@@ -24,9 +24,15 @@ const useForumBackendGetTopics = () => {
   const { accounts: { tokens } } = useYlide();
   const fetch = useForumApiFetch(tokens);
 
-  return React.useCallback(() => {
+  return React.useCallback((query: string, sort: [string, 'ASC' | 'DESC']) => {
     return fetch<PaginatedArray<ForumTopic>>({
       url: '/topic/',
+      queryParams: query ? {
+        search: query,
+        sort: JSON.stringify(sort),
+      } : {
+        sort: JSON.stringify(sort),
+      },
       fetchParams: {
         method: 'GET',
       },
@@ -52,17 +58,39 @@ const useForumBackendGetThreads = (topicSlug: string) => {
   const { accounts: { tokens } } = useYlide();
   const fetch = useForumApiFetch(tokens);
 
-  return React.useCallback(() => {
+  return React.useCallback((query: string, sort: [string, 'ASC' | 'DESC']) => {
     return fetch<PaginatedArray<ForumThread>>({
       url: `/thread/`,
-      queryParams: {
+      queryParams: query ? {
         topicSlug: topicSlug,
+        sort: JSON.stringify(sort),
+        search: query,
+      } : {
+        topicSlug: topicSlug,
+        sort: JSON.stringify(sort),
       },
       fetchParams: {
         method: 'GET',
       },
     });
   }, [ fetch, topicSlug ]);
+};
+
+const useForumBackendGetBestThreads = () => {
+  const fetch = useForumApiFetch();
+
+  return React.useCallback(() => {
+    return fetch<{
+      latest: Array<ForumThread>;
+      newest: Array<ForumThread>;
+      popular: Array<ForumThread>;
+    }>({
+      url: `/thread/best`,
+      fetchParams: {
+        method: 'GET',
+      },
+    });
+  }, [ fetch ]);
 };
 
 const useForumBackendGetThread = (id: string) => {
@@ -83,12 +111,27 @@ const useForumBackendGetReplies = () => {
   const { accounts: { tokens } } = useYlide();
   const fetch = useForumApiFetch(tokens);
 
-  return React.useCallback((feedId: Uint256) => {
+  return React.useCallback((feedId: Uint256, sort: [string, 'ASC' | 'DESC']) => {
     return fetch<Array<ForumReply>>({
       url: `/reply/`,
       queryParams: {
-        feedId: feedId,
+        feedId,
+        sort: JSON.stringify(sort),
       },
+      fetchParams: {
+        method: 'GET',
+      },
+    });
+  }, [ fetch ]);
+};
+
+const useForumBackendGetReply = () => {
+  const { accounts: { tokens } } = useYlide();
+  const fetch = useForumApiFetch(tokens);
+
+  return React.useCallback((id: string) => {
+    return fetch<ForumReply | null>({
+      url: `/reply/${ id }`,
       fetchParams: {
         method: 'GET',
       },
@@ -101,8 +144,10 @@ const publicApi = {
   useGetTopics: useForumBackendGetTopics,
   useGetTopic: useForumBackendGetTopic,
   useGetThreads: useForumBackendGetThreads,
+  useGetBestThreads: useForumBackendGetBestThreads,
   useGetThread: useForumBackendGetThread,
   useGetReplies: useForumBackendGetReplies,
+  useGetReply: useForumBackendGetReply,
 };
 
 export default publicApi;

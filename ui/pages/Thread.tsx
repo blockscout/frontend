@@ -1,6 +1,7 @@
 import {
-  Flex, Icon, useColorModeValue, Text, HStack, Textarea,
+  Flex, Icon, useColorModeValue, Text, HStack, Textarea, Spinner,
 } from '@chakra-ui/react';
+import { YMF } from '@ylide/sdk';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect } from 'react';
 
@@ -10,10 +11,10 @@ import type { RepliesSorting } from 'types/api/forum';
 
 import type { Query } from 'nextjs-routes';
 
-import backArrowIcon from 'icons/arrows/arrow-back.svg';
 import attachmentIcon from 'icons/attachment.svg';
 import bookmarkIconFilled from 'icons/bookmark_filled.svg';
 import bookmarkIcon from 'icons/bookmark.svg';
+import crossIcon from 'icons/cross.svg';
 import eyeIconFilled from 'icons/eye_filled.svg';
 import eyeIcon from 'icons/eye.svg';
 import sendIcon from 'icons/send.svg';
@@ -25,29 +26,24 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ChatsAccountsBar from 'ui/shared/forum/ChatsAccountsBar';
 import PopoverCompactSorting from 'ui/shared/forum/PopoverCompactSorting';
 import RepliesList from 'ui/shared/forum/RepliesList';
+import ReplyEntity from 'ui/shared/forum/ReplyEntity';
 import SelectAccountDropdown from 'ui/shared/forum/SelectAccountDropdown';
 import SelectBlockchainDropdown from 'ui/shared/forum/SelectBlockchainDropdown';
 import TagsList from 'ui/shared/forum/TagsList';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import type { Option } from 'ui/shared/sort/Sort';
 
-import type { ThreadsSortingField } from './Threads';
-
 export type RepliesSortingField = RepliesSorting['sort'];
 export type RepliesSortingValue = `${ RepliesSortingField }-${ RepliesSorting['order'] }`;
 
 const SORT_OPTIONS: Array<Option<RepliesSortingValue>> = [
-  { title: 'Sort by Popular asc', id: undefined },
-  { title: 'Sort by Popular desc', id: 'popular-desc' },
-  { title: 'Sort by Name asc', id: 'name-asc' },
-  { title: 'Sort by Name desc', id: 'name-desc' },
-  { title: 'Sort by Updated asc', id: 'updated-asc' },
-  { title: 'Sort by Updated desc', id: 'updated-desc' },
+  { title: 'Sort by old first', id: 'time-asc' },
+  { title: 'Sort by new first', id: 'time-desc' },
 ];
 
 const getSortValueFromQuery = (query: Query): RepliesSortingValue => {
   if (!query.sort || !query.order) {
-    return 'popular-desc';
+    return 'time-desc';
   }
 
   const str = query.sort + '-' + query.order;
@@ -55,7 +51,7 @@ const getSortValueFromQuery = (query: Query): RepliesSortingValue => {
     return str as RepliesSortingValue;
   }
 
-  return 'popular-desc';
+  return 'time-desc';
 };
 
 const ThreadPageContent = () => {
@@ -66,8 +62,11 @@ const ThreadPageContent = () => {
   const threadString = getQueryParamString(router.query.thread);
   // const topicString = getQueryParamString(router.query.topic);
 
+  const [ repliesLoading, setRepliesLoading ] = React.useState(false);
   const [ replies, setReplies ] = React.useState<Array<ForumReply>>([]);
+  const [ replyTo, setReplyTo ] = React.useState<ForumReply | undefined>();
   const [ thread, setThread ] = React.useState<ForumThread | undefined>();
+  const [ sending, setSending ] = React.useState(false);
   const [ replyText, setReplyText ] = React.useState<string>('');
   const [ account, setAccount ] = React.useState<DomainAccount | undefined>(domainAccounts[0]);
   const [ blockchain, setBlockchain ] = React.useState<string>('GNOSIS');
@@ -105,18 +104,45 @@ const ThreadPageContent = () => {
     if (!initialized || !thread) {
       return;
     }
-    getReplies(thread.feedId).then(setReplies);
-  }, [ getReplies, thread, initialized ]);
+    // sorting
+    const sort: [string, 'ASC' | 'DESC'] = sorting === 'time-asc' ? [ 'createTimestamp', 'ASC' ] : [ 'createTimestamp', 'DESC' ];
+    setRepliesLoading(true);
+    getReplies(thread.feedId, sort).then(result => {
+      setReplies(result);
+      setRepliesLoading(false);
+      setSending(false);
+      setReplyText('');
+      setReplyTo(undefined);
+    });
+  }, [ getReplies, thread, initialized, replyCount, sorting ]);
 
   const handleSend = useCallback(async() => {
     if (!thread || !account) {
       return;
     }
-    await broadcastMessage(account, thread.feedId, 'Reply', replyText);
-    setTimeout(() => {
-      getReplies(thread.feedId).then(setReplies);
-    }, 3000);
-  }, [ account, replyText, thread, broadcastMessage, getReplies ]);
+    setSending(true);
+    try {
+      const ymfContent = YMF.fromPlainText(replyText);
+      if (replyTo) {
+        ymfContent.root.children.unshift({
+          parent: ymfContent.root,
+          type: 'tag',
+          tag: 'reply-to',
+          attributes: {
+            id: replyTo.id,
+          },
+          singular: true,
+          children: [],
+        });
+      }
+      await broadcastMessage(account, thread.feedId, 'Reply', ymfContent);
+      setTimeout(() => {
+        getThread().then(setThread);
+      }, 3000);
+    } catch (e) {
+      setSending(false);
+    }
+  }, [ thread, account, replyText, replyTo, broadcastMessage, getThread ]);
 
   const onSort = React.useCallback((value: RepliesSortingValue) => {
     setSorting(value);
@@ -135,18 +161,31 @@ const ThreadPageContent = () => {
     setReplyText(e.target.value);
   }, []);
 
-  const sortings: Array<{ key: ThreadsSortingField; title: string }> = [
-    { key: 'popular', title: 'Sort by Popular' },
-    { key: 'name', title: 'Sort by Name' },
-    { key: 'updated', title: 'Sort by Updated' },
+  const sortings: Array<{ key: RepliesSortingValue; title: string }> = [
+    { key: 'time-asc', title: 'Sort by old first' },
+    { key: 'time-desc', title: 'Sort by new first' },
   ];
+
+  const transformSortingValue = useCallback((value: RepliesSortingValue) => {
+    return value === 'time-asc' ? 'old first' : 'new first';
+  }, [ ]);
+
+  const filteredReplies = sorting === 'time-asc' ? replies.slice(1) : replies.slice(0, -1);
+
+  const handleReplyTo = useCallback((reply: ForumReply) => {
+    setReplyTo(reply);
+  }, [ ]);
+
+  const handleDiscardReplyTo = useCallback(() => {
+    setReplyTo(undefined);
+  }, [ ]);
 
   return (
     <Flex position="relative" flexDir="column">
       <HStack align="center" justify="space-between" mb={ 6 }>
         <PageTitle
           mb={ 0 }
-          beforeTitle={ <Icon color="link" cursor="pointer" _hover={{ color: 'link_hover' }} boxSize={ 6 } mr={ 2 } as={ backArrowIcon }/> }
+          backLink={ thread ? { url: `/forum/${ thread.topicSlug }`, label: `Back to topic` } : undefined }
           title={ thread?.title || '' }
           isLoading={ !thread }
           justifyContent="space-between"
@@ -207,18 +246,45 @@ const ThreadPageContent = () => {
             />
             <PopoverCompactSorting
               items={ sortings }
+              instantSelect={ true }
               onChange={ onSort }
               value={ sorting }
+              valueTransform={ transformSortingValue }
             />
           </HStack>
-          <RepliesList replies={ allRepliesLoaded ? replies.slice(0, -1) : replies }/>
+          { repliesLoading ? (
+            <Spinner/>
+          ) : (
+            <RepliesList onReplyTo={ handleReplyTo } replies={ allRepliesLoaded ? filteredReplies : replies }/>
+          ) }
         </Flex>
       </Flex>
       <Flex flexDir="column" mb={ 6 } marginX={ -12 } paddingX={ 12 }>
-        <Flex w="900px" flexDir="column" border="1px solid" borderRadius={ 12 } borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }>
+        <Flex w="900px" overflow="hidden" flexDir="column" border="1px solid" borderRadius={ 12 } borderColor={ borderColor }>
+          { replyTo && (
+            <Flex flexDir="row" borderBottom="1px solid" borderColor={ borderColor }>
+              <ReplyEntity { ...replyTo } type="reply-form"/>
+              <Flex flexDir="row" align="center" px={ 3 }>
+                <Icon
+                  as={ crossIcon }
+                  boxSize={ 6 }
+                  cursor="pointer"
+                  _hover={{ color: 'link_hovered' }}
+                  onClick={ handleDiscardReplyTo }
+                />
+              </Flex>
+            </Flex>
+          ) }
           <Flex flexDir="row" padding={ 6 } align="center" borderBottom="1px solid" borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }>
             <Textarea border="0" flexDir="row" flexGrow={ 1 } value={ replyText } placeholder="Type text here..." onChange={ handleReplyTextChange }/>
-            <Flex flexDir="row" align="center"><Icon as={ attachmentIcon } boxSize={ 6 }/></Flex>
+            <Flex flexDir="row" align="center">
+              <Icon
+                as={ attachmentIcon }
+                boxSize={ 6 }
+                cursor="pointer"
+                _hover={{ color: 'link_hovered' }}
+              />
+            </Flex>
           </Flex>
 
           <Flex flexDir="row" justify="space-between" padding={ 6 }>
@@ -233,7 +299,17 @@ const ThreadPageContent = () => {
                 onChange={ handleBlockchainChange }
               />
               <Flex flexDir="row" align="center">
-                <Icon as={ sendIcon } boxSize={ 6 } cursor="pointer" _hover={{ color: 'link_hovered' }} onClick={ handleSend }/>
+                { sending ? (
+                  <Spinner/>
+                ) : (
+                  <Icon
+                    as={ sendIcon }
+                    boxSize={ 6 }
+                    cursor="pointer"
+                    _hover={{ color: 'link_hovered' }}
+                    onClick={ handleSend }
+                  />
+                ) }
               </Flex>
             </Flex>
           </Flex>

@@ -6,7 +6,7 @@ import useFetch from 'lib/hooks/useFetch';
 
 export interface Params {
   url?: string;
-  queryParams?: Record<string, string>;
+  queryParams?: Record<string, string> | Array<Array<string>>;
   fetchParams?: Pick<FetchParams, 'body' | 'method' | 'signal'>;
 }
 

@@ -1,6 +1,6 @@
 import { evm } from '@ylide/ethereum';
-import type { AbstractWalletController, Uint256 } from '@ylide/sdk';
-import { BrowserLocalStorage, MessageContentV5, Ylide, YlideKeysRegistry } from '@ylide/sdk';
+import type { AbstractWalletController, IMessage, MessageAttachment, RecipientInfo, Uint256, WalletAccount } from '@ylide/sdk';
+import { BrowserLocalStorage, MessageContentV4, MessageContentV5, stringToSemver, Ylide, YlideKeysRegistry, YMF } from '@ylide/sdk';
 import { SmartBuffer } from '@ylide/smart-buffer';
 import type { ReactNode } from 'react';
 import React, { createContext, useContext, useEffect, useState, useMemo, useCallback } from 'react';
@@ -14,6 +14,23 @@ import { ensurePageLoaded } from 'lib/ensurePageLoaded';
 import { useYlideAccountModal, useYlideSelectWalletModal } from './modals';
 import { useYlideAccounts } from './useYlideAccounts';
 import { useYlideFaucet } from './useYlideFaucet';
+
+export enum MessageDecodedTextDataType {
+  PLAIN = 'plain',
+  YMF = 'YMF',
+}
+
+export type IMessageDecodedTextData =
+	| { type: MessageDecodedTextDataType.PLAIN; value: string }
+	| { type: MessageDecodedTextDataType.YMF; value: YMF };
+
+export interface IMessageDecodedContent {
+  msgId: string;
+  decodedTextData: IMessageDecodedTextData;
+  decodedSubject: string;
+  attachments: Array<MessageAttachment>;
+  recipientInfos: Array<RecipientInfo>;
+}
 
 const YlideContext = createContext(undefined as unknown as ReturnType<typeof useYlideService>);
 
@@ -231,17 +248,111 @@ const useYlideService = () => {
   const walletConnectRegistry = useWalletConnectRegistry();
   const accounts = useAccountController(ylide, keysRegistry, wallets, initialized);
 
-  const broadcastMessage = useCallback(async(account: DomainAccount, feedId: string, subject: string, content: string) => {
+  const broadcastMessage = useCallback(async(account: DomainAccount, feedId: string, subject: string, content: YMF) => {
     return await ylide.core.broadcastMessage({
       feedId: feedId as Uint256,
       wallet: account.wallet,
       sender: account.account,
-      content: MessageContentV5.simple(subject, content),
+      content: new MessageContentV5({
+        subject: subject,
+        content: content,
+        attachments: [],
+        extraBytes: new Uint8Array(0),
+        extraJson: {},
+        recipientInfos: [],
+        sendingAgentName: 'Blockscout',
+        sendingAgentVersion: stringToSemver('0.0.1'),
+      }),
       serviceCode: 7,
     }, {
       isPersonal: false,
       isGenericFeed: true,
     });
+  }, [ ylide ]);
+
+  const sendMessage = useCallback(async(account: DomainAccount, recipients: Array<string>, feedId: string, subject: string, content: string) => {
+    return await ylide.core.sendMessage({
+      feedId: feedId as Uint256,
+      wallet: account.wallet,
+      sender: account.account,
+      content: MessageContentV5.simple(subject, content),
+      recipients: recipients,
+      serviceCode: 7,
+    }, {
+      isPersonal: false,
+      isGenericFeed: true,
+    });
+  }, [ ylide ]);
+
+  const decodeDirectMessage = useCallback(async(
+    msgId: string,
+    msg: IMessage,
+    recipient: WalletAccount,
+  ): Promise<IMessageDecodedContent | null> => {
+    const content = await ylide.core.getMessageContent(msg);
+
+    if (!content || content.corrupted) {
+      return null;
+    }
+
+    try {
+      const result = await ylide.core.decryptMessageContent(recipient, msg, content);
+
+      return {
+        msgId,
+        decodedSubject: result.content.subject,
+        decodedTextData:
+          result.content.content instanceof YMF ?
+            {
+              type: MessageDecodedTextDataType.YMF,
+              value: result.content.content,
+            } :
+            {
+              type: MessageDecodedTextDataType.PLAIN,
+              value: result.content.content,
+            },
+        attachments:
+          result.content instanceof MessageContentV4 || result.content instanceof MessageContentV5 ?
+            result.content.attachments :
+            [],
+        recipientInfos: result.content instanceof MessageContentV5 ? result.content.recipientInfos : [],
+      };
+    } catch (err) {
+      return null;
+    }
+  }, [ ylide ]);
+
+  const decodeBroadcastMessage = useCallback(async(
+    msgId: string,
+    msg: IMessage,
+  ): Promise<IMessageDecodedContent | null> => {
+    const content = await ylide.core.getMessageContent(msg);
+
+    if (!content || content.corrupted) {
+      return null;
+    }
+
+    const result = ylide.core.decryptBroadcastContent(msg, content);
+
+    return {
+      msgId,
+      decodedSubject: result.content.subject,
+      decodedTextData:
+        result.content.content instanceof YMF ?
+          {
+            type: MessageDecodedTextDataType.YMF,
+            value: result.content.content,
+          } :
+          {
+            type: MessageDecodedTextDataType.PLAIN,
+            value: result.content.content,
+          },
+      attachments:
+        result.content instanceof MessageContentV4 || result.content instanceof MessageContentV5 ?
+          result.content.attachments :
+          [],
+      recipientInfos: result.content instanceof MessageContentV5 ? result.content.recipientInfos : [],
+    };
   }, [ ylide ]);
 
   useEffect(() => {
@@ -263,6 +374,9 @@ const useYlideService = () => {
     accounts,
     faucet,
     broadcastMessage,
+    sendMessage,
+    decodeBroadcastMessage,
+    decodeDirectMessage,
   };
 };
 

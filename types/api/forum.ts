@@ -13,6 +13,6 @@ export interface ThreadsSorting {
 }
 
 export interface RepliesSorting {
-  sort: 'popular' | 'name' | 'updated';
+  sort: 'time';
   order: 'asc' | 'desc';
 }

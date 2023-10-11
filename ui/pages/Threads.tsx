@@ -11,6 +11,7 @@ import type { Query } from 'nextjs-routes';
 import ForumPublicApi from 'lib/api/ylideApi/ForumPublicApi';
 import { calcForumPagination } from 'lib/api/ylideApi/utils';
 import { useYlide } from 'lib/contexts/ylide';
+import useDebounce from 'lib/hooks/useDebounce';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import ActionBar from 'ui/shared/ActionBar';
 import FilterInput from 'ui/shared/filters/FilterInput';
@@ -80,6 +81,17 @@ const ThreadsPageContent = () => {
   const PAGE_SIZE = 10;
   const pagination = useMemo(() => calcForumPagination(PAGE_SIZE, page, setPage, threads), [ threads, page ]);
 
+  const debouncedFilter = useDebounce(filter, 300);
+
+  const sortsMap: Record<ThreadsSortingValue, [string, 'ASC' | 'DESC']> = useMemo(() => ({
+    'popular-asc': [ 'replyCount', 'ASC' ],
+    'popular-desc': [ 'replyCount', 'DESC' ],
+    'name-asc': [ 'title', 'ASC' ],
+    'name-desc': [ 'title', 'DESC' ],
+    'updated-asc': [ 'lastReplyTimestamp', 'ASC' ],
+    'updated-desc': [ 'lastReplyTimestamp', 'DESC' ],
+  }), []);
+
   useEffect(() => {
     if (!initialized) {
       return;
@@ -92,14 +104,14 @@ const ThreadsPageContent = () => {
       return;
     }
     setThreads(data => ({ ...data, loading: true }));
-    getThreads().then(result => {
+    const sort: [string, 'ASC' | 'DESC'] = sortsMap[sorting];
+    getThreads(debouncedFilter, sort).then(result => {
       setThreads(data => ({ ...data, loading: false, data: result }));
     }).catch(err => {
       setThreads(data => ({ ...data, loading: false, error: err }));
     });
-  }, [ getThreads, initialized, topic ]);
+  }, [ getThreads, initialized, topic, debouncedFilter, sortsMap, sorting ]);
 
-  // const debouncedFilter = useDebounce(filter, 300);
   const globalTags = [
     'All', 'Solidity', 'Go-ethereum', 'Web3js', 'Contract-development', 'Remix', 'Blockchain',
   ];

@@ -146,14 +146,16 @@ const AccountsPopover = ({ className }: Props) => {
               { domainAccounts.map((account) => (
                 <AccountPlate key={ account.account.address } account={ account }/>
               )) }
-              <Button
-                variant="outline"
-                size="sm"
-                mt={ 2 }
-                onClick={ addAccount }
-              >
+              { domainAccounts.length === 0 && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  mt={ 2 }
+                  onClick={ addAccount }
+                >
               Add account
-              </Button>
+                </Button>
+              ) }
             </VStack>
           </PopoverBody>
         </PopoverContent>

@@ -1,9 +1,11 @@
 import { Flex, useColorModeValue, Icon, Link, Text } from '@chakra-ui/react';
 import React from 'react';
 
+import type { ForumThread } from 'lib/api/ylideApi/types';
+
 import caretRight from 'icons/arrows/caret-right.svg';
 
-const TopicsHighlight = ({ title, items }: { title: string; items: Array<{ id: string; title: string }>}) => {
+const ThreadsHighlight = ({ title, items }: { title: string; items: Array<ForumThread>}) => {
   const iconColor = useColorModeValue('blackAlpha.900', 'whiteAlpha.900');
   const threadColor = useColorModeValue('blackAlpha.700', 'whiteAlpha.700');
   return (
@@ -24,7 +26,7 @@ const TopicsHighlight = ({ title, items }: { title: string; items: Array<{ id: s
       <Flex minW={ 0 } flexDir="column" gap={ 4 } maxW="100%" alignItems="stretch">
         { items.map((item) => (
           <Link
-            href="/forum/test-topic"
+            href={ `/forum/${ item.topicSlug }/${ item.slug }/` }
             display="flex"
             key={ item.id }
             flexDir="row"
@@ -51,4 +53,4 @@ const TopicsHighlight = ({ title, items }: { title: string; items: Array<{ id: s
   );
 };
 
-export default TopicsHighlight;
+export default ThreadsHighlight;

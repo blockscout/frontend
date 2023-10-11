@@ -7,14 +7,16 @@ import ReplyEntity from './ReplyEntity';
 
 interface Props {
   replies: Array<ForumReply>;
+  onReplyTo?: (reply: ForumReply) => void;
 }
 
-const RepliesList = ({ replies }: Props) => {
+const RepliesList = ({ replies, onReplyTo }: Props) => {
   return (
     <VStack align="stretch" spacing={ 4 } mb={ 10 }>
       { replies.map((item) => (
         <ReplyEntity
           key={ item.id }
+          onReplyTo={ onReplyTo }
           { ...item }
         />
       )) }

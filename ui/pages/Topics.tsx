@@ -1,7 +1,8 @@
-import { Flex, HStack, Button } from '@chakra-ui/react';
+import { Flex, HStack, Button, Spinner } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useMemo } from 'react';
 
+import type { ForumThread } from 'lib/api/ylideApi/types';
 import { type PaginatedState, type ForumTopic, defaultPaginatedState } from 'lib/api/ylideApi/types';
 import type { TopicsSorting } from 'types/api/forum';
 
@@ -10,12 +11,13 @@ import type { Query } from 'nextjs-routes';
 import ForumPublicApi from 'lib/api/ylideApi/ForumPublicApi';
 import { calcForumPagination } from 'lib/api/ylideApi/utils';
 import { useYlide } from 'lib/contexts/ylide';
+import useDebounce from 'lib/hooks/useDebounce';
 import ActionBar from 'ui/shared/ActionBar';
 import FilterInput from 'ui/shared/filters/FilterInput';
 import ChatsAccountsBar from 'ui/shared/forum/ChatsAccountsBar';
 import DevForumHero from 'ui/shared/forum/DevForumHero';
 import PopoverSorting from 'ui/shared/forum/PopoverSorting';
-import TopicsHighlight from 'ui/shared/forum/TopicsHighlight';
+import ThreadsHighlight from 'ui/shared/forum/ThreadsHighlight';
 import TopicsList from 'ui/shared/forum/TopicsList';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -64,7 +66,15 @@ const getSortValueFromQuery = (query: Query): TopicsSortingValue => {
   return 'popular-desc';
 };
 
-const TopicsHighlights = () => {
+const ThreadsHighlights = ({
+  latest,
+  newest,
+  popular,
+}: {
+  latest: Array<ForumThread>;
+  newest: Array<ForumThread>;
+  popular: Array<ForumThread>;
+}) => {
   return (
     <Flex
       mb={ 10 }
@@ -73,30 +83,9 @@ const TopicsHighlights = () => {
       alignItems="flex-start"
       maxW="100%"
     >
-      <TopicsHighlight title="🔥 Most popular" items={ [
-        { id: '123',
-          title: 'One of the most popular thread name here' },
-        { id: '456',
-          title: 'One of the most popular thread name here' },
-        { id: '789',
-          title: 'One of the most popular thread name here' },
-      ] }/>
-      <TopicsHighlight title="💬 Top commented" items={ [
-        { id: '123',
-          title: 'One of the most popular thread name here' },
-        { id: '456',
-          title: 'One of the most popular thread name here' },
-        { id: '789',
-          title: 'One of the most popular thread name here' },
-      ] }/>
-      <TopicsHighlight title="❤️ Most freshest" items={ [
-        { id: '123',
-          title: 'One of the most popular thread name here' },
-        { id: '456',
-          title: 'One of the most popular thread name here' },
-        { id: '789',
-          title: 'One of the most popular thread name here' },
-      ] }/>
+      <ThreadsHighlight title="🔥 Most popular" items={ popular }/>
+      <ThreadsHighlight title="💬 Last commented" items={ latest }/>
+      <ThreadsHighlight title="❤️ Most freshest" items={ newest }/>
     </Flex>
   );
 };
@@ -108,33 +97,52 @@ const TopicsPageContent = () => {
   const [ sorting, setSorting ] = React.useState<TopicsSortingValue>(getSortValueFromQuery(router.query));
   const [ page, setPage ] = React.useState<number>(1);
   const [ topics, setTopics ] = React.useState<PaginatedState<ForumTopic>>(defaultPaginatedState());
+  const [ bestThreads, setBestThreads ] = React.useState<{
+    latest: Array<ForumThread>;
+    newest: Array<ForumThread>;
+    popular: Array<ForumThread>;
+  }>({ latest: [], newest: [], popular: [] });
   const getTopics = ForumPublicApi.useGetTopics();
+  const getBestThreads = ForumPublicApi.useGetBestThreads();
   const PAGE_SIZE = 10;
   const pagination = useMemo(() => calcForumPagination(PAGE_SIZE, page, setPage, topics), [ topics, page ]);
+
+  const debouncedFilter = useDebounce(filter, 300);
+  // sorting
+
+  const sortsMap: Record<TopicsSortingValue, [string, 'ASC' | 'DESC']> = useMemo(() => ({
+    'popular-asc': [ 'threadsCount', 'ASC' ],
+    'popular-desc': [ 'threadsCount', 'DESC' ],
+    'name-asc': [ 'title', 'ASC' ],
+    'name-desc': [ 'title', 'DESC' ],
+    'updated-asc': [ 'lastReplyTimestamp', 'ASC' ],
+    'updated-desc': [ 'lastReplyTimestamp', 'DESC' ],
+  }), []);
 
   useEffect(() => {
     if (!initialized) {
       return;
     }
     setTopics(data => ({ ...data, loading: true }));
-    getTopics().then(result => {
+    getBestThreads().then(result => {
+      setBestThreads(result);
+    }).catch(() => {
+    });
+    const sort: [string, 'ASC' | 'DESC'] = sortsMap[sorting];
+    getTopics(debouncedFilter, sort).then(result => {
       setTopics(data => ({ ...data, loading: false, data: result }));
     }).catch(err => {
       setTopics(data => ({ ...data, loading: false, error: err }));
     });
-  }, [ getTopics, initialized ]);
-
-  // const debouncedFilter = useDebounce(filter, 300);
+  }, [ getTopics, getBestThreads, initialized, debouncedFilter, sorting, sortsMap ]);
 
   const onSearchChange = useCallback((value: string) => {
-    // onFilterChange({ q: value });
     setFilter(value);
-  }, [ ]); // onFilterChange
+  }, [ ]);
 
   const onSort = useCallback((value: TopicsSortingValue) => {
     setSorting(value);
-    // onSortingChange(getSortParamsFromValue(value));
-  }, [ ]); // onSortingChange
+  }, [ ]);
 
   const filterInput = (
     <FilterInput
@@ -158,7 +166,12 @@ const TopicsPageContent = () => {
   const actionBar = (
     <ActionBar mt={ -3 }>
       <HStack spacing={ 3 }>
-        <PopoverSortingTyped isActive={ sorting !== 'popular-desc' } items={ sortings } onChange={ onSort } value={ sorting }/>
+        <PopoverSortingTyped
+          isActive={ sorting !== 'popular-desc' }
+          items={ sortings }
+          onChange={ onSort }
+          value={ sorting }
+        />
         { filterInput }
       </HStack>
       <Pagination ml="auto" { ...pagination }/>
@@ -172,13 +185,15 @@ const TopicsPageContent = () => {
         <PageTitle containerProps={{ mb: 0 }} title="Dev forum" justifyContent="space-between"/>
         <ChatsAccountsBar compact={ true }/>
       </HStack>
-      <TopicsHighlights/>
+      <ThreadsHighlights { ...bestThreads }/>
       <HStack align="center" justify="space-between" mb={ 6 }>
         <PageTitle containerProps={{ mb: 0 }} title="Topics" justifyContent="space-between"/>
         { admins.length ? (<Button pos="relative">Create topic</Button>) : null }
       </HStack>
       { actionBar }
-      { topics.loading ? 'Loading...' : (
+      { topics.loading ? (
+        <Spinner/>
+      ) : (
         <TopicsList topics={ topics.data.items }/>
       ) }
     </Flex>
