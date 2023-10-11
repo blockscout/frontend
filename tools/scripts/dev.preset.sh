@@ -19,11 +19,6 @@ if [ ! -f "$secrets_file" ]; then
     exit 1
 fi
 
-# if NEXT_PUBLIC_APP_LISTEN_PORT is not defined - then it should equal to NEXT_PUBLIC_APP_PORT:
-if [ -z "$NEXT_PUBLIC_APP_LISTEN_PORT" ]; then
-  export NEXT_PUBLIC_APP_LISTEN_PORT=$NEXT_PUBLIC_APP_PORT
-fi
-
 # download assets for the running instance
 dotenv \
   -e $config_file \
@@ -35,5 +30,5 @@ dotenv \
   -v NEXT_PUBLIC_GIT_TAG=$(git describe --tags --abbrev=0) \
   -e $config_file \
   -e $secrets_file \
-  -- bash -c './deploy/scripts/make_envs_script.sh && next dev -- -p $NEXT_PUBLIC_APP_LISTEN_PORT' |
+  -- bash -c './deploy/scripts/make_envs_script.sh && if [ -z "$NEXT_PUBLIC_APP_LISTEN_PORT" ]; then export NEXT_PUBLIC_APP_LISTEN_PORT=$NEXT_PUBLIC_APP_PORT fi && next dev -- -p $NEXT_PUBLIC_APP_LISTEN_PORT' |
 pino-pretty
