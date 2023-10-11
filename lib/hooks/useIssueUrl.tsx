@@ -1,9 +1,11 @@
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import config from 'configs/app';
 
 export default function useIssueUrl(backendVersion: string | undefined) {
   const [ isLoading, setIsLoading ] = React.useState(true);
+  const router = useRouter();
 
   React.useEffect(() => {
     setIsLoading(false);
@@ -23,6 +25,8 @@ export default function useIssueUrl(backendVersion: string | undefined) {
       'additional-information': `**User Agent:** ${ window.navigator.userAgent }`,
     });
     return `https://github.com/blockscout/blockscout/issues/new/?${ searchParams.toString() }`;
-  }, [ backendVersion, isLoading ]);
+  // we need to update link whenever page url changes
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ backendVersion, isLoading, router.asPath ]);
 
 }
