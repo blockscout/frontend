@@ -79,7 +79,7 @@ const SearchBarSuggest = ({ onClick, onClear }: Props) => {
           flexGrow={ 1 }
         >
           { kw.startsWith('0x') ? (
-            <Box w="100%" overflow="hidden" whiteSpace="nowrap">
+            <Box overflow="hidden" whiteSpace="nowrap">
               <HashStringShortenDynamic hash={ kw } isTooltipDisabled/>
             </Box>
           ) :
