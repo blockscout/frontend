@@ -1,10 +1,10 @@
-import { Grid, GridItem, Text, Skeleton } from '@chakra-ui/react';
+import { Grid, Text, Skeleton } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { ZKEVM_L2_TX_BATCH_STATUSES } from 'types/api/zkEvml2TxnBatches';
-import type { ZkEvmL2TxnBatch } from 'types/api/zkEvml2TxnBatches';
+import { ZKEVM_L2_TX_BATCH_STATUSES } from 'types/api/zkEvmL2TxnBatches';
+import type { ZkEvmL2TxnBatch } from 'types/api/zkEvmL2TxnBatches';
 
 import { route } from 'nextjs-routes';
 
@@ -15,6 +15,7 @@ import Icon from 'ui/shared/chakra/Icon';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -57,16 +58,6 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
   if (!data) {
     return null;
   }
-
-  const sectionGap = (
-    <GridItem
-      colSpan={{ base: undefined, lg: 2 }}
-      mt={{ base: 2, lg: 3 }}
-      mb={{ base: 0, lg: 3 }}
-      borderBottom="1px solid"
-      borderColor="divider"
-    />
-  );
 
   return (
     <Grid
@@ -133,7 +124,7 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
         </Skeleton>
       </DetailsInfoItem>
 
-      { sectionGap }
+      <DetailsInfoItemDivider/>
 
       <DetailsInfoItem
         title="Global exit root"

@@ -59,7 +59,7 @@ const Stats = () => {
         { config.features.zkEvmRollup.isEnabled ? (
           <StatsItem
             icon={ batchesIcon }
-            title="Latest batch "
+            title="Latest batch"
             value={ (zkEvmLatestBatchQuery.data || 0).toLocaleString() }
             url={ route({ pathname: '/zkevm-l2-txn-batches' }) }
             isLoading={ zkEvmLatestBatchQuery.isPlaceholderData }

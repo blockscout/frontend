@@ -1,7 +1,7 @@
 import { Table, Tbody, Th, Tr } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ZkEvmL2TxnBatchesItem } from 'types/api/zkEvml2TxnBatches';
+import type { ZkEvmL2TxnBatchesItem } from 'types/api/zkEvmL2TxnBatches';
 
 import { default as Thead } from 'ui/shared/TheadSticky';
 

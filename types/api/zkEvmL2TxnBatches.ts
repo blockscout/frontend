@@ -36,3 +36,5 @@ export type ZkEvmL2TxnBatchTxs = {
   // API responce doesn't have next_page_params option, but we need to add it to the type for consistency
   next_page_params: null;
 }
+
+export type NewZkEvmBatchSocketResponse = { batch: ZkEvmL2TxnBatch };

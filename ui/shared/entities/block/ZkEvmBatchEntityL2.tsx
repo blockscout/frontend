@@ -11,7 +11,7 @@ import * as BlockEntity from './BlockEntity';
 
 const feature = config.features.zkEvmRollup;
 
-const BlockEntityL2 = (props: BlockEntity.EntityProps) => {
+const ZkEvmBatchEntityL2 = (props: BlockEntity.EntityProps) => {
   const linkProps = _omit(props, [ 'className' ]);
   const partsProps = _omit(props, [ 'className', 'onClick' ]);
 
@@ -32,4 +32,4 @@ const BlockEntityL2 = (props: BlockEntity.EntityProps) => {
   );
 };
 
-export default chakra(BlockEntityL2);
+export default chakra(ZkEvmBatchEntityL2);

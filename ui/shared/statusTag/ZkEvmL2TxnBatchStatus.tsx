@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { ZkEvmL2TxnBatchesItem } from 'types/api/zkEvml2TxnBatches';
+import type { ZkEvmL2TxnBatchesItem } from 'types/api/zkEvmL2TxnBatches';
 
 import type { StatusTagType } from './StatusTag';
 import StatusTag from './StatusTag';

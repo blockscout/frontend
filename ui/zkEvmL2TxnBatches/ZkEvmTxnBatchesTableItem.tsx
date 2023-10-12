@@ -1,7 +1,7 @@
 import { Td, Tr, Text, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ZkEvmL2TxnBatchesItem } from 'types/api/zkEvml2TxnBatches';
+import type { ZkEvmL2TxnBatchesItem } from 'types/api/zkEvmL2TxnBatches';
 
 import { route } from 'nextjs-routes';
 
@@ -25,7 +25,7 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
 
   return (
     <Tr>
-      <Td>
+      <Td verticalAlign="middle">
         <ZkEvmBatchEntityL2
           isLoading={ isLoading }
           number={ item.number }
@@ -34,15 +34,15 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
           fontWeight={ 600 }
         />
       </Td>
-      <Td>
+      <Td verticalAlign="middle">
         <ZkEvmL2TxnBatchStatus status={ item.status } isLoading={ isLoading }/>
       </Td>
-      <Td>
+      <Td verticalAlign="middle">
         <Skeleton isLoaded={ !isLoading } color="text_secondary">
           <span>{ timeAgo }</span>
         </Skeleton>
       </Td>
-      <Td>
+      <Td verticalAlign="middle">
         <LinkInternal
           href={ route({ pathname: '/zkevm-l2-txn-batch/[number]', query: { number: item.number.toString(), tab: 'txs' } }) }
           isLoading={ isLoading }
@@ -52,7 +52,7 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
           </Skeleton>
         </LinkInternal>
       </Td>
-      <Td pr={ 12 }>
+      <Td pr={ 12 } verticalAlign="middle">
         { item.verify_tx_hash ? (
           <TxEntityL1
             isLoading={ isLoading }
@@ -63,7 +63,7 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
           />
         ) : <Text>Pending</Text> }
       </Td>
-      <Td pr={ 12 }>
+      <Td pr={ 12 } verticalAlign="middle">
         { item.sequence_tx_hash ? (
           <TxEntityL1
             isLoading={ isLoading }
