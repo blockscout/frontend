@@ -24,6 +24,7 @@ import { useYlide } from 'lib/contexts/ylide';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ChatsAccountsBar from 'ui/shared/forum/ChatsAccountsBar';
+import Editor from 'ui/shared/forum/Editor';
 import PopoverCompactSorting from 'ui/shared/forum/PopoverCompactSorting';
 import RepliesList from 'ui/shared/forum/RepliesList';
 import ReplyEntity from 'ui/shared/forum/ReplyEntity';
@@ -221,17 +222,11 @@ const ThreadPageContent = () => {
           </Flex>
         </Flex>
         <Flex flexDir="column" w="900px" gap={ 6 }>
-          { /* <Text>Lorem ipsum dolor sit amet consectetur.</Text>
-          <Text>Enim amet.</Text>
-          <Image
-            src="https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8"
-            alt="random"
-            borderRadius={ 12 }
-            maxH="440px"
-          />
-          <Text>Quisque hendrerit ultricies elementum elementum turpis.</Text>
-          <Text>😎 Sed dictum ultricies lectus at ut. Pretium fringilla vulputate condimentum ante sodales tristique mattis.</Text> */ }
-          { thread?.description && <Text>{ thread.description }</Text> }
+          { thread?.description && (
+            <Editor
+              value={ thread.description }
+            />
+          ) }
           <TagsList mb={ 6 } tags={ thread?.tags || [] }/>
         </Flex>
       </Flex>

@@ -1,4 +1,5 @@
-import { Flex, HStack, Button, Input, Textarea, VStack } from '@chakra-ui/react';
+import { Flex, HStack, Button, Input, VStack } from '@chakra-ui/react';
+import { YMF } from '@ylide/sdk';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 
@@ -9,6 +10,7 @@ import ForumPublicApi from 'lib/api/ylideApi/ForumPublicApi';
 import { useYlide } from 'lib/contexts/ylide';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import ChatsAccountsBar from 'ui/shared/forum/ChatsAccountsBar';
+import Editor from 'ui/shared/forum/Editor';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const CreateThreadPageContent = () => {
@@ -19,6 +21,7 @@ const CreateThreadPageContent = () => {
   const getTopic = ForumPublicApi.useGetTopic(topicString);
   const createThread = ForumPersonalApi.useCreateThread(tokens[0]);
 
+  const [ sending, setSending ] = useState(false);
   const [ title, setTitle ] = useState('');
   const [ text, setText ] = useState('');
 
@@ -33,17 +36,24 @@ const CreateThreadPageContent = () => {
     setTitle(e.target.value);
   }, []);
 
-  const handleTextChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setText(e.target.value);
+  const handleTextChange = useCallback((value: string) => {
+    setText(value);
   }, []);
 
   const handleCreate = useCallback(async() => {
     if (!topic) {
       return;
     }
-    const result = await createThread({ topic: topic.id, title, description: text, tags: [] });
-    await broadcastMessage(domainAccounts[0], result.feedId, title, text);
-  }, [ topic, createThread, title, text, broadcastMessage, domainAccounts ]);
+    setSending(true);
+    try {
+      const result = await createThread({ topic: topic.id, title, description: text, tags: [] });
+      await broadcastMessage(domainAccounts[0], result.feedId, title, YMF.fromYMFText(text));
+      setSending(false);
+      router.push({ pathname: '/forum/[topic]/[thread]', query: { topic: topicString, thread: result.slug } });
+    } catch (err) {
+      setSending(false);
+    }
+  }, [ topic, createThread, title, text, broadcastMessage, domainAccounts, router, topicString ]);
 
   return (
     <Flex position="relative" flexDir="column">
@@ -59,9 +69,12 @@ const CreateThreadPageContent = () => {
       </HStack>
       <VStack gap={ 4 } alignItems="stretch">
         <Input placeholder="Title" value={ title } onChange={ handleTitleChange }/>
-        <Textarea placeholder="Text" value={ text } onChange={ handleTextChange }/>
+        <Editor
+          value={ text }
+          onChange={ handleTextChange }
+        />
         <Flex flexDir="row" justifyContent="flex-end">
-          <Button onClick={ handleCreate }>Create</Button>
+          <Button isLoading={ sending } onClick={ handleCreate }>Create</Button>
         </Flex>
       </VStack>
     </Flex>
