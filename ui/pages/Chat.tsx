@@ -277,7 +277,6 @@ const ChatPageContent = () => {
             />
             <Flex flexDir="row" align="center" gap={ 6 }>
               <SelectBlockchainDropdown
-                options={ [ 'GNOSIS', 'ETHEREUM', 'BNBCHAIN' ] }
                 value={ blockchain }
                 onChange={ handleBlockchainChange }
               />

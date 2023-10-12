@@ -1,6 +1,7 @@
 import {
   Flex, Icon, useColorModeValue, Text, HStack, Textarea, Spinner,
 } from '@chakra-ui/react';
+import { EVMNetwork, EVM_CHAINS, EVM_NAMES } from '@ylide/ethereum';
 import { YMF } from '@ylide/sdk';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect } from 'react';
@@ -92,7 +93,15 @@ const ThreadPageContent = () => {
 
   const handleBlockchainChange = useCallback((newBlockchain: string) => {
     setBlockchain(newBlockchain);
-  }, []);
+    if (account) {
+      const networkByName = (name: string) =>
+        Object.values(EVMNetwork).filter(t => !isNaN(Number(t))).find(t => EVM_NAMES[Number(t) as EVMNetwork] === name) as EVMNetwork;
+      const network = networkByName(newBlockchain);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      account.wallet.onNetworkSwitchRequest('', undefined, network, EVM_CHAINS[network]);
+    }
+  }, [ account ]);
 
   useEffect(() => {
     if (!initialized) {
@@ -289,7 +298,6 @@ const ThreadPageContent = () => {
             />
             <Flex flexDir="row" align="center" gap={ 6 }>
               <SelectBlockchainDropdown
-                options={ [ 'GNOSIS', 'ETHEREUM', 'BNBCHAIN' ] }
                 value={ blockchain }
                 onChange={ handleBlockchainChange }
               />

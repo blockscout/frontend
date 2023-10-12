@@ -5,12 +5,34 @@ import caretDownIcon from 'icons/arrows/caret-down.svg';
 import { blockchainMeta } from 'lib/contexts/ylide/constants';
 
 export interface SelectBlockchainDropdownProps {
-  options: Array<string>;
+  options?: Array<string>;
   value: string;
   onChange: (newValue: string) => void;
 }
 
-const SelectBlockchainDropdown = ({ options, value, onChange }: SelectBlockchainDropdownProps) => {
+const DEFAULT_OPTIONS = [
+  'ETHEREUM',
+  'AVALANCHE',
+  'ARBITRUM',
+  'BNBCHAIN',
+  'OPTIMISM',
+  'POLYGON',
+  'FANTOM',
+  'KLAYTN',
+  'GNOSIS',
+  'AURORA',
+  'CELO',
+  'CRONOS',
+  'MOONBEAM',
+  'MOONRIVER',
+  'METIS',
+  'BASE',
+  'ZETA',
+  'LINEA',
+];
+
+const SelectBlockchainDropdown = ({ options: _options, value, onChange }: SelectBlockchainDropdownProps) => {
+  const options = _options || DEFAULT_OPTIONS;
   const { isOpen, onToggle, onClose } = useDisclosure();
 
   const hoveredBackgroundColor = useColorModeValue('blackAlpha.100', 'whiteAlpha.100');
@@ -46,10 +68,10 @@ const SelectBlockchainDropdown = ({ options, value, onChange }: SelectBlockchain
             { options.map((option) => (
               <Flex
                 _hover={{ backgroundColor: hoveredBackgroundColor }}
-                paddingY={ 2 }
+                paddingY={ 1 }
                 key={ option }
                 borderRadius="5px"
-                paddingX={ 2 }
+                paddingX={ 1 }
                 flexDir="row"
                 cursor="pointer"
                 onClick={ clickHandlers[option] }
@@ -57,7 +79,7 @@ const SelectBlockchainDropdown = ({ options, value, onChange }: SelectBlockchain
                 opacity={ value === option ? 0.5 : 1 }
               >
                 <Flex grow={ 1 } align="center" flexDir="row">
-                  <Flex align="center" justify="center" mr={ 3 }>{ blockchainMeta[option].logo(16) }</Flex>
+                  <Flex align="center" justify="center" mr={ 2 } fontSize={ 12 }>{ blockchainMeta[option].logo(16) }</Flex>
                   { blockchainMeta[option].title }
                 </Flex>
               </Flex>

@@ -5,7 +5,7 @@ import {
 } from '@chakra-ui/react';
 import * as browserUtils from '@walletconnect/browser-utils';
 import type { AbstractWalletController } from '@ylide/sdk';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useYlide } from 'lib/contexts/ylide';
 import { walletsMeta } from 'lib/contexts/ylide/constants';
@@ -30,29 +30,16 @@ export const SelectWalletModal = ({ onClose }: SelectWalletModalProps) => {
   const isMobile = browserUtils.isMobile();
   const isDesktop = !isMobile;
 
-  const { initialized, wallets, walletConnectRegistry } = useYlide();
+  const { initialized, wallets, walletConnectRegistry, walletConnectState } = useYlide();
+  const { disconnectWalletConnect } = walletConnectState;
 
   const platform = isMobile ? 'mobile' : 'desktop';
   const links = browserUtils.getMobileLinkRegistry(
     browserUtils.formatMobileRegistry(walletConnectRegistry.registry, platform),
   );
 
-  const walletConnectState: {
-    loading: boolean;
-    url: string;
-    connection: null | {
-      walletName: string;
-    };
-  } = useMemo(() => {
-    return {
-      loading: false,
-      url: '',
-      connection: null,
-    };
-  }, []);
-
   const [ activeTab, setActiveTab ] = useState<'qr' | 'desktop' | 'install'>(
-    !walletConnectState.loading && walletConnectState.connection ? 'install' : 'qr',
+    walletConnectState.initialized && walletConnectState.connection ? 'install' : 'qr',
   );
   const [ search, setSearch ] = useState('');
 
@@ -76,24 +63,7 @@ Boolean(wallets.find(ww => ww.wallet() === wallet)),
     [ availableBrowserWallets ],
   );
 
-  const isWalletConnectAlreadyUsed = false; // !walletConnectState.loading && walletConnectState.connection;
-
-  //   useEffect(
-  //     () =>
-  //       reaction(
-  //         () => domain.wallets.find(w => w.factory.wallet === 'walletconnect'),
-  //         (wc, prev) => {
-  //           if (!prev && wc) {
-  //             onClose?.(wc);
-  //           }
-  //         },
-  //       ),
-  //     [ onClose ],
-  //   );
-
-  const disconnectWalletConnect = useCallback(() => {
-    // domain.disconnectWalletConnect();
-  }, []);
+  const isWalletConnectAlreadyUsed = walletConnectState.initialized && walletConnectState.connection;
 
   function renderWalletConnectAlreadyUsed(walletName: string) {
     return (
@@ -107,6 +77,9 @@ connection.
         <br/>
         <Button
           size="sm"
+          w="100%"
+          h="50px"
+          mb={ 4 }
           onClick={ disconnectWalletConnect }
         >
 Disconnect WalletConnect
@@ -133,10 +106,7 @@ Disconnect WalletConnect
   const onSelectDesktopWallet = useCallback(
     (w: (typeof links)[0]) => {
       const href = browserUtils.formatIOSMobile(
-        !walletConnectState.loading &&
-!walletConnectState.connection ?
-          walletConnectState.url :
-          '',
+        walletConnectState.initialized && !walletConnectState.connection ? walletConnectState.url : '',
         w,
       );
       browserUtils.saveMobileLinkInfo({
@@ -170,7 +140,7 @@ Disconnect WalletConnect
       ) : (
         <>
           <WrappedQRCode
-            value={ !walletConnectState.loading && !walletConnectState.connection ? walletConnectState.url : '' }
+            value={ walletConnectState.initialized && !walletConnectState.connection ? walletConnectState.url : '' }
           />
           <Text
             fontSize="12px"
@@ -255,7 +225,7 @@ Disconnect WalletConnect
   );
 
   const renderDesktopWalletsList = () => (
-    !walletConnectState.loading && walletConnectState.connection ? (
+    walletConnectState.initialized && walletConnectState.connection ? (
       renderWalletConnectAlreadyUsed(walletConnectState.connection.walletName)
     ) : (
       <WalletsList
@@ -269,6 +239,15 @@ Disconnect WalletConnect
       />
     )
   );
+
+  const [ wasConnectedOnMount ] = useState(Boolean(walletConnectState.connection));
+
+  useEffect(() => {
+    const wc = wallets.find(it => it.wallet() === 'walletconnect');
+    if (!wasConnectedOnMount && walletConnectState.connection && wc) {
+      onClose?.(wc);
+    }
+  }, [ wasConnectedOnMount, walletConnectState.connection, wallets, onClose ]);
 
   const qrTabContent = isDesktop ? renderQRContent() : renderMobileWalletsList();
 

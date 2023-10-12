@@ -1,5 +1,7 @@
-import { evm } from '@ylide/ethereum';
-import type { AbstractWalletController, IMessage, MessageAttachment, RecipientInfo, Uint256, WalletAccount } from '@ylide/sdk';
+import { EthereumProvider } from '@walletconnect/ethereum-provider';
+import type { EVMWalletController } from '@ylide/ethereum';
+import { evm, EVM_CHAINS, EVM_NAMES, EVM_RPCS, EVMNetwork, evmWalletFactories } from '@ylide/ethereum';
+import type { AbstractWalletController, IMessage, MessageAttachment, RecipientInfo, Uint256, WalletAccount, WalletControllerFactory } from '@ylide/sdk';
 import { BrowserLocalStorage, MessageContentV4, MessageContentV5, stringToSemver, Ylide, YlideKeysRegistry, YMF } from '@ylide/sdk';
 import { SmartBuffer } from '@ylide/smart-buffer';
 import type { ReactNode } from 'react';
@@ -11,6 +13,7 @@ import ForumPersonalApi from 'lib/api/ylideApi/ForumPersonalApi';
 import ForumPublicApi from 'lib/api/ylideApi/ForumPublicApi';
 import { ensurePageLoaded } from 'lib/ensurePageLoaded';
 
+import { blockchainMeta } from './constants';
 import { useYlideAccountModal, useYlideSelectWalletModal } from './modals';
 import { useYlideAccounts } from './useYlideAccounts';
 import { useYlideFaucet } from './useYlideFaucet';
@@ -33,6 +36,151 @@ export interface IMessageDecodedContent {
 }
 
 const YlideContext = createContext(undefined as unknown as ReturnType<typeof useYlideService>);
+
+export interface WalletConnectConnection {
+  readonly walletName: string;
+  readonly provider: InstanceType<typeof EthereumProvider>;
+}
+
+const useWalletConnectState = (
+  ylide: Ylide,
+  ylideIsInitialized: boolean,
+  wallets: Array<AbstractWalletController>,
+  updateWallets: (newWallets: Array<AbstractWalletController>) => void,
+) => {
+  const [ initialized, setInitialized ] = useState(false);
+  const [ connection, setConnection ] = useState<WalletConnectConnection | undefined>(undefined);
+  const [ url, setUrl ] = useState<string>('');
+
+  const disconnectWalletConnect = useCallback(async() => {
+    if (!initialized || !connection) {
+      return;
+    }
+
+    const wc = wallets.find(w => w.wallet() === 'walletconnect');
+
+    if (wc) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      await (wc as EVMWalletController).signer.provider.provider.disconnect();
+      // TODO: pizdec
+      document.location.reload();
+    }
+  }, [ connection, initialized, wallets ]);
+
+  const initWallet = useCallback(async(factory: WalletControllerFactory) => {
+    if (!initialized || !connection) {
+      return false;
+    }
+    await ylide.controllers.addWallet(
+      factory.wallet,
+      {
+        dev: false,
+        faucet: {
+          registrar: 1,
+          apiKey: { type: 'client', key: 'clfaf6c3e695452c2a' },
+        },
+        walletConnectProvider: initialized && connection ? connection.provider : null,
+      },
+      factory.blockchainGroup,
+    );
+    updateWallets([ ...ylide.controllers.wallets ]);
+    return true;
+  }, [ ylide, initialized, connection, updateWallets ]);
+
+  const init = useCallback(async() => {
+    const rpcMap = {
+      // Metamask only supports ethereum chain :(
+      [EVM_CHAINS[EVMNetwork.ETHEREUM]]: (EVM_RPCS[EVMNetwork.ETHEREUM].find(
+        r => !r.rpc.startsWith('ws'),
+      ) as {
+        rpc: string;
+        blockLimit?: number;
+        lastestNotSupported?: boolean;
+        batchNotSupported?: boolean;
+      }).rpc,
+    };
+    const chains = Object.keys(rpcMap).map(Number);
+    let isAvailable = true;
+    const projectId = 'e9deead089b3383b2db777961e3fa244';
+    const wcTest = await EthereumProvider.init({
+      projectId,
+      chains,
+      // TODO: remove after fix by WalletConnect - https://github.com/WalletConnect/walletconnect-monorepo/issues/2641
+      // WalletConnect couldn't reproduce the issue, but we had it.
+      // Need further to debug, but currently it does not break anything. Propose to leave it.
+      optionalChains: [ 100500 ],
+      rpcMap,
+      showQrModal: true,
+    });
+    wcTest.modal?.subscribeModal(({ open }: { open: boolean }) => {
+      if (open) {
+        wcTest.modal?.closeModal();
+        isAvailable = false;
+      }
+    });
+    try {
+      await wcTest.enable();
+    } catch (err) {
+      isAvailable = false;
+    }
+
+    if (isAvailable) {
+      setInitialized(true);
+      setConnection({
+        walletName: wcTest.session?.peer.metadata.name || '',
+        provider: wcTest,
+      });
+    } else {
+      const wcReal = await EthereumProvider.init({
+        projectId,
+        chains,
+        // TODO: remove after fix by WalletConnect - https://github.com/WalletConnect/walletconnect-monorepo/issues/2641
+        // WalletConnect couldn't reproduce the issue, but we had it.
+        // Need further to debug, but currently it does not break anything. Propose to leave it.
+        optionalChains: [ 100500 ],
+        rpcMap,
+        showQrModal: false,
+      });
+      wcReal.on('display_uri', url => {
+        setInitialized(true);
+        setConnection(undefined);
+        setUrl(url);
+      });
+      wcReal.on('connect', async() => {
+        setInitialized(true);
+        setConnection({
+          walletName: wcReal.session?.peer.metadata.name || '',
+          provider: wcReal,
+        });
+      });
+
+      wcReal.enable();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (ylideIsInitialized) {
+      init();
+    }
+  }, [ ylideIsInitialized, init ]);
+
+  useEffect(() => {
+    if (ylideIsInitialized && initialized && connection) {
+      const wcFactory = ylide.walletsList.find(w => w.wallet === 'walletconnect');
+      if (wcFactory) {
+        initWallet(wcFactory.factory);
+      }
+    }
+  }, [ ylideIsInitialized, initialized, connection, ylide, initWallet ]);
+
+  return {
+    initialized,
+    connection,
+    url,
+    disconnectWalletConnect,
+  };
+};
 
 const useWalletConnectRegistry = () => {
   const [ registry, setRegistry ] = useState<IAppRegistry>({});
@@ -60,7 +208,13 @@ const useWalletConnectRegistry = () => {
 
 const REACT_APP_FEED_PUBLIC_KEY = '9b939eaca8b685f46d8311698669e25ec50015d96644bf671ed35264d754a977';
 
-const useAccountController = (ylide: Ylide, keysRegistry: YlideKeysRegistry, wallets: Array<AbstractWalletController>, ylideInitialized: boolean) => {
+const useAccountController = (
+  ylide: Ylide,
+  keysRegistry: YlideKeysRegistry,
+  wallets: Array<AbstractWalletController>,
+  ylideInitialized: boolean,
+  disconnectWalletConnect: () => void,
+) => {
   const { savedAccounts, addAccount, deleteAccount, setAccountAuthKey } = useYlideAccounts();
   const selectWalletModal = useYlideSelectWalletModal();
   const accountModal = useYlideAccountModal();
@@ -191,8 +345,11 @@ const useAccountController = (ylide: Ylide, keysRegistry: YlideKeysRegistry, wal
     if (currentAccount && currentAccount.address === account.account.address) {
       await account.wallet.disconnectAccount(account.account);
     }
+    if (account.wallet.wallet() === 'walletconnect') {
+      disconnectWalletConnect();
+    }
     deleteAccount(account.account);
-  }, [ deleteAccount, keysRegistry ]);
+  }, [ deleteAccount, keysRegistry, disconnectWalletConnect ]);
 
   // export async function activateAccount(params: { account: DomainAccount }) {
   //   const account = params.account;
@@ -246,7 +403,41 @@ const useYlideService = () => {
   const [ initialized, setInitialized ] = useState(false);
   const [ wallets, setWallets ] = useState<Array<AbstractWalletController>>([]);
   const walletConnectRegistry = useWalletConnectRegistry();
-  const accounts = useAccountController(ylide, keysRegistry, wallets, initialized);
+  const walletConnectState = useWalletConnectState(ylide, initialized, wallets, setWallets);
+  const accounts = useAccountController(ylide, keysRegistry, wallets, initialized, walletConnectState.disconnectWalletConnect);
+
+  const switchEVMChain = useCallback(async(wallet: AbstractWalletController, needNetwork: EVMNetwork) => {
+    try {
+      const bData = blockchainMeta[EVM_NAMES[needNetwork]];
+      if (!walletConnectState.connection) {
+        await (wallet as EVMWalletController).providerObject.request({
+          method: 'wallet_addEthereumChain',
+          params: [ bData.ethNetwork ],
+        });
+      }
+    } catch (error) {
+      // console.error('error: ', error);
+    }
+    if (walletConnectState.connection) {
+      const wc = wallets.find(w => w.wallet() === 'walletconnect');
+      if (wc) {
+        await (wallet as EVMWalletController).signer.provider.send('wallet_switchEthereumChain', [
+          { chainId: '0x' + Number(EVM_CHAINS[needNetwork]).toString(16) },
+        ]);
+      }
+    } else {
+      await (wallet as EVMWalletController).providerObject.request({
+        method: 'wallet_switchEthereumChain',
+        params: [ { chainId: '0x' + Number(EVM_CHAINS[needNetwork]).toString(16) } ], // chainId must be in hexadecimal numbers
+      });
+    }
+  }, [ walletConnectState.connection, wallets ]);
+
+  const switchEVMChainRef = React.useRef(switchEVMChain);
+
+  useEffect(() => {
+    switchEVMChainRef.current = switchEVMChain;
+  }, [ switchEVMChain ]);
 
   const broadcastMessage = useCallback(async(account: DomainAccount, feedId: string, subject: string, content: YMF) => {
     return await ylide.core.broadcastMessage({
@@ -359,11 +550,26 @@ const useYlideService = () => {
     const f = async() => {
       await ensurePageLoaded;
       await ylide.init();
+      ylide.registerWalletFactory(evmWalletFactories.walletconnect);
       setWallets(ylide.controllers.wallets);
       setInitialized(true);
     };
     f();
   }, [ ylide, keysRegistry ]);
+
+  useEffect(() => {
+    wallets.forEach(w => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      w.onNetworkSwitchRequest = async(
+        reason: string,
+        currentNetwork: EVMNetwork | undefined,
+        needNetwork: EVMNetwork,
+      ) => {
+        switchEVMChainRef.current(w, needNetwork);
+      };
+    });
+  }, [ wallets ]);
 
   return {
     ylide,
@@ -371,6 +577,7 @@ const useYlideService = () => {
     wallets,
     initialized,
     walletConnectRegistry,
+    walletConnectState,
     accounts,
     faucet,
     broadcastMessage,
