@@ -91,7 +91,13 @@ frontend:
     NEXT_PUBLIC_FEATURED_NETWORKS:
       _default: https://raw.githubusercontent.com/blockscout/frontend-configs/dev/configs/featured-networks/base-goerli.json
     NEXT_PUBLIC_API_HOST:
-      _default: blockscout-optimism-goerli.k8s-dev.blockscout.com
+      _default: 65.109.173.70
+    NEXT_PUBLIC_API_PORT:
+      _default: 80
+    NEXT_PUBLIC_API_PROTOCOL:
+      _default: http
+    NEXT_PUBLIC_USE_NEXT_JS_PROXY:
+      _default: true
     NEXT_PUBLIC_APP_HOST:
       _default: review-l2-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}.k8s-dev.blockscout.com
     NEXT_PUBLIC_API_BASE_PATH:
@@ -104,12 +110,10 @@ frontend:
       _default: https://stats-optimism-goerli.k8s-dev.blockscout.com
     NEXT_PUBLIC_MARKETPLACE_CONFIG_URL:
       _default: https://raw.githubusercontent.com/blockscout/frontend-configs/dev/configs/marketplace/base-goerli.json
-    NEXT_PUBLIC_NETWORK_EXPLORERS:
-      _default: ''
     NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND:
       _default: "linear-gradient(136.9deg,rgb(107 94 236) 1.5%,rgb(0 82 255) 56.84%,rgb(82 62 231) 98.54%)"
     NEXT_PUBLIC_NETWORK_RPC_URL:
-      _default: https://goerli.optimism.io
+      _default: https://eth.llamarpc.com
     NEXT_PUBLIC_WEB3_WALLETS:
       _default: "['coinbase']"
     NEXT_PUBLIC_WEB3_DISABLE_ADD_TOKEN_TO_WALLET:
