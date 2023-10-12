@@ -6,6 +6,8 @@ import React from 'react';
 import { ZKEVM_L2_TX_BATCH_STATUSES } from 'types/api/zkEvml2TxnBatches';
 import type { ZkEvmL2TxnBatch } from 'types/api/zkEvml2TxnBatches';
 
+import { route } from 'nextjs-routes';
+
 import clockIcon from 'icons/clock.svg';
 import type { ResourceError } from 'lib/api/resources';
 import dayjs from 'lib/date/dayjs';
@@ -15,6 +17,7 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import LinkInternal from 'ui/shared/LinkInternal';
 import PrevNext from 'ui/shared/PrevNext';
 import TextSeparator from 'ui/shared/TextSeparator';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
@@ -124,9 +127,9 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
         isLoading={ isPlaceholderData }
       >
         <Skeleton isLoaded={ !isPlaceholderData }>
-          { /* <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash, tab: 'txs' } }) }> */ }
-          { data.transactions.length } transaction{ data.transactions.length === 1 ? '' : 's' }
-          { /* </LinkInternal> */ }
+          <LinkInternal href={ route({ pathname: '/zkevm-l2-txn-batch/[number]', query: { number: data.number.toString(), tab: 'txs' } }) }>
+            { data.transactions.length } transaction{ data.transactions.length === 1 ? '' : 's' }
+          </LinkInternal>
         </Skeleton>
       </DetailsInfoItem>
 
