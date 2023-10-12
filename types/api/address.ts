@@ -152,12 +152,11 @@ export type AddressWithdrawalsItem = {
 }
 
 export type AddressTabsCounters = {
-  coin_balances_count: number;
-  internal_txs_count: number;
-  logs_count: number;
-  token_balances_count: number;
-  token_transfers_count: number;
-  transactions_count: number;
-  validations_count: number;
-  withdrawals_count: number;
+  internal_txs_count: number | null;
+  logs_count: number | null;
+  token_balances_count: number | null;
+  token_transfers_count: number | null;
+  transactions_count: number | null;
+  validations_count: number | null;
+  withdrawals_count: number | null;
 }
