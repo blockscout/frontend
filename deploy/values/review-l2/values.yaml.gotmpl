@@ -91,7 +91,9 @@ frontend:
     NEXT_PUBLIC_FEATURED_NETWORKS:
       _default: https://raw.githubusercontent.com/blockscout/frontend-configs/dev/configs/featured-networks/base-goerli.json
     NEXT_PUBLIC_API_HOST:
-      _default: blockscout-optimism-goerli.k8s-dev.blockscout.com
+      _default: 65.109.173.70
+    NEXT_PUBLIC_API_PROTOCOL:
+      _default: http
     NEXT_PUBLIC_APP_HOST:
       _default: review-l2-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}.k8s-dev.blockscout.com
     NEXT_PUBLIC_API_BASE_PATH:
@@ -122,12 +124,10 @@ frontend:
       _default: https://contracts-info-test.k8s-dev.blockscout.com
     NEXT_PUBLIC_ADMIN_SERVICE_API_HOST:
       _default: https://admin-rs-test.k8s-dev.blockscout.com
-    NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK:
+    NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK:
       _default: "true"
     NEXT_PUBLIC_L1_BASE_URL:
       _default: https://blockscout-main.k8s-dev.blockscout.com
-    NEXT_PUBLIC_OPTIMISTIC_L2_WITHDRAWAL_URL:
-      _default: https://app.optimism.io/bridge/withdraw
     NEXT_PUBLIC_GRAPHIQL_TRANSACTION:
       _default: 0x4a0ed8ddf751a7cb5297f827699117b0f6d21a0b2907594d300dc9fed75c7e62
     NEXT_PUBLIC_SENTRY_DSN:
