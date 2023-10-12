@@ -10,7 +10,7 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY package.json yarn.lock ./
 RUN apk add git
-RUN yarn --frozen-lockfile
+RUN yarn --frozen-lockfile --ignore-optional
 
 
 ### FEATURE REPORTER
