@@ -17,9 +17,10 @@ interface Props {
   token: TokenInfo;
   isLoading?: boolean;
   variant?: 'icon' | 'button';
+  iconSize?: number;
 }
 
-const AddressAddToWallet = ({ className, token, isLoading, variant = 'icon' }: Props) => {
+const AddressAddToWallet = ({ className, token, isLoading, variant = 'icon', iconSize = 6 }: Props) => {
   const toast = useToast();
   const { provider, wallet } = useProvider();
   const addOrSwitchChain = useAddOrSwitchChain();
@@ -79,7 +80,7 @@ const AddressAddToWallet = ({ className, token, isLoading, variant = 'icon' }: P
   }
 
   if (isLoading) {
-    return <Skeleton className={ className } boxSize={ 6 } borderRadius="base"/>;
+    return <Skeleton className={ className } boxSize={ iconSize } borderRadius="base"/>;
   }
 
   if (!feature.isEnabled) {
@@ -106,7 +107,7 @@ const AddressAddToWallet = ({ className, token, isLoading, variant = 'icon' }: P
   return (
     <Tooltip label={ `Add token to ${ WALLETS_INFO[wallet].name }` }>
       <Box className={ className } display="inline-flex" cursor="pointer" onClick={ handleClick } flexShrink={ 0 }>
-        <Icon as={ WALLETS_INFO[wallet].icon } boxSize={ 6 }/>
+        <Icon as={ WALLETS_INFO[wallet].icon } boxSize={ iconSize }/>
       </Box>
     </Tooltip>
   );

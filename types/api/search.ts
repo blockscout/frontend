@@ -35,6 +35,7 @@ export interface SearchResultLabel {
 
 export interface SearchResultBlock {
   type: 'block';
+  block_type?: 'block' | 'reorg';
   block_number: number | string;
   block_hash: string;
   timestamp: string;

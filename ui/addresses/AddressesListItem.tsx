@@ -5,6 +5,7 @@ import React from 'react';
 import type { AddressesItem } from 'types/api/addresses';
 
 import config from 'configs/app';
+import { ZERO } from 'lib/consts';
 import Tag from 'ui/shared/chakra/Tag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
@@ -12,7 +13,7 @@ import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 type Props = {
   item: AddressesItem;
   index: number;
-  totalSupply: string;
+  totalSupply: BigNumber;
   isLoading?: boolean;
 }
 
@@ -47,7 +48,7 @@ const AddressesListItem = ({
           <span>{ addressBalance.dp(8).toFormat() }</span>
         </Skeleton>
       </HStack>
-      { totalSupply && totalSupply !== '0' && (
+      { !totalSupply.eq(ZERO) && (
         <HStack spacing={ 3 }>
           <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>Percentage</Skeleton>
           <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary">

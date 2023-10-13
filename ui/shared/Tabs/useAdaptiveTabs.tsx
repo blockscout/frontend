@@ -1,11 +1,9 @@
 import _debounce from 'lodash/debounce';
 import React from 'react';
 
-import type { RoutedTab } from './types';
+import type { MenuButton, RoutedTab } from './types';
 
-import { menuButton } from './utils';
-
-export default function useAdaptiveTabs(tabs: Array<RoutedTab>, disabled?: boolean) {
+export default function useAdaptiveTabs(tabs: Array<RoutedTab | MenuButton>, disabled?: boolean) {
   // to avoid flickering we set initial value to 0
   // so there will be no displayed tabs initially
   const [ tabsCut, setTabsCut ] = React.useState(disabled ? tabs.length : 0);
@@ -51,16 +49,8 @@ export default function useAdaptiveTabs(tabs: Array<RoutedTab>, disabled?: boole
     return visibleNum;
   }, [ tabs.length, tabsRefs ]);
 
-  const tabsList = React.useMemo(() => {
-    if (disabled) {
-      return tabs;
-    }
-
-    return [ ...tabs, menuButton ];
-  }, [ tabs, disabled ]);
-
   React.useEffect(() => {
-    setTabsRefs(tabsList.map((_, index) => tabsRefs[index] || React.createRef()));
+    setTabsRefs(tabs.map((_, index) => tabsRefs[index] || React.createRef()));
     setTabsCut(disabled ? tabs.length : 0);
   // update refs only when disabled prop changes
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -91,10 +81,9 @@ export default function useAdaptiveTabs(tabs: Array<RoutedTab>, disabled?: boole
   return React.useMemo(() => {
     return {
       tabsCut,
-      tabsList,
       tabsRefs,
       listRef,
       rightSlotRef,
     };
-  }, [ tabsList, tabsCut, tabsRefs, listRef ]);
+  }, [ tabsCut, tabsRefs ]);
 }

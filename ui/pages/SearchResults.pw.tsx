@@ -101,6 +101,7 @@ test('search by block number +@mobile', async({ mount, page }) => {
     body: JSON.stringify({
       items: [
         searchMock.block1,
+        searchMock.block2,
       ],
     }),
   }));

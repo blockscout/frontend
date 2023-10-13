@@ -1,4 +1,4 @@
-import { Tr, Td, Text, Flex, Icon, Image, Box, Skeleton, useColorMode } from '@chakra-ui/react';
+import { Tr, Td, Text, Flex, Icon, Image, Box, Skeleton, useColorMode, Tag } from '@chakra-ui/react';
 import React from 'react';
 import xss from 'xss';
 
@@ -263,9 +263,12 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
               </BlockEntity.Container>
             </Td>
             <Td fontSize="sm" verticalAlign="middle">
-              <Box overflow="hidden" whiteSpace="nowrap" as={ shouldHighlightHash ? 'mark' : 'span' } display="block">
-                <HashStringShortenDynamic hash={ data.block_hash }/>
-              </Box>
+              <Flex columnGap={ 2 } alignItems="center">
+                { data.block_type === 'reorg' && <Tag flexShrink={ 0 }>Reorg</Tag> }
+                <Box overflow="hidden" whiteSpace="nowrap" as={ shouldHighlightHash ? 'mark' : 'span' } display="block">
+                  <HashStringShortenDynamic hash={ data.block_hash }/>
+                </Box>
+              </Flex>
             </Td>
             <Td fontSize="sm" verticalAlign="middle" isNumeric>
               <Text variant="secondary">{ dayjs(data.timestamp).format('llll') }</Text>

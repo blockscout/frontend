@@ -5,13 +5,13 @@ import type { TokenInstance } from 'types/api/token';
 
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import NftMedia from 'ui/shared/nft/NftMedia';
 
 import TokenInstanceCreatorAddress from './details/TokenInstanceCreatorAddress';
-import TokenInstanceDivider from './details/TokenInstanceDivider';
 import TokenInstanceMetadataInfo from './details/TokenInstanceMetadataInfo';
 import TokenInstanceTransfersCount from './details/TokenInstanceTransfersCount';
 
@@ -87,7 +87,7 @@ const TokenInstanceDetails = ({ data, scrollRef, isLoading }: Props) => {
         overflow="hidden"
       >
         <TokenInstanceMetadataInfo data={ data } isLoading={ isLoading }/>
-        <TokenInstanceDivider/>
+        <DetailsInfoItemDivider/>
         <DetailsSponsoredItem isLoading={ isLoading }/>
       </Grid>
     </>
