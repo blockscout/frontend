@@ -9,8 +9,8 @@ env:
     NEXT_PUBLIC_GIT_TAG: v1.13.2
     SENTRY_ORG: ${{ vars.SENTRY_ORG }}
     SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT }}
-    SENTRY_AUTH_TOKEN: ${{ vars.SENTRY_AUTH_TOKEN }}
-    SENTRY_DSN: ${{ vars.SENTRY_DSN }}
+    SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+    SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
 
 jobs:
     build_and_upload:
@@ -19,13 +19,13 @@ jobs:
         steps:
             - name: Checkout repo
               uses: actions/checkout@v3
-      
+
             - name: Setup node
               uses: actions/setup-node@v3
               with:
                 node-version: 18
                 cache: 'yarn'
-      
+
             - name: Cache node_modules
               uses: actions/cache@v3
               id: cache-node-modules
@@ -33,7 +33,7 @@ jobs:
                 path: |
                   node_modules
                 key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
-        
+
             - name: Install dependencies
               if: steps.cache-node-modules.outputs.cache-hit != 'true'
               run: yarn --frozen-lockfile --ignore-optional
