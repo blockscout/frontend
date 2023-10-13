@@ -16,6 +16,7 @@ import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Icon from 'ui/shared/chakra/Icon';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
 import TxStatus from 'ui/shared/TxStatus';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 import TxType from 'ui/txs/TxType';
@@ -39,9 +40,10 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
       display={{ base: 'block', lg: 'none' }}
     >
       <Flex justifyContent="space-between">
-        <HStack>
+        <HStack flexWrap="wrap">
           <TxType types={ tx.tx_types } isLoading={ isLoading }/>
           <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
+          <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
         </HStack>
         <TxAdditionalInfo tx={ tx } isMobile isLoading={ isLoading }/>
       </Flex>
