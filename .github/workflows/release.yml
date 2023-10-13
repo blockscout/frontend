@@ -24,6 +24,11 @@ jobs:
                             state: 'all'
                         });
                 
+                        if (issues.length === 0) {
+                            core.notice(`No issues with label "${ process.env.LABEL_NAME }" found.`);
+                            return;
+                        }
+
                         const issueIds = issues.map(({ node_id }) => node_id);
                         const labelId = issues[0].labels.find(({ name }) => name === process.env.LABEL_NAME).node_id;
 
