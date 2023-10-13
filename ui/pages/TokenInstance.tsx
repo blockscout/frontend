@@ -1,11 +1,10 @@
-import { Box, Flex, Icon, Skeleton } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { PaginationParams } from 'ui/shared/pagination/types';
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
-import nftIcon from 'icons/nft_shield.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -19,7 +18,7 @@ import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu'
 import TextAd from 'ui/shared/ad/TextAd';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import Tag from 'ui/shared/chakra/Tag';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import LinkExternal from 'ui/shared/LinkExternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -122,10 +121,6 @@ const TokenInstanceContent = () => {
     throw Error('Token instance fetch failed', { cause: tokenInstanceQuery.error });
   }
 
-  const nftShieldIcon = tokenInstanceQuery.isPlaceholderData ?
-    <Skeleton boxSize={ 6 } display="inline-block" borderRadius="base" mr={ 2 } my={ 2 } verticalAlign="text-bottom"/> :
-    <Icon as={ nftIcon } boxSize={ 6 } mr={ 2 }/>;
-
   const tokenTag = <Tag isLoading={ tokenInstanceQuery.isPlaceholderData }>{ tokenInstanceQuery.data?.token.type }</Tag>;
 
   const address = {
@@ -172,12 +167,17 @@ const TokenInstanceContent = () => {
 
   const titleSecondRow = (
     <Flex alignItems="center" w="100%" minW={ 0 } columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
-      <AddressEntity
-        address={ address }
+      <TokenEntity
+        token={ tokenInstanceQuery.data?.token }
         isLoading={ isLoading }
+        noSymbol
+        noCopy
+        jointSymbol
         fontFamily="heading"
         fontSize="lg"
         fontWeight={ 500 }
+        w="auto"
+        maxW="700px"
       />
       { !isLoading && tokenInstanceQuery.data && <AddressAddToWallet token={ tokenInstanceQuery.data.token } variant="button"/> }
       <AddressQrCode address={ address } isLoading={ isLoading }/>
@@ -190,9 +190,8 @@ const TokenInstanceContent = () => {
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        title={ `${ tokenInstanceQuery.data?.token.name || 'Unnamed token' } #${ tokenInstanceQuery.data?.id }` }
+        title={ `ID ${ tokenInstanceQuery.data?.id }` }
         backLink={ backLink }
-        beforeTitle={ nftShieldIcon }
         contentAfter={ tokenTag }
         secondRow={ titleSecondRow }
         isLoading={ isLoading }

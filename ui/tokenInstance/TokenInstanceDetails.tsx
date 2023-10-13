@@ -7,7 +7,6 @@ import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import NftMedia from 'ui/shared/nft/NftMedia';
 
@@ -44,17 +43,6 @@ const TokenInstanceDetails = ({ data, scrollRef, isLoading }: Props) => {
           templateColumns={{ base: 'minmax(0, 1fr)', lg: '200px minmax(0, 1fr)' }}
           overflow="hidden"
         >
-          <DetailsInfoItem
-            title="Token"
-            hint="Token name"
-            isLoading={ isLoading }
-          >
-            <TokenEntity
-              token={ data.token }
-              isLoading={ isLoading }
-              noCopy
-            />
-          </DetailsInfoItem>
           { data.is_unique && data.owner && (
             <DetailsInfoItem
               title="Owner"
