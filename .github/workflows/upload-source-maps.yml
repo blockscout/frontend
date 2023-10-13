@@ -6,7 +6,7 @@ on:
     types: [ opened, synchronize ]
 
 env:
-    NEXT_PUBLIC_GIT_TAG: v1.13.2
+    NEXT_PUBLIC_GIT_TAG: v1.16.0
     SENTRY_ORG: ${{ vars.SENTRY_ORG }}
     SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT }}
     SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
