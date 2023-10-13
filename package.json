@@ -8,16 +8,20 @@
     "npm": "8"
   },
   "scripts": {
-    "dev": "PORT=8080 next dev",
+    "dev": "next dev",
+    "proxy": {
+      "/api/v1/":"https://stats-eth-main.k8s.blockscout.com"
+    },
     "dev:preset": "./tools/scripts/dev.preset.sh",
     "build": "next build",
     "build:docker": "docker build --build-arg GIT_COMMIT_SHA=$(git rev-parse --short HEAD) --build-arg GIT_TAG=$(git describe --tags --abbrev=0) -t blockscout-frontend ./",
-    "start": "PORT=8080 next start",
+    "start": "next start",
     "start:docker:local": "docker run -p 3000:3000 --env-file .env.local blockscout-frontend",
     "start:docker:preset": "./tools/scripts/docker.preset.sh",
     "lint:eslint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:eslint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "lint:tsc": "tsc -p ./tsconfig.json",
+    "prepare": "husky install",
     "format-svg": "svgo -r ./icons",
     "test:pw": "./playwright/make-envs-script.sh && NODE_OPTIONS=\"--max-old-space-size=4096\" ./node_modules/.bin/dotenv -e ./configs/envs/.env.pw -- playwright test -c playwright-ct.config.ts",
     "test:pw:local": "export NODE_PATH=$(pwd)/node_modules && rm -rf ./playwright/.cache && yarn test:pw",
@@ -118,6 +122,7 @@
     "eslint-plugin-no-cyrillic-string": "^1.0.5",
     "eslint-plugin-playwright": "^0.11.2",
     "eslint-plugin-regexp": "^1.7.0",
+    "husky": "^8.0.0",
     "jest": "^29.2.1",
     "jest-environment-jsdom": "^29.2.1",
     "jest-fetch-mock": "^3.0.3",

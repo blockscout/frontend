@@ -26,9 +26,9 @@
 // });
 
 const api = Object.freeze({
-  host: 'scan.aries.axiomesh.io',
-  endpoint: 'https://scan.aries.axiomesh.io',
-  socket: 'ws://192.168.0.208:9092',
+  host: 'eth.blockscout.com',
+  endpoint: 'https://eth.blockscout.com',
+  socket: 'ws://192.168.0.208:9091',
   basePath: '',
 });
 

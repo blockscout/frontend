@@ -1,6 +1,7 @@
 // import type { Feature } from './types';
 
-const apiEndpoint = 'http://172.16.13.130:8153';
+// const apiEndpoint = 'http://172.16.13.130:8153';
+const apiEndpoint = 'https://stats-eth-main.k8s.blockscout.com';
 
 const title = 'Solidity to UML diagrams';
 
