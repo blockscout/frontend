@@ -11,7 +11,7 @@ test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 test('base view +@dark-mode', async({ mount }) => {
   const component = await mount(
     <TestApp>
-      <TxsListItem tx={ txMock.base } showBlockInfo/>
+      <TxsListItem tx={ txMock.withWatchListNames } showBlockInfo/>
     </TestApp>,
   );
 
@@ -21,7 +21,7 @@ test('base view +@dark-mode', async({ mount }) => {
 test('with base address', async({ mount }) => {
   const component = await mount(
     <TestApp>
-      <TxsListItem tx={ txMock.base } showBlockInfo currentAddress={ txMock.base.from.hash }/>
+      <TxsListItem tx={ txMock.withWatchListNames } showBlockInfo currentAddress={ txMock.base.from.hash }/>
     </TestApp>,
   );
 

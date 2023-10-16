@@ -18,6 +18,7 @@ import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import InOutTag from 'ui/shared/InOutTag';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
+import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
 import TxStatus from 'ui/shared/TxStatus';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 import TxType from 'ui/txs/TxType';
@@ -44,9 +45,10 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
   return (
     <ListItemMobile display="block" width="100%" isAnimated key={ tx.hash }>
       <Flex justifyContent="space-between" mt={ 4 }>
-        <HStack>
+        <HStack flexWrap="wrap">
           <TxType types={ tx.tx_types } isLoading={ isLoading }/>
           <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
+          <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
         </HStack>
         <TxAdditionalInfo tx={ tx } isMobile isLoading={ isLoading }/>
       </Flex>
@@ -118,14 +120,20 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
           />
         ) : '-' }
       </Flex>
-      <Box mt={ 2 }>
-        <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre">Value { config.chain.currency.symbol } </Skeleton>
-        <Skeleton isLoaded={ !isLoading } display="inline-block" variant="text_secondary">{ getValueWithUnit(tx.value).toFormat() }</Skeleton>
-      </Box>
-      <Box mt={ 2 } mb={ 3 }>
-        <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre">Fee { config.chain.currency.symbol } </Skeleton>
-        <Skeleton isLoaded={ !isLoading } display="inline-block" variant="text_secondary">{ getValueWithUnit(tx.fee.value).toFormat() }</Skeleton>
-      </Box>
+      { !config.UI.views.tx.hiddenFields?.value && (
+        <Box mt={ 2 }>
+          <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre">Value { config.chain.currency.symbol } </Skeleton>
+          <Skeleton isLoaded={ !isLoading } display="inline-block" variant="text_secondary">{ getValueWithUnit(tx.value).toFormat() }</Skeleton>
+        </Box>
+      ) }
+      { !config.UI.views.tx.hiddenFields?.tx_fee && (
+        <Box mt={ 2 } mb={ 3 }>
+          <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre">
+            Fee{ config.UI.views.tx.hiddenFields?.fee_currency ? ' ' : ` ${ config.chain.currency.symbol } ` }
+          </Skeleton>
+          <Skeleton isLoaded={ !isLoading } display="inline-block" variant="text_secondary">{ getValueWithUnit(tx.fee.value).toFormat() }</Skeleton>
+        </Box>
+      ) }
     </ListItemMobile>
   );
 };

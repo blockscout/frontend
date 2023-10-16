@@ -30,19 +30,21 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
   return (
     <>
       <Heading as="h4" size="sm" mb={ 6 }>Additional info </Heading>
-      <Box { ...sectionProps } mb={ 4 }>
-        <Text { ...sectionTitleProps }>Transaction fee</Text>
-        <Flex>
-          <CurrencyValue
-            value={ tx.fee.value }
-            currency={ config.chain.currency.symbol }
-            exchangeRate={ tx.exchange_rate }
-            accuracyUsd={ 2 }
-            flexWrap="wrap"
-            rowGap={ 0 }
-          />
-        </Flex>
-      </Box>
+      { !config.UI.views.tx.hiddenFields?.tx_fee && (
+        <Box { ...sectionProps } mb={ 4 }>
+          <Text { ...sectionTitleProps }>Transaction fee</Text>
+          <Flex>
+            <CurrencyValue
+              value={ tx.fee.value }
+              currency={ config.UI.views.tx.hiddenFields?.fee_currency ? '' : config.chain.currency.symbol }
+              exchangeRate={ tx.exchange_rate }
+              accuracyUsd={ 2 }
+              flexWrap="wrap"
+              rowGap={ 0 }
+            />
+          </Flex>
+        </Box>
+      ) }
       { tx.gas_used !== null && (
         <Box { ...sectionProps } mb={ 4 }>
           <Text { ...sectionTitleProps }>Gas limit & usage by transaction</Text>
@@ -54,7 +56,8 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
           </Flex>
         </Box>
       ) }
-      { (tx.base_fee_per_gas !== null || tx.max_fee_per_gas !== null || tx.max_priority_fee_per_gas !== null) && (
+      { !config.UI.views.tx.hiddenFields?.gas_fees &&
+        (tx.base_fee_per_gas !== null || tx.max_fee_per_gas !== null || tx.max_priority_fee_per_gas !== null) && (
         <Box { ...sectionProps } mb={ 4 }>
           <Text { ...sectionTitleProps }>Gas fees (Gwei)</Text>
           { tx.base_fee_per_gas !== null && (

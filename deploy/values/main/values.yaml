@@ -67,6 +67,7 @@ blockscout:
     DISPLAY_TOKEN_ICONS: 'true'
     FETCH_REWARDS_WAY: manual
     MICROSERVICE_SC_VERIFIER_ENABLED: 'true'
+    MICROSERVICE_SC_VERIFIER_TYPE: 'eth_bytecode_db'
     MICROSERVICE_SC_VERIFIER_URL: http://eth-bytecode-db-svc.eth-bytecode-db-testing.svc.cluster.local:80
     INDEXER_MEMORY_LIMIT: 5
     APPS_MENU: 'true'

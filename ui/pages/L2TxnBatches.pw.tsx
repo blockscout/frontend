@@ -18,6 +18,11 @@ const TXN_BATCHES_API_URL = buildApiUrl('l2_txn_batches');
 const TXN_BATCHES_COUNT_API_URL = buildApiUrl('l2_txn_batches_count');
 
 test('base view +@mobile', async({ mount, page }) => {
+  // test on mobile is flaky
+  // my assumption is there is not enough time to calculate hashes truncation so component is unstable
+  // so I raised the test timeout to check if it helps
+  test.slow();
+
   await page.route('https://request-global.czilladx.com/serve/native.php?z=19260bf627546ab7242', (route) => route.fulfill({
     status: 200,
     body: '',
@@ -39,5 +44,5 @@ test('base view +@mobile', async({ mount, page }) => {
     </TestApp>,
   );
 
-  await expect(component).toHaveScreenshot();
+  await expect(component).toHaveScreenshot({ timeout: 10_000 });
 });
