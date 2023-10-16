@@ -127,8 +127,7 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
       { !config.UI.views.tx.hiddenFields?.tx_fee && (
         <Box mt={ 2 } mb={ 3 }>
           <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre">
-            { /* Fee { config.chain.currency.symbol }  */ }
-          Fee{ config.UI.views.tx.hiddenFields?.fee_currency ? ' ' : ` ${ config.chain.currency.symbol } ` }
+            Fee{ config.UI.views.tx.hiddenFields?.fee_currency ? ' ' : ` ${ config.chain.currency.symbol } ` }
           </Skeleton>
           <Skeleton isLoaded={ !isLoading } display="inline-block" variant="text_secondary">{ getValueWithUnit(tx.fee.value).toFormat() }</Skeleton>
         </Box>
