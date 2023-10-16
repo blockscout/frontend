@@ -61,6 +61,7 @@ blockscout:
     ETHEREUM_JSONRPC_VARIANT: geth
     MIX_ENV: prod
     MICROSERVICE_SC_VERIFIER_ENABLED: 'true'
+    MICROSERVICE_SC_VERIFIER_TYPE: 'eth_bytecode_db'
     MICROSERVICE_SC_VERIFIER_URL: https://sc-verifier-test.k8s-dev.blockscout.com
     DISABLE_EXCHANGE_RATES: 'true'
     APPS_MENU: 'true'

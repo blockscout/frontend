@@ -49,12 +49,12 @@ export default function useNavItems(): ReturnType {
   return React.useMemo(() => {
     let blockchainNavItems: Array<NavItem> | Array<Array<NavItem>> = [];
 
-    const topAccounts = {
+    const topAccounts = !config.UI.views.address.hiddenViews?.top_accounts ? {
       text: 'Top accounts',
       nextRoute: { pathname: '/accounts' as const },
       icon: topAccountsIcon,
       isActive: pathname === '/accounts',
-    };
+    } : null;
     const blocks = {
       text: 'Blocks',
       nextRoute: { pathname: '/blocks' as const },
@@ -90,7 +90,7 @@ export default function useNavItems(): ReturnType {
         [
           topAccounts,
           verifiedContracts,
-        ],
+        ].filter(Boolean),
       ];
     } else {
       blockchainNavItems = [

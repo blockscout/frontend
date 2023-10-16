@@ -30,10 +30,11 @@ type Props = {
 const LatestTxsItem = ({ tx, isLoading }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
   const timeAgo = useTimeAgoIncrement(tx.timestamp || '0', true);
+  const columnNum = config.UI.views.tx.hiddenFields?.value && config.UI.views.tx.hiddenFields?.tx_fee ? 2 : 3;
 
   return (
     <Grid
-      gridTemplateColumns="3fr 2fr 150px"
+      gridTemplateColumns={ columnNum === 2 ? '3fr 2fr' : '3fr 2fr 150px' }
       gridGap={ 8 }
       width="100%"
       minW="700px"
@@ -104,14 +105,18 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
         </Box>
       </Grid>
       <Box>
-        <Skeleton isLoaded={ !isLoading } mb={ 2 }>
-          <Text as="span" whiteSpace="pre">{ config.chain.currency.symbol } </Text>
-          <Text as="span" variant="secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() }</Text>
-        </Skeleton>
-        <Skeleton isLoaded={ !isLoading }>
-          <Text as="span">Fee </Text>
-          <Text as="span" variant="secondary">{ getValueWithUnit(tx.fee.value).dp(5).toFormat() }</Text>
-        </Skeleton>
+        { !config.UI.views.tx.hiddenFields?.value && (
+          <Skeleton isLoaded={ !isLoading } mb={ 2 }>
+            <Text as="span" whiteSpace="pre">{ config.chain.currency.symbol } </Text>
+            <Text as="span" variant="secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() }</Text>
+          </Skeleton>
+        ) }
+        { !config.UI.views.tx.hiddenFields?.tx_fee && (
+          <Skeleton isLoaded={ !isLoading }>
+            <Text as="span">Fee </Text>
+            <Text as="span" variant="secondary">{ getValueWithUnit(tx.fee.value).dp(5).toFormat() }</Text>
+          </Skeleton>
+        ) }
       </Box>
     </Grid>
   );
