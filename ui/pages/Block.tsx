@@ -1,3 +1,4 @@
+import { chakra, Skeleton } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -16,6 +17,7 @@ import { WITHDRAWAL } from 'stubs/withdrawals';
 import BlockDetails from 'ui/block/BlockDetails';
 import BlockWithdrawals from 'ui/block/BlockWithdrawals';
 import TextAd from 'ui/shared/ad/TextAd';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -112,6 +114,24 @@ const BlockPageContent = () => {
   }, [ appProps.referrer ]);
 
   const title = blockQuery.data?.type === 'reorg' ? `Reorged block #${ blockQuery.data?.height }` : `Block #${ blockQuery.data?.height }`;
+  const titleSecondRow = (
+    <>
+      <Skeleton
+        isLoaded={ !blockQuery.isPlaceholderData }
+        fontFamily="heading"
+        display="flex"
+        minW={ 0 }
+        columnGap={ 2 }
+        fontWeight={ 500 }
+      >
+        <chakra.span flexShrink={ 0 }>
+          { config.chain.verificationType === 'validation' ? 'Validated by' : 'Mined by' }
+        </chakra.span>
+        <AddressEntity address={ blockQuery.data?.miner }/>
+      </Skeleton>
+      <NetworkExplorers type="block" pathParam={ heightOrHash } ml={{ base: 3, lg: 'auto' }}/>
+    </>
+  );
 
   return (
     <>
@@ -119,7 +139,7 @@ const BlockPageContent = () => {
       <PageTitle
         title={ title }
         backLink={ backLink }
-        contentAfter={ <NetworkExplorers type="block" pathParam={ heightOrHash } ml={{ base: 'initial', lg: 'auto' }}/> }
+        secondRow={ titleSecondRow }
         isLoading={ blockQuery.isPlaceholderData }
       />
       { blockQuery.isPlaceholderData ? <TabsSkeleton tabs={ tabs }/> : (

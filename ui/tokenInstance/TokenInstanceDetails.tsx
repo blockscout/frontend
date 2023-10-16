@@ -8,7 +8,6 @@ import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import NftMedia from 'ui/shared/nft/NftMedia';
 import TokenNftMarketplaces from 'ui/token/TokenNftMarketplaces';
@@ -37,7 +36,7 @@ const TokenInstanceDetails = ({ data, scrollRef, isLoading }: Props) => {
 
   return (
     <>
-      <Flex alignItems="flex-start" mt={ 8 } flexDir={{ base: 'column-reverse', lg: 'row' }} columnGap={ 6 } rowGap={ 6 }>
+      <Flex alignItems="flex-start" flexDir={{ base: 'column-reverse', lg: 'row' }} columnGap={ 6 } rowGap={ 6 }>
         <Grid
           flexGrow={ 1 }
           columnGap={ 8 }
@@ -45,17 +44,6 @@ const TokenInstanceDetails = ({ data, scrollRef, isLoading }: Props) => {
           templateColumns={{ base: 'minmax(0, 1fr)', lg: '200px minmax(0, 1fr)' }}
           overflow="hidden"
         >
-          <DetailsInfoItem
-            title="Token"
-            hint="Token name"
-            isLoading={ isLoading }
-          >
-            <TokenEntity
-              token={ data.token }
-              isLoading={ isLoading }
-              noCopy
-            />
-          </DetailsInfoItem>
           { data.is_unique && data.owner && (
             <DetailsInfoItem
               title="Owner"

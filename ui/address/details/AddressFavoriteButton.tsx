@@ -3,6 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import config from 'configs/app';
 import starFilledIcon from 'icons/star_filled.svg';
 import starOutlineIcon from 'icons/star_outline.svg';
 import { getResourceKey } from 'lib/api/useApiQuery';
@@ -15,7 +16,7 @@ import DeleteAddressModal from 'ui/watchlist/DeleteAddressModal';
 interface Props {
   className?: string;
   hash: string;
-  watchListId: number | null;
+  watchListId: number | null | undefined;
 }
 
 const AddressFavoriteButton = ({ className, hash, watchListId }: Props) => {
@@ -24,6 +25,7 @@ const AddressFavoriteButton = ({ className, hash, watchListId }: Props) => {
   const queryClient = useQueryClient();
   const router = useRouter();
   const isAccountActionAllowed = useIsAccountActionAllowed();
+  const onFocusCapture = usePreventFocusAfterModalClosing();
 
   const handleClick = React.useCallback(() => {
     if (!isAccountActionAllowed()) {
@@ -54,6 +56,10 @@ const AddressFavoriteButton = ({ className, hash, watchListId }: Props) => {
     };
   }, [ hash, watchListId ]);
 
+  if (!config.features.account.isEnabled) {
+    return null;
+  }
+
   return (
     <>
       <Tooltip label={ `${ watchListId ? 'Remove address from Watch list' : 'Add address to Watch list' }` }>
@@ -68,7 +74,7 @@ const AddressFavoriteButton = ({ className, hash, watchListId }: Props) => {
           flexShrink={ 0 }
           onClick={ handleClick }
           icon={ <Icon as={ watchListId ? starFilledIcon : starOutlineIcon } boxSize={ 5 }/> }
-          onFocusCapture={ usePreventFocusAfterModalClosing() }
+          onFocusCapture={ onFocusCapture }
         />
       </Tooltip>
       <WatchlistAddModal

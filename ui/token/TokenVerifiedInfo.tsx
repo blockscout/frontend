@@ -1,4 +1,4 @@
-import { Flex, Skeleton } from '@chakra-ui/react';
+import { Skeleton } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
@@ -25,9 +25,9 @@ const TokenVerifiedInfo = ({ verifiedInfoQuery }: Props) => {
     if (isLoading) {
       return (
         <>
-          <Skeleton w="130px" h="30px" borderRadius="base"/>
-          <Skeleton w="130px" h="30px" borderRadius="base"/>
-          <Skeleton w="120px" h="30px" borderRadius="base"/>
+          <Skeleton w="100px" h="30px" borderRadius="base"/>
+          <Skeleton w="100px" h="30px" borderRadius="base"/>
+          <Skeleton w="80px" h="30px" borderRadius="base"/>
         </>
       );
     }
@@ -40,7 +40,9 @@ const TokenVerifiedInfo = ({ verifiedInfoQuery }: Props) => {
       try {
         const url = new URL(data.projectWebsite);
         return (
-          <LinkExternal href={ data.projectWebsite } variant="subtle">{ url.host }</LinkExternal>
+          <LinkExternal href={ data.projectWebsite } variant="subtle" flexShrink={ 0 }>
+            { url.host }
+          </LinkExternal>
         );
       } catch (error) {
         return null;
@@ -55,7 +57,7 @@ const TokenVerifiedInfo = ({ verifiedInfoQuery }: Props) => {
     );
   })();
 
-  return <Flex columnGap={ 3 } rowGap={ 3 } mt={ 5 } flexWrap="wrap" _empty={{ display: 'none' }}>{ content }</Flex>;
+  return content;
 };
 
 export default React.memo(TokenVerifiedInfo);

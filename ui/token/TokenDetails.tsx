@@ -86,7 +86,6 @@ const TokenDetails = ({ tokenQuery }: Props) => {
 
   return (
     <Grid
-      mt={ 8 }
       columnGap={ 8 }
       rowGap={{ base: 1, lg: 3 }}
       templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} overflow="hidden"

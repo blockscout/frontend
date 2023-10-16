@@ -1,4 +1,4 @@
-import { Box, Icon, Tooltip } from '@chakra-ui/react';
+import { Box, Flex, Icon, Tooltip } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
@@ -23,8 +23,11 @@ import * as addressStubs from 'stubs/address';
 import * as tokenStubs from 'stubs/token';
 import { generateListStub } from 'stubs/utils';
 import AddressContract from 'ui/address/AddressContract';
+import AddressQrCode from 'ui/address/details/AddressQrCode';
+import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import TextAd from 'ui/shared/ad/TextAd';
-import AddressHeadingInfo from 'ui/shared/AddressHeadingInfo';
+import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EntityTags from 'ui/shared/EntityTags';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
@@ -261,12 +264,30 @@ const TokenPageContent = () => {
             [ { label: verifiedInfoQuery.data.projectSector, display_name: verifiedInfoQuery.data.projectSector } ] :
             undefined
         }
-        contentAfter={
-          <NetworkExplorers type="token" pathParam={ hashString } ml="auto" hideText={ isMobile }/>
-        }
         flexGrow={ 1 }
       />
     </>
+  );
+
+  const isLoading = tokenQuery.isPlaceholderData || contractQuery.isPlaceholderData;
+
+  const titleSecondRow = (
+    <Flex alignItems="center" w="100%" minW={ 0 } columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
+      <AddressEntity
+        address={{ ...contractQuery.data, name: '' }}
+        isLoading={ isLoading }
+        fontFamily="heading"
+        fontSize="lg"
+        fontWeight={ 500 }
+      />
+      { !isLoading && tokenQuery.data && <AddressAddToWallet token={ tokenQuery.data } variant="button"/> }
+      <AddressQrCode address={ contractQuery.data } isLoading={ isLoading }/>
+      <AccountActionsMenu isLoading={ isLoading }/>
+      <Flex ml={{ base: 0, lg: 'auto' }} columnGap={ 2 } flexGrow={{ base: 1, lg: 0 }}>
+        <TokenVerifiedInfo verifiedInfoQuery={ verifiedInfoQuery }/>
+        <NetworkExplorers type="token" pathParam={ hashString } ml={{ base: 'auto', lg: 0 }}/>
+      </Flex>
+    </Flex>
   );
 
   return (
@@ -274,28 +295,25 @@ const TokenPageContent = () => {
       <TextAd mb={ 6 }/>
       <PageTitle
         title={ `${ tokenQuery.data?.name || 'Unnamed token' }${ tokenSymbolText }` }
-        isLoading={ tokenQuery.isPlaceholderData }
+        isLoading={ isLoading }
         backLink={ backLink }
         beforeTitle={ tokenQuery.data ? (
           <TokenEntity.Icon
             token={ tokenQuery.data }
-            isLoading={ tokenQuery.isPlaceholderData }
+            isLoading={ isLoading }
             iconSize="lg"
           />
         ) : null }
         contentAfter={ titleContentAfter }
+        secondRow={ titleSecondRow }
       />
-      <AddressHeadingInfo
-        address={ contractQuery.data }
-        token={ tokenQuery.data }
-        isLoading={ tokenQuery.isPlaceholderData || contractQuery.isPlaceholderData }
-      />
-      <TokenVerifiedInfo verifiedInfoQuery={ verifiedInfoQuery }/>
+
       <TokenDetails tokenQuery={ tokenQuery }/>
+
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ scrollRef }></Box>
 
-      { tokenQuery.isPlaceholderData || contractQuery.isPlaceholderData ?
+      { isLoading ?
         <TabsSkeleton tabs={ tabs }/> :
         (
           <RoutedTabs

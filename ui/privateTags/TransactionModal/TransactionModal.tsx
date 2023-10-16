@@ -11,10 +11,11 @@ import TransactionForm from './TransactionForm';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  data?: TransactionTag;
+  onSuccess?: () => Promise<void>;
+  data?: Partial<TransactionTag>;
 }
 
-const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
+const AddressModal: React.FC<Props> = ({ isOpen, onClose, onSuccess, data }) => {
   const title = data ? 'Edit transaction tag' : 'New transaction tag';
   const text = !data ? 'Label any transaction with a private transaction tag (up to 35 chars) to customize your explorer experience.' : '';
 
@@ -28,13 +29,14 @@ const AddressModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
   }, [ data?.id, isOpen ]);
 
   const handleSuccess = React.useCallback(async() => {
+    onSuccess?.();
     if (!data?.id) {
       mixpanel.logEvent(
         mixpanel.EventTypes.PRIVATE_TAG,
         { Action: 'Submit', 'Page type': PAGE_TYPE_DICT['/account/tag-address'], 'Tag type': 'Tx' },
       );
     }
-  }, [ data?.id ]);
+  }, [ data?.id, onSuccess ]);
 
   const renderForm = useCallback(() => {
     return <TransactionForm data={ data } onClose={ onClose } onSuccess={ handleSuccess } setAlertVisible={ setAlertVisible }/>;

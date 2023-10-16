@@ -5,7 +5,6 @@ import React from 'react';
 import type { TokenInfo } from 'types/api/token';
 
 import iconVerifiedToken from 'icons/verified_token.svg';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import { publicTag, privateTag, watchlistName } from 'mocks/address/tag';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EntityTags from 'ui/shared/EntityTags';
@@ -14,8 +13,6 @@ import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from '../PageTitle';
 
 const LongNameAndManyTags = () => {
-  const isMobile = useIsMobile();
-
   const tokenData: TokenInfo = {
     address: '0xa77A39CC9680B10C00af5D4ABFc92e1F07406c64',
     circulating_market_cap: null,
@@ -45,7 +42,7 @@ const LongNameAndManyTags = () => {
           { label: 'after_1', display_name: 'Another tag' },
           { label: 'after_2', display_name: 'And yet more' },
         ] }
-        contentAfter={ <NetworkExplorers type="token" pathParam="token-hash" ml="auto" hideText={ isMobile }/> }
+        contentAfter={ <NetworkExplorers type="token" pathParam="token-hash" ml="auto"/> }
         flexGrow={ 1 }
       />
     </>
