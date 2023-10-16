@@ -68,8 +68,25 @@ export const base: Transaction = {
   has_error_in_internal_txs: false,
 };
 
+export const withWatchListNames: Transaction = {
+  ...base,
+  hash: '0x62d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3194',
+  from: {
+    ...base.from,
+    watchlist_names: [
+      { label: 'from #1', display_name: 'from utka' },
+      { label: 'kitty', display_name: 'kitty kitty kitty cat where are you' },
+    ],
+  },
+  to: {
+    ...base.to,
+    watchlist_names: [ { label: 'to #1', display_name: 'to utka' } ],
+  } as Transaction['to'],
+};
+
 export const withContractCreation: Transaction = {
   ...base,
+  hash: '0x62d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3195',
   to: null,
   created_contract: {
     hash: '0xdda21946FF3FAa027104b15BE6970CA756439F5a',
@@ -88,6 +105,7 @@ export const withContractCreation: Transaction = {
 
 export const withTokenTransfer: Transaction = {
   ...base,
+  hash: '0x62d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3196',
   to: {
     hash: '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859',
     implementation_name: null,
