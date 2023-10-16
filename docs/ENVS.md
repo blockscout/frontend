@@ -18,6 +18,7 @@ The app instance could be customized by passing following variables to NodeJS en
     - [Block](ENVS.md#block-views)
     - [Address](ENVS.md#address-views)
     - [Transaction](ENVS.md#transaction-views)
+    - [NFT](ENVS.md#nft-views)
   - [Misc](ENVS.md#misc)
 - [App features](ENVS.md#app-features)
   - [My account](ENVS.md#my-account)
@@ -216,6 +217,25 @@ Settings for meta tags and OG tags
 | Id | Description |
 | --- | --- |
 | `fee_per_gas` | Amount of total fee divided by total amount of gas used by transaction |
+
+&nbsp;
+
+#### NFT views
+
+| Variable | Type | Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES | `Array<NftMarketplace>` where `NftMarketplace` can have following [properties](#nft-marketplace-properties) | Used to build up links to NFT collections and NFT instances in external marketplaces. | - | - | `[{'name':'OpenSea','collection_url':'https://opensea.io/assets/ethereum/{hash}','instance_url':'https://opensea.io/assets/ethereum/{hash}/{id}','logo_url':'https://opensea.io/static/images/logos/opensea-logo.svg'}]` |
+
+
+##### NFT marketplace properties
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| name | `string` | Displayed name of the marketplace | Required | - | `OpenSea` |
+| collection_url | `string` | URL template for NFT collection | Required | - | `https://opensea.io/assets/ethereum/{hash}` |
+| instance_url | `string` | URL template for NFT instance | Required | - | `https://opensea.io/assets/ethereum/{hash}/{id}` |
+| logo_url | `string` | URL of marketplace logo | Required | - | `https://opensea.io/static/images/logos/opensea-logo.svg` |
+
+*Note* URL templates should contain placeholders of NFT hash (`{hash}`) and NFT id (`{id}`). This placeholders will be substituted with particular values for every collection or instance.
 
 &nbsp;
 

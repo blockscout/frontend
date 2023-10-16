@@ -23,6 +23,7 @@ import type { AddressViewId } from '../../../types/views/address';
 import { ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from '../../../types/views/address';
 import { BLOCK_FIELDS_IDS } from '../../../types/views/block';
 import type { BlockFieldId } from '../../../types/views/block';
+import type { NftMarketplaceItem } from '../../../types/views/nft';
 import type { TxAdditionalFieldsId, TxFieldsId } from '../../../types/views/tx';
 import { TX_ADDITIONAL_FIELDS_IDS, TX_FIELDS_IDS } from '../../../types/views/tx';
 
@@ -251,6 +252,14 @@ const networkExplorerSchema: yup.ObjectSchema<NetworkExplorer> = yup
       }),
   });
 
+const nftMarketplaceSchema: yup.ObjectSchema<NftMarketplaceItem> = yup
+  .object({
+    name: yup.string().required(),
+    collection_url: yup.string().test(urlTest).required(),
+    instance_url: yup.string().test(urlTest).required(),
+    logo_url: yup.string().test(urlTest).required(),
+  });
+
 const bridgedTokenChainSchema: yup.ObjectSchema<BridgedTokenChain> = yup
   .object({
     id: yup.string().required(),
@@ -378,6 +387,11 @@ const schema = yup
       .transform(replaceQuotes)
       .json()
       .of(yup.string<TxAdditionalFieldsId>().oneOf(TX_ADDITIONAL_FIELDS_IDS)),
+    NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(nftMarketplaceSchema),
 
     //     e. misc
     NEXT_PUBLIC_NETWORK_EXPLORERS: yup
