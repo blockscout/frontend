@@ -21,6 +21,9 @@ for var in $(env | grep '^NEXT_PUBLIC_' | cut -d= -f1); do
   # Get the value of the variable
   value="${!var}"
 
+  # Replace double quotes with single quotes
+  value="${value//\"/\'}"
+
   # Write the variable name and value to the output file
   echo "${var}: \"${value}\"," >> "$output_file"
 done
