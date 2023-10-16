@@ -59,10 +59,15 @@ const SwaggerUI = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const reqInterceptor = React.useCallback((req: any) => {
     if (!req.loadSpec) {
-      req.url = req.url.replace(DEFAULT_SERVER, config.api.host);
-      const url = new URL(req.url);
-      url.protocol = 'https:';
-      req.url = url.toString();
+      const newUrl = new URL(req.url.replace(DEFAULT_SERVER, config.api.host));
+
+      newUrl.protocol = config.api.protocol + ':';
+
+      if (config.api.port) {
+        newUrl.port = config.api.port;
+      }
+
+      req.url = newUrl.toString();
     }
     return req;
   }, []);
