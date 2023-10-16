@@ -89,14 +89,18 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
           />
         ) }
       </Flex>
-      <Skeleton isLoaded={ !isLoading } mb={ 2 } fontSize="sm" w="fit-content">
-        <Text as="span">Value { config.chain.currency.symbol } </Text>
-        <Text as="span" variant="secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() }</Text>
-      </Skeleton>
-      <Skeleton isLoaded={ !isLoading } fontSize="sm" w="fit-content">
-        <Text as="span">Fee { config.chain.currency.symbol } </Text>
-        <Text as="span" variant="secondary">{ getValueWithUnit(tx.fee.value).dp(5).toFormat() }</Text>
-      </Skeleton>
+      { !config.UI.views.tx.hiddenFields?.value && (
+        <Skeleton isLoaded={ !isLoading } mb={ 2 } fontSize="sm" w="fit-content">
+          <Text as="span">Value { config.chain.currency.symbol } </Text>
+          <Text as="span" variant="secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() }</Text>
+        </Skeleton>
+      ) }
+      { !config.UI.views.tx.hiddenFields?.tx_fee && (
+        <Skeleton isLoaded={ !isLoading } fontSize="sm" w="fit-content">
+          <Text as="span">Fee { config.chain.currency.symbol } </Text>
+          <Text as="span" variant="secondary">{ getValueWithUnit(tx.fee.value).dp(5).toFormat() }</Text>
+        </Skeleton>
+      ) }
     </Box>
   );
 };

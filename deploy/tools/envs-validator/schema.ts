@@ -19,9 +19,12 @@ import { SUPPORTED_WALLETS } from '../../../types/client/wallets';
 import type { CustomLink, CustomLinksGroup } from '../../../types/footerLinks';
 import type { ChainIndicatorId } from '../../../types/homepage';
 import { type NetworkVerificationType, type NetworkExplorer, type FeaturedNetwork, NETWORK_GROUPS } from '../../../types/networks';
-import { IDENTICON_TYPES } from '../../../types/views/address';
+import type { AddressViewId } from '../../../types/views/address';
+import { ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from '../../../types/views/address';
 import { BLOCK_FIELDS_IDS } from '../../../types/views/block';
 import type { BlockFieldId } from '../../../types/views/block';
+import type { TxAdditionalFieldsId, TxFieldsId } from '../../../types/views/tx';
+import { TX_ADDITIONAL_FIELDS_IDS, TX_FIELDS_IDS } from '../../../types/views/tx';
 
 import { replaceQuotes } from '../../../configs/app/utils';
 import * as regexp from '../../../lib/regexp';
@@ -360,6 +363,21 @@ const schema = yup
       .json()
       .of(yup.string<BlockFieldId>().oneOf(BLOCK_FIELDS_IDS)),
     NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE: yup.string().oneOf(IDENTICON_TYPES),
+    NEXT_PUBLIC_VIEWS_ADDRESS_HIDDEN_VIEWS: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(yup.string<AddressViewId>().oneOf(ADDRESS_VIEWS_IDS)),
+    NEXT_PUBLIC_VIEWS_TX_HIDDEN_FIELDS: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(yup.string<TxFieldsId>().oneOf(TX_FIELDS_IDS)),
+    NEXT_PUBLIC_VIEWS_TX_ADDITIONAL_FIELDS: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(yup.string<TxAdditionalFieldsId>().oneOf(TX_ADDITIONAL_FIELDS_IDS)),
 
     //     e. misc
     NEXT_PUBLIC_NETWORK_EXPLORERS: yup

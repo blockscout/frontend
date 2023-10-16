@@ -45,6 +45,7 @@ import TextSeparator from 'ui/shared/TextSeparator';
 import TxStatus from 'ui/shared/TxStatus';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import TxDetailsActions from 'ui/tx/details/TxDetailsActions';
+import TxDetailsFeePerGas from 'ui/tx/details/TxDetailsFeePerGas';
 import TxDetailsGasPrice from 'ui/tx/details/TxDetailsGasPrice';
 import TxDetailsOther from 'ui/tx/details/TxDetailsOther';
 import TxDetailsTokenTransfers from 'ui/tx/details/TxDetailsTokenTransfers';
@@ -284,33 +285,41 @@ const TxDetails = () => {
 
         <DetailsInfoItemDivider/>
 
-        <DetailsInfoItem
-          title="Value"
-          hint="Value sent in the native token (and USD) if applicable"
-          isLoading={ isPlaceholderData }
-        >
-          <CurrencyValue
-            value={ data.value }
-            currency={ config.chain.currency.symbol }
-            exchangeRate={ data.exchange_rate }
+        { !config.UI.views.tx.hiddenFields?.value && (
+          <DetailsInfoItem
+            title="Value"
+            hint="Value sent in the native token (and USD) if applicable"
             isLoading={ isPlaceholderData }
-            flexWrap="wrap"
-          />
-        </DetailsInfoItem>
-        <DetailsInfoItem
-          title="Transaction fee"
-          hint="Total transaction fee"
-          isLoading={ isPlaceholderData }
-        >
-          <CurrencyValue
-            value={ data.fee.value }
-            currency={ config.chain.currency.symbol }
-            exchangeRate={ data.exchange_rate }
-            flexWrap="wrap"
+          >
+            <CurrencyValue
+              value={ data.value }
+              currency={ config.chain.currency.symbol }
+              exchangeRate={ data.exchange_rate }
+              isLoading={ isPlaceholderData }
+              flexWrap="wrap"
+            />
+          </DetailsInfoItem>
+        ) }
+        { !config.UI.views.tx.hiddenFields?.tx_fee && (
+          <DetailsInfoItem
+            title="Transaction fee"
+            hint="Total transaction fee"
             isLoading={ isPlaceholderData }
-          />
-        </DetailsInfoItem>
+          >
+            <CurrencyValue
+              value={ data.fee.value }
+              currency={ config.UI.views.tx.hiddenFields?.fee_currency ? '' : config.chain.currency.symbol }
+              exchangeRate={ data.exchange_rate }
+              flexWrap="wrap"
+              isLoading={ isPlaceholderData }
+            />
+          </DetailsInfoItem>
+        ) }
+
         <TxDetailsGasPrice gasPrice={ data.gas_price } isLoading={ isPlaceholderData }/>
+
+        <TxDetailsFeePerGas txFee={ data.fee.value } gasUsed={ data.gas_used } isLoading={ isPlaceholderData }/>
+
         <DetailsInfoItem
           title="Gas usage & limit by txn"
           hint="Actual gas amount used by the transaction"
@@ -321,7 +330,8 @@ const TxDetails = () => {
           <Skeleton isLoaded={ !isPlaceholderData }>{ BigNumber(data.gas_limit).toFormat() }</Skeleton>
           <Utilization ml={ 4 } value={ BigNumber(data.gas_used || 0).dividedBy(BigNumber(data.gas_limit)).toNumber() } isLoading={ isPlaceholderData }/>
         </DetailsInfoItem>
-        { (data.base_fee_per_gas || data.max_fee_per_gas || data.max_priority_fee_per_gas) && (
+        { !config.UI.views.tx.hiddenFields?.gas_fees &&
+          (data.base_fee_per_gas || data.max_fee_per_gas || data.max_priority_fee_per_gas) && (
           <DetailsInfoItem
             title="Gas fees (Gwei)"
             // eslint-disable-next-line max-len
@@ -354,7 +364,7 @@ const TxDetails = () => {
             ) }
           </DetailsInfoItem>
         ) }
-        { data.tx_burnt_fee && !config.features.rollup.isEnabled && (
+        { data.tx_burnt_fee && !config.UI.views.tx.hiddenFields?.burnt_fees && !config.features.rollup.isEnabled && (
           <DetailsInfoItem
             title="Burnt fees"
             hint={ `Amount of ${ config.chain.currency.symbol } burned for this transaction. Equals Block Base Fee per Gas * Gas Used` }

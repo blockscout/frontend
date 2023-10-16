@@ -13,6 +13,7 @@ import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
 
+import config from 'configs/app';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Icon from 'ui/shared/chakra/Icon';
@@ -153,12 +154,16 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
           </Flex>
         </Td>
       </Hide>
-      <Td isNumeric>
-        <CurrencyValue value={ tx.value } accuracy={ 8 } isLoading={ isLoading }/>
-      </Td>
-      <Td isNumeric>
-        <CurrencyValue value={ tx.fee.value } accuracy={ 8 } isLoading={ isLoading }/>
-      </Td>
+      { !config.UI.views.tx.hiddenFields?.value && (
+        <Td isNumeric>
+          <CurrencyValue value={ tx.value } accuracy={ 8 } isLoading={ isLoading }/>
+        </Td>
+      ) }
+      { !config.UI.views.tx.hiddenFields?.tx_fee && (
+        <Td isNumeric>
+          <CurrencyValue value={ tx.fee.value } accuracy={ 8 } isLoading={ isLoading }/>
+        </Td>
+      ) }
     </Tr>
   );
 };
