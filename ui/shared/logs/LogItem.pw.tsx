@@ -21,7 +21,7 @@ test('with decoded input data +@mobile +@dark-mode', async({ mount }) => {
       <LogItem
         index={ 42 }
         decoded={ inputDataMocks.withIndexedFields }
-        address={ addressMocks.withName }
+        address={{ ...addressMocks.withName, is_verified: true }}
         topics={ TOPICS }
         data={ DATA }
         type="transaction"

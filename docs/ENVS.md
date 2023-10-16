@@ -16,6 +16,9 @@ The app instance could be customized by passing following variables to NodeJS en
   - [Meta](ENVS.md#meta)
   - [Views](ENVS.md#views)
     - [Block](ENVS.md#block-views)
+    - [Address](ENVS.md#address-views)
+    - [Transaction](ENVS.md#transaction-views)
+    - [NFT](ENVS.md#nft-views)
   - [Misc](ENVS.md#misc)
 - [App features](ENVS.md#app-features)
   - [My account](ENVS.md#my-account)
@@ -184,6 +187,55 @@ Settings for meta tags and OG tags
 | Variable | Type | Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE | `"github" \| "jazzicon" \| "gradient_avatar" \| "blockie"` | Style of address identicon appearance. Choose between [GitHub](https://github.blog/2013-08-14-identicons/), [Metamask Jazzicon](https://metamask.github.io/jazzicon/), [Gradient Avatar](https://github.com/varld/gradient-avatar) and [Ethereum Blocky](https://mycryptohq.github.io/ethereum-blockies-base64/) | - | `jazzicon` | `gradient_avatar` |
+| NEXT_PUBLIC_VIEWS_ADDRESS_HIDDEN_VIEWS | `Array<AddressViewId>` | Address views that should not be displayed. See below the list of the possible id values.  | - | - | `'["top_accounts"]'` |
+
+##### Address views list
+| Id | Description |
+| --- | --- |
+| `top_accounts` | Top accounts |
+
+&nbsp;
+
+#### Transaction views
+
+| Variable | Type | Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_VIEWS_TX_HIDDEN_FIELDS | `Array<TxFieldsId>` | Array of the transaction fields ids that should be hidden. See below the list of the possible id values. | - | - | `'["value","tx_fee"]'` |
+| NEXT_PUBLIC_VIEWS_TX_ADDITIONAL_FIELDS | `Array<TxAdditionalFieldsId>` | Array of the additional fields ids that should be added to the transaction details. See below the list of the possible id values. | - | - | `'["fee_per_gas"]'` |
+
+##### Transaction fields list
+| Id | Description |
+| --- | --- |
+| `value` | Sent value |
+| `fee_currency` | Fee currency |
+| `gas_price` | Price per unit of gas |
+| `tx_fee` | Total transaction fee |
+| `gas_fees` | Gas fees breakdown |
+| `burnt_fees` | Amount of native coin burnt for transaction |
+
+##### Transaction additional fields list
+| Id | Description |
+| --- | --- |
+| `fee_per_gas` | Amount of total fee divided by total amount of gas used by transaction |
+
+&nbsp;
+
+#### NFT views
+
+| Variable | Type | Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES | `Array<NftMarketplace>` where `NftMarketplace` can have following [properties](#nft-marketplace-properties) | Used to build up links to NFT collections and NFT instances in external marketplaces. | - | - | `[{'name':'OpenSea','collection_url':'https://opensea.io/assets/ethereum/{hash}','instance_url':'https://opensea.io/assets/ethereum/{hash}/{id}','logo_url':'https://opensea.io/static/images/logos/opensea-logo.svg'}]` |
+
+
+##### NFT marketplace properties
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| name | `string` | Displayed name of the marketplace | Required | - | `OpenSea` |
+| collection_url | `string` | URL template for NFT collection | Required | - | `https://opensea.io/assets/ethereum/{hash}` |
+| instance_url | `string` | URL template for NFT instance | Required | - | `https://opensea.io/assets/ethereum/{hash}/{id}` |
+| logo_url | `string` | URL of marketplace logo | Required | - | `https://opensea.io/static/images/logos/opensea-logo.svg` |
+
+*Note* URL templates should contain placeholders of NFT hash (`{hash}`) and NFT id (`{id}`). This placeholders will be substituted with particular values for every collection or instance.
 
 &nbsp;
 
