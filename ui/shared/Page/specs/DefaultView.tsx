@@ -4,6 +4,8 @@ import React from 'react';
 import type { TokenInfo } from 'types/api/token';
 
 import iconVerifiedToken from 'icons/verified_token.svg';
+import * as addressMock from 'mocks/address/address';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EntityTags from 'ui/shared/EntityTags';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
@@ -36,9 +38,20 @@ const DefaultView = () => {
         tagsBefore={ [
           { label: 'example', display_name: 'Example label' },
         ] }
-        contentAfter={ <NetworkExplorers type="token" pathParam="token-hash" ml="auto"/> }
         flexGrow={ 1 }
       />
+    </>
+  );
+
+  const secondRow = (
+    <>
+      <AddressEntity
+        address={{ ...addressMock.token, name: '' }}
+        fontFamily="heading"
+        fontSize="lg"
+        fontWeight={ 500 }
+      />
+      <NetworkExplorers type="token" pathParam={ addressMock.hash } ml="auto"/>
     </>
   );
 
@@ -53,6 +66,7 @@ const DefaultView = () => {
       ) }
       backLink={ backLink }
       contentAfter={ contentAfter }
+      secondRow={ secondRow }
     />
   );
 };
