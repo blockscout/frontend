@@ -5,6 +5,7 @@ function generateCspPolicy() {
   const policyDescriptor = mergeDescriptors(
     descriptors.app(),
     descriptors.ad(),
+    descriptors.algolia(),
     descriptors.cloudFlare(),
     descriptors.googleAnalytics(),
     descriptors.googleFonts(),

@@ -139,11 +139,13 @@ The app version shown in the footer is derived from build-time ENV variables `NE
 
 By default, the app has generic favicon. You can override this behavior by providing the following variables. Hence, the favicon assets bundle will be generated at the container start time and will be used instead of default one.
 
-| Variable | Type| Description | Compulsoriness  | Default value | Example value |
-| --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY | `string` | RealFaviconGenerator [API key](https://realfavicongenerator.net/api/) | Required | - | `<your-secret>` |
-| NEXT_PUBLIC_FAVICON_MASTER_URL | `string` | - | - | `NEXT_PUBLIC_NETWORK_ICON` | `https://placekitten.com/180/180` |
-
+| Variable                              | Type| Description | Compulsoriness  | Default value              | Example value                     |
+|---------------------------------------| --- | --- | --- |----------------------------|-----------------------------------|
+| NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY | `string` | RealFaviconGenerator [API key](https://realfavicongenerator.net/api/) | Required | -                          | `<your-secret>`                   |
+| NEXT_PUBLIC_FAVICON_MASTER_URL        | `string` | - | - | `NEXT_PUBLIC_NETWORK_ICON` | `https://placekitten.com/180/180` |
+| NEXT_PUBLIC_ALGOLIA_APP_ID                     | `string` | - | - | `NEXT_PUBLIC_ALGOLIA_APP_ID`      | `XYZXYZ123321`                    |
+| NEXT_PUBLIC_ALGOLIA_API_KEY                     | `string` | - | - | `NEXT_PUBLIC_ALGOLIA_API_KEY`      | `12341234123412341234`            |
+| NEXT_PUBLIC_ALGOLIA_INDEX_NAME                     | `string` | - | - | `NEXT_PUBLIC_ALGOLIA_INDEX_NAME`      | `your_index_name`                 |
 &nbsp;
 
 ### Meta
