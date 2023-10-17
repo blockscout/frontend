@@ -4,7 +4,7 @@ frontend:
   app: blockscout
   enabled: true
   image:
-    _default: ghcr.io/blockscout/frontend:prerelease-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
+    _default: ghcr.io/blockscout/frontend:review-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
     pullPolicy: Always
   ingress:
     enabled: true
@@ -17,6 +17,7 @@ frontend:
       exact:
         # - "/(apps|auth/profile|account)"
         - "/"
+        - "/envs.js"
       prefix:
         # - "/(apps|auth/profile|account)"
         - "/_next"
@@ -25,6 +26,7 @@ frontend:
         - "/apps"
         - "/static"
         - "/favicon"
+        - "/assets"
         - "/auth/profile"
         - "/auth/unverified-email"
         - "/txs"
@@ -63,9 +65,9 @@ frontend:
     enabled: false
   environment:
     NEXT_PUBLIC_APP_ENV:
-      _default: preview
+      _default: development
     NEXT_PUBLIC_APP_INSTANCE:
-      _default: base_goerli
+      _default: review_L2
     NEXT_PUBLIC_NETWORK_NAME:
       _default: "Base Göerli"
     NEXT_PUBLIC_NETWORK_SHORT_NAME:

@@ -16,6 +16,9 @@ The app instance could be customized by passing following variables to NodeJS en
   - [Meta](ENVS.md#meta)
   - [Views](ENVS.md#views)
     - [Block](ENVS.md#block-views)
+    - [Address](ENVS.md#address-views)
+    - [Transaction](ENVS.md#transaction-views)
+    - [NFT](ENVS.md#nft-views)
   - [Misc](ENVS.md#misc)
 - [App features](ENVS.md#app-features)
   - [My account](ENVS.md#my-account)
@@ -35,6 +38,9 @@ The app instance could be customized by passing following variables to NodeJS en
   - [Blockchain statistics](ENVS.md#blockchain-statistics)
   - [Web3 wallet integration](ENVS.md#web3-wallet-integration-add-token-or-network-to-the-wallet) (add token or network to the wallet)
   - [Verified tokens info](ENVS.md#verified-tokens-info)
+  - [Bridged tokens](ENVS.md#bridged-tokens)
+  - [Safe{Core} address tags](ENVS.md#safecore-address-tags)
+  - [SUAVE chain](ENVS.md#suave-chain)
   - [Sentry error monitoring](ENVS.md#sentry-error-monitoring)
 - [3rd party services configuration](ENVS.md#external-services-configuration)
 
@@ -183,6 +189,55 @@ Settings for meta tags and OG tags
 | Variable | Type | Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE | `"github" \| "jazzicon" \| "gradient_avatar" \| "blockie"` | Style of address identicon appearance. Choose between [GitHub](https://github.blog/2013-08-14-identicons/), [Metamask Jazzicon](https://metamask.github.io/jazzicon/), [Gradient Avatar](https://github.com/varld/gradient-avatar) and [Ethereum Blocky](https://mycryptohq.github.io/ethereum-blockies-base64/) | - | `jazzicon` | `gradient_avatar` |
+| NEXT_PUBLIC_VIEWS_ADDRESS_HIDDEN_VIEWS | `Array<AddressViewId>` | Address views that should not be displayed. See below the list of the possible id values.  | - | - | `'["top_accounts"]'` |
+
+##### Address views list
+| Id | Description |
+| --- | --- |
+| `top_accounts` | Top accounts |
+
+&nbsp;
+
+#### Transaction views
+
+| Variable | Type | Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_VIEWS_TX_HIDDEN_FIELDS | `Array<TxFieldsId>` | Array of the transaction fields ids that should be hidden. See below the list of the possible id values. | - | - | `'["value","tx_fee"]'` |
+| NEXT_PUBLIC_VIEWS_TX_ADDITIONAL_FIELDS | `Array<TxAdditionalFieldsId>` | Array of the additional fields ids that should be added to the transaction details. See below the list of the possible id values. | - | - | `'["fee_per_gas"]'` |
+
+##### Transaction fields list
+| Id | Description |
+| --- | --- |
+| `value` | Sent value |
+| `fee_currency` | Fee currency |
+| `gas_price` | Price per unit of gas |
+| `tx_fee` | Total transaction fee |
+| `gas_fees` | Gas fees breakdown |
+| `burnt_fees` | Amount of native coin burnt for transaction |
+
+##### Transaction additional fields list
+| Id | Description |
+| --- | --- |
+| `fee_per_gas` | Amount of total fee divided by total amount of gas used by transaction |
+
+&nbsp;
+
+#### NFT views
+
+| Variable | Type | Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES | `Array<NftMarketplace>` where `NftMarketplace` can have following [properties](#nft-marketplace-properties) | Used to build up links to NFT collections and NFT instances in external marketplaces. | - | - | `[{'name':'OpenSea','collection_url':'https://opensea.io/assets/ethereum/{hash}','instance_url':'https://opensea.io/assets/ethereum/{hash}/{id}','logo_url':'https://opensea.io/static/images/logos/opensea-logo.svg'}]` |
+
+
+##### NFT marketplace properties
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| name | `string` | Displayed name of the marketplace | Required | - | `OpenSea` |
+| collection_url | `string` | URL template for NFT collection | Required | - | `https://opensea.io/assets/ethereum/{hash}` |
+| instance_url | `string` | URL template for NFT instance | Required | - | `https://opensea.io/assets/ethereum/{hash}/{id}` |
+| logo_url | `string` | URL of marketplace logo | Required | - | `https://opensea.io/static/images/logos/opensea-logo.svg` |
+
+*Note* URL templates should contain placeholders of NFT hash (`{hash}`) and NFT id (`{id}`). This placeholders will be substituted with particular values for every collection or instance.
 
 &nbsp;
 
@@ -192,6 +247,7 @@ Settings for meta tags and OG tags
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_NETWORK_EXPLORERS | `Array<NetworkExplorer>` where `NetworkExplorer` can have following [properties](#network-explorer-configuration-properties) | Used to build up links to transactions, blocks, addresses in other chain explorers. | - | - | `[{'title':'Anyblock','baseUrl':'https://explorer.anyblock.tools','paths':{'tx':'/ethereum/poa/core/tx'}}]` |
 | NEXT_PUBLIC_HIDE_INDEXING_ALERT | `boolean` | Set to `true` to hide indexing alert, if the chain indexing isn't completed | - | `false` | `true` |
+| NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE | `string` | Used for displaying custom announcements or alerts in the header of the site. Could be a regular string or a HTML code. | - | - | `Hello world! 🤪` |
 
 #### Network explorer configuration properties
 
@@ -406,9 +462,49 @@ This feature is **enabled by default** with the `['metamask']` value. To switch 
 
 &nbsp;
 
+### Bridged tokens
+
+This feature allows users to view tokens that have been bridged from other EVM chains. Additional tab "Bridged" will be added to the tokens page and the link to original token will be displayed on the token page.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_BRIDGED_TOKENS_CHAINS | `Array<BridgedTokenChain>` where `BridgedTokenChain` can have following [properties](#bridged-token-chain-configuration-properties) | Used for displaying filter by the chain from which token where bridged. Also, used for creating links to original tokens in other explorers. | Required | - | `[{'id':'1','title':'Ethereum','short_title':'ETH','base_url':'https://eth.blockscout.com/token'}]` |
+| NEXT_PUBLIC_BRIDGED_TOKENS_BRIDGES | `Array<TokenBridge>` where `TokenBridge` can have following [properties](#token-bridge-configuration-properties) | Used for displaying text about bridges types on the tokens page. | Required | - | `[{'type':'omni','title':'OmniBridge','short_title':'OMNI'}]` |
+
+#### Bridged token chain configuration properties
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| id | `string` | Base chain id, see [https://chainlist.org](https://chainlist.org) for the reference | Required | - | `1` |
+| title | `string` | Displayed name of the chain | Required | - | `Ethereum` |
+| short_title | `string` | Used for displaying chain name in the list view as tag | Required | - | `ETH` |
+| base_url | `string` | Base url to original token in base chain explorer | Required | - | `https://eth.blockscout.com/token` |
+
+*Note* The url to original token will be constructed as `<base_url>/<token_hash>`, e.g `https://eth.blockscout.com/token/<token_hash>`
+
+#### Token bridge configuration properties
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| type | `string` | Bridge type; should be matched to `bridge_type` field in API response | Required | - | `omni` |
+| title | `string` | Bridge title | Required | - | `OmniBridge` |
+| short_title | `string` | Bridge short title for displaying in the tags | Required | - | `OMNI` |
+
+&nbsp;
+
 ### Safe{Core} address tags
 
 For the smart contract addresses which are [Safe{Core} accounts](https://safe.global/) public tag "Multisig: Safe" will be displayed in the address page header along side to Safe logo. The Safe service is available only for certain networks, see full list [here](https://docs.safe.global/safe-core-api/available-services). Based on provided value of `NEXT_PUBLIC_NETWORK_ID`, the feature will be enabled or disabled. 
+
+&nbsp;
+
+### SUAVE chain
+
+For blockchains that implementing SUAVE architecture additional fields will be shown on the transaction page ("Allowed peekers", "Computor"). Users also will be able to see the list of all transaction for a particular Computor in the separate view.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_IS_SUAVE_CHAIN | `boolean` | Set to true for blockchains with [SUAVE architecture](https://writings.flashbots.net/mevm-suave-centauri-and-beyond) | Required | - | `true` |
 
 &nbsp;
 
@@ -418,8 +514,8 @@ For the smart contract addresses which are [Safe{Core} accounts](https://safe.gl
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_SENTRY_DSN | `string` | Client key for your Sentry.io app | Required | - | `<your-secret>` |
 | SENTRY_CSP_REPORT_URI | `string` | URL for sending CSP-reports to your Sentry.io app | - | - | `<your-secret>` |
-| NEXT_PUBLIC_APP_ENV | `string` | Current app env (e.g development, review or production). Passed as `environment` property to Sentry config | - | `process.env.NODE_ENV` | `production` |
-| NEXT_PUBLIC_APP_INSTANCE | `string` | Name of app instance. Used as custom tag `app_instance` value in the main Sentry scope | - | - | `wonderful_kepler` |
+| NEXT_PUBLIC_APP_ENV | `string` | App env (e.g development, review or production). Passed as `environment` property to Sentry config | - | `production` | `production` |
+| NEXT_PUBLIC_APP_INSTANCE | `string` | Name of app instance. Used as custom tag `app_instance` value in the main Sentry scope. If not provided, it will be constructed from `NEXT_PUBLIC_APP_HOST` | - | - | `wonderful_kepler` |
 
 &nbsp;
 

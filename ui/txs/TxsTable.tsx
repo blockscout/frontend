@@ -51,20 +51,24 @@ const TxsTable = ({
           <Th width={{ xl: '152px', base: '86px' }}>From</Th>
           <Th width={{ xl: currentAddress ? '48px' : '36px', base: currentAddress ? '52px' : '28px' }}></Th>
           <Th width={{ xl: '152px', base: '86px' }}>To</Th>
-          <Th width="20%" isNumeric>
-            <Link onClick={ sort('val') } display="flex" justifyContent="end">
-              { sorting === 'val-asc' && <Icon boxSize={ 5 } as={ rightArrowIcon } transform="rotate(-90deg)"/> }
-              { sorting === 'val-desc' && <Icon boxSize={ 5 } as={ rightArrowIcon } transform="rotate(90deg)"/> }
-              { `Value ${ config.chain.currency.symbol }` }
-            </Link>
-          </Th>
-          <Th width="20%" isNumeric pr={ 5 }>
-            <Link onClick={ sort('fee') } display="flex" justifyContent="end">
-              { sorting === 'fee-asc' && <Icon boxSize={ 5 } as={ rightArrowIcon } transform="rotate(-90deg)"/> }
-              { sorting === 'fee-desc' && <Icon boxSize={ 5 } as={ rightArrowIcon } transform="rotate(90deg)"/> }
-              { `Fee ${ config.chain.currency.symbol }` }
-            </Link>
-          </Th>
+          { !config.UI.views.tx.hiddenFields?.value && (
+            <Th width="20%" isNumeric>
+              <Link onClick={ sort('val') } display="flex" justifyContent="end">
+                { sorting === 'val-asc' && <Icon boxSize={ 5 } as={ rightArrowIcon } transform="rotate(-90deg)"/> }
+                { sorting === 'val-desc' && <Icon boxSize={ 5 } as={ rightArrowIcon } transform="rotate(90deg)"/> }
+                { `Value ${ config.chain.currency.symbol }` }
+              </Link>
+            </Th>
+          ) }
+          { !config.UI.views.tx.hiddenFields?.tx_fee && (
+            <Th width="20%" isNumeric pr={ 5 }>
+              <Link onClick={ sort('fee') } display="flex" justifyContent="end">
+                { sorting === 'fee-asc' && <Icon boxSize={ 5 } as={ rightArrowIcon } transform="rotate(-90deg)"/> }
+                { sorting === 'fee-desc' && <Icon boxSize={ 5 } as={ rightArrowIcon } transform="rotate(90deg)"/> }
+                { `Fee${ config.UI.views.tx.hiddenFields?.fee_currency ? '' : ` ${ config.chain.currency.symbol }` }` }
+              </Link>
+            </Th>
+          ) }
         </Tr>
       </TheadSticky>
       <Tbody>

@@ -1,4 +1,4 @@
-import { Box, Icon } from '@chakra-ui/react';
+import { Box, Flex, Icon } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -10,7 +10,6 @@ import iconSuccess from 'icons/status/success.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import useContractTabs from 'lib/hooks/useContractTabs';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import useIsSafeAddress from 'lib/hooks/useIsSafeAddress';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ADDRESS_INFO, ADDRESS_TABS_COUNTERS } from 'stubs/address';
@@ -24,7 +23,12 @@ import AddressTokens from 'ui/address/AddressTokens';
 import AddressTokenTransfers from 'ui/address/AddressTokenTransfers';
 import AddressTxs from 'ui/address/AddressTxs';
 import AddressWithdrawals from 'ui/address/AddressWithdrawals';
+import AddressFavoriteButton from 'ui/address/details/AddressFavoriteButton';
+import AddressQrCode from 'ui/address/details/AddressQrCode';
+import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import TextAd from 'ui/shared/ad/TextAd';
+import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EntityTags from 'ui/shared/EntityTags';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -41,7 +45,6 @@ const TOKEN_TABS = Object.values(tokenTabsByType);
 
 const AddressPageContent = () => {
   const router = useRouter();
-  const isMobile = useIsMobile();
   const appProps = useAppContext();
 
   const tabsScrollRef = React.useRef<HTMLDivElement>(null);
@@ -105,7 +108,6 @@ const AddressPageContent = () => {
       {
         id: 'coin_balance_history',
         title: 'Coin balance history',
-        count: addressTabsCountersQuery.data?.coin_balances_count,
         component: <AddressCoinBalance/>,
       },
       config.chain.verificationType === 'validation' && addressTabsCountersQuery.data?.validations_count ?
@@ -149,14 +151,11 @@ const AddressPageContent = () => {
       data={ addressQuery.data }
       isLoading={ addressQuery.isPlaceholderData }
       tagsBefore={ [
-        addressQuery.data?.is_contract ? { label: 'contract', display_name: 'Contract' } : { label: 'eoa', display_name: 'EOA' },
+        !addressQuery.data?.is_contract ? { label: 'eoa', display_name: 'EOA' } : undefined,
         addressQuery.data?.implementation_address ? { label: 'proxy', display_name: 'Proxy' } : undefined,
         addressQuery.data?.token ? { label: 'token', display_name: 'Token' } : undefined,
         isSafeAddress ? { label: 'safe', display_name: 'Multisig: Safe' } : undefined,
       ] }
-      contentAfter={
-        <NetworkExplorers type="address" pathParam={ hash } ml="auto" hideText={ isMobile }/>
-      }
     />
   );
 
@@ -175,6 +174,30 @@ const AddressPageContent = () => {
     };
   }, [ appProps.referrer ]);
 
+  const isLoading = addressQuery.isPlaceholderData;
+
+  const titleSecondRow = (
+    <Flex alignItems="center" w="100%" columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
+      <AddressEntity
+        address={{ ...addressQuery.data, name: '' }}
+        isLoading={ isLoading }
+        fontFamily="heading"
+        fontSize="lg"
+        fontWeight={ 500 }
+        noLink
+        isSafeAddress={ isSafeAddress }
+      />
+      { !isLoading && addressQuery.data?.is_contract && addressQuery.data.token &&
+        <AddressAddToWallet token={ addressQuery.data.token } variant="button"/> }
+      { !isLoading && !addressQuery.data?.is_contract && config.features.account.isEnabled && (
+        <AddressFavoriteButton hash={ hash } watchListId={ addressQuery.data?.watchlist_address_id }/>
+      ) }
+      <AddressQrCode address={ addressQuery.data } isLoading={ isLoading }/>
+      <AccountActionsMenu isLoading={ isLoading }/>
+      <NetworkExplorers type="address" pathParam={ hash } ml="auto"/>
+    </Flex>
+  );
+
   return (
     <>
       <TextAd mb={ 6 }/>
@@ -182,7 +205,8 @@ const AddressPageContent = () => {
         title={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }
         backLink={ backLink }
         contentAfter={ tags }
-        isLoading={ addressQuery.isPlaceholderData }
+        secondRow={ titleSecondRow }
+        isLoading={ isLoading }
       />
       <AddressDetails addressQuery={ addressQuery } scrollRef={ tabsScrollRef }/>
       { /* should stay before tabs to scroll up with pagination */ }

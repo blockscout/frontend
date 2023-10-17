@@ -34,7 +34,7 @@ export default function useNftMediaType(url: string | null, isEnabled: boolean) 
 
       try {
         const mediaTypeResourceUrl = route({ pathname: '/node-api/media-type' as StaticRoute<'/api/media-type'>['pathname'], query: { url } });
-        const response = await fetch<{ type: MediaType | undefined }, ResourceError>(mediaTypeResourceUrl);
+        const response = await fetch<{ type: MediaType | undefined }, ResourceError>(mediaTypeResourceUrl, undefined, { resource: 'media-type' });
 
         return 'type' in response ? response.type ?? 'image' : 'image';
       } catch (error) {

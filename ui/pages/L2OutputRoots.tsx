@@ -1,4 +1,4 @@
-import { Box, Hide, Show, Skeleton, Text } from '@chakra-ui/react';
+import { Hide, Show, Skeleton, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
@@ -6,11 +6,10 @@ import { L2_OUTPUT_ROOTS_ITEM } from 'stubs/L2';
 import { generateListStub } from 'stubs/utils';
 import OutputRootsListItem from 'ui/l2OutputRoots/OutputRootsListItem';
 import OutputRootsTable from 'ui/l2OutputRoots/OutputRootsTable';
-import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
+import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 
 const L2OutputRoots = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
@@ -67,19 +66,7 @@ const L2OutputRoots = () => {
     );
   })();
 
-  const actionBar = (
-    <>
-      <Box mb={ 6 } display={{ base: 'block', lg: 'none' }}>
-        { text }
-      </Box>
-      <ActionBar mt={ -6 } alignItems="center">
-        <Box display={{ base: 'none', lg: 'block' }}>
-          { text }
-        </Box>
-        { pagination.isVisible && <Pagination ml="auto" { ...pagination }/> }
-      </ActionBar>
-    </>
-  );
+  const actionBar = <StickyPaginationWithText text={ text } pagination={ pagination }/>;
 
   return (
     <>

@@ -73,6 +73,25 @@ export const read: Array<SmartContractReadMethod> = [
     stateMutability: 'view',
     type: 'function',
   },
+  {
+    inputs: [],
+    method_id: '69598efe',
+    name: 'totalPartitions',
+    constant: true,
+    payable: false,
+    outputs: [
+      {
+        type: 'bytes32[]',
+        name: 'bytes32[]',
+        value: [
+          '0x7265736572766564000000000000000000000000000000000000000000000000',
+          '0x6973737565640000000000000000000000000000000000000000000000000000',
+        ],
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
 ];
 
 export const readResultSuccess: SmartContractQueryMethodReadSuccess = {

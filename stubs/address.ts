@@ -43,7 +43,6 @@ export const ADDRESS_COUNTERS: AddressCounters = {
 };
 
 export const ADDRESS_TABS_COUNTERS: AddressTabsCounters = {
-  coin_balances_count: 10,
   internal_txs_count: 10,
   logs_count: 10,
   token_balances_count: 10,

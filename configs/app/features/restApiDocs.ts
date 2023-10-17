@@ -2,7 +2,7 @@ import type { Feature } from './types';
 
 import { getEnvValue } from '../utils';
 
-const specUrl = getEnvValue(process.env.NEXT_PUBLIC_API_SPEC_URL) || `https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml`;
+const specUrl = getEnvValue('NEXT_PUBLIC_API_SPEC_URL') || `https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml`;
 
 const title = 'REST API documentation';
 

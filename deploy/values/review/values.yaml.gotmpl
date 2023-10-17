@@ -4,7 +4,7 @@ frontend:
   app: blockscout
   enabled: true
   image:
-    _default: ghcr.io/blockscout/frontend:prerelease-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
+    _default: ghcr.io/blockscout/frontend:review-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
     pullPolicy: Always
   ingress:
     enabled: true
@@ -17,13 +17,16 @@ frontend:
       exact:
         # - "/(apps|auth/profile|account)"
         - "/"
+        - "/envs.js"
       prefix:
         - "/_next"
         - "/node-api"
         - "/account"
         - "/apps"
         - "/static"
+        - "/assets"
         - "/favicon"
+        - "/assets"
         - "/auth/profile"
         - "/auth/unverified-email"
         - "/txs"
@@ -59,9 +62,9 @@ frontend:
     enabled: false
   environment:
     NEXT_PUBLIC_APP_ENV:
-      _default: preview
+      _default: development
     NEXT_PUBLIC_APP_INSTANCE:
-      _default: eth_goerli
+      _default: review
     NEXT_PUBLIC_NETWORK_NAME:
       _default: Blockscout
     NEXT_PUBLIC_NETWORK_ID:
@@ -132,3 +135,13 @@ frontend:
       _default: "['token_pocket','coinbase','metamask']"
     NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE:
       _default: gradient_avatar
+    NEXT_PUBLIC_VIEWS_ADDRESS_HIDDEN_VIEWS:
+      _default: "['top_accounts']"
+    NEXT_PUBLIC_VIEWS_TX_HIDDEN_FIELDS:
+      _default: "['value','fee_currency','gas_price','gas_fees','burnt_fees']"
+    NEXT_PUBLIC_VIEWS_TX_ADDITIONAL_FIELDS:
+      _default: "['fee_per_gas']"
+    NEXT_PUBLIC_USE_NEXT_JS_PROXY:
+      _default: true
+    NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES:
+      _default: "[{'name':'LooksRare','collection_url':'https://goerli.looksrare.org/collections/{hash}','instance_url':'https://goerli.looksrare.org/collections/{hash}/{id}','logo_url':'https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/nft-marketplace-logos/looks-rare.png'}]"

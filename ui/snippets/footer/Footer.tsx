@@ -6,6 +6,7 @@ import type { CustomLinksGroup } from 'types/footerLinks';
 
 import config from 'configs/app';
 import discussionsIcon from 'icons/discussions.svg';
+import donateIcon from 'icons/donate.svg';
 import editIcon from 'icons/edit.svg';
 import cannyIcon from 'icons/social/canny.svg';
 import discordIcon from 'icons/social/discord.svg';
@@ -15,11 +16,11 @@ import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import useFetch from 'lib/hooks/useFetch';
 import useIssueUrl from 'lib/hooks/useIssueUrl';
-import IndexingAlertIntTxs from 'ui/home/IndexingAlertIntTxs';
 import NetworkAddToWallet from 'ui/shared/NetworkAddToWallet';
 
 import ColorModeToggler from '../header/ColorModeToggler';
 import FooterLinkItem from './FooterLinkItem';
+import IntTxsIndexingStatus from './IntTxsIndexingStatus';
 import getApiVersionUrl from './utils/getApiVersionUrl';
 
 const MAX_LINKS_COLUMNS = 3;
@@ -73,6 +74,12 @@ const Footer = () => {
       text: 'Discussions',
       url: 'https://github.com/orgs/blockscout/discussions',
     },
+    {
+      icon: donateIcon,
+      iconSize: '20px',
+      text: 'Donate',
+      url: 'https://github.com/sponsors/blockscout',
+    },
   ];
 
   const frontendLink = (() => {
@@ -91,7 +98,7 @@ const Footer = () => {
 
   const { isLoading, data: linksData } = useQuery<unknown, ResourceError<unknown>, Array<CustomLinksGroup>>(
     [ 'footer-links' ],
-    async() => fetch(config.UI.footer.links || ''),
+    async() => fetch(config.UI.footer.links || '', undefined, { resource: 'footer-links' }),
     {
       enabled: Boolean(config.UI.footer.links),
       staleTime: Infinity,
@@ -109,7 +116,7 @@ const Footer = () => {
       <Box flexGrow="1" mb={{ base: 8, lg: 0 }}>
         <Flex flexWrap="wrap" columnGap={ 8 } rowGap={ 6 }>
           <ColorModeToggler/>
-          { !config.UI.indexingAlert.isHidden && <IndexingAlertIntTxs/> }
+          { !config.UI.indexingAlert.isHidden && <IntTxsIndexingStatus/> }
           <NetworkAddToWallet/>
         </Flex>
         <Box mt={{ base: 5, lg: '44px' }}>
@@ -142,7 +149,7 @@ const Footer = () => {
           { config.UI.footer.links && <Text fontWeight={ 500 } mb={ 3 }>Blockscout</Text> }
           <Grid
             gap={ 1 }
-            gridTemplateColumns={ config.UI.footer.links ? '160px' : { base: 'repeat(auto-fill, 160px)', lg: 'repeat(3, 160px)' } }
+            gridTemplateColumns={ config.UI.footer.links ? '160px' : { base: 'repeat(auto-fill, 160px)', lg: 'repeat(4, 160px)' } }
             gridTemplateRows={{ base: 'auto', lg: config.UI.footer.links ? 'auto' : 'repeat(2, auto)' }}
             gridAutoFlow={{ base: 'row', lg: config.UI.footer.links ? 'row' : 'column' }}
             mt={{ base: 0, lg: config.UI.footer.links ? 0 : '100px' }}

@@ -16,6 +16,10 @@ const API_URL_TOKEN_TRANSFERS_COUNT = buildApiUrl('token_instance_transfers_coun
 });
 
 test('base view +@dark-mode +@mobile', async({ mount, page }) => {
+  await page.route('http://localhost:3000/nft-marketplace-logo.png', (route) => route.fulfill({
+    status: 200,
+    path: './playwright/mocks/image_s.jpg',
+  }));
   await page.route(API_URL_ADDRESS, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(addressMock.contract),

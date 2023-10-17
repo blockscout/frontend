@@ -13,7 +13,7 @@ test.describe('base view', () => {
     const component = await mount(
       <TestApp>
         { /* eslint-disable-next-line react/jsx-no-bind */ }
-        <TxsTable txs={ [ txMock.base, txMock.base ] } sort={ () => () => {} } top={ 0 } showBlockInfo showSocketInfo={ false }/>
+        <TxsTable txs={ [ txMock.base, txMock.withWatchListNames ] } sort={ () => () => {} } top={ 0 } showBlockInfo showSocketInfo={ false }/>
       </TestApp>,
     );
 
@@ -27,7 +27,7 @@ test.describe('base view', () => {
       const component = await mount(
         <TestApp>
           { /* eslint-disable-next-line react/jsx-no-bind */ }
-          <TxsTable txs={ [ txMock.base, txMock.base ] } sort={ () => () => {} } top={ 0 } showBlockInfo showSocketInfo={ false }/>
+          <TxsTable txs={ [ txMock.base, txMock.withWatchListNames ] } sort={ () => () => {} } top={ 0 } showBlockInfo showSocketInfo={ false }/>
         </TestApp>,
       );
 

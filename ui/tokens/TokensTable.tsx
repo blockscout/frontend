@@ -2,12 +2,12 @@ import { Icon, Link, Table, Tbody, Th, Tr } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
+import type { TokensSortingField, TokensSortingValue } from 'types/api/tokens';
 
 import rightArrowIcon from 'icons/arrows/east.svg';
 import { default as getNextSortValueShared } from 'ui/shared/sort/getNextSortValue';
 import { default as Thead } from 'ui/shared/TheadSticky';
 
-import type { TokensSortingValue, TokensSortingField } from './Tokens';
 import TokensTableItem from './TokensTableItem';
 
 const SORT_SEQUENCE: Record<TokensSortingField, Array<TokensSortingValue | undefined>> = {

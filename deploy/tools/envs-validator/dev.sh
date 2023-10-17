@@ -2,7 +2,7 @@
 
 export NEXT_PUBLIC_GIT_COMMIT_SHA=$(git rev-parse --short HEAD)
 export NEXT_PUBLIC_GIT_TAG=$(git describe --tags --abbrev=0)
-../../scripts/make_envs_template.sh ../../../docs/ENVS.md
+../../scripts/collect_envs.sh ../../../docs/ENVS.md
 
 yarn build
 

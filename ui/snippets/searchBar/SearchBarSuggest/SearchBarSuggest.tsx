@@ -86,6 +86,10 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
     return map;
   }, [ query.data, marketplaceApps.displayedApps ]);
 
+  React.useEffect(() => {
+    categoriesRefs.current = Array(Object.keys(itemsGroups).length).fill('').map((_, i) => categoriesRefs.current[i] || React.createRef());
+  }, [ itemsGroups ]);
+
   const scrollToCategory = React.useCallback((index: number) => () => {
     setTabIndex(index);
     scroller.scrollTo(`cat_${ index }`, {
