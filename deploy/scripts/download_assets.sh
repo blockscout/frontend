@@ -37,8 +37,14 @@ get_target_filename() {
     local name_suffix="${name_prefix%_URL}"
     local name_lc="$(echo "$name_suffix" | tr '[:upper:]' '[:lower:]')"
     
-    # Extract the extension from the URL
-    local extension="${url##*.}"
+    # Remove query parameters from the URL and get the filename
+    local filename=$(basename "${url%%\?*}")
+
+    # Extract the extension from the filename
+    local extension="${filename##*.}"
+
+    # Convert the extension to lowercase
+    extension=$(echo "$extension" | tr '[:upper:]' '[:lower:]')
     
     # Construct the custom file name
     echo "$name_lc.$extension"

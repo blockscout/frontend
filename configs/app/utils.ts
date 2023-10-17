@@ -36,8 +36,12 @@ export const getExternalAssetFilePath = (envName: string) => {
 };
 
 export const buildExternalAssetFilePath = (name: string, value: string) => {
-  const fileName = name.replace(/^NEXT_PUBLIC_/, '').replace(/_URL$/, '').toLowerCase();
-  const fileExtension = value.match(regexp.FILE_EXTENSION)?.[1];
-
-  return `/assets/${ fileName }.${ fileExtension }`;
+  try {
+    const fileName = name.replace(/^NEXT_PUBLIC_/, '').replace(/_URL$/, '').toLowerCase();
+    const url = new URL(value);
+    const fileExtension = url.pathname.match(regexp.FILE_EXTENSION)?.[1];
+    return `/assets/${ fileName }.${ fileExtension }`;
+  } catch (error) {
+    return;
+  }
 };
