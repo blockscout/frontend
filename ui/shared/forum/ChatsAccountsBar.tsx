@@ -1,5 +1,6 @@
 import { Icon, Button, Flex, useColorModeValue } from '@chakra-ui/react';
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useCallback } from 'react';
 
 import chatIcon from 'icons/chat.svg';
 
@@ -12,7 +13,12 @@ interface Props {
 }
 
 const ChatsAccountsBar = ({ compact, noChats }: Props) => {
+  const router = useRouter();
   const borderColor = useColorModeValue('blackAlpha.400', 'whiteAlpha.400');
+
+  const handleClick = useCallback(() => {
+    router.push({ pathname: '/forum/chats' });
+  }, [ router ]);
 
   return (
     <Flex gap={ compact ? 3 : 2 }>
@@ -51,6 +57,7 @@ const ChatsAccountsBar = ({ compact, noChats }: Props) => {
           fontWeight={ 500 }
           borderColor={ borderColor }
           variant="outline"
+          onClick={ handleClick }
         >Chat list</Button>
       )) }
       <AccountsPopover minHeight="32px"/>

@@ -2,7 +2,9 @@ import { EthereumProvider } from '@walletconnect/ethereum-provider';
 import type { EVMWalletController } from '@ylide/ethereum';
 import { evm, EVM_CHAINS, EVM_NAMES, EVM_RPCS, EVMNetwork, evmWalletFactories } from '@ylide/ethereum';
 import type { AbstractWalletController, IMessage, MessageAttachment, RecipientInfo, Uint256, WalletAccount, WalletControllerFactory } from '@ylide/sdk';
-import { BrowserLocalStorage, MessageContentV4, MessageContentV5, stringToSemver, Ylide, YlideKeysRegistry, YMF } from '@ylide/sdk';
+import {
+  BrowserLocalStorage, MessageContentV4, MessageContentV5, PrivateKeyAvailabilityState, stringToSemver, Ylide, YlideKeysRegistry, YMF,
+} from '@ylide/sdk';
 import { SmartBuffer } from '@ylide/smart-buffer';
 import type { ReactNode } from 'react';
 import React, { createContext, useContext, useEffect, useState, useMemo, useCallback } from 'react';
@@ -265,14 +267,15 @@ const useAccountController = (
 
   const constructBackendAuthKeySignature = useCallback(async(account: DomainAccount) => {
     const localPrivateKeys = keysRegistry.getLocalPrivateKeys(account.account.address);
-    if (localPrivateKeys[0]) {
+    const availableKeys = localPrivateKeys.filter(key => key.availabilityState === PrivateKeyAvailabilityState.AVAILABLE);
+    if (availableKeys[0]) {
       const mvPublicKey = SmartBuffer.ofHexString(REACT_APP_FEED_PUBLIC_KEY).bytes;
 
       const messageBytes = SmartBuffer.ofUTF8String(
         JSON.stringify({ address: account.account.address, timestamp: Date.now() }),
       ).bytes;
 
-      return localPrivateKeys[0].execute(
+      return availableKeys[0].execute(
         async privateKey => ({
           messageEncrypted: new SmartBuffer(privateKey.encrypt(messageBytes, mvPublicKey)).toHexString(),
           publicKey: new SmartBuffer(privateKey.publicKey).toHexString(),

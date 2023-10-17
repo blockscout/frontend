@@ -151,7 +151,7 @@ export function YlideConnectAccountModal({
     // const acc = await wallet.createNewDomainAccount(account);
     // await acc.addNewLocalPrivateKey(privateKey);
     // domainAccountRef.current = acc;
-    keysRegistry.addLocalPrivateKey(privateKey);
+    await keysRegistry.addLocalPrivateKey(privateKey);
     return {
       wallet,
       account,

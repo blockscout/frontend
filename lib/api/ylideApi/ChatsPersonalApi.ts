@@ -13,11 +13,14 @@ const useChatsGetList = () => {
         totalCount: string;
         entries: Array<{
           address: string;
+          msgId: string;
+          metadata: Omit<IMessage, 'key'> & { key: Array<number> };
+          isSentByYou: boolean;
           lastMessageTimestamp: number;
         }>;
       };
     }>({
-      url: '/nft3-chats',
+      url: '/v2/chats',
       fetchParams: {
         method: 'POST',
         body: {
@@ -26,7 +29,19 @@ const useChatsGetList = () => {
           limit,
         },
       },
-    });
+    }).then(response => ({
+      ...response,
+      data: {
+        ...response.data,
+        entries: response.data.entries.map(e => ({
+          ...e,
+          metadata: {
+            ...e.metadata,
+            key: new Uint8Array(e.metadata.key),
+          },
+        })),
+      },
+    }));
   }, [ fetch ]);
 };
 

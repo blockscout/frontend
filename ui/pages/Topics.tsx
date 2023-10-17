@@ -12,6 +12,7 @@ import ForumPublicApi from 'lib/api/ylideApi/ForumPublicApi';
 import { calcForumPagination } from 'lib/api/ylideApi/utils';
 import { useYlide } from 'lib/contexts/ylide';
 import useDebounce from 'lib/hooks/useDebounce';
+import { CreateTopicModal } from 'ui/createTopicModal';
 import ActionBar from 'ui/shared/ActionBar';
 import FilterInput from 'ui/shared/filters/FilterInput';
 import ChatsAccountsBar from 'ui/shared/forum/ChatsAccountsBar';
@@ -93,10 +94,12 @@ const ThreadsHighlights = ({
 const TopicsPageContent = () => {
   const router = useRouter();
   const { accounts: { admins, initialized } } = useYlide();
+  const [ reloadTick, setReloadTick ] = React.useState<number>(0);
   const [ filter, setFilter ] = React.useState<string>(router.query.q?.toString() || '');
   const [ sorting, setSorting ] = React.useState<TopicsSortingValue>(getSortValueFromQuery(router.query));
   const [ page, setPage ] = React.useState<number>(1);
   const [ topics, setTopics ] = React.useState<PaginatedState<ForumTopic>>(defaultPaginatedState());
+  const [ createTopicVisible, setCreateTopicVisible ] = React.useState(false);
   const [ bestThreads, setBestThreads ] = React.useState<{
     latest: Array<ForumThread>;
     newest: Array<ForumThread>;
@@ -106,6 +109,15 @@ const TopicsPageContent = () => {
   const getBestThreads = ForumPublicApi.useGetBestThreads();
   const PAGE_SIZE = 10;
   const pagination = useMemo(() => calcForumPagination(PAGE_SIZE, page, setPage, topics), [ topics, page ]);
+
+  const handleCreateTopicClose = useCallback(() => {
+    setReloadTick(tick => tick + 1);
+    setCreateTopicVisible(false);
+  }, []);
+
+  const handleCreateTopicOpen = useCallback(() => {
+    setCreateTopicVisible(true);
+  }, []);
 
   const debouncedFilter = useDebounce(filter, 300);
   // sorting
@@ -123,6 +135,9 @@ const TopicsPageContent = () => {
     if (!initialized) {
       return;
     }
+    if (reloadTick < 0) {
+      return;
+    }
     setTopics(data => ({ ...data, loading: true }));
     getBestThreads().then(result => {
       setBestThreads(result);
@@ -134,7 +149,7 @@ const TopicsPageContent = () => {
     }).catch(err => {
       setTopics(data => ({ ...data, loading: false, error: err }));
     });
-  }, [ getTopics, getBestThreads, initialized, debouncedFilter, sorting, sortsMap ]);
+  }, [ getTopics, getBestThreads, initialized, debouncedFilter, sorting, sortsMap, reloadTick ]);
 
   const onSearchChange = useCallback((value: string) => {
     setFilter(value);
@@ -179,24 +194,29 @@ const TopicsPageContent = () => {
   );
 
   return (
-    <Flex position="relative" flexDir="column">
-      <DevForumHero/>
-      <HStack align="center" justify="space-between" mb={ 6 }>
-        <PageTitle containerProps={{ mb: 0 }} title="Dev forum" justifyContent="space-between"/>
-        <ChatsAccountsBar compact={ true }/>
-      </HStack>
-      <ThreadsHighlights { ...bestThreads }/>
-      <HStack align="center" justify="space-between" mb={ 6 }>
-        <PageTitle containerProps={{ mb: 0 }} title="Topics" justifyContent="space-between"/>
-        { admins.length ? (<Button pos="relative">Create topic</Button>) : null }
-      </HStack>
-      { actionBar }
-      { topics.loading ? (
-        <Spinner/>
-      ) : (
-        <TopicsList topics={ topics.data.items }/>
-      ) }
-    </Flex>
+    <>
+      { createTopicVisible ? (
+        <CreateTopicModal onClose={ handleCreateTopicClose }/>
+      ) : null }
+      <Flex position="relative" flexDir="column">
+        <DevForumHero/>
+        <HStack align="center" justify="space-between" mb={ 6 }>
+          <PageTitle containerProps={{ mb: 0 }} title="Dev forum" justifyContent="space-between"/>
+          <ChatsAccountsBar compact={ true }/>
+        </HStack>
+        <ThreadsHighlights { ...bestThreads }/>
+        <HStack align="center" justify="space-between" mb={ 6 }>
+          <PageTitle containerProps={{ mb: 0 }} title="Topics" justifyContent="space-between"/>
+          { admins.length ? (<Button pos="relative" onClick={ handleCreateTopicOpen }>Create topic</Button>) : null }
+        </HStack>
+        { actionBar }
+        { topics.loading ? (
+          <Spinner/>
+        ) : (
+          <TopicsList topics={ topics.data.items }/>
+        ) }
+      </Flex>
+    </>
   );
 };
 

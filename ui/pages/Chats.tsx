@@ -1,8 +1,10 @@
 import { Flex, HStack } from '@chakra-ui/react';
+import type { IMessage } from '@ylide/sdk';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 
 import ChatsPersonalApi from 'lib/api/ylideApi/ChatsPersonalApi';
+import type { IMessageDecodedContent } from 'lib/contexts/ylide';
 import { useYlide } from 'lib/contexts/ylide';
 import ActionBar from 'ui/shared/ActionBar';
 import FilterInput from 'ui/shared/filters/FilterInput';
@@ -13,13 +15,16 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 const ChatsPageContent = () => {
   const router = useRouter();
   const [ filter, setFilter ] = React.useState<string>(router.query.q?.toString() || '');
-  const { accounts: { initialized, domainAccounts } } = useYlide();
+  const { accounts: { initialized, domainAccounts }, decodeDirectMessage } = useYlide();
   const [ chats, setChats ] = React.useState<{
     result: true;
     data: {
       totalCount: string;
       entries: Array<{
         address: string;
+        msgId: string;
+        metadata: IMessage;
+        isSentByYou: boolean;
         lastMessageTimestamp: number;
       }>;
     };
@@ -30,7 +35,26 @@ const ChatsPageContent = () => {
       entries: [],
     },
   });
+  const [ decodedMessages, setDecodedMessages ] = React.useState<Record<string, IMessageDecodedContent | null>>({});
   const getChats = ChatsPersonalApi.useGetChats();
+
+  React.useEffect(() => {
+    (async() => {
+      let isChanged = false;
+      const newDecodedMessages = { ...decodedMessages };
+      await Promise.all(chats.data.entries.map(async m => {
+        if (typeof newDecodedMessages[m.msgId] !== 'undefined') {
+          return;
+        }
+        const decoded = await decodeDirectMessage(m.msgId, m.metadata, domainAccounts[0].account);
+        newDecodedMessages[m.msgId] = decoded;
+        isChanged = true;
+      }));
+      if (isChanged) {
+        setDecodedMessages(newDecodedMessages);
+      }
+    })();
+  }, [ chats, decodedMessages, domainAccounts, decodeDirectMessage ]);
 
   React.useEffect(() => {
     if (initialized && domainAccounts.length) {
@@ -74,7 +98,7 @@ const ChatsPageContent = () => {
         <ChatsAccountsBar compact={ true } noChats/>
       </HStack>
       { actionBar }
-      <ChatsList chats={ chats.data.entries }/>
+      <ChatsList chats={ chats.data.entries } decodedMessages={ decodedMessages }/>
     </Flex>
   );
 };

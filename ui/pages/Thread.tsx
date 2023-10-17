@@ -12,7 +12,7 @@ import type { RepliesSorting } from 'types/api/forum';
 
 import type { Query } from 'nextjs-routes';
 
-import attachmentIcon from 'icons/attachment.svg';
+// import attachmentIcon from 'icons/attachment.svg';
 import bookmarkIconFilled from 'icons/bookmark_filled.svg';
 import bookmarkIcon from 'icons/bookmark.svg';
 import crossIcon from 'icons/cross.svg';
@@ -281,14 +281,14 @@ const ThreadPageContent = () => {
           ) }
           <Flex flexDir="row" padding={ 6 } align="center" borderBottom="1px solid" borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }>
             <Textarea border="0" flexDir="row" flexGrow={ 1 } value={ replyText } placeholder="Type text here..." onChange={ handleReplyTextChange }/>
-            <Flex flexDir="row" align="center">
+            { /* <Flex flexDir="row" align="center">
               <Icon
                 as={ attachmentIcon }
                 boxSize={ 6 }
                 cursor="pointer"
                 _hover={{ color: 'link_hovered' }}
               />
-            </Flex>
+            </Flex> */ }
           </Flex>
 
           <Flex flexDir="row" justify="space-between" padding={ 6 }>
