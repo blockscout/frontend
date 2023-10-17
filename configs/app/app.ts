@@ -9,7 +9,7 @@ const baseUrl = [
   appHost,
   appPort && ':' + appPort,
 ].filter(Boolean).join('');
-const isDev = process.env.NODE_ENV === 'development';
+const isDev = getEnvValue('NODE_ENV') === 'development';
 
 const app = Object.freeze({
   isDev,
