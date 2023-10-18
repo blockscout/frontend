@@ -21,7 +21,7 @@ const hooksConfig = {
   },
 };
 
-const FEATURED_NETWORKS_URL = buildExternalAssetFilePath('NEXT_PUBLIC_FEATURED_NETWORKS', 'https://localhost:3000/featured-networks.json') || '';
+const FEATURED_NETWORKS_URL = app.url + buildExternalAssetFilePath('NEXT_PUBLIC_FEATURED_NETWORKS', 'https://localhost:3000/config.json') || '';
 
 const test = base.extend({
   context: contextWithEnvs([
