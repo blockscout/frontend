@@ -81,13 +81,17 @@ These are the steps that you have to follow to make everything work:
     - `deploy/values/main/values.yaml` - main development environment
     - `deploy/values/review-l2/values.yaml.gotmpl` - review development environment for L2 networks
     - `deploy/values/l2-optimism-goerli/values.yaml` - main development environment
-5. Add validation schema for the new variable into the file `deploy/tools/envs-validator/schema.ts`; verify that any or all updated config presets from "Step 3" are valid by doing the following steps:
+5. If your variable is meant to receive a link to some external resource (image or JSON-config file), extend the array `ASSETS_ENVS` in `deploy/scripts/download_assets.sh` with your variable name
+6. Add validation schema for the new variable into the file `deploy/tools/envs-validator/schema.ts`
+7. Check if modified validation schema is valid by doing the following steps:
     - change your current directory to `deploy/tools/envs-validator`
     - install deps with `yarn` command
-    - change `PRESETS` array in `dev.sh` script file accordingly
-    - run `yarn dev` command and see the validation result
-    - *Please* do not commit your changes in the `dev.sh` file since it is also used in the CI workflow
-6. Don't forget to mention in the PR notes that new ENV variable was added  
+    - add your variable into `./test/.env.base` test preset or create a new test preset if needed
+    - if your variable contains a link to the external JSON config file:
+      - add example of file content into `./test/assets` directory; the file name should be constructed by stripping away prefix `NEXT_PUBLIC_` and postfix `_URL` if any, and converting the remaining string to lowercase (for example, `NEXT_PUBLIC_MARKETPLACE_CONFIG_URL` will become `marketplace_config.json`)
+      - in the main script `index.ts` extend array `envsWithJsonConfig` with your variable name
+    - run `yarn test` command to see the validation result
+8. Don't forget to mention in the PR notes that new ENV variable was added  
 
 &nbsp;
 
