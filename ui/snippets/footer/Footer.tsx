@@ -70,7 +70,7 @@ const Footer = () => {
       icon: discussionsIcon,
       iconSize: '20px',
       text: 'Discussions',
-      url: 'https://github.com/orgs/blockscout/discussions',
+      url: 'https://forum.canto.build/',
     },
   ];
 
