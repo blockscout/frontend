@@ -149,9 +149,6 @@ By default, the app has generic favicon. You can override this behavior by provi
 |---------------------------------------| --- | --- | --- |----------------------------|-----------------------------------|
 | NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY | `string` | RealFaviconGenerator [API key](https://realfavicongenerator.net/api/) | Required | -                          | `<your-secret>`                   |
 | NEXT_PUBLIC_FAVICON_MASTER_URL        | `string` | - | - | `NEXT_PUBLIC_NETWORK_ICON` | `https://placekitten.com/180/180` |
-| NEXT_PUBLIC_ALGOLIA_APP_ID                     | `string` | - | - | `NEXT_PUBLIC_ALGOLIA_APP_ID`      | `XYZXYZ123321`                    |
-| NEXT_PUBLIC_ALGOLIA_API_KEY                     | `string` | - | - | `NEXT_PUBLIC_ALGOLIA_API_KEY`      | `12341234123412341234`            |
-| NEXT_PUBLIC_ALGOLIA_INDEX_NAME                     | `string` | - | - | `NEXT_PUBLIC_ALGOLIA_INDEX_NAME`      | `your_index_name`                 |
 &nbsp;
 
 ### Meta

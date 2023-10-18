@@ -9,4 +9,3 @@ export { monaco } from './monaco';
 export { safe } from './safe';
 export { sentry } from './sentry';
 export { walletConnect } from './walletConnect';
-export { algolia } from './algolia';
