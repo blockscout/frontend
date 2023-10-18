@@ -6,6 +6,7 @@ import { apps as appsMock } from 'mocks/apps/apps';
 import * as searchMock from 'mocks/search/index';
 import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
+import * as app from 'playwright/utils/app';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
 import * as configs from 'playwright/utils/configs';
 import LayoutMainColumn from 'ui/shared/layout/components/MainColumn';
@@ -182,7 +183,7 @@ test('search by tx hash +@mobile', async({ mount, page }) => {
 });
 
 test.describe('with apps', () => {
-  const MARKETPLACE_CONFIG_URL = buildExternalAssetFilePath('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', 'https://marketplace-config.json') || '';
+  const MARKETPLACE_CONFIG_URL = app.url + buildExternalAssetFilePath('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', 'https://marketplace-config.json') || '';
   const extendedTest = test.extend({
     context: contextWithEnvs([
       { name: 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', value: MARKETPLACE_CONFIG_URL },
