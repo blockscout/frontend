@@ -280,7 +280,7 @@ const BlockDetails = ({ query }: Props) => {
           isLoading={ isPlaceholderData }
         >
           <Skeleton isLoaded={ !isPlaceholderData }>
-            { BigNumber(data.minimum_gas_price).dividedBy(GWEI).toFormat() } Gwei
+            { BigNumber(data.minimum_gas_price).dividedBy(GWEI).toFormat() } Gacanto
           </Skeleton>
         </DetailsInfoItem>
       ) }
@@ -296,7 +296,7 @@ const BlockDetails = ({ query }: Props) => {
             <>
               <Text>{ BigNumber(data.base_fee_per_gas).dividedBy(WEI).toFixed() } { config.chain.currency.symbol } </Text>
               <Text variant="secondary" whiteSpace="pre">
-                { space }({ BigNumber(data.base_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() } Gwei)
+                { space }({ BigNumber(data.base_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() } Gacanto)
               </Text>
             </>
           ) }

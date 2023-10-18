@@ -309,7 +309,7 @@ const TxDetails = () => {
             { BigNumber(data.gas_price).dividedBy(WEI).toFixed() } { config.chain.currency.symbol }
           </Skeleton>
           <Skeleton isLoaded={ !isPlaceholderData } color="text_secondary">
-            <span>({ BigNumber(data.gas_price).dividedBy(WEI_IN_GWEI).toFixed() } Gwei)</span>
+            <span>({ BigNumber(data.gas_price).dividedBy(WEI_IN_GWEI).toFixed() } Gacanto)</span>
           </Skeleton>
         </DetailsInfoItem>
         <DetailsInfoItem
@@ -324,7 +324,7 @@ const TxDetails = () => {
         </DetailsInfoItem>
         { (data.base_fee_per_gas || data.max_fee_per_gas || data.max_priority_fee_per_gas) && (
           <DetailsInfoItem
-            title="Gas fees (Gwei)"
+            title="Gas fees (Gacanto)"
             // eslint-disable-next-line max-len
             hint={ `
               Base Fee refers to the network Base Fee at the time of the block, 
@@ -388,7 +388,7 @@ const TxDetails = () => {
                 isLoading={ isPlaceholderData }
               >
                 <Text mr={ 1 }>{ BigNumber(data.l1_gas_price).dividedBy(WEI).toFixed() } { config.chain.currency.symbol }</Text>
-                <Text variant="secondary">({ BigNumber(data.l1_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } Gwei)</Text>
+                <Text variant="secondary">({ BigNumber(data.l1_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } Gacanto)</Text>
               </DetailsInfoItem>
             ) }
             { data.l1_fee && (

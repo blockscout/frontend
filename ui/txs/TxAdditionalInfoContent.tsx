@@ -54,7 +54,7 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
       ) }
       { (tx.base_fee_per_gas !== null || tx.max_fee_per_gas !== null || tx.max_priority_fee_per_gas !== null) && (
         <Box { ...sectionProps } mb={ 4 }>
-          <Text { ...sectionTitleProps }>Gas fees (Gwei)</Text>
+          <Text { ...sectionTitleProps }>Gas fees (Gacanto)</Text>
           { tx.base_fee_per_gas !== null && (
             <Box>
               <Text as="span" fontWeight="500">Base: </Text>

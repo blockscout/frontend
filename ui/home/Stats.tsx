@@ -77,7 +77,7 @@ const Stats = () => {
           <StatsItem
             icon={ gasIcon }
             title="Gas tracker"
-            value={ `${ Number(data.gas_prices.average).toLocaleString() } Gwei` }
+            value={ `${ Number(data.gas_prices.average).toLocaleString() } Gacanto` }
             _last={ isOdd ? lastItemTouchStyle : undefined }
             tooltipLabel={ gasLabel }
             isLoading={ isPlaceholderData }
