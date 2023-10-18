@@ -17,4 +17,5 @@ export const base: HomeStats = {
   total_gas_used: '0',
   total_transactions: '82258122',
   transactions_today: '26815',
+  tvl: '1767425.102766552',
 };
