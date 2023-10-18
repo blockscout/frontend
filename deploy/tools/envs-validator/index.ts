@@ -64,7 +64,7 @@ async function validateEnvs(appEnvs: Record<string, string>) {
 
 async function getExternalJsonContent(envName: string): Promise<string | void> {
   return new Promise((resolve, reject) => {
-    const fileName = `./public${ buildExternalAssetFilePath(envName, '.json') }`;
+    const fileName = `./public${ buildExternalAssetFilePath(envName, 'https://foo.bar/baz.json') }`;
 
     fs.readFile(path.resolve(__dirname, fileName), 'utf8', (err, data) => {
       if (err) {
