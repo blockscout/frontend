@@ -1,9 +1,24 @@
-import type { NavItemExternal } from 'types/client/navigation-items';
+import { NAVIGATION_LINK_IDS, type NavItemExternal, type NavigationLinkId } from 'types/client/navigation-items';
 import type { ChainIndicatorId } from 'types/homepage';
 import type { NetworkExplorer } from 'types/networks';
 
 import * as views from './ui/views';
 import { getEnvValue, getExternalAssetFilePath, parseEnvJson } from './utils';
+
+const hiddenLinks = (() => {
+  const parsedValue = parseEnvJson<Array<NavigationLinkId>>(getEnvValue('NEXT_PUBLIC_NAVIGATION_HIDDEN_LINKS')) || [];
+
+  if (!Array.isArray(parsedValue)) {
+    return undefined;
+  }
+
+  const result = NAVIGATION_LINK_IDS.reduce((result, item) => {
+    result[item] = parsedValue.includes(item);
+    return result;
+  }, {} as Record<NavigationLinkId, boolean>);
+
+  return result;
+})();
 
 // eslint-disable-next-line max-len
 const HOMEPAGE_PLATE_BACKGROUND_DEFAULT = 'radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%), var(--chakra-colors-blue-400)';
@@ -18,6 +33,7 @@ const UI = Object.freeze({
       'default': getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_ICON'),
       dark: getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_ICON_DARK'),
     },
+    hiddenLinks,
     otherLinks: parseEnvJson<Array<NavItemExternal>>(getEnvValue('NEXT_PUBLIC_OTHER_LINKS')) || [],
     featuredNetworks: getExternalAssetFilePath('NEXT_PUBLIC_FEATURED_NETWORKS'),
   },

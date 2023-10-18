@@ -18,6 +18,7 @@
     "lint:eslint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:eslint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "lint:tsc": "tsc -p ./tsconfig.json",
+    "lint:envs-validator:dev": "cd ./deploy/tools/envs-validator && ./dev.sh",
     "prepare": "husky install",
     "format-svg": "svgo -r ./icons",
     "test:pw": "./tools/scripts/pw.sh",

@@ -28,3 +28,8 @@ export type NavGroupItem = NavItemCommon & {
   isActive?: boolean;
   subItems: Array<NavItem> | Array<Array<NavItem>>;
 }
+
+import type { ArrayElement } from '../utils';
+
+export const NAVIGATION_LINK_IDS = [ 'rpc_api', 'eth_rpc_api' ] as const;
+export type NavigationLinkId = ArrayElement<typeof NAVIGATION_LINK_IDS>;
