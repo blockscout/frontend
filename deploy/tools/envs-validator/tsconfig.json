@@ -8,7 +8,13 @@
 			"nextjs-routes": ["./nextjs/nextjs-routes.d.ts"],
 		}
 	},
-	"include": [ "../../../types/**/*.ts", "../../../global.d.ts", "./index.ts", "./schema.ts" ],
+	"include": [ 
+		"../../../types/**/*.ts", 
+		"../../../configs/app/**/*.ts", 
+		"../../../global.d.ts", 
+		"./index.ts", 
+		"./schema.ts" 
+	],
 	"tsc-alias": {
 	  "verbose": true,
 	  "resolveFullPaths": true,

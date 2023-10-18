@@ -12,7 +12,8 @@ import type { AdButlerConfig } from '../../../types/client/adButlerConfig';
 import { SUPPORTED_AD_TEXT_PROVIDERS, SUPPORTED_AD_BANNER_PROVIDERS } from '../../../types/client/adProviders';
 import type { AdTextProviders, AdBannerProviders } from '../../../types/client/adProviders';
 import type { MarketplaceAppOverview } from '../../../types/client/marketplace';
-import type { NavItemExternal } from '../../../types/client/navigation-items';
+import { NAVIGATION_LINK_IDS } from '../../../types/client/navigation-items';
+import type { NavItemExternal, NavigationLinkId } from '../../../types/client/navigation-items';
 import type { BridgedTokenChain, TokenBridge } from '../../../types/client/token';
 import type { WalletType } from '../../../types/client/wallets';
 import { SUPPORTED_WALLETS } from '../../../types/client/wallets';
@@ -354,6 +355,11 @@ const schema = yup
       .transform(replaceQuotes)
       .json()
       .of(navItemExternalSchema),
+    NEXT_PUBLIC_NAVIGATION_HIDDEN_LINKS: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(yup.string<NavigationLinkId>().oneOf(NAVIGATION_LINK_IDS)),
     NEXT_PUBLIC_NETWORK_LOGO: yup.string().test(urlTest),
     NEXT_PUBLIC_NETWORK_LOGO_DARK: yup.string().test(urlTest),
     NEXT_PUBLIC_NETWORK_ICON: yup.string().test(urlTest),
@@ -432,7 +438,6 @@ const schema = yup
     NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY: yup.string(),
     NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID: yup.string(),
     NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN: yup.string(),
-    NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY: yup.string(),
 
     // Misc
     NEXT_PUBLIC_USE_NEXT_JS_PROXY: yup.boolean(),
