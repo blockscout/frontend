@@ -19,3 +19,8 @@ export const base: HomeStats = {
   transactions_today: '26815',
   tvl: '1767425.102766552',
 };
+
+export const withBtcLocked: HomeStats = {
+  ...base,
+  rootstock_locked_btc: '3337493406696977561374',
+};
