@@ -86,13 +86,23 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
     return <DataFetchAlert/>;
   }
 
-  const canBeVerified = !data?.is_self_destructed && (!data?.is_verified || data.is_partially_verified);
+  const canBeVerified = !data?.is_self_destructed && !data?.is_verified;
 
-  const verificationButton = isPlaceholderData ? <Skeleton w="130px" h={ 8 } mr={ 3 } ml="auto" borderRadius="base"/> : (
+  const verificationButton = isPlaceholderData ? (
+    <Skeleton
+      w="130px"
+      h={ 8 }
+      mr={ data?.is_partially_verified ? 0 : 3 }
+      ml={ data?.is_partially_verified ? 0 : 'auto' }
+      borderRadius="base"
+      flexShrink={ 0 }
+    />
+  ) : (
     <Button
       size="sm"
-      ml="auto"
-      mr={ 3 }
+      mr={ data?.is_partially_verified ? 0 : 3 }
+      ml={ data?.is_partially_verified ? 0 : 'auto' }
+      flexShrink={ 0 }
       as="a"
       href={ route({ pathname: '/address/[hash]/contract-verification', query: { hash: addressHash || '' } }) }
     >
@@ -164,7 +174,10 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
       <Flex flexDir="column" rowGap={ 2 } mb={ 6 } _empty={{ display: 'none' }}>
         { data?.is_verified && (
           <Skeleton isLoaded={ !isPlaceholderData }>
-            <Alert status="success">Contract Source Code Verified ({ data.is_partially_verified ? 'Partial' : 'Exact' } Match)</Alert>
+            <Alert status="success" flexWrap="wrap" rowGap={ 3 } columnGap={ 5 }>
+              <span>Contract Source Code Verified ({ data.is_partially_verified ? 'Partial' : 'Exact' } Match)</span>
+              { data.is_partially_verified ? verificationButton : null }
+            </Alert>
           </Skeleton>
         ) }
         { verificationAlert }

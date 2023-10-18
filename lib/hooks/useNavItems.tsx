@@ -120,12 +120,12 @@ export default function useNavItems(): ReturnType {
         icon: graphQLIcon,
         isActive: pathname === '/graphiql',
       } : null,
-      {
+      !config.UI.sidebar.hiddenLinks?.rpc_api && {
         text: 'RPC API',
         icon: rpcIcon,
         url: 'https://docs.blockscout.com/for-users/api/rpc-endpoints',
       },
-      {
+      !config.UI.sidebar.hiddenLinks?.eth_rpc_api && {
         text: 'Eth RPC API',
         icon: rpcIcon,
         url: ' https://docs.blockscout.com/for-users/api/eth-rpc',
@@ -157,7 +157,7 @@ export default function useNavItems(): ReturnType {
         icon: statsIcon,
         isActive: pathname === '/stats',
       } : null,
-      {
+      apiNavItems.length > 0 && {
         text: 'API',
         icon: apiDocsIcon,
         isActive: apiNavItems.some(item => isInternalItem(item) && item.isActive),
