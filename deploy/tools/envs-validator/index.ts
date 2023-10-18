@@ -5,10 +5,12 @@ import type { ValidationError } from 'yup';
 
 import schema from './schema';
 
+const silent = process.argv.includes('--silent');
+
 run();
 
 async function run() {
-  console.log();
+  !silent && console.log();
   try {
     const appEnvs = Object.entries(process.env)
       .filter(([ key ]) => key.startsWith('NEXT_PUBLIC_'))
@@ -26,7 +28,7 @@ async function run() {
 }
 
 async function validateEnvs(appEnvs: Record<string, string>) {
-  console.log(`🌀 Validating ENV variables values...`);
+  !silent && console.log(`🌀 Validating ENV variables values...`);
 
   try {
     // replace ENVs with external JSON files content
@@ -44,7 +46,7 @@ async function validateEnvs(appEnvs: Record<string, string>) {
     ) || '[]';
 
     await schema.validate(appEnvs, { stripUnknown: false, abortEarly: false });
-    console.log('👍 All good!');
+    !silent && console.log('👍 All good!');
   } catch (_error) {
     if (typeof _error === 'object' && _error !== null && 'errors' in _error) {
       console.log('🚨 ENVs validation failed with the following errors:');
@@ -59,7 +61,7 @@ async function validateEnvs(appEnvs: Record<string, string>) {
     throw _error;
   }
 
-  console.log();
+  !silent && console.log();
 }
 
 async function getExternalJsonContent(fileName: string, envValue: string): Promise<string | void> {
@@ -83,7 +85,7 @@ async function getExternalJsonContent(fileName: string, envValue: string): Promi
 
 async function checkPlaceholdersCongruity(envsMap: Record<string, string>) {
   try {
-    console.log(`🌀 Checking environment variables and their placeholders congruity...`);
+    !silent && console.log(`🌀 Checking environment variables and their placeholders congruity...`);
 
     const runTimeEnvs = await getEnvsPlaceholders(path.resolve(__dirname, '.env.registry'));
     const buildTimeEnvs = await getEnvsPlaceholders(path.resolve(__dirname, '.env'));
@@ -108,7 +110,7 @@ async function checkPlaceholdersCongruity(envsMap: Record<string, string>) {
       throw new Error();
     }
 
-    console.log('👍 All good!\n');
+    !silent && console.log('👍 All good!\n');
   } catch (error) {
     console.log('🚨 Congruity check failed.\n');
     throw error;

@@ -21,23 +21,19 @@ validate_file() {
     local test_file="$1"
 
     echo
-    echo "------------------------------------------------"
     echo "🧿 Validating file '$test_file'..."
 
     dotenv \
         -e $test_file \
         -e $common_file \
         -e $secrets_file \
-            yarn validate
+            yarn run validate -- --silent
 
     if [ $? -eq 0 ]; then
-        echo "✅ File '$test_file' is valid."
-        echo "------------------------------------------------"
-        echo
+        echo "👍 All good!"
         return 0
     else
-        echo "🛑 File '$test_file' is invalid. Please fix it and run script again."
-        echo "------------------------------------------------"
+        echo "🛑 The file is invalid. Please fix errors and run script again."
         echo
         return 1
     fi
