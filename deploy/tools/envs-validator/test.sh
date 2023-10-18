@@ -17,12 +17,6 @@ cp -r ${test_folder}/assets ./public/
 # Build validator script
 yarn build
 
-echo;
-ls -lah;
-
-echo;
-ls -lah ./public/assets;
-
 validate_file() {
     local test_file="$1"
 
