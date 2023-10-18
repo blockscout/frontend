@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import type { ValidationError } from 'yup';
 
+import { buildExternalAssetFilePath } from '../../../configs/app/utils';
 import schema from './schema';
 
 const silent = process.argv.includes('--silent');
@@ -32,18 +33,15 @@ async function validateEnvs(appEnvs: Record<string, string>) {
 
   try {
     // replace ENVs with external JSON files content
-    appEnvs.NEXT_PUBLIC_FEATURED_NETWORKS = await getExternalJsonContent(
-      './public/assets/featured_networks.json',
-      appEnvs.NEXT_PUBLIC_FEATURED_NETWORKS,
-    ) || '[]';
-    appEnvs.NEXT_PUBLIC_MARKETPLACE_CONFIG_URL = await getExternalJsonContent(
-      './public/assets/marketplace_config.json',
-      appEnvs.NEXT_PUBLIC_MARKETPLACE_CONFIG_URL,
-    ) || '[]';
-    appEnvs.NEXT_PUBLIC_FOOTER_LINKS = await getExternalJsonContent(
-      './public/assets/footer_links.json',
-      appEnvs.NEXT_PUBLIC_FOOTER_LINKS,
-    ) || '[]';
+    const envsWithJsonConfig = [
+      'NEXT_PUBLIC_FEATURED_NETWORKS',
+      'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL',
+      'NEXT_PUBLIC_FOOTER_LINKS',
+    ];
+
+    for await (const envName of envsWithJsonConfig) {
+      appEnvs[envName] = await(appEnvs[envName] ? getExternalJsonContent(envName) : Promise.resolve()) || '[]';
+    }
 
     await schema.validate(appEnvs, { stripUnknown: false, abortEarly: false });
     !silent && console.log('👍 All good!');
@@ -64,12 +62,9 @@ async function validateEnvs(appEnvs: Record<string, string>) {
   !silent && console.log();
 }
 
-async function getExternalJsonContent(fileName: string, envValue: string): Promise<string | void> {
+async function getExternalJsonContent(envName: string): Promise<string | void> {
   return new Promise((resolve, reject) => {
-    if (!envValue) {
-      resolve();
-      return;
-    }
+    const fileName = `./public${ buildExternalAssetFilePath(envName, '.json') }`;
 
     fs.readFile(path.resolve(__dirname, fileName), 'utf8', (err, data) => {
       if (err) {
