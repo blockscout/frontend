@@ -42,14 +42,14 @@ class MyDocument extends Document {
           <link rel="icon" sizes="16x16" type="image/png"href="/static/favicon-16x16.png"/>
           <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png"/>
           <link rel="mask-icon" href="/static/safari-pinned-tab.svg" color="#5bbad5"/>
-          <meta property="og:title" content="Blockscout: A block explorer designed for a decentralized world."/>
+          <meta property="og:title" content="Canto EVM Explorer"/>
           <meta
             property="og:description"
             // eslint-disable-next-line max-len
-            content="Blockscout is the #1 open-source blockchain explorer available today. 100+ chains and counting rely on Blockscout data availability, APIs, and ecosystem tools to support their networks."
+            content="Canto is a permissionless general-purpose blockchain running the Ethereum Virtual Machine (EVM). It was built to deliver on the promise of DeFi – that through a post-traditional financial movement, new systems will be made accessible, transparent, decentralized, and free"
           />
           <meta property="og:image" content={ config.app.baseUrl + '/static/og.png' }/>
-          <meta property="og:site_name" content="Blockscout"/>
+          <meta property="og:site_name" content="Canto Explorer"/>
           <meta property="og:type" content="website"/>
           <meta name="twitter:card" content="summary_large_image"/>
           <meta property="twitter:image" content={ config.app.baseUrl + '/static/og_twitter.png' }/>
