@@ -105,9 +105,9 @@ const Footer = () => {
         <Text mt={ 3 } maxW={{ base: 'unset', lg: '470px' }} fontSize="xs">
             Blockscout is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for Ethereum Networks.
         </Text>
-        <Box mt={{ base: 5, lg: '44px' }}>
+        <Text mt={ 3 } maxW={{ base: 'unset', lg: '470px' }} fontSize="xs">
           Powered By <Link fontSize="xs" href="https://twitter.com/NeoBase_Studios">NeoBase</Link>
-        </Box>
+        </Text>
         <VStack spacing={ 1 } mt={ 6 } alignItems="start">
           { apiVersionUrl && (
             <Text fontSize="xs">
