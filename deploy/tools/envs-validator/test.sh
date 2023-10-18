@@ -12,10 +12,16 @@ cp ../../../.env.example ${secrets_file}
 
 # Copy test assets
 mkdir -p "./public/assets"
-cp -r ${test_folder}/assets/ ./public/assets
+cp -r ${test_folder}/assets/ ./public/assets/
 
 # Build validator script
 yarn build
+
+echo;
+ls -lah;
+
+echo;
+ls -lah ./public/assets;
 
 validate_file() {
     local test_file="$1"

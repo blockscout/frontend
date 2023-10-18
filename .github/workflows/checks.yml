@@ -51,7 +51,7 @@ jobs:
         run: yarn lint:tsc
 
   envs_validation:
-    name: ENV variables presets validation
+    name: ENV variables validation
     runs-on: ubuntu-latest
     needs: [ code_quality ]
     steps:
