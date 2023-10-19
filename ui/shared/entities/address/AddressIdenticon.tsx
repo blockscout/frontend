@@ -19,15 +19,12 @@ const Icon = dynamic(
       }
 
       case 'universal_profile': {
-        const makeUniversalProfileIdenticon = (await import('./IdenticonUniversalProfile')).default;
+        // fallback to blockie
         const makeBlockie = (await import('ethereum-blockies-base64')).default;
 
         // eslint-disable-next-line react/display-name
         return (props: IconProps) => {
-          let data = makeUniversalProfileIdenticon(props.hash);
-          if (data === undefined) {
-            data = makeBlockie(props.hash);
-          }
+          const data = makeBlockie(props.hash);
           return (
             <Image
               src={ data }

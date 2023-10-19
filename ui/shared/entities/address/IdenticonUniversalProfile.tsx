@@ -1,31 +1,39 @@
-import algoliasearch from 'algoliasearch';
-
 import { getEnvValue } from 'configs/app/utils';
 
-const makeUniversalProfileIdenticon: (hash: string) => string | undefined = (hash: string) => {
-  // eslint-disable-next-line no-restricted-properties
-  const algoliaAppID = getEnvValue(process.env.NEXT_PUBLIC_ALGOLIA_APP_ID);
-  // eslint-disable-next-line no-restricted-properties
-  const algoliaApiKey = getEnvValue(process.env.NEXT_PUBLIC_ALGOLIA_API_KEY);
-  // eslint-disable-next-line no-restricted-properties
-  const algoliaIndexName = getEnvValue(process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME) || '';
+type UPResponse = {
+  type: string;
+  LSP3Profile: {
+    name: string;
+    profileImage: {
+      [key: number]: {
+        url: string;
+      };
+    };
+  };
+}
 
-  if (algoliaAppID === undefined || algoliaApiKey === undefined) {
+const makeUniversalProfileIdenticon: (hash: string) => Promise<undefined | string> = async(hash: string) => {
+  const upApiUrl = getEnvValue('NEXT_PUBLIC_UP_API_URL') || '';
+  const networkId = getEnvValue('NEXT_PUBLIC_NETWORK_ID') || '42';
+
+  const url = `${ upApiUrl }/v1/${ networkId }/address/${ hash }`;
+
+  const response = await fetch(url);
+  if (!response.ok) {
     return undefined;
   }
 
-  const algoliaClient = algoliasearch(algoliaAppID, algoliaApiKey);
-  const universalProfileIndex = algoliaClient.initIndex(algoliaIndexName);
-  let result: string | undefined;
-  universalProfileIndex.search(hash)
-    .then(() => {
-      result = hash;
-    })
-    .catch(() => {
-      result = undefined;
-    });
+  const UPResult = (await response.json() as UPResponse);
+  const profilePictures = Object.values(UPResult.LSP3Profile.profileImage);
 
-  return result;
+  // console.log(JSON.stringify(UPResult));
+  // console.log(UPResult.type);
+  // console.log(JSON.stringify(UPResult.LSP3Profile));
+  // console.log(JSON.stringify(UPResult.LSP3Profile.profileImage));
+  // console.log(JSON.stringify(profilePictures));
+  // console.log(profilePictures[4].url);
+
+  return profilePictures[4].url;
 };
 
 export default makeUniversalProfileIdenticon;

@@ -12,9 +12,10 @@ import iconContractVerified from 'icons/contract_verified.svg';
 import iconContract from 'icons/contract.svg';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
+import config from '../../../../configs/app';
 import { getIconProps } from '../base/utils';
 import AddressIdenticon from './AddressIdenticon';
-
+import makeUniversalProfileIdenticon from './IdenticonUniversalProfile';
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'address'>;
 
 const Link = chakra((props: LinkProps) => {
@@ -34,7 +35,7 @@ type IconProps = Pick<EntityProps, 'address' | 'isLoading' | 'iconSize' | 'noIco
   asProp?: As;
 };
 
-const Icon = (props: IconProps) => {
+const Icon = async(props: IconProps) => {
   if (props.noIcon) {
     return null;
   }
@@ -73,18 +74,36 @@ const Icon = (props: IconProps) => {
       );
     }
 
-    return (
-      <Tooltip label="Contract">
-        <span>
-          <EntityBase.Icon
-            { ...props }
-            asProp={ iconContract }
-            borderRadius={ 0 }
-          />
-        </span>
-      </Tooltip>
-    );
+    if (config.UI.views.address.identiconType === 'universal_profile') {
+      let upUrl: string | undefined = '';
+
+      await makeUniversalProfileIdenticon(props.address.hash)
+        .then(data => {
+          if (data !== undefined) {
+            upUrl = data;
+            // console.log(`Inside of then: ${ upUrl }`)
+          }
+        });
+      // console.log(`Outside of then: ${ upUrl }`)
+
+      if (process.browser) {
+        import('@lukso/web-components/dist/components/lukso-profile');
+
+        return <lukso-profile profile-url={ upUrl }></lukso-profile>;
+      }
+    }
   }
+  return (
+    <Tooltip label="Contract">
+      <span>
+        <EntityBase.Icon
+          { ...props }
+          asProp={ iconContract }
+          borderRadius={ 0 }
+        />
+      </span>
+    </Tooltip>
+  );
 
   return (
     <Tooltip label={ props.address.implementation_name }>

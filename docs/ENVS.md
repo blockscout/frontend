@@ -151,6 +151,16 @@ By default, the app has generic favicon. You can override this behavior by provi
 | NEXT_PUBLIC_FAVICON_MASTER_URL        | `string` | - | - | `NEXT_PUBLIC_NETWORK_ICON` | `https://placekitten.com/180/180` |
 &nbsp;
 
+### Favicon
+
+By default, the app has generic favicon. You can override this behavior by providing the following variables. Hence, the favicon assets bundle will be generated at the container start time and will be used instead of default one.
+
+| Variable               | Type| Description                                       | Compulsoriness  | Default value              | Example value                      |
+|------------------------| --- |---------------------------------------------------| --- |----------------------------|------------------------------------|
+| NEXT_PUBLIC_UP_API_URL | `string` | LUKSO UP API URL used for getting various UP data | Required | -                          | `https://api.universalprofile.com` |
+
+&nbsp;
+
 ### Meta
 
 Settings for meta tags and OG tags
