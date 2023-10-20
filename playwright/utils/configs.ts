@@ -38,3 +38,9 @@ export const viewsEnvs = {
     ],
   },
 };
+
+export const stabilityEnvs = [
+  { name: 'NEXT_PUBLIC_VIEWS_ADDRESS_HIDDEN_VIEWS', value: '["top_accounts"]' },
+  { name: 'NEXT_PUBLIC_VIEWS_TX_HIDDEN_FIELDS', value: '["value","fee_currency","gas_price","gas_fees","burnt_fees"]' },
+  { name: 'NEXT_PUBLIC_VIEWS_TX_ADDITIONAL_FIELDS', value: '["fee_per_gas"]' },
+];

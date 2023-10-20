@@ -42,6 +42,7 @@ import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
 import TextSeparator from 'ui/shared/TextSeparator';
+import TxFeeStability from 'ui/shared/tx/TxFeeStability';
 import TxStatus from 'ui/shared/TxStatus';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import TxDetailsActions from 'ui/tx/details/TxDetailsActions';
@@ -306,13 +307,17 @@ const TxDetails = () => {
             hint="Total transaction fee"
             isLoading={ isPlaceholderData }
           >
-            <CurrencyValue
-              value={ data.fee.value }
-              currency={ config.UI.views.tx.hiddenFields?.fee_currency ? '' : config.chain.currency.symbol }
-              exchangeRate={ data.exchange_rate }
-              flexWrap="wrap"
-              isLoading={ isPlaceholderData }
-            />
+            { data.stability_fee ? (
+              <TxFeeStability data={ data.stability_fee } isLoading={ isPlaceholderData }/>
+            ) : (
+              <CurrencyValue
+                value={ data.fee.value }
+                currency={ config.UI.views.tx.hiddenFields?.fee_currency ? '' : config.chain.currency.symbol }
+                exchangeRate={ data.exchange_rate }
+                flexWrap="wrap"
+                isLoading={ isPlaceholderData }
+              />
+            ) }
           </DetailsInfoItem>
         ) }
 

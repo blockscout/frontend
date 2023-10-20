@@ -202,3 +202,27 @@ mainnetTest('without testnet warning', async({ mount, page }) => {
     maskColor: configs.maskColor,
   });
 });
+
+const stabilityTest = test.extend({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  context: contextWithEnvs(configs.stabilityEnvs) as any,
+});
+
+stabilityTest('stability customization', async({ mount, page }) => {
+  await page.route(API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(txMock.stabilityTx),
+  }));
+
+  const component = await mount(
+    <TestApp>
+      <TxDetails/>
+    </TestApp>,
+    { hooksConfig },
+  );
+
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(configs.adsBannerSelector) ],
+    maskColor: configs.maskColor,
+  });
+});
