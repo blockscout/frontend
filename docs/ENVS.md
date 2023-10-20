@@ -4,6 +4,12 @@ The app instance could be customized by passing following variables to NodeJS en
 
 **IMPORTANT NOTE!** For _production_ build purposes all json-like values should be single-quoted. If it contains a hash (`#`) or a dollar-sign (`$`) the whole value should be wrapped in single quotes as well (see `dotenv` [readme](https://github.com/bkeepers/dotenv#variable-substitution) for the reference)
 
+## Disclaimer about using variables
+
+Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will be exposed to the browser. So any user can obtain its values. Make sure that for all 3rd-party services keys (e.g., Sentri, Auth0, WalletConnect, etc.) in the services administration panel you have created a whitelist of allowed origins and have added your app domain into it. That will help you prevent using your key by unauthorized app, if someone gets its value.
+
+&nbsp;
+
 ## Table of contents
 - [App configuration](ENVS.md#app-configuration)
 - [Blockchain parameters](ENVS.md#blockchain-parameters)
