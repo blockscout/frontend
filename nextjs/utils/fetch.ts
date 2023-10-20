@@ -16,11 +16,12 @@ export default function fetchFactory(
   return function fetch(url: string, init?: RequestInit): Promise<Response> {
     const csrfToken = _req.headers['x-csrf-token'];
     const authToken = _req.headers['Authorization'];
+    const apiToken = _req.cookies[cookies.NAMES.API_TOKEN];
 
     const headers = {
       accept: _req.headers['accept'] || 'application/json',
       'content-type': _req.headers['content-type'] || 'application/json',
-      cookie: `${ cookies.NAMES.API_TOKEN }=${ _req.cookies[cookies.NAMES.API_TOKEN] }`,
+      cookie: apiToken ? `${ cookies.NAMES.API_TOKEN }=${ apiToken }` : '',
       ...(csrfToken ? { 'x-csrf-token': String(csrfToken) } : {}),
       ...(authToken ? { Authorization: String(authToken) } : {}),
     };
@@ -29,6 +30,11 @@ export default function fetchFactory(
       message: 'Trying to call API',
       url,
       req: _req,
+    });
+
+    httpLogger.logger.info({
+      message: 'API request headers',
+      headers,
     });
 
     const body = (() => {
