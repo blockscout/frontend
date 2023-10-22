@@ -236,6 +236,7 @@ const schema = yup
     NEXT_PUBLIC_APP_HOST: yup.string().required(),
     NEXT_PUBLIC_APP_PROTOCOL: yup.string().oneOf(protocols),
     NEXT_PUBLIC_APP_PORT: yup.number().positive().integer(),
+    NEXT_PUBLIC_APP_BASE_PATH: yup.string(),
 
     // 2. Blockchain parameters
     NEXT_PUBLIC_NETWORK_NAME: yup.string().required(),

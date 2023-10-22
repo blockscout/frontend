@@ -12,8 +12,10 @@ const withRoutes = require('nextjs-routes/config')({
 const headers = require('./nextjs/headers');
 const redirects = require('./nextjs/redirects');
 const rewrites = require('./nextjs/rewrites');
+const appBasePath = process.env.NEXT_PUBLIC_APP_BASE_PATH || '';
 
 const moduleExports = withTM({
+  basePath: appBasePath,
   include: path.resolve(__dirname, 'icons'),
   reactStrictMode: true,
   webpack(config, { webpack }) {

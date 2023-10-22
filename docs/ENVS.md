@@ -47,6 +47,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_APP_PROTOCOL | `http \| https` | App url schema | - | `https` | `http` |
 | NEXT_PUBLIC_APP_HOST | `string` | App host | Required | - | `blockscout.com` |
 | NEXT_PUBLIC_APP_PORT | `number` | Port where app is running | - | `3000` | `3001` |
+| NEXT_PUBLIC_APP_BASE_PATH | `string` | Base path where the app is served | - | `` | `/poa/core` |
 | NEXT_PUBLIC_USE_NEXT_JS_PROXY | `boolean` | Tells the app to proxy all APIs request through the NextJS app. **We strongly advise not to use it in the production environment**, since it can lead to performance issues of the NodeJS server | - | `false` | `true` |
 
 &nbsp;
