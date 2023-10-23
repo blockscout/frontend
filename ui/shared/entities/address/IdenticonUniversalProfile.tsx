@@ -1,5 +1,7 @@
 import { getEnvValue } from 'configs/app/utils';
 
+import config from '../../../../configs/app';
+
 type UPResponse = {
   type: string;
   LSP3Profile: {
@@ -12,7 +14,11 @@ type UPResponse = {
   };
 }
 
-const makeUniversalProfileIdenticon: (hash: string) => Promise<undefined | string> = async(hash: string) => {
+const makeUniversalProfileIdenticon: (hash: string) => Promise<string> = async(hash: string) => {
+  if (config.UI.views.address.identiconType !== 'universal_profile') {
+    return '';
+  }
+
   const upApiUrl = getEnvValue('NEXT_PUBLIC_UP_API_URL') || '';
   const networkId = getEnvValue('NEXT_PUBLIC_NETWORK_ID') || '42';
 
@@ -20,7 +26,7 @@ const makeUniversalProfileIdenticon: (hash: string) => Promise<undefined | strin
 
   const response = await fetch(url);
   if (!response.ok) {
-    return undefined;
+    return '';
   }
 
   const UPResult = (await response.json() as UPResponse);

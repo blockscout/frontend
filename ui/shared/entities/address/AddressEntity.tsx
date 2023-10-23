@@ -1,7 +1,7 @@
 import type { As } from '@chakra-ui/react';
 import { Box, Flex, Skeleton, Tooltip, chakra, VStack } from '@chakra-ui/react';
 import _omit from 'lodash/omit';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import type { AddressParam } from 'types/api/addressParams';
 
@@ -12,7 +12,6 @@ import iconContractVerified from 'icons/contract_verified.svg';
 import iconContract from 'icons/contract.svg';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
-import config from '../../../../configs/app';
 import { getIconProps } from '../base/utils';
 import AddressIdenticon from './AddressIdenticon';
 import makeUniversalProfileIdenticon from './IdenticonUniversalProfile';
@@ -35,7 +34,18 @@ type IconProps = Pick<EntityProps, 'address' | 'isLoading' | 'iconSize' | 'noIco
   asProp?: As;
 };
 
-const Icon = async(props: IconProps) => {
+const Icon = (props: IconProps) => {
+  const [ upUrl, setUpUrl ] = useState('');
+  useEffect(() => {
+    (async() => {
+      const result = await makeUniversalProfileIdenticon(props.address.hash);
+
+      setUpUrl(result);
+
+      return;
+    })();
+  });
+
   if (props.noIcon) {
     return null;
   }
@@ -74,36 +84,22 @@ const Icon = async(props: IconProps) => {
       );
     }
 
-    if (config.UI.views.address.identiconType === 'universal_profile') {
-      let upUrl: string | undefined = '';
-
-      await makeUniversalProfileIdenticon(props.address.hash)
-        .then(data => {
-          if (data !== undefined) {
-            upUrl = data;
-            // console.log(`Inside of then: ${ upUrl }`)
-          }
-        });
-      // console.log(`Outside of then: ${ upUrl }`)
-
-      if (process.browser) {
-        import('@lukso/web-components/dist/components/lukso-profile');
-
-        return <lukso-profile profile-url={ upUrl }></lukso-profile>;
-      }
+    if (upUrl !== '') {
+      return <lukso-profile size="x-small" profile-url={ upUrl }></lukso-profile>;
     }
+
+    return (
+      <Tooltip label="Contract">
+        <span>
+          <EntityBase.Icon
+            { ...props }
+            asProp={ iconContract }
+            borderRadius={ 0 }
+          />
+        </span>
+      </Tooltip>
+    );
   }
-  return (
-    <Tooltip label="Contract">
-      <span>
-        <EntityBase.Icon
-          { ...props }
-          asProp={ iconContract }
-          borderRadius={ 0 }
-        />
-      </span>
-    </Tooltip>
-  );
 
   return (
     <Tooltip label={ props.address.implementation_name }>
