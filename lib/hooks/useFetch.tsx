@@ -72,7 +72,11 @@ export default function useFetch() {
         );
 
       } else {
-        return response.json() as Promise<Success>;
+        if (response.status === 204) {
+          return Promise.resolve({} as Success);
+        } else {
+          return response.json() as Promise<Success>;
+        }
       }
     });
   }, [ ]);

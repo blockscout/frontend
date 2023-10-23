@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { ForumThreadCompact, ForumTopic } from './types';
+import type { ForumThread, ForumTopic } from './types';
 
 import useYlideApiFetch from './useForumApiFetch';
 
@@ -40,6 +40,94 @@ const useForumBackendCreateTopic = (token: string) => {
   }, [ fetch ]);
 };
 
+const useForumBackendBookmarkTopic = () => {
+  const fetch = useYlideApiFetch();
+
+  return React.useCallback((body: {
+    token: string;
+    id: string;
+    enable: boolean;
+  }) => {
+    return fetch<ForumTopic>({
+      url: '/topic/bookmark/',
+      fetchParams: {
+        method: 'POST',
+        body: {
+          id: body.id,
+          enable: body.enable,
+        },
+      },
+      tokens: body.token,
+    });
+  }, [ fetch ]);
+};
+
+const useForumBackendWatchTopic = () => {
+  const fetch = useYlideApiFetch();
+
+  return React.useCallback((body: {
+    token: string;
+    id: string;
+    enable: boolean;
+  }) => {
+    return fetch<ForumTopic>({
+      url: '/topic/watch/',
+      fetchParams: {
+        method: 'POST',
+        body: {
+          id: body.id,
+          enable: body.enable,
+        },
+      },
+      tokens: body.token,
+    });
+  }, [ fetch ]);
+};
+
+const useForumBackendBookmarkThread = () => {
+  const fetch = useYlideApiFetch();
+
+  return React.useCallback((body: {
+    token: string;
+    id: string;
+    enable: boolean;
+  }) => {
+    return fetch<ForumThread>({
+      url: '/thread/bookmark/',
+      fetchParams: {
+        method: 'POST',
+        body: {
+          id: body.id,
+          enable: body.enable,
+        },
+      },
+      tokens: body.token,
+    });
+  }, [ fetch ]);
+};
+
+const useForumBackendWatchThread = () => {
+  const fetch = useYlideApiFetch();
+
+  return React.useCallback((body: {
+    token: string;
+    id: string;
+    enable: boolean;
+  }) => {
+    return fetch<ForumThread>({
+      url: '/thread/watch/',
+      fetchParams: {
+        method: 'POST',
+        body: {
+          id: body.id,
+          enable: body.enable,
+        },
+      },
+      tokens: body.token,
+    });
+  }, [ fetch ]);
+};
+
 export interface ThreadCreateParams {
   topic: string;
   title: string;
@@ -56,7 +144,7 @@ const useForumBackendCreateThread = (token: string) => {
   const fetch = useYlideApiFetch(token);
 
   return React.useCallback((body: ThreadCreateParams) => {
-    return fetch<ForumThreadCompact>({
+    return fetch<ForumThread>({
       url: '/thread/',
       fetchParams: {
         method: 'POST',
@@ -70,6 +158,10 @@ const personalApi = {
   useAcquireAuthKey: useForumBackendAcquireAuthKey,
   useCreateTopic: useForumBackendCreateTopic,
   useCreateThread: useForumBackendCreateThread,
+  useBookmarkTopic: useForumBackendBookmarkTopic,
+  useBookmarkThread: useForumBackendBookmarkThread,
+  useWatchTopic: useForumBackendWatchTopic,
+  useWatchThread: useForumBackendWatchThread,
 };
 
 export default personalApi;

@@ -19,10 +19,11 @@ export interface ForumTopic {
   creatorAddress: string;
   slug: string;
   threadsCount: string;
+  bookmarked: Array<string> | null;
+  watched: Array<string> | null;
 }
 
 export interface ForumThreadCompact {
-  id: string;
   slug: string;
   feedId: Uint256;
   createTimestamp: number;
@@ -39,16 +40,17 @@ export interface ForumThreadCompact {
   creatorAddress: string;
   messageFeedId: Uint256;
   parentFeedId: Uint256 | null;
+
+  bookmarked: Array<string> | null;
+  watched: Array<string> | null;
 }
 
 export interface ForumThread extends ForumThreadCompact {
   activated: boolean;
-  bookmarked: null | Array<string>;
   replyCount: string;
   tags: Array<string>;
   topicId: string;
   topicSlug: string;
-  watched: null | Array<string>;
 }
 
 export interface ForumReply {

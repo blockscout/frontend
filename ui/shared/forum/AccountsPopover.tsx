@@ -1,20 +1,23 @@
 import {
   Flex, Button, Icon, Text, chakra, Popover, PopoverTrigger, PopoverBody,
-  PopoverContent, useDisclosure, VStack, useColorModeValue,
+  PopoverContent, useDisclosure, VStack, useColorModeValue, Box,
 } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import type { DomainAccount } from 'lib/contexts/ylide/types';
 
-import accountIcon from 'icons/account.svg';
+// import accountIcon from 'icons/account.svg';
 import arrowIcon from 'icons/arrows/east-mini.svg';
+import bookmarkIcon from 'icons/bookmark.svg';
 import logoutIcon from 'icons/logout.svg';
-import starIcon from 'icons/star_outline.svg';
+import plusIcon from 'icons/plus.svg';
 import { useYlide } from 'lib/contexts/ylide';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import { YlideConnectAccountModal } from 'ui/connectAccountModal';
 import { SelectWalletModal } from 'ui/selectWalletModal';
 
 import AddressEntity from '../entities/address/AddressEntity';
+import AddressIdenticon from '../entities/address/AddressIdenticon';
 
 interface Props {
   className?: string;
@@ -44,7 +47,7 @@ const AccountPlate = ({ account }: { account: DomainAccount }) => {
           <AddressEntity address={{ hash: account.account.address, name: undefined }} noCopy/>
         </Flex>
         <Flex flexDir="row" gap={ 3 }>
-          <Icon boxSize={ 5 } as={ starIcon } cursor="pointer" _hover={{
+          <Icon boxSize={ 5 } as={ bookmarkIcon } cursor="pointer" _hover={{
             color: 'link_hovered',
           }}/>
           <Icon boxSize={ 5 } as={ logoutIcon } cursor="pointer" onClick={ handleLogout } _hover={{
@@ -59,14 +62,7 @@ const AccountPlate = ({ account }: { account: DomainAccount }) => {
 const AccountsPopover = ({ className }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
   const { accounts: { connectAccount, domainAccounts, selectWalletModal, accountModal } } = useYlide();
-  // const {
-  //   connect,
-  //   // disconnect,
-  //   isModalOpening,
-  //   isOpen: isWeb3ModalOpen,
-  //   // isDisconnected,
-  //   // address,
-  // } = useYlideAccountModal();
+  const isMobile = useIsMobile();
 
   const addAccount = useCallback(() => {
     connectAccount();
@@ -81,28 +77,13 @@ const AccountsPopover = ({ className }: Props) => {
     </>
   );
 
-  // const accounts: Array<WalletAccountEntry> = [
-  //   {
-  //     address: '0x15a33D60283e3D20751D6740162D1212c1ad2a2d',
-  //     name: 'Account 1',
-  //     ensName: 'sewald.eth',
-  //   }, {
-  //     address: '0x15a33D60283e3D20751D6740162D1212c1ad2a2d',
-  //     name: 'Account 2',
-  //   }, {
-  //     address: '0x15a33D60283e3D20751D6740162D1212c1ad2a2d',
-  //     name: 'Account 3',
-  //     ensName: 'sewald.eth',
-  //   },
-  // ];
-
   const button = (
     <Button
       className={ className }
       size="sm"
       variant="outline"
       onClick={ domainAccounts.length ? onToggle : addAccount }
-      aria-label="Verify in other explorers"
+      aria-label="Accounts popover"
       fontWeight={ 500 }
       px={ 2 }
       isActive={ false }
@@ -112,11 +93,22 @@ const AccountsPopover = ({ className }: Props) => {
       minHeight="32px"
     >
       { domainAccounts.length ? (
-        <Icon as={ accountIcon } color="#505050" boxSize={ 5 } mr={ 2 }/>
+        <Box mr={ 2 }>
+          <AddressIdenticon
+            size={ 20 }
+            hash={ domainAccounts[0].account.address }
+          />
+        </Box>
+        // <Icon as={ accountIcon } color="#505050" boxSize={ 5 } mr={ 2 }/>
       ) : null }
-      <Text as="span" color="inherit">
-        { domainAccounts.length ? `${ domainAccounts.length } account${ domainAccounts.length > 1 ? 's' : '' }` : 'Connect wallet' }
-      </Text>
+      { !domainAccounts.length && isMobile ? (
+        <Icon as={ plusIcon } boxSize={ 4 }/>
+      ) : null }
+      { !isMobile ? (
+        <Text as="span" color="inherit">
+          { domainAccounts.length ? `${ domainAccounts.length } account${ domainAccounts.length > 1 ? 's' : '' }` : 'Connect wallet' }
+        </Text>
+      ) : null }
       { domainAccounts.length ? (
         <Icon
           as={ arrowIcon }

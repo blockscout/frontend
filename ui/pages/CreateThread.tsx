@@ -1,16 +1,18 @@
-import { Flex, HStack, Button, Input, VStack } from '@chakra-ui/react';
+import { Flex, HStack, Button, Input, VStack, TagLabel, Icon, useToast } from '@chakra-ui/react';
 import { EVMNetwork, EVM_CHAINS, EVM_NAMES } from '@ylide/ethereum';
 import { YMF } from '@ylide/sdk';
 import { useRouter } from 'next/router';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import type { ForumTopic } from 'lib/api/ylideApi/types';
 import type { DomainAccount } from 'lib/contexts/ylide/types';
 
+import crossIcon from 'icons/cross.svg';
 import ForumPersonalApi from 'lib/api/ylideApi/ForumPersonalApi';
 import ForumPublicApi from 'lib/api/ylideApi/ForumPublicApi';
 import { useYlide } from 'lib/contexts/ylide';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import Tag from 'ui/shared/chakra/Tag';
 import ChatsAccountsBar from 'ui/shared/forum/ChatsAccountsBar';
 import Editor from 'ui/shared/forum/Editor';
 import SelectAccountDropdown from 'ui/shared/forum/SelectAccountDropdown';
@@ -26,10 +28,13 @@ const CreateThreadPageContent = () => {
   const topicString = getQueryParamString(router.query.topic);
   const getTopic = ForumPublicApi.useGetTopic(topicString);
   const createThread = ForumPersonalApi.useCreateThread(tokens[0]);
+  const toast = useToast();
 
   const [ sending, setSending ] = useState(false);
   const [ title, setTitle ] = useState('');
   const [ text, setText ] = useState('');
+  const [ currentTag, setCurrentTag ] = React.useState<string>('');
+  const [ tags, setTags ] = React.useState<Array<string>>([]);
 
   useEffect(() => {
     if (!account && domainAccounts.length) {
@@ -77,14 +82,42 @@ const CreateThreadPageContent = () => {
     }
     setSending(true);
     try {
-      const result = await createThread({ topic: topic.id, title, description: text, tags: [] });
+      const result = await createThread({ topic: topic.id, title, description: text, tags });
       await broadcastMessage(domainAccounts[0], result.feedId, title, YMF.fromYMFText(text));
       setSending(false);
       router.push({ pathname: '/forum/[topic]/[thread]', query: { topic: topicString, thread: result.slug } });
     } catch (err) {
       setSending(false);
+      toast({
+        position: 'top-right',
+        title: 'Error',
+        description: (err as ({ payload: string } | undefined))?.payload || 'There was an error while creating thread.',
+        status: 'error',
+        variant: 'subtle',
+        isClosable: true,
+      });
     }
-  }, [ topic, createThread, title, text, broadcastMessage, domainAccounts, router, topicString ]);
+  }, [ toast, topic, createThread, title, text, tags, broadcastMessage, domainAccounts, router, topicString ]);
+
+  const handleCurrentTagsChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setCurrentTag(e.target.value);
+  }, []);
+
+  const handleCurrentTagKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      setTags(tags => [ ...new Set([ ...tags, currentTag ]).values() ]);
+      setCurrentTag('');
+    }
+  }, [ currentTag ]);
+
+  const removeTagCallback = useMemo(() => {
+    return tags.reduce((acc, tag) => {
+      acc[tag] = () => {
+        setTags(tags => tags.filter(t => t !== tag));
+      };
+      return acc;
+    }, {} as Record<string, () => void>);
+  }, [ tags ]);
 
   return (
     <Flex position="relative" flexDir="column">
@@ -104,18 +137,55 @@ const CreateThreadPageContent = () => {
           value={ text }
           onChange={ handleTextChange }
         />
-        <Flex flexDir="row" justify="space-between">
+        <Flex flexDir="row" flexWrap="wrap" alignItems="center" gap={ 2 }>
+          { tags.length ? tags.map(tag => (
+            <Tag px={ 2 } py={ 2 } display="inline-flex" alignItems="center" size="lk" key={ tag } verticalAlign="middle">
+              <TagLabel display="inline-block">{ tag }</TagLabel>
+              <Icon
+                ml={ 1 }
+                as={ crossIcon }
+                _hover={{
+                  cursor: 'pointer',
+                  color: 'link_hovered',
+                }}
+                onClick={ removeTagCallback[tag] }
+              />
+            </Tag>
+          )) : (
+            null
+          ) }
+          <Input
+            w="auto"
+            flexGrow={ 1 }
+            size="sm"
+            minW="200px"
+            placeholder="Type tag, press Enter"
+            value={ currentTag }
+            onChange={ handleCurrentTagsChange }
+            onKeyDown={ handleCurrentTagKeyDown }
+          />
+        </Flex>
+        <Flex
+          flexDir={{ base: 'column', sm: 'row' }}
+          justify={{ base: 'flex-start', sm: 'space-between' }}
+          align={{ base: 'stretch', sm: 'space-between' }}
+          gap={{ base: 3, sm: 6 }}
+        >
           <SelectAccountDropdown
             value={ account }
             onChange={ handleAccountChange }
           />
-          <Flex flexDir="row" align="center" gap={ 6 }>
+          <Flex
+            flexDir={{ base: 'column', sm: 'row' }}
+            align={{ base: 'stretch', sm: 'center' }}
+            gap={{ base: 3, sm: 6 }}
+          >
             <SelectBlockchainDropdown
               value={ blockchain }
               onChange={ handleBlockchainChange }
             />
-            <Flex flexDir="row" align="center">
-              <Button isLoading={ sending } onClick={ handleCreate }>Create</Button>
+            <Flex flexDir={{ base: 'column', sm: 'row' }} align={{ base: 'stretch', sm: 'center' }}>
+              <Button disabled={ !account } isLoading={ sending } onClick={ handleCreate }>Create</Button>
             </Flex>
           </Flex>
         </Flex>

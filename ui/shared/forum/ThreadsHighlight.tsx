@@ -13,14 +13,13 @@ const ThreadsHighlight = ({ title, items }: { title: string; items: Array<ForumT
       grow={ 1 }
       shrink={ 1 }
       flexDir="column"
-      borderRadius={{ base: 'none', lg: 'base' }}
+      borderRadius={{ sm: 12, base: 'none', lg: 'base' }}
       border="1px solid"
       borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
       alignItems="stretch"
       padding={ 6 }
       gap={ 6 }
       minW={ 0 }
-
     >
       <Flex>{ title }</Flex>
       <Flex minW={ 0 } flexDir="column" gap={ 4 } maxW="100%" alignItems="stretch">

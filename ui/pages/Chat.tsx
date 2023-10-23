@@ -1,5 +1,6 @@
 import { Flex, HStack, Icon, Spinner, Textarea, VStack, useColorModeValue } from '@chakra-ui/react';
-import type { Uint256, IMessage } from '@ylide/sdk';
+import { EVMNetwork, EVM_CHAINS, EVM_NAMES } from '@ylide/ethereum';
+import { YLIDE_MAIN_FEED_ID, type IMessage } from '@ylide/sdk';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 
@@ -120,13 +121,21 @@ const ChatPageContent = () => {
 
   const handleBlockchainChange = useCallback((newBlockchain: string) => {
     setBlockchain(newBlockchain);
-  }, []);
+    if (account) {
+      const networkByName = (name: string) =>
+        Object.values(EVMNetwork).filter(t => !isNaN(Number(t))).find(t => EVM_NAMES[Number(t) as EVMNetwork] === name) as EVMNetwork;
+      const network = networkByName(newBlockchain);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      account.wallet.onNetworkSwitchRequest('', undefined, network, EVM_CHAINS[network]);
+    }
+  }, [ account ]);
 
   const handleSend = useCallback(async() => {
     if (!authorAddressString || !account) {
       return;
     }
-    const feedId = '0000000000000000000000000000000000000000000000000000000000000002' as Uint256; // YLIDE_MAIN_FEED_ID
+    const feedId = YLIDE_MAIN_FEED_ID;
     setSending(true);
     try {
       await sendMessage(account, [ authorAddressString ], feedId, 'Chat Message', replyText);
@@ -209,7 +218,7 @@ const ChatPageContent = () => {
 
   return (
     <Flex position="relative" flexDir="column">
-      <HStack align="center" justify="space-between" mb={ 6 }>
+      <HStack align={{ base: 'stretch', sm: 'center' }} flexDir={{ base: 'column', sm: 'row' }} justify="space-between" mb={ 6 }>
         <PageTitle
           backLink={{ url: '/forum/chats', label: 'Chats list' }}
           containerProps={{ mb: 0 }}
@@ -254,7 +263,7 @@ const ChatPageContent = () => {
           );
         }) }
       </VStack>
-      <Flex flexDir="column" mb={ 6 } marginX={ -12 } paddingX={ 12 }>
+      <Flex flexDir="column" mb={ 6 } marginX={{ base: 0, sm: -12 }} paddingX={{ base: 0, sm: 12 }}>
         <Flex flexDir="column" border="1px solid" borderRadius={ 12 } borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }>
           <Flex flexDir="row" padding={ 6 } align="center" borderBottom="1px solid" borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }>
             <Textarea
@@ -270,25 +279,35 @@ const ChatPageContent = () => {
             />
           </Flex>
 
-          <Flex flexDir="row" justify="space-between" padding={ 6 }>
-            <SelectAccountDropdown
-              value={ account }
-              onChange={ handleAccountChange }
-            />
-            <Flex flexDir="row" align="center" gap={ 6 }>
+          <Flex flexDir="row" justify="flex-start" padding={ 6 }>
+            <Flex
+              flexDir={{ base: 'column', sm: 'row' }}
+              justify="space-between"
+              mr={ 6 }
+              flexGrow={ 1 }
+              gap={{ base: 3, sm: 0 }}
+            >
+              <SelectAccountDropdown
+                value={ account }
+                onChange={ handleAccountChange }
+              />
               <SelectBlockchainDropdown
                 value={ blockchain }
                 onChange={ handleBlockchainChange }
               />
-              <Flex flexDir="row" align="center">
-                {
-                  sending ? (
-                    <Spinner/>
-                  ) : (
-                    <Icon as={ sendIcon } boxSize={ 6 } cursor="pointer" _hover={{ color: 'link_hovered' }} onClick={ handleSend }/>
-                  )
-                }
-              </Flex>
+            </Flex>
+            <Flex flexDir="row" align="center">
+              { sending ? (
+                <Spinner/>
+              ) : (
+                <Icon
+                  as={ sendIcon }
+                  boxSize={ 6 }
+                  cursor="pointer"
+                  _hover={{ color: 'link_hovered' }}
+                  onClick={ handleSend }
+                />
+              ) }
             </Flex>
           </Flex>
         </Flex>

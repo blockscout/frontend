@@ -12,6 +12,7 @@ import ForumPublicApi from 'lib/api/ylideApi/ForumPublicApi';
 import { calcForumPagination } from 'lib/api/ylideApi/utils';
 import { useYlide } from 'lib/contexts/ylide';
 import useDebounce from 'lib/hooks/useDebounce';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import ActionBar from 'ui/shared/ActionBar';
 import FilterInput from 'ui/shared/filters/FilterInput';
@@ -22,24 +23,6 @@ import ThreadsList from 'ui/shared/forum/ThreadsList';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import type { Option } from 'ui/shared/sort/Sort';
-// import { generateListStub } from 'stubs/utils';
-// import { TOKEN_INFO_ERC_20 } from 'stubs/token';
-// import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-
-// import type { RoutedTab } from 'ui/shared/Tabs/types';
-
-// import useIsMobile from 'lib/hooks/useIsMobile';
-// import getQueryParamString from 'lib/router/getQueryParamString';
-// import { BLOCK } from 'stubs/block';
-// import { generateListStub } from 'stubs/utils';
-// import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-// import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
-
-// const TAB_LIST_PROPS = {
-//   marginBottom: 0,
-//   py: 5,
-//   marginTop: -5,
-// };
 
 export type ThreadsSortingField = ThreadsSorting['sort'];
 export type ThreadsSortingValue = `${ ThreadsSortingField }-${ ThreadsSorting['order'] }`;
@@ -75,11 +58,17 @@ const ThreadsPageContent = () => {
   const [ page, setPage ] = React.useState<number>(1);
   const [ topic, setTopic ] = React.useState<ForumTopic | undefined>();
   const [ threads, setThreads ] = React.useState<PaginatedState<ForumThread>>(defaultPaginatedState());
+  const [ threadsMeta, setThreadsMeta ] = React.useState<{
+    pinnedThreads: Array<ForumThread>;
+    topTags: Array<string>;
+  }>({ pinnedThreads: [], topTags: [] });
   const topicString = getQueryParamString(router.query.topic);
   const getTopic = ForumPublicApi.useGetTopic(topicString);
+  const getThreadsMeta = ForumPublicApi.useGetThreadsMeta(topicString);
   const getThreads = ForumPublicApi.useGetThreads(topic?.slug || '');
   const PAGE_SIZE = 10;
   const pagination = useMemo(() => calcForumPagination(PAGE_SIZE, page, setPage, threads), [ threads, page ]);
+  const isMobile = useIsMobile();
 
   const debouncedFilter = useDebounce(filter, 300);
 
@@ -97,7 +86,8 @@ const ThreadsPageContent = () => {
       return;
     }
     getTopic().then(setTopic);
-  }, [ getTopic, initialized ]);
+    getThreadsMeta().then(setThreadsMeta);
+  }, [ getTopic, getThreadsMeta, initialized ]);
 
   useEffect(() => {
     if (!initialized || !topic) {
@@ -116,22 +106,12 @@ const ThreadsPageContent = () => {
     'All', 'Solidity', 'Go-ethereum', 'Web3js', 'Contract-development', 'Remix', 'Blockchain',
   ];
 
-  const onSearchChange = useCallback((value: string) => {
-    // onFilterChange({ q: value });
-    setFilter(value);
-  }, [ ]); // onFilterChange
-
-  const onSort = useCallback((value: ThreadsSortingValue) => {
-    setSorting(value);
-    // onSortingChange(getSortParamsFromValue(value));
-  }, [ ]); // onSortingChange
-
   const filterInput = (
     <FilterInput
       w="100%"
-      minW="400px"
+      minW={{ base: '100px', md: '400px' }}
       size="xs"
-      onChange={ onSearchChange }
+      onChange={ setFilter }
       placeholder="Search by type, address, hash, method..."
       initialValue={ filter }
     />
@@ -155,16 +135,73 @@ const ThreadsPageContent = () => {
     router.push({ pathname: '/forum/[topic]/create-thread', query: { topic: topicString } });
   }, [ router, topicString ]);
 
+  const handleBookmarked = useCallback((threadId: string, address: string, enabled: boolean) => {
+    setThreads({
+      loading: false,
+      error: null,
+      data: {
+        ...threads.data,
+        items: threads.data.items.map(thread => {
+          if (thread.feedId === threadId) {
+            if (enabled) {
+              return {
+                ...thread,
+                bookmarked: [ ...new Set([ ...thread.bookmarked || [], address ]).values() ],
+              };
+            } else {
+              return {
+                ...thread,
+                bookmarked: thread.bookmarked ? thread.bookmarked.filter(a => a !== address) : null,
+              };
+            }
+          }
+          return thread;
+        }),
+      },
+    });
+  }, [ threads ]);
+
+  const handleWatched = useCallback((threadId: string, address: string, enabled: boolean) => {
+    setThreads({
+      loading: false,
+      error: null,
+      data: {
+        ...threads.data,
+        items: threads.data.items.map(thread => {
+          if (thread.feedId === threadId) {
+            if (enabled) {
+              return {
+                ...thread,
+                watched: [ ...new Set([ ...thread.watched || [], address ]).values() ],
+              };
+            } else {
+              return {
+                ...thread,
+                watched: thread.watched ? thread.watched.filter(a => a !== address) : null,
+              };
+            }
+          }
+          return thread;
+        }),
+      },
+    });
+  }, [ threads ]);
+
   const actionBar = (
-    <ActionBar mt={ -3 }>
+    <ActionBar mt={ -3 } flexDir={{ sm: 'row', base: 'column' }} alignItems={{ sm: 'center', base: 'stretch' }}>
       <HStack spacing={ 3 }>
-        <PopoverSorting isActive={ false } items={ sortings } onChange={ onSort } value={ sorting }/>
+        <PopoverSorting isActive={ false } items={ sortings } onChange={ setSorting } value={ sorting }/>
         { filterInput }
       </HStack>
-      <Button pos="relative" isLoading={ !topic } zIndex={ 5 } onClick={ handleCreateThread }>Create thread</Button>
+      <Button mt={{ sm: 0, base: 3 }} pos="relative" isLoading={ !topic } zIndex={ 5 } onClick={ handleCreateThread }>Create thread</Button>
       <Pagination ml="auto" { ...pagination }/>
     </ActionBar>
   );
+
+  let title = 'Loading...';
+  if (topic) {
+    title = isMobile ? topic.title : `Threads of "${ topic.title }"`;
+  }
 
   return (
     <Flex position="relative" flexDir="column">
@@ -172,7 +209,7 @@ const ThreadsPageContent = () => {
         <PageTitle
           backLink={{ label: 'Forum', url: '/forum' }}
           containerProps={{ mb: 0 }}
-          title={ topic ? `Threads of "${ topic.title }"` : 'Loading...' }
+          title={ title }
           isLoading={ !topic }
           justifyContent="space-between"
         />
@@ -180,8 +217,15 @@ const ThreadsPageContent = () => {
       </HStack>
       { tags }
       { actionBar }
-      { /* <ThreadsList topic={ topicString } threads={ pinnedThreads } pinned={ true }/> */ }
-      <ThreadsList topic={ topicString } threads={ threads.data.items }/>
+      { threadsMeta.pinnedThreads.length ? (
+        <ThreadsList topic={ topicString } threads={ threadsMeta.pinnedThreads } pinned={ true }/>
+      ) : null }
+      <ThreadsList
+        topic={ topicString }
+        threads={ threads.data.items }
+        onBookmark={ handleBookmarked }
+        onWatch={ handleWatched }
+      />
     </Flex>
   );
 };

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 
 import chatIcon from 'icons/chat.svg';
+import useIsMobile from 'lib/hooks/useIsMobile';
 
 import LinkInternal from '../LinkInternal';
 import AccountsPopover from './AccountsPopover';
@@ -14,6 +15,7 @@ interface Props {
 
 const ChatsAccountsBar = ({ compact, noChats }: Props) => {
   const router = useRouter();
+  const isMobile = useIsMobile();
   const borderColor = useColorModeValue('blackAlpha.400', 'whiteAlpha.400');
 
   const handleClick = useCallback(() => {
@@ -21,8 +23,8 @@ const ChatsAccountsBar = ({ compact, noChats }: Props) => {
   }, [ router ]);
 
   return (
-    <Flex gap={ compact ? 3 : 2 }>
-      { !noChats && (compact ? (
+    <Flex gap={ isMobile || compact ? 3 : 2 }>
+      { !noChats && (isMobile || compact ? (
         <LinkInternal
           aria-label="chats"
           size="sm"

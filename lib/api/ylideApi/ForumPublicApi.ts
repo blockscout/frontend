@@ -76,6 +76,23 @@ const useForumBackendGetThreads = (topicSlug: string) => {
   }, [ fetch, topicSlug ]);
 };
 
+const useForumBackendGetThreadsMeta = (topicSlug: string) => {
+  const { accounts: { tokens } } = useYlide();
+  const fetch = useForumApiFetch(tokens);
+
+  return React.useCallback(() => {
+    return fetch<{
+      pinnedThreads: Array<ForumThread>;
+      topTags: Array<string>;
+    }>({
+      url: `/topic/${ topicSlug }/meta`,
+      fetchParams: {
+        method: 'GET',
+      },
+    });
+  }, [ fetch, topicSlug ]);
+};
+
 const useForumBackendGetBestThreads = () => {
   const fetch = useForumApiFetch();
 
@@ -105,6 +122,34 @@ const useForumBackendGetThread = (id: string) => {
       },
     });
   }, [ fetch, id ]);
+};
+
+const useForumBackendGetThreadByTx = (txHash: string) => {
+  const { accounts: { tokens } } = useYlide();
+  const fetch = useForumApiFetch(tokens);
+
+  return React.useCallback(() => {
+    return fetch<ForumThread>({
+      url: `/thread//blockchain/transaction/${ txHash }`,
+      fetchParams: {
+        method: 'GET',
+      },
+    });
+  }, [ fetch, txHash ]);
+};
+
+const useForumBackendGetThreadByAddress = (address: string) => {
+  const { accounts: { tokens } } = useYlide();
+  const fetch = useForumApiFetch(tokens);
+
+  return React.useCallback(() => {
+    return fetch<ForumThread>({
+      url: `/thread//blockchain/address/${ address }`,
+      fetchParams: {
+        method: 'GET',
+      },
+    });
+  }, [ fetch, address ]);
 };
 
 const useForumBackendGetReplies = () => {
@@ -144,8 +189,11 @@ const publicApi = {
   useGetTopics: useForumBackendGetTopics,
   useGetTopic: useForumBackendGetTopic,
   useGetThreads: useForumBackendGetThreads,
+  useGetThreadsMeta: useForumBackendGetThreadsMeta,
   useGetBestThreads: useForumBackendGetBestThreads,
   useGetThread: useForumBackendGetThread,
+  useGetThreadByTx: useForumBackendGetThreadByTx,
+  useGetThreadByAddress: useForumBackendGetThreadByAddress,
   useGetReplies: useForumBackendGetReplies,
   useGetReply: useForumBackendGetReply,
 };

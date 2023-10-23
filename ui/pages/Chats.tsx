@@ -70,7 +70,7 @@ const ChatsPageContent = () => {
   const filterInput = (
     <FilterInput
       w="100%"
-      minW="400px"
+      minW={{ base: '100px', sm: '400px' }}
       size="xs"
       onChange={ onSearchChange }
       placeholder="Search by type, address, hash, method..."
@@ -79,7 +79,7 @@ const ChatsPageContent = () => {
   );
 
   const actionBar = (
-    <ActionBar mt={ -3 }>
+    <ActionBar mt={ -3 } flexDir={{ sm: 'row', base: 'column' }} alignItems={{ sm: 'center', base: 'stretch' }}>
       <HStack spacing={ 3 }>
         { filterInput }
       </HStack>
