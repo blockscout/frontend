@@ -64,6 +64,7 @@ const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink }:
   const Component = isExternal ? LinkExternal : LinkInternal;
 
   return (
+    // @ts-ignore
     <Component
       { ...styles }
       href={ href }

@@ -43,9 +43,9 @@ declare global {
     }
   }
 
-  // interface Window {
-  //   ethereum?: any;
-  //   lukso?: any;
-  //   grecaptcha?: any;
-  // }
+  interface Window {
+    ethereum?: any;
+    lukso?: any;
+    grecaptcha?: any;
+  }
 }

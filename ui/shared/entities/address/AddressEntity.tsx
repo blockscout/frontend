@@ -15,6 +15,10 @@ import * as EntityBase from 'ui/shared/entities/base/components';
 import { getIconProps } from '../base/utils';
 import AddressIdenticon from './AddressIdenticon';
 import makeUniversalProfileIdenticon from './IdenticonUniversalProfile';
+if (process.browser) {
+  import('@lukso/web-components/dist/components/lukso-profile');
+}
+
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'address'>;
 
 const Link = chakra((props: LinkProps) => {
@@ -84,8 +88,18 @@ const Icon = (props: IconProps) => {
       );
     }
 
-    if (upUrl !== '') {
-      return <lukso-profile size="x-small" profile-url={ upUrl }></lukso-profile>;
+    if (upUrl !== '' && process.browser) {
+      console.log(`Generating profile for url ${ upUrl } and ${ props.address.hash }`);
+      return (
+        <Box mr={ 2 } ml={ 1 }>
+          <lukso-profile
+            size="x-small"
+            profile-url={ upUrl }
+            profile-address={ props.address.hash }
+            has-identicon={ true }
+          ></lukso-profile>
+        </Box>
+      );
     }
 
     return (
