@@ -15,7 +15,7 @@ export const txnBatchesData: ZkEvmL2TxnBatchesResponse = {
       status: 'Unfinalized',
       verify_tx_hash: null,
       sequence_tx_hash: null,
-      number: 5218590,
+      number: 5218591,
       tx_count: 9,
     },
   ],

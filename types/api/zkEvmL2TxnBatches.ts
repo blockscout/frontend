@@ -37,4 +37,4 @@ export type ZkEvmL2TxnBatchTxs = {
   next_page_params: null;
 }
 
-export type NewZkEvmBatchSocketResponse = { batch: ZkEvmL2TxnBatch };
+export type NewZkEvmBatchSocketResponse = { batch: ZkEvmL2TxnBatchesItem };

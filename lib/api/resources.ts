@@ -504,7 +504,7 @@ export const RESOURCES = {
     pathParams: [ 'number' as const ],
   },
   zkevm_l2_txn_batch_txs: {
-    path: 'api/v2/transactions/zkevm-batch/:number',
+    path: '/api/v2/transactions/zkevm-batch/:number',
     pathParams: [ 'number' as const ],
     filterFields: [],
   },
