@@ -3,6 +3,7 @@ import React from 'react';
 
 import arrowIcon from 'icons/arrows/east.svg';
 import finalizedIcon from 'icons/finalized.svg';
+import unfinalizedIcon from 'icons/unfinalized.svg';
 
 type Props = {
   step: string;
@@ -15,7 +16,7 @@ const VerificationStep = ({ step, isLast, isPassed }: Props) => {
 
   return (
     <HStack gap={ 2 } color={ stepColor }>
-      <Icon as={ finalizedIcon } boxSize={ 5 }/>
+      <Icon as={ isPassed ? finalizedIcon : unfinalizedIcon } boxSize={ 5 }/>
       <Text color={ stepColor }>{ step }</Text>
       { !isLast && <Icon as={ arrowIcon } boxSize={ 5 }/> }
     </HStack>

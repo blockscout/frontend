@@ -82,7 +82,7 @@ export default function useNavItems(): ReturnType {
         [
           topAccounts,
           verifiedContracts,
-        ],
+        ].filter(Boolean),
       ];
     } else if (config.features.optimisticRollup.isEnabled) {
       blockchainNavItems = [

@@ -33,6 +33,8 @@ const Item = ({ data, isLoading }: ItemProps) => {
           w="100%"
           overflow="hidden"
           href={ data.value }
+          fontSize="sm"
+          lineHeight={ 5 }
         >
           <TruncatedValue value={ data.value } w="calc(100% - 16px)"/>
         </LinkExternal>

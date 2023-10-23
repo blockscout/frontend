@@ -129,6 +129,7 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
       <DetailsInfoItem
         title="Global exit root"
         isLoading={ isPlaceholderData }
+        flexWrap="nowrap"
       >
         <Skeleton isLoaded={ !isPlaceholderData } overflow="hidden">
           <HashStringShortenDynamic hash={ data.global_exit_root }/>
@@ -138,6 +139,7 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
       <DetailsInfoItem
         title="Acc input hash"
         isLoading={ isPlaceholderData }
+        flexWrap="nowrap"
       >
         <Skeleton isLoaded={ !isPlaceholderData } overflow="hidden">
           <HashStringShortenDynamic hash={ data.acc_input_hash }/>
@@ -159,6 +161,7 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
       <DetailsInfoItem
         title="State root"
         isLoading={ isPlaceholderData }
+        flexWrap="nowrap"
       >
         <Skeleton isLoaded={ !isPlaceholderData } overflow="hidden">
           <HashStringShortenDynamic hash={ data.state_root }/>

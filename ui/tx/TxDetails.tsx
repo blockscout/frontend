@@ -159,6 +159,7 @@ const TxDetails = () => {
         { data.zkevm_status && (
           <DetailsInfoItem
             title="Confirmation status"
+            hint="Status of the transaction confirmation path to L1"
             isLoading={ isPlaceholderData }
           >
             <VerificationSteps step={ data.zkevm_status } steps={ ZKEVM_L2_TX_STATUSES } isLoading={ isPlaceholderData }/>
@@ -197,6 +198,7 @@ const TxDetails = () => {
         { data.zkevm_batch_number && (
           <DetailsInfoItem
             title="Tx batch"
+            hint="Batch index for this transaction"
             isLoading={ isPlaceholderData }
           >
             <ZkEvmBatchEntityL2
