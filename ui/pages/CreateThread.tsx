@@ -181,6 +181,7 @@ const CreateThreadPageContent = () => {
             gap={{ base: 3, sm: 6 }}
           >
             <SelectBlockchainDropdown
+              account={ account }
               value={ blockchain }
               onChange={ handleBlockchainChange }
             />

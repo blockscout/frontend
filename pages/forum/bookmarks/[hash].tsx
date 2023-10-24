@@ -5,12 +5,12 @@ import React from 'react';
 import type { Props } from 'nextjs/getServerSideProps';
 import PageNextJs from 'nextjs/PageNextJs';
 
-const CreateTopic = dynamic(() => import('ui/pages/Topics'), { ssr: false });
+const Bookmarks = dynamic(() => import('ui/pages/Bookmarks'), { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
-    <PageNextJs pathname="/forum" query={ props }>
-      <CreateTopic/>
+    <PageNextJs pathname="/forum/bookmarks/[hash]" query={ props }>
+      <Bookmarks/>
     </PageNextJs>
   );
 };

@@ -83,7 +83,7 @@ const useForumBackendGetThreadsMeta = (topicSlug: string) => {
   return React.useCallback(() => {
     return fetch<{
       pinnedThreads: Array<ForumThread>;
-      topTags: Array<string>;
+      topTags: Array<{ name: string; count: string }>;
     }>({
       url: `/topic/${ topicSlug }/meta`,
       fetchParams: {

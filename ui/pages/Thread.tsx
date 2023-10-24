@@ -106,7 +106,7 @@ const ThreadPageContent = () => {
           <TagsList mb={ 6 } tags={ thread?.tags || [] }/>
         </Flex>
       </ContentContainer>
-      { thread && (<ThreadReplies thread={ thread }/>) }
+      { thread && (<ThreadReplies thread={ thread } skipThreadBody={ true }/>) }
     </Flex>
   );
 };

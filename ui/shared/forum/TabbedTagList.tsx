@@ -1,7 +1,7 @@
 import { Flex, Icon } from '@chakra-ui/react';
 import React from 'react';
 
-import starIcon from 'icons/star_outline.svg';
+import bookmarkIcon from 'icons/bookmark.svg';
 
 import TabsWithScroll from '../Tabs/TabsWithScroll';
 
@@ -38,7 +38,7 @@ const TabbedTagsList = ({ noBookmarked, items, defaultValue, onChange }: Props) 
         tabs={ [
           ...(noBookmarked ? [] : [ {
             id: 'bookmarked',
-            title: () => <Icon as={ starIcon } boxSize={ 4 }/>,
+            title: () => <Icon as={ bookmarkIcon } boxSize={ 4 }/>,
             component: null,
           } ]),
           ...items.map(i => ({

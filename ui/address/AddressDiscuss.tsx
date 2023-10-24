@@ -10,12 +10,12 @@ import { useYlide } from 'lib/contexts/ylide';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import ThreadReplies from 'ui/shared/forum/ThreadReplies';
 
-const TxDiscuss = () => {
+const AddressDiscuss = () => {
   const router = useRouter();
   const hash = getQueryParamString(router.query.hash).toLowerCase();
   const { accounts: { initialized, tokens } } = useYlide();
   const [ thread, setThread ] = React.useState<ForumThread | undefined>();
-  const getThread = ForumPublicApi.useGetThreadByTx(hash);
+  const getThread = ForumPublicApi.useGetThreadByAddress(hash);
   const createThread = ForumPersonalApi.useCreateThread(tokens[0]);
   const toast = useToast();
 
@@ -31,8 +31,8 @@ const TxDiscuss = () => {
     // blockchainTx
     try {
       const thread = await createThread({
-        title: `Let's discuss tx "${ hash }"`,
-        description: `Transaction "${ hash }" discussion`,
+        title: `Let's discuss address "${ hash }"`,
+        description: `Address "${ hash }" discussion`,
         blockchainTx: hash,
         topic: '27',
         tags: [],
@@ -55,7 +55,7 @@ const TxDiscuss = () => {
   if (!thread) {
     return (
       <Flex flexDir="column" align="flex-start">
-        <Text color={ mutedColor }>There’s no discussions about this transaction yet.</Text>
+        <Text color={ mutedColor }>There’s no discussions about this address yet.</Text>
         <Button mt={ 4 } onClick={ handleCreateDiscussion }>Create discussion</Button>
       </Flex>
     );
@@ -66,4 +66,4 @@ const TxDiscuss = () => {
   );
 };
 
-export default TxDiscuss;
+export default AddressDiscuss;

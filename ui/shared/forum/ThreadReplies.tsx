@@ -32,7 +32,7 @@ const ContentContainer = chakra(({ children }: { children: React.ReactNode }) =>
   );
 });
 
-const ThreadReplies = ({ thread }: { thread: ForumThread }) => {
+const ThreadReplies = ({ thread, skipThreadBody = false }: { thread: ForumThread; skipThreadBody?: boolean }) => {
   const { accounts: { initialized, domainAccounts }, broadcastMessage } = useYlide();
   const [ sorting, setSorting ] = React.useState<RepliesSortingValue>('time-desc');
 
@@ -45,8 +45,8 @@ const ThreadReplies = ({ thread }: { thread: ForumThread }) => {
   const [ blockchain, setBlockchain ] = React.useState<string>('GNOSIS');
   const getReplies = ForumPublicApi.useGetReplies();
 
-  const replyCount = Number(thread?.replyCount || '1') - 1;
-  const allRepliesLoaded = replies.length === replyCount + 1;
+  const replyCount = !skipThreadBody ? Number(thread?.replyCount || '0') : (Number(thread?.replyCount || '1') - 1);
+  const allRepliesLoaded = replies.length === (!skipThreadBody ? replyCount : (replyCount + 1));
 
   useEffect(() => {
     if (!account && domainAccounts.length) {
@@ -87,7 +87,7 @@ const ThreadReplies = ({ thread }: { thread: ForumThread }) => {
       setReplyText('');
       setReplyTo(undefined);
     });
-  }, [ getReplies, thread, initialized, replyCount, sorting ]);
+  }, [ getReplies, thread, initialized, sorting ]);
 
   const handleSend = useCallback(async() => {
     if (!thread || !account) {
@@ -108,11 +108,11 @@ const ThreadReplies = ({ thread }: { thread: ForumThread }) => {
           children: [],
         });
       }
-      await broadcastMessage(account, thread.feedId, 'Reply', ymfContent);
+      await broadcastMessage(account, thread.feedId, 'Reply', ymfContent, blockchain);
     } catch (e) {
       setSending(false);
     }
-  }, [ thread, account, replyText, replyTo, broadcastMessage ]);
+  }, [ thread, account, replyText, replyTo, broadcastMessage, blockchain ]);
 
   const repliesColor = useColorModeValue('gray.400', 'gray.600');
   const borderColor = useColorModeValue('blackAlpha.100', 'whiteAlpha.200');
@@ -130,7 +130,10 @@ const ThreadReplies = ({ thread }: { thread: ForumThread }) => {
     return value === 'time-asc' ? 'old first' : 'new first';
   }, [ ]);
 
-  const filteredReplies = sorting === 'time-asc' ? replies.slice(1) : replies.slice(0, -1);
+  let filteredReplies = replies;
+  if (skipThreadBody) {
+    filteredReplies = sorting === 'time-asc' ? replies.slice(1) : replies.slice(0, -1);
+  }
 
   const handleReplyTo = useCallback((reply: ForumReply) => {
     setReplyTo(reply);
@@ -207,6 +210,7 @@ _hover={{ color: 'link_hovered' }}
                 onChange={ handleAccountChange }
               />
               <SelectBlockchainDropdown
+                account={ account }
                 value={ blockchain }
                 onChange={ handleBlockchainChange }
               />

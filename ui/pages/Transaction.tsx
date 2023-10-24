@@ -50,7 +50,7 @@ const TransactionPageContent = () => {
     { id: 'logs', title: 'Logs', component: <TxLogs/> },
     { id: 'state', title: 'State', component: <TxState/> },
     { id: 'raw_trace', title: 'Raw trace', component: <TxRawTrace/> },
-    { id: 'discuss', title: 'Discuss', component: <TxDiscuss/> },
+    config.features.forum.isEnabled && { id: 'discuss', title: 'Discuss', component: <TxDiscuss/> },
   ].filter(Boolean);
 
   const tabIndex = useTabIndexFromQuery(tabs);

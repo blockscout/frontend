@@ -394,6 +394,56 @@ const useAccountController = (
   };
 };
 
+const useBalances = (ylide: Ylide, accounts: Array<DomainAccount>) => {
+  const [ balances, setBalances ] = useState<Record<string, Record<string, { original: string; numeric: number; e18: string }>>>({});
+
+  const getBalanceOf = useCallback(async(address: string) => {
+    const chains = ylide.controllers.blockchains;
+    const balances: Array<{ original: string; numeric: number; e18: string }> = await Promise.all(
+      chains.map(async chain => {
+        try {
+          return await new Promise((resolve, reject) => {
+            chain.getBalance(address).then(resolve).catch(reject);
+            setTimeout(reject, 3000);
+          });
+        } catch (err) {
+          return {
+            original: '0',
+            numeric: 0,
+            e18: '0',
+          };
+        }
+      }),
+    );
+    return chains.reduce(
+      (p, c, i) => ({
+        ...p,
+        [c.blockchain()]: balances[i],
+      }),
+      {} as Record<string, { original: string; numeric: number; e18: string }>,
+    );
+  }, [ ylide ]);
+
+  useEffect(() => {
+    (async() => {
+      let isNew = false;
+      const newBalances = await Promise.all(accounts.map(async(account) => {
+        if (balances[account.account.address]) {
+          return [ account.account.address, balances[account.account.address] ];
+        } else {
+          isNew = true;
+          return [ account.account.address, await getBalanceOf(account.account.address) ];
+        }
+      }));
+      if (isNew) {
+        setBalances(Object.fromEntries(newBalances));
+      }
+    })();
+  }, [ accounts, balances, getBalanceOf ]);
+
+  return balances;
+};
+
 const useYlideService = () => {
   const keysRegistry = useMemo(() => new YlideKeysRegistry(new BrowserLocalStorage()), []);
   const ylide = useMemo(() => {
@@ -408,6 +458,7 @@ const useYlideService = () => {
   const walletConnectRegistry = useWalletConnectRegistry();
   const walletConnectState = useWalletConnectState(ylide, initialized, wallets, setWallets);
   const accounts = useAccountController(ylide, keysRegistry, wallets, initialized, walletConnectState.disconnectWalletConnect);
+  const balances = useBalances(ylide, accounts.domainAccounts);
 
   const switchEVMChain = useCallback(async(wallet: AbstractWalletController, needNetwork: EVMNetwork) => {
     try {
@@ -442,7 +493,12 @@ const useYlideService = () => {
     switchEVMChainRef.current = switchEVMChain;
   }, [ switchEVMChain ]);
 
-  const broadcastMessage = useCallback(async(account: DomainAccount, feedId: string, subject: string, content: YMF) => {
+  const broadcastMessage = useCallback(async(account: DomainAccount, feedId: string, subject: string, content: YMF, blockchain?: string) => {
+    const foundNetwork = Object.keys(EVM_NAMES).find(n => EVM_NAMES[Number(n) as EVMNetwork] === blockchain);
+    let network: undefined | EVMNetwork = undefined;
+    if (typeof foundNetwork !== 'undefined') {
+      network = Number(foundNetwork) as EVMNetwork;
+    }
     return await ylide.core.broadcastMessage({
       feedId: feedId as Uint256,
       wallet: account.wallet,
@@ -461,10 +517,23 @@ const useYlideService = () => {
     }, {
       isPersonal: false,
       isGenericFeed: true,
+      network,
     });
   }, [ ylide ]);
 
-  const sendMessage = useCallback(async(account: DomainAccount, recipients: Array<string>, feedId: string, subject: string, content: string) => {
+  const sendMessage = useCallback(async(
+    account: DomainAccount,
+    recipients: Array<string>,
+    feedId: string,
+    subject: string,
+    content: string,
+    blockchain?: string,
+  ) => {
+    const foundNetwork = Object.keys(EVM_NAMES).find(n => EVM_NAMES[Number(n) as EVMNetwork] === blockchain);
+    let network: undefined | EVMNetwork = undefined;
+    if (typeof foundNetwork !== 'undefined') {
+      network = Number(foundNetwork) as EVMNetwork;
+    }
     return await ylide.core.sendMessage({
       feedId: feedId as Uint256,
       wallet: account.wallet,
@@ -475,6 +544,7 @@ const useYlideService = () => {
     }, {
       isPersonal: false,
       isGenericFeed: true,
+      network,
     });
   }, [ ylide ]);
 
@@ -583,6 +653,7 @@ const useYlideService = () => {
     walletConnectState,
     accounts,
     faucet,
+    balances,
     broadcastMessage,
     sendMessage,
     decodeBroadcastMessage,

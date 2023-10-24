@@ -54,13 +54,13 @@ const ThreadsPageContent = () => {
   const { accounts: { initialized } } = useYlide();
   const [ filter, setFilter ] = React.useState<string>(router.query.q?.toString() || '');
   const [ sorting, setSorting ] = React.useState<ThreadsSortingValue>(getSortValueFromQuery(router.query));
-  const [ tag, setTag ] = React.useState<string>(router.query.tag?.toString() || '');
+  const [ tag, setTag ] = React.useState<string>(router.query.tag?.toString() || 'All');
   const [ page, setPage ] = React.useState<number>(1);
   const [ topic, setTopic ] = React.useState<ForumTopic | undefined>();
   const [ threads, setThreads ] = React.useState<PaginatedState<ForumThread>>(defaultPaginatedState());
   const [ threadsMeta, setThreadsMeta ] = React.useState<{
     pinnedThreads: Array<ForumThread>;
-    topTags: Array<string>;
+    topTags: Array<{ name: string; count: string }>;
   }>({ pinnedThreads: [], topTags: [] });
   const topicString = getQueryParamString(router.query.topic);
   const getTopic = ForumPublicApi.useGetTopic(topicString);
@@ -102,9 +102,7 @@ const ThreadsPageContent = () => {
     });
   }, [ getThreads, initialized, topic, debouncedFilter, sortsMap, sorting ]);
 
-  const globalTags = [
-    'All', 'Solidity', 'Go-ethereum', 'Web3js', 'Contract-development', 'Remix', 'Blockchain',
-  ];
+  const globalTags = useMemo(() => [ 'All', ...threadsMeta.topTags.map(tag => tag.name) ], [ threadsMeta ]);
 
   const filterInput = (
     <FilterInput

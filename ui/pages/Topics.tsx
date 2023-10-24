@@ -111,7 +111,7 @@ const ThreadsHighlights = ({
         maxW="100%"
       >
         { !isMobile || tab === 'pinned' ? (
-          <ThreadsHighlight title="🔥 Pinned" items={ popular }/>
+          <ThreadsHighlight title="📌 Pinned" items={ popular }/>
         ) : null }
         { !isMobile || tab === 'popular' ? (
           <ThreadsHighlight title="🔥 Most popular" items={ popular }/>

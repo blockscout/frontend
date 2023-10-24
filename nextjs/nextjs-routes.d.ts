@@ -32,9 +32,9 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/forum/[topic]/[thread]", { "topic": string; "thread": string }>
     | DynamicRoute<"/forum/[topic]/create-thread", { "topic": string }>
     | DynamicRoute<"/forum/[topic]", { "topic": string }>
+    | DynamicRoute<"/forum/bookmarks/[hash]", { "hash": string }>
     | DynamicRoute<"/forum/chats/[hash]", { "hash": string }>
     | StaticRoute<"/forum/chats">
-    | StaticRoute<"/forum/create-topic">
     | StaticRoute<"/forum">
     | StaticRoute<"/graphiql">
     | StaticRoute<"/">

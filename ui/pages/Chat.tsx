@@ -292,6 +292,7 @@ const ChatPageContent = () => {
                 onChange={ handleAccountChange }
               />
               <SelectBlockchainDropdown
+                account={ account }
                 value={ blockchain }
                 onChange={ handleBlockchainChange }
               />

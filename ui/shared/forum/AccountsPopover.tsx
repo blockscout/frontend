@@ -2,6 +2,7 @@ import {
   Flex, Button, Icon, Text, chakra, Popover, PopoverTrigger, PopoverBody,
   PopoverContent, useDisclosure, VStack, useColorModeValue, Box,
 } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 
 import type { DomainAccount } from 'lib/contexts/ylide/types';
@@ -24,9 +25,14 @@ interface Props {
 }
 
 const AccountPlate = ({ account }: { account: DomainAccount }) => {
+  const router = useRouter();
   const { accounts: { disconnectAccount } } = useYlide();
 
   const borderColor = useColorModeValue('blackAlpha.400', 'whiteAlpha.400');
+
+  const handleBookmarks = useCallback(() => {
+    router.push({ pathname: '/forum/bookmarks/[hash]', query: { hash: account.account.address.toLowerCase() } });
+  }, [ router, account ]);
 
   const handleLogout = useCallback(() => {
     disconnectAccount(account);
@@ -47,7 +53,7 @@ const AccountPlate = ({ account }: { account: DomainAccount }) => {
           <AddressEntity address={{ hash: account.account.address, name: undefined }} noCopy/>
         </Flex>
         <Flex flexDir="row" gap={ 3 }>
-          <Icon boxSize={ 5 } as={ bookmarkIcon } cursor="pointer" _hover={{
+          <Icon boxSize={ 5 } as={ bookmarkIcon } cursor="pointer" onClick={ handleBookmarks } _hover={{
             color: 'link_hovered',
           }}/>
           <Icon boxSize={ 5 } as={ logoutIcon } cursor="pointer" onClick={ handleLogout } _hover={{
