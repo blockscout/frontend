@@ -25,14 +25,13 @@ interface Props {
   children: React.ReactNode;
   marks: Array<string> | null;
   title?: string;
-  disabledChildren?: React.ReactNode;
   showUnauthorizedAccounts?: boolean;
   onSelect?: (account: DomainAccount) => void;
   accountsFilter?: (account: DomainAccount) => boolean;
   contentProps?: PopoverContentProps;
 }
 
-const PopoverByAccount = ({ marks, title, children, disabledChildren, onSelect, accountsFilter, showUnauthorizedAccounts, contentProps }: Props) => {
+const PopoverByAccount = ({ marks, title, children, onSelect, accountsFilter, showUnauthorizedAccounts, contentProps }: Props) => {
   const { accounts: { domainAccounts } } = useYlide();
   const { isOpen, onToggle, onClose } = useDisclosure();
 
@@ -66,10 +65,10 @@ const PopoverByAccount = ({ marks, title, children, disabledChildren, onSelect, 
     }
   }, [ onToggle, accounts, onSelect ]);
 
-  return (
+  return accounts.length ? (
     <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
       <PopoverTrigger>
-        { accounts.length ? (<Box onClick={ handleClick }>{ children }</Box>) : disabledChildren || null }
+        <Box onClick={ handleClick }>{ children }</Box>
       </PopoverTrigger>
       <PopoverContent w="400px" { ...contentProps }>
         <PopoverBody >
@@ -104,7 +103,7 @@ const PopoverByAccount = ({ marks, title, children, disabledChildren, onSelect, 
         </PopoverBody>
       </PopoverContent>
     </Popover>
-  );
+  ) : null;
 };
 
 export default React.memo(PopoverByAccount);
