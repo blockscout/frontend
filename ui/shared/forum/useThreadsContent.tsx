@@ -39,14 +39,14 @@ const getSortValueFromQuery = (query: Query): ThreadsSortingValue => {
   return 'popular-desc';
 };
 
-const useThreadsContent = (tokens?: Array<string>, topicSlug?: string, criteria: 'all' | 'bookmarked' | 'watched' = 'all') => {
+const useThreadsContent = (tokens?: Array<string>, topicSlug?: string, criteria: 'all' | 'bookmarked' | 'watched' = 'all', tag?: string) => {
   const router = useRouter();
   const { accounts: { initialized } } = useYlide();
   const [ filter, setFilter ] = React.useState<string>(router.query.q?.toString() || '');
   const [ sorting, setSorting ] = React.useState<ThreadsSortingValue>(getSortValueFromQuery(router.query));
   const [ page, setPage ] = React.useState<number>(1);
   const [ threads, setThreads ] = React.useState<PaginatedState<ForumThread>>(defaultPaginatedState());
-  const getThreads = ForumPublicApi.useGetThreads(tokens, topicSlug || '', criteria);
+  const getThreads = ForumPublicApi.useGetThreads(tokens, topicSlug || '', criteria, tag);
   const PAGE_SIZE = 10;
   const pagination = useMemo(() => calcForumPagination(PAGE_SIZE, page, setPage, threads), [ threads, page ]);
 

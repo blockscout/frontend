@@ -36,6 +36,7 @@ const ThreadReplies = ({ thread, skipThreadBody = false }: { thread: ForumThread
   const { accounts: { initialized, domainAccounts }, broadcastMessage } = useYlide();
   const [ sorting, setSorting ] = React.useState<RepliesSortingValue>('time-desc');
 
+  const [ repliedReloadTick, setRepliesReloadTick ] = React.useState(0);
   const [ repliesLoading, setRepliesLoading ] = React.useState(false);
   const [ replies, setReplies ] = React.useState<Array<ForumReply>>([]);
   const [ replyTo, setReplyTo ] = React.useState<ForumReply | undefined>();
@@ -79,6 +80,9 @@ const ThreadReplies = ({ thread, skipThreadBody = false }: { thread: ForumThread
     }
     // sorting
     const sort: [string, 'ASC' | 'DESC'] = sorting === 'time-asc' ? [ 'createTimestamp', 'ASC' ] : [ 'createTimestamp', 'DESC' ];
+    if (repliedReloadTick < 0) {
+      return;
+    }
     setRepliesLoading(true);
     getReplies(thread.feedId, sort).then(result => {
       setReplies(result);
@@ -87,7 +91,7 @@ const ThreadReplies = ({ thread, skipThreadBody = false }: { thread: ForumThread
       setReplyText('');
       setReplyTo(undefined);
     });
-  }, [ getReplies, thread, initialized, sorting ]);
+  }, [ getReplies, thread, initialized, sorting, repliedReloadTick ]);
 
   const handleSend = useCallback(async() => {
     if (!thread || !account) {
@@ -109,6 +113,8 @@ const ThreadReplies = ({ thread, skipThreadBody = false }: { thread: ForumThread
         });
       }
       await broadcastMessage(account, thread.feedId, 'Reply', ymfContent, blockchain);
+      setTimeout(() => setRepliesReloadTick(tick => tick + 1), 1000);
+      setSending(false);
     } catch (e) {
       setSending(false);
     }

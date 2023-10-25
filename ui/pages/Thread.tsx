@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
 import type { ForumThread } from 'lib/api/ylideApi/types';
+import type { DomainAccount } from 'lib/contexts/ylide/types';
 import type { RepliesSorting } from 'types/api/forum';
 
 // import attachmentIcon from 'icons/attachment.svg';
@@ -11,12 +12,14 @@ import bookmarkIcon from 'icons/bookmark.svg';
 import eyeIconFilled from 'icons/eye_filled.svg';
 import eyeIcon from 'icons/eye.svg';
 import ago from 'lib/ago';
+import ForumPersonalApi from 'lib/api/ylideApi/ForumPersonalApi';
 import ForumPublicApi from 'lib/api/ylideApi/ForumPublicApi';
 import { useYlide } from 'lib/contexts/ylide';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ChatsAccountsBar from 'ui/shared/forum/ChatsAccountsBar';
 import Editor from 'ui/shared/forum/Editor';
+import PopoverByAccount from 'ui/shared/forum/PopoverByAccount';
 import TagsList from 'ui/shared/forum/TagsList';
 import ThreadReplies from 'ui/shared/forum/ThreadReplies';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -37,11 +40,70 @@ const ThreadPageContent = () => {
   const { accounts: { initialized } } = useYlide();
   const threadString = getQueryParamString(router.query.thread);
   // const topicString = getQueryParamString(router.query.topic);
+  const bookmarkThread = ForumPersonalApi.useBookmarkThread();
+  const watchThread = ForumPersonalApi.useWatchThread();
 
   const [ thread, setThread ] = React.useState<ForumThread | undefined>();
   const getThread = ForumPublicApi.useGetThread(threadString);
 
   const replyCount = Number(thread?.replyCount || '1') - 1;
+
+  const isBookmarked = Boolean(thread?.bookmarked?.length);
+  const isWatched = Boolean(thread?.watched?.length);
+
+  const handleToggleWatch = React.useCallback(async(account: DomainAccount) => {
+    if (!account.backendAuthKey || !thread) {
+      return;
+    }
+    const enable = !thread.watched?.includes(account.account.address.toLowerCase());
+    await watchThread({
+      token: account.backendAuthKey,
+      id: thread.feedId,
+      enable,
+    });
+    setThread(prev => {
+      if (!prev) {
+        return prev;
+      }
+      let newWatched;
+      if (enable) {
+        newWatched = [ ...prev?.watched || [], account.account.address.toLowerCase() ];
+      } else {
+        newWatched = prev.watched ? prev.watched.filter(b => b !== account.account.address.toLowerCase()) : prev.watched;
+      }
+      return {
+        ...prev,
+        watched: newWatched,
+      };
+    });
+  }, [ thread, watchThread ]);
+
+  const handleToggleBookmark = React.useCallback(async(account: DomainAccount) => {
+    if (!account.backendAuthKey || !thread) {
+      return;
+    }
+    const enable = !thread.bookmarked?.includes(account.account.address.toLowerCase());
+    await bookmarkThread({
+      token: account.backendAuthKey,
+      id: thread.feedId,
+      enable,
+    });
+    setThread(prev => {
+      if (!prev) {
+        return prev;
+      }
+      let newBookmarked;
+      if (enable) {
+        newBookmarked = [ ...prev?.bookmarked || [], account.account.address.toLowerCase() ];
+      } else {
+        newBookmarked = prev.bookmarked ? prev.bookmarked.filter(b => b !== account.account.address.toLowerCase()) : prev.bookmarked;
+      }
+      return {
+        ...prev,
+        bookmarked: newBookmarked,
+      };
+    });
+  }, [ bookmarkThread, thread ]);
 
   useEffect(() => {
     if (!initialized) {
@@ -53,9 +115,6 @@ const ThreadPageContent = () => {
   const iconColor = useColorModeValue('gray.700', 'gray.300');
   const hoverIconColor = useColorModeValue('gray.900', 'gray.100');
   const borderColor = useColorModeValue('blackAlpha.100', 'whiteAlpha.200');
-
-  const isWatched = false;
-  const isBookmarked = false;
 
   return (
     <Flex position="relative" flexDir="column">
@@ -80,20 +139,32 @@ const ThreadPageContent = () => {
           <Flex align="center" flexDir="row" gap={ 4 }>
             <Flex><Text as="span" fontWeight="700">{ replyCount }</Text>&nbsp;{ replyCount === 1 ? 'reply' : 'replies' }</Flex>
             <Flex align="center" flexDir="row" gap={ 2 }>
-              <Icon
-                as={ isWatched ? eyeIconFilled : eyeIcon }
-                boxSize={ 5 }
-                color={ iconColor }
-                cursor="pointer"
-                _hover={{ color: hoverIconColor }}
-              />
-              <Icon
-                as={ isBookmarked ? bookmarkIconFilled : bookmarkIcon }
-                boxSize={ 5 }
-                color={ iconColor }
-                cursor="pointer"
-                _hover={{ color: hoverIconColor }}
-              />
+              <PopoverByAccount
+                onSelect={ handleToggleWatch }
+                title="Select account to watch"
+                marks={ thread?.watched || [] }
+              >
+                <Icon
+                  as={ isWatched ? eyeIconFilled : eyeIcon }
+                  boxSize={ 5 }
+                  color={ iconColor }
+                  cursor="pointer"
+                  _hover={{ color: hoverIconColor }}
+                />
+              </PopoverByAccount>
+              <PopoverByAccount
+                onSelect={ handleToggleBookmark }
+                title="Select account to bookmark"
+                marks={ thread?.bookmarked || [] }
+              >
+                <Icon
+                  as={ isBookmarked ? bookmarkIconFilled : bookmarkIcon }
+                  boxSize={ 5 }
+                  color={ iconColor }
+                  cursor="pointer"
+                  _hover={{ color: hoverIconColor }}
+                />
+              </PopoverByAccount>
             </Flex>
           </Flex>
         </Flex>

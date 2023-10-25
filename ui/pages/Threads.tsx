@@ -39,7 +39,7 @@ const ThreadsPageContent = () => {
     setSorting,
     pagination,
     content,
-  } = useThreadsContent(tokens, topicString, 'all');
+  } = useThreadsContent(tokens, topicString, tag === 'bookmarked' ? 'bookmarked' : 'all', tag === 'All' || tag === 'bookmarked' ? undefined : tag);
 
   useEffect(() => {
     if (!initialized) {

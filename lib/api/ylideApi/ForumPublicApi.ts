@@ -60,7 +60,12 @@ const useForumBackendGetTopic = (id: string) => {
   }, [ fetch, id ]);
 };
 
-const useForumBackendGetThreads = (tokens?: Array<string>, topicSlug?: string, criteria: 'all' | 'bookmarked' | 'watched' = 'all') => {
+const useForumBackendGetThreads = (
+  tokens?: Array<string>,
+  topicSlug?: string,
+  criteria: 'all' | 'bookmarked' | 'watched' = 'all',
+  tag?: string,
+) => {
   const fetch = useForumApiFetch(tokens);
 
   return React.useCallback((query: string, sort: [string, 'ASC' | 'DESC']) => {
@@ -79,6 +84,9 @@ const useForumBackendGetThreads = (tokens?: Array<string>, topicSlug?: string, c
     if (criteria === 'watched') {
       queryParams.onlyWatched = 'true';
     }
+    if (tag) {
+      queryParams.tags = tag;
+    }
     return fetch<PaginatedArray<ForumThread>>({
       url: `/thread/`,
       queryParams,
@@ -86,7 +94,7 @@ const useForumBackendGetThreads = (tokens?: Array<string>, topicSlug?: string, c
         method: 'GET',
       },
     });
-  }, [ fetch, topicSlug, criteria ]);
+  }, [ fetch, topicSlug, criteria, tag ]);
 };
 
 const useForumBackendGetThreadsMeta = (topicSlug: string) => {
