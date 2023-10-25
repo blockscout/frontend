@@ -1,15 +1,9 @@
-import { Flex, HStack, Button, Spinner } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
+import { Flex, HStack, Button } from '@chakra-ui/react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import type { ForumThread } from 'lib/api/ylideApi/types';
-import { type PaginatedState, type ForumTopic, defaultPaginatedState } from 'lib/api/ylideApi/types';
-import type { TopicsSorting } from 'types/api/forum';
-
-import type { Query } from 'nextjs-routes';
 
 import ForumPublicApi from 'lib/api/ylideApi/ForumPublicApi';
-import { calcForumPagination } from 'lib/api/ylideApi/utils';
 import { useYlide } from 'lib/contexts/ylide';
 import useDebounce from 'lib/hooks/useDebounce';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -21,53 +15,10 @@ import ChatsAccountsBar from 'ui/shared/forum/ChatsAccountsBar';
 import DevForumHero from 'ui/shared/forum/DevForumHero';
 import PopoverSorting from 'ui/shared/forum/PopoverSorting';
 import ThreadsHighlight from 'ui/shared/forum/ThreadsHighlight';
-import TopicsList from 'ui/shared/forum/TopicsList';
+import type { TopicsSortingField, TopicsSortingValue } from 'ui/shared/forum/useTopicsContent';
+import useTopicsContent from 'ui/shared/forum/useTopicsContent';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
-import type { Option } from 'ui/shared/sort/Sort';
-// import { generateListStub } from 'stubs/utils';
-// import { TOKEN_INFO_ERC_20 } from 'stubs/token';
-// import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-
-// import type { RoutedTab } from 'ui/shared/Tabs/types';
-
-// import useIsMobile from 'lib/hooks/useIsMobile';
-// import getQueryParamString from 'lib/router/getQueryParamString';
-// import { BLOCK } from 'stubs/block';
-// import { generateListStub } from 'stubs/utils';
-// import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-// import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
-
-// const TAB_LIST_PROPS = {
-//   marginBottom: 0,
-//   py: 5,
-//   marginTop: -5,
-// };
-
-export type TopicsSortingField = TopicsSorting['sort'];
-export type TopicsSortingValue = `${ TopicsSortingField }-${ TopicsSorting['order'] }`;
-
-const SORT_OPTIONS: Array<Option<TopicsSortingValue>> = [
-  { title: 'Sort by Popular asc', id: undefined },
-  { title: 'Sort by Popular desc', id: 'popular-desc' },
-  { title: 'Sort by Name asc', id: 'name-asc' },
-  { title: 'Sort by Name desc', id: 'name-desc' },
-  { title: 'Sort by Updated asc', id: 'updated-asc' },
-  { title: 'Sort by Updated desc', id: 'updated-desc' },
-];
-
-const getSortValueFromQuery = (query: Query): TopicsSortingValue => {
-  if (!query.sort || !query.order) {
-    return 'popular-desc';
-  }
-
-  const str = query.sort + '-' + query.order;
-  if (SORT_OPTIONS.map(option => option.id).includes(str)) {
-    return str as TopicsSortingValue;
-  }
-
-  return 'popular-desc';
-};
 
 const ThreadsHighlights = ({
   // latest,
@@ -125,33 +76,34 @@ const ThreadsHighlights = ({
 };
 
 const TopicsPageContent = () => {
-  const router = useRouter();
   const isMobile = useIsMobile();
-  const { accounts: { admins, initialized } } = useYlide();
-  const [ reloadTick, setReloadTick ] = React.useState<number>(0);
-  const [ filter, setFilter ] = React.useState<string>(router.query.q?.toString() || '');
-  const [ sorting, setSorting ] = React.useState<TopicsSortingValue>(getSortValueFromQuery(router.query));
-  const [ page, setPage ] = React.useState<number>(1);
-  const [ topics, setTopics ] = React.useState<PaginatedState<ForumTopic>>(defaultPaginatedState());
+  const { accounts: { admins, tokens, initialized } } = useYlide();
   const [ createTopicVisible, setCreateTopicVisible ] = React.useState(false);
   const [ bestThreads, setBestThreads ] = React.useState<{
     latest: Array<ForumThread>;
     newest: Array<ForumThread>;
     popular: Array<ForumThread>;
   }>({ latest: [], newest: [], popular: [] });
-  const getTopics = ForumPublicApi.useGetTopics();
   const getBestThreads = ForumPublicApi.useGetBestThreads();
-  const PAGE_SIZE = 10;
-  const pagination = useMemo(() => calcForumPagination(PAGE_SIZE, page, setPage, topics), [ topics, page ]);
+  const {
+    filter,
+    setFilter,
+    sorting,
+    setSorting,
+    reloadTick,
+    setReloadTick,
+    pagination,
+    content,
+  } = useTopicsContent(tokens, 'all');
 
   const handleCreateTopicClose = useCallback(() => {
     setReloadTick(tick => tick + 1);
     setCreateTopicVisible(false);
-  }, []);
+  }, [ setReloadTick ]);
 
   const handleCreateTopicOpen = useCallback(() => {
     setCreateTopicVisible(true);
-  }, []);
+  }, [ ]);
 
   const debouncedFilter = useDebounce(filter, 300);
   // sorting
@@ -172,78 +124,11 @@ const TopicsPageContent = () => {
     if (reloadTick < 0) {
       return;
     }
-    setTopics(data => ({ ...data, loading: true }));
     getBestThreads().then(result => {
       setBestThreads(result);
     }).catch(() => {
     });
-    const sort: [string, 'ASC' | 'DESC'] = sortsMap[sorting];
-    getTopics(debouncedFilter, sort).then(result => {
-      setTopics(data => ({ ...data, loading: false, data: result }));
-    }).catch(err => {
-      setTopics(data => ({ ...data, loading: false, error: err }));
-    });
-  }, [ getTopics, getBestThreads, initialized, debouncedFilter, sorting, sortsMap, reloadTick ]);
-
-  const onSearchChange = useCallback((value: string) => {
-    setFilter(value);
-  }, [ ]);
-
-  const onSort = useCallback((value: TopicsSortingValue) => {
-    setSorting(value);
-  }, [ ]);
-
-  const handleBookmarked = useCallback((topicId: string, address: string, enabled: boolean) => {
-    setTopics({
-      loading: false,
-      error: null,
-      data: {
-        ...topics.data,
-        items: topics.data.items.map(topic => {
-          if (topic.id === topicId) {
-            if (enabled) {
-              return {
-                ...topic,
-                bookmarked: [ ...new Set([ ...topic.bookmarked || [], address ]).values() ],
-              };
-            } else {
-              return {
-                ...topic,
-                bookmarked: topic.bookmarked ? topic.bookmarked.filter(a => a !== address) : null,
-              };
-            }
-          }
-          return topic;
-        }),
-      },
-    });
-  }, [ topics ]);
-
-  const handleWatched = useCallback((topicId: string, address: string, enabled: boolean) => {
-    setTopics({
-      loading: false,
-      error: null,
-      data: {
-        ...topics.data,
-        items: topics.data.items.map(topic => {
-          if (topic.id === topicId) {
-            if (enabled) {
-              return {
-                ...topic,
-                watched: [ ...new Set([ ...topic.watched || [], address ]).values() ],
-              };
-            } else {
-              return {
-                ...topic,
-                watched: topic.watched ? topic.watched.filter(a => a !== address) : null,
-              };
-            }
-          }
-          return topic;
-        }),
-      },
-    });
-  }, [ topics ]);
+  }, [ getBestThreads, initialized, debouncedFilter, sorting, sortsMap, reloadTick ]);
 
   const filterInput = (
     <FilterInput
@@ -251,7 +136,7 @@ const TopicsPageContent = () => {
       minW={ isMobile ? undefined : '400px' }
       flexGrow={ 1 }
       size="xs"
-      onChange={ onSearchChange }
+      onChange={ setFilter }
       placeholder="Search by type, address, hash, method..."
       initialValue={ filter }
     />
@@ -271,7 +156,7 @@ const TopicsPageContent = () => {
         <PopoverSortingTyped
           isActive={ sorting !== 'popular-desc' }
           items={ sortings }
-          onChange={ onSort }
+          onChange={ setSorting }
           value={ sorting }
         />
         { filterInput }
@@ -297,15 +182,7 @@ const TopicsPageContent = () => {
           { admins.length ? (<Button pos="relative" onClick={ handleCreateTopicOpen }>Create topic</Button>) : null }
         </HStack>
         { actionBar }
-        { topics.loading ? (
-          <Spinner/>
-        ) : (
-          <TopicsList
-            topics={ topics.data.items }
-            onBookmark={ handleBookmarked }
-            onWatch={ handleWatched }
-          />
-        ) }
+        { content }
       </Flex>
     </>
   );

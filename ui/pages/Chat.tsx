@@ -2,7 +2,7 @@ import { Flex, HStack, Icon, Spinner, Textarea, VStack, useColorModeValue } from
 import { EVMNetwork, EVM_CHAINS, EVM_NAMES } from '@ylide/ethereum';
 import { YLIDE_MAIN_FEED_ID, type IMessage } from '@ylide/sdk';
 import { useRouter } from 'next/router';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import type { DomainAccount } from 'lib/contexts/ylide/types';
 
@@ -14,7 +14,6 @@ import type { IMessageDecodedContent } from 'lib/contexts/ylide';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import shortDate from 'lib/shortDate';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import FilterInput from 'ui/shared/filters/FilterInput';
 import ChatsAccountsBar from 'ui/shared/forum/ChatsAccountsBar';
 import SelectAccountDropdown from 'ui/shared/forum/SelectAccountDropdown';
 import SelectBlockchainDropdown from 'ui/shared/forum/SelectBlockchainDropdown';
@@ -87,12 +86,12 @@ const InternalChatMessage = ({ text, date }: ExternalChatMessageProps) => {
 
 const ChatPageContent = () => {
   const router = useRouter();
-  const [ filter, setFilter ] = React.useState<string>(router.query.q?.toString() || '');
   const authorAddressString = getQueryParamString(router.query.hash);
 
   const { accounts: { initialized, domainAccounts }, decodeDirectMessage, sendMessage } = useYlide();
   const messagesContainerRef = React.useRef<HTMLDivElement>(null);
   const [ sending, setSending ] = React.useState(false);
+  const [ reloadTick, setReloadTick ] = React.useState(0);
   const [ messages, setMessages ] = React.useState<Array<{
     id: string;
     type: 'message';
@@ -164,18 +163,29 @@ const ChatPageContent = () => {
   }, []);
 
   React.useEffect(() => {
-    if (initialized && domainAccounts.length) {
+    if (initialized && domainAccounts.length && reloadTick >= 0) {
       getMessages(domainAccounts[0].account.address, authorAddressString).then(r => {
         setMessages(r.data.entries.reverse());
-        setTimeout(() => {
-          messagesContainerRef.current?.scroll({
-            top: messagesContainerRef.current?.scrollHeight || 10000,
-            behavior: 'instant',
-          });
-        }, 1);
+        if (reloadTick === 0) {
+          setTimeout(() => {
+            messagesContainerRef.current?.scroll({
+              top: messagesContainerRef.current?.scrollHeight || 10000,
+              behavior: 'instant',
+            });
+          }, 1);
+        }
       });
     }
-  }, [ initialized, domainAccounts, getMessages, authorAddressString ]);
+  }, [ initialized, domainAccounts, getMessages, authorAddressString, reloadTick ]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setReloadTick(tick => tick + 1);
+    }, 5000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
 
   React.useEffect(() => {
     (async() => {
@@ -201,21 +211,6 @@ const ChatPageContent = () => {
     })();
   }, [ messages, decodedMessages, domainAccounts, decodeDirectMessage ]);
 
-  const onSearchChange = useCallback((value: string) => {
-    // onFilterChange({ q: value });
-    setFilter(value);
-  }, [ ]); // onFilterChange
-
-  const filterInput = (
-    <FilterInput
-      w="300px"
-      size="xs"
-      onChange={ onSearchChange }
-      placeholder="Search by type, address, hash, method..."
-      initialValue={ filter }
-    />
-  );
-
   return (
     <Flex position="relative" flexDir="column">
       <HStack align={{ base: 'stretch', sm: 'center' }} flexDir={{ base: 'column', sm: 'row' }} justify="space-between" mb={ 6 }>
@@ -225,7 +220,7 @@ const ChatPageContent = () => {
           title={ authorAddressString.substring(0, 6) + '...' + authorAddressString.substring(authorAddressString.length - 4) }
         />
         <Flex flexDir="row" justify="flex-end" gap={ 3 }>
-          { filterInput }
+          { /* { filterInput } */ }
           <ChatsAccountsBar compact={ true } noChats/>
         </Flex>
       </HStack>

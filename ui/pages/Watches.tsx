@@ -6,13 +6,13 @@ import { useYlide } from 'lib/contexts/ylide';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import shortenString from 'lib/shortenString';
 import ActionBar from 'ui/shared/ActionBar';
-import BookmarkedThreads from 'ui/shared/forum/BookmarkedThreads';
-import BookmarkedTopics from 'ui/shared/forum/BookmarkedTopics';
 import ChatsAccountsBar from 'ui/shared/forum/ChatsAccountsBar';
+import WatchedThreads from 'ui/shared/forum/WatchedThreads';
+import WatchedTopics from 'ui/shared/forum/WatchedTopics';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import TabsWithScroll from 'ui/shared/Tabs/TabsWithScroll';
 
-const BookmarksPageContent = () => {
+const WatchesPageContent = () => {
   const router = useRouter();
   const { accounts: { domainAccounts } } = useYlide();
   const hash = getQueryParamString(router.query.hash).toLowerCase();
@@ -29,7 +29,7 @@ const BookmarksPageContent = () => {
   return (
     <Flex position="relative" flexDir="column">
       <HStack align="center" justify="space-between" mb={ 6 }>
-        <PageTitle containerProps={{ mb: 0 }} title={ `Bookmarks of "${ shortenString(hash) }"` } justifyContent="space-between"/>
+        <PageTitle containerProps={{ mb: 0 }} title={ `Watches of "${ shortenString(hash) }"` } justifyContent="space-between"/>
         <ChatsAccountsBar compact={ true }/>
       </HStack>
       { actionBar }
@@ -42,12 +42,12 @@ const BookmarksPageContent = () => {
               {
                 id: 'topics',
                 title: 'Topics',
-                component: <BookmarkedTopics account={ account }/>,
+                component: <WatchedTopics account={ account }/>,
               },
               {
                 id: 'threads',
                 title: 'Threads',
-                component: <BookmarkedThreads account={ account }/>,
+                component: <WatchedThreads account={ account }/>,
               },
               // {
               //   id: 'replies',
@@ -69,4 +69,4 @@ const BookmarksPageContent = () => {
   );
 };
 
-export default BookmarksPageContent;
+export default WatchesPageContent;

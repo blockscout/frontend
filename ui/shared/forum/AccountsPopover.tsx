@@ -10,10 +10,12 @@ import type { DomainAccount } from 'lib/contexts/ylide/types';
 // import accountIcon from 'icons/account.svg';
 import arrowIcon from 'icons/arrows/east-mini.svg';
 import bookmarkIcon from 'icons/bookmark.svg';
+import eyeIcon from 'icons/eye.svg';
 import logoutIcon from 'icons/logout.svg';
 import plusIcon from 'icons/plus.svg';
 import { useYlide } from 'lib/contexts/ylide';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import shortenString from 'lib/shortenString';
 import { YlideConnectAccountModal } from 'ui/connectAccountModal';
 import { SelectWalletModal } from 'ui/selectWalletModal';
 
@@ -34,6 +36,10 @@ const AccountPlate = ({ account }: { account: DomainAccount }) => {
     router.push({ pathname: '/forum/bookmarks/[hash]', query: { hash: account.account.address.toLowerCase() } });
   }, [ router, account ]);
 
+  const handleWatches = useCallback(() => {
+    router.push({ pathname: '/forum/watches/[hash]', query: { hash: account.account.address.toLowerCase() } });
+  }, [ router, account ]);
+
   const handleLogout = useCallback(() => {
     disconnectAccount(account);
   }, [ account, disconnectAccount ]);
@@ -49,10 +55,13 @@ const AccountPlate = ({ account }: { account: DomainAccount }) => {
     >
       <Flex flexDir="row" fontSize={ 12 } mb={ 1 }>{ account.name }</Flex>
       <Flex flexDir="row" justify="space-between" align="center">
-        <Flex flexDir="row" maxW="calc(100% - 70px)" grow={ 1 }>
+        <Flex flexDir="row" maxW="calc(100% - 95px)" grow={ 1 }>
           <AddressEntity address={{ hash: account.account.address, name: undefined }} noCopy/>
         </Flex>
         <Flex flexDir="row" gap={ 3 }>
+          <Icon boxSize={ 5 } as={ eyeIcon } cursor="pointer" onClick={ handleWatches } _hover={{
+            color: 'link_hovered',
+          }}/>
           <Icon boxSize={ 5 } as={ bookmarkIcon } cursor="pointer" onClick={ handleBookmarks } _hover={{
             color: 'link_hovered',
           }}/>
@@ -112,7 +121,8 @@ const AccountsPopover = ({ className }: Props) => {
       ) : null }
       { !isMobile ? (
         <Text as="span" color="inherit">
-          { domainAccounts.length ? `${ domainAccounts.length } account${ domainAccounts.length > 1 ? 's' : '' }` : 'Connect wallet' }
+          { /* `${ domainAccounts.length } account${ domainAccounts.length > 1 ? 's' : '' }` */ }
+          { domainAccounts.length ? shortenString(domainAccounts[0].account.address) : 'Connect wallet' }
         </Text>
       ) : null }
       { domainAccounts.length ? (

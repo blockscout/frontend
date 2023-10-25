@@ -162,13 +162,11 @@ export const ThreadsListEntry = ({
 };
 
 const ThreadsList = ({
-  topic,
   threads,
   pinned,
   onBookmark,
   onWatch,
 }: {
-  topic: string;
   threads: Array<ForumThread>;
   pinned?: boolean;
   onBookmark?: (topicId: string, address: string, enabled: boolean) => void;
@@ -179,7 +177,7 @@ const ThreadsList = ({
     <VStack mb={ 6 } background={ pinned ? pinnedBG : undefined } marginX={ pinned ? -12 : 0 } paddingX={ pinned ? 12 : 0 } align="stretch" spacing={ 4 }>
       { threads.map((item) => (
         <ThreadsListEntry
-          link={{ topic, thread: item.slug }} //  item.thread
+          link={{ topic: item.topicSlug, thread: item.slug }} //  item.thread
           feedId={ item.feedId }
           pinned={ pinned }
           key={ item.feedId }

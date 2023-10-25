@@ -1,7 +1,7 @@
 import { Flex, HStack } from '@chakra-ui/react';
 import type { IMessage } from '@ylide/sdk';
 import { useRouter } from 'next/router';
-import React, { useCallback } from 'react';
+import React from 'react';
 
 import ChatsPersonalApi from 'lib/api/ylideApi/ChatsPersonalApi';
 import type { IMessageDecodedContent } from 'lib/contexts/ylide';
@@ -62,17 +62,12 @@ const ChatsPageContent = () => {
     }
   }, [ initialized, domainAccounts, getChats ]);
 
-  const onSearchChange = useCallback((value: string) => {
-    // onFilterChange({ q: value });
-    setFilter(value);
-  }, [ ]); // onFilterChange
-
   const filterInput = (
     <FilterInput
       w="100%"
       minW={{ base: '100px', sm: '400px' }}
       size="xs"
-      onChange={ onSearchChange }
+      onChange={ setFilter }
       placeholder="Search by type, address, hash, method..."
       initialValue={ filter }
     />
@@ -87,6 +82,17 @@ const ChatsPageContent = () => {
     </ActionBar>
   );
 
+  let filteredEntries: Array<{
+    address: string;
+  }> = chats.data.entries.filter(m => m.address.toLowerCase().includes(filter.toLowerCase()));
+  if (!filteredEntries.length && filter.length === 42 && filter.startsWith('0x')) {
+    filteredEntries = [
+      {
+        address: filter.toLowerCase(),
+      },
+    ];
+  }
+
   return (
     <Flex position="relative" flexDir="column">
       <HStack align="center" justify="space-between" mb={ 6 }>
@@ -98,7 +104,7 @@ const ChatsPageContent = () => {
         <ChatsAccountsBar compact={ true } noChats/>
       </HStack>
       { actionBar }
-      <ChatsList chats={ chats.data.entries } decodedMessages={ decodedMessages }/>
+      <ChatsList chats={ filteredEntries } decodedMessages={ decodedMessages }/>
     </Flex>
   );
 };

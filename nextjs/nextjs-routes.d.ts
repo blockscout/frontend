@@ -36,6 +36,7 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/forum/chats/[hash]", { "hash": string }>
     | StaticRoute<"/forum/chats">
     | StaticRoute<"/forum">
+    | DynamicRoute<"/forum/watches/[hash]", { "hash": string }>
     | StaticRoute<"/graphiql">
     | StaticRoute<"/">
     | StaticRoute<"/l2-deposits">

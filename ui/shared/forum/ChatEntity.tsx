@@ -11,9 +11,10 @@ import AddressEntity from '../entities/address/AddressEntity';
 
 export interface ChatDescriptor {
   address: string;
-  msgId: string;
-  metadata: IMessage;
-  lastMessageTimestamp: number;
+  msgId?: string;
+  metadata?: IMessage;
+  isSentByYou?: boolean;
+  lastMessageTimestamp?: number;
   decodedMessages: Record<string, IMessageDecodedContent | null>;
 }
 
@@ -26,6 +27,9 @@ const ChatEntity = ({ address, msgId, decodedMessages, lastMessageTimestamp }: C
   }, [ router, address ]);
 
   const text = useMemo(() => {
+    if (!msgId) {
+      return 'Open chat to send message';
+    }
     let content = typeof decodedMessages[msgId] === 'undefined' ? 'Decoding...' : 'No content available...';
     const dec = decodedMessages[msgId];
     if (dec) {
@@ -76,10 +80,12 @@ const ChatEntity = ({ address, msgId, decodedMessages, lastMessageTimestamp }: C
       </Flex>
       <Flex flexDir="row" align="center" justifyContent="flex-end" gap={ 3 }>
         { /* <Tag colorScheme="blue">2</Tag> */ }
-        <Text color={ dateColor }>{ formatDateTime(new Date(lastMessageTimestamp * 1000), {
-          timeWithoutSeconds: isMobile,
-          dateWithoutYear: isMobile,
-        }) }</Text>
+        { lastMessageTimestamp ? (
+          <Text color={ dateColor }>{ formatDateTime(new Date(lastMessageTimestamp * 1000), {
+            timeWithoutSeconds: isMobile,
+            dateWithoutYear: isMobile,
+          }) }</Text>
+        ) : null }
       </Flex>
     </Flex>
   );

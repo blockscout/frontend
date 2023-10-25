@@ -20,24 +20,30 @@ const useForumBackendGetMe = (tokens: Array<string>) => {
   }, [ fetch ]);
 };
 
-const useForumBackendGetTopics = () => {
-  const { accounts: { tokens } } = useYlide();
+const useForumBackendGetTopics = (tokens?: Array<string>, criteria: 'all' | 'bookmarked' | 'watched' = 'all') => {
   const fetch = useForumApiFetch(tokens);
 
   return React.useCallback((query: string, sort: [string, 'ASC' | 'DESC']) => {
+    const queryParams: Record<string, string> = query ? {
+      sort: JSON.stringify(sort),
+      search: query,
+    } : {
+      sort: JSON.stringify(sort),
+    };
+    if (criteria === 'bookmarked') {
+      queryParams.onlyBookmarked = 'true';
+    } else
+    if (criteria === 'watched') {
+      queryParams.onlyWatched = 'true';
+    }
     return fetch<PaginatedArray<ForumTopic>>({
       url: '/topic/',
-      queryParams: query ? {
-        search: query,
-        sort: JSON.stringify(sort),
-      } : {
-        sort: JSON.stringify(sort),
-      },
+      queryParams,
       fetchParams: {
         method: 'GET',
       },
     });
-  }, [ fetch ]);
+  }, [ fetch, criteria ]);
 };
 
 const useForumBackendGetTopic = (id: string) => {
@@ -54,26 +60,33 @@ const useForumBackendGetTopic = (id: string) => {
   }, [ fetch, id ]);
 };
 
-const useForumBackendGetThreads = (topicSlug: string) => {
-  const { accounts: { tokens } } = useYlide();
+const useForumBackendGetThreads = (tokens?: Array<string>, topicSlug?: string, criteria: 'all' | 'bookmarked' | 'watched' = 'all') => {
   const fetch = useForumApiFetch(tokens);
 
   return React.useCallback((query: string, sort: [string, 'ASC' | 'DESC']) => {
+    const queryParams: Record<string, string> = query ? {
+      sort: JSON.stringify(sort),
+      search: query,
+    } : {
+      sort: JSON.stringify(sort),
+    };
+    if (topicSlug) {
+      queryParams.topicSlug = topicSlug;
+    }
+    if (criteria === 'bookmarked') {
+      queryParams.onlyBookmarked = 'true';
+    } else
+    if (criteria === 'watched') {
+      queryParams.onlyWatched = 'true';
+    }
     return fetch<PaginatedArray<ForumThread>>({
       url: `/thread/`,
-      queryParams: query ? {
-        topicSlug: topicSlug,
-        sort: JSON.stringify(sort),
-        search: query,
-      } : {
-        topicSlug: topicSlug,
-        sort: JSON.stringify(sort),
-      },
+      queryParams,
       fetchParams: {
         method: 'GET',
       },
     });
-  }, [ fetch, topicSlug ]);
+  }, [ fetch, topicSlug, criteria ]);
 };
 
 const useForumBackendGetThreadsMeta = (topicSlug: string) => {
@@ -186,14 +199,17 @@ const useForumBackendGetReply = () => {
 
 const publicApi = {
   useGetMe: useForumBackendGetMe,
+
   useGetTopics: useForumBackendGetTopics,
   useGetTopic: useForumBackendGetTopic,
+
   useGetThreads: useForumBackendGetThreads,
   useGetThreadsMeta: useForumBackendGetThreadsMeta,
   useGetBestThreads: useForumBackendGetBestThreads,
   useGetThread: useForumBackendGetThread,
   useGetThreadByTx: useForumBackendGetThreadByTx,
   useGetThreadByAddress: useForumBackendGetThreadByAddress,
+
   useGetReplies: useForumBackendGetReplies,
   useGetReply: useForumBackendGetReply,
 };

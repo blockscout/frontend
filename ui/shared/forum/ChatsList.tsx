@@ -9,9 +9,10 @@ import ChatEntity from './ChatEntity';
 interface Props {
   chats: Array<{
     address: string;
-    msgId: string;
-    metadata: IMessage;
-    lastMessageTimestamp: number;
+    msgId?: string;
+    metadata?: IMessage;
+    isSentByYou?: boolean;
+    lastMessageTimestamp?: number;
   }>;
   decodedMessages: Record<string, IMessageDecodedContent | null>;
 }

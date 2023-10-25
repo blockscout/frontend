@@ -2,16 +2,10 @@ import { Flex, HStack, Button } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useMemo } from 'react';
 
-import type { PaginatedState, ForumTopic, ForumThread } from 'lib/api/ylideApi/types';
-import { defaultPaginatedState } from 'lib/api/ylideApi/types';
-import type { ThreadsSorting } from 'types/api/forum';
-
-import type { Query } from 'nextjs-routes';
+import type { ForumTopic, ForumThread } from 'lib/api/ylideApi/types';
 
 import ForumPublicApi from 'lib/api/ylideApi/ForumPublicApi';
-import { calcForumPagination } from 'lib/api/ylideApi/utils';
 import { useYlide } from 'lib/contexts/ylide';
-import useDebounce from 'lib/hooks/useDebounce';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import ActionBar from 'ui/shared/ActionBar';
@@ -20,44 +14,16 @@ import ChatsAccountsBar from 'ui/shared/forum/ChatsAccountsBar';
 import PopoverSorting from 'ui/shared/forum/PopoverSorting';
 import TabbedTagsList from 'ui/shared/forum/TabbedTagList';
 import ThreadsList from 'ui/shared/forum/ThreadsList';
+import type { ThreadsSortingField } from 'ui/shared/forum/useThreadsContent';
+import useThreadsContent from 'ui/shared/forum/useThreadsContent';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
-import type { Option } from 'ui/shared/sort/Sort';
-
-export type ThreadsSortingField = ThreadsSorting['sort'];
-export type ThreadsSortingValue = `${ ThreadsSortingField }-${ ThreadsSorting['order'] }`;
-
-const SORT_OPTIONS: Array<Option<ThreadsSortingValue>> = [
-  { title: 'Sort by Popular asc', id: undefined },
-  { title: 'Sort by Popular desc', id: 'popular-desc' },
-  { title: 'Sort by Name asc', id: 'name-asc' },
-  { title: 'Sort by Name desc', id: 'name-desc' },
-  { title: 'Sort by Updated asc', id: 'updated-asc' },
-  { title: 'Sort by Updated desc', id: 'updated-desc' },
-];
-
-const getSortValueFromQuery = (query: Query): ThreadsSortingValue => {
-  if (!query.sort || !query.order) {
-    return 'popular-desc';
-  }
-
-  const str = query.sort + '-' + query.order;
-  if (SORT_OPTIONS.map(option => option.id).includes(str)) {
-    return str as ThreadsSortingValue;
-  }
-
-  return 'popular-desc';
-};
 
 const ThreadsPageContent = () => {
   const router = useRouter();
-  const { accounts: { initialized } } = useYlide();
-  const [ filter, setFilter ] = React.useState<string>(router.query.q?.toString() || '');
-  const [ sorting, setSorting ] = React.useState<ThreadsSortingValue>(getSortValueFromQuery(router.query));
+  const { accounts: { initialized, tokens } } = useYlide();
   const [ tag, setTag ] = React.useState<string>(router.query.tag?.toString() || 'All');
-  const [ page, setPage ] = React.useState<number>(1);
   const [ topic, setTopic ] = React.useState<ForumTopic | undefined>();
-  const [ threads, setThreads ] = React.useState<PaginatedState<ForumThread>>(defaultPaginatedState());
   const [ threadsMeta, setThreadsMeta ] = React.useState<{
     pinnedThreads: Array<ForumThread>;
     topTags: Array<{ name: string; count: string }>;
@@ -65,21 +31,15 @@ const ThreadsPageContent = () => {
   const topicString = getQueryParamString(router.query.topic);
   const getTopic = ForumPublicApi.useGetTopic(topicString);
   const getThreadsMeta = ForumPublicApi.useGetThreadsMeta(topicString);
-  const getThreads = ForumPublicApi.useGetThreads(topic?.slug || '');
-  const PAGE_SIZE = 10;
-  const pagination = useMemo(() => calcForumPagination(PAGE_SIZE, page, setPage, threads), [ threads, page ]);
   const isMobile = useIsMobile();
-
-  const debouncedFilter = useDebounce(filter, 300);
-
-  const sortsMap: Record<ThreadsSortingValue, [string, 'ASC' | 'DESC']> = useMemo(() => ({
-    'popular-asc': [ 'replyCount', 'ASC' ],
-    'popular-desc': [ 'replyCount', 'DESC' ],
-    'name-asc': [ 'title', 'ASC' ],
-    'name-desc': [ 'title', 'DESC' ],
-    'updated-asc': [ 'lastReplyTimestamp', 'ASC' ],
-    'updated-desc': [ 'lastReplyTimestamp', 'DESC' ],
-  }), []);
+  const {
+    filter,
+    setFilter,
+    sorting,
+    setSorting,
+    pagination,
+    content,
+  } = useThreadsContent(tokens, topicString, 'all');
 
   useEffect(() => {
     if (!initialized) {
@@ -88,19 +48,6 @@ const ThreadsPageContent = () => {
     getTopic().then(setTopic);
     getThreadsMeta().then(setThreadsMeta);
   }, [ getTopic, getThreadsMeta, initialized ]);
-
-  useEffect(() => {
-    if (!initialized || !topic) {
-      return;
-    }
-    setThreads(data => ({ ...data, loading: true }));
-    const sort: [string, 'ASC' | 'DESC'] = sortsMap[sorting];
-    getThreads(debouncedFilter, sort).then(result => {
-      setThreads(data => ({ ...data, loading: false, data: result }));
-    }).catch(err => {
-      setThreads(data => ({ ...data, loading: false, error: err }));
-    });
-  }, [ getThreads, initialized, topic, debouncedFilter, sortsMap, sorting ]);
 
   const globalTags = useMemo(() => [ 'All', ...threadsMeta.topTags.map(tag => tag.name) ], [ threadsMeta ]);
 
@@ -133,58 +80,6 @@ const ThreadsPageContent = () => {
     router.push({ pathname: '/forum/[topic]/create-thread', query: { topic: topicString } });
   }, [ router, topicString ]);
 
-  const handleBookmarked = useCallback((threadId: string, address: string, enabled: boolean) => {
-    setThreads({
-      loading: false,
-      error: null,
-      data: {
-        ...threads.data,
-        items: threads.data.items.map(thread => {
-          if (thread.feedId === threadId) {
-            if (enabled) {
-              return {
-                ...thread,
-                bookmarked: [ ...new Set([ ...thread.bookmarked || [], address ]).values() ],
-              };
-            } else {
-              return {
-                ...thread,
-                bookmarked: thread.bookmarked ? thread.bookmarked.filter(a => a !== address) : null,
-              };
-            }
-          }
-          return thread;
-        }),
-      },
-    });
-  }, [ threads ]);
-
-  const handleWatched = useCallback((threadId: string, address: string, enabled: boolean) => {
-    setThreads({
-      loading: false,
-      error: null,
-      data: {
-        ...threads.data,
-        items: threads.data.items.map(thread => {
-          if (thread.feedId === threadId) {
-            if (enabled) {
-              return {
-                ...thread,
-                watched: [ ...new Set([ ...thread.watched || [], address ]).values() ],
-              };
-            } else {
-              return {
-                ...thread,
-                watched: thread.watched ? thread.watched.filter(a => a !== address) : null,
-              };
-            }
-          }
-          return thread;
-        }),
-      },
-    });
-  }, [ threads ]);
-
   const actionBar = (
     <ActionBar mt={ -3 } flexDir={{ sm: 'row', base: 'column' }} alignItems={{ sm: 'center', base: 'stretch' }}>
       <HStack spacing={ 3 }>
@@ -216,14 +111,9 @@ const ThreadsPageContent = () => {
       { tags }
       { actionBar }
       { threadsMeta.pinnedThreads.length ? (
-        <ThreadsList topic={ topicString } threads={ threadsMeta.pinnedThreads } pinned={ true }/>
+        <ThreadsList threads={ threadsMeta.pinnedThreads } pinned={ true }/>
       ) : null }
-      <ThreadsList
-        topic={ topicString }
-        threads={ threads.data.items }
-        onBookmark={ handleBookmarked }
-        onWatch={ handleWatched }
-      />
+      { content }
     </Flex>
   );
 };
