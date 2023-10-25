@@ -45,6 +45,7 @@ const ThreadReplies = ({ thread, skipThreadBody = false }: { thread: ForumThread
   const [ account, setAccount ] = React.useState<DomainAccount | undefined>(domainAccounts[0]);
   const [ blockchain, setBlockchain ] = React.useState<string>('GNOSIS');
   const getReplies = ForumPublicApi.useGetReplies();
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null);
 
   const replyCount = !skipThreadBody ? Number(thread?.replyCount || '0') : (Number(thread?.replyCount || '1') - 1);
   const allRepliesLoaded = replies.length === (!skipThreadBody ? replyCount : (replyCount + 1));
@@ -143,6 +144,8 @@ const ThreadReplies = ({ thread, skipThreadBody = false }: { thread: ForumThread
 
   const handleReplyTo = useCallback((reply: ForumReply) => {
     setReplyTo(reply);
+    textareaRef.current?.scrollIntoView({ behavior: 'smooth' });
+    textareaRef.current?.focus();
   }, [ ]);
 
   const handleDiscardReplyTo = useCallback(() => {
@@ -192,7 +195,15 @@ const ThreadReplies = ({ thread, skipThreadBody = false }: { thread: ForumThread
             </Flex>
           ) }
           <Flex flexDir="row" padding={ 6 } align="center" borderBottom="1px solid" borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }>
-            <Textarea border="0" flexDir="row" flexGrow={ 1 } value={ replyText } placeholder="Type text here..." onChange={ handleReplyTextChange }/>
+            <Textarea
+              border="0"
+              flexDir="row"
+              flexGrow={ 1 }
+              value={ replyText }
+              placeholder="Type text here..."
+              onChange={ handleReplyTextChange }
+              ref={ textareaRef }
+            />
             { /* <Flex flexDir="row" align="center">
 <Icon
 as={ attachmentIcon }
