@@ -29,7 +29,12 @@ const WatchesPageContent = () => {
   return (
     <Flex position="relative" flexDir="column">
       <HStack align="center" justify="space-between" mb={ 6 }>
-        <PageTitle containerProps={{ mb: 0 }} title={ `Watches of "${ shortenString(hash) }"` } justifyContent="space-between"/>
+        <PageTitle
+          backLink={{ url: '/forum', label: 'Dev forum' }}
+          containerProps={{ mb: 0 }}
+          title={ `Watches of "${ shortenString(hash) }"` }
+          justifyContent="space-between"
+        />
         <ChatsAccountsBar compact={ true }/>
       </HStack>
       { actionBar }

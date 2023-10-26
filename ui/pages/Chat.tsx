@@ -137,7 +137,7 @@ const ChatPageContent = () => {
     const feedId = YLIDE_MAIN_FEED_ID;
     setSending(true);
     try {
-      await sendMessage(account, [ authorAddressString ], feedId, 'Chat Message', replyText);
+      await sendMessage(account, [ authorAddressString ], feedId, 'Chat Message', replyText, blockchain);
       setTimeout(() => {
         getMessages(account.account.address, authorAddressString).then(r => {
           setSending(false);
@@ -156,7 +156,7 @@ const ChatPageContent = () => {
     } catch (err) {
       setSending(false);
     }
-  }, [ authorAddressString, account, sendMessage, replyText, getMessages ]);
+  }, [ authorAddressString, account, sendMessage, replyText, getMessages, blockchain ]);
 
   const handleReplyTextChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setReplyText(e.target.value);
