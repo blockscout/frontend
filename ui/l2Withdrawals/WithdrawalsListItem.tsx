@@ -11,7 +11,7 @@ import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import LinkExternal from 'ui/shared/LinkExternal';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
-const feature = config.features.rollup;
+const feature = config.features.optimisticRollup;
 
 type Props = { item: L2WithdrawalsItem; isLoading?: boolean };
 

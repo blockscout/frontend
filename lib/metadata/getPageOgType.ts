@@ -36,6 +36,8 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/l2-output-roots': 'Root page',
   '/l2-txn-batches': 'Root page',
   '/l2-withdrawals': 'Root page',
+  '/zkevm-l2-txn-batches': 'Root page',
+  '/zkevm-l2-txn-batch/[number]': 'Regular page',
   '/404': 'Regular page',
 
   // service routes, added only to make typescript happy

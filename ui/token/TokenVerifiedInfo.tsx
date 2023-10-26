@@ -40,7 +40,7 @@ const TokenVerifiedInfo = ({ verifiedInfoQuery }: Props) => {
       try {
         const url = new URL(data.projectWebsite);
         return (
-          <LinkExternal href={ data.projectWebsite } variant="subtle" flexShrink={ 0 }>
+          <LinkExternal href={ data.projectWebsite } variant="subtle" flexShrink={ 0 } fontSize="sm" lineHeight={ 5 }>
             { url.host }
           </LinkExternal>
         );

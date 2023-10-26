@@ -155,7 +155,7 @@ test('with actions uniswap +@mobile +@dark-mode', async({ mount, page }) => {
 
 const l2Test = test.extend({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  context: contextWithEnvs(configs.featureEnvs.rollup) as any,
+  context: contextWithEnvs(configs.featureEnvs.optimisticRollup) as any,
 });
 
 l2Test('l2', async({ mount, page }) => {

@@ -7,7 +7,7 @@ import txBatchIcon from 'icons/txn_batches_slim.svg';
 
 import * as BlockEntity from './BlockEntity';
 
-const feature = config.features.rollup;
+const feature = config.features.optimisticRollup;
 
 const BlockEntityL2 = (props: BlockEntity.EntityProps) => {
   const linkProps = _omit(props, [ 'className' ]);

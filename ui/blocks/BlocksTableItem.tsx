@@ -26,6 +26,8 @@ interface Props {
   enableTimeIncrement?: boolean;
 }
 
+const isRollup = config.features.optimisticRollup.isEnabled || config.features.zkEvmRollup.isEnabled;
+
 const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
   const totalReward = getBlockTotalReward(data);
   const burntFees = BigNumber(data.burnt_fees || 0);
@@ -82,7 +84,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           </Skeleton>
         ) : data.tx_count }
       </Td>
-      { !config.features.rollup.isEnabled && !config.UI.views.block.hiddenFields?.total_reward && (
+      { !isRollup && !config.UI.views.block.hiddenFields?.total_reward && (
         <Td fontSize="sm">
           <Skeleton isLoaded={ !isLoading } display="inline-block">{ BigNumber(data.gas_used || 0).toFormat() }</Skeleton>
           <Flex mt={ 2 }>
@@ -109,7 +111,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           { totalReward.toFixed(8) }
         </Skeleton>
       </Td>
-      { !config.features.rollup.isEnabled && !config.UI.views.block.hiddenFields?.burnt_fees && (
+      { !isRollup && !config.UI.views.block.hiddenFields?.burnt_fees && (
         <Td fontSize="sm">
           <Flex alignItems="center" columnGap={ 2 }>
             <Icon as={ flameIcon } boxSize={ 5 } color={ burntFeesIconColor } isLoading={ isLoading }/>
