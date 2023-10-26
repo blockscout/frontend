@@ -86,7 +86,9 @@ const ThreadsPageContent = () => {
         <PopoverSorting isActive={ false } items={ sortings } onChange={ setSorting } value={ sorting }/>
         { filterInput }
       </HStack>
-      <Button mt={{ sm: 0, base: 3 }} pos="relative" isLoading={ !topic } zIndex={ 5 } onClick={ handleCreateThread }>Create thread</Button>
+      { topicString !== 'transactions' && topicString !== 'addresses' ? (
+        <Button mt={{ sm: 0, base: 3 }} pos="relative" isLoading={ !topic } zIndex={ 5 } onClick={ handleCreateThread }>Create thread</Button>
+      ) : null }
       <Pagination ml="auto" { ...pagination }/>
     </ActionBar>
   );
