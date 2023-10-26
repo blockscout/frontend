@@ -27,7 +27,7 @@ const TxFeeStability = ({ data, isLoading, hideUsd, accuracy, className }: Props
   return (
     <Skeleton whiteSpace="pre" isLoaded={ !isLoading } display="flex" className={ className }>
       <span>{ valueStr } </span>
-      <TokenEntity token={ data.token } noIcon noCopy onlySymbol w="auto"/>
+      { valueStr !== '0' && <TokenEntity token={ data.token } noIcon noCopy onlySymbol w="auto"/> }
       { usd && !hideUsd && <chakra.span color="text_secondary"> (${ usd })</chakra.span> }
     </Skeleton>
   );
