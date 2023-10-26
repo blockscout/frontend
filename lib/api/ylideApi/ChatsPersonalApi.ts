@@ -66,7 +66,7 @@ const useChatsGetMessages = () => {
         }>;
       };
     }>({
-      url: '/nft3-thread',
+      url: '/v2/thread',
       fetchParams: {
         method: 'POST',
         body: {
