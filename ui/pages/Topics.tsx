@@ -174,7 +174,7 @@ const TopicsPageContent = () => {
         <DevForumHero/>
         <HStack align="center" justify="space-between" mb={ 6 }>
           <PageTitle containerProps={{ mb: 0 }} title="Dev forum" justifyContent="space-between"/>
-          <ChatsAccountsBar compact={ true }/>
+          <ChatsAccountsBar/>
         </HStack>
         <ThreadsHighlights { ...bestThreads }/>
         <HStack align="center" justify="space-between" mb={ 6 }>

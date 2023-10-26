@@ -126,7 +126,7 @@ const ThreadPageContent = () => {
           isLoading={ !thread }
           justifyContent="space-between"
         />
-        <ChatsAccountsBar compact/>
+        <ChatsAccountsBar/>
       </HStack>
       <ContentContainer mb={ 6 } borderBottom="1px solid" borderColor={ borderColor }>
         <Flex flexDir="row" maxW="900px" mb={ 8 } justify="space-between">

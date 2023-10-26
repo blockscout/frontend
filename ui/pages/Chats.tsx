@@ -101,7 +101,7 @@ const ChatsPageContent = () => {
           containerProps={{ mb: 0 }}
           title="Chats"
         />
-        <ChatsAccountsBar compact={ true } noChats/>
+        <ChatsAccountsBar noChats/>
       </HStack>
       { actionBar }
       <ChatsList chats={ filteredEntries } decodedMessages={ decodedMessages }/>

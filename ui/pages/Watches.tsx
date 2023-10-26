@@ -35,7 +35,7 @@ const WatchesPageContent = () => {
           title={ `Watches of "${ shortenString(hash) }"` }
           justifyContent="space-between"
         />
-        <ChatsAccountsBar compact={ true }/>
+        <ChatsAccountsBar/>
       </HStack>
       { actionBar }
       <Flex mb={ 6 } flexDir="column" w="100%" align="stretch">

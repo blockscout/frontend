@@ -9,11 +9,10 @@ import LinkInternal from '../LinkInternal';
 import AccountsPopover from './AccountsPopover';
 
 interface Props {
-  compact?: boolean;
   noChats?: boolean;
 }
 
-const ChatsAccountsBar = ({ compact, noChats }: Props) => {
+const ChatsAccountsBar = ({ noChats }: Props) => {
   const router = useRouter();
   const isMobile = useIsMobile();
   const borderColor = useColorModeValue('blackAlpha.400', 'whiteAlpha.400');
@@ -23,8 +22,8 @@ const ChatsAccountsBar = ({ compact, noChats }: Props) => {
   }, [ router ]);
 
   return (
-    <Flex gap={ isMobile || compact ? 3 : 2 }>
-      { !noChats && (isMobile || compact ? (
+    <Flex gap={ isMobile ? 3 : 2 }>
+      { !noChats && (isMobile ? (
         <LinkInternal
           aria-label="chats"
           size="sm"
@@ -60,7 +59,7 @@ const ChatsAccountsBar = ({ compact, noChats }: Props) => {
           borderColor={ borderColor }
           variant="outline"
           onClick={ handleClick }
-        >Chat list</Button>
+        >Chats</Button>
       )) }
       <AccountsPopover minHeight="32px"/>
     </Flex>

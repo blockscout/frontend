@@ -221,7 +221,7 @@ const ChatPageContent = () => {
         />
         <Flex flexDir="row" justify="flex-end" gap={ 3 }>
           { /* { filterInput } */ }
-          <ChatsAccountsBar compact={ true } noChats/>
+          <ChatsAccountsBar noChats/>
         </Flex>
       </HStack>
       <VStack ref={ messagesContainerRef } align="stretch" gap={ 4 } h="calc(100vh - 400px)" overflowY="scroll" paddingBottom={ 5 }>
