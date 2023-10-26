@@ -1,7 +1,7 @@
 import type { As } from '@chakra-ui/react';
 import { Box, Flex, Skeleton, Tooltip, chakra, VStack } from '@chakra-ui/react';
 import _omit from 'lodash/omit';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import type { AddressParam } from 'types/api/addressParams';
 
@@ -14,7 +14,7 @@ import * as EntityBase from 'ui/shared/entities/base/components';
 
 import { getIconProps } from '../base/utils';
 import AddressIdenticon from './AddressIdenticon';
-import makeUniversalProfileIdenticon from './IdenticonUniversalProfile';
+import { IdenticonUniversalProfile } from './IdenticonUniversalProfileQuery';
 if (process.browser) {
   import('@lukso/web-components/dist/components/lukso-profile');
 }
@@ -39,17 +39,6 @@ type IconProps = Pick<EntityProps, 'address' | 'isLoading' | 'iconSize' | 'noIco
 };
 
 const Icon = (props: IconProps) => {
-  const [ upUrl, setUpUrl ] = useState('');
-  useEffect(() => {
-    (async() => {
-      const result = await makeUniversalProfileIdenticon(props.address.hash);
-
-      setUpUrl(result);
-
-      return;
-    })();
-  });
-
   if (props.noIcon) {
     return null;
   }
@@ -88,21 +77,7 @@ const Icon = (props: IconProps) => {
       );
     }
 
-    if (upUrl !== '' && process.browser) {
-      console.log(`Generating profile for url ${ upUrl } and ${ props.address.hash }`);
-      return (
-        <Box mr={ 2 } ml={ 1 }>
-          <lukso-profile
-            size="x-small"
-            profile-url={ upUrl }
-            profile-address={ props.address.hash }
-            has-identicon={ true }
-          ></lukso-profile>
-        </Box>
-      );
-    }
-
-    return (
+    const contractIcon = (
       <Tooltip label="Contract">
         <span>
           <EntityBase.Icon
@@ -113,6 +88,12 @@ const Icon = (props: IconProps) => {
         </span>
       </Tooltip>
     );
+
+    if (process.browser) {
+      return <IdenticonUniversalProfile address={ props.address.hash } fallbackIcon={ contractIcon }/>;
+    }
+
+    return contractIcon;
   }
 
   return (
