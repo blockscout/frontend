@@ -2,23 +2,13 @@ import { Box } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 
+import type { UPResponse } from '../../../../types/api/universalProfile';
+
 import { getEnvValue } from '../../../../configs/app/utils';
 
 interface Props {
   address: string;
   fallbackIcon: JSX.Element;
-}
-
-type UPResponse = {
-  type: string;
-  LSP3Profile: {
-    name: string;
-    profileImage: {
-      [key: number]: {
-        url: string;
-      };
-    };
-  };
 }
 
 export const IdenticonUniversalProfile: React.FC<Props> = ({ address, fallbackIcon }) => {
