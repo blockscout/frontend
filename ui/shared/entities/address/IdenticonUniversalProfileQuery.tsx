@@ -39,14 +39,18 @@ export const IdenticonUniversalProfile: React.FC<Props> = ({ address, fallbackIc
           const networkId = getEnvValue('NEXT_PUBLIC_NETWORK_ID') || '42';
 
           const url = `${ upApiUrl }/v1/${ networkId }/address/${ address }`;
-          const resp = await fetch(url);
-          const json = await resp.json();
-
-          return json as UPResponse;
+          try {
+            const resp = await fetch(url);
+            const json = await resp.json();
+            return json as UPResponse;
+          } catch (err) {
+            return undefined;
+          }
         },
       });
-
-      setUp(data);
+      if (data !== undefined) {
+        setUp(data);
+      }
     })();
   }, [ address, up, setUp, queryClient ]);
 
@@ -54,11 +58,12 @@ export const IdenticonUniversalProfile: React.FC<Props> = ({ address, fallbackIc
     return fallbackIcon;
   }
 
+  const profileImageUrl = up.LSP3Profile.profileImage === null ? '' : up.LSP3Profile.profileImage[0].url;
   return (
     <Box mr={ 2 } ml={ 1 }>
       <lukso-profile
         size="x-small"
-        profile-url={ up.LSP3Profile.profileImage[0].url }
+        profile-url={ profileImageUrl }
         profile-address={ address }
         has-identicon={ true }
       ></lukso-profile>
