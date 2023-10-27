@@ -1,6 +1,8 @@
 import type { IMessage } from '@ylide/sdk';
 import React from 'react';
 
+import { DEFAULT_CHAINS } from 'ui/shared/forum/SelectBlockchainDropdown';
+
 import useChatsApiFetch from './useChatsApiFetch';
 
 const useChatsGetList = () => {
@@ -27,6 +29,7 @@ const useChatsGetList = () => {
           myAddress,
           offset,
           limit,
+          blockchain: DEFAULT_CHAINS,
         },
       },
     }).then(response => ({
@@ -74,6 +77,7 @@ const useChatsGetMessages = () => {
           recipientAddress,
           offset,
           limit,
+          blockchain: DEFAULT_CHAINS,
         },
       },
     }).then(result => {

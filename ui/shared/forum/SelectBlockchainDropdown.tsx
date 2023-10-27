@@ -14,7 +14,7 @@ export interface SelectBlockchainDropdownProps {
   onChange: (newValue: string) => void;
 }
 
-const DEFAULT_OPTIONS = [
+export const DEFAULT_CHAINS = [
   'ETHEREUM',
   'AVALANCHE',
   'ARBITRUM',
@@ -36,7 +36,7 @@ const DEFAULT_OPTIONS = [
 ];
 
 const SelectBlockchainDropdown = ({ account, options: _options, value, onChange }: SelectBlockchainDropdownProps) => {
-  const options = _options || DEFAULT_OPTIONS;
+  const options = _options || DEFAULT_CHAINS;
   const { isOpen, onToggle, onClose } = useDisclosure();
   const { balances } = useYlide();
 
