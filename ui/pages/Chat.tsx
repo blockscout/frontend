@@ -1,4 +1,4 @@
-import { Flex, HStack, Icon, Spinner, Textarea, VStack, useColorModeValue } from '@chakra-ui/react';
+import { Flex, HStack, Icon, Spinner, Textarea, VStack, useColorModeValue, useToast } from '@chakra-ui/react';
 import { EVMNetwork, EVM_CHAINS, EVM_NAMES } from '@ylide/ethereum';
 import { YLIDE_MAIN_FEED_ID, type IMessage } from '@ylide/sdk';
 import { useRouter } from 'next/router';
@@ -100,6 +100,7 @@ const ChatPageContent = () => {
   }>>([]);
   const [ decodedMessages, setDecodedMessages ] = React.useState<Record<string, IMessageDecodedContent | null>>({});
   const getMessages = ChatsPersonalApi.useGetMessages();
+  const toast = useToast();
 
   const [ replyText, setReplyText ] = React.useState<string>('');
   const [ account, setAccount ] = React.useState<DomainAccount | undefined>(domainAccounts[0]);
@@ -153,10 +154,30 @@ const ChatPageContent = () => {
           setSending(false);
         });
       }, 6000);
-    } catch (err) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
       setSending(false);
+      if (err && typeof err.message === 'string' && err.message.startsWith('ACCOUNT_UNREACHABLE:')) {
+        toast({
+          position: 'top-right',
+          title: 'Error',
+          description: err.message.split('ACCOUNT_UNREACHABLE: ')[1],
+          status: 'error',
+          variant: 'subtle',
+          isClosable: true,
+        });
+      } else {
+        toast({
+          position: 'top-right',
+          title: 'Error',
+          description: (err as ({ payload: string } | undefined))?.payload || 'There was an error while sending message.',
+          status: 'error',
+          variant: 'subtle',
+          isClosable: true,
+        });
+      }
     }
-  }, [ authorAddressString, account, sendMessage, replyText, getMessages, blockchain ]);
+  }, [ authorAddressString, account, sendMessage, replyText, getMessages, blockchain, toast ]);
 
   const handleReplyTextChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setReplyText(e.target.value);

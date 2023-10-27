@@ -7,10 +7,8 @@ import React, { useCallback } from 'react';
 
 import type { DomainAccount } from 'lib/contexts/ylide/types';
 
-// import accountIcon from 'icons/account.svg';
 import arrowIcon from 'icons/arrows/east-mini.svg';
 import bookmarkIcon from 'icons/bookmark.svg';
-import eyeIcon from 'icons/eye.svg';
 import logoutIcon from 'icons/logout.svg';
 import plusIcon from 'icons/plus.svg';
 import { useYlide } from 'lib/contexts/ylide';
@@ -36,10 +34,6 @@ const AccountPlate = ({ account }: { account: DomainAccount }) => {
     router.push({ pathname: '/forum/bookmarks/[hash]', query: { hash: account.account.address.toLowerCase() } });
   }, [ router, account ]);
 
-  const handleWatches = useCallback(() => {
-    router.push({ pathname: '/forum/watches/[hash]', query: { hash: account.account.address.toLowerCase() } });
-  }, [ router, account ]);
-
   const handleLogout = useCallback(() => {
     disconnectAccount(account);
   }, [ account, disconnectAccount ]);
@@ -59,9 +53,6 @@ const AccountPlate = ({ account }: { account: DomainAccount }) => {
           <AddressEntity address={{ hash: account.account.address, name: undefined }} noCopy/>
         </Flex>
         <Flex flexDir="row" gap={ 3 }>
-          <Icon boxSize={ 5 } as={ eyeIcon } cursor="pointer" onClick={ handleWatches } _hover={{
-            color: 'link_hovered',
-          }}/>
           <Icon boxSize={ 5 } as={ bookmarkIcon } cursor="pointer" onClick={ handleBookmarks } _hover={{
             color: 'link_hovered',
           }}/>
