@@ -2,7 +2,6 @@ import { Box, Flex, HStack, Icon } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { TokenType } from 'types/api/token';
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
@@ -36,13 +35,7 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 
-export const tokenTabsByType: Record<TokenType, string> = {
-  'ERC-20': 'tokens_erc20',
-  'ERC-721': 'tokens_erc721',
-  'ERC-1155': 'tokens_erc1155',
-} as const;
-
-const TOKEN_TABS = Object.values(tokenTabsByType);
+const TOKEN_TABS = [ 'tokens_erc20', 'tokens_nfts', 'tokens_nfts_collection', 'tokens_nfts_list' ];
 
 const AddressPageContent = () => {
   const router = useRouter();

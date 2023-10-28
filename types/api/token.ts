@@ -77,3 +77,7 @@ export type TokenInventoryPagination = {
 }
 
 export type TokenVerifiedInfo = Omit<TokenInfoApplication, 'id' | 'status'>;
+
+export type TokenInventoryFilters = {
+  holder_address_hash?: string;
+}
