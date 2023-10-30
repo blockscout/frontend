@@ -84,11 +84,8 @@ export interface AddressNFTsResponse {
 export interface AddressCollectionsResponse {
   items: Array<AddressCollection>;
   next_page_params: {
-    items_count: number;
-    token_name: string | null;
+    token_contract_address_hash: string;
     token_type: TokenType;
-    value: number;
-    fiat_value: string | null;
   } | null;
 }
 

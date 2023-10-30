@@ -1,4 +1,4 @@
-import { Box, Radio, RadioGroup } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -9,6 +9,8 @@ import type { TokenType } from 'types/api/token';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import { getResourceKey } from 'lib/api/useApiQuery';
+import { useAppContext } from 'lib/contexts/app';
+import * as cookies from 'lib/cookies';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
@@ -17,6 +19,7 @@ import { ADDRESS_TOKEN_BALANCE_ERC_20, ADDRESS_NFT_1155, ADDRESS_COLLECTION } fr
 import { generateListStub } from 'stubs/utils';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
+import RadioButtonGroup from 'ui/shared/RadioButtonGroup';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 
 import AddressCollections from './tokens/AddressCollections';
@@ -24,7 +27,7 @@ import AddressNFTs from './tokens/AddressNFTs';
 import ERC20Tokens from './tokens/ERC20Tokens';
 import TokenBalances from './tokens/TokenBalances';
 
-type TNftDisplayType = 'collection' | 'list';
+type TNftDisplayType = 'collections' | 'list';
 
 const TAB_LIST_PROPS = {
   marginBottom: 0,
@@ -50,7 +53,8 @@ const AddressTokens = () => {
 
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
-  const [ nftDisplayType, setNftDisplayType ] = React.useState<TNftDisplayType>('collection');
+  const displayTypeCookie = cookies.get(cookies.NAMES.ADDRESS_NFT_DISPLAY_TYPE, useAppContext().cookies);
+  const [ nftDisplayType, setNftDisplayType ] = React.useState<TNftDisplayType>(displayTypeCookie === 'list' ? 'list' : 'collections');
 
   const tab = getQueryParamString(router.query.tab);
   const hash = getQueryParamString(router.query.hash);
@@ -72,7 +76,7 @@ const AddressTokens = () => {
     pathParams: { hash },
     scrollRef,
     options: {
-      enabled: tab === 'tokens_nfts' && nftDisplayType === 'collection',
+      enabled: tab === 'tokens_nfts' && nftDisplayType === 'collections',
       refetchOnMount: false,
       placeholderData: generateListStub<'address_collections'>(ADDRESS_COLLECTION, 10, { next_page_params: null }),
     },
@@ -153,6 +157,7 @@ const AddressTokens = () => {
   });
 
   const handleNFTsDisplayTypeChange = React.useCallback((val: TNftDisplayType) => {
+    cookies.set(cookies.NAMES.ADDRESS_NFT_DISPLAY_TYPE, val);
     setNftDisplayType(val);
   }, []);
 
@@ -168,10 +173,12 @@ const AddressTokens = () => {
   ];
 
   const nftDisplayTypeRadio = (
-    <RadioGroup onChange={ handleNFTsDisplayTypeChange } value={ nftDisplayType }>
-      <Radio value="collection">Collection</Radio>
-      <Radio value="list">List</Radio>
-    </RadioGroup>
+    <RadioButtonGroup<TNftDisplayType>
+      onChange={ handleNFTsDisplayTypeChange }
+      defaultValue={ nftDisplayType }
+      name="type"
+      options={ [ { title: 'By collections', value: 'collections' }, { title: 'List', value: 'list' } ] }
+    />
   );
 
   let pagination: PaginationParams | undefined;
@@ -201,6 +208,7 @@ const AddressTokens = () => {
         size="sm"
         tabListProps={ isMobile ? TAB_LIST_PROPS_MOBILE : TAB_LIST_PROPS }
         rightSlot={ rightSlot }
+        rightSlotProps={ tab !== 'tokens_erc20' && !isMobile ? { flexGrow: 1, display: 'flex', justifyContent: 'space-between', ml: 8 } : {} }
         stickyEnabled={ !isMobile }
       />
     </>
