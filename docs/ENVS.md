@@ -515,7 +515,7 @@ For the smart contract addresses which are [Safe{Core} accounts](https://safe.gl
 
 ### SUAVE chain
 
-For blockchains that implementing SUAVE architecture additional fields will be shown on the transaction page ("Allowed peekers", "Computor"). Users also will be able to see the list of all transaction for a particular Computor in the separate view.
+For blockchains that implementing SUAVE architecture additional fields will be shown on the transaction page ("Allowed peekers", "Kettle"). Users also will be able to see the list of all transaction for a particular Kettle in the separate view.
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |

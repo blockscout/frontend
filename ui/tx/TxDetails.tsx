@@ -225,13 +225,13 @@ const TxDetails = () => {
         ) }
         { data.execution_node && (
           <DetailsInfoItem
-            title="Computor"
+            title="Kettle"
             hint="Node that carried out the confidential computation"
             isLoading={ isPlaceholderData }
           >
             <AddressEntity
               address={ data.execution_node }
-              href={ route({ pathname: '/txs/computor/[hash]', query: { hash: data.execution_node.hash } }) }
+              href={ route({ pathname: '/txs/kettle/[hash]', query: { hash: data.execution_node.hash } }) }
             />
           </DetailsInfoItem>
         ) }
