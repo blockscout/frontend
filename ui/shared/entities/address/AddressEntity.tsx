@@ -1,7 +1,8 @@
 import type { As } from '@chakra-ui/react';
 import { Box, Flex, Skeleton, Tooltip, chakra, VStack } from '@chakra-ui/react';
+import { useQueryClient } from '@tanstack/react-query';
 import _omit from 'lodash/omit';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import type { AddressParam } from 'types/api/addressParams';
 
@@ -14,9 +15,10 @@ import * as EntityBase from 'ui/shared/entities/base/components';
 
 import { getIconProps } from '../base/utils';
 import AddressIdenticon from './AddressIdenticon';
-import { IdenticonUniversalProfile } from './IdenticonUniversalProfileQuery';
+import { getUniversalProfile, IdenticonUniversalProfile } from './IdenticonUniversalProfileQuery';
 if (process.browser) {
   import('@lukso/web-components/dist/components/lukso-profile');
+  import('@lukso/web-components/dist/components/lukso-username');
 }
 
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'address'>;
@@ -89,7 +91,7 @@ const Icon = (props: IconProps) => {
       </Tooltip>
     );
 
-    if (process.browser) {
+    if (process.env.NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE === 'universal_profile') {
       return <IdenticonUniversalProfile address={ props.address.hash } fallbackIcon={ contractIcon }/>;
     }
 
@@ -111,6 +113,8 @@ const Icon = (props: IconProps) => {
 type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'address'>;
 
 const Content = chakra((props: ContentProps) => {
+  const queryClient = useQueryClient();
+  const [ upName, setUpName ] = useState('');
   if (props.address.name) {
     const label = (
       <VStack gap={ 0 } py={ 1 } color="inherit">
@@ -125,6 +129,29 @@ const Content = chakra((props: ContentProps) => {
           { props.address.name }
         </Skeleton>
       </Tooltip>
+    );
+  }
+  useEffect(() => {
+    (async() => {
+      const upData = await getUniversalProfile(props.address.hash, queryClient);
+      if (upData === undefined) {
+        return;
+      }
+      if (upData.LSP3Profile !== undefined) {
+        setUpName(upData.LSP3Profile.name);
+      }
+    })();
+  }, [ props.address.hash, queryClient ]);
+
+  if (upName !== '') {
+    return (
+      <lukso-username
+        name={ upName }
+        address={ props.address.hash }
+        hide-prefix={ true }
+        size="medium"
+        slice-by=""
+      ></lukso-username>
     );
   }
 
