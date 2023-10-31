@@ -18,7 +18,6 @@ import AddressIdenticon from './AddressIdenticon';
 import { getUniversalProfile, IdenticonUniversalProfile } from './IdenticonUniversalProfileQuery';
 if (process.browser) {
   import('@lukso/web-components/dist/components/lukso-profile');
-  import('@lukso/web-components/dist/components/lukso-username');
 }
 
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'address'>;
