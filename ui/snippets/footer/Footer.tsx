@@ -107,7 +107,8 @@ const Footer = () => {
   return (
     <Flex
       direction={{ base: 'column', lg: 'row' }}
-      p={{ base: 4, lg: 9 }}
+      px={{ base: 4, lg: 12 }}
+      py={{ base: 4, lg: 9 }}
       borderTop="1px solid"
       borderColor="divider"
       as="footer"
@@ -149,8 +150,20 @@ const Footer = () => {
           { config.UI.footer.links && <Text fontWeight={ 500 } mb={ 3 }>Blockscout</Text> }
           <Grid
             gap={ 1 }
-            gridTemplateColumns={ config.UI.footer.links ? '160px' : { base: 'repeat(auto-fill, 160px)', lg: 'repeat(4, 160px)' } }
-            gridTemplateRows={{ base: 'auto', lg: config.UI.footer.links ? 'auto' : 'repeat(2, auto)' }}
+            gridTemplateColumns={
+              config.UI.footer.links ?
+                '160px' :
+                {
+                  base: 'repeat(auto-fill, 160px)',
+                  lg: 'repeat(2, 160px)',
+                  xl: 'repeat(4, 160px)',
+                }
+            }
+            gridTemplateRows={{
+              base: 'auto',
+              lg: config.UI.footer.links ? 'auto' : 'repeat(4, auto)',
+              xl: config.UI.footer.links ? 'auto' : 'repeat(2, auto)',
+            }}
             gridAutoFlow={{ base: 'row', lg: config.UI.footer.links ? 'row' : 'column' }}
             mt={{ base: 0, lg: config.UI.footer.links ? 0 : '100px' }}
           >
