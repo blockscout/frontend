@@ -22,7 +22,7 @@ const Home = () => {
         minW={{ base: 'unset', lg: '900px' }}
         data-label="hero plate"
       >
-        <Flex mb={{ base: 6, lg: 8 }} justifyContent="space-between">
+        <Flex mb={{ base: 6, lg: 8 }} justifyContent="space-between" alignItems="center">
           <Heading
             as="h1"
             size={{ base: 'md', lg: 'xl' }}
@@ -33,7 +33,7 @@ const Home = () => {
             Welcome to { config.chain.name } explorer
           </Heading>
           <Box display={{ base: 'none', lg: 'block' }}>
-            { config.features.account.isEnabled && <ProfileMenuDesktop/> }
+            { config.features.account.isEnabled && <ProfileMenuDesktop isHomePage/> }
           </Box>
         </Flex>
         <LightMode>

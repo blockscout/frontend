@@ -1,5 +1,5 @@
-import { Box, Drawer, DrawerOverlay, DrawerContent, DrawerBody, useDisclosure, Button } from '@chakra-ui/react';
-import type { ButtonProps } from '@chakra-ui/react';
+import { Drawer, DrawerOverlay, DrawerContent, DrawerBody, useDisclosure, IconButton, useColorModeValue } from '@chakra-ui/react';
+import type { IconButtonProps } from '@chakra-ui/react';
 import React from 'react';
 
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
@@ -29,7 +29,7 @@ const ProfileMenuMobile = () => {
     }
   }, [ data, error?.status, isLoading ]);
 
-  const buttonProps: Partial<ButtonProps> = (() => {
+  const iconButtonProps: Partial<IconButtonProps> = (() => {
     if (hasMenu || !loginUrl) {
       return {};
     }
@@ -41,19 +41,25 @@ const ProfileMenuMobile = () => {
     };
   })();
 
+  const themedBackground = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
+  const themedBorderColor = useColorModeValue('gray.300', 'gray.700');
+  const themedColor = useColorModeValue('blackAlpha.800', 'gray.400');
+
   return (
     <>
-      <Box padding={ 2 } onClick={ hasMenu ? onOpen : undefined }>
-        <Button
-          variant="unstyled"
-          display="block"
-          boxSize="24px"
-          flexShrink={ 0 }
-          { ...buttonProps }
-        >
-          <UserAvatar size={ 24 }/>
-        </Button>
-      </Box>
+      <IconButton
+        aria-label="profile menu"
+        icon={ <UserAvatar size={ 20 }/> }
+        variant={ data?.avatar ? 'subtle' : 'outline' }
+        colorScheme="gray"
+        boxSize="40px"
+        flexShrink={ 0 }
+        bg={ data?.avatar ? themedBackground : undefined }
+        color={ themedColor }
+        borderColor={ !data?.avatar ? themedBorderColor : undefined }
+        onClick={ hasMenu ? onOpen : undefined }
+        { ...iconButtonProps }
+      />
       { hasMenu && (
         <Drawer
           isOpen={ isOpen }
