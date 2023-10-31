@@ -9,7 +9,7 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import TxsContent from 'ui/txs/TxsContent';
 
-const ComputorTxs = () => {
+const KettleTxs = () => {
   const router = useRouter();
 
   const hash = getQueryParamString(router.query.hash);
@@ -39,4 +39,4 @@ const ComputorTxs = () => {
   );
 };
 
-export default ComputorTxs;
+export default KettleTxs;

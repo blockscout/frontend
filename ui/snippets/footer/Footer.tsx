@@ -117,7 +117,7 @@ const Footer = () => {
       <Box flexGrow="1" mb={{ base: 8, lg: 0 }}>
         <Flex flexWrap="wrap" columnGap={ 8 } rowGap={ 6 }>
           <ColorModeToggler/>
-          { !config.UI.indexingAlert.isHidden && <IntTxsIndexingStatus/> }
+          { !config.UI.indexingAlert.intTxs.isHidden && <IntTxsIndexingStatus/> }
           <NetworkAddToWallet/>
         </Flex>
         <Box mt={{ base: 5, lg: '44px' }}>

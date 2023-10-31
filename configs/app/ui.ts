@@ -53,7 +53,12 @@ const UI = Object.freeze({
   },
   views,
   indexingAlert: {
-    isHidden: getEnvValue('NEXT_PUBLIC_HIDE_INDEXING_ALERT'),
+    blocks: {
+      isHidden: getEnvValue('NEXT_PUBLIC_HIDE_INDEXING_ALERT_BLOCKS') === 'true' ? true : false,
+    },
+    intTxs: {
+      isHidden: getEnvValue('NEXT_PUBLIC_HIDE_INDEXING_ALERT_INT_TXS') === 'true' ? true : false,
+    },
   },
   maintenanceAlert: {
     message: getEnvValue('NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE'),
