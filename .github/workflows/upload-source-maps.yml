@@ -2,11 +2,8 @@ name: Upload source maps to Sentry
 on:
   workflow_call:
   workflow_dispatch:
-  pull_request:
-    types: [ opened, synchronize ]
 
 env:
-    NEXT_PUBLIC_GIT_TAG: v1.16.0
     SENTRY_ORG: ${{ vars.SENTRY_ORG }}
     SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT }}
     SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
@@ -16,6 +13,7 @@ jobs:
     build_and_upload:
         name: Build app with source maps and upload to Sentry
         runs-on: ubuntu-latest
+        if: ${{ github.ref_type == 'tag' }}
         steps:
             - name: Checkout repo
               uses: actions/checkout@v3
@@ -48,4 +46,4 @@ jobs:
               run: yarn sentry-cli sourcemaps inject ./.next
 
             - name: Upload source maps to Sentry
-              run: yarn sentry-cli sourcemaps upload --release=${{ env.NEXT_PUBLIC_GIT_TAG }} --validate ./.next
+              run: yarn sentry-cli sourcemaps upload --release=${{ github.ref_name }} --validate ./.next
