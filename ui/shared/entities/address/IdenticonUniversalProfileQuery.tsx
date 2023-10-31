@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 
 import type { UPResponse } from '../../../../types/api/universalProfile';
 
+import config from '../../../../configs/app';
 import { getEnvValue } from '../../../../configs/app/utils';
 
 interface Props {
@@ -13,6 +14,9 @@ interface Props {
 }
 
 export const getUniversalProfile = async(address: string, queryClient: QueryClient) => {
+  if (config.UI.views.address.identiconType !== 'universal_profile') {
+    return undefined;
+  }
   const query = queryClient.getQueryData<UPResponse>([ 'universalProfile', { address: address } ]);
   if (query !== undefined) {
     return query;

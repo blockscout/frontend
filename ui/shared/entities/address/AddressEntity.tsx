@@ -91,11 +91,7 @@ const Icon = (props: IconProps) => {
       </Tooltip>
     );
 
-    if (process.env.NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE === 'universal_profile') {
-      return <IdenticonUniversalProfile address={ props.address.hash } fallbackIcon={ contractIcon }/>;
-    }
-
-    return contractIcon;
+    return <IdenticonUniversalProfile address={ props.address.hash } fallbackIcon={ contractIcon }/>;
   }
 
   return (
@@ -131,7 +127,7 @@ const Content = chakra((props: ContentProps) => {
       </Tooltip>
     );
   }
-  useEffect(() => {
+  useEffect(() => { // this causes a sort of loading state where the address suddenly switches to up name - needs fix?
     (async() => {
       const upData = await getUniversalProfile(props.address.hash, queryClient);
       if (upData === undefined) {
@@ -143,22 +139,11 @@ const Content = chakra((props: ContentProps) => {
     })();
   }, [ props.address.hash, queryClient ]);
 
-  if (upName !== '') {
-    return (
-      <lukso-username
-        name={ upName }
-        address={ props.address.hash }
-        hide-prefix={ true }
-        size="medium"
-        slice-by=""
-      ></lukso-username>
-    );
-  }
-
+  const displayedName = upName !== '' ? `@${ upName } (${ props.address.hash })` : props.address.hash;
   return (
     <EntityBase.Content
       { ...props }
-      text={ props.address.hash }
+      text={ displayedName }
     />
   );
 });
