@@ -49,7 +49,7 @@ export default function useFetchTokens({ hash }: Props) {
   }, [ erc1155query.data, erc20query.data, erc721query.data ]);
 
   return {
-    isLoading: erc20query.isLoading || erc721query.isLoading || erc1155query.isLoading,
+    isPending: erc20query.isPending || erc721query.isPending || erc1155query.isPending,
     isError: erc20query.isError || erc721query.isError || erc1155query.isError,
     data,
     refetch,

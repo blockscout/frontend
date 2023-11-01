@@ -18,17 +18,17 @@ const IndexingBlocksAlert = () => {
   const cookiesString = appProps.cookies;
   const [ hasAlertCookie ] = React.useState(cookies.get(cookies.NAMES.INDEXING_ALERT, cookiesString) === 'true');
 
-  const { data, isError, isLoading } = useApiQuery('homepage_indexing_status', {
+  const { data, isError, isPending } = useApiQuery('homepage_indexing_status', {
     queryOptions: {
       enabled: !config.UI.indexingAlert.blocks.isHidden,
     },
   });
 
   React.useEffect(() => {
-    if (!isLoading && !isError) {
+    if (!isPending && !isError) {
       cookies.set(cookies.NAMES.INDEXING_ALERT, data.finished_indexing_blocks ? 'false' : 'true');
     }
-  }, [ data, isError, isLoading ]);
+  }, [ data, isError, isPending ]);
 
   const queryClient = useQueryClient();
 
@@ -62,7 +62,7 @@ const IndexingBlocksAlert = () => {
     return null;
   }
 
-  if (isLoading) {
+  if (isPending) {
     return hasAlertCookie ? <Skeleton h={{ base: '96px', lg: '48px' }} w="100%"/> : null;
   }
 

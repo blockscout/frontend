@@ -29,7 +29,7 @@ const ContractWrite = ({ addressHash, isProxy, isCustomAbi }: Props) => {
   const { chain } = useNetwork();
   const { switchNetworkAsync } = useSwitchNetwork();
 
-  const { data, isLoading, isError } = useApiQuery(isProxy ? 'contract_methods_write_proxy' : 'contract_methods_write', {
+  const { data, isPending, isError } = useApiQuery(isProxy ? 'contract_methods_write_proxy' : 'contract_methods_write', {
     pathParams: { hash: addressHash },
     queryParams: {
       is_custom_abi: isCustomAbi ? 'true' : 'false',
@@ -99,7 +99,7 @@ const ContractWrite = ({ addressHash, isProxy, isCustomAbi }: Props) => {
     return <DataFetchAlert/>;
   }
 
-  if (isLoading) {
+  if (isPending) {
     return <ContentLoader/>;
   }
 

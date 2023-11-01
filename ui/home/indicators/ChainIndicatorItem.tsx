@@ -33,7 +33,7 @@ const ChainIndicatorItem = ({ id, title, value, icon, isSelected, onClick, stats
       return null;
     }
 
-    if (stats.isLoading) {
+    if (stats.isPending) {
       return (
         <Skeleton
           h={ 3 }

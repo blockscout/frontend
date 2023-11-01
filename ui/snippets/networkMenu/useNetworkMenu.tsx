@@ -13,7 +13,7 @@ export default function useNetworkMenu() {
   const { isOpen, onClose, onOpen, onToggle } = useDisclosure();
 
   const apiFetch = useApiFetch();
-  const { isLoading, data } = useQuery<unknown, ResourceError<unknown>, Array<FeaturedNetwork>>({
+  const { isPending, data } = useQuery<unknown, ResourceError<unknown>, Array<FeaturedNetwork>>({
     queryKey: [ 'featured-network' ],
     queryFn: async() => apiFetch(config.UI.sidebar.featuredNetworks || '', undefined, { resource: 'featured-network' }),
     enabled: Boolean(config.UI.sidebar.featuredNetworks) && isOpen,
@@ -25,8 +25,8 @@ export default function useNetworkMenu() {
     onClose,
     onOpen,
     onToggle,
-    isLoading,
+    isPending,
     data,
     availableTabs: NETWORK_GROUPS.filter((tab) => data?.some(({ group }) => group === tab)),
-  }), [ isOpen, onClose, onOpen, onToggle, data, isLoading ]);
+  }), [ isOpen, onClose, onOpen, onToggle, data, isPending ]);
 }

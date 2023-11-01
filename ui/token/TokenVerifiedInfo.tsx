@@ -15,14 +15,14 @@ interface Props {
 
 const TokenVerifiedInfo = ({ verifiedInfoQuery }: Props) => {
 
-  const { data, isLoading, isError } = verifiedInfoQuery;
+  const { data, isPending, isError } = verifiedInfoQuery;
 
   const content = (() => {
     if (!config.features.verifiedTokens.isEnabled) {
       return null;
     }
 
-    if (isLoading) {
+    if (isPending) {
       return (
         <>
           <Skeleton w="100px" h="30px" borderRadius="base"/>

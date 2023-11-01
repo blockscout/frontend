@@ -61,7 +61,7 @@ export default function useTxsSort(
   }, []);
 
   return React.useMemo(() => {
-    if (queryResult.isError || queryResult.isLoading) {
+    if (queryResult.isError || queryResult.isPending) {
       return { ...queryResult, setSortByField, setSortByValue, sorting };
     }
 
