@@ -20,6 +20,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:jest/recommended',
     'plugin:playwright/playwright-test',
+    'plugin:@tanstack/eslint-plugin-query/recommended',
   ],
   plugins: [
     'es5',
@@ -31,6 +32,7 @@ module.exports = {
     'eslint-plugin-import-helpers',
     'jest',
     'eslint-plugin-no-cyrillic-string',
+    '@tanstack/query',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
