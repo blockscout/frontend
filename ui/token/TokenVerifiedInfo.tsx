@@ -5,12 +5,13 @@ import React from 'react';
 import type { TokenVerifiedInfo as TTokenVerifiedInfo } from 'types/api/token';
 
 import config from 'configs/app';
+import type { ResourceError } from 'lib/api/resources';
 import LinkExternal from 'ui/shared/LinkExternal';
 
 import TokenProjectInfo from './TokenProjectInfo';
 
 interface Props {
-  verifiedInfoQuery: UseQueryResult<TTokenVerifiedInfo>;
+  verifiedInfoQuery: UseQueryResult<TTokenVerifiedInfo, ResourceError<unknown>>;
 }
 
 const TokenVerifiedInfo = ({ verifiedInfoQuery }: Props) => {
