@@ -44,7 +44,7 @@ const AddressCollections = ({ collectionsQuery, address }: Props) => {
     const hasOverload = Number(item.amount) > item.token_instances.length;
     return (
       <Box key={ item.token.address + index } mb={ 6 }>
-        <Flex mb={ 3 }>
+        <Flex mb={ 3 } flexWrap="wrap">
           <TokenEntity
             width="auto"
             noSymbol
@@ -53,11 +53,11 @@ const AddressCollections = ({ collectionsQuery, address }: Props) => {
             noCopy
             fontWeight="600"
           />
-          <Skeleton isLoaded={ !isPlaceholderData } >
+          <Skeleton isLoaded={ !isPlaceholderData } mr={ 3 }>
             <Text variant="secondary" whiteSpace="pre">{ ` - ${ Number(item.amount).toLocaleString() } item${ Number(item.amount) > 1 ? 's' : '' }` }</Text>
           </Skeleton>
           { hasOverload && (
-            <LinkInternal href={ collectionUrl } ml={ 3 } isLoading={ isPlaceholderData }>
+            <LinkInternal href={ collectionUrl } isLoading={ isPlaceholderData }>
               <Skeleton isLoaded={ !isPlaceholderData }>View in collection</Skeleton>
             </LinkInternal>
           ) }

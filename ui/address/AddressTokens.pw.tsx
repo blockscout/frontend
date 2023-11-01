@@ -13,6 +13,8 @@ import AddressTokens from './AddressTokens';
 const ADDRESS_HASH = addressMock.withName.hash;
 const API_URL_ADDRESS = buildApiUrl('address', { hash: ADDRESS_HASH });
 const API_URL_TOKENS = buildApiUrl('address_tokens', { hash: ADDRESS_HASH });
+const API_URL_NFT = buildApiUrl('address_nfts', { hash: ADDRESS_HASH });
+const API_URL_COLLECTIONS = buildApiUrl('address_collections', { hash: ADDRESS_HASH });
 
 const nextPageParams = {
   items_count: 50,
@@ -52,6 +54,14 @@ const test = base.extend({
       status: 200,
       body: JSON.stringify(response1155),
     }));
+    await page.route(API_URL_NFT, (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify(tokensMock.nfts),
+    }));
+    await page.route(API_URL_COLLECTIONS, (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify(tokensMock.collections),
+    }));
 
     use(page);
   },
@@ -76,10 +86,10 @@ test('erc20 +@dark-mode', async({ mount }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('erc721 +@dark-mode', async({ mount }) => {
+test('collections +@dark-mode', async({ mount }) => {
   const hooksConfig = {
     router: {
-      query: { hash: ADDRESS_HASH, tab: 'tokens_erc721' },
+      query: { hash: ADDRESS_HASH, tab: 'tokens_nfts' },
       isReady: true,
     },
   };
@@ -95,10 +105,10 @@ test('erc721 +@dark-mode', async({ mount }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('erc1155 +@dark-mode', async({ mount }) => {
+test('nfts +@dark-mode', async({ mount }) => {
   const hooksConfig = {
     router: {
-      query: { hash: ADDRESS_HASH, tab: 'tokens_erc1155' },
+      query: { hash: ADDRESS_HASH, tab: 'tokens_nfts' },
       isReady: true,
     },
   };
@@ -110,6 +120,8 @@ test('erc1155 +@dark-mode', async({ mount }) => {
     </TestApp>,
     { hooksConfig },
   );
+
+  await component.getByText('List').click();
 
   await expect(component).toHaveScreenshot();
 });
@@ -136,10 +148,10 @@ test.describe('mobile', () => {
     await expect(component).toHaveScreenshot();
   });
 
-  test('erc721', async({ mount }) => {
+  test('nfts', async({ mount }) => {
     const hooksConfig = {
       router: {
-        query: { hash: ADDRESS_HASH, tab: 'tokens_erc721' },
+        query: { hash: ADDRESS_HASH, tab: 'tokens_nfts' },
         isReady: true,
       },
     };
@@ -152,13 +164,15 @@ test.describe('mobile', () => {
       { hooksConfig },
     );
 
+    await component.getByLabel('list').click();
+
     await expect(component).toHaveScreenshot();
   });
 
-  test('erc1155', async({ mount }) => {
+  test('collections', async({ mount }) => {
     const hooksConfig = {
       router: {
-        query: { hash: ADDRESS_HASH, tab: 'tokens_erc1155' },
+        query: { hash: ADDRESS_HASH, tab: 'tokens_nfts' },
         isReady: true,
       },
     };

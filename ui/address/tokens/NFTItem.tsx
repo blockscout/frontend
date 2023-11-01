@@ -31,7 +31,7 @@ const NFTItem = ({ token, value, isLoading, withTokenLink, ...tokenInstance }: P
         />
       </Link>
       <Flex justifyContent="space-between" w="100%">
-        <Flex ml={ 1 }>
+        <Flex ml={ 1 } overflow="hidden">
           <Text whiteSpace="pre" variant="secondary">ID# </Text>
           <NftEntity hash={ token.address } id={ tokenInstance.id } isLoading={ isLoading } noIcon/>
         </Flex>

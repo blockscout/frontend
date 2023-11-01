@@ -1,4 +1,4 @@
-import type { AddressTokenBalance } from 'types/api/address';
+import type { AddressCollectionsResponse, AddressNFTsResponse, AddressTokenBalance } from 'types/api/address';
 
 import * as tokens from 'mocks/tokens/tokenInfo';
 import * as tokenInstance from 'mocks/tokens/tokenInstance';
@@ -116,4 +116,50 @@ export const erc1155List = {
     erc1155a,
     erc1155b,
   ],
+};
+
+export const nfts: AddressNFTsResponse = {
+  items: [
+    {
+      ...tokenInstance.base,
+      token_type: 'ERC-1155',
+      value: '11',
+    },
+    {
+      ...tokenInstance.unique,
+      token_type: 'ERC-721',
+      value: '1',
+    },
+  ],
+  next_page_params: null,
+};
+
+const nftInstance = {
+  ...tokenInstance.base,
+  token_type: 'ERC-1155',
+  value: '11',
+};
+
+export const collections: AddressCollectionsResponse = {
+  items: [
+    {
+      token: tokens.tokenInfoERC1155a,
+      amount: '100',
+      token_instances: Array(5).fill(nftInstance),
+    },
+    {
+      token: tokens.tokenInfoERC20LongSymbol,
+      amount: '100',
+      token_instances: Array(5).fill(nftInstance),
+    },
+    {
+      token: tokens.tokenInfoERC1155WithoutName,
+      amount: '1',
+      token_instances: [ nftInstance ],
+    },
+  ],
+  next_page_params: {
+    token_contract_address_hash: '123',
+    token_type: 'ERC-1155',
+  },
 };

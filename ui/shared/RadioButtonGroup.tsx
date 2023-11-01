@@ -1,10 +1,18 @@
-import { ButtonGroup, Button, Box, useRadio, useRadioGroup, useColorModeValue } from '@chakra-ui/react';
+import { ButtonGroup, Button, Flex, Icon, useRadio, useRadioGroup, useColorModeValue } from '@chakra-ui/react';
 import type { UseRadioProps } from '@chakra-ui/react';
 import React from 'react';
 
-type RadioButtonProps = UseRadioProps & {
-  children: React.ReactNode;
+type RadioItemProps = {
+  title: string;
+  icon?: React.FC<React.SVGAttributes<SVGElement>>;
+  onlyIcon: false | undefined;
+} | {
+  title: string;
+  icon: React.FC<React.SVGAttributes<SVGElement>>;
+  onlyIcon: true;
 }
+
+type RadioButtonProps = UseRadioProps & RadioItemProps;
 
 const RadioButton = (props: RadioButtonProps) => {
   const { getInputProps, getRadioProps } = useRadio(props);
@@ -13,30 +21,52 @@ const RadioButton = (props: RadioButtonProps) => {
   const input = getInputProps();
   const checkbox = getRadioProps();
 
+  const styleProps = {
+    flex: 1,
+    variant: 'outline',
+    fontWeight: 500,
+    cursor: props.isChecked ? 'initial' : 'pointer',
+    borderColor: buttonColor,
+    backgroundColor: props.isChecked ? buttonColor : 'none',
+    _hover: {
+      borderColor: buttonColor,
+      ...(props.isChecked ? {} : { color: 'link_hovered' }),
+    },
+    _active: {
+      backgroundColor: 'none',
+    },
+    ...(props.isChecked ? { color: 'text' } : {}),
+  };
+
+  if (props.onlyIcon) {
+    return (
+      <Button
+        as="label"
+        aria-label={ props.title }
+        { ...styleProps }
+      >
+        <input { ...input }/>
+        <Flex
+          { ...checkbox }
+        >
+          <Icon as={ props.icon } boxSize={ 5 }/>
+        </Flex>
+      </Button>
+    );
+  }
+
   return (
     <Button
       as="label"
-      variant="outline"
-      fontWeight={ 500 }
-      cursor={ props.isChecked ? 'initial' : 'pointer' }
-      borderColor={ buttonColor }
-      _hover={{
-        borderColor: buttonColor,
-        ...(props.isChecked ? {} : { color: 'link_hovered' }),
-
-      }}
-      _active={{
-        backgroundColor: 'none',
-      }}
-      backgroundColor={ props.isChecked ? buttonColor : 'none' }
-      { ...(props.isChecked ? { color: 'text' } : {}) }
+      leftIcon={ props.icon ? <Icon as={ props.icon } boxSize={ 5 }/> : undefined }
+      { ...styleProps }
     >
       <input { ...input }/>
-      <Box
+      <Flex
         { ...checkbox }
       >
-        { props.children }
-      </Box>
+        { props.title }
+      </Flex>
     </Button>
   );
 };
@@ -45,7 +75,7 @@ type RadioButtonGroupProps<T extends string> = {
   onChange: (value: T) => void;
   name: string;
   defaultValue: string;
-  options: Array<{title: string; value: T}>;
+  options: Array<{ value: T } & RadioItemProps>;
 }
 
 const RadioButtonGroup = <T extends string>({ onChange, name, defaultValue, options }: RadioButtonGroupProps<T>) => {
@@ -54,10 +84,10 @@ const RadioButtonGroup = <T extends string>({ onChange, name, defaultValue, opti
   const group = getRootProps();
 
   return (
-    <ButtonGroup { ...group } isAttached size="sm">
+    <ButtonGroup { ...group } isAttached size="sm" display="grid" gridTemplateColumns="1fr 1fr">
       { options.map((option) => {
         const props = getRadioProps({ value: option.value });
-        return <RadioButton { ...props } key={ option.value }>{ option.title }</RadioButton>;
+        return <RadioButton { ...props } key={ option.value } { ...option }/>;
       }) }
     </ButtonGroup>
   );
