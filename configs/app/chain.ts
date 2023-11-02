@@ -17,6 +17,7 @@ const chain = Object.freeze({
   rpcUrl: getEnvValue('NEXT_PUBLIC_NETWORK_RPC_URL'),
   isTestnet: getEnvValue('NEXT_PUBLIC_IS_TESTNET') === 'true',
   verificationType: getEnvValue('NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE') || 'mining',
+  nearNetwork: getEnvValue('NEXT_PUBLIC_NEAR_NETWORK'),
 });
 
 export default chain;

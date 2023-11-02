@@ -1,0 +1,22 @@
+[
+  {
+    "title": "Aurora",
+    "url": "https://explorer.aurora.dev/",
+    "group": "Mainnets"
+  },
+  {
+    "title": "Aurora (old explorer)",
+    "url": "https://explorer.old.aurora.dev/",
+    "group": "Mainnets"
+  },
+  {
+    "title": "Aurora testnet",
+    "url": "https://explorer.testnet.aurora.dev/",
+    "group": "Testnets"
+  },
+  {
+    "title": "Aurora testnet (old explorer)",
+    "url": "https://explorer.old.testnet.aurora.dev/",
+    "group": "Testnets"
+  }
+]
