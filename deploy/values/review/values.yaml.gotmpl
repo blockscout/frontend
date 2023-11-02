@@ -20,6 +20,7 @@ stats:
   enabled: false
 frontend:
   enabled: true
+  replicaCount: 1
   image:
     tag: review-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
     pullPolicy: Always
