@@ -120,7 +120,7 @@ const AddressTokens = () => {
 
   const rightSlot = (
     <>
-      { tab !== 'tokens_erc20' && nftDisplayTypeRadio }
+      { tab !== 'tokens' && tab !== 'tokens_erc20' && nftDisplayTypeRadio }
       { pagination.isVisible && !isMobile && <Pagination { ...pagination }/> }
     </>
   );
