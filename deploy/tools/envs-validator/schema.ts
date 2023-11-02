@@ -19,7 +19,7 @@ import type { WalletType } from '../../../types/client/wallets';
 import { SUPPORTED_WALLETS } from '../../../types/client/wallets';
 import type { CustomLink, CustomLinksGroup } from '../../../types/footerLinks';
 import type { ChainIndicatorId } from '../../../types/homepage';
-import { type NetworkVerificationType, type NetworkExplorer, type FeaturedNetwork, NETWORK_GROUPS } from '../../../types/networks';
+import { type NetworkVerificationType, type NetworkExplorer, type FeaturedNetwork, type NearNetworkType, NETWORK_GROUPS } from '../../../types/networks';
 import type { AddressViewId } from '../../../types/views/address';
 import { ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from '../../../types/views/address';
 import { BLOCK_FIELDS_IDS } from '../../../types/views/block';
@@ -328,6 +328,7 @@ const schema = yup
     NEXT_PUBLIC_NETWORK_GOVERNANCE_TOKEN_SYMBOL: yup.string(),
     NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE: yup.string<NetworkVerificationType>().oneOf([ 'validation', 'mining' ]),
     NEXT_PUBLIC_IS_TESTNET: yup.boolean(),
+    NEXT_PUBLIC_NEAR_NETWORK: yup.string<NearNetworkType>().oneOf([ 'mainnet', 'testnet' ]),
 
     // 3. API configuration
     NEXT_PUBLIC_API_PROTOCOL: yup.string().oneOf(protocols),
