@@ -1,17 +1,22 @@
-import { Box } from '@chakra-ui/react';
+import { Box, HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { NFTTokenType } from 'types/api/token';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import listIcon from 'icons/apps.svg';
 import collectionIcon from 'icons/collection.svg';
 import { useAppContext } from 'lib/contexts/app';
 import * as cookies from 'lib/cookies';
+import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import { ADDRESS_TOKEN_BALANCE_ERC_20, ADDRESS_NFT_1155, ADDRESS_COLLECTION } from 'stubs/address';
 import { generateListStub } from 'stubs/utils';
+import PopoverFilter from 'ui/shared/filters/PopoverFilter';
+import TokenTypeFilter from 'ui/shared/filters/TokenTypeFilter';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import RadioButtonGroup from 'ui/shared/RadioButtonGroup';
@@ -25,16 +30,17 @@ import TokenBalances from './tokens/TokenBalances';
 type TNftDisplayType = 'collection' | 'list';
 
 const TAB_LIST_PROPS = {
-  marginBottom: 0,
+  my: 3,
   py: 5,
-  marginTop: 3,
   columnGap: 3,
 };
 
 const TAB_LIST_PROPS_MOBILE = {
-  mt: 8,
+  my: 8,
   columnGap: 3,
 };
+
+const getTokenFilterValue = (getFilterValuesFromQuery<NFTTokenType>).bind(null, NFT_TOKEN_TYPE_IDS);
 
 const AddressTokens = () => {
   const router = useRouter();
@@ -44,6 +50,7 @@ const AddressTokens = () => {
 
   const displayTypeCookie = cookies.get(cookies.NAMES.ADDRESS_NFT_DISPLAY_TYPE, useAppContext().cookies);
   const [ nftDisplayType, setNftDisplayType ] = React.useState<TNftDisplayType>(displayTypeCookie === 'list' ? 'list' : 'collection');
+  const [ tokenTypes, setTokenTypes ] = React.useState<Array<NFTTokenType> | undefined>(getTokenFilterValue(router.query.type) || []);
 
   const tab = getQueryParamString(router.query.tab);
   const hash = getQueryParamString(router.query.hash);
@@ -69,6 +76,7 @@ const AddressTokens = () => {
       refetchOnMount: false,
       placeholderData: generateListStub<'address_collections'>(ADDRESS_COLLECTION, 10, { next_page_params: null }),
     },
+    filters: { type: tokenTypes },
   });
 
   const nftsQuery = useQueryWithPages({
@@ -80,12 +88,25 @@ const AddressTokens = () => {
       refetchOnMount: false,
       placeholderData: generateListStub<'address_nfts'>(ADDRESS_NFT_1155, 10, { next_page_params: null }),
     },
+    filters: { type: tokenTypes },
   });
 
   const handleNFTsDisplayTypeChange = React.useCallback((val: TNftDisplayType) => {
     cookies.set(cookies.NAMES.ADDRESS_NFT_DISPLAY_TYPE, val);
     setNftDisplayType(val);
   }, []);
+
+  const handleTokenTypesChange = React.useCallback((value: Array<NFTTokenType>) => {
+    nftsQuery.onFilterChange({ type: value });
+    collectionsQuery.onFilterChange({ type: value });
+    setTokenTypes(value);
+  }, [ nftsQuery, collectionsQuery ]);
+
+  const nftTypeFilter = (
+    <PopoverFilter isActive={ tokenTypes && tokenTypes.length > 0 } contentProps={{ w: '200px' }} appliedFiltersNum={ tokenTypes?.length }>
+      <TokenTypeFilter<NFTTokenType> nftOnly onChange={ handleTokenTypesChange } defaultValue={ tokenTypes }/>
+    </PopoverFilter>
+  );
 
   const tabs = [
     { id: 'tokens_erc20', title: 'ERC-20', component: <ERC20Tokens tokensQuery={ erc20Query }/> },
@@ -120,7 +141,10 @@ const AddressTokens = () => {
 
   const rightSlot = (
     <>
-      { tab !== 'tokens' && tab !== 'tokens_erc20' && nftDisplayTypeRadio }
+      <HStack spacing={ 3 }>
+        { tab !== 'tokens' && tab !== 'tokens_erc20' && nftDisplayTypeRadio }
+        { tab !== 'tokens' && tab !== 'tokens_erc20' && nftTypeFilter }
+      </HStack>
       { pagination.isVisible && !isMobile && <Pagination { ...pagination }/> }
     </>
   );

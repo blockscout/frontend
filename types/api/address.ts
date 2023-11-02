@@ -3,7 +3,7 @@ import type { Transaction } from 'types/api/transaction';
 import type { UserTags } from './addressParams';
 import type { Block } from './block';
 import type { InternalTransaction } from './internalTransaction';
-import type { TokenInfo, TokenInstance, TokenType } from './token';
+import type { NFTTokenType, TokenInfo, TokenInstance, TokenType } from './token';
 import type { TokenTransfer, TokenTransferPagination } from './tokenTransfer';
 
 export interface Address extends UserTags {
@@ -124,6 +124,10 @@ export type AddressTokenTransferFilters = {
 
 export type AddressTokensFilter = {
   type: TokenType;
+}
+
+export type AddressNFTTokensFilter = {
+  type: Array<NFTTokenType> | undefined;
 }
 
 export interface AddressCoinBalanceHistoryItem {

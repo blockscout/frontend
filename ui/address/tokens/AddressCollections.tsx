@@ -44,7 +44,7 @@ const AddressCollections = ({ collectionsQuery, address }: Props) => {
     const hasOverload = Number(item.amount) > item.token_instances.length;
     return (
       <Box key={ item.token.address + index } mb={ 6 }>
-        <Flex mb={ 3 } flexWrap="wrap">
+        <Flex mb={ 3 } flexWrap="wrap" lineHeight="30px">
           <TokenEntity
             width="auto"
             noSymbol

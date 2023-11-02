@@ -17,6 +17,7 @@ type RadioButtonProps = UseRadioProps & RadioItemProps;
 const RadioButton = (props: RadioButtonProps) => {
   const { getInputProps, getRadioProps } = useRadio(props);
   const buttonColor = useColorModeValue('blue.50', 'gray.800');
+  const checkedTextColor = useColorModeValue('blue.700', 'gray.50');
 
   const input = getInputProps();
   const checkbox = getRadioProps();
@@ -35,7 +36,7 @@ const RadioButton = (props: RadioButtonProps) => {
     _active: {
       backgroundColor: 'none',
     },
-    ...(props.isChecked ? { color: 'text' } : {}),
+    ...(props.isChecked ? { color: checkedTextColor } : {}),
   };
 
   if (props.onlyIcon) {
@@ -58,7 +59,7 @@ const RadioButton = (props: RadioButtonProps) => {
   return (
     <Button
       as="label"
-      leftIcon={ props.icon ? <Icon as={ props.icon } boxSize={ 5 }/> : undefined }
+      leftIcon={ props.icon ? <Icon as={ props.icon } boxSize={ 5 } mr={ -1 }/> : undefined }
       { ...styleProps }
     >
       <input { ...input }/>
