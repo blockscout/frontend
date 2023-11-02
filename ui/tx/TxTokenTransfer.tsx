@@ -45,7 +45,7 @@ const TxTokenTransfer = () => {
     setTypeFilter(nextValue);
   }, [ tokenTransferQuery ]);
 
-  if (!txsInfo.isLoading && !txsInfo.isPlaceholderData && !txsInfo.isError && !txsInfo.data.status) {
+  if (!txsInfo.isPending && !txsInfo.isPlaceholderData && !txsInfo.isError && !txsInfo.data.status) {
     return txsInfo.socketStatus ? <TxSocketAlert status={ txsInfo.socketStatus }/> : <TxPendingAlert/>;
   }
 

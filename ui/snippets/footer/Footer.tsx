@@ -96,13 +96,12 @@ const Footer = () => {
 
   const fetch = useFetch();
 
-  const { isLoading, data: linksData } = useQuery<unknown, ResourceError<unknown>, Array<CustomLinksGroup>>(
-    [ 'footer-links' ],
-    async() => fetch(config.UI.footer.links || '', undefined, { resource: 'footer-links' }),
-    {
-      enabled: Boolean(config.UI.footer.links),
-      staleTime: Infinity,
-    });
+  const { isPending, data: linksData } = useQuery<unknown, ResourceError<unknown>, Array<CustomLinksGroup>>({
+    queryKey: [ 'footer-links' ],
+    queryFn: async() => fetch(config.UI.footer.links || '', undefined, { resource: 'footer-links' }),
+    enabled: Boolean(config.UI.footer.links),
+    staleTime: Infinity,
+  });
 
   return (
     <Flex
@@ -170,7 +169,7 @@ const Footer = () => {
             { BLOCKSCOUT_LINKS.map(link => <FooterLinkItem { ...link } key={ link.text }/>) }
           </Grid>
         </Box>
-        { config.UI.footer.links && isLoading && (
+        { config.UI.footer.links && isPending && (
           Array.from(Array(3)).map((i, index) => (
             <Box minW="160px" key={ index }>
               <Skeleton w="120px" h="20px" mb={ 6 }/>

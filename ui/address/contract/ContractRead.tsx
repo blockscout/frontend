@@ -27,7 +27,7 @@ const ContractRead = ({ addressHash, isProxy, isCustomAbi }: Props) => {
   const apiFetch = useApiFetch();
   const account = useWatchAccount();
 
-  const { data, isLoading, isError } = useApiQuery(isProxy ? 'contract_methods_read_proxy' : 'contract_methods_read', {
+  const { data, isPending, isError } = useApiQuery(isProxy ? 'contract_methods_read_proxy' : 'contract_methods_read', {
     pathParams: { hash: addressHash },
     queryParams: {
       is_custom_abi: isCustomAbi ? 'true' : 'false',
@@ -83,7 +83,7 @@ const ContractRead = ({ addressHash, isProxy, isCustomAbi }: Props) => {
     return <DataFetchAlert/>;
   }
 
-  if (isLoading) {
+  if (isPending) {
     return <ContentLoader/>;
   }
 

@@ -103,7 +103,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
   const bgColor = useColorModeValue('white', 'gray.900');
 
   const content = (() => {
-    if (query.isLoading || marketplaceApps.isPlaceholderData) {
+    if (query.isPending || marketplaceApps.isPlaceholderData) {
       return <ContentLoader text="We are searching, please wait... " fontSize="sm"/>;
     }
 

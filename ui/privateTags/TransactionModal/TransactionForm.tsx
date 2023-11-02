@@ -47,22 +47,23 @@ const TransactionForm: React.FC<Props> = ({ data, onClose, onSuccess, setAlertVi
   const queryClient = useQueryClient();
   const apiFetch = useApiFetch();
 
-  const { mutate } = useMutation((formData: Inputs) => {
-    const body = {
-      name: formData?.tag,
-      transaction_hash: formData?.transaction,
-    };
-    const isEdit = data?.id;
+  const { mutate } = useMutation({
+    mutationFn: (formData: Inputs) => {
+      const body = {
+        name: formData?.tag,
+        transaction_hash: formData?.transaction,
+      };
+      const isEdit = data?.id;
 
-    if (isEdit) {
-      return apiFetch('private_tags_tx', {
-        pathParams: { id: data.id },
-        fetchParams: { method: 'PUT', body },
-      });
-    }
+      if (isEdit) {
+        return apiFetch('private_tags_tx', {
+          pathParams: { id: data.id },
+          fetchParams: { method: 'PUT', body },
+        });
+      }
 
-    return apiFetch('private_tags_tx', { fetchParams: { method: 'POST', body } });
-  }, {
+      return apiFetch('private_tags_tx', { fetchParams: { method: 'POST', body } });
+    },
     onError: (error: ResourceErrorAccount<TransactionTagErrors>) => {
       setPending(false);
       const errorMap = error.payload?.errors;
@@ -76,7 +77,7 @@ const TransactionForm: React.FC<Props> = ({ data, onClose, onSuccess, setAlertVi
       }
     },
     onSuccess: async() => {
-      await queryClient.refetchQueries([ resourceKey('private_tags_tx') ]);
+      await queryClient.refetchQueries({ queryKey: [ resourceKey('private_tags_tx') ] });
       await onSuccess();
       onClose();
       setPending(false);
