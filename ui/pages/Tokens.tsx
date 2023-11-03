@@ -105,7 +105,7 @@ const Tokens = () => {
     </PopoverFilter>
   ) : (
     <PopoverFilter isActive={ tokenTypes && tokenTypes.length > 0 } contentProps={{ w: '200px' }} appliedFiltersNum={ tokenTypes?.length }>
-      <TokenTypeFilter onChange={ handleTokenTypesChange } defaultValue={ tokenTypes } nftOnly={ false }/>
+      <TokenTypeFilter<TokenType> onChange={ handleTokenTypesChange } defaultValue={ tokenTypes } nftOnly={ false }/>
     </PopoverFilter>
   );
 

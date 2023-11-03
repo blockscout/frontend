@@ -2,6 +2,7 @@ import { Grid } from '@chakra-ui/react';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import { apos } from 'lib/html-entities';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -11,9 +12,10 @@ import NFTItem from './NFTItem';
 
 type Props = {
   tokensQuery: QueryWithPagesResult<'address_nfts'>;
+  hasActiveFilters: boolean;
 }
 
-const AddressNFTs = ({ tokensQuery }: Props) => {
+const AddressNFTs = ({ tokensQuery, hasActiveFilters }: Props) => {
   const isMobile = useIsMobile();
 
   const { isError, isPlaceholderData, data, pagination } = tokensQuery;
@@ -53,6 +55,10 @@ const AddressNFTs = ({ tokensQuery }: Props) => {
       emptyText="There are no tokens of selected type."
       content={ content }
       actionBar={ actionBar }
+      filterProps={{
+        emptyFilteredText: `Couldn${ apos }t find any token that matches your query.`,
+        hasActiveFilters,
+      }}
     />
   );
 };

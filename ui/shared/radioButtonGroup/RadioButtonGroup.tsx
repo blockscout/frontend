@@ -85,7 +85,7 @@ const RadioButtonGroup = <T extends string>({ onChange, name, defaultValue, opti
   const group = getRootProps();
 
   return (
-    <ButtonGroup { ...group } isAttached size="sm" display="grid" gridTemplateColumns="1fr 1fr">
+    <ButtonGroup { ...group } isAttached size="sm" display="grid" gridTemplateColumns={ `repeat(${ options.length }, 1fr)` }>
       { options.map((option) => {
         const props = getRadioProps({ value: option.value });
         return <RadioButton { ...props } key={ option.value } { ...option }/>;

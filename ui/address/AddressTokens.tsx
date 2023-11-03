@@ -19,7 +19,7 @@ import PopoverFilter from 'ui/shared/filters/PopoverFilter';
 import TokenTypeFilter from 'ui/shared/filters/TokenTypeFilter';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import RadioButtonGroup from 'ui/shared/RadioButtonGroup';
+import RadioButtonGroup from 'ui/shared/radioButtonGroup/RadioButtonGroup';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 
 import AddressCollections from './tokens/AddressCollections';
@@ -73,7 +73,6 @@ const AddressTokens = () => {
     scrollRef,
     options: {
       enabled: tab === 'tokens_nfts' && nftDisplayType === 'collection',
-      refetchOnMount: false,
       placeholderData: generateListStub<'address_collections'>(ADDRESS_COLLECTION, 10, { next_page_params: null }),
     },
     filters: { type: tokenTypes },
@@ -85,7 +84,6 @@ const AddressTokens = () => {
     scrollRef,
     options: {
       enabled: tab === 'tokens_nfts' && nftDisplayType === 'list',
-      refetchOnMount: false,
       placeholderData: generateListStub<'address_nfts'>(ADDRESS_NFT_1155, 10, { next_page_params: null }),
     },
     filters: { type: tokenTypes },
@@ -108,14 +106,16 @@ const AddressTokens = () => {
     </PopoverFilter>
   );
 
+  const hasActiveFilters = Boolean(tokenTypes?.length);
+
   const tabs = [
     { id: 'tokens_erc20', title: 'ERC-20', component: <ERC20Tokens tokensQuery={ erc20Query }/> },
     {
       id: 'tokens_nfts',
       title: 'NFTs',
       component: nftDisplayType === 'list' ?
-        <AddressNFTs tokensQuery={ nftsQuery }/> :
-        <AddressCollections collectionsQuery={ collectionsQuery } address={ hash }/>,
+        <AddressNFTs tokensQuery={ nftsQuery } hasActiveFilters={ hasActiveFilters }/> :
+        <AddressCollections collectionsQuery={ collectionsQuery } address={ hash } hasActiveFilters={ hasActiveFilters }/>,
     },
   ];
 
@@ -139,11 +139,17 @@ const AddressTokens = () => {
     pagination = erc20Query.pagination;
   }
 
+  const hasNftData =
+    (!nftsQuery.isPlaceholderData && nftsQuery.data?.items.length) ||
+    (!collectionsQuery.isPlaceholderData && collectionsQuery.data?.items.length);
+
+  const isNftTab = tab !== 'tokens' && tab !== 'tokens_erc20';
+
   const rightSlot = (
     <>
       <HStack spacing={ 3 }>
-        { tab !== 'tokens' && tab !== 'tokens_erc20' && nftDisplayTypeRadio }
-        { tab !== 'tokens' && tab !== 'tokens_erc20' && nftTypeFilter }
+        { isNftTab && (hasNftData || hasActiveFilters) && nftDisplayTypeRadio }
+        { isNftTab && (hasNftData || hasActiveFilters) && nftTypeFilter }
       </HStack>
       { pagination.isVisible && !isMobile && <Pagination { ...pagination }/> }
     </>

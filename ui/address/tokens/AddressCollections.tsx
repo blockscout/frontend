@@ -4,6 +4,7 @@ import React from 'react';
 import { route } from 'nextjs-routes';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import { apos } from 'lib/html-entities';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
@@ -18,9 +19,10 @@ import NFTItemContainer from './NFTItemContainer';
 type Props = {
   collectionsQuery: QueryWithPagesResult<'address_collections'>;
   address: string;
+  hasActiveFilters: boolean;
 }
 
-const AddressCollections = ({ collectionsQuery, address }: Props) => {
+const AddressCollections = ({ collectionsQuery, address, hasActiveFilters }: Props) => {
   const isMobile = useIsMobile();
 
   const { isError, isPlaceholderData, data, pagination } = collectionsQuery;
@@ -56,11 +58,9 @@ const AddressCollections = ({ collectionsQuery, address }: Props) => {
           <Skeleton isLoaded={ !isPlaceholderData } mr={ 3 }>
             <Text variant="secondary" whiteSpace="pre">{ ` - ${ Number(item.amount).toLocaleString() } item${ Number(item.amount) > 1 ? 's' : '' }` }</Text>
           </Skeleton>
-          { hasOverload && (
-            <LinkInternal href={ collectionUrl } isLoading={ isPlaceholderData }>
-              <Skeleton isLoaded={ !isPlaceholderData }>View in collection</Skeleton>
-            </LinkInternal>
-          ) }
+          <LinkInternal href={ collectionUrl } isLoading={ isPlaceholderData }>
+            <Skeleton isLoaded={ !isPlaceholderData }>View in collection</Skeleton>
+          </LinkInternal>
         </Flex>
         <Grid
           w="100%"
@@ -105,6 +105,10 @@ const AddressCollections = ({ collectionsQuery, address }: Props) => {
       emptyText="There are no tokens of selected type."
       content={ content }
       actionBar={ actionBar }
+      filterProps={{
+        emptyFilteredText: `Couldn${ apos }t find any token that matches your query.`,
+        hasActiveFilters,
+      }}
     />
   );
 };

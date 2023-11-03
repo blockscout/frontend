@@ -6,7 +6,7 @@ type Props = {
   className?: string;
 };
 
-const NFTItem = ({ children, className }: Props) => {
+const NFTItemContainer = ({ children, className }: Props) => {
   return (
     <Box
       w={{ base: '100%', lg: '210px' }}
@@ -24,4 +24,4 @@ const NFTItem = ({ children, className }: Props) => {
   );
 };
 
-export default chakra(NFTItem);
+export default chakra(NFTItemContainer);
