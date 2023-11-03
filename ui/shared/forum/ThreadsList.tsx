@@ -1,4 +1,4 @@
-import { Flex, useColorModeValue, Text, Icon, VStack } from '@chakra-ui/react';
+import { Flex, useColorModeValue, Text, Icon, VStack, Popover, PopoverTrigger, PopoverContent, PopoverBody, Button } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -10,6 +10,8 @@ import bookmarkIcon from 'icons/bookmark.svg';
 import eyeIconFilled from 'icons/eye_filled.svg';
 import eyeIcon from 'icons/eye.svg';
 import ForumPersonalApi from 'lib/api/ylideApi/ForumPersonalApi';
+import ForumTelegramApi from 'lib/api/ylideApi/ForumTelegramApi';
+import { useYlide } from 'lib/contexts/ylide';
 
 import AddressEntity from '../entities/address/AddressEntity';
 import PopoverByAccount from './PopoverByAccount';
@@ -53,6 +55,9 @@ export const ThreadsListEntry = ({
   const hoverIconColor = useColorModeValue('gray.900', 'gray.100');
   const bookmarkThread = ForumPersonalApi.useBookmarkThread();
   const watchThread = ForumPersonalApi.useWatchThread();
+  const enablePushes = ForumTelegramApi.useGetLink();
+  const { addressesWithPushes, accounts: { domainAccounts }, setAccountPushState } = useYlide();
+  const [ pushPopoverVisible, setPushPopoverVisible ] = React.useState<boolean>(false);
 
   const handleClick = React.useCallback(() => {
     router.push({
@@ -75,7 +80,10 @@ export const ThreadsListEntry = ({
       enable,
     });
     onWatch?.(feedId, account.account.address.toLowerCase(), enable);
-  }, [ watchThread, feedId, onWatch, watched ]);
+    if (!addressesWithPushes.includes(account.account.address.toLowerCase())) {
+      setPushPopoverVisible(true);
+    }
+  }, [ watchThread, feedId, onWatch, watched, addressesWithPushes ]);
 
   const handleToggleBookmark = React.useCallback(async(account: DomainAccount) => {
     if (!account.backendAuthKey) {
@@ -89,6 +97,33 @@ export const ThreadsListEntry = ({
     });
     onBookmark?.(feedId, account.account.address.toLowerCase(), enable);
   }, [ bookmarkThread, feedId, onBookmark, bookmarked ]);
+
+  const handleActivatePushes = React.useCallback(async(e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const url = await enablePushes(domainAccounts.map(d => d.account.address.toLowerCase()));
+    window.open(url, '_blank');
+    domainAccounts.forEach(account => {
+      setAccountPushState(account.account.address.toLowerCase(), true);
+    });
+    setPushPopoverVisible(false);
+  }, [ enablePushes, domainAccounts, setAccountPushState ]);
+
+  const watchContent = (
+    <PopoverByAccount
+      onSelect={ handleToggleWatch }
+      title="Select account to watch"
+      marks={ watched }
+    >
+      <Icon
+        as={ isWatched ? eyeIconFilled : eyeIcon }
+        boxSize={ 5 }
+        color={ iconColor }
+        cursor="pointer"
+        _hover={{ color: hoverIconColor }}
+      />
+    </PopoverByAccount>
+  );
 
   return (
     <Flex
@@ -128,19 +163,21 @@ export const ThreadsListEntry = ({
           { lastReplyDate && <Text as="span" opacity={ 0.8 }>&nbsp;last reply { new Date(lastReplyDate * 1000).toLocaleDateString() }</Text> }
         </Flex>
         <Flex mt={{ base: 4, sm: 0 }} flexDir="row" justifyContent={{ sm: 'flex-start', base: 'center' }} gap={ 2 }>
-          <PopoverByAccount
-            onSelect={ handleToggleWatch }
-            title="Select account to watch"
-            marks={ watched }
-          >
-            <Icon
-              as={ isWatched ? eyeIconFilled : eyeIcon }
-              boxSize={ 5 }
-              color={ iconColor }
-              cursor="pointer"
-              _hover={{ color: hoverIconColor }}
-            />
-          </PopoverByAccount>
+          <Popover isOpen={ pushPopoverVisible } placement="bottom-start">
+            <PopoverTrigger>
+              <Flex>
+                { watchContent }
+              </Flex>
+            </PopoverTrigger>
+            <PopoverContent>
+              <PopoverBody>
+                <Flex flexDir="column" gap={ 4 }>
+                  <Flex fontSize={ 16 } textAlign="center">Enable notifications on Telegram to get notified of new replies to this thread</Flex>
+                  <Button onClick={ handleActivatePushes }>Enable notifications</Button>
+                </Flex>
+              </PopoverBody>
+            </PopoverContent>
+          </Popover>
           <PopoverByAccount
             onSelect={ handleToggleBookmark }
             title="Select account to bookmark"

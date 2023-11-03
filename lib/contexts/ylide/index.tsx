@@ -19,6 +19,7 @@ import { blockchainMeta } from './constants';
 import { useYlideAccountModal, useYlideSelectWalletModal } from './modals';
 import { useYlideAccounts } from './useYlideAccounts';
 import { useYlideFaucet } from './useYlideFaucet';
+import { useYlidePushes } from './useYlidePushes';
 
 export enum MessageDecodedTextDataType {
   PLAIN = 'plain',
@@ -459,6 +460,7 @@ const useYlideService = () => {
   const walletConnectState = useWalletConnectState(ylide, initialized, wallets, setWallets);
   const accounts = useAccountController(ylide, keysRegistry, wallets, initialized, walletConnectState.disconnectWalletConnect);
   const balances = useBalances(ylide, accounts.domainAccounts);
+  const { addressesWithPushes, setAccountPushState } = useYlidePushes();
 
   const switchEVMChain = useCallback(async(wallet: AbstractWalletController, needNetwork: EVMNetwork) => {
     try {
@@ -654,6 +656,8 @@ const useYlideService = () => {
     accounts,
     faucet,
     balances,
+    addressesWithPushes,
+    setAccountPushState,
     broadcastMessage,
     sendMessage,
     decodeBroadcastMessage,

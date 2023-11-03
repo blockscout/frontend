@@ -54,3 +54,8 @@ export interface YlideSavedAccount {
   wallet: string;
   backendAuthKey: string | null;
 }
+
+export interface YlideAccountPushes {
+  lowercaseAddress: string;
+  isEnabled: boolean;
+}

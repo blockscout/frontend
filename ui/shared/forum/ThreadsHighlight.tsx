@@ -27,7 +27,7 @@ const ThreadsHighlight = ({ title, items }: { title: string; items: Array<ForumT
           <Link
             href={ `/forum/${ item.topicSlug }/${ item.slug }/` }
             display="flex"
-            key={ item.id }
+            key={ item.slug }
             flexDir="row"
             color={ threadColor }
             _hover={{ color: 'link_hovered', textDecor: 'underline' }}

@@ -67,12 +67,12 @@ const useThreadsContent = (tokens?: Array<string>, topicSlug?: string, criteria:
     }
     setThreads(data => ({ ...data, loading: true }));
     const sort: [string, 'ASC' | 'DESC'] = sortsMap[sorting];
-    getThreads(debouncedFilter, sort).then(result => {
+    getThreads(debouncedFilter, sort, [ (page - 1) * PAGE_SIZE, page * PAGE_SIZE ]).then(result => {
       setThreads(data => ({ ...data, loading: false, data: result }));
     }).catch(err => {
       setThreads(data => ({ ...data, loading: false, error: err }));
     });
-  }, [ getThreads, initialized, debouncedFilter, sortsMap, sorting ]);
+  }, [ getThreads, initialized, debouncedFilter, sortsMap, sorting, page ]);
 
   const handleBookmarked = useCallback((threadId: string, address: string, enabled: boolean) => {
     setThreads({

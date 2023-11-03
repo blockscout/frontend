@@ -72,12 +72,12 @@ const useTopicsContent = (tokens?: Array<string>, criteria: 'all' | 'bookmarked'
     }
     setTopics(data => ({ ...data, loading: true }));
     const sort: [string, 'ASC' | 'DESC'] = sortsMap[sorting];
-    getTopics(debouncedFilter, sort).then(result => {
+    getTopics(debouncedFilter, sort, [ (page - 1) * PAGE_SIZE, page * PAGE_SIZE ]).then(result => {
       setTopics(data => ({ ...data, loading: false, data: result }));
     }).catch(err => {
       setTopics(data => ({ ...data, loading: false, error: err }));
     });
-  }, [ getTopics, initialized, debouncedFilter, sorting, sortsMap, reloadTick ]);
+  }, [ getTopics, initialized, debouncedFilter, sorting, sortsMap, reloadTick, page ]);
 
   const handleBookmarked = useCallback((topicId: string, address: string, enabled: boolean) => {
     setTopics({

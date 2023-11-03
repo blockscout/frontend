@@ -23,7 +23,7 @@ const useForumBackendGetMe = (tokens: Array<string>) => {
 const useForumBackendGetTopics = (tokens?: Array<string>, criteria: 'all' | 'bookmarked' | 'watched' = 'all') => {
   const fetch = useForumApiFetch(tokens);
 
-  return React.useCallback((query: string, sort: [string, 'ASC' | 'DESC']) => {
+  return React.useCallback((query: string, sort: [string, 'ASC' | 'DESC'], range: [number, number]) => {
     const queryParams: Record<string, string> = query ? {
       sort: JSON.stringify(sort),
       search: query,
@@ -36,6 +36,7 @@ const useForumBackendGetTopics = (tokens?: Array<string>, criteria: 'all' | 'boo
     if (criteria === 'watched') {
       queryParams.onlyWatched = 'true';
     }
+    queryParams.range = JSON.stringify(range);
     return fetch<PaginatedArray<ForumTopic>>({
       url: '/topic/',
       queryParams,
@@ -68,7 +69,7 @@ const useForumBackendGetThreads = (
 ) => {
   const fetch = useForumApiFetch(tokens);
 
-  return React.useCallback((query: string, sort: [string, 'ASC' | 'DESC']) => {
+  return React.useCallback((query: string, sort: [string, 'ASC' | 'DESC'], range: [number, number]) => {
     const queryParams: Record<string, string> = query ? {
       sort: JSON.stringify(sort),
       search: query,
@@ -87,6 +88,7 @@ const useForumBackendGetThreads = (
     if (tag) {
       queryParams.tags = tag;
     }
+    queryParams.range = JSON.stringify(range);
     return fetch<PaginatedArray<ForumThread>>({
       url: `/thread/`,
       queryParams,
