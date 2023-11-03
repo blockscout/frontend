@@ -1,5 +1,6 @@
 import type { As } from '@chakra-ui/react';
 import { Box, Flex, Skeleton, Tooltip, chakra, VStack } from '@chakra-ui/react';
+import { useQueryClient } from '@tanstack/react-query';
 import _omit from 'lodash/omit';
 import React, { useEffect, useState } from 'react';
 
@@ -14,7 +15,7 @@ import * as EntityBase from 'ui/shared/entities/base/components';
 
 import { getIconProps } from '../base/utils';
 import AddressIdenticon from './AddressIdenticon';
-import makeUniversalProfileIdenticon from './IdenticonUniversalProfile';
+import { getUniversalProfile, IdenticonUniversalProfile } from './IdenticonUniversalProfileQuery';
 if (process.browser) {
   import('@lukso/web-components/dist/components/lukso-profile');
 }
@@ -39,17 +40,6 @@ type IconProps = Pick<EntityProps, 'address' | 'isLoading' | 'iconSize' | 'noIco
 };
 
 const Icon = (props: IconProps) => {
-  const [ upUrl, setUpUrl ] = useState('');
-  useEffect(() => {
-    (async() => {
-      const result = await makeUniversalProfileIdenticon(props.address.hash);
-
-      setUpUrl(result);
-
-      return;
-    })();
-  });
-
   if (props.noIcon) {
     return null;
   }
@@ -88,21 +78,7 @@ const Icon = (props: IconProps) => {
       );
     }
 
-    if (upUrl !== '' && process.browser) {
-      console.log(`Generating profile for url ${ upUrl } and ${ props.address.hash }`);
-      return (
-        <Box mr={ 2 } ml={ 1 }>
-          <lukso-profile
-            size="x-small"
-            profile-url={ upUrl }
-            profile-address={ props.address.hash }
-            has-identicon={ true }
-          ></lukso-profile>
-        </Box>
-      );
-    }
-
-    return (
+    const contractIcon = (
       <Tooltip label="Contract">
         <span>
           <EntityBase.Icon
@@ -113,6 +89,8 @@ const Icon = (props: IconProps) => {
         </span>
       </Tooltip>
     );
+
+    return <IdenticonUniversalProfile address={ props.address.hash } fallbackIcon={ contractIcon }/>;
   }
 
   return (
@@ -130,6 +108,8 @@ const Icon = (props: IconProps) => {
 type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'address'>;
 
 const Content = chakra((props: ContentProps) => {
+  const queryClient = useQueryClient();
+  const [ upName, setUpName ] = useState('');
   if (props.address.name) {
     const label = (
       <VStack gap={ 0 } py={ 1 } color="inherit">
@@ -146,11 +126,23 @@ const Content = chakra((props: ContentProps) => {
       </Tooltip>
     );
   }
+  useEffect(() => { // this causes a sort of loading state where the address suddenly switches to up name - needs fix?
+    (async() => {
+      const upData = await getUniversalProfile(props.address.hash, queryClient);
+      if (upData === undefined) {
+        return;
+      }
+      if (upData.LSP3Profile !== undefined) {
+        setUpName(upData.LSP3Profile.name);
+      }
+    })();
+  }, [ props.address.hash, queryClient ]);
 
+  const displayedName = upName !== '' ? `@${ upName } (${ props.address.hash })` : props.address.hash;
   return (
     <EntityBase.Content
       { ...props }
-      text={ props.address.hash }
+      text={ displayedName }
     />
   );
 });

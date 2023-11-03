@@ -44,8 +44,8 @@ declare global {
   }
 
   interface Window {
-    ethereum?: any;
-    lukso?: any;
-    grecaptcha?: any;
+    ethereum?: never;
+    lukso?: never;
+    grecaptcha?: never;
   }
 }
