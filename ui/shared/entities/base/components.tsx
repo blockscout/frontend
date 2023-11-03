@@ -61,7 +61,7 @@ const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink }:
     return <Skeleton isLoaded={ !isLoading } { ...styles }>{ children }</Skeleton>;
   }
 
-  const Component = isExternal ? LinkExternal : LinkInternal;
+  const Component: React.FC<LinkBaseProps> = isExternal ? LinkExternal : LinkInternal;
 
   return (
     <Component
