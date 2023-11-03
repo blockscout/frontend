@@ -111,7 +111,7 @@ const TokenTransferTableItem = ({
         />
       </Td>
       <Td isNumeric verticalAlign="top">
-        <Skeleton isLoaded={ !isLoading } display="inline-block" my="7px">
+        <Skeleton isLoaded={ !isLoading } display="inline-block" my="7px" wordBreak="break-all">
           { 'value' in total && BigNumber(total.value).div(BigNumber(10 ** Number(total.decimals))).dp(8).toFormat() }
         </Skeleton>
       </Td>
