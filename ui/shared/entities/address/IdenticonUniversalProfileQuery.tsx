@@ -58,9 +58,13 @@ export const IdenticonUniversalProfile: React.FC<Props> = ({ address, fallbackIc
     return fallbackIcon;
   }
 
-  const lastImageIndex = Object.values(up.LSP3Profile.profileImage).length - 1;
+  let profileImageUrl = '';
+  if (up.LSP3Profile.profileImage !== null) {
+    const lastImageIndex = Object.values(up.LSP3Profile.profileImage).length - 1;
 
-  const profileImageUrl = up.hasProfileImage ? up.LSP3Profile.profileImage[lastImageIndex].url : '';
+    profileImageUrl = up.hasProfileImage ? up.LSP3Profile.profileImage[lastImageIndex].url : '';
+  }
+
   return (
     <Box mr={ 2 }>
       <lukso-profile
