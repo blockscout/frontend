@@ -32,7 +32,7 @@ export const base: Block = {
       type: 'POA Mania Reward',
     },
     {
-      reward: '1026853607500000000',
+      reward: '1026853607510000000',
       type: 'Validator Reward',
     },
     {

@@ -12,7 +12,7 @@ import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import LinkInternal from 'ui/shared/LinkInternal';
 
-const feature = config.features.rollup;
+const feature = config.features.optimisticRollup;
 
 type Props = { item: L2TxnBatchesItem; isLoading?: boolean };
 

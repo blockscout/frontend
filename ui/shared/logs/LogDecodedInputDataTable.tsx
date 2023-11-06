@@ -4,9 +4,8 @@ import React from 'react';
 import type { DecodedInput } from 'types/api/decodedInput';
 import type { ArrayElement } from 'types/utils';
 
-import Address from 'ui/shared/address/Address';
-import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
 interface Props {
@@ -33,10 +32,10 @@ const Row = ({ name, type, indexed, value, isLoading }: ArrayElement<DecodedInpu
   const content = (() => {
     if (type === 'address' && typeof value === 'string') {
       return (
-        <Address justifyContent="space-between">
-          <AddressLink type="address" hash={ value } isLoading={ isLoading }/>
-          <CopyToClipboard text={ value } isLoading={ isLoading }/>
-        </Address>
+        <AddressEntity
+          address={{ hash: value, name: '', implementation_name: null, is_contract: false, is_verified: false }}
+          isLoading={ isLoading }
+        />
       );
     }
 

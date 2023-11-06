@@ -4,19 +4,28 @@ import React from 'react';
 
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import useLoginUrl from 'lib/hooks/useLoginUrl';
+import * as mixpanel from 'lib/mixpanel/index';
 import UserAvatar from 'ui/shared/UserAvatar';
 import ProfileMenuContent from 'ui/snippets/profileMenu/ProfileMenuContent';
 
 const ProfileMenuDesktop = () => {
-  const { data, error, isLoading } = useFetchProfileInfo();
+  const { data, error, isPending } = useFetchProfileInfo();
   const loginUrl = useLoginUrl();
   const [ hasMenu, setHasMenu ] = React.useState(false);
 
   React.useEffect(() => {
-    if (!isLoading) {
+    if (!isPending) {
       setHasMenu(Boolean(data));
     }
-  }, [ data, error?.status, isLoading ]);
+  }, [ data, error?.status, isPending ]);
+
+  const handleSignInClick = React.useCallback(() => {
+    mixpanel.logEvent(
+      mixpanel.EventTypes.ACCOUNT_ACCESS,
+      { Action: 'Auth0 init' },
+      { send_immediately: true },
+    );
+  }, []);
 
   const buttonProps: Partial<ButtonProps> = (() => {
     if (hasMenu || !loginUrl) {
@@ -26,6 +35,7 @@ const ProfileMenuDesktop = () => {
     return {
       as: 'a',
       href: loginUrl,
+      onClick: handleSignInClick,
     };
   })();
 
@@ -34,8 +44,8 @@ const ProfileMenuDesktop = () => {
       <PopoverTrigger>
         <Button
           variant="unstyled"
-          display="inline-flex"
-          height="auto"
+          display="block"
+          boxSize="50px"
           flexShrink={ 0 }
           { ...buttonProps }
         >

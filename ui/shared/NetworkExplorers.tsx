@@ -12,10 +12,9 @@ interface Props {
   className?: string;
   type: keyof TNetworkExplorer['paths'];
   pathParam: string;
-  hideText?: boolean;
 }
 
-const NetworkExplorers = ({ className, type, pathParam, hideText }: Props) => {
+const NetworkExplorers = ({ className, type, pathParam }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
 
   const explorersLinks = config.UI.explorers.items
@@ -41,11 +40,11 @@ const NetworkExplorers = ({ className, type, pathParam, hideText }: Props) => {
           aria-label="Verify in other explorers"
           fontWeight={ 500 }
           px={ 2 }
-          h="30px"
+          h="32px"
+          flexShrink={ 0 }
         >
-          <Icon as={ explorerIcon } boxSize={ 5 } mr={ hideText ? 0 : 1 }/>
-          { !hideText && <span>Explorers</span> }
-          <Icon as={ arrowIcon } transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 } ml={ 1 }/>
+          <Icon as={ explorerIcon } boxSize={ 5 }/>
+          <Icon as={ arrowIcon } transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 }/>
         </Button>
       </PopoverTrigger>
       <PopoverContent w="240px">

@@ -1,15 +1,15 @@
-import { Box, Flex, Td, Tr, Skeleton } from '@chakra-ui/react';
+import { Flex, Td, Tr, Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
 
-import Address from 'ui/shared/address/Address';
+import config from 'configs/app';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
-import AddressLink from 'ui/shared/address/AddressLink';
 import Tag from 'ui/shared/chakra/Tag';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import TokenLogo from 'ui/shared/TokenLogo';
+import type { EntityProps as AddressEntityProps } from 'ui/shared/entities/address/AddressEntity';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
 type Props = {
   token: TokenInfo;
@@ -19,6 +19,8 @@ type Props = {
 }
 
 const PAGE_SIZE = 50;
+
+const bridgedTokensFeature = config.features.bridgedTokens;
 
 const TokensTableItem = ({
   token,
@@ -31,13 +33,22 @@ const TokensTableItem = ({
     address,
     exchange_rate: exchangeRate,
     type,
-    name,
-    symbol,
     holders,
     circulating_market_cap: marketCap,
+    origin_chain_id: originalChainId,
   } = token;
 
-  const tokenString = [ name, symbol && `(${ symbol })` ].filter(Boolean).join(' ');
+  const bridgedChainTag = bridgedTokensFeature.isEnabled ?
+    bridgedTokensFeature.chains.find(({ id }) => id === originalChainId)?.short_title :
+    undefined;
+
+  const tokenAddress: AddressEntityProps['address'] = {
+    hash: address,
+    name: '',
+    implementation_name: null,
+    is_contract: true,
+    is_verified: false,
+  };
 
   return (
     <Tr>
@@ -46,29 +57,37 @@ const TokensTableItem = ({
           <Skeleton
             isLoaded={ !isLoading }
             fontSize="sm"
-            lineHeight="24px"
+            lineHeight="20px"
             fontWeight={ 600 }
             mr={ 3 }
             minW="28px"
           >
             { (page - 1) * PAGE_SIZE + index + 1 }
           </Skeleton>
-          <Box overflow="hidden">
-            <Flex alignItems="center">
-              <TokenLogo data={ token } boxSize={ 6 } mr={ 2 } isLoading={ isLoading }/>
-              <AddressLink fontSize="sm" fontWeight="700" hash={ address } type="token" alias={ tokenString } isLoading={ isLoading }/>
+          <Flex overflow="hidden" flexDir="column" rowGap={ 2 }>
+            <TokenEntity
+              token={ token }
+              isLoading={ isLoading }
+              jointSymbol
+              noCopy
+              fontSize="sm"
+              fontWeight="700"
+            />
+            <Flex columnGap={ 2 } py="5px" alignItems="center">
+              <AddressEntity
+                address={ tokenAddress }
+                isLoading={ isLoading }
+                noIcon
+                fontSize="sm"
+                fontWeight={ 500 }
+              />
+              <AddressAddToWallet token={ token } isLoading={ isLoading } iconSize={ 5 }/>
             </Flex>
-            <Box ml={ 8 } mt={ 2 }>
-              <Address>
-                <AddressLink fontSize="sm" hash={ address } type="address" truncation="constant" fontWeight={ 500 } isLoading={ isLoading }/>
-                <CopyToClipboard text={ address } isLoading={ isLoading }/>
-                <AddressAddToWallet token={ token } ml={ 2 } isLoading={ isLoading }/>
-              </Address>
-              <Box mt={ 3 } >
-                <Tag isLoading={ isLoading }>{ type }</Tag>
-              </Box>
-            </Box>
-          </Box>
+            <Flex columnGap={ 1 }>
+              <Tag isLoading={ isLoading }>{ type }</Tag>
+              { bridgedChainTag && <Tag isLoading={ isLoading }>{ bridgedChainTag }</Tag> }
+            </Flex>
+          </Flex>
         </Flex>
       </Td>
       <Td isNumeric>

@@ -4,13 +4,19 @@ on:
     workflow_dispatch:
     push:
         tags:
-            - 'v[0-9]+.[0-9]+.[0-9]+-[a-z]+' # e.g v1.2.3-alpha
+            - 'v[0-9]+.[0-9]+.[0-9]+-[a-z]+*' # e.g v1.2.3-alpha
 
 jobs:
     checks:
         name: Run code checks
         uses: "./.github/workflows/checks.yml"
         secrets: inherit
+
+    # publish_image:
+    # image will be published in e2e-tests.yml workflow
+    #     name: Publish Docker image
+    #     uses: './.github/workflows/publish-image.yml'
+    #     secrets: inherit
 
     e2e_tests:
         name: Run e2e tests
@@ -24,4 +30,10 @@ jobs:
         with:
             tag: ${{ github.ref_name }}
             label_name: 'pre-release'
+            label_description: Tasks in pre-release right now
+        secrets: inherit
+
+    upload_source_maps:
+        name: Upload source maps to Sentry
+        uses: './.github/workflows/upload-source-maps.yml'
         secrets: inherit

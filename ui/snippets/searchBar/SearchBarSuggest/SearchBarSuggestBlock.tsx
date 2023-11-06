@@ -1,11 +1,11 @@
-import { Text, Icon, Flex, Grid } from '@chakra-ui/react';
+import { Text, Flex, Grid, Tag } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SearchResultBlock } from 'types/api/search';
 
-import blockIcon from 'icons/block.svg';
 import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
+import * as BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 interface Props {
@@ -15,7 +15,7 @@ interface Props {
 }
 
 const SearchBarSuggestBlock = ({ data, isMobile, searchTerm }: Props) => {
-  const icon = <Icon as={ blockIcon } boxSize={ 6 } color="gray.500"/>;
+  const icon = <BlockEntity.Icon/>;
   const shouldHighlightHash = data.block_hash.toLowerCase() === searchTerm.toLowerCase();
   const blockNumber = (
     <Text
@@ -43,9 +43,10 @@ const SearchBarSuggestBlock = ({ data, isMobile, searchTerm }: Props) => {
   if (isMobile) {
     return (
       <>
-        <Flex alignItems="center" gap={ 2 }>
+        <Flex alignItems="center">
           { icon }
           { blockNumber }
+          { data.block_type === 'reorg' && <Tag ml="auto">Reorg</Tag> }
         </Flex>
         { hash }
         <Text variant="secondary">{ date }</Text>
@@ -54,10 +55,15 @@ const SearchBarSuggestBlock = ({ data, isMobile, searchTerm }: Props) => {
   }
 
   return (
-    <Grid templateColumns="24px 200px minmax(auto, max-content) auto" gap={ 2 }>
-      { icon }
-      { blockNumber }
-      { hash }
+    <Grid templateColumns="228px minmax(auto, max-content) auto" gap={ 2 }>
+      <Flex alignItems="center">
+        { icon }
+        { blockNumber }
+      </Flex>
+      <Flex columnGap={ 3 } minW={ 0 } alignItems="center">
+        { data.block_type === 'reorg' && <Tag flexShrink={ 0 }>Reorg</Tag> }
+        { hash }
+      </Flex>
       <Text variant="secondary" textAlign="end">{ date }</Text>
     </Grid>
   );

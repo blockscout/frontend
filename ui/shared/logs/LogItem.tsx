@@ -7,9 +7,8 @@ import { route } from 'nextjs-routes';
 
 // import searchIcon from 'icons/search.svg';
 import { space } from 'lib/html-entities';
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import LogTopic from 'ui/shared/logs/LogTopic';
 
@@ -44,7 +43,7 @@ const LogItem = ({ address, index, topics, data, decoded, type, tx_hash: txHash,
         pt: 0,
       }}
     >
-      { !decoded && type === 'transaction' && (
+      { !decoded && !address.is_verified && type === 'transaction' && (
         <GridItem colSpan={{ base: 1, lg: 2 }}>
           <Alert status="warning" display="inline-table" whiteSpace="normal">
             To see accurate decoded input data, the contract must be verified.{ space }
@@ -54,15 +53,19 @@ const LogItem = ({ address, index, topics, data, decoded, type, tx_hash: txHash,
       ) }
       { hasTxInfo ? <RowHeader isLoading={ isLoading }>Transaction</RowHeader> : <RowHeader isLoading={ isLoading }>Address</RowHeader> }
       <GridItem display="flex" alignItems="center">
-        <Address mr={{ base: 9, lg: 0 }}>
-          { !hasTxInfo && <AddressIcon address={ address } mr={ 2 } isLoading={ isLoading }/> }
-          <AddressLink
-            hash={ hasTxInfo ? txHash : address.hash }
-            alias={ hasTxInfo ? undefined : address.name }
-            type={ type === 'address' ? 'transaction' : 'address' }
+        { type === 'address' ? (
+          <TxEntity
+            hash={ txHash }
             isLoading={ isLoading }
+            mr={{ base: 9, lg: 4 }}
           />
-        </Address>
+        ) : (
+          <AddressEntity
+            address={ address }
+            isLoading={ isLoading }
+            mr={{ base: 9, lg: 4 }}
+          />
+        ) }
         { /* api doesn't have find topic feature yet */ }
         { /* <Tooltip label="Find matches topic">
           <Link ml={ 2 } mr={{ base: 9, lg: 0 }} display="inline-flex">

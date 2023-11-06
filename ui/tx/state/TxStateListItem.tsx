@@ -2,9 +2,7 @@ import React from 'react';
 
 import type { TxStateChange } from 'types/api/txStateChanges';
 
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
 import { getStateElements } from './utils';
@@ -22,12 +20,12 @@ const TxStateListItem = ({ data, isLoading }: Props) => {
     <ListItemMobileGrid.Container>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Address</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value py="3px">
-        <Address flexGrow={ 1 } w="100%" alignSelf="center">
-          <AddressIcon address={ data.address } isLoading={ isLoading }/>
-          <AddressLink type="address" hash={ data.address.hash } ml={ 2 } truncation="constant" mr={ 3 } isLoading={ isLoading }/>
-          { tag }
-        </Address>
+      <ListItemMobileGrid.Value py="3px" display="flex" flexWrap="nowrap" columnGap={ 3 }>
+        <AddressEntity
+          address={ data.address }
+          isLoading={ isLoading }
+        />
+        { tag }
       </ListItemMobileGrid.Value>
 
       { before && (

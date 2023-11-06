@@ -7,6 +7,7 @@ import { scroller } from 'react-scroll';
 
 import type { TokenInfo } from 'types/api/token';
 
+import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import { TOKEN_COUNTERS } from 'stubs/token';
@@ -15,21 +16,24 @@ import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
+import TokenNftMarketplaces from './TokenNftMarketplaces';
+
 interface Props {
-  tokenQuery: UseQueryResult<TokenInfo>;
+  tokenQuery: UseQueryResult<TokenInfo, ResourceError<unknown>>;
 }
 
 const TokenDetails = ({ tokenQuery }: Props) => {
   const router = useRouter();
+  const hash = router.query.hash?.toString();
 
   const tokenCountersQuery = useApiQuery('token_counters', {
-    pathParams: { hash: router.query.hash?.toString() },
+    pathParams: { hash },
     queryOptions: { enabled: Boolean(router.query.hash), placeholderData: TOKEN_COUNTERS },
   });
 
   const changeUrlAndScroll = useCallback((tab: TokenTabs) => () => {
     router.push(
-      { pathname: '/token/[hash]', query: { hash: router.query.hash?.toString() || '', tab } },
+      { pathname: '/token/[hash]', query: { hash: hash || '', tab } },
       undefined,
       { shallow: true },
     );
@@ -37,7 +41,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
       duration: 500,
       smooth: true,
     });
-  }, [ router ]);
+  }, [ hash, router ]);
 
   const countersItem = useCallback((item: 'token_holders_count' | 'transfers_count') => {
     const itemValue = tokenCountersQuery.data?.[item];
@@ -83,7 +87,6 @@ const TokenDetails = ({ tokenQuery }: Props) => {
 
   return (
     <Grid
-      mt={ 8 }
       columnGap={ 8 }
       rowGap={{ base: 1, lg: 3 }}
       templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} overflow="hidden"
@@ -158,6 +161,9 @@ const TokenDetails = ({ tokenQuery }: Props) => {
           </Skeleton>
         </DetailsInfoItem>
       ) }
+
+      { type !== 'ERC-20' && <TokenNftMarketplaces hash={ hash } isLoading={ tokenQuery.isPlaceholderData }/> }
+
       <DetailsSponsoredItem isLoading={ tokenQuery.isPlaceholderData }/>
     </Grid>
   );

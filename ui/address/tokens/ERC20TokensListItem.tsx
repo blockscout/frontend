@@ -5,16 +5,13 @@ import type { AddressTokenBalance } from 'types/api/address';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
-import AddressLink from 'ui/shared/address/AddressLink';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import TokenLogo from 'ui/shared/TokenLogo';
 
 type Props = AddressTokenBalance & { isLoading: boolean};
 
 const ERC20TokensListItem = ({ token, value, isLoading }: Props) => {
-
-  const tokenString = [ token.name, token.symbol && `(${ token.symbol })` ].filter(Boolean).join(' ');
 
   const {
     valueStr: tokenQuantity,
@@ -24,12 +21,21 @@ const ERC20TokensListItem = ({ token, value, isLoading }: Props) => {
   return (
     <ListItemMobile rowGap={ 2 }>
       <Flex alignItems="center" width="100%">
-        <TokenLogo data={ token } boxSize={ 6 } mr={ 2 } isLoading={ isLoading }/>
-        <AddressLink fontWeight="700" hash={ token.address } type="token" alias={ tokenString } isLoading={ isLoading }/>
+        <TokenEntity
+          token={ token }
+          isLoading={ isLoading }
+          noCopy
+          jointSymbol
+          fontWeight="700"
+        />
       </Flex>
       <Flex alignItems="center" pl={ 8 }>
-        <AddressLink hash={ token.address } type="address" truncation="constant" isLoading={ isLoading }/>
-        <CopyToClipboard text={ token.address } isLoading={ isLoading }/>
+        <AddressEntity
+          address={{ hash: token.address }}
+          isLoading={ isLoading }
+          truncation="constant"
+          noIcon
+        />
         <AddressAddToWallet token={ token } ml={ 2 } isLoading={ isLoading }/>
       </Flex>
       { token.exchange_rate !== undefined && token.exchange_rate !== null && (

@@ -49,12 +49,12 @@ export default function useNavItems(): ReturnType {
   return React.useMemo(() => {
     let blockchainNavItems: Array<NavItem> | Array<Array<NavItem>> = [];
 
-    const topAccounts = {
+    const topAccounts = !config.UI.views.address.hiddenViews?.top_accounts ? {
       text: 'Top accounts',
       nextRoute: { pathname: '/accounts' as const },
       icon: topAccountsIcon,
       isActive: pathname === '/accounts',
-    };
+    } : null;
     const blocks = {
       text: 'Blocks',
       nextRoute: { pathname: '/blocks' as const },
@@ -71,7 +71,20 @@ export default function useNavItems(): ReturnType {
     // eslint-disable-next-line max-len
      { text: 'Verified contracts', nextRoute: { pathname: '/verified-contracts' as const }, icon: verifiedIcon, isActive: pathname === '/verified-contracts' };
 
-    if (config.features.rollup.isEnabled) {
+    if (config.features.zkEvmRollup.isEnabled) {
+      blockchainNavItems = [
+        [
+          txs,
+          blocks,
+          // eslint-disable-next-line max-len
+          { text: 'Txn batches', nextRoute: { pathname: '/zkevm-l2-txn-batches' as const }, icon: txnBatchIcon, isActive: pathname === '/zkevm-l2-txn-batches' || pathname === '/zkevm-l2-txn-batch/[number]' },
+        ],
+        [
+          topAccounts,
+          verifiedContracts,
+        ].filter(Boolean),
+      ];
+    } else if (config.features.optimisticRollup.isEnabled) {
       blockchainNavItems = [
         [
           txs,
@@ -90,7 +103,7 @@ export default function useNavItems(): ReturnType {
         [
           topAccounts,
           verifiedContracts,
-        ],
+        ].filter(Boolean),
       ];
     } else {
       blockchainNavItems = [
@@ -120,12 +133,12 @@ export default function useNavItems(): ReturnType {
         icon: graphQLIcon,
         isActive: pathname === '/graphiql',
       } : null,
-      {
+      !config.UI.sidebar.hiddenLinks?.rpc_api && {
         text: 'RPC API',
         icon: rpcIcon,
         url: 'https://docs.blockscout.com/for-users/api/rpc-endpoints',
       },
-      {
+      !config.UI.sidebar.hiddenLinks?.eth_rpc_api && {
         text: 'Eth RPC API',
         icon: rpcIcon,
         url: ' https://docs.blockscout.com/for-users/api/eth-rpc',
@@ -157,7 +170,7 @@ export default function useNavItems(): ReturnType {
         icon: statsIcon,
         isActive: pathname === '/stats',
       } : null,
-      {
+      apiNavItems.length > 0 && {
         text: 'API',
         icon: apiDocsIcon,
         isActive: apiNavItems.some(item => isInternalItem(item) && item.isActive),

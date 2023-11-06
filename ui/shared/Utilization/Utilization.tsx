@@ -17,7 +17,7 @@ const Utilization = ({ className, value, colorScheme = 'green', isLoading }: Pro
   const color = colorScheme === 'gray' ? colorGrayScheme : 'green.500';
 
   return (
-    <Flex className={ className } alignItems="center" columnGap="10px">
+    <Flex className={ className } alignItems="center" columnGap={ 2 }>
       <Skeleton isLoaded={ !isLoading } w={ `${ WIDTH }px` } h="4px" borderRadius="full" overflow="hidden">
         <Box bg={ useColorModeValue('blackAlpha.200', 'whiteAlpha.200') } h="100%">
           <Box bg={ color } w={ valueString } h="100%"/>

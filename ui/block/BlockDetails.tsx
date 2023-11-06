@@ -20,11 +20,12 @@ import dayjs from 'lib/date/dayjs';
 import { space } from 'lib/html-entities';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import AddressLink from 'ui/shared/address/AddressLink';
 import Icon from 'ui/shared/chakra/Icon';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -36,6 +37,8 @@ import Utilization from 'ui/shared/Utilization/Utilization';
 interface Props {
   query: UseQueryResult<Block, ResourceError>;
 }
+
+const isRollup = config.features.optimisticRollup.isEnabled || config.features.zkEvmRollup.isEnabled;
 
 const BlockDetails = ({ query }: Props) => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
@@ -81,21 +84,12 @@ const BlockDetails = ({ query }: Props) => {
     return null;
   }
 
-  const sectionGap = (
-    <GridItem
-      colSpan={{ base: undefined, lg: 2 }}
-      mt={{ base: 2, lg: 3 }}
-      mb={{ base: 0, lg: 3 }}
-      borderBottom="1px solid"
-      borderColor="divider"
-    />
-  );
   const { totalReward, staticReward, burntFees, txFees } = getBlockReward(data);
 
   const validatorTitle = getNetworkValidatorTitle();
 
   const rewardBreakDown = (() => {
-    if (config.features.rollup.isEnabled || totalReward.isEqualTo(ZERO) || txFees.isEqualTo(ZERO) || burntFees.isEqualTo(ZERO)) {
+    if (isRollup || totalReward.isEqualTo(ZERO) || txFees.isEqualTo(ZERO) || burntFees.isEqualTo(ZERO)) {
       return null;
     }
 
@@ -126,6 +120,14 @@ const BlockDetails = ({ query }: Props) => {
         ) }
       </Text>
     );
+  })();
+
+  const verificationTitle = (() => {
+    if (config.features.zkEvmRollup.isEnabled) {
+      return 'Sequenced by';
+    }
+
+    return config.chain.verificationType === 'validation' ? 'Validated by' : 'Mined by';
   })();
 
   return (
@@ -201,17 +203,19 @@ const BlockDetails = ({ query }: Props) => {
         </DetailsInfoItem>
       ) }
       <DetailsInfoItem
-        title={ config.chain.verificationType === 'validation' ? 'Validated by' : 'Mined by' }
+        title={ verificationTitle }
         hint="A block producer who successfully included the block onto the blockchain"
         columnGap={ 1 }
         isLoading={ isPlaceholderData }
       >
-        <AddressLink type="address" hash={ data.miner.hash } isLoading={ isPlaceholderData }/>
-        { data.miner.name && <Text>{ `(${ capitalize(validatorTitle) }: ${ data.miner.name })` }</Text> }
+        <AddressEntity
+          address={ data.miner }
+          isLoading={ isPlaceholderData }
+        />
         { /* api doesn't return the block processing time yet */ }
         { /* <Text>{ dayjs.duration(block.minedIn, 'second').humanize(true) }</Text> */ }
       </DetailsInfoItem>
-      { !config.features.rollup.isEnabled && !totalReward.isEqualTo(ZERO) && !config.UI.views.block.hiddenFields?.total_reward && (
+      { !isRollup && !totalReward.isEqualTo(ZERO) && !config.UI.views.block.hiddenFields?.total_reward && (
         <DetailsInfoItem
           title="Block reward"
           hint={
@@ -241,7 +245,7 @@ const BlockDetails = ({ query }: Props) => {
         ))
       }
 
-      { sectionGap }
+      <DetailsInfoItemDivider/>
 
       <DetailsInfoItem
         title="Gas used"
@@ -313,7 +317,7 @@ const BlockDetails = ({ query }: Props) => {
           isLoading={ isPlaceholderData }
         >
           <Icon as={ flameIcon } boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
-          <Skeleton isLoaded={ !isPlaceholderData } ml={ 1 }>
+          <Skeleton isLoaded={ !isPlaceholderData } ml={ 2 }>
             { burntFees.dividedBy(WEI).toFixed() } { config.chain.currency.symbol }
           </Skeleton>
           { !txFees.isEqualTo(ZERO) && (
@@ -440,7 +444,7 @@ const BlockDetails = ({ query }: Props) => {
             </Box>
           </DetailsInfoItem>
 
-          { sectionGap }
+          <DetailsInfoItemDivider/>
 
           <DetailsInfoItem
             title="Hash"
@@ -477,7 +481,7 @@ const BlockDetails = ({ query }: Props) => {
           >
             <Text wordBreak="break-all" whiteSpace="break-spaces">{ data.state_root }</Text>
           </DetailsInfoItem> */ }
-          { config.chain.verificationType !== 'validation' && (
+          { !config.UI.views.block.hiddenFields?.nonce && (
             <DetailsInfoItem
               title="Nonce"
               hint="Block nonce is a value used during mining to demonstrate proof of work for a block"

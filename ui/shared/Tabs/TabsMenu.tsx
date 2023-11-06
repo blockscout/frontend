@@ -12,6 +12,7 @@ import React from 'react';
 
 import type { MenuButton, TabItem } from './types';
 
+import TabCounter from './TabCounter';
 import { menuButton } from './utils';
 
 interface Props {
@@ -30,7 +31,7 @@ const TabsMenu = ({ tabs, tabsCut, isActive, styles, onItemClick, buttonRef, act
 
   const handleItemClick = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
     onClose();
-    const tabIndex = (event.target as HTMLButtonElement).getAttribute('data-index');
+    const tabIndex = event.currentTarget.getAttribute('data-index');
     if (tabIndex) {
       onItemClick(tabsCut + Number(tabIndex));
     }
@@ -59,8 +60,14 @@ const TabsMenu = ({ tabs, tabsCut, isActive, styles, onItemClick, buttonRef, act
               isActive={ activeTab ? activeTab.id === tab.id : false }
               justifyContent="left"
               data-index={ index }
+              sx={{
+                '&:hover span': {
+                  color: 'inherit',
+                },
+              }}
             >
               { typeof tab.title === 'function' ? tab.title() : tab.title }
+              <TabCounter count={ tab.count }/>
             </Button>
           )) }
         </PopoverBody>

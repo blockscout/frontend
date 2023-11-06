@@ -13,19 +13,19 @@ import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
 
+import config from 'configs/app';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
 import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import CurrencyValue from 'ui/shared/CurrencyValue';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import InOutTag from 'ui/shared/InOutTag';
-import TxStatus from 'ui/shared/TxStatus';
+import TxStatus from 'ui/shared/statusTag/TxStatus';
+import TxFeeStability from 'ui/shared/tx/TxFeeStability';
+import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 
 import TxType from './TxType';
@@ -46,36 +46,27 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
   const timeAgo = useTimeAgoIncrement(tx.timestamp, enableTimeIncrement);
 
   const addressFrom = (
-    <Address w="100%">
-      <AddressIcon address={ tx.from } isLoading={ isLoading }/>
-      <AddressLink
-        type="address"
-        hash={ tx.from.hash }
-        alias={ tx.from.name }
-        fontWeight="500" ml={ 2 }
-        truncation="constant"
-        isDisabled={ isOut }
-        isLoading={ isLoading }
-      />
-      { !isOut && <CopyToClipboard text={ tx.from.hash } isLoading={ isLoading }/> }
-    </Address>
+    <AddressEntity
+      address={ tx.from }
+      isLoading={ isLoading }
+      noCopy={ isOut }
+      noLink={ isOut }
+      truncation="constant"
+      w="100%"
+      py="2px"
+    />
   );
 
   const addressTo = dataTo ? (
-    <Address w="100%">
-      <AddressIcon address={ dataTo } isLoading={ isLoading }/>
-      <AddressLink
-        type="address"
-        hash={ dataTo.hash }
-        alias={ dataTo.name }
-        fontWeight="500"
-        ml={ 2 }
-        truncation="constant"
-        isDisabled={ isIn }
-        isLoading={ isLoading }
-      />
-      { !isIn && <CopyToClipboard text={ dataTo.hash } isLoading={ isLoading }/> }
-    </Address>
+    <AddressEntity
+      address={ dataTo }
+      isLoading={ isLoading }
+      truncation="constant"
+      noCopy={ isIn }
+      noLink={ isIn }
+      w="100%"
+      py="2px"
+    />
   ) : '-';
 
   return (
@@ -106,6 +97,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
         <VStack alignItems="start">
           <TxType types={ tx.tx_types } isLoading={ isLoading }/>
           <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
+          <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
         </VStack>
       </Td>
       <Td whiteSpace="nowrap">
@@ -165,12 +157,20 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
           </Flex>
         </Td>
       </Hide>
-      <Td isNumeric>
-        <CurrencyValue value={ tx.value } accuracy={ 8 } isLoading={ isLoading }/>
-      </Td>
-      <Td isNumeric>
-        <CurrencyValue value={ tx.fee.value } accuracy={ 8 } isLoading={ isLoading }/>
-      </Td>
+      { !config.UI.views.tx.hiddenFields?.value && (
+        <Td isNumeric>
+          <CurrencyValue value={ tx.value } accuracy={ 8 } isLoading={ isLoading }/>
+        </Td>
+      ) }
+      { !config.UI.views.tx.hiddenFields?.tx_fee && (
+        <Td isNumeric>
+          { tx.stability_fee ? (
+            <TxFeeStability data={ tx.stability_fee } isLoading={ isLoading } accuracy={ 8 } justifyContent="end" hideUsd/>
+          ) : (
+            <CurrencyValue value={ tx.fee.value } accuracy={ 8 } isLoading={ isLoading }/>
+          ) }
+        </Td>
+      ) }
     </Tr>
   );
 };

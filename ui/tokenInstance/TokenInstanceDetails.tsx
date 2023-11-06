@@ -3,18 +3,16 @@ import React from 'react';
 
 import type { TokenInstance } from 'types/api/token';
 
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import NftMedia from 'ui/shared/nft/NftMedia';
-import TokenSnippet from 'ui/shared/TokenSnippet/TokenSnippet';
+import TokenNftMarketplaces from 'ui/token/TokenNftMarketplaces';
 
 import TokenInstanceCreatorAddress from './details/TokenInstanceCreatorAddress';
-import TokenInstanceDivider from './details/TokenInstanceDivider';
 import TokenInstanceMetadataInfo from './details/TokenInstanceMetadataInfo';
 import TokenInstanceTransfersCount from './details/TokenInstanceTransfersCount';
 
@@ -38,7 +36,7 @@ const TokenInstanceDetails = ({ data, scrollRef, isLoading }: Props) => {
 
   return (
     <>
-      <Flex alignItems="flex-start" mt={ 8 } flexDir={{ base: 'column-reverse', lg: 'row' }} columnGap={ 6 } rowGap={ 6 }>
+      <Flex alignItems="flex-start" flexDir={{ base: 'column-reverse', lg: 'row' }} columnGap={ 6 } rowGap={ 6 }>
         <Grid
           flexGrow={ 1 }
           columnGap={ 8 }
@@ -46,24 +44,16 @@ const TokenInstanceDetails = ({ data, scrollRef, isLoading }: Props) => {
           templateColumns={{ base: 'minmax(0, 1fr)', lg: '200px minmax(0, 1fr)' }}
           overflow="hidden"
         >
-          <DetailsInfoItem
-            title="Token"
-            hint="Token name"
-            isLoading={ isLoading }
-          >
-            <TokenSnippet data={ data.token } isLoading={ isLoading }/>
-          </DetailsInfoItem>
           { data.is_unique && data.owner && (
             <DetailsInfoItem
               title="Owner"
               hint="Current owner of this token instance"
               isLoading={ isLoading }
             >
-              <Address>
-                <AddressIcon address={ data.owner } isLoading={ isLoading }/>
-                <AddressLink type="address" hash={ data.owner.hash } ml={ 2 } isLoading={ isLoading }/>
-                <CopyToClipboard text={ data.owner.hash } isLoading={ isLoading }/>
-              </Address>
+              <AddressEntity
+                address={ data.owner }
+                isLoading={ isLoading }
+              />
             </DetailsInfoItem>
           ) }
           <TokenInstanceCreatorAddress hash={ isLoading ? '' : data.token.address }/>
@@ -80,6 +70,7 @@ const TokenInstanceDetails = ({ data, scrollRef, isLoading }: Props) => {
             </Flex>
           </DetailsInfoItem>
           <TokenInstanceTransfersCount hash={ isLoading ? '' : data.token.address } id={ isLoading ? '' : data.id } onClick={ handleCounterItemClick }/>
+          <TokenNftMarketplaces isLoading={ isLoading } hash={ data.token.address } id={ data.id }/>
         </Grid>
         <NftMedia
           url={ data.animation_url || data.image_url }
@@ -87,6 +78,7 @@ const TokenInstanceDetails = ({ data, scrollRef, isLoading }: Props) => {
           flexShrink={ 0 }
           alignSelf={{ base: 'center', lg: 'flex-start' }}
           isLoading={ isLoading }
+          withFullscreen
         />
       </Flex>
       <Grid
@@ -97,7 +89,7 @@ const TokenInstanceDetails = ({ data, scrollRef, isLoading }: Props) => {
         overflow="hidden"
       >
         <TokenInstanceMetadataInfo data={ data } isLoading={ isLoading }/>
-        <TokenInstanceDivider/>
+        <DetailsInfoItemDivider/>
         <DetailsSponsoredItem isLoading={ isLoading }/>
       </Grid>
     </>

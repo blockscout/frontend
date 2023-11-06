@@ -17,6 +17,10 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
+import { ZKEVM_L2_TX_STATUSES } from 'types/api/transaction';
+
+import { route } from 'nextjs-routes';
+
 import config from 'configs/app';
 import clockIcon from 'icons/clock.svg';
 import flameIcon from 'icons/flame.svg';
@@ -26,28 +30,32 @@ import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
 import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
+import ZkEvmBatchEntityL2 from 'ui/shared/entities/block/ZkEvmBatchEntityL2';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-// import PrevNext from 'ui/shared/PrevNext';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
+import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TextSeparator from 'ui/shared/TextSeparator';
-import TruncatedValue from 'ui/shared/TruncatedValue';
-import TxStatus from 'ui/shared/TxStatus';
+import TxFeeStability from 'ui/shared/tx/TxFeeStability';
 import Utilization from 'ui/shared/Utilization/Utilization';
+import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 import TxDetailsActions from 'ui/tx/details/TxDetailsActions';
+import TxDetailsFeePerGas from 'ui/tx/details/TxDetailsFeePerGas';
+import TxDetailsGasPrice from 'ui/tx/details/TxDetailsGasPrice';
+import TxDetailsOther from 'ui/tx/details/TxDetailsOther';
 import TxDetailsTokenTransfers from 'ui/tx/details/TxDetailsTokenTransfers';
 import TxRevertReason from 'ui/tx/details/TxRevertReason';
+import TxAllowedPeekers from 'ui/tx/TxAllowedPeekers';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
 import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
 
@@ -111,20 +119,14 @@ const TxDetails = () => {
     </Tooltip>
   ) : null;
 
-  const divider = (
-    <GridItem
-      colSpan={{ base: undefined, lg: 2 }}
-      mt={{ base: 2, lg: 3 }}
-      mb={{ base: 0, lg: 3 }}
-      borderBottom="1px solid"
-      borderColor="divider"
-    />
-  );
-
   return (
     <>
-      { config.chain.isTestnet && <Alert status="warning" mb={ 6 }>This is a testnet transaction only</Alert> }
-      <Grid columnGap={ 8 } rowGap={{ base: 3, lg: 3 }} templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }}>
+      { config.chain.isTestnet && (
+        <Skeleton mb={ 6 } isLoaded={ !isPlaceholderData }>
+          <Alert status="warning">This is a testnet transaction only</Alert>
+        </Skeleton>
+      ) }
+      <Grid columnGap={ 8 } rowGap={{ base: 3, lg: 3 }} templateColumns={{ base: 'minmax(0, 1fr)', lg: 'max-content minmax(728px, auto)' }}>
         { socketStatus && (
           <GridItem colSpan={{ base: undefined, lg: 2 }} mb={ 2 }>
             <TxSocketAlert status={ socketStatus }/>
@@ -141,11 +143,9 @@ const TxDetails = () => {
             <HashStringShortenDynamic hash={ data.hash }/>
           </Skeleton>
           <CopyToClipboard text={ data.hash } isLoading={ isPlaceholderData }/>
-          { /* api doesn't support navigation between certain address account tx */ }
-          { /* <PrevNext ml={ 7 }/> */ }
         </DetailsInfoItem>
         <DetailsInfoItem
-          title="Status and method"
+          title={ config.features.zkEvmRollup.isEnabled ? 'L2 status and method' : 'Status and method' }
           hint="Current transaction state: Success, Failed (Error), or Pending (In Process)"
           isLoading={ isPlaceholderData }
         >
@@ -156,6 +156,15 @@ const TxDetails = () => {
             </Tag>
           ) }
         </DetailsInfoItem>
+        { data.zkevm_status && (
+          <DetailsInfoItem
+            title="Confirmation status"
+            hint="Status of the transaction confirmation path to L1"
+            isLoading={ isPlaceholderData }
+          >
+            <VerificationSteps step={ data.zkevm_status } steps={ ZKEVM_L2_TX_STATUSES } isLoading={ isPlaceholderData }/>
+          </DetailsInfoItem>
+        ) }
         { data.revert_reason && (
           <DetailsInfoItem
             title="Revert reason"
@@ -186,6 +195,18 @@ const TxDetails = () => {
             </>
           ) }
         </DetailsInfoItem>
+        { data.zkevm_batch_number && (
+          <DetailsInfoItem
+            title="Tx batch"
+            hint="Batch index for this transaction"
+            isLoading={ isPlaceholderData }
+          >
+            <ZkEvmBatchEntityL2
+              isLoading={ isPlaceholderData }
+              number={ data.zkevm_batch_number }
+            />
+          </DetailsInfoItem>
+        ) }
         { data.timestamp && (
           <DetailsInfoItem
             title="Timestamp"
@@ -193,7 +214,7 @@ const TxDetails = () => {
             isLoading={ isPlaceholderData }
           >
             <Icon as={ clockIcon } boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
-            <Skeleton isLoaded={ !isPlaceholderData } ml={ 1 }>{ dayjs(data.timestamp).fromNow() }</Skeleton>
+            <Skeleton isLoaded={ !isPlaceholderData } ml={ 2 }>{ dayjs(data.timestamp).fromNow() }</Skeleton>
             <TextSeparator/>
             <Skeleton isLoaded={ !isPlaceholderData } whiteSpace="normal">{ dayjs(data.timestamp).format('llll') }</Skeleton>
             <TextSeparator color="gray.500"/>
@@ -202,14 +223,29 @@ const TxDetails = () => {
             </Skeleton>
           </DetailsInfoItem>
         ) }
+        { data.execution_node && (
+          <DetailsInfoItem
+            title="Kettle"
+            hint="Node that carried out the confidential computation"
+            isLoading={ isPlaceholderData }
+          >
+            <AddressEntity
+              address={ data.execution_node }
+              href={ route({ pathname: '/txs/kettle/[hash]', query: { hash: data.execution_node.hash } }) }
+            />
+          </DetailsInfoItem>
+        ) }
+        { data.allowed_peekers && data.allowed_peekers.length > 0 && (
+          <TxAllowedPeekers items={ data.allowed_peekers }/>
+        ) }
         <DetailsSponsoredItem isLoading={ isPlaceholderData }/>
 
-        { divider }
+        <DetailsInfoItemDivider/>
 
         { actionsExist && (
           <>
             <TxDetailsActions actions={ data.actions }/>
-            { divider }
+            <DetailsInfoItemDivider/>
           </>
         ) }
 
@@ -219,11 +255,10 @@ const TxDetails = () => {
           isLoading={ isPlaceholderData }
           columnGap={ 3 }
         >
-          <Address>
-            <AddressIcon address={ data.from } isLoading={ isPlaceholderData }/>
-            <AddressLink type="address" ml={ 2 } hash={ data.from.hash } isLoading={ isPlaceholderData }/>
-            <CopyToClipboard text={ data.from.hash } isLoading={ isPlaceholderData }/>
-          </Address>
+          <AddressEntity
+            address={ data.from }
+            isLoading={ isPlaceholderData }
+          />
           { data.from.name && <Text>{ data.from.name }</Text> }
           { addressFromTags.length > 0 && (
             <Flex columnGap={ 3 }>
@@ -241,24 +276,27 @@ const TxDetails = () => {
           { toAddress ? (
             <>
               { data.to && data.to.hash ? (
-                <Address alignItems="center" flexShrink={ 0 } w={{ base: '100%', lg: 'auto' }}>
-                  <AddressIcon address={ toAddress } isLoading={ isPlaceholderData }/>
-                  <AddressLink type="address" ml={ 2 } hash={ toAddress.hash } isLoading={ isPlaceholderData }/>
+                <Flex flexWrap="nowrap" alignItems="center" maxW="100%">
+                  <AddressEntity
+                    address={ toAddress }
+                    isLoading={ isPlaceholderData }
+                  />
                   { executionSuccessBadge }
                   { executionFailedBadge }
-                  <CopyToClipboard text={ toAddress.hash } isLoading={ isPlaceholderData }/>
-                </Address>
+                </Flex>
               ) : (
-                <Flex width={{ base: '100%', lg: 'auto' }} whiteSpace="pre" alignItems="center" flexShrink={ 0 }>
+                <Flex width="100%" whiteSpace="pre" alignItems="center" flexShrink={ 0 }>
                   <span>[Contract </span>
-                  <AddressLink type="address" hash={ toAddress.hash }/>
-                  <span> created]</span>
+                  <AddressEntity
+                    address={ toAddress }
+                    isLoading={ isPlaceholderData }
+                    noIcon
+                  />
+                  <span>created]</span>
                   { executionSuccessBadge }
                   { executionFailedBadge }
-                  <CopyToClipboard text={ toAddress.hash }/>
                 </Flex>
               ) }
-              { toAddress.name && <TruncatedValue value={ toAddress.name }/> }
               { addressToTags.length > 0 && (
                 <Flex columnGap={ 3 }>
                   { addressToTags }
@@ -271,45 +309,77 @@ const TxDetails = () => {
         </DetailsInfoItem>
         { data.token_transfers && <TxDetailsTokenTransfers data={ data.token_transfers } txHash={ data.hash }/> }
 
-        { divider }
+        <DetailsInfoItemDivider/>
 
-        <DetailsInfoItem
-          title="Value"
-          hint="Value sent in the native token (and USD) if applicable"
-          isLoading={ isPlaceholderData }
-        >
-          <CurrencyValue
-            value={ data.value }
-            currency={ config.chain.currency.symbol }
-            exchangeRate={ data.exchange_rate }
+        { data.zkevm_sequence_hash && (
+          <DetailsInfoItem
+            title="Sequence tx hash"
+            flexWrap="nowrap"
+
             isLoading={ isPlaceholderData }
-          />
-        </DetailsInfoItem>
-        <DetailsInfoItem
-          title="Transaction fee"
-          hint="Total transaction fee"
-          isLoading={ isPlaceholderData }
-        >
-          <CurrencyValue
-            value={ data.fee.value }
-            currency={ config.chain.currency.symbol }
-            exchangeRate={ data.exchange_rate }
-            flexWrap="wrap"
+          >
+            <Skeleton isLoaded={ !isPlaceholderData } overflow="hidden">
+              <HashStringShortenDynamic hash={ data.zkevm_sequence_hash }/>
+            </Skeleton>
+            <CopyToClipboard text={ data.zkevm_sequence_hash } isLoading={ isPlaceholderData }/>
+          </DetailsInfoItem>
+        ) }
+        { data.zkevm_verify_hash && (
+          <DetailsInfoItem
+            title="Verify tx hash"
+            flexWrap="nowrap"
             isLoading={ isPlaceholderData }
-          />
-        </DetailsInfoItem>
-        <DetailsInfoItem
-          title="Gas price"
-          hint="Price per unit of gas specified by the sender. Higher gas prices can prioritize transaction inclusion during times of high usage"
-          isLoading={ isPlaceholderData }
-        >
-          <Skeleton isLoaded={ !isPlaceholderData } mr={ 1 }>
-            { BigNumber(data.gas_price).dividedBy(WEI).toFixed() } { config.chain.currency.symbol }
-          </Skeleton>
-          <Skeleton isLoaded={ !isPlaceholderData } color="text_secondary">
-            <span>({ BigNumber(data.gas_price).dividedBy(WEI_IN_GWEI).toFixed() } Gwei)</span>
-          </Skeleton>
-        </DetailsInfoItem>
+          >
+            <Skeleton isLoaded={ !isPlaceholderData } overflow="hidden">
+
+              <HashStringShortenDynamic hash={ data.zkevm_verify_hash }/>
+            </Skeleton>
+            <CopyToClipboard text={ data.zkevm_verify_hash } isLoading={ isPlaceholderData }/>
+
+          </DetailsInfoItem>
+        ) }
+
+        { (data.zkevm_batch_number || data.zkevm_verify_hash) && <DetailsInfoItemDivider/> }
+
+        { !config.UI.views.tx.hiddenFields?.value && (
+          <DetailsInfoItem
+            title="Value"
+            hint="Value sent in the native token (and USD) if applicable"
+            isLoading={ isPlaceholderData }
+          >
+            <CurrencyValue
+              value={ data.value }
+              currency={ config.chain.currency.symbol }
+              exchangeRate={ data.exchange_rate }
+              isLoading={ isPlaceholderData }
+              flexWrap="wrap"
+            />
+          </DetailsInfoItem>
+        ) }
+        { !config.UI.views.tx.hiddenFields?.tx_fee && (
+          <DetailsInfoItem
+            title="Transaction fee"
+            hint="Total transaction fee"
+            isLoading={ isPlaceholderData }
+          >
+            { data.stability_fee ? (
+              <TxFeeStability data={ data.stability_fee } isLoading={ isPlaceholderData }/>
+            ) : (
+              <CurrencyValue
+                value={ data.fee.value }
+                currency={ config.UI.views.tx.hiddenFields?.fee_currency ? '' : config.chain.currency.symbol }
+                exchangeRate={ data.exchange_rate }
+                flexWrap="wrap"
+                isLoading={ isPlaceholderData }
+              />
+            ) }
+          </DetailsInfoItem>
+        ) }
+
+        <TxDetailsGasPrice gasPrice={ data.gas_price } isLoading={ isPlaceholderData }/>
+
+        <TxDetailsFeePerGas txFee={ data.fee.value } gasUsed={ data.gas_used } isLoading={ isPlaceholderData }/>
+
         <DetailsInfoItem
           title="Gas usage & limit by txn"
           hint="Actual gas amount used by the transaction"
@@ -320,7 +390,8 @@ const TxDetails = () => {
           <Skeleton isLoaded={ !isPlaceholderData }>{ BigNumber(data.gas_limit).toFormat() }</Skeleton>
           <Utilization ml={ 4 } value={ BigNumber(data.gas_used || 0).dividedBy(BigNumber(data.gas_limit)).toNumber() } isLoading={ isPlaceholderData }/>
         </DetailsInfoItem>
-        { (data.base_fee_per_gas || data.max_fee_per_gas || data.max_priority_fee_per_gas) && (
+        { !config.UI.views.tx.hiddenFields?.gas_fees &&
+          (data.base_fee_per_gas || data.max_fee_per_gas || data.max_priority_fee_per_gas) && (
           <DetailsInfoItem
             title="Gas fees (Gwei)"
             // eslint-disable-next-line max-len
@@ -353,7 +424,7 @@ const TxDetails = () => {
             ) }
           </DetailsInfoItem>
         ) }
-        { data.tx_burnt_fee && !config.features.rollup.isEnabled && (
+        { data.tx_burnt_fee && !config.UI.views.tx.hiddenFields?.burnt_fees && !config.features.optimisticRollup.isEnabled && (
           <DetailsInfoItem
             title="Burnt fees"
             hint={ `Amount of ${ config.chain.currency.symbol } burned for this transaction. Equals Block Base Fee per Gas * Gas Used` }
@@ -364,11 +435,11 @@ const TxDetails = () => {
               currency={ config.chain.currency.symbol }
               exchangeRate={ data.exchange_rate }
               flexWrap="wrap"
-              ml={ 1 }
+              ml={ 2 }
             />
           </DetailsInfoItem>
         ) }
-        { config.features.rollup.isEnabled && (
+        { config.features.optimisticRollup.isEnabled && (
           <>
             { data.l1_gas_used && (
               <DetailsInfoItem
@@ -433,39 +504,7 @@ const TxDetails = () => {
         { isExpanded && (
           <>
             <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
-            <DetailsInfoItem
-              title="Other"
-              hint="Other data related to this transaction"
-            >
-              {
-                [
-                  typeof data.type === 'number' && (
-                    <Box key="type">
-                      <Text as="span" fontWeight="500">Txn type: </Text>
-                      <Text fontWeight="600" as="span">{ data.type }</Text>
-                      { data.type === 2 && <Text fontWeight="400" as="span" ml={ 1 } variant="secondary">(EIP-1559)</Text> }
-                    </Box>
-                  ),
-                  <Box key="nonce">
-                    <Text as="span" fontWeight="500">Nonce: </Text>
-                    <Text fontWeight="600" as="span">{ data.nonce }</Text>
-                  </Box>,
-                  data.position !== null && (
-                    <Box key="position">
-                      <Text as="span" fontWeight="500">Position: </Text>
-                      <Text fontWeight="600" as="span">{ data.position }</Text>
-                    </Box>
-                  ),
-                ]
-                  .filter(Boolean)
-                  .map((item, index) => (
-                    <>
-                      { index !== 0 && <TextSeparator/> }
-                      { item }
-                    </>
-                  ))
-              }
-            </DetailsInfoItem>
+            <TxDetailsOther nonce={ data.nonce } type={ data.type } position={ data.position }/>
             <DetailsInfoItem
               title="Raw input"
               hint="Binary data included with the transaction. See logs tab for additional info"

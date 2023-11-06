@@ -4,17 +4,17 @@ import React from 'react';
 import type { Route } from 'nextjs-routes';
 
 import useAdblockDetect from 'lib/hooks/useAdblockDetect';
-import useConfigSentry from 'lib/hooks/useConfigSentry';
 import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
 import * as metadata from 'lib/metadata';
 import * as mixpanel from 'lib/mixpanel';
+import useConfigSentry from 'lib/sentry/useConfigSentry';
 
 type Props = Route & {
   children: React.ReactNode;
 }
 
 const PageNextJs = (props: Props) => {
-  const { title, description } = metadata.generate(props);
+  const { title, description, opengraph } = metadata.generate(props);
 
   useGetCsrfToken();
   useAdblockDetect();
@@ -28,6 +28,14 @@ const PageNextJs = (props: Props) => {
       <Head>
         <title>{ title }</title>
         <meta name="description" content={ description }/>
+
+        { /* OG TAGS */ }
+        <meta property="og:title" content={ opengraph.title }/>
+        { opengraph.description && <meta property="og:description" content={ opengraph.description }/> }
+        <meta property="og:image" content={ opengraph.imageUrl }/>
+        <meta name="twitter:card" content="summary_large_image"/>
+        <meta property="twitter:image" content={ opengraph.imageUrl }/>
+        <meta property="og:type" content="website"/>
       </Head>
       { props.children }
     </>

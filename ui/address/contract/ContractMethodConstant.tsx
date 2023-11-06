@@ -7,11 +7,9 @@ import type { SmartContractMethodOutput } from 'types/api/contract';
 
 import config from 'configs/app';
 import { WEI } from 'lib/consts';
-import Address from 'ui/shared/address/Address';
-import AddressLink from 'ui/shared/address/AddressLink';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
-function castValueToString(value: number | string | boolean | bigint | undefined): string {
+function castValueToString(value: number | string | boolean | object | bigint | undefined): string {
   switch (typeof value) {
     case 'string':
       return value;
@@ -23,6 +21,8 @@ function castValueToString(value: number | string | boolean | bigint | undefined
       return value.toLocaleString(undefined, { useGrouping: false });
     case 'bigint':
       return value.toString();
+    case 'object':
+      return JSON.stringify(value, undefined, 2);
   }
 }
 
@@ -49,14 +49,14 @@ const ContractMethodStatic = ({ data }: Props) => {
   const content = (() => {
     if (typeof data.value === 'string' && data.type === 'address' && data.value) {
       return (
-        <Address>
-          <AddressLink type="address" hash={ data.value }/>
-          <CopyToClipboard text={ data.value }/>
-        </Address>
+        <AddressEntity
+          address={{ hash: data.value }}
+          noIcon
+        />
       );
     }
 
-    return <chakra.span wordBreak="break-all">({ data.type }): { String(value) }</chakra.span>;
+    return <chakra.span wordBreak="break-all" whiteSpace="pre-wrap">({ data.type }): { String(value) }</chakra.span>;
   })();
 
   return (

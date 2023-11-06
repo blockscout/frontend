@@ -1,16 +1,10 @@
-import type { ArrayElement } from 'types/utils';
+import type { BlockFieldId } from 'types/views/block';
+import { BLOCK_FIELDS_IDS } from 'types/views/block';
 
 import { getEnvValue, parseEnvJson } from 'configs/app/utils';
 
-export const BLOCK_FIELDS_IDS = [
-  'burnt_fees',
-  'total_reward',
-] as const;
-
-export type BlockFieldId = ArrayElement<typeof BLOCK_FIELDS_IDS>;
-
 const blockHiddenFields = (() => {
-  const parsedValue = parseEnvJson<Array<BlockFieldId>>(getEnvValue(process.env.NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS)) || [];
+  const parsedValue = parseEnvJson<Array<BlockFieldId>>(getEnvValue('NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS')) || [];
 
   if (!Array.isArray(parsedValue)) {
     return undefined;

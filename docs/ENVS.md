@@ -4,6 +4,12 @@ The app instance could be customized by passing following variables to NodeJS en
 
 **IMPORTANT NOTE!** For _production_ build purposes all json-like values should be single-quoted. If it contains a hash (`#`) or a dollar-sign (`$`) the whole value should be wrapped in single quotes as well (see `dotenv` [readme](https://github.com/bkeepers/dotenv#variable-substitution) for the reference)
 
+## Disclaimer about using variables
+
+Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will be exposed to the browser. So any user can obtain its values. Make sure that for all 3rd-party services keys (e.g., Sentri, Auth0, WalletConnect, etc.) in the services administration panel you have created a whitelist of allowed origins and have added your app domain into it. That will help you prevent using your key by unauthorized app, if someone gets its value.
+
+&nbsp;
+
 ## Table of contents
 - [App configuration](ENVS.md#app-configuration)
 - [Blockchain parameters](ENVS.md#blockchain-parameters)
@@ -12,8 +18,13 @@ The app instance could be customized by passing following variables to NodeJS en
   - [Homepage](ENVS.md#homepage)
   - [Sidebar](ENVS.md#sidebar)
   - [Footer](ENVS.md#footer)
+  - [Favicon](ENVS.md#favicon)
+  - [Meta](ENVS.md#meta)
   - [Views](ENVS.md#views)
     - [Block](ENVS.md#block-views)
+    - [Address](ENVS.md#address-views)
+    - [Transaction](ENVS.md#transaction-views)
+    - [NFT](ENVS.md#nft-views)
   - [Misc](ENVS.md#misc)
 - [App features](ENVS.md#app-features)
   - [My account](ENVS.md#my-account)
@@ -22,7 +33,8 @@ The app instance could be customized by passing following variables to NodeJS en
   - [Banner ads](ENVS.md#banner-ads)
   - [Text ads](ENVS.md#text-ads)
   - [Beacon chain](ENVS.md#beacon-chain)
-  - [Rollup (L2) chain](ENVS.md#rollup-l2-chain)
+  - [Optimistic rollup (L2) chain](ENVS.md#optimistic-rollup-l2-chain)
+  - [ZkEvm rollup (L2) chain](NVS.md#zkevm-rollup-l2-chain)
   - [Export data to CSV file](ENVS.md#export-data-to-csv-file)
   - [Google analytics](ENVS.md#google-analytics)
   - [Mixpanel analytics](ENVS.md#mixpanel-analytics)
@@ -33,6 +45,9 @@ The app instance could be customized by passing following variables to NodeJS en
   - [Blockchain statistics](ENVS.md#blockchain-statistics)
   - [Web3 wallet integration](ENVS.md#web3-wallet-integration-add-token-or-network-to-the-wallet) (add token or network to the wallet)
   - [Verified tokens info](ENVS.md#verified-tokens-info)
+  - [Bridged tokens](ENVS.md#bridged-tokens)
+  - [Safe{Core} address tags](ENVS.md#safecore-address-tags)
+  - [SUAVE chain](ENVS.md#suave-chain)
   - [Sentry error monitoring](ENVS.md#sentry-error-monitoring)
 - [3rd party services configuration](ENVS.md#external-services-configuration)
 
@@ -60,6 +75,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_NETWORK_CURRENCY_NAME | `string` | Network currency name | - | - | `Ether` |
 | NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL | `string` | Network currency symbol | - | - | `ETH` |
 | NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS | `string` | Network currency decimals | - | `18` | `6` |
+| NEXT_PUBLIC_NETWORK_GOVERNANCE_TOKEN_SYMBOL | `string` | Network governance token symbol | - | - | `GNO` |
 | NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE | `validation` or `mining` | Verification type in the network | - | `mining` | `validation` |
 | NEXT_PUBLIC_IS_TESTNET | `boolean`| Set to true if network is testnet | - | `false` | `true` |
 
@@ -83,7 +99,7 @@ The app instance could be customized by passing following variables to NodeJS en
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_HOMEPAGE_CHARTS | `Array<'daily_txs' \| 'coin_price' \| 'market_cap'>` | List of charts displayed on the home page | - | - | `['daily_txs','coin_price','market_cap']` |
+| NEXT_PUBLIC_HOMEPAGE_CHARTS | `Array<'daily_txs' \| 'coin_price' \| 'market_cap' \| 'tvl'>` | List of charts displayed on the home page | - | - | `['daily_txs','coin_price','market_cap']` |
 | NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR | `string` | Text color of the hero plate on the homepage (escape "#" symbol if you use HEX color codes or use rgba-value instead) | - | `white` | `\#DCFE76` |
 | NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND | `string` | Background css value for hero plate on the homepage (escape "#" symbol if you use HEX color codes or use rgba-value instead) | - | `radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%), var(--chakra-colors-blue-400)` | `radial-gradient(at 15% 86%, hsla(350,65%,70%,1) 0px, transparent 50%)` \| `no-repeat bottom 20% right 0px/100% url(https://placekitten/1400/200)` |
 | NEXT_PUBLIC_HOMEPAGE_SHOW_GAS_TRACKER | `boolean` | Set to false if network doesn't have gas tracker | - | `true` | `false` |
@@ -95,12 +111,13 @@ The app instance could be customized by passing following variables to NodeJS en
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_NETWORK_LOGO | `string` | Network logo; if not provided, placeholder will be shown; *Note* the logo height should be 20px and width less than 120px | - | - | `https://placekitten.com/240/40` |
+| NEXT_PUBLIC_NETWORK_LOGO | `string` | Network logo; if not provided, placeholder will be shown; *Note* the logo height should be 24px and width less than 120px | - | - | `https://placekitten.com/240/40` |
 | NEXT_PUBLIC_NETWORK_LOGO_DARK | `string` | Network logo for dark color mode; if not provided, **inverted** regular logo will be used instead | - | - | `https://placekitten.com/240/40` |
 | NEXT_PUBLIC_NETWORK_ICON | `string` | Network icon; used as a replacement for regular network logo when nav bar is collapsed; if not provided, placeholder will be shown; *Note* the icon size should be at least 60px by 60px | - | - | `https://placekitten.com/60/60` |
 | NEXT_PUBLIC_NETWORK_ICON_DARK | `string` | Network icon for dark color mode; if not provided, **inverted** regular icon will be used instead | - | - | `https://placekitten.com/60/60` |
 | NEXT_PUBLIC_FEATURED_NETWORKS | `string` | URL of configuration file (`.json` format only) which contains list of featured networks that will be shown in the network menu. See [below](#featured-network-configuration-properties) list of available properties for particular network | - | - | `https://example.com/featured_networks_config.json` |
 | NEXT_PUBLIC_OTHER_LINKS | `Array<{url: string; text: string}>` | List of links for the "Other" navigation menu | - | - | `[{'url':'https://blockscout.com','text':'Blockscout'}]` |
+| NEXT_PUBLIC_NAVIGATION_HIDDEN_LINKS | `Array<LinkId>` | List of external links hidden in the navigation. Supported ids are `eth_rpc_api`, `rpc_api` | - | - | `['eth_rpc_api']` |
 
 #### Featured network configuration properties
 
@@ -132,6 +149,29 @@ The app version shown in the footer is derived from build-time ENV variables `NE
 
 &nbsp;
 
+### Favicon
+
+By default, the app has generic favicon. You can override this behavior by providing the following variables. Hence, the favicon assets bundle will be generated at the container start time and will be used instead of default one.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| FAVICON_GENERATOR_API_KEY | `string` | RealFaviconGenerator [API key](https://realfavicongenerator.net/api/) | Required | - | `<your-secret>` |
+| FAVICON_MASTER_URL | `string` | - | - | `NEXT_PUBLIC_NETWORK_ICON` | `https://placekitten.com/180/180` |
+
+&nbsp;
+
+### Meta
+
+Settings for meta tags and OG tags
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_PROMOTE_BLOCKSCOUT_IN_TITLE | `boolean` | Set to `true` to promote Blockscout in meta and OG titles | - | `true` | `true` |
+| NEXT_PUBLIC_OG_DESCRIPTION | `string` | Custom OG description | - | - | `Blockscout is the #1 open-source blockchain explorer available today. 100+ chains and counting rely on Blockscout data availability, APIs, and ecosystem tools to support their networks.` |
+| NEXT_PUBLIC_OG_IMAGE_URL | `string` | OG image url. Minimum image size is 200 x 20 pixels (recommended: 1200 x 600); maximum supported file size is 8 MB; 2:1 aspect ratio; supported formats: image/jpeg, image/gif, image/png | - | `static/og_placeholder.png` | `https://placekitten.com/1200/600` |
+
+&nbsp;
+
 ### Views
 
 #### Block views
@@ -146,6 +186,64 @@ The app version shown in the footer is derived from build-time ENV variables `NE
 | --- | --- |
 | `burnt_fees` | Burnt fees |
 | `total_reward` | Total block reward |
+| `nonce` | Block nonce |
+
+&nbsp;
+
+#### Address views
+
+| Variable | Type | Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE | `"github" \| "jazzicon" \| "gradient_avatar" \| "blockie"` | Style of address identicon appearance. Choose between [GitHub](https://github.blog/2013-08-14-identicons/), [Metamask Jazzicon](https://metamask.github.io/jazzicon/), [Gradient Avatar](https://github.com/varld/gradient-avatar) and [Ethereum Blocky](https://mycryptohq.github.io/ethereum-blockies-base64/) | - | `jazzicon` | `gradient_avatar` |
+| NEXT_PUBLIC_VIEWS_ADDRESS_HIDDEN_VIEWS | `Array<AddressViewId>` | Address views that should not be displayed. See below the list of the possible id values.  | - | - | `'["top_accounts"]'` |
+
+##### Address views list
+| Id | Description |
+| --- | --- |
+| `top_accounts` | Top accounts |
+
+&nbsp;
+
+#### Transaction views
+
+| Variable | Type | Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_VIEWS_TX_HIDDEN_FIELDS | `Array<TxFieldsId>` | Array of the transaction fields ids that should be hidden. See below the list of the possible id values. | - | - | `'["value","tx_fee"]'` |
+| NEXT_PUBLIC_VIEWS_TX_ADDITIONAL_FIELDS | `Array<TxAdditionalFieldsId>` | Array of the additional fields ids that should be added to the transaction details. See below the list of the possible id values. | - | - | `'["fee_per_gas"]'` |
+
+##### Transaction fields list
+| Id | Description |
+| --- | --- |
+| `value` | Sent value |
+| `fee_currency` | Fee currency |
+| `gas_price` | Price per unit of gas |
+| `tx_fee` | Total transaction fee |
+| `gas_fees` | Gas fees breakdown |
+| `burnt_fees` | Amount of native coin burnt for transaction |
+
+##### Transaction additional fields list
+| Id | Description |
+| --- | --- |
+| `fee_per_gas` | Amount of total fee divided by total amount of gas used by transaction |
+
+&nbsp;
+
+#### NFT views
+
+| Variable | Type | Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES | `Array<NftMarketplace>` where `NftMarketplace` can have following [properties](#nft-marketplace-properties) | Used to build up links to NFT collections and NFT instances in external marketplaces. | - | - | `[{'name':'OpenSea','collection_url':'https://opensea.io/assets/ethereum/{hash}','instance_url':'https://opensea.io/assets/ethereum/{hash}/{id}','logo_url':'https://opensea.io/static/images/logos/opensea-logo.svg'}]` |
+
+
+##### NFT marketplace properties
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| name | `string` | Displayed name of the marketplace | Required | - | `OpenSea` |
+| collection_url | `string` | URL template for NFT collection | Required | - | `https://opensea.io/assets/ethereum/{hash}` |
+| instance_url | `string` | URL template for NFT instance | Required | - | `https://opensea.io/assets/ethereum/{hash}/{id}` |
+| logo_url | `string` | URL of marketplace logo | Required | - | `https://opensea.io/static/images/logos/opensea-logo.svg` |
+
+*Note* URL templates should contain placeholders of NFT hash (`{hash}`) and NFT id (`{id}`). This placeholders will be substituted with particular values for every collection or instance.
 
 &nbsp;
 
@@ -154,7 +252,9 @@ The app version shown in the footer is derived from build-time ENV variables `NE
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_NETWORK_EXPLORERS | `Array<NetworkExplorer>` where `NetworkExplorer` can have following [properties](#network-explorer-configuration-properties) | Used to build up links to transactions, blocks, addresses in other chain explorers. | - | - | `[{'title':'Anyblock','baseUrl':'https://explorer.anyblock.tools','paths':{'tx':'/ethereum/poa/core/tx'}}]` |
-| NEXT_PUBLIC_HIDE_INDEXING_ALERT | `boolean` | Set to `true` to hide indexing alert, if the chain indexing isn't completed | - | `false` | `true` |
+| NEXT_PUBLIC_HIDE_INDEXING_ALERT_BLOCKS | `boolean` | Set to `true` to hide indexing alert in the page header about indexing chain's blocks | - | `false` | `true` |
+| NEXT_PUBLIC_HIDE_INDEXING_ALERT_INT_TXS | `boolean` | Set to `true` to hide indexing alert in the page footer about indexing block's internal transactions | - | `false` | `true` |
+| NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE | `string` | Used for displaying custom announcements or alerts in the header of the site. Could be a regular string or a HTML code. | - | - | `Hello world! 🤪` |
 
 #### Network explorer configuration properties
 
@@ -239,13 +339,22 @@ This feature is **enabled by default** with the `coinzilla` ads provider. To swi
 
 &nbsp;
 
-### Rollup (L2) chain
+### Optimistic rollup (L2) chain
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_IS_L2_NETWORK | `boolean` | Set to true for L2 solutions | Required | - | `true` |
+| NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK | `boolean` | Set to true for optimistic L2 solutions | Required | - | `true` |
+| NEXT_PUBLIC_OPTIMISTIC_L2_WITHDRAWAL_URL | `string` | URL for optimistic L2 -> L1 withdrawals | Required | - | `https://app.optimism.io/bridge/withdraw` |
 | NEXT_PUBLIC_L1_BASE_URL | `string` | Blockscout base URL for L1 network | Required | - | `'http://eth-goerli.blockscout.com'` |
-| NEXT_PUBLIC_L2_WITHDRAWAL_URL | `string` | URL for L2 -> L1 withdrawals | Required | - | `https://app.optimism.io/bridge/withdraw` |
+
+&nbsp;
+
+### ZkEvm rollup (L2) chain
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK | `boolean` | Set to true for zkevm L2 solutions  | Required | - | `true` |
+| NEXT_PUBLIC_L1_BASE_URL | `string` | Blockscout base URL for L1 network | Required | - | `'http://eth-goerli.blockscout.com'` |
+
 
 &nbsp;
 
@@ -287,7 +396,7 @@ This feature is **always enabled**, but you can configure its behavior by passin
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_API_SPEC_URL | `string` | Spec to be displayed on `/api-docs` page | Required | - | `https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml` |
+| NEXT_PUBLIC_API_SPEC_URL | `string` | Spec to be displayed on `/api-docs` page | Required | `https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml` | `https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml` |
 
 &nbsp;
 
@@ -369,14 +478,60 @@ This feature is **enabled by default** with the `['metamask']` value. To switch 
 
 &nbsp;
 
+### Bridged tokens
+
+This feature allows users to view tokens that have been bridged from other EVM chains. Additional tab "Bridged" will be added to the tokens page and the link to original token will be displayed on the token page.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_BRIDGED_TOKENS_CHAINS | `Array<BridgedTokenChain>` where `BridgedTokenChain` can have following [properties](#bridged-token-chain-configuration-properties) | Used for displaying filter by the chain from which token where bridged. Also, used for creating links to original tokens in other explorers. | Required | - | `[{'id':'1','title':'Ethereum','short_title':'ETH','base_url':'https://eth.blockscout.com/token'}]` |
+| NEXT_PUBLIC_BRIDGED_TOKENS_BRIDGES | `Array<TokenBridge>` where `TokenBridge` can have following [properties](#token-bridge-configuration-properties) | Used for displaying text about bridges types on the tokens page. | Required | - | `[{'type':'omni','title':'OmniBridge','short_title':'OMNI'}]` |
+
+#### Bridged token chain configuration properties
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| id | `string` | Base chain id, see [https://chainlist.org](https://chainlist.org) for the reference | Required | - | `1` |
+| title | `string` | Displayed name of the chain | Required | - | `Ethereum` |
+| short_title | `string` | Used for displaying chain name in the list view as tag | Required | - | `ETH` |
+| base_url | `string` | Base url to original token in base chain explorer | Required | - | `https://eth.blockscout.com/token` |
+
+*Note* The url to original token will be constructed as `<base_url>/<token_hash>`, e.g `https://eth.blockscout.com/token/<token_hash>`
+
+#### Token bridge configuration properties
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| type | `string` | Bridge type; should be matched to `bridge_type` field in API response | Required | - | `omni` |
+| title | `string` | Bridge title | Required | - | `OmniBridge` |
+| short_title | `string` | Bridge short title for displaying in the tags | Required | - | `OMNI` |
+
+&nbsp;
+
+### Safe{Core} address tags
+
+For the smart contract addresses which are [Safe{Core} accounts](https://safe.global/) public tag "Multisig: Safe" will be displayed in the address page header along side to Safe logo. The Safe service is available only for certain networks, see full list [here](https://docs.safe.global/safe-core-api/available-services). Based on provided value of `NEXT_PUBLIC_NETWORK_ID`, the feature will be enabled or disabled. 
+
+&nbsp;
+
+### SUAVE chain
+
+For blockchains that implementing SUAVE architecture additional fields will be shown on the transaction page ("Allowed peekers", "Kettle"). Users also will be able to see the list of all transaction for a particular Kettle in the separate view.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_IS_SUAVE_CHAIN | `boolean` | Set to true for blockchains with [SUAVE architecture](https://writings.flashbots.net/mevm-suave-centauri-and-beyond) | Required | - | `true` |
+
+&nbsp;
+
 ### Sentry error monitoring
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_SENTRY_DSN | `string` | Client key for your Sentry.io app | Required | - | `<your-secret>` |
 | SENTRY_CSP_REPORT_URI | `string` | URL for sending CSP-reports to your Sentry.io app | - | - | `<your-secret>` |
-| NEXT_PUBLIC_APP_ENV | `string` | Current app env (e.g development, review or production). Passed as `environment` property to Sentry config | - | `process.env.NODE_ENV` | `production` |
-| NEXT_PUBLIC_APP_INSTANCE | `string` | Name of app instance. Used as custom tag `app_instance` value in the main Sentry scope | - | - | `wonderful_kepler` |
+| NEXT_PUBLIC_APP_ENV | `string` | App env (e.g development, review or production). Passed as `environment` property to Sentry config | - | `production` | `production` |
+| NEXT_PUBLIC_APP_INSTANCE | `string` | Name of app instance. Used as custom tag `app_instance` value in the main Sentry scope. If not provided, it will be constructed from `NEXT_PUBLIC_APP_HOST` | - | - | `wonderful_kepler` |
 
 &nbsp;
 

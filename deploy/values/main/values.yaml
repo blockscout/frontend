@@ -54,7 +54,7 @@ blockscout:
       cpu: "3"
   # Blockscout environment variables
   env:
-    BLOCKSCOUT_VERSION: v5.1.2-beta
+    BLOCKSCOUT_VERSION: v5.3.0-beta
     ETHEREUM_JSONRPC_VARIANT: geth
     HEART_BEAT_TIMEOUT: 30
     SUBNETWORK: Ethereum
@@ -67,6 +67,7 @@ blockscout:
     DISPLAY_TOKEN_ICONS: 'true'
     FETCH_REWARDS_WAY: manual
     MICROSERVICE_SC_VERIFIER_ENABLED: 'true'
+    MICROSERVICE_SC_VERIFIER_TYPE: 'eth_bytecode_db'
     MICROSERVICE_SC_VERIFIER_URL: http://eth-bytecode-db-svc.eth-bytecode-db-testing.svc.cluster.local:80
     INDEXER_MEMORY_LIMIT: 5
     APPS_MENU: 'true'
@@ -146,8 +147,8 @@ frontend:
 
     NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE: validation
     NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM: https://airtable.com/shrqUAcjgGJ4jU88C
-    NEXT_PUBLIC_APP_ENV: stable
-    NEXT_PUBLIC_APP_INSTANCE: eth_goerli
+    NEXT_PUBLIC_APP_ENV: development
+    NEXT_PUBLIC_APP_INSTANCE: main
     NEXT_PUBLIC_STATS_API_HOST: https://stats-test.k8s-dev.blockscout.com/
     NEXT_PUBLIC_VISUALIZE_API_HOST: http://visualizer-svc.visualizer-testing.svc.cluster.local/
     NEXT_PUBLIC_CONTRACT_INFO_API_HOST: https://contracts-info-test.k8s-dev.blockscout.com
@@ -155,10 +156,10 @@ frontend:
     NEXT_PUBLIC_LOGOUT_URL: https://blockscoutcom.us.auth0.com/v2/logout
     NEXT_PUBLIC_NETWORK_RPC_URL: https://rpc.ankr.com/eth_goerli
     NEXT_PUBLIC_HOMEPAGE_CHARTS: "['daily_txs','coin_price','market_cap']"
-    NEXT_PUBLIC_API_SPEC_URL: https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml
     NEXT_PUBLIC_MARKETPLACE_CONFIG_URL: https://raw.githubusercontent.com/blockscout/frontend-configs/dev/configs/marketplace/eth-goerli.json
     NEXT_PUBLIC_GRAPHIQL_TRANSACTION: 0xf7d4972356e6ae44ae948d0cf19ef2beaf0e574c180997e969a2837da15e349d
     NEXT_PUBLIC_WEB3_WALLETS: "['token_pocket','coinbase','metamask']"
+    NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES: "[{'name':'LooksRare','collection_url':'https://goerli.looksrare.org/collections/{hash}','instance_url':'https://goerli.looksrare.org/collections/{hash}/{id}','logo_url':'https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/nft-marketplace-logos/looks-rare.png'}]"
   envFromSecret:
     NEXT_PUBLIC_SENTRY_DSN: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_SENTRY_DSN
     SENTRY_CSP_REPORT_URI: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/SENTRY_CSP_REPORT_URI
@@ -166,3 +167,4 @@ frontend:
     NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID
     NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY
     NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID
+    FAVICON_GENERATOR_API_KEY: ref+vault://deployment-values/blockscout/common?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY

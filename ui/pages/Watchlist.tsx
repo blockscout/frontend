@@ -42,7 +42,7 @@ const WatchList: React.FC = () => {
   }, [ addressModalProps ]);
 
   const onAddOrEditSuccess = useCallback(async() => {
-    await queryClient.refetchQueries([ resourceKey('watchlist') ]);
+    await queryClient.refetchQueries({ queryKey: [ resourceKey('watchlist') ] });
     setAddressModalData(undefined);
     addressModalProps.onClose();
   }, [ addressModalProps, queryClient ]);

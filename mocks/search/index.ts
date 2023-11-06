@@ -11,6 +11,7 @@ export const token1: SearchResultToken = {
   token_type: 'ERC-721',
   total_supply: '10000001',
   exchange_rate: null,
+  is_verified_via_admin_panel: true,
   is_smart_contract_verified: true,
 };
 
@@ -25,6 +26,7 @@ export const token2: SearchResultToken = {
   token_type: 'ERC-20',
   total_supply: '10000001',
   exchange_rate: '1.11',
+  is_verified_via_admin_panel: false,
   is_smart_contract_verified: false,
 };
 
@@ -34,6 +36,15 @@ export const block1: SearchResultBlock = {
   type: 'block' as const,
   timestamp: '2022-12-11T17:55:20Z',
   url: '/block/0x1af31d7535dded06bab9a88eb40ee2f8d0529a60ab3b8a7be2ba69b008cacbd1',
+};
+
+export const block2: SearchResultBlock = {
+  block_hash: '0x1af31d7535dded06bab9a88eb40ee2f8d0529a60ab3b8a7be2ba69b008cacbd2',
+  block_number: 8198536,
+  block_type: 'reorg',
+  type: 'block' as const,
+  timestamp: '2022-12-11T18:55:20Z',
+  url: '/block/0x1af31d7535dded06bab9a88eb40ee2f8d0529a60ab3b8a7be2ba69b008cacbd2',
 };
 
 export const address1: SearchResultAddressOrContract = {

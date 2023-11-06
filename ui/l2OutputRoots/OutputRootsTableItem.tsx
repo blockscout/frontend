@@ -10,7 +10,7 @@ import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
-const feature = config.features.rollup;
+const feature = config.features.optimisticRollup;
 
 type Props = { item: L2OutputRootsItem; isLoading?: boolean };
 

@@ -6,6 +6,7 @@ import type { CustomLinksGroup } from 'types/footerLinks';
 
 import config from 'configs/app';
 import discussionsIcon from 'icons/discussions.svg';
+import donateIcon from 'icons/donate.svg';
 import editIcon from 'icons/edit.svg';
 import cannyIcon from 'icons/social/canny.svg';
 import discordIcon from 'icons/social/discord.svg';
@@ -15,16 +16,17 @@ import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import useFetch from 'lib/hooks/useFetch';
 import useIssueUrl from 'lib/hooks/useIssueUrl';
-import IndexingAlertIntTxs from 'ui/home/IndexingAlertIntTxs';
 import NetworkAddToWallet from 'ui/shared/NetworkAddToWallet';
 
 import ColorModeToggler from '../header/ColorModeToggler';
 import FooterLinkItem from './FooterLinkItem';
+import IntTxsIndexingStatus from './IntTxsIndexingStatus';
 import getApiVersionUrl from './utils/getApiVersionUrl';
 
 const MAX_LINKS_COLUMNS = 3;
 
 const FRONT_VERSION_URL = `https://github.com/lukso-network/network-explorer-execution-frontend`;
+const FRONT_COMMIT_URL = `https://github.com/lukso-network/network-explorer-execution-frontend/commit/ebbe332737aecbf7279c7939ad5e49da76db654b`;
 
 const Footer = () => {
 
@@ -56,20 +58,32 @@ const Footer = () => {
     },
   ];
 
+  const frontendLink = (() => {
+    if (config.UI.footer.frontendVersion) {
+      return <Link href={ FRONT_VERSION_URL } target="_blank">{ config.UI.footer.frontendVersion }</Link>;
+    }
+
+    if (config.UI.footer.frontendCommit) {
+      return <Link href={ FRONT_COMMIT_URL } target="_blank">{ config.UI.footer.frontendCommit }</Link>;
+    }
+
+    return null;
+  })();
+
   const fetch = useFetch();
 
-  const { isLoading, data: linksData } = useQuery<unknown, ResourceError<unknown>, Array<CustomLinksGroup>>(
-    [ 'footer-links' ],
-    async() => fetch(config.UI.footer.links || ''),
-    {
-      enabled: Boolean(config.UI.footer.links),
-      staleTime: Infinity,
-    });
+  const { isPending, data: linksData } = useQuery<unknown, ResourceError<unknown>, Array<CustomLinksGroup>>({
+    queryKey: [ 'footer-links' ],
+    queryFn: async() => fetch(config.UI.footer.links || '', undefined, { resource: 'footer-links' }),
+    enabled: Boolean(config.UI.footer.links),
+    staleTime: Infinity,
+  });
 
   return (
     <Flex
       direction={{ base: 'column', lg: 'row' }}
-      p={{ base: 4, lg: 9 }}
+      px={{ base: 4, lg: 12 }}
+      py={{ base: 4, lg: 9 }}
       borderTop="1px solid"
       borderColor="divider"
       as="footer"
@@ -78,7 +92,7 @@ const Footer = () => {
       <Box flexGrow="1" mb={{ base: 8, lg: 0 }}>
         <Flex flexWrap="wrap" columnGap={ 8 } rowGap={ 6 }>
           <ColorModeToggler/>
-          { !config.UI.indexingAlert.isHidden && <IndexingAlertIntTxs/> }
+          { !config.UI.indexingAlert.intTxs.isHidden && <IntTxsIndexingStatus/> }
           <NetworkAddToWallet/>
         </Flex>
         <Box mt={{ base: 5, lg: '44px' }}>
@@ -93,9 +107,9 @@ const Footer = () => {
                 Backend: <Link href={ apiVersionUrl } target="_blank">{ backendVersionData?.backend_version }</Link>
             </Text>
           ) }
-          { (config.UI.footer.frontendVersion || config.UI.footer.frontendCommit) && (
+          { frontendLink && (
             <Text fontSize="xs">
-              Frontend: <Link href={ FRONT_VERSION_URL } target="_blank">{ config.UI.footer.frontendVersion }</Link>
+              Frontend: { frontendLink }
             </Text>
           ) }
         </VStack>
@@ -111,15 +125,27 @@ const Footer = () => {
           { config.UI.footer.links && <Text fontWeight={ 500 } mb={ 3 }>Blockscout</Text> }
           <Grid
             gap={ 1 }
-            gridTemplateColumns={ config.UI.footer.links ? '160px' : { base: 'repeat(auto-fill, 160px)', lg: 'repeat(3, 160px)' } }
-            gridTemplateRows={{ base: 'auto', lg: config.UI.footer.links ? 'auto' : 'repeat(2, auto)' }}
+            gridTemplateColumns={
+              config.UI.footer.links ?
+                '160px' :
+                {
+                  base: 'repeat(auto-fill, 160px)',
+                  lg: 'repeat(2, 160px)',
+                  xl: 'repeat(4, 160px)',
+                }
+            }
+            gridTemplateRows={{
+              base: 'auto',
+              lg: config.UI.footer.links ? 'auto' : 'repeat(4, auto)',
+              xl: config.UI.footer.links ? 'auto' : 'repeat(2, auto)',
+            }}
             gridAutoFlow={{ base: 'row', lg: config.UI.footer.links ? 'row' : 'column' }}
             mt={{ base: 0, lg: config.UI.footer.links ? 0 : '100px' }}
           >
             { BLOCKSCOUT_LINKS.map(link => <FooterLinkItem { ...link } key={ link.text }/>) }
           </Grid>
         </Box>
-        { config.UI.footer.links && isLoading && (
+        { config.UI.footer.links && isPending && (
           Array.from(Array(3)).map((i, index) => (
             <Box minW="160px" key={ index }>
               <Skeleton w="120px" h="20px" mb={ 6 }/>

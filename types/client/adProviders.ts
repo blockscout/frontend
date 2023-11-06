@@ -1,3 +1,7 @@
-export type AdBannerProviders = 'slise' | 'adbutler' | 'coinzilla' | 'none';
+import type { ArrayElement } from 'types/utils';
 
-export type AdTextProviders = 'coinzilla' | 'none';
+export const SUPPORTED_AD_BANNER_PROVIDERS = [ 'slise', 'adbutler', 'coinzilla', 'none' ] as const;
+export type AdBannerProviders = ArrayElement<typeof SUPPORTED_AD_BANNER_PROVIDERS>;
+
+export const SUPPORTED_AD_TEXT_PROVIDERS = [ 'coinzilla', 'none' ] as const;
+export type AdTextProviders = ArrayElement<typeof SUPPORTED_AD_TEXT_PROVIDERS>;

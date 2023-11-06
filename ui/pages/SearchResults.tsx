@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import type { FormEvent } from 'react';
 import React from 'react';
 
-import IndexingAlertBlocks from 'ui/home/IndexingAlertBlocks';
 import useMarketplaceApps from 'ui/marketplace/useMarketplaceApps';
 import SearchResultListItem from 'ui/searchResults/SearchResultListItem';
 import SearchResultsInput from 'ui/searchResults/SearchResultsInput';
@@ -17,11 +16,12 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import Thead from 'ui/shared/TheadSticky';
 import Header from 'ui/snippets/header/Header';
+import HeaderAlert from 'ui/snippets/header/HeaderAlert';
 import useSearchQuery from 'ui/snippets/searchBar/useSearchQuery';
 
 const SearchResultsPageContent = () => {
   const router = useRouter();
-  const { query, redirectCheckQuery, searchTerm, debouncedSearchTerm, handleSearchTermChange } = useSearchQuery(true);
+  const { query, redirectCheckQuery, searchTerm, debouncedSearchTerm, handleSearchTermChange } = useSearchQuery();
   const { data, isError, isPlaceholderData, pagination } = query;
   const [ showContent, setShowContent ] = React.useState(false);
 
@@ -40,21 +40,21 @@ const SearchResultsPageContent = () => {
     if (redirectCheckQuery.data?.redirect && redirectCheckQuery.data.parameter) {
       switch (redirectCheckQuery.data.type) {
         case 'block': {
-          router.push({ pathname: '/block/[height_or_hash]', query: { height_or_hash: redirectCheckQuery.data.parameter } });
+          router.replace({ pathname: '/block/[height_or_hash]', query: { height_or_hash: redirectCheckQuery.data.parameter } });
           return;
         }
         case 'address': {
-          router.push({ pathname: '/address/[hash]', query: { hash: redirectCheckQuery.data.parameter } });
+          router.replace({ pathname: '/address/[hash]', query: { hash: redirectCheckQuery.data.parameter } });
           return;
         }
         case 'transaction': {
-          router.push({ pathname: '/tx/[hash]', query: { hash: redirectCheckQuery.data.parameter } });
+          router.replace({ pathname: '/tx/[hash]', query: { hash: redirectCheckQuery.data.parameter } });
           return;
         }
       }
     }
 
-    !redirectCheckQuery.isLoading && setShowContent(true);
+    !redirectCheckQuery.isPending && setShowContent(true);
   }, [ redirectCheckQuery, router, debouncedSearchTerm, showContent ]);
 
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
@@ -181,7 +181,7 @@ const SearchResultsPageContent = () => {
 
   return (
     <>
-      <IndexingAlertBlocks/>
+      <HeaderAlert/>
       <Header renderSearchBar={ renderSearchBar }/>
       <AppErrorBoundary>
         <Layout.Content>

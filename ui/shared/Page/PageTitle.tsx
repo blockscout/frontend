@@ -16,6 +16,7 @@ type Props = {
   beforeTitle?: React.ReactNode;
   afterTitle?: React.ReactNode;
   contentAfter?: React.ReactNode;
+  secondRow?: React.ReactNode;
   isLoading?: boolean;
   withTextAd?: boolean;
 }
@@ -31,7 +32,7 @@ const BackLink = (props: BackLinkProp & { isLoading?: boolean }) => {
     return <Skeleton boxSize={ 6 } display="inline-block" borderRadius="base" mr={ 3 } my={ 2 } verticalAlign="text-bottom" isLoaded={ !props.isLoading }/>;
   }
 
-  const icon = <Icon as={ eastArrowIcon } boxSize={ 6 } transform="rotate(180deg)" margin="auto"/>;
+  const icon = <Icon as={ eastArrowIcon } boxSize={ 6 } transform="rotate(180deg)" margin="auto" color="gray.400"/>;
 
   if ('url' in props) {
     return (
@@ -52,7 +53,7 @@ const BackLink = (props: BackLinkProp & { isLoading?: boolean }) => {
   );
 };
 
-const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoading, afterTitle, beforeTitle }: Props) => {
+const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoading, afterTitle, beforeTitle, secondRow }: Props) => {
   const tooltip = useDisclosure();
   const isMobile = useIsMobile();
   const [ isTextTruncated, setIsTextTruncated ] = React.useState(false);
@@ -90,57 +91,62 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
   }, [ updatedTruncateState ]);
 
   return (
-    <Flex
-      className={ className }
-      mb={ 6 }
-      flexDir="row"
-      flexWrap="wrap"
-      rowGap={ 3 }
-      columnGap={ 3 }
-      alignItems="center"
-    >
-      <Flex h={{ base: 'auto', lg: isLoading ? 10 : 'auto' }} maxW="100%" alignItems="center">
-        { backLink && <BackLink { ...backLink } isLoading={ isLoading }/> }
-        { beforeTitle }
-        <Skeleton
-          isLoaded={ !isLoading }
-          overflow="hidden"
-        >
-          <Tooltip
-            label={ title }
-            isOpen={ tooltip.isOpen }
-            onClose={ tooltip.onClose }
-            maxW={{ base: 'calc(100vw - 32px)', lg: '500px' }}
-            closeOnScroll={ isMobile ? true : false }
-            isDisabled={ !isTextTruncated }
+    <Flex className={ className } flexDir="column" rowGap={ 3 } mb={ 6 }>
+      <Flex
+        flexDir="row"
+        flexWrap="wrap"
+        rowGap={ 3 }
+        columnGap={ 3 }
+        alignItems="center"
+      >
+        <Flex h={{ base: 'auto', lg: isLoading ? 10 : 'auto' }} maxW="100%" alignItems="center">
+          { backLink && <BackLink { ...backLink } isLoading={ isLoading }/> }
+          { beforeTitle }
+          <Skeleton
+            isLoaded={ !isLoading }
+            overflow="hidden"
           >
-            <Heading
-              ref={ headingRef }
-              as="h1"
-              size="lg"
-              whiteSpace="normal"
-              wordBreak="break-all"
-              style={{
-                WebkitLineClamp: TEXT_MAX_LINES,
-                WebkitBoxOrient: 'vertical',
-                display: '-webkit-box',
-              }}
-              overflow="hidden"
-              textOverflow="ellipsis"
-              onMouseEnter={ tooltip.onOpen }
-              onMouseLeave={ tooltip.onClose }
-              onClick={ isMobile ? tooltip.onToggle : undefined }
+            <Tooltip
+              label={ title }
+              isOpen={ tooltip.isOpen }
+              onClose={ tooltip.onClose }
+              maxW={{ base: 'calc(100vw - 32px)', lg: '500px' }}
+              closeOnScroll={ isMobile ? true : false }
+              isDisabled={ !isTextTruncated }
             >
-              <span ref={ textRef }>
-                { title }
-              </span>
-            </Heading>
-          </Tooltip>
-        </Skeleton>
-        { afterTitle }
+              <Heading
+                ref={ headingRef }
+                as="h1"
+                size="lg"
+                whiteSpace="normal"
+                wordBreak="break-all"
+                style={{
+                  WebkitLineClamp: TEXT_MAX_LINES,
+                  WebkitBoxOrient: 'vertical',
+                  display: '-webkit-box',
+                }}
+                overflow="hidden"
+                textOverflow="ellipsis"
+                onMouseEnter={ tooltip.onOpen }
+                onMouseLeave={ tooltip.onClose }
+                onClick={ isMobile ? tooltip.onToggle : undefined }
+              >
+                <span ref={ textRef }>
+                  { title }
+                </span>
+              </Heading>
+            </Tooltip>
+          </Skeleton>
+          { afterTitle }
+        </Flex>
+        { contentAfter }
+        { withTextAd && <TextAd order={{ base: -1, lg: 100 }} mb={{ base: 6, lg: 0 }} ml="auto" w={{ base: '100%', lg: 'auto' }}/> }
       </Flex>
-      { contentAfter }
-      { withTextAd && <TextAd order={{ base: -1, lg: 100 }} mb={{ base: 6, lg: 0 }} ml="auto" w={{ base: '100%', lg: 'auto' }}/> }
+      { secondRow && (
+        <Flex alignItems="center" minH={ 10 } overflow="hidden">
+          { secondRow }
+        </Flex>
+      ) }
     </Flex>
   );
 };

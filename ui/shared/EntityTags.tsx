@@ -1,3 +1,4 @@
+import type { ThemingProps } from '@chakra-ui/react';
 import { Flex, chakra, useDisclosure, Popover, PopoverTrigger, PopoverContent, PopoverBody } from '@chakra-ui/react';
 import React from 'react';
 
@@ -9,6 +10,8 @@ import Tag from 'ui/shared/chakra/Tag';
 interface TagData {
   label: string;
   display_name: string;
+  colorScheme?: ThemingProps<'Tag'>['colorScheme'];
+  variant?: ThemingProps<'Tag'>['variant'];
 }
 
 interface Props {
@@ -24,7 +27,7 @@ const EntityTags = ({ className, data, tagsBefore = [], tagsAfter = [], isLoadin
   const isMobile = useIsMobile();
   const { isOpen, onToggle, onClose } = useDisclosure();
 
-  const tags = [
+  const tags: Array<TagData> = [
     ...tagsBefore,
     ...(data?.private_tags || []),
     ...(data?.public_tags || []),
@@ -45,7 +48,14 @@ const EntityTags = ({ className, data, tagsBefore = [], tagsAfter = [], isLoadin
             tags
               .slice(0, 2)
               .map((tag) => (
-                <Tag key={ tag.label } isLoading={ isLoading } isTruncated maxW={{ base: '115px', lg: 'initial' }}>
+                <Tag
+                  key={ tag.label }
+                  isLoading={ isLoading }
+                  isTruncated
+                  maxW={{ base: '115px', lg: 'initial' }}
+                  colorScheme={ 'colorScheme' in tag ? tag.colorScheme : 'gray' }
+                  variant={ 'variant' in tag ? tag.variant : 'subtle' }
+                >
                   { tag.display_name }
                 </Tag>
               ))
@@ -60,7 +70,15 @@ const EntityTags = ({ className, data, tagsBefore = [], tagsAfter = [], isLoadin
                   {
                     tags
                       .slice(2)
-                      .map((tag) => <Tag key={ tag.label }>{ tag.display_name }</Tag>)
+                      .map((tag) => (
+                        <Tag
+                          key={ tag.label }
+                          colorScheme={ 'colorScheme' in tag ? tag.colorScheme : 'gray' }
+                          variant={ 'variant' in tag ? tag.variant : 'subtle' }
+                        >
+                          { tag.display_name }
+                        </Tag>
+                      ))
                   }
                 </Flex>
               </PopoverBody>
@@ -71,7 +89,14 @@ const EntityTags = ({ className, data, tagsBefore = [], tagsAfter = [], isLoadin
     }
 
     return tags.map((tag) => (
-      <Tag key={ tag.label } isLoading={ isLoading } isTruncated maxW={{ base: '115px', lg: 'initial' }}>
+      <Tag
+        key={ tag.label }
+        isLoading={ isLoading }
+        isTruncated
+        maxW={{ base: '115px', lg: 'initial' }}
+        colorScheme={ 'colorScheme' in tag ? tag.colorScheme : 'gray' }
+        variant={ 'variant' in tag ? tag.variant : 'subtle' }
+      >
         { tag.display_name }
       </Tag>
     ));

@@ -5,17 +5,15 @@ import React from 'react';
 import type { AddressesItem } from 'types/api/addresses';
 
 import config from 'configs/app';
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
+import { ZERO } from 'lib/consts';
 import Tag from 'ui/shared/chakra/Tag';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
 type Props = {
   item: AddressesItem;
   index: number;
-  totalSupply: string;
+  totalSupply: BigNumber;
   isLoading?: boolean;
 }
 
@@ -31,19 +29,12 @@ const AddressesListItem = ({
   return (
     <ListItemMobile rowGap={ 3 }>
       <Flex alignItems="center" justifyContent="space-between" w="100%">
-        <Address maxW="100%" mr={ 8 }>
-          <AddressIcon address={ item } mr={ 2 } isLoading={ isLoading }/>
-          <AddressLink
-            fontWeight={ 700 }
-            flexGrow={ 1 }
-            w="calc(100% - 32px)"
-            hash={ item.hash }
-            alias={ item.name }
-            type="address"
-            isLoading={ isLoading }
-          />
-          <CopyToClipboard text={ item.hash } isLoading={ isLoading }/>
-        </Address>
+        <AddressEntity
+          address={ item }
+          isLoading={ isLoading }
+          fontWeight={ 700 }
+          mr={ 2 }
+        />
         <Skeleton isLoaded={ !isLoading } fontSize="sm" ml="auto" minW={ 6 } color="text_secondary">
           <span>{ index }</span>
         </Skeleton>
@@ -57,7 +48,7 @@ const AddressesListItem = ({
           <span>{ addressBalance.dp(8).toFormat() }</span>
         </Skeleton>
       </HStack>
-      { totalSupply && totalSupply !== '0' && (
+      { !totalSupply.eq(ZERO) && (
         <HStack spacing={ 3 }>
           <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>Percentage</Skeleton>
           <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary">

@@ -3,8 +3,8 @@ import React, { useCallback } from 'react';
 
 import type { PublicTag } from 'types/api/account';
 
-import AddressSnippet from 'ui/shared/AddressSnippet';
 import Tag from 'ui/shared/chakra/Tag';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 
@@ -28,7 +28,15 @@ const PublicTagListItem = ({ item, isLoading, onEditClick, onDeleteClick }: Prop
     <ListItemMobile>
       <VStack spacing={ 3 } alignItems="flex-start" maxW="100%">
         <VStack spacing={ 4 } alignItems="unset" maxW="100%">
-          { item.addresses_with_info.map((address) => <AddressSnippet key={ address.hash } address={ address } isLoading={ isLoading }/>) }
+          { item.addresses_with_info.map((address) => (
+            <AddressEntity
+              key={ address.hash }
+              address={ address }
+              isLoading={ isLoading }
+              fontWeight="600"
+              w="100%"
+            />
+          )) }
         </VStack>
         <HStack spacing={ 3 }>
           <Text fontSize="sm" fontWeight={ 500 }>Public tags</Text>

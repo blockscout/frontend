@@ -14,6 +14,7 @@ import type {
 import type {
   Address,
   AddressCounters,
+  AddressTabsCounters,
   AddressTransactionsResponse,
   AddressTokenTransferResponse,
   AddressCoinBalanceHistoryResponse,
@@ -40,7 +41,7 @@ import type { L2TxnBatchesResponse } from 'types/api/l2TxnBatches';
 import type { L2WithdrawalsResponse } from 'types/api/l2Withdrawals';
 import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
 import type { RawTracesResponse } from 'types/api/rawTrace';
-import type { SearchRedirectResult, SearchResult, SearchResultFilters } from 'types/api/search';
+import type { SearchRedirectResult, SearchResult, SearchResultFilters, SearchResultItem } from 'types/api/search';
 import type { Counters, StatsCharts, StatsChart, HomeStats } from 'types/api/stats';
 import type {
   TokenCounters,
@@ -51,13 +52,14 @@ import type {
   TokenInstanceTransfersCount,
   TokenVerifiedInfo,
 } from 'types/api/token';
-import type { TokensResponse, TokensFilters, TokensSorting, TokenInstanceTransferResponse } from 'types/api/tokens';
+import type { TokensResponse, TokensFilters, TokensSorting, TokenInstanceTransferResponse, TokensBridgedFilters } from 'types/api/tokens';
 import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
 import type { TransactionsResponseValidated, TransactionsResponsePending, Transaction, TransactionsResponseWatchlist } from 'types/api/transaction';
 import type { TTxsFilters } from 'types/api/txsFilters';
 import type { TxStateChanges } from 'types/api/txStateChanges';
 import type { VisualizedContract } from 'types/api/visualization';
 import type { WithdrawalsResponse, WithdrawalsCounters } from 'types/api/withdrawals';
+import type { ZkEvmL2TxnBatch, ZkEvmL2TxnBatchesItem, ZkEvmL2TxnBatchesResponse, ZkEvmL2TxnBatchTxs } from 'types/api/zkEvmL2TxnBatches';
 import type { ArrayElement } from 'types/utils';
 
 import config from 'configs/app';
@@ -197,6 +199,11 @@ export const RESOURCES = {
     path: '/api/v2/transactions/watchlist',
     filterFields: [ ],
   },
+  txs_execution_node: {
+    path: '/api/v2/transactions/execution-node/:hash',
+    pathParams: [ 'hash' as const ],
+    filterFields: [ ],
+  },
   tx: {
     path: '/api/v2/transactions/:hash',
     pathParams: [ 'hash' as const ],
@@ -246,6 +253,10 @@ export const RESOURCES = {
   },
   address_counters: {
     path: '/api/v2/addresses/:hash/counters',
+    pathParams: [ 'hash' as const ],
+  },
+  address_tabs_counters: {
+    path: '/api/v2/addresses/:hash/tabs-counters',
     pathParams: [ 'hash' as const ],
   },
   // this resource doesn't have pagination, so causing huge problems on some addresses page
@@ -372,6 +383,10 @@ export const RESOURCES = {
     path: '/api/v2/tokens',
     filterFields: [ 'q' as const, 'type' as const ],
   },
+  tokens_bridged: {
+    path: '/api/v2/tokens/bridged',
+    filterFields: [ 'q' as const, 'chain_ids' as const ],
+  },
 
   // TOKEN INSTANCE
   token_instance: {
@@ -412,14 +427,24 @@ export const RESOURCES = {
   homepage_txs: {
     path: '/api/v2/main-page/transactions',
   },
+  homepage_zkevm_l2_batches: {
+    path: '/api/v2/main-page/zkevm/batches/confirmed',
+  },
   homepage_txs_watchlist: {
     path: '/api/v2/main-page/transactions/watchlist',
   },
   homepage_indexing_status: {
     path: '/api/v2/main-page/indexing-status',
   },
+  homepage_zkevm_latest_batch: {
+    path: '/api/v2/main-page/zkevm/batches/latest-number',
+  },
 
   // SEARCH
+  quick_search: {
+    path: '/api/v2/search/quick',
+    filterFields: [ 'q' ],
+  },
   search: {
     path: '/api/v2/search',
     filterFields: [ 'q' ],
@@ -463,6 +488,25 @@ export const RESOURCES = {
 
   l2_txn_batches_count: {
     path: '/api/v2/optimism/txn-batches/count',
+  },
+
+  zkevm_l2_txn_batches: {
+    path: '/api/v2/zkevm/batches',
+    filterFields: [],
+  },
+
+  zkevm_l2_txn_batches_count: {
+    path: '/api/v2/zkevm/batches/count',
+  },
+
+  zkevm_l2_txn_batch: {
+    path: '/api/v2/zkevm/batches/:number',
+    pathParams: [ 'number' as const ],
+  },
+  zkevm_l2_txn_batch_txs: {
+    path: '/api/v2/transactions/zkevm-batch/:number',
+    pathParams: [ 'number' as const ],
+    filterFields: [],
   },
 
   // CONFIGS
@@ -524,16 +568,17 @@ export interface ResourceError<T = unknown> {
 export type ResourceErrorAccount<T> = ResourceError<{ errors: T }>
 
 export type PaginatedResources = 'blocks' | 'block_txs' |
-'txs_validated' | 'txs_pending' | 'txs_watchlist' |
+'txs_validated' | 'txs_pending' | 'txs_watchlist' | 'txs_execution_node' |
 'tx_internal_txs' | 'tx_logs' | 'tx_token_transfers' | 'tx_state_changes' |
 'addresses' |
 'address_txs' | 'address_internal_txs' | 'address_token_transfers' | 'address_blocks_validated' | 'address_coin_balance' |
 'search' |
 'address_logs' | 'address_tokens' |
-'token_transfers' | 'token_holders' | 'token_inventory' | 'tokens' |
+'token_transfers' | 'token_holders' | 'token_inventory' | 'tokens' | 'tokens_bridged' |
 'token_instance_transfers' | 'token_instance_holders' |
 'verified_contracts' |
 'l2_output_roots' | 'l2_withdrawals' | 'l2_txn_batches' | 'l2_deposits' |
+'zkevm_l2_txn_batches' | 'zkevm_l2_txn_batch_txs' |
 'withdrawals' | 'address_withdrawals' | 'block_withdrawals';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
@@ -557,7 +602,9 @@ Q extends 'homepage_blocks' ? Array<Block> :
 Q extends 'homepage_txs' ? Array<Transaction> :
 Q extends 'homepage_txs_watchlist' ? Array<Transaction> :
 Q extends 'homepage_deposits' ? Array<L2DepositsItem> :
+Q extends 'homepage_zkevm_l2_batches' ? { items: Array<ZkEvmL2TxnBatchesItem> } :
 Q extends 'homepage_indexing_status' ? IndexingStatus :
+Q extends 'homepage_zkevm_latest_batch' ? number :
 Q extends 'stats_counters' ? Counters :
 Q extends 'stats_lines' ? StatsCharts :
 Q extends 'stats_line' ? StatsChart :
@@ -568,6 +615,7 @@ Q extends 'block_withdrawals' ? BlockWithdrawalsResponse :
 Q extends 'txs_validated' ? TransactionsResponseValidated :
 Q extends 'txs_pending' ? TransactionsResponsePending :
 Q extends 'txs_watchlist' ? TransactionsResponseWatchlist :
+Q extends 'txs_execution_node' ? TransactionsResponseValidated :
 Q extends 'tx' ? Transaction :
 Q extends 'tx_internal_txs' ? InternalTransactionsResponse :
 Q extends 'tx_logs' ? LogsResponseTx :
@@ -577,6 +625,7 @@ Q extends 'tx_state_changes' ? TxStateChanges :
 Q extends 'addresses' ? AddressesResponse :
 Q extends 'address' ? Address :
 Q extends 'address_counters' ? AddressCounters :
+Q extends 'address_tabs_counters' ? AddressTabsCounters :
 Q extends 'address_txs' ? AddressTransactionsResponse :
 Q extends 'address_internal_txs' ? AddressInternalTxsResponse :
 Q extends 'address_token_transfers' ? AddressTokenTransferResponse :
@@ -597,6 +646,8 @@ Q extends 'token_instance_transfers' ? TokenInstanceTransferResponse :
 Q extends 'token_instance_holders' ? TokenHolders :
 Q extends 'token_inventory' ? TokenInventoryResponse :
 Q extends 'tokens' ? TokensResponse :
+Q extends 'tokens_bridged' ? TokensResponse :
+Q extends 'quick_search' ? Array<SearchResultItem> :
 Q extends 'search' ? SearchResult :
 Q extends 'search_check_redirect' ? SearchRedirectResult :
 Q extends 'contract' ? SmartContract :
@@ -618,6 +669,10 @@ Q extends 'l2_output_roots_count' ? number :
 Q extends 'l2_withdrawals_count' ? number :
 Q extends 'l2_deposits_count' ? number :
 Q extends 'l2_txn_batches_count' ? number :
+Q extends 'zkevm_l2_txn_batches' ? ZkEvmL2TxnBatchesResponse :
+Q extends 'zkevm_l2_txn_batches_count' ? number :
+Q extends 'zkevm_l2_txn_batch' ? ZkEvmL2TxnBatch :
+Q extends 'zkevm_l2_txn_batch_txs' ? ZkEvmL2TxnBatchTxs :
 Q extends 'config_backend_version' ? BackendVersionConfig :
 never;
 /* eslint-enable @typescript-eslint/indent */
@@ -633,6 +688,7 @@ Q extends 'address_token_transfers' ? AddressTokenTransferFilters :
 Q extends 'address_tokens' ? AddressTokensFilter :
 Q extends 'search' ? SearchResultFilters :
 Q extends 'tokens' ? TokensFilters :
+Q extends 'tokens_bridged' ? TokensBridgedFilters :
 Q extends 'verified_contracts' ? VerifiedContractsFilters :
 never;
 /* eslint-enable @typescript-eslint/indent */
@@ -640,5 +696,6 @@ never;
 /* eslint-disable @typescript-eslint/indent */
 export type PaginationSorting<Q extends PaginatedResources> =
 Q extends 'tokens' ? TokensSorting :
+Q extends 'tokens_bridged' ? TokensSorting :
 never;
 /* eslint-enable @typescript-eslint/indent */

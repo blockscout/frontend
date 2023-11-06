@@ -1,20 +1,21 @@
-import { Flex, Grid, Icon, Image, Box, Text, Skeleton, useColorMode } from '@chakra-ui/react';
+import { Flex, Grid, Icon, Image, Box, Text, Skeleton, useColorMode, Tag } from '@chakra-ui/react';
 import React from 'react';
+import xss from 'xss';
 
 import type { SearchResultItem } from 'types/api/search';
 
 import { route } from 'nextjs-routes';
 
-import labelIcon from 'icons/publictags.svg';
+import labelIcon from 'icons/publictags_slim.svg';
 import iconSuccess from 'icons/status/success.svg';
+import verifiedToken from 'icons/verified_token.svg';
 import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
 import * as mixpanel from 'lib/mixpanel/index';
 import { saveToRecentKeywords } from 'lib/recentSearchKeywords';
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
+import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as BlockEntity from 'ui/shared/entities/block/BlockEntity';
+import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import * as TxEntity from 'ui/shared/entities/tx/TxEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkExternal from 'ui/shared/LinkExternal';
@@ -22,7 +23,6 @@ import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import type { SearchResultAppItem } from 'ui/shared/search/utils';
 import { getItemCategory, searchItemTitles } from 'ui/shared/search/utils';
-import TokenLogo from 'ui/shared/TokenLogo';
 
 interface Props {
   data: SearchResultItem | SearchResultAppItem;
@@ -49,10 +49,9 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
         const name = data.name + (data.symbol ? ` (${ data.symbol })` : '');
 
         return (
-          <Flex alignItems="flex-start" flexGrow={ 1 } overflow="hidden">
-            <TokenLogo boxSize={ 6 } data={ data } flexShrink={ 0 } isLoading={ isLoading }/>
+          <Flex alignItems="center" overflow="hidden">
+            <TokenEntity.Icon token={{ ...data, type: data.token_type }} isLoading={ isLoading }/>
             <LinkInternal
-              ml={ 2 }
               href={ route({ pathname: '/token/[hash]', query: { hash: data.address } }) }
               fontWeight={ 700 }
               wordBreak="break-all"
@@ -69,6 +68,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
                 textOverflow="ellipsis"
               />
             </LinkInternal>
+            { data.is_verified_via_admin_panel && <Icon as={ verifiedToken } boxSize={ 4 } ml={ 1 } color="green.500"/> }
           </Flex>
         );
       }
@@ -76,14 +76,31 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
       case 'contract':
       case 'address': {
         const shouldHighlightHash = data.address.toLowerCase() === searchTerm.toLowerCase();
+        const address = {
+          hash: data.address,
+          is_contract: data.type === 'contract',
+          is_verified: data.is_smart_contract_verified,
+          name: null,
+          implementation_name: null,
+        };
+
         return (
-          <Address>
-            <AddressIcon address={{ hash: data.address, is_contract: data.type === 'contract', implementation_name: null }} mr={ 2 } flexShrink={ 0 }/>
-            <Box as={ shouldHighlightHash ? 'mark' : 'span' } display="block" whiteSpace="nowrap" overflow="hidden">
-              <AddressLink type="address" hash={ data.address } fontWeight={ 700 } display="block" w="100%" onClick={ handleLinkClick }/>
-            </Box>
-            { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 1 }/> }
-          </Address>
+          <AddressEntity.Container>
+            <AddressEntity.Icon address={ address }/>
+            <AddressEntity.Link
+              address={ address }
+              onClick={ handleLinkClick }
+            >
+              <AddressEntity.Content
+                asProp={ shouldHighlightHash ? 'mark' : 'span' }
+                address={ address }
+                fontSize="sm"
+                lineHeight={ 5 }
+                fontWeight={ 700 }
+              />
+            </AddressEntity.Link>
+            <AddressEntity.Copy address={ address }/>
+          </AddressEntity.Container>
         );
       }
 
@@ -157,6 +174,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
                 fontWeight={ 700 }
               />
             </BlockEntity.Link>
+            { data.block_type === 'reorg' && <Tag ml={ 2 }>Reorg</Tag> }
           </BlockEntity.Container>
         );
       }
@@ -249,7 +267,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
       case 'contract':
       case 'address': {
         const shouldHighlightHash = data.address.toLowerCase() === searchTerm.toLowerCase();
-        return data.name ? <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? data.name : highlightText(data.name, searchTerm) }}/> : null;
+        return data.name ? <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? xss(data.name) : highlightText(data.name, searchTerm) }}/> : null;
       }
 
       default:

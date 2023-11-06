@@ -1,15 +1,17 @@
 /* eslint-disable no-console */
 import fs from 'fs';
 import path from 'path';
-import type { ZodError } from 'zod-validation-error';
-import { fromZodError } from 'zod-validation-error';
+import type { ValidationError } from 'yup';
 
-import { nextPublicEnvsSchema } from './schema';
+import { buildExternalAssetFilePath } from '../../../configs/app/utils';
+import schema from './schema';
+
+const silent = process.argv.includes('--silent');
 
 run();
 
 async function run() {
-  console.log();
+  !silent && console.log();
   try {
     const appEnvs = Object.entries(process.env)
       .filter(([ key ]) => key.startsWith('NEXT_PUBLIC_'))
@@ -18,46 +20,75 @@ async function run() {
         return result;
       }, {} as Record<string, string>);
 
-    await validateEnvsSchema(appEnvs);
     await checkPlaceholdersCongruity(appEnvs);
+    await validateEnvs(appEnvs);
 
   } catch (error) {
     process.exit(1);
   }
 }
 
-async function validateEnvsSchema(appEnvs: Record<string, string>) {
-  try {
-    console.log(`⏳ Validating environment variables schema...`);
-    nextPublicEnvsSchema.parse(appEnvs);
-    console.log('👍 All good!\n');
-  } catch (error) {
-    const validationError = fromZodError(
-      error as ZodError,
-      {
-        prefix: '',
-        prefixSeparator: '\n  ',
-        issueSeparator: ';\n  ',
-      },
-    );
-    console.log(validationError);
-    console.log('🚨 Environment variables set is invalid.\n');
+async function validateEnvs(appEnvs: Record<string, string>) {
+  !silent && console.log(`🌀 Validating ENV variables values...`);
 
-    throw error;
+  try {
+    // replace ENVs with external JSON files content
+    const envsWithJsonConfig = [
+      'NEXT_PUBLIC_FEATURED_NETWORKS',
+      'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL',
+      'NEXT_PUBLIC_FOOTER_LINKS',
+    ];
+
+    for await (const envName of envsWithJsonConfig) {
+      appEnvs[envName] = await(appEnvs[envName] ? getExternalJsonContent(envName) : Promise.resolve()) || '[]';
+    }
+
+    await schema.validate(appEnvs, { stripUnknown: false, abortEarly: false });
+    !silent && console.log('👍 All good!');
+  } catch (_error) {
+    if (typeof _error === 'object' && _error !== null && 'errors' in _error) {
+      console.log('🚨 ENVs validation failed with the following errors:');
+      (_error as ValidationError).errors.forEach((error) => {
+        console.log('    ', error);
+      });
+    } else {
+      console.log('🚨 Unexpected error occurred during validation.');
+      console.error(_error);
+    }
+
+    throw _error;
   }
+
+  !silent && console.log();
 }
 
-async function checkPlaceholdersCongruity(runTimeEnvs: Record<string, string>) {
-  try {
-    console.log(`⏳ Checking environment variables and their placeholders congruity...`);
+async function getExternalJsonContent(envName: string): Promise<string | void> {
+  return new Promise((resolve, reject) => {
+    const fileName = `./public${ buildExternalAssetFilePath(envName, 'https://foo.bar/baz.json') }`;
 
-    const placeholders = await getEnvsPlaceholders(path.resolve(__dirname, '.env.production'));
+    fs.readFile(path.resolve(__dirname, fileName), 'utf8', (err, data) => {
+      if (err) {
+        console.log(`🚨 Unable to read file: ${ fileName }`);
+        reject(err);
+        return;
+      }
+
+      resolve(data);
+    });
+  });
+}
+
+async function checkPlaceholdersCongruity(envsMap: Record<string, string>) {
+  try {
+    !silent && console.log(`🌀 Checking environment variables and their placeholders congruity...`);
+
+    const runTimeEnvs = await getEnvsPlaceholders(path.resolve(__dirname, '.env.registry'));
     const buildTimeEnvs = await getEnvsPlaceholders(path.resolve(__dirname, '.env'));
-    const envs = Object.keys(runTimeEnvs).filter((env) => !buildTimeEnvs.includes(env));
+    const envs = Object.keys(envsMap).filter((env) => !buildTimeEnvs.includes(env));
 
     const inconsistencies: Array<string> = [];
     for (const env of envs) {
-      const hasPlaceholder = placeholders.includes(env);
+      const hasPlaceholder = runTimeEnvs.includes(env);
       if (!hasPlaceholder) {
         inconsistencies.push(env);
       }
@@ -74,7 +105,7 @@ async function checkPlaceholdersCongruity(runTimeEnvs: Record<string, string>) {
       throw new Error();
     }
 
-    console.log('👍 All good!\n');
+    !silent && console.log('👍 All good!\n');
   } catch (error) {
     console.log('🚨 Congruity check failed.\n');
     throw error;
@@ -85,7 +116,7 @@ function getEnvsPlaceholders(filePath: string): Promise<Array<string>> {
   return new Promise((resolve, reject) => {
     fs.readFile(filePath, 'utf8', (err, data) => {
       if (err) {
-        console.log(`⛔ Unable to read placeholders file.`);
+        console.log(`🚨 Unable to read placeholders file.`);
         reject(err);
         return;
       }

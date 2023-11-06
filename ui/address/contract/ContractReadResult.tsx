@@ -6,6 +6,15 @@ import type { SmartContractReadMethod } from 'types/api/contract';
 
 import hexToUtf8 from 'lib/hexToUtf8';
 
+const ContractReadResultError = ({ children }: {children: React.ReactNode}) => {
+  return (
+    <Alert status="error" mt={ 3 } p={ 4 } borderRadius="md" fontSize="sm" wordBreak="break-word" whiteSpace="pre-wrap">
+      { children }
+    </Alert>
+  );
+
+};
+
 interface Props {
   item: SmartContractReadMethod;
   result: ContractMethodReadResult;
@@ -20,19 +29,27 @@ const ContractReadResult = ({ item, result, onSettle }: Props) => {
   }, [ onSettle ]);
 
   if ('status' in result) {
-    return <Alert status="error" mt={ 3 } p={ 4 } borderRadius="md" fontSize="sm" wordBreak="break-word">{ result.statusText }</Alert>;
+    return <ContractReadResultError>{ result.statusText }</ContractReadResultError>;
   }
 
   if (result.is_error) {
-    const message = 'error' in result.result ? result.result.error : result.result.message;
-    const decoded = 'raw' in result.result && result.result.raw ? `\nRevert reason: ${ hexToUtf8(result.result.raw) }` : '';
+    if ('error' in result.result) {
+      return <ContractReadResultError>{ result.result.error }</ContractReadResultError>;
+    }
 
-    return (
-      <Alert status="error" mt={ 3 } p={ 4 } borderRadius="md" fontSize="sm" wordBreak="break-word" whiteSpace="pre-wrap">
-        { message }
-        { decoded }
-      </Alert>
-    );
+    if ('message' in result.result) {
+      return <ContractReadResultError>[{ result.result.code }] { result.result.message }</ContractReadResultError>;
+    }
+
+    if ('raw' in result.result) {
+      return <ContractReadResultError>{ `Revert reason: ${ hexToUtf8(result.result.raw) }` }</ContractReadResultError>;
+    }
+
+    if ('method_id' in result.result) {
+      return <ContractReadResultError>{ JSON.stringify(result.result, undefined, 2) }</ContractReadResultError>;
+    }
+
+    return <ContractReadResultError>Something went wrong.</ContractReadResultError>;
   }
 
   return (

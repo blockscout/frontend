@@ -10,7 +10,7 @@ interface Props {
 }
 
 const AddressCoinBalanceChart = ({ addressHash }: Props) => {
-  const { data, isLoading, isError } = useApiQuery('address_coin_balance_chart', {
+  const { data, isPending, isError } = useApiQuery('address_coin_balance_chart', {
     pathParams: { hash: addressHash },
   });
 
@@ -24,7 +24,7 @@ const AddressCoinBalanceChart = ({ addressHash }: Props) => {
       isError={ isError }
       title="Balances"
       items={ items }
-      isLoading={ isLoading }
+      isLoading={ isPending }
       h="300px"
       units={ config.chain.currency.symbol }
     />

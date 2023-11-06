@@ -6,15 +6,12 @@ import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import eastArrowIcon from 'icons/arrows/east.svg';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
 import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
+import AddressEntityWithTokenFilter from 'ui/shared/entities/address/AddressEntityWithTokenFilter';
+import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
 type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean };
@@ -59,17 +56,21 @@ const TokenTransferListItem = ({
       </Flex>
       { method && <Tag isLoading={ isLoading }>{ method }</Tag> }
       <Flex w="100%" columnGap={ 3 }>
-        <Address width="50%">
-          <AddressIcon address={ from } isLoading={ isLoading }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ from.hash } type="address_token" tokenHash={ token.address } isLoading={ isLoading }/>
-          <CopyToClipboard text={ from.hash } isLoading={ isLoading }/>
-        </Address>
+        <AddressEntityWithTokenFilter
+          address={ from }
+          isLoading={ isLoading }
+          tokenHash={ token.address }
+          width="50%"
+          fontWeight="500"
+        />
         <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500" isLoading={ isLoading }/>
-        <Address width="50%">
-          <AddressIcon address={ to } isLoading={ isLoading }/>
-          <AddressLink ml={ 2 } fontWeight="500" hash={ to.hash } type="address_token" tokenHash={ token.address } isLoading={ isLoading }/>
-          <CopyToClipboard text={ to.hash } isLoading={ isLoading }/>
-        </Address>
+        <AddressEntityWithTokenFilter
+          address={ to }
+          isLoading={ isLoading }
+          tokenHash={ token.address }
+          width="50%"
+          fontWeight="500"
+        />
       </Flex>
       { value && (token.type === 'ERC-20' || token.type === 'ERC-1155') && (
         <Flex columnGap={ 2 } w="100%">
@@ -83,10 +84,10 @@ const TokenTransferListItem = ({
         </Flex>
       ) }
       { 'token_id' in total && (token.type === 'ERC-721' || token.type === 'ERC-1155') && (
-        <TokenTransferNft
+        <NftEntity
           hash={ token.address }
           id={ total.token_id }
-          isDisabled={ Boolean(tokenId && tokenId === total.token_id) }
+          noLink={ Boolean(tokenId && tokenId === total.token_id) }
           isLoading={ isLoading }
         />
       ) }

@@ -155,7 +155,7 @@ test('with actions uniswap +@mobile +@dark-mode', async({ mount, page }) => {
 
 const l2Test = test.extend({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  context: contextWithEnvs(configs.featureEnvs.rollup) as any,
+  context: contextWithEnvs(configs.featureEnvs.optimisticRollup) as any,
 });
 
 l2Test('l2', async({ mount, page }) => {
@@ -188,6 +188,30 @@ mainnetTest('without testnet warning', async({ mount, page }) => {
   await page.route(API_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(txMock.l2tx),
+  }));
+
+  const component = await mount(
+    <TestApp>
+      <TxDetails/>
+    </TestApp>,
+    { hooksConfig },
+  );
+
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(configs.adsBannerSelector) ],
+    maskColor: configs.maskColor,
+  });
+});
+
+const stabilityTest = test.extend({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  context: contextWithEnvs(configs.stabilityEnvs) as any,
+});
+
+stabilityTest('stability customization', async({ mount, page }) => {
+  await page.route(API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(txMock.stabilityTx),
   }));
 
   const component = await mount(

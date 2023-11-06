@@ -71,7 +71,7 @@ const Sol2UmlDiagram = ({ addressHash }: Props) => {
     throw Error('Uml diagram fetch error', { cause: contractQuery.error as unknown as Error });
   }
 
-  if (contractQuery.isLoading || umlQuery.isLoading) {
+  if (contractQuery.isPending || umlQuery.isPending) {
     return <ContentLoader/>;
   }
 

@@ -7,10 +7,8 @@ import type { WithdrawalsItem } from 'types/api/withdrawals';
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
 import CurrencyValue from 'ui/shared/CurrencyValue';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
@@ -62,10 +60,10 @@ const WithdrawalsListItem = ({ item, isLoading, view }: Props) => {
       { view !== 'address' && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>To</ListItemMobileGrid.Label><ListItemMobileGrid.Value>
-            <Address>
-              <AddressIcon address={ item.receiver } isLoading={ isLoading }/>
-              <AddressLink type="address" hash={ item.receiver.hash } truncation="dynamic" ml={ 2 } isLoading={ isLoading }/>
-            </Address>
+            <AddressEntity
+              address={ item.receiver }
+              isLoading={ isLoading }
+            />
           </ListItemMobileGrid.Value>
         </>
       ) }

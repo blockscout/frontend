@@ -12,10 +12,8 @@ import dayjs from 'lib/date/dayjs';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import * as stubs from 'stubs/contract';
-import Address from 'ui/shared/address/Address';
-import AddressIcon from 'ui/shared/address/AddressIcon';
-import AddressLink from 'ui/shared/address/AddressLink';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
@@ -88,11 +86,23 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
     return <DataFetchAlert/>;
   }
 
-  const verificationButton = isPlaceholderData ? <Skeleton w="130px" h={ 8 } mr={ 3 } ml="auto" borderRadius="base"/> : (
+  const canBeVerified = !data?.is_self_destructed && !data?.is_verified;
+
+  const verificationButton = isPlaceholderData ? (
+    <Skeleton
+      w="130px"
+      h={ 8 }
+      mr={ data?.is_partially_verified ? 0 : 3 }
+      ml={ data?.is_partially_verified ? 0 : 'auto' }
+      borderRadius="base"
+      flexShrink={ 0 }
+    />
+  ) : (
     <Button
       size="sm"
-      ml="auto"
-      mr={ 3 }
+      mr={ data?.is_partially_verified ? 0 : 3 }
+      ml={ data?.is_partially_verified ? 0 : 'auto' }
+      flexShrink={ 0 }
       as="a"
       href={ route({ pathname: '/address/[hash]/contract-verification', query: { hash: addressHash || '' } }) }
     >
@@ -107,9 +117,14 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
 
     const decoded = data.decoded_constructor_args
       .map(([ value, { name, type } ], index) => {
-        const valueEl = type === 'address' ?
-          <LinkInternal href={ route({ pathname: '/address/[hash]', query: { hash: value } }) }>{ value }</LinkInternal> :
-          <span>{ value }</span>;
+        const valueEl = type === 'address' ? (
+          <AddressEntity
+            address={{ hash: value }}
+            noIcon
+            display="inline-flex"
+            maxW="100%"
+          />
+        ) : <span>{ value }</span>;
         return (
           <Box key={ index }>
             <span>Arg [{ index }] { name || '' } ({ type }): </span>
@@ -159,7 +174,10 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
       <Flex flexDir="column" rowGap={ 2 } mb={ 6 } _empty={{ display: 'none' }}>
         { data?.is_verified && (
           <Skeleton isLoaded={ !isPlaceholderData }>
-            <Alert status="success">Contract Source Code Verified ({ data.is_partially_verified ? 'Partial' : 'Exact' } Match)</Alert>
+            <Alert status="success" flexWrap="wrap" rowGap={ 3 } columnGap={ 5 }>
+              <span>Contract Source Code Verified ({ data.is_partially_verified ? 'Partial' : 'Exact' } Match)</span>
+              { data.is_partially_verified ? verificationButton : null }
+            </Alert>
           </Skeleton>
         ) }
         { verificationAlert }
@@ -171,10 +189,12 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
         { !data?.is_verified && data?.verified_twin_address_hash && !data?.minimal_proxy_address_hash && (
           <Alert status="warning" whiteSpace="pre-wrap" flexWrap="wrap">
             <span>Contract is not verified. However, we found a verified contract with the same bytecode in Blockscout DB </span>
-            <Address>
-              <AddressIcon address={{ hash: data.verified_twin_address_hash, is_contract: true, implementation_name: null }}/>
-              <AddressLink type="address" hash={ data.verified_twin_address_hash } truncation="constant" ml={ 2 }/>
-            </Address>
+            <AddressEntity
+              address={{ hash: data.verified_twin_address_hash, is_contract: true, implementation_name: null }}
+              truncation="constant"
+              fontSize="sm"
+              fontWeight="500"
+            />
             <chakra.span mt={ 1 }>All functions displayed below are from ABI of that contract. In order to verify current contract, proceed with </chakra.span>
             <LinkInternal href={ route({ pathname: '/address/[hash]/contract-verification', query: { hash: addressHash || '' } }) }>
               Verify & Publish
@@ -185,10 +205,13 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
         { data?.minimal_proxy_address_hash && (
           <Alert status="warning" flexWrap="wrap" whiteSpace="pre-wrap">
             <span>Minimal Proxy Contract for </span>
-            <Address>
-              <AddressIcon address={{ hash: data.minimal_proxy_address_hash, is_contract: true, implementation_name: null }}/>
-              <AddressLink type="address" hash={ data.minimal_proxy_address_hash } truncation="constant" ml={ 2 }/>
-            </Address>
+            <AddressEntity
+              address={{ hash: data.minimal_proxy_address_hash, is_contract: true, implementation_name: null }}
+              truncation="constant"
+              fontSize="sm"
+              fontWeight="500"
+              noCopy
+            />
             <span>. </span>
             <Box>
               <Link href="https://eips.ethereum.org/EIPS/eip-1167">EIP-1167</Link>
@@ -245,7 +268,7 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
           <RawDataSnippet
             data={ data.creation_bytecode }
             title="Contract creation code"
-            rightSlot={ data.is_verified || data.is_self_destructed ? null : verificationButton }
+            rightSlot={ canBeVerified ? verificationButton : null }
             beforeSlot={ data.is_self_destructed ? (
               <Alert status="info" whiteSpace="pre-wrap" mb={ 3 }>
                 Contracts that self destruct in their constructors have no contract code published and cannot be verified.
@@ -260,7 +283,7 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
           <RawDataSnippet
             data={ data.deployed_bytecode }
             title="Deployed ByteCode"
-            rightSlot={ !data?.creation_bytecode && !(data.is_verified || data.is_self_destructed) ? verificationButton : null }
+            rightSlot={ !data?.creation_bytecode && canBeVerified ? verificationButton : null }
             textareaMaxHeight="200px"
             isLoading={ isPlaceholderData }
           />

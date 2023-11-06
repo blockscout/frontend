@@ -24,6 +24,11 @@ jobs:
                             state: 'all'
                         });
                 
+                        if (issues.length === 0) {
+                            core.notice(`No issues with label "${ process.env.LABEL_NAME }" found.`);
+                            return;
+                        }
+
                         const issueIds = issues.map(({ node_id }) => node_id);
                         const labelId = issues[0].labels.find(({ name }) => name === process.env.LABEL_NAME).node_id;
 
@@ -67,4 +72,15 @@ jobs:
             field_name: Status
             field_value: Released
             issues: ${{ needs.label_released_issues.outputs.issues }}
+        secrets: inherit
+
+    publish_image:
+        name: Publish Docker image
+        uses: './.github/workflows/publish-image.yml'
+        secrets: inherit
+
+    upload_source_maps:
+        name: Upload source maps to Sentry
+        needs: publish_image
+        uses: './.github/workflows/upload-source-maps.yml'
         secrets: inherit

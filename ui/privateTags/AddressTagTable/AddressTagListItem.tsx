@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 
 import type { AddressTag } from 'types/api/account';
 
-import AddressSnippet from 'ui/shared/AddressSnippet';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TableItemActionButtons from 'ui/shared/TableItemActionButtons';
 
@@ -26,7 +26,12 @@ const AddressTagListItem = ({ item, onEditClick, onDeleteClick, isLoading }: Pro
   return (
     <ListItemMobile>
       <Flex alignItems="flex-start" flexDirection="column" maxW="100%">
-        <AddressSnippet address={ item.address } isLoading={ isLoading }/>
+        <AddressEntity
+          address={ item.address }
+          isLoading={ isLoading }
+          fontWeight="600"
+          w="100%"
+        />
         <HStack spacing={ 3 } mt={ 4 }>
           <Text fontSize="sm" fontWeight={ 500 }>Private tag</Text>
           <Skeleton isLoaded={ !isLoading } display="inline-block" borderRadius="sm">

@@ -320,6 +320,8 @@
               "eth_goerli",
               "eth",
               "rootstock",
+              "polygon",
+              "gnosis",
               "localhost",
             ],
             "default": "main"

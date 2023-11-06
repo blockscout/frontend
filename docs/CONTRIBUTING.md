@@ -69,19 +69,29 @@ For all types of dependencies:
 
 These are the steps that you have to follow to make everything work:
 1. First and foremost, document variable in the [/docs/ENVS.md](./ENVS.md) file; provide short description, its expected type, requirement flag, default and example value; **do not skip this step** otherwise the app will not receive variable value at run-time
-2. Make sure that you have added a property to React app config (`/configs/app/index.ts`) in appropriate section that is associated with this variable; do not use ENV variable values directly in the application code; decide where this variable belongs to and place it under the certain section:
+2. Make sure that you have added a property to React app config (`configs/app/index.ts`) in appropriate section that is associated with this variable; do not use ENV variable values directly in the application code; decide where this variable belongs to and place it under the certain section:
     - `app` - the front-end app itself
     - `api` - the main API configuration
     - `UI` - the app UI customization
     - `features` - the particular feature of the app
     - `services` - some 3rd party service integration which is not related to one particular feature  
-3. For local development purposes add the variable with its appropriate values to pre-defined ENV configs `/configs/envs` where it is needed
+3. For local development purposes add the variable with its appropriate values to pre-defined ENV configs `configs/envs` where it is needed
 4. Add the variable to CI configs where it is needed
     - `deploy/values/review/values.yaml.gotmpl` - review development environment
     - `deploy/values/main/values.yaml` - main development environment
     - `deploy/values/review-l2/values.yaml.gotmpl` - review development environment for L2 networks
     - `deploy/values/l2-optimism-goerli/values.yaml` - main development environment
-5. Don't forget to mention in the PR notes that new ENV variable were added  
+5. If your variable is meant to receive a link to some external resource (image or JSON-config file), extend the array `ASSETS_ENVS` in `deploy/scripts/download_assets.sh` with your variable name
+6. Add validation schema for the new variable into the file `deploy/tools/envs-validator/schema.ts`
+7. Check if modified validation schema is valid by doing the following steps:
+    - change your current directory to `deploy/tools/envs-validator`
+    - install deps with `yarn` command
+    - add your variable into `./test/.env.base` test preset or create a new test preset if needed
+    - if your variable contains a link to the external JSON config file:
+      - add example of file content into `./test/assets` directory; the file name should be constructed by stripping away prefix `NEXT_PUBLIC_` and postfix `_URL` if any, and converting the remaining string to lowercase (for example, `NEXT_PUBLIC_MARKETPLACE_CONFIG_URL` will become `marketplace_config.json`)
+      - in the main script `index.ts` extend array `envsWithJsonConfig` with your variable name
+    - run `yarn test` command to see the validation result
+8. Don't forget to mention in the PR notes that new ENV variable was added  
 
 &nbsp;
 
