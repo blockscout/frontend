@@ -70,7 +70,7 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
 
   const queryResult = useApiQuery(resourceName, {
     pathParams,
-    queryParams,
+    queryParams: Object.keys(queryParams).length ? queryParams : undefined,
     queryOptions: {
       staleTime: page === 1 ? 0 : Infinity,
       ...options,
