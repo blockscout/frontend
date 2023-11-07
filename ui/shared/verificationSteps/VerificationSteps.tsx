@@ -7,9 +7,10 @@ export interface Props<T extends string> {
   step: T;
   steps: Array<T>;
   isLoading?: boolean;
+  rightSlot?: React.ReactNode;
 }
 
-const VerificationSteps = <T extends string>({ step, steps, isLoading }: Props<T>) => {
+const VerificationSteps = <T extends string>({ step, steps, isLoading, rightSlot }: Props<T>) => {
   const currentStepIndex = steps.indexOf(step);
 
   return (
@@ -21,8 +22,9 @@ const VerificationSteps = <T extends string>({ step, steps, isLoading }: Props<T
       flexWrap="wrap"
     >
       { steps.map((step, index) => (
-        <VerificationStep step={ step } isLast={ index === steps.length - 1 } isPassed={ index <= currentStepIndex } key={ step }/>
+        <VerificationStep step={ step } isLast={ index === steps.length - 1 && !rightSlot } isPassed={ index <= currentStepIndex } key={ step }/>
       )) }
+      { rightSlot }
     </Skeleton>
   );
 };
