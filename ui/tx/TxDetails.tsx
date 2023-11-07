@@ -158,7 +158,6 @@ const TxDetails = () => {
           ) }
         </DetailsInfoItem>
         <TxDetailsWithdrawalStatus
-          isLoading={ isPlaceholderData }
           status={ data.op_withdrawal_status }
           l1TxHash={ data.op_l1_transaction_hash }
         />

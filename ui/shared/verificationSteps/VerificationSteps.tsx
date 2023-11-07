@@ -1,4 +1,4 @@
-import { Skeleton } from '@chakra-ui/react';
+import { Skeleton, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import VerificationStep from './VerificationStep';
@@ -8,13 +8,15 @@ export interface Props<T extends string> {
   steps: Array<T>;
   isLoading?: boolean;
   rightSlot?: React.ReactNode;
+  className?: string;
 }
 
-const VerificationSteps = <T extends string>({ step, steps, isLoading, rightSlot }: Props<T>) => {
+const VerificationSteps = <T extends string>({ step, steps, isLoading, rightSlot, className }: Props<T>) => {
   const currentStepIndex = steps.indexOf(step);
 
   return (
     <Skeleton
+      className={ className }
       isLoaded={ !isLoading }
       display="flex"
       gap={ 2 }
@@ -29,4 +31,4 @@ const VerificationSteps = <T extends string>({ step, steps, isLoading, rightSlot
   );
 };
 
-export default VerificationSteps;
+export default chakra(VerificationSteps);
