@@ -13,6 +13,10 @@ interface Props {
   fallbackIcon: JSX.Element;
 }
 
+export const formattedLuksoName = (hash: string, name: string) => {
+  return `@${ name }#${ hash }`;
+};
+
 export const getUniversalProfile = async(address: string, queryClient: QueryClient) => {
   if (config.UI.views.address.identiconType !== 'universal_profile') {
     return undefined;

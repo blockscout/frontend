@@ -2,14 +2,13 @@ import { Box, Text, Flex } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 
-import type { UPResponse } from '../../../../types/api/universalProfile';
 import type { SearchResultAddressOrContract } from 'types/api/search';
 
 import highlightText from 'lib/highlightText';
 import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
-import { getUniversalProfile } from '../../../shared/entities/address/IdenticonUniversalProfileQuery';
+import { formattedLuksoName, getUniversalProfile } from '../../../shared/entities/address/IdenticonUniversalProfileQuery';
 
 interface Props {
   data: SearchResultAddressOrContract;
@@ -20,7 +19,6 @@ interface Props {
 const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
   const queryClient = useQueryClient();
   const [ type, setType ] = useState(data.type);
-  const [ up, setUp ] = useState({} as UPResponse);
   const [ displayedName, setDisplayedName ] = useState(data.address);
 
   useEffect(() => { // this causes a sort of loading state where the address suddenly switches to up name - needs fix?
@@ -30,15 +28,14 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
         return;
       }
 
-      setUp(upData); // when the type is contract the icon will know that it needs to get UP profile picture
-      if (up.LSP3Profile !== undefined) {
-        setType('contract');
-        if (up.hasProfileImage) {
-          setDisplayedName(`@${ up.LSP3Profile.name } (${ data.address })`);
+      if (upData.LSP3Profile !== undefined) {
+        setType('contract'); // when the type is contract the icon will know that it needs to get UP profile picture
+        if (upData.hasProfileImage) {
+          setDisplayedName(formattedLuksoName(data.address, upData.LSP3Profile.name));
         }
       }
     })();
-  }, [ data, up, queryClient, setUp, setType, setDisplayedName ]);
+  }, [ data, queryClient, setType, setDisplayedName ]);
 
   const shouldHighlightHash = data.address.toLowerCase() === searchTerm.toLowerCase();
   const icon = (
