@@ -4,7 +4,7 @@ import React, { useCallback, useEffect } from 'react';
 
 import type { ForumReply } from 'lib/api/ylideApi/types';
 
-import horizontalDotsIcon from 'icons/horizontal_dots.svg';
+// import horizontalDotsIcon from 'icons/horizontal_dots.svg';
 import replyIcon from 'icons/reply.svg';
 import ago from 'lib/ago';
 import ForumPublicApi from 'lib/api/ylideApi/ForumPublicApi';
@@ -98,13 +98,13 @@ const ReplyEntity = (props: ReplyEntityProps) => {
               _hover={{ color: 'link_hovered' }}
               onClick={ handleReplyToClick }
             />
-            <Icon
+            { /* <Icon
               as={ horizontalDotsIcon }
               boxSize={ 5 }
               color={ iconColor }
               cursor="pointer"
               _hover={{ color: 'link_hovered' }}
-            />
+        /> */ }
           </Flex>
         ) : null }
       </Flex>
