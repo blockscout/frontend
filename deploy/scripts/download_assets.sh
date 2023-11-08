@@ -37,11 +37,20 @@ get_target_filename() {
     local name_suffix="${name_prefix%_URL}"
     local name_lc="$(echo "$name_suffix" | tr '[:upper:]' '[:lower:]')"
     
-    # Remove query parameters from the URL and get the filename
-    local filename=$(basename "${url%%\?*}")
-
-    # Extract the extension from the filename
-    local extension="${filename##*.}"
+    # Check if the URL starts with "file://"
+    if [[ "$url" == file://* ]]; then
+        # Extract the local file path
+        local file_path="${url#file://}"
+        # Get the filename from the local file path
+        local filename=$(basename "$file_path")
+        # Extract the extension from the filename
+        local extension="${filename##*.}"
+    else
+        # Remove query parameters from the URL and get the filename
+        local filename=$(basename "${url%%\?*}")
+        # Extract the extension from the filename
+        local extension="${filename##*.}"
+    fi
 
     # Convert the extension to lowercase
     extension=$(echo "$extension" | tr '[:upper:]' '[:lower:]')
@@ -59,19 +68,25 @@ download_and_save_asset() {
 
     # Check if the environment variable is set
     if [ -z "${!env_var}" ]; then
-        echo "   [.] Environment variable $env_var is not set. Skipping download."
+        echo "   [.] $env_var: Variable is not set. Skipping download."
         return 1
     fi
 
-    # Download the asset using curl
-    curl -s -o "$destination" "$url"
+    # Check if the URL starts with "file://"
+    if [[ "$url" == file://* ]]; then
+        # Copy the local file to the destination
+        cp "${url#file://}" "$destination"
+    else
+        # Download the asset using curl
+        curl -s -o "$destination" "$url"
+    fi
 
     # Check if the download was successful
     if [ $? -eq 0 ]; then
-        echo "   [+] Downloaded $env_var to $destination successfully."
+        echo "   [+] $env_var: Successfully saved file from $url to $destination."
         return 0
     else
-        echo "   [-] Failed to download $env_var from $url."
+        echo "   [-] $env_var: Failed to save file from $url."
         return 1
     fi
 }
