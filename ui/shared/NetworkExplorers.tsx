@@ -6,6 +6,7 @@ import type { NetworkExplorer as TNetworkExplorer } from 'types/networks';
 import config from 'configs/app';
 import arrowIcon from 'icons/arrows/east-mini.svg';
 import explorerIcon from 'icons/explorer.svg';
+import stripTrailingSlash from 'lib/stripTrailingSlash';
 import LinkExternal from 'ui/shared/LinkExternal';
 
 interface Props {
@@ -17,12 +18,14 @@ interface Props {
 const NetworkExplorers = ({ className, type, pathParam }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
 
-  const explorersLinks = config.UI.explorers.items
-    .filter((explorer) => explorer.paths[type])
-    .map((explorer) => {
-      const url = new URL(explorer.paths[type] + '/' + pathParam, explorer.baseUrl);
-      return <LinkExternal key={ explorer.baseUrl } href={ url.toString() }>{ explorer.title }</LinkExternal>;
-    });
+  const explorersLinks = React.useMemo(() => {
+    return config.UI.explorers.items
+      .filter((explorer) => typeof explorer.paths[type] === 'string')
+      .map((explorer) => {
+        const url = new URL(stripTrailingSlash(explorer.paths[type] || '') + '/' + pathParam, explorer.baseUrl);
+        return <LinkExternal key={ explorer.baseUrl } href={ url.toString() }>{ explorer.title }</LinkExternal>;
+      });
+  }, [ pathParam, type ]);
 
   if (explorersLinks.length === 0) {
     return null;
