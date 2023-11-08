@@ -16,6 +16,7 @@ import type { FontFace } from 'use-font-face-observer';
 import useFontFaceObserver from 'use-font-face-observer';
 
 import { BODY_TYPEFACE, HEADING_TYPEFACE } from 'theme/foundations/typography';
+
 import config from '../../configs/app';
 
 const TAIL_LENGTH = 4;
@@ -32,7 +33,6 @@ interface Props {
 const HashStringShortenDynamic = ({ hash, fontWeight = '400', isTooltipDisabled, tailLength = TAIL_LENGTH, as = 'span' }: Props) => {
   const elementRef = useRef<HTMLSpanElement>(null);
   const [ displayedString, setDisplayedString ] = React.useState(hash);
-  const [ upName, setUpName ] = React.useState('');
 
   const isFontFaceLoaded = useFontFaceObserver([
     { family: BODY_TYPEFACE, weight: String(fontWeight) as FontFace['weight'] },
@@ -69,10 +69,15 @@ const HashStringShortenDynamic = ({ hash, fontWeight = '400', isTooltipDisabled,
       }
 
       // if we get #, this means that we got a valid universal profile in format of @name#0x1234 - we can split this data and return username component.
-      if (config.UI.views.address.identiconType === 'universal_profile') {
+      if (config.UI.views.address.identiconType === 'universal_profile' && hash.includes('#')) {
         const upParts = hash.split('#');
+        const hashHead = '#' + upParts[1].slice(2, 6); // change #0x1234 -> #1234
         const name = upParts[0];
-        setUpName(name.slice(0, rightI - 1));
+        const slicedName = name.slice(0, rightI - 2);
+        const displayed = rightI - 2 > name.length ? name + hashHead : slicedName + '...' + hashHead;
+        setDisplayedString(displayed);
+
+        return;
       }
       setDisplayedString(hash.slice(0, rightI - 1) + '...' + tail);
     } else {
