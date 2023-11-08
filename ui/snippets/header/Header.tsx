@@ -7,6 +7,8 @@ import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
 import ProfileMenuMobile from 'ui/snippets/profileMenu/ProfileMenuMobile';
 import SearchBar from 'ui/snippets/searchBar/SearchBar';
+import WalletMenuDesktop from 'ui/snippets/walletMenu/WalletMenuDesktop';
+import WalletMenuMobile from 'ui/snippets/walletMenu/WalletMenuMobile';
 
 import Burger from './Burger';
 
@@ -42,7 +44,12 @@ const Header = ({ isHomePage, renderSearchBar }: Props) => {
         >
           <Burger/>
           <NetworkLogo/>
-          { config.features.account.isEnabled ? <ProfileMenuMobile/> : <Box boxSize={ 10 }/> }
+          <Box display="flex">
+            { config.features.account.isEnabled ? <ProfileMenuMobile/> : <Box boxSize={ 10 }/> }
+            <Box ml={ 2 }>
+              <WalletMenuMobile/>
+            </Box>
+          </Box>
         </Flex>
         { !isHomePage && searchBar }
       </Box>
@@ -58,7 +65,10 @@ const Header = ({ isHomePage, renderSearchBar }: Props) => {
             <Box width="100%">
               { searchBar }
             </Box>
-            { config.features.account.isEnabled && <ProfileMenuDesktop/> }
+            <Box display="flex">
+              { config.features.account.isEnabled && <ProfileMenuDesktop/> }
+              <WalletMenuDesktop/>
+            </Box>
           </HStack>
         ) }
       </Box>

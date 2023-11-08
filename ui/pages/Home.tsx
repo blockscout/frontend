@@ -10,6 +10,7 @@ import Transactions from 'ui/home/Transactions';
 import AdBanner from 'ui/shared/ad/AdBanner';
 import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
 import SearchBar from 'ui/snippets/searchBar/SearchBar';
+import WalletMenuDesktop from 'ui/snippets/walletMenu/WalletMenuDesktop';
 
 const Home = () => {
   return (
@@ -34,6 +35,7 @@ const Home = () => {
           </Heading>
           <Box display={{ base: 'none', lg: 'block' }}>
             { config.features.account.isEnabled && <ProfileMenuDesktop isHomePage/> }
+            <WalletMenuDesktop isHomePage/>
           </Box>
         </Flex>
         <LightMode>
