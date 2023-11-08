@@ -61,6 +61,10 @@ export function prepareAbi(abi: Abi, item: SmartContractWriteMethod): Abi {
           return true;
         }
 
+        if (abiItem.inputs.length !== item.inputs.length) {
+          return false;
+        }
+
         return abiItem.inputs.every(({ name, type }) => {
           const itemInput = item.inputs.find((input) => input.name === name);
           return Boolean(itemInput) && itemInput?.type === type;
