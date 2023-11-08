@@ -23,7 +23,7 @@ const TxStateTable = ({ data, isLoading, top }: Props) => {
       <Thead top={ top }>
         <Tr>
           <Th width="140px">Type</Th>
-          <Th width="146px">Address</Th>
+          <Th width="160px">Address</Th>
           <Th width="33%" isNumeric>Before</Th>
           <Th width="33%" isNumeric>After</Th>
           <Th width="33%" isNumeric>Change</Th>
