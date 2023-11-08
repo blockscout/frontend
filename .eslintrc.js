@@ -307,7 +307,15 @@ module.exports = {
       },
     },
     {
-      files: [ '*.config.ts', '*.config.js', 'playwright/**', 'deploy/tools/**', 'middleware.ts', 'nextjs/**' ],
+      files: [
+        '*.config.ts',
+        '*.config.js',
+        'playwright/**',
+        'deploy/tools/**',
+        'middleware.ts',
+        'nextjs/**',
+        'instrumentation*.ts',
+      ],
       rules: {
         // for configs allow to consume env variables from process.env directly
         'no-restricted-properties': [ 0 ],

@@ -39,6 +39,9 @@ const moduleExports = {
   headers,
   output: 'standalone',
   productionBrowserSourceMaps: process.env.GENERATE_SOURCEMAPS === 'true',
+  experimental: {
+    instrumentationHook: process.env.OPEN_TELEMETRY === 'true',
+  },
 };
 
 module.exports = withRoutes(moduleExports);
