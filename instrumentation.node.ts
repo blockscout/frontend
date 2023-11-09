@@ -25,7 +25,7 @@ const sdk = new NodeSDK({
     process.env.NODE_ENV === 'production' ?
       new OTLPTraceExporter({
         // optional - default url is http://localhost:4318/v1/traces
-        url: 'opentelemetry.opentelemetry-opentelemetry-collector.svc.cluster.local:4318/v1/traces',
+        url: 'opentelemetry-opentelemetry-collector.opentelemetry.svc.cluster.local:4318/v1/traces',
       }) :
       new ConsoleSpanExporter(),
   metricReader: new PeriodicExportingMetricReader({
@@ -33,7 +33,7 @@ const sdk = new NodeSDK({
       process.env.NODE_ENV === 'production' ?
         new OTLPMetricExporter({
           // url is optional and can be omitted - default is http://localhost:4318/v1/metrics
-          url: 'opentelemetry.opentelemetry-opentelemetry-collector.svc.cluster.local:4318/v1/metrics',
+          url: 'opentelemetry-opentelemetry-collector.opentelemetry.svc.cluster.local:4318/v1/metrics',
         }) :
         new ConsoleMetricExporter(),
   }),
