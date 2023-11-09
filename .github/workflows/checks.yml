@@ -12,6 +12,7 @@ on:
       - 'docs/**'
       - 'public/**'
       - 'stub/**'
+      - 'tools/**'
       
 # concurrency:
 #   group: ${{ github.workflow }}__${{ github.job }}__${{ github.ref }}
@@ -51,7 +52,7 @@ jobs:
         run: yarn lint:tsc
 
   envs_validation:
-    name: ENV variables presets validation
+    name: ENV variables validation
     runs-on: ubuntu-latest
     needs: [ code_quality ]
     steps:
@@ -79,13 +80,10 @@ jobs:
       - name: Install script dependencies
         run: cd ./deploy/tools/envs-validator && yarn --frozen-lockfile --ignore-optional
 
-      - name: Copy secrets file
-        run: cp ./.env.example ./configs/envs/.env.secrets
-
-      - name: Run validation script
+      - name: Run validation tests
         run: |
           set +e
-          cd ./deploy/tools/envs-validator && yarn dev
+          cd ./deploy/tools/envs-validator && yarn test
           exitcode="$?"
           echo "exitcode=$exitcode" >> $GITHUB_OUTPUT
           exit "$exitcode"

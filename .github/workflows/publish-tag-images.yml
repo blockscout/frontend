@@ -1,0 +1,46 @@
+name: Publish Docker tag images
+
+on: 
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - 'v[0-9].[0-9].[0-9]-testnet'
+
+env:
+  DOCKER_REGISTRY: europe-docker.pkg.dev
+  DOCKER_IMAGE_NAME: lks-lz-artifacts/docker-explorer-execution/frontend
+
+jobs:
+  build-docker:
+    permissions:
+      contents: "read"
+      id-token: "write"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout ${{ inputs.sha }}
+        uses: actions/checkout@v2
+
+      - name: Setup buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Authenticate to Google Cloud
+        id: gcpauth
+        uses: google-github-actions/auth@v1
+        with:
+          create_credentials_file: "true"
+          workload_identity_provider: "projects/311968610280/locations/global/workloadIdentityPools/github/providers/github"
+          service_account: "artifact-deployer@lks-lz-management.iam.gserviceaccount.com"
+
+      - name: login
+        run: |-
+          gcloud auth login --brief --cred-file="${{ steps.gcpauth.outputs.credentials_file_path }}"
+          gcloud auth configure-docker ${{ env.DOCKER_REGISTRY }}
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: |
+            ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:${{ github.ref_name }}
+            ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:latest

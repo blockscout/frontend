@@ -44,22 +44,23 @@ const AddressForm: React.FC<Props> = ({ data, onClose, onSuccess, setAlertVisibl
 
   const formBackgroundColor = useColorModeValue('white', 'gray.900');
 
-  const { mutate } = useMutation((formData: Inputs) => {
-    const body = {
-      name: formData?.tag,
-      address_hash: formData?.address,
-    };
+  const { mutate } = useMutation({
+    mutationFn: (formData: Inputs) => {
+      const body = {
+        name: formData?.tag,
+        address_hash: formData?.address,
+      };
 
-    const isEdit = data?.id;
-    if (isEdit) {
-      return apiFetch('private_tags_address', {
-        pathParams: { id: data.id },
-        fetchParams: { method: 'PUT', body },
-      });
-    }
+      const isEdit = data?.id;
+      if (isEdit) {
+        return apiFetch('private_tags_address', {
+          pathParams: { id: data.id },
+          fetchParams: { method: 'PUT', body },
+        });
+      }
 
-    return apiFetch('private_tags_address', { fetchParams: { method: 'POST', body } });
-  }, {
+      return apiFetch('private_tags_address', { fetchParams: { method: 'POST', body } });
+    },
     onError: (error: ResourceErrorAccount<AddressTagErrors>) => {
       setPending(false);
       const errorMap = error.payload?.errors;

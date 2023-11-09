@@ -25,8 +25,8 @@ import getApiVersionUrl from './utils/getApiVersionUrl';
 
 const MAX_LINKS_COLUMNS = 3;
 
-const FRONT_VERSION_URL = `https://github.com/blockscout/frontend/tree/${ config.UI.footer.frontendVersion }`;
-const FRONT_COMMIT_URL = `https://github.com/blockscout/frontend/commit/${ config.UI.footer.frontendCommit }`;
+const FRONT_VERSION_URL = `https://github.com/lukso-network/network-explorer-execution-frontend`;
+const FRONT_COMMIT_URL = `https://github.com/lukso-network/network-explorer-execution-frontend/commit/ebbe332737aecbf7279c7939ad5e49da76db654b`;
 
 const Footer = () => {
 
@@ -39,46 +39,22 @@ const Footer = () => {
   const issueUrl = useIssueUrl(backendVersionData?.backend_version);
   const BLOCKSCOUT_LINKS = [
     {
-      icon: editIcon,
-      iconSize: '16px',
-      text: 'Submit an issue',
-      url: issueUrl,
-    },
-    {
-      icon: cannyIcon,
-      iconSize: '20px',
-      text: 'Feature request',
-      url: 'https://blockscout.canny.io/feature-requests',
-    },
-    {
       icon: gitIcon,
       iconSize: '18px',
       text: 'Contribute',
-      url: 'https://github.com/blockscout/blockscout',
+      url: 'https://github.com/lukso-network/network-explorer-execution',
     },
     {
       icon: twitterIcon,
       iconSize: '18px',
       text: 'Twitter',
-      url: 'https://www.twitter.com/blockscoutcom',
+      url: 'https://x.com/lukso_io/',
     },
     {
       icon: discordIcon,
       iconSize: '18px',
       text: 'Discord',
-      url: 'https://discord.gg/blockscout',
-    },
-    {
-      icon: discussionsIcon,
-      iconSize: '20px',
-      text: 'Discussions',
-      url: 'https://github.com/orgs/blockscout/discussions',
-    },
-    {
-      icon: donateIcon,
-      iconSize: '20px',
-      text: 'Donate',
-      url: 'https://github.com/sponsors/blockscout',
+      url: 'https://discord.gg/lukso',
     },
   ];
 
@@ -96,18 +72,18 @@ const Footer = () => {
 
   const fetch = useFetch();
 
-  const { isLoading, data: linksData } = useQuery<unknown, ResourceError<unknown>, Array<CustomLinksGroup>>(
-    [ 'footer-links' ],
-    async() => fetch(config.UI.footer.links || '', undefined, { resource: 'footer-links' }),
-    {
-      enabled: Boolean(config.UI.footer.links),
-      staleTime: Infinity,
-    });
+  const { isPending, data: linksData } = useQuery<unknown, ResourceError<unknown>, Array<CustomLinksGroup>>({
+    queryKey: [ 'footer-links' ],
+    queryFn: async() => fetch(config.UI.footer.links || '', undefined, { resource: 'footer-links' }),
+    enabled: Boolean(config.UI.footer.links),
+    staleTime: Infinity,
+  });
 
   return (
     <Flex
       direction={{ base: 'column', lg: 'row' }}
-      p={{ base: 4, lg: 9 }}
+      px={{ base: 4, lg: 12 }}
+      py={{ base: 4, lg: 9 }}
       borderTop="1px solid"
       borderColor="divider"
       as="footer"
@@ -116,14 +92,14 @@ const Footer = () => {
       <Box flexGrow="1" mb={{ base: 8, lg: 0 }}>
         <Flex flexWrap="wrap" columnGap={ 8 } rowGap={ 6 }>
           <ColorModeToggler/>
-          { !config.UI.indexingAlert.isHidden && <IntTxsIndexingStatus/> }
+          { !config.UI.indexingAlert.intTxs.isHidden && <IntTxsIndexingStatus/> }
           <NetworkAddToWallet/>
         </Flex>
         <Box mt={{ base: 5, lg: '44px' }}>
-          <Link fontSize="xs" href="https://www.blockscout.com">blockscout.com</Link>
+          <Link fontSize="xs" href="https://lukso.network/">lukso.network</Link>
         </Box>
         <Text mt={ 3 } maxW={{ base: 'unset', lg: '470px' }} fontSize="xs">
-            Blockscout is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for Ethereum Networks.
+            Execution explorer is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for EVM Networks. It's the <Link fontSize="xs" href="https://www.blockscout.com/">Blockscout</Link> fork.
         </Text>
         <VStack spacing={ 1 } mt={ 6 } alignItems="start">
           { apiVersionUrl && (
@@ -149,15 +125,27 @@ const Footer = () => {
           { config.UI.footer.links && <Text fontWeight={ 500 } mb={ 3 }>Blockscout</Text> }
           <Grid
             gap={ 1 }
-            gridTemplateColumns={ config.UI.footer.links ? '160px' : { base: 'repeat(auto-fill, 160px)', lg: 'repeat(4, 160px)' } }
-            gridTemplateRows={{ base: 'auto', lg: config.UI.footer.links ? 'auto' : 'repeat(2, auto)' }}
+            gridTemplateColumns={
+              config.UI.footer.links ?
+                '160px' :
+                {
+                  base: 'repeat(auto-fill, 160px)',
+                  lg: 'repeat(2, 160px)',
+                  xl: 'repeat(4, 160px)',
+                }
+            }
+            gridTemplateRows={{
+              base: 'auto',
+              lg: config.UI.footer.links ? 'auto' : 'repeat(4, auto)',
+              xl: config.UI.footer.links ? 'auto' : 'repeat(2, auto)',
+            }}
             gridAutoFlow={{ base: 'row', lg: config.UI.footer.links ? 'row' : 'column' }}
             mt={{ base: 0, lg: config.UI.footer.links ? 0 : '100px' }}
           >
             { BLOCKSCOUT_LINKS.map(link => <FooterLinkItem { ...link } key={ link.text }/>) }
           </Grid>
         </Box>
-        { config.UI.footer.links && isLoading && (
+        { config.UI.footer.links && isPending && (
           Array.from(Array(3)).map((i, index) => (
             <Box minW="160px" key={ index }>
               <Skeleton w="120px" h="20px" mb={ 6 }/>

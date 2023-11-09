@@ -18,7 +18,7 @@ test.describe('all items', () => {
   test.beforeEach(async({ page, mount }) => {
     await page.route(API_URL, (route) => route.fulfill({
       status: 200,
-      body: JSON.stringify(statsMock.base),
+      body: JSON.stringify(statsMock.withBtcLocked),
     }));
 
     component = await mount(

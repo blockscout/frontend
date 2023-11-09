@@ -3,7 +3,7 @@ import type { Route } from 'nextjs-routes';
 export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/': 'Homepage',
   '/txs': 'Transactions',
-  '/txs/computor/[hash]': 'Computor transactions',
+  '/txs/kettle/[hash]': 'Kettle transactions',
   '/tx/[hash]': 'Transaction details',
   '/blocks': 'Blocks',
   '/block/[height_or_hash]': 'Block details',
@@ -34,6 +34,8 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/l2-output-roots': 'Output roots',
   '/l2-txn-batches': 'Tx batches (L2 blocks)',
   '/l2-withdrawals': 'Withdrawals (L2 > L1)',
+  '/zkevm-l2-txn-batches': 'ZkEvm L2 Tx batches',
+  '/zkevm-l2-txn-batch/[number]': 'ZkEvm L2 Tx batch details',
   '/404': '404',
 
   // service routes, added only to make typescript happy

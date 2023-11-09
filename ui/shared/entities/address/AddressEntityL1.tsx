@@ -7,7 +7,7 @@ import config from 'configs/app';
 
 import * as AddressEntity from './AddressEntity';
 
-const feature = config.features.rollup;
+const feature = config.features.optimisticRollup;
 
 const AddressEntityL1 = (props: AddressEntity.EntityProps) => {
   if (!feature.isEnabled) {

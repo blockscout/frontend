@@ -12,14 +12,16 @@ import config from 'configs/app';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
+import { space } from 'lib/html-entities';
 import Icon from 'ui/shared/chakra/Icon';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import InOutTag from 'ui/shared/InOutTag';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
+import TxStatus from 'ui/shared/statusTag/TxStatus';
+import TxFeeStability from 'ui/shared/tx/TxFeeStability';
 import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
-import TxStatus from 'ui/shared/TxStatus';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 import TxType from 'ui/txs/TxType';
 
@@ -121,18 +123,27 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
         ) : '-' }
       </Flex>
       { !config.UI.views.tx.hiddenFields?.value && (
-        <Box mt={ 2 }>
-          <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre">Value { config.chain.currency.symbol } </Skeleton>
-          <Skeleton isLoaded={ !isLoading } display="inline-block" variant="text_secondary">{ getValueWithUnit(tx.value).toFormat() }</Skeleton>
-        </Box>
+        <Flex mt={ 2 } columnGap={ 2 }>
+          <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre">Value</Skeleton>
+          <Skeleton isLoaded={ !isLoading } display="inline-block" variant="text_secondary" whiteSpace="pre">
+            { getValueWithUnit(tx.value).toFormat() }
+            { space }
+            { config.chain.currency.symbol }
+          </Skeleton>
+        </Flex>
       ) }
       { !config.UI.views.tx.hiddenFields?.tx_fee && (
-        <Box mt={ 2 } mb={ 3 }>
-          <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre">
-            Fee{ config.UI.views.tx.hiddenFields?.fee_currency ? ' ' : ` ${ config.chain.currency.symbol } ` }
-          </Skeleton>
-          <Skeleton isLoaded={ !isLoading } display="inline-block" variant="text_secondary">{ getValueWithUnit(tx.fee.value).toFormat() }</Skeleton>
-        </Box>
+        <Flex mt={ 2 } mb={ 3 } columnGap={ 2 }>
+          <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre">Fee</Skeleton>
+          { tx.stability_fee ? (
+            <TxFeeStability data={ tx.stability_fee } isLoading={ isLoading } hideUsd/>
+          ) : (
+            <Skeleton isLoaded={ !isLoading } display="inline-block" variant="text_secondary" whiteSpace="pre">
+              { getValueWithUnit(tx.fee.value).toFormat() }
+              { config.UI.views.tx.hiddenFields?.fee_currency ? '' : ` ${ config.chain.currency.symbol }` }
+            </Skeleton>
+          ) }
+        </Flex>
       ) }
     </ListItemMobile>
   );

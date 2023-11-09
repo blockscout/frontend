@@ -10,10 +10,10 @@ import TabsWithScroll from 'ui/shared/Tabs/TabsWithScroll';
 
 const TransactionsHome = () => {
   const hasAccount = useHasAccount();
-  if (config.features.rollup.isEnabled || hasAccount) {
+  if (config.features.optimisticRollup.isEnabled || hasAccount) {
     const tabs = [
       { id: 'txn', title: 'Latest txn', component: <LatestTxs/> },
-      config.features.rollup.isEnabled && { id: 'deposits', title: 'Deposits (L1→L2 txn)', component: <LatestDeposits/> },
+      config.features.optimisticRollup.isEnabled && { id: 'deposits', title: 'Deposits (L1→L2 txn)', component: <LatestDeposits/> },
       hasAccount && { id: 'watchlist', title: 'Watch list', component: <LatestWatchlistTxs/> },
     ].filter(Boolean);
     return (

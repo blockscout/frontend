@@ -7,6 +7,7 @@ import { scroller } from 'react-scroll';
 
 import type { TokenInfo } from 'types/api/token';
 
+import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import { TOKEN_COUNTERS } from 'stubs/token';
@@ -18,7 +19,7 @@ import TruncatedValue from 'ui/shared/TruncatedValue';
 import TokenNftMarketplaces from './TokenNftMarketplaces';
 
 interface Props {
-  tokenQuery: UseQueryResult<TokenInfo>;
+  tokenQuery: UseQueryResult<TokenInfo, ResourceError<unknown>>;
 }
 
 const TokenDetails = ({ tokenQuery }: Props) => {

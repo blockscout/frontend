@@ -14,10 +14,10 @@ export const featureEnvs = {
   beaconChain: [
     { name: 'NEXT_PUBLIC_HAS_BEACON_CHAIN', value: 'true' },
   ],
-  rollup: [
-    { name: 'NEXT_PUBLIC_IS_L2_NETWORK', value: 'true' },
+  optimisticRollup: [
+    { name: 'NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK', value: 'true' },
     { name: 'NEXT_PUBLIC_L1_BASE_URL', value: 'https://localhost:3101' },
-    { name: 'NEXT_PUBLIC_L2_WITHDRAWAL_URL', value: 'https://localhost:3102' },
+    { name: 'NEXT_PUBLIC_OPTIMISTIC_L2_WITHDRAWAL_URL', value: 'https://localhost:3102' },
   ],
   bridgedTokens: [
     {
@@ -29,6 +29,10 @@ export const featureEnvs = {
       value: '[{"type":"omni","title":"OmniBridge","short_title":"OMNI"},{"type":"amb","title":"Arbitrary Message Bridge","short_title":"AMB"}]',
     },
   ],
+  zkRollup: [
+    { name: 'NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK', value: 'true' },
+    { name: 'NEXT_PUBLIC_L1_BASE_URL', value: 'https://localhost:3101' },
+  ],
 };
 
 export const viewsEnvs = {
@@ -38,3 +42,9 @@ export const viewsEnvs = {
     ],
   },
 };
+
+export const stabilityEnvs = [
+  { name: 'NEXT_PUBLIC_VIEWS_ADDRESS_HIDDEN_VIEWS', value: '["top_accounts"]' },
+  { name: 'NEXT_PUBLIC_VIEWS_TX_HIDDEN_FIELDS', value: '["value","fee_currency","gas_price","gas_fees","burnt_fees"]' },
+  { name: 'NEXT_PUBLIC_VIEWS_TX_ADDITIONAL_FIELDS', value: '["fee_per_gas"]' },
+];

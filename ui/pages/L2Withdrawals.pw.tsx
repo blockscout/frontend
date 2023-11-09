@@ -11,7 +11,7 @@ import L2Withdrawals from './L2Withdrawals';
 
 const test = base.extend({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  context: contextWithEnvs(configs.featureEnvs.rollup) as any,
+  context: contextWithEnvs(configs.featureEnvs.optimisticRollup) as any,
 });
 
 const WITHDRAWALS_API_URL = buildApiUrl('l2_withdrawals');

@@ -27,6 +27,7 @@ const defaultAppContext = {
     id: '',
     height_or_hash: '',
     hash: '',
+    number: '',
     q: '',
   },
 };

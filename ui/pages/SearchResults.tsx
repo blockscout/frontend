@@ -54,7 +54,7 @@ const SearchResultsPageContent = () => {
       }
     }
 
-    !redirectCheckQuery.isLoading && setShowContent(true);
+    !redirectCheckQuery.isPending && setShowContent(true);
   }, [ redirectCheckQuery, router, debouncedSearchTerm, showContent ]);
 
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {

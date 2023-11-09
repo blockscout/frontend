@@ -3,7 +3,7 @@ import type { Route } from 'nextjs-routes';
 const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/': 'blockchain explorer',
   '/txs': 'transactions',
-  '/txs/computor/[hash]': 'computor %hash% transactions',
+  '/txs/kettle/[hash]': 'kettle %hash% transactions',
   '/tx/[hash]': 'transaction %hash%',
   '/blocks': 'blocks',
   '/block/[height_or_hash]': 'block %height_or_hash%',
@@ -34,6 +34,8 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/l2-output-roots': 'output roots',
   '/l2-txn-batches': 'Tx batches (L2 blocks)',
   '/l2-withdrawals': 'withdrawals (L2 > L1)',
+  '/zkevm-l2-txn-batches': 'zkEvm L2 Tx batches',
+  '/zkevm-l2-txn-batch/[number]': 'zkEvm L2 Tx batch %number%',
   '/404': 'error - page not found',
 
   // service routes, added only to make typescript happy

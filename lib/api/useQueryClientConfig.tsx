@@ -18,7 +18,7 @@ export default function useQueryClientConfig() {
           }
           return failureCount < 2;
         },
-        useErrorBoundary: (error) => {
+        throwOnError: (error) => {
           const status = getErrorObjStatusCode(error);
           // don't catch error for "Too many requests" response
           return status === 429;

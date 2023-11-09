@@ -24,7 +24,7 @@ export default function useIssueUrl(backendVersion: string | undefined) {
       'frontend-version': [ config.UI.footer.frontendVersion, config.UI.footer.frontendCommit ].filter(Boolean).join('+'),
       'additional-information': `**User Agent:** ${ window.navigator.userAgent }`,
     });
-    return `https://github.com/blockscout/blockscout/issues/new/?${ searchParams.toString() }`;
+    return `https://github.com/lukso-network/network-explorer-execution/issues/new/?${ searchParams.toString() }`;
   // we need to update link whenever page url changes
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ backendVersion, isLoading, router.asPath ]);

@@ -3,12 +3,15 @@ import fs from 'fs';
 import path from 'path';
 import type { ValidationError } from 'yup';
 
+import { buildExternalAssetFilePath } from '../../../configs/app/utils';
 import schema from './schema';
+
+const silent = process.argv.includes('--silent');
 
 run();
 
 async function run() {
-  console.log();
+  !silent && console.log();
   try {
     const appEnvs = Object.entries(process.env)
       .filter(([ key ]) => key.startsWith('NEXT_PUBLIC_'))
@@ -26,25 +29,22 @@ async function run() {
 }
 
 async function validateEnvs(appEnvs: Record<string, string>) {
-  console.log(`🌀 Validating ENV variables values...`);
+  !silent && console.log(`🌀 Validating ENV variables values...`);
 
   try {
     // replace ENVs with external JSON files content
-    appEnvs.NEXT_PUBLIC_FEATURED_NETWORKS = await getExternalJsonContent(
-      './public/assets/featured_networks.json',
-      appEnvs.NEXT_PUBLIC_FEATURED_NETWORKS,
-    ) || '[]';
-    appEnvs.NEXT_PUBLIC_MARKETPLACE_CONFIG_URL = await getExternalJsonContent(
-      './public/assets/marketplace_config.json',
-      appEnvs.NEXT_PUBLIC_MARKETPLACE_CONFIG_URL,
-    ) || '[]';
-    appEnvs.NEXT_PUBLIC_FOOTER_LINKS = await getExternalJsonContent(
-      './public/assets/footer_links.json',
-      appEnvs.NEXT_PUBLIC_FOOTER_LINKS,
-    ) || '[]';
+    const envsWithJsonConfig = [
+      'NEXT_PUBLIC_FEATURED_NETWORKS',
+      'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL',
+      'NEXT_PUBLIC_FOOTER_LINKS',
+    ];
+
+    for await (const envName of envsWithJsonConfig) {
+      appEnvs[envName] = await(appEnvs[envName] ? getExternalJsonContent(envName) : Promise.resolve()) || '[]';
+    }
 
     await schema.validate(appEnvs, { stripUnknown: false, abortEarly: false });
-    console.log('👍 All good!');
+    !silent && console.log('👍 All good!');
   } catch (_error) {
     if (typeof _error === 'object' && _error !== null && 'errors' in _error) {
       console.log('🚨 ENVs validation failed with the following errors:');
@@ -59,15 +59,12 @@ async function validateEnvs(appEnvs: Record<string, string>) {
     throw _error;
   }
 
-  console.log();
+  !silent && console.log();
 }
 
-async function getExternalJsonContent(fileName: string, envValue: string): Promise<string | void> {
+async function getExternalJsonContent(envName: string): Promise<string | void> {
   return new Promise((resolve, reject) => {
-    if (!envValue) {
-      resolve();
-      return;
-    }
+    const fileName = `./public${ buildExternalAssetFilePath(envName, 'https://foo.bar/baz.json') }`;
 
     fs.readFile(path.resolve(__dirname, fileName), 'utf8', (err, data) => {
       if (err) {
@@ -83,7 +80,7 @@ async function getExternalJsonContent(fileName: string, envValue: string): Promi
 
 async function checkPlaceholdersCongruity(envsMap: Record<string, string>) {
   try {
-    console.log(`🌀 Checking environment variables and their placeholders congruity...`);
+    !silent && console.log(`🌀 Checking environment variables and their placeholders congruity...`);
 
     const runTimeEnvs = await getEnvsPlaceholders(path.resolve(__dirname, '.env.registry'));
     const buildTimeEnvs = await getEnvsPlaceholders(path.resolve(__dirname, '.env'));
@@ -108,7 +105,7 @@ async function checkPlaceholdersCongruity(envsMap: Record<string, string>) {
       throw new Error();
     }
 
-    console.log('👍 All good!\n');
+    !silent && console.log('👍 All good!\n');
   } catch (error) {
     console.log('🚨 Congruity check failed.\n');
     throw error;

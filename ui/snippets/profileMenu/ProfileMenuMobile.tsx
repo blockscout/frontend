@@ -11,7 +11,7 @@ import ProfileMenuContent from 'ui/snippets/profileMenu/ProfileMenuContent';
 const ProfileMenuMobile = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const { data, error, isLoading } = useFetchProfileInfo();
+  const { data, error, isPending } = useFetchProfileInfo();
   const loginUrl = useLoginUrl();
   const [ hasMenu, setHasMenu ] = React.useState(false);
 
@@ -24,10 +24,10 @@ const ProfileMenuMobile = () => {
   }, []);
 
   React.useEffect(() => {
-    if (!isLoading) {
+    if (!isPending) {
       setHasMenu(Boolean(data));
     }
-  }, [ data, error?.status, isLoading ]);
+  }, [ data, error?.status, isPending ]);
 
   const buttonProps: Partial<ButtonProps> = (() => {
     if (hasMenu || !loginUrl) {

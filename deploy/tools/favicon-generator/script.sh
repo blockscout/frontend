@@ -8,17 +8,17 @@ if [ -z "$MASTER_URL" ]; then
   exit 1
 fi
 
-# Check if NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY is provided
-if [ -z "$NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY" ]; then
-  echo "🛑 Error: NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY variable is not provided."
+# Check if FAVICON_GENERATOR_API_KEY is provided
+if [ -z "$FAVICON_GENERATOR_API_KEY" ]; then
+  echo "🛑 Error: FAVICON_GENERATOR_API_KEY variable is not provided."
   exit 1
 fi
 
-# Mask the NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY to display only the first 8 characters
-API_KEY_MASKED="${NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY:0:8}***"
+# Mask the FAVICON_GENERATOR_API_KEY to display only the first 8 characters
+API_KEY_MASKED="${FAVICON_GENERATOR_API_KEY:0:8}***"
 echo "🆗 The following variables are provided:"
 echo "      MASTER_URL: $MASTER_URL"
-echo "      NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY: $API_KEY_MASKED"
+echo "      FAVICON_GENERATOR_API_KEY: $API_KEY_MASKED"
 echo
 
 # RealFaviconGenerator API endpoint URL
@@ -34,7 +34,7 @@ CONFIG_TEMPLATE_FILE="config.template.json"
 CONFIG_FILE="config.json"
 
 # Replace <api_key> and <master_url> placeholders in the JSON template file
-API_KEY_VALUE="$NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY"
+API_KEY_VALUE="$FAVICON_GENERATOR_API_KEY"
 sed -e "s|<api_key>|$API_KEY_VALUE|" -e "s|<master_url>|$MASTER_URL|" "$CONFIG_TEMPLATE_FILE" > "$CONFIG_FILE"
 
 # Make the API POST request with JSON data from the config file

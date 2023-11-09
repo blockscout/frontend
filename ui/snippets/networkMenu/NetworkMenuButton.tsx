@@ -30,6 +30,7 @@ const NetworkMenuButton = ({ isMobile, isActive, onClick, className }: Props, re
       aria-label="Network menu"
       aria-roledescription="menu"
     >
+
       <Icon
         as={ networksIcon }
         width="36px"

@@ -27,7 +27,7 @@ const ChartWidgetContainer = ({ id, title, description, interval, onLoadingError
   const endDate = selectedInterval.start ? formatDate(new Date()) : undefined;
   const startDate = selectedInterval.start ? formatDate(selectedInterval.start) : undefined;
 
-  const { data, isLoading, isError } = useApiQuery('stats_line', {
+  const { data, isPending, isError } = useApiQuery('stats_line', {
     pathParams: { id },
     queryParams: {
       from: startDate,
@@ -56,7 +56,7 @@ const ChartWidgetContainer = ({ id, title, description, interval, onLoadingError
       title={ title }
       units={ units }
       description={ description }
-      isLoading={ isLoading }
+      isLoading={ isPending }
       minH="230px"
     />
   );

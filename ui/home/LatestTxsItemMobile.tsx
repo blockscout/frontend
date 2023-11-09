@@ -16,8 +16,9 @@ import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Icon from 'ui/shared/chakra/Icon';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import TxStatus from 'ui/shared/statusTag/TxStatus';
+import TxFeeStability from 'ui/shared/tx/TxFeeStability';
 import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
-import TxStatus from 'ui/shared/TxStatus';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 import TxType from 'ui/txs/TxType';
 
@@ -98,9 +99,13 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
         </Skeleton>
       ) }
       { !config.UI.views.tx.hiddenFields?.tx_fee && (
-        <Skeleton isLoaded={ !isLoading } fontSize="sm" w="fit-content">
-          <Text as="span">Fee { config.chain.currency.symbol } </Text>
-          <Text as="span" variant="secondary">{ getValueWithUnit(tx.fee.value).dp(5).toFormat() }</Text>
+        <Skeleton isLoaded={ !isLoading } fontSize="sm" w="fit-content" display="flex" whiteSpace="pre">
+          <Text as="span">Fee { !config.UI.views.tx.hiddenFields?.fee_currency ? `${ config.chain.currency.symbol } ` : '' }</Text>
+          { tx.stability_fee ? (
+            <TxFeeStability data={ tx.stability_fee } accuracy={ 5 } color="text_secondary" hideUsd/>
+          ) : (
+            <Text as="span" variant="secondary">{ getValueWithUnit(tx.fee.value).dp(5).toFormat() }</Text>
+          ) }
         </Skeleton>
       ) }
     </Box>
