@@ -45,6 +45,8 @@ frontend:
       memory: 384Mi
       cpu: 250m
   env:
+    OPEN_TELEMETRY: true
+    NEXT_OTEL_VERBOSE: 1
     NEXT_PUBLIC_APP_ENV: development
     NEXT_PUBLIC_APP_INSTANCE: review
     NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE: validation

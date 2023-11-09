@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
+import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-proto';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
 import { Resource } from '@opentelemetry/resources';
 import {
@@ -20,19 +21,31 @@ const sdk = new NodeSDK({
         'unknown_app',
   }),
   spanProcessor: new SimpleSpanProcessor(new OTLPTraceExporter()),
-  traceExporter: new ConsoleSpanExporter(),
+  traceExporter:
+    process.env.NODE_ENV === 'production' ?
+      new OTLPTraceExporter({
+        // optional - default url is http://localhost:4318/v1/traces
+        url: 'opentelemetry.opentelemetry-opentelemetry-collector.svc.cluster.local:4318/v1/traces',
+      }) :
+      new ConsoleSpanExporter(),
   metricReader: new PeriodicExportingMetricReader({
-    exporter: new ConsoleMetricExporter(),
+    exporter:
+      process.env.NODE_ENV === 'production' ?
+        new OTLPMetricExporter({
+          // url is optional and can be omitted - default is http://localhost:4318/v1/metrics
+          url: 'opentelemetry.opentelemetry-opentelemetry-collector.svc.cluster.local:4318/v1/metrics',
+        }) :
+        new ConsoleMetricExporter(),
   }),
   instrumentations: [
     getNodeAutoInstrumentations({
       '@opentelemetry/instrumentation-http': {
-        // ignoreIncomingPaths: [
-        //   ...(process.env.NODE_ENV !== 'production' ?
-        //     [ /^\/_next\/static.*/ ] :
-        //     []
-        //   ),
-        // ],
+        ignoreIncomingPaths: [
+          ...(process.env.NODE_ENV !== 'production' ?
+            [ /^\/_next\/static.*/ ] :
+            []
+          ),
+        ],
         // This gives your request spans a more meaningful name
         // than `HTTP GET`
         // requestHook: (span, request) => {
