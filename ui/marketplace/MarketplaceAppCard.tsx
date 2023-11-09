@@ -15,6 +15,7 @@ interface Props extends MarketplaceAppPreview {
   isFavorite: boolean;
   onFavoriteClick: (id: string, isFavorite: boolean) => void;
   isLoading: boolean;
+  showDisclaimer: (id: string) => void;
 }
 
 const MarketplaceAppCard = ({
@@ -30,8 +31,17 @@ const MarketplaceAppCard = ({
   isFavorite,
   onFavoriteClick,
   isLoading,
+  showDisclaimer,
 }: Props) => {
   const categoriesLabel = categories.join(', ');
+
+  const handleClick = useCallback((event: MouseEvent) => {
+    const isShown = window.localStorage.getItem('marketplace-disclaimer-shown');
+    if (!isShown) {
+      event.preventDefault();
+      showDisclaimer(id);
+    }
+  }, [ showDisclaimer, id ]);
 
   const handleInfoClick = useCallback((event: MouseEvent) => {
     event.preventDefault();
@@ -100,6 +110,7 @@ const MarketplaceAppCard = ({
             url={ url }
             external={ external }
             title={ title }
+            onClick={ handleClick }
           />
         </Skeleton>
 
