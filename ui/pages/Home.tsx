@@ -33,7 +33,7 @@ const Home = () => {
           >
             Welcome to { config.chain.name } explorer
           </Heading>
-          <Box display={{ base: 'none', lg: 'block' }}>
+          <Box display={{ base: 'none', lg: 'flex' }}>
             { config.features.account.isEnabled && <ProfileMenuDesktop isHomePage/> }
             <WalletMenuDesktop isHomePage/>
           </Box>

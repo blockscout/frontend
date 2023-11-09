@@ -1,5 +1,5 @@
 import type { IconButtonProps } from '@chakra-ui/react';
-import { Popover, PopoverContent, PopoverBody, PopoverTrigger, IconButton, useColorModeValue } from '@chakra-ui/react';
+import { Popover, PopoverContent, PopoverBody, PopoverTrigger, IconButton, useColorModeValue, Tooltip, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
@@ -44,17 +44,17 @@ const ProfileMenuDesktop = ({ isHomePage }: Props) => {
   })();
 
   const variant = React.useMemo(() => {
-    if (data?.avatar) {
+    if (hasMenu) {
       return 'subtle';
     }
     return isHomePage ? 'solid' : 'outline';
-  }, [ data?.avatar, isHomePage ]);
+  }, [ hasMenu, isHomePage ]);
 
   let iconButtonStyles: Partial<IconButtonProps> = {};
   const themedBackground = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
   const themedBorderColor = useColorModeValue('gray.300', 'gray.700');
   const themedColor = useColorModeValue('blackAlpha.800', 'gray.400');
-  if (data?.avatar) {
+  if (hasMenu) {
     iconButtonStyles = {
       bg: isHomePage ? '#EBF8FF' : themedBackground,
     };
@@ -71,18 +71,28 @@ const ProfileMenuDesktop = ({ isHomePage }: Props) => {
 
   return (
     <Popover openDelay={ 300 } placement="bottom-end" gutter={ 10 } isLazy>
-      <PopoverTrigger>
-        <IconButton
-          aria-label="profile menu"
-          icon={ <UserAvatar size={ 20 }/> }
-          variant={ variant }
-          colorScheme="blue"
-          boxSize="40px"
-          flexShrink={ 0 }
-          { ...iconButtonProps }
-          { ...iconButtonStyles }
-        />
-      </PopoverTrigger>
+      <Tooltip
+        label={ <span>Sign in to My Account to add tags,<br/>create watchlists, access API keys and more</span> }
+        textAlign="center"
+        padding={ 2 }
+        isDisabled={ hasMenu }
+        openDelay={ 300 }
+      >
+        <Box>
+          <PopoverTrigger>
+            <IconButton
+              aria-label="profile menu"
+              icon={ <UserAvatar size={ 20 }/> }
+              variant={ variant }
+              colorScheme="blue"
+              boxSize="40px"
+              flexShrink={ 0 }
+              { ...iconButtonProps }
+              { ...iconButtonStyles }
+            />
+          </PopoverTrigger>
+        </Box>
+      </Tooltip>
       { hasMenu && (
         <PopoverContent w="212px">
           <PopoverBody padding="24px 16px 16px 16px">
