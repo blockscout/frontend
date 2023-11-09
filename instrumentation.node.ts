@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import { diag, DiagConsoleLogger, DiagLogLevel } from '@opentelemetry/api';
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
 import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-proto';
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-http';
@@ -10,6 +11,8 @@ import {
 import { NodeSDK } from '@opentelemetry/sdk-node';
 import { SimpleSpanProcessor, ConsoleSpanExporter } from '@opentelemetry/sdk-trace-node';
 import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
+
+diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.INFO);
 
 const sdk = new NodeSDK({
   resource: new Resource({
@@ -25,7 +28,7 @@ const sdk = new NodeSDK({
     process.env.NODE_ENV === 'production' ?
       new OTLPTraceExporter({
         // optional - default url is http://localhost:4318/v1/traces
-        url: 'opentelemetry-opentelemetry-collector.opentelemetry.svc.cluster.local:4318/v1/traces',
+        url: 'http://opentelemetry-opentelemetry-collector.opentelemetry.svc.cluster.local:4318/v1/traces',
       }) :
       new ConsoleSpanExporter(),
   metricReader: new PeriodicExportingMetricReader({
@@ -33,7 +36,7 @@ const sdk = new NodeSDK({
       process.env.NODE_ENV === 'production' ?
         new OTLPMetricExporter({
           // url is optional and can be omitted - default is http://localhost:4318/v1/metrics
-          url: 'opentelemetry-opentelemetry-collector.opentelemetry.svc.cluster.local:4318/v1/metrics',
+          url: 'http://opentelemetry-opentelemetry-collector.opentelemetry.svc.cluster.local:4318/v1/metrics',
         }) :
         new ConsoleMetricExporter(),
   }),
