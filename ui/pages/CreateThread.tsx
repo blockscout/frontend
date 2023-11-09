@@ -83,7 +83,7 @@ const CreateThreadPageContent = () => {
     setSending(true);
     try {
       const result = await createThread({ topic: topic.id, title, description: text, tags });
-      await broadcastMessage(domainAccounts[0], result.feedId, title, YMF.fromYMFText(text));
+      await broadcastMessage(domainAccounts[0], result.feedId, title, YMF.fromYMFText(text), blockchain);
       setSending(false);
       router.push({ pathname: '/forum/[topic]/[thread]', query: { topic: topicString, thread: result.slug } });
     } catch (err) {
@@ -97,7 +97,7 @@ const CreateThreadPageContent = () => {
         isClosable: true,
       });
     }
-  }, [ toast, topic, createThread, title, text, tags, broadcastMessage, domainAccounts, router, topicString ]);
+  }, [ topic, createThread, title, text, tags, broadcastMessage, domainAccounts, blockchain, router, topicString, toast ]);
 
   const handleCurrentTagsChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentTag(e.target.value);

@@ -14,6 +14,7 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 
 const ChatsPageContent = () => {
   const router = useRouter();
+  const [ reloadTick, setReloadTick ] = React.useState(0);
   const [ filter, setFilter ] = React.useState<string>(router.query.q?.toString() || '');
   const { accounts: { initialized, domainAccounts }, decodeDirectMessage } = useYlide();
   const [ chats, setChats ] = React.useState<{
@@ -39,6 +40,15 @@ const ChatsPageContent = () => {
   const getChats = ChatsPersonalApi.useGetChats();
 
   React.useEffect(() => {
+    const interval = setInterval(() => {
+      setReloadTick(tick => tick + 1);
+    }, 5000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  React.useEffect(() => {
     (async() => {
       let isChanged = false;
       const newDecodedMessages = { ...decodedMessages };
@@ -57,10 +67,10 @@ const ChatsPageContent = () => {
   }, [ chats, decodedMessages, domainAccounts, decodeDirectMessage ]);
 
   React.useEffect(() => {
-    if (initialized && domainAccounts.length) {
+    if (initialized && domainAccounts.length && reloadTick >= 0) {
       getChats(domainAccounts[0].account.address).then(setChats);
     }
-  }, [ initialized, domainAccounts, getChats ]);
+  }, [ initialized, domainAccounts, getChats, reloadTick ]);
 
   const filterInput = (
     <FilterInput

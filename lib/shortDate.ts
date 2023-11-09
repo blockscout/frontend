@@ -9,8 +9,8 @@ export default function shortDate(timestamp: number) {
   const time = `${ zp(date.getHours()) }:${ zp(date.getMinutes()) }`;
 
   if (year === currentYear) {
-    return `${ zp(date.getDate()) }/${ zp(date.getMonth()) } ${ time }`;
+    return `${ zp(date.getDate()) }/${ zp(date.getMonth() + 1) } ${ time }`;
   } else {
-    return `${ zp(date.getDate()) }/${ zp(date.getMonth()) }/${ zp(year % 100) } ${ time }`;
+    return `${ zp(date.getDate()) }/${ zp(date.getMonth() + 1) }/${ zp(year % 100) } ${ time }`;
   }
 }

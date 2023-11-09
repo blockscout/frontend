@@ -139,7 +139,7 @@ const ThreadReplies = ({ thread, skipThreadBody = false }: { thread: ForumThread
 
   let filteredReplies = replies;
   if (skipThreadBody) {
-    filteredReplies = sorting === 'time-asc' ? replies.slice(1) : replies.slice(0, -1);
+    filteredReplies = (sorting === 'time-asc' ? replies.slice(1) : replies.slice(0, -1)).filter(t => t.contentText !== thread.description);
   }
 
   const handleReplyTo = useCallback((reply: ForumReply) => {
