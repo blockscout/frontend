@@ -26,7 +26,7 @@ const Burger = () => {
 
   return (
     <>
-      <Box padding={ 2 } onClick={ onOpen }>
+      <Box padding={ 2 } onClick={ onOpen } cursor="pointer">
         <Icon
           as={ burgerIcon }
           boxSize={ 6 }

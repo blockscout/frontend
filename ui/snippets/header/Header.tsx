@@ -14,10 +14,11 @@ import Burger from './Burger';
 
 type Props = {
   isHomePage?: boolean;
+  isAppPage?: boolean;
   renderSearchBar?: () => React.ReactNode;
 }
 
-const Header = ({ isHomePage, renderSearchBar }: Props) => {
+const Header = ({ isHomePage, isAppPage, renderSearchBar }: Props) => {
   const bgColor = useColorModeValue('white', 'black');
   const scrollDirection = useScrollDirection();
 
@@ -62,6 +63,12 @@ const Header = ({ isHomePage, renderSearchBar }: Props) => {
             justifyContent="center"
             gap={ 12 }
           >
+            { isAppPage && (
+              <Box display="flex" alignItems="center" gap={ 3 }>
+                <Burger/>
+                <NetworkLogo isCollapsed/>
+              </Box>
+            ) }
             <Box width="100%">
               { searchBar }
             </Box>
