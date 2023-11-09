@@ -1,6 +1,6 @@
 import type { UseCheckboxProps } from '@chakra-ui/checkbox';
 import { useCheckbox } from '@chakra-ui/checkbox';
-import { useColorMode, useColorModeValue, Icon } from '@chakra-ui/react';
+import { useColorMode, useColorModeValue, Icon, useToken } from '@chakra-ui/react';
 import type {
   SystemStyleObject,
   ThemingProps,
@@ -39,6 +39,7 @@ const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((props, ref)
   const trackBg = useColorModeValue('blackAlpha.100', 'whiteAlpha.100');
   const thumbBg = 'white';
   const transitionProps = getDefaultTransitionProps();
+  const blackColor = useToken('colors', 'black');
 
   const trackStyles: SystemStyleObject = React.useMemo(() => ({
     bgColor: props.trackBg || trackBg,
@@ -67,9 +68,14 @@ const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((props, ref)
     transitionDuration: 'ultra-slow',
   }), [ thumbBg, transitionProps, state.isChecked ]);
 
+  const handleChange = React.useCallback(() => {
+    toggleColorMode();
+    window.document.documentElement.style.setProperty('--chakra-colors-black', blackColor);
+  }, [ blackColor, toggleColorMode ]);
+
   return (
     <chakra.label
-      { ...getRootProps({ onChange: toggleColorMode }) }
+      { ...getRootProps({ onChange: handleChange }) }
       display="inline-block"
       position="relative"
       verticalAlign="middle"
