@@ -51,6 +51,10 @@ export const config: Sentry.BrowserOptions | undefined = (() => {
       'conduitPage',
       // Generic error code from errors outside the security sandbox
       'Script error.',
+
+      // Relay and WalletConnect errors
+      'Attempt to connect to relay via',
+      'WebSocket connection failed for URL: wss://relay.walletconnect.com',
     ],
     denyUrls: [
       // Facebook flakiness
@@ -67,6 +71,12 @@ export const config: Sentry.BrowserOptions | undefined = (() => {
       /127\.0\.0\.1:4001\/isrunning/i, // Cacaoweb
       /webappstoolbarba\.texthelp\.com\//i,
       /metrics\.itunes\.apple\.com\.edgesuite\.net\//i,
+
+      // AD fetch failed errors
+      /czilladx\.com/i,
+      /coinzilla\.com/i,
+      /coinzilla\.io/i,
+      /slise\.xyz/i,
     ],
   };
 })();
