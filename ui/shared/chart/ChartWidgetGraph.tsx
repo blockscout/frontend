@@ -37,8 +37,10 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
   const overlayRef = React.useRef<SVGRectElement>(null);
 
   const [ rect, ref ] = useClientRect<SVGSVGElement>();
-  const chartMargin = { ...DEFAULT_CHART_MARGIN, ...margin };
+  const [ chartMargin, setChartMargin ] = React.useState({ ...DEFAULT_CHART_MARGIN, ...margin });
   const { innerWidth, innerHeight } = calculateInnerSize(rect, chartMargin);
+
+  // console.table({ innerWidth, innerHeight });
 
   const chartId = `chart-${ title.split(' ').join('') }-${ isEnlarged ? 'fullscreen' : 'small' }`;
   const [ range, setRange ] = React.useState<[ Date, Date ]>([ items[0].date, items[items.length - 1].date ]);
@@ -57,11 +59,23 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
   }, [ isGroupedValues, rangedItems ]);
   const chartData = React.useMemo(() => ([ { items: displayedData, name: 'Value', color, units } ]), [ color, displayedData, units ]);
 
-  const { xTickFormat, yTickFormat, xScale, yScale } = useTimeChartController({
+  const { xTickFormat, yTickFormat, xScale, yScale, yFormatParams } = useTimeChartController({
     data: [ { items: displayedData, name: title, color } ],
     width: innerWidth,
     height: innerHeight,
   });
+
+  React.useEffect(() => {
+    // console.log('__>__', yFormatParams.maximumSignificantDigits);
+    const adj = yFormatParams.maximumSignificantDigits && yFormatParams.maximumSignificantDigits > 2 ?
+      7 * (yFormatParams.maximumSignificantDigits - 2) :
+      0;
+    setChartMargin({
+      ...DEFAULT_CHART_MARGIN,
+      ...margin,
+      left: DEFAULT_CHART_MARGIN.left + (margin?.left ?? 0) + adj,
+    });
+  }, [ margin, yFormatParams.maximumSignificantDigits ]);
 
   const handleRangeSelect = React.useCallback((nextRange: [ Date, Date ]) => {
     setRange([ nextRange[0], nextRange[1] ]);
