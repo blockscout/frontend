@@ -40,6 +40,8 @@ ARG GIT_TAG
 ENV NEXT_PUBLIC_GIT_TAG=$GIT_TAG
 
 ENV NODE_ENV production
+ENV OPEN_TELEMETRY true
+ENV NEXT_OTEL_VERBOSE 1
 
 ### APP
 # Copy dependencies and source code
