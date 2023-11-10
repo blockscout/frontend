@@ -9,11 +9,22 @@ export const config: Sentry.BrowserOptions | undefined = (() => {
     return;
   }
 
+  const tracesSampleRate: number | undefined = (() => {
+    if (feature.environment === 'staging') {
+      return 1;
+    }
+
+    if (feature.environment === 'production' && feature.instance === 'eth') {
+      return 0.2;
+    }
+  })();
+
   return {
     environment: feature.environment,
     dsn: feature.dsn,
     release: feature.release,
-    enableTracing: false,
+    enableTracing: feature.enableTracing,
+    tracesSampleRate,
 
     // error filtering settings
     // were taken from here - https://docs.sentry.io/platforms/node/guides/azure-functions/configuration/filtering/#decluttering-sentry
