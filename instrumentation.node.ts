@@ -14,6 +14,13 @@ import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions'
 
 diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.INFO);
 
+const traceExporter = process.env.NODE_ENV === 'production' ?
+  new OTLPTraceExporter({
+  // optional - default url is http://localhost:4318/v1/traces
+    url: 'http://opentelemetry-opentelemetry-collector.opentelemetry.svc.cluster.local:4318/v1/traces',
+  }) :
+  new ConsoleSpanExporter();
+
 const sdk = new NodeSDK({
   resource: new Resource({
     [SemanticResourceAttributes.SERVICE_NAME]: 'blockscout_frontend',
@@ -23,14 +30,8 @@ const sdk = new NodeSDK({
         process.env.NEXT_PUBLIC_APP_HOST?.replace('.blockscout.com', '').replaceAll('-', '_') ||
         'unknown_app',
   }),
-  spanProcessor: new SimpleSpanProcessor(new OTLPTraceExporter()),
-  traceExporter:
-    process.env.NODE_ENV === 'production' ?
-      new OTLPTraceExporter({
-        // optional - default url is http://localhost:4318/v1/traces
-        url: 'http://opentelemetry-opentelemetry-collector.opentelemetry.svc.cluster.local:4318/v1/traces',
-      }) :
-      new ConsoleSpanExporter(),
+  spanProcessor: new SimpleSpanProcessor(traceExporter),
+  traceExporter,
   metricReader: new PeriodicExportingMetricReader({
     exporter:
       process.env.NODE_ENV === 'production' ?
