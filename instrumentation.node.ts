@@ -15,10 +15,7 @@ import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions'
 diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.INFO);
 
 const traceExporter = process.env.NODE_ENV === 'production' ?
-  new OTLPTraceExporter({
-  // optional - default url is http://localhost:4318/v1/traces
-    url: 'http://opentelemetry-opentelemetry-collector.opentelemetry.svc.cluster.local:4318/v1/traces',
-  }) :
+  new OTLPTraceExporter() :
   new ConsoleSpanExporter();
 
 const sdk = new NodeSDK({
@@ -35,10 +32,7 @@ const sdk = new NodeSDK({
   metricReader: new PeriodicExportingMetricReader({
     exporter:
       process.env.NODE_ENV === 'production' ?
-        new OTLPMetricExporter({
-          // url is optional and can be omitted - default is http://localhost:4318/v1/metrics
-          url: 'http://opentelemetry-opentelemetry-collector.opentelemetry.svc.cluster.local:4318/v1/metrics',
-        }) :
+        new OTLPMetricExporter() :
         new ConsoleMetricExporter(),
   }),
   instrumentations: [
@@ -70,12 +64,14 @@ const sdk = new NodeSDK({
   ],
 });
 
-sdk.start();
+if (process.env.OTEL_SDK_ENABLED) {
+  sdk.start();
 
-process.on('SIGTERM', () => {
-  sdk
-    .shutdown()
-    .then(() => console.log('Tracing terminated'))
-    .catch((error) => console.log('Error terminating tracing', error))
-    .finally(() => process.exit(0));
-});
+  process.on('SIGTERM', () => {
+    sdk
+      .shutdown()
+      .then(() => console.log('Tracing terminated'))
+      .catch((error) => console.log('Error terminating tracing', error))
+      .finally(() => process.exit(0));
+  });
+}
