@@ -28,8 +28,6 @@ dotenv \
 dotenv \
   -v NEXT_PUBLIC_GIT_COMMIT_SHA=$(git rev-parse --short HEAD) \
   -v NEXT_PUBLIC_GIT_TAG=$(git describe --tags --abbrev=0) \
-  -v OPEN_TELEMETRY=true \
-  -v NEXT_OTEL_VERBOSE=1 \
   -e $config_file \
   -e $secrets_file \
   -- bash -c './deploy/scripts/make_envs_script.sh && next dev -- -p $NEXT_PUBLIC_APP_PORT' |
