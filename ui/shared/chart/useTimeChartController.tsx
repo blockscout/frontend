@@ -44,11 +44,6 @@ export default function useTimeChartController({ data, width, height }: Props) {
     return s;
   }, [ height, yMin, yMax ]);
 
-  // const yScaleForAxis = useMemo(
-  //   () => d3.scaleBand().domain([ String(yMin), String(yMax) ]).range([ height, 0 ]),
-  //   [ height, yMin, yMax ],
-  // );
-
   const xTickFormat = (axis: d3.Axis<d3.NumberValue>) => (d: d3.AxisDomain) => {
     let format: (date: Date) => string;
     const scale = axis.scale();

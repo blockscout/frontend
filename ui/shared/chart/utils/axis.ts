@@ -1,12 +1,20 @@
 import * as d3 from 'd3';
+import _unique from 'lodash/uniq';
 
 import type { TimeChartData } from '../types';
 
 export function getAxisParamsY(data: TimeChartData) {
   const min = d3.min(data, ({ items }) => d3.min(items, ({ value }) => value)) ?? 0;
   const max = d3.max(data, ({ items }) => d3.max(items, ({ value }) => value)) ?? 0;
+  const scale = d3.scaleLinear()
+    .domain([ min, max ])
+    .nice(3);
 
-  const formatParams = getLabelFormatParams(min, max);
+  const ticks = scale.ticks(3);
+
+  // console.log('__>__ ticks', scale.ticks(3));
+
+  const formatParams = getLabelFormatParams(ticks);
 
   // console.table({
   //   minL: min.toLocaleString(undefined, formatParams),
@@ -17,20 +25,23 @@ export function getAxisParamsY(data: TimeChartData) {
   return { min, max, formatParams };
 }
 
-function getLabelFormatParams(min: number, max: number, maximumSignificantDigits = 2): Intl.NumberFormatOptions {
+function getLabelFormatParams(ticks: Array<number>, maximumSignificantDigits = 2): Intl.NumberFormatOptions {
   const defaults = {
     // minimumFractionDigits: 2,
     maximumFractionDigits: 3,
     // minimumSignificantDigits: 3,
     maximumSignificantDigits,
     notation: 'compact' as const,
-    // trailingZeroDisplay: 'stripIfInteger',
+    // trailingZeroDisplay: '',
   };
-  const diff = max - min;
-  const indention = diff * 0;
 
-  const minStr = (min >= 0 && min - indention <= 0 ? 0 : min - indention).toLocaleString(undefined, defaults);
-  const maxStr = (max - indention).toLocaleString(undefined, defaults);
+  const uniqTicksStr = _unique(ticks.map((tick) => tick.toLocaleString(undefined, defaults)));
+
+  // const diff = max - min;
+  // const indention = diff * 0;
+
+  // const minStr = (min >= 0 && min - indention <= 0 ? 0 : min - indention).toLocaleString(undefined, defaults);
+  // const maxStr = (max - indention).toLocaleString(undefined, defaults);
 
   // console.table({
   //   minStr,
@@ -42,11 +53,11 @@ function getLabelFormatParams(min: number, max: number, maximumSignificantDigits
 
   // console.table({ min, max, diff, order });
 
-  if (minStr !== maxStr || maximumSignificantDigits === 8) {
+  if (uniqTicksStr.length === ticks.length || maximumSignificantDigits === 8) {
     return defaults;
   }
 
-  return getLabelFormatParams(min, max, maximumSignificantDigits + 1);
+  return getLabelFormatParams(ticks, maximumSignificantDigits + 1);
 }
 
 // export function getLabelFormat(num: number) {
