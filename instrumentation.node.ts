@@ -9,14 +9,12 @@ import {
   ConsoleMetricExporter,
 } from '@opentelemetry/sdk-metrics';
 import { NodeSDK } from '@opentelemetry/sdk-node';
-import { SimpleSpanProcessor, ConsoleSpanExporter } from '@opentelemetry/sdk-trace-node';
+import { SimpleSpanProcessor } from '@opentelemetry/sdk-trace-node';
 import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
 
 diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.INFO);
 
-const traceExporter = process.env.NODE_ENV === 'production' ?
-  new OTLPTraceExporter() :
-  new ConsoleSpanExporter();
+const traceExporter = new OTLPTraceExporter();
 
 const sdk = new NodeSDK({
   resource: new Resource({
@@ -38,27 +36,25 @@ const sdk = new NodeSDK({
   instrumentations: [
     getNodeAutoInstrumentations({
       '@opentelemetry/instrumentation-http': {
-        ignoreIncomingPaths: [
-          ...(process.env.NODE_ENV !== 'production' ?
-            [ /^\/_next\/static.*/ ] :
-            []
-          ),
-        ],
-        // This gives your request spans a more meaningful name
-        // than `HTTP GET`
-        // requestHook: (span, request) => {
-        //   span.setAttributes({
-        //     name: `${ request.method } ${ request.url || request.path }`,
-        //   });
-        // },
-
-        // Re-assign the root span's attributes
-        // startIncomingSpanHook: (request) => {
-        //   return {
-        //     name: `${ request.method } ${ request.url || request.path }`,
-        //     'request.path': request.url || request.path,
-        //   };
-        // },
+        ignoreIncomingRequestHook: (request) => {
+          try {
+            if (!request.url) {
+              return false;
+            }
+            const url = new URL(request.url, `http://${ request.headers.host }`);
+            if (
+              url.pathname.startsWith('/_next/static/') ||
+              url.pathname.startsWith('/_next/data/') ||
+              url.pathname.startsWith('/assets/') ||
+              url.pathname.startsWith('/static/') ||
+              url.pathname.startsWith('/favicon/') ||
+              url.pathname.startsWith('/envs.js')
+            ) {
+              return true;
+            }
+          } catch (error) {}
+          return false;
+        },
       },
     }),
   ],
