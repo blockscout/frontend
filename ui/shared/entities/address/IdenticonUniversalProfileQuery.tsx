@@ -5,7 +5,6 @@ import React, { useEffect, useState } from 'react';
 
 import type { UPResponse } from '../../../../types/api/universalProfile';
 
-import config from '../../../../configs/app';
 import { getEnvValue } from '../../../../configs/app/utils';
 
 interface Props {
@@ -18,7 +17,11 @@ export const formattedLuksoName = (hash: string, name: string) => {
 };
 
 export const getUniversalProfile = async(address: string, queryClient: QueryClient) => {
-  if (config.UI.views.address.identiconType !== 'universal_profile') {
+  const identiconType = getEnvValue('NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE');
+  if (identiconType === undefined) {
+    return undefined;
+  }
+  if (!identiconType.includes('universal_profile')) {
     return undefined;
   }
   const query = queryClient.getQueryData<UPResponse>([ 'universalProfile', { address: address } ]);

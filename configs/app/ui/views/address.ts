@@ -4,7 +4,10 @@ import { ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from 'types/views/address';
 import { getEnvValue, parseEnvJson } from 'configs/app/utils';
 
 const identiconType: IdenticonType = (() => {
-  const value = getEnvValue('NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE');
+  let value = getEnvValue('NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE');
+  if (value !== undefined && value.includes('universal_profile|')) {
+    value = value.split('|')[1];
+  }
 
   return IDENTICON_TYPES.find((type) => value === type) || 'jazzicon';
 })();

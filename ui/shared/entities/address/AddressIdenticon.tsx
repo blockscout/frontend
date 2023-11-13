@@ -18,22 +18,6 @@ const Icon = dynamic(
         return (props: IconProps) => <IdenticonGithub size={ props.size } seed={ props.hash }/>;
       }
 
-      case 'universal_profile': {
-        // fallback to blockie
-        const makeBlockie = (await import('ethereum-blockies-base64')).default;
-
-        // eslint-disable-next-line react/display-name
-        return (props: IconProps) => {
-          const data = makeBlockie(props.hash);
-          return (
-            <Image
-              src={ data }
-              alt={ `Identicon for ${ props.hash }}` }
-            />
-          );
-        };
-      }
-
       case 'blockie': {
         const makeBlockie = (await import('ethereum-blockies-base64')).default;
 

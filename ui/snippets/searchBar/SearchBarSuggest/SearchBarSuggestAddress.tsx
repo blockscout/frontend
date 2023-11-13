@@ -37,7 +37,6 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
     })();
   }, [ data, queryClient, setType, setDisplayedName ]);
 
-  const shouldHighlightHash = data.address.toLowerCase() === searchTerm.toLowerCase();
   const icon = (
     <AddressEntity.Icon
       address={{ hash: data.address, is_contract: type === 'contract', name: '', is_verified: data.is_smart_contract_verified, implementation_name: null }}
@@ -62,7 +61,7 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
         <Flex alignItems="center">
           { icon }
           <Box
-            as={ shouldHighlightHash ? 'mark' : 'span' }
+            as="span"
             display="block"
             overflow="hidden"
             whiteSpace="nowrap"
@@ -81,7 +80,7 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
       <Flex alignItems="center" w="450px" mr={ 2 }>
         { icon }
         <Box
-          as={ shouldHighlightHash ? 'mark' : 'span' }
+          as="span"
           display="block"
           overflow="hidden"
           whiteSpace="nowrap"
