@@ -18,8 +18,7 @@ import useFetch from 'lib/hooks/useFetch';
 import useIssueUrl from 'lib/hooks/useIssueUrl';
 import NetworkAddToWallet from 'ui/shared/NetworkAddToWallet';
 
-import ColorModeToggler from '../header/ColorModeToggler';
-import ColorModeSlider from './ColorModeSlider';
+import ColorModeSwitch from './ColorModeSwitch';
 import FooterLinkItem from './FooterLinkItem';
 import IntTxsIndexingStatus from './IntTxsIndexingStatus';
 import getApiVersionUrl from './utils/getApiVersionUrl';
@@ -118,8 +117,7 @@ const Footer = () => {
     >
       <Box flexGrow="1" mb={{ base: 8, lg: 0 }} minW="195px">
         <Flex flexWrap="wrap" columnGap={ 8 } rowGap={ 6 }>
-          <ColorModeToggler/>
-          <ColorModeSlider/>
+          <ColorModeSwitch/>
           { !config.UI.indexingAlert.intTxs.isHidden && <IntTxsIndexingStatus/> }
           <NetworkAddToWallet/>
         </Flex>

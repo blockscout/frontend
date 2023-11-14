@@ -1,0 +1,145 @@
+import {
+  IconButton,
+  Icon,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverBody,
+  useColorMode,
+  Text,
+  Tooltip,
+  Flex,
+  Box,
+  useDisclosure,
+} from '@chakra-ui/react';
+import _clamp from 'lodash/clamp';
+import React from 'react';
+
+import moonIcon from 'icons/moon.svg';
+import sunIcon from 'icons/sun.svg';
+
+const COLORS = [
+  { hex: '#101112', name: 'Black', colorMode: 'dark' },
+  { hex: '#1A1E25', name: 'Dark', colorMode: 'dark' },
+  { hex: '#232B37', name: 'Dim dark', colorMode: 'dark' },
+  { hex: '#F5F6F8', name: 'Light', colorMode: 'light' },
+  { hex: '#FAFBFB', name: 'Off-white', colorMode: 'light' },
+  { hex: '#FFFFFF', name: 'White', colorMode: 'light' },
+];
+
+const ColorModeSwitch = () => {
+  const { isOpen, onToggle, onClose } = useDisclosure();
+  const { toggleColorMode, colorMode } = useColorMode();
+  const [ index, setIndex ] = React.useState(0);
+
+  const setColorMode = React.useCallback((index: number) => {
+    const color = COLORS[index];
+    if (colorMode !== color.colorMode) {
+      toggleColorMode();
+    }
+
+    const varName = color.colorMode === 'light' ? '--chakra-colors-white' : '--chakra-colors-black';
+    window.document.documentElement.style.setProperty(varName, color.hex);
+  }, [ colorMode, toggleColorMode ]);
+
+  const handleSelect = React.useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+    const hex = event.currentTarget.getAttribute('data-hex');
+    const nextIndex = COLORS.findIndex((item) => item.hex === hex);
+    if (nextIndex === -1) {
+      return;
+    }
+
+    setColorMode(nextIndex);
+    setIndex(nextIndex);
+  }, [ setColorMode ]);
+
+  const handleNextClick = React.useCallback(() => {
+    setIndex((prev) => {
+      const nextIndex = _clamp(prev + 1, 0, COLORS.length - 1);
+      prev !== nextIndex && setColorMode(nextIndex);
+
+      return nextIndex;
+    });
+  }, [ setColorMode ]);
+
+  const handlePrevClick = React.useCallback(() => {
+    setIndex((prev) => {
+      const nextIndex = _clamp(prev - 1, 0, COLORS.length - 1);
+      prev !== nextIndex && setColorMode(nextIndex);
+
+      return nextIndex;
+    });
+  }, [ setColorMode ]);
+
+  return (
+    <Popover placement="bottom-start" isLazy trigger="click" isOpen={ isOpen } onClose={ onClose }>
+      <PopoverTrigger>
+        <IconButton
+          colorScheme="blue"
+          aria-label="hint"
+          icon={ <Icon as={ sunIcon } boxSize={ 5 }/> }
+          boxSize={ 8 }
+          variant="simple"
+          borderColor={ isOpen ? 'link_hovered' : 'transparent' }
+          borderWidth="1px"
+          _hover={{
+            borderColor: 'link_hovered',
+          }}
+          onClick={ onToggle }
+        />
+      </PopoverTrigger>
+      <PopoverContent overflowY="hidden" w="240px">
+        <PopoverBody boxShadow="2xl">
+          <Text variant="secondary" fontSize="sm" textAlign="center" mt={ 2 } mb={ 1 }>
+            { COLORS[index].name }
+          </Text>
+          <Flex justifyContent="center" alignItems="center" columnGap={ 3 } py={ 4 }>
+            <Icon
+              as={ moonIcon }
+              boxSize={ 4 }
+              color="text_secondary"
+              cursor="pointer"
+              onClick={ handlePrevClick }
+            />
+            <Flex as="ul">
+              { COLORS.map((color, i) => (
+                <Tooltip label={ color.name } key={ color.hex } placement="top">
+                  <Box
+                    as="li"
+                    boxSize={ 5 }
+                    listStyleType="none"
+                    cursor="pointer"
+                    bgColor={ color.hex }
+                    data-hex={ color.hex }
+                    onClick={ handleSelect }
+                    zIndex={ i === index ? 1 : 0 }
+                    outline={ i === index ? '1px solid' : '0px solid' }
+                    outlineColor="text_secondary"
+                    outlineOffset={ 0 }
+                    _first={{
+                      borderTopLeftRadius: 'sm',
+                      borderBottomLeftRadius: 'sm',
+                    }}
+                    _last={{
+                      borderTopRightRadius: 'sm',
+                      borderBottomRightRadius: 'sm',
+                    }}
+                  />
+                </Tooltip>
+              )) }
+            </Flex>
+            <Icon
+              as={ sunIcon }
+              boxSize={ 5 }
+              color="text_secondary"
+              cursor="pointer"
+              onClick={ handleNextClick }
+            />
+          </Flex>
+        </PopoverBody>
+      </PopoverContent>
+    </Popover>
+  );
+};
+
+export default ColorModeSwitch;
