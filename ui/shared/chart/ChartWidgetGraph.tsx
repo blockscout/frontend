@@ -54,7 +54,17 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
   const chartData = React.useMemo(() => ([ { items: displayedData, name: 'Value', color, units } ]), [ color, displayedData, units ]);
 
   const margin: ChartMargin = React.useMemo(() => ({ ...DEFAULT_CHART_MARGIN, ...marginProps }), [ marginProps ]);
-  const ticks = React.useMemo(() => isEnlarged ? { x: 8, y: 6 } : { x: 4, y: 3 }, [ isEnlarged ]);
+  const axesConfig = React.useMemo(() => {
+    return {
+      x: {
+        ticks: isEnlarged ? 8 : 4,
+      },
+      y: {
+        ticks: isEnlarged ? 6 : 3,
+        nice: true,
+      },
+    };
+  }, [ isEnlarged ]);
 
   const {
     ref,
@@ -66,7 +76,7 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
   } = useTimeChartController({
     data: chartData,
     margin,
-    ticks,
+    axesConfig,
   });
 
   const handleRangeSelect = React.useCallback((nextRange: [ Date, Date ]) => {
@@ -87,7 +97,7 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
         <ChartGridLine
           type="horizontal"
           scale={ axis.y.scale }
-          ticks={ ticks.y }
+          ticks={ axesConfig.y.ticks }
           size={ innerWidth }
           disableAnimation
         />
@@ -112,7 +122,7 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
         <ChartAxis
           type="left"
           scale={ axis.y.scale }
-          ticks={ ticks.y }
+          ticks={ axesConfig.y.ticks }
           tickFormatGenerator={ axis.y.tickFormatter }
           disableAnimation
         />
@@ -121,7 +131,7 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
           type="bottom"
           scale={ axis.x.scale }
           transform={ `translate(0, ${ innerHeight })` }
-          ticks={ ticks.x }
+          ticks={ axesConfig.x.ticks }
           anchorEl={ overlayRef.current }
           tickFormatGenerator={ axis.x.tickFormatter }
           disableAnimation

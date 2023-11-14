@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 import _unique from 'lodash/uniq';
 
-import type { TimeChartData } from '../types';
+import type { AxesConfig, AxisConfig, TimeChartData } from '../types';
 
 import { WEEK, MONTH, YEAR } from 'lib/consts';
 
@@ -9,8 +9,8 @@ export const DEFAULT_MAXIMUM_SIGNIFICANT_DIGITS = 2;
 export const DEFAULT_MAXIMUM_FRACTION_DIGITS = 3;
 export const MAXIMUM_SIGNIFICANT_DIGITS_LIMIT = 8;
 
-export function getAxisParams(data: TimeChartData, ticks?: { x?: number; y?: number }) {
-  const { labelFormatParams: labelFormatParamsY, scale: yScale } = getAxisParamsY(data, ticks?.y ?? 3);
+export function getAxisParams(data: TimeChartData, axesConfig?: AxesConfig) {
+  const { labelFormatParams: labelFormatParamsY, scale: yScale } = getAxisParamsY(data, axesConfig?.y);
 
   return {
     x: {
@@ -53,14 +53,18 @@ const tickFormatterX = (axis: d3.Axis<d3.NumberValue>) => (d: d3.AxisDomain) => 
   return format(d as Date);
 };
 
-function getAxisParamsY(data: TimeChartData, ticksNum: number) {
+function getAxisParamsY(data: TimeChartData, config?: AxisConfig) {
+  const DEFAULT_TICKS_NUM = 3;
   const min = d3.min(data, ({ items }) => d3.min(items, ({ value }) => value)) ?? 0;
   const max = d3.max(data, ({ items }) => d3.max(items, ({ value }) => value)) ?? 0;
-  const scale = d3.scaleLinear()
-    .domain([ min, max ])
-    .nice(3);
+  const scale = config?.nice ?
+    d3.scaleLinear()
+      .domain([ min, max ])
+      .nice(config?.ticks ?? DEFAULT_TICKS_NUM) :
+    d3.scaleLinear()
+      .domain([ min, max ]);
 
-  const ticks = scale.ticks(ticksNum);
+  const ticks = scale.ticks(config?.ticks ?? DEFAULT_TICKS_NUM);
   const labelFormatParams = getYLabelFormatParams(ticks);
 
   return { min, max, scale, labelFormatParams };

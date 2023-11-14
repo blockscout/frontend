@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { ChartMargin, TimeChartData } from 'ui/shared/chart/types';
+import type { AxesConfig, ChartMargin, TimeChartData } from 'ui/shared/chart/types';
 
 import useClientRect from 'lib/hooks/useClientRect';
 
@@ -10,16 +10,16 @@ import { getAxisParams, DEFAULT_MAXIMUM_SIGNIFICANT_DIGITS } from './utils/timeC
 interface Props {
   data: TimeChartData;
   margin?: ChartMargin;
-  ticks?: { x?: number; y?: number };
+  axesConfig?: AxesConfig;
 }
 
-export default function useTimeChartController({ data, margin, ticks }: Props) {
+export default function useTimeChartController({ data, margin, axesConfig }: Props) {
 
   const [ rect, ref ] = useClientRect<SVGSVGElement>();
 
   // we need to recalculate the axis scale whenever the rect width changes
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const axisParams = React.useMemo(() => getAxisParams(data, ticks), [ data, ticks, rect?.width ]);
+  const axisParams = React.useMemo(() => getAxisParams(data, axesConfig), [ data, axesConfig, rect?.width ]);
 
   const chartMargin = React.useMemo(() => {
     const exceedingDigits = (axisParams.y.labelFormatParams.maximumSignificantDigits ?? DEFAULT_MAXIMUM_SIGNIFICANT_DIGITS) -
