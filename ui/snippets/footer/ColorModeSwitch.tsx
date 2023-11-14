@@ -1,3 +1,4 @@
+import type { ColorMode } from '@chakra-ui/react';
 import {
   IconButton,
   Icon,
@@ -17,6 +18,7 @@ import React from 'react';
 
 import moonIcon from 'icons/moon.svg';
 import sunIcon from 'icons/sun.svg';
+import * as cookies from 'lib/cookies';
 
 const COLORS = [
   { hex: '#101112', name: 'Black', colorMode: 'dark' },
@@ -27,10 +29,22 @@ const COLORS = [
   { hex: '#FFFFFF', name: 'White', colorMode: 'light' },
 ];
 
+function getInitialIndex(colorMode: ColorMode, hex: string | undefined): number {
+  const index = COLORS.findIndex((color) => color.hex === hex);
+  if (index === -1) {
+    return colorMode === 'dark' ? COLORS.findIndex((color) => color.colorMode === colorMode) : COLORS.findLastIndex((color) => color.colorMode === colorMode);
+  }
+
+  return index;
+}
+
 const ColorModeSwitch = () => {
   const { isOpen, onToggle, onClose } = useDisclosure();
   const { toggleColorMode, colorMode } = useColorMode();
-  const [ index, setIndex ] = React.useState(0);
+
+  const cookieHex = cookies.get(cookies.NAMES.COLOR_MODE_HEX);
+
+  const [ index, setIndex ] = React.useState(getInitialIndex(colorMode, cookieHex));
 
   const setColorMode = React.useCallback((index: number) => {
     const color = COLORS[index];
@@ -40,7 +54,14 @@ const ColorModeSwitch = () => {
 
     const varName = color.colorMode === 'light' ? '--chakra-colors-white' : '--chakra-colors-black';
     window.document.documentElement.style.setProperty(varName, color.hex);
+
+    cookies.set(cookies.NAMES.COLOR_MODE_HEX, color.hex);
   }, [ colorMode, toggleColorMode ]);
+
+  React.useEffect(() => {
+    setColorMode(index);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSelect = React.useCallback((event: React.MouseEvent<HTMLDivElement>) => {
     const hex = event.currentTarget.getAttribute('data-hex');
