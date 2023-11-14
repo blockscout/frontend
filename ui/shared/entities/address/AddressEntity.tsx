@@ -78,7 +78,7 @@ const Icon = (props: IconProps) => {
       );
     }
 
-    const contractIcon = (
+    const ContractIcon = (
       <Tooltip label="Contract">
         <span>
           <EntityBase.Icon
@@ -90,7 +90,7 @@ const Icon = (props: IconProps) => {
       </Tooltip>
     );
 
-    return <IdenticonUniversalProfile address={ props.address.hash } fallbackIcon={ contractIcon }/>;
+    return <IdenticonUniversalProfile address={ props.address.hash } fallbackIcon={ ContractIcon }/>;
   }
 
   return (

@@ -1,6 +1,6 @@
 import { Tooltip, chakra } from '@chakra-ui/react';
 import type { As } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import shortenString from 'lib/shortenString';
 
@@ -14,7 +14,7 @@ interface Props {
 }
 
 const HashStringShorten = ({ hash, isTooltipDisabled, as = 'span' }: Props) => {
-  const [ shortenedString, setShortenedString ] = React.useState(shortenString(hash));
+  const [ shortenedString, setShortenedString ] = useState(shortenString(hash));
   useEffect(() => {
     const identiconType = getEnvValue('NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE');
     if (identiconType === undefined) {
