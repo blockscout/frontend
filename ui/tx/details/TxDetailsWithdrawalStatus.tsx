@@ -23,12 +23,16 @@ const TxDetailsWithdrawalStatus = ({ status, l1TxHash }: Props) => {
     return null;
   }
 
+  const hasClaimButton = status === 'Ready for relay';
+
+  const steps = hasClaimButton ? WITHDRAWAL_STATUSES.slice(0, -1) : WITHDRAWAL_STATUSES;
+
   const rightSlot = (() => {
     if (status === 'Relayed' && l1TxHash) {
       return <TxEntityL1 hash={ l1TxHash } truncation="constant"/>;
     }
 
-    if (status === 'Ready for relay') {
+    if (hasClaimButton) {
       return (
         <Button
           variant="outline"
@@ -51,11 +55,11 @@ const TxDetailsWithdrawalStatus = ({ status, l1TxHash }: Props) => {
       hint="Detailed status progress of the transaction"
     >
       <VerificationSteps
-        steps={ WITHDRAWAL_STATUSES as unknown as Array<L2WithdrawalStatus> }
+        steps={ steps as unknown as Array<L2WithdrawalStatus> }
         step={ status }
         rightSlot={ rightSlot }
-        my={ status === 'Ready for relay' ? '-6px' : 0 }
-        lineHeight={ status === 'Ready for relay' ? 8 : undefined }
+        my={ hasClaimButton ? '-6px' : 0 }
+        lineHeight={ hasClaimButton ? 8 : undefined }
       />
     </DetailsInfoItem>
   );

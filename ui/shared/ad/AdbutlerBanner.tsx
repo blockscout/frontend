@@ -47,8 +47,8 @@ const AdbutlerBanner = ({ className }: { className?: string }) => {
 
   return (
     <Flex className={ className } id="adBanner" h={{ base: '100px', lg: '90px' }}>
-      <Script id="ad-butler-1">{ connectAdbutler }</Script>
-      <Script id="ad-butler-2">{ placeAd }</Script>
+      <Script strategy="lazyOnload" id="ad-butler-1">{ connectAdbutler }</Script>
+      <Script strategy="lazyOnload" id="ad-butler-2">{ placeAd }</Script>
       <div id="ad-banner"></div>
     </Flex>
   );
