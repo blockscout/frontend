@@ -49,6 +49,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
   - [Safe{Core} address tags](ENVS.md#safecore-address-tags)
   - [SUAVE chain](ENVS.md#suave-chain)
   - [Sentry error monitoring](ENVS.md#sentry-error-monitoring)
+  - [OpenTelemetry](ENVS.md#opentelemetry)
 - [3rd party services configuration](ENVS.md#external-services-configuration)
 
 &nbsp;
@@ -533,6 +534,16 @@ For blockchains that implementing SUAVE architecture additional fields will be s
 | NEXT_PUBLIC_SENTRY_ENABLE_TRACING | `boolean` | Enables tracing and performance monitoring in Sentry.io | - | `false` | `true` |
 | NEXT_PUBLIC_APP_ENV | `string` | App env (e.g development, review or production). Passed as `environment` property to Sentry config | - | `production` | `production` |
 | NEXT_PUBLIC_APP_INSTANCE | `string` | Name of app instance. Used as custom tag `app_instance` value in the main Sentry scope. If not provided, it will be constructed from `NEXT_PUBLIC_APP_HOST` | - | - | `wonderful_kepler` |
+
+&nbsp;
+
+### OpenTelemetry
+
+OpenTelemetry SDK for Node.js app could be enabled by passing `OTEL_SDK_ENABLED=true` variable. Configure the OpenTelemetry Protocol Exporter by using the generic environment variables described in the [OT docs](https://opentelemetry.io/docs/specs/otel/protocol/exporter/#configuration-options).
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| OTEL_SDK_ENABLED | `boolean` | Flag to enable the feature | Required | `false` | `true` |
 
 &nbsp;
 
