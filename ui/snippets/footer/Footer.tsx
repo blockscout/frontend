@@ -5,17 +5,12 @@ import React from 'react';
 import type { CustomLinksGroup } from 'types/footerLinks';
 
 import config from 'configs/app';
-import discussionsIcon from 'icons/discussions.svg';
-import donateIcon from 'icons/donate.svg';
-import editIcon from 'icons/edit.svg';
-import cannyIcon from 'icons/social/canny.svg';
 import discordIcon from 'icons/social/discord.svg';
 import gitIcon from 'icons/social/git.svg';
 import twitterIcon from 'icons/social/tweet.svg';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import useFetch from 'lib/hooks/useFetch';
-import useIssueUrl from 'lib/hooks/useIssueUrl';
 import NetworkAddToWallet from 'ui/shared/NetworkAddToWallet';
 
 import ColorModeToggler from '../header/ColorModeToggler';
@@ -36,7 +31,6 @@ const Footer = () => {
     },
   });
   const apiVersionUrl = getApiVersionUrl(backendVersionData?.backend_version);
-  const issueUrl = useIssueUrl(backendVersionData?.backend_version);
   const BLOCKSCOUT_LINKS = [
     {
       icon: gitIcon,
@@ -99,7 +93,8 @@ const Footer = () => {
           <Link fontSize="xs" href="https://lukso.network/">lukso.network</Link>
         </Box>
         <Text mt={ 3 } maxW={{ base: 'unset', lg: '470px' }} fontSize="xs">
-            Execution explorer is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for EVM Networks. It's the <Link fontSize="xs" href="https://www.blockscout.com/">Blockscout</Link> fork.
+            Execution explorer is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for EVM Networks.
+            It`&apos;`s the <Link fontSize="xs" href="https://www.blockscout.com/">Blockscout</Link> fork.
         </Text>
         <VStack spacing={ 1 } mt={ 6 } alignItems="start">
           { apiVersionUrl && (

@@ -1,4 +1,4 @@
-declare module "yup" {
+declare module 'yup' {
   interface StringSchema {
     // Yup's URL validator is not perfect so we made our own
     // https://github.com/jquense/yup/pull/1859
@@ -6,65 +6,65 @@ declare module "yup" {
   }
 }
 
-import * as yup from "yup";
+import * as yup from 'yup';
 
-import type { AdButlerConfig } from "../../../types/client/adButlerConfig";
+import type { AdButlerConfig } from '../../../types/client/adButlerConfig';
 import {
   SUPPORTED_AD_TEXT_PROVIDERS,
   SUPPORTED_AD_BANNER_PROVIDERS,
-} from "../../../types/client/adProviders";
+} from '../../../types/client/adProviders';
 import type {
   AdTextProviders,
   AdBannerProviders,
-} from "../../../types/client/adProviders";
-import type { MarketplaceAppOverview } from "../../../types/client/marketplace";
-import { NAVIGATION_LINK_IDS } from "../../../types/client/navigation-items";
+} from '../../../types/client/adProviders';
+import type { MarketplaceAppOverview } from '../../../types/client/marketplace';
+import { NAVIGATION_LINK_IDS } from '../../../types/client/navigation-items';
 import type {
   NavItemExternal,
   NavigationLinkId,
-} from "../../../types/client/navigation-items";
+} from '../../../types/client/navigation-items';
 import type {
   BridgedTokenChain,
   TokenBridge,
-} from "../../../types/client/token";
-import type { WalletType } from "../../../types/client/wallets";
-import { SUPPORTED_WALLETS } from "../../../types/client/wallets";
-import type { CustomLink, CustomLinksGroup } from "../../../types/footerLinks";
-import type { ChainIndicatorId } from "../../../types/homepage";
+} from '../../../types/client/token';
+import type { WalletType } from '../../../types/client/wallets';
+import { SUPPORTED_WALLETS } from '../../../types/client/wallets';
+import type { CustomLink, CustomLinksGroup } from '../../../types/footerLinks';
+import type { ChainIndicatorId } from '../../../types/homepage';
 import {
   type NetworkVerificationType,
   type NetworkExplorer,
   type FeaturedNetwork,
   NETWORK_GROUPS,
-} from "../../../types/networks";
-import type { AddressViewId } from "../../../types/views/address";
+} from '../../../types/networks';
+import type { AddressViewId } from '../../../types/views/address';
 import {
   ADDRESS_VIEWS_IDS,
   IDENTICON_TYPES,
-} from "../../../types/views/address";
-import { BLOCK_FIELDS_IDS } from "../../../types/views/block";
-import type { BlockFieldId } from "../../../types/views/block";
-import type { NftMarketplaceItem } from "../../../types/views/nft";
-import type { TxAdditionalFieldsId, TxFieldsId } from "../../../types/views/tx";
+} from '../../../types/views/address';
+import { BLOCK_FIELDS_IDS } from '../../../types/views/block';
+import type { BlockFieldId } from '../../../types/views/block';
+import type { NftMarketplaceItem } from '../../../types/views/nft';
+import type { TxAdditionalFieldsId, TxFieldsId } from '../../../types/views/tx';
 import {
   TX_ADDITIONAL_FIELDS_IDS,
   TX_FIELDS_IDS,
-} from "../../../types/views/tx";
+} from '../../../types/views/tx';
 
-import { replaceQuotes } from "../../../configs/app/utils";
-import * as regexp from "../../../lib/regexp";
+import { replaceQuotes } from '../../../configs/app/utils';
+import * as regexp from '../../../lib/regexp';
 
-const protocols = ["http", "https"];
+const protocols = [ 'http', 'https' ];
 
 const urlTest: yup.TestConfig = {
-  name: "url",
+  name: 'url',
   test: (value: unknown) => {
     if (!value) {
       return true;
     }
 
     try {
-      if (typeof value === "string") {
+      if (typeof value === 'string') {
         new URL(value);
         return true;
       }
@@ -72,7 +72,7 @@ const urlTest: yup.TestConfig = {
 
     return false;
   },
-  message: "${path} is not a valid URL",
+  message: '${path} is not a valid URL',
   exclusive: true,
 };
 
@@ -101,13 +101,13 @@ const marketplaceSchema = yup.object().shape({
     .of(marketplaceAppSchema),
   NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM: yup
     .string()
-    .when("NEXT_PUBLIC_MARKETPLACE_CONFIG_URL", {
+    .when('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', {
       is: (value: Array<unknown>) => value.length > 0,
       then: (schema) => schema.test(urlTest).required(),
       otherwise: (schema) =>
         schema.max(
           -1,
-          "NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM cannot not be used without NEXT_PUBLIC_MARKETPLACE_CONFIG_URL"
+          'NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM cannot not be used without NEXT_PUBLIC_MARKETPLACE_CONFIG_URL',
         ),
     }),
 });
@@ -116,13 +116,13 @@ const beaconChainSchema = yup.object().shape({
   NEXT_PUBLIC_HAS_BEACON_CHAIN: yup.boolean(),
   NEXT_PUBLIC_BEACON_CHAIN_CURRENCY_SYMBOL: yup
     .string()
-    .when("NEXT_PUBLIC_HAS_BEACON_CHAIN", {
+    .when('NEXT_PUBLIC_HAS_BEACON_CHAIN', {
       is: (value: boolean) => value,
       then: (schema) => schema.min(1).optional(),
       otherwise: (schema) =>
         schema.max(
           -1,
-          'NEXT_PUBLIC_BEACON_CHAIN_CURRENCY_SYMBOL cannot not be used if NEXT_PUBLIC_HAS_BEACON_CHAIN is not set to "true"'
+          'NEXT_PUBLIC_BEACON_CHAIN_CURRENCY_SYMBOL cannot not be used if NEXT_PUBLIC_HAS_BEACON_CHAIN is not set to \'true\'',
         ),
     }),
 });
@@ -131,14 +131,14 @@ const rollupSchema = yup.object().shape({
   NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK: yup.boolean(),
   NEXT_PUBLIC_OPTIMISTIC_L2_WITHDRAWAL_URL: yup
     .string()
-    .when("NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK", {
+    .when('NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK', {
       is: (value: string) => value,
       then: (schema) => schema.test(urlTest).required(),
       // eslint-disable-next-line max-len
       otherwise: (schema) =>
         schema.max(
           -1,
-          'NEXT_PUBLIC_OPTIMISTIC_L2_WITHDRAWAL_URL cannot not be used if NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK is not set to "true"'
+          'NEXT_PUBLIC_OPTIMISTIC_L2_WITHDRAWAL_URL cannot not be used if NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK is not set to \'true\'',
         ),
     }),
   NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK: yup.boolean(),
@@ -146,8 +146,8 @@ const rollupSchema = yup.object().shape({
     .string()
     .when(
       [
-        "NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK",
-        "NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK",
+        'NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK',
+        'NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK',
       ],
       {
         is: (isOptimistic?: boolean, isZk?: boolean) => isOptimistic || isZk,
@@ -156,9 +156,9 @@ const rollupSchema = yup.object().shape({
         otherwise: (schema) =>
           schema.max(
             -1,
-            'NEXT_PUBLIC_L1_BASE_URL cannot not be used if NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK or NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK is not set to "true"'
+            'NEXT_PUBLIC_L1_BASE_URL cannot not be used if NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK or NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK is not set to \'true\'',
           ),
-      }
+      },
     ),
 });
 
@@ -166,8 +166,8 @@ const adButlerConfigSchema = yup
   .object<AdButlerConfig>()
   .transform(replaceQuotes)
   .json()
-  .when("NEXT_PUBLIC_AD_BANNER_PROVIDER", {
-    is: (value: AdBannerProviders) => value === "adbutler",
+  .when('NEXT_PUBLIC_AD_BANNER_PROVIDER', {
+    is: (value: AdBannerProviders) => value === 'adbutler',
     then: (schema) =>
       schema
         .shape({
@@ -188,31 +188,31 @@ const adsBannerSchema = yup.object().shape({
 
 const sentrySchema = yup.object().shape({
   NEXT_PUBLIC_SENTRY_DSN: yup.string().test(urlTest),
-  SENTRY_CSP_REPORT_URI: yup.string().when("NEXT_PUBLIC_SENTRY_DSN", {
+  SENTRY_CSP_REPORT_URI: yup.string().when('NEXT_PUBLIC_SENTRY_DSN', {
     is: (value: string) => Boolean(value),
     then: (schema) => schema.test(urlTest),
     otherwise: (schema) =>
       schema.max(
         -1,
-        "SENTRY_CSP_REPORT_URI cannot not be used without NEXT_PUBLIC_SENTRY_DSN"
+        'SENTRY_CSP_REPORT_URI cannot not be used without NEXT_PUBLIC_SENTRY_DSN',
       ),
   }),
-  NEXT_PUBLIC_APP_INSTANCE: yup.string().when("NEXT_PUBLIC_SENTRY_DSN", {
+  NEXT_PUBLIC_APP_INSTANCE: yup.string().when('NEXT_PUBLIC_SENTRY_DSN', {
     is: (value: string) => Boolean(value),
     then: (schema) => schema,
     otherwise: (schema) =>
       schema.max(
         -1,
-        "NEXT_PUBLIC_APP_INSTANCE cannot not be used without NEXT_PUBLIC_SENTRY_DSN"
+        'NEXT_PUBLIC_APP_INSTANCE cannot not be used without NEXT_PUBLIC_SENTRY_DSN',
       ),
   }),
-  NEXT_PUBLIC_APP_ENV: yup.string().when("NEXT_PUBLIC_SENTRY_DSN", {
+  NEXT_PUBLIC_APP_ENV: yup.string().when('NEXT_PUBLIC_SENTRY_DSN', {
     is: (value: string) => Boolean(value),
     then: (schema) => schema,
     otherwise: (schema) =>
       schema.max(
         -1,
-        "NEXT_PUBLIC_APP_ENV cannot not be used without NEXT_PUBLIC_SENTRY_DSN"
+        'NEXT_PUBLIC_APP_ENV cannot not be used without NEXT_PUBLIC_SENTRY_DSN',
       ),
   }),
 });
@@ -221,44 +221,44 @@ const accountSchema = yup.object().shape({
   NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED: yup.boolean(),
   NEXT_PUBLIC_AUTH0_CLIENT_ID: yup
     .string()
-    .when("NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED", {
+    .when('NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED', {
       is: (value: boolean) => value,
       then: (schema) => schema.required(),
       otherwise: (schema) =>
         schema.max(
           -1,
-          'NEXT_PUBLIC_AUTH0_CLIENT_ID cannot not be used if NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED is not set to "true"'
+          'NEXT_PUBLIC_AUTH0_CLIENT_ID cannot not be used if NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED is not set to \'true\'',
         ),
     }),
-  NEXT_PUBLIC_AUTH_URL: yup.string().when("NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED", {
+  NEXT_PUBLIC_AUTH_URL: yup.string().when('NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED', {
     is: (value: boolean) => value,
     then: (schema) => schema.test(urlTest),
     otherwise: (schema) =>
       schema.max(
         -1,
-        'NEXT_PUBLIC_AUTH_URL cannot not be used if NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED is not set to "true"'
+        'NEXT_PUBLIC_AUTH_URL cannot not be used if NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED is not set to \'true\'',
       ),
   }),
   NEXT_PUBLIC_LOGOUT_URL: yup
     .string()
-    .when("NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED", {
+    .when('NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED', {
       is: (value: boolean) => value,
       then: (schema) => schema.test(urlTest).required(),
       otherwise: (schema) =>
         schema.max(
           -1,
-          'NEXT_PUBLIC_LOGOUT_URL cannot not be used if NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED is not set to "true"'
+          'NEXT_PUBLIC_LOGOUT_URL cannot not be used if NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED is not set to \'true\'',
         ),
     }),
   NEXT_PUBLIC_ADMIN_SERVICE_API_HOST: yup
     .string()
-    .when("NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED", {
+    .when('NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED', {
       is: (value: boolean) => value,
       then: (schema) => schema.test(urlTest),
       otherwise: (schema) =>
         schema.max(
           -1,
-          'NEXT_PUBLIC_ADMIN_SERVICE_API_HOST cannot not be used if NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED is not set to "true"'
+          'NEXT_PUBLIC_ADMIN_SERVICE_API_HOST cannot not be used if NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED is not set to \'true\'',
         ),
     }),
 });
@@ -313,7 +313,7 @@ const bridgedTokenChainSchema: yup.ObjectSchema<BridgedTokenChain> = yup.object(
     title: yup.string().required(),
     short_title: yup.string().required(),
     base_url: yup.string().test(urlTest).required(),
-  }
+  },
 );
 
 const tokenBridgeSchema: yup.ObjectSchema<TokenBridge> = yup.object({
@@ -333,13 +333,13 @@ const bridgedTokensSchema = yup.object().shape({
     .transform(replaceQuotes)
     .json()
     .of(tokenBridgeSchema)
-    .when("NEXT_PUBLIC_BRIDGED_TOKENS_CHAINS", {
+    .when('NEXT_PUBLIC_BRIDGED_TOKENS_CHAINS', {
       is: (value: Array<unknown>) => value && value.length > 0,
       then: (schema) => schema.required(),
       otherwise: (schema) =>
         schema.max(
           -1,
-          "NEXT_PUBLIC_BRIDGED_TOKENS_BRIDGES cannot not be used without NEXT_PUBLIC_BRIDGED_TOKENS_CHAINS"
+          'NEXT_PUBLIC_BRIDGED_TOKENS_BRIDGES cannot not be used without NEXT_PUBLIC_BRIDGED_TOKENS_CHAINS',
         ),
     }),
 });
@@ -347,7 +347,7 @@ const bridgedTokensSchema = yup.object().shape({
 const schema = yup
   .object()
   .noUnknown(true, (params) => {
-    return `Unknown ENV variables were provided: ${params.unknown}`;
+    return `Unknown ENV variables were provided: ${ params.unknown }`;
   })
   .shape({
     // I. Build-time ENVs
@@ -373,7 +373,7 @@ const schema = yup
     NEXT_PUBLIC_NETWORK_GOVERNANCE_TOKEN_SYMBOL: yup.string(),
     NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE: yup
       .string<NetworkVerificationType>()
-      .oneOf(["validation", "mining"]),
+      .oneOf([ 'validation', 'mining' ]),
     NEXT_PUBLIC_IS_TESTNET: yup.boolean(),
 
     // 3. API configuration
@@ -381,7 +381,7 @@ const schema = yup
     NEXT_PUBLIC_API_HOST: yup.string().required(),
     NEXT_PUBLIC_API_PORT: yup.number().integer().positive(),
     NEXT_PUBLIC_API_BASE_PATH: yup.string(),
-    NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL: yup.string().oneOf(["ws", "wss"]),
+    NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL: yup.string().oneOf([ 'ws', 'wss' ]),
 
     // 4. UI configuration
     //   a. homepage
@@ -392,7 +392,7 @@ const schema = yup
       .of(
         yup
           .string<ChainIndicatorId>()
-          .oneOf(["daily_txs", "coin_price", "market_cap", "tvl"])
+          .oneOf([ 'daily_txs', 'coin_price', 'market_cap', 'tvl' ]),
       ),
     NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR: yup.string(),
     NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND: yup.string(),
@@ -468,10 +468,10 @@ const schema = yup
     NEXT_PUBLIC_WEB3_WALLETS: yup
       .mixed()
       .test(
-        "shape",
-        'Invalid schema were provided for NEXT_PUBLIC_WEB3_WALLETS, it should be either array or "none" string literal',
+        'shape',
+        'Invalid schema were provided for NEXT_PUBLIC_WEB3_WALLETS, it should be either array or \'none\' string literal',
         (data) => {
-          const isNoneSchema = yup.string().equals(["none"]);
+          const isNoneSchema = yup.string().equals([ 'none' ]);
           const isArrayOfWalletsSchema = yup
             .array()
             .transform(replaceQuotes)
@@ -482,7 +482,7 @@ const schema = yup
             isNoneSchema.isValidSync(data) ||
             isArrayOfWalletsSchema.isValidSync(data)
           );
-        }
+        },
       ),
     NEXT_PUBLIC_WEB3_DISABLE_ADD_TOKEN_TO_WALLET: yup.boolean(),
     NEXT_PUBLIC_AD_TEXT_PROVIDER: yup

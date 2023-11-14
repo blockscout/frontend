@@ -1,6 +1,6 @@
-import type { WindowProvider } from "wagmi";
-import type { LuksoProfile } from "@lukso/web-components/dist/components/lukso-profile";
-import type * as React from "react";
+import type { LuksoProfile } from '@lukso/web-components/dist/components/lukso-profile';
+import type * as React from 'react';
+import type { WindowProvider } from 'wagmi';
 
 type CPreferences = {
   zone: string;
@@ -10,7 +10,7 @@ type CPreferences = {
 
 type WebComponent<T> =
   | (React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> &
-      Partial<T>)
+  Partial<T>)
   | { children?: React.ReactNode; class?: string };
 
 declare global {
@@ -30,13 +30,13 @@ declare global {
 
   namespace NodeJS {
     interface ProcessEnv {
-      NODE_ENV: "development" | "production";
+      NODE_ENV: 'development' | 'production';
     }
   }
 
   namespace JSX {
     interface IntrinsicElements {
-      "lukso-profile": WebComponent<LuksoProfile>;
+      'lukso-profile': WebComponent<LuksoProfile>;
     }
   }
 }
