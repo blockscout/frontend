@@ -87,32 +87,29 @@ const MarketplaceApp = () => {
   }
 
   return (
-    <>
-      { !isPending && <PageTitle title={ data.title } backLink={ backLink }/> }
-      <Center
-        h="100vh"
-        mx={{ base: -4, lg: -6 }}
-      >
-        { (isFrameLoading) && (
-          <ContentLoader/>
-        ) }
+    <Center
+      h="100vh"
+      mx={{ base: -4, lg: -6 }}
+    >
+      { (isFrameLoading) && (
+        <ContentLoader/>
+      ) }
 
-        { data && (
-          <Box
-            allow={ IFRAME_ALLOW_ATTRIBUTE }
-            ref={ ref }
-            sandbox={ IFRAME_SANDBOX_ATTRIBUTE }
-            as="iframe"
-            h="100%"
-            w="100%"
-            display={ isFrameLoading ? 'none' : 'block' }
-            src={ data.url }
-            title={ data.title }
-            onLoad={ handleIframeLoad }
-          />
-        ) }
-      </Center>
-    </>
+      { data && (
+        <Box
+          allow={ IFRAME_ALLOW_ATTRIBUTE }
+          ref={ ref }
+          sandbox={ IFRAME_SANDBOX_ATTRIBUTE }
+          as="iframe"
+          h="100%"
+          w="100%"
+          display={ isFrameLoading ? 'none' : 'block' }
+          src={ data.url }
+          title={ data.title }
+          onLoad={ handleIframeLoad }
+        />
+      ) }
+    </Center>
   );
 };
 
