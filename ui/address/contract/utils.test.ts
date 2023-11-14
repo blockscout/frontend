@@ -53,13 +53,35 @@ describe('function prepareAbi()', () => {
     expect(abi).toHaveLength(commonAbi.length);
   });
 
-  it('if there are two or more methods with the same name, filters out those which inputs are not matched', () => {
+  it('if there are two or more methods with the same name and inputs length, filters out those which input types are not matched', () => {
     const abi = prepareAbi([
       ...commonAbi,
       {
         inputs: [
           { internalType: 'address', name: '_fallbackUser', type: 'address' },
           { internalType: 'bytes', name: '_rawZkAddress', type: 'bytes' },
+        ],
+        name: 'directNativeDeposit',
+        outputs: [
+          { internalType: 'uint256', name: '', type: 'uint256' },
+        ],
+        stateMutability: 'payable',
+        type: 'function',
+      },
+    ], method);
+
+    expect(abi).toHaveLength(commonAbi.length);
+
+    const item = abi.find((item) => 'name' in item ? item.name === method.name : false);
+    expect(item).toEqual(commonAbi[2]);
+  });
+
+  it('if there are two or more methods with the same name and different inputs length, filters out those which inputs are not matched', () => {
+    const abi = prepareAbi([
+      ...commonAbi,
+      {
+        inputs: [
+          { internalType: 'address', name: '_fallbackUser', type: 'address' },
         ],
         name: 'directNativeDeposit',
         outputs: [

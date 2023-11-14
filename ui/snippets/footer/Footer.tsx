@@ -23,7 +23,7 @@ import FooterLinkItem from './FooterLinkItem';
 import IntTxsIndexingStatus from './IntTxsIndexingStatus';
 import getApiVersionUrl from './utils/getApiVersionUrl';
 
-const MAX_LINKS_COLUMNS = 3;
+const MAX_LINKS_COLUMNS = 4;
 
 const FRONT_VERSION_URL = `https://github.com/blockscout/frontend/tree/${ config.UI.footer.frontendVersion }`;
 const FRONT_COMMIT_URL = `https://github.com/blockscout/frontend/commit/${ config.UI.footer.frontendCommit }`;
@@ -96,13 +96,14 @@ const Footer = () => {
 
   const fetch = useFetch();
 
-  const { isLoading, data: linksData } = useQuery<unknown, ResourceError<unknown>, Array<CustomLinksGroup>>(
-    [ 'footer-links' ],
-    async() => fetch(config.UI.footer.links || '', undefined, { resource: 'footer-links' }),
-    {
-      enabled: Boolean(config.UI.footer.links),
-      staleTime: Infinity,
-    });
+  const { isPending, data: linksData } = useQuery<unknown, ResourceError<unknown>, Array<CustomLinksGroup>>({
+    queryKey: [ 'footer-links' ],
+    queryFn: async() => fetch(config.UI.footer.links || '', undefined, { resource: 'footer-links' }),
+    enabled: Boolean(config.UI.footer.links),
+    staleTime: Infinity,
+  });
+
+  const colNum = Math.min(linksData?.length || Infinity, MAX_LINKS_COLUMNS) + 1;
 
   return (
     <Flex
@@ -112,9 +113,9 @@ const Footer = () => {
       borderTop="1px solid"
       borderColor="divider"
       as="footer"
-      columnGap="100px"
+      columnGap={{ lg: '32px', xl: '100px' }}
     >
-      <Box flexGrow="1" mb={{ base: 8, lg: 0 }}>
+      <Box flexGrow="1" mb={{ base: 8, lg: 0 }} minW="195px">
         <Flex flexWrap="wrap" columnGap={ 8 } rowGap={ 6 }>
           <ColorModeToggler/>
           { !config.UI.indexingAlert.intTxs.isHidden && <IntTxsIndexingStatus/> }
@@ -140,28 +141,32 @@ const Footer = () => {
         </VStack>
       </Box>
       <Grid
-        gap={{ base: 6, lg: 12 }}
+        gap={{ base: 6, lg: config.UI.footer.links && colNum === MAX_LINKS_COLUMNS + 1 ? 2 : 8, xl: 12 }}
         gridTemplateColumns={ config.UI.footer.links ?
-          { base: 'repeat(auto-fill, 160px)', lg: `repeat(${ (linksData?.length || MAX_LINKS_COLUMNS) + 1 }, 160px)` } :
+          {
+            base: 'repeat(auto-fill, 160px)',
+            lg: `repeat(${ colNum }, 135px)`,
+            xl: `repeat(${ colNum }, 160px)`,
+          } :
           'auto'
         }
       >
-        <Box minW="160px" w={ config.UI.footer.links ? '160px' : '100%' }>
+        <Box>
           { config.UI.footer.links && <Text fontWeight={ 500 } mb={ 3 }>Blockscout</Text> }
           <Grid
             gap={ 1 }
             gridTemplateColumns={
               config.UI.footer.links ?
-                '160px' :
+                '1fr' :
                 {
                   base: 'repeat(auto-fill, 160px)',
-                  lg: 'repeat(2, 160px)',
+                  lg: 'repeat(3, 160px)',
                   xl: 'repeat(4, 160px)',
                 }
             }
             gridTemplateRows={{
               base: 'auto',
-              lg: config.UI.footer.links ? 'auto' : 'repeat(4, auto)',
+              lg: config.UI.footer.links ? 'auto' : 'repeat(3, auto)',
               xl: config.UI.footer.links ? 'auto' : 'repeat(2, auto)',
             }}
             gridAutoFlow={{ base: 'row', lg: config.UI.footer.links ? 'row' : 'column' }}
@@ -170,19 +175,19 @@ const Footer = () => {
             { BLOCKSCOUT_LINKS.map(link => <FooterLinkItem { ...link } key={ link.text }/>) }
           </Grid>
         </Box>
-        { config.UI.footer.links && isLoading && (
+        { config.UI.footer.links && isPending && (
           Array.from(Array(3)).map((i, index) => (
-            <Box minW="160px" key={ index }>
-              <Skeleton w="120px" h="20px" mb={ 6 }/>
+            <Box key={ index }>
+              <Skeleton w="100%" h="20px" mb={ 6 }/>
               <VStack spacing={ 5 } alignItems="start" mb={ 2 }>
-                { Array.from(Array(5)).map((i, index) => <Skeleton w="160px" h="14px" key={ index }/>) }
+                { Array.from(Array(5)).map((i, index) => <Skeleton w="100%" h="14px" key={ index }/>) }
               </VStack>
             </Box>
           ))
         ) }
         { config.UI.footer.links && linksData && (
           linksData.slice(0, MAX_LINKS_COLUMNS).map(linkGroup => (
-            <Box minW="160px" key={ linkGroup.title }>
+            <Box key={ linkGroup.title }>
               <Text fontWeight={ 500 } mb={ 3 }>{ linkGroup.title }</Text>
               <VStack spacing={ 1 } alignItems="start">
                 { linkGroup.links.map(link => <FooterLinkItem { ...link } key={ link.text }/>) }

@@ -54,6 +54,7 @@ import TxDetailsFeePerGas from 'ui/tx/details/TxDetailsFeePerGas';
 import TxDetailsGasPrice from 'ui/tx/details/TxDetailsGasPrice';
 import TxDetailsOther from 'ui/tx/details/TxDetailsOther';
 import TxDetailsTokenTransfers from 'ui/tx/details/TxDetailsTokenTransfers';
+import TxDetailsWithdrawalStatus from 'ui/tx/details/TxDetailsWithdrawalStatus';
 import TxRevertReason from 'ui/tx/details/TxRevertReason';
 import TxAllowedPeekers from 'ui/tx/TxAllowedPeekers';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
@@ -156,6 +157,10 @@ const TxDetails = () => {
             </Tag>
           ) }
         </DetailsInfoItem>
+        <TxDetailsWithdrawalStatus
+          status={ data.op_withdrawal_status }
+          l1TxHash={ data.op_l1_transaction_hash }
+        />
         { data.zkevm_status && (
           <DetailsInfoItem
             title="Confirmation status"

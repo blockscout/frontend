@@ -160,6 +160,12 @@ const sentrySchema = yup
         then: (schema) => schema.test(urlTest),
         otherwise: (schema) => schema.max(-1, 'SENTRY_CSP_REPORT_URI cannot not be used without NEXT_PUBLIC_SENTRY_DSN'),
       }),
+    NEXT_PUBLIC_SENTRY_ENABLE_TRACING: yup
+      .boolean()
+      .when('NEXT_PUBLIC_SENTRY_DSN', {
+        is: (value: string) => Boolean(value),
+        then: (schema) => schema,
+      }),
     NEXT_PUBLIC_APP_INSTANCE: yup
       .string()
       .when('NEXT_PUBLIC_SENTRY_DSN', {

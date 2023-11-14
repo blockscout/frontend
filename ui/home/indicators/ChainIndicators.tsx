@@ -41,7 +41,7 @@ const ChainIndicators = () => {
   }
 
   const valueTitle = (() => {
-    if (statsQueryResult.isLoading) {
+    if (statsQueryResult.isPending) {
       return <Skeleton h="48px" w="215px" mt={ 3 } mb={ 4 }/>;
     }
 

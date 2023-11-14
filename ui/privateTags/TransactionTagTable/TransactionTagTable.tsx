@@ -1,6 +1,5 @@
 import {
   Table,
-  Thead,
   Tbody,
   Tr,
   Th,
@@ -9,6 +8,8 @@ import React from 'react';
 
 import type { TransactionTags, TransactionTag } from 'types/api/account';
 
+import TheadSticky from 'ui/shared/TheadSticky';
+
 import TransactionTagTableItem from './TransactionTagTableItem';
 
 interface Props {
@@ -16,18 +17,19 @@ interface Props {
   isLoading: boolean;
   onEditClick: (data: TransactionTag) => void;
   onDeleteClick: (data: TransactionTag) => void;
+  top: number;
 }
 
-const AddressTagTable = ({ data, isLoading, onDeleteClick, onEditClick }: Props) => {
+const AddressTagTable = ({ data, isLoading, onDeleteClick, onEditClick, top }: Props) => {
   return (
     <Table variant="simple" minWidth="600px">
-      <Thead>
+      <TheadSticky top={ top }>
         <Tr>
           <Th width="75%">Transaction</Th>
           <Th width="25%">Private tag</Th>
           <Th width="108px"></Th>
         </Tr>
-      </Thead>
+      </TheadSticky>
       <Tbody>
         { data?.map((item, index) => (
           <TransactionTagTableItem

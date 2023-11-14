@@ -3,13 +3,13 @@ import type {
   UserInfo,
   CustomAbis,
   PublicTags,
-  AddressTags,
-  TransactionTags,
   ApiKeys,
-  WatchlistAddress,
   VerifiedAddressResponse,
   TokenInfoApplicationConfig,
   TokenInfoApplications,
+  WatchlistResponse,
+  TransactionTagsResponse,
+  AddressTagsResponse,
 } from 'types/api/account';
 import type {
   Address,
@@ -90,20 +90,23 @@ export const RESOURCES = {
     pathParams: [ 'id' as const ],
   },
   watchlist: {
-    path: '/api/account/v1/user/watchlist/:id?',
+    path: '/api/account/v2/user/watchlist/:id?',
     pathParams: [ 'id' as const ],
+    filterFields: [ ],
   },
   public_tags: {
     path: '/api/account/v1/user/public_tags/:id?',
     pathParams: [ 'id' as const ],
   },
   private_tags_address: {
-    path: '/api/account/v1/user/tags/address/:id?',
+    path: '/api/account/v2/user/tags/address/:id?',
     pathParams: [ 'id' as const ],
+    filterFields: [ ],
   },
   private_tags_tx: {
-    path: '/api/account/v1/user/tags/transaction/:id?',
+    path: '/api/account/v2/user/tags/transaction/:id?',
     pathParams: [ 'id' as const ],
+    filterFields: [ ],
   },
   api_keys: {
     path: '/api/account/v1/user/api_keys/:id?',
@@ -579,7 +582,8 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'verified_contracts' |
 'l2_output_roots' | 'l2_withdrawals' | 'l2_txn_batches' | 'l2_deposits' |
 'zkevm_l2_txn_batches' | 'zkevm_l2_txn_batch_txs' |
-'withdrawals' | 'address_withdrawals' | 'block_withdrawals';
+'withdrawals' | 'address_withdrawals' | 'block_withdrawals' |
+'watchlist' | 'private_tags_address' | 'private_tags_tx';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
@@ -588,10 +592,10 @@ export type ResourcePayload<Q extends ResourceName> =
 Q extends 'user_info' ? UserInfo :
 Q extends 'custom_abi' ? CustomAbis :
 Q extends 'public_tags' ? PublicTags :
-Q extends 'private_tags_address' ? AddressTags :
-Q extends 'private_tags_tx' ? TransactionTags :
+Q extends 'private_tags_address' ? AddressTagsResponse :
+Q extends 'private_tags_tx' ? TransactionTagsResponse :
 Q extends 'api_keys' ? ApiKeys :
-Q extends 'watchlist' ? Array<WatchlistAddress> :
+Q extends 'watchlist' ? WatchlistResponse :
 Q extends 'verified_addresses' ? VerifiedAddressResponse :
 Q extends 'token_info_applications_config' ? TokenInfoApplicationConfig :
 Q extends 'token_info_applications' ? TokenInfoApplications :

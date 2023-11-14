@@ -38,6 +38,7 @@ const moduleExports = {
   redirects,
   headers,
   output: 'standalone',
+  productionBrowserSourceMaps: process.env.GENERATE_SOURCEMAPS === 'true',
 };
 
 module.exports = withRoutes(moduleExports);

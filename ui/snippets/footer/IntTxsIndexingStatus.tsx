@@ -13,7 +13,7 @@ import useSocketMessage from 'lib/socket/useSocketMessage';
 
 const IntTxsIndexingStatus = () => {
 
-  const { data, isError, isLoading } = useApiQuery('homepage_indexing_status');
+  const { data, isError, isPending } = useApiQuery('homepage_indexing_status');
 
   const bgColor = useColorModeValue('blackAlpha.100', 'whiteAlpha.100');
   const hintTextcolor = useColorModeValue('black', 'white');
@@ -42,7 +42,7 @@ const IntTxsIndexingStatus = () => {
     handler: handleInternalTxsIndexStatus,
   });
 
-  if (isError || isLoading) {
+  if (isError || isPending) {
     return null;
   }
 

@@ -1,6 +1,5 @@
 import {
   Table,
-  Thead,
   Tbody,
   Tr,
   Th,
@@ -9,6 +8,8 @@ import React from 'react';
 
 import type { AddressTags, AddressTag } from 'types/api/account';
 
+import TheadSticky from 'ui/shared/TheadSticky';
+
 import AddressTagTableItem from './AddressTagTableItem';
 
 interface Props {
@@ -16,18 +17,19 @@ interface Props {
   onEditClick: (data: AddressTag) => void;
   onDeleteClick: (data: AddressTag) => void;
   isLoading: boolean;
+  top: number;
 }
 
-const AddressTagTable = ({ data, onDeleteClick, onEditClick, isLoading }: Props) => {
+const AddressTagTable = ({ data, onDeleteClick, onEditClick, isLoading, top }: Props) => {
   return (
     <Table variant="simple" minWidth="600px">
-      <Thead>
+      <TheadSticky top={ top }>
         <Tr>
           <Th width="60%">Address</Th>
           <Th width="40%">Private tag</Th>
           <Th width="116px"></Th>
         </Tr>
-      </Thead>
+      </TheadSticky>
       <Tbody>
         { data?.map((item: AddressTag, index: number) => (
           <AddressTagTableItem

@@ -32,3 +32,8 @@ jobs:
             label_name: 'pre-release'
             label_description: Tasks in pre-release right now
         secrets: inherit
+
+    upload_source_maps:
+        name: Upload source maps to Sentry
+        uses: './.github/workflows/upload-source-maps.yml'
+        secrets: inherit

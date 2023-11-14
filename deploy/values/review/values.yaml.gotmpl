@@ -1,147 +1,81 @@
-global:
-  env: review
+fullNameOverride: bs-stack
+nameOverride: bs-stack
+imagePullSecrets:
+  - name: regcred
+config:
+  network:
+    id: 5
+    name: Blockscout
+    shortname: Blockscout
+    currency:
+      name: Ether
+      symbol: ETH
+      decimals: 18
+  account:
+    enabled: true
+  testnet: true
+blockscout:
+  enabled: false
+stats:
+  enabled: false
 frontend:
-  app: blockscout
   enabled: true
+  replicaCount: 1
   image:
-    _default: ghcr.io/blockscout/frontend:review-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
+    tag: review-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
     pullPolicy: Always
   ingress:
     enabled: true
-    host:
-      _default: review-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}.k8s-dev.blockscout.com
-    # enable https
-    tls:
-      enabled: true
-    path:
-      exact:
-        # - "/(apps|auth/profile|account)"
-        - "/"
-        - "/envs.js"
-      prefix:
-        - "/_next"
-        - "/node-api"
-        - "/account"
-        - "/apps"
-        - "/static"
-        - "/assets"
-        - "/favicon"
-        - "/assets"
-        - "/auth/profile"
-        - "/auth/unverified-email"
-        - "/txs"
-        - "/tx"
-        - "/blocks"
-        - "/block"
-        - "/login"
-        - "/address"
-        - "/stats"
-        - "/search-results"
-        - "/token"
-        - "/tokens"
-        - "/accounts"
-        - "/visualize"
-        - "/api-docs"
-        - "/csv-export"
-        - "/verified-contracts"
-        - "/graphiql"
-        - "/login"
+    annotations:
+      kubernetes.io/ingress.class: internal-and-public
+      nginx.ingress.kubernetes.io/proxy-body-size: 500m
+      nginx.ingress.kubernetes.io/client-max-body-size: "500M"
+      nginx.ingress.kubernetes.io/proxy-buffering: "off"
+      nginx.ingress.kubernetes.io/proxy-connect-timeout: "15m"
+      nginx.ingress.kubernetes.io/proxy-send-timeout: "15m"
+      nginx.ingress.kubernetes.io/proxy-read-timeout: "15m"
+      cert-manager.io/cluster-issuer: "zerossl-prod"
+    hostname: review-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}.k8s-dev.blockscout.com
 
   resources:
     limits:
-      memory:
-        _default: 768Mi
-      cpu:
-        _default: "1"
+      memory: 768Mi
+      cpu: "1"
     requests:
-      memory:
-        _default: 384Mi
-      cpu:
-        _default: 250m
-  nodeSelector:
-    enabled: false
-  environment:
-    NEXT_PUBLIC_APP_ENV:
-      _default: development
-    NEXT_PUBLIC_APP_INSTANCE:
-      _default: review
-    NEXT_PUBLIC_NETWORK_NAME:
-      _default: Blockscout
-    NEXT_PUBLIC_NETWORK_ID:
-      _default: 5
-    NEXT_PUBLIC_NETWORK_CURRENCY_NAME:
-      _default: Ether
-    NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL:
-      _default: ETH
-    NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS:
-      _default: 18
-    NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE:
-      _default: validation
-    NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED:
-      _default: 'true'
-    NEXT_PUBLIC_FEATURED_NETWORKS:
-      _default: https://raw.githubusercontent.com/blockscout/frontend-configs/dev/configs/featured-networks/eth-goerli.json
-    NEXT_PUBLIC_NETWORK_LOGO:
-      _default: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-logos/goerli.svg
-    NEXT_PUBLIC_NETWORK_ICON:
-      _default: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-icons/goerli.svg
-    NEXT_PUBLIC_API_HOST:
-      _default: blockscout-main.k8s-dev.blockscout.com
-    NEXT_PUBLIC_STATS_API_HOST:
-      _default: https://stats-test.k8s-dev.blockscout.com/
-    NEXT_PUBLIC_VISUALIZE_API_HOST:
-      _default: http://visualizer-svc.visualizer-testing.svc.cluster.local/
-    NEXT_PUBLIC_CONTRACT_INFO_API_HOST:
-      _default: https://contracts-info-test.k8s-dev.blockscout.com
-    NEXT_PUBLIC_ADMIN_SERVICE_API_HOST:
-      _default: https://admin-rs-test.k8s-dev.blockscout.com
-    NEXT_PUBLIC_AUTH_URL:
-      _default: https://blockscout-main.k8s-dev.blockscout.com
-    NEXT_PUBLIC_API_BASE_PATH:
-      _default: /
-    NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM:
-      _default: https://airtable.com/shrqUAcjgGJ4jU88C
-    NEXT_PUBLIC_LOGOUT_URL:
-      _default: https://blockscoutcom.us.auth0.com/v2/logout
-    NEXT_PUBLIC_HOMEPAGE_CHARTS:
-      _default: "['daily_txs','coin_price','market_cap']"
-    NEXT_PUBLIC_APP_HOST:
-      _default: review-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}.k8s-dev.blockscout.com
-    NEXT_PUBLIC_NETWORK_RPC_URL:
-      _default: https://rpc.ankr.com/eth_goerli
-    NEXT_PUBLIC_NETWORK_EXPLORERS:
-      _default: "[{'title':'Bitquery','baseUrl':'https://explorer.bitquery.io/','paths':{'tx':'/goerli/tx','address':'/goerli/address','token':'/goerli/token','block':'/goerli/block'}},{'title':'Etherscan','baseUrl':'https://goerli.etherscan.io/','paths':{'tx':'/tx','address':'/address','token':'/token','block':'/block'}}]"
-    NEXT_PUBLIC_MARKETPLACE_CONFIG_URL:
-      _default: https://raw.githubusercontent.com/blockscout/frontend-configs/dev/configs/marketplace/eth-goerli.json
-    NEXT_PUBLIC_IS_TESTNET:
-      _default: true
-    NEXT_PUBLIC_GRAPHIQL_TRANSACTION:
-      _default: 0xf7d4972356e6ae44ae948d0cf19ef2beaf0e574c180997e969a2837da15e349d
-    NEXT_PUBLIC_SENTRY_DSN:
-      _default: ref+vault://deployment-values/blockscout/dev/review?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_SENTRY_DSN
-    SENTRY_CSP_REPORT_URI:
-      _default: ref+vault://deployment-values/blockscout/dev/review?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/SENTRY_CSP_REPORT_URI
-    NEXT_PUBLIC_AUTH0_CLIENT_ID:
-      _default: ref+vault://deployment-values/blockscout/dev/review?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_AUTH0_CLIENT_ID
-    NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID:
-      _default: ref+vault://deployment-values/blockscout/dev/review?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID
-    NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY:
-      _default: ref+vault://deployment-values/blockscout/dev/review?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY
-    NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID:
-      _default: ref+vault://deployment-values/blockscout/dev/review?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID
-    FAVICON_GENERATOR_API_KEY:
-      _default: ref+vault://deployment-values/blockscout/common?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY
-    NEXT_PUBLIC_WEB3_WALLETS:
-      _default: "['token_pocket','coinbase','metamask']"
-    NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE:
-      _default: gradient_avatar
-    NEXT_PUBLIC_VIEWS_ADDRESS_HIDDEN_VIEWS:
-      _default: "['top_accounts']"
-    NEXT_PUBLIC_VIEWS_TX_HIDDEN_FIELDS:
-      _default: "['value','fee_currency','gas_price','gas_fees','burnt_fees']"
-    NEXT_PUBLIC_VIEWS_TX_ADDITIONAL_FIELDS:
-      _default: "['fee_per_gas']"
-    NEXT_PUBLIC_USE_NEXT_JS_PROXY:
-      _default: true
-    NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES:
-      _default: "[{'name':'LooksRare','collection_url':'https://goerli.looksrare.org/collections/{hash}','instance_url':'https://goerli.looksrare.org/collections/{hash}/{id}','logo_url':'https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/nft-marketplace-logos/looks-rare.png'}]"
+      memory: 384Mi
+      cpu: 250m
+  env:
+    NEXT_PUBLIC_APP_ENV: development
+    NEXT_PUBLIC_APP_INSTANCE: review
+    NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE: validation
+    NEXT_PUBLIC_FEATURED_NETWORKS: https://raw.githubusercontent.com/blockscout/frontend-configs/dev/configs/featured-networks/eth-goerli.json
+    NEXT_PUBLIC_NETWORK_LOGO: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-logos/goerli.svg
+    NEXT_PUBLIC_NETWORK_ICON: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-icons/goerli.svg
+    NEXT_PUBLIC_API_HOST: blockscout-main.k8s-dev.blockscout.com
+    NEXT_PUBLIC_STATS_API_HOST: https://stats-test.k8s-dev.blockscout.com/
+    NEXT_PUBLIC_VISUALIZE_API_HOST: http://visualizer-svc.visualizer-testing.svc.cluster.local/
+    NEXT_PUBLIC_CONTRACT_INFO_API_HOST: https://contracts-info-test.k8s-dev.blockscout.com
+    NEXT_PUBLIC_ADMIN_SERVICE_API_HOST: https://admin-rs-test.k8s-dev.blockscout.com
+    NEXT_PUBLIC_AUTH_URL: https://blockscout-main.k8s-dev.blockscout.com
+    NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM: https://airtable.com/shrqUAcjgGJ4jU88C
+    NEXT_PUBLIC_LOGOUT_URL: https://blockscoutcom.us.auth0.com/v2/logout
+    NEXT_PUBLIC_HOMEPAGE_CHARTS: "['daily_txs','coin_price','market_cap']"
+    NEXT_PUBLIC_NETWORK_RPC_URL: https://rpc.ankr.com/eth_goerli
+    NEXT_PUBLIC_NETWORK_EXPLORERS: "[{'title':'Bitquery','baseUrl':'https://explorer.bitquery.io/','paths':{'tx':'/goerli/tx','address':'/goerli/address','token':'/goerli/token','block':'/goerli/block'}},{'title':'Etherscan','baseUrl':'https://goerli.etherscan.io/','paths':{'tx':'/tx','address':'/address','token':'/token','block':'/block'}}]"
+    NEXT_PUBLIC_MARKETPLACE_CONFIG_URL: https://raw.githubusercontent.com/blockscout/frontend-configs/dev/configs/marketplace/eth-goerli.json
+    NEXT_PUBLIC_GRAPHIQL_TRANSACTION: 0xf7d4972356e6ae44ae948d0cf19ef2beaf0e574c180997e969a2837da15e349d
+    NEXT_PUBLIC_WEB3_WALLETS: "['token_pocket','coinbase','metamask']"
+    NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE: gradient_avatar
+    NEXT_PUBLIC_VIEWS_ADDRESS_HIDDEN_VIEWS: "['top_accounts']"
+    NEXT_PUBLIC_VIEWS_TX_HIDDEN_FIELDS: "['value','fee_currency','gas_price','gas_fees','burnt_fees']"
+    NEXT_PUBLIC_VIEWS_TX_ADDITIONAL_FIELDS: "['fee_per_gas']"
+    NEXT_PUBLIC_USE_NEXT_JS_PROXY: true
+    NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES: "[{'name':'LooksRare','collection_url':'https://goerli.looksrare.org/collections/{hash}','instance_url':'https://goerli.looksrare.org/collections/{hash}/{id}','logo_url':'https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/nft-marketplace-logos/looks-rare.png'}]"
+  envFromSecret:
+    NEXT_PUBLIC_SENTRY_DSN: ref+vault://deployment-values/blockscout/dev/review?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_SENTRY_DSN
+    SENTRY_CSP_REPORT_URI: ref+vault://deployment-values/blockscout/dev/review?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/SENTRY_CSP_REPORT_URI
+    NEXT_PUBLIC_AUTH0_CLIENT_ID: ref+vault://deployment-values/blockscout/dev/review?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_AUTH0_CLIENT_ID
+    NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: ref+vault://deployment-values/blockscout/dev/review?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID
+    NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY: ref+vault://deployment-values/blockscout/dev/review?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY
+    NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID: ref+vault://deployment-values/blockscout/dev/review?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID
+    FAVICON_GENERATOR_API_KEY: ref+vault://deployment-values/blockscout/common?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY

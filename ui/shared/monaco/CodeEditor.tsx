@@ -219,8 +219,9 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile }: Props) 
     };
 
     return (
-      <Box height={ `${ EDITOR_HEIGHT }px` } sx={ sx }>
+      <Box height={ `${ EDITOR_HEIGHT }px` } width="100%" sx={ sx } ref={ containerNodeRef }>
         <MonacoEditor
+          className="editor-container"
           language={ editorLanguage }
           path={ data[index].file_path }
           defaultValue={ data[index].source_code }

@@ -89,6 +89,7 @@ jobs:
                         );
 
                         if (releases[0].tagName !== process.env.TAG) {
+                            core.info(`Current latest tag: ${ releases[0].tagName }`);
                             core.setFailed(`Release with tag ${ process.env.TAG } is not latest one.`);
                             return;
                         }
