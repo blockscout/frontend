@@ -32,7 +32,7 @@ export const getUniversalProfile = async(address: string, queryClient: QueryClie
   return await queryClient.fetchQuery({
     queryKey: [ 'universalProfile', { address: address } ],
     queryFn: async() => {
-      const upApiUrl = getEnvValue('NEXT_PUBLIC_UP_API_URL') || '';
+      const upApiUrl = getEnvValue('NEXT_PUBLIC_UNIVERSAL_PROFILES_API_URL') || '';
       const networkId = getEnvValue('NEXT_PUBLIC_NETWORK_ID') || '42';
 
       const url = `${ upApiUrl }/v1/${ networkId }/address/${ address }`;
