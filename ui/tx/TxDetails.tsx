@@ -167,7 +167,7 @@ const TxDetails = () => {
             hint="Status of the transaction confirmation path to L1"
             isLoading={ isPlaceholderData }
           >
-            <VerificationSteps step={ data.zkevm_status } steps={ ZKEVM_L2_TX_STATUSES } isLoading={ isPlaceholderData }/>
+            <VerificationSteps currentStep={ data.zkevm_status } steps={ ZKEVM_L2_TX_STATUSES } isLoading={ isPlaceholderData }/>
           </DetailsInfoItem>
         ) }
         { data.revert_reason && (

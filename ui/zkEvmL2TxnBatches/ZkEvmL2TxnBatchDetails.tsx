@@ -86,7 +86,7 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
         title="Status"
         isLoading={ isPlaceholderData }
       >
-        <VerificationSteps steps={ ZKEVM_L2_TX_BATCH_STATUSES } step={ data.status } isLoading={ isPlaceholderData }/>
+        <VerificationSteps steps={ ZKEVM_L2_TX_BATCH_STATUSES } currentStep={ data.status } isLoading={ isPlaceholderData }/>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Timestamp"
