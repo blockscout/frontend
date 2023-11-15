@@ -100,18 +100,20 @@ const Footer = () => {
           <NetworkAddToWallet/>
         </Flex>
         <Box mt={{ base: 5, lg: '44px' }}>
-          <Link fontSize="xs" href="https://www.blockscout.com">blockscout.com</Link>
+          <Link fontSize="xs" href="https://www.blockscout.com" color="accent" _hover={{ color: 'accent', textDecoration: 'underline' }}>blockscout.com</Link>
         </Box>
         <Text mt={ 3 } maxW={{ base: 'unset', lg: '470px' }} fontSize="xs">
             Blockscout is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for Ethereum Networks.
         </Text>
         <Text mt={ 3 } maxW={{ base: 'unset', lg: '470px' }} fontSize="xs">
-          Powered By <Link fontSize="xs" href="https://twitter.com/NeoBase_Studios">NeoBase</Link>
+          Powered By <Link fontSize="xs" href="https://twitter.com/NeoBase_Studios"
+            color="accent" _hover={{ color: 'accent', textDecoration: 'underline' }}>NeoBase</Link>
         </Text>
         <VStack spacing={ 1 } mt={ 6 } alignItems="start">
           { apiVersionUrl && (
             <Text fontSize="xs">
-                Backend: <Link href={ apiVersionUrl } target="_blank">{ backendVersionData?.backend_version }</Link>
+                Backend: <Link color="accent" _hover={{ color: 'accent', textDecoration: 'underline' }}
+                href={ apiVersionUrl } target="_blank">{ backendVersionData?.backend_version }</Link>
             </Text>
           ) }
           { (config.UI.footer.frontendVersion || config.UI.footer.frontendCommit) && (

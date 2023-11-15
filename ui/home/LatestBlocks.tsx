@@ -105,7 +105,7 @@ const LatestBlocks = () => {
           </AnimatePresence>
         </VStack>
         <Flex justifyContent="center">
-          <LinkInternal fontSize="sm" href={ route({ pathname: '/blocks' }) }>View all blocks</LinkInternal>
+          <LinkInternal fontSize="sm" href={ route({ pathname: '/blocks' }) } color="text">View all blocks</LinkInternal>
         </Flex>
       </>
     );

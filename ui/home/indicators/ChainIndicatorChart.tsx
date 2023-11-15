@@ -1,4 +1,4 @@
-import { useToken } from '@chakra-ui/react';
+import { useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TimeChartData } from 'ui/shared/chart/types';
@@ -20,7 +20,7 @@ const CHART_MARGIN = { bottom: 5, left: 10, right: 10, top: 0 };
 
 const ChainIndicatorChart = ({ data }: Props) => {
   const overlayRef = React.useRef<SVGRectElement>(null);
-  const lineColor = useToken('colors', 'blue.500');
+  const lineColor = useColorModeValue('#3CAD71', '#07FC99');
 
   const [ rect, ref ] = useClientRect<SVGSVGElement>();
   const { innerWidth, innerHeight } = calculateInnerSize(rect, CHART_MARGIN);
@@ -37,6 +37,7 @@ const ChainIndicatorChart = ({ data }: Props) => {
           data={ data[0].items }
           xScale={ xScale }
           yScale={ yScale }
+          color={ lineColor }
         />
         <ChartLine
           data={ data[0].items }

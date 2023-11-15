@@ -1,5 +1,5 @@
 import type { SystemStyleObject, TooltipProps } from '@chakra-ui/react';
-import { Skeleton, Flex, useColorModeValue, chakra, LightMode } from '@chakra-ui/react';
+import { chakra, Flex, LightMode, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import breakpoints from 'theme/foundations/breakpoints';
@@ -35,7 +35,7 @@ const StatsItem = ({ icon, title, value, className, tooltipLabel, url, isLoading
     [`@media screen and (min-width: ${ breakpoints.lg }) and (max-width: ${ LARGEST_BREAKPOINT })`]: { alignItems: 'center' },
   };
 
-  const bgColor = useColorModeValue('blue.50', 'blue.800');
+  const bgColor = useColorModeValue('#F9F9F9', '#2C2C2C');
   const loadingBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
   const infoColor = useColorModeValue('gray.600', 'gray.400');
 
@@ -57,7 +57,7 @@ const StatsItem = ({ icon, title, value, className, tooltipLabel, url, isLoading
         href: url,
       } : {}) }
     >
-      <Icon as={ icon } boxSize={ 7 } isLoading={ isLoading } borderRadius="base"/>
+      <Icon as={ icon } boxSize={ 7 } isLoading={ isLoading } borderRadius="base" color="text"/>
       <Flex
         flexDirection="column"
         alignItems="start"
@@ -66,7 +66,7 @@ const StatsItem = ({ icon, title, value, className, tooltipLabel, url, isLoading
         <Skeleton isLoaded={ !isLoading } color="text_secondary" fontSize="xs" lineHeight="16px" borderRadius="base">
           <span>{ title }</span>
         </Skeleton>
-        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 } fontSize="md" color={ useColorModeValue('black', 'white') } borderRadius="base">
+        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 } fontSize="md" color="text" borderRadius="base">
           <span>{ value }</span>
         </Skeleton>
       </Flex>

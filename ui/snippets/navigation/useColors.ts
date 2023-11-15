@@ -3,9 +3,9 @@ import { useColorModeValue } from '@chakra-ui/react';
 export default function useColors() {
   return {
     text: {
-      'default': useColorModeValue('gray.600', 'gray.400'),
-      active: useColorModeValue('blue.700', 'gray.50'),
-      hover: 'link_hovered',
+      'default': useColorModeValue('#171717', '#FAFAFA'),
+      active: 'accent',
+      hover: 'accent',
     },
     bg: {
       'default': 'transparent',
