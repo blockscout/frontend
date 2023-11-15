@@ -312,7 +312,7 @@ const TxDetails = () => {
             <span>[ Contract creation ]</span>
           ) }
         </DetailsInfoItem>
-        { data.token_transfers && <TxDetailsTokenTransfers data={ data.token_transfers } txHash={ data.hash }/> }
+        { data.token_transfers && <TxDetailsTokenTransfers data={ data.token_transfers } txHash={ data.hash } isOverflow={ data.token_transfers_overflow }/> }
 
         <DetailsInfoItemDivider/>
 

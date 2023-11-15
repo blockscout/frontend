@@ -1,9 +1,9 @@
 import { Tr, Td, Flex, Skeleton, Box } from '@chakra-ui/react';
-import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
+import getCurrencyValue from 'lib/getCurrencyValue';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Tag from 'ui/shared/chakra/Tag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -35,6 +35,13 @@ const TokenTransferTableItem = ({
   isLoading,
 }: Props) => {
   const timeAgo = useTimeAgoIncrement(timestamp, enableTimeIncrement);
+  const { usd, valueStr } = 'value' in total ? getCurrencyValue({
+    value: total.value,
+    exchangeRate: token.exchange_rate,
+    accuracy: 8,
+    accuracyUsd: 2,
+    decimals: total.decimals || '0',
+  }) : { usd: null, valueStr: null };
 
   return (
     <Tr alignItems="top">
@@ -111,9 +118,16 @@ const TokenTransferTableItem = ({
         />
       </Td>
       <Td isNumeric verticalAlign="top">
-        <Skeleton isLoaded={ !isLoading } display="inline-block" my="7px" wordBreak="break-all">
-          { 'value' in total && BigNumber(total.value).div(BigNumber(10 ** Number(total.decimals))).dp(8).toFormat() }
-        </Skeleton>
+        { valueStr && (
+          <Skeleton isLoaded={ !isLoading } display="inline-block" mt="7px" wordBreak="break-all">
+            { valueStr }
+          </Skeleton>
+        ) }
+        { usd && (
+          <Skeleton isLoaded={ !isLoading } color="text_secondary" mt="10px" ml="auto" w="min-content">
+            <span>${ usd }</span>
+          </Skeleton>
+        ) }
       </Td>
     </Tr>
   );
