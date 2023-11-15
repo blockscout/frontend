@@ -1,10 +1,10 @@
 import { Tr, Td, Grid, Skeleton, Box } from '@chakra-ui/react';
-import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import eastArrowIcon from 'icons/arrows/east.svg';
+import getCurrencyValue from 'lib/getCurrencyValue';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
@@ -26,6 +26,13 @@ const TokenTransferTableItem = ({
   isLoading,
 }: Props) => {
   const timeAgo = useTimeAgoIncrement(timestamp, true);
+  const { usd, valueStr } = 'value' in total ? getCurrencyValue({
+    value: total.value,
+    exchangeRate: token.exchange_rate,
+    accuracy: 8,
+    accuracyUsd: 2,
+    decimals: total.decimals || '0',
+  }) : { usd: null, valueStr: null };
 
   return (
     <Tr alignItems="top">
@@ -91,9 +98,16 @@ const TokenTransferTableItem = ({
       ) }
       { (token.type === 'ERC-20' || token.type === 'ERC-1155') && (
         <Td isNumeric verticalAlign="top">
-          <Skeleton isLoaded={ !isLoading } my="7px">
-            { 'value' in total && BigNumber(total.value).div(BigNumber(10 ** Number(total.decimals))).dp(8).toFormat() }
-          </Skeleton>
+          { valueStr && (
+            <Skeleton isLoaded={ !isLoading } display="inline-block" mt="7px" wordBreak="break-all">
+              { valueStr }
+            </Skeleton>
+          ) }
+          { usd && (
+            <Skeleton isLoaded={ !isLoading } color="text_secondary" mt="10px" wordBreak="break-all">
+              <span>${ usd }</span>
+            </Skeleton>
+          ) }
         </Td>
       ) }
     </Tr>

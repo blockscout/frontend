@@ -25,29 +25,39 @@ const TxDetailsWithdrawalStatus = ({ status, l1TxHash }: Props) => {
 
   const hasClaimButton = status === 'Ready for relay';
 
-  const steps = hasClaimButton ? WITHDRAWAL_STATUSES.slice(0, -1) : WITHDRAWAL_STATUSES;
+  const steps = (() => {
+    switch (status) {
+      case 'Ready for relay':
+        return WITHDRAWAL_STATUSES.slice(0, -1);
+      case 'Relayed': {
+        if (l1TxHash) {
+          return WITHDRAWAL_STATUSES.map((status) => {
+            return status === 'Relayed' ? {
+              content: <TxEntityL1 hash={ l1TxHash } truncation="constant" text="Relayed" noIcon/>,
+              label: status,
+            } : status;
+          });
+        }
 
-  const rightSlot = (() => {
-    if (status === 'Relayed' && l1TxHash) {
-      return <TxEntityL1 hash={ l1TxHash } truncation="constant"/>;
+        return WITHDRAWAL_STATUSES;
+      }
+
+      default:
+        return WITHDRAWAL_STATUSES;
     }
-
-    if (hasClaimButton) {
-      return (
-        <Button
-          variant="outline"
-          size="sm"
-          as="a"
-          href="https://app.optimism.io/bridge/withdraw"
-          target="_blank"
-        >
-            Claim funds
-        </Button>
-      );
-    }
-
-    return null;
   })();
+
+  const rightSlot = hasClaimButton ? (
+    <Button
+      variant="outline"
+      size="sm"
+      as="a"
+      href="https://app.optimism.io/bridge/withdraw"
+      target="_blank"
+    >
+            Claim funds
+    </Button>
+  ) : null;
 
   return (
     <DetailsInfoItem
@@ -56,7 +66,7 @@ const TxDetailsWithdrawalStatus = ({ status, l1TxHash }: Props) => {
     >
       <VerificationSteps
         steps={ steps as unknown as Array<L2WithdrawalStatus> }
-        step={ status }
+        currentStep={ status }
         rightSlot={ rightSlot }
         my={ hasClaimButton ? '-6px' : 0 }
         lineHeight={ hasClaimButton ? 8 : undefined }

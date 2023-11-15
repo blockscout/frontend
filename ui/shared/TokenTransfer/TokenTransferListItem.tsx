@@ -1,10 +1,10 @@
 import { Flex, Skeleton } from '@chakra-ui/react';
-import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import eastArrowIcon from 'icons/arrows/east.svg';
+import getCurrencyValue from 'lib/getCurrencyValue';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
@@ -37,15 +37,14 @@ const TokenTransferListItem = ({
   enableTimeIncrement,
   isLoading,
 }: Props) => {
-  const value = (() => {
-    if (!('value' in total)) {
-      return null;
-    }
-
-    return BigNumber(total.value).div(BigNumber(10 ** Number(total.decimals))).dp(8).toFormat();
-  })();
-
   const timeAgo = useTimeAgoIncrement(timestamp, enableTimeIncrement);
+  const { usd, valueStr } = 'value' in total ? getCurrencyValue({
+    value: total.value,
+    exchangeRate: token.exchange_rate,
+    accuracy: 8,
+    accuracyUsd: 2,
+    decimals: total.decimals || '0',
+  }) : { usd: null, valueStr: null };
 
   const addressWidth = `calc((100% - ${ baseAddress ? '50px - 24px' : '24px - 24px' }) / 2)`;
   return (
@@ -112,10 +111,13 @@ const TokenTransferListItem = ({
           width={ addressWidth }
         />
       </Flex>
-      { value && (
+      { valueStr && (
         <Flex columnGap={ 2 } w="100%">
           <Skeleton isLoaded={ !isLoading } fontWeight={ 500 } flexShrink={ 0 }>Value</Skeleton>
-          <Skeleton isLoaded={ !isLoading } color="text_secondary"><span>{ value }</span></Skeleton>
+          <Skeleton isLoaded={ !isLoading } color="text_secondary">
+            <span>{ valueStr }</span>
+            { usd && <span> (${ usd })</span> }
+          </Skeleton>
         </Flex>
       ) }
     </ListItemMobile>
