@@ -13,7 +13,6 @@ import {
   Box,
   useDisclosure,
 } from '@chakra-ui/react';
-import _clamp from 'lodash/clamp';
 import React from 'react';
 
 import moonIcon from 'icons/moon.svg';
@@ -74,38 +73,25 @@ const ColorModeSwitch = () => {
     setIndex(nextIndex);
   }, [ setColorMode ]);
 
-  const handleNextClick = React.useCallback(() => {
-    setIndex((prev) => {
-      const nextIndex = _clamp(prev + 1, 0, COLORS.length - 1);
-      prev !== nextIndex && setColorMode(nextIndex);
-
-      return nextIndex;
-    });
+  const handleGoToLastClick = React.useCallback(() => {
+    setIndex(COLORS.length - 1);
+    setColorMode(COLORS.length - 1);
   }, [ setColorMode ]);
 
-  const handlePrevClick = React.useCallback(() => {
-    setIndex((prev) => {
-      const nextIndex = _clamp(prev - 1, 0, COLORS.length - 1);
-      prev !== nextIndex && setColorMode(nextIndex);
-
-      return nextIndex;
-    });
+  const handleGoToFirstClick = React.useCallback(() => {
+    setIndex(0);
+    setColorMode(0);
   }, [ setColorMode ]);
 
   return (
     <Popover placement="bottom-start" isLazy trigger="click" isOpen={ isOpen } onClose={ onClose }>
       <PopoverTrigger>
         <IconButton
-          colorScheme="blue"
-          aria-label="hint"
+          variant="outline"
+          colorScheme="gray"
+          aria-label="color mode switch"
           icon={ <Icon as={ sunIcon } boxSize={ 5 }/> }
           boxSize={ 8 }
-          variant="simple"
-          borderColor={ isOpen ? 'link_hovered' : 'transparent' }
-          borderWidth="1px"
-          _hover={{
-            borderColor: 'link_hovered',
-          }}
           onClick={ onToggle }
         />
       </PopoverTrigger>
@@ -120,7 +106,7 @@ const ColorModeSwitch = () => {
               boxSize={ 4 }
               color="text_secondary"
               cursor="pointer"
-              onClick={ handlePrevClick }
+              onClick={ handleGoToFirstClick }
             />
             <Flex as="ul">
               { COLORS.map((color, i) => (
@@ -154,7 +140,7 @@ const ColorModeSwitch = () => {
               boxSize={ 5 }
               color="text_secondary"
               cursor="pointer"
-              onClick={ handleNextClick }
+              onClick={ handleGoToLastClick }
             />
           </Flex>
         </PopoverBody>
