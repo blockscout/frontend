@@ -17,6 +17,8 @@ import useFontFaceObserver from 'use-font-face-observer';
 
 import { BODY_TYPEFACE, HEADING_TYPEFACE } from 'theme/foundations/typography';
 
+import { getEnvValue } from '../../configs/app/utils';
+
 const TAIL_LENGTH = 4;
 const HEAD_MIN_LENGTH = 4;
 
@@ -64,6 +66,22 @@ const HashStringShortenDynamic = ({ hash, fontWeight = '400', isTooltipDisabled,
         } else {
           rightI = medI;
         }
+      }
+
+      // if we get #, this means that we got a valid universal profile in format of @name#0x1234 - we can split this data and return username component.
+      const identiconType = getEnvValue('NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE');
+      if (identiconType === undefined) {
+        return;
+      }
+      if (identiconType.includes('universal_profile') && hash.includes('#')) {
+        const upParts = hash.split('#');
+        const hashHead = '#' + upParts[1].slice(2, 6); // change #0x1234 -> #1234
+        const name = upParts[0];
+        const slicedName = name.slice(0, rightI - 2);
+        const displayed = rightI - 2 > name.length ? name + hashHead : slicedName + '...' + hashHead;
+        setDisplayedString(displayed);
+
+        return;
       }
       setDisplayedString(hash.slice(0, rightI - 1) + '...' + tail);
     } else {
