@@ -40,7 +40,6 @@ jobs:
               run: yarn build
               env:
                 NODE_ENV: production
-                GENERATE_SOURCEMAPS: true
 
             - name: Inject Sentry debug ID
               run: yarn sentry-cli sourcemaps inject ./.next
