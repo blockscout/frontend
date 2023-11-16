@@ -1,4 +1,4 @@
-import * as Sentry from '@sentry/react';
+import * as Sentry from '@sentry/nextjs';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 

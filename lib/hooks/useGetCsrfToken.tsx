@@ -1,4 +1,4 @@
-import * as Sentry from '@sentry/react';
+import * as Sentry from '@sentry/nextjs';
 import { useQuery } from '@tanstack/react-query';
 
 import buildUrl from 'lib/api/buildUrl';

@@ -1,21 +1,21 @@
-import type * as Sentry from '@sentry/react';
+import type * as Sentry from '@sentry/nextjs';
 
 import appConfig from 'configs/app';
 
 const feature = appConfig.features.sentry;
 
-export const config: Sentry.BrowserOptions | undefined = (() => {
+export const config: Sentry.NodeOptions | undefined = (() => {
   if (!feature.isEnabled) {
     return;
   }
 
   const tracesSampleRate: number | undefined = (() => {
-    if (feature.environment === 'staging' || feature.environment === 'development') {
-      return 1;
-    }
-
-    if (feature.environment === 'production') {
-      return 0.2;
+    switch (feature.environment) {
+      case 'development':
+      case 'staging':
+        return 1;
+      case 'production':
+        return 0.2;
     }
   })();
 

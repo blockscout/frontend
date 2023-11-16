@@ -1,4 +1,4 @@
-import * as Sentry from '@sentry/react';
+import * as Sentry from '@sentry/nextjs';
 import React from 'react';
 
 import type { NextPageWithLayout } from 'nextjs/types';

@@ -1,5 +1,5 @@
 import { VStack, Textarea, Button, Alert, AlertTitle, AlertDescription, Code, Flex, Box } from '@chakra-ui/react';
-import * as Sentry from '@sentry/react';
+import * as Sentry from '@sentry/nextjs';
 import mixpanel from 'mixpanel-browser';
 import type { ChangeEvent } from 'react';
 import React from 'react';

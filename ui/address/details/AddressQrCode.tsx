@@ -15,7 +15,7 @@ import {
   IconButton,
   Skeleton,
 } from '@chakra-ui/react';
-import * as Sentry from '@sentry/react';
+import * as Sentry from '@sentry/nextjs';
 import { useRouter } from 'next/router';
 import QRCode from 'qrcode';
 import React from 'react';

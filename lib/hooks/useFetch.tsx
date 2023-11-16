@@ -1,4 +1,4 @@
-import * as Sentry from '@sentry/react';
+import * as Sentry from '@sentry/nextjs';
 import React from 'react';
 
 import isBodyAllowed from 'lib/api/isBodyAllowed';

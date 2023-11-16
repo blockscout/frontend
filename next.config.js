@@ -1,6 +1,7 @@
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.BUNDLE_ANALYZER === 'true',
 });
+const { withSentryConfig } = require('@sentry/nextjs');
 
 const withRoutes = require('nextjs-routes/config')({
   outDir: 'nextjs',
@@ -46,6 +47,11 @@ const moduleExports = {
   experimental: {
     instrumentationHook: true,
   },
+  sentry: {
+    disableServerWebpackPlugin: true,
+    disableClientWebpackPlugin: true,
+    autoInstrumentServerFunctions: false,
+  },
 };
 
-module.exports = withBundleAnalyzer(withRoutes(moduleExports));
+module.exports = withSentryConfig(withBundleAnalyzer(withRoutes(moduleExports)));
