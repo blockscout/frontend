@@ -8,14 +8,9 @@ export const SINGLE_IDENTICON_TYPES = [
 ] as const;
 
 export const makeUniversalProfileIdenticonsUnions = () => {
-  const upUnions = SINGLE_IDENTICON_TYPES.map((identicon) => {
+  return SINGLE_IDENTICON_TYPES.map((identicon) => {
     return `universal_profile|${ identicon }`;
   });
-
-  return [
-    ...SINGLE_IDENTICON_TYPES,
-    ...upUnions,
-  ];
 };
 
 export const IDENTICON_TYPES = [
