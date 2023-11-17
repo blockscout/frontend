@@ -48,11 +48,11 @@ class MyDocument extends Document {
           <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg"/>
 
           { /* OG TAGS */ }
-          <meta property="og:title" content="Blockscout: A block explorer designed for a decentralized world."/>
+          <meta property="og:title" content="Subspace Nova Explorer"/>
           <meta
             property="og:description"
             // eslint-disable-next-line max-len
-            content="Blockscout is the #1 open-source blockchain explorer available today. 100+ chains and counting rely on Blockscout data availability, APIs, and ecosystem tools to support their networks."
+            content="Subspace Labs Gemini Nova Block Explorer"
           />
           <meta property="og:image" content={ config.app.baseUrl + '/static/og.png' }/>
           <meta property="og:site_name" content="Blockscout"/>
