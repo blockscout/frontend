@@ -48,6 +48,16 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/api/healthz': 'Regular page',
   '/auth/auth0': 'Regular page',
   '/auth/unverified-email': 'Regular page',
+
+  // forum routes:
+  '/forum': 'Root page',
+  '/forum/[topic]': 'Regular page',
+  '/forum/[topic]/create-thread': 'Regular page',
+  '/forum/[topic]/[thread]': 'Regular page',
+  '/forum/chats': 'Root page',
+  '/forum/chats/[hash]': 'Regular page',
+  '/forum/bookmarks/[hash]': 'Regular page',
+  '/forum/watches/[hash]': 'Regular page',
 };
 
 export default function getPageOgType(pathname: Route['pathname']) {

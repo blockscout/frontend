@@ -46,6 +46,15 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/api/healthz': 'node API health check',
   '/auth/auth0': 'authentication',
   '/auth/unverified-email': 'unverified email',
+
+  '/forum': 'forum',
+  '/forum/[topic]': 'topic',
+  '/forum/[topic]/create-thread': 'create thread',
+  '/forum/[topic]/[thread]': 'thread',
+  '/forum/chats': 'chats',
+  '/forum/chats/[hash]': 'chat',
+  '/forum/bookmarks/[hash]': 'bookmarks',
+  '/forum/watches/[hash]': 'watches',
 };
 
 export function make(pathname: Route['pathname']) {
