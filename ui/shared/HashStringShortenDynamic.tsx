@@ -73,12 +73,12 @@ const HashStringShortenDynamic = ({ hash, fontWeight = '400', isTooltipDisabled,
       if (identiconType === undefined) {
         return;
       }
-      if (identiconType.includes('universal_profile') && hash.includes('#')) {
-        const upParts = hash.split('#');
-        const hashHead = '#' + upParts[1].slice(2, 6); // change #0x1234 -> #1234
+      if (identiconType.includes('universal_profile') && hash.includes(' (')) {
+        const upParts = hash.split(' (');
+        const hashHead = '#' + upParts[1].slice(2, 6); // change (0x1234...5678) -> #1234
         const name = upParts[0];
-        const slicedName = name.slice(0, rightI - 2);
-        const displayed = rightI - 2 > name.length ? name + hashHead : slicedName + '...' + hashHead;
+        const slicedName = name.slice(0, rightI - 3);
+        const displayed = rightI - 3 > name.length ? name + hashHead : slicedName + '...' + hashHead;
         setDisplayedString(displayed);
 
         return;
