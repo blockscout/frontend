@@ -1,10 +1,10 @@
 import {
   Box,
   Flex,
-  HStack,
-  Text,
   Grid,
+  HStack,
   Skeleton,
+  Text,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -57,7 +57,7 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
               <Icon
                 as={ transactionIcon }
                 boxSize="30px"
-                color="link"
+                color="text"
                 display="inline"
                 isLoading={ isLoading }
                 borderRadius="base"
@@ -68,6 +68,8 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
                   type="transaction"
                   fontWeight="700"
                   isLoading={ isLoading }
+                  color="text"
+                  _hover={{ color: 'text', textDecoration: 'underline' }}
                 />
               </Address>
               { tx.timestamp && (
@@ -82,7 +84,7 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
           <Icon
             as={ rightArrowIcon }
             boxSize={ 6 }
-            color="gray.500"
+            color="text_secondary"
             transform="rotate(90deg)"
             isLoading={ isLoading }
           />
@@ -97,6 +99,8 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
                 ml={ 2 }
                 fontSize="sm"
                 isLoading={ isLoading }
+                color="text"
+                _hover={{ color: 'text', textDecoration: 'underline' }}
               />
             </Address>
             { dataTo && (
@@ -110,6 +114,8 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
                   ml={ 2 }
                   fontSize="sm"
                   isLoading={ isLoading }
+                  color="text"
+                  _hover={{ color: 'text', textDecoration: 'underline' }}
                 />
               </Address>
             ) }
@@ -117,12 +123,12 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
         </Grid>
         <Box>
           <Skeleton isLoaded={ !isLoading } mb={ 2 }>
-            <Text as="span" whiteSpace="pre">{ config.chain.currency.symbol } </Text>
-            <Text as="span" variant="secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() }</Text>
+            <Text as="span" whiteSpace="pre" color="text">{ config.chain.currency.symbol } </Text>
+            <Text as="span" variant="secondary" color="text_secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() }</Text>
           </Skeleton>
           <Skeleton isLoaded={ !isLoading }>
-            <Text as="span">Fee </Text>
-            <Text as="span" variant="secondary">{ getValueWithUnit(tx.fee.value).dp(5).toFormat() }</Text>
+            <Text as="span" color="text">Fee </Text>
+            <Text as="span" variant="secondary" color="text_secondary">{ getValueWithUnit(tx.fee.value).dp(5).toFormat() }</Text>
           </Skeleton>
         </Box>
       </Grid>
