@@ -50,6 +50,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
   - [SUAVE chain](ENVS.md#suave-chain)
   - [Sentry error monitoring](ENVS.md#sentry-error-monitoring)
   - [OpenTelemetry](ENVS.md#opentelemetry)
+  - [Ylide Forum](ENVS.md#ylide)
 - [3rd party services configuration](ENVS.md#external-services-configuration)
 
 &nbsp;
@@ -544,6 +545,18 @@ OpenTelemetry SDK for Node.js app could be enabled by passing `OTEL_SDK_ENABLED=
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | OTEL_SDK_ENABLED | `boolean` | Flag to enable the feature | Required | `false` | `true` |
+
+&nbsp;
+
+### Ylide Forum
+
+Decenrtalized forum feature could be enabled by passing `NEXT_PUBLIC_IS_FORUM_SUPPORTED=true` variable. After deploying the forum indexer Docker image, you should pass the public url of backend API to the variable `NEXT_PUBLIC_FORUM_INDEXER_URL` (without trailing slash). If you want to support WalletConnect protocol for authorization, please, kindly sign up in the [Wallet Connect Cloud](https://cloud.walletconnect.com/sign-in) and provide the WalletConnect project ID to the `NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID` variable.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_IS_FORUM_SUPPORTED | `boolean` | Flag to enable the feature | Required | `false` | `true` |
+| NEXT_PUBLIC_FORUM_INDEXER_URL | `string` | URL of the forum public indexer | Optional | `` | `https://forum-blockscout.ylide.io` |
+| NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID | `string` | Flag to enable the feature | Optional | `` | `e9deead089b3383b2db777961e3fa244` |
 
 &nbsp;
 
