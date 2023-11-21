@@ -4,7 +4,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 
 import fetchFactory from 'nextjs/utils/fetch';
 
-import config from 'configs/app';
+import appConfig from 'configs/app';
 
 const handler = async(nextReq: NextApiRequest, nextRes: NextApiResponse) => {
   if (!nextReq.url) {
@@ -14,7 +14,7 @@ const handler = async(nextReq: NextApiRequest, nextRes: NextApiResponse) => {
 
   const url = new URL(
     nextReq.url.replace(/^\/node-api\/proxy/, ''),
-    nextReq.headers['x-endpoint']?.toString() || config.api.endpoint,
+    nextReq.headers['x-endpoint']?.toString() || appConfig.api.endpoint,
   );
   const apiRes = await fetchFactory(nextReq)(
     url.toString(),
@@ -29,3 +29,11 @@ const handler = async(nextReq: NextApiRequest, nextRes: NextApiResponse) => {
 };
 
 export default handler;
+
+export const config = {
+  api: {
+    // disable body parser otherwise it is impossible to upload large files (over 1Mb)
+    // e.g. when verifying a smart contract
+    bodyParser: false,
+  },
+};

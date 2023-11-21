@@ -2,6 +2,7 @@ import type { AddressParam } from './addressParams';
 import type { BlockTransactionsResponse } from './block';
 import type { DecodedInput } from './decodedInput';
 import type { Fee } from './fee';
+import type { TokenInfo } from './token';
 import type { TokenTransfer } from './tokenTransfer';
 import type { TxAction } from './txAction';
 
@@ -55,6 +56,15 @@ export type Transaction = {
   execution_node?: AddressParam | null;
   allowed_peekers?: Array<string>;
   wrapped?: Pick<Transaction, WrappedTransactionFields>;
+  // Stability fields
+  stability_fee?: {
+    dapp_address: AddressParam;
+    dapp_fee: string;
+    token: TokenInfo;
+    total_fee: string;
+    validator_address: AddressParam;
+    validator_fee: string;
+  };
 }
 
 export type TransactionsResponse = TransactionsResponseValidated | TransactionsResponsePending;

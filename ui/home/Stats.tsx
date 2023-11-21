@@ -1,4 +1,5 @@
 import { Grid } from '@chakra-ui/react';
+import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
@@ -6,10 +7,12 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import blockIcon from 'icons/block.svg';
 import clockIcon from 'icons/clock-light.svg';
+import bitcoinIcon from 'icons/coins/bitcoin.svg';
 import gasIcon from 'icons/gas.svg';
 import txIcon from 'icons/transactions.svg';
 import walletIcon from 'icons/wallet.svg';
 import useApiQuery from 'lib/api/useApiQuery';
+import { WEI } from 'lib/consts';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 
 import StatsGasPrices from './StatsGasPrices';
@@ -39,6 +42,7 @@ const Stats = () => {
 
   if (data) {
     !data.gas_prices && itemsCount--;
+    data.rootstock_locked_btc && itemsCount++;
     const isOdd = Boolean(itemsCount % 2);
     const gasLabel = hasGasTracker && data.gas_prices ? <StatsGasPrices gasPrices={ data.gas_prices }/> : null;
 
@@ -80,6 +84,15 @@ const Stats = () => {
             value={ `${ Number(data.gas_prices.average).toLocaleString() } Gwei` }
             _last={ isOdd ? lastItemTouchStyle : undefined }
             tooltipLabel={ gasLabel }
+            isLoading={ isPlaceholderData }
+          />
+        ) }
+        { data.rootstock_locked_btc && (
+          <StatsItem
+            icon={ bitcoinIcon }
+            title="BTC Locked in 2WP"
+            value={ `${ BigNumber(data.rootstock_locked_btc).div(WEI).dp(0).toFormat() } RBTC` }
+            _last={ isOdd ? lastItemTouchStyle : undefined }
             isLoading={ isPlaceholderData }
           />
         ) }

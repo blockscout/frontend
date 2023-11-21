@@ -4,7 +4,8 @@ import React from 'react';
 import type { TokenInfo } from 'types/api/token';
 
 import iconVerifiedToken from 'icons/verified_token.svg';
-import useIsMobile from 'lib/hooks/useIsMobile';
+import * as addressMock from 'mocks/address/address';
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EntityTags from 'ui/shared/EntityTags';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
@@ -12,8 +13,6 @@ import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from '../PageTitle';
 
 const DefaultView = () => {
-  const isMobile = useIsMobile();
-
   const tokenData: TokenInfo = {
     address: '0x363574E6C5C71c343d7348093D84320c76d5Dd29',
     circulating_market_cap: '117629601.61913824',
@@ -39,9 +38,20 @@ const DefaultView = () => {
         tagsBefore={ [
           { label: 'example', display_name: 'Example label' },
         ] }
-        contentAfter={ <NetworkExplorers type="token" pathParam="token-hash" ml="auto" hideText={ isMobile }/> }
         flexGrow={ 1 }
       />
+    </>
+  );
+
+  const secondRow = (
+    <>
+      <AddressEntity
+        address={{ ...addressMock.token, name: '' }}
+        fontFamily="heading"
+        fontSize="lg"
+        fontWeight={ 500 }
+      />
+      <NetworkExplorers type="token" pathParam={ addressMock.hash } ml="auto"/>
     </>
   );
 
@@ -56,6 +66,7 @@ const DefaultView = () => {
       ) }
       backLink={ backLink }
       contentAfter={ contentAfter }
+      secondRow={ secondRow }
     />
   );
 };

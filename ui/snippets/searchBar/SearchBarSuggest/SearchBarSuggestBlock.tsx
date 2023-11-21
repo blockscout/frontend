@@ -60,7 +60,7 @@ const SearchBarSuggestBlock = ({ data, isMobile, searchTerm }: Props) => {
         { icon }
         { blockNumber }
       </Flex>
-      <Flex columnGap={ 3 } minW={ 0 }>
+      <Flex columnGap={ 3 } minW={ 0 } alignItems="center">
         { data.block_type === 'reorg' && <Tag flexShrink={ 0 }>Reorg</Tag> }
         { hash }
       </Flex>

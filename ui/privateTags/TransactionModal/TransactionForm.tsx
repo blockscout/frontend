@@ -21,7 +21,7 @@ import TransactionInput from 'ui/shared/TransactionInput';
 const TAG_MAX_LENGTH = 35;
 
 type Props = {
-  data?: TransactionTag;
+  data?: Partial<TransactionTag>;
   onClose: () => void;
   onSuccess: () => Promise<void>;
   setAlertVisible: (isAlertVisible: boolean) => void;

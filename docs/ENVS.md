@@ -4,6 +4,12 @@ The app instance could be customized by passing following variables to NodeJS en
 
 **IMPORTANT NOTE!** For _production_ build purposes all json-like values should be single-quoted. If it contains a hash (`#`) or a dollar-sign (`$`) the whole value should be wrapped in single quotes as well (see `dotenv` [readme](https://github.com/bkeepers/dotenv#variable-substitution) for the reference)
 
+## Disclaimer about using variables
+
+Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will be exposed to the browser. So any user can obtain its values. Make sure that for all 3rd-party services keys (e.g., Sentri, Auth0, WalletConnect, etc.) in the services administration panel you have created a whitelist of allowed origins and have added your app domain into it. That will help you prevent using your key by unauthorized app, if someone gets its value.
+
+&nbsp;
+
 ## Table of contents
 - [App configuration](ENVS.md#app-configuration)
 - [Blockchain parameters](ENVS.md#blockchain-parameters)
@@ -16,6 +22,9 @@ The app instance could be customized by passing following variables to NodeJS en
   - [Meta](ENVS.md#meta)
   - [Views](ENVS.md#views)
     - [Block](ENVS.md#block-views)
+    - [Address](ENVS.md#address-views)
+    - [Transaction](ENVS.md#transaction-views)
+    - [NFT](ENVS.md#nft-views)
   - [Misc](ENVS.md#misc)
 - [App features](ENVS.md#app-features)
   - [My account](ENVS.md#my-account)
@@ -89,7 +98,7 @@ The app instance could be customized by passing following variables to NodeJS en
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_HOMEPAGE_CHARTS | `Array<'daily_txs' \| 'coin_price' \| 'market_cap'>` | List of charts displayed on the home page | - | - | `['daily_txs','coin_price','market_cap']` |
+| NEXT_PUBLIC_HOMEPAGE_CHARTS | `Array<'daily_txs' \| 'coin_price' \| 'market_cap' \| 'tvl'>` | List of charts displayed on the home page | - | - | `['daily_txs','coin_price','market_cap']` |
 | NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR | `string` | Text color of the hero plate on the homepage (escape "#" symbol if you use HEX color codes or use rgba-value instead) | - | `white` | `\#DCFE76` |
 | NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND | `string` | Background css value for hero plate on the homepage (escape "#" symbol if you use HEX color codes or use rgba-value instead) | - | `radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%), var(--chakra-colors-blue-400)` | `radial-gradient(at 15% 86%, hsla(350,65%,70%,1) 0px, transparent 50%)` \| `no-repeat bottom 20% right 0px/100% url(https://placekitten/1400/200)` |
 | NEXT_PUBLIC_HOMEPAGE_SHOW_GAS_TRACKER | `boolean` | Set to false if network doesn't have gas tracker | - | `true` | `false` |
@@ -107,6 +116,7 @@ The app instance could be customized by passing following variables to NodeJS en
 | NEXT_PUBLIC_NETWORK_ICON_DARK | `string` | Network icon for dark color mode; if not provided, **inverted** regular icon will be used instead | - | - | `https://placekitten.com/60/60` |
 | NEXT_PUBLIC_FEATURED_NETWORKS | `string` | URL of configuration file (`.json` format only) which contains list of featured networks that will be shown in the network menu. See [below](#featured-network-configuration-properties) list of available properties for particular network | - | - | `https://example.com/featured_networks_config.json` |
 | NEXT_PUBLIC_OTHER_LINKS | `Array<{url: string; text: string}>` | List of links for the "Other" navigation menu | - | - | `[{'url':'https://blockscout.com','text':'Blockscout'}]` |
+| NEXT_PUBLIC_NAVIGATION_HIDDEN_LINKS | `Array<LinkId>` | List of external links hidden in the navigation. Supported ids are `eth_rpc_api`, `rpc_api` | - | - | `['eth_rpc_api']` |
 
 #### Featured network configuration properties
 
@@ -144,8 +154,8 @@ By default, the app has generic favicon. You can override this behavior by provi
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY | `string` | RealFaviconGenerator [API key](https://realfavicongenerator.net/api/) | Required | - | `<your-secret>` |
-| NEXT_PUBLIC_FAVICON_MASTER_URL | `string` | - | - | `NEXT_PUBLIC_NETWORK_ICON` | `https://placekitten.com/180/180` |
+| FAVICON_GENERATOR_API_KEY | `string` | RealFaviconGenerator [API key](https://realfavicongenerator.net/api/) | Required | - | `<your-secret>` |
+| FAVICON_MASTER_URL | `string` | - | - | `NEXT_PUBLIC_NETWORK_ICON` | `https://placekitten.com/180/180` |
 
 &nbsp;
 
@@ -184,6 +194,55 @@ Settings for meta tags and OG tags
 | Variable | Type | Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE | `"github" \| "jazzicon" \| "gradient_avatar" \| "blockie"` | Style of address identicon appearance. Choose between [GitHub](https://github.blog/2013-08-14-identicons/), [Metamask Jazzicon](https://metamask.github.io/jazzicon/), [Gradient Avatar](https://github.com/varld/gradient-avatar) and [Ethereum Blocky](https://mycryptohq.github.io/ethereum-blockies-base64/) | - | `jazzicon` | `gradient_avatar` |
+| NEXT_PUBLIC_VIEWS_ADDRESS_HIDDEN_VIEWS | `Array<AddressViewId>` | Address views that should not be displayed. See below the list of the possible id values.  | - | - | `'["top_accounts"]'` |
+
+##### Address views list
+| Id | Description |
+| --- | --- |
+| `top_accounts` | Top accounts |
+
+&nbsp;
+
+#### Transaction views
+
+| Variable | Type | Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_VIEWS_TX_HIDDEN_FIELDS | `Array<TxFieldsId>` | Array of the transaction fields ids that should be hidden. See below the list of the possible id values. | - | - | `'["value","tx_fee"]'` |
+| NEXT_PUBLIC_VIEWS_TX_ADDITIONAL_FIELDS | `Array<TxAdditionalFieldsId>` | Array of the additional fields ids that should be added to the transaction details. See below the list of the possible id values. | - | - | `'["fee_per_gas"]'` |
+
+##### Transaction fields list
+| Id | Description |
+| --- | --- |
+| `value` | Sent value |
+| `fee_currency` | Fee currency |
+| `gas_price` | Price per unit of gas |
+| `tx_fee` | Total transaction fee |
+| `gas_fees` | Gas fees breakdown |
+| `burnt_fees` | Amount of native coin burnt for transaction |
+
+##### Transaction additional fields list
+| Id | Description |
+| --- | --- |
+| `fee_per_gas` | Amount of total fee divided by total amount of gas used by transaction |
+
+&nbsp;
+
+#### NFT views
+
+| Variable | Type | Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES | `Array<NftMarketplace>` where `NftMarketplace` can have following [properties](#nft-marketplace-properties) | Used to build up links to NFT collections and NFT instances in external marketplaces. | - | - | `[{'name':'OpenSea','collection_url':'https://opensea.io/assets/ethereum/{hash}','instance_url':'https://opensea.io/assets/ethereum/{hash}/{id}','logo_url':'https://opensea.io/static/images/logos/opensea-logo.svg'}]` |
+
+
+##### NFT marketplace properties
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| name | `string` | Displayed name of the marketplace | Required | - | `OpenSea` |
+| collection_url | `string` | URL template for NFT collection | Required | - | `https://opensea.io/assets/ethereum/{hash}` |
+| instance_url | `string` | URL template for NFT instance | Required | - | `https://opensea.io/assets/ethereum/{hash}/{id}` |
+| logo_url | `string` | URL of marketplace logo | Required | - | `https://opensea.io/static/images/logos/opensea-logo.svg` |
+
+*Note* URL templates should contain placeholders of NFT hash (`{hash}`) and NFT id (`{id}`). This placeholders will be substituted with particular values for every collection or instance.
 
 &nbsp;
 

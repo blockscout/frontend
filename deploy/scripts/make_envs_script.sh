@@ -3,7 +3,7 @@
 echo "🌀 Creating client script with ENV values..."
 
 # Define the output file name
-output_file="./public/envs.js"
+output_file="${1:-./public/envs.js}"
 
 touch $output_file;
 truncate -s 0 $output_file;
@@ -20,6 +20,9 @@ echo "window.__envs = {" >> $output_file;
 for var in $(env | grep '^NEXT_PUBLIC_' | cut -d= -f1); do
   # Get the value of the variable
   value="${!var}"
+
+  # Replace double quotes with single quotes
+  value="${value//\"/\'}"
 
   # Write the variable name and value to the output file
   echo "${var}: \"${value}\"," >> "$output_file"

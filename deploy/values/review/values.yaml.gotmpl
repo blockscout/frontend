@@ -129,11 +129,19 @@ frontend:
       _default: ref+vault://deployment-values/blockscout/dev/review?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY
     NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID:
       _default: ref+vault://deployment-values/blockscout/dev/review?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID
-    NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY:
+    FAVICON_GENERATOR_API_KEY:
       _default: ref+vault://deployment-values/blockscout/common?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY
     NEXT_PUBLIC_WEB3_WALLETS:
       _default: "['token_pocket','coinbase','metamask']"
     NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE:
       _default: gradient_avatar
+    NEXT_PUBLIC_VIEWS_ADDRESS_HIDDEN_VIEWS:
+      _default: "['top_accounts']"
+    NEXT_PUBLIC_VIEWS_TX_HIDDEN_FIELDS:
+      _default: "['value','fee_currency','gas_price','gas_fees','burnt_fees']"
+    NEXT_PUBLIC_VIEWS_TX_ADDITIONAL_FIELDS:
+      _default: "['fee_per_gas']"
     NEXT_PUBLIC_USE_NEXT_JS_PROXY:
       _default: true
+    NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES:
+      _default: "[{'name':'LooksRare','collection_url':'https://goerli.looksrare.org/collections/{hash}','instance_url':'https://goerli.looksrare.org/collections/{hash}/{id}','logo_url':'https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/nft-marketplace-logos/looks-rare.png'}]"

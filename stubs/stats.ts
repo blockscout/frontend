@@ -17,6 +17,7 @@ export const HOMEPAGE_STATS: HomeStats = {
   total_gas_used: '0',
   total_transactions: '193823272',
   transactions_today: '0',
+  tvl: '1767425.102766552',
 };
 
 export const STATS_CHARTS_SECTION: StatsChartsSection = {

@@ -12,6 +12,7 @@ on:
       - 'docs/**'
       - 'public/**'
       - 'stub/**'
+      - 'tools/**'
       
 # concurrency:
 #   group: ${{ github.workflow }}__${{ github.job }}__${{ github.ref }}
@@ -42,7 +43,7 @@ jobs:
   
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: yarn --frozen-lockfile
+        run: yarn --frozen-lockfile --ignore-optional
 
       - name: Run ESLint
         run: yarn lint:eslint
@@ -51,7 +52,7 @@ jobs:
         run: yarn lint:tsc
 
   envs_validation:
-    name: ENV variables presets validation
+    name: ENV variables validation
     runs-on: ubuntu-latest
     needs: [ code_quality ]
     steps:
@@ -74,18 +75,15 @@ jobs:
     
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: yarn --frozen-lockfile
+        run: yarn --frozen-lockfile --ignore-optional
 
       - name: Install script dependencies
-        run: cd ./deploy/tools/envs-validator && yarn --frozen-lockfile
+        run: cd ./deploy/tools/envs-validator && yarn --frozen-lockfile --ignore-optional
 
-      - name: Copy secrets file
-        run: cp ./.env.example ./configs/envs/.env.secrets
-
-      - name: Run validation script
+      - name: Run validation tests
         run: |
           set +e
-          cd ./deploy/tools/envs-validator && yarn dev
+          cd ./deploy/tools/envs-validator && yarn test
           exitcode="$?"
           echo "exitcode=$exitcode" >> $GITHUB_OUTPUT
           exit "$exitcode"
@@ -114,7 +112,7 @@ jobs:
     
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: yarn --frozen-lockfile
+        run: yarn --frozen-lockfile --ignore-optional
 
       - name: Run Jest
         run: yarn test:jest
@@ -156,7 +154,7 @@ jobs:
     
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: yarn --frozen-lockfile
+        run: yarn --frozen-lockfile --ignore-optional
 
       - name: Run PlayWright
         run: yarn test:pw:ci

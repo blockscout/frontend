@@ -8,6 +8,7 @@ import { apps as appsMock } from 'mocks/apps/apps';
 import * as searchMock from 'mocks/search/index';
 import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
+import * as app from 'playwright/utils/app';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
 
 import SearchBar from './SearchBar';
@@ -268,13 +269,14 @@ test('recent keywords suggest +@mobile', async({ mount, page }) => {
     </TestApp>,
   );
   // eslint-disable-next-line max-len
-  await page.evaluate(() => window.localStorage.setItem('recent_search_keywords', '["10x1d311959270e0bbdc1fc7bc6dbd8ad645c4dd8d6aa32f5f89d54629a924f112b","0x1d311959270e0bbdc1fc7bc6dbd8ad645c4dd8d6aa32f5f89d54629a924f112b","usd","bob"]'));
+  await page.evaluate(() => window.localStorage.setItem('recent_search_keywords', '["10x2d311959270e0bbdc1fc7bc6dbd8ad645c4dd8d6aa32f5f89d54629a924f112b","0x1d311959270e0bbdc1fc7bc6dbd8ad645c4dd8d6aa32f5f89d54629a924f112b","usd","bob"]'));
   await page.getByPlaceholder(/search/i).click();
+  await page.getByText('0x1d311959270e0bbdc1fc7bc6db').isVisible();
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
 });
 
 base.describe('with apps', () => {
-  const MARKETPLACE_CONFIG_URL = buildExternalAssetFilePath('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', 'https://marketplace-config.json') || '';
+  const MARKETPLACE_CONFIG_URL = app.url + buildExternalAssetFilePath('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', 'https://marketplace-config.json') || '';
   const test = base.extend({
     context: contextWithEnvs([
       { name: 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', value: MARKETPLACE_CONFIG_URL },

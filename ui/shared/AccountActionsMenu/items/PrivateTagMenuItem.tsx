@@ -4,25 +4,28 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { Address } from 'types/api/address';
+import type { Transaction } from 'types/api/transaction';
 
 import iconPrivateTags from 'icons/privattags.svg';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import getPageType from 'lib/mixpanel/getPageType';
-import PrivateTagModal from 'ui/privateTags/AddressModal/AddressModal';
+import AddressModal from 'ui/privateTags/AddressModal/AddressModal';
+import TransactionModal from 'ui/privateTags/TransactionModal/TransactionModal';
 
 interface Props {
   className?: string;
   hash: string;
   onBeforeClick: () => boolean;
+  type?: 'address' | 'tx';
 }
 
-const PrivateTagMenuItem = ({ className, hash, onBeforeClick }: Props) => {
+const PrivateTagMenuItem = ({ className, hash, onBeforeClick, type = 'address' }: Props) => {
   const modal = useDisclosure();
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  const queryKey = getResourceKey('address', { pathParams: { hash } });
-  const addressData = queryClient.getQueryData<Address>(queryKey);
+  const queryKey = getResourceKey(type === 'tx' ? 'tx' : 'address', { pathParams: { hash } });
+  const queryData = queryClient.getQueryData<Address | Transaction>(queryKey);
 
   const handleClick = React.useCallback(() => {
     if (!onBeforeClick()) {
@@ -37,17 +40,23 @@ const PrivateTagMenuItem = ({ className, hash, onBeforeClick }: Props) => {
     modal.onClose();
   }, [ queryClient, queryKey, modal ]);
 
-  const formData = React.useMemo(() => {
-    return {
-      address_hash: hash,
-    };
-  }, [ hash ]);
-
-  if (addressData?.private_tags?.length) {
+  if (
+    queryData &&
+    (
+      ('private_tags' in queryData && queryData.private_tags?.length) ||
+      ('tx_tag' in queryData && queryData.tx_tag)
+    )
+  ) {
     return null;
   }
 
   const pageType = getPageType(router.pathname);
+  const modalProps = {
+    isOpen: modal.isOpen,
+    onClose: modal.onClose,
+    onSuccess: handleAddPrivateTag,
+    pageType,
+  };
 
   return (
     <>
@@ -55,13 +64,10 @@ const PrivateTagMenuItem = ({ className, hash, onBeforeClick }: Props) => {
         <Icon as={ iconPrivateTags } boxSize={ 6 } mr={ 2 }/>
         <span>Add private tag</span>
       </MenuItem>
-      <PrivateTagModal
-        data={ formData }
-        pageType={ pageType }
-        isOpen={ modal.isOpen }
-        onClose={ modal.onClose }
-        onSuccess={ handleAddPrivateTag }
-      />
+      { type === 'tx' ?
+        <TransactionModal { ...modalProps } data={{ transaction_hash: hash }}/> :
+        <AddressModal { ...modalProps } data={{ address_hash: hash }}/>
+      }
     </>
   );
 };

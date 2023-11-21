@@ -6,7 +6,7 @@
   "scripts": {
     "build": "yarn webpack-cli -c ./webpack.config.js",
     "validate": "node ./index.js",
-    "dev": "./dev.sh"
+    "test": "./test.sh"
   },
   "dependencies": {
     "ts-loader": "^9.4.4",

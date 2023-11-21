@@ -5,15 +5,15 @@ import React from 'react';
 const COUNTER_OVERLOAD = 50;
 
 type Props = {
-  count?: number;
+  count?: number | null;
   parentClassName: string;
 }
 
-const TasCounter = ({ count, parentClassName }: Props) => {
+const TabCounter = ({ count, parentClassName }: Props) => {
 
   const zeroCountColor = useColorModeValue('blackAlpha.400', 'whiteAlpha.400');
 
-  if (count === undefined) {
+  if (count === undefined || count === null) {
     return null;
   }
 
@@ -35,4 +35,4 @@ const TasCounter = ({ count, parentClassName }: Props) => {
   );
 };
 
-export default TasCounter;
+export default TabCounter;
