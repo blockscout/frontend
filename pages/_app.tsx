@@ -62,7 +62,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
                 </YlideProvider>
               </SocketProvider>
             </ScrollDirectionProvider>
-            <ReactQueryDevtools/>
+            <ReactQueryDevtools buttonPosition="bottom-left" position="left"/>
             <GoogleAnalytics/>
           </QueryClientProvider>
         </AppContextProvider>

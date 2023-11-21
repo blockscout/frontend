@@ -106,20 +106,23 @@ const beaconChainSchema = yup
 const rollupSchema = yup
   .object()
   .shape({
-    NEXT_PUBLIC_IS_L2_NETWORK: yup.boolean(),
-    NEXT_PUBLIC_L1_BASE_URL: yup
+    NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK: yup.boolean(),
+    NEXT_PUBLIC_OPTIMISTIC_L2_WITHDRAWAL_URL: yup
       .string()
-      .when('NEXT_PUBLIC_IS_L2_NETWORK', {
-        is: (value: boolean) => value,
-        then: (schema) => schema.test(urlTest).required(),
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_L1_BASE_URL cannot not be used if NEXT_PUBLIC_IS_L2_NETWORK is not set to "true"'),
-      }),
-    NEXT_PUBLIC_L2_WITHDRAWAL_URL: yup
-      .string()
-      .when('NEXT_PUBLIC_IS_L2_NETWORK', {
+      .when('NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK', {
         is: (value: string) => value,
         then: (schema) => schema.test(urlTest).required(),
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_L2_WITHDRAWAL_URL cannot not be used if NEXT_PUBLIC_IS_L2_NETWORK is not set to "true"'),
+        // eslint-disable-next-line max-len
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_OPTIMISTIC_L2_WITHDRAWAL_URL cannot not be used if NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK is not set to "true"'),
+      }),
+    NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK: yup.boolean(),
+    NEXT_PUBLIC_L1_BASE_URL: yup
+      .string()
+      .when([ 'NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK', 'NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK' ], {
+        is: (isOptimistic?: boolean, isZk?: boolean) => isOptimistic || isZk,
+        then: (schema) => schema.test(urlTest).required(),
+        // eslint-disable-next-line max-len
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_L1_BASE_URL cannot not be used if NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK or NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK is not set to "true"'),
       }),
   });
 
@@ -156,6 +159,12 @@ const sentrySchema = yup
         is: (value: string) => Boolean(value),
         then: (schema) => schema.test(urlTest),
         otherwise: (schema) => schema.max(-1, 'SENTRY_CSP_REPORT_URI cannot not be used without NEXT_PUBLIC_SENTRY_DSN'),
+      }),
+    NEXT_PUBLIC_SENTRY_ENABLE_TRACING: yup
+      .boolean()
+      .when('NEXT_PUBLIC_SENTRY_DSN', {
+        is: (value: string) => Boolean(value),
+        then: (schema) => schema,
       }),
     NEXT_PUBLIC_APP_INSTANCE: yup
       .string()
@@ -405,7 +414,8 @@ const schema = yup
       .transform(replaceQuotes)
       .json()
       .of(networkExplorerSchema),
-    NEXT_PUBLIC_HIDE_INDEXING_ALERT: yup.boolean(),
+    NEXT_PUBLIC_HIDE_INDEXING_ALERT_BLOCKS: yup.boolean(),
+    NEXT_PUBLIC_HIDE_INDEXING_ALERT_INT_TXS: yup.boolean(),
     NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: yup.string(),
 
     // 5. Features configuration

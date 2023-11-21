@@ -19,4 +19,4 @@ if [ ! -f "$secrets_file" ]; then
     exit 1
 fi
 
-docker run -p 3000:3000 --env-file $config_file --env-file $secrets_file blockscout-frontend | pino-pretty
+docker run -p 3000:3000 --env-file $config_file --env-file $secrets_file blockscout-frontend:local | pino-pretty

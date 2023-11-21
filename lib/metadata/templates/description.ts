@@ -8,7 +8,7 @@ const DEFAULT_TEMPLATE = 'Blockscout is the #1 open-source blockchain explorer a
 const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/': DEFAULT_TEMPLATE,
   '/txs': DEFAULT_TEMPLATE,
-  '/txs/computor/[hash]': DEFAULT_TEMPLATE,
+  '/txs/kettle/[hash]': DEFAULT_TEMPLATE,
   '/tx/[hash]': 'View transaction %hash% on %network_title%',
   '/blocks': DEFAULT_TEMPLATE,
   '/block/[height_or_hash]': 'View the transactions, token transfers, and uncles for block %height_or_hash%',
@@ -39,6 +39,8 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/l2-output-roots': DEFAULT_TEMPLATE,
   '/l2-txn-batches': DEFAULT_TEMPLATE,
   '/l2-withdrawals': DEFAULT_TEMPLATE,
+  '/zkevm-l2-txn-batches': DEFAULT_TEMPLATE,
+  '/zkevm-l2-txn-batch/[number]': DEFAULT_TEMPLATE,
   '/404': DEFAULT_TEMPLATE,
 
   // service routes, added only to make typescript happy

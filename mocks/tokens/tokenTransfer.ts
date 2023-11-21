@@ -25,7 +25,7 @@ export const erc20: TokenTransfer = {
     address: '0x55d536e4d6c1993d8ef2e2a4ef77f02088419420',
     circulating_market_cap: '117629601.61913824',
     decimals: '18',
-    exchange_rate: null,
+    exchange_rate: '42',
     holders: '46554',
     name: 'ARIANEE',
     symbol: 'ARIA',

@@ -15,7 +15,7 @@ import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 
-const feature = config.features.rollup;
+const feature = config.features.optimisticRollup;
 
 type Props = {
   item: L2DepositsItem;

@@ -10,6 +10,7 @@ import clockIcon from 'icons/clock-light.svg';
 import bitcoinIcon from 'icons/coins/bitcoin.svg';
 import gasIcon from 'icons/gas.svg';
 import txIcon from 'icons/transactions.svg';
+import batchesIcon from 'icons/txn_batches.svg';
 import walletIcon from 'icons/wallet.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import { WEI } from 'lib/consts';
@@ -28,7 +29,14 @@ const Stats = () => {
     },
   });
 
-  if (isError) {
+  const zkEvmLatestBatchQuery = useApiQuery('homepage_zkevm_latest_batch', {
+    queryOptions: {
+      placeholderData: 12345,
+      enabled: config.features.zkEvmRollup.isEnabled,
+    },
+  });
+
+  if (isError || zkEvmLatestBatchQuery.isError) {
     return null;
   }
 
@@ -48,13 +56,23 @@ const Stats = () => {
 
     content = (
       <>
-        <StatsItem
-          icon={ blockIcon }
-          title="Total blocks"
-          value={ Number(data.total_blocks).toLocaleString() }
-          url={ route({ pathname: '/blocks' }) }
-          isLoading={ isPlaceholderData }
-        />
+        { config.features.zkEvmRollup.isEnabled ? (
+          <StatsItem
+            icon={ batchesIcon }
+            title="Latest batch"
+            value={ (zkEvmLatestBatchQuery.data || 0).toLocaleString() }
+            url={ route({ pathname: '/zkevm-l2-txn-batches' }) }
+            isLoading={ zkEvmLatestBatchQuery.isPlaceholderData }
+          />
+        ) : (
+          <StatsItem
+            icon={ blockIcon }
+            title="Total blocks"
+            value={ Number(data.total_blocks).toLocaleString() }
+            url={ route({ pathname: '/blocks' }) }
+            isLoading={ isPlaceholderData }
+          />
+        ) }
         { hasAvgBlockTime && (
           <StatsItem
             icon={ clockIcon }

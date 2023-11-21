@@ -63,7 +63,10 @@ const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isL
           <Icon boxSize={ 5 } as={ WalletIcon } isLoading={ isLoading }/>
           <Skeleton isLoaded={ !isLoading } display="inline-flex">
             <Text>{ `Net worth:${ nbsp }` }
-              { `${ item.tokens_overflow ? '>' : '' }$${ BigNumber(item.tokens_fiat_value).plus((BigNumber(usdNative ? usdNative : '0'))).toFormat(2) }` }
+              {
+                `${ item.tokens_overflow ? '>' : '' }
+                $${ BigNumber(item.tokens_fiat_value).plus((BigNumber(item.address_balance ? usdNative : '0'))).toFormat(2) }`
+              }
             </Text>
           </Skeleton>
         </HStack>

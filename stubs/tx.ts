@@ -50,4 +50,12 @@ export const TX: Transaction = {
   tx_tag: null,
 };
 
+export const TX_ZKEVM_L2: Transaction = {
+  ...TX,
+  zkevm_batch_number: 12345,
+  zkevm_sequence_hash: '0x2b824349b320cfa72f292ab26bf525adb00083ba9fa097141896c3c8c74567cc',
+  zkevm_status: 'Confirmed by Sequencer',
+  zkevm_verify_hash: '0x2b824349b320cfa72f292ab26bf525adb00083ba9fa097141896c3c8c74567cc',
+};
+
 export const TX_RAW_TRACE: RawTracesResponse = [];

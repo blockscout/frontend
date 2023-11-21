@@ -34,9 +34,9 @@ const MarketplaceApp = () => {
   const router = useRouter();
   const id = getQueryParamString(router.query.id);
 
-  const { isLoading, isError, error, data } = useQuery<unknown, ResourceError<unknown>, MarketplaceAppOverview>(
-    [ 'marketplace-apps', id ],
-    async() => {
+  const { isPending, isError, error, data } = useQuery<unknown, ResourceError<unknown>, MarketplaceAppOverview>({
+    queryKey: [ 'marketplace-apps', id ],
+    queryFn: async() => {
       const result = await apiFetch<Array<MarketplaceAppOverview>, unknown>(configUrl, undefined, { resource: 'marketplace-apps' });
       if (!Array.isArray(result)) {
         throw result;
@@ -49,12 +49,10 @@ const MarketplaceApp = () => {
 
       return item;
     },
-    {
-      enabled: feature.isEnabled,
-    },
-  );
+    enabled: feature.isEnabled,
+  });
 
-  const [ isFrameLoading, setIsFrameLoading ] = useState(isLoading);
+  const [ isFrameLoading, setIsFrameLoading ] = useState(isPending);
   const { colorMode } = useColorMode();
 
   const handleIframeLoad = useCallback(() => {
@@ -106,7 +104,7 @@ const MarketplaceApp = () => {
 
   return (
     <>
-      { !isLoading && <PageTitle title={ data.title } backLink={ backLink }/> }
+      { !isPending && <PageTitle title={ data.title } backLink={ backLink }/> }
       <Center
         h="100vh"
         mx={{ base: -4, lg: -12 }}

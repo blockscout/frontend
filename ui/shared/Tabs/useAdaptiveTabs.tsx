@@ -1,4 +1,3 @@
-import _debounce from 'lodash/debounce';
 import React from 'react';
 
 import type { MenuButton, RoutedTab } from './types';
@@ -28,7 +27,7 @@ export default function useAdaptiveTabs(tabs: Array<RoutedTab | MenuButton>, dis
 
       if (result.visibleNum < index) {
         // means that we haven't increased visibleNum on the previous iteration, so there is no space left
-        // we skip now till the rest of the loop
+        // we skip now till the end of the loop
         return result;
       }
 
@@ -61,22 +60,6 @@ export default function useAdaptiveTabs(tabs: Array<RoutedTab | MenuButton>, dis
       setTabsCut(calculateCut());
     }
   }, [ calculateCut, disabled, tabsRefs ]);
-
-  React.useEffect(() => {
-    if (tabsRefs.length === 0 || disabled) {
-      return;
-    }
-
-    const resizeHandler = _debounce(() => {
-      setTabsCut(calculateCut());
-    }, 100);
-    const resizeObserver = new ResizeObserver(resizeHandler);
-
-    resizeObserver.observe(document.body);
-    return function cleanup() {
-      resizeObserver.unobserve(document.body);
-    };
-  }, [ calculateCut, disabled, tabsRefs.length ]);
 
   return React.useMemo(() => {
     return {

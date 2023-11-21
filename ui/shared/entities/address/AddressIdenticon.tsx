@@ -19,11 +19,11 @@ const Icon = dynamic(
       }
 
       case 'blockie': {
-        const makeBlockie = (await import('ethereum-blockies-base64')).default;
+        const { blo } = (await import('blo'));
 
         // eslint-disable-next-line react/display-name
         return (props: IconProps) => {
-          const data = makeBlockie(props.hash);
+          const data = blo(props.hash as `0x${ string }`, props.size);
           return (
             <Image
               src={ data }

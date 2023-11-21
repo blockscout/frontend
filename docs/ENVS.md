@@ -33,7 +33,8 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
   - [Banner ads](ENVS.md#banner-ads)
   - [Text ads](ENVS.md#text-ads)
   - [Beacon chain](ENVS.md#beacon-chain)
-  - [Rollup (L2) chain](ENVS.md#rollup-l2-chain)
+  - [Optimistic rollup (L2) chain](ENVS.md#optimistic-rollup-l2-chain)
+  - [ZkEvm rollup (L2) chain](NVS.md#zkevm-rollup-l2-chain)
   - [Export data to CSV file](ENVS.md#export-data-to-csv-file)
   - [Google analytics](ENVS.md#google-analytics)
   - [Mixpanel analytics](ENVS.md#mixpanel-analytics)
@@ -48,6 +49,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
   - [Safe{Core} address tags](ENVS.md#safecore-address-tags)
   - [SUAVE chain](ENVS.md#suave-chain)
   - [Sentry error monitoring](ENVS.md#sentry-error-monitoring)
+  - [OpenTelemetry](ENVS.md#opentelemetry)
 - [3rd party services configuration](ENVS.md#external-services-configuration)
 
 &nbsp;
@@ -251,7 +253,8 @@ Settings for meta tags and OG tags
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_NETWORK_EXPLORERS | `Array<NetworkExplorer>` where `NetworkExplorer` can have following [properties](#network-explorer-configuration-properties) | Used to build up links to transactions, blocks, addresses in other chain explorers. | - | - | `[{'title':'Anyblock','baseUrl':'https://explorer.anyblock.tools','paths':{'tx':'/ethereum/poa/core/tx'}}]` |
-| NEXT_PUBLIC_HIDE_INDEXING_ALERT | `boolean` | Set to `true` to hide indexing alert, if the chain indexing isn't completed | - | `false` | `true` |
+| NEXT_PUBLIC_HIDE_INDEXING_ALERT_BLOCKS | `boolean` | Set to `true` to hide indexing alert in the page header about indexing chain's blocks | - | `false` | `true` |
+| NEXT_PUBLIC_HIDE_INDEXING_ALERT_INT_TXS | `boolean` | Set to `true` to hide indexing alert in the page footer about indexing block's internal transactions | - | `false` | `true` |
 | NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE | `string` | Used for displaying custom announcements or alerts in the header of the site. Could be a regular string or a HTML code. | - | - | `Hello world! 🤪` |
 
 #### Network explorer configuration properties
@@ -337,13 +340,22 @@ This feature is **enabled by default** with the `coinzilla` ads provider. To swi
 
 &nbsp;
 
-### Rollup (L2) chain
+### Optimistic rollup (L2) chain
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_IS_L2_NETWORK | `boolean` | Set to true for L2 solutions | Required | - | `true` |
+| NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK | `boolean` | Set to true for optimistic L2 solutions | Required | - | `true` |
+| NEXT_PUBLIC_OPTIMISTIC_L2_WITHDRAWAL_URL | `string` | URL for optimistic L2 -> L1 withdrawals | Required | - | `https://app.optimism.io/bridge/withdraw` |
 | NEXT_PUBLIC_L1_BASE_URL | `string` | Blockscout base URL for L1 network | Required | - | `'http://eth-goerli.blockscout.com'` |
-| NEXT_PUBLIC_L2_WITHDRAWAL_URL | `string` | URL for L2 -> L1 withdrawals | Required | - | `https://app.optimism.io/bridge/withdraw` |
+
+&nbsp;
+
+### ZkEvm rollup (L2) chain
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK | `boolean` | Set to true for zkevm L2 solutions  | Required | - | `true` |
+| NEXT_PUBLIC_L1_BASE_URL | `string` | Blockscout base URL for L1 network | Required | - | `'http://eth-goerli.blockscout.com'` |
+
 
 &nbsp;
 
@@ -505,7 +517,7 @@ For the smart contract addresses which are [Safe{Core} accounts](https://safe.gl
 
 ### SUAVE chain
 
-For blockchains that implementing SUAVE architecture additional fields will be shown on the transaction page ("Allowed peekers", "Computor"). Users also will be able to see the list of all transaction for a particular Computor in the separate view.
+For blockchains that implementing SUAVE architecture additional fields will be shown on the transaction page ("Allowed peekers", "Kettle"). Users also will be able to see the list of all transaction for a particular Kettle in the separate view.
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
@@ -519,8 +531,19 @@ For blockchains that implementing SUAVE architecture additional fields will be s
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_SENTRY_DSN | `string` | Client key for your Sentry.io app | Required | - | `<your-secret>` |
 | SENTRY_CSP_REPORT_URI | `string` | URL for sending CSP-reports to your Sentry.io app | - | - | `<your-secret>` |
+| NEXT_PUBLIC_SENTRY_ENABLE_TRACING | `boolean` | Enables tracing and performance monitoring in Sentry.io | - | `false` | `true` |
 | NEXT_PUBLIC_APP_ENV | `string` | App env (e.g development, review or production). Passed as `environment` property to Sentry config | - | `production` | `production` |
 | NEXT_PUBLIC_APP_INSTANCE | `string` | Name of app instance. Used as custom tag `app_instance` value in the main Sentry scope. If not provided, it will be constructed from `NEXT_PUBLIC_APP_HOST` | - | - | `wonderful_kepler` |
+
+&nbsp;
+
+### OpenTelemetry
+
+OpenTelemetry SDK for Node.js app could be enabled by passing `OTEL_SDK_ENABLED=true` variable. Configure the OpenTelemetry Protocol Exporter by using the generic environment variables described in the [OT docs](https://opentelemetry.io/docs/specs/otel/protocol/exporter/#configuration-options).
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| OTEL_SDK_ENABLED | `boolean` | Flag to enable the feature | Required | `false` | `true` |
 
 &nbsp;
 

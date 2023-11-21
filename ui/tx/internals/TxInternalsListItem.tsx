@@ -10,7 +10,7 @@ import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import TxStatus from 'ui/shared/TxStatus';
+import TxStatus from 'ui/shared/statusTag/TxStatus';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
 type Props = InternalTransaction & { isLoading?: boolean };

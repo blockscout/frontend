@@ -2,6 +2,8 @@ const RESTRICTED_MODULES = {
   paths: [
     { name: 'dayjs', message: 'Please use lib/date/dayjs.ts instead of directly importing dayjs' },
     { name: '@chakra-ui/icons', message: 'Using @chakra-ui/icons is prohibited. Please use regular svg-icon instead (see examples in "icons/" folder)' },
+    { name: '@metamask/providers', message: 'Please lazy-load @metamask/providers or use useProvider hook instead' },
+    { name: '@metamask/post-message-stream', message: 'Please lazy-load @metamask/post-message-stream or use useProvider hook instead' },
   ],
 };
 
@@ -20,6 +22,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:jest/recommended',
     'plugin:playwright/playwright-test',
+    'plugin:@tanstack/eslint-plugin-query/recommended',
   ],
   plugins: [
     'es5',
@@ -31,6 +34,7 @@ module.exports = {
     'eslint-plugin-import-helpers',
     'jest',
     'eslint-plugin-no-cyrillic-string',
+    '@tanstack/query',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -305,7 +309,15 @@ module.exports = {
       },
     },
     {
-      files: [ '*.config.ts', 'playwright/**', 'deploy/tools/**', 'middleware.ts', 'nextjs/**' ],
+      files: [
+        '*.config.ts',
+        '*.config.js',
+        'playwright/**',
+        'deploy/tools/**',
+        'middleware.ts',
+        'nextjs/**',
+        'instrumentation*.ts',
+      ],
       rules: {
         // for configs allow to consume env variables from process.env directly
         'no-restricted-properties': [ 0 ],

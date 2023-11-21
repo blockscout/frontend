@@ -17,6 +17,8 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
+import { ZKEVM_L2_TX_STATUSES } from 'types/api/transaction';
+
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
@@ -38,18 +40,21 @@ import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
+import ZkEvmBatchEntityL2 from 'ui/shared/entities/block/ZkEvmBatchEntityL2';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
+import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TextSeparator from 'ui/shared/TextSeparator';
 import TxFeeStability from 'ui/shared/tx/TxFeeStability';
-import TxStatus from 'ui/shared/TxStatus';
 import Utilization from 'ui/shared/Utilization/Utilization';
+import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 import TxDetailsActions from 'ui/tx/details/TxDetailsActions';
 import TxDetailsFeePerGas from 'ui/tx/details/TxDetailsFeePerGas';
 import TxDetailsGasPrice from 'ui/tx/details/TxDetailsGasPrice';
 import TxDetailsOther from 'ui/tx/details/TxDetailsOther';
 import TxDetailsTokenTransfers from 'ui/tx/details/TxDetailsTokenTransfers';
+import TxDetailsWithdrawalStatus from 'ui/tx/details/TxDetailsWithdrawalStatus';
 import TxRevertReason from 'ui/tx/details/TxRevertReason';
 import TxAllowedPeekers from 'ui/tx/TxAllowedPeekers';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
@@ -141,7 +146,7 @@ const TxDetails = () => {
           <CopyToClipboard text={ data.hash } isLoading={ isPlaceholderData }/>
         </DetailsInfoItem>
         <DetailsInfoItem
-          title="Status and method"
+          title={ config.features.zkEvmRollup.isEnabled ? 'L2 status and method' : 'Status and method' }
           hint="Current transaction state: Success, Failed (Error), or Pending (In Process)"
           isLoading={ isPlaceholderData }
         >
@@ -152,6 +157,19 @@ const TxDetails = () => {
             </Tag>
           ) }
         </DetailsInfoItem>
+        <TxDetailsWithdrawalStatus
+          status={ data.op_withdrawal_status }
+          l1TxHash={ data.op_l1_transaction_hash }
+        />
+        { data.zkevm_status && (
+          <DetailsInfoItem
+            title="Confirmation status"
+            hint="Status of the transaction confirmation path to L1"
+            isLoading={ isPlaceholderData }
+          >
+            <VerificationSteps currentStep={ data.zkevm_status } steps={ ZKEVM_L2_TX_STATUSES } isLoading={ isPlaceholderData }/>
+          </DetailsInfoItem>
+        ) }
         { data.revert_reason && (
           <DetailsInfoItem
             title="Revert reason"
@@ -182,6 +200,18 @@ const TxDetails = () => {
             </>
           ) }
         </DetailsInfoItem>
+        { data.zkevm_batch_number && (
+          <DetailsInfoItem
+            title="Tx batch"
+            hint="Batch index for this transaction"
+            isLoading={ isPlaceholderData }
+          >
+            <ZkEvmBatchEntityL2
+              isLoading={ isPlaceholderData }
+              number={ data.zkevm_batch_number }
+            />
+          </DetailsInfoItem>
+        ) }
         { data.timestamp && (
           <DetailsInfoItem
             title="Timestamp"
@@ -200,13 +230,13 @@ const TxDetails = () => {
         ) }
         { data.execution_node && (
           <DetailsInfoItem
-            title="Computor"
+            title="Kettle"
             hint="Node that carried out the confidential computation"
             isLoading={ isPlaceholderData }
           >
             <AddressEntity
               address={ data.execution_node }
-              href={ route({ pathname: '/txs/computor/[hash]', query: { hash: data.execution_node.hash } }) }
+              href={ route({ pathname: '/txs/kettle/[hash]', query: { hash: data.execution_node.hash } }) }
             />
           </DetailsInfoItem>
         ) }
@@ -282,9 +312,39 @@ const TxDetails = () => {
             <span>[ Contract creation ]</span>
           ) }
         </DetailsInfoItem>
-        { data.token_transfers && <TxDetailsTokenTransfers data={ data.token_transfers } txHash={ data.hash }/> }
+        { data.token_transfers && <TxDetailsTokenTransfers data={ data.token_transfers } txHash={ data.hash } isOverflow={ data.token_transfers_overflow }/> }
 
         <DetailsInfoItemDivider/>
+
+        { data.zkevm_sequence_hash && (
+          <DetailsInfoItem
+            title="Sequence tx hash"
+            flexWrap="nowrap"
+
+            isLoading={ isPlaceholderData }
+          >
+            <Skeleton isLoaded={ !isPlaceholderData } overflow="hidden">
+              <HashStringShortenDynamic hash={ data.zkevm_sequence_hash }/>
+            </Skeleton>
+            <CopyToClipboard text={ data.zkevm_sequence_hash } isLoading={ isPlaceholderData }/>
+          </DetailsInfoItem>
+        ) }
+        { data.zkevm_verify_hash && (
+          <DetailsInfoItem
+            title="Verify tx hash"
+            flexWrap="nowrap"
+            isLoading={ isPlaceholderData }
+          >
+            <Skeleton isLoaded={ !isPlaceholderData } overflow="hidden">
+
+              <HashStringShortenDynamic hash={ data.zkevm_verify_hash }/>
+            </Skeleton>
+            <CopyToClipboard text={ data.zkevm_verify_hash } isLoading={ isPlaceholderData }/>
+
+          </DetailsInfoItem>
+        ) }
+
+        { (data.zkevm_batch_number || data.zkevm_verify_hash) && <DetailsInfoItemDivider/> }
 
         { !config.UI.views.tx.hiddenFields?.value && (
           <DetailsInfoItem
@@ -369,7 +429,7 @@ const TxDetails = () => {
             ) }
           </DetailsInfoItem>
         ) }
-        { data.tx_burnt_fee && !config.UI.views.tx.hiddenFields?.burnt_fees && !config.features.rollup.isEnabled && (
+        { data.tx_burnt_fee && !config.UI.views.tx.hiddenFields?.burnt_fees && !config.features.optimisticRollup.isEnabled && (
           <DetailsInfoItem
             title="Burnt fees"
             hint={ `Amount of ${ config.chain.currency.symbol } burned for this transaction. Equals Block Base Fee per Gas * Gas Used` }
@@ -384,7 +444,7 @@ const TxDetails = () => {
             />
           </DetailsInfoItem>
         ) }
-        { config.features.rollup.isEnabled && (
+        { config.features.optimisticRollup.isEnabled && (
           <>
             { data.l1_gas_used && (
               <DetailsInfoItem

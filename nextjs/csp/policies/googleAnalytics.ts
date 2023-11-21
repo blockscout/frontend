@@ -16,7 +16,7 @@ export function googleAnalytics(): CspDev.DirectiveDescriptor {
     ],
     'script-src': [
       // inline script hash, see ui/shared/GoogleAnalytics.tsx
-      '\'sha256-NTmEg2dBnojQfTYrYJEmp3nG7V66756qPbQMCIBrctk=\'',
+      '\'sha256-WXRwCtfSfMoCPzPUIOUAosSaADdGgct0/Lhmnbm7MCA=\'',
       'https://www.googletagmanager.com',
       '*.google-analytics.com',
       '*.analytics.google.com',

@@ -1,3 +1,7 @@
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.BUNDLE_ANALYZER === 'true',
+});
+
 const withRoutes = require('nextjs-routes/config')({
   outDir: 'nextjs',
 });
@@ -38,6 +42,10 @@ const moduleExports = {
   redirects,
   headers,
   output: 'standalone',
+  productionBrowserSourceMaps: true,
+  experimental: {
+    instrumentationHook: true,
+  },
 };
 
-module.exports = withRoutes(moduleExports);
+module.exports = withBundleAnalyzer(withRoutes(moduleExports));
