@@ -13,7 +13,7 @@ interface Props {
 }
 
 export const formattedLuksoName = (hash: string, name: string) => {
-  return `@${ name }#${ hash }`;
+  return `@${ name } (${ hash })`;
 };
 
 export const getUniversalProfile = async(address: string, queryClient: QueryClient) => {
