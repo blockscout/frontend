@@ -46,6 +46,15 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/api/healthz': 'Node API: Health check',
   '/auth/auth0': 'Auth',
   '/auth/unverified-email': 'Unverified email',
+
+  '/forum': 'Forum',
+  '/forum/[topic]': 'Forum ttopic',
+  '/forum/[topic]/create-thread': 'Forum: Create thread',
+  '/forum/[topic]/[thread]': 'Forum thread',
+  '/forum/chats': 'Chats',
+  '/forum/chats/[hash]': 'Chat',
+  '/forum/bookmarks/[hash]': 'Bookmarks',
+  '/forum/watches/[hash]': 'Watches',
 };
 
 export default function getPageType(pathname: Route['pathname']) {
