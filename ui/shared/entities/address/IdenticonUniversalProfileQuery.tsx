@@ -56,7 +56,7 @@ export const IdenticonUniversalProfile: React.FC<Props> = ({ address, fallbackIc
         return;
       }
     })();
-  }, [ address, up, setUp, queryClient ]);
+  }, [ address, setUp, queryClient ]);
 
   if (up === undefined || up.LSP3Profile === undefined) {
     return fallbackIcon;

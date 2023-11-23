@@ -518,6 +518,7 @@ export const RESOURCES = {
   api_v2_key: {
     path: '/api/v2/key',
   },
+  up_profiles: {},
 
   // API V1
   csv_export_txs: {

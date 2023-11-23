@@ -5522,7 +5522,7 @@ ajv@^6.10.0, ajv@^6.12.4:
 
 algoliasearch@^4.20.0:
   version "4.20.0"
-  resolved "https://registry.npmjs.org/algoliasearch/-/algoliasearch-4.20.0.tgz"
+  resolved "https://registry.yarnpkg.com/algoliasearch/-/algoliasearch-4.20.0.tgz#700c2cb66e14f8a288460036c7b2a554d0d93cf4"
   integrity sha512-y+UHEjnOItoNy0bYO+WWmLWBlPwDjKHW6mNHrPi0NkuhpQOOEbrkwQH/wgKFDLh7qlKjzoKeiRtlpewDPDG23g==
   dependencies:
     "@algolia/cache-browser-local-storage" "4.20.0"
