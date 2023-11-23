@@ -11,12 +11,13 @@ export const config: Sentry.BrowserOptions | undefined = (() => {
   }
 
   const tracesSampleRate: number | undefined = (() => {
-    if (feature.environment === 'staging' || feature.environment === 'development') {
-      return 1;
-    }
-
-    if (feature.environment === 'production') {
-      return 0.2;
+    switch (feature.environment) {
+      case 'development':
+        return 1;
+      case 'staging':
+        return 0.75;
+      case 'production':
+        return 0.2;
     }
   })();
 
