@@ -10,6 +10,11 @@
     "group": "Mainnets"
   },
   {
+    "title": "Powergold",
+    "url": "https://explorer.powergold.aurora.dev/",
+    "group": "Silos"
+  },
+  {
     "title": "Aurora testnet",
     "url": "https://explorer.testnet.aurora.dev/",
     "group": "Testnets"
