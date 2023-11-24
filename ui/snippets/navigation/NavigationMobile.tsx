@@ -11,9 +11,10 @@ import NavLinkGroupMobile from './NavLinkGroupMobile';
 
 interface Props {
   onNavLinkClick?: () => void;
+  isAppPage?: boolean;
 }
 
-const NavigationMobile = ({ onNavLinkClick }: Props) => {
+const NavigationMobile = ({ onNavLinkClick, isAppPage }: Props) => {
   const { mainNavItems, accountNavItems } = useNavItems();
 
   const [ openedGroupIndex, setOpenedGroupIndex ] = React.useState(-1);
@@ -61,9 +62,9 @@ const NavigationMobile = ({ onNavLinkClick }: Props) => {
           >
             { mainNavItems.map((item, index) => {
               if (isGroupItem(item)) {
-                return <NavLinkGroupMobile key={ item.text } item={ item } onClick={ onGroupItemOpen(index) }/>;
+                return <NavLinkGroupMobile key={ item.text } item={ item } onClick={ onGroupItemOpen(index) } isExpanded={ isAppPage }/>;
               } else {
-                return <NavLink key={ item.text } item={ item } onClick={ onNavLinkClick }/>;
+                return <NavLink key={ item.text } item={ item } onClick={ onNavLinkClick } isCollapsed={ isAppPage ? false : undefined }/>;
               }
             }) }
           </VStack>

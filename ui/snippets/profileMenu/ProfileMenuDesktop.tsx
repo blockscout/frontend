@@ -1,5 +1,5 @@
 import type { IconButtonProps } from '@chakra-ui/react';
-import { Popover, PopoverContent, PopoverBody, PopoverTrigger, IconButton, useColorModeValue, Tooltip, Box } from '@chakra-ui/react';
+import { Popover, PopoverContent, PopoverBody, PopoverTrigger, IconButton, Tooltip, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
@@ -8,6 +8,8 @@ import * as mixpanel from 'lib/mixpanel/index';
 import UserAvatar from 'ui/shared/UserAvatar';
 import ProfileMenuContent from 'ui/snippets/profileMenu/ProfileMenuContent';
 
+import useMenuButtonColors from '../useMenuButtonColors';
+
 type Props = {
   isHomePage?: boolean;
 };
@@ -15,6 +17,7 @@ type Props = {
 const ProfileMenuDesktop = ({ isHomePage }: Props) => {
   const { data, error, isPending } = useFetchProfileInfo();
   const loginUrl = useLoginUrl();
+  const { themedBackground, themedBorderColor, themedColor } = useMenuButtonColors();
   const [ hasMenu, setHasMenu ] = React.useState(false);
 
   React.useEffect(() => {
@@ -51,16 +54,13 @@ const ProfileMenuDesktop = ({ isHomePage }: Props) => {
   }, [ hasMenu, isHomePage ]);
 
   let iconButtonStyles: Partial<IconButtonProps> = {};
-  const themedBackground = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
-  const themedBorderColor = useColorModeValue('gray.300', 'gray.700');
-  const themedColor = useColorModeValue('blackAlpha.800', 'gray.400');
   if (hasMenu) {
     iconButtonStyles = {
-      bg: isHomePage ? '#EBF8FF' : themedBackground,
+      bg: isHomePage ? 'blue.50' : themedBackground,
     };
   } else if (isHomePage) {
     iconButtonStyles = {
-      color: '#fff',
+      color: 'white',
     };
   } else {
     iconButtonStyles = {

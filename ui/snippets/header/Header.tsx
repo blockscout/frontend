@@ -45,12 +45,10 @@ const Header = ({ isHomePage, isAppPage, renderSearchBar }: Props) => {
         >
           <Burger/>
           <NetworkLogo/>
-          <Box display="flex">
+          <Flex columnGap={ 2 }>
             { config.features.account.isEnabled ? <ProfileMenuMobile/> : <Box boxSize={ 10 }/> }
-            <Box ml={ 2 }>
-              <WalletMenuMobile/>
-            </Box>
-          </Box>
+            { config.features.blockchainInteraction.isEnabled && <WalletMenuMobile/> }
+          </Flex>
         </Flex>
         { !isHomePage && searchBar }
       </Box>
@@ -65,7 +63,7 @@ const Header = ({ isHomePage, isAppPage, renderSearchBar }: Props) => {
           >
             { isAppPage && (
               <Box display="flex" alignItems="center" gap={ 3 }>
-                <Burger/>
+                <Burger isAppPage/>
                 <NetworkLogo isCollapsed/>
               </Box>
             ) }
@@ -74,7 +72,7 @@ const Header = ({ isHomePage, isAppPage, renderSearchBar }: Props) => {
             </Box>
             <Box display="flex">
               { config.features.account.isEnabled && <ProfileMenuDesktop/> }
-              <WalletMenuDesktop/>
+              { config.features.blockchainInteraction.isEnabled && <WalletMenuDesktop/> }
             </Box>
           </HStack>
         ) }

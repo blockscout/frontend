@@ -1,4 +1,4 @@
-import { Drawer, DrawerOverlay, DrawerContent, DrawerBody, useDisclosure, IconButton, useColorModeValue, Icon } from '@chakra-ui/react';
+import { Drawer, DrawerOverlay, DrawerContent, DrawerBody, useDisclosure, IconButton, Icon } from '@chakra-ui/react';
 import React from 'react';
 
 import walletIcon from 'icons/wallet.svg';
@@ -6,13 +6,12 @@ import AddressIdenticon from 'ui/shared/entities/address/AddressIdenticon';
 import useWallet from 'ui/snippets/walletMenu/useWallet';
 import WalletMenuContent from 'ui/snippets/walletMenu/WalletMenuContent';
 
+import useMenuButtonColors from '../useMenuButtonColors';
+
 const WalletMenuMobile = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isWalletConnected, address, connect, disconnect, isModalOpening, isModalOpen } = useWallet();
-
-  const themedBackground = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
-  const themedBorderColor = useColorModeValue('gray.300', 'gray.700');
-  const themedColor = useColorModeValue('blackAlpha.800', 'gray.400');
+  const { themedBackground, themedBorderColor, themedColor } = useMenuButtonColors();
 
   return (
     <>

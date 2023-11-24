@@ -1,5 +1,5 @@
 import type { ButtonProps } from '@chakra-ui/react';
-import { Popover, PopoverContent, PopoverBody, PopoverTrigger, Button, useColorModeValue, Box, useBoolean, Tooltip } from '@chakra-ui/react';
+import { Popover, PopoverContent, PopoverBody, PopoverTrigger, Button, Box, useBoolean, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 
 import AddressIdenticon from 'ui/shared/entities/address/AddressIdenticon';
@@ -7,12 +7,15 @@ import HashStringShorten from 'ui/shared/HashStringShorten';
 import useWallet from 'ui/snippets/walletMenu/useWallet';
 import WalletMenuContent from 'ui/snippets/walletMenu/WalletMenuContent';
 
+import useMenuButtonColors from '../useMenuButtonColors';
+
 type Props = {
   isHomePage?: boolean;
 };
 
 const WalletMenuDesktop = ({ isHomePage }: Props) => {
   const { isWalletConnected, address, connect, disconnect, isModalOpening, isModalOpen } = useWallet();
+  const { themedBackground, themedBorderColor, themedColor } = useMenuButtonColors();
   const [ isPopoverOpen, setIsPopoverOpen ] = useBoolean(false);
   const [ isTooltipShown, setIsTooltipShown ] = useBoolean(false);
 
@@ -32,12 +35,9 @@ const WalletMenuDesktop = ({ isHomePage }: Props) => {
   }, [ isWalletConnected, isHomePage ]);
 
   let buttonStyles: Partial<ButtonProps> = {};
-  const themedBackground = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
-  const themedBorderColor = useColorModeValue('gray.300', 'gray.700');
-  const themedColor = useColorModeValue('blackAlpha.800', 'gray.400');
   if (isWalletConnected) {
     buttonStyles = {
-      bg: isHomePage ? '#EBF8FF' : themedBackground,
+      bg: isHomePage ? 'blue.50' : themedBackground,
       color: isHomePage ? 'blackAlpha.800' : themedColor,
       _hover: {
         color: isHomePage ? 'blackAlpha.800' : themedColor,
@@ -45,7 +45,7 @@ const WalletMenuDesktop = ({ isHomePage }: Props) => {
     };
   } else if (isHomePage) {
     buttonStyles = {
-      color: '#FFFFFF',
+      color: 'white',
     };
   } else {
     buttonStyles = {

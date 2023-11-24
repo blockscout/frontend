@@ -1,4 +1,4 @@
-import { Drawer, DrawerOverlay, DrawerContent, DrawerBody, useDisclosure, IconButton, useColorModeValue } from '@chakra-ui/react';
+import { Drawer, DrawerOverlay, DrawerContent, DrawerBody, useDisclosure, IconButton } from '@chakra-ui/react';
 import type { IconButtonProps } from '@chakra-ui/react';
 import React from 'react';
 
@@ -8,11 +8,13 @@ import * as mixpanel from 'lib/mixpanel/index';
 import UserAvatar from 'ui/shared/UserAvatar';
 import ProfileMenuContent from 'ui/snippets/profileMenu/ProfileMenuContent';
 
+import useMenuButtonColors from '../useMenuButtonColors';
+
 const ProfileMenuMobile = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   const { data, error, isPending } = useFetchProfileInfo();
   const loginUrl = useLoginUrl();
+  const { themedBackground, themedBorderColor, themedColor } = useMenuButtonColors();
   const [ hasMenu, setHasMenu ] = React.useState(false);
 
   const handleSignInClick = React.useCallback(() => {
@@ -40,10 +42,6 @@ const ProfileMenuMobile = () => {
       onClick: handleSignInClick,
     };
   })();
-
-  const themedBackground = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
-  const themedBorderColor = useColorModeValue('gray.300', 'gray.700');
-  const themedColor = useColorModeValue('blackAlpha.800', 'gray.400');
 
   return (
     <>
