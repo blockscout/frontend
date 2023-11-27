@@ -2,23 +2,30 @@ import { Table, Tbody, Tr, Th, Link, Icon } from '@chakra-ui/react';
 import React from 'react';
 
 import type { VerifiedContract } from 'types/api/contracts';
+import type { VerifiedContractsSorting, VerifiedContractsSortingField, VerifiedContractsSortingValue } from 'types/api/verifiedContracts';
 
 import config from 'configs/app';
 import arrowIcon from 'icons/arrows/east.svg';
+import getNextSortValue from 'ui/shared/sort/getNextSortValue';
 import { default as Thead } from 'ui/shared/TheadSticky';
+import { SORT_SEQUENCE } from 'ui/verifiedContracts/utils';
 
-import type { Sort, SortField } from './utils';
 import VerifiedContractsTableItem from './VerifiedContractsTableItem';
 
 interface Props {
   data: Array<VerifiedContract>;
-  sort: Sort | undefined;
-  onSortToggle: (field: SortField) => () => void;
+  sort: VerifiedContractsSortingValue | undefined;
+  setSorting: (val: VerifiedContractsSortingValue | undefined) => void;
   isLoading?: boolean;
 }
 
-const VerifiedContractsTable = ({ data, sort, onSortToggle, isLoading }: Props) => {
-  const sortIconTransform = sort?.includes('asc') ? 'rotate(-90deg)' : 'rotate(90deg)';
+const VerifiedContractsTable = ({ data, sort, setSorting, isLoading }: Props) => {
+  const sortIconTransform = sort?.includes('asc' as VerifiedContractsSorting['order']) ? 'rotate(-90deg)' : 'rotate(90deg)';
+
+  const onSortToggle = React.useCallback((field: VerifiedContractsSortingField) => () => {
+    const value = getNextSortValue<VerifiedContractsSortingField, VerifiedContractsSortingValue>(SORT_SEQUENCE, field)(sort);
+    setSorting(value);
+  }, [ sort, setSorting ]);
 
   return (
     <Table variant="simple" size="sm">
@@ -32,8 +39,8 @@ const VerifiedContractsTable = ({ data, sort, onSortToggle, isLoading }: Props) 
             </Link>
           </Th>
           <Th width="130px" isNumeric>
-            <Link display="flex" alignItems="center" justifyContent="flex-end" onClick={ isLoading ? undefined : onSortToggle('txs') } columnGap={ 1 }>
-              { sort?.includes('txs') && <Icon as={ arrowIcon } boxSize={ 4 } transform={ sortIconTransform }/> }
+            <Link display="flex" alignItems="center" justifyContent="flex-end" onClick={ isLoading ? undefined : onSortToggle('txs_count') } columnGap={ 1 }>
+              { sort?.includes('txs_count') && <Icon as={ arrowIcon } boxSize={ 4 } transform={ sortIconTransform }/> }
                 Txs
             </Link>
           </Th>
