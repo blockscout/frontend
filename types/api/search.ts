@@ -50,10 +50,9 @@ export interface SearchResultTx {
 }
 
 export interface SearchResultUniversalProfile {
-  type: 'universal profile';
+  type: 'universal_profile';
   name: string | null;
   address: string;
-  url?: string; // not used by the frontend, we build the url ourselves
 }
 
 export type SearchResultItem =

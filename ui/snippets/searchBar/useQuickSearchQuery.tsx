@@ -4,7 +4,7 @@ import React from 'react';
 import useApiQuery from 'lib/api/useApiQuery';
 import useDebounce from 'lib/hooks/useDebounce';
 
-import useUniversalProfileQuery from '../../../lib/api/useUniversalProfileQuery';
+// import useUniversalProfileQuery from '../../../lib/api/useUniversalProfileQuery';
 
 export default function useQuickSearchQuery() {
   const router = useRouter();
@@ -26,10 +26,10 @@ export default function useQuickSearchQuery() {
     queryOptions: { enabled: Boolean(debouncedSearchTerm) },
   });
 
-  const upQuery = useUniversalProfileQuery('up_profiles', {
-    queryParams: { q: debouncedSearchTerm },
-    queryOptions: { enabled: debouncedSearchTerm.trim().length > 0 },
-  });
+  // const upQuery = useUniversalProfileQuery('universal_profile', {
+  //   queryParams: { q: debouncedSearchTerm },
+  //   queryOptions: { enabled: debouncedSearchTerm.trim().length > 0 },
+  // });
 
   return React.useMemo(() => ({
     searchTerm,
