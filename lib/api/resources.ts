@@ -77,16 +77,16 @@ export const SORTING_FIELDS = [ 'sort', 'order' ];
 export const RESOURCES = {
   // ACCOUNT
   csrf: {
-    path: '/api/account/v1/get_csrf',
+    path: '/api/account/v2/get_csrf',
   },
   user_info: {
-    path: '/api/account/v1/user/info',
+    path: '/api/account/v2/user/info',
   },
   email_resend: {
-    path: '/api/account/v1/email/resend',
+    path: '/api/account/v2/email/resend',
   },
   custom_abi: {
-    path: '/api/account/v1/user/custom_abis/:id?',
+    path: '/api/account/v2/user/custom_abis/:id?',
     pathParams: [ 'id' as const ],
   },
   watchlist: {
@@ -95,7 +95,7 @@ export const RESOURCES = {
     filterFields: [ ],
   },
   public_tags: {
-    path: '/api/account/v1/user/public_tags/:id?',
+    path: '/api/account/v2/user/public_tags/:id?',
     pathParams: [ 'id' as const ],
   },
   private_tags_address: {
@@ -109,7 +109,7 @@ export const RESOURCES = {
     filterFields: [ ],
   },
   api_keys: {
-    path: '/api/account/v1/user/api_keys/:id?',
+    path: '/api/account/v2/user/api_keys/:id?',
     pathParams: [ 'id' as const ],
   },
 
