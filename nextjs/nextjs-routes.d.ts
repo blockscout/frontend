@@ -29,6 +29,14 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/block/[height_or_hash]", { "height_or_hash": string }>
     | StaticRoute<"/blocks">
     | StaticRoute<"/csv-export">
+    | DynamicRoute<"/forum/[topic]/[thread]", { "topic": string; "thread": string }>
+    | DynamicRoute<"/forum/[topic]/create-thread", { "topic": string }>
+    | DynamicRoute<"/forum/[topic]", { "topic": string }>
+    | DynamicRoute<"/forum/bookmarks/[hash]", { "hash": string }>
+    | DynamicRoute<"/forum/chats/[hash]", { "hash": string }>
+    | StaticRoute<"/forum/chats">
+    | StaticRoute<"/forum">
+    | DynamicRoute<"/forum/watches/[hash]", { "hash": string }>
     | StaticRoute<"/graphiql">
     | StaticRoute<"/">
     | StaticRoute<"/l2-deposits">

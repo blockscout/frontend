@@ -19,6 +19,7 @@ import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import useTabIndexFromQuery from 'ui/shared/Tabs/useTabIndexFromQuery';
 import TxDetails from 'ui/tx/TxDetails';
 import TxDetailsWrapped from 'ui/tx/TxDetailsWrapped';
+import TxDiscuss from 'ui/tx/TxDiscuss';
 import TxInternals from 'ui/tx/TxInternals';
 import TxLogs from 'ui/tx/TxLogs';
 import TxRawTrace from 'ui/tx/TxRawTrace';
@@ -49,6 +50,7 @@ const TransactionPageContent = () => {
     { id: 'logs', title: 'Logs', component: <TxLogs/> },
     { id: 'state', title: 'State', component: <TxState/> },
     { id: 'raw_trace', title: 'Raw trace', component: <TxRawTrace/> },
+    config.features.forum.isEnabled && { id: 'discuss', title: 'Discuss', component: <TxDiscuss/> },
   ].filter(Boolean);
 
   const tabIndex = useTabIndexFromQuery(tabs);

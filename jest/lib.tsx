@@ -6,9 +6,9 @@ import React from 'react';
 
 import { AppContextProvider } from 'lib/contexts/app';
 import { ScrollDirectionProvider } from 'lib/contexts/scrollDirection';
+import { YlideProvider } from 'lib/contexts/ylide';
 import { SocketProvider } from 'lib/socket/context';
 import theme from 'theme';
-
 import 'lib/setLocale';
 
 const PAGE_PROPS = {
@@ -19,6 +19,8 @@ const PAGE_PROPS = {
   hash: '',
   number: '',
   q: '',
+  topic: '',
+  thread: '',
 };
 
 const TestApp = ({ children }: {children: React.ReactNode}) => {
@@ -37,7 +39,9 @@ const TestApp = ({ children }: {children: React.ReactNode}) => {
         <AppContextProvider pageProps={ PAGE_PROPS }>
           <ScrollDirectionProvider>
             <SocketProvider>
-              { children }
+              <YlideProvider>
+                { children }
+              </YlideProvider>
             </SocketProvider>
           </ScrollDirectionProvider>
         </AppContextProvider>

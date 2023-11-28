@@ -51,9 +51,9 @@ export default function useAdaptiveTabs(tabs: Array<RoutedTab | MenuButton>, dis
   React.useEffect(() => {
     setTabsRefs(tabs.map((_, index) => tabsRefs[index] || React.createRef()));
     setTabsCut(disabled ? tabs.length : 0);
-  // update refs only when disabled prop changes
+  // update refs only when disabled or tabs props changes
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ disabled ]);
+  }, [ disabled, tabs ]);
 
   React.useEffect(() => {
     if (tabsRefs.length > 0 && !disabled) {

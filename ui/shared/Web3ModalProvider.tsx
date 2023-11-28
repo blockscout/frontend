@@ -67,30 +67,37 @@ const { wagmiConfig, ethereumClient } = getConfig();
 
 interface Props {
   children: React.ReactNode;
+  wagmiConfig?: ReturnType<typeof getConfig>['wagmiConfig'];
+  ethereumClient?: ReturnType<typeof getConfig>['ethereumClient'];
   fallback?: JSX.Element | (() => JSX.Element);
 }
 
-const Web3ModalProvider = ({ children, fallback }: Props) => {
+const Web3ModalProvider = ({ children, wagmiConfig: _wagmiConfig, ethereumClient: _ethereumClient, fallback }: Props) => {
   const modalZIndex = useToken<string>('zIndices', 'modal');
   const web3ModalTheme = useColorModeValue('light', 'dark');
 
-  if (!wagmiConfig || !ethereumClient || !feature.isEnabled) {
+  const finalWagmiConfig = _wagmiConfig || wagmiConfig;
+  const finalEthereumClient = _ethereumClient || ethereumClient;
+
+  if (!finalWagmiConfig || !finalEthereumClient) {
     return typeof fallback === 'function' ? fallback() : (fallback || null);
   }
 
   return (
     <>
-      <WagmiConfig config={ wagmiConfig }>
+      <WagmiConfig config={ finalWagmiConfig }>
         { children }
       </WagmiConfig>
-      <Web3Modal
-        projectId={ feature.walletConnect.projectId }
-        ethereumClient={ ethereumClient }
-        themeMode={ web3ModalTheme }
-        themeVariables={{
-          '--w3m-z-index': modalZIndex,
-        }}
-      />
+      { feature.isEnabled && (
+        <Web3Modal
+          projectId={ feature.walletConnect.projectId }
+          ethereumClient={ finalEthereumClient }
+          themeMode={ web3ModalTheme }
+          themeVariables={{
+            '--w3m-z-index': modalZIndex,
+          }}
+        />
+      ) }
     </>
   );
 };

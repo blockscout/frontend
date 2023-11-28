@@ -23,10 +23,10 @@ export type AddressCheckResponseSuccess = {
   status: 'SUCCESS';
   result: AddressCheckStatusSuccess;
 } |
-{ status: 'IS_OWNER_ERROR' } |
-{ status: 'OWNERSHIP_VERIFIED_ERROR' } |
-{ status: 'SOURCE_CODE_NOT_VERIFIED_ERROR' } |
-{ status: 'INVALID_ADDRESS_ERROR' };
+{ status: 'IS_OWNER_ERROR'; payload?: { message?: string } } |
+{ status: 'OWNERSHIP_VERIFIED_ERROR'; payload?: { message?: string } } |
+{ status: 'SOURCE_CODE_NOT_VERIFIED_ERROR'; payload?: { message?: string } } |
+{ status: 'INVALID_ADDRESS_ERROR'; payload?: { message?: string } };
 
 export interface AddressVerificationResponseError {
   code: number;

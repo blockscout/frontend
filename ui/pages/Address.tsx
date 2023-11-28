@@ -17,6 +17,7 @@ import AddressBlocksValidated from 'ui/address/AddressBlocksValidated';
 import AddressCoinBalance from 'ui/address/AddressCoinBalance';
 import AddressContract from 'ui/address/AddressContract';
 import AddressDetails from 'ui/address/AddressDetails';
+import AddressDiscuss from 'ui/address/AddressDiscuss';
 import AddressInternalTxs from 'ui/address/AddressInternalTxs';
 import AddressLogs from 'ui/address/AddressLogs';
 import AddressTokens from 'ui/address/AddressTokens';
@@ -109,6 +110,11 @@ const AddressPageContent = () => {
         id: 'coin_balance_history',
         title: 'Coin balance history',
         component: <AddressCoinBalance/>,
+      },
+      config.features.forum.isEnabled && {
+        id: 'discuss',
+        title: 'Discuss',
+        component: <AddressDiscuss/>,
       },
       config.chain.verificationType === 'validation' && addressTabsCountersQuery.data?.validations_count ?
         {

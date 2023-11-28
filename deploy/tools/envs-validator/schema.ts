@@ -182,6 +182,19 @@ const sentrySchema = yup
       }),
   });
 
+const ylideSchema = yup
+  .object()
+  .shape({
+    NEXT_PUBLIC_IS_FORUM_SUPPORTED: yup.boolean(),
+    NEXT_PUBLIC_FORUM_INDEXER_URL: yup
+      .string()
+      .when('NEXT_PUBLIC_IS_FORUM_SUPPORTED', {
+        is: (value: boolean) => value,
+        then: (schema) => schema.test(urlTest).required(),
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_FORUM_INDEXER_URL cannot not be used if NEXT_PUBLIC_IS_FORUM_SUPPORTED is not set to "true"'),
+      }),
+  });
+
 const accountSchema = yup
   .object()
   .shape({
@@ -453,6 +466,7 @@ const schema = yup
     NEXT_PUBLIC_USE_NEXT_JS_PROXY: yup.boolean(),
   })
   .concat(accountSchema)
+  .concat(ylideSchema)
   .concat(adsBannerSchema)
   .concat(marketplaceSchema)
   .concat(rollupSchema)

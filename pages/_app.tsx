@@ -12,6 +12,7 @@ import useQueryClientConfig from 'lib/api/useQueryClientConfig';
 import { AppContextProvider } from 'lib/contexts/app';
 import { ChakraProvider } from 'lib/contexts/chakra';
 import { ScrollDirectionProvider } from 'lib/contexts/scrollDirection';
+import { YlideProvider } from 'lib/contexts/ylide';
 import { SocketProvider } from 'lib/socket/context';
 import theme from 'theme';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
@@ -56,7 +57,9 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
           <QueryClientProvider client={ queryClient }>
             <ScrollDirectionProvider>
               <SocketProvider url={ `${ config.api.socket }${ config.api.basePath }/socket/v2` }>
-                { getLayout(<Component { ...pageProps }/>) }
+                <YlideProvider>
+                  { getLayout(<Component { ...pageProps }/>) }
+                </YlideProvider>
               </SocketProvider>
             </ScrollDirectionProvider>
             <ReactQueryDevtools buttonPosition="bottom-left" position="left"/>

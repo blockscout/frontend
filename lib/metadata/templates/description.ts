@@ -51,6 +51,15 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/api/healthz': DEFAULT_TEMPLATE,
   '/auth/auth0': DEFAULT_TEMPLATE,
   '/auth/unverified-email': DEFAULT_TEMPLATE,
+
+  '/forum': DEFAULT_TEMPLATE,
+  '/forum/[topic]': DEFAULT_TEMPLATE,
+  '/forum/[topic]/create-thread': DEFAULT_TEMPLATE,
+  '/forum/[topic]/[thread]': DEFAULT_TEMPLATE,
+  '/forum/chats': DEFAULT_TEMPLATE,
+  '/forum/chats/[hash]': DEFAULT_TEMPLATE,
+  '/forum/bookmarks/[hash]': DEFAULT_TEMPLATE,
+  '/forum/watches/[hash]': DEFAULT_TEMPLATE,
 };
 
 export function make(pathname: Route['pathname']) {

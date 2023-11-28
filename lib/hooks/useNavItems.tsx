@@ -10,6 +10,7 @@ import appsIcon from 'icons/apps.svg';
 import withdrawalsIcon from 'icons/arrows/north-east.svg';
 import depositsIcon from 'icons/arrows/south-east.svg';
 import blocksIcon from 'icons/block.svg';
+import forumIcon from 'icons/forum.svg';
 import gearIcon from 'icons/gear.svg';
 import globeIcon from 'icons/globe-b.svg';
 import graphQLIcon from 'icons/graphQL.svg';
@@ -176,6 +177,12 @@ export default function useNavItems(): ReturnType {
         isActive: apiNavItems.some(item => isInternalItem(item) && item.isActive),
         subItems: apiNavItems,
       },
+      config.features.forum.isEnabled ? {
+        text: 'Forum',
+        icon: forumIcon,
+        nextRoute: { pathname: '/forum' as const },
+        isActive: pathname.startsWith('/forum/') || pathname === '/forum',
+      } : null,
       config.UI.sidebar.otherLinks.length > 0 ? {
         text: 'Other',
         icon: gearIcon,
