@@ -1,4 +1,4 @@
-import { Image, chakra, Skeleton } from '@chakra-ui/react';
+import { Image, Skeleton, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
@@ -23,7 +23,7 @@ const TokenLogo = ({ className, isLoading, data }: Props) => {
       className={ className }
       src={ data?.icon_url ?? undefined }
       alt={ `${ data?.name || 'token' } logo` }
-      fallback={ <TokenLogoPlaceholder className={ className }/> }
+      fallback={ <TokenLogoPlaceholder bgColor="divider" className={ className }/> }
     />
   );
 };

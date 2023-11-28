@@ -1,4 +1,4 @@
-import { Box, Text, chakra, Skeleton } from '@chakra-ui/react';
+import { Box, Skeleton, Text, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
@@ -32,7 +32,7 @@ const CurrencyValue = ({ value, currency = '', decimals, exchangeRate, className
 
   return (
     <Box as="span" className={ className } display="inline-flex" rowGap={ 3 } columnGap={ 1 }>
-      <Text display="inline-block">
+      <Text display="inline-block" color="text">
         { valueResult }{ currency ? ` ${ currency }` : '' }
       </Text>
       { usdResult && <Text as="span" variant="secondary" fontWeight={ 400 }>(${ usdResult })</Text> }

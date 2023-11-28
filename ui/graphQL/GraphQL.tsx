@@ -4,8 +4,8 @@ import { GraphiQL } from 'graphiql';
 import React from 'react';
 
 import config from 'configs/app';
-import buildUrl from 'lib/api/buildUrl';
 import 'graphiql/graphiql.css';
+import buildUrl from 'lib/api/buildUrl';
 import isBrowser from 'lib/isBrowser';
 
 const feature = config.features.graphqlApiDocs;

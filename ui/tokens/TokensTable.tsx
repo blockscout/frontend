@@ -7,7 +7,7 @@ import rightArrowIcon from 'icons/arrows/east.svg';
 import { default as getNextSortValueShared } from 'ui/shared/sort/getNextSortValue';
 import { default as Thead } from 'ui/shared/TheadSticky';
 
-import type { TokensSortingValue, TokensSortingField } from './Tokens';
+import type { TokensSortingField, TokensSortingValue } from './Tokens';
 import TokensTableItem from './TokensTableItem';
 
 const SORT_SEQUENCE: Record<TokensSortingField, Array<TokensSortingValue | undefined>> = {
@@ -40,19 +40,20 @@ const TokensTable = ({ items, page, isLoading, sorting, setSorting }: Props) => 
         <Tr>
           <Th w="50%">Token</Th>
           <Th isNumeric w="15%">
-            <Link onClick={ sort('fiat_value') } display="flex" justifyContent="end">
+            <Link color="accent" _hover={{ color: 'accent', textDecoration: 'underline' }} onClick={ sort('fiat_value') } display="flex" justifyContent="end">
               { sorting?.includes('fiat_value') && <Icon as={ rightArrowIcon } boxSize={ 4 } transform={ sortIconTransform }/> }
               Price
             </Link>
           </Th>
           <Th isNumeric w="20%">
-            <Link onClick={ sort('circulating_market_cap') } display="flex" justifyContent="end">
+            <Link color="accent" _hover={{ color: 'accent', textDecoration: 'underline' }}
+              onClick={ sort('circulating_market_cap') } display="flex" justifyContent="end">
               { sorting?.includes('circulating_market_cap') && <Icon as={ rightArrowIcon } boxSize={ 4 } transform={ sortIconTransform }/> }
               On-chain market cap
             </Link>
           </Th>
           <Th isNumeric w="15%">
-            <Link onClick={ sort('holder_count') } display="flex" justifyContent="end">
+            <Link color="accent" _hover={{ color: 'accent', textDecoration: 'underline' }} onClick={ sort('holder_count') } display="flex" justifyContent="end">
               { sorting?.includes('holder_count') && <Icon as={ rightArrowIcon } boxSize={ 4 } transform={ sortIconTransform }/> }
               Holders
             </Link>

@@ -1,7 +1,7 @@
-import { InputGroup, Input, InputLeftElement, Icon, chakra, useColorModeValue, forwardRef, InputRightElement } from '@chakra-ui/react';
+import { Icon, Input, InputGroup, InputLeftElement, InputRightElement, chakra, forwardRef, useColorModeValue } from '@chakra-ui/react';
 import throttle from 'lodash/throttle';
+import type { ChangeEvent, FocusEvent, FormEvent } from 'react';
 import React from 'react';
-import type { ChangeEvent, FormEvent, FocusEvent } from 'react';
 
 import searchIcon from 'icons/search.svg';
 import { useScrollDirection } from 'lib/contexts/scrollDirection';
@@ -85,7 +85,7 @@ const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHid
     >
       <InputGroup size={{ base: isHomepage ? 'md' : 'sm', lg: 'md' }}>
         <InputLeftElement w={{ base: isHomepage ? 6 : 4, lg: 6 }} ml={{ base: isHomepage ? 4 : 3, lg: 4 }} h="100%">
-          <Icon as={ searchIcon } boxSize={{ base: isHomepage ? 6 : 4, lg: 6 }} color={ useColorModeValue('blackAlpha.600', 'whiteAlpha.600') }/>
+          <Icon as={ searchIcon } boxSize={{ base: isHomepage ? 6 : 4, lg: 6 }} color={ useColorModeValue('blackAlpha.600', 'primary') }/>
         </InputLeftElement>
         <Input
           pl={{ base: isHomepage ? '50px' : '38px', lg: '50px' }}
@@ -102,8 +102,9 @@ const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHid
           onChange={ handleChange }
           border={ isHomepage ? 'none' : '2px solid' }
           borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
-          _focusWithin={{ _placeholder: { color: 'gray.300' } }}
-          color={ useColorModeValue('black', 'white') }
+          _focusWithin={{ borderColor: 'accent', _placeholder: { color: useColorModeValue('rgba(16, 17, 18, 0.48)', 'text') } }}
+          color={ useColorModeValue('black', 'primary') }
+          _placeholder={{ color: useColorModeValue('rgba(16, 17, 18, 0.48)', 'text') }}
           value={ value }
         />
         { value && (

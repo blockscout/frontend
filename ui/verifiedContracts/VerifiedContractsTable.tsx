@@ -1,4 +1,4 @@
-import { Table, Tbody, Tr, Th, Link, Icon } from '@chakra-ui/react';
+import { Icon, Link, Table, Tbody, Th, Tr } from '@chakra-ui/react';
 import React from 'react';
 
 import type { VerifiedContract } from 'types/api/contracts';
@@ -26,13 +26,15 @@ const VerifiedContractsTable = ({ data, sort, onSortToggle, isLoading }: Props) 
         <Tr>
           <Th width="50%">Contract</Th>
           <Th width="130px" isNumeric>
-            <Link display="flex" alignItems="center" justifyContent="flex-end" onClick={ isLoading ? undefined : onSortToggle('balance') } columnGap={ 1 }>
+            <Link color="accent" _hover={{ color: 'accent', textDecoration: 'underline' }}
+              display="flex" alignItems="center" justifyContent="flex-end" onClick={ isLoading ? undefined : onSortToggle('balance') } columnGap={ 1 }>
               { sort?.includes('balance') && <Icon as={ arrowIcon } boxSize={ 4 } transform={ sortIconTransform }/> }
                 Balance { config.chain.currency.symbol }
             </Link>
           </Th>
           <Th width="130px" isNumeric>
-            <Link display="flex" alignItems="center" justifyContent="flex-end" onClick={ isLoading ? undefined : onSortToggle('txs') } columnGap={ 1 }>
+            <Link color="accent" _hover={{ color: 'accent', textDecoration: 'underline' }}
+              display="flex" alignItems="center" justifyContent="flex-end" onClick={ isLoading ? undefined : onSortToggle('txs') } columnGap={ 1 }>
               { sort?.includes('txs') && <Icon as={ arrowIcon } boxSize={ 4 } transform={ sortIconTransform }/> }
                 Txs
             </Link>

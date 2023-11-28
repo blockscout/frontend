@@ -50,22 +50,25 @@ const TokensTableItem = ({
             fontWeight={ 600 }
             mr={ 3 }
             minW="28px"
+            color="text"
           >
             { (page - 1) * PAGE_SIZE + index + 1 }
           </Skeleton>
           <Box overflow="hidden">
             <Flex alignItems="center">
               <TokenLogo data={ token } boxSize={ 6 } mr={ 2 } isLoading={ isLoading }/>
-              <AddressLink fontSize="sm" fontWeight="700" hash={ address } type="token" alias={ tokenString } isLoading={ isLoading }/>
+              <AddressLink color="accent" _hover={{ color: 'accent', textDecoration: 'underline' }}
+                fontSize="sm" fontWeight="700" hash={ address } type="token" alias={ tokenString } isLoading={ isLoading }/>
             </Flex>
             <Box ml={ 8 } mt={ 2 }>
               <Address>
-                <AddressLink fontSize="sm" hash={ address } type="address" truncation="constant" fontWeight={ 500 } isLoading={ isLoading }/>
+                <AddressLink color="text" _hover={{ color: 'text', textDecoration: 'underline' }}
+                  fontSize="sm" hash={ address } type="address" truncation="constant" fontWeight={ 500 } isLoading={ isLoading }/>
                 <CopyToClipboard text={ address } isLoading={ isLoading }/>
                 <AddressAddToWallet token={ token } ml={ 2 } isLoading={ isLoading }/>
               </Address>
               <Box mt={ 3 } >
-                <Tag isLoading={ isLoading }>{ type }</Tag>
+                <Tag color="text_secondary" bgColor="divider" isLoading={ isLoading }>{ type }</Tag>
               </Box>
             </Box>
           </Box>
@@ -88,6 +91,7 @@ const TokensTableItem = ({
           lineHeight="24px"
           fontWeight={ 500 }
           display="inline-block"
+          color="text"
         >
           { Number(holders).toLocaleString() }
         </Skeleton>

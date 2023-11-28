@@ -1,4 +1,4 @@
-import { TagLabel, TagLeftIcon, Tooltip } from '@chakra-ui/react';
+import { TagLabel, TagLeftIcon, Tooltip, useColorMode } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
@@ -15,15 +15,20 @@ export interface Props {
 }
 
 const TxStatus = ({ status, errorText, isLoading }: Props) => {
+  const { colorMode } = useColorMode();
+
   let label;
   let icon;
   let colorScheme;
+  let color;
+  let bgColor;
 
   switch (status) {
     case 'ok':
       label = 'Success';
       icon = successIcon;
-      colorScheme = 'green';
+      color = colorMode === 'dark' ? '#38A169' : '#38A169';
+      bgColor = colorMode === 'dark' ? '#2C2C2C' : '#F0FFF4';
       break;
     case 'error':
       label = 'Failed';
@@ -41,7 +46,7 @@ const TxStatus = ({ status, errorText, isLoading }: Props) => {
 
   return (
     <Tooltip label={ errorText }>
-      <Tag colorScheme={ colorScheme } display="inline-flex" isLoading={ isLoading }>
+      <Tag colorScheme={ colorScheme } color={ color } bgColor={ bgColor } display="inline-flex" isLoading={ isLoading }>
         <TagLeftIcon boxSize={ 2.5 } as={ icon }/>
         <TagLabel>{ label }</TagLabel>
       </Tag>

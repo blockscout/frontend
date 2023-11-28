@@ -29,6 +29,13 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasPage
           size="sm"
           onClick={ resetPage }
           isDisabled={ page === 1 || isLoading }
+          borderColor="accent"
+          color="accent"
+          _hover={{ color: 'accent', borderColor: 'accent' }}
+          _active={{
+            borderColor: 'accent',
+            color: 'accent',
+          }}
         >
         First
         </Button>
@@ -39,6 +46,13 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasPage
           onClick={ onPrevPageClick }
           size="sm"
           aria-label="Prev page"
+          borderColor="accent"
+          color="accent"
+          _hover={{ color: 'accent', borderColor: 'accent' }}
+          _active={{
+            borderColor: 'accent',
+            color: 'accent',
+          }}
           w="36px"
           icon={ <Icon as={ arrowIcon } w={ 5 } h={ 5 }/> }
           isDisabled={ !canGoBackwards || page === 1 || isLoading }
@@ -49,6 +63,13 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasPage
           variant="outline"
           size="sm"
           isActive
+          color="accent"
+          borderColor="accent"
+          _hover={{ color: 'accent', borderColor: 'accent' }}
+          _active={{
+            borderColor: 'accent',
+            color: 'accent',
+          }}
           borderWidth="1px"
           fontWeight={ 400 }
           h={ 8 }
@@ -64,7 +85,13 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasPage
           onClick={ onNextPageClick }
           size="sm"
           aria-label="Next page"
-          w="36px"
+          w="36px" borderColor="accent"
+          color="accent"
+          _hover={{ color: 'accent', borderColor: 'accent' }}
+          _active={{
+            borderColor: 'accent',
+            color: 'accent',
+          }}
           icon={ <Icon as={ arrowIcon } w={ 5 } h={ 5 } transform="rotate(180deg)"/> }
           isDisabled={ !hasNextPage || isLoading }
         />

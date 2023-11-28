@@ -1,4 +1,4 @@
-import { Tr, Td, Flex, chakra, Tooltip, Skeleton } from '@chakra-ui/react';
+import { chakra, Flex, Skeleton, Td, Tooltip, Tr, useColorModeValue } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -21,6 +21,7 @@ interface Props {
 }
 
 const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
+  const iconBgColor = useColorModeValue('#F0F1F2', '#2C2C2C');
   const balance = data.coin_balance && data.coin_balance !== '0' ?
     BigNumber(data.coin_balance).div(10 ** config.chain.currency.decimals).dp(6).toFormat() :
     '0';
@@ -29,9 +30,10 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
     <Tr>
       <Td>
         <Flex columnGap={ 2 }>
-          <AddressIcon address={ data.address } isLoading={ isLoading }/>
+          <AddressIcon bgColor={ iconBgColor } address={ data.address } isLoading={ isLoading }/>
           <Flex columnGap={ 2 } flexWrap="wrap" w="calc(100% - 32px)">
-            <AddressLink hash={ data.address.hash } type="address" alias={ data.address.name } isLoading={ isLoading } my={ 1 } query={{ tab: 'contract' }}/>
+            <AddressLink color="accent" _hover={{ color: 'accent', textDecoration: 'underline' }}
+              hash={ data.address.hash } type="address" alias={ data.address.name } isLoading={ isLoading } my={ 1 } query={{ tab: 'contract' }}/>
             <Flex alignItems="center">
               <Skeleton isLoaded={ !isLoading } color="text_secondary" my={ 1 }>
                 <HashStringShorten hash={ data.address.hash } isTooltipDisabled/>
@@ -63,21 +65,21 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
         <Tooltip label={ isLoading ? undefined : 'Optimization' }>
           <chakra.span display="inline-block">
             { data.optimization_enabled ?
-              <Icon as={ iconCheck } boxSize={ 6 } color="green.500" cursor="pointer" isLoading={ isLoading }/> :
+              <Icon as={ iconCheck } boxSize={ 6 } color="accent" cursor="pointer" isLoading={ isLoading }/> :
               <Icon as={ iconCross } boxSize={ 6 } color="red.600" cursor="pointer" isLoading={ isLoading }/> }
           </chakra.span>
         </Tooltip>
         <Tooltip label={ isLoading ? undefined : 'Constructor args' }>
           <chakra.span display="inline-block" ml={ 3 }>
             { data.has_constructor_args ?
-              <Icon as={ iconCheck } boxSize={ 6 } color="green.500" cursor="pointer" isLoading={ isLoading }/> :
+              <Icon as={ iconCheck } boxSize={ 6 } color="accent" cursor="pointer" isLoading={ isLoading }/> :
               <Icon as={ iconCross } boxSize={ 6 } color="red.600" cursor="pointer" isLoading={ isLoading }/> }
           </chakra.span>
         </Tooltip>
       </Td>
       <Td>
         <Flex alignItems="center" columnGap={ 2 } my={ 1 }>
-          <Icon as={ iconSuccess } boxSize={ 4 } color="green.500" isLoading={ isLoading }/>
+          <Icon as={ iconSuccess } boxSize={ 4 } color="accent" isLoading={ isLoading }/>
           <Skeleton isLoaded={ !isLoading } color="text_secondary">
             <span>{ dayjs(data.verified_at).fromNow() }</span>
           </Skeleton>

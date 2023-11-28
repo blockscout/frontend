@@ -1,5 +1,5 @@
 import type { As } from '@chakra-ui/react';
-import { Skeleton, Box, Button, Circle, Icon, useColorModeValue } from '@chakra-ui/react';
+import { Box, Button, Circle, Icon, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import filterIcon from 'icons/filter.svg';
@@ -30,6 +30,9 @@ const FilterButton = ({ isActive, isLoading, appliedFiltersNum, onClick, as }: P
       fontWeight="500"
       variant="outline"
       colorScheme="gray-dark"
+      color="text"
+      borderColor="secondary_base"
+      _hover={{ color: 'accent', borderColor: 'accent' }}
       onClick={ onClick }
       isActive={ isActive }
       px={ 1.5 }

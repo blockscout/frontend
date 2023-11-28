@@ -1,4 +1,4 @@
-import { Flex, HStack, Skeleton } from '@chakra-ui/react';
+import { Flex, HStack, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -25,19 +25,21 @@ const AddressesListItem = ({
   totalSupply,
   isLoading,
 }: Props) => {
-
+  const iconBgColor = useColorModeValue('#F0F1F2', '#2C2C2C');
   const addressBalance = BigNumber(item.coin_balance).div(BigNumber(10 ** config.chain.currency.decimals));
 
   return (
     <ListItemMobile rowGap={ 3 }>
       <Flex alignItems="center" justifyContent="space-between" w="100%">
         <Address maxW="100%" mr={ 8 }>
-          <AddressIcon address={ item } mr={ 2 } isLoading={ isLoading }/>
+          <AddressIcon bgColor={ iconBgColor } address={ item } mr={ 2 } isLoading={ isLoading }/>
           <AddressLink
             fontWeight={ 700 }
             flexGrow={ 1 }
             w="calc(100% - 32px)"
             hash={ item.hash }
+            color="accent"
+            _hover={{ color: 'accent', textDecoration: 'underline' }}
             alias={ item.name }
             type="address"
             isLoading={ isLoading }

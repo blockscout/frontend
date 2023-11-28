@@ -1,13 +1,12 @@
 import type { SystemStyleInterpolation } from '@chakra-ui/styled-system';
 import { defineStyle, defineStyleConfig } from '@chakra-ui/styled-system';
-import { mode } from '@chakra-ui/theme-tools';
 
-const variantPrimary = defineStyle((props) => ({
-  color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
+const variantPrimary = defineStyle(() => ({
+  color: 'text',
 }));
 
-const variantSecondary = defineStyle((props) => ({
-  color: mode('gray.500', 'gray.400')(props),
+const variantSecondary = defineStyle(() => ({
+  color: 'text_secondary',
 }));
 
 const variantInherit = {

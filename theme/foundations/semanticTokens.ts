@@ -19,6 +19,10 @@ const semanticTokens = {
     link_hovered: {
       'default': 'blue.400',
     },
+    secondary_base: {
+      'default': '#E2E8F0',
+      _dark: '#2C2C2C',
+    },
     error: {
       'default': 'red.400',
       _dark: 'red.300',
