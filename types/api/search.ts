@@ -25,6 +25,14 @@ export interface SearchResultAddressOrContract {
   url?: string; // not used by the frontend, we build the url ourselves
 }
 
+export interface SearchResultAddressOrContractOrUniversalProfile {
+  type: 'address' | 'contract' | 'universal_profile';
+  name: string | null;
+  address: string;
+  is_smart_contract_verified: boolean;
+  url?: string; // not used by the frontend, we build the url ourselves
+}
+
 export interface SearchResultLabel {
   type: 'label';
   address: string;
@@ -56,7 +64,13 @@ export interface SearchResultUniversalProfile {
 }
 
 export type SearchResultItem =
-    SearchResultToken | SearchResultAddressOrContract | SearchResultBlock | SearchResultTx | SearchResultLabel | SearchResultUniversalProfile;
+    SearchResultToken |
+    SearchResultAddressOrContract |
+    SearchResultAddressOrContractOrUniversalProfile |
+    SearchResultBlock |
+    SearchResultTx |
+    SearchResultLabel |
+    SearchResultUniversalProfile;
 
 export interface SearchResult {
   items: Array<SearchResultItem>;

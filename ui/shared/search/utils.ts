@@ -59,5 +59,8 @@ export function getItemCategory(item: SearchResultItem | SearchResultAppItem): C
     case 'app': {
       return 'app';
     }
+    case 'universal_profile': {
+      return 'universal_profile';
+    }
   }
 }

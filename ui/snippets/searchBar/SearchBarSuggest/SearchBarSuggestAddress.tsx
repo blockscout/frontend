@@ -2,7 +2,7 @@ import { Box, Text, Flex } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 
-import type { SearchResultAddressOrContract } from 'types/api/search';
+import type { SearchResultAddressOrContractOrUniversalProfile } from 'types/api/search';
 
 import highlightText from 'lib/highlightText';
 import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -11,7 +11,7 @@ import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import { formattedLuksoName, getUniversalProfile } from '../../../shared/entities/address/IdenticonUniversalProfileQuery';
 
 interface Props {
-  data: SearchResultAddressOrContract;
+  data: SearchResultAddressOrContractOrUniversalProfile;
   isMobile: boolean | undefined;
   searchTerm: string;
 }
