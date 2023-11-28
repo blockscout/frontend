@@ -34,6 +34,8 @@ frontend:
       nginx.ingress.kubernetes.io/proxy-connect-timeout: "15m"
       nginx.ingress.kubernetes.io/proxy-send-timeout: "15m"
       nginx.ingress.kubernetes.io/proxy-read-timeout: "15m"
+      nginx.ingress.kubernetes.io/proxy-buffer-size: "128k"
+      nginx.ingress.kubernetes.io/proxy-buffers-number: "8"
       cert-manager.io/cluster-issuer: "zerossl-prod"
     hostname: review-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}.k8s-dev.blockscout.com
 
@@ -71,9 +73,6 @@ frontend:
     NEXT_PUBLIC_VIEWS_TX_ADDITIONAL_FIELDS: "['fee_per_gas']"
     NEXT_PUBLIC_USE_NEXT_JS_PROXY: true
     NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES: "[{'name':'LooksRare','collection_url':'https://goerli.looksrare.org/collections/{hash}','instance_url':'https://goerli.looksrare.org/collections/{hash}/{id}','logo_url':'https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/nft-marketplace-logos/looks-rare.png'}]"
-    OTEL_SDK_ENABLED: true
-    OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger-collector.jaeger.svc.cluster.local:4318
-    NEXT_OTEL_VERBOSE: 1
     NEXT_PUBLIC_IS_FORUM_SUPPORTED: true
     NEXT_PUBLIC_FORUM_INDEXER_URL: https://forum-blockscout.ylide.io
   envFromSecret:
