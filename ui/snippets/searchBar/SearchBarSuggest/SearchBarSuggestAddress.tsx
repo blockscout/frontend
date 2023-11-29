@@ -30,7 +30,7 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
 
       if (upData.LSP3Profile !== undefined) {
         setType('contract'); // when the type is contract the icon will know that it needs to get UP profile picture
-        if (upData.hasProfileImage) {
+        if (upData.hasProfileName) {
           setDisplayedName(formattedLuksoName(data.address, upData.LSP3Profile.name));
         }
       }
