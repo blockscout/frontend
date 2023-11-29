@@ -10,7 +10,7 @@ import { useAppContext } from 'lib/contexts/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as metadata from 'lib/metadata';
 import * as regexp from 'lib/regexp';
-import { TOKEN_INSTANCE } from 'stubs/token';
+import { TOKEN_INSTANCE, TOKEN_INFO_ERC_1155 } from 'stubs/token';
 import * as tokenStubs from 'stubs/token';
 import { generateListStub } from 'stubs/utils';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
@@ -43,6 +43,14 @@ const TokenInstanceContent = () => {
 
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
+  const tokenQuery = useApiQuery('token', {
+    pathParams: { hash },
+    queryOptions: {
+      enabled: Boolean(hash && id),
+      placeholderData: TOKEN_INFO_ERC_1155,
+    },
+  });
+
   const tokenInstanceQuery = useApiQuery('token_instance', {
     pathParams: { hash, id },
     queryOptions: {
@@ -58,14 +66,18 @@ const TokenInstanceContent = () => {
     options: {
       enabled: Boolean(hash && id && (!tab || tab === 'token_transfers') && !tokenInstanceQuery.isPlaceholderData && tokenInstanceQuery.data),
       placeholderData: generateListStub<'token_instance_transfers'>(
-        tokenInstanceQuery.data?.token.type === 'ERC-1155' ? tokenStubs.TOKEN_TRANSFER_ERC_1155 : tokenStubs.TOKEN_TRANSFER_ERC_721,
+        tokenQuery.data?.type === 'ERC-1155' ? tokenStubs.TOKEN_TRANSFER_ERC_1155 : tokenStubs.TOKEN_TRANSFER_ERC_721,
         10,
         { next_page_params: null },
       ),
     },
   });
 
-  const shouldFetchHolders = !tokenInstanceQuery.isPlaceholderData && tokenInstanceQuery.data && !tokenInstanceQuery.data.is_unique;
+  const shouldFetchHolders =
+    !tokenQuery.isPlaceholderData &&
+    !tokenInstanceQuery.isPlaceholderData &&
+    tokenInstanceQuery.data &&
+    !tokenInstanceQuery.data.is_unique;
 
   const holdersQuery = useQueryWithPages({
     resourceName: 'token_instance_holders',
@@ -74,18 +86,18 @@ const TokenInstanceContent = () => {
     options: {
       enabled: Boolean(hash && tab === 'holders' && shouldFetchHolders),
       placeholderData: generateListStub<'token_instance_holders'>(
-        tokenInstanceQuery.data?.token.type === 'ERC-1155' ? tokenStubs.TOKEN_HOLDER_ERC_1155 : tokenStubs.TOKEN_HOLDER_ERC_20, 10, { next_page_params: null }),
+        tokenQuery.data?.type === 'ERC-1155' ? tokenStubs.TOKEN_HOLDER_ERC_1155 : tokenStubs.TOKEN_HOLDER_ERC_20, 10, { next_page_params: null }),
     },
   });
 
   React.useEffect(() => {
-    if (tokenInstanceQuery.data && !tokenInstanceQuery.isPlaceholderData) {
+    if (tokenInstanceQuery.data && !tokenInstanceQuery.isPlaceholderData && tokenQuery.data && !tokenQuery.isPlaceholderData) {
       metadata.update(
-        { pathname: '/token/[hash]/instance/[id]', query: { hash: tokenInstanceQuery.data.token.address, id: tokenInstanceQuery.data.id } },
-        { symbol: tokenInstanceQuery.data.token.symbol ?? '' },
+        { pathname: '/token/[hash]/instance/[id]', query: { hash: tokenQuery.data.address, id: tokenInstanceQuery.data.id } },
+        { symbol: tokenQuery.data.symbol ?? '' },
       );
     }
-  }, [ tokenInstanceQuery.data, tokenInstanceQuery.isPlaceholderData ]);
+  }, [ tokenInstanceQuery.data, tokenInstanceQuery.isPlaceholderData, tokenQuery.data, tokenQuery.isPlaceholderData ]);
 
   const backLink = React.useMemo(() => {
     const hasGoBackLink = appProps.referrer && appProps.referrer.includes(`/token/${ hash }`) && !appProps.referrer.includes('instance');
@@ -104,10 +116,10 @@ const TokenInstanceContent = () => {
     {
       id: 'token_transfers',
       title: 'Token transfers',
-      component: <TokenTransfer transfersQuery={ transfersQuery } tokenId={ id } token={ tokenInstanceQuery.data?.token }/>,
+      component: <TokenTransfer transfersQuery={ transfersQuery } tokenId={ id } token={ tokenQuery.data }/>,
     },
     shouldFetchHolders ?
-      { id: 'holders', title: 'Holders', component: <TokenHolders holdersQuery={ holdersQuery } token={ tokenInstanceQuery.data?.token }/> } :
+      { id: 'holders', title: 'Holders', component: <TokenHolders holdersQuery={ holdersQuery } token={ tokenQuery.data }/> } :
       undefined,
     { id: 'metadata', title: 'Metadata', component: (
       <TokenInstanceMetadata
@@ -121,7 +133,7 @@ const TokenInstanceContent = () => {
     throw Error('Token instance fetch failed', { cause: tokenInstanceQuery.error });
   }
 
-  const tokenTag = <Tag isLoading={ tokenInstanceQuery.isPlaceholderData }>{ tokenInstanceQuery.data?.token.type }</Tag>;
+  const tokenTag = <Tag isLoading={ tokenInstanceQuery.isPlaceholderData }>{ tokenQuery.data?.type }</Tag>;
 
   const address = {
     hash: hash || '',
@@ -131,7 +143,7 @@ const TokenInstanceContent = () => {
     watchlist_address_id: null,
   };
 
-  const isLoading = tokenInstanceQuery.isPlaceholderData;
+  const isLoading = tokenInstanceQuery.isPlaceholderData || tokenQuery.isPlaceholderData;
 
   const appLink = (() => {
     if (!tokenInstanceQuery.data?.external_app_url) {
@@ -168,7 +180,7 @@ const TokenInstanceContent = () => {
   const titleSecondRow = (
     <Flex alignItems="center" w="100%" minW={ 0 } columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
       <TokenEntity
-        token={ tokenInstanceQuery.data?.token }
+        token={ tokenQuery.data }
         isLoading={ isLoading }
         noSymbol
         noCopy
@@ -179,7 +191,7 @@ const TokenInstanceContent = () => {
         w="auto"
         maxW="700px"
       />
-      { !isLoading && tokenInstanceQuery.data && <AddressAddToWallet token={ tokenInstanceQuery.data.token } variant="button"/> }
+      { !isLoading && tokenInstanceQuery.data && <AddressAddToWallet token={ tokenQuery.data } variant="button"/> }
       <AddressQrCode address={ address } isLoading={ isLoading }/>
       <AccountActionsMenu isLoading={ isLoading }/>
       { appLink }
@@ -197,7 +209,7 @@ const TokenInstanceContent = () => {
         isLoading={ isLoading }
       />
 
-      <TokenInstanceDetails data={ tokenInstanceQuery?.data } isLoading={ isLoading } scrollRef={ scrollRef }/>
+      <TokenInstanceDetails data={ tokenInstanceQuery?.data } isLoading={ isLoading } scrollRef={ scrollRef } token={ tokenQuery.data }/>
 
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ scrollRef }></Box>

@@ -1,6 +1,10 @@
 import { Grid } from '@chakra-ui/react';
+import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
+import type { TokenInfo } from 'types/api/token';
+
+import type { ResourceError } from 'lib/api/resources';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
@@ -11,9 +15,10 @@ import TokenInventoryItem from './TokenInventoryItem';
 
 type Props = {
   inventoryQuery: QueryWithPagesResult<'token_inventory'>;
+  tokenQuery: UseQueryResult<TokenInfo, ResourceError<unknown>>;
 }
 
-const TokenInventory = ({ inventoryQuery }: Props) => {
+const TokenInventory = ({ inventoryQuery, tokenQuery }: Props) => {
   const isMobile = useIsMobile();
 
   const actionBar = isMobile && inventoryQuery.pagination.isVisible && (
@@ -23,8 +28,9 @@ const TokenInventory = ({ inventoryQuery }: Props) => {
   );
 
   const items = inventoryQuery.data?.items;
+  const token = tokenQuery.data;
 
-  const content = items ? (
+  const content = items && token ? (
     <Grid
       w="100%"
       columnGap={{ base: 3, lg: 6 }}
@@ -33,9 +39,10 @@ const TokenInventory = ({ inventoryQuery }: Props) => {
     >
       { items.map((item, index) => (
         <TokenInventoryItem
-          key={ item.token.address + '_' + item.id + (inventoryQuery.isPlaceholderData ? '_' + index : '') }
+          key={ token.address + '_' + item.id + (inventoryQuery.isPlaceholderData ? '_' + index : '') }
           item={ item }
-          isLoading={ inventoryQuery.isPlaceholderData }
+          isLoading={ inventoryQuery.isPlaceholderData || tokenQuery.isPlaceholderData }
+          token={ token }
         />
       )) }
     </Grid>
