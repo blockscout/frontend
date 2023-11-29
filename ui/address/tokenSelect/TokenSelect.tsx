@@ -35,7 +35,7 @@ const TokenSelect = ({ onClick }: Props) => {
 
   const addressQueryData = queryClient.getQueryData<Address>(addressResourceKey);
 
-  const { data, isError, isLoading, refetch } = useFetchTokens({ hash: addressQueryData?.hash });
+  const { data, isError, isPending, refetch } = useFetchTokens({ hash: addressQueryData?.hash });
   const tokensResourceKey = getResourceKey('address_tokens', { pathParams: { hash: addressQueryData?.hash }, queryParams: { type: 'ERC-20' } });
   const tokensIsFetching = useIsFetching({ queryKey: tokensResourceKey });
 
@@ -72,7 +72,7 @@ const TokenSelect = ({ onClick }: Props) => {
     handler: handleTokenBalanceMessage,
   });
 
-  if (isLoading) {
+  if (isPending) {
     return (
       <Flex columnGap={ 3 }>
         <Skeleton h={ 8 } w="150px" borderRadius="base"/>

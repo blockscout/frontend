@@ -15,7 +15,7 @@ const dailyTxsIndicator: TChainIndicator<'homepage_chart_txs'> = {
   title: 'Daily transactions',
   value: (stats) => Number(stats.transactions_today).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }),
   icon: <Icon as={ txIcon } boxSize={ 6 } bgColor="#56ACD1" borderRadius="base" color="white"/>,
-  hint: `The total daily number of transactions on the blockchain for the last month.`,
+  hint: `Number of transactions yesterday (0:00 - 23:59 UTC). The chart displays daily transactions for the past 30 days.`,
   api: {
     resourceName: 'homepage_chart_txs',
     dataFn: (response) => ([ {

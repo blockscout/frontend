@@ -179,7 +179,7 @@ const AddressPageContent = () => {
   const titleSecondRow = (
     <Flex alignItems="center" w="100%" columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
       <AddressEntity
-        address={{ ...addressQuery.data, name: '' }}
+        address={{ ...addressQuery.data, hash, name: '' }}
         isLoading={ isLoading }
         fontFamily="heading"
         fontSize="lg"
@@ -192,7 +192,7 @@ const AddressPageContent = () => {
       { !isLoading && !addressQuery.data?.is_contract && config.features.account.isEnabled && (
         <AddressFavoriteButton hash={ hash } watchListId={ addressQuery.data?.watchlist_address_id }/>
       ) }
-      <AddressQrCode address={ addressQuery.data } isLoading={ isLoading }/>
+      <AddressQrCode address={{ hash }} isLoading={ isLoading }/>
       <AccountActionsMenu isLoading={ isLoading }/>
       <NetworkExplorers type="address" pathParam={ hash } ml="auto"/>
     </Flex>

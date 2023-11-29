@@ -39,7 +39,8 @@ const DeleteModal: React.FC<Props> = ({
     onClose();
   }, [ onClose, setAlertVisible ]);
 
-  const mutation = useMutation(mutationFn, {
+  const mutation = useMutation({
+    mutationFn,
     onSuccess: async() => {
       onSuccess();
       onClose();
@@ -70,7 +71,7 @@ const DeleteModal: React.FC<Props> = ({
           <Button
             size="lg"
             onClick={ onDeleteClick }
-            isLoading={ mutation.isLoading }
+            isLoading={ mutation.isPending }
             // FIXME: chackra's button is disabled when isLoading
             isDisabled={ false }
           >

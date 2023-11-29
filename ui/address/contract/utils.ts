@@ -9,7 +9,7 @@ export const getNativeCoinValue = (value: string | Array<unknown>) => {
     return BigInt(0);
   }
 
-  return BigInt(Number(_value));
+  return BigInt(_value);
 };
 
 export const addZeroesAllowed = (valueType: string) => {
@@ -59,6 +59,10 @@ export function prepareAbi(abi: Abi, item: SmartContractWriteMethod): Abi {
 
         if (abiItem.name !== item.name) {
           return true;
+        }
+
+        if (abiItem.inputs.length !== item.inputs.length) {
+          return false;
         }
 
         return abiItem.inputs.every(({ name, type }) => {

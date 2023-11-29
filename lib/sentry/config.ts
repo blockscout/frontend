@@ -1,4 +1,5 @@
 import type * as Sentry from '@sentry/react';
+import { BrowserTracing } from '@sentry/tracing';
 
 import appConfig from 'configs/app';
 
@@ -9,11 +10,24 @@ export const config: Sentry.BrowserOptions | undefined = (() => {
     return;
   }
 
+  const tracesSampleRate: number | undefined = (() => {
+    switch (feature.environment) {
+      case 'development':
+        return 1;
+      case 'staging':
+        return 0.75;
+      case 'production':
+        return 0.2;
+    }
+  })();
+
   return {
     environment: feature.environment,
     dsn: feature.dsn,
     release: feature.release,
-    enableTracing: false,
+    enableTracing: feature.enableTracing,
+    tracesSampleRate,
+    integrations: [ new BrowserTracing() ],
 
     // error filtering settings
     // were taken from here - https://docs.sentry.io/platforms/node/guides/azure-functions/configuration/filtering/#decluttering-sentry
@@ -40,6 +54,10 @@ export const config: Sentry.BrowserOptions | undefined = (() => {
       'conduitPage',
       // Generic error code from errors outside the security sandbox
       'Script error.',
+
+      // Relay and WalletConnect errors
+      'Attempt to connect to relay via',
+      'WebSocket connection failed for URL: wss://relay.walletconnect.com',
     ],
     denyUrls: [
       // Facebook flakiness
@@ -56,6 +74,12 @@ export const config: Sentry.BrowserOptions | undefined = (() => {
       /127\.0\.0\.1:4001\/isrunning/i, // Cacaoweb
       /webappstoolbarba\.texthelp\.com\//i,
       /metrics\.itunes\.apple\.com\.edgesuite\.net\//i,
+
+      // AD fetch failed errors
+      /czilladx\.com/i,
+      /coinzilla\.com/i,
+      /coinzilla\.io/i,
+      /slise\.xyz/i,
     ],
   };
 })();

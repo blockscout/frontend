@@ -1,5 +1,3 @@
-import { WindowPostMessageStream } from '@metamask/post-message-stream';
-import { initializeProvider } from '@metamask/providers';
 import React from 'react';
 import type { WindowProvider } from 'wagmi';
 
@@ -15,13 +13,16 @@ export default function useProvider() {
   const [ provider, setProvider ] = React.useState<WindowProvider>();
   const [ wallet, setWallet ] = React.useState<WalletType>();
 
-  React.useEffect(() => {
+  const initializeProvider = React.useMemo(() => async() => {
     if (!feature.isEnabled) {
       return;
     }
 
     if (!('ethereum' in window && window.ethereum)) {
       if (feature.wallets.includes('metamask') && window.navigator.userAgent.includes('Firefox')) {
+        const { WindowPostMessageStream } = (await import('@metamask/post-message-stream'));
+        const { initializeProvider } = (await import('@metamask/providers'));
+
         // workaround for MetaMask in Firefox
         // Firefox blocks MetaMask injection script because of our CSP for 'script-src'
         // so we have to inject it manually while the issue is not fixed
@@ -72,6 +73,10 @@ export default function useProvider() {
       }
     }
   }, []);
+
+  React.useEffect(() => {
+    initializeProvider();
+  }, [ initializeProvider ]);
 
   return { provider, wallet };
 }

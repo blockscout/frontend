@@ -4,17 +4,18 @@ import React from 'react';
 import type { TxsResponse } from 'types/api/transaction';
 import type { Sort } from 'types/client/txs-sort';
 
+import type { ResourceError } from 'lib/api/resources';
 import * as cookies from 'lib/cookies';
 import sortTxs from 'lib/tx/sortTxs';
 
-type HookResult = UseQueryResult<TxsResponse> & {
+type HookResult = UseQueryResult<TxsResponse, ResourceError<unknown>> & {
   sorting: Sort;
   setSortByField: (field: 'val' | 'fee') => () => void;
   setSortByValue: (value: Sort | undefined) => void;
 }
 
 export default function useTxsSort(
-  queryResult: UseQueryResult<TxsResponse>,
+  queryResult: UseQueryResult<TxsResponse, ResourceError<unknown>>,
 ): HookResult {
 
   const [ sorting, setSorting ] = React.useState<Sort>(cookies.get(cookies.NAMES.TXS_SORT) as Sort);
@@ -61,7 +62,7 @@ export default function useTxsSort(
   }, []);
 
   return React.useMemo(() => {
-    if (queryResult.isError || queryResult.isLoading) {
+    if (queryResult.isError || queryResult.isPending) {
       return { ...queryResult, setSortByField, setSortByValue, sorting };
     }
 

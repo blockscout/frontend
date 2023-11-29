@@ -1,10 +1,10 @@
 import { Flex, Skeleton } from '@chakra-ui/react';
-import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import eastArrowIcon from 'icons/arrows/east.svg';
+import getCurrencyValue from 'lib/getCurrencyValue';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
@@ -27,15 +27,14 @@ const TokenTransferListItem = ({
   tokenId,
   isLoading,
 }: Props) => {
-  const value = (() => {
-    if (!('value' in total)) {
-      return null;
-    }
-
-    return BigNumber(total.value).div(BigNumber(10 ** Number(total.decimals))).dp(8).toFormat();
-  })();
-
   const timeAgo = useTimeAgoIncrement(timestamp, true);
+  const { usd, valueStr } = 'value' in total ? getCurrencyValue({
+    value: total.value,
+    exchangeRate: token.exchange_rate,
+    accuracy: 8,
+    accuracyUsd: 2,
+    decimals: total.decimals || '0',
+  }) : { usd: null, valueStr: null };
 
   return (
     <ListItemMobile rowGap={ 3 } isAnimated>
@@ -72,15 +71,16 @@ const TokenTransferListItem = ({
           fontWeight="500"
         />
       </Flex>
-      { value && (token.type === 'ERC-20' || token.type === 'ERC-1155') && (
+      { valueStr && (token.type === 'ERC-20' || token.type === 'ERC-1155') && (
         <Flex columnGap={ 2 } w="100%">
           <Skeleton isLoaded={ !isLoading } flexShrink={ 0 } fontWeight={ 500 }>
             Value
           </Skeleton>
           <Skeleton isLoaded={ !isLoading } color="text_secondary">
-            <span>{ value }</span>
+            <span>{ valueStr }</span>
           </Skeleton>
           { token.symbol && <TruncatedValue isLoading={ isLoading } value={ token.symbol }/> }
+          { usd && <Skeleton isLoaded={ !isLoading } color="text_secondary"><span>(${ usd })</span></Skeleton> }
         </Flex>
       ) }
       { 'token_id' in total && (token.type === 'ERC-721' || token.type === 'ERC-1155') && (

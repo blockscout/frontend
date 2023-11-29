@@ -11,12 +11,15 @@ export type L2WithdrawalsItem = {
   'status': string;
 }
 
-export type L2WithdrawalStatus =
-  'In challenge period' |
-  'Ready for relay' |
-  'Relayed' |
-  'Waiting for state root' |
-  'Ready to prove';
+export const WITHDRAWAL_STATUSES = [
+  'Waiting for state root',
+  'Ready to prove',
+  'In challenge period',
+  'Ready for relay',
+  'Relayed',
+] as const;
+
+export type L2WithdrawalStatus = typeof WITHDRAWAL_STATUSES[number];
 
 export type L2WithdrawalsResponse = {
   items: Array<L2WithdrawalsItem>;
