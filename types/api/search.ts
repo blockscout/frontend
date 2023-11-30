@@ -17,14 +17,6 @@ export interface SearchResultToken {
   is_smart_contract_verified: boolean;
 }
 
-export interface SearchResultAddressOrContract {
-  type: 'address' | 'contract';
-  name: string | null;
-  address: string;
-  is_smart_contract_verified: boolean;
-  url?: string; // not used by the frontend, we build the url ourselves
-}
-
 export interface SearchResultAddressOrContractOrUniversalProfile {
   type: 'address' | 'contract' | 'universal_profile';
   name: string | null;
@@ -65,7 +57,6 @@ export interface SearchResultUniversalProfile {
 
 export type SearchResultItem =
     SearchResultToken |
-    SearchResultAddressOrContract |
     SearchResultAddressOrContractOrUniversalProfile |
     SearchResultBlock |
     SearchResultTx |

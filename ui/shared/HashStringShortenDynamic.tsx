@@ -76,10 +76,9 @@ const HashStringShortenDynamic = ({ hash, fontWeight = '400', isTooltipDisabled,
         const slicedName = name.slice(0, rightI - 3);
         const displayed = rightI - 3 > name.length ? name + hashHead : slicedName + '...' + hashHead;
         setDisplayedString(displayed);
-
-        return;
+      } else {
+        setDisplayedString(hash.slice(0, rightI - 1) + '...' + tail);
       }
-      setDisplayedString(hash.slice(0, rightI - 1) + '...' + tail);
     } else {
       setDisplayedString(hash);
     }

@@ -13,7 +13,7 @@ interface Props {
   fallbackIcon: JSX.Element;
 }
 
-export const formattedLuksoName = (hash: string, name: string) => {
+export const formattedLuksoName = (hash: string, name: string | null) => {
   return `@${ name } (${ hash })`;
 };
 
