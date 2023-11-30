@@ -196,7 +196,7 @@ const AddressPageContent = () => {
       <AddressQrCode address={{ hash }} isLoading={ isLoading }/>
       <AccountActionsMenu isLoading={ isLoading }/>
       <HStack ml="auto" gap={ 2 }/>
-      { config.UI.views.address.solidityscanEnabled && <SolidityscanReport hash={ hash }/> }
+      { addressQuery.data?.is_contract && config.UI.views.address.solidityscanEnabled && <SolidityscanReport hash={ hash }/> }
       <NetworkExplorers type="address" pathParam={ hash }/>
     </Flex>
   );
