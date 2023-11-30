@@ -54,6 +54,10 @@ const SwaggerUI = () => {
     '.swagger-ui .wrapper': {
       padding: 0,
     },
+
+    '.opblock-summary-control[aria-label~="get"] > .opblock-summary-method': {
+      backgroundColor: useColorModeValue('accent', 'accent'),
+    },
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
