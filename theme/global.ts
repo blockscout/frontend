@@ -21,6 +21,7 @@ const global = (props: StyleFunctionProps) => ({
   },
   form: {
     w: '100%',
+    colorSchema: 'auto',
   },
   ...scrollbar(props),
 });
