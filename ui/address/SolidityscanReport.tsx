@@ -91,6 +91,7 @@ const SolidityscanReport = ({ className, hash }: Props) => {
           <Button
             className={ className }
             color={ scoreColor }
+            borderColor={ scoreColor }
             size="sm"
             variant="outline"
             colorScheme="gray"
@@ -130,7 +131,7 @@ const SolidityscanReport = ({ className, hash }: Props) => {
               <Text color={ scoreColor } fontWeight={ 500 }>Security score is { scoreLevel }</Text>
             </Box>
           </Flex>
-          { vulnerabilities && vulnerabilitiesCount && (
+          { vulnerabilities && vulnerabilitiesCount > 0 && (
             <Box mb={ 5 }>
               <Text py="7px" variant="secondary" fontSize="xs" fontWeight={ 500 }>Vulnerabilities distribution</Text>
               <Grid templateColumns="20px 1fr 100px" alignItems="center" rowGap={ 2 }>
