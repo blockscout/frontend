@@ -41,7 +41,7 @@ const LatestBlocksItem = ({ block, h, isLoading }: Props) => {
       w="100%"
     >
       <Flex alignItems="center" overflow="hidden" w="100%" mb={ 3 }>
-        <Icon as={ blockIcon } boxSize="30px" color="#3CAD71" isLoading={ isLoading } borderRadius="base"/>
+        <Icon as={ blockIcon } boxSize="30px" color="accent" isLoading={ isLoading } borderRadius="base"/>
         <AddressLink
           isLoading={ isLoading }
           type="block"
@@ -52,8 +52,6 @@ const LatestBlocksItem = ({ block, h, isLoading }: Props) => {
           ml={ 2 }
           mr="auto"
           tailLength={ 2 }
-          color="#3CAD71"
-          _hover={{ color: '#3CAD71', textDecoration: 'underline' }}
         />
         <BlockTimestamp
           ts={ block.timestamp }

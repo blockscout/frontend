@@ -96,7 +96,7 @@ const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((props, ref)
           margin={ 2 }
           zIndex="docked"
           as={ moonIcon }
-          color={ state.isChecked ? 'accent' : 'text' }
+          color={ state.isChecked ? 'accent' : 'black' }
           { ...transitionProps }
         />
         <chakra.div
@@ -109,7 +109,7 @@ const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((props, ref)
           margin={ 1.5 }
           zIndex="docked"
           as={ sunIcon }
-          color={ !state.isChecked ? 'accent' : 'text' }
+          color={ !state.isChecked ? 'accent' : 'black' }
           { ...transitionProps }
         />
       </chakra.div>

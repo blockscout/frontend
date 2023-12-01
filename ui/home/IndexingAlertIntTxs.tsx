@@ -66,8 +66,7 @@ const IndexingAlertIntTxs = () => {
       borderRadius="base"
       alignItems="center"
       justifyContent="center"
-      color="green.400"
-      _hover={{ color: 'blue.400' }}
+      color="accent"
     >
       <IconButton
         colorScheme="none"

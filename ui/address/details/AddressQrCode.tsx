@@ -65,6 +65,8 @@ const AddressQrCode = ({ hash, className, isLoading }: Props) => {
           size="sm"
           pl="6px"
           pr="6px"
+          color="accent"
+          borderColor="accent"
           onClick={ onOpen }
           icon={ <Icon as={ qrCodeIcon } boxSize={ 5 }/> }
         />

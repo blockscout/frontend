@@ -1,4 +1,4 @@
-import { useColorModeValue, useToken, useTheme } from '@chakra-ui/react';
+import { useColorModeValue, useTheme, useToken } from '@chakra-ui/react';
 import { transparentize } from '@chakra-ui/theme-tools';
 import * as d3 from 'd3';
 import React from 'react';
@@ -58,7 +58,7 @@ const ChartArea = ({ id, xScale, yScale, color, data, disableAnimation, ...props
       { color ? (
         <defs>
           <linearGradient id={ `${ gradientColorId }` } x1="0%" x2="0%" y1="0%" y2="100%">
-            <stop offset="0%" stopColor={ color }/>
+            <stop offset="0%" stopColor={ color + '40' }/>
             <stop offset="100%" stopColor={ gradientStopColor }/>
           </linearGradient>
         </defs>

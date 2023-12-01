@@ -26,7 +26,7 @@ const LABEL_WIDTH = 80;
 
 const ChartTooltip = ({ xScale, yScale, width, tooltipWidth = 200, height, data, anchorEl, ...props }: Props) => {
   const lineColor = useToken('colors', 'gray.400');
-  const titleColor = useToken('colors', 'blue.100');
+  const titleColor = useToken('colors', 'accent');
   const textColor = useToken('colors', 'white');
   const markerBgColor = useToken('colors', useColorModeValue('black', 'white'));
   const markerBorderColor = useToken('colors', useColorModeValue('white', 'black'));
