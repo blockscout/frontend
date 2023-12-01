@@ -174,7 +174,7 @@ const TxDetails = () => {
           { data.block === null ?
             <Text>Pending</Text> : (
               <Skeleton isLoaded={ !isPlaceholderData }>
-                <LinkInternal color="accent" _hover={{ color: 'accent', textDecoration: 'underline' }}
+                <LinkInternal
                   href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.block) } }) }>
                   { data.block }
                 </LinkInternal>
@@ -428,7 +428,6 @@ const TxDetails = () => {
                 fontSize="sm"
                 textDecorationLine="underline"
                 textDecorationStyle="dashed"
-                color="accent" _hover={{ color: 'accent', textDecoration: 'underline' }}
                 onClick={ handleCutClick }
               >
                 { isExpanded ? 'Hide details' : 'View details' }

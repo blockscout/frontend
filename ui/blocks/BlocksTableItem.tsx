@@ -46,8 +46,6 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           <Tooltip isDisabled={ data.type !== 'reorg' } label="Chain reorganizations">
             <Skeleton isLoaded={ !isLoading } display="inline-block">
               <LinkInternal
-                color="accent"
-                _hover={{ color: 'accent', textDecoration: 'underline' }}
                 fontWeight={ 600 }
                 href={ route({
                   pathname: '/block/[height_or_hash]',
@@ -85,9 +83,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
             <LinkInternal href={ route({
               pathname: '/block/[height_or_hash]',
               query: { height_or_hash: String(data.height), tab: 'txs' },
-            }) }
-            color="accent"
-            _hover={{ color: 'accent', textDecoration: 'underline' }}>
+            }) }>
               { data.tx_count }
             </LinkInternal>
           </Skeleton>

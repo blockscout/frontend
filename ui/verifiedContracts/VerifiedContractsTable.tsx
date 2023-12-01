@@ -26,14 +26,14 @@ const VerifiedContractsTable = ({ data, sort, onSortToggle, isLoading }: Props) 
         <Tr>
           <Th width="50%">Contract</Th>
           <Th width="130px" isNumeric>
-            <Link color="accent" _hover={{ color: 'accent', textDecoration: 'underline' }}
+            <Link
               display="flex" alignItems="center" justifyContent="flex-end" onClick={ isLoading ? undefined : onSortToggle('balance') } columnGap={ 1 }>
               { sort?.includes('balance') && <Icon as={ arrowIcon } boxSize={ 4 } transform={ sortIconTransform }/> }
                 Balance { config.chain.currency.symbol }
             </Link>
           </Th>
           <Th width="130px" isNumeric>
-            <Link color="accent" _hover={{ color: 'accent', textDecoration: 'underline' }}
+            <Link
               display="flex" alignItems="center" justifyContent="flex-end" onClick={ isLoading ? undefined : onSortToggle('txs') } columnGap={ 1 }>
               { sort?.includes('txs') && <Icon as={ arrowIcon } boxSize={ 4 } transform={ sortIconTransform }/> }
                 Txs

@@ -44,7 +44,7 @@ const SocketNewItemsNotice = chakra(({ children, className, url, num, alert, typ
 
     return (
       <>
-        <Link color="accent" _hover={{ color: 'accent', textDecoration: 'underline' }}
+        <Link
           href={ url }>{ num.toLocaleString() } more { name }{ num > 1 ? 's' : '' }</Link>
         <Text whiteSpace="pre"> ha{ num > 1 ? 've' : 's' } come in</Text>
       </>

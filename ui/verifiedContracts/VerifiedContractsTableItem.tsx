@@ -32,7 +32,7 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
         <Flex columnGap={ 2 }>
           <AddressIcon bgColor={ iconBgColor } address={ data.address } isLoading={ isLoading }/>
           <Flex columnGap={ 2 } flexWrap="wrap" w="calc(100% - 32px)">
-            <AddressLink color="accent" _hover={{ color: 'accent', textDecoration: 'underline' }}
+            <AddressLink
               hash={ data.address.hash } type="address" alias={ data.address.name } isLoading={ isLoading } my={ 1 } query={{ tab: 'contract' }}/>
             <Flex alignItems="center">
               <Skeleton isLoaded={ !isLoading } color="text_secondary" my={ 1 }>

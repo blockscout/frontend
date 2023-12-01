@@ -33,7 +33,6 @@ const TokenSnippet = ({ data, className, logoSize = 6, isDisabled, hideSymbol, h
         alias={ data?.name || 'Unnamed token' }
         type="token"
         isDisabled={ isDisabled }
-        color="accent" _hover={{ color: 'accent', textDecoration: 'underline' }}
         isLoading={ isLoading }
         maxW={ withSymbol ?
           `calc(80% - ${ (logoSize + columnGap * 2) * 4 }px)` :

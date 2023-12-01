@@ -57,7 +57,7 @@ const TokensTableItem = ({
           <Box overflow="hidden">
             <Flex alignItems="center">
               <TokenLogo data={ token } boxSize={ 6 } mr={ 2 } isLoading={ isLoading }/>
-              <AddressLink color="accent" _hover={{ color: 'accent', textDecoration: 'underline' }}
+              <AddressLink
                 fontSize="sm" fontWeight="700" hash={ address } type="token" alias={ tokenString } isLoading={ isLoading }/>
             </Flex>
             <Box ml={ 8 } mt={ 2 }>

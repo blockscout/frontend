@@ -46,8 +46,6 @@ const AddressesTableItem = ({
             w="calc(100% - 32px)"
             hash={ item.hash }
             alias={ item.name }
-            color="accent"
-            _hover={{ color: 'accent', textDecoration: 'underline' }}
             type="address"
             isLoading={ isLoading }
           />
