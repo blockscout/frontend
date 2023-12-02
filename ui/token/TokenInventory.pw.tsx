@@ -2,6 +2,7 @@ import { Box } from '@chakra-ui/react';
 import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
+import { tokenInfoERC721a } from 'mocks/tokens/tokenInfo';
 import { base as tokenInstanse } from 'mocks/tokens/tokenInstance';
 import TestApp from 'playwright/TestApp';
 
@@ -22,6 +23,11 @@ test('base view +@mobile', async({ mount }) => {
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore:
           pagination: { page: 1, isVisible: true },
+        }}
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore:
+        tokenQuery={{
+          data: tokenInfoERC721a,
         }}
       />
     </TestApp>,
