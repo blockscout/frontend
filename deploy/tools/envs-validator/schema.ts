@@ -392,6 +392,7 @@ const schema = yup
       .transform(replaceQuotes)
       .json()
       .of(yup.string<AddressViewId>().oneOf(ADDRESS_VIEWS_IDS)),
+    NEXT_PUBLIC_VIEWS_CONTRACT_SOLIDITYSCAN_ENABLED: yup.boolean(),
     NEXT_PUBLIC_VIEWS_TX_HIDDEN_FIELDS: yup
       .array()
       .transform(replaceQuotes)

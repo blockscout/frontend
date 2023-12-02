@@ -1,4 +1,4 @@
-import { Box, Flex, Icon } from '@chakra-ui/react';
+import { Box, Flex, HStack, Icon } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -25,6 +25,7 @@ import AddressTxs from 'ui/address/AddressTxs';
 import AddressWithdrawals from 'ui/address/AddressWithdrawals';
 import AddressFavoriteButton from 'ui/address/details/AddressFavoriteButton';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
+import SolidityscanReport from 'ui/address/SolidityscanReport';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import TextAd from 'ui/shared/ad/TextAd';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
@@ -194,7 +195,9 @@ const AddressPageContent = () => {
       ) }
       <AddressQrCode address={{ hash }} isLoading={ isLoading }/>
       <AccountActionsMenu isLoading={ isLoading }/>
-      <NetworkExplorers type="address" pathParam={ hash } ml="auto"/>
+      <HStack ml="auto" gap={ 2 }/>
+      { addressQuery.data?.is_contract && config.UI.views.address.solidityscanEnabled && <SolidityscanReport hash={ hash }/> }
+      <NetworkExplorers type="address" pathParam={ hash }/>
     </Flex>
   );
 

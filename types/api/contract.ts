@@ -156,3 +156,25 @@ export interface SmartContractVerificationError {
   constructor_arguments?: Array<string>;
   name?: Array<string>;
 }
+
+export type SolidityscanReport = {
+  scan_report: {
+    scan_status: string;
+    scan_summary: {
+      issue_severity_distribution: {
+        critical: number;
+        gas: number;
+        high: number;
+        informational: number;
+        low: number;
+        medium: number;
+      };
+      lines_analyzed_count: number;
+      scan_time_taken: number;
+      score: string;
+      score_v2: string;
+      threat_score: string;
+    };
+    scanner_reference_url: string;
+  };
+}
