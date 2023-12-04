@@ -11,6 +11,7 @@ import * as Layout from './components';
 const LayoutDefault = ({ children }: Props) => {
   return (
     <Layout.Container>
+      <Layout.TopRow/>
       <Layout.MainArea>
         <Layout.SideBar/>
         <Layout.MainColumn>
