@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import * as addressMock from 'mocks/address/address';
+import { tokenInfoERC721a } from 'mocks/tokens/tokenInfo';
 import * as tokenInstanceMock from 'mocks/tokens/tokenInstance';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
@@ -9,10 +10,12 @@ import * as configs from 'playwright/utils/configs';
 
 import TokenInstanceDetails from './TokenInstanceDetails';
 
-const API_URL_ADDRESS = buildApiUrl('address', { hash: tokenInstanceMock.base.token.address });
+const hash = tokenInfoERC721a.address;
+
+const API_URL_ADDRESS = buildApiUrl('address', { hash });
 const API_URL_TOKEN_TRANSFERS_COUNT = buildApiUrl('token_instance_transfers_count', {
   id: tokenInstanceMock.unique.id,
-  hash: tokenInstanceMock.unique.token.address,
+  hash,
 });
 
 test('base view +@dark-mode +@mobile', async({ mount, page }) => {
@@ -31,7 +34,7 @@ test('base view +@dark-mode +@mobile', async({ mount, page }) => {
 
   const component = await mount(
     <TestApp>
-      <TokenInstanceDetails data={ tokenInstanceMock.unique }/>
+      <TokenInstanceDetails data={ tokenInstanceMock.unique } token={ tokenInfoERC721a }/>
     </TestApp>,
   );
 

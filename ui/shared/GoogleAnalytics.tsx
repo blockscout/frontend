@@ -20,7 +20,7 @@ const GoogleAnalytics = () => {
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-          gtag('config', '${ id }');
+          gtag('config', window.__envs.NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID);
         ` }
       </Script>
     </>

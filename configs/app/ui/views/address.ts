@@ -27,6 +27,7 @@ const hiddenViews = (() => {
 const config = Object.freeze({
   identiconType,
   hiddenViews,
+  solidityscanEnabled: getEnvValue('NEXT_PUBLIC_VIEWS_CONTRACT_SOLIDITYSCAN_ENABLED') === 'true',
 });
 
 export default config;

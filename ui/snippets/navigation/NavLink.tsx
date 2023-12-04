@@ -1,4 +1,4 @@
-import { Link, Text, HStack, Tooltip, Box, useBreakpointValue, chakra, shouldForwardProp } from '@chakra-ui/react';
+import { Link, Text, HStack, Tooltip, Box, useBreakpointValue, chakra, shouldForwardProp, Icon } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React from 'react';
 
@@ -6,6 +6,7 @@ import type { NavItem } from 'types/client/navigation-items';
 
 import { route } from 'nextjs-routes';
 
+import arrowIcon from 'icons/arrows/north-east.svg';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { isInternalItem } from 'lib/hooks/useNavItems';
 
@@ -43,6 +44,11 @@ const NavLink = ({ item, isCollapsed, px, className, onClick }: Props) => {
       aria-label={ `${ item.text } link` }
       whiteSpace="nowrap"
       onClick={ onClick }
+      _hover={{
+        '& *': {
+          color: 'link_hovered',
+        },
+      }}
     >
       <Tooltip
         label={ item.text }
@@ -56,7 +62,8 @@ const NavLink = ({ item, isCollapsed, px, className, onClick }: Props) => {
         <HStack spacing={ 3 } overflow="hidden">
           <NavLinkIcon item={ item }/>
           <Text { ...styleProps.textProps }>
-            { item.text }
+            <span>{ item.text }</span>
+            { !isInternalLink && <Icon as={ arrowIcon } boxSize={ 4 } color="text_secondary" verticalAlign="middle"/> }
           </Text>
         </HStack>
       </Tooltip>
