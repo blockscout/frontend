@@ -23,10 +23,10 @@ import config from "configs/app";
 // import gitIcon from "icons/social/git.svg";
 // import twitterIcon from "icons/social/tweet.svg";
 import discordIcon from "icons/edexaSocial/discord.svg";
-import facebookIcon from "icons/edexaSocial/facebook.svg";
+import mediumIcon from "icons/edexaSocial/medium.svg";
 import instagramIcon from "icons/edexaSocial/instagram.svg";
 import linkedInIcon from "icons/edexaSocial/linkedln.svg";
-import redditIcon from "icons/edexaSocial/reddit.svg";
+import youtubeIcon from "icons/edexaSocial/youtube.svg";
 import spotifyIcon from "icons/edexaSocial/spotify.svg";
 import telegramIcon from "icons/edexaSocial/telegram.svg";
 import twitterIcon from "icons/edexaSocial/twitter.svg";
@@ -68,10 +68,10 @@ const Footer = () => {
       url: "https://discord.com/invite/TKBQS9tZJY",
     },
     {
-      icon: facebookIcon,
+      icon: mediumIcon,
       iconSize: "20px",
-      text: "Facebook",
-      url: "https://www.facebook.com/EDEXA-302612773660046/",
+      text: "Medium",
+      url: "https://medium.com/@edeXablockchain",
     },
     {
       icon: twitterIcon,
@@ -98,10 +98,10 @@ const Footer = () => {
       url: "https://t.me/edeXa",
     },
     {
-      icon: redditIcon,
+      icon: youtubeIcon,
       iconSize: "20px",
-      text: "Reddit",
-      url: "https://www.reddit.com/user/edexa_blockchain",
+      text: "Youtube",
+      url: "https://www.youtube.com/@edexa1326",
     },
   ];
 

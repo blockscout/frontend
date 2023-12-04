@@ -10,8 +10,7 @@ import React from "react";
 import { route } from "nextjs-routes";
 
 import config from "configs/app";
-import iconPlaceholder from "icons/networks/icon-placeholder.svg";
-import logoPlaceholder from "icons/networks/logo-placeholder.svg";
+import iconPlaceholder from "icons/edexaSocial/bigLogo.svg";
 
 interface Props {
   isCollapsed?: boolean;
@@ -46,7 +45,7 @@ const LogoFallback = ({
 
   return (
     <Icon
-      as={isSmall ? iconPlaceholder : logoPlaceholder}
+      as={isSmall ? "https://edexa-general.s3.ap-south-1.amazonaws.com/XLogo.png" : iconPlaceholder}
       width="auto"
       height="100%"
       color={logoColor}

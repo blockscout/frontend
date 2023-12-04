@@ -16,7 +16,7 @@ const AutoRotateImage = () => {
 
     // Clear the interval when the component is unmounted
     return () => clearInterval(intervalId);
-  }, []); // Empty dependency array ensures the effect runs only once on mount
+  }, [imageIndex]); // Empty dependency array ensures the effect runs only once on mount
 
   return <Image src={images[imageIndex]} alt={`Image ${imageIndex + 1}`} />;
 };
