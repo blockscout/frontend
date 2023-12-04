@@ -27,7 +27,7 @@ export const config: Sentry.BrowserOptions | undefined = (() => {
     release: feature.release,
     enableTracing: feature.enableTracing,
     tracesSampleRate,
-    integrations: [ new BrowserTracing() ],
+    integrations: feature.enableTracing ? [ new BrowserTracing() ] : undefined,
 
     // error filtering settings
     // were taken from here - https://docs.sentry.io/platforms/node/guides/azure-functions/configuration/filtering/#decluttering-sentry

@@ -174,7 +174,7 @@ const TokenPageContent = () => {
 
   const tabs: Array<RoutedTab> = [
     (tokenQuery.data?.type === 'ERC-1155' || tokenQuery.data?.type === 'ERC-721') ?
-      { id: 'inventory', title: 'Inventory', component: <TokenInventory inventoryQuery={ inventoryQuery }/> } :
+      { id: 'inventory', title: 'Inventory', component: <TokenInventory inventoryQuery={ inventoryQuery } tokenQuery={ tokenQuery }/> } :
       undefined,
     { id: 'token_transfers', title: 'Token transfers', component: <TokenTransfer transfersQuery={ transfersQuery } token={ tokenQuery.data }/> },
     { id: 'holders', title: 'Holders', component: <TokenHolders token={ tokenQuery.data } holdersQuery={ holdersQuery }/> },

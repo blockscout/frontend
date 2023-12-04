@@ -108,6 +108,5 @@ export const TOKEN_INSTANCE: TokenInstance = {
     name: 'GENESIS #188882, 8a77ca1bcaa4036f. Blockchain pixel PFP NFT + "on music video" trait inspired by God',
   },
   owner: ADDRESS_PARAMS,
-  token: TOKEN_INFO_ERC_1155,
   holder_address_hash: ADDRESS_HASH,
 };
