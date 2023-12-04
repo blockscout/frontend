@@ -6,7 +6,6 @@ import { scroller, Element } from 'react-scroll';
 
 import type { SearchResultItem } from 'types/api/search';
 
-import type { ResourceError } from 'lib/api/resources';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useMarketplaceApps from 'ui/marketplace/useMarketplaceApps';
 import TextAd from 'ui/shared/ad/TextAd';
@@ -18,7 +17,7 @@ import SearchBarSuggestApp from './SearchBarSuggestApp';
 import SearchBarSuggestItem from './SearchBarSuggestItem';
 
 interface Props {
-  query: UseQueryResult<Array<SearchResultItem>, ResourceError<unknown>>;
+  query: UseQueryResult<Array<SearchResultItem>, Error>;
   searchTerm: string;
   onItemClick: (event: React.MouseEvent<HTMLAnchorElement>) => void;
   containerId: string;
@@ -142,6 +141,8 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
                 { cat.title }
               </Text>
               { cat.id !== 'app' && itemsGroups[cat.id]?.map((item, index) =>
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-ignore
                 <SearchBarSuggestItem key={ index } data={ item } isMobile={ isMobile } searchTerm={ searchTerm } onClick={ onItemClick }/>,
               ) }
               { cat.id === 'app' && itemsGroups[cat.id]?.map((item, index) =>

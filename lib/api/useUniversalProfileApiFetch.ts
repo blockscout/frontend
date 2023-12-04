@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { SearchResultUniversalProfile } from '../../types/api/search';
+import type { SearchResultAddressOrContractOrUniversalProfile } from '../../types/api/search';
 import type { UniversalProfileProxyResponse } from '../../types/api/universalProfile';
 
 import type { Params as FetchParams } from 'lib/hooks/useFetch';
@@ -19,12 +19,13 @@ export default function useUniversalProfileApiFetch() {
   ) => {
     try {
       const { hits } = await algoliaIndex.search(queryParams);
-      return hits.map<SearchResultUniversalProfile>((hit) => {
+      return hits.map<SearchResultAddressOrContractOrUniversalProfile>((hit) => {
         const hitAsUp = hit as unknown as UniversalProfileProxyResponse;
         return {
           type: 'universal_profile',
           name: hitAsUp.hasProfileName ? hitAsUp.LSP3Profile.name : null,
           address: hit.objectID,
+          is_smart_contract_verified: false,
         };
       });
     } catch (error) {

@@ -49,19 +49,12 @@ export interface SearchResultTx {
   url?: string; // not used by the frontend, we build the url ourselves
 }
 
-export interface SearchResultUniversalProfile {
-  type: 'universal_profile';
-  name: string | null;
-  address: string;
-}
-
 export type SearchResultItem =
     SearchResultToken |
     SearchResultAddressOrContractOrUniversalProfile |
     SearchResultBlock |
     SearchResultTx |
-    SearchResultLabel |
-    SearchResultUniversalProfile;
+    SearchResultLabel
 
 export interface SearchResult {
   items: Array<SearchResultItem>;

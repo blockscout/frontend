@@ -113,6 +113,8 @@ const ContractSourceCode = ({ address, implementationAddress }: Props) => {
   ) : null;
 
   const copyToClipboard = activeContractData?.length === 1 ?
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
     <CopyToClipboard text={ activeContractData[0].source_code } isLoading={ isLoading } ml={{ base: 'auto', lg: diagramLink ? '0' : 'auto' }}/> :
     null;
 
