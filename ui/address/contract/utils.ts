@@ -9,7 +9,7 @@ export const getNativeCoinValue = (value: string | Array<unknown>) => {
     return BigInt(0);
   }
 
-  return BigInt(Number(_value));
+  return BigInt(_value);
 };
 
 export const addZeroesAllowed = (valueType: string) => {
