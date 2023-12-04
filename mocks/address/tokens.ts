@@ -122,11 +122,13 @@ export const nfts: AddressNFTsResponse = {
   items: [
     {
       ...tokenInstance.base,
+      token: tokens.tokenInfoERC1155a,
       token_type: 'ERC-1155',
       value: '11',
     },
     {
       ...tokenInstance.unique,
+      token: tokens.tokenInfoERC721a,
       token_type: 'ERC-721',
       value: '1',
     },
