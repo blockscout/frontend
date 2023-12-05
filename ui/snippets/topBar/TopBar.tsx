@@ -2,18 +2,19 @@ import { Flex, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import ColorModeSwitch from './ColorModeSwitch';
+import TopBarStats from './TopBarStats';
 
 const TopBar = () => {
-  const bgColor = useColorModeValue('gray.50', 'blackAlpha.900');
+  const bgColor = useColorModeValue('gray.50', 'whiteAlpha.100');
 
   return (
     <Flex
       py={ 2 }
       px={ 6 }
-      fontSize="xs"
       bgColor={ bgColor }
+      justifyContent="space-between"
     >
-      FOO BAR
+      <TopBarStats/>
       <ColorModeSwitch/>
     </Flex>
   );

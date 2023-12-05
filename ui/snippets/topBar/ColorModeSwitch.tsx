@@ -93,9 +93,24 @@ const ColorSample = (
       borderRadius="full"
       borderWidth="1px"
       borderColor={ borderColor }
-      outline={ isActive ? `1px solid ${ activeBorderColor }` : undefined }
+      position="relative"
+      _before={{
+        position: 'absolute',
+        display: 'block',
+        content: '""',
+        top: '-2px',
+        left: '-2px',
+        width: 'calc(100% + 2px)',
+        height: 'calc(100% + 2px)',
+        borderStyle: 'solid',
+        borderRadius: 'full',
+        borderWidth: '1px',
+        borderColor: isActive ? activeBorderColor : 'transparent',
+      }}
       _hover={{
-        outline: `1px solid ${ hoverBorderColor }`,
+        _before: {
+          borderColor: hoverBorderColor,
+        },
       }}
       data-hex={ hex }
       onClick={ onClick }
@@ -105,7 +120,7 @@ const ColorSample = (
 
 const ColorModeSwitch = () => {
   const { isOpen, onToggle, onClose } = useDisclosure();
-  const { setColorMode } = useColorMode();
+  const { setColorMode, colorMode } = useColorMode();
 
   const [ activeHex, setActiveHex ] = React.useState<string>();
 
@@ -125,10 +140,13 @@ const ColorModeSwitch = () => {
   }, [ setColorMode ]);
 
   React.useEffect(() => {
-    const cookieHex = cookies.get(cookies.NAMES.COLOR_MODE_HEX);
-    cookieHex && setTheme(cookieHex);
+    const fallbackHex = (THEMES.find(theme => theme.colorMode === colorMode) ?? THEMES[0]).colors[0].hex;
+    const cookieHex = cookies.get(cookies.NAMES.COLOR_MODE_HEX) ?? fallbackHex;
+    setTheme(cookieHex);
     setActiveHex(cookieHex);
-  }, [ setTheme ]);
+  // should run only on mount
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ ]);
 
   const handleSelect = React.useCallback((event: React.MouseEvent<HTMLDivElement>) => {
     const hex = event.currentTarget.getAttribute('data-hex');
@@ -154,9 +172,8 @@ const ColorModeSwitch = () => {
             icon={ <Icon as={ activeTheme.icon } boxSize={ 5 }/> }
             boxSize={ 5 }
             onClick={ onToggle }
-            ml="auto"
           />
-        ) : <Skeleton boxSize={ 5 }/> }
+        ) : <Skeleton boxSize={ 5 } borderRadius="sm"/> }
       </PopoverTrigger>
       <PopoverContent overflowY="hidden" w="200px" fontSize="sm">
         <PopoverBody boxShadow="2xl">
@@ -167,4 +184,4 @@ const ColorModeSwitch = () => {
   );
 };
 
-export default ColorModeSwitch;
+export default React.memo(ColorModeSwitch);
