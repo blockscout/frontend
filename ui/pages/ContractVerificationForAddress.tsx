@@ -7,7 +7,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import ContractVerificationForm from 'ui/contractVerification/ContractVerificationForm';
-import { isValidVerificationMethod, sortVerificationMethods } from 'ui/contractVerification/utils';
+import useFormConfigQuery from 'ui/contractVerification/useFormConfigQuery';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -31,17 +31,7 @@ const ContractVerificationForAddress = () => {
     throw Error('Not found', { cause: contractQuery.error as unknown as Error });
   }
 
-  const configQuery = useApiQuery('contract_verification_config', {
-    queryOptions: {
-      select: (data) => {
-        return {
-          ...data,
-          verification_options: data.verification_options.filter(isValidVerificationMethod).sort(sortVerificationMethods),
-        };
-      },
-      enabled: Boolean(hash),
-    },
-  });
+  const configQuery = useFormConfigQuery(Boolean(hash));
 
   React.useEffect(() => {
     if (method && hash) {
