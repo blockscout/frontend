@@ -5,12 +5,13 @@ import { useForm, FormProvider } from 'react-hook-form';
 
 import type { FormFields } from './types';
 import type { SocketMessage } from 'lib/socket/types';
-import type { SmartContractVerificationMethod, SmartContractVerificationConfig } from 'types/api/contract';
+import type { SmartContractVerificationMethod, SmartContractVerificationConfig, SmartContract } from 'types/api/contract';
 
 import { route } from 'nextjs-routes';
 
 import useApiFetch from 'lib/api/useApiFetch';
 import delay from 'lib/delay';
+import getErrorObjStatusCode from 'lib/errors/getErrorObjStatusCode';
 import useToast from 'lib/hooks/useToast';
 import * as mixpanel from 'lib/mixpanel/index';
 import useSocketChannel from 'lib/socket/useSocketChannel';
@@ -48,6 +49,25 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
   const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(data) => {
     const body = prepareRequestBody(data);
 
+    if (!hash) {
+      try {
+        const response = await apiFetch<'contract', SmartContract>('contract', {
+          pathParams: { hash: data.address.toLowerCase() },
+        });
+
+        const isVerifiedContract = 'is_verified' in response && response?.is_verified && !response.is_partially_verified;
+        if (isVerifiedContract) {
+          setError('address', { message: 'Contract has already been verified' });
+          return Promise.resolve();
+        }
+      } catch (error) {
+        const statusCode = getErrorObjStatusCode(error);
+        const message = statusCode === 404 ? 'Address is not a smart contract' : 'Something went wrong';
+        setError('address', { message });
+        return Promise.resolve();
+      }
+    }
+
     try {
       await apiFetch('contract_verification_via', {
         pathParams: { method: data.method.value, hash: data.address.toLowerCase() },
@@ -63,7 +83,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
     return new Promise((resolve) => {
       submitPromiseResolver.current = resolve;
     });
-  }, [ apiFetch ]);
+  }, [ apiFetch, hash, setError ]);
 
   const address = watch('address');
   const addressState = getFieldState('address');
