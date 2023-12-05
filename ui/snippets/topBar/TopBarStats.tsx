@@ -35,8 +35,9 @@ const TopBarStats = () => {
       { data?.gas_prices && (
         <Skeleton isLoaded={ !isPlaceholderData }>
           <span>Gas:</span>
-          <span> ${ Number(data.gas_prices.average).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }) }</span>
-          <chakra.span display={{ base: 'none', lg: 'inline' }}> { asymp } 18 Gwei per txn</chakra.span>
+          { /* will be added to API later */ }
+          { /* <span> ${ Number(data.gas_prices.average).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }) }</span> */ }
+          <chakra.span> { asymp } { data.gas_prices.average } Gwei per txn</chakra.span>
           { data.average_block_time && (
             <chakra.span display={{ base: 'none', lg: 'inline' }}> { tilde } { (data.average_block_time / 1000).toFixed(1) } s</chakra.span>
           ) }

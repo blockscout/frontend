@@ -140,7 +140,17 @@ const ColorModeSwitch = () => {
   }, [ setColorMode ]);
 
   React.useEffect(() => {
-    const fallbackHex = (THEMES.find(theme => theme.colorMode === colorMode) ?? THEMES[0]).colors[0].hex;
+    const cookieColorMode = cookies.get(cookies.NAMES.COLOR_MODE);
+
+    const nextColorMode = (() => {
+      if (!cookieColorMode) {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+
+      return colorMode;
+    })();
+
+    const fallbackHex = (THEMES.find(theme => theme.colorMode === nextColorMode && theme.colors.length === 1) ?? THEMES[0]).colors[0].hex;
     const cookieHex = cookies.get(cookies.NAMES.COLOR_MODE_HEX) ?? fallbackHex;
     setTheme(cookieHex);
     setActiveHex(cookieHex);
@@ -184,4 +194,4 @@ const ColorModeSwitch = () => {
   );
 };
 
-export default React.memo(ColorModeSwitch);
+export default ColorModeSwitch;
