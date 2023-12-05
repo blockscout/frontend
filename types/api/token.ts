@@ -1,7 +1,8 @@
 import type { TokenInfoApplication } from './account';
 import type { AddressParam } from './addressParams';
 
-export type TokenType = 'ERC-20' | 'ERC-721' | 'ERC-1155';
+export type NFTTokenType = 'ERC-721' | 'ERC-1155';
+export type TokenType = 'ERC-20' | NFTTokenType;
 
 export interface TokenInfo<T extends TokenType = TokenType> {
   address: string;
@@ -77,3 +78,7 @@ export type TokenInventoryPagination = {
 }
 
 export type TokenVerifiedInfo = Omit<TokenInfoApplication, 'id' | 'status'>;
+
+export type TokenInventoryFilters = {
+  holder_address_hash?: string;
+}

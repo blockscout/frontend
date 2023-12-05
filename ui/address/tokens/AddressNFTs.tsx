@@ -2,6 +2,7 @@ import { Grid } from '@chakra-ui/react';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import { apos } from 'lib/html-entities';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -10,10 +11,11 @@ import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPage
 import NFTItem from './NFTItem';
 
 type Props = {
-  tokensQuery: QueryWithPagesResult<'address_tokens'>;
+  tokensQuery: QueryWithPagesResult<'address_nfts'>;
+  hasActiveFilters: boolean;
 }
 
-const ERC1155Tokens = ({ tokensQuery }: Props) => {
+const AddressNFTs = ({ tokensQuery, hasActiveFilters }: Props) => {
   const isMobile = useIsMobile();
 
   const { isError, isPlaceholderData, data, pagination } = tokensQuery;
@@ -32,13 +34,14 @@ const ERC1155Tokens = ({ tokensQuery }: Props) => {
       gridTemplateColumns={{ base: 'repeat(2, calc((100% - 12px)/2))', lg: 'repeat(auto-fill, minmax(210px, 1fr))' }}
     >
       { data.items.map((item, index) => {
-        const key = item.token.address + '_' + (item.token_instance?.id && !isPlaceholderData ? `id_${ item.token_instance?.id }` : `index_${ index }`);
+        const key = item.token.address + '_' + (item.id && !isPlaceholderData ? `id_${ item.id }` : `index_${ index }`);
 
         return (
           <NFTItem
             key={ key }
             { ...item }
             isLoading={ isPlaceholderData }
+            withTokenLink
           />
         );
       }) }
@@ -52,8 +55,12 @@ const ERC1155Tokens = ({ tokensQuery }: Props) => {
       emptyText="There are no tokens of selected type."
       content={ content }
       actionBar={ actionBar }
+      filterProps={{
+        emptyFilteredText: `Couldn${ apos }t find any token that matches your query.`,
+        hasActiveFilters,
+      }}
     />
   );
 };
 
-export default ERC1155Tokens;
+export default AddressNFTs;

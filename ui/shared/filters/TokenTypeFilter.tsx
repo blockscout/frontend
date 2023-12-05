@@ -1,16 +1,16 @@
 import { CheckboxGroup, Checkbox, Text, Flex, Link, useCheckboxGroup } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenType } from 'types/api/token';
+import type { NFTTokenType, TokenType } from 'types/api/token';
 
-import { TOKEN_TYPES } from 'lib/token/tokenTypes';
+import { NFT_TOKEN_TYPES, TOKEN_TYPES } from 'lib/token/tokenTypes';
 
-type Props = {
-  onChange: (nextValue: Array<TokenType>) => void;
-  defaultValue?: Array<TokenType>;
+type Props<T extends TokenType | NFTTokenType> = {
+  onChange: (nextValue: Array<T>) => void;
+  defaultValue?: Array<T>;
+  nftOnly: T extends NFTTokenType ? true : false;
 }
-
-const TokenTypeFilter = ({ onChange, defaultValue }: Props) => {
+const TokenTypeFilter = <T extends TokenType | NFTTokenType>({ nftOnly, onChange, defaultValue }: Props<T>) => {
   const { value, setValue } = useCheckboxGroup({ defaultValue });
 
   const handleReset = React.useCallback(() => {
@@ -21,7 +21,7 @@ const TokenTypeFilter = ({ onChange, defaultValue }: Props) => {
     onChange([]);
   }, [ onChange, setValue, value.length ]);
 
-  const handleChange = React.useCallback((nextValue: Array<TokenType>) => {
+  const handleChange = React.useCallback((nextValue: Array<T>) => {
     setValue(nextValue);
     onChange(nextValue);
   }, [ onChange, setValue ]);
@@ -32,6 +32,7 @@ const TokenTypeFilter = ({ onChange, defaultValue }: Props) => {
         <Text fontWeight={ 600 } variant="secondary">Type</Text>
         <Link
           onClick={ handleReset }
+          cursor={ value.length > 0 ? 'pointer' : 'unset' }
           color={ value.length > 0 ? 'link' : 'text_secondary' }
           _hover={{
             color: value.length > 0 ? 'link_hovered' : 'text_secondary',
@@ -41,7 +42,7 @@ const TokenTypeFilter = ({ onChange, defaultValue }: Props) => {
         </Link>
       </Flex>
       <CheckboxGroup size="lg" onChange={ handleChange } value={ value }>
-        { TOKEN_TYPES.map(({ title, id }) => (
+        { (nftOnly ? NFT_TOKEN_TYPES : TOKEN_TYPES).map(({ title, id }) => (
           <Checkbox key={ id } value={ id }>
             <Text fontSize="md">{ title }</Text>
           </Checkbox>
