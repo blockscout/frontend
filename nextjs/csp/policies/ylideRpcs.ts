@@ -78,6 +78,13 @@ export function ylideRpcs(): CspDev.DirectiveDescriptor {
       'celoscan.io',
       'andromeda.metis.io',
       'andromeda-explorer.metis.io',
+      'wss://*.ylide.io',
+      'wss://*.alchemy.com',
+      'wss://*.infura.io',
+      'wss://*.nodereal.io',
+      'wss://rpc.gnosischain.com',
+      'wss://forno.celo.org',
+      'wss://wss.api.moonbeam.network',
     ],
   };
 }

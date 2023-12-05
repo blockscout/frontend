@@ -61,7 +61,6 @@ export interface TokenInstance {
   external_app_url: string | null;
   metadata: Record<string, unknown> | null;
   owner: AddressParam | null;
-  token: TokenInfo;
 }
 
 export interface TokenInstanceTransfersCount {
