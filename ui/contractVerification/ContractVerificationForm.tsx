@@ -166,7 +166,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
 
   useUpdateEffect(() => {
     if (methodValue) {
-      reset(getDefaultValues(methodValue, config, hash));
+      reset(getDefaultValues(methodValue, config, address || hash));
 
       const methodName = METHOD_LABELS[methodValue];
       mixpanel.logEvent(mixpanel.EventTypes.CONTRACT_VERIFICATION, { Status: 'Method selected', Method: methodName });
