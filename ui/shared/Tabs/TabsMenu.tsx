@@ -49,7 +49,7 @@ const TabsMenu = ({ tabs, tabsCut, isActive, styles, onItemClick, buttonRef, act
           { menuButton.title }
         </Button>
       </PopoverTrigger>
-      <PopoverContent w="auto">
+      <PopoverContent w="auto" borderColor="divider" bgColor="bg_base">
         <PopoverBody display="flex" flexDir="column">
           { tabs.slice(tabsCut).map((tab, index) => (
             <Button

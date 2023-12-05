@@ -1,4 +1,4 @@
-import { chakra, Icon, Tooltip, Hide, Skeleton, Flex } from '@chakra-ui/react';
+import { Flex, Hide, Icon, Skeleton, Tooltip, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { CsvExportParams } from 'types/client/address';
@@ -38,7 +38,7 @@ const AddressCsvExportLink = ({ className, address, params, isLoading }: Props) 
   }
 
   return (
-    <Tooltip isDisabled={ !isMobile } label="Download CSV">
+    <Tooltip isDisabled={ !isMobile } label="Download CSV" bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
       <LinkInternal
         className={ className }
         display="inline-flex"

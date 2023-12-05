@@ -14,7 +14,7 @@ const HashStringShorten = ({ hash, isTooltipDisabled }: Props) => {
   }
 
   return (
-    <Tooltip label={ hash } isDisabled={ isTooltipDisabled }>
+    <Tooltip label={ hash } isDisabled={ isTooltipDisabled } bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
       { shortenString(hash) }
     </Tooltip>
   );

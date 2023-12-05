@@ -1,6 +1,6 @@
-import { Popover, PopoverTrigger, PopoverContent, PopoverBody, useDisclosure } from '@chakra-ui/react';
+import { Popover, PopoverBody, PopoverContent, PopoverTrigger, useDisclosure } from '@chakra-ui/react';
 import _debounce from 'lodash/debounce';
-import type { FormEvent, FocusEvent } from 'react';
+import type { FocusEvent, FormEvent } from 'react';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -87,7 +87,8 @@ const SearchResultsInput = ({ searchTerm, handleSubmit, handleSearchTermChange }
           value={ searchTerm }
         />
       </PopoverTrigger>
-      <PopoverContent w={ `${ menuWidth.current }px` } maxH={{ base: '300px', lg: '500px' }} overflowY="scroll" ref={ menuRef }>
+      <PopoverContent w={ `${ menuWidth.current }px` } maxH={{ base: '300px', lg: '500px' }}
+        overflowY="scroll" ref={ menuRef } borderColor="divider" bgColor="bg_base">
         <PopoverBody py={ 6 }>
           <SearchBarRecentKeywords onClick={ handleSearchTermChange } onClear={ onClose }/>
         </PopoverBody>

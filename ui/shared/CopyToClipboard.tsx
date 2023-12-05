@@ -28,7 +28,8 @@ const CopyToClipboard = ({ text, className, isLoading }: Props) => {
   }
 
   return (
-    <Tooltip label={ copied ? 'Copied' : 'Copy to clipboard' } isOpen={ isOpen || copied }>
+    <Tooltip label={ copied ? 'Copied' : 'Copy to clipboard' } isOpen={ isOpen || copied }
+      bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
       <IconButton
         aria-label="copy"
         icon={ <CopyIcon/> }

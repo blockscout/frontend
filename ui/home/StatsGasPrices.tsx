@@ -8,11 +8,11 @@ const StatsGasPrices = ({ gasPrices }: {gasPrices: GasPrices}) => {
     color: 'accent',
   };
   const contentStyleProps = {
-    color: 'white',
+    color: 'text',
   };
 
   return (
-    <Grid templateColumns="repeat(2, max-content)" rowGap={ 2 } columnGap={ 4 } padding={ 4 } fontSize="xs">
+    <Grid templateColumns="repeat(2, max-content)" rowGap={ 2 } columnGap={ 4 } padding={ 4 } fontSize="xs" bgColor="bg_base">
       <GridItem { ...labelStyleProps }>Slow</GridItem>
       <GridItem { ...contentStyleProps }>{ `${ gasPrices.slow } Gacanto` }</GridItem>
       <GridItem { ...labelStyleProps }>Average</GridItem>

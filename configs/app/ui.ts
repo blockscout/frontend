@@ -6,7 +6,7 @@ import * as views from './ui/views';
 import { getEnvValue, parseEnvJson } from './utils';
 
 // eslint-disable-next-line max-len
-const HOMEPAGE_PLATE_BACKGROUND_DEFAULT = 'linear-gradient(270deg, #D2FFED 0%, #06FC99 66.03%)';
+const HOMEPAGE_PLATE_BACKGROUND_DEFAULT = 'linear-gradient(-90deg, #68CFAA 0%, #00FF98 66.03%)';
 
 const UI = Object.freeze({
   sidebar: {

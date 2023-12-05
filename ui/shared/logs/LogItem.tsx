@@ -64,13 +64,13 @@ const LogItem = ({ address, index, topics, data, decoded, type, tx_hash: txHash,
           />
         </Address>
         { /* api doesn't have find topic feature yet */ }
-        { /* <Tooltip label="Find matches topic">
+        { /* <Tooltip label="Find matches topic" bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
           <Link ml={ 2 } mr={{ base: 9, lg: 0 }} display="inline-flex">
             <Icon as={ searchIcon } boxSize={ 5 }/>
           </Link>
         </Tooltip> */ }
         <Skeleton isLoaded={ !isLoading } ml="auto" borderRadius="base">
-          <Tooltip label="Log index">
+          <Tooltip label="Log index" bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
             <Button variant="outline" colorScheme="gray" isActive size="sm" fontWeight={ 400 }>
               { index }
             </Button>

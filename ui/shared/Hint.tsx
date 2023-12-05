@@ -30,6 +30,7 @@ const Hint = ({ label, className, tooltipProps, isLoading }: Props) => {
       placement="top"
       maxW="320px"
       isOpen={ isOpen }
+      bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider"
       { ...tooltipProps }
     >
       <IconButton

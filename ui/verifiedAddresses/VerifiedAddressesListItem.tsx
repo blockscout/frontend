@@ -51,7 +51,7 @@ const VerifiedAddressesListItem = ({ item, application, onAdd, onEdit, isLoading
     return (
       <>
         <VerifiedAddressesTokenSnippet application={ application } name={ item.metadata.tokenName }/>
-        <Tooltip label="Edit">
+        <Tooltip label="Edit" bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
           <IconButton
             aria-label="edit"
             variant="simple"

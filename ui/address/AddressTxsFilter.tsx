@@ -34,11 +34,17 @@ const AddressTxsFilter = ({ onFilterChange, defaultFilter, isActive, isLoading }
           as="div"
         />
       </MenuButton>
-      <MenuList zIndex={ 2 }>
-        <MenuOptionGroup defaultValue={ defaultFilter || 'all' } title="Address" type="radio" onChange={ onFilterChange }>
-          <MenuItemOption value="all">All</MenuItemOption>
-          <MenuItemOption value="from">From</MenuItemOption>
-          <MenuItemOption value="to">To</MenuItemOption>
+      <MenuList zIndex={ 2 } bgColor="bg_base" borderColor="divider">
+        <MenuOptionGroup defaultValue={ defaultFilter || 'all' } title="Address" type="radio" onChange={ onFilterChange } >
+          <MenuItemOption value="all" bgColor="inherit" _hover={{
+            bgColor: 'divider',
+          }}>All</MenuItemOption>
+          <MenuItemOption value="from" bgColor="inherit" _hover={{
+            bgColor: 'divider',
+          }} >From</MenuItemOption>
+          <MenuItemOption value="to" bgColor="inherit" _hover={{
+            bgColor: 'divider',
+          }}>To</MenuItemOption>
         </MenuOptionGroup>
       </MenuList>
     </Menu>

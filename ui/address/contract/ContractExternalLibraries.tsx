@@ -108,7 +108,7 @@ const ContractExternalLibraries = ({ className, data }: Props) => {
       <PopoverTrigger>
         { button }
       </PopoverTrigger>
-      <PopoverContent w="400px">
+      <PopoverContent w="400px" borderColor="divider" bgColor="bg_base">
         <PopoverBody >
           { content }
         </PopoverBody>

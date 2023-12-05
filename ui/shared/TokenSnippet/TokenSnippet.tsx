@@ -42,7 +42,7 @@ const TokenSnippet = ({ data, className, logoSize = 6, isDisabled, hideSymbol, h
         textOverflow="ellipsis"
       />
       { withSymbol && (
-        <Skeleton isLoaded={ !isLoading } color="text_secondary" maxW="20%" display="flex">
+        <Skeleton isLoaded={ !isLoading } color="text" maxW="20%" display="flex">
           <div>(</div>
           <TruncatedValue value={ data.symbol } display="block" wordBreak="break-all"/>
           <div>)</div>

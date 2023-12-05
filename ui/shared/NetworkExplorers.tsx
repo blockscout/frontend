@@ -48,7 +48,7 @@ const NetworkExplorers = ({ className, type, pathParam, hideText }: Props) => {
           <Icon as={ arrowIcon } transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 } ml={ 1 }/>
         </Button>
       </PopoverTrigger>
-      <PopoverContent w="240px">
+      <PopoverContent w="240px" borderColor="divider" bgColor="bg_base">
         <PopoverBody >
           <chakra.span color="text_secondary" fontSize="xs">Verify with other explorers</chakra.span>
           <Flex

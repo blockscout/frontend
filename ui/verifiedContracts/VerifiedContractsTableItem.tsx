@@ -62,14 +62,14 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
         </Flex>
       </Td>
       <Td>
-        <Tooltip label={ isLoading ? undefined : 'Optimization' }>
+        <Tooltip label={ isLoading ? undefined : 'Optimization' } bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
           <chakra.span display="inline-block">
             { data.optimization_enabled ?
               <Icon as={ iconCheck } boxSize={ 6 } color="accent" cursor="pointer" isLoading={ isLoading }/> :
               <Icon as={ iconCross } boxSize={ 6 } color="red.600" cursor="pointer" isLoading={ isLoading }/> }
           </chakra.span>
         </Tooltip>
-        <Tooltip label={ isLoading ? undefined : 'Constructor args' }>
+        <Tooltip label={ isLoading ? undefined : 'Constructor args' } bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
           <chakra.span display="inline-block" ml={ 3 }>
             { data.has_constructor_args ?
               <Icon as={ iconCheck } boxSize={ 6 } color="accent" cursor="pointer" isLoading={ isLoading }/> :

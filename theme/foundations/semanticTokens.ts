@@ -30,6 +30,10 @@ const semanticTokens = {
       'default': '#3CAD71',
       _dark: '#07FC99',
     },
+    bg_base: {
+      'default': 'white',
+      _dark: '#171717',
+    },
   },
   shadows: {
     action_bar: '0 4px 4px -4px rgb(0 0 0 / 10%), 0 2px 4px -4px rgb(0 0 0 / 6%)',

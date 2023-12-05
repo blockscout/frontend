@@ -84,7 +84,7 @@ const ContractMethodFieldZeroes = ({ onClick, isDisabled }: Props) => {
           </Button>
         </PopoverTrigger>
         <Portal>
-          <PopoverContent w="110px">
+          <PopoverContent w="110px" borderColor="divider" bgColor="bg_base">
             <PopoverBody py={ 2 }>
               <List>
                 { [ 8, 12, 16, 18, 20 ].map((id) => (

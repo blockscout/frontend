@@ -31,7 +31,7 @@ const PopoverFilter = ({ appliedFiltersNum, children, contentProps, isActive, is
           isLoading={ isLoading }
         />
       </PopoverTrigger>
-      <PopoverContent { ...contentProps }>
+      <PopoverContent borderColor="divider" bgColor="bg_base" { ...contentProps }>
         <PopoverBody px={ 4 } py={ 6 } display="flex" flexDir="column" rowGap={ 5 }>
           { children }
         </PopoverBody>

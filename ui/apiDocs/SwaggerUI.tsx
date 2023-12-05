@@ -59,6 +59,10 @@ const SwaggerUI = () => {
       backgroundColor: useToken('colors', 'accent'),
     },
 
+    '.opblock-summary-control > .opblock-summary-method': {
+      color: useColorModeValue('text', '#171717'),
+    },
+
     '.opblock': {
       borderColor: useToken('colors', 'accent') + ' !important',
       backgroundColor: 'unset !important',

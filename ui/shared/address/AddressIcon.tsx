@@ -24,7 +24,7 @@ const AddressIcon = ({ address, className, isLoading }: Props) => {
   }
 
   return (
-    <Tooltip label={ address.implementation_name }>
+    <Tooltip label={ address.implementation_name } bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
       <Box className={ className } boxSize={ 6 } display="inline-flex">
         <Jazzicon diameter={ 24 } seed={ jsNumberForAddress(address.hash) }/>
       </Box>

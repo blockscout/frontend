@@ -45,7 +45,7 @@ const TxStatus = ({ status, errorText, isLoading }: Props) => {
   }
 
   return (
-    <Tooltip label={ errorText }>
+    <Tooltip label={ errorText } bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
       <Tag colorScheme={ colorScheme } color={ color } bgColor={ bgColor } display="inline-flex" isLoading={ isLoading }>
         <TagLeftIcon boxSize={ 2.5 } as={ icon }/>
         <TagLabel>{ label }</TagLabel>

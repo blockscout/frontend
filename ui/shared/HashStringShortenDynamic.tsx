@@ -93,7 +93,8 @@ const HashStringShortenDynamic = ({ hash, fontWeight = '400', isTooltipDisabled,
 
   if (isTruncated) {
     return (
-      <Tooltip label={ hash } isDisabled={ isTooltipDisabled } maxW={{ base: '100vw', lg: '400px' }}>{ content }</Tooltip>
+      <Tooltip label={ hash } isDisabled={ isTooltipDisabled } maxW={{ base: '100vw', lg: '400px' }}
+        bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">{ content }</Tooltip>
     );
   }
 

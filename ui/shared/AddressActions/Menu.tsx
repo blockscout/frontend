@@ -36,7 +36,7 @@ const AddressActions = ({ isLoading }: Props) => {
           </Flex>
         </MenuButton>
       </Skeleton>
-      <MenuList minWidth="180px" zIndex="popover">
+      <MenuList minWidth="180px" zIndex="popover" bgColor="bg_base" borderColor="divider">
         { isTokenPage && config.features.addressVerification.isEnabled &&
           <TokenInfoMenuItem py={ 2 } px={ 4 } hash={ hash } onBeforeClick={ isAccountActionAllowed }/> }
         <PrivateTagMenuItem py={ 2 } px={ 4 } hash={ hash } onBeforeClick={ isAccountActionAllowed }/>

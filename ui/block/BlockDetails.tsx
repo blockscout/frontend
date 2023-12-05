@@ -105,13 +105,13 @@ const BlockDetails = ({ query }: Props) => {
 
     return (
       <Text variant="secondary" whiteSpace="break-spaces">
-        <Tooltip label="Static block reward">
+        <Tooltip label="Static block reward" bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
           <span>{ staticReward.dividedBy(WEI).toFixed() }</span>
         </Tooltip>
         { !txFees.isEqualTo(ZERO) && (
           <>
             { space }+{ space }
-            <Tooltip label="Txn fees">
+            <Tooltip label="Txn fees" bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
               <span>{ txFees.dividedBy(WEI).toFixed() }</span>
             </Tooltip>
           </>
@@ -119,7 +119,7 @@ const BlockDetails = ({ query }: Props) => {
         { !burntFees.isEqualTo(ZERO) && (
           <>
             { space }-{ space }
-            <Tooltip label="Burnt fees">
+            <Tooltip label="Burnt fees" bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
               <span>{ burntFees.dividedBy(WEI).toFixed() }</span>
             </Tooltip>
           </>
@@ -317,7 +317,7 @@ const BlockDetails = ({ query }: Props) => {
             { burntFees.dividedBy(WEI).toFixed() } { config.chain.currency.symbol }
           </Skeleton>
           { !txFees.isEqualTo(ZERO) && (
-            <Tooltip label="Burnt fees / Txn fees * 100%">
+            <Tooltip label="Burnt fees / Txn fees * 100%" bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
               <Box>
                 <Utilization
                   ml={ 4 }

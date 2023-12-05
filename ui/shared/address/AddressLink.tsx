@@ -1,4 +1,4 @@
-import { chakra, shouldForwardProp, Tooltip, Box, Skeleton } from '@chakra-ui/react';
+import { Box, Skeleton, Tooltip, chakra, shouldForwardProp } from '@chakra-ui/react';
 import type { HTMLAttributeAnchorTarget } from 'react';
 import React from 'react';
 
@@ -66,7 +66,7 @@ const AddressLink = (props: Props) => {
         return <TruncatedValue value={ alias } display="block"/>;
       }
       return (
-        <Tooltip label={ hash } isDisabled={ isMobile }>
+        <Tooltip label={ hash } isDisabled={ isMobile } bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
           { text }
         </Tooltip>
       );

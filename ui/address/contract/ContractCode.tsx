@@ -1,4 +1,4 @@
-import { Flex, Skeleton, Button, Grid, GridItem, Alert, Link, chakra, Box } from '@chakra-ui/react';
+import { Alert, Box, Button, chakra, Flex, Grid, GridItem, Link, Skeleton } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
@@ -93,6 +93,10 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
       size="sm"
       ml="auto"
       mr={ 3 }
+      bgColor="accent"
+      _hover={{
+        bgColor: 'accent',
+      }}
       as="a"
       href={ route({ pathname: '/address/[hash]/contract-verification', query: { hash: addressHash || '' } }) }
     >

@@ -99,14 +99,14 @@ const TxDetails = () => {
   const actionsExist = data.actions && data.actions.length > 0;
 
   const executionSuccessBadge = toAddress?.is_contract && data.result === 'success' ? (
-    <Tooltip label="Contract execution completed">
+    <Tooltip label="Contract execution completed" bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
       <chakra.span display="inline-flex" ml={ 2 } mr={ 1 }>
         <ChakraIcon as={ successIcon } boxSize={ 4 } color={ executionSuccessIconColor } cursor="pointer"/>
       </chakra.span>
     </Tooltip>
   ) : null;
   const executionFailedBadge = toAddress?.is_contract && Boolean(data.status) && data.result !== 'success' ? (
-    <Tooltip label="Error occurred during contract execution">
+    <Tooltip label="Error occurred during contract execution" bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
       <chakra.span display="inline-flex" ml={ 2 } mr={ 1 }>
         <ChakraIcon as={ errorIcon } boxSize={ 4 } color="error" cursor="pointer"/>
       </chakra.span>

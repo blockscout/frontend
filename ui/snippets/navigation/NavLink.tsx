@@ -45,6 +45,7 @@ const NavLink = ({ item, isCollapsed, px, className }: Props) => {
       <Tooltip
         label={ item.text }
         hasArrow={ false }
+        bgColor="bg_base" borderWidth="1px" borderColor="divider"
         isDisabled={ isMobile || isCollapsed === false || (isCollapsed === undefined && isXLScreen) }
         placement="right"
         variant="nav"

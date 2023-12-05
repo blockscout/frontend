@@ -1,5 +1,5 @@
 import type { SystemStyleObject, TooltipProps } from '@chakra-ui/react';
-import { chakra, Flex, LightMode, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { chakra, Flex, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import breakpoints from 'theme/foundations/breakpoints';
@@ -23,7 +23,6 @@ const TOOLTIP_PROPS: Partial<TooltipProps> = {
   borderRadius: 'md',
   placement: 'bottom-end',
   offset: [ 0, 0 ],
-  bgColor: 'blackAlpha.900',
 };
 
 const StatsItem = ({ icon, title, value, className, tooltipLabel, url, isLoading }: Props) => {
@@ -71,17 +70,15 @@ const StatsItem = ({ icon, title, value, className, tooltipLabel, url, isLoading
         </Skeleton>
       </Flex>
       { tooltipLabel && !isLoading && (
-        <LightMode>
-          <Hint
-            label={ tooltipLabel }
-            tooltipProps={ TOOLTIP_PROPS }
-            boxSize={ 6 }
-            color={ infoColor }
-            position="absolute"
-            top={{ base: 'calc(50% - 12px)', lg: '10px', xl: 'calc(50% - 12px)' }}
-            right="10px"
-          />
-        </LightMode>
+        <Hint
+          label={ tooltipLabel }
+          tooltipProps={ TOOLTIP_PROPS }
+          boxSize={ 6 }
+          color={ infoColor }
+          position="absolute"
+          top={{ base: 'calc(50% - 12px)', lg: '10px', xl: 'calc(50% - 12px)' }}
+          right="10px"
+        />
       ) }
     </Flex>
   );
