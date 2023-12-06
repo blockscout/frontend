@@ -56,6 +56,7 @@ const TokenPageContent = () => {
 
   const hashString = getQueryParamString(router.query.hash);
   const tab = getQueryParamString(router.query.tab);
+  const ownerFilter = getQueryParamString(router.query.holder_address_hash) || undefined;
 
   const queryClient = useQueryClient();
 
@@ -140,6 +141,7 @@ const TokenPageContent = () => {
   const inventoryQuery = useQueryWithPages({
     resourceName: 'token_inventory',
     pathParams: { hash: hashString },
+    filters: ownerFilter ? { holder_address_hash: ownerFilter } : {},
     scrollRef,
     options: {
       enabled: Boolean(
@@ -150,7 +152,7 @@ const TokenPageContent = () => {
           tab === 'inventory'
         ),
       ),
-      placeholderData: generateListStub<'token_inventory'>(tokenStubs.TOKEN_INSTANCE, 50, { next_page_params: null }),
+      placeholderData: generateListStub<'token_inventory'>(tokenStubs.TOKEN_INSTANCE, 50, { next_page_params: { unique_token: 1 } }),
     },
   });
 
@@ -173,9 +175,11 @@ const TokenPageContent = () => {
   const contractTabs = useContractTabs(contractQuery.data);
 
   const tabs: Array<RoutedTab> = [
-    (tokenQuery.data?.type === 'ERC-1155' || tokenQuery.data?.type === 'ERC-721') ?
-      { id: 'inventory', title: 'Inventory', component: <TokenInventory inventoryQuery={ inventoryQuery } tokenQuery={ tokenQuery }/> } :
-      undefined,
+    (tokenQuery.data?.type === 'ERC-1155' || tokenQuery.data?.type === 'ERC-721') ? {
+      id: 'inventory',
+      title: 'Inventory',
+      component: <TokenInventory inventoryQuery={ inventoryQuery } tokenQuery={ tokenQuery } ownerFilter={ ownerFilter }/>,
+    } : undefined,
     { id: 'token_transfers', title: 'Token transfers', component: <TokenTransfer transfersQuery={ transfersQuery } token={ tokenQuery.data }/> },
     { id: 'holders', title: 'Holders', component: <TokenHolders token={ tokenQuery.data } holdersQuery={ holdersQuery }/> },
     contractQuery.data?.is_contract ? {
