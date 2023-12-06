@@ -6,15 +6,10 @@ import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
 import SearchBar from 'ui/snippets/searchBar/SearchBar';
 
 type Props = {
-  isHomePage?: boolean;
   renderSearchBar?: () => React.ReactNode;
 }
 
-const HeaderDesktop = ({ isHomePage, renderSearchBar }: Props) => {
-
-  if (isHomePage) {
-    return null;
-  }
+const HeaderDesktop = ({ renderSearchBar }: Props) => {
 
   const searchBar = renderSearchBar ? renderSearchBar() : <SearchBar/>;
 
