@@ -38,7 +38,7 @@ export default function useFetchTxInfo({ onTxStatusUpdate, updateDelay }: Params
       placeholderData: config.features.zkEvmRollup.isEnabled ? TX_ZKEVM_L2 : TX,
     },
   });
-  const { data, isError, isLoading } = queryResult;
+  const { data, isError, isPending } = queryResult;
 
   const handleStatusUpdateMessage: SocketMessage.TxStatusUpdate['handler'] = React.useCallback(async() => {
     updateDelay && await delay(updateDelay);
@@ -60,7 +60,7 @@ export default function useFetchTxInfo({ onTxStatusUpdate, updateDelay }: Params
     topic: `transactions:${ hash }`,
     onSocketClose: handleSocketClose,
     onSocketError: handleSocketError,
-    isDisabled: isLoading || isError || data.status !== null,
+    isDisabled: isPending || isError || data.status !== null,
   });
   useSocketMessage({
     channel,

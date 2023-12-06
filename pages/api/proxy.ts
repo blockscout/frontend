@@ -32,8 +32,8 @@ export default handler;
 
 export const config = {
   api: {
-    // disable body parser otherwise it is impossible to upload large files (over 1Mb)
-    // e.g. when verifying a smart contract
-    bodyParser: false,
+    bodyParser: {
+      sizeLimit: '100mb',
+    },
   },
 };

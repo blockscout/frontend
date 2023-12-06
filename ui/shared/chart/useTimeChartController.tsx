@@ -1,101 +1,65 @@
-import * as d3 from 'd3';
-import { useMemo } from 'react';
+import React from 'react';
 
-import type { TimeChartData } from 'ui/shared/chart/types';
+import type { AxesConfig, ChartMargin, TimeChartData } from 'ui/shared/chart/types';
 
-import { WEEK, MONTH, YEAR } from 'lib/consts';
+import useClientRect from 'lib/hooks/useClientRect';
+
+import calculateInnerSize from './utils/calculateInnerSize';
+import { getAxisParams, DEFAULT_MAXIMUM_SIGNIFICANT_DIGITS } from './utils/timeChartAxis';
 
 interface Props {
   data: TimeChartData;
-  width: number;
-  height: number;
+  margin?: ChartMargin;
+  axesConfig?: AxesConfig;
 }
 
-export default function useTimeChartController({ data, width, height }: Props) {
+export default function useTimeChartController({ data, margin, axesConfig }: Props) {
 
-  const xMin = useMemo(
-    () => d3.min(data, ({ items }) => d3.min(items, ({ date }) => date)) || new Date(),
-    [ data ],
-  );
+  const [ rect, ref ] = useClientRect<SVGSVGElement>();
 
-  const xMax = useMemo(
-    () => d3.max(data, ({ items }) => d3.max(items, ({ date }) => date)) || new Date(),
-    [ data ],
-  );
+  // we need to recalculate the axis scale whenever the rect width changes
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const axisParams = React.useMemo(() => getAxisParams(data, axesConfig), [ data, axesConfig, rect?.width ]);
 
-  const xScale = useMemo(
-    () => d3.scaleTime().domain([ xMin, xMax ]).range([ 0, width ]),
-    [ xMin, xMax, width ],
-  );
+  const chartMargin = React.useMemo(() => {
+    const exceedingDigits = (axisParams.y.labelFormatParams.maximumSignificantDigits ?? DEFAULT_MAXIMUM_SIGNIFICANT_DIGITS) -
+       DEFAULT_MAXIMUM_SIGNIFICANT_DIGITS;
+    const PIXELS_PER_DIGIT = 7;
+    const leftShift = PIXELS_PER_DIGIT * exceedingDigits;
 
-  const yMin = useMemo(
-    () => d3.min(data, ({ items }) => d3.min(items, ({ value }) => value)) || 0,
-    [ data ],
-  );
+    return {
+      ...margin,
+      left: (margin?.left ?? 0) + leftShift,
+    };
+  }, [ axisParams.y.labelFormatParams.maximumSignificantDigits, margin ]);
 
-  const yMax = useMemo(
-    () => d3.max(data, ({ items }) => d3.max(items, ({ value }) => value)) || 0,
-    [ data ],
-  );
+  const { innerWidth, innerHeight } = calculateInnerSize(rect, chartMargin);
 
-  const yScale = useMemo(() => {
-    const indention = (yMax - yMin) * 0.15;
+  const xScale = React.useMemo(() => {
+    return axisParams.x.scale.range([ 0, innerWidth ]);
+  }, [ axisParams.x.scale, innerWidth ]);
 
-    return d3.scaleLinear()
-      .domain([ yMin >= 0 && yMin - indention <= 0 ? 0 : yMin - indention, yMax + indention ])
-      .range([ height, 0 ]);
-  }, [ height, yMin, yMax ]);
+  const yScale = React.useMemo(() => {
+    return axisParams.y.scale.range([ innerHeight, 0 ]);
+  }, [ axisParams.y.scale, innerHeight ]);
 
-  const yScaleForAxis = useMemo(
-    () => d3.scaleBand().domain([ String(yMin), String(yMax) ]).range([ height, 0 ]),
-    [ height, yMin, yMax ],
-  );
-
-  const xTickFormat = (axis: d3.Axis<d3.NumberValue>) => (d: d3.AxisDomain) => {
-    let format: (date: Date) => string;
-    const scale = axis.scale();
-    const extent = scale.domain();
-
-    const span = Number(extent[1]) - Number(extent[0]);
-
-    if (span > YEAR) {
-      format = d3.timeFormat('%Y');
-    } else if (span > 2 * MONTH) {
-      format = d3.timeFormat('%b');
-    } else if (span > WEEK) {
-      format = d3.timeFormat('%b %d');
-    } else {
-      format = d3.timeFormat('%a %d');
-    }
-
-    return format(d as Date);
-  };
-
-  const yTickFormat = () => (d: d3.AxisDomain) => {
-    const num = Number(d);
-    const maximumFractionDigits = (() => {
-      if (num < 1) {
-        return 3;
-      }
-
-      if (num < 10) {
-        return 2;
-      }
-
-      if (num < 100) {
-        return 1;
-      }
-
-      return 0;
-    })();
-    return Number(d).toLocaleString(undefined, { maximumFractionDigits, notation: 'compact' });
-  };
-
-  return {
-    xTickFormat,
-    yTickFormat,
-    xScale,
-    yScale,
-    yScaleForAxis,
-  };
+  return React.useMemo(() => {
+    return {
+      rect,
+      ref,
+      chartMargin,
+      innerWidth,
+      innerHeight,
+      axis: {
+        x: {
+          tickFormatter: axisParams.x.tickFormatter,
+          scale: xScale,
+        },
+        y: {
+          tickFormatter: axisParams.y.tickFormatter,
+          scale: yScale,
+        },
+      },
+    };
+  }, [ axisParams.x.tickFormatter, axisParams.y.tickFormatter, chartMargin, innerHeight, innerWidth, rect, ref, xScale, yScale ]);
 }

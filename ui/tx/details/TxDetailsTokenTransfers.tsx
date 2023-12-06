@@ -14,6 +14,7 @@ import TxDetailsTokenTransfer from './TxDetailsTokenTransfer';
 interface Props {
   data: Array<TokenTransfer>;
   txHash: string;
+  isOverflow: boolean;
 }
 
 const TOKEN_TRANSFERS_TYPES = [
@@ -22,16 +23,14 @@ const TOKEN_TRANSFERS_TYPES = [
   { title: 'Tokens burnt', hint: 'List of tokens burnt in the transaction', type: 'token_burning' },
   { title: 'Tokens created', hint: 'List of tokens created in the transaction', type: 'token_spawning' },
 ];
-const VISIBLE_ITEMS_NUM = 3;
 
-const TxDetailsTokenTransfers = ({ data, txHash }: Props) => {
+const TxDetailsTokenTransfers = ({ data, txHash, isOverflow }: Props) => {
   const viewAllUrl = route({ pathname: '/tx/[hash]', query: { hash: txHash, tab: 'token_transfers' } });
 
   const transferGroups = TOKEN_TRANSFERS_TYPES.map((group) => ({
     ...group,
     items: data?.filter((token) => token.type === group.type) || [],
   }));
-  const showViewAllLink = transferGroups.some(({ items }) => items.length > VISIBLE_ITEMS_NUM);
 
   return (
     <>
@@ -54,12 +53,12 @@ const TxDetailsTokenTransfers = ({ data, txHash }: Props) => {
               w="100%"
               overflow="hidden"
             >
-              { items.slice(0, VISIBLE_ITEMS_NUM).map((item, index) => <TxDetailsTokenTransfer key={ index } data={ item }/>) }
+              { items.map((item, index) => <TxDetailsTokenTransfer key={ index } data={ item }/>) }
             </Flex>
           </DetailsInfoItem>
         );
       }) }
-      { showViewAllLink && (
+      { isOverflow && (
         <>
           <Show above="lg" ssr={ false }><GridItem></GridItem></Show>
           <GridItem fontSize="sm" alignItems="center" display="inline-flex" pl={{ base: '28px', lg: 0 }}>

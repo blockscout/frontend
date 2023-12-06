@@ -24,15 +24,14 @@ function isAppCategoryMatches(category: string, app: MarketplaceAppOverview, fav
 
 export default function useMarketplaceApps(filter: string, selectedCategoryId: string = MarketplaceCategory.ALL, favoriteApps: Array<string> = []) {
   const apiFetch = useApiFetch();
-  const { isPlaceholderData, isError, error, data } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppOverview>>(
-    [ 'marketplace-apps' ],
-    async() => apiFetch(configUrl, undefined, { resource: 'marketplace-apps' }),
-    {
-      select: (data) => (data as Array<MarketplaceAppOverview>).sort((a, b) => a.title.localeCompare(b.title)),
-      placeholderData: feature.isEnabled ? Array(9).fill(MARKETPLACE_APP) : undefined,
-      staleTime: Infinity,
-      enabled: feature.isEnabled,
-    });
+  const { isPlaceholderData, isError, error, data } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppOverview>>({
+    queryKey: [ 'marketplace-apps' ],
+    queryFn: async() => apiFetch(configUrl, undefined, { resource: 'marketplace-apps' }),
+    select: (data) => (data as Array<MarketplaceAppOverview>).sort((a, b) => a.title.localeCompare(b.title)),
+    placeholderData: feature.isEnabled ? Array(9).fill(MARKETPLACE_APP) : undefined,
+    staleTime: Infinity,
+    enabled: feature.isEnabled,
+  });
 
   const displayedApps = React.useMemo(() => {
     return data?.filter(app => isAppNameMatches(filter, app) && isAppCategoryMatches(selectedCategoryId, app, favoriteApps)) || [];

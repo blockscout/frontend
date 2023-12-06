@@ -36,13 +36,13 @@ const Icon = (props: IconProps) => {
   );
 };
 
-type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'hash'>;
+type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'hash' | 'text'>;
 
 const Content = chakra((props: ContentProps) => {
   return (
     <EntityBase.Content
       { ...props }
-      text={ props.hash }
+      text={ props.text ?? props.hash }
     />
   );
 });
@@ -64,6 +64,7 @@ const Container = EntityBase.Container;
 
 export interface EntityProps extends EntityBase.EntityBaseProps {
   hash: string;
+  text?: string;
 }
 
 const TxEntity = (props: EntityProps) => {
