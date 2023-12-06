@@ -164,7 +164,7 @@ test.describe('with apps', () => {
     ]) as any,
   });
 
-  extendedTest.only('default view +@mobile', async({ mount, page }) => {
+  extendedTest('default view +@mobile', async({ mount, page }) => {
     const hooksConfig = {
       router: {
         query: { q: 'o' },
