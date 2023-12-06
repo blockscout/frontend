@@ -39,7 +39,7 @@ const ColorModeSwitchTheme = ({ icon, name, colors, onClick, activeHex }: Props)
         } : undefined,
       }}
       onClick={ onClick }
-      data-hex={ hasOneColor ? colors[0].hex : undefined }
+      data-hex={ colors[0].hex }
       fontWeight={ 500 }
       borderRadius="base"
     >

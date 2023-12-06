@@ -57,6 +57,8 @@ const ColorModeSwitch = () => {
   }, [ ]);
 
   const handleSelect = React.useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+
     const hex = event.currentTarget.getAttribute('data-hex');
 
     if (!hex) {
