@@ -24,6 +24,7 @@ type Props = {
   currentAddress?: string;
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
+  translate?: boolean;
 }
 
 const TxsTable = ({
@@ -38,6 +39,7 @@ const TxsTable = ({
   currentAddress,
   enableTimeIncrement,
   isLoading,
+  translate,
 }: Props) => {
   return (
     <Table variant="simple" minWidth="950px" size="xs">
@@ -94,6 +96,7 @@ const TxsTable = ({
               currentAddress={ currentAddress }
               enableTimeIncrement={ enableTimeIncrement }
               isLoading={ isLoading }
+              translate={ translate }
             />
           )) }
         </AnimatePresence>

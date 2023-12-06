@@ -12,9 +12,10 @@ interface Props {
   appliedFiltersNum?: number;
   onClick: () => void;
   as?: As;
+  border?: boolean;
 }
 
-const FilterButton = ({ isActive, isLoading, appliedFiltersNum, onClick, as }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
+const FilterButton = ({ isActive, isLoading, appliedFiltersNum, onClick, as, border }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
   const badgeColor = useColorModeValue('white', 'black');
   const badgeBgColor = useColorModeValue('blue.700', 'gray.50');
 
@@ -35,6 +36,11 @@ const FilterButton = ({ isActive, isLoading, appliedFiltersNum, onClick, as }: P
       px={ 1.5 }
       flexShrink={ 0 }
       as={ as }
+      _active={{
+        color: '#4299E1',
+        borderColor: border ? '#4299E1' : 'transparent',
+        bg: 'blue.50',
+      }}
     >
       { FilterIcon }
       <Box display={{ base: 'none', lg: 'block' }}>Filter</Box>

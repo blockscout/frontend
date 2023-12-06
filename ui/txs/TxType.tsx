@@ -2,17 +2,21 @@ import React from 'react';
 
 import type { TransactionType } from 'types/api/transaction';
 
+import { camelCaseToSentence } from 'lib/utils/stringHelpers';
 import Tag from 'ui/shared/chakra/Tag';
 
 export interface Props {
   types: Array<TransactionType>;
   isLoading?: boolean;
+  translateLabel?: string;
 }
 
 const TYPES_ORDER = [ 'rootstock_remasc', 'rootstock_bridge', 'token_creation', 'contract_creation', 'token_transfer', 'contract_call', 'coin_transfer' ];
 
-const TxType = ({ types, isLoading }: Props) => {
+const TxType = ({ types, isLoading, translateLabel }: Props) => {
   const typeToShow = types.sort((t1, t2) => TYPES_ORDER.indexOf(t1) - TYPES_ORDER.indexOf(t2))[0];
+
+  const filteredTypes = [ 'unclassified' ];
 
   let label;
   let colorScheme;
@@ -50,6 +54,12 @@ const TxType = ({ types, isLoading }: Props) => {
       label = 'Transaction';
       colorScheme = 'purple';
 
+  }
+
+  if (translateLabel) {
+    if (!filteredTypes.includes(translateLabel)) {
+      label = camelCaseToSentence(translateLabel);
+    }
   }
 
   return (

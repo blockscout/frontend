@@ -26,6 +26,7 @@ type Props = {
   filterValue?: AddressFromToFilter;
   enableTimeIncrement?: boolean;
   top?: number;
+  translate?: boolean;
 }
 
 const TxsContent = ({
@@ -39,6 +40,7 @@ const TxsContent = ({
   currentAddress,
   enableTimeIncrement,
   top,
+  translate,
 }: Props) => {
   const { data, isPlaceholderData, isError, setSortByField, setSortByValue, sorting } = useTxsSort(query);
   const isMobile = useIsMobile();
@@ -63,6 +65,7 @@ const TxsContent = ({
               currentAddress={ currentAddress }
               enableTimeIncrement={ enableTimeIncrement }
               isLoading={ isPlaceholderData }
+              translate={ translate }
             />
           )) }
         </Box>
@@ -80,6 +83,7 @@ const TxsContent = ({
           currentAddress={ currentAddress }
           enableTimeIncrement={ enableTimeIncrement }
           isLoading={ isPlaceholderData }
+          translate={ translate }
         />
       </Hide>
     </>

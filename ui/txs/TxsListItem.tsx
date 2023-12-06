@@ -11,6 +11,7 @@ import type { Transaction } from 'types/api/transaction';
 import config from 'configs/app';
 import rightArrowIcon from 'icons/arrows/east.svg';
 import getValueWithUnit from 'lib/getValueWithUnit';
+import useFetchDescribe from 'lib/hooks/useFetchDescribe';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import { space } from 'lib/html-entities';
 import Icon from 'ui/shared/chakra/Icon';
@@ -31,12 +32,13 @@ type Props = {
   currentAddress?: string;
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
+  translate?: boolean;
 }
 
 const TAG_WIDTH = 48;
 const ARROW_WIDTH = 24;
 
-const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeIncrement }: Props) => {
+const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeIncrement, translate }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
 
   const isOut = Boolean(currentAddress && currentAddress === tx.from.hash);
@@ -44,11 +46,13 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
 
   const timeAgo = useTimeAgoIncrement(tx.timestamp, enableTimeIncrement);
 
+  const { data: describeData } = useFetchDescribe(translate ? tx.hash : null);
+
   return (
     <ListItemMobile display="block" width="100%" isAnimated key={ tx.hash }>
       <Flex justifyContent="space-between" mt={ 4 }>
         <HStack flexWrap="wrap">
-          <TxType types={ tx.tx_types } isLoading={ isLoading }/>
+          <TxType types={ tx.tx_types } isLoading={ isLoading } translateLabel={ describeData?.type }/>
           <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
           <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
         </HStack>

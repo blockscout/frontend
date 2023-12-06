@@ -10,6 +10,7 @@ import { route } from 'nextjs-routes';
 import iconSafe from 'icons/brands/safe.svg';
 import iconContractVerified from 'icons/contract_verified.svg';
 import iconContract from 'icons/contract.svg';
+import { truncateMiddle } from 'lib/utils/numberHelpers';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
 import { getIconProps } from '../base/utils';
@@ -98,7 +99,7 @@ const Icon = (props: IconProps) => {
   );
 };
 
-type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'address'>;
+type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'address' | 'truncate' | 'truncateEnd'>;
 
 const Content = chakra((props: ContentProps) => {
   if (props.address.name) {
@@ -121,7 +122,7 @@ const Content = chakra((props: ContentProps) => {
   return (
     <EntityBase.Content
       { ...props }
-      text={ props.address.hash }
+      text={ props.truncate ? truncateMiddle(props.address.hash, props.truncate, props.truncateEnd || 4) : props.address.hash }
     />
   );
 });
@@ -142,6 +143,8 @@ const Container = EntityBase.Container;
 export interface EntityProps extends EntityBase.EntityBaseProps {
   address: Pick<AddressParam, 'hash' | 'name' | 'is_contract' | 'is_verified' | 'implementation_name'>;
   isSafeAddress?: boolean;
+  truncate?: number;
+  truncateEnd?: number;
 }
 
 const AddressEntry = (props: EntityProps) => {

@@ -40,6 +40,9 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
 
   // service routes, added only to make typescript happy
   '/login': 'login',
+  '/api/translate': 'node API media type',
+  '/api/history': 'node API media type',
+  '/api/describe': 'node API media type',
   '/api/media-type': 'node API media type',
   '/api/proxy': 'node API proxy',
   '/api/csrf': 'node API CSRF token',

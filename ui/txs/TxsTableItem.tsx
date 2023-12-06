@@ -15,6 +15,7 @@ import type { Transaction } from 'types/api/transaction';
 
 import config from 'configs/app';
 import rightArrowIcon from 'icons/arrows/east.svg';
+import useFetchDescribe from 'lib/hooks/useFetchDescribe';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
@@ -36,14 +37,17 @@ type Props = {
   currentAddress?: string;
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
+  translate?: boolean;
 }
 
-const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, isLoading }: Props) => {
+const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, isLoading, translate }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
   const isOut = Boolean(currentAddress && currentAddress === tx.from.hash);
   const isIn = Boolean(currentAddress && currentAddress === dataTo?.hash);
 
   const timeAgo = useTimeAgoIncrement(tx.timestamp, enableTimeIncrement);
+
+  const { data: describeData } = useFetchDescribe(translate ? tx.hash : null);
 
   const addressFrom = (
     <AddressEntity
@@ -95,7 +99,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
       </Td>
       <Td>
         <VStack alignItems="start">
-          <TxType types={ tx.tx_types } isLoading={ isLoading }/>
+          <TxType types={ tx.tx_types } isLoading={ isLoading } translateLabel={ describeData?.type }/>
           <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
           <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
         </VStack>
