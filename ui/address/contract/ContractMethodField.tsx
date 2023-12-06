@@ -6,8 +6,9 @@ import {
   InputRightElement,
 } from '@chakra-ui/react';
 import React from 'react';
-import type { Control, ControllerRenderProps, UseFormGetValues, UseFormSetValue } from 'react-hook-form';
+import type { Control, ControllerRenderProps, UseFormGetValues, UseFormSetValue, UseFormStateReturn } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
+import { isAddress } from 'viem';
 
 import type { MethodFormFields } from './types';
 import type { SmartContractMethodArgType } from 'types/api/contract';
@@ -47,30 +48,50 @@ const ContractMethodField = ({ control, name, valueType, placeholder, setValue, 
 
   const hasZerosControl = addZeroesAllowed(valueType);
 
-  const renderInput = React.useCallback(({ field }: { field: ControllerRenderProps<MethodFormFields> }) => {
+  const renderInput = React.useCallback((
+    { field, formState }: { field: ControllerRenderProps<MethodFormFields>; formState: UseFormStateReturn<MethodFormFields> },
+  ) => {
+    const error = formState.errors[name];
+
     return (
-      <FormControl
-        id={ name }
-        w="100%"
-        mb={{ base: 1, lg: 0 }}
-        isDisabled={ isDisabled }
-      >
-        <InputGroup size="xs">
-          <Input
-            { ...field }
-            ref={ ref }
-            placeholder={ placeholder }
-            paddingRight={ hasZerosControl ? '120px' : '40px' }
-            autoComplete="off"
-          />
-          <InputRightElement w="auto" right={ 1 }>
-            { field.value && <ClearButton onClick={ handleClear } isDisabled={ isDisabled }/> }
-            { hasZerosControl && <ContractMethodFieldZeroes onClick={ handleAddZeroesClick } isDisabled={ isDisabled }/> }
-          </InputRightElement>
-        </InputGroup>
-      </FormControl>
+      <Box>
+        <FormControl
+          id={ name }
+          w="100%"
+          mb={{ base: 1, lg: 0 }}
+          isDisabled={ isDisabled }
+        >
+          <InputGroup size="xs">
+            <Input
+              { ...field }
+              ref={ ref }
+              isInvalid={ Boolean(error) }
+              required
+              placeholder={ placeholder }
+              paddingRight={ hasZerosControl ? '120px' : '40px' }
+              autoComplete="off"
+            />
+            <InputRightElement w="auto" right={ 1 }>
+              { field.value && <ClearButton onClick={ handleClear } isDisabled={ isDisabled }/> }
+              { hasZerosControl && <ContractMethodFieldZeroes onClick={ handleAddZeroesClick } isDisabled={ isDisabled }/> }
+            </InputRightElement>
+          </InputGroup>
+        </FormControl>
+        { error && <Box color="error" fontSize="sm" mt={ 1 }>{ error.message }</Box> }
+      </Box>
     );
   }, [ name, isDisabled, placeholder, hasZerosControl, handleClear, handleAddZeroesClick ]);
+
+  const validate = React.useCallback((value: string) => {
+    switch (valueType) {
+      case 'address': {
+        return !isAddress(value) ? 'Invalid address format' : true;
+      }
+
+      default:
+        return;
+    }
+  }, [ valueType ]);
 
   return (
     <>
@@ -86,6 +107,7 @@ const ContractMethodField = ({ control, name, valueType, placeholder, setValue, 
         name={ name }
         control={ control }
         render={ renderInput }
+        rules={{ required: 'Field is required', validate }}
       />
     </>
   );

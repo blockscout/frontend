@@ -80,6 +80,7 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
 
   const { control, handleSubmit, setValue, getValues } = useForm<MethodFormFields>({
     defaultValues: _fromPairs(inputs.map(({ name }, index) => [ getFieldName(name, index), '' ])),
+    mode: 'onBlur',
   });
 
   const handleTxSettle = React.useCallback(() => {
