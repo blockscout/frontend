@@ -42,7 +42,8 @@ const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum
         <Tr>
           <Th width="125px">Block</Th>
           <Th width="120px">Size, bytes</Th>
-          <Th width={ `${ VALIDATOR_COL_WEIGHT / widthBase * 100 }%` } minW="160px">{ capitalize(getNetworkValidatorTitle()) }</Th>
+          { !config.UI.views.block.hiddenFields?.miner &&
+            <Th width={ `${ VALIDATOR_COL_WEIGHT / widthBase * 100 }%` } minW="160px">{ capitalize(getNetworkValidatorTitle()) }</Th> }
           <Th width="64px" isNumeric>Txn</Th>
           <Th width={ `${ GAS_COL_WEIGHT / widthBase * 100 }%` }>Gas used</Th>
           { !isRollup && !config.UI.views.block.hiddenFields?.total_reward &&

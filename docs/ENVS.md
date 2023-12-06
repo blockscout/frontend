@@ -188,6 +188,7 @@ Settings for meta tags and OG tags
 | `burnt_fees` | Burnt fees |
 | `total_reward` | Total block reward |
 | `nonce` | Block nonce |
+| `miner` | Address of block's miner or validator |
 
 &nbsp;
 
