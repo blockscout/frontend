@@ -1,4 +1,5 @@
 import {
+  Box,
   FormControl,
   Input,
   InputGroup,
@@ -50,9 +51,8 @@ const ContractMethodField = ({ control, name, valueType, placeholder, setValue, 
     return (
       <FormControl
         id={ name }
-        flexBasis={{ base: '100%', lg: 'calc((100% - 24px) / 3 - 65px)' }}
-        w={{ base: '100%', lg: 'auto' }}
-        flexGrow={ 1 }
+        w="100%"
+        mb={{ base: 1, lg: 0 }}
         isDisabled={ isDisabled }
       >
         <InputGroup size="xs">
@@ -61,6 +61,7 @@ const ContractMethodField = ({ control, name, valueType, placeholder, setValue, 
             ref={ ref }
             placeholder={ placeholder }
             paddingRight={ hasZerosControl ? '120px' : '40px' }
+            autoComplete="off"
           />
           <InputRightElement w="auto" right={ 1 }>
             { field.value && <ClearButton onClick={ handleClear } isDisabled={ isDisabled }/> }
@@ -72,12 +73,21 @@ const ContractMethodField = ({ control, name, valueType, placeholder, setValue, 
   }, [ name, isDisabled, placeholder, hasZerosControl, handleClear, handleAddZeroesClick ]);
 
   return (
-    <Controller
-      name={ name }
-      control={ control }
-      render={ renderInput }
-    />
-
+    <>
+      <Box
+        fontWeight={ 500 }
+        lineHeight="20px"
+        py={{ lg: '6px' }}
+        fontSize="sm"
+      >
+        { name } ({ valueType })
+      </Box>
+      <Controller
+        name={ name }
+        control={ control }
+        render={ renderInput }
+      />
+    </>
   );
 };
 

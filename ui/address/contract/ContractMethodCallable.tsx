@@ -119,13 +119,11 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
     <Box>
       <chakra.form
         noValidate
-        display="flex"
+        display="grid"
         columnGap={ 3 }
-        flexDir={{ base: 'column', lg: 'row' }}
-        rowGap={ 2 }
-        alignItems={{ base: 'flex-start', lg: 'center' }}
+        rowGap={{ base: 2, lg: 3 }}
+        gridTemplateColumns={{ base: 'minmax(0, 1fr)', lg: 'minmax(min-content, 180px) minmax(0, 1fr)' }}
         onSubmit={ handleSubmit(onFormSubmit) }
-        flexWrap="wrap"
         onChange={ handleFormChange }
       >
         { inputs.map(({ type, name }, index) => {
@@ -146,13 +144,15 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
         }) }
         <Button
           isLoading={ isLoading }
-          loadingText={ isWrite ? 'Write' : 'Query' }
+          loadingText={ isWrite ? 'Write' : 'Read' }
           variant="outline"
           size="sm"
           flexShrink={ 0 }
+          width="min-content"
+          px={ 4 }
           type="submit"
         >
-          { isWrite ? 'Write' : 'Query' }
+          { isWrite ? 'Write' : 'Read' }
         </Button>
       </chakra.form>
       { 'outputs' in data && !isWrite && data.outputs.length > 0 && (
