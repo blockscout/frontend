@@ -8,6 +8,7 @@ import {
 import React from 'react';
 import type { Control, ControllerRenderProps, UseFormGetValues, UseFormSetValue, UseFormStateReturn } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
+import { NumericFormat } from 'react-number-format';
 import { isAddress } from 'viem';
 
 import type { MethodFormFields } from './types';
@@ -16,7 +17,7 @@ import type { SmartContractMethodArgType } from 'types/api/contract';
 import ClearButton from 'ui/shared/ClearButton';
 
 import ContractMethodFieldZeroes from './ContractMethodFieldZeroes';
-import { addZeroesAllowed } from './utils';
+import { INT_REGEXP, getIntBoundaries } from './utils';
 
 interface Props {
   control: Control<MethodFormFields>;
@@ -46,12 +47,24 @@ const ContractMethodField = ({ control, name, valueType, placeholder, setValue, 
     onChange();
   }, [ getValues, name, onChange, setValue ]);
 
-  const hasZerosControl = addZeroesAllowed(valueType);
+  const intMatch = React.useMemo(() => {
+    const match = valueType.match(INT_REGEXP);
+    if (!match) {
+      return null;
+    }
+
+    const [ , isUnsigned, power = '256' ] = match;
+    const [ min, max ] = getIntBoundaries(Number(power), Boolean(isUnsigned));
+
+    return { isUnsigned, power, min, max };
+  }, [ valueType ]);
 
   const renderInput = React.useCallback((
     { field, formState }: { field: ControllerRenderProps<MethodFormFields>; formState: UseFormStateReturn<MethodFormFields> },
   ) => {
     const error = formState.errors[name];
+    // show control for all inputs which allows to insert 10^18 or greater numbers
+    const hasZerosControl = intMatch && Number(intMatch.power) >= 64;
 
     return (
       <Box>
@@ -64,6 +77,12 @@ const ContractMethodField = ({ control, name, valueType, placeholder, setValue, 
           <InputGroup size="xs">
             <Input
               { ...field }
+              { ...(intMatch ? {
+                as: NumericFormat,
+                thousandSeparator: ' ',
+                decimalScale: 0,
+                allowNegative: !intMatch.isUnsigned,
+              } : {}) }
               ref={ ref }
               isInvalid={ Boolean(error) }
               required
@@ -80,18 +99,31 @@ const ContractMethodField = ({ control, name, valueType, placeholder, setValue, 
         { error && <Box color="error" fontSize="sm" mt={ 1 }>{ error.message }</Box> }
       </Box>
     );
-  }, [ name, isDisabled, placeholder, hasZerosControl, handleClear, handleAddZeroesClick ]);
+  }, [ name, intMatch, isDisabled, placeholder, handleClear, handleAddZeroesClick ]);
 
   const validate = React.useCallback((value: string) => {
-    switch (valueType) {
-      case 'address': {
-        return !isAddress(value) ? 'Invalid address format' : true;
+    if (valueType === 'address') {
+      return !isAddress(value) ? 'Invalid address format' : true;
+    }
+
+    if (intMatch) {
+      const formattedValue = Number(value.replace(/\s/g, ''));
+
+      if (Object.is(formattedValue, NaN)) {
+        return 'Invalid integer format';
       }
 
-      default:
-        return;
+      if (formattedValue > intMatch.max || formattedValue < intMatch.min) {
+        const lowerBoundary = intMatch.isUnsigned ? '0' : `-1 * 2 ^ ${ Number(intMatch.power) / 2 }`;
+        const upperBoundary = intMatch.isUnsigned ? `2 ^ ${ intMatch.power } - 1` : `2^${ Number(intMatch.power) / 2 } - 1`;
+        return `Value should be in range from "${ lowerBoundary }" to "${ upperBoundary }" inclusively`;
+      }
+
+      return true;
     }
-  }, [ valueType ]);
+
+    return true;
+  }, [ intMatch, valueType ]);
 
   return (
     <>

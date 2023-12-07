@@ -2,6 +2,15 @@ import type { Abi } from 'abitype';
 
 import type { SmartContractWriteMethod } from 'types/api/contract';
 
+export const INT_REGEXP = /^(u)?int(\d+)?$/i;
+
+export const getIntBoundaries = (power: number, isUnsigned: boolean) => {
+  const maxUnsigned = 2 ** power;
+  const max = isUnsigned ? maxUnsigned - 1 : maxUnsigned / 2 - 1;
+  const min = isUnsigned ? 0 : -maxUnsigned / 2;
+  return [ min, max ];
+};
+
 export const getNativeCoinValue = (value: string | Array<unknown>) => {
   const _value = Array.isArray(value) ? value[0] : value;
 
@@ -10,24 +19,6 @@ export const getNativeCoinValue = (value: string | Array<unknown>) => {
   }
 
   return BigInt(_value);
-};
-
-export const addZeroesAllowed = (valueType: string) => {
-  if (valueType.includes('[')) {
-    return false;
-  }
-
-  const REGEXP = /^u?int(\d+)/i;
-
-  const match = valueType.match(REGEXP);
-  const power = match?.[1];
-
-  if (power) {
-    // show control for all inputs which allows to insert 10^18 or greater numbers
-    return Number(power) >= 64;
-  }
-
-  return false;
 };
 
 interface ExtendedError extends Error {

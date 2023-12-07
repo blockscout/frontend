@@ -97,6 +97,8 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
       .map(castFieldValue(inputs))
       .map(([ , value ]) => value);
 
+    return;
+
     setResult(undefined);
     setLoading(true);
 
@@ -131,7 +133,7 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
           const fieldName = getFieldName(name, index);
           return (
             <ContractMethodField
-              key={ fieldName }
+              key={ index }
               name={ fieldName }
               valueType={ type }
               placeholder={ `${ name }(${ type })` }
