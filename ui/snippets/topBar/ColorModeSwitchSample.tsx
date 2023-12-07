@@ -13,7 +13,9 @@ interface Props extends ColorThemeColor {
 }
 
 const ColorModeSwitchSample = ({ hex, sampleBg, onClick, isActive }: Props) => {
-  const borderColor = useColorModeValue('white', 'black');
+  const bgColor = useColorModeValue('white', 'gray.900');
+  const activeBgColor = useColorModeValue('blue.50', 'blackAlpha.800');
+
   const activeBorderColor = useToken('colors', useColorModeValue('blackAlpha.800', 'gray.50'));
   const hoverBorderColor = useToken('colors', 'link_hovered');
 
@@ -23,19 +25,19 @@ const ColorModeSwitchSample = ({ hex, sampleBg, onClick, isActive }: Props) => {
       boxSize={ 5 }
       borderRadius="full"
       borderWidth="1px"
-      borderColor={ borderColor }
+      borderColor={ isActive ? activeBgColor : bgColor }
       position="relative"
       _before={{
         position: 'absolute',
         display: 'block',
         content: '""',
-        top: '-2px',
-        left: '-2px',
+        top: '-3px',
+        left: '-3px',
         width: 'calc(100% + 2px)',
         height: 'calc(100% + 2px)',
         borderStyle: 'solid',
         borderRadius: 'full',
-        borderWidth: '1px',
+        borderWidth: '2px',
         borderColor: isActive ? activeBorderColor : 'transparent',
       }}
       _hover={{
