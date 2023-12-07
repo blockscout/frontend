@@ -6,6 +6,7 @@ import type { UniversalProfileProxyResponse } from '../../types/api/universalPro
 import type { Params as FetchParams } from 'lib/hooks/useFetch';
 
 import { algoliaIndex } from './buildUniversalProfileUrl';
+import { isUniversalProfileEnabled } from './isUniversalProfileEnabled';
 import type { ResourceName, ResourcePathParams } from './resources';
 
 export interface Params<R extends ResourceName> {
@@ -17,6 +18,9 @@ export interface Params<R extends ResourceName> {
 export default function useUniversalProfileApiFetch() {
   return React.useCallback(async(queryParams: string,
   ) => {
+    if (!isUniversalProfileEnabled()) {
+      return [] as Array<SearchResultAddressOrContractOrUniversalProfile>;
+    }
     try {
       const { hits } = await algoliaIndex.search(queryParams);
       return hits.map<SearchResultAddressOrContractOrUniversalProfile>((hit) => {
