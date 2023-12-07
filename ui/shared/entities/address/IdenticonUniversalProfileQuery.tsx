@@ -3,28 +3,25 @@ import type { QueryClient } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 
-import type { UPResponse } from '../../../../types/api/universalProfile';
+import type { UniversalProfileProxyResponse } from '../../../../types/api/universalProfile';
 
 import { getEnvValue } from '../../../../configs/app/utils';
+import { isUniversalProfileEnabled } from '../../../../lib/api/isUniversalProfileEnabled';
 
 interface Props {
   address: string;
   fallbackIcon: JSX.Element;
 }
 
-export const formattedLuksoName = (hash: string, name: string) => {
+export const formattedLuksoName = (hash: string, name: string | null) => {
   return `@${ name } (${ hash })`;
 };
 
 export const getUniversalProfile = async(address: string, queryClient: QueryClient) => {
-  const identiconType = getEnvValue('NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE');
-  if (identiconType === undefined) {
+  if (!isUniversalProfileEnabled()) {
     return undefined;
   }
-  if (!identiconType.includes('universal_profile')) {
-    return undefined;
-  }
-  const query = queryClient.getQueryData<UPResponse>([ 'universalProfile', { address: address } ]);
+  const query = queryClient.getQueryData<UniversalProfileProxyResponse>([ 'universalProfile', { address: address } ]);
   if (query !== undefined) {
     return query;
   }
@@ -39,7 +36,7 @@ export const getUniversalProfile = async(address: string, queryClient: QueryClie
       try {
         const resp = await fetch(url);
         const json = await resp.json();
-        return json as UPResponse;
+        return json as UniversalProfileProxyResponse;
       } catch (err) {
         return undefined;
       }
@@ -48,7 +45,7 @@ export const getUniversalProfile = async(address: string, queryClient: QueryClie
 };
 
 export const IdenticonUniversalProfile: React.FC<Props> = ({ address, fallbackIcon }) => {
-  const [ up, setUp ] = useState({} as UPResponse);
+  const [ up, setUp ] = useState({} as UniversalProfileProxyResponse);
   const queryClient = useQueryClient();
   useEffect(() => {
     (async() => {
@@ -59,7 +56,7 @@ export const IdenticonUniversalProfile: React.FC<Props> = ({ address, fallbackIc
         return;
       }
     })();
-  }, [ address, up, setUp, queryClient ]);
+  }, [ address, setUp, queryClient ]);
 
   if (up === undefined || up.LSP3Profile === undefined) {
     return fallbackIcon;

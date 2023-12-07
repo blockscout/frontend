@@ -1,7 +1,7 @@
 import type { SearchResultItem } from 'types/api/search';
 import type { MarketplaceAppOverview } from 'types/client/marketplace';
 
-export type ApiCategory = 'token' | 'nft' | 'address' | 'public_tag' | 'transaction' | 'block';
+export type ApiCategory = 'token' | 'nft' | 'address' | 'public_tag' | 'transaction' | 'block' | 'universal_profile';
 export type Category = ApiCategory | 'app';
 
 export type ItemsCategoriesMap =
@@ -21,6 +21,7 @@ export const searchCategories: Array<{id: Category; title: string }> = [
   { id: 'public_tag', title: 'Public tags' },
   { id: 'transaction', title: 'Transactions' },
   { id: 'block', title: 'Blocks' },
+  { id: 'universal_profile', title: 'Universal Profiles' },
 ];
 
 export const searchItemTitles: Record<Category, { itemTitle: string; itemTitleShort: string }> = {
@@ -31,6 +32,7 @@ export const searchItemTitles: Record<Category, { itemTitle: string; itemTitleSh
   public_tag: { itemTitle: 'Public tag', itemTitleShort: 'Tag' },
   transaction: { itemTitle: 'Transaction', itemTitleShort: 'Txn' },
   block: { itemTitle: 'Block', itemTitleShort: 'Block' },
+  universal_profile: { itemTitle: 'Universal Profile', itemTitleShort: 'UP' },
 };
 
 export function getItemCategory(item: SearchResultItem | SearchResultAppItem): Category | undefined {
@@ -56,6 +58,9 @@ export function getItemCategory(item: SearchResultItem | SearchResultAppItem): C
     }
     case 'app': {
       return 'app';
+    }
+    case 'universal_profile': {
+      return 'universal_profile';
     }
   }
 }

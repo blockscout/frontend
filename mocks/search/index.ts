@@ -1,4 +1,11 @@
-import type { SearchResultToken, SearchResultBlock, SearchResultAddressOrContract, SearchResultTx, SearchResultLabel, SearchResult } from 'types/api/search';
+import type {
+  SearchResultToken,
+  SearchResultBlock,
+  SearchResultAddressOrContractOrUniversalProfile,
+  SearchResultTx,
+  SearchResultLabel,
+  SearchResult,
+} from 'types/api/search';
 
 export const token1: SearchResultToken = {
   address: '0x377c5F2B300B25a534d4639177873b7fEAA56d4B',
@@ -47,7 +54,7 @@ export const block2: SearchResultBlock = {
   url: '/block/0x1af31d7535dded06bab9a88eb40ee2f8d0529a60ab3b8a7be2ba69b008cacbd2',
 };
 
-export const address1: SearchResultAddressOrContract = {
+export const address1: SearchResultAddressOrContractOrUniversalProfile = {
   address: '0xb64a30399f7F6b0C154c2E7Af0a3ec7B0A5b131a',
   name: null,
   type: 'address' as const,
@@ -55,7 +62,7 @@ export const address1: SearchResultAddressOrContract = {
   url: '/address/0xb64a30399f7F6b0C154c2E7Af0a3ec7B0A5b131a',
 };
 
-export const contract1: SearchResultAddressOrContract = {
+export const contract1: SearchResultAddressOrContractOrUniversalProfile = {
   address: '0xb64a30399f7F6b0C154c2E7Af0a3ec7B0A5b131a',
   name: 'Unknown contract in this network',
   type: 'contract' as const,
