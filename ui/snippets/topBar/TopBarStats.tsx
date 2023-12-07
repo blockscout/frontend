@@ -26,8 +26,8 @@ const TopBarStats = () => {
     >
       { data?.coin_price && (
         <Skeleton isLoaded={ !isPlaceholderData }>
-          <span>{ config.chain.governanceToken.symbol || config.chain.currency.symbol }</span>
-          <span> ${ Number(data.coin_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }) }</span>
+          <span>{ config.chain.governanceToken.symbol || config.chain.currency.symbol }: </span>
+          <span>${ Number(data.coin_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }) }</span>
         </Skeleton>
       ) }
       { data?.coin_price && data.gas_prices && <TextSeparator color="divider"/> }
