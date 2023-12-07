@@ -1,9 +1,8 @@
-import { chakra, Flex, Skeleton } from '@chakra-ui/react';
+import { Flex, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
-import { asymp, tilde } from 'lib/html-entities';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import TextSeparator from 'ui/shared/TextSeparator';
 
@@ -34,13 +33,7 @@ const TopBarStats = () => {
       { data?.coin_price && data.gas_prices && <TextSeparator color="divider"/> }
       { data?.gas_prices && (
         <Skeleton isLoaded={ !isPlaceholderData }>
-          <span>Gas:</span>
-          { /* will be added to API later */ }
-          { /* <span> ${ Number(data.gas_prices.average).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }) }</span> */ }
-          <chakra.span> { asymp } { data.gas_prices.average } Gwei per txn</chakra.span>
-          { data.average_block_time && (
-            <chakra.span display={{ base: 'none', lg: 'inline' }}> { tilde } { (data.average_block_time / 1000).toFixed(1) } s</chakra.span>
-          ) }
+          <span>Gas: { data.gas_prices.average } Gwei</span>
         </Skeleton>
       ) }
     </Flex>
