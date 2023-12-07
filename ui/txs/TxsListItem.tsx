@@ -134,14 +134,18 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
       ) }
       { !config.UI.views.tx.hiddenFields?.tx_fee && (
         <Flex mt={ 2 } mb={ 3 } columnGap={ 2 }>
-          <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre">Fee</Skeleton>
-          { tx.stability_fee ? (
-            <TxFeeStability data={ tx.stability_fee } isLoading={ isLoading } hideUsd/>
-          ) : (
-            <Skeleton isLoaded={ !isLoading } display="inline-block" variant="text_secondary" whiteSpace="pre">
-              { getValueWithUnit(tx.fee.value).toFormat() }
-              { config.UI.views.tx.hiddenFields?.fee_currency ? '' : ` ${ config.chain.currency.symbol }` }
-            </Skeleton>
+          { (tx.stability_fee !== undefined || tx.fee.value !== null) && (
+            <>
+              <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre">Fee</Skeleton>
+              { tx.stability_fee ? (
+                <TxFeeStability data={ tx.stability_fee } isLoading={ isLoading } hideUsd/>
+              ) : (
+                <Skeleton isLoaded={ !isLoading } display="inline-block" variant="text_secondary" whiteSpace="pre">
+                  { getValueWithUnit(tx.fee.value || 0).toFormat() }
+                  { config.UI.views.tx.hiddenFields?.fee_currency ? '' : ` ${ config.chain.currency.symbol }` }
+                </Skeleton>
+              ) }
+            </>
           ) }
         </Flex>
       ) }

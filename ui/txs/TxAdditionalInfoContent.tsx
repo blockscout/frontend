@@ -33,20 +33,24 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
       <Heading as="h4" size="sm" mb={ 6 }>Additional info </Heading>
       { !config.UI.views.tx.hiddenFields?.tx_fee && (
         <Box { ...sectionProps } mb={ 4 }>
-          <Text { ...sectionTitleProps }>Transaction fee</Text>
-          { tx.stability_fee ? (
-            <TxFeeStability data={ tx.stability_fee }/>
-          ) : (
-            <Flex>
-              <CurrencyValue
-                value={ tx.fee.value }
-                currency={ config.UI.views.tx.hiddenFields?.fee_currency ? '' : config.chain.currency.symbol }
-                exchangeRate={ tx.exchange_rate }
-                accuracyUsd={ 2 }
-                flexWrap="wrap"
-                rowGap={ 0 }
-              />
-            </Flex>
+          { (tx.stability_fee !== undefined || tx.fee.value !== null) && (
+            <>
+              <Text { ...sectionTitleProps }>Transaction fee</Text>
+              { tx.stability_fee ? (
+                <TxFeeStability data={ tx.stability_fee }/>
+              ) : (
+                <Flex>
+                  <CurrencyValue
+                    value={ tx.fee.value }
+                    currency={ config.UI.views.tx.hiddenFields?.fee_currency ? '' : config.chain.currency.symbol }
+                    exchangeRate={ tx.exchange_rate }
+                    accuracyUsd={ 2 }
+                    flexWrap="wrap"
+                    rowGap={ 0 }
+                  />
+                </Flex>
+              ) }
+            </>
           ) }
         </Box>
       ) }
