@@ -557,3 +557,10 @@ For obtaining the variables values please refer to [reCAPTCHA documentation](htt
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY | `string` | Site key | - | - | `<your-secret>` |
+
+### Ramp Integration
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_RAMP_HOST_API_KEY | `string` | Host api key for Ramp integration | - | - | `<your-secret>` |
+| NEXT_PUBLIC_RAMP_DEFAULT_ASSET | `string` | SwapAsset symbol of the asset to be shown to the user when they open Ramp (see https://docs.ramp.network/assets) | - | - | `ETH_ETH` |

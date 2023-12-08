@@ -45,6 +45,7 @@
     "@opentelemetry/sdk-node": "^0.45.0",
     "@opentelemetry/sdk-trace-node": "^1.18.0",
     "@opentelemetry/semantic-conventions": "^1.18.0",
+    "@ramp-network/ramp-instant-sdk": "^4.0.4",
     "@sentry/cli": "^2.21.2",
     "@sentry/react": "7.24.0",
     "@sentry/tracing": "7.24.0",
