@@ -14,7 +14,7 @@ import ContractMethodField from './ContractMethodField';
 interface Props {
   name: string;
   size: number;
-  valueType: SmartContractMethodArgType;
+  argType: SmartContractMethodArgType;
   control: Control<MethodFormFields>;
   setValue: UseFormSetValue<MethodFormFields>;
   getValues: UseFormGetValues<MethodFormFields>;
@@ -22,7 +22,7 @@ interface Props {
   onChange: () => void;
 }
 
-const ContractMethodFieldArray = ({ control, name, setValue, getValues, isDisabled, valueType, onChange }: Props) => {
+const ContractMethodFieldArray = ({ control, name, setValue, getValues, isDisabled, argType, onChange }: Props) => {
   const { fields, append, remove } = useFieldArray({
     name: name as never,
     control,
@@ -52,8 +52,8 @@ const ContractMethodFieldArray = ({ control, name, setValue, getValues, isDisabl
               name={ `${ name }[${ index }]` }
               groupName={ name }
               index={ index }
-              valueType={ valueType }
-              placeholder={ valueType }
+              argType={ argType }
+              placeholder={ argType }
               control={ control }
               setValue={ setValue }
               getValues={ getValues }

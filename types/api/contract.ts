@@ -1,6 +1,6 @@
 import type { Abi } from 'abitype';
 
-export type SmartContractMethodArgType = 'address' | 'uint256' | 'bool' | 'string' | 'bytes' | 'bytes32' | 'bytes32[]';
+export type SmartContractMethodArgType = 'address' | 'uint256' | 'bool' | 'string' | 'bytes' | 'bytes32' | 'bytes32[]' | 'tuple';
 export type SmartContractMethodStateMutability = 'view' | 'nonpayable' | 'payable';
 
 export interface SmartContract {
@@ -88,6 +88,7 @@ export interface SmartContractMethodInput {
   internalType?: SmartContractMethodArgType;
   name: string;
   type: SmartContractMethodArgType;
+  components?: Array<SmartContractMethodInput>;
 }
 
 export interface SmartContractMethodOutput extends SmartContractMethodInput {

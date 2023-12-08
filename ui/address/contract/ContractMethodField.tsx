@@ -25,7 +25,7 @@ interface Props {
   index?: number;
   groupName?: string;
   placeholder: string;
-  valueType: SmartContractMethodArgType;
+  argType: SmartContractMethodArgType;
   control: Control<MethodFormFields>;
   setValue: UseFormSetValue<MethodFormFields>;
   getValues: UseFormGetValues<MethodFormFields>;
@@ -33,7 +33,7 @@ interface Props {
   onChange: () => void;
 }
 
-const ContractMethodField = ({ control, name, groupName, index, valueType, placeholder, setValue, getValues, isDisabled, onChange }: Props) => {
+const ContractMethodField = ({ control, name, groupName, index, argType, placeholder, setValue, getValues, isDisabled, onChange }: Props) => {
   const ref = React.useRef<HTMLInputElement>(null);
 
   const handleClear = React.useCallback(() => {
@@ -51,7 +51,7 @@ const ContractMethodField = ({ control, name, groupName, index, valueType, place
   }, [ getValues, groupName, index, name, onChange, setValue ]);
 
   const intMatch = React.useMemo(() => {
-    const match = valueType.match(INT_REGEXP);
+    const match = argType.match(INT_REGEXP);
     if (!match) {
       return null;
     }
@@ -60,11 +60,11 @@ const ContractMethodField = ({ control, name, groupName, index, valueType, place
     const [ min, max ] = getIntBoundaries(Number(power), Boolean(isUnsigned));
 
     return { isUnsigned, power, min, max };
-  }, [ valueType ]);
+  }, [ argType ]);
 
   const bytesMatch = React.useMemo(() => {
-    return valueType.match(BYTES_REGEXP);
-  }, [ valueType ]);
+    return argType.match(BYTES_REGEXP);
+  }, [ argType ]);
 
   const renderInput = React.useCallback((
     { field, formState }: { field: ControllerRenderProps<MethodFormFields>; formState: UseFormStateReturn<MethodFormFields> },
@@ -111,11 +111,11 @@ const ContractMethodField = ({ control, name, groupName, index, valueType, place
   }, [ index, groupName, name, intMatch, isDisabled, placeholder, handleClear, handleAddZeroesClick ]);
 
   const validate = React.useCallback((value: string | Array<string>) => {
-    if (typeof value === 'object') {
+    if (typeof value === 'object' || !value) {
       return;
     }
 
-    if (valueType === 'address') {
+    if (argType === 'address') {
       return !isAddress(value) ? 'Invalid address format' : true;
     }
 
@@ -135,7 +135,7 @@ const ContractMethodField = ({ control, name, groupName, index, valueType, place
       return true;
     }
 
-    if (valueType === 'bool') {
+    if (argType === 'bool') {
       const formattedValue = formatBooleanValue(value);
       if (formattedValue === undefined) {
         return 'Invalid boolean format. Allowed values: 0, 1, true, false';
@@ -160,7 +160,7 @@ const ContractMethodField = ({ control, name, groupName, index, valueType, place
     }
 
     return true;
-  }, [ bytesMatch, intMatch, valueType ]);
+  }, [ bytesMatch, intMatch, argType ]);
 
   return (
     <Controller
