@@ -126,6 +126,19 @@ const rollupSchema = yup
       }),
   });
 
+const rampSchema = yup
+  .object()
+  .shape({
+    NEXT_PUBLIC_RAMP_HOST_API_KEY: yup.string(),
+    NEXT_PUBLIC_RAMP_DEFAULT_ASSET: yup
+      .string()
+      .when('NEXT_PUBLIC_RAMP_HOST_API_KEY', {
+        is: (value: string) => Boolean(value),
+        then: (schema) => schema,
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_RAMP_DEFAULT_ASSET cannot not be used without NEXT_PUBLIC_RAMP_HOST_API_KEY'),
+      }),
+  });
+
 const adButlerConfigSchema = yup
   .object<AdButlerConfig>()
   .transform(replaceQuotes)
@@ -459,6 +472,7 @@ const schema = yup
   .concat(rollupSchema)
   .concat(beaconChainSchema)
   .concat(bridgedTokensSchema)
-  .concat(sentrySchema);
+  .concat(sentrySchema)
+  .concat(rampSchema);
 
 export default schema;
