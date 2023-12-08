@@ -33,7 +33,7 @@ const DEFAULT_CHART_MARGIN = { bottom: 20, left: 40, right: 20, top: 10 };
 
 const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title, margin, units }: Props) => {
   const isMobile = useIsMobile();
-  const color = useColorModeValue('#3CAD71', '#07FC99');
+  const color = useColorModeValue('#1ACD6E', '#07FC99');
   const overlayRef = React.useRef<SVGRectElement>(null);
 
   const [ rect, ref ] = useClientRect<SVGSVGElement>();
