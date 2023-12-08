@@ -11,6 +11,25 @@ export const getIntBoundaries = (power: number, isUnsigned: boolean) => {
   return [ min, max ];
 };
 
+export const formatBooleanValue = (value: string) => {
+  const formattedValue = value.toLowerCase();
+
+  switch (formattedValue) {
+    case 'true':
+    case '1': {
+      return 'true';
+    }
+
+    case 'false':
+    case '0': {
+      return 'false';
+    }
+
+    default:
+      return;
+  }
+};
+
 export const getNativeCoinValue = (value: string | Array<unknown>) => {
   const _value = Array.isArray(value) ? value[0] : value;
 

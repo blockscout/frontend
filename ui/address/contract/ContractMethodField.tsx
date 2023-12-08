@@ -17,7 +17,7 @@ import type { SmartContractMethodArgType } from 'types/api/contract';
 import ClearButton from 'ui/shared/ClearButton';
 
 import ContractMethodFieldZeroes from './ContractMethodFieldZeroes';
-import { INT_REGEXP, getIntBoundaries } from './utils';
+import { INT_REGEXP, getIntBoundaries, formatBooleanValue } from './utils';
 
 interface Props {
   control: Control<MethodFormFields>;
@@ -120,6 +120,13 @@ const ContractMethodField = ({ control, name, valueType, placeholder, setValue, 
       }
 
       return true;
+    }
+
+    if (valueType === 'bool') {
+      const formattedValue = formatBooleanValue(value);
+      if (formattedValue === undefined) {
+        return 'Invalid boolean format. Allowed values: 0, 1, true, false';
+      }
     }
 
     return true;
