@@ -5,12 +5,14 @@ import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 
 import type { MethodFormFields, ContractMethodCallResult } from './types';
-import type { SmartContractMethodInput, SmartContractMethod } from 'types/api/contract';
+import type { SmartContractMethodInput, SmartContractMethod, SmartContractMethodArgType } from 'types/api/contract';
 
 import arrowIcon from 'icons/arrows/down-right.svg';
 import * as mixpanel from 'lib/mixpanel/index';
 
 import ContractMethodField from './ContractMethodField';
+import ContractMethodFieldArray from './ContractMethodFieldArray';
+import { ARRAY_REGEXP } from './utils';
 
 interface ResultComponentProps<T extends SmartContractMethod> {
   item: T;
@@ -27,7 +29,10 @@ interface Props<T extends SmartContractMethod> {
 
 const getFieldName = (name: string | undefined, index: number): string => name || String(index);
 
-const sortFields = (data: Array<SmartContractMethodInput>) => ([ a ]: [string, string], [ b ]: [string, string]): 1 | -1 | 0 => {
+const sortFields = (data: Array<SmartContractMethodInput>) => (
+  [ a ]: [string, string | Array<string>],
+  [ b ]: [string, string | Array<string>],
+): 1 | -1 | 0 => {
   const fieldNames = data.map(({ name }, index) => getFieldName(name, index));
   const indexA = fieldNames.indexOf(a);
   const indexB = fieldNames.indexOf(b);
@@ -43,15 +48,19 @@ const sortFields = (data: Array<SmartContractMethodInput>) => ([ a ]: [string, s
   return 0;
 };
 
-const castFieldValue = (data: Array<SmartContractMethodInput>) => ([ key, value ]: [ string, string ], index: number) => {
+const castFieldValue = (data: Array<SmartContractMethodInput>) => ([ key, value ]: [ string, string | Array<string> ], index: number) => {
   if (data[index].type.includes('[')) {
     return [ key, parseArrayValue(value) ];
   }
   return [ key, value ];
 };
 
-const parseArrayValue = (value: string) => {
+const parseArrayValue = (value: string | Array<string>) => {
   try {
+    if (Array.isArray(value)) {
+      return value;
+    }
+
     const parsedResult = JSON.parse(value);
     if (Array.isArray(parsedResult)) {
       return parsedResult;
@@ -97,8 +106,6 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
       .map(castFieldValue(inputs))
       .map(([ , value ]) => value);
 
-    return;
-
     setResult(undefined);
     setLoading(true);
 
@@ -131,9 +138,20 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
       >
         { inputs.map(({ type, name }, index) => {
           const fieldName = getFieldName(name, index);
-          return (
+          const arrayTypeMatch = type.match(ARRAY_REGEXP);
+          const content = arrayTypeMatch ? (
+            <ContractMethodFieldArray
+              name={ fieldName }
+              valueType={ arrayTypeMatch[1] as SmartContractMethodArgType }
+              size={ Number(arrayTypeMatch[2] || Infinity) }
+              control={ control }
+              setValue={ setValue }
+              getValues={ getValues }
+              isDisabled={ isLoading }
+              onChange={ handleFormChange }
+            />
+          ) : (
             <ContractMethodField
-              key={ index }
               name={ fieldName }
               valueType={ type }
               placeholder={ `${ name }(${ type })` }
@@ -143,6 +161,20 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
               isDisabled={ isLoading }
               onChange={ handleFormChange }
             />
+          );
+
+          return (
+            <React.Fragment key={ index }>
+              <Box
+                fontWeight={ 500 }
+                lineHeight="20px"
+                py={{ lg: '6px' }}
+                fontSize="sm"
+              >
+                { name } ({ type })
+              </Box>
+              { content }
+            </React.Fragment>
           );
         }) }
         <Button

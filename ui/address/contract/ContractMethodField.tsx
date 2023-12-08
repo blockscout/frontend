@@ -6,7 +6,7 @@ import {
   InputRightElement,
 } from '@chakra-ui/react';
 import React from 'react';
-import type { Control, ControllerRenderProps, UseFormGetValues, UseFormSetValue, UseFormStateReturn } from 'react-hook-form';
+import type { Control, ControllerRenderProps, FieldError, UseFormGetValues, UseFormSetValue, UseFormStateReturn } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
 import { isAddress } from 'viem';
@@ -21,17 +21,19 @@ import ContractMethodFieldZeroes from './ContractMethodFieldZeroes';
 import { INT_REGEXP, BYTES_REGEXP, getIntBoundaries, formatBooleanValue } from './utils';
 
 interface Props {
+  name: string;
+  index?: number;
+  groupName?: string;
+  placeholder: string;
+  valueType: SmartContractMethodArgType;
   control: Control<MethodFormFields>;
   setValue: UseFormSetValue<MethodFormFields>;
   getValues: UseFormGetValues<MethodFormFields>;
-  placeholder: string;
-  name: string;
-  valueType: SmartContractMethodArgType;
   isDisabled: boolean;
   onChange: () => void;
 }
 
-const ContractMethodField = ({ control, name, valueType, placeholder, setValue, getValues, isDisabled, onChange }: Props) => {
+const ContractMethodField = ({ control, name, groupName, index, valueType, placeholder, setValue, getValues, isDisabled, onChange }: Props) => {
   const ref = React.useRef<HTMLInputElement>(null);
 
   const handleClear = React.useCallback(() => {
@@ -41,12 +43,12 @@ const ContractMethodField = ({ control, name, valueType, placeholder, setValue, 
   }, [ name, onChange, setValue ]);
 
   const handleAddZeroesClick = React.useCallback((power: number) => {
-    const value = getValues()[name];
+    const value = groupName && index !== undefined ? getValues()[groupName][index] : getValues()[name];
     const zeroes = Array(power).fill('0').join('');
     const newValue = value ? value + zeroes : '1' + zeroes;
     setValue(name, newValue);
     onChange();
-  }, [ getValues, name, onChange, setValue ]);
+  }, [ getValues, groupName, index, name, onChange, setValue ]);
 
   const intMatch = React.useMemo(() => {
     const match = valueType.match(INT_REGEXP);
@@ -67,15 +69,17 @@ const ContractMethodField = ({ control, name, valueType, placeholder, setValue, 
   const renderInput = React.useCallback((
     { field, formState }: { field: ControllerRenderProps<MethodFormFields>; formState: UseFormStateReturn<MethodFormFields> },
   ) => {
-    const error = formState.errors[name];
+    const error: FieldError | undefined = index !== undefined && groupName !== undefined ?
+      (formState.errors[groupName] as unknown as Array<FieldError>)?.[index] :
+      formState.errors[name];
+
     // show control for all inputs which allows to insert 10^18 or greater numbers
     const hasZerosControl = intMatch && Number(intMatch.power) >= 64;
 
     return (
-      <Box>
+      <Box w="100%">
         <FormControl
           id={ name }
-          w="100%"
           mb={{ base: 1, lg: 0 }}
           isDisabled={ isDisabled }
         >
@@ -104,9 +108,13 @@ const ContractMethodField = ({ control, name, valueType, placeholder, setValue, 
         { error && <Box color="error" fontSize="sm" mt={ 1 }>{ error.message }</Box> }
       </Box>
     );
-  }, [ name, intMatch, isDisabled, placeholder, handleClear, handleAddZeroesClick ]);
+  }, [ index, groupName, name, intMatch, isDisabled, placeholder, handleClear, handleAddZeroesClick ]);
 
-  const validate = React.useCallback((value: string) => {
+  const validate = React.useCallback((value: string | Array<string>) => {
+    if (typeof value === 'object') {
+      return;
+    }
+
     if (valueType === 'address') {
       return !isAddress(value) ? 'Invalid address format' : true;
     }
@@ -155,22 +163,12 @@ const ContractMethodField = ({ control, name, valueType, placeholder, setValue, 
   }, [ bytesMatch, intMatch, valueType ]);
 
   return (
-    <>
-      <Box
-        fontWeight={ 500 }
-        lineHeight="20px"
-        py={{ lg: '6px' }}
-        fontSize="sm"
-      >
-        { name } ({ valueType })
-      </Box>
-      <Controller
-        name={ name }
-        control={ control }
-        render={ renderInput }
-        rules={{ required: 'Field is required', validate }}
-      />
-    </>
+    <Controller
+      name={ name }
+      control={ control }
+      render={ renderInput }
+      rules={{ required: 'Field is required', validate }}
+    />
   );
 };
 

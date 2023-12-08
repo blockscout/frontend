@@ -6,6 +6,8 @@ export const INT_REGEXP = /^(u)?int(\d+)?$/i;
 
 export const BYTES_REGEXP = /^bytes(\d+)?$/i;
 
+export const ARRAY_REGEXP = /^(.*)\[(\d*)\]$/;
+
 export const getIntBoundaries = (power: number, isUnsigned: boolean) => {
   const maxUnsigned = 2 ** power;
   const max = isUnsigned ? maxUnsigned - 1 : maxUnsigned / 2 - 1;
