@@ -14,10 +14,11 @@ import { isAddress } from 'viem';
 import type { MethodFormFields } from './types';
 import type { SmartContractMethodArgType } from 'types/api/contract';
 
+import stringToBytes from 'lib/stringToBytes';
 import ClearButton from 'ui/shared/ClearButton';
 
 import ContractMethodFieldZeroes from './ContractMethodFieldZeroes';
-import { INT_REGEXP, getIntBoundaries, formatBooleanValue } from './utils';
+import { INT_REGEXP, BYTES_REGEXP, getIntBoundaries, formatBooleanValue } from './utils';
 
 interface Props {
   control: Control<MethodFormFields>;
@@ -57,6 +58,10 @@ const ContractMethodField = ({ control, name, valueType, placeholder, setValue, 
     const [ min, max ] = getIntBoundaries(Number(power), Boolean(isUnsigned));
 
     return { isUnsigned, power, min, max };
+  }, [ valueType ]);
+
+  const bytesMatch = React.useMemo(() => {
+    return valueType.match(BYTES_REGEXP);
   }, [ valueType ]);
 
   const renderInput = React.useCallback((
@@ -129,8 +134,25 @@ const ContractMethodField = ({ control, name, valueType, placeholder, setValue, 
       }
     }
 
+    if (bytesMatch) {
+      const [ , length ] = bytesMatch;
+
+      if (value.startsWith('0x')) {
+        if (value.replace('0x', '').length % 2 !== 0) {
+          return 'Invalid bytes format';
+        }
+      }
+
+      if (length) {
+        const valueLengthInBytes = value.startsWith('0x') ? value.replace('0x', '').length / 2 : stringToBytes(value).length;
+        return valueLengthInBytes > Number(length) ? `Value should be a maximum of ${ length } bytes` : true;
+      }
+
+      return true;
+    }
+
     return true;
-  }, [ intMatch, valueType ]);
+  }, [ bytesMatch, intMatch, valueType ]);
 
   return (
     <>
