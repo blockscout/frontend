@@ -477,19 +477,24 @@ export const RESOURCES = {
 
   // API V1
   csv_export_txs: {
-    path: '/api/v1/transactions-csv',
+    // path: '/api/v1/transactions-csv',
+    path: '/transactions-csv',
   },
   csv_export_internal_txs: {
-    path: '/api/v1/internal-transactions-csv',
+    // path: '/api/v1/internal-transactions-csv',
+    path: '/internal-transactions-csv',
   },
   csv_export_token_transfers: {
-    path: '/api/v1/token-transfers-csv',
+    // path: '/api/v1/token-transfers-csv',
+    path: '/token-transfers-csv',
   },
   csv_export_logs: {
-    path: '/api/v1/logs-csv',
+    // path: '/api/v1/logs-csv',
+    path: '/logs-csv',
   },
   graphql: {
-    path: '/api/v1/graphql',
+    // path: '/api/v1/graphql',
+    path: '/graphql',
   },
 };
 
