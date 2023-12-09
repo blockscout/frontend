@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, AlertTitle, chakra, Skeleton } from '@chakra-ui/react';
+import { Alert, AlertIcon, AlertTitle, chakra, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
@@ -19,6 +19,7 @@ const IndexingAlertBlocks = ({ className }: { className?: string }) => {
   const appProps = useAppContext();
   const cookiesString = appProps.cookies;
   const [ hasAlertCookie ] = React.useState(cookies.get(cookies.NAMES.INDEXING_ALERT, cookiesString) === 'true');
+  const alertBgColor = useColorModeValue('#F0F1F3', '#2C2C2C');
 
   const { data, isError, isLoading } = useApiQuery('homepage_indexing_status');
 
@@ -65,9 +66,9 @@ const IndexingAlertBlocks = ({ className }: { className?: string }) => {
   }
 
   return (
-    <Alert status="info" colorScheme="gray" py={ 3 } borderRadius="12px" mb={ 6 } className={ className }>
-      { !isMobile && <AlertIcon/> }
-      <AlertTitle>
+    <Alert status="info" bgColor={ alertBgColor } color="text" py={ 3 } borderRadius="12px" mb={ 6 } className={ className }>
+      { !isMobile && <AlertIcon color="text"/> }
+      <AlertTitle fontWeight={ 500 }>
         { `${ data.indexed_blocks_ratio && `${ Math.floor(Number(data.indexed_blocks_ratio) * 100) }% Blocks Indexed${ nbsp }${ ndash } ` }
           We're indexing this chain right now. Some of the counts may be inaccurate.` }
       </AlertTitle>

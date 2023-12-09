@@ -16,7 +16,7 @@ import {
   VisuallyHidden,
 } from '@chakra-ui/react';
 import domToImage from 'dom-to-image';
-import React, { useRef, useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 
 import type { TimeChartItem } from './types';
 
@@ -192,7 +192,7 @@ const ChartWidget = ({ items, title, description, isLoading, className, isError,
           </Flex>
 
           <Flex ml="auto" columnGap={ 2 }>
-            <Tooltip label="Reset zoom">
+            <Tooltip label="Reset zoom" bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
               <IconButton
                 hidden={ isZoomResetInitial }
                 aria-label="Reset zoom"
@@ -222,9 +222,12 @@ const ChartWidget = ({ items, title, description, isLoading, className, isError,
                     </VisuallyHidden>
                   </MenuButton>
                 </Skeleton>
-                <MenuList>
-                  <MenuItem
+                <MenuList bgColor="bg_base" borderColor="divider">
+                  <MenuItem bgColor="bg_base" borderColor="divider"
                     display="flex"
+                    _hover={{
+                      bgColor: 'divider',
+                    }}
                     alignItems="center"
                     onClick={ showChartFullscreen }
                   >
@@ -235,6 +238,10 @@ const ChartWidget = ({ items, title, description, isLoading, className, isError,
                   <MenuItem
                     display="flex"
                     alignItems="center"
+                    bgColor="bg_base" borderColor="divider"
+                    _hover={{
+                      bgColor: 'divider',
+                    }}
                     onClick={ handleFileSaveClick }
                   >
                     <Icon as={ imageIcon } boxSize={ 5 } mr={ 3 }/>
@@ -244,6 +251,10 @@ const ChartWidget = ({ items, title, description, isLoading, className, isError,
                   <MenuItem
                     display="flex"
                     alignItems="center"
+                    bgColor="bg_base" borderColor="divider"
+                    _hover={{
+                      bgColor: 'divider',
+                    }}
                     onClick={ handleSVGSavingClick }
                   >
                     <Icon as={ svgFileIcon } boxSize={ 5 } mr={ 3 }/>

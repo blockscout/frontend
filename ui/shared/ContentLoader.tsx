@@ -27,7 +27,7 @@ const ContentLoader = ({ className, text }: Props) => {
           animation: `${ runnerAnimation } 700ms ease-in-out infinite alternate`,
           left: '100%',
           top: 0,
-          backgroundColor: 'blue.300',
+          backgroundColor: 'accent',
           borderRadius: 'full',
         }}
       />

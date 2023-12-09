@@ -1,4 +1,4 @@
-import { Tr, Td, Flex, Box, Tooltip, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex, Skeleton, Td, Tooltip, Tr, useColorModeValue } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import { motion } from 'framer-motion';
 import React from 'react';
@@ -30,7 +30,6 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
   const burntFees = BigNumber(data.burnt_fees || 0);
   const txFees = BigNumber(data.tx_fees || 0);
 
-  const separatorColor = useColorModeValue('gray.200', 'gray.700');
   const burntFeesIconColor = useColorModeValue('gray.500', 'inherit');
 
   return (
@@ -44,7 +43,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
     >
       <Td fontSize="sm">
         <Flex columnGap={ 2 } alignItems="center" mb={ 2 }>
-          <Tooltip isDisabled={ data.type !== 'reorg' } label="Chain reorganizations">
+          <Tooltip isDisabled={ data.type !== 'reorg' } label="Chain reorganizations" bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
             <Skeleton isLoaded={ !isLoading } display="inline-block">
               <LinkInternal
                 fontWeight={ 600 }
@@ -70,6 +69,8 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           type="address"
           alias={ data.miner.name }
           hash={ data.miner.hash }
+          color="text"
+          _hover={{ color: 'text', textDecoration: 'underline' }}
           truncation="constant"
           display="inline-flex"
           maxW="100%"
@@ -92,7 +93,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
         <Td fontSize="sm">
           <Skeleton isLoaded={ !isLoading } display="inline-block">{ BigNumber(data.gas_used || 0).toFormat() }</Skeleton>
           <Flex mt={ 2 }>
-            <Tooltip label={ isLoading ? undefined : 'Gas Used %' }>
+            <Tooltip label={ isLoading ? undefined : 'Gas Used %' } bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
               <Box>
                 <Utilization
                   colorScheme="gray"
@@ -103,7 +104,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
             </Tooltip>
             { data.gas_target_percentage && (
               <>
-                <TextSeparator color={ separatorColor } mx={ 1 }/>
+                <TextSeparator mx={ 1 } color="text_secondary"/>
                 <GasUsedToTargetRatio value={ data.gas_target_percentage } isLoading={ isLoading }/>
               </>
             ) }
@@ -123,9 +124,9 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
               { burntFees.dividedBy(WEI).toFixed(8) }
             </Skeleton>
           </Flex>
-          <Tooltip label={ isLoading ? undefined : 'Burnt fees / Txn fees * 100%' }>
+          <Tooltip label={ isLoading ? undefined : 'Burnt fees / Txn fees * 100%' } bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
             <Box w="min-content">
-              <Utilization mt={ 2 } value={ burntFees.div(txFees).toNumber() } isLoading={ isLoading }/>
+              <Utilization colorScheme="accent" mt={ 2 } value={ burntFees.div(txFees).toNumber() } isLoading={ isLoading }/>
             </Box>
           </Tooltip>
         </Td>

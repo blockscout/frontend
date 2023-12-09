@@ -66,8 +66,7 @@ const IndexingAlertIntTxs = () => {
       borderRadius="base"
       alignItems="center"
       justifyContent="center"
-      color="green.400"
-      _hover={{ color: 'blue.400' }}
+      color="accent"
     >
       <IconButton
         colorScheme="none"
@@ -89,7 +88,7 @@ const IndexingAlertIntTxs = () => {
       <PopoverTrigger>
         { trigger }
       </PopoverTrigger>
-      <PopoverContent maxH="450px" overflowY="scroll" w="240px">
+      <PopoverContent maxH="450px" overflowY="scroll" w="240px" borderColor="divider" bgColor="bg_base">
         <PopoverBody p={ 4 } bgColor={ bgColor } boxShadow="2xl">
           { hint }
         </PopoverBody>

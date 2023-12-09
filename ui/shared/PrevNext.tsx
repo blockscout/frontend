@@ -33,7 +33,7 @@ const PrevNext = ({ className, onClick, prevLabel, nextLabel, isPrevDisabled, is
 
   return (
     <Box className={ className }>
-      <Tooltip label={ prevLabel }>
+      <Tooltip label={ prevLabel } bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
         <IconButton
           aria-label="prev"
           icon={ <Icon as={ eastArrow } boxSize={ 6 }/> }
@@ -45,7 +45,7 @@ const PrevNext = ({ className, onClick, prevLabel, nextLabel, isPrevDisabled, is
           isDisabled={ isPrevDisabled }
         />
       </Tooltip>
-      <Tooltip label={ nextLabel }>
+      <Tooltip label={ nextLabel } bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
         <IconButton
           aria-label="next"
           icon={ <Icon as={ eastArrow }boxSize={ 6 } transform="rotate(180deg)"/> }

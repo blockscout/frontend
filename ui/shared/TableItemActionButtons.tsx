@@ -25,7 +25,7 @@ const TableItemActionButtons = ({ onEditClick, onDeleteClick, isLoading }: Props
 
   return (
     <HStack spacing={ 6 } alignSelf="flex-end">
-      <Tooltip label="Edit">
+      <Tooltip label="Edit" bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
         <IconButton
           aria-label="edit"
           variant="simple"
@@ -38,7 +38,7 @@ const TableItemActionButtons = ({ onEditClick, onDeleteClick, isLoading }: Props
           borderRadius="none"
         />
       </Tooltip>
-      <Tooltip label="Delete">
+      <Tooltip label="Delete" bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
         <IconButton
           aria-label="delete"
           variant="simple"

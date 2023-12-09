@@ -1,4 +1,4 @@
-import { useToken } from '@chakra-ui/react';
+import { useColorModeValue } from '@chakra-ui/react';
 import * as d3 from 'd3';
 import React, { useEffect, useMemo } from 'react';
 
@@ -33,7 +33,7 @@ const DEFAULT_CHART_MARGIN = { bottom: 20, left: 40, right: 20, top: 10 };
 
 const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title, margin, units }: Props) => {
   const isMobile = useIsMobile();
-  const color = useToken('colors', 'blue.200');
+  const color = useColorModeValue('#1ACD6E', '#07FC99');
   const overlayRef = React.useRef<SVGRectElement>(null);
 
   const [ rect, ref ] = useClientRect<SVGSVGElement>();

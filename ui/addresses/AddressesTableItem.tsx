@@ -1,4 +1,4 @@
-import { Tr, Td, Text, Skeleton } from '@chakra-ui/react';
+import { Skeleton, Td, Text, Tr, useColorModeValue } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -26,7 +26,7 @@ const AddressesTableItem = ({
   hasPercentage,
   isLoading,
 }: Props) => {
-
+  const iconBgColor = useColorModeValue('#F0F1F2', '#2C2C2C');
   const addressBalance = BigNumber(item.coin_balance).div(BigNumber(10 ** config.chain.currency.decimals));
   const addressBalanceChunks = addressBalance.dp(8).toFormat().split('.');
 
@@ -39,7 +39,7 @@ const AddressesTableItem = ({
       </Td>
       <Td>
         <Address display="inline-flex" maxW="100%">
-          <AddressIcon address={ item } mr={ 2 } isLoading={ isLoading }/>
+          <AddressIcon bgColor={ iconBgColor } address={ item } mr={ 2 } isLoading={ isLoading }/>
           <AddressLink
             fontWeight={ 700 }
             flexGrow={ 1 }

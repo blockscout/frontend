@@ -5,7 +5,7 @@ import { mode } from '@chakra-ui/theme-tools';
 const baseStyle: SystemStyleInterpolation = (props) => {
   return {
     fontWeight: '500',
-    color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
+    color: mode('text', 'text')(props),
   };
 };
 

@@ -1,4 +1,4 @@
-import { IconButton, Tooltip, useClipboard, chakra, useDisclosure, Skeleton } from '@chakra-ui/react';
+import { IconButton, Skeleton, Tooltip, chakra, useClipboard, useDisclosure } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 
 import CopyIcon from 'icons/copy.svg';
@@ -28,14 +28,16 @@ const CopyToClipboard = ({ text, className, isLoading }: Props) => {
   }
 
   return (
-    <Tooltip label={ copied ? 'Copied' : 'Copy to clipboard' } isOpen={ isOpen || copied }>
+    <Tooltip label={ copied ? 'Copied' : 'Copy to clipboard' } isOpen={ isOpen || copied }
+      bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
       <IconButton
         aria-label="copy"
         icon={ <CopyIcon/> }
         w="20px"
         h="20px"
-        color="gray.400"
+        color="text_secondary"
         variant="simple"
+        _hover={{ color: 'accent' }}
         display="inline-block"
         flexShrink={ 0 }
         onClick={ onCopy }

@@ -61,7 +61,7 @@ const VerifiedAddressesTableItem = ({ item, application, onAdd, onEdit, isLoadin
       </Td>
       <Td pl="0">
         { item.metadata.tokenName && application && !isLoading ? (
-          <Tooltip label={ isLoading ? undefined : 'Edit' }>
+          <Tooltip label={ isLoading ? undefined : 'Edit' } bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
             <IconButton
               aria-label="edit"
               variant="simple"

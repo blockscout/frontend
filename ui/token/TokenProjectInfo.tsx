@@ -43,7 +43,7 @@ const TokenProjectInfo = ({ data }: Props) => {
       <PopoverTrigger>
         <TriggerButton isOpen={ isOpen } onClick={ onToggle }/>
       </PopoverTrigger>
-      <PopoverContent w="500px">
+      <PopoverContent w="500px" borderColor="divider" bgColor="bg_base">
         <PopoverBody px={ 6 } py={ 5 }>
           <Content data={ data }/>
         </PopoverBody>

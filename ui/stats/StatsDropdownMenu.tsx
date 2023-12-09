@@ -43,7 +43,7 @@ export function StatsDropdownMenu<T extends string>({ items, selectedId, onSelec
         </Box>
       </MenuButton>
 
-      <MenuList zIndex={ 3 }>
+      <MenuList zIndex={ 3 } bgColor="bg_base" borderColor="divider">
         <MenuOptionGroup
           value={ selectedId }
           type="radio"
@@ -52,6 +52,10 @@ export function StatsDropdownMenu<T extends string>({ items, selectedId, onSelec
           { items.map((item) => (
             <MenuItemOption
               key={ item.id }
+              bgColor="bg_base" borderColor="divider"
+              _hover={{
+                bgColor: 'divider',
+              }}
               value={ item.id }
             >
               { item.title }

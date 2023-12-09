@@ -7,7 +7,7 @@ import rightArrowIcon from 'icons/arrows/east.svg';
 import { default as getNextSortValueShared } from 'ui/shared/sort/getNextSortValue';
 import { default as Thead } from 'ui/shared/TheadSticky';
 
-import type { TokensSortingValue, TokensSortingField } from './Tokens';
+import type { TokensSortingField, TokensSortingValue } from './Tokens';
 import TokensTableItem from './TokensTableItem';
 
 const SORT_SEQUENCE: Record<TokensSortingField, Array<TokensSortingValue | undefined>> = {
@@ -46,7 +46,8 @@ const TokensTable = ({ items, page, isLoading, sorting, setSorting }: Props) => 
             </Link>
           </Th>
           <Th isNumeric w="20%">
-            <Link onClick={ sort('circulating_market_cap') } display="flex" justifyContent="end">
+            <Link
+              onClick={ sort('circulating_market_cap') } display="flex" justifyContent="end">
               { sorting?.includes('circulating_market_cap') && <Icon as={ rightArrowIcon } boxSize={ 4 } transform={ sortIconTransform }/> }
               On-chain market cap
             </Link>

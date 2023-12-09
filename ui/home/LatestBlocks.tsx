@@ -1,4 +1,4 @@
-import { Box, Heading, Flex, Text, VStack, Skeleton } from '@chakra-ui/react';
+import { Box, Flex, Heading, Skeleton, Text, VStack } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { AnimatePresence } from 'framer-motion';
 import React from 'react';
@@ -87,7 +87,7 @@ const LatestBlocks = () => {
             <Text as="span" fontSize="sm">
               Network utilization:{ nbsp }
             </Text>
-            <Text as="span" fontSize="sm" color="blue.400" fontWeight={ 700 }>
+            <Text as="span" fontSize="sm" color="accent" fontWeight={ 700 }>
               { statsQueryResult.data?.network_utilization_percentage.toFixed(2) }%
             </Text>
           </Skeleton>
@@ -105,7 +105,8 @@ const LatestBlocks = () => {
           </AnimatePresence>
         </VStack>
         <Flex justifyContent="center">
-          <LinkInternal fontSize="sm" href={ route({ pathname: '/blocks' }) }>View all blocks</LinkInternal>
+          <LinkInternal fontSize="sm" href={ route({ pathname: '/blocks' }) }
+            color="text" _hover={{ color: 'accent', textDecoration: 'underline' }}>View all blocks</LinkInternal>
         </Flex>
       </>
     );

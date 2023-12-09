@@ -1,8 +1,9 @@
-import type { ChakraProps } from '@chakra-ui/react';
+import { useColorMode, type ChakraProps } from '@chakra-ui/react';
 import * as Sentry from '@sentry/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { AppProps } from 'next/app';
+import Head from 'next/head';
 import React from 'react';
 
 import type { NextPageWithLayout } from 'nextjs/types';
@@ -37,17 +38,34 @@ const ERROR_SCREEN_STYLES: ChakraProps = {
 };
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+  const { colorMode } = useColorMode();
 
+  const getLayout = Component.getLayout ?? ((page) => <Layout>{ page }</Layout>);
+
+  return (
+    <>
+      <Head>
+        <link rel="icon" sizes="32x32" type="image/png" href={ `/static/favicon-32x32-${ colorMode }.png` }/>
+        <link rel="icon" sizes="16x16" type="image/png"href={ `/static/favicon-16x16-${ colorMode }.png` }/>
+        <link rel="apple-touch-icon" sizes="180x180" href={ `/static/apple-touch-icon-${ colorMode }.png` }/>
+      </Head>
+
+      { getLayout(<Component { ...pageProps }/>) }
+    </>
+
+  );
+}
+
+function AppWrapper({ pageProps, ...props }: AppPropsWithLayout) {
   const queryClient = useQueryClientConfig();
 
   const handleError = React.useCallback((error: Error) => {
     Sentry.captureException(error);
   }, []);
 
-  const getLayout = Component.getLayout ?? ((page) => <Layout>{ page }</Layout>);
-
   return (
     <ChakraProvider theme={ theme } cookies={ pageProps.cookies }>
+
       <AppErrorBoundary
         { ...ERROR_SCREEN_STYLES }
         onError={ handleError }
@@ -56,7 +74,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
           <QueryClientProvider client={ queryClient }>
             <ScrollDirectionProvider>
               <SocketProvider url={ `${ config.api.socket }${ config.api.basePath }/socket/v2` }>
-                { getLayout(<Component { ...pageProps }/>) }
+                <MyApp pageProps={ pageProps } { ...props }/>
               </SocketProvider>
             </ScrollDirectionProvider>
             <ReactQueryDevtools/>
@@ -68,4 +86,4 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   );
 }
 
-export default MyApp;
+export default AppWrapper;

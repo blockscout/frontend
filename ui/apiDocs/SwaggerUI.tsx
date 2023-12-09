@@ -4,7 +4,7 @@ const SwaggerUIReact = dynamic(() => import('swagger-ui-react'), {
   ssr: false,
 });
 
-import { Box, useColorModeValue } from '@chakra-ui/react';
+import { Box, useColorModeValue, useToken } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
@@ -53,6 +53,31 @@ const SwaggerUI = () => {
     },
     '.swagger-ui .wrapper': {
       padding: 0,
+    },
+
+    '.opblock-summary-control[aria-label~="get"] > .opblock-summary-method': {
+      backgroundColor: useToken('colors', 'accent'),
+    },
+
+    '.opblock-summary-control > .opblock-summary-method': {
+      color: useColorModeValue('text', '#171717'),
+    },
+
+    '.opblock': {
+      borderColor: useToken('colors', 'accent') + ' !important',
+      backgroundColor: 'unset !important',
+    },
+
+    '.tab-item.active h4 span::after': {
+      backgroundColor: useToken('colors', 'accent') + ' !important',
+    },
+
+    '.opblock .opblock-summary': {
+      borderColor: useToken('colors', 'accent') + ' !important',
+    },
+
+    '.opblock .try-out button': {
+      color: useToken('colors', 'text') + ' !important',
     },
   };
 

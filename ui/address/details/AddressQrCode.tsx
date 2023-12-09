@@ -57,7 +57,7 @@ const AddressQrCode = ({ hash, className, isLoading }: Props) => {
 
   return (
     <>
-      <Tooltip label="Click to view QR code">
+      <Tooltip label="Click to view QR code" bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
         <IconButton
           className={ className }
           aria-label="Show QR code"
@@ -65,6 +65,8 @@ const AddressQrCode = ({ hash, className, isLoading }: Props) => {
           size="sm"
           pl="6px"
           pr="6px"
+          color="accent"
+          borderColor="accent"
           onClick={ onOpen }
           icon={ <Icon as={ qrCodeIcon } boxSize={ 5 }/> }
         />

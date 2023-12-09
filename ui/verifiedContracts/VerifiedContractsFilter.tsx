@@ -1,9 +1,9 @@
 import {
   Menu,
   MenuButton,
+  MenuItemOption,
   MenuList,
   MenuOptionGroup,
-  MenuItemOption,
   useDisclosure,
 } from '@chakra-ui/react';
 import React from 'react';
@@ -30,12 +30,20 @@ const VerifiedContractsFilter = ({ onChange, defaultValue, isActive }: Props) =>
           as="div"
         />
       </MenuButton>
-      <MenuList zIndex="popover">
+      <MenuList zIndex="popover" bgColor="bg_base" borderColor="divider">
         <MenuOptionGroup defaultValue={ defaultValue || 'all' } title="Filter" type="radio" onChange={ onChange }>
-          <MenuItemOption value="all">All</MenuItemOption>
-          <MenuItemOption value="solidity">Solidity</MenuItemOption>
-          <MenuItemOption value="vyper">Vyper</MenuItemOption>
-          <MenuItemOption value="yul">Yul</MenuItemOption>
+          <MenuItemOption value="all" bgColor="bg_base" borderColor="divider" _hover={{
+            bgColor: 'divider',
+          }}>All</MenuItemOption>
+          <MenuItemOption value="solidity" bgColor="bg_base" borderColor="divider" _hover={{
+            bgColor: 'divider',
+          }}>Solidity</MenuItemOption>
+          <MenuItemOption value="vyper" bgColor="bg_base" borderColor="divider" _hover={{
+            bgColor: 'divider',
+          }}>Vyper</MenuItemOption>
+          <MenuItemOption value="yul" bgColor="bg_base" borderColor="divider" _hover={{
+            bgColor: 'divider',
+          }}>Yul</MenuItemOption>
         </MenuOptionGroup>
       </MenuList>
     </Menu>

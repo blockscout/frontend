@@ -35,7 +35,7 @@ const BackLink = (props: BackLinkProp & { isLoading?: boolean }) => {
 
   if ('url' in props) {
     return (
-      <Tooltip label={ props.label }>
+      <Tooltip label={ props.label } bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
         <LinkInternal display="inline-flex" href={ props.url } h="40px" mr={ 3 }>
           { icon }
         </LinkInternal>
@@ -44,7 +44,7 @@ const BackLink = (props: BackLinkProp & { isLoading?: boolean }) => {
   }
 
   return (
-    <Tooltip label={ props.label }>
+    <Tooltip label={ props.label } bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
       <Link display="inline-flex" onClick={ props.onClick } h="40px" mr={ 3 }>
         { icon }
       </Link>
@@ -109,6 +109,7 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
           <Tooltip
             label={ title }
             isOpen={ tooltip.isOpen }
+            bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider"
             onClose={ tooltip.onClose }
             maxW={{ base: 'calc(100vw - 32px)', lg: '500px' }}
             closeOnScroll={ isMobile ? true : false }

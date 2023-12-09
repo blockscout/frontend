@@ -86,7 +86,7 @@ const AddressAddToWallet = ({ className, token, isLoading }: Props) => {
   }
 
   return (
-    <Tooltip label={ `Add token to ${ WALLETS_INFO[wallet].name }` }>
+    <Tooltip label={ `Add token to ${ WALLETS_INFO[wallet].name }` } bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
       <Box className={ className } display="inline-flex" cursor="pointer" onClick={ handleClick }>
         <Icon as={ WALLETS_INFO[wallet].icon } boxSize={ 6 }/>
       </Box>

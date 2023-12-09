@@ -26,6 +26,10 @@ const MarketplaceCategoriesMenuItem = ({ id, onClick }: Props) => {
       onClick={ handleSelection }
       display="flex"
       alignItems="center"
+      bgColor="bg_base" borderColor="divider"
+      _hover={{
+        bgColor: 'divider',
+      }}
     >
       { id in ICONS && <Icon mr={ 3 } as={ ICONS[id] } w={ 4 } h={ 4 } color="blackAlpha.800"/> }
       { id }

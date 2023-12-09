@@ -1,21 +1,21 @@
 import {
+  Alert,
+  Box,
+  chakra,
+  Icon as ChakraIcon,
+  Flex,
   Grid,
   GridItem,
-  Text,
-  Box,
-  Icon as ChakraIcon,
   Link,
-  Spinner,
-  Flex,
-  Tooltip,
-  chakra,
-  useColorModeValue,
   Skeleton,
-  Alert,
+  Spinner,
+  Text,
+  Tooltip,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
-import { scroller, Element } from 'react-scroll';
+import { Element, scroller } from 'react-scroll';
 
 import { route } from 'nextjs-routes';
 
@@ -99,14 +99,14 @@ const TxDetails = () => {
   const actionsExist = data.actions && data.actions.length > 0;
 
   const executionSuccessBadge = toAddress?.is_contract && data.result === 'success' ? (
-    <Tooltip label="Contract execution completed">
+    <Tooltip label="Contract execution completed" bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
       <chakra.span display="inline-flex" ml={ 2 } mr={ 1 }>
         <ChakraIcon as={ successIcon } boxSize={ 4 } color={ executionSuccessIconColor } cursor="pointer"/>
       </chakra.span>
     </Tooltip>
   ) : null;
   const executionFailedBadge = toAddress?.is_contract && Boolean(data.status) && data.result !== 'success' ? (
-    <Tooltip label="Error occurred during contract execution">
+    <Tooltip label="Error occurred during contract execution" bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
       <chakra.span display="inline-flex" ml={ 2 } mr={ 1 }>
         <ChakraIcon as={ errorIcon } boxSize={ 4 } color="error" cursor="pointer"/>
       </chakra.span>
@@ -174,14 +174,15 @@ const TxDetails = () => {
           { data.block === null ?
             <Text>Pending</Text> : (
               <Skeleton isLoaded={ !isPlaceholderData }>
-                <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.block) } }) }>
+                <LinkInternal
+                  href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.block) } }) }>
                   { data.block }
                 </LinkInternal>
               </Skeleton>
             ) }
           { Boolean(data.confirmations) && (
             <>
-              <TextSeparator color="gray.500"/>
+              <TextSeparator color="text_secondary"/>
               <Skeleton isLoaded={ !isPlaceholderData } color="text_secondary">
                 <span>{ data.confirmations } Block confirmations</span>
               </Skeleton>
@@ -194,11 +195,11 @@ const TxDetails = () => {
             hint="Date & time of transaction inclusion, including length of time for confirmation"
             isLoading={ isPlaceholderData }
           >
-            <Icon as={ clockIcon } boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
+            <Icon as={ clockIcon } boxSize={ 5 } color="text_secondary" isLoading={ isPlaceholderData }/>
             <Skeleton isLoaded={ !isPlaceholderData } ml={ 1 }>{ dayjs(data.timestamp).fromNow() }</Skeleton>
             <TextSeparator/>
             <Skeleton isLoaded={ !isPlaceholderData } whiteSpace="normal">{ dayjs(data.timestamp).format('llll') }</Skeleton>
-            <TextSeparator color="gray.500"/>
+            <TextSeparator color="text_secondary"/>
             <Skeleton isLoaded={ !isPlaceholderData } color="text_secondary">
               <span>{ getConfirmationDuration(data.confirmation_duration) }</span>
             </Skeleton>
@@ -223,8 +224,9 @@ const TxDetails = () => {
         >
           <Address>
             <AddressIcon address={ data.from } isLoading={ isPlaceholderData }/>
-            <AddressLink type="address" ml={ 2 } hash={ data.from.hash } isLoading={ isPlaceholderData }/>
-            <CopyToClipboard text={ data.from.hash } isLoading={ isPlaceholderData }/>
+            <AddressLink color="text" _hover={{ color: 'text', textDecoration: 'underline' }}
+              type="address" ml={ 2 } hash={ data.from.hash } isLoading={ isPlaceholderData }/>
+            <CopyToClipboard color="text_secondary" text={ data.from.hash } isLoading={ isPlaceholderData }/>
           </Address>
           { data.from.name && <Text>{ data.from.name }</Text> }
           { addressFromTags.length > 0 && (
@@ -245,19 +247,20 @@ const TxDetails = () => {
               { data.to && data.to.hash ? (
                 <Address alignItems="center" flexShrink={ 0 } w={{ base: '100%', lg: 'auto' }}>
                   <AddressIcon address={ toAddress } isLoading={ isPlaceholderData }/>
-                  <AddressLink type="address" ml={ 2 } hash={ toAddress.hash } isLoading={ isPlaceholderData }/>
+                  <AddressLink color="text" _hover={{ color: 'text', textDecoration: 'underline' }}
+                    type="address" ml={ 2 } hash={ toAddress.hash } isLoading={ isPlaceholderData }/>
                   { executionSuccessBadge }
                   { executionFailedBadge }
-                  <CopyToClipboard text={ toAddress.hash } isLoading={ isPlaceholderData }/>
+                  <CopyToClipboard color="text_secondary" text={ toAddress.hash } isLoading={ isPlaceholderData }/>
                 </Address>
               ) : (
                 <Flex width={{ base: '100%', lg: 'auto' }} whiteSpace="pre" alignItems="center" flexShrink={ 0 }>
                   <span>[Contract </span>
-                  <AddressLink type="address" hash={ toAddress.hash }/>
+                  <AddressLink color="text" _hover={{ color: 'text', textDecoration: 'underline' }} type="address" hash={ toAddress.hash }/>
                   <span> created]</span>
                   { executionSuccessBadge }
                   { executionFailedBadge }
-                  <CopyToClipboard text={ toAddress.hash }/>
+                  <CopyToClipboard color="text_secondary" text={ toAddress.hash }/>
                 </Flex>
               ) }
               { toAddress.name && <TruncatedValue value={ toAddress.name }/> }

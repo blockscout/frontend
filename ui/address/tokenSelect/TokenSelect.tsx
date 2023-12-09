@@ -86,7 +86,7 @@ const TokenSelect = ({ onClick }: Props) => {
         <TokenSelectMobile data={ data } isLoading={ tokensIsFetching === 1 }/> :
         <TokenSelectDesktop data={ data } isLoading={ tokensIsFetching === 1 }/>
       }
-      <Tooltip label="Show all tokens">
+      <Tooltip label="Show all tokens" bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
         <Box>
           <NextLink href={{ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'tokens' } }} passHref legacyBehavior>
             <IconButton

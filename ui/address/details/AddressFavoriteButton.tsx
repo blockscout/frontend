@@ -1,4 +1,4 @@
-import { Icon, chakra, Tooltip, IconButton, useDisclosure } from '@chakra-ui/react';
+import { Icon, IconButton, Tooltip, chakra, useDisclosure } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -54,7 +54,8 @@ const AddressFavoriteButton = ({ className, hash, watchListId }: Props) => {
 
   return (
     <>
-      <Tooltip label={ `${ watchListId ? 'Remove address from Watch list' : 'Add address to Watch list' }` }>
+      <Tooltip label={ `${ watchListId ? 'Remove address from Watch list' : 'Add address to Watch list' }` }
+        bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
         <IconButton
           isActive={ Boolean(watchListId) }
           className={ className }

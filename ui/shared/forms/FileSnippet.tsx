@@ -80,6 +80,7 @@ const FileSnippet = ({ file, className, index, onRemove, isDisabled, error }: Pr
             <Tooltip
               label={ error }
               placement="top"
+              bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider"
               maxW="320px"
             >
               <Box cursor="pointer" display="inherit" onClick={ handleErrorHintIconClick } ml={ 1 }>

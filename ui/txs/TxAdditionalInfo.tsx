@@ -1,11 +1,11 @@
 import {
   Modal,
-  ModalContent,
   ModalCloseButton,
+  ModalContent,
   Popover,
-  PopoverTrigger,
-  PopoverContent,
   PopoverBody,
+  PopoverContent,
+  PopoverTrigger,
   useDisclosure,
 } from '@chakra-ui/react';
 import React from 'react';
@@ -55,7 +55,7 @@ const TxAdditionalInfo = ({ hash, tx, isMobile, isLoading }: Props) => {
           <PopoverTrigger>
             <AdditionalInfoButton isOpen={ isOpen } isLoading={ isLoading }/>
           </PopoverTrigger>
-          <PopoverContent border="1px solid" borderColor="divider">
+          <PopoverContent border="1px solid" borderColor="divider" bgColor="bg_base">
             <PopoverBody>
               { content }
             </PopoverBody>

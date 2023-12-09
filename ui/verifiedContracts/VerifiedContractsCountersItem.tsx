@@ -8,7 +8,7 @@ type Props = {
 }
 
 const VerifiedContractsCountersItem = ({ name, total, new24 }: Props) => {
-  const itemBgColor = useColorModeValue('blue.50', 'blue.800');
+  const itemBgColor = useColorModeValue('#E9FFF4', '#2C2C2C');
   return (
     <Box
       w={{ base: '100%', lg: 'calc((100% - 12px)/2)' }}
@@ -21,7 +21,7 @@ const VerifiedContractsCountersItem = ({ name, total, new24 }: Props) => {
         <Text fontWeight={ 600 } mr={ 2 } fontSize="lg">{ Number(total).toLocaleString() }</Text>
         { Number(new24) > 0 && (
           <>
-            <Text fontWeight={ 600 } mr={ 1 } fontSize="lg" color="green.500">+{ Number(new24).toLocaleString() }</Text>
+            <Text fontWeight={ 600 } mr={ 1 } fontSize="lg" color="accent">+{ Number(new24).toLocaleString() }</Text>
             <Text variant="secondary" fontSize="sm">(24h)</Text>
           </>
         ) }

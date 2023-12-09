@@ -80,7 +80,7 @@ const Sol2UmlDiagram = ({ addressHash }: Props) => {
   }
 
   return (
-    <Tooltip label="Click on image to zoom" placement="top">
+    <Tooltip label="Click on image to zoom" placement="top" bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
       <chakra.img
         src={ `data:image/svg+xml;base64,${ umlQuery.data.svg }` }
         alt={ `Contract ${ contractQuery.data.name } UML diagram` }

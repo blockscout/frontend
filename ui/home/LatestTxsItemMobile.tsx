@@ -59,7 +59,7 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
             as={ transactionIcon }
             boxSize="30px"
             mr={ 2 }
-            color="link"
+            color="text"
             isLoading={ isLoading }
           />
           <Address width="100%">
@@ -69,6 +69,7 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
               fontWeight="700"
               truncation="constant"
               isLoading={ isLoading }
+              color="text"
             />
           </Address>
         </Flex>
@@ -90,12 +91,13 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
             truncation="constant"
             fontSize="sm"
             isLoading={ isLoading }
+            color="text"
           />
         </Address>
         <Icon
           as={ rightArrowIcon }
           boxSize={ 6 }
-          color="gray.500"
+          color="text_secondary"
           isLoading={ isLoading }
         />
         { dataTo && (
@@ -110,17 +112,18 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
               truncation="constant"
               fontSize="sm"
               isLoading={ isLoading }
+              color="text"
             />
           </Address>
         ) }
       </Flex>
       <Skeleton isLoaded={ !isLoading } mb={ 2 } fontSize="sm" w="fit-content">
-        <Text as="span">Value { config.chain.currency.symbol } </Text>
-        <Text as="span" variant="secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() }</Text>
+        <Text as="span" color="text">Value { config.chain.currency.symbol } </Text>
+        <Text as="span" variant="secondary" color="text_secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() }</Text>
       </Skeleton>
       <Skeleton isLoaded={ !isLoading } fontSize="sm" w="fit-content">
-        <Text as="span">Fee { config.chain.currency.symbol } </Text>
-        <Text as="span" variant="secondary">{ getValueWithUnit(tx.fee.value).dp(5).toFormat() }</Text>
+        <Text as="span" color="text">Fee { config.chain.currency.symbol } </Text>
+        <Text as="span" variant="secondary" color="text_secondary">{ getValueWithUnit(tx.fee.value).dp(5).toFormat() }</Text>
       </Skeleton>
     </Box>
   );

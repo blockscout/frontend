@@ -60,7 +60,10 @@ const TruncatedTextTooltip = ({ children, label }: Props) => {
   );
 
   if (isTruncated) {
-    return <Tooltip label={ label } maxW={{ base: '100vw', lg: '400px' }}>{ modifiedChildren }</Tooltip>;
+    return (
+      <Tooltip label={ label } maxW={{ base: '100vw', lg: '400px' }}
+        bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">{ modifiedChildren }</Tooltip>
+    );
   }
 
   return modifiedChildren;

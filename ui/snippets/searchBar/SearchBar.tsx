@@ -1,7 +1,7 @@
-import { Box, Popover, PopoverTrigger, PopoverContent, PopoverBody, useDisclosure, PopoverFooter } from '@chakra-ui/react';
+import { Box, Popover, PopoverBody, PopoverContent, PopoverFooter, PopoverTrigger, useDisclosure } from '@chakra-ui/react';
 import _debounce from 'lodash/debounce';
 import { useRouter } from 'next/router';
-import type { FormEvent, FocusEvent } from 'react';
+import type { FocusEvent, FormEvent } from 'react';
 import React from 'react';
 import { Element } from 'react-scroll';
 
@@ -126,6 +126,7 @@ const SearchBar = ({ isHomepage }: Props) => {
         />
       </PopoverTrigger>
       <PopoverContent
+        borderColor="divider" bgColor="bg_base"
         w={ `${ menuWidth.current }px` }
         ref={ menuRef }
       >

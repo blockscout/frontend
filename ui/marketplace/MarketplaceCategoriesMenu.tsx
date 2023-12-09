@@ -54,7 +54,7 @@ const MarketplaceCategoriesMenu = ({ selectedCategoryId, onSelect, categories, i
         </Box>
       </MenuButton>
 
-      <MenuList zIndex={ 3 }>
+      <MenuList zIndex={ 3 } bgColor="bg_base" borderColor="divider">
         { options.map((category: string) => (
           <MarketplaceCategoriesMenuItem
             key={ category }

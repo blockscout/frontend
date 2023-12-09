@@ -27,7 +27,7 @@ const Home = () => {
             size={{ base: 'md', lg: 'xl' }}
             lineHeight={{ base: '32px', lg: '50px' }}
             fontWeight={ 600 }
-            color={ config.UI.homepage.plate.textColor }
+            color="#171717"
           >
             Welcome to { config.chain.name } Blockscout
           </Heading>

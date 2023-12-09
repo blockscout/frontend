@@ -41,7 +41,7 @@ const LatestBlocksItem = ({ block, h, isLoading }: Props) => {
       w="100%"
     >
       <Flex alignItems="center" overflow="hidden" w="100%" mb={ 3 }>
-        <Icon as={ blockIcon } boxSize="30px" color="link" isLoading={ isLoading } borderRadius="base"/>
+        <Icon as={ blockIcon } boxSize="30px" color="accent" isLoading={ isLoading } borderRadius="base"/>
         <AddressLink
           isLoading={ isLoading }
           type="block"
@@ -60,17 +60,20 @@ const LatestBlocksItem = ({ block, h, isLoading }: Props) => {
           fontSize="sm"
           flexShrink={ 0 }
           ml={ 2 }
+          color="text_secondary"
         />
       </Flex>
       <Grid gridGap={ 2 } templateColumns="auto minmax(0, 1fr)" fontSize="sm">
-        <Skeleton isLoaded={ !isLoading }>Txn</Skeleton>
-        <Skeleton isLoaded={ !isLoading } color="text_secondary"><span>{ block.tx_count }</span></Skeleton>
+        <Skeleton isLoaded={ !isLoading } color="text">Txn</Skeleton>
+        <Skeleton isLoaded={ !isLoading } color="text"><span>{ block.tx_count }</span></Skeleton>
         { !config.features.rollup.isEnabled && !config.UI.views.block.hiddenFields?.nonce && (
           <>
-            <Skeleton isLoaded={ !isLoading }>Reward</Skeleton>
-            <Skeleton isLoaded={ !isLoading } color="text_secondary"><span>{ totalReward.toFixed() }</span></Skeleton>
-            <Skeleton isLoaded={ !isLoading } textTransform="capitalize">{ getNetworkValidatorTitle() }</Skeleton>
-            <AddressLink type="address" alias={ block.miner.name } hash={ block.miner.hash } truncation="constant" maxW="100%" isLoading={ isLoading }/>
+            <Skeleton isLoaded={ !isLoading } color="text">Reward</Skeleton>
+            <Skeleton isLoaded={ !isLoading } color="text"><span>{ totalReward.toFixed() }</span></Skeleton>
+            <Skeleton isLoaded={ !isLoading } textTransform="capitalize" color="text">{ getNetworkValidatorTitle() }</Skeleton>
+            <AddressLink type="address" alias={ block.miner.name } hash={ block.miner.hash } truncation="constant" maxW="100%"
+              isLoading={ isLoading }
+              color="text"/>
           </>
         ) }
       </Grid>

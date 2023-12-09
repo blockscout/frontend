@@ -100,7 +100,7 @@ const ContractSourceCode = ({ address, implementationAddress }: Props) => {
   })();
 
   const diagramLink = diagramLinkAddress ? (
-    <Tooltip label="Visualize contract code using Sol2Uml JS library">
+    <Tooltip label="Visualize contract code using Sol2Uml JS library" bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
       <LinkInternal
         href={ route({ pathname: '/visualize/sol2uml', query: { address: diagramLinkAddress } }) }
         ml={{ base: '0', lg: 'auto' }}

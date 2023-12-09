@@ -54,7 +54,7 @@ const EntityTags = ({ className, data, tagsBefore = [], tagsAfter = [], isLoadin
             <PopoverTrigger>
               <Tag onClick={ onToggle }>+{ tags.length - 1 }</Tag>
             </PopoverTrigger>
-            <PopoverContent w="240px">
+            <PopoverContent w="240px" borderColor="divider" bgColor="bg_base">
               <PopoverBody >
                 <Flex columnGap={ 2 } rowGap={ 2 } flexWrap="wrap">
                   {

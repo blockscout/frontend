@@ -1,7 +1,7 @@
 import { Flex, Icon, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenTransfer as TTokenTransfer, Erc20TotalPayload, Erc721TotalPayload, Erc1155TotalPayload } from 'types/api/tokenTransfer';
+import type { Erc1155TotalPayload, Erc20TotalPayload, Erc721TotalPayload, TokenTransfer as TTokenTransfer } from 'types/api/tokenTransfer';
 
 import rightArrowIcon from 'icons/arrows/east.svg';
 import { space } from 'lib/html-entities';
@@ -22,8 +22,8 @@ const TxDetailsTokenTransfer = ({ data }: Props) => {
         const total = data.total as Erc20TotalPayload;
         return (
           <Flex flexWrap="wrap" columnGap={ 3 } rowGap={ 2 }>
-            <Text fontWeight={ 500 } as="span">For:{ space }
-              <CurrencyValue value={ total.value } exchangeRate={ data.token.exchange_rate } fontWeight={ 600 } decimals={ total.decimals }/>
+            <Text as="span" color="text_secondary">For:{ space }
+              <CurrencyValue value={ total.value } exchangeRate={ data.token.exchange_rate } decimals={ total.decimals }/>
             </Text>
             <TokenSnippet
               data={ data.token }
@@ -71,9 +71,11 @@ const TxDetailsTokenTransfer = ({ data }: Props) => {
       w="100%"
     >
       <Flex alignItems="center">
-        <AddressLink type="address" fontWeight="500" hash={ data.from.hash } truncation="constant"/>
-        <Icon as={ rightArrowIcon } boxSize={ 6 } mx={ 2 } color="gray.500"/>
-        <AddressLink type="address" fontWeight="500" hash={ data.to.hash } truncation="constant"/>
+        <AddressLink color="text" _hover={{ color: 'text', textDecoration: 'underline' }}
+          type="address" fontWeight="500" hash={ data.from.hash } truncation="constant"/>
+        <Icon as={ rightArrowIcon } boxSize={ 6 } mx={ 2 } color="text_secondary"/>
+        <AddressLink color="text" _hover={{ color: 'text', textDecoration: 'underline' }}
+          type="address" fontWeight="500" hash={ data.to.hash } truncation="constant"/>
       </Flex>
       <Flex flexDir="column" rowGap={ 5 } w="100%" overflow="hidden">
         { content }

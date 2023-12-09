@@ -4,8 +4,8 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
-import { AddressFromToFilterValues } from 'types/api/address';
 import type { AddressFromToFilter, AddressTokenTransferResponse } from 'types/api/address';
+import { AddressFromToFilterValues } from 'types/api/address';
 import type { TokenType } from 'types/api/token';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
@@ -235,7 +235,7 @@ const AddressTokenTransfers = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Pr
       <Flex alignItems="center" py={ 1 }>
         <TokenLogo data={ tokenData } boxSize={ 6 } mr={ 2 }/>
         { isMobile ? <HashStringShorten hash={ tokenFilter }/> : tokenFilter }
-        <Tooltip label="Reset filter">
+        <Tooltip label="Reset filter" bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
           <Flex>
             <Icon
               as={ crossIcon }

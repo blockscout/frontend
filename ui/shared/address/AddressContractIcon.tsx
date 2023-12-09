@@ -10,7 +10,7 @@ const AddressContractIcon = ({ className }: Props) => {
   const color = useColorModeValue('gray.400', 'gray.200');
 
   return (
-    <Tooltip label="Contract">
+    <Tooltip label="Contract" bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
       <Box
         className={ className }
         width="24px"

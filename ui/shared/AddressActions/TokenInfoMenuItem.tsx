@@ -1,4 +1,4 @@
-import { MenuItem, Icon, chakra, useDisclosure } from '@chakra-ui/react';
+import { Icon, MenuItem, chakra, useDisclosure } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -65,7 +65,10 @@ const TokenInfoMenuItem = ({ className, hash, onBeforeClick }: Props) => {
   const content = (() => {
     if (!verifiedAddressesQuery.data?.verifiedAddresses.find(({ contractAddress }) => contractAddress.toLowerCase() === hash.toLowerCase())) {
       return (
-        <MenuItem className={ className } onClick={ handleAddAddressClick }>
+        <MenuItem className={ className } onClick={ handleAddAddressClick } bgColor="bg_base" borderColor="divider"
+          _hover={{
+            bgColor: 'divider',
+          }}>
           { icon }
           <span>{ tokenInfoQuery.data?.tokenAddress ? 'Update token info' : 'Add token info' }</span>
         </MenuItem>
@@ -75,7 +78,10 @@ const TokenInfoMenuItem = ({ className, hash, onBeforeClick }: Props) => {
     const hasApplication = applicationsQuery.data?.submissions.some(({ tokenAddress }) => tokenAddress.toLowerCase() === hash.toLowerCase());
 
     return (
-      <MenuItem className={ className } onClick={ handleAddApplicationClick }>
+      <MenuItem className={ className } onClick={ handleAddApplicationClick } bgColor="bg_base" borderColor="divider"
+        _hover={{
+          bgColor: 'divider',
+        }}>
         { icon }
         <span>
           {

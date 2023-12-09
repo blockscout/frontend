@@ -122,6 +122,7 @@ const Tokens = () => {
       onChange={ onSearchChange }
       placeholder="Token name or symbol"
       initialValue={ filter }
+      inputProps={{ borderColor: 'secondary_base' }}
     />
   );
 

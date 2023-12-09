@@ -1,17 +1,17 @@
 import type { UseCheckboxProps } from '@chakra-ui/checkbox';
 import { useCheckbox } from '@chakra-ui/checkbox';
-import { useColorMode, useColorModeValue, Icon } from '@chakra-ui/react';
+import { Icon, useColorMode, useColorModeValue } from '@chakra-ui/react';
 import type {
+  HTMLChakraProps,
   SystemStyleObject,
   ThemingProps,
-  HTMLChakraProps,
 } from '@chakra-ui/system';
 import {
   chakra,
   forwardRef,
   omitThemingProps,
 } from '@chakra-ui/system';
-import { dataAttr, __DEV__ } from '@chakra-ui/utils';
+import { __DEV__, dataAttr } from '@chakra-ui/utils';
 import * as React from 'react';
 
 import moonIcon from 'icons/moon.svg';
@@ -96,7 +96,7 @@ const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((props, ref)
           margin={ 2 }
           zIndex="docked"
           as={ moonIcon }
-          color={ useColorModeValue('blue.300', 'blackAlpha.900') }
+          color={ state.isChecked ? 'accent' : 'black' }
           { ...transitionProps }
         />
         <chakra.div
@@ -109,7 +109,7 @@ const ColorModeToggler = forwardRef<ColorModeTogglerProps, 'input'>((props, ref)
           margin={ 1.5 }
           zIndex="docked"
           as={ sunIcon }
-          color={ useColorModeValue('blackAlpha.900', 'blue.300') }
+          color={ !state.isChecked ? 'accent' : 'black' }
           { ...transitionProps }
         />
       </chakra.div>

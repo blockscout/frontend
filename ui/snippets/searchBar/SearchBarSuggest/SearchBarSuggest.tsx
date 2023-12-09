@@ -1,7 +1,7 @@
 import { Box, Tab, TabList, Tabs, Text, useColorModeValue } from '@chakra-ui/react';
 import throttle from 'lodash/throttle';
 import React from 'react';
-import { scroller, Element } from 'react-scroll';
+import { Element, scroller } from 'react-scroll';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useMarketplaceApps from 'ui/marketplace/useMarketplaceApps';
@@ -116,7 +116,11 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
           <Box position="sticky" top="0" width="100%" background={ bgColor } py={ 5 } my={ -5 } ref={ tabsRef }>
             <Tabs variant="outline" colorScheme="gray" size="sm" index={ tabIndex }>
               <TabList columnGap={ 3 } rowGap={ 2 } flexWrap="wrap">
-                { resultCategories.map((cat, index) => <Tab key={ cat.id } onClick={ scrollToCategory(index) }>{ cat.title }</Tab>) }
+                { resultCategories.map((cat, index) => (
+                  <Tab _hover={{ color: 'accent', borderColor: 'accent' }}
+                    _selected={{ bgColor: 'accent', color: 'white', borderColor: 'transparent' }}
+                    key={ cat.id } onClick={ scrollToCategory(index) }>{ cat.title }</Tab>
+                )) }
               </TabList>
             </Tabs>
           </Box>

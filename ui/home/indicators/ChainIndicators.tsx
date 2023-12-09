@@ -31,7 +31,9 @@ const ChainIndicators = () => {
   const queryResult = useFetchChartData(indicator);
   const statsQueryResult = useApiQuery('homepage_stats');
 
-  const bgColorDesktop = useColorModeValue('white', 'gray.900');
+  const bgColorDesktop = useColorModeValue('white', '#171717');
+  const bgBoxShadowDesktop = useColorModeValue('0px 8px 16px -5px rgba(0, 0, 0, 0.10)', '0px 8px 16px -5px rgba(6, 252, 153, 0.10)');
+  const indicatorTitleColor = useColorModeValue('#616B74', '#A8A8A8');
   const bgColorMobile = useColorModeValue('white', 'black');
   const listBgColorDesktop = useColorModeValue('gray.50', 'black');
   const listBgColorMobile = useColorModeValue('gray.50', 'gray.900');
@@ -60,7 +62,7 @@ const ChainIndicators = () => {
     <Flex
       p={{ base: 0, lg: 8 }}
       borderRadius={{ base: 'none', lg: 'lg' }}
-      boxShadow={{ base: 'none', lg: 'xl' }}
+      boxShadow={{ base: 'none', lg: bgBoxShadowDesktop }}
       bgColor={{ base: bgColorMobile, lg: bgColorDesktop }}
       columnGap={ 12 }
       rowGap={ 0 }
@@ -71,8 +73,8 @@ const ChainIndicators = () => {
     >
       <Flex flexGrow={ 1 } flexDir="column" order={{ base: 2, lg: 1 }} p={{ base: 6, lg: 0 }}>
         <Flex alignItems="center">
-          <Text fontWeight={ 500 } fontFamily="heading" fontSize="lg">{ indicator?.title }</Text>
-          { indicator?.hint && <Hint label={ indicator.hint } ml={ 1 }/> }
+          <Text fontWeight={ 500 } fontFamily="heading" color={ indicatorTitleColor } fontSize="lg">{ indicator?.title }</Text>
+          { indicator?.hint && <Hint label={ indicator.hint } color={ indicatorTitleColor } ml={ 1 }/> }
         </Flex>
         { valueTitle }
         <ChainIndicatorChartContainer { ...queryResult }/>

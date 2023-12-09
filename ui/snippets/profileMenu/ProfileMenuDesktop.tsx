@@ -43,7 +43,7 @@ const ProfileMenuDesktop = () => {
         </Button>
       </PopoverTrigger>
       { hasMenu && (
-        <PopoverContent w="212px">
+        <PopoverContent w="212px" borderColor="divider" bgColor="bg_base">
           <PopoverBody padding="24px 16px 16px 16px">
             <ProfileMenuContent data={ data }/>
           </PopoverBody>

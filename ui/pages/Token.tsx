@@ -238,7 +238,8 @@ const TokenPageContent = () => {
   const titleContentAfter = (
     <>
       { verifiedInfoQuery.data?.tokenAddress && (
-        <Tooltip label={ `Information on this token has been verified by ${ config.chain.name }` }>
+        <Tooltip label={ `Information on this token has been verified by ${ config.chain.name }` }
+          bgColor="bg_base" color="text" borderWidth="1px" borderColor="divider">
           <Box boxSize={ 6 }>
             <Icon as={ iconVerifiedToken } color="green.500" boxSize={ 6 } cursor="pointer"/>
           </Box>
