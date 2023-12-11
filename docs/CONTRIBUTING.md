@@ -44,15 +44,21 @@ And of course our premier language is [Typescript](https://www.typescriptlang.or
 
 ## Local development
 
-1. Prepare your environment variables:  
-    - clone `.env.example` into `configs/envs/.env.secrets` and fill it with necessary secrets for the [external services](./ENVS.md#external-services-configuration) integration; you can pick up only those that your needed
-    - choose one of the following options:  
-        A. create `.env.local` file in the root folder with environment variables from the [list](./ENVS.md); all required variables should be present in the file;  
-        B. pick up one of the predefined configurations located at `/configs/envs` folder; no actual action is needed at this stage;
-2. Run your local dev server:
-    - if you picked up option "A" above, use `yarn dev` command
-    - if your options is "B", use `yarn dev:<config_name>` command
-3. In browser navigate to the URL from the command output (by default, it is `http://localhost:3000`)
+To develop locally, follow one of the two paths outlined below:
+
+A. Custom configuration:
+
+1. Create `.env.local` file in the root folder and include all required environment variables from the [list](./ENVS.md)
+2. Optionally, clone `.env.example` and name it `.env.secrets`. Fill it with necessary secrets for integrating with [external services](./ENVS.md#external-services-configuration). Include only secrets your need.
+3. Use `yarn dev` command to start the dev server.
+4. Open your browser and navigate to the URL provided in the command line output (by default, it is `http://localhost:3000`).
+
+B. Pre-defined configuration:
+
+1. Optionally, clone `.env.example` file into `configs/envs/.env.secrets`. Fill it with necessary secrets for integrating with [external services](./ENVS.md#external-services-configuration). Include only secrets your need.
+2. Choose one of the predefined configurations located in the `/configs/envs` folder.
+3. Start your local dev server using the `yarn dev:<config_name>` command.
+4. Open your browser and navigate to the URL provided in the command line output (by default, it is `http://localhost:3000`).
 
 &nbsp;
 

@@ -110,6 +110,7 @@ test.describe('with tooltips', () => {
       { hooksConfig },
     );
 
+    await component.locator('header').hover();
     await page.locator('svg[aria-label="Expand/Collapse menu"]').click();
     await page.locator('a[aria-label="Tokens link"]').hover();
 
@@ -210,5 +211,39 @@ base.describe('cookie set to true', () => {
 
     const networkMenu = component.locator('button[aria-label="Network menu"]');
     expect(await networkMenu.isVisible()).toBe(false);
+  });
+});
+
+test('hover +@dark-mode', async({ mount }) => {
+  const component = await mount(
+    <TestApp>
+      <Flex w="100%" minH="100vh" alignItems="stretch">
+        <NavigationDesktop/>
+        <Box bgColor="lightpink" w="100%"/>
+      </Flex>
+    </TestApp>,
+    { hooksConfig },
+  );
+
+  await component.locator('header').hover();
+  await expect(component).toHaveScreenshot();
+});
+
+test.describe('hover xl screen', () => {
+  test.use({ viewport: configs.viewport.xl });
+
+  test('+@dark-mode', async({ mount }) => {
+    const component = await mount(
+      <TestApp>
+        <Flex w="100%" minH="100vh" alignItems="stretch">
+          <NavigationDesktop/>
+          <Box bgColor="lightpink" w="100%"/>
+        </Flex>
+      </TestApp>,
+      { hooksConfig },
+    );
+
+    await component.locator('header').hover();
+    await expect(component).toHaveScreenshot();
   });
 });
