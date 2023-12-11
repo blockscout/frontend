@@ -37,6 +37,7 @@ export const METHOD_LABELS: Record<SmartContractVerificationMethod, string> = {
 
 export const DEFAULT_VALUES: Record<SmartContractVerificationMethod, FormFields> = {
   'flattened-code': {
+    address: '',
     method: {
       value: 'flattened-code' as const,
       label: METHOD_LABELS['flattened-code'],
@@ -53,6 +54,7 @@ export const DEFAULT_VALUES: Record<SmartContractVerificationMethod, FormFields>
     libraries: [],
   },
   'standard-input': {
+    address: '',
     method: {
       value: 'standard-input' as const,
       label: METHOD_LABELS['standard-input'],
@@ -64,6 +66,7 @@ export const DEFAULT_VALUES: Record<SmartContractVerificationMethod, FormFields>
     constructor_args: '',
   },
   sourcify: {
+    address: '',
     method: {
       value: 'sourcify' as const,
       label: METHOD_LABELS.sourcify,
@@ -71,6 +74,7 @@ export const DEFAULT_VALUES: Record<SmartContractVerificationMethod, FormFields>
     sources: [],
   },
   'multi-part': {
+    address: '',
     method: {
       value: 'multi-part' as const,
       label: METHOD_LABELS['multi-part'],
@@ -83,6 +87,7 @@ export const DEFAULT_VALUES: Record<SmartContractVerificationMethod, FormFields>
     libraries: [],
   },
   'vyper-code': {
+    address: '',
     method: {
       value: 'vyper-code' as const,
       label: METHOD_LABELS['vyper-code'],
@@ -94,6 +99,7 @@ export const DEFAULT_VALUES: Record<SmartContractVerificationMethod, FormFields>
     constructor_args: '',
   },
   'vyper-multi-part': {
+    address: '',
     method: {
       value: 'vyper-multi-part' as const,
       label: METHOD_LABELS['vyper-multi-part'],
@@ -103,6 +109,7 @@ export const DEFAULT_VALUES: Record<SmartContractVerificationMethod, FormFields>
     sources: [],
   },
   'vyper-standard-input': {
+    address: '',
     method: {
       value: 'vyper-standard-input' as const,
       label: METHOD_LABELS['vyper-standard-input'],
@@ -112,8 +119,8 @@ export const DEFAULT_VALUES: Record<SmartContractVerificationMethod, FormFields>
   },
 };
 
-export function getDefaultValues(method: SmartContractVerificationMethod, config: SmartContractVerificationConfig) {
-  const defaultValues = DEFAULT_VALUES[method];
+export function getDefaultValues(method: SmartContractVerificationMethod, config: SmartContractVerificationConfig, hash?: string) {
+  const defaultValues = { ...DEFAULT_VALUES[method], address: hash };
 
   if ('evm_version' in defaultValues) {
     if (method === 'flattened-code' || method === 'multi-part') {
