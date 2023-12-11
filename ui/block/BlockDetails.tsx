@@ -202,19 +202,21 @@ const BlockDetails = ({ query }: Props) => {
           </Skeleton>
         </DetailsInfoItem>
       ) }
-      <DetailsInfoItem
-        title={ verificationTitle }
-        hint="A block producer who successfully included the block onto the blockchain"
-        columnGap={ 1 }
-        isLoading={ isPlaceholderData }
-      >
-        <AddressEntity
-          address={ data.miner }
+      { !config.UI.views.block.hiddenFields?.miner && (
+        <DetailsInfoItem
+          title={ verificationTitle }
+          hint="A block producer who successfully included the block onto the blockchain"
+          columnGap={ 1 }
           isLoading={ isPlaceholderData }
-        />
-        { /* api doesn't return the block processing time yet */ }
-        { /* <Text>{ dayjs.duration(block.minedIn, 'second').humanize(true) }</Text> */ }
-      </DetailsInfoItem>
+        >
+          <AddressEntity
+            address={ data.miner }
+            isLoading={ isPlaceholderData }
+          />
+          { /* api doesn't return the block processing time yet */ }
+          { /* <Text>{ dayjs.duration(block.minedIn, 'second').humanize(true) }</Text> */ }
+        </DetailsInfoItem>
+      ) }
       { !isRollup && !totalReward.isEqualTo(ZERO) && !config.UI.views.block.hiddenFields?.total_reward && (
         <DetailsInfoItem
           title="Block reward"

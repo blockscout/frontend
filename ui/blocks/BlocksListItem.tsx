@@ -57,13 +57,15 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           <span>{ data.size.toLocaleString() } bytes</span>
         </Skeleton>
       </Flex>
-      <Flex columnGap={ 2 } w="100%">
-        <Text fontWeight={ 500 }>{ capitalize(getNetworkValidatorTitle()) }</Text>
-        <AddressEntity
-          address={ data.miner }
-          isLoading={ isLoading }
-        />
-      </Flex>
+      { !config.UI.views.block.hiddenFields?.miner && (
+        <Flex columnGap={ 2 } w="100%">
+          <Text fontWeight={ 500 }>{ capitalize(getNetworkValidatorTitle()) }</Text>
+          <AddressEntity
+            address={ data.miner }
+            isLoading={ isLoading }
+          />
+        </Flex>
+      ) }
       <Flex columnGap={ 2 }>
         <Text fontWeight={ 500 }>Txn</Text>
         { data.tx_count > 0 ? (
