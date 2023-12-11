@@ -167,7 +167,7 @@ const TxDetails = () => {
             hint="Status of the transaction confirmation path to L1"
             isLoading={ isPlaceholderData }
           >
-            <VerificationSteps step={ data.zkevm_status } steps={ ZKEVM_L2_TX_STATUSES } isLoading={ isPlaceholderData }/>
+            <VerificationSteps currentStep={ data.zkevm_status } steps={ ZKEVM_L2_TX_STATUSES } isLoading={ isPlaceholderData }/>
           </DetailsInfoItem>
         ) }
         { data.revert_reason && (
@@ -312,7 +312,7 @@ const TxDetails = () => {
             <span>[ Contract creation ]</span>
           ) }
         </DetailsInfoItem>
-        { data.token_transfers && <TxDetailsTokenTransfers data={ data.token_transfers } txHash={ data.hash }/> }
+        { data.token_transfers && <TxDetailsTokenTransfers data={ data.token_transfers } txHash={ data.hash } isOverflow={ data.token_transfers_overflow }/> }
 
         <DetailsInfoItemDivider/>
 

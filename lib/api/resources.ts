@@ -26,12 +26,15 @@ import type {
   AddressTokensFilter,
   AddressTokensResponse,
   AddressWithdrawalsResponse,
+  AddressNFTsResponse,
+  AddressCollectionsResponse,
+  AddressNFTTokensFilter,
 } from 'types/api/address';
 import type { AddressesResponse } from 'types/api/addresses';
 import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters, BlockWithdrawalsResponse } from 'types/api/block';
 import type { ChartMarketResponse, ChartTransactionResponse } from 'types/api/charts';
 import type { BackendVersionConfig } from 'types/api/configs';
-import type { SmartContract, SmartContractReadMethod, SmartContractWriteMethod, SmartContractVerificationConfig } from 'types/api/contract';
+import type { SmartContract, SmartContractReadMethod, SmartContractWriteMethod, SmartContractVerificationConfig, SolidityscanReport } from 'types/api/contract';
 import type { VerifiedContractsResponse, VerifiedContractsFilters, VerifiedContractsCounters } from 'types/api/contracts';
 import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
@@ -51,6 +54,7 @@ import type {
   TokenInstance,
   TokenInstanceTransfersCount,
   TokenVerifiedInfo,
+  TokenInventoryFilters,
 } from 'types/api/token';
 import type { TokensResponse, TokensFilters, TokensSorting, TokenInstanceTransferResponse, TokensBridgedFilters } from 'types/api/tokens';
 import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
@@ -77,16 +81,16 @@ export const SORTING_FIELDS = [ 'sort', 'order' ];
 export const RESOURCES = {
   // ACCOUNT
   csrf: {
-    path: '/api/account/v1/get_csrf',
+    path: '/api/account/v2/get_csrf',
   },
   user_info: {
-    path: '/api/account/v1/user/info',
+    path: '/api/account/v2/user/info',
   },
   email_resend: {
-    path: '/api/account/v1/email/resend',
+    path: '/api/account/v2/email/resend',
   },
   custom_abi: {
-    path: '/api/account/v1/user/custom_abis/:id?',
+    path: '/api/account/v2/user/custom_abis/:id?',
     pathParams: [ 'id' as const ],
   },
   watchlist: {
@@ -95,7 +99,7 @@ export const RESOURCES = {
     filterFields: [ ],
   },
   public_tags: {
-    path: '/api/account/v1/user/public_tags/:id?',
+    path: '/api/account/v2/user/public_tags/:id?',
     pathParams: [ 'id' as const ],
   },
   private_tags_address: {
@@ -109,7 +113,7 @@ export const RESOURCES = {
     filterFields: [ ],
   },
   api_keys: {
-    path: '/api/account/v1/user/api_keys/:id?',
+    path: '/api/account/v2/user/api_keys/:id?',
     pathParams: [ 'id' as const ],
   },
 
@@ -305,6 +309,16 @@ export const RESOURCES = {
     pathParams: [ 'hash' as const ],
     filterFields: [ 'type' as const ],
   },
+  address_nfts: {
+    path: '/api/v2/addresses/:hash/nft',
+    pathParams: [ 'hash' as const ],
+    filterFields: [ 'type' as const ],
+  },
+  address_collections: {
+    path: '/api/v2/addresses/:hash/nft/collections',
+    pathParams: [ 'hash' as const ],
+    filterFields: [ 'type' as const ],
+  },
   address_withdrawals: {
     path: '/api/v2/addresses/:hash/withdrawals',
     pathParams: [ 'hash' as const ],
@@ -343,6 +357,10 @@ export const RESOURCES = {
     path: '/api/v2/smart-contracts/:hash/verification/via/:method',
     pathParams: [ 'hash' as const, 'method' as const ],
   },
+  contract_solidityscan_report: {
+    path: '/api/v2/smart-contracts/:hash/solidityscan-report',
+    pathParams: [ 'hash' as const ],
+  },
 
   verified_contracts: {
     path: '/api/v2/smart-contracts',
@@ -380,7 +398,7 @@ export const RESOURCES = {
   token_inventory: {
     path: '/api/v2/tokens/:hash/instances',
     pathParams: [ 'hash' as const ],
-    filterFields: [],
+    filterFields: [ 'holder_address_hash' as const ],
   },
   tokens: {
     path: '/api/v2/tokens',
@@ -576,7 +594,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'addresses' |
 'address_txs' | 'address_internal_txs' | 'address_token_transfers' | 'address_blocks_validated' | 'address_coin_balance' |
 'search' |
-'address_logs' | 'address_tokens' |
+'address_logs' | 'address_tokens' | 'address_nfts' | 'address_collections' |
 'token_transfers' | 'token_holders' | 'token_inventory' | 'tokens' | 'tokens_bridged' |
 'token_instance_transfers' | 'token_instance_holders' |
 'verified_contracts' |
@@ -638,6 +656,8 @@ Q extends 'address_coin_balance' ? AddressCoinBalanceHistoryResponse :
 Q extends 'address_coin_balance_chart' ? AddressCoinBalanceHistoryChart :
 Q extends 'address_logs' ? LogsResponseAddress :
 Q extends 'address_tokens' ? AddressTokensResponse :
+Q extends 'address_nfts' ? AddressNFTsResponse :
+Q extends 'address_collections' ? AddressCollectionsResponse :
 Q extends 'address_withdrawals' ? AddressWithdrawalsResponse :
 Q extends 'token' ? TokenInfo :
 Q extends 'token_verified_info' ? TokenVerifiedInfo :
@@ -659,6 +679,7 @@ Q extends 'contract_methods_read' ? Array<SmartContractReadMethod> :
 Q extends 'contract_methods_read_proxy' ? Array<SmartContractReadMethod> :
 Q extends 'contract_methods_write' ? Array<SmartContractWriteMethod> :
 Q extends 'contract_methods_write_proxy' ? Array<SmartContractWriteMethod> :
+Q extends 'contract_solidityscan_report' ? SolidityscanReport :
 Q extends 'verified_contracts' ? VerifiedContractsResponse :
 Q extends 'verified_contracts_counters' ? VerifiedContractsCounters :
 Q extends 'visualize_sol2uml' ? VisualizedContract :
@@ -690,7 +711,10 @@ Q extends 'token_transfers' ? TokenTransferFilters :
 Q extends 'address_txs' | 'address_internal_txs' ? AddressTxsFilters :
 Q extends 'address_token_transfers' ? AddressTokenTransferFilters :
 Q extends 'address_tokens' ? AddressTokensFilter :
+Q extends 'address_nfts' ? AddressNFTTokensFilter :
+Q extends 'address_collections' ? AddressNFTTokensFilter :
 Q extends 'search' ? SearchResultFilters :
+Q extends 'token_inventory' ? TokenInventoryFilters :
 Q extends 'tokens' ? TokensFilters :
 Q extends 'tokens_bridged' ? TokensBridgedFilters :
 Q extends 'verified_contracts' ? VerifiedContractsFilters :

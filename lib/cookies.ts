@@ -12,6 +12,7 @@ export enum NAMES {
   INDEXING_ALERT='indexing_alert',
   ADBLOCK_DETECTED='adblock_detected',
   MIXPANEL_DEBUG='_mixpanel_debug',
+  ADDRESS_NFT_DISPLAY_TYPE='address_nft_display_type'
 }
 
 export function get(name?: NAMES | undefined | null, serverCookie?: string) {

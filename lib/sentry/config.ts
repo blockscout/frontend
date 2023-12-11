@@ -1,4 +1,5 @@
 import type * as Sentry from '@sentry/react';
+import { BrowserTracing } from '@sentry/tracing';
 
 import appConfig from 'configs/app';
 
@@ -10,12 +11,13 @@ export const config: Sentry.BrowserOptions | undefined = (() => {
   }
 
   const tracesSampleRate: number | undefined = (() => {
-    if (feature.environment === 'staging') {
-      return 1;
-    }
-
-    if (feature.environment === 'production' && feature.instance === 'eth') {
-      return 0.2;
+    switch (feature.environment) {
+      case 'development':
+        return 1;
+      case 'staging':
+        return 0.75;
+      case 'production':
+        return 0.2;
     }
   })();
 
@@ -25,6 +27,7 @@ export const config: Sentry.BrowserOptions | undefined = (() => {
     release: feature.release,
     enableTracing: feature.enableTracing,
     tracesSampleRate,
+    integrations: feature.enableTracing ? [ new BrowserTracing() ] : undefined,
 
     // error filtering settings
     // were taken from here - https://docs.sentry.io/platforms/node/guides/azure-functions/configuration/filtering/#decluttering-sentry

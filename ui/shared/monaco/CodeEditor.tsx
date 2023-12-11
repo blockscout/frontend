@@ -1,5 +1,5 @@
 import type { SystemStyleObject } from '@chakra-ui/react';
-import { Box, useColorMode, Flex, useToken } from '@chakra-ui/react';
+import { Box, useColorMode, Flex, useToken, Center } from '@chakra-ui/react';
 import type { EditorProps } from '@monaco-editor/react';
 import MonacoEditor from '@monaco-editor/react';
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
@@ -11,6 +11,7 @@ import type { SmartContractExternalLibrary } from 'types/api/contract';
 import useClientRect from 'lib/hooks/useClientRect';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import isMetaKey from 'lib/isMetaKey';
+import ErrorBoundary from 'ui/shared/ErrorBoundary';
 
 import CodeEditorBreadcrumbs from './CodeEditorBreadcrumbs';
 import CodeEditorLoading from './CodeEditorLoading';
@@ -207,6 +208,10 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile }: Props) 
     },
   }), [ editorWidth, themeColors, borderRadius ]);
 
+  const renderErrorScreen = React.useCallback(() => {
+    return <Center bgColor={ themeColors['editor.background'] } w="100%" borderRadius="md">Oops! Something went wrong!</Center>;
+  }, [ themeColors ]);
+
   if (data.length === 1) {
     const sx = {
       ...containerSx,
@@ -220,15 +225,17 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile }: Props) 
 
     return (
       <Box height={ `${ EDITOR_HEIGHT }px` } width="100%" sx={ sx } ref={ containerNodeRef }>
-        <MonacoEditor
-          className="editor-container"
-          language={ editorLanguage }
-          path={ data[index].file_path }
-          defaultValue={ data[index].source_code }
-          options={ EDITOR_OPTIONS }
-          onMount={ handleEditorDidMount }
-          loading={ <CodeEditorLoading borderRadius="md"/> }
-        />
+        <ErrorBoundary renderErrorScreen={ renderErrorScreen }>
+          <MonacoEditor
+            className="editor-container"
+            language={ editorLanguage }
+            path={ data[index].file_path }
+            defaultValue={ data[index].source_code }
+            options={ EDITOR_OPTIONS }
+            onMount={ handleEditorDidMount }
+            loading={ <CodeEditorLoading borderRadius="md"/> }
+          />
+        </ErrorBoundary>
       </Box>
     );
   }
@@ -247,34 +254,36 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile }: Props) 
       onKeyDown={ handleKeyDown }
       onKeyUp={ handleKeyUp }
     >
-      <Box flexGrow={ 1 }>
-        <CodeEditorTabs
-          tabs={ tabs }
-          activeTab={ data[index].file_path }
+      <ErrorBoundary renderErrorScreen={ renderErrorScreen }>
+        <Box flexGrow={ 1 }>
+          <CodeEditorTabs
+            tabs={ tabs }
+            activeTab={ data[index].file_path }
+            mainFile={ mainFile }
+            onTabSelect={ handleTabSelect }
+            onTabClose={ handleTabClose }
+          />
+          <CodeEditorBreadcrumbs path={ data[index].file_path }/>
+          <MonacoEditor
+            className="editor-container"
+            height={ `${ EDITOR_HEIGHT }px` }
+            language={ editorLanguage }
+            path={ data[index].file_path }
+            defaultValue={ data[index].source_code }
+            options={ EDITOR_OPTIONS }
+            onMount={ handleEditorDidMount }
+            loading={ <CodeEditorLoading borderBottomLeftRadius="md"/> }
+          />
+        </Box>
+        <CodeEditorSideBar
+          data={ data }
+          onFileSelect={ handleSelectFile }
+          monaco={ instance }
+          editor={ editor }
+          selectedFile={ data[index].file_path }
           mainFile={ mainFile }
-          onTabSelect={ handleTabSelect }
-          onTabClose={ handleTabClose }
         />
-        <CodeEditorBreadcrumbs path={ data[index].file_path }/>
-        <MonacoEditor
-          className="editor-container"
-          height={ `${ EDITOR_HEIGHT }px` }
-          language={ editorLanguage }
-          path={ data[index].file_path }
-          defaultValue={ data[index].source_code }
-          options={ EDITOR_OPTIONS }
-          onMount={ handleEditorDidMount }
-          loading={ <CodeEditorLoading borderBottomLeftRadius="md"/> }
-        />
-      </Box>
-      <CodeEditorSideBar
-        data={ data }
-        onFileSelect={ handleSelectFile }
-        monaco={ instance }
-        editor={ editor }
-        selectedFile={ data[index].file_path }
-        mainFile={ mainFile }
-      />
+      </ErrorBoundary>
     </Flex>
   );
 };

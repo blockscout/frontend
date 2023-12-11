@@ -84,7 +84,6 @@ const MarketplaceAppCard = ({
           marginBottom={ 4 }
           w={{ base: '64px', sm: '96px' }}
           h={{ base: '64px', sm: '96px' }}
-          borderRadius={ 8 }
           display="flex"
           alignItems="center"
           justifyContent="center"
@@ -92,6 +91,7 @@ const MarketplaceAppCard = ({
           <Image
             src={ isLoading ? undefined : logoUrl }
             alt={ `${ title } app icon` }
+            borderRadius="8px"
           />
         </Skeleton>
 
