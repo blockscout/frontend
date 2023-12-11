@@ -17,7 +17,7 @@ const LayoutDefault = ({ children }: Props) => {
           paddingX={{ base: 4, lg: 6 }}
         >
           <HeaderAlert/>
-          <Header isAppPage/>
+          <Header isMarketplaceAppPage/>
           <AppErrorBoundary>
             <Layout.Content pt={{ base: 0, lg: 6 }}>
               { children }
