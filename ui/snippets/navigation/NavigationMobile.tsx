@@ -39,6 +39,8 @@ const NavigationMobile = ({ onNavLinkClick, isMarketplaceAppPage }: Props) => {
 
   const openedItem = mainNavItems[openedGroupIndex];
 
+  const isCollapsed = isMarketplaceAppPage ? false : undefined;
+
   return (
     <Flex position="relative" flexDirection="column" flexGrow={ 1 }>
       <Box
@@ -64,7 +66,7 @@ const NavigationMobile = ({ onNavLinkClick, isMarketplaceAppPage }: Props) => {
               if (isGroupItem(item)) {
                 return <NavLinkGroupMobile key={ item.text } item={ item } onClick={ onGroupItemOpen(index) } isExpanded={ isMarketplaceAppPage }/>;
               } else {
-                return <NavLink key={ item.text } item={ item } onClick={ onNavLinkClick } isCollapsed={ isMarketplaceAppPage ? false : undefined }/>;
+                return <NavLink key={ item.text } item={ item } onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>;
               }
             }) }
           </VStack>
@@ -78,7 +80,7 @@ const NavigationMobile = ({ onNavLinkClick, isMarketplaceAppPage }: Props) => {
             borderColor="divider"
           >
             <VStack as="ul" spacing="1" alignItems="flex-start">
-              { accountNavItems.map((item) => <NavLink key={ item.text } item={ item } onClick={ onNavLinkClick }/>) }
+              { accountNavItems.map((item) => <NavLink key={ item.text } item={ item } onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>) }
             </VStack>
           </Box>
         ) }
@@ -114,10 +116,10 @@ const NavigationMobile = ({ onNavLinkClick, isMarketplaceAppPage }: Props) => {
                     borderColor: 'divider',
                   }}
                 >
-                  { item.map(subItem => <NavLink key={ subItem.text } item={ subItem } onClick={ onNavLinkClick }/>) }
+                  { item.map(subItem => <NavLink key={ subItem.text } item={ subItem } onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>) }
                 </Box>
               ) :
-                <NavLink key={ item.text } item={ item } mb={ 1 } onClick={ onNavLinkClick }/>,
+                <NavLink key={ item.text } item={ item } mb={ 1 } onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>,
             ) }
           </Box>
         </Box>

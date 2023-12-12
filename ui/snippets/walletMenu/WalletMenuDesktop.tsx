@@ -71,8 +71,9 @@ const WalletMenuDesktop = ({ isHomePage }: Props) => {
         openDelay={ 300 }
         isOpen={ isTooltipShown || undefined }
         onClose={ setIsTooltipShown.off }
+        display={{ base: 'none', lg: 'flex' }}
       >
-        <Box ml={ 3 }>
+        <Box ml={ 2 }>
           <PopoverTrigger>
             <Button
               variant={ variant }
