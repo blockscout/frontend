@@ -14,11 +14,6 @@ if [ ! -f "$config_file" ]; then
     exit 1
 fi
 
-if [ ! -f "$secrets_file" ]; then
-    echo "Error: File '$secrets_file' not found."
-    exit 1
-fi
-
 # download assets for the running instance
 dotenv \
   -e $config_file \

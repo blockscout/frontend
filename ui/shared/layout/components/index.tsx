@@ -1,4 +1,5 @@
 import Footer from 'ui/snippets/footer/Footer';
+import TopRow from 'ui/snippets/topBar/TopBar';
 
 import Container from './Container';
 import Content from './Content';
@@ -13,9 +14,11 @@ export {
   SideBar,
   MainColumn,
   Footer,
+  TopRow,
 };
 
 // Container
+//    TopRow
 //    MainArea
 //       SideBar
 //       MainColumn

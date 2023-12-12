@@ -8,13 +8,8 @@ const LayoutSearchResults = ({ children }: Props) => {
 
   return (
     <Layout.Container>
-      <Layout.MainArea>
-        <Layout.SideBar/>
-        <Layout.MainColumn>
-          { children }
-        </Layout.MainColumn>
-      </Layout.MainArea>
-      <Layout.Footer/>
+      <Layout.TopRow/>
+      { children }
     </Layout.Container>
   );
 };

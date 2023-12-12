@@ -116,20 +116,22 @@ const BlockPageContent = () => {
   const title = blockQuery.data?.type === 'reorg' ? `Reorged block #${ blockQuery.data?.height }` : `Block #${ blockQuery.data?.height }`;
   const titleSecondRow = (
     <>
-      <Skeleton
-        isLoaded={ !blockQuery.isPlaceholderData }
-        fontFamily="heading"
-        display="flex"
-        minW={ 0 }
-        columnGap={ 2 }
-        fontWeight={ 500 }
-      >
-        <chakra.span flexShrink={ 0 }>
-          { config.chain.verificationType === 'validation' ? 'Validated by' : 'Mined by' }
-        </chakra.span>
-        <AddressEntity address={ blockQuery.data?.miner }/>
-      </Skeleton>
-      <NetworkExplorers type="block" pathParam={ heightOrHash } ml={{ base: 3, lg: 'auto' }}/>
+      { !config.UI.views.block.hiddenFields?.miner && (
+        <Skeleton
+          isLoaded={ !blockQuery.isPlaceholderData }
+          fontFamily="heading"
+          display="flex"
+          minW={ 0 }
+          columnGap={ 2 }
+          fontWeight={ 500 }
+        >
+          <chakra.span flexShrink={ 0 }>
+            { config.chain.verificationType === 'validation' ? 'Validated by' : 'Mined by' }
+          </chakra.span>
+          <AddressEntity address={ blockQuery.data?.miner }/>
+        </Skeleton>
+      ) }
+      <NetworkExplorers type="block" pathParam={ heightOrHash } ml={{ base: config.UI.views.block.hiddenFields?.miner ? 0 : 3, lg: 'auto' }}/>
     </>
   );
 
