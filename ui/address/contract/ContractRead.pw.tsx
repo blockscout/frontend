@@ -28,7 +28,7 @@ test('base view +@mobile +@dark-mode', async({ mount, page }) => {
 
   const component = await mount(
     <TestApp>
-      <ContractRead addressHash={ addressHash }/>
+      <ContractRead/>
     </TestApp>,
     { hooksConfig },
   );
