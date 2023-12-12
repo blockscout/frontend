@@ -100,7 +100,7 @@ const ContractMethodField = ({ control, name, groupName, index, argType, placeho
               autoComplete="off"
             />
             <InputRightElement w="auto" right={ 1 }>
-              { field.value && <ClearButton onClick={ handleClear } isDisabled={ isDisabled }/> }
+              { typeof field.value === 'string' && field.value.replace('\n', '') && <ClearButton onClick={ handleClear } isDisabled={ isDisabled }/> }
               { hasZerosControl && <ContractMethodFieldZeroes onClick={ handleAddZeroesClick } isDisabled={ isDisabled }/> }
             </InputRightElement>
           </InputGroup>
@@ -110,9 +110,15 @@ const ContractMethodField = ({ control, name, groupName, index, argType, placeho
     );
   }, [ index, groupName, name, intMatch, isDisabled, placeholder, handleClear, handleAddZeroesClick ]);
 
-  const validate = React.useCallback((value: string | Array<string>) => {
-    if (typeof value === 'object' || !value) {
+  const validate = React.useCallback((_value: string | Array<string>) => {
+    if (typeof _value === 'object') {
       return;
+    }
+
+    const value = _value.replace('\n', '');
+
+    if (!value) {
+      return 'Field is required';
     }
 
     if (argType === 'address') {

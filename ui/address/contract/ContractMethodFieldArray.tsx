@@ -22,15 +22,26 @@ interface Props {
   onChange: () => void;
 }
 
-const ContractMethodFieldArray = ({ control, name, setValue, getValues, isDisabled, argType, onChange }: Props) => {
+const ContractMethodFieldArray = ({ control, name, setValue, getValues, isDisabled, argType, onChange, size }: Props) => {
   const { fields, append, remove } = useFieldArray({
     name: name as never,
     control,
   });
 
   React.useEffect(() => {
-    fields.length === 0 && append('');
-  }, [ append, fields.length ]);
+    if (fields.length === 0) {
+      if (size === Infinity) {
+        append('');
+      } else {
+        for (let i = 0; i < size - 1; i++) {
+          // a little hack to append multiple empty fields in the array
+          // had to adjust code in ContractMethodField as well
+          append('\n');
+        }
+      }
+    }
+
+  }, [ fields.length, append, size ]);
 
   const handleAddButtonClick = React.useCallback(() => {
     append('');
@@ -60,7 +71,7 @@ const ContractMethodFieldArray = ({ control, name, setValue, getValues, isDisabl
               isDisabled={ isDisabled }
               onChange={ onChange }
             />
-            { array.length > 1 && (
+            { array.length > 1 && size === Infinity && (
               <IconButton
                 aria-label="remove"
                 data-index={ index }
@@ -73,7 +84,7 @@ const ContractMethodFieldArray = ({ control, name, setValue, getValues, isDisabl
                 isDisabled={ isDisabled }
               />
             ) }
-            { index === array.length - 1 && (
+            { index === array.length - 1 && size === Infinity && (
               <IconButton
                 aria-label="add"
                 data-index={ index }
