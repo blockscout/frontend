@@ -41,7 +41,7 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasPage
           aria-label="Prev page"
           w="36px"
           icon={ <Icon as={ arrowIcon } w={ 5 } h={ 5 }/> }
-          isDisabled={ !canGoBackwards || page === 1 || isLoading }
+          isDisabled={ !canGoBackwards || isLoading }
         />
       </Skeleton>
       <Skeleton isLoaded={ !showSkeleton } display="inline-block" borderRadius="base">
