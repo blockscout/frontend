@@ -85,7 +85,7 @@ const ContractMethodsAccordionItem = <T extends SmartContractMethod>({ data, ind
           <AccordionIcon/>
         </AccordionButton>
       </Element>
-      <AccordionPanel pb={ 4 } px={ 0 }>
+      <AccordionPanel pb={ 4 } pr={ 0 } pl="28px">
         { renderContent(data, index, id) }
       </AccordionPanel>
     </AccordionItem>

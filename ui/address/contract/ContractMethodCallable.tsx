@@ -1,4 +1,4 @@
-import { Box, Button, chakra, Flex, Icon, Text } from '@chakra-ui/react';
+import { Box, Button, chakra, Flex, Grid, Icon, Text } from '@chakra-ui/react';
 // import _fromPairs from 'lodash/fromPairs';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
@@ -136,62 +136,65 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
       <FormProvider { ...formApi }>
         <chakra.form
           noValidate
-          display="grid"
-          columnGap={ 3 }
-          rowGap={{ base: 2, lg: 3 }}
-          gridTemplateColumns={{ base: 'minmax(0, 1fr)', lg: 'minmax(min-content, 250px) minmax(0, 1fr)' }}
           onSubmit={ formApi.handleSubmit(onFormSubmit) }
           onChange={ handleFormChange }
         >
-          { inputs.map((input, index) => {
-            const fieldName = getFormFieldName(input.name, index);
+          <Grid
+            columnGap={ 3 }
+            rowGap={{ base: 2, lg: 3 }}
+            gridTemplateColumns={{ base: 'minmax(0, 1fr)', lg: 'minmax(min-content, 250px) minmax(0, 1fr)' }}
+            mb={ 3 }
+            _empty={{ display: 'none' }}
+          >
+            { inputs.map((input, index) => {
+              const fieldName = getFormFieldName(input.name, index);
 
-            if (input.type === 'tuple' && input.components) {
+              if (input.type === 'tuple' && input.components) {
+                return (
+                  <React.Fragment key={ fieldName }>
+                    { index !== 0 && <><Box h={{ base: 0, lg: 3 }}/><div/></> }
+                    <Box
+                      fontWeight={ 500 }
+                      lineHeight="20px"
+                      py={{ lg: '6px' }}
+                      fontSize="sm"
+                      wordBreak="break-word"
+                    >
+                      { input.name } ({ input.type })
+                    </Box>
+                    <div/>
+                    { input.components.map((component, componentIndex) => {
+                      const fieldName = getFormFieldName(component.name, componentIndex, input.name);
+
+                      return (
+                        <ContractMethodCallableRow
+                          key={ fieldName }
+                          fieldName={ fieldName }
+                          argName={ component.name }
+                          argType={ component.type }
+                          isDisabled={ isLoading }
+                          onChange={ handleFormChange }
+                          isGrouped
+                        />
+                      );
+                    }) }
+                    { index !== inputs.length - 1 && <><Box h={{ base: 0, lg: 3 }}/><div/></> }
+                  </React.Fragment>
+                );
+              }
+
               return (
-                <React.Fragment key={ fieldName }>
-                  { index !== 0 && <><Box h={{ base: 0, lg: 3 }}/><div/></> }
-                  <Box
-                    fontWeight={ 500 }
-                    lineHeight="20px"
-                    py={{ lg: '6px' }}
-                    fontSize="sm"
-                    wordBreak="break-word"
-                  >
-                    { input.name } ({ input.type })
-                  </Box>
-                  <div/>
-                  { input.components.map((component, componentIndex) => {
-                    const fieldName = getFormFieldName(component.name, componentIndex, input.name);
-
-                    return (
-                      <ContractMethodCallableRow
-                        key={ fieldName }
-                        fieldName={ fieldName }
-                        argName={ component.name }
-                        argType={ component.type }
-                        isDisabled={ isLoading }
-                        onChange={ handleFormChange }
-                        isGrouped
-                      />
-                    );
-                  }) }
-                  { index !== inputs.length - 1 && <><Box h={{ base: 0, lg: 3 }}/><div/></> }
-                </React.Fragment>
+                <ContractMethodCallableRow
+                  key={ fieldName }
+                  fieldName={ fieldName }
+                  argName={ input.name }
+                  argType={ input.type }
+                  isDisabled={ isLoading }
+                  onChange={ handleFormChange }
+                />
               );
-            }
-
-            return (
-              <ContractMethodCallableRow
-                key={ fieldName }
-                fieldName={ fieldName }
-                argName={ input.name }
-                argType={ input.type }
-                isDisabled={ isLoading }
-                onChange={ handleFormChange }
-              />
-            );
-          }) }
-          <div/>
+            }) }
+          </Grid>
           <Button
             isLoading={ isLoading }
             loadingText={ isWrite ? 'Write' : 'Read' }
@@ -207,9 +210,9 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
         </chakra.form>
       </FormProvider>
       { 'outputs' in data && !isWrite && data.outputs.length > 0 && (
-        <Flex mt={ 3 }>
+        <Flex mt={ 3 } fontSize="sm">
           <Icon as={ arrowIcon } boxSize={ 5 } mr={ 1 }/>
-          <Text>{ data.outputs.map(({ type }) => type).join(', ') }</Text>
+          <Text>{ data.outputs.map(({ type, name }) => [ name, type ].join(' ')).join(', ') }</Text>
         </Flex>
       ) }
       { result && <ResultComponent item={ data } result={ result } onSettle={ handleTxSettle }/> }
