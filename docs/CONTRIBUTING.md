@@ -33,7 +33,7 @@ We are using following technology stack in the project
 - [Yarn](https://yarnpkg.com/) as package manager
 - [ReactJS](https://reactjs.org/) as UI library
 - [Next.js](https://nextjs.org/) as application framework
-- [Chakra](https://chakra-ui.com/) as component library; our theme customization could be found in `/theme` folder
+- [Chakra](https://chakra-ui.com/) as component library; our theme customization can be found in `/theme` folder
 - [TanStack Query](https://tanstack.com/query/v4/docs/react/overview/) for fetching, caching and updating data from the API
 - [Jest](https://jestjs.io/) as JavaScript testing framework
 - [Playwright](https://playwright.dev/) as a tool for components visual testing
@@ -59,6 +59,7 @@ B. Pre-defined configuration:
 2. Choose one of the predefined configurations located in the `/configs/envs` folder.
 3. Start your local dev server using the `yarn dev:<config_name>` command.
 4. Open your browser and navigate to the URL provided in the command line output (by default, it is `http://localhost:3000`).
+
 
 &nbsp;
 
@@ -160,7 +161,7 @@ We have 3 pre-configured projects. You can run your test with the desired projec
 2. Once you finish your work, remove label "WIP" from PR, if it was added before, and publish PR if it was in the draft state
 3. Make sure that all code checks and tests are successfully passed
 4. Add description to your Pull Request and link an existing issue(s) that it is fixing
-5. Request review from one or all core team members: @tom2drum, @isstuev. Our core team are committed to reviewing patches in a timely manner.
+5. Request review from one or all core team members: @tom2drum, @isstuev. Our core team is committed to reviewing patches in a timely manner.
 6. After code review is done, we merge pull requests by squashing all commits and editing the commit message if necessary using the GitHub user interface.
 
 *Note*, if you Pull Request contains any changes that are not backwards compatible with the previous versions of the app, please specify them in PR description and add label ["breaking changes"](https://github.com/blockscout/frontend/labels/breaking%20changes) to it.
