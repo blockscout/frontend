@@ -4,12 +4,12 @@ import React from 'react';
 import type { Props } from 'nextjs/getServerSideProps';
 import PageNextJs from 'nextjs/PageNextJs';
 
-import ContractVerification from 'ui/pages/ContractVerification';
+import ContractVerificationForAddress from 'ui/pages/ContractVerificationForAddress';
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
     <PageNextJs pathname="/address/[hash]/contract-verification" query={ props }>
-      <ContractVerification/>
+      <ContractVerificationForAddress/>
     </PageNextJs>
   );
 };

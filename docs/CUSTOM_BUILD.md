@@ -7,4 +7,4 @@ For running app container from freshly built image do
 docker run -p 3000:3000 --env-file <path-to-your-env-file> <your-image-tag>
 ```
 
-*Disclaimer* Do no try to generate production build of the app on your local machine (outside the docker). The app will not work as you would expect.
+*Disclaimer* Do not try to generate production build of the app on your local machine (outside the docker). The app will not work as you would expect.

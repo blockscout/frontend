@@ -24,6 +24,7 @@ import topAccountsIcon from 'icons/top-accounts.svg';
 import transactionsIcon from 'icons/transactions.svg';
 import txnBatchIcon from 'icons/txn_batches.svg';
 import verifiedIcon from 'icons/verified.svg';
+import verifyContractIcon from 'icons/verify-contract.svg';
 import watchlistIcon from 'icons/watchlist.svg';
 import { rightLineArrow } from 'lib/html-entities';
 import UserAvatar from 'ui/shared/UserAvatar';
@@ -176,11 +177,19 @@ export default function useNavItems(): ReturnType {
         isActive: apiNavItems.some(item => isInternalItem(item) && item.isActive),
         subItems: apiNavItems,
       },
-      config.UI.sidebar.otherLinks.length > 0 ? {
+      {
         text: 'Other',
         icon: gearIcon,
-        subItems: config.UI.sidebar.otherLinks,
-      } : null,
+        subItems: [
+          {
+            text: 'Verify contract',
+            nextRoute: { pathname: '/contract-verification' as const },
+            icon: verifyContractIcon,
+            isActive: pathname.startsWith('/contract-verification'),
+          },
+          ...config.UI.sidebar.otherLinks,
+        ],
+      },
     ].filter(Boolean);
 
     const accountNavItems: ReturnType['accountNavItems'] = [

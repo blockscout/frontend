@@ -1,4 +1,4 @@
-import { Box, Heading, Flex, LightMode } from '@chakra-ui/react';
+import { Box, Heading, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
@@ -31,16 +31,14 @@ const Home = () => {
             fontWeight={ 600 }
             color={ config.UI.homepage.plate.textColor }
           >
-            Welcome to { config.chain.name } explorer
+            { config.chain.name } explorer
           </Heading>
           <Box display={{ base: 'none', lg: 'flex' }}>
             { config.features.account.isEnabled && <ProfileMenuDesktop isHomePage/> }
             { config.features.blockchainInteraction.isEnabled && <WalletMenuDesktop isHomePage/> }
           </Box>
         </Flex>
-        <LightMode>
-          <SearchBar isHomepage/>
-        </LightMode>
+        <SearchBar isHomepage/>
       </Box>
       <Stats/>
       <ChainIndicators/>

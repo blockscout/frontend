@@ -25,7 +25,8 @@ const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHid
   const isMobile = useIsMobile();
 
   const handleScroll = React.useCallback(() => {
-    if (window.pageYOffset !== 0) {
+    const TOP_BAR_HEIGHT = 36;
+    if (window.pageYOffset >= TOP_BAR_HEIGHT) {
       setIsSticky(true);
     } else {
       setIsSticky(false);
@@ -68,12 +69,12 @@ const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHid
       onBlur={ onBlur }
       onFocus={ onFocus }
       w="100%"
-      backgroundColor={ isHomepage ? 'white' : bgColor }
+      backgroundColor={ bgColor }
       borderRadius={{ base: isHomepage ? 'base' : 'none', lg: 'base' }}
-      position={{ base: isHomepage ? 'static' : 'fixed', lg: 'static' }}
+      position={{ base: isHomepage ? 'static' : 'absolute', lg: 'static' }}
       top={{ base: isHomepage ? 0 : 55, lg: 0 }}
       left="0"
-      zIndex={{ base: isHomepage ? 'auto' : 'sticky1', lg: 'auto' }}
+      zIndex={{ base: isHomepage ? 'auto' : '-1', lg: 'auto' }}
       paddingX={{ base: isHomepage ? 0 : 4, lg: 0 }}
       paddingTop={{ base: isHomepage ? 0 : 1, lg: 0 }}
       paddingBottom={{ base: isHomepage ? 0 : 4, lg: 0 }}

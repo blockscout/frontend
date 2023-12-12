@@ -1,5 +1,6 @@
-// https://unicode-table.com
-export const asymp = String.fromCharCode(8776); // ~
+// https://symbl.cc/en/
+export const asymp = String.fromCharCode(8776); // ≈
+export const tilde = String.fromCharCode(126); // ~
 export const hellip = String.fromCharCode(8230); // …
 export const nbsp = String.fromCharCode(160); // no-break Space
 export const thinsp = String.fromCharCode(8201); // thin Space
