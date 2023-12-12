@@ -10,9 +10,9 @@ const sortTxs = (sorting?: Sort) => (tx1: Transaction, tx2: Transaction) => {
     case 'val-asc':
       return compareBns(tx2.value, tx1.value);
     case 'fee-desc':
-      return compareBns(tx1.fee.value, tx2.fee.value);
+      return compareBns(tx1.fee.value || 0, tx2.fee.value || 0);
     case 'fee-asc':
-      return compareBns(tx2.fee.value, tx1.fee.value);
+      return compareBns(tx2.fee.value || 0, tx1.fee.value || 0);
     default:
       return 0;
   }
