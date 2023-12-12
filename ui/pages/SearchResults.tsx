@@ -15,8 +15,9 @@ import * as Layout from 'ui/shared/layout/components';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import Thead from 'ui/shared/TheadSticky';
-import Header from 'ui/snippets/header/Header';
 import HeaderAlert from 'ui/snippets/header/HeaderAlert';
+import HeaderDesktop from 'ui/snippets/header/HeaderDesktop';
+import HeaderMobile from 'ui/snippets/header/HeaderMobile';
 import useSearchQuery from 'ui/snippets/searchBar/useSearchQuery';
 
 const SearchResultsPageContent = () => {
@@ -181,13 +182,20 @@ const SearchResultsPageContent = () => {
 
   return (
     <>
-      <HeaderAlert/>
-      <Header renderSearchBar={ renderSearchBar }/>
-      <AppErrorBoundary>
-        <Layout.Content>
-          { pageContent }
-        </Layout.Content>
-      </AppErrorBoundary>
+      <HeaderMobile renderSearchBar={ renderSearchBar }/>
+      <Layout.MainArea>
+        <Layout.SideBar/>
+        <Layout.MainColumn>
+          <HeaderAlert/>
+          <HeaderDesktop renderSearchBar={ renderSearchBar }/>
+          <AppErrorBoundary>
+            <Layout.Content>
+              { pageContent }
+            </Layout.Content>
+          </AppErrorBoundary>
+        </Layout.MainColumn>
+      </Layout.MainArea>
+      <Layout.Footer/>
     </>
   );
 };
