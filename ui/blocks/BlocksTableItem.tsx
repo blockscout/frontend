@@ -66,12 +66,14 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           { data.size.toLocaleString() }
         </Skeleton>
       </Td>
-      <Td fontSize="sm">
-        <AddressEntity
-          address={ data.miner }
-          isLoading={ isLoading }
-        />
-      </Td>
+      { !config.UI.views.block.hiddenFields?.miner && (
+        <Td fontSize="sm">
+          <AddressEntity
+            address={ data.miner }
+            isLoading={ isLoading }
+          />
+        </Td>
+      ) }
       <Td isNumeric fontSize="sm">
         { data.tx_count > 0 ? (
           <Skeleton isLoaded={ !isLoading } display="inline-block">

@@ -66,7 +66,7 @@ const LatestBlocksItem = ({ block, isLoading }: Props) => {
           </>
         ) }
 
-        { !config.features.optimisticRollup.isEnabled && (
+        { !config.features.optimisticRollup.isEnabled && !config.UI.views.block.hiddenFields?.miner && (
           <>
             <Skeleton isLoaded={ !isLoading } textTransform="capitalize">{ getNetworkValidatorTitle() }</Skeleton>
             <AddressEntity
