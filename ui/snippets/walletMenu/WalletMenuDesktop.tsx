@@ -1,5 +1,5 @@
 import type { ButtonProps } from '@chakra-ui/react';
-import { Popover, PopoverContent, PopoverBody, PopoverTrigger, Button, Box, useBoolean, Tooltip } from '@chakra-ui/react';
+import { Popover, PopoverContent, PopoverBody, PopoverTrigger, Button, Box, useBoolean } from '@chakra-ui/react';
 import React from 'react';
 
 import AddressIdenticon from 'ui/shared/entities/address/AddressIdenticon';
@@ -8,6 +8,7 @@ import useWallet from 'ui/snippets/walletMenu/useWallet';
 import WalletMenuContent from 'ui/snippets/walletMenu/WalletMenuContent';
 
 import useMenuButtonColors from '../useMenuButtonColors';
+import WalletTooltip from './WalletTooltip';
 
 type Props = {
   isHomePage?: boolean;
@@ -17,15 +18,6 @@ const WalletMenuDesktop = ({ isHomePage }: Props) => {
   const { isWalletConnected, address, connect, disconnect, isModalOpening, isModalOpen } = useWallet();
   const { themedBackground, themedBorderColor, themedColor } = useMenuButtonColors();
   const [ isPopoverOpen, setIsPopoverOpen ] = useBoolean(false);
-  const [ isTooltipShown, setIsTooltipShown ] = useBoolean(false);
-
-  React.useEffect(() => {
-    const wasShown = window.localStorage.getItem('wallet-connect-tooltip-shown');
-    if (!wasShown) {
-      setIsTooltipShown.on();
-      window.localStorage.setItem('wallet-connect-tooltip-shown', 'true');
-    }
-  }, [ setIsTooltipShown ]);
 
   const variant = React.useMemo(() => {
     if (isWalletConnected) {
@@ -63,16 +55,7 @@ const WalletMenuDesktop = ({ isHomePage }: Props) => {
       isOpen={ isPopoverOpen }
       onClose={ setIsPopoverOpen.off }
     >
-      <Tooltip
-        label={ <span>Your wallet is used to interact with<br/>apps and contracts in the explorer</span> }
-        textAlign="center"
-        padding={ 2 }
-        isDisabled={ isWalletConnected }
-        openDelay={ 300 }
-        isOpen={ isTooltipShown || undefined }
-        onClose={ setIsTooltipShown.off }
-        display={{ base: 'none', lg: 'flex' }}
-      >
+      <WalletTooltip isDisabled={ isWalletConnected }>
         <Box ml={ 2 }>
           <PopoverTrigger>
             <Button
@@ -96,7 +79,7 @@ const WalletMenuDesktop = ({ isHomePage }: Props) => {
             </Button>
           </PopoverTrigger>
         </Box>
-      </Tooltip>
+      </WalletTooltip>
       { isWalletConnected && (
         <PopoverContent w="235px">
           <PopoverBody padding="24px 16px 16px 16px">

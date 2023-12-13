@@ -7,6 +7,7 @@ import useWallet from 'ui/snippets/walletMenu/useWallet';
 import WalletMenuContent from 'ui/snippets/walletMenu/WalletMenuContent';
 
 import useMenuButtonColors from '../useMenuButtonColors';
+import WalletTooltip from './WalletTooltip';
 
 const WalletMenuMobile = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -15,22 +16,24 @@ const WalletMenuMobile = () => {
 
   return (
     <>
-      <IconButton
-        aria-label="wallet menu"
-        icon={ isWalletConnected ?
-          <AddressIdenticon size={ 20 } hash={ address }/> :
-          <Icon as={ walletIcon } boxSize={ 6 }/>
-        }
-        variant={ isWalletConnected ? 'subtle' : 'outline' }
-        colorScheme="gray"
-        boxSize="40px"
-        flexShrink={ 0 }
-        bg={ isWalletConnected ? themedBackground : undefined }
-        color={ themedColor }
-        borderColor={ !isWalletConnected ? themedBorderColor : undefined }
-        onClick={ isWalletConnected ? onOpen : connect }
-        isLoading={ isModalOpening || isModalOpen }
-      />
+      <WalletTooltip isDisabled={ isWalletConnected } isMobile>
+        <IconButton
+          aria-label="wallet menu"
+          icon={ isWalletConnected ?
+            <AddressIdenticon size={ 20 } hash={ address }/> :
+            <Icon as={ walletIcon } boxSize={ 6 }/>
+          }
+          variant={ isWalletConnected ? 'subtle' : 'outline' }
+          colorScheme="gray"
+          boxSize="40px"
+          flexShrink={ 0 }
+          bg={ isWalletConnected ? themedBackground : undefined }
+          color={ themedColor }
+          borderColor={ !isWalletConnected ? themedBorderColor : undefined }
+          onClick={ isWalletConnected ? onOpen : connect }
+          isLoading={ isModalOpening || isModalOpen }
+        />
+      </WalletTooltip>
       { isWalletConnected && (
         <Drawer
           isOpen={ isOpen }
