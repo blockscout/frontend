@@ -1,5 +1,4 @@
 import { Box, Button, chakra, Flex, Grid, Icon, Text } from '@chakra-ui/react';
-// import _fromPairs from 'lodash/fromPairs';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -11,6 +10,7 @@ import arrowIcon from 'icons/arrows/down-right.svg';
 import * as mixpanel from 'lib/mixpanel/index';
 
 import ContractMethodCallableRow from './ContractMethodCallableRow';
+import { formatFieldValues, transformFieldsToArgs } from './utils';
 
 interface ResultComponentProps<T extends SmartContractMethod> {
   item: T;
@@ -25,52 +25,9 @@ interface Props<T extends SmartContractMethod> {
   isWrite?: boolean;
 }
 
-// TODO @tom2drum remove this
-const getFieldName = (name: string | undefined, index: number): string => name || String(index);
-
-const getFormFieldName = (inputName: string, inputIndex: number, group?: string) => `${ group ? `${ group }_` : '' }${ inputName || 'input' }-${ inputIndex }}`;
-
-const sortFields = (data: Array<SmartContractMethodInput>) => (
-  [ a ]: [string, string | Array<string>],
-  [ b ]: [string, string | Array<string>],
-): 1 | -1 | 0 => {
-  const fieldNames = data.map(({ name }, index) => getFieldName(name, index));
-  const indexA = fieldNames.indexOf(a);
-  const indexB = fieldNames.indexOf(b);
-
-  if (indexA > indexB) {
-    return 1;
-  }
-
-  if (indexA < indexB) {
-    return -1;
-  }
-
-  return 0;
-};
-
-const castFieldValue = (data: Array<SmartContractMethodInput>) => ([ key, value ]: [ string, string | Array<string> ], index: number) => {
-  if (data[index].type.includes('[')) {
-    return [ key, parseArrayValue(value) ];
-  }
-  return [ key, value ];
-};
-
-const parseArrayValue = (value: string | Array<string>) => {
-  try {
-    if (Array.isArray(value)) {
-      return value;
-    }
-
-    const parsedResult = JSON.parse(value);
-    if (Array.isArray(parsedResult)) {
-      return parsedResult;
-    }
-    throw new Error('Not an array');
-  } catch (error) {
-    return '';
-  }
-};
+// groupName%groupIndex:inputName%inputIndex
+const getFormFieldName = (input: { index: number; name: string }, group?: { index: number; name: string }) =>
+  `${ group ? `${ group.name }%${ group.index }:` : '' }${ input.name || 'input' }%${ input.index }`;
 
 const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit, resultComponent: ResultComponent, isWrite }: Props<T>) => {
 
@@ -89,8 +46,6 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
   }, [ data ]);
 
   const formApi = useForm<MethodFormFields>({
-    // TODO @tom2drum rewrite this
-    // defaultValues: _fromPairs(inputs.map(({ name }, index) => [ getFieldName(name, index), '' ])),
     mode: 'onBlur',
   });
 
@@ -103,14 +58,8 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
   }, [ result ]);
 
   const onFormSubmit: SubmitHandler<MethodFormFields> = React.useCallback(async(formData) => {
-    // console.log('__>__ formData', formData);
-
-    // debugger;
-
-    const args = Object.entries(formData)
-      .sort(sortFields(inputs))
-      .map(castFieldValue(inputs))
-      .map(([ , value ]) => value);
+    const formattedData = formatFieldValues(formData, inputs);
+    const args = transformFieldsToArgs(formattedData);
 
     setResult(undefined);
     setLoading(true);
@@ -147,7 +96,7 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
             _empty={{ display: 'none' }}
           >
             { inputs.map((input, index) => {
-              const fieldName = getFormFieldName(input.name, index);
+              const fieldName = getFormFieldName({ name: input.name, index });
 
               if (input.type === 'tuple' && input.components) {
                 return (
@@ -164,7 +113,10 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
                     </Box>
                     <div/>
                     { input.components.map((component, componentIndex) => {
-                      const fieldName = getFormFieldName(component.name, componentIndex, input.name);
+                      const fieldName = getFormFieldName(
+                        { name: component.name, index: componentIndex },
+                        { name: input.name, index },
+                      );
 
                       return (
                         <ContractMethodCallableRow

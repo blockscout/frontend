@@ -1,6 +1,11 @@
 import type { Abi } from 'abitype';
+import _mapValues from 'lodash/mapValues';
 
-import type { SmartContractWriteMethod } from 'types/api/contract';
+import type { MethodArgType, MethodFormFields, MethodFormFieldsFormatted } from './types';
+import type { SmartContractMethodArgType, SmartContractMethodInput, SmartContractWriteMethod } from 'types/api/contract';
+
+import bytesToHexString from 'lib/bytesToHexString';
+import stringToBytes from 'lib/stringToBytes';
 
 export const INT_REGEXP = /^(u)?int(\d+)?$/i;
 
@@ -88,4 +93,117 @@ export function prepareAbi(abi: Abi, item: SmartContractWriteMethod): Abi {
   }
 
   return abi;
+}
+
+function getFieldType(fieldName: string, inputs: Array<SmartContractMethodInput>) {
+  const chunks = fieldName.split(':');
+
+  if (chunks.length === 1) {
+    const [ , index ] = chunks[0].split('%');
+    return inputs[Number(index)].type;
+  } else {
+    const group = chunks[0].split('%');
+    const input = chunks[1].split('%');
+
+    return inputs[Number(group[1])].components?.[Number(input[1])].type;
+  }
+}
+
+function parseArrayValue(value: string) {
+  try {
+    const parsedResult = JSON.parse(value);
+    if (Array.isArray(parsedResult)) {
+      return parsedResult as Array<string>;
+    }
+    throw new Error('Not an array');
+  } catch (error) {
+    return '';
+  }
+}
+
+function castValue(value: string, type: SmartContractMethodArgType) {
+  if (type === 'bool') {
+    return formatBooleanValue(value) === 'true';
+  }
+
+  const intMatch = type.match(INT_REGEXP);
+  if (intMatch) {
+    return value.replaceAll(' ', '');
+  }
+
+  const bytesMatch = type.match(BYTES_REGEXP);
+  if (bytesMatch) {
+    if (value.startsWith('0x')) {
+      return value;
+    }
+
+    const bytesArray = stringToBytes(value);
+    return `0x${ bytesToHexString(bytesArray) }`;
+  }
+
+  const isNestedArray = (type.match(/\[/g) || []).length > 1;
+  if (isNestedArray) {
+    return parseArrayValue(value) || value;
+  }
+
+  return value;
+}
+
+export function formatFieldValues(formFields: MethodFormFields, inputs: Array<SmartContractMethodInput>) {
+  const formattedFields = _mapValues(formFields, (value, key) => {
+    const type = getFieldType(key, inputs);
+
+    if (!type) {
+      return value;
+    }
+
+    if (Array.isArray(value)) {
+      const arrayMatch = type.match(ARRAY_REGEXP);
+
+      if (arrayMatch) {
+        return value.map((item) => castValue(item, arrayMatch[1] as SmartContractMethodArgType));
+      }
+
+      return value;
+    }
+
+    return castValue(value, type);
+  });
+
+  return formattedFields;
+}
+
+export function transformFieldsToArgs(formFields: MethodFormFieldsFormatted) {
+  const unGroupedFields = Object.entries(formFields)
+    .reduce((
+      result: Record<string, MethodArgType>,
+      [ key, value ]: [ string, MethodArgType ],
+    ) => {
+      const chunks = key.split(':');
+
+      if (chunks.length > 1) {
+        const groupKey = chunks[0];
+        const [ , fieldIndex ] = chunks[1].split('%');
+
+        if (result[groupKey] === undefined) {
+          result[groupKey] = [];
+        }
+
+        (result[groupKey] as Array<MethodArgType>)[Number(fieldIndex)] = value;
+        return result;
+      }
+
+      result[key] = value;
+      return result;
+    }, {});
+
+  const args = (Object.entries(unGroupedFields)
+    .map(([ key, value ]) => {
+      const [ , index ] = key.split('%');
+      return [ Number(index), value ];
+    }) as Array<[ number, string | Array<string> ]>)
+    .sort((a, b) => a[0] - b[0])
+    .map(([ , value ]) => value);
+
+  return args;
 }
