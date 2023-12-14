@@ -132,12 +132,6 @@ const SearchBar = ({ isHomepage }: Props) => {
         <PopoverBody
           p={ 0 }
           color="chakra-body-text"
-          sx={
-            isHomepage ? {
-              mark: { bgColor: 'green.100' },
-              '*::-webkit-scrollbar-thumb': { backgroundColor: 'blackAlpha.300' },
-            } : {}
-          }
         >
           <Box
             maxH="50vh"

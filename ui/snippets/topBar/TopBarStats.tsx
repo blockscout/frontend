@@ -30,8 +30,8 @@ const TopBarStats = () => {
           <span>${ Number(data.coin_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }) }</span>
         </Skeleton>
       ) }
-      { data?.coin_price && data.gas_prices && <TextSeparator color="divider"/> }
-      { data?.gas_prices && (
+      { data?.coin_price && config.UI.homepage.showGasTracker && <TextSeparator color="divider"/> }
+      { data?.gas_prices && config.UI.homepage.showGasTracker && (
         <Skeleton isLoaded={ !isPlaceholderData }>
           <span>Gas: { data.gas_prices.average } Gwei</span>
         </Skeleton>
