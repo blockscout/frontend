@@ -7,7 +7,7 @@ import { generateListStub } from 'stubs/utils';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import TxsContent from 'ui/txs/TxsContent';
+import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
 
 const KettleTxs = () => {
   const router = useRouter();
@@ -31,7 +31,7 @@ const KettleTxs = () => {
     <>
       <PageTitle title="Computor transactions" withTextAd/>
       <AddressEntity address={{ hash }} mb={ 6 }/>
-      <TxsContent
+      <TxsWithFrontendSorting
         query={ query }
         showSocketInfo={ false }
       />

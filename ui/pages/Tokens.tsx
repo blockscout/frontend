@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { TokenType } from 'types/api/token';
-import type { TokensSortingValue } from 'types/api/tokens';
+import type { TokensSortingValue, TokensSortingField, TokensSorting } from 'types/api/tokens';
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
@@ -16,11 +16,13 @@ import PopoverFilter from 'ui/shared/filters/PopoverFilter';
 import TokenTypeFilter from 'ui/shared/filters/TokenTypeFilter';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
+import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
+import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TokensList from 'ui/tokens/Tokens';
 import TokensActionBar from 'ui/tokens/TokensActionBar';
 import TokensBridgedChainsFilter from 'ui/tokens/TokensBridgedChainsFilter';
-import { getSortParamsFromValue, getSortValueFromQuery, getTokenFilterValue, getBridgedChainsFilterValue } from 'ui/tokens/utils';
+import { SORT_OPTIONS, getTokenFilterValue, getBridgedChainsFilterValue } from 'ui/tokens/utils';
 
 const TAB_LIST_PROPS = {
   marginBottom: 0,
@@ -44,7 +46,7 @@ const Tokens = () => {
   const q = getQueryParamString(router.query.q);
 
   const [ searchTerm, setSearchTerm ] = React.useState<string>(q ?? '');
-  const [ sort, setSort ] = React.useState<TokensSortingValue | undefined>(getSortValueFromQuery(router.query));
+  const [ sort, setSort ] = React.useState<TokensSortingValue | undefined>(getSortValueFromQuery<TokensSortingValue>(router.query, SORT_OPTIONS));
   const [ tokenTypes, setTokenTypes ] = React.useState<Array<TokenType> | undefined>(getTokenFilterValue(router.query.type));
   const [ bridgeChains, setBridgeChains ] = React.useState<Array<string> | undefined>(getBridgedChainsFilterValue(router.query.chain_ids));
 
@@ -53,7 +55,7 @@ const Tokens = () => {
   const tokensQuery = useQueryWithPages({
     resourceName: tab === 'bridged' ? 'tokens_bridged' : 'tokens',
     filters: tab === 'bridged' ? { q: debouncedSearchTerm, chain_ids: bridgeChains } : { q: debouncedSearchTerm, type: tokenTypes },
-    sorting: getSortParamsFromValue(sort),
+    sorting: getSortParamsFromValue<TokensSortingValue, TokensSortingField, TokensSorting['order']>(sort),
     options: {
       placeholderData: generateListStub<'tokens'>(
         TOKEN_INFO_ERC_20,
