@@ -7,6 +7,8 @@ import { STATS_COUNTER } from 'stubs/stats';
 import DataFetchAlert from '../shared/DataFetchAlert';
 import NumberWidget from './NumberWidget';
 
+const UNITS_WITHOUT_SPACE = [ 's' ];
+
 const NumberWidgetsList = () => {
   const { data, isPlaceholderData, isError } = useApiQuery('stats_counters', {
     queryOptions: {
@@ -26,11 +28,18 @@ const NumberWidgetsList = () => {
       {
         data?.counters?.map(({ id, title, value, units, description }, index) => {
 
+          let unitsStr = '';
+          if (UNITS_WITHOUT_SPACE.includes(units)) {
+            unitsStr = units;
+          } else if (units) {
+            unitsStr = ' ' + units;
+          }
+
           return (
             <NumberWidget
               key={ id + (isPlaceholderData ? index : '') }
               label={ title }
-              value={ `${ Number(value).toLocaleString(undefined, { maximumFractionDigits: 3, notation: 'compact' }) } ${ units ? units : '' }` }
+              value={ `${ Number(value).toLocaleString(undefined, { maximumFractionDigits: 3, notation: 'compact' }) }${ unitsStr }` }
               isLoading={ isPlaceholderData }
               description={ description }
             />
