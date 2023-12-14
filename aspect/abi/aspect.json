@@ -1,0 +1,244 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "contractAddr",
+                "type": "address"
+            }
+        ],
+        "name": "aspectsOf",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "address",
+                        "name": "aspectId",
+                        "type": "address"
+                    },
+                    {
+                        "internalType": "uint64",
+                        "name": "version",
+                        "type": "uint64"
+                    },
+                    {
+                        "internalType": "int8",
+                        "name": "priority",
+                        "type": "int8"
+                    }
+                ],
+                "internalType": "struct AspectCore.AspectBoundInfoArr[]",
+                "name": "aspectBoundInfo",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "aspectId",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "aspectVersion",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "contractAddr",
+                "type": "address"
+            },
+            {
+                "internalType": "int8",
+                "name": "priority",
+                "type": "int8"
+            }
+        ],
+        "name": "bind",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "aspectId",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "contractAddr",
+                "type": "address"
+            },
+            {
+                "internalType": "uint64",
+                "name": "version",
+                "type": "uint64"
+            }
+        ],
+        "name": "changeVersion",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "aspectId",
+                "type": "address"
+            }
+        ],
+        "name": "contractsOf",
+        "outputs": [
+            {
+                "internalType": "address[]",
+                "name": "contracts",
+                "type": "address[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes",
+                "name": "code",
+                "type": "bytes"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "string",
+                        "name": "key",
+                        "type": "string"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "value",
+                        "type": "string"
+                    }
+                ],
+                "internalType": "struct AspectCore.KVPair[]",
+                "name": "properties",
+                "type": "tuple[]"
+            },
+            {
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes",
+                "name": "proof",
+                "type": "bytes"
+            }
+        ],
+        "name": "deploy",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "aspectId",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes",
+                "name": "data",
+                "type": "bytes"
+            }
+        ],
+        "name": "entrypoint",
+        "outputs": [
+            {
+                "internalType": "bytes",
+                "name": "result",
+                "type": "bytes"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "aspectId",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "contractAddr",
+                "type": "address"
+            }
+        ],
+        "name": "unbind",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "aspectId",
+                "type": "address"
+            },
+            {
+                "internalType": "bytes",
+                "name": "code",
+                "type": "bytes"
+            },
+            {
+                "components": [
+                    {
+                        "internalType": "bytes",
+                        "name": "key",
+                        "type": "bytes"
+                    },
+                    {
+                        "internalType": "bytes",
+                        "name": "value",
+                        "type": "bytes"
+                    }
+                ],
+                "internalType": "struct AspectCore.KVPair[]",
+                "name": "properties",
+                "type": "tuple[]"
+            }
+        ],
+        "name": "upgrade",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "aspectId",
+                "type": "address"
+            }
+        ],
+        "name": "versionOf",
+        "outputs": [
+            {
+                "internalType": "uint64",
+                "name": "version",
+                "type": "uint64"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]

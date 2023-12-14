@@ -31,7 +31,6 @@ type Props = {
 const LatestTxsItem = ({ tx, isLoading }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
   const timeAgo = useTimeAgoIncrement(tx.timestamp || '0', true);
-
   return (
     <Box
       width="100%"
@@ -47,7 +46,7 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
           <TxAdditionalInfo tx={ tx } isLoading={ isLoading }/>
           <Box ml={ 3 } w="calc(100% - 40px)">
             <HStack>
-              <TxType types={ tx.tx_types } isLoading={ isLoading }/>
+              <TxType rawInput={ tx.raw_input } types={ tx.tx_types } isLoading={ isLoading }/>
               <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
             </HStack>
             <Flex

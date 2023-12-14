@@ -50,6 +50,7 @@
     "d3": "^7.6.1",
     "dayjs": "^1.11.5",
     "dom-to-image": "^2.6.0",
+    "ethers": "^6.9.0",
     "framer-motion": "^6.5.1",
     "graphiql": "^2.2.0",
     "graphql": "^16.6.0",

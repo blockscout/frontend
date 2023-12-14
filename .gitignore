@@ -12,6 +12,9 @@
 # next.js
 /.next/
 /out/
+/public/assets/
+/public/envs.js
+/analyze
 
 # production
 /build

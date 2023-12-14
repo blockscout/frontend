@@ -42,7 +42,7 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
     >
       <Flex justifyContent="space-between">
         <HStack>
-          <TxType types={ tx.tx_types } isLoading={ isLoading }/>
+          <TxType rawInput={ tx.raw_input } types={ tx.tx_types } isLoading={ isLoading }/>
           <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
         </HStack>
         <TxAdditionalInfo tx={ tx } isMobile isLoading={ isLoading }/>
