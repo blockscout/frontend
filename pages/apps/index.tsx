@@ -12,7 +12,7 @@ const Page: NextPage = () => {
   return (
     <PageNextJs pathname="/apps">
       <>
-        <PageTitle title="Marketplace"/>
+        <PageTitle title="DAppscout"/>
         <Marketplace/>
       </>
     </PageNextJs>

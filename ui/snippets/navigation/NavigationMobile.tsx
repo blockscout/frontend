@@ -11,9 +11,10 @@ import NavLinkGroupMobile from './NavLinkGroupMobile';
 
 interface Props {
   onNavLinkClick?: () => void;
+  isMarketplaceAppPage?: boolean;
 }
 
-const NavigationMobile = ({ onNavLinkClick }: Props) => {
+const NavigationMobile = ({ onNavLinkClick, isMarketplaceAppPage }: Props) => {
   const { mainNavItems, accountNavItems } = useNavItems();
 
   const [ openedGroupIndex, setOpenedGroupIndex ] = React.useState(-1);
@@ -38,6 +39,8 @@ const NavigationMobile = ({ onNavLinkClick }: Props) => {
 
   const openedItem = mainNavItems[openedGroupIndex];
 
+  const isCollapsed = isMarketplaceAppPage ? false : undefined;
+
   return (
     <Flex position="relative" flexDirection="column" flexGrow={ 1 }>
       <Box
@@ -61,9 +64,9 @@ const NavigationMobile = ({ onNavLinkClick }: Props) => {
           >
             { mainNavItems.map((item, index) => {
               if (isGroupItem(item)) {
-                return <NavLinkGroupMobile key={ item.text } item={ item } onClick={ onGroupItemOpen(index) }/>;
+                return <NavLinkGroupMobile key={ item.text } item={ item } onClick={ onGroupItemOpen(index) } isExpanded={ isMarketplaceAppPage }/>;
               } else {
-                return <NavLink key={ item.text } item={ item } onClick={ onNavLinkClick }/>;
+                return <NavLink key={ item.text } item={ item } onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>;
               }
             }) }
           </VStack>
@@ -77,7 +80,7 @@ const NavigationMobile = ({ onNavLinkClick }: Props) => {
             borderColor="divider"
           >
             <VStack as="ul" spacing="1" alignItems="flex-start">
-              { accountNavItems.map((item) => <NavLink key={ item.text } item={ item } onClick={ onNavLinkClick }/>) }
+              { accountNavItems.map((item) => <NavLink key={ item.text } item={ item } onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>) }
             </VStack>
           </Box>
         ) }
@@ -113,10 +116,10 @@ const NavigationMobile = ({ onNavLinkClick }: Props) => {
                     borderColor: 'divider',
                   }}
                 >
-                  { item.map(subItem => <NavLink key={ subItem.text } item={ subItem } onClick={ onNavLinkClick }/>) }
+                  { item.map(subItem => <NavLink key={ subItem.text } item={ subItem } onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>) }
                 </Box>
               ) :
-                <NavLink key={ item.text } item={ item } mb={ 1 } onClick={ onNavLinkClick }/>,
+                <NavLink key={ item.text } item={ item } mb={ 1 } onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>,
             ) }
           </Box>
         </Box>

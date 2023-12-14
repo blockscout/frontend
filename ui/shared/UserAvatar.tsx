@@ -1,10 +1,10 @@
-import { SkeletonCircle, Image } from '@chakra-ui/react';
+import { SkeletonCircle, Image, Icon } from '@chakra-ui/react';
 import React from 'react';
 
+import profileIcon from 'icons/profile.svg';
 import { useAppContext } from 'lib/contexts/app';
 import * as cookies from 'lib/cookies';
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
-import IdenticonGithub from 'ui/shared/IdenticonGithub';
 
 interface Props {
   size: number;
@@ -34,7 +34,7 @@ const UserAvatar = ({ size }: Props) => {
       boxSize={ `${ size }px` }
       borderRadius="full"
       overflow="hidden"
-      fallback={ isImageLoadError || !data?.avatar ? <IdenticonGithub size={ size } seed={ data?.email || 'randomness' } flexShrink={ 0 }/> : undefined }
+      fallback={ isImageLoadError || !data?.avatar ? <Icon as={ profileIcon } boxSize={ 5 }/> : undefined }
       onError={ handleImageLoadError }
     />
   );

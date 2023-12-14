@@ -5,6 +5,7 @@ import config from 'configs/app';
 import PlusIcon from 'icons/plus.svg';
 import MarketplaceAppModal from 'ui/marketplace/MarketplaceAppModal';
 import MarketplaceCategoriesMenu from 'ui/marketplace/MarketplaceCategoriesMenu';
+import MarketplaceDisclaimerModal from 'ui/marketplace/MarketplaceDisclaimerModal';
 import MarketplaceList from 'ui/marketplace/MarketplaceList';
 import FilterInput from 'ui/shared/filters/FilterInput';
 
@@ -27,6 +28,9 @@ const Marketplace = () => {
     clearSelectedAppId,
     favoriteApps,
     onFavoriteClick,
+    isAppInfoModalOpen,
+    isDisclaimerModalOpen,
+    showDisclaimer,
   } = useMarketplace();
 
   if (isError) {
@@ -68,14 +72,23 @@ const Marketplace = () => {
         favoriteApps={ favoriteApps }
         onFavoriteClick={ onFavoriteClick }
         isLoading={ isPlaceholderData }
+        showDisclaimer={ showDisclaimer }
       />
 
-      { selectedApp && (
+      { (selectedApp && isAppInfoModalOpen) && (
         <MarketplaceAppModal
           onClose={ clearSelectedAppId }
           isFavorite={ favoriteApps.includes(selectedApp.id) }
           onFavoriteClick={ onFavoriteClick }
           data={ selectedApp }
+        />
+      ) }
+
+      { (selectedApp && isDisclaimerModalOpen) && (
+        <MarketplaceDisclaimerModal
+          isOpen={ isDisclaimerModalOpen }
+          onClose={ clearSelectedAppId }
+          appId={ selectedApp.id }
         />
       ) }
 
