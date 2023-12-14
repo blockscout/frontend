@@ -25,12 +25,12 @@ jobs:
     if: ${{ !contains(github.event.pull_request.labels.*.name, 'WIP') && !(github.event.action == 'unlabeled' && github.event.label.name != 'WIP') }}
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20.10.0
           cache: 'yarn'
 
       - name: Cache node_modules
@@ -57,12 +57,12 @@ jobs:
     needs: [ code_quality ]
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20.10.0
           cache: 'yarn'
 
       - name: Cache node_modules
@@ -94,12 +94,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20.10.0
           cache: 'yarn'
 
       - name: Cache node_modules
@@ -122,7 +122,7 @@ jobs:
     needs: [ code_quality, envs_validation ]
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.35.1-focal
+      image: mcr.microsoft.com/playwright:v1.40.1-focal
 
     strategy:
       fail-fast: false
@@ -134,14 +134,14 @@ jobs:
         run: apt-get update && apt-get install git-lfs
 
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           lfs: 'true'
 
       - name: Setup node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20.10.0
           cache: 'yarn'
 
       - name: Cache node_modules
