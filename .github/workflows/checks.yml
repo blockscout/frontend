@@ -22,7 +22,7 @@ jobs:
   code_quality:
     name: Code quality
     runs-on: ubuntu-latest
-    if: ${{ !contains(github.event.pull_request.labels.*.name, 'WIP') && !(github.event.action == 'unlabeled' && github.event.label.name != 'WIP') }}
+    if: ${{ !contains(github.event.pull_request.labels.*.name, 'skip checks') && !(github.event.action == 'unlabeled' && github.event.label.name != 'skip checks') }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
