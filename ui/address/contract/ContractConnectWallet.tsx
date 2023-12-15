@@ -1,5 +1,5 @@
 import { Alert, Button, Flex } from '@chakra-ui/react';
-import { useWeb3Modal } from '@web3modal/react';
+import { useWeb3Modal, useWeb3ModalState } from '@web3modal/wagmi/react';
 import React from 'react';
 import { useAccount, useDisconnect } from 'wagmi';
 
@@ -8,7 +8,8 @@ import * as mixpanel from 'lib/mixpanel/index';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 const ContractConnectWallet = () => {
-  const { open, isOpen } = useWeb3Modal();
+  const { open } = useWeb3Modal();
+  const { open: isOpen } = useWeb3ModalState();
   const { disconnect } = useDisconnect();
   const isMobile = useIsMobile();
   const [ isModalOpening, setIsModalOpening ] = React.useState(false);

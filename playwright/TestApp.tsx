@@ -1,9 +1,10 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { w3mProvider } from '@web3modal/ethereum';
+import { createWeb3Modal } from '@web3modal/wagmi/react';
 import React from 'react';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
 
 import type { Props as PageProps } from 'nextjs/getServerSideProps';
 
@@ -33,17 +34,25 @@ const defaultAppContext = {
 };
 
 // >>> Web3 stuff
-const { publicClient } = configureChains(
+const { publicClient, chains } = configureChains(
   [ mainnet ],
-  [
-    w3mProvider({ projectId: '' }),
-  ],
+  [],
 );
 
 const wagmiConfig = createConfig({
   autoConnect: false,
-  connectors: [ ],
+  connectors: [
+    new WalletConnectConnector({
+      options: { projectId: 'xxx' },
+    }),
+  ],
   publicClient,
+});
+
+createWeb3Modal({
+  wagmiConfig,
+  projectId: 'xxx',
+  chains,
 });
 // <<<<
 
