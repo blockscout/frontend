@@ -1,12 +1,14 @@
 import { useColorMode } from '@chakra-ui/react';
 import { jsonRpcProvider } from '@wagmi/core/providers/jsonRpc';
-import { createWeb3Modal, useWeb3ModalTheme } from '@web3modal/wagmi/react';
+import { createWeb3Modal, useWeb3ModalTheme, defaultWagmiConfig } from '@web3modal/wagmi/react';
 import React from 'react';
 import type { Chain } from 'wagmi';
-import { configureChains, createConfig, WagmiConfig } from 'wagmi';
-import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
+import { configureChains, WagmiConfig } from 'wagmi';
 
 import config from 'configs/app';
+import colors from 'theme/foundations/colors';
+import { BODY_TYPEFACE } from 'theme/foundations/typography';
+import zIndices from 'theme/foundations/zIndices';
 
 const feature = config.features.blockchainInteraction;
 
@@ -41,7 +43,7 @@ const getConfig = () => {
       },
     };
 
-    const { publicClient, webSocketPublicClient, chains } = configureChains(
+    const { chains } = configureChains(
       [ currentChain ],
       [
         jsonRpcProvider({
@@ -52,16 +54,9 @@ const getConfig = () => {
       ],
     );
 
-    const wagmiConfig = createConfig({
-      autoConnect: true,
-      connectors: [
-        new WalletConnectConnector({
-          chains,
-          options: { projectId: feature.walletConnect.projectId, showQrModal: false },
-        }),
-      ],
-      publicClient,
-      webSocketPublicClient,
+    const wagmiConfig = defaultWagmiConfig({
+      chains,
+      projectId: feature.walletConnect.projectId,
     });
 
     createWeb3Modal({
@@ -69,10 +64,10 @@ const getConfig = () => {
       projectId: feature.walletConnect.projectId,
       chains,
       themeVariables: {
-        '--w3m-font-family': 'Inter, sans-serif',
-        '--w3m-accent': '#2B6CB0', // blue.400
+        '--w3m-font-family': `${ BODY_TYPEFACE }, sans-serif`,
+        '--w3m-accent': colors.blue[600],
         '--w3m-border-radius-master': '2px',
-        '--w3m-z-index': 1400,
+        '--w3m-z-index': zIndices.modal,
       },
     });
 
