@@ -1,4 +1,4 @@
-import { Tooltip, useBoolean } from '@chakra-ui/react';
+import { Tooltip, useBoolean, useOutsideClick } from '@chakra-ui/react';
 import React from 'react';
 
 type Props = {
@@ -9,6 +9,8 @@ type Props = {
 
 const WalletTooltip = ({ children, isDisabled, isMobile }: Props) => {
   const [ isTooltipShown, setIsTooltipShown ] = useBoolean(false);
+  const ref = React.useRef(null);
+  useOutsideClick({ ref, handler: setIsTooltipShown.off });
 
   React.useEffect(() => {
     const key = `wallet-connect-tooltip-shown-${ isMobile ? 'mobile' : 'desktop' }`;
@@ -29,6 +31,7 @@ const WalletTooltip = ({ children, isDisabled, isMobile }: Props) => {
       isOpen={ isTooltipShown || (isMobile ? false : undefined) }
       onClose={ setIsTooltipShown.off }
       display={ isMobile ? { base: 'flex', lg: 'none' } : { base: 'none', lg: 'flex' } }
+      ref={ ref }
     >
       { children }
     </Tooltip>
