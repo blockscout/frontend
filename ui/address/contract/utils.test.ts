@@ -109,10 +109,10 @@ describe('function formatFieldValues()', () => {
       '1',
       'true',
     ],
-    '_l2OutputIndex%1': '1',
+    '_l2OutputIndex%1': '0xaeff',
     '_paused%2': '0',
     '_withdrawalProof%3': [
-      'xxx',
+      '0x0f',
       '0x02',
     ],
   };
@@ -150,10 +150,10 @@ describe('function formatFieldValues()', () => {
         true,
         true,
       ],
-      '_l2OutputIndex%1': '0x31',
+      '_l2OutputIndex%1': '0xaeff',
       '_paused%2': false,
       '_withdrawalProof%3': [
-        '0x787878',
+        '0x0f',
         '0x02',
       ],
     });

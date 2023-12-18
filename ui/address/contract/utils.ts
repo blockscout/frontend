@@ -4,9 +4,6 @@ import _mapValues from 'lodash/mapValues';
 import type { MethodArgType, MethodFormFields, MethodFormFieldsFormatted } from './types';
 import type { SmartContractMethodArgType, SmartContractMethodInput, SmartContractWriteMethod } from 'types/api/contract';
 
-import bytesToHexString from 'lib/bytesToHexString';
-import stringToBytes from 'lib/stringToBytes';
-
 export const INT_REGEXP = /^(u)?int(\d+)?$/i;
 
 export const BYTES_REGEXP = /^bytes(\d+)?$/i;
@@ -129,16 +126,6 @@ function castValue(value: string, type: SmartContractMethodArgType) {
   const intMatch = type.match(INT_REGEXP);
   if (intMatch) {
     return value.replaceAll(' ', '');
-  }
-
-  const bytesMatch = type.match(BYTES_REGEXP);
-  if (bytesMatch) {
-    if (value.startsWith('0x')) {
-      return value;
-    }
-
-    const bytesArray = stringToBytes(value);
-    return `0x${ bytesToHexString(bytesArray) }`;
   }
 
   const isNestedArray = (type.match(/\[/g) || []).length > 1;

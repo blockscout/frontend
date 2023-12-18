@@ -9,12 +9,11 @@ import React from 'react';
 import type { Control, ControllerRenderProps, FieldError, UseFormGetValues, UseFormSetValue, UseFormStateReturn } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
-import { isAddress } from 'viem';
+import { isAddress, isHex, getAddress } from 'viem';
 
 import type { MethodFormFields } from './types';
 import type { SmartContractMethodArgType } from 'types/api/contract';
 
-import stringToBytes from 'lib/stringToBytes';
 import ClearButton from 'ui/shared/ClearButton';
 
 import ContractMethodFieldZeroes from './ContractMethodFieldZeroes';
@@ -122,7 +121,18 @@ const ContractMethodField = ({ control, name, groupName, index, argType, placeho
     }
 
     if (argType === 'address') {
-      return !isAddress(value) ? 'Invalid address format' : true;
+      if (!isAddress(value)) {
+        return 'Invalid address format';
+      }
+
+      // all lowercase addresses are valid
+      const isInLowerCase = value === value.toLowerCase();
+      if (isInLowerCase) {
+        return true;
+      }
+
+      // check if address checksum is valid
+      return getAddress(value) === value ? true : 'Invalid address checksum';
     }
 
     if (intMatch) {
@@ -151,14 +161,12 @@ const ContractMethodField = ({ control, name, groupName, index, argType, placeho
     if (bytesMatch) {
       const [ , length ] = bytesMatch;
 
-      if (value.startsWith('0x')) {
-        if (value.replace('0x', '').length % 2 !== 0) {
-          return 'Invalid bytes format';
-        }
+      if (!isHex(value)) {
+        return 'Invalid bytes format';
       }
 
       if (length) {
-        const valueLengthInBytes = value.startsWith('0x') ? value.replace('0x', '').length / 2 : stringToBytes(value).length;
+        const valueLengthInBytes = value.replace('0x', '').length / 2;
         return valueLengthInBytes > Number(length) ? `Value should be a maximum of ${ length } bytes` : true;
       }
 
