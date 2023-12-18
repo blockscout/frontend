@@ -84,18 +84,21 @@ interface Props {
   fallback?: JSX.Element | (() => JSX.Element);
 }
 
-const Web3ModalProvider = ({ children, fallback }: Props) => {
+const Fallback = ({ children, fallback }: Props) => {
+  return typeof fallback === 'function' ? fallback() : (fallback || <>{ children }</>); // eslint-disable-line react/jsx-no-useless-fragment
+};
+
+const Provider = ({ children, fallback }: Props) => {
   const { colorMode } = useColorMode();
   const { setThemeMode } = useWeb3ModalTheme();
 
   React.useEffect(() => {
-    if (wagmiConfig && feature.isEnabled) {
-      setThemeMode(colorMode);
-    }
+    setThemeMode(colorMode);
   }, [ colorMode, setThemeMode ]);
 
+  // not really necessary, but we have to make typescript happy
   if (!wagmiConfig || !feature.isEnabled) {
-    return typeof fallback === 'function' ? fallback() : (fallback || <>{ children }</>); // eslint-disable-line react/jsx-no-useless-fragment
+    return <Fallback fallback={ fallback }>{ children }</Fallback>;
   }
 
   return (
@@ -104,5 +107,7 @@ const Web3ModalProvider = ({ children, fallback }: Props) => {
     </WagmiConfig>
   );
 };
+
+const Web3ModalProvider = wagmiConfig && feature.isEnabled ? Provider : Fallback;
 
 export default Web3ModalProvider;
