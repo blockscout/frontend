@@ -45,6 +45,30 @@ interface Props {
   hash: string;
 }
 
+type ItemProps = {
+  item: DistributionItem;
+  vulnerabilities: SolidityscanReport['scan_report']['scan_summary']['issue_severity_distribution'];
+  vulnerabilitiesCount: number;
+}
+
+const SolidityScanReportItem = ({ item, vulnerabilities, vulnerabilitiesCount }: ItemProps) => {
+  const bgBar = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
+  const yetAnotherGrayColor = useColorModeValue('gray.400', 'gray.500');
+
+  return (
+    <>
+      <Box w={ 3 } h={ 3 } bg={ item.color } borderRadius="6px" mr={ 2 }></Box>
+      <Flex justifyContent="space-between" mr={ 3 }>
+        <Text>{ item.name }</Text>
+        <Text color={ vulnerabilities[item.id] > 0 ? 'text' : yetAnotherGrayColor }>{ vulnerabilities[item.id] }</Text>
+      </Flex>
+      <Box bg={ bgBar } h="10px" borderRadius="8px">
+        <Box bg={ item.color } w={ vulnerabilities[item.id] / vulnerabilitiesCount } h="10px" borderRadius="8px"/>
+      </Box>
+    </>
+  );
+};
+
 const SolidityscanReport = ({ className, hash }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
 
@@ -58,7 +82,6 @@ const SolidityscanReport = ({ className, hash }: Props) => {
 
   const score = Number(data?.scan_report.scan_summary.score_v2);
 
-  const bgBar = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
   const chartGrayColor = useColorModeValue('gray.100', 'gray.700');
   const yetAnotherGrayColor = useColorModeValue('gray.400', 'gray.500');
   const popoverBgColor = useColorModeValue('white', 'gray.900');
@@ -136,16 +159,7 @@ const SolidityscanReport = ({ className, hash }: Props) => {
               <Text py="7px" variant="secondary" fontSize="xs" fontWeight={ 500 }>Vulnerabilities distribution</Text>
               <Grid templateColumns="20px 1fr 100px" alignItems="center" rowGap={ 2 }>
                 { DISTRIBUTION_ITEMS.map(item => (
-                  <>
-                    <Box w={ 3 } h={ 3 } bg={ item.color } borderRadius="6px" mr={ 2 }></Box>
-                    <Flex justifyContent="space-between" mr={ 3 }>
-                      <Text>{ item.name }</Text>
-                      <Text color={ vulnerabilities[item.id] > 0 ? 'text' : yetAnotherGrayColor }>{ vulnerabilities[item.id] }</Text>
-                    </Flex>
-                    <Box bg={ bgBar } h="10px" borderRadius="8px">
-                      <Box bg={ item.color } w={ vulnerabilities[item.id] / vulnerabilitiesCount } h="10px" borderRadius="8px"/>
-                    </Box>
-                  </>
+                  <SolidityScanReportItem item={ item } key={ item.id } vulnerabilities={ vulnerabilities } vulnerabilitiesCount={ vulnerabilitiesCount }/>
                 )) }
               </Grid>
             </Box>

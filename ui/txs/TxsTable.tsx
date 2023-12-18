@@ -2,8 +2,7 @@ import { Link, Table, Tbody, Tr, Th, Icon, Show, Hide } from '@chakra-ui/react';
 import { AnimatePresence } from 'framer-motion';
 import React from 'react';
 
-import type { Transaction } from 'types/api/transaction';
-import type { Sort } from 'types/client/txs-sort';
+import type { Transaction, TransactionsSortingField, TransactionsSortingValue } from 'types/api/transaction';
 
 import config from 'configs/app';
 import rightArrowIcon from 'icons/arrows/east.svg';
@@ -14,8 +13,8 @@ import TxsTableItem from './TxsTableItem';
 
 type Props = {
   txs: Array<Transaction>;
-  sort: (field: 'val' | 'fee') => () => void;
-  sorting?: Sort;
+  sort: (field: TransactionsSortingField) => () => void;
+  sorting?: TransactionsSortingValue;
   top: number;
   showBlockInfo: boolean;
   showSocketInfo: boolean;
@@ -58,9 +57,9 @@ const TxsTable = ({
           </Th>
           { !config.UI.views.tx.hiddenFields?.value && (
             <Th width="20%" isNumeric>
-              <Link onClick={ sort('val') } display="flex" justifyContent="end">
-                { sorting === 'val-asc' && <Icon boxSize={ 5 } as={ rightArrowIcon } transform="rotate(-90deg)"/> }
-                { sorting === 'val-desc' && <Icon boxSize={ 5 } as={ rightArrowIcon } transform="rotate(90deg)"/> }
+              <Link onClick={ sort('value') } display="flex" justifyContent="end">
+                { sorting === 'value-asc' && <Icon boxSize={ 5 } as={ rightArrowIcon } transform="rotate(-90deg)"/> }
+                { sorting === 'value-desc' && <Icon boxSize={ 5 } as={ rightArrowIcon } transform="rotate(90deg)"/> }
                 { `Value ${ config.chain.currency.symbol }` }
               </Link>
             </Th>

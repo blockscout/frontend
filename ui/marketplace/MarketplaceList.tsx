@@ -14,9 +14,10 @@ type Props = {
   favoriteApps: Array<string>;
   onFavoriteClick: (id: string, isFavorite: boolean) => void;
   isLoading: boolean;
+  showDisclaimer: (id: string) => void;
 }
 
-const MarketplaceList = ({ apps, onAppClick, favoriteApps, onFavoriteClick, isLoading }: Props) => {
+const MarketplaceList = ({ apps, onAppClick, favoriteApps, onFavoriteClick, isLoading, showDisclaimer }: Props) => {
   return apps.length > 0 ? (
     <Grid
       templateColumns={{
@@ -41,6 +42,7 @@ const MarketplaceList = ({ apps, onAppClick, favoriteApps, onFavoriteClick, isLo
           isFavorite={ favoriteApps.includes(app.id) }
           onFavoriteClick={ onFavoriteClick }
           isLoading={ isLoading }
+          showDisclaimer={ showDisclaimer }
         />
       )) }
     </Grid>

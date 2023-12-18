@@ -157,8 +157,8 @@ We have 3 pre-configured projects. You can run your test with the desired projec
 
 ### Opening PR and getting it accepted
 
-1. Push your changes and create a Pull Request. If you are still working on the task, please use "Draft Pull Request" option, so we know that it is not ready yet. In addition, you can add label "WIP" to your PR, so all CI checks will not be triggered. 
-2. Once you finish your work, remove label "WIP" from PR, if it was added before, and publish PR if it was in the draft state
+1. Push your changes and create a Pull Request. If you are still working on the task, please use "Draft Pull Request" option, so we know that it is not ready yet. In addition, you can add label "skip checks" to your PR, so all CI checks will not be triggered. 
+2. Once you finish your work, remove label "skip checks" from PR, if it was added before, and publish PR if it was in the draft state
 3. Make sure that all code checks and tests are successfully passed
 4. Add description to your Pull Request and link an existing issue(s) that it is fixing
 5. Request review from one or all core team members: @tom2drum, @isstuev. Our core team is committed to reviewing patches in a timely manner.

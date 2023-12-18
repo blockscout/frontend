@@ -17,10 +17,11 @@ import useNavLinkStyleProps from './useNavLinkStyleProps';
 type Props = {
   item: NavGroupItem;
   onClick: () => void;
+  isExpanded?: boolean;
 }
 
-const NavLinkGroup = ({ item, onClick }: Props) => {
-  const styleProps = useNavLinkStyleProps({ isActive: item.isActive });
+const NavLinkGroup = ({ item, onClick, isExpanded }: Props) => {
+  const styleProps = useNavLinkStyleProps({ isActive: item.isActive, isExpanded });
 
   return (
     <Box as="li" listStyleType="none" w="100%" onClick={ onClick }>

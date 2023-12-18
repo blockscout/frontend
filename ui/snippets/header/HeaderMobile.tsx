@@ -7,6 +7,7 @@ import { useScrollDirection } from 'lib/contexts/scrollDirection';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import ProfileMenuMobile from 'ui/snippets/profileMenu/ProfileMenuMobile';
 import SearchBar from 'ui/snippets/searchBar/SearchBar';
+import WalletMenuMobile from 'ui/snippets/walletMenu/WalletMenuMobile';
 
 import Burger from './Burger';
 
@@ -47,7 +48,10 @@ const HeaderMobile = ({ isHomePage, renderSearchBar }: Props) => {
       >
         <Burger/>
         <NetworkLogo/>
-        { config.features.account.isEnabled ? <ProfileMenuMobile/> : <Box boxSize={ 10 }/> }
+        <Flex columnGap={ 2 }>
+          { config.features.account.isEnabled ? <ProfileMenuMobile/> : <Box boxSize={ 10 }/> }
+          { config.features.blockchainInteraction.isEnabled && <WalletMenuMobile/> }
+        </Flex>
       </Flex>
       { !isHomePage && searchBar }
     </Box>

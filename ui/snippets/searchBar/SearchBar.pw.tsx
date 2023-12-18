@@ -1,4 +1,3 @@
-import { LightMode } from '@chakra-ui/react';
 import { test as base, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
@@ -93,9 +92,7 @@ test('search by name homepage +@dark-mode', async({ mount, page }) => {
 
   await mount(
     <TestApp>
-      <LightMode>
-        <SearchBar isHomepage/>
-      </LightMode>
+      <SearchBar isHomepage/>
     </TestApp>,
   );
   await page.getByPlaceholder(/search/i).type('o');

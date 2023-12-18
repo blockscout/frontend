@@ -29,6 +29,7 @@ See our [Contribution guide](./docs/CONTRIBUTING.md) for pull request protocol. 
 - [Contribution guide](./docs/CONTRIBUTING.md)
 - [Making a custom build](./docs/CUSTOM_BUILD.md)
 - [Frontend migration guide](https://docs.blockscout.com/for-developers/frontend-migration)
+- [Manual deployment guide with backend and microservices](https://docs.blockscout.com/for-developers/deployment/manual-deployment-guide)
 
 ## License
 

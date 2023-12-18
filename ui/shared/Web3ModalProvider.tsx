@@ -75,7 +75,7 @@ const Web3ModalProvider = ({ children, fallback }: Props) => {
   const web3ModalTheme = useColorModeValue('light', 'dark');
 
   if (!wagmiConfig || !ethereumClient || !feature.isEnabled) {
-    return typeof fallback === 'function' ? fallback() : (fallback || null);
+    return typeof fallback === 'function' ? fallback() : (fallback || <>{ children }</>); // eslint-disable-line react/jsx-no-useless-fragment
   }
 
   return (

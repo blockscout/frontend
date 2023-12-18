@@ -17,11 +17,11 @@ const ContractConnectWallet = () => {
     setIsModalOpening(true);
     await open();
     setIsModalOpening(false);
-    mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Status: 'Started' });
+    mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Source: 'Smart contracts', Status: 'Started' });
   }, [ open ]);
 
   const handleAccountConnected = React.useCallback(({ isReconnected }: { isReconnected: boolean }) => {
-    !isReconnected && mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Status: 'Connected' });
+    !isReconnected && mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Source: 'Smart contracts', Status: 'Connected' });
   }, []);
 
   const handleDisconnect = React.useCallback(() => {

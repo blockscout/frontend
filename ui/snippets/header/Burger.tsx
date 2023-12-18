@@ -10,7 +10,11 @@ import NetworkMenuButton from 'ui/snippets/networkMenu/NetworkMenuButton';
 import NetworkMenuContentMobile from 'ui/snippets/networkMenu/NetworkMenuContentMobile';
 import useNetworkMenu from 'ui/snippets/networkMenu/useNetworkMenu';
 
-const Burger = () => {
+interface Props {
+  isMarketplaceAppPage?: boolean;
+}
+
+const Burger = ({ isMarketplaceAppPage }: Props) => {
   const iconColor = useColorModeValue('gray.600', 'white');
   const { isOpen, onOpen, onClose } = useDisclosure();
   const networkMenu = useNetworkMenu();
@@ -26,7 +30,7 @@ const Burger = () => {
 
   return (
     <>
-      <Box padding={ 2 } onClick={ onOpen }>
+      <Box padding={ 2 } onClick={ onOpen } cursor="pointer">
         <Icon
           as={ burgerIcon }
           boxSize={ 6 }
@@ -57,7 +61,7 @@ const Burger = () => {
             </Flex>
             { networkMenu.isOpen ?
               <NetworkMenuContentMobile tabs={ networkMenu.availableTabs } items={ networkMenu.data }/> :
-              <NavigationMobile onNavLinkClick={ onClose }/>
+              <NavigationMobile onNavLinkClick={ onClose } isMarketplaceAppPage={ isMarketplaceAppPage }/>
             }
           </DrawerBody>
         </DrawerContent>

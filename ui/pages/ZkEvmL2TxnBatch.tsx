@@ -14,7 +14,7 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
-import TxsContent from 'ui/txs/TxsContent';
+import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
 import ZkEvmL2TxnBatchDetails from 'ui/zkEvmL2TxnBatches/ZkEvmL2TxnBatchDetails';
 
 const ZkEvmL2TxnBatch = () => {
@@ -51,7 +51,7 @@ const ZkEvmL2TxnBatch = () => {
 
   const tabs: Array<RoutedTab> = React.useMemo(() => ([
     { id: 'index', title: 'Details', component: <ZkEvmL2TxnBatchDetails query={ batchQuery }/> },
-    { id: 'txs', title: 'Transactions', component: <TxsContent query={ batchTxsQuery } showSocketInfo={ false }/> },
+    { id: 'txs', title: 'Transactions', component: <TxsWithFrontendSorting query={ batchTxsQuery } showSocketInfo={ false }/> },
   ].filter(Boolean)), [ batchQuery, batchTxsQuery ]);
 
   const backLink = React.useMemo(() => {
