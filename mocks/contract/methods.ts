@@ -9,7 +9,7 @@ export const read: Array<SmartContractReadMethod> = [
   {
     constant: true,
     inputs: [
-      { internalType: 'address', name: '', type: 'address' },
+      { internalType: 'address', name: 'wallet', type: 'address' },
     ],
     method_id: '70a08231',
     name: 'FLASHLOAN_PREMIUM_TOTAL',
