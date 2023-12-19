@@ -21,7 +21,7 @@ interface Props {
 
 const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHide, onClear, value }: Props, ref: React.ForwardedRef<HTMLFormElement>) => {
   const innerRef = React.useRef<HTMLFormElement>(null);
-  React.useImperativeHandle(ref, () => innerRef.current!, []);
+  React.useImperativeHandle(ref, () => innerRef.current as HTMLFormElement, []);
   const [ isSticky, setIsSticky ] = React.useState(false);
   const scrollDirection = useScrollDirection();
   const isMobile = useIsMobile();
@@ -56,9 +56,7 @@ const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHid
     return () => {
       window.removeEventListener('scroll', throttledHandleScroll);
     };
-  // replicate componentDidMount
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ isMobile ]);
+  }, [ isMobile, handleScroll ]);
 
   const bgColor = useColorModeValue('white', 'black');
   const transformMobile = scrollDirection !== 'down' ? 'translateY(0)' : 'translateY(-100%)';
