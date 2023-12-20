@@ -2,11 +2,12 @@ import { Box, chakra, Flex, Skeleton, useColorModeValue } from '@chakra-ui/react
 import type { As, IconProps } from '@chakra-ui/react';
 import React from 'react';
 
-import IconBase from 'ui/shared/chakra/Icon';
 import type { Props as CopyToClipboardProps } from 'ui/shared/CopyToClipboard';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import type { IconName } from 'ui/shared/IconSvg';
+import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
 
@@ -76,12 +77,12 @@ const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink }:
 });
 
 export interface IconBaseProps extends Pick<EntityBaseProps, 'isLoading' | 'iconSize' | 'noIcon'> {
-  asProp: As;
+  name: IconName;
   color?: IconProps['color'];
   borderRadius?: IconProps['borderRadius'];
 }
 
-const Icon = ({ isLoading, iconSize, noIcon, asProp, color, borderRadius }: IconBaseProps) => {
+const Icon = ({ isLoading, iconSize, noIcon, name, color, borderRadius }: IconBaseProps) => {
   const defaultColor = useColorModeValue('gray.500', 'gray.400');
 
   if (noIcon) {
@@ -91,8 +92,8 @@ const Icon = ({ isLoading, iconSize, noIcon, asProp, color, borderRadius }: Icon
   const styles = getIconProps(iconSize);
   return (
     <Box mr={ 2 } color={ color ?? defaultColor }>
-      <IconBase
-        as={ asProp }
+      <IconSvg
+        name={ name }
         boxSize={ styles.boxSize }
         isLoading={ isLoading }
         borderRadius={ borderRadius ?? 'base' }

@@ -4,6 +4,8 @@ import React from 'react';
 
 export const href = '/icons/sprite.svg';
 
+export { IconName };
+
 interface Props {
   name: IconName;
   isLoading?: boolean;

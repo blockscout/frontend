@@ -8,6 +8,8 @@ dotenv \
   -e $config_file \
   -- bash -c './deploy/scripts/make_envs_script.sh ./playwright/envs.js'
 
+yarn svg:build-sprite
+
 dotenv \
   -v NODE_OPTIONS=\"--max-old-space-size=4096\" \
   -e $config_file \

@@ -1,4 +1,4 @@
-import type { As, ChakraProps } from '@chakra-ui/react';
+import type { ChakraProps } from '@chakra-ui/react';
 import { Image, Skeleton, chakra } from '@chakra-ui/react';
 import _omit from 'lodash/omit';
 import React from 'react';
@@ -29,7 +29,6 @@ const Link = chakra((props: LinkProps) => {
 });
 
 type IconProps = Pick<EntityProps, 'token' | 'isLoading' | 'iconSize' | 'noIcon' | 'className'> & {
-  asProp?: As;
   marginRight?: ChakraProps['marginRight'];
   boxSize?: ChakraProps['boxSize'];
 };
