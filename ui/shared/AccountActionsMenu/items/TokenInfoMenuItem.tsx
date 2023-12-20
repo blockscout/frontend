@@ -1,15 +1,15 @@
-import { MenuItem, Icon, chakra, useDisclosure } from '@chakra-ui/react';
+import { MenuItem, chakra, useDisclosure } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { Route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import iconEdit from 'icons/edit.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import useHasAccount from 'lib/hooks/useHasAccount';
 import { PAGE_TYPE_DICT } from 'lib/mixpanel/getPageType';
 import AddressVerificationModal from 'ui/addressVerification/AddressVerificationModal';
+import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   className?: string;
@@ -61,7 +61,7 @@ const TokenInfoMenuItem = ({ className, hash, onBeforeClick }: Props) => {
     router.push({ pathname: '/account/verified-addresses' });
   }, [ router ]);
 
-  const icon = <Icon as={ iconEdit } boxSize={ 6 } mr={ 2 } p={ 1 }/>;
+  const icon = <IconSvg name="edit" boxSize={ 6 } mr={ 2 } p={ 1 }/>;
 
   const content = (() => {
     if (!verifiedAddressesQuery.data?.verifiedAddresses.find(({ contractAddress }) => contractAddress.toLowerCase() === hash.toLowerCase())) {
