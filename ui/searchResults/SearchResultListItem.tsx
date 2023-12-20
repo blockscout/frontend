@@ -1,4 +1,4 @@
-import { Flex, Grid, Icon, Image, Box, Text, Skeleton, useColorMode, Tag } from '@chakra-ui/react';
+import { Flex, Grid, Image, Box, Text, Skeleton, useColorMode, Tag } from '@chakra-ui/react';
 import React from 'react';
 import xss from 'xss';
 
@@ -6,9 +6,6 @@ import type { SearchResultItem } from 'types/api/search';
 
 import { route } from 'nextjs-routes';
 
-import labelIcon from 'icons/publictags_slim.svg';
-import iconSuccess from 'icons/status/success.svg';
-import verifiedToken from 'icons/verified_token.svg';
 import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
 import * as mixpanel from 'lib/mixpanel/index';
@@ -18,6 +15,7 @@ import * as BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import * as TxEntity from 'ui/shared/entities/tx/TxEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
@@ -68,7 +66,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
                 textOverflow="ellipsis"
               />
             </LinkInternal>
-            { data.is_verified_via_admin_panel && <Icon as={ verifiedToken } boxSize={ 4 } ml={ 1 } color="green.500"/> }
+            { data.is_verified_via_admin_panel && <IconSvg name="verified_token" boxSize={ 4 } ml={ 1 } color="green.500"/> }
           </Flex>
         );
       }
@@ -107,7 +105,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
       case 'label': {
         return (
           <Flex alignItems="center">
-            <Icon as={ labelIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
+            <IconSvg name="publictags_slim" boxSize={ 6 } mr={ 2 } color="gray.500"/>
             <LinkInternal
               href={ route({ pathname: '/address/[hash]', query: { hash: data.address } }) }
               fontWeight={ 700 }
@@ -214,7 +212,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
               <Text whiteSpace="nowrap" overflow="hidden">
                 <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
               </Text>
-              { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 1 }/> }
+              { data.is_smart_contract_verified && <IconSvg name="status/success" color="green.500" ml={ 1 }/> }
             </Skeleton>
             <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" fontWeight={ 700 }>
               { data.token_type === 'ERC-20' && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
@@ -245,7 +243,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
             <Box overflow="hidden">
               <HashStringShortenDynamic hash={ data.address }/>
             </Box>
-            { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 1 }/> }
+            { data.is_smart_contract_verified && <IconSvg name="status/success" color="green.500" ml={ 1 }/> }
           </Flex>
         );
       }

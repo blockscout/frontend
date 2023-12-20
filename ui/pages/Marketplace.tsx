@@ -1,13 +1,13 @@
-import { Box, Icon, Link, Skeleton } from '@chakra-ui/react';
+import { Box, Link, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
-import PlusIcon from 'icons/plus.svg';
 import MarketplaceAppModal from 'ui/marketplace/MarketplaceAppModal';
 import MarketplaceCategoriesMenu from 'ui/marketplace/MarketplaceCategoriesMenu';
 import MarketplaceDisclaimerModal from 'ui/marketplace/MarketplaceDisclaimerModal';
 import MarketplaceList from 'ui/marketplace/MarketplaceList';
 import FilterInput from 'ui/shared/filters/FilterInput';
+import IconSvg from 'ui/shared/IconSvg';
 
 import useMarketplace from '../marketplace/useMarketplace';
 const feature = config.features.marketplace;
@@ -104,8 +104,8 @@ const Marketplace = () => {
           href={ feature.submitFormUrl }
           isExternal
         >
-          <Icon
-            as={ PlusIcon }
+          <IconSvg
+            name="plus"
             w={ 3 }
             h={ 3 }
             mr={ 2 }

@@ -1,4 +1,4 @@
-import { Tr, Td, Text, Flex, Icon, Image, Box, Skeleton, useColorMode, Tag } from '@chakra-ui/react';
+import { Tr, Td, Text, Flex, Image, Box, Skeleton, useColorMode, Tag } from '@chakra-ui/react';
 import React from 'react';
 import xss from 'xss';
 
@@ -6,9 +6,6 @@ import type { SearchResultItem } from 'types/api/search';
 
 import { route } from 'nextjs-routes';
 
-import labelIcon from 'icons/publictags_slim.svg';
-import iconSuccess from 'icons/status/success.svg';
-import verifiedToken from 'icons/verified_token.svg';
 import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
 import * as mixpanel from 'lib/mixpanel/index';
@@ -18,6 +15,7 @@ import * as BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import * as TxEntity from 'ui/shared/entities/tx/TxEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
 import type { SearchResultAppItem } from 'ui/shared/search/utils';
@@ -68,7 +66,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
                     dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}
                   />
                 </LinkInternal>
-                { data.is_verified_via_admin_panel && <Icon as={ verifiedToken } boxSize={ 4 } ml={ 1 } color="green.500"/> }
+                { data.is_verified_via_admin_panel && <IconSvg name="verified_token" boxSize={ 4 } ml={ 1 } color="green.500"/> }
               </Flex>
             </Td>
             <Td fontSize="sm" verticalAlign="middle">
@@ -76,7 +74,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
                 <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-28px)' : 'unset' }>
                   <HashStringShortenDynamic hash={ data.address }/>
                 </Box>
-                { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 1 }/> }
+                { data.is_smart_contract_verified && <IconSvg name="status/success" color="green.500" ml={ 1 }/> }
               </Skeleton>
             </Td>
             <Td fontSize="sm" verticalAlign="middle" isNumeric>
@@ -165,7 +163,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
           <>
             <Td fontSize="sm">
               <Flex alignItems="center">
-                <Icon as={ labelIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
+                <IconSvg name="publictags_slim" boxSize={ 6 } mr={ 2 } color="gray.500"/>
                 <LinkInternal
                   href={ route({ pathname: '/address/[hash]', query: { hash: data.address } }) }
                   fontWeight={ 700 }
@@ -182,7 +180,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
                 <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-28px)' : 'unset' }>
                   <HashStringShortenDynamic hash={ data.address }/>
                 </Box>
-                { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 1 }/> }
+                { data.is_smart_contract_verified && <IconSvg name="status/success" color="green.500" ml={ 1 }/> }
               </Flex>
             </Td>
             <Td></Td>
