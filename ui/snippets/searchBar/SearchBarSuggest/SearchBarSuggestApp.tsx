@@ -1,11 +1,11 @@
-import { Icon, Image, Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import { Image, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React from 'react';
 
 import type { MarketplaceAppOverview } from 'types/client/marketplace';
 
-import arrowIcon from 'icons/arrows/north-east.svg';
 import highlightText from 'lib/highlightText';
+import IconSvg from 'ui/shared/IconSvg';
 
 import SearchBarSuggestItemLink from './SearchBarSuggestItemLink';
 
@@ -42,7 +42,7 @@ const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick }: Props) => 
             >
               <span dangerouslySetInnerHTML={{ __html: highlightText(data.title, searchTerm) }}/>
             </Text>
-            { data.external && <Icon as={ arrowIcon } boxSize={ 4 } verticalAlign="middle"/> }
+            { data.external && <IconSvg name="arrows/north-east" boxSize={ 4 } verticalAlign="middle"/> }
           </Flex>
           <Text
             variant="secondary"
@@ -81,7 +81,7 @@ const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick }: Props) => 
         >
           { data.description }
         </Text>
-        { data.external && <Icon as={ arrowIcon } boxSize={ 4 } verticalAlign="middle" color="text_secondary"/> }
+        { data.external && <IconSvg name="arrows/north-east" boxSize={ 4 } verticalAlign="middle" color="text_secondary"/> }
       </Flex>
     );
   })();

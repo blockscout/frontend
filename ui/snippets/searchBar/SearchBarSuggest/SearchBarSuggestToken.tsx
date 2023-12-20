@@ -1,13 +1,12 @@
-import { Grid, Text, Flex, Icon } from '@chakra-ui/react';
+import { Grid, Text, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SearchResultToken } from 'types/api/search';
 
-import iconSuccess from 'icons/status/success.svg';
-import verifiedToken from 'icons/verified_token.svg';
 import highlightText from 'lib/highlightText';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   data: SearchResultToken;
@@ -17,7 +16,7 @@ interface Props {
 
 const SearchBarSuggestToken = ({ data, isMobile, searchTerm }: Props) => {
   const icon = <TokenEntity.Icon token={{ ...data, type: data.token_type }}/>;
-  const verifiedIcon = <Icon as={ verifiedToken } boxSize={ 4 } color="green.500" ml={ 1 }/>;
+  const verifiedIcon = <IconSvg name="verified_token" boxSize={ 4 } color="green.500" ml={ 1 }/>;
   const name = (
     <Text
       fontWeight={ 700 }
@@ -35,7 +34,7 @@ const SearchBarSuggestToken = ({ data, isMobile, searchTerm }: Props) => {
     </Text>
   );
 
-  const contractVerifiedIcon = data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 1 }/>;
+  const contractVerifiedIcon = data.is_smart_contract_verified && <IconSvg name="status/success" color="green.500" ml={ 1 }/>;
   const additionalInfo = (
     <Text overflow="hidden" whiteSpace="nowrap" fontWeight={ 700 }>
       { data.token_type === 'ERC-20' && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }

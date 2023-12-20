@@ -1,8 +1,8 @@
-import { Drawer, DrawerOverlay, DrawerContent, DrawerBody, useDisclosure, IconButton, Icon } from '@chakra-ui/react';
+import { Drawer, DrawerOverlay, DrawerContent, DrawerBody, useDisclosure, IconButton } from '@chakra-ui/react';
 import React from 'react';
 
-import walletIcon from 'icons/wallet.svg';
 import AddressIdenticon from 'ui/shared/entities/address/AddressIdenticon';
+import IconSvg from 'ui/shared/IconSvg';
 import useWallet from 'ui/snippets/walletMenu/useWallet';
 import WalletMenuContent from 'ui/snippets/walletMenu/WalletMenuContent';
 
@@ -21,7 +21,7 @@ const WalletMenuMobile = () => {
           aria-label="wallet menu"
           icon={ isWalletConnected ?
             <AddressIdenticon size={ 20 } hash={ address }/> :
-            <Icon as={ walletIcon } boxSize={ 6 }/>
+            <IconSvg name="wallet" boxSize={ 6 }/>
           }
           variant={ isWalletConnected ? 'subtle' : 'outline' }
           colorScheme="gray"

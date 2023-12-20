@@ -1,11 +1,10 @@
-import { Icon, Box, Image, useColorModeValue, Skeleton } from '@chakra-ui/react';
+import { Box, Image, useColorModeValue, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import iconPlaceholder from 'icons/networks/icon-placeholder.svg';
-import logoPlaceholder from 'icons/networks/logo-placeholder.svg';
+import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   isCollapsed?: boolean;
@@ -31,8 +30,8 @@ const LogoFallback = ({ isCollapsed, isSmall }: { isCollapsed?: boolean; isSmall
   }
 
   return (
-    <Icon
-      as={ isSmall ? iconPlaceholder : logoPlaceholder }
+    <IconSvg
+      name={ isSmall ? 'networks/icon-placeholder' : 'networks/logo-placeholder' }
       width="auto"
       height="100%"
       color={ logoColor }

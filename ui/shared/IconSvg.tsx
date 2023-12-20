@@ -1,3 +1,4 @@
+import type { HTMLChakraProps } from '@chakra-ui/react';
 import { Skeleton, chakra } from '@chakra-ui/react';
 import { type IconName } from 'public/icons/name';
 import React from 'react';
@@ -6,15 +7,14 @@ export const href = '/icons/sprite.svg';
 
 export { IconName };
 
-interface Props {
+interface Props extends HTMLChakraProps<'div'> {
   name: IconName;
   isLoading?: boolean;
-  className?: string;
 }
 
-const IconSvg = ({ name, isLoading, className }: Props) => {
+const IconSvg = ({ name, isLoading, ...props }: Props) => {
   return (
-    <Skeleton isLoaded={ !isLoading } className={ className }>
+    <Skeleton isLoaded={ !isLoading } display="inline-block" { ...props }>
       <chakra.svg w="100%" h="100%">
         <use href={ `${ href }#${ name }` }/>
       </chakra.svg>
@@ -22,4 +22,4 @@ const IconSvg = ({ name, isLoading, className }: Props) => {
   );
 };
 
-export default chakra(IconSvg);
+export default IconSvg;
