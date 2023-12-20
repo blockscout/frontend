@@ -5,10 +5,9 @@ import React from 'react';
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
 import config from 'configs/app';
-import rightArrowIcon from 'icons/arrows/east.svg';
-import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import IconSvg from 'ui/shared/IconSvg';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
@@ -39,7 +38,7 @@ const TxInternalTableItem = ({ type, from, to, value, success, error, gas_limit:
         />
       </Td>
       <Td px={ 0 } verticalAlign="middle">
-        <Icon as={ rightArrowIcon } boxSize={ 6 } color="gray.500" isLoading={ isLoading }/>
+        <IconSvg name="arrows/east" boxSize={ 6 } color="gray.500" isLoading={ isLoading }/>
       </Td>
       <Td verticalAlign="middle">
         { toData && (

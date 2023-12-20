@@ -1,14 +1,14 @@
-import { Flex, Icon, chakra } from '@chakra-ui/react';
+import { Flex, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { TxAction, TxActionGeneral } from 'types/api/txAction';
 
 import config from 'configs/app';
-import uniswapIcon from 'icons/uniswap.svg';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
+import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   action: TxAction;
@@ -88,7 +88,7 @@ const TxDetailsAction = ({ action }: Props) => {
           <chakra.span color="text_secondary">{ text1 }</chakra.span>
 
           <Flex columnGap={ 2 }>
-            <Icon as={ uniswapIcon } boxSize={ 5 } color="white" bgColor="#ff007a" borderRadius="full" p="2px"/>
+            <IconSvg name="uniswap" boxSize={ 5 } color="white" bgColor="#ff007a" borderRadius="full" p="2px"/>
             <chakra.span>Uniswap V3</chakra.span>
           </Flex>
         </Flex>
