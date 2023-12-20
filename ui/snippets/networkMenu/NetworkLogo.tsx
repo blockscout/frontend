@@ -49,11 +49,10 @@ const NetworkLogo = ({ isCollapsed, onClick }: Props) => {
   const iconStyle = useColorModeValue({}, !config.UI.sidebar.icon.dark ? darkModeFilter : {});
 
   return (
-    // TODO switch to <NextLink href={ href } passHref> when main page for network will be ready
     <Box
       as="a"
       href={ route({ pathname: '/' }) }
-      width={{ base: 'auto', lg: isCollapsed === false ? '120px' : '30px', xl: isCollapsed ? '30px' : '120px' }}
+      width={{ base: '120px', lg: isCollapsed === false ? '120px' : '30px', xl: isCollapsed ? '30px' : '120px' }}
       height={{ base: '24px', lg: isCollapsed === false ? '24px' : '30px', xl: isCollapsed ? '30px' : '24px' }}
       display="inline-flex"
       overflow="hidden"

@@ -27,7 +27,7 @@ const LongNameAndManyTags = () => {
 
   const contentAfter = (
     <>
-      <IconSvg name="verified_token" color="green.500" boxSize={ 6 } cursor="pointer"/>
+      <IconSvg name="verified_token" color="green.500" boxSize={ 6 } cursor="pointer" flexShrink={ 0 }/>
       <EntityTags
         data={{
           private_tags: [ privateTag ],

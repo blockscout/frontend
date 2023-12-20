@@ -15,7 +15,7 @@ interface Props {
 }
 
 const AppErrorIcon = ({ statusCode }: Props) => {
-  return <IconSvg name={ ICONS[String(statusCode)] || ICONS['500'] } width="200px" height="auto" color="text"/>;
+  return <IconSvg name={ ICONS[String(statusCode)] || ICONS['500'] } width="200px" height="100px" color="text"/>;
 };
 
 export default AppErrorIcon;

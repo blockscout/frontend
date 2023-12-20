@@ -69,9 +69,7 @@ const TokenTransferTableItem = ({
         />
       </Td>
       <Td px={ 0 }>
-        <Box my="3px">
-          <IconSvg name="arrows/east-mini" boxSize={ 6 } color="gray.500" isLoading={ isLoading }/>
-        </Box>
+        <IconSvg name="arrows/east" boxSize={ 6 } color="gray.500" mt="3px" isLoading={ isLoading }/>
       </Td>
       <Td>
         <AddressEntityWithTokenFilter

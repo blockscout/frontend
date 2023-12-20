@@ -1,4 +1,4 @@
-import { Box, chakra, Flex, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { chakra, Flex, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import type { As, IconProps } from '@chakra-ui/react';
 import React from 'react';
 
@@ -91,14 +91,17 @@ const Icon = ({ isLoading, iconSize, noIcon, name, color, borderRadius }: IconBa
 
   const styles = getIconProps(iconSize);
   return (
-    <Box mr={ 2 } color={ color ?? defaultColor }>
-      <IconSvg
-        name={ name }
-        boxSize={ styles.boxSize }
-        isLoading={ isLoading }
-        borderRadius={ borderRadius ?? 'base' }
-      />
-    </Box>
+    <IconSvg
+      name={ name }
+      boxSize={ styles.boxSize }
+      isLoading={ isLoading }
+      borderRadius={ borderRadius ?? 'base' }
+      display="block"
+      mr={ 2 }
+      color={ color ?? defaultColor }
+      minW={ 0 }
+      flexShrink={ 0 }
+    />
   );
 };
 

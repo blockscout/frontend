@@ -37,7 +37,7 @@ const SearchBarSuggestLabel = ({ data, isMobile, searchTerm }: Props) => {
     </Text>
   );
 
-  const isContractVerified = data.is_smart_contract_verified && <IconSvg name="status/success" color="green.500"/>;
+  const isContractVerified = data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" flexShrink={ 0 }/>;
 
   if (isMobile) {
     return (

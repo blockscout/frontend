@@ -1,6 +1,5 @@
 import {
   HStack,
-  Box,
   Flex,
   Skeleton,
 } from '@chakra-ui/react';
@@ -101,14 +100,14 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
         />
         { (isIn || isOut) ?
           <InOutTag isIn={ isIn } isOut={ isOut } width="48px" mx={ 2 } isLoading={ isLoading }/> : (
-            <Box mx={ 2 }>
-              <IconSvg
-                name="arrows/east"
-                boxSize={ 6 }
-                color="gray.500"
-                isLoading={ isLoading }
-              />
-            </Box>
+            <IconSvg
+              name="arrows/east"
+              boxSize={ 6 }
+              color="gray.500"
+              isLoading={ isLoading }
+              mx={ 2 }
+              flexShrink={ 0 }
+            />
           ) }
         { dataTo ? (
           <AddressEntity

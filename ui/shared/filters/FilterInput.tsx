@@ -44,7 +44,7 @@ const FilterInput = ({ onChange, className, size = 'sm', placeholder, initialVal
         <InputLeftElement
           pointerEvents="none"
         >
-          <IconSvg name="search" color={ iconColor }/>
+          <IconSvg name="search" color={ iconColor } boxSize={ 4 }/>
         </InputLeftElement>
 
         <Input

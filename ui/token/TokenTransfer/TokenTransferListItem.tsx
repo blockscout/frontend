@@ -61,7 +61,7 @@ const TokenTransferListItem = ({
           width="50%"
           fontWeight="500"
         />
-        <IconSvg name="arrows/east-mini" boxSize={ 6 } color="gray.500" isLoading={ isLoading }/>
+        <IconSvg name="arrows/east" boxSize={ 6 } color="gray.500" flexShrink={ 0 } isLoading={ isLoading }/>
         <AddressEntityWithTokenFilter
           address={ to }
           isLoading={ isLoading }

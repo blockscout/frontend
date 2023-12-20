@@ -70,7 +70,7 @@ const VerifiedAddressesListItem = ({ item, application, onAdd, onEdit, isLoading
             borderRadius="none"
             flexShrink={ 0 }
             onClick={ handleEditClick }
-            icon={ <IconSvg name="edit"/> }
+            icon={ <IconSvg name="edit" boxSize={ 4 } flexShrink={ 0 }/> }
           />
         </Tooltip>
       </>

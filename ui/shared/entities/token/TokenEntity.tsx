@@ -42,10 +42,11 @@ const Icon = (props: IconProps) => {
     marginRight: props.marginRight ?? 2,
     boxSize: props.boxSize ?? getIconProps(props.iconSize).boxSize,
     borderRadius: 'base',
+    flexShrink: 0,
   };
 
   if (props.isLoading) {
-    return <Skeleton { ...styles } className={ props.className } flexShrink={ 0 }/>;
+    return <Skeleton { ...styles } className={ props.className }/>;
   }
 
   return (

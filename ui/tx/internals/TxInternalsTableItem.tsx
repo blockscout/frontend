@@ -38,7 +38,7 @@ const TxInternalTableItem = ({ type, from, to, value, success, error, gas_limit:
         />
       </Td>
       <Td px={ 0 } verticalAlign="middle">
-        <IconSvg name="arrows/east" boxSize={ 6 } color="gray.500" isLoading={ isLoading }/>
+        <IconSvg name="arrows/east" boxSize={ 6 } color="gray.500" isLoading={ isLoading } display="block"/>
       </Td>
       <Td verticalAlign="middle">
         { toData && (

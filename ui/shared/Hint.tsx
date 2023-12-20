@@ -21,7 +21,7 @@ const Hint = ({ label, className, tooltipProps, isLoading }: Props) => {
   }, [ onToggle ]);
 
   if (isLoading) {
-    return <Skeleton boxSize={ 5 } borderRadius="sm"/>;
+    return <Skeleton className={ className } boxSize={ 5 } borderRadius="sm"/>;
   }
 
   return (
@@ -35,7 +35,7 @@ const Hint = ({ label, className, tooltipProps, isLoading }: Props) => {
       <IconButton
         colorScheme="none"
         aria-label="hint"
-        icon={ <IconSvg name="info" boxSize={ 5 }/> }
+        icon={ <IconSvg name="info" w="100%" h="100%"/> }
         boxSize={ 5 }
         variant="simple"
         display="inline-block"

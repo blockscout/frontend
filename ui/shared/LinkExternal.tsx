@@ -59,7 +59,7 @@ const LinkExternal = ({ href, children, className, isLoading, variant }: Props) 
   return (
     <Link className={ className } { ...styleProps } target="_blank" href={ href }>
       { children }
-      <IconSvg name="arrows/north-east" boxSize={ 4 } verticalAlign="middle" color="gray.400"/>
+      <IconSvg name="arrows/north-east" boxSize={ 4 } verticalAlign="middle" color="gray.400" flexShrink={ 0 }/>
     </Link>
   );
 };

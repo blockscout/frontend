@@ -74,7 +74,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
                 <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-28px)' : 'unset' }>
                   <HashStringShortenDynamic hash={ data.address }/>
                 </Box>
-                { data.is_smart_contract_verified && <IconSvg name="status/success" color="green.500" ml={ 1 }/> }
+                { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
               </Skeleton>
             </Td>
             <Td fontSize="sm" verticalAlign="middle" isNumeric>
@@ -180,7 +180,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
                 <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-28px)' : 'unset' }>
                   <HashStringShortenDynamic hash={ data.address }/>
                 </Box>
-                { data.is_smart_contract_verified && <IconSvg name="status/success" color="green.500" ml={ 1 }/> }
+                { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
               </Flex>
             </Td>
             <Td></Td>

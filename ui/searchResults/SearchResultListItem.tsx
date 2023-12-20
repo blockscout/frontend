@@ -212,12 +212,12 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
               <Text whiteSpace="nowrap" overflow="hidden">
                 <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
               </Text>
-              { data.is_smart_contract_verified && <IconSvg name="status/success" color="green.500" ml={ 1 }/> }
+              { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
             </Skeleton>
-            <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" fontWeight={ 700 }>
+            <Skeleton isLoaded={ !isLoading } overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" fontWeight={ 700 }>
               { data.token_type === 'ERC-20' && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
               { data.token_type !== 'ERC-20' && data.total_supply && `Items ${ Number(data.total_supply).toLocaleString() }` }
-            </Text>
+            </Skeleton>
           </Grid>
         );
       }
@@ -243,7 +243,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
             <Box overflow="hidden">
               <HashStringShortenDynamic hash={ data.address }/>
             </Box>
-            { data.is_smart_contract_verified && <IconSvg name="status/success" color="green.500" ml={ 1 }/> }
+            { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
           </Flex>
         );
       }
