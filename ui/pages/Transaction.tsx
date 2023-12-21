@@ -1,3 +1,4 @@
+import { Box, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -7,7 +8,7 @@ import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { TX } from 'stubs/tx';
+import { TX, TX_INTERPRETATION } from 'stubs/tx';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import TextAd from 'ui/shared/ad/TextAd';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
@@ -17,6 +18,8 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import useTabIndexFromQuery from 'ui/shared/Tabs/useTabIndexFromQuery';
+import TxInterpretation from 'ui/tx/interpretation/TxInterpretation';
+import { checkTemplate as checkInterpretationTemplate } from 'ui/tx/interpretation/utils';
 import TxDetails from 'ui/tx/TxDetails';
 import TxDetailsWrapped from 'ui/tx/TxDetailsWrapped';
 import TxInternals from 'ui/tx/TxInternals';
@@ -36,6 +39,16 @@ const TransactionPageContent = () => {
     queryOptions: {
       enabled: Boolean(hash),
       placeholderData: TX,
+    },
+  });
+
+  const hasInterpretationFeature = config.features.txInterpretation.isEnabled;
+
+  const txInterpretationQuery = useApiQuery('tx_interpretation', {
+    pathParams: { hash },
+    queryOptions: {
+      enabled: Boolean(hash) && hasInterpretationFeature,
+      placeholderData: TX_INTERPRETATION,
     },
   });
 
@@ -73,12 +86,19 @@ const TransactionPageContent = () => {
     };
   }, [ appProps.referrer ]);
 
+  const hasInterpretation =
+    hasInterpretationFeature && (txInterpretationQuery.isPlaceholderData ||
+    (txInterpretationQuery.data?.data.summaries[0] && checkInterpretationTemplate(txInterpretationQuery.data.data.summaries[0])));
+
   const titleSecondRow = (
-    <>
-      <TxEntity hash={ hash } noLink noCopy={ false } fontWeight={ 500 } mr={ 2 } fontFamily="heading"/>
-      { !data?.tx_tag && <AccountActionsMenu mr={{ base: 0, lg: 3 }}/> }
-      <NetworkExplorers type="tx" pathParam={ hash } ml={{ base: 3, lg: 'auto' }}/>
-    </>
+    <Box display={{ base: 'block', lg: 'flex' }} alignItems="center" w="100%">
+      { hasInterpretationFeature && <TxInterpretation query={ txInterpretationQuery } mr={{ base: 0, lg: 6 }}/> }
+      { !hasInterpretation && <TxEntity hash={ hash } noLink noCopy={ false } fontWeight={ 500 } mr={{ base: 0, lg: 2 }} fontFamily="heading"/> }
+      <Flex alignItems="center" justifyContent={{ base: 'start', lg: 'space-between' }} flexGrow={ 1 }>
+        { !data?.tx_tag && <AccountActionsMenu mr={ 3 } mt={{ base: 3, lg: 0 }}/> }
+        <NetworkExplorers type="tx" pathParam={ hash } ml={{ base: 0, lg: 'auto' }} mt={{ base: 3, lg: 0 }}/>
+      </Flex>
+    </Box>
   );
 
   return (

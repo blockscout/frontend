@@ -44,6 +44,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
   - [Solidity to UML diagrams](ENVS.md#solidity-to-uml-diagrams)
   - [Blockchain statistics](ENVS.md#blockchain-statistics)
   - [Web3 wallet integration](ENVS.md#web3-wallet-integration-add-token-or-network-to-the-wallet) (add token or network to the wallet)
+  - [Transaction interpretation](ENVS.md#transaction-interpretation)
   - [Verified tokens info](ENVS.md#verified-tokens-info)
   - [Bridged tokens](ENVS.md#bridged-tokens)
   - [Safe{Core} address tags](ENVS.md#safecore-address-tags)
@@ -470,6 +471,16 @@ This feature is **enabled by default** with the `['metamask']` value. To switch 
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_WEB3_WALLETS | `Array<'metamask' \| 'coinbase' \| 'token_pocket'>` | Array of Web3 wallets which will be used  to add tokens or chain to. The first wallet which is enabled in user's browser will be shown. | - | `[ 'metamask' ]` | `[ 'coinbase' ]` |
 | NEXT_PUBLIC_WEB3_DISABLE_ADD_TOKEN_TO_WALLET | `boolean`| Set to `true` to hide icon "Add to your wallet" next to token addresses | - | - | `true` |
+
+&nbsp;
+
+### Transaction interpretation
+
+<!-- Nikita will provide feature description -->
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_TRANSACTION_INTERPRETATION_ENABLED | `boolean`| Set to `true` to enable transaction interpretation | - | - | `true` |
 
 &nbsp;
 
