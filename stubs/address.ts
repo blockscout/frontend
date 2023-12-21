@@ -71,6 +71,7 @@ export const TOP_ADDRESS: AddressesItem = {
   private_tags: [],
   public_tags: [ ],
   watchlist_names: [],
+  ens_domain_name: null,
 };
 
 export const ADDRESS_COIN_BALANCE: AddressCoinBalanceHistoryItem = {

@@ -82,6 +82,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
           is_verified: data.is_smart_contract_verified,
           name: null,
           implementation_name: null,
+          ens_domain_name: null,
         };
 
         return (

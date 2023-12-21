@@ -10,6 +10,7 @@ export const erc20: TokenTransfer = {
     private_tags: [],
     public_tags: [],
     watchlist_names: [],
+    ens_domain_name: null,
   },
   to: {
     hash: '0x7d20a8D54F955b4483A66aB335635ab66e151c51',
@@ -20,6 +21,7 @@ export const erc20: TokenTransfer = {
     private_tags: [],
     public_tags: [],
     watchlist_names: [],
+    ens_domain_name: 'kitty.kitty.cat.eth',
   },
   token: {
     address: '0x55d536e4d6c1993d8ef2e2a4ef77f02088419420',
@@ -55,6 +57,7 @@ export const erc721: TokenTransfer = {
     private_tags: [],
     public_tags: [],
     watchlist_names: [],
+    ens_domain_name: 'kitty.kitty.cat.eth',
   },
   to: {
     hash: '0x47eE48AEBc4ab9Ed908b805b8c8dAAa71B31Db1A',
@@ -65,6 +68,7 @@ export const erc721: TokenTransfer = {
     private_tags: [],
     public_tags: [],
     watchlist_names: [],
+    ens_domain_name: null,
   },
   token: {
     address: '0x363574E6C5C71c343d7348093D84320c76d5Dd29',
@@ -99,6 +103,7 @@ export const erc1155A: TokenTransfer = {
     private_tags: [],
     public_tags: [],
     watchlist_names: [],
+    ens_domain_name: null,
   },
   to: {
     hash: '0xBb36c792B9B45Aaf8b848A1392B0d6559202729E',
@@ -109,6 +114,7 @@ export const erc1155A: TokenTransfer = {
     private_tags: [],
     public_tags: [],
     watchlist_names: [],
+    ens_domain_name: 'kitty.kitty.cat.eth',
   },
   token: {
     address: '0xF56b7693E4212C584de4a83117f805B8E89224CB',

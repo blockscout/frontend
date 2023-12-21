@@ -15,6 +15,19 @@ export const withName: AddressParam = {
   private_tags: [],
   watchlist_names: [],
   public_tags: [],
+  ens_domain_name: null,
+};
+
+export const withEns: AddressParam = {
+  hash: hash,
+  implementation_name: null,
+  is_contract: false,
+  is_verified: null,
+  name: 'ArianeeStore',
+  private_tags: [],
+  watchlist_names: [],
+  public_tags: [],
+  ens_domain_name: 'kitty.kitty.kitty.cat.eth',
 };
 
 export const withoutName: AddressParam = {
@@ -26,6 +39,7 @@ export const withoutName: AddressParam = {
   private_tags: [],
   watchlist_names: [],
   public_tags: [],
+  ens_domain_name: null,
 };
 
 export const token: Address = {
