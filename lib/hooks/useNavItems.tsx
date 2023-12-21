@@ -101,7 +101,7 @@ export default function useNavItems(): ReturnType {
         config.features.beaconChain.isEnabled && {
           text: 'Withdrawals',
           nextRoute: { pathname: '/withdrawals' as const },
-          icon: 'arrow/north-east',
+          icon: 'arrows/north-east',
           isActive: pathname === '/withdrawals',
         },
       ].filter(Boolean);
