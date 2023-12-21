@@ -29,6 +29,7 @@ import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu'
 import TextAd from 'ui/shared/ad/TextAd';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import EntityTags from 'ui/shared/EntityTags';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -172,14 +173,26 @@ const AddressPageContent = () => {
 
   const titleSecondRow = (
     <Flex alignItems="center" w="100%" columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
+      { addressQuery.data?.ens_domain_name && (
+        <EnsEntity
+          name={ addressQuery.data?.ens_domain_name }
+          noLink
+          fontFamily="heading"
+          fontSize="lg"
+          fontWeight={ 500 }
+          mr={ 1 }
+          maxW="300px"
+        />
+      ) }
       <AddressEntity
-        address={{ ...addressQuery.data, hash, name: '' }}
+        address={{ ...addressQuery.data, hash, name: '', ens_domain_name: '' }}
         isLoading={ isLoading }
         fontFamily="heading"
         fontSize="lg"
         fontWeight={ 500 }
         noLink
         isSafeAddress={ isSafeAddress }
+        mr={ 4 }
       />
       { !isLoading && addressQuery.data?.is_contract && addressQuery.data.token &&
         <AddressAddToWallet token={ addressQuery.data.token } variant="button"/> }

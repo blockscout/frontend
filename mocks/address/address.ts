@@ -70,6 +70,7 @@ export const token: Address = {
   has_token_transfers: true,
   has_tokens: true,
   has_validated_blocks: false,
+  ens_domain_name: null,
 };
 
 export const contract: Address = {
@@ -100,6 +101,7 @@ export const contract: Address = {
   token: null,
   watchlist_names: [ watchlistName ],
   watchlist_address_id: 42,
+  ens_domain_name: null,
 };
 
 export const validator: Address = {
@@ -130,4 +132,5 @@ export const validator: Address = {
   token: null,
   watchlist_names: [],
   watchlist_address_id: null,
+  ens_domain_name: null,
 };
