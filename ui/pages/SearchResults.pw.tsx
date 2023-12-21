@@ -32,6 +32,7 @@ test.describe('search by name ', () => {
           searchMock.token1,
           searchMock.token2,
           searchMock.contract1,
+          searchMock.address2,
           searchMock.label1,
         ],
       }),

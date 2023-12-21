@@ -1,9 +1,11 @@
-import { Box, Text, Flex } from '@chakra-ui/react';
+import { chakra, Box, Text, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SearchResultAddressOrContract } from 'types/api/search';
 
+import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
+import { ADDRESS_REGEXP } from 'lib/validations/address';
 import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
@@ -14,7 +16,8 @@ interface Props {
 }
 
 const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
-  const shouldHighlightHash = data.address.toLowerCase() === searchTerm.toLowerCase();
+  const shouldHighlightHash = ADDRESS_REGEXP.test(searchTerm);
+
   const icon = (
     <AddressEntity.Icon
       address={{
@@ -27,17 +30,26 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
       }}
     />
   );
-  const name = data.name && (
+  const addressName = data.name || data.ens_info?.name;
+
+  const nameEl = addressName && (
     <Text
       variant="secondary"
       overflow="hidden"
       whiteSpace="nowrap"
       textOverflow="ellipsis"
     >
-      <span dangerouslySetInnerHTML={{ __html: highlightText(data.name, searchTerm) }}/>
+      <chakra.span fontWeight={ 500 } dangerouslySetInnerHTML={{ __html: highlightText(addressName, searchTerm) }}/>
+      { data.ens_info &&
+        (
+          data.ens_info.names_count > 1 ?
+            <span> (+{ data.ens_info.names_count - 1 })</span> :
+            <span> (expires { dayjs(data.ens_info.expiry_date).fromNow() })</span>
+        )
+      }
     </Text>
   );
-  const address = <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>;
+  const addressEl = <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>;
 
   if (isMobile) {
     return (
@@ -51,10 +63,10 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
             whiteSpace="nowrap"
             fontWeight={ 700 }
           >
-            { address }
+            { addressEl }
           </Box>
         </Flex>
-        { name }
+        { nameEl }
       </>
     );
   }
@@ -70,10 +82,10 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
           whiteSpace="nowrap"
           fontWeight={ 700 }
         >
-          { address }
+          { addressEl }
         </Box>
       </Flex>
-      { name }
+      { nameEl }
     </Flex>
   );
 };

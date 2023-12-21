@@ -23,6 +23,12 @@ export interface SearchResultAddressOrContract {
   address: string;
   is_smart_contract_verified: boolean;
   url?: string; // not used by the frontend, we build the url ourselves
+  ens_info?: {
+    address_hash: string;
+    expiry_date: string;
+    name: string;
+    names_count: number;
+  };
 }
 
 export interface SearchResultLabel {
