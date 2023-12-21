@@ -36,6 +36,7 @@ import type { ChartMarketResponse, ChartTransactionResponse } from 'types/api/ch
 import type { BackendVersionConfig } from 'types/api/configs';
 import type { SmartContract, SmartContractReadMethod, SmartContractWriteMethod, SmartContractVerificationConfig, SolidityscanReport } from 'types/api/contract';
 import type { VerifiedContractsResponse, VerifiedContractsFilters, VerifiedContractsCounters } from 'types/api/contracts';
+import type { EnsAddressLookupResponse, EnsDomainDetailed, EnsDomainEventsResponse, EnsDomainLookupResponse } from 'types/api/ens';
 import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
 import type { L2DepositsResponse, L2DepositsItem } from 'types/api/l2Deposits';
@@ -173,6 +174,32 @@ export const RESOURCES = {
     pathParams: [ 'id' as const ],
     endpoint: getFeaturePayload(config.features.stats)?.api.endpoint,
     basePath: getFeaturePayload(config.features.stats)?.api.basePath,
+  },
+
+  // NAME SERVICE
+  addresses_lookup: {
+    path: '/api/v1/:chainId/addresses\\:lookup',
+    pathParams: [ 'chainId' as const ],
+    endpoint: getFeaturePayload(config.features.nameService)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.nameService)?.api.basePath,
+  },
+  domain_info: {
+    path: '/api/v1/:chainId/domains/:name',
+    pathParams: [ 'chainId' as const, 'name' as const ],
+    endpoint: getFeaturePayload(config.features.nameService)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.nameService)?.api.basePath,
+  },
+  domain_events: {
+    path: '/api/v1/:chainId/domains/:name/events',
+    pathParams: [ 'chainId' as const, 'name' as const ],
+    endpoint: getFeaturePayload(config.features.nameService)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.nameService)?.api.basePath,
+  },
+  domains_lookup: {
+    path: '/api/v1/:chainId/domains\\:lookup',
+    pathParams: [ 'chainId' as const ],
+    endpoint: getFeaturePayload(config.features.nameService)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.nameService)?.api.basePath,
   },
 
   // VISUALIZATION
@@ -706,6 +733,10 @@ Q extends 'zkevm_l2_txn_batches_count' ? number :
 Q extends 'zkevm_l2_txn_batch' ? ZkEvmL2TxnBatch :
 Q extends 'zkevm_l2_txn_batch_txs' ? ZkEvmL2TxnBatchTxs :
 Q extends 'config_backend_version' ? BackendVersionConfig :
+Q extends 'addresses_lookup' ? EnsAddressLookupResponse :
+Q extends 'domain_info' ? EnsDomainDetailed :
+Q extends 'domain_events' ? EnsDomainEventsResponse :
+Q extends 'domains_lookup' ? EnsDomainLookupResponse :
 never;
 /* eslint-enable @typescript-eslint/indent */
 
