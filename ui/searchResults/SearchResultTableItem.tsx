@@ -103,6 +103,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
           implementation_name: null,
           ens_domain_name: null,
         };
+        const expiresText = data.ens_info?.expiry_date ? ` (expires ${ dayjs(data.ens_info.expiry_date).fromNow() })` : '';
 
         return (
           <>
@@ -131,7 +132,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
                   (
                     data.ens_info.names_count > 1 ?
                       <chakra.span color="text_secondary"> (+{ data.ens_info.names_count - 1 })</chakra.span> :
-                      <chakra.span color="text_secondary"> (expires { dayjs(data.ens_info.expiry_date).fromNow() })</chakra.span>
+                      <chakra.span color="text_secondary">{ expiresText }</chakra.span>
                   )
                 }
               </Td>

@@ -270,6 +270,8 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
       case 'address': {
         const shouldHighlightHash = ADDRESS_REGEXP.test(searchTerm);
         const addressName = data.name || data.ens_info?.name;
+        const expiresText = data.ens_info?.expiry_date ? ` (expires ${ dayjs(data.ens_info.expiry_date).fromNow() })` : '';
+
         return addressName ? (
           <>
             <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? xss(addressName) : highlightText(addressName, searchTerm) }}/>
@@ -277,7 +279,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
               (
                 data.ens_info.names_count > 1 ?
                   <chakra.span color="text_secondary"> (+{ data.ens_info.names_count - 1 })</chakra.span> :
-                  <chakra.span color="text_secondary"> (expires { dayjs(data.ens_info.expiry_date).fromNow() })</chakra.span>
+                  <chakra.span color="text_secondary">{ expiresText }</chakra.span>
               )
             }
           </>

@@ -25,7 +25,7 @@ export interface SearchResultAddressOrContract {
   url?: string; // not used by the frontend, we build the url ourselves
   ens_info?: {
     address_hash: string;
-    expiry_date: string;
+    expiry_date?: string;
     name: string;
     names_count: number;
   };

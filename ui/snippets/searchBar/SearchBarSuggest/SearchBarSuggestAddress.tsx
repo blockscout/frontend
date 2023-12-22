@@ -31,6 +31,7 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
     />
   );
   const addressName = data.name || data.ens_info?.name;
+  const expiresText = data.ens_info?.expiry_date ? ` (expires ${ dayjs(data.ens_info.expiry_date).fromNow() })` : '';
 
   const nameEl = addressName && (
     <Text
@@ -44,7 +45,7 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
         (
           data.ens_info.names_count > 1 ?
             <span> (+{ data.ens_info.names_count - 1 })</span> :
-            <span> (expires { dayjs(data.ens_info.expiry_date).fromNow() })</span>
+            <span>{ expiresText }</span>
         )
       }
     </Text>
