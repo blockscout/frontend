@@ -33,8 +33,8 @@ const AddressCounterItem = ({ prop, query, address, onClick, isAddressQueryLoadi
   if (query.isError || data === null || data === undefined) {
     return <span>0</span>;
   }
-
   switch (prop) {
+    case 'aspect_binding_count': return <span>{ data }</span>;
     case 'gas_usage_count':
       return <span>{ BigNumber(data).toFormat() }</span>;
     case 'transactions_count':

@@ -1,5 +1,7 @@
 import { Box, Text, Grid, Skeleton } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
+import AspectABI from 'aspect/abi/aspect.json';
+import { ethers } from 'ethers';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -7,6 +9,7 @@ import type { Address as TAddress } from 'types/api/address';
 
 import { route } from 'nextjs-routes';
 
+import chain from 'configs/app/chain';
 import blockIcon from 'icons/block.svg';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
@@ -42,6 +45,16 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
       enabled: Boolean(addressHash) && Boolean(addressQuery.data),
       placeholderData: ADDRESS_COUNTERS,
     },
+  });
+  const provider = new ethers.JsonRpcProvider(chain.rpcUrl);
+  const contract = new ethers.Contract(chain.aspectAddress, AspectABI, provider);
+
+  contract.aspectsOf(addressHash).then(res => {
+    if (countersQuery.data) {
+      countersQuery.data.aspect_binding_count = res.length;
+    }
+  }).catch(err => {
+    return Promise.reject(err);
   });
 
   const handleCounterItemClick = React.useCallback(() => {
@@ -176,6 +189,22 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
           { addressQuery.data ? (
             <AddressCounterItem
               prop="gas_usage_count"
+              query={ countersQuery }
+              address={ data.hash }
+              onClick={ handleCounterItemClick }
+              isAddressQueryLoading={ addressQuery.isPlaceholderData }
+            />
+          ) :
+            0 }
+        </DetailsInfoItem>
+        <DetailsInfoItem
+          title="Binding Aspect"
+          hint="The number of bound Aspect"
+          isLoading={ addressQuery.isPlaceholderData || countersQuery.isPlaceholderData }
+        >
+          { addressQuery.data ? (
+            <AddressCounterItem
+              prop="aspect_binding_count"
               query={ countersQuery }
               address={ data.hash }
               onClick={ handleCounterItemClick }

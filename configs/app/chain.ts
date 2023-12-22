@@ -12,6 +12,7 @@ const chain = Object.freeze({
     decimals: Number(getEnvValue(process.env.NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS)) || DEFAULT_CURRENCY_DECIMALS,
   },
   rpcUrl: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_RPC_URL),
+  aspectAddress: getEnvValue(process.env.NEXT_PUBLIC_ASPECT_CORE_ADDRESS) || '',
   isTestnet: getEnvValue(process.env.NEXT_PUBLIC_IS_TESTNET) === 'true',
   verificationType: getEnvValue(process.env.NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE) || 'mining',
 });

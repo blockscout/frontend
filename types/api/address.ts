@@ -39,6 +39,7 @@ export interface AddressCounters {
   token_transfers_count: string;
   gas_usage_count: string;
   validations_count: string | null;
+  aspect_binding_count?: string;
 }
 
 export interface AddressTokenBalance {
