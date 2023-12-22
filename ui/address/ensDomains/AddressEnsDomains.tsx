@@ -40,10 +40,12 @@ const AddressEnsDomains = ({ addressHash, mainDomainName }: Props) => {
 
   const mainDomain = data.items.find((domain) => domain.name === mainDomainName);
   const ownedDomains = data.items.filter((domain) =>
+    domain.owner &&
     domain.owner.hash.toLowerCase() === addressHash.toLowerCase() &&
     domain.name !== mainDomainName,
   );
   const resolvedDomains = data.items.filter((domain) =>
+    domain.resolvedAddress &&
     domain.resolvedAddress.hash.toLowerCase() === addressHash.toLowerCase() &&
     domain.name !== mainDomainName,
   );

@@ -3,10 +3,10 @@ export interface EnsDomain {
   name: string;
   resolvedAddress: {
     hash: string;
-  };
+  } | null;
   owner: {
     hash: string;
-  };
+  } | null;
   registrationDate?: string;
   expiryDate?: string;
 }
@@ -15,7 +15,7 @@ export interface EnsDomainDetailed extends EnsDomain {
   tokenId: string;
   registrant: {
     hash: string;
-  };
+  } | null;
   otherAddresses: Record<string, string>;
 }
 
@@ -24,7 +24,7 @@ export interface EnsDomainEvent {
   timestamp: string;
   fromAddress: {
     hash: string;
-  };
+  } | null;
   action?: string;
 }
 

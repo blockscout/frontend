@@ -14,7 +14,6 @@ import NameDomainDetails from 'ui/nameDomain/NameDomainDetails';
 import NameDomainHistory from 'ui/nameDomain/NameDomainHistory';
 import TextAd from 'ui/shared/ad/TextAd';
 import Icon from 'ui/shared/chakra/Icon';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -43,7 +42,7 @@ const NameDomain = () => {
   const tabIndex = useTabIndexFromQuery(tabs);
 
   if (infoQuery.isError) {
-    return <DataFetchAlert/>;
+    throw new Error(undefined, { cause: infoQuery.error });
   }
 
   const isLoading = infoQuery.isPlaceholderData;
@@ -56,13 +55,15 @@ const NameDomain = () => {
         noLink
         maxW="300px"
       />
-      <AddressEntity
-        address={ infoQuery.data?.resolvedAddress }
-        isLoading={ isLoading }
-        truncation={ isMobile ? 'constant' : 'dynamic' }
-        noLink
-        flexShrink={ 0 }
-      />
+      { infoQuery.data?.resolvedAddress && (
+        <AddressEntity
+          address={ infoQuery.data?.resolvedAddress }
+          isLoading={ isLoading }
+          truncation={ isMobile ? 'constant' : 'dynamic' }
+          noLink
+          flexShrink={ 0 }
+        />
+      ) }
       { /* TODO @tom2drum add correct href */ }
       <Tooltip label="Lookup for related domain names">
         <LinkInternal flexShrink={ 0 } display="inline-flex">

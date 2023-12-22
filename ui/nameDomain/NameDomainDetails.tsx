@@ -71,42 +71,46 @@ const NameDomainDetails = ({ query }: Props) => {
           </Skeleton>
         </DetailsInfoItem>
       ) }
-      <DetailsInfoItem
-        title="Registrant"
-        hint="The account that owns the domain name and has the rights to edit its ownership and records"
-        isLoading={ isLoading }
-        columnGap={ 2 }
-        flexWrap="nowrap"
-      >
-        <AddressEntity
-          address={ query.data?.registrant }
+      { query.data?.registrant && (
+        <DetailsInfoItem
+          title="Registrant"
+          hint="The account that owns the domain name and has the rights to edit its ownership and records"
           isLoading={ isLoading }
-        />
-        { /* TODO @tom2drum add correct href */ }
-        <Tooltip label="Lookup for related domain names">
-          <LinkInternal flexShrink={ 0 } display="inline-flex">
-            <Icon as={ iconSearch } boxSize={ 5 } isLoading={ isLoading }/>
-          </LinkInternal>
-        </Tooltip>
-      </DetailsInfoItem>
-      <DetailsInfoItem
-        title="Controller"
-        hint="The account that owns the rights to edit the records of this domain name"
-        isLoading={ isLoading }
-        columnGap={ 2 }
-        flexWrap="nowrap"
-      >
-        <AddressEntity
-          address={ query.data?.owner }
+          columnGap={ 2 }
+          flexWrap="nowrap"
+        >
+          <AddressEntity
+            address={ query.data.registrant }
+            isLoading={ isLoading }
+          />
+          { /* TODO @tom2drum add correct href */ }
+          <Tooltip label="Lookup for related domain names">
+            <LinkInternal flexShrink={ 0 } display="inline-flex">
+              <Icon as={ iconSearch } boxSize={ 5 } isLoading={ isLoading }/>
+            </LinkInternal>
+          </Tooltip>
+        </DetailsInfoItem>
+      ) }
+      { query.data?.owner && (
+        <DetailsInfoItem
+          title="Controller"
+          hint="The account that owns the rights to edit the records of this domain name"
           isLoading={ isLoading }
-        />
-        { /* TODO @tom2drum add correct href */ }
-        <Tooltip label="Lookup for related domain names">
-          <LinkInternal flexShrink={ 0 } display="inline-flex">
-            <Icon as={ iconSearch } boxSize={ 5 } isLoading={ isLoading }/>
-          </LinkInternal>
-        </Tooltip>
-      </DetailsInfoItem>
+          columnGap={ 2 }
+          flexWrap="nowrap"
+        >
+          <AddressEntity
+            address={ query.data.owner }
+            isLoading={ isLoading }
+          />
+          { /* TODO @tom2drum add correct href */ }
+          <Tooltip label="Lookup for related domain names">
+            <LinkInternal flexShrink={ 0 } display="inline-flex">
+              <Icon as={ iconSearch } boxSize={ 5 } isLoading={ isLoading }/>
+            </LinkInternal>
+          </Tooltip>
+        </DetailsInfoItem>
+      ) }
       <DetailsInfoItem
         title="Token ID"
         hint="The Token ID of this domain name NFT"
