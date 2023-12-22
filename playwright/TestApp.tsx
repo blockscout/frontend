@@ -29,6 +29,7 @@ const defaultAppContext = {
     hash: '',
     number: '',
     q: '',
+    name: '',
   },
 };
 

@@ -1,4 +1,4 @@
-import { Button, chakra, Flex, Grid, Icon, Link, Popover, PopoverBody, PopoverContent, PopoverTrigger, Skeleton, useDisclosure } from '@chakra-ui/react';
+import { Button, chakra, Flex, Grid, Icon, Popover, PopoverBody, PopoverContent, PopoverTrigger, Skeleton, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
@@ -7,6 +7,7 @@ import ensIcon from 'icons/ENS.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import dayjs from 'lib/date/dayjs';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
+import LinkInternal from 'ui/shared/LinkInternal';
 
 interface Props {
   addressHash: string;
@@ -96,10 +97,10 @@ const AddressEnsDomains = ({ addressHash, mainDomainName }: Props) => {
           ) }
           { (ownedDomains.length > 9 || resolvedDomains.length > 9) && (
             // TODO @tom2drum add href to link
-            <Link>
+            <LinkInternal>
               <span> More results</span>
               <chakra.span color="text_secondary"> ({ data.totalRecords })</chakra.span>
-            </Link>
+            </LinkInternal>
           ) }
         </PopoverBody>
       </PopoverContent>

@@ -11,21 +11,11 @@ export interface EnsDomain {
   expiryDate?: string;
 }
 
-export interface EnsDomainDetailed {
-  id: string;
-  name: string;
+export interface EnsDomainDetailed extends EnsDomain {
   tokenId: string;
-  resolvedAddress: {
-    hash: string;
-  };
-  owner: {
-    hash: string;
-  };
   registrant: {
     hash: string;
   };
-  registrationDate?: string;
-  expiryDate?: string;
   otherAddresses: Record<string, string>;
 }
 

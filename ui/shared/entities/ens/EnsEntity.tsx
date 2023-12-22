@@ -12,8 +12,7 @@ import TruncatedValue from 'ui/shared/TruncatedValue';
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'name'>;
 
 const Link = chakra((props: LinkProps) => {
-  // TODO @tom2drum change link href
-  const defaultHref = route({ pathname: '/tx/[hash]', query: { hash: props.name } });
+  const defaultHref = route({ pathname: '/name-domains/[name]', query: { name: props.name } });
 
   return (
     <EntityBase.Link
