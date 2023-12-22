@@ -1,4 +1,4 @@
-import { chakra, Grid, Skeleton, Tooltip, Flex, Icon as ChakraIcon } from '@chakra-ui/react';
+import { Grid, Skeleton, Tooltip, Flex, Icon as ChakraIcon } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
@@ -14,6 +14,8 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import LinkInternal from 'ui/shared/LinkInternal';
 import TextSeparator from 'ui/shared/TextSeparator';
 
+import NameDomainExpiryStatus from './NameDomainExpiryStatus';
+
 interface Props {
   query: UseQueryResult<EnsDomainDetailed, ResourceError<unknown>>;
 }
@@ -23,23 +25,6 @@ const NameDomainDetails = ({ query }: Props) => {
 
   const otherAddresses = Object.entries(query.data?.otherAddresses ?? {});
   const hasExpired = query.data?.expiryDate && dayjs(query.data.expiryDate).isBefore(dayjs());
-
-  const expiryText = (() => {
-    if (!query.data?.expiryDate) {
-      return null;
-    }
-
-    if (hasExpired) {
-      return <chakra.span color="red.600">Expired</chakra.span>;
-    }
-
-    const diff = dayjs(query.data.expiryDate).diff(dayjs(), 'day');
-    if (diff < 30) {
-      return <chakra.span color="red.600">{ diff } days left</chakra.span>;
-    }
-
-    return <chakra.span color="text_secondary">Expires { dayjs(query.data.expiryDate).fromNow() }</chakra.span>;
-  })();
 
   return (
     <Grid columnGap={ 8 } rowGap={ 3 } templateColumns={{ base: 'minmax(0, 1fr)', lg: 'max-content minmax(728px, auto)' }}>
@@ -67,7 +52,7 @@ const NameDomainDetails = ({ query }: Props) => {
           </Skeleton>
           <TextSeparator color="gray.500"/>
           <Skeleton isLoaded={ !isLoading } color="text_secondary" display="inline">
-            <chakra.span>{ expiryText }</chakra.span>
+            <NameDomainExpiryStatus date={ query.data?.expiryDate }/>
           </Skeleton>
         </DetailsInfoItem>
       ) }

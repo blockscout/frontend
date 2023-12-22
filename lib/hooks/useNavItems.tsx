@@ -10,6 +10,7 @@ import appsIcon from 'icons/apps.svg';
 import withdrawalsIcon from 'icons/arrows/north-east.svg';
 import depositsIcon from 'icons/arrows/south-east.svg';
 import blocksIcon from 'icons/block.svg';
+import ensIcon from 'icons/ENS.svg';
 import gearIcon from 'icons/gear.svg';
 import globeIcon from 'icons/globe-b.svg';
 import graphQLIcon from 'icons/graphQL.svg';
@@ -71,6 +72,12 @@ export default function useNavItems(): ReturnType {
     const verifiedContracts =
     // eslint-disable-next-line max-len
      { text: 'Verified contracts', nextRoute: { pathname: '/verified-contracts' as const }, icon: verifiedIcon, isActive: pathname === '/verified-contracts' };
+    const ensLookup = config.features.nameService.isEnabled ? {
+      text: 'ENS lookup',
+      nextRoute: { pathname: '/name-domains' as const },
+      icon: ensIcon,
+      isActive: pathname === '/name-domains' || pathname === '/name-domains/[name]',
+    } : null;
 
     if (config.features.zkEvmRollup.isEnabled) {
       blockchainNavItems = [
@@ -83,6 +90,7 @@ export default function useNavItems(): ReturnType {
         [
           topAccounts,
           verifiedContracts,
+          ensLookup,
         ].filter(Boolean),
       ];
     } else if (config.features.optimisticRollup.isEnabled) {
@@ -104,6 +112,7 @@ export default function useNavItems(): ReturnType {
         [
           topAccounts,
           verifiedContracts,
+          ensLookup,
         ].filter(Boolean),
       ];
     } else {
@@ -112,6 +121,7 @@ export default function useNavItems(): ReturnType {
         blocks,
         topAccounts,
         verifiedContracts,
+        ensLookup,
         config.features.beaconChain.isEnabled && {
           text: 'Withdrawals',
           nextRoute: { pathname: '/withdrawals' as const },
