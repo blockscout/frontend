@@ -1,6 +1,7 @@
 import type { EnsDomainDetailed } from 'types/api/ens';
 
 import { ADDRESS_PARAMS, ADDRESS_HASH } from './addressParams';
+import { TX_HASH } from './tx';
 
 export const ENS_DOMAIN: EnsDomainDetailed = {
   id: '0x126d74db13895f8d3a1d362410212731d1e1d9be8add83e388385f93d84c8c84',
@@ -14,4 +15,11 @@ export const ENS_DOMAIN: EnsDomainDetailed = {
   otherAddresses: {
     ETH: ADDRESS_HASH,
   },
+};
+
+export const ENS_DOMAIN_EVENT = {
+  transactionHash: TX_HASH,
+  timestamp: '2022-06-06T08:43:15.000000Z',
+  fromAddress: ADDRESS_PARAMS,
+  action: '0xf7a16963',
 };
