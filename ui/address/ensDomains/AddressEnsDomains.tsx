@@ -3,7 +3,7 @@ import React from 'react';
 
 import config from 'configs/app';
 import arrowIcon from 'icons/arrows/east-mini.svg';
-import ensIcon from 'icons/ENS.svg';
+import ensIcon from 'icons/ENS_slim.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import dayjs from 'lib/date/dayjs';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';

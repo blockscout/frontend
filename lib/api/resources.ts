@@ -636,7 +636,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'zkevm_l2_txn_batches' | 'zkevm_l2_txn_batch_txs' |
 'withdrawals' | 'address_withdrawals' | 'block_withdrawals' |
 'watchlist' | 'private_tags_address' | 'private_tags_tx' |
-'domain_events' | 'domains_lookup';
+'domain_events' | 'domains_lookup' | 'addresses_lookup';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 

@@ -2,8 +2,11 @@ import { Box, Hide, Show } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { EnsDomainLookupFiltersOptions } from 'types/api/ens';
+
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
+import useDebounce from 'lib/hooks/useDebounce';
 import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ENS_DOMAIN } from 'stubs/ENS';
@@ -19,24 +22,38 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 const NameDomains = () => {
   const router = useRouter();
 
-  const q = getQueryParamString(router.query.q);
+  const address = getQueryParamString(router.query.address);
+  const ownedBy = getQueryParamString(router.query.ownedBy);
+  const resolvedTo = getQueryParamString(router.query.resolvedTo);
+  const withInactive = getQueryParamString(router.query.withInactive);
 
-  const [ searchTerm, setSearchTerm ] = React.useState<string>(q ?? '');
+  const initialFilters: EnsDomainLookupFiltersOptions = [
+    ownedBy === 'true' ? 'ownedBy' as const : undefined,
+    resolvedTo === 'true' ? 'resolvedTo' as const : undefined,
+    withInactive === 'true' ? 'withInactive' as const : undefined,
+  ].filter(Boolean);
+
+  const [ searchTerm, setSearchTerm ] = React.useState<string>(address ?? '');
+  const [ filterValue, setFilterValue ] = React.useState<EnsDomainLookupFiltersOptions>(initialFilters);
   const [ sort, setSort ] = React.useState<Sort>();
 
-  const { isError, isPlaceholderData, data } = useApiQuery('domains_lookup', {
+  const debouncedSearchTerm = useDebounce(searchTerm || '', 300);
+
+  const { isError, isPlaceholderData, data } = useApiQuery('addresses_lookup', {
     pathParams: { chainId: config.chain.id },
     fetchParams: {
       method: 'POST',
       body: {
-        name: 'pepecat🐾.eth',
+        address: debouncedSearchTerm,
+        resolvedTo: true,
+        ownedBy: true,
         onlyActive: true,
         sort: 'registration_date',
         order: 'ASC',
       },
     },
     queryOptions: {
-      placeholderData: generateListStub<'domains_lookup'>(ENS_DOMAIN, 50, { totalRecords: 50 }),
+      placeholderData: generateListStub<'addresses_lookup'>(ENS_DOMAIN, 50, { totalRecords: 50 }),
     },
   });
 
@@ -53,6 +70,10 @@ const NameDomains = () => {
 
   const handleSearchTermChange = React.useCallback((value: string) => {
     setSearchTerm(value);
+  }, []);
+
+  const handleFilterValueChange = React.useCallback((value: EnsDomainLookupFiltersOptions) => {
+    setFilterValue(value);
   }, []);
 
   const hasActiveFilters = Boolean(searchTerm);
@@ -83,8 +104,13 @@ const NameDomains = () => {
 
   const actionBar = (
     <NameDomainsActionBar
+      isLoading={ isPlaceholderData }
       searchTerm={ searchTerm }
       onSearchChange={ handleSearchTermChange }
+      filterValue={ filterValue }
+      onFilterValueChange={ handleFilterValueChange }
+      sort={ sort }
+      onSortChange={ setSort }
     />
   );
 

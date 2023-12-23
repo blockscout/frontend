@@ -25,7 +25,7 @@ const NameDomainsTableItem = ({ isLoading, name, resolvedAddress, registrationDa
       <Td verticalAlign="middle" pl={ 9 }>
         { registrationDate && (
           <Skeleton isLoaded={ !isLoading }>
-            { dayjs(registrationDate).format('llll') }
+            { dayjs(registrationDate).format('MMM DD YYYY HH:mm:ss A') }
             <chakra.span color="text_secondary"> { dayjs(registrationDate).fromNow() }</chakra.span>
           </Skeleton>
         ) }
@@ -33,7 +33,7 @@ const NameDomainsTableItem = ({ isLoading, name, resolvedAddress, registrationDa
       <Td verticalAlign="middle">
         { expiryDate && (
           <Skeleton isLoaded={ !isLoading } whiteSpace="pre-wrap">
-            <span>{ dayjs(expiryDate).format('llll') } </span>
+            <span>{ dayjs(expiryDate).format('MMM DD YYYY HH:mm:ss A') } </span>
             <NameDomainExpiryStatus date={ expiryDate }/>
           </Skeleton>
         ) }

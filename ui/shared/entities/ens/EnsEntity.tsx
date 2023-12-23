@@ -5,7 +5,7 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
-import ensIcon from 'icons/ENS.svg';
+import ensIcon from 'icons/ENS_slim.svg';
 import * as EntityBase from 'ui/shared/entities/base/components';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 

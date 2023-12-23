@@ -42,3 +42,12 @@ export interface EnsDomainLookupResponse {
   items: Array<EnsDomain>;
   totalRecords: number;
 }
+
+export interface EnsDomainLookupFilters {
+  name: string | null;
+  resolvedTo: boolean;
+  ownedBy: boolean;
+  onlyActive: boolean;
+}
+
+export type EnsDomainLookupFiltersOptions = Array<'resolvedTo' | 'ownedBy' | 'withInactive'>;

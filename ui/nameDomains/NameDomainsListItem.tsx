@@ -35,7 +35,7 @@ const NameDomainsListItem = ({ name, isLoading, resolvedAddress, registrationDat
           <ListItemMobileGrid.Label isLoading={ isLoading }>Registered on</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
             <Skeleton isLoaded={ !isLoading }>
-              { dayjs(registrationDate).format('llll') }
+              { dayjs(registrationDate).format('MMM DD YYYY HH:mm:ss A') }
               <chakra.span color="text_secondary"> { dayjs(registrationDate).fromNow() }</chakra.span>
             </Skeleton>
           </ListItemMobileGrid.Value>
@@ -47,7 +47,7 @@ const NameDomainsListItem = ({ name, isLoading, resolvedAddress, registrationDat
           <ListItemMobileGrid.Label isLoading={ isLoading }>Registered on</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
             <Skeleton isLoaded={ !isLoading } whiteSpace="pre-wrap">
-              <span>{ dayjs(expiryDate).format('llll') } </span>
+              <span>{ dayjs(expiryDate).format('MMM DD YYYY HH:mm:ss A') } </span>
               <NameDomainExpiryStatus date={ expiryDate }/>
             </Skeleton>
           </ListItemMobileGrid.Value>
