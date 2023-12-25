@@ -9,6 +9,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import useDebounce from 'lib/hooks/useDebounce';
 import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { ADDRESS_REGEXP } from 'lib/validations/address';
 import { ENS_DOMAIN } from 'stubs/ENS';
 import { generateListStub } from 'stubs/utils';
 import NameDomainsActionBar from 'ui/nameDomains/NameDomainsActionBar';
@@ -22,7 +23,7 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 const NameDomains = () => {
   const router = useRouter();
 
-  const address = getQueryParamString(router.query.address);
+  const q = getQueryParamString(router.query.q);
   const ownedBy = getQueryParamString(router.query.ownedBy);
   const resolvedTo = getQueryParamString(router.query.resolvedTo);
   const withInactive = getQueryParamString(router.query.withInactive);
@@ -33,32 +34,63 @@ const NameDomains = () => {
     withInactive === 'true' ? 'withInactive' as const : undefined,
   ].filter(Boolean);
 
-  const [ searchTerm, setSearchTerm ] = React.useState<string>(address ?? '');
+  const [ searchTerm, setSearchTerm ] = React.useState<string>(q || '');
   const [ filterValue, setFilterValue ] = React.useState<EnsDomainLookupFiltersOptions>(initialFilters);
   const [ sort, setSort ] = React.useState<Sort>();
 
-  const debouncedSearchTerm = useDebounce(searchTerm || '', 300);
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const isAddressSearch = React.useMemo(() => ADDRESS_REGEXP.test(debouncedSearchTerm), [ debouncedSearchTerm ]);
+  const sortParam = sort?.split('-')[0];
+  const orderParam = sort?.split('-')[1].toUpperCase();
 
-  const { isError, isPlaceholderData, data } = useApiQuery('addresses_lookup', {
+  const addressesLookupQuery = useApiQuery('addresses_lookup', {
     pathParams: { chainId: config.chain.id },
     fetchParams: {
       method: 'POST',
       body: {
         address: debouncedSearchTerm,
-        resolvedTo: true,
-        ownedBy: true,
-        onlyActive: true,
-        sort: 'registration_date',
-        order: 'ASC',
+        resolvedTo: filterValue.includes('resolvedTo'),
+        ownedBy: filterValue.includes('ownedBy'),
+        onlyActive: !filterValue.includes('withInactive'),
+        sort: sortParam,
+        order: orderParam,
       },
     },
     queryOptions: {
+      enabled: isAddressSearch,
       placeholderData: generateListStub<'addresses_lookup'>(ENS_DOMAIN, 50, { totalRecords: 50 }),
     },
   });
 
+  const domainsLookupQuery = useApiQuery('domains_lookup', {
+    pathParams: { chainId: config.chain.id },
+    fetchParams: {
+      method: 'POST',
+      body: {
+        name: debouncedSearchTerm,
+        onlyActive: !filterValue.includes('withInactive'),
+        sort: sortParam,
+        order: orderParam,
+      },
+    },
+    queryOptions: {
+      enabled: !isAddressSearch,
+      placeholderData: generateListStub<'domains_lookup'>(ENS_DOMAIN, 50, { totalRecords: 50 }),
+    },
+  });
+
+  const query = isAddressSearch ? addressesLookupQuery : domainsLookupQuery;
+  const { data, isError, isPlaceholderData: isLoading } = query;
+
+  React.useEffect(() => {
+    if (isAddressSearch && filterValue.filter((value) => value !== 'withInactive').length === 0) {
+      setFilterValue([ 'ownedBy', 'resolvedTo' ]);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ isAddressSearch ]);
+
   const handleSortToggle = React.useCallback((event: React.MouseEvent) => {
-    if (isPlaceholderData) {
+    if (isLoading) {
       return;
     }
     const field = (event.currentTarget as HTMLDivElement).getAttribute('data-field') as SortField | undefined;
@@ -66,7 +98,7 @@ const NameDomains = () => {
     if (field) {
       setSort(getNextSortValue(field));
     }
-  }, [ isPlaceholderData ]);
+  }, [ isLoading ]);
 
   const handleSearchTermChange = React.useCallback((value: string) => {
     setSearchTerm(value);
@@ -84,9 +116,9 @@ const NameDomains = () => {
         <Box>
           { data?.items.map((item, index) => (
             <NameDomainsListItem
-              key={ item.id + (isPlaceholderData ? index : '') }
+              key={ item.id + (isLoading ? index : '') }
               { ...item }
-              isLoading={ isPlaceholderData }
+              isLoading={ isLoading }
             />
           )) }
         </Box>
@@ -94,7 +126,7 @@ const NameDomains = () => {
       <Hide below="lg" ssr={ false }>
         <NameDomainsTable
           data={ data }
-          isLoading={ isPlaceholderData }
+          isLoading={ isLoading }
           sort={ sort }
           onSortToggle={ handleSortToggle }
         />
@@ -104,13 +136,14 @@ const NameDomains = () => {
 
   const actionBar = (
     <NameDomainsActionBar
-      isLoading={ isPlaceholderData }
+      isLoading={ isLoading }
       searchTerm={ searchTerm }
       onSearchChange={ handleSearchTermChange }
       filterValue={ filterValue }
       onFilterValueChange={ handleFilterValueChange }
       sort={ sort }
       onSortChange={ setSort }
+      isAddressSearch={ isAddressSearch }
     />
   );
 

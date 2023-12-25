@@ -35,9 +35,10 @@ interface Props {
   sort: TSort | undefined;
   onSortChange: (nextValue: TSort | undefined) => void;
   isLoading: boolean;
+  isAddressSearch: boolean;
 }
 
-const NameDomainsActionBar = ({ searchTerm, onSearchChange, filterValue, onFilterValueChange, sort, onSortChange, isLoading }: Props) => {
+const NameDomainsActionBar = ({ searchTerm, onSearchChange, filterValue, onFilterValueChange, sort, onSortChange, isLoading, isAddressSearch }: Props) => {
   const isInitialLoading = useIsInitialLoading(isLoading);
 
   const searchInput = (
@@ -56,7 +57,7 @@ const NameDomainsActionBar = ({ searchTerm, onSearchChange, filterValue, onFilte
       <div>
         <CheckboxGroup size="lg" onChange={ onFilterValueChange } value={ filterValue } defaultValue={ filterValue }>
           <Text variant="secondary" fontWeight={ 600 } mb={ 3 } fontSize="sm">Address</Text>
-          <Checkbox value="ownedBy" display="block">
+          <Checkbox value="ownedBy" display="block" isDisabled={ !isAddressSearch }>
             Owned by
           </Checkbox>
           <Checkbox
@@ -67,6 +68,7 @@ const NameDomainsActionBar = ({ searchTerm, onSearchChange, filterValue, onFilte
             pb={ 4 }
             borderBottom="1px solid"
             borderColor="divider"
+            isDisabled={ !isAddressSearch }
           >
             Resolved to address
           </Checkbox>
