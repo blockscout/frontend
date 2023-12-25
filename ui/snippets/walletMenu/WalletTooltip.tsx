@@ -18,18 +18,18 @@ const WalletTooltip = ({ children, isDisabled, isMobile }: Props) => {
     const label = isAppPage ?
       <span>Connect once to use your wallet with<br/>all apps in the DAppscout marketplace!</span> :
       defaultLabel;
-    const localStorageKey = `${ isAppPage ? 'dapp-' : '' }wallet-connect-tooltip-shown-${ isMobile ? 'mobile' : 'desktop' }`;
+    const localStorageKey = `${ isAppPage ? 'dapp-' : '' }wallet-connect-tooltip-shown`;
     return { defaultLabel, label, localStorageKey };
-  }, [ router.pathname, isMobile ]);
+  }, [ router.pathname ]);
 
   React.useEffect(() => {
     const wasShown = window.localStorage.getItem(localStorageKey);
-    if (!wasShown) {
+    if (!isDisabled && !wasShown) {
       setIsTooltipShown.on();
       window.localStorage.setItem(localStorageKey, 'true');
       setTimeout(() => setIsTooltipShown.off(), 3000);
     }
-  }, [ setIsTooltipShown, localStorageKey ]);
+  }, [ setIsTooltipShown, localStorageKey, isDisabled ]);
 
   return (
     <Tooltip
@@ -40,7 +40,6 @@ const WalletTooltip = ({ children, isDisabled, isMobile }: Props) => {
       openDelay={ 300 }
       isOpen={ isTooltipShown || (isMobile ? false : undefined) }
       onClose={ setIsTooltipShown.off }
-      display={ isMobile ? { base: 'flex', lg: 'none' } : { base: 'none', lg: 'flex' } }
     >
       { children }
     </Tooltip>
