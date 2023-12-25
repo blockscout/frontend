@@ -25,8 +25,8 @@ import getApiVersionUrl from './utils/getApiVersionUrl';
 
 const MAX_LINKS_COLUMNS = 4;
 
-const FRONT_VERSION_URL = `https://github.com/luxdefi/blockscout-frontend/tree/${ config.UI.footer.frontendVersion }`;
-const FRONT_COMMIT_URL = `https://github.com/luxdefi/blockscout-frontend/commit/${ config.UI.footer.frontendCommit }`;
+const FRONT_VERSION_URL = `https://github.com/luxdefi/explorer-app/tree/${ config.UI.footer.frontendVersion }`;
+const FRONT_COMMIT_URL = `https://github.com/luxdefi/explorer-app/commit/${ config.UI.footer.frontendCommit }`;
 
 const Footer = () => {
 
@@ -125,7 +125,7 @@ const Footer = () => {
   const renderProjectInfo = React.useCallback((gridArea?: GridProps['gridArea']) => {
     return (
       <Box gridArea={ gridArea }>
-        <Link fontSize="xs" href="https://www.blockscout.com">blockscout.com</Link>
+        <Link fontSize="xs" href="https://lux.network">Lux Network</Link>
         <Text mt={ 3 } fontSize="xs">
           Lux Explorer is a tool for inspecting and analyzing the decentralized network of blockchains that comprise the Lux Network.
         </Text>
