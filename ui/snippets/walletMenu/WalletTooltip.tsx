@@ -27,7 +27,7 @@ const WalletTooltip = ({ children, isDisabled, isMobile }: Props) => {
       textAlign="center"
       padding={ 2 }
       isDisabled={ isDisabled }
-      openDelay={ 300 }
+      openDelay={ 500 }
       isOpen={ isTooltipShown || (isMobile ? false : undefined) }
       onClose={ setIsTooltipShown.off }
       display={ isMobile ? { base: 'flex', lg: 'none' } : { base: 'none', lg: 'flex' } }
