@@ -1,4 +1,4 @@
-import { Tooltip, useBoolean } from '@chakra-ui/react';
+import { Tooltip, useBoolean, useOutsideClick } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -11,6 +11,8 @@ type Props = {
 const WalletTooltip = ({ children, isDisabled, isMobile }: Props) => {
   const router = useRouter();
   const [ isTooltipShown, setIsTooltipShown ] = useBoolean(false);
+  const ref = React.useRef(null);
+  useOutsideClick({ ref, handler: setIsTooltipShown.off });
 
   const { defaultLabel, label, localStorageKey } = React.useMemo(() => {
     const isAppPage = router.pathname === '/apps/[id]';
@@ -37,9 +39,11 @@ const WalletTooltip = ({ children, isDisabled, isMobile }: Props) => {
       textAlign="center"
       padding={ 2 }
       isDisabled={ isDisabled }
-      openDelay={ 300 }
+      openDelay={ 500 }
       isOpen={ isTooltipShown || (isMobile ? false : undefined) }
       onClose={ setIsTooltipShown.off }
+      display={ isMobile ? { base: 'flex', lg: 'none' } : { base: 'none', lg: 'flex' } }
+      ref={ ref }
     >
       { children }
     </Tooltip>

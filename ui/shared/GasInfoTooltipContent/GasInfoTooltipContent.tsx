@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { GasPrices } from 'types/api/stats';
 
-const StatsGasPrices = ({ gasPrices }: {gasPrices: GasPrices}) => {
+const GasInfoTooltipContent = ({ gasPrices }: {gasPrices: GasPrices}) => {
   const nameStyleProps = {
     color: useColorModeValue('blue.100', 'blue.600'),
   };
@@ -20,4 +20,4 @@ const StatsGasPrices = ({ gasPrices }: {gasPrices: GasPrices}) => {
   );
 };
 
-export default StatsGasPrices;
+export default React.memo(GasInfoTooltipContent);

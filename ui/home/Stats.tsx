@@ -15,8 +15,8 @@ import walletIcon from 'icons/wallet.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import { WEI } from 'lib/consts';
 import { HOMEPAGE_STATS } from 'stubs/stats';
+import GasInfoTooltipContent from 'ui/shared/GasInfoTooltipContent/GasInfoTooltipContent';
 
-import StatsGasPrices from './StatsGasPrices';
 import StatsItem from './StatsItem';
 
 const hasGasTracker = config.UI.homepage.showGasTracker;
@@ -52,7 +52,7 @@ const Stats = () => {
     !data.gas_prices && itemsCount--;
     data.rootstock_locked_btc && itemsCount++;
     const isOdd = Boolean(itemsCount % 2);
-    const gasLabel = hasGasTracker && data.gas_prices ? <StatsGasPrices gasPrices={ data.gas_prices }/> : null;
+    const gasLabel = hasGasTracker && data.gas_prices ? <GasInfoTooltipContent gasPrices={ data.gas_prices }/> : null;
 
     content = (
       <>
