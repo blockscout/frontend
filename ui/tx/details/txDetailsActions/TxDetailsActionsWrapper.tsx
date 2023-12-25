@@ -1,19 +1,18 @@
 import { Flex, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TxAction } from 'types/api/txAction';
-
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-
-import TxDetailsAction from './TxDetailsAction';
 
 const SCROLL_GRADIENT_HEIGHT = 48;
 
-interface Props {
-  actions: Array<TxAction>;
+type Props = {
+  children: React.ReactNode;
+  isLoading?: boolean;
 }
 
-const TxDetailsActions = ({ actions }: Props) => {
+export const TX_ACTIONS_BLOCK_ID = 'tx-actions';
+
+const TxDetailsActions = ({ children, isLoading }: Props) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [ hasScroll, setHasScroll ] = React.useState(false);
 
@@ -34,8 +33,10 @@ const TxDetailsActions = ({ actions }: Props) => {
       hint="Highlighted events of the transaction"
       note={ hasScroll ? 'Scroll to see more' : undefined }
       position="relative"
+      isLoading={ isLoading }
     >
       <Flex
+        id="tx-actions"
         flexDirection="column"
         alignItems="stretch"
         rowGap={ 5 }
@@ -55,7 +56,7 @@ const TxDetailsActions = ({ actions }: Props) => {
         pr={ hasScroll ? 5 : 0 }
         pb={ hasScroll ? 10 : 0 }
       >
-        { actions.map((action, index: number) => <TxDetailsAction key={ index } action={ action }/>) }
+        { children }
       </Flex>
     </DetailsInfoItem>
   );

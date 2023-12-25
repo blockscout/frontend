@@ -1,4 +1,4 @@
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex, Link } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -18,8 +18,8 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import useTabIndexFromQuery from 'ui/shared/Tabs/useTabIndexFromQuery';
+import { TX_ACTIONS_BLOCK_ID } from 'ui/tx/details/txDetailsActions/TxDetailsActionsWrapper';
 import TxInterpretation from 'ui/tx/interpretation/TxInterpretation';
-import { checkTemplate as checkInterpretationTemplate } from 'ui/tx/interpretation/utils';
 import TxDetails from 'ui/tx/TxDetails';
 import TxDetailsWrapped from 'ui/tx/TxDetailsWrapped';
 import TxInternals from 'ui/tx/TxInternals';
@@ -53,7 +53,11 @@ const TransactionPageContent = () => {
   });
 
   const tabs: Array<RoutedTab> = [
-    { id: 'index', title: config.features.suave.isEnabled && data?.wrapped ? 'Confidential compute tx details' : 'Details', component: <TxDetails/> },
+    {
+      id: 'index',
+      title: config.features.suave.isEnabled && data?.wrapped ? 'Confidential compute tx details' : 'Details',
+      component: <TxDetails txInterpretationQuery={ txInterpretationQuery }/>,
+    },
     config.features.suave.isEnabled && data?.wrapped ?
       { id: 'wrapped', title: 'Regular tx details', component: <TxDetailsWrapped data={ data.wrapped }/> } :
       undefined,
@@ -86,13 +90,21 @@ const TransactionPageContent = () => {
     };
   }, [ appProps.referrer ]);
 
-  const hasInterpretation =
-    hasInterpretationFeature && (txInterpretationQuery.isPlaceholderData ||
-    (txInterpretationQuery.data?.data.summaries[0] && checkInterpretationTemplate(txInterpretationQuery.data.data.summaries[0])));
+  const hasInterpretation = hasInterpretationFeature &&
+    (txInterpretationQuery.isPlaceholderData || txInterpretationQuery.data?.data.summaries.length);
 
   const titleSecondRow = (
     <Box display={{ base: 'block', lg: 'flex' }} alignItems="center" w="100%">
-      { hasInterpretationFeature && <TxInterpretation query={ txInterpretationQuery } mr={{ base: 0, lg: 6 }}/> }
+      { hasInterpretationFeature && (
+        <Flex mr={{ base: 0, lg: 6 }} flexWrap="wrap">
+          <TxInterpretation
+            summary={ txInterpretationQuery.data?.data.summaries[0] }
+            isLoading={ txInterpretationQuery.isPlaceholderData }
+          />
+          { !txInterpretationQuery.isPlaceholderData && txInterpretationQuery.data?.data.summaries && txInterpretationQuery.data?.data.summaries.length > 1 &&
+            <Link ml={ 3 } href={ `#${ TX_ACTIONS_BLOCK_ID }` }>all actions</Link> }
+        </Flex>
+      ) }
       { !hasInterpretation && <TxEntity hash={ hash } noLink noCopy={ false } fontWeight={ 500 } mr={{ base: 0, lg: 2 }} fontFamily="heading"/> }
       <Flex alignItems="center" justifyContent={{ base: 'start', lg: 'space-between' }} flexGrow={ 1 }>
         { !data?.tx_tag && <AccountActionsMenu mr={ 3 } mt={{ base: 3, lg: 0 }}/> }

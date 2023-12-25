@@ -63,28 +63,53 @@ export const TX_RAW_TRACE: RawTracesResponse = [];
 
 export const TX_INTERPRETATION: TxInterpretationResponse = {
   data: {
-    summaries: [ {
-      summary_template: '{action_type} {source_amount} Ether into {destination_amount} {destination_token}',
-      summary_template_variables: {
-        action_type: { type: 'string', value: 'Wrap' },
-        source_amount: { type: 'currency', value: '0.7' },
-        destination_amount: { type: 'currency', value: '0.7' },
-        destination_token: {
-          type: 'token',
-          value: {
-            name: 'Museion',
-            type: 'ERC-20',
-            symbol: 'MUSA',
-            address: '0x486a3c5f34cDc4EF133f248f1C81168D78da52e8',
-            holders: '1152',
-            decimals: '18',
-            icon_url: null,
-            total_supply: '210000000000000000000000000',
-            exchange_rate: null,
-            circulating_market_cap: null,
+    summaries: [
+      {
+        summary_template: '{action_type} {source_amount} Ether into {destination_amount} {destination_token}',
+        summary_template_variables: {
+          action_type: { type: 'string', value: 'Wrap' },
+          source_amount: { type: 'currency', value: '0.7' },
+          destination_amount: { type: 'currency', value: '0.7' },
+          destination_token: {
+            type: 'token',
+            value: {
+              name: 'Museion',
+              type: 'ERC-20',
+              symbol: 'MUSA',
+              address: '0x486a3c5f34cDc4EF133f248f1C81168D78da52e8',
+              holders: '1152',
+              decimals: '18',
+              icon_url: null,
+              total_supply: '210000000000000000000000000',
+              exchange_rate: null,
+              circulating_market_cap: null,
+            },
           },
         },
       },
-    } ],
+      {
+        summary_template: '{action_type} {source_amount} Ether into {destination_amount} {destination_token}',
+        summary_template_variables: {
+          action_type: { type: 'string', value: 'Wrap' },
+          source_amount: { type: 'currency', value: '0.7' },
+          destination_amount: { type: 'currency', value: '0.7' },
+          destination_token: {
+            type: 'token',
+            value: {
+              name: 'Museion',
+              type: 'ERC-20',
+              symbol: 'MUSA',
+              address: '0x486a3c5f34cDc4EF133f248f1C81168D78da52e8',
+              holders: '1152',
+              decimals: '18',
+              icon_url: null,
+              total_supply: '210000000000000000000000000',
+              exchange_rate: null,
+              circulating_market_cap: null,
+            },
+          },
+        },
+      },
+    ],
   },
 };
