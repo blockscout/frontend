@@ -6,8 +6,8 @@ export default function getApiVersionUrl(version: string | undefined): string | 
   const [ tag, commit ] = version.split('.+commit.');
 
   if (commit) {
-    return `https://github.com/blockscout/blockscout/commit/${ commit }`;
+    return `https://github.com/luxdefi/blockscout-frontend/commit/${ commit }`;
   }
 
-  return `https://github.com/blockscout/blockscout/tree/${ tag }`;
+  return `https://github.com/luxdefi/blockscout-frontend/tree/${ tag }`;
 }

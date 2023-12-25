@@ -25,8 +25,8 @@ import getApiVersionUrl from './utils/getApiVersionUrl';
 
 const MAX_LINKS_COLUMNS = 4;
 
-const FRONT_VERSION_URL = `https://github.com/blockscout/frontend/tree/${ config.UI.footer.frontendVersion }`;
-const FRONT_COMMIT_URL = `https://github.com/blockscout/frontend/commit/${ config.UI.footer.frontendCommit }`;
+const FRONT_VERSION_URL = `https://github.com/luxdefi/blockscout-frontend/tree/${ config.UI.footer.frontendVersion }`;
+const FRONT_COMMIT_URL = `https://github.com/luxdefi/blockscout-frontend/commit/${ config.UI.footer.frontendCommit }`;
 
 const Footer = () => {
 
@@ -48,37 +48,37 @@ const Footer = () => {
       icon: cannyIcon,
       iconSize: '20px',
       text: 'Feature request',
-      url: 'https://blockscout.canny.io/feature-requests',
+      url: 'https://luxdefi.canny.io/feature-requests',
     },
     {
       icon: gitIcon,
       iconSize: '18px',
       text: 'Contribute',
-      url: 'https://github.com/blockscout/blockscout',
+      url: 'https://github.com/luxdefi/',
     },
     {
       icon: twitterIcon,
       iconSize: '18px',
       text: 'Twitter',
-      url: 'https://www.twitter.com/blockscoutcom',
+      url: 'https://www.twitter.com/luxdefi',
     },
     {
       icon: discordIcon,
       iconSize: '24px',
       text: 'Discord',
-      url: 'https://discord.gg/blockscout',
+      url: 'https://discord.gg/luxdefi',
     },
     {
       icon: discussionsIcon,
       iconSize: '20px',
       text: 'Discussions',
-      url: 'https://github.com/orgs/blockscout/discussions',
+      url: 'https://github.com/orgs/luxdefi/discussions',
     },
     {
       icon: donateIcon,
       iconSize: '20px',
       text: 'Donate',
-      url: 'https://github.com/sponsors/blockscout',
+      url: 'https://github.com/sponsors/luxdefi',
     },
   ];
 
@@ -127,7 +127,7 @@ const Footer = () => {
       <Box gridArea={ gridArea }>
         <Link fontSize="xs" href="https://www.blockscout.com">blockscout.com</Link>
         <Text mt={ 3 } fontSize="xs">
-          Blockscout is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for Ethereum Networks.
+          Lux Explorer is a tool for inspecting and analyzing the decentralized network of blockchains that comprise the Lux Network.
         </Text>
         <VStack spacing={ 1 } mt={ 6 } alignItems="start">
           { apiVersionUrl && (
