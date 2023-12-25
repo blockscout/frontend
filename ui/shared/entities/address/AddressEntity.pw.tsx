@@ -81,17 +81,18 @@ test.describe('loading', () => {
     await expect(component).toHaveScreenshot();
   });
 
-  test('with ENS', async({ mount }) => {
-    const component = await mount(
-      <TestApp>
-        <AddressEntity
-          address={ addressMock.withEns }
-        />
-      </TestApp>,
-    );
+});
 
-    await expect(component).toHaveScreenshot();
-  });
+test('with ENS', async({ mount }) => {
+  const component = await mount(
+    <TestApp>
+      <AddressEntity
+        address={ addressMock.withEns }
+      />
+    </TestApp>,
+  );
+
+  await expect(component).toHaveScreenshot();
 });
 
 test('external link', async({ mount }) => {

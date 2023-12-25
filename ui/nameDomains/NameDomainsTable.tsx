@@ -7,7 +7,7 @@ import arrowIcon from 'icons/arrows/east.svg';
 import { default as Thead } from 'ui/shared/TheadSticky';
 
 import NameDomainsTableItem from './NameDomainsTableItem';
-import { sortFn, type Sort } from './utils';
+import { type Sort } from './utils';
 
 interface Props {
   data: EnsDomainLookupResponse | undefined;
@@ -45,12 +45,7 @@ const NameDomainsTable = ({ data, isLoading, sort, onSortToggle }: Props) => {
         </Tr>
       </Thead>
       <Tbody>
-        {
-          data?.items
-            .slice()
-            .sort(sortFn(sort))
-            .map((item, index) => <NameDomainsTableItem key={ index } { ...item } isLoading={ isLoading }/>)
-        }
+        { data?.items.map((item, index) => <NameDomainsTableItem key={ index } { ...item } isLoading={ isLoading }/>) }
       </Tbody>
     </Table>
   );

@@ -8,7 +8,7 @@ export interface EnsDomain {
     hash: string;
   } | null;
   registrationDate?: string;
-  expiryDate?: string;
+  expiryDate: string | null;
 }
 
 export interface EnsDomainDetailed extends EnsDomain {

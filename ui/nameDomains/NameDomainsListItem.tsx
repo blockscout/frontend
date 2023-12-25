@@ -1,4 +1,4 @@
-import { chakra, Skeleton } from '@chakra-ui/react';
+import { Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { EnsDomain } from 'types/api/ens';
@@ -35,8 +35,8 @@ const NameDomainsListItem = ({ name, isLoading, resolvedAddress, registrationDat
           <ListItemMobileGrid.Label isLoading={ isLoading }>Registered on</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
             <Skeleton isLoaded={ !isLoading }>
-              { dayjs(registrationDate).format('MMM DD YYYY HH:mm:ss A') }
-              <chakra.span color="text_secondary"> { dayjs(registrationDate).fromNow() }</chakra.span>
+              <div>{ dayjs(registrationDate).format('MMM DD YYYY HH:mm:ss A') }</div>
+              <div> { dayjs(registrationDate).fromNow() }</div>
             </Skeleton>
           </ListItemMobileGrid.Value>
         </>
@@ -44,10 +44,10 @@ const NameDomainsListItem = ({ name, isLoading, resolvedAddress, registrationDat
 
       { expiryDate && (
         <>
-          <ListItemMobileGrid.Label isLoading={ isLoading }>Registered on</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>Expiration date</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
             <Skeleton isLoaded={ !isLoading } whiteSpace="pre-wrap">
-              <span>{ dayjs(expiryDate).format('MMM DD YYYY HH:mm:ss A') } </span>
+              <div>{ dayjs(expiryDate).format('MMM DD YYYY HH:mm:ss A') } </div>
               <NameDomainExpiryStatus date={ expiryDate }/>
             </Skeleton>
           </ListItemMobileGrid.Value>
