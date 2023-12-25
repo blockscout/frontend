@@ -4,6 +4,8 @@ import React from 'react';
 
 import type { EnsDomainDetailed } from 'types/api/ens';
 
+import { route } from 'nextjs-routes';
+
 import clockIcon from 'icons/clock.svg';
 import iconSearch from 'icons/search.svg';
 import type { ResourceError } from 'lib/api/resources';
@@ -68,9 +70,12 @@ const NameDomainDetails = ({ query }: Props) => {
             address={ query.data.registrant }
             isLoading={ isLoading }
           />
-          { /* TODO @tom2drum add correct href */ }
           <Tooltip label="Lookup for related domain names">
-            <LinkInternal flexShrink={ 0 } display="inline-flex">
+            <LinkInternal
+              flexShrink={ 0 }
+              display="inline-flex"
+              href={ route({ pathname: '/name-domains', query: { ownedBy: 'true', resolvedTo: 'true', q: query.data.registrant.hash } }) }
+            >
               <Icon as={ iconSearch } boxSize={ 5 } isLoading={ isLoading }/>
             </LinkInternal>
           </Tooltip>
@@ -88,9 +93,12 @@ const NameDomainDetails = ({ query }: Props) => {
             address={ query.data.owner }
             isLoading={ isLoading }
           />
-          { /* TODO @tom2drum add correct href */ }
           <Tooltip label="Lookup for related domain names">
-            <LinkInternal flexShrink={ 0 } display="inline-flex">
+            <LinkInternal
+              flexShrink={ 0 }
+              display="inline-flex"
+              href={ route({ pathname: '/name-domains', query: { ownedBy: 'true', resolvedTo: 'true', q: query.data.owner.hash } }) }
+            >
               <Icon as={ iconSearch } boxSize={ 5 } isLoading={ isLoading }/>
             </LinkInternal>
           </Tooltip>

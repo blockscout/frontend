@@ -4,6 +4,8 @@ import React from 'react';
 
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
+import { route } from 'nextjs-routes';
+
 import config from 'configs/app';
 import iconSearch from 'icons/search.svg';
 import useApiQuery from 'lib/api/useApiQuery';
@@ -64,12 +66,17 @@ const NameDomain = () => {
           flexShrink={ 0 }
         />
       ) }
-      { /* TODO @tom2drum add correct href */ }
-      <Tooltip label="Lookup for related domain names">
-        <LinkInternal flexShrink={ 0 } display="inline-flex">
-          <Icon as={ iconSearch } boxSize={ 5 } isLoading={ isLoading }/>
-        </LinkInternal>
-      </Tooltip>
+      { infoQuery.data?.resolvedAddress && (
+        <Tooltip label="Lookup for related domain names">
+          <LinkInternal
+            flexShrink={ 0 }
+            display="inline-flex"
+            href={ route({ pathname: '/name-domains', query: { ownedBy: 'true', resolvedTo: 'true', q: infoQuery.data?.resolvedAddress?.hash } }) }
+          >
+            <Icon as={ iconSearch } boxSize={ 5 } isLoading={ isLoading }/>
+          </LinkInternal>
+        </Tooltip>
+      ) }
     </Flex>
   );
 

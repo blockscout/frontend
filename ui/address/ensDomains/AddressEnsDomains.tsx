@@ -1,6 +1,8 @@
 import { Button, chakra, Flex, Grid, Icon, Popover, PopoverBody, PopoverContent, PopoverTrigger, Skeleton, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
+import { route } from 'nextjs-routes';
+
 import config from 'configs/app';
 import arrowIcon from 'icons/arrows/east-mini.svg';
 import ensIcon from 'icons/ENS_slim.svg';
@@ -98,8 +100,9 @@ const AddressEnsDomains = ({ addressHash, mainDomainName }: Props) => {
             </div>
           ) }
           { (ownedDomains.length > 9 || resolvedDomains.length > 9) && (
-            // TODO @tom2drum add href to link
-            <LinkInternal>
+            <LinkInternal
+              href={ route({ pathname: '/name-domains', query: { ownedBy: 'true', resolvedTo: 'true', q: addressHash } }) }
+            >
               <span> More results</span>
               <chakra.span color="text_secondary"> ({ data.totalRecords })</chakra.span>
             </LinkInternal>
