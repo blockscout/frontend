@@ -1,10 +1,10 @@
 import { extractVariables, checkTemplate } from './utils';
 
-const template = '{action_type} {source_amount} Ether into {destination_amount} {destination_token}';
+const template = '{action_type} {source_amount} {native} into {destination_amount} {destination_token}';
 
 it('extracts variables names', () => {
   const result = extractVariables(template);
-  expect(result).toEqual([ 'action_type', 'source_amount', 'destination_amount', 'destination_token' ]);
+  expect(result).toEqual([ 'action_type', 'source_amount', 'native', 'destination_amount', 'destination_token' ]);
 });
 
 it('check template true', () => {

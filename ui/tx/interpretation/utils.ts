@@ -4,6 +4,8 @@ import type { TxInterpretationSummary } from 'types/api/txInterpretation';
 // eslint-disable-next-line regexp/no-useless-non-capturing-group
 export const VAR_REGEXP = /\{(?:[^}]+)\}/g;
 
+export const NATIVE_COIN_SYMBOL_VAR_NAME = 'native';
+
 export function extractVariables(templateString: string) {
 
   const matches = templateString.match(VAR_REGEXP);
@@ -22,7 +24,7 @@ export function checkTemplate(summary: TxInterpretationSummary) {
   const variablesNames = extractVariables(summary.summary_template);
 
   for (const name of variablesNames) {
-    if (!summary.summary_template_variables[name]) {
+    if (name !== NATIVE_COIN_SYMBOL_VAR_NAME && !summary.summary_template_variables[name]) {
       return false;
     }
   }

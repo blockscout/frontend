@@ -5,13 +5,14 @@ import React from 'react';
 
 import type { TxInterpretationResponse, TxInterpretationVariable } from 'types/api/txInterpretation';
 
+import config from 'configs/app';
 import actionIcon from 'icons/action.svg';
 import type { ResourceError } from 'lib/api/resources';
 import dayjs from 'lib/date/dayjs';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
-import { extractVariables, getStringChunks } from './utils';
+import { extractVariables, getStringChunks, NATIVE_COIN_SYMBOL_VAR_NAME } from './utils';
 
 type Props = {
   query: UseQueryResult<TxInterpretationResponse, ResourceError>;
@@ -54,8 +55,12 @@ const TxInterpretation = ({ query, className }: Props) => {
       { chunks.map((chunk, index) => {
         return (
           <>
-            <Text whiteSpace="pre">{ chunk }</Text>
-            { index < chunks.length - 1 && <TxInterpretationElementByType { ...variables[variablesNames[index]] }/> }
+            <Text whiteSpace="pre">{ chunk.trim() + ' ' }</Text>
+            { index < chunks.length - 1 && (
+              variablesNames[index] === NATIVE_COIN_SYMBOL_VAR_NAME ?
+                <Text>{ config.chain.currency.symbol }</Text> :
+                <TxInterpretationElementByType { ...variables[variablesNames[index]] }/>
+            ) }
           </>
         );
       }) }
