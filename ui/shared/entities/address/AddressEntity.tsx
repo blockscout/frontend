@@ -1,5 +1,5 @@
 import type { As } from '@chakra-ui/react';
-import { Box, Flex, Skeleton, Tooltip, chakra, VStack } from '@chakra-ui/react';
+import { Box, Flex, Skeleton, Tooltip, chakra, VStack, useColorModeValue } from '@chakra-ui/react';
 import _omit from 'lodash/omit';
 import React from 'react';
 
@@ -10,6 +10,7 @@ import { route } from 'nextjs-routes';
 import iconSafe from 'icons/brands/safe.svg';
 import iconContractVerified from 'icons/contract_verified.svg';
 import iconContract from 'icons/contract.svg';
+import { useAddressHighlightContext } from 'lib/contexts/addressHighlight';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
 import { getIconProps } from '../base/utils';
@@ -148,8 +149,32 @@ const AddressEntry = (props: EntityProps) => {
   const linkProps = _omit(props, [ 'className' ]);
   const partsProps = _omit(props, [ 'className', 'onClick' ]);
 
+  const context = useAddressHighlightContext();
+  const highlightedBgColor = useColorModeValue('blue.50', 'blue.900');
+  const highlightedBorderColor = useColorModeValue('blue.200', 'blue.600');
+
   return (
-    <Container className={ props.className }>
+    <Container
+      className={ props.className }
+      data-hash={ props.address.hash }
+      onMouseEnter={ context?.onMouseEnter }
+      onMouseLeave={ context?.onMouseLeave }
+      position="relative"
+      _before={ !props.isLoading && context?.highlightedAddress === props.address.hash ? {
+        content: `" "`,
+        position: 'absolute',
+        top: '-7px',
+        left: '-5px',
+        width: `calc(100% + ${ props.noCopy ? 10 : 5 }px)`,
+        height: 'calc(100% + 12px)',
+        borderRadius: 'base',
+        borderColor: highlightedBorderColor,
+        borderWidth: '1px',
+        borderStyle: 'dashed',
+        bgColor: highlightedBgColor,
+        zIndex: -1,
+      } : undefined }
+    >
       <Icon { ...partsProps }/>
       <Link { ...linkProps }>
         <Content { ...partsProps }/>

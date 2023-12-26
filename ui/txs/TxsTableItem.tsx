@@ -52,7 +52,8 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
       noCopy={ isOut }
       noLink={ isOut }
       truncation="constant"
-      w="100%"
+      w="min-content"
+      maxW="100%"
       py="2px"
     />
   );
@@ -64,7 +65,8 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
       truncation="constant"
       noCopy={ isIn }
       noLink={ isIn }
-      w="100%"
+      w="min-content"
+      maxW="100%"
       py="2px"
     />
   ) : '-';
@@ -150,7 +152,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
                   isLoading={ isLoading }
                 />
               ) }
-            <VStack alignItems="start" overflow="hidden" ml={ 1 }>
+            <VStack alignItems="start" ml={ 1 } w="calc(100% - 48px)">
               { addressFrom }
               { addressTo }
             </VStack>

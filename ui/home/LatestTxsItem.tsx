@@ -35,7 +35,10 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
 
   return (
     <Grid
-      gridTemplateColumns={ columnNum === 2 ? '3fr 2fr' : '3fr 2fr 150px' }
+      gridTemplateColumns={{
+        lg: columnNum === 2 ? '3fr minmax(auto, 160px)' : '3fr minmax(auto, 160px) 150px',
+        xl: columnNum === 2 ? '3fr minmax(auto, 250px)' : '3fr minmax(auto, 250px) 150px',
+      }}
       gridGap={ 8 }
       width="100%"
       minW="700px"
@@ -77,15 +80,16 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
           </Flex>
         </Box>
       </Flex>
-      <Grid alignItems="center" alignSelf="flex-start" templateColumns="24px auto">
+      <Flex alignItems="center" alignSelf="flex-start">
         <Icon
           as={ rightArrowIcon }
           boxSize={ 6 }
           color="gray.500"
           transform="rotate(90deg)"
           isLoading={ isLoading }
+          flexShrink={ 0 }
         />
-        <Box overflow="hidden" ml={ 1 }>
+        <Box ml={ 1 } maxW="calc(100% - 24px)">
           <AddressEntity
             isLoading={ isLoading }
             address={ tx.from }
@@ -104,7 +108,7 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
             />
           ) }
         </Box>
-      </Grid>
+      </Flex>
       <Box>
         { !config.UI.views.tx.hiddenFields?.value && (
           <Skeleton isLoaded={ !isLoading } mb={ 2 }>

@@ -67,6 +67,7 @@ const TokenTransferTableItem = ({
           truncation="constant"
           tokenHash={ token.address }
           my="5px"
+          w="min-content"
         />
       </Td>
       <Td px={ 0 }>
@@ -81,6 +82,7 @@ const TokenTransferTableItem = ({
           truncation="constant"
           tokenHash={ token.address }
           my="5px"
+          w="min-content"
         />
       </Td>
       { (token.type === 'ERC-721' || token.type === 'ERC-1155') && (

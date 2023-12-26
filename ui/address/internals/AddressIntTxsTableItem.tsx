@@ -83,6 +83,7 @@ const AddressIntTxsTableItem = ({
           isLoading={ isLoading }
           noLink={ isOut }
           noCopy={ isOut }
+          w="min-content"
         />
       </Td>
       <Td px={ 0 } verticalAlign="middle">
@@ -98,6 +99,7 @@ const AddressIntTxsTableItem = ({
             isLoading={ isLoading }
             noLink={ isIn }
             noCopy={ isIn }
+            w="min-content"
           />
         ) }
       </Td>

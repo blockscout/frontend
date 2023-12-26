@@ -32,14 +32,17 @@ export interface EntityBaseProps {
 
 export interface ContainerBaseProps extends Pick<EntityBaseProps, 'className'> {
   children: React.ReactNode;
+  onMouseEnter?: (event: React.MouseEvent) => void;
+  onMouseLeave?: (event: React.MouseEvent) => void;
 }
 
-const Container = chakra(({ className, children }: ContainerBaseProps) => {
+const Container = chakra(({ className, children, ...props }: ContainerBaseProps) => {
   return (
     <Flex
       className={ className }
       alignItems="center"
       minWidth={ 0 } // for content truncation - https://css-tricks.com/flexbox-truncated-text/
+      { ...props }
     >
       { children }
     </Flex>
