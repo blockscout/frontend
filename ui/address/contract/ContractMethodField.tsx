@@ -4,6 +4,7 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import React from 'react';
 import type { Control, ControllerRenderProps, FieldError, UseFormGetValues, UseFormSetValue, UseFormStateReturn } from 'react-hook-form';
@@ -12,7 +13,7 @@ import { NumericFormat } from 'react-number-format';
 import { isAddress, isHex, getAddress } from 'viem';
 
 import type { MethodFormFields } from './types';
-import type { SmartContractMethodArgType } from 'types/api/contract';
+import type { SmartContractMethodArgType, SmartContractMethodInput } from 'types/api/contract';
 
 import ClearButton from 'ui/shared/ClearButton';
 
@@ -21,6 +22,7 @@ import { INT_REGEXP, BYTES_REGEXP, getIntBoundaries, formatBooleanValue } from '
 
 interface Props {
   name: string;
+  type?: SmartContractMethodInput['fieldType'];
   index?: number;
   groupName?: string;
   placeholder: string;
@@ -29,11 +31,14 @@ interface Props {
   setValue: UseFormSetValue<MethodFormFields>;
   getValues: UseFormGetValues<MethodFormFields>;
   isDisabled: boolean;
+  isOptional?: boolean;
   onChange: () => void;
 }
 
-const ContractMethodField = ({ control, name, groupName, index, argType, placeholder, setValue, getValues, isDisabled, onChange }: Props) => {
+const ContractMethodField = ({ control, name, type, groupName, index, argType, placeholder, setValue, getValues, isDisabled, isOptional, onChange }: Props) => {
   const ref = React.useRef<HTMLInputElement>(null);
+  const nativeCoinFieldBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.100');
+  const bgColor = useColorModeValue('white', 'black');
 
   const handleClear = React.useCallback(() => {
     setValue(name, '');
@@ -76,10 +81,28 @@ const ContractMethodField = ({ control, name, groupName, index, argType, placeho
     const hasZerosControl = intMatch && Number(intMatch.power) >= 64;
 
     return (
-      <Box w="100%">
+      <Box
+        w="100%"
+        pt={{ lg: type === 'native_coin' ? 1 : 0 }}
+        pb={{ base: type === 'native_coin' ? '6px' : 0, lg: type === 'native_coin' ? 1 : 0 }}
+        position="relative"
+        _before={ type === 'native_coin' ? {
+          content: `" "`,
+          position: 'absolute',
+          top: 0,
+          right: '-6px',
+          width: { base: 'calc(100% + 12px)', lg: 'calc(100% + 6px)' },
+          height: '100%',
+          bgColor: nativeCoinFieldBgColor,
+          borderTopLeftRadius: 'none',
+          borderTopRightRadius: { lg: 'base' },
+          borderBottomRightRadius: 'base',
+          borderBottomLeftRadius: { base: 'base', lg: 'none' },
+          zIndex: -1,
+        } : undefined }
+      >
         <FormControl
           id={ name }
-          mb={{ base: 1, lg: 0 }}
           isDisabled={ isDisabled }
         >
           <InputGroup size="xs">
@@ -93,10 +116,11 @@ const ContractMethodField = ({ control, name, groupName, index, argType, placeho
               } : {}) }
               ref={ ref }
               isInvalid={ Boolean(error) }
-              required
+              required={ !isOptional }
               placeholder={ placeholder }
               paddingRight={ hasZerosControl ? '120px' : '40px' }
               autoComplete="off"
+              bgColor={ bgColor }
             />
             <InputRightElement w="auto" right={ 1 }>
               { typeof field.value === 'string' && field.value.replace('\n', '') && <ClearButton onClick={ handleClear } isDisabled={ isDisabled }/> }
@@ -107,7 +131,7 @@ const ContractMethodField = ({ control, name, groupName, index, argType, placeho
         { error && <Box color="error" fontSize="sm" mt={ 1 }>{ error.message }</Box> }
       </Box>
     );
-  }, [ index, groupName, name, intMatch, isDisabled, placeholder, handleClear, handleAddZeroesClick ]);
+  }, [ index, groupName, name, intMatch, type, nativeCoinFieldBgColor, isDisabled, isOptional, placeholder, bgColor, handleClear, handleAddZeroesClick ]);
 
   const validate = React.useCallback((_value: string | Array<string>) => {
     if (typeof _value === 'object') {
@@ -116,7 +140,7 @@ const ContractMethodField = ({ control, name, groupName, index, argType, placeho
 
     const value = _value.replace('\n', '');
 
-    if (!value) {
+    if (!value && !isOptional) {
       return 'Field is required';
     }
 
@@ -174,14 +198,14 @@ const ContractMethodField = ({ control, name, groupName, index, argType, placeho
     }
 
     return true;
-  }, [ bytesMatch, intMatch, argType ]);
+  }, [ isOptional, argType, intMatch, bytesMatch ]);
 
   return (
     <Controller
       name={ name }
       control={ control }
       render={ renderInput }
-      rules={{ required: 'Field is required', validate }}
+      rules={{ required: isOptional ? false : 'Field is required', validate }}
     />
   );
 };

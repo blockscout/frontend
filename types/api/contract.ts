@@ -89,6 +89,7 @@ export interface SmartContractMethodInput {
   name: string;
   type: SmartContractMethodArgType;
   components?: Array<SmartContractMethodInput>;
+  fieldType?: 'native_coin';
 }
 
 export interface SmartContractMethodOutput extends SmartContractMethodInput {

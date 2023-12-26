@@ -6,6 +6,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 import type { MethodFormFields, ContractMethodCallResult } from './types';
 import type { SmartContractMethodInput, SmartContractMethod } from 'types/api/contract';
 
+import config from 'configs/app';
 import arrowIcon from 'icons/arrows/down-right.svg';
 import * as mixpanel from 'lib/mixpanel/index';
 
@@ -38,9 +39,10 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
     return [
       ...('inputs' in data ? data.inputs : []),
       ...('stateMutability' in data && data.stateMutability === 'payable' ? [ {
-        name: 'value',
+        name: `Send native ${ config.chain.currency.symbol }`,
         type: 'uint256' as const,
         internalType: 'uint256' as const,
+        fieldType: 'native_coin' as const,
       } ] : []),
     ];
   }, [ data ]);
@@ -139,9 +141,11 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
                 <ContractMethodCallableRow
                   key={ fieldName }
                   fieldName={ fieldName }
+                  fieldType={ input.fieldType }
                   argName={ input.name }
                   argType={ input.type }
                   isDisabled={ isLoading }
+                  isOptional={ input.fieldType === 'native_coin' && inputs.length > 1 }
                   onChange={ handleFormChange }
                 />
               );
