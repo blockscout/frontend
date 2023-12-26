@@ -35,8 +35,8 @@ const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHid
         setIsSticky(false);
       }
     }
-
-    if (isMobile && innerRef?.current?.getBoundingClientRect() && innerRef?.current?.getBoundingClientRect().y < TOP_BAR_HEIGHT) {
+    const clientRect = isMobile && innerRef?.current?.getBoundingClientRect();
+    if (clientRect && clientRect.y < TOP_BAR_HEIGHT) {
       onHide?.();
     }
   }, [ isMobile, onHide, isHomepage ]);
