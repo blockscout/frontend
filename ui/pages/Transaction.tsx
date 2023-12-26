@@ -14,19 +14,15 @@ import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TxDetails from 'ui/tx/TxDetails';
-import TxInternals from 'ui/tx/TxInternals';
 import TxLogs from 'ui/tx/TxLogs';
-import TxRawTrace from 'ui/tx/TxRawTrace';
 import TxState from 'ui/tx/TxState';
 import TxTokenTransfer from 'ui/tx/TxTokenTransfer';
 
 const TABS: Array<RoutedTab> = [
   { id: 'index', title: 'Details', component: <TxDetails/> },
   { id: 'token_transfers', title: 'Token transfers', component: <TxTokenTransfer/> },
-  { id: 'internal', title: 'Internal txns', component: <TxInternals/> },
   { id: 'logs', title: 'Logs', component: <TxLogs/> },
   { id: 'state', title: 'State', component: <TxState/> },
-  { id: 'raw_trace', title: 'Raw trace', component: <TxRawTrace/> },
 ];
 
 const TransactionPageContent = () => {

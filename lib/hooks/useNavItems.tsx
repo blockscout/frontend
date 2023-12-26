@@ -20,7 +20,6 @@ import apiDocsIcon from 'icons/restAPI.svg';
 import rpcIcon from 'icons/RPC.svg';
 import statsIcon from 'icons/stats.svg';
 import tokensIcon from 'icons/token.svg';
-import topAccountsIcon from 'icons/top-accounts.svg';
 import transactionsIcon from 'icons/transactions.svg';
 import txnBatchIcon from 'icons/txn_batches.svg';
 import verifiedIcon from 'icons/verified.svg';
@@ -49,12 +48,6 @@ export default function useNavItems(): ReturnType {
   return React.useMemo(() => {
     let blockchainNavItems: Array<NavItem> | Array<Array<NavItem>> = [];
 
-    const topAccounts = {
-      text: 'Top accounts',
-      nextRoute: { pathname: '/accounts' as const },
-      icon: topAccountsIcon,
-      isActive: pathname === '/accounts',
-    };
     const blocks = {
       text: 'Blocks',
       nextRoute: { pathname: '/blocks' as const },
@@ -68,8 +61,8 @@ export default function useNavItems(): ReturnType {
       isActive: pathname === '/txs' || pathname === '/tx/[hash]',
     };
     const verifiedContracts =
-    // eslint-disable-next-line max-len
-     { text: 'Verified contracts', nextRoute: { pathname: '/verified-contracts' as const }, icon: verifiedIcon, isActive: pathname === '/verified-contracts' };
+      // eslint-disable-next-line max-len
+      { text: 'Verified contracts', nextRoute: { pathname: '/verified-contracts' as const }, icon: verifiedIcon, isActive: pathname === '/verified-contracts' };
 
     if (config.features.rollup.isEnabled) {
       blockchainNavItems = [
@@ -88,7 +81,6 @@ export default function useNavItems(): ReturnType {
           { text: 'Output roots', nextRoute: { pathname: '/l2-output-roots' as const }, icon: outputRootsIcon, isActive: pathname === '/l2-output-roots' },
         ],
         [
-          topAccounts,
           verifiedContracts,
         ],
       ];
@@ -96,7 +88,6 @@ export default function useNavItems(): ReturnType {
       blockchainNavItems = [
         txs,
         blocks,
-        topAccounts,
         verifiedContracts,
         config.features.beaconChain.isEnabled && {
           text: 'Withdrawals',
@@ -157,7 +148,7 @@ export default function useNavItems(): ReturnType {
         icon: statsIcon,
         isActive: pathname === '/stats',
       } : null,
-      {
+      null && {
         text: 'API',
         icon: apiDocsIcon,
         isActive: apiNavItems.some(item => isInternalItem(item) && item.isActive),

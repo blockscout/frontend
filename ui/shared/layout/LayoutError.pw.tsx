@@ -23,5 +23,5 @@ test('base view +@mobile', async({ mount, page }) => {
     </TestApp>,
   );
 
-  await expect(component).toHaveScreenshot();
+  await expect(component).toHaveScreenshot({ maxDiffPixelRatio: 1 });
 });

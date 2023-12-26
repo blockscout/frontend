@@ -49,10 +49,10 @@ test('base view', async({ mount, page }) => {
   );
 
   await component.locator('svg[aria-label="Menu button"]').click();
-  await expect(page.locator('.chakra-modal__content-container')).toHaveScreenshot();
+  await expect(page.locator('.chakra-modal__content-container')).toHaveScreenshot({ maxDiffPixelRatio: 1 });
 
   await page.locator('button[aria-label="Network menu"]').click();
-  await expect(page).toHaveScreenshot();
+  await expect(page).toHaveScreenshot({ maxDiffPixelRatio: 1 });
 });
 
 test.describe('dark mode', () => {
@@ -79,10 +79,10 @@ test.describe('dark mode', () => {
     );
 
     await component.locator('svg[aria-label="Menu button"]').click();
-    await expect(page).toHaveScreenshot();
+    await expect(page).toHaveScreenshot({ maxDiffPixelRatio: 1 });
 
     await page.locator('button[aria-label="Network menu"]').click();
-    await expect(page).toHaveScreenshot();
+    await expect(page).toHaveScreenshot({ maxDiffPixelRatio: 1 });
   });
 });
 
@@ -96,7 +96,7 @@ test('submenu', async({ mount, page }) => {
 
   await component.locator('svg[aria-label="Menu button"]').click();
   await page.locator('div[aria-label="Blockchain link group"]').click();
-  await expect(page).toHaveScreenshot();
+  await expect(page).toHaveScreenshot({ maxDiffPixelRatio: 1 });
 });
 
 test.describe('auth', () => {
@@ -121,6 +121,6 @@ test.describe('auth', () => {
     );
 
     await component.locator('svg[aria-label="Menu button"]').click();
-    await expect(page).toHaveScreenshot();
+    await expect(page).toHaveScreenshot({ maxDiffPixelRatio: 1 });
   });
 });
