@@ -1,6 +1,7 @@
 import { Drawer, DrawerOverlay, DrawerContent, DrawerBody, useDisclosure, IconButton } from '@chakra-ui/react';
 import React from 'react';
 
+import useIsMobile from 'lib/hooks/useIsMobile';
 import AddressIdenticon from 'ui/shared/entities/address/AddressIdenticon';
 import IconSvg from 'ui/shared/IconSvg';
 import useWallet from 'ui/snippets/walletMenu/useWallet';
@@ -13,10 +14,11 @@ const WalletMenuMobile = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isWalletConnected, address, connect, disconnect, isModalOpening, isModalOpen } = useWallet();
   const { themedBackground, themedBorderColor, themedColor } = useMenuButtonColors();
+  const isMobile = useIsMobile();
 
   return (
     <>
-      <WalletTooltip isDisabled={ isWalletConnected } isMobile>
+      <WalletTooltip isDisabled={ isWalletConnected || isMobile === undefined || !isMobile } isMobile>
         <IconButton
           aria-label="wallet menu"
           icon={ isWalletConnected ?

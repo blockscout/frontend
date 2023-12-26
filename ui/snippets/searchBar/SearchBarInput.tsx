@@ -20,25 +20,33 @@ interface Props {
 }
 
 const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHide, onClear, value }: Props, ref: React.ForwardedRef<HTMLFormElement>) => {
+  const innerRef = React.useRef<HTMLFormElement>(null);
+  React.useImperativeHandle(ref, () => innerRef.current as HTMLFormElement, []);
   const [ isSticky, setIsSticky ] = React.useState(false);
   const scrollDirection = useScrollDirection();
   const isMobile = useIsMobile();
 
   const handleScroll = React.useCallback(() => {
     const TOP_BAR_HEIGHT = 36;
-    if (window.pageYOffset >= TOP_BAR_HEIGHT) {
-      setIsSticky(true);
-    } else {
-      setIsSticky(false);
+    if (!isHomepage) {
+      if (window.scrollY >= TOP_BAR_HEIGHT) {
+        setIsSticky(true);
+      } else {
+        setIsSticky(false);
+      }
     }
-  }, [ ]);
+    const clientRect = isMobile && innerRef?.current?.getBoundingClientRect();
+    if (clientRect && clientRect.y < TOP_BAR_HEIGHT) {
+      onHide?.();
+    }
+  }, [ isMobile, onHide, isHomepage ]);
 
   const handleChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
     onChange(event.target.value);
   }, [ onChange ]);
 
   React.useEffect(() => {
-    if (!isMobile || isHomepage) {
+    if (!isMobile) {
       return;
     }
     const throttledHandleScroll = throttle(handleScroll, 300);
@@ -48,22 +56,14 @@ const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHid
     return () => {
       window.removeEventListener('scroll', throttledHandleScroll);
     };
-  // replicate componentDidMount
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ isMobile ]);
+  }, [ isMobile, handleScroll ]);
 
   const bgColor = useColorModeValue('white', 'black');
   const transformMobile = scrollDirection !== 'down' ? 'translateY(0)' : 'translateY(-100%)';
 
-  React.useEffect(() => {
-    if (isMobile && scrollDirection === 'down') {
-      onHide?.();
-    }
-  }, [ scrollDirection, onHide, isMobile ]);
-
   return (
     <chakra.form
-      ref={ ref }
+      ref={ innerRef }
       noValidate
       onSubmit={ onSubmit }
       onBlur={ onBlur }

@@ -1,4 +1,4 @@
-import { Box, Link, Skeleton } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
@@ -7,7 +7,6 @@ import MarketplaceCategoriesMenu from 'ui/marketplace/MarketplaceCategoriesMenu'
 import MarketplaceDisclaimerModal from 'ui/marketplace/MarketplaceDisclaimerModal';
 import MarketplaceList from 'ui/marketplace/MarketplaceList';
 import FilterInput from 'ui/shared/filters/FilterInput';
-import IconSvg from 'ui/shared/IconSvg';
 
 import useMarketplace from '../marketplace/useMarketplace';
 const feature = config.features.marketplace;
@@ -91,29 +90,6 @@ const Marketplace = () => {
           appId={ selectedApp.id }
         />
       ) }
-
-      <Skeleton
-        isLoaded={ !isPlaceholderData }
-        marginTop={{ base: 8, sm: 16 }}
-        display="inline-block"
-      >
-        <Link
-          fontWeight="bold"
-          display="inline-flex"
-          alignItems="baseline"
-          href={ feature.submitFormUrl }
-          isExternal
-        >
-          <IconSvg
-            name="plus"
-            w={ 3 }
-            h={ 3 }
-            mr={ 2 }
-          />
-
-              Submit an app
-        </Link>
-      </Skeleton>
     </>
   );
 };
