@@ -76,7 +76,7 @@ const ProfileMenuDesktop = ({ isHomePage }: Props) => {
         textAlign="center"
         padding={ 2 }
         isDisabled={ hasMenu }
-        openDelay={ 300 }
+        openDelay={ 500 }
       >
         <Box>
           <PopoverTrigger>

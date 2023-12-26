@@ -1,4 +1,4 @@
-import { Flex, Skeleton } from '@chakra-ui/react';
+import { Grid, Flex, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
@@ -72,16 +72,31 @@ const TokenTransferListItem = ({
         />
       </Flex>
       { valueStr && (token.type === 'ERC-20' || token.type === 'ERC-1155') && (
-        <Flex columnGap={ 2 } w="100%">
+        <Grid gap={ 2 } templateColumns={ `1fr auto auto${ usd ? ' auto' : '' }` }>
           <Skeleton isLoaded={ !isLoading } flexShrink={ 0 } fontWeight={ 500 }>
             Value
           </Skeleton>
-          <Skeleton isLoaded={ !isLoading } color="text_secondary">
+          <Skeleton
+            isLoaded={ !isLoading }
+            color="text_secondary"
+            wordBreak="break-all"
+            overflow="hidden"
+            flexGrow={ 1 }
+          >
             <span>{ valueStr }</span>
           </Skeleton>
           { token.symbol && <TruncatedValue isLoading={ isLoading } value={ token.symbol }/> }
-          { usd && <Skeleton isLoaded={ !isLoading } color="text_secondary"><span>(${ usd })</span></Skeleton> }
-        </Flex>
+          { usd && (
+            <Skeleton
+              isLoaded={ !isLoading }
+              color="text_secondary"
+              wordBreak="break-all"
+              overflow="hidden"
+            >
+              <span>(${ usd })</span>
+            </Skeleton>
+          ) }
+        </Grid>
       ) }
       { 'token_id' in total && (token.type === 'ERC-721' || token.type === 'ERC-1155') && (
         <NftEntity
