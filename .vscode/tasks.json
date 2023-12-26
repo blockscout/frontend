@@ -318,6 +318,7 @@
               "main.L2",
               "poa_core",
               "eth_goerli",
+              "sepolia",
               "eth",
               "rootstock",
               "polygon",
