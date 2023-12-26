@@ -26,9 +26,19 @@ const TxInterpretationElementByType = ({ variable }: { variable?: TxInterpretati
   const { type, value } = variable;
   switch (type) {
     case 'address':
-      return <AddressEntity address={ value } truncation="constant" sx={{ ':not(:first-child)': { marginLeft: 1 } }}/>;
+      return <AddressEntity address={ value } truncation="constant" sx={{ ':not(:first-child)': { marginLeft: 1 } }} whiteSpace="initial"/>;
     case 'token':
-      return <TokenEntity token={ value } onlySymbol width="fit-content" sx={{ ':not(:first-child)': { marginLeft: 1 } }}/>;
+      return (
+        <TokenEntity
+          token={ value }
+          onlySymbol
+          noCopy
+          width="fit-content"
+          sx={{ ':not(:first-child)': { marginLeft: 1 } }}
+          mr={ 2 }
+          whiteSpace="initial"
+        />
+      );
     case 'currency': {
       let numberString = '';
       if (BigNumber(value).isLessThan(0.1)) {
@@ -42,10 +52,10 @@ const TxInterpretationElementByType = ({ variable }: { variable?: TxInterpretati
     }
     case 'timestamp':
       // timestamp is in unix format
-      return <Text>{ dayjs(Number(value) * 1000).format('llll') + ' ' }</Text>;
+      return <Text color="text_secondary">{ dayjs(Number(value) * 1000).format('llll') + ' ' }</Text>;
     case 'string':
     default: {
-      return <Text>{ value.toString() + ' ' }</Text>;
+      return <Text color="text_secondary">{ value.toString() + ' ' }</Text>;
     }
   }
 };
@@ -67,8 +77,8 @@ const TxInterpretation = ({ summary, isLoading, className }: Props) => {
       <Icon as={ actionIcon } boxSize={ 5 } color="text_secondary" mr={ 2 }/>
       { chunks.map((chunk, index) => {
         return (
-          <Flex whiteSpace="pre" key={ chunk + index }>
-            <Text>{ chunk.trim() + (chunk.trim() && variablesNames[index] ? ' ' : '') }</Text>
+          <Flex whiteSpace="pre" key={ chunk + index } fontSize="lg" fontWeight={ 500 }>
+            <Text color="text_secondary">{ chunk.trim() + (chunk.trim() && variablesNames[index] ? ' ' : '') }</Text>
             { index < variablesNames.length && (
               variablesNames[index] === NATIVE_COIN_SYMBOL_VAR_NAME ?
                 <Text>{ config.chain.currency.symbol + ' ' }</Text> :

@@ -96,7 +96,7 @@ const TransactionPageContent = () => {
   const titleSecondRow = (
     <Box display={{ base: 'block', lg: 'flex' }} alignItems="center" w="100%">
       { hasInterpretationFeature && (
-        <Flex mr={{ base: 0, lg: 6 }} flexWrap="wrap">
+        <Flex mr={{ base: 0, lg: 6 }} flexWrap="wrap" alignItems="center">
           <TxInterpretation
             summary={ txInterpretationQuery.data?.data.summaries[0] }
             isLoading={ txInterpretationQuery.isPlaceholderData }
