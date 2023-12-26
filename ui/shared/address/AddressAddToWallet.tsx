@@ -106,7 +106,7 @@ const AddressAddToWallet = ({ className, token, isLoading, variant = 'icon', ico
 
   return (
     <Tooltip label={ `Add token to ${ WALLETS_INFO[wallet].name }` }>
-      <Box className={ className } display="inline-flex" cursor="pointer" onClick={ handleClick } flexShrink={ 0 }>
+      <Box className={ className } display="inline-flex" cursor="pointer" onClick={ handleClick } flexShrink={ 0 } aria-label="Add token to wallet">
         <Icon as={ WALLETS_INFO[wallet].icon } boxSize={ iconSize }/>
       </Box>
     </Tooltip>
