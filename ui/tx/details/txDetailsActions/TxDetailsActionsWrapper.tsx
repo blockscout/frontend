@@ -36,7 +36,7 @@ const TxDetailsActions = ({ children, isLoading }: Props) => {
       isLoading={ isLoading }
     >
       <Flex
-        id="tx-actions"
+        id={ TX_ACTIONS_BLOCK_ID }
         flexDirection="column"
         alignItems="stretch"
         rowGap={ 5 }

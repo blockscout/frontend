@@ -4,10 +4,13 @@ import { getEnvValue } from '../utils';
 
 const title = 'Transaction interpretation';
 
-const config: Feature<{ isEnabled: true }> = (() => {
-  if (getEnvValue('NEXT_PUBLIC_TRANSACTION_INTERPRETATION_ENABLED') === 'true') {
+const provider = getEnvValue('NEXT_PUBLIC_TRANSACTION_INTERPRETATION_PROVIDER') || 'none';
+
+const config: Feature<{ provider: string }> = (() => {
+  if (provider !== 'none') {
     return Object.freeze({
       title,
+      provider,
       isEnabled: true,
     });
   }

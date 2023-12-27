@@ -1,14 +1,14 @@
-import { Skeleton, Flex, Text, Icon, chakra } from '@chakra-ui/react';
+import { Skeleton, Flex, Text, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { TxInterpretationSummary, TxInterpretationVariable } from 'types/api/txInterpretation';
 
 import config from 'configs/app';
-import actionIcon from 'icons/action.svg';
 import dayjs from 'lib/date/dayjs';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
+import IconSvg from 'ui/shared/IconSvg';
 
 import { extractVariables, getStringChunks, NATIVE_COIN_SYMBOL_VAR_NAME } from './utils';
 
@@ -45,8 +45,10 @@ const TxInterpretationElementByType = ({ variable }: { variable?: TxInterpretati
         numberString = BigNumber(value).toPrecision(2);
       } else if (BigNumber(value).isLessThan(10000)) {
         numberString = BigNumber(value).dp(2).toFormat();
-      } else {
+      } else if (BigNumber(value).isLessThan(1000000)) {
         numberString = BigNumber(value).dividedBy(1000).toFormat(2) + 'K';
+      } else {
+        numberString = BigNumber(value).dividedBy(1000000).toFormat(2) + 'M';
       }
       return <Text>{ numberString + ' ' }</Text>;
     }
@@ -74,10 +76,10 @@ const TxInterpretation = ({ summary, isLoading, className }: Props) => {
 
   return (
     <Skeleton display="flex" flexWrap="wrap" alignItems="center" isLoaded={ !isLoading } className={ className }>
-      <Icon as={ actionIcon } boxSize={ 5 } color="text_secondary" mr={ 2 }/>
+      <IconSvg name="lightning" boxSize={ 5 } color="text_secondary" mr={ 2 }/>
       { chunks.map((chunk, index) => {
         return (
-          <Flex whiteSpace="pre" key={ chunk + index } fontSize="lg" fontWeight={ 500 }>
+          <Flex whiteSpace="pre" key={ chunk + index } fontWeight={ 500 }>
             <Text color="text_secondary">{ chunk.trim() + (chunk.trim() && variablesNames[index] ? ' ' : '') }</Text>
             { index < variablesNames.length && (
               variablesNames[index] === NATIVE_COIN_SYMBOL_VAR_NAME ?

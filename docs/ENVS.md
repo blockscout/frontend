@@ -476,11 +476,9 @@ This feature is **enabled by default** with the `['metamask']` value. To switch 
 
 ### Transaction interpretation
 
-<!-- Nikita will provide feature description -->
-
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_TRANSACTION_INTERPRETATION_ENABLED | `boolean`| Set to `true` to enable transaction interpretation | - | - | `true` |
+| NEXT_PUBLIC_TRANSACTION_INTERPRETATION_PROVIDER | `blockscout` \| `none` | Transaction interpretation provider that displays human readable transaction description | - | `none` | `blockscout` |
 
 &nbsp;
 

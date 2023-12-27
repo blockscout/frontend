@@ -12,18 +12,15 @@ import {
   Skeleton,
   Alert,
 } from '@chakra-ui/react';
-import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
 import { ZKEVM_L2_TX_STATUSES } from 'types/api/transaction';
-import type { TxInterpretationResponse } from 'types/api/txInterpretation';
 
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import type { ResourceError } from 'lib/api/resources';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
@@ -47,8 +44,7 @@ import TextSeparator from 'ui/shared/TextSeparator';
 import TxFeeStability from 'ui/shared/tx/TxFeeStability';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
-import TxDetailsActionsFallback from 'ui/tx/details/txDetailsActions/TxDetailsActionsFallback';
-import TxDetailsActionsInterpretation from 'ui/tx/details/txDetailsActions/TxDetailsActionsInterpretation';
+import TxDetailsActions from 'ui/tx/details/txDetailsActions/TxDetailsActions';
 import TxDetailsFeePerGas from 'ui/tx/details/TxDetailsFeePerGas';
 import TxDetailsGasPrice from 'ui/tx/details/TxDetailsGasPrice';
 import TxDetailsOther from 'ui/tx/details/TxDetailsOther';
@@ -59,11 +55,7 @@ import TxAllowedPeekers from 'ui/tx/TxAllowedPeekers';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
 import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
 
-type Props = {
-  txInterpretationQuery?: UseQueryResult<TxInterpretationResponse, ResourceError>;
-}
-
-const TxDetails = ({ txInterpretationQuery }: Props) => {
+const TxDetails = () => {
   const { data, isPlaceholderData, isError, socketStatus, error } = useFetchTxInfo();
 
   const [ isExpanded, setIsExpanded ] = React.useState(false);
@@ -248,25 +240,7 @@ const TxDetails = ({ txInterpretationQuery }: Props) => {
 
         <DetailsInfoItemDivider/>
 
-        { config.features.txInterpretation.isEnabled && txInterpretationQuery !== undefined && (
-          <>
-            <TxDetailsActionsInterpretation
-              actions={ txInterpretationQuery.data?.data.summaries }
-              isLoading={ isPlaceholderData || txInterpretationQuery.isPlaceholderData }
-            />
-            { (isPlaceholderData ||
-              txInterpretationQuery.isPlaceholderData ||
-              (txInterpretationQuery.data?.data.summaries && txInterpretationQuery.data?.data.summaries.length > 1)) &&
-              <DetailsInfoItemDivider/> }
-          </>
-        ) }
-        { /* if tx interpretation is not configured, show tx actions from tx info */ }
-        { !config.features.txInterpretation.isEnabled && data.actions && data.actions.length > 0 && (
-          <>
-            <TxDetailsActionsFallback actions={ data.actions } isLoading={ isPlaceholderData }/>
-            <DetailsInfoItemDivider/>
-          </>
-        ) }
+        <TxDetailsActions hash={ data.hash } actions={ data.actions } isTxDataLoading={ isPlaceholderData }/>
 
         <DetailsInfoItem
           title="From"

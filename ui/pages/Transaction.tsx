@@ -1,4 +1,3 @@
-import { Box, Flex, Link } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -8,24 +7,20 @@ import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { TX, TX_INTERPRETATION } from 'stubs/tx';
-import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
+import { TX } from 'stubs/tx';
 import TextAd from 'ui/shared/ad/TextAd';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import EntityTags from 'ui/shared/EntityTags';
-import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import useTabIndexFromQuery from 'ui/shared/Tabs/useTabIndexFromQuery';
-import { TX_ACTIONS_BLOCK_ID } from 'ui/tx/details/txDetailsActions/TxDetailsActionsWrapper';
-import TxInterpretation from 'ui/tx/interpretation/TxInterpretation';
 import TxDetails from 'ui/tx/TxDetails';
 import TxDetailsWrapped from 'ui/tx/TxDetailsWrapped';
 import TxInternals from 'ui/tx/TxInternals';
 import TxLogs from 'ui/tx/TxLogs';
 import TxRawTrace from 'ui/tx/TxRawTrace';
 import TxState from 'ui/tx/TxState';
+import TxSubHeading from 'ui/tx/TxSubHeading';
 import TxTokenTransfer from 'ui/tx/TxTokenTransfer';
 
 const TransactionPageContent = () => {
@@ -42,21 +37,11 @@ const TransactionPageContent = () => {
     },
   });
 
-  const hasInterpretationFeature = config.features.txInterpretation.isEnabled;
-
-  const txInterpretationQuery = useApiQuery('tx_interpretation', {
-    pathParams: { hash },
-    queryOptions: {
-      enabled: Boolean(hash) && hasInterpretationFeature,
-      placeholderData: TX_INTERPRETATION,
-    },
-  });
-
   const tabs: Array<RoutedTab> = [
     {
       id: 'index',
       title: config.features.suave.isEnabled && data?.wrapped ? 'Confidential compute tx details' : 'Details',
-      component: <TxDetails txInterpretationQuery={ txInterpretationQuery }/>,
+      component: <TxDetails/>,
     },
     config.features.suave.isEnabled && data?.wrapped ?
       { id: 'wrapped', title: 'Regular tx details', component: <TxDetailsWrapped data={ data.wrapped }/> } :
@@ -90,28 +75,7 @@ const TransactionPageContent = () => {
     };
   }, [ appProps.referrer ]);
 
-  const hasInterpretation = hasInterpretationFeature &&
-    (txInterpretationQuery.isPlaceholderData || txInterpretationQuery.data?.data.summaries.length);
-
-  const titleSecondRow = (
-    <Box display={{ base: 'block', lg: 'flex' }} alignItems="center" w="100%">
-      { hasInterpretationFeature && (
-        <Flex mr={{ base: 0, lg: 6 }} flexWrap="wrap" alignItems="center">
-          <TxInterpretation
-            summary={ txInterpretationQuery.data?.data.summaries[0] }
-            isLoading={ txInterpretationQuery.isPlaceholderData }
-          />
-          { !txInterpretationQuery.isPlaceholderData && txInterpretationQuery.data?.data.summaries && txInterpretationQuery.data?.data.summaries.length > 1 &&
-            <Link ml={ 3 } href={ `#${ TX_ACTIONS_BLOCK_ID }` }>all actions</Link> }
-        </Flex>
-      ) }
-      { !hasInterpretation && <TxEntity hash={ hash } noLink noCopy={ false } fontWeight={ 500 } mr={{ base: 0, lg: 2 }} fontFamily="heading"/> }
-      <Flex alignItems="center" justifyContent={{ base: 'start', lg: 'space-between' }} flexGrow={ 1 }>
-        { !data?.tx_tag && <AccountActionsMenu mr={ 3 } mt={{ base: 3, lg: 0 }}/> }
-        <NetworkExplorers type="tx" pathParam={ hash } ml={{ base: 0, lg: 'auto' }} mt={{ base: 3, lg: 0 }}/>
-      </Flex>
-    </Box>
-  );
+  const titleSecondRow = <TxSubHeading hash={ hash } hasTag={ Boolean(data?.tx_tag) }/>;
 
   return (
     <>
