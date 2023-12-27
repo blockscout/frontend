@@ -1,19 +1,15 @@
 import {
-  Box, Flex, Heading, Icon, IconButton, Image, Link, List, Modal, ModalBody,
+  Box, Flex, Heading, IconButton, Image, Link, List, Modal, ModalBody,
   ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tag, Text, useColorModeValue,
 } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import type { MarketplaceAppOverview } from 'types/client/marketplace';
 
-import linkIcon from 'icons/link.svg';
-import ghIcon from 'icons/social/git.svg';
-import tgIcon from 'icons/social/telega.svg';
-import twIcon from 'icons/social/tweet.svg';
-import starFilledIcon from 'icons/star_filled.svg';
-import starOutlineIcon from 'icons/star_outline.svg';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
+import type { IconName } from 'ui/shared/IconSvg';
+import IconSvg from 'ui/shared/IconSvg';
 
 import MarketplaceAppModalLink from './MarketplaceAppModalLink';
 
@@ -47,15 +43,15 @@ const MarketplaceAppModal = ({
 
   const socialLinks = [
     telegram ? {
-      icon: tgIcon,
+      icon: 'social/telega' as IconName,
       url: telegram,
     } : null,
     twitter ? {
-      icon: twIcon,
+      icon: 'social/tweet' as IconName,
       url: twitter,
     } : null,
     github ? {
-      icon: ghIcon,
+      icon: 'social/git' as IconName,
       url: github,
     } : null,
   ].filter(Boolean);
@@ -138,8 +134,8 @@ const MarketplaceAppModal = ({
                 h={ 8 }
                 onClick={ handleFavoriteClick }
                 icon={ isFavorite ?
-                  <Icon as={ starFilledIcon } w={ 4 } h={ 4 } color="yellow.400"/> :
-                  <Icon as={ starOutlineIcon } w={ 4 } h={ 4 } color="gray.300"/> }
+                  <IconSvg name="star_filled" w={ 4 } h={ 4 } color="yellow.400"/> :
+                  <IconSvg name="star_outline" w={ 4 } h={ 4 } color="gray.300"/> }
               />
             </Box>
           </Box>
@@ -188,8 +184,8 @@ const MarketplaceAppModal = ({
               maxW="100%"
               overflow="hidden"
             >
-              <Icon
-                as={ linkIcon }
+              <IconSvg
+                name="link"
                 display="inline"
                 verticalAlign="baseline"
                 boxSize="18px"
@@ -227,8 +223,8 @@ const MarketplaceAppModal = ({
                   w={ 10 }
                   h={ 10 }
                 >
-                  <Icon
-                    as={ icon }
+                  <IconSvg
+                    name={ icon }
                     w="20px"
                     h="20px"
                     display="block"

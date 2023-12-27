@@ -4,7 +4,6 @@ import {
   Text,
   Grid,
   Button,
-  Icon,
   chakra,
   Popover,
   PopoverTrigger,
@@ -19,10 +18,9 @@ import React from 'react';
 
 import { SolidityscanReport } from 'types/api/contract';
 
-import scoreNotOkIcon from 'icons/score/score-not-ok.svg';
-import scoreOkIcon from 'icons/score/score-ok.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import { SOLIDITYSCAN_REPORT } from 'stubs/contract';
+import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/LinkExternal';
 
 type DistributionItem = {
@@ -125,7 +123,7 @@ const SolidityscanReport = ({ className, hash }: Props) => {
             h="32px"
             flexShrink={ 0 }
           >
-            <Icon as={ score < 80 ? scoreNotOkIcon : scoreOkIcon } boxSize={ 5 } mr={ 1 }/>
+            <IconSvg name={ score < 80 ? 'score/score-not-ok' : 'score/score-ok' } boxSize={ 5 } mr={ 1 }/>
             { score }
           </Button>
         </Skeleton>
@@ -143,7 +141,7 @@ const SolidityscanReport = ({ className, hash }: Props) => {
               mr={ 3 }
             >
               <Center position="absolute" w="38px" h="38px" top="5px" right="5px" bg={ popoverBgColor } borderRadius="20px">
-                <Icon as={ score < 80 ? scoreNotOkIcon : scoreOkIcon } boxSize={ 5 } color={ scoreColor }/>
+                <IconSvg name={ score < 80 ? 'score/score-not-ok' : 'score/score-ok' } boxSize={ 5 } color={ scoreColor }/>
               </Center>
             </Box>
             <Box>

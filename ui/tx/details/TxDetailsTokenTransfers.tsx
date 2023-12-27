@@ -1,12 +1,12 @@
-import { Icon, GridItem, Show, Flex } from '@chakra-ui/react';
+import { GridItem, Show, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import { route } from 'nextjs-routes';
 
-import tokenIcon from 'icons/token.svg';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/LinkInternal';
 
 import TxDetailsTokenTransfer from './TxDetailsTokenTransfer';
@@ -62,7 +62,7 @@ const TxDetailsTokenTransfers = ({ data, txHash, isOverflow }: Props) => {
         <>
           <Show above="lg" ssr={ false }><GridItem></GridItem></Show>
           <GridItem fontSize="sm" alignItems="center" display="inline-flex" pl={{ base: '28px', lg: 0 }}>
-            <Icon as={ tokenIcon } boxSize={ 6 }/>
+            <IconSvg name="token" boxSize={ 6 }/>
             <LinkInternal href={ viewAllUrl }>
               View all
             </LinkInternal>

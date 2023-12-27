@@ -1,20 +1,16 @@
 import type { WalletType, WalletInfo } from 'types/client/wallets';
 
-import coinbaseIcon from 'icons/wallets/coinbase.svg';
-import metamaskIcon from 'icons/wallets/metamask.svg';
-import tokenPocketIcon from 'icons/wallets/token-pocket.svg';
-
 export const WALLETS_INFO: Record<Exclude<WalletType, 'none'>, WalletInfo> = {
   metamask: {
     name: 'MetaMask',
-    icon: metamaskIcon,
+    icon: 'wallets/metamask',
   },
   coinbase: {
     name: 'Coinbase Wallet',
-    icon: coinbaseIcon,
+    icon: 'wallets/coinbase',
   },
   token_pocket: {
     name: 'TokenPocket',
-    icon: tokenPocketIcon,
+    icon: 'wallets/token-pocket',
   },
 };

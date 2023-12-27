@@ -1,4 +1,4 @@
-import { Flex, Icon, IconButton } from '@chakra-ui/react';
+import { Flex, IconButton } from '@chakra-ui/react';
 import React from 'react';
 import type { Control, UseFormGetValues, UseFormSetValue } from 'react-hook-form';
 import { useFieldArray } from 'react-hook-form';
@@ -6,8 +6,7 @@ import { useFieldArray } from 'react-hook-form';
 import type { MethodFormFields } from './types';
 import type { SmartContractMethodArgType } from 'types/api/contract';
 
-import minusIcon from 'icons/minus.svg';
-import plusIcon from 'icons/plus.svg';
+import IconSvg from 'ui/shared/IconSvg';
 
 import ContractMethodField from './ContractMethodField';
 
@@ -80,7 +79,7 @@ const ContractMethodFieldArray = ({ control, name, setValue, getValues, isDisabl
                 h="30px"
                 flexShrink={ 0 }
                 onClick={ handleRemoveButtonClick }
-                icon={ <Icon as={ minusIcon } boxSize={ 4 }/> }
+                icon={ <IconSvg name="minus" boxSize={ 4 }/> }
                 isDisabled={ isDisabled }
               />
             ) }
@@ -93,7 +92,7 @@ const ContractMethodFieldArray = ({ control, name, setValue, getValues, isDisabl
                 h="30px"
                 flexShrink={ 0 }
                 onClick={ handleAddButtonClick }
-                icon={ <Icon as={ plusIcon } boxSize={ 4 }/> }
+                icon={ <IconSvg name="plus" boxSize={ 4 }/> }
                 isDisabled={ isDisabled }
               />
             ) }

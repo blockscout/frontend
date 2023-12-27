@@ -58,6 +58,7 @@ RUN ./collect_envs.sh ./docs/ENVS.md
 
 # Build app for production
 RUN yarn build
+RUN yarn svg:build-sprite
 
 
 ### FEATURE REPORTER

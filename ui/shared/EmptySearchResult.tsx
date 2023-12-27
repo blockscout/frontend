@@ -1,7 +1,7 @@
-import { Box, Heading, Icon, Text } from '@chakra-ui/react';
+import { Box, Heading, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import emptyIcon from 'icons/empty_search_result.svg';
+import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   text: string;
@@ -14,8 +14,8 @@ const EmptySearchResult = ({ text }: Props) => {
       flexDirection="column"
       alignItems="center"
     >
-      <Icon
-        as={ emptyIcon }
+      <IconSvg
+        name="empty_search_result"
         boxSize={ 60 }
         display="block"
       />

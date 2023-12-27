@@ -1,15 +1,15 @@
-import { IconButton, Icon, Popover, PopoverTrigger, PopoverContent, PopoverBody, Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import { IconButton, Popover, PopoverTrigger, PopoverContent, PopoverBody, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
 import type { IndexingStatus } from 'types/api/indexingStatus';
 
-import infoIcon from 'icons/info.svg';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import { apos, nbsp, ndash } from 'lib/html-entities';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
+import IconSvg from 'ui/shared/IconSvg';
 
 const IntTxsIndexingStatus = () => {
 
@@ -72,7 +72,7 @@ const IntTxsIndexingStatus = () => {
       <IconButton
         colorScheme="none"
         aria-label="hint"
-        icon={ <Icon as={ infoIcon } boxSize={ 5 }/> }
+        icon={ <IconSvg name="info" boxSize={ 5 }/> }
         boxSize={ 6 }
         variant="simple"
       />
