@@ -5,13 +5,6 @@ import React from 'react';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import blockIcon from 'icons/block.svg';
-import clockIcon from 'icons/clock-light.svg';
-import bitcoinIcon from 'icons/coins/bitcoin.svg';
-import gasIcon from 'icons/gas.svg';
-import txIcon from 'icons/transactions.svg';
-import batchesIcon from 'icons/txn_batches.svg';
-import walletIcon from 'icons/wallet.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import { WEI } from 'lib/consts';
 import { HOMEPAGE_STATS } from 'stubs/stats';
@@ -58,7 +51,7 @@ const Stats = () => {
       <>
         { config.features.zkEvmRollup.isEnabled ? (
           <StatsItem
-            icon={ batchesIcon }
+            icon="txn_batches"
             title="Latest batch"
             value={ (zkEvmLatestBatchQuery.data || 0).toLocaleString() }
             url={ route({ pathname: '/zkevm-l2-txn-batches' }) }
@@ -66,7 +59,7 @@ const Stats = () => {
           />
         ) : (
           <StatsItem
-            icon={ blockIcon }
+            icon="block"
             title="Total blocks"
             value={ Number(data.total_blocks).toLocaleString() }
             url={ route({ pathname: '/blocks' }) }
@@ -75,21 +68,21 @@ const Stats = () => {
         ) }
         { hasAvgBlockTime && (
           <StatsItem
-            icon={ clockIcon }
+            icon="clock-light"
             title="Average block time"
             value={ `${ (data.average_block_time / 1000).toFixed(1) }s` }
             isLoading={ isPlaceholderData }
           />
         ) }
         <StatsItem
-          icon={ txIcon }
+          icon="transactions"
           title="Total transactions"
           value={ Number(data.total_transactions).toLocaleString() }
           url={ route({ pathname: '/txs' }) }
           isLoading={ isPlaceholderData }
         />
         <StatsItem
-          icon={ walletIcon }
+          icon="wallet"
           title="Wallet addresses"
           value={ Number(data.total_addresses).toLocaleString() }
           _last={ isOdd ? lastItemTouchStyle : undefined }
@@ -97,7 +90,7 @@ const Stats = () => {
         />
         { hasGasTracker && data.gas_prices && (
           <StatsItem
-            icon={ gasIcon }
+            icon="gas"
             title="Gas tracker"
             value={ `${ Number(data.gas_prices.average).toLocaleString() } Gwei` }
             _last={ isOdd ? lastItemTouchStyle : undefined }
@@ -107,7 +100,7 @@ const Stats = () => {
         ) }
         { data.rootstock_locked_btc && (
           <StatsItem
-            icon={ bitcoinIcon }
+            icon="coins/bitcoin"
             title="BTC Locked in 2WP"
             value={ `${ BigNumber(data.rootstock_locked_btc).div(WEI).dp(0).toFormat() } RBTC` }
             _last={ isOdd ? lastItemTouchStyle : undefined }

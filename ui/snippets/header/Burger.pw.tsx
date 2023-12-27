@@ -50,7 +50,7 @@ test('base view', async({ mount, page }) => {
     { hooksConfig },
   );
 
-  await component.locator('svg[aria-label="Menu button"]').click();
+  await component.locator('div[aria-label="Menu button"]').click();
   await expect(page.locator('.chakra-modal__content-container')).toHaveScreenshot();
 
   await page.locator('button[aria-label="Network menu"]').click();
@@ -80,7 +80,7 @@ test.describe('dark mode', () => {
       { hooksConfig },
     );
 
-    await component.locator('svg[aria-label="Menu button"]').click();
+    await component.locator('div[aria-label="Menu button"]').click();
     await expect(page).toHaveScreenshot();
 
     await page.locator('button[aria-label="Network menu"]').click();
@@ -96,7 +96,7 @@ test('submenu', async({ mount, page }) => {
     { hooksConfig },
   );
 
-  await component.locator('svg[aria-label="Menu button"]').click();
+  await component.locator('div[aria-label="Menu button"]').click();
   await page.locator('div[aria-label="Blockchain link group"]').click();
   await expect(page).toHaveScreenshot();
 });
@@ -122,7 +122,7 @@ test.describe('auth', () => {
       { hooksConfig },
     );
 
-    await component.locator('svg[aria-label="Menu button"]').click();
+    await component.locator('div[aria-label="Menu button"]').click();
     await expect(page).toHaveScreenshot();
   });
 });

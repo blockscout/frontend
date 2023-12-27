@@ -3,7 +3,6 @@ import {
   GridItem,
   Text,
   Box,
-  Icon as ChakraIcon,
   Link,
   Spinner,
   Flex,
@@ -22,15 +21,10 @@ import { ZKEVM_L2_TX_STATUSES } from 'types/api/transaction';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import clockIcon from 'icons/clock.svg';
-import flameIcon from 'icons/flame.svg';
-import errorIcon from 'icons/status/error.svg';
-import successIcon from 'icons/status/success.svg';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
-import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import CurrencyValue from 'ui/shared/CurrencyValue';
@@ -42,6 +36,7 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import ZkEvmBatchEntityL2 from 'ui/shared/entities/block/ZkEvmBatchEntityL2';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import IconSvg from 'ui/shared/IconSvg';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
@@ -108,14 +103,14 @@ const TxDetails = () => {
   const executionSuccessBadge = toAddress?.is_contract && data.result === 'success' ? (
     <Tooltip label="Contract execution completed">
       <chakra.span display="inline-flex" ml={ 2 } mr={ 1 }>
-        <ChakraIcon as={ successIcon } boxSize={ 4 } color={ executionSuccessIconColor } cursor="pointer"/>
+        <IconSvg name="status/success" boxSize={ 4 } color={ executionSuccessIconColor } cursor="pointer"/>
       </chakra.span>
     </Tooltip>
   ) : null;
   const executionFailedBadge = toAddress?.is_contract && Boolean(data.status) && data.result !== 'success' ? (
     <Tooltip label="Error occurred during contract execution">
       <chakra.span display="inline-flex" ml={ 2 } mr={ 1 }>
-        <ChakraIcon as={ errorIcon } boxSize={ 4 } color="error" cursor="pointer"/>
+        <IconSvg name="status/error" boxSize={ 4 } color="error" cursor="pointer"/>
       </chakra.span>
     </Tooltip>
   ) : null;
@@ -218,7 +213,7 @@ const TxDetails = () => {
             hint="Date & time of transaction inclusion, including length of time for confirmation"
             isLoading={ isPlaceholderData }
           >
-            <Icon as={ clockIcon } boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
+            <IconSvg name="clock" boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
             <Skeleton isLoaded={ !isPlaceholderData } ml={ 2 }>{ dayjs(data.timestamp).fromNow() }</Skeleton>
             <TextSeparator/>
             <Skeleton isLoaded={ !isPlaceholderData } whiteSpace="normal">{ dayjs(data.timestamp).format('llll') }</Skeleton>
@@ -434,7 +429,7 @@ const TxDetails = () => {
             title="Burnt fees"
             hint={ `Amount of ${ config.chain.currency.symbol } burned for this transaction. Equals Block Base Fee per Gas * Gas Used` }
           >
-            <Icon as={ flameIcon } boxSize={ 5 } color="gray.500"/>
+            <IconSvg name="flame" boxSize={ 5 } color="gray.500"/>
             <CurrencyValue
               value={ String(data.tx_burnt_fee) }
               currency={ config.chain.currency.symbol }

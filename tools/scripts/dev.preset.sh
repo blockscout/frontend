@@ -19,6 +19,9 @@ dotenv \
   -e $config_file \
   -- bash -c './deploy/scripts/download_assets.sh ./public/assets'
 
+yarn svg:build-sprite
+echo ""
+
 # generate envs.js file and run the app
 dotenv \
   -v NEXT_PUBLIC_GIT_COMMIT_SHA=$(git rev-parse --short HEAD) \

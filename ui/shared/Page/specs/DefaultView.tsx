@@ -1,13 +1,12 @@
-import { Icon } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
 
-import iconVerifiedToken from 'icons/verified_token.svg';
 import * as addressMock from 'mocks/address/address';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EntityTags from 'ui/shared/EntityTags';
+import IconSvg from 'ui/shared/IconSvg';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 
 import PageTitle from '../PageTitle';
@@ -33,7 +32,7 @@ const DefaultView = () => {
 
   const contentAfter = (
     <>
-      <Icon as={ iconVerifiedToken } color="green.500" boxSize={ 6 } cursor="pointer"/>
+      <IconSvg name="verified_token" color="green.500" boxSize={ 6 } cursor="pointer"/>
       <EntityTags
         tagsBefore={ [
           { label: 'example', display_name: 'Example label' },

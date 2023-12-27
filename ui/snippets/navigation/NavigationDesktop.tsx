@@ -1,14 +1,13 @@
-import { Flex, Box, VStack, Icon, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Box, VStack, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
-import chevronIcon from 'icons/arrows/east-mini.svg';
-import testnetIcon from 'icons/testnet.svg';
 import { useAppContext } from 'lib/contexts/app';
 import * as cookies from 'lib/cookies';
 import useHasAccount from 'lib/hooks/useHasAccount';
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
+import IconSvg from 'ui/shared/IconSvg';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import NetworkMenu from 'ui/snippets/networkMenu/NetworkMenu';
 
@@ -65,7 +64,7 @@ const NavigationDesktop = () => {
         },
       }}
     >
-      { config.chain.isTestnet && <Icon as={ testnetIcon } h="14px" w="auto" color="red.400" position="absolute" pl={ 3 } top="34px"/> }
+      { config.chain.isTestnet && <IconSvg name="testnet" h="14px" w="49px" color="red.400" position="absolute" pl={ 3 } top="34px"/> }
       <Box
         as="header"
         display="flex"
@@ -101,8 +100,8 @@ const NavigationDesktop = () => {
           </VStack>
         </Box>
       ) }
-      <Icon
-        as={ chevronIcon }
+      <IconSvg
+        name="arrows/east-mini"
         width={ 6 }
         height={ 6 }
         border="1px"

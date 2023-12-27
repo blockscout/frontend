@@ -1,18 +1,16 @@
-import type { As } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
 import _omit from 'lodash/omit';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
-import nftPlaceholder from 'icons/nft_shield.svg';
 import * as EntityBase from 'ui/shared/entities/base/components';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
 const Container = EntityBase.Container;
 
 type IconProps = Pick<EntityProps, 'isLoading' | 'noIcon' | 'iconSize'> & {
-  asProp?: As;
+  name?: EntityBase.IconBaseProps['name'];
 };
 
 const Icon = (props: IconProps) => {
@@ -24,7 +22,7 @@ const Icon = (props: IconProps) => {
     <EntityBase.Icon
       { ...props }
       iconSize={ props.iconSize ?? 'lg' }
-      asProp={ props.asProp ?? nftPlaceholder }
+      name={ props.name ?? 'nft_shield' }
     />
   );
 };

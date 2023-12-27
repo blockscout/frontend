@@ -1,4 +1,4 @@
-import { Grid, Skeleton, Tooltip, Flex, Icon as ChakraIcon } from '@chakra-ui/react';
+import { Grid, Skeleton, Tooltip, Flex } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
@@ -6,13 +6,11 @@ import type { EnsDomainDetailed } from 'types/api/ens';
 
 import { route } from 'nextjs-routes';
 
-import clockIcon from 'icons/clock.svg';
-import iconSearch from 'icons/search.svg';
 import type { ResourceError } from 'lib/api/resources';
 import dayjs from 'lib/date/dayjs';
-import Icon from 'ui/shared/chakra/Icon';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/LinkInternal';
 import TextSeparator from 'ui/shared/TextSeparator';
 
@@ -39,7 +37,7 @@ const NameDomainDetails = ({ query }: Props) => {
           display="inline-block"
         >
           <Skeleton isLoaded={ !isLoading } display="inline" mr={ 2 } mt="-2px" >
-            <ChakraIcon as={ clockIcon } boxSize={ 5 } color="gray.500"verticalAlign="middle"/>
+            <IconSvg name="clock" boxSize={ 5 } color="gray.500"verticalAlign="middle"/>
           </Skeleton>
           { hasExpired && (
             <>
@@ -76,7 +74,7 @@ const NameDomainDetails = ({ query }: Props) => {
               display="inline-flex"
               href={ route({ pathname: '/name-domains', query: { ownedBy: 'true', resolvedTo: 'true', q: query.data.registrant.hash } }) }
             >
-              <Icon as={ iconSearch } boxSize={ 5 } isLoading={ isLoading }/>
+              <IconSvg name="search" boxSize={ 5 } isLoading={ isLoading }/>
             </LinkInternal>
           </Tooltip>
         </DetailsInfoItem>
@@ -99,7 +97,7 @@ const NameDomainDetails = ({ query }: Props) => {
               display="inline-flex"
               href={ route({ pathname: '/name-domains', query: { ownedBy: 'true', resolvedTo: 'true', q: query.data.owner.hash } }) }
             >
-              <Icon as={ iconSearch } boxSize={ 5 } isLoading={ isLoading }/>
+              <IconSvg name="search" boxSize={ 5 } isLoading={ isLoading }/>
             </LinkInternal>
           </Tooltip>
         </DetailsInfoItem>

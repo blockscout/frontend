@@ -8,14 +8,13 @@ import type { Block } from 'types/api/block';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import flameIcon from 'icons/flame.svg';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import { WEI } from 'lib/consts';
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
-import Icon from 'ui/shared/chakra/Icon';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
+import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/LinkInternal';
 import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization/Utilization';
@@ -116,7 +115,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
       { !isRollup && !config.UI.views.block.hiddenFields?.burnt_fees && (
         <Td fontSize="sm">
           <Flex alignItems="center" columnGap={ 2 }>
-            <Icon as={ flameIcon } boxSize={ 5 } color={ burntFeesIconColor } isLoading={ isLoading }/>
+            <IconSvg name="flame" boxSize={ 5 } color={ burntFeesIconColor } isLoading={ isLoading }/>
             <Skeleton isLoaded={ !isLoading } display="inline-block">
               { burntFees.dividedBy(WEI).toFixed(8) }
             </Skeleton>

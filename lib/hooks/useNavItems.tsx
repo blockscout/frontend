@@ -4,29 +4,6 @@ import React from 'react';
 import type { NavItemInternal, NavItem, NavGroupItem } from 'types/client/navigation-items';
 
 import config from 'configs/app';
-import abiIcon from 'icons/ABI.svg';
-import apiKeysIcon from 'icons/API.svg';
-import appsIcon from 'icons/apps.svg';
-import withdrawalsIcon from 'icons/arrows/north-east.svg';
-import depositsIcon from 'icons/arrows/south-east.svg';
-import blocksIcon from 'icons/block.svg';
-import ensIcon from 'icons/ENS.svg';
-import gearIcon from 'icons/gear.svg';
-import globeIcon from 'icons/globe-b.svg';
-import graphQLIcon from 'icons/graphQL.svg';
-import outputRootsIcon from 'icons/output_roots.svg';
-import privateTagIcon from 'icons/privattags.svg';
-import publicTagIcon from 'icons/publictags.svg';
-import apiDocsIcon from 'icons/restAPI.svg';
-import rpcIcon from 'icons/RPC.svg';
-import statsIcon from 'icons/stats.svg';
-import tokensIcon from 'icons/token.svg';
-import topAccountsIcon from 'icons/top-accounts.svg';
-import transactionsIcon from 'icons/transactions.svg';
-import txnBatchIcon from 'icons/txn_batches.svg';
-import verifiedIcon from 'icons/verified.svg';
-import verifyContractIcon from 'icons/verify-contract.svg';
-import watchlistIcon from 'icons/watchlist.svg';
 import { rightLineArrow } from 'lib/html-entities';
 import UserAvatar from 'ui/shared/UserAvatar';
 
@@ -51,31 +28,35 @@ export default function useNavItems(): ReturnType {
   return React.useMemo(() => {
     let blockchainNavItems: Array<NavItem> | Array<Array<NavItem>> = [];
 
-    const topAccounts = !config.UI.views.address.hiddenViews?.top_accounts ? {
+    const topAccounts: NavItem | null = !config.UI.views.address.hiddenViews?.top_accounts ? {
       text: 'Top accounts',
       nextRoute: { pathname: '/accounts' as const },
-      icon: topAccountsIcon,
+      icon: 'top-accounts',
       isActive: pathname === '/accounts',
     } : null;
-    const blocks = {
+    const blocks: NavItem | null = {
       text: 'Blocks',
       nextRoute: { pathname: '/blocks' as const },
-      icon: blocksIcon,
+      icon: 'block',
       isActive: pathname === '/blocks' || pathname === '/block/[height_or_hash]',
     };
-    const txs = {
+    const txs: NavItem | null = {
       text: 'Transactions',
       nextRoute: { pathname: '/txs' as const },
-      icon: transactionsIcon,
+      icon: 'transactions',
       isActive: pathname === '/txs' || pathname === '/tx/[hash]',
     };
-    const verifiedContracts =
-    // eslint-disable-next-line max-len
-     { text: 'Verified contracts', nextRoute: { pathname: '/verified-contracts' as const }, icon: verifiedIcon, isActive: pathname === '/verified-contracts' };
+    const verifiedContracts: NavItem | null =
+     {
+       text: 'Verified contracts',
+       nextRoute: { pathname: '/verified-contracts' as const },
+       icon: 'verified',
+       isActive: pathname === '/verified-contracts',
+     };
     const ensLookup = config.features.nameService.isEnabled ? {
       text: 'ENS lookup',
       nextRoute: { pathname: '/name-domains' as const },
-      icon: ensIcon,
+      icon: 'ENS',
       isActive: pathname === '/name-domains' || pathname === '/name-domains/[name]',
     } : null;
 
@@ -84,8 +65,12 @@ export default function useNavItems(): ReturnType {
         [
           txs,
           blocks,
-          // eslint-disable-next-line max-len
-          { text: 'Txn batches', nextRoute: { pathname: '/zkevm-l2-txn-batches' as const }, icon: txnBatchIcon, isActive: pathname === '/zkevm-l2-txn-batches' || pathname === '/zkevm-l2-txn-batch/[number]' },
+          {
+            text: 'Txn batches',
+            nextRoute: { pathname: '/zkevm-l2-txn-batches' as const },
+            icon: 'txn_batches',
+            isActive: pathname === '/zkevm-l2-txn-batches' || pathname === '/zkevm-l2-txn-batch/[number]',
+          },
         ],
         [
           topAccounts,
@@ -98,16 +83,16 @@ export default function useNavItems(): ReturnType {
         [
           txs,
           // eslint-disable-next-line max-len
-          { text: `Deposits (L1${ rightLineArrow }L2)`, nextRoute: { pathname: '/l2-deposits' as const }, icon: depositsIcon, isActive: pathname === '/l2-deposits' },
+          { text: `Deposits (L1${ rightLineArrow }L2)`, nextRoute: { pathname: '/l2-deposits' as const }, icon: 'arrows/south-east', isActive: pathname === '/l2-deposits' },
           // eslint-disable-next-line max-len
-          { text: `Withdrawals (L2${ rightLineArrow }L1)`, nextRoute: { pathname: '/l2-withdrawals' as const }, icon: withdrawalsIcon, isActive: pathname === '/l2-withdrawals' },
+          { text: `Withdrawals (L2${ rightLineArrow }L1)`, nextRoute: { pathname: '/l2-withdrawals' as const }, icon: 'arrows/north-east', isActive: pathname === '/l2-withdrawals' },
         ],
         [
           blocks,
           // eslint-disable-next-line max-len
-          { text: 'Txn batches', nextRoute: { pathname: '/l2-txn-batches' as const }, icon: txnBatchIcon, isActive: pathname === '/l2-txn-batches' },
+          { text: 'Txn batches', nextRoute: { pathname: '/l2-txn-batches' as const }, icon: 'txn_batches', isActive: pathname === '/l2-txn-batches' },
           // eslint-disable-next-line max-len
-          { text: 'Output roots', nextRoute: { pathname: '/l2-output-roots' as const }, icon: outputRootsIcon, isActive: pathname === '/l2-output-roots' },
+          { text: 'Output roots', nextRoute: { pathname: '/l2-output-roots' as const }, icon: 'output_roots', isActive: pathname === '/l2-output-roots' },
         ],
         [
           topAccounts,
@@ -125,7 +110,7 @@ export default function useNavItems(): ReturnType {
         config.features.beaconChain.isEnabled && {
           text: 'Withdrawals',
           nextRoute: { pathname: '/withdrawals' as const },
-          icon: withdrawalsIcon,
+          icon: 'arrows/north-east',
           isActive: pathname === '/withdrawals',
         },
       ].filter(Boolean);
@@ -135,23 +120,23 @@ export default function useNavItems(): ReturnType {
       config.features.restApiDocs.isEnabled ? {
         text: 'REST API',
         nextRoute: { pathname: '/api-docs' as const },
-        icon: apiDocsIcon,
+        icon: 'restAPI',
         isActive: pathname === '/api-docs',
       } : null,
       config.features.graphqlApiDocs.isEnabled ? {
         text: 'GraphQL',
         nextRoute: { pathname: '/graphiql' as const },
-        icon: graphQLIcon,
+        icon: 'graphQL',
         isActive: pathname === '/graphiql',
       } : null,
       !config.UI.sidebar.hiddenLinks?.rpc_api && {
         text: 'RPC API',
-        icon: rpcIcon,
+        icon: 'RPC',
         url: 'https://docs.blockscout.com/for-users/api/rpc-endpoints',
       },
       !config.UI.sidebar.hiddenLinks?.eth_rpc_api && {
         text: 'Eth RPC API',
-        icon: rpcIcon,
+        icon: 'RPC',
         url: ' https://docs.blockscout.com/for-users/api/eth-rpc',
       },
     ].filter(Boolean);
@@ -159,42 +144,42 @@ export default function useNavItems(): ReturnType {
     const mainNavItems: ReturnType['mainNavItems'] = [
       {
         text: 'Blockchain',
-        icon: globeIcon,
+        icon: 'globe-b',
         isActive: blockchainNavItems.flat().some(item => isInternalItem(item) && item.isActive),
         subItems: blockchainNavItems,
       },
       {
         text: 'Tokens',
         nextRoute: { pathname: '/tokens' as const },
-        icon: tokensIcon,
+        icon: 'token',
         isActive: pathname.startsWith('/token'),
       },
       config.features.marketplace.isEnabled ? {
         text: 'Apps',
         nextRoute: { pathname: '/apps' as const },
-        icon: appsIcon,
+        icon: 'apps',
         isActive: pathname.startsWith('/app'),
       } : null,
       config.features.stats.isEnabled ? {
         text: 'Charts & stats',
         nextRoute: { pathname: '/stats' as const },
-        icon: statsIcon,
+        icon: 'stats',
         isActive: pathname === '/stats',
       } : null,
       apiNavItems.length > 0 && {
         text: 'API',
-        icon: apiDocsIcon,
+        icon: 'restAPI',
         isActive: apiNavItems.some(item => isInternalItem(item) && item.isActive),
         subItems: apiNavItems,
       },
       {
         text: 'Other',
-        icon: gearIcon,
+        icon: 'gear',
         subItems: [
           {
             text: 'Verify contract',
             nextRoute: { pathname: '/contract-verification' as const },
-            icon: verifyContractIcon,
+            icon: 'verify-contract',
             isActive: pathname.startsWith('/contract-verification'),
           },
           ...config.UI.sidebar.otherLinks,
@@ -206,35 +191,37 @@ export default function useNavItems(): ReturnType {
       {
         text: 'Watch list',
         nextRoute: { pathname: '/account/watchlist' as const },
-        icon: watchlistIcon,
+        icon: 'watchlist',
         isActive: pathname === '/account/watchlist',
       },
       {
         text: 'Private tags',
         nextRoute: { pathname: '/account/tag-address' as const },
-        icon: privateTagIcon,
+        icon: 'privattags',
         isActive: pathname === '/account/tag-address',
       },
       {
         text: 'Public tags',
         nextRoute: { pathname: '/account/public-tags-request' as const },
-        icon: publicTagIcon, isActive: pathname === '/account/public-tags-request',
+        icon: 'publictags',
+        isActive: pathname === '/account/public-tags-request',
       },
       {
         text: 'API keys',
         nextRoute: { pathname: '/account/api-key' as const },
-        icon: apiKeysIcon, isActive: pathname === '/account/api-key',
+        icon: 'API',
+        isActive: pathname === '/account/api-key',
       },
       {
         text: 'Custom ABI',
         nextRoute: { pathname: '/account/custom-abi' as const },
-        icon: abiIcon,
+        icon: 'ABI',
         isActive: pathname === '/account/custom-abi',
       },
       config.features.addressVerification.isEnabled && {
         text: 'Verified addrs',
         nextRoute: { pathname: '/account/verified-addresses' as const },
-        icon: verifiedIcon,
+        icon: 'verified',
         isActive: pathname === '/account/verified-addresses',
       },
     ].filter(Boolean);

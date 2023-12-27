@@ -3,14 +3,13 @@ import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
-import eastArrowIcon from 'icons/arrows/east.svg';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
 import AddressEntityWithTokenFilter from 'ui/shared/entities/address/AddressEntityWithTokenFilter';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import IconSvg from 'ui/shared/IconSvg';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
@@ -62,7 +61,7 @@ const TokenTransferListItem = ({
           width="50%"
           fontWeight="500"
         />
-        <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500" isLoading={ isLoading }/>
+        <IconSvg name="arrows/east" boxSize={ 6 } color="gray.500" flexShrink={ 0 } isLoading={ isLoading }/>
         <AddressEntityWithTokenFilter
           address={ to }
           isLoading={ isLoading }

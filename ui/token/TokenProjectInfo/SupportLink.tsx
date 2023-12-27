@@ -1,8 +1,7 @@
-import { Icon, Link } from '@chakra-ui/react';
+import { Link } from '@chakra-ui/react';
 import React from 'react';
 
-import iconEmail from 'icons/email.svg';
-import iconLink from 'icons/link.svg';
+import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   url: string;
@@ -11,7 +10,6 @@ interface Props {
 const SupportLink = ({ url }: Props) => {
   const isEmail = url.includes('@');
   const href = isEmail ? `mailto:${ url }` : url;
-  const icon = isEmail ? iconEmail : iconLink;
 
   return (
     <Link
@@ -21,7 +19,7 @@ const SupportLink = ({ url }: Props) => {
       alignItems="center"
       columnGap={ 1 }
     >
-      <Icon as={ icon } boxSize={ 6 } color="text_secondary"/>
+      <IconSvg name={ isEmail ? 'email' : 'link' } boxSize={ 6 } color="text_secondary"/>
       <span>{ url }</span>
     </Link>
   );

@@ -52,7 +52,13 @@ const TokensTableItem = ({
   };
 
   return (
-    <Tr>
+    <Tr
+      sx={{
+        '&:hover [aria-label="Add token to wallet"]': {
+          opacity: 1,
+        },
+      }}
+    >
       <Td>
         <Flex alignItems="flex-start">
           <Skeleton
@@ -82,7 +88,12 @@ const TokensTableItem = ({
                 fontSize="sm"
                 fontWeight={ 500 }
               />
-              <AddressAddToWallet token={ token } isLoading={ isLoading } iconSize={ 5 }/>
+              <AddressAddToWallet
+                token={ token }
+                isLoading={ isLoading }
+                iconSize={ 5 }
+                opacity={ 0 }
+              />
             </Flex>
             <Flex columnGap={ 1 }>
               <Tag isLoading={ isLoading }>{ type }</Tag>

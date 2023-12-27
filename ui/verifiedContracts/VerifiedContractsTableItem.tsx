@@ -5,14 +5,11 @@ import React from 'react';
 import type { VerifiedContract } from 'types/api/contracts';
 
 import config from 'configs/app';
-import iconCheck from 'icons/check.svg';
-import iconCross from 'icons/cross.svg';
-import iconSuccess from 'icons/status/success.svg';
 import dayjs from 'lib/date/dayjs';
-import Icon from 'ui/shared/chakra/Icon';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import HashStringShorten from 'ui/shared/HashStringShorten';
+import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   data: VerifiedContract;
@@ -63,21 +60,21 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
         <Tooltip label={ isLoading ? undefined : 'Optimization' }>
           <chakra.span display="inline-block">
             { data.optimization_enabled ?
-              <Icon as={ iconCheck } boxSize={ 6 } color="green.500" cursor="pointer" isLoading={ isLoading }/> :
-              <Icon as={ iconCross } boxSize={ 6 } color="red.600" cursor="pointer" isLoading={ isLoading }/> }
+              <IconSvg name="check" boxSize={ 6 } color="green.500" cursor="pointer" isLoading={ isLoading }/> :
+              <IconSvg name="cross" boxSize={ 6 } color="red.600" cursor="pointer" isLoading={ isLoading }/> }
           </chakra.span>
         </Tooltip>
         <Tooltip label={ isLoading ? undefined : 'Constructor args' }>
           <chakra.span display="inline-block" ml={ 2 }>
             { data.has_constructor_args ?
-              <Icon as={ iconCheck } boxSize={ 6 } color="green.500" cursor="pointer" isLoading={ isLoading }/> :
-              <Icon as={ iconCross } boxSize={ 6 } color="red.600" cursor="pointer" isLoading={ isLoading }/> }
+              <IconSvg name="check" boxSize={ 6 } color="green.500" cursor="pointer" isLoading={ isLoading }/> :
+              <IconSvg name="cross" boxSize={ 6 } color="red.600" cursor="pointer" isLoading={ isLoading }/> }
           </chakra.span>
         </Tooltip>
       </Td>
       <Td>
         <Flex alignItems="center" columnGap={ 2 } my={ 1 }>
-          <Icon as={ iconSuccess } boxSize={ 4 } color="green.500" isLoading={ isLoading }/>
+          <IconSvg name="status/success" boxSize={ 4 } color="green.500" isLoading={ isLoading }/>
           <Skeleton isLoaded={ !isLoading } color="text_secondary">
             <span>{ dayjs(data.verified_at).fromNow() }</span>
           </Skeleton>

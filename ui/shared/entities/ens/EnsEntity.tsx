@@ -1,11 +1,9 @@
-import type { As } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
 import _omit from 'lodash/omit';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
-import ensIcon from 'icons/ENS_slim.svg';
 import * as EntityBase from 'ui/shared/entities/base/components';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
@@ -24,15 +22,15 @@ const Link = chakra((props: LinkProps) => {
   );
 });
 
-type IconProps = Omit<EntityBase.IconBaseProps, 'asProp'> & {
-  asProp?: As;
+type IconProps = Omit<EntityBase.IconBaseProps, 'name'> & {
+  iconName?: EntityBase.IconBaseProps['name'];
 };
 
 const Icon = (props: IconProps) => {
   return (
     <EntityBase.Icon
       { ...props }
-      asProp={ props.asProp ?? ensIcon }
+      name={ props.iconName ?? 'ENS_slim' }
     />
   );
 };

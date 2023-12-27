@@ -7,7 +7,6 @@ import type { RoutedTab } from 'ui/shared/Tabs/types';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import iconSearch from 'icons/search.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -15,9 +14,9 @@ import { ENS_DOMAIN } from 'stubs/ENS';
 import NameDomainDetails from 'ui/nameDomain/NameDomainDetails';
 import NameDomainHistory from 'ui/nameDomain/NameDomainHistory';
 import TextAd from 'ui/shared/ad/TextAd';
-import Icon from 'ui/shared/chakra/Icon';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
+import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/LinkInternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
@@ -73,7 +72,7 @@ const NameDomain = () => {
             display="inline-flex"
             href={ route({ pathname: '/name-domains', query: { ownedBy: 'true', resolvedTo: 'true', q: infoQuery.data?.resolvedAddress?.hash } }) }
           >
-            <Icon as={ iconSearch } boxSize={ 5 } isLoading={ isLoading }/>
+            <IconSvg name="search" boxSize={ 5 } isLoading={ isLoading }/>
           </LinkInternal>
         </Tooltip>
       ) }

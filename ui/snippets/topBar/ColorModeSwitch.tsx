@@ -1,6 +1,5 @@
 import {
   IconButton,
-  Icon,
   Popover,
   PopoverTrigger,
   PopoverContent,
@@ -12,6 +11,7 @@ import {
 import React from 'react';
 
 import * as cookies from 'lib/cookies';
+import IconSvg from 'ui/shared/IconSvg';
 
 import ColorModeSwitchTheme from './ColorModeSwitchTheme';
 import { COLOR_THEMES } from './utils';
@@ -79,7 +79,7 @@ const ColorModeSwitch = () => {
             variant="simple"
             colorScheme="blue"
             aria-label="color mode switch"
-            icon={ <Icon as={ activeTheme.icon } boxSize={ 5 }/> }
+            icon={ <IconSvg name={ activeTheme.icon } boxSize={ 5 }/> }
             boxSize={ 5 }
             onClick={ onToggle }
           />

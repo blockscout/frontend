@@ -2,6 +2,7 @@ import type { ButtonProps } from '@chakra-ui/react';
 import { Popover, PopoverContent, PopoverBody, PopoverTrigger, Button, Box, useBoolean } from '@chakra-ui/react';
 import React from 'react';
 
+import useIsMobile from 'lib/hooks/useIsMobile';
 import AddressIdenticon from 'ui/shared/entities/address/AddressIdenticon';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import useWallet from 'ui/snippets/walletMenu/useWallet';
@@ -18,6 +19,7 @@ const WalletMenuDesktop = ({ isHomePage }: Props) => {
   const { isWalletConnected, address, connect, disconnect, isModalOpening, isModalOpen } = useWallet();
   const { themedBackground, themedBorderColor, themedColor } = useMenuButtonColors();
   const [ isPopoverOpen, setIsPopoverOpen ] = useBoolean(false);
+  const isMobile = useIsMobile();
 
   const variant = React.useMemo(() => {
     if (isWalletConnected) {
@@ -55,7 +57,7 @@ const WalletMenuDesktop = ({ isHomePage }: Props) => {
       isOpen={ isPopoverOpen }
       onClose={ setIsPopoverOpen.off }
     >
-      <WalletTooltip isDisabled={ isWalletConnected }>
+      <WalletTooltip isDisabled={ isWalletConnected || isMobile === undefined || isMobile }>
         <Box ml={ 2 }>
           <PopoverTrigger>
             <Button
