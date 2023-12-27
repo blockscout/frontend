@@ -6,6 +6,7 @@ import type { TxInterpretationSummary, TxInterpretationVariable } from 'types/ap
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
+import * as mixpanel from 'lib/mixpanel/index';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
@@ -19,14 +20,31 @@ type Props = {
 }
 
 const TxInterpretationElementByType = ({ variable }: { variable?: TxInterpretationVariable }) => {
+  const onAddressClick = React.useCallback(() => {
+    mixpanel.logEvent(mixpanel.EventTypes.TX_INTERPRETATION_INTERACTION, { Type: 'Address click' });
+  }, []);
+
+  const onTokenClick = React.useCallback(() => {
+    mixpanel.logEvent(mixpanel.EventTypes.TX_INTERPRETATION_INTERACTION, { Type: 'Token click' });
+  }, []);
+
   if (!variable) {
     return null;
   }
 
   const { type, value } = variable;
   switch (type) {
-    case 'address':
-      return <AddressEntity address={ value } truncation="constant" sx={{ ':not(:first-child)': { marginLeft: 1 } }} whiteSpace="initial"/>;
+    case 'address': {
+      return (
+        <AddressEntity
+          address={ value }
+          truncation="constant"
+          sx={{ ':not(:first-child)': { marginLeft: 1 } }}
+          whiteSpace="initial"
+          onClick={ onAddressClick }
+        />
+      );
+    }
     case 'token':
       return (
         <TokenEntity
@@ -37,6 +55,7 @@ const TxInterpretationElementByType = ({ variable }: { variable?: TxInterpretati
           sx={{ ':not(:first-child)': { marginLeft: 1 } }}
           mr={ 2 }
           whiteSpace="initial"
+          onClick={ onTokenClick }
         />
       );
     case 'currency': {
