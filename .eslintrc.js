@@ -5,6 +5,9 @@ const RESTRICTED_MODULES = {
     { name: '@metamask/providers', message: 'Please lazy-load @metamask/providers or use useProvider hook instead' },
     { name: '@metamask/post-message-stream', message: 'Please lazy-load @metamask/post-message-stream or use useProvider hook instead' },
   ],
+  patterns: [
+    'icons/*',
+  ],
 };
 
 module.exports = {

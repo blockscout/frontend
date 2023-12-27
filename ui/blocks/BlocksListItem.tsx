@@ -8,15 +8,14 @@ import type { Block } from 'types/api/block';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import flameIcon from 'icons/flame.svg';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import { WEI } from 'lib/consts';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
-import Icon from 'ui/shared/chakra/Icon';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
+import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TextSeparator from 'ui/shared/TextSeparator';
@@ -106,7 +105,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           <Text fontWeight={ 500 }>Burnt fees</Text>
           <Flex columnGap={ 4 } mt={ 2 }>
             <Flex>
-              <Icon as={ flameIcon } boxSize={ 5 } color="gray.500" isLoading={ isLoading }/>
+              <IconSvg name="flame" boxSize={ 5 } color="gray.500" isLoading={ isLoading }/>
               <Skeleton isLoaded={ !isLoading } display="inline-block" color="text_secondary" ml={ 2 }>
                 <span>{ burntFees.div(WEI).toFixed() }</span>
               </Skeleton>

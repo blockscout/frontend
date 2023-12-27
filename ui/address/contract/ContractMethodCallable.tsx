@@ -1,4 +1,4 @@
-import { Box, Button, chakra, Flex, Icon, Text } from '@chakra-ui/react';
+import { Box, Button, chakra, Flex, Text } from '@chakra-ui/react';
 import _fromPairs from 'lodash/fromPairs';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
@@ -7,8 +7,8 @@ import { useForm } from 'react-hook-form';
 import type { MethodFormFields, ContractMethodCallResult } from './types';
 import type { SmartContractMethodInput, SmartContractMethod } from 'types/api/contract';
 
-import arrowIcon from 'icons/arrows/down-right.svg';
 import * as mixpanel from 'lib/mixpanel/index';
+import IconSvg from 'ui/shared/IconSvg';
 
 import ContractMethodField from './ContractMethodField';
 
@@ -157,7 +157,7 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
       </chakra.form>
       { 'outputs' in data && !isWrite && data.outputs.length > 0 && (
         <Flex mt={ 3 }>
-          <Icon as={ arrowIcon } boxSize={ 5 } mr={ 1 }/>
+          <IconSvg name="arrows/down-right" boxSize={ 5 } mr={ 1 }/>
           <Text>{ data.outputs.map(({ type }) => type).join(', ') }</Text>
         </Flex>
       ) }

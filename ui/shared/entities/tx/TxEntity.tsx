@@ -1,11 +1,9 @@
-import type { As } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
 import _omit from 'lodash/omit';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
-import transactionIcon from 'icons/transactions_slim.svg';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'hash'>;
@@ -23,15 +21,15 @@ const Link = chakra((props: LinkProps) => {
   );
 });
 
-type IconProps = Omit<EntityBase.IconBaseProps, 'asProp'> & {
-  asProp?: As;
+type IconProps = Omit<EntityBase.IconBaseProps, 'name'> & {
+  name?: EntityBase.IconBaseProps['name'];
 };
 
 const Icon = (props: IconProps) => {
   return (
     <EntityBase.Icon
       { ...props }
-      asProp={ props.asProp ?? transactionIcon }
+      name={ props.name ?? 'transactions_slim' }
     />
   );
 };

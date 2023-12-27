@@ -10,12 +10,11 @@ import React from 'react';
 import type { Transaction } from 'types/api/transaction';
 
 import config from 'configs/app';
-import rightArrowIcon from 'icons/arrows/east.svg';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import Icon from 'ui/shared/chakra/Icon';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import IconSvg from 'ui/shared/IconSvg';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TxFeeStability from 'ui/shared/tx/TxFeeStability';
 import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
@@ -76,8 +75,8 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
           fontWeight="500"
           mr={ 2 }
         />
-        <Icon
-          as={ rightArrowIcon }
+        <IconSvg
+          name="arrows/east"
           boxSize={ 6 }
           color="gray.500"
           isLoading={ isLoading }

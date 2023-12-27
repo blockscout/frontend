@@ -1,14 +1,17 @@
-import { ButtonGroup, Button, Flex, Icon, useRadio, useRadioGroup, useColorModeValue } from '@chakra-ui/react';
+import { ButtonGroup, Button, Flex, useRadio, useRadioGroup, useColorModeValue } from '@chakra-ui/react';
 import type { UseRadioProps } from '@chakra-ui/react';
 import React from 'react';
 
+import type { IconName } from 'ui/shared/IconSvg';
+import IconSvg from 'ui/shared/IconSvg';
+
 type RadioItemProps = {
   title: string;
-  icon?: React.FC<React.SVGAttributes<SVGElement>>;
+  icon?: IconName;
   onlyIcon: false | undefined;
 } | {
   title: string;
-  icon: React.FC<React.SVGAttributes<SVGElement>>;
+  icon: IconName;
   onlyIcon: true;
 }
 
@@ -50,7 +53,7 @@ const RadioButton = (props: RadioButtonProps) => {
         <Flex
           { ...checkbox }
         >
-          <Icon as={ props.icon } boxSize={ 5 }/>
+          <IconSvg name={ props.icon } boxSize={ 5 }/>
         </Flex>
       </Button>
     );
@@ -59,7 +62,7 @@ const RadioButton = (props: RadioButtonProps) => {
   return (
     <Button
       as="label"
-      leftIcon={ props.icon ? <Icon as={ props.icon } boxSize={ 5 } mr={ -1 }/> : undefined }
+      leftIcon={ props.icon ? <IconSvg name={ props.icon } boxSize={ 5 } mr={ -1 }/> : undefined }
       { ...styleProps }
     >
       <input { ...input }/>

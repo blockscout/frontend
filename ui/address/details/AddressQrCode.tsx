@@ -1,7 +1,6 @@
 import {
   chakra,
   Alert,
-  Icon,
   Modal,
   ModalBody,
   ModalContent,
@@ -22,10 +21,10 @@ import React from 'react';
 
 import type { Address as AddressType } from 'types/api/address';
 
-import qrCodeIcon from 'icons/qr_code.svg';
 import getPageType from 'lib/mixpanel/getPageType';
 import * as mixpanel from 'lib/mixpanel/index';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import IconSvg from 'ui/shared/IconSvg';
 
 const SVG_OPTIONS = {
   margin: 0,
@@ -78,7 +77,7 @@ const AddressQrCode = ({ address, className, isLoading }: Props) => {
           pl="6px"
           pr="6px"
           onClick={ onOpen }
-          icon={ <Icon as={ qrCodeIcon } boxSize={ 5 }/> }
+          icon={ <IconSvg name="qr_code" boxSize={ 5 }/> }
           flexShrink={ 0 }
         />
       </Tooltip>

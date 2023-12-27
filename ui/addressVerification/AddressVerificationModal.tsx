@@ -1,11 +1,11 @@
-import { Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Link } from '@chakra-ui/react';
+import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Link } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressVerificationFormFirstStepFields, AddressCheckStatusSuccess } from './types';
 import type { VerifiedAddress } from 'types/api/account';
 
-import eastArrowIcon from 'icons/arrows/east.svg';
 import * as mixpanel from 'lib/mixpanel/index';
+import IconSvg from 'ui/shared/IconSvg';
 import Web3ModalProvider from 'ui/shared/Web3ModalProvider';
 
 import AddressVerificationStepAddress from './steps/AddressVerificationStepAddress';
@@ -100,7 +100,7 @@ const AddressVerificationModal = ({ defaultAddress, isOpen, onClose, onSubmit, o
         <ModalHeader fontWeight="500" textStyle="h3" mb={ 6 }>
           { stepIndex !== 0 && (
             <Link mr={ 3 } onClick={ handleGoToPrevStep }>
-              <Icon as={ eastArrowIcon } boxSize={ 6 } transform="rotate(180deg)" verticalAlign="middle"/>
+              <IconSvg name="arrows/east" boxSize={ 6 } transform="rotate(180deg)" verticalAlign="middle"/>
             </Link>
           ) }
           <span>{ step.title }</span>

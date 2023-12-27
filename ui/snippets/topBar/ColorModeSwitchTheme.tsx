@@ -1,10 +1,11 @@
 import {
-  Icon,
   Flex,
   useColorModeValue,
   useToken,
 } from '@chakra-ui/react';
 import React from 'react';
+
+import IconSvg from 'ui/shared/IconSvg';
 
 import ColorModeSwitchSample from './ColorModeSwitchSample';
 import type { ColorTheme } from './utils';
@@ -43,7 +44,7 @@ const ColorModeSwitchTheme = ({ icon, name, colors, onClick, activeHex }: Props)
       fontWeight={ 500 }
       borderRadius="base"
     >
-      <Icon as={ icon } boxSize={ 5 } mr={ 2 }/>
+      <IconSvg name={ icon } boxSize={ 5 } mr={ 2 }/>
       <span>{ name }</span>
       <Flex columnGap={ 2 } ml="auto" alignItems="center">
         { colors.map((sample) => <ColorModeSwitchSample key={ sample.hex } { ...sample } onClick={ onClick } isActive={ activeHex === sample.hex }/>) }

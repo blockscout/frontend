@@ -3,7 +3,6 @@ import {
   Center,
   chakra,
   Flex,
-  Icon,
   IconButton, Link,
   Menu,
   MenuButton,
@@ -20,14 +19,10 @@ import React, { useRef, useCallback, useState } from 'react';
 
 import type { TimeChartItem } from './types';
 
-import svgFileIcon from 'icons/files/csv.svg';
-import imageIcon from 'icons/files/image.svg';
-import repeatArrowIcon from 'icons/repeat_arrow.svg';
-import scopeIcon from 'icons/scope.svg';
-import dotsIcon from 'icons/vertical_dots.svg';
 import dayjs from 'lib/date/dayjs';
 import { apos } from 'lib/html-entities';
 import saveAsCSV from 'lib/saveAsCSV';
+import IconSvg from 'ui/shared/IconSvg';
 
 import ChartWidgetGraph from './ChartWidgetGraph';
 import FullscreenChartModal from './FullscreenChartModal';
@@ -202,7 +197,7 @@ const ChartWidget = ({ items, title, description, isLoading, className, isError,
                 size="sm"
                 variant="outline"
                 onClick={ handleZoomResetClick }
-                icon={ <Icon as={ repeatArrowIcon } w={ 4 } h={ 4 }/> }
+                icon={ <IconSvg name="repeat_arrow" w={ 4 } h={ 4 }/> }
               />
             </Tooltip>
 
@@ -212,7 +207,7 @@ const ChartWidget = ({ items, title, description, isLoading, className, isError,
                   <MenuButton
                     w="36px"
                     h="32px"
-                    icon={ <Icon as={ dotsIcon } w={ 4 } h={ 4 }/> }
+                    icon={ <IconSvg name="vertical_dots" w={ 4 } h={ 4 }/> }
                     colorScheme="gray"
                     variant="ghost"
                     as={ IconButton }
@@ -228,7 +223,7 @@ const ChartWidget = ({ items, title, description, isLoading, className, isError,
                     alignItems="center"
                     onClick={ showChartFullscreen }
                   >
-                    <Icon as={ scopeIcon } boxSize={ 5 } mr={ 3 }/>
+                    <IconSvg name="scope" boxSize={ 5 } mr={ 3 }/>
                   View fullscreen
                   </MenuItem>
 
@@ -237,7 +232,7 @@ const ChartWidget = ({ items, title, description, isLoading, className, isError,
                     alignItems="center"
                     onClick={ handleFileSaveClick }
                   >
-                    <Icon as={ imageIcon } boxSize={ 5 } mr={ 3 }/>
+                    <IconSvg name="files/image" boxSize={ 5 } mr={ 3 }/>
                   Save as PNG
                   </MenuItem>
 
@@ -246,7 +241,7 @@ const ChartWidget = ({ items, title, description, isLoading, className, isError,
                     alignItems="center"
                     onClick={ handleSVGSavingClick }
                   >
-                    <Icon as={ svgFileIcon } boxSize={ 5 } mr={ 3 }/>
+                    <IconSvg name="files/csv" boxSize={ 5 } mr={ 3 }/>
                   Save as CSV
                   </MenuItem>
                 </MenuList>

@@ -6,6 +6,7 @@ import React from 'react';
 import * as serverTiming from 'nextjs/utils/serverTiming';
 
 import theme from 'theme';
+import * as svgSprite from 'ui/shared/IconSvg';
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
@@ -48,6 +49,8 @@ class MyDocument extends Document {
           <link rel="icon" sizes="16x16" type="image/png"href="/favicon/favicon-16x16.png"/>
           <link rel="apple-touch-icon" href="/favicon/apple-touch-icon-180x180.png"/>
           <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg"/>
+
+          <link rel="preload" as="image" href={ svgSprite.href }/>
         </Head>
         <body>
           <ColorModeScript initialColorMode={ theme.config.initialColorMode }/>

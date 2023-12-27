@@ -1,5 +1,4 @@
 import {
-  Icon,
   Text,
   HStack,
   Flex,
@@ -9,7 +8,7 @@ import React from 'react';
 
 import type { NavGroupItem } from 'types/client/navigation-items';
 
-import chevronIcon from 'icons/arrows/east-mini.svg';
+import IconSvg from 'ui/shared/IconSvg';
 
 import NavLinkIcon from './NavLinkIcon';
 import useNavLinkStyleProps from './useNavLinkStyleProps';
@@ -40,7 +39,7 @@ const NavLinkGroup = ({ item, onClick, isExpanded }: Props) => {
               { item.text }
             </Text>
           </HStack>
-          <Icon as={ chevronIcon } transform="rotate(180deg)" boxSize={ 6 }/>
+          <IconSvg name="arrows/east-mini" transform="rotate(180deg)" boxSize={ 6 }/>
         </Flex>
       </Box>
     </Box>

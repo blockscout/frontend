@@ -1,15 +1,14 @@
-import { Icon, chakra, Tooltip, IconButton, useDisclosure } from '@chakra-ui/react';
+import { chakra, Tooltip, IconButton, useDisclosure } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import config from 'configs/app';
-import starFilledIcon from 'icons/star_filled.svg';
-import starOutlineIcon from 'icons/star_outline.svg';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import useIsAccountActionAllowed from 'lib/hooks/useIsAccountActionAllowed';
 import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
 import * as mixpanel from 'lib/mixpanel/index';
+import IconSvg from 'ui/shared/IconSvg';
 import WatchlistAddModal from 'ui/watchlist/AddressModal/AddressModal';
 import DeleteAddressModal from 'ui/watchlist/DeleteAddressModal';
 
@@ -73,7 +72,7 @@ const AddressFavoriteButton = ({ className, hash, watchListId }: Props) => {
           pr="6px"
           flexShrink={ 0 }
           onClick={ handleClick }
-          icon={ <Icon as={ watchListId ? starFilledIcon : starOutlineIcon } boxSize={ 5 }/> }
+          icon={ <IconSvg name={ watchListId ? 'star_filled' : 'star_outline' } boxSize={ 5 }/> }
           onFocusCapture={ onFocusCapture }
         />
       </Tooltip>
