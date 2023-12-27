@@ -13,7 +13,7 @@ import { NumericFormat } from 'react-number-format';
 import { isAddress, isHex, getAddress } from 'viem';
 
 import type { MethodFormFields } from './types';
-import type { SmartContractMethodArgType, SmartContractMethodInput } from 'types/api/contract';
+import type { SmartContractMethodArgType } from 'types/api/contract';
 
 import ClearButton from 'ui/shared/ClearButton';
 
@@ -22,7 +22,6 @@ import { INT_REGEXP, BYTES_REGEXP, getIntBoundaries, formatBooleanValue } from '
 
 interface Props {
   name: string;
-  type?: SmartContractMethodInput['fieldType'];
   index?: number;
   groupName?: string;
   placeholder: string;
@@ -35,9 +34,8 @@ interface Props {
   onChange: () => void;
 }
 
-const ContractMethodField = ({ control, name, type, groupName, index, argType, placeholder, setValue, getValues, isDisabled, isOptional, onChange }: Props) => {
+const ContractMethodField = ({ control, name, groupName, index, argType, placeholder, setValue, getValues, isDisabled, isOptional, onChange }: Props) => {
   const ref = React.useRef<HTMLInputElement>(null);
-  const nativeCoinFieldBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.100');
   const bgColor = useColorModeValue('white', 'black');
 
   const handleClear = React.useCallback(() => {
@@ -81,26 +79,7 @@ const ContractMethodField = ({ control, name, type, groupName, index, argType, p
     const hasZerosControl = intMatch && Number(intMatch.power) >= 64;
 
     return (
-      <Box
-        w="100%"
-        pt={{ lg: type === 'native_coin' ? 1 : 0 }}
-        pb={{ base: type === 'native_coin' ? '6px' : 0, lg: type === 'native_coin' ? 1 : 0 }}
-        position="relative"
-        _before={ type === 'native_coin' ? {
-          content: `" "`,
-          position: 'absolute',
-          top: 0,
-          right: '-6px',
-          width: { base: 'calc(100% + 12px)', lg: 'calc(100% + 6px)' },
-          height: '100%',
-          bgColor: nativeCoinFieldBgColor,
-          borderTopLeftRadius: 'none',
-          borderTopRightRadius: { lg: 'base' },
-          borderBottomRightRadius: 'base',
-          borderBottomLeftRadius: { base: 'base', lg: 'none' },
-          zIndex: -1,
-        } : undefined }
-      >
+      <Box w="100%">
         <FormControl
           id={ name }
           isDisabled={ isDisabled }
@@ -131,10 +110,10 @@ const ContractMethodField = ({ control, name, type, groupName, index, argType, p
         { error && <Box color="error" fontSize="sm" mt={ 1 }>{ error.message }</Box> }
       </Box>
     );
-  }, [ index, groupName, name, intMatch, type, nativeCoinFieldBgColor, isDisabled, isOptional, placeholder, bgColor, handleClear, handleAddZeroesClick ]);
+  }, [ index, groupName, name, intMatch, isDisabled, isOptional, placeholder, bgColor, handleClear, handleAddZeroesClick ]);
 
-  const validate = React.useCallback((_value: string | Array<string>) => {
-    if (typeof _value === 'object') {
+  const validate = React.useCallback((_value: string | Array<string> | undefined) => {
+    if (typeof _value === 'object' || !_value) {
       return;
     }
 
@@ -191,7 +170,7 @@ const ContractMethodField = ({ control, name, type, groupName, index, argType, p
 
       if (length) {
         const valueLengthInBytes = value.replace('0x', '').length / 2;
-        return valueLengthInBytes > Number(length) ? `Value should be a maximum of ${ length } bytes` : true;
+        return valueLengthInBytes !== Number(length) ? `Value should be ${ length } bytes in length` : true;
       }
 
       return true;

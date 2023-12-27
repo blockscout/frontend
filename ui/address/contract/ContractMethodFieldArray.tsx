@@ -55,7 +55,7 @@ const ContractMethodFieldArray = ({ control, name, setValue, getValues, isDisabl
   }, [ remove ]);
 
   return (
-    <Flex flexDir="column" rowGap={ 3 }>
+    <Flex flexDir="column" rowGap={ 3 } w="100%">
       { fields.map((field, index, array) => {
         return (
           <Flex key={ field.id } columnGap={ 3 }>

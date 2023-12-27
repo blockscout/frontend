@@ -1,4 +1,4 @@
-import { Box, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -39,7 +39,6 @@ const ContractMethodCallableRow = ({ argName, fieldName, fieldType, argType, onC
   ) : (
     <ContractMethodField
       name={ fieldName }
-      type={ fieldType }
       argType={ argType }
       placeholder={ argType }
       control={ control }
@@ -54,35 +53,31 @@ const ContractMethodCallableRow = ({ argName, fieldName, fieldType, argType, onC
   const isNativeCoinField = fieldType === 'native_coin';
 
   return (
-    <>
+    <Flex
+      flexDir={{ base: 'column', lg: 'row' }}
+      columnGap={ 3 }
+      rowGap={{ base: 2, lg: 0 }}
+      bgColor={ isNativeCoinField ? nativeCoinFieldBgColor : undefined }
+      py={ isNativeCoinField ? 1 : undefined }
+      px={ isNativeCoinField ? '6px' : undefined }
+      mx={ isNativeCoinField ? '-6px' : undefined }
+      borderRadius="base"
+    >
       <Box
         position="relative"
         fontWeight={ 500 }
         lineHeight="20px"
-        pt={{ base: isNativeCoinField ? '6px' : 0, lg: isNativeCoinField ? '10px' : '6px' }}
-        pb={{ lg: isNativeCoinField ? '10px' : '6px' }}
+        py={{ lg: '6px' }}
         fontSize="sm"
         color={ isGrouped ? 'text_secondary' : 'initial' }
         wordBreak="break-word"
-        _before={ isNativeCoinField ? {
-          content: `" "`,
-          position: 'absolute',
-          top: 0,
-          left: '-6px',
-          width: { base: 'calc(100% + 12px)', lg: 'calc(100% + 18px)' },
-          height: { base: 'calc(100% + 8px)', lg: '100%' },
-          bgColor: nativeCoinFieldBgColor,
-          borderTopLeftRadius: 'base',
-          borderTopRightRadius: { base: 'base', lg: 'none' },
-          borderBottomRightRadius: 'none',
-          borderBottomLeftRadius: { base: 'none', lg: 'base' },
-          zIndex: -1,
-        } : undefined }
+        w={{ lg: '250px' }}
+        flexShrink={ 0 }
       >
         { argName }{ isOptional ? '' : '*' } ({ argType })
       </Box>
       { content }
-    </>
+    </Flex>
   );
 };
 

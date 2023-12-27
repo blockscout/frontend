@@ -1,4 +1,4 @@
-import { Box, Button, chakra, Flex, Grid, Icon, Text } from '@chakra-ui/react';
+import { Box, Button, chakra, Flex, Icon, Text } from '@chakra-ui/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -90,10 +90,9 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
           onSubmit={ formApi.handleSubmit(onFormSubmit) }
           onChange={ handleFormChange }
         >
-          <Grid
-            columnGap={ 3 }
-            rowGap={{ base: 2, lg: 3 }}
-            gridTemplateColumns={{ base: 'minmax(0, 1fr)', lg: 'minmax(min-content, 250px) minmax(0, 1fr)' }}
+          <Flex
+            flexDir="column"
+            rowGap={ 3 }
             mb={ 3 }
             _empty={{ display: 'none' }}
           >
@@ -113,7 +112,6 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
                     >
                       { input.name } ({ input.type })
                     </Box>
-                    <div/>
                     { input.components.map((component, componentIndex) => {
                       const fieldName = getFormFieldName(
                         { name: component.name, index: componentIndex },
@@ -150,7 +148,7 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
                 />
               );
             }) }
-          </Grid>
+          </Flex>
           <Button
             isLoading={ isLoading }
             loadingText={ isWrite ? 'Write' : 'Read' }
