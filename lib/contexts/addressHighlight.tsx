@@ -14,15 +14,20 @@ export const AddressHighlightContext = React.createContext<TAddressHighlightCont
 
 export function AddressHighlightProvider({ children }: AddressHighlightProviderProps) {
   const [ highlightedAddress, setHighlightedAddress ] = React.useState<string | null>(null);
+  const timeoutId = React.useRef<number | null>(null);
 
   const onMouseEnter = React.useCallback((event: React.MouseEvent) => {
-    // TODO @tom2drum add throttling
     const hash = event.currentTarget.getAttribute('data-hash');
-    hash && setHighlightedAddress(hash);
+    if (hash) {
+      timeoutId.current = window.setTimeout(() => {
+        setHighlightedAddress(hash);
+      }, 100);
+    }
   }, []);
 
   const onMouseLeave = React.useCallback(() => {
     setHighlightedAddress(null);
+    typeof timeoutId.current === 'number' && window.clearTimeout(timeoutId.current);
   }, []);
 
   const value = React.useMemo(() => {
@@ -32,6 +37,12 @@ export function AddressHighlightProvider({ children }: AddressHighlightProviderP
       onMouseLeave,
     };
   }, [ highlightedAddress, onMouseEnter, onMouseLeave ]);
+
+  React.useEffect(() => {
+    return () => {
+      typeof timeoutId.current === 'number' && window.clearTimeout(timeoutId.current);
+    };
+  }, []);
 
   return (
     <AddressHighlightContext.Provider value={ value }>
