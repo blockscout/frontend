@@ -36,7 +36,7 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
     <Grid
       gridTemplateColumns={{
         lg: columnNum === 2 ? '3fr minmax(auto, 160px)' : '3fr minmax(auto, 160px) 150px',
-        xl: columnNum === 2 ? '3fr minmax(auto, 250px)' : '3fr minmax(auto, 250px) 150px',
+        xl: columnNum === 2 ? '3fr minmax(auto, 250px)' : '3fr minmax(auto, 275px) 150px',
       }}
       gridGap={ 8 }
       width="100%"
@@ -110,15 +110,15 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
           ) }
         </Flex>
       </Flex>
-      <Box>
+      <Flex flexDir="column">
         { !config.UI.views.tx.hiddenFields?.value && (
-          <Skeleton isLoaded={ !isLoading } mb="1px" lineHeight="30px">
+          <Skeleton isLoaded={ !isLoading } my="3px">
             <Text as="span" whiteSpace="pre">{ config.chain.currency.symbol } </Text>
             <Text as="span" variant="secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() }</Text>
           </Skeleton>
         ) }
         { !config.UI.views.tx.hiddenFields?.tx_fee && (
-          <Skeleton isLoaded={ !isLoading } display="flex" whiteSpace="pre" lineHeight="30px">
+          <Skeleton isLoaded={ !isLoading } display="flex" whiteSpace="pre" my="3px">
             <Text as="span">Fee </Text>
             { tx.stability_fee ? (
               <TxFeeStability data={ tx.stability_fee } accuracy={ 5 } color="text_secondary" hideUsd/>
@@ -127,7 +127,7 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
             ) }
           </Skeleton>
         ) }
-      </Box>
+      </Flex>
     </Grid>
   );
 };
