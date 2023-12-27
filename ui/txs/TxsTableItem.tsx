@@ -53,7 +53,8 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
       truncation="constant"
       w="min-content"
       maxW="100%"
-      py="2px"
+      my="2px"
+      lineHeight="20px"
     />
   );
 
@@ -67,6 +68,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
       w="min-content"
       maxW="100%"
       py="2px"
+      lineHeight="20px"
     />
   ) : '-';
 
@@ -151,7 +153,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
                   isLoading={ isLoading }
                 />
               ) }
-            <VStack alignItems="start" ml={ 1 } w="calc(100% - 48px)">
+            <VStack alignItems="start" ml={ 1 } w="calc(100% - 48px)" gap="11px">
               { addressFrom }
               { addressTo }
             </VStack>

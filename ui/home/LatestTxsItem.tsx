@@ -48,16 +48,17 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
       display={{ base: 'none', lg: 'grid' }}
     >
       <Flex overflow="hidden" w="100%">
-        <TxAdditionalInfo tx={ tx } isLoading={ isLoading }/>
+        <TxAdditionalInfo tx={ tx } isLoading={ isLoading } my="3px"/>
         <Box ml={ 3 } w="calc(100% - 40px)">
-          <HStack flexWrap="wrap">
+          <HStack flexWrap="wrap" my="3px">
             <TxType types={ tx.tx_types } isLoading={ isLoading }/>
             <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
             <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
           </HStack>
           <Flex
-            mt={ 2 }
             alignItems="center"
+            mt="7px"
+            mb="3px"
           >
             <TxEntity
               isLoading={ isLoading }
@@ -88,35 +89,36 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
           isLoading={ isLoading }
           flexShrink={ 0 }
         />
-        <Box ml={ 1 } maxW="calc(100% - 24px)">
+        <Flex ml={ 1 } maxW="calc(100% - 24px)" flexDir="column" rowGap="1px">
           <AddressEntity
             isLoading={ isLoading }
             address={ tx.from }
             fontSize="sm"
-            lineHeight={ 6 }
+            lineHeight={ 5 }
+            my="5px"
             fontWeight="500"
-            mb={ 2 }
           />
           { dataTo && (
             <AddressEntity
               isLoading={ isLoading }
               address={ dataTo }
               fontSize="sm"
-              lineHeight={ 6 }
+              lineHeight={ 5 }
+              my="5px"
               fontWeight="500"
             />
           ) }
-        </Box>
+        </Flex>
       </Flex>
       <Box>
         { !config.UI.views.tx.hiddenFields?.value && (
-          <Skeleton isLoaded={ !isLoading } mb={ 2 }>
+          <Skeleton isLoaded={ !isLoading } mb="1px" lineHeight="30px">
             <Text as="span" whiteSpace="pre">{ config.chain.currency.symbol } </Text>
             <Text as="span" variant="secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() }</Text>
           </Skeleton>
         ) }
         { !config.UI.views.tx.hiddenFields?.tx_fee && (
-          <Skeleton isLoaded={ !isLoading } display="flex" whiteSpace="pre">
+          <Skeleton isLoaded={ !isLoading } display="flex" whiteSpace="pre" lineHeight="30px">
             <Text as="span">Fee </Text>
             { tx.stability_fee ? (
               <TxFeeStability data={ tx.stability_fee } accuracy={ 5 } color="text_secondary" hideUsd/>

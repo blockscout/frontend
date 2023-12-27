@@ -83,6 +83,7 @@ const AddressIntTxsTableItem = ({
           noLink={ isOut }
           noCopy={ isOut }
           w="min-content"
+          maxW="100%"
         />
       </Td>
       <Td px={ 0 } verticalAlign="middle">
@@ -99,6 +100,7 @@ const AddressIntTxsTableItem = ({
             noLink={ isIn }
             noCopy={ isIn }
             w="min-content"
+            maxW="100%"
           />
         ) }
       </Td>
