@@ -1,10 +1,10 @@
-import { Box, Flex, Text, Icon, VStack, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex, Text, VStack, useColorModeValue } from '@chakra-ui/react';
 import { animate, motion, useMotionValue } from 'framer-motion';
 import React, { useCallback } from 'react';
 
-import chevronIcon from 'icons/arrows/east-mini.svg';
 import useHasAccount from 'lib/hooks/useHasAccount';
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
+import IconSvg from 'ui/shared/IconSvg';
 import NavLink from 'ui/snippets/navigation/NavLink';
 
 import NavLinkGroupMobile from './NavLinkGroupMobile';
@@ -96,7 +96,7 @@ const NavigationMobile = ({ onNavLinkClick, isMarketplaceAppPage }: Props) => {
           key="sub"
         >
           <Flex alignItems="center" px={ 3 } py={ 2.5 } w="100%" h="50px" onClick={ onGroupItemClose } mb={ 1 }>
-            <Icon as={ chevronIcon } boxSize={ 6 } mr={ 2 } color={ iconColor }/>
+            <IconSvg name="arrows/east-mini" boxSize={ 6 } mr={ 2 } color={ iconColor }/>
             <Text variant="secondary" fontSize="sm">{ mainNavItems[openedGroupIndex].text }</Text>
           </Flex>
           <Box

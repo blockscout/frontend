@@ -1,12 +1,12 @@
-import { Link, Table, Tbody, Tr, Th, Icon, Show, Hide } from '@chakra-ui/react';
+import { Link, Table, Tbody, Tr, Th, Show, Hide } from '@chakra-ui/react';
 import { AnimatePresence } from 'framer-motion';
 import React from 'react';
 
 import type { Transaction, TransactionsSortingField, TransactionsSortingValue } from 'types/api/transaction';
 
 import config from 'configs/app';
-import rightArrowIcon from 'icons/arrows/east.svg';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
+import IconSvg from 'ui/shared/IconSvg';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import TheadSticky from 'ui/shared/TheadSticky';
 
@@ -60,8 +60,8 @@ const TxsTable = ({
             { !config.UI.views.tx.hiddenFields?.value && (
               <Th width="20%" isNumeric>
                 <Link onClick={ sort('value') } display="flex" justifyContent="end">
-                  { sorting === 'value-asc' && <Icon boxSize={ 5 } as={ rightArrowIcon } transform="rotate(-90deg)"/> }
-                  { sorting === 'value-desc' && <Icon boxSize={ 5 } as={ rightArrowIcon } transform="rotate(90deg)"/> }
+                  { sorting === 'value-asc' && <IconSvg boxSize={ 5 } name="arrows/east" transform="rotate(-90deg)"/> }
+                  { sorting === 'value-desc' && <IconSvg boxSize={ 5 } name="arrows/east" transform="rotate(90deg)"/> }
                   { `Value ${ config.chain.currency.symbol }` }
                 </Link>
               </Th>
@@ -69,8 +69,8 @@ const TxsTable = ({
             { !config.UI.views.tx.hiddenFields?.tx_fee && (
               <Th width="20%" isNumeric pr={ 5 }>
                 <Link onClick={ sort('fee') } display="flex" justifyContent="end">
-                  { sorting === 'fee-asc' && <Icon boxSize={ 5 } as={ rightArrowIcon } transform="rotate(-90deg)"/> }
-                  { sorting === 'fee-desc' && <Icon boxSize={ 5 } as={ rightArrowIcon } transform="rotate(90deg)"/> }
+                  { sorting === 'fee-asc' && <IconSvg boxSize={ 5 } name="arrows/east" transform="rotate(-90deg)"/> }
+                  { sorting === 'fee-desc' && <IconSvg boxSize={ 5 } name="arrows/east" transform="rotate(90deg)"/> }
                   { `Fee${ config.UI.views.tx.hiddenFields?.fee_currency ? '' : ` ${ config.chain.currency.symbol }` }` }
                 </Link>
               </Th>

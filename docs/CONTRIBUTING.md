@@ -182,7 +182,8 @@ We have 3 pre-configured projects. You can run your test with the desired projec
 | `yarn lint:eslint` | lint project files with ESLint |
 | `yarn lint:eslint:fix` | lint project files with ESLint and automatically fix problems |
 | `yarn lint:tsc` | compile project typescript files using TypeScript Compiler |
-| `yarn format-svg` | format and optimize SVG icons in the `/icons` folder using SVGO tool |
+| `yarn svg:format` | format and optimize SVG icons in the `/icons` folder using SVGO tool |
+| `yarn svg:build-sprite` | build SVG icons sprite |
 | **Testing** |
 | `yarn test:jest` | run all Jest unit tests |
 | `yarn test:jest:watch` | run all Jest unit tests in watch mode |

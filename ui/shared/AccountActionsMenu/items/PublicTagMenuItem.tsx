@@ -1,8 +1,8 @@
-import { MenuItem, Icon, chakra } from '@chakra-ui/react';
+import { MenuItem, chakra } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import iconPublicTags from 'icons/publictags.svg';
+import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   className?: string;
@@ -23,7 +23,7 @@ const PublicTagMenuItem = ({ className, hash, onBeforeClick }: Props) => {
 
   return (
     <MenuItem className={ className }onClick={ handleClick }>
-      <Icon as={ iconPublicTags } boxSize={ 6 } mr={ 2 }/>
+      <IconSvg name="publictags" boxSize={ 6 } mr={ 2 }/>
       <span>Add public tag</span>
     </MenuItem>
   );

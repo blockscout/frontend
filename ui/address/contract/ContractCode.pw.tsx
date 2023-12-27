@@ -78,6 +78,31 @@ test('verified with changed byte code socket', async({ mount, page, createSocket
   await expect(component).toHaveScreenshot();
 });
 
+test('verified via lookup in eth_bytecode_db', async({ mount, page, createSocket }) => {
+  await page.route(CONTRACT_API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(contractMock.nonVerified),
+  }));
+  await page.route('https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/**', (route) => route.abort());
+
+  await mount(
+    <TestApp withSocket>
+      <ContractCode addressHash={ addressHash }/>
+    </TestApp>,
+    { hooksConfig },
+  );
+
+  const socket = await createSocket();
+  const channel = await socketServer.joinChannel(socket, 'addresses:' + addressHash.toLowerCase());
+
+  await page.waitForResponse(CONTRACT_API_URL);
+  socketServer.sendMessage(socket, channel, 'smart_contract_was_verified', {});
+
+  const request = await page.waitForRequest(CONTRACT_API_URL);
+
+  expect(request).toBeTruthy();
+});
+
 test('verified with multiple sources', async({ mount, page }) => {
   await page.route(CONTRACT_API_URL, (route) => route.fulfill({
     status: 200,

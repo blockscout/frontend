@@ -5,8 +5,6 @@ import React from 'react';
 import type { NFTTokenType } from 'types/api/token';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
-import listIcon from 'icons/apps.svg';
-import collectionIcon from 'icons/collection.svg';
 import { useAppContext } from 'lib/contexts/app';
 import * as cookies from 'lib/cookies';
 import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
@@ -125,8 +123,8 @@ const AddressTokens = () => {
       defaultValue={ nftDisplayType }
       name="type"
       options={ [
-        { title: 'By collection', value: 'collection', icon: collectionIcon, onlyIcon: isMobile },
-        { title: 'List', value: 'list', icon: listIcon, onlyIcon: isMobile },
+        { title: 'By collection', value: 'collection', icon: 'collection', onlyIcon: isMobile },
+        { title: 'List', value: 'list', icon: 'apps', onlyIcon: isMobile },
       ] }
     />
   );

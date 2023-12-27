@@ -7,9 +7,6 @@ import type { AddressParam } from 'types/api/addressParams';
 
 import { route } from 'nextjs-routes';
 
-import iconSafe from 'icons/brands/safe.svg';
-import iconContractVerified from 'icons/contract_verified.svg';
-import iconContract from 'icons/contract.svg';
 import { useAddressHighlightContext } from 'lib/contexts/addressHighlight';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
@@ -54,7 +51,7 @@ const Icon = (props: IconProps) => {
       return (
         <EntityBase.Icon
           { ...props }
-          asProp={ iconSafe }
+          name="brands/safe"
         />
       );
     }
@@ -65,7 +62,7 @@ const Icon = (props: IconProps) => {
           <span>
             <EntityBase.Icon
               { ...props }
-              asProp={ iconContractVerified }
+              name="contract_verified"
               color="green.500"
               borderRadius={ 0 }
             />
@@ -79,7 +76,7 @@ const Icon = (props: IconProps) => {
         <span>
           <EntityBase.Icon
             { ...props }
-            asProp={ iconContract }
+            name="contract"
             borderRadius={ 0 }
           />
         </span>

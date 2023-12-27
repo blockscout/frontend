@@ -22,7 +22,13 @@ const ERC20TokensTableItem = ({
   } = getCurrencyValue({ value: value, exchangeRate: token.exchange_rate, decimals: token.decimals, accuracy: 8, accuracyUsd: 2 });
 
   return (
-    <Tr>
+    <Tr
+      sx={{
+        '&:hover [aria-label="Add token to wallet"]': {
+          opacity: 1,
+        },
+      }}
+    >
       <Td verticalAlign="middle">
         <TokenEntity
           token={ token }
@@ -39,7 +45,7 @@ const ERC20TokensTableItem = ({
             isLoading={ isLoading }
             noIcon
           />
-          <AddressAddToWallet token={ token } ml={ 4 } isLoading={ isLoading }/>
+          <AddressAddToWallet token={ token } ml={ 4 } isLoading={ isLoading } opacity="0"/>
         </Flex>
       </Td>
       <Td isNumeric verticalAlign="middle">
