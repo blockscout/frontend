@@ -12,7 +12,7 @@ type Props = EnsDomain & {
   isLoading?: boolean;
 }
 
-const NameDomainsTableItem = ({ isLoading, name, resolvedAddress, registrationDate, expiryDate }: Props) => {
+const NameDomainsTableItem = ({ isLoading, name, resolved_address: resolvedAddress, registration_date: registrationDate, expiry_date: expiryDate }: Props) => {
 
   return (
     <Tr>

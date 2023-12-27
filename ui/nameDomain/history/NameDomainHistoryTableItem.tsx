@@ -12,7 +12,7 @@ type Props = EnsDomainEvent & {
   isLoading?: boolean;
 }
 
-const NameDomainHistoryTableItem = ({ isLoading, transactionHash, fromAddress, action, timestamp }: Props) => {
+const NameDomainHistoryTableItem = ({ isLoading, transaction_hash: transactionHash, from_address: fromAddress, action, timestamp }: Props) => {
 
   return (
     <Tr>

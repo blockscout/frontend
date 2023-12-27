@@ -36,7 +36,15 @@ import type { ChartMarketResponse, ChartTransactionResponse } from 'types/api/ch
 import type { BackendVersionConfig } from 'types/api/configs';
 import type { SmartContract, SmartContractReadMethod, SmartContractWriteMethod, SmartContractVerificationConfig, SolidityscanReport } from 'types/api/contract';
 import type { VerifiedContractsResponse, VerifiedContractsFilters, VerifiedContractsCounters } from 'types/api/contracts';
-import type { EnsAddressLookupResponse, EnsDomainDetailed, EnsDomainEventsResponse, EnsDomainLookupResponse } from 'types/api/ens';
+import type {
+  EnsAddressLookupFilters,
+  EnsAddressLookupResponse,
+  EnsDomainDetailed,
+  EnsDomainEventsResponse,
+  EnsDomainLookupFilters,
+  EnsDomainLookupResponse,
+  EnsLookupSorting,
+} from 'types/api/ens';
 import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
 import type { L2DepositsResponse, L2DepositsItem } from 'types/api/l2Deposits';
@@ -182,6 +190,7 @@ export const RESOURCES = {
     pathParams: [ 'chainId' as const ],
     endpoint: getFeaturePayload(config.features.nameService)?.api.endpoint,
     basePath: getFeaturePayload(config.features.nameService)?.api.basePath,
+    filterFields: [ 'address' as const, 'resolved_to' as const, 'owned_by' as const, 'only_active' as const ],
   },
   domain_info: {
     path: '/api/v1/:chainId/domains/:name',
@@ -200,6 +209,7 @@ export const RESOURCES = {
     pathParams: [ 'chainId' as const ],
     endpoint: getFeaturePayload(config.features.nameService)?.api.endpoint,
     basePath: getFeaturePayload(config.features.nameService)?.api.basePath,
+    filterFields: [ 'name' as const, 'only_active' as const ],
   },
 
   // VISUALIZATION
@@ -636,7 +646,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'zkevm_l2_txn_batches' | 'zkevm_l2_txn_batch_txs' |
 'withdrawals' | 'address_withdrawals' | 'block_withdrawals' |
 'watchlist' | 'private_tags_address' | 'private_tags_tx' |
-'domain_events' | 'domains_lookup' | 'addresses_lookup';
+'domains_lookup' | 'addresses_lookup';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
@@ -757,6 +767,8 @@ Q extends 'token_inventory' ? TokenInventoryFilters :
 Q extends 'tokens' ? TokensFilters :
 Q extends 'tokens_bridged' ? TokensBridgedFilters :
 Q extends 'verified_contracts' ? VerifiedContractsFilters :
+Q extends 'addresses_lookup' ? EnsAddressLookupFilters :
+Q extends 'domains_lookup' ? EnsDomainLookupFilters :
 never;
 /* eslint-enable @typescript-eslint/indent */
 
@@ -766,5 +778,7 @@ Q extends 'tokens' ? TokensSorting :
 Q extends 'tokens_bridged' ? TokensSorting :
 Q extends 'verified_contracts' ? VerifiedContractsSorting :
 Q extends 'address_txs' ? TransactionsSorting :
+Q extends 'addresses_lookup' ? EnsLookupSorting :
+Q extends 'domains_lookup' ? EnsLookupSorting :
 never;
 /* eslint-enable @typescript-eslint/indent */

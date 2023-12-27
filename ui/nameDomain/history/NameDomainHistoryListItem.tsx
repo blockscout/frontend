@@ -13,7 +13,7 @@ type Props = EnsDomainEvent & {
   isLoading?: boolean;
 }
 
-const NameDomainHistoryListItem = ({ isLoading, transactionHash, timestamp, fromAddress, action }: Props) => {
+const NameDomainHistoryListItem = ({ isLoading, transaction_hash: transactionHash, timestamp, from_address: fromAddress, action }: Props) => {
   return (
     <ListItemMobileGrid.Container>
       <ListItemMobileGrid.Label isLoading={ isLoading }>Txn hash</ListItemMobileGrid.Label>

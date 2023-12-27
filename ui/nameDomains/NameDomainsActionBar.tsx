@@ -57,11 +57,11 @@ const NameDomainsActionBar = ({ searchTerm, onSearchChange, filterValue, onFilte
       <div>
         <CheckboxGroup size="lg" onChange={ onFilterValueChange } value={ filterValue } defaultValue={ filterValue }>
           <Text variant="secondary" fontWeight={ 600 } mb={ 3 } fontSize="sm">Address</Text>
-          <Checkbox value="ownedBy" display="block" isDisabled={ !isAddressSearch }>
+          <Checkbox value="owned_by" display="block" isDisabled={ !isAddressSearch }>
             Owned by
           </Checkbox>
           <Checkbox
-            value="resolvedTo"
+            value="resolved_to"
             display="block"
             mt={ 5 }
             mb={ 4 }
@@ -73,7 +73,7 @@ const NameDomainsActionBar = ({ searchTerm, onSearchChange, filterValue, onFilte
             Resolved to address
           </Checkbox>
           <Text variant="secondary" fontWeight={ 600 } mb={ 3 } fontSize="sm">Status</Text>
-          <Checkbox value="withInactive" display="block">
+          <Checkbox value="with_inactive" display="block">
             Include expired
           </Checkbox>
         </CheckboxGroup>

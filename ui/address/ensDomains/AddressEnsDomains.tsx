@@ -1,14 +1,13 @@
-import { Button, chakra, Flex, Grid, Icon, Popover, PopoverBody, PopoverContent, PopoverTrigger, Skeleton, useDisclosure } from '@chakra-ui/react';
+import { Button, chakra, Flex, Grid, Popover, PopoverBody, PopoverContent, PopoverTrigger, Skeleton, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import arrowIcon from 'icons/arrows/east-mini.svg';
-import ensIcon from 'icons/ENS_slim.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import dayjs from 'lib/date/dayjs';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
+import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/LinkInternal';
 
 interface Props {
@@ -21,14 +20,12 @@ const AddressEnsDomains = ({ addressHash, mainDomainName }: Props) => {
 
   const { data, isPending, isError } = useApiQuery('addresses_lookup', {
     pathParams: { chainId: config.chain.id },
-    fetchParams: {
-      method: 'POST',
-      body: {
-        address: addressHash,
-        resolvedTo: true,
-        ownedBy: true,
-        onlyActive: true,
-      },
+    queryParams: {
+      address: addressHash,
+      resolved_to: true,
+      owned_by: true,
+      only_active: true,
+      order: 'ASC',
     },
   });
 
@@ -47,10 +44,12 @@ const AddressEnsDomains = ({ addressHash, mainDomainName }: Props) => {
     domain.name !== mainDomainName,
   );
   const resolvedDomains = data.items.filter((domain) =>
-    domain.resolvedAddress &&
-    domain.resolvedAddress.hash.toLowerCase() === addressHash.toLowerCase() &&
+    domain.resolved_address &&
+    domain.resolved_address.hash.toLowerCase() === addressHash.toLowerCase() &&
     domain.name !== mainDomainName,
   );
+
+  const totalRecords = data.next_page_params ? '50+' : data.items.length;
 
   return (
     <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
@@ -66,9 +65,9 @@ const AddressEnsDomains = ({ addressHash, mainDomainName }: Props) => {
           h="32px"
           flexShrink={ 0 }
         >
-          <Icon as={ ensIcon } boxSize={ 5 }/>
-          <chakra.span ml={ 1 } display={{ base: 'none', lg: 'block' }}>{ data.totalRecords } Domains</chakra.span>
-          <Icon as={ arrowIcon } transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 }/>
+          <IconSvg name="ENS_slim" boxSize={ 5 }/>
+          <chakra.span ml={ 1 } display={{ base: 'none', lg: 'block' }}>{ totalRecords } Domains</chakra.span>
+          <IconSvg name="arrows/east-mini" transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 }/>
         </Button>
       </PopoverTrigger>
       <PopoverContent w={{ base: '100vw', lg: '500px' }}>
@@ -78,8 +77,8 @@ const AddressEnsDomains = ({ addressHash, mainDomainName }: Props) => {
               <p>A domain name is not necessarily held by a person popularly associated with the name.</p>
               <Flex alignItems="center" fontSize="md" mt={ 4 }>
                 <EnsEntity name={ mainDomain.name } fontWeight={ 600 } noCopy/>
-                { mainDomain.expiryDate &&
-                    <chakra.span color="text_secondary" whiteSpace="pre"> (expires { dayjs(mainDomain.expiryDate).fromNow() })</chakra.span> }
+                { mainDomain.expiry_date &&
+                    <chakra.span color="text_secondary" whiteSpace="pre"> (expires { dayjs(mainDomain.expiry_date).fromNow() })</chakra.span> }
               </Flex>
             </div>
           ) }
@@ -101,10 +100,10 @@ const AddressEnsDomains = ({ addressHash, mainDomainName }: Props) => {
           ) }
           { (ownedDomains.length > 9 || resolvedDomains.length > 9) && (
             <LinkInternal
-              href={ route({ pathname: '/name-domains', query: { ownedBy: 'true', resolvedTo: 'true', q: addressHash } }) }
+              href={ route({ pathname: '/name-domains', query: { owned_by: 'true', resolved_to: 'true', q: addressHash } }) }
             >
               <span> More results</span>
-              <chakra.span color="text_secondary"> ({ data.totalRecords })</chakra.span>
+              <chakra.span color="text_secondary"> ({ totalRecords })</chakra.span>
             </LinkInternal>
           ) }
         </PopoverBody>

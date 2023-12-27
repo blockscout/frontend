@@ -24,14 +24,14 @@ const NameDomains = () => {
   const router = useRouter();
 
   const q = getQueryParamString(router.query.q);
-  const ownedBy = getQueryParamString(router.query.ownedBy);
-  const resolvedTo = getQueryParamString(router.query.resolvedTo);
-  const withInactive = getQueryParamString(router.query.withInactive);
+  const ownedBy = getQueryParamString(router.query.owned_by);
+  const resolvedTo = getQueryParamString(router.query.resolved_to);
+  const withInactive = getQueryParamString(router.query.with_inactive);
 
   const initialFilters: EnsDomainLookupFiltersOptions = [
-    ownedBy === 'true' ? 'ownedBy' as const : undefined,
-    resolvedTo === 'true' ? 'resolvedTo' as const : undefined,
-    withInactive === 'true' ? 'withInactive' as const : undefined,
+    ownedBy === 'true' ? 'owned_by' as const : undefined,
+    resolvedTo === 'true' ? 'resolved_to' as const : undefined,
+    withInactive === 'true' ? 'with_inactive' as const : undefined,
   ].filter(Boolean);
 
   const [ searchTerm, setSearchTerm ] = React.useState<string>(q || '');
@@ -41,41 +41,35 @@ const NameDomains = () => {
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const isAddressSearch = React.useMemo(() => ADDRESS_REGEXP.test(debouncedSearchTerm), [ debouncedSearchTerm ]);
   const sortParam = sort?.split('-')[0];
-  const orderParam = sort?.split('-')[1].toUpperCase();
+  const orderParam = sort?.split('-')[1];
 
   const addressesLookupQuery = useApiQuery('addresses_lookup', {
     pathParams: { chainId: config.chain.id },
-    fetchParams: {
-      method: 'POST',
-      body: {
-        address: debouncedSearchTerm,
-        resolvedTo: filterValue.includes('resolvedTo'),
-        ownedBy: filterValue.includes('ownedBy'),
-        onlyActive: !filterValue.includes('withInactive'),
-        sort: sortParam,
-        order: orderParam,
-      },
+    queryParams: {
+      address: debouncedSearchTerm,
+      resolved_to: filterValue.includes('resolved_to'),
+      owned_by: filterValue.includes('owned_by'),
+      only_active: !filterValue.includes('with_inactive'),
+      sort: sortParam,
+      order: orderParam,
     },
     queryOptions: {
       enabled: isAddressSearch,
-      placeholderData: generateListStub<'addresses_lookup'>(ENS_DOMAIN, 50, { totalRecords: 50 }),
+      placeholderData: generateListStub<'addresses_lookup'>(ENS_DOMAIN, 50, { next_page_params: null }),
     },
   });
 
   const domainsLookupQuery = useApiQuery('domains_lookup', {
     pathParams: { chainId: config.chain.id },
-    fetchParams: {
-      method: 'POST',
-      body: {
-        name: debouncedSearchTerm,
-        onlyActive: !filterValue.includes('withInactive'),
-        sort: sortParam,
-        order: orderParam,
-      },
+    queryParams: {
+      name: debouncedSearchTerm,
+      only_active: !filterValue.includes('with_inactive'),
+      sort: sortParam,
+      order: orderParam,
     },
     queryOptions: {
       enabled: !isAddressSearch,
-      placeholderData: generateListStub<'domains_lookup'>(ENS_DOMAIN, 50, { totalRecords: 50 }),
+      placeholderData: generateListStub<'domains_lookup'>(ENS_DOMAIN, 50, { next_page_params: null }),
     },
   });
 
@@ -83,8 +77,8 @@ const NameDomains = () => {
   const { data, isError, isPlaceholderData: isLoading } = query;
 
   React.useEffect(() => {
-    if (isAddressSearch && filterValue.filter((value) => value !== 'withInactive').length === 0) {
-      setFilterValue([ 'ownedBy', 'resolvedTo' ]);
+    if (isAddressSearch && filterValue.filter((value) => value !== 'with_inactive').length === 0) {
+      setFilterValue([ 'owned_by', 'resolved_to' ]);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ isAddressSearch ]);

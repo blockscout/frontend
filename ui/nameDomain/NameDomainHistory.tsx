@@ -6,7 +6,6 @@ import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ENS_DOMAIN_EVENT } from 'stubs/ENS';
-import { generateListStub } from 'stubs/utils';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 
 import NameDomainHistoryListItem from './history/NameDomainHistoryListItem';
@@ -22,7 +21,7 @@ const NameDomainHistory = () => {
   const { isPlaceholderData, isError, data } = useApiQuery('domain_events', {
     pathParams: { name: domainName, chainId: config.chain.id },
     queryOptions: {
-      placeholderData: generateListStub<'domain_events'>(ENS_DOMAIN_EVENT, 4, { totalRecords: 4 }),
+      placeholderData: { items: Array(4).fill(ENS_DOMAIN_EVENT) },
     },
   });
 

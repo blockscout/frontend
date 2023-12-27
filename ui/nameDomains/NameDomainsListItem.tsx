@@ -13,7 +13,7 @@ interface Props extends EnsDomain {
   isLoading: boolean;
 }
 
-const NameDomainsListItem = ({ name, isLoading, resolvedAddress, registrationDate, expiryDate }: Props) => {
+const NameDomainsListItem = ({ name, isLoading, resolved_address: resolvedAddress, registration_date: registrationDate, expiry_date: expiryDate }: Props) => {
   return (
     <ListItemMobileGrid.Container>
       <ListItemMobileGrid.Label isLoading={ isLoading }>Domain</ListItemMobileGrid.Label>

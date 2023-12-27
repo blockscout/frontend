@@ -56,21 +56,21 @@ const NameDomain = () => {
         noLink
         maxW="300px"
       />
-      { infoQuery.data?.resolvedAddress && (
+      { infoQuery.data?.resolved_address && (
         <AddressEntity
-          address={ infoQuery.data?.resolvedAddress }
+          address={ infoQuery.data?.resolved_address }
           isLoading={ isLoading }
           truncation={ isMobile ? 'constant' : 'dynamic' }
           noLink
           flexShrink={ 0 }
         />
       ) }
-      { infoQuery.data?.resolvedAddress && (
+      { infoQuery.data?.resolved_address && (
         <Tooltip label="Lookup for related domain names">
           <LinkInternal
             flexShrink={ 0 }
             display="inline-flex"
-            href={ route({ pathname: '/name-domains', query: { ownedBy: 'true', resolvedTo: 'true', q: infoQuery.data?.resolvedAddress?.hash } }) }
+            href={ route({ pathname: '/name-domains', query: { owned_by: 'true', resolved_to: 'true', q: infoQuery.data?.resolved_address?.hash } }) }
           >
             <IconSvg name="search" boxSize={ 5 } isLoading={ isLoading }/>
           </LinkInternal>
