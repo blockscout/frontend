@@ -129,7 +129,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
                 { data.ens_info &&
                   (
                     data.ens_info.names_count > 1 ?
-                      <chakra.span color="text_secondary"> (+{ data.ens_info.names_count - 1 })</chakra.span> :
+                      <chakra.span color="text_secondary"> ({ data.ens_info.names_count > 39 ? '40+' : `+${ data.ens_info.names_count - 1 }` })</chakra.span> :
                       <chakra.span color="text_secondary">{ expiresText }</chakra.span>
                   )
                 }

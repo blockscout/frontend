@@ -44,7 +44,7 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
       { data.ens_info &&
         (
           data.ens_info.names_count > 1 ?
-            <span> (+{ data.ens_info.names_count - 1 })</span> :
+            <span> ({ data.ens_info.names_count > 39 ? '40+' : `+${ data.ens_info.names_count - 1 }` })</span> :
             <span>{ expiresText }</span>
         )
       }
