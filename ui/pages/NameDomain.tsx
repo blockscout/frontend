@@ -70,7 +70,7 @@ const NameDomain = () => {
           <LinkInternal
             flexShrink={ 0 }
             display="inline-flex"
-            href={ route({ pathname: '/name-domains', query: { owned_by: 'true', resolved_to: 'true', q: infoQuery.data?.resolved_address?.hash } }) }
+            href={ route({ pathname: '/name-domains', query: { owned_by: 'true', resolved_to: 'true', address: infoQuery.data?.resolved_address?.hash } }) }
           >
             <IconSvg name="search" boxSize={ 5 } isLoading={ isLoading }/>
           </LinkInternal>

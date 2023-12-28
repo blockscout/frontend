@@ -72,7 +72,7 @@ const NameDomainDetails = ({ query }: Props) => {
             <LinkInternal
               flexShrink={ 0 }
               display="inline-flex"
-              href={ route({ pathname: '/name-domains', query: { owned_by: 'true', resolved_to: 'true', q: query.data.registrant.hash } }) }
+              href={ route({ pathname: '/name-domains', query: { owned_by: 'true', resolved_to: 'true', address: query.data.registrant.hash } }) }
             >
               <IconSvg name="search" boxSize={ 5 } isLoading={ isLoading }/>
             </LinkInternal>
@@ -95,7 +95,7 @@ const NameDomainDetails = ({ query }: Props) => {
             <LinkInternal
               flexShrink={ 0 }
               display="inline-flex"
-              href={ route({ pathname: '/name-domains', query: { owned_by: 'true', resolved_to: 'true', q: query.data.owner.hash } }) }
+              href={ route({ pathname: '/name-domains', query: { owned_by: 'true', resolved_to: 'true', address: query.data.owner.hash } }) }
             >
               <IconSvg name="search" boxSize={ 5 } isLoading={ isLoading }/>
             </LinkInternal>
