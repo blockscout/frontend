@@ -9,7 +9,7 @@ import buildApiUrl from 'playwright/utils/buildApiUrl';
 
 import NameDomains from './NameDomains';
 
-const DOMAINS_LOOKUP_API_URL = buildApiUrl('domains_lookup', { chainId: config.chain.id });
+const DOMAINS_LOOKUP_API_URL = buildApiUrl('domains_lookup', { chainId: config.chain.id }) + '?only_active=true';
 
 test.beforeEach(async({ page }) => {
   await page.route('https://request-global.czilladx.com/serve/native.php?z=19260bf627546ab7242', (route) => route.fulfill({
@@ -34,6 +34,9 @@ test('default view +@mobile', async({ mount, page }) => {
         ensDomainMock.ensDomainC,
         ensDomainMock.ensDomainD,
       ],
+      next_page_params: {
+        token_id: '<token-id>',
+      },
     }),
   }));
 

@@ -8,8 +8,9 @@ import buildApiUrl from 'playwright/utils/buildApiUrl';
 
 import AddressEnsDomains from './AddressEnsDomains';
 
-const ADDRESSES_LOOKUP_API_URL = buildApiUrl('addresses_lookup', { chainId: config.chain.id });
 const ADDRESS_HASH = ensDomainMock.ensDomainA.owner?.hash ?? '';
+const ADDRESSES_LOOKUP_API_URL = buildApiUrl('addresses_lookup', { chainId: config.chain.id }) +
+  `?address=${ ADDRESS_HASH }&resolved_to=true&owned_by=true&only_active=true&order=ASC`;
 
 test('base view', async({ mount, page }) => {
   await page.route(ADDRESSES_LOOKUP_API_URL, (route) => route.fulfill({
@@ -21,7 +22,6 @@ test('base view', async({ mount, page }) => {
         ensDomainMock.ensDomainC,
         ensDomainMock.ensDomainD,
       ],
-      totalRecords: 4,
     }),
   }));
 
