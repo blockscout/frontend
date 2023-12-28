@@ -54,6 +54,7 @@
 	| "graphQL"
 	| "info"
 	| "key"
+	| "lightning"
 	| "link"
 	| "lock"
 	| "minus"

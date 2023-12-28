@@ -40,7 +40,9 @@ jobs:
                         const tag = process.env.TAG;
                         const REGEXP = /^v[0-9]+.[0-9]+.[0-9]+-[a-z]+((\.|-)\d+)?$/i;
                         const match = tag.match(REGEXP);
-                        return match && !match[1] ? 'true' : 'false';
+                        const isInitial = match && !match[1] ? true : false;
+                        core.info('is_initial flag value: ', isInitial);
+                        return isInitial;
 
     label_issues:
         name: Add pre-release label to issues
