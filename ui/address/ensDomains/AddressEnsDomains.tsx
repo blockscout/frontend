@@ -37,6 +37,10 @@ const AddressEnsDomains = ({ addressHash, mainDomainName }: Props) => {
     return <Skeleton h={ 8 } w={{ base: '60px', lg: '120px' }} borderRadius="base"/>;
   }
 
+  if (data.items.length === 0) {
+    return null;
+  }
+
   const mainDomain = data.items.find((domain) => domain.name === mainDomainName);
   const ownedDomains = data.items.filter((domain) => {
     if (domain.name === mainDomainName) {
@@ -65,7 +69,7 @@ const AddressEnsDomains = ({ addressHash, mainDomainName }: Props) => {
     domain.name !== mainDomainName,
   );
 
-  const totalRecords = data.next_page_params ? '50+' : data.items.length;
+  const totalRecords = data.items.length > 40 ? '40+' : data.items.length;
 
   return (
     <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
