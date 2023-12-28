@@ -28,6 +28,18 @@ const NameDomainDetails = ({ query }: Props) => {
 
   return (
     <Grid columnGap={ 8 } rowGap={ 3 } templateColumns={{ base: 'minmax(0, 1fr)', lg: 'max-content minmax(728px, auto)' }}>
+      { query.data?.registration_date && (
+        <DetailsInfoItem
+          title="Registration date"
+          hint="The date the name was registered"
+          isLoading={ isLoading }
+        >
+          <IconSvg name="clock" boxSize={ 5 } color="gray.500" verticalAlign="middle" isLoading={ isLoading } mr={ 2 }/>
+          <Skeleton isLoaded={ !isLoading } display="inline" whiteSpace="pre-wrap" lineHeight="20px">
+            { dayjs(query.data.registration_date).format('llll') }
+          </Skeleton>
+        </DetailsInfoItem>
+      ) }
       { query.data?.expiry_date && (
         <DetailsInfoItem
           title="Expiration date"
@@ -36,9 +48,7 @@ const NameDomainDetails = ({ query }: Props) => {
           isLoading={ isLoading }
           display="inline-block"
         >
-          <Skeleton isLoaded={ !isLoading } display="inline" mr={ 2 } mt="-2px" >
-            <IconSvg name="clock" boxSize={ 5 } color="gray.500"verticalAlign="middle"/>
-          </Skeleton>
+          <IconSvg name="clock" boxSize={ 5 } color="gray.500" verticalAlign="middle" isLoading={ isLoading } mr={ 2 } mt="-2px"/>
           { hasExpired && (
             <>
               <Skeleton isLoaded={ !isLoading } display="inline" whiteSpace="pre-wrap" lineHeight="24px">
@@ -96,6 +106,29 @@ const NameDomainDetails = ({ query }: Props) => {
               flexShrink={ 0 }
               display="inline-flex"
               href={ route({ pathname: '/name-domains', query: { owned_by: 'true', resolved_to: 'true', address: query.data.owner.hash } }) }
+            >
+              <IconSvg name="search" boxSize={ 5 } isLoading={ isLoading }/>
+            </LinkInternal>
+          </Tooltip>
+        </DetailsInfoItem>
+      ) }
+      { query.data?.wrapped_owner && (
+        <DetailsInfoItem
+          title="Wrapped controller"
+          hint="Owner of this NFT domain in NameWrapper contract"
+          isLoading={ isLoading }
+          columnGap={ 2 }
+          flexWrap="nowrap"
+        >
+          <AddressEntity
+            address={ query.data.wrapped_owner }
+            isLoading={ isLoading }
+          />
+          <Tooltip label="Lookup for related domain names">
+            <LinkInternal
+              flexShrink={ 0 }
+              display="inline-flex"
+              href={ route({ pathname: '/name-domains', query: { owned_by: 'true', resolved_to: 'true', address: query.data.wrapped_owner.hash } }) }
             >
               <IconSvg name="search" boxSize={ 5 } isLoading={ isLoading }/>
             </LinkInternal>
