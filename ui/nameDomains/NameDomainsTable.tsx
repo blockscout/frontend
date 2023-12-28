@@ -1,9 +1,9 @@
-import { Table, Tbody, Tr, Th, Link, Icon } from '@chakra-ui/react';
+import { Table, Tbody, Tr, Th, Link } from '@chakra-ui/react';
 import React from 'react';
 
 import type { EnsDomainLookupResponse } from 'types/api/ens';
 
-import arrowIcon from 'icons/arrows/east.svg';
+import IconSvg from 'ui/shared/IconSvg';
 import { default as Thead } from 'ui/shared/TheadSticky';
 
 import NameDomainsTableItem from './NameDomainsTableItem';
@@ -17,7 +17,7 @@ interface Props {
 }
 
 const NameDomainsTable = ({ data, isLoading, sort, onSortToggle }: Props) => {
-  const sortIconTransform = sort?.includes('asc') ? 'rotate(-90deg)' : 'rotate(90deg)';
+  const sortIconTransform = sort?.toLowerCase().includes('asc') ? 'rotate(-90deg)' : 'rotate(90deg)';
 
   return (
     <Table variant="simple" size="sm">
@@ -28,8 +28,8 @@ const NameDomainsTable = ({ data, isLoading, sort, onSortToggle }: Props) => {
           <Th width="25%" pl={ 9 }>
             <Link display="flex" alignItems="center" justifyContent="flex-start" position="relative" data-field="registration_date" onClick={ onSortToggle }>
               { sort?.includes('registration_date') && (
-                <Icon
-                  as={ arrowIcon }
+                <IconSvg
+                  name="arrows/east"
                   boxSize={ 4 }
                   transform={ sortIconTransform }
                   color="link"

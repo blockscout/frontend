@@ -2,10 +2,9 @@ import { Box, Hide, Show } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { EnsDomainLookupFiltersOptions } from 'types/api/ens';
+import type { EnsDomainLookupFiltersOptions, EnsLookupSorting } from 'types/api/ens';
 
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
 import useDebounce from 'lib/hooks/useDebounce';
 import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -16,70 +15,87 @@ import NameDomainsActionBar from 'ui/nameDomains/NameDomainsActionBar';
 import NameDomainsListItem from 'ui/nameDomains/NameDomainsListItem';
 import NameDomainsTable from 'ui/nameDomains/NameDomainsTable';
 import type { Sort, SortField } from 'ui/nameDomains/utils';
-import { getNextSortValue } from 'ui/nameDomains/utils';
+import { SORT_OPTIONS, getNextSortValue } from 'ui/nameDomains/utils';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
+import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
+import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
+import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';
 
 const NameDomains = () => {
   const router = useRouter();
 
-  const q = getQueryParamString(router.query.q);
+  const q = getQueryParamString(router.query.name) || getQueryParamString(router.query.address);
   const ownedBy = getQueryParamString(router.query.owned_by);
   const resolvedTo = getQueryParamString(router.query.resolved_to);
-  const withInactive = getQueryParamString(router.query.with_inactive);
+  const onlyActive = getQueryParamString(router.query.only_active);
 
   const initialFilters: EnsDomainLookupFiltersOptions = [
     ownedBy === 'true' ? 'owned_by' as const : undefined,
     resolvedTo === 'true' ? 'resolved_to' as const : undefined,
-    withInactive === 'true' ? 'with_inactive' as const : undefined,
+    onlyActive === 'false' ? 'with_inactive' as const : undefined,
   ].filter(Boolean);
+  const initialSort = getSortValueFromQuery<Sort>(router.query, SORT_OPTIONS);
 
   const [ searchTerm, setSearchTerm ] = React.useState<string>(q || '');
   const [ filterValue, setFilterValue ] = React.useState<EnsDomainLookupFiltersOptions>(initialFilters);
-  const [ sort, setSort ] = React.useState<Sort>();
+  const [ sort, setSort ] = React.useState<Sort | undefined>(initialSort);
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const isAddressSearch = React.useMemo(() => ADDRESS_REGEXP.test(debouncedSearchTerm), [ debouncedSearchTerm ]);
-  const sortParam = sort?.split('-')[0];
-  const orderParam = sort?.split('-')[1];
+  const sortParams = getSortParamsFromValue<Sort, EnsLookupSorting['sort'], EnsLookupSorting['order']>(sort);
 
-  const addressesLookupQuery = useApiQuery('addresses_lookup', {
+  const addressesLookupQuery = useQueryWithPages({
+    resourceName: 'addresses_lookup',
     pathParams: { chainId: config.chain.id },
-    queryParams: {
+    filters: {
       address: debouncedSearchTerm,
       resolved_to: filterValue.includes('resolved_to'),
       owned_by: filterValue.includes('owned_by'),
       only_active: !filterValue.includes('with_inactive'),
-      sort: sortParam,
-      order: orderParam,
     },
-    queryOptions: {
+    sorting: sortParams,
+    options: {
       enabled: isAddressSearch,
       placeholderData: generateListStub<'addresses_lookup'>(ENS_DOMAIN, 50, { next_page_params: null }),
     },
   });
 
-  const domainsLookupQuery = useApiQuery('domains_lookup', {
+  const domainsLookupQuery = useQueryWithPages({
+    resourceName: 'domains_lookup',
     pathParams: { chainId: config.chain.id },
-    queryParams: {
+    filters: {
       name: debouncedSearchTerm,
       only_active: !filterValue.includes('with_inactive'),
-      sort: sortParam,
-      order: orderParam,
     },
-    queryOptions: {
+    sorting: sortParams,
+    options: {
       enabled: !isAddressSearch,
       placeholderData: generateListStub<'domains_lookup'>(ENS_DOMAIN, 50, { next_page_params: null }),
     },
   });
 
   const query = isAddressSearch ? addressesLookupQuery : domainsLookupQuery;
-  const { data, isError, isPlaceholderData: isLoading } = query;
+  const { data, isError, isPlaceholderData: isLoading, onFilterChange, onSortingChange } = query;
 
   React.useEffect(() => {
-    if (isAddressSearch && filterValue.filter((value) => value !== 'with_inactive').length === 0) {
-      setFilterValue([ 'owned_by', 'resolved_to' ]);
+    const hasInactiveFilter = filterValue.some((value) => value === 'with_inactive');
+    if (isAddressSearch) {
+      setFilterValue([ 'owned_by' as const, 'resolved_to' as const, hasInactiveFilter ? 'with_inactive' as const : undefined ].filter(Boolean));
+      onFilterChange<'addresses_lookup'>({
+        address: debouncedSearchTerm,
+        resolved_to: true,
+        owned_by: true,
+        only_active: !hasInactiveFilter,
+      });
+    } else {
+      setFilterValue([ hasInactiveFilter ? 'with_inactive' as const : undefined ].filter(Boolean));
+      onFilterChange<'domains_lookup'>({
+        name: debouncedSearchTerm,
+        only_active: !hasInactiveFilter,
+      });
     }
+  // should run only the type of search changes
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ isAddressSearch ]);
 
@@ -90,17 +106,50 @@ const NameDomains = () => {
     const field = (event.currentTarget as HTMLDivElement).getAttribute('data-field') as SortField | undefined;
 
     if (field) {
-      setSort(getNextSortValue(field));
+      setSort((prevValue) => {
+        const nextSortValue = getNextSortValue(field)(prevValue);
+        onSortingChange(getSortParamsFromValue(nextSortValue));
+        return nextSortValue;
+      });
     }
-  }, [ isLoading ]);
+  }, [ isLoading, onSortingChange ]);
 
   const handleSearchTermChange = React.useCallback((value: string) => {
     setSearchTerm(value);
-  }, []);
+    const isAddressSearch = ADDRESS_REGEXP.test(value);
+    if (isAddressSearch) {
+      onFilterChange<'addresses_lookup'>({
+        address: value,
+        resolved_to: filterValue.includes('resolved_to'),
+        owned_by: filterValue.includes('owned_by'),
+        only_active: !filterValue.includes('with_inactive'),
+      });
+    } else {
+      onFilterChange<'domains_lookup'>({
+        name: value,
+        only_active: !filterValue.includes('with_inactive'),
+      });
+    }
+  }, [ onFilterChange, filterValue ]);
 
   const handleFilterValueChange = React.useCallback((value: EnsDomainLookupFiltersOptions) => {
     setFilterValue(value);
-  }, []);
+
+    const isAddressSearch = ADDRESS_REGEXP.test(debouncedSearchTerm);
+    if (isAddressSearch) {
+      onFilterChange<'addresses_lookup'>({
+        address: debouncedSearchTerm,
+        resolved_to: value.includes('resolved_to'),
+        owned_by: value.includes('owned_by'),
+        only_active: !value.includes('with_inactive'),
+      });
+    } else {
+      onFilterChange<'domains_lookup'>({
+        name: debouncedSearchTerm,
+        only_active: !value.includes('with_inactive'),
+      });
+    }
+  }, [ debouncedSearchTerm, onFilterChange ]);
 
   const hasActiveFilters = Boolean(searchTerm);
 
@@ -138,6 +187,7 @@ const NameDomains = () => {
       sort={ sort }
       onSortChange={ setSort }
       isAddressSearch={ isAddressSearch }
+      pagination={ query.pagination }
     />
   );
 

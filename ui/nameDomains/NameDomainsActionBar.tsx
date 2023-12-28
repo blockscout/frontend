@@ -14,20 +14,8 @@ import Sort from 'ui/shared/sort/Sort';
 import type { Sort as TSort } from './utils';
 import { SORT_OPTIONS } from './utils';
 
-const pagination: PaginationParams = {
-  isVisible: true,
-  isLoading: false,
-  page: 1,
-  hasPages: true,
-  hasNextPage: true,
-  canGoBackwards: false,
-  onNextPageClick: () => {},
-  onPrevPageClick: () => {},
-  resetPage: () => {},
-};
-
 interface Props {
-  pagination?: PaginationParams;
+  pagination: PaginationParams;
   searchTerm: string | undefined;
   onSearchChange: (value: string) => void;
   filterValue: EnsDomainLookupFiltersOptions;
@@ -38,7 +26,17 @@ interface Props {
   isAddressSearch: boolean;
 }
 
-const NameDomainsActionBar = ({ searchTerm, onSearchChange, filterValue, onFilterValueChange, sort, onSortChange, isLoading, isAddressSearch }: Props) => {
+const NameDomainsActionBar = ({
+  searchTerm,
+  onSearchChange,
+  filterValue,
+  onFilterValueChange,
+  sort,
+  onSortChange,
+  isLoading,
+  isAddressSearch,
+  pagination,
+}: Props) => {
   const isInitialLoading = useIsInitialLoading(isLoading);
 
   const searchInput = (

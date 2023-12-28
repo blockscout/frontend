@@ -1,9 +1,9 @@
-import { Table, Tbody, Tr, Th, Link, Icon } from '@chakra-ui/react';
+import { Table, Tbody, Tr, Th, Link } from '@chakra-ui/react';
 import React from 'react';
 
 import type { EnsDomainEventsResponse } from 'types/api/ens';
 
-import arrowIcon from 'icons/arrows/east.svg';
+import IconSvg from 'ui/shared/IconSvg';
 import { default as Thead } from 'ui/shared/TheadSticky';
 
 import NameDomainHistoryTableItem from './NameDomainHistoryTableItem';
@@ -28,8 +28,8 @@ const NameDomainHistoryTable = ({ data, isLoading, sort, onSortToggle }: Props) 
           <Th width="25%" pl={ 9 }>
             <Link display="flex" alignItems="center" justifyContent="flex-start" position="relative" data-field="timestamp" onClick={ onSortToggle }>
               { sort?.includes('timestamp') && (
-                <Icon
-                  as={ arrowIcon }
+                <IconSvg
+                  name="arrows/east"
                   boxSize={ 4 }
                   transform={ sortIconTransform }
                   color="link"
