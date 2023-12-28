@@ -65,6 +65,7 @@ import type {
   TransactionsResponseWatchlist,
   TransactionsSorting,
 } from 'types/api/transaction';
+import type { TxInterpretationResponse } from 'types/api/txInterpretation';
 import type { TTxsFilters } from 'types/api/txsFilters';
 import type { TxStateChanges } from 'types/api/txStateChanges';
 import type { VerifiedContractsSorting } from 'types/api/verifiedContracts';
@@ -245,6 +246,10 @@ export const RESOURCES = {
     path: '/api/v2/transactions/:hash/state-changes',
     pathParams: [ 'hash' as const ],
     filterFields: [],
+  },
+  tx_interpretation: {
+    path: '/api/v2/transactions/:hash/summary',
+    pathParams: [ 'hash' as const ],
   },
   withdrawals: {
     path: '/api/v2/withdrawals',
@@ -651,6 +656,7 @@ Q extends 'tx_logs' ? LogsResponseTx :
 Q extends 'tx_token_transfers' ? TokenTransferResponse :
 Q extends 'tx_raw_trace' ? RawTracesResponse :
 Q extends 'tx_state_changes' ? TxStateChanges :
+Q extends 'tx_interpretation' ? TxInterpretationResponse :
 Q extends 'addresses' ? AddressesResponse :
 Q extends 'address' ? Address :
 Q extends 'address_counters' ? AddressCounters :
