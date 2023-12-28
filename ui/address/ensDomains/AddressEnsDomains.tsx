@@ -38,11 +38,22 @@ const AddressEnsDomains = ({ addressHash, mainDomainName }: Props) => {
   }
 
   const mainDomain = data.items.find((domain) => domain.name === mainDomainName);
-  const ownedDomains = data.items.filter((domain) =>
-    domain.owner &&
-    domain.owner.hash.toLowerCase() === addressHash.toLowerCase() &&
-    domain.name !== mainDomainName,
-  );
+  const ownedDomains = data.items.filter((domain) => {
+    if (domain.name === mainDomainName) {
+      return false;
+    }
+
+    if (domain.owner && domain.owner.hash.toLowerCase() === addressHash.toLowerCase()) {
+      return true;
+    }
+
+    // include wrapped owner
+    if (domain.wrapped_owner?.hash.toLowerCase() === addressHash.toLowerCase()) {
+      return !domain.resolved_address || domain.resolved_address.hash.toLowerCase() !== addressHash.toLowerCase();
+    }
+
+    return false;
+  });
   const resolvedDomains = data.items.filter((domain) =>
     domain.resolved_address &&
     domain.resolved_address.hash.toLowerCase() === addressHash.toLowerCase() &&

@@ -7,6 +7,9 @@ export interface EnsDomain {
   owner: {
     hash: string;
   } | null;
+  wrapped_owner: {
+    hash: string;
+  } | null;
   registration_date?: string;
   expiry_date: string | null;
 }

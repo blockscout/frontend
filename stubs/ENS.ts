@@ -8,6 +8,7 @@ export const ENS_DOMAIN: EnsDomainDetailed = {
   name: 'kitty.cat.eth',
   token_id: '0x686f4041f059de13c12563c94bd32b8edef9e4d86c931f37abb8cb69ecf25fd6',
   owner: ADDRESS_PARAMS,
+  wrapped_owner: null,
   resolved_address: ADDRESS_PARAMS,
   registrant: ADDRESS_PARAMS,
   registration_date: '2023-12-20T01:29:12.000Z',

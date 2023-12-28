@@ -13,6 +13,7 @@ export const ensDomainA: EnsDomainDetailed = {
   owner: {
     hash: '0x114d4603199df73e7d157787f8778e21fcd13066',
   },
+  wrapped_owner: null,
   registration_date: '2021-06-27T13:34:44.000Z',
   expiry_date: '2025-03-01T14:20:24.000Z',
   other_addresses: {
@@ -33,6 +34,7 @@ export const ensDomainB: EnsDomainDetailed = {
   owner: {
     hash: '0x114d4603199df73e7d157787f8778e21fcd13066',
   },
+  wrapped_owner: null,
   registration_date: '2023-08-13T13:01:12.000Z',
   expiry_date: null,
   other_addresses: {},
@@ -51,6 +53,7 @@ export const ensDomainC: EnsDomainDetailed = {
   owner: {
     hash: '0x114d4603199df73e7d157787f8778e21fcd13066',
   },
+  wrapped_owner: null,
   registration_date: '2022-04-24T07:34:44.000Z',
   expiry_date: '2022-11-01T13:10:36.000Z',
   other_addresses: {},
@@ -67,6 +70,7 @@ export const ensDomainD: EnsDomainDetailed = {
     hash: '0x114d4603199df73e7d157787f8778e21fcd13066',
   },
   owner: null,
+  wrapped_owner: null,
   registration_date: '2022-04-24T07:34:44.000Z',
   expiry_date: '2027-09-23T13:10:36.000Z',
   other_addresses: {},
