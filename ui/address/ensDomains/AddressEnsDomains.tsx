@@ -43,6 +43,11 @@ const AddressEnsDomains = ({ addressHash, mainDomainName }: Props) => {
       return false;
     }
 
+    // exclude resolved address
+    if (domain.resolved_address && domain.resolved_address.hash.toLowerCase() === addressHash.toLowerCase()) {
+      return false;
+    }
+
     if (domain.owner && domain.owner.hash.toLowerCase() === addressHash.toLowerCase()) {
       return true;
     }
