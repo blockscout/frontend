@@ -9,7 +9,6 @@ import { KEY_WORDS } from '../utils';
 const MAIN_DOMAINS = [
   `*.${ config.app.host }`,
   config.app.host,
-  getFeaturePayload(config.features.sol2uml)?.api.endpoint,
 ].filter(Boolean);
 
 const getCspReportUrl = () => {
@@ -113,6 +112,7 @@ export function app(): CspDev.DirectiveDescriptor {
 
     'font-src': [
       KEY_WORDS.DATA,
+      ...MAIN_DOMAINS,
     ],
 
     'object-src': [

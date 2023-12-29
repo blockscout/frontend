@@ -56,6 +56,7 @@ export const config: Sentry.BrowserOptions | undefined = (() => {
       'Script error.',
 
       // Relay and WalletConnect errors
+      'The quota has been exceeded',
       'Attempt to connect to relay via',
       'WebSocket connection failed for URL: wss://relay.walletconnect.com',
     ],
@@ -67,9 +68,11 @@ export const config: Sentry.BrowserOptions | undefined = (() => {
       // Woopra flakiness
       /eatdifferent\.com\.woopra-ns\.com/i,
       /static\.woopra\.com\/js\/woopra\.js/i,
-      // Chrome extensions
+      // Chrome and other extensions
       /extensions\//i,
       /^chrome:\/\//i,
+      /^chrome-extension:\/\//i,
+      /^moz-extension:\/\//i,
       // Other plugins
       /127\.0\.0\.1:4001\/isrunning/i, // Cacaoweb
       /webappstoolbarba\.texthelp\.com\//i,
