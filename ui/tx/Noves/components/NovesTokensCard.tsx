@@ -2,16 +2,16 @@ import { Box, Text, useColorModeValue } from '@chakra-ui/react';
 import type { FC } from 'react';
 import React from 'react';
 
-import type { Nft, Token } from 'types/translateApi';
+import type { NovesNft, NovesToken } from 'types/novesApi';
 
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 interface Props {
   amount?: string;
-  token: Token | Nft | undefined;
+  token: NovesToken | NovesNft | undefined;
 }
 
-const TokensCard: FC<Props> = ({ token, amount }) => {
+const NovesTokensCard: FC<Props> = ({ token, amount }) => {
   const textColor = useColorModeValue('white', 'blackAlpha.900');
 
   if (!token) {
@@ -51,4 +51,4 @@ const TokensCard: FC<Props> = ({ token, amount }) => {
   );
 };
 
-export default React.memo(TokensCard);
+export default React.memo(NovesTokensCard);

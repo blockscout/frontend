@@ -3,22 +3,20 @@ import type { FC } from 'react';
 import React from 'react';
 
 import lightning from 'icons/lightning.svg';
-import { roundNumberIfNeeded } from 'lib/utils/numberHelpers';
-import { camelCaseToSentence } from 'lib/utils/stringHelpers';
 import Icon from 'ui/shared/chakra/Icon';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
-import TokensCard from './TokensCard';
-import type { Action, FlowViewItem } from './utils/generateFlowViewData';
+import type { NovesAction, NovesFlowViewItem } from '../utils/NovesGenerateFlowViewData';
+import NovesTokensCard from './NovesTokensCard';
 
 interface Props {
-  item: FlowViewItem;
+  item: NovesFlowViewItem;
 }
 
-const ActionCard: FC<Props> = ({ item }) => {
+const NovesActionCard: FC<Props> = ({ item }) => {
   const popoverBg = useColorModeValue('gray.700', 'gray.300');
 
-  const getTokenData = (action: Action) => {
+  const getTokenData = (action: NovesAction) => {
     const name = action.nft?.name || action.token?.name;
     const symbol = action.nft?.symbol || action.token?.symbol;
 
@@ -36,10 +34,10 @@ const ActionCard: FC<Props> = ({ item }) => {
       <Hide above="md">
         <Box display="flex" gap={ 2 } cursor="pointer" flexWrap="wrap">
           <Text fontWeight="700" >
-            { camelCaseToSentence(item.action.label) }
+            { item.action.label }
           </Text>
           <Text fontWeight="500">
-            { roundNumberIfNeeded(item.action.amount?.toString() || '', 3) }
+            { item.action.amount }
           </Text>
           <TokenEntity
             token={ getTokenData(item.action) }
@@ -70,14 +68,14 @@ const ActionCard: FC<Props> = ({ item }) => {
                 display="flex"
                 fontSize="xl"
                 mr="5px"
-                color="#718096"
-                _dark={{ color: '#92a2bb' }}
+                color="gray.500"
+                _dark={{ color: 'gray.400' }}
               />
               <Text fontWeight="700" >
-                { camelCaseToSentence(item.action.label) }
+                { item.action.label }
               </Text>
               <Text fontWeight="500">
-                { roundNumberIfNeeded(item.action.amount?.toString() || '', 3) }
+                { item.action.amount }
               </Text>
               <TokenEntity
                 token={ getTokenData(item.action) }
@@ -100,7 +98,7 @@ const ActionCard: FC<Props> = ({ item }) => {
             <PopoverArrow bg={ popoverBg }/>
             <Box p={ 2 }>
 
-              <TokensCard
+              <NovesTokensCard
                 token={ item.action.token || item.action.nft }
                 amount={ item.action.amount }
               />
@@ -113,4 +111,4 @@ const ActionCard: FC<Props> = ({ item }) => {
   );
 };
 
-export default React.memo(ActionCard);
+export default React.memo(NovesActionCard);

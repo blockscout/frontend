@@ -86,7 +86,7 @@ const Content = chakra((props: ContentProps) => {
   );
 });
 
-type SymbolProps = Pick<EntityProps, 'token' | 'isLoading' | 'noSymbol' | 'jointSymbol' | 'onlySymbol' | 'noTruncate'>;
+type SymbolProps = Pick<EntityProps, 'token' | 'isLoading' | 'noSymbol' | 'jointSymbol' | 'onlySymbol'>;
 
 const Symbol = (props: SymbolProps) => {
   const symbol = props.token.symbol;
@@ -109,8 +109,8 @@ const Symbol = (props: SymbolProps) => {
         <chakra.span
           display="inline-block"
           whiteSpace="nowrap"
-          overflow={ props.noTruncate ? 'initial' : 'hidden' }
-          textOverflow={ props.noTruncate ? 'initial' : 'ellipsis' }
+          overflow="hidden"
+          textOverflow="ellipsis"
           height="fit-content"
         >
           { symbol }
@@ -139,7 +139,6 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
   noSymbol?: boolean;
   jointSymbol?: boolean;
   onlySymbol?: boolean;
-  noTruncate?: boolean;
 }
 
 const TokenEntity = (props: EntityProps) => {

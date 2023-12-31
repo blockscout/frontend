@@ -1,97 +1,6 @@
 import _ from 'lodash';
 
-import type { Nft, ResponseData, SentReceived, Token } from 'types/translateApi';
-
-export interface Action {
-  label: string;
-  amount: string | undefined;
-  flowDirection: 'toLeft' | 'toRight';
-  nft: Nft | undefined;
-  token: Token | undefined;
-}
-export interface FlowViewItem {
-  action: Action;
-  rightActor: {
-    address: string;
-    name: string | null;
-  };
-  leftActor: {
-    address: string;
-    name: string | null;
-  };
-  accountAddress: string;
-}
-
-export function generateFlowViewData(data: ResponseData): Array<FlowViewItem> {
-  const perspectiveAddress = data.accountAddress.toLowerCase();
-
-  const sent = data.classificationData.sent || [];
-  const received = data.classificationData.received || [];
-
-  const txItems = [ ...sent, ...received ];
-
-  const paidGasIndex = _.findIndex(txItems, (item) => item.action === 'paidGas');
-  if (paidGasIndex >= 0) {
-    const element = txItems.splice(paidGasIndex, 1)[0];
-    element.to.name = 'Validators';
-    txItems.splice(txItems.length, 0, element);
-  }
-
-  const flowViewData = txItems.map((item) => {
-    const action = {
-      label: item.action,
-      amount: item.amount || undefined,
-      flowDirection: getFlowDirection(item, perspectiveAddress),
-      nft: item.nft || undefined,
-      token: item.token || undefined,
-    };
-
-    if (item.from.name && item.from.name.includes('(this wallet)')) {
-      item.from.name = item.from.name.split('(this wallet)')[0];
-    }
-
-    if (item.to.name && item.to.name.includes('(this wallet)')) {
-      item.to.name = item.to.name.split('(this wallet)')[0];
-    }
-
-    const rightActor = getRightActor(item, perspectiveAddress);
-
-    const leftActor = getLeftActor(item, perspectiveAddress);
-
-    return { action, rightActor, leftActor, accountAddress: perspectiveAddress };
-  });
-
-  return flowViewData;
-}
-
-function getRightActor(item: SentReceived, perspectiveAddress: string) {
-  if (!item.to.address || item.to.address.toLowerCase() !== perspectiveAddress) {
-    return { address: item.to.address, name: item.to.name };
-  }
-
-  return { address: item.from.address, name: item.from.name };
-}
-
-function getLeftActor(item: SentReceived, perspectiveAddress: string) {
-  if (item.to.address && item.to.address.toLowerCase() === perspectiveAddress) {
-    return { address: item.to.address, name: item.to.name };
-  }
-
-  return { address: item.from.address, name: item.from.name };
-}
-
-function getFlowDirection(item: SentReceived, perspectiveAddress: string): 'toLeft' | 'toRight' {
-  // return "toLeft" or "toRight"
-  if (item.to.address && item.to.address.toLowerCase() === perspectiveAddress) {
-    return 'toLeft';
-  }
-
-  if (item.from.address && item.from.address.toLowerCase() === perspectiveAddress) {
-    return 'toRight';
-  }
-
-  return 'toLeft'; // default case
-}
+import type { NovesResponseData } from 'types/novesApi';
 
 interface TokensData {
   nameList: Array<string>;
@@ -115,7 +24,7 @@ interface TokensData {
   };
 }
 
-export function getTokensData(data: ResponseData): TokensData {
+function getTokensData(data: NovesResponseData): TokensData {
   const sent = data.classificationData.sent || [];
   const received = data.classificationData.received || [];
 
@@ -164,7 +73,7 @@ export function getTokensData(data: ResponseData): TokensData {
   };
 }
 
-export const getSplittedDescription = (translateData: ResponseData) => {
+export const NovesGetSplittedDescription = (translateData: NovesResponseData) => {
   const description = translateData.classificationData.description;
   const removeEndDot = description.endsWith('.') ? description.slice(0, description.length - 1) : description;
   let parsedDescription = ' ' + removeEndDot;
@@ -268,11 +177,4 @@ export const getSplittedDescription = (translateData: ResponseData) => {
   }
 
   return descriptionSplitted;
-};
-
-export const getFlowCount = (data: ResponseData | undefined) => {
-  if (!data) {
-    return 0;
-  }
-  return generateFlowViewData(data).length;
 };

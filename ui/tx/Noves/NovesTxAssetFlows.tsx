@@ -3,31 +3,31 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import _ from 'lodash';
 import React, { useState } from 'react';
 
-import type { ResponseData } from 'types/translateApi';
+import type { NovesResponseData } from 'types/novesApi';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import lightning from 'icons/lightning.svg';
-import type { TranslateError } from 'lib/hooks/useFetchTranslate';
-import { getActionFromTo } from 'ui/shared/accountHistory/FromToComponent';
 import ActionBar from 'ui/shared/ActionBar';
 import Icon from 'ui/shared/chakra/Icon';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import NovesFromToComponent from 'ui/shared/Noves/NovesFromToComponent';
 import Pagination from 'ui/shared/pagination/Pagination';
+import type { NovesTranslateError } from 'ui/tx/Noves/NovesUseFetchTranslate';
 
-import ActionCard from './assetFlows/ActionCard';
-import { generateFlowViewData } from './assetFlows/utils/generateFlowViewData';
+import NovesActionCard from './components/NovesActionCard';
+import { NovesGenerateFlowViewData } from './utils/NovesGenerateFlowViewData';
 
 interface FlowViewProps {
-  data: UseQueryResult<ResponseData, TranslateError>;
+  data: UseQueryResult<NovesResponseData, NovesTranslateError>;
 }
 
-export default function TxAssetFlows(props: FlowViewProps) {
+export default function NovesTxAssetFlows(props: FlowViewProps) {
   const { data: queryData, isPlaceholderData, isError } = props.data;
 
   const [ page, setPage ] = useState<number>(1);
 
-  const ViewData = queryData ? generateFlowViewData(queryData) : [];
+  const ViewData = queryData ? NovesGenerateFlowViewData(queryData) : [];
   const chunkedViewData = _.chunk(ViewData, 10);
 
   const paginationProps: PaginationParams = {
@@ -91,8 +91,8 @@ export default function TxAssetFlows(props: FlowViewProps) {
                         display="flex"
                         fontSize="xl"
                         mr="5px"
-                        color="#718096"
-                        _dark={{ color: '#92a2bb' }}
+                        color="gray.500"
+                        _dark={{ color: 'gray.400' }}
                       />
                       <Text fontSize="sm" fontWeight={ 500 }>
                         Action
@@ -101,10 +101,10 @@ export default function TxAssetFlows(props: FlowViewProps) {
 
                   </Skeleton>
                   <Skeleton borderRadius="sm" isLoaded={ !isPlaceholderData } maxW="100vw" w="full">
-                    <ActionCard item={ item }/>
+                    <NovesActionCard item={ item }/>
                   </Skeleton>
                   <Skeleton borderRadius="sm" isLoaded={ !isPlaceholderData } maxW="100vw" >
-                    { getActionFromTo(item) }
+                    <NovesFromToComponent item={ item }/>
                   </Skeleton>
                 </VStack>
               )) }
@@ -129,12 +129,12 @@ export default function TxAssetFlows(props: FlowViewProps) {
                     <Tr key={ i }>
                       <Td px={ 3 } py={ 5 } fontSize="sm" borderColor="gray.200">
                         <Skeleton borderRadius="sm" isLoaded={ !isPlaceholderData } >
-                          <ActionCard item={ item }/>
+                          <NovesActionCard item={ item }/>
                         </Skeleton>
                       </Td>
                       <Td px={ 3 } py="18px" fontSize="sm" borderColor="gray.200" >
                         <Skeleton borderRadius="sm" isLoaded={ !isPlaceholderData }>
-                          { getActionFromTo(item, 50) }
+                          <NovesFromToComponent item={ item }/>
                         </Skeleton>
                       </Td>
                     </Tr>

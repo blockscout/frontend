@@ -15,7 +15,6 @@ import type { Transaction } from 'types/api/transaction';
 
 import config from 'configs/app';
 import rightArrowIcon from 'icons/arrows/east.svg';
-import useFetchDescribe from 'lib/hooks/useFetchDescribe';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
@@ -27,6 +26,7 @@ import InOutTag from 'ui/shared/InOutTag';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TxFeeStability from 'ui/shared/tx/TxFeeStability';
 import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
+import NovesUseFetchDescribe from 'ui/txs/Noves/NovesUseFetchDescribe';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 
 import TxType from './TxType';
@@ -47,7 +47,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
 
   const timeAgo = useTimeAgoIncrement(tx.timestamp, enableTimeIncrement);
 
-  const { data: describeData } = useFetchDescribe(translate ? tx.hash : null);
+  const { data: describeData } = NovesUseFetchDescribe(translate ? tx.hash : null);
 
   const addressFrom = (
     <AddressEntity

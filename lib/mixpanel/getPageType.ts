@@ -40,9 +40,9 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
 
   // service routes, added only to make typescript happy
   '/login': 'Login',
-  '/api/translate': 'Node API: Media type',
-  '/api/history': 'Node API: Media type',
-  '/api/describe': 'Node API: Media type',
+  '/api/noves/translate': 'Node API: Media type',
+  '/api/noves/history': 'Node API: Media type',
+  '/api/noves/describe': 'Node API: Media type',
   '/api/media-type': 'Node API: Media type',
   '/api/proxy': 'Node API: Proxy',
   '/api/csrf': 'Node API: CSRF token',

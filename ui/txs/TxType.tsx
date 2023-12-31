@@ -2,7 +2,6 @@ import React from 'react';
 
 import type { TransactionType } from 'types/api/transaction';
 
-import { camelCaseToSentence } from 'lib/utils/stringHelpers';
 import Tag from 'ui/shared/chakra/Tag';
 
 export interface Props {
@@ -58,7 +57,7 @@ const TxType = ({ types, isLoading, translateLabel }: Props) => {
 
   if (translateLabel) {
     if (!filteredTypes.includes(translateLabel)) {
-      label = camelCaseToSentence(translateLabel);
+      label = translateLabel;
     }
   }
 

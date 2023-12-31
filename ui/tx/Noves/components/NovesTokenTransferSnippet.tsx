@@ -16,7 +16,7 @@ interface Props {
   tokenId: string;
 }
 
-const TokenTransferSnippet = ({ token, tokenId }: Props) => {
+const NovesTokenTransferSnippet = ({ token, tokenId }: Props) => {
   return (
     <Flex alignItems="center" columnGap={ 2 } rowGap={ 2 } flexWrap="wrap">
       <TokenEntity
@@ -43,4 +43,4 @@ const TokenTransferSnippet = ({ token, tokenId }: Props) => {
   );
 };
 
-export default React.memo(TokenTransferSnippet);
+export default React.memo(NovesTokenTransferSnippet);

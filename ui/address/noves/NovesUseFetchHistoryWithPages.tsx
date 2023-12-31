@@ -6,19 +6,19 @@ import queryString from 'querystring';
 import React, { useCallback } from 'react';
 import { animateScroll } from 'react-scroll';
 
-import type { AccountHistoryResponse, HistoryFilters } from 'types/translateApi';
+import type { NovesAccountHistoryResponse, NovesHistoryFilters } from 'types/novesApi';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import type { PaginatedResources, PaginationFilters, PaginationSorting } from 'lib/api/resources';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
-import type { TranslateHistory } from './useFetchHistory';
-import useFetchHistory from './useFetchHistory';
+import type { TranslateHistory } from './NovesUseFetchHistory';
+import NovesUseFetchHistory from './NovesUseFetchHistory';
 
 export interface Params<Resource extends PaginatedResources> {
   address: string;
-  options?: Omit<UseQueryOptions<AccountHistoryResponse, TranslateHistory, AccountHistoryResponse>, 'queryKey' | 'queryFn'>;
-  filters?: HistoryFilters;
+  options?: Omit<UseQueryOptions<NovesAccountHistoryResponse, TranslateHistory, NovesAccountHistoryResponse>, 'queryKey' | 'queryFn'>;
+  filters?: NovesHistoryFilters;
   sorting?: PaginationSorting<Resource>;
   scrollRef?: React.RefObject<HTMLDivElement>;
 }
@@ -36,13 +36,13 @@ function getPaginationParamsFromQuery(queryString: string | Array<string> | unde
 }
 
 export type QueryWithPagesResult<Resource extends PaginatedResources> =
-UseQueryResult<AccountHistoryResponse, TranslateHistory> &
+UseQueryResult<NovesAccountHistoryResponse, TranslateHistory> &
 {
   onFilterChange: (filters: PaginationFilters<Resource>) => void;
   pagination: PaginationParams;
 }
 
-export default function useFetchHistoryWithPages<Resource extends PaginatedResources>({
+export default function NovesUseFetchHistoryWithPages<Resource extends PaginatedResources>({
   address,
   filters,
   options,
@@ -66,7 +66,7 @@ export default function useFetchHistoryWithPages<Resource extends PaginatedResou
     scrollRef?.current ? scrollRef.current.scrollIntoView(true) : animateScroll.scrollToTop({ duration: 0 });
   }, [ scrollRef ]);
 
-  const queryResult = useFetchHistory(address, page, {
+  const queryResult = NovesUseFetchHistory(address, page, {
     queryParams,
     queryOptions: {
       staleTime: page === 1 ? 0 : Infinity,
@@ -182,7 +182,7 @@ export default function useFetchHistoryWithPages<Resource extends PaginatedResou
       queryClient.cancelQueries({ queryKey });
       setPage(1);
     }
-  // hook should run only when queryName has changed
+  // hook should run only when address has changed
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ address ]);
 

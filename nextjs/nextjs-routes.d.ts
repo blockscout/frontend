@@ -17,12 +17,12 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/address/[hash]/contract-verification", { "hash": string }>
     | DynamicRoute<"/address/[hash]", { "hash": string }>
     | StaticRoute<"/api/csrf">
-    | StaticRoute<"/api/describe">
     | StaticRoute<"/api/healthz">
-    | StaticRoute<"/api/history">
     | StaticRoute<"/api/media-type">
+    | StaticRoute<"/api/noves/describe">
+    | StaticRoute<"/api/noves/history">
+    | StaticRoute<"/api/noves/translate">
     | StaticRoute<"/api/proxy">
-    | StaticRoute<"/api/translate">
     | StaticRoute<"/api-docs">
     | StaticRoute<"/apps">
     | DynamicRoute<"/apps/[id]", { "id": string }>

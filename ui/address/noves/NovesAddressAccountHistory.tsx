@@ -5,46 +5,47 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { HistorySentReceivedFilter } from 'types/translateApi';
-import { HistorySentReceivedFilterValues } from 'types/translateApi';
+import type { NovesHistorySentReceivedFilter } from 'types/novesApi';
+import { NovesHistorySentReceivedFilterValues } from 'types/novesApi';
 
 import lightning from 'icons/lightning.svg';
 import dayjs from 'lib/date/dayjs';
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { TRANSLATE } from 'stubs/translate';
-import { getFromTo } from 'ui/shared/accountHistory/FromToComponent';
+import { NOVES_TRANSLATE } from 'stubs/noves/Novestranslate';
 import ActionBar from 'ui/shared/ActionBar';
 import Icon from 'ui/shared/chakra/Icon';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import LinkInternal from 'ui/shared/LinkInternal';
+import NovesFromToComponent from 'ui/shared/Noves/NovesFromToComponent';
+import { NovesGetFromToValue } from 'ui/shared/Noves/utils';
 import Pagination from 'ui/shared/pagination/Pagination';
 
-import AccountHistoryFilter from './history/AccountHistoryFilter';
-import useFetchHistoryWithPages from './history/useFetchHistoryWithPages';
-import { generateHistoryStub } from './history/utils';
+import NovesAccountHistoryFilter from './NovesAccountHistoryFilter';
+import useFetchHistoryWithPages from './NovesUseFetchHistoryWithPages';
+import { generateHistoryStub } from './utils';
 
 dayjs.extend(utc);
 
-const getFilterValue = (getFilterValueFromQuery<HistorySentReceivedFilter>).bind(null, HistorySentReceivedFilterValues);
+const getFilterValue = (getFilterValueFromQuery<NovesHistorySentReceivedFilter>).bind(null, NovesHistorySentReceivedFilterValues);
 
 type Props = {
   scrollRef?: React.RefObject<HTMLDivElement>;
 }
 
-const AddressAccountHistory = ({ scrollRef }: Props) => {
+const NovesAddressAccountHistory = ({ scrollRef }: Props) => {
   const router = useRouter();
 
   const currentAddress = getQueryParamString(router.query.hash).toLowerCase();
 
   const addressColor = useColorModeValue('gray.500', 'whiteAlpha.600');
 
-  const [ filterValue, setFilterValue ] = React.useState<HistorySentReceivedFilter>(getFilterValue(router.query.filter));
+  const [ filterValue, setFilterValue ] = React.useState<NovesHistorySentReceivedFilter>(getFilterValue(router.query.filter));
   const { data, isError, pagination, isPlaceholderData } = useFetchHistoryWithPages({
     address: currentAddress,
     scrollRef,
     options: {
-      placeholderData: generateHistoryStub(TRANSLATE, 10, { hasNextPage: true, pageSize: 10, pageNumber: 1 }),
+      placeholderData: generateHistoryStub(NOVES_TRANSLATE, 10, { hasNextPage: true, pageSize: 10, pageNumber: 1 }),
     },
   });
 
@@ -56,7 +57,7 @@ const AddressAccountHistory = ({ scrollRef }: Props) => {
 
   const actionBar = (
     <ActionBar mt={ -6 } pb={{ base: 6, md: 5 }}>
-      <AccountHistoryFilter
+      <NovesAccountHistoryFilter
         defaultFilter={ filterValue }
         onFilterChange={ handleFilterChange }
         isActive={ Boolean(filterValue) }
@@ -67,7 +68,7 @@ const AddressAccountHistory = ({ scrollRef }: Props) => {
     </ActionBar>
   );
 
-  const filteredData = isPlaceholderData ? data?.items : data?.items.filter(i => filterValue ? getFromTo(i, currentAddress, true) === filterValue : i);
+  const filteredData = isPlaceholderData ? data?.items : data?.items.filter(i => filterValue ? NovesGetFromToValue(i, currentAddress) === filterValue : i);
 
   const content = (
     <Box position="relative">
@@ -83,8 +84,8 @@ const AddressAccountHistory = ({ scrollRef }: Props) => {
                       display="flex"
                       fontSize="xl"
                       mr="5px"
-                      color="#718096"
-                      _dark={{ color: '#92a2bb' }}
+                      color="gray.500"
+                      _dark={{ color: 'gray.400' }}
                     />
                     <Text fontSize="sm" fontWeight={ 500 }>
                     Action
@@ -103,7 +104,7 @@ const AddressAccountHistory = ({ scrollRef }: Props) => {
                 </LinkInternal>
               </Skeleton>
               <Skeleton borderRadius="sm" isLoaded={ !isPlaceholderData }>
-                { getFromTo(tx, currentAddress) }
+                <NovesFromToComponent txData={ tx } currentAddress={ currentAddress }/>
               </Skeleton>
             </VStack>
           )) }
@@ -149,8 +150,8 @@ const AddressAccountHistory = ({ scrollRef }: Props) => {
                             display="flex"
                             fontSize="xl"
                             mr="8px"
-                            color="#718096"
-                            _dark={{ color: '#92a2bb' }}
+                            color="gray.500"
+                            _dark={{ color: 'gray.400' }}
                           />
                           <LinkInternal href={ `/tx/${ tx.rawTransactionData.transactionHash }` }>
                             <Text as="span" color="link" fontWeight="bold" whiteSpace="break-spaces" wordBreak="break-word">
@@ -162,7 +163,7 @@ const AddressAccountHistory = ({ scrollRef }: Props) => {
                     </Td>
                     <Td px={ 3 } py="18px" fontSize="sm" borderColor="gray.200" >
                       <Skeleton borderRadius="sm" flexShrink={ 0 } isLoaded={ !isPlaceholderData }>
-                        { getFromTo(tx, currentAddress) }
+                        <NovesFromToComponent txData={ tx } currentAddress={ currentAddress }/>
                       </Skeleton>
                     </Td>
                   </Tr>
@@ -195,4 +196,4 @@ const AddressAccountHistory = ({ scrollRef }: Props) => {
   );
 };
 
-export default AddressAccountHistory;
+export default NovesAddressAccountHistory;

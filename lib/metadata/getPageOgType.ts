@@ -42,9 +42,9 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
 
   // service routes, added only to make typescript happy
   '/login': 'Regular page',
-  '/api/translate': 'Regular page',
-  '/api/history': 'Regular page',
-  '/api/describe': 'Regular page',
+  '/api/noves/translate': 'Regular page',
+  '/api/noves/history': 'Regular page',
+  '/api/noves/describe': 'Regular page',
   '/api/media-type': 'Regular page',
   '/api/proxy': 'Regular page',
   '/api/csrf': 'Regular page',

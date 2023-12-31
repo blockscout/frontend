@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import type { HistorySentReceivedFilter } from 'types/translateApi';
+import type { NovesHistorySentReceivedFilter } from 'types/novesApi';
 
 import Check from 'icons/check.svg';
 import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
@@ -17,12 +17,12 @@ import FilterButton from 'ui/shared/filters/FilterButton';
 
 interface Props {
   isActive: boolean;
-  defaultFilter: HistorySentReceivedFilter;
+  defaultFilter: NovesHistorySentReceivedFilter;
   onFilterChange: (nextValue: string | Array<string>) => void;
   isLoading?: boolean;
 }
 
-const AccountHistoryFilter = ({ onFilterChange, defaultFilter, isActive, isLoading }: Props) => {
+const NovesAccountHistoryFilter = ({ onFilterChange, defaultFilter, isActive, isLoading }: Props) => {
   const { isOpen, onToggle } = useDisclosure();
   const isInitialLoading = useIsInitialLoading(isLoading);
 
@@ -41,7 +41,6 @@ const AccountHistoryFilter = ({ onFilterChange, defaultFilter, isActive, isLoadi
           onClick={ onToggle }
           appliedFiltersNum={ isActive ? 1 : 0 }
           as="div"
-          border={ isOpen }
         />
       </MenuButton>
       <MenuList zIndex={ 2 }>
@@ -85,4 +84,4 @@ const AccountHistoryFilter = ({ onFilterChange, defaultFilter, isActive, isLoadi
   );
 };
 
-export default React.memo(AccountHistoryFilter);
+export default React.memo(NovesAccountHistoryFilter);
