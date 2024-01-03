@@ -10,6 +10,7 @@ interface Props {
   isLoading?: boolean;
 }
 
+// TODO @tom2drum remove this component
 const InOutTag = ({ isIn, isOut, className, isLoading }: Props) => {
   if (!isIn && !isOut) {
     return null;
