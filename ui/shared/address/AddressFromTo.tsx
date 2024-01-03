@@ -55,7 +55,7 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
             noIcon={ noIcon }
             tokenHash={ tokenHash }
             truncation={ truncation }
-            maxW="calc(100% - 28px)"
+            maxW={ truncation === 'constant' ? undefined : 'calc(100% - 28px)' }
             w="min-content"
           />
         </Flex>
@@ -68,7 +68,7 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
             noIcon={ noIcon }
             tokenHash={ tokenHash }
             truncation={ truncation }
-            maxW="calc(100% - 28px)"
+            maxW={ truncation === 'constant' ? undefined : 'calc(100% - 28px)' }
             w="min-content"
             ml="28px"
           />
@@ -87,7 +87,7 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
         noIcon={ noIcon }
         tokenHash={ tokenHash }
         truncation={ truncation }
-        maxW="calc(50% - 18px)"
+        maxW={ truncation === 'constant' ? undefined : 'calc(50% - 18px)' }
       />
       <IconSvg name="arrows/east" color={ iconColor } boxSize={ 5 } flexShrink={ 0 } isLoading={ isLoading }/>
       { to ? (
@@ -99,7 +99,7 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
           noIcon={ noIcon }
           tokenHash={ tokenHash }
           truncation={ truncation }
-          maxW="calc(50% - 18px)"
+          maxW={ truncation === 'constant' ? undefined : 'calc(50% - 18px)' }
         />
       ) : <span>-</span> }
     </Flex>
