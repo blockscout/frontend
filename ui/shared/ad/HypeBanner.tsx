@@ -1,9 +1,10 @@
 import { Flex, chakra } from '@chakra-ui/react';
-import { Banner, useIdentity, Environment, HypeLab, HypeLabContext } from 'hypelab-react';
+// import { Banner, useIdentity, Environment, HypeLab, HypeLabContext } from 'hypelab-react';
+import { Banner, Environment, HypeLab, HypeLabContext } from 'hypelab-react';
 import React from 'react';
-import { useAccount } from 'wagmi';
+// import { useAccount } from 'wagmi';
 
-import Web3ModalProvider from 'ui/shared/Web3ModalProvider';
+// import Web3ModalProvider from 'ui/shared/Web3ModalProvider';
 
 const HypeBannerContent = ({ className }: { className?: string }) => {
 
@@ -19,15 +20,15 @@ const HypeBannerContent = ({ className }: { className?: string }) => {
   );
 };
 
-const HypeBannerWithWalletAddress = ({ className }: { className?: string }) => {
-  const { address } = useAccount();
-  const { setWalletAddresses } = useIdentity();
-  if (address) {
-    setWalletAddresses([ address ]);
-  }
+// const HypeBannerWithWalletAddress = ({ className }: { className?: string }) => {
+//   const { address } = useAccount();
+//   const { setWalletAddresses } = useIdentity();
+//   if (address) {
+//     setWalletAddresses([ address ]);
+//   }
 
-  return <HypeBannerContent className={ className }/>;
-};
+//   return <HypeBannerContent className={ className }/>;
+// };
 
 const HypeBanner = ({ className }: { className?: string }) => {
   const client = new HypeLab({
@@ -38,15 +39,16 @@ const HypeBanner = ({ className }: { className?: string }) => {
     // environment: Environment.Production /* Production Environment */
   });
 
-  const fallback = React.useCallback(() => {
-    return <HypeBannerContent className={ className }/>;
-  }, [ className ]);
+  // const fallback = React.useCallback(() => {
+  //   return <HypeBannerContent className={ className }/>;
+  // }, [ className ]);
 
   return (
     <HypeLabContext client={ client }>
-      <Web3ModalProvider fallback={ fallback }>
+      { /* <Web3ModalProvider fallback={ fallback }>
         <HypeBannerWithWalletAddress className={ className }/>
-      </Web3ModalProvider>
+      </Web3ModalProvider> */ }
+      <HypeBannerContent className={ className }/>
     </HypeLabContext>
   );
 };
