@@ -1,3 +1,103 @@
-<svg viewBox="0 0 114 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path fill-rule="evenodd" clip-rule="evenodd" d="M7.21 0a1 1 0 0 1 1 1v2.167a1 1 0 0 1-1 1H5.687a1 1 0 0 0-1 1V19a1 1 0 0 1-1 1H1.5a1 1 0 0 1-1-1V5.167a1 1 0 0 1 1-1h1.521a1 1 0 0 0 1-1V1a1 1 0 0 1 1-1H7.21Zm8.404 0a1 1 0 0 1 1 1v2.167a1 1 0 0 0 1 1h1.376a1 1 0 0 1 1 1V19a1 1 0 0 1-1 1H16.8a1 1 0 0 1-1-1V5.167a1 1 0 0 0-1-1h-1.375a1 1 0 0 1-1-1V1a1 1 0 0 1 1-1h2.188Zm-4.246 7.976a1 1 0 0 1 1 1v6.095a1 1 0 0 1-1 1H9.18a1 1 0 0 1-1-1V8.976a1 1 0 0 1 1-1h2.188Zm26.776-2.131h1.035l-.005 9.71h1.821V4.181h-2.851v1.664ZM33.15 4.533h-4.948v11.03h5.223c2.225 0 3.452-1.396 3.452-3.17a2.825 2.825 0 0 0-.529-1.726 2.81 2.81 0 0 0-1.463-1.049v-.052a2.456 2.456 0 0 0 1.494-2.343c0-1.588-1.134-2.69-3.23-2.69Zm1.391 3.005c0 .891-.567 1.477-1.357 1.477h-3.139V6.061h3.139c.79 0 1.357.586 1.357 1.477Zm.498 4.734c0 1.05-.687 1.774-1.632 1.774h-3.362v-3.532h3.362c.945 0 1.632.707 1.632 1.758Zm7.642-.793c0-2.498 1.84-4.342 4.383-4.342s4.398 1.826 4.398 4.342c0 2.516-1.838 4.325-4.398 4.325-2.56 0-4.383-1.827-4.383-4.325Zm3.902 2.688h.982c1.117 0 2.096-1.189 2.096-2.688 0-1.5-.982-2.708-2.096-2.708h-.982c-1.116 0-2.095 1.231-2.095 2.708s.979 2.688 2.095 2.688Zm10.342-7.03c-2.525 0-4.28 1.775-4.28 4.325 0 2.55 1.735 4.342 4.253 4.357 2.071 0 3.681-1.103 3.927-3.223h-1.77a1.75 1.75 0 0 1-1.752 1.602h-.859c-1.1 0-1.993-1.22-1.993-2.722 0-1.501.893-2.707 1.993-2.707h.859c.79 0 1.563.482 1.735 1.568h1.77c-.258-2.149-1.856-3.2-3.883-3.2Zm5.53-2.956h1.803v6.274h1.308l2.44-3.084h2.06l-3.006 3.808 3.144 4.376H68.04l-2.629-3.618h-1.153v3.618h-1.804V4.181Zm10.309 8.918h-1.735c.066 1.792 1.227 2.705 3.62 2.702 2.473 0 3.59-.93 3.59-2.619 0-1.31-.722-2.154-2.285-2.343l-1.926-.246c-.74-.104-1.083-.465-1.083-1 0-.534.361-.947 1.134-.947h1.033c.894 0 1.186.5 1.272 1.206h1.735c-.067-1.878-1.338-2.722-3.436-2.722-2.192 0-3.419.896-3.419 2.55 0 1.257.722 2.222 2.337 2.412l1.909.246c.739.106 1.048.433 1.048.985 0 .551-.378.964-1.186.964h-1.136c-.94 0-1.386-.465-1.472-1.188Zm6.609-1.637c0-2.55 1.752-4.325 4.28-4.325 2.027 0 3.624 1.051 3.882 3.2h-1.77c-.171-1.086-.944-1.568-1.734-1.568h-.86c-1.101 0-1.995 1.206-1.995 2.707 0 1.502.894 2.723 1.996 2.723h.859a1.75 1.75 0 0 0 1.752-1.602h1.77c-.246 2.119-1.856 3.222-3.927 3.222-2.516-.015-4.253-1.807-4.253-4.357Zm13.706-4.325c-2.543 0-4.38 1.844-4.38 4.342 0 2.498 1.818 4.325 4.38 4.325s4.4-1.81 4.4-4.325c0-2.516-1.858-4.342-4.4-4.342Zm.5 7.03h-.976c-1.117 0-2.101-1.211-2.101-2.688s.98-2.708 2.096-2.708h.981c1.117 0 2.099 1.209 2.099 2.708s-.982 2.688-2.099 2.688Zm5.397-1.637V7.38h1.804v4.842c0 1.19.601 1.896 1.391 1.896h.982c.842 0 1.598-.776 1.598-1.896V7.381h1.806v8.184h-1.755v-1.12c-.491.844-1.357 1.361-2.68 1.361-1.978-.002-3.146-1.157-3.146-3.276Zm10.582-3.557v4.677c0 1.223.736 1.913 2.057 1.915h1.963v-1.637h-1.443c-.584 0-.756-.258-.756-.792v-4.17h2.13V7.38h-2.13V5.086h-1.821v2.295h-1.58v1.592h1.58Z" fill="currentColor"/>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 300 53">
+  <defs>
+    <clipPath id="logo-placeholder_svg__b">
+      <path d="M0 0h300v53H0z"/>
+    </clipPath>
+    <clipPath id="logo-placeholder_svg__c">
+      <path d="M0 0h300v53H0z"/>
+    </clipPath>
+    <clipPath id="logo-placeholder_svg__d">
+      <path d="M0 0h300v53H0z"/>
+    </clipPath>
+    <clipPath id="logo-placeholder_svg__e">
+      <path d="M0 0h300v53H0z"/>
+    </clipPath>
+    <clipPath id="logo-placeholder_svg__f">
+      <path d="M0 0h300v53H0z"/>
+    </clipPath>
+    <clipPath id="logo-placeholder_svg__g">
+      <path d="M0 0h300v53H0z"/>
+    </clipPath>
+    <clipPath id="logo-placeholder_svg__h">
+      <path d="M0 0h300v53H0z"/>
+    </clipPath>
+    <clipPath id="logo-placeholder_svg__i">
+      <path d="M0 0h300v53H0z"/>
+    </clipPath>
+    <mask id="logo-placeholder_svg__k">
+      <g filter="url(#logo-placeholder_svg__a)">
+        <path style="fill:currentColor;fill-opacity:.976471;stroke:none" d="M0 0h300v53H0z"/>
+      </g>
+    </mask>
+    <mask id="logo-placeholder_svg__m">
+      <g filter="url(#logo-placeholder_svg__a)">
+        <path style="fill:currentColor;fill-opacity:.976471;stroke:none" d="M0 0h300v53H0z"/>
+      </g>
+    </mask>
+    <mask id="logo-placeholder_svg__o">
+      <g filter="url(#logo-placeholder_svg__a)">
+        <path style="fill:currentColor;fill-opacity:.964706;stroke:none" d="M0 0h300v53H0z"/>
+      </g>
+    </mask>
+    <mask id="logo-placeholder_svg__q">
+      <g filter="url(#logo-placeholder_svg__a)">
+        <path style="fill:currentColor;fill-opacity:.988235;stroke:none" d="M0 0h300v53H0z"/>
+      </g>
+    </mask>
+    <mask id="logo-placeholder_svg__s">
+      <g filter="url(#logo-placeholder_svg__a)">
+        <path style="fill:currentColor;fill-opacity:.968627;stroke:none" d="M0 0h300v53H0z"/>
+      </g>
+    </mask>
+    <mask id="logo-placeholder_svg__u">
+      <g filter="url(#logo-placeholder_svg__a)">
+        <path style="fill:currentColor;fill-opacity:.976471;stroke:none" d="M0 0h300v53H0z"/>
+      </g>
+    </mask>
+    <mask id="logo-placeholder_svg__w">
+      <g filter="url(#logo-placeholder_svg__a)">
+        <path style="fill:currentColor;fill-opacity:.964706;stroke:none" d="M0 0h300v53H0z"/>
+      </g>
+    </mask>
+    <mask id="logo-placeholder_svg__y">
+      <g filter="url(#logo-placeholder_svg__a)">
+        <path style="fill:currentColor;fill-opacity:.976471;stroke:none" d="M0 0h300v53H0z"/>
+      </g>
+    </mask>
+    <g id="logo-placeholder_svg__j" clip-path="url(#logo-placeholder_svg__b)">
+      <path style="stroke:none;fill-rule:evenodd;fill:#0081ff;fill-opacity:1" d="M29.918-.086h.332c10 17.668 20 35.336 30 53H50.7c-6.9-12.281-13.798-24.57-20.7-36.86-6.844 12.29-13.688 24.579-20.531 36.86H-.082v-.34l30-52.66Zm0 0"/>
+    </g>
+    <g id="logo-placeholder_svg__l" clip-path="url(#logo-placeholder_svg__c)">
+      <path style="stroke:none;fill-rule:evenodd;fill:currentColor;fill-opacity:1" d="M147.738 52.914h-6.035a1373.064 1373.064 0 0 0-8.715-18.516c-3.183-.168-6.367-.226-9.55-.168v18.684h-5.032V10.277c6.375.047 12.746.188 19.11.426 5.629 1.942 8.53 5.934 8.714 11.977-.039 4.304-1.824 7.617-5.363 9.937-.855.43-1.691.856-2.515 1.274 3.132 6.343 6.257 12.687 9.386 19.023Zm-24.3-37.71c4.246-.028 8.492 0 12.734.085 3.422.922 5.152 3.184 5.195 6.793-.199 3.941-2.21 6.32-6.031 7.137-3.965.086-7.934.113-11.899.086V15.203Zm0 0"/>
+    </g>
+    <g id="logo-placeholder_svg__n" clip-path="url(#logo-placeholder_svg__d)">
+      <path style="stroke:none;fill-rule:evenodd;fill:currentColor;fill-opacity:1" d="M113.883 52.914h-5.867A4914.39 4914.39 0 0 1 93.437 17.07c-.511-.11-.874.063-1.09.512-2.679 6.613-5.386 13.211-8.128 19.79 4.414.026 8.828.112 13.238.253a61.318 61.318 0 0 1 1.844 4.758c-5.7-.028-11.395 0-17.094.086a1097.63 1097.63 0 0 0-4.191 10.105c.242.117.468.23.671.34h-6.535A6911.719 6911.719 0 0 1 90.25 10.617c1.902-.226 3.8-.226 5.7 0a6890.305 6890.305 0 0 1 17.933 42.297Zm0 0"/>
+    </g>
+    <g id="logo-placeholder_svg__p" clip-path="url(#logo-placeholder_svg__e)">
+      <path style="stroke:none;fill-rule:evenodd;fill:currentColor;fill-opacity:1" d="M172.207 52.914h-5.027v-37.71h-14.246v-4.759h33.52v4.758h-14.247v37.711Zm0 0"/>
+    </g>
+    <g id="logo-placeholder_svg__r" clip-path="url(#logo-placeholder_svg__f)">
+      <path style="stroke:none;fill-rule:evenodd;fill:currentColor;fill-opacity:1" d="M221.313 52.914h-27.989V10.445h27.317v4.758H198.52v14.102h19.44v4.754h-19.44v13.93h22.792v4.925Zm0 0"/>
+    </g>
+    <g id="logo-placeholder_svg__t" clip-path="url(#logo-placeholder_svg__g)">
+      <path style="stroke:none;fill-rule:evenodd;fill:currentColor;fill-opacity:1" d="M253.996 52.914h-24.973V10.445h5.028v37.543h21.789a44.172 44.172 0 0 1-1.844 4.926Zm0 0"/>
+    </g>
+    <g id="logo-placeholder_svg__v" clip-path="url(#logo-placeholder_svg__h)">
+      <path style="stroke:none;fill-rule:evenodd;fill:currentColor;fill-opacity:1" d="M299.918 52.746v.168h-6.035A4793.414 4793.414 0 0 0 279.3 17.156c-.559-.164-.918.035-1.09.594-2.652 6.512-5.305 13.023-7.961 19.535 4.355.145 8.715.227 13.074.258l2.012 4.754c-5.754.086-11.508.113-17.262.086a272.218 272.218 0 0 1-4.191 10.277c.316.035.594.117.836.254h-6.703a3560.604 3560.604 0 0 0 18.101-42.469h5.867a3236.876 3236.876 0 0 0 17.934 42.301Zm0 0"/>
+    </g>
+    <g id="logo-placeholder_svg__x" clip-path="url(#logo-placeholder_svg__i)">
+      <path style="stroke:none;fill-rule:evenodd;fill:#0081ff;fill-opacity:1" d="M42.152 52.914H18.016a.85.85 0 0 1 .086-.508A1959.614 1959.614 0 0 0 30 31.512a678.787 678.787 0 0 1 12.152 21.402Zm0 0"/>
+    </g>
+    <filter id="logo-placeholder_svg__a" filterUnits="objectBoundingBox" x="0%" y="0%" width="100%" height="100%">
+      <feColorMatrix in="SourceGraphic" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0"/>
+    </filter>
+  </defs>
+  <use xlink:href="#logo-placeholder_svg__j" mask="url(#logo-placeholder_svg__k)"/>
+  <use xlink:href="#logo-placeholder_svg__l" mask="url(#logo-placeholder_svg__m)"/>
+  <use xlink:href="#logo-placeholder_svg__n" mask="url(#logo-placeholder_svg__o)"/>
+  <use xlink:href="#logo-placeholder_svg__p" mask="url(#logo-placeholder_svg__q)"/>
+  <use xlink:href="#logo-placeholder_svg__r" mask="url(#logo-placeholder_svg__s)"/>
+  <use xlink:href="#logo-placeholder_svg__t" mask="url(#logo-placeholder_svg__u)"/>
+  <use xlink:href="#logo-placeholder_svg__v" mask="url(#logo-placeholder_svg__w)"/>
+  <use xlink:href="#logo-placeholder_svg__x" mask="url(#logo-placeholder_svg__y)"/>
 </svg>
