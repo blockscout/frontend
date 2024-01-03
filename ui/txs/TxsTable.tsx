@@ -1,4 +1,4 @@
-import { Link, Table, Tbody, Tr, Th, Show, Hide } from '@chakra-ui/react';
+import { Link, Table, Tbody, Tr, Th } from '@chakra-ui/react';
 import { AnimatePresence } from 'framer-motion';
 import React from 'react';
 
@@ -49,14 +49,7 @@ const TxsTable = ({
             <Th width="160px">Type</Th>
             <Th width="20%">Method</Th>
             { showBlockInfo && <Th width="18%">Block</Th> }
-            <Th width={{ xl: '152px', base: '86px' }}>
-              <Show above="xl" ssr={ false }>From</Show>
-              <Hide above="xl" ssr={ false }>From / To</Hide>
-            </Th>
-            <Th width={{ xl: currentAddress ? '48px' : '36px', base: currentAddress ? '52px' : '28px' }}></Th>
-            <Th width={{ xl: '152px', base: '86px' }}>
-              <Show above="xl" ssr={ false }>To</Show>
-            </Th>
+            <Th width={{ base: '224px', xl: '352px' }}>From/To</Th>
             { !config.UI.views.tx.hiddenFields?.value && (
               <Th width="20%" isNumeric>
                 <Link onClick={ sort('value') } display="flex" justifyContent="end">

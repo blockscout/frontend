@@ -26,17 +26,15 @@ const TokenTransferTable = ({ data, top, showSocketInfo, socketInfoAlert, socket
 
   return (
     <AddressHighlightProvider>
-      <Table variant="simple" size="sm" minW="950px">
+      <Table variant="simple" size="sm">
         <Thead top={ top }>
           <Tr>
-            <Th width={ tokenType === 'ERC-1155' ? '60%' : '80%' }>Txn hash</Th>
+            <Th width={ tokenType === 'ERC-1155' ? '50%' : '75%' }>Txn hash</Th>
             <Th width="164px">Method</Th>
-            <Th width="160px">From</Th>
-            <Th width="36px" px={ 0 }/>
-            <Th width="218px" >To</Th>
-            { (tokenType === 'ERC-721' || tokenType === 'ERC-1155') && <Th width="20%" isNumeric={ tokenType === 'ERC-721' }>Token ID</Th> }
+            <Th width={{ lg: '200px', xl: '420px' }}>From/To</Th>
+            { (tokenType === 'ERC-721' || tokenType === 'ERC-1155') && <Th width="25%" isNumeric={ tokenType === 'ERC-721' }>Token ID</Th> }
             { (tokenType === 'ERC-20' || tokenType === 'ERC-1155') && (
-              <Th width="20%" isNumeric>
+              <Th width="25%" isNumeric>
                 <TruncatedValue value={ `Value ${ token?.symbol || '' }` } w="100%" verticalAlign="middle"/>
               </Th>
             ) }
