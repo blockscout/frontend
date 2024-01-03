@@ -31,14 +31,13 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
       lg: (typeof modeProp === 'object' ? modeProp.lg : modeProp),
       xl: (typeof modeProp === 'object' ? modeProp.xl : modeProp),
     },
-    { ssr: false },
   ) ?? 'long';
 
   const Entity = tokenHash ? AddressEntityWithTokenFilter : AddressEntity;
 
   if (mode === 'compact') {
     return (
-      <Flex className={ className } flexDir="column" rowGap="14px">
+      <Flex className={ className } flexDir="column" rowGap={ 3 }>
         <Flex alignItems="center" columnGap={ 2 }>
           <IconSvg
             name="arrows/east"

@@ -160,10 +160,10 @@ const AddressEntry = (props: EntityProps) => {
       _before={ !props.isLoading && context?.highlightedAddress === props.address.hash ? {
         content: `" "`,
         position: 'absolute',
-        top: '-7px',
+        top: '-5px',
         left: '-5px',
         width: `calc(100% + ${ props.noCopy ? 10 : 5 }px)`,
-        height: 'calc(100% + 12px)',
+        height: 'calc(100% + 8px)',
         borderRadius: 'base',
         borderColor: highlightedBorderColor,
         borderWidth: '1px',
