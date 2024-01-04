@@ -91,7 +91,7 @@ const NameDomainDetails = ({ query }: Props) => {
       ) }
       { query.data?.owner && (
         <DetailsInfoItem
-          title="Controller"
+          title="Owner"
           hint="The account that owns the rights to edit the records of this domain name"
           isLoading={ isLoading }
           columnGap={ 2 }
@@ -114,7 +114,7 @@ const NameDomainDetails = ({ query }: Props) => {
       ) }
       { query.data?.wrapped_owner && (
         <DetailsInfoItem
-          title="Wrapped controller"
+          title="Manager"
           hint="Owner of this NFT domain in NameWrapper contract"
           isLoading={ isLoading }
           columnGap={ 2 }

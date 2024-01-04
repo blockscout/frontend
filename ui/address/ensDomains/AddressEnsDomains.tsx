@@ -1,5 +1,8 @@
 import { Button, chakra, Flex, Grid, Popover, PopoverBody, PopoverContent, PopoverTrigger, Skeleton, useDisclosure } from '@chakra-ui/react';
+import _clamp from 'lodash/clamp';
 import React from 'react';
+
+import type { EnsDomain } from 'types/api/ens';
 
 import { route } from 'nextjs-routes';
 
@@ -14,6 +17,19 @@ interface Props {
   addressHash: string;
   mainDomainName: string | null;
 }
+
+const DomainsGrid = ({ data }: { data: Array<EnsDomain> }) => {
+  return (
+    <Grid
+      templateColumns={{ base: `repeat(${ _clamp(data.length, 1, 2) }, 1fr)`, lg: `repeat(${ _clamp(data.length, 1, 3) }, 1fr)` }}
+      columnGap={ 8 }
+      rowGap={ 4 }
+      mt={ 2 }
+    >
+      { data.slice(0, 9).map((domain) => <EnsEntity key={ domain.id } name={ domain.name } noCopy/>) }
+    </Grid>
+  );
+};
 
 const AddressEnsDomains = ({ addressHash, mainDomainName }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
@@ -86,7 +102,7 @@ const AddressEnsDomains = ({ addressHash, mainDomainName }: Props) => {
           flexShrink={ 0 }
         >
           <IconSvg name="ENS_slim" boxSize={ 5 }/>
-          <chakra.span ml={ 1 } display={{ base: 'none', lg: 'block' }}>{ totalRecords } Domains</chakra.span>
+          <chakra.span ml={ 1 } display={{ base: 'none', lg: 'block' }}>{ totalRecords } Domain{ data.items.length > 1 ? 's' : '' }</chakra.span>
           <IconSvg name="arrows/east-mini" transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 }/>
         </Button>
       </PopoverTrigger>
@@ -105,17 +121,13 @@ const AddressEnsDomains = ({ addressHash, mainDomainName }: Props) => {
           { ownedDomains.length > 0 && (
             <div>
               <chakra.span color="text_secondary" fontSize="xs">Other domain names owned by this address</chakra.span>
-              <Grid templateColumns={{ base: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }} columnGap={ 8 } rowGap={ 4 } mt={ 2 }>
-                { ownedDomains.slice(0, 9).map((domain) => <EnsEntity key={ domain.id } name={ domain.name } noCopy/>) }
-              </Grid>
+              <DomainsGrid data={ ownedDomains }/>
             </div>
           ) }
           { resolvedDomains.length > 0 && (
             <div>
               <chakra.span color="text_secondary" fontSize="xs">Other domain names resolved to this address</chakra.span>
-              <Grid templateColumns={{ base: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }} columnGap={ 8 } rowGap={ 4 } mt={ 2 }>
-                { resolvedDomains.slice(0, 9).map((domain) => <EnsEntity key={ domain.id } name={ domain.name } noCopy/>) }
-              </Grid>
+              <DomainsGrid data={ resolvedDomains }/>
             </div>
           ) }
           { (ownedDomains.length > 9 || resolvedDomains.length > 9) && (

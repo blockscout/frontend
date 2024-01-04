@@ -16,18 +16,18 @@ const NameDomainHistoryTableItem = ({ isLoading, transaction_hash: transactionHa
 
   return (
     <Tr>
-      <Td>
+      <Td verticalAlign="middle">
         <TxEntity hash={ transactionHash } isLoading={ isLoading } fontWeight={ 700 }/>
       </Td>
-      <Td pl={ 9 }>
+      <Td pl={ 9 } verticalAlign="middle">
         <Skeleton isLoaded={ !isLoading } color="text_secondary" display="inline-block">
           <span>{ dayjs(timestamp).fromNow() }</span>
         </Skeleton>
       </Td>
-      <Td>
+      <Td verticalAlign="middle">
         { fromAddress && <AddressEntity address={ fromAddress } isLoading={ isLoading }/> }
       </Td>
-      <Td>
+      <Td verticalAlign="middle">
         { action && <Tag colorScheme="gray" isLoading={ isLoading }>{ action }</Tag> }
       </Td>
     </Tr>

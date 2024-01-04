@@ -204,7 +204,7 @@ const AddressPageContent = () => {
       <AccountActionsMenu isLoading={ isLoading }/>
       <HStack ml="auto" gap={ 2 }/>
       { addressQuery.data?.is_contract && addressQuery.data?.is_verified && config.UI.views.address.solidityscanEnabled && <SolidityscanReport hash={ hash }/> }
-      { addressQuery.data && config.features.nameService.isEnabled &&
+      { !isLoading && addressQuery.data && config.features.nameService.isEnabled &&
         <AddressEnsDomains addressHash={ hash } mainDomainName={ addressQuery.data.ens_domain_name }/> }
       <NetworkExplorers type="address" pathParam={ hash }/>
     </Flex>
