@@ -27,11 +27,11 @@ const TxSubHeading = ({ hash, hasTag }: Props) => {
   });
 
   const hasInterpretation = hasInterpretationFeature &&
-    (txInterpretationQuery.isPlaceholderData || txInterpretationQuery.data?.data.summaries.length);
+    (txInterpretationQuery.isPlaceholderData || Boolean(txInterpretationQuery.data?.data.summaries.length));
 
   return (
     <Box display={{ base: 'block', lg: 'flex' }} alignItems="center" w="100%">
-      { hasInterpretationFeature && (
+      { hasInterpretation && (
         <Flex mr={{ base: 0, lg: 6 }} flexWrap="wrap" alignItems="center">
           <TxInterpretation
             summary={ txInterpretationQuery.data?.data.summaries[0] }
