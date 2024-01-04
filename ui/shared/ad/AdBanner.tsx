@@ -7,7 +7,7 @@ import * as cookies from 'lib/cookies';
 
 import AdbutlerBanner from './AdbutlerBanner';
 import CoinzillaBanner from './CoinzillaBanner';
-import HypeBanner from './HypeBanner';
+import HypeBanner from './HypeBannerTest';
 import SliseBanner from './SliseBanner';
 
 const feature = config.features.adsBanner;

@@ -37,6 +37,8 @@ export function ad(): CspDev.DirectiveDescriptor {
 
       // slise
       '*.slise.xyz',
+
+      'cdn.jsdelivr.net',
     ],
     'img-src': [
       // coinzilla
