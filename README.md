@@ -1,7 +1,7 @@
-<h1 align="center">Blockscout frontend</h1>
+<h1 align="center">edeXa Explorer frontend</h1>
 
 <p align="center">
-    <span>Frontend application for </span>
+    <span>Forked from open source project</span>
     <a href="https://github.com/blockscout/blockscout/blob/master/README.md">Blockscout</a>
     <span> blockchain explorer</span>
 </p>
