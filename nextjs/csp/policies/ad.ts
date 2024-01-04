@@ -1,55 +1,58 @@
-import Base64 from 'crypto-js/enc-base64';
-import sha256 from 'crypto-js/sha256';
-import type CspDev from 'csp-dev';
+import Base64 from "crypto-js/enc-base64";
+import sha256 from "crypto-js/sha256";
+import type CspDev from "csp-dev";
 
-import { connectAdbutler, placeAd } from 'ui/shared/ad/adbutlerScript';
+import { connectAdbutler, placeAd } from "ui/shared/ad/adbutlerScript";
 
 export function ad(): CspDev.DirectiveDescriptor {
   return {
-    'connect-src': [
+    "connect-src": [
       // coinzilla
-      'coinzilla.com',
-      '*.coinzilla.com',
-      'https://request-global.czilladx.com',
+      "coinzilla.com",
+      "*.coinzilla.com",
+      "https://request-global.czilladx.com",
 
       // slise
-      '*.slise.xyz',
+      "*.slise.xyz",
 
       // hype
-      'api.hypelab-staging.com',
-      'api.hypelab.com',
-      'd1q98dzwj6s2rb.cloudfront.net',
-      '*.ixncdn.com',
-      'api.jxncdn.com',
+      "api.hypelab-staging.com",
+      "api.hypelab.com",
+      "d1q98dzwj6s2rb.cloudfront.net",
+      "*.ixncdn.com",
+      "api.jxncdn.com",
     ],
-    'frame-src': [
+    "frame-src": [
       // coinzilla
-      'https://request-global.czilladx.com',
+      "https://request-global.czilladx.com",
     ],
-    'script-src': [
+    "script-src": [
       // coinzilla
-      'coinzillatag.com',
+      "coinzillatag.com",
 
       // adbutler
-      'servedbyadbutler.com',
-      `'sha256-${ Base64.stringify(sha256(connectAdbutler)) }'`,
-      `'sha256-${ Base64.stringify(sha256(placeAd ?? '')) }'`,
+      "servedbyadbutler.com",
+      `'sha256-${Base64.stringify(sha256(connectAdbutler))}'`,
+      `'sha256-${Base64.stringify(sha256(placeAd ?? ""))}'`,
 
       // slise
-      '*.slise.xyz',
+      "*.slise.xyz",
 
-      'cdn.jsdelivr.net',
+      "cdn.jsdelivr.net",
+
+      // hype
+      "eval",
     ],
-    'img-src': [
+    "img-src": [
       // coinzilla
-      'cdn.coinzilla.io',
+      "cdn.coinzilla.io",
 
       // adbutler
-      'servedbyadbutler.com',
+      "servedbyadbutler.com",
     ],
-    'font-src': [
+    "font-src": [
       // coinzilla
-      'https://request-global.czilladx.com',
+      "https://request-global.czilladx.com",
     ],
   };
 }

@@ -9,7 +9,7 @@ RUN apk add --no-cache libc6-compat
 # Install dependencies
 WORKDIR /app
 COPY package.json yarn.lock ./
-COPY hypelab-react-0.5.1.tgz ./
+COPY hypelab-react-0.5.2.tgz ./
 RUN apk add git
 RUN yarn --frozen-lockfile --ignore-optional
 

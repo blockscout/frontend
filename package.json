@@ -68,7 +68,7 @@
     "graphiql": "^2.2.0",
     "graphql": "^16.8.1",
     "graphql-ws": "^5.11.3",
-    "hypelab-react": "./hypelab-react-0.5.1.tgz",
+    "hypelab-react": "./hypelab-react-0.5.2.tgz",
     "js-cookie": "^3.0.1",
     "lodash": "^4.0.0",
     "mixpanel-browser": "^2.47.0",
