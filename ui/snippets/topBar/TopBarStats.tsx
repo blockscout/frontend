@@ -40,7 +40,7 @@ const TopBarStats = () => {
         </Skeleton>
       ) }
       { data?.coin_price && config.UI.homepage.showGasTracker && <TextSeparator color="divider"/> }
-      { data?.gas_prices && config.UI.homepage.showGasTracker && (
+      { data?.gas_prices && data.gas_prices.average !== null && config.UI.homepage.showGasTracker && (
         <Skeleton isLoaded={ !isPlaceholderData }>
           <chakra.span color="text_secondary">Gas </chakra.span>
           <LightMode>
