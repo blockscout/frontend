@@ -17,6 +17,11 @@ const TopBarStats = () => {
   }, [ onToggle ]);
 
   const { data, isPlaceholderData, isError } = useApiQuery('homepage_stats', {
+    fetchParams: {
+      headers: {
+        'updated-gas-oracle': 'true',
+      },
+    },
     queryOptions: {
       placeholderData: HOMEPAGE_STATS,
       refetchOnMount: false,
@@ -34,10 +39,19 @@ const TopBarStats = () => {
       fontWeight={ 500 }
     >
       { data?.coin_price && (
-        <Skeleton isLoaded={ !isPlaceholderData }>
-          <chakra.span color="text_secondary">{ config.chain.governanceToken.symbol || config.chain.currency.symbol } </chakra.span>
-          <span>${ Number(data.coin_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }) }</span>
-        </Skeleton>
+        <Flex columnGap={ 1 }>
+          <Skeleton isLoaded={ !isPlaceholderData }>
+            <chakra.span color="text_secondary">{ config.chain.governanceToken.symbol || config.chain.currency.symbol } </chakra.span>
+            <span>${ Number(data.coin_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }) }</span>
+          </Skeleton>
+          { data.coin_price_change_percentage && (
+            <Skeleton isLoaded={ !isPlaceholderData }>
+              <chakra.span color={ Number(data.coin_price_change_percentage) >= 0 ? 'green.500' : 'red.500' }>
+                { Number(data.coin_price_change_percentage).toFixed(2) }%
+              </chakra.span>
+            </Skeleton>
+          ) }
+        </Flex>
       ) }
       { data?.coin_price && config.UI.homepage.showGasTracker && <TextSeparator color="divider"/> }
       { data?.gas_prices && data.gas_prices.average !== null && config.UI.homepage.showGasTracker && (

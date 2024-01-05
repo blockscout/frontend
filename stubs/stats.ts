@@ -3,6 +3,7 @@ import type { Counter, HomeStats, StatsChartsSection } from 'types/api/stats';
 export const HOMEPAGE_STATS: HomeStats = {
   average_block_time: 14346,
   coin_price: '1807.68',
+  coin_price_change_percentage: 42,
   gas_prices: {
     average: 0.1,
     fast: 0.11,
