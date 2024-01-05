@@ -51,7 +51,7 @@ const Stats = () => {
     !data.gas_prices && itemsCount--;
     data.rootstock_locked_btc && itemsCount++;
     const isOdd = Boolean(itemsCount % 2);
-    const gasLabel = hasGasTracker && data.gas_prices ? <GasInfoTooltipContent gasPrices={ data.gas_prices }/> : null;
+    const gasLabel = hasGasTracker && data.gas_prices ? <GasInfoTooltipContent data={ data }/> : null;
 
     content = (
       <>
@@ -98,7 +98,10 @@ const Stats = () => {
           <StatsItem
             icon="gas"
             title="Gas tracker"
-            value={ data.gas_prices.average !== null ? `${ Number(data.gas_prices.average).toLocaleString() } Gwei` : 'N/A' }
+            value={ data.gas_prices.average && data.gas_prices.average.price !== null ?
+              `${ Number(data.gas_prices.average.price).toLocaleString() } Gwei` :
+              'N/A'
+            }
             _last={ isOdd ? lastItemTouchStyle : undefined }
             tooltipLabel={ gasLabel }
             isLoading={ isPlaceholderData }

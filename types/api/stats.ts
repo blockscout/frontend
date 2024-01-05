@@ -9,6 +9,8 @@ export type HomeStats = {
   transactions_today: string;
   gas_used_today: string;
   gas_prices: GasPrices | null;
+  gas_price_updated_at: string | null;
+  gas_prices_update_in: number;
   static_gas_price: string | null;
   market_cap: string;
   network_utilization_percentage: number;
@@ -17,9 +19,15 @@ export type HomeStats = {
 }
 
 export type GasPrices = {
-  average: number | null;
-  fast: number | null;
-  slow: number | null;
+  average: GasPriceInfo | null;
+  fast: GasPriceInfo | null;
+  slow: GasPriceInfo | null;
+}
+
+export interface GasPriceInfo {
+  fiat_price: string | null;
+  price: number | null;
+  time: number | null;
 }
 
 export type Counters = {
