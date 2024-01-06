@@ -41,7 +41,7 @@ export function ad(): CspDev.DirectiveDescriptor {
       "cdn.jsdelivr.net",
 
       // hype
-      "unsafe-eval",
+      "'unsafe-eval'",
     ],
     "img-src": [
       // coinzilla
