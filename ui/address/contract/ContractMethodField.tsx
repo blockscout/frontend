@@ -147,7 +147,7 @@ const ContractMethodField = ({ control, name, groupName, index, argType, placeho
 
       if (formattedValue > intMatch.max || formattedValue < intMatch.min) {
         const lowerBoundary = intMatch.isUnsigned ? '0' : `-1 * 2 ^ ${ Number(intMatch.power) / 2 }`;
-        const upperBoundary = intMatch.isUnsigned ? `2 ^ ${ intMatch.power } - 1` : `2^${ Number(intMatch.power) / 2 } - 1`;
+        const upperBoundary = intMatch.isUnsigned ? `2 ^ ${ intMatch.power } - 1` : `2 ^ ${ Number(intMatch.power) / 2 } - 1`;
         return `Value should be in range from "${ lowerBoundary }" to "${ upperBoundary }" inclusively`;
       }
 
