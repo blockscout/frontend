@@ -53,6 +53,18 @@ const Stats = () => {
     const isOdd = Boolean(itemsCount % 2);
     const gasLabel = hasGasTracker && data.gas_prices ? <GasInfoTooltipContent data={ data }/> : null;
 
+    const gasPriceText = (() => {
+      if (data.gas_prices?.average?.fiat_price) {
+        return `$${ data.gas_prices.average.fiat_price }`;
+      }
+
+      if (data.gas_prices?.average?.price) {
+        return `${ data.gas_prices.average.price.toLocaleString() } Gwei`;
+      }
+
+      return 'N/A';
+    })();
+
     content = (
       <>
         { config.features.zkEvmRollup.isEnabled ? (
@@ -98,10 +110,7 @@ const Stats = () => {
           <StatsItem
             icon="gas"
             title="Gas tracker"
-            value={ data.gas_prices.average && data.gas_prices.average.price !== null ?
-              `${ Number(data.gas_prices.average.price).toLocaleString() } Gwei` :
-              'N/A'
-            }
+            value={ gasPriceText }
             _last={ isOdd ? lastItemTouchStyle : undefined }
             tooltipLabel={ gasLabel }
             isLoading={ isPlaceholderData }

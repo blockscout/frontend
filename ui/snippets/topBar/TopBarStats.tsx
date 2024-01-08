@@ -96,7 +96,7 @@ const TopBarStats = () => {
                 onMouseEnter={ onOpen }
                 onMouseLeave={ onClose }
               >
-                { data.gas_prices.average.price } Gwei
+                { data.gas_prices.average.fiat_price ? `$${ data.gas_prices.average.fiat_price }` : `${ data.gas_prices.average.price } Gwei` }
               </Link>
             </Tooltip>
           </LightMode>
