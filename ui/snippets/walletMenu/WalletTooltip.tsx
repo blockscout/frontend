@@ -26,12 +26,15 @@ const WalletTooltip = ({ children, isDisabled, isMobile }: Props) => {
 
   React.useEffect(() => {
     const wasShown = window.localStorage.getItem(localStorageKey);
-    if (!isDisabled && !wasShown) {
-      setIsTooltipShown.on();
-      window.localStorage.setItem(localStorageKey, 'true');
-      setTimeout(() => setIsTooltipShown.off(), 3000);
+    const isMarketplacePage = [ '/apps', '/apps/[id]' ].includes(router.pathname);
+    if (!isDisabled && !wasShown && isMarketplacePage) {
+      setTimeout(() => {
+        setIsTooltipShown.on();
+        window.localStorage.setItem(localStorageKey, 'true');
+        setTimeout(() => setIsTooltipShown.off(), 5000);
+      }, 1000);
     }
-  }, [ setIsTooltipShown, localStorageKey, isDisabled ]);
+  }, [ setIsTooltipShown, localStorageKey, isDisabled, router.pathname ]);
 
   return (
     <Tooltip
