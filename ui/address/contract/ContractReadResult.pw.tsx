@@ -99,3 +99,34 @@ test('success', async({ mount }) => {
 
   await expect(component).toHaveScreenshot();
 });
+
+test('complex success', async({ mount }) => {
+  const result: ContractMethodReadResult = {
+    is_error: false,
+    result: {
+      names: [
+        [
+          'data',
+          [ 'totalSupply', 'owner', 'symbol' ],
+        ],
+        'supports721',
+        'page',
+      ],
+      output: [
+        {
+          type: 'tuple[uint256,address,string]',
+          value: [ 1000, '0xe150519ae293922cfe6217feba3add4726f5e851', 'AOC_INCUBATORS' ],
+        },
+        { type: 'bool', value: 'true' },
+        { type: 'uint256[]', value: [ 1, 2, 3, 4, 5 ] },
+      ],
+    },
+  };
+  const component = await mount(
+    <TestApp>
+      <ContractReadResult item={ item } onSettle={ onSettle } result={ result }/>
+    </TestApp>,
+  );
+
+  await expect(component).toHaveScreenshot();
+});
