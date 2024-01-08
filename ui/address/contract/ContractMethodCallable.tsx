@@ -1,4 +1,4 @@
-import { Box, Button, chakra, Flex, Text } from '@chakra-ui/react';
+import { Box, Button, chakra, Flex } from '@chakra-ui/react';
 import _fromPairs from 'lodash/fromPairs';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
@@ -158,7 +158,17 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
       { 'outputs' in data && !isWrite && data.outputs.length > 0 && (
         <Flex mt={ 3 }>
           <IconSvg name="arrows/down-right" boxSize={ 5 } mr={ 1 }/>
-          <Text>{ data.outputs.map(({ type }) => type).join(', ') }</Text>
+          <p>
+            { data.outputs.map(({ type, name }, index) => {
+              return (
+                <>
+                  <chakra.span fontWeight={ 500 }>{ name } </chakra.span>
+                  <span>{ name ? `(${ type })` : type }</span>
+                  { index < data.outputs.length - 1 && <span>, </span> }
+                </>
+              );
+            }) }
+          </p>
         </Flex>
       ) }
       { result && <ResultComponent item={ data } result={ result } onSettle={ handleTxSettle }/> }
