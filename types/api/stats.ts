@@ -16,9 +16,9 @@ export type HomeStats = {
 }
 
 export type GasPrices = {
-  average: number;
-  fast: number;
-  slow: number;
+  average: number | null;
+  fast: number | null;
+  slow: number | null;
 }
 
 export type Counters = {

@@ -14,7 +14,7 @@ export const read: Array<SmartContractReadMethod> = [
     method_id: '70a08231',
     name: 'FLASHLOAN_PREMIUM_TOTAL',
     outputs: [
-      { internalType: 'uint256', name: '', type: 'uint256' },
+      { internalType: 'uint256', name: 'amount', type: 'uint256' },
     ],
     payable: false,
     stateMutability: 'view',
@@ -97,7 +97,7 @@ export const read: Array<SmartContractReadMethod> = [
 export const readResultSuccess: SmartContractQueryMethodReadSuccess = {
   is_error: false,
   result: {
-    names: [ 'uint256' ],
+    names: [ 'amount' ],
     output: [
       { type: 'uint256', value: '42' },
     ],
