@@ -16,7 +16,7 @@ const TxDetailsActionsInterpretation = ({ hash, isTxDataLoading }: Props) => {
   const txInterpretationQuery = useApiQuery('tx_interpretation', {
     pathParams: { hash },
     queryOptions: {
-      enabled: Boolean(hash),
+      enabled: Boolean(hash) && !isTxDataLoading,
       placeholderData: TX_INTERPRETATION,
       refetchOnMount: false,
     },
