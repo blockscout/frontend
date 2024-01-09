@@ -1,4 +1,4 @@
-import { Box, Heading, Flex, LightMode } from '@chakra-ui/react';
+import { Box, Heading, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
@@ -10,6 +10,7 @@ import Transactions from 'ui/home/Transactions';
 import AdBanner from 'ui/shared/ad/AdBanner';
 import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
 import SearchBar from 'ui/snippets/searchBar/SearchBar';
+import WalletMenuDesktop from 'ui/snippets/walletMenu/WalletMenuDesktop';
 
 const Home = () => {
   return (
@@ -22,7 +23,7 @@ const Home = () => {
         minW={{ base: 'unset', lg: '900px' }}
         data-label="hero plate"
       >
-        <Flex mb={{ base: 6, lg: 8 }} justifyContent="space-between">
+        <Flex mb={{ base: 6, lg: 8 }} justifyContent="space-between" alignItems="center">
           <Heading
             as="h1"
             size={{ base: 'md', lg: 'xl' }}
@@ -30,15 +31,14 @@ const Home = () => {
             fontWeight={ 600 }
             color={ config.UI.homepage.plate.textColor }
           >
-            Welcome to { config.chain.name } explorer
+            { config.chain.name } explorer
           </Heading>
-          <Box display={{ base: 'none', lg: 'block' }}>
-            { config.features.account.isEnabled && <ProfileMenuDesktop/> }
+          <Box display={{ base: 'none', lg: 'flex' }}>
+            { config.features.account.isEnabled && <ProfileMenuDesktop isHomePage/> }
+            { config.features.blockchainInteraction.isEnabled && <WalletMenuDesktop isHomePage/> }
           </Box>
         </Flex>
-        <LightMode>
-          <SearchBar isHomepage/>
-        </LightMode>
+        <SearchBar isHomepage/>
       </Box>
       <Stats/>
       <ChainIndicators/>

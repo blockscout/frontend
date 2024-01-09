@@ -1,20 +1,17 @@
-import { Icon } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TChainIndicator } from '../types';
 
 import config from 'configs/app';
-import globeIcon from 'icons/globe.svg';
-import lockIcon from 'icons/lock.svg';
-import txIcon from 'icons/transactions.svg';
 import { sortByDateDesc } from 'ui/shared/chart/utils/sorts';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
+import IconSvg from 'ui/shared/IconSvg';
 
 const dailyTxsIndicator: TChainIndicator<'homepage_chart_txs'> = {
   id: 'daily_txs',
   title: 'Daily transactions',
   value: (stats) => Number(stats.transactions_today).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }),
-  icon: <Icon as={ txIcon } boxSize={ 6 } bgColor="#56ACD1" borderRadius="base" color="white"/>,
+  icon: <IconSvg name="transactions" boxSize={ 6 } bgColor="#56ACD1" borderRadius="base" color="white"/>,
   hint: `Number of transactions yesterday (0:00 - 23:59 UTC). The chart displays daily transactions for the past 30 days.`,
   api: {
     resourceName: 'homepage_chart_txs',
@@ -58,7 +55,7 @@ const marketPriceIndicator: TChainIndicator<'homepage_chart_market'> = {
   id: 'market_cap',
   title: 'Market cap',
   value: (stats) => '$' + Number(stats.market_cap).toLocaleString(undefined, { maximumFractionDigits: 0, notation: 'compact' }),
-  icon: <Icon as={ globeIcon } boxSize={ 6 } bgColor="#6A5DCC" borderRadius="base" color="white"/>,
+  icon: <IconSvg name="globe" boxSize={ 6 } bgColor="#6A5DCC" borderRadius="base" color="white"/>,
   // eslint-disable-next-line max-len
   hint: 'The total market value of a cryptocurrency\'s circulating supply. It is analogous to the free-float capitalization in the stock market. Market Cap = Current Price x Circulating Supply.',
   api: {
@@ -81,7 +78,7 @@ const tvlIndicator: TChainIndicator<'homepage_chart_market'> = {
   id: 'tvl',
   title: 'Total value locked',
   value: (stats) => '$' + Number(stats.tvl).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }),
-  icon: <Icon as={ lockIcon } boxSize={ 6 } bgColor="#517FDB" borderRadius="base" color="white"/>,
+  icon: <IconSvg name="lock" boxSize={ 6 } bgColor="#517FDB" borderRadius="base" color="white"/>,
   // eslint-disable-next-line max-len
   hint: 'Total value of digital assets locked or staked in a chain',
   api: {

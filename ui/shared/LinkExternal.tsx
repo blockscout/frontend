@@ -1,8 +1,8 @@
 import type { ChakraProps } from '@chakra-ui/react';
-import { Link, Icon, chakra, Box, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { Link, chakra, Box, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
-import arrowIcon from 'icons/arrows/north-east.svg';
+import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   href: string;
@@ -59,7 +59,7 @@ const LinkExternal = ({ href, children, className, isLoading, variant }: Props) 
   return (
     <Link className={ className } { ...styleProps } target="_blank" href={ href }>
       { children }
-      <Icon as={ arrowIcon } boxSize={ 4 } verticalAlign="middle" color="gray.400"/>
+      <IconSvg name="arrows/north-east" boxSize={ 4 } verticalAlign="middle" color="gray.400" flexShrink={ 0 }/>
     </Link>
   );
 };

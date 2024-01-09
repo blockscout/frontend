@@ -5,7 +5,6 @@ import React from 'react';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import txBatchIcon from 'icons/txn_batches_slim.svg';
 
 import * as BlockEntity from './BlockEntity';
 
@@ -21,7 +20,7 @@ const ZkEvmBatchEntityL2 = (props: BlockEntity.EntityProps) => {
 
   return (
     <BlockEntity.Container className={ props.className }>
-      <BlockEntity.Icon { ...partsProps } asProp={ txBatchIcon }/>
+      <BlockEntity.Icon { ...partsProps } name="txn_batches_slim"/>
       <BlockEntity.Link
         { ...linkProps }
         href={ route({ pathname: '/zkevm-l2-txn-batch/[number]', query: { number: props.number.toString() } }) }

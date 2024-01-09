@@ -1,4 +1,4 @@
 export interface Fee {
   type: string;
-  value: string;
+  value: string | null;
 }

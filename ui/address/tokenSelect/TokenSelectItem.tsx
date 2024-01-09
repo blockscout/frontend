@@ -5,6 +5,7 @@ import React from 'react';
 import { route } from 'nextjs-routes';
 
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
+import LinkInternal from 'ui/shared/LinkInternal';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
 import type { TokenEnhancedData } from '../utils/tokenUtils';
@@ -47,11 +48,10 @@ const TokenSelectItem = ({ data }: Props) => {
     }
   })();
 
-  // TODO add filter param when token page is ready
   const url = route({ pathname: '/token/[hash]', query: { hash: data.token.address } });
 
   return (
-    <Flex
+    <LinkInternal
       px={ 1 }
       py="10px"
       display="flex"
@@ -62,9 +62,8 @@ const TokenSelectItem = ({ data }: Props) => {
       _hover={{
         bgColor: useColorModeValue('blue.50', 'gray.800'),
       }}
+      color="initial"
       fontSize="sm"
-      cursor="pointer"
-      as="a"
       href={ url }
     >
       <Flex alignItems="center" w="100%" overflow="hidden">
@@ -80,7 +79,7 @@ const TokenSelectItem = ({ data }: Props) => {
       <Flex alignItems="center" justifyContent="space-between" w="100%" whiteSpace="nowrap">
         { secondRow }
       </Flex>
-    </Flex>
+    </LinkInternal>
   );
 };
 

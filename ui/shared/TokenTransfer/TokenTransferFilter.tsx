@@ -56,7 +56,7 @@ const TokenTransferFilter = ({
         </>
       ) }
       <Text variant="secondary" fontWeight={ 600 }>Type</Text>
-      <TokenTypeFilter onChange={ onTypeFilterChange } defaultValue={ defaultTypeFilters }/>
+      <TokenTypeFilter<TokenType> onChange={ onTypeFilterChange } defaultValue={ defaultTypeFilters } nftOnly={ false }/>
     </PopoverFilter>
   );
 };

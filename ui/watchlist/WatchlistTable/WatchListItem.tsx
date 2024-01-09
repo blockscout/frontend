@@ -76,7 +76,7 @@ const WatchListItem = ({ item, isLoading, onEditClick, onDeleteClick }: Props) =
     },
     onSuccess: () => {
       setSwitchDisabled(false);
-      showNotificationToast(!notificationEnabled);
+      showNotificationToast(notificationEnabled);
     },
   });
 

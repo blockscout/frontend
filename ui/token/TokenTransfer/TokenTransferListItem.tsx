@@ -1,16 +1,15 @@
-import { Flex, Skeleton } from '@chakra-ui/react';
+import { Grid, Flex, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
-import eastArrowIcon from 'icons/arrows/east.svg';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
 import AddressEntityWithTokenFilter from 'ui/shared/entities/address/AddressEntityWithTokenFilter';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import IconSvg from 'ui/shared/IconSvg';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
@@ -62,7 +61,7 @@ const TokenTransferListItem = ({
           width="50%"
           fontWeight="500"
         />
-        <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500" isLoading={ isLoading }/>
+        <IconSvg name="arrows/east" boxSize={ 6 } color="gray.500" flexShrink={ 0 } isLoading={ isLoading }/>
         <AddressEntityWithTokenFilter
           address={ to }
           isLoading={ isLoading }
@@ -72,16 +71,31 @@ const TokenTransferListItem = ({
         />
       </Flex>
       { valueStr && (token.type === 'ERC-20' || token.type === 'ERC-1155') && (
-        <Flex columnGap={ 2 } w="100%">
+        <Grid gap={ 2 } templateColumns={ `1fr auto auto${ usd ? ' auto' : '' }` }>
           <Skeleton isLoaded={ !isLoading } flexShrink={ 0 } fontWeight={ 500 }>
             Value
           </Skeleton>
-          <Skeleton isLoaded={ !isLoading } color="text_secondary">
+          <Skeleton
+            isLoaded={ !isLoading }
+            color="text_secondary"
+            wordBreak="break-all"
+            overflow="hidden"
+            flexGrow={ 1 }
+          >
             <span>{ valueStr }</span>
           </Skeleton>
           { token.symbol && <TruncatedValue isLoading={ isLoading } value={ token.symbol }/> }
-          { usd && <Skeleton isLoaded={ !isLoading } color="text_secondary"><span>(${ usd })</span></Skeleton> }
-        </Flex>
+          { usd && (
+            <Skeleton
+              isLoaded={ !isLoading }
+              color="text_secondary"
+              wordBreak="break-all"
+              overflow="hidden"
+            >
+              <span>(${ usd })</span>
+            </Skeleton>
+          ) }
+        </Grid>
       ) }
       { 'token_id' in total && (token.type === 'ERC-721' || token.type === 'ERC-1155') && (
         <NftEntity

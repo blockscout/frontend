@@ -24,7 +24,7 @@ import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
-import TxsContent from 'ui/txs/TxsContent';
+import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
 
 const TAB_LIST_PROPS = {
   marginBottom: 0,
@@ -82,7 +82,7 @@ const BlockPageContent = () => {
 
   const tabs: Array<RoutedTab> = React.useMemo(() => ([
     { id: 'index', title: 'Details', component: <BlockDetails query={ blockQuery }/> },
-    { id: 'txs', title: 'Transactions', component: <TxsContent query={ blockTxsQuery } showBlockInfo={ false } showSocketInfo={ false }/> },
+    { id: 'txs', title: 'Transactions', component: <TxsWithFrontendSorting query={ blockTxsQuery } showBlockInfo={ false } showSocketInfo={ false }/> },
     config.features.beaconChain.isEnabled && Boolean(blockQuery.data?.withdrawals_count) ?
       { id: 'withdrawals', title: 'Withdrawals', component: <BlockWithdrawals blockWithdrawalsQuery={ blockWithdrawalsQuery }/> } :
       null,
@@ -116,20 +116,22 @@ const BlockPageContent = () => {
   const title = blockQuery.data?.type === 'reorg' ? `Reorged block #${ blockQuery.data?.height }` : `Block #${ blockQuery.data?.height }`;
   const titleSecondRow = (
     <>
-      <Skeleton
-        isLoaded={ !blockQuery.isPlaceholderData }
-        fontFamily="heading"
-        display="flex"
-        minW={ 0 }
-        columnGap={ 2 }
-        fontWeight={ 500 }
-      >
-        <chakra.span flexShrink={ 0 }>
-          { config.chain.verificationType === 'validation' ? 'Validated by' : 'Mined by' }
-        </chakra.span>
-        <AddressEntity address={ blockQuery.data?.miner }/>
-      </Skeleton>
-      <NetworkExplorers type="block" pathParam={ heightOrHash } ml={{ base: 3, lg: 'auto' }}/>
+      { !config.UI.views.block.hiddenFields?.miner && (
+        <Skeleton
+          isLoaded={ !blockQuery.isPlaceholderData }
+          fontFamily="heading"
+          display="flex"
+          minW={ 0 }
+          columnGap={ 2 }
+          fontWeight={ 500 }
+        >
+          <chakra.span flexShrink={ 0 }>
+            { config.chain.verificationType === 'validation' ? 'Validated by' : 'Mined by' }
+          </chakra.span>
+          <AddressEntity address={ blockQuery.data?.miner }/>
+        </Skeleton>
+      ) }
+      <NetworkExplorers type="block" pathParam={ heightOrHash } ml={{ base: config.UI.views.block.hiddenFields?.miner ? 0 : 3, lg: 'auto' }}/>
     </>
   );
 

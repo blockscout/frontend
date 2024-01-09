@@ -1,22 +1,24 @@
 import { LinkOverlay } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React from 'react';
+import type { MouseEvent } from 'react';
 
 type Props = {
   id: string;
   url: string;
   external?: boolean;
   title: string;
+  onClick?: (event: MouseEvent) => void;
 }
 
-const MarketplaceAppCardLink = ({ url, external, id, title }: Props) => {
+const MarketplaceAppCardLink = ({ url, external, id, title, onClick }: Props) => {
   return external ? (
     <LinkOverlay href={ url } isExternal={ true }>
       { title }
     </LinkOverlay>
   ) : (
     <NextLink href={{ pathname: '/apps/[id]', query: { id } }} passHref legacyBehavior>
-      <LinkOverlay>
+      <LinkOverlay onClick={ onClick }>
         { title }
       </LinkOverlay>
     </NextLink>

@@ -1,5 +1,5 @@
-import { Box, Drawer, DrawerOverlay, DrawerContent, DrawerBody, useDisclosure, Button } from '@chakra-ui/react';
-import type { ButtonProps } from '@chakra-ui/react';
+import { Drawer, DrawerOverlay, DrawerContent, DrawerBody, useDisclosure, IconButton } from '@chakra-ui/react';
+import type { IconButtonProps } from '@chakra-ui/react';
 import React from 'react';
 
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
@@ -8,11 +8,13 @@ import * as mixpanel from 'lib/mixpanel/index';
 import UserAvatar from 'ui/shared/UserAvatar';
 import ProfileMenuContent from 'ui/snippets/profileMenu/ProfileMenuContent';
 
+import useMenuButtonColors from '../useMenuButtonColors';
+
 const ProfileMenuMobile = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
   const { data, error, isPending } = useFetchProfileInfo();
   const loginUrl = useLoginUrl();
+  const { themedBackground, themedBorderColor, themedColor } = useMenuButtonColors();
   const [ hasMenu, setHasMenu ] = React.useState(false);
 
   const handleSignInClick = React.useCallback(() => {
@@ -29,7 +31,7 @@ const ProfileMenuMobile = () => {
     }
   }, [ data, error?.status, isPending ]);
 
-  const buttonProps: Partial<ButtonProps> = (() => {
+  const iconButtonProps: Partial<IconButtonProps> = (() => {
     if (hasMenu || !loginUrl) {
       return {};
     }
@@ -43,17 +45,19 @@ const ProfileMenuMobile = () => {
 
   return (
     <>
-      <Box padding={ 2 } onClick={ hasMenu ? onOpen : undefined }>
-        <Button
-          variant="unstyled"
-          display="block"
-          boxSize="24px"
-          flexShrink={ 0 }
-          { ...buttonProps }
-        >
-          <UserAvatar size={ 24 }/>
-        </Button>
-      </Box>
+      <IconButton
+        aria-label="profile menu"
+        icon={ <UserAvatar size={ 20 }/> }
+        variant={ data?.avatar ? 'subtle' : 'outline' }
+        colorScheme="gray"
+        boxSize="40px"
+        flexShrink={ 0 }
+        bg={ data?.avatar ? themedBackground : undefined }
+        color={ themedColor }
+        borderColor={ !data?.avatar ? themedBorderColor : undefined }
+        onClick={ hasMenu ? onOpen : undefined }
+        { ...iconButtonProps }
+      />
       { hasMenu && (
         <Drawer
           isOpen={ isOpen }
