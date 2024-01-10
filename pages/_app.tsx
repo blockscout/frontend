@@ -2,6 +2,8 @@ import { useColorMode, type ChakraProps } from '@chakra-ui/react';
 import * as Sentry from '@sentry/react';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import React from 'react';
@@ -51,6 +53,8 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       </Head>
 
       { getLayout(<Component { ...pageProps }/>) }
+      <Analytics debug={ false }/>
+      <SpeedInsights debug={ false }/>
     </>
 
   );
