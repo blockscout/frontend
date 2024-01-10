@@ -38,6 +38,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
   - [Export data to CSV file](ENVS.md#export-data-to-csv-file)
   - [Google analytics](ENVS.md#google-analytics)
   - [Mixpanel analytics](ENVS.md#mixpanel-analytics)
+  - [GrowthBook feature flagging and A/B testing](ENVS.md#growthbook-feature-flagging-and-ab-testing)
   - [GraphQL API documentation](ENVS.md#graphql-api-documentation)
   - [REST API documentation](ENVS.md#rest-api-documentation)
   - [Marketplace](ENVS.md#marketplace)
@@ -383,6 +384,14 @@ This feature is **enabled by default** with the `coinzilla` ads provider. To swi
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN | `string` | Project token for [Mixpanel](https://mixpanel.com/) analytics service | true | - | `<your-secret>` |
+
+&nbsp;
+
+### GrowthBook feature flagging and A/B testing
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_GROWTH_BOOK_CLIENT_KEY | `string` | Client SDK key for [GrowthBook](https://www.growthbook.io/) service | true | - | `<your-secret>` |
 
 &nbsp;
 

@@ -1,4 +1,5 @@
 import { VStack, Textarea, Button, Alert, AlertTitle, AlertDescription, Code, Flex, Box } from '@chakra-ui/react';
+import { useFeatureValue } from '@growthbook/growthbook-react';
 import * as Sentry from '@sentry/react';
 import mixpanel from 'mixpanel-browser';
 import type { ChangeEvent } from 'react';
@@ -14,6 +15,8 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 const Login = () => {
   const toast = useToast();
   const [ num, setNum ] = useGradualIncrement(0);
+
+  const testFeatureValue = useFeatureValue('test_value', 'fallback');
 
   const [ isFormVisible, setFormVisibility ] = React.useState(false);
   const [ token, setToken ] = React.useState('');
@@ -77,12 +80,15 @@ const Login = () => {
           <Button onClick={ handleSetTokenClick }>Set cookie</Button>
         </>
       ) }
-      <Button colorScheme="red" onClick={ checkSentry }>Check Sentry</Button>
-      <Button colorScheme="teal" onClick={ checkMixpanel }>Check Mixpanel</Button>
+      <Flex columnGap={ 2 }>
+        <Button colorScheme="red" onClick={ checkSentry }>Check Sentry</Button>
+        <Button colorScheme="teal" onClick={ checkMixpanel }>Check Mixpanel</Button>
+      </Flex>
       <Flex columnGap={ 2 } alignItems="center">
         <Box w="50px" textAlign="center">{ num }</Box>
         <Button onClick={ handleNumIncrement } size="sm">add</Button>
       </Flex>
+      <Box>Test feature value: <b>{ testFeatureValue }</b></Box>
     </VStack>
   );
 
