@@ -13,7 +13,7 @@ import useQueryClientConfig from 'lib/api/useQueryClientConfig';
 import { AppContextProvider } from 'lib/contexts/app';
 import { ChakraProvider } from 'lib/contexts/chakra';
 import { ScrollDirectionProvider } from 'lib/contexts/scrollDirection';
-import { growthBook } from 'lib/growthbook/index';
+import { growthBook } from 'lib/growthbook/init';
 import { SocketProvider } from 'lib/socket/context';
 import theme from 'theme';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';

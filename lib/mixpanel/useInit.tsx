@@ -7,7 +7,7 @@ import { deviceType } from 'react-device-detect';
 
 import config from 'configs/app';
 import * as cookies from 'lib/cookies';
-import { growthBook } from 'lib/growthbook/index';
+import { growthBook } from 'lib/growthbook/init';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
 export default function useMixpanelInit() {
@@ -29,6 +29,9 @@ export default function useMixpanelInit() {
         growthBook?.setAttributes({
           ...growthBook.getAttributes(),
           id: mixpanel.get_distinct_id(),
+          time_zone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          language: mixpanel.get_property('Language'),
+          chain_id: mixpanel.get_property('Chain id'),
         });
       },
     };
