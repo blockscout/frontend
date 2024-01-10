@@ -1,5 +1,4 @@
 import { VStack, Textarea, Button, Alert, AlertTitle, AlertDescription, Code, Flex, Box } from '@chakra-ui/react';
-import { useFeatureValue } from '@growthbook/growthbook-react';
 import * as Sentry from '@sentry/react';
 import mixpanel from 'mixpanel-browser';
 import type { ChangeEvent } from 'react';
@@ -7,6 +6,7 @@ import React from 'react';
 
 import config from 'configs/app';
 import * as cookies from 'lib/cookies';
+import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import useGradualIncrement from 'lib/hooks/useGradualIncrement';
 import useToast from 'lib/hooks/useToast';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -16,7 +16,7 @@ const Login = () => {
   const toast = useToast();
   const [ num, setNum ] = useGradualIncrement(0);
 
-  const testFeatureValue = useFeatureValue('test_value', 'fallback');
+  const testFeature = useFeatureValue('test_value', 'fallback');
 
   const [ isFormVisible, setFormVisibility ] = React.useState(false);
   const [ token, setToken ] = React.useState('');
@@ -88,7 +88,7 @@ const Login = () => {
         <Box w="50px" textAlign="center">{ num }</Box>
         <Button onClick={ handleNumIncrement } size="sm">add</Button>
       </Flex>
-      <Box>Test feature value: <b>{ testFeatureValue }</b></Box>
+      <Box>Test feature value: <b>{ testFeature.isLoading ? 'loading...' : JSON.stringify(testFeature.value) }</b></Box>
     </VStack>
   );
 

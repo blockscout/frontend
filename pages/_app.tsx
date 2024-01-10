@@ -10,6 +10,7 @@ import type { NextPageWithLayout } from 'nextjs/types';
 
 import config from 'configs/app';
 import useQueryClientConfig from 'lib/api/useQueryClientConfig';
+import { SECOND } from 'lib/consts';
 import { AppContextProvider } from 'lib/contexts/app';
 import { ChakraProvider } from 'lib/contexts/chakra';
 import { ScrollDirectionProvider } from 'lib/contexts/scrollDirection';
@@ -42,7 +43,7 @@ const ERROR_SCREEN_STYLES: ChakraProps = {
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   React.useEffect(() => {
-    growthBook?.loadFeatures();
+    growthBook?.loadFeatures({ timeout: SECOND });
   }, []);
 
   const queryClient = useQueryClientConfig();
