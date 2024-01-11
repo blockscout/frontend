@@ -30,7 +30,7 @@ export default function useMixpanelInit() {
       loaded: function() {
         growthBook?.setAttributes({
           ...growthBook.getAttributes(),
-          time_zone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
           language: window.navigator.language,
         });
       },

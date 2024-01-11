@@ -3,6 +3,10 @@ import { GrowthBook } from '@growthbook/growthbook-react';
 import config from 'configs/app';
 import * as mixpanel from 'lib/mixpanel';
 
+export interface GrowthBookFeatures {
+  test_value: string;
+}
+
 export const growthBook = (() => {
   const feature = config.features.growthBook;
 
@@ -10,7 +14,7 @@ export const growthBook = (() => {
     return;
   }
 
-  return new GrowthBook({
+  return new GrowthBook<GrowthBookFeatures>({
     apiHost: 'https://cdn.growthbook.io',
     clientKey: feature.clientKey,
     enableDevMode: config.app.isDev,

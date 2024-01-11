@@ -1,9 +1,12 @@
+import type { WidenPrimitives } from '@growthbook/growthbook';
 import { useFeatureValue, useGrowthBook } from '@growthbook/growthbook-react';
 
-export default function useGbFeatureValue<T extends Parameters<typeof useFeatureValue>[1]>(
-  name: Parameters<typeof useFeatureValue>[0],
-  fallback: T,
-): { value: ReturnType<typeof useFeatureValue<T>>; isLoading: boolean } {
+import type { GrowthBookFeatures } from './init';
+
+export default function useGbFeatureValue<Name extends keyof GrowthBookFeatures>(
+  name: Name,
+  fallback: GrowthBookFeatures[Name],
+): { value: WidenPrimitives<GrowthBookFeatures[Name]>; isLoading: boolean } {
   const value = useFeatureValue(name, fallback);
   const growthBook = useGrowthBook();
 
