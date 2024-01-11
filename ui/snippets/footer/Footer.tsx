@@ -1,3 +1,4 @@
+import type { GridProps } from '@chakra-ui/react';
 import { Box, Grid, Flex, Text, Link, VStack, Skeleton } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
@@ -5,20 +6,12 @@ import React from 'react';
 import type { CustomLinksGroup } from 'types/footerLinks';
 
 import config from 'configs/app';
-import discussionsIcon from 'icons/discussions.svg';
-import donateIcon from 'icons/donate.svg';
-import editIcon from 'icons/edit.svg';
-import cannyIcon from 'icons/social/canny.svg';
-import discordIcon from 'icons/social/discord.svg';
-import gitIcon from 'icons/social/git.svg';
-import twitterIcon from 'icons/social/tweet.svg';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import useFetch from 'lib/hooks/useFetch';
 import useIssueUrl from 'lib/hooks/useIssueUrl';
 import NetworkAddToWallet from 'ui/shared/NetworkAddToWallet';
 
-import ColorModeToggler from '../header/ColorModeToggler';
 import FooterLinkItem from './FooterLinkItem';
 import IntTxsIndexingStatus from './IntTxsIndexingStatus';
 import getApiVersionUrl from './utils/getApiVersionUrl';
@@ -39,43 +32,43 @@ const Footer = () => {
   const issueUrl = useIssueUrl(backendVersionData?.backend_version);
   const BLOCKSCOUT_LINKS = [
     {
-      icon: editIcon,
+      icon: 'edit' as const,
       iconSize: '16px',
       text: 'Submit an issue',
       url: issueUrl,
     },
     {
-      icon: cannyIcon,
+      icon: 'social/canny' as const,
       iconSize: '20px',
       text: 'Feature request',
       url: 'https://blockscout.canny.io/feature-requests',
     },
     {
-      icon: gitIcon,
+      icon: 'social/git' as const,
       iconSize: '18px',
       text: 'Contribute',
       url: 'https://github.com/blockscout/blockscout',
     },
     {
-      icon: twitterIcon,
+      icon: 'social/tweet' as const,
       iconSize: '18px',
       text: 'Twitter',
       url: 'https://www.twitter.com/blockscoutcom',
     },
     {
-      icon: discordIcon,
+      icon: 'social/discord' as const,
       iconSize: '24px',
       text: 'Discord',
       url: 'https://discord.gg/blockscout',
     },
     {
-      icon: discussionsIcon,
+      icon: 'discussions' as const,
       iconSize: '20px',
       text: 'Discussions',
       url: 'https://github.com/orgs/blockscout/discussions',
     },
     {
-      icon: donateIcon,
+      icon: 'donate' as const,
       iconSize: '20px',
       text: 'Donate',
       url: 'https://github.com/sponsors/blockscout',
@@ -96,41 +89,43 @@ const Footer = () => {
 
   const fetch = useFetch();
 
-  const { isPending, data: linksData } = useQuery<unknown, ResourceError<unknown>, Array<CustomLinksGroup>>({
+  const { isPlaceholderData, data: linksData } = useQuery<unknown, ResourceError<unknown>, Array<CustomLinksGroup>>({
     queryKey: [ 'footer-links' ],
     queryFn: async() => fetch(config.UI.footer.links || '', undefined, { resource: 'footer-links' }),
     enabled: Boolean(config.UI.footer.links),
     staleTime: Infinity,
+    placeholderData: [],
   });
 
-  const colNum = Math.min(linksData?.length || Infinity, MAX_LINKS_COLUMNS) + 1;
+  const colNum = isPlaceholderData ? 1 : Math.min(linksData?.length || Infinity, MAX_LINKS_COLUMNS) + 1;
 
-  return (
-    <Flex
-      direction={{ base: 'column', lg: 'row' }}
-      px={{ base: 4, lg: 12 }}
-      py={{ base: 4, lg: 9 }}
-      borderTop="1px solid"
-      borderColor="divider"
-      as="footer"
-      columnGap={{ lg: '32px', xl: '100px' }}
-    >
-      <Box flexGrow="1" mb={{ base: 8, lg: 0 }} minW="195px">
-        <Flex flexWrap="wrap" columnGap={ 8 } rowGap={ 6 }>
-          <ColorModeToggler/>
-          { !config.UI.indexingAlert.intTxs.isHidden && <IntTxsIndexingStatus/> }
-          <NetworkAddToWallet/>
-        </Flex>
-        <Box mt={{ base: 5, lg: '44px' }}>
-          <Link fontSize="xs" href="https://www.blockscout.com">blockscout.com</Link>
-        </Box>
-        <Text mt={ 3 } maxW={{ base: 'unset', lg: '470px' }} fontSize="xs">
-            Blockscout is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for Ethereum Networks.
+  const renderNetworkInfo = React.useCallback((gridArea?: GridProps['gridArea']) => {
+    return (
+      <Flex
+        gridArea={ gridArea }
+        flexWrap="wrap"
+        columnGap={ 8 }
+        rowGap={ 6 }
+        mb={{ base: 5, lg: 10 }}
+        _empty={{ display: 'none' }}
+      >
+        { !config.UI.indexingAlert.intTxs.isHidden && <IntTxsIndexingStatus/> }
+        <NetworkAddToWallet/>
+      </Flex>
+    );
+  }, []);
+
+  const renderProjectInfo = React.useCallback((gridArea?: GridProps['gridArea']) => {
+    return (
+      <Box gridArea={ gridArea }>
+        <Link fontSize="xs" href="https://www.blockscout.com">blockscout.com</Link>
+        <Text mt={ 3 } fontSize="xs">
+          Blockscout is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for Ethereum Networks.
         </Text>
         <VStack spacing={ 1 } mt={ 6 } alignItems="start">
           { apiVersionUrl && (
             <Text fontSize="xs">
-                Backend: <Link href={ apiVersionUrl } target="_blank">{ backendVersionData?.backend_version }</Link>
+              Backend: <Link href={ apiVersionUrl } target="_blank">{ backendVersionData?.backend_version }</Link>
             </Text>
           ) }
           { frontendLink && (
@@ -140,64 +135,93 @@ const Footer = () => {
           ) }
         </VStack>
       </Box>
-      <Grid
-        gap={{ base: 6, lg: config.UI.footer.links && colNum === MAX_LINKS_COLUMNS + 1 ? 2 : 8, xl: 12 }}
-        gridTemplateColumns={ config.UI.footer.links ?
-          {
+    );
+  }, [ apiVersionUrl, backendVersionData?.backend_version, frontendLink ]);
+
+  const containerProps: GridProps = {
+    as: 'footer',
+    px: { base: 4, lg: 12 },
+    py: { base: 4, lg: 9 },
+    borderTop: '1px solid',
+    borderColor: 'divider',
+    gridTemplateColumns: { base: '1fr', lg: 'minmax(auto, 470px) 1fr' },
+    columnGap: { lg: '32px', xl: '100px' },
+  };
+
+  if (config.UI.footer.links) {
+    return (
+      <Grid { ...containerProps }>
+        <div>
+          { renderNetworkInfo() }
+          { renderProjectInfo() }
+        </div>
+
+        <Grid
+          gap={{ base: 6, lg: colNum === MAX_LINKS_COLUMNS + 1 ? 2 : 8, xl: 12 }}
+          gridTemplateColumns={{
             base: 'repeat(auto-fill, 160px)',
             lg: `repeat(${ colNum }, 135px)`,
             xl: `repeat(${ colNum }, 160px)`,
-          } :
-          'auto'
-        }
-      >
-        <Box>
-          { config.UI.footer.links && <Text fontWeight={ 500 } mb={ 3 }>Blockscout</Text> }
-          <Grid
-            gap={ 1 }
-            gridTemplateColumns={
-              config.UI.footer.links ?
-                '1fr' :
-                {
-                  base: 'repeat(auto-fill, 160px)',
-                  lg: 'repeat(3, 160px)',
-                  xl: 'repeat(4, 160px)',
-                }
-            }
-            gridTemplateRows={{
-              base: 'auto',
-              lg: config.UI.footer.links ? 'auto' : 'repeat(3, auto)',
-              xl: config.UI.footer.links ? 'auto' : 'repeat(2, auto)',
-            }}
-            gridAutoFlow={{ base: 'row', lg: config.UI.footer.links ? 'row' : 'column' }}
-            mt={{ base: 0, lg: config.UI.footer.links ? 0 : '100px' }}
-          >
-            { BLOCKSCOUT_LINKS.map(link => <FooterLinkItem { ...link } key={ link.text }/>) }
-          </Grid>
-        </Box>
-        { config.UI.footer.links && isPending && (
-          Array.from(Array(3)).map((i, index) => (
-            <Box key={ index }>
-              <Skeleton w="100%" h="20px" mb={ 6 }/>
-              <VStack spacing={ 5 } alignItems="start" mb={ 2 }>
-                { Array.from(Array(5)).map((i, index) => <Skeleton w="100%" h="14px" key={ index }/>) }
-              </VStack>
-            </Box>
-          ))
-        ) }
-        { config.UI.footer.links && linksData && (
-          linksData.slice(0, MAX_LINKS_COLUMNS).map(linkGroup => (
-            <Box key={ linkGroup.title }>
-              <Text fontWeight={ 500 } mb={ 3 }>{ linkGroup.title }</Text>
-              <VStack spacing={ 1 } alignItems="start">
-                { linkGroup.links.map(link => <FooterLinkItem { ...link } key={ link.text }/>) }
-              </VStack>
-            </Box>
-          ))
-        ) }
+          }}
+          justifyContent={{ lg: 'flex-end' }}
+          mt={{ base: 8, lg: 0 }}
+        >
+          {
+            ([
+              { title: 'Blockscout', links: BLOCKSCOUT_LINKS },
+              ...(linksData || []),
+            ])
+              .slice(0, colNum)
+              .map(linkGroup => (
+                <Box key={ linkGroup.title }>
+                  <Skeleton fontWeight={ 500 } mb={ 3 } display="inline-block" isLoaded={ !isPlaceholderData }>{ linkGroup.title }</Skeleton>
+                  <VStack spacing={ 1 } alignItems="start">
+                    { linkGroup.links.map(link => <FooterLinkItem { ...link } key={ link.text } isLoading={ isPlaceholderData }/>) }
+                  </VStack>
+                </Box>
+              ))
+          }
+        </Grid>
       </Grid>
-    </Flex>
+    );
+  }
+
+  return (
+    <Grid
+      { ...containerProps }
+      gridTemplateAreas={{
+        lg: `
+          "network links-top"
+          "info links-bottom"
+        `,
+      }}
+    >
+
+      { renderNetworkInfo({ lg: 'network' }) }
+      { renderProjectInfo({ lg: 'info' }) }
+
+      <Grid
+        gridArea={{ lg: 'links-bottom' }}
+        gap={ 1 }
+        gridTemplateColumns={{
+          base: 'repeat(auto-fill, 160px)',
+          lg: 'repeat(3, 160px)',
+          xl: 'repeat(4, 160px)',
+        }}
+        gridTemplateRows={{
+          base: 'auto',
+          lg: 'repeat(3, auto)',
+          xl: 'repeat(2, auto)',
+        }}
+        gridAutoFlow={{ base: 'row', lg: 'column' }}
+        alignContent="start"
+        justifyContent={{ lg: 'flex-end' }}
+        mt={{ base: 8, lg: 0 }}
+      >
+        { BLOCKSCOUT_LINKS.map(link => <FooterLinkItem { ...link } key={ link.text }/>) }
+      </Grid>
+    </Grid>
   );
 };
 
-export default Footer;
+export default React.memo(Footer);

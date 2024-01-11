@@ -3,7 +3,7 @@ export type HomeStats = {
   total_addresses: string;
   total_transactions: string;
   average_block_time: number;
-  coin_price: string;
+  coin_price: string | null;
   total_gas_used: string;
   transactions_today: string;
   gas_used_today: string;
@@ -16,9 +16,9 @@ export type HomeStats = {
 }
 
 export type GasPrices = {
-  average: number;
-  fast: number;
-  slow: number;
+  average: number | null;
+  fast: number | null;
+  slow: number | null;
 }
 
 export type Counters = {

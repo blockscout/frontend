@@ -44,6 +44,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
   - [Solidity to UML diagrams](ENVS.md#solidity-to-uml-diagrams)
   - [Blockchain statistics](ENVS.md#blockchain-statistics)
   - [Web3 wallet integration](ENVS.md#web3-wallet-integration-add-token-or-network-to-the-wallet) (add token or network to the wallet)
+  - [Transaction interpretation](ENVS.md#transaction-interpretation)
   - [Verified tokens info](ENVS.md#verified-tokens-info)
   - [Bridged tokens](ENVS.md#bridged-tokens)
   - [Safe{Core} address tags](ENVS.md#safecore-address-tags)
@@ -128,7 +129,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
 | url | `string` | Network explorer main page url | Required | - | `https://blockscout.com/xdai/mainnet` |
 | group | `Mainnets \| Testnets \| Other` | Indicates in which tab network appears in the menu | Required | - | `Mainnets` |
 | icon | `string` | Network icon; if not provided, the common placeholder will be shown; *Note* that icon size should be at least 60px by 60px | - | - | `https://placekitten.com/60/60` |
-| isActive | `boolean` | Pass `true` if item should be shonw as active in the menu | - | - | `true` |
+| isActive | `boolean` | Pass `true` if item should be shown as active in the menu | - | - | `true` |
 | invertIconInDarkMode | `boolean` | Pass `true` if icon colors should be inverted in dark mode | - | - | `true` |
 
 &nbsp;
@@ -188,6 +189,7 @@ Settings for meta tags and OG tags
 | `burnt_fees` | Burnt fees |
 | `total_reward` | Total block reward |
 | `nonce` | Block nonce |
+| `miner` | Address of block's miner or validator |
 
 &nbsp;
 
@@ -197,6 +199,7 @@ Settings for meta tags and OG tags
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE | `"github" \| "jazzicon" \| "gradient_avatar" \| "blockie"` | Style of address identicon appearance. Choose between [GitHub](https://github.blog/2013-08-14-identicons/), [Metamask Jazzicon](https://metamask.github.io/jazzicon/), [Gradient Avatar](https://github.com/varld/gradient-avatar) and [Ethereum Blocky](https://mycryptohq.github.io/ethereum-blockies-base64/) | - | `jazzicon` | `gradient_avatar` |
 | NEXT_PUBLIC_VIEWS_ADDRESS_HIDDEN_VIEWS | `Array<AddressViewId>` | Address views that should not be displayed. See below the list of the possible id values.  | - | - | `'["top_accounts"]'` |
+| NEXT_PUBLIC_VIEWS_CONTRACT_SOLIDITYSCAN_ENABLED | `boolean` | Set to `true` if SolidityScan reports are supported | - | - | `true` |
 
 ##### Address views list
 | Id | Description |
@@ -271,7 +274,7 @@ Settings for meta tags and OG tags
 
 ## App features
 
-*Note* The variables which are marked as required should be passed as described in order to enable the particular feature, but there are not required in the whole app context.
+*Note* The variables which are marked as required should be passed as described in order to enable the particular feature, but they are not required in the whole app context.
 
 ### My account
 
@@ -286,7 +289,7 @@ Settings for meta tags and OG tags
 
 ### Address verification in "My account"
 
-*Note* all ENV variables required for [My account](ENVS.md#my-account) feature should be passed along side with the following ones:
+*Note* all ENV variables required for [My account](ENVS.md#my-account) feature should be passed alongside the following ones:
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
@@ -418,7 +421,7 @@ This feature is **always enabled**, but you can configure its behavior by passin
 | title | `string` | Displayed title of the app. | Required | `'The App'` |
 | logo | `string` | URL to logo file. Should be at least 288x288. | Required | `'https://foo.app/icon.png'` |
 | shortDescription | `string` | Displayed only in the app list. | Required | `'Awesome app'` |
-| categories | `Array<MarketplaceCategoryId>` | Displayed category. Select one of the following bellow. | Required | `['security', 'tools']` |
+| categories | `Array<MarketplaceCategoryId>` | Displayed category. Select one of the following below. | Required | `['security', 'tools']` |
 | author | `string` | Displayed author of the app | Required | `'Bob'` |
 | url | `string` | URL of the app which will be launched in the iframe. | Required | `'https://foo.app/launch'` |
 | description | `string` | Displayed only in the modal dialog with additional info about the app. | Required | `'The best app'` |
@@ -471,6 +474,14 @@ This feature is **enabled by default** with the `['metamask']` value. To switch 
 
 &nbsp;
 
+### Transaction interpretation
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_TRANSACTION_INTERPRETATION_PROVIDER | `blockscout` \| `none` | Transaction interpretation provider that displays human readable transaction description | - | `none` | `blockscout` |
+
+&nbsp;
+
 ### Verified tokens info
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
@@ -511,13 +522,13 @@ This feature allows users to view tokens that have been bridged from other EVM c
 
 ### Safe{Core} address tags
 
-For the smart contract addresses which are [Safe{Core} accounts](https://safe.global/) public tag "Multisig: Safe" will be displayed in the address page header along side to Safe logo. The Safe service is available only for certain networks, see full list [here](https://docs.safe.global/safe-core-api/available-services). Based on provided value of `NEXT_PUBLIC_NETWORK_ID`, the feature will be enabled or disabled. 
+For the smart contract addresses which are [Safe{Core} accounts](https://safe.global/) public tag "Multisig: Safe" will be displayed in the address page header alongside to Safe logo. The Safe service is available only for certain networks, see full list [here](https://docs.safe.global/safe-core-api/available-services). Based on provided value of `NEXT_PUBLIC_NETWORK_ID`, the feature will be enabled or disabled. 
 
 &nbsp;
 
 ### SUAVE chain
 
-For blockchains that implementing SUAVE architecture additional fields will be shown on the transaction page ("Allowed peekers", "Kettle"). Users also will be able to see the list of all transaction for a particular Kettle in the separate view.
+For blockchains that implement SUAVE architecture additional fields will be shown on the transaction page ("Allowed peekers", "Kettle"). Users also will be able to see the list of all transactions for a particular Kettle in the separate view.
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |

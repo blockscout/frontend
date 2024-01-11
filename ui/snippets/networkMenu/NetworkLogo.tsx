@@ -1,11 +1,10 @@
-import { Icon, Box, Image, useColorModeValue, Skeleton } from '@chakra-ui/react';
+import { Box, Image, useColorModeValue, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import iconPlaceholder from 'icons/networks/icon-placeholder.svg';
-import logoPlaceholder from 'icons/networks/logo-placeholder.svg';
+import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   isCollapsed?: boolean;
@@ -31,8 +30,8 @@ const LogoFallback = ({ isCollapsed, isSmall }: { isCollapsed?: boolean; isSmall
   }
 
   return (
-    <Icon
-      as={ isSmall ? iconPlaceholder : logoPlaceholder }
+    <IconSvg
+      name={ isSmall ? 'networks/icon-placeholder' : 'networks/logo-placeholder' }
       width="auto"
       height="100%"
       color={ logoColor }
@@ -50,11 +49,10 @@ const NetworkLogo = ({ isCollapsed, onClick }: Props) => {
   const iconStyle = useColorModeValue({}, !config.UI.sidebar.icon.dark ? darkModeFilter : {});
 
   return (
-    // TODO switch to <NextLink href={ href } passHref> when main page for network will be ready
     <Box
       as="a"
       href={ route({ pathname: '/' }) }
-      width={{ base: 'auto', lg: isCollapsed === false ? '120px' : '30px', xl: isCollapsed ? '30px' : '120px' }}
+      width={{ base: '120px', lg: isCollapsed === false ? '120px' : '30px', xl: isCollapsed ? '30px' : '120px' }}
       height={{ base: '24px', lg: isCollapsed === false ? '24px' : '30px', xl: isCollapsed ? '30px' : '24px' }}
       display="inline-flex"
       overflow="hidden"

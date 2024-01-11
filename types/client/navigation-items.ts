@@ -2,8 +2,10 @@ import type React from 'react';
 
 import type { Route } from 'nextjs-routes';
 
+import type { IconName } from 'ui/shared/IconSvg';
+
 type NavIconOrComponent = {
-  icon?: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
+  icon?: IconName;
 } | {
   iconComponent?: React.FC<{size?: number}>;
 };

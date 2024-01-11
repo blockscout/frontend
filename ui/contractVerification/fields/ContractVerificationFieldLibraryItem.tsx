@@ -1,13 +1,12 @@
-import { Flex, FormControl, Icon, IconButton, Input, Text } from '@chakra-ui/react';
+import { Flex, FormControl, IconButton, Input, Text } from '@chakra-ui/react';
 import React from 'react';
 import type { Control, ControllerRenderProps, FieldError } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 
-import minusIcon from 'icons/minus.svg';
-import plusIcon from 'icons/plus.svg';
 import { ADDRESS_REGEXP } from 'lib/validations/address';
+import IconSvg from 'ui/shared/IconSvg';
 import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
@@ -86,7 +85,7 @@ const ContractVerificationFieldLibraryItem = ({ control, index, fieldsLength, on
                 w="30px"
                 h="30px"
                 onClick={ handleRemoveButtonClick }
-                icon={ <Icon as={ minusIcon } w="20px" h="20px"/> }
+                icon={ <IconSvg name="minus" w="20px" h="20px"/> }
                 isDisabled={ isDisabled }
               />
             ) }
@@ -97,7 +96,7 @@ const ContractVerificationFieldLibraryItem = ({ control, index, fieldsLength, on
                 w="30px"
                 h="30px"
                 onClick={ handleAddButtonClick }
-                icon={ <Icon as={ plusIcon } w="20px" h="20px"/> }
+                icon={ <IconSvg name="plus" w="20px" h="20px"/> }
                 isDisabled={ isDisabled }
               />
             ) }

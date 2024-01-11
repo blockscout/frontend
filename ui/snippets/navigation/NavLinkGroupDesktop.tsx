@@ -1,5 +1,4 @@
 import {
-  Icon,
   Text,
   HStack,
   Box,
@@ -14,7 +13,7 @@ import React from 'react';
 
 import type { NavGroupItem } from 'types/client/navigation-items';
 
-import chevronIcon from 'icons/arrows/east-mini.svg';
+import IconSvg from 'ui/shared/IconSvg';
 
 import NavLink from './NavLink';
 import NavLinkIcon from './NavLinkIcon';
@@ -53,8 +52,8 @@ const NavLinkGroupDesktop = ({ item, isCollapsed }: Props) => {
               >
                 { item.text }
               </Text>
-              <Icon
-                as={ chevronIcon }
+              <IconSvg
+                name="arrows/east-mini"
                 position="absolute"
                 right="7px"
                 transform="rotate(180deg)"

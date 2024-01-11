@@ -1,9 +1,9 @@
-import { Box, Button, Grid, Heading, Icon, Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay, Text } from '@chakra-ui/react';
+import { Box, Button, Grid, Heading, Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay, Text } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import type { TimeChartItem } from './types';
 
-import repeatArrow from 'icons/repeat_arrow.svg';
+import IconSvg from 'ui/shared/IconSvg';
 
 import ChartWidgetGraph from './ChartWidgetGraph';
 
@@ -71,7 +71,7 @@ const FullscreenChartModal = ({
 
             { !isZoomResetInitial && (
               <Button
-                leftIcon={ <Icon as={ repeatArrow } w={ 4 } h={ 4 }/> }
+                leftIcon={ <IconSvg name="repeat_arrow" w={ 4 } h={ 4 }/> }
                 colorScheme="blue"
                 gridColumn={ 2 }
                 justifySelf="end"

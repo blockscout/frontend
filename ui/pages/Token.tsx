@@ -1,4 +1,4 @@
-import { Box, Flex, Icon, Tooltip } from '@chakra-ui/react';
+import { Box, Flex, Tooltip } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
@@ -9,8 +9,6 @@ import type { PaginationParams } from 'ui/shared/pagination/types';
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
-import iconSuccess from 'icons/status/success.svg';
-import iconVerifiedToken from 'icons/verified_token.svg';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import useContractTabs from 'lib/hooks/useContractTabs';
@@ -30,6 +28,7 @@ import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EntityTags from 'ui/shared/EntityTags';
+import IconSvg from 'ui/shared/IconSvg';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -56,6 +55,7 @@ const TokenPageContent = () => {
 
   const hashString = getQueryParamString(router.query.hash);
   const tab = getQueryParamString(router.query.tab);
+  const ownerFilter = getQueryParamString(router.query.holder_address_hash) || undefined;
 
   const queryClient = useQueryClient();
 
@@ -140,6 +140,7 @@ const TokenPageContent = () => {
   const inventoryQuery = useQueryWithPages({
     resourceName: 'token_inventory',
     pathParams: { hash: hashString },
+    filters: ownerFilter ? { holder_address_hash: ownerFilter } : {},
     scrollRef,
     options: {
       enabled: Boolean(
@@ -150,7 +151,7 @@ const TokenPageContent = () => {
           tab === 'inventory'
         ),
       ),
-      placeholderData: generateListStub<'token_inventory'>(tokenStubs.TOKEN_INSTANCE, 50, { next_page_params: null }),
+      placeholderData: generateListStub<'token_inventory'>(tokenStubs.TOKEN_INSTANCE, 50, { next_page_params: { unique_token: 1 } }),
     },
   });
 
@@ -173,9 +174,11 @@ const TokenPageContent = () => {
   const contractTabs = useContractTabs(contractQuery.data);
 
   const tabs: Array<RoutedTab> = [
-    (tokenQuery.data?.type === 'ERC-1155' || tokenQuery.data?.type === 'ERC-721') ?
-      { id: 'inventory', title: 'Inventory', component: <TokenInventory inventoryQuery={ inventoryQuery }/> } :
-      undefined,
+    (tokenQuery.data?.type === 'ERC-1155' || tokenQuery.data?.type === 'ERC-721') ? {
+      id: 'inventory',
+      title: 'Inventory',
+      component: <TokenInventory inventoryQuery={ inventoryQuery } tokenQuery={ tokenQuery } ownerFilter={ ownerFilter }/>,
+    } : undefined,
     { id: 'token_transfers', title: 'Token transfers', component: <TokenTransfer transfersQuery={ transfersQuery } token={ tokenQuery.data }/> },
     { id: 'holders', title: 'Holders', component: <TokenHolders token={ tokenQuery.data } holdersQuery={ holdersQuery }/> },
     contractQuery.data?.is_contract ? {
@@ -185,7 +188,7 @@ const TokenPageContent = () => {
           return (
             <>
               <span>Contract</span>
-              <Icon as={ iconSuccess } boxSize="14px" color="green.500" ml={ 1 }/>
+              <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 }/>
             </>
           );
         }
@@ -246,7 +249,7 @@ const TokenPageContent = () => {
       { verifiedInfoQuery.data?.tokenAddress && (
         <Tooltip label={ `Information on this token has been verified by ${ config.chain.name }` }>
           <Box boxSize={ 6 }>
-            <Icon as={ iconVerifiedToken } color="green.500" boxSize={ 6 } cursor="pointer"/>
+            <IconSvg name="verified_token" color="green.500" boxSize={ 6 } cursor="pointer"/>
           </Box>
         </Tooltip>
       ) }

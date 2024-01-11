@@ -1,9 +1,9 @@
-import { Box, Button, Icon, Menu, MenuButton, MenuList, Skeleton } from '@chakra-ui/react';
+import { Box, Button, Menu, MenuButton, MenuList, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import { MarketplaceCategory } from 'types/client/marketplace';
 
-import eastMiniArrowIcon from 'icons/arrows/east-mini.svg';
+import IconSvg from 'ui/shared/IconSvg';
 
 import MarketplaceCategoriesMenuItem from './MarketplaceCategoriesMenuItem';
 
@@ -50,7 +50,7 @@ const MarketplaceCategoriesMenu = ({ selectedCategoryId, onSelect, categories, i
           alignItems="center"
         >
           { selectedCategoryId }
-          <Icon transform="rotate(-90deg)" ml={{ base: 'auto', sm: 1 }} as={ eastMiniArrowIcon } w={ 5 } h={ 5 }/>
+          <IconSvg transform="rotate(-90deg)" ml={{ base: 'auto', sm: 1 }} name="arrows/east-mini" w={ 5 } h={ 5 }/>
         </Box>
       </MenuButton>
 

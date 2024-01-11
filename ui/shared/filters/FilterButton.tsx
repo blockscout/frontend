@@ -1,10 +1,10 @@
 import type { As } from '@chakra-ui/react';
-import { Skeleton, Box, Button, Circle, Icon, useColorModeValue } from '@chakra-ui/react';
+import { Skeleton, Box, Button, Circle, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
-import filterIcon from 'icons/filter.svg';
+import IconSvg from 'ui/shared/IconSvg';
 
-const FilterIcon = <Icon as={ filterIcon } boxSize={ 5 } mr={{ base: 0, lg: 2 }}/>;
+const FilterIcon = <IconSvg name="filter" boxSize={ 5 } mr={{ base: 0, lg: 2 }}/>;
 
 interface Props {
   isActive?: boolean;

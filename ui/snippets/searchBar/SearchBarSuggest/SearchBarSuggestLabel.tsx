@@ -1,12 +1,11 @@
-import { Grid, Text, Flex, Icon } from '@chakra-ui/react';
+import { Grid, Text, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SearchResultLabel } from 'types/api/search';
 
-import labelIcon from 'icons/publictags_slim.svg';
-import iconSuccess from 'icons/status/success.svg';
 import highlightText from 'lib/highlightText';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   data: SearchResultLabel;
@@ -15,7 +14,7 @@ interface Props {
 }
 
 const SearchBarSuggestLabel = ({ data, isMobile, searchTerm }: Props) => {
-  const icon = <Icon as={ labelIcon } boxSize={ 5 } color="gray.500"/>;
+  const icon = <IconSvg name="publictags_slim" boxSize={ 5 } color="gray.500"/>;
 
   const name = (
     <Text
@@ -38,7 +37,7 @@ const SearchBarSuggestLabel = ({ data, isMobile, searchTerm }: Props) => {
     </Text>
   );
 
-  const isContractVerified = data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500"/>;
+  const isContractVerified = data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" flexShrink={ 0 }/>;
 
   if (isMobile) {
     return (

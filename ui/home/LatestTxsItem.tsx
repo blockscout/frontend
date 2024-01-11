@@ -11,12 +11,11 @@ import React from 'react';
 import type { Transaction } from 'types/api/transaction';
 
 import config from 'configs/app';
-import rightArrowIcon from 'icons/arrows/east.svg';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import Icon from 'ui/shared/chakra/Icon';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import IconSvg from 'ui/shared/IconSvg';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TxFeeStability from 'ui/shared/tx/TxFeeStability';
 import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
@@ -78,8 +77,8 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
         </Box>
       </Flex>
       <Grid alignItems="center" alignSelf="flex-start" templateColumns="24px auto">
-        <Icon
-          as={ rightArrowIcon }
+        <IconSvg
+          name="arrows/east"
           boxSize={ 6 }
           color="gray.500"
           transform="rotate(90deg)"
@@ -118,7 +117,7 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
             { tx.stability_fee ? (
               <TxFeeStability data={ tx.stability_fee } accuracy={ 5 } color="text_secondary" hideUsd/>
             ) : (
-              <Text as="span" variant="secondary">{ getValueWithUnit(tx.fee.value).dp(5).toFormat() }</Text>
+              <Text as="span" variant="secondary">{ tx.fee.value ? getValueWithUnit(tx.fee.value).dp(5).toFormat() : '-' }</Text>
             ) }
           </Skeleton>
         ) }

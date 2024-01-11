@@ -14,14 +14,13 @@ import React from 'react';
 import type { Transaction } from 'types/api/transaction';
 
 import config from 'configs/app';
-import rightArrowIcon from 'icons/arrows/east.svg';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import IconSvg from 'ui/shared/IconSvg';
 import InOutTag from 'ui/shared/InOutTag';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TxFeeStability from 'ui/shared/tx/TxFeeStability';
@@ -129,7 +128,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
           { (isIn || isOut) ?
             <InOutTag isIn={ isIn } isOut={ isOut } width="48px" mr={ 2 } isLoading={ isLoading }/> : (
               <Box mx="6px">
-                <Icon as={ rightArrowIcon } boxSize={ 6 } color="gray.500" isLoading={ isLoading }/>
+                <IconSvg name="arrows/east" boxSize={ 6 } color="gray.500" isLoading={ isLoading }/>
               </Box>
             ) }
         </Td>
@@ -142,8 +141,8 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
           <Flex alignItems="center">
             { (isIn || isOut) ?
               <InOutTag isIn={ isIn } isOut={ isOut } width="48px" isLoading={ isLoading }/> : (
-                <Icon
-                  as={ rightArrowIcon }
+                <IconSvg
+                  name="arrows/east"
                   boxSize={ 6 }
                   color="gray.500"
                   transform="rotate(90deg)"
@@ -164,10 +163,11 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
       ) }
       { !config.UI.views.tx.hiddenFields?.tx_fee && (
         <Td isNumeric>
+          { /* eslint-disable-next-line no-nested-ternary */ }
           { tx.stability_fee ? (
             <TxFeeStability data={ tx.stability_fee } isLoading={ isLoading } accuracy={ 8 } justifyContent="end" hideUsd/>
           ) : (
-            <CurrencyValue value={ tx.fee.value } accuracy={ 8 } isLoading={ isLoading }/>
+            tx.fee.value ? <CurrencyValue value={ tx.fee.value } accuracy={ 8 } isLoading={ isLoading }/> : '-'
           ) }
         </Td>
       ) }

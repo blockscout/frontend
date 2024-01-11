@@ -45,4 +45,4 @@ jobs:
               run: yarn sentry-cli sourcemaps inject ./.next
 
             - name: Upload source maps to Sentry
-              run: yarn sentry-cli sourcemaps upload --release=${{ github.ref_name }} --validate ./.next
+              run: yarn sentry-cli sourcemaps upload --release=${{ github.ref_name }} --url-prefix=~/_next/ --validate ./.next

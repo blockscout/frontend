@@ -4,7 +4,6 @@ import {
   Button,
   Flex,
   Heading,
-  Icon,
   Modal,
   ModalCloseButton,
   ModalContent,
@@ -20,11 +19,10 @@ import React from 'react';
 
 import type { SmartContractExternalLibrary } from 'types/api/contract';
 
-import arrowIcon from 'icons/arrows/east-mini.svg';
-import iconWarning from 'icons/status/warning.svg';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { apos } from 'lib/html-entities';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   className?: string;
@@ -66,8 +64,8 @@ const ContractExternalLibraries = ({ className, data }: Props) => {
       aria-label="View external libraries"
     >
       <span>{ data.length } { data.length > 1 ? 'Libraries' : 'Library' } </span>
-      <Icon as={ iconWarning } boxSize={ 5 } color="orange.400" ml="2px"/>
-      <Icon as={ arrowIcon } transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 } ml={ 2 }/>
+      <IconSvg name="status/warning" boxSize={ 5 } color="orange.400" ml="2px"/>
+      <IconSvg name="arrows/east-mini" transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 } ml={ 2 }/>
     </Button>
   );
 

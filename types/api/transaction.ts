@@ -122,3 +122,12 @@ export type TransactionType = 'rootstock_remasc' |
 'coin_transfer'
 
 export type TxsResponse = TransactionsResponseValidated | TransactionsResponsePending | BlockTransactionsResponse;
+
+export interface TransactionsSorting {
+  sort: 'value' | 'fee';
+  order: 'asc' | 'desc';
+}
+
+export type TransactionsSortingField = TransactionsSorting['sort'];
+
+export type TransactionsSortingValue = `${ TransactionsSortingField }-${ TransactionsSorting['order'] }`;
