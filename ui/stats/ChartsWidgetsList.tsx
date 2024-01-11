@@ -1,12 +1,11 @@
 import type { TooltipProps } from '@chakra-ui/react';
 import { Box, Grid, Heading, List, ListItem, Skeleton } from '@chakra-ui/react';
-import { useQueryClient } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
 
-import type { HomeStats, StatsChartsSection } from 'types/api/stats';
+import type { StatsChartsSection } from 'types/api/stats';
 import type { StatsIntervalIds } from 'types/client/stats';
 
-import { getResourceKey } from 'lib/api/useApiQuery';
+import useApiQuery from 'lib/api/useApiQuery';
 import { apos } from 'lib/html-entities';
 import EmptySearchResult from 'ui/shared/EmptySearchResult';
 import GasInfoTooltipContent from 'ui/shared/GasInfoTooltipContent/GasInfoTooltipContent';
@@ -34,8 +33,16 @@ const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, in
   const isAnyChartDisplayed = charts?.some((section) => section.charts.length > 0);
   const isEmptyChartList = Boolean(filterQuery) && !isAnyChartDisplayed;
 
-  const queryClient = useQueryClient();
-  const homeStatsData = queryClient.getQueryData<HomeStats>(getResourceKey('homepage_stats'));
+  const homeStatsQuery = useApiQuery('homepage_stats', {
+    fetchParams: {
+      headers: {
+        'updated-gas-oracle': 'true',
+      },
+    },
+    queryOptions: {
+      refetchOnMount: false,
+    },
+  });
 
   const handleChartLoadingError = useCallback(
     () => setIsSomeChartLoadingError(true),
@@ -69,8 +76,12 @@ const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, in
                 <Heading size="md" >
                   { section.title }
                 </Heading>
-                { section.id === 'gas' && homeStatsData && homeStatsData.gas_prices &&
-                  <Hint label={ <GasInfoTooltipContent data={ homeStatsData }/> } tooltipProps={ GAS_TOOLTIP_PROPS }/> }
+                { section.id === 'gas' && homeStatsQuery.data && homeStatsQuery.data.gas_prices && (
+                  <Hint
+                    label={ <GasInfoTooltipContent data={ homeStatsQuery.data } dataUpdatedAt={ homeStatsQuery.dataUpdatedAt }/> }
+                    tooltipProps={ GAS_TOOLTIP_PROPS }
+                  />
+                ) }
               </Skeleton>
 
               <Grid

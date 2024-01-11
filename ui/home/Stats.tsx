@@ -16,7 +16,7 @@ const hasGasTracker = config.UI.homepage.showGasTracker;
 const hasAvgBlockTime = config.UI.homepage.showAvgBlockTime;
 
 const Stats = () => {
-  const { data, isPlaceholderData, isError } = useApiQuery('homepage_stats', {
+  const { data, isPlaceholderData, isError, dataUpdatedAt } = useApiQuery('homepage_stats', {
     fetchParams: {
       headers: {
         'updated-gas-oracle': 'true',
@@ -51,7 +51,7 @@ const Stats = () => {
     !data.gas_prices && itemsCount--;
     data.rootstock_locked_btc && itemsCount++;
     const isOdd = Boolean(itemsCount % 2);
-    const gasLabel = hasGasTracker && data.gas_prices ? <GasInfoTooltipContent data={ data }/> : null;
+    const gasLabel = hasGasTracker && data.gas_prices ? <GasInfoTooltipContent data={ data } dataUpdatedAt={ dataUpdatedAt }/> : null;
 
     const gasPriceText = (() => {
       if (data.gas_prices?.average?.fiat_price) {

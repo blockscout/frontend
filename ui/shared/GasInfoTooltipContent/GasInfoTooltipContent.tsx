@@ -10,9 +10,10 @@ import GasInfoUpdateTimer from './GasInfoUpdateTimer';
 
 interface Props {
   data: HomeStats;
+  dataUpdatedAt: number;
 }
 
-const GasInfoTooltipContent = ({ data }: Props) => {
+const GasInfoTooltipContent = ({ data, dataUpdatedAt }: Props) => {
 
   if (!data.gas_prices) {
     return null;
@@ -26,7 +27,7 @@ const GasInfoTooltipContent = ({ data }: Props) => {
           <GridItem color="text_secondary" display="flex" justifyContent="flex-end" columnGap={ 2 }>
             { dayjs(data.gas_price_updated_at).format('MMM DD, HH:mm:ss') }
             { data.gas_prices_update_in !== 0 &&
-              <GasInfoUpdateTimer startTime={ data.gas_price_updated_at } duration={ data.gas_prices_update_in }/> }
+              <GasInfoUpdateTimer startTime={ dataUpdatedAt } duration={ data.gas_prices_update_in }/> }
           </GridItem>
         </>
       ) }

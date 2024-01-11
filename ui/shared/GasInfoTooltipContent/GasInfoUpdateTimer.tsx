@@ -5,7 +5,7 @@ import { SECOND } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
 
 interface Props {
-  startTime: string;
+  startTime: number;
   duration: number;
 }
 
@@ -14,8 +14,8 @@ const getValue = (startDate: dayjs.Dayjs, duration: number) => {
   const diff = now.diff(startDate, 'ms');
   const value = diff / duration * 100;
 
-  if (value >= 99) {
-    return 99;
+  if (value >= 95) {
+    return 95;
   }
 
   return value;
@@ -30,7 +30,7 @@ const GasInfoUpdateTimer = ({ startTime, duration }: Props) => {
     const intervalId = window.setInterval(() => {
       const nextValue = getValue(startDate, duration);
       setValue(nextValue);
-      if (nextValue === 99) {
+      if (nextValue === 95) {
         window.clearInterval(intervalId);
       }
     }, SECOND);

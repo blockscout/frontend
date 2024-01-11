@@ -3,7 +3,6 @@ import React from 'react';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
-import { SECOND } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import GasInfoTooltipContent from 'ui/shared/GasInfoTooltipContent/GasInfoTooltipContent';
@@ -18,7 +17,7 @@ const TopBarStats = () => {
     onToggle();
   }, [ onToggle ]);
 
-  const { data, isPlaceholderData, isError, refetch } = useApiQuery('homepage_stats', {
+  const { data, isPlaceholderData, isError, refetch, dataUpdatedAt } = useApiQuery('homepage_stats', {
     fetchParams: {
       headers: {
         'updated-gas-oracle': 'true',
@@ -35,7 +34,7 @@ const TopBarStats = () => {
       return;
     }
 
-    const endDate = dayjs(data.gas_price_updated_at).add(data.gas_prices_update_in, 'ms');
+    const endDate = dayjs(dataUpdatedAt).add(data.gas_prices_update_in, 'ms');
     const timeout = endDate.diff(dayjs(), 'ms');
 
     if (timeout <= 0) {
@@ -44,12 +43,12 @@ const TopBarStats = () => {
 
     const timeoutId = window.setTimeout(() => {
       refetch();
-    }, timeout + SECOND);
+    }, timeout);
 
     return () => {
       window.clearTimeout(timeoutId);
     };
-  }, [ isPlaceholderData, data?.gas_price_updated_at, data?.gas_prices_update_in, refetch ]);
+  }, [ isPlaceholderData, data?.gas_price_updated_at, dataUpdatedAt, data?.gas_prices_update_in, refetch ]);
 
   if (isError) {
     return <div/>;
@@ -82,7 +81,7 @@ const TopBarStats = () => {
           <chakra.span color="text_secondary">Gas </chakra.span>
           <LightMode>
             <Tooltip
-              label={ <GasInfoTooltipContent data={ data }/> }
+              label={ <GasInfoTooltipContent data={ data } dataUpdatedAt={ dataUpdatedAt }/> }
               hasArrow={ false }
               borderRadius="md"
               offset={ [ 0, 16 ] }
