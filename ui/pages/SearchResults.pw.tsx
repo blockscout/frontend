@@ -91,6 +91,7 @@ test('search by block number +@mobile', async({ mount, page }) => {
       items: [
         searchMock.block1,
         searchMock.block2,
+        searchMock.block3,
       ],
     }),
   }));
