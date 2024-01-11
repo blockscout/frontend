@@ -49,7 +49,7 @@ const TxDetailsWithdrawalStatus = ({ status, l1TxHash }: Props) => {
       href="https://app.optimism.io/bridge/withdraw"
       target="_blank"
     >
-            Claim funds
+      Claim funds
     </Button>
   ) : null;
 

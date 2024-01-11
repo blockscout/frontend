@@ -1,4 +1,4 @@
-import { Text, HStack } from '@chakra-ui/react';
+import { HStack, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Step } from './types';
@@ -17,7 +17,7 @@ const VerificationStep = ({ step, isLast, isPassed }: Props) => {
   return (
     <HStack gap={ 2 } color={ stepColor }>
       <IconSvg name={ isPassed ? 'finalized' : 'unfinalized' } boxSize={ 5 }/>
-      <Text color={ stepColor }>{ typeof step === 'string' ? step : step.content }</Text>
+      <Box color={ stepColor }>{ typeof step === 'string' ? step : step.content }</Box>
       { !isLast && <IconSvg name="arrows/east" boxSize={ 5 }/> }
     </HStack>
   );

@@ -155,13 +155,18 @@ const TxDetails = () => {
             title="Withdrawal status"
             hint="Detailed status progress of the transaction"
           >
-            <Flex flexDir="column" rowGap={ 3 }>
+            <Flex flexDir="column" rowGap={ 2 }>
               { data.op_withdrawals.map((withdrawal) => (
-                <TxDetailsWithdrawalStatus
-                  key={ withdrawal.nonce }
-                  status={ withdrawal.status }
-                  l1TxHash={ withdrawal.l1_transaction_hash }
-                />
+                <Box key={ withdrawal.nonce }>
+                  <Box mb={ 2 }>
+                    <span>Nonce: </span>
+                    <chakra.span fontWeight={ 600 }>{ withdrawal.nonce }</chakra.span>
+                  </Box>
+                  <TxDetailsWithdrawalStatus
+                    status={ withdrawal.status }
+                    l1TxHash={ withdrawal.l1_transaction_hash }
+                  />
+                </Box>
               )) }
             </Flex>
           </DetailsInfoItem>
