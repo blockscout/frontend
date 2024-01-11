@@ -23,6 +23,11 @@ export const growthBook = (() => {
       chain_id: config.chain.id,
     },
     trackingCallback: (experiment, result) => {
+      if (isExperimentStarted(experiment.key)) {
+        return;
+      }
+
+      saveExperimentInStorage(experiment.key);
       mixpanel.logEvent(mixpanel.EventTypes.EXPERIMENT_STARTED, {
         'Experiment name': experiment.key,
         'Variant name': result.value,
@@ -31,3 +36,35 @@ export const growthBook = (() => {
     },
   });
 })();
+
+const STORAGE_KEY = 'growthbook:experiments';
+const STORAGE_LIMIT = 20;
+
+function getStorageValue(): Array<unknown> | undefined {
+  const item = window.localStorage.getItem(STORAGE_KEY);
+  if (!item) {
+    return;
+  }
+
+  try {
+    const parsedValue = JSON.parse(item);
+    if (Array.isArray(parsedValue)) {
+      return parsedValue;
+    }
+  } catch {
+    return;
+  }
+}
+
+function isExperimentStarted(key: string): boolean {
+  const items = getStorageValue() ?? [];
+  return items.some((item) => item === key);
+}
+
+function saveExperimentInStorage(key: string) {
+  const items = getStorageValue() ?? [];
+  const newItems = [ key, ...items ].slice(0, STORAGE_LIMIT);
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(newItems));
+  } catch (error) {}
+}
