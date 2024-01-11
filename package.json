@@ -42,6 +42,8 @@
     "@tanstack/react-query-devtools": "^4.0.10",
     "@types/papaparse": "^5.3.5",
     "@types/react-scroll": "^1.8.4",
+    "@vercel/analytics": "^1.1.1",
+    "@vercel/speed-insights": "^1.0.2",
     "@web3modal/ethereum": "^2.6.2",
     "@web3modal/react": "^2.6.2",
     "bignumber.js": "^9.1.0",
