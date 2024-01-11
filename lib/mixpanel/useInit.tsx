@@ -10,6 +10,8 @@ import * as cookies from 'lib/cookies';
 import { growthBook } from 'lib/growthbook/init';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
+import getUuid from './getUuid';
+
 export default function useMixpanelInit() {
   const [ isInited, setIsInited ] = React.useState(false);
   const router = useRouter();
@@ -25,13 +27,11 @@ export default function useMixpanelInit() {
 
     const mixpanelConfig: Partial<Config> = {
       debug: Boolean(debugFlagQuery.current || debugFlagCookie),
-      loaded: function(mixpanel) {
+      loaded: function() {
         growthBook?.setAttributes({
           ...growthBook.getAttributes(),
-          id: mixpanel.get_distinct_id(),
           time_zone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-          language: mixpanel.get_property('Language'),
-          chain_id: mixpanel.get_property('Chain id'),
+          language: window.navigator.language,
         });
       },
     };
@@ -46,6 +46,7 @@ export default function useMixpanelInit() {
       'Viewport height': window.innerHeight,
       Language: window.navigator.language,
       'Device type': _capitalize(deviceType),
+      'User id': getUuid(),
     });
 
     setIsInited(true);

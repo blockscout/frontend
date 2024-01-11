@@ -1,7 +1,7 @@
 import { GrowthBook } from '@growthbook/growthbook-react';
-import mixpanel from 'mixpanel-browser';
 
 import config from 'configs/app';
+import * as mixpanel from 'lib/mixpanel';
 
 export const growthBook = (() => {
   const feature = config.features.growthBook;
@@ -14,11 +14,15 @@ export const growthBook = (() => {
     apiHost: 'https://cdn.growthbook.io',
     clientKey: feature.clientKey,
     enableDevMode: config.app.isDev,
+    attributes: {
+      id: mixpanel.getUuid(),
+      chain_id: config.chain.id,
+    },
     trackingCallback: (experiment, result) => {
-      mixpanel.track('$experiment_started', {
+      mixpanel.logEvent(mixpanel.EventTypes.EXPERIMENT_STARTED, {
         'Experiment name': experiment.key,
-        'Variant name': result.variationId,
-        $source: 'growthbook',
+        'Variant name': result.value,
+        Source: 'growthbook',
       });
     },
   });
