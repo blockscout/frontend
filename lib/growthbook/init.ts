@@ -3,6 +3,8 @@ import { GrowthBook } from '@growthbook/growthbook-react';
 import config from 'configs/app';
 import * as mixpanel from 'lib/mixpanel';
 
+import { STORAGE_KEY, STORAGE_LIMIT } from './consts';
+
 export interface GrowthBookFeatures {
   test_value: string;
 }
@@ -36,9 +38,6 @@ export const growthBook = (() => {
     },
   });
 })();
-
-const STORAGE_KEY = 'growthbook:experiments';
-const STORAGE_LIMIT = 20;
 
 function getStorageValue(): Array<unknown> | undefined {
   const item = window.localStorage.getItem(STORAGE_KEY);

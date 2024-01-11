@@ -7,7 +7,6 @@ import { deviceType } from 'react-device-detect';
 
 import config from 'configs/app';
 import * as cookies from 'lib/cookies';
-import { growthBook } from 'lib/growthbook/init';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
 import getUuid from './getUuid';
@@ -27,13 +26,6 @@ export default function useMixpanelInit() {
 
     const mixpanelConfig: Partial<Config> = {
       debug: Boolean(debugFlagQuery.current || debugFlagCookie),
-      loaded: function() {
-        growthBook?.setAttributes({
-          ...growthBook.getAttributes(),
-          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-          language: window.navigator.language,
-        });
-      },
     };
     const isAuth = Boolean(cookies.get(cookies.NAMES.API_TOKEN));
 
