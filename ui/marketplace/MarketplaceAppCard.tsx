@@ -4,6 +4,7 @@ import React, { useCallback } from 'react';
 
 import type { MarketplaceAppPreview } from 'types/client/marketplace';
 
+import * as mixpanel from 'lib/mixpanel/index';
 import IconSvg from 'ui/shared/IconSvg';
 
 import MarketplaceAppCardLink from './MarketplaceAppCardLink';
@@ -43,6 +44,7 @@ const MarketplaceAppCard = ({
 
   const handleInfoClick = useCallback((event: MouseEvent) => {
     event.preventDefault();
+    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'More button', Info: id });
     onInfoClick(id);
   }, [ onInfoClick, id ]);
 
