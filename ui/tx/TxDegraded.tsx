@@ -1,4 +1,4 @@
-import { Alert } from '@chakra-ui/react';
+import { Alert, Skeleton } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import type { Chain, GetBlockReturnType, GetTransactionReturnType, TransactionReceipt } from 'viem';
@@ -8,6 +8,7 @@ import type { Transaction } from 'types/api/transaction';
 import dayjs from 'lib/date/dayjs';
 import hexToDecimal from 'lib/hexToDecimal';
 import { publicClient } from 'lib/web3/client';
+import { GET_BLOCK, GET_TRANSACTION, GET_TRANSACTION_RECEIPT, GET_TRANSACTION_CONFIRMATIONS } from 'stubs/RPC';
 
 import TxInfo from './details/TxInfo';
 
@@ -29,7 +30,7 @@ const TxDegraded = ({ hash }: Props) => {
     queryFn: async() => {
       const tx = await publicClient.getTransaction({ hash: hash as `0x${ string }` });
 
-      return await Promise.all([
+      return Promise.all([
         tx,
         publicClient.getTransactionReceipt({ hash: hash as `0x${ string }` }), // TODO @tom2drum pending tx case when receipt is not available
         publicClient.getTransactionConfirmations({ hash: hash as `0x${ string }` }),
@@ -100,12 +101,19 @@ const TxDegraded = ({ hash }: Props) => {
         actions: [],
       };
     },
-    // TODO @tom2drum add placeholder data
+    placeholderData: [
+      GET_TRANSACTION,
+      GET_TRANSACTION_RECEIPT,
+      GET_TRANSACTION_CONFIRMATIONS,
+      GET_BLOCK,
+    ],
   });
 
   return (
     <>
-      <Alert status="warning" mb={ 6 }>Blockscout is busy, retrying...</Alert>
+      <Skeleton mb={ 6 } isLoaded={ !query.isPlaceholderData }>
+        <Alert status="warning">Blockscout is busy, retrying...</Alert>
+      </Skeleton>
       <TxInfo data={ query.data } isLoading={ query.isPlaceholderData }/>
     </>
   );

@@ -2,7 +2,6 @@ import {
   Grid,
   GridItem,
   Text,
-  Box,
   Link,
   Spinner,
   Flex,
@@ -398,17 +397,17 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
               </Skeleton>
             ) }
             { data.max_fee_per_gas && (
-              <Box>
+              <Skeleton isLoaded={ !isLoading }>
                 <Text as="span" fontWeight="500">Max: </Text>
                 <Text fontWeight="600" as="span">{ BigNumber(data.max_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
                 { data.max_priority_fee_per_gas && <TextSeparator/> }
-              </Box>
+              </Skeleton>
             ) }
             { data.max_priority_fee_per_gas && (
-              <Box>
+              <Skeleton isLoaded={ !isLoading }>
                 <Text as="span" fontWeight="500">Max priority: </Text>
                 <Text fontWeight="600" as="span">{ BigNumber(data.max_priority_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
-              </Box>
+              </Skeleton>
             ) }
           </DetailsInfoItem>
         ) }
