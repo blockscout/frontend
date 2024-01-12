@@ -206,10 +206,14 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             <Skeleton isLoaded={ !isLoading } ml={ 2 }>{ dayjs(data.timestamp).fromNow() }</Skeleton>
             <TextSeparator/>
             <Skeleton isLoaded={ !isLoading } whiteSpace="normal">{ dayjs(data.timestamp).format('llll') }</Skeleton>
-            <TextSeparator color="gray.500"/>
-            <Skeleton isLoaded={ !isLoading } color="text_secondary">
-              <span>{ getConfirmationDuration(data.confirmation_duration) }</span>
-            </Skeleton>
+            { data.confirmation_duration && (
+              <>
+                <TextSeparator color="gray.500"/>
+                <Skeleton isLoaded={ !isLoading } color="text_secondary">
+                  <span>{ getConfirmationDuration(data.confirmation_duration) }</span>
+                </Skeleton>
+              </>
+            ) }
           </DetailsInfoItem>
         ) }
         { data.execution_node && (

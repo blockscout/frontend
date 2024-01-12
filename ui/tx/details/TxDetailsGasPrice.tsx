@@ -7,12 +7,12 @@ import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 
 interface Props {
-  gasPrice: string;
+  gasPrice: string | null;
   isLoading?: boolean;
 }
 
 const TxDetailsGasPrice = ({ gasPrice, isLoading }: Props) => {
-  if (config.UI.views.tx.hiddenFields?.gas_price) {
+  if (config.UI.views.tx.hiddenFields?.gas_price || !gasPrice) {
     return null;
   }
 
