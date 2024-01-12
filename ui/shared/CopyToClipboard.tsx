@@ -1,7 +1,7 @@
 import { IconButton, Tooltip, useClipboard, chakra, useDisclosure, Skeleton } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 
-import CopyIcon from 'icons/copy.svg';
+import IconSvg from 'ui/shared/IconSvg';
 
 export interface Props {
   text: string;
@@ -31,7 +31,7 @@ const CopyToClipboard = ({ text, className, isLoading }: Props) => {
     <Tooltip label={ copied ? 'Copied' : 'Copy to clipboard' } isOpen={ isOpen || copied }>
       <IconButton
         aria-label="copy"
-        icon={ <CopyIcon/> }
+        icon={ <IconSvg name="copy" boxSize={ 5 }/> }
         w="20px"
         h="20px"
         color="gray.400"

@@ -1,4 +1,4 @@
-import { chakra, Checkbox, Code, Icon } from '@chakra-ui/react';
+import { chakra, Checkbox, Code } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 import type { ControllerRenderProps } from 'react-hook-form';
@@ -7,10 +7,10 @@ import { useFormContext, Controller } from 'react-hook-form';
 import type { FormFields } from '../types';
 import type { SmartContractVerificationConfig } from 'types/api/contract';
 
-import iconSearch from 'icons/search.svg';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import FancySelect from 'ui/shared/FancySelect/FancySelect';
+import IconSvg from 'ui/shared/IconSvg';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
@@ -56,7 +56,7 @@ const ContractVerificationFieldCompiler = ({ isVyper }: Props) => {
         defaultOptions
         size={ isMobile ? 'md' : 'lg' }
         placeholder="Compiler (enter version or use the dropdown)"
-        placeholderIcon={ <Icon as={ iconSearch }/> }
+        placeholderIcon={ <IconSvg name="search"/> }
         isDisabled={ formState.isSubmitting }
         error={ error }
         isRequired

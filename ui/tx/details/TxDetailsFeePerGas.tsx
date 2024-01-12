@@ -6,13 +6,13 @@ import config from 'configs/app';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 
 interface Props {
-  txFee: string;
+  txFee: string | null;
   gasUsed: string | null;
   isLoading?: boolean;
 }
 
 const TxDetailsFeePerGas = ({ txFee, gasUsed, isLoading }: Props) => {
-  if (!config.UI.views.tx.additionalFields?.fee_per_gas || !gasUsed) {
+  if (!config.UI.views.tx.additionalFields?.fee_per_gas || !gasUsed || txFee === null) {
     return null;
   }
 

@@ -68,7 +68,7 @@ it('returns correct data if there is only one page', async() => {
   expect(result.current.data).toEqual(responses.page_empty);
   expect(result.current.pagination).toMatchObject({
     page: 1,
-    canGoBackwards: true,
+    canGoBackwards: false,
     hasNextPage: false,
     isLoading: false,
     isVisible: false,
@@ -91,7 +91,7 @@ describe('if there are multiple pages', () => {
     expect(result.current.data).toEqual(responses.page_1);
     expect(result.current.pagination).toMatchObject({
       page: 1,
-      canGoBackwards: true,
+      canGoBackwards: false,
       hasNextPage: true,
       isLoading: false,
       isVisible: true,
@@ -258,7 +258,7 @@ describe('if there are multiple pages', () => {
       expect(result.current.data).toEqual(responses.page_1);
       expect(result.current.pagination).toMatchObject({
         page: 1,
-        canGoBackwards: true,
+        canGoBackwards: false,
         hasNextPage: true,
         isLoading: false,
         isVisible: true,
@@ -310,7 +310,7 @@ describe('if there are multiple pages', () => {
     expect(result.current.data).toEqual(responses.page_1);
     expect(result.current.pagination).toMatchObject({
       page: 1,
-      canGoBackwards: true,
+      canGoBackwards: false,
       hasNextPage: true,
       isLoading: false,
       isVisible: true,
@@ -404,7 +404,7 @@ describe('if there is page query param in URL', () => {
     expect(result.current.data).toEqual(responses.page_3);
     expect(result.current.pagination).toMatchObject({
       page: 3,
-      canGoBackwards: false,
+      canGoBackwards: true,
       hasNextPage: false,
       isLoading: false,
       isVisible: true,
@@ -458,7 +458,7 @@ describe('queries with filters', () => {
     expect(result.current.data).toEqual(responses.page_filtered);
     expect(result.current.pagination).toMatchObject({
       page: 1,
-      canGoBackwards: true,
+      canGoBackwards: false,
       hasNextPage: true,
       isLoading: false,
       isVisible: true,
@@ -547,7 +547,7 @@ describe('queries with sorting', () => {
     expect(result.current.data).toEqual(responses.page_sorted);
     expect(result.current.pagination).toMatchObject({
       page: 1,
-      canGoBackwards: true,
+      canGoBackwards: false,
       hasNextPage: false,
       isLoading: false,
       isVisible: false,

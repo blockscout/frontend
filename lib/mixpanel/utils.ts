@@ -13,6 +13,7 @@ export enum EventTypes {
   CONTRACT_VERIFICATION = 'Contract verification',
   QR_CODE = 'QR code',
   PAGE_WIDGET = 'Page widget',
+  TX_INTERPRETATION_INTERACTION = 'Transaction interpratetion interaction'
 }
 
 /* eslint-disable @typescript-eslint/indent */
@@ -61,6 +62,7 @@ Type extends EventTypes.VERIFY_TOKEN ? {
   'Action': 'Form opened' | 'Submit';
 } :
 Type extends EventTypes.WALLET_CONNECT ? {
+  'Source': 'Header' | 'Smart contracts';
   'Status': 'Started' | 'Connected';
 } :
 Type extends EventTypes.CONTRACT_INTERACTION ? {
@@ -76,6 +78,9 @@ Type extends EventTypes.QR_CODE ? {
 } :
 Type extends EventTypes.PAGE_WIDGET ? {
   'Type': 'Tokens dropdown' | 'Tokens show all (icon)' | 'Add to watchlist' | 'Address actions (more button)';
+} :
+Type extends EventTypes.TX_INTERPRETATION_INTERACTION ? {
+  'Type': 'Address click' | 'Token click';
 } :
 undefined;
 /* eslint-enable @typescript-eslint/indent */

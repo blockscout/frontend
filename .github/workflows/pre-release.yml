@@ -4,7 +4,7 @@ on:
     workflow_dispatch:
     push:
         tags:
-            - 'v[0-9]+.[0-9]+.[0-9]+-[a-z]+*' # e.g v1.2.3-alpha
+            - 'v[0-9]+.[0-9]+.[0-9]+-[a-z]+*' # e.g v1.2.3-alpha.2
 
 jobs:
     checks:
@@ -24,9 +24,31 @@ jobs:
         uses: "./.github/workflows/e2e-tests.yml"
         secrets: inherit
 
+    version:
+        name: Pre-release version info
+        runs-on: ubuntu-latest
+        outputs:
+            is_initial: ${{ steps.is_initial.outputs.result }}
+        steps:
+            -   name: Determine if it is the initial version of the pre-release
+                id: is_initial
+                uses: actions/github-script@v6
+                env:
+                    TAG: ${{ github.ref_name }}
+                with:
+                    script: |
+                        const tag = process.env.TAG;
+                        const REGEXP = /^v[0-9]+.[0-9]+.[0-9]+-[a-z]+((\.|-)\d+)?$/i;
+                        const match = tag.match(REGEXP);
+                        const isInitial = match && !match[1] ? true : false;
+                        core.info('is_initial flag value: ', isInitial);
+                        return isInitial;
+
     label_issues:
         name: Add pre-release label to issues
         uses: './.github/workflows/label-issues-in-release.yml'
+        needs: [ version ]
+        if: ${{ needs.version.outputs.is_initial == 'true' }}
         with:
             tag: ${{ github.ref_name }}
             label_name: 'pre-release'

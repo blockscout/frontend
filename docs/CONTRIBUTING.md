@@ -33,7 +33,7 @@ We are using following technology stack in the project
 - [Yarn](https://yarnpkg.com/) as package manager
 - [ReactJS](https://reactjs.org/) as UI library
 - [Next.js](https://nextjs.org/) as application framework
-- [Chakra](https://chakra-ui.com/) as component library; our theme customization could be found in `/theme` folder
+- [Chakra](https://chakra-ui.com/) as component library; our theme customization can be found in `/theme` folder
 - [TanStack Query](https://tanstack.com/query/v4/docs/react/overview/) for fetching, caching and updating data from the API
 - [Jest](https://jestjs.io/) as JavaScript testing framework
 - [Playwright](https://playwright.dev/) as a tool for components visual testing
@@ -44,15 +44,22 @@ And of course our premier language is [Typescript](https://www.typescriptlang.or
 
 ## Local development
 
-1. Prepare your environment variables:  
-    - clone `.env.example` into `configs/envs/.env.secrets` and fill it with necessary secrets for the [external services](./ENVS.md#external-services-configuration) integration; you can pick up only those that your needed
-    - choose one of the following options:  
-        A. create `.env.local` file in the root folder with environment variables from the [list](./ENVS.md); all required variables should be present in the file;  
-        B. pick up one of the predefined configurations located at `/configs/envs` folder; no actual action is needed at this stage;
-2. Run your local dev server:
-    - if you picked up option "A" above, use `yarn dev` command
-    - if your options is "B", use `yarn dev:<config_name>` command
-3. In browser navigate to the URL from the command output (by default, it is `http://localhost:3000`)
+To develop locally, follow one of the two paths outlined below:
+
+A. Custom configuration:
+
+1. Create `.env.local` file in the root folder and include all required environment variables from the [list](./ENVS.md)
+2. Optionally, clone `.env.example` and name it `.env.secrets`. Fill it with necessary secrets for integrating with [external services](./ENVS.md#external-services-configuration). Include only secrets your need.
+3. Use `yarn dev` command to start the dev server.
+4. Open your browser and navigate to the URL provided in the command line output (by default, it is `http://localhost:3000`).
+
+B. Pre-defined configuration:
+
+1. Optionally, clone `.env.example` file into `configs/envs/.env.secrets`. Fill it with necessary secrets for integrating with [external services](./ENVS.md#external-services-configuration). Include only secrets your need.
+2. Choose one of the predefined configurations located in the `/configs/envs` folder.
+3. Start your local dev server using the `yarn dev:<config_name>` command.
+4. Open your browser and navigate to the URL provided in the command line output (by default, it is `http://localhost:3000`).
+
 
 &nbsp;
 
@@ -150,11 +157,11 @@ We have 3 pre-configured projects. You can run your test with the desired projec
 
 ### Opening PR and getting it accepted
 
-1. Push your changes and create a Pull Request. If you are still working on the task, please use "Draft Pull Request" option, so we know that it is not ready yet. In addition, you can add label "WIP" to your PR, so all CI checks will not be triggered. 
-2. Once you finish your work, remove label "WIP" from PR, if it was added before, and publish PR if it was in the draft state
+1. Push your changes and create a Pull Request. If you are still working on the task, please use "Draft Pull Request" option, so we know that it is not ready yet. In addition, you can add label "skip checks" to your PR, so all CI checks will not be triggered. 
+2. Once you finish your work, remove label "skip checks" from PR, if it was added before, and publish PR if it was in the draft state
 3. Make sure that all code checks and tests are successfully passed
 4. Add description to your Pull Request and link an existing issue(s) that it is fixing
-5. Request review from one or all core team members: @tom2drum, @isstuev. Our core team are committed to reviewing patches in a timely manner.
+5. Request review from one or all core team members: @tom2drum, @isstuev. Our core team is committed to reviewing patches in a timely manner.
 6. After code review is done, we merge pull requests by squashing all commits and editing the commit message if necessary using the GitHub user interface.
 
 *Note*, if you Pull Request contains any changes that are not backwards compatible with the previous versions of the app, please specify them in PR description and add label ["breaking changes"](https://github.com/blockscout/frontend/labels/breaking%20changes) to it.
@@ -175,7 +182,8 @@ We have 3 pre-configured projects. You can run your test with the desired projec
 | `yarn lint:eslint` | lint project files with ESLint |
 | `yarn lint:eslint:fix` | lint project files with ESLint and automatically fix problems |
 | `yarn lint:tsc` | compile project typescript files using TypeScript Compiler |
-| `yarn format-svg` | format and optimize SVG icons in the `/icons` folder using SVGO tool |
+| `yarn svg:format` | format and optimize SVG icons in the `/icons` folder using SVGO tool |
+| `yarn svg:build-sprite` | build SVG icons sprite |
 | **Testing** |
 | `yarn test:jest` | run all Jest unit tests |
 | `yarn test:jest:watch` | run all Jest unit tests in watch mode |

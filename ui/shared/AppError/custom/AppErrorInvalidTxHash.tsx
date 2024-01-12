@@ -1,8 +1,8 @@
 /* eslint-disable max-len */
-import { Box, OrderedList, ListItem, Icon, useColorModeValue, Flex } from '@chakra-ui/react';
+import { Box, OrderedList, ListItem, useColorModeValue, Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import txIcon from 'icons/transactions.svg';
+import IconSvg from 'ui/shared/IconSvg';
 
 import AppErrorTitle from '../AppErrorTitle';
 
@@ -18,7 +18,7 @@ const AppErrorInvalidTxHash = () => {
     <>
       <Box p={ 4 } borderColor={ snippet.borderColor } borderRadius="md" w="230px" borderWidth="1px">
         <Flex alignItems="center" pb={ 4 } borderBottomWidth="1px" borderColor={ snippet.borderColor }>
-          <Icon as={ txIcon } boxSize={ 8 } color={ snippet.iconColor } bgColor={ snippet.iconBg } p={ 1 } borderRadius="md"/>
+          <IconSvg name="transactions" boxSize={ 8 } color={ snippet.iconColor } bgColor={ snippet.iconBg } p={ 1 } borderRadius="md"/>
           <Box ml={ 2 }>
             <Box w="125px" h="8px" borderRadius="full" bgColor={ snippet.iconBg }/>
             <Box w="30px" h="8px" borderRadius="full" bgColor={ snippet.borderColor } mt={ 1.5 }/>

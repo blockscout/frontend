@@ -11,8 +11,6 @@ import type { Block } from 'types/api/block';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import clockIcon from 'icons/clock.svg';
-import flameIcon from 'icons/flame.svg';
 import type { ResourceError } from 'lib/api/resources';
 import getBlockReward from 'lib/block/getBlockReward';
 import { GWEI, WEI, WEI_IN_GWEI, ZERO } from 'lib/consts';
@@ -20,7 +18,6 @@ import dayjs from 'lib/date/dayjs';
 import { space } from 'lib/html-entities';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import Icon from 'ui/shared/chakra/Icon';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
@@ -28,6 +25,7 @@ import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/LinkInternal';
 import PrevNext from 'ui/shared/PrevNext';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
@@ -169,7 +167,7 @@ const BlockDetails = ({ query }: Props) => {
         hint="Date & time at which block was produced."
         isLoading={ isPlaceholderData }
       >
-        <Icon as={ clockIcon } boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
+        <IconSvg name="clock" boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
         <Skeleton isLoaded={ !isPlaceholderData } ml={ 1 }>
           { dayjs(data.timestamp).fromNow() }
         </Skeleton>
@@ -202,19 +200,21 @@ const BlockDetails = ({ query }: Props) => {
           </Skeleton>
         </DetailsInfoItem>
       ) }
-      <DetailsInfoItem
-        title={ verificationTitle }
-        hint="A block producer who successfully included the block onto the blockchain"
-        columnGap={ 1 }
-        isLoading={ isPlaceholderData }
-      >
-        <AddressEntity
-          address={ data.miner }
+      { !config.UI.views.block.hiddenFields?.miner && (
+        <DetailsInfoItem
+          title={ verificationTitle }
+          hint="A block producer who successfully included the block onto the blockchain"
+          columnGap={ 1 }
           isLoading={ isPlaceholderData }
-        />
-        { /* api doesn't return the block processing time yet */ }
-        { /* <Text>{ dayjs.duration(block.minedIn, 'second').humanize(true) }</Text> */ }
-      </DetailsInfoItem>
+        >
+          <AddressEntity
+            address={ data.miner }
+            isLoading={ isPlaceholderData }
+          />
+          { /* api doesn't return the block processing time yet */ }
+          { /* <Text>{ dayjs.duration(block.minedIn, 'second').humanize(true) }</Text> */ }
+        </DetailsInfoItem>
+      ) }
       { !isRollup && !totalReward.isEqualTo(ZERO) && !config.UI.views.block.hiddenFields?.total_reward && (
         <DetailsInfoItem
           title="Block reward"
@@ -316,7 +316,7 @@ const BlockDetails = ({ query }: Props) => {
           }
           isLoading={ isPlaceholderData }
         >
-          <Icon as={ flameIcon } boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
+          <IconSvg name="flame" boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
           <Skeleton isLoaded={ !isPlaceholderData } ml={ 2 }>
             { burntFees.dividedBy(WEI).toFixed() } { config.chain.currency.symbol }
           </Skeleton>

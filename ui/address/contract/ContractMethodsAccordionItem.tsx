@@ -1,4 +1,4 @@
-import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Icon, Tooltip, useClipboard, useDisclosure } from '@chakra-ui/react';
+import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Tooltip, useClipboard, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 import { Element } from 'react-scroll';
 
@@ -7,8 +7,8 @@ import type { SmartContractMethod } from 'types/api/contract';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import iconLink from 'icons/link.svg';
 import Hint from 'ui/shared/Hint';
+import IconSvg from 'ui/shared/IconSvg';
 
 interface Props<T extends SmartContractMethod> {
   data: T;
@@ -57,7 +57,7 @@ const ContractMethodsAccordionItem = <T extends SmartContractMethod>({ data, ind
                 onMouseEnter={ onOpen }
                 onMouseLeave={ onClose }
               >
-                <Icon as={ iconLink } boxSize={ 5 }/>
+                <IconSvg name="link" boxSize={ 5 }/>
               </Box>
             </Tooltip>
           ) }

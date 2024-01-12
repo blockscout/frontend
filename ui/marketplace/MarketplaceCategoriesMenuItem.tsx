@@ -1,18 +1,18 @@
-import { Icon, MenuItem } from '@chakra-ui/react';
-import type { FunctionComponent, SVGAttributes } from 'react';
+import { MenuItem } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import { MarketplaceCategory } from 'types/client/marketplace';
 
-import starFilledIcon from 'icons/star_filled.svg';
+import type { IconName } from 'ui/shared/IconSvg';
+import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {
   id: string;
   onClick: (category: string) => void;
 }
 
-const ICONS: Record<string, FunctionComponent<SVGAttributes<SVGElement>>> = {
-  [MarketplaceCategory.FAVORITES]: starFilledIcon,
+const ICONS: Record<string, IconName> = {
+  [MarketplaceCategory.FAVORITES]: 'star_filled',
 };
 
 const MarketplaceCategoriesMenuItem = ({ id, onClick }: Props) => {
@@ -27,7 +27,7 @@ const MarketplaceCategoriesMenuItem = ({ id, onClick }: Props) => {
       display="flex"
       alignItems="center"
     >
-      { id in ICONS && <Icon mr={ 3 } as={ ICONS[id] } w={ 4 } h={ 4 } color="blackAlpha.800"/> }
+      { id in ICONS && <IconSvg mr={ 3 } name={ ICONS[id] } w={ 4 } h={ 4 } color="blackAlpha.800"/> }
       { id }
     </MenuItem>
   );

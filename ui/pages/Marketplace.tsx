@@ -1,10 +1,10 @@
-import { Box, Icon, Link, Skeleton } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
-import PlusIcon from 'icons/plus.svg';
 import MarketplaceAppModal from 'ui/marketplace/MarketplaceAppModal';
 import MarketplaceCategoriesMenu from 'ui/marketplace/MarketplaceCategoriesMenu';
+import MarketplaceDisclaimerModal from 'ui/marketplace/MarketplaceDisclaimerModal';
 import MarketplaceList from 'ui/marketplace/MarketplaceList';
 import FilterInput from 'ui/shared/filters/FilterInput';
 
@@ -27,6 +27,9 @@ const Marketplace = () => {
     clearSelectedAppId,
     favoriteApps,
     onFavoriteClick,
+    isAppInfoModalOpen,
+    isDisclaimerModalOpen,
+    showDisclaimer,
   } = useMarketplace();
 
   if (isError) {
@@ -68,9 +71,10 @@ const Marketplace = () => {
         favoriteApps={ favoriteApps }
         onFavoriteClick={ onFavoriteClick }
         isLoading={ isPlaceholderData }
+        showDisclaimer={ showDisclaimer }
       />
 
-      { selectedApp && (
+      { (selectedApp && isAppInfoModalOpen) && (
         <MarketplaceAppModal
           onClose={ clearSelectedAppId }
           isFavorite={ favoriteApps.includes(selectedApp.id) }
@@ -79,28 +83,13 @@ const Marketplace = () => {
         />
       ) }
 
-      <Skeleton
-        isLoaded={ !isPlaceholderData }
-        marginTop={{ base: 8, sm: 16 }}
-        display="inline-block"
-      >
-        <Link
-          fontWeight="bold"
-          display="inline-flex"
-          alignItems="baseline"
-          href={ feature.submitFormUrl }
-          isExternal
-        >
-          <Icon
-            as={ PlusIcon }
-            w={ 3 }
-            h={ 3 }
-            mr={ 2 }
-          />
-
-              Submit an app
-        </Link>
-      </Skeleton>
+      { (selectedApp && isDisclaimerModalOpen) && (
+        <MarketplaceDisclaimerModal
+          isOpen={ isDisclaimerModalOpen }
+          onClose={ clearSelectedAppId }
+          appId={ selectedApp.id }
+        />
+      ) }
     </>
   );
 };

@@ -1,21 +1,23 @@
-import { Button, chakra, useUpdateEffect } from '@chakra-ui/react';
+import { Button, Grid, chakra, useUpdateEffect } from '@chakra-ui/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
 
 import type { FormFields } from './types';
 import type { SocketMessage } from 'lib/socket/types';
-import type { SmartContractVerificationMethod, SmartContractVerificationConfig } from 'types/api/contract';
+import type { SmartContractVerificationMethod, SmartContractVerificationConfig, SmartContract } from 'types/api/contract';
 
 import { route } from 'nextjs-routes';
 
 import useApiFetch from 'lib/api/useApiFetch';
 import delay from 'lib/delay';
+import getErrorObjStatusCode from 'lib/errors/getErrorObjStatusCode';
 import useToast from 'lib/hooks/useToast';
 import * as mixpanel from 'lib/mixpanel/index';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 
+import ContractVerificationFieldAddress from './fields/ContractVerificationFieldAddress';
 import ContractVerificationFieldMethod from './fields/ContractVerificationFieldMethod';
 import ContractVerificationFlattenSourceCode from './methods/ContractVerificationFlattenSourceCode';
 import ContractVerificationMultiPartFile from './methods/ContractVerificationMultiPartFile';
@@ -29,15 +31,15 @@ import { prepareRequestBody, formatSocketErrors, getDefaultValues, METHOD_LABELS
 interface Props {
   method?: SmartContractVerificationMethod;
   config: SmartContractVerificationConfig;
-  hash: string;
+  hash?: string;
 }
 
 const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Props) => {
   const formApi = useForm<FormFields>({
     mode: 'onBlur',
-    defaultValues: methodFromQuery ? getDefaultValues(methodFromQuery, config) : undefined,
+    defaultValues: methodFromQuery ? getDefaultValues(methodFromQuery, config, hash) : undefined,
   });
-  const { control, handleSubmit, watch, formState, setError, reset } = formApi;
+  const { control, handleSubmit, watch, formState, setError, reset, getFieldState } = formApi;
   const submitPromiseResolver = React.useRef<(value: unknown) => void>();
   const methodNameRef = React.useRef<string>();
 
@@ -47,9 +49,28 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
   const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(data) => {
     const body = prepareRequestBody(data);
 
+    if (!hash) {
+      try {
+        const response = await apiFetch<'contract', SmartContract>('contract', {
+          pathParams: { hash: data.address.toLowerCase() },
+        });
+
+        const isVerifiedContract = 'is_verified' in response && response?.is_verified && !response.is_partially_verified;
+        if (isVerifiedContract) {
+          setError('address', { message: 'Contract has already been verified' });
+          return Promise.resolve();
+        }
+      } catch (error) {
+        const statusCode = getErrorObjStatusCode(error);
+        const message = statusCode === 404 ? 'Address is not a smart contract' : 'Something went wrong';
+        setError('address', { message });
+        return Promise.resolve();
+      }
+    }
+
     try {
       await apiFetch('contract_verification_via', {
-        pathParams: { method: data.method.value, hash: hash.toLowerCase() },
+        pathParams: { method: data.method.value, hash: data.address.toLowerCase() },
         fetchParams: {
           method: 'POST',
           body,
@@ -62,7 +83,10 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
     return new Promise((resolve) => {
       submitPromiseResolver.current = resolve;
     });
-  }, [ apiFetch, hash ]);
+  }, [ apiFetch, hash, setError ]);
+
+  const address = watch('address');
+  const addressState = getFieldState('address');
 
   const handleNewSocketMessage: SocketMessage.ContractVerification['handler'] = React.useCallback(async(payload) => {
     if (payload.status === 'error') {
@@ -88,8 +112,8 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
       { send_immediately: true },
     );
 
-    window.location.assign(route({ pathname: '/address/[hash]', query: { hash, tab: 'contract' } }));
-  }, [ hash, setError, toast ]);
+    window.location.assign(route({ pathname: '/address/[hash]', query: { hash: address, tab: 'contract' } }));
+  }, [ setError, toast, address ]);
 
   const handleSocketError = React.useCallback(() => {
     if (!formState.isSubmitting) {
@@ -114,10 +138,10 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
   }, [ toast ]);
 
   const channel = useSocketChannel({
-    topic: `addresses:${ hash.toLowerCase() }`,
+    topic: `addresses:${ address?.toLowerCase() }`,
     onSocketClose: handleSocketError,
     onSocketError: handleSocketError,
-    isDisabled: false,
+    isDisabled: Boolean(address && addressState.error),
   });
   useSocketMessage({
     channel,
@@ -142,7 +166,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
 
   useUpdateEffect(() => {
     if (methodValue) {
-      reset(getDefaultValues(methodValue, config));
+      reset(getDefaultValues(methodValue, config, address || hash));
 
       const methodName = METHOD_LABELS[methodValue];
       mixpanel.logEvent(mixpanel.EventTypes.CONTRACT_VERIFICATION, { Status: 'Method selected', Method: methodName });
@@ -157,11 +181,14 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
         noValidate
         onSubmit={ handleSubmit(onFormSubmit) }
       >
-        <ContractVerificationFieldMethod
-          control={ control }
-          methods={ config.verification_options }
-          isDisabled={ formState.isSubmitting }
-        />
+        <Grid as="section" columnGap="30px" rowGap={{ base: 2, lg: 5 }} templateColumns={{ base: '1fr', lg: 'minmax(auto, 680px) minmax(0, 340px)' }}>
+          { !hash && <ContractVerificationFieldAddress/> }
+          <ContractVerificationFieldMethod
+            control={ control }
+            methods={ config.verification_options }
+            isDisabled={ formState.isSubmitting }
+          />
+        </Grid>
         { content }
         { Boolean(method) && (
           <Button

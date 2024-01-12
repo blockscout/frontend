@@ -1,12 +1,14 @@
-import { useColorModeValue, useToken } from '@chakra-ui/react';
+import { useColorMode } from '@chakra-ui/react';
 import { jsonRpcProvider } from '@wagmi/core/providers/jsonRpc';
-import { EthereumClient, w3mConnectors } from '@web3modal/ethereum';
-import { Web3Modal } from '@web3modal/react';
+import { createWeb3Modal, useWeb3ModalTheme, defaultWagmiConfig } from '@web3modal/wagmi/react';
 import React from 'react';
 import type { Chain } from 'wagmi';
-import { configureChains, createConfig, WagmiConfig } from 'wagmi';
+import { configureChains, WagmiConfig } from 'wagmi';
 
 import config from 'configs/app';
+import colors from 'theme/foundations/colors';
+import { BODY_TYPEFACE } from 'theme/foundations/typography';
+import zIndices from 'theme/foundations/zIndices';
 
 const feature = config.features.blockchainInteraction;
 
@@ -41,58 +43,71 @@ const getConfig = () => {
       },
     };
 
-    const chains = [ currentChain ];
-
-    const { publicClient } = configureChains(chains, [
-      jsonRpcProvider({
-        rpc: () => ({
-          http: config.chain.rpcUrl || '',
+    const { chains } = configureChains(
+      [ currentChain ],
+      [
+        jsonRpcProvider({
+          rpc: () => ({
+            http: config.chain.rpcUrl || '',
+          }),
         }),
-      }),
-    ]);
-    const wagmiConfig = createConfig({
-      autoConnect: true,
-      connectors: w3mConnectors({ projectId: feature.walletConnect.projectId, chains }),
-      publicClient,
-    });
-    const ethereumClient = new EthereumClient(wagmiConfig, chains);
+      ],
+    );
 
-    return { wagmiConfig, ethereumClient };
+    const wagmiConfig = defaultWagmiConfig({
+      chains,
+      projectId: feature.walletConnect.projectId,
+    });
+
+    createWeb3Modal({
+      wagmiConfig,
+      projectId: feature.walletConnect.projectId,
+      chains,
+      themeVariables: {
+        '--w3m-font-family': `${ BODY_TYPEFACE }, sans-serif`,
+        '--w3m-accent': colors.blue[600],
+        '--w3m-border-radius-master': '2px',
+        '--w3m-z-index': zIndices.modal,
+      },
+    });
+
+    return { wagmiConfig };
   } catch (error) {
-    return { wagmiConfig: undefined, ethereumClient: undefined };
+    return { };
   }
 };
 
-const { wagmiConfig, ethereumClient } = getConfig();
+const { wagmiConfig } = getConfig();
 
 interface Props {
   children: React.ReactNode;
   fallback?: JSX.Element | (() => JSX.Element);
 }
 
-const Web3ModalProvider = ({ children, fallback }: Props) => {
-  const modalZIndex = useToken<string>('zIndices', 'modal');
-  const web3ModalTheme = useColorModeValue('light', 'dark');
+const Fallback = ({ children, fallback }: Props) => {
+  return typeof fallback === 'function' ? fallback() : (fallback || <>{ children }</>); // eslint-disable-line react/jsx-no-useless-fragment
+};
 
-  if (!wagmiConfig || !ethereumClient || !feature.isEnabled) {
-    return typeof fallback === 'function' ? fallback() : (fallback || null);
+const Provider = ({ children, fallback }: Props) => {
+  const { colorMode } = useColorMode();
+  const { setThemeMode } = useWeb3ModalTheme();
+
+  React.useEffect(() => {
+    setThemeMode(colorMode);
+  }, [ colorMode, setThemeMode ]);
+
+  // not really necessary, but we have to make typescript happy
+  if (!wagmiConfig || !feature.isEnabled) {
+    return <Fallback fallback={ fallback }>{ children }</Fallback>;
   }
 
   return (
-    <>
-      <WagmiConfig config={ wagmiConfig }>
-        { children }
-      </WagmiConfig>
-      <Web3Modal
-        projectId={ feature.walletConnect.projectId }
-        ethereumClient={ ethereumClient }
-        themeMode={ web3ModalTheme }
-        themeVariables={{
-          '--w3m-z-index': modalZIndex,
-        }}
-      />
-    </>
+    <WagmiConfig config={ wagmiConfig }>
+      { children }
+    </WagmiConfig>
   );
 };
+
+const Web3ModalProvider = wagmiConfig && feature.isEnabled ? Provider : Fallback;
 
 export default Web3ModalProvider;

@@ -1,12 +1,10 @@
-import { Box, Icon, IconButton, Image, Link, LinkBox, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { Box, IconButton, Image, Link, LinkBox, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 
 import type { MarketplaceAppPreview } from 'types/client/marketplace';
 
-import northEastIcon from 'icons/arrows/north-east.svg';
-import starFilledIcon from 'icons/star_filled.svg';
-import starOutlineIcon from 'icons/star_outline.svg';
+import IconSvg from 'ui/shared/IconSvg';
 
 import MarketplaceAppCardLink from './MarketplaceAppCardLink';
 
@@ -15,6 +13,7 @@ interface Props extends MarketplaceAppPreview {
   isFavorite: boolean;
   onFavoriteClick: (id: string, isFavorite: boolean) => void;
   isLoading: boolean;
+  showDisclaimer: (id: string) => void;
 }
 
 const MarketplaceAppCard = ({
@@ -30,8 +29,17 @@ const MarketplaceAppCard = ({
   isFavorite,
   onFavoriteClick,
   isLoading,
+  showDisclaimer,
 }: Props) => {
   const categoriesLabel = categories.join(', ');
+
+  const handleClick = useCallback((event: MouseEvent) => {
+    const isShown = window.localStorage.getItem('marketplace-disclaimer-shown');
+    if (!isShown) {
+      event.preventDefault();
+      showDisclaimer(id);
+    }
+  }, [ showDisclaimer, id ]);
 
   const handleInfoClick = useCallback((event: MouseEvent) => {
     event.preventDefault();
@@ -74,7 +82,6 @@ const MarketplaceAppCard = ({
           marginBottom={ 4 }
           w={{ base: '64px', sm: '96px' }}
           h={{ base: '64px', sm: '96px' }}
-          borderRadius={ 8 }
           display="flex"
           alignItems="center"
           justifyContent="center"
@@ -82,6 +89,7 @@ const MarketplaceAppCard = ({
           <Image
             src={ isLoading ? undefined : logoUrl }
             alt={ `${ title } app icon` }
+            borderRadius="8px"
           />
         </Skeleton>
 
@@ -100,6 +108,7 @@ const MarketplaceAppCard = ({
             url={ url }
             external={ external }
             title={ title }
+            onClick={ handleClick }
           />
         </Skeleton>
 
@@ -141,9 +150,10 @@ const MarketplaceAppCard = ({
             >
             More
 
-              <Icon
-                as={ northEastIcon }
+              <IconSvg
+                name="arrows/north-east"
                 marginLeft={ 1 }
+                boxSize={ 4 }
               />
             </Link>
           </Box>
@@ -164,8 +174,8 @@ const MarketplaceAppCard = ({
             h={ 8 }
             onClick={ handleFavoriteClick }
             icon={ isFavorite ?
-              <Icon as={ starFilledIcon } w={ 4 } h={ 4 } color="yellow.400"/> :
-              <Icon as={ starOutlineIcon } w={ 4 } h={ 4 } color="gray.300"/>
+              <IconSvg name="star_filled" w={ 4 } h={ 4 } color="yellow.400"/> :
+              <IconSvg name="star_outline" w={ 4 } h={ 4 } color="gray.300"/>
             }
           />
         ) }

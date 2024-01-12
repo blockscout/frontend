@@ -3,14 +3,13 @@ import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
-import eastArrowIcon from 'icons/arrows/east.svg';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import Icon from 'ui/shared/chakra/Icon';
 import Tag from 'ui/shared/chakra/Tag';
 import AddressEntityWithTokenFilter from 'ui/shared/entities/address/AddressEntityWithTokenFilter';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import IconSvg from 'ui/shared/IconSvg';
 
 type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean }
 
@@ -70,9 +69,7 @@ const TokenTransferTableItem = ({
         />
       </Td>
       <Td px={ 0 }>
-        <Box my="3px">
-          <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500" isLoading={ isLoading }/>
-        </Box>
+        <IconSvg name="arrows/east" boxSize={ 6 } color="gray.500" mt="3px" isLoading={ isLoading }/>
       </Td>
       <Td>
         <AddressEntityWithTokenFilter

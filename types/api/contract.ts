@@ -97,10 +97,10 @@ export interface SmartContractMethodOutput extends SmartContractMethodInput {
 export interface SmartContractQueryMethodReadSuccess {
   is_error: false;
   result: {
-    names: Array<string>;
+    names: Array<string | [ string, Array<string> ]>;
     output: Array<{
       type: string;
-      value: string;
+      value: string | Array<unknown>;
     }>;
   };
 }
@@ -155,4 +155,26 @@ export interface SmartContractVerificationError {
   compiler_version?: Array<string>;
   constructor_arguments?: Array<string>;
   name?: Array<string>;
+}
+
+export type SolidityscanReport = {
+  scan_report: {
+    scan_status: string;
+    scan_summary: {
+      issue_severity_distribution: {
+        critical: number;
+        gas: number;
+        high: number;
+        informational: number;
+        low: number;
+        medium: number;
+      };
+      lines_analyzed_count: number;
+      scan_time_taken: number;
+      score: string;
+      score_v2: string;
+      threat_score: string;
+    };
+    scanner_reference_url: string;
+  };
 }

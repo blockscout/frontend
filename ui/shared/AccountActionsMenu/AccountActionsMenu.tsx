@@ -1,12 +1,12 @@
-import { Button, Menu, MenuButton, MenuList, Icon, Flex, Skeleton, chakra } from '@chakra-ui/react';
+import { Button, Menu, MenuButton, MenuList, Flex, Skeleton, chakra } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import config from 'configs/app';
-import iconArrow from 'icons/arrows/east-mini.svg';
 import useIsAccountActionAllowed from 'lib/hooks/useIsAccountActionAllowed';
 import * as mixpanel from 'lib/mixpanel/index';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import IconSvg from 'ui/shared/IconSvg';
 
 import PrivateTagMenuItem from './items/PrivateTagMenuItem';
 import PublicTagMenuItem from './items/PublicTagMenuItem';
@@ -44,7 +44,7 @@ const AccountActionsMenu = ({ isLoading, className }: Props) => {
         >
           <Flex alignItems="center">
             <span>More</span>
-            <Icon as={ iconArrow } transform="rotate(-90deg)" boxSize={ 5 } ml={ 1 }/>
+            <IconSvg name="arrows/east-mini" transform="rotate(-90deg)" boxSize={ 5 } ml={ 1 }/>
           </Flex>
         </MenuButton>
       </Skeleton>
