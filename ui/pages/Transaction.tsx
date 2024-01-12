@@ -14,6 +14,7 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import useTabIndexFromQuery from 'ui/shared/Tabs/useTabIndexFromQuery';
+import TxDegraded from 'ui/tx/TxDegraded';
 import TxDetails from 'ui/tx/TxDetails';
 import TxDetailsWrapped from 'ui/tx/TxDetailsWrapped';
 import TxInternals from 'ui/tx/TxInternals';
@@ -77,6 +78,22 @@ const TransactionPageContent = () => {
 
   const titleSecondRow = <TxSubHeading hash={ hash } hasTag={ Boolean(data?.tx_tag) }/>;
 
+  const content = (() => {
+    if (isPlaceholderData) {
+      return (
+        <>
+          <TabsSkeleton tabs={ tabs } mt={ 6 }/>
+          { tabs[tabIndex]?.component }
+        </>
+      );
+    }
+
+    // TODO @tom2drum: add condition for degraded tx
+    return <TxDegraded hash={ hash }/>;
+
+    return <RoutedTabs tabs={ tabs }/>;
+  })();
+
   return (
     <>
       <TextAd mb={ 6 }/>
@@ -86,12 +103,7 @@ const TransactionPageContent = () => {
         contentAfter={ tags }
         secondRow={ titleSecondRow }
       />
-      { isPlaceholderData ? (
-        <>
-          <TabsSkeleton tabs={ tabs } mt={ 6 }/>
-          { tabs[tabIndex]?.component }
-        </>
-      ) : <RoutedTabs tabs={ tabs }/> }
+      { content }
     </>
   );
 };

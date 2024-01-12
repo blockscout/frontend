@@ -2,10 +2,10 @@ import { useColorMode } from '@chakra-ui/react';
 import { jsonRpcProvider } from '@wagmi/core/providers/jsonRpc';
 import { createWeb3Modal, useWeb3ModalTheme, defaultWagmiConfig } from '@web3modal/wagmi/react';
 import React from 'react';
-import type { Chain } from 'wagmi';
 import { configureChains, WagmiConfig } from 'wagmi';
 
 import config from 'configs/app';
+import currentChain from 'lib/web3/currentChain';
 import colors from 'theme/foundations/colors';
 import { BODY_TYPEFACE } from 'theme/foundations/typography';
 import zIndices from 'theme/foundations/zIndices';
@@ -17,31 +17,6 @@ const getConfig = () => {
     if (!feature.isEnabled) {
       throw new Error();
     }
-
-    const currentChain: Chain = {
-      id: Number(config.chain.id),
-      name: config.chain.name || '',
-      network: config.chain.name || '',
-      nativeCurrency: {
-        decimals: config.chain.currency.decimals,
-        name: config.chain.currency.name || '',
-        symbol: config.chain.currency.symbol || '',
-      },
-      rpcUrls: {
-        'public': {
-          http: [ config.chain.rpcUrl || '' ],
-        },
-        'default': {
-          http: [ config.chain.rpcUrl || '' ],
-        },
-      },
-      blockExplorers: {
-        'default': {
-          name: 'Blockscout',
-          url: config.app.baseUrl,
-        },
-      },
-    };
 
     const { chains } = configureChains(
       [ currentChain ],
