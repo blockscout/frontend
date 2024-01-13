@@ -27,7 +27,7 @@ const GasInfoTooltipContent = ({ data, dataUpdatedAt }: Props) => {
           <GridItem color="text_secondary" display="flex" justifyContent="flex-end" columnGap={ 2 }>
             { dayjs(data.gas_price_updated_at).format('MMM DD, HH:mm:ss') }
             { data.gas_prices_update_in !== 0 &&
-              <GasInfoUpdateTimer startTime={ dataUpdatedAt } duration={ data.gas_prices_update_in }/> }
+              <GasInfoUpdateTimer key={ dataUpdatedAt } startTime={ dataUpdatedAt } duration={ data.gas_prices_update_in }/> }
           </GridItem>
         </>
       ) }
