@@ -1,16 +1,17 @@
-import { Box, Button, chakra, Flex, Text } from '@chakra-ui/react';
-import _fromPairs from 'lodash/fromPairs';
+import { Box, Button, chakra, Flex } from '@chakra-ui/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
-import { useForm } from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
 
 import type { MethodFormFields, ContractMethodCallResult } from './types';
 import type { SmartContractMethodInput, SmartContractMethod } from 'types/api/contract';
 
+import config from 'configs/app';
 import * as mixpanel from 'lib/mixpanel/index';
 import IconSvg from 'ui/shared/IconSvg';
 
-import ContractMethodField from './ContractMethodField';
+import ContractMethodCallableRow from './ContractMethodCallableRow';
+import { formatFieldValues, transformFieldsToArgs } from './utils';
 
 interface ResultComponentProps<T extends SmartContractMethod> {
   item: T;
@@ -25,42 +26,9 @@ interface Props<T extends SmartContractMethod> {
   isWrite?: boolean;
 }
 
-const getFieldName = (name: string | undefined, index: number): string => name || String(index);
-
-const sortFields = (data: Array<SmartContractMethodInput>) => ([ a ]: [string, string], [ b ]: [string, string]): 1 | -1 | 0 => {
-  const fieldNames = data.map(({ name }, index) => getFieldName(name, index));
-  const indexA = fieldNames.indexOf(a);
-  const indexB = fieldNames.indexOf(b);
-
-  if (indexA > indexB) {
-    return 1;
-  }
-
-  if (indexA < indexB) {
-    return -1;
-  }
-
-  return 0;
-};
-
-const castFieldValue = (data: Array<SmartContractMethodInput>) => ([ key, value ]: [ string, string ], index: number) => {
-  if (data[index].type.includes('[')) {
-    return [ key, parseArrayValue(value) ];
-  }
-  return [ key, value ];
-};
-
-const parseArrayValue = (value: string) => {
-  try {
-    const parsedResult = JSON.parse(value);
-    if (Array.isArray(parsedResult)) {
-      return parsedResult;
-    }
-    throw new Error('Not an array');
-  } catch (error) {
-    return '';
-  }
-};
+// groupName%groupIndex:inputName%inputIndex
+const getFormFieldName = (input: { index: number; name: string }, group?: { index: number; name: string }) =>
+  `${ group ? `${ group.name }%${ group.index }:` : '' }${ input.name || 'input' }%${ input.index }`;
 
 const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit, resultComponent: ResultComponent, isWrite }: Props<T>) => {
 
@@ -71,15 +39,16 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
     return [
       ...('inputs' in data ? data.inputs : []),
       ...('stateMutability' in data && data.stateMutability === 'payable' ? [ {
-        name: 'value',
+        name: `Send native ${ config.chain.currency.symbol }`,
         type: 'uint256' as const,
         internalType: 'uint256' as const,
+        fieldType: 'native_coin' as const,
       } ] : []),
     ];
   }, [ data ]);
 
-  const { control, handleSubmit, setValue, getValues } = useForm<MethodFormFields>({
-    defaultValues: _fromPairs(inputs.map(({ name }, index) => [ getFieldName(name, index), '' ])),
+  const formApi = useForm<MethodFormFields>({
+    mode: 'onBlur',
   });
 
   const handleTxSettle = React.useCallback(() => {
@@ -91,10 +60,8 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
   }, [ result ]);
 
   const onFormSubmit: SubmitHandler<MethodFormFields> = React.useCallback(async(formData) => {
-    const args = Object.entries(formData)
-      .sort(sortFields(inputs))
-      .map(castFieldValue(inputs))
-      .map(([ , value ]) => value);
+    const formattedData = formatFieldValues(formData, inputs);
+    const args = transformFieldsToArgs(formattedData);
 
     setResult(undefined);
     setLoading(true);
@@ -117,48 +84,99 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
 
   return (
     <Box>
-      <chakra.form
-        noValidate
-        display="flex"
-        columnGap={ 3 }
-        flexDir={{ base: 'column', lg: 'row' }}
-        rowGap={ 2 }
-        alignItems={{ base: 'flex-start', lg: 'center' }}
-        onSubmit={ handleSubmit(onFormSubmit) }
-        flexWrap="wrap"
-        onChange={ handleFormChange }
-      >
-        { inputs.map(({ type, name }, index) => {
-          const fieldName = getFieldName(name, index);
-          return (
-            <ContractMethodField
-              key={ fieldName }
-              name={ fieldName }
-              valueType={ type }
-              placeholder={ `${ name }(${ type })` }
-              control={ control }
-              setValue={ setValue }
-              getValues={ getValues }
-              isDisabled={ isLoading }
-              onChange={ handleFormChange }
-            />
-          );
-        }) }
-        <Button
-          isLoading={ isLoading }
-          loadingText={ isWrite ? 'Write' : 'Query' }
-          variant="outline"
-          size="sm"
-          flexShrink={ 0 }
-          type="submit"
+      <FormProvider { ...formApi }>
+        <chakra.form
+          noValidate
+          onSubmit={ formApi.handleSubmit(onFormSubmit) }
+          onChange={ handleFormChange }
         >
-          { isWrite ? 'Write' : 'Query' }
-        </Button>
-      </chakra.form>
+          <Flex
+            flexDir="column"
+            rowGap={ 3 }
+            mb={ 3 }
+            _empty={{ display: 'none' }}
+          >
+            { inputs.map((input, index) => {
+              const fieldName = getFormFieldName({ name: input.name, index });
+
+              if (input.type === 'tuple' && input.components) {
+                return (
+                  <React.Fragment key={ fieldName }>
+                    { index !== 0 && <><Box h={{ base: 0, lg: 3 }}/><div/></> }
+                    <Box
+                      fontWeight={ 500 }
+                      lineHeight="20px"
+                      py={{ lg: '6px' }}
+                      fontSize="sm"
+                      wordBreak="break-word"
+                    >
+                      { input.name } ({ input.type })
+                    </Box>
+                    { input.components.map((component, componentIndex) => {
+                      const fieldName = getFormFieldName(
+                        { name: component.name, index: componentIndex },
+                        { name: input.name, index },
+                      );
+
+                      return (
+                        <ContractMethodCallableRow
+                          key={ fieldName }
+                          fieldName={ fieldName }
+                          argName={ component.name }
+                          argType={ component.type }
+                          isDisabled={ isLoading }
+                          onChange={ handleFormChange }
+                          isGrouped
+                        />
+                      );
+                    }) }
+                    { index !== inputs.length - 1 && <><Box h={{ base: 0, lg: 3 }}/><div/></> }
+                  </React.Fragment>
+                );
+              }
+
+              return (
+                <ContractMethodCallableRow
+                  key={ fieldName }
+                  fieldName={ fieldName }
+                  fieldType={ input.fieldType }
+                  argName={ input.name }
+                  argType={ input.type }
+                  isDisabled={ isLoading }
+                  isOptional={ input.fieldType === 'native_coin' && inputs.length > 1 }
+                  onChange={ handleFormChange }
+                />
+              );
+            }) }
+          </Flex>
+          <Button
+            isLoading={ isLoading }
+            loadingText={ isWrite ? 'Write' : 'Read' }
+            variant="outline"
+            size="sm"
+            flexShrink={ 0 }
+            width="min-content"
+            px={ 4 }
+            type="submit"
+          >
+            { isWrite ? 'Write' : 'Read' }
+          </Button>
+        </chakra.form>
+      </FormProvider>
       { 'outputs' in data && !isWrite && data.outputs.length > 0 && (
-        <Flex mt={ 3 }>
+        <Flex mt={ 3 } fontSize="sm">
           <IconSvg name="arrows/down-right" boxSize={ 5 } mr={ 1 }/>
-          <Text>{ data.outputs.map(({ type }) => type).join(', ') }</Text>
+          <p>
+            { data.outputs.map(({ type, name }, index) => {
+              return (
+                <>
+                  <chakra.span fontWeight={ 500 }>{ name } </chakra.span>
+                  <span>{ name ? `(${ type })` : type }</span>
+                  { index < data.outputs.length - 1 && <span>, </span> }
+                </>
+              );
+            }) }
+          </p>
         </Flex>
       ) }
       { result && <ResultComponent item={ data } result={ result } onSettle={ handleTxSettle }/> }
