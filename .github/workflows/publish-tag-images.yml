@@ -41,6 +41,8 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
+          build-args: |
+            GIT_TAG=${{ github.ref_name }}
           tags: |
             ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:${{ github.ref_name }}
             ${{ env.DOCKER_REGISTRY }}/${{ env.DOCKER_IMAGE_NAME }}:latest

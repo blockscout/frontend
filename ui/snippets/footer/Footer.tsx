@@ -33,7 +33,7 @@ const Footer = () => {
       icon: 'social/git' as const,
       iconSize: '18px',
       text: 'Contribute',
-      url: 'https://github.com/lukso-network/network-explorer-execution-frontend',
+      url: 'https://github.com/lukso-network/',
     },
     {
       icon: 'social/tweet' as const,
