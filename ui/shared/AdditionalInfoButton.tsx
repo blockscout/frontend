@@ -1,5 +1,4 @@
 import {
-  Icon,
   useColorModeValue,
   chakra,
   Button,
@@ -7,7 +6,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import infoIcon from 'icons/info.svg';
+import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   isOpen?: boolean;
@@ -39,8 +38,8 @@ const AdditionalInfoButton = ({ isOpen, onClick, className, isLoading }: Props, 
       cursor="pointer"
       flexShrink={ 0 }
     >
-      <Icon
-        as={ infoIcon }
+      <IconSvg
+        name="info"
         boxSize={ 5 }
         color="link"
         _hover={{ color: 'link_hovered' }}

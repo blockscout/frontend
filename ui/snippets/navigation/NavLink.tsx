@@ -8,6 +8,7 @@ import { route } from 'nextjs-routes';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { isInternalItem } from 'lib/hooks/useNavItems';
+import IconSvg from 'ui/shared/IconSvg';
 
 import NavLinkIcon from './NavLinkIcon';
 import useColors from './useColors';
@@ -43,6 +44,11 @@ const NavLink = ({ item, isCollapsed, px, className, onClick }: Props) => {
       aria-label={ `${ item.text } link` }
       whiteSpace="nowrap"
       onClick={ onClick }
+      _hover={{
+        '& *': {
+          color: 'link_hovered',
+        },
+      }}
     >
       <Tooltip
         label={ item.text }
@@ -56,7 +62,8 @@ const NavLink = ({ item, isCollapsed, px, className, onClick }: Props) => {
         <HStack spacing={ 3 } overflow="hidden">
           <NavLinkIcon item={ item }/>
           <Text { ...styleProps.textProps }>
-            { item.text }
+            <span>{ item.text }</span>
+            { !isInternalLink && <IconSvg name="arrows/north-east" boxSize={ 4 } color="text_secondary" verticalAlign="middle"/> }
           </Text>
         </HStack>
       </Tooltip>

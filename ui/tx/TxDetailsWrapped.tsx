@@ -65,16 +65,18 @@ const TxDetailsWrapped = ({ data }: Props) => {
           flexWrap="wrap"
         />
       </DetailsInfoItem>
-      <DetailsInfoItem
-        title="Transaction fee"
-        hint="Total transaction fee"
-      >
-        <CurrencyValue
-          value={ data.fee.value }
-          currency={ config.chain.currency.symbol }
-          flexWrap="wrap"
-        />
-      </DetailsInfoItem>
+      { data.fee.value !== null && (
+        <DetailsInfoItem
+          title="Transaction fee"
+          hint="Total transaction fee"
+        >
+          <CurrencyValue
+            value={ data.fee.value }
+            currency={ config.chain.currency.symbol }
+            flexWrap="wrap"
+          />
+        </DetailsInfoItem>
+      ) }
       <TxDetailsGasPrice gasPrice={ data.gas_price }/>
       { data.gas_limit && (
         <DetailsInfoItem

@@ -17,6 +17,9 @@
 /out/
 /public/assets/
 /public/envs.js
+/public/icons/sprite.svg
+/public/icons/README.md
+/analyze
 
 # production
 /build

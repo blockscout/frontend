@@ -4,7 +4,7 @@ import React from 'react';
 import { useAppContext } from 'lib/contexts/app';
 import * as cookies from 'lib/cookies';
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
-import IdenticonGithub from 'ui/shared/IdenticonGithub';
+import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   size: number;
@@ -34,7 +34,7 @@ const UserAvatar = ({ size }: Props) => {
       boxSize={ `${ size }px` }
       borderRadius="full"
       overflow="hidden"
-      fallback={ isImageLoadError || !data?.avatar ? <IdenticonGithub size={ size } seed={ data?.email || 'randomness' } flexShrink={ 0 }/> : undefined }
+      fallback={ isImageLoadError || !data?.avatar ? <IconSvg name="profile" boxSize={ 5 }/> : undefined }
       onError={ handleImageLoadError }
     />
   );

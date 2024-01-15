@@ -29,6 +29,8 @@ export default function useMarketplace() {
   const [ selectedCategoryId, setSelectedCategoryId ] = React.useState<string>(MarketplaceCategory.ALL);
   const [ filterQuery, setFilterQuery ] = React.useState(defaultFilterQuery);
   const [ favoriteApps, setFavoriteApps ] = React.useState<Array<string>>([]);
+  const [ isAppInfoModalOpen, setIsAppInfoModalOpen ] = React.useState<boolean>(false);
+  const [ isDisclaimerModalOpen, setIsDisclaimerModalOpen ] = React.useState<boolean>(false);
 
   const handleFavoriteClick = React.useCallback((id: string, isFavorite: boolean) => {
     const favoriteApps = getFavoriteApps();
@@ -46,10 +48,20 @@ export default function useMarketplace() {
 
   const showAppInfo = React.useCallback((id: string) => {
     setSelectedAppId(id);
+    setIsAppInfoModalOpen(true);
+  }, []);
+
+  const showDisclaimer = React.useCallback((id: string) => {
+    setSelectedAppId(id);
+    setIsDisclaimerModalOpen(true);
   }, []);
 
   const debouncedFilterQuery = useDebounce(filterQuery, 500);
-  const clearSelectedAppId = React.useCallback(() => setSelectedAppId(null), []);
+  const clearSelectedAppId = React.useCallback(() => {
+    setSelectedAppId(null);
+    setIsAppInfoModalOpen(false);
+    setIsDisclaimerModalOpen(false);
+  }, []);
 
   const handleCategoryChange = React.useCallback((newCategory: string) => {
     setSelectedCategoryId(newCategory);
@@ -104,6 +116,9 @@ export default function useMarketplace() {
     clearSelectedAppId,
     favoriteApps,
     onFavoriteClick: handleFavoriteClick,
+    isAppInfoModalOpen,
+    isDisclaimerModalOpen,
+    showDisclaimer,
   }), [
     selectedCategoryId,
     categories,
@@ -118,5 +133,8 @@ export default function useMarketplace() {
     isPlaceholderData,
     showAppInfo,
     debouncedFilterQuery,
+    isAppInfoModalOpen,
+    isDisclaimerModalOpen,
+    showDisclaimer,
   ]);
 }

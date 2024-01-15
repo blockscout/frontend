@@ -1,8 +1,7 @@
-import { Button, Icon } from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react';
 import React from 'react';
 
-import arrowIcon from 'icons/arrows/east-mini.svg';
-import rocketIcon from 'icons/rocket.svg';
+import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   onClick: () => void;
@@ -22,9 +21,9 @@ const TriggerButton = ({ isOpen, onClick }: Props, ref: React.ForwardedRef<HTMLB
       px={ 2 }
       h="32px"
     >
-      <Icon as={ rocketIcon } boxSize={ 5 } mr={ 1 }/>
+      <IconSvg name="rocket" boxSize={ 5 } mr={ 1 }/>
       <span>Info</span>
-      <Icon as={ arrowIcon } transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 } ml={ 1 }/>
+      <IconSvg name="arrows/east-mini" transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 } ml={ 1 }/>
     </Button>
   );
 };

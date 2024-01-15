@@ -17,7 +17,7 @@ const FOOTER_LINKS_URL = app.url + buildExternalAssetFilePath('NEXT_PUBLIC_FOOTE
 const BACKEND_VERSION_API_URL = buildApiUrl('config_backend_version');
 const INDEXING_ALERT_API_URL = buildApiUrl('homepage_indexing_status');
 
-base.describe('with custom links, 4 cols', () => {
+base.describe('with custom links, max cols', () => {
   const test = base.extend({
     context: contextWithEnvs([
       { name: 'NEXT_PUBLIC_FOOTER_LINKS', value: FOOTER_LINKS_URL },
@@ -64,7 +64,7 @@ base.describe('with custom links, 4 cols', () => {
   });
 });
 
-base.describe('with custom links, 2 cols', () => {
+base.describe('with custom links, min cols', () => {
   const test = base.extend({
     context: contextWithEnvs([
       { name: 'NEXT_PUBLIC_FOOTER_LINKS', value: FOOTER_LINKS_URL },

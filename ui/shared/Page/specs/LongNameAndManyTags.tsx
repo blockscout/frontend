@@ -1,13 +1,12 @@
 /* eslint-disable max-len */
-import { Icon } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
 
-import iconVerifiedToken from 'icons/verified_token.svg';
 import { publicTag, privateTag, watchlistName } from 'mocks/address/tag';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EntityTags from 'ui/shared/EntityTags';
+import IconSvg from 'ui/shared/IconSvg';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 
 import PageTitle from '../PageTitle';
@@ -28,7 +27,7 @@ const LongNameAndManyTags = () => {
 
   const contentAfter = (
     <>
-      <Icon as={ iconVerifiedToken } color="green.500" boxSize={ 6 } cursor="pointer"/>
+      <IconSvg name="verified_token" color="green.500" boxSize={ 6 } cursor="pointer" flexShrink={ 0 }/>
       <EntityTags
         data={{
           private_tags: [ privateTag ],

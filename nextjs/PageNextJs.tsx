@@ -7,18 +7,19 @@ import useAdblockDetect from 'lib/hooks/useAdblockDetect';
 import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
 import * as metadata from 'lib/metadata';
 import * as mixpanel from 'lib/mixpanel';
-import useConfigSentry from 'lib/sentry/useConfigSentry';
+import { init as initSentry } from 'lib/sentry/config';
 
 type Props = Route & {
   children: React.ReactNode;
 }
+
+initSentry();
 
 const PageNextJs = (props: Props) => {
   const { title, description, opengraph } = metadata.generate(props);
 
   useGetCsrfToken();
   useAdblockDetect();
-  useConfigSentry();
 
   const isMixpanelInited = mixpanel.useInit();
   mixpanel.useLogPageView(isMixpanelInited);

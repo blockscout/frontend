@@ -21,6 +21,7 @@ const config: Feature<{
   instance: string;
   release: string | undefined;
   environment: string;
+  enableTracing: boolean;
 }> = (() => {
   if (dsn && instance && environment) {
     return Object.freeze({
@@ -30,6 +31,7 @@ const config: Feature<{
       instance,
       release,
       environment,
+      enableTracing: getEnvValue('NEXT_PUBLIC_SENTRY_ENABLE_TRACING') === 'true',
     });
   }
 

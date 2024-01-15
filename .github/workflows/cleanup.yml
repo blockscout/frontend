@@ -29,5 +29,5 @@ jobs:
   cleanup_docker_image:
     uses: blockscout/blockscout-ci-cd/.github/workflows/cleanup_docker.yaml@master
     with:
-      dockerImage: prerelease-$GITHUB_REF_NAME_SLUG
+      dockerImage: review-$GITHUB_REF_NAME_SLUG
     secrets: inherit

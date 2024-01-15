@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { VerifiedContractsFilters } from 'types/api/contracts';
+import type { VerifiedContractsSorting, VerifiedContractsSortingField, VerifiedContractsSortingValue } from 'types/api/verifiedContracts';
 
 import useDebounce from 'lib/hooks/useDebounce';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -16,9 +17,10 @@ import FilterInput from 'ui/shared/filters/FilterInput';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
+import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
+import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';
 import Sort from 'ui/shared/sort/Sort';
-import type { SortField, Sort as TSort } from 'ui/verifiedContracts/utils';
-import { SORT_OPTIONS, sortFn, getNextSortValue } from 'ui/verifiedContracts/utils';
+import { SORT_OPTIONS } from 'ui/verifiedContracts/utils';
 import VerifiedContractsCounters from 'ui/verifiedContracts/VerifiedContractsCounters';
 import VerifiedContractsFilter from 'ui/verifiedContracts/VerifiedContractsFilter';
 import VerifiedContractsList from 'ui/verifiedContracts/VerifiedContractsList';
@@ -28,15 +30,17 @@ const VerifiedContracts = () => {
   const router = useRouter();
   const [ searchTerm, setSearchTerm ] = React.useState(getQueryParamString(router.query.q) || undefined);
   const [ type, setType ] = React.useState(getQueryParamString(router.query.filter) as VerifiedContractsFilters['filter'] || undefined);
-  const [ sort, setSort ] = React.useState<TSort>();
+  const [ sort, setSort ] =
+    React.useState<VerifiedContractsSortingValue | undefined>(getSortValueFromQuery<VerifiedContractsSortingValue>(router.query, SORT_OPTIONS));
 
   const debouncedSearchTerm = useDebounce(searchTerm || '', 300);
 
   const isMobile = useIsMobile();
 
-  const { isError, isPlaceholderData, data, pagination, onFilterChange } = useQueryWithPages({
+  const { isError, isPlaceholderData, data, pagination, onFilterChange, onSortingChange } = useQueryWithPages({
     resourceName: 'verified_contracts',
     filters: { q: debouncedSearchTerm, filter: type },
+    sorting: getSortParamsFromValue<VerifiedContractsSortingValue, VerifiedContractsSortingField, VerifiedContractsSorting['order']>(sort),
     options: {
       placeholderData: generateListStub<'verified_contracts'>(
         VERIFIED_CONTRACT_INFO,
@@ -67,11 +71,10 @@ const VerifiedContracts = () => {
     setType(filter);
   }, [ debouncedSearchTerm, onFilterChange ]);
 
-  const handleSortToggle = React.useCallback((field: SortField) => {
-    return () => {
-      setSort(getNextSortValue(field));
-    };
-  }, []);
+  const handleSortChange = React.useCallback((value?: VerifiedContractsSortingValue) => {
+    setSort(value);
+    onSortingChange(getSortParamsFromValue(value));
+  }, [ onSortingChange ]);
 
   const typeFilter = <VerifiedContractsFilter onChange={ handleTypeChange } defaultValue={ type } isActive={ Boolean(type) }/>;
 
@@ -89,7 +92,7 @@ const VerifiedContracts = () => {
     <Sort
       options={ SORT_OPTIONS }
       sort={ sort }
-      setSort={ setSort }
+      setSort={ handleSortChange }
     />
   );
 
@@ -112,15 +115,13 @@ const VerifiedContracts = () => {
     </>
   );
 
-  const sortedData = data?.items.slice().sort(sortFn(sort));
-
-  const content = sortedData ? (
+  const content = data?.items ? (
     <>
       <Show below="lg" ssr={ false }>
-        <VerifiedContractsList data={ sortedData } isLoading={ isPlaceholderData }/>
+        <VerifiedContractsList data={ data.items } isLoading={ isPlaceholderData }/>
       </Show>
       <Hide below="lg" ssr={ false }>
-        <VerifiedContractsTable data={ sortedData } sort={ sort } onSortToggle={ handleSortToggle } isLoading={ isPlaceholderData }/>
+        <VerifiedContractsTable data={ data.items } sort={ sort } setSorting={ handleSortChange } isLoading={ isPlaceholderData }/>
       </Hide>
     </>
   ) : null;

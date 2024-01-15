@@ -1,17 +1,13 @@
-import { Box, Flex, Icon, Text, useColorModeValue, IconButton, chakra, Tooltip } from '@chakra-ui/react';
+import { Box, Flex, Text, useColorModeValue, IconButton, chakra, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 
-import CrossIcon from 'icons/cross.svg';
-import jsonIcon from 'icons/files/json.svg';
-import placeholderIcon from 'icons/files/placeholder.svg';
-import solIcon from 'icons/files/sol.svg';
-import yulIcon from 'icons/files/yul.svg';
-import infoIcon from 'icons/info.svg';
+import type { IconName } from 'ui/shared/IconSvg';
+import IconSvg from 'ui/shared/IconSvg';
 
-const FILE_ICONS: Record<string, React.FunctionComponent<React.SVGAttributes<SVGElement>>> = {
-  '.json': jsonIcon,
-  '.sol': solIcon,
-  '.yul': yulIcon,
+const FILE_ICONS: Record<string, IconName> = {
+  '.json': 'files/json',
+  '.sol': 'files/sol',
+  '.yul': 'files/yul',
 };
 
 function getFileExtension(fileName: string) {
@@ -44,7 +40,7 @@ const FileSnippet = ({ file, className, index, onRemove, isDisabled, error }: Pr
   }, []);
 
   const fileExtension = getFileExtension(file.name);
-  const fileIcon = FILE_ICONS[fileExtension] || placeholderIcon;
+  const fileIcon = FILE_ICONS[fileExtension] || 'files/placeholder';
   const iconColor = useColorModeValue('gray.600', 'gray.400');
 
   return (
@@ -55,8 +51,8 @@ const FileSnippet = ({ file, className, index, onRemove, isDisabled, error }: Pr
       alignItems="center"
       textAlign="left"
     >
-      <Icon
-        as={ fileIcon }
+      <IconSvg
+        name={ fileIcon }
         boxSize="74px"
         color={ error ? 'error' : iconColor }
         mr={ 2 }
@@ -83,13 +79,13 @@ const FileSnippet = ({ file, className, index, onRemove, isDisabled, error }: Pr
               maxW="320px"
             >
               <Box cursor="pointer" display="inherit" onClick={ handleErrorHintIconClick } ml={ 1 }>
-                <Icon as={ infoIcon } boxSize={ 5 } color="error"/>
+                <IconSvg name="info" boxSize={ 5 } color="error"/>
               </Box>
             </Tooltip>
           ) }
           <IconButton
             aria-label="remove"
-            icon={ <CrossIcon/> }
+            icon={ <IconSvg name="cross" boxSize={ 6 }/> }
             boxSize={ 6 }
             variant="simple"
             display="inline-block"

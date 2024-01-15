@@ -8,15 +8,13 @@ import {
   Button,
   List,
   ListItem,
-  Icon,
   useDisclosure,
   Input,
 } from '@chakra-ui/react';
 import React from 'react';
 
-import iconEastMini from 'icons/arrows/east-mini.svg';
-import iconCheck from 'icons/check.svg';
 import { times } from 'lib/html-entities';
+import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   onClick: (power: number) => void;
@@ -80,7 +78,7 @@ const ContractMethodFieldZeroes = ({ onClick, isDisabled }: Props) => {
             onClick={ onToggle }
             isDisabled={ isDisabled }
           >
-            <Icon as={ iconEastMini } transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } boxSize={ 6 }/>
+            <IconSvg name="arrows/east-mini" transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } boxSize={ 6 }/>
           </Button>
         </PopoverTrigger>
         <Portal>
@@ -99,7 +97,7 @@ const ContractMethodFieldZeroes = ({ onClick, isDisabled }: Props) => {
                     cursor="pointer"
                   >
                     <span>10*{ id }</span>
-                    { selectedOption === id && <Icon as={ iconCheck } boxSize={ 6 } color="blue.600"/> }
+                    { selectedOption === id && <IconSvg name="check" boxSize={ 6 } color="blue.600"/> }
                   </ListItem>
                 )) }
                 <ListItem

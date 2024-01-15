@@ -265,7 +265,7 @@
         },
         {
             "type": "npm",
-            "script": "format-svg",
+            "script": "svg:format",
             "problemMatcher": [],
             "label": "format svg",
             "detail": "format svg files with svgo",
@@ -318,6 +318,7 @@
               "main.L2",
               "poa_core",
               "eth_goerli",
+              "sepolia",
               "eth",
               "rootstock",
               "polygon",
