@@ -46,6 +46,14 @@ export default function useNavItems(): ReturnType {
       icon: 'transactions',
       isActive: pathname === '/txs' || pathname === '/tx/[hash]',
     };
+    const userOps: NavItem | null = config.features.userOps.isEnabled ? {
+      text: 'User operations',
+      nextRoute: { pathname: '/ops' as const },
+      // change!!!
+      icon: 'top-accounts',
+      isActive: pathname === '/ops' || pathname === '/op/[hash]',
+    } : null;
+
     const verifiedContracts: NavItem | null =
      {
        text: 'Verified contracts',
@@ -64,6 +72,7 @@ export default function useNavItems(): ReturnType {
       blockchainNavItems = [
         [
           txs,
+          userOps,
           blocks,
           {
             text: 'Txn batches',
@@ -71,7 +80,7 @@ export default function useNavItems(): ReturnType {
             icon: 'txn_batches',
             isActive: pathname === '/zkevm-l2-txn-batches' || pathname === '/zkevm-l2-txn-batch/[number]',
           },
-        ],
+        ].filter(Boolean),
         [
           topAccounts,
           verifiedContracts,
@@ -95,6 +104,7 @@ export default function useNavItems(): ReturnType {
           { text: 'Output roots', nextRoute: { pathname: '/l2-output-roots' as const }, icon: 'output_roots', isActive: pathname === '/l2-output-roots' },
         ],
         [
+          userOps,
           topAccounts,
           verifiedContracts,
           ensLookup,
@@ -103,6 +113,7 @@ export default function useNavItems(): ReturnType {
     } else {
       blockchainNavItems = [
         txs,
+        userOps,
         blocks,
         topAccounts,
         verifiedContracts,

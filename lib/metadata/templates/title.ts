@@ -37,6 +37,8 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/l2-withdrawals': 'withdrawals (L2 > L1)',
   '/zkevm-l2-txn-batches': 'zkEvm L2 Tx batches',
   '/zkevm-l2-txn-batch/[number]': 'zkEvm L2 Tx batch %number%',
+  '/ops': 'user operations',
+  '/op/[hash]': 'user operation %hash%',
   '/404': 'error - page not found',
   '/name-domains': 'domains search and resolve',
   '/name-domains/[name]': '%name% domain details',
