@@ -1,4 +1,4 @@
-import { GridItem, chakra, useColorModeValue } from '@chakra-ui/react';
+import { GridItem, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { GasPriceInfo } from 'types/api/stats';
@@ -11,8 +11,6 @@ interface Props {
 }
 
 const GasInfoRow = ({ name, info }: Props) => {
-  const labelColor = useColorModeValue('blue.100', 'blue.600');
-
   const content = (() => {
     if (!info || info.price === null) {
       return 'N/A';
@@ -32,8 +30,8 @@ const GasInfoRow = ({ name, info }: Props) => {
 
   return (
     <>
-      <GridItem color={ labelColor }>{ name }</GridItem>
-      <GridItem textAlign="right">{ content }</GridItem>
+      <GridItem color="blue.100">{ name }</GridItem>
+      <GridItem color="text" textAlign="right">{ content }</GridItem>
     </>
   );
 };

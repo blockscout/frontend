@@ -1,4 +1,4 @@
-import { Flex, LightMode, Link, Skeleton, Tooltip, chakra, useDisclosure } from '@chakra-ui/react';
+import { Flex, Link, Skeleton, Tooltip, chakra, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
@@ -79,26 +79,24 @@ const TopBarStats = () => {
       { data?.gas_prices && data.gas_prices.average !== null && config.UI.homepage.showGasTracker && (
         <Skeleton isLoaded={ !isPlaceholderData }>
           <chakra.span color="text_secondary">Gas </chakra.span>
-          <LightMode>
-            <Tooltip
-              label={ <GasInfoTooltipContent data={ data } dataUpdatedAt={ dataUpdatedAt }/> }
-              hasArrow={ false }
-              borderRadius="md"
-              offset={ [ 0, 16 ] }
-              bgColor="blackAlpha.900"
-              p={ 0 }
-              isOpen={ isOpen }
+          <Tooltip
+            label={ <GasInfoTooltipContent data={ data } dataUpdatedAt={ dataUpdatedAt }/> }
+            hasArrow={ false }
+            borderRadius="md"
+            offset={ [ 0, 16 ] }
+            bgColor="blackAlpha.900"
+            p={ 0 }
+            isOpen={ isOpen }
+          >
+            <Link
+              _hover={{ textDecoration: 'none', color: 'link_hovered' }}
+              onClick={ handleClick }
+              onMouseEnter={ onOpen }
+              onMouseLeave={ onClose }
             >
-              <Link
-                _hover={{ textDecoration: 'none', color: 'link_hovered' }}
-                onClick={ handleClick }
-                onMouseEnter={ onOpen }
-                onMouseLeave={ onClose }
-              >
-                { data.gas_prices.average.fiat_price ? `$${ data.gas_prices.average.fiat_price }` : `${ data.gas_prices.average.price } Gwei` }
-              </Link>
-            </Tooltip>
-          </LightMode>
+              { data.gas_prices.average.fiat_price ? `$${ data.gas_prices.average.fiat_price }` : `${ data.gas_prices.average.price } Gwei` }
+            </Link>
+          </Tooltip>
         </Skeleton>
       ) }
     </Flex>
