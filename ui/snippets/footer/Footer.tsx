@@ -95,7 +95,7 @@ const Footer = () => {
         <Link fontSize="xs" href="https://lukso.network/">lukso.network</Link>
         <Text mt={ 3 } fontSize="xs">
           Execution explorer is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for LUKSO Networks.
-          It`&apos;`s the <Link fontSize="xs" href="https://www.blockscout.com/">Blockscout</Link> explorer fork.
+          It is the <Link fontSize="xs" href="https://www.blockscout.com/">Blockscout</Link> explorer fork.
         </Text>
         <VStack spacing={ 1 } mt={ 6 } alignItems="start">
           { apiVersionUrl && (
