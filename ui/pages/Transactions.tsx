@@ -64,7 +64,7 @@ const Transactions = () => {
         <TxsWithFrontendSorting query={ txsQuery } showSocketInfo={ txsQuery.pagination.page === 1 } socketInfoNum={ num } socketInfoAlert={ socketAlert }/> },
     {
       id: 'pending',
-      title: 'Pending',
+      title: 'Rejected',
       component: (
         <TxsWithFrontendSorting
           query={ txsQuery }

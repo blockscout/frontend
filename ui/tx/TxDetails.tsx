@@ -114,6 +114,14 @@ const TxDetails = () => {
     </Tooltip>
   ) : null;
 
+  const getTxStatus = () => {
+    if (!data.block && data.error) {
+      return 'error';
+    } else {
+      return data.status;
+    }
+  };
+
   return (
     <>
       { config.chain.isTestnet && (
@@ -133,7 +141,7 @@ const TxDetails = () => {
           flexWrap="nowrap"
           isLoading={ isPlaceholderData }
         >
-          { data.status === null && <Spinner mr={ 2 } size="sm" flexShrink={ 0 }/> }
+          { (data.status === null && !data.error) && <Spinner mr={ 2 } size="sm" flexShrink={ 0 }/> }
           <Skeleton isLoaded={ !isPlaceholderData } overflow="hidden">
             <HashStringShortenDynamic hash={ data.hash }/>
           </Skeleton>
@@ -144,7 +152,7 @@ const TxDetails = () => {
           hint="Current transaction state: Success, Failed (Error), or Pending (In Process)"
           isLoading={ isPlaceholderData }
         >
-          <TxStatus status={ data.status } errorText={ data.status === 'error' ? data.result : undefined } isLoading={ isPlaceholderData }/>
+          <TxStatus status={ getTxStatus() } errorText={ data.status === 'error' ? data.result : undefined } isLoading={ isPlaceholderData }/>
           { data.method && (
             <Tag colorScheme={ data.method === 'Multicall' ? 'teal' : 'gray' } isLoading={ isPlaceholderData } isTruncated ml={ 3 }>
               { data.method }
@@ -170,6 +178,14 @@ const TxDetails = () => {
             hint="The revert reason of the transaction"
           >
             <TxRevertReason { ...data.revert_reason }/>
+          </DetailsInfoItem>
+        ) }
+        { !data.block && data.error && (
+          <DetailsInfoItem
+            title="Revert reason"
+            hint="The revert reason of the transaction"
+          >
+            <TxRevertReason raw={ data.error }/>
           </DetailsInfoItem>
         ) }
         <DetailsInfoItem

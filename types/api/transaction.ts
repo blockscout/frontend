@@ -76,6 +76,7 @@ export type Transaction = {
   zkevm_sequence_hash?: string;
   near_receipt_hash?: string;
   near_transaction_hash?: string;
+  error?: string;
 }
 
 export const ZKEVM_L2_TX_STATUSES = [ 'Confirmed by Sequencer', 'L1 Confirmed' ];
