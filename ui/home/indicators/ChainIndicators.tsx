@@ -3,6 +3,7 @@ import React from 'react';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
+import { HOMEPAGE_STATS } from 'stubs/stats';
 import Hint from 'ui/shared/Hint';
 
 import ChainIndicatorChartContainer from './ChainIndicatorChartContainer';
@@ -29,7 +30,17 @@ const ChainIndicators = () => {
   const indicator = indicators.find(({ id }) => id === selectedIndicator);
 
   const queryResult = useFetchChartData(indicator);
-  const statsQueryResult = useApiQuery('homepage_stats');
+  const statsQueryResult = useApiQuery('homepage_stats', {
+    fetchParams: {
+      headers: {
+        'updated-gas-oracle': 'true',
+      },
+    },
+    queryOptions: {
+      refetchOnMount: false,
+      placeholderData: HOMEPAGE_STATS,
+    },
+  });
 
   const bgColorDesktop = useColorModeValue('white', 'gray.900');
   const bgColorMobile = useColorModeValue('white', 'black');

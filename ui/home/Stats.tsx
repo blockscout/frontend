@@ -16,8 +16,14 @@ const hasGasTracker = config.UI.homepage.showGasTracker;
 const hasAvgBlockTime = config.UI.homepage.showAvgBlockTime;
 
 const Stats = () => {
-  const { data, isPlaceholderData, isError } = useApiQuery('homepage_stats', {
+  const { data, isPlaceholderData, isError, dataUpdatedAt } = useApiQuery('homepage_stats', {
+    fetchParams: {
+      headers: {
+        'updated-gas-oracle': 'true',
+      },
+    },
     queryOptions: {
+      refetchOnMount: false,
       placeholderData: HOMEPAGE_STATS,
     },
   });
@@ -45,7 +51,19 @@ const Stats = () => {
     !data.gas_prices && itemsCount--;
     data.rootstock_locked_btc && itemsCount++;
     const isOdd = Boolean(itemsCount % 2);
-    const gasLabel = hasGasTracker && data.gas_prices ? <GasInfoTooltipContent gasPrices={ data.gas_prices }/> : null;
+    const gasLabel = hasGasTracker && data.gas_prices ? <GasInfoTooltipContent data={ data } dataUpdatedAt={ dataUpdatedAt }/> : null;
+
+    const gasPriceText = (() => {
+      if (data.gas_prices?.average?.fiat_price) {
+        return `$${ data.gas_prices.average.fiat_price }`;
+      }
+
+      if (data.gas_prices?.average?.price) {
+        return `${ data.gas_prices.average.price.toLocaleString() } Gwei`;
+      }
+
+      return 'N/A';
+    })();
 
     content = (
       <>
@@ -92,7 +110,7 @@ const Stats = () => {
           <StatsItem
             icon="gas"
             title="Gas tracker"
-            value={ data.gas_prices.average !== null ? `${ Number(data.gas_prices.average).toLocaleString() } Gwei` : 'N/A' }
+            value={ gasPriceText }
             _last={ isOdd ? lastItemTouchStyle : undefined }
             tooltipLabel={ gasLabel }
             isLoading={ isPlaceholderData }
