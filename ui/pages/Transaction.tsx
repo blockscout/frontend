@@ -5,6 +5,7 @@ import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
+import { SECOND } from 'lib/consts';
 import { useAppContext } from 'lib/contexts/app';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { TX } from 'stubs/tx';
@@ -29,18 +30,22 @@ const TransactionPageContent = () => {
   const appProps = useAppContext();
 
   const hash = getQueryParamString(router.query.hash);
-
-  const { data, isPlaceholderData, isError } = useApiQuery('tx', {
+  const { data, isPlaceholderData, isError, error, errorUpdateCount } = useApiQuery('tx', {
     pathParams: { hash },
     queryOptions: {
       enabled: Boolean(hash),
       placeholderData: TX,
+      // TODO @tom2drum: do only one request when refetching (disable retries)
+      refetchInterval: (query): number | false => {
+        return query.state.status === 'error' && query.state.errorUpdateCount > 0 ? 15 * SECOND : false;
+      },
     },
   });
 
+  const showDegradedView = (isError || isPlaceholderData) && errorUpdateCount > 0;
+
   const tabs: Array<RoutedTab> = (() => {
-    // TODO @tom2drum: add condition for degraded tx
-    const detailsComponent = isError ? <TxDetailsDegraded hash={ hash }/> : <TxDetails/>;
+    const detailsComponent = showDegradedView ? <TxDetailsDegraded hash={ hash } originalError={ error }/> : <TxDetails/>;
 
     return [
       {
@@ -84,7 +89,7 @@ const TransactionPageContent = () => {
   const titleSecondRow = <TxSubHeading hash={ hash } hasTag={ Boolean(data?.tx_tag) }/>;
 
   const content = (() => {
-    if (isPlaceholderData) {
+    if (isPlaceholderData && !showDegradedView) {
       return (
         <>
           <TabsSkeleton tabs={ tabs } mt={ 6 }/>
@@ -95,6 +100,10 @@ const TransactionPageContent = () => {
 
     return <RoutedTabs tabs={ tabs }/>;
   })();
+
+  if (error?.status === 422) {
+    throw Error('Invalid tx hash', { cause: error as unknown as Error });
+  }
 
   return (
     <>

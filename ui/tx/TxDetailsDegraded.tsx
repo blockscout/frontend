@@ -5,16 +5,18 @@ import type { Chain, GetBlockReturnType, GetTransactionReturnType, TransactionRe
 
 import type { Transaction } from 'types/api/transaction';
 
+import type { ResourceError } from 'lib/api/resources';
 import dayjs from 'lib/date/dayjs';
 import hexToDecimal from 'lib/hexToDecimal';
 import { publicClient } from 'lib/web3/client';
 import { GET_BLOCK, GET_TRANSACTION, GET_TRANSACTION_RECEIPT, GET_TRANSACTION_CONFIRMATIONS } from 'stubs/RPC';
+import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import ServiceDegradationAlert from 'ui/shared/ServiceDegradationAlert';
 
 import TxInfo from './details/TxInfo';
 
 type RpcResponseType = [
-  GetTransactionReturnType<Chain, 'latest'>,
+  GetTransactionReturnType<Chain, 'latest'> | null,
   TransactionReceipt | null,
   bigint,
   GetBlockReturnType<Chain, false, 'latest'> | null,
@@ -22,18 +24,21 @@ type RpcResponseType = [
 
 interface Props {
   hash: string;
+  originalError: ResourceError | null;
 }
 
-const TxDetailsDegraded = ({ hash }: Props) => {
+// TODO @tom2drum try to write tests
 
-  const query = useQuery<RpcResponseType, unknown, Transaction>({
+const TxDetailsDegraded = ({ hash, originalError }: Props) => {
+
+  const query = useQuery<RpcResponseType, unknown, Transaction | null>({
     queryKey: [ 'RPC', 'tx', { hash } ],
     queryFn: async() => {
       const tx = await publicClient.getTransaction({ hash: hash as `0x${ string }` });
 
       return Promise.all([
         tx,
-        publicClient.getTransactionReceipt({ hash: hash as `0x${ string }` }), // TODO @tom2drum pending tx case when receipt is not available
+        publicClient.getTransactionReceipt({ hash: hash as `0x${ string }` }),
         publicClient.getTransactionConfirmations({ hash: hash as `0x${ string }` }),
         publicClient.getBlock({ blockHash: tx.blockHash }),
       ]);
@@ -41,8 +46,12 @@ const TxDetailsDegraded = ({ hash }: Props) => {
     select: (response) => {
       const [ tx, txReceipt, txConfirmations, block ] = response;
 
+      if (!tx) {
+        return null;
+      }
+
       const status = (() => {
-        if (!tx.blockNumber) {
+        if (!tx?.blockNumber) {
           return null;
         }
 
@@ -111,11 +120,21 @@ const TxDetailsDegraded = ({ hash }: Props) => {
     refetchOnMount: false,
   });
 
+  if (!query.data) {
+    if (originalError?.status === 404) {
+      throw Error('Tx not found', { cause: { status: 404 } as unknown as Error });
+    }
+
+    return <DataFetchAlert/>;
+  }
+
   return (
     <>
-      <Skeleton mb={ 6 } isLoaded={ !query.isPlaceholderData }>
-        <ServiceDegradationAlert/>
-      </Skeleton>
+      { originalError?.status !== 404 && (
+        <Skeleton mb={ 6 } isLoaded={ !query.isPlaceholderData }>
+          <ServiceDegradationAlert/>
+        </Skeleton>
+      ) }
       <TxInfo data={ query.data } isLoading={ query.isPlaceholderData }/>
     </>
   );
