@@ -1,4 +1,4 @@
-import { Box, Flex, Icon, IconButton, Skeleton, Tooltip } from '@chakra-ui/react';
+import { Box, Flex, IconButton, Skeleton, Tooltip } from '@chakra-ui/react';
 import { useQueryClient, useIsFetching } from '@tanstack/react-query';
 import _sumBy from 'lodash/sumBy';
 import NextLink from 'next/link';
@@ -7,11 +7,11 @@ import React from 'react';
 
 import type { Address } from 'types/api/address';
 
-import walletIcon from 'icons/wallet.svg';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import IconSvg from 'ui/shared/IconSvg';
 
 import useFetchTokens from '../utils/useFetchTokens';
 import TokenSelectDesktop from './TokenSelectDesktop';
@@ -69,7 +69,7 @@ const TokenSelect = ({ onClick }: Props) => {
               size="sm"
               pl="6px"
               pr="6px"
-              icon={ <Icon as={ walletIcon } boxSize={ 5 }/> }
+              icon={ <IconSvg name="wallet" boxSize={ 5 }/> }
               as="a"
               onClick={ handleIconButtonClick }
             />

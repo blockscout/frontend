@@ -16,7 +16,7 @@ import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import useTabIndexFromQuery from 'ui/shared/Tabs/useTabIndexFromQuery';
 import NovesTxAssetFlows from 'ui/tx/Noves/NovesTxAssetFlows';
-import NovesTxTitleSecondRow from 'ui/tx/Noves/NovesTxTitleSecondRow';
+//import NovesTxTitleSecondRow from 'ui/tx/Noves/NovesTxTitleSecondRow';
 import NovesUseFetchTranslate from 'ui/tx/Noves/NovesUseFetchTranslate';
 import { NovesGetFlowCount } from 'ui/tx/Noves/utils/NovesGenerateFlowViewData';
 import TxDetails from 'ui/tx/TxDetails';
@@ -25,6 +25,7 @@ import TxInternals from 'ui/tx/TxInternals';
 import TxLogs from 'ui/tx/TxLogs';
 import TxRawTrace from 'ui/tx/TxRawTrace';
 import TxState from 'ui/tx/TxState';
+import TxSubHeading from 'ui/tx/TxSubHeading';
 import TxTokenTransfer from 'ui/tx/TxTokenTransfer';
 
 const TransactionPageContent = () => {
@@ -86,7 +87,8 @@ const TransactionPageContent = () => {
     };
   }, [ appProps.referrer ]);
 
-  const titleSecondRow = <NovesTxTitleSecondRow fetchTranslate={ fetchTranslate } hash={ hash } txTag={ data?.tx_tag }/>;
+  //const titleSecondRow = <NovesTxTitleSecondRow fetchTranslate={ fetchTranslate } hash={ hash } txTag={ data?.tx_tag }/>;
+  const titleSecondRow = <TxSubHeading hash={ hash } hasTag={ Boolean(data?.tx_tag) }/>;
 
   return (
     <>

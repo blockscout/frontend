@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { GasPrices } from 'types/api/stats';
 
-const StatsGasPrices = ({ gasPrices }: {gasPrices: GasPrices}) => {
+const GasInfoTooltipContent = ({ gasPrices }: {gasPrices: GasPrices}) => {
   const nameStyleProps = {
     color: useColorModeValue('blue.100', 'blue.600'),
   };
@@ -11,13 +11,13 @@ const StatsGasPrices = ({ gasPrices }: {gasPrices: GasPrices}) => {
   return (
     <Grid templateColumns="repeat(2, max-content)" rowGap={ 2 } columnGap={ 4 } padding={ 4 } fontSize="xs">
       <GridItem { ...nameStyleProps }>Slow</GridItem>
-      <GridItem>{ `${ gasPrices.slow } Gwei` }</GridItem>
+      <GridItem>{ gasPrices.slow !== null ? `${ gasPrices.slow } Gwei` : 'N/A' }</GridItem>
       <GridItem { ...nameStyleProps }>Average</GridItem>
-      <GridItem>{ `${ gasPrices.average } Gwei` }</GridItem>
+      <GridItem>{ gasPrices.average !== null ? `${ gasPrices.average } Gwei` : 'N/A' }</GridItem>
       <GridItem { ...nameStyleProps }>Fast</GridItem>
-      <GridItem>{ `${ gasPrices.fast } Gwei` }</GridItem>
+      <GridItem>{ gasPrices.fast !== null ? `${ gasPrices.fast } Gwei` : 'N/A' }</GridItem>
     </Grid>
   );
 };
 
-export default StatsGasPrices;
+export default React.memo(GasInfoTooltipContent);

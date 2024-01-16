@@ -9,11 +9,11 @@ export function ad(): CspDev.DirectiveDescriptor {
     'connect-src': [
       'coinzilla.com',
       '*.coinzilla.com',
-      'request-global.czilladx.com',
+      'https://request-global.czilladx.com',
       '*.slise.xyz',
     ],
     'frame-src': [
-      'request-global.czilladx.com',
+      'https://request-global.czilladx.com',
     ],
     'script-src': [
       'coinzillatag.com',
@@ -27,7 +27,7 @@ export function ad(): CspDev.DirectiveDescriptor {
       'cdn.coinzilla.io',
     ],
     'font-src': [
-      'request-global.czilladx.com',
+      'https://request-global.czilladx.com',
     ],
   };
 }

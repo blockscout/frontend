@@ -1,4 +1,4 @@
-import { Box, Flex, Icon, Tooltip } from '@chakra-ui/react';
+import { Box, Flex, Tooltip } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
@@ -9,8 +9,6 @@ import type { PaginationParams } from 'ui/shared/pagination/types';
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
-import iconSuccess from 'icons/status/success.svg';
-import iconVerifiedToken from 'icons/verified_token.svg';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import useContractTabs from 'lib/hooks/useContractTabs';
@@ -30,6 +28,7 @@ import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EntityTags from 'ui/shared/EntityTags';
+import IconSvg from 'ui/shared/IconSvg';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -189,7 +188,7 @@ const TokenPageContent = () => {
           return (
             <>
               <span>Contract</span>
-              <Icon as={ iconSuccess } boxSize="14px" color="green.500" ml={ 1 }/>
+              <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 }/>
             </>
           );
         }
@@ -250,7 +249,7 @@ const TokenPageContent = () => {
       { verifiedInfoQuery.data?.tokenAddress && (
         <Tooltip label={ `Information on this token has been verified by ${ config.chain.name }` }>
           <Box boxSize={ 6 }>
-            <Icon as={ iconVerifiedToken } color="green.500" boxSize={ 6 } cursor="pointer"/>
+            <IconSvg name="verified_token" color="green.500" boxSize={ 6 } cursor="pointer"/>
           </Box>
         </Tooltip>
       ) }

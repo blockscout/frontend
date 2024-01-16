@@ -58,9 +58,17 @@ import type {
 } from 'types/api/token';
 import type { TokensResponse, TokensFilters, TokensSorting, TokenInstanceTransferResponse, TokensBridgedFilters } from 'types/api/tokens';
 import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
-import type { TransactionsResponseValidated, TransactionsResponsePending, Transaction, TransactionsResponseWatchlist } from 'types/api/transaction';
+import type {
+  TransactionsResponseValidated,
+  TransactionsResponsePending,
+  Transaction,
+  TransactionsResponseWatchlist,
+  TransactionsSorting,
+} from 'types/api/transaction';
+import type { TxInterpretationResponse } from 'types/api/txInterpretation';
 import type { TTxsFilters } from 'types/api/txsFilters';
 import type { TxStateChanges } from 'types/api/txStateChanges';
+import type { VerifiedContractsSorting } from 'types/api/verifiedContracts';
 import type { VisualizedContract } from 'types/api/visualization';
 import type { WithdrawalsResponse, WithdrawalsCounters } from 'types/api/withdrawals';
 import type { ZkEvmL2TxnBatch, ZkEvmL2TxnBatchesItem, ZkEvmL2TxnBatchesResponse, ZkEvmL2TxnBatchTxs } from 'types/api/zkEvmL2TxnBatches';
@@ -238,6 +246,10 @@ export const RESOURCES = {
     path: '/api/v2/transactions/:hash/state-changes',
     pathParams: [ 'hash' as const ],
     filterFields: [],
+  },
+  tx_interpretation: {
+    path: '/api/v2/transactions/:hash/summary',
+    pathParams: [ 'hash' as const ],
   },
   withdrawals: {
     path: '/api/v2/withdrawals',
@@ -644,6 +656,7 @@ Q extends 'tx_logs' ? LogsResponseTx :
 Q extends 'tx_token_transfers' ? TokenTransferResponse :
 Q extends 'tx_raw_trace' ? RawTracesResponse :
 Q extends 'tx_state_changes' ? TxStateChanges :
+Q extends 'tx_interpretation' ? TxInterpretationResponse :
 Q extends 'addresses' ? AddressesResponse :
 Q extends 'address' ? Address :
 Q extends 'address_counters' ? AddressCounters :
@@ -725,5 +738,7 @@ never;
 export type PaginationSorting<Q extends PaginatedResources> =
 Q extends 'tokens' ? TokensSorting :
 Q extends 'tokens_bridged' ? TokensSorting :
+Q extends 'verified_contracts' ? VerifiedContractsSorting :
+Q extends 'address_txs' ? TransactionsSorting :
 never;
 /* eslint-enable @typescript-eslint/indent */

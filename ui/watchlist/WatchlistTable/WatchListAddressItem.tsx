@@ -5,14 +5,12 @@ import React from 'react';
 import type { WatchlistAddress } from 'types/api/account';
 
 import config from 'configs/app';
-import TokensIcon from 'icons/tokens.svg';
-import WalletIcon from 'icons/wallet.svg';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import { nbsp } from 'lib/html-entities';
-import Icon from 'ui/shared/chakra/Icon';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
+import IconSvg from 'ui/shared/IconSvg';
 
 const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isLoading?: boolean }) => {
   const nativeTokenData = React.useMemo(() => ({
@@ -51,7 +49,7 @@ const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isL
       </Flex>
       { item.tokens_count && (
         <HStack spacing={ 2 } fontSize="sm" pl={ 7 }>
-          <Icon as={ TokensIcon } boxSize={ 5 } isLoading={ isLoading } borderRadius="sm"/>
+          <IconSvg name="tokens" boxSize={ 5 } isLoading={ isLoading } borderRadius="sm"/>
           <Skeleton isLoaded={ !isLoading } display="inline-flex">
             <span>{ `Tokens:${ nbsp }` + item.tokens_count + (item.tokens_overflow ? '+' : '') }</span>
             <Text variant="secondary" fontWeight={ 400 }>{ `${ nbsp }($${ BigNumber(item.tokens_fiat_value).toFormat(2) })` }</Text>
@@ -60,7 +58,7 @@ const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isL
       ) }
       { item.tokens_fiat_value && (
         <HStack spacing={ 2 } fontSize="sm" pl={ 7 }>
-          <Icon boxSize={ 5 } as={ WalletIcon } isLoading={ isLoading }/>
+          <IconSvg boxSize={ 5 } name="wallet" isLoading={ isLoading }/>
           <Skeleton isLoaded={ !isLoading } display="inline-flex">
             <Text>{ `Net worth:${ nbsp }` }
               {

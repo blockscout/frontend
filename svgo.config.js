@@ -5,11 +5,11 @@ module.exports = {
       params: {
         overrides: {
           removeViewBox: false,
+          removeHiddenElems: false,
         },
       },
     },
     'removeDimensions',
-    'prefixIds',
   ],
   js2svg: {
     indent: 2,

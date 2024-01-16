@@ -1,12 +1,11 @@
-import { Flex, Button, Icon, chakra, Popover, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure } from '@chakra-ui/react';
+import { Flex, Button, chakra, Popover, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
 import type { NetworkExplorer as TNetworkExplorer } from 'types/networks';
 
 import config from 'configs/app';
-import arrowIcon from 'icons/arrows/east-mini.svg';
-import explorerIcon from 'icons/explorer.svg';
 import stripTrailingSlash from 'lib/stripTrailingSlash';
+import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/LinkExternal';
 
 interface Props {
@@ -46,8 +45,8 @@ const NetworkExplorers = ({ className, type, pathParam }: Props) => {
           h="32px"
           flexShrink={ 0 }
         >
-          <Icon as={ explorerIcon } boxSize={ 5 }/>
-          <Icon as={ arrowIcon } transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 }/>
+          <IconSvg name="explorer" boxSize={ 5 }/>
+          <IconSvg name="arrows/east-mini" transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 }/>
         </Button>
       </PopoverTrigger>
       <PopoverContent w="240px">

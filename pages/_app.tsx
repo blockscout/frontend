@@ -17,6 +17,7 @@ import theme from 'theme';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
 import GoogleAnalytics from 'ui/shared/GoogleAnalytics';
 import Layout from 'ui/shared/layout/Layout';
+import Web3ModalProvider from 'ui/shared/Web3ModalProvider';
 
 import 'lib/setLocale';
 
@@ -52,17 +53,19 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         { ...ERROR_SCREEN_STYLES }
         onError={ handleError }
       >
-        <AppContextProvider pageProps={ pageProps }>
-          <QueryClientProvider client={ queryClient }>
-            <ScrollDirectionProvider>
-              <SocketProvider url={ `${ config.api.socket }${ config.api.basePath }/socket/v2` }>
-                { getLayout(<Component { ...pageProps }/>) }
-              </SocketProvider>
-            </ScrollDirectionProvider>
-            <ReactQueryDevtools buttonPosition="bottom-left" position="left"/>
-            <GoogleAnalytics/>
-          </QueryClientProvider>
-        </AppContextProvider>
+        <Web3ModalProvider>
+          <AppContextProvider pageProps={ pageProps }>
+            <QueryClientProvider client={ queryClient }>
+              <ScrollDirectionProvider>
+                <SocketProvider url={ `${ config.api.socket }${ config.api.basePath }/socket/v2` }>
+                  { getLayout(<Component { ...pageProps }/>) }
+                </SocketProvider>
+              </ScrollDirectionProvider>
+              <ReactQueryDevtools buttonPosition="bottom-left" position="left"/>
+              <GoogleAnalytics/>
+            </QueryClientProvider>
+          </AppContextProvider>
+        </Web3ModalProvider>
       </AppErrorBoundary>
     </ChakraProvider>
   );
