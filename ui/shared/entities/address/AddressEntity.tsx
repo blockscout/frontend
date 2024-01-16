@@ -161,7 +161,7 @@ const AddressEntry = (props: EntityProps) => {
         content: `" "`,
         position: 'absolute',
         top: '-5px',
-        left: '-5px',
+        left: '-6px',
         width: `calc(100% + ${ props.noCopy ? 10 : 5 }px)`,
         height: 'calc(100% + 8px)',
         borderRadius: 'base',

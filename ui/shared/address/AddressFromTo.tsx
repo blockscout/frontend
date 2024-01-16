@@ -1,5 +1,5 @@
 import type { ThemeTypings } from '@chakra-ui/react';
-import { Flex, chakra, useBreakpointValue, useColorModeValue } from '@chakra-ui/react';
+import { Flex, chakra, useBreakpointValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressParam } from 'types/api/addressParams';
@@ -7,7 +7,9 @@ import type { AddressParam } from 'types/api/addressParams';
 import type { EntityProps } from 'ui/shared/entities/address/AddressEntity';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import AddressEntityWithTokenFilter from 'ui/shared/entities/address/AddressEntityWithTokenFilter';
-import IconSvg from 'ui/shared/IconSvg';
+
+import AddressFromToIcon from './AddressFromToIcon';
+import { getTxCourseType } from './utils';
 
 type Mode = 'compact' | 'long';
 
@@ -24,7 +26,6 @@ interface Props {
 }
 
 const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading, tokenHash = '', truncation, noIcon }: Props) => {
-  const iconColor = useColorModeValue('gray.500', 'gray.300');
   const mode = useBreakpointValue(
     {
       base: (typeof modeProp === 'object' ? modeProp.base : modeProp),
@@ -39,12 +40,9 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
     return (
       <Flex className={ className } flexDir="column" rowGap={ 3 }>
         <Flex alignItems="center" columnGap={ 2 }>
-          <IconSvg
-            name="arrows/east"
+          <AddressFromToIcon
             isLoading={ isLoading }
-            color={ iconColor }
-            boxSize={ 5 }
-            flexShrink={ 0 }
+            type={ getTxCourseType(from.hash, to?.hash, current) }
             transform="rotate(90deg)"
           />
           <Entity
@@ -89,7 +87,10 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
         truncation={ truncation }
         maxW={ truncation === 'constant' ? undefined : 'calc(50% - 18px)' }
       />
-      <IconSvg name="arrows/east" color={ iconColor } boxSize={ 5 } flexShrink={ 0 } isLoading={ isLoading }/>
+      <AddressFromToIcon
+        isLoading={ isLoading }
+        type={ getTxCourseType(from.hash, to?.hash, current) }
+      />
       { to ? (
         <Entity
           address={ to }
