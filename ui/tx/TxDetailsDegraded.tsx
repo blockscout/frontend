@@ -5,7 +5,6 @@ import type { Chain, GetBlockReturnType, GetTransactionReturnType, TransactionRe
 
 import type { Transaction } from 'types/api/transaction';
 
-import type { ResourceError } from 'lib/api/resources';
 import dayjs from 'lib/date/dayjs';
 import hexToDecimal from 'lib/hexToDecimal';
 import { publicClient } from 'lib/web3/client';
@@ -14,6 +13,7 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import ServiceDegradationAlert from 'ui/shared/ServiceDegradationAlert';
 
 import TxInfo from './details/TxInfo';
+import type { TxQuery } from './useTxQuery';
 
 type RpcResponseType = [
   GetTransactionReturnType<Chain, 'latest'> | null,
@@ -24,12 +24,14 @@ type RpcResponseType = [
 
 interface Props {
   hash: string;
-  originalError: ResourceError | null;
+  txQuery: TxQuery;
 }
 
 // TODO @tom2drum try to write tests
 
-const TxDetailsDegraded = ({ hash, originalError }: Props) => {
+const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
+
+  const [ originalError ] = React.useState(txQuery.error);
 
   const query = useQuery<RpcResponseType, unknown, Transaction | null>({
     queryKey: [ 'RPC', 'tx', { hash } ],
@@ -119,6 +121,18 @@ const TxDetailsDegraded = ({ hash, originalError }: Props) => {
     ],
     refetchOnMount: false,
   });
+
+  React.useEffect(() => {
+    if (!query.isPlaceholderData && query.data) {
+      txQuery.setRefetchOnError.on();
+    }
+  }, [ query.data, query.isPlaceholderData, txQuery ]);
+
+  React.useEffect(() => {
+    return () => {
+      txQuery.setRefetchOnError.off();
+    };
+  }, [ txQuery.setRefetchOnError ]);
 
   if (!query.data) {
     if (originalError?.status === 404) {

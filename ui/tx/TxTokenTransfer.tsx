@@ -4,7 +4,6 @@ import React from 'react';
 
 import type { TokenType } from 'types/api/token';
 
-import { SECOND } from 'lib/consts';
 import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
 import { apos } from 'lib/html-entities';
 import { TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
@@ -19,22 +18,25 @@ import TokenTransferList from 'ui/shared/TokenTransfer/TokenTransferList';
 import TokenTransferTable from 'ui/shared/TokenTransfer/TokenTransferTable';
 import TxPendingAlert from 'ui/tx/TxPendingAlert';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
-import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
+
+import type { TxQuery } from './useTxQuery';
 
 const getTokenFilterValue = (getFilterValuesFromQuery<TokenType>).bind(null, TOKEN_TYPE_IDS);
 
-const TxTokenTransfer = () => {
-  const txsInfo = useFetchTxInfo({ updateDelay: 5 * SECOND });
+interface Props {
+  txQuery: TxQuery;
+}
 
+const TxTokenTransfer = ({ txQuery }: Props) => {
   const router = useRouter();
 
   const [ typeFilter, setTypeFilter ] = React.useState<Array<TokenType>>(getTokenFilterValue(router.query.type) || []);
 
   const tokenTransferQuery = useQueryWithPages({
     resourceName: 'tx_token_transfers',
-    pathParams: { hash: txsInfo.data?.hash.toString() },
+    pathParams: { hash: txQuery.data?.hash.toString() },
     options: {
-      enabled: !txsInfo.isPlaceholderData && Boolean(txsInfo.data?.status && txsInfo.data?.hash),
+      enabled: !txQuery.isPlaceholderData && Boolean(txQuery.data?.status && txQuery.data?.hash),
       placeholderData: getTokenTransfersStub(),
     },
     filters: { type: typeFilter },
@@ -45,11 +47,11 @@ const TxTokenTransfer = () => {
     setTypeFilter(nextValue);
   }, [ tokenTransferQuery ]);
 
-  if (!txsInfo.isPending && !txsInfo.isPlaceholderData && !txsInfo.isError && !txsInfo.data.status) {
-    return txsInfo.socketStatus ? <TxSocketAlert status={ txsInfo.socketStatus }/> : <TxPendingAlert/>;
+  if (!txQuery.isPending && !txQuery.isPlaceholderData && !txQuery.isError && !txQuery.data.status) {
+    return txQuery.socketStatus ? <TxSocketAlert status={ txQuery.socketStatus }/> : <TxPendingAlert/>;
   }
 
-  if (txsInfo.isError || tokenTransferQuery.isError) {
+  if (txQuery.isError || tokenTransferQuery.isError) {
     return <DataFetchAlert/>;
   }
 
@@ -81,7 +83,7 @@ const TxTokenTransfer = () => {
 
   return (
     <DataListDisplay
-      isError={ txsInfo.isError || tokenTransferQuery.isError }
+      isError={ txQuery.isError || tokenTransferQuery.isError }
       items={ tokenTransferQuery.data?.items }
       emptyText="There are no token transfers."
       filterProps={{

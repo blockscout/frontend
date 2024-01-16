@@ -4,18 +4,15 @@ import React from 'react';
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
-import { SECOND } from 'lib/consts';
 import { useAppContext } from 'lib/contexts/app';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { TX } from 'stubs/tx';
 import TextAd from 'ui/shared/ad/TextAd';
 import EntityTags from 'ui/shared/EntityTags';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import useTabIndexFromQuery from 'ui/shared/Tabs/useTabIndexFromQuery';
-import TxDetails from 'ui/tx/TxDetails';
+import TxInfo from 'ui/tx/details/TxInfo';
 import TxDetailsDegraded from 'ui/tx/TxDetailsDegraded';
 import TxDetailsWrapped from 'ui/tx/TxDetailsWrapped';
 import TxInternals from 'ui/tx/TxInternals';
@@ -24,28 +21,22 @@ import TxRawTrace from 'ui/tx/TxRawTrace';
 import TxState from 'ui/tx/TxState';
 import TxSubHeading from 'ui/tx/TxSubHeading';
 import TxTokenTransfer from 'ui/tx/TxTokenTransfer';
+import useTxQuery from 'ui/tx/useTxQuery';
 
 const TransactionPageContent = () => {
   const router = useRouter();
   const appProps = useAppContext();
 
   const hash = getQueryParamString(router.query.hash);
-  const { data, isPlaceholderData, isError, error, errorUpdateCount } = useApiQuery('tx', {
-    pathParams: { hash },
-    queryOptions: {
-      enabled: Boolean(hash),
-      placeholderData: TX,
-      // TODO @tom2drum: do only one request when refetching (disable retries)
-      refetchInterval: (query): number | false => {
-        return query.state.status === 'error' && query.state.errorUpdateCount > 0 ? 15 * SECOND : false;
-      },
-    },
-  });
+  const txQuery = useTxQuery();
+  const { data, isPlaceholderData, isError, error, errorUpdateCount, socketStatus } = txQuery;
 
   const showDegradedView = (isError || isPlaceholderData) && errorUpdateCount > 0;
 
   const tabs: Array<RoutedTab> = (() => {
-    const detailsComponent = showDegradedView ? <TxDetailsDegraded hash={ hash } originalError={ error }/> : <TxDetails/>;
+    const detailsComponent = showDegradedView ?
+      <TxDetailsDegraded hash={ hash } txQuery={ txQuery }/> :
+      <TxInfo data={ data } isLoading={ isPlaceholderData } socketStatus={ socketStatus }/>;
 
     return [
       {
@@ -56,11 +47,11 @@ const TransactionPageContent = () => {
       config.features.suave.isEnabled && data?.wrapped ?
         { id: 'wrapped', title: 'Regular tx details', component: <TxDetailsWrapped data={ data.wrapped }/> } :
         undefined,
-      { id: 'token_transfers', title: 'Token transfers', component: <TxTokenTransfer/> },
-      { id: 'internal', title: 'Internal txns', component: <TxInternals/> },
-      { id: 'logs', title: 'Logs', component: <TxLogs/> },
-      { id: 'state', title: 'State', component: <TxState/> },
-      { id: 'raw_trace', title: 'Raw trace', component: <TxRawTrace/> },
+      { id: 'token_transfers', title: 'Token transfers', component: <TxTokenTransfer txQuery={ txQuery }/> },
+      { id: 'internal', title: 'Internal txns', component: <TxInternals txQuery={ txQuery }/> },
+      { id: 'logs', title: 'Logs', component: <TxLogs txQuery={ txQuery }/> },
+      { id: 'state', title: 'State', component: <TxState txQuery={ txQuery }/> },
+      { id: 'raw_trace', title: 'Raw trace', component: <TxRawTrace txQuery={ txQuery }/> },
     ].filter(Boolean);
   })();
 
