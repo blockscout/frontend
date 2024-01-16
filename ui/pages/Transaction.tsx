@@ -14,8 +14,8 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import useTabIndexFromQuery from 'ui/shared/Tabs/useTabIndexFromQuery';
-import TxDegraded from 'ui/tx/TxDegraded';
 import TxDetails from 'ui/tx/TxDetails';
+import TxDetailsDegraded from 'ui/tx/TxDetailsDegraded';
 import TxDetailsWrapped from 'ui/tx/TxDetailsWrapped';
 import TxInternals from 'ui/tx/TxInternals';
 import TxLogs from 'ui/tx/TxLogs';
@@ -30,7 +30,7 @@ const TransactionPageContent = () => {
 
   const hash = getQueryParamString(router.query.hash);
 
-  const { data, isPlaceholderData } = useApiQuery('tx', {
+  const { data, isPlaceholderData, isError } = useApiQuery('tx', {
     pathParams: { hash },
     queryOptions: {
       enabled: Boolean(hash),
@@ -38,21 +38,26 @@ const TransactionPageContent = () => {
     },
   });
 
-  const tabs: Array<RoutedTab> = [
-    {
-      id: 'index',
-      title: config.features.suave.isEnabled && data?.wrapped ? 'Confidential compute tx details' : 'Details',
-      component: <TxDetails/>,
-    },
-    config.features.suave.isEnabled && data?.wrapped ?
-      { id: 'wrapped', title: 'Regular tx details', component: <TxDetailsWrapped data={ data.wrapped }/> } :
-      undefined,
-    { id: 'token_transfers', title: 'Token transfers', component: <TxTokenTransfer/> },
-    { id: 'internal', title: 'Internal txns', component: <TxInternals/> },
-    { id: 'logs', title: 'Logs', component: <TxLogs/> },
-    { id: 'state', title: 'State', component: <TxState/> },
-    { id: 'raw_trace', title: 'Raw trace', component: <TxRawTrace/> },
-  ].filter(Boolean);
+  const tabs: Array<RoutedTab> = (() => {
+    // TODO @tom2drum: add condition for degraded tx
+    const detailsComponent = isError ? <TxDetailsDegraded hash={ hash }/> : <TxDetails/>;
+
+    return [
+      {
+        id: 'index',
+        title: config.features.suave.isEnabled && data?.wrapped ? 'Confidential compute tx details' : 'Details',
+        component: detailsComponent,
+      },
+      config.features.suave.isEnabled && data?.wrapped ?
+        { id: 'wrapped', title: 'Regular tx details', component: <TxDetailsWrapped data={ data.wrapped }/> } :
+        undefined,
+      { id: 'token_transfers', title: 'Token transfers', component: <TxTokenTransfer/> },
+      { id: 'internal', title: 'Internal txns', component: <TxInternals/> },
+      { id: 'logs', title: 'Logs', component: <TxLogs/> },
+      { id: 'state', title: 'State', component: <TxState/> },
+      { id: 'raw_trace', title: 'Raw trace', component: <TxRawTrace/> },
+    ].filter(Boolean);
+  })();
 
   const tabIndex = useTabIndexFromQuery(tabs);
 
@@ -87,9 +92,6 @@ const TransactionPageContent = () => {
         </>
       );
     }
-
-    // TODO @tom2drum: add condition for degraded tx
-    return <TxDegraded hash={ hash }/>;
 
     return <RoutedTabs tabs={ tabs }/>;
   })();

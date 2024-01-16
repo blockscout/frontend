@@ -59,7 +59,7 @@ const TxState = () => {
         The below is a summary of those changes.
       </Text>
       <DataListDisplay
-        isError={ isError }
+        isError={ isError || txInfo.isError }
         items={ data?.items }
         emptyText="There are no state changes for this transaction."
         content={ content }

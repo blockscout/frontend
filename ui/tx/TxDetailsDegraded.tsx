@@ -1,4 +1,4 @@
-import { Alert, Skeleton } from '@chakra-ui/react';
+import { Skeleton } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import type { Chain, GetBlockReturnType, GetTransactionReturnType, TransactionReceipt } from 'viem';
@@ -9,6 +9,7 @@ import dayjs from 'lib/date/dayjs';
 import hexToDecimal from 'lib/hexToDecimal';
 import { publicClient } from 'lib/web3/client';
 import { GET_BLOCK, GET_TRANSACTION, GET_TRANSACTION_RECEIPT, GET_TRANSACTION_CONFIRMATIONS } from 'stubs/RPC';
+import ServiceDegradationAlert from 'ui/shared/ServiceDegradationAlert';
 
 import TxInfo from './details/TxInfo';
 
@@ -23,7 +24,7 @@ interface Props {
   hash: string;
 }
 
-const TxDegraded = ({ hash }: Props) => {
+const TxDetailsDegraded = ({ hash }: Props) => {
 
   const query = useQuery<RpcResponseType, unknown, Transaction>({
     queryKey: [ 'RPC', 'tx', { hash } ],
@@ -107,16 +108,17 @@ const TxDegraded = ({ hash }: Props) => {
       GET_TRANSACTION_CONFIRMATIONS,
       GET_BLOCK,
     ],
+    refetchOnMount: false,
   });
 
   return (
     <>
       <Skeleton mb={ 6 } isLoaded={ !query.isPlaceholderData }>
-        <Alert status="warning">Blockscout is busy, retrying...</Alert>
+        <ServiceDegradationAlert/>
       </Skeleton>
       <TxInfo data={ query.data } isLoading={ query.isPlaceholderData }/>
     </>
   );
 };
 
-export default React.memo(TxDegraded);
+export default React.memo(TxDetailsDegraded);
