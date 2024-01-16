@@ -44,7 +44,7 @@ import TextSeparator from 'ui/shared/TextSeparator';
 import TxFeeStability from 'ui/shared/tx/TxFeeStability';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
-import TxDetailsActions from 'ui/tx/details/TxDetailsActions';
+import TxDetailsActions from 'ui/tx/details/txDetailsActions/TxDetailsActions';
 import TxDetailsFeePerGas from 'ui/tx/details/TxDetailsFeePerGas';
 import TxDetailsGasPrice from 'ui/tx/details/TxDetailsGasPrice';
 import TxDetailsOther from 'ui/tx/details/TxDetailsOther';
@@ -97,8 +97,6 @@ const TxDetails = () => {
     ...toAddress?.public_tags || [],
     ...toAddress?.watchlist_names || [],
   ].map((tag) => <Tag key={ tag.label }>{ tag.display_name }</Tag>);
-
-  const actionsExist = data.actions && data.actions.length > 0;
 
   const executionSuccessBadge = toAddress?.is_contract && data.result === 'success' ? (
     <Tooltip label="Contract execution completed">
@@ -242,12 +240,7 @@ const TxDetails = () => {
 
         <DetailsInfoItemDivider/>
 
-        { actionsExist && (
-          <>
-            <TxDetailsActions actions={ data.actions }/>
-            <DetailsInfoItemDivider/>
-          </>
-        ) }
+        <TxDetailsActions hash={ data.hash } actions={ data.actions } isTxDataLoading={ isPlaceholderData }/>
 
         <DetailsInfoItem
           title="From"

@@ -16,9 +16,10 @@ interface Props<T extends SmartContractMethod> {
   id: number;
   addressHash?: string;
   renderContent: (item: T, index: number, id: number) => React.ReactNode;
+  tab: string;
 }
 
-const ContractMethodsAccordionItem = <T extends SmartContractMethod>({ data, index, id, addressHash, renderContent }: Props<T>) => {
+const ContractMethodsAccordionItem = <T extends SmartContractMethod>({ data, index, id, addressHash, renderContent, tab }: Props<T>) => {
   const url = React.useMemo(() => {
     if (!('method_id' in data)) {
       return '';
@@ -28,11 +29,11 @@ const ContractMethodsAccordionItem = <T extends SmartContractMethod>({ data, ind
       pathname: '/address/[hash]',
       query: {
         hash: addressHash ?? '',
-        tab: 'read_contract',
+        tab,
       },
       hash: data.method_id,
     });
-  }, [ addressHash, data ]);
+  }, [ addressHash, data, tab ]);
 
   const { hasCopied, onCopy } = useClipboard(url, 1000);
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -85,7 +86,7 @@ const ContractMethodsAccordionItem = <T extends SmartContractMethod>({ data, ind
           <AccordionIcon/>
         </AccordionButton>
       </Element>
-      <AccordionPanel pb={ 4 } px={ 0 }>
+      <AccordionPanel pb={ 4 } pr={ 0 } pl="28px" w="calc(100% - 6px)">
         { renderContent(data, index, id) }
       </AccordionPanel>
     </AccordionItem>

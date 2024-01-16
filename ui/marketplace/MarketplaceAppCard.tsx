@@ -153,6 +153,7 @@ const MarketplaceAppCard = ({
               <IconSvg
                 name="arrows/north-east"
                 marginLeft={ 1 }
+                boxSize={ 4 }
               />
             </Link>
           </Box>

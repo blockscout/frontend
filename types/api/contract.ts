@@ -1,6 +1,6 @@
-import type { Abi } from 'abitype';
+import type { Abi, AbiType } from 'abitype';
 
-export type SmartContractMethodArgType = 'address' | 'uint256' | 'bool' | 'string' | 'bytes' | 'bytes32' | 'bytes32[]';
+export type SmartContractMethodArgType = AbiType;
 export type SmartContractMethodStateMutability = 'view' | 'nonpayable' | 'payable';
 
 export interface SmartContract {
@@ -88,6 +88,8 @@ export interface SmartContractMethodInput {
   internalType?: SmartContractMethodArgType;
   name: string;
   type: SmartContractMethodArgType;
+  components?: Array<SmartContractMethodInput>;
+  fieldType?: 'native_coin';
 }
 
 export interface SmartContractMethodOutput extends SmartContractMethodInput {
@@ -97,10 +99,10 @@ export interface SmartContractMethodOutput extends SmartContractMethodInput {
 export interface SmartContractQueryMethodReadSuccess {
   is_error: false;
   result: {
-    names: Array<string>;
+    names: Array<string | [ string, Array<string> ]>;
     output: Array<{
       type: string;
-      value: string;
+      value: string | Array<unknown>;
     }>;
   };
 }

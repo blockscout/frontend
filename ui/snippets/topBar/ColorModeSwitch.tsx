@@ -35,6 +35,7 @@ const ColorModeSwitch = () => {
     window.document.documentElement.style.setProperty(varName, hex);
 
     cookies.set(cookies.NAMES.COLOR_MODE_HEX, hex);
+    window.localStorage.setItem(cookies.NAMES.COLOR_MODE, nextTheme.colorMode);
   }, [ setColorMode ]);
 
   React.useEffect(() => {
