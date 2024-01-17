@@ -68,12 +68,16 @@ const UserOpsListItem = ({ item, isLoading }: Props) => {
         />
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>Fee</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading }>
-          <CurrencyValue value={ item.fee } isLoading={ isLoading } accuracy={ 8 } currency={ config.chain.currency.symbol }/>
-        </Skeleton>
-      </ListItemMobileGrid.Value>
+      { !config.UI.views.tx.hiddenFields?.tx_fee && (
+        <>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>Fee</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Value>
+            <Skeleton isLoaded={ !isLoading }>
+              <CurrencyValue value={ item.fee } isLoading={ isLoading } accuracy={ 8 } currency={ config.chain.currency.symbol }/>
+            </Skeleton>
+          </ListItemMobileGrid.Value>
+        </>
+      ) }
 
     </ListItemMobileGrid.Container>
   );

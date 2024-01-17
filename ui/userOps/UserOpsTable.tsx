@@ -25,8 +25,7 @@ const UserOpsTable = ({ items, isLoading, top }: Props) => {
           <Th w="160px">Sender</Th>
           <Th w="160px">Tx hash</Th>
           <Th w="40%">Block</Th>
-          { /* add condition like in tx table */ }
-          <Th w="120px" isNumeric>{ `Fee ${ config.chain.currency.symbol }` }</Th>
+          { !config.UI.views.tx.hiddenFields?.tx_fee && <Th w="120px" isNumeric>{ `Fee ${ config.chain.currency.symbol }` }</Th> }
         </Tr>
       </Thead>
       <Tbody>

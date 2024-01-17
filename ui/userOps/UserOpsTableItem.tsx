@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { UserOpsItem } from 'types/api/userOps';
 
+import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
@@ -55,9 +56,11 @@ const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
           noIcon
         />
       </Td>
-      <Td verticalAlign="middle" isNumeric>
-        <CurrencyValue value={ item.fee } isLoading={ isLoading } accuracy={ 8 }/>
-      </Td>
+      { !config.UI.views.tx.hiddenFields?.tx_fee && (
+        <Td verticalAlign="middle" isNumeric>
+          <CurrencyValue value={ item.fee } isLoading={ isLoading } accuracy={ 8 }/>
+        </Td>
+      ) }
     </Tr>
   );
 };

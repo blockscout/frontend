@@ -104,18 +104,19 @@ const UserOpDetails = ({ query }: Props) => {
           <DetailsTimestamp timestamp={ Number(data.timestamp) * 1000 } isLoading={ isPlaceholderData }/>
         </DetailsInfoItem>
       ) }
-      { /* condition? */ }
-      <DetailsInfoItem
-        title="Fee"
-        hint="Total User operation fee"
-        isLoading={ isPlaceholderData }
-      >
-        <CurrencyValue
-          value={ data.fee }
-          currency={ config.chain.currency.symbol }
+      { !config.UI.views.tx.hiddenFields?.tx_fee && (
+        <DetailsInfoItem
+          title="Fee"
+          hint="Total User operation fee"
           isLoading={ isPlaceholderData }
-        />
-      </DetailsInfoItem>
+        >
+          <CurrencyValue
+            value={ data.fee }
+            currency={ config.chain.currency.symbol }
+            isLoading={ isPlaceholderData }
+          />
+        </DetailsInfoItem>
+      ) }
       <DetailsInfoItem
         title="Gas limit"
         hint="Gas limit for the User operation"
@@ -183,24 +184,27 @@ const UserOpDetails = ({ query }: Props) => {
           >
             { BigNumber(data.pre_verification_gas).toFormat() }
           </DetailsInfoItem>
-          <DetailsInfoItem
-            title="Max fee per gas"
-            hint="Maximum fee per gas "
-          >
-            <Text>{ BigNumber(data.max_fee_per_gas).dividedBy(WEI).toFixed() } { config.chain.currency.symbol } </Text>
-            <Text variant="secondary" whiteSpace="pre">
-              { space }({ BigNumber(data.max_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() } Gwei)
-            </Text>
-          </DetailsInfoItem>
-          <DetailsInfoItem
-            title="Max priority fee per gas"
-            hint="Maximum priority fee per gas"
-          >
-            <Text>{ BigNumber(data.max_priority_fee_per_gas).dividedBy(WEI).toFixed() } { config.chain.currency.symbol } </Text>
-            <Text variant="secondary" whiteSpace="pre">
-              { space }({ BigNumber(data.max_priority_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() } Gwei)
-            </Text>
-          </DetailsInfoItem>
+          { !config.UI.views.tx.hiddenFields?.gas_fees && (
+            <>
+              <DetailsInfoItem
+                title="Max fee per gas"
+                hint="Maximum fee per gas "
+              >
+                <Text>{ BigNumber(data.max_fee_per_gas).dividedBy(WEI).toFixed() } { config.chain.currency.symbol } </Text>
+                <Text variant="secondary" whiteSpace="pre">
+                  { space }({ BigNumber(data.max_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() } Gwei)
+                </Text>
+              </DetailsInfoItem><DetailsInfoItem
+                title="Max priority fee per gas"
+                hint="Maximum priority fee per gas"
+              >
+                <Text>{ BigNumber(data.max_priority_fee_per_gas).dividedBy(WEI).toFixed() } { config.chain.currency.symbol } </Text>
+                <Text variant="secondary" whiteSpace="pre">
+                  { space }({ BigNumber(data.max_priority_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() } Gwei)
+                </Text>
+              </DetailsInfoItem>
+            </>
+          ) }
 
           <DetailsInfoItemDivider/>
 
