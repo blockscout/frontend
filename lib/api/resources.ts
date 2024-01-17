@@ -77,7 +77,7 @@ import type {
 import type { TxInterpretationResponse } from 'types/api/txInterpretation';
 import type { TTxsFilters } from 'types/api/txsFilters';
 import type { TxStateChanges } from 'types/api/txStateChanges';
-import type { UserOpsResponse, UserOp, UserOpsFilters } from 'types/api/userOps';
+import type { UserOpsResponse, UserOp, UserOpsFilters, UserOpsAccount } from 'types/api/userOps';
 import type { VerifiedContractsSorting } from 'types/api/verifiedContracts';
 import type { VisualizedContract } from 'types/api/visualization';
 import type { WithdrawalsResponse, WithdrawalsCounters } from 'types/api/withdrawals';
@@ -583,11 +583,15 @@ export const RESOURCES = {
   // USER OPS
   user_ops: {
     path: '/api/v2/proxy/account-abstraction/operations',
-    filterFields: [ 'transaction_hash' as const ],
+    filterFields: [ 'transaction_hash' as const, 'sender' as const ],
   },
 
   user_op: {
     path: '/api/v2/proxy/account-abstraction/operations/:hash',
+    pathParams: [ 'hash' as const ],
+  },
+  user_ops_account: {
+    path: '/api/v2/proxy/account-abstraction/accounts/:hash',
     pathParams: [ 'hash' as const ],
   },
 
@@ -768,6 +772,7 @@ Q extends 'domain_events' ? EnsDomainEventsResponse :
 Q extends 'domains_lookup' ? EnsDomainLookupResponse :
 Q extends 'user_ops' ? UserOpsResponse :
 Q extends 'user_op' ? UserOp :
+Q extends 'user_ops_account' ? UserOpsAccount :
 never;
 /* eslint-enable @typescript-eslint/indent */
 

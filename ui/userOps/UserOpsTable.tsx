@@ -12,9 +12,11 @@ import UserOpsTableItem from './UserOpsTableItem';
    items: Array<UserOpsItem>;
    isLoading?: boolean;
    top: number;
+   showTx: boolean;
+   showSender: boolean;
  };
 
-const UserOpsTable = ({ items, isLoading, top }: Props) => {
+const UserOpsTable = ({ items, isLoading, top, showTx, showSender }: Props) => {
   return (
     <Table variant="simple" size="sm">
       <Thead top={ top }>
@@ -22,15 +24,21 @@ const UserOpsTable = ({ items, isLoading, top }: Props) => {
           <Th w="60%">User op hash</Th>
           <Th w="110px">Age</Th>
           <Th w="140px">Status</Th>
-          <Th w="160px">Sender</Th>
-          <Th w="160px">Tx hash</Th>
+          { showSender && <Th w="160px">Sender</Th> }
+          { showTx && <Th w="160px">Tx hash</Th> }
           <Th w="40%">Block</Th>
           { !config.UI.views.tx.hiddenFields?.tx_fee && <Th w="120px" isNumeric>{ `Fee ${ config.chain.currency.symbol }` }</Th> }
         </Tr>
       </Thead>
       <Tbody>
         { items.map((item, index) => (
-          <UserOpsTableItem key={ (isLoading ? String(index) : '') } item={ item } isLoading={ isLoading }/>
+          <UserOpsTableItem
+            key={ (isLoading ? String(index) : '') }
+            item={ item }
+            isLoading={ isLoading }
+            showSender={ showSender }
+            showTx={ showTx }
+          />
         )) }
       </Tbody>
     </Table>

@@ -53,4 +53,9 @@ export type UserOp = {
 
 export type UserOpsFilters = {
   transaction_hash?: string;
+  sender?: string;
+}
+
+export type UserOpsAccount = {
+  total_ops: number;
 }

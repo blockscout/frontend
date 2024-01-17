@@ -1,4 +1,4 @@
-import type { UserOpsItem, UserOp } from 'types/api/userOps';
+import type { UserOpsItem, UserOp, UserOpsAccount } from 'types/api/userOps';
 
 export const USER_OPS_ITEM: UserOpsItem = {
   hash: '0xb94fab8f31f83001a23e20b2ce3cdcfb284c57a64b9a073e0e09c018bc701978',
@@ -39,4 +39,10 @@ export const USER_OP: UserOp = {
   sponsor_type: 'paymaster_sponsor',
   fee: '17927001792700',
   timestamp: '1704994440',
+  user_logs_count: 1,
+  user_logs_start_index: 2,
+};
+
+export const USER_OPS_ACCOUNT: UserOpsAccount = {
+  total_ops: 1,
 };

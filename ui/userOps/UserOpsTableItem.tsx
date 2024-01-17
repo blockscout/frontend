@@ -15,9 +15,11 @@ import UserOpStatus from 'ui/shared/userOps/UserOpStatus';
  type Props = {
    item: UserOpsItem;
    isLoading?: boolean;
+   showTx: boolean;
+   showSender: boolean;
  };
 
-const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
+const UserOpsTableItem = ({ item, isLoading, showTx, showSender }: Props) => {
   // will be fixed on the back-end
   const timeAgo = dayjs(Number(item.timestamp) * 1000).fromNow();
 
@@ -32,21 +34,25 @@ const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
       <Td verticalAlign="middle">
         <UserOpStatus status={ item.status } isLoading={ isLoading }/>
       </Td>
-      <Td verticalAlign="middle">
-        <UserOpsAddress
-          address={ item.address }
-          isLoading={ isLoading }
-          truncation="constant"
-        />
-      </Td>
-      <Td verticalAlign="middle">
-        <TxEntity
-          hash={ item.transaction_hash }
-          isLoading={ isLoading }
-          truncation="constant"
-          noIcon
-        />
-      </Td>
+      { showSender && (
+        <Td verticalAlign="middle">
+          <UserOpsAddress
+            address={ item.address }
+            isLoading={ isLoading }
+            truncation="constant"
+          />
+        </Td>
+      ) }
+      { showTx && (
+        <Td verticalAlign="middle">
+          <TxEntity
+            hash={ item.transaction_hash }
+            isLoading={ isLoading }
+            truncation="constant"
+            noIcon
+          />
+        </Td>
+      ) }
       <Td verticalAlign="middle">
         <BlockEntity
           number={ item.block_number }
@@ -65,4 +71,4 @@ const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
   );
 };
 
-export default WithdrawalsTableItem;
+export default UserOpsTableItem;

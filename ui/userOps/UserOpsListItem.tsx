@@ -16,9 +16,11 @@ import UserOpStatus from 'ui/shared/userOps/UserOpStatus';
 type Props = {
   item: UserOpsItem;
   isLoading?: boolean;
+  showTx: boolean;
+  showSender: boolean;
 };
 
-const UserOpsListItem = ({ item, isLoading }: Props) => {
+const UserOpsListItem = ({ item, isLoading, showTx, showSender }: Props) => {
   // format will be fixed on the back-end
   const timeAgo = dayjs(Number(item.timestamp) * 1000).fromNow();
 
@@ -40,22 +42,30 @@ const UserOpsListItem = ({ item, isLoading }: Props) => {
         <UserOpStatus status={ item.status } isLoading={ isLoading }/>
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>Sender</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
-        <UserOpsAddress
-          address={ item.address }
-          isLoading={ isLoading }
-        />
-      </ListItemMobileGrid.Value>
+      { showSender && (
+        <>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>Sender</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Value>
+            <UserOpsAddress
+              address={ item.address }
+              isLoading={ isLoading }
+            />
+          </ListItemMobileGrid.Value>
+        </>
+      ) }
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>Tx hash</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
-        <TxEntity
-          hash={ item.transaction_hash }
-          isLoading={ isLoading }
-          noIcon
-        />
-      </ListItemMobileGrid.Value>
+      { showTx && (
+        <>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>Tx hash</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Value>
+            <TxEntity
+              hash={ item.transaction_hash }
+              isLoading={ isLoading }
+              noIcon
+            />
+          </ListItemMobileGrid.Value>
+        </>
+      ) }
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Block</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
