@@ -1,8 +1,22 @@
 import type { EnsDomainDetailed } from 'types/api/ens';
 
+const domainTokenA = {
+  id: '97352314626701792030827861137068748433918254309635329404916858191911576754327',
+  contract_hash: '0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea85',
+  type: 'NATIVE_DOMAIN_TOKEN' as const,
+};
+const domainTokenB = {
+  id: '423546333',
+  contract_hash: '0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea86',
+  type: 'WRAPPED_DOMAIN_TOKEN' as const,
+};
+
 export const ensDomainA: EnsDomainDetailed = {
   id: '0xb140bf9645e54f02ed3c1bcc225566b515a98d1688f10494a5c3bc5b447936a7',
-  token_id: '0xf9b76a83152e20da7e5e671de7d79c7de1a2e63add2796aa187bbf98dd2471a6',
+  tokens: [
+    domainTokenA,
+    domainTokenB,
+  ],
   name: 'cat.eth',
   registrant: {
     hash: '0x114d4603199df73e7d157787f8778e21fcd13066',
@@ -25,7 +39,7 @@ export const ensDomainA: EnsDomainDetailed = {
 
 export const ensDomainB: EnsDomainDetailed = {
   id: '0x632ac7bec8e883416b371b36beaa822f4784208c99d063ee030020e2bd09b885',
-  token_id: '0xf9b76a83152e20da7e5e671de7d79c7de1a2e63add2796aa187bbf98dd2471a7',
+  tokens: [ domainTokenA ],
   name: 'kitty.kitty.kitty.cat.eth',
   resolved_address: null,
   registrant: {
@@ -42,7 +56,7 @@ export const ensDomainB: EnsDomainDetailed = {
 
 export const ensDomainC: EnsDomainDetailed = {
   id: '0xdb7f351de6d93bda077a9211bdc49f249326d87932e4787d109b0262e9d189ad',
-  token_id: '0xf9b76a83152e20da7e5e671de7d79c7de1a2e63add2796aa187bbf98dd2471a8',
+  tokens: [ domainTokenA ],
   name: 'duck.duck.eth',
   registrant: {
     hash: '0x114d4603199df73e7d157787f8778e21fcd13066',
@@ -61,7 +75,7 @@ export const ensDomainC: EnsDomainDetailed = {
 
 export const ensDomainD: EnsDomainDetailed = {
   id: '0xdb7f351de6d93bda077a9211bdc49f249326d87932e4787d109b0262e9d189ae',
-  token_id: '0xf9b76a83152e20da7e5e671de7d79c7de1a2e63add2796aa187bbf98dd2471a9',
+  tokens: [ domainTokenA ],
   name: '🦆.duck.eth',
   registrant: {
     hash: '0x114d4603199df73e7d157787f8778e21fcd13066',

@@ -6,7 +6,13 @@ import { TX_HASH } from './tx';
 export const ENS_DOMAIN: EnsDomainDetailed = {
   id: '0x126d74db13895f8d3a1d362410212731d1e1d9be8add83e388385f93d84c8c84',
   name: 'kitty.cat.eth',
-  token_id: '0x686f4041f059de13c12563c94bd32b8edef9e4d86c931f37abb8cb69ecf25fd6',
+  tokens: [
+    {
+      id: '973523146267017920308',
+      contract_hash: ADDRESS_HASH,
+      type: 'NATIVE_DOMAIN_TOKEN',
+    },
+  ],
   owner: ADDRESS_PARAMS,
   wrapped_owner: null,
   resolved_address: ADDRESS_PARAMS,

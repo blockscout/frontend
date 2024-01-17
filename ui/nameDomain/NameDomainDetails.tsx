@@ -10,6 +10,7 @@ import type { ResourceError } from 'lib/api/resources';
 import dayjs from 'lib/date/dayjs';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/LinkInternal';
 import TextSeparator from 'ui/shared/TextSeparator';
@@ -135,17 +136,18 @@ const NameDomainDetails = ({ query }: Props) => {
           </Tooltip>
         </DetailsInfoItem>
       ) }
-      <DetailsInfoItem
-        title="Token ID"
-        hint="The Token ID of this domain name NFT"
-        isLoading={ isLoading }
-        wordBreak="break-all"
-        whiteSpace="pre-wrap"
-      >
-        <Skeleton isLoaded={ !isLoading }>
-          { query.data?.token_id }
-        </Skeleton>
-      </DetailsInfoItem>
+      { query.data?.tokens.map((token) => (
+        <DetailsInfoItem
+          key={ token.type }
+          title={ token.type === 'WRAPPED_DOMAIN_TOKEN' ? 'Wrapped token ID' : 'Token ID' }
+          hint={ `The ${ token.type === 'WRAPPED_DOMAIN_TOKEN' ? 'wrapped ' : '' }token ID of this domain name NFT` }
+          isLoading={ isLoading }
+          wordBreak="break-all"
+          whiteSpace="pre-wrap"
+        >
+          <NftEntity hash={ token.contract_hash } id={ token.id } isLoading={ isLoading } noIcon/>
+        </DetailsInfoItem>
+      )) }
       { otherAddresses.length > 0 && (
         <DetailsInfoItem
           title="Other addresses"

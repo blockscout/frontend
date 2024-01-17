@@ -15,7 +15,7 @@ export interface EnsDomain {
 }
 
 export interface EnsDomainDetailed extends EnsDomain {
-  token_id: string;
+  tokens: Array<{ id: string; contract_hash: string; type: 'NATIVE_DOMAIN_TOKEN' | 'WRAPPED_DOMAIN_TOKEN' }>;
   registrant: {
     hash: string;
   } | null;
