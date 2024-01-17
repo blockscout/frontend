@@ -244,6 +244,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
             <Td fontSize="sm" verticalAlign="middle">
               <Flex columnGap={ 2 } alignItems="center">
                 { data.block_type === 'reorg' && <Tag flexShrink={ 0 }>Reorg</Tag> }
+                { data.block_type === 'uncle' && <Tag flexShrink={ 0 }>Uncle</Tag> }
                 <Box overflow="hidden" whiteSpace="nowrap" as={ shouldHighlightHash ? 'mark' : 'span' } display="block">
                   <HashStringShortenDynamic hash={ data.block_hash }/>
                 </Box>

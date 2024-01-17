@@ -113,7 +113,18 @@ const BlockPageContent = () => {
     };
   }, [ appProps.referrer ]);
 
-  const title = blockQuery.data?.type === 'reorg' ? `Reorged block #${ blockQuery.data?.height }` : `Block #${ blockQuery.data?.height }`;
+  const title = (() => {
+    switch (blockQuery.data?.type) {
+      case 'reorg':
+        return `Reorged block #${ blockQuery.data?.height }`;
+
+      case 'uncle':
+        return `Uncle block #${ blockQuery.data?.height }`;
+
+      default:
+        return `Block #${ blockQuery.data?.height }`;
+    }
+  })();
   const titleSecondRow = (
     <>
       { !config.UI.views.block.hiddenFields?.miner && (

@@ -175,6 +175,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
               />
             </BlockEntity.Link>
             { data.block_type === 'reorg' && <Tag ml={ 2 }>Reorg</Tag> }
+            { data.block_type === 'uncle' && <Tag ml={ 2 }>Uncle</Tag> }
           </BlockEntity.Container>
         );
       }

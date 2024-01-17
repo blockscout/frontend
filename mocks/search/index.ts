@@ -47,6 +47,15 @@ export const block2: SearchResultBlock = {
   url: '/block/0x1af31d7535dded06bab9a88eb40ee2f8d0529a60ab3b8a7be2ba69b008cacbd2',
 };
 
+export const block3: SearchResultBlock = {
+  block_hash: '0x1af31d7535dded06bab9a88eb40ee2f8d0529a60ab3b8a7be2ba69b008cacbd3',
+  block_number: 8198536,
+  block_type: 'uncle',
+  type: 'block' as const,
+  timestamp: '2022-12-11T18:11:11Z',
+  url: '/block/0x1af31d7535dded06bab9a88eb40ee2f8d0529a60ab3b8a7be2ba69b008cacbd3',
+};
+
 export const address1: SearchResultAddressOrContract = {
   address: '0xb64a30399f7F6b0C154c2E7Af0a3ec7B0A5b131a',
   name: null,
