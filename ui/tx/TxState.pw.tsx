@@ -7,8 +7,8 @@ import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
 
 import TxState from './TxState';
+import type { TxQuery } from './useTxQuery';
 
-const TX_INFO_API_URL = buildApiUrl('tx', { hash: txMock.base.hash });
 const TX_STATE_API_URL = buildApiUrl('tx_state_changes', { hash: txMock.base.hash });
 const hooksConfig = {
   router: {
@@ -17,18 +17,20 @@ const hooksConfig = {
 };
 
 test('base view +@mobile', async({ mount, page }) => {
-  await page.route(TX_INFO_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(txMock.base),
-  }));
   await page.route(TX_STATE_API_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(txStateMock.baseResponse),
   }));
 
+  const txQuery = {
+    data: txMock.base,
+    isPlaceholderData: false,
+    isError: false,
+  } as TxQuery;
+
   const component = await mount(
     <TestApp>
-      <TxState/>
+      <TxState txQuery={ txQuery }/>
     </TestApp>,
     { hooksConfig },
   );
