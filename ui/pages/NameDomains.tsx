@@ -151,7 +151,7 @@ const NameDomains = () => {
     }
   }, [ debouncedSearchTerm, onFilterChange ]);
 
-  const hasActiveFilters = Boolean(searchTerm);
+  const hasActiveFilters = Boolean(debouncedSearchTerm) || filterValue.length > 0;
 
   const content = (
     <>
