@@ -35,7 +35,7 @@ const TokenTransferFilter = ({
   const isInitialLoading = useIsInitialLoading(isLoading);
 
   return (
-    <PopoverFilter appliedFiltersNum={ appliedFiltersNum } contentProps={{ w: '200px' }} isLoading={ isInitialLoading }>
+    <PopoverFilter appliedFiltersNum={ appliedFiltersNum } contentProps={{ w: '220px' }} isLoading={ isInitialLoading }>
       { withAddressFilter && (
         <>
           <Text variant="secondary" fontWeight={ 600 }>Address</Text>
@@ -49,8 +49,8 @@ const TokenTransferFilter = ({
           >
             <Stack spacing={ 4 }>
               <Radio value="all"><Text fontSize="md">All</Text></Radio>
-              <Radio value="from"><Text fontSize="md">From</Text></Radio>
-              <Radio value="to"><Text fontSize="md">To</Text></Radio>
+              <Radio value="from"><Text fontSize="md">Outgoing transfers</Text></Radio>
+              <Radio value="to"><Text fontSize="md">Incoming transfers</Text></Radio>
             </Stack>
           </RadioGroup>
         </>
