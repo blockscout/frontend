@@ -31,6 +31,8 @@
 	| "email-sent"
 	| "email"
 	| "empty_search_result"
+	| "ENS_slim"
+	| "ENS"
 	| "error-pages/404"
 	| "error-pages/422"
 	| "error-pages/429"

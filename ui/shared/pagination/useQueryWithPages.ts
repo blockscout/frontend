@@ -37,7 +37,7 @@ function getPaginationParamsFromQuery(queryString: string | Array<string> | unde
 export type QueryWithPagesResult<Resource extends PaginatedResources> =
 UseQueryResult<ResourcePayload<Resource>, ResourceError<unknown>> &
 {
-  onFilterChange: (filters: PaginationFilters<Resource>) => void;
+  onFilterChange: <R extends PaginatedResources = Resource>(filters: PaginationFilters<R>) => void;
   onSortingChange: (sorting?: PaginationSorting<Resource>) => void;
   pagination: PaginationParams;
 }
@@ -136,12 +136,13 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
     });
   }, [ queryClient, resourceName, router, scrollToTop ]);
 
-  const onFilterChange = useCallback((newFilters: PaginationFilters<Resource> | undefined) => {
+  const onFilterChange = useCallback(<R extends PaginatedResources = Resource>(newFilters: PaginationFilters<R> | undefined) => {
     const newQuery = omit<typeof router.query>(router.query, 'next_page_params', 'page', resource.filterFields);
     if (newFilters) {
       Object.entries(newFilters).forEach(([ key, value ]) => {
-        if (value && value.length) {
-          newQuery[key] = Array.isArray(value) ? value.join(',') : (value || '');
+        const isValidValue = typeof value === 'boolean' || (value && value.length);
+        if (isValidValue) {
+          newQuery[key] = Array.isArray(value) ? value.join(',') : (String(value) || '');
         }
       });
     }

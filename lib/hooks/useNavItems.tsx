@@ -53,6 +53,12 @@ export default function useNavItems(): ReturnType {
        icon: 'verified',
        isActive: pathname === '/verified-contracts',
      };
+    const ensLookup = config.features.nameService.isEnabled ? {
+      text: 'ENS lookup',
+      nextRoute: { pathname: '/name-domains' as const },
+      icon: 'ENS',
+      isActive: pathname === '/name-domains' || pathname === '/name-domains/[name]',
+    } : null;
 
     if (config.features.zkEvmRollup.isEnabled) {
       blockchainNavItems = [
@@ -69,6 +75,7 @@ export default function useNavItems(): ReturnType {
         [
           topAccounts,
           verifiedContracts,
+          ensLookup,
         ].filter(Boolean),
       ];
     } else if (config.features.optimisticRollup.isEnabled) {
@@ -90,6 +97,7 @@ export default function useNavItems(): ReturnType {
         [
           topAccounts,
           verifiedContracts,
+          ensLookup,
         ].filter(Boolean),
       ];
     } else {
@@ -98,6 +106,7 @@ export default function useNavItems(): ReturnType {
         blocks,
         topAccounts,
         verifiedContracts,
+        ensLookup,
         config.features.beaconChain.isEnabled && {
           text: 'Withdrawals',
           nextRoute: { pathname: '/withdrawals' as const },

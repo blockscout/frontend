@@ -30,7 +30,7 @@ const VerificationSteps = ({ currentStep, steps, isLoading, rightSlot, className
     >
       { steps.map((step, index) => (
         <VerificationStep
-          key={ currentStep }
+          key={ index }
           step={ step }
           isLast={ index === steps.length - 1 && !rightSlot }
           isPassed={ index <= currentStepIndex }

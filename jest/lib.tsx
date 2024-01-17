@@ -20,6 +20,7 @@ const PAGE_PROPS = {
   hash: '',
   number: '',
   q: '',
+  name: '',
 };
 
 const TestApp = ({ children }: {children: React.ReactNode}) => {

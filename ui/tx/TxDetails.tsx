@@ -150,10 +150,27 @@ const TxDetails = () => {
             </Tag>
           ) }
         </DetailsInfoItem>
-        <TxDetailsWithdrawalStatus
-          status={ data.op_withdrawal_status }
-          l1TxHash={ data.op_l1_transaction_hash }
-        />
+        { config.features.optimisticRollup.isEnabled && data.op_withdrawals && data.op_withdrawals.length > 0 && (
+          <DetailsInfoItem
+            title="Withdrawal status"
+            hint="Detailed status progress of the transaction"
+          >
+            <Flex flexDir="column" rowGap={ 2 }>
+              { data.op_withdrawals.map((withdrawal) => (
+                <Box key={ withdrawal.nonce }>
+                  <Box mb={ 2 }>
+                    <span>Nonce: </span>
+                    <chakra.span fontWeight={ 600 }>{ withdrawal.nonce }</chakra.span>
+                  </Box>
+                  <TxDetailsWithdrawalStatus
+                    status={ withdrawal.status }
+                    l1TxHash={ withdrawal.l1_transaction_hash }
+                  />
+                </Box>
+              )) }
+            </Flex>
+          </DetailsInfoItem>
+        ) }
         { data.zkevm_status && (
           <DetailsInfoItem
             title="Confirmation status"

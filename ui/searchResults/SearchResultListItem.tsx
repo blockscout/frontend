@@ -1,4 +1,4 @@
-import { Flex, Grid, Image, Box, Text, Skeleton, useColorMode, Tag } from '@chakra-ui/react';
+import { chakra, Flex, Grid, Image, Box, Text, Skeleton, useColorMode, Tag } from '@chakra-ui/react';
 import React from 'react';
 import xss from 'xss';
 
@@ -10,6 +10,7 @@ import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
 import * as mixpanel from 'lib/mixpanel/index';
 import { saveToRecentKeywords } from 'lib/recentSearchKeywords';
+import { ADDRESS_REGEXP } from 'lib/validations/address';
 import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
@@ -73,13 +74,14 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
 
       case 'contract':
       case 'address': {
-        const shouldHighlightHash = data.address.toLowerCase() === searchTerm.toLowerCase();
+        const shouldHighlightHash = ADDRESS_REGEXP.test(searchTerm);
         const address = {
           hash: data.address,
           is_contract: data.type === 'contract',
           is_verified: data.is_smart_contract_verified,
           name: null,
           implementation_name: null,
+          ens_domain_name: null,
         };
 
         return (
@@ -173,6 +175,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
               />
             </BlockEntity.Link>
             { data.block_type === 'reorg' && <Tag ml={ 2 }>Reorg</Tag> }
+            { data.block_type === 'uncle' && <Tag ml={ 2 }>Uncle</Tag> }
           </BlockEntity.Container>
         );
       }
@@ -264,8 +267,23 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
       }
       case 'contract':
       case 'address': {
-        const shouldHighlightHash = data.address.toLowerCase() === searchTerm.toLowerCase();
-        return data.name ? <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? xss(data.name) : highlightText(data.name, searchTerm) }}/> : null;
+        const shouldHighlightHash = ADDRESS_REGEXP.test(searchTerm);
+        const addressName = data.name || data.ens_info?.name;
+        const expiresText = data.ens_info?.expiry_date ? ` (expires ${ dayjs(data.ens_info.expiry_date).fromNow() })` : '';
+
+        return addressName ? (
+          <>
+            <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? xss(addressName) : highlightText(addressName, searchTerm) }}/>
+            { data.ens_info &&
+              (
+                data.ens_info.names_count > 1 ?
+                  <chakra.span color="text_secondary"> ({ data.ens_info.names_count > 39 ? '40+' : `+${ data.ens_info.names_count - 1 }` })</chakra.span> :
+                  <chakra.span color="text_secondary">{ expiresText }</chakra.span>
+              )
+            }
+          </>
+        ) :
+          null;
       }
 
       default:
