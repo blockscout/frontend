@@ -47,4 +47,6 @@ export type UserOp = {
   signature: string;
   nonce: string;
   call_data: string;
+  user_logs_start_index: number;
+  user_logs_count: number;
 }
