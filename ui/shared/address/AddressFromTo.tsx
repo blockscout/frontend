@@ -75,18 +75,21 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
     );
   }
 
+  const isOutgoing = current === from.hash;
+  const iconSizeWithMargins = (5 + (isOutgoing ? 4 : 2) + 3) * 4;
+
   return (
     <Flex className={ className } alignItems="center">
       <Entity
         address={ from }
         isLoading={ isLoading }
-        noLink={ current === from.hash }
-        noCopy={ current === from.hash }
+        noLink={ isOutgoing }
+        noCopy={ isOutgoing }
         noIcon={ noIcon }
         tokenHash={ tokenHash }
         truncation={ truncation }
-        maxW={ truncation === 'constant' ? undefined : 'calc(50% - 20px)' }
-        mr={ current === from.hash ? 4 : 2 }
+        maxW={ truncation === 'constant' ? undefined : `calc(50% - ${ iconSizeWithMargins / 2 }px)` }
+        mr={ isOutgoing ? 4 : 2 }
       />
       <AddressFromToIcon
         isLoading={ isLoading }
@@ -101,7 +104,7 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
           noIcon={ noIcon }
           tokenHash={ tokenHash }
           truncation={ truncation }
-          maxW={ truncation === 'constant' ? undefined : 'calc(50% - 20px)' }
+          maxW={ truncation === 'constant' ? undefined : `calc(50% - ${ iconSizeWithMargins / 2 }px)` }
           ml={ 3 }
         />
       ) : <span>-</span> }
