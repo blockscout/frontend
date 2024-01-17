@@ -23,7 +23,7 @@ const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
   return (
     <Tr>
       <Td verticalAlign="middle">
-        <UserOpEntity hash={ item.hash } noCopy={ false } isLoading={ isLoading }/>
+        <UserOpEntity hash={ item.hash } isLoading={ isLoading } noIcon fontWeight={ 700 }/>
       </Td>
       <Td verticalAlign="middle">
         <Skeleton isLoaded={ !isLoading } color="text_secondary" display="inline-block"><span>{ timeAgo }</span></Skeleton>
@@ -43,6 +43,7 @@ const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
           hash={ item.transaction_hash }
           isLoading={ isLoading }
           truncation="constant"
+          noIcon
         />
       </Td>
       <Td verticalAlign="middle">
@@ -51,6 +52,7 @@ const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
           isLoading={ isLoading }
           fontSize="sm"
           lineHeight={ 5 }
+          noIcon
         />
       </Td>
       <Td verticalAlign="middle" isNumeric>

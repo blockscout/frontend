@@ -27,7 +27,7 @@ const UserOpsListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>User op hash</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <UserOpEntity hash={ item.hash } noCopy={ false } isLoading={ isLoading }/>
+        <UserOpEntity hash={ item.hash } isLoading={ isLoading } fontWeight="700" noIcon/>
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
@@ -53,6 +53,7 @@ const UserOpsListItem = ({ item, isLoading }: Props) => {
         <TxEntity
           hash={ item.transaction_hash }
           isLoading={ isLoading }
+          noIcon
         />
       </ListItemMobileGrid.Value>
 
@@ -63,6 +64,7 @@ const UserOpsListItem = ({ item, isLoading }: Props) => {
           isLoading={ isLoading }
           fontSize="sm"
           lineHeight={ 5 }
+          noIcon
         />
       </ListItemMobileGrid.Value>
 

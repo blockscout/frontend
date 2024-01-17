@@ -2,6 +2,7 @@ import { inRange } from 'lodash';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { Log } from 'types/api/log';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
@@ -11,10 +12,11 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { USER_OP } from 'stubs/userOps';
 import TextAd from 'ui/shared/ad/TextAd';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
+import TxLogs from 'ui/tx/TxLogs';
 import TxTokenTransfer from 'ui/tx/TxTokenTransfer';
 import UserOpCallData from 'ui/userOp/UserOpCallData';
 import UserOpDetails from 'ui/userOp/UserOpDetails';
@@ -50,6 +52,17 @@ const BlockPageContent = () => {
     }
   }, [ userOpQuery.data ]);
 
+  const filterLogsByLogIndex = React.useCallback((log: Log) => {
+    if (!userOpQuery.data) {
+      return true;
+    } else {
+      if (inRange(log.index, userOpQuery.data.user_logs_start_index, userOpQuery.data.user_logs_start_index + userOpQuery.data.user_logs_count)) {
+        return true;
+      }
+      return false;
+    }
+  }, [ userOpQuery.data ]);
+
   const tabs: Array<RoutedTab> = React.useMemo(() => ([
     { id: 'index', title: 'Details', component: <UserOpDetails query={ userOpQuery }/> },
     {
@@ -58,9 +71,9 @@ const BlockPageContent = () => {
       component: <TxTokenTransfer txHash={ userOpQuery.data?.transaction_hash } tokenTransferFilter={ filterTokenTransfersByLogIndex }/>,
     },
     { id: 'call_data', title: 'Call data', component: <UserOpCallData rawCallData={ userOpQuery.data?.call_data }/> },
-    // { id: 'logs', title: 'Logs', component: <UserOpLogs txHash={ userOpQuery.data?.transaction_hash }/> }
+    { id: 'logs', title: 'Logs', component: <TxLogs txHash={ userOpQuery.data?.transaction_hash } logsFilter={ filterLogsByLogIndex }/> },
     // { id: 'raw', title: 'Raw', component: <UserOpRaw txHash={ userOpQuery.data?.transaction_hash }/> }
-  ].filter(Boolean)), [ userOpQuery, filterTokenTransfersByLogIndex ]);
+  ].filter(Boolean)), [ userOpQuery, filterTokenTransfersByLogIndex, filterLogsByLogIndex ]);
 
   if (!hash) {
     throw new Error('User operation not found', { cause: { status: 404 } });
@@ -83,7 +96,7 @@ const BlockPageContent = () => {
     };
   }, [ appProps.referrer ]);
 
-  const titleSecondRow = <HashStringShortenDynamic hash={ hash }/>;
+  const titleSecondRow = <UserOpEntity hash={ hash } noLink noCopy={ false } fontWeight={ 500 } fontFamily="heading" iconSize="lg"/>;
 
   return (
     <>
