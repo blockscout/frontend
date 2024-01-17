@@ -1,5 +1,5 @@
 import type { As } from '@chakra-ui/react';
-import { Box, Flex, Skeleton, Tooltip, chakra, VStack } from '@chakra-ui/react';
+import { Box, Flex, Skeleton, Tooltip, chakra, VStack, useColorModeValue } from '@chakra-ui/react';
 import _omit from 'lodash/omit';
 import React from 'react';
 
@@ -7,6 +7,7 @@ import type { AddressParam } from 'types/api/addressParams';
 
 import { route } from 'nextjs-routes';
 
+import { useAddressHighlightContext } from 'lib/contexts/addressHighlight';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
 import { getIconProps } from '../base/utils';
@@ -146,8 +147,35 @@ const AddressEntry = (props: EntityProps) => {
   const linkProps = _omit(props, [ 'className' ]);
   const partsProps = _omit(props, [ 'className', 'onClick' ]);
 
+  const context = useAddressHighlightContext();
+  const highlightedBgColor = useColorModeValue('blue.50', 'blue.900');
+  const highlightedBorderColor = useColorModeValue('blue.200', 'blue.600');
+
   return (
-    <Container className={ props.className }>
+    <Container
+      className={ props.className }
+      data-hash={ props.address.hash }
+      onMouseEnter={ context?.onMouseEnter }
+      onMouseLeave={ context?.onMouseLeave }
+      position="relative"
+      _before={ !props.isLoading && context?.highlightedAddress === props.address.hash ? {
+        content: `" "`,
+        position: 'absolute',
+        py: 1,
+        pl: 1,
+        pr: props.noCopy ? 2 : 0,
+        top: '-5px',
+        left: '-5px',
+        width: `100%`,
+        height: '100%',
+        borderRadius: 'base',
+        borderColor: highlightedBorderColor,
+        borderWidth: '1px',
+        borderStyle: 'dashed',
+        bgColor: highlightedBgColor,
+        zIndex: -1,
+      } : undefined }
+    >
       <Icon { ...partsProps }/>
       <Link { ...linkProps }>
         <Content { ...partsProps }/>
