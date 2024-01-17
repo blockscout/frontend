@@ -110,8 +110,8 @@ const AddressEnsDomains = ({ addressHash, mainDomainName }: Props) => {
         <PopoverBody px={ 6 } py={ 5 } fontSize="sm" display="flex" flexDir="column" rowGap={ 5 } alignItems="flex-start">
           { mainDomain && (
             <div>
-              <p>A domain name is not necessarily held by a person popularly associated with the name.</p>
-              <Flex alignItems="center" fontSize="md" mt={ 4 }>
+              <chakra.span color="text_secondary" fontSize="xs">Primary*</chakra.span>
+              <Flex alignItems="center" fontSize="md" mt={ 2 }>
                 <EnsEntity name={ mainDomain.name } fontWeight={ 600 } noCopy/>
                 { mainDomain.expiry_date &&
                     <chakra.span color="text_secondary" whiteSpace="pre"> (expires { dayjs(mainDomain.expiry_date).fromNow() })</chakra.span> }
@@ -120,13 +120,13 @@ const AddressEnsDomains = ({ addressHash, mainDomainName }: Props) => {
           ) }
           { ownedDomains.length > 0 && (
             <div>
-              <chakra.span color="text_secondary" fontSize="xs">Other domain names owned by this address</chakra.span>
+              <chakra.span color="text_secondary" fontSize="xs">Owned by this address</chakra.span>
               <DomainsGrid data={ ownedDomains }/>
             </div>
           ) }
           { resolvedDomains.length > 0 && (
             <div>
-              <chakra.span color="text_secondary" fontSize="xs">Other domain names resolved to this address</chakra.span>
+              <chakra.span color="text_secondary" fontSize="xs">Resolved to this address</chakra.span>
               <DomainsGrid data={ resolvedDomains }/>
             </div>
           ) }
@@ -137,6 +137,11 @@ const AddressEnsDomains = ({ addressHash, mainDomainName }: Props) => {
               <span> More results</span>
               <chakra.span color="text_secondary"> ({ totalRecords })</chakra.span>
             </LinkInternal>
+          ) }
+          { mainDomain && (
+            <chakra.span fontSize="xs" mt={ -1 }>
+              *A domain name is not necessarily held by a person popularly associated with the name
+            </chakra.span>
           ) }
         </PopoverBody>
       </PopoverContent>

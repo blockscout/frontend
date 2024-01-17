@@ -177,7 +177,6 @@ const AddressPageContent = () => {
       { addressQuery.data?.ens_domain_name && (
         <EnsEntity
           name={ addressQuery.data?.ens_domain_name }
-          noLink
           fontFamily="heading"
           fontSize="lg"
           fontWeight={ 500 }

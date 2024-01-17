@@ -54,14 +54,13 @@ const NameDomain = () => {
         name={ domainName }
         isLoading={ isLoading }
         noLink
-        maxW="300px"
+        maxW={ infoQuery.data?.resolved_address ? '300px' : 'min-content' }
       />
       { infoQuery.data?.resolved_address && (
         <AddressEntity
           address={ infoQuery.data?.resolved_address }
           isLoading={ isLoading }
           truncation={ isMobile ? 'constant' : 'dynamic' }
-          noLink
           flexShrink={ 0 }
         />
       ) }
