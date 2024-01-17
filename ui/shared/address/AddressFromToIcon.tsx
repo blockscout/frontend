@@ -22,8 +22,8 @@ const AddressFromToIcon = ({ isLoading, type, className }: Props) => {
       bgColor: useColorModeValue('orange.50', 'yellow.900'),
     },
     self: {
-      color: useColorModeValue('gray.500', 'gray.300'),
-      bgColor: 'transparent',
+      color: useColorModeValue('blackAlpha.400', 'whiteAlpha.400'),
+      bgColor: useColorModeValue('blackAlpha.50', 'whiteAlpha.50'),
     },
     unspecified: {
       color: useColorModeValue('gray.500', 'gray.300'),
@@ -33,7 +33,7 @@ const AddressFromToIcon = ({ isLoading, type, className }: Props) => {
   const labels = {
     'in': 'Incoming txn',
     out: 'Outgoing txn',
-    self: 'Self txn',
+    self: 'Txn to the same address',
   };
 
   const icon = (
