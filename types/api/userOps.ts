@@ -50,3 +50,7 @@ export type UserOp = {
   user_logs_start_index: number;
   user_logs_count: number;
 }
+
+export type UserOpsFilters = {
+  transaction_hash?: string;
+}

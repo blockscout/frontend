@@ -22,6 +22,7 @@ import TxRawTrace from 'ui/tx/TxRawTrace';
 import TxState from 'ui/tx/TxState';
 import TxSubHeading from 'ui/tx/TxSubHeading';
 import TxTokenTransfer from 'ui/tx/TxTokenTransfer';
+import TxUserOps from 'ui/tx/TxUserOps';
 
 const TransactionPageContent = () => {
   const router = useRouter();
@@ -47,6 +48,7 @@ const TransactionPageContent = () => {
       { id: 'wrapped', title: 'Regular tx details', component: <TxDetailsWrapped data={ data.wrapped }/> } :
       undefined,
     { id: 'token_transfers', title: 'Token transfers', component: <TxTokenTransfer/> },
+    config.features.userOps.isEnabled ? { id: 'user_ops', title: 'User operations', component: <TxUserOps/> } : undefined,
     { id: 'internal', title: 'Internal txns', component: <TxInternals/> },
     { id: 'logs', title: 'Logs', component: <TxLogs/> },
     { id: 'state', title: 'State', component: <TxState/> },

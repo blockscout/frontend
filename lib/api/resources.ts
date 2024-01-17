@@ -77,7 +77,7 @@ import type {
 import type { TxInterpretationResponse } from 'types/api/txInterpretation';
 import type { TTxsFilters } from 'types/api/txsFilters';
 import type { TxStateChanges } from 'types/api/txStateChanges';
-import type { UserOpsResponse, UserOp } from 'types/api/userOps';
+import type { UserOpsResponse, UserOp, UserOpsFilters } from 'types/api/userOps';
 import type { VerifiedContractsSorting } from 'types/api/verifiedContracts';
 import type { VisualizedContract } from 'types/api/visualization';
 import type { WithdrawalsResponse, WithdrawalsCounters } from 'types/api/withdrawals';
@@ -583,7 +583,7 @@ export const RESOURCES = {
   // USER OPS
   user_ops: {
     path: '/api/v2/proxy/account-abstraction/operations',
-    filterFields: [],
+    filterFields: [ 'transaction_hash' as const ],
   },
 
   user_op: {
@@ -789,6 +789,7 @@ Q extends 'tokens_bridged' ? TokensBridgedFilters :
 Q extends 'verified_contracts' ? VerifiedContractsFilters :
 Q extends 'addresses_lookup' ? EnsAddressLookupFilters :
 Q extends 'domains_lookup' ? EnsDomainLookupFilters :
+Q extends 'user_ops' ? UserOpsFilters :
 never;
 /* eslint-enable @typescript-eslint/indent */
 
