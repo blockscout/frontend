@@ -29,6 +29,7 @@ export const base: Transaction = {
     private_tags: [ ],
     public_tags: [ publicTag ],
     watchlist_names: [],
+    ens_domain_name: 'kitty.kitty.cat.eth',
   },
   gas_limit: '800000',
   gas_price: '48000000000',
@@ -54,6 +55,7 @@ export const base: Transaction = {
     private_tags: [ privateTag ],
     public_tags: [],
     watchlist_names: [ watchlistName ],
+    ens_domain_name: null,
   },
   token_transfers: [],
   token_transfers_overflow: false,
@@ -97,6 +99,7 @@ export const withContractCreation: Transaction = {
     private_tags: [],
     public_tags: [],
     watchlist_names: [],
+    ens_domain_name: null,
   },
   tx_types: [
     'contract_creation',
@@ -115,6 +118,7 @@ export const withTokenTransfer: Transaction = {
     private_tags: [ privateTag ],
     public_tags: [],
     watchlist_names: [ watchlistName ],
+    ens_domain_name: null,
   },
   token_transfers: [
     tokenTransferMock.erc20,
@@ -168,6 +172,7 @@ export const withRawRevertReason: Transaction = {
     private_tags: [ ],
     public_tags: [],
     watchlist_names: [ ],
+    ens_domain_name: null,
   },
 };
 
@@ -283,6 +288,7 @@ export const stabilityTx: Transaction = {
       private_tags: [],
       public_tags: [],
       watchlist_names: [],
+      ens_domain_name: null,
     },
     dapp_fee: '34381250000000',
     token: {
@@ -307,6 +313,7 @@ export const stabilityTx: Transaction = {
       private_tags: [],
       public_tags: [],
       watchlist_names: [],
+      ens_domain_name: null,
     },
     validator_fee: '34381250000000',
   },

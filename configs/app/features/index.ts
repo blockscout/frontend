@@ -10,6 +10,7 @@ export { default as googleAnalytics } from './googleAnalytics';
 export { default as graphqlApiDocs } from './graphqlApiDocs';
 export { default as marketplace } from './marketplace';
 export { default as mixpanel } from './mixpanel';
+export { default as nameService } from './nameService';
 export { default as restApiDocs } from './restApiDocs';
 export { default as optimisticRollup } from './optimisticRollup';
 export { default as safe } from './safe';

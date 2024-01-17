@@ -46,6 +46,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
   - [Web3 wallet integration](ENVS.md#web3-wallet-integration-add-token-or-network-to-the-wallet) (add token or network to the wallet)
   - [Transaction interpretation](ENVS.md#transaction-interpretation)
   - [Verified tokens info](ENVS.md#verified-tokens-info)
+  - [Name service integration](ENVS.md#name-service-integration)
   - [Bridged tokens](ENVS.md#bridged-tokens)
   - [Safe{Core} address tags](ENVS.md#safecore-address-tags)
   - [SUAVE chain](ENVS.md#suave-chain)
@@ -487,6 +488,16 @@ This feature is **enabled by default** with the `['metamask']` value. To switch 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_CONTRACT_INFO_API_HOST | `string` | Contract Info API endpoint url | Required | - | `https://contracts-info.services.blockscout.com` |
+
+&nbsp;
+
+### Name service integration
+
+This feature allows resolving blockchain addresses using human-readable domain names.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_NAME_SERVICE_API_HOST | `string` | Name Service API endpoint url | Required | - | `https://bens.services.blockscout.com` |
 
 &nbsp;
 

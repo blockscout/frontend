@@ -33,6 +33,7 @@ export const txInterpretation: TxInterpretationResponse = {
             private_tags: [],
             public_tags: [],
             watchlist_names: [],
+            ens_domain_name: null,
           },
         },
         timestamp: {
