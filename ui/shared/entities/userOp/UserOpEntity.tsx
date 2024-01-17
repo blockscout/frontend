@@ -21,18 +21,19 @@ const Link = chakra((props: LinkProps) => {
   );
 });
 
-// type IconProps = Omit<EntityBase.IconBaseProps, 'name'> & {
-//   name?: EntityBase.IconBaseProps['name'];
-// };
+type IconProps = Omit<EntityBase.IconBaseProps, 'name'> & {
+  name?: EntityBase.IconBaseProps['name'];
+};
 
-// const Icon = (props: IconProps) => {
-//   return (
-//     <EntityBase.Icon
-//       { ...props }
-//       name={ props.name ?? 'transactions_slim' }
-//     />
-//   );
-// };
+const Icon = (props: IconProps) => {
+  return (
+    <EntityBase.Icon
+      { ...props }
+      // change to slim!!
+      name={ props.name ?? 'user_op' }
+    />
+  );
+};
 
 type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'hash'>;
 
@@ -70,7 +71,7 @@ const UserOpEntity = (props: EntityProps) => {
 
   return (
     <Container className={ props.className }>
-      { /* <Icon { ...partsProps }/> */ }
+      <Icon { ...partsProps }/>
       <Link { ...linkProps }>
         <Content { ...partsProps }/>
       </Link>
@@ -84,7 +85,7 @@ export default React.memo(chakra(UserOpEntity));
 export {
   Container,
   Link,
-  // Icon,
+  Icon,
   Content,
   Copy,
 };

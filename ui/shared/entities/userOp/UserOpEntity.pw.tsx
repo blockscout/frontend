@@ -6,26 +6,26 @@ import TestApp from 'playwright/TestApp';
 import UserOpEntity from './UserOpEntity';
 
 const hash = '0x376db52955d5bce114d0ccea2dcf22289b4eae1b86bcae5a59bb5fdbfef48899';
-// const iconSizes = [ 'md', 'lg' ];
+const iconSizes = [ 'md', 'lg' ];
 
 test.use({ viewport: { width: 180, height: 30 } });
 
-// test.describe('icon size', () => {
-//   iconSizes.forEach((size) => {
-//     test(size, async({ mount }) => {
-//       const component = await mount(
-//         <TestApp>
-//           <TxEntity
-//             hash={ hash }
-//             iconSize={ size }
-//           />
-//         </TestApp>,
-//       );
+test.describe('icon size', () => {
+  iconSizes.forEach((size) => {
+    test(size, async({ mount }) => {
+      const component = await mount(
+        <TestApp>
+          <UserOpEntity
+            hash={ hash }
+            iconSize={ size }
+          />
+        </TestApp>,
+      );
 
-//       await expect(component).toHaveScreenshot();
-//     });
-//   });
-// });
+      await expect(component).toHaveScreenshot();
+    });
+  });
+});
 
 test('loading', async({ mount }) => {
   const component = await mount(

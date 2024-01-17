@@ -49,8 +49,7 @@ export default function useNavItems(): ReturnType {
     const userOps: NavItem | null = config.features.userOps.isEnabled ? {
       text: 'User operations',
       nextRoute: { pathname: '/ops' as const },
-      // change!!!
-      icon: 'top-accounts',
+      icon: 'user_op',
       isActive: pathname === '/ops' || pathname === '/op/[hash]',
     } : null;
 
