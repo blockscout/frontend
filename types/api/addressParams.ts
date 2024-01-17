@@ -21,4 +21,5 @@ export interface AddressParam extends UserTags {
   name: string | null;
   is_contract: boolean;
   is_verified: boolean | null;
+  ens_domain_name: string | null;
 }

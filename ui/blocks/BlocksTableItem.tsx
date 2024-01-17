@@ -50,7 +50,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
             <BlockEntity
               isLoading={ isLoading }
               number={ data.height }
-              hash={ data.type === 'reorg' ? data.hash : undefined }
+              hash={ data.type !== 'block' ? data.hash : undefined }
               noIcon
               fontSize="sm"
               lineHeight={ 5 }

@@ -9,6 +9,7 @@ function generateCspPolicy() {
     descriptors.googleAnalytics(),
     descriptors.googleFonts(),
     descriptors.googleReCaptcha(),
+    descriptors.growthBook(),
     descriptors.mixpanel(),
     descriptors.monaco(),
     descriptors.safe(),

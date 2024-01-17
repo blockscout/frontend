@@ -19,7 +19,7 @@ test('default view +@dark-mode +@mobile', async({ mount, page }) => {
     </TestApp>,
   );
 
-  await component.getByText(/gwei/i).hover();
+  await component.getByText(/\$1\.01/).hover();
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 220 } });
 
   await component.getByLabel('color mode switch').click();

@@ -11,6 +11,8 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import type { TabItem } from './types';
 
+import isBrowser from 'lib/isBrowser';
+
 import AdaptiveTabsList from './AdaptiveTabsList';
 import { menuButton } from './utils';
 
@@ -39,7 +41,7 @@ const TabsWithScroll = ({
   ...themeProps
 }: Props) => {
   const [ activeTabIndex, setActiveTabIndex ] = useState<number>(defaultTabIndex || 0);
-  const [ screenWidth, setScreenWidth ] = React.useState(0);
+  const [ screenWidth, setScreenWidth ] = React.useState(isBrowser() ? window.innerWidth : 0);
 
   const tabsRef = useRef<HTMLDivElement>(null);
 

@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react';
 import { test as base, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
@@ -25,7 +26,9 @@ statuses.forEach((status) => {
 
     const component = await mount(
       <TestApp>
-        <TxDetailsWithdrawalStatus status={ status } l1TxHash="0x7d93a59a228e97d084a635181c3053e324237d07566ec12287eae6da2bcf9456"/>
+        <Box p={ 2 }>
+          <TxDetailsWithdrawalStatus status={ status } l1TxHash="0x7d93a59a228e97d084a635181c3053e324237d07566ec12287eae6da2bcf9456"/>
+        </Box>
       </TestApp>,
     );
 
