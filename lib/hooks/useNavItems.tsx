@@ -179,7 +179,6 @@ export default function useNavItems(): ReturnType {
           {
             text: 'Verify contract',
             nextRoute: { pathname: '/contract-verification' as const },
-            icon: 'verify-contract',
             isActive: pathname.startsWith('/contract-verification'),
           },
           ...config.UI.sidebar.otherLinks,

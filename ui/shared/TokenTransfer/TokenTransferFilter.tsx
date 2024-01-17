@@ -55,7 +55,6 @@ const TokenTransferFilter = ({
           </RadioGroup>
         </>
       ) }
-      <Text variant="secondary" fontWeight={ 600 }>Type</Text>
       <TokenTypeFilter<TokenType> onChange={ onTypeFilterChange } defaultValue={ defaultTypeFilters } nftOnly={ false }/>
     </PopoverFilter>
   );

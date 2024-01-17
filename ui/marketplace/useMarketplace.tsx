@@ -6,6 +6,7 @@ import React from 'react';
 import { MarketplaceCategory } from 'types/client/marketplace';
 
 import useDebounce from 'lib/hooks/useDebounce';
+import * as mixpanel from 'lib/mixpanel/index';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
 import useMarketplaceApps from './useMarketplaceApps';
@@ -33,6 +34,8 @@ export default function useMarketplace() {
   const [ isDisclaimerModalOpen, setIsDisclaimerModalOpen ] = React.useState<boolean>(false);
 
   const handleFavoriteClick = React.useCallback((id: string, isFavorite: boolean) => {
+    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Favorite app', Info: id });
+
     const favoriteApps = getFavoriteApps();
 
     if (isFavorite) {
@@ -64,6 +67,7 @@ export default function useMarketplace() {
   }, []);
 
   const handleCategoryChange = React.useCallback((newCategory: string) => {
+    mixpanel.logEvent(mixpanel.EventTypes.FILTERS, { Source: 'Marketplace', 'Filter name': newCategory });
     setSelectedCategoryId(newCategory);
   }, []);
 
@@ -91,6 +95,11 @@ export default function useMarketplace() {
       category: selectedCategoryId === MarketplaceCategory.ALL ? undefined : selectedCategoryId,
       filter: debouncedFilterQuery,
     }, Boolean);
+
+    if (debouncedFilterQuery.length > 0) {
+      mixpanel.logEvent(mixpanel.EventTypes.LOCAL_SEARCH, { Source: 'Marketplace', 'Search query': debouncedFilterQuery });
+    }
+
     router.replace(
       { pathname: '/apps', query },
       undefined,
