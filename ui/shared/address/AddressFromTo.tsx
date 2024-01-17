@@ -76,7 +76,7 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
   }
 
   return (
-    <Flex className={ className } alignItems="center" columnGap={ 2 }>
+    <Flex className={ className } alignItems="center">
       <Entity
         address={ from }
         isLoading={ isLoading }
@@ -85,7 +85,8 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
         noIcon={ noIcon }
         tokenHash={ tokenHash }
         truncation={ truncation }
-        maxW={ truncation === 'constant' ? undefined : 'calc(50% - 18px)' }
+        maxW={ truncation === 'constant' ? undefined : 'calc(50% - 20px)' }
+        mr={ current === from.hash ? 4 : 2 }
       />
       <AddressFromToIcon
         isLoading={ isLoading }
@@ -100,7 +101,8 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
           noIcon={ noIcon }
           tokenHash={ tokenHash }
           truncation={ truncation }
-          maxW={ truncation === 'constant' ? undefined : 'calc(50% - 18px)' }
+          maxW={ truncation === 'constant' ? undefined : 'calc(50% - 20px)' }
+          ml={ 3 }
         />
       ) : <span>-</span> }
     </Flex>

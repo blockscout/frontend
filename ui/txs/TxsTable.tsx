@@ -49,7 +49,7 @@ const TxsTable = ({
             <Th width="160px">Type</Th>
             <Th width="20%">Method</Th>
             { showBlockInfo && <Th width="18%">Block</Th> }
-            <Th width={{ base: '224px', xl: '352px' }}>From/To</Th>
+            <Th width={{ base: '224px', xl: '360px' }}>From/To</Th>
             { !config.UI.views.tx.hiddenFields?.value && (
               <Th width="20%" isNumeric>
                 <Link onClick={ sort('value') } display="flex" justifyContent="end">
