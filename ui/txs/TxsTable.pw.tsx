@@ -17,7 +17,7 @@ test.describe('base view', () => {
       </TestApp>,
     );
 
-    await component.getByText('0x04').first().hover();
+    await component.getByText('kitty').first().hover();
 
     await expect(component).toHaveScreenshot();
   });
@@ -33,7 +33,7 @@ test.describe('base view', () => {
         </TestApp>,
       );
 
-      await component.getByText('0x04').first().hover();
+      await component.getByText('kitty').first().hover();
 
       await expect(component).toHaveScreenshot();
     });
