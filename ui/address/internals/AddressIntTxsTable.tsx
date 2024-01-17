@@ -24,11 +24,9 @@ const AddressIntTxsTable = ({ data, currentAddress, isLoading }: Props) => {
             <Th width="15%">Parent txn hash</Th>
             <Th width="15%">Type</Th>
             <Th width="10%">Block</Th>
-            <Th width="20%">From</Th>
-            <Th width="48px" px={ 0 }/>
-            <Th width="20%">To</Th>
+            <Th width="40%">From/To</Th>
             <Th width="20%" isNumeric>
-            Value { config.chain.currency.symbol }
+              Value { config.chain.currency.symbol }
             </Th>
           </Tr>
         </Thead>

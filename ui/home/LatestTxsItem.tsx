@@ -13,9 +13,8 @@ import type { Transaction } from 'types/api/transaction';
 import config from 'configs/app';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
-import IconSvg from 'ui/shared/IconSvg';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TxFeeStability from 'ui/shared/tx/TxFeeStability';
 import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
@@ -35,7 +34,7 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
   return (
     <Grid
       gridTemplateColumns={{
-        lg: columnNum === 2 ? '3fr minmax(auto, 160px)' : '3fr minmax(auto, 160px) 150px',
+        lg: columnNum === 2 ? '3fr minmax(auto, 180px)' : '3fr minmax(auto, 180px) 150px',
         xl: columnNum === 2 ? '3fr minmax(auto, 250px)' : '3fr minmax(auto, 275px) 150px',
       }}
       gridGap={ 8 }
@@ -80,36 +79,12 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
           </Flex>
         </Box>
       </Flex>
-      <Flex alignItems="center" alignSelf="flex-start">
-        <IconSvg
-          name="arrows/east"
-          boxSize={ 6 }
-          color="gray.500"
-          transform="rotate(90deg)"
-          isLoading={ isLoading }
-          flexShrink={ 0 }
-        />
-        <Flex ml={ 1 } maxW="calc(100% - 24px)" flexDir="column" rowGap="1px">
-          <AddressEntity
-            isLoading={ isLoading }
-            address={ tx.from }
-            fontSize="sm"
-            lineHeight={ 5 }
-            my="5px"
-            fontWeight="500"
-          />
-          { dataTo && (
-            <AddressEntity
-              isLoading={ isLoading }
-              address={ dataTo }
-              fontSize="sm"
-              lineHeight={ 5 }
-              my="5px"
-              fontWeight="500"
-            />
-          ) }
-        </Flex>
-      </Flex>
+      <AddressFromTo
+        from={ tx.from }
+        to={ dataTo }
+        isLoading={ isLoading }
+        mode="compact"
+      />
       <Flex flexDir="column">
         { !config.UI.views.tx.hiddenFields?.value && (
           <Skeleton isLoaded={ !isLoading } my="3px">

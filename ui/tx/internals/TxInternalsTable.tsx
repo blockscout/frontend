@@ -27,9 +27,7 @@ const TxInternalsTable = ({ data, sort, onSortToggle, top, isLoading }: Props) =
         <Thead top={ top }>
           <Tr>
             <Th width="28%">Type</Th>
-            <Th width="20%">From</Th>
-            <Th width="24px" px={ 0 }/>
-            <Th width="20%">To</Th>
+            <Th width="40%">From/To</Th>
             <Th width="16%" isNumeric>
               <Link display="flex" alignItems="center" justifyContent="flex-end" onClick={ onSortToggle('value') } columnGap={ 1 }>
                 { sort?.includes('value') && <IconSvg name="arrows/east" boxSize={ 4 } transform={ sortIconTransform }/> }
