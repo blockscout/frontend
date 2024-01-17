@@ -16,6 +16,7 @@ export enum EventTypes {
   QR_CODE = 'QR code',
   PAGE_WIDGET = 'Page widget',
   TX_INTERPRETATION_INTERACTION = 'Transaction interpratetion interaction',
+  EXPERIMENT_STARTED = 'Experiment started',
   FILTERS = 'Filters'
 }
 
@@ -96,6 +97,11 @@ Type extends EventTypes.PAGE_WIDGET ? (
 ) :
 Type extends EventTypes.TX_INTERPRETATION_INTERACTION ? {
   'Type': 'Address click' | 'Token click';
+} :
+Type extends EventTypes.EXPERIMENT_STARTED ? {
+  'Experiment name': string;
+  'Variant name': string;
+  'Source': 'growthbook';
 } :
 Type extends EventTypes.FILTERS ? {
   'Source': 'Marketplace';

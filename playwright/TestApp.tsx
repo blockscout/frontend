@@ -1,4 +1,5 @@
 import { ChakraProvider } from '@chakra-ui/react';
+import { GrowthBookProvider } from '@growthbook/growthbook-react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createWeb3Modal, defaultWagmiConfig } from '@web3modal/wagmi/react';
 import React from 'react';
@@ -64,9 +65,11 @@ const TestApp = ({ children, withSocket, appContext = defaultAppContext }: Props
       <QueryClientProvider client={ queryClient }>
         <SocketProvider url={ withSocket ? `ws://${ app.domain }:${ app.socketPort }` : undefined }>
           <AppContextProvider { ...appContext }>
-            <WagmiConfig config={ wagmiConfig }>
-              { children }
-            </WagmiConfig>
+            <GrowthBookProvider>
+              <WagmiConfig config={ wagmiConfig }>
+                { children }
+              </WagmiConfig>
+            </GrowthBookProvider>
           </AppContextProvider>
         </SocketProvider>
       </QueryClientProvider>
