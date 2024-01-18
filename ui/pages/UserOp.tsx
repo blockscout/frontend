@@ -96,7 +96,7 @@ const BlockPageContent = () => {
     };
   }, [ appProps.referrer ]);
 
-  const titleSecondRow = <UserOpEntity hash={ hash } noLink noCopy={ false } fontWeight={ 500 } fontFamily="heading" iconSize="lg"/>;
+  const titleSecondRow = <UserOpEntity hash={ hash } noLink noCopy={ false } fontWeight={ 500 } fontFamily="heading"/>;
 
   return (
     <>

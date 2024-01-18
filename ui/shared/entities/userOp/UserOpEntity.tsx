@@ -29,8 +29,7 @@ const Icon = (props: IconProps) => {
   return (
     <EntityBase.Icon
       { ...props }
-      // change to slim!!
-      name={ props.name ?? 'user_op' }
+      name={ props.name ?? 'user_op_slim' }
     />
   );
 };
