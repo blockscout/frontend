@@ -49,6 +49,7 @@ export type UserOp = {
   call_data: string;
   user_logs_start_index: number;
   user_logs_count: number;
+  paymaster_and_data?: string;
 }
 
 export type UserOpsFilters = {

@@ -169,7 +169,7 @@ const AddressPageContent = () => {
         addressQuery.data?.implementation_address ? { label: 'proxy', display_name: 'Proxy' } : undefined,
         addressQuery.data?.token ? { label: 'token', display_name: 'Token' } : undefined,
         isSafeAddress ? { label: 'safe', display_name: 'Multisig: Safe' } : undefined,
-        userOpsAccountQuery.data?.total_ops ? { label: 'user_ops_acc', display_name: 'Smart contract wallet' } : undefined,
+        userOpsAccountQuery.data ? { label: 'user_ops_acc', display_name: 'Smart contract wallet' } : undefined,
       ] }
     />
   );

@@ -8,7 +8,6 @@ import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { USER_OP } from 'stubs/userOps';
 import TextAd from 'ui/shared/ad/TextAd';
@@ -16,20 +15,15 @@ import UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
+import useTabIndexFromQuery from 'ui/shared/Tabs/useTabIndexFromQuery';
 import TxLogs from 'ui/tx/TxLogs';
 import TxTokenTransfer from 'ui/tx/TxTokenTransfer';
 import UserOpCallData from 'ui/userOp/UserOpCallData';
 import UserOpDetails from 'ui/userOp/UserOpDetails';
-
-const TAB_LIST_PROPS = {
-  marginBottom: 0,
-  py: 5,
-  marginTop: -5,
-};
+import UserOpRaw from 'ui/userOp/UserOpRaw';
 
 const BlockPageContent = () => {
   const router = useRouter();
-  const isMobile = useIsMobile();
   const appProps = useAppContext();
   const hash = getQueryParamString(router.query.hash);
 
@@ -70,10 +64,16 @@ const BlockPageContent = () => {
       title: 'Token transfers',
       component: <TxTokenTransfer txHash={ userOpQuery.data?.transaction_hash } tokenTransferFilter={ filterTokenTransfersByLogIndex }/>,
     },
-    { id: 'call_data', title: 'Call data', component: <UserOpCallData rawCallData={ userOpQuery.data?.call_data }/> },
+    {
+      id: 'call_data',
+      title: 'Call data',
+      component: <UserOpCallData rawCallData={ userOpQuery.data?.call_data } isLoading={ userOpQuery.isPlaceholderData }/>,
+    },
     { id: 'logs', title: 'Logs', component: <TxLogs txHash={ userOpQuery.data?.transaction_hash } logsFilter={ filterLogsByLogIndex }/> },
-    // { id: 'raw', title: 'Raw', component: <UserOpRaw txHash={ userOpQuery.data?.transaction_hash }/> }
+    { id: 'raw', title: 'Raw', component: <UserOpRaw query={ userOpQuery }/> },
   ].filter(Boolean)), [ userOpQuery, filterTokenTransfersByLogIndex, filterLogsByLogIndex ]);
+
+  const tabIndex = useTabIndexFromQuery(tabs);
 
   if (!hash) {
     throw new Error('User operation not found', { cause: { status: 404 } });
@@ -106,7 +106,13 @@ const BlockPageContent = () => {
         backLink={ backLink }
         secondRow={ titleSecondRow }
       />
-      { userOpQuery.isPlaceholderData ? <TabsSkeleton tabs={ tabs }/> : <RoutedTabs tabs={ tabs } tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }/> }
+      { userOpQuery.isPlaceholderData ? (
+        <>
+          <TabsSkeleton tabs={ tabs } mt={ 6 }/>
+          { tabs[tabIndex]?.component }
+        </>
+      ) :
+        <RoutedTabs tabs={ tabs }/> }
     </>
   );
 };
