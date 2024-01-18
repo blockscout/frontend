@@ -330,6 +330,7 @@ const schema = yup
     NEXT_PUBLIC_NETWORK_ID: yup.number().positive().integer().required(),
     NEXT_PUBLIC_NETWORK_RPC_URL: yup.string().test(urlTest),
     NEXT_PUBLIC_NETWORK_CURRENCY_NAME: yup.string(),
+    NEXT_PUBLIC_NETWORK_CURRENCY_WEI_NAME: yup.string(),
     NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL: yup.string(),
     NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS: yup.number().integer().positive(),
     NEXT_PUBLIC_NETWORK_GOVERNANCE_TOKEN_SYMBOL: yup.string(),

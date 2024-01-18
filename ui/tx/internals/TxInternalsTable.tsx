@@ -3,8 +3,8 @@ import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
-import config from 'configs/app';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
+import { currencyUnits } from 'lib/units';
 import IconSvg from 'ui/shared/IconSvg';
 import { default as Thead } from 'ui/shared/TheadSticky';
 import TxInternalsTableItem from 'ui/tx/internals/TxInternalsTableItem';
@@ -31,13 +31,13 @@ const TxInternalsTable = ({ data, sort, onSortToggle, top, isLoading }: Props) =
             <Th width="16%" isNumeric>
               <Link display="flex" alignItems="center" justifyContent="flex-end" onClick={ onSortToggle('value') } columnGap={ 1 }>
                 { sort?.includes('value') && <IconSvg name="arrows/east" boxSize={ 4 } transform={ sortIconTransform }/> }
-                Value { config.chain.currency.symbol }
+                Value { currencyUnits.ether }
               </Link>
             </Th>
             <Th width="16%" isNumeric>
               <Link display="flex" alignItems="center" justifyContent="flex-end" onClick={ onSortToggle('gas-limit') } columnGap={ 1 }>
                 { sort?.includes('gas-limit') && <IconSvg name="arrows/east" boxSize={ 4 } transform={ sortIconTransform }/> }
-                Gas limit { config.chain.currency.symbol }
+                Gas limit { currencyUnits.ether }
               </Link>
             </Th>
           </Tr>

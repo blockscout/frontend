@@ -39,7 +39,7 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
     return [
       ...('inputs' in data ? data.inputs : []),
       ...('stateMutability' in data && data.stateMutability === 'payable' ? [ {
-        name: `Send native ${ config.chain.currency.symbol }`,
+        name: `Send native ${ config.chain.currency.symbol || 'coin' }`,
         type: 'uint256' as const,
         internalType: 'uint256' as const,
         fieldType: 'native_coin' as const,

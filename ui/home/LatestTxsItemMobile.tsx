@@ -12,6 +12,7 @@ import type { Transaction } from 'types/api/transaction';
 import config from 'configs/app';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
+import { currencyUnits } from 'lib/units';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
@@ -75,13 +76,13 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
       />
       { !config.UI.views.tx.hiddenFields?.value && (
         <Skeleton isLoaded={ !isLoading } mb={ 2 } fontSize="sm" w="fit-content">
-          <Text as="span">Value { config.chain.currency.symbol } </Text>
+          <Text as="span">Value { currencyUnits.ether } </Text>
           <Text as="span" variant="secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() }</Text>
         </Skeleton>
       ) }
       { !config.UI.views.tx.hiddenFields?.tx_fee && (
         <Skeleton isLoaded={ !isLoading } fontSize="sm" w="fit-content" display="flex" whiteSpace="pre">
-          <Text as="span">Fee { !config.UI.views.tx.hiddenFields?.fee_currency ? `${ config.chain.currency.symbol } ` : '' }</Text>
+          <Text as="span">Fee { !config.UI.views.tx.hiddenFields?.fee_currency ? `${ currencyUnits.ether } ` : '' }</Text>
           { tx.stability_fee ? (
             <TxFeeStability data={ tx.stability_fee } accuracy={ 5 } color="text_secondary" hideUsd/>
           ) : (

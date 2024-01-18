@@ -11,6 +11,7 @@ import config from 'configs/app';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import { WEI } from 'lib/consts';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
+import { currencyUnits } from 'lib/units';
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
@@ -94,7 +95,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
       </Box>
       { !isRollup && !config.UI.views.block.hiddenFields?.total_reward && (
         <Flex columnGap={ 2 }>
-          <Text fontWeight={ 500 }>Reward { config.chain.currency.symbol }</Text>
+          <Text fontWeight={ 500 }>Reward { currencyUnits.ether }</Text>
           <Skeleton isLoaded={ !isLoading } display="inline-block" color="text_secondary">
             <span>{ totalReward.toFixed() }</span>
           </Skeleton>
