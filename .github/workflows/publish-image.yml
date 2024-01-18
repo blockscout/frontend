@@ -7,12 +7,22 @@ on:
                 description: Image tags
                 required: false
                 type: string
+            platforms:
+                description: Image platforms (you can specify multiple platforms separated by comma)
+                required: false
+                type: string
+                default: linux/amd64
     workflow_call:
         inputs:
             tags:
                 description: Image tags
                 required: false
                 type: string
+            platforms:
+                description: Image platforms (you can specify multiple platforms separated by comma)
+                required: false
+                type: string
+                default: linux/amd64
 
 jobs:
     run:
@@ -58,9 +68,7 @@ jobs:
                     push: true
                     cache-from: type=gha
                     tags: ${{ inputs.tags || steps.meta.outputs.tags }}
-                    platforms: |
-                        linux/amd64
-                        linux/arm64/v8
+                    platforms: ${{ inputs.platforms }}
                     labels: ${{ steps.meta.outputs.labels }}
                     build-args: |
                         GIT_COMMIT_SHA=${{ env.SHORT_SHA }}
