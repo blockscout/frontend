@@ -54,7 +54,7 @@ export default function useTxQuery(): TxQuery {
       },
     },
   });
-  const { data, isError, isPending } = queryResult;
+  const { data, isError, isPlaceholderData, isPending } = queryResult;
 
   const handleStatusUpdateMessage: SocketMessage.TxStatusUpdate['handler'] = React.useCallback(async() => {
     await delay(5 * SECOND);
@@ -75,7 +75,7 @@ export default function useTxQuery(): TxQuery {
     topic: `transactions:${ hash }`,
     onSocketClose: handleSocketClose,
     onSocketError: handleSocketError,
-    isDisabled: isPending || isError || data.status !== null,
+    isDisabled: isPending || isPlaceholderData || isError || data.status !== null,
   });
   useSocketMessage({
     channel,
@@ -83,9 +83,9 @@ export default function useTxQuery(): TxQuery {
     handler: handleStatusUpdateMessage,
   });
 
-  return {
+  return React.useMemo(() => ({
     ...queryResult,
     socketStatus,
     setRefetchOnError: setRefetchEnabled,
-  };
+  }), [ queryResult, socketStatus, setRefetchEnabled ]);
 }

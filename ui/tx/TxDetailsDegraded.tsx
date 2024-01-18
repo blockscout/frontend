@@ -18,7 +18,7 @@ import type { TxQuery } from './useTxQuery';
 type RpcResponseType = [
   GetTransactionReturnType<Chain, 'latest'> | null,
   TransactionReceipt | null,
-  bigint,
+  bigint | null,
   GetBlockReturnType<Chain, false, 'latest'> | null,
 ];
 
@@ -27,8 +27,6 @@ interface Props {
   txQuery: TxQuery;
 }
 
-// TODO @tom2drum try to write tests
-
 const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
 
   const [ originalError ] = React.useState(txQuery.error);
@@ -36,14 +34,23 @@ const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
   const query = useQuery<RpcResponseType, unknown, Transaction | null>({
     queryKey: [ 'RPC', 'tx', { hash } ],
     queryFn: async() => {
-      const tx = await publicClient.getTransaction({ hash: hash as `0x${ string }` });
+      const tx = await publicClient.getTransaction({ hash: hash as `0x${ string }` }).catch(() => null);
 
-      return Promise.all([
+      if (!tx) {
+        return [ null, null, null, null ];
+      }
+
+      const txReceipt = await publicClient.getTransactionReceipt({ hash: hash as `0x${ string }` }).catch(() => null);
+      const block = await publicClient.getBlock({ blockHash: tx.blockHash }).catch(() => null);
+      const latestBlock = await publicClient.getBlock().catch(() => null);
+      const confirmations = latestBlock && block ? latestBlock.number - block.number + BigInt(1) : null;
+
+      return [
         tx,
-        publicClient.getTransactionReceipt({ hash: hash as `0x${ string }` }),
-        publicClient.getTransactionConfirmations({ hash: hash as `0x${ string }` }),
-        publicClient.getBlock({ blockHash: tx.blockHash }),
-      ]);
+        txReceipt,
+        confirmations,
+        block,
+      ];
     },
     select: (response) => {
       const [ tx, txReceipt, txConfirmations, block ] = response;
@@ -53,11 +60,11 @@ const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
       }
 
       const status = (() => {
-        if (!tx?.blockNumber) {
+        if (!txReceipt) {
           return null;
         }
 
-        return txReceipt?.status === 'success' ? 'ok' : 'error';
+        return txReceipt.status === 'success' ? 'ok' : 'error';
       })();
 
       const gasPrice = txReceipt?.effectiveGasPrice ?? tx.gasPrice;
@@ -121,13 +128,17 @@ const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
       GET_BLOCK,
     ],
     refetchOnMount: false,
+    enabled: !txQuery.isPlaceholderData,
+    retry: false,
   });
 
+  const hasData = Boolean(query.data);
+
   React.useEffect(() => {
-    if (!query.isPlaceholderData && query.data) {
+    if (!query.isPlaceholderData && hasData) {
       txQuery.setRefetchOnError.on();
     }
-  }, [ query.data, query.isPlaceholderData, txQuery ]);
+  }, [ hasData, query.isPlaceholderData, txQuery ]);
 
   React.useEffect(() => {
     return () => {
