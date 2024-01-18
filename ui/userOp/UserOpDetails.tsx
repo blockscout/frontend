@@ -17,6 +17,7 @@ import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import DetailsTimestamp from 'ui/shared/DetailsTimestamp';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import UserOpsAddress from 'ui/shared/userOps/UserOpsAddress';
 import UserOpSponsorType from 'ui/shared/userOps/UserOpSponsorType';
 import UserOpStatus from 'ui/shared/userOps/UserOpStatus';
@@ -65,8 +66,8 @@ const UserOpDetails = ({ query }: Props) => {
         hint="Unique character string assigned to every User operation"
         isLoading={ isPlaceholderData }
       >
-        <Skeleton isLoaded={ !isPlaceholderData }>
-          { data.hash }
+        <Skeleton isLoaded={ !isPlaceholderData } overflow="hidden">
+          <HashStringShortenDynamic hash={ data.hash }/>
         </Skeleton>
       </DetailsInfoItem>
       <DetailsInfoItem
@@ -83,11 +84,14 @@ const UserOpDetails = ({ query }: Props) => {
       >
         <UserOpStatus status={ data.status } isLoading={ isPlaceholderData }/>
       </DetailsInfoItem>
+      { /* how to show it? */ }
       { data.revert_reason && (
         <DetailsInfoItem
           title="Revert reason"
           hint="The revert reason of the User operation"
           isLoading={ isPlaceholderData }
+          wordBreak="break-all"
+          whiteSpace="normal"
         >
           <Skeleton isLoaded={ !isPlaceholderData }>
             { data.revert_reason }
@@ -259,6 +263,8 @@ const UserOpDetails = ({ query }: Props) => {
             <DetailsInfoItem
               title="Init code"
               hint="Code used to deploy the account if not yet on-chain"
+              wordBreak="break-all"
+              whiteSpace="normal"
             >
               { data.init_code }
             </DetailsInfoItem>
@@ -266,7 +272,6 @@ const UserOpDetails = ({ query }: Props) => {
           <DetailsInfoItem
             title="Signature"
             hint="Used to validate a User operation along with the nonce during verification"
-
             wordBreak="break-all"
             whiteSpace="normal"
 
@@ -276,6 +281,8 @@ const UserOpDetails = ({ query }: Props) => {
           <DetailsInfoItem
             title="Nonce"
             hint="Anti-replay protection; also used as the salt for first-time account creation"
+            wordBreak="break-all"
+            whiteSpace="normal"
           >
             { data.nonce }
           </DetailsInfoItem>
