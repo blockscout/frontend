@@ -12,9 +12,8 @@ import type { Transaction } from 'types/api/transaction';
 import config from 'configs/app';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
-import IconSvg from 'ui/shared/IconSvg';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TxFeeStability from 'ui/shared/tx/TxFeeStability';
 import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
@@ -66,31 +65,14 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
           </Skeleton>
         ) }
       </Flex>
-      <Flex alignItems="center" mb={ 3 }>
-        <AddressEntity
-          isLoading={ isLoading }
-          address={ tx.from }
-          truncation="constant"
-          fontSize="sm"
-          fontWeight="500"
-          mr={ 2 }
-        />
-        <IconSvg
-          name="arrows/east"
-          boxSize={ 6 }
-          color="gray.500"
-          isLoading={ isLoading }
-        />
-        { dataTo && (
-          <AddressEntity
-            isLoading={ isLoading }
-            address={ dataTo }
-            truncation="constant"
-            fontSize="sm"
-            fontWeight="500"
-          />
-        ) }
-      </Flex>
+      <AddressFromTo
+        from={ tx.from }
+        to={ dataTo }
+        isLoading={ isLoading }
+        fontSize="sm"
+        fontWeight="500"
+        mb={ 3 }
+      />
       { !config.UI.views.tx.hiddenFields?.value && (
         <Skeleton isLoaded={ !isLoading } mb={ 2 } fontSize="sm" w="fit-content">
           <Text as="span">Value { config.chain.currency.symbol } </Text>

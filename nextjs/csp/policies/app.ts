@@ -53,6 +53,7 @@ export function app(): CspDev.DirectiveDescriptor {
       getFeaturePayload(config.features.sol2uml)?.api.endpoint,
       getFeaturePayload(config.features.verifiedTokens)?.api.endpoint,
       getFeaturePayload(config.features.addressVerification)?.api.endpoint,
+      getFeaturePayload(config.features.nameService)?.api.endpoint,
 
       // chain RPC server
       config.chain.rpcUrl,

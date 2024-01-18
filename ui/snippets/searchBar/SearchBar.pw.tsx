@@ -65,6 +65,7 @@ test('search by contract name  +@mobile +@dark-mode', async({ mount, page }) => 
     status: 200,
     body: JSON.stringify([
       searchMock.contract1,
+      searchMock.address2,
     ]),
   }));
 
@@ -148,6 +149,7 @@ test('search by block number +@mobile', async({ mount, page }) => {
     body: JSON.stringify([
       searchMock.block1,
       searchMock.block2,
+      searchMock.block3,
     ]),
   }));
 

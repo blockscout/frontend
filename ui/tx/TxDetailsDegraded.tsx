@@ -69,6 +69,7 @@ const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
         private_tags: [],
         public_tags: [],
         watchlist_names: [],
+        ens_domain_name: null,
       };
 
       return {

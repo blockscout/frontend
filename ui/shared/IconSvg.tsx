@@ -12,9 +12,9 @@ interface Props extends HTMLChakraProps<'div'> {
   isLoading?: boolean;
 }
 
-const IconSvg = ({ name, isLoading, ...props }: Props) => {
+const IconSvg = ({ name, isLoading, ...props }: Props, ref: React.ForwardedRef<HTMLDivElement>) => {
   return (
-    <Skeleton isLoaded={ !isLoading } display="inline-block" { ...props }>
+    <Skeleton isLoaded={ !isLoading } display="inline-block" { ...props } ref={ ref }>
       <chakra.svg w="100%" h="100%">
         <use href={ `${ href }#${ name }` }/>
       </chakra.svg>
@@ -22,4 +22,4 @@ const IconSvg = ({ name, isLoading, ...props }: Props) => {
   );
 };
 
-export default IconSvg;
+export default React.forwardRef(IconSvg);

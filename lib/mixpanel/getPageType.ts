@@ -38,6 +38,8 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/zkevm-l2-txn-batches': 'ZkEvm L2 Tx batches',
   '/zkevm-l2-txn-batch/[number]': 'ZkEvm L2 Tx batch details',
   '/404': '404',
+  '/name-domains': 'Domains search and resolve',
+  '/name-domains/[name]': 'Domain details',
 
   // service routes, added only to make typescript happy
   '/login': 'Login',

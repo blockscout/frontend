@@ -1,5 +1,5 @@
 import type { As } from '@chakra-ui/react';
-import { Box, Flex, Skeleton, Tooltip, chakra, VStack } from '@chakra-ui/react';
+import { Box, Flex, Skeleton, Tooltip, chakra, VStack, useColorModeValue } from '@chakra-ui/react';
 import _omit from 'lodash/omit';
 import React from 'react';
 
@@ -7,6 +7,7 @@ import type { AddressParam } from 'types/api/addressParams';
 
 import { route } from 'nextjs-routes';
 
+import { useAddressHighlightContext } from 'lib/contexts/addressHighlight';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
 import { getIconProps } from '../base/utils';
@@ -98,10 +99,11 @@ const Icon = (props: IconProps) => {
 type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'address'>;
 
 const Content = chakra((props: ContentProps) => {
-  if (props.address.name) {
+  if (props.address.name || props.address.ens_domain_name) {
+    const text = props.address.ens_domain_name || props.address.name;
     const label = (
       <VStack gap={ 0 } py={ 1 } color="inherit">
-        <Box fontWeight={ 600 } whiteSpace="pre-wrap" wordBreak="break-word">{ props.address.name }</Box>
+        <Box fontWeight={ 600 } whiteSpace="pre-wrap" wordBreak="break-word">{ text }</Box>
         <Box whiteSpace="pre-wrap" wordBreak="break-word">{ props.address.hash }</Box>
       </VStack>
     );
@@ -109,7 +111,7 @@ const Content = chakra((props: ContentProps) => {
     return (
       <Tooltip label={ label } maxW="100vw">
         <Skeleton isLoaded={ !props.isLoading } overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" as="span">
-          { props.address.name }
+          { text }
         </Skeleton>
       </Tooltip>
     );
@@ -137,7 +139,7 @@ const Copy = (props: CopyProps) => {
 const Container = EntityBase.Container;
 
 export interface EntityProps extends EntityBase.EntityBaseProps {
-  address: Pick<AddressParam, 'hash' | 'name' | 'is_contract' | 'is_verified' | 'implementation_name'>;
+  address: Pick<AddressParam, 'hash' | 'name' | 'is_contract' | 'is_verified' | 'implementation_name' | 'ens_domain_name'>;
   isSafeAddress?: boolean;
 }
 
@@ -145,8 +147,35 @@ const AddressEntry = (props: EntityProps) => {
   const linkProps = _omit(props, [ 'className' ]);
   const partsProps = _omit(props, [ 'className', 'onClick' ]);
 
+  const context = useAddressHighlightContext();
+  const highlightedBgColor = useColorModeValue('blue.50', 'blue.900');
+  const highlightedBorderColor = useColorModeValue('blue.200', 'blue.600');
+
   return (
-    <Container className={ props.className }>
+    <Container
+      className={ props.className }
+      data-hash={ props.address.hash }
+      onMouseEnter={ context?.onMouseEnter }
+      onMouseLeave={ context?.onMouseLeave }
+      position="relative"
+      _before={ !props.isLoading && context?.highlightedAddress === props.address.hash ? {
+        content: `" "`,
+        position: 'absolute',
+        py: 1,
+        pl: 1,
+        pr: props.noCopy ? 2 : 0,
+        top: '-5px',
+        left: '-5px',
+        width: `100%`,
+        height: '100%',
+        borderRadius: 'base',
+        borderColor: highlightedBorderColor,
+        borderWidth: '1px',
+        borderStyle: 'dashed',
+        bgColor: highlightedBgColor,
+        zIndex: -1,
+      } : undefined }
+    >
       <Icon { ...partsProps }/>
       <Link { ...linkProps }>
         <Content { ...partsProps }/>

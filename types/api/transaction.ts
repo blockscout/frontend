@@ -14,6 +14,12 @@ export type TransactionRevertReason = {
 type WrappedTransactionFields = 'decoded_input' | 'fee' | 'gas_limit' | 'gas_price' | 'hash' | 'max_fee_per_gas' |
 'max_priority_fee_per_gas' | 'method' | 'nonce' | 'raw_input' | 'to' | 'type' | 'value';
 
+export interface OpWithdrawal {
+  l1_transaction_hash: string;
+  nonce: number;
+  status: L2WithdrawalStatus;
+}
+
 export type Transaction = {
   to: AddressParam | null;
   created_contract: AddressParam | null;
@@ -54,8 +60,7 @@ export type Transaction = {
   l1_gas_used?: string;
   has_error_in_internal_txs: boolean | null;
   // optimism fields
-  op_withdrawal_status?: L2WithdrawalStatus;
-  op_l1_transaction_hash?: string;
+  op_withdrawals?: Array<OpWithdrawal>;
   // SUAVE fields
   execution_node?: AddressParam | null;
   allowed_peekers?: Array<string>;

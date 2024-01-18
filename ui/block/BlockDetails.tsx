@@ -128,6 +128,17 @@ const BlockDetails = ({ query }: Props) => {
     return config.chain.verificationType === 'validation' ? 'Validated by' : 'Mined by';
   })();
 
+  const blockTypeLabel = (() => {
+    switch (data.type) {
+      case 'reorg':
+        return 'Reorg';
+      case 'uncle':
+        return 'Uncle';
+      default:
+        return 'Block';
+    }
+  })();
+
   return (
     <Grid
       columnGap={ 8 }
@@ -136,7 +147,7 @@ const BlockDetails = ({ query }: Props) => {
       overflow="hidden"
     >
       <DetailsInfoItem
-        title={ `${ data.type === 'reorg' ? 'Reorg' : 'Block' } height` }
+        title={ `${ blockTypeLabel } height` }
         hint="The block height of a particular block is defined as the number of blocks preceding it in the blockchain"
         isLoading={ isPlaceholderData }
       >

@@ -5,11 +5,10 @@ import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
+import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import Tag from 'ui/shared/chakra/Tag';
-import AddressEntityWithTokenFilter from 'ui/shared/entities/address/AddressEntityWithTokenFilter';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
-import IconSvg from 'ui/shared/IconSvg';
 
 type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean }
 
@@ -60,24 +59,13 @@ const TokenTransferTableItem = ({
         ) : null }
       </Td>
       <Td>
-        <AddressEntityWithTokenFilter
-          address={ from }
+        <AddressFromTo
+          from={ from }
+          to={ to }
           isLoading={ isLoading }
-          truncation="constant"
+          mt="5px"
+          mode={{ lg: 'compact', xl: 'long' }}
           tokenHash={ token.address }
-          my="5px"
-        />
-      </Td>
-      <Td px={ 0 }>
-        <IconSvg name="arrows/east" boxSize={ 6 } color="gray.500" mt="3px" isLoading={ isLoading }/>
-      </Td>
-      <Td>
-        <AddressEntityWithTokenFilter
-          address={ to }
-          isLoading={ isLoading }
-          truncation="constant"
-          tokenHash={ token.address }
-          my="5px"
         />
       </Td>
       { (token.type === 'ERC-721' || token.type === 'ERC-1155') && (
