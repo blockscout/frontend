@@ -37,11 +37,6 @@ const LatestBlocks = () => {
 
   const queryClient = useQueryClient();
   const statsQueryResult = useApiQuery('homepage_stats', {
-    fetchParams: {
-      headers: {
-        'updated-gas-oracle': 'true',
-      },
-    },
     queryOptions: {
       refetchOnMount: false,
       placeholderData: HOMEPAGE_STATS,

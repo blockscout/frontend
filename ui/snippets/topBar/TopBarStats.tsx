@@ -18,11 +18,6 @@ const TopBarStats = () => {
   }, [ onToggle ]);
 
   const { data, isPlaceholderData, isError, refetch, dataUpdatedAt } = useApiQuery('homepage_stats', {
-    fetchParams: {
-      headers: {
-        'updated-gas-oracle': 'true',
-      },
-    },
     queryOptions: {
       placeholderData: HOMEPAGE_STATS,
       refetchOnMount: false,

@@ -17,11 +17,6 @@ const hasAvgBlockTime = config.UI.homepage.showAvgBlockTime;
 
 const Stats = () => {
   const { data, isPlaceholderData, isError, dataUpdatedAt } = useApiQuery('homepage_stats', {
-    fetchParams: {
-      headers: {
-        'updated-gas-oracle': 'true',
-      },
-    },
     queryOptions: {
       refetchOnMount: false,
       placeholderData: HOMEPAGE_STATS,

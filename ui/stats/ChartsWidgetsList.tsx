@@ -34,11 +34,6 @@ const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, in
   const isEmptyChartList = Boolean(filterQuery) && !isAnyChartDisplayed;
 
   const homeStatsQuery = useApiQuery('homepage_stats', {
-    fetchParams: {
-      headers: {
-        'updated-gas-oracle': 'true',
-      },
-    },
     queryOptions: {
       refetchOnMount: false,
     },

@@ -31,11 +31,6 @@ const ChainIndicators = () => {
 
   const queryResult = useFetchChartData(indicator);
   const statsQueryResult = useApiQuery('homepage_stats', {
-    fetchParams: {
-      headers: {
-        'updated-gas-oracle': 'true',
-      },
-    },
     queryOptions: {
       refetchOnMount: false,
       placeholderData: HOMEPAGE_STATS,

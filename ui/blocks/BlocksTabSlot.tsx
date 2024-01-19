@@ -14,11 +14,6 @@ interface Props {
 
 const BlocksTabSlot = ({ pagination }: Props) => {
   const statsQuery = useApiQuery('homepage_stats', {
-    fetchParams: {
-      headers: {
-        'updated-gas-oracle': 'true',
-      },
-    },
     queryOptions: {
       placeholderData: HOMEPAGE_STATS,
     },

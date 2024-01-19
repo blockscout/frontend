@@ -91,6 +91,7 @@ export interface ApiResource {
   basePath?: string;
   pathParams?: Array<string>;
   needAuth?: boolean; // for external APIs which require authentication
+  headers?: RequestInit['headers'];
 }
 
 export const SORTING_FIELDS = [ 'sort', 'order' ];
@@ -481,6 +482,9 @@ export const RESOURCES = {
   // HOMEPAGE
   homepage_stats: {
     path: '/api/v2/stats',
+    headers: {
+      'updated-gas-oracle': 'true',
+    },
   },
   homepage_chart_txs: {
     path: '/api/v2/stats/charts/transactions',
