@@ -5,7 +5,7 @@ import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import dayjs from 'lib/date/dayjs';
 import { HOMEPAGE_STATS } from 'stubs/stats';
-import GasInfoTooltipContent from 'ui/shared/GasInfoTooltipContent/GasInfoTooltipContent';
+import GasInfoTooltipContent from 'ui/shared/gas/GasInfoTooltipContent';
 import TextSeparator from 'ui/shared/TextSeparator';
 
 const TopBarStats = () => {

@@ -10,7 +10,7 @@ interface Props {
   info: GasPriceInfo | null;
 }
 
-const GasInfoRow = ({ name, info }: Props) => {
+const GasInfoTooltipRow = ({ name, info }: Props) => {
   const content = (() => {
     if (!info || info.price === null) {
       return 'N/A';
@@ -36,4 +36,4 @@ const GasInfoRow = ({ name, info }: Props) => {
   );
 };
 
-export default React.memo(GasInfoRow);
+export default React.memo(GasInfoTooltipRow);

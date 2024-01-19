@@ -5,7 +5,7 @@ import type { HomeStats } from 'types/api/stats';
 
 import dayjs from 'lib/date/dayjs';
 
-import GasInfoRow from './GasInfoRow';
+import GasInfoTooltipRow from './GasInfoTooltipRow';
 import GasInfoUpdateTimer from './GasInfoUpdateTimer';
 
 interface Props {
@@ -32,9 +32,9 @@ const GasInfoTooltipContent = ({ data, dataUpdatedAt }: Props) => {
             </GridItem>
           </>
         ) }
-        <GasInfoRow name="Slow" info={ data.gas_prices.slow }/>
-        <GasInfoRow name="Normal" info={ data.gas_prices.average }/>
-        <GasInfoRow name="Fast" info={ data.gas_prices.fast }/>
+        <GasInfoTooltipRow name="Slow" info={ data.gas_prices.slow }/>
+        <GasInfoTooltipRow name="Normal" info={ data.gas_prices.average }/>
+        <GasInfoTooltipRow name="Fast" info={ data.gas_prices.fast }/>
       </Grid>
     </DarkMode>
   );

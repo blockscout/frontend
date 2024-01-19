@@ -8,7 +8,7 @@ import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { WEI } from 'lib/consts';
 import { HOMEPAGE_STATS } from 'stubs/stats';
-import GasInfoTooltipContent from 'ui/shared/GasInfoTooltipContent/GasInfoTooltipContent';
+import GasInfoTooltipContent from 'ui/shared/gas/GasInfoTooltipContent';
 
 import StatsItem from './StatsItem';
 

@@ -8,7 +8,7 @@ import type { StatsIntervalIds } from 'types/client/stats';
 import useApiQuery from 'lib/api/useApiQuery';
 import { apos } from 'lib/html-entities';
 import EmptySearchResult from 'ui/shared/EmptySearchResult';
-import GasInfoTooltipContent from 'ui/shared/GasInfoTooltipContent/GasInfoTooltipContent';
+import GasInfoTooltipContent from 'ui/shared/gas/GasInfoTooltipContent';
 import Hint from 'ui/shared/Hint';
 
 import ChartsLoadingErrorAlert from './ChartsLoadingErrorAlert';
