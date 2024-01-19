@@ -33,7 +33,7 @@ const UserOpsContent = ({ query, showTx = true, showSender = true }: Props) => {
         />
       </Hide>
       <Show below="lg" ssr={ false }>
-        { query.data.items.map(((item, index) => (
+        { query.data.items.map((item, index) => (
           <UserOpsListItem
             key={ item.hash + (query.isPlaceholderData ? String(index) : '') }
             item={ item }
@@ -41,7 +41,7 @@ const UserOpsContent = ({ query, showTx = true, showSender = true }: Props) => {
             showTx={ showTx }
             showSender={ showSender }
           />
-        ))) }
+        )) }
       </Show>
     </>
   ) : null;

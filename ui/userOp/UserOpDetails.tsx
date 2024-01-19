@@ -17,7 +17,7 @@ import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import DetailsTimestamp from 'ui/shared/DetailsTimestamp';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
 import UserOpsAddress from 'ui/shared/userOps/UserOpsAddress';
 import UserOpSponsorType from 'ui/shared/userOps/UserOpSponsorType';
 import UserOpStatus from 'ui/shared/userOps/UserOpStatus';
@@ -67,7 +67,7 @@ const UserOpDetails = ({ query }: Props) => {
         isLoading={ isPlaceholderData }
       >
         <Skeleton isLoaded={ !isPlaceholderData } overflow="hidden">
-          <HashStringShortenDynamic hash={ data.hash }/>
+          <UserOpEntity hash={ data.hash } noIcon noLink/>
         </Skeleton>
       </DetailsInfoItem>
       <DetailsInfoItem
@@ -134,7 +134,7 @@ const UserOpDetails = ({ query }: Props) => {
         title="Transaction hash"
         hint="Hash of the transaction this User operation belongs to"
       >
-        <TxEntity hash={ data.transaction_hash } isLoading={ isPlaceholderData }/>
+        <TxEntity hash={ data.transaction_hash } isLoading={ isPlaceholderData } noCopy={ false }/>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Block"

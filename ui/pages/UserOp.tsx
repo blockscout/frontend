@@ -22,7 +22,7 @@ import UserOpCallData from 'ui/userOp/UserOpCallData';
 import UserOpDetails from 'ui/userOp/UserOpDetails';
 import UserOpRaw from 'ui/userOp/UserOpRaw';
 
-const BlockPageContent = () => {
+const UserOp = () => {
   const router = useRouter();
   const appProps = useAppContext();
   const hash = getQueryParamString(router.query.hash);
@@ -35,27 +35,30 @@ const BlockPageContent = () => {
     },
   });
 
+  const logRangeStart = Number(userOpQuery.data?.user_logs_start_index);
+  const logRangeEnd = logRangeStart + Number(userOpQuery.data?.user_logs_count);
+
   const filterTokenTransfersByLogIndex = React.useCallback((tt: TokenTransfer) => {
     if (!userOpQuery.data) {
       return true;
     } else {
-      if (inRange(Number(tt.log_index), userOpQuery.data.user_logs_start_index, userOpQuery.data.user_logs_start_index + userOpQuery.data.user_logs_count)) {
+      if (inRange(Number(tt.log_index), logRangeStart, logRangeEnd)) {
         return true;
       }
       return false;
     }
-  }, [ userOpQuery.data ]);
+  }, [ userOpQuery.data, logRangeStart, logRangeEnd ]);
 
   const filterLogsByLogIndex = React.useCallback((log: Log) => {
     if (!userOpQuery.data) {
       return true;
     } else {
-      if (inRange(log.index, userOpQuery.data.user_logs_start_index, userOpQuery.data.user_logs_start_index + userOpQuery.data.user_logs_count)) {
+      if (inRange(log.index, logRangeStart, logRangeEnd)) {
         return true;
       }
       return false;
     }
-  }, [ userOpQuery.data ]);
+  }, [ userOpQuery.data, logRangeStart, logRangeEnd ]);
 
   const tabs: Array<RoutedTab> = React.useMemo(() => ([
     { id: 'index', title: 'Details', component: <UserOpDetails query={ userOpQuery }/> },
@@ -117,4 +120,4 @@ const BlockPageContent = () => {
   );
 };
 
-export default BlockPageContent;
+export default UserOp;

@@ -31,15 +31,17 @@ const UserOpsTable = ({ items, isLoading, top, showTx, showSender }: Props) => {
         </Tr>
       </Thead>
       <Tbody>
-        { items.map((item, index) => (
-          <UserOpsTableItem
-            key={ (isLoading ? String(index) : '') }
-            item={ item }
-            isLoading={ isLoading }
-            showSender={ showSender }
-            showTx={ showTx }
-          />
-        )) }
+        { items.map((item, index) => {
+          return (
+            <UserOpsTableItem
+              key={ item.hash + (isLoading ? String(index) : '') }
+              item={ item }
+              isLoading={ isLoading }
+              showSender={ showSender }
+              showTx={ showTx }
+            />
+          );
+        }) }
       </Tbody>
     </Table>
   );
