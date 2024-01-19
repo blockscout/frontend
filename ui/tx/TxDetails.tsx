@@ -378,7 +378,7 @@ const TxDetails = () => {
             ) : (
               <CurrencyValue
                 value={ data.fee.value }
-                currency={ config.UI.views.tx.hiddenFields?.fee_currency ? '' : currencyUnits }
+                currency={ config.UI.views.tx.hiddenFields?.fee_currency ? '' : currencyUnits.ether }
                 exchangeRate={ data.exchange_rate }
                 flexWrap="wrap"
                 isLoading={ isPlaceholderData }
@@ -438,12 +438,12 @@ const TxDetails = () => {
         { data.tx_burnt_fee && !config.UI.views.tx.hiddenFields?.burnt_fees && !config.features.optimisticRollup.isEnabled && (
           <DetailsInfoItem
             title="Burnt fees"
-            hint={ `Amount of ${ currencyUnits } burned for this transaction. Equals Block Base Fee per Gas * Gas Used` }
+            hint={ `Amount of ${ currencyUnits.ether } burned for this transaction. Equals Block Base Fee per Gas * Gas Used` }
           >
             <IconSvg name="flame" boxSize={ 5 } color="gray.500"/>
             <CurrencyValue
               value={ String(data.tx_burnt_fee) }
-              currency={ currencyUnits }
+              currency={ currencyUnits.ether }
               exchangeRate={ data.exchange_rate }
               flexWrap="wrap"
               ml={ 2 }
@@ -480,7 +480,7 @@ const TxDetails = () => {
               >
                 <CurrencyValue
                   value={ data.l1_fee }
-                  currency={ currencyUnits }
+                  currency={ currencyUnits.ether }
                   exchangeRate={ data.exchange_rate }
                   flexWrap="wrap"
                 />
