@@ -20,8 +20,7 @@ import UserOpStatus from 'ui/shared/userOps/UserOpStatus';
  };
 
 const UserOpsTableItem = ({ item, isLoading, showTx, showSender }: Props) => {
-  // will be fixed on the back-end
-  const timeAgo = dayjs(Number(item.timestamp) * 1000).fromNow();
+  const timeAgo = dayjs(item.timestamp).fromNow();
 
   return (
     <Tr>

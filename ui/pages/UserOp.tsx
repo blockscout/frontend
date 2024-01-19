@@ -35,30 +35,27 @@ const UserOp = () => {
     },
   });
 
-  const logRangeStart = Number(userOpQuery.data?.user_logs_start_index);
-  const logRangeEnd = logRangeStart + Number(userOpQuery.data?.user_logs_count);
-
   const filterTokenTransfersByLogIndex = React.useCallback((tt: TokenTransfer) => {
     if (!userOpQuery.data) {
       return true;
     } else {
-      if (inRange(Number(tt.log_index), logRangeStart, logRangeEnd)) {
+      if (inRange(Number(tt.log_index), userOpQuery.data?.user_logs_start_index, userOpQuery.data?.user_logs_start_index + userOpQuery.data?.user_logs_count)) {
         return true;
       }
       return false;
     }
-  }, [ userOpQuery.data, logRangeStart, logRangeEnd ]);
+  }, [ userOpQuery.data ]);
 
   const filterLogsByLogIndex = React.useCallback((log: Log) => {
     if (!userOpQuery.data) {
       return true;
     } else {
-      if (inRange(log.index, logRangeStart, logRangeEnd)) {
+      if (inRange(log.index, userOpQuery.data?.user_logs_start_index, userOpQuery.data?.user_logs_start_index + userOpQuery.data?.user_logs_count)) {
         return true;
       }
       return false;
     }
-  }, [ userOpQuery.data, logRangeStart, logRangeEnd ]);
+  }, [ userOpQuery.data ]);
 
   const tabs: Array<RoutedTab> = React.useMemo(() => ([
     { id: 'index', title: 'Details', component: <UserOpDetails query={ userOpQuery }/> },
@@ -73,7 +70,7 @@ const UserOp = () => {
       component: <UserOpCallData rawCallData={ userOpQuery.data?.call_data } isLoading={ userOpQuery.isPlaceholderData }/>,
     },
     { id: 'logs', title: 'Logs', component: <TxLogs txHash={ userOpQuery.data?.transaction_hash } logsFilter={ filterLogsByLogIndex }/> },
-    { id: 'raw', title: 'Raw', component: <UserOpRaw query={ userOpQuery }/> },
+    { id: 'raw', title: 'Raw', component: <UserOpRaw rawData={ userOpQuery.data?.raw } isLoading={ userOpQuery.isPlaceholderData }/> },
   ].filter(Boolean)), [ userOpQuery, filterTokenTransfersByLogIndex, filterLogsByLogIndex ]);
 
   const tabIndex = useTabIndexFromQuery(tabs);

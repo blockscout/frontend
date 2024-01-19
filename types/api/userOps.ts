@@ -43,13 +43,13 @@ export type UserOp = {
   factory: string | null;
   paymaster: string | null;
   sponsor_type: UserOpSponsorType;
-  init_code: string | null;
   signature: string;
   nonce: string;
   call_data: string;
   user_logs_start_index: number;
   user_logs_count: number;
-  paymaster_and_data?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  raw: Record<string, any>;
 }
 
 export type UserOpsFilters = {

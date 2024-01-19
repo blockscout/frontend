@@ -84,7 +84,6 @@ const UserOpDetails = ({ query }: Props) => {
       >
         <UserOpStatus status={ data.status } isLoading={ isPlaceholderData }/>
       </DetailsInfoItem>
-      { /* how to show it? */ }
       { data.revert_reason && (
         <DetailsInfoItem
           title="Revert reason"
@@ -104,8 +103,7 @@ const UserOpDetails = ({ query }: Props) => {
           hint="Date and time of User operation"
           isLoading={ isPlaceholderData }
         >
-          { /* timestamp format will be fixed  */ }
-          <DetailsTimestamp timestamp={ Number(data.timestamp) * 1000 } isLoading={ isPlaceholderData }/>
+          <DetailsTimestamp timestamp={ data.timestamp } isLoading={ isPlaceholderData }/>
         </DetailsInfoItem>
       ) }
       { !config.UI.views.tx.hiddenFields?.tx_fee && (
@@ -133,18 +131,21 @@ const UserOpDetails = ({ query }: Props) => {
       <DetailsInfoItem
         title="Transaction hash"
         hint="Hash of the transaction this User operation belongs to"
+        isLoading={ isPlaceholderData }
       >
         <TxEntity hash={ data.transaction_hash } isLoading={ isPlaceholderData } noCopy={ false }/>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Block"
         hint="Block number containing this User operation"
+        isLoading={ isPlaceholderData }
       >
         <BlockEntity number={ data.block_number } isLoading={ isPlaceholderData }/>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Entry point"
         hint="Contract that executes bundles of User operations"
+        isLoading={ isPlaceholderData }
       >
         <UserOpsAddress address={ data.entry_point } isLoading={ isPlaceholderData }/>
       </DetailsInfoItem>
@@ -259,16 +260,6 @@ const UserOpDetails = ({ query }: Props) => {
 
           <DetailsInfoItemDivider/>
 
-          { data.init_code && (
-            <DetailsInfoItem
-              title="Init code"
-              hint="Code used to deploy the account if not yet on-chain"
-              wordBreak="break-all"
-              whiteSpace="normal"
-            >
-              { data.init_code }
-            </DetailsInfoItem>
-          ) }
           <DetailsInfoItem
             title="Signature"
             hint="Used to validate a User operation along with the nonce during verification"

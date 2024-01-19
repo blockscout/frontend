@@ -21,8 +21,7 @@ type Props = {
 };
 
 const UserOpsListItem = ({ item, isLoading, showTx, showSender }: Props) => {
-  // format will be fixed on the back-end
-  const timeAgo = dayjs(Number(item.timestamp) * 1000).fromNow();
+  const timeAgo = dayjs(item.timestamp).fromNow();
 
   return (
     <ListItemMobileGrid.Container gridTemplateColumns="100px auto">
