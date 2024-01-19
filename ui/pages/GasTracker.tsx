@@ -1,10 +1,11 @@
-import { Flex, Skeleton, chakra } from '@chakra-ui/react';
+import { Box, Flex, Skeleton, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import dayjs from 'lib/date/dayjs';
 import { HOMEPAGE_STATS } from 'stubs/stats';
+import GasTrackerChart from 'ui/gasTracker/GasTrackerChart';
 import GasTrackerNetworkUtilization from 'ui/gasTracker/GasTrackerNetworkUtilization';
 import GasInfoUpdateTimer from 'ui/shared/gas/GasInfoUpdateTimer';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -67,7 +68,9 @@ const GasTracker = () => {
         secondRow={ titleSecondRow }
         withTextAd
       />
-      <p>FOO BAR</p>
+      <Box mt={ 12 }>
+        <GasTrackerChart/>
+      </Box>
     </>
   );
 };
