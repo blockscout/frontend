@@ -35,6 +35,8 @@ export const USER_OP: UserOp = {
   status: true,
   revert_reason: null,
   gas: '399596',
+  gas_price: '1575000898',
+  gas_used: '118810',
   sponsor_type: 'paymaster_sponsor',
   fee: '17927001792700',
   timestamp: '2023-12-18T10:48:49.000000Z',

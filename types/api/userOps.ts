@@ -1,10 +1,10 @@
-import type { AddressParam } from './addressParams';
+import type { AddressParamBasic } from './addressParams';
 
 export type UserOpsItem = {
   hash: string;
   block_number: string;
   transaction_hash: string;
-  address: string | AddressParam;
+  address: string | AddressParamBasic;
   timestamp: string;
   status: boolean;
   fee: string;
@@ -22,7 +22,7 @@ export type UserOpSponsorType = 'paymaster_hybrid' | 'paymaster_sponsor' | 'wall
 
 export type UserOp = {
   hash: string;
-  sender: string | AddressParam;
+  sender: string | AddressParamBasic;
   status: boolean;
   revert_reason: string | null;
   timestamp: string | null;
@@ -31,7 +31,7 @@ export type UserOp = {
   transaction_hash: string;
   block_number: string;
   block_hash: string;
-  entry_point: string;
+  entry_point: string | AddressParamBasic;
   call_gas_limit: string;
   verification_gas_limit: string;
   pre_verification_gas: string;
@@ -39,9 +39,9 @@ export type UserOp = {
   max_priority_fee_per_gas: string;
   aggregator: string | null;
   aggregator_signature: string | null;
-  bundler: string;
+  bundler: string | AddressParamBasic;
   factory: string | null;
-  paymaster: string | null;
+  paymaster: string | AddressParamBasic | null;
   sponsor_type: UserOpSponsorType;
   signature: string;
   nonce: string;
@@ -50,6 +50,8 @@ export type UserOp = {
   user_logs_count: number;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   raw: Record<string, any>;
+  gas_price: string;
+  gas_used: string;
 }
 
 export type UserOpsFilters = {

@@ -1,12 +1,12 @@
 import React from 'react';
 
-import type { AddressParam } from 'types/api/addressParams';
+import type { AddressParamBasic } from 'types/api/addressParams';
 
 import AddressEntity from '../entities/address/AddressEntity';
 import type { EntityProps } from '../entities/address/AddressEntity';
 
 type Props = Omit<EntityProps, 'address'> & {
-  address: string | AddressParam;
+  address: string | AddressParamBasic;
 }
 
 const UserOpsAddress = ({ address, ...props }: Props) => {
