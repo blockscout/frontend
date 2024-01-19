@@ -8,6 +8,8 @@ import type { RoutedTab } from 'ui/shared/Tabs/types';
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
+import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
+import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { BLOCK } from 'stubs/block';
@@ -72,14 +74,6 @@ const BlockPageContent = () => {
     },
   });
 
-  if (!heightOrHash) {
-    throw new Error('Block not found', { cause: { status: 404 } });
-  }
-
-  if (blockQuery.isError) {
-    throw new Error(undefined, { cause: blockQuery.error });
-  }
-
   const tabs: Array<RoutedTab> = React.useMemo(() => ([
     { id: 'index', title: 'Details', component: <BlockDetails query={ blockQuery }/> },
     { id: 'txs', title: 'Transactions', component: <TxsWithFrontendSorting query={ blockTxsQuery } showBlockInfo={ false } showSocketInfo={ false }/> },
@@ -112,6 +106,9 @@ const BlockPageContent = () => {
       url: appProps.referrer,
     };
   }, [ appProps.referrer ]);
+
+  throwOnAbsentParamError(heightOrHash);
+  throwOnResourceLoadError(blockQuery);
 
   const title = (() => {
     switch (blockQuery.data?.type) {
