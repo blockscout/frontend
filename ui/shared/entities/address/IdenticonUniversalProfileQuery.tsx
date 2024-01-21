@@ -45,9 +45,9 @@ export const IdenticonUniversalProfile: React.FC<Props> = ({
   address,
   fallbackIcon,
 }) => {
-  const { data: up } = useUniversalProfile(address);
+  const { data: up, isLoading } = useUniversalProfile(address);
 
-  if (up === undefined || up.LSP3Profile === undefined) {
+  if (isLoading || !up || !up.LSP3Profile) {
     return fallbackIcon;
   }
 
