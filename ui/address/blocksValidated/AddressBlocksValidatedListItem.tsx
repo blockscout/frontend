@@ -7,6 +7,7 @@ import type { Block } from 'types/api/block';
 import config from 'configs/app';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
+import { currencyUnits } from 'lib/units';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import Utilization from 'ui/shared/Utilization/Utilization';
@@ -50,7 +51,7 @@ const AddressBlocksValidatedListItem = (props: Props) => {
       </Flex>
       { !config.UI.views.block.hiddenFields?.total_reward && (
         <Flex columnGap={ 2 } w="100%">
-          <Skeleton isLoaded={ !props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Reward { config.chain.currency.symbol }</Skeleton>
+          <Skeleton isLoaded={ !props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Reward { currencyUnits.ether }</Skeleton>
           <Skeleton isLoaded={ !props.isLoading } color="text_secondary">{ totalReward.toFixed() }</Skeleton>
         </Flex>
       ) }

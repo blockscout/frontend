@@ -10,6 +10,7 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
+import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useApiFetch from 'lib/hooks/useFetch';
 import * as metadata from 'lib/metadata';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -100,7 +101,7 @@ const MarketplaceApp = () => {
   const router = useRouter();
   const id = getQueryParamString(router.query.id);
 
-  const { isPending, isError, error, data } = useQuery<unknown, ResourceError<unknown>, MarketplaceAppOverview>({
+  const query = useQuery<unknown, ResourceError<unknown>, MarketplaceAppOverview>({
     queryKey: [ 'marketplace-apps', id ],
     queryFn: async() => {
       const result = await apiFetch<Array<MarketplaceAppOverview>, unknown>(configUrl, undefined, { resource: 'marketplace-apps' });
@@ -116,6 +117,7 @@ const MarketplaceApp = () => {
     },
     enabled: feature.isEnabled,
   });
+  const { data, isPending } = query;
 
   useEffect(() => {
     if (data) {
@@ -126,9 +128,7 @@ const MarketplaceApp = () => {
     }
   }, [ data ]);
 
-  if (isError) {
-    throw new Error('Unable to load app', { cause: error });
-  }
+  throwOnResourceLoadError(query);
 
   return (
     <DappscoutIframeProvider

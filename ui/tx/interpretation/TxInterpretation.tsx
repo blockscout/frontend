@@ -4,9 +4,9 @@ import React from 'react';
 
 import type { TxInterpretationSummary, TxInterpretationVariable } from 'types/api/txInterpretation';
 
-import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
 import * as mixpanel from 'lib/mixpanel/index';
+import { currencyUnits } from 'lib/units';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
@@ -102,7 +102,7 @@ const TxInterpretation = ({ summary, isLoading, className }: Props) => {
             <Text color="text_secondary">{ chunk.trim() + (chunk.trim() && variablesNames[index] ? ' ' : '') }</Text>
             { index < variablesNames.length && (
               variablesNames[index] === NATIVE_COIN_SYMBOL_VAR_NAME ?
-                <Text>{ config.chain.currency.symbol + ' ' }</Text> :
+                <Text>{ currencyUnits.ether + ' ' }</Text> :
                 <TxInterpretationElementByType variable={ variables[variablesNames[index]] }/>
             ) }
           </Flex>

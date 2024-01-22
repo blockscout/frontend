@@ -4,6 +4,7 @@ import React from 'react';
 import type { GasPriceInfo } from 'types/api/stats';
 
 import config from 'configs/app';
+import { currencyUnits } from 'lib/units';
 
 const feature = config.features.gasTracker;
 
@@ -42,7 +43,7 @@ const GasPrice = ({ data, prefix, className, unitMode = 'primary', emptyText }: 
 
   return (
     <span className={ className }>
-      { prefix }{ Number(data.price).toLocaleString(undefined, { maximumFractionDigits: 0 }) } Gwei
+      { prefix }{ Number(data.price).toLocaleString(undefined, { maximumFractionDigits: 0 }) } { currencyUnits.gwei }
     </span>
   );
 };

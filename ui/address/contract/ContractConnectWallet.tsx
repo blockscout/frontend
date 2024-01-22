@@ -1,47 +1,25 @@
 import { Alert, Button, Flex } from '@chakra-ui/react';
-import { useWeb3Modal, useWeb3ModalState } from '@web3modal/wagmi/react';
 import React from 'react';
-import { useAccount, useDisconnect } from 'wagmi';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import * as mixpanel from 'lib/mixpanel/index';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import useWallet from 'ui/snippets/walletMenu/useWallet';
 
 const ContractConnectWallet = () => {
-  const { open } = useWeb3Modal();
-  const { open: isOpen } = useWeb3ModalState();
-  const { disconnect } = useDisconnect();
+  const { isModalOpening, isModalOpen, connect, disconnect, address, isWalletConnected } = useWallet({ source: 'Smart contracts' });
   const isMobile = useIsMobile();
-  const [ isModalOpening, setIsModalOpening ] = React.useState(false);
-
-  const handleConnect = React.useCallback(async() => {
-    setIsModalOpening(true);
-    await open();
-    setIsModalOpening(false);
-    mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Source: 'Smart contracts', Status: 'Started' });
-  }, [ open ]);
-
-  const handleAccountConnected = React.useCallback(({ isReconnected }: { isReconnected: boolean }) => {
-    !isReconnected && mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Source: 'Smart contracts', Status: 'Connected' });
-  }, []);
-
-  const handleDisconnect = React.useCallback(() => {
-    disconnect();
-  }, [ disconnect ]);
-
-  const { address, isDisconnected } = useAccount({ onConnect: handleAccountConnected });
 
   const content = (() => {
-    if (isDisconnected || !address) {
+    if (!isWalletConnected) {
       return (
         <>
           <span>Disconnected</span>
           <Button
             ml={ 3 }
-            onClick={ handleConnect }
+            onClick={ connect }
             size="sm"
             variant="outline"
-            isLoading={ isModalOpening || isOpen }
+            isLoading={ isModalOpening || isModalOpen }
             loadingText="Connect wallet"
           >
               Connect wallet
@@ -61,7 +39,7 @@ const ContractConnectWallet = () => {
             ml={ 2 }
           />
         </Flex>
-        <Button onClick={ handleDisconnect } size="sm" variant="outline">Disconnect</Button>
+        <Button onClick={ disconnect } size="sm" variant="outline">Disconnect</Button>
       </Flex>
     );
   })();

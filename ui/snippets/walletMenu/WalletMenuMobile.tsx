@@ -13,7 +13,7 @@ import WalletTooltip from './WalletTooltip';
 
 const WalletMenuMobile = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { isWalletConnected, address, connect, disconnect, isModalOpening, isModalOpen } = useWallet();
+  const { isWalletConnected, address, connect, disconnect, isModalOpening, isModalOpen } = useWallet({ source: 'Header' });
   const { themedBackground, themedBorderColor, themedColor } = useMenuButtonColors();
   const isMobile = useIsMobile();
 
