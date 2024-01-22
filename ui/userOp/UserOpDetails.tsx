@@ -68,7 +68,7 @@ const UserOpDetails = ({ query }: Props) => {
         isLoading={ isPlaceholderData }
       >
         <Skeleton isLoaded={ !isPlaceholderData } overflow="hidden">
-          <UserOpEntity hash={ data.hash } noIcon noLink/>
+          <UserOpEntity hash={ data.hash } noIcon noLink noCopy={ false }/>
         </Skeleton>
       </DetailsInfoItem>
       <DetailsInfoItem
