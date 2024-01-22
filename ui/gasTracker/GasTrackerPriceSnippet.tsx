@@ -45,7 +45,7 @@ const GasTrackerPriceSnippet = ({ data, type, isLoading }: Props) => {
     >
       <Skeleton textStyle="h3" display="inline-block" isLoaded={ !isLoading }>{ TITLES[type] }</Skeleton>
       <Flex columnGap={ 3 } alignItems="center" mt={ 3 }>
-        <IconSvg name={ ICONS[type] } boxSize={ 10 } isLoading={ isLoading }/>
+        <IconSvg name={ ICONS[type] } boxSize={ 10 } isLoading={ isLoading } flexShrink={ 0 }/>
         <Skeleton isLoaded={ !isLoading }>
           <GasPrice data={ data } fontSize="48px" lineHeight="48px" fontWeight={ 600 } letterSpacing="-1px" fontFamily="heading"/>
         </Skeleton>

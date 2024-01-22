@@ -3,8 +3,9 @@ import React from 'react';
 
 import type { GasPriceInfo } from 'types/api/stats';
 
-type View = 'gwei' | 'usd';
-const PRIMARY_VIEW: View = 'usd';
+import config from 'configs/app';
+
+const feature = config.features.gasTracker;
 
 interface Props {
   data: GasPriceInfo | null;
@@ -15,19 +16,19 @@ interface Props {
 }
 
 const GasPrice = ({ data, prefix, className, unitMode = 'primary', emptyText }: Props) => {
-  if (!data) {
+  if (!data || !feature.isEnabled) {
     return emptyText ? <span>emptyText</span> : null;
   }
 
-  const view = (() => {
+  const units = (() => {
     if (unitMode === 'primary') {
-      return PRIMARY_VIEW;
+      return feature.primaryUnits;
     }
 
-    return PRIMARY_VIEW === 'usd' ? 'gwei' : 'usd';
+    return feature.primaryUnits === 'usd' ? 'gwei' : 'usd';
   })();
 
-  if (view === 'usd' && data.fiat_price) {
+  if (units === 'usd' && data.fiat_price) {
     return (
       <span className={ className }>
         { prefix }${ Number(data.fiat_price).toLocaleString(undefined, { maximumFractionDigits: 2 }) }
@@ -39,7 +40,11 @@ const GasPrice = ({ data, prefix, className, unitMode = 'primary', emptyText }: 
     return emptyText ? <span>emptyText</span> : null;
   }
 
-  return <span className={ className }>{ prefix }{ data.price } Gwei</span>;
+  return (
+    <span className={ className }>
+      { prefix }{ Number(data.price).toLocaleString(undefined, { maximumFractionDigits: 0 }) } Gwei
+    </span>
+  );
 };
 
 export default chakra(GasPrice);

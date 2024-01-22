@@ -71,8 +71,8 @@ const TopBarStats = () => {
           ) }
         </Flex>
       ) }
-      { data?.coin_price && config.UI.homepage.showGasTracker && <TextSeparator color="divider"/> }
-      { data?.gas_prices && data.gas_prices.average !== null && config.UI.homepage.showGasTracker && (
+      { data?.coin_price && config.features.gasTracker.isEnabled && <TextSeparator color="divider"/> }
+      { data?.gas_prices && data.gas_prices.average !== null && config.features.gasTracker.isEnabled && (
         <Skeleton isLoaded={ !isPlaceholderData }>
           <chakra.span color="text_secondary">Gas </chakra.span>
           <Tooltip

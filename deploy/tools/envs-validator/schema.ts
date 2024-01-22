@@ -11,6 +11,8 @@ import * as yup from 'yup';
 import type { AdButlerConfig } from '../../../types/client/adButlerConfig';
 import { SUPPORTED_AD_TEXT_PROVIDERS, SUPPORTED_AD_BANNER_PROVIDERS } from '../../../types/client/adProviders';
 import type { AdTextProviders, AdBannerProviders } from '../../../types/client/adProviders';
+import { GAS_UNITS } from '../../../types/client/gasTracker';
+import type { GasUnit } from '../../../types/client/gasTracker';
 import type { MarketplaceAppOverview } from '../../../types/client/marketplace';
 import { NAVIGATION_LINK_IDS } from '../../../types/client/navigation-items';
 import type { NavItemExternal, NavigationLinkId } from '../../../types/client/navigation-items';
@@ -352,7 +354,6 @@ const schema = yup
       .of(yup.string<ChainIndicatorId>().oneOf([ 'daily_txs', 'coin_price', 'market_cap', 'tvl' ])),
     NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR: yup.string(),
     NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND: yup.string(),
-    NEXT_PUBLIC_HOMEPAGE_SHOW_GAS_TRACKER: yup.boolean(),
     NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME: yup.boolean(),
 
     //     b. sidebar
@@ -446,6 +447,8 @@ const schema = yup
     NEXT_PUBLIC_OG_DESCRIPTION: yup.string(),
     NEXT_PUBLIC_OG_IMAGE_URL: yup.string().test(urlTest),
     NEXT_PUBLIC_IS_SUAVE_CHAIN: yup.boolean(),
+    NEXT_PUBLIC_GAS_TRACKER_ENABLED: yup.boolean(),
+    NEXT_PUBLIC_GAS_TRACKER_PREFERRED_UNITS: yup.string<GasUnit>().oneOf(GAS_UNITS),
 
     // 6. External services envs
     NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: yup.string(),

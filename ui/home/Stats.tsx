@@ -13,7 +13,7 @@ import GasPrice from 'ui/shared/gas/GasPrice';
 
 import StatsItem from './StatsItem';
 
-const hasGasTracker = config.UI.homepage.showGasTracker;
+const hasGasTracker = config.features.gasTracker.isEnabled;
 const hasAvgBlockTime = config.UI.homepage.showAvgBlockTime;
 
 const Stats = () => {
