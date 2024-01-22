@@ -28,6 +28,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
   - [Misc](ENVS.md#misc)
 - [App features](ENVS.md#app-features)
   - [My account](ENVS.md#my-account)
+  - [Gas tracker](ENVS.md#gas-tracker)
   - [Address verification](ENVS.md#address-verification-in-my-account) in "My account"
   - [Blockchain interaction](ENVS.md#blockchain-interaction-writing-to-contract-etc) (writing to contract, etc.)
   - [Banner ads](ENVS.md#banner-ads)
