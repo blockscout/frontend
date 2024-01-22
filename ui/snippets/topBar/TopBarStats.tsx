@@ -1,5 +1,7 @@
-import { Flex, Link, Skeleton, Tooltip, chakra, useDisclosure } from '@chakra-ui/react';
+import { Flex, Skeleton, Tooltip, chakra, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
+
+import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
@@ -7,16 +9,12 @@ import dayjs from 'lib/date/dayjs';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import GasInfoTooltipContent from 'ui/shared/gas/GasInfoTooltipContent';
 import GasPrice from 'ui/shared/gas/GasPrice';
+import LinkInternal from 'ui/shared/LinkInternal';
 import TextSeparator from 'ui/shared/TextSeparator';
 
 const TopBarStats = () => {
   // have to implement controlled tooltip because of the issue - https://github.com/chakra-ui/chakra-ui/issues/7107
-  const { isOpen, onOpen, onToggle, onClose } = useDisclosure();
-
-  const handleClick = React.useCallback((event: React.MouseEvent) => {
-    event.stopPropagation();
-    onToggle();
-  }, [ onToggle ]);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { data, isPlaceholderData, isError, refetch, dataUpdatedAt } = useApiQuery('homepage_stats', {
     queryOptions: {
@@ -84,14 +82,13 @@ const TopBarStats = () => {
             p={ 0 }
             isOpen={ isOpen }
           >
-            <Link
-              _hover={{ textDecoration: 'none', color: 'link_hovered' }}
-              onClick={ handleClick }
+            <LinkInternal
+              href={ route({ pathname: '/gas-tracker' }) }
               onMouseEnter={ onOpen }
               onMouseLeave={ onClose }
             >
               <GasPrice data={ data.gas_prices.average }/>
-            </Link>
+            </LinkInternal>
           </Tooltip>
         </Skeleton>
       ) }

@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react';
+import { Flex, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { GasPrices } from 'types/api/stats';
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const GasTrackerPrices = ({ prices, isLoading }: Props) => {
-  const borderColor = 'gray.200';
+  const borderColor = useColorModeValue('gray.200', 'whiteAlpha.300');
 
   return (
     <Flex

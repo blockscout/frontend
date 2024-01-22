@@ -1,4 +1,4 @@
-import { Box, Flex, Skeleton } from '@chakra-ui/react';
+import { Box, Flex, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { GasPriceInfo, GasPrices } from 'types/api/stats';
@@ -30,8 +30,8 @@ const GasTrackerPriceSnippet = ({ data, type, isLoading }: Props) => {
 
   const bgColors = {
     fast: 'transparent',
-    average: 'gray.50',
-    slow: 'gray.50',
+    average: useColorModeValue('gray.50', 'whiteAlpha.200'),
+    slow: useColorModeValue('gray.50', 'whiteAlpha.200'),
   };
 
   return (
@@ -45,7 +45,7 @@ const GasTrackerPriceSnippet = ({ data, type, isLoading }: Props) => {
     >
       <Skeleton textStyle="h3" display="inline-block" isLoaded={ !isLoading }>{ TITLES[type] }</Skeleton>
       <Flex columnGap={ 3 } alignItems="center" mt={ 3 }>
-        <IconSvg name={ ICONS[type] } boxSize={ 10 } isLoading={ isLoading } flexShrink={ 0 }/>
+        <IconSvg name={ ICONS[type] } boxSize={{ base: '30px', lg: 10 }} isLoading={ isLoading } flexShrink={ 0 }/>
         <Skeleton isLoaded={ !isLoading }>
           <GasPrice data={ data } fontSize="48px" lineHeight="48px" fontWeight={ 600 } letterSpacing="-1px" fontFamily="heading"/>
         </Skeleton>
