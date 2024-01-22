@@ -10,6 +10,7 @@ import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'lib/api/resources';
 import dayjs from 'lib/date/dayjs';
+import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
@@ -43,12 +44,8 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
   }, [ data, router ]);
 
   if (isError) {
-    if (error?.status === 404) {
-      throw Error('Tx Batch not found', { cause: error as unknown as Error });
-    }
-
-    if (error?.status === 422) {
-      throw Error('Invalid tx batch number', { cause: error as unknown as Error });
+    if (error?.status === 404 || error?.status === 422) {
+      throwOnResourceLoadError({ isError, error });
     }
 
     return <DataFetchAlert/>;

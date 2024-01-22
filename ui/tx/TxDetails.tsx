@@ -23,6 +23,7 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
+import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
 import { currencyUnits } from 'lib/units';
@@ -71,12 +72,8 @@ const TxDetails = () => {
   const executionSuccessIconColor = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
 
   if (isError) {
-    if (error?.status === 422) {
-      throw Error('Invalid tx hash', { cause: error as unknown as Error });
-    }
-
-    if (error?.status === 404) {
-      throw Error('Tx not found', { cause: error as unknown as Error });
+    if (error?.status === 422 || error?.status === 404) {
+      throwOnResourceLoadError({ isError, error, resource: 'tx' });
     }
 
     return <DataFetchAlert/>;

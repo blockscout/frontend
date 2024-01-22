@@ -5,6 +5,7 @@ import type { SmartContractVerificationMethod } from 'types/api/contract';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
+import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import ContractVerificationForm from 'ui/contractVerification/ContractVerificationForm';
 import useFormConfigQuery from 'ui/contractVerification/useFormConfigQuery';
@@ -27,9 +28,7 @@ const ContractVerificationForAddress = () => {
     },
   });
 
-  if (contractQuery.isError && contractQuery.error.status === 404) {
-    throw Error('Not found', { cause: contractQuery.error as unknown as Error });
-  }
+  throwOnResourceLoadError(contractQuery);
 
   const configQuery = useFormConfigQuery(Boolean(hash));
 

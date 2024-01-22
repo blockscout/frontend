@@ -7,6 +7,7 @@ import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
+import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as metadata from 'lib/metadata';
 import * as regexp from 'lib/regexp';
@@ -129,9 +130,7 @@ const TokenInstanceContent = () => {
     ) },
   ].filter(Boolean);
 
-  if (tokenInstanceQuery.isError) {
-    throw Error('Token instance fetch failed', { cause: tokenInstanceQuery.error });
-  }
+  throwOnResourceLoadError(tokenInstanceQuery);
 
   const tokenTag = <Tag isLoading={ tokenInstanceQuery.isPlaceholderData }>{ tokenQuery.data?.type }</Tag>;
 

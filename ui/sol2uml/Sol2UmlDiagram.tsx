@@ -5,6 +5,8 @@ import type { SmartContract } from 'types/api/contract';
 
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
+import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
+import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import ContentLoader from 'ui/shared/ContentLoader';
 
 interface Props {
@@ -59,23 +61,15 @@ const Sol2UmlDiagram = ({ addressHash }: Props) => {
     newWindow?.document.write(image.outerHTML);
   }, [ imgUrl ]);
 
-  if (!addressHash) {
-    throw Error('Contract address is not provided', { cause: { status: 404 } as unknown as Error });
-  }
-
-  if (contractQuery.isError) {
-    throw Error('Contract fetch error', { cause: contractQuery.error as unknown as Error });
-  }
-
-  if (umlQuery.isError) {
-    throw Error('Uml diagram fetch error', { cause: contractQuery.error as unknown as Error });
-  }
+  throwOnAbsentParamError(addressHash);
+  throwOnResourceLoadError(contractQuery);
+  throwOnResourceLoadError(umlQuery);
 
   if (contractQuery.isPending || umlQuery.isPending) {
     return <ContentLoader/>;
   }
 
-  if (!umlQuery.data.svg) {
+  if (!umlQuery.data?.svg || !contractQuery.data) {
     return <span>No data for visualization</span>;
   }
 

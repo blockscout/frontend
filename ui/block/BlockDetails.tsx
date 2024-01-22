@@ -15,6 +15,7 @@ import type { ResourceError } from 'lib/api/resources';
 import getBlockReward from 'lib/block/getBlockReward';
 import { GWEI, WEI, WEI_IN_GWEI, ZERO } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
+import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import { space } from 'lib/html-entities';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -68,12 +69,8 @@ const BlockDetails = ({ query }: Props) => {
   }, [ data, router ]);
 
   if (isError) {
-    if (error?.status === 404) {
-      throw Error('Block not found', { cause: error as unknown as Error });
-    }
-
-    if (error?.status === 422) {
-      throw Error('Invalid block number', { cause: error as unknown as Error });
+    if (error?.status === 404 || error?.status === 422) {
+      throwOnResourceLoadError({ isError, error });
     }
 
     return <DataFetchAlert/>;
