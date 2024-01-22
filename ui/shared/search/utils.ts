@@ -1,7 +1,9 @@
 import type { SearchResultItem } from 'types/api/search';
 import type { MarketplaceAppOverview } from 'types/client/marketplace';
 
-export type ApiCategory = 'token' | 'nft' | 'address' | 'public_tag' | 'transaction' | 'block';
+import config from 'configs/app';
+
+export type ApiCategory = 'token' | 'nft' | 'address' | 'public_tag' | 'transaction' | 'block' | 'user_operation';
 export type Category = ApiCategory | 'app';
 
 export type ItemsCategoriesMap =
@@ -23,6 +25,10 @@ export const searchCategories: Array<{id: Category; title: string }> = [
   { id: 'block', title: 'Blocks' },
 ];
 
+if (config.features.userOps.isEnabled) {
+  searchCategories.push({ id: 'user_operation', title: 'User operations' });
+}
+
 export const searchItemTitles: Record<Category, { itemTitle: string; itemTitleShort: string }> = {
   app: { itemTitle: 'App', itemTitleShort: 'App' },
   token: { itemTitle: 'Token', itemTitleShort: 'Token' },
@@ -31,6 +37,7 @@ export const searchItemTitles: Record<Category, { itemTitle: string; itemTitleSh
   public_tag: { itemTitle: 'Public tag', itemTitleShort: 'Tag' },
   transaction: { itemTitle: 'Transaction', itemTitleShort: 'Txn' },
   block: { itemTitle: 'Block', itemTitleShort: 'Block' },
+  user_operation: { itemTitle: 'User operation', itemTitleShort: 'User op' },
 };
 
 export function getItemCategory(item: SearchResultItem | SearchResultAppItem): Category | undefined {
@@ -56,6 +63,9 @@ export function getItemCategory(item: SearchResultItem | SearchResultAppItem): C
     }
     case 'app': {
       return 'app';
+    }
+    case 'user_operation': {
+      return 'user_operation';
     }
   }
 }

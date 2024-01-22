@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import type { FormEvent } from 'react';
 import React from 'react';
 
+import config from 'configs/app';
 import useMarketplaceApps from 'ui/marketplace/useMarketplaceApps';
 import SearchResultListItem from 'ui/searchResults/SearchResultListItem';
 import SearchResultsInput from 'ui/searchResults/SearchResultsInput';
@@ -52,6 +53,10 @@ const SearchResultsPageContent = () => {
           router.replace({ pathname: '/tx/[hash]', query: { hash: redirectCheckQuery.data.parameter } });
           return;
         }
+        case 'user_operation': {
+          router.replace({ pathname: '/op/[hash]', query: { hash: redirectCheckQuery.data.parameter } });
+          return;
+        }
       }
     }
 
@@ -62,12 +67,19 @@ const SearchResultsPageContent = () => {
     event.preventDefault();
   }, [ ]);
 
+  const dataToDisplay = (data?.items || []).filter((item) => {
+    if (!config.features.userOps.isEnabled && item.type === 'user_operation') {
+      return false;
+    }
+    return true;
+  });
+
   const content = (() => {
     if (isError) {
       return <DataFetchAlert/>;
     }
 
-    const hasData = data?.items.length || (pagination.page === 1 && marketplaceApps.displayedApps.length);
+    const hasData = dataToDisplay.length || (pagination.page === 1 && marketplaceApps.displayedApps.length);
 
     if (!hasData) {
       return null;
@@ -83,7 +95,7 @@ const SearchResultsPageContent = () => {
               searchTerm={ debouncedSearchTerm }
             />
           )) }
-          { data && data.items.map((item, index) => (
+          { dataToDisplay.map((item, index) => (
             <SearchResultListItem
               key={ (isPlaceholderData ? 'placeholder_' : 'actual_') + index }
               data={ item }
@@ -110,7 +122,7 @@ const SearchResultsPageContent = () => {
                   searchTerm={ debouncedSearchTerm }
                 />
               )) }
-              { data && data.items.map((item, index) => (
+              { dataToDisplay.map((item, index) => (
                 <SearchResultTableItem
                   key={ (isPlaceholderData ? 'placeholder_' : 'actual_') + index }
                   data={ item }
@@ -130,7 +142,7 @@ const SearchResultsPageContent = () => {
       return null;
     }
 
-    const resultsCount = pagination.page === 1 && !data?.next_page_params ? (data?.items.length || 0) + marketplaceApps.displayedApps.length : '50+';
+    const resultsCount = pagination.page === 1 && !data?.next_page_params ? (dataToDisplay.length || 0) + marketplaceApps.displayedApps.length : '50+';
 
     const text = isPlaceholderData && pagination.page === 1 ? (
       <Skeleton h={ 6 } w="280px" borderRadius="full" mb={ pagination.isVisible ? 0 : 6 }/>
@@ -141,7 +153,7 @@ const SearchResultsPageContent = () => {
           <chakra.span fontWeight={ 700 }>
             { resultsCount }
           </chakra.span>
-          <span> matching result{ (((data?.items.length || 0) + marketplaceApps.displayedApps.length) > 1) || pagination.page > 1 ? 's' : '' } for </span>
+          <span> matching result{ (((dataToDisplay.length || 0) + marketplaceApps.displayedApps.length) > 1) || pagination.page > 1 ? 's' : '' } for </span>
           “<chakra.span fontWeight={ 700 }>{ debouncedSearchTerm }</chakra.span>”
         </Box>
       )
