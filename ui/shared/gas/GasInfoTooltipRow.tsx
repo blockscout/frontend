@@ -4,6 +4,7 @@ import React from 'react';
 import type { GasPriceInfo } from 'types/api/stats';
 
 import { asymp, space } from 'lib/html-entities';
+import GasPrice from 'ui/shared/gas/GasPrice';
 
 interface Props {
   name: string;
@@ -18,7 +19,7 @@ const GasInfoTooltipRow = ({ name, info }: Props) => {
 
     return (
       <>
-        <span>{ info.fiat_price ? `$${ info.fiat_price }` : `${ info.price } Gwei` }</span>
+        <GasPrice data={ info }/>
         { info.time && (
           <chakra.span color="text_secondary">
             { space }per tx { asymp } { (info.time / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 }) }s

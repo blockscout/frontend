@@ -6,6 +6,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import dayjs from 'lib/date/dayjs';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import GasInfoTooltipContent from 'ui/shared/gas/GasInfoTooltipContent';
+import GasPrice from 'ui/shared/gas/GasPrice';
 import TextSeparator from 'ui/shared/TextSeparator';
 
 const TopBarStats = () => {
@@ -89,7 +90,7 @@ const TopBarStats = () => {
               onMouseEnter={ onOpen }
               onMouseLeave={ onClose }
             >
-              { data.gas_prices.average.fiat_price ? `$${ data.gas_prices.average.fiat_price }` : `${ data.gas_prices.average.price } Gwei` }
+              <GasPrice data={ data.gas_prices.average }/>
             </Link>
           </Tooltip>
         </Skeleton>

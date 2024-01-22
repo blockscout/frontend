@@ -5,6 +5,7 @@ import type { GasPriceInfo, GasPrices } from 'types/api/stats';
 
 import { SECOND } from 'lib/consts';
 import { asymp } from 'lib/html-entities';
+import GasPrice from 'ui/shared/gas/GasPrice';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -45,12 +46,13 @@ const GasTrackerPriceSnippet = ({ data, type, isLoading }: Props) => {
       <Skeleton textStyle="h3" display="inline-block" isLoaded={ !isLoading }>{ TITLES[type] }</Skeleton>
       <Flex columnGap={ 3 } alignItems="center" mt={ 3 }>
         <IconSvg name={ ICONS[type] } boxSize={ 10 } isLoading={ isLoading }/>
-        <Skeleton isLoaded={ !isLoading } fontSize="48px" lineHeight="48px" fontWeight={ 600 } letterSpacing="-1px" fontFamily="heading">
-          ${ Number(data.fiat_price).toLocaleString(undefined, { maximumFractionDigits: 2 }) }
+        <Skeleton isLoaded={ !isLoading }>
+          <GasPrice data={ data } fontSize="48px" lineHeight="48px" fontWeight={ 600 } letterSpacing="-1px" fontFamily="heading"/>
         </Skeleton>
       </Flex>
-      <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary" mt={ 3 } whiteSpace="pre" display="inline-block">
-        <span>{ asymp } { data.price } Gwei per transaction</span>
+      <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary" mt={ 3 } display="inline-block">
+        <GasPrice data={ data } prefix={ `${ asymp } ` } unitMode="secondary"/>
+        <span> per transaction</span>
         { data.time && <span> / { (data.time / SECOND).toLocaleString(undefined, { maximumFractionDigits: 1 }) }s</span> }
       </Skeleton>
       <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary" mt={ 2 } display="inline-block">

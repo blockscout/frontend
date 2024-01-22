@@ -10,7 +10,7 @@ import IconSvg from 'ui/shared/IconSvg';
 type Props = {
   icon: IconName;
   title: string;
-  value: string;
+  value: string | React.ReactNode;
   className?: string;
   tooltipLabel?: React.ReactNode;
   url?: string;
@@ -68,7 +68,7 @@ const StatsItem = ({ icon, title, value, className, tooltipLabel, url, isLoading
           <span>{ title }</span>
         </Skeleton>
         <Skeleton isLoaded={ !isLoading } fontWeight={ 500 } fontSize="md" color={ useColorModeValue('black', 'white') } borderRadius="base">
-          <span>{ value }</span>
+          { typeof value === 'string' ? <span>{ value }</span> : value }
         </Skeleton>
       </Flex>
       { tooltipLabel && !isLoading && (
