@@ -3,6 +3,7 @@ import React from 'react';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
+import { currencyUnits } from 'lib/units';
 import ChartWidget from 'ui/shared/chart/ChartWidget';
 
 interface Props {
@@ -26,7 +27,7 @@ const AddressCoinBalanceChart = ({ addressHash }: Props) => {
       items={ items }
       isLoading={ isPending }
       h="300px"
-      units={ config.chain.currency.symbol }
+      units={ currencyUnits.ether }
     />
   );
 };

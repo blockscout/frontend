@@ -3,8 +3,8 @@ import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
-import config from 'configs/app';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
+import { currencyUnits } from 'lib/units';
 import { default as Thead } from 'ui/shared/TheadSticky';
 
 import AddressIntTxsTableItem from './AddressIntTxsTableItem';
@@ -26,7 +26,7 @@ const AddressIntTxsTable = ({ data, currentAddress, isLoading }: Props) => {
             <Th width="10%">Block</Th>
             <Th width="40%">From/To</Th>
             <Th width="20%" isNumeric>
-              Value { config.chain.currency.symbol }
+              Value { currencyUnits.ether }
             </Th>
           </Tr>
         </Thead>

@@ -25,6 +25,7 @@ import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
+import { currencyUnits } from 'lib/units';
 import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import CurrencyValue from 'ui/shared/CurrencyValue';
@@ -359,7 +360,7 @@ const TxDetails = () => {
           >
             <CurrencyValue
               value={ data.value }
-              currency={ config.chain.currency.symbol }
+              currency={ currencyUnits.ether }
               exchangeRate={ data.exchange_rate }
               isLoading={ isPlaceholderData }
               flexWrap="wrap"
@@ -377,7 +378,7 @@ const TxDetails = () => {
             ) : (
               <CurrencyValue
                 value={ data.fee.value }
-                currency={ config.UI.views.tx.hiddenFields?.fee_currency ? '' : config.chain.currency.symbol }
+                currency={ config.UI.views.tx.hiddenFields?.fee_currency ? '' : currencyUnits.ether }
                 exchangeRate={ data.exchange_rate }
                 flexWrap="wrap"
                 isLoading={ isPlaceholderData }
@@ -403,7 +404,7 @@ const TxDetails = () => {
         { !config.UI.views.tx.hiddenFields?.gas_fees &&
           (data.base_fee_per_gas || data.max_fee_per_gas || data.max_priority_fee_per_gas) && (
           <DetailsInfoItem
-            title="Gas fees (Gwei)"
+            title={ `Gas fees (${ currencyUnits.gwei })` }
             // eslint-disable-next-line max-len
             hint={ `
               Base Fee refers to the network Base Fee at the time of the block, 
@@ -437,12 +438,12 @@ const TxDetails = () => {
         { data.tx_burnt_fee && !config.UI.views.tx.hiddenFields?.burnt_fees && !config.features.optimisticRollup.isEnabled && (
           <DetailsInfoItem
             title="Burnt fees"
-            hint={ `Amount of ${ config.chain.currency.symbol } burned for this transaction. Equals Block Base Fee per Gas * Gas Used` }
+            hint={ `Amount of ${ currencyUnits.ether } burned for this transaction. Equals Block Base Fee per Gas * Gas Used` }
           >
             <IconSvg name="flame" boxSize={ 5 } color="gray.500"/>
             <CurrencyValue
               value={ String(data.tx_burnt_fee) }
-              currency={ config.chain.currency.symbol }
+              currency={ currencyUnits.ether }
               exchangeRate={ data.exchange_rate }
               flexWrap="wrap"
               ml={ 2 }
@@ -466,8 +467,8 @@ const TxDetails = () => {
                 hint="L1 gas price"
                 isLoading={ isPlaceholderData }
               >
-                <Text mr={ 1 }>{ BigNumber(data.l1_gas_price).dividedBy(WEI).toFixed() } { config.chain.currency.symbol }</Text>
-                <Text variant="secondary">({ BigNumber(data.l1_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } Gwei)</Text>
+                <Text mr={ 1 }>{ BigNumber(data.l1_gas_price).dividedBy(WEI).toFixed() } { currencyUnits.ether }</Text>
+                <Text variant="secondary">({ BigNumber(data.l1_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })</Text>
               </DetailsInfoItem>
             ) }
             { data.l1_fee && (
@@ -479,7 +480,7 @@ const TxDetails = () => {
               >
                 <CurrencyValue
                   value={ data.l1_fee }
-                  currency={ config.chain.currency.symbol }
+                  currency={ currencyUnits.ether }
                   exchangeRate={ data.exchange_rate }
                   flexWrap="wrap"
                 />
