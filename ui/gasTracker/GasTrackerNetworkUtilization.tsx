@@ -9,7 +9,6 @@ interface Props {
 }
 
 const GasTrackerNetworkUtilization = ({ percentage, isLoading }: Props) => {
-  // TODO @tom2drum network load thresholds
   const load = (() => {
     if (percentage > 80) {
       return 'high';

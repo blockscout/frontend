@@ -7,10 +7,10 @@ import dayjs from 'lib/date/dayjs';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import GasTrackerChart from 'ui/gasTracker/GasTrackerChart';
 import GasTrackerNetworkUtilization from 'ui/gasTracker/GasTrackerNetworkUtilization';
+import GasTrackerPrices from 'ui/gasTracker/GasTrackerPrices';
 import GasInfoUpdateTimer from 'ui/shared/gas/GasInfoUpdateTimer';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
-// TODO @tom2drum handle error state
 const GasTracker = () => {
   const { data, isPlaceholderData, isError, error, dataUpdatedAt } = useApiQuery('homepage_stats', {
     queryOptions: {
@@ -68,6 +68,7 @@ const GasTracker = () => {
         secondRow={ titleSecondRow }
         withTextAd
       />
+      { data?.gas_prices && <GasTrackerPrices prices={ data.gas_prices } isLoading={ isLoading }/> }
       <Box mt={ 12 }>
         <GasTrackerChart/>
       </Box>
