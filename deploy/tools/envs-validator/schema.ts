@@ -70,6 +70,7 @@ const marketplaceAppSchema: yup.ObjectSchema<MarketplaceAppOverview> = yup
     twitter: yup.string().test(urlTest),
     telegram: yup.string().test(urlTest),
     github: yup.string().test(urlTest),
+    internalWallet: yup.boolean(),
   });
 
 const marketplaceSchema = yup
