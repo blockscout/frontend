@@ -1,4 +1,4 @@
-import { Skeleton } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import type { Chain, GetBlockReturnType, GetTransactionReturnType, TransactionReceipt } from 'viem';
@@ -9,8 +9,9 @@ import dayjs from 'lib/date/dayjs';
 import hexToDecimal from 'lib/hexToDecimal';
 import { publicClient } from 'lib/web3/client';
 import { GET_BLOCK, GET_TRANSACTION, GET_TRANSACTION_RECEIPT, GET_TRANSACTION_CONFIRMATIONS } from 'stubs/RPC';
+import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
+import TestnetWarning from 'ui/shared/alerts/TestnetWarning';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import ServiceDegradationAlert from 'ui/shared/ServiceDegradationAlert';
 
 import TxInfo from './details/TxInfo';
 import type { TxQuery } from './useTxQuery';
@@ -156,11 +157,10 @@ const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
 
   return (
     <>
-      { originalError?.status !== 404 && (
-        <Skeleton mb={ 6 } isLoaded={ !query.isPlaceholderData }>
-          <ServiceDegradationAlert/>
-        </Skeleton>
-      ) }
+      <Flex rowGap={ 2 } mb={ 6 } flexDir="column">
+        <TestnetWarning/>
+        { originalError?.status !== 404 && <ServiceDegradationWarning isLoading={ query.isPlaceholderData }/> }
+      </Flex>
       <TxInfo data={ query.data } isLoading={ query.isPlaceholderData }/>
     </>
   );

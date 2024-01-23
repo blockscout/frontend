@@ -12,7 +12,7 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import useTabIndexFromQuery from 'ui/shared/Tabs/useTabIndexFromQuery';
-import TxInfo from 'ui/tx/details/TxInfo';
+import TxDetails from 'ui/tx/TxDetails';
 import TxDetailsDegraded from 'ui/tx/TxDetailsDegraded';
 import TxDetailsWrapped from 'ui/tx/TxDetailsWrapped';
 import TxInternals from 'ui/tx/TxInternals';
@@ -29,14 +29,14 @@ const TransactionPageContent = () => {
 
   const hash = getQueryParamString(router.query.hash);
   const txQuery = useTxQuery();
-  const { data, isPlaceholderData, isError, error, errorUpdateCount, socketStatus } = txQuery;
+  const { data, isPlaceholderData, isError, error, errorUpdateCount } = txQuery;
 
   const showDegradedView = (isError || isPlaceholderData) && errorUpdateCount > 0;
 
   const tabs: Array<RoutedTab> = (() => {
     const detailsComponent = showDegradedView ?
       <TxDetailsDegraded hash={ hash } txQuery={ txQuery }/> :
-      <TxInfo data={ data } isLoading={ isPlaceholderData } socketStatus={ socketStatus }/>;
+      <TxDetails txQuery={ txQuery }/>;
 
     return [
       {
