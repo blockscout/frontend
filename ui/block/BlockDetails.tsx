@@ -315,7 +315,7 @@ const BlockDetails = ({ query }: Props) => {
           ) }
         </DetailsInfoItem>
       ) }
-      { !config.UI.views.block.hiddenFields?.burnt_fees && (
+      { !config.UI.views.block.hiddenFields?.burnt_fees && !burntFees.isEqualTo(ZERO) && (
         <DetailsInfoItem
           title="Burnt fees"
           hint={
@@ -444,14 +444,16 @@ const BlockDetails = ({ query }: Props) => {
               <HashStringShortenDynamic hash={ BigNumber(data.difficulty).toFormat() }/>
             </Box>
           </DetailsInfoItem>
-          <DetailsInfoItem
-            title="Total difficulty"
-            hint="Total difficulty of the chain until this block"
-          >
-            <Box whiteSpace="nowrap" overflow="hidden">
-              <HashStringShortenDynamic hash={ BigNumber(data.total_difficulty).toFormat() }/>
-            </Box>
-          </DetailsInfoItem>
+          { data.total_difficulty && (
+            <DetailsInfoItem
+              title="Total difficulty"
+              hint="Total difficulty of the chain until this block"
+            >
+              <Box whiteSpace="nowrap" overflow="hidden">
+                <HashStringShortenDynamic hash={ BigNumber(data.total_difficulty).toFormat() }/>
+              </Box>
+            </DetailsInfoItem>
+          ) }
 
           <DetailsInfoItemDivider/>
 

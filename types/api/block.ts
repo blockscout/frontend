@@ -13,7 +13,7 @@ export interface Block {
   hash: string;
   parent_hash: string;
   difficulty: string;
-  total_difficulty: string;
+  total_difficulty: string | null;
   gas_used: string | null;
   gas_limit: string;
   nonce: string;

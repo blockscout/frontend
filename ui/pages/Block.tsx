@@ -6,18 +6,17 @@ import type { PaginationParams } from 'ui/shared/pagination/types';
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { BLOCK } from 'stubs/block';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import { WITHDRAWAL } from 'stubs/withdrawals';
 import BlockDetails from 'ui/block/BlockDetails';
 import BlockWithdrawals from 'ui/block/BlockWithdrawals';
+import useBlockQuery from 'ui/block/useBlockQuery';
 import TextAd from 'ui/shared/ad/TextAd';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
@@ -41,13 +40,7 @@ const BlockPageContent = () => {
   const heightOrHash = getQueryParamString(router.query.height_or_hash);
   const tab = getQueryParamString(router.query.tab);
 
-  const blockQuery = useApiQuery('block', {
-    pathParams: { height_or_hash: heightOrHash },
-    queryOptions: {
-      enabled: Boolean(heightOrHash),
-      placeholderData: BLOCK,
-    },
-  });
+  const blockQuery = useBlockQuery({ heightOrHash });
 
   const blockTxsQuery = useQueryWithPages({
     resourceName: 'block_txs',
