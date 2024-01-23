@@ -4,9 +4,9 @@ import React from 'react';
 
 import type { AddressCoinBalanceHistoryItem } from 'types/api/address';
 
-import config from 'configs/app';
 import { WEI, ZERO } from 'lib/consts';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
+import { currencyUnits } from 'lib/units';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
@@ -25,7 +25,7 @@ const AddressCoinBalanceListItem = (props: Props) => {
     <ListItemMobile rowGap={ 2 } isAnimated>
       <Flex justifyContent="space-between" w="100%">
         <Skeleton isLoaded={ !props.isLoading } fontWeight={ 600 }>
-          { BigNumber(props.value).div(WEI).dp(8).toFormat() } { config.chain.currency.symbol }
+          { BigNumber(props.value).div(WEI).dp(8).toFormat() } { currencyUnits.ether }
         </Skeleton>
         <Skeleton isLoaded={ !props.isLoading }>
           <Stat flexGrow="0">

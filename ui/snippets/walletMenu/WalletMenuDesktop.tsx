@@ -17,7 +17,7 @@ type Props = {
 };
 
 const WalletMenuDesktop = ({ isHomePage }: Props) => {
-  const { isWalletConnected, address, connect, disconnect, isModalOpening, isModalOpen } = useWallet();
+  const { isWalletConnected, address, connect, disconnect, isModalOpening, isModalOpen } = useWallet({ source: 'Header' });
   const { themedBackground, themedBorderColor, themedColor } = useMenuButtonColors();
   const [ isPopoverOpen, setIsPopoverOpen ] = useBoolean(false);
   const isMobile = useIsMobile();

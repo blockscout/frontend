@@ -2,6 +2,7 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
+import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import MarketplaceAppModal from 'ui/marketplace/MarketplaceAppModal';
 import MarketplaceCategoriesMenu from 'ui/marketplace/MarketplaceCategoriesMenu';
 import MarketplaceDisclaimerModal from 'ui/marketplace/MarketplaceDisclaimerModal';
@@ -32,9 +33,7 @@ const Marketplace = () => {
     showDisclaimer,
   } = useMarketplace();
 
-  if (isError) {
-    throw new Error('Unable to get apps list', { cause: error });
-  }
+  throwOnResourceLoadError(isError && error ? { isError, error } : { isError: false, error: null });
 
   if (!feature.isEnabled) {
     return null;

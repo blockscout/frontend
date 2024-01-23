@@ -7,6 +7,7 @@ import type { WatchlistAddress } from 'types/api/account';
 import config from 'configs/app';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import { nbsp } from 'lib/html-entities';
+import { currencyUnits } from 'lib/units';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
@@ -37,7 +38,7 @@ const WatchListAddressItem = ({ item, isLoading }: { item: WatchlistAddress; isL
           isLoading={ isLoading }
         />
         <Skeleton isLoaded={ !isLoading } whiteSpace="pre" display="inline-flex">
-          <span>{ config.chain.currency.symbol } balance: </span>
+          <span>{ currencyUnits.ether } balance: </span>
           <CurrencyValue
             value={ item.address_balance }
             exchangeRate={ item.exchange_rate }

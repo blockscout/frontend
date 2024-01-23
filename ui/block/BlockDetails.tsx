@@ -15,9 +15,11 @@ import type { ResourceError } from 'lib/api/resources';
 import getBlockReward from 'lib/block/getBlockReward';
 import { GWEI, WEI, WEI_IN_GWEI, ZERO } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
+import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import { space } from 'lib/html-entities';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { currencyUnits } from 'lib/units';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
@@ -67,12 +69,8 @@ const BlockDetails = ({ query }: Props) => {
   }, [ data, router ]);
 
   if (isError) {
-    if (error?.status === 404) {
-      throw Error('Block not found', { cause: error as unknown as Error });
-    }
-
-    if (error?.status === 422) {
-      throw Error('Invalid block number', { cause: error as unknown as Error });
+    if (error?.status === 404 || error?.status === 422) {
+      throwOnResourceLoadError({ isError, error });
     }
 
     return <DataFetchAlert/>;
@@ -237,7 +235,7 @@ const BlockDetails = ({ query }: Props) => {
           isLoading={ isPlaceholderData }
         >
           <Skeleton isLoaded={ !isPlaceholderData }>
-            { totalReward.dividedBy(WEI).toFixed() } { config.chain.currency.symbol }
+            { totalReward.dividedBy(WEI).toFixed() } { currencyUnits.ether }
           </Skeleton>
           { rewardBreakDown }
         </DetailsInfoItem>
@@ -251,7 +249,7 @@ const BlockDetails = ({ query }: Props) => {
             // is this text correct for validators?
             hint={ `Amount of distributed reward. ${ capitalize(validatorTitle) }s receive a static block reward + Tx fees + uncle fees` }
           >
-            { BigNumber(reward).dividedBy(WEI).toFixed() } { config.chain.currency.symbol }
+            { BigNumber(reward).dividedBy(WEI).toFixed() } { currencyUnits.ether }
           </DetailsInfoItem>
         ))
       }
@@ -295,7 +293,7 @@ const BlockDetails = ({ query }: Props) => {
           isLoading={ isPlaceholderData }
         >
           <Skeleton isLoaded={ !isPlaceholderData }>
-            { BigNumber(data.minimum_gas_price).dividedBy(GWEI).toFormat() } Gwei
+            { BigNumber(data.minimum_gas_price).dividedBy(GWEI).toFormat() } { currencyUnits.gwei }
           </Skeleton>
         </DetailsInfoItem>
       ) }
@@ -309,9 +307,9 @@ const BlockDetails = ({ query }: Props) => {
             <Skeleton isLoaded={ !isPlaceholderData } h="20px" maxW="380px" w="100%"/>
           ) : (
             <>
-              <Text>{ BigNumber(data.base_fee_per_gas).dividedBy(WEI).toFixed() } { config.chain.currency.symbol } </Text>
+              <Text>{ BigNumber(data.base_fee_per_gas).dividedBy(WEI).toFixed() } { currencyUnits.ether } </Text>
               <Text variant="secondary" whiteSpace="pre">
-                { space }({ BigNumber(data.base_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() } Gwei)
+                { space }({ BigNumber(data.base_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })
               </Text>
             </>
           ) }
@@ -329,7 +327,7 @@ const BlockDetails = ({ query }: Props) => {
         >
           <IconSvg name="flame" boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
           <Skeleton isLoaded={ !isPlaceholderData } ml={ 2 }>
-            { burntFees.dividedBy(WEI).toFixed() } { config.chain.currency.symbol }
+            { burntFees.dividedBy(WEI).toFixed() } { currencyUnits.ether }
           </Skeleton>
           { !txFees.isEqualTo(ZERO) && (
             <Tooltip label="Burnt fees / Txn fees * 100%">
@@ -351,7 +349,7 @@ const BlockDetails = ({ query }: Props) => {
           isLoading={ isPlaceholderData }
         >
           <Skeleton isLoaded={ !isPlaceholderData }>
-            { BigNumber(data.priority_fee).dividedBy(WEI).toFixed() } { config.chain.currency.symbol }
+            { BigNumber(data.priority_fee).dividedBy(WEI).toFixed() } { currencyUnits.ether }
           </Skeleton>
         </DetailsInfoItem>
       ) }
