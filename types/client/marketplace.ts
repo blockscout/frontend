@@ -7,6 +7,7 @@ export type MarketplaceAppPreview = {
   shortDescription: string;
   categories: Array<string>;
   url: string;
+  internalWallet?: boolean;
 }
 
 export type MarketplaceAppOverview = MarketplaceAppPreview & {

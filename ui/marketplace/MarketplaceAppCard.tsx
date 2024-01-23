@@ -1,10 +1,12 @@
-import { Box, IconButton, Image, Link, LinkBox, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { Box, IconButton, Image, Link, LinkBox, Skeleton, useColorModeValue, Tooltip } from '@chakra-ui/react';
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 
 import type { MarketplaceAppPreview } from 'types/client/marketplace';
 
+import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import * as mixpanel from 'lib/mixpanel/index';
+import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
 import MarketplaceAppCardLink from './MarketplaceAppCardLink';
@@ -29,9 +31,13 @@ const MarketplaceAppCard = ({
   onInfoClick,
   isFavorite,
   onFavoriteClick,
-  isLoading,
+  isLoading: isDataLoading,
   showDisclaimer,
+  internalWallet,
 }: Props) => {
+  const { value: isExperiment, isLoading: isExperimentLoading } = useFeatureValue('marketplace_exp', false);
+  const isLoading = isDataLoading || isExperimentLoading;
+
   const categoriesLabel = categories.join(', ');
 
   const handleClick = useCallback((event: MouseEvent) => {
@@ -55,6 +61,23 @@ const MarketplaceAppCard = ({
   const logoUrl = useColorModeValue(logo, logoDarkMode || logo);
   const moreButtonBgGradient = `linear(to-r, ${ useColorModeValue('whiteAlpha.50', 'blackAlpha.50') }, ${ useColorModeValue('white', 'black') } 20%)`;
 
+  const [ integrationIcon, integrationIconColor, integrationText ] = React.useMemo(() => {
+    let icon: IconName = 'integration/partial';
+    let color = 'gray.400';
+    let text = 'This app opens in Blockscout without Blockscout wallet functionality. Use your external web3 wallet to connect directly to this application';
+
+    if (external) {
+      icon = 'arrows/north-east';
+      text = 'This app opens in a separate tab';
+    } else if (internalWallet) {
+      icon = 'integration/full';
+      color = 'green.500';
+      text = 'This app opens in Blockscout and your Blockscout wallet connects automatically';
+    }
+
+    return [ icon, color, text ];
+  }, [ external, internalWallet ]);
+
   return (
     <LinkBox
       _hover={{
@@ -71,12 +94,14 @@ const MarketplaceAppCard = ({
       role="group"
     >
       <Box
-        display={{ base: 'grid', sm: 'block' }}
+        display={{ base: 'grid', sm: isExperiment ? 'flex' : 'block' }}
+        flexDirection={ isExperiment ? 'column' : undefined }
         gridTemplateColumns={{ base: '64px 1fr', sm: '1fr' }}
         gridTemplateRows={{ base: 'none', sm: 'none' }}
-        gridRowGap={{ base: 2, sm: 'none' }}
-        gridColumnGap={{ base: 4, sm: 'none' }}
+        gridRowGap={{ base: 2, sm: 0 }}
+        gridColumnGap={{ base: 4, sm: 0 }}
         height="100%"
+        alignContent={ isExperiment ? 'start' : undefined }
       >
         <Skeleton
           isLoaded={ !isLoading }
@@ -103,7 +128,8 @@ const MarketplaceAppCard = ({
           fontSize={{ base: 'sm', sm: 'lg' }}
           fontWeight="semibold"
           fontFamily="heading"
-          display="inline-block"
+          display={ isExperiment ? 'flex' : 'inline-block' }
+          alignItems={ isExperiment ? 'center' : undefined }
         >
           <MarketplaceAppCardLink
             id={ id }
@@ -112,6 +138,24 @@ const MarketplaceAppCard = ({
             title={ title }
             onClick={ handleClick }
           />
+          { isExperiment && (
+            <Tooltip
+              label={ integrationText }
+              textAlign="center"
+              padding={ 2 }
+              openDelay={ 300 }
+              maxW={ 400 }
+            >
+              <IconSvg
+                name={ integrationIcon }
+                marginLeft={ 2 }
+                boxSize={ 5 }
+                color={ integrationIconColor }
+                position="relative"
+                cursor="pointer"
+              />
+            </Tooltip>
+          ) }
         </Skeleton>
 
         <Skeleton
@@ -127,43 +171,63 @@ const MarketplaceAppCard = ({
           isLoaded={ !isLoading }
           fontSize={{ base: 'xs', sm: 'sm' }}
           lineHeight="20px"
-          noOfLines={ 4 }
+          noOfLines={ isExperiment ? 3 : 4 }
         >
           { shortDescription }
         </Skeleton>
 
         { !isLoading && (
-          <Box
-            position="absolute"
-            right={{ base: 3, sm: '20px' }}
-            bottom={{ base: 3, sm: '20px' }}
-            paddingLeft={ 8 }
-            bgGradient={ moreButtonBgGradient }
-          >
-            <Link
-              fontSize={{ base: 'xs', sm: 'sm' }}
+          isExperiment ? (
+            <Box
               display="flex"
-              alignItems="center"
-              paddingRight={{ sm: 2 }}
-              maxW="100%"
-              overflow="hidden"
-              href="#"
-              onClick={ handleInfoClick }
+              position={{ base: 'absolute', sm: 'relative' }}
+              bottom={{ base: 3, sm: 0 }}
+              left={{ base: 3, sm: 0 }}
+              marginTop={{ base: 0, sm: 'auto' }}
+              paddingTop={{ base: 0, sm: 4 }}
             >
-            More
+              <Link
+                fontSize={{ base: 'xs', sm: 'sm' }}
+                paddingRight={{ sm: 2 }}
+                href="#"
+                onClick={ handleInfoClick }
+              >
+                More info
+              </Link>
+            </Box>
+          ) : (
+            <Box
+              position="absolute"
+              right={{ base: 3, sm: '20px' }}
+              bottom={{ base: 3, sm: '20px' }}
+              paddingLeft={ 8 }
+              bgGradient={ moreButtonBgGradient }
+            >
+              <Link
+                fontSize={{ base: 'xs', sm: 'sm' }}
+                display="flex"
+                alignItems="center"
+                paddingRight={{ sm: 2 }}
+                maxW="100%"
+                overflow="hidden"
+                href="#"
+                onClick={ handleInfoClick }
+              >
+              More
 
-              <IconSvg
-                name="arrows/north-east"
-                marginLeft={ 1 }
-                boxSize={ 4 }
-              />
-            </Link>
-          </Box>
+                <IconSvg
+                  name="arrows/north-east"
+                  marginLeft={ 1 }
+                  boxSize={ 4 }
+                />
+              </Link>
+            </Box>
+          )
         ) }
 
         { !isLoading && (
           <IconButton
-            display={{ base: 'block', sm: isFavorite ? 'block' : 'none' }}
+            display={{ base: 'block', sm: isFavorite || isExperiment ? 'block' : 'none' }}
             _groupHover={{ display: 'block' }}
             position="absolute"
             right={{ base: 3, sm: '10px' }}
