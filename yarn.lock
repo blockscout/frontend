@@ -2981,6 +2981,11 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
+"@hypelab/sdk-react@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@hypelab/sdk-react/-/sdk-react-1.0.0.tgz#399058576422a7a715edfd6c55b946950a26ba39"
+  integrity sha512-d8eJOqgocXvfMae/JbFXZdK/Q79oYYXScto1wJ7uTDHxrPZTIpgVNhuJM7UKmVJAKRSHnniRcZCjh2+pZCW5ww==
+
 "@ioredis/commands@^1.1.1":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@ioredis/commands/-/commands-1.2.0.tgz#6d61b3097470af1fdbbe622795b8921d42018e11"
@@ -10979,11 +10984,6 @@ husky@^8.0.0:
   version "8.0.1"
   resolved "https://registry.yarnpkg.com/husky/-/husky-8.0.1.tgz#511cb3e57de3e3190514ae49ed50f6bc3f50b3e9"
   integrity sha512-xs7/chUH/CKdOCs7Zy0Aev9e/dKOMZf3K1Az1nar3tzlv0jfqnYtu235bstsWTmXOR0EfINrPa97yy4Lz6RiKw==
-
-hypelab-react@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/hypelab-react/-/hypelab-react-0.5.0.tgz#27fd56016f73cdac01fb3d0aac716842170ec383"
-  integrity sha512-5htdSf60gcn9MGUaffLjljd1GtSAFpIbHMo4Os9NXCAdID73u1R9M2ON44Wtf7+DAwfB2JfJoDAb395p9eQ9wg==
 
 iconv-lite@0.6, iconv-lite@0.6.3:
   version "0.6.3"

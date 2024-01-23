@@ -1,14 +1,20 @@
 import { Flex, chakra } from '@chakra-ui/react';
-import { Banner, useIdentity, Environment, HypeLab, HypeLabContext } from 'hypelab-react';
+import { Banner, setWalletAddresses } from '@hypelab/sdk-react';
+import Script from 'next/script';
 import React from 'react';
 import { useAccount } from 'wagmi';
 
-import Web3ModalProvider from 'ui/shared/Web3ModalProvider';
+import Web3ModalProvider from '../Web3ModalProvider';
+import { hypeInit } from './hypeBannerScript';
 
 const HypeBannerContent = ({ className }: { className?: string }) => {
 
   return (
     <>
+      <Script
+        id="hypelab"
+        strategy="afterInteractive"
+      >{ hypeInit }</Script>
       <Flex className={ className } h="90px" display={{ base: 'none', lg: 'flex' }}>
         <Banner placement="771e47c10c"/>
       </Flex>
@@ -21,33 +27,25 @@ const HypeBannerContent = ({ className }: { className?: string }) => {
 
 const HypeBannerWithWalletAddress = ({ className }: { className?: string }) => {
   const { address } = useAccount();
-  const { setWalletAddresses } = useIdentity();
-  if (address) {
-    setWalletAddresses([ address ]);
-  }
+  React.useEffect(() => {
+    if (address) {
+      setWalletAddresses([ address ]);
+    }
+  }, [ address ]);
 
   return <HypeBannerContent className={ className }/>;
 };
 
 const HypeBanner = ({ className }: { className?: string }) => {
-  const client = new HypeLab({
-    URL: 'https://api.hypelab-staging.com',
-    // URL: 'https://api.hypelab.com', /* Production URL */
-    propertySlug: 'baaded78c2',
-    environment: Environment.Development,
-    // environment: Environment.Production /* Production Environment */
-  });
 
   const fallback = React.useCallback(() => {
     return <HypeBannerContent className={ className }/>;
   }, [ className ]);
 
   return (
-    <HypeLabContext client={ client }>
-      <Web3ModalProvider fallback={ fallback }>
-        <HypeBannerWithWalletAddress className={ className }/>
-      </Web3ModalProvider>
-    </HypeLabContext>
+    <Web3ModalProvider fallback={ fallback }>
+      <HypeBannerWithWalletAddress className={ className }/>
+    </Web3ModalProvider>
   );
 };
 
