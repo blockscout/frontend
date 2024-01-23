@@ -5,6 +5,7 @@ import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
+import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import TextAd from 'ui/shared/ad/TextAd';
 import EntityTags from 'ui/shared/EntityTags';
@@ -93,7 +94,7 @@ const TransactionPageContent = () => {
   })();
 
   if (error?.status === 422) {
-    throw Error('Invalid tx hash', { cause: error as unknown as Error });
+    throwOnResourceLoadError({ resource: 'tx', error, isError: true });
   }
 
   return (

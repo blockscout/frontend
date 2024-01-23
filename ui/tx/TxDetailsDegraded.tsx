@@ -149,7 +149,7 @@ const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
 
   if (!query.data) {
     if (originalError?.status === 404) {
-      throw Error('Tx not found', { cause: { status: 404 } as unknown as Error });
+      throw Error('Not found', { cause: { status: 404 } as unknown as Error });
     }
 
     return <DataFetchAlert/>;
