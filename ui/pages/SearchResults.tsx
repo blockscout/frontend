@@ -54,8 +54,10 @@ const SearchResultsPageContent = () => {
           return;
         }
         case 'user_operation': {
-          router.replace({ pathname: '/op/[hash]', query: { hash: redirectCheckQuery.data.parameter } });
-          return;
+          if (config.features.userOps.isEnabled) {
+            router.replace({ pathname: '/op/[hash]', query: { hash: redirectCheckQuery.data.parameter } });
+            return;
+          }
         }
       }
     }
