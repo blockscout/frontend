@@ -9,6 +9,7 @@ import type { UserOp } from 'types/api/userOps';
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
+import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import { space } from 'lib/html-entities';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
@@ -18,10 +19,10 @@ import DetailsTimestamp from 'ui/shared/DetailsTimestamp';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
+import RawInputData from 'ui/shared/RawInputData';
 import UserOpsAddress from 'ui/shared/userOps/UserOpsAddress';
 import UserOpSponsorType from 'ui/shared/userOps/UserOpSponsorType';
 import UserOpStatus from 'ui/shared/userOps/UserOpStatus';
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
 interface Props {
@@ -292,6 +293,12 @@ const UserOpDetails = ({ query }: Props) => {
             whiteSpace="normal"
           >
             { data.nonce }
+          </DetailsInfoItem>
+          <DetailsInfoItem
+            title="Call data"
+            hint="Data that’s passed to the sender for execution"
+          >
+            <RawInputData hex={ data.call_data }/>
           </DetailsInfoItem>
         </>
       ) }

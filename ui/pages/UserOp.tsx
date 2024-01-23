@@ -18,7 +18,6 @@ import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import useTabIndexFromQuery from 'ui/shared/Tabs/useTabIndexFromQuery';
 import TxLogs from 'ui/tx/TxLogs';
 import TxTokenTransfer from 'ui/tx/TxTokenTransfer';
-import UserOpCallData from 'ui/userOp/UserOpCallData';
 import UserOpDetails from 'ui/userOp/UserOpDetails';
 import UserOpRaw from 'ui/userOp/UserOpRaw';
 
@@ -64,14 +63,9 @@ const UserOp = () => {
       title: 'Token transfers',
       component: <TxTokenTransfer txHash={ userOpQuery.data?.transaction_hash } tokenTransferFilter={ filterTokenTransfersByLogIndex }/>,
     },
-    {
-      id: 'call_data',
-      title: 'Call data',
-      component: <UserOpCallData rawCallData={ userOpQuery.data?.call_data } isLoading={ userOpQuery.isPlaceholderData }/>,
-    },
     { id: 'logs', title: 'Logs', component: <TxLogs txHash={ userOpQuery.data?.transaction_hash } logsFilter={ filterLogsByLogIndex }/> },
     { id: 'raw', title: 'Raw', component: <UserOpRaw rawData={ userOpQuery.data?.raw } isLoading={ userOpQuery.isPlaceholderData }/> },
-  ].filter(Boolean)), [ userOpQuery, filterTokenTransfersByLogIndex, filterLogsByLogIndex ]);
+  ]), [ userOpQuery, filterTokenTransfersByLogIndex, filterLogsByLogIndex ]);
 
   const tabIndex = useTabIndexFromQuery(tabs);
 
