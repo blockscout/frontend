@@ -45,18 +45,20 @@ const GasTrackerPriceSnippet = ({ data, type, isLoading }: Props) => {
     >
       <Skeleton textStyle="h3" display="inline-block" isLoaded={ !isLoading }>{ TITLES[type] }</Skeleton>
       <Flex columnGap={ 3 } alignItems="center" mt={ 3 }>
-        <IconSvg name={ ICONS[type] } boxSize={{ base: '30px', lg: 10 }} isLoading={ isLoading } flexShrink={ 0 }/>
+        <IconSvg name={ ICONS[type] } boxSize={{ base: '30px', xl: 10 }} isLoading={ isLoading } flexShrink={ 0 }/>
         <Skeleton isLoaded={ !isLoading }>
-          <GasPrice data={ data } fontSize="48px" lineHeight="48px" fontWeight={ 600 } letterSpacing="-1px" fontFamily="heading"/>
+          <GasPrice data={ data } fontSize={{ base: '36px', xl: '48px' }} lineHeight="48px" fontWeight={ 600 } letterSpacing="-1px" fontFamily="heading"/>
         </Skeleton>
       </Flex>
       <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary" mt={ 3 } display="inline-block">
-        <GasPrice data={ data } prefix={ `${ asymp } ` } unitMode="secondary"/>
+        { data.price && data.fiat_price && <GasPrice data={ data } prefix={ `${ asymp } ` } unitMode="secondary"/> }
         <span> per transaction</span>
         { data.time && <span> / { (data.time / SECOND).toLocaleString(undefined, { maximumFractionDigits: 1 }) }s</span> }
       </Skeleton>
-      <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary" mt={ 2 } display="inline-block">
-        <span>Base 10 / Priority 8</span>
+      <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary" mt={ 2 } display="inline-block" whiteSpace="pre">
+        { data.base_fee && <span>Base { data.base_fee.toLocaleString(undefined, { maximumFractionDigits: 0 }) }</span> }
+        { data.base_fee && data.priority_fee && <span> / </span> }
+        { data.priority_fee && <span>Priority { data.priority_fee.toLocaleString(undefined, { maximumFractionDigits: 0 }) }</span> }
       </Skeleton>
     </Box>
   );

@@ -28,6 +28,8 @@ export interface GasPriceInfo {
   fiat_price: string | null;
   price: number | null;
   time: number | null;
+  base_fee: number | null;
+  priority_fee: number | null;
 }
 
 export type Counters = {

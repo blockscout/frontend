@@ -43,7 +43,7 @@ const GasPrice = ({ data, prefix, className, unitMode = 'primary', emptyText }: 
 
   return (
     <span className={ className }>
-      { prefix }{ Number(data.price).toLocaleString(undefined, { maximumFractionDigits: 0 }) } { currencyUnits.gwei }
+      { prefix }{ Number(data.price).toLocaleString(undefined, { maximumFractionDigits: 1 }) } { currencyUnits.gwei }
     </span>
   );
 };
