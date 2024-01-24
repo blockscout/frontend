@@ -109,11 +109,12 @@ export default function useBlockQuery({ heightOrHash }: Params): BlockQuery {
     }
   }, [ rpcQuery.data, rpcQuery.isPlaceholderData ]);
 
-  const query = (apiQuery.isError || apiQuery.isPlaceholderData) && apiQuery.errorUpdateCount > 0 && rpcQuery.data ? rpcQuery : apiQuery;
+  const useRpcQuery = Boolean((apiQuery.isError || apiQuery.isPlaceholderData) && apiQuery.errorUpdateCount > 0 && rpcQuery.data);
+  const query = useRpcQuery ? rpcQuery : apiQuery;
 
   // TODO @tom2drum remove type coercion
   return {
     ...query,
-    isDegradedData: Boolean(!rpcQuery.isPlaceholderData && rpcQuery.data),
+    isDegradedData: useRpcQuery,
   } as BlockQuery;
 }

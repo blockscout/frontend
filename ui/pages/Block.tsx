@@ -11,13 +11,14 @@ import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import { WITHDRAWAL } from 'stubs/withdrawals';
 import BlockDetails from 'ui/block/BlockDetails';
 import BlockWithdrawals from 'ui/block/BlockWithdrawals';
 import useBlockQuery from 'ui/block/useBlockQuery';
+import useBlockTxQuery from 'ui/block/useBlockTxQuery';
 import TextAd from 'ui/shared/ad/TextAd';
+import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -41,19 +42,7 @@ const BlockPageContent = () => {
   const tab = getQueryParamString(router.query.tab);
 
   const blockQuery = useBlockQuery({ heightOrHash });
-
-  const blockTxsQuery = useQueryWithPages({
-    resourceName: 'block_txs',
-    pathParams: { height_or_hash: heightOrHash },
-    options: {
-      enabled: Boolean(!blockQuery.isPlaceholderData && blockQuery.data?.height && tab === 'txs'),
-      placeholderData: generateListStub<'block_txs'>(TX, 50, { next_page_params: {
-        block_number: 9004925,
-        index: 49,
-        items_count: 50,
-      } }),
-    },
-  });
+  const blockTxsQuery = useBlockTxQuery({ heightOrHash, blockQuery, tab });
 
   const blockWithdrawalsQuery = useQueryWithPages({
     resourceName: 'block_withdrawals',
@@ -68,8 +57,26 @@ const BlockPageContent = () => {
   });
 
   const tabs: Array<RoutedTab> = React.useMemo(() => ([
-    { id: 'index', title: 'Details', component: <BlockDetails query={ blockQuery }/> },
-    { id: 'txs', title: 'Transactions', component: <TxsWithFrontendSorting query={ blockTxsQuery } showBlockInfo={ false } showSocketInfo={ false }/> },
+    {
+      id: 'index',
+      title: 'Details',
+      component: (
+        <>
+          { blockQuery.isDegradedData && <ServiceDegradationWarning isLoading={ blockQuery.isPlaceholderData } mb={ 6 }/> }
+          <BlockDetails query={ blockQuery }/>
+        </>
+      ),
+    },
+    {
+      id: 'txs',
+      title: 'Transactions',
+      component: (
+        <>
+          { blockTxsQuery.isDegradedData && <ServiceDegradationWarning isLoading={ blockTxsQuery.isPlaceholderData } mb={ 6 }/> }
+          <TxsWithFrontendSorting query={ blockTxsQuery } showBlockInfo={ false } showSocketInfo={ false }/>
+        </>
+      ),
+    },
     config.features.beaconChain.isEnabled && Boolean(blockQuery.data?.withdrawals_count) ?
       { id: 'withdrawals', title: 'Withdrawals', component: <BlockWithdrawals blockWithdrawalsQuery={ blockWithdrawalsQuery }/> } :
       null,

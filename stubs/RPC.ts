@@ -74,3 +74,8 @@ export const GET_BLOCK: GetBlockReturnType<Chain, false, 'latest'> = {
   withdrawalsRoot: TX_HASH,
   sealFields: [ '0x00' ],
 };
+
+export const GET_BLOCK_WITH_TRANSACTIONS: GetBlockReturnType<Chain, true, 'latest'> = {
+  ...GET_BLOCK,
+  transactions: Array(5).fill(GET_TRANSACTION),
+};

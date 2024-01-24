@@ -1,17 +1,13 @@
 import { Grid, GridItem, Text, Link, Box, Tooltip, useColorModeValue, Skeleton } from '@chakra-ui/react';
-import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import capitalize from 'lodash/capitalize';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
-import type { Block } from 'types/api/block';
-
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import type { ResourceError } from 'lib/api/resources';
 import getBlockReward from 'lib/block/getBlockReward';
 import { GWEI, WEI, WEI_IN_GWEI, ZERO } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
@@ -34,8 +30,10 @@ import RawDataSnippet from 'ui/shared/RawDataSnippet';
 import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
+import type { BlockQuery } from './useBlockQuery';
+
 interface Props {
-  query: UseQueryResult<Block, ResourceError>;
+  query: BlockQuery;
 }
 
 const isRollup = config.features.optimisticRollup.isEnabled || config.features.zkEvmRollup.isEnabled;

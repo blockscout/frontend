@@ -12,6 +12,10 @@ export interface Props {
 }
 
 const TxStatus = ({ status, errorText, isLoading }: Props) => {
+  if (status === undefined) {
+    return null;
+  }
+
   let text;
   let type: StatusTagType;
 
