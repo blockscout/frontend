@@ -1,9 +1,11 @@
+import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import type { Chain, GetBlockReturnType } from 'viem';
 
 import type { BlockTransactionsResponse } from 'types/api/block';
 
+import type { ResourceError } from 'lib/api/resources';
 import { retry } from 'lib/api/useQueryClientConfig';
 import { SECOND } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
@@ -146,16 +148,24 @@ export default function useBlockTxQuery({ heightOrHash, blockQuery, tab }: Param
     }
   }, [ rpcQuery.data, rpcQuery.isPlaceholderData ]);
 
-  const useRpcQuery = (
+  const useRpcQuery = Boolean((
     blockQuery.isDegradedData ||
     ((apiQuery.isError || apiQuery.isPlaceholderData) && apiQuery.errorUpdateCount > 0)
-  ) && rpcQuery.data;
-  const query = useRpcQuery ? rpcQuery : apiQuery;
+  ) && rpcQuery.data);
 
-  // TODO @tom2drum remove type coercion
+  const rpcQueryWithPages: QueryWithPagesResult<'block_txs'> = React.useMemo(() => {
+    return {
+      ...rpcQuery as UseQueryResult<BlockTransactionsResponse, ResourceError>,
+      pagination: emptyPagination,
+      onFilterChange: () => {},
+      onSortingChange: () => {},
+    };
+  }, [ rpcQuery ]);
+
+  const query = useRpcQuery ? rpcQueryWithPages : apiQuery;
+
   return {
     ...query,
     isDegradedData: useRpcQuery,
-    pagination: useRpcQuery ? emptyPagination : apiQuery.pagination,
-  } as BlockTxsQuery;
+  };
 }

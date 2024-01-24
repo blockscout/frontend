@@ -1,3 +1,4 @@
+import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import type { Chain, GetBlockReturnType } from 'viem';
@@ -5,6 +6,7 @@ import type { Chain, GetBlockReturnType } from 'viem';
 import type { BlockWithdrawalsResponse } from 'types/api/block';
 
 import config from 'configs/app';
+import type { ResourceError } from 'lib/api/resources';
 import { retry } from 'lib/api/useQueryClientConfig';
 import { SECOND } from 'lib/consts';
 import hexToDecimal from 'lib/hexToDecimal';
@@ -106,16 +108,24 @@ export default function useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab
     }
   }, [ rpcQuery.data, rpcQuery.isPlaceholderData ]);
 
-  const useRpcQuery = (
+  const useRpcQuery = Boolean((
     blockQuery.isDegradedData ||
     ((apiQuery.isError || apiQuery.isPlaceholderData) && apiQuery.errorUpdateCount > 0)
-  ) && rpcQuery.data;
-  const query = useRpcQuery ? rpcQuery : apiQuery;
+  ) && rpcQuery.data);
 
-  // TODO @tom2drum remove type coercion
+  const rpcQueryWithPages: QueryWithPagesResult<'block_withdrawals'> = React.useMemo(() => {
+    return {
+      ...rpcQuery as UseQueryResult<BlockWithdrawalsResponse, ResourceError>,
+      pagination: emptyPagination,
+      onFilterChange: () => {},
+      onSortingChange: () => {},
+    };
+  }, [ rpcQuery ]);
+
+  const query = useRpcQuery ? rpcQueryWithPages : apiQuery;
+
   return {
     ...query,
     isDegradedData: useRpcQuery,
-    pagination: useRpcQuery ? emptyPagination : apiQuery.pagination,
-  } as BlockWithdrawalsQuery;
+  };
 }

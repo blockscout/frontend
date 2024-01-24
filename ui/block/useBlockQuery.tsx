@@ -97,7 +97,7 @@ export default function useBlockQuery({ heightOrHash }: Params): BlockQuery {
     }
 
     if (apiQuery.isError && apiQuery.errorUpdateCount === 1) {
-      setRefetchEnabled(true);
+      // setRefetchEnabled(true);
     } else if (!apiQuery.isError) {
       setRefetchEnabled(false);
     }
@@ -110,11 +110,10 @@ export default function useBlockQuery({ heightOrHash }: Params): BlockQuery {
   }, [ rpcQuery.data, rpcQuery.isPlaceholderData ]);
 
   const useRpcQuery = Boolean((apiQuery.isError || apiQuery.isPlaceholderData) && apiQuery.errorUpdateCount > 0 && rpcQuery.data);
-  const query = useRpcQuery ? rpcQuery : apiQuery;
+  const query = useRpcQuery ? rpcQuery as UseQueryResult<Block, ResourceError<{ status: number }>> : apiQuery;
 
-  // TODO @tom2drum remove type coercion
   return {
     ...query,
     isDegradedData: useRpcQuery,
-  } as BlockQuery;
+  };
 }
