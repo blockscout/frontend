@@ -102,7 +102,7 @@ export default function useBlockQuery({ heightOrHash, blockQuery, tab }: Params)
                 value: null,
                 type: 'actual',
               },
-              created_contract: null, // TODO @tom2drum fix contract creation tx (#5139490 on goerli)
+              created_contract: null,
               result: '',
               priority_fee: null,
               tx_burnt_fee: null,
