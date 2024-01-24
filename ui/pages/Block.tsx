@@ -11,19 +11,17 @@ import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { generateListStub } from 'stubs/utils';
-import { WITHDRAWAL } from 'stubs/withdrawals';
 import BlockDetails from 'ui/block/BlockDetails';
 import BlockWithdrawals from 'ui/block/BlockWithdrawals';
 import useBlockQuery from 'ui/block/useBlockQuery';
 import useBlockTxQuery from 'ui/block/useBlockTxQuery';
+import useBlockWithdrawalsQuery from 'ui/block/useBlockWithdrawalsQuery';
 import TextAd from 'ui/shared/ad/TextAd';
 import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
@@ -43,18 +41,7 @@ const BlockPageContent = () => {
 
   const blockQuery = useBlockQuery({ heightOrHash });
   const blockTxsQuery = useBlockTxQuery({ heightOrHash, blockQuery, tab });
-
-  const blockWithdrawalsQuery = useQueryWithPages({
-    resourceName: 'block_withdrawals',
-    pathParams: { height_or_hash: heightOrHash },
-    options: {
-      enabled: Boolean(!blockQuery.isPlaceholderData && blockQuery.data?.height && config.features.beaconChain.isEnabled && tab === 'withdrawals'),
-      placeholderData: generateListStub<'block_withdrawals'>(WITHDRAWAL, 50, { next_page_params: {
-        index: 5,
-        items_count: 50,
-      } }),
-    },
-  });
+  const blockWithdrawalsQuery = useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab });
 
   const tabs: Array<RoutedTab> = React.useMemo(() => ([
     {
@@ -78,8 +65,16 @@ const BlockPageContent = () => {
       ),
     },
     config.features.beaconChain.isEnabled && Boolean(blockQuery.data?.withdrawals_count) ?
-      { id: 'withdrawals', title: 'Withdrawals', component: <BlockWithdrawals blockWithdrawalsQuery={ blockWithdrawalsQuery }/> } :
-      null,
+      {
+        id: 'withdrawals',
+        title: 'Withdrawals',
+        component: (
+          <>
+            { blockWithdrawalsQuery.isDegradedData && <ServiceDegradationWarning isLoading={ blockWithdrawalsQuery.isPlaceholderData } mb={ 6 }/> }
+            <BlockWithdrawals blockWithdrawalsQuery={ blockWithdrawalsQuery }/>
+          </>
+        ),
+      } : null,
   ].filter(Boolean)), [ blockQuery, blockTxsQuery, blockWithdrawalsQuery ]);
 
   const hasPagination = !isMobile && (

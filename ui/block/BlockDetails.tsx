@@ -67,6 +67,7 @@ const BlockDetails = ({ query }: Props) => {
   }, [ data, router ]);
 
   if (isError) {
+    // TODO @tom2drum handle errors
     if (error?.status === 404 || error?.status === 422) {
       throwOnResourceLoadError({ isError, error });
     }
