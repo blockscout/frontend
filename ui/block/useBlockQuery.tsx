@@ -1,11 +1,14 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
+import React from 'react';
 import type { Chain, GetBlockReturnType } from 'viem';
 
 import type { Block } from 'types/api/block';
 
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
+import { retry } from 'lib/api/useQueryClientConfig';
+import { SECOND } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
 import { publicClient } from 'lib/web3/client';
 import { BLOCK } from 'stubs/block';
@@ -14,18 +17,33 @@ import { unknownAddress } from 'ui/shared/address/utils';
 
 type RpcResponseType = GetBlockReturnType<Chain, false, 'latest'> | null;
 
-export type BlockQuery = UseQueryResult<Block, ResourceError<{ status: number }>>;
+export type BlockQuery = UseQueryResult<Block, ResourceError<{ status: number }>> & {
+  isDegradedData: boolean;
+};
 
 interface Params {
   heightOrHash: string;
 }
 
 export default function useBlockQuery({ heightOrHash }: Params): BlockQuery {
+  const [ isRefetchEnabled, setRefetchEnabled ] = React.useState(false);
+
   const apiQuery = useApiQuery<'block', { status: number }>('block', {
     pathParams: { height_or_hash: heightOrHash },
     queryOptions: {
       enabled: Boolean(heightOrHash),
       placeholderData: BLOCK,
+      refetchOnMount: false,
+      retry: (failureCount, error) => {
+        if (isRefetchEnabled) {
+          return false;
+        }
+
+        return retry(failureCount, error);
+      },
+      refetchInterval: (): number | false => {
+        return isRefetchEnabled ? 15 * SECOND : false;
+      },
     },
   });
 
@@ -69,10 +87,33 @@ export default function useBlockQuery({ heightOrHash }: Params): BlockQuery {
     },
     placeholderData: GET_BLOCK,
     enabled: apiQuery.isError,
+    retry: false,
+    refetchOnMount: false,
   });
 
-  const query = apiQuery.isError && rpcQuery.data ? rpcQuery : apiQuery;
+  React.useEffect(() => {
+    if (apiQuery.isPlaceholderData) {
+      return;
+    }
+
+    if (apiQuery.isError && apiQuery.errorUpdateCount === 1) {
+      setRefetchEnabled(true);
+    } else if (!apiQuery.isError) {
+      setRefetchEnabled(false);
+    }
+  }, [ apiQuery.errorUpdateCount, apiQuery.isError, apiQuery.isPlaceholderData ]);
+
+  React.useEffect(() => {
+    if (!rpcQuery.isPlaceholderData && !rpcQuery.data) {
+      setRefetchEnabled(false);
+    }
+  }, [ rpcQuery.data, rpcQuery.isPlaceholderData ]);
+
+  const query = (apiQuery.isError || apiQuery.isPlaceholderData) && apiQuery.errorUpdateCount > 0 && rpcQuery.data ? rpcQuery : apiQuery;
 
   // TODO @tom2drum remove type coercion
-  return query as BlockQuery;
+  return {
+    ...query,
+    isDegradedData: Boolean(!rpcQuery.isPlaceholderData && rpcQuery.data),
+  } as BlockQuery;
 }
