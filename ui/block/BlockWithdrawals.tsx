@@ -3,7 +3,7 @@ import React from 'react';
 
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
-import WithdrawalsListItem from 'ui/withdrawals/WithdrawalsListItem';
+import WithdrawalsList from 'ui/withdrawals/WithdrawalsList';
 import WithdrawalsTable from 'ui/withdrawals/WithdrawalsTable';
 
 type Props = {
@@ -14,14 +14,11 @@ const BlockWithdrawals = ({ blockWithdrawalsQuery }: Props) => {
   const content = blockWithdrawalsQuery.data?.items ? (
     <>
       <Show below="lg" ssr={ false }>
-        { blockWithdrawalsQuery.data.items.map((item, index) => (
-          <WithdrawalsListItem
-            key={ item.index + (blockWithdrawalsQuery.isPlaceholderData ? String(index) : '') }
-            item={ item }
-            view="block"
-            isLoading={ blockWithdrawalsQuery.isPlaceholderData }
-          />
-        )) }
+        <WithdrawalsList
+          items={ blockWithdrawalsQuery.data.items }
+          isLoading={ blockWithdrawalsQuery.isPlaceholderData }
+          view="block"
+        />
       </Show>
       <Hide below="lg" ssr={ false }>
         <WithdrawalsTable
