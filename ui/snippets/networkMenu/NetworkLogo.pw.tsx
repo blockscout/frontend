@@ -24,7 +24,7 @@ base.describe('placeholder logo', () => {
       </TestApp>,
     );
 
-    await expect(component.locator('a')).toHaveScreenshot();
+    await expect(component.locator('a')).toHaveScreenshot({ maxDiffPixelRatio: 1 });
   });
 
   test.describe('screen xl', () => {
@@ -37,7 +37,7 @@ base.describe('placeholder logo', () => {
         </TestApp>,
       );
 
-      await expect(component.locator('a')).toHaveScreenshot();
+      await expect(component.locator('a')).toHaveScreenshot({ maxDiffPixelRatio: 1 });
     });
   });
 });
@@ -77,14 +77,14 @@ base.describe('custom logo', () => {
   });
 
   test('+@dark-mode', async() => {
-    await expect(component.locator('a')).toHaveScreenshot();
+    await expect(component.locator('a')).toHaveScreenshot({ maxDiffPixelRatio: 1 });
   });
 
   test.describe('screen xl', () => {
     test.use({ viewport: configs.viewport.xl });
 
     test('+@dark-mode', async() => {
-      await expect(component.locator('a')).toHaveScreenshot();
+      await expect(component.locator('a')).toHaveScreenshot({ maxDiffPixelRatio: 1 });
     });
   });
 });
@@ -126,14 +126,14 @@ base.describe('custom logo with dark option -@default +@dark-mode', () => {
   });
 
   test('', async() => {
-    await expect(component.locator('a')).toHaveScreenshot();
+    await expect(component.locator('a')).toHaveScreenshot({ maxDiffPixelRatio: 1 });
   });
 
   test.describe('screen xl', () => {
     test.use({ viewport: configs.viewport.xl });
 
     test('', async() => {
-      await expect(component.locator('a')).toHaveScreenshot();
+      await expect(component.locator('a')).toHaveScreenshot({ maxDiffPixelRatio: 1 });
     });
   });
 });

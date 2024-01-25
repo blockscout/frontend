@@ -104,9 +104,23 @@ export interface AddressCoinBalanceHistoryItem {
   transaction_hash: string | null;
   value: string;
 }
+export interface AddressAspectsHistoryItem {
+  block_number: number;
+  block_timestamp: string;
+  delta: string;
+  transaction_hash: string | null;
+  value: string;
+}
 
 export interface AddressCoinBalanceHistoryResponse {
   items: Array<AddressCoinBalanceHistoryItem>;
+  next_page_params: {
+    block_number: number;
+    items_count: number;
+  } | null;
+}
+export interface AddressAspectsHistoryResponse {
+  items: Array<AddressAspectsHistoryItem>;
   next_page_params: {
     block_number: number;
     items_count: number;

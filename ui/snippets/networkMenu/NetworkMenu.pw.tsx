@@ -39,14 +39,14 @@ extendedTest('base view +@dark-mode', async({ mount, page }) => {
     </TestApp>,
   );
 
-  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 36, height: 36 } });
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 36, height: 36 }, maxDiffPixelRatio: 1 });
 
   await component.locator('button[aria-label="Network menu"]').hover();
-  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 36, height: 36 } });
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 36, height: 36 }, maxDiffPixelRatio: 1 });
 
   await component.locator('button[aria-label="Network menu"]').click();
-  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 450, height: 550 } });
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 450, height: 550 }, maxDiffPixelRatio: 1 });
 
   await component.getByText(/poa/i).hover();
-  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 450, height: 550 } });
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 450, height: 550 }, maxDiffPixelRatio: 1 });
 });

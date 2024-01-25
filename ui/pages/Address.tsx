@@ -13,6 +13,7 @@ import useContractTabs from 'lib/hooks/useContractTabs';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ADDRESS_INFO } from 'stubs/address';
+import AddressAspects from 'ui/address/AddressAspects';
 import AddressBlocksValidated from 'ui/address/AddressBlocksValidated';
 import AddressCoinBalance from 'ui/address/AddressCoinBalance';
 import AddressContract from 'ui/address/AddressContract';
@@ -89,6 +90,7 @@ const AddressPageContent = () => {
         component: <AddressContract tabs={ contractTabs }/>,
         subTabs: contractTabs.map(tab => tab.id),
       } : undefined,
+      { id: 'aspect', title: 'Aspects', component: <AddressAspects/> },
     ].filter(Boolean);
   }, [ addressQuery.data, contractTabs ]);
 

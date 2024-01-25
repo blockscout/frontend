@@ -38,7 +38,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
   const router = useRouter();
 
   const addressHash = getQueryParamString(router.query.hash);
-
+  const [ isLoading, setIsLoading ] = React.useState(true);
   const countersQuery = useApiQuery('address_counters', {
     pathParams: { hash: addressHash },
     queryOptions: {
@@ -55,6 +55,8 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
     }
   }).catch(err => {
     return Promise.reject(err);
+  }).finally(() => {
+    setIsLoading(false);
   });
 
   const handleCounterItemClick = React.useCallback(() => {
@@ -99,6 +101,9 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
     return null;
   }
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
   return (
     <Box>
       <AddressHeadingInfo address={ data } token={ data.token } isLoading={ addressQuery.isPlaceholderData } isLinkDisabled/>

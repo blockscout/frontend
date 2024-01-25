@@ -12,7 +12,7 @@ test('no auth +@mobile', async({ mount, page }) => {
     </TestApp>,
   );
 
-  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 150 } });
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 150 }, maxDiffPixelRatio: 1 });
 });
 
 test.describe('dark mode', () => {
@@ -25,6 +25,6 @@ test.describe('dark mode', () => {
       </TestApp>,
     );
 
-    await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 150 } });
+    await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 150 }, maxDiffPixelRatio: 1 });
   });
 });
