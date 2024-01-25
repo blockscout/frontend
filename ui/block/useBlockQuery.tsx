@@ -79,7 +79,7 @@ export default function useBlockQuery({ heightOrHash }: Params): BlockQuery {
         gas_target_percentage: null,
         gas_used_percentage: null,
         burnt_fees_percentage: null,
-        type: 'block', // TODO @tom2drum get block type
+        type: 'block', // we can't get this type from RPC, so it will always be a regular block
         tx_fees: null,
         uncles_hashes: block.uncles,
         withdrawals_count: block.withdrawals?.length,
