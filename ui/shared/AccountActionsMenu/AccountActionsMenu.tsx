@@ -1,4 +1,4 @@
-import { Button, Menu, MenuButton, MenuList, Flex, Skeleton, chakra } from '@chakra-ui/react';
+import { IconButton, Menu, MenuButton, MenuList, Skeleton, chakra } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -37,16 +37,14 @@ const AccountActionsMenu = ({ isLoading, className }: Props) => {
     <Menu>
       <Skeleton isLoaded={ !isLoading } borderRadius="base" className={ className }>
         <MenuButton
-          as={ Button }
+          as={ IconButton }
           size="sm"
           variant="outline"
+          colorScheme="gray"
+          px="6px"
           onClick={ handleButtonClick }
-        >
-          <Flex alignItems="center">
-            <span>More</span>
-            <IconSvg name="arrows/east-mini" transform="rotate(-90deg)" boxSize={ 5 } ml={ 1 }/>
-          </Flex>
-        </MenuButton>
+          icon={ <IconSvg name="dots" boxSize={ 5 }/> }
+        />
       </Skeleton>
       <MenuList minWidth="180px" zIndex="popover">
         { isTokenPage && config.features.addressVerification.isEnabled &&
