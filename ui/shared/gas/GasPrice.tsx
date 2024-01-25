@@ -30,6 +30,14 @@ const GasPrice = ({ data, prefix, className, unitMode = 'primary', emptyText }: 
   })();
 
   if (units === 'usd' && data.fiat_price) {
+    if (Number(data.fiat_price) < 0.01) {
+      return (
+        <span className={ className }>
+          { prefix ?? '< ' }$0.01
+        </span>
+      );
+    }
+
     return (
       <span className={ className }>
         { prefix }${ Number(data.fiat_price).toLocaleString(undefined, { maximumFractionDigits: 2 }) }
