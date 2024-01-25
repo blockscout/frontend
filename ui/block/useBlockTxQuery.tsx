@@ -125,7 +125,7 @@ export default function useBlockTxQuery({ heightOrHash, blockQuery, tab }: Param
       };
     },
     placeholderData: GET_BLOCK_WITH_TRANSACTIONS,
-    enabled: tab === 'txs' && (blockQuery.isDegradedData || apiQuery.isError),
+    enabled: tab === 'txs' && (blockQuery.isDegradedData || apiQuery.isError || apiQuery.errorUpdateCount > 0),
     retry: false,
     refetchOnMount: false,
   });

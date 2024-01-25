@@ -40,7 +40,10 @@ export default function useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab
     resourceName: 'block_withdrawals',
     pathParams: { height_or_hash: heightOrHash },
     options: {
-      enabled: Boolean(tab === 'withdrawals' && !blockQuery.isPlaceholderData && !blockQuery.isDegradedData && config.features.beaconChain.isEnabled),
+      enabled:
+        tab === 'withdrawals' &&
+        config.features.beaconChain.isEnabled &&
+        !blockQuery.isPlaceholderData && !blockQuery.isDegradedData,
       placeholderData: generateListStub<'block_withdrawals'>(WITHDRAWAL, 50, { next_page_params: {
         index: 5,
         items_count: 50,
@@ -85,7 +88,10 @@ export default function useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab
       };
     },
     placeholderData: GET_BLOCK,
-    enabled: apiQuery.isError,
+    enabled:
+      tab === 'withdrawals' &&
+      config.features.beaconChain.isEnabled &&
+      (blockQuery.isDegradedData || apiQuery.isError || apiQuery.errorUpdateCount > 0),
     retry: false,
     refetchOnMount: false,
   });
