@@ -585,7 +585,6 @@ export const RESOURCES = {
     path: '/api/v2/proxy/account-abstraction/operations',
     filterFields: [ 'transaction_hash' as const, 'sender' as const ],
   },
-
   user_op: {
     path: '/api/v2/proxy/account-abstraction/operations/:hash',
     pathParams: [ 'hash' as const ],
