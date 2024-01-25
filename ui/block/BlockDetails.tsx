@@ -11,13 +11,11 @@ import config from 'configs/app';
 import getBlockReward from 'lib/block/getBlockReward';
 import { GWEI, WEI, WEI_IN_GWEI, ZERO } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import { space } from 'lib/html-entities';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { currencyUnits } from 'lib/units';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -45,7 +43,7 @@ const BlockDetails = ({ query }: Props) => {
 
   const separatorColor = useColorModeValue('gray.200', 'gray.700');
 
-  const { data, isPlaceholderData, isError, error } = query;
+  const { data, isPlaceholderData } = query;
 
   const handleCutClick = React.useCallback(() => {
     setIsExpanded((flag) => !flag);
@@ -65,15 +63,6 @@ const BlockDetails = ({ query }: Props) => {
 
     router.push({ pathname: '/block/[height_or_hash]', query: { height_or_hash: nextId } }, undefined);
   }, [ data, router ]);
-
-  if (isError) {
-    // TODO @tom2drum handle errors
-    if (error?.status === 404 || error?.status === 422) {
-      throwOnResourceLoadError({ isError, error });
-    }
-
-    return <DataFetchAlert/>;
-  }
 
   if (!data) {
     return null;

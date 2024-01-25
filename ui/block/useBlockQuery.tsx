@@ -86,7 +86,7 @@ export default function useBlockQuery({ heightOrHash }: Params): BlockQuery {
       };
     },
     placeholderData: GET_BLOCK,
-    enabled: apiQuery.isError,
+    enabled: apiQuery.isError || apiQuery.errorUpdateCount > 0,
     retry: false,
     refetchOnMount: false,
   });
@@ -97,7 +97,7 @@ export default function useBlockQuery({ heightOrHash }: Params): BlockQuery {
     }
 
     if (apiQuery.isError && apiQuery.errorUpdateCount === 1) {
-      // setRefetchEnabled(true);
+      setRefetchEnabled(true);
     } else if (!apiQuery.isError) {
       setRefetchEnabled(false);
     }
