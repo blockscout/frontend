@@ -20,6 +20,6 @@ export type MarketplaceAppOverview = MarketplaceAppPreview & {
 }
 
 export enum MarketplaceCategory {
-  ALL = 'All apps',
+  ALL = 'All',
   FAVORITES = 'Favorites',
 }

@@ -1,12 +1,19 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import { MarketplaceCategory } from 'types/client/marketplace';
+import type { TabItem } from 'ui/shared/Tabs/types';
+
 import config from 'configs/app';
+import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import MarketplaceAppModal from 'ui/marketplace/MarketplaceAppModal';
 import MarketplaceCategoriesMenu from 'ui/marketplace/MarketplaceCategoriesMenu';
 import MarketplaceDisclaimerModal from 'ui/marketplace/MarketplaceDisclaimerModal';
 import MarketplaceList from 'ui/marketplace/MarketplaceList';
 import FilterInput from 'ui/shared/filters/FilterInput';
+import IconSvg from 'ui/shared/IconSvg';
+import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
+import TabsWithScroll from 'ui/shared/Tabs/TabsWithScroll';
 
 import useMarketplace from '../marketplace/useMarketplace';
 const feature = config.features.marketplace;
@@ -30,7 +37,44 @@ const Marketplace = () => {
     isAppInfoModalOpen,
     isDisclaimerModalOpen,
     showDisclaimer,
+    appsTotal,
   } = useMarketplace();
+
+  const { value: isExperiment } = useFeatureValue('marketplace_exp', false);
+
+  const categoryTabs = React.useMemo(() => {
+    const tabs: Array<TabItem> = categories.map(category => ({
+      id: category.name,
+      title: category.name,
+      count: category.count,
+      component: null,
+    }));
+
+    tabs.unshift({
+      id: MarketplaceCategory.ALL,
+      title: MarketplaceCategory.ALL,
+      count: appsTotal,
+      component: null,
+    });
+
+    tabs.unshift({
+      id: MarketplaceCategory.FAVORITES,
+      title: () => <IconSvg name="star_outline" w={ 4 } h={ 4 }/>,
+      count: null,
+      component: null,
+    });
+
+    return tabs;
+  }, [ categories, appsTotal ]);
+
+  const selectedCategoryIndex = React.useMemo(() => {
+    const index = categoryTabs.findIndex(c => c.id === selectedCategoryId);
+    return index === -1 ? 0 : index;
+  }, [ categoryTabs, selectedCategoryId ]);
+
+  const handleCategoryChange = React.useCallback((index: number) => {
+    onCategoryChange(categoryTabs[index].id);
+  }, [ categoryTabs, onCategoryChange ]);
 
   if (isError) {
     throw new Error('Unable to get apps list', { cause: error });
@@ -44,16 +88,32 @@ const Marketplace = () => {
 
   return (
     <>
+      { isExperiment && (
+        <Box marginTop={{ base: 0, lg: 8 }}>
+          { isPlaceholderData ? (
+            <TabsSkeleton tabs={ categoryTabs }/>
+          ) : (
+            <TabsWithScroll
+              tabs={ categoryTabs }
+              onTabChange={ handleCategoryChange }
+              defaultTabIndex={ selectedCategoryIndex }
+              marginBottom={{ base: 0, lg: -2 }}
+            />
+          ) }
+        </Box>
+      ) }
       <Box
         display="flex"
         flexDirection={{ base: 'column', sm: 'row' }}
       >
-        <MarketplaceCategoriesMenu
-          categories={ categories }
-          selectedCategoryId={ selectedCategoryId }
-          onSelect={ onCategoryChange }
-          isLoading={ isPlaceholderData }
-        />
+        { !isExperiment && (
+          <MarketplaceCategoriesMenu
+            categories={ categories.map(c => c.name) }
+            selectedCategoryId={ selectedCategoryId }
+            onSelect={ onCategoryChange }
+            isLoading={ isPlaceholderData }
+          />
+        ) }
 
         <FilterInput
           initialValue={ filterQuery }
@@ -72,6 +132,7 @@ const Marketplace = () => {
         onFavoriteClick={ onFavoriteClick }
         isLoading={ isPlaceholderData }
         showDisclaimer={ showDisclaimer }
+        selectedCategoryId={ selectedCategoryId }
       />
 
       { (selectedApp && isAppInfoModalOpen) && (

@@ -4,7 +4,7 @@ import React from 'react';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
-  text: string;
+  text: string | JSX.Element;
 }
 
 const EmptySearchResult = ({ text }: Props) => {

@@ -1,5 +1,5 @@
+import _groudBy from 'lodash/groupBy';
 import _pickBy from 'lodash/pickBy';
-import _unique from 'lodash/uniq';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -74,7 +74,12 @@ export default function useMarketplace() {
   const { isPlaceholderData, isError, error, data, displayedApps } = useMarketplaceApps(debouncedFilterQuery, selectedCategoryId, favoriteApps);
 
   const categories = React.useMemo(() => {
-    return _unique(data?.map(app => app.categories).flat()) || [];
+    const grouped = _groudBy(data, app => app.categories);
+    return Object.keys(grouped).map(category => ({
+      name: category,
+      count: grouped[category].length,
+    }));
+    // return _unique(data?.map(app => app.categories).flat()) || [];
   }, [ data ]);
 
   React.useEffect(() => {
@@ -83,7 +88,7 @@ export default function useMarketplace() {
 
   React.useEffect(() => {
     if (!isPlaceholderData && !isError) {
-      const isValidDefaultCategory = categories.includes(defaultCategoryId);
+      const isValidDefaultCategory = categories.map(c => c.name).includes(defaultCategoryId);
       isValidDefaultCategory && setSelectedCategoryId(defaultCategoryId);
     }
     // run only when data is loaded
@@ -128,6 +133,7 @@ export default function useMarketplace() {
     isAppInfoModalOpen,
     isDisclaimerModalOpen,
     showDisclaimer,
+    appsTotal: data?.length || 0,
   }), [
     selectedCategoryId,
     categories,
@@ -145,5 +151,6 @@ export default function useMarketplace() {
     isAppInfoModalOpen,
     isDisclaimerModalOpen,
     showDisclaimer,
+    data?.length,
   ]);
 }

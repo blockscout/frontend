@@ -2,9 +2,12 @@ import { Grid } from '@chakra-ui/react';
 import React from 'react';
 
 import type { MarketplaceAppPreview } from 'types/client/marketplace';
+import { MarketplaceCategory } from 'types/client/marketplace';
 
+import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import { apos } from 'lib/html-entities';
 import EmptySearchResult from 'ui/shared/EmptySearchResult';
+import IconSvg from 'ui/shared/IconSvg';
 
 import MarketplaceAppCard from './MarketplaceAppCard';
 
@@ -15,9 +18,12 @@ type Props = {
   onFavoriteClick: (id: string, isFavorite: boolean) => void;
   isLoading: boolean;
   showDisclaimer: (id: string) => void;
+  selectedCategoryId?: string;
 }
 
-const MarketplaceList = ({ apps, onAppClick, favoriteApps, onFavoriteClick, isLoading, showDisclaimer }: Props) => {
+const MarketplaceList = ({ apps, onAppClick, favoriteApps, onFavoriteClick, isLoading, showDisclaimer, selectedCategoryId }: Props) => {
+  const { value: isExperiment } = useFeatureValue('marketplace_exp', false);
+
   return apps.length > 0 ? (
     <Grid
       templateColumns={{
@@ -48,7 +54,18 @@ const MarketplaceList = ({ apps, onAppClick, favoriteApps, onFavoriteClick, isLo
       )) }
     </Grid>
   ) : (
-    <EmptySearchResult text={ `Couldn${ apos }t find an app that matches your filter query.` }/>
+    <EmptySearchResult
+      text={
+        (selectedCategoryId === MarketplaceCategory.FAVORITES && !favoriteApps.length && isExperiment) ? (
+          <>
+            You don{ apos }t have any favorite apps.
+            Click on the <IconSvg name="star_outline" w={ 4 } h={ 4 } mb={ -0.5 }/> icon on the app{ apos }s card to add it to Favorites.
+          </>
+        ) : (
+          `Couldn${ apos }t find an app that matches your filter query.`
+        )
+      }
+    />
   );
 };
 
