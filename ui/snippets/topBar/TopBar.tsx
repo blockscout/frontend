@@ -1,7 +1,6 @@
 import { Flex, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
-import ColorModeSwitch from './ColorModeSwitch';
 import TopBarStats from './TopBarStats';
 
 const TopBar = () => {
@@ -15,7 +14,7 @@ const TopBar = () => {
       justifyContent="space-between"
     >
       <TopBarStats/>
-      <ColorModeSwitch/>
+      { /* <ColorModeSwitch/> */ }
     </Flex>
   );
 };
