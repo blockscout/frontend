@@ -24,7 +24,7 @@ const LayoutHome = ({ children }: Props) => {
           </AppErrorBoundary>
         </Layout.MainColumn>
       </Layout.MainArea>
-      { /*<Layout.Footer/>*/ }
+      <Layout.Footer/>
     </Layout.Container>
   );
 };

@@ -1,5 +1,5 @@
 import type { GridProps } from '@chakra-ui/react';
-import { Box, Grid, Flex, Text, Link, VStack, Skeleton } from '@chakra-ui/react';
+import { Box, Flex, Grid, Link, Skeleton, Text, VStack } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
@@ -9,7 +9,6 @@ import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import useFetch from 'lib/hooks/useFetch';
-import useIssueUrl from 'lib/hooks/useIssueUrl';
 import NetworkAddToWallet from 'ui/shared/NetworkAddToWallet';
 
 import FooterLinkItem from './FooterLinkItem';
@@ -29,49 +28,54 @@ const Footer = () => {
     },
   });
   const apiVersionUrl = getApiVersionUrl(backendVersionData?.backend_version);
-  const issueUrl = useIssueUrl(backendVersionData?.backend_version);
   const BLOCKSCOUT_LINKS = [
-    {
-      icon: 'edit' as const,
-      iconSize: '16px',
-      text: 'Submit an issue',
-      url: issueUrl,
-    },
-    {
-      icon: 'social/canny' as const,
-      iconSize: '20px',
-      text: 'Feature request',
-      url: 'https://blockscout.canny.io/feature-requests',
-    },
-    {
-      icon: 'social/git' as const,
-      iconSize: '18px',
-      text: 'Contribute',
-      url: 'https://github.com/blockscout/blockscout',
-    },
     {
       icon: 'social/tweet' as const,
       iconSize: '18px',
       text: 'Twitter',
-      url: 'https://www.twitter.com/blockscoutcom',
+      url: 'https://twitter.com/blockchainsprts',
     },
     {
       icon: 'social/discord' as const,
       iconSize: '24px',
       text: 'Discord',
-      url: 'https://discord.gg/blockscout',
+      url: 'https://discord.gg/blockchainsports',
     },
     {
-      icon: 'discussions' as const,
-      iconSize: '20px',
-      text: 'Discussions',
-      url: 'https://github.com/orgs/blockscout/discussions',
+      icon: 'social/medium_filled' as const,
+      iconSize: '24px',
+      text: 'Medium',
+      url: 'https://medium.com/@BlockchainSports',
     },
     {
-      icon: 'donate' as const,
-      iconSize: '20px',
-      text: 'Donate',
-      url: 'https://github.com/sponsors/blockscout',
+      icon: 'social/zealy' as const,
+      iconSize: '24px',
+      text: 'Zealy',
+      url: 'https://zealy.io/c/blockchainsports',
+    },
+    {
+      icon: 'social/youtube' as const,
+      iconSize: '24px',
+      text: 'YouTube',
+      url: 'https://www.youtube.com/@blockchain_sports',
+    },
+    {
+      icon: 'social/git' as const,
+      iconSize: '24px',
+      text: 'GitBook',
+      url: 'https://blockchain-sports.gitbook.io/blockchain-sports-whitepaper/',
+    },
+    {
+      icon: 'social/instagram' as const,
+      iconSize: '24px',
+      text: 'Instagram',
+      url: 'https://instagram.com/blockchain.sports',
+    },
+    {
+      icon: 'social/telega' as const,
+      iconSize: '24px',
+      text: 'Telegram',
+      url: 'https://t.me/bcsports_io',
     },
   ];
 
@@ -118,10 +122,7 @@ const Footer = () => {
   const renderProjectInfo = React.useCallback((gridArea?: GridProps['gridArea']) => {
     return (
       <Box gridArea={ gridArea }>
-        <Link fontSize="xs" href="https://www.blockscout.com">blockscout.com</Link>
-        <Text mt={ 3 } fontSize="xs">
-          Blockscout is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for Ethereum Networks.
-        </Text>
+        <Link fontSize="xs" href="https://www.bcsports.io">bcsports.io</Link>
         <VStack spacing={ 1 } mt={ 6 } alignItems="start">
           { apiVersionUrl && (
             <Text fontSize="xs">
