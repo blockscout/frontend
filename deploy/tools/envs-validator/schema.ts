@@ -11,6 +11,7 @@ import * as yup from 'yup';
 import type { AdButlerConfig } from '../../../types/client/adButlerConfig';
 import { SUPPORTED_AD_TEXT_PROVIDERS, SUPPORTED_AD_BANNER_PROVIDERS } from '../../../types/client/adProviders';
 import type { AdTextProviders, AdBannerProviders } from '../../../types/client/adProviders';
+import type { ContractCodeIde } from '../../../types/client/contract';
 import type { MarketplaceAppOverview } from '../../../types/client/marketplace';
 import { NAVIGATION_LINK_IDS } from '../../../types/client/navigation-items';
 import type { NavItemExternal, NavigationLinkId } from '../../../types/client/navigation-items';
@@ -263,6 +264,13 @@ const networkExplorerSchema: yup.ObjectSchema<NetworkExplorer> = yup
       }),
   });
 
+const contractCodeIdeSchema: yup.ObjectSchema<ContractCodeIde> = yup
+  .object({
+    title: yup.string().required(),
+    url: yup.string().test(urlTest).required(),
+    icon_url: yup.string().test(urlTest).required(),
+  });
+
 const nftMarketplaceSchema: yup.ObjectSchema<NftMarketplaceItem> = yup
   .object({
     name: yup.string().required(),
@@ -417,6 +425,11 @@ const schema = yup
       .transform(replaceQuotes)
       .json()
       .of(networkExplorerSchema),
+    NEXT_PUBLIC_CONTRACT_CODE_IDES: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(contractCodeIdeSchema),
     NEXT_PUBLIC_HIDE_INDEXING_ALERT_BLOCKS: yup.boolean(),
     NEXT_PUBLIC_HIDE_INDEXING_ALERT_INT_TXS: yup.boolean(),
     NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: yup.string(),
