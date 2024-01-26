@@ -41,9 +41,9 @@ const AccountActionsMenu = ({ isLoading, className }: Props) => {
           size="sm"
           variant="outline"
           colorScheme="gray"
-          px="6px"
+          px="7px"
           onClick={ handleButtonClick }
-          icon={ <IconSvg name="dots" boxSize={ 5 }/> }
+          icon={ <IconSvg name="dots" boxSize="18px"/> }
         />
       </Skeleton>
       <MenuList minWidth="180px" zIndex="popover">
