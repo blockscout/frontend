@@ -5,11 +5,13 @@ import React from 'react';
 
 import { MarketplaceCategory } from 'types/client/marketplace';
 
+import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import useDebounce from 'lib/hooks/useDebounce';
 import * as mixpanel from 'lib/mixpanel/index';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
 import useMarketplaceApps from './useMarketplaceApps';
+import useMarketplaceCategories from './useMarketplaceCategories';
 
 const favoriteAppsLocalStorageKey = 'favoriteApps';
 
@@ -73,14 +75,23 @@ export default function useMarketplace() {
 
   const { isPlaceholderData, isError, error, data, displayedApps } = useMarketplaceApps(debouncedFilterQuery, selectedCategoryId, favoriteApps);
 
+  const { value: isExperiment } = useFeatureValue('marketplace_exp', false);
+  const { isPlaceholderData: isCategoriesPlaceholderData, data: categoriesData } = useMarketplaceCategories();
+
   const categories = React.useMemo(() => {
+    let categoryNames: Array<string> = [];
     const grouped = _groudBy(data, app => app.categories);
-    return Object.keys(grouped).map(category => ({
-      name: category,
-      count: grouped[category].length,
-    }));
-    // return _unique(data?.map(app => app.categories).flat()) || [];
-  }, [ data ]);
+
+    if (categoriesData?.length && isExperiment) {
+      categoryNames = categoriesData;
+    } else {
+      categoryNames = Object.keys(grouped);
+    }
+
+    return categoryNames
+      .map(category => ({ name: category, count: grouped[category]?.length || 0 }))
+      .filter(c => c.count > 0);
+  }, [ data, categoriesData, isExperiment ]);
 
   React.useEffect(() => {
     setFavoriteApps(getFavoriteApps());
@@ -134,6 +145,7 @@ export default function useMarketplace() {
     isDisclaimerModalOpen,
     showDisclaimer,
     appsTotal: data?.length || 0,
+    isCategoriesPlaceholderData,
   }), [
     selectedCategoryId,
     categories,
@@ -152,5 +164,6 @@ export default function useMarketplace() {
     isDisclaimerModalOpen,
     showDisclaimer,
     data?.length,
+    isCategoriesPlaceholderData,
   ]);
 }

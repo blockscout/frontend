@@ -71,6 +71,7 @@ const marketplaceAppSchema: yup.ObjectSchema<MarketplaceAppOverview> = yup
     telegram: yup.string().test(urlTest),
     github: yup.string().test(urlTest),
     internalWallet: yup.boolean(),
+    priority: yup.number(),
   });
 
 const marketplaceSchema = yup
@@ -80,6 +81,9 @@ const marketplaceSchema = yup
       .array()
       .json()
       .of(marketplaceAppSchema),
+    NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL: yup
+      .array()
+      .json(),
     NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM: yup
       .string()
       .when('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', {

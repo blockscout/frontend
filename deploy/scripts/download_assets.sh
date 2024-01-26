@@ -15,6 +15,7 @@ ASSETS_DIR="$1"
 # Define a list of environment variables containing URLs of external assets
 ASSETS_ENVS=(
     "NEXT_PUBLIC_MARKETPLACE_CONFIG_URL"
+    "NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL"
     "NEXT_PUBLIC_FEATURED_NETWORKS"
     "NEXT_PUBLIC_FOOTER_LINKS"
     "NEXT_PUBLIC_NETWORK_LOGO"
@@ -36,7 +37,7 @@ get_target_filename() {
     local name_prefix="${env_var#NEXT_PUBLIC_}"
     local name_suffix="${name_prefix%_URL}"
     local name_lc="$(echo "$name_suffix" | tr '[:upper:]' '[:lower:]')"
-    
+
     # Check if the URL starts with "file://"
     if [[ "$url" == file://* ]]; then
         # Extract the local file path
@@ -54,7 +55,7 @@ get_target_filename() {
 
     # Convert the extension to lowercase
     extension=$(echo "$extension" | tr '[:upper:]' '[:lower:]')
-    
+
     # Construct the custom file name
     echo "$name_lc.$extension"
 }

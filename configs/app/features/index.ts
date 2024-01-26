@@ -10,6 +10,7 @@ export { default as googleAnalytics } from './googleAnalytics';
 export { default as graphqlApiDocs } from './graphqlApiDocs';
 export { default as growthBook } from './growthBook';
 export { default as marketplace } from './marketplace';
+export { default as marketplaceCategories } from './marketplaceCategories';
 export { default as mixpanel } from './mixpanel';
 export { default as nameService } from './nameService';
 export { default as restApiDocs } from './restApiDocs';
