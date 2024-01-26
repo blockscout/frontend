@@ -5,6 +5,7 @@ import type { Chain, GetBlockReturnType, GetTransactionReturnType, TransactionRe
 
 import type { Transaction } from 'types/api/transaction';
 
+import { SECOND } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
 import hexToDecimal from 'lib/hexToDecimal';
 import { publicClient } from 'lib/web3/client';
@@ -17,7 +18,7 @@ import TxInfo from './details/TxInfo';
 import type { TxQuery } from './useTxQuery';
 
 type RpcResponseType = [
-  GetTransactionReturnType<Chain, 'latest'> | null,
+  GetTransactionReturnType<Chain, 'latest'>,
   TransactionReceipt | null,
   bigint | null,
   GetBlockReturnType<Chain, false, 'latest'> | null,
@@ -35,10 +36,9 @@ const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
   const query = useQuery<RpcResponseType, unknown, Transaction | null>({
     queryKey: [ 'RPC', 'tx', { hash } ],
     queryFn: async() => {
-      const tx = await publicClient.getTransaction({ hash: hash as `0x${ string }` }).catch(() => null);
-
+      const tx = await publicClient.getTransaction({ hash: hash as `0x${ string }` });
       if (!tx) {
-        return [ null, null, null, null ];
+        throw new Error('Not found');
       }
 
       const txReceipt = await publicClient.getTransactionReceipt({ hash: hash as `0x${ string }` }).catch(() => null);
@@ -55,10 +55,6 @@ const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
     },
     select: (response) => {
       const [ tx, txReceipt, txConfirmations, block ] = response;
-
-      if (!tx) {
-        return null;
-      }
 
       const status = (() => {
         if (!txReceipt) {
@@ -99,7 +95,7 @@ const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
         raw_input: tx.input,
         gas_used: txReceipt?.gasUsed?.toString() ?? null,
         gas_limit: tx.gas.toString(),
-        confirmations: Number(txConfirmations),
+        confirmations: txConfirmations && txConfirmations > 0 ? Number(txConfirmations) : 0,
         fee: {
           value: txReceipt && gasPrice ? (txReceipt.gasUsed * gasPrice).toString() : null,
           type: 'actual',
@@ -130,7 +126,8 @@ const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
     ],
     refetchOnMount: false,
     enabled: !txQuery.isPlaceholderData,
-    retry: false,
+    retry: 2,
+    retryDelay: 5 * SECOND,
   });
 
   const hasData = Boolean(query.data);
