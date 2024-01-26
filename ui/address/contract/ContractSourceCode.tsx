@@ -191,8 +191,8 @@ const ContractSourceCode = ({ address, implementationAddress }: Props) => {
         { editorSourceTypeSelector }
         { externalLibraries }
         { diagramLink }
-        { copyToClipboard }
         { ides }
+        { copyToClipboard }
       </Flex>
       { content }
     </section>

@@ -1,4 +1,4 @@
-import { Flex, Button, chakra, Popover, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure, Image } from '@chakra-ui/react';
+import { Flex, Button, chakra, Popover, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure, Image, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
@@ -12,14 +12,17 @@ interface Props {
 
 const ContractCodeIde = ({ className, hash }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
+  const defaultIconColor = useColorModeValue('gray.600', 'gray.500');
 
   const ideLinks = React.useMemo(() => {
     return config.UI.ides.items
       .map((ide) => {
         const url = decodeURIComponent(ide.url.replace('{hash}', hash).replace('{domain}', config.app.host || ''));
-        const icon = 'icon_url' in ide ?
-          <Image boxSize={ 5 } mr={ 2 } src={ ide.icon_url } alt={ `${ ide.title } icon` }/> :
-          <IconSvg name="ABI_slim" boxSize={ 5 } color="gray.600" mr={ 2 }/>;
+        const icon = 'icon_url' in ide ? (
+          <Flex mr={ 2 } boxSize={ 5 } bgColor="whiteAlpha.900" alignItems="center" justifyContent="center">
+            <Image boxSize="18px" src={ ide.icon_url } alt={ `${ ide.title } icon` }/>
+          </Flex>
+        ) : <IconSvg name="ABI_slim" boxSize={ 5 } color={ defaultIconColor } mr={ 2 }/>;
 
         return (
           <LinkExternal key={ ide.title } href={ url } display="inline-flex" alignItems="center">
@@ -28,7 +31,7 @@ const ContractCodeIde = ({ className, hash }: Props) => {
           </LinkExternal>
         );
       });
-  }, [ hash ]);
+  }, [ defaultIconColor, hash ]);
 
   if (ideLinks.length === 0) {
     return null;
@@ -57,8 +60,8 @@ const ContractCodeIde = ({ className, hash }: Props) => {
         <PopoverBody >
           <chakra.span color="text_secondary" fontSize="xs">Redactors</chakra.span>
           <Flex
-            alignItems="center"
-            flexWrap="wrap"
+            flexDir="column"
+            alignItems="flex-start"
             columnGap={ 6 }
             rowGap={ 3 }
             mt={ 3 }

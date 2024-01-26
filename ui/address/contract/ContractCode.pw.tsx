@@ -122,6 +122,9 @@ test('verified with multiple sources', async({ mount, page }) => {
 
   await page.getByRole('button', { name: 'View external libraries' }).click();
   await expect(section).toHaveScreenshot();
+
+  await page.getByRole('button', { name: 'Open source code in IDE' }).click();
+  await expect(section).toHaveScreenshot();
 });
 
 test('verified via sourcify', async({ mount, page }) => {
