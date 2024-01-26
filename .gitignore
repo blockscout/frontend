@@ -36,7 +36,7 @@ yarn-error.log*
 .env*.local
 /configs/envs/.env.secrets
 /configs/envs/.samples
-
+/.idea
 # typescript
 *.tsbuildinfo
 
