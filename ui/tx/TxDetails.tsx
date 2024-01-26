@@ -33,7 +33,6 @@ import CurrencyValue from 'ui/shared/CurrencyValue';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
-import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import ZkEvmBatchEntityL2 from 'ui/shared/entities/block/ZkEvmBatchEntityL2';
@@ -251,7 +250,6 @@ const TxDetails = () => {
         { data.allowed_peekers && data.allowed_peekers.length > 0 && (
           <TxAllowedPeekers items={ data.allowed_peekers }/>
         ) }
-        <DetailsSponsoredItem isLoading={ isPlaceholderData }/>
 
         <DetailsInfoItemDivider/>
 

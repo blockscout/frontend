@@ -6,7 +6,6 @@ import type { TokenInfo, TokenInstance } from 'types/api/token';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
-import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import NftMedia from 'ui/shared/nft/NftMedia';
@@ -91,7 +90,6 @@ const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
       >
         <TokenInstanceMetadataInfo data={ data } isLoading={ isLoading }/>
         <DetailsInfoItemDivider/>
-        <DetailsSponsoredItem isLoading={ isLoading }/>
       </Grid>
     </>
   );
