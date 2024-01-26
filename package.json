@@ -115,7 +115,7 @@
     "@types/node": "18.11.18",
     "@types/phoenix": "^1.5.4",
     "@types/qrcode": "^1.5.0",
-    "@types/react": "^18.2.48",
+    "@types/react": "18.0.9",
     "@types/react-dom": "18.0.5",
     "@types/react-google-recaptcha": "^2.1.5",
     "@types/swagger-ui-react": "^4.11.0",
