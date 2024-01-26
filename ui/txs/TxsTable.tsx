@@ -95,9 +95,9 @@ const TxsTable = ({
               />
             )) }
           </AnimatePresence>
-          <tr ref={ cutRef }/>
         </Tbody>
       </Table>
+      <div ref={ cutRef }/>
     </AddressHighlightProvider>
   );
 };

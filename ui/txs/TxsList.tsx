@@ -42,7 +42,7 @@ const TxsList = (props: Props) => {
           isLoading={ props.isLoading }
         />
       )) }
-      <div ref={ cutRef }/>
+      <Box ref={ cutRef } h={ 0 }/>
     </Box>
   );
 };
