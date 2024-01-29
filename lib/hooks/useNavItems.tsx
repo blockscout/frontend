@@ -54,7 +54,7 @@ export default function useNavItems(): ReturnType {
        isActive: pathname === '/verified-contracts',
      };
     const ensLookup = config.features.nameService.isEnabled ? {
-      text: 'ENS lookup',
+      text: 'Name services lookup',
       nextRoute: { pathname: '/name-domains' as const },
       icon: 'ENS',
       isActive: pathname === '/name-domains' || pathname === '/name-domains/[name]',
