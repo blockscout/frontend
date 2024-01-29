@@ -1,9 +1,9 @@
-import { chakra, Icon, Input, InputGroup, InputLeftElement, InputRightElement, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { chakra, Input, InputGroup, InputLeftElement, InputRightElement, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import type { ChangeEvent } from 'react';
 import React, { useCallback, useState } from 'react';
 
-import searchIcon from 'icons/search.svg';
 import ClearButton from 'ui/shared/ClearButton';
+import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {
   onChange: (searchTerm: string) => void;
@@ -37,6 +37,7 @@ const FilterInput = ({ onChange, className, size = 'sm', placeholder, initialVal
       isLoaded={ !isLoading }
       className={ className }
       minW="250px"
+      borderRadius="base"
     >
       <InputGroup
         size={ size }
@@ -44,7 +45,7 @@ const FilterInput = ({ onChange, className, size = 'sm', placeholder, initialVal
         <InputLeftElement
           pointerEvents="none"
         >
-          <Icon as={ searchIcon } color={ iconColor }/>
+          <IconSvg name="search" color={ iconColor } boxSize={ 4 }/>
         </InputLeftElement>
 
         <Input

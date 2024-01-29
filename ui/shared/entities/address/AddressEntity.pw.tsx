@@ -1,6 +1,8 @@
+import { Box } from '@chakra-ui/react';
 import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
+import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import * as addressMock from 'mocks/address/address';
 import TestApp from 'playwright/TestApp';
 
@@ -80,6 +82,19 @@ test.describe('loading', () => {
 
     await expect(component).toHaveScreenshot();
   });
+
+});
+
+test('with ENS', async({ mount }) => {
+  const component = await mount(
+    <TestApp>
+      <AddressEntity
+        address={ addressMock.withEns }
+      />
+    </TestApp>,
+  );
+
+  await expect(component).toHaveScreenshot();
 });
 
 test('external link', async({ mount }) => {
@@ -127,9 +142,13 @@ test('customization', async({ mount }) => {
 test('hover', async({ page, mount }) => {
   const component = await mount(
     <TestApp>
-      <AddressEntity
-        address={ addressMock.withoutName }
-      />
+      <AddressHighlightProvider>
+        <Box p={ 3 }>
+          <AddressEntity
+            address={ addressMock.withoutName }
+          />
+        </Box>
+      </AddressHighlightProvider>
     </TestApp>,
   );
 

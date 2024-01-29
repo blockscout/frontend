@@ -3,7 +3,6 @@ import {
   GridItem,
   Text,
   Box,
-  Icon as ChakraIcon,
   Link,
   Spinner,
   Flex,
@@ -22,15 +21,12 @@ import { ZKEVM_L2_TX_STATUSES } from 'types/api/transaction';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import clockIcon from 'icons/clock.svg';
-import flameIcon from 'icons/flame.svg';
-import errorIcon from 'icons/status/error.svg';
-import successIcon from 'icons/status/success.svg';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
+import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
-import Icon from 'ui/shared/chakra/Icon';
+import { currencyUnits } from 'lib/units';
 import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import CurrencyValue from 'ui/shared/CurrencyValue';
@@ -42,6 +38,7 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import ZkEvmBatchEntityL2 from 'ui/shared/entities/block/ZkEvmBatchEntityL2';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import IconSvg from 'ui/shared/IconSvg';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
@@ -49,7 +46,7 @@ import TextSeparator from 'ui/shared/TextSeparator';
 import TxFeeStability from 'ui/shared/tx/TxFeeStability';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
-import TxDetailsActions from 'ui/tx/details/TxDetailsActions';
+import TxDetailsActions from 'ui/tx/details/txDetailsActions/TxDetailsActions';
 import TxDetailsFeePerGas from 'ui/tx/details/TxDetailsFeePerGas';
 import TxDetailsGasPrice from 'ui/tx/details/TxDetailsGasPrice';
 import TxDetailsOther from 'ui/tx/details/TxDetailsOther';
@@ -75,12 +72,8 @@ const TxDetails = () => {
   const executionSuccessIconColor = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
 
   if (isError) {
-    if (error?.status === 422) {
-      throw Error('Invalid tx hash', { cause: error as unknown as Error });
-    }
-
-    if (error?.status === 404) {
-      throw Error('Tx not found', { cause: error as unknown as Error });
+    if (error?.status === 422 || error?.status === 404) {
+      throwOnResourceLoadError({ isError, error, resource: 'tx' });
     }
 
     return <DataFetchAlert/>;
@@ -103,19 +96,17 @@ const TxDetails = () => {
     ...toAddress?.watchlist_names || [],
   ].map((tag) => <Tag key={ tag.label }>{ tag.display_name }</Tag>);
 
-  const actionsExist = data.actions && data.actions.length > 0;
-
   const executionSuccessBadge = toAddress?.is_contract && data.result === 'success' ? (
     <Tooltip label="Contract execution completed">
       <chakra.span display="inline-flex" ml={ 2 } mr={ 1 }>
-        <ChakraIcon as={ successIcon } boxSize={ 4 } color={ executionSuccessIconColor } cursor="pointer"/>
+        <IconSvg name="status/success" boxSize={ 4 } color={ executionSuccessIconColor } cursor="pointer"/>
       </chakra.span>
     </Tooltip>
   ) : null;
   const executionFailedBadge = toAddress?.is_contract && Boolean(data.status) && data.result !== 'success' ? (
     <Tooltip label="Error occurred during contract execution">
       <chakra.span display="inline-flex" ml={ 2 } mr={ 1 }>
-        <ChakraIcon as={ errorIcon } boxSize={ 4 } color="error" cursor="pointer"/>
+        <IconSvg name="status/error" boxSize={ 4 } color="error" cursor="pointer"/>
       </chakra.span>
     </Tooltip>
   ) : null;
@@ -157,10 +148,27 @@ const TxDetails = () => {
             </Tag>
           ) }
         </DetailsInfoItem>
-        <TxDetailsWithdrawalStatus
-          status={ data.op_withdrawal_status }
-          l1TxHash={ data.op_l1_transaction_hash }
-        />
+        { config.features.optimisticRollup.isEnabled && data.op_withdrawals && data.op_withdrawals.length > 0 && (
+          <DetailsInfoItem
+            title="Withdrawal status"
+            hint="Detailed status progress of the transaction"
+          >
+            <Flex flexDir="column" rowGap={ 2 }>
+              { data.op_withdrawals.map((withdrawal) => (
+                <Box key={ withdrawal.nonce }>
+                  <Box mb={ 2 }>
+                    <span>Nonce: </span>
+                    <chakra.span fontWeight={ 600 }>{ withdrawal.nonce }</chakra.span>
+                  </Box>
+                  <TxDetailsWithdrawalStatus
+                    status={ withdrawal.status }
+                    l1TxHash={ withdrawal.l1_transaction_hash }
+                  />
+                </Box>
+              )) }
+            </Flex>
+          </DetailsInfoItem>
+        ) }
         { data.zkevm_status && (
           <DetailsInfoItem
             title="Confirmation status"
@@ -218,7 +226,7 @@ const TxDetails = () => {
             hint="Date & time of transaction inclusion, including length of time for confirmation"
             isLoading={ isPlaceholderData }
           >
-            <Icon as={ clockIcon } boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
+            <IconSvg name="clock" boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
             <Skeleton isLoaded={ !isPlaceholderData } ml={ 2 }>{ dayjs(data.timestamp).fromNow() }</Skeleton>
             <TextSeparator/>
             <Skeleton isLoaded={ !isPlaceholderData } whiteSpace="normal">{ dayjs(data.timestamp).format('llll') }</Skeleton>
@@ -247,12 +255,7 @@ const TxDetails = () => {
 
         <DetailsInfoItemDivider/>
 
-        { actionsExist && (
-          <>
-            <TxDetailsActions actions={ data.actions }/>
-            <DetailsInfoItemDivider/>
-          </>
-        ) }
+        <TxDetailsActions hash={ data.hash } actions={ data.actions } isTxDataLoading={ isPlaceholderData }/>
 
         <DetailsInfoItem
           title="From"
@@ -354,7 +357,7 @@ const TxDetails = () => {
           >
             <CurrencyValue
               value={ data.value }
-              currency={ config.chain.currency.symbol }
+              currency={ currencyUnits.ether }
               exchangeRate={ data.exchange_rate }
               isLoading={ isPlaceholderData }
               flexWrap="wrap"
@@ -372,7 +375,7 @@ const TxDetails = () => {
             ) : (
               <CurrencyValue
                 value={ data.fee.value }
-                currency={ config.UI.views.tx.hiddenFields?.fee_currency ? '' : config.chain.currency.symbol }
+                currency={ config.UI.views.tx.hiddenFields?.fee_currency ? '' : currencyUnits.ether }
                 exchangeRate={ data.exchange_rate }
                 flexWrap="wrap"
                 isLoading={ isPlaceholderData }
@@ -398,7 +401,7 @@ const TxDetails = () => {
         { !config.UI.views.tx.hiddenFields?.gas_fees &&
           (data.base_fee_per_gas || data.max_fee_per_gas || data.max_priority_fee_per_gas) && (
           <DetailsInfoItem
-            title="Gas fees (Gwei)"
+            title={ `Gas fees (${ currencyUnits.gwei })` }
             // eslint-disable-next-line max-len
             hint={ `
               Base Fee refers to the network Base Fee at the time of the block, 
@@ -432,12 +435,12 @@ const TxDetails = () => {
         { data.tx_burnt_fee && !config.UI.views.tx.hiddenFields?.burnt_fees && !config.features.optimisticRollup.isEnabled && (
           <DetailsInfoItem
             title="Burnt fees"
-            hint={ `Amount of ${ config.chain.currency.symbol } burned for this transaction. Equals Block Base Fee per Gas * Gas Used` }
+            hint={ `Amount of ${ currencyUnits.ether } burned for this transaction. Equals Block Base Fee per Gas * Gas Used` }
           >
-            <Icon as={ flameIcon } boxSize={ 5 } color="gray.500"/>
+            <IconSvg name="flame" boxSize={ 5 } color="gray.500"/>
             <CurrencyValue
               value={ String(data.tx_burnt_fee) }
-              currency={ config.chain.currency.symbol }
+              currency={ currencyUnits.ether }
               exchangeRate={ data.exchange_rate }
               flexWrap="wrap"
               ml={ 2 }
@@ -461,8 +464,8 @@ const TxDetails = () => {
                 hint="L1 gas price"
                 isLoading={ isPlaceholderData }
               >
-                <Text mr={ 1 }>{ BigNumber(data.l1_gas_price).dividedBy(WEI).toFixed() } { config.chain.currency.symbol }</Text>
-                <Text variant="secondary">({ BigNumber(data.l1_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } Gwei)</Text>
+                <Text mr={ 1 }>{ BigNumber(data.l1_gas_price).dividedBy(WEI).toFixed() } { currencyUnits.ether }</Text>
+                <Text variant="secondary">({ BigNumber(data.l1_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })</Text>
               </DetailsInfoItem>
             ) }
             { data.l1_fee && (
@@ -474,7 +477,7 @@ const TxDetails = () => {
               >
                 <CurrencyValue
                   value={ data.l1_fee }
-                  currency={ config.chain.currency.symbol }
+                  currency={ currencyUnits.ether }
                   exchangeRate={ data.exchange_rate }
                   flexWrap="wrap"
                 />

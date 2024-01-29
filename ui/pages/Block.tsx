@@ -8,6 +8,8 @@ import type { RoutedTab } from 'ui/shared/Tabs/types';
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
+import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
+import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { BLOCK } from 'stubs/block';
@@ -24,7 +26,7 @@ import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
-import TxsContent from 'ui/txs/TxsContent';
+import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
 
 const TAB_LIST_PROPS = {
   marginBottom: 0,
@@ -72,17 +74,9 @@ const BlockPageContent = () => {
     },
   });
 
-  if (!heightOrHash) {
-    throw new Error('Block not found', { cause: { status: 404 } });
-  }
-
-  if (blockQuery.isError) {
-    throw new Error(undefined, { cause: blockQuery.error });
-  }
-
   const tabs: Array<RoutedTab> = React.useMemo(() => ([
     { id: 'index', title: 'Details', component: <BlockDetails query={ blockQuery }/> },
-    { id: 'txs', title: 'Transactions', component: <TxsContent query={ blockTxsQuery } showBlockInfo={ false } showSocketInfo={ false }/> },
+    { id: 'txs', title: 'Transactions', component: <TxsWithFrontendSorting query={ blockTxsQuery } showBlockInfo={ false } showSocketInfo={ false }/> },
     config.features.beaconChain.isEnabled && Boolean(blockQuery.data?.withdrawals_count) ?
       { id: 'withdrawals', title: 'Withdrawals', component: <BlockWithdrawals blockWithdrawalsQuery={ blockWithdrawalsQuery }/> } :
       null,
@@ -113,7 +107,21 @@ const BlockPageContent = () => {
     };
   }, [ appProps.referrer ]);
 
-  const title = blockQuery.data?.type === 'reorg' ? `Reorged block #${ blockQuery.data?.height }` : `Block #${ blockQuery.data?.height }`;
+  throwOnAbsentParamError(heightOrHash);
+  throwOnResourceLoadError(blockQuery);
+
+  const title = (() => {
+    switch (blockQuery.data?.type) {
+      case 'reorg':
+        return `Reorged block #${ blockQuery.data?.height }`;
+
+      case 'uncle':
+        return `Uncle block #${ blockQuery.data?.height }`;
+
+      default:
+        return `Block #${ blockQuery.data?.height }`;
+    }
+  })();
   const titleSecondRow = (
     <>
       { !config.UI.views.block.hiddenFields?.miner && (

@@ -40,6 +40,8 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/zkevm-l2-txn-batches': 'Root page',
   '/zkevm-l2-txn-batch/[number]': 'Regular page',
   '/404': 'Regular page',
+  '/name-domains': 'Root page',
+  '/name-domains/[name]': 'Regular page',
 
   // service routes, added only to make typescript happy
   '/login': 'Regular page',

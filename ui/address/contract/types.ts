@@ -2,7 +2,10 @@ import type { SmartContractQueryMethodRead, SmartContractMethod } from 'types/ap
 
 import type { ResourceError } from 'lib/api/resources';
 
-export type MethodFormFields = Record<string, string>;
+export type MethodFormFields = Record<string, string | Array<string>>;
+export type MethodFormFieldsFormatted = Record<string, MethodArgType>;
+
+export type MethodArgType = string | boolean | Array<MethodArgType>;
 
 export type ContractMethodReadResult = SmartContractQueryMethodRead | ResourceError;
 

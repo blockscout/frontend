@@ -5,8 +5,8 @@ import React from 'react';
 
 import type { SmartContractMethodOutput } from 'types/api/contract';
 
-import config from 'configs/app';
 import { WEI } from 'lib/consts';
+import { currencyUnits } from 'lib/units';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 function castValueToString(value: number | string | boolean | object | bigint | undefined): string {
@@ -32,17 +32,17 @@ interface Props {
 
 const ContractMethodStatic = ({ data }: Props) => {
   const [ value, setValue ] = React.useState<string>(castValueToString(data.value));
-  const [ label, setLabel ] = React.useState('WEI');
+  const [ label, setLabel ] = React.useState(currencyUnits.wei.toUpperCase());
 
   const handleCheckboxChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
     const initialValue = castValueToString(data.value);
 
     if (event.target.checked) {
       setValue(BigNumber(initialValue).div(WEI).toFixed());
-      setLabel(config.chain.currency.symbol || 'ETH');
+      setLabel(currencyUnits.ether.toUpperCase());
     } else {
       setValue(BigNumber(initialValue).toFixed());
-      setLabel('WEI');
+      setLabel(currencyUnits.wei.toUpperCase());
     }
   }, [ data.value ]);
 

@@ -37,7 +37,7 @@ test('status code 500', async({ mount }) => {
 });
 
 test('invalid tx hash', async({ mount }) => {
-  const error = { message: 'Invalid tx hash', cause: { status: 404 } } as Error;
+  const error = { message: 'Invalid tx hash', cause: { status: 422, resource: 'tx' } } as Error;
   const component = await mount(
     <TestApp>
       <AppError error={ error }/>

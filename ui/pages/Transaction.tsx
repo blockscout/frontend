@@ -8,11 +8,8 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { TX } from 'stubs/tx';
-import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import TextAd from 'ui/shared/ad/TextAd';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import EntityTags from 'ui/shared/EntityTags';
-import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
@@ -23,6 +20,7 @@ import TxInternals from 'ui/tx/TxInternals';
 import TxLogs from 'ui/tx/TxLogs';
 import TxRawTrace from 'ui/tx/TxRawTrace';
 import TxState from 'ui/tx/TxState';
+import TxSubHeading from 'ui/tx/TxSubHeading';
 import TxTokenTransfer from 'ui/tx/TxTokenTransfer';
 
 const TransactionPageContent = () => {
@@ -40,7 +38,11 @@ const TransactionPageContent = () => {
   });
 
   const tabs: Array<RoutedTab> = [
-    { id: 'index', title: config.features.suave.isEnabled && data?.wrapped ? 'Confidential compute tx details' : 'Details', component: <TxDetails/> },
+    {
+      id: 'index',
+      title: config.features.suave.isEnabled && data?.wrapped ? 'Confidential compute tx details' : 'Details',
+      component: <TxDetails/>,
+    },
     config.features.suave.isEnabled && data?.wrapped ?
       { id: 'wrapped', title: 'Regular tx details', component: <TxDetailsWrapped data={ data.wrapped }/> } :
       undefined,
@@ -73,13 +75,7 @@ const TransactionPageContent = () => {
     };
   }, [ appProps.referrer ]);
 
-  const titleSecondRow = (
-    <>
-      <TxEntity hash={ hash } noLink noCopy={ false } fontWeight={ 500 } mr={ 2 } fontFamily="heading"/>
-      { !data?.tx_tag && <AccountActionsMenu mr={{ base: 0, lg: 3 }}/> }
-      <NetworkExplorers type="tx" pathParam={ hash } ml={{ base: 3, lg: 'auto' }}/>
-    </>
-  );
+  const titleSecondRow = <TxSubHeading hash={ hash } hasTag={ Boolean(data?.tx_tag) }/>;
 
   return (
     <>

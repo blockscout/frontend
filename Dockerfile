@@ -10,7 +10,7 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY package.json yarn.lock ./
 RUN apk add git
-RUN yarn --frozen-lockfile --ignore-optional
+RUN yarn --frozen-lockfile
 
 
 ### FEATURE REPORTER
@@ -58,6 +58,7 @@ RUN ./collect_envs.sh ./docs/ENVS.md
 
 # Build app for production
 RUN yarn build
+RUN yarn svg:build-sprite
 
 
 ### FEATURE REPORTER
@@ -88,6 +89,10 @@ WORKDIR /app
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
+
+# Set the correct permission for prerender cache
+RUN mkdir .next
+RUN chown nextjs:nodejs .next
 
 COPY --from=builder /app/next.config.js ./
 COPY --from=builder /app/public ./public

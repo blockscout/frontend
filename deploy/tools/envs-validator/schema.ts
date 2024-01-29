@@ -15,6 +15,7 @@ import type { MarketplaceAppOverview } from '../../../types/client/marketplace';
 import { NAVIGATION_LINK_IDS } from '../../../types/client/navigation-items';
 import type { NavItemExternal, NavigationLinkId } from '../../../types/client/navigation-items';
 import type { BridgedTokenChain, TokenBridge } from '../../../types/client/token';
+import { PROVIDERS as TX_INTERPRETATION_PROVIDERS } from '../../../types/client/txInterpretation';
 import type { WalletType } from '../../../types/client/wallets';
 import { SUPPORTED_WALLETS } from '../../../types/client/wallets';
 import type { CustomLink, CustomLinksGroup } from '../../../types/footerLinks';
@@ -329,6 +330,7 @@ const schema = yup
     NEXT_PUBLIC_NETWORK_ID: yup.number().positive().integer().required(),
     NEXT_PUBLIC_NETWORK_RPC_URL: yup.string().test(urlTest),
     NEXT_PUBLIC_NETWORK_CURRENCY_NAME: yup.string(),
+    NEXT_PUBLIC_NETWORK_CURRENCY_WEI_NAME: yup.string(),
     NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL: yup.string(),
     NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS: yup.number().integer().positive(),
     NEXT_PUBLIC_NETWORK_GOVERNANCE_TOKEN_SYMBOL: yup.string(),
@@ -424,6 +426,7 @@ const schema = yup
     NEXT_PUBLIC_STATS_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_VISUALIZE_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_CONTRACT_INFO_API_HOST: yup.string().test(urlTest),
+    NEXT_PUBLIC_NAME_SERVICE_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_GRAPHIQL_TRANSACTION: yup.string().matches(regexp.HEX_REGEXP),
     NEXT_PUBLIC_WEB3_WALLETS: yup
       .mixed()
@@ -438,6 +441,7 @@ const schema = yup
         return isNoneSchema.isValidSync(data) || isArrayOfWalletsSchema.isValidSync(data);
       }),
     NEXT_PUBLIC_WEB3_DISABLE_ADD_TOKEN_TO_WALLET: yup.boolean(),
+    NEXT_PUBLIC_TRANSACTION_INTERPRETATION_PROVIDER: yup.string().oneOf(TX_INTERPRETATION_PROVIDERS),
     NEXT_PUBLIC_AD_TEXT_PROVIDER: yup.string<AdTextProviders>().oneOf(SUPPORTED_AD_TEXT_PROVIDERS),
     NEXT_PUBLIC_PROMOTE_BLOCKSCOUT_IN_TITLE: yup.boolean(),
     NEXT_PUBLIC_OG_DESCRIPTION: yup.string(),
@@ -449,6 +453,7 @@ const schema = yup
     NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY: yup.string(),
     NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID: yup.string(),
     NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN: yup.string(),
+    NEXT_PUBLIC_GROWTH_BOOK_CLIENT_KEY: yup.string(),
 
     // Misc
     NEXT_PUBLIC_USE_NEXT_JS_PROXY: yup.boolean(),

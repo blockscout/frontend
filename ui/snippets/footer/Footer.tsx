@@ -6,13 +6,6 @@ import React from 'react';
 import type { CustomLinksGroup } from 'types/footerLinks';
 
 import config from 'configs/app';
-import discussionsIcon from 'icons/discussions.svg';
-import donateIcon from 'icons/donate.svg';
-import editIcon from 'icons/edit.svg';
-import cannyIcon from 'icons/social/canny.svg';
-import discordIcon from 'icons/social/discord.svg';
-import gitIcon from 'icons/social/git.svg';
-import twitterIcon from 'icons/social/tweet.svg';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import useFetch from 'lib/hooks/useFetch';
@@ -39,43 +32,43 @@ const Footer = () => {
   const issueUrl = useIssueUrl(backendVersionData?.backend_version);
   const BLOCKSCOUT_LINKS = [
     {
-      icon: editIcon,
+      icon: 'edit' as const,
       iconSize: '16px',
       text: 'Submit an issue',
       url: issueUrl,
     },
     {
-      icon: cannyIcon,
+      icon: 'social/canny' as const,
       iconSize: '20px',
       text: 'Feature request',
       url: 'https://blockscout.canny.io/feature-requests',
     },
     {
-      icon: gitIcon,
+      icon: 'social/git' as const,
       iconSize: '18px',
       text: 'Contribute',
       url: 'https://github.com/blockscout/blockscout',
     },
     {
-      icon: twitterIcon,
+      icon: 'social/tweet' as const,
       iconSize: '18px',
       text: 'Twitter',
       url: 'https://www.twitter.com/blockscoutcom',
     },
     {
-      icon: discordIcon,
+      icon: 'social/discord' as const,
       iconSize: '24px',
       text: 'Discord',
       url: 'https://discord.gg/blockscout',
     },
     {
-      icon: discussionsIcon,
+      icon: 'discussions' as const,
       iconSize: '20px',
       text: 'Discussions',
       url: 'https://github.com/orgs/blockscout/discussions',
     },
     {
-      icon: donateIcon,
+      icon: 'donate' as const,
       iconSize: '20px',
       text: 'Donate',
       url: 'https://github.com/sponsors/blockscout',

@@ -9,7 +9,6 @@ import { KEY_WORDS } from '../utils';
 const MAIN_DOMAINS = [
   `*.${ config.app.host }`,
   config.app.host,
-  getFeaturePayload(config.features.sol2uml)?.api.endpoint,
 ].filter(Boolean);
 
 const getCspReportUrl = () => {
@@ -54,6 +53,7 @@ export function app(): CspDev.DirectiveDescriptor {
       getFeaturePayload(config.features.sol2uml)?.api.endpoint,
       getFeaturePayload(config.features.verifiedTokens)?.api.endpoint,
       getFeaturePayload(config.features.addressVerification)?.api.endpoint,
+      getFeaturePayload(config.features.nameService)?.api.endpoint,
 
       // chain RPC server
       config.chain.rpcUrl,
@@ -113,6 +113,7 @@ export function app(): CspDev.DirectiveDescriptor {
 
     'font-src': [
       KEY_WORDS.DATA,
+      ...MAIN_DOMAINS,
     ],
 
     'object-src': [

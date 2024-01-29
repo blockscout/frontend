@@ -38,13 +38,16 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
   - [Export data to CSV file](ENVS.md#export-data-to-csv-file)
   - [Google analytics](ENVS.md#google-analytics)
   - [Mixpanel analytics](ENVS.md#mixpanel-analytics)
+  - [GrowthBook feature flagging and A/B testing](ENVS.md#growthbook-feature-flagging-and-ab-testing)
   - [GraphQL API documentation](ENVS.md#graphql-api-documentation)
   - [REST API documentation](ENVS.md#rest-api-documentation)
   - [Marketplace](ENVS.md#marketplace)
   - [Solidity to UML diagrams](ENVS.md#solidity-to-uml-diagrams)
   - [Blockchain statistics](ENVS.md#blockchain-statistics)
   - [Web3 wallet integration](ENVS.md#web3-wallet-integration-add-token-or-network-to-the-wallet) (add token or network to the wallet)
+  - [Transaction interpretation](ENVS.md#transaction-interpretation)
   - [Verified tokens info](ENVS.md#verified-tokens-info)
+  - [Name service integration](ENVS.md#name-service-integration)
   - [Bridged tokens](ENVS.md#bridged-tokens)
   - [Safe{Core} address tags](ENVS.md#safecore-address-tags)
   - [SUAVE chain](ENVS.md#suave-chain)
@@ -74,6 +77,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
 | NEXT_PUBLIC_NETWORK_ID | `number` | Chain id, see [https://chainlist.org](https://chainlist.org) for the reference | Required | -  | `99` |
 | NEXT_PUBLIC_NETWORK_RPC_URL | `string` | Chain public RPC server url, see [https://chainlist.org](https://chainlist.org) for the reference | - | - | `https://core.poa.network` |
 | NEXT_PUBLIC_NETWORK_CURRENCY_NAME | `string` | Network currency name | - | - | `Ether` |
+| NEXT_PUBLIC_NETWORK_CURRENCY_WEI_NAME | `string` | Name of network currency subdenomination | - | `wei` | `duck` |
 | NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL | `string` | Network currency symbol | - | - | `ETH` |
 | NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS | `string` | Network currency decimals | - | `18` | `6` |
 | NEXT_PUBLIC_NETWORK_GOVERNANCE_TOKEN_SYMBOL | `string` | Network governance token symbol | - | - | `GNO` |
@@ -385,6 +389,14 @@ This feature is **enabled by default** with the `coinzilla` ads provider. To swi
 
 &nbsp;
 
+### GrowthBook feature flagging and A/B testing
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_GROWTH_BOOK_CLIENT_KEY | `string` | Client SDK key for [GrowthBook](https://www.growthbook.io/) service | true | - | `<your-secret>` |
+
+&nbsp;
+
 ### GraphQL API documentation
 
 This feature is **always enabled**, but you can configure its behavior by passing the following variables.
@@ -473,11 +485,29 @@ This feature is **enabled by default** with the `['metamask']` value. To switch 
 
 &nbsp;
 
+### Transaction interpretation
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_TRANSACTION_INTERPRETATION_PROVIDER | `blockscout` \| `none` | Transaction interpretation provider that displays human readable transaction description | - | `none` | `blockscout` |
+
+&nbsp;
+
 ### Verified tokens info
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_CONTRACT_INFO_API_HOST | `string` | Contract Info API endpoint url | Required | - | `https://contracts-info.services.blockscout.com` |
+
+&nbsp;
+
+### Name service integration
+
+This feature allows resolving blockchain addresses using human-readable domain names.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_NAME_SERVICE_API_HOST | `string` | Name Service API endpoint url | Required | - | `https://bens.services.blockscout.com` |
 
 &nbsp;
 

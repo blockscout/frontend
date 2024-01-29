@@ -1,4 +1,3 @@
-import { LightMode } from '@chakra-ui/react';
 import { test as base, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
@@ -66,6 +65,7 @@ test('search by contract name  +@mobile +@dark-mode', async({ mount, page }) => 
     status: 200,
     body: JSON.stringify([
       searchMock.contract1,
+      searchMock.address2,
     ]),
   }));
 
@@ -93,9 +93,7 @@ test('search by name homepage +@dark-mode', async({ mount, page }) => {
 
   await mount(
     <TestApp>
-      <LightMode>
-        <SearchBar isHomepage/>
-      </LightMode>
+      <SearchBar isHomepage/>
     </TestApp>,
   );
   await page.getByPlaceholder(/search/i).type('o');
@@ -151,6 +149,7 @@ test('search by block number +@mobile', async({ mount, page }) => {
     body: JSON.stringify([
       searchMock.block1,
       searchMock.block2,
+      searchMock.block3,
     ]),
   }));
 

@@ -3,11 +3,12 @@ import { Skeleton, Flex, useColorModeValue, chakra, LightMode } from '@chakra-ui
 import React from 'react';
 
 import breakpoints from 'theme/foundations/breakpoints';
-import Icon from 'ui/shared/chakra/Icon';
 import Hint from 'ui/shared/Hint';
+import type { IconName } from 'ui/shared/IconSvg';
+import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {
-  icon: React.FC<React.SVGAttributes<SVGElement>>;
+  icon: IconName;
   title: string;
   value: string;
   className?: string;
@@ -57,7 +58,7 @@ const StatsItem = ({ icon, title, value, className, tooltipLabel, url, isLoading
         href: url,
       } : {}) }
     >
-      <Icon as={ icon } boxSize={ 7 } isLoading={ isLoading } borderRadius="base"/>
+      <IconSvg name={ icon } boxSize={ 7 } isLoading={ isLoading } borderRadius="base"/>
       <Flex
         flexDirection="column"
         alignItems="start"

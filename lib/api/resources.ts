@@ -36,6 +36,15 @@ import type { ChartMarketResponse, ChartTransactionResponse } from 'types/api/ch
 import type { BackendVersionConfig } from 'types/api/configs';
 import type { SmartContract, SmartContractReadMethod, SmartContractWriteMethod, SmartContractVerificationConfig, SolidityscanReport } from 'types/api/contract';
 import type { VerifiedContractsResponse, VerifiedContractsFilters, VerifiedContractsCounters } from 'types/api/contracts';
+import type {
+  EnsAddressLookupFilters,
+  EnsAddressLookupResponse,
+  EnsDomainDetailed,
+  EnsDomainEventsResponse,
+  EnsDomainLookupFilters,
+  EnsDomainLookupResponse,
+  EnsLookupSorting,
+} from 'types/api/ens';
 import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
 import type { L2DepositsResponse, L2DepositsItem } from 'types/api/l2Deposits';
@@ -58,9 +67,17 @@ import type {
 } from 'types/api/token';
 import type { TokensResponse, TokensFilters, TokensSorting, TokenInstanceTransferResponse, TokensBridgedFilters } from 'types/api/tokens';
 import type { TokenTransferResponse, TokenTransferFilters } from 'types/api/tokenTransfer';
-import type { TransactionsResponseValidated, TransactionsResponsePending, Transaction, TransactionsResponseWatchlist } from 'types/api/transaction';
+import type {
+  TransactionsResponseValidated,
+  TransactionsResponsePending,
+  Transaction,
+  TransactionsResponseWatchlist,
+  TransactionsSorting,
+} from 'types/api/transaction';
+import type { TxInterpretationResponse } from 'types/api/txInterpretation';
 import type { TTxsFilters } from 'types/api/txsFilters';
 import type { TxStateChanges } from 'types/api/txStateChanges';
+import type { VerifiedContractsSorting } from 'types/api/verifiedContracts';
 import type { VisualizedContract } from 'types/api/visualization';
 import type { WithdrawalsResponse, WithdrawalsCounters } from 'types/api/withdrawals';
 import type { ZkEvmL2TxnBatch, ZkEvmL2TxnBatchesItem, ZkEvmL2TxnBatchesResponse, ZkEvmL2TxnBatchTxs } from 'types/api/zkEvmL2TxnBatches';
@@ -168,6 +185,34 @@ export const RESOURCES = {
     basePath: getFeaturePayload(config.features.stats)?.api.basePath,
   },
 
+  // NAME SERVICE
+  addresses_lookup: {
+    path: '/api/v1/:chainId/addresses\\:lookup',
+    pathParams: [ 'chainId' as const ],
+    endpoint: getFeaturePayload(config.features.nameService)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.nameService)?.api.basePath,
+    filterFields: [ 'address' as const, 'resolved_to' as const, 'owned_by' as const, 'only_active' as const ],
+  },
+  domain_info: {
+    path: '/api/v1/:chainId/domains/:name',
+    pathParams: [ 'chainId' as const, 'name' as const ],
+    endpoint: getFeaturePayload(config.features.nameService)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.nameService)?.api.basePath,
+  },
+  domain_events: {
+    path: '/api/v1/:chainId/domains/:name/events',
+    pathParams: [ 'chainId' as const, 'name' as const ],
+    endpoint: getFeaturePayload(config.features.nameService)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.nameService)?.api.basePath,
+  },
+  domains_lookup: {
+    path: '/api/v1/:chainId/domains\\:lookup',
+    pathParams: [ 'chainId' as const ],
+    endpoint: getFeaturePayload(config.features.nameService)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.nameService)?.api.basePath,
+    filterFields: [ 'name' as const, 'only_active' as const ],
+  },
+
   // VISUALIZATION
   visualize_sol2uml: {
     path: '/api/v1/solidity\\:visualize-contracts',
@@ -238,6 +283,10 @@ export const RESOURCES = {
     path: '/api/v2/transactions/:hash/state-changes',
     pathParams: [ 'hash' as const ],
     filterFields: [],
+  },
+  tx_interpretation: {
+    path: '/api/v2/transactions/:hash/summary',
+    pathParams: [ 'hash' as const ],
   },
   withdrawals: {
     path: '/api/v2/withdrawals',
@@ -601,7 +650,8 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'l2_output_roots' | 'l2_withdrawals' | 'l2_txn_batches' | 'l2_deposits' |
 'zkevm_l2_txn_batches' | 'zkevm_l2_txn_batch_txs' |
 'withdrawals' | 'address_withdrawals' | 'block_withdrawals' |
-'watchlist' | 'private_tags_address' | 'private_tags_tx';
+'watchlist' | 'private_tags_address' | 'private_tags_tx' |
+'domains_lookup' | 'addresses_lookup';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
@@ -644,6 +694,7 @@ Q extends 'tx_logs' ? LogsResponseTx :
 Q extends 'tx_token_transfers' ? TokenTransferResponse :
 Q extends 'tx_raw_trace' ? RawTracesResponse :
 Q extends 'tx_state_changes' ? TxStateChanges :
+Q extends 'tx_interpretation' ? TxInterpretationResponse :
 Q extends 'addresses' ? AddressesResponse :
 Q extends 'address' ? Address :
 Q extends 'address_counters' ? AddressCounters :
@@ -699,6 +750,10 @@ Q extends 'zkevm_l2_txn_batches_count' ? number :
 Q extends 'zkevm_l2_txn_batch' ? ZkEvmL2TxnBatch :
 Q extends 'zkevm_l2_txn_batch_txs' ? ZkEvmL2TxnBatchTxs :
 Q extends 'config_backend_version' ? BackendVersionConfig :
+Q extends 'addresses_lookup' ? EnsAddressLookupResponse :
+Q extends 'domain_info' ? EnsDomainDetailed :
+Q extends 'domain_events' ? EnsDomainEventsResponse :
+Q extends 'domains_lookup' ? EnsDomainLookupResponse :
 never;
 /* eslint-enable @typescript-eslint/indent */
 
@@ -718,6 +773,8 @@ Q extends 'token_inventory' ? TokenInventoryFilters :
 Q extends 'tokens' ? TokensFilters :
 Q extends 'tokens_bridged' ? TokensBridgedFilters :
 Q extends 'verified_contracts' ? VerifiedContractsFilters :
+Q extends 'addresses_lookup' ? EnsAddressLookupFilters :
+Q extends 'domains_lookup' ? EnsDomainLookupFilters :
 never;
 /* eslint-enable @typescript-eslint/indent */
 
@@ -725,5 +782,9 @@ never;
 export type PaginationSorting<Q extends PaginatedResources> =
 Q extends 'tokens' ? TokensSorting :
 Q extends 'tokens_bridged' ? TokensSorting :
+Q extends 'verified_contracts' ? VerifiedContractsSorting :
+Q extends 'address_txs' ? TransactionsSorting :
+Q extends 'addresses_lookup' ? EnsLookupSorting :
+Q extends 'domains_lookup' ? EnsLookupSorting :
 never;
 /* eslint-enable @typescript-eslint/indent */

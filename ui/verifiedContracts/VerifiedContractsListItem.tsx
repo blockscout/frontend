@@ -5,14 +5,12 @@ import React from 'react';
 import type { VerifiedContract } from 'types/api/contracts';
 
 import config from 'configs/app';
-import iconCheck from 'icons/check.svg';
-import iconCross from 'icons/cross.svg';
-import iconSuccess from 'icons/status/success.svg';
 import dayjs from 'lib/date/dayjs';
-import Icon from 'ui/shared/chakra/Icon';
+import { currencyUnits } from 'lib/units';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import HashStringShorten from 'ui/shared/HashStringShorten';
+import IconSvg from 'ui/shared/IconSvg';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
 interface Props {
@@ -40,7 +38,7 @@ const VerifiedContractsListItem = ({ data, isLoading }: Props) => {
         <CopyToClipboard text={ data.address.hash } isLoading={ isLoading }/>
       </Flex>
       <Flex columnGap={ 3 }>
-        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Balance { config.chain.currency.symbol }</Skeleton>
+        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Balance { currencyUnits.ether }</Skeleton>
         <Skeleton isLoaded={ !isLoading } color="text_secondary">
           <span>{ balance }</span>
         </Skeleton>
@@ -61,19 +59,19 @@ const VerifiedContractsListItem = ({ data, isLoading }: Props) => {
       <Flex columnGap={ 3 }>
         <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Optimization</Skeleton>
         { data.optimization_enabled ?
-          <Icon as={ iconCheck } boxSize={ 6 } color="green.500" cursor="pointer" isLoading={ isLoading }/> :
-          <Icon as={ iconCross } boxSize={ 6 } color="red.600" cursor="pointer" isLoading={ isLoading }/> }
+          <IconSvg name="check" boxSize={ 6 } color="green.500" cursor="pointer" isLoading={ isLoading }/> :
+          <IconSvg name="cross" boxSize={ 6 } color="red.600" cursor="pointer" isLoading={ isLoading }/> }
       </Flex>
       <Flex columnGap={ 3 }>
         <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Constructor args</Skeleton>
         { data.has_constructor_args ?
-          <Icon as={ iconCheck } boxSize={ 6 } color="green.500" cursor="pointer" isLoading={ isLoading }/> :
-          <Icon as={ iconCross } boxSize={ 6 } color="red.600" cursor="pointer" isLoading={ isLoading }/> }
+          <IconSvg name="check" boxSize={ 6 } color="green.500" cursor="pointer" isLoading={ isLoading }/> :
+          <IconSvg name="cross" boxSize={ 6 } color="red.600" cursor="pointer" isLoading={ isLoading }/> }
       </Flex>
       <Flex columnGap={ 3 }>
         <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Verified</Skeleton>
         <Flex alignItems="center" columnGap={ 2 }>
-          <Icon as={ iconSuccess } boxSize={ 4 } color="green.500" isLoading={ isLoading }/>
+          <IconSvg name="status/success" boxSize={ 4 } color="green.500" isLoading={ isLoading }/>
           <Skeleton isLoaded={ !isLoading } color="text_secondary">
             <span>{ dayjs(data.verified_at).fromNow() }</span>
           </Skeleton>

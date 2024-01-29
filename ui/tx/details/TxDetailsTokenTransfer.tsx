@@ -1,11 +1,10 @@
-import { Flex, Icon, chakra } from '@chakra-ui/react';
+import { Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenTransfer as TTokenTransfer, Erc20TotalPayload, Erc721TotalPayload, Erc1155TotalPayload } from 'types/api/tokenTransfer';
 
-import rightArrowIcon from 'icons/arrows/east.svg';
 import getCurrencyValue from 'lib/getCurrencyValue';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import NftTokenTransferSnippet from 'ui/tx/NftTokenTransferSnippet';
 
@@ -75,11 +74,13 @@ const TxDetailsTokenTransfer = ({ data }: Props) => {
       flexDir="row"
       w="100%"
     >
-      <Flex alignItems="center" fontWeight="500">
-        <AddressEntity address={ data.from } truncation="constant" noIcon maxW="150px"/>
-        <Icon as={ rightArrowIcon } boxSize={ 5 } mx={ 2 } color="gray.500"/>
-        <AddressEntity address={ data.to } truncation="constant" noIcon maxW="150px"/>
-      </Flex>
+      <AddressFromTo
+        from={ data.from }
+        to={ data.to }
+        truncation="constant"
+        noIcon
+        fontWeight="500"
+      />
       <Flex flexDir="column" rowGap={ 5 } w="100%" overflow="hidden" fontWeight={ 500 }>
         { content }
       </Flex>

@@ -37,7 +37,7 @@ function getPaginationParamsFromQuery(queryString: string | Array<string> | unde
 export type QueryWithPagesResult<Resource extends PaginatedResources> =
 UseQueryResult<ResourcePayload<Resource>, ResourceError<unknown>> &
 {
-  onFilterChange: (filters: PaginationFilters<Resource>) => void;
+  onFilterChange: <R extends PaginatedResources = Resource>(filters: PaginationFilters<R>) => void;
   onSortingChange: (sorting?: PaginationSorting<Resource>) => void;
   pagination: PaginationParams;
 }
@@ -61,7 +61,6 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
   const [ hasPages, setHasPages ] = React.useState(page > 1);
 
   const isMounted = React.useRef(false);
-  const canGoBackwards = React.useRef(!router.query.page);
   const queryParams = { ...pageParams[page], ...filters, ...sorting };
 
   const scrollToTop = useCallback(() => {
@@ -107,7 +106,6 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
     let nextPageQuery: typeof router.query = { ...router.query };
     if (page === 2) {
       nextPageQuery = omit(router.query, [ 'next_page_params', 'page' ]);
-      canGoBackwards.current = true;
     } else {
       nextPageQuery.next_page_params = encodeURIComponent(JSON.stringify(pageParams[page - 1]));
       nextPageQuery.page = String(page - 1);
@@ -130,7 +128,6 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
       queryClient.removeQueries({ queryKey: [ resourceName ] });
       setPage(1);
       setPageParams({});
-      canGoBackwards.current = true;
       window.setTimeout(() => {
         // FIXME after router is updated we still have inactive queries for previously visited page (e.g third), where we came from
         // so have to remove it but with some delay :)
@@ -139,12 +136,13 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
     });
   }, [ queryClient, resourceName, router, scrollToTop ]);
 
-  const onFilterChange = useCallback((newFilters: PaginationFilters<Resource> | undefined) => {
+  const onFilterChange = useCallback(<R extends PaginatedResources = Resource>(newFilters: PaginationFilters<R> | undefined) => {
     const newQuery = omit<typeof router.query>(router.query, 'next_page_params', 'page', resource.filterFields);
     if (newFilters) {
       Object.entries(newFilters).forEach(([ key, value ]) => {
-        if (value && value.length) {
-          newQuery[key] = Array.isArray(value) ? value.join(',') : (value || '');
+        const isValidValue = typeof value === 'boolean' || (value && value.length);
+        if (isValidValue) {
+          newQuery[key] = Array.isArray(value) ? value.join(',') : (String(value) || '');
         }
       });
     }
@@ -193,7 +191,7 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
     resetPage,
     hasPages,
     hasNextPage,
-    canGoBackwards: canGoBackwards.current,
+    canGoBackwards: Boolean(pageParams[page - 1]),
     isLoading: queryResult.isPlaceholderData,
     isVisible: hasPages || hasNextPage,
   };

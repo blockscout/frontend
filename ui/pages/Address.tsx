@@ -1,11 +1,10 @@
-import { Box, Flex, HStack, Icon } from '@chakra-ui/react';
+import { Box, Flex, HStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
-import iconSuccess from 'icons/status/success.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import useContractTabs from 'lib/hooks/useContractTabs';
@@ -24,12 +23,15 @@ import AddressTxs from 'ui/address/AddressTxs';
 import AddressWithdrawals from 'ui/address/AddressWithdrawals';
 import AddressFavoriteButton from 'ui/address/details/AddressFavoriteButton';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
+import AddressEnsDomains from 'ui/address/ensDomains/AddressEnsDomains';
 import SolidityscanReport from 'ui/address/SolidityscanReport';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import TextAd from 'ui/shared/ad/TextAd';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import EntityTags from 'ui/shared/EntityTags';
+import IconSvg from 'ui/shared/IconSvg';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
@@ -127,7 +129,7 @@ const AddressPageContent = () => {
             return (
               <>
                 <span>Contract</span>
-                <Icon as={ iconSuccess } boxSize="14px" color="green.500" ml={ 1 }/>
+                <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 }/>
               </>
             );
           }
@@ -172,14 +174,25 @@ const AddressPageContent = () => {
 
   const titleSecondRow = (
     <Flex alignItems="center" w="100%" columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
+      { addressQuery.data?.ens_domain_name && (
+        <EnsEntity
+          name={ addressQuery.data?.ens_domain_name }
+          fontFamily="heading"
+          fontSize="lg"
+          fontWeight={ 500 }
+          mr={ 1 }
+          maxW="300px"
+        />
+      ) }
       <AddressEntity
-        address={{ ...addressQuery.data, hash, name: '' }}
+        address={{ ...addressQuery.data, hash, name: '', ens_domain_name: '' }}
         isLoading={ isLoading }
         fontFamily="heading"
         fontSize="lg"
         fontWeight={ 500 }
         noLink
         isSafeAddress={ isSafeAddress }
+        mr={ 4 }
       />
       { !isLoading && addressQuery.data?.is_contract && addressQuery.data.token &&
         <AddressAddToWallet token={ addressQuery.data.token } variant="button"/> }
@@ -189,7 +202,9 @@ const AddressPageContent = () => {
       <AddressQrCode address={{ hash }} isLoading={ isLoading }/>
       <AccountActionsMenu isLoading={ isLoading }/>
       <HStack ml="auto" gap={ 2 }/>
-      { addressQuery.data?.is_contract && config.UI.views.address.solidityscanEnabled && <SolidityscanReport hash={ hash }/> }
+      { addressQuery.data?.is_contract && addressQuery.data?.is_verified && config.UI.views.address.solidityscanEnabled && <SolidityscanReport hash={ hash }/> }
+      { !isLoading && addressQuery.data && config.features.nameService.isEnabled &&
+        <AddressEnsDomains addressHash={ hash } mainDomainName={ addressQuery.data.ens_domain_name }/> }
       <NetworkExplorers type="address" pathParam={ hash }/>
     </Flex>
   );

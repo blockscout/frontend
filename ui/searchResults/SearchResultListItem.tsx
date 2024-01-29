@@ -1,4 +1,4 @@
-import { Flex, Grid, Icon, Image, Box, Text, Skeleton, useColorMode, Tag } from '@chakra-ui/react';
+import { chakra, Flex, Grid, Image, Box, Text, Skeleton, useColorMode, Tag } from '@chakra-ui/react';
 import React from 'react';
 import xss from 'xss';
 
@@ -6,18 +6,17 @@ import type { SearchResultItem } from 'types/api/search';
 
 import { route } from 'nextjs-routes';
 
-import labelIcon from 'icons/publictags_slim.svg';
-import iconSuccess from 'icons/status/success.svg';
-import verifiedToken from 'icons/verified_token.svg';
 import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
 import * as mixpanel from 'lib/mixpanel/index';
 import { saveToRecentKeywords } from 'lib/recentSearchKeywords';
+import { ADDRESS_REGEXP } from 'lib/validations/address';
 import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import * as TxEntity from 'ui/shared/entities/tx/TxEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
@@ -68,20 +67,21 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
                 textOverflow="ellipsis"
               />
             </LinkInternal>
-            { data.is_verified_via_admin_panel && <Icon as={ verifiedToken } boxSize={ 4 } ml={ 1 } color="green.500"/> }
+            { data.is_verified_via_admin_panel && <IconSvg name="verified_token" boxSize={ 4 } ml={ 1 } color="green.500"/> }
           </Flex>
         );
       }
 
       case 'contract':
       case 'address': {
-        const shouldHighlightHash = data.address.toLowerCase() === searchTerm.toLowerCase();
+        const shouldHighlightHash = ADDRESS_REGEXP.test(searchTerm);
         const address = {
           hash: data.address,
           is_contract: data.type === 'contract',
           is_verified: data.is_smart_contract_verified,
           name: null,
           implementation_name: null,
+          ens_domain_name: null,
         };
 
         return (
@@ -107,7 +107,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
       case 'label': {
         return (
           <Flex alignItems="center">
-            <Icon as={ labelIcon } boxSize={ 6 } mr={ 2 } color="gray.500"/>
+            <IconSvg name="publictags_slim" boxSize={ 6 } mr={ 2 } color="gray.500"/>
             <LinkInternal
               href={ route({ pathname: '/address/[hash]', query: { hash: data.address } }) }
               fontWeight={ 700 }
@@ -175,6 +175,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
               />
             </BlockEntity.Link>
             { data.block_type === 'reorg' && <Tag ml={ 2 }>Reorg</Tag> }
+            { data.block_type === 'uncle' && <Tag ml={ 2 }>Uncle</Tag> }
           </BlockEntity.Container>
         );
       }
@@ -214,12 +215,12 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
               <Text whiteSpace="nowrap" overflow="hidden">
                 <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
               </Text>
-              { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 1 }/> }
+              { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
             </Skeleton>
-            <Text overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" fontWeight={ 700 }>
+            <Skeleton isLoaded={ !isLoading } overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" fontWeight={ 700 }>
               { data.token_type === 'ERC-20' && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
               { data.token_type !== 'ERC-20' && data.total_supply && `Items ${ Number(data.total_supply).toLocaleString() }` }
-            </Text>
+            </Skeleton>
           </Grid>
         );
       }
@@ -245,7 +246,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
             <Box overflow="hidden">
               <HashStringShortenDynamic hash={ data.address }/>
             </Box>
-            { data.is_smart_contract_verified && <Icon as={ iconSuccess } color="green.500" ml={ 1 }/> }
+            { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
           </Flex>
         );
       }
@@ -266,8 +267,23 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
       }
       case 'contract':
       case 'address': {
-        const shouldHighlightHash = data.address.toLowerCase() === searchTerm.toLowerCase();
-        return data.name ? <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? xss(data.name) : highlightText(data.name, searchTerm) }}/> : null;
+        const shouldHighlightHash = ADDRESS_REGEXP.test(searchTerm);
+        const addressName = data.name || data.ens_info?.name;
+        const expiresText = data.ens_info?.expiry_date ? ` (expires ${ dayjs(data.ens_info.expiry_date).fromNow() })` : '';
+
+        return addressName ? (
+          <>
+            <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? xss(addressName) : highlightText(addressName, searchTerm) }}/>
+            { data.ens_info &&
+              (
+                data.ens_info.names_count > 1 ?
+                  <chakra.span color="text_secondary"> ({ data.ens_info.names_count > 39 ? '40+' : `+${ data.ens_info.names_count - 1 }` })</chakra.span> :
+                  <chakra.span color="text_secondary">{ expiresText }</chakra.span>
+              )
+            }
+          </>
+        ) :
+          null;
       }
 
       default:

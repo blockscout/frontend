@@ -38,7 +38,6 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
   const [ isChangedBytecodeSocket, setIsChangedBytecodeSocket ] = React.useState<boolean>();
 
   const queryClient = useQueryClient();
-  const refetchQueries = queryClient.refetchQueries;
   const addressInfo = queryClient.getQueryData<AddressInfo>(getResourceKey('address', { pathParams: { hash: addressHash } }));
 
   const { data, isPlaceholderData, isError } = useApiQuery('contract', {
@@ -55,13 +54,13 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
   }, [ ]);
 
   const handleContractWasVerifiedMessage: SocketMessage.SmartContractWasVerified['handler'] = React.useCallback(() => {
-    refetchQueries({
+    queryClient.refetchQueries({
       queryKey: getResourceKey('address', { pathParams: { hash: addressHash } }),
     });
-    refetchQueries({
+    queryClient.refetchQueries({
       queryKey: getResourceKey('contract', { pathParams: { hash: addressHash } }),
     });
-  }, [ addressHash, refetchQueries ]);
+  }, [ addressHash, queryClient ]);
 
   const enableQuery = React.useCallback(() => setIsQueryEnabled(true), []);
 

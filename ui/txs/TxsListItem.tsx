@@ -1,6 +1,5 @@
 import {
   HStack,
-  Box,
   Flex,
   Skeleton,
 } from '@chakra-ui/react';
@@ -9,15 +8,13 @@ import React from 'react';
 import type { Transaction } from 'types/api/transaction';
 
 import config from 'configs/app';
-import rightArrowIcon from 'icons/arrows/east.svg';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import { space } from 'lib/html-entities';
-import Icon from 'ui/shared/chakra/Icon';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import { currencyUnits } from 'lib/units';
+import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
-import InOutTag from 'ui/shared/InOutTag';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TxFeeStability from 'ui/shared/tx/TxFeeStability';
@@ -33,14 +30,8 @@ type Props = {
   isLoading?: boolean;
 }
 
-const TAG_WIDTH = 48;
-const ARROW_WIDTH = 24;
-
 const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeIncrement }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
-
-  const isOut = Boolean(currentAddress && currentAddress === tx.from.hash);
-  const isIn = Boolean(currentAddress && currentAddress === tx.to?.hash);
 
   const timeAgo = useTimeAgoIncrement(tx.timestamp, enableTimeIncrement);
 
@@ -91,44 +82,21 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
           />
         </Flex>
       ) }
-      <Flex alignItems="center" height={ 6 } mt={ 6 }>
-        <AddressEntity
-          address={ tx.from }
-          isLoading={ isLoading }
-          noLink={ isOut }
-          noCopy={ isOut }
-          w={ `calc((100% - ${ currentAddress ? TAG_WIDTH + 16 : ARROW_WIDTH + 8 }px)/2)` }
-          fontWeight="500"
-        />
-        { (isIn || isOut) ?
-          <InOutTag isIn={ isIn } isOut={ isOut } width="48px" mx={ 2 } isLoading={ isLoading }/> : (
-            <Box mx={ 2 }>
-              <Icon
-                as={ rightArrowIcon }
-                boxSize={ 6 }
-                color="gray.500"
-                isLoading={ isLoading }
-              />
-            </Box>
-          ) }
-        { dataTo ? (
-          <AddressEntity
-            address={ dataTo }
-            isLoading={ isLoading }
-            noLink={ isIn }
-            noCopy={ isIn }
-            w={ `calc((100% - ${ currentAddress ? TAG_WIDTH + 16 : ARROW_WIDTH + 8 }px)/2)` }
-            fontWeight="500"
-          />
-        ) : '-' }
-      </Flex>
+      <AddressFromTo
+        from={ tx.from }
+        to={ dataTo }
+        current={ currentAddress }
+        isLoading={ isLoading }
+        mt={ 6 }
+        fontWeight="500"
+      />
       { !config.UI.views.tx.hiddenFields?.value && (
         <Flex mt={ 2 } columnGap={ 2 }>
           <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre">Value</Skeleton>
           <Skeleton isLoaded={ !isLoading } display="inline-block" variant="text_secondary" whiteSpace="pre">
             { getValueWithUnit(tx.value).toFormat() }
             { space }
-            { config.chain.currency.symbol }
+            { currencyUnits.ether }
           </Skeleton>
         </Flex>
       ) }
@@ -142,7 +110,7 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
               ) : (
                 <Skeleton isLoaded={ !isLoading } display="inline-block" variant="text_secondary" whiteSpace="pre">
                   { getValueWithUnit(tx.fee.value || 0).toFormat() }
-                  { config.UI.views.tx.hiddenFields?.fee_currency ? '' : ` ${ config.chain.currency.symbol }` }
+                  { config.UI.views.tx.hiddenFields?.fee_currency ? '' : ` ${ currencyUnits.ether }` }
                 </Skeleton>
               ) }
             </>

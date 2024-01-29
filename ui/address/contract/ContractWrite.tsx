@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React from 'react';
 import { useAccount, useWalletClient, useNetwork, useSwitchNetwork } from 'wagmi';
 
@@ -5,6 +6,7 @@ import type { SmartContractWriteMethod } from 'types/api/contract';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import ContractMethodsAccordion from 'ui/address/contract/ContractMethodsAccordion';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
@@ -17,17 +19,18 @@ import ContractWriteResult from './ContractWriteResult';
 import useContractAbi from './useContractAbi';
 import { getNativeCoinValue, prepareAbi } from './utils';
 
-interface Props {
-  addressHash?: string;
-  isProxy?: boolean;
-  isCustomAbi?: boolean;
-}
-
-const ContractWrite = ({ addressHash, isProxy, isCustomAbi }: Props) => {
+const ContractWrite = () => {
   const { data: walletClient } = useWalletClient();
   const { isConnected } = useAccount();
   const { chain } = useNetwork();
   const { switchNetworkAsync } = useSwitchNetwork();
+
+  const router = useRouter();
+
+  const tab = getQueryParamString(router.query.tab);
+  const addressHash = getQueryParamString(router.query.hash);
+  const isProxy = tab === 'write_proxy';
+  const isCustomAbi = tab === 'write_custom_methods';
 
   const { data, isPending, isError } = useApiQuery(isProxy ? 'contract_methods_write_proxy' : 'contract_methods_write', {
     pathParams: { hash: addressHash },
@@ -112,7 +115,7 @@ const ContractWrite = ({ addressHash, isProxy, isCustomAbi }: Props) => {
       { isCustomAbi && <ContractCustomAbiAlert/> }
       <ContractConnectWallet/>
       { isProxy && <ContractImplementationAddress hash={ addressHash }/> }
-      <ContractMethodsAccordion data={ data } addressHash={ addressHash } renderItemContent={ renderItemContent }/>
+      <ContractMethodsAccordion data={ data } addressHash={ addressHash } renderItemContent={ renderItemContent } tab={ tab }/>
     </>
   );
 };

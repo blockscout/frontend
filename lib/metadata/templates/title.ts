@@ -33,11 +33,13 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/csv-export': 'export data to CSV',
   '/l2-deposits': 'deposits (L1 > L2)',
   '/l2-output-roots': 'output roots',
-  '/l2-txn-batches': 'Tx batches (L2 blocks)',
+  '/l2-txn-batches': 'tx batches (L2 blocks)',
   '/l2-withdrawals': 'withdrawals (L2 > L1)',
   '/zkevm-l2-txn-batches': 'zkEvm L2 Tx batches',
   '/zkevm-l2-txn-batch/[number]': 'zkEvm L2 Tx batch %number%',
   '/404': 'error - page not found',
+  '/name-domains': 'domains search and resolve',
+  '/name-domains/[name]': '%name% domain details',
 
   // service routes, added only to make typescript happy
   '/login': 'login',

@@ -1,12 +1,12 @@
-import { InputGroup, Input, InputLeftElement, Icon, chakra, useColorModeValue, forwardRef, InputRightElement } from '@chakra-ui/react';
+import { InputGroup, Input, InputLeftElement, chakra, useColorModeValue, forwardRef, InputRightElement } from '@chakra-ui/react';
 import throttle from 'lodash/throttle';
 import React from 'react';
 import type { ChangeEvent, FormEvent, FocusEvent } from 'react';
 
-import searchIcon from 'icons/search.svg';
 import { useScrollDirection } from 'lib/contexts/scrollDirection';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import ClearButton from 'ui/shared/ClearButton';
+import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   onChange: (value: string) => void;
@@ -20,25 +20,33 @@ interface Props {
 }
 
 const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHide, onClear, value }: Props, ref: React.ForwardedRef<HTMLFormElement>) => {
+  const innerRef = React.useRef<HTMLFormElement>(null);
+  React.useImperativeHandle(ref, () => innerRef.current as HTMLFormElement, []);
   const [ isSticky, setIsSticky ] = React.useState(false);
   const scrollDirection = useScrollDirection();
   const isMobile = useIsMobile();
 
   const handleScroll = React.useCallback(() => {
     const TOP_BAR_HEIGHT = 36;
-    if (window.pageYOffset >= TOP_BAR_HEIGHT) {
-      setIsSticky(true);
-    } else {
-      setIsSticky(false);
+    if (!isHomepage) {
+      if (window.scrollY >= TOP_BAR_HEIGHT) {
+        setIsSticky(true);
+      } else {
+        setIsSticky(false);
+      }
     }
-  }, [ ]);
+    const clientRect = isMobile && innerRef?.current?.getBoundingClientRect();
+    if (clientRect && clientRect.y < TOP_BAR_HEIGHT) {
+      onHide?.();
+    }
+  }, [ isMobile, onHide, isHomepage ]);
 
   const handleChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
     onChange(event.target.value);
   }, [ onChange ]);
 
   React.useEffect(() => {
-    if (!isMobile || isHomepage) {
+    if (!isMobile) {
       return;
     }
     const throttledHandleScroll = throttle(handleScroll, 300);
@@ -48,22 +56,14 @@ const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHid
     return () => {
       window.removeEventListener('scroll', throttledHandleScroll);
     };
-  // replicate componentDidMount
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ isMobile ]);
+  }, [ isMobile, handleScroll ]);
 
   const bgColor = useColorModeValue('white', 'black');
   const transformMobile = scrollDirection !== 'down' ? 'translateY(0)' : 'translateY(-100%)';
 
-  React.useEffect(() => {
-    if (isMobile && scrollDirection === 'down') {
-      onHide?.();
-    }
-  }, [ scrollDirection, onHide, isMobile ]);
-
   return (
     <chakra.form
-      ref={ ref }
+      ref={ innerRef }
       noValidate
       onSubmit={ onSubmit }
       onBlur={ onBlur }
@@ -86,7 +86,7 @@ const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHid
     >
       <InputGroup size={{ base: isHomepage ? 'md' : 'sm', lg: 'md' }}>
         <InputLeftElement w={{ base: isHomepage ? 6 : 4, lg: 6 }} ml={{ base: isHomepage ? 4 : 3, lg: 4 }} h="100%">
-          <Icon as={ searchIcon } boxSize={{ base: isHomepage ? 6 : 4, lg: 6 }} color={ useColorModeValue('blackAlpha.600', 'whiteAlpha.600') }/>
+          <IconSvg name="search" boxSize={{ base: isHomepage ? 6 : 4, lg: 6 }} color={ useColorModeValue('blackAlpha.600', 'whiteAlpha.600') }/>
         </InputLeftElement>
         <Input
           pl={{ base: isHomepage ? '50px' : '38px', lg: '50px' }}
