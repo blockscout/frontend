@@ -18,17 +18,18 @@ import { TX, TX_ZKEVM_L2 } from 'stubs/tx';
 interface Params {
   onTxStatusUpdate?: () => void;
   updateDelay?: number;
+  txHash?: string;
 }
 
 type ReturnType = UseQueryResult<Transaction, ResourceError<{ status: number }>> & {
   socketStatus: 'close' | 'error' | undefined;
 }
 
-export default function useFetchTxInfo({ onTxStatusUpdate, updateDelay }: Params | undefined = {}): ReturnType {
+export default function useFetchTxInfo({ onTxStatusUpdate, updateDelay, txHash }: Params | undefined = {}): ReturnType {
   const router = useRouter();
   const queryClient = useQueryClient();
   const [ socketStatus, setSocketStatus ] = React.useState<'close' | 'error'>();
-  const hash = getQueryParamString(router.query.hash);
+  const hash = txHash || getQueryParamString(router.query.hash);
 
   const queryResult = useApiQuery<'tx', { status: number }>('tx', {
     pathParams: { hash },

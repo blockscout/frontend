@@ -123,6 +123,8 @@
 	| "txn_batches"
 	| "unfinalized"
 	| "uniswap"
+	| "user_op_slim"
+	| "user_op"
 	| "verified_token"
 	| "verified"
 	| "verify-contract"
