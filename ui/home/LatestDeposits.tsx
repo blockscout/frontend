@@ -58,7 +58,7 @@ const LatestDeposits = () => {
   }
 
   if (data) {
-    const depositsUrl = route({ pathname: '/l2-deposits' });
+    const depositsUrl = route({ pathname: '/deposits' });
     return (
       <>
         <SocketNewItemsNotice borderBottomRadius={ 0 } url={ depositsUrl } num={ num } alert={ socketAlert } type="deposit" isLoading={ isPlaceholderData }/>

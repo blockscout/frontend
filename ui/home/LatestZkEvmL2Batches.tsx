@@ -73,7 +73,7 @@ const LatestZkEvmL2Batches = () => {
           </AnimatePresence>
         </VStack>
         <Flex justifyContent="center">
-          <LinkInternal fontSize="sm" href={ route({ pathname: '/zkevm-l2-txn-batches' }) }>View all batches</LinkInternal>
+          <LinkInternal fontSize="sm" href={ route({ pathname: '/batches' }) }>View all batches</LinkInternal>
         </Flex>
       </>
     );
