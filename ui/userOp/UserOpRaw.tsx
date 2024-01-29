@@ -5,12 +5,12 @@ import type { UserOp } from 'types/api/userOps';
 
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
+// order is taken from the ERC-4337 standard
 // eslint-disable-next-line max-len
 const KEYS_ORDER: Array<keyof UserOp['raw']> = [ 'sender', 'nonce', 'init_code', 'call_data', 'call_gas_limit', 'verification_gas_limit', 'pre_verification_gas', 'max_fee_per_gas', 'max_priority_fee_per_gas', 'paymaster_and_data', 'signature' ];
 
 interface Props {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  rawData?: Record<string, any>;
+  rawData?: UserOp['raw'];
   isLoading?: boolean;
 }
 

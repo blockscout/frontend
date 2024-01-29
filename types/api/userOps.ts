@@ -48,7 +48,6 @@ export type UserOp = {
   call_data: string;
   user_logs_start_index: number;
   user_logs_count: number;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   raw: {
     call_data: string;
     call_gas_limit: string;

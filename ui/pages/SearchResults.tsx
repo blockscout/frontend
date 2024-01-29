@@ -69,7 +69,7 @@ const SearchResultsPageContent = () => {
     event.preventDefault();
   }, [ ]);
 
-  const dataToDisplay = (data?.items || []).filter((item) => {
+  const displayedItems = (data?.items || []).filter((item) => {
     if (!config.features.userOps.isEnabled && item.type === 'user_operation') {
       return false;
     }
@@ -81,7 +81,7 @@ const SearchResultsPageContent = () => {
       return <DataFetchAlert/>;
     }
 
-    const hasData = dataToDisplay.length || (pagination.page === 1 && marketplaceApps.displayedApps.length);
+    const hasData = displayedItems.length || (pagination.page === 1 && marketplaceApps.displayedApps.length);
 
     if (!hasData) {
       return null;
@@ -97,7 +97,7 @@ const SearchResultsPageContent = () => {
               searchTerm={ debouncedSearchTerm }
             />
           )) }
-          { dataToDisplay.map((item, index) => (
+          { displayedItems.map((item, index) => (
             <SearchResultListItem
               key={ (isPlaceholderData ? 'placeholder_' : 'actual_') + index }
               data={ item }
@@ -124,7 +124,7 @@ const SearchResultsPageContent = () => {
                   searchTerm={ debouncedSearchTerm }
                 />
               )) }
-              { dataToDisplay.map((item, index) => (
+              { displayedItems.map((item, index) => (
                 <SearchResultTableItem
                   key={ (isPlaceholderData ? 'placeholder_' : 'actual_') + index }
                   data={ item }
@@ -144,7 +144,7 @@ const SearchResultsPageContent = () => {
       return null;
     }
 
-    const resultsCount = pagination.page === 1 && !data?.next_page_params ? (dataToDisplay.length || 0) + marketplaceApps.displayedApps.length : '50+';
+    const resultsCount = pagination.page === 1 && !data?.next_page_params ? (displayedItems.length || 0) + marketplaceApps.displayedApps.length : '50+';
 
     const text = isPlaceholderData && pagination.page === 1 ? (
       <Skeleton h={ 6 } w="280px" borderRadius="full" mb={ pagination.isVisible ? 0 : 6 }/>
@@ -155,7 +155,7 @@ const SearchResultsPageContent = () => {
           <chakra.span fontWeight={ 700 }>
             { resultsCount }
           </chakra.span>
-          <span> matching result{ (((dataToDisplay.length || 0) + marketplaceApps.displayedApps.length) > 1) || pagination.page > 1 ? 's' : '' } for </span>
+          <span> matching result{ (((displayedItems.length || 0) + marketplaceApps.displayedApps.length) > 1) || pagination.page > 1 ? 's' : '' } for </span>
           “<chakra.span fontWeight={ 700 }>{ debouncedSearchTerm }</chakra.span>”
         </Box>
       )

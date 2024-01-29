@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react';
 import { test as base, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
@@ -29,7 +30,9 @@ test('base view +@mobile', async({ mount, page }) => {
 
   const component = await mount(
     <TestApp>
-      <UserOps/>
+      <Box pt={{ base: '106px', lg: 0 }}>
+        <UserOps/>
+      </Box>
     </TestApp>,
   );
 

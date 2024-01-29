@@ -15,7 +15,7 @@ import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import * as TxEntity from 'ui/shared/entities/tx/TxEntity';
-import * as UserOpEtity from 'ui/shared/entities/userOp/UserOpEntity';
+import * as UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/LinkExternal';
@@ -202,22 +202,22 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
       }
       case 'user_operation': {
         return (
-          <UserOpEtity.Container>
-            <UserOpEtity.Icon/>
-            <UserOpEtity.Link
+          <UserOpEntity.Container>
+            <UserOpEntity.Icon/>
+            <UserOpEntity.Link
               isLoading={ isLoading }
               hash={ data.user_operation_hash }
               onClick={ handleLinkClick }
             >
-              <UserOpEtity.Content
+              <UserOpEntity.Content
                 asProp="mark"
                 hash={ data.user_operation_hash }
                 fontSize="sm"
                 lineHeight={ 5 }
                 fontWeight={ 700 }
               />
-            </UserOpEtity.Link>
-          </UserOpEtity.Container>
+            </UserOpEntity.Link>
+          </UserOpEntity.Container>
         );
       }
     }
