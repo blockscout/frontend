@@ -421,7 +421,7 @@ This feature is **always enabled**, but you can configure its behavior by passin
 | NEXT_PUBLIC_MARKETPLACE_CONFIG_URL | `string` | URL of configuration file (`.json` format only) which contains list of apps that will be shown on the marketplace page. See [below](#marketplace-app-configuration-properties) list of available properties for an app | Required | - | `https://example.com/marketplace_config.json` |
 | NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM | `string` | Link to form where authors can submit their dapps to the marketplace | Required | - | `https://airtable.com/shrqUAcjgGJ4jU88C` |
 | NEXT_PUBLIC_NETWORK_RPC_URL | `string` | See in [Blockchain parameters](ENVS.md#blockchain-parameters) section | Required | - | `https://core.poa.network` |
-| NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL | `string` | URL of configuration file (`.json` format only) which the list of categories to be displayed on the markeplace page in the specified order | - | - | `https://example.com/marketplace_categories.json` |
+| NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL | `string` | URL of configuration file (`.json` format only) which contains the list of categories to be displayed on the markeplace page in the specified order. If no URL is provided, then the list of categories will be compiled based on the `categories` fields from the marketplace (apps) configuration file | - | - | `https://example.com/marketplace_categories.json` |
 
 #### Marketplace app configuration properties
 
@@ -440,6 +440,8 @@ This feature is **always enabled**, but you can configure its behavior by passin
 | twitter | `string` | Displayed twitter link | - | `'https://twitter.com/blockscoutcom'` |
 | telegram | `string`  | Displayed telegram link | - | `'https://t.me/poa_network'` |
 | github | `string` | Displayed github link | - | `'https://github.com/blockscout'` |
+| internalWallet | `boolean` | `true` means that the application can automatically connect to the Blockscout wallet. | - | `true` |
+| priority | `number` | The higher the priority, the higher the app will appear in the list on the Marketplace page. | - | `7` |
 
 #### Marketplace categories ids
 

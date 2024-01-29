@@ -83,7 +83,8 @@ const marketplaceSchema = yup
       .of(marketplaceAppSchema),
     NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL: yup
       .array()
-      .json(),
+      .json()
+      .of(yup.string()),
     NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM: yup
       .string()
       .when('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', {
