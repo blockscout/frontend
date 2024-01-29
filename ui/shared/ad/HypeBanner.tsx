@@ -7,6 +7,9 @@ import { useAccount } from 'wagmi';
 import Web3ModalProvider from '../Web3ModalProvider';
 import { hypeInit } from './hypeBannerScript';
 
+const DESKTOP_BANNER_SLUG = 'b1559fc3e7';
+const MOBILE_BANNER_SLUG = '668ed80a9e';
+
 const HypeBannerContent = ({ className }: { className?: string }) => {
 
   return (
@@ -16,10 +19,10 @@ const HypeBannerContent = ({ className }: { className?: string }) => {
         strategy="afterInteractive"
       >{ hypeInit }</Script>
       <Flex className={ className } h="90px" display={{ base: 'none', lg: 'flex' }}>
-        <Banner placement="771e47c10c"/>
+        <Banner placement={ DESKTOP_BANNER_SLUG }/>
       </Flex>
       <Flex className={ className } h="50px" display={{ base: 'flex', lg: 'none' }}>
-        <Banner placement="64412f33ad"/>
+        <Banner placement={ MOBILE_BANNER_SLUG }/>
       </Flex>
     </>
   );

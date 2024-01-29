@@ -17,7 +17,6 @@ export function ad(): CspDev.DirectiveDescriptor {
       '*.slise.xyz',
 
       // hype
-      'api.hypelab-staging.com',
       'api.hypelab.com',
     ],
     'frame-src': [
