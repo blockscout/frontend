@@ -18,11 +18,9 @@ const ContractCodeIde = ({ className, hash }: Props) => {
     return config.UI.ides.items
       .map((ide) => {
         const url = decodeURIComponent(ide.url.replace('{hash}', hash).replace('{domain}', config.app.host || ''));
-        const icon = 'icon_url' in ide ? (
-          <Flex mr={ 2 } boxSize={ 5 } bgColor="whiteAlpha.900" alignItems="center" justifyContent="center">
-            <Image boxSize="18px" src={ ide.icon_url } alt={ `${ ide.title } icon` }/>
-          </Flex>
-        ) : <IconSvg name="ABI_slim" boxSize={ 5 } color={ defaultIconColor } mr={ 2 }/>;
+        const icon = 'icon_url' in ide ?
+          <Image boxSize={ 5 } mr={ 2 } src={ ide.icon_url } alt={ `${ ide.title } icon` }/> :
+          <IconSvg name="ABI_slim" boxSize={ 5 } color={ defaultIconColor } mr={ 2 }/>;
 
         return (
           <LinkExternal key={ ide.title } href={ url } display="inline-flex" alignItems="center">
