@@ -12,7 +12,7 @@ import useApiFetch from 'lib/hooks/useFetch';
 const feature = config.features.marketplace;
 const categoriesUrl = (feature.isEnabled && feature.categoriesUrl) || '';
 
-export default function useMarketplaceCategories(apps: Array<MarketplaceAppOverview>) {
+export default function useMarketplaceCategories(apps: Array<MarketplaceAppOverview> | undefined) {
   const apiFetch = useApiFetch();
   const { value: isExperiment } = useFeatureValue('marketplace_exp', true);
 
@@ -25,6 +25,10 @@ export default function useMarketplaceCategories(apps: Array<MarketplaceAppOverv
   });
 
   const categories = React.useMemo(() => {
+    if (!apps?.length) {
+      return [];
+    }
+
     let categoryNames: Array<string> = [];
     const grouped = _groudBy(apps, app => app.categories);
 
