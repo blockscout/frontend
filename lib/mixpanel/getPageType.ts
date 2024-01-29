@@ -37,6 +37,8 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/l2-withdrawals': 'Withdrawals (L2 > L1)',
   '/zkevm-l2-txn-batches': 'ZkEvm L2 Tx batches',
   '/zkevm-l2-txn-batch/[number]': 'ZkEvm L2 Tx batch details',
+  '/ops': 'User operations',
+  '/op/[hash]': 'User operation details',
   '/404': '404',
   '/name-domains': 'Domains search and resolve',
   '/name-domains/[name]': 'Domain details',

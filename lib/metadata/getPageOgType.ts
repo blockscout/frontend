@@ -39,6 +39,8 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/l2-withdrawals': 'Root page',
   '/zkevm-l2-txn-batches': 'Root page',
   '/zkevm-l2-txn-batch/[number]': 'Regular page',
+  '/ops': 'Root page',
+  '/op/[hash]': 'Regular page',
   '/404': 'Regular page',
   '/name-domains': 'Root page',
   '/name-domains/[name]': 'Regular page',

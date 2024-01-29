@@ -4,8 +4,8 @@
   "private": false,
   "homepage": "https://github.com/blockscout/frontend#readme",
   "engines": {
-    "node": "18",
-    "npm": "8"
+    "node": "20.11.0",
+    "npm": "10.2.4"
   },
   "scripts": {
     "dev": "./tools/scripts/dev.sh",
@@ -24,7 +24,7 @@
     "svg:build-sprite": "icons build -i ./icons -o ./public/icons --optimize",
     "test:pw": "./tools/scripts/pw.sh",
     "test:pw:local": "export NODE_PATH=$(pwd)/node_modules && yarn test:pw",
-    "test:pw:docker": "docker run --rm --network host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.35.1-focal ./tools/scripts/pw.docker.sh",
+    "test:pw:docker": "docker run --rm --network host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.41.1-focal ./tools/scripts/pw.docker.sh",
     "test:pw:ci": "yarn test:pw --project=$PW_PROJECT",
     "test:jest": "jest",
     "test:jest:watch": "jest --watch",
@@ -99,8 +99,8 @@
     "xss": "^1.0.14"
   },
   "devDependencies": {
-    "@playwright/experimental-ct-react": "1.35.1",
-    "@playwright/test": "^1.35.1",
+    "@playwright/experimental-ct-react": "1.41.1",
+    "@playwright/test": "1.41.1",
     "@svgr/webpack": "^6.5.1",
     "@tanstack/eslint-plugin-query": "^5.0.5",
     "@testing-library/react": "^14.0.0",
@@ -112,7 +112,7 @@
     "@types/jest": "^29.2.0",
     "@types/js-cookie": "^3.0.2",
     "@types/mixpanel-browser": "^2.38.1",
-    "@types/node": "18.11.18",
+    "@types/node": "20.11.0",
     "@types/phoenix": "^1.5.4",
     "@types/qrcode": "^1.5.0",
     "@types/react": "18.0.9",
