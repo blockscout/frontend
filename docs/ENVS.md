@@ -33,7 +33,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
   - [Banner ads](ENVS.md#banner-ads)
   - [Text ads](ENVS.md#text-ads)
   - [Beacon chain](ENVS.md#beacon-chain)
-  - [User operations](ENVS.md#user-operations)
+  - [User operations](ENVS.md#user-operations-feature-erc-4337)
   - [Optimistic rollup (L2) chain](ENVS.md#optimistic-rollup-l2-chain)
   - [ZkEvm rollup (L2) chain](NVS.md#zkevm-rollup-l2-chain)
   - [Export data to CSV file](ENVS.md#export-data-to-csv-file)
