@@ -266,7 +266,7 @@ const oldUrls = [
   },
   {
     source: '/l2-output-roots',
-    destination: '/outputs',
+    destination: '/output-roots',
   },
 ];
 

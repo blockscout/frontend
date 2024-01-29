@@ -34,7 +34,7 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/visualize/sol2uml': 'Regular page',
   '/csv-export': 'Regular page',
   '/deposits': 'Root page',
-  '/outputs': 'Root page',
+  '/output-roots': 'Root page',
   '/batches': 'Root page',
   '/batches/[number]': 'Regular page',
   '/404': 'Regular page',

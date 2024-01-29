@@ -37,7 +37,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/visualize/sol2uml': DEFAULT_TEMPLATE,
   '/csv-export': DEFAULT_TEMPLATE,
   '/deposits': DEFAULT_TEMPLATE,
-  '/outputs': DEFAULT_TEMPLATE,
+  '/output-roots': DEFAULT_TEMPLATE,
   '/batches': DEFAULT_TEMPLATE,
   '/batches/[number]': DEFAULT_TEMPLATE,
   '/404': DEFAULT_TEMPLATE,

@@ -92,7 +92,7 @@ export default function useNavItems(): ReturnType {
           // eslint-disable-next-line max-len
           { text: 'Txn batches', nextRoute: { pathname: '/batches' as const }, icon: 'txn_batches', isActive: pathname === '/batches' },
           // eslint-disable-next-line max-len
-          { text: 'Output roots', nextRoute: { pathname: '/outputs' as const }, icon: 'output_roots', isActive: pathname === '/outputs' },
+          { text: 'Output roots', nextRoute: { pathname: '/output-roots' as const }, icon: 'output_roots', isActive: pathname === '/output-roots' },
         ],
         [
           topAccounts,

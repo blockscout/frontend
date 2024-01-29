@@ -32,7 +32,7 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/visualize/sol2uml': 'Solidity UML diagram',
   '/csv-export': 'Export data to CSV file',
   '/deposits': 'Deposits (L1 > L2)',
-  '/outputs': 'Output roots',
+  '/output-roots': 'Output roots',
   '/batches': 'Tx batches (L2 blocks)',
   '/batches/[number]': 'L2 tx batch details',
   '/404': '404',
