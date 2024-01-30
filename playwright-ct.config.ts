@@ -65,6 +65,9 @@ const config: PlaywrightTestConfig = defineConfig({
           // so for now we just mock these modules in tests
           '@metamask/post-message-stream': './playwright/mocks/modules/@metamask/post-message-stream.js',
           '@metamask/providers': './playwright/mocks/modules/@metamask/providers.js',
+
+          // Mock for growthbook to test feature flags
+          'lib/growthbook/useFeatureValue': './playwright/mocks/lib/growthbook/useFeatureValue.js',
         },
       },
       define: {

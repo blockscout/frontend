@@ -4,7 +4,8 @@ import React from 'react';
 import { buildExternalAssetFilePath } from 'configs/app/utils';
 import { FEATURED_NETWORKS_MOCK } from 'mocks/config/network';
 import authFixture from 'playwright/fixtures/auth';
-import contextWithEnvs, { createContextWithEnvs } from 'playwright/fixtures/contextWithEnvs';
+import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
+import createContextWithStorage from 'playwright/fixtures/createContextWithStorage';
 import TestApp from 'playwright/TestApp';
 import * as app from 'playwright/utils/app';
 
@@ -104,7 +105,7 @@ test('submenu', async({ mount, page }) => {
 test.describe('auth', () => {
   const extendedTest = base.extend({
     context: async({ browser }, use) => {
-      const context = await createContextWithEnvs(browser, [
+      const context = await createContextWithStorage(browser, [
         { name: 'NEXT_PUBLIC_FEATURED_NETWORKS', value: FEATURED_NETWORKS_URL },
       ]);
       authFixture(context);
