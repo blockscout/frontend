@@ -12,27 +12,29 @@ import useApiFetch from 'lib/hooks/useFetch';
 const feature = config.features.marketplace;
 const categoriesUrl = (feature.isEnabled && feature.categoriesUrl) || '';
 
-export default function useMarketplaceCategories(apps: Array<MarketplaceAppOverview> | undefined) {
+const categoriesStub = Array(9).fill('Bridge').map((c, i) => c + i);
+
+export default function useMarketplaceCategories(apps: Array<MarketplaceAppOverview> | undefined, isAppsPlaceholderData: boolean) {
   const apiFetch = useApiFetch();
-  const { value: isExperiment } = useFeatureValue('marketplace_exp', true);
+  const { value: isExperiment } = useFeatureValue('marketplace_exp', false);
 
   const { isPlaceholderData, data } = useQuery<unknown, ResourceError<unknown>, Array<string>>({
     queryKey: [ 'marketplace-categories' ],
     queryFn: async() => apiFetch(categoriesUrl, undefined, { resource: 'marketplace-categories' }),
-    placeholderData: categoriesUrl ? Array(9).fill('Bridge').map((c, i) => c + i) : undefined,
+    placeholderData: categoriesUrl ? categoriesStub : undefined,
     staleTime: Infinity,
     enabled: Boolean(categoriesUrl),
   });
 
   const categories = React.useMemo(() => {
-    if (!apps?.length) {
-      return [];
+    if (isAppsPlaceholderData || isPlaceholderData) {
+      return categoriesStub.map(category => ({ name: category, count: 0 }));
     }
 
     let categoryNames: Array<string> = [];
     const grouped = _groudBy(apps, app => app.categories);
 
-    if (data?.length && isExperiment) {
+    if (data?.length && !isPlaceholderData && isExperiment) {
       categoryNames = data;
     } else {
       categoryNames = Object.keys(grouped);
@@ -41,10 +43,10 @@ export default function useMarketplaceCategories(apps: Array<MarketplaceAppOverv
     return categoryNames
       .map(category => ({ name: category, count: grouped[category]?.length || 0 }))
       .filter(c => c.count > 0);
-  }, [ apps, data, isExperiment ]);
+  }, [ apps, isAppsPlaceholderData, data, isPlaceholderData, isExperiment ]);
 
   return React.useMemo(() => ({
-    isPlaceholderData,
+    isPlaceholderData: isAppsPlaceholderData || isPlaceholderData,
     data: categories,
-  }), [ isPlaceholderData, categories ]);
+  }), [ isPlaceholderData, isAppsPlaceholderData, categories ]);
 }

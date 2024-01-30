@@ -72,7 +72,7 @@ export default function useMarketplace() {
   }, []);
 
   const { isPlaceholderData, isError, error, data, displayedApps } = useMarketplaceApps(debouncedFilterQuery, selectedCategoryId, favoriteApps);
-  const { isPlaceholderData: isCategoriesPlaceholderData, data: categories } = useMarketplaceCategories(data);
+  const { isPlaceholderData: isCategoriesPlaceholderData, data: categories } = useMarketplaceCategories(data, isPlaceholderData);
 
   React.useEffect(() => {
     setFavoriteApps(getFavoriteApps());

@@ -91,7 +91,7 @@ const Marketplace = () => {
     <>
       { isExperiment && (
         <Box marginTop={{ base: 0, lg: 8 }}>
-          { (isPlaceholderData || isCategoriesPlaceholderData) ? (
+          { (isCategoriesPlaceholderData) ? (
             <TabsSkeleton tabs={ categoryTabs }/>
           ) : (
             <TabsWithScroll
