@@ -52,11 +52,11 @@ const ChainIndicators = () => {
   }
 
   const valueTitle = (() => {
-    if (statsQueryResult.isPending) {
+    if (statsQueryResult.isPlaceholderData) {
       return <Skeleton h="48px" w="215px" mt={ 3 } mb={ 4 }/>;
     }
 
-    if (statsQueryResult.isError) {
+    if (!statsQueryResult.data) {
       return <Text mt={ 3 } mb={ 4 }>There is no data</Text>;
     }
 

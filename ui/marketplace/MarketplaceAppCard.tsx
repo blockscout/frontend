@@ -128,8 +128,7 @@ const MarketplaceAppCard = ({
           fontSize={{ base: 'sm', sm: 'lg' }}
           fontWeight="semibold"
           fontFamily="heading"
-          display={ isExperiment ? 'flex' : 'inline-block' }
-          alignItems={ isExperiment ? 'center' : undefined }
+          display="inline-block"
         >
           <MarketplaceAppCardLink
             id={ id }
@@ -148,11 +147,12 @@ const MarketplaceAppCard = ({
             >
               <IconSvg
                 name={ integrationIcon }
-                marginLeft={ 2 }
                 boxSize={ 5 }
                 color={ integrationIconColor }
                 position="relative"
                 cursor="pointer"
+                verticalAlign="middle"
+                marginBottom={ 1 }
               />
             </Tooltip>
           ) }

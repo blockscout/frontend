@@ -7,6 +7,7 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { WEI } from 'lib/consts';
+import { currencyUnits } from 'lib/units';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import GasInfoTooltipContent from 'ui/shared/GasInfoTooltipContent/GasInfoTooltipContent';
 
@@ -59,7 +60,7 @@ const Stats = () => {
       }
 
       if (data.gas_prices?.average?.price) {
-        return `${ data.gas_prices.average.price.toLocaleString() } Gwei`;
+        return `${ data.gas_prices.average.price.toLocaleString() } ${ currencyUnits.gwei }`;
       }
 
       return 'N/A';

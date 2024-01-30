@@ -57,7 +57,7 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
             w="min-content"
           />
         </Flex>
-        { to ? (
+        { to && (
           <Entity
             address={ to }
             isLoading={ isLoading }
@@ -70,7 +70,7 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
             w="min-content"
             ml="28px"
           />
-        ) : <span>-</span> }
+        ) }
       </Flex>
     );
   }
@@ -95,7 +95,7 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
         isLoading={ isLoading }
         type={ getTxCourseType(from.hash, to?.hash, current) }
       />
-      { to ? (
+      { to && (
         <Entity
           address={ to }
           isLoading={ isLoading }
@@ -107,7 +107,7 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
           maxW={ truncation === 'constant' ? undefined : `calc(50% - ${ iconSizeWithMargins / 2 }px)` }
           ml={ 3 }
         />
-      ) : <span>-</span> }
+      ) }
     </Flex>
   );
 };

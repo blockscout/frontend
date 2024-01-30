@@ -11,6 +11,7 @@ import * as yup from 'yup';
 import type { AdButlerConfig } from '../../../types/client/adButlerConfig';
 import { SUPPORTED_AD_TEXT_PROVIDERS, SUPPORTED_AD_BANNER_PROVIDERS } from '../../../types/client/adProviders';
 import type { AdTextProviders, AdBannerProviders } from '../../../types/client/adProviders';
+import type { ContractCodeIde } from '../../../types/client/contract';
 import type { MarketplaceAppOverview } from '../../../types/client/marketplace';
 import { NAVIGATION_LINK_IDS } from '../../../types/client/navigation-items';
 import type { NavItemExternal, NavigationLinkId } from '../../../types/client/navigation-items';
@@ -264,6 +265,13 @@ const networkExplorerSchema: yup.ObjectSchema<NetworkExplorer> = yup
       }),
   });
 
+const contractCodeIdeSchema: yup.ObjectSchema<ContractCodeIde> = yup
+  .object({
+    title: yup.string().required(),
+    url: yup.string().test(urlTest).required(),
+    icon_url: yup.string().test(urlTest).required(),
+  });
+
 const nftMarketplaceSchema: yup.ObjectSchema<NftMarketplaceItem> = yup
   .object({
     name: yup.string().required(),
@@ -331,6 +339,7 @@ const schema = yup
     NEXT_PUBLIC_NETWORK_ID: yup.number().positive().integer().required(),
     NEXT_PUBLIC_NETWORK_RPC_URL: yup.string().test(urlTest),
     NEXT_PUBLIC_NETWORK_CURRENCY_NAME: yup.string(),
+    NEXT_PUBLIC_NETWORK_CURRENCY_WEI_NAME: yup.string(),
     NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL: yup.string(),
     NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS: yup.number().integer().positive(),
     NEXT_PUBLIC_NETWORK_GOVERNANCE_TOKEN_SYMBOL: yup.string(),
@@ -417,6 +426,11 @@ const schema = yup
       .transform(replaceQuotes)
       .json()
       .of(networkExplorerSchema),
+    NEXT_PUBLIC_CONTRACT_CODE_IDES: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(contractCodeIdeSchema),
     NEXT_PUBLIC_HIDE_INDEXING_ALERT_BLOCKS: yup.boolean(),
     NEXT_PUBLIC_HIDE_INDEXING_ALERT_INT_TXS: yup.boolean(),
     NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: yup.string(),
@@ -447,6 +461,7 @@ const schema = yup
     NEXT_PUBLIC_OG_DESCRIPTION: yup.string(),
     NEXT_PUBLIC_OG_IMAGE_URL: yup.string().test(urlTest),
     NEXT_PUBLIC_IS_SUAVE_CHAIN: yup.boolean(),
+    NEXT_PUBLIC_HAS_USER_OPS: yup.boolean(),
 
     // 6. External services envs
     NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: yup.string(),

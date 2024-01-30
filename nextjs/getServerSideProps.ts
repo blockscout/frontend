@@ -147,3 +147,13 @@ export const accounts: GetServerSideProps<Props> = async(context) => {
 
   return base(context);
 };
+
+export const userOps: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.userOps.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};

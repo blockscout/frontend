@@ -5,6 +5,7 @@ import { MarketplaceCategory } from 'types/client/marketplace';
 import type { TabItem } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
+import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import MarketplaceAppModal from 'ui/marketplace/MarketplaceAppModal';
 import MarketplaceCategoriesMenu from 'ui/marketplace/MarketplaceCategoriesMenu';
@@ -76,9 +77,7 @@ const Marketplace = () => {
     onCategoryChange(categoryTabs[index].id);
   }, [ categoryTabs, onCategoryChange ]);
 
-  if (isError) {
-    throw new Error('Unable to get apps list', { cause: error });
-  }
+  throwOnResourceLoadError(isError && error ? { isError, error } : { isError: false, error: null });
 
   if (!feature.isEnabled) {
     return null;

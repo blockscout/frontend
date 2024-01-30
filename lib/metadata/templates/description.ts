@@ -42,6 +42,8 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/l2-withdrawals': DEFAULT_TEMPLATE,
   '/zkevm-l2-txn-batches': DEFAULT_TEMPLATE,
   '/zkevm-l2-txn-batch/[number]': DEFAULT_TEMPLATE,
+  '/ops': DEFAULT_TEMPLATE,
+  '/op/[hash]': DEFAULT_TEMPLATE,
   '/404': DEFAULT_TEMPLATE,
   '/name-domains': DEFAULT_TEMPLATE,
   '/name-domains/[name]': DEFAULT_TEMPLATE,

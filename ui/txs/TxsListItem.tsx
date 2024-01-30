@@ -11,6 +11,7 @@ import config from 'configs/app';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import { space } from 'lib/html-entities';
+import { currencyUnits } from 'lib/units';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
@@ -95,7 +96,7 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
           <Skeleton isLoaded={ !isLoading } display="inline-block" variant="text_secondary" whiteSpace="pre">
             { getValueWithUnit(tx.value).toFormat() }
             { space }
-            { config.chain.currency.symbol }
+            { currencyUnits.ether }
           </Skeleton>
         </Flex>
       ) }
@@ -109,7 +110,7 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
               ) : (
                 <Skeleton isLoaded={ !isLoading } display="inline-block" variant="text_secondary" whiteSpace="pre">
                   { getValueWithUnit(tx.fee.value || 0).toFormat() }
-                  { config.UI.views.tx.hiddenFields?.fee_currency ? '' : ` ${ config.chain.currency.symbol }` }
+                  { config.UI.views.tx.hiddenFields?.fee_currency ? '' : ` ${ currencyUnits.ether }` }
                 </Skeleton>
               ) }
             </>

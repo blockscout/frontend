@@ -1,27 +1,23 @@
 import { Grid, GridItem, Text, Link, Box, Tooltip, useColorModeValue, Skeleton } from '@chakra-ui/react';
-import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import capitalize from 'lodash/capitalize';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
-import type { Block } from 'types/api/block';
-
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import type { ResourceError } from 'lib/api/resources';
 import getBlockReward from 'lib/block/getBlockReward';
 import { GWEI, WEI, WEI_IN_GWEI, ZERO } from 'lib/consts';
-import dayjs from 'lib/date/dayjs';
 import { space } from 'lib/html-entities';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { currencyUnits } from 'lib/units';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
+import DetailsTimestamp from 'ui/shared/DetailsTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
@@ -32,8 +28,10 @@ import RawDataSnippet from 'ui/shared/RawDataSnippet';
 import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
+import type { BlockQuery } from './useBlockQuery';
+
 interface Props {
-  query: UseQueryResult<Block, ResourceError>;
+  query: BlockQuery;
 }
 
 const isRollup = config.features.optimisticRollup.isEnabled || config.features.zkEvmRollup.isEnabled;
@@ -45,7 +43,7 @@ const BlockDetails = ({ query }: Props) => {
 
   const separatorColor = useColorModeValue('gray.200', 'gray.700');
 
-  const { data, isPlaceholderData, isError, error } = query;
+  const { data, isPlaceholderData } = query;
 
   const handleCutClick = React.useCallback(() => {
     setIsExpanded((flag) => !flag);
@@ -65,18 +63,6 @@ const BlockDetails = ({ query }: Props) => {
 
     router.push({ pathname: '/block/[height_or_hash]', query: { height_or_hash: nextId } }, undefined);
   }, [ data, router ]);
-
-  if (isError) {
-    if (error?.status === 404) {
-      throw Error('Block not found', { cause: error as unknown as Error });
-    }
-
-    if (error?.status === 422) {
-      throw Error('Invalid block number', { cause: error as unknown as Error });
-    }
-
-    return <DataFetchAlert/>;
-  }
 
   if (!data) {
     return null;
@@ -178,14 +164,7 @@ const BlockDetails = ({ query }: Props) => {
         hint="Date & time at which block was produced."
         isLoading={ isPlaceholderData }
       >
-        <IconSvg name="clock" boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
-        <Skeleton isLoaded={ !isPlaceholderData } ml={ 1 }>
-          { dayjs(data.timestamp).fromNow() }
-        </Skeleton>
-        <TextSeparator/>
-        <Skeleton isLoaded={ !isPlaceholderData } whiteSpace="normal">
-          { dayjs(data.timestamp).format('llll') }
-        </Skeleton>
+        <DetailsTimestamp timestamp={ data.timestamp } isLoading={ isPlaceholderData }/>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Transactions"
@@ -237,7 +216,7 @@ const BlockDetails = ({ query }: Props) => {
           isLoading={ isPlaceholderData }
         >
           <Skeleton isLoaded={ !isPlaceholderData }>
-            { totalReward.dividedBy(WEI).toFixed() } { config.chain.currency.symbol }
+            { totalReward.dividedBy(WEI).toFixed() } { currencyUnits.ether }
           </Skeleton>
           { rewardBreakDown }
         </DetailsInfoItem>
@@ -251,7 +230,7 @@ const BlockDetails = ({ query }: Props) => {
             // is this text correct for validators?
             hint={ `Amount of distributed reward. ${ capitalize(validatorTitle) }s receive a static block reward + Tx fees + uncle fees` }
           >
-            { BigNumber(reward).dividedBy(WEI).toFixed() } { config.chain.currency.symbol }
+            { BigNumber(reward).dividedBy(WEI).toFixed() } { currencyUnits.ether }
           </DetailsInfoItem>
         ))
       }
@@ -295,7 +274,7 @@ const BlockDetails = ({ query }: Props) => {
           isLoading={ isPlaceholderData }
         >
           <Skeleton isLoaded={ !isPlaceholderData }>
-            { BigNumber(data.minimum_gas_price).dividedBy(GWEI).toFormat() } Gwei
+            { BigNumber(data.minimum_gas_price).dividedBy(GWEI).toFormat() } { currencyUnits.gwei }
           </Skeleton>
         </DetailsInfoItem>
       ) }
@@ -309,15 +288,15 @@ const BlockDetails = ({ query }: Props) => {
             <Skeleton isLoaded={ !isPlaceholderData } h="20px" maxW="380px" w="100%"/>
           ) : (
             <>
-              <Text>{ BigNumber(data.base_fee_per_gas).dividedBy(WEI).toFixed() } { config.chain.currency.symbol } </Text>
+              <Text>{ BigNumber(data.base_fee_per_gas).dividedBy(WEI).toFixed() } { currencyUnits.ether } </Text>
               <Text variant="secondary" whiteSpace="pre">
-                { space }({ BigNumber(data.base_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() } Gwei)
+                { space }({ BigNumber(data.base_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })
               </Text>
             </>
           ) }
         </DetailsInfoItem>
       ) }
-      { !config.UI.views.block.hiddenFields?.burnt_fees && (
+      { !config.UI.views.block.hiddenFields?.burnt_fees && !burntFees.isEqualTo(ZERO) && (
         <DetailsInfoItem
           title="Burnt fees"
           hint={
@@ -329,7 +308,7 @@ const BlockDetails = ({ query }: Props) => {
         >
           <IconSvg name="flame" boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
           <Skeleton isLoaded={ !isPlaceholderData } ml={ 2 }>
-            { burntFees.dividedBy(WEI).toFixed() } { config.chain.currency.symbol }
+            { burntFees.dividedBy(WEI).toFixed() } { currencyUnits.ether }
           </Skeleton>
           { !txFees.isEqualTo(ZERO) && (
             <Tooltip label="Burnt fees / Txn fees * 100%">
@@ -351,7 +330,7 @@ const BlockDetails = ({ query }: Props) => {
           isLoading={ isPlaceholderData }
         >
           <Skeleton isLoaded={ !isPlaceholderData }>
-            { BigNumber(data.priority_fee).dividedBy(WEI).toFixed() } { config.chain.currency.symbol }
+            { BigNumber(data.priority_fee).dividedBy(WEI).toFixed() } { currencyUnits.ether }
           </Skeleton>
         </DetailsInfoItem>
       ) }
@@ -446,14 +425,16 @@ const BlockDetails = ({ query }: Props) => {
               <HashStringShortenDynamic hash={ BigNumber(data.difficulty).toFormat() }/>
             </Box>
           </DetailsInfoItem>
-          <DetailsInfoItem
-            title="Total difficulty"
-            hint="Total difficulty of the chain until this block"
-          >
-            <Box whiteSpace="nowrap" overflow="hidden">
-              <HashStringShortenDynamic hash={ BigNumber(data.total_difficulty).toFormat() }/>
-            </Box>
-          </DetailsInfoItem>
+          { data.total_difficulty && (
+            <DetailsInfoItem
+              title="Total difficulty"
+              hint="Total difficulty of the chain until this block"
+            >
+              <Box whiteSpace="nowrap" overflow="hidden">
+                <HashStringShortenDynamic hash={ BigNumber(data.total_difficulty).toFormat() }/>
+              </Box>
+            </DetailsInfoItem>
+          ) }
 
           <DetailsInfoItemDivider/>
 

@@ -6,6 +6,7 @@ import type { InternalTransaction } from 'types/api/internalTransaction';
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
+import { currencyUnits } from 'lib/units';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import Tag from 'ui/shared/chakra/Tag';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
@@ -68,7 +69,7 @@ const TxInternalsListItem = ({
         w="100%"
       />
       <HStack spacing={ 3 }>
-        <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>Value { config.chain.currency.symbol }</Skeleton>
+        <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>Value { currencyUnits.ether }</Skeleton>
         <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary" minW={ 6 }>
           <span>{ BigNumber(value).div(BigNumber(10 ** config.chain.currency.decimals)).toFormat() }</span>
         </Skeleton>

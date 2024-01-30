@@ -7,6 +7,7 @@ import type { WithdrawalsItem } from 'types/api/withdrawals';
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
+import { currencyUnits } from 'lib/units';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
@@ -77,7 +78,7 @@ const WithdrawalsListItem = ({ item, isLoading, view }: Props) => {
 
           <ListItemMobileGrid.Label isLoading={ isLoading }>Value</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <CurrencyValue value={ item.amount } currency={ feature.currency.symbol } isLoading={ isLoading }/>
+            <CurrencyValue value={ item.amount } currency={ currencyUnits.ether } isLoading={ isLoading }/>
           </ListItemMobileGrid.Value>
         </>
       ) }

@@ -8,6 +8,7 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
+import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ENS_DOMAIN } from 'stubs/ENS';
@@ -42,9 +43,7 @@ const NameDomain = () => {
 
   const tabIndex = useTabIndexFromQuery(tabs);
 
-  if (infoQuery.isError) {
-    throw new Error(undefined, { cause: infoQuery.error });
-  }
+  throwOnResourceLoadError(infoQuery);
 
   const isLoading = infoQuery.isPlaceholderData;
 
@@ -81,7 +80,7 @@ const NameDomain = () => {
   return (
     <>
       <TextAd mb={ 6 }/>
-      <PageTitle title="ENS Domain details" secondRow={ titleSecondRow }/>
+      <PageTitle title="Name details" secondRow={ titleSecondRow }/>
       { infoQuery.isPlaceholderData ? (
         <>
           <TabsSkeleton tabs={ tabs } mt={ 6 }/>

@@ -13,6 +13,7 @@ import type { Transaction } from 'types/api/transaction';
 import config from 'configs/app';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
+import { currencyUnits } from 'lib/units';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
@@ -88,7 +89,7 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
       <Flex flexDir="column">
         { !config.UI.views.tx.hiddenFields?.value && (
           <Skeleton isLoaded={ !isLoading } my="3px">
-            <Text as="span" whiteSpace="pre">{ config.chain.currency.symbol } </Text>
+            <Text as="span" whiteSpace="pre">{ currencyUnits.ether } </Text>
             <Text as="span" variant="secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() }</Text>
           </Skeleton>
         ) }

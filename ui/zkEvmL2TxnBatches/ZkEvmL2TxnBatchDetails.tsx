@@ -9,17 +9,16 @@ import type { ZkEvmL2TxnBatch } from 'types/api/zkEvmL2TxnBatches';
 import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'lib/api/resources';
-import dayjs from 'lib/date/dayjs';
+import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
+import DetailsTimestamp from 'ui/shared/DetailsTimestamp';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/LinkInternal';
 import PrevNext from 'ui/shared/PrevNext';
-import TextSeparator from 'ui/shared/TextSeparator';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 
 interface Props {
@@ -43,12 +42,8 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
   }, [ data, router ]);
 
   if (isError) {
-    if (error?.status === 404) {
-      throw Error('Tx Batch not found', { cause: error as unknown as Error });
-    }
-
-    if (error?.status === 422) {
-      throw Error('Invalid tx batch number', { cause: error as unknown as Error });
+    if (error?.status === 404 || error?.status === 422) {
+      throwOnResourceLoadError({ isError, error });
     }
 
     return <DataFetchAlert/>;
@@ -91,14 +86,7 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
         title="Timestamp"
         isLoading={ isPlaceholderData }
       >
-        <IconSvg name="clock" boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
-        <Skeleton isLoaded={ !isPlaceholderData } ml={ 1 }>
-          { dayjs(data.timestamp).fromNow() }
-        </Skeleton>
-        <TextSeparator/>
-        <Skeleton isLoaded={ !isPlaceholderData } whiteSpace="normal">
-          { dayjs(data.timestamp).format('llll') }
-        </Skeleton>
+        <DetailsTimestamp timestamp={ data.timestamp } isLoading={ isPlaceholderData }/>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Verify tx hash"

@@ -6,6 +6,8 @@ import type { Transaction, TransactionsSortingField, TransactionsSortingValue } 
 
 import config from 'configs/app';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
+import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
+import { currencyUnits } from 'lib/units';
 import IconSvg from 'ui/shared/IconSvg';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import TheadSticky from 'ui/shared/TheadSticky';
@@ -39,6 +41,8 @@ const TxsTable = ({
   enableTimeIncrement,
   isLoading,
 }: Props) => {
+  const { cutRef, renderedItemsNum } = useLazyRenderedList(txs, !isLoading);
+
   return (
     <AddressHighlightProvider>
       <Table variant="simple" minWidth="950px" size="xs">
@@ -55,7 +59,7 @@ const TxsTable = ({
                 <Link onClick={ sort('value') } display="flex" justifyContent="end">
                   { sorting === 'value-asc' && <IconSvg boxSize={ 5 } name="arrows/east" transform="rotate(-90deg)"/> }
                   { sorting === 'value-desc' && <IconSvg boxSize={ 5 } name="arrows/east" transform="rotate(90deg)"/> }
-                  { `Value ${ config.chain.currency.symbol }` }
+                  { `Value ${ currencyUnits.ether }` }
                 </Link>
               </Th>
             ) }
@@ -64,7 +68,7 @@ const TxsTable = ({
                 <Link onClick={ sort('fee') } display="flex" justifyContent="end">
                   { sorting === 'fee-asc' && <IconSvg boxSize={ 5 } name="arrows/east" transform="rotate(-90deg)"/> }
                   { sorting === 'fee-desc' && <IconSvg boxSize={ 5 } name="arrows/east" transform="rotate(90deg)"/> }
-                  { `Fee${ config.UI.views.tx.hiddenFields?.fee_currency ? '' : ` ${ config.chain.currency.symbol }` }` }
+                  { `Fee${ config.UI.views.tx.hiddenFields?.fee_currency ? '' : ` ${ currencyUnits.ether }` }` }
                 </Link>
               </Th>
             ) }
@@ -80,7 +84,7 @@ const TxsTable = ({
             />
           ) }
           <AnimatePresence initial={ false }>
-            { txs.map((item, index) => (
+            { txs.slice(0, renderedItemsNum).map((item, index) => (
               <TxsTableItem
                 key={ item.hash + (isLoading ? index : '') }
                 tx={ item }
@@ -93,6 +97,7 @@ const TxsTable = ({
           </AnimatePresence>
         </Tbody>
       </Table>
+      <div ref={ cutRef }/>
     </AddressHighlightProvider>
   );
 };
