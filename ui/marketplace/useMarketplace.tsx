@@ -1,4 +1,3 @@
-import _groudBy from 'lodash/groupBy';
 import _pickBy from 'lodash/pickBy';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -10,6 +9,7 @@ import * as mixpanel from 'lib/mixpanel/index';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
 import useMarketplaceApps from './useMarketplaceApps';
+import useMarketplaceCategories from './useMarketplaceCategories';
 
 const favoriteAppsLocalStorageKey = 'favoriteApps';
 
@@ -72,15 +72,7 @@ export default function useMarketplace() {
   }, []);
 
   const { isPlaceholderData, isError, error, data, displayedApps } = useMarketplaceApps(debouncedFilterQuery, selectedCategoryId, favoriteApps);
-
-  const categories = React.useMemo(() => {
-    const grouped = _groudBy(data, app => app.categories);
-    return Object.keys(grouped).map(category => ({
-      name: category,
-      count: grouped[category].length,
-    }));
-    // return _unique(data?.map(app => app.categories).flat()) || [];
-  }, [ data ]);
+  const { isPlaceholderData: isCategoriesPlaceholderData, data: categories } = useMarketplaceCategories(data, isPlaceholderData);
 
   React.useEffect(() => {
     setFavoriteApps(getFavoriteApps());
@@ -134,6 +126,7 @@ export default function useMarketplace() {
     isDisclaimerModalOpen,
     showDisclaimer,
     appsTotal: data?.length || 0,
+    isCategoriesPlaceholderData,
   }), [
     selectedCategoryId,
     categories,
@@ -152,5 +145,6 @@ export default function useMarketplace() {
     isDisclaimerModalOpen,
     showDisclaimer,
     data?.length,
+    isCategoriesPlaceholderData,
   ]);
 }

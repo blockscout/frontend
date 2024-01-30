@@ -39,6 +39,7 @@ const Marketplace = () => {
     isDisclaimerModalOpen,
     showDisclaimer,
     appsTotal,
+    isCategoriesPlaceholderData,
   } = useMarketplace();
 
   const { value: isExperiment } = useFeatureValue('marketplace_exp', false);
@@ -89,7 +90,7 @@ const Marketplace = () => {
     <>
       { isExperiment && (
         <Box marginTop={{ base: 0, lg: 8 }}>
-          { isPlaceholderData ? (
+          { (isCategoriesPlaceholderData) ? (
             <TabsSkeleton tabs={ categoryTabs }/>
           ) : (
             <TabsWithScroll
