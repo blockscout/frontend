@@ -27,7 +27,7 @@ const TokenProjectInfo = ({ data }: Props) => {
   if (isMobile) {
     return (
       <>
-        <TriggerButton isOpen={ isOpen } onClick={ onToggle }/>
+        <TriggerButton onClick={ onToggle }/>
         <Modal isOpen={ isOpen } onClose={ onClose } size="full">
           <ModalContent>
             <ModalCloseButton/>
@@ -41,7 +41,7 @@ const TokenProjectInfo = ({ data }: Props) => {
   return (
     <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
       <PopoverTrigger>
-        <TriggerButton isOpen={ isOpen } onClick={ onToggle }/>
+        <TriggerButton onClick={ onToggle }/>
       </PopoverTrigger>
       <PopoverContent w="500px">
         <PopoverBody px={ 6 } py={ 5 }>

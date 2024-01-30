@@ -129,7 +129,8 @@ function castValue(value: string, type: SmartContractMethodArgType) {
   }
 
   const isNestedArray = (type.match(/\[/g) || []).length > 1;
-  if (isNestedArray) {
+  const isNestedTuple = type.includes('tuple');
+  if (isNestedArray || isNestedTuple) {
     return parseArrayValue(value) || value;
   }
 

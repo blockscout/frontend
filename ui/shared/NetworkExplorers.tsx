@@ -1,4 +1,4 @@
-import { Flex, Button, chakra, Popover, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure } from '@chakra-ui/react';
+import { Flex, Button, chakra, Popover, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure, Show, Hide } from '@chakra-ui/react';
 import React from 'react';
 
 import type { NetworkExplorer as TNetworkExplorer } from 'types/networks';
@@ -46,7 +46,12 @@ const NetworkExplorers = ({ className, type, pathParam }: Props) => {
           flexShrink={ 0 }
         >
           <IconSvg name="explorer" boxSize={ 5 }/>
-          <IconSvg name="arrows/east-mini" transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 }/>
+          <Show above="xl">
+            <chakra.span ml={ 1 }>{ explorersLinks.length } Explorer{ explorersLinks.length > 1 ? 's' : '' }</chakra.span>
+          </Show>
+          <Hide above="xl">
+            <chakra.span ml={ 1 }>{ explorersLinks.length }</chakra.span>
+          </Hide>
         </Button>
       </PopoverTrigger>
       <PopoverContent w="240px">

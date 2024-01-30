@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { TokenType } from 'types/api/token';
+import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
 import { apos } from 'lib/html-entities';
@@ -25,9 +26,10 @@ const getTokenFilterValue = (getFilterValuesFromQuery<TokenType>).bind(null, TOK
 
 interface Props {
   txQuery: TxQuery;
+  tokenTransferFilter?: (data: TokenTransfer) => boolean;
 }
 
-const TxTokenTransfer = ({ txQuery }: Props) => {
+const TxTokenTransfer = ({ txQuery, tokenTransferFilter }: Props) => {
   const router = useRouter();
 
   const [ typeFilter, setTypeFilter ] = React.useState<Array<TokenType>>(getTokenFilterValue(router.query.type) || []);
@@ -58,13 +60,23 @@ const TxTokenTransfer = ({ txQuery }: Props) => {
   const numActiveFilters = typeFilter.length;
   const isActionBarHidden = !numActiveFilters && !tokenTransferQuery.data?.items.length;
 
+  let items: Array<TokenTransfer> = [];
+
+  if (tokenTransferQuery.data?.items) {
+    if (tokenTransferQuery.isPlaceholderData) {
+      items = tokenTransferQuery.data?.items;
+    } else {
+      items = tokenTransferFilter ? tokenTransferQuery.data.items.filter(tokenTransferFilter) : tokenTransferQuery.data.items;
+    }
+  }
+
   const content = tokenTransferQuery.data?.items ? (
     <>
       <Hide below="lg" ssr={ false }>
-        <TokenTransferTable data={ tokenTransferQuery.data?.items } top={ isActionBarHidden ? 0 : 80 } isLoading={ tokenTransferQuery.isPlaceholderData }/>
+        <TokenTransferTable data={ items } top={ isActionBarHidden ? 0 : 80 } isLoading={ tokenTransferQuery.isPlaceholderData }/>
       </Hide>
       <Show below="lg" ssr={ false }>
-        <TokenTransferList data={ tokenTransferQuery.data?.items } isLoading={ tokenTransferQuery.isPlaceholderData }/>
+        <TokenTransferList data={ items } isLoading={ tokenTransferQuery.isPlaceholderData }/>
       </Show>
     </>
   ) : null;
@@ -84,7 +96,7 @@ const TxTokenTransfer = ({ txQuery }: Props) => {
   return (
     <DataListDisplay
       isError={ txQuery.isError || tokenTransferQuery.isError }
-      items={ tokenTransferQuery.data?.items }
+      items={ items }
       emptyText="There are no token transfers."
       filterProps={{
         emptyFilteredText: `Couldn${ apos }t find any token transfer that matches your query.`,
