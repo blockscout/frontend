@@ -26,7 +26,7 @@ const UserOpsContent = ({ query, showTx = true, showSender = true }: Props) => {
       <Hide below="lg" ssr={ false }>
         <UserOpsTable
           items={ query.data.items }
-          top={ query.pagination.isVisible ? 0 : 80 }
+          top={ query.pagination.isVisible ? 80 : 0 }
           isLoading={ query.isPlaceholderData }
           showTx={ showTx }
           showSender={ showSender }
