@@ -114,7 +114,7 @@ export default function useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab
     }
   }, [ rpcQuery.data, rpcQuery.isPlaceholderData ]);
 
-  const useRpcQuery = Boolean((
+  const isRpcQuery = Boolean((
     blockQuery.isDegradedData ||
     ((apiQuery.isError || apiQuery.isPlaceholderData) && apiQuery.errorUpdateCount > 0)
   ) && rpcQuery.data);
@@ -128,10 +128,10 @@ export default function useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab
     };
   }, [ rpcQuery ]);
 
-  const query = useRpcQuery ? rpcQueryWithPages : apiQuery;
+  const query = isRpcQuery ? rpcQueryWithPages : apiQuery;
 
   return {
     ...query,
-    isDegradedData: useRpcQuery,
+    isDegradedData: isRpcQuery,
   };
 }
