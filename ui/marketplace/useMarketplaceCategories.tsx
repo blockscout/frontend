@@ -8,11 +8,10 @@ import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import useApiFetch from 'lib/hooks/useFetch';
+import { CATEGORIES } from 'stubs/marketplace';
 
 const feature = config.features.marketplace;
 const categoriesUrl = (feature.isEnabled && feature.categoriesUrl) || '';
-
-const categoriesStub = Array(9).fill('Bridge').map((c, i) => c + i);
 
 export default function useMarketplaceCategories(apps: Array<MarketplaceAppOverview> | undefined, isAppsPlaceholderData: boolean) {
   const apiFetch = useApiFetch();
@@ -21,14 +20,14 @@ export default function useMarketplaceCategories(apps: Array<MarketplaceAppOverv
   const { isPlaceholderData, data } = useQuery<unknown, ResourceError<unknown>, Array<string>>({
     queryKey: [ 'marketplace-categories' ],
     queryFn: async() => apiFetch(categoriesUrl, undefined, { resource: 'marketplace-categories' }),
-    placeholderData: categoriesUrl ? categoriesStub : undefined,
+    placeholderData: categoriesUrl ? CATEGORIES : undefined,
     staleTime: Infinity,
     enabled: Boolean(categoriesUrl),
   });
 
   const categories = React.useMemo(() => {
     if (isAppsPlaceholderData || isPlaceholderData) {
-      return categoriesStub.map(category => ({ name: category, count: 0 }));
+      return CATEGORIES.map(category => ({ name: category, count: 0 }));
     }
 
     let categoryNames: Array<string> = [];

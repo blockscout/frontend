@@ -15,3 +15,5 @@ export const MARKETPLACE_APP: MarketplaceAppOverview = {
   external: true,
   url: 'https://example.com',
 };
+
+export const CATEGORIES: Array<string> = Array(9).fill('Bridge').map((c, i) => c + i);
