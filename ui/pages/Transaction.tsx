@@ -50,7 +50,9 @@ const TransactionPageContent = () => {
         { id: 'wrapped', title: 'Regular tx details', component: <TxDetailsWrapped data={ data.wrapped }/> } :
         undefined,
       { id: 'token_transfers', title: 'Token transfers', component: <TxTokenTransfer txQuery={ txQuery }/> },
-      config.features.userOps.isEnabled ? { id: 'user_ops', title: 'User operations', component: <TxUserOps/> } : undefined,
+      config.features.userOps.isEnabled ?
+        { id: 'user_ops', title: 'User operations', component: <TxUserOps txQuery={ txQuery }/> } :
+        undefined,
       { id: 'internal', title: 'Internal txns', component: <TxInternals txQuery={ txQuery }/> },
       { id: 'logs', title: 'Logs', component: <TxLogs txQuery={ txQuery }/> },
       { id: 'state', title: 'State', component: <TxState txQuery={ txQuery }/> },

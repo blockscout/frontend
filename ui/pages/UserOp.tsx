@@ -8,6 +8,8 @@ import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
+import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
+import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { USER_OP } from 'stubs/userOps';
 import TextAd from 'ui/shared/ad/TextAd';
@@ -18,6 +20,7 @@ import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import useTabIndexFromQuery from 'ui/shared/Tabs/useTabIndexFromQuery';
 import TxLogs from 'ui/tx/TxLogs';
 import TxTokenTransfer from 'ui/tx/TxTokenTransfer';
+import useTxQuery from 'ui/tx/useTxQuery';
 import UserOpDetails from 'ui/userOp/UserOpDetails';
 import UserOpRaw from 'ui/userOp/UserOpRaw';
 
@@ -27,12 +30,14 @@ const UserOp = () => {
   const hash = getQueryParamString(router.query.hash);
 
   const userOpQuery = useApiQuery('user_op', {
-    pathParams: { hash: hash },
+    pathParams: { hash },
     queryOptions: {
       enabled: Boolean(hash),
       placeholderData: USER_OP,
     },
   });
+
+  const txQuery = useTxQuery({ hash: userOpQuery.data?.transaction_hash, isEnabled: !userOpQuery.isPlaceholderData });
 
   const filterTokenTransfersByLogIndex = React.useCallback((tt: TokenTransfer) => {
     if (!userOpQuery.data) {
@@ -61,21 +66,13 @@ const UserOp = () => {
     {
       id: 'token_transfers',
       title: 'Token transfers',
-      component: <TxTokenTransfer txHash={ userOpQuery.data?.transaction_hash } tokenTransferFilter={ filterTokenTransfersByLogIndex }/>,
+      component: <TxTokenTransfer txQuery={ txQuery } tokenTransferFilter={ filterTokenTransfersByLogIndex }/>,
     },
-    { id: 'logs', title: 'Logs', component: <TxLogs txHash={ userOpQuery.data?.transaction_hash } logsFilter={ filterLogsByLogIndex }/> },
+    { id: 'logs', title: 'Logs', component: <TxLogs txQuery={ txQuery } logsFilter={ filterLogsByLogIndex }/> },
     { id: 'raw', title: 'Raw', component: <UserOpRaw rawData={ userOpQuery.data?.raw } isLoading={ userOpQuery.isPlaceholderData }/> },
-  ]), [ userOpQuery, filterTokenTransfersByLogIndex, filterLogsByLogIndex ]);
+  ]), [ userOpQuery, txQuery, filterTokenTransfersByLogIndex, filterLogsByLogIndex ]);
 
   const tabIndex = useTabIndexFromQuery(tabs);
-
-  if (!hash) {
-    throw new Error('User operation not found', { cause: { status: 404 } });
-  }
-
-  if (userOpQuery.isError) {
-    throw new Error(undefined, { cause: userOpQuery.error });
-  }
 
   const backLink = React.useMemo(() => {
     const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/ops');
@@ -89,6 +86,9 @@ const UserOp = () => {
       url: appProps.referrer,
     };
   }, [ appProps.referrer ]);
+
+  throwOnAbsentParamError(hash);
+  throwOnResourceLoadError(userOpQuery);
 
   const titleSecondRow = <UserOpEntity hash={ hash } noLink noCopy={ false } fontWeight={ 500 } fontFamily="heading"/>;
 
