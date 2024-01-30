@@ -96,7 +96,7 @@ Type extends EventTypes.PAGE_WIDGET ? (
   }
 ) :
 Type extends EventTypes.TX_INTERPRETATION_INTERACTION ? {
-  'Type': 'Address click' | 'Token click';
+  'Type': 'Address click' | 'Token click' | 'Domain click';
 } :
 Type extends EventTypes.EXPERIMENT_STARTED ? {
   'Experiment name': string;
