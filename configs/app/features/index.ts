@@ -21,4 +21,3 @@ export { default as txInterpretation } from './txInterpretation';
 export { default as web3Wallet } from './web3Wallet';
 export { default as verifiedTokens } from './verifiedTokens';
 export { default as zkEvmRollup } from './zkEvmRollup';
-export { default as noves } from './noves';

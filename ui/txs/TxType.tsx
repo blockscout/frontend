@@ -57,7 +57,11 @@ const TxType = ({ types, isLoading, translateLabel }: Props) => {
 
   if (translateLabel) {
     if (!filteredTypes.includes(translateLabel)) {
-      label = translateLabel;
+      return (
+        <Tag colorScheme={ colorScheme } isLoading={ isLoading }>
+          { translateLabel }
+        </Tag>
+      );
     }
   }
 

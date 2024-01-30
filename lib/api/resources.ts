@@ -43,6 +43,7 @@ import type { L2OutputRootsResponse } from 'types/api/l2OutputRoots';
 import type { L2TxnBatchesResponse } from 'types/api/l2TxnBatches';
 import type { L2WithdrawalsResponse } from 'types/api/l2Withdrawals';
 import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
+import type { NovesAccountHistoryResponse, NovesDescribeResponse, NovesResponseData } from 'types/api/noves';
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import type { SearchRedirectResult, SearchResult, SearchResultFilters, SearchResultItem } from 'types/api/search';
 import type { Counters, StatsCharts, StatsChart, HomeStats } from 'types/api/stats';
@@ -542,6 +543,21 @@ export const RESOURCES = {
     filterFields: [],
   },
 
+  // NOVES-FI
+  noves_transaction: {
+    path: '/api/v2/proxy/noves-fi/transactions/:hash',
+    pathParams: [ 'hash' as const ],
+  },
+  noves_address_history: {
+    path: '/api/v2/proxy/noves-fi/addresses/:address/transactions',
+    pathParams: [ 'address' as const ],
+    filterFields: [],
+  },
+  noves_describe_tx: {
+    path: '/api/v2/proxy/noves-fi/transactions/:hash/describe',
+    pathParams: [ 'hash' as const ],
+  },
+
   // CONFIGS
   config_backend_version: {
     path: '/api/v2/config/backend-version',
@@ -613,7 +629,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'l2_output_roots' | 'l2_withdrawals' | 'l2_txn_batches' | 'l2_deposits' |
 'zkevm_l2_txn_batches' | 'zkevm_l2_txn_batch_txs' |
 'withdrawals' | 'address_withdrawals' | 'block_withdrawals' |
-'watchlist' | 'private_tags_address' | 'private_tags_tx';
+'watchlist' | 'private_tags_address' | 'private_tags_tx' | 'noves_address_history';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
@@ -712,6 +728,9 @@ Q extends 'zkevm_l2_txn_batches_count' ? number :
 Q extends 'zkevm_l2_txn_batch' ? ZkEvmL2TxnBatch :
 Q extends 'zkevm_l2_txn_batch_txs' ? ZkEvmL2TxnBatchTxs :
 Q extends 'config_backend_version' ? BackendVersionConfig :
+Q extends 'noves_transaction' ? NovesResponseData :
+Q extends 'noves_address_history' ? NovesAccountHistoryResponse :
+Q extends 'noves_describe_tx' ? NovesDescribeResponse :
 never;
 /* eslint-enable @typescript-eslint/indent */
 

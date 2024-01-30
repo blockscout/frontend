@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import type { NovesNft, NovesResponseData, NovesSentReceived, NovesToken } from 'types/novesApi';
+import type { NovesNft, NovesResponseData, NovesSentReceived, NovesToken } from 'types/api/noves';
 
 export interface NovesAction {
   label: string;
@@ -13,7 +13,7 @@ export interface NovesAction {
 export interface NovesFlowViewItem {
   action: NovesAction;
   rightActor: {
-    address: string;
+    address: string ;
     name: string | null;
   };
   leftActor: {
@@ -23,7 +23,7 @@ export interface NovesFlowViewItem {
   accountAddress: string;
 }
 
-export function NovesGenerateFlowViewData(data: NovesResponseData): Array<NovesFlowViewItem> {
+export function generateFlowViewData(data: NovesResponseData): Array<NovesFlowViewItem> {
   const perspectiveAddress = data.accountAddress.toLowerCase();
 
   const sent = data.classificationData.sent || [];
@@ -40,7 +40,7 @@ export function NovesGenerateFlowViewData(data: NovesResponseData): Array<NovesF
 
   const flowViewData = txItems.map((item) => {
     const action = {
-      label: item.actionFormatted,
+      label: item.actionFormatted || item.action,
       amount: item.amount || undefined,
       flowDirection: getFlowDirection(item, perspectiveAddress),
       nft: item.nft || undefined,
@@ -67,7 +67,7 @@ export function NovesGenerateFlowViewData(data: NovesResponseData): Array<NovesF
 
 function getRightActor(item: NovesSentReceived, perspectiveAddress: string) {
   if (!item.to.address || item.to.address.toLowerCase() !== perspectiveAddress) {
-    return { address: item.to.address, name: item.to.name };
+    return { address: item.to.address || '', name: item.to.name };
   }
 
   return { address: item.from.address, name: item.from.name };
@@ -82,7 +82,6 @@ function getLeftActor(item: NovesSentReceived, perspectiveAddress: string) {
 }
 
 function getFlowDirection(item: NovesSentReceived, perspectiveAddress: string): 'toLeft' | 'toRight' {
-  // return "toLeft" or "toRight"
   if (item.to.address && item.to.address.toLowerCase() === perspectiveAddress) {
     return 'toLeft';
   }
@@ -91,12 +90,5 @@ function getFlowDirection(item: NovesSentReceived, perspectiveAddress: string): 
     return 'toRight';
   }
 
-  return 'toLeft'; // default case
+  return 'toLeft';
 }
-
-export const NovesGetFlowCount = (data: NovesResponseData | undefined) => {
-  if (!data) {
-    return 0;
-  }
-  return NovesGenerateFlowViewData(data).length;
-};

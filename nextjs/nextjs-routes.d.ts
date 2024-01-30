@@ -19,9 +19,6 @@ declare module "nextjs-routes" {
     | StaticRoute<"/api/csrf">
     | StaticRoute<"/api/healthz">
     | StaticRoute<"/api/media-type">
-    | StaticRoute<"/api/noves/describe">
-    | StaticRoute<"/api/noves/history">
-    | StaticRoute<"/api/noves/translate">
     | StaticRoute<"/api/proxy">
     | StaticRoute<"/api-docs">
     | StaticRoute<"/apps">

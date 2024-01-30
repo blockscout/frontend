@@ -11,6 +11,7 @@ import useContractTabs from 'lib/hooks/useContractTabs';
 import useIsSafeAddress from 'lib/hooks/useIsSafeAddress';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ADDRESS_INFO, ADDRESS_TABS_COUNTERS } from 'stubs/address';
+import AddressAccountHistory from 'ui/address/AddressAccountHistory';
 import AddressBlocksValidated from 'ui/address/AddressBlocksValidated';
 import AddressCoinBalance from 'ui/address/AddressCoinBalance';
 import AddressContract from 'ui/address/AddressContract';
@@ -23,7 +24,6 @@ import AddressTxs from 'ui/address/AddressTxs';
 import AddressWithdrawals from 'ui/address/AddressWithdrawals';
 import AddressFavoriteButton from 'ui/address/details/AddressFavoriteButton';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
-import NovesAddressAccountHistory from 'ui/address/noves/NovesAddressAccountHistory';
 import SolidityscanReport from 'ui/address/SolidityscanReport';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import TextAd from 'ui/shared/ad/TextAd';
@@ -37,6 +37,8 @@ import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 
 const TOKEN_TABS = [ 'tokens_erc20', 'tokens_nfts', 'tokens_nfts_collection', 'tokens_nfts_list' ];
+
+const feature = config.features.txInterpretation;
 
 const AddressPageContent = () => {
   const router = useRouter();
@@ -73,12 +75,13 @@ const AddressPageContent = () => {
         count: addressTabsCountersQuery.data?.transactions_count,
         component: <AddressTxs scrollRef={ tabsScrollRef }/>,
       },
-      {
-        id: 'history',
-        title: 'Account history',
-        //count: ,
-        component: <NovesAddressAccountHistory scrollRef={ tabsScrollRef }/>,
-      },
+      feature.isEnabled && feature.provider === 'noves' ?
+        {
+          id: 'account_history',
+          title: 'Account history',
+          component: <AddressAccountHistory scrollRef={ tabsScrollRef }/>,
+        } :
+        undefined,
       config.features.beaconChain.isEnabled && addressTabsCountersQuery.data?.withdrawals_count ?
         {
           id: 'withdrawals',

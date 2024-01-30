@@ -4,6 +4,7 @@ import React from 'react';
 import type { AddressFromToFilter } from 'types/api/address';
 import type { Transaction, TransactionsSortingField, TransactionsSortingValue } from 'types/api/transaction';
 
+import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import DataListDisplay from 'ui/shared/DataListDisplay';
@@ -32,13 +33,14 @@ type Props = {
   filterValue?: AddressFromToFilter;
   enableTimeIncrement?: boolean;
   top?: number;
-  translate?: boolean;
   items?: Array<Transaction>;
   isPlaceholderData: boolean;
   isError: boolean;
   setSorting: (value: TransactionsSortingValue | undefined) => void;
   sort: TransactionsSortingValue | undefined;
 }
+
+const feature = config.features.txInterpretation;
 
 const TxsContent = ({
   query,
@@ -51,7 +53,6 @@ const TxsContent = ({
   currentAddress,
   enableTimeIncrement,
   top,
-  translate,
   items,
   isPlaceholderData,
   isError,
@@ -64,6 +65,8 @@ const TxsContent = ({
     const value = getNextSortValue<TransactionsSortingField, TransactionsSortingValue>(SORT_SEQUENCE, field)(sort);
     setSorting(value);
   }, [ sort, setSorting ]);
+
+  const translateEnabled = feature.isEnabled && feature.provider === 'noves';
 
   const content = items ? (
     <>
@@ -85,7 +88,7 @@ const TxsContent = ({
               currentAddress={ currentAddress }
               enableTimeIncrement={ enableTimeIncrement }
               isLoading={ isPlaceholderData }
-              translate={ translate }
+              translateEnabled={ translateEnabled }
             />
           )) }
         </Box>
@@ -103,7 +106,7 @@ const TxsContent = ({
           currentAddress={ currentAddress }
           enableTimeIncrement={ enableTimeIncrement }
           isLoading={ isPlaceholderData }
-          translate={ translate }
+          translateEnabled={ translateEnabled }
         />
       </Hide>
     </>

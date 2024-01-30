@@ -1,6 +1,6 @@
-import type { NovesResponseData, NovesSentReceived } from 'types/novesApi';
+import type { NovesResponseData, NovesSentReceived } from 'types/api/noves';
 
-import type { NovesFlowViewItem } from 'ui/tx/Noves/utils/NovesGenerateFlowViewData';
+import type { NovesFlowViewItem } from 'ui/tx/assetFlows/utils/generateFlowViewData';
 
 export interface FromToData {
   text: string;
@@ -8,7 +8,7 @@ export interface FromToData {
   name?: string | null;
 }
 
-export const NovesGetFromTo = (txData: NovesResponseData, currentAddress: string): FromToData => {
+export const getFromTo = (txData: NovesResponseData, currentAddress: string): FromToData => {
   const raw = txData.rawTransactionData;
   const sent = txData.classificationData.sent;
   let sentFound: Array<NovesSentReceived> = [];
@@ -22,7 +22,7 @@ export const NovesGetFromTo = (txData: NovesResponseData, currentAddress: string
   let receivedFound: Array<NovesSentReceived> = [];
   if (received && received[0]) {
     receivedFound = received
-      .filter((received) => received.to.address.toLocaleLowerCase() === currentAddress)
+      .filter((received) => received.to.address?.toLocaleLowerCase() === currentAddress)
       .filter((received) => received.from.address);
   }
 
@@ -37,14 +37,18 @@ export const NovesGetFromTo = (txData: NovesResponseData, currentAddress: string
       }
     }
     if (sentFound.length > receivedFound.length) {
-      return { text: 'Sent to', address: sentFound[0].to.address } ;
+      // already filtered if null
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      return { text: 'Sent to', address: sentFound[0].to.address! } ;
     } else {
       return { text: 'Received from', address: receivedFound[0].from.address } ;
     }
   }
 
   if (sent && sentFound[0]) {
-    return { text: 'Sent to', address: sentFound[0].to.address } ;
+    // already filtered if null
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return { text: 'Sent to', address: sentFound[0].to.address! } ;
   }
 
   if (received && receivedFound[0]) {
@@ -70,19 +74,16 @@ export const NovesGetFromTo = (txData: NovesResponseData, currentAddress: string
   return { text: 'Sent to', address: currentAddress };
 };
 
-export const NovesGetFromToValue = (txData: NovesResponseData, currentAddress: string) => {
-  const fromTo = NovesGetFromTo(txData, currentAddress);
+export const getFromToValue = (txData: NovesResponseData, currentAddress: string) => {
+  const fromTo = getFromTo(txData, currentAddress);
 
   return fromTo.text.split(' ').shift()?.toLowerCase();
 };
 
-export const NovesGetActionFromTo = (item: NovesFlowViewItem): FromToData => {
-  if (item.action.flowDirection === 'toRight') {
-    return {
-      text: 'Sent to', address: item.rightActor.address, name: item.rightActor.name,
-    };
-  }
+export const getActionFromTo = (item: NovesFlowViewItem): FromToData => {
   return {
-    text: 'Received from', address: item.rightActor.address, name: item.rightActor.name,
+    text: item.action.flowDirection === 'toRight' ? 'Sent to' : 'Received from',
+    address: item.rightActor.address,
+    name: item.rightActor.name,
   };
 };

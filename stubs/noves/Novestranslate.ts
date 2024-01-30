@@ -1,4 +1,4 @@
-import type { NovesResponseData, NovesClassificationData, NovesRawTransactionData } from 'types/novesApi';
+import type { NovesResponseData, NovesClassificationData, NovesRawTransactionData } from 'types/api/noves';
 
 const NOVES_TRANSLATE_CLASSIFIED: NovesClassificationData = {
   description: 'Sent 0.04 ETH',

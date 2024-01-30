@@ -8,6 +8,7 @@ import React from 'react';
 import type { Transaction } from 'types/api/transaction';
 
 import config from 'configs/app';
+import useApiQuery from 'lib/api/useApiQuery';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import { space } from 'lib/html-entities';
@@ -20,7 +21,6 @@ import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TxFeeStability from 'ui/shared/tx/TxFeeStability';
 import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
-import NovesUseFetchDescribe from 'ui/txs/Noves/NovesUseFetchDescribe';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 import TxType from 'ui/txs/TxType';
 
@@ -30,13 +30,13 @@ type Props = {
   currentAddress?: string;
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
-  translate?: boolean;
+  translateEnabled?: boolean;
 }
 
 const TAG_WIDTH = 48;
 const ARROW_WIDTH = 24;
 
-const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeIncrement, translate }: Props) => {
+const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeIncrement, translateEnabled }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
 
   const isOut = Boolean(currentAddress && currentAddress === tx.from.hash);
@@ -44,7 +44,12 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
 
   const timeAgo = useTimeAgoIncrement(tx.timestamp, enableTimeIncrement);
 
-  const { data: describeData } = NovesUseFetchDescribe(translate ? tx.hash : null);
+  const { data: describeData } = useApiQuery('noves_describe_tx', {
+    pathParams: { hash: tx.hash },
+    queryOptions: {
+      enabled: Boolean(translateEnabled),
+    },
+  });
 
   return (
     <ListItemMobile display="block" width="100%" isAnimated key={ tx.hash }>

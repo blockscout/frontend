@@ -1,22 +1,24 @@
-import { Box, Hide, Popover, PopoverArrow, PopoverContent, PopoverTrigger, Show, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Hide, Popover, PopoverArrow, PopoverContent, PopoverTrigger, Show, Skeleton, Text, useColorModeValue } from '@chakra-ui/react';
 import type { FC } from 'react';
 import React from 'react';
 
-import lightning from 'icons/lightning.svg';
-import Icon from 'ui/shared/chakra/Icon';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
+import IconSvg from 'ui/shared/IconSvg';
 
-import type { NovesAction, NovesFlowViewItem } from '../utils/NovesGenerateFlowViewData';
-import NovesTokensCard from './NovesTokensCard';
+import type { NovesFlowViewItem } from '../utils/generateFlowViewData';
+import NovesTokenTooltipContent from './NovesTokenTooltipContent';
 
 interface Props {
   item: NovesFlowViewItem;
+  isLoaded: boolean;
 }
 
-const NovesActionCard: FC<Props> = ({ item }) => {
+const NovesActionSnippet: FC<Props> = ({ item, isLoaded }) => {
   const popoverBg = useColorModeValue('gray.700', 'gray.300');
 
-  const getTokenData = (action: NovesAction) => {
+  const token = React.useMemo(() => {
+    const action = item.action;
+
     const name = action.nft?.name || action.token?.name;
     const symbol = action.nft?.symbol || action.token?.symbol;
 
@@ -27,10 +29,12 @@ const NovesActionCard: FC<Props> = ({ item }) => {
     };
 
     return token;
-  };
+  }, [ item.action ]);
+
+  const validTokenAddress = token.address ? Boolean(token.address.match(/^0x[a-fA-F\d]{40}$/)) : false;
 
   return (
-    <>
+    <Skeleton borderRadius="sm" isLoaded={ isLoaded }>
       <Hide above="md">
         <Box display="flex" gap={ 2 } cursor="pointer" flexWrap="wrap">
           <Text fontWeight="700" >
@@ -40,10 +44,10 @@ const NovesActionCard: FC<Props> = ({ item }) => {
             { item.action.amount }
           </Text>
           <TokenEntity
-            token={ getTokenData(item.action) }
+            token={ token }
             noCopy
             noSymbol
-            noLink
+            noLink={ !validTokenAddress }
             fontWeight="500"
             color="link"
             w="fit-content"
@@ -63,11 +67,10 @@ const NovesActionCard: FC<Props> = ({ item }) => {
         >
           <PopoverTrigger>
             <Box display="flex" gap={ 2 } cursor="pointer" w="fit-content" maxW="100%">
-              <Icon
-                as={ lightning }
-                display="flex"
-                fontSize="xl"
-                mr="5px"
+              <IconSvg
+                name="lightning"
+                height="5"
+                width="5"
                 color="gray.500"
                 _dark={{ color: 'gray.400' }}
               />
@@ -78,10 +81,10 @@ const NovesActionCard: FC<Props> = ({ item }) => {
                 { item.action.amount }
               </Text>
               <TokenEntity
-                token={ getTokenData(item.action) }
+                token={ token }
                 noCopy
                 jointSymbol
-                noLink
+                noLink={ !validTokenAddress }
                 fontWeight="500"
                 color="link"
                 w="fit-content"
@@ -94,21 +97,19 @@ const NovesActionCard: FC<Props> = ({ item }) => {
             shadow="lg"
             width="fit-content"
             zIndex="modal"
+            padding={ 2 }
           >
             <PopoverArrow bg={ popoverBg }/>
-            <Box p={ 2 }>
 
-              <NovesTokensCard
-                token={ item.action.token || item.action.nft }
-                amount={ item.action.amount }
-              />
-
-            </Box>
+            <NovesTokenTooltipContent
+              token={ item.action.token || item.action.nft }
+              amount={ item.action.amount }
+            />
           </PopoverContent>
         </Popover>
       </Show>
-    </>
+    </Skeleton>
   );
 };
 
-export default React.memo(NovesActionCard);
+export default React.memo(NovesActionSnippet);

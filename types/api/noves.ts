@@ -8,10 +8,13 @@ export interface NovesResponseData {
 
 export interface NovesClassificationData {
   type: string;
-  typeFormatted: string;
+  typeFormatted?: string;
   description: string;
   sent: Array<NovesSentReceived>;
   received: Array<NovesSentReceived>;
+  protocol?: {
+    name: string | null;
+  };
   source: {
     type: string | null;
   };
@@ -20,7 +23,7 @@ export interface NovesClassificationData {
 
 export interface NovesSentReceived {
   action: string;
-  actionFormatted: string;
+  actionFormatted?: string;
   amount: string;
   to: NovesTo;
   from: NovesFrom;
@@ -50,7 +53,7 @@ export interface NovesFrom {
 
 export interface NovesTo {
   name: string | null;
-  address: string;
+  address: string | null;
 }
 
 export interface NovesRawTransactionData {
@@ -66,7 +69,11 @@ export interface NovesRawTransactionData {
 
 export interface NovesTransactionFee {
   amount: string;
-  currency: string;
+  currency?: string;
+  token?: {
+    decimals: number;
+    symbol: string;
+  };
 }
 
 export interface NovesAccountHistoryResponse {
@@ -74,15 +81,22 @@ export interface NovesAccountHistoryResponse {
   items: Array<NovesResponseData>;
   pageNumber: number;
   pageSize: number;
-  nextPageUrl?: string;
+  next_page_params?: {
+    startBlock: null;
+    endBlock: string;
+    pageNumber: number;
+    pageSize: number;
+    ignoreTransactions: string;
+    viewAsAccountAddress: string;
+  };
 }
 
-export const NovesHistorySentReceivedFilterValues = [ 'received', 'sent' ] as const;
+export const NovesHistoryFilterValues = [ 'received', 'sent' ] as const;
 
-export type NovesHistorySentReceivedFilter = typeof NovesHistorySentReceivedFilterValues[number] | undefined;
+export type NovesHistoryFilterValue = typeof NovesHistoryFilterValues[number] | undefined;
 
 export interface NovesHistoryFilters {
-  filter?: NovesHistorySentReceivedFilter;
+  filter?: NovesHistoryFilterValue;
 }
 
 export interface NovesDescribeResponse {

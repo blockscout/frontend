@@ -14,6 +14,7 @@ import React from 'react';
 import type { Transaction } from 'types/api/transaction';
 
 import config from 'configs/app';
+import useApiQuery from 'lib/api/useApiQuery';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import Tag from 'ui/shared/chakra/Tag';
 import CurrencyValue from 'ui/shared/CurrencyValue';
@@ -25,7 +26,6 @@ import InOutTag from 'ui/shared/InOutTag';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TxFeeStability from 'ui/shared/tx/TxFeeStability';
 import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
-import NovesUseFetchDescribe from 'ui/txs/Noves/NovesUseFetchDescribe';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 
 import TxType from './TxType';
@@ -36,17 +36,22 @@ type Props = {
   currentAddress?: string;
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
-  translate?: boolean;
+  translateEnabled?: boolean;
 }
 
-const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, isLoading, translate }: Props) => {
+const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, isLoading, translateEnabled }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
   const isOut = Boolean(currentAddress && currentAddress === tx.from.hash);
   const isIn = Boolean(currentAddress && currentAddress === dataTo?.hash);
 
   const timeAgo = useTimeAgoIncrement(tx.timestamp, enableTimeIncrement);
 
-  const { data: describeData } = NovesUseFetchDescribe(translate ? tx.hash : null);
+  const { data: describeData } = useApiQuery('noves_describe_tx', {
+    pathParams: { hash: tx.hash },
+    queryOptions: {
+      enabled: Boolean(translateEnabled),
+    },
+  });
 
   const addressFrom = (
     <AddressEntity
