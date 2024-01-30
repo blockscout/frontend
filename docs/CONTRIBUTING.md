@@ -14,7 +14,7 @@ Thanks for showing interest to contribute to Blockscout. The following steps wil
     cd <fork_name>
     ```
 
-3. Make sure you're running Node.js 18+ and NPM 8+; if not, upgrade it accordingly, for example using [nvm](https://github.com/nvm-sh/nvm).
+3. Make sure you're running Node.js 20+ and NPM 10+; if not, upgrade it accordingly, for example using [nvm](https://github.com/nvm-sh/nvm).
     ```sh
     node -v
     npm -v

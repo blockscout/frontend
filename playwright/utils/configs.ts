@@ -36,6 +36,9 @@ export const featureEnvs = {
     { name: 'NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK', value: 'true' },
     { name: 'NEXT_PUBLIC_L1_BASE_URL', value: 'https://localhost:3101' },
   ],
+  userOps: [
+    { name: 'NEXT_PUBLIC_HAS_USER_OPS', value: 'true' },
+  ],
 };
 
 export const viewsEnvs = {
