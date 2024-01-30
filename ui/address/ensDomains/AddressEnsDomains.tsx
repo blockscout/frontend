@@ -95,7 +95,7 @@ const AddressEnsDomains = ({ addressHash, mainDomainName }: Props) => {
           variant="outline"
           colorScheme="gray"
           onClick={ onToggle }
-          aria-label="Address ENS domains"
+          aria-label="Address domains"
           fontWeight={ 500 }
           px={ 2 }
           h="32px"
