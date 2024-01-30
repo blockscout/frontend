@@ -11,6 +11,7 @@ import type { ResourceError } from 'lib/api/resources';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import { space } from 'lib/html-entities';
+import { currencyUnits } from 'lib/units';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
@@ -116,7 +117,7 @@ const UserOpDetails = ({ query }: Props) => {
         >
           <CurrencyValue
             value={ data.fee }
-            currency={ config.chain.currency.symbol }
+            currency={ currencyUnits.ether }
             isLoading={ isPlaceholderData }
           />
         </DetailsInfoItem>
@@ -212,17 +213,17 @@ const UserOpDetails = ({ query }: Props) => {
                 title="Max fee per gas"
                 hint="Maximum fee per gas "
               >
-                <Text>{ BigNumber(data.max_fee_per_gas).dividedBy(WEI).toFixed() } { config.chain.currency.symbol } </Text>
+                <Text>{ BigNumber(data.max_fee_per_gas).dividedBy(WEI).toFixed() } { currencyUnits.ether } </Text>
                 <Text variant="secondary" whiteSpace="pre">
-                  { space }({ BigNumber(data.max_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() } Gwei)
+                  { space }({ BigNumber(data.max_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })
                 </Text>
               </DetailsInfoItem><DetailsInfoItem
                 title="Max priority fee per gas"
                 hint="Maximum priority fee per gas"
               >
-                <Text>{ BigNumber(data.max_priority_fee_per_gas).dividedBy(WEI).toFixed() } { config.chain.currency.symbol } </Text>
+                <Text>{ BigNumber(data.max_priority_fee_per_gas).dividedBy(WEI).toFixed() } { currencyUnits.ether } </Text>
                 <Text variant="secondary" whiteSpace="pre">
-                  { space }({ BigNumber(data.max_priority_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() } Gwei)
+                  { space }({ BigNumber(data.max_priority_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })
                 </Text>
               </DetailsInfoItem>
             </>

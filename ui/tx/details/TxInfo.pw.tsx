@@ -4,12 +4,10 @@ import React from 'react';
 import * as txMock from 'mocks/txs/tx';
 import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
-import buildApiUrl from 'playwright/utils/buildApiUrl';
 import * as configs from 'playwright/utils/configs';
 
-import TxDetails from './TxDetails';
+import TxInfo from './TxInfo';
 
-const API_URL = buildApiUrl('tx', { hash: '1' });
 const hooksConfig = {
   router: {
     query: { hash: 1 },
@@ -17,14 +15,9 @@ const hooksConfig = {
 };
 
 test('between addresses +@mobile +@dark-mode', async({ mount, page }) => {
-  await page.route(API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(txMock.base),
-  }));
-
   const component = await mount(
     <TestApp>
-      <TxDetails/>
+      <TxInfo data={ txMock.base } isLoading={ false }/>
     </TestApp>,
     { hooksConfig },
   );
@@ -38,14 +31,9 @@ test('between addresses +@mobile +@dark-mode', async({ mount, page }) => {
 });
 
 test('creating contact', async({ mount, page }) => {
-  await page.route(API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(txMock.withContractCreation),
-  }));
-
   const component = await mount(
     <TestApp>
-      <TxDetails/>
+      <TxInfo data={ txMock.withContractCreation } isLoading={ false }/>
     </TestApp>,
     { hooksConfig },
   );
@@ -57,14 +45,9 @@ test('creating contact', async({ mount, page }) => {
 });
 
 test('with token transfer +@mobile', async({ mount, page }) => {
-  await page.route(API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(txMock.withTokenTransfer),
-  }));
-
   const component = await mount(
     <TestApp>
-      <TxDetails/>
+      <TxInfo data={ txMock.withTokenTransfer } isLoading={ false }/>
     </TestApp>,
     { hooksConfig },
   );
@@ -76,14 +59,9 @@ test('with token transfer +@mobile', async({ mount, page }) => {
 });
 
 test('with decoded revert reason', async({ mount, page }) => {
-  await page.route(API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(txMock.withDecodedRevertReason),
-  }));
-
   const component = await mount(
     <TestApp>
-      <TxDetails/>
+      <TxInfo data={ txMock.withDecodedRevertReason } isLoading={ false }/>
     </TestApp>,
     { hooksConfig },
   );
@@ -95,14 +73,9 @@ test('with decoded revert reason', async({ mount, page }) => {
 });
 
 test('with decoded raw reason', async({ mount, page }) => {
-  await page.route(API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(txMock.withRawRevertReason),
-  }));
-
   const component = await mount(
     <TestApp>
-      <TxDetails/>
+      <TxInfo data={ txMock.withRawRevertReason } isLoading={ false }/>
     </TestApp>,
     { hooksConfig },
   );
@@ -114,14 +87,9 @@ test('with decoded raw reason', async({ mount, page }) => {
 });
 
 test('pending', async({ mount, page }) => {
-  await page.route(API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(txMock.pending),
-  }));
-
   const component = await mount(
     <TestApp>
-      <TxDetails/>
+      <TxInfo data={ txMock.pending } isLoading={ false }/>
     </TestApp>,
     { hooksConfig },
   );
@@ -135,14 +103,9 @@ test('pending', async({ mount, page }) => {
 });
 
 test('with actions uniswap +@mobile +@dark-mode', async({ mount, page }) => {
-  await page.route(API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(txMock.withActionsUniswap),
-  }));
-
   const component = await mount(
     <TestApp>
-      <TxDetails/>
+      <TxInfo data={ txMock.withActionsUniswap } isLoading={ false }/>
     </TestApp>,
     { hooksConfig },
   );
@@ -159,14 +122,9 @@ const l2Test = test.extend({
 });
 
 l2Test('l2', async({ mount, page }) => {
-  await page.route(API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(txMock.l2tx),
-  }));
-
   const component = await mount(
     <TestApp>
-      <TxDetails/>
+      <TxInfo data={ txMock.l2tx } isLoading={ false }/>
     </TestApp>,
     { hooksConfig },
   );
@@ -185,14 +143,9 @@ const mainnetTest = test.extend({
 });
 
 mainnetTest('without testnet warning', async({ mount, page }) => {
-  await page.route(API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(txMock.l2tx),
-  }));
-
   const component = await mount(
     <TestApp>
-      <TxDetails/>
+      <TxInfo data={ txMock.l2tx } isLoading={ false }/>
     </TestApp>,
     { hooksConfig },
   );
@@ -209,14 +162,9 @@ const stabilityTest = test.extend({
 });
 
 stabilityTest('stability customization', async({ mount, page }) => {
-  await page.route(API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(txMock.stabilityTx),
-  }));
-
   const component = await mount(
     <TestApp>
-      <TxDetails/>
+      <TxInfo data={ txMock.stabilityTx } isLoading={ false }/>
     </TestApp>,
     { hooksConfig },
   );

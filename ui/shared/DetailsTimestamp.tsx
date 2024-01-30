@@ -18,7 +18,7 @@ const DetailsTimestamp = ({ timestamp, isLoading }: Props) => {
       <Skeleton isLoaded={ !isLoading } ml={ 2 }>
         { dayjs(timestamp).fromNow() }
       </Skeleton>
-      <TextSeparator/>
+      <TextSeparator color="gray.500"/>
       <Skeleton isLoaded={ !isLoading } whiteSpace="normal">
         { dayjs(timestamp).format('llll') }
       </Skeleton>

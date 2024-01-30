@@ -29,11 +29,11 @@ export type Transaction = {
   status: 'ok' | 'error' | null;
   block: number | null;
   timestamp: string | null;
-  confirmation_duration: Array<number>;
+  confirmation_duration: Array<number> | null;
   from: AddressParam;
   value: string;
   fee: Fee;
-  gas_price: string;
+  gas_price: string | null;
   type: number | null;
   gas_used: string | null;
   gas_limit: string;
@@ -49,7 +49,7 @@ export type Transaction = {
   decoded_input: DecodedInput | null;
   token_transfers: Array<TokenTransfer> | null;
   token_transfers_overflow: boolean;
-  exchange_rate: string;
+  exchange_rate: string | null;
   method: string | null;
   tx_types: Array<TransactionType>;
   tx_tag: string | null;

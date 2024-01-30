@@ -3,7 +3,6 @@ import React from 'react';
 
 import type { Log } from 'types/api/log';
 
-import { SECOND } from 'lib/consts';
 import { LOG } from 'stubs/log';
 import { generateListStub } from 'stubs/utils';
 import ActionBar from 'ui/shared/ActionBar';
@@ -13,29 +12,29 @@ import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import TxPendingAlert from 'ui/tx/TxPendingAlert';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
-import useFetchTxInfo from 'ui/tx/useFetchTxInfo';
 
-type Props = {
-  txHash?: string;
+import type { TxQuery } from './useTxQuery';
+
+interface Props {
+  txQuery: TxQuery;
   logsFilter?: (log: Log) => boolean;
 }
 
-const TxLogs = ({ txHash, logsFilter }: Props) => {
-  const txInfo = useFetchTxInfo({ updateDelay: 5 * SECOND, txHash });
+const TxLogs = ({ txQuery, logsFilter }: Props) => {
   const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
     resourceName: 'tx_logs',
-    pathParams: { hash: txInfo.data?.hash },
+    pathParams: { hash: txQuery.data?.hash },
     options: {
-      enabled: !txInfo.isPlaceholderData && Boolean(txInfo.data?.hash) && Boolean(txInfo.data?.status),
+      enabled: !txQuery.isPlaceholderData && Boolean(txQuery.data?.hash) && Boolean(txQuery.data?.status),
       placeholderData: generateListStub<'tx_logs'>(LOG, 3, { next_page_params: null }),
     },
   });
 
-  if (!txInfo.isPending && !txInfo.isPlaceholderData && !txInfo.isError && !txInfo.data.status) {
-    return txInfo.socketStatus ? <TxSocketAlert status={ txInfo.socketStatus }/> : <TxPendingAlert/>;
+  if (!txQuery.isPending && !txQuery.isPlaceholderData && !txQuery.isError && !txQuery.data.status) {
+    return txQuery.socketStatus ? <TxSocketAlert status={ txQuery.socketStatus }/> : <TxPendingAlert/>;
   }
 
-  if (isError || txInfo.isError) {
+  if (isError || txQuery.isError) {
     return <DataFetchAlert/>;
   }
 
