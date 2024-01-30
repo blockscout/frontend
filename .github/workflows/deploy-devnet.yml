@@ -1,0 +1,57 @@
+name: Deploy Devnet
+
+on:
+  push:
+    branches: [ "devnet" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: "recursive"
+
+      - name: Create Image Tarball for Node
+        run: |
+          docker build -t sportchain-node .
+          docker save -o sportchain-node.tar sportchain-node
+          mkdir -p artifacts
+          mv sportchain-node.tar artifacts/
+
+      - name: Create Image Tarball for Explorer
+        run: |
+          cd polkadot-js-apps
+          docker build -t sportchain-explorer -f docker/Dockerfile .
+          docker save -o sportchain-explorer.tar sportchain-explorer
+          mv sportchain-explorer.tar ../artifacts/
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh/
+          touch ~/.ssh/known_hosts
+          ssh-keyscan ${{ secrets.DEVNET_HOST }} >> ~/.ssh/known_hosts
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          eval $(ssh-agent)
+
+      - name: Copy Files to Server
+        run: |
+          scp -r artifacts/* ${{ secrets.DEVNET_USERNAME}}@${{ secrets.DEVNET_HOST }}:/sportchain/
+          scp deploy/docker-compose.devnet.yml ${{ secrets.DEVNET_USERNAME}}@${{ secrets.DEVNET_HOST }}:/sportchain/docker-compose.yml
+
+      - name: SSH into Server and Deploy
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.DEVNET_HOST }}
+          username: ${{ secrets.DEVNET_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /sportchain
+            docker load -i sportchain-node.tar
+            docker load -i sportchain-explorer.tar
+            docker-compose down
+            docker-compose pull
+            docker-compose up -d --build --remove-orphans

@@ -1,15 +1,15 @@
 # *****************************
 # *** STAGE 1: Dependencies ***
 # *****************************
-FROM node:18-alpine AS deps
+FROM node:18 AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk add --no-cache libc6-compat
+RUN apt-get update && apt-get install -y libc6-dev
 
 ### APP
 # Install dependencies
 WORKDIR /app
 COPY package.json yarn.lock ./
-RUN apk add git
+RUN apt-get install -y git
 RUN yarn --frozen-lockfile
 
 
@@ -30,8 +30,8 @@ RUN yarn --frozen-lockfile
 # *****************************
 # ****** STAGE 2: Build *******
 # *****************************
-FROM node:18-alpine AS builder
-RUN apk add --no-cache --upgrade libc6-compat bash
+FROM node:18 AS builder
+RUN apt-get update && apt-get install -y libc6-dev bash
 
 # pass commit sha and git tag to the app image
 ARG GIT_COMMIT_SHA
@@ -78,8 +78,8 @@ RUN cd ./deploy/tools/envs-validator && yarn build
 # ******* STAGE 3: Run ********
 # *****************************
 # Production image, copy all the files and run next
-FROM node:18-alpine AS runner
-RUN apk add --no-cache --upgrade bash curl jq unzip
+FROM node:18 AS runner
+RUN apt-get update && apt-get install -y bash curl jq unzip
 
 ### APP
 WORKDIR /app
@@ -132,3 +132,4 @@ EXPOSE 3000
 ENV PORT 3000
 
 CMD ["node", "server.js"]
+
