@@ -1,8 +1,15 @@
-import type { Chain, GetBlockReturnType, GetTransactionReturnType, TransactionReceipt } from 'viem';
+import type { Chain, GetBlockReturnType, GetTransactionReturnType, TransactionReceipt, Withdrawal } from 'viem';
 
 import { ADDRESS_HASH } from './addressParams';
 import { BLOCK_HASH } from './block';
 import { TX_HASH } from './tx';
+
+export const WITHDRAWAL: Withdrawal = {
+  index: '0x1af95d9',
+  validatorIndex: '0x7d748',
+  address: '0x9b52b9033ecbb6635f1c31a646d5691b282878aa',
+  amount: '0x29e16b',
+};
 
 export const GET_TRANSACTION: GetTransactionReturnType<Chain, 'latest'> = {
   blockHash: BLOCK_HASH,
@@ -70,7 +77,12 @@ export const GET_BLOCK: GetBlockReturnType<Chain, false, 'latest'> = {
   ],
   transactionsRoot: TX_HASH,
   uncles: [],
-  withdrawals: [ ],
+  withdrawals: Array(10).fill(WITHDRAWAL),
   withdrawalsRoot: TX_HASH,
   sealFields: [ '0x00' ],
+};
+
+export const GET_BLOCK_WITH_TRANSACTIONS: GetBlockReturnType<Chain, true, 'latest'> = {
+  ...GET_BLOCK,
+  transactions: Array(50).fill(GET_TRANSACTION),
 };

@@ -1,26 +1,20 @@
 import { Grid, GridItem, Text, Link, Box, Tooltip, useColorModeValue, Skeleton } from '@chakra-ui/react';
-import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import capitalize from 'lodash/capitalize';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
-import type { Block } from 'types/api/block';
-
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import type { ResourceError } from 'lib/api/resources';
 import getBlockReward from 'lib/block/getBlockReward';
 import { GWEI, WEI, WEI_IN_GWEI, ZERO } from 'lib/consts';
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import { space } from 'lib/html-entities';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { currencyUnits } from 'lib/units';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import DetailsTimestamp from 'ui/shared/DetailsTimestamp';
@@ -34,8 +28,10 @@ import RawDataSnippet from 'ui/shared/RawDataSnippet';
 import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
+import type { BlockQuery } from './useBlockQuery';
+
 interface Props {
-  query: UseQueryResult<Block, ResourceError>;
+  query: BlockQuery;
 }
 
 const isRollup = config.features.optimisticRollup.isEnabled || config.features.zkEvmRollup.isEnabled;
@@ -47,7 +43,7 @@ const BlockDetails = ({ query }: Props) => {
 
   const separatorColor = useColorModeValue('gray.200', 'gray.700');
 
-  const { data, isPlaceholderData, isError, error } = query;
+  const { data, isPlaceholderData } = query;
 
   const handleCutClick = React.useCallback(() => {
     setIsExpanded((flag) => !flag);
@@ -67,14 +63,6 @@ const BlockDetails = ({ query }: Props) => {
 
     router.push({ pathname: '/block/[height_or_hash]', query: { height_or_hash: nextId } }, undefined);
   }, [ data, router ]);
-
-  if (isError) {
-    if (error?.status === 404 || error?.status === 422) {
-      throwOnResourceLoadError({ isError, error });
-    }
-
-    return <DataFetchAlert/>;
-  }
 
   if (!data) {
     return null;
@@ -308,7 +296,7 @@ const BlockDetails = ({ query }: Props) => {
           ) }
         </DetailsInfoItem>
       ) }
-      { !config.UI.views.block.hiddenFields?.burnt_fees && (
+      { !config.UI.views.block.hiddenFields?.burnt_fees && !burntFees.isEqualTo(ZERO) && (
         <DetailsInfoItem
           title="Burnt fees"
           hint={
@@ -437,14 +425,16 @@ const BlockDetails = ({ query }: Props) => {
               <HashStringShortenDynamic hash={ BigNumber(data.difficulty).toFormat() }/>
             </Box>
           </DetailsInfoItem>
-          <DetailsInfoItem
-            title="Total difficulty"
-            hint="Total difficulty of the chain until this block"
-          >
-            <Box whiteSpace="nowrap" overflow="hidden">
-              <HashStringShortenDynamic hash={ BigNumber(data.total_difficulty).toFormat() }/>
-            </Box>
-          </DetailsInfoItem>
+          { data.total_difficulty && (
+            <DetailsInfoItem
+              title="Total difficulty"
+              hint="Total difficulty of the chain until this block"
+            >
+              <Box whiteSpace="nowrap" overflow="hidden">
+                <HashStringShortenDynamic hash={ BigNumber(data.total_difficulty).toFormat() }/>
+              </Box>
+            </DetailsInfoItem>
+          ) }
 
           <DetailsInfoItemDivider/>
 

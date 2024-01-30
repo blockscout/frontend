@@ -6,6 +6,7 @@ import type { Transaction, TransactionsSortingField, TransactionsSortingValue } 
 
 import config from 'configs/app';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
+import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
 import { currencyUnits } from 'lib/units';
 import IconSvg from 'ui/shared/IconSvg';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
@@ -40,6 +41,8 @@ const TxsTable = ({
   enableTimeIncrement,
   isLoading,
 }: Props) => {
+  const { cutRef, renderedItemsNum } = useLazyRenderedList(txs, !isLoading);
+
   return (
     <AddressHighlightProvider>
       <Table variant="simple" minWidth="950px" size="xs">
@@ -81,7 +84,7 @@ const TxsTable = ({
             />
           ) }
           <AnimatePresence initial={ false }>
-            { txs.map((item, index) => (
+            { txs.slice(0, renderedItemsNum).map((item, index) => (
               <TxsTableItem
                 key={ item.hash + (isLoading ? index : '') }
                 tx={ item }
@@ -94,6 +97,7 @@ const TxsTable = ({
           </AnimatePresence>
         </Tbody>
       </Table>
+      <div ref={ cutRef }/>
     </AddressHighlightProvider>
   );
 };

@@ -37,6 +37,7 @@ const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
     queryKey: [ 'RPC', 'tx', { hash } ],
     queryFn: async() => {
       const tx = await publicClient.getTransaction({ hash: hash as `0x${ string }` });
+
       if (!tx) {
         throw new Error('Not found');
       }

@@ -26,7 +26,7 @@ export type Transaction = {
   hash: string;
   result: string;
   confirmations: number;
-  status: 'ok' | 'error' | null;
+  status: 'ok' | 'error' | null | undefined;
   block: number | null;
   timestamp: string | null;
   confirmation_duration: Array<number> | null;
