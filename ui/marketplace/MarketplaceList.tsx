@@ -43,6 +43,7 @@ const MarketplaceList = ({ apps, onAppClick, favoriteApps, onFavoriteClick, isLo
           onFavoriteClick={ onFavoriteClick }
           isLoading={ isLoading }
           showDisclaimer={ showDisclaimer }
+          internalWallet={ app.internalWallet }
         />
       )) }
     </Grid>

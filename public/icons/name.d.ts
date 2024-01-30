@@ -55,6 +55,8 @@
 	| "globe"
 	| "graphQL"
 	| "info"
+	| "integration/full"
+	| "integration/partial"
 	| "key"
 	| "lightning"
 	| "link"

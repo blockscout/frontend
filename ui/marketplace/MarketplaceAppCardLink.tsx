@@ -13,12 +13,12 @@ type Props = {
 
 const MarketplaceAppCardLink = ({ url, external, id, title, onClick }: Props) => {
   return external ? (
-    <LinkOverlay href={ url } isExternal={ true }>
+    <LinkOverlay href={ url } isExternal={ true } marginRight={ 2 }>
       { title }
     </LinkOverlay>
   ) : (
     <NextLink href={{ pathname: '/apps/[id]', query: { id } }} passHref legacyBehavior>
-      <LinkOverlay onClick={ onClick }>
+      <LinkOverlay onClick={ onClick } marginRight={ 2 }>
         { title }
       </LinkOverlay>
     </NextLink>
