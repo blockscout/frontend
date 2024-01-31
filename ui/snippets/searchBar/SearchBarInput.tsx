@@ -77,7 +77,7 @@ const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHid
       zIndex={{ base: isHomepage ? 'auto' : '-1', lg: 'auto' }}
       paddingX={{ base: isHomepage ? 0 : 4, lg: 0 }}
       paddingTop={{ base: isHomepage ? 0 : 1, lg: 0 }}
-      paddingBottom={{ base: isHomepage ? 0 : 4, lg: 0 }}
+      paddingBottom={{ base: isHomepage ? 0 : 2, lg: 0 }}
       boxShadow={ scrollDirection !== 'down' && isSticky ? 'md' : 'none' }
       transform={{ base: isHomepage ? 'none' : transformMobile, lg: 'none' }}
       transitionProperty="transform,box-shadow,background-color,color,border-color"
