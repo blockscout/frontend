@@ -45,7 +45,7 @@ const TokenSelectButton = ({ isOpen, isLoading, onClick, data }: Props, ref: Rea
         <Text whiteSpace="pre" variant="secondary" fontWeight={ 400 }> ({ prefix }${ usd.toFormat(2) })</Text>
         <IconSvg name="arrows/east-mini" transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 } ml={ 3 }/>
       </Button>
-      { isLoading && !isOpen && <Skeleton h="100%" w="100%" position="absolute" top={ 0 } left={ 0 } bgColor={ skeletonBgColor }/> }
+      { isLoading && !isOpen && <Skeleton h="100%" w="100%" position="absolute" top={ 0 } left={ 0 } bgColor={ skeletonBgColor } borderRadius="base"/> }
     </Box>
   );
 };
