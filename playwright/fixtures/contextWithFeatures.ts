@@ -9,7 +9,7 @@ interface Feature {
 
 export default function contextWithFeaturesFixture(envs: Array<Feature>): Parameters<typeof test.extend>[0]['context'] {
   return async({ browser }, use) => {
-    const storageItems = envs.map(({ id, value }) => ({ name: `pw_feature:${ id }`, value: JSON.stringify({ value, type: typeof value }) }));
+    const storageItems = envs.map(({ id, value }) => ({ name: `pw_feature:${ id }`, value: JSON.stringify(value) }));
     const context = await createContextWithStorage(browser, storageItems);
 
     await use(context);
