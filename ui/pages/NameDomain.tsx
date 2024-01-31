@@ -57,7 +57,7 @@ const NameDomain = () => {
       flexWrap={{ base: 'wrap', lg: 'nowrap' }}
     >
       <EnsEntity
-        name={ domainName + domainName + domainName }
+        name={ domainName }
         isLoading={ isLoading }
         noLink
         maxW={{ lg: infoQuery.data?.resolved_address ? '300px' : 'min-content' }}
