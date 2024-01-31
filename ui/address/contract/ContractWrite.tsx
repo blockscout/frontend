@@ -39,6 +39,7 @@ const ContractWrite = () => {
     },
     queryOptions: {
       enabled: Boolean(addressHash),
+      refetchOnMount: false,
     },
   });
 
