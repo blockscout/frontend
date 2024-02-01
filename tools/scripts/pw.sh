@@ -65,6 +65,8 @@ args=$(filter_arguments "$@")
 affected_flag=$(check_affected_flag "$@")
 files_to_run=$(get_files_to_run "$affected_flag")
 
+ls ./playwright
+
 echo "Running Playwright tests with the following arguments: $args"
 echo "Affected flag: $affected_flag"
 echo "Files to run: $files_to_run"
@@ -72,5 +74,5 @@ echo "Files to run: $files_to_run"
 dotenv \
   -v NODE_OPTIONS=\"--max-old-space-size=4096\" \
   -e $config_file \
-  -- playwright test -c playwright-ct.config.ts $files_to_run "${args[@]}"
+  -- playwright test -c playwright-ct.config.ts $files_to_run $args
 
