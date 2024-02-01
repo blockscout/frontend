@@ -28,7 +28,10 @@ function getFileDeps(filename) {
 }
 
 async function getChangedFiles() {
-  const files = execSync(`git diff --name-only main...$(git symbolic-ref --short HEAD)`)
+  // eslint-disable-next-line max-len
+  const command = `git diff --name-only origin/${ process.env.GITHUB_BASE_REF || 'main' } origin/${ process.env.GITHUB_HEAD_REF || '$(git branch --show-current)' } -- ${ rootDir }`;
+  console.log('Executing command: ', command);
+  const files = execSync(command)
     .toString()
     .trim()
     .split('\n')
@@ -41,6 +44,7 @@ async function run() {
   fs.unlink(targetFile, () => {});
 
   const changedFiles = await getChangedFiles();
+  console.log('ChangedFiles: ', changedFiles);
 
   if (!changedFiles.length) {
     console.log('No changed files found. Exiting...');
@@ -67,8 +71,7 @@ async function run() {
   const end = Date.now();
   console.log('Total time: ', ((end - start) / 1_000).toLocaleString());
 
-  console.log('ChangedFiles: ', changedFiles);
-  console.log('Test to run: ', testFileNamesToRun);
+  console.log('Tests to run: ', testFileNamesToRun);
   console.log('Non existent deps: ', NON_EXISTENT_DEPS);
 
   fs.writeFileSync(targetFile, testFileNamesToRun.join('\n'));

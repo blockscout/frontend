@@ -120,13 +120,13 @@ jobs:
   pw_affected_tests:
     name: Resolve affected Playwright tests
     runs-on: ubuntu-latest
-    needs: [ code_quality, envs_validation ]
+    # needs: [ code_quality, envs_validation ]
     if: github.event_name == 'pull_request'
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 0
 
       - name: Setup node
         uses: actions/setup-node@v4
@@ -134,8 +134,11 @@ jobs:
           node-version: 20.11.0
           cache: 'yarn'
 
-      - name: Install dependencies and run script
-        run: cd ./deploy/tools/affected-tests && yarn --frozen-lockfile && node ./index.js
+      - name: Install dependencies and 
+        run: cd ./deploy/tools/affected-tests && yarn --frozen-lockfile
+      
+      - name: Run script
+        run: node ./deploy/tools/affected-tests/index.js
 
       - name: Upload result file
         uses: actions/upload-artifact@v4
@@ -145,7 +148,7 @@ jobs:
 
   pw_tests:
     name: 'Playwright tests / Project: ${{ matrix.project }}'
-    needs: [ code_quality, envs_validation, pw_affected_tests ]
+    needs: [ pw_affected_tests ]
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.41.1-focal

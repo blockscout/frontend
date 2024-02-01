@@ -15,7 +15,7 @@ check_affected_flag() {
     local affected_flag=false
 
     for arg in "$@"; do
-        if [ "$arg" = "--affected" ]; then
+        if [[ "$arg" = "--affected"* ]]; then
             # Extract the value after the equals sign
             is_affected_value=${is_affected_arg#*=}
 
