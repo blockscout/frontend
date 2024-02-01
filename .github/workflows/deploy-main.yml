@@ -1,41 +1,170 @@
-name: Deploy from main branch
+#name: Deploy from main branch
+#
+#on:
+#  push:
+#    branches:
+#      - main
+#  workflow_dispatch:
+#
+#concurrency:
+#  group: ${{ github.workflow }}-${{ github.ref }}
+#  cancel-in-progress: true
+#
+#jobs:
+#  publish_image:
+#    name: Publish Docker image
+#    uses: './.github/workflows/publish-image.yml'
+#    secrets: inherit
+#
+#  deploy_main:
+#    name: Deploy frontend
+#    needs: publish_image
+#    uses: blockscout/blockscout-ci-cd/.github/workflows/deploy_helmfile.yaml@master
+#    with:
+#      appName: front
+#      globalEnv: main
+#      helmfileDir: deploy
+#      kubeConfigSecret: ci/data/dev/kubeconfig/k8s-dev
+#      vaultRole: ci-dev
+#    secrets: inherit
+#
+#  deploy_l2:
+#    name: Deploy frontend (L2)
+#    needs: publish_image
+#    uses: blockscout/blockscout-ci-cd/.github/workflows/deploy_helmfile.yaml@master
+#    with:
+#      appName: l2-optimism-goerli
+#      globalEnv: optimism-goerli
+#      helmfileDir: deploy
+#      kubeConfigSecret: ci/data/dev/kubeconfig/k8s-dev
+#      vaultRole: ci-dev
+#    secrets: inherit
+
+#name: Deploy from main branch
+#
+#on:
+#  push:
+#    branches:
+#      - main
+#  workflow_dispatch:
+#
+#concurrency:
+#  group: ${{ github.workflow }}-${{ github.ref }}
+#  cancel-in-progress: true
+#
+#jobs:
+#  publish_image:
+#    name: Publish Docker image
+#    uses: './.github/workflows/publish-image.yml'
+#    secrets: inherit
+#
+#  deploy_main:
+#    name: Deploy frontend
+#    needs: publish_image
+#    uses: blockscout/blockscout-ci-cd/.github/workflows/deploy_helmfile.yaml@master
+#    with:
+#      appName: front
+#      globalEnv: main
+#      helmfileDir: deploy
+#      kubeConfigSecret: ci/data/dev/kubeconfig/k8s-dev
+#      vaultRole: ci-dev
+#    secrets: inherit
+#
+#  deploy_l2:
+#    name: Deploy frontend (L2)
+#    needs: publish_image
+#    uses: blockscout/blockscout-ci-cd/.github/workflows/deploy_helmfile.yaml@master
+#    with:
+#      appName: l2-optimism-goerli
+#      globalEnv: optimism-goerli
+#      helmfileDir: deploy
+#      kubeConfigSecret: ci/data/dev/kubeconfig/k8s-dev
+#      vaultRole: ci-dev
+#    secrets: inherit
+
+#name: Deploy review environment
+#
+#on:
+#  workflow_dispatch:
+#
+#jobs:
+#  make_slug:
+#    name: Make GitHub reference slug
+#    runs-on: ubuntu-latest
+#    outputs:
+#      REF_SLUG: ${{ steps.output.outputs.REF_SLUG }}
+#    steps:
+#      -   name: Inject slug/short variables
+#          uses: rlespinasse/github-slug-action@v4.4.1
+#
+#      -   name: Set output
+#          id: output
+#          run: echo "REF_SLUG=${{ env.GITHUB_REF_NAME_SLUG }}" >> $GITHUB_OUTPUT
+#
+#  publish_image:
+#    name: Publish Docker image
+#    needs: make_slug
+#    uses: './.github/workflows/publish-image.yml'
+#    with:
+#        tags: ghcr.io/blockscout/frontend:review-${{ needs.make_slug.outputs.REF_SLUG }}
+#    secrets: inherit
+#
+#  deploy_review:
+#    name: Deploy frontend
+#    needs: [ make_slug, publish_image ]
+#    uses: blockscout/blockscout-ci-cd/.github/workflows/deploy_helmfile.yaml@master
+#    with:
+#      appName: review-${{ needs.make_slug.outputs.REF_SLUG }}
+#      globalEnv: review
+#      helmfileDir: deploy
+#      kubeConfigSecret: ci/data/dev/kubeconfig/k8s-dev
+#      vaultRole: ci-dev
+#    secrets: inherit
+
+name: Deploy Frontend
 
 on:
   push:
-    branches:
-      - main
-  workflow_dispatch:
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+    branches: [ "main" ]  # Используйте вашу основную ветку
 
 jobs:
-  publish_image:
-    name: Publish Docker image
-    uses: './.github/workflows/publish-image.yml'
-    secrets: inherit
+  build:
 
-  deploy_main:
-    name: Deploy frontend
-    needs: publish_image
-    uses: blockscout/blockscout-ci-cd/.github/workflows/deploy_helmfile.yaml@master
-    with:
-      appName: front
-      globalEnv: main
-      helmfileDir: deploy
-      kubeConfigSecret: ci/data/dev/kubeconfig/k8s-dev
-      vaultRole: ci-dev
-    secrets: inherit
+    runs-on: ubuntu-latest
 
-  deploy_l2:
-    name: Deploy frontend (L2)
-    needs: publish_image
-    uses: blockscout/blockscout-ci-cd/.github/workflows/deploy_helmfile.yaml@master
-    with:
-      appName: l2-optimism-goerli
-      globalEnv: optimism-goerli
-      helmfileDir: deploy
-      kubeConfigSecret: ci/data/dev/kubeconfig/k8s-dev
-      vaultRole: ci-dev
-    secrets: inherit
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Build and Push Docker Image
+        run: |
+          docker build --platform linux/amd64 --build-arg GIT_COMMIT_SHA=$(git rev-parse --short HEAD) --build-arg GIT_TAG=$(git describe --tags --abbrev=0) -t r8by/blockscout-frontend:blockscout-frontend .
+          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          docker push r8by/blockscout-frontend:blockscout-frontend
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh/
+          touch ~/.ssh/known_hosts
+          ssh-keyscan ${{ secrets.DEV_SERVER_HOST }} >> ~/.ssh/known_hosts
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 700 ~/.ssh/id_rsa
+          eval $(ssh-agent)
+
+      - name: Debug SSH Key
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > debug_key
+          cat debug_key
+
+      - name: SSH into Server and Deploy
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.DEV_SERVER_HOST }}
+          username: ${{ secrets.DEV_SERVER_USERNAME }}
+          password: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            docker pull r8by/blockscout-frontend:blockscout-frontend
+            docker stop blockscout-frontend || true
+            docker rm blockscout-frontend || true
+            docker run -d --name blockscout-frontend -p 127.0.0.1:8080:80 --env-file .env r8by/blockscout-frontend:blockscout-frontend
+#            docker run -d --name blockscout-frontend --env-file .env -p 80:80 r8by/blockscout-frontend:blockscout-frontend
