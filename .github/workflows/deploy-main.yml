@@ -138,7 +138,7 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          echo "${{ front.secrets.DOCKER_PASSWORD }}" | docker login -u ${{ front.secrets.DOCKER_USERNAME }} --password-stdin
+          echo "${{ secrets.front.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.front.DOCKER_USERNAME }} --password-stdin
           docker build --platform linux/amd64 --build-arg GIT_COMMIT_SHA=$(git rev-parse --short HEAD) --build-arg GIT_TAG=$(git describe --tags --abbrev=0) -t r8by/blockscout-frontend:blockscout-frontend .
           docker push r8by/blockscout-frontend:blockscout-frontend
 
