@@ -68,6 +68,14 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
     />
   ) : '-';
 
+  const getTxStatus = () => {
+    if (!tx.block && tx.error) {
+      return 'error';
+    } else {
+      return tx.status;
+    }
+  };
+
   return (
     <Tr
       as={ motion.tr }
@@ -95,7 +103,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
       <Td>
         <VStack alignItems="start">
           <TxType types={ tx.tx_types } isLoading={ isLoading }/>
-          <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
+          <TxStatus status={ getTxStatus() } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
           <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
         </VStack>
       </Td>
