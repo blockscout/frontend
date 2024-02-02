@@ -19,7 +19,7 @@ const GasInfoRow = ({ name, info }: Props) => {
 
     return (
       <>
-        <span>{ info.fiat_price ? `$${ info.fiat_price }` : `${ info.price } ${ currencyUnits.gwei }` }</span>
+        <span>{ info.fiat_price ? `${ info.fiat_price }` : `${ info.price } ${ currencyUnits.gwei }` }</span>
         { info.time && (
           <chakra.span color="text_secondary">
             { space }per tx { asymp } { (info.time / 1000).toLocaleString(undefined, { maximumFractionDigits: 1 }) }s
