@@ -70,7 +70,7 @@ const TokenTransferTableItem = ({
       </Td>
       { (token.type === 'ERC-721' || token.type === 'ERC-1155') && (
         <Td>
-          { 'token_id' in total ? (
+          { 'token_id' in total && total.token_id !== null ? (
             <NftEntity
               hash={ token.address }
               id={ total.token_id }
