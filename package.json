@@ -28,7 +28,7 @@
     "test:pw:ci": "yarn test:pw --project=$PW_PROJECT",
     "test:pw:detect-affected": "node ./deploy/tools/affected-tests/index.js",
     "test:jest": "jest",
-    "test:jest:watch": "jest",
+    "test:jest:watch": "jest --watch",
     "favicon:generate:dev": "./tools/scripts/favicon-generator.dev.sh"
   },
   "dependencies": {
@@ -71,7 +71,7 @@
     "graphql": "^16.8.1",
     "graphql-ws": "^5.11.3",
     "js-cookie": "^3.0.1",
-    "lodash": "^4.0.2",
+    "lodash": "^4.0.0",
     "mixpanel-browser": "^2.47.0",
     "monaco-editor": "^0.34.1",
     "next": "13.5.4",
@@ -82,7 +82,7 @@
     "phoenix": "^1.6.15",
     "pino-http": "^8.2.1",
     "pino-pretty": "^9.1.1",
-    "qrcode": "^1.5.2",
+    "qrcode": "^1.5.1",
     "react": "18.2.0",
     "react-device-detect": "^2.2.3",
     "react-dom": "18.2.0",

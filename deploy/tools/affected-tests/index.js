@@ -11,7 +11,7 @@ const TARGET_FILE = path.resolve(ROOT_DIR, './playwright/affected-tests.txt');
 const NON_EXISTENT_DEPS = [];
 
 const DIRECTORIES_WITH_TESTS = [
-  path.resolve(ROOT_DIR, './ui/shared'),
+  path.resolve(ROOT_DIR, './ui'),
 ];
 
 function getAllPwFilesInDirectory(directory) {
@@ -70,9 +70,9 @@ function checkChangesInSvgSprite(changedFiles) {
   }
 
   const svgNamesFile = path.resolve(ROOT_DIR, './public/icons/name.d.ts');
-  const isSvgNamesChanged = changedFiles.some((file) => file === svgNamesFile);
+  const areSvgNamesChanged = changedFiles.some((file) => file === svgNamesFile);
 
-  if (!isSvgNamesChanged) {
+  if (!areSvgNamesChanged) {
     // If only the icons have changed and not the names in the SVG file, we will need to run all tests.
     // This is because we cannot correctly identify the test files that depend on these changes.
     return true;
@@ -178,7 +178,6 @@ async function run() {
   const isDepChanged = (dep) => changedFiles.includes(dep) || changedNpmModules.some((module) => dep.startsWith(module));
 
   const testFilesToRun = allTestFiles
-    .slice(0, 10)
     .map((file) => ({ file, deps: getFileDeps(file, changedNpmModules) }))
     .filter(({ deps }) => deps.some(isDepChanged));
   const testFileNamesToRun = testFilesToRun.map(({ file }) => path.relative(ROOT_DIR, file));
