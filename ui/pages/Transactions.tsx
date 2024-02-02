@@ -84,7 +84,7 @@ const Transactions = () => {
   const pagination = router.query.tab === 'watchlist' ? txsWatchlistQuery.pagination : txsQuery.pagination;
 
   return (
-    <>
+    <div>
       <PageTitle title="Transactions" withTextAd/>
       <RoutedTabs
         tabs={ tabs }
@@ -94,7 +94,7 @@ const Transactions = () => {
         ) }
         stickyEnabled={ !isMobile }
       />
-    </>
+    </div>
   );
 };
 

@@ -91,11 +91,11 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
   }, [ updatedTruncateState ]);
 
   return (
-    <>
+    <div className="p-0 m-0">
       <BlankRasa2/>
       <Flex
         className={ className }
-        mb={ 6 }
+        mt={ 0 }
         flexDir="row"
         flexWrap="wrap"
         rowGap={ 3 }
@@ -146,7 +146,7 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
         { contentAfter }
         { withTextAd && <TextAd order={{ base: -1, lg: 100 }} mb={{ base: 6, lg: 0 }} ml="auto" w={{ base: '100%', lg: 'auto' }}/> }
       </Flex>
-    </>
+    </div>
   );
 };
 

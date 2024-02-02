@@ -8,9 +8,11 @@ const Transactions = dynamic(() => import('ui/pages/Transactions'), { ssr: false
 
 const Page: NextPage = () => {
   return (
-    <PageNextJs pathname="/txs">
-      <Transactions/>
-    </PageNextJs>
+    <div>
+      <PageNextJs pathname="/txs">
+        <Transactions/>
+      </PageNextJs>
+    </div>
   );
 };
 
