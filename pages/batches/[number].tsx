@@ -9,7 +9,7 @@ const ZkEvmL2TxnBatch = dynamic(() => import('ui/pages/ZkEvmL2TxnBatch'), { ssr:
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
-    <PageNextJs pathname="/zkevm-l2-txn-batch/[number]" query={ props }>
+    <PageNextJs pathname="/batches/[number]" query={ props }>
       <ZkEvmL2TxnBatch/>
     </PageNextJs>
   );
@@ -17,4 +17,4 @@ const Page: NextPage<Props> = (props: Props) => {
 
 export default Page;
 
-export { zkEvmL2 as getServerSideProps } from 'nextjs/getServerSideProps';
+export { zkEvmRollup as getServerSideProps } from 'nextjs/getServerSideProps';

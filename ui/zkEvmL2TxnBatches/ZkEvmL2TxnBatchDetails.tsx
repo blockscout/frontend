@@ -38,7 +38,7 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
     const increment = direction === 'next' ? +1 : -1;
     const nextId = String(data.number + increment);
 
-    router.push({ pathname: '/zkevm-l2-txn-batch/[number]', query: { number: nextId } }, undefined);
+    router.push({ pathname: '/batches/[number]', query: { number: nextId } }, undefined);
   }, [ data, router ]);
 
   if (isError) {
@@ -105,7 +105,7 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
         isLoading={ isPlaceholderData }
       >
         <Skeleton isLoaded={ !isPlaceholderData }>
-          <LinkInternal href={ route({ pathname: '/zkevm-l2-txn-batch/[number]', query: { number: data.number.toString(), tab: 'txs' } }) }>
+          <LinkInternal href={ route({ pathname: '/batches/[number]', query: { number: data.number.toString(), tab: 'txs' } }) }>
             { data.transactions.length } transaction{ data.transactions.length === 1 ? '' : 's' }
           </LinkInternal>
         </Skeleton>

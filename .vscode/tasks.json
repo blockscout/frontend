@@ -323,6 +323,7 @@
               "eth",
               "rootstock",
               "polygon",
+              "zkevm",
               "gnosis",
               "localhost",
             ],
