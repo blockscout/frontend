@@ -9,10 +9,10 @@ const BlankRasa2 = () => {
   return (
     <div className={ colorMode === 'light' ? 'relative bottom-5 w-full md:flex items-center bg-white shadow-md rounded-xl p-5 shadow-[#eeeeee] border border-[#fcfcfc] text-black' : 'relative bottom-5 w-full md:flex items-center bg-[#171717] shadow-lg rounded-xl p-5 shadow-[#0e2119] border border-none text-white' }>
       <div className="md:flex items-center md:gap-5">
-        <Image src="/static/logo2.png" width={ 300 } height={ 300 } alt="logo2" className={ colorMode === 'light' ? 'w-[100px] xl:w-[130px] 2xl:w-[150px]' : 'w-[100px] xl:w-[130px] 2xl:w-[150px] invert' } priority/>
+        <Image src="/static/logo2.png" width={ 300 } height={ 300 } alt="logo2" className={ colorMode === 'light' ? 'w-[100px] 2xl:w-[120px]' : 'w-[100px] 2xl:w-[120px] invert' } priority/>
         <div className="md:w-[60%]">
-          <h2 className="pt-3 pb-2  text-xl xl:text-2xl 2xl:text-3xl font-[600]">Blank Rasa</h2>
-          <p className={ colorMode === 'light' ? 'md:text-sm text-sm 2xl:text-xl text-[#616B74]' : 'md:text-sm text-sm 2xl:text-xl text-[#f2f2f2]' }>
+          <h2 className="pt-3 pb-2 text-xl 2xl:text-2xl font-[600]">Blank Rasa</h2>
+          <p className={ colorMode === 'light' ? 'text-sm 2xl:text-base text-[#616B74]' : 'text-sm 2xl:text-base text-[#f2f2f2]' }>
                 A platform for discovering and trading NFTs on Canto.
                 Features collections such as CantoLongneck, Shnoises and more
           </p>
