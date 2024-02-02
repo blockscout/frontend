@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import { SECOND } from 'lib/consts';
+import removeQueryParam from 'lib/router/removeQueryParam';
 
 type Props = {
   children: React.ReactNode;
@@ -29,14 +30,19 @@ const WalletTooltip = ({ children, isDisabled, isMobile }: Props) => {
   React.useEffect(() => {
     const wasShown = window.localStorage.getItem(localStorageKey);
     const isMarketplacePage = [ '/apps', '/apps/[id]' ].includes(router.pathname);
-    if (!isDisabled && !wasShown && isMarketplacePage) {
+    const isTooltipShowAction = router.query.action === 'tooltip';
+
+    if (!isDisabled && isMarketplacePage && (!wasShown || isTooltipShowAction)) {
       setTimeout(() => {
         setIsTooltipShown.on();
         window.localStorage.setItem(localStorageKey, 'true');
         setTimeout(() => setIsTooltipShown.off(), 5 * SECOND);
-      }, SECOND);
+        if (isTooltipShowAction) {
+          removeQueryParam(router, 'action');
+        }
+      }, isTooltipShowAction ? 0 : SECOND);
     }
-  }, [ setIsTooltipShown, localStorageKey, isDisabled, router.pathname ]);
+  }, [ setIsTooltipShown, localStorageKey, isDisabled, router ]);
 
   return (
     <Tooltip
