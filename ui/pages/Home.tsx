@@ -1,4 +1,4 @@
-import { Box, Heading, Flex } from '@chakra-ui/react';
+import { Box, Heading, Flex, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
@@ -13,11 +13,13 @@ import SearchBar from 'ui/snippets/searchBar/SearchBar';
 import WalletMenuDesktop from 'ui/snippets/walletMenu/WalletMenuDesktop';
 
 const Home = () => {
+  const textColor = useColorModeValue('gray.800', 'white');
   return (
     <Box as="main">
       <Box
         w="100%"
-        background={ config.UI.homepage.plate.background }
+        borderColor="orange.200"
+        borderWidth="1px"
         borderRadius="24px"
         padding={{ base: '24px', lg: '48px' }}
         minW={{ base: 'unset', lg: '900px' }}
@@ -29,7 +31,7 @@ const Home = () => {
             size={{ base: 'md', lg: 'xl' }}
             lineHeight={{ base: '32px', lg: '50px' }}
             fontWeight={ 600 }
-            color={ config.UI.homepage.plate.textColor }
+            color={ textColor }
           >
             { config.chain.name } explorer
           </Heading>

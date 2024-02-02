@@ -71,7 +71,8 @@ const ChainIndicators = () => {
     <Flex
       p={{ base: 0, lg: 8 }}
       borderRadius={{ base: 'none', lg: 'lg' }}
-      boxShadow={{ base: 'none', lg: 'xl' }}
+      borderWidth="1px"
+      borderColor="orange.200"
       bgColor={{ base: bgColorMobile, lg: bgColorDesktop }}
       columnGap={ 12 }
       rowGap={ 0 }
