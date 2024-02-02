@@ -1,3 +1,4 @@
+import '../styles/globals.css';
 import { useColorMode, type ChakraProps } from '@chakra-ui/react';
 import * as Sentry from '@sentry/react';
 import { QueryClientProvider } from '@tanstack/react-query';

@@ -1,4 +1,5 @@
 import { Box, Heading, Flex, LightMode } from '@chakra-ui/react';
+import BlankRasa1 from 'components/Home/Cards/BlankRasa1';
 import React from 'react';
 
 import config from 'configs/app';
@@ -40,7 +41,12 @@ const Home = () => {
         </LightMode>
       </Box>
       <Stats/>
-      <ChainIndicators/>
+      <div className="md:flex w-full gap-4">
+        <div className="w-full">
+          <ChainIndicators/>
+        </div>
+        <BlankRasa1/>
+      </div>
       <AdBanner mt={{ base: 6, lg: 8 }} mx="auto" display="flex" justifyContent="center"/>
       <Flex mt={ 8 } direction={{ base: 'column', lg: 'row' }} columnGap={ 12 } rowGap={ 8 }>
         <LatestBlocks/>
