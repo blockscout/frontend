@@ -12,6 +12,7 @@ import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPage
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import getNextSortValue from 'ui/shared/sort/getNextSortValue';
 
+import useDescribeTxs from './noves/useDescribeTxs';
 import TxsHeaderMobile from './TxsHeaderMobile';
 import TxsListItem from './TxsListItem';
 import TxsTable from './TxsTable';
@@ -68,7 +69,10 @@ const TxsContent = ({
 
   const translateEnabled = feature.isEnabled && feature.provider === 'noves';
 
-  const content = items ? (
+  // Same array of transactions as "items" with "translate" field added
+  const itemsWithTranslate = useDescribeTxs(items, translateEnabled);
+
+  const content = itemsWithTranslate ? (
     <>
       <Show below="lg" ssr={ false }>
         <Box>
@@ -80,7 +84,7 @@ const TxsContent = ({
               isLoading={ isPlaceholderData }
             />
           ) }
-          { items.map((tx, index) => (
+          { itemsWithTranslate.map((tx, index) => (
             <TxsListItem
               key={ tx.hash + (isPlaceholderData ? index : '') }
               tx={ tx }
@@ -88,14 +92,13 @@ const TxsContent = ({
               currentAddress={ currentAddress }
               enableTimeIncrement={ enableTimeIncrement }
               isLoading={ isPlaceholderData }
-              translateEnabled={ translateEnabled }
             />
           )) }
         </Box>
       </Show>
       <Hide below="lg" ssr={ false }>
         <TxsTable
-          txs={ items }
+          txs={ itemsWithTranslate }
           sort={ onSortToggle }
           sorting={ sort }
           showBlockInfo={ showBlockInfo }
@@ -106,7 +109,6 @@ const TxsContent = ({
           currentAddress={ currentAddress }
           enableTimeIncrement={ enableTimeIncrement }
           isLoading={ isPlaceholderData }
-          translateEnabled={ translateEnabled }
         />
       </Hide>
     </>

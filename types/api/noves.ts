@@ -103,3 +103,9 @@ export interface NovesDescribeResponse {
   type: string;
   description: string;
 }
+
+export interface NovesDescribeTxsResponse {
+  txHash: string;
+  type: string;
+  description: string;
+}[];

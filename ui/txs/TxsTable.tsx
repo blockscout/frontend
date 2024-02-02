@@ -2,17 +2,18 @@ import { Link, Table, Tbody, Tr, Th, Show, Hide } from '@chakra-ui/react';
 import { AnimatePresence } from 'framer-motion';
 import React from 'react';
 
-import type { Transaction, TransactionsSortingField, TransactionsSortingValue } from 'types/api/transaction';
+import type { TransactionsSortingField, TransactionsSortingValue } from 'types/api/transaction';
 
 import config from 'configs/app';
 import IconSvg from 'ui/shared/IconSvg';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import TheadSticky from 'ui/shared/TheadSticky';
 
+import type { TransactionWithTranslate } from './noves/useDescribeTxs';
 import TxsTableItem from './TxsTableItem';
 
 type Props = {
-  txs: Array<Transaction>;
+  txs: Array<TransactionWithTranslate>;
   sort: (field: TransactionsSortingField) => () => void;
   sorting?: TransactionsSortingValue;
   top: number;
@@ -23,7 +24,6 @@ type Props = {
   currentAddress?: string;
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
-  translateEnabled?: boolean;
 }
 
 const TxsTable = ({
@@ -38,7 +38,6 @@ const TxsTable = ({
   currentAddress,
   enableTimeIncrement,
   isLoading,
-  translateEnabled,
 }: Props) => {
   return (
     <Table variant="simple" minWidth="950px" size="xs">
@@ -95,7 +94,6 @@ const TxsTable = ({
               currentAddress={ currentAddress }
               enableTimeIncrement={ enableTimeIncrement }
               isLoading={ isLoading }
-              translateEnabled={ translateEnabled }
             />
           )) }
         </AnimatePresence>
