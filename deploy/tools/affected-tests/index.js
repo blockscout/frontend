@@ -21,12 +21,20 @@ function getAllPwFilesInDirectory(directory) {
     .map((file) => path.join(directory, file));
 }
 
-function getFileDeps(filename) {
+function getFileDeps(filename, changedNpmModules) {
   return dependencyTree.toList({
     filename,
     directory: ROOT_DIR,
     filter: (path) => {
-      return path.indexOf('node_modules') === -1;
+      if (path.indexOf('node_modules') === -1) {
+        return true;
+      }
+
+      if (changedNpmModules.some((module) => path.startsWith(module))) {
+        return true;
+      }
+
+      return false;
     },
     tsConfig: path.resolve(ROOT_DIR, './tsconfig.json'),
     nonExistent: NON_EXISTENT_DEPS,
@@ -77,13 +85,55 @@ function checkChangesInSvgSprite(changedFiles) {
 
 function createTargetFile(content) {
   fs.writeFileSync(TARGET_FILE, content);
+}
 
+function getPackageJsonUpdatedProps(packageJsonFile) {
+  const command = process.env.CI ?
+    `git diff --unified=0 origin/${ process.env.GITHUB_BASE_REF } ${ process.env.GITHUB_SHA } -- ${ packageJsonFile }` :
+    `git diff --unified=0 main $(git branch --show-current) -- ${ packageJsonFile }`;
+
+  console.log('Executing command: ', command);
+  const changedLines = execSync(command)
+    .toString()
+    .trim()
+    .split('\n')
+    .filter(Boolean)
+    .filter((line) => line.startsWith('+ ') || line.startsWith('- '));
+
+  const changedProps = [ ...new Set(
+    changedLines
+      .map((line) => line.replaceAll(' ', '').replaceAll('+', '').replaceAll('-', ''))
+      .map((line) => line.split(':')[0].replaceAll('"', '')),
+  ) ];
+
+  return changedProps;
+}
+
+function getUpdatedNpmModules(changedFiles) {
+  const packageJsonFile = path.resolve(ROOT_DIR, './package.json');
+
+  if (!changedFiles.includes(packageJsonFile)) {
+    return [];
+  }
+
+  try {
+    const packageJsonContent = JSON.parse(fs.readFileSync(packageJsonFile, 'utf-8'));
+    const usedNpmModules = [
+      ...Object.keys(packageJsonContent.dependencies || {}),
+      ...Object.keys(packageJsonContent.devDependencies || {}),
+    ];
+    const updatedProps = getPackageJsonUpdatedProps(packageJsonFile);
+
+    return updatedProps.filter((prop) => usedNpmModules.includes(prop));
+  } catch (error) {}
 }
 
 async function run() {
   // NOTES:
   // - The absence of TARGET_FILE implies that all tests should be run.
   // - The empty TARGET_FILE implies that no tests should be run.
+
+  const start = Date.now();
 
   fs.unlink(TARGET_FILE, () => {});
 
@@ -107,16 +157,30 @@ async function run() {
     return;
   }
 
-  const start = Date.now();
+  let changedNpmModules = getUpdatedNpmModules(changedFiles);
+
+  if (!changedNpmModules) {
+    console.log('Some error occurred while detecting changed NPM modules. It is advisable to run all test suites. Exiting...');
+    return;
+  }
+
+  console.log('Changed NPM modules in the branch: ', changedNpmModules);
+
+  changedNpmModules = [
+    ...changedNpmModules,
+    ...changedNpmModules.map((module) => `@types/${ module }`), // there are some deps that are resolved to .d.ts files
+  ].map((module) => path.resolve(ROOT_DIR, `./node_modules/${ module }`));
 
   const allTestFiles = DIRECTORIES_WITH_TESTS.reduce((acc, dir) => {
     return acc.concat(getAllPwFilesInDirectory(dir));
   }, []);
 
+  const isDepChanged = (dep) => changedFiles.includes(dep) || changedNpmModules.some((module) => dep.startsWith(module));
+
   const testFilesToRun = allTestFiles
     .slice(0, 10)
-    .map((file) => ({ file, deps: getFileDeps(file) }))
-    .filter(({ deps }) => deps.some((dep) => changedFiles.includes(dep)));
+    .map((file) => ({ file, deps: getFileDeps(file, changedNpmModules) }))
+    .filter(({ deps }) => deps.some(isDepChanged));
   const testFileNamesToRun = testFilesToRun.map(({ file }) => path.relative(ROOT_DIR, file));
 
   if (!testFileNamesToRun.length) {
@@ -125,13 +189,19 @@ async function run() {
     return;
   }
 
-  const end = Date.now();
-  console.log('Total time: ', ((end - start) / 1_000).toLocaleString());
-
-  console.log('Tests to run: ', testFileNamesToRun);
-  console.log('Non existent deps: ', NON_EXISTENT_DEPS);
-
   createTargetFile(testFileNamesToRun.join('\n'));
+
+  const end = Date.now();
+
+  const testFilesToRunWithFilteredDeps = testFilesToRun.map(({ file, deps }) => ({
+    file,
+    deps: deps.filter(isDepChanged),
+  }));
+
+  console.log('Total time: ', ((end - start) / 1_000).toLocaleString());
+  console.log('Total test to run: ', testFileNamesToRun.length);
+  console.log('Tests to run with changed deps: ', testFilesToRunWithFilteredDeps);
+  console.log('Non existent deps: ', NON_EXISTENT_DEPS);
 }
 
 run();

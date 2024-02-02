@@ -145,6 +145,7 @@ jobs:
         with:
           name: playwright-affected-tests
           path: ./playwright/affected-tests.txt
+          retention-days: 3
 
   pw_tests:
     name: 'Playwright tests / Project: ${{ matrix.project }}'
