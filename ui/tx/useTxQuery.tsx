@@ -27,19 +27,24 @@ export type TxQuery = UseQueryResult<Transaction, ResourceError<{ status: number
   };
 }
 
-export default function useTxQuery(): TxQuery {
+interface Params {
+  hash?: string;
+  isEnabled?: boolean;
+}
+
+export default function useTxQuery(params?: Params): TxQuery {
   const [ socketStatus, setSocketStatus ] = React.useState<'close' | 'error'>();
   const [ isRefetchEnabled, setRefetchEnabled ] = useBoolean(false);
 
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const hash = getQueryParamString(router.query.hash);
+  const hash = params?.hash ?? getQueryParamString(router.query.hash);
 
   const queryResult = useApiQuery<'tx', { status: number }>('tx', {
     pathParams: { hash },
     queryOptions: {
-      enabled: Boolean(hash),
+      enabled: Boolean(hash) && params?.isEnabled !== false,
       refetchOnMount: false,
       placeholderData: config.features.zkEvmRollup.isEnabled ? TX_ZKEVM_L2 : TX,
       retry: (failureCount, error) => {

@@ -1,6 +1,8 @@
 import { Box, Text } from '@chakra-ui/react';
 import React from 'react';
 
+import type { Log } from 'types/api/log';
+
 import { LOG } from 'stubs/log';
 import { generateListStub } from 'stubs/utils';
 import ActionBar from 'ui/shared/ActionBar';
@@ -15,9 +17,10 @@ import type { TxQuery } from './useTxQuery';
 
 interface Props {
   txQuery: TxQuery;
+  logsFilter?: (log: Log) => boolean;
 }
 
-const TxLogs = ({ txQuery }: Props) => {
+const TxLogs = ({ txQuery, logsFilter }: Props) => {
   const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
     resourceName: 'tx_logs',
     pathParams: { hash: txQuery.data?.hash },
@@ -35,7 +38,17 @@ const TxLogs = ({ txQuery }: Props) => {
     return <DataFetchAlert/>;
   }
 
-  if (!data?.items.length) {
+  let items: Array<Log> = [];
+
+  if (data?.items) {
+    if (isPlaceholderData) {
+      items = data?.items;
+    } else {
+      items = logsFilter ? data.items.filter(logsFilter) : data.items;
+    }
+  }
+
+  if (!items.length) {
     return <Text as="span">There are no logs for this transaction.</Text>;
   }
 
@@ -46,7 +59,7 @@ const TxLogs = ({ txQuery }: Props) => {
           <Pagination ml="auto" { ...pagination }/>
         </ActionBar>
       ) }
-      { data?.items.map((item, index) => <LogItem key={ index } { ...item } type="transaction" isLoading={ isPlaceholderData }/>) }
+      { items.map((item, index) => <LogItem key={ index } { ...item } type="transaction" isLoading={ isPlaceholderData }/>) }
     </Box>
   );
 };

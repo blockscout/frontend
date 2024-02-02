@@ -22,7 +22,6 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
-import dayjs from 'lib/date/dayjs';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
 import { currencyUnits } from 'lib/units';
@@ -32,6 +31,7 @@ import CurrencyValue from 'ui/shared/CurrencyValue';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
+import DetailsTimestamp from 'ui/shared/DetailsTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import ZkEvmBatchEntityL2 from 'ui/shared/entities/block/ZkEvmBatchEntityL2';
@@ -53,7 +53,6 @@ import TxDetailsWithdrawalStatus from 'ui/tx/details/TxDetailsWithdrawalStatus';
 import TxRevertReason from 'ui/tx/details/TxRevertReason';
 import TxAllowedPeekers from 'ui/tx/TxAllowedPeekers';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
-
 interface Props {
   data: Transaction | undefined;
   isLoading: boolean;
@@ -213,10 +212,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           hint="Date & time of transaction inclusion, including length of time for confirmation"
           isLoading={ isLoading }
         >
-          <IconSvg name="clock" boxSize={ 5 } color="gray.500" isLoading={ isLoading }/>
-          <Skeleton isLoaded={ !isLoading } ml={ 2 }>{ dayjs(data.timestamp).fromNow() }</Skeleton>
-          <TextSeparator/>
-          <Skeleton isLoaded={ !isLoading } whiteSpace="normal">{ dayjs(data.timestamp).format('llll') }</Skeleton>
+          <DetailsTimestamp timestamp={ data.timestamp } isLoading={ isLoading }/>
           { data.confirmation_duration && (
             <>
               <TextSeparator color="gray.500"/>

@@ -10,7 +10,6 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import getBlockReward from 'lib/block/getBlockReward';
 import { GWEI, WEI, WEI_IN_GWEI, ZERO } from 'lib/consts';
-import dayjs from 'lib/date/dayjs';
 import { space } from 'lib/html-entities';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -18,6 +17,7 @@ import { currencyUnits } from 'lib/units';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
+import DetailsTimestamp from 'ui/shared/DetailsTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
@@ -164,14 +164,7 @@ const BlockDetails = ({ query }: Props) => {
         hint="Date & time at which block was produced."
         isLoading={ isPlaceholderData }
       >
-        <IconSvg name="clock" boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
-        <Skeleton isLoaded={ !isPlaceholderData } ml={ 1 }>
-          { dayjs(data.timestamp).fromNow() }
-        </Skeleton>
-        <TextSeparator/>
-        <Skeleton isLoaded={ !isPlaceholderData } whiteSpace="normal">
-          { dayjs(data.timestamp).format('llll') }
-        </Skeleton>
+        <DetailsTimestamp timestamp={ data.timestamp } isLoading={ isPlaceholderData }/>
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Transactions"

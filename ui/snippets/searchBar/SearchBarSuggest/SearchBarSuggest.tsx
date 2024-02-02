@@ -111,11 +111,11 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
       return <Text>Something went wrong. Try refreshing the page or come back later.</Text>;
     }
 
-    if (!query.data || query.data.length === 0) {
+    const resultCategories = searchCategories.filter(cat => itemsGroups[cat.id]);
+
+    if (resultCategories.length === 0) {
       return <Text>No results found.</Text>;
     }
-
-    const resultCategories = searchCategories.filter(cat => itemsGroups[cat.id]);
 
     return (
       <>

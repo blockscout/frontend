@@ -1,4 +1,12 @@
-import type { SearchResultToken, SearchResultBlock, SearchResultAddressOrContract, SearchResultTx, SearchResultLabel, SearchResult } from 'types/api/search';
+import type {
+  SearchResultToken,
+  SearchResultBlock,
+  SearchResultAddressOrContract,
+  SearchResultTx,
+  SearchResultLabel,
+  SearchResult,
+  SearchResultUserOp,
+} from 'types/api/search';
 
 export const token1: SearchResultToken = {
   address: '0x377c5F2B300B25a534d4639177873b7fEAA56d4B',
@@ -99,6 +107,13 @@ export const tx1: SearchResultTx = {
   type: 'transaction' as const,
   timestamp: '2022-12-11T17:55:20Z',
   url: '/tx/0x349d4025d03c6faec117ee10ac0bce7c7a805dd2cbff7a9f101304d9a8a525dd',
+};
+
+export const userOp1: SearchResultUserOp = {
+  timestamp: '2024-01-11T14:15:48.000000Z',
+  type: 'user_operation',
+  user_operation_hash: '0xcb560d77b0f3af074fa05c1e5c691bcdfe457e630062b5907e9e71fc74b2ec61',
+  url: '/op/0xcb560d77b0f3af074fa05c1e5c691bcdfe457e630062b5907e9e71fc74b2ec61',
 };
 
 export const baseResponse: SearchResult = {

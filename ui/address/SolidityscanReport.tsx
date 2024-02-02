@@ -112,7 +112,7 @@ const SolidityscanReport = ({ className, hash }: Props) => {
   return (
     <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
       <PopoverTrigger>
-        <Skeleton isLoaded={ !isPlaceholderData }>
+        <Skeleton isLoaded={ !isPlaceholderData } borderRadius="base">
           <Button
             className={ className }
             color={ scoreColor }
@@ -122,7 +122,7 @@ const SolidityscanReport = ({ className, hash }: Props) => {
             onClick={ onToggle }
             aria-label="SolidityScan score"
             fontWeight={ 500 }
-            px={ 2 }
+            px="6px"
             h="32px"
             flexShrink={ 0 }
           >

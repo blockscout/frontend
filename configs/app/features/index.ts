@@ -20,6 +20,7 @@ export { default as sol2uml } from './sol2uml';
 export { default as stats } from './stats';
 export { default as suave } from './suave';
 export { default as txInterpretation } from './txInterpretation';
-export { default as web3Wallet } from './web3Wallet';
+export { default as userOps } from './userOps';
 export { default as verifiedTokens } from './verifiedTokens';
+export { default as web3Wallet } from './web3Wallet';
 export { default as zkEvmRollup } from './zkEvmRollup';

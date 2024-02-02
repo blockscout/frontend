@@ -80,7 +80,7 @@ const NameDomain = () => {
   return (
     <>
       <TextAd mb={ 6 }/>
-      <PageTitle title="ENS Domain details" secondRow={ titleSecondRow }/>
+      <PageTitle title="Name details" secondRow={ titleSecondRow }/>
       { infoQuery.isPlaceholderData ? (
         <>
           <TabsSkeleton tabs={ tabs } mt={ 6 }/>

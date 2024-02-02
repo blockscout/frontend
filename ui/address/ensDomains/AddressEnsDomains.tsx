@@ -1,4 +1,4 @@
-import { Button, chakra, Flex, Grid, Popover, PopoverBody, PopoverContent, PopoverTrigger, Skeleton, useDisclosure } from '@chakra-ui/react';
+import { Button, chakra, Flex, Grid, Hide, Popover, PopoverBody, PopoverContent, PopoverTrigger, Show, Skeleton, useDisclosure } from '@chakra-ui/react';
 import _clamp from 'lodash/clamp';
 import React from 'react';
 
@@ -50,7 +50,7 @@ const AddressEnsDomains = ({ addressHash, mainDomainName }: Props) => {
   }
 
   if (isPending) {
-    return <Skeleton h={ 8 } w={{ base: '60px', lg: '120px' }} borderRadius="base"/>;
+    return <Skeleton h={ 8 } w={{ base: '50px', xl: '120px' }} borderRadius="base"/>;
   }
 
   if (data.items.length === 0) {
@@ -95,15 +95,19 @@ const AddressEnsDomains = ({ addressHash, mainDomainName }: Props) => {
           variant="outline"
           colorScheme="gray"
           onClick={ onToggle }
-          aria-label="Address ENS domains"
+          aria-label="Address domains"
           fontWeight={ 500 }
           px={ 2 }
           h="32px"
           flexShrink={ 0 }
         >
           <IconSvg name="ENS_slim" boxSize={ 5 }/>
-          <chakra.span ml={ 1 } display={{ base: 'none', lg: 'block' }}>{ totalRecords } Domain{ data.items.length > 1 ? 's' : '' }</chakra.span>
-          <IconSvg name="arrows/east-mini" transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 }/>
+          <Show above="xl">
+            <chakra.span ml={ 1 }>{ totalRecords } Domain{ data.items.length > 1 ? 's' : '' }</chakra.span>
+          </Show>
+          <Hide above="xl">
+            <chakra.span ml={ 1 }>{ totalRecords }</chakra.span>
+          </Hide>
         </Button>
       </PopoverTrigger>
       <PopoverContent w={{ base: '100vw', lg: '500px' }}>

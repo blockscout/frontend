@@ -35,6 +35,8 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/output-roots': 'Output roots',
   '/batches': 'Tx batches (L2 blocks)',
   '/batches/[number]': 'L2 tx batch details',
+  '/ops': 'User operations',
+  '/op/[hash]': 'User operation details',
   '/404': '404',
   '/name-domains': 'Domains search and resolve',
   '/name-domains/[name]': 'Domain details',
