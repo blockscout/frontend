@@ -11,6 +11,7 @@ const chain = Object.freeze({
     weiName: getEnvValue('NEXT_PUBLIC_NETWORK_CURRENCY_WEI_NAME'),
     symbol: getEnvValue('NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL'),
     decimals: Number(getEnvValue('NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS')) || DEFAULT_CURRENCY_DECIMALS,
+    image: getEnvValue('NEXT_PUBLIC_NETWORK_CURRENCY_IMAGE_URL'),
   },
   governanceToken: {
     symbol: getEnvValue('NEXT_PUBLIC_NETWORK_GOVERNANCE_TOKEN_SYMBOL'),
