@@ -48,7 +48,7 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
   const { data: describeData, isLoading: isDescribeLoading } = useApiQuery('noves_describe_tx', {
     pathParams: { hash: tx.hash },
     queryOptions: {
-      enabled: tx.translate.enabled,
+      enabled: Boolean(tx.translate?.enabled),
     },
   });
   //

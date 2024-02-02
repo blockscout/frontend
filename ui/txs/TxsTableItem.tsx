@@ -49,7 +49,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
   const { data: describeData, isLoading: isDescribeLoading } = useApiQuery('noves_describe_tx', {
     pathParams: { hash: tx.hash },
     queryOptions: {
-      enabled: tx.translate.enabled,
+      enabled: Boolean(tx.translate?.enabled),
     },
   });
   //

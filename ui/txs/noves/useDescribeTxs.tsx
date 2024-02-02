@@ -15,7 +15,7 @@ export interface DescribeTxs {
 }
 
 export interface TransactionWithTranslate extends Transaction {
-  translate: DescribeTxs;
+  translate?: DescribeTxs;
 }
 
 export default function useDescribeTxs(items: Array<Transaction> | undefined, translateEnabled: boolean) {

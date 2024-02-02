@@ -3,7 +3,7 @@ import React from 'react';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
-import { NOVES_TRANSLATE } from 'stubs/noves/novestranslate';
+import { NOVES_TRANSLATE } from 'stubs/noves/novesTranslate';
 import { TX_INTERPRETATION } from 'stubs/txInterpretation';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
