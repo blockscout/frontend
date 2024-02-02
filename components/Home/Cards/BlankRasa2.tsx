@@ -7,7 +7,7 @@ const BlankRasa2 = () => {
   const { colorMode } = useColorMode();
 
   return (
-    <div className={ colorMode === 'light' ? 'relative bottom-5 w-full md:flex items-center bg-white shadow-md rounded-xl p-5 shadow-[#eeeeee] border border-[#fcfcfc] text-black' : 'w-full md:flex items-center bg-[#171717] shadow-lg rounded-xl p-5 shadow-[#0e2119] border border-none text-white' }>
+    <div className={ colorMode === 'light' ? 'relative bottom-5 w-full md:flex items-center bg-white shadow-md rounded-xl p-5 shadow-[#eeeeee] border border-[#fcfcfc] text-black' : 'relative bottom-5 w-full md:flex items-center bg-[#171717] shadow-lg rounded-xl p-5 shadow-[#0e2119] border border-none text-white' }>
       <div className="md:flex items-center md:gap-5">
         <Image src="/static/logo2.png" width={ 300 } height={ 300 } alt="logo2" className={ colorMode === 'light' ? 'w-[100px] xl:w-[130px] 2xl:w-[150px]' : 'w-[100px] xl:w-[130px] 2xl:w-[150px] invert' } priority/>
         <div className="md:w-[60%]">
