@@ -163,6 +163,7 @@ jobs:
     name: 'Playwright tests / Project: ${{ matrix.project }}'
     needs: [ code_quality, envs_validation, pw_affected_tests ]
     if: |
+      always() &&
       needs.code_quality.result == 'success' && 
       needs.envs_validation.result == 'success' && 
       (needs.pw_affected_tests.result == 'success' || needs.pw_affected_tests.result == 'skipped') 
