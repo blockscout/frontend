@@ -22,24 +22,23 @@ interface Props {
 const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHide, onClear, value }: Props, ref: React.ForwardedRef<HTMLFormElement>) => {
   const innerRef = React.useRef<HTMLFormElement>(null);
   React.useImperativeHandle(ref, () => innerRef.current as HTMLFormElement, []);
-  const [ isSticky, setIsSticky ] = React.useState(false);
   const scrollDirection = useScrollDirection();
   const isMobile = useIsMobile();
 
   const handleScroll = React.useCallback(() => {
     const TOP_BAR_HEIGHT = 36;
-    if (!isHomepage) {
-      if (window.scrollY >= TOP_BAR_HEIGHT) {
-        setIsSticky(true);
-      } else {
-        setIsSticky(false);
-      }
-    }
+    // if (!isHomepage) {
+    //   if (window.scrollY >= TOP_BAR_HEIGHT) {
+    //     setIsSticky(true);
+    //   } else {
+    //     setIsSticky(false);
+    //   }
+    // }
     const clientRect = isMobile && innerRef?.current?.getBoundingClientRect();
     if (clientRect && clientRect.y < TOP_BAR_HEIGHT) {
       onHide?.();
     }
-  }, [ isMobile, onHide, isHomepage ]);
+  }, [ isMobile, onHide ]);
 
   const handleChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
     onChange(event.target.value);
@@ -58,7 +57,7 @@ const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHid
     };
   }, [ isMobile, handleScroll ]);
 
-  const bgColor = useColorModeValue('white', 'black');
+  const bgColor = useColorModeValue('orange.200', 'black');
   const transformMobile = scrollDirection !== 'down' ? 'translateY(0)' : 'translateY(-100%)';
 
   return (
@@ -78,7 +77,6 @@ const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHid
       paddingX={{ base: isHomepage ? 0 : 4, lg: 0 }}
       paddingTop={{ base: isHomepage ? 0 : 1, lg: 0 }}
       paddingBottom={{ base: isHomepage ? 0 : 4, lg: 0 }}
-      boxShadow={ scrollDirection !== 'down' && isSticky ? 'md' : 'none' }
       transform={{ base: isHomepage ? 'none' : transformMobile, lg: 'none' }}
       transitionProperty="transform,box-shadow,background-color,color,border-color"
       transitionDuration="normal"
@@ -101,8 +99,7 @@ const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHid
           }}
           placeholder={ isMobile ? 'Search by address / ... ' : 'Search by address / txn hash / block / token... ' }
           onChange={ handleChange }
-          border={ isHomepage ? 'none' : '2px solid' }
-          borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
+          border="none"
           _focusWithin={{ _placeholder: { color: 'gray.300' } }}
           color={ useColorModeValue('black', 'white') }
           value={ value }

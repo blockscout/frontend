@@ -91,6 +91,7 @@ const TopBarStats = () => {
           >
             <Link
               _hover={{ textDecoration: 'none', color: 'link_hovered' }}
+              color="orange.500"
               onClick={ handleClick }
               onMouseEnter={ onOpen }
               onMouseLeave={ onClose }
