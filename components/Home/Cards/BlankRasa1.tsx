@@ -16,7 +16,7 @@ const BlankRasa1 = () => {
       </p>
       <div>
         <a className="block mt-2" href="https://www.blankrasa.com" target="_blank" referrerPolicy="no-referrer">
-          <button className={ colorMode === 'light' ? 'rounded-md text-base p-2 border border-[#3CAD71] text-[#3CAD71] font-[500] w-full hover:bg-[#3CAD71] hover:text-[#fff] transition-all duration-300 hover:border-[#3CAD71]' : 'rounded-md text-base p-2 border border-[#3CAD71] text-[#3CAD71] font-[500] w-full hover:bg-[#3CAD71] hover:text-[#000] transition-all duration-300 hover:border-[#3CAD71]' }>Explore More</button>
+          <button className={ colorMode === 'light' ? 'rounded-md text-base p-2 border border-[#3CAD71] text-[#3CAD71] font-[500] w-full hover:bg-[#3CAD71] hover:text-[#fff] transition-all duration-300 hover:border-[#3CAD71]' : 'rounded-md text-base p-2 border border-[#3CAD71] text-[#3CAD71]  font-[500] w-full hover:bg-[#3CAD71] hover:text-[#000] transition-all duration-300 hover:border-[#3CAD71]' }>Explore More</button>
         </a>
       </div>
     </div>
