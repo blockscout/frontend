@@ -10,6 +10,7 @@ import dayjs from 'lib/date/dayjs';
 import hexToDecimal from 'lib/hexToDecimal';
 import { publicClient } from 'lib/web3/client';
 import { GET_BLOCK, GET_TRANSACTION, GET_TRANSACTION_RECEIPT, GET_TRANSACTION_CONFIRMATIONS } from 'stubs/RPC';
+import { unknownAddress } from 'ui/shared/address/utils';
 import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
 import TestnetWarning from 'ui/shared/alerts/TestnetWarning';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
@@ -66,16 +67,6 @@ const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
       })();
 
       const gasPrice = txReceipt?.effectiveGasPrice ?? tx.gasPrice;
-      const unknownAddress = {
-        is_contract: false,
-        is_verified: false,
-        implementation_name: '',
-        name: '',
-        private_tags: [],
-        public_tags: [],
-        watchlist_names: [],
-        ens_domain_name: null,
-      };
 
       return {
         from: { ...unknownAddress, hash: tx.from as string },
