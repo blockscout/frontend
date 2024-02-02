@@ -120,7 +120,7 @@ jobs:
   pw_affected_tests:
     name: Resolve affected Playwright tests
     runs-on: ubuntu-latest
-    # needs: [ code_quality, envs_validation ]
+    needs: [ code_quality, envs_validation ]
     if: github.event_name == 'pull_request'
     steps:
       - name: Checkout repo
@@ -161,7 +161,8 @@ jobs:
 
   pw_tests:
     name: 'Playwright tests / Project: ${{ matrix.project }}'
-    needs: [ pw_affected_tests ]
+    needs: [ code_quality, envs_validation, pw_affected_tests ]
+    if: ${{ !failure() }}
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.41.1-focal
