@@ -51,8 +51,12 @@ get_files_to_run() {
       affected_tests_file="./playwright/affected-tests.txt"
 
       if [ -f "$affected_tests_file" ]; then
-          file_content=$(<"$affected_tests_file")
-          files_to_run="${file_content//$'\n'/$' '}"
+            file_content=$(<"$affected_tests_file")
+            files_to_run="${file_content//$'\n'/$' '}"
+
+            if [ -z "$files_to_run" ]; then
+                exit 1
+            fi
       fi
   fi
 
@@ -62,6 +66,10 @@ get_files_to_run() {
 args=$(filter_arguments "$@")
 affected_flag=$(check_affected_flag "$@")
 files_to_run=$(get_files_to_run "$affected_flag")
+if [ $? -eq 1 ]; then
+    echo "No affected tests found in the file. Exiting..."
+    exit 0
+fi
 
 echo "Running Playwright tests with the following arguments: $args"
 echo "Affected flag: $affected_flag"
