@@ -53,8 +53,6 @@ get_files_to_run() {
       if [ -f "$affected_tests_file" ]; then
           file_content=$(<"$affected_tests_file")
           files_to_run="${file_content//$'\n'/$' '}"
-      else 
-          echo "No affected tests found. Running all tests."
       fi
   fi
 
@@ -64,8 +62,6 @@ get_files_to_run() {
 args=$(filter_arguments "$@")
 affected_flag=$(check_affected_flag "$@")
 files_to_run=$(get_files_to_run "$affected_flag")
-
-ls ./playwright
 
 echo "Running Playwright tests with the following arguments: $args"
 echo "Affected flag: $affected_flag"
