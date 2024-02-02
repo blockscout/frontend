@@ -305,7 +305,7 @@
             "options": [
               "",
               "--update-snapshots",
-              "--affected",
+              "--update-snapshots --affected",
               "--ui",
             ],
             "default": ""
