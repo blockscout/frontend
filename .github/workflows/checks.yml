@@ -134,11 +134,23 @@ jobs:
           node-version: 20.11.0
           cache: 'yarn'
 
-      - name: Install dependencies and 
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        id: cache-node-modules
+        with:
+          path: |
+            node_modules
+          key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+      
+      - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: yarn --frozen-lockfile --ignore-optional
+
+      - name: Install script dependencies 
         run: cd ./deploy/tools/affected-tests && yarn --frozen-lockfile
       
       - name: Run script
-        run: node ./deploy/tools/affected-tests/index.js
+        run: yarn test:pw:detect-affected
 
       - name: Upload result file
         uses: actions/upload-artifact@v4
