@@ -97,7 +97,7 @@ const Footer = () => {
         <Text mt={ 3 } fontSize="xs">
           Bool Scan is a Block Explorer and Analytics Platform for the Bool Network.
         </Text>
-        <VStack spacing={ 1 } mt={ 6 } alignItems="start">
+        {/* <VStack spacing={ 1 } mt={ 6 } alignItems="start">
           { apiVersionUrl && (
             <Text fontSize="xs">
               Backend: <Link href={ apiVersionUrl } target="_blank">{ backendVersionData?.backend_version }</Link>
@@ -108,7 +108,7 @@ const Footer = () => {
               Frontend: { frontendLink }
             </Text>
           ) }
-        </VStack>
+        </VStack> */}
       </Box>
     );
   }, [ apiVersionUrl, backendVersionData?.backend_version, frontendLink ]);
