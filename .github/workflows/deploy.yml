@@ -1,0 +1,49 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    environment: main
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Create Image Tarball
+        run: |
+          docker build --build-arg GIT_COMMIT_SHA=$(git rev-parse --short HEAD) --build-arg GIT_TAG=$(git describe --tags --abbrev=0) -t explorer-frontend .
+          docker save -o explorer-frontend.tar explorer-frontend
+          mkdir -p artifacts
+          mv explorer-frontend.tar artifacts/
+          
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh/
+          touch ~/.ssh/known_hosts
+          ssh-keyscan ${{ secrets.EXPLORER_HOST }} >> ~/.ssh/known_hosts
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          eval $(ssh-agent)
+
+      - name: Copy Files to Server
+        run: |
+          scp -r artifacts/* ${{ secrets.HOST_USER}}@${{ secrets.EXPLORER_HOST }}:/blockscout/
+          scp deploy/* ${{ secrets.HOST_USER}}@${{ secrets.EXPLORER_HOST }}:/blockscout/
+
+
+      - name: SSH into Server and Deploy
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EXPLORER_HOST }}
+          username: ${{ secrets.EXPLORER_HOST }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /blockscout
+            docker load -i explorer_frontend.tar
+            docker-compose down
+            docker-compose pull
+            docker-compose up -d --build --remove-orphans
