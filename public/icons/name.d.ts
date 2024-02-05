@@ -116,6 +116,7 @@
 	| "status/warning"
 	| "sun"
 	| "testnet"
+	| "devnet"
 	| "token-placeholder"
 	| "token"
 	| "tokens"

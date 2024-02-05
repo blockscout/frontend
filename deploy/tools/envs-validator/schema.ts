@@ -350,8 +350,8 @@ const schema = yup
     NEXT_PUBLIC_NETWORK_GOVERNANCE_TOKEN_SYMBOL: yup.string(),
     NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE: yup.string<NetworkVerificationType>().oneOf([ 'validation', 'mining' ]),
     NEXT_PUBLIC_IS_TESTNET: yup.boolean(),
+    NEXT_PUBLIC_IS_DEVNET: yup.boolean(),
     NEXT_PUBLIC_NETWORK_CURRENCY_IMAGE_URL: yup.string(),
-
     // 3. API configuration
     NEXT_PUBLIC_API_PROTOCOL: yup.string().oneOf(protocols),
     NEXT_PUBLIC_API_HOST: yup.string().required(),
@@ -370,6 +370,7 @@ const schema = yup
     NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND: yup.string(),
     NEXT_PUBLIC_HOMEPAGE_SHOW_GAS_TRACKER: yup.boolean(),
     NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME: yup.boolean(),
+    NEXT_PUBLIC_HOMEPAGE_TX_ICON: yup.string(),
 
     //     b. sidebar
     NEXT_PUBLIC_FEATURED_NETWORKS: yup

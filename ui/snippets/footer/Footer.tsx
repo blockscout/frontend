@@ -89,7 +89,7 @@ const Footer = () => {
     return (
       <Box gridArea={ gridArea }>
         <HStack spacing={ 1 }>
-          <Image src="/favicon/favicon-32x32.png" alt="Bool Scan" unoptimized width={ 30 } height={ 30 }/>
+          <Image src="/favicon/favicon-footer.png" alt="Bool Scan" unoptimized width={ 30 } height={ 30 }/>
           <Text fontSize="md">
               Powered by <Link fontSize="md" href="https://bool.network">Bool Network</Link>
           </Text>

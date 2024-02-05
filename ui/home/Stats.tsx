@@ -55,12 +55,12 @@ const Stats = () => {
     const gasLabel = hasGasTracker && data.gas_prices ? <GasInfoTooltipContent data={ data } dataUpdatedAt={ dataUpdatedAt }/> : null;
 
     const gasPriceText = (() => {
-      if (data.gas_prices?.average?.fiat_price) {
-        return `$${ data.gas_prices.average.fiat_price }`;
-      }
+      // if (data.gas_prices?.average?.fiat_price) {
+      //   return `$${ data.gas_prices.average.fiat_price }`;
+      // }
 
       if (data.gas_prices?.average?.price) {
-        return `${ data.gas_prices.average.price.toLocaleString() } ${ currencyUnits.gwei }`;
+        return  data.gas_prices.average.price.toLocaleString() + '' + currencyUnits.gwei ;
       }
 
       return 'N/A';

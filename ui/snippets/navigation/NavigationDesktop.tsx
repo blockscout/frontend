@@ -46,6 +46,8 @@ const NavigationDesktop = () => {
 
   const isExpanded = isCollapsed === false;
 
+
+
   return (
     <Flex
       display={{ base: 'none', lg: 'flex' }}
@@ -65,6 +67,7 @@ const NavigationDesktop = () => {
       }}
     >
       { config.chain.isTestnet && <IconSvg name="testnet" h="14px" w="49px" color="red.400" position="absolute" pl={ 3 } top="34px"/> }
+      { config.chain.isDevNet && <IconSvg name="devnet" h="14px" w="49px" color="red.400" position="absolute" pl={ 3 } top="34px"/> }
       <Box
         as="header"
         display="flex"

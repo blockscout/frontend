@@ -51,6 +51,7 @@ const UI = Object.freeze({
     },
     showGasTracker: getEnvValue('NEXT_PUBLIC_HOMEPAGE_SHOW_GAS_TRACKER') === 'false' ? false : true,
     showAvgBlockTime: getEnvValue('NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME') === 'false' ? false : true,
+    txIcoin: getEnvValue('NEXT_PUBLIC_HOMEPAGE_TX_ICON'),
   },
   views,
   indexingAlert: {
