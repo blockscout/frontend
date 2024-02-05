@@ -17,7 +17,7 @@ import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
-import { extractVariables, getStringChunks, NATIVE_COIN_SYMBOL_VAR_NAME } from './utils';
+import { extractVariables, getStringChunks, fillStringVariables, NATIVE_COIN_SYMBOL_VAR_NAME } from './utils';
 
 type Props = {
   summary?: TxInterpretationSummary;
@@ -48,7 +48,7 @@ const TxInterpretationElementByType = ({ variable }: { variable?: NonStringTxInt
   switch (type) {
     case 'address': {
       return (
-        <chakra.span display="inline-block" verticalAlign="top" sx={{ ':not(:first-child)': { marginLeft: 1 } }}>
+        <chakra.span display="inline-block" verticalAlign="top" _notFirst={{ marginLeft: 1 }}>
           <AddressEntity
             address={ value }
             truncation="constant"
@@ -60,13 +60,13 @@ const TxInterpretationElementByType = ({ variable }: { variable?: NonStringTxInt
     }
     case 'token':
       return (
-        <chakra.span display="inline-block" verticalAlign="top" sx={{ ':not(:first-child)': { marginLeft: 1 } }}>
+        <chakra.span display="inline-block" verticalAlign="top" _notFirst={{ marginLeft: 1 }}>
           <TokenEntity
             token={ value }
             onlySymbol
             noCopy
             width="fit-content"
-            sx={{ ':not(:first-child)': { marginLeft: 1 } }}
+            _notFirst={{ marginLeft: 1 }}
             mr={ 2 }
             whiteSpace="initial"
             onClick={ onTokenClick }
@@ -76,11 +76,11 @@ const TxInterpretationElementByType = ({ variable }: { variable?: NonStringTxInt
     case 'domain': {
       if (config.features.nameService.isEnabled) {
         return (
-          <chakra.span display="inline-block" verticalAlign="top" sx={{ ':not(:first-child)': { marginLeft: 1 } }}>
+          <chakra.span display="inline-block" verticalAlign="top" _notFirst={{ marginLeft: 1 }}>
             <EnsEntity
               name={ value }
               width="fit-content"
-              sx={{ ':not(:first-child)': { marginLeft: 1 } }}
+              _notFirst={{ marginLeft: 1 }}
               whiteSpace="initial"
               onClick={ onDomainClick }
             />
@@ -116,14 +116,7 @@ const TxInterpretation = ({ summary, isLoading, className }: Props) => {
   const template = summary.summary_template;
   const variables = summary.summary_template_variables;
 
-  const variablesNamesInitial = extractVariables(template);
-
-  let intermediateResult = template;
-  variablesNamesInitial.forEach(name => {
-    if (variables[name] && variables[name].type === 'string') {
-      intermediateResult = intermediateResult.replace(`{${ name }}`, variables[name].value as string);
-    }
-  });
+  const intermediateResult = fillStringVariables(template, variables);
 
   const variablesNames = extractVariables(intermediateResult);
   const chunks = getStringChunks(intermediateResult);

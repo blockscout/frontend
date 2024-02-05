@@ -1,4 +1,7 @@
 // we use that regex as a separator when splitting template and dont want to capture variables
+
+import type { TxInterpretationVariable } from 'types/api/txInterpretation';
+
 // eslint-disable-next-line regexp/no-useless-non-capturing-group
 export const VAR_REGEXP = /\{(?:[^}]+)\}/g;
 
@@ -15,4 +18,17 @@ export function extractVariables(templateString: string) {
 
 export function getStringChunks(template: string) {
   return template.split(VAR_REGEXP);
+}
+
+export function fillStringVariables(template: string, variables: Record<string, TxInterpretationVariable>) {
+  const variablesNames = extractVariables(template);
+
+  let result = template;
+  variablesNames.forEach(name => {
+    if (variables[name] && variables[name].type === 'string') {
+      result = result.replace(`{${ name }}`, variables[name].value as string);
+    }
+  });
+
+  return result;
 }
