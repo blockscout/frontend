@@ -7,9 +7,11 @@ interface Props {
 
 const Content = ({ children }: Props) => {
   return (
-    <Box pt={{ base: 0, lg: '52px' }} as="main">
-      { children }
-    </Box>
+    <div className="bg-">
+      <Box pt={{ base: 0, lg: '20px' }} as="main">
+        { children }
+      </Box>
+    </div>
   );
 };
 

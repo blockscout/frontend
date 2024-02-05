@@ -41,7 +41,7 @@ const Home = () => {
         </LightMode>
       </Box>
       <Stats/>
-      <div className="md:flex w-full gap-4">
+      <div className="md:flex w-full gap-8">
         <div className="w-full">
           <ChainIndicators/>
         </div>

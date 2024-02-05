@@ -95,7 +95,7 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
       <BlankRasa2/>
       <Flex
         className={ className }
-        mt={ 0 }
+        mb={ 4 }
         flexDir="row"
         flexWrap="wrap"
         rowGap={ 3 }
