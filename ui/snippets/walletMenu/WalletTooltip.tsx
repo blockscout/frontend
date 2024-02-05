@@ -31,8 +31,10 @@ const WalletTooltip = ({ children, isDisabled, isMobile }: Props) => {
     const wasShown = window.localStorage.getItem(localStorageKey);
     const isMarketplacePage = [ '/apps', '/apps/[id]' ].includes(router.pathname);
     const isTooltipShowAction = router.query.action === 'tooltip';
+    const isConnectWalletAction = router.query.action === 'connect';
+    const needToShow = (!wasShown && !isConnectWalletAction) || isTooltipShowAction;
 
-    if (!isDisabled && isMarketplacePage && (!wasShown || isTooltipShowAction)) {
+    if (!isDisabled && isMarketplacePage && needToShow) {
       setTimeout(() => {
         setIsTooltipShown.on();
         window.localStorage.setItem(localStorageKey, 'true');
