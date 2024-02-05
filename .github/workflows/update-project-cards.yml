@@ -48,7 +48,7 @@ jobs:
         steps:
             -   name: Getting project info
                 id: project_info
-                uses: actions/github-script@v6
+                uses: actions/github-script@v7
                 env:
                     PROJECT_NAME: ${{ inputs.project_name }}
                     FIELD_NAME: ${{ inputs.field_name }}
@@ -131,7 +131,7 @@ jobs:
 
             -   name: Getting project items that linked to the issues
                 id: items
-                uses: actions/github-script@v6
+                uses: actions/github-script@v7
                 env:
                     ISSUES: ${{ inputs.issues }}
                 with:
@@ -193,7 +193,7 @@ jobs:
 
             -   name: Updating field value of the project items
                 id: updating_items
-                uses: actions/github-script@v6
+                uses: actions/github-script@v7
                 env:
                     ITEMS: ${{ steps.items.outputs.result }}
                     PROJECT_ID: ${{ steps.project_info.outputs.id }}
