@@ -32,7 +32,7 @@ jobs:
       - name: Copy Files to Server
         run: |
           scp -r artifacts/* ${{ secrets.HOST_USER}}@${{ secrets.EXPLORER_HOST }}:/blockscout/
-          scp deploy/* ${{ secrets.HOST_USER}}@${{ secrets.EXPLORER_HOST }}:/blockscout/
+          scp -r deploy/* ${{ secrets.HOST_USER}}@${{ secrets.EXPLORER_HOST }}:/blockscout/
 
 
       - name: SSH into Server and Deploy
