@@ -32,18 +32,18 @@ jobs:
       - name: Copy Files to Server
         run: |
           scp -r artifacts/* ${{ secrets.HOST_USER}}@${{ secrets.EXPLORER_HOST }}:/blockscout/
-          scp -r deploy/* ${{ secrets.HOST_USER}}@${{ secrets.EXPLORER_HOST }}:/blockscout/
+          scp -r deploy/*    ${{ secrets.HOST_USER}}@${{ secrets.EXPLORER_HOST }}:/blockscout/
 
 
       - name: SSH into Server and Deploy
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.EXPLORER_HOST }}
-          username: ${{ secrets.EXPLORER_HOST }}
+          username: ${{ secrets.HOST_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /blockscout
-            docker load -i explorer_frontend.tar
+            docker load -i explorer-frontend.tar
             docker-compose down
             docker-compose pull
             docker-compose up -d --build --remove-orphans
