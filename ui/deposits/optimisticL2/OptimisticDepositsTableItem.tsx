@@ -31,6 +31,7 @@ const OptimisticDepositsTableItem = ({ item, isLoading }: Props) => {
           fontSize="sm"
           lineHeight={ 5 }
           fontWeight={ 600 }
+          noIcon
         />
       </Td>
       <Td verticalAlign="middle">
@@ -39,7 +40,8 @@ const OptimisticDepositsTableItem = ({ item, isLoading }: Props) => {
           hash={ item.l2_tx_hash }
           fontSize="sm"
           lineHeight={ 5 }
-          truncation="constant"
+          truncation="constant_long"
+          noIcon
         />
       </Td>
       <Td verticalAlign="middle" pr={ 12 }>
@@ -49,7 +51,8 @@ const OptimisticDepositsTableItem = ({ item, isLoading }: Props) => {
         <TxEntityL1
           isLoading={ isLoading }
           hash={ item.l1_tx_hash }
-          truncation="constant"
+          truncation="constant_long"
+          noIcon
           fontSize="sm"
           lineHeight={ 5 }
         />

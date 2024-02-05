@@ -25,7 +25,7 @@ const NameDomainHistoryTableItem = ({ isLoading, transaction_hash: transactionHa
         </Skeleton>
       </Td>
       <Td verticalAlign="middle">
-        { fromAddress && <AddressEntity address={ fromAddress } isLoading={ isLoading }/> }
+        { fromAddress && <AddressEntity address={ fromAddress } isLoading={ isLoading } truncation="constant"/> }
       </Td>
       <Td verticalAlign="middle">
         { action && <Tag colorScheme="gray" isLoading={ isLoading }>{ action }</Tag> }

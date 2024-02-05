@@ -87,6 +87,7 @@ const TokensTableItem = ({
                 noIcon
                 fontSize="sm"
                 fontWeight={ 500 }
+                truncation="constant"
               />
               <AddressAddToWallet
                 token={ token }

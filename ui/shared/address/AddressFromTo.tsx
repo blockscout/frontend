@@ -25,7 +25,7 @@ interface Props {
   noIcon?: boolean;
 }
 
-const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading, tokenHash = '', truncation, noIcon }: Props) => {
+const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading, tokenHash = '', noIcon }: Props) => {
   const mode = useBreakpointValue(
     {
       base: (typeof modeProp === 'object' ? modeProp.base : modeProp),
@@ -52,8 +52,8 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
             noCopy={ current === from.hash }
             noIcon={ noIcon }
             tokenHash={ tokenHash }
-            truncation={ truncation }
-            maxW={ truncation === 'constant' ? undefined : 'calc(100% - 28px)' }
+            truncation="constant"
+            maxW="calc(100% - 28px)"
             w="min-content"
           />
         </Flex>
@@ -65,8 +65,8 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
             noCopy={ current === to.hash }
             noIcon={ noIcon }
             tokenHash={ tokenHash }
-            truncation={ truncation }
-            maxW={ truncation === 'constant' ? undefined : 'calc(100% - 28px)' }
+            truncation="constant"
+            maxW="calc(100% - 28px)"
             w="min-content"
             ml="28px"
           />
@@ -87,8 +87,8 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
         noCopy={ isOutgoing }
         noIcon={ noIcon }
         tokenHash={ tokenHash }
-        truncation={ truncation }
-        maxW={ truncation === 'constant' ? undefined : `calc(50% - ${ iconSizeWithMargins / 2 }px)` }
+        truncation="constant"
+        maxW={ `calc(50% - ${ iconSizeWithMargins / 2 }px)` }
         mr={ isOutgoing ? 4 : 2 }
       />
       <AddressFromToIcon
@@ -103,8 +103,8 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
           noCopy={ current === to.hash }
           noIcon={ noIcon }
           tokenHash={ tokenHash }
-          truncation={ truncation }
-          maxW={ truncation === 'constant' ? undefined : `calc(50% - ${ iconSizeWithMargins / 2 }px)` }
+          truncation="constant"
+          maxW={ `calc(50% - ${ iconSizeWithMargins / 2 }px)` }
           ml={ 3 }
         />
       ) }

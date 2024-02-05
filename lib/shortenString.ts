@@ -1,11 +1,11 @@
-export default function shortenString(string: string | null) {
+export default function shortenString(string: string | null, charNumber = 8) {
   if (!string) {
     return '';
   }
 
-  if (string.length <= 7) {
+  if (string.length <= charNumber - 1) {
     return string;
   }
 
-  return string.slice(0, 4) + '...' + string.slice(-4);
+  return string.slice(0, charNumber - 4) + '...' + string.slice(-4);
 }

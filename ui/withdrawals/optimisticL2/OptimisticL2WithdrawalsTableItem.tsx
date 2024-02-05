@@ -40,9 +40,10 @@ const OptimisticL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
         <TxEntity
           isLoading={ isLoading }
           hash={ item.l2_tx_hash }
-          truncation="constant"
           fontSize="sm"
           lineHeight={ 5 }
+          truncation="constant_long"
+          noIcon
         />
       </Td>
       <Td verticalAlign="middle" pr={ 12 }>
@@ -61,7 +62,8 @@ const OptimisticL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
           <TxEntityL1
             isLoading={ isLoading }
             hash={ item.l1_tx_hash }
-            truncation="constant"
+            truncation="constant_long"
+            noIcon
             fontSize="sm"
             lineHeight={ 5 }
           />

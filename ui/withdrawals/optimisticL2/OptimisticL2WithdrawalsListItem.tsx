@@ -40,6 +40,7 @@ const OptimisticL2WithdrawalsListItem = ({ item, isLoading }: Props) => {
             <AddressEntity
               address={ item.from }
               isLoading={ isLoading }
+              truncation="constant"
             />
           </ListItemMobileGrid.Value>
         </>

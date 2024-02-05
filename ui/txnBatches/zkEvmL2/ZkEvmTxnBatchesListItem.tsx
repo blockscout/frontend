@@ -69,7 +69,7 @@ const ZkEvmTxnBatchesListItem = ({ item, isLoading }: Props) => {
             hash={ item.verify_tx_hash }
             fontSize="sm"
             lineHeight={ 5 }
-            maxW="100%"
+            truncation="constant_long"
           />
         ) : <Text>Pending</Text> }
       </ListItemMobileGrid.Value>
@@ -82,7 +82,7 @@ const ZkEvmTxnBatchesListItem = ({ item, isLoading }: Props) => {
             hash={ item.sequence_tx_hash }
             fontSize="sm"
             lineHeight={ 5 }
-            maxW="100%"
+            truncation="constant_long"
           />
         ) : <Text>Pending</Text> }
       </ListItemMobileGrid.Value>

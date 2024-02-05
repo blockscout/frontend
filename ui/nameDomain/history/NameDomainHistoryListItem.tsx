@@ -32,7 +32,7 @@ const NameDomainHistoryListItem = ({ isLoading, transaction_hash: transactionHas
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>From</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <AddressEntity address={ fromAddress } isLoading={ isLoading }/>
+            <AddressEntity address={ fromAddress } isLoading={ isLoading } truncation="constant"/>
           </ListItemMobileGrid.Value>
         </>
       ) }

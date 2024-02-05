@@ -25,7 +25,7 @@ const UserOpsTableItem = ({ item, isLoading, showTx, showSender }: Props) => {
   return (
     <Tr>
       <Td verticalAlign="middle">
-        <UserOpEntity hash={ item.hash } isLoading={ isLoading } noIcon fontWeight={ 700 }/>
+        <UserOpEntity hash={ item.hash } isLoading={ isLoading } noIcon fontWeight={ 700 } truncation="constant_long"/>
       </Td>
       <Td verticalAlign="middle">
         <Skeleton isLoaded={ !isLoading } color="text_secondary" display="inline-block"><span>{ timeAgo }</span></Skeleton>
