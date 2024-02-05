@@ -95,7 +95,7 @@ const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
         created_contract: txReceipt?.contractAddress ?
           { ...unknownAddress, hash: txReceipt.contractAddress, is_contract: true } :
           null,
-        result: '',
+        result: 'success',
         priority_fee: null,
         tx_burnt_fee: null,
         revert_reason: null,
