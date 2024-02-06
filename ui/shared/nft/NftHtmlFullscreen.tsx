@@ -9,7 +9,7 @@ interface Props {
   onClose: () => void;
 }
 
-const NftHtmlWithFullscreen = ({ src, isOpen, onClose }: Props) => {
+const NftHtmlFullscreen = ({ src, isOpen, onClose }: Props) => {
   return (
     <NftMediaFullscreenModal isOpen={ isOpen } onClose={ onClose }>
       <chakra.iframe
@@ -22,4 +22,4 @@ const NftHtmlWithFullscreen = ({ src, isOpen, onClose }: Props) => {
   );
 };
 
-export default NftHtmlWithFullscreen;
+export default NftHtmlFullscreen;
