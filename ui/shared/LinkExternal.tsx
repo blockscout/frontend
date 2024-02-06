@@ -10,10 +10,9 @@ interface Props {
   children: React.ReactNode;
   isLoading?: boolean;
   variant?: 'subtle';
-  hideIcon?: boolean;
 }
 
-const LinkExternal = ({ href, children, className, isLoading, variant, hideIcon }: Props) => {
+const LinkExternal = ({ href, children, className, isLoading, variant }: Props) => {
   const subtleLinkBg = useColorModeValue('gray.100', 'gray.700');
 
   const styleProps: ChakraProps = (() => {
@@ -60,9 +59,7 @@ const LinkExternal = ({ href, children, className, isLoading, variant, hideIcon 
   return (
     <Link className={ className } { ...styleProps } target="_blank" href={ href }>
       { children }
-      { !hideIcon && (
-        <IconSvg name="arrows/north-east" boxSize={ 4 } verticalAlign="middle" color="gray.400" flexShrink={ 0 }/>
-      ) }
+      <IconSvg name="arrows/north-east" boxSize={ 4 } verticalAlign="middle" color="gray.400" flexShrink={ 0 }/>
     </Link>
   );
 };

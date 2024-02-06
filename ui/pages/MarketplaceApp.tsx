@@ -16,8 +16,8 @@ import * as metadata from 'lib/metadata';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import ContentLoader from 'ui/shared/ContentLoader';
 
+import useAutoConnectWallet from '../marketplace/useAutoConnectWallet';
 import useMarketplaceWallet from '../marketplace/useMarketplaceWallet';
-import useWalletConnection from '../marketplace/useWalletConnection';
 
 const feature = config.features.marketplace;
 const configUrl = feature.isEnabled ? feature.configUrl : '';
@@ -97,7 +97,7 @@ const MarketplaceAppContent = ({ address, data, isPending }: Props) => {
 
 const MarketplaceApp = () => {
   const { address, sendTransaction, signMessage, signTypedData } = useMarketplaceWallet();
-  useWalletConnection();
+  useAutoConnectWallet();
 
   const apiFetch = useApiFetch();
   const router = useRouter();

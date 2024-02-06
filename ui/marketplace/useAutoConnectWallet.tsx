@@ -5,7 +5,7 @@ import removeQueryParam from 'lib/router/removeQueryParam';
 import updateQueryParam from 'lib/router/updateQueryParam';
 import useWallet from 'ui/snippets/walletMenu/useWallet';
 
-export default function useMarketplaceWallet() {
+export default function useAutoConnectWallet() {
   const router = useRouter();
   const { isWalletConnected, isModalOpen, connect } = useWallet({ source: 'Swap button' });
   const isConnectionStarted = useRef(false);
