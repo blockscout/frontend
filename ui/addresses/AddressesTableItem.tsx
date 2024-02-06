@@ -34,11 +34,12 @@ const AddressesTableItem = ({
           { index }
         </Skeleton>
       </Td>
-      <Td verticalAlign="middle">
+      <Td>
         <AddressEntity
           address={ item }
           isLoading={ isLoading }
           fontWeight={ 700 }
+          my="2px"
         />
       </Td>
       <Td pl={ 10 }>
@@ -47,7 +48,7 @@ const AddressesTableItem = ({
         )) : null }
       </Td>
       <Td isNumeric>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">
+        <Skeleton isLoaded={ !isLoading } display="inline-block" maxW="100%">
           <Text lineHeight="24px" as="span">{ addressBalanceChunks[0] }</Text>
           { addressBalanceChunks[1] && <Text lineHeight="24px" as="span">.</Text> }
           <Text lineHeight="24px" variant="secondary" as="span">{ addressBalanceChunks[1] }</Text>

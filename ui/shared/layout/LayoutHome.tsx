@@ -16,7 +16,7 @@ const LayoutHome = ({ children }: Props) => {
       <Layout.MainArea>
         <Layout.SideBar/>
         <Layout.MainColumn
-          paddingTop={{ base: 6, lg: 9 }}
+          paddingTop={{ base: 3, lg: 6 }}
         >
           <HeaderAlert/>
           <AppErrorBoundary>

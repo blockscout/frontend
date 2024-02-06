@@ -111,7 +111,7 @@ const SearchBar = ({ isHomepage }: Props) => {
       autoFocus={ false }
       onClose={ onClose }
       placement="bottom-start"
-      offset={ isMobile && !isHomepage ? [ 16, -12 ] : undefined }
+      offset={ isMobile && !isHomepage ? [ 16, -4 ] : undefined }
       isLazy
     >
       <PopoverTrigger>
