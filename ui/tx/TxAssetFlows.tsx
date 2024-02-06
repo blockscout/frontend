@@ -38,12 +38,12 @@ export default function TxAssetFlows(props: FlowViewProps) {
     onNextPageClick: () => setPage(page + 1),
     onPrevPageClick: () => setPage(page - 1),
     resetPage: () => setPage(1),
-    canGoBackwards: true,
+    canGoBackwards: page > 1,
     isLoading: isPlaceholderData,
     page: page,
     hasNextPage: Boolean(chunkedViewData[page]),
-    hasPages: true,
-    isVisible: true,
+    hasPages: Boolean(chunkedViewData[1]),
+    isVisible: Boolean(chunkedViewData[1]),
   };
 
   const data = chunkedViewData [page - 1];

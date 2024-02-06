@@ -1,3 +1,4 @@
+import type { ContractCodeIde } from 'types/client/contract';
 import { NAVIGATION_LINK_IDS, type NavItemExternal, type NavigationLinkId } from 'types/client/navigation-items';
 import type { ChainIndicatorId } from 'types/homepage';
 import type { NetworkExplorer } from 'types/networks';
@@ -65,6 +66,9 @@ const UI = Object.freeze({
   },
   explorers: {
     items: parseEnvJson<Array<NetworkExplorer>>(getEnvValue('NEXT_PUBLIC_NETWORK_EXPLORERS')) || [],
+  },
+  ides: {
+    items: parseEnvJson<Array<ContractCodeIde>>(getEnvValue('NEXT_PUBLIC_CONTRACT_CODE_IDES')) || [],
   },
 });
 

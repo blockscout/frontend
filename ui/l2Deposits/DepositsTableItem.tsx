@@ -56,7 +56,7 @@ const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
       </Td>
       <Td verticalAlign="middle">
         <AddressEntityL1
-          address={{ hash: item.l1_tx_origin, name: '', is_contract: false, is_verified: false, implementation_name: '' }}
+          address={{ hash: item.l1_tx_origin, name: '', is_contract: false, is_verified: false, implementation_name: '', ens_domain_name: null }}
           isLoading={ isLoading }
           truncation="constant"
           noCopy

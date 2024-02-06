@@ -14,20 +14,26 @@ export type TransactionRevertReason = {
 type WrappedTransactionFields = 'decoded_input' | 'fee' | 'gas_limit' | 'gas_price' | 'hash' | 'max_fee_per_gas' |
 'max_priority_fee_per_gas' | 'method' | 'nonce' | 'raw_input' | 'to' | 'type' | 'value';
 
+export interface OpWithdrawal {
+  l1_transaction_hash: string;
+  nonce: number;
+  status: L2WithdrawalStatus;
+}
+
 export type Transaction = {
   to: AddressParam | null;
   created_contract: AddressParam | null;
   hash: string;
   result: string;
   confirmations: number;
-  status: 'ok' | 'error' | null;
+  status: 'ok' | 'error' | null | undefined;
   block: number | null;
   timestamp: string | null;
-  confirmation_duration: Array<number>;
+  confirmation_duration: Array<number> | null;
   from: AddressParam;
   value: string;
   fee: Fee;
-  gas_price: string;
+  gas_price: string | null;
   type: number | null;
   gas_used: string | null;
   gas_limit: string;
@@ -43,7 +49,7 @@ export type Transaction = {
   decoded_input: DecodedInput | null;
   token_transfers: Array<TokenTransfer> | null;
   token_transfers_overflow: boolean;
-  exchange_rate: string;
+  exchange_rate: string | null;
   method: string | null;
   tx_types: Array<TransactionType>;
   tx_tag: string | null;
@@ -54,8 +60,7 @@ export type Transaction = {
   l1_gas_used?: string;
   has_error_in_internal_txs: boolean | null;
   // optimism fields
-  op_withdrawal_status?: L2WithdrawalStatus;
-  op_l1_transaction_hash?: string;
+  op_withdrawals?: Array<OpWithdrawal>;
   // SUAVE fields
   execution_node?: AddressParam | null;
   allowed_peekers?: Array<string>;

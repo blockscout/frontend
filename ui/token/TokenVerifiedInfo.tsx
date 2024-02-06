@@ -28,7 +28,7 @@ const TokenVerifiedInfo = ({ verifiedInfoQuery }: Props) => {
         <>
           <Skeleton w="100px" h="30px" borderRadius="base"/>
           <Skeleton w="100px" h="30px" borderRadius="base"/>
-          <Skeleton w="80px" h="30px" borderRadius="base"/>
+          <Skeleton w="70px" h="30px" borderRadius="base"/>
         </>
       );
     }

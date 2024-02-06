@@ -6,6 +6,7 @@ import type { AddressesItem } from 'types/api/addresses';
 
 import config from 'configs/app';
 import { ZERO } from 'lib/consts';
+import { currencyUnits } from 'lib/units';
 import Tag from 'ui/shared/chakra/Tag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
@@ -43,7 +44,7 @@ const AddressesListItem = ({
         <Tag key={ tag.label } isLoading={ isLoading }>{ tag.display_name }</Tag>
       )) }
       <HStack spacing={ 3 }>
-        <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>{ `Balance ${ config.chain.currency.symbol }` }</Skeleton>
+        <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>{ `Balance ${ currencyUnits.ether }` }</Skeleton>
         <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary">
           <span>{ addressBalance.dp(8).toFormat() }</span>
         </Skeleton>

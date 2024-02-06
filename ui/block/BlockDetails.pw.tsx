@@ -1,16 +1,13 @@
 import { test, expect } from '@playwright/experimental-ct-react';
-import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
-import type { Block } from 'types/api/block';
-
-import type { ResourceError } from 'lib/api/resources';
 import * as blockMock from 'mocks/blocks/block';
 import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
 import * as configs from 'playwright/utils/configs';
 
 import BlockDetails from './BlockDetails';
+import type { BlockQuery } from './useBlockQuery';
 
 const hooksConfig = {
   router: {
@@ -22,7 +19,7 @@ test('regular block +@mobile +@dark-mode', async({ mount, page }) => {
   const query = {
     data: blockMock.base,
     isPending: false,
-  } as UseQueryResult<Block, ResourceError>;
+  } as BlockQuery;
 
   const component = await mount(
     <TestApp>
@@ -40,7 +37,7 @@ test('genesis block', async({ mount, page }) => {
   const query = {
     data: blockMock.genesis,
     isPending: false,
-  } as UseQueryResult<Block, ResourceError>;
+  } as BlockQuery;
 
   const component = await mount(
     <TestApp>
@@ -63,7 +60,7 @@ customFieldsTest('rootstock custom fields', async({ mount, page }) => {
   const query = {
     data: blockMock.rootstock,
     isPending: false,
-  } as UseQueryResult<Block, ResourceError>;
+  } as BlockQuery;
 
   const component = await mount(
     <TestApp>

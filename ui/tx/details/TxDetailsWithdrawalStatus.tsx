@@ -4,8 +4,6 @@ import React from 'react';
 import type { L2WithdrawalStatus } from 'types/api/l2Withdrawals';
 import { WITHDRAWAL_STATUSES } from 'types/api/l2Withdrawals';
 
-import config from 'configs/app';
-import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 
@@ -15,10 +13,6 @@ interface Props {
 }
 
 const TxDetailsWithdrawalStatus = ({ status, l1TxHash }: Props) => {
-  if (!config.features.optimisticRollup.isEnabled) {
-    return null;
-  }
-
   if (!status || !WITHDRAWAL_STATUSES.includes(status)) {
     return null;
   }
@@ -55,23 +49,18 @@ const TxDetailsWithdrawalStatus = ({ status, l1TxHash }: Props) => {
       href="https://app.optimism.io/bridge/withdraw"
       target="_blank"
     >
-            Claim funds
+      Claim funds
     </Button>
   ) : null;
 
   return (
-    <DetailsInfoItem
-      title="Withdrawal status"
-      hint="Detailed status progress of the transaction"
-    >
-      <VerificationSteps
-        steps={ steps as unknown as Array<L2WithdrawalStatus> }
-        currentStep={ status }
-        rightSlot={ rightSlot }
-        my={ hasClaimButton ? '-6px' : 0 }
-        lineHeight={ hasClaimButton ? 8 : undefined }
-      />
-    </DetailsInfoItem>
+    <VerificationSteps
+      steps={ steps as unknown as Array<L2WithdrawalStatus> }
+      currentStep={ status }
+      rightSlot={ rightSlot }
+      my={ hasClaimButton ? '-6px' : 0 }
+      lineHeight={ hasClaimButton ? 8 : undefined }
+    />
   );
 };
 

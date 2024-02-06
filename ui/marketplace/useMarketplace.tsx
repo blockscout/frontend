@@ -1,14 +1,15 @@
 import _pickBy from 'lodash/pickBy';
-import _unique from 'lodash/uniq';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import { MarketplaceCategory } from 'types/client/marketplace';
 
 import useDebounce from 'lib/hooks/useDebounce';
+import * as mixpanel from 'lib/mixpanel/index';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
 import useMarketplaceApps from './useMarketplaceApps';
+import useMarketplaceCategories from './useMarketplaceCategories';
 
 const favoriteAppsLocalStorageKey = 'favoriteApps';
 
@@ -33,6 +34,8 @@ export default function useMarketplace() {
   const [ isDisclaimerModalOpen, setIsDisclaimerModalOpen ] = React.useState<boolean>(false);
 
   const handleFavoriteClick = React.useCallback((id: string, isFavorite: boolean) => {
+    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Favorite app', Info: id });
+
     const favoriteApps = getFavoriteApps();
 
     if (isFavorite) {
@@ -64,14 +67,12 @@ export default function useMarketplace() {
   }, []);
 
   const handleCategoryChange = React.useCallback((newCategory: string) => {
+    mixpanel.logEvent(mixpanel.EventTypes.FILTERS, { Source: 'Marketplace', 'Filter name': newCategory });
     setSelectedCategoryId(newCategory);
   }, []);
 
   const { isPlaceholderData, isError, error, data, displayedApps } = useMarketplaceApps(debouncedFilterQuery, selectedCategoryId, favoriteApps);
-
-  const categories = React.useMemo(() => {
-    return _unique(data?.map(app => app.categories).flat()) || [];
-  }, [ data ]);
+  const { isPlaceholderData: isCategoriesPlaceholderData, data: categories } = useMarketplaceCategories(data, isPlaceholderData);
 
   React.useEffect(() => {
     setFavoriteApps(getFavoriteApps());
@@ -79,7 +80,7 @@ export default function useMarketplace() {
 
   React.useEffect(() => {
     if (!isPlaceholderData && !isError) {
-      const isValidDefaultCategory = categories.includes(defaultCategoryId);
+      const isValidDefaultCategory = categories.map(c => c.name).includes(defaultCategoryId);
       isValidDefaultCategory && setSelectedCategoryId(defaultCategoryId);
     }
     // run only when data is loaded
@@ -91,6 +92,11 @@ export default function useMarketplace() {
       category: selectedCategoryId === MarketplaceCategory.ALL ? undefined : selectedCategoryId,
       filter: debouncedFilterQuery,
     }, Boolean);
+
+    if (debouncedFilterQuery.length > 0) {
+      mixpanel.logEvent(mixpanel.EventTypes.LOCAL_SEARCH, { Source: 'Marketplace', 'Search query': debouncedFilterQuery });
+    }
+
     router.replace(
       { pathname: '/apps', query },
       undefined,
@@ -119,6 +125,8 @@ export default function useMarketplace() {
     isAppInfoModalOpen,
     isDisclaimerModalOpen,
     showDisclaimer,
+    appsTotal: data?.length || 0,
+    isCategoriesPlaceholderData,
   }), [
     selectedCategoryId,
     categories,
@@ -136,5 +144,7 @@ export default function useMarketplace() {
     isAppInfoModalOpen,
     isDisclaimerModalOpen,
     showDisclaimer,
+    data?.length,
+    isCategoriesPlaceholderData,
   ]);
 }

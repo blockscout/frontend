@@ -3,6 +3,7 @@ import { Popover, PopoverContent, PopoverBody, PopoverTrigger, Button, Box, useB
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import * as mixpanel from 'lib/mixpanel/index';
 import AddressIdenticon from 'ui/shared/entities/address/AddressIdenticon';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import useWallet from 'ui/snippets/walletMenu/useWallet';
@@ -16,7 +17,7 @@ type Props = {
 };
 
 const WalletMenuDesktop = ({ isHomePage }: Props) => {
-  const { isWalletConnected, address, connect, disconnect, isModalOpening, isModalOpen } = useWallet();
+  const { isWalletConnected, address, connect, disconnect, isModalOpening, isModalOpen } = useWallet({ source: 'Header' });
   const { themedBackground, themedBorderColor, themedColor } = useMenuButtonColors();
   const [ isPopoverOpen, setIsPopoverOpen ] = useBoolean(false);
   const isMobile = useIsMobile();
@@ -48,6 +49,11 @@ const WalletMenuDesktop = ({ isHomePage }: Props) => {
     };
   }
 
+  const openPopover = React.useCallback(() => {
+    mixpanel.logEvent(mixpanel.EventTypes.WALLET_ACTION, { Action: 'Open' });
+    setIsPopoverOpen.on();
+  }, [ setIsPopoverOpen ]);
+
   return (
     <Popover
       openDelay={ 300 }
@@ -66,7 +72,7 @@ const WalletMenuDesktop = ({ isHomePage }: Props) => {
               flexShrink={ 0 }
               isLoading={ isModalOpening || isModalOpen }
               loadingText="Connect wallet"
-              onClick={ isWalletConnected ? setIsPopoverOpen.on : connect }
+              onClick={ isWalletConnected ? openPopover : connect }
               fontSize="sm"
               { ...buttonStyles }
             >

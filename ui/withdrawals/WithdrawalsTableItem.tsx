@@ -10,16 +10,16 @@ import CurrencyValue from 'ui/shared/CurrencyValue';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 
- type Props = ({
-   item: WithdrawalsItem;
-   view: 'list';
- } | {
-   item: AddressWithdrawalsItem;
-   view: 'address';
- } | {
-   item: BlockWithdrawalsItem;
-   view: 'block';
- }) & { isLoading?: boolean };
+type Props = ({
+  item: WithdrawalsItem;
+  view: 'list';
+} | {
+  item: AddressWithdrawalsItem;
+  view: 'address';
+} | {
+  item: BlockWithdrawalsItem;
+  view: 'block';
+}) & { isLoading?: boolean };
 
 const WithdrawalsTableItem = ({ item, view, isLoading }: Props) => {
   return (

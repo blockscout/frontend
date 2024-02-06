@@ -46,6 +46,13 @@ export default function useNavItems(): ReturnType {
       icon: 'transactions',
       isActive: pathname === '/txs' || pathname === '/tx/[hash]',
     };
+    const userOps: NavItem | null = config.features.userOps.isEnabled ? {
+      text: 'User operations',
+      nextRoute: { pathname: '/ops' as const },
+      icon: 'user_op',
+      isActive: pathname === '/ops' || pathname === '/op/[hash]',
+    } : null;
+
     const verifiedContracts: NavItem | null =
      {
        text: 'Verified contracts',
@@ -53,22 +60,30 @@ export default function useNavItems(): ReturnType {
        icon: 'verified',
        isActive: pathname === '/verified-contracts',
      };
+    const ensLookup = config.features.nameService.isEnabled ? {
+      text: 'Name services lookup',
+      nextRoute: { pathname: '/name-domains' as const },
+      icon: 'ENS',
+      isActive: pathname === '/name-domains' || pathname === '/name-domains/[name]',
+    } : null;
 
     if (config.features.zkEvmRollup.isEnabled) {
       blockchainNavItems = [
         [
           txs,
+          userOps,
           blocks,
           {
             text: 'Txn batches',
-            nextRoute: { pathname: '/zkevm-l2-txn-batches' as const },
+            nextRoute: { pathname: '/batches' as const },
             icon: 'txn_batches',
-            isActive: pathname === '/zkevm-l2-txn-batches' || pathname === '/zkevm-l2-txn-batch/[number]',
+            isActive: pathname === '/batches' || pathname === '/batches/[number]',
           },
-        ],
+        ].filter(Boolean),
         [
           topAccounts,
           verifiedContracts,
+          ensLookup,
         ].filter(Boolean),
       ];
     } else if (config.features.optimisticRollup.isEnabled) {
@@ -76,28 +91,32 @@ export default function useNavItems(): ReturnType {
         [
           txs,
           // eslint-disable-next-line max-len
-          { text: `Deposits (L1${ rightLineArrow }L2)`, nextRoute: { pathname: '/l2-deposits' as const }, icon: 'arrows/south-east', isActive: pathname === '/l2-deposits' },
+          { text: `Deposits (L1${ rightLineArrow }L2)`, nextRoute: { pathname: '/deposits' as const }, icon: 'arrows/south-east', isActive: pathname === '/deposits' },
           // eslint-disable-next-line max-len
-          { text: `Withdrawals (L2${ rightLineArrow }L1)`, nextRoute: { pathname: '/l2-withdrawals' as const }, icon: 'arrows/north-east', isActive: pathname === '/l2-withdrawals' },
+          { text: `Withdrawals (L2${ rightLineArrow }L1)`, nextRoute: { pathname: '/withdrawals' as const }, icon: 'arrows/north-east', isActive: pathname === '/withdrawals' },
         ],
         [
           blocks,
           // eslint-disable-next-line max-len
-          { text: 'Txn batches', nextRoute: { pathname: '/l2-txn-batches' as const }, icon: 'txn_batches', isActive: pathname === '/l2-txn-batches' },
+          { text: 'Txn batches', nextRoute: { pathname: '/batches' as const }, icon: 'txn_batches', isActive: pathname === '/batches' },
           // eslint-disable-next-line max-len
-          { text: 'Output roots', nextRoute: { pathname: '/l2-output-roots' as const }, icon: 'output_roots', isActive: pathname === '/l2-output-roots' },
+          { text: 'Output roots', nextRoute: { pathname: '/output-roots' as const }, icon: 'output_roots', isActive: pathname === '/output-roots' },
         ],
         [
+          userOps,
           topAccounts,
           verifiedContracts,
+          ensLookup,
         ].filter(Boolean),
       ];
     } else {
       blockchainNavItems = [
         txs,
+        userOps,
         blocks,
         topAccounts,
         verifiedContracts,
+        ensLookup,
         config.features.beaconChain.isEnabled && {
           text: 'Withdrawals',
           nextRoute: { pathname: '/withdrawals' as const },

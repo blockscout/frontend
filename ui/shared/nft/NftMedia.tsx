@@ -20,12 +20,18 @@ interface Props {
 }
 
 const NftMedia = ({ url, className, isLoading, withFullscreen }: Props) => {
-  const [ isMediaLoading, setIsMediaLoading ] = React.useState(Boolean(url));
+  const [ isMediaLoading, setIsMediaLoading ] = React.useState(true);
   const [ isLoadingError, setIsLoadingError ] = React.useState(false);
 
   const { ref, inView } = useInView({ triggerOnce: true });
 
   const type = useNftMediaType(url, !isLoading && inView);
+
+  React.useEffect(() => {
+    if (!isLoading) {
+      setIsMediaLoading(Boolean(url));
+    }
+  }, [ isLoading, url ]);
 
   const handleMediaLoaded = React.useCallback(() => {
     setIsMediaLoading(false);

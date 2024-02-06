@@ -6,6 +6,7 @@ import type { BlockWithdrawalsItem } from 'types/api/block';
 import type { WithdrawalsItem } from 'types/api/withdrawals';
 
 import config from 'configs/app';
+import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
 import { default as Thead } from 'ui/shared/TheadSticky';
 
 import WithdrawalsTableItem from './WithdrawalsTableItem';
@@ -26,7 +27,9 @@ const feature = config.features.beaconChain;
    view: 'block';
  });
 
-const WithdrawalsTable = ({ items, isLoading, top, view = 'list' }: Props) => {
+const WithdrawalsTable = ({ items, isLoading, top, view }: Props) => {
+  const { cutRef, renderedItemsNum } = useLazyRenderedList(items, !isLoading);
+
   if (!feature.isEnabled) {
     return null;
   }
@@ -44,15 +47,16 @@ const WithdrawalsTable = ({ items, isLoading, top, view = 'list' }: Props) => {
         </Tr>
       </Thead>
       <Tbody>
-        { view === 'list' && (items as Array<WithdrawalsItem>).map((item, index) => (
+        { view === 'list' && (items as Array<WithdrawalsItem>).slice(0, renderedItemsNum).map((item, index) => (
           <WithdrawalsTableItem key={ item.index + (isLoading ? String(index) : '') } item={ item } view="list" isLoading={ isLoading }/>
         )) }
-        { view === 'address' && (items as Array<AddressWithdrawalsItem>).map((item, index) => (
+        { view === 'address' && (items as Array<AddressWithdrawalsItem>).slice(0, renderedItemsNum).map((item, index) => (
           <WithdrawalsTableItem key={ item.index + (isLoading ? String(index) : '') } item={ item } view="address" isLoading={ isLoading }/>
         )) }
-        { view === 'block' && (items as Array<BlockWithdrawalsItem>).map((item, index) => (
+        { view === 'block' && (items as Array<BlockWithdrawalsItem>).slice(0, renderedItemsNum).map((item, index) => (
           <WithdrawalsTableItem key={ item.index + (isLoading ? String(index) : '') } item={ item } view="block" isLoading={ isLoading }/>
         )) }
+        <tr ref={ cutRef }/>
       </Tbody>
     </Table>
   );

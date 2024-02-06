@@ -7,6 +7,7 @@ import type { Address as TAddress } from 'types/api/address';
 
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
+import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ADDRESS_COUNTERS } from 'stubs/address';
 import AddressCounterItem from 'ui/address/details/AddressCounterItem';
@@ -68,7 +69,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
   const is422Error = addressQuery.isError && 'status' in addressQuery.error && addressQuery.error.status === 422;
 
   if (addressQuery.isError && is422Error) {
-    throw Error('Address fetch error', { cause: addressQuery.error as unknown as Error });
+    throwOnResourceLoadError(addressQuery);
   }
 
   if (addressQuery.isError && !is404Error) {

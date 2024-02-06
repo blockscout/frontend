@@ -9,7 +9,7 @@ import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 interface Props {
   token: TokenInfo;
   value: string;
-  tokenId: string;
+  tokenId: string | null;
 }
 
 const NftTokenTransferSnippet = ({ value, token, tokenId }: Props) => {
@@ -26,15 +26,18 @@ const NftTokenTransferSnippet = ({ value, token, tokenId }: Props) => {
       ) : (
         <chakra.span color="text_secondary">for token ID</chakra.span>
       ) }
-      <NftEntity
-        hash={ token.address }
-        id={ tokenId }
-        fontWeight={ 600 }
-        iconSize="md"
-        maxW={{ base: '100%', lg: '150px' }}
-        w="auto"
-        flexShrink={ 0 }
-      />
+      { tokenId !== null ? (
+        <NftEntity
+          hash={ token.address }
+          id={ tokenId }
+          fontWeight={ 600 }
+          iconSize="md"
+          maxW={{ base: '100%', lg: '150px' }}
+          w="auto"
+          flexShrink={ 0 }
+        />
+      ) : <chakra.span color="text_secondary"> N/A </chakra.span>
+      }
       <chakra.span color="text_secondary">of</chakra.span>
       <TokenEntity
         token={ token }

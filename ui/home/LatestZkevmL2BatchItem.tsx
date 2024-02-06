@@ -57,7 +57,7 @@ const LatestZkevmL2BatchItem = ({ batch, isLoading }: Props) => {
         <Flex alignItems="center">
           <Skeleton isLoaded={ !isLoading } mr={ 2 }>Txn</Skeleton>
           <LinkInternal
-            href={ route({ pathname: '/zkevm-l2-txn-batch/[number]', query: { number: batch.number.toString(), tab: 'txs' } }) }
+            href={ route({ pathname: '/batches/[number]', query: { number: batch.number.toString(), tab: 'txs' } }) }
             isLoading={ isLoading }
           >
             <Skeleton isLoaded={ !isLoading }>

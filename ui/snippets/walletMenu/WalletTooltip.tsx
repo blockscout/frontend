@@ -2,6 +2,8 @@ import { Tooltip, useBoolean, useOutsideClick } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import { SECOND } from 'lib/consts';
+
 type Props = {
   children: React.ReactNode;
   isDisabled?: boolean;
@@ -26,12 +28,15 @@ const WalletTooltip = ({ children, isDisabled, isMobile }: Props) => {
 
   React.useEffect(() => {
     const wasShown = window.localStorage.getItem(localStorageKey);
-    if (!isDisabled && !wasShown) {
-      setIsTooltipShown.on();
-      window.localStorage.setItem(localStorageKey, 'true');
-      setTimeout(() => setIsTooltipShown.off(), 3000);
+    const isMarketplacePage = [ '/apps', '/apps/[id]' ].includes(router.pathname);
+    if (!isDisabled && !wasShown && isMarketplacePage) {
+      setTimeout(() => {
+        setIsTooltipShown.on();
+        window.localStorage.setItem(localStorageKey, 'true');
+        setTimeout(() => setIsTooltipShown.off(), 5 * SECOND);
+      }, SECOND);
     }
-  }, [ setIsTooltipShown, localStorageKey, isDisabled ]);
+  }, [ setIsTooltipShown, localStorageKey, isDisabled, router.pathname ]);
 
   return (
     <Tooltip

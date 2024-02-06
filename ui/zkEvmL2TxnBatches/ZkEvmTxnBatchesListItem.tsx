@@ -51,7 +51,7 @@ const ZkEvmTxnBatchesListItem = ({ item, isLoading }: Props) => {
       <ListItemMobileGrid.Label isLoading={ isLoading }>Txn count</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <LinkInternal
-          href={ route({ pathname: '/zkevm-l2-txn-batch/[number]', query: { number: item.number.toString(), tab: 'txs' } }) }
+          href={ route({ pathname: '/batches/[number]', query: { number: item.number.toString(), tab: 'txs' } }) }
           isLoading={ isLoading }
           fontWeight={ 600 }
         >

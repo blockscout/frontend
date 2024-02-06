@@ -8,6 +8,7 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import getValueWithUnit from 'lib/getValueWithUnit';
+import { currencyUnits } from 'lib/units';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import LinkInternal from 'ui/shared/LinkInternal';
 import TextSeparator from 'ui/shared/TextSeparator';
@@ -42,7 +43,7 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
                 <Flex>
                   <CurrencyValue
                     value={ tx.fee.value }
-                    currency={ config.UI.views.tx.hiddenFields?.fee_currency ? '' : config.chain.currency.symbol }
+                    currency={ config.UI.views.tx.hiddenFields?.fee_currency ? '' : currencyUnits.ether }
                     exchangeRate={ tx.exchange_rate }
                     accuracyUsd={ 2 }
                     flexWrap="wrap"
@@ -68,7 +69,7 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
       { !config.UI.views.tx.hiddenFields?.gas_fees &&
         (tx.base_fee_per_gas !== null || tx.max_fee_per_gas !== null || tx.max_priority_fee_per_gas !== null) && (
         <Box { ...sectionProps } mb={ 4 }>
-          <Text { ...sectionTitleProps }>Gas fees (Gwei)</Text>
+          <Text { ...sectionTitleProps }>Gas fees ({ currencyUnits.gwei })</Text>
           { tx.base_fee_per_gas !== null && (
             <Box>
               <Text as="span" fontWeight="500">Base: </Text>

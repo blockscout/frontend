@@ -6,6 +6,7 @@ import type { VerifiedContract } from 'types/api/contracts';
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
+import { currencyUnits } from 'lib/units';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import HashStringShorten from 'ui/shared/HashStringShorten';
@@ -37,7 +38,7 @@ const VerifiedContractsListItem = ({ data, isLoading }: Props) => {
         <CopyToClipboard text={ data.address.hash } isLoading={ isLoading }/>
       </Flex>
       <Flex columnGap={ 3 }>
-        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Balance { config.chain.currency.symbol }</Skeleton>
+        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Balance { currencyUnits.ether }</Skeleton>
         <Skeleton isLoaded={ !isLoading } color="text_secondary">
           <span>{ balance }</span>
         </Skeleton>

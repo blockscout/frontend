@@ -34,7 +34,7 @@ const ChainIndicatorItem = ({ id, title, value, icon, isSelected, onClick, stats
       return null;
     }
 
-    if (stats.isPending) {
+    if (stats.isPlaceholderData) {
       return (
         <Skeleton
           h={ 3 }
@@ -46,7 +46,7 @@ const ChainIndicatorItem = ({ id, title, value, icon, isSelected, onClick, stats
       );
     }
 
-    if (stats.isError) {
+    if (!stats.data) {
       return <Text variant="secondary" fontWeight={ 400 }>no data</Text>;
     }
 

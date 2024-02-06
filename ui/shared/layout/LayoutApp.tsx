@@ -3,7 +3,6 @@ import React from 'react';
 import type { Props } from './types';
 
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
-import HeaderAlert from 'ui/snippets/header/HeaderAlert';
 import HeaderDesktop from 'ui/snippets/header/HeaderDesktop';
 import HeaderMobile from 'ui/snippets/header/HeaderMobile';
 
@@ -19,7 +18,6 @@ const LayoutDefault = ({ children }: Props) => {
           paddingTop={{ base: 16, lg: 6 }}
           paddingX={{ base: 4, lg: 6 }}
         >
-          <HeaderAlert/>
           <HeaderDesktop isMarketplaceAppPage/>
           <AppErrorBoundary>
             <Layout.Content pt={{ base: 0, lg: 6 }}>
