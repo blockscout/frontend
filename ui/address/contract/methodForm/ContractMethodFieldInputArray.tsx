@@ -38,9 +38,10 @@ interface Props {
   data: SmartContractMethodInput;
   hideLabel?: boolean;
   level?: number;
+  basePath: string;
 }
 
-const ContractMethodFieldInputArray = ({ data, hideLabel, level }: Props) => {
+const ContractMethodFieldInputArray = ({ data, hideLabel, level, basePath }: Props) => {
 
   const [ num, setNum ] = React.useState(1);
 
@@ -61,7 +62,7 @@ const ContractMethodFieldInputArray = ({ data, hideLabel, level }: Props) => {
     const itemData = { ...data, type, name: `item #${ (level ? `${ level }.` : '') + (index + 1) }` };
 
     if (data.components && type === 'tuple') {
-      return <ContractMethodFieldInputTuple data={ itemData }/>;
+      return <ContractMethodFieldInputTuple data={ itemData } basePath={ `${ basePath }:${ index }` }/>;
     }
 
     const arrayMatch = type.match(ARRAY_REGEXP);
@@ -70,13 +71,13 @@ const ContractMethodFieldInputArray = ({ data, hideLabel, level }: Props) => {
       return (
         <Box outline="1px dashed lightskyblue" w="100%">
           <Box lineHeight={ type.includes('tuple') ? '45px' : '32px' }>item #{ index + 1 }({ type })</Box>
-          <ContractMethodFieldInputArray data={ itemData } hideLabel level={ index + 1 }/>
+          <ContractMethodFieldInputArray data={ itemData } hideLabel level={ index + 1 } basePath={ `${ basePath }:${ index }` }/>
         </Box>
       );
     }
 
     return (
-      <ContractMethodFieldInput data={ itemData } hideLabel/>
+      <ContractMethodFieldInput data={ itemData } hideLabel path={ `${ basePath }:${ index }` }/>
     );
   };
 

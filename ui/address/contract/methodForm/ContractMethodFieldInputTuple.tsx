@@ -10,9 +10,10 @@ import ContractMethodFieldInputArray from './ContractMethodFieldInputArray';
 interface Props {
   data: SmartContractMethodInput;
   hideLabel?: boolean;
+  basePath: string;
 }
 
-const ContractMethodFieldInputTuple = ({ data, hideLabel }: Props) => {
+const ContractMethodFieldInputTuple = ({ data, hideLabel, basePath }: Props) => {
   return (
     <Accordion allowToggle outline="1px dashed lightpink" w="100%">
       <AccordionItem _first={{ borderTopWidth: 0 }} _last={{ borderBottomWidth: 0 }}>
@@ -26,15 +27,15 @@ const ContractMethodFieldInputTuple = ({ data, hideLabel }: Props) => {
         <AccordionPanel display="flex" flexDir="column" rowGap={ 3 }>
           { data.components?.map((component, index) => {
             if (component.components && component.type === 'tuple') {
-              return <ContractMethodFieldInputTuple key={ index } data={ component }/>;
+              return <ContractMethodFieldInputTuple key={ index } data={ component } basePath={ `${ basePath }:${ index }` }/>;
             }
 
             const arrayMatch = component.type.match(ARRAY_REGEXP);
             if (arrayMatch) {
-              return <ContractMethodFieldInputArray key={ index } data={ component }/>;
+              return <ContractMethodFieldInputArray key={ index } data={ component } basePath={ `${ basePath }:${ index }` }/>;
             }
 
-            return <ContractMethodFieldInput key={ index } data={ component }/>;
+            return <ContractMethodFieldInput key={ index } data={ component } path={ `${ basePath }:${ index }` }/>;
           }) }
         </AccordionPanel>
       </AccordionItem>

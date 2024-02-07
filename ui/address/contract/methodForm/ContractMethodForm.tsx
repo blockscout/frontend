@@ -32,15 +32,15 @@ const ContractMethodForm = ({ data }: Props) => {
     <Flex flexDir="column" rowGap={ 3 }>
       { inputs.map((input, index) => {
         if (input.components && input.type === 'tuple') {
-          return <ContractMethodFieldInputTuple key={ index } data={ input }/>;
+          return <ContractMethodFieldInputTuple key={ index } data={ input } basePath={ `${ index }` }/>;
         }
 
         const arrayMatch = input.type.match(ARRAY_REGEXP);
         if (arrayMatch) {
-          return <ContractMethodFieldInputArray key={ index } data={ input }/>;
+          return <ContractMethodFieldInputArray key={ index } data={ input } basePath={ `${ index }` }/>;
         }
 
-        return <ContractMethodFieldInput key={ index } data={ input }/>;
+        return <ContractMethodFieldInput key={ index } data={ input } path={ `${ index }` }/>;
       }) }
     </Flex>
   );
