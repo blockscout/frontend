@@ -55,7 +55,7 @@ const NetworkAddToWallet = () => {
   }
 
   return (
-    <Button variant="outline" size="sm" onClick={ handleClick }>
+    <Button variant="outline" colorScheme="orange" size="sm" onClick={ handleClick }>
       <IconSvg name={ WALLETS_INFO[wallet].icon } boxSize={ 5 } mr={ 2 }/>
         Add { config.chain.name }
     </Button>
