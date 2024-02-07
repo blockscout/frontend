@@ -6,12 +6,12 @@ import { MarketplaceCategory } from 'types/client/marketplace';
 
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
+import useApiQuery from 'lib/api/useApiQuery';
 import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import useApiFetch from 'lib/hooks/useFetch';
 import { MARKETPLACE_APP } from 'stubs/marketplace';
 
 const feature = config.features.marketplace;
-const configUrl = feature.isEnabled ? feature.configUrl : '';
 
 function isAppNameMatches(q: string, app: MarketplaceAppOverview) {
   return app.title.toLowerCase().includes(q.toLowerCase());
@@ -47,18 +47,35 @@ function sortApps(apps: Array<MarketplaceAppOverview>, isExperiment: boolean) {
   });
 }
 
-export default function useMarketplaceApps(filter: string, selectedCategoryId: string = MarketplaceCategory.ALL, favoriteApps: Array<string> = []) {
+function useAppsQuery() {
   const apiFetch = useApiFetch();
   const { value: isExperiment } = useFeatureValue('marketplace_exp', false);
 
-  const { isPlaceholderData, isError, error, data } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppOverview>>({
+  const placeholderData = feature.isEnabled ? Array(9).fill(MARKETPLACE_APP) : undefined;
+
+  const data1 = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppOverview>>({
     queryKey: [ 'marketplace-apps' ],
-    queryFn: async() => apiFetch(configUrl, undefined, { resource: 'marketplace-apps' }),
+    queryFn: async() => apiFetch(feature.isEnabled && feature.configUrl ? feature.configUrl : '', undefined, { resource: 'marketplace-apps' }),
     select: (data) => sortApps(data as Array<MarketplaceAppOverview>, isExperiment),
-    placeholderData: feature.isEnabled ? Array(9).fill(MARKETPLACE_APP) : undefined,
+    placeholderData,
     staleTime: Infinity,
     enabled: feature.isEnabled,
   });
+
+  const data2 = useApiQuery('marketplace_dapps', {
+    pathParams: { chainId: config.chain.id },
+    queryOptions: {
+      select: (data) => sortApps(data as Array<MarketplaceAppOverview>, isExperiment),
+      placeholderData,
+      enabled: feature.isEnabled,
+    },
+  });
+
+  return feature.isEnabled && feature.configUrl ? data1 : data2;
+}
+
+export default function useMarketplaceApps(filter: string, selectedCategoryId: string = MarketplaceCategory.ALL, favoriteApps: Array<string> = []) {
+  const { isPlaceholderData, isError, error, data } = useAppsQuery();
 
   const displayedApps = React.useMemo(() => {
     return data?.filter(app => isAppNameMatches(filter, app) && isAppCategoryMatches(selectedCategoryId, app, favoriteApps)) || [];

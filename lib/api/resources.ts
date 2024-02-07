@@ -82,6 +82,7 @@ import type { VerifiedContractsSorting } from 'types/api/verifiedContracts';
 import type { VisualizedContract } from 'types/api/visualization';
 import type { WithdrawalsResponse, WithdrawalsCounters } from 'types/api/withdrawals';
 import type { ZkEvmL2TxnBatch, ZkEvmL2TxnBatchesItem, ZkEvmL2TxnBatchesResponse, ZkEvmL2TxnBatchTxs } from 'types/api/zkEvmL2TxnBatches';
+import type { MarketplaceAppOverview } from 'types/client/marketplace';
 import type { ArrayElement } from 'types/utils';
 
 import config from 'configs/app';
@@ -212,6 +213,20 @@ export const RESOURCES = {
     endpoint: getFeaturePayload(config.features.nameService)?.api.endpoint,
     basePath: getFeaturePayload(config.features.nameService)?.api.basePath,
     filterFields: [ 'name' as const, 'only_active' as const ],
+  },
+
+  // MARKETPLACE
+  marketplace_dapps: {
+    path: '/api/v1/chains/:chainId/marketplace/dapps',
+    pathParams: [ 'chainId' as const ],
+    endpoint: getFeaturePayload(config.features.marketplace)?.api?.endpoint,
+    basePath: getFeaturePayload(config.features.marketplace)?.api?.basePath,
+  },
+  marketplace_dapp: {
+    path: '/api/v1/chains/:chainId/marketplace/dapps/:dappId',
+    pathParams: [ 'chainId' as const, 'dappId' as const ],
+    endpoint: getFeaturePayload(config.features.marketplace)?.api?.endpoint,
+    basePath: getFeaturePayload(config.features.marketplace)?.api?.basePath,
   },
 
   // VISUALIZATION
@@ -772,6 +787,8 @@ Q extends 'domains_lookup' ? EnsDomainLookupResponse :
 Q extends 'user_ops' ? UserOpsResponse :
 Q extends 'user_op' ? UserOp :
 Q extends 'user_ops_account' ? UserOpsAccount :
+Q extends 'marketplace_dapps' ? Array<MarketplaceAppOverview> :
+Q extends 'marketplace_dapp' ? MarketplaceAppOverview :
 never;
 /* eslint-enable @typescript-eslint/indent */
 

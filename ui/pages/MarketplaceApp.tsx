@@ -10,6 +10,7 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
+import useApiQuery from 'lib/api/useApiQuery';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useApiFetch from 'lib/hooks/useFetch';
 import * as metadata from 'lib/metadata';
@@ -19,7 +20,6 @@ import ContentLoader from 'ui/shared/ContentLoader';
 import useMarketplaceWallet from '../marketplace/useMarketplaceWallet';
 
 const feature = config.features.marketplace;
-const configUrl = feature.isEnabled ? feature.configUrl : '';
 
 const IFRAME_SANDBOX_ATTRIBUTE = 'allow-forms allow-orientation-lock ' +
 'allow-pointer-lock allow-popups-to-escape-sandbox ' +
@@ -94,16 +94,13 @@ const MarketplaceAppContent = ({ address, data, isPending }: Props) => {
   );
 };
 
-const MarketplaceApp = () => {
-  const { address, sendTransaction, signMessage, signTypedData } = useMarketplaceWallet();
-
+function useAppQuery(id: string) {
   const apiFetch = useApiFetch();
-  const router = useRouter();
-  const id = getQueryParamString(router.query.id);
 
-  const query = useQuery<unknown, ResourceError<unknown>, MarketplaceAppOverview>({
+  const data1 = useQuery<unknown, ResourceError<unknown>, MarketplaceAppOverview>({
     queryKey: [ 'marketplace-apps', id ],
     queryFn: async() => {
+      const configUrl = feature.isEnabled && feature.configUrl ? feature.configUrl : '';
       const result = await apiFetch<Array<MarketplaceAppOverview>, unknown>(configUrl, undefined, { resource: 'marketplace-apps' });
       if (!Array.isArray(result)) {
         throw result;
@@ -117,6 +114,24 @@ const MarketplaceApp = () => {
     },
     enabled: feature.isEnabled,
   });
+
+  const data2 = useApiQuery('marketplace_dapp', {
+    pathParams: { chainId: config.chain.id, dappId: id },
+    queryOptions: {
+      enabled: feature.isEnabled,
+    },
+  });
+
+  return feature.isEnabled && feature.configUrl ? data1 : data2;
+}
+
+const MarketplaceApp = () => {
+  const { address, sendTransaction, signMessage, signTypedData } = useMarketplaceWallet();
+
+  const router = useRouter();
+  const id = getQueryParamString(router.query.id);
+
+  const query = useAppQuery(id);
   const { data, isPending } = query;
 
   useEffect(() => {
