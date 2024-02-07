@@ -46,7 +46,7 @@ const ContractMethodsAccordionItem = <T extends SmartContractMethod>({ data, ind
   return (
     <AccordionItem as="section" _first={{ borderTopWidth: 0 }} _last={{ borderBottomWidth: 0 }}>
       <Element as="h2" name={ 'method_id' in data ? `method_${ data.method_id }` : '' }>
-        <AccordionButton px={ 0 } py={ 3 } _hover={{ bgColor: 'inherit' }} wordBreak="break-all" textAlign="left">
+        <AccordionButton px={ 0 } py={ 3 } _hover={{ bgColor: 'inherit' }} wordBreak="break-all" textAlign="left" as="div" cursor="pointer">
           { 'method_id' in data && (
             <Tooltip label={ hasCopied ? 'Copied!' : 'Copy link' } isOpen={ isOpen || hasCopied } onClose={ onClose }>
               <Box

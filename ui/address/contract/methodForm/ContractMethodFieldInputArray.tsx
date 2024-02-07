@@ -43,16 +43,16 @@ interface Props {
 
 const ContractMethodFieldInputArray = ({ data, hideLabel, level, basePath }: Props) => {
 
-  const [ num, setNum ] = React.useState(1);
+  const [ registeredIndices, setRegisteredIndices ] = React.useState([ 0 ]);
 
   const handleAddButtonClick = React.useCallback(() => {
-    setNum((prev) => prev + 1);
+    setRegisteredIndices((prev) => [ ...prev, prev[prev.length - 1] + 1 ]);
   }, []);
 
   const handleRemoveButtonClick = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
     const itemIndex = event.currentTarget.getAttribute('data-index');
     if (itemIndex) {
-      setNum((prev) => prev - 1);
+      setRegisteredIndices((prev) => prev.filter((index) => index !== Number(itemIndex)));
     }
   }, [ ]);
 
@@ -89,12 +89,14 @@ const ContractMethodFieldInputArray = ({ data, hideLabel, level, basePath }: Pro
         </Box>
       ) }
       <Flex flexDir="column" rowGap={ 1 } w="100%">
-        { Array(num).fill(0).map((item, index) => {
+        { registeredIndices.map((registeredIndex, index) => {
           return (
-            <Flex key={ index } alignItems="flex-start" columnGap={ 3 }>
-              { content(index) }
-              { num > 1 && <ArrayButton index={ index } onClick={ handleRemoveButtonClick } type="remove" my={ type.includes('tuple') ? 2 : 0 }/> }
-              { index === num - 1 && <ArrayButton index={ index } onClick={ handleAddButtonClick } type="add" my={ type.includes('tuple') ? 2 : 0 }/> }
+            <Flex key={ registeredIndex } alignItems="flex-start" columnGap={ 3 }>
+              { content(registeredIndex) }
+              { registeredIndices.length > 1 &&
+                <ArrayButton index={ registeredIndex } onClick={ handleRemoveButtonClick } type="remove" my={ type.includes('tuple') ? 2 : 0 }/> }
+              { index === registeredIndices.length - 1 &&
+                <ArrayButton index={ registeredIndex } onClick={ handleAddButtonClick } type="add" my={ type.includes('tuple') ? 2 : 0 }/> }
             </Flex>
           );
         }) }
