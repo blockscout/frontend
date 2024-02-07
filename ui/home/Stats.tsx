@@ -73,7 +73,7 @@ const Stats = () => {
             icon="txn_batches"
             title="Latest batch"
             value={ (zkEvmLatestBatchQuery.data || 0).toLocaleString() }
-            url={ route({ pathname: '/zkevm-l2-txn-batches' }) }
+            url={ route({ pathname: '/batches' }) }
             isLoading={ zkEvmLatestBatchQuery.isPlaceholderData }
           />
         ) : (

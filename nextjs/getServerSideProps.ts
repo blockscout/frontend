@@ -48,8 +48,8 @@ export const verifiedAddresses: GetServerSideProps<Props> = async(context) => {
   return account(context);
 };
 
-export const beaconChain: GetServerSideProps<Props> = async(context) => {
-  if (!config.features.beaconChain.isEnabled) {
+export const withdrawals: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.beaconChain.isEnabled && !config.features.optimisticRollup.isEnabled) {
     return {
       notFound: true,
     };
@@ -58,7 +58,17 @@ export const beaconChain: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-export const L2: GetServerSideProps<Props> = async(context) => {
+export const rollup: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.optimisticRollup.isEnabled && !config.features.zkEvmRollup.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
+export const optimisticRollup: GetServerSideProps<Props> = async(context) => {
   if (!config.features.optimisticRollup.isEnabled) {
     return {
       notFound: true,
@@ -68,7 +78,7 @@ export const L2: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-export const zkEvmL2: GetServerSideProps<Props> = async(context) => {
+export const zkEvmRollup: GetServerSideProps<Props> = async(context) => {
   if (!config.features.zkEvmRollup.isEnabled) {
     return {
       notFound: true,

@@ -242,6 +242,32 @@ const oldUrls = [
     source: '/token/:hash/write-proxy',
     destination: '/token/:hash?tab=write_proxy',
   },
+
+  // ROLLUPs
+  {
+    source: '/l2-txn-batches',
+    destination: '/batches',
+  },
+  {
+    source: '/zkevm-l2-txn-batches',
+    destination: '/batches',
+  },
+  {
+    source: '/zkevm-l2-txn-batch/:path*',
+    destination: '/batches/:path*',
+  },
+  {
+    source: '/l2-deposits',
+    destination: '/deposits',
+  },
+  {
+    source: '/l2-withdrawals',
+    destination: '/withdrawals',
+  },
+  {
+    source: '/l2-output-roots',
+    destination: '/output-roots',
+  },
 ];
 
 async function redirects() {

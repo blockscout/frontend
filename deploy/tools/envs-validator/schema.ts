@@ -259,6 +259,7 @@ const footerLinkGroupSchema: yup.ObjectSchema<CustomLinksGroup> = yup
 const networkExplorerSchema: yup.ObjectSchema<NetworkExplorer> = yup
   .object({
     title: yup.string().required(),
+    logo: yup.string().test(urlTest),
     baseUrl: yup.string().test(urlTest).required(),
     paths: yup
       .object()

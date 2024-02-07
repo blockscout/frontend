@@ -37,7 +37,7 @@ jobs:
         steps:
             - name: Fetching issues linked to pull request
               id: linked_issues
-              uses: actions/github-script@v6
+              uses: actions/github-script@v7
               env:
                 PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
               with:

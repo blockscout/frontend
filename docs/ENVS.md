@@ -270,6 +270,7 @@ Settings for meta tags and OG tags
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
+| logo | `string` | URL to explorer logo file. Should be at least 40x40. | - | - | `'https://foo.app/icon.png'` |
 | title | `string` | Displayed name of the explorer | Required | - | `Anyblock` |
 | baseUrl | `string` | Base url of the explorer | Required | - | `https://explorer.anyblock.tools` |
 | paths | `Record<'tx' \| 'block' \| 'address' \| 'token', string>` | Map of explorer entities and their paths | Required | - | `{'tx':'/ethereum/poa/core/tx'}` |
