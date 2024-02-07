@@ -11,8 +11,8 @@ import { ARRAY_REGEXP } from '../utils';
 import ContractMethodFieldInput from './ContractMethodFieldInput';
 import ContractMethodFieldInputArray from './ContractMethodFieldInputArray';
 import ContractMethodFieldInputTuple from './ContractMethodFieldInputTuple';
-
-type ContractMethodFormFields = Record<string, string>;
+import type { ContractMethodFormFields } from './utils';
+import { transformFormDataToMethodArgs } from './utils';
 
 interface Props {
   data: SmartContractWriteMethod;
@@ -27,7 +27,9 @@ const ContractMethodForm = ({ data }: Props) => {
 
   const onFormSubmit: SubmitHandler<ContractMethodFormFields> = React.useCallback(async(formData) => {
     // eslint-disable-next-line no-console
-    console.log('onFormSubmit', formData);
+    console.log('form data: ', formData);
+    // eslint-disable-next-line no-console
+    console.log('args: ', transformFormDataToMethodArgs(formData));
   }, []);
 
   const inputs: Array<SmartContractMethodInput> = React.useMemo(() => {
