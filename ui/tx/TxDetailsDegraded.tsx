@@ -36,6 +36,10 @@ const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
   const query = useQuery<RpcResponseType, unknown, Transaction | null>({
     queryKey: [ 'RPC', 'tx', { hash } ],
     queryFn: async() => {
+      if (!publicClient) {
+        throw new Error('No public RPC client');
+      }
+
       const tx = await publicClient.getTransaction({ hash: hash as `0x${ string }` });
 
       if (!tx) {

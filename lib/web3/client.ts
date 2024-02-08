@@ -7,11 +7,13 @@ export const publicClient = (() => {
     return;
   }
 
-  return createPublicClient({
-    chain: currentChain,
-    transport: http(),
-    batch: {
-      multicall: true,
-    },
-  });
+  try {
+    return createPublicClient({
+      chain: currentChain,
+      transport: http(),
+      batch: {
+        multicall: true,
+      },
+    });
+  } catch (error) {}
 })();
