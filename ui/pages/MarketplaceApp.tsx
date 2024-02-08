@@ -95,8 +95,8 @@ const MarketplaceAppContent = ({ address, data, isPending }: Props) => {
 
 const MarketplaceApp = () => {
   const { address, sendTransaction, signMessage, signTypedData } = useMarketplaceWallet();
-  const apiFetch = useApiFetch();
 
+  const apiFetch = useApiFetch();
   const router = useRouter();
   const id = getQueryParamString(router.query.id);
 
