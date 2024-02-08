@@ -8,7 +8,7 @@ import { NovesHistoryFilterValues } from 'types/api/noves';
 
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { NOVES_TRANSLATE } from 'stubs/noves/novesTranslate';
+import { NOVES_TRANSLATE } from 'stubs/noves/NovesTranslate';
 import { generateListStub } from 'stubs/utils';
 import AddressAccountHistoryTableItem from 'ui/address/accountHistory/AddressAccountHistoryTableItem';
 import ActionBar from 'ui/shared/ActionBar';

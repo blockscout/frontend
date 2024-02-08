@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { NOVES_TRANSLATE } from 'stubs/noves/novesTranslate';
+import { NOVES_TRANSLATE } from 'stubs/noves/NovesTranslate';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -114,7 +114,7 @@ export default function TxAssetFlows(props: FlowViewProps) {
     <DataListDisplay
       isError={ isError }
       items={ data }
-      emptyText="There are no transactions."
+      emptyText="There are no transfers."
       content={ content }
       actionBar={ actionBar }
     />

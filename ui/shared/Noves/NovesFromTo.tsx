@@ -30,7 +30,7 @@ const NovesFromTo: FC<Props> = ({ isLoaded, txData, currentAddress = '', item })
 
   const isSent = data.text.startsWith('Sent');
 
-  const addressObj = { hash: data.address || '', name: data.name || '' };
+  const address = { hash: data.address || '', name: data.name || '' };
 
   return (
     <Skeleton borderRadius="sm" isLoaded={ isLoaded }>
@@ -52,7 +52,7 @@ const NovesFromTo: FC<Props> = ({ isLoaded, txData, currentAddress = '', item })
         </Tag>
 
         <AddressEntity
-          address={ addressObj }
+          address={ address }
           fontWeight="500"
           noCopy={ !data.address }
           noLink={ !data.address }
