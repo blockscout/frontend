@@ -1,17 +1,23 @@
-import { Skeleton, Flex, Text, chakra } from '@chakra-ui/react';
+import { Skeleton, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { TxInterpretationSummary, TxInterpretationVariable } from 'types/api/txInterpretation';
+import type {
+  TxInterpretationSummary,
+  TxInterpretationVariable,
+  TxInterpretationVariableString,
+} from 'types/api/txInterpretation';
 
+import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
 import * as mixpanel from 'lib/mixpanel/index';
 import { currencyUnits } from 'lib/units';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
-import { extractVariables, getStringChunks, NATIVE_COIN_SYMBOL_VAR_NAME } from './utils';
+import { extractVariables, getStringChunks, fillStringVariables, NATIVE_COIN_SYMBOL_VAR_NAME } from './utils';
 
 type Props = {
   summary?: TxInterpretationSummary;
@@ -19,13 +25,19 @@ type Props = {
   className?: string;
 }
 
-const TxInterpretationElementByType = ({ variable }: { variable?: TxInterpretationVariable }) => {
+type NonStringTxInterpretationVariable = Exclude<TxInterpretationVariable, TxInterpretationVariableString>
+
+const TxInterpretationElementByType = ({ variable }: { variable?: NonStringTxInterpretationVariable }) => {
   const onAddressClick = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.TX_INTERPRETATION_INTERACTION, { Type: 'Address click' });
   }, []);
 
   const onTokenClick = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.TX_INTERPRETATION_INTERACTION, { Type: 'Token click' });
+  }, []);
+
+  const onDomainClick = React.useCallback(() => {
+    mixpanel.logEvent(mixpanel.EventTypes.TX_INTERPRETATION_INTERACTION, { Type: 'Domain click' });
   }, []);
 
   if (!variable) {
@@ -36,28 +48,47 @@ const TxInterpretationElementByType = ({ variable }: { variable?: TxInterpretati
   switch (type) {
     case 'address': {
       return (
-        <AddressEntity
-          address={ value }
-          truncation="constant"
-          sx={{ ':not(:first-child)': { marginLeft: 1 } }}
-          whiteSpace="initial"
-          onClick={ onAddressClick }
-        />
+        <chakra.span display="inline-block" verticalAlign="top" _notFirst={{ marginLeft: 1 }}>
+          <AddressEntity
+            address={ value }
+            truncation="constant"
+            onClick={ onAddressClick }
+            whiteSpace="initial"
+          />
+        </chakra.span>
       );
     }
     case 'token':
       return (
-        <TokenEntity
-          token={ value }
-          onlySymbol
-          noCopy
-          width="fit-content"
-          sx={{ ':not(:first-child)': { marginLeft: 1 } }}
-          mr={ 2 }
-          whiteSpace="initial"
-          onClick={ onTokenClick }
-        />
+        <chakra.span display="inline-block" verticalAlign="top" _notFirst={{ marginLeft: 1 }}>
+          <TokenEntity
+            token={ value }
+            onlySymbol
+            noCopy
+            width="fit-content"
+            _notFirst={{ marginLeft: 1 }}
+            mr={ 2 }
+            whiteSpace="initial"
+            onClick={ onTokenClick }
+          />
+        </chakra.span>
       );
+    case 'domain': {
+      if (config.features.nameService.isEnabled) {
+        return (
+          <chakra.span display="inline-block" verticalAlign="top" _notFirst={{ marginLeft: 1 }}>
+            <EnsEntity
+              name={ value }
+              width="fit-content"
+              _notFirst={{ marginLeft: 1 }}
+              whiteSpace="initial"
+              onClick={ onDomainClick }
+            />
+          </chakra.span>
+        );
+      }
+      return <chakra.span color="text_secondary" whiteSpace="pre">{ value + ' ' }</chakra.span>;
+    }
     case 'currency': {
       let numberString = '';
       if (BigNumber(value).isLessThan(0.1)) {
@@ -69,14 +100,10 @@ const TxInterpretationElementByType = ({ variable }: { variable?: TxInterpretati
       } else {
         numberString = BigNumber(value).dividedBy(1000000).toFormat(2) + 'M';
       }
-      return <Text>{ numberString + ' ' }</Text>;
+      return <chakra.span>{ numberString + ' ' }</chakra.span>;
     }
-    case 'timestamp':
-      // timestamp is in unix format
-      return <Text color="text_secondary">{ dayjs(Number(value) * 1000).format('llll') + ' ' }</Text>;
-    case 'string':
-    default: {
-      return <Text color="text_secondary">{ value.toString() + ' ' }</Text>;
+    case 'timestamp': {
+      return <chakra.span color="text_secondary" whiteSpace="pre">{ dayjs(Number(value) * 1000).format('MMM DD YYYY') }</chakra.span>;
     }
   }
 };
@@ -89,23 +116,24 @@ const TxInterpretation = ({ summary, isLoading, className }: Props) => {
   const template = summary.summary_template;
   const variables = summary.summary_template_variables;
 
-  const variablesNames = extractVariables(template);
+  const intermediateResult = fillStringVariables(template, variables);
 
-  const chunks = getStringChunks(template);
+  const variablesNames = extractVariables(intermediateResult);
+  const chunks = getStringChunks(intermediateResult);
 
   return (
-    <Skeleton display="flex" flexWrap="wrap" alignItems="center" isLoaded={ !isLoading } className={ className }>
-      <IconSvg name="lightning" boxSize={ 5 } color="text_secondary" mr={ 2 }/>
+    <Skeleton isLoaded={ !isLoading } className={ className } fontWeight={ 500 } whiteSpace="pre-wrap" >
+      <IconSvg name="lightning" boxSize={ 5 } color="text_secondary" mr={ 2 } verticalAlign="text-top"/>
       { chunks.map((chunk, index) => {
         return (
-          <Flex whiteSpace="pre" key={ chunk + index } fontWeight={ 500 }>
-            <Text color="text_secondary">{ chunk.trim() + (chunk.trim() && variablesNames[index] ? ' ' : '') }</Text>
+          <chakra.span key={ chunk + index }>
+            <chakra.span color="text_secondary">{ chunk.trim() + (chunk.trim() && variablesNames[index] ? ' ' : '') }</chakra.span>
             { index < variablesNames.length && (
               variablesNames[index] === NATIVE_COIN_SYMBOL_VAR_NAME ?
-                <Text>{ currencyUnits.ether + ' ' }</Text> :
-                <TxInterpretationElementByType variable={ variables[variablesNames[index]] }/>
+                <chakra.span>{ currencyUnits.ether + ' ' }</chakra.span> :
+                <TxInterpretationElementByType variable={ variables[variablesNames[index]] as NonStringTxInterpretationVariable }/>
             ) }
-          </Flex>
+          </chakra.span>
         );
       }) }
     </Skeleton>

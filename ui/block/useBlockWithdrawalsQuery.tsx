@@ -65,6 +65,10 @@ export default function useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab
   const rpcQuery = useQuery<RpcResponseType, unknown, BlockWithdrawalsResponse | null>({
     queryKey: [ 'RPC', 'block', { heightOrHash } ],
     queryFn: async() => {
+      if (!publicClient) {
+        return null;
+      }
+
       const blockParams = heightOrHash.startsWith('0x') ? { blockHash: heightOrHash as `0x${ string }` } : { blockNumber: BigInt(heightOrHash) };
       return publicClient.getBlock(blockParams).catch(() => null);
     },
@@ -89,6 +93,7 @@ export default function useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab
     },
     placeholderData: GET_BLOCK,
     enabled:
+      publicClient !== undefined &&
       tab === 'withdrawals' &&
       config.features.beaconChain.isEnabled &&
       (blockQuery.isDegradedData || apiQuery.isError || apiQuery.errorUpdateCount > 0),
@@ -97,7 +102,7 @@ export default function useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab
   });
 
   React.useEffect(() => {
-    if (apiQuery.isPlaceholderData) {
+    if (apiQuery.isPlaceholderData || !publicClient) {
       return;
     }
 
@@ -117,7 +122,7 @@ export default function useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab
   const isRpcQuery = Boolean((
     blockQuery.isDegradedData ||
     ((apiQuery.isError || apiQuery.isPlaceholderData) && apiQuery.errorUpdateCount > 0)
-  ) && rpcQuery.data);
+  ) && rpcQuery.data && publicClient);
 
   const rpcQueryWithPages: QueryWithPagesResult<'block_withdrawals'> = React.useMemo(() => {
     return {

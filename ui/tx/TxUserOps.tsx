@@ -2,6 +2,7 @@ import React from 'react';
 
 import { USER_OPS_ITEM } from 'stubs/userOps';
 import { generateListStub } from 'stubs/utils';
+import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import TxPendingAlert from 'ui/tx/TxPendingAlert';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
@@ -26,6 +27,10 @@ const TxUserOps = ({ txQuery }: Props) => {
 
   if (!txQuery.isPending && !txQuery.isPlaceholderData && !txQuery.isError && !txQuery.data.status) {
     return txQuery.socketStatus ? <TxSocketAlert status={ txQuery.socketStatus }/> : <TxPendingAlert/>;
+  }
+
+  if (txQuery.isError) {
+    return <DataFetchAlert/>;
   }
 
   return <UserOpsContent query={ userOpsQuery } showTx={ false }/>;
