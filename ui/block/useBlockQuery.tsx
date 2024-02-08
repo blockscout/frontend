@@ -50,6 +50,10 @@ export default function useBlockQuery({ heightOrHash }: Params): BlockQuery {
   const rpcQuery = useQuery<RpcResponseType, unknown, Block | null>({
     queryKey: [ 'RPC', 'block', { heightOrHash } ],
     queryFn: async() => {
+      if (!publicClient) {
+        return null;
+      }
+
       const blockParams = heightOrHash.startsWith('0x') ? { blockHash: heightOrHash as `0x${ string }` } : { blockNumber: BigInt(heightOrHash) };
       return publicClient.getBlock(blockParams).catch(() => null);
     },
@@ -86,13 +90,13 @@ export default function useBlockQuery({ heightOrHash }: Params): BlockQuery {
       };
     },
     placeholderData: GET_BLOCK,
-    enabled: apiQuery.isError || apiQuery.errorUpdateCount > 0,
+    enabled: publicClient !== undefined && (apiQuery.isError || apiQuery.errorUpdateCount > 0),
     retry: false,
     refetchOnMount: false,
   });
 
   React.useEffect(() => {
-    if (apiQuery.isPlaceholderData) {
+    if (apiQuery.isPlaceholderData || !publicClient) {
       return;
     }
 
@@ -109,7 +113,7 @@ export default function useBlockQuery({ heightOrHash }: Params): BlockQuery {
     }
   }, [ rpcQuery.data, rpcQuery.isPlaceholderData ]);
 
-  const isRpcQuery = Boolean((apiQuery.isError || apiQuery.isPlaceholderData) && apiQuery.errorUpdateCount > 0 && rpcQuery.data);
+  const isRpcQuery = Boolean(publicClient && (apiQuery.isError || apiQuery.isPlaceholderData) && apiQuery.errorUpdateCount > 0 && rpcQuery.data);
   const query = isRpcQuery ? rpcQuery as UseQueryResult<Block, ResourceError<{ status: number }>> : apiQuery;
 
   return {
