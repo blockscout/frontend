@@ -19,7 +19,13 @@ export default function buildUrl<R extends ResourceName>(
 
   queryParams && Object.entries(queryParams).forEach(([ key, value ]) => {
     // there are some pagination params that can be null or false for the next page
-    value !== undefined && value !== '' && url.searchParams.append(key, String(value));
+    if (value !== undefined && value !== '') {
+      if (Array.isArray(value)) {
+        value.forEach((v, i) => url.searchParams.append(`${ key }[${ i }]`, String(v)));
+      } else {
+        url.searchParams.append(key, String(value));
+      }
+    }
   });
 
   return url.toString();
