@@ -49,6 +49,10 @@ export default function useAddressQuery({ hash }: Params): AddressQuery {
   const rpcQuery = useQuery<RpcResponseType, unknown, Address | null>({
     queryKey: [ 'RPC', 'address', { hash } ],
     queryFn: async() => {
+      if (!publicClient) {
+        throw new Error('No public RPC client');
+      }
+
       const balance = publicClient.getBalance({ address: hash as `0x${ string }` }).catch(() => null);
 
       return Promise.all([
@@ -100,7 +104,7 @@ export default function useAddressQuery({ hash }: Params): AddressQuery {
   });
 
   React.useEffect(() => {
-    if (apiQuery.isPlaceholderData) {
+    if (apiQuery.isPlaceholderData || !publicClient) {
       return;
     }
 
@@ -117,7 +121,7 @@ export default function useAddressQuery({ hash }: Params): AddressQuery {
     }
   }, [ rpcQuery.data, rpcQuery.isPlaceholderData ]);
 
-  const isRpcQuery = Boolean((apiQuery.isError || apiQuery.isPlaceholderData) && apiQuery.errorUpdateCount > 0 && rpcQuery.data);
+  const isRpcQuery = Boolean((apiQuery.isError || apiQuery.isPlaceholderData) && apiQuery.errorUpdateCount > 0 && rpcQuery.data && publicClient);
   const query = isRpcQuery ? rpcQuery as UseQueryResult<Address, ResourceError<{ status: number }>> : apiQuery;
 
   return {
