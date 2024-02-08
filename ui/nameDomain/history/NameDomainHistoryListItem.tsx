@@ -18,7 +18,7 @@ const NameDomainHistoryListItem = ({ isLoading, transaction_hash: transactionHas
     <ListItemMobileGrid.Container>
       <ListItemMobileGrid.Label isLoading={ isLoading }>Txn hash</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <TxEntity hash={ transactionHash } isLoading={ isLoading } fontWeight={ 500 }/>
+        <TxEntity hash={ transactionHash } isLoading={ isLoading } fontWeight={ 500 } truncation="constant_long"/>
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>

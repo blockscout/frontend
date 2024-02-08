@@ -74,6 +74,7 @@ const LatestBlocksItem = ({ block, isLoading }: Props) => {
               isLoading={ isLoading }
               noIcon
               noCopy
+              truncation="constant"
             />
           </>
         ) }

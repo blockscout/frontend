@@ -1,9 +1,9 @@
-export default function shortenString(string: string | null, charNumber = 8) {
+export default function shortenString(string: string | null, charNumber: number | undefined = 8) {
   if (!string) {
     return '';
   }
 
-  if (string.length <= charNumber - 1) {
+  if (string.length <= charNumber) {
     return string;
   }
 

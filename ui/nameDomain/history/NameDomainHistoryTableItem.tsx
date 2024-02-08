@@ -17,7 +17,13 @@ const NameDomainHistoryTableItem = ({ isLoading, transaction_hash: transactionHa
   return (
     <Tr>
       <Td verticalAlign="middle">
-        <TxEntity hash={ transactionHash } isLoading={ isLoading } fontWeight={ 700 }/>
+        <TxEntity
+          hash={ transactionHash }
+          isLoading={ isLoading }
+          fontWeight={ 700 }
+          noIcon
+          truncation="constant_long"
+        />
       </Td>
       <Td pl={ 9 } verticalAlign="middle">
         <Skeleton isLoaded={ !isLoading } color="text_secondary" display="inline-block">
