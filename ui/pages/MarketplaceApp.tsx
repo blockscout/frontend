@@ -10,7 +10,6 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
-import useApiQuery from 'lib/api/useApiQuery';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useApiFetch from 'lib/hooks/useFetch';
 import * as metadata from 'lib/metadata';
@@ -94,44 +93,41 @@ const MarketplaceAppContent = ({ address, data, isPending }: Props) => {
   );
 };
 
-function useAppQuery(id: string) {
-  const apiFetch = useApiFetch();
-
-  const data1 = useQuery<unknown, ResourceError<unknown>, MarketplaceAppOverview>({
-    queryKey: [ 'marketplace-apps', id ],
-    queryFn: async() => {
-      const configUrl = feature.isEnabled && feature.configUrl ? feature.configUrl : '';
-      const result = await apiFetch<Array<MarketplaceAppOverview>, unknown>(configUrl, undefined, { resource: 'marketplace-apps' });
-      if (!Array.isArray(result)) {
-        throw result;
-      }
-      const item = result.find((app: MarketplaceAppOverview) => app.id === id);
-      if (!item) {
-        throw { status: 404 };
-      }
-
-      return item;
-    },
-    enabled: feature.isEnabled,
-  });
-
-  const data2 = useApiQuery('marketplace_dapp', {
-    pathParams: { chainId: config.chain.id, dappId: id },
-    queryOptions: {
-      enabled: feature.isEnabled,
-    },
-  });
-
-  return feature.isEnabled && feature.configUrl ? data1 : data2;
-}
-
 const MarketplaceApp = () => {
   const { address, sendTransaction, signMessage, signTypedData } = useMarketplaceWallet();
+  const apiFetch = useApiFetch();
 
   const router = useRouter();
   const id = getQueryParamString(router.query.id);
 
-  const query = useAppQuery(id);
+  const query = useQuery<unknown, ResourceError<unknown>, MarketplaceAppOverview>({
+    queryKey: [ 'marketplace-dapps', id ],
+    queryFn: async() => {
+      if (!feature.isEnabled) {
+        return null;
+      }
+      const isConfigFile = 'configUrl' in feature;
+      const url = isConfigFile ?
+        feature.configUrl :
+        feature.api.endpoint + `/api/v1/chains/${ config.chain.id }/marketplace/dapps/${ id }`;
+
+      const result = await apiFetch<Array<MarketplaceAppOverview>, unknown>(url, undefined, { resource: 'marketplace-dapps' });
+
+      if (isConfigFile) {
+        if (!Array.isArray(result)) {
+          throw result;
+        }
+        const item = result.find((app: MarketplaceAppOverview) => app.id === id);
+        if (!item) {
+          throw { status: 404 };
+        }
+        return item;
+      }
+
+      return result;
+    },
+    enabled: feature.isEnabled,
+  });
   const { data, isPending } = query;
 
   useEffect(() => {
