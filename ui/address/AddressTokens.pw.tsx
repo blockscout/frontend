@@ -13,8 +13,8 @@ import AddressTokens from './AddressTokens';
 const ADDRESS_HASH = addressMock.withName.hash;
 const API_URL_ADDRESS = buildApiUrl('address', { hash: ADDRESS_HASH });
 const API_URL_TOKENS = buildApiUrl('address_tokens', { hash: ADDRESS_HASH });
-const API_URL_NFT = buildApiUrl('address_nfts', { hash: ADDRESS_HASH }) + '?type=';
-const API_URL_COLLECTIONS = buildApiUrl('address_collections', { hash: ADDRESS_HASH }) + '?type=';
+const API_URL_NFT = buildApiUrl('address_nfts', { hash: ADDRESS_HASH });
+const API_URL_COLLECTIONS = buildApiUrl('address_collections', { hash: ADDRESS_HASH });
 
 const nextPageParams = {
   items_count: 50,
