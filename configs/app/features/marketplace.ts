@@ -17,7 +17,15 @@ const config: Feature<(
 ) & { submitFormUrl: string; categoriesUrl: string | undefined }
 > = (() => {
   if (chain.rpcUrl && submitFormUrl) {
-    if (adminServiceApiHost) {
+    if (configUrl) {
+      return Object.freeze({
+        title,
+        isEnabled: true,
+        configUrl,
+        submitFormUrl,
+        categoriesUrl,
+      });
+    } else if (adminServiceApiHost) {
       return Object.freeze({
         title,
         isEnabled: true,
@@ -27,14 +35,6 @@ const config: Feature<(
           endpoint: adminServiceApiHost,
           basePath: '',
         },
-      });
-    } else if (configUrl) {
-      return Object.freeze({
-        title,
-        isEnabled: true,
-        configUrl,
-        submitFormUrl,
-        categoriesUrl,
       });
     }
   }
