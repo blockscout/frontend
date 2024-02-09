@@ -111,7 +111,7 @@ base.describe('bridged tokens', async() => {
   });
 
   test('base view', async({ mount, page }) => {
-    await page.route(BRIDGED_TOKENS_API_URL + '?chain_ids%5B0%5D=99', (route) => route.fulfill({
+    await page.route(BRIDGED_TOKENS_API_URL + '?chain_ids=99', (route) => route.fulfill({
       status: 200,
       body: JSON.stringify(bridgedFilteredTokens),
     }));
