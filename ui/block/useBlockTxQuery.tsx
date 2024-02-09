@@ -63,6 +63,10 @@ export default function useBlockTxQuery({ heightOrHash, blockQuery, tab }: Param
   const rpcQuery = useQuery<RpcResponseType, unknown, BlockTransactionsResponse | null>({
     queryKey: [ 'RPC', 'block_txs', { heightOrHash } ],
     queryFn: async() => {
+      if (!publicClient) {
+        return null;
+      }
+
       const blockParams = heightOrHash.startsWith('0x') ?
         { blockHash: heightOrHash as `0x${ string }`, includeTransactions: true } :
         { blockNumber: BigInt(heightOrHash), includeTransactions: true };
@@ -125,13 +129,13 @@ export default function useBlockTxQuery({ heightOrHash, blockQuery, tab }: Param
       };
     },
     placeholderData: GET_BLOCK_WITH_TRANSACTIONS,
-    enabled: tab === 'txs' && (blockQuery.isDegradedData || apiQuery.isError || apiQuery.errorUpdateCount > 0),
+    enabled: publicClient !== undefined && tab === 'txs' && (blockQuery.isDegradedData || apiQuery.isError || apiQuery.errorUpdateCount > 0),
     retry: false,
     refetchOnMount: false,
   });
 
   React.useEffect(() => {
-    if (apiQuery.isPlaceholderData) {
+    if (apiQuery.isPlaceholderData || !publicClient) {
       return;
     }
 
@@ -151,7 +155,7 @@ export default function useBlockTxQuery({ heightOrHash, blockQuery, tab }: Param
   const isRpcQuery = Boolean((
     blockQuery.isDegradedData ||
     ((apiQuery.isError || apiQuery.isPlaceholderData) && apiQuery.errorUpdateCount > 0)
-  ) && rpcQuery.data);
+  ) && rpcQuery.data && publicClient);
 
   const rpcQueryWithPages: QueryWithPagesResult<'block_txs'> = React.useMemo(() => {
     return {
