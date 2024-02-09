@@ -11,7 +11,7 @@ import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import LinkExternal from 'ui/shared/LinkExternal';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
-const feature = config.features.optimisticRollup;
+const rollupFeature = config.features.rollup;
 
 type Props = { item: L2WithdrawalsItem; isLoading?: boolean };
 
@@ -19,7 +19,7 @@ const WithdrawalsListItem = ({ item, isLoading }: Props) => {
   const timeAgo = item.l2_timestamp ? dayjs(item.l2_timestamp).fromNow() : null;
   const timeToEnd = item.challenge_period_end ? dayjs(item.challenge_period_end).fromNow(true) + ' left' : null;
 
-  if (!feature.isEnabled) {
+  if (!rollupFeature.isEnabled || rollupFeature.type !== 'optimistic') {
     return null;
   }
 
@@ -68,8 +68,8 @@ const WithdrawalsListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Status</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        { item.status === 'Ready for relay' ?
-          <LinkExternal href={ feature.withdrawalUrl }>{ item.status }</LinkExternal> :
+        { item.status === 'Ready for relay' && rollupFeature.L2WithdrawalUrl ?
+          <LinkExternal href={ rollupFeature.L2WithdrawalUrl }>{ item.status }</LinkExternal> :
           <Skeleton isLoaded={ !isLoading } display="inline-block">{ item.status }</Skeleton> }
       </ListItemMobileGrid.Value>
 

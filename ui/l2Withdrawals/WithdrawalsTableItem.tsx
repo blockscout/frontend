@@ -10,7 +10,7 @@ import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import LinkExternal from 'ui/shared/LinkExternal';
 
-const feature = config.features.optimisticRollup;
+const rollupFeature = config.features.rollup;
 
  type Props = { item: L2WithdrawalsItem; isLoading?: boolean };
 
@@ -18,7 +18,7 @@ const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
   const timeAgo = item.l2_timestamp ? dayjs(item.l2_timestamp).fromNow() : 'N/A';
   const timeToEnd = item.challenge_period_end ? dayjs(item.challenge_period_end).fromNow(true) + ' left' : '';
 
-  if (!feature.isEnabled) {
+  if (!rollupFeature.isEnabled || rollupFeature.type !== 'optimistic') {
     return null;
   }
 
@@ -51,8 +51,8 @@ const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
         </Skeleton>
       </Td>
       <Td verticalAlign="middle">
-        { item.status === 'Ready for relay' ?
-          <LinkExternal href={ feature.withdrawalUrl }>{ item.status }</LinkExternal> :
+        { item.status === 'Ready for relay' && rollupFeature.L2WithdrawalUrl ?
+          <LinkExternal href={ rollupFeature.L2WithdrawalUrl }>{ item.status }</LinkExternal> :
           <Skeleton isLoaded={ !isLoading } display="inline-block">{ item.status }</Skeleton>
         }
       </Td>

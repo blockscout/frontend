@@ -5,9 +5,10 @@ import React from 'react';
 import PageNextJs from 'nextjs/PageNextJs';
 
 import config from 'configs/app';
+const rollupFeature = config.features.rollup;
 
 const Withdrawals = dynamic(() => {
-  if (config.features.optimisticRollup.isEnabled) {
+  if (rollupFeature.isEnabled && rollupFeature.type === 'optimistic') {
     return import('ui/pages/L2Withdrawals');
   }
   return import('ui/pages/Withdrawals');

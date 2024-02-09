@@ -11,14 +11,14 @@ import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 
-const feature = config.features.optimisticRollup;
+const rollupFeature = config.features.rollup;
 
  type Props = { item: L2DepositsItem; isLoading?: boolean };
 
 const WithdrawalsTableItem = ({ item, isLoading }: Props) => {
   const timeAgo = dayjs(item.l1_block_timestamp).fromNow();
 
-  if (!feature.isEnabled) {
+  if (!rollupFeature.isEnabled || rollupFeature.type !== 'optimistic') {
     return null;
   }
 

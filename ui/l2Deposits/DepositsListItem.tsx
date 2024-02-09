@@ -12,14 +12,14 @@ import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
-const feature = config.features.optimisticRollup;
+const rollupFeature = config.features.rollup;
 
 type Props = { item: L2DepositsItem; isLoading?: boolean };
 
 const DepositsListItem = ({ item, isLoading }: Props) => {
   const timeAgo = dayjs(item.l1_block_timestamp).fromNow();
 
-  if (!feature.isEnabled) {
+  if (!rollupFeature.isEnabled || rollupFeature.type !== 'optimistic') {
     return null;
   }
 

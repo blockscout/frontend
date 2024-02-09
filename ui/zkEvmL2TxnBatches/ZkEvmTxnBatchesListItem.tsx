@@ -7,20 +7,20 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
-import ZkEvmBatchEntityL2 from 'ui/shared/entities/block/ZkEvmBatchEntityL2';
+import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import LinkInternal from 'ui/shared/LinkInternal';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 import ZkEvmL2TxnBatchStatus from 'ui/shared/statusTag/ZkEvmL2TxnBatchStatus';
 
-const feature = config.features.zkEvmRollup;
+const rollupFeature = config.features.rollup;
 
 type Props = { item: ZkEvmL2TxnBatchesItem; isLoading?: boolean };
 
 const ZkEvmTxnBatchesListItem = ({ item, isLoading }: Props) => {
   const timeAgo = dayjs(item.timestamp).fromNow();
 
-  if (!feature.isEnabled) {
+  if (!rollupFeature.isEnabled || rollupFeature.type !== 'zkEvm') {
     return null;
   }
 
@@ -29,7 +29,7 @@ const ZkEvmTxnBatchesListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Batch #</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <ZkEvmBatchEntityL2
+        <BatchEntityL2
           isLoading={ isLoading }
           number={ item.number }
           fontSize="sm"

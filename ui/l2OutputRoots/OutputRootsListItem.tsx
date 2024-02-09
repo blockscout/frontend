@@ -11,14 +11,14 @@ import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
-const feature = config.features.optimisticRollup;
+const rollupFeature = config.features.rollup;
 
 type Props = { item: L2OutputRootsItem; isLoading?: boolean };
 
 const OutputRootsListItem = ({ item, isLoading }: Props) => {
   const timeAgo = dayjs(item.l1_timestamp).fromNow();
 
-  if (!feature.isEnabled) {
+  if (!rollupFeature.isEnabled || rollupFeature.type !== 'optimistic') {
     return null;
   }
 

@@ -12,14 +12,14 @@ import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import LinkInternal from 'ui/shared/LinkInternal';
 
-const feature = config.features.optimisticRollup;
+const rollupFeature = config.features.rollup;
 
 type Props = { item: L2TxnBatchesItem; isLoading?: boolean };
 
 const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
   const timeAgo = dayjs(item.l1_timestamp).fromNow();
 
-  if (!feature.isEnabled) {
+  if (!rollupFeature.isEnabled || rollupFeature.type !== 'optimistic') {
     return null;
   }
 
