@@ -52,7 +52,7 @@ import type { L2OutputRootsResponse } from 'types/api/l2OutputRoots';
 import type { L2TxnBatchesResponse } from 'types/api/l2TxnBatches';
 import type { L2WithdrawalsResponse } from 'types/api/l2Withdrawals';
 import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
-import type { NovesAccountHistoryResponse, NovesDescribeResponse, NovesResponseData } from 'types/api/noves';
+import type { NovesAccountHistoryResponse, NovesDescribeTxsResponse, NovesResponseData } from 'types/api/noves';
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import type { SearchRedirectResult, SearchResult, SearchResultFilters, SearchResultItem } from 'types/api/search';
 import type { Counters, StatsCharts, StatsChart, HomeStats } from 'types/api/stats';
@@ -87,11 +87,17 @@ import type { ArrayElement } from 'types/utils';
 
 import config from 'configs/app';
 
+export interface QueryParamArray {
+  key: string;
+  type: 'array';
+}
+
 export interface ApiResource {
   path: ResourcePath;
   endpoint?: string;
   basePath?: string;
   pathParams?: Array<string>;
+  queryParams?: Array<string | QueryParamArray>;
   needAuth?: boolean; // for external APIs which require authentication
 }
 
@@ -591,11 +597,13 @@ export const RESOURCES = {
     pathParams: [ 'address' as const ],
     filterFields: [],
   },
-  noves_describe_tx: {
-    path: '/api/v2/proxy/noves-fi/transactions/:hash/describe',
-    pathParams: [ 'hash' as const ],
+  noves_describe_txs: {
+    path: '/api/v2/proxy/noves-fi/transactions',
+    queryParams: [
+      'viewAsAccountAddress' as const,
+      { key: 'hashes', type: 'array' } as const,
+    ],
   },
-
   // USER OPS
   user_ops: {
     path: '/api/v2/proxy/account-abstraction/operations',
@@ -682,7 +690,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'zkevm_l2_txn_batches' | 'zkevm_l2_txn_batch_txs' |
 'withdrawals' | 'address_withdrawals' | 'block_withdrawals' |
 'watchlist' | 'private_tags_address' | 'private_tags_tx' |
-'domains_lookup' | 'addresses_lookup' | 'user_ops' | 'noves_address_history';
+'domains_lookup' | 'addresses_lookup' | 'user_ops' | 'noves_address_history' | 'noves_describe_txs';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
@@ -783,7 +791,7 @@ Q extends 'zkevm_l2_txn_batch_txs' ? ZkEvmL2TxnBatchTxs :
 Q extends 'config_backend_version' ? BackendVersionConfig :
 Q extends 'noves_transaction' ? NovesResponseData :
 Q extends 'noves_address_history' ? NovesAccountHistoryResponse :
-Q extends 'noves_describe_tx' ? NovesDescribeResponse :
+Q extends 'noves_describe_txs' ? NovesDescribeTxsResponse :
 Q extends 'addresses_lookup' ? EnsAddressLookupResponse :
 Q extends 'domain_info' ? EnsDomainDetailed :
 Q extends 'domain_events' ? EnsDomainEventsResponse :

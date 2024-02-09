@@ -4,7 +4,6 @@ import React from 'react';
 import type { AddressFromToFilter } from 'types/api/address';
 import type { Transaction, TransactionsSortingField, TransactionsSortingValue } from 'types/api/transaction';
 
-import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import DataListDisplay from 'ui/shared/DataListDisplay';
@@ -40,8 +39,6 @@ type Props = {
   sort: TransactionsSortingValue | undefined;
 }
 
-const feature = config.features.txInterpretation;
-
 const TxsContent = ({
   query,
   filter,
@@ -66,10 +63,7 @@ const TxsContent = ({
     setSorting(value);
   }, [ sort, setSorting ]);
 
-  const translateEnabled = feature.isEnabled && feature.provider === 'noves';
-
-  // Same array of transactions as "items" with "translate" field added
-  const itemsWithTranslate = useDescribeTxs(items, translateEnabled);
+  const itemsWithTranslate = useDescribeTxs(items, currentAddress);
 
   const content = itemsWithTranslate ? (
     <>

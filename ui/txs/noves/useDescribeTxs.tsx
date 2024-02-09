@@ -4,7 +4,9 @@ import _ from 'lodash';
 import type { NovesDescribeTxsResponse } from 'types/api/noves';
 import type { Transaction } from 'types/api/transaction';
 
+import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
+// import useApiQuery from 'lib/api/useApiQuery';
 
 export interface DescribeTxs {
   txHash: string;
@@ -18,12 +20,16 @@ export interface TransactionWithTranslate extends Transaction {
   translate?: DescribeTxs;
 }
 
-export default function useDescribeTxs(items: Array<Transaction> | undefined, translateEnabled: boolean) {
+const feature = config.features.txInterpretation;
+
+const translateEnabled = feature.isEnabled && feature.provider === 'noves';
+
+export default function useDescribeTxs(items: Array<Transaction> | undefined, viewAsAccountAddress: string | undefined) {
   const txsHash = items?.map(i => i.hash);
   const txsChunk = _.chunk(txsHash || [], 10);
 
   const txsParams = Array(5).fill(undefined).map((_, i) => txsChunk[i]);
-  const txsQuerys = useFetchTxs(txsParams, translateEnabled);
+  const txsQuerys = useFetchTxs(txsParams, viewAsAccountAddress);
 
   const isLoading = txsQuerys.some(query => query.isLoading || query.isPlaceholderData);
   const queryData = txsQuerys.map(query => query.data ? query.data : []).flat();
@@ -58,7 +64,7 @@ export default function useDescribeTxs(items: Array<Transaction> | undefined, tr
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function useFetchTxs(txs: Array<Array<string>>, translateEnabled: boolean) {
+function useFetchTxs(txs: Array<Array<string>>, viewAsAccountAddress: string | undefined) {
   const txsQuerys = [];
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -66,21 +72,15 @@ function useFetchTxs(txs: Array<Array<string>>, translateEnabled: boolean) {
     // loop to avoid writing 5 hook calls.
     // txs will always have the same length so we always execute the same amount of hooks
 
-    /*
-  ---- This will be available once the proxy for this endpoint is ready ----
+    // Need to fix implementation here to handle translateEnabled correctly, and verify the calls to describeTxs proxy are working correctly
+    // const query = useApiQuery('noves_describe_txs', {
+    //   queryParams: {
+    //     viewAsAccountAddress: viewAsAccountAddress,
+    //     hashes: body,
+    //   },
+    // });
 
-    const query = useApiQuery('noves_describe_txs', {
-      fetchParams: {
-        method: 'POST',
-        body: body ? JSON.stringify(body) : undefined,
-      },
-      queryOptions: {
-        enabled: translateEnabled && Boolean(body),
-      },
-    });
-
-    txsQuerys.push(query);
-    */
+    // txsQuerys.push(query);
 
     txsQuerys.push({} as UseQueryResult<NovesDescribeTxsResponse, ResourceError<unknown>>);
   }
