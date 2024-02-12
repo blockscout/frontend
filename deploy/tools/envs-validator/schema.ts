@@ -15,6 +15,7 @@ import type { ContractCodeIde } from '../../../types/client/contract';
 import type { MarketplaceAppOverview } from '../../../types/client/marketplace';
 import { NAVIGATION_LINK_IDS } from '../../../types/client/navigation-items';
 import type { NavItemExternal, NavigationLinkId } from '../../../types/client/navigation-items';
+import { ROLLUP_TYPES } from '../../../types/client/rollup';
 import type { BridgedTokenChain, TokenBridge } from '../../../types/client/token';
 import { PROVIDERS as TX_INTERPRETATION_PROVIDERS } from '../../../types/client/txInterpretation';
 import type { WalletType } from '../../../types/client/wallets';
@@ -114,23 +115,20 @@ const beaconChainSchema = yup
 const rollupSchema = yup
   .object()
   .shape({
-    NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK: yup.boolean(),
-    NEXT_PUBLIC_OPTIMISTIC_L2_WITHDRAWAL_URL: yup
+    NEXT_PUBLIC_ROLLUP_TYPE: yup.string().oneOf(ROLLUP_TYPES),
+    NEXT_PUBLIC_ROLLUP_L1_BASE_URL: yup
       .string()
-      .when('NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK', {
+      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
         is: (value: string) => value,
         then: (schema) => schema.test(urlTest).required(),
-        // eslint-disable-next-line max-len
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_OPTIMISTIC_L2_WITHDRAWAL_URL cannot not be used if NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK is not set to "true"'),
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_ROLLUP_L1_BASE_URL cannot not be used if NEXT_PUBLIC_ROLLUP_TYPE is not defined'),
       }),
-    NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK: yup.boolean(),
-    NEXT_PUBLIC_L1_BASE_URL: yup
+    NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL: yup
       .string()
-      .when([ 'NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK', 'NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK' ], {
-        is: (isOptimistic?: boolean, isZk?: boolean) => isOptimistic || isZk,
+      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
+        is: (value: string) => value === 'optimistic',
         then: (schema) => schema.test(urlTest).required(),
-        // eslint-disable-next-line max-len
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_L1_BASE_URL cannot not be used if NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK or NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK is not set to "true"'),
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL cannot not be used if NEXT_PUBLIC_ROLLUP_TYPE is not defined'),
       }),
   });
 

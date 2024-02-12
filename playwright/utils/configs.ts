@@ -15,9 +15,9 @@ export const featureEnvs = {
     { name: 'NEXT_PUBLIC_HAS_BEACON_CHAIN', value: 'true' },
   ],
   optimisticRollup: [
-    { name: 'NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK', value: 'true' },
-    { name: 'NEXT_PUBLIC_L1_BASE_URL', value: 'https://localhost:3101' },
-    { name: 'NEXT_PUBLIC_OPTIMISTIC_L2_WITHDRAWAL_URL', value: 'https://localhost:3102' },
+    { name: 'NEXT_PUBLIC_ROLLUP_TYPE', value: 'optimistic' },
+    { name: 'NEXT_PUBLIC_ROLLUP_L1_BASE_URL', value: 'https://localhost:3101' },
+    { name: 'NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL', value: 'https://localhost:3102' },
   ],
   bridgedTokens: [
     {
@@ -32,9 +32,9 @@ export const featureEnvs = {
   txInterpretation: [
     { name: 'NEXT_PUBLIC_TRANSACTION_INTERPRETATION_PROVIDER', value: 'blockscout' },
   ],
-  zkRollup: [
-    { name: 'NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK', value: 'true' },
-    { name: 'NEXT_PUBLIC_L1_BASE_URL', value: 'https://localhost:3101' },
+  zkEvmRollup: [
+    { name: 'NEXT_PUBLIC_ROLLUP_TYPE', value: 'zkEvm' },
+    { name: 'NEXT_PUBLIC_ROLLUP_L1_BASE_URL', value: 'https://localhost:3101' },
   ],
   userOps: [
     { name: 'NEXT_PUBLIC_HAS_USER_OPS', value: 'true' },

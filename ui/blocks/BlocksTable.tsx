@@ -28,7 +28,7 @@ const GAS_COL_WEIGHT = 33;
 const REWARD_COL_WEIGHT = 22;
 const FEES_COL_WEIGHT = 22;
 
-const isRollup = config.features.optimisticRollup.isEnabled || config.features.zkEvmRollup.isEnabled;
+const isRollup = config.features.rollup.isEnabled;
 
 const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum, socketInfoAlert }: Props) => {
 

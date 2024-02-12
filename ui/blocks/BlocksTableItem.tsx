@@ -25,7 +25,7 @@ interface Props {
   enableTimeIncrement?: boolean;
 }
 
-const isRollup = config.features.optimisticRollup.isEnabled || config.features.zkEvmRollup.isEnabled;
+const isRollup = config.features.rollup.isEnabled;
 
 const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
   const totalReward = getBlockTotalReward(data);

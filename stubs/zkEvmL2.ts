@@ -1,4 +1,4 @@
-import type { ZkEvmL2TxnBatch, ZkEvmL2TxnBatchesItem } from 'types/api/zkEvmL2TxnBatches';
+import type { ZkEvmL2TxnBatch, ZkEvmL2TxnBatchesItem } from 'types/api/zkEvmL2';
 
 import { TX_HASH } from './tx';
 
