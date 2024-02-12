@@ -36,7 +36,6 @@ export type OptimisticL2OutputRootsResponse = {
 }
 
 export type OptimisticL2TxnBatchesItem = {
-  epoch_number: number;
   l1_tx_hashes: Array<string>;
   l1_timestamp: string;
   l2_block_number: number;
