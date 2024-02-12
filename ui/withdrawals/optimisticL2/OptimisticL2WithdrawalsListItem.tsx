@@ -40,6 +40,7 @@ const OptimisticL2WithdrawalsListItem = ({ item, isLoading }: Props) => {
             <AddressEntity
               address={ item.from }
               isLoading={ isLoading }
+              truncation="constant"
             />
           </ListItemMobileGrid.Value>
         </>
@@ -52,6 +53,7 @@ const OptimisticL2WithdrawalsListItem = ({ item, isLoading }: Props) => {
           hash={ item.l2_tx_hash }
           fontSize="sm"
           lineHeight={ 5 }
+          truncation="constant_long"
         />
       </ListItemMobileGrid.Value>
 
@@ -82,6 +84,7 @@ const OptimisticL2WithdrawalsListItem = ({ item, isLoading }: Props) => {
               hash={ item.l1_tx_hash }
               fontSize="sm"
               lineHeight={ 5 }
+              truncation="constant_long"
             />
           </ListItemMobileGrid.Value>
         </>

@@ -8,7 +8,7 @@ import dayjs from 'lib/date/dayjs';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import HashStringShorten from 'ui/shared/HashStringShorten';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
 const rollupFeature = config.features.rollup;
@@ -55,14 +55,15 @@ const OptimisticL2OutputRootsListItem = ({ item, isLoading }: Props) => {
           hash={ item.l1_tx_hash }
           fontSize="sm"
           lineHeight={ 5 }
+          truncation="constant_long"
         />
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Output root</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Flex overflow="hidden" whiteSpace="nowrap" alignItems="center" w="100%" justifyContent="space-between">
-          <Skeleton isLoaded={ !isLoading } color="text_secondary" w="calc(100% - 24px)">
-            <HashStringShortenDynamic hash={ item.output_root }/>
+        <Flex overflow="hidden" whiteSpace="nowrap" alignItems="center" w="100%" justifyContent="start">
+          <Skeleton isLoaded={ !isLoading } color="text_secondary">
+            <HashStringShorten hash={ item.output_root } type="long"/>
           </Skeleton>
           <CopyToClipboard text={ item.output_root } isLoading={ isLoading }/>
         </Flex>

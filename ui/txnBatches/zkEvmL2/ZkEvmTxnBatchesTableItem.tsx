@@ -32,6 +32,7 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
           fontSize="sm"
           lineHeight={ 5 }
           fontWeight={ 600 }
+          noIcon
         />
       </Td>
       <Td verticalAlign="middle">
@@ -59,7 +60,8 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
             hash={ item.verify_tx_hash }
             fontSize="sm"
             lineHeight={ 5 }
-            maxW="100%"
+            truncation="constant_long"
+            noIcon
           />
         ) : <Text>Pending</Text> }
       </Td>
@@ -70,7 +72,8 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
             hash={ item.sequence_tx_hash }
             fontSize="sm"
             lineHeight={ 5 }
-            maxW="100%"
+            truncation="constant_long"
+            noIcon
           />
         ) : <Text>Pending</Text> }
       </Td>

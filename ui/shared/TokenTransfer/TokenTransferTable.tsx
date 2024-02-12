@@ -38,11 +38,11 @@ const TokenTransferTable = ({
         <Thead top={ top }>
           <Tr>
             { showTxInfo && <Th width="44px"></Th> }
-            <Th width="185px">Token</Th>
+            <Th width="200px">Token</Th>
             <Th width="160px">Token ID</Th>
-            { showTxInfo && <Th width="20%">Txn hash</Th> }
-            <Th width="50%">From/To</Th>
-            <Th width="30%" isNumeric>Value</Th>
+            { showTxInfo && <Th width="200px">Txn hash</Th> }
+            <Th width="60%">From/To</Th>
+            <Th width="40%" isNumeric>Value</Th>
           </Tr>
         </Thead>
         <Tbody>

@@ -64,6 +64,7 @@ const BeaconChainWithdrawalsListItem = ({ item, isLoading, view }: Props) => {
             <AddressEntity
               address={ item.receiver }
               isLoading={ isLoading }
+              truncation="constant"
             />
           </ListItemMobileGrid.Value>
         </>

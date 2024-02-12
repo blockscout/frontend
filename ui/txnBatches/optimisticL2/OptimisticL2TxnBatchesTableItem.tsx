@@ -32,6 +32,7 @@ const OptimisticL2TxnBatchesTableItem = ({ item, isLoading }: Props) => {
           fontSize="sm"
           lineHeight={ 5 }
           fontWeight={ 600 }
+          noIcon
         />
       </Td>
       <Td>
@@ -64,7 +65,8 @@ const OptimisticL2TxnBatchesTableItem = ({ item, isLoading }: Props) => {
               hash={ hash }
               fontSize="sm"
               lineHeight={ 5 }
-              maxW="100%"
+              truncation="constant_long"
+              noIcon
             />
           )) }
         </VStack>

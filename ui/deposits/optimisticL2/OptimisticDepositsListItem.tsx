@@ -44,6 +44,7 @@ const OptimisticDepositsListItem = ({ item, isLoading }: Props) => {
           hash={ item.l2_tx_hash }
           fontSize="sm"
           lineHeight={ 5 }
+          truncation="constant_long"
         />
       </ListItemMobileGrid.Value>
 
@@ -59,6 +60,7 @@ const OptimisticDepositsListItem = ({ item, isLoading }: Props) => {
           hash={ item.l1_tx_hash }
           fontSize="sm"
           lineHeight={ 5 }
+          truncation="constant_long"
         />
       </ListItemMobileGrid.Value>
 
@@ -68,6 +70,7 @@ const OptimisticDepositsListItem = ({ item, isLoading }: Props) => {
           address={{ hash: item.l1_tx_origin, name: '', is_contract: false, is_verified: false, implementation_name: '', ens_domain_name: null }}
           isLoading={ isLoading }
           noCopy
+          truncation="constant"
         />
       </ListItemMobileGrid.Value>
 

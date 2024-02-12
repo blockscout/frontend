@@ -18,7 +18,7 @@ const OptimisticL2OutputRootsTable = ({ items, top, isLoading }: Props) => {
     <Table variant="simple" size="sm" minW="900px">
       <Thead top={ top }>
         <Tr>
-          <Th width="140px">L2 output index</Th>
+          <Th width="160px">L2 output index</Th>
           <Th width="20%">Age</Th>
           <Th width="20%">L2 block #</Th>
           <Th width="30%">L1 txn hash</Th>

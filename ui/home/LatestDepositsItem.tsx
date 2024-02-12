@@ -46,6 +46,7 @@ const LatestDepositsItem = ({ item, isLoading }: Props) => {
       hash={ item.l1_tx_hash }
       fontSize="sm"
       lineHeight={ 5 }
+      truncation={ isMobile ? 'constant_long' : 'dynamic' }
     />
   );
 
@@ -55,6 +56,7 @@ const LatestDepositsItem = ({ item, isLoading }: Props) => {
       hash={ item.l2_tx_hash }
       fontSize="sm"
       lineHeight={ 5 }
+      truncation={ isMobile ? 'constant_long' : 'dynamic' }
     />
   );
 

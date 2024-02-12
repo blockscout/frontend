@@ -63,6 +63,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           <AddressEntity
             address={ data.miner }
             isLoading={ isLoading }
+            truncation="constant"
           />
         </Flex>
       ) }

@@ -70,6 +70,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           <AddressEntity
             address={ data.miner }
             isLoading={ isLoading }
+            truncation="constant"
           />
         </Td>
       ) }
