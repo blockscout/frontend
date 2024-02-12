@@ -126,7 +126,7 @@ const rollupSchema = yup
     NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL: yup
       .string()
       .when('NEXT_PUBLIC_ROLLUP_TYPE', {
-        is: (value: string) => value,
+        is: (value: string) => value === 'optimistic',
         then: (schema) => schema.test(urlTest).required(),
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL cannot not be used if NEXT_PUBLIC_ROLLUP_TYPE is not defined'),
       }),
