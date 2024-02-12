@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import _groudBy from 'lodash/groupBy';
 import React from 'react';
 
 import type { MarketplaceAppOverview } from 'types/client/marketplace';
@@ -31,7 +30,16 @@ export default function useMarketplaceCategories(apps: Array<MarketplaceAppOverv
     }
 
     let categoryNames: Array<string> = [];
-    const grouped = _groudBy(apps, app => app.categories);
+    const grouped: { [key: string]: number } = {};
+
+    apps?.forEach(app => {
+      app.categories.forEach(category => {
+        if (grouped[category] === undefined) {
+          grouped[category] = 0;
+        }
+        grouped[category]++;
+      });
+    });
 
     if (data?.length && !isPlaceholderData && isExperiment) {
       categoryNames = data;
@@ -40,7 +48,7 @@ export default function useMarketplaceCategories(apps: Array<MarketplaceAppOverv
     }
 
     return categoryNames
-      .map(category => ({ name: category, count: grouped[category]?.length || 0 }))
+      .map(category => ({ name: category, count: grouped[category] || 0 }))
       .filter(c => c.count > 0);
   }, [ apps, isAppsPlaceholderData, data, isPlaceholderData, isExperiment ]);
 
