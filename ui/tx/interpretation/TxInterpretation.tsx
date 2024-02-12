@@ -1,4 +1,4 @@
-import { Skeleton, chakra } from '@chakra-ui/react';
+import { Skeleton, Tooltip, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -127,7 +127,9 @@ const TxInterpretation = ({ summary, isLoading, className }: Props) => {
 
   return (
     <Skeleton isLoaded={ !isLoading } className={ className } fontWeight={ 500 } whiteSpace="pre-wrap" >
-      <IconSvg name="lightning" boxSize={ 5 } color="text_secondary" mr={ 2 } verticalAlign="text-top"/>
+      <Tooltip label="Transaction summary">
+        <IconSvg name="lightning" boxSize={ 5 } color="text_secondary" mr={ 2 } verticalAlign="text-top"/>
+      </Tooltip>
       { chunks.map((chunk, index) => {
         return (
           <chakra.span key={ chunk + index }>

@@ -43,6 +43,21 @@ bsInterpretationTest('with interpretation +@mobile +@dark-mode', async({ mount, 
   await expect(component).toHaveScreenshot();
 });
 
+bsInterpretationTest('with interpretation and view all link +@mobile', async({ mount, page }) => {
+  await page.route(TX_INTERPRETATION_API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify({ data: { summaries: [ ...txInterpretation.data.summaries, ...txInterpretation.data.summaries ] } }),
+  }));
+
+  const component = await mount(
+    <TestApp>
+      <TxSubHeading hash={ hash } hasTag={ false }/>
+    </TestApp>,
+  );
+
+  await expect(component).toHaveScreenshot();
+});
+
 bsInterpretationTest('no interpretation', async({ mount, page }) => {
   await page.route(TX_INTERPRETATION_API_URL, (route) => route.fulfill({
     status: 200,
