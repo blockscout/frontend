@@ -6,8 +6,9 @@ import { MarketplaceCategory } from 'types/client/marketplace';
 
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
+import useApiFetch from 'lib/api/useApiFetch';
 import useFeatureValue from 'lib/growthbook/useFeatureValue';
-import useApiFetch from 'lib/hooks/useFetch';
+import useFetch from 'lib/hooks/useFetch';
 import { MARKETPLACE_APP } from 'stubs/marketplace';
 
 const feature = config.features.marketplace;
@@ -47,6 +48,7 @@ function sortApps(apps: Array<MarketplaceAppOverview>, isExperiment: boolean) {
 }
 
 export default function useMarketplaceApps(filter: string, selectedCategoryId: string = MarketplaceCategory.ALL, favoriteApps: Array<string> = []) {
+  const fetch = useFetch();
   const apiFetch = useApiFetch();
   const { value: isExperiment } = useFeatureValue('marketplace_exp', false);
 
@@ -55,12 +57,11 @@ export default function useMarketplaceApps(filter: string, selectedCategoryId: s
     queryFn: async() => {
       if (!feature.isEnabled) {
         return [];
+      } else if ('configUrl' in feature) {
+        return fetch<Array<MarketplaceAppOverview>, unknown>(feature.configUrl, undefined, { resource: 'marketplace-dapps' });
+      } else {
+        return apiFetch('marketplace_dapps', { pathParams: { chainId: config.chain.id } });
       }
-      const url = 'configUrl' in feature ?
-        feature.configUrl :
-        feature.api.endpoint + `/api/v1/chains/${ config.chain.id }/marketplace/dapps`;
-
-      return apiFetch<Array<MarketplaceAppOverview>, unknown>(url, undefined, { resource: 'marketplace-dapps' });
     },
     select: (data) => sortApps(data as Array<MarketplaceAppOverview>, isExperiment),
     placeholderData: feature.isEnabled ? Array(9).fill(MARKETPLACE_APP) : undefined,

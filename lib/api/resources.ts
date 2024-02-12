@@ -82,9 +82,13 @@ import type { VerifiedContractsSorting } from 'types/api/verifiedContracts';
 import type { VisualizedContract } from 'types/api/visualization';
 import type { WithdrawalsResponse, WithdrawalsCounters } from 'types/api/withdrawals';
 import type { ZkEvmL2TxnBatch, ZkEvmL2TxnBatchesItem, ZkEvmL2TxnBatchesResponse, ZkEvmL2TxnBatchTxs } from 'types/api/zkEvmL2TxnBatches';
+import type { MarketplaceAppOverview } from 'types/client/marketplace';
 import type { ArrayElement } from 'types/utils';
 
 import config from 'configs/app';
+
+const marketplaceFeature = getFeaturePayload(config.features.marketplace);
+const marketplaceApi = marketplaceFeature && 'api' in marketplaceFeature ? marketplaceFeature.api : undefined;
 
 export interface ApiResource {
   path: ResourcePath;
@@ -219,6 +223,20 @@ export const RESOURCES = {
     path: '/api/v1/solidity\\:visualize-contracts',
     endpoint: getFeaturePayload(config.features.sol2uml)?.api.endpoint,
     basePath: getFeaturePayload(config.features.sol2uml)?.api.basePath,
+  },
+
+  // MARKETPLACE
+  marketplace_dapps: {
+    path: '/api/v1/chains/:chainId/marketplace/dapps',
+    pathParams: [ 'chainId' as const ],
+    endpoint: marketplaceApi?.endpoint,
+    basePath: marketplaceApi?.basePath,
+  },
+  marketplace_dapp: {
+    path: '/api/v1/chains/:chainId/marketplace/dapps/:dappId',
+    pathParams: [ 'chainId' as const, 'dappId' as const ],
+    endpoint: marketplaceApi?.endpoint,
+    basePath: marketplaceApi?.basePath,
   },
 
   // BLOCKS, TXS
@@ -772,6 +790,8 @@ Q extends 'domains_lookup' ? EnsDomainLookupResponse :
 Q extends 'user_ops' ? UserOpsResponse :
 Q extends 'user_op' ? UserOp :
 Q extends 'user_ops_account' ? UserOpsAccount :
+Q extends 'marketplace_dapps' ? Array<MarketplaceAppOverview> :
+Q extends 'marketplace_dapp' ? MarketplaceAppOverview :
 never;
 /* eslint-enable @typescript-eslint/indent */
 
