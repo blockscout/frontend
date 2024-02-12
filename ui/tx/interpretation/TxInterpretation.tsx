@@ -17,7 +17,7 @@ import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
-import { extractVariables, getStringChunks, fillStringVariables, NATIVE_COIN_SYMBOL_VAR_NAME } from './utils';
+import { extractVariables, getStringChunks, fillStringVariables, checkSummary, NATIVE_COIN_SYMBOL_VAR_NAME } from './utils';
 
 type Props = {
   summary?: TxInterpretationSummary;
@@ -115,6 +115,10 @@ const TxInterpretation = ({ summary, isLoading, className }: Props) => {
 
   const template = summary.summary_template;
   const variables = summary.summary_template_variables;
+
+  if (!checkSummary(template, variables)) {
+    return null;
+  }
 
   const intermediateResult = fillStringVariables(template, variables);
 

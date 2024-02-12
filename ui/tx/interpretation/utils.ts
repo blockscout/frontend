@@ -20,6 +20,19 @@ export function getStringChunks(template: string) {
   return template.split(VAR_REGEXP);
 }
 
+export function checkSummary(template: string, variables: Record<string, TxInterpretationVariable>) {
+  const variablesNames = extractVariables(template);
+  let result = true;
+  for (const name of variablesNames) {
+    if (!variables[name] || variables[name].value === undefined || variables[name].value === null) {
+      result = false;
+      break;
+    }
+  }
+
+  return result;
+}
+
 export function fillStringVariables(template: string, variables: Record<string, TxInterpretationVariable>) {
   const variablesNames = extractVariables(template);
 
