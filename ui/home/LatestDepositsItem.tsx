@@ -6,7 +6,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import type { L2DepositsItem } from 'types/api/l2Deposits';
+import type { OptimisticL2DepositsItem } from 'types/api/optimisticL2';
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
@@ -18,11 +18,11 @@ import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 const feature = config.features.rollup;
 
 type Props = {
-  item: L2DepositsItem;
+  item: OptimisticL2DepositsItem;
   isLoading?: boolean;
 }
 
-const LatestTxsItem = ({ item, isLoading }: Props) => {
+const LatestDepositsItem = ({ item, isLoading }: Props) => {
   const timeAgo = dayjs(item.l1_block_timestamp).fromNow();
   const isMobile = useIsMobile();
 
@@ -116,4 +116,4 @@ const LatestTxsItem = ({ item, isLoading }: Props) => {
   );
 };
 
-export default React.memo(LatestTxsItem);
+export default React.memo(LatestDepositsItem);

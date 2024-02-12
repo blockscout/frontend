@@ -16,7 +16,7 @@ const Batches = dynamic(() => {
     case 'zkEvm':
       return import('ui/pages/ZkEvmL2TxnBatches');
     case 'optimistic':
-      return import('ui/pages/L2TxnBatches');
+      return import('ui/pages/OptimisticL2TxnBatches');
   }
 }, { ssr: false });
 

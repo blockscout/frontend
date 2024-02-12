@@ -6,12 +6,17 @@ import PageNextJs from 'nextjs/PageNextJs';
 
 import config from 'configs/app';
 const rollupFeature = config.features.rollup;
+const beaconChainFeature = config.features.beaconChain;
 
 const Withdrawals = dynamic(() => {
   if (rollupFeature.isEnabled && rollupFeature.type === 'optimistic') {
-    return import('ui/pages/L2Withdrawals');
+    return import('ui/pages/OptimisticL2Withdrawals');
   }
-  return import('ui/pages/Withdrawals');
+  if (beaconChainFeature.isEnabled) {
+    return import('ui/pages/BeaconChainWithdrawals');
+  }
+
+  throw new Error('Withdrawals feature is not enabled.');
 }, { ssr: false });
 
 const Page: NextPage = () => {

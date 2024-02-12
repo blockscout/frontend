@@ -6,7 +6,7 @@ import type { SmartContractVerificationResponse } from 'types/api/contract';
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 import type { Transaction } from 'types/api/transaction';
-import type { NewZkEvmBatchSocketResponse } from 'types/api/zkEvmL2TxnBatches';
+import type { NewZkEvmBatchSocketResponse } from 'types/api/zkEvmL2';
 
 export type SocketMessageParams = SocketMessage.NewBlock |
 SocketMessage.BlocksIndexStatus |
