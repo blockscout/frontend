@@ -50,13 +50,15 @@ const TxSubHeading = ({ hash, hasTag }: Props) => {
 
   return (
     <Box display={{ base: 'block', lg: 'flex' }} alignItems="center" w="100%">
-      { hasInterpretation && hasNovesInterpretation ?
+      { hasNovesInterpretation &&
         (
           <NovesSubHeadingInterpretation
             data={ novesInterpretationQuery.data }
             isLoading={ novesInterpretationQuery.isPlaceholderData }
           />
-        ) :
+        )
+      }
+      { hasInternalInterpretation &&
         (
           <Flex mr={{ base: 0, lg: 6 }} flexWrap="wrap" alignItems="center">
             <TxInterpretation

@@ -3,6 +3,7 @@ import type { BlockTransactionsResponse } from './block';
 import type { DecodedInput } from './decodedInput';
 import type { Fee } from './fee';
 import type { L2WithdrawalStatus } from './l2Withdrawals';
+import type { NovesTxTranslation } from './noves';
 import type { TokenInfo } from './token';
 import type { TokenTransfer } from './tokenTransfer';
 import type { TxAction } from './txAction';
@@ -79,6 +80,8 @@ export type Transaction = {
   zkevm_batch_number?: number;
   zkevm_status?: typeof ZKEVM_L2_TX_STATUSES[number];
   zkevm_sequence_hash?: string;
+  // Noves-fi
+  translation?: NovesTxTranslation;
 }
 
 export const ZKEVM_L2_TX_STATUSES = [ 'Confirmed by Sequencer', 'L1 Confirmed' ];

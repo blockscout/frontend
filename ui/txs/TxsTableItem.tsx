@@ -7,8 +7,9 @@ import {
 import { motion } from 'framer-motion';
 import React from 'react';
 
+import type { Transaction } from 'types/api/transaction';
+
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import Tag from 'ui/shared/chakra/Tag';
@@ -20,30 +21,19 @@ import TxFeeStability from 'ui/shared/tx/TxFeeStability';
 import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 
-import type { TransactionWithTranslate } from './noves/useDescribeTxs';
 import TxType from './TxType';
 
 type Props = {
-  tx: TransactionWithTranslate;
+  tx: Transaction;
   showBlockInfo: boolean;
   currentAddress?: string;
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
-  // "translateEnabled" removed and replaced with "tx.translate.enabled"
 }
 
 const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, isLoading }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
   const timeAgo = useTimeAgoIncrement(tx.timestamp, enableTimeIncrement);
-
-  // This will be removed once the new proxy is ready
-  const { data: describeData, isLoading: isDescribeLoading } = useApiQuery('noves_describe_tx', {
-    pathParams: { hash: tx.hash },
-    queryOptions: {
-      enabled: Boolean(tx.translate?.enabled),
-    },
-  });
-  //
 
   return (
     <Tr
@@ -71,13 +61,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
       </Td>
       <Td>
         <VStack alignItems="start">
-          {
-
-            /* Whit the data inside tx
-              <TxType types={ tx.tx_types } isLoading={ isLoading || tx.translate.isLoading } translateLabel={ tx.translate.type }/>
-            */
-          }
-          <TxType types={ tx.tx_types } isLoading={ isLoading || isDescribeLoading } translateLabel={ describeData?.type }/>
+          <TxType types={ tx.tx_types } isLoading={ isLoading || tx.translation?.isLoading } translateLabel={ tx.translation?.data?.type }/>
           <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
           <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
         </VStack>

@@ -16,10 +16,6 @@ export interface NovesFlowViewItem {
     address: string ;
     name: string | null;
   };
-  leftActor: {
-    address: string;
-    name: string | null;
-  };
   accountAddress: string;
 }
 
@@ -57,9 +53,7 @@ export function generateFlowViewData(data: NovesResponseData): Array<NovesFlowVi
 
     const rightActor = getRightActor(item, perspectiveAddress);
 
-    const leftActor = getLeftActor(item, perspectiveAddress);
-
-    return { action, rightActor, leftActor, accountAddress: perspectiveAddress };
+    return { action, rightActor, accountAddress: perspectiveAddress };
   });
 
   return flowViewData;
@@ -73,19 +67,7 @@ function getRightActor(item: NovesSentReceived, perspectiveAddress: string) {
   return { address: item.from.address, name: item.from.name };
 }
 
-function getLeftActor(item: NovesSentReceived, perspectiveAddress: string) {
-  if (item.to.address && item.to.address.toLowerCase() === perspectiveAddress) {
-    return { address: item.to.address, name: item.to.name };
-  }
-
-  return { address: item.from.address, name: item.from.name };
-}
-
 function getFlowDirection(item: NovesSentReceived, perspectiveAddress: string): 'toLeft' | 'toRight' {
-  if (item.to.address && item.to.address.toLowerCase() === perspectiveAddress) {
-    return 'toLeft';
-  }
-
   if (item.from.address && item.from.address.toLowerCase() === perspectiveAddress) {
     return 'toRight';
   }

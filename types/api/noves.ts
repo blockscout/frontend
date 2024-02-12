@@ -109,3 +109,8 @@ export interface NovesDescribeTxsResponse {
   type: string;
   description: string;
 }[];
+
+export interface NovesTxTranslation {
+  data?: NovesDescribeTxsResponse;
+  isLoading: boolean;
+}

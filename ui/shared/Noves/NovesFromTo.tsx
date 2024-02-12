@@ -42,13 +42,11 @@ const NovesFromTo: FC<Props> = ({ isLoaded, txData, currentAddress = '', item })
           minW="max-content"
         >
           <TagLabel
-            position="absolute"
-            w="full"
+            w="113px"
             textAlign="center"
           >
             { data.text }
           </TagLabel>
-          <TagLabel visibility="hidden" whiteSpace="nowrap" px={ 2 } >Received from</TagLabel>
         </Tag>
 
         <AddressEntity

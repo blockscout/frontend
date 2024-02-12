@@ -1,10 +1,11 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
+import type { Transaction } from 'types/api/transaction';
+
 import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
-import type { TransactionWithTranslate } from './noves/useDescribeTxs';
 import TxsListItem from './TxsListItem';
 
 interface Props {
@@ -15,7 +16,7 @@ interface Props {
   enableTimeIncrement?: boolean;
   currentAddress?: string;
   isLoading: boolean;
-  items: Array<TransactionWithTranslate>;
+  items: Array<Transaction>;
 }
 
 const TxsList = (props: Props) => {

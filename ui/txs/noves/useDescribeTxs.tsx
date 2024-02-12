@@ -1,89 +1,80 @@
-import type { UseQueryResult } from '@tanstack/react-query';
 import _ from 'lodash';
+import { useMemo } from 'react';
 
-import type { NovesDescribeTxsResponse } from 'types/api/noves';
 import type { Transaction } from 'types/api/transaction';
 
 import config from 'configs/app';
-import type { ResourceError } from 'lib/api/resources';
-// import useApiQuery from 'lib/api/useApiQuery';
-
-export interface DescribeTxs {
-  txHash: string;
-  type?: string;
-  description?: string;
-  isLoading: boolean;
-  enabled: boolean;
-}
-
-export interface TransactionWithTranslate extends Transaction {
-  translate?: DescribeTxs;
-}
+import useApiQuery from 'lib/api/useApiQuery';
 
 const feature = config.features.txInterpretation;
 
 const translateEnabled = feature.isEnabled && feature.provider === 'noves';
 
 export default function useDescribeTxs(items: Array<Transaction> | undefined, viewAsAccountAddress: string | undefined) {
-  const txsHash = items?.map(i => i.hash);
-  const txsChunk = _.chunk(txsHash || [], 10);
+  const txsHash = _.uniq(items?.map(i => i.hash));
 
-  const txsParams = Array(5).fill(undefined).map((_, i) => txsChunk[i]);
-  const txsQuerys = useFetchTxs(txsParams, viewAsAccountAddress);
+  const txsQueries = useFetchTxs(txsHash, viewAsAccountAddress);
 
-  const isLoading = txsQuerys.some(query => query.isLoading || query.isPlaceholderData);
-  const queryData = txsQuerys.map(query => query.data ? query.data : []).flat();
+  const isLoading = useMemo(() => txsQueries.some(query => query.isLoading || query.isPlaceholderData), [ txsQueries ]);
+  const queryData = useMemo(() => txsQueries.map(query => query.data ? query.data : []).flat(), [ txsQueries ]);
 
-  const data: Array<TransactionWithTranslate> | undefined = items?.map(tx => {
-    const query = queryData.find(data => data.txHash === tx.hash);
+  const data: Array<Transaction> | undefined = useMemo(() => items?.map(tx => {
+    if (!translateEnabled) {
+      // Can't return earlier because of hooks order
+      return tx;
+    }
+
+    const query = queryData.find(data => data.txHash.toLowerCase() === tx.hash.toLowerCase());
 
     if (query) {
       return {
         ...tx,
-        translate: {
-          ...query,
+        translation: {
+          data: query,
           isLoading: false,
-          enabled: translateEnabled,
         },
       };
     }
 
     return {
       ...tx,
-      translate: {
-        txHash: tx.hash,
+      translation: {
         isLoading,
-        enabled: translateEnabled,
       },
     };
-  });
+  }), [ items, queryData, isLoading ]);
 
-  // return same "items" array of Transaction with a new "translate" field.
+  // return same "items" array of Transaction with a new "translation" field.
 
   return data;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function useFetchTxs(txs: Array<Array<string>>, viewAsAccountAddress: string | undefined) {
-  const txsQuerys = [];
+function useFetchTxs(txsHash: Array<string>, viewAsAccountAddress: string | undefined) {
+  // we need to send 10 txs per call
+  const txsHashChunk = _.chunk(txsHash, 10);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  for (const body of txs) {
-    // loop to avoid writing 5 hook calls.
-    // txs will always have the same length so we always execute the same amount of hooks
+  const txsQueries = [];
 
-    // Need to fix implementation here to handle translateEnabled correctly, and verify the calls to describeTxs proxy are working correctly
-    // const query = useApiQuery('noves_describe_txs', {
-    //   queryParams: {
-    //     viewAsAccountAddress: viewAsAccountAddress,
-    //     hashes: body,
-    //   },
-    // });
+  // loop to avoid writing 5 hook calls.
+  for (let index = 0; index < 5; index++) {
 
-    // txsQuerys.push(query);
+    const body = txsHashChunk[index];
 
-    txsQuerys.push({} as UseQueryResult<NovesDescribeTxsResponse, ResourceError<unknown>>);
+    // we always execute the same amount of hooks
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const query = useApiQuery('noves_describe_txs', {
+      queryParams: {
+        viewAsAccountAddress: viewAsAccountAddress,
+        hashes: body,
+      },
+      queryOptions: {
+        enabled: translateEnabled && Boolean(body),
+      },
+    });
+
+    txsQueries.push(query);
   }
 
-  return txsQuerys;
+  return txsQueries;
 }

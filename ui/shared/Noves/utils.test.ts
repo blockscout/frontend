@@ -36,10 +36,6 @@ it('get data for FromTo component from flow item', async() => {
       address: '0xdD15D2650387Fb6FEDE27ae7392C402a393F8A37',
       name: null,
     },
-    leftActor: {
-      address: '0xef6595A423c99f3f2821190A4d96fcE4DcD89a80',
-      name: 'This wallet',
-    },
     accountAddress: '0xef6595a423c99f3f2821190a4d96fce4dcd89a80',
   };
 

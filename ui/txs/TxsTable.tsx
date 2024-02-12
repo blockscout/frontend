@@ -2,7 +2,7 @@ import { Link, Table, Tbody, Tr, Th } from '@chakra-ui/react';
 import { AnimatePresence } from 'framer-motion';
 import React from 'react';
 
-import type { TransactionsSortingField, TransactionsSortingValue } from 'types/api/transaction';
+import type { Transaction, TransactionsSortingField, TransactionsSortingValue } from 'types/api/transaction';
 
 import config from 'configs/app';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
@@ -12,11 +12,10 @@ import IconSvg from 'ui/shared/IconSvg';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import TheadSticky from 'ui/shared/TheadSticky';
 
-import type { TransactionWithTranslate } from './noves/useDescribeTxs';
 import TxsTableItem from './TxsTableItem';
 
 type Props = {
-  txs: Array<TransactionWithTranslate>;
+  txs: Array<Transaction>;
   sort: (field: TransactionsSortingField) => () => void;
   sorting?: TransactionsSortingValue;
   top: number;

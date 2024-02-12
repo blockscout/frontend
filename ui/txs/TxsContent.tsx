@@ -119,7 +119,7 @@ const TxsContent = ({
   return (
     <DataListDisplay
       isError={ isError }
-      items={ items }
+      items={ itemsWithTranslate }
       emptyText="There are no transactions."
       content={ content }
       actionBar={ actionBar }

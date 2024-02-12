@@ -2,28 +2,18 @@ import _ from 'lodash';
 
 import type { NovesResponseData } from 'types/api/noves';
 
-import type { TokensData } from './getTokensData';
+import type { NovesTokenInfo, TokensData } from './getTokensData';
 import { getTokensData } from './getTokensData';
 
 interface TokenWithIndices {
   name: string;
   hasId: boolean;
   indices: Array<number>;
-  token: {
-    name: string | undefined;
-    symbol: string | undefined;
-    address: string | undefined;
-    id?: string | undefined;
-  };
+  token: NovesTokenInfo;
 }
 
 export interface DescriptionItems {
-  token: {
-    name: string | undefined;
-    symbol: string | undefined;
-    address: string | undefined;
-    id?: string | undefined;
-  } | undefined;
+  token: NovesTokenInfo | undefined;
   text: string;
   hasId: boolean | undefined;
 }

@@ -1,18 +1,13 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import type { TokenInfo } from 'types/api/token';
+
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
-interface Token {
-  address: string | undefined;
-  id?: string | undefined;
-  name: string | undefined;
-  symbol: string | undefined;
-}
-
 interface Props {
-  token: Token;
+  token: Pick<TokenInfo, 'address' | 'name' | 'symbol'>;
   tokenId: string;
 }
 

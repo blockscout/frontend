@@ -5,8 +5,9 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
+import type { Transaction } from 'types/api/transaction';
+
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import { space } from 'lib/html-entities';
@@ -21,15 +22,12 @@ import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 import TxType from 'ui/txs/TxType';
 
-import type { TransactionWithTranslate } from './noves/useDescribeTxs';
-
 type Props = {
-  tx: TransactionWithTranslate;
+  tx: Transaction;
   showBlockInfo: boolean;
   currentAddress?: string;
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
-  // "translateEnabled" removed and replaced with "tx.translate.enabled"
 }
 
 const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeIncrement }: Props) => {
@@ -37,26 +35,11 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
 
   const timeAgo = useTimeAgoIncrement(tx.timestamp, enableTimeIncrement);
 
-  //  This will be removed once the new proxy is ready
-  const { data: describeData, isLoading: isDescribeLoading } = useApiQuery('noves_describe_tx', {
-    pathParams: { hash: tx.hash },
-    queryOptions: {
-      enabled: Boolean(tx.translate?.enabled),
-    },
-  });
-  //
-
   return (
     <ListItemMobile display="block" width="100%" isAnimated key={ tx.hash }>
       <Flex justifyContent="space-between" mt={ 4 }>
         <HStack flexWrap="wrap">
-          {
-
-          /* Whit the data inside tx
-            <TxType types={ tx.tx_types } isLoading={ isLoading || tx.translate.isLoading } translateLabel={ tx.translate.type }/>
-          */
-          }
-          <TxType types={ tx.tx_types } isLoading={ isLoading || isDescribeLoading } translateLabel={ describeData?.type }/>
+          <TxType types={ tx.tx_types } isLoading={ isLoading || tx.translation?.isLoading } translateLabel={ tx.translation?.data?.type }/>
           <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
           <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
         </HStack>

@@ -1,26 +1,21 @@
 import _ from 'lodash';
 
 import type { NovesResponseData } from 'types/api/noves';
+import type { TokenInfo } from 'types/api/token';
+
+export interface NovesTokenInfo extends Pick<TokenInfo, 'address' | 'name' | 'symbol'> {
+  id?: string | undefined;
+}
 
 export interface TokensData {
   nameList: Array<string>;
   symbolList: Array<string>;
   idList: Array<string>;
   byName: {
-    [x: string]: {
-      name: string | undefined;
-      symbol: string | undefined;
-      address: string | undefined;
-      id?: string | undefined;
-    };
+    [x: string]: NovesTokenInfo;
   };
   bySymbol: {
-    [x: string]: {
-      name: string | undefined;
-      symbol: string | undefined;
-      address: string | undefined;
-      id: string | undefined;
-    };
+    [x: string]: NovesTokenInfo;
   };
 }
 
@@ -32,13 +27,13 @@ export function getTokensData(data: NovesResponseData): TokensData {
 
   // Extract all tokens data
   const tokens = txItems.map((item) => {
-    const name = item.nft?.name || item.token?.name;
-    const symbol = item.nft?.symbol || item.token?.symbol;
+    const name = item.nft?.name || item.token?.name || null;
+    const symbol = item.nft?.symbol || item.token?.symbol || null;
 
     const token = {
       name: name,
-      symbol: symbol?.toLowerCase() === name?.toLowerCase() ? undefined : symbol,
-      address: item.nft?.address || item.token?.address,
+      symbol: symbol?.toLowerCase() === name?.toLowerCase() ? null : symbol,
+      address: item.nft?.address || item.token?.address || '',
       id: item.nft?.id || item.token?.id,
     };
 
@@ -63,10 +58,11 @@ export function getTokensData(data: NovesResponseData): TokensData {
     return i[0];
   });
 
+  const filters = [ 'undefined', 'null' ];
   // Array of keys to match in string
-  const nameList = _.keysIn(mappedNames).filter(i => i !== 'undefined');
-  const symbolList = _.keysIn(mappedSymbols).filter(i => i !== 'undefined');
-  const idList = _.keysIn(mappedIds).filter(i => i !== 'undefined');
+  const nameList = _.keysIn(mappedNames).filter(i => !filters.includes(i));
+  const symbolList = _.keysIn(mappedSymbols).filter(i => !filters.includes(i));
+  const idList = _.keysIn(mappedIds).filter(i => !filters.includes(i));
 
   return {
     nameList,
