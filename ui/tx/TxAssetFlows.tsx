@@ -32,7 +32,7 @@ export default function TxAssetFlows(props: FlowViewProps) {
   const [ page, setPage ] = useState<number>(1);
 
   const ViewData = useMemo(() => (queryData ? generateFlowViewData(queryData) : []), [ queryData ]);
-  const chunkedViewData = _.chunk(ViewData, 10);
+  const chunkedViewData = _.chunk(ViewData, 50);
 
   const paginationProps: PaginationParams = useMemo(() => ({
     onNextPageClick: () => setPage(page + 1),
