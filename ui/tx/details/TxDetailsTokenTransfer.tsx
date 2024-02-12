@@ -26,7 +26,7 @@ const TxDetailsTokenTransfer = ({ data }: Props) => {
         });
 
         return (
-          <Flex flexWrap="wrap" columnGap={ 2 } rowGap={ 2 }>
+          <>
             <chakra.span color="text_secondary">for</chakra.span>
             <span>{ valueStr }</span>
             <TokenEntity
@@ -36,7 +36,7 @@ const TxDetailsTokenTransfer = ({ data }: Props) => {
               w="auto"
             />
             { usd && <chakra.span color="text_secondary">(${ usd })</chakra.span> }
-          </Flex>
+          </>
         );
       }
 
@@ -73,6 +73,7 @@ const TxDetailsTokenTransfer = ({ data }: Props) => {
       rowGap={ 3 }
       flexDir="row"
       w="100%"
+      fontWeight={ 500 }
     >
       <AddressFromTo
         from={ data.from }
