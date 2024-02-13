@@ -7,22 +7,36 @@ import { getEnvValue, getExternalAssetFilePath } from '../utils';
 const configUrl = getExternalAssetFilePath('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL');
 const submitFormUrl = getEnvValue('NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM');
 const categoriesUrl = getExternalAssetFilePath('NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL');
+const adminServiceApiHost = getEnvValue('NEXT_PUBLIC_ADMIN_SERVICE_API_HOST');
 
 const title = 'Marketplace';
 
-const config: Feature<{ configUrl: string; submitFormUrl: string; categoriesUrl: string | undefined }> = (() => {
-  if (
-    chain.rpcUrl &&
-    configUrl &&
-    submitFormUrl
-  ) {
-    return Object.freeze({
-      title,
-      isEnabled: true,
-      configUrl,
-      submitFormUrl,
-      categoriesUrl,
-    });
+const config: Feature<(
+  { configUrl: string } |
+  { api: { endpoint: string; basePath: string } }
+) & { submitFormUrl: string; categoriesUrl: string | undefined }
+> = (() => {
+  if (chain.rpcUrl && submitFormUrl) {
+    if (configUrl) {
+      return Object.freeze({
+        title,
+        isEnabled: true,
+        configUrl,
+        submitFormUrl,
+        categoriesUrl,
+      });
+    } else if (adminServiceApiHost) {
+      return Object.freeze({
+        title,
+        isEnabled: true,
+        submitFormUrl,
+        categoriesUrl,
+        api: {
+          endpoint: adminServiceApiHost,
+          basePath: '',
+        },
+      });
+    }
   }
 
   return Object.freeze({
