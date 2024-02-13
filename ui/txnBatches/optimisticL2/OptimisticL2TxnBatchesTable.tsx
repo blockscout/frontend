@@ -20,7 +20,6 @@ const OptimisticL2TxnBatchesTable = ({ items, top, isLoading }: Props) => {
         <Tr>
           <Th width="170px">L2 block #</Th>
           <Th width="170px">L2 block txn count</Th>
-          <Th width="160px">Epoch number</Th>
           <Th width="100%">L1 txn hash</Th>
           <Th width="150px">Age</Th>
         </Tr>

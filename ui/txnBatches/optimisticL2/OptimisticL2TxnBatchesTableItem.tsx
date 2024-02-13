@@ -7,7 +7,6 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
-import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -44,17 +43,6 @@ const OptimisticL2TxnBatchesTableItem = ({ item, isLoading }: Props) => {
             { item.tx_count }
           </Skeleton>
         </LinkInternal>
-      </Td>
-      <Td>
-        <BlockEntityL1
-          isLoading={ isLoading }
-          number={ item.epoch_number }
-          fontSize="sm"
-          lineHeight={ 5 }
-          fontWeight={ 600 }
-          py="2px"
-          noIcon
-        />
       </Td>
       <Td pr={ 12 }>
         <VStack spacing={ 3 } alignItems="flex-start">

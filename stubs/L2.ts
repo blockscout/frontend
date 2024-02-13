@@ -29,7 +29,6 @@ export const L2_WITHDRAWAL_ITEM: OptimisticL2WithdrawalsItem = {
 };
 
 export const L2_TXN_BATCHES_ITEM: OptimisticL2TxnBatchesItem = {
-  epoch_number: 9103513,
   l1_timestamp: '2023-06-01T14:46:48.000000Z',
   l1_tx_hashes: [
     TX_HASH,
