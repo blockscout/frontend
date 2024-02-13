@@ -54,12 +54,12 @@ const ContractMethodForm = ({ data }: Props) => {
         <Flex flexDir="column" rowGap={ 3 }>
           { inputs.map((input, index) => {
             if (input.components && input.type === 'tuple') {
-              return <ContractMethodFieldInputTuple key={ index } data={ input } basePath={ `${ index }` }/>;
+              return <ContractMethodFieldInputTuple key={ index } data={ input } basePath={ `${ index }` } level={ 0 }/>;
             }
 
             const arrayMatch = input.type.match(ARRAY_REGEXP);
             if (arrayMatch) {
-              return <ContractMethodFieldInputArray key={ index } data={ input } basePath={ `${ index }` }/>;
+              return <ContractMethodFieldInputArray key={ index } data={ input } basePath={ `${ index }` } level={ 0 }/>;
             }
 
             return <ContractMethodFieldInput key={ index } data={ input } path={ `${ index }` }/>;
@@ -73,6 +73,7 @@ const ContractMethodForm = ({ data }: Props) => {
           width="min-content"
           px={ 4 }
           type="submit"
+          mt={ 6 }
         >
           Submit
         </Button>

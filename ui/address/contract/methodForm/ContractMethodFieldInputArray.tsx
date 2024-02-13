@@ -24,11 +24,11 @@ const ArrayButton = chakra(({ className, index, onClick, isDisabled, type }: Arr
       aria-label={ type }
       data-index={ index }
       variant="outline"
-      w="30px"
-      h="30px"
+      w="20px"
+      h="20px"
       flexShrink={ 0 }
       onClick={ onClick }
-      icon={ <IconSvg name={ type === 'remove' ? 'minus' : 'plus' } boxSize={ 4 }/> }
+      icon={ <IconSvg name={ type === 'remove' ? 'minus' : 'plus' } boxSize={ 3 }/> }
       isDisabled={ isDisabled }
     />
   );
@@ -36,12 +36,11 @@ const ArrayButton = chakra(({ className, index, onClick, isDisabled, type }: Arr
 
 interface Props {
   data: SmartContractMethodInput;
-  hideLabel?: boolean;
-  level?: number;
+  level: number;
   basePath: string;
 }
 
-const ContractMethodFieldInputArray = ({ data, hideLabel, level, basePath }: Props) => {
+const ContractMethodFieldInputArray = ({ data, level, basePath }: Props) => {
 
   const [ registeredIndices, setRegisteredIndices ] = React.useState([ 0 ]);
 
@@ -58,11 +57,13 @@ const ContractMethodFieldInputArray = ({ data, hideLabel, level, basePath }: Pro
 
   const type = data.type.slice(0, -2) as SmartContractMethodArgType;
 
+  // TODO @tom2drum refactor this
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const content = (index: number) => {
     const itemData = { ...data, type, name: `item #${ (level ? `${ level }.` : '') + (index + 1) }` };
 
     if (data.components && type === 'tuple') {
-      return <ContractMethodFieldInputTuple data={ itemData } basePath={ `${ basePath }:${ index }` }/>;
+      return <ContractMethodFieldInputTuple data={ itemData } basePath={ `${ basePath }:${ index }` } level={ level }/>;
     }
 
     const arrayMatch = type.match(ARRAY_REGEXP);
@@ -71,32 +72,44 @@ const ContractMethodFieldInputArray = ({ data, hideLabel, level, basePath }: Pro
       return (
         <Box outline="1px dashed lightskyblue" w="100%">
           <Box lineHeight={ type.includes('tuple') ? '45px' : '32px' }>item #{ index + 1 }({ type })</Box>
-          <ContractMethodFieldInputArray data={ itemData } hideLabel level={ index + 1 } basePath={ `${ basePath }:${ index }` }/>
+          <ContractMethodFieldInputArray data={ itemData } level={ index + 1 } basePath={ `${ basePath }:${ index }` }/>
         </Box>
       );
     }
 
     return (
-      <ContractMethodFieldInput data={ itemData } hideLabel path={ `${ basePath }:${ index }` }/>
+      <ContractMethodFieldInput data={ itemData } hideLabel path={ `${ basePath }:${ index }` } px={ 0 }/>
     );
   };
 
+  const isNestedArray = type.includes('[][]');
+
+  if (isNestedArray) {
+    return <div>nested array</div>;
+  }
+
+  const isTupleArray = type.includes('tuple');
+
+  if (isTupleArray) {
+    return <div>tuple array</div>;
+  }
+
+  // primitive value array
+
   return (
-    <Flex alignItems="flex-start" columnGap={ 3 }>
-      { !hideLabel && (
-        <Box w="200px" fontSize="sm" flexShrink={ 0 } my={ type.includes('tuple') ? '12px' : '6px' }>
-          { data.name || '<arg w/o name>' } ({ data.type })
-        </Box>
-      ) }
+    <Flex alignItems="flex-start" columnGap={ 3 } px="6px">
+      <Box w="250px" fontSize="sm" flexShrink={ 0 } my="6px">
+        { data.name || '<arg w/o name>' } ({ data.type })
+      </Box>
       <Flex flexDir="column" rowGap={ 1 } w="100%">
         { registeredIndices.map((registeredIndex, index) => {
           return (
             <Flex key={ registeredIndex } alignItems="flex-start" columnGap={ 3 }>
-              { content(registeredIndex) }
+              <ContractMethodFieldInput data={ data } hideLabel path={ `${ basePath }:${ index }` } px={ 0 }/>
               { registeredIndices.length > 1 &&
-                <ArrayButton index={ registeredIndex } onClick={ handleRemoveButtonClick } type="remove" my={ type.includes('tuple') ? 2 : 0 }/> }
+                <ArrayButton index={ registeredIndex } onClick={ handleRemoveButtonClick } type="remove" my="6px"/> }
               { index === registeredIndices.length - 1 &&
-                <ArrayButton index={ registeredIndex } onClick={ handleAddButtonClick } type="add" my={ type.includes('tuple') ? 2 : 0 }/> }
+                <ArrayButton index={ registeredIndex } onClick={ handleAddButtonClick } type="add" my="6px"/> }
             </Flex>
           );
         }) }
