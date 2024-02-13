@@ -7,6 +7,7 @@ import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { publicClient } from 'lib/web3/client';
 import TextAd from 'ui/shared/ad/TextAd';
 import EntityTags from 'ui/shared/EntityTags';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -33,7 +34,7 @@ const TransactionPageContent = () => {
   const txQuery = useTxQuery();
   const { data, isPlaceholderData, isError, error, errorUpdateCount } = txQuery;
 
-  const showDegradedView = (isError || isPlaceholderData) && errorUpdateCount > 0;
+  const showDegradedView = publicClient && (isError || isPlaceholderData) && errorUpdateCount > 0;
 
   const tabs: Array<RoutedTab> = (() => {
     const detailsComponent = showDegradedView ?
@@ -97,8 +98,10 @@ const TransactionPageContent = () => {
     return <RoutedTabs tabs={ tabs }/>;
   })();
 
-  if (error?.status === 422) {
-    throwOnResourceLoadError({ resource: 'tx', error, isError: true });
+  if (isError && !showDegradedView) {
+    if (error?.status === 422 || error?.status === 404) {
+      throwOnResourceLoadError({ resource: 'tx', error, isError: true });
+    }
   }
 
   return (

@@ -47,11 +47,14 @@ import type {
 } from 'types/api/ens';
 import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
-import type { L2DepositsResponse, L2DepositsItem } from 'types/api/l2Deposits';
-import type { L2OutputRootsResponse } from 'types/api/l2OutputRoots';
-import type { L2TxnBatchesResponse } from 'types/api/l2TxnBatches';
-import type { L2WithdrawalsResponse } from 'types/api/l2Withdrawals';
 import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
+import type {
+  OptimisticL2DepositsResponse,
+  OptimisticL2DepositsItem,
+  OptimisticL2OutputRootsResponse,
+  OptimisticL2TxnBatchesResponse,
+  OptimisticL2WithdrawalsResponse,
+} from 'types/api/optimisticL2';
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import type { SearchRedirectResult, SearchResult, SearchResultFilters, SearchResultItem } from 'types/api/search';
 import type { Counters, StatsCharts, StatsChart, HomeStats } from 'types/api/stats';
@@ -81,7 +84,7 @@ import type { UserOpsResponse, UserOp, UserOpsFilters, UserOpsAccount } from 'ty
 import type { VerifiedContractsSorting } from 'types/api/verifiedContracts';
 import type { VisualizedContract } from 'types/api/visualization';
 import type { WithdrawalsResponse, WithdrawalsCounters } from 'types/api/withdrawals';
-import type { ZkEvmL2TxnBatch, ZkEvmL2TxnBatchesItem, ZkEvmL2TxnBatchesResponse, ZkEvmL2TxnBatchTxs } from 'types/api/zkEvmL2TxnBatches';
+import type { ZkEvmL2TxnBatch, ZkEvmL2TxnBatchesItem, ZkEvmL2TxnBatchesResponse, ZkEvmL2TxnBatchTxs } from 'types/api/zkEvmL2';
 import type { ArrayElement } from 'types/utils';
 
 import config from 'configs/app';
@@ -688,7 +691,7 @@ Q extends 'homepage_chart_market' ? ChartMarketResponse :
 Q extends 'homepage_blocks' ? Array<Block> :
 Q extends 'homepage_txs' ? Array<Transaction> :
 Q extends 'homepage_txs_watchlist' ? Array<Transaction> :
-Q extends 'homepage_deposits' ? Array<L2DepositsItem> :
+Q extends 'homepage_deposits' ? Array<OptimisticL2DepositsItem> :
 Q extends 'homepage_zkevm_l2_batches' ? { items: Array<ZkEvmL2TxnBatchesItem> } :
 Q extends 'homepage_indexing_status' ? IndexingStatus :
 Q extends 'homepage_zkevm_latest_batch' ? number :
@@ -752,10 +755,10 @@ Q extends 'visualize_sol2uml' ? VisualizedContract :
 Q extends 'contract_verification_config' ? SmartContractVerificationConfig :
 Q extends 'withdrawals' ? WithdrawalsResponse :
 Q extends 'withdrawals_counters' ? WithdrawalsCounters :
-Q extends 'l2_output_roots' ? L2OutputRootsResponse :
-Q extends 'l2_withdrawals' ? L2WithdrawalsResponse :
-Q extends 'l2_deposits' ? L2DepositsResponse :
-Q extends 'l2_txn_batches' ? L2TxnBatchesResponse :
+Q extends 'l2_output_roots' ? OptimisticL2OutputRootsResponse :
+Q extends 'l2_withdrawals' ? OptimisticL2WithdrawalsResponse :
+Q extends 'l2_deposits' ? OptimisticL2DepositsResponse :
+Q extends 'l2_txn_batches' ? OptimisticL2TxnBatchesResponse :
 Q extends 'l2_output_roots_count' ? number :
 Q extends 'l2_withdrawals_count' ? number :
 Q extends 'l2_deposits_count' ? number :

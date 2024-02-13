@@ -10,7 +10,7 @@ import { useAppContext } from 'lib/contexts/app';
 import useContractTabs from 'lib/hooks/useContractTabs';
 import useIsSafeAddress from 'lib/hooks/useIsSafeAddress';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { ADDRESS_INFO, ADDRESS_TABS_COUNTERS } from 'stubs/address';
+import { ADDRESS_TABS_COUNTERS } from 'stubs/address';
 import { USER_OPS_ACCOUNT } from 'stubs/userOps';
 import AddressBlocksValidated from 'ui/address/AddressBlocksValidated';
 import AddressCoinBalance from 'ui/address/AddressCoinBalance';
@@ -27,6 +27,7 @@ import AddressFavoriteButton from 'ui/address/details/AddressFavoriteButton';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
 import AddressEnsDomains from 'ui/address/ensDomains/AddressEnsDomains';
 import SolidityscanReport from 'ui/address/SolidityscanReport';
+import useAddressQuery from 'ui/address/utils/useAddressQuery';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import TextAd from 'ui/shared/ad/TextAd';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
@@ -48,13 +49,7 @@ const AddressPageContent = () => {
   const tabsScrollRef = React.useRef<HTMLDivElement>(null);
   const hash = getQueryParamString(router.query.hash);
 
-  const addressQuery = useApiQuery('address', {
-    pathParams: { hash },
-    queryOptions: {
-      enabled: Boolean(hash),
-      placeholderData: ADDRESS_INFO,
-    },
-  });
+  const addressQuery = useAddressQuery({ hash });
 
   const addressTabsCountersQuery = useApiQuery('address_tabs_counters', {
     pathParams: { hash },
@@ -67,7 +62,7 @@ const AddressPageContent = () => {
   const userOpsAccountQuery = useApiQuery('user_ops_account', {
     pathParams: { hash },
     queryOptions: {
-      enabled: Boolean(hash),
+      enabled: Boolean(hash) && config.features.userOps.isEnabled,
       placeholderData: USER_OPS_ACCOUNT,
     },
   });
@@ -160,21 +155,23 @@ const AddressPageContent = () => {
     ].filter(Boolean);
   }, [ addressQuery.data, contractTabs, addressTabsCountersQuery.data, userOpsAccountQuery.data ]);
 
+  const isLoading = addressQuery.isPlaceholderData || (config.features.userOps.isEnabled && userOpsAccountQuery.isPlaceholderData);
+
   const tags = (
     <EntityTags
       data={ addressQuery.data }
-      isLoading={ addressQuery.isPlaceholderData }
+      isLoading={ isLoading }
       tagsBefore={ [
         !addressQuery.data?.is_contract ? { label: 'eoa', display_name: 'EOA' } : undefined,
         addressQuery.data?.implementation_address ? { label: 'proxy', display_name: 'Proxy' } : undefined,
         addressQuery.data?.token ? { label: 'token', display_name: 'Token' } : undefined,
         isSafeAddress ? { label: 'safe', display_name: 'Multisig: Safe' } : undefined,
-        userOpsAccountQuery.data ? { label: 'user_ops_acc', display_name: 'Smart contract wallet' } : undefined,
+        config.features.userOps.isEnabled && userOpsAccountQuery.data ? { label: 'user_ops_acc', display_name: 'Smart contract wallet' } : undefined,
       ] }
     />
   );
 
-  const content = addressQuery.isError ? null : <RoutedTabs tabs={ tabs } tabListProps={{ mt: 8 }}/>;
+  const content = (addressQuery.isError || addressQuery.isDegradedData) ? null : <RoutedTabs tabs={ tabs } tabListProps={{ mt: 8 }}/>;
 
   const backLink = React.useMemo(() => {
     const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/accounts');
@@ -188,8 +185,6 @@ const AddressPageContent = () => {
       url: appProps.referrer,
     };
   }, [ appProps.referrer ]);
-
-  const isLoading = addressQuery.isPlaceholderData;
 
   const titleSecondRow = (
     <Flex alignItems="center" w="100%" columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
@@ -241,7 +236,7 @@ const AddressPageContent = () => {
       <AddressDetails addressQuery={ addressQuery } scrollRef={ tabsScrollRef }/>
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ tabsScrollRef }></Box>
-      { (addressQuery.isPlaceholderData || addressTabsCountersQuery.isPlaceholderData || userOpsAccountQuery.isPlaceholderData) ?
+      { (isLoading || addressTabsCountersQuery.isPlaceholderData) ?
         <TabsSkeleton tabs={ tabs }/> :
         content
       }

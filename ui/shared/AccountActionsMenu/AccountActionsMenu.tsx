@@ -1,6 +1,8 @@
-import { IconButton, Menu, MenuButton, MenuList, Skeleton, chakra } from '@chakra-ui/react';
+import { Box, IconButton, Menu, MenuButton, MenuList, Skeleton, chakra } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
+
+import type { ItemProps } from './types';
 
 import config from 'configs/app';
 import useIsAccountActionAllowed from 'lib/hooks/useIsAccountActionAllowed';
@@ -33,30 +35,55 @@ const AccountActionsMenu = ({ isLoading, className }: Props) => {
     return null;
   }
 
+  const items = [
+    {
+      render: (props: ItemProps) => <TokenInfoMenuItem { ...props }/>,
+      enabled: isTokenPage && config.features.addressVerification.isEnabled,
+    },
+    {
+      render: (props: ItemProps) => <PrivateTagMenuItem { ...props } entityType={ isTxPage ? 'tx' : 'address' }/>,
+      enabled: true,
+    },
+    {
+      render: (props: ItemProps) => <PublicTagMenuItem { ...props }/>,
+      enabled: !isTxPage,
+    },
+  ].filter(({ enabled }) => enabled);
+
+  if (items.length === 0) {
+    return null;
+  }
+
+  if (isLoading) {
+    return <Skeleton w="36px" h="32px" borderRadius="base" className={ className }/>;
+  }
+
+  if (items.length === 1) {
+    return (
+      <Box className={ className }>
+        { items[0].render({ type: 'button', hash, onBeforeClick: isAccountActionAllowed }) }
+      </Box>
+    );
+  }
+
   return (
     <Menu>
-      <Skeleton isLoaded={ !isLoading } borderRadius="base" className={ className }>
-        <MenuButton
-          as={ IconButton }
-          size="sm"
-          variant="outline"
-          colorScheme="gray"
-          px="7px"
-          onClick={ handleButtonClick }
-          icon={ <IconSvg name="dots" boxSize="18px"/> }
-        />
-      </Skeleton>
+      <MenuButton
+        as={ IconButton }
+        className={ className }
+        size="sm"
+        variant="outline"
+        colorScheme="gray"
+        px="7px"
+        onClick={ handleButtonClick }
+        icon={ <IconSvg name="dots" boxSize="18px"/> }
+      />
       <MenuList minWidth="180px" zIndex="popover">
-        { isTokenPage && config.features.addressVerification.isEnabled &&
-          <TokenInfoMenuItem py={ 2 } px={ 4 } hash={ hash } onBeforeClick={ isAccountActionAllowed }/> }
-        <PrivateTagMenuItem
-          py={ 2 }
-          px={ 4 }
-          hash={ hash }
-          onBeforeClick={ isAccountActionAllowed }
-          type={ isTxPage ? 'tx' : 'address' }
-        />
-        { !isTxPage && <PublicTagMenuItem py={ 2 } px={ 4 } hash={ hash } onBeforeClick={ isAccountActionAllowed }/> }
+        { items.map(({ render }, index) => (
+          <React.Fragment key={ index }>
+            { render({ type: 'menu_item', hash, onBeforeClick: isAccountActionAllowed }) }
+          </React.Fragment>
+        )) }
       </MenuList>
     </Menu>
   );

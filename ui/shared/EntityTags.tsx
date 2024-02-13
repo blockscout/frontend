@@ -62,7 +62,7 @@ const EntityTags = ({ className, data, tagsBefore = [], tagsAfter = [], isLoadin
           }
           <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
             <PopoverTrigger>
-              <Tag onClick={ onToggle }>+{ tags.length - 1 }</Tag>
+              <Tag isLoading={ isLoading }onClick={ onToggle }>+{ tags.length - 1 }</Tag>
             </PopoverTrigger>
             <PopoverContent w="240px">
               <PopoverBody >

@@ -8,8 +8,8 @@ import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
-import ZkEvmTxnBatchesListItem from 'ui/zkEvmL2TxnBatches/ZkEvmTxnBatchesListItem';
-import ZkEvmTxnBatchesTable from 'ui/zkEvmL2TxnBatches/ZkEvmTxnBatchesTable';
+import ZkEvmTxnBatchesListItem from 'ui/txnBatches/zkEvmL2/ZkEvmTxnBatchesListItem';
+import ZkEvmTxnBatchesTable from 'ui/txnBatches/zkEvmL2/ZkEvmTxnBatchesTable';
 
 const ZkEvmL2TxnBatches = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
