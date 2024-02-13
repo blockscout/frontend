@@ -1,38 +1,13 @@
-import { Box, chakra, Flex, IconButton } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SmartContractMethodInput, SmartContractMethodArgType } from 'types/api/contract';
 
-import IconSvg from 'ui/shared/IconSvg';
-
 import { ARRAY_REGEXP } from '../utils';
+import ContractMethodArrayButton from './ContractMethodArrayButton';
+import ContractMethodFieldAccordion from './ContractMethodFieldAccordion';
 import ContractMethodFieldInput from './ContractMethodFieldInput';
 import ContractMethodFieldInputTuple from './ContractMethodFieldInputTuple';
-
-interface ArrayButtonProps {
-  index: number;
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  isDisabled?: boolean;
-  type: 'add' | 'remove';
-  className?: string;
-}
-
-const ArrayButton = chakra(({ className, index, onClick, isDisabled, type }: ArrayButtonProps) => {
-  return (
-    <IconButton
-      className={ className }
-      aria-label={ type }
-      data-index={ index }
-      variant="outline"
-      w="20px"
-      h="20px"
-      flexShrink={ 0 }
-      onClick={ onClick }
-      icon={ <IconSvg name={ type === 'remove' ? 'minus' : 'plus' } boxSize={ 3 }/> }
-      isDisabled={ isDisabled }
-    />
-  );
-});
 
 interface Props {
   data: SmartContractMethodInput;
@@ -44,11 +19,13 @@ const ContractMethodFieldInputArray = ({ data, level, basePath }: Props) => {
 
   const [ registeredIndices, setRegisteredIndices ] = React.useState([ 0 ]);
 
-  const handleAddButtonClick = React.useCallback(() => {
+  const handleAddButtonClick = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     setRegisteredIndices((prev) => [ ...prev, prev[prev.length - 1] + 1 ]);
   }, []);
 
   const handleRemoveButtonClick = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     const itemIndex = event.currentTarget.getAttribute('data-index');
     if (itemIndex) {
       setRegisteredIndices((prev) => prev.filter((index) => index !== Number(itemIndex)));
@@ -82,16 +59,37 @@ const ContractMethodFieldInputArray = ({ data, level, basePath }: Props) => {
     );
   };
 
-  const isNestedArray = type.includes('[][]');
+  const isNestedArray = data.type.includes('[][]');
 
   if (isNestedArray) {
     return <div>nested array</div>;
   }
 
-  const isTupleArray = type.includes('tuple');
+  const isTupleArray = data.type.includes('tuple');
 
   if (isTupleArray) {
-    return <div>tuple array</div>;
+    return (
+      <ContractMethodFieldAccordion
+        level={ level }
+        label={ `${ data.name || '<arg w/o name>' } (${ data.type }) level: ${ level }` }
+      >
+        { registeredIndices.map((registeredIndex, index) => {
+          const itemData = { ...data, type, name: `item #${ (level ? `${ level }.` : '') + (index + 1) }` };
+
+          return (
+            <ContractMethodFieldInputTuple
+              key={ registeredIndex }
+              data={ itemData }
+              basePath={ `${ basePath }:${ registeredIndex }` }
+              level={ level }
+              onAddClick={ index === registeredIndices.length - 1 ? handleAddButtonClick : undefined }
+              onRemoveClick={ registeredIndices.length > 1 ? handleRemoveButtonClick : undefined }
+              index={ registeredIndex }
+            />
+          );
+        }) }
+      </ContractMethodFieldAccordion>
+    );
   }
 
   // primitive value array
@@ -107,9 +105,9 @@ const ContractMethodFieldInputArray = ({ data, level, basePath }: Props) => {
             <Flex key={ registeredIndex } alignItems="flex-start" columnGap={ 3 }>
               <ContractMethodFieldInput data={ data } hideLabel path={ `${ basePath }:${ index }` } px={ 0 }/>
               { registeredIndices.length > 1 &&
-                <ArrayButton index={ registeredIndex } onClick={ handleRemoveButtonClick } type="remove" my="6px"/> }
+                <ContractMethodArrayButton index={ registeredIndex } onClick={ handleRemoveButtonClick } type="remove" my="6px"/> }
               { index === registeredIndices.length - 1 &&
-                <ArrayButton index={ registeredIndex } onClick={ handleAddButtonClick } type="add" my="6px"/> }
+                <ContractMethodArrayButton index={ registeredIndex } onClick={ handleAddButtonClick } type="add" my="6px"/> }
             </Flex>
           );
         }) }
