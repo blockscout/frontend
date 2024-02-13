@@ -39,6 +39,10 @@ export default function useAddressQuery({ hash, addressQuery }: Params): Address
   const rpcQuery = useQuery<RpcResponseType, unknown, AddressCounters | null>({
     queryKey: [ 'RPC', 'address_counters', { hash } ],
     queryFn: async() => {
+      if (!publicClient) {
+        throw new Error('No public RPC client');
+      }
+
       const txCount = publicClient.getTransactionCount({ address: hash as `0x${ string }` }).catch(() => null);
 
       return Promise.all([
@@ -60,7 +64,7 @@ export default function useAddressQuery({ hash, addressQuery }: Params): Address
     refetchOnMount: false,
   });
 
-  const isRpcQuery = Boolean((addressQuery.isDegradedData || apiQuery.isError) && rpcQuery.data);
+  const isRpcQuery = Boolean((addressQuery.isDegradedData || apiQuery.isError) && rpcQuery.data && publicClient);
   const query = isRpcQuery ? rpcQuery as UseQueryResult<AddressCounters, ResourceError<{ status: number }>> : apiQuery;
 
   return {
