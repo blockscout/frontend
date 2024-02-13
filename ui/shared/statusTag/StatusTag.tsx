@@ -37,9 +37,9 @@ const StatusTag = ({ type, text, errorText, isLoading }: Props) => {
 
   return (
     <Tooltip label={ errorText }>
-      <Tag colorScheme={ colorScheme } display="inline-flex" isLoading={ isLoading }>
-        <IconSvg boxSize={ 2.5 } name={ icon } mr={ 2 }/>
-        <TagLabel>{ text }</TagLabel>
+      <Tag colorScheme={ colorScheme } display="flex" isLoading={ isLoading } >
+        <IconSvg boxSize={ 2.5 } name={ icon } mr={ 2 } flexShrink={ 0 }/>
+        <TagLabel display="block">{ text }</TagLabel>
       </Tag>
     </Tooltip>
   );

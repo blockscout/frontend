@@ -39,7 +39,7 @@ export interface Address extends UserTags {
 export interface AddressCounters {
   transactions_count: string;
   token_transfers_count: string;
-  gas_usage_count: string;
+  gas_usage_count: string | null;
   validations_count: string | null;
 }
 

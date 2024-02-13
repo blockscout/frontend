@@ -108,7 +108,7 @@ test.describe('socket', () => {
       },
     };
 
-    const API_URL_NO_TOKEN = buildApiUrl('address_token_transfers', { hash: CURRENT_ADDRESS });
+    const API_URL_NO_TOKEN = buildApiUrl('address_token_transfers', { hash: CURRENT_ADDRESS }) + '?type=';
 
     await page.route(API_URL_NO_TOKEN, (route) => route.fulfill({
       status: 200,
@@ -144,7 +144,7 @@ test.describe('socket', () => {
       },
     };
 
-    const API_URL_NO_TOKEN = buildApiUrl('address_token_transfers', { hash: CURRENT_ADDRESS });
+    const API_URL_NO_TOKEN = buildApiUrl('address_token_transfers', { hash: CURRENT_ADDRESS }) + '?type=';
 
     await page.route(API_URL_NO_TOKEN, (route) => route.fulfill({
       status: 200,

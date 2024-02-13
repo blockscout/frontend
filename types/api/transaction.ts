@@ -2,7 +2,7 @@ import type { AddressParam } from './addressParams';
 import type { BlockTransactionsResponse } from './block';
 import type { DecodedInput } from './decodedInput';
 import type { Fee } from './fee';
-import type { L2WithdrawalStatus } from './l2Withdrawals';
+import type { OptimisticL2WithdrawalStatus } from './optimisticL2';
 import type { TokenInfo } from './token';
 import type { TokenTransfer } from './tokenTransfer';
 import type { TxAction } from './txAction';
@@ -17,7 +17,7 @@ type WrappedTransactionFields = 'decoded_input' | 'fee' | 'gas_limit' | 'gas_pri
 export interface OpWithdrawal {
   l1_transaction_hash: string;
   nonce: number;
-  status: L2WithdrawalStatus;
+  status: OptimisticL2WithdrawalStatus;
 }
 
 export type Transaction = {

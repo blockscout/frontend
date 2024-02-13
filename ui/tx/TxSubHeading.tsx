@@ -29,6 +29,9 @@ const TxSubHeading = ({ hash, hasTag }: Props) => {
   const hasInterpretation = hasInterpretationFeature &&
     (txInterpretationQuery.isPlaceholderData || Boolean(txInterpretationQuery.data?.data.summaries.length));
 
+  const hasViewAllInterpretationsLink =
+    !txInterpretationQuery.isPlaceholderData && txInterpretationQuery.data?.data.summaries && txInterpretationQuery.data?.data.summaries.length > 1;
+
   return (
     <Box display={{ base: 'block', lg: 'flex' }} alignItems="center" w="100%">
       { hasInterpretation && (
@@ -37,9 +40,10 @@ const TxSubHeading = ({ hash, hasTag }: Props) => {
             summary={ txInterpretationQuery.data?.data.summaries[0] }
             isLoading={ txInterpretationQuery.isPlaceholderData }
             fontSize="lg"
+            mr={ hasViewAllInterpretationsLink ? 3 : 0 }
           />
-          { !txInterpretationQuery.isPlaceholderData && txInterpretationQuery.data?.data.summaries && txInterpretationQuery.data?.data.summaries.length > 1 &&
-            <Link ml={ 3 } href={ `#${ TX_ACTIONS_BLOCK_ID }` }>all actions</Link> }
+          { hasViewAllInterpretationsLink &&
+            <Link href={ `#${ TX_ACTIONS_BLOCK_ID }` }>View all</Link> }
         </Flex>
       ) }
       { !hasInterpretation && <TxEntity hash={ hash } noLink noCopy={ false } fontWeight={ 500 } mr={{ base: 0, lg: 2 }} fontFamily="heading"/> }

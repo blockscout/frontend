@@ -43,6 +43,7 @@ const AddressIntTxsTableItem = ({
             isLoading={ isLoading }
             fontWeight={ 700 }
             noIcon
+            truncation="constant_long"
           />
           { timestamp && (
             <Skeleton isLoaded={ !isLoading } color="text_secondary" fontWeight="400" fontSize="sm">

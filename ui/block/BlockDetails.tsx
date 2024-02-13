@@ -34,7 +34,7 @@ interface Props {
   query: BlockQuery;
 }
 
-const isRollup = config.features.optimisticRollup.isEnabled || config.features.zkEvmRollup.isEnabled;
+const rollupFeature = config.features.rollup;
 
 const BlockDetails = ({ query }: Props) => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
@@ -73,7 +73,7 @@ const BlockDetails = ({ query }: Props) => {
   const validatorTitle = getNetworkValidatorTitle();
 
   const rewardBreakDown = (() => {
-    if (isRollup || totalReward.isEqualTo(ZERO) || txFees.isEqualTo(ZERO) || burntFees.isEqualTo(ZERO)) {
+    if (rollupFeature.isEnabled || totalReward.isEqualTo(ZERO) || txFees.isEqualTo(ZERO) || burntFees.isEqualTo(ZERO)) {
       return null;
     }
 
@@ -107,7 +107,7 @@ const BlockDetails = ({ query }: Props) => {
   })();
 
   const verificationTitle = (() => {
-    if (config.features.zkEvmRollup.isEnabled) {
+    if (rollupFeature.isEnabled && rollupFeature.type === 'zkEvm') {
       return 'Sequenced by';
     }
 
@@ -205,7 +205,7 @@ const BlockDetails = ({ query }: Props) => {
           { /* <Text>{ dayjs.duration(block.minedIn, 'second').humanize(true) }</Text> */ }
         </DetailsInfoItem>
       ) }
-      { !isRollup && !totalReward.isEqualTo(ZERO) && !config.UI.views.block.hiddenFields?.total_reward && (
+      { !rollupFeature.isEnabled && !totalReward.isEqualTo(ZERO) && !config.UI.views.block.hiddenFields?.total_reward && (
         <DetailsInfoItem
           title="Block reward"
           hint={
