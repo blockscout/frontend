@@ -692,7 +692,10 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
 /* eslint-disable @typescript-eslint/indent */
-export type ResourcePayload<Q extends ResourceName> =
+// !!! IMPORTANT !!!
+// Don't add any new types here because TypeScript cannot handle it properly
+// use ResourcePayloadB instead
+export type ResourcePayloadA<Q extends ResourceName> =
 Q extends 'user_info' ? UserInfo :
 Q extends 'custom_abi' ? CustomAbis :
 Q extends 'public_tags' ? PublicTags :
@@ -793,10 +796,24 @@ Q extends 'domains_lookup' ? EnsDomainLookupResponse :
 Q extends 'user_ops' ? UserOpsResponse :
 Q extends 'user_op' ? UserOp :
 Q extends 'user_ops_account' ? UserOpsAccount :
+never;
+// !!! IMPORTANT !!!
+// See comment above
+/* eslint-enable @typescript-eslint/indent */
+
+/* eslint-disable @typescript-eslint/indent */
+export type ResourcePayloadB<Q extends ResourceName> =
 Q extends 'marketplace_dapps' ? Array<MarketplaceAppOverview> :
 Q extends 'marketplace_dapp' ? MarketplaceAppOverview :
 never;
 /* eslint-enable @typescript-eslint/indent */
+
+export type ResourcePayload<Q extends ResourceName> = ResourcePayloadA<Q> | ResourcePayloadB<Q>;
+
+// Right now there is no paginated resources in B-part
+// Add "| ResourcePayloadB<Q>[...]" if it is not true anymore
+export type PaginatedResponseItems<Q extends ResourceName> = Q extends PaginatedResources ? ResourcePayloadA<Q>['items'] : never;
+export type PaginatedResponseNextPageParams<Q extends ResourceName> = Q extends PaginatedResources ? ResourcePayloadA<Q>['next_page_params'] : never;
 
 /* eslint-disable @typescript-eslint/indent */
 export type PaginationFilters<Q extends PaginatedResources> =
