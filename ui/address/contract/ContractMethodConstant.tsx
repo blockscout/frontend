@@ -2,6 +2,7 @@ import { Checkbox, Flex, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import type { ChangeEvent } from 'react';
 import React from 'react';
+import { getAddress } from 'viem';
 
 import type { SmartContractMethodOutput } from 'types/api/contract';
 
@@ -50,7 +51,7 @@ const ContractMethodStatic = ({ data }: Props) => {
     if (typeof data.value === 'string' && data.type === 'address' && data.value) {
       return (
         <AddressEntity
-          address={{ hash: data.value }}
+          address={{ hash: getAddress(data.value) }}
           noIcon
         />
       );

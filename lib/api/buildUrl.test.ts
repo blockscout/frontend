@@ -34,7 +34,7 @@ describe('falsy query parameters', () => {
 
 test('builds URL with array-like query parameters', () => {
   const url = buildUrl('block', { height_or_hash: '42' }, { includeTx: [ '0x11', '0x22' ], sort: 'asc' });
-  expect(url).toBe('https://localhost:3003/api/v2/blocks/42?includeTx%5B0%5D=0x11&includeTx%5B1%5D=0x22&sort=asc');
+  expect(url).toBe('https://localhost:3003/api/v2/blocks/42?includeTx=0x11%2C0x22&sort=asc');
 });
 
 test('builds URL for resource with custom API endpoint', () => {

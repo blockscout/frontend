@@ -4,7 +4,7 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-const Deposits = dynamic(() => import('ui/pages/L2Deposits'), { ssr: false });
+const Deposits = dynamic(() => import('ui/pages/OptimisticL2Deposits'), { ssr: false });
 
 const Page: NextPage = () => {
   return (
