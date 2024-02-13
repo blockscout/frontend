@@ -19,6 +19,7 @@ export { default as sentry } from './sentry';
 export { default as sol2uml } from './sol2uml';
 export { default as stats } from './stats';
 export { default as suave } from './suave';
+export { default as swapButton } from './swapButton';
 export { default as txInterpretation } from './txInterpretation';
 export { default as userOps } from './userOps';
 export { default as verifiedTokens } from './verifiedTokens';

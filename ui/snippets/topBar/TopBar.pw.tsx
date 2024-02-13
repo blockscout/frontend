@@ -1,11 +1,19 @@
-import { test, expect } from '@playwright/experimental-ct-react';
+import { test as base, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import * as statsMock from 'mocks/stats/index';
+import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
 
 import TopBar from './TopBar';
+
+const test = base.extend({
+  context: contextWithEnvs([
+    { name: 'NEXT_PUBLIC_SWAP_BUTTON_URL', value: 'uniswap' },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ]) as any,
+});
 
 test('default view +@dark-mode +@mobile', async({ mount, page }) => {
   await page.route(buildApiUrl('homepage_stats'), (route) => route.fulfill({
