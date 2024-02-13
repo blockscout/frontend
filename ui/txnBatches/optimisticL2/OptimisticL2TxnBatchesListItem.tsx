@@ -7,7 +7,6 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
-import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -48,18 +47,6 @@ const OptimisticL2TxnBatchesListItem = ({ item, isLoading }: Props) => {
             { item.tx_count }
           </Skeleton>
         </LinkInternal>
-      </ListItemMobileGrid.Value>
-
-      <ListItemMobileGrid.Label isLoading={ isLoading }>Epoch number</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
-        <BlockEntityL1
-          isLoading={ isLoading }
-          number={ item.epoch_number }
-          noIcon
-          fontSize="sm"
-          lineHeight={ 5 }
-          fontWeight={ 600 }
-        />
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn hash</ListItemMobileGrid.Label>
