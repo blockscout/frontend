@@ -18,9 +18,10 @@ export type TxInterpretationVariable =
   TxInterpretationVariableTimestamp |
   TxInterpretationVariableToken |
   TxInterpretationVariableAddress |
-  TxInterpretationVariableDomain;
+  TxInterpretationVariableDomain |
+  TxInterpretationVariableMethod;
 
-export type TxInterpretationVariableType = 'string' | 'currency' | 'timestamp' | 'token' | 'address' | 'domain';
+export type TxInterpretationVariableType = 'string' | 'currency' | 'timestamp' | 'token' | 'address' | 'domain' | 'method';
 
 export type TxInterpretationVariableString = {
   type: 'string';
@@ -49,5 +50,10 @@ export type TxInterpretationVariableAddress = {
 
 export type TxInterpretationVariableDomain = {
   type: 'domain';
+  value: string;
+}
+
+export type TxInterpretationVariableMethod = {
+  type: 'method';
   value: string;
 }
