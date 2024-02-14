@@ -8,8 +8,9 @@ import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { WEI } from 'lib/consts';
 import { HOMEPAGE_STATS } from 'stubs/stats';
-import GasInfoTooltipContent from 'ui/shared/gas/GasInfoTooltipContent';
+import GasInfoTooltip from 'ui/shared/gas/GasInfoTooltip';
 import GasPrice from 'ui/shared/gas/GasPrice';
+import IconSvg from 'ui/shared/IconSvg';
 
 import StatsItem from './StatsItem';
 
@@ -48,7 +49,21 @@ const Stats = () => {
     !data.gas_prices && itemsCount--;
     data.rootstock_locked_btc && itemsCount++;
     const isOdd = Boolean(itemsCount % 2);
-    const gasLabel = hasGasTracker && data.gas_prices ? <GasInfoTooltipContent data={ data } dataUpdatedAt={ dataUpdatedAt }/> : null;
+    const gasInfoTooltip = hasGasTracker && data.gas_prices ? (
+      <GasInfoTooltip data={ data } dataUpdatedAt={ dataUpdatedAt }>
+        <IconSvg
+          isLoading={ isPlaceholderData }
+          name="info"
+          boxSize={ 5 }
+          display="block"
+          cursor="pointer"
+          _hover={{ color: 'link_hovered' }}
+          position="absolute"
+          top={{ base: 'calc(50% - 12px)', lg: '10px', xl: 'calc(50% - 12px)' }}
+          right="10px"
+        />
+      </GasInfoTooltip>
+    ) : null;
 
     content = (
       <>
@@ -97,7 +112,7 @@ const Stats = () => {
             title="Gas tracker"
             value={ <GasPrice data={ data.gas_prices.average } emptyText="N/A"/> }
             _last={ isOdd ? lastItemTouchStyle : undefined }
-            tooltipLabel={ gasLabel }
+            tooltip={ gasInfoTooltip }
             isLoading={ isPlaceholderData }
           />
         ) }

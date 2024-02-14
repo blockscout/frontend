@@ -1,4 +1,4 @@
-import { Flex, Skeleton, Tooltip, chakra, useDisclosure } from '@chakra-ui/react';
+import { Flex, Skeleton, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
@@ -7,15 +7,12 @@ import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import dayjs from 'lib/date/dayjs';
 import { HOMEPAGE_STATS } from 'stubs/stats';
-import GasInfoTooltipContent from 'ui/shared/gas/GasInfoTooltipContent';
+import GasInfoTooltip from 'ui/shared/gas/GasInfoTooltip';
 import GasPrice from 'ui/shared/gas/GasPrice';
 import LinkInternal from 'ui/shared/LinkInternal';
 import TextSeparator from 'ui/shared/TextSeparator';
 
 const TopBarStats = () => {
-  // have to implement controlled tooltip because of the issue - https://github.com/chakra-ui/chakra-ui/issues/7107
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
   const { data, isPlaceholderData, isError, refetch, dataUpdatedAt } = useApiQuery('homepage_stats', {
     queryOptions: {
       placeholderData: HOMEPAGE_STATS,
@@ -73,23 +70,13 @@ const TopBarStats = () => {
       { data?.gas_prices && data.gas_prices.average !== null && config.features.gasTracker.isEnabled && (
         <Skeleton isLoaded={ !isPlaceholderData }>
           <chakra.span color="text_secondary">Gas </chakra.span>
-          <Tooltip
-            label={ <GasInfoTooltipContent data={ data } dataUpdatedAt={ dataUpdatedAt }/> }
-            hasArrow={ false }
-            borderRadius="md"
-            offset={ [ 0, 16 ] }
-            bgColor="blackAlpha.900"
-            p={ 0 }
-            isOpen={ isOpen }
-          >
+          <GasInfoTooltip data={ data } dataUpdatedAt={ dataUpdatedAt } >
             <LinkInternal
               href={ route({ pathname: '/gas-tracker' }) }
-              onMouseEnter={ onOpen }
-              onMouseLeave={ onClose }
             >
               <GasPrice data={ data.gas_prices.average }/>
             </LinkInternal>
-          </Tooltip>
+          </GasInfoTooltip>
         </Skeleton>
       ) }
     </Flex>

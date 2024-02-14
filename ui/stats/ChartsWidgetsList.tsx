@@ -1,4 +1,3 @@
-import type { TooltipProps } from '@chakra-ui/react';
 import { Box, Grid, Heading, List, ListItem, Skeleton } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 
@@ -8,17 +7,11 @@ import type { StatsIntervalIds } from 'types/client/stats';
 import useApiQuery from 'lib/api/useApiQuery';
 import { apos } from 'lib/html-entities';
 import EmptySearchResult from 'ui/shared/EmptySearchResult';
-import GasInfoTooltipContent from 'ui/shared/gas/GasInfoTooltipContent';
-import Hint from 'ui/shared/Hint';
+import GasInfoTooltip from 'ui/shared/gas/GasInfoTooltip';
+import IconSvg from 'ui/shared/IconSvg';
 
 import ChartsLoadingErrorAlert from './ChartsLoadingErrorAlert';
 import ChartWidgetContainer from './ChartWidgetContainer';
-
-const GAS_TOOLTIP_PROPS: Partial<TooltipProps> = {
-  borderRadius: 'md',
-  hasArrow: false,
-  padding: 0,
-};
 
 type Props = {
   filterQuery: string;
@@ -72,10 +65,9 @@ const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, in
                   { section.title }
                 </Heading>
                 { section.id === 'gas' && homeStatsQuery.data && homeStatsQuery.data.gas_prices && (
-                  <Hint
-                    label={ <GasInfoTooltipContent data={ homeStatsQuery.data } dataUpdatedAt={ homeStatsQuery.dataUpdatedAt }/> }
-                    tooltipProps={ GAS_TOOLTIP_PROPS }
-                  />
+                  <GasInfoTooltip data={ homeStatsQuery.data } dataUpdatedAt={ homeStatsQuery.dataUpdatedAt }>
+                    <IconSvg name="info" boxSize={ 5 } display="block" cursor="pointer" _hover={{ color: 'link_hovered' }}/>
+                  </GasInfoTooltip>
                 ) }
               </Skeleton>
 
