@@ -7,7 +7,6 @@ import { MarketplaceCategory } from 'types/client/marketplace';
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
-import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import useFetch from 'lib/hooks/useFetch';
 import { MARKETPLACE_APP } from 'stubs/marketplace';
 
@@ -23,10 +22,7 @@ function isAppCategoryMatches(category: string, app: MarketplaceAppOverview, fav
       app.categories.includes(category);
 }
 
-function sortApps(apps: Array<MarketplaceAppOverview>, isExperiment: boolean) {
-  if (!isExperiment) {
-    return apps.sort((a, b) => a.title.localeCompare(b.title));
-  }
+function sortApps(apps: Array<MarketplaceAppOverview>) {
   return apps.sort((a, b) => {
     const priorityA = a.priority || 0;
     const priorityB = b.priority || 0;
@@ -50,7 +46,6 @@ function sortApps(apps: Array<MarketplaceAppOverview>, isExperiment: boolean) {
 export default function useMarketplaceApps(filter: string, selectedCategoryId: string = MarketplaceCategory.ALL, favoriteApps: Array<string> = []) {
   const fetch = useFetch();
   const apiFetch = useApiFetch();
-  const { value: isExperiment } = useFeatureValue('marketplace_exp', false);
 
   const { isPlaceholderData, isError, error, data } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppOverview>>({
     queryKey: [ 'marketplace-dapps' ],
@@ -63,7 +58,7 @@ export default function useMarketplaceApps(filter: string, selectedCategoryId: s
         return apiFetch('marketplace_dapps', { pathParams: { chainId: config.chain.id } });
       }
     },
-    select: (data) => sortApps(data as Array<MarketplaceAppOverview>, isExperiment),
+    select: (data) => sortApps(data as Array<MarketplaceAppOverview>),
     placeholderData: feature.isEnabled ? Array(9).fill(MARKETPLACE_APP) : undefined,
     staleTime: Infinity,
     enabled: feature.isEnabled,

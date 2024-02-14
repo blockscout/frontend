@@ -4,7 +4,6 @@ import React from 'react';
 import type { MarketplaceAppPreview } from 'types/client/marketplace';
 import { MarketplaceCategory } from 'types/client/marketplace';
 
-import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import { apos } from 'lib/html-entities';
 import EmptySearchResult from 'ui/shared/EmptySearchResult';
 import IconSvg from 'ui/shared/IconSvg';
@@ -22,8 +21,6 @@ type Props = {
 }
 
 const MarketplaceList = ({ apps, onAppClick, favoriteApps, onFavoriteClick, isLoading, showDisclaimer, selectedCategoryId }: Props) => {
-  const { value: isExperiment } = useFeatureValue('marketplace_exp', false);
-
   return apps.length > 0 ? (
     <Grid
       templateColumns={{
@@ -56,7 +53,7 @@ const MarketplaceList = ({ apps, onAppClick, favoriteApps, onFavoriteClick, isLo
   ) : (
     <EmptySearchResult
       text={
-        (selectedCategoryId === MarketplaceCategory.FAVORITES && !favoriteApps.length && isExperiment) ? (
+        (selectedCategoryId === MarketplaceCategory.FAVORITES && !favoriteApps.length) ? (
           <>
             You don{ apos }t have any favorite apps.
             Click on the <IconSvg name="star_outline" w={ 4 } h={ 4 } mb={ -0.5 }/> icon on the app{ apos }s card to add it to Favorites.

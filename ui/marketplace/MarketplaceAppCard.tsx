@@ -4,7 +4,6 @@ import React, { useCallback } from 'react';
 
 import type { MarketplaceAppPreview } from 'types/client/marketplace';
 
-import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import * as mixpanel from 'lib/mixpanel/index';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
@@ -31,13 +30,10 @@ const MarketplaceAppCard = ({
   onInfoClick,
   isFavorite,
   onFavoriteClick,
-  isLoading: isDataLoading,
+  isLoading,
   showDisclaimer,
   internalWallet,
 }: Props) => {
-  const { value: isExperiment, isLoading: isExperimentLoading } = useFeatureValue('marketplace_exp', false);
-  const isLoading = isDataLoading || isExperimentLoading;
-
   const categoriesLabel = categories.join(', ');
 
   const handleClick = useCallback((event: MouseEvent) => {
@@ -59,7 +55,6 @@ const MarketplaceAppCard = ({
   }, [ onFavoriteClick, id, isFavorite ]);
 
   const logoUrl = useColorModeValue(logo, logoDarkMode || logo);
-  const moreButtonBgGradient = `linear(to-r, ${ useColorModeValue('whiteAlpha.50', 'blackAlpha.50') }, ${ useColorModeValue('white', 'black') } 20%)`;
 
   const [ integrationIcon, integrationIconColor, integrationText ] = React.useMemo(() => {
     let icon: IconName = 'integration/partial';
@@ -94,14 +89,14 @@ const MarketplaceAppCard = ({
       role="group"
     >
       <Box
-        display={{ base: 'grid', sm: isExperiment ? 'flex' : 'block' }}
-        flexDirection={ isExperiment ? 'column' : undefined }
+        display={{ base: 'grid', sm: 'flex' }}
+        flexDirection="column"
         gridTemplateColumns={{ base: '64px 1fr', sm: '1fr' }}
         gridTemplateRows={{ base: 'none', sm: 'none' }}
         gridRowGap={{ base: 2, sm: 0 }}
         gridColumnGap={{ base: 4, sm: 0 }}
         height="100%"
-        alignContent={ isExperiment ? 'start' : undefined }
+        alignContent="start"
       >
         <Skeleton
           isLoaded={ !isLoading }
@@ -137,25 +132,23 @@ const MarketplaceAppCard = ({
             title={ title }
             onClick={ handleClick }
           />
-          { isExperiment && (
-            <Tooltip
-              label={ integrationText }
-              textAlign="center"
-              padding={ 2 }
-              openDelay={ 300 }
-              maxW={ 400 }
-            >
-              <IconSvg
-                name={ integrationIcon }
-                boxSize={ 5 }
-                color={ integrationIconColor }
-                position="relative"
-                cursor="pointer"
-                verticalAlign="middle"
-                marginBottom={ 1 }
-              />
-            </Tooltip>
-          ) }
+          <Tooltip
+            label={ integrationText }
+            textAlign="center"
+            padding={ 2 }
+            openDelay={ 300 }
+            maxW={ 400 }
+          >
+            <IconSvg
+              name={ integrationIcon }
+              boxSize={ 5 }
+              color={ integrationIconColor }
+              position="relative"
+              cursor="pointer"
+              verticalAlign="middle"
+              marginBottom={ 1 }
+            />
+          </Tooltip>
         </Skeleton>
 
         <Skeleton
@@ -171,63 +164,34 @@ const MarketplaceAppCard = ({
           isLoaded={ !isLoading }
           fontSize={{ base: 'xs', sm: 'sm' }}
           lineHeight="20px"
-          noOfLines={ isExperiment ? 3 : 4 }
+          noOfLines={ 3 }
         >
           { shortDescription }
         </Skeleton>
 
         { !isLoading && (
-          isExperiment ? (
-            <Box
-              display="flex"
-              position={{ base: 'absolute', sm: 'relative' }}
-              bottom={{ base: 3, sm: 0 }}
-              left={{ base: 3, sm: 0 }}
-              marginTop={{ base: 0, sm: 'auto' }}
-              paddingTop={{ base: 0, sm: 4 }}
+          <Box
+            display="flex"
+            position={{ base: 'absolute', sm: 'relative' }}
+            bottom={{ base: 3, sm: 0 }}
+            left={{ base: 3, sm: 0 }}
+            marginTop={{ base: 0, sm: 'auto' }}
+            paddingTop={{ base: 0, sm: 4 }}
+          >
+            <Link
+              fontSize={{ base: 'xs', sm: 'sm' }}
+              paddingRight={{ sm: 2 }}
+              href="#"
+              onClick={ handleInfoClick }
             >
-              <Link
-                fontSize={{ base: 'xs', sm: 'sm' }}
-                paddingRight={{ sm: 2 }}
-                href="#"
-                onClick={ handleInfoClick }
-              >
-                More info
-              </Link>
-            </Box>
-          ) : (
-            <Box
-              position="absolute"
-              right={{ base: 3, sm: '20px' }}
-              bottom={{ base: 3, sm: '20px' }}
-              paddingLeft={ 8 }
-              bgGradient={ moreButtonBgGradient }
-            >
-              <Link
-                fontSize={{ base: 'xs', sm: 'sm' }}
-                display="flex"
-                alignItems="center"
-                paddingRight={{ sm: 2 }}
-                maxW="100%"
-                overflow="hidden"
-                href="#"
-                onClick={ handleInfoClick }
-              >
-              More
-
-                <IconSvg
-                  name="arrows/north-east"
-                  marginLeft={ 1 }
-                  boxSize={ 4 }
-                />
-              </Link>
-            </Box>
-          )
+              More info
+            </Link>
+          </Box>
         ) }
 
         { !isLoading && (
           <IconButton
-            display={{ base: 'block', sm: isFavorite || isExperiment ? 'block' : 'none' }}
+            display={{ base: 'block', sm: isFavorite ? 'block' : 'none' }}
             _groupHover={{ display: 'block' }}
             position="absolute"
             right={{ base: 3, sm: '10px' }}

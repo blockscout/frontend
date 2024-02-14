@@ -6,10 +6,8 @@ import type { TabItem } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
-import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import MarketplaceAppModal from 'ui/marketplace/MarketplaceAppModal';
-import MarketplaceCategoriesMenu from 'ui/marketplace/MarketplaceCategoriesMenu';
 import MarketplaceDisclaimerModal from 'ui/marketplace/MarketplaceDisclaimerModal';
 import MarketplaceList from 'ui/marketplace/MarketplaceList';
 import FilterInput from 'ui/shared/filters/FilterInput';
@@ -64,7 +62,6 @@ const Marketplace = () => {
     isCategoriesPlaceholderData,
   } = useMarketplace();
   const isMobile = useIsMobile();
-  const { value: isExperiment } = useFeatureValue('marketplace_exp', false);
 
   const categoryTabs = React.useMemo(() => {
     const tabs: Array<TabItem> = categories.map(category => ({
@@ -143,42 +140,27 @@ const Marketplace = () => {
           </Flex>
         ) }
       />
-      { isExperiment && (
-        <Box marginTop={{ base: 0, lg: 8 }}>
-          { (isCategoriesPlaceholderData) ? (
-            <TabsSkeleton tabs={ categoryTabs }/>
-          ) : (
-            <TabsWithScroll
-              tabs={ categoryTabs }
-              onTabChange={ handleCategoryChange }
-              defaultTabIndex={ selectedCategoryIndex }
-              marginBottom={{ base: 0, lg: -2 }}
-            />
-          ) }
-        </Box>
-      ) }
-      <Box
-        display="flex"
-        flexDirection={{ base: 'column', sm: 'row' }}
-      >
-        { !isExperiment && (
-          <MarketplaceCategoriesMenu
-            categories={ categories.map(c => c.name) }
-            selectedCategoryId={ selectedCategoryId }
-            onSelect={ onCategoryChange }
-            isLoading={ isPlaceholderData }
+      <Box marginTop={{ base: 0, lg: 8 }}>
+        { (isCategoriesPlaceholderData) ? (
+          <TabsSkeleton tabs={ categoryTabs }/>
+        ) : (
+          <TabsWithScroll
+            tabs={ categoryTabs }
+            onTabChange={ handleCategoryChange }
+            defaultTabIndex={ selectedCategoryIndex }
+            marginBottom={{ base: 0, lg: -2 }}
           />
         ) }
-
-        <FilterInput
-          initialValue={ filterQuery }
-          onChange={ onSearchInputChange }
-          marginBottom={{ base: '4', lg: '6' }}
-          w="100%"
-          placeholder="Find app"
-          isLoading={ isPlaceholderData }
-        />
       </Box>
+
+      <FilterInput
+        initialValue={ filterQuery }
+        onChange={ onSearchInputChange }
+        marginBottom={{ base: '4', lg: '6' }}
+        w="100%"
+        placeholder="Find app"
+        isLoading={ isPlaceholderData }
+      />
 
       <MarketplaceList
         apps={ displayedApps }
