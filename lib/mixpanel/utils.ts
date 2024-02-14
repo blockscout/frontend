@@ -70,7 +70,7 @@ Type extends EventTypes.VERIFY_TOKEN ? {
   'Action': 'Form opened' | 'Submit';
 } :
 Type extends EventTypes.WALLET_CONNECT ? {
-  'Source': 'Header' | 'Smart contracts';
+  'Source': 'Header' | 'Smart contracts' | 'Swap button';
   'Status': 'Started' | 'Connected';
 } :
 Type extends EventTypes.WALLET_ACTION ? {
@@ -96,7 +96,7 @@ Type extends EventTypes.PAGE_WIDGET ? (
   }
 ) :
 Type extends EventTypes.TX_INTERPRETATION_INTERACTION ? {
-  'Type': 'Address click' | 'Token click';
+  'Type': 'Address click' | 'Token click' | 'Domain click';
 } :
 Type extends EventTypes.EXPERIMENT_STARTED ? {
   'Experiment name': string;

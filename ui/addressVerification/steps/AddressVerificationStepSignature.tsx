@@ -157,7 +157,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
       }
       case 'INVALID_SIGNER_ERROR': {
         const signer = shortenString(formState.errors.root.message || '');
-        const expectedSigners = [ contractCreator, contractOwner ].filter(Boolean).map(shortenString).join(', ');
+        const expectedSigners = [ contractCreator, contractOwner ].filter(Boolean).map(s => shortenString(s)).join(', ');
         return (
           <Box>
             <span>This address </span>

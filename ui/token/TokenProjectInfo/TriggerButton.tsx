@@ -5,10 +5,9 @@ import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   onClick: () => void;
-  isOpen: boolean;
 }
 
-const TriggerButton = ({ isOpen, onClick }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
+const TriggerButton = ({ onClick }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
   return (
     <Button
       ref={ ref }
@@ -23,7 +22,6 @@ const TriggerButton = ({ isOpen, onClick }: Props, ref: React.ForwardedRef<HTMLB
     >
       <IconSvg name="rocket" boxSize={ 5 } mr={ 1 }/>
       <span>Info</span>
-      <IconSvg name="arrows/east-mini" transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 } ml={ 1 }/>
     </Button>
   );
 };

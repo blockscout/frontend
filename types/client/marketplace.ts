@@ -7,6 +7,8 @@ export type MarketplaceAppPreview = {
   shortDescription: string;
   categories: Array<string>;
   url: string;
+  internalWallet?: boolean;
+  priority?: number;
 }
 
 export type MarketplaceAppOverview = MarketplaceAppPreview & {
@@ -19,6 +21,6 @@ export type MarketplaceAppOverview = MarketplaceAppPreview & {
 }
 
 export enum MarketplaceCategory {
-  ALL = 'All apps',
+  ALL = 'All',
   FAVORITES = 'Favorites',
 }

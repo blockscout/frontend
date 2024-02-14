@@ -207,7 +207,7 @@ const ChartWidget = ({ items, title, description, isLoading, className, isError,
                   <MenuButton
                     w="36px"
                     h="32px"
-                    icon={ <IconSvg name="vertical_dots" w={ 4 } h={ 4 }/> }
+                    icon={ <IconSvg name="dots" boxSize={ 4 } transform="rotate(-90deg)"/> }
                     colorScheme="gray"
                     variant="ghost"
                     as={ IconButton }

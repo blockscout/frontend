@@ -15,6 +15,7 @@ import StatsItem from './StatsItem';
 
 const hasGasTracker = config.features.gasTracker.isEnabled;
 const hasAvgBlockTime = config.UI.homepage.showAvgBlockTime;
+const rollupFeature = config.features.rollup;
 
 const Stats = () => {
   const { data, isPlaceholderData, isError, dataUpdatedAt } = useApiQuery('homepage_stats', {
@@ -27,7 +28,7 @@ const Stats = () => {
   const zkEvmLatestBatchQuery = useApiQuery('homepage_zkevm_latest_batch', {
     queryOptions: {
       placeholderData: 12345,
-      enabled: config.features.zkEvmRollup.isEnabled,
+      enabled: rollupFeature.isEnabled && rollupFeature.type === 'zkEvm',
     },
   });
 
@@ -51,12 +52,12 @@ const Stats = () => {
 
     content = (
       <>
-        { config.features.zkEvmRollup.isEnabled ? (
+        { rollupFeature.isEnabled && rollupFeature.type === 'zkEvm' ? (
           <StatsItem
             icon="txn_batches"
             title="Latest batch"
             value={ (zkEvmLatestBatchQuery.data || 0).toLocaleString() }
-            url={ route({ pathname: '/zkevm-l2-txn-batches' }) }
+            url={ route({ pathname: '/batches' }) }
             isLoading={ zkEvmLatestBatchQuery.isPlaceholderData }
           />
         ) : (

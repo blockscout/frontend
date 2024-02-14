@@ -40,7 +40,7 @@ const TokenTransferListItem = ({
         <TxEntity
           isLoading={ isLoading }
           hash={ txHash }
-          truncation="constant"
+          truncation="constant_long"
           fontWeight="700"
         />
         { timestamp && (
@@ -87,7 +87,7 @@ const TokenTransferListItem = ({
           ) }
         </Grid>
       ) }
-      { 'token_id' in total && (token.type === 'ERC-721' || token.type === 'ERC-1155') && (
+      { 'token_id' in total && (token.type === 'ERC-721' || token.type === 'ERC-1155') && total.token_id !== null && (
         <NftEntity
           hash={ token.address }
           id={ total.token_id }

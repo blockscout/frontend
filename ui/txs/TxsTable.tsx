@@ -6,6 +6,7 @@ import type { Transaction, TransactionsSortingField, TransactionsSortingValue } 
 
 import config from 'configs/app';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
+import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
 import { currencyUnits } from 'lib/units';
 import IconSvg from 'ui/shared/IconSvg';
 import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
@@ -40,17 +41,19 @@ const TxsTable = ({
   enableTimeIncrement,
   isLoading,
 }: Props) => {
+  const { cutRef, renderedItemsNum } = useLazyRenderedList(txs, !isLoading);
+
   return (
     <AddressHighlightProvider>
       <Table variant="simple" minWidth="950px" size="xs">
         <TheadSticky top={ top }>
           <Tr>
             <Th width="54px"></Th>
-            <Th width="22%">Txn hash</Th>
+            <Th width="180px">Txn hash</Th>
             <Th width="160px">Type</Th>
             <Th width="20%">Method</Th>
             { showBlockInfo && <Th width="18%">Block</Th> }
-            <Th width={{ base: '224px', xl: '360px' }}>From/To</Th>
+            <Th width="224px">From/To</Th>
             { !config.UI.views.tx.hiddenFields?.value && (
               <Th width="20%" isNumeric>
                 <Link onClick={ sort('value') } display="flex" justifyContent="end">
@@ -81,7 +84,7 @@ const TxsTable = ({
             />
           ) }
           <AnimatePresence initial={ false }>
-            { txs.map((item, index) => (
+            { txs.slice(0, renderedItemsNum).map((item, index) => (
               <TxsTableItem
                 key={ item.hash + (isLoading ? index : '') }
                 tx={ item }
@@ -94,6 +97,7 @@ const TxsTable = ({
           </AnimatePresence>
         </Tbody>
       </Table>
+      <div ref={ cutRef }/>
     </AddressHighlightProvider>
   );
 };

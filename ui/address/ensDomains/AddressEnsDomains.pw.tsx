@@ -31,7 +31,7 @@ test('base view', async({ mount, page }) => {
     </TestApp>,
   );
 
-  await component.getByText('4 domains').click();
+  await component.getByText('4').click();
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 550, height: 350 } });
 });

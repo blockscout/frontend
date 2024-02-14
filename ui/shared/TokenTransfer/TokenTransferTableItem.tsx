@@ -65,7 +65,7 @@ const TokenTransferTableItem = ({
         </Flex>
       </Td>
       <Td>
-        { 'token_id' in total && <NftEntity hash={ token.address } id={ total.token_id } isLoading={ isLoading }/> }
+        { 'token_id' in total && total.token_id !== null && <NftEntity hash={ token.address } id={ total.token_id } isLoading={ isLoading }/> }
       </Td>
       { showTxInfo && txHash && (
         <Td>
@@ -75,6 +75,7 @@ const TokenTransferTableItem = ({
             fontWeight={ 600 }
             noIcon
             mt="7px"
+            truncation="constant_long"
           />
           { timestamp && (
             <Skeleton isLoaded={ !isLoading } color="text_secondary" fontWeight="400" mt="10px" display="inline-block">

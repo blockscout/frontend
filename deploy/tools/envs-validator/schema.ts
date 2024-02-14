@@ -11,11 +11,13 @@ import * as yup from 'yup';
 import type { AdButlerConfig } from '../../../types/client/adButlerConfig';
 import { SUPPORTED_AD_TEXT_PROVIDERS, SUPPORTED_AD_BANNER_PROVIDERS } from '../../../types/client/adProviders';
 import type { AdTextProviders, AdBannerProviders } from '../../../types/client/adProviders';
+import type { ContractCodeIde } from '../../../types/client/contract';
 import { GAS_UNITS } from '../../../types/client/gasTracker';
 import type { GasUnit } from '../../../types/client/gasTracker';
 import type { MarketplaceAppOverview } from '../../../types/client/marketplace';
 import { NAVIGATION_LINK_IDS } from '../../../types/client/navigation-items';
 import type { NavItemExternal, NavigationLinkId } from '../../../types/client/navigation-items';
+import { ROLLUP_TYPES } from '../../../types/client/rollup';
 import type { BridgedTokenChain, TokenBridge } from '../../../types/client/token';
 import { PROVIDERS as TX_INTERPRETATION_PROVIDERS } from '../../../types/client/txInterpretation';
 import type { WalletType } from '../../../types/client/wallets';
@@ -72,6 +74,8 @@ const marketplaceAppSchema: yup.ObjectSchema<MarketplaceAppOverview> = yup
     twitter: yup.string().test(urlTest),
     telegram: yup.string().test(urlTest),
     github: yup.string().test(urlTest),
+    internalWallet: yup.boolean(),
+    priority: yup.number(),
   });
 
 const marketplaceSchema = yup
@@ -81,12 +85,25 @@ const marketplaceSchema = yup
       .array()
       .json()
       .of(marketplaceAppSchema),
+    NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL: yup
+      .array()
+      .json()
+      .of(yup.string()),
     NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM: yup
       .string()
-      .when('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', {
-        is: (value: Array<unknown>) => value.length > 0,
+      .when([ 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', 'NEXT_PUBLIC_ADMIN_SERVICE_API_HOST' ], {
+        is: (config: Array<unknown>, apiHost: string) => config.length > 0 || Boolean(apiHost),
         then: (schema) => schema.test(urlTest).required(),
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM cannot not be used without NEXT_PUBLIC_MARKETPLACE_CONFIG_URL'),
+        // eslint-disable-next-line max-len
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM cannot not be used without NEXT_PUBLIC_MARKETPLACE_CONFIG_URL or NEXT_PUBLIC_ADMIN_SERVICE_API_HOST'),
+      }),
+    NEXT_PUBLIC_MARKETPLACE_SUGGEST_IDEAS_FORM: yup
+      .string()
+      .when([ 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', 'NEXT_PUBLIC_ADMIN_SERVICE_API_HOST' ], {
+        is: (config: Array<unknown>, apiHost: string) => config.length > 0 || Boolean(apiHost),
+        then: (schema) => schema.test(urlTest),
+        // eslint-disable-next-line max-len
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_SUGGEST_IDEAS_FORM cannot not be used without NEXT_PUBLIC_MARKETPLACE_CONFIG_URL or NEXT_PUBLIC_ADMIN_SERVICE_API_HOST'),
       }),
   });
 
@@ -109,23 +126,20 @@ const beaconChainSchema = yup
 const rollupSchema = yup
   .object()
   .shape({
-    NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK: yup.boolean(),
-    NEXT_PUBLIC_OPTIMISTIC_L2_WITHDRAWAL_URL: yup
+    NEXT_PUBLIC_ROLLUP_TYPE: yup.string().oneOf(ROLLUP_TYPES),
+    NEXT_PUBLIC_ROLLUP_L1_BASE_URL: yup
       .string()
-      .when('NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK', {
+      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
         is: (value: string) => value,
         then: (schema) => schema.test(urlTest).required(),
-        // eslint-disable-next-line max-len
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_OPTIMISTIC_L2_WITHDRAWAL_URL cannot not be used if NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK is not set to "true"'),
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_ROLLUP_L1_BASE_URL cannot not be used if NEXT_PUBLIC_ROLLUP_TYPE is not defined'),
       }),
-    NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK: yup.boolean(),
-    NEXT_PUBLIC_L1_BASE_URL: yup
+    NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL: yup
       .string()
-      .when([ 'NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK', 'NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK' ], {
-        is: (isOptimistic?: boolean, isZk?: boolean) => isOptimistic || isZk,
+      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
+        is: (value: string) => value === 'optimistic',
         then: (schema) => schema.test(urlTest).required(),
-        // eslint-disable-next-line max-len
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_L1_BASE_URL cannot not be used if NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK or NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK is not set to "true"'),
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL cannot not be used if NEXT_PUBLIC_ROLLUP_TYPE is not defined'),
       }),
   });
 
@@ -254,6 +268,7 @@ const footerLinkGroupSchema: yup.ObjectSchema<CustomLinksGroup> = yup
 const networkExplorerSchema: yup.ObjectSchema<NetworkExplorer> = yup
   .object({
     title: yup.string().required(),
+    logo: yup.string().test(urlTest),
     baseUrl: yup.string().test(urlTest).required(),
     paths: yup
       .object()
@@ -263,6 +278,13 @@ const networkExplorerSchema: yup.ObjectSchema<NetworkExplorer> = yup
         token: yup.string(),
         block: yup.string(),
       }),
+  });
+
+const contractCodeIdeSchema: yup.ObjectSchema<ContractCodeIde> = yup
+  .object({
+    title: yup.string().required(),
+    url: yup.string().test(urlTest).required(),
+    icon_url: yup.string().test(urlTest).required(),
   });
 
 const nftMarketplaceSchema: yup.ObjectSchema<NftMarketplaceItem> = yup
@@ -418,6 +440,11 @@ const schema = yup
       .transform(replaceQuotes)
       .json()
       .of(networkExplorerSchema),
+    NEXT_PUBLIC_CONTRACT_CODE_IDES: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(contractCodeIdeSchema),
     NEXT_PUBLIC_HIDE_INDEXING_ALERT_BLOCKS: yup.boolean(),
     NEXT_PUBLIC_HIDE_INDEXING_ALERT_INT_TXS: yup.boolean(),
     NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: yup.string(),
@@ -448,6 +475,8 @@ const schema = yup
     NEXT_PUBLIC_OG_DESCRIPTION: yup.string(),
     NEXT_PUBLIC_OG_IMAGE_URL: yup.string().test(urlTest),
     NEXT_PUBLIC_IS_SUAVE_CHAIN: yup.boolean(),
+    NEXT_PUBLIC_HAS_USER_OPS: yup.boolean(),
+    NEXT_PUBLIC_SWAP_BUTTON_URL: yup.string(),
     NEXT_PUBLIC_GAS_TRACKER_ENABLED: yup.boolean(),
     NEXT_PUBLIC_GAS_TRACKER_PREFERRED_UNITS: yup.string<GasUnit>().oneOf(GAS_UNITS),
 

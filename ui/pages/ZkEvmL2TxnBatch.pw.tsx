@@ -11,7 +11,7 @@ import ZkEvmL2TxnBatch from './ZkEvmL2TxnBatch';
 
 const test = base.extend({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  context: contextWithEnvs(configs.featureEnvs.zkRollup) as any,
+  context: contextWithEnvs(configs.featureEnvs.zkEvmRollup) as any,
 });
 
 const hooksConfig = {

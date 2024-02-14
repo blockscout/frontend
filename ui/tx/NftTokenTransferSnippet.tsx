@@ -1,4 +1,4 @@
-import { Flex, chakra } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
@@ -9,14 +9,14 @@ import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 interface Props {
   token: TokenInfo;
   value: string;
-  tokenId: string;
+  tokenId: string | null;
 }
 
 const NftTokenTransferSnippet = ({ value, token, tokenId }: Props) => {
   const num = value === '1' ? '' : value;
 
   return (
-    <Flex alignItems="center" columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
+    <>
       { num ? (
         <>
           <chakra.span color="text_secondary">for</chakra.span>
@@ -26,15 +26,18 @@ const NftTokenTransferSnippet = ({ value, token, tokenId }: Props) => {
       ) : (
         <chakra.span color="text_secondary">for token ID</chakra.span>
       ) }
-      <NftEntity
-        hash={ token.address }
-        id={ tokenId }
-        fontWeight={ 600 }
-        iconSize="md"
-        maxW={{ base: '100%', lg: '150px' }}
-        w="auto"
-        flexShrink={ 0 }
-      />
+      { tokenId !== null ? (
+        <NftEntity
+          hash={ token.address }
+          id={ tokenId }
+          fontWeight={ 600 }
+          iconSize="md"
+          maxW={{ base: '100%', lg: '150px' }}
+          w="auto"
+          flexShrink={ 0 }
+        />
+      ) : <chakra.span color="text_secondary"> N/A </chakra.span>
+      }
       <chakra.span color="text_secondary">of</chakra.span>
       <TokenEntity
         token={ token }
@@ -42,7 +45,7 @@ const NftTokenTransferSnippet = ({ value, token, tokenId }: Props) => {
         w="auto"
         flexGrow={ 1 }
       />
-    </Flex>
+    </>
   );
 };
 

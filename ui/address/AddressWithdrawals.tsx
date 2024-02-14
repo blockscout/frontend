@@ -9,8 +9,8 @@ import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import WithdrawalsListItem from 'ui/withdrawals/WithdrawalsListItem';
-import WithdrawalsTable from 'ui/withdrawals/WithdrawalsTable';
+import BeaconChainWithdrawalsListItem from 'ui/withdrawals/beaconChain/BeaconChainWithdrawalsListItem';
+import BeaconChainWithdrawalsTable from 'ui/withdrawals/beaconChain/BeaconChainWithdrawalsTable';
 
 const AddressWithdrawals = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}) => {
   const router = useRouter();
@@ -32,7 +32,7 @@ const AddressWithdrawals = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivE
     <>
       <Show below="lg" ssr={ false }>
         { data.items.map((item, index) => (
-          <WithdrawalsListItem
+          <BeaconChainWithdrawalsListItem
             key={ item.index + Number(isPlaceholderData ? index : '') }
             item={ item }
             view="address"
@@ -41,7 +41,7 @@ const AddressWithdrawals = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivE
         )) }
       </Show>
       <Hide below="lg" ssr={ false }>
-        <WithdrawalsTable items={ data.items } view="address" top={ pagination.isVisible ? 80 : 0 } isLoading={ isPlaceholderData }/>
+        <BeaconChainWithdrawalsTable items={ data.items } view="address" top={ pagination.isVisible ? 80 : 0 } isLoading={ isPlaceholderData }/>
       </Hide>
     </>
   ) : null ;

@@ -15,7 +15,7 @@ export interface UserTags {
   public_tags: Array<AddressTag> | null;
 }
 
-export interface AddressParam extends UserTags {
+export type AddressParamBasic = {
   hash: string;
   implementation_name: string | null;
   name: string | null;
@@ -23,3 +23,5 @@ export interface AddressParam extends UserTags {
   is_verified: boolean | null;
   ens_domain_name: string | null;
 }
+
+export type AddressParam = UserTags & AddressParamBasic;

@@ -56,10 +56,10 @@ const variantSubtle = definePartsStyle((props) => {
   return {
     container: {
       [$fg.variable]: colorScheme === 'gray' ? 'colors.blackAlpha.800' : `colors.${ colorScheme }.500`,
-      [$bg.variable]: colorScheme === 'gray' ? 'colors.gray.100' : bg.light,
+      [$bg.variable]: colorScheme === 'gray' ? 'colors.blackAlpha.100' : bg.light,
       _dark: {
         [$fg.variable]: colorScheme === 'gray' ? 'colors.whiteAlpha.800' : `colors.${ colorScheme }.200`,
-        [$bg.variable]: colorScheme === 'gray' ? 'colors.gray.800' : bg.dark,
+        [$bg.variable]: colorScheme === 'gray' ? 'colors.whiteAlpha.200' : bg.dark,
       },
     },
   };
