@@ -98,7 +98,7 @@ const ContractMethodFieldInputArray = ({ data, level, basePath, onAddClick, onRe
 
   // primitive value array
   return (
-    <Flex alignItems="flex-start" columnGap={ 3 } px="6px">
+    <Flex flexDir={{ base: 'column', md: 'row' }} alignItems="flex-start" columnGap={ 3 } px="6px">
       <ContractMethodFieldLabel data={ data }/>
       <Flex flexDir="column" rowGap={ 1 } w="100%">
         { registeredIndices.map((registeredIndex, index) => {

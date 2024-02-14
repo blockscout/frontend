@@ -14,8 +14,8 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import ContractConnectWallet from './ContractConnectWallet';
 import ContractCustomAbiAlert from './ContractCustomAbiAlert';
 import ContractImplementationAddress from './ContractImplementationAddress';
-import ContractMethodCallable from './ContractMethodCallable';
 import ContractWriteResult from './ContractWriteResult';
+import ContractMethodForm from './methodForm/ContractMethodForm';
 import useContractAbi from './useContractAbi';
 import { getNativeCoinValue, prepareAbi } from './utils';
 
@@ -45,7 +45,7 @@ const ContractWrite = () => {
 
   const contractAbi = useContractAbi({ addressHash, isProxy, isCustomAbi });
 
-  const handleMethodFormSubmit = React.useCallback(async(item: SmartContractWriteMethod, args: Array<string | Array<unknown>>) => {
+  const handleMethodFormSubmit = React.useCallback(async(item: SmartContractWriteMethod, args: Array<unknown>) => {
     if (!isConnected) {
       throw new Error('Wallet is not connected');
     }
@@ -89,12 +89,12 @@ const ContractWrite = () => {
 
   const renderItemContent = React.useCallback((item: SmartContractWriteMethod, index: number, id: number) => {
     return (
-      <ContractMethodCallable
+      <ContractMethodForm
         key={ id + '_' + index }
         data={ item }
         onSubmit={ handleMethodFormSubmit }
         resultComponent={ ContractWriteResult }
-        isWrite
+        methodType="write"
       />
     );
   }, [ handleMethodFormSubmit ]);

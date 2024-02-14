@@ -36,14 +36,12 @@ export const formatBooleanValue = (value: string) => {
   }
 };
 
-export const getNativeCoinValue = (value: string | Array<unknown>) => {
-  const _value = Array.isArray(value) ? value[0] : value;
-
-  if (typeof _value !== 'string') {
+export const getNativeCoinValue = (value: unknown) => {
+  if (typeof value !== 'string') {
     return BigInt(0);
   }
 
-  return BigInt(_value);
+  return BigInt(value);
 };
 
 interface ExtendedError extends Error {
