@@ -17,7 +17,7 @@ import type { SmartContractMethodArgType } from 'types/api/contract';
 
 import ClearButton from 'ui/shared/ClearButton';
 
-import ContractMethodFieldZeroes from './ContractMethodFieldZeroes';
+import ContractMethodMultiplyButton from './methodForm/ContractMethodMultiplyButton';
 import { INT_REGEXP, BYTES_REGEXP, getIntBoundaries, formatBooleanValue } from './utils';
 
 interface Props {
@@ -103,7 +103,7 @@ const ContractMethodField = ({ control, name, groupName, index, argType, placeho
             />
             <InputRightElement w="auto" right={ 1 }>
               { typeof field.value === 'string' && field.value.replace('\n', '') && <ClearButton onClick={ handleClear } isDisabled={ isDisabled }/> }
-              { hasZerosControl && <ContractMethodFieldZeroes onClick={ handleAddZeroesClick } isDisabled={ isDisabled }/> }
+              { hasZerosControl && <ContractMethodMultiplyButton onClick={ handleAddZeroesClick } isDisabled={ isDisabled }/> }
             </InputRightElement>
           </InputGroup>
         </FormControl>

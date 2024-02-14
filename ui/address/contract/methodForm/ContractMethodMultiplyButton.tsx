@@ -21,7 +21,7 @@ interface Props {
   isDisabled?: boolean;
 }
 
-const ContractMethodFieldZeroes = ({ onClick, isDisabled }: Props) => {
+const ContractMethodMultiplyButton = ({ onClick, isDisabled }: Props) => {
   const [ selectedOption, setSelectedOption ] = React.useState<number | undefined>(18);
   const [ customValue, setCustomValue ] = React.useState<number>();
   const { isOpen, onToggle, onClose } = useDisclosure();
@@ -78,7 +78,14 @@ const ContractMethodFieldZeroes = ({ onClick, isDisabled }: Props) => {
             onClick={ onToggle }
             isDisabled={ isDisabled }
           >
-            <IconSvg name="arrows/east-mini" transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } boxSize={ 6 }/>
+            <IconSvg
+              name="arrows/east-mini"
+              transitionDuration="fast"
+              transitionProperty="transform"
+              transitionTimingFunction="ease-in-out"
+              transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' }
+              boxSize={ 6 }
+            />
           </Button>
         </PopoverTrigger>
         <Portal>
@@ -126,4 +133,4 @@ const ContractMethodFieldZeroes = ({ onClick, isDisabled }: Props) => {
   );
 };
 
-export default React.memo(ContractMethodFieldZeroes);
+export default React.memo(ContractMethodMultiplyButton);
