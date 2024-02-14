@@ -41,7 +41,7 @@ test('loading state', async({ mount, page }) => {
 
 const gweiUnitsTest = test.extend({
   context: contextWithEnvs([
-    { name: 'NEXT_PUBLIC_GAS_TRACKER_PREFERRED_UNITS', value: 'gwei' },
+    { name: 'NEXT_PUBLIC_GAS_TRACKER_UNITS', value: '["gwei"]' },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ]) as any,
 });

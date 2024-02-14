@@ -22,11 +22,13 @@ const GasPrice = ({ data, prefix, className, unitMode = 'primary', emptyText }: 
   }
 
   const units = (() => {
+    const primaryUnits = feature.units[0];
+
     if (unitMode === 'primary') {
-      return feature.primaryUnits;
+      return primaryUnits;
     }
 
-    return feature.primaryUnits === 'usd' ? 'gwei' : 'usd';
+    return primaryUnits === 'usd' ? 'gwei' : 'usd';
   })();
 
   if (units === 'usd' && data.fiat_price) {
