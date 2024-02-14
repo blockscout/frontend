@@ -14,9 +14,10 @@ interface Props extends Pick<AccordionProps, 'onAddClick' | 'onRemoveClick' | 'i
   data: SmartContractMethodInput;
   level: number;
   basePath: string;
+  isDisabled: boolean;
 }
 
-const ContractMethodFieldInputArray = ({ data, level, basePath, onAddClick, onRemoveClick, index: parentIndex }: Props) => {
+const ContractMethodFieldInputArray = ({ data, level, basePath, onAddClick, onRemoveClick, index: parentIndex, isDisabled }: Props) => {
 
   const [ registeredIndices, setRegisteredIndices ] = React.useState([ 0 ]);
 
@@ -59,6 +60,7 @@ const ContractMethodFieldInputArray = ({ data, level, basePath, onAddClick, onRe
               onAddClick={ index === registeredIndices.length - 1 ? handleAddButtonClick : undefined }
               onRemoveClick={ registeredIndices.length > 1 ? handleRemoveButtonClick : undefined }
               index={ registeredIndex }
+              isDisabled={ isDisabled }
             />
           );
         }) }
@@ -89,6 +91,7 @@ const ContractMethodFieldInputArray = ({ data, level, basePath, onAddClick, onRe
               onAddClick={ index === registeredIndices.length - 1 ? handleAddButtonClick : undefined }
               onRemoveClick={ registeredIndices.length > 1 ? handleRemoveButtonClick : undefined }
               index={ registeredIndex }
+              isDisabled={ isDisabled }
             />
           );
         }) }
@@ -106,7 +109,7 @@ const ContractMethodFieldInputArray = ({ data, level, basePath, onAddClick, onRe
 
           return (
             <Flex key={ registeredIndex } alignItems="flex-start" columnGap={ 3 }>
-              <ContractMethodFieldInput data={ itemData } hideLabel path={ `${ basePath }:${ index }` } px={ 0 }/>
+              <ContractMethodFieldInput data={ itemData } hideLabel path={ `${ basePath }:${ index }` } px={ 0 } isDisabled={ isDisabled }/>
               { registeredIndices.length > 1 &&
                 <ContractMethodArrayButton index={ registeredIndex } onClick={ handleRemoveButtonClick } type="remove" my="6px"/> }
               { index === registeredIndices.length - 1 &&

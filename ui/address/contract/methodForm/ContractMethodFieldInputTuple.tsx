@@ -12,9 +12,10 @@ interface Props extends Pick<AccordionProps, 'onAddClick' | 'onRemoveClick' | 'i
   data: SmartContractMethodInput;
   basePath: string;
   level: number;
+  isDisabled: boolean;
 }
 
-const ContractMethodFieldInputTuple = ({ data, basePath, level, ...accordionProps }: Props) => {
+const ContractMethodFieldInputTuple = ({ data, basePath, level, isDisabled, ...accordionProps }: Props) => {
   return (
     <ContractMethodFieldAccordion
       { ...accordionProps }
@@ -23,15 +24,38 @@ const ContractMethodFieldInputTuple = ({ data, basePath, level, ...accordionProp
     >
       { data.components?.map((component, index) => {
         if (component.components && component.type === 'tuple') {
-          return <ContractMethodFieldInputTuple key={ index } data={ component } basePath={ `${ basePath }:${ index }` } level={ level + 1 }/>;
+          return (
+            <ContractMethodFieldInputTuple
+              key={ index }
+              data={ component }
+              basePath={ `${ basePath }:${ index }` }
+              level={ level + 1 }
+              isDisabled={ isDisabled }
+            />
+          );
         }
 
         const arrayMatch = component.type.match(ARRAY_REGEXP);
         if (arrayMatch) {
-          return <ContractMethodFieldInputArray key={ index } data={ component } basePath={ `${ basePath }:${ index }` } level={ level + 1 }/>;
+          return (
+            <ContractMethodFieldInputArray
+              key={ index }
+              data={ component }
+              basePath={ `${ basePath }:${ index }` }
+              level={ level + 1 }
+              isDisabled={ isDisabled }
+            />
+          );
         }
 
-        return <ContractMethodFieldInput key={ index } data={ component } path={ `${ basePath }:${ index }` }/>;
+        return (
+          <ContractMethodFieldInput
+            key={ index }
+            data={ component }
+            path={ `${ basePath }:${ index }` }
+            isDisabled={ isDisabled }
+          />
+        );
       }) }
     </ContractMethodFieldAccordion>
   );

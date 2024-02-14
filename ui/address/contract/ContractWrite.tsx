@@ -93,7 +93,8 @@ const ContractWrite = () => {
         key={ id + '_' + index }
         data={ item }
         onSubmit={ handleMethodFormSubmit }
-        resultComponent={ ContractWriteResult }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        resultComponent={ ContractWriteResult as any }
         methodType="write"
       />
     );

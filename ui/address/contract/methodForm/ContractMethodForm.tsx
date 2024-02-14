@@ -90,18 +90,18 @@ const ContractMethodForm = <T extends SmartContractMethod>({ data, onSubmit, res
           onSubmit={ formApi.handleSubmit(onFormSubmit) }
           onChange={ handleFormChange }
         >
-          <Flex flexDir="column" rowGap={ 3 }>
+          <Flex flexDir="column" rowGap={ 3 } mb={ 6 } _empty={{ display: 'none' }}>
             { inputs.map((input, index) => {
               if (input.components && input.type === 'tuple') {
-                return <ContractMethodFieldInputTuple key={ index } data={ input } basePath={ `${ index }` } level={ 0 }/>;
+                return <ContractMethodFieldInputTuple key={ index } data={ input } basePath={ `${ index }` } level={ 0 } isDisabled={ isLoading }/>;
               }
 
               const arrayMatch = input.type.match(ARRAY_REGEXP);
               if (arrayMatch) {
-                return <ContractMethodFieldInputArray key={ index } data={ input } basePath={ `${ index }` } level={ 0 }/>;
+                return <ContractMethodFieldInputArray key={ index } data={ input } basePath={ `${ index }` } level={ 0 } isDisabled={ isLoading }/>;
               }
 
-              return <ContractMethodFieldInput key={ index } data={ input } path={ `${ index }` }/>;
+              return <ContractMethodFieldInput key={ index } data={ input } path={ `${ index }` } isDisabled={ isLoading }/>;
             }) }
           </Flex>
           <Button
@@ -113,7 +113,6 @@ const ContractMethodForm = <T extends SmartContractMethod>({ data, onSubmit, res
             width="min-content"
             px={ 4 }
             type="submit"
-            mt={ 6 }
           >
             { methodType === 'write' ? 'Write' : 'Read' }
           </Button>
