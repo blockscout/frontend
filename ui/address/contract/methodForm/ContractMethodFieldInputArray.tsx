@@ -1,21 +1,22 @@
-import { Box, Flex } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SmartContractMethodInput, SmartContractMethodArgType } from 'types/api/contract';
 
-import { ARRAY_REGEXP } from '../utils';
 import ContractMethodArrayButton from './ContractMethodArrayButton';
+import type { Props as AccordionProps } from './ContractMethodFieldAccordion';
 import ContractMethodFieldAccordion from './ContractMethodFieldAccordion';
 import ContractMethodFieldInput from './ContractMethodFieldInput';
 import ContractMethodFieldInputTuple from './ContractMethodFieldInputTuple';
+import ContractMethodFieldLabel from './ContractMethodFieldLabel';
 
-interface Props {
+interface Props extends Pick<AccordionProps, 'onAddClick' | 'onRemoveClick' | 'index'> {
   data: SmartContractMethodInput;
   level: number;
   basePath: string;
 }
 
-const ContractMethodFieldInputArray = ({ data, level, basePath }: Props) => {
+const ContractMethodFieldInputArray = ({ data, level, basePath, onAddClick, onRemoveClick, index: parentIndex }: Props) => {
 
   const [ registeredIndices, setRegisteredIndices ] = React.useState([ 0 ]);
 
@@ -32,37 +33,37 @@ const ContractMethodFieldInputArray = ({ data, level, basePath }: Props) => {
     }
   }, [ ]);
 
-  const type = data.type.slice(0, -2) as SmartContractMethodArgType;
-
-  // TODO @tom2drum refactor this
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const content = (index: number) => {
-    const itemData = { ...data, type, name: `item #${ (level ? `${ level }.` : '') + (index + 1) }` };
-
-    if (data.components && type === 'tuple') {
-      return <ContractMethodFieldInputTuple data={ itemData } basePath={ `${ basePath }:${ index }` } level={ level }/>;
-    }
-
-    const arrayMatch = type.match(ARRAY_REGEXP);
-
-    if (arrayMatch) {
-      return (
-        <Box outline="1px dashed lightskyblue" w="100%">
-          <Box lineHeight={ type.includes('tuple') ? '45px' : '32px' }>item #{ index + 1 }({ type })</Box>
-          <ContractMethodFieldInputArray data={ itemData } level={ index + 1 } basePath={ `${ basePath }:${ index }` }/>
-        </Box>
-      );
-    }
-
-    return (
-      <ContractMethodFieldInput data={ itemData } hideLabel path={ `${ basePath }:${ index }` } px={ 0 }/>
-    );
-  };
-
+  const childrenType = data.type.slice(0, -2) as SmartContractMethodArgType;
+  const getItemData = (index: number) => ({
+    ...data,
+    type: childrenType,
+    name: `#${ (parentIndex !== undefined ? `${ parentIndex + 1 }.` : '') + (index + 1) }`,
+  });
   const isNestedArray = data.type.includes('[][]');
 
   if (isNestedArray) {
-    return <div>nested array</div>;
+    return (
+      <ContractMethodFieldAccordion
+        level={ level }
+        label={ `${ data.name || '<arg w/o name>' } (${ data.type }) level: ${ level }` }
+      >
+        { registeredIndices.map((registeredIndex, index) => {
+          const itemData = getItemData(index);
+
+          return (
+            <ContractMethodFieldInputArray
+              key={ registeredIndex }
+              data={ itemData }
+              basePath={ `${ basePath }:${ registeredIndex }` }
+              level={ level + 1 }
+              onAddClick={ index === registeredIndices.length - 1 ? handleAddButtonClick : undefined }
+              onRemoveClick={ registeredIndices.length > 1 ? handleRemoveButtonClick : undefined }
+              index={ registeredIndex }
+            />
+          );
+        }) }
+      </ContractMethodFieldAccordion>
+    );
   }
 
   const isTupleArray = data.type.includes('tuple');
@@ -72,16 +73,19 @@ const ContractMethodFieldInputArray = ({ data, level, basePath }: Props) => {
       <ContractMethodFieldAccordion
         level={ level }
         label={ `${ data.name || '<arg w/o name>' } (${ data.type }) level: ${ level }` }
+        onAddClick={ onAddClick }
+        onRemoveClick={ onRemoveClick }
+        index={ parentIndex }
       >
         { registeredIndices.map((registeredIndex, index) => {
-          const itemData = { ...data, type, name: `item #${ (level ? `${ level }.` : '') + (index + 1) }` };
+          const itemData = getItemData(index);
 
           return (
             <ContractMethodFieldInputTuple
               key={ registeredIndex }
               data={ itemData }
               basePath={ `${ basePath }:${ registeredIndex }` }
-              level={ level }
+              level={ level + 1 }
               onAddClick={ index === registeredIndices.length - 1 ? handleAddButtonClick : undefined }
               onRemoveClick={ registeredIndices.length > 1 ? handleRemoveButtonClick : undefined }
               index={ registeredIndex }
@@ -93,17 +97,16 @@ const ContractMethodFieldInputArray = ({ data, level, basePath }: Props) => {
   }
 
   // primitive value array
-
   return (
     <Flex alignItems="flex-start" columnGap={ 3 } px="6px">
-      <Box w="250px" fontSize="sm" flexShrink={ 0 } my="6px">
-        { data.name || '<arg w/o name>' } ({ data.type })
-      </Box>
+      <ContractMethodFieldLabel data={ data }/>
       <Flex flexDir="column" rowGap={ 1 } w="100%">
         { registeredIndices.map((registeredIndex, index) => {
+          const itemData = getItemData(index);
+
           return (
             <Flex key={ registeredIndex } alignItems="flex-start" columnGap={ 3 }>
-              <ContractMethodFieldInput data={ data } hideLabel path={ `${ basePath }:${ index }` } px={ 0 }/>
+              <ContractMethodFieldInput data={ itemData } hideLabel path={ `${ basePath }:${ index }` } px={ 0 }/>
               { registeredIndices.length > 1 &&
                 <ContractMethodArrayButton index={ registeredIndex } onClick={ handleRemoveButtonClick } type="remove" my="6px"/> }
               { index === registeredIndices.length - 1 &&
@@ -116,4 +119,4 @@ const ContractMethodFieldInputArray = ({ data, level, basePath }: Props) => {
   );
 };
 
-export default ContractMethodFieldInputArray;
+export default React.memo(ContractMethodFieldInputArray);

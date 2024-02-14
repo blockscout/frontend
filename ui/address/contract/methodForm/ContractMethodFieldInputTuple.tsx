@@ -37,4 +37,4 @@ const ContractMethodFieldInputTuple = ({ data, basePath, level, ...accordionProp
   );
 };
 
-export default ContractMethodFieldInputTuple;
+export default React.memo(ContractMethodFieldInputTuple);

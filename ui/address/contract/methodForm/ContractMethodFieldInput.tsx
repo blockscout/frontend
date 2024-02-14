@@ -1,8 +1,10 @@
-import { Box, Flex, FormControl, Input, InputGroup, chakra, useColorModeValue } from '@chakra-ui/react';
+import { Flex, FormControl, Input, InputGroup, chakra, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
 import type { SmartContractMethodInput } from 'types/api/contract';
+
+import ContractMethodFieldLabel from './ContractMethodFieldLabel';
 
 interface Props {
   data: SmartContractMethodInput;
@@ -30,7 +32,7 @@ const ContractMethodFieldInput = ({ data, hideLabel, path, className }: Props) =
       px="6px"
       py={ isNativeCoin ? 1 : 0 }
     >
-      { !hideLabel && <Box w="250px" fontSize="sm" flexShrink={ 0 } fontWeight={ 500 }>{ data.name || '<arg w/o name>' } ({ data.type })</Box> }
+      { !hideLabel && <ContractMethodFieldLabel data={ data }/> }
       <FormControl>
         <InputGroup size="xs">
           <Input
@@ -45,4 +47,4 @@ const ContractMethodFieldInput = ({ data, hideLabel, path, className }: Props) =
   );
 };
 
-export default chakra(ContractMethodFieldInput);
+export default React.memo(chakra(ContractMethodFieldInput));

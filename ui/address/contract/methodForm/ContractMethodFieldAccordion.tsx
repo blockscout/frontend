@@ -43,4 +43,4 @@ const ContractMethodFieldAccordion = ({ label, level, children, onAddClick, onRe
   );
 };
 
-export default ContractMethodFieldAccordion;
+export default React.memo(ContractMethodFieldAccordion);
