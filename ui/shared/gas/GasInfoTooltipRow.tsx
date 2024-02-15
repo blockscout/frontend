@@ -22,7 +22,7 @@ const GasInfoTooltipRow = ({ name, info }: Props) => {
           </chakra.span>
         ) }
       </Box>
-      <GasPrice data={ info }/>
+      <GasPrice data={ info } textAlign="right"/>
       <GasPrice data={ info } unitMode="secondary" color="text_secondary" textAlign="right"/>
     </>
   );

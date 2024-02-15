@@ -110,7 +110,7 @@ const Stats = () => {
           <StatsItem
             icon="gas"
             title="Gas tracker"
-            value={ <GasPrice data={ data.gas_prices.average } emptyText="N/A"/> }
+            value={ <GasPrice data={ data.gas_prices.average }/> }
             _last={ isOdd ? lastItemTouchStyle : undefined }
             tooltip={ gasInfoTooltip }
             isLoading={ isPlaceholderData }

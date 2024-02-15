@@ -5,6 +5,7 @@ import type { HomeStats } from 'types/api/stats';
 
 import { route } from 'nextjs-routes';
 
+import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
 import LinkInternal from 'ui/shared/LinkInternal';
 
@@ -18,6 +19,7 @@ interface Props {
 }
 
 const POPOVER_OFFSET: [ number, number ] = [ 0, 10 ];
+const feature = config.features.gasTracker;
 
 const GasInfoTooltip = ({ children, data, dataUpdatedAt }: Props) => {
   const tooltipBg = useColorModeValue('gray.700', 'gray.900');
@@ -25,6 +27,12 @@ const GasInfoTooltip = ({ children, data, dataUpdatedAt }: Props) => {
   if (!data.gas_prices) {
     return null;
   }
+
+  const columnNum =
+    Object.values(data.gas_prices).some((price) => price?.fiat_price) &&
+    Object.values(data.gas_prices).some((price) => price?.price) &&
+    feature.isEnabled && feature.units.length === 2 ?
+      3 : 2;
 
   return (
     <Popover trigger="hover" isLazy offset={ POPOVER_OFFSET }>
@@ -46,7 +54,7 @@ const GasInfoTooltip = ({ children, data, dataUpdatedAt }: Props) => {
                     </Flex>
                   </Flex>
                 ) }
-                <Grid rowGap={ 2 } columnGap="10px" gridTemplateColumns="repeat(3, minmax(min-content, auto))">
+                <Grid rowGap={ 2 } columnGap="10px" gridTemplateColumns={ `repeat(${ columnNum }, minmax(min-content, auto))` }>
                   <GasInfoTooltipRow name="Slow" info={ data.gas_prices.slow }/>
                   <GasInfoTooltipRow name="Normal" info={ data.gas_prices.average }/>
                   <GasInfoTooltipRow name="Fast" info={ data.gas_prices.fast }/>

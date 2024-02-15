@@ -2,60 +2,74 @@ import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { GasPriceInfo } from 'types/api/stats';
+import type { GasUnit } from 'types/client/gasTracker';
 
 import config from 'configs/app';
-import { currencyUnits } from 'lib/units';
+
+import formatGasValue from './formatGasValue';
 
 const feature = config.features.gasTracker;
+
+const UNITS_TO_API_FIELD_MAP: Record<GasUnit, 'price' | 'fiat_price'> = {
+  gwei: 'price',
+  usd: 'fiat_price',
+};
 
 interface Props {
   data: GasPriceInfo | null;
   className?: string;
   unitMode?: 'primary' | 'secondary';
   prefix?: string;
-  emptyText?: string;
 }
 
-const GasPrice = ({ data, prefix, className, unitMode = 'primary', emptyText }: Props) => {
+const GasPrice = ({ data, prefix, className, unitMode = 'primary' }: Props) => {
   if (!data || !feature.isEnabled) {
-    return emptyText ? <span>emptyText</span> : null;
+    return null;
   }
 
-  const units = (() => {
-    const primaryUnits = feature.units[0];
+  switch (unitMode) {
+    case 'secondary': {
+      const units = feature.units[1];
 
-    if (unitMode === 'primary') {
-      return primaryUnits;
+      if (!units) {
+        return null;
+      }
+
+      const value = data[UNITS_TO_API_FIELD_MAP[units]];
+
+      if (!value) {
+        return null;
+      }
+
+      const formattedValue = formatGasValue(data, units);
+      return <span className={ className }>{ prefix }{ formattedValue }</span>;
     }
+    case 'primary': {
+      const primaryUnits = feature.units[0];
+      const secondaryUnits = feature.units[1];
 
-    return primaryUnits === 'usd' ? 'gwei' : 'usd';
-  })();
+      if (!primaryUnits) {
+        // this should never happen since feature will be disabled if there are no units at all
+        return null;
+      }
 
-  if (units === 'usd' && data.fiat_price) {
-    if (Number(data.fiat_price) < 0.01) {
-      return (
-        <span className={ className }>
-          { prefix ?? '< ' }$0.01
-        </span>
-      );
+      const value = data[UNITS_TO_API_FIELD_MAP[primaryUnits]];
+      if (!value) {
+        // in primary mode we want to fallback to secondary units if value in primary units are not available
+        const valueInSecondaryUnits = data[UNITS_TO_API_FIELD_MAP[secondaryUnits]];
+
+        if (!valueInSecondaryUnits) {
+          // in primary mode we always want to show something
+          // this will return "N/A <units>"
+          return <span className={ className }>{ formatGasValue(data, primaryUnits) }</span>;
+        } else {
+          return <span className={ className }>{ prefix }{ formatGasValue(data, secondaryUnits) }</span>;
+        }
+      }
+
+      return <span className={ className }>{ prefix }{ formatGasValue(data, primaryUnits) }</span>;
     }
-
-    return (
-      <span className={ className }>
-        { prefix }${ Number(data.fiat_price).toLocaleString(undefined, { maximumFractionDigits: 2 }) }
-      </span>
-    );
   }
-
-  if (!data.price) {
-    return emptyText ? <span>emptyText</span> : null;
-  }
-
-  return (
-    <span className={ className }>
-      { prefix }{ Number(data.price).toLocaleString(undefined, { maximumFractionDigits: 1 }) } { currencyUnits.gwei }
-    </span>
-  );
 };
 
 export default chakra(GasPrice);
