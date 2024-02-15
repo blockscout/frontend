@@ -12,6 +12,11 @@ const Withdrawals = dynamic(() => {
   if (rollupFeature.isEnabled && rollupFeature.type === 'optimistic') {
     return import('ui/pages/OptimisticL2Withdrawals');
   }
+
+  if (rollupFeature.isEnabled && rollupFeature.type === 'shibarium') {
+    return import('ui/pages/ShibariumWithdrawals');
+  }
+
   if (beaconChainFeature.isEnabled) {
     return import('ui/pages/BeaconChainWithdrawals');
   }

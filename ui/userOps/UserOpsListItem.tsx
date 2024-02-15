@@ -6,11 +6,11 @@ import type { UserOpsItem } from 'types/api/userOps';
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
 import CurrencyValue from 'ui/shared/CurrencyValue';
+import AddressStringOrParam from 'ui/shared/entities/address/AddressStringOrParam';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
-import UserOpsAddress from 'ui/shared/userOps/UserOpsAddress';
 import UserOpStatus from 'ui/shared/userOps/UserOpStatus';
 
 type Props = {
@@ -45,7 +45,7 @@ const UserOpsListItem = ({ item, isLoading, showTx, showSender }: Props) => {
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Sender</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <UserOpsAddress
+            <AddressStringOrParam
               address={ item.address }
               isLoading={ isLoading }
               truncation="constant"

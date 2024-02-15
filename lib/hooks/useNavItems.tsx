@@ -119,6 +119,23 @@ export default function useNavItems(): ReturnType {
           ensLookup,
         ].filter(Boolean),
       ];
+    } else if (rollupFeature.isEnabled && rollupFeature.type === 'shibarium') {
+      blockchainNavItems = [
+        [
+          txs,
+          // eslint-disable-next-line max-len
+          { text: `Deposits (L1${ rightLineArrow }L2)`, nextRoute: { pathname: '/deposits' as const }, icon: 'arrows/south-east', isActive: pathname === '/deposits' },
+          // eslint-disable-next-line max-len
+          { text: `Withdrawals (L2${ rightLineArrow }L1)`, nextRoute: { pathname: '/withdrawals' as const }, icon: 'arrows/north-east', isActive: pathname === '/withdrawals' },
+        ],
+        [
+          blocks,
+          userOps,
+          topAccounts,
+          verifiedContracts,
+          ensLookup,
+        ].filter(Boolean),
+      ];
     } else {
       blockchainNavItems = [
         txs,
