@@ -16,12 +16,13 @@ interface Props {
   children: React.ReactNode;
   data: HomeStats;
   dataUpdatedAt: number;
+  isOpen?: boolean; // for testing purposes only; the tests were flaky, i couldn't find a better way
 }
 
 const POPOVER_OFFSET: [ number, number ] = [ 0, 10 ];
 const feature = config.features.gasTracker;
 
-const GasInfoTooltip = ({ children, data, dataUpdatedAt }: Props) => {
+const GasInfoTooltip = ({ children, data, dataUpdatedAt, isOpen }: Props) => {
   const tooltipBg = useColorModeValue('gray.700', 'gray.900');
 
   if (!data.gas_prices) {
@@ -35,7 +36,7 @@ const GasInfoTooltip = ({ children, data, dataUpdatedAt }: Props) => {
       3 : 2;
 
   return (
-    <Popover trigger="hover" isLazy offset={ POPOVER_OFFSET }>
+    <Popover trigger="hover" isLazy offset={ POPOVER_OFFSET } isOpen={ isOpen }>
       <PopoverTrigger>
         { children }
       </PopoverTrigger>
@@ -55,9 +56,9 @@ const GasInfoTooltip = ({ children, data, dataUpdatedAt }: Props) => {
                   </Flex>
                 ) }
                 <Grid rowGap={ 2 } columnGap="10px" gridTemplateColumns={ `repeat(${ columnNum }, minmax(min-content, auto))` }>
-                  <GasInfoTooltipRow name="Slow" info={ data.gas_prices.slow }/>
-                  <GasInfoTooltipRow name="Normal" info={ data.gas_prices.average }/>
                   <GasInfoTooltipRow name="Fast" info={ data.gas_prices.fast }/>
+                  <GasInfoTooltipRow name="Normal" info={ data.gas_prices.average }/>
+                  <GasInfoTooltipRow name="Slow" info={ data.gas_prices.slow }/>
                 </Grid>
                 <LinkInternal href={ route({ pathname: '/gas-tracker' }) }>
                     Gas tracker overview
