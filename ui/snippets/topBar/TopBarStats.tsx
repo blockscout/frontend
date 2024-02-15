@@ -1,7 +1,5 @@
-import { Flex, Skeleton, chakra } from '@chakra-ui/react';
+import { Flex, Link, Skeleton, chakra } from '@chakra-ui/react';
 import React from 'react';
-
-import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
@@ -9,7 +7,6 @@ import dayjs from 'lib/date/dayjs';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import GasInfoTooltip from 'ui/shared/gas/GasInfoTooltip';
 import GasPrice from 'ui/shared/gas/GasPrice';
-import LinkInternal from 'ui/shared/LinkInternal';
 import TextSeparator from 'ui/shared/TextSeparator';
 
 const TopBarStats = () => {
@@ -71,11 +68,9 @@ const TopBarStats = () => {
         <Skeleton isLoaded={ !isPlaceholderData }>
           <chakra.span color="text_secondary">Gas </chakra.span>
           <GasInfoTooltip data={ data } dataUpdatedAt={ dataUpdatedAt } >
-            <LinkInternal
-              href={ route({ pathname: '/gas-tracker' }) }
-            >
+            <Link>
               <GasPrice data={ data.gas_prices.average }/>
-            </LinkInternal>
+            </Link>
           </GasInfoTooltip>
         </Skeleton>
       ) }
