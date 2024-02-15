@@ -22,11 +22,15 @@ function isAppCategoryMatches(category: string, app: MarketplaceAppOverview, fav
       app.categories.includes(category);
 }
 
-function sortApps(apps: Array<MarketplaceAppOverview>) {
+function sortApps(apps: Array<MarketplaceAppOverview>, favoriteApps: Array<string>) {
   return apps.sort((a, b) => {
     const priorityA = a.priority || 0;
     const priorityB = b.priority || 0;
-    // First, sort by priority (descending)
+    // First, sort by favorite apps
+    if (favoriteApps.includes(a.id) !== favoriteApps.includes(b.id)) {
+      return favoriteApps.includes(a.id) ? -1 : 1;
+    }
+    // Then sort by priority (descending)
     if (priorityB !== priorityA) {
       return priorityB - priorityA;
     }
@@ -47,6 +51,11 @@ export default function useMarketplaceApps(filter: string, selectedCategoryId: s
   const fetch = useFetch();
   const apiFetch = useApiFetch();
 
+  const lastFavoriteAppsRef = React.useRef(favoriteApps);
+  React.useEffect(() => {
+    lastFavoriteAppsRef.current = favoriteApps;
+  }, [ selectedCategoryId ]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const { isPlaceholderData, isError, error, data } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppOverview>>({
     queryKey: [ 'marketplace-dapps' ],
     queryFn: async() => {
@@ -58,7 +67,7 @@ export default function useMarketplaceApps(filter: string, selectedCategoryId: s
         return apiFetch('marketplace_dapps', { pathParams: { chainId: config.chain.id } });
       }
     },
-    select: (data) => sortApps(data as Array<MarketplaceAppOverview>),
+    select: (data) => sortApps(data as Array<MarketplaceAppOverview>, lastFavoriteAppsRef.current),
     placeholderData: feature.isEnabled ? Array(9).fill(MARKETPLACE_APP) : undefined,
     staleTime: Infinity,
     enabled: feature.isEnabled,
