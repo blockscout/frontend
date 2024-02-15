@@ -29,19 +29,25 @@ const GasPrice = ({ data, prefix, className, unitMode = 'primary' }: Props) => {
 
   switch (unitMode) {
     case 'secondary': {
-      const units = feature.units[1];
+      const primaryUnits = feature.units[0];
+      const secondaryUnits = feature.units[1];
 
-      if (!units) {
+      if (!secondaryUnits) {
         return null;
       }
 
-      const value = data[UNITS_TO_API_FIELD_MAP[units]];
-
-      if (!value) {
+      const primaryUnitsValue = data[UNITS_TO_API_FIELD_MAP[primaryUnits]];
+      if (!primaryUnitsValue) {
+        // in this case we display values in secondary untis in primary mode as fallback
         return null;
       }
 
-      const formattedValue = formatGasValue(data, units);
+      const secondaryUnitsValue = data[UNITS_TO_API_FIELD_MAP[secondaryUnits]];
+      if (!secondaryUnitsValue) {
+        return null;
+      }
+
+      const formattedValue = formatGasValue(data, secondaryUnits);
       return <span className={ className }>{ prefix }{ formattedValue }</span>;
     }
     case 'primary': {
