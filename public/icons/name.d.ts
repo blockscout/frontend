@@ -130,6 +130,7 @@
 	| "uniswap"
 	| "user_op_slim"
 	| "user_op"
+	| "validator"
 	| "verified_token"
 	| "verified"
 	| "verify-contract"
