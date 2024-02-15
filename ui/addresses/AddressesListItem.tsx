@@ -35,6 +35,7 @@ const AddressesListItem = ({
           isLoading={ isLoading }
           fontWeight={ 700 }
           mr={ 2 }
+          truncation="constant"
         />
         <Skeleton isLoaded={ !isLoading } fontSize="sm" ml="auto" minW={ 6 } color="text_secondary">
           <span>{ index }</span>

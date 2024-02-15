@@ -115,6 +115,7 @@
 	| "status/success"
 	| "status/warning"
 	| "sun"
+	| "swap"
 	| "testnet"
 	| "token-placeholder"
 	| "token"

@@ -4,7 +4,7 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-const OutputRoots = dynamic(() => import('ui/pages/L2OutputRoots'), { ssr: false });
+const OutputRoots = dynamic(() => import('ui/pages/OptimisticL2OutputRoots'), { ssr: false });
 
 const Page: NextPage = () => {
   return (

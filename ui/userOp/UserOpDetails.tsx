@@ -133,7 +133,7 @@ const UserOpDetails = ({ query }: Props) => {
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Gas used"
-        hint="Actual gas amount used by the the User operation"
+        hint="Actual gas amount used by the User operation"
         isLoading={ isPlaceholderData }
       >
         <Skeleton isLoaded={ !isPlaceholderData }>
