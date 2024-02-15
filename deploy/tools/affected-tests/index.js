@@ -13,6 +13,7 @@ const NON_EXISTENT_DEPS = [];
 const DIRECTORIES_WITH_TESTS = [
   path.resolve(ROOT_DIR, './ui'),
 ];
+const VISITED = {};
 
 function getAllPwFilesInDirectory(directory) {
   const files = fs.readdirSync(directory, { recursive: true });
@@ -38,6 +39,7 @@ function getFileDeps(filename, changedNpmModules) {
     },
     tsConfig: path.resolve(ROOT_DIR, './tsconfig.json'),
     nonExistent: NON_EXISTENT_DEPS,
+    visited: VISITED,
   });
 }
 
