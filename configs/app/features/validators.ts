@@ -5,8 +5,8 @@ import type { ValidatorsChainType } from 'types/client/validators';
 import { getEnvValue } from '../utils';
 
 const chainType = ((): ValidatorsChainType | undefined => {
-  const envValue = getEnvValue('NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE');
-  return envValue && VALIDATORS_CHAIN_TYPE.includes(envValue) ? envValue as ValidatorsChainType : undefined;
+  const envValue = getEnvValue('NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE') as ValidatorsChainType | undefined;
+  return envValue && VALIDATORS_CHAIN_TYPE.includes(envValue) ? envValue : undefined;
 })();
 
 const title = 'Validators list';
