@@ -16,6 +16,13 @@ export interface ValidatorsResponse {
   } | null;
 }
 
+export interface ValidatorsCountersResponse {
+  active_validators_counter: string;
+  active_validators_percentage: number;
+  new_validators_counter_24h: string;
+  validators_counter: string;
+}
+
 export interface ValidatorsFilters {
   // address_hash: string | undefined; // right now API doesn't support filtering by address_hash
   state_filter: Validator['state'] | undefined;

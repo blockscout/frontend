@@ -81,7 +81,7 @@ import type { TxInterpretationResponse } from 'types/api/txInterpretation';
 import type { TTxsFilters } from 'types/api/txsFilters';
 import type { TxStateChanges } from 'types/api/txStateChanges';
 import type { UserOpsResponse, UserOp, UserOpsFilters, UserOpsAccount } from 'types/api/userOps';
-import type { ValidatorsFilters, ValidatorsResponse, ValidatorsSorting } from 'types/api/validators';
+import type { ValidatorsCountersResponse, ValidatorsFilters, ValidatorsResponse, ValidatorsSorting } from 'types/api/validators';
 import type { VerifiedContractsSorting } from 'types/api/verifiedContracts';
 import type { VisualizedContract } from 'types/api/visualization';
 import type { WithdrawalsResponse, WithdrawalsCounters } from 'types/api/withdrawals';
@@ -622,6 +622,10 @@ export const RESOURCES = {
     pathParams: [ 'chainType' as const ],
     filterFields: [ 'address_hash' as const, 'state' as const ],
   },
+  validators_counters: {
+    path: '/api/v2/validators/:chainType/counters',
+    pathParams: [ 'chainType' as const ],
+  },
 
   // CONFIGS
   config_backend_version: {
@@ -814,6 +818,7 @@ export type ResourcePayloadB<Q extends ResourceName> =
 Q extends 'marketplace_dapps' ? Array<MarketplaceAppOverview> :
 Q extends 'marketplace_dapp' ? MarketplaceAppOverview :
 Q extends 'validators' ? ValidatorsResponse :
+Q extends 'validators_counters' ? ValidatorsCountersResponse :
 never;
 /* eslint-enable @typescript-eslint/indent */
 

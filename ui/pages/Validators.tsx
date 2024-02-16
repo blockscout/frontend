@@ -22,10 +22,10 @@ import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
 import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';
 import Sort from 'ui/shared/sort/Sort';
 import { SORT_OPTIONS } from 'ui/validators/utils';
+import ValidatorsCounters from 'ui/validators/ValidatorsCounters';
 import ValidatorsFilter from 'ui/validators/ValidatorsFilter';
 import ValidatorsList from 'ui/validators/ValidatorsList';
 import ValidatorsTable from 'ui/validators/ValidatorsTable';
-// import VerifiedContractsCounters from 'ui/verifiedContracts/VerifiedContractsCounters';
 
 const Validators = () => {
   const router = useRouter();
@@ -136,7 +136,7 @@ const Validators = () => {
   return (
     <Box>
       <PageTitle title="Validators" withTextAd/>
-      { /* <VerifiedContractsCounters/> */ }
+      <ValidatorsCounters/>
       <DataListDisplay
         isError={ isError }
         items={ data?.items }
