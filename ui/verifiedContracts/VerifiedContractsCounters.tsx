@@ -1,48 +1,38 @@
-import { Flex, Skeleton } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
-
-import VerifiedContractsCountersItem from './VerifiedContractsCountersItem';
+import { VERIFIED_CONTRACTS_COUNTERS } from 'stubs/contract';
+import StatsWidget from 'ui/shared/stats/StatsWidget';
 
 const VerifiedContractsCounters = () => {
-  const countersQuery = useApiQuery('verified_contracts_counters');
+  const countersQuery = useApiQuery('verified_contracts_counters', {
+    queryOptions: {
+      placeholderData: VERIFIED_CONTRACTS_COUNTERS,
+    },
+  });
 
-  if (countersQuery.isError) {
+  if (!countersQuery.data) {
     return null;
   }
 
-  const content = (() => {
-    if (countersQuery.isPending) {
-      const item = <Skeleton w={{ base: '100%', lg: 'calc((100% - 12px)/2)' }} h="69px" borderRadius="12px"/>;
-      return (
-        <>
-          { item }
-          { item }
-        </>
-      );
-    }
-
-    return (
-      <>
-        <VerifiedContractsCountersItem
-          name="Total contracts"
-          total={ countersQuery.data.smart_contracts }
-          new24={ countersQuery.data.new_smart_contracts_24h }
-        />
-        <VerifiedContractsCountersItem
-          name="Verified contracts"
-          total={ countersQuery.data.verified_smart_contracts }
-          new24={ countersQuery.data.new_verified_smart_contracts_24h }
-        />
-      </>
-    );
-  })();
-
   return (
-    <Flex columnGap={ 3 } rowGap={ 3 } flexDirection={{ base: 'column', lg: 'row' }} mb={ 6 }>
-      { content }
-    </Flex>
+    <Box columnGap={ 3 } rowGap={ 3 } mb={ 6 } display="grid" gridTemplateColumns={{ base: '1fr', lg: 'repeat(2, 1fr)' }}>
+      <StatsWidget
+        label="Total contracts"
+        value={ Number(countersQuery.data.smart_contracts).toLocaleString() }
+        diff={ countersQuery.data.new_smart_contracts_24h }
+        diffFormatted={ Number(countersQuery.data.new_smart_contracts_24h).toLocaleString() }
+        isLoading={ countersQuery.isPlaceholderData }
+      />
+      <StatsWidget
+        label="Verified contracts"
+        value={ Number(countersQuery.data.verified_smart_contracts).toLocaleString() }
+        diff={ countersQuery.data.new_verified_smart_contracts_24h }
+        diffFormatted={ Number(countersQuery.data.new_verified_smart_contracts_24h).toLocaleString() }
+        isLoading={ countersQuery.isPlaceholderData }
+      />
+    </Box>
   );
 };
 

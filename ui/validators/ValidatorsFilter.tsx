@@ -14,7 +14,7 @@ import FilterButton from 'ui/shared/filters/FilterButton';
 
 interface Props {
   isActive: boolean;
-  defaultValue: ValidatorsFilters['state'] | undefined;
+  defaultValue: ValidatorsFilters['state_filter'] | undefined;
   onChange: (nextValue: string | Array<string>) => void;
 }
 
