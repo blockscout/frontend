@@ -18,6 +18,7 @@ export function ad(): CspDev.DirectiveDescriptor {
 
       // hype
       'api.hypelab.com',
+      '*.ixncdn.com',
     ],
     'frame-src': [
       // coinzilla
