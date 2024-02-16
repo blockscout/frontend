@@ -73,3 +73,61 @@ test('error', async({ mount }) => {
 
   await expect(component).toHaveScreenshot();
 });
+
+test('small values', async({ mount, page }) => {
+  const modifiedProps = {
+    ...props,
+    items: [
+      { date: new Date('2023-02-13'), value: 0.000005041012112611958 },
+      { date: new Date('2023-02-14'), value: 0.000004781545670577531 },
+      { date: new Date('2023-02-15'), value: 0.00000520510604212437 },
+      { date: new Date('2023-02-16'), value: 0.000005274901030625893 },
+      { date: new Date('2023-02-17'), value: 0.00000534325322320271 },
+      { date: new Date('2023-02-18'), value: 0.00000579140116207668 },
+      { date: new Date('2023-02-19'), value: 0.000004878307079043056 },
+      { date: new Date('2023-02-20'), value: 0.0000053454186920910215 },
+      { date: new Date('2023-02-21'), value: 0.000005770588532081243 },
+      { date: new Date('2023-02-22'), value: 0.00000589334810122426 },
+      { date: new Date('2023-02-23'), value: 0.00000547040196358741 },
+    ],
+  };
+
+  const component = await mount(
+    <TestApp>
+      <ChartWidget { ...modifiedProps }/>
+    </TestApp>,
+  );
+  await page.waitForFunction(() => {
+    return document.querySelector('path[data-name="chart-Nativecoincirculatingsupply-small"]')?.getAttribute('opacity') === '1';
+  });
+  await expect(component).toHaveScreenshot();
+});
+
+test('small variations in big values', async({ mount, page }) => {
+  const modifiedProps = {
+    ...props,
+    items: [
+      { date: new Date('2023-02-13'), value: 8886203 },
+      { date: new Date('2023-02-14'), value: 8890184 },
+      { date: new Date('2023-02-15'), value: 8893483 },
+      { date: new Date('2023-02-16'), value: 8897924 },
+      { date: new Date('2023-02-17'), value: 8902268 },
+      { date: new Date('2023-02-18'), value: 8906320 },
+      { date: new Date('2023-02-19'), value: 8910264 },
+      { date: new Date('2023-02-20'), value: 8914827 },
+      { date: new Date('2023-02-21'), value: 8918592 },
+      { date: new Date('2023-02-22'), value: 8921988 },
+      { date: new Date('2023-02-23'), value: 8922206 },
+    ],
+  };
+
+  const component = await mount(
+    <TestApp>
+      <ChartWidget { ...modifiedProps }/>
+    </TestApp>,
+  );
+  await page.waitForFunction(() => {
+    return document.querySelector('path[data-name="chart-Nativecoincirculatingsupply-small"]')?.getAttribute('opacity') === '1';
+  });
+  await expect(component).toHaveScreenshot();
+});
