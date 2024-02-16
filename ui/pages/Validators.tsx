@@ -30,7 +30,7 @@ import ValidatorsTable from 'ui/validators/ValidatorsTable';
 const Validators = () => {
   const router = useRouter();
   // const [ searchTerm, setSearchTerm ] = React.useState(getQueryParamString(router.query.address_hash) || undefined);
-  const [ statusFilter, setStatusFilter ] = React.useState(getQueryParamString(router.query.state) as ValidatorsFilters['state_filter'] || undefined);
+  const [ statusFilter, setStatusFilter ] = React.useState(getQueryParamString(router.query.state_filter) as ValidatorsFilters['state_filter'] || undefined);
   const [ sort, setSort ] =
     React.useState<ValidatorsSortingValue | undefined>(getSortValueFromQuery<ValidatorsSortingValue>(router.query, SORT_OPTIONS));
 
