@@ -88,7 +88,7 @@ const marketplaceSchema = yup
         is: true,
         then: (schema) => schema,
         // eslint-disable-next-line max-len
-        otherwise: (schema) => schema.max(1, 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
       }),
     NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL: yup
       .array()
@@ -98,7 +98,7 @@ const marketplaceSchema = yup
         is: true,
         then: (schema) => schema,
         // eslint-disable-next-line max-len
-        otherwise: (schema) => schema.max(1, 'NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
       }),
     NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM: yup
       .string()
