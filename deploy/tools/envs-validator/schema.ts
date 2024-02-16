@@ -79,6 +79,7 @@ const marketplaceAppSchema: yup.ObjectSchema<MarketplaceAppOverview> = yup
 const marketplaceSchema = yup
   .object()
   .shape({
+    NEXT_PUBLIC_MARKETPLACE_ENABLED: yup.boolean(),
     NEXT_PUBLIC_MARKETPLACE_CONFIG_URL: yup
       .array()
       .json()
@@ -89,19 +90,19 @@ const marketplaceSchema = yup
       .of(yup.string()),
     NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM: yup
       .string()
-      .when([ 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', 'NEXT_PUBLIC_ADMIN_SERVICE_API_HOST' ], {
-        is: (config: Array<unknown>, apiHost: string) => config.length > 0 || Boolean(apiHost),
+      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
+        is: (enabled: boolean) => enabled,
         then: (schema) => schema.test(urlTest).required(),
         // eslint-disable-next-line max-len
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM cannot not be used without NEXT_PUBLIC_MARKETPLACE_CONFIG_URL or NEXT_PUBLIC_ADMIN_SERVICE_API_HOST'),
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
       }),
     NEXT_PUBLIC_MARKETPLACE_SUGGEST_IDEAS_FORM: yup
       .string()
-      .when([ 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', 'NEXT_PUBLIC_ADMIN_SERVICE_API_HOST' ], {
-        is: (config: Array<unknown>, apiHost: string) => config.length > 0 || Boolean(apiHost),
+      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
+        is: (enabled: boolean) => enabled,
         then: (schema) => schema.test(urlTest),
         // eslint-disable-next-line max-len
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_SUGGEST_IDEAS_FORM cannot not be used without NEXT_PUBLIC_MARKETPLACE_CONFIG_URL or NEXT_PUBLIC_ADMIN_SERVICE_API_HOST'),
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_SUGGEST_IDEAS_FORM cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
       }),
   });
 

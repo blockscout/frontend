@@ -179,6 +179,7 @@ frontend:
     NEXT_PUBLIC_NETWORK_LOGO: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-logos/base.svg
     NEXT_PUBLIC_NETWORK_ICON: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-icons/base.svg
     NEXT_PUBLIC_FEATURED_NETWORKS: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/featured-networks/base-goerli.json
+    NEXT_PUBLIC_MARKETPLACE_ENABLED: true
     NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM: https://airtable.com/shrqUAcjgGJ4jU88C
     NEXT_PUBLIC_MARKETPLACE_SUGGEST_IDEAS_FORM: https://airtable.com/appiy5yijZpMMSKjT/pag3t82DUCyhGRZZO/form
     NEXT_PUBLIC_LOGOUT_URL: https://blockscoutcom.us.auth0.com/v2/logout
