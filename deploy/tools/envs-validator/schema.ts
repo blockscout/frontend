@@ -83,15 +83,27 @@ const marketplaceSchema = yup
     NEXT_PUBLIC_MARKETPLACE_CONFIG_URL: yup
       .array()
       .json()
-      .of(marketplaceAppSchema),
+      .of(marketplaceAppSchema)
+      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
+        is: true,
+        then: (schema) => schema,
+        // eslint-disable-next-line max-len
+        otherwise: (schema) => schema.max(1, 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
+      }),
     NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL: yup
       .array()
       .json()
-      .of(yup.string()),
+      .of(yup.string())
+      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
+        is: true,
+        then: (schema) => schema,
+        // eslint-disable-next-line max-len
+        otherwise: (schema) => schema.max(1, 'NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
+      }),
     NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM: yup
       .string()
       .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
-        is: (enabled: boolean) => enabled,
+        is: true,
         then: (schema) => schema.test(urlTest).required(),
         // eslint-disable-next-line max-len
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
@@ -99,7 +111,7 @@ const marketplaceSchema = yup
     NEXT_PUBLIC_MARKETPLACE_SUGGEST_IDEAS_FORM: yup
       .string()
       .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
-        is: (enabled: boolean) => enabled,
+        is: true,
         then: (schema) => schema.test(urlTest),
         // eslint-disable-next-line max-len
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_SUGGEST_IDEAS_FORM cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
