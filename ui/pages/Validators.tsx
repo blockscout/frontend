@@ -6,7 +6,7 @@ import { getFeaturePayload } from 'configs/app/features/types';
 import type { ValidatorsFilters, ValidatorsSorting, ValidatorsSortingField, ValidatorsSortingValue } from 'types/api/validators';
 
 import config from 'configs/app';
-import useDebounce from 'lib/hooks/useDebounce';
+// import useDebounce from 'lib/hooks/useDebounce';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -14,7 +14,7 @@ import { generateListStub } from 'stubs/utils';
 import { VALIDATOR } from 'stubs/validators';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
-import FilterInput from 'ui/shared/filters/FilterInput';
+// import FilterInput from 'ui/shared/filters/FilterInput';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -29,19 +29,22 @@ import ValidatorsTable from 'ui/validators/ValidatorsTable';
 
 const Validators = () => {
   const router = useRouter();
-  const [ searchTerm, setSearchTerm ] = React.useState(getQueryParamString(router.query.q) || undefined);
-  const [ statusFilter, setStatusFilter ] = React.useState(getQueryParamString(router.query.state) as ValidatorsFilters['state'] || undefined);
+  // const [ searchTerm, setSearchTerm ] = React.useState(getQueryParamString(router.query.address_hash) || undefined);
+  const [ statusFilter, setStatusFilter ] = React.useState(getQueryParamString(router.query.state) as ValidatorsFilters['state_filter'] || undefined);
   const [ sort, setSort ] =
     React.useState<ValidatorsSortingValue | undefined>(getSortValueFromQuery<ValidatorsSortingValue>(router.query, SORT_OPTIONS));
 
-  const debouncedSearchTerm = useDebounce(searchTerm || '', 300);
+  // const debouncedSearchTerm = useDebounce(searchTerm || '', 300);
 
   const isMobile = useIsMobile();
 
   const { isError, isPlaceholderData, data, pagination, onFilterChange, onSortingChange } = useQueryWithPages({
     resourceName: 'validators',
     pathParams: { chainType: getFeaturePayload(config.features.validators)?.chainType },
-    filters: { address_hash: debouncedSearchTerm, state: statusFilter },
+    filters: {
+      // address_hash: debouncedSearchTerm,
+      state_filter: statusFilter,
+    },
     sorting: getSortParamsFromValue<ValidatorsSortingValue, ValidatorsSortingField, ValidatorsSorting['order']>(sort),
     options: {
       enabled: config.features.validators.isEnabled,
@@ -53,21 +56,27 @@ const Validators = () => {
     },
   });
 
-  const handleSearchTermChange = React.useCallback((value: string) => {
-    onFilterChange({ address_hash: value, state: statusFilter });
-    setSearchTerm(value);
-  }, [ statusFilter, onFilterChange ]);
+  // const handleSearchTermChange = React.useCallback((value: string) => {
+  //   onFilterChange({
+  //     address_hash: value,
+  //     state_filter: statusFilter
+  //   });
+  //   setSearchTerm(value);
+  // }, [ statusFilter, onFilterChange ]);
 
   const handleStateFilterChange = React.useCallback((value: string | Array<string>) => {
     if (Array.isArray(value)) {
       return;
     }
 
-    const state = value === 'all' ? undefined : value as ValidatorsFilters['state'];
+    const state = value === 'all' ? undefined : value as ValidatorsFilters['state_filter'];
 
-    onFilterChange({ address_hash: debouncedSearchTerm, state });
+    onFilterChange({
+      // address_hash: debouncedSearchTerm,
+      state_filter: state,
+    });
     setStatusFilter(state);
-  }, [ debouncedSearchTerm, onFilterChange ]);
+  }, [ onFilterChange ]);
 
   const handleSortChange = React.useCallback((value?: ValidatorsSortingValue) => {
     setSort(value);
@@ -76,15 +85,15 @@ const Validators = () => {
 
   const filterMenu = <ValidatorsFilter onChange={ handleStateFilterChange } defaultValue={ statusFilter } isActive={ Boolean(statusFilter) }/>;
 
-  const filterInput = (
-    <FilterInput
-      w={{ base: '100%', lg: '350px' }}
-      size="xs"
-      onChange={ handleSearchTermChange }
-      placeholder="Search by validator's address hash"
-      initialValue={ searchTerm }
-    />
-  );
+  // const filterInput = (
+  //   <FilterInput
+  //     w={{ base: '100%', lg: '350px' }}
+  //     size="xs"
+  //     onChange={ handleSearchTermChange }
+  //     placeholder="Search by validator's address hash"
+  //     initialValue={ searchTerm }
+  //   />
+  // );
 
   const sortButton = (
     <Sort
@@ -99,13 +108,13 @@ const Validators = () => {
       <HStack spacing={ 3 } mb={ 6 } display={{ base: 'flex', lg: 'none' }}>
         { filterMenu }
         { sortButton }
-        { filterInput }
+        { /* { filterInput } */ }
       </HStack>
       { (!isMobile || pagination.isVisible) && (
         <ActionBar mt={ -6 }>
           <HStack spacing={ 3 } display={{ base: 'none', lg: 'flex' }}>
             { filterMenu }
-            { filterInput }
+            { /* { filterInput } */ }
           </HStack>
           <Pagination ml="auto" { ...pagination }/>
         </ActionBar>
@@ -134,7 +143,10 @@ const Validators = () => {
         emptyText="There are no verified contracts."
         filterProps={{
           emptyFilteredText: `Couldn${ apos }t find any validator that matches your query.`,
-          hasActiveFilters: Boolean(searchTerm || statusFilter),
+          hasActiveFilters: Boolean(
+            // searchTerm ||
+            statusFilter,
+          ),
         }}
         content={ content }
         actionBar={ actionBar }
