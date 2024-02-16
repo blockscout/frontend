@@ -35,7 +35,7 @@ const PublicTagMenuItem = ({ className, hash, onBeforeClick, type }: Props) => {
         return (
           <MenuItem className={ className } onClick={ handleClick }>
             <IconSvg name="publictags" boxSize={ 6 } mr={ 2 }/>
-            <span>Add private tag</span>
+            <span>Add public tag</span>
           </MenuItem>
         );
       }
