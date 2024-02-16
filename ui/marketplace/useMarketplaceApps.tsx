@@ -51,6 +51,7 @@ export default function useMarketplaceApps(filter: string, selectedCategoryId: s
   const fetch = useFetch();
   const apiFetch = useApiFetch();
 
+  // Update favorite apps only when selectedCategoryId changes to avoid sortApps to be called on each favorite app click
   const lastFavoriteAppsRef = React.useRef(favoriteApps);
   React.useEffect(() => {
     lastFavoriteAppsRef.current = favoriteApps;
