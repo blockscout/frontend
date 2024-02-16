@@ -18,7 +18,7 @@ const ContainerWithScrollY = ({ className, hasScroll, containerId, gradientHeigh
       id={ containerId }
       flexDirection="column"
       className={ className }
-      overflowY="scroll"
+      overflowY={ hasScroll ? 'scroll' : 'auto' }
       ref={ ref }
       _after={ hasScroll ? {
         position: 'absolute',
