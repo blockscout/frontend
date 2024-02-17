@@ -599,10 +599,6 @@ export const RESOURCES = {
   },
   noves_describe_txs: {
     path: '/api/v2/proxy/noves-fi/transactions',
-    queryParams: [
-      'viewAsAccountAddress' as const,
-      { key: 'hashes', type: 'array' } as const,
-    ],
   },
   // USER OPS
   user_ops: {

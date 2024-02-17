@@ -2,6 +2,7 @@ import { Box, Hide, Popover, PopoverArrow, PopoverContent, PopoverTrigger, Show,
 import type { FC } from 'react';
 import React from 'react';
 
+import { HEX_REGEXP } from 'lib/regexp';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -31,11 +32,11 @@ const NovesActionSnippet: FC<Props> = ({ item, isLoaded }) => {
     return token;
   }, [ item.action ]);
 
-  const validTokenAddress = token.address ? Boolean(token.address.match(/^0x[a-fA-F\d]{40}$/)) : false;
+  const validTokenAddress = token.address ? HEX_REGEXP.test(token.address) : false;
 
   return (
     <Skeleton borderRadius="sm" isLoaded={ isLoaded }>
-      <Hide above="md">
+      <Hide above="lg">
         <Box display="flex" gap={ 2 } cursor="pointer" flexWrap="wrap">
           <Text fontWeight="700" >
             { item.action.label }
@@ -54,7 +55,7 @@ const NovesActionSnippet: FC<Props> = ({ item, isLoaded }) => {
           />
         </Box>
       </Hide>
-      <Show above="md">
+      <Show above="lg">
 
         <Popover
           trigger="hover"

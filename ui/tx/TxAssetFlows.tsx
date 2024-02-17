@@ -1,4 +1,4 @@
-import { Table, Thead, Tbody, Tr, Th, TableContainer, Box, Skeleton, Text, Show, Hide, Divider } from '@chakra-ui/react';
+import { Table, Tbody, Tr, Th, Box, Skeleton, Text, Show, Hide, Divider } from '@chakra-ui/react';
 import _ from 'lodash';
 import React, { useMemo, useState } from 'react';
 
@@ -10,6 +10,7 @@ import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import Pagination from 'ui/shared/pagination/Pagination';
+import TheadSticky from 'ui/shared/TheadSticky';
 
 import TxAssetFlowsListItem from './assetFlows/TxAssetFlowsListItem';
 import TxAssetFlowsTableItem from './assetFlows/TxAssetFlowsTableItem';
@@ -70,7 +71,7 @@ export default function TxAssetFlows(props: FlowViewProps) {
 
   const content = (
     <>
-      <Hide above="md" >
+      <Hide above="lg" >
         { data?.length && <Divider borderColor="gray.200" mb={ 4 }/> }
 
         { data?.map((item, i) => (
@@ -82,30 +83,28 @@ export default function TxAssetFlows(props: FlowViewProps) {
         )) }
       </Hide>
 
-      <Show above="md">
-        <TableContainer>
-          <Table variant="simple">
-            <Thead>
-              <Tr>
-                <Th>
+      <Show above="lg">
+        <Table variant="simple" size="sm">
+          <TheadSticky top={ 75 }>
+            <Tr>
+              <Th>
                   Actions
-                </Th>
-                <Th width="450px">
+              </Th>
+              <Th width="450px">
                   From/To
-                </Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              { data?.map((item, i) => (
-                <TxAssetFlowsTableItem
-                  key={ `${ i }-${ item.accountAddress }` }
-                  item={ item }
-                  isPlaceholderData={ isPlaceholderData }
-                />
-              )) }
-            </Tbody>
-          </Table>
-        </TableContainer>
+              </Th>
+            </Tr>
+          </TheadSticky>
+          <Tbody>
+            { data?.map((item, i) => (
+              <TxAssetFlowsTableItem
+                key={ `${ i }-${ item.accountAddress }` }
+                item={ item }
+                isPlaceholderData={ isPlaceholderData }
+              />
+            )) }
+          </Tbody>
+        </Table>
       </Show>
     </>
   );

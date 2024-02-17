@@ -1,5 +1,5 @@
 import { Box, Hide, Show, Table,
-  Tbody, Th, Thead, Tr } from '@chakra-ui/react';
+  Tbody, Th, Tr } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -16,6 +16,7 @@ import DataListDisplay from 'ui/shared/DataListDisplay';
 import { getFromToValue } from 'ui/shared/Noves/utils';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
+import TheadSticky from 'ui/shared/TheadSticky';
 
 import AddressAccountHistoryListItem from './accountHistory/AddressAccountHistoryListItem';
 import AccountHistoryFilter from './AddressAccountHistoryFilter';
@@ -65,10 +66,10 @@ const AddressAccountHistory = ({ scrollRef }: Props) => {
 
   const content = (
     <Box position="relative">
-      <Hide above="md" ssr={ false }>
+      <Hide above="lg" ssr={ false }>
         { filteredData?.map((item, i) => (
           <AddressAccountHistoryListItem
-            key={ i }
+            key={ `${ i }-${ item.rawTransactionData.transactionHash }` }
             tx={ item }
             currentAddress={ currentAddress }
             isPlaceholderData={ isPlaceholderData }
@@ -76,9 +77,9 @@ const AddressAccountHistory = ({ scrollRef }: Props) => {
         )) }
       </Hide>
 
-      <Show above="md" ssr={ false }>
+      <Show above="lg" ssr={ false }>
         <Table variant="simple" >
-          <Thead>
+          <TheadSticky top={ 75 }>
             <Tr>
               <Th width="120px">
                   Age
@@ -90,11 +91,11 @@ const AddressAccountHistory = ({ scrollRef }: Props) => {
                   From/To
               </Th>
             </Tr>
-          </Thead>
+          </TheadSticky>
           <Tbody maxWidth="full">
             { filteredData?.map((item, i) => (
               <AddressAccountHistoryTableItem
-                key={ i }
+                key={ `${ i }-${ item.rawTransactionData.transactionHash }` }
                 tx={ item }
                 currentAddress={ currentAddress }
                 isPlaceholderData={ isPlaceholderData }
