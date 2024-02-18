@@ -83,7 +83,7 @@ const TransactionPageContent = () => {
     };
   }, [ appProps.referrer ]);
 
-  const titleSecondRow = <TxSubHeading hash={ hash } hasTag={ Boolean(data?.tx_tag) }/>;
+  const titleSecondRow = <TxSubHeading hash={ hash } hasTag={ Boolean(data?.tx_tag) } txQuery={ txQuery }/>;
 
   const content = (() => {
     if (isPlaceholderData && !showDegradedView) {
