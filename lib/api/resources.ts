@@ -598,7 +598,7 @@ export const RESOURCES = {
     filterFields: [],
   },
   noves_describe_txs: {
-    path: '/api/v2/proxy/noves-fi/describe-transactions',
+    path: '/api/v2/proxy/noves-fi/transaction-descriptions',
   },
   // USER OPS
   user_ops: {
