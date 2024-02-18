@@ -21,6 +21,7 @@ const ContractSecurityAudits = ({ addressHash }: Props) => {
   const { data, isPlaceholderData } = useApiQuery('contract_security_audits', {
     pathParams: { hash: addressHash },
     queryOptions: {
+      refetchOnMount: false,
       placeholderData: { items: [] },
       enabled: Boolean(addressHash),
     },
@@ -79,4 +80,4 @@ const ContractSecurityAudits = ({ addressHash }: Props) => {
   );
 };
 
-export default ContractSecurityAudits;
+export default React.memo(ContractSecurityAudits);
