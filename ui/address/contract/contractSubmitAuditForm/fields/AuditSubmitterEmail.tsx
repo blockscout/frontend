@@ -20,7 +20,6 @@ const AuditSubmitterEmail = ({ control }: Props) => {
           { ...field }
           required
           isInvalid={ Boolean(fieldState.error) }
-          autoComplete="off"
         />
         <InputPlaceholder text="Submitter email" error={ fieldState.error }/>
       </FormControl>

@@ -1,4 +1,4 @@
-import { Box, Button, Skeleton, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SmartContractSecurityAuditSubmission } from 'types/api/contract';
@@ -61,11 +61,9 @@ const ContractSecurityAudits = ({ addressHash }: Props) => {
             mt={ 2 }
           >
             { data.items.map(item => (
-              <Skeleton isLoaded={ !isPlaceholderData } key={ item.audit_company_name + item.audit_publish_date }>
-                <LinkExternal href={ item.audit_report_url }>
-                  { `${ item.audit_company_name }, ${ dayjs(item.audit_publish_date).format('MMM DD, YYYY') }` }
-                </LinkExternal>
-              </Skeleton>
+              <LinkExternal href={ item.audit_report_url } key={ item.audit_company_name + item.audit_publish_date } isLoading={ isPlaceholderData }>
+                { `${ item.audit_company_name }, ${ dayjs(item.audit_publish_date).format('MMM DD, YYYY') }` }
+              </LinkExternal>
             )) }
           </ContainerWithScrollY>
         </Box>

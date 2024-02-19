@@ -19,7 +19,6 @@ const AuditSubmitterName = ({ control }: Props) => {
           { ...field }
           required
           isInvalid={ Boolean(fieldState.error) }
-          autoComplete="off"
         />
         <InputPlaceholder text="Submitter name" error={ fieldState.error }/>
       </FormControl>

@@ -234,50 +234,53 @@ test('non verified', async({ mount, page }) => {
   await expect(component).toHaveScreenshot();
 });
 
-const withAuditsTest = test.extend({
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  context: contextWithEnvs(configs.UIEnvs.hasContractAuditReports) as any,
-});
+test.describe('with audits feature', () => {
 
-withAuditsTest('with audits feature, no audits', async({ mount, page }) => {
-  await page.route(CONTRACT_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(contractMock.verified),
-  }));
-  await page.route(CONTRACT_AUDITS_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify({ items: [] }),
-  }));
-  await page.route('https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/**', (route) => route.abort());
+  const withAuditsTest = test.extend({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    context: contextWithEnvs(configs.UIEnvs.hasContractAuditReports) as any,
+  });
 
-  const component = await mount(
-    <TestApp>
-      <ContractCode addressHash={ addressHash } noSocket/>
-    </TestApp>,
-    { hooksConfig },
-  );
+  withAuditsTest('no audits', async({ mount, page }) => {
+    await page.route(CONTRACT_API_URL, (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify(contractMock.verified),
+    }));
+    await page.route(CONTRACT_AUDITS_API_URL, (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify({ items: [] }),
+    }));
+    await page.route('https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/**', (route) => route.abort());
 
-  await expect(component).toHaveScreenshot();
-});
+    const component = await mount(
+      <TestApp>
+        <ContractCode addressHash={ addressHash } noSocket/>
+      </TestApp>,
+      { hooksConfig },
+    );
 
-withAuditsTest('with audits feature, has audits', async({ mount, page }) => {
-  await page.route(CONTRACT_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(contractMock.verified),
-  }));
-  await page.route(CONTRACT_AUDITS_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(contractAudits),
-  }));
+    await expect(component).toHaveScreenshot();
+  });
 
-  await page.route('https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/**', (route) => route.abort());
+  withAuditsTest('has audits', async({ mount, page }) => {
+    await page.route(CONTRACT_API_URL, (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify(contractMock.verified),
+    }));
+    await page.route(CONTRACT_AUDITS_API_URL, (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify(contractAudits),
+    }));
 
-  const component = await mount(
-    <TestApp>
-      <ContractCode addressHash={ addressHash } noSocket/>
-    </TestApp>,
-    { hooksConfig },
-  );
+    await page.route('https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/**', (route) => route.abort());
 
-  await expect(component).toHaveScreenshot();
+    const component = await mount(
+      <TestApp>
+        <ContractCode addressHash={ addressHash } noSocket/>
+      </TestApp>,
+      { hooksConfig },
+    );
+
+    await expect(component).toHaveScreenshot();
+  });
 });
