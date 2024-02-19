@@ -34,7 +34,14 @@ import type { AddressesResponse } from 'types/api/addresses';
 import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters, BlockWithdrawalsResponse } from 'types/api/block';
 import type { ChartMarketResponse, ChartTransactionResponse } from 'types/api/charts';
 import type { BackendVersionConfig } from 'types/api/configs';
-import type { SmartContract, SmartContractReadMethod, SmartContractWriteMethod, SmartContractVerificationConfig, SolidityscanReport } from 'types/api/contract';
+import type {
+  SmartContract,
+  SmartContractReadMethod,
+  SmartContractWriteMethod,
+  SmartContractVerificationConfig,
+  SolidityscanReport,
+  SmartContractSecurityAudits,
+} from 'types/api/contract';
 import type { VerifiedContractsResponse, VerifiedContractsFilters, VerifiedContractsCounters } from 'types/api/contracts';
 import type {
   EnsAddressLookupFilters,
@@ -432,6 +439,10 @@ export const RESOURCES = {
   },
   contract_solidityscan_report: {
     path: '/api/v2/smart-contracts/:hash/solidityscan-report',
+    pathParams: [ 'hash' as const ],
+  },
+  contract_security_audits: {
+    path: '/api/v2/smart-contracts/:hash/audit-reports',
     pathParams: [ 'hash' as const ],
   },
 
@@ -844,6 +855,7 @@ Q extends 'shibarium_withdrawals' ? ShibariumWithdrawalsResponse :
 Q extends 'shibarium_deposits' ? ShibariumDepositsResponse :
 Q extends 'shibarium_withdrawals_count' ? number :
 Q extends 'shibarium_deposits_count' ? number :
+Q extends 'contract_security_audits' ? SmartContractSecurityAudits :
 never;
 /* eslint-enable @typescript-eslint/indent */
 
