@@ -65,7 +65,7 @@ const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDi
       px="6px"
       py={ isNativeCoin ? 1 : 0 }
     >
-      { !hideLabel && <ContractMethodFieldLabel data={ data }/> }
+      { !hideLabel && <ContractMethodFieldLabel data={ data } isOptional={ isOptional }/> }
       <FormControl isDisabled={ isDisabled }>
         <InputGroup size="xs">
           <Input

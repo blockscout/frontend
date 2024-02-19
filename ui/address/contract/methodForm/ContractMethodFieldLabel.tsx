@@ -5,10 +5,11 @@ import type { SmartContractMethodInput } from 'types/api/contract';
 
 interface Props {
   data: SmartContractMethodInput;
+  isOptional?: boolean;
 }
 
 // TODO @tom2drum add helper to get lable text
-const ContractMethodFieldLabel = ({ data }: Props) => {
+const ContractMethodFieldLabel = ({ data, isOptional }: Props) => {
   return (
     <Box
       w="250px"
@@ -18,7 +19,7 @@ const ContractMethodFieldLabel = ({ data }: Props) => {
       flexShrink={ 0 }
       fontWeight={ 500 }
     >
-      { data.name || '<arg w/o name>' } ({ data.type })
+      { data.name || '<arg w/o name>' } ({ data.type }){ !isOptional && '*' }
     </Box>
   );
 };
