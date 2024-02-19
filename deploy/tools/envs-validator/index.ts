@@ -41,7 +41,9 @@ async function validateEnvs(appEnvs: Record<string, string>) {
     ];
 
     for await (const envName of envsWithJsonConfig) {
-      appEnvs[envName] = await(appEnvs[envName] ? getExternalJsonContent(envName) : Promise.resolve()) || '[]';
+      if (appEnvs[envName]) {
+        appEnvs[envName] = await getExternalJsonContent(envName) || '[]';
+      }
     }
 
     await schema.validate(appEnvs, { stripUnknown: false, abortEarly: false });
