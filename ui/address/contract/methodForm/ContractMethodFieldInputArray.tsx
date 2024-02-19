@@ -10,6 +10,7 @@ import ContractMethodFieldAccordion from './ContractMethodFieldAccordion';
 import ContractMethodFieldInput from './ContractMethodFieldInput';
 import ContractMethodFieldInputTuple from './ContractMethodFieldInputTuple';
 import ContractMethodFieldLabel from './ContractMethodFieldLabel';
+import { getFieldLabel } from './utils';
 
 interface Props extends Pick<AccordionProps, 'onAddClick' | 'onRemoveClick' | 'index'> {
   data: SmartContractMethodInput;
@@ -50,7 +51,7 @@ const ContractMethodFieldInputArray = ({ data, level, basePath, onAddClick, onRe
     return (
       <ContractMethodFieldAccordion
         level={ level }
-        label={ `${ data.name || '<arg w/o name>' } (${ data.type }) level: ${ level }` }
+        label={ getFieldLabel(data.name, data.type) }
         isInvalid={ isInvalid }
       >
         { registeredIndices.map((registeredIndex, index) => {
@@ -79,7 +80,7 @@ const ContractMethodFieldInputArray = ({ data, level, basePath, onAddClick, onRe
     return (
       <ContractMethodFieldAccordion
         level={ level }
-        label={ `${ data.name || '<arg w/o name>' } (${ data.type }) level: ${ level }` }
+        label={ getFieldLabel(data.name, data.type) }
         onAddClick={ onAddClick }
         onRemoveClick={ onRemoveClick }
         index={ parentIndex }

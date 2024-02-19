@@ -40,7 +40,6 @@ const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDi
 
   const handleClear = React.useCallback(() => {
     setValue(name, '');
-    // onChange(); // TODO @tom2drum check form errors reset when editing field
     ref.current?.focus();
   }, [ name, setValue ]);
 
@@ -49,7 +48,6 @@ const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDi
     const value = getValues(name);
     const newValue = value ? value + zeroes : '1' + zeroes;
     setValue(name, newValue);
-    // onChange();
   }, [ getValues, name, setValue ]);
 
   const error = fieldState.error;

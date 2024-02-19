@@ -35,12 +35,7 @@ const ContractMethodForm = <T extends SmartContractMethod>({ data, onSubmit, res
   });
 
   const onFormSubmit: SubmitHandler<ContractMethodFormFields> = React.useCallback(async(formData) => {
-    // eslint-disable-next-line no-console
-    console.log('form data: ', formData);
-
     const args = transformFormDataToMethodArgs(formData);
-    // eslint-disable-next-line no-console
-    console.log('args: ', args);
 
     setResult(undefined);
     setLoading(true);

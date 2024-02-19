@@ -1,5 +1,7 @@
 import _set from 'lodash/set';
 
+import type { SmartContractMethodArgType } from 'types/api/contract';
+
 export type ContractMethodFormFields = Record<string, string | undefined>;
 
 export const INT_REGEXP = /^(u)?int(\d+)?$/i;
@@ -56,4 +58,8 @@ function filterOurEmptyItems(array: Array<unknown>): Array<unknown> {
   return array
     .map((item) => Array.isArray(item) ? filterOurEmptyItems(item) : item)
     .filter((item) => item !== undefined);
+}
+
+export function getFieldLabel(name: string | undefined, type: SmartContractMethodArgType, isRequired?: boolean) {
+  return `${ name || '<arg w/o name>' } (${ type })${ isRequired ? '*' : '' }`;
 }

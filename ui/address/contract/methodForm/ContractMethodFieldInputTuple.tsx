@@ -7,7 +7,7 @@ import type { Props as AccordionProps } from './ContractMethodFieldAccordion';
 import ContractMethodFieldAccordion from './ContractMethodFieldAccordion';
 import ContractMethodFieldInput from './ContractMethodFieldInput';
 import ContractMethodFieldInputArray from './ContractMethodFieldInputArray';
-import { ARRAY_REGEXP } from './utils';
+import { ARRAY_REGEXP, getFieldLabel } from './utils';
 
 interface Props extends Pick<AccordionProps, 'onAddClick' | 'onRemoveClick' | 'index'> {
   data: SmartContractMethodInput;
@@ -25,7 +25,7 @@ const ContractMethodFieldInputTuple = ({ data, basePath, level, isDisabled, ...a
     <ContractMethodFieldAccordion
       { ...accordionProps }
       level={ level }
-      label={ `${ data.name || '<arg w/o name>' } (${ data.type }) level: ${ level }` }
+      label={ getFieldLabel(data.name, data.type) }
       isInvalid={ isInvalid }
     >
       { data.components?.map((component, index) => {

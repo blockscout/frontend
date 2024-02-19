@@ -3,13 +3,14 @@ import React from 'react';
 
 import type { SmartContractMethodInput } from 'types/api/contract';
 
+import { getFieldLabel } from './utils';
+
 interface Props {
   data: SmartContractMethodInput;
   isOptional?: boolean;
   level: number;
 }
 
-// TODO @tom2drum add helper to get lable text
 const ContractMethodFieldLabel = ({ data, isOptional, level }: Props) => {
   const color = useColorModeValue('blackAlpha.600', 'whiteAlpha.600');
 
@@ -23,7 +24,7 @@ const ContractMethodFieldLabel = ({ data, isOptional, level }: Props) => {
       fontWeight={ 500 }
       color={ level > 1 ? color : undefined }
     >
-      { data.name || '<arg w/o name>' } ({ data.type }){ !isOptional && '*' }
+      { getFieldLabel(data.name, data.type, !isOptional) }
     </Box>
   );
 };
