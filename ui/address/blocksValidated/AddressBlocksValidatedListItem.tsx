@@ -43,11 +43,13 @@ const AddressBlocksValidatedListItem = (props: Props) => {
       <Flex columnGap={ 2 } w="100%">
         <Skeleton isLoaded={ !props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Gas used</Skeleton>
         <Skeleton isLoaded={ !props.isLoading } color="text_secondary">{ BigNumber(props.gas_used || 0).toFormat() }</Skeleton>
-        <Utilization
-          colorScheme="gray"
-          value={ BigNumber(props.gas_used || 0).dividedBy(BigNumber(props.gas_limit)).toNumber() }
-          isLoading={ props.isLoading }
-        />
+        { props.gas_used && props.gas_used !== '0' && (
+          <Utilization
+            colorScheme="gray"
+            value={ BigNumber(props.gas_used || 0).dividedBy(BigNumber(props.gas_limit)).toNumber() }
+            isLoading={ props.isLoading }
+          />
+        ) }
       </Flex>
       { !config.UI.views.block.hiddenFields?.total_reward && (
         <Flex columnGap={ 2 } w="100%">

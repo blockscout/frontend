@@ -22,6 +22,7 @@ const ValidatorsListItem = ({ data, isLoading }: Props) => {
         <AddressEntity
           isLoading={ isLoading }
           address={ data.address }
+          truncation="constant"
         />
       </ListItemMobileGrid.Value>
 

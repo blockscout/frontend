@@ -18,6 +18,7 @@ const ValidatorsTableItem = ({ data, isLoading }: Props) => {
         <AddressEntity
           address={ data.address }
           isLoading={ isLoading }
+          truncation="constant"
         />
       </Td>
       <Td verticalAlign="middle">
