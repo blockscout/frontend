@@ -20,6 +20,8 @@ import type { NavItemExternal, NavigationLinkId } from '../../../types/client/na
 import { ROLLUP_TYPES } from '../../../types/client/rollup';
 import type { BridgedTokenChain, TokenBridge } from '../../../types/client/token';
 import { PROVIDERS as TX_INTERPRETATION_PROVIDERS } from '../../../types/client/txInterpretation';
+import { VALIDATORS_CHAIN_TYPE } from '../../../types/client/validators';
+import type { ValidatorsChainType } from '../../../types/client/validators';
 import type { WalletType } from '../../../types/client/wallets';
 import { SUPPORTED_WALLETS } from '../../../types/client/wallets';
 import type { CustomLink, CustomLinksGroup } from '../../../types/footerLinks';
@@ -81,29 +83,42 @@ const marketplaceAppSchema: yup.ObjectSchema<MarketplaceAppOverview> = yup
 const marketplaceSchema = yup
   .object()
   .shape({
+    NEXT_PUBLIC_MARKETPLACE_ENABLED: yup.boolean(),
     NEXT_PUBLIC_MARKETPLACE_CONFIG_URL: yup
       .array()
       .json()
-      .of(marketplaceAppSchema),
+      .of(marketplaceAppSchema)
+      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
+        is: true,
+        then: (schema) => schema,
+        // eslint-disable-next-line max-len
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
+      }),
     NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL: yup
       .array()
       .json()
-      .of(yup.string()),
+      .of(yup.string())
+      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
+        is: true,
+        then: (schema) => schema,
+        // eslint-disable-next-line max-len
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
+      }),
     NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM: yup
       .string()
-      .when([ 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', 'NEXT_PUBLIC_ADMIN_SERVICE_API_HOST' ], {
-        is: (config: Array<unknown>, apiHost: string) => config.length > 0 || Boolean(apiHost),
+      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
+        is: true,
         then: (schema) => schema.test(urlTest).required(),
         // eslint-disable-next-line max-len
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM cannot not be used without NEXT_PUBLIC_MARKETPLACE_CONFIG_URL or NEXT_PUBLIC_ADMIN_SERVICE_API_HOST'),
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
       }),
     NEXT_PUBLIC_MARKETPLACE_SUGGEST_IDEAS_FORM: yup
       .string()
-      .when([ 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', 'NEXT_PUBLIC_ADMIN_SERVICE_API_HOST' ], {
-        is: (config: Array<unknown>, apiHost: string) => config.length > 0 || Boolean(apiHost),
+      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
+        is: true,
         then: (schema) => schema.test(urlTest),
         // eslint-disable-next-line max-len
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_SUGGEST_IDEAS_FORM cannot not be used without NEXT_PUBLIC_MARKETPLACE_CONFIG_URL or NEXT_PUBLIC_ADMIN_SERVICE_API_HOST'),
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_SUGGEST_IDEAS_FORM cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
       }),
   });
 
@@ -445,6 +460,7 @@ const schema = yup
       .transform(replaceQuotes)
       .json()
       .of(contractCodeIdeSchema),
+    NEXT_PUBLIC_HAS_CONTRACT_AUDIT_REPORTS: yup.boolean(),
     NEXT_PUBLIC_HIDE_INDEXING_ALERT_BLOCKS: yup.boolean(),
     NEXT_PUBLIC_HIDE_INDEXING_ALERT_INT_TXS: yup.boolean(),
     NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: yup.string(),
@@ -477,6 +493,7 @@ const schema = yup
     NEXT_PUBLIC_IS_SUAVE_CHAIN: yup.boolean(),
     NEXT_PUBLIC_HAS_USER_OPS: yup.boolean(),
     NEXT_PUBLIC_SWAP_BUTTON_URL: yup.string(),
+    NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE: yup.string<ValidatorsChainType>().oneOf(VALIDATORS_CHAIN_TYPE),
     NEXT_PUBLIC_GAS_TRACKER_ENABLED: yup.boolean(),
     NEXT_PUBLIC_GAS_TRACKER_UNITS: yup.array().transform(replaceQuotes).json().of(yup.string<GasUnit>().oneOf(GAS_UNITS)),
 

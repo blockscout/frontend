@@ -4,7 +4,20 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-const Deposits = dynamic(() => import('ui/pages/OptimisticL2Deposits'), { ssr: false });
+import config from 'configs/app';
+const rollupFeature = config.features.rollup;
+
+const Deposits = dynamic(() => {
+  if (rollupFeature.isEnabled && rollupFeature.type === 'optimistic') {
+    return import('ui/pages/OptimisticL2Deposits');
+  }
+
+  if (rollupFeature.isEnabled && rollupFeature.type === 'shibarium') {
+    return import('ui/pages/ShibariumDeposits');
+  }
+
+  throw new Error('Withdrawals feature is not enabled.');
+}, { ssr: false });
 
 const Page: NextPage = () => {
   return (
@@ -16,4 +29,4 @@ const Page: NextPage = () => {
 
 export default Page;
 
-export { optimisticRollup as getServerSideProps } from 'nextjs/getServerSideProps';
+export { deposits as getServerSideProps } from 'nextjs/getServerSideProps';

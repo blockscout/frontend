@@ -12,6 +12,7 @@ import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
 import * as mixpanel from 'lib/mixpanel/index';
 import { currencyUnits } from 'lib/units';
+import Tag from 'ui/shared/chakra/Tag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
@@ -104,6 +105,19 @@ const TxInterpretationElementByType = ({ variable }: { variable?: NonStringTxInt
     }
     case 'timestamp': {
       return <chakra.span color="text_secondary" whiteSpace="pre">{ dayjs(Number(value) * 1000).format('MMM DD YYYY') }</chakra.span>;
+    }
+    case 'method': {
+      return (
+        <Tag
+          colorScheme={ value === 'Multicall' ? 'teal' : 'gray' }
+          isTruncated
+          ml={ 1 }
+          mr={ 2 }
+          verticalAlign="text-top"
+        >
+          { value }
+        </Tag>
+      );
     }
   }
 };

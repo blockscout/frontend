@@ -20,6 +20,10 @@ export const featureEnvs = {
     { name: 'NEXT_PUBLIC_ROLLUP_L1_BASE_URL', value: 'https://localhost:3101' },
     { name: 'NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL', value: 'https://localhost:3102' },
   ],
+  shibariumRollup: [
+    { name: 'NEXT_PUBLIC_ROLLUP_TYPE', value: 'shibarium' },
+    { name: 'NEXT_PUBLIC_ROLLUP_L1_BASE_URL', value: 'https://localhost:3101' },
+  ],
   bridgedTokens: [
     {
       name: 'NEXT_PUBLIC_BRIDGED_TOKENS_CHAINS',
@@ -40,6 +44,9 @@ export const featureEnvs = {
   userOps: [
     { name: 'NEXT_PUBLIC_HAS_USER_OPS', value: 'true' },
   ],
+  validators: [
+    { name: 'NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE', value: 'stability' },
+  ],
 };
 
 export const viewsEnvs = {
@@ -48,6 +55,12 @@ export const viewsEnvs = {
       { name: 'NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS', value: '["burnt_fees", "total_reward", "nonce"]' },
     ],
   },
+};
+
+export const UIEnvs = {
+  hasContractAuditReports: [
+    { name: 'NEXT_PUBLIC_HAS_CONTRACT_AUDIT_REPORTS', value: 'true' },
+  ],
 };
 
 export const stabilityEnvs = [

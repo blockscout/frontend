@@ -18,10 +18,10 @@ interface Props<TData> {
   onClose: () => void;
   data?: TData;
   title: string;
-  text: string;
+  text?: string;
   renderForm: () => JSX.Element;
-  isAlertVisible: boolean;
-  setAlertVisible: (isAlertVisible: boolean) => void;
+  isAlertVisible?: boolean;
+  setAlertVisible?: (isAlertVisible: boolean) => void;
 }
 
 export default function FormModal<TData>({
@@ -35,7 +35,7 @@ export default function FormModal<TData>({
 }: Props<TData>) {
 
   const onModalClose = useCallback(() => {
-    setAlertVisible(false);
+    setAlertVisible && setAlertVisible(false);
     onClose();
   }, [ onClose, setAlertVisible ]);
 

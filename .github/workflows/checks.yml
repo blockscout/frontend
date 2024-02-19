@@ -206,6 +206,7 @@ jobs:
       - name: Download affected tests list
         if: ${{ needs.pw_affected_tests.result == 'success' }}
         uses: actions/download-artifact@v4
+        continue-on-error: true
         with:
           name: playwright-affected-tests
           path: ./playwright
