@@ -62,11 +62,10 @@ export interface SmartContractMethodBase {
   type: 'function';
   payable: boolean;
   error?: string;
-}
-
-export interface SmartContractReadMethod extends SmartContractMethodBase {
   method_id: string;
 }
+
+export type SmartContractReadMethod = SmartContractMethodBase;
 
 export interface SmartContractWriteFallback {
   payable?: true;

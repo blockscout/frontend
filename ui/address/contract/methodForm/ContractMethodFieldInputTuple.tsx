@@ -2,11 +2,11 @@ import React from 'react';
 
 import type { SmartContractMethodInput } from 'types/api/contract';
 
-import { ARRAY_REGEXP } from '../utils';
 import type { Props as AccordionProps } from './ContractMethodFieldAccordion';
 import ContractMethodFieldAccordion from './ContractMethodFieldAccordion';
 import ContractMethodFieldInput from './ContractMethodFieldInput';
 import ContractMethodFieldInputArray from './ContractMethodFieldInputArray';
+import { ARRAY_REGEXP } from './utils';
 
 interface Props extends Pick<AccordionProps, 'onAddClick' | 'onRemoveClick' | 'index'> {
   data: SmartContractMethodInput;

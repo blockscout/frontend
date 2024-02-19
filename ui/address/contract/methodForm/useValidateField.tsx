@@ -3,8 +3,8 @@ import { getAddress, isAddress, isHex } from 'viem';
 
 import type { SmartContractMethodArgType } from 'types/api/contract';
 
-import { BYTES_REGEXP, formatBooleanValue } from '../utils';
 import type { MatchInt } from './useArgTypeMatchInt';
+import { BYTES_REGEXP, formatBooleanValue } from './utils';
 
 interface Params {
   argType: SmartContractMethodArgType;

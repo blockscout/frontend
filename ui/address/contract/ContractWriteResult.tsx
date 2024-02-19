@@ -2,10 +2,12 @@ import React from 'react';
 import { useWaitForTransaction } from 'wagmi';
 
 import type { ContractMethodWriteResult } from './types';
+import type { SmartContractWriteMethod } from 'types/api/contract';
 
 import ContractWriteResultDumb from './ContractWriteResultDumb';
 
 interface Props {
+  item: SmartContractWriteMethod;
   result: ContractMethodWriteResult;
   onSettle: () => void;
 }
@@ -19,4 +21,4 @@ const ContractWriteResult = ({ result, onSettle }: Props) => {
   return <ContractWriteResultDumb result={ result } onSettle={ onSettle } txInfo={ txInfo }/>;
 };
 
-export default React.memo(ContractWriteResult);
+export default React.memo(ContractWriteResult) as typeof ContractWriteResult;

@@ -89,12 +89,11 @@ const ContractWrite = () => {
 
   const renderItemContent = React.useCallback((item: SmartContractWriteMethod, index: number, id: number) => {
     return (
-      <ContractMethodForm
+      <ContractMethodForm<SmartContractWriteMethod>
         key={ id + '_' + index }
         data={ item }
         onSubmit={ handleMethodFormSubmit }
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        resultComponent={ ContractWriteResult as any }
+        resultComponent={ ContractWriteResult }
         methodType="write"
       />
     );

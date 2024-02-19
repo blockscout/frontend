@@ -39,11 +39,11 @@ const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDi
 
   const handleClear = React.useCallback(() => {
     setValue(name, '');
-    // onChange();
+    // onChange(); // TODO @tom2drum check form errors reset when editing field
     ref.current?.focus();
   }, [ name, setValue ]);
 
-  const handleAddZeroesClick = React.useCallback((power: number) => {
+  const handleMultiplyButtonClick = React.useCallback((power: number) => {
     const zeroes = Array(power).fill('0').join('');
     const value = getValues(name);
     const newValue = value ? value + zeroes : '1' + zeroes;
@@ -86,7 +86,7 @@ const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDi
           />
           <InputRightElement w="auto" right={ 1 }>
             { typeof field.value === 'string' && field.value.replace('\n', '') && <ClearButton onClick={ handleClear } isDisabled={ isDisabled }/> }
-            { hasMultiplyButton && <ContractMethodMultiplyButton onClick={ handleAddZeroesClick } isDisabled={ isDisabled }/> }
+            { hasMultiplyButton && <ContractMethodMultiplyButton onClick={ handleMultiplyButtonClick } isDisabled={ isDisabled }/> }
           </InputRightElement>
         </InputGroup>
         { error && <Box color="error" fontSize="sm" lineHeight={ 5 } mt={ 1 }>{ error.message }</Box> }

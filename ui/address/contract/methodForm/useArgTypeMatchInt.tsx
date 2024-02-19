@@ -1,6 +1,6 @@
 import type { SmartContractMethodArgType } from 'types/api/contract';
 
-import { INT_REGEXP, getIntBoundaries } from '../utils';
+import { INT_REGEXP, getIntBoundaries } from './utils';
 
 interface Params {
   argType: SmartContractMethodArgType;

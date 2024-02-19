@@ -10,13 +10,12 @@ import type { SmartContractMethod, SmartContractMethodInput } from 'types/api/co
 import config from 'configs/app';
 import * as mixpanel from 'lib/mixpanel/index';
 
-import { ARRAY_REGEXP } from '../utils';
 import ContractMethodFieldInput from './ContractMethodFieldInput';
 import ContractMethodFieldInputArray from './ContractMethodFieldInputArray';
 import ContractMethodFieldInputTuple from './ContractMethodFieldInputTuple';
 import ContractMethodFormOutputs from './ContractMethodFormOutputs';
+import { ARRAY_REGEXP, transformFormDataToMethodArgs } from './utils';
 import type { ContractMethodFormFields } from './utils';
-import { transformFormDataToMethodArgs } from './utils';
 
 interface Props<T extends SmartContractMethod> {
   data: T;
@@ -124,4 +123,4 @@ const ContractMethodForm = <T extends SmartContractMethod>({ data, onSubmit, res
   );
 };
 
-export default React.memo(ContractMethodForm);
+export default React.memo(ContractMethodForm) as typeof ContractMethodForm;
