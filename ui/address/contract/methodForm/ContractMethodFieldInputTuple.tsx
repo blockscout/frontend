@@ -43,12 +43,13 @@ const ContractMethodFieldInputTuple = ({ data, basePath, level, isDisabled, ...a
 
         const arrayMatch = component.type.match(ARRAY_REGEXP);
         if (arrayMatch) {
+          const [ , itemType ] = arrayMatch;
           return (
             <ContractMethodFieldInputArray
               key={ index }
               data={ component }
               basePath={ `${ basePath }:${ index }` }
-              level={ level + 1 }
+              level={ itemType === 'tuple' ? level + 1 : level }
               isDisabled={ isDisabled }
             />
           );
