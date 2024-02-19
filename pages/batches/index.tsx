@@ -18,6 +18,7 @@ const Batches = dynamic(() => {
     case 'optimistic':
       return import('ui/pages/OptimisticL2TxnBatches');
   }
+  throw new Error('Txn batches feature is not enabled.');
 }, { ssr: false });
 
 const Page: NextPage = () => {
