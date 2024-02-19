@@ -1,4 +1,5 @@
 import React from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import type { SmartContractMethodInput } from 'types/api/contract';
 
@@ -16,11 +17,16 @@ interface Props extends Pick<AccordionProps, 'onAddClick' | 'onRemoveClick' | 'i
 }
 
 const ContractMethodFieldInputTuple = ({ data, basePath, level, isDisabled, ...accordionProps }: Props) => {
+  const { formState: { errors } } = useFormContext();
+  const fieldsWithErrors = Object.keys(errors);
+  const isInvalid = fieldsWithErrors.some((field) => field.startsWith(basePath));
+
   return (
     <ContractMethodFieldAccordion
       { ...accordionProps }
       level={ level }
       label={ `${ data.name || '<arg w/o name>' } (${ data.type }) level: ${ level }` }
+      isInvalid={ isInvalid }
     >
       { data.components?.map((component, index) => {
         if (component.components && component.type === 'tuple') {

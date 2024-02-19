@@ -10,9 +10,10 @@ export interface Props {
   onAddClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   onRemoveClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   index?: number;
+  isInvalid?: boolean;
 }
 
-const ContractMethodFieldAccordion = ({ label, level, children, onAddClick, onRemoveClick, index }: Props) => {
+const ContractMethodFieldAccordion = ({ label, level, children, onAddClick, onRemoveClick, index, isInvalid }: Props) => {
   const bgColorLevel0 = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
   const bgColor = useColorModeValue('whiteAlpha.700', 'blackAlpha.700');
 
@@ -31,7 +32,7 @@ const ContractMethodFieldAccordion = ({ label, level, children, onAddClick, onRe
               _hover={{ bgColor: 'inherit' }}
             >
               <AccordionIcon transform={ isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' } color="gray.500"/>
-              <Box fontSize="sm" lineHeight={ 5 } fontWeight={ 700 } mr="auto" ml={ 1 }>
+              <Box fontSize="sm" lineHeight={ 5 } fontWeight={ 700 } mr="auto" ml={ 1 } color={ isInvalid ? 'error' : undefined }>
                 { label }
               </Box>
               { onRemoveClick && <ContractMethodArrayButton index={ index } onClick={ onRemoveClick } type="remove"/> }

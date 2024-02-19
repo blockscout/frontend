@@ -1,5 +1,6 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import type { SmartContractMethodInput, SmartContractMethodArgType } from 'types/api/contract';
 
@@ -18,6 +19,9 @@ interface Props extends Pick<AccordionProps, 'onAddClick' | 'onRemoveClick' | 'i
 }
 
 const ContractMethodFieldInputArray = ({ data, level, basePath, onAddClick, onRemoveClick, index: parentIndex, isDisabled }: Props) => {
+  const { formState: { errors } } = useFormContext();
+  const fieldsWithErrors = Object.keys(errors);
+  const isInvalid = fieldsWithErrors.some((field) => field.startsWith(basePath));
 
   const [ registeredIndices, setRegisteredIndices ] = React.useState([ 0 ]);
 
@@ -47,6 +51,7 @@ const ContractMethodFieldInputArray = ({ data, level, basePath, onAddClick, onRe
       <ContractMethodFieldAccordion
         level={ level }
         label={ `${ data.name || '<arg w/o name>' } (${ data.type }) level: ${ level }` }
+        isInvalid={ isInvalid }
       >
         { registeredIndices.map((registeredIndex, index) => {
           const itemData = getItemData(index);
@@ -78,6 +83,7 @@ const ContractMethodFieldInputArray = ({ data, level, basePath, onAddClick, onRe
         onAddClick={ onAddClick }
         onRemoveClick={ onRemoveClick }
         index={ parentIndex }
+        isInvalid={ isInvalid }
       >
         { registeredIndices.map((registeredIndex, index) => {
           const itemData = getItemData(index);
