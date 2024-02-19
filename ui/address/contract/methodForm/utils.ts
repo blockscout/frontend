@@ -1,5 +1,6 @@
-export type ContractMethodFormFields = Record<string, string | undefined>; // TODO @tom2drum - should not be undefined since all fields are required
 import _set from 'lodash/set';
+
+export type ContractMethodFormFields = Record<string, string | undefined>;
 
 export const INT_REGEXP = /^(u)?int(\d+)?$/i;
 
@@ -47,6 +48,11 @@ export function transformFormDataToMethodArgs(formData: ContractMethodFormFields
 }
 
 function filterOurEmptyItems(array: Array<unknown>): Array<unknown> {
+  // The undefined value may occur in two cases:
+  //    1. When an optional form field is left blank by the user.
+  //        The only optional field is the native coin value, which is safely handled in the form submit handler.
+  //    2. When the user adds and removes items from a field array.
+  //        In this scenario, empty items need to be filtered out to maintain the correct sequence of arguments.
   return array
     .map((item) => Array.isArray(item) ? filterOurEmptyItems(item) : item)
     .filter((item) => item !== undefined);

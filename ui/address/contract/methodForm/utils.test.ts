@@ -13,9 +13,8 @@ describe('transformFormDataToMethodArgs', () => {
       '0:0:2:1:1': '0:0:2:1:1',
       '0:0:2:2:0': '0:0:2:2:0',
       '0:0:2:2:2': '0:0:2:2:2',
-      '0:0:3:0': undefined,
-      '0:0:3:1': undefined,
-      '0:0:3:2': undefined,
+      '0:0:2:5:3': '0:0:2:5:3',
+      '0:0:2:5:8': '0:0:2:5:8',
     };
     const result = transformFormDataToMethodArgs(formData);
     expect(result).toEqual([
@@ -34,6 +33,10 @@ describe('transformFormDataToMethodArgs', () => {
             [
               '0:0:2:2:0',
               '0:0:2:2:2',
+            ],
+            [
+              '0:0:2:5:3',
+              '0:0:2:5:8',
             ],
           ],
         ],

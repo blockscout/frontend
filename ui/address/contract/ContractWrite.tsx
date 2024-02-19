@@ -45,6 +45,7 @@ const ContractWrite = () => {
 
   const contractAbi = useContractAbi({ addressHash, isProxy, isCustomAbi });
 
+  // TODO @tom2drum maybe move this inside the form
   const handleMethodFormSubmit = React.useCallback(async(item: SmartContractWriteMethod, args: Array<unknown>) => {
     if (!isConnected) {
       throw new Error('Wallet is not connected');
@@ -67,21 +68,22 @@ const ContractWrite = () => {
       return { hash };
     }
 
-    const _args = 'stateMutability' in item && item.stateMutability === 'payable' ? args.slice(0, -1) : args;
-    const value = 'stateMutability' in item && item.stateMutability === 'payable' ? getNativeCoinValue(args[args.length - 1]) : undefined;
     const methodName = item.name;
 
     if (!methodName) {
       throw new Error('Method name is not defined');
     }
 
+    const _args = args.slice(0, item.inputs.length);
+    const value = getNativeCoinValue(args[item.inputs.length]);
     const abi = prepareAbi(contractAbi, item);
+
     const hash = await walletClient?.writeContract({
       args: _args,
       abi,
       functionName: methodName,
       address: addressHash as `0x${ string }`,
-      value: value as undefined,
+      value,
     });
 
     return { hash };
