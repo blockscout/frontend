@@ -12,7 +12,7 @@ import GasInfoUpdateTimer from 'ui/shared/gas/GasInfoUpdateTimer';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const GasTracker = () => {
-  const { data, isPlaceholderData, isError, error, dataUpdatedAt } = useApiQuery('homepage_stats', {
+  const { data, isPlaceholderData, isError, error, dataUpdatedAt } = useApiQuery('stats', {
     queryOptions: {
       placeholderData: HOMEPAGE_STATS,
       refetchOnMount: false,

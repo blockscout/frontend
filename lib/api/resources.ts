@@ -176,7 +176,7 @@ export const RESOURCES = {
     needAuth: true,
   },
 
-  // STATS
+  // STATS MICROSERVICE API
   stats_counters: {
     path: '/api/v1/counters',
     endpoint: getFeaturePayload(config.features.stats)?.api.endpoint,
@@ -501,19 +501,21 @@ export const RESOURCES = {
     filterFields: [],
   },
 
-  // HOMEPAGE
-  homepage_stats: {
+  // APP STATS
+  stats: {
     path: '/api/v2/stats',
     headers: {
       'updated-gas-oracle': 'true',
     },
   },
-  homepage_chart_txs: {
+  stats_charts_txs: {
     path: '/api/v2/stats/charts/transactions',
   },
-  homepage_chart_market: {
+  stats_charts_market: {
     path: '/api/v2/stats/charts/market',
   },
+
+  // HOMEPAGE
   homepage_blocks: {
     path: '/api/v2/main-page/blocks',
   },
@@ -710,9 +712,9 @@ Q extends 'watchlist' ? WatchlistResponse :
 Q extends 'verified_addresses' ? VerifiedAddressResponse :
 Q extends 'token_info_applications_config' ? TokenInfoApplicationConfig :
 Q extends 'token_info_applications' ? TokenInfoApplications :
-Q extends 'homepage_stats' ? HomeStats :
-Q extends 'homepage_chart_txs' ? ChartTransactionResponse :
-Q extends 'homepage_chart_market' ? ChartMarketResponse :
+Q extends 'stats' ? HomeStats :
+Q extends 'stats_charts_txs' ? ChartTransactionResponse :
+Q extends 'stats_charts_market' ? ChartMarketResponse :
 Q extends 'homepage_blocks' ? Array<Block> :
 Q extends 'homepage_txs' ? Array<Transaction> :
 Q extends 'homepage_txs_watchlist' ? Array<Transaction> :

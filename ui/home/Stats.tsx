@@ -19,7 +19,7 @@ const hasAvgBlockTime = config.UI.homepage.showAvgBlockTime;
 const rollupFeature = config.features.rollup;
 
 const Stats = () => {
-  const { data, isPlaceholderData, isError, dataUpdatedAt } = useApiQuery('homepage_stats', {
+  const { data, isPlaceholderData, isError, dataUpdatedAt } = useApiQuery('stats', {
     queryOptions: {
       refetchOnMount: false,
       placeholderData: HOMEPAGE_STATS,

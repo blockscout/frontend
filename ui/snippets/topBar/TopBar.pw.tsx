@@ -16,7 +16,7 @@ const test = base.extend({
 });
 
 test('default view +@dark-mode +@mobile', async({ mount, page }) => {
-  await page.route(buildApiUrl('homepage_stats'), (route) => route.fulfill({
+  await page.route(buildApiUrl('stats'), (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(statsMock.base),
   }));

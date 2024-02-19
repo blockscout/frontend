@@ -11,7 +11,7 @@ import GasTracker from './GasTracker';
 
 const STATS_LINES_API_URL = buildApiUrl('stats_lines');
 const GAS_PRICE_CHART_API_URL = buildApiUrl('stats_line', { id: 'averageGasPrice' }) + '?**';
-const STATS_API_URL = buildApiUrl('homepage_stats');
+const STATS_API_URL = buildApiUrl('stats');
 
 test('base view +@dark-mode +@mobile', async({ mount, page }) => {
   await page.route(STATS_API_URL, (route) => route.fulfill({

@@ -10,7 +10,7 @@ import * as configs from 'playwright/utils/configs';
 
 import Stats from './Stats';
 
-const API_URL = buildApiUrl('homepage_stats');
+const API_URL = buildApiUrl('stats');
 
 test.describe('all items', () => {
   let component: Locator;

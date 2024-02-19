@@ -10,7 +10,7 @@ import GasPrice from 'ui/shared/gas/GasPrice';
 import TextSeparator from 'ui/shared/TextSeparator';
 
 const TopBarStats = () => {
-  const { data, isPlaceholderData, isError, refetch, dataUpdatedAt } = useApiQuery('homepage_stats', {
+  const { data, isPlaceholderData, isError, refetch, dataUpdatedAt } = useApiQuery('stats', {
     queryOptions: {
       placeholderData: HOMEPAGE_STATS,
       refetchOnMount: false,

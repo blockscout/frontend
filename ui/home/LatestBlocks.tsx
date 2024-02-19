@@ -36,7 +36,7 @@ const LatestBlocks = () => {
   });
 
   const queryClient = useQueryClient();
-  const statsQueryResult = useApiQuery('homepage_stats', {
+  const statsQueryResult = useApiQuery('stats', {
     queryOptions: {
       refetchOnMount: false,
       placeholderData: HOMEPAGE_STATS,

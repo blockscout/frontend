@@ -26,7 +26,7 @@ const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, in
   const isAnyChartDisplayed = charts?.some((section) => section.charts.length > 0);
   const isEmptyChartList = Boolean(filterQuery) && !isAnyChartDisplayed;
 
-  const homeStatsQuery = useApiQuery('homepage_stats', {
+  const homeStatsQuery = useApiQuery('stats', {
     queryOptions: {
       refetchOnMount: false,
     },
