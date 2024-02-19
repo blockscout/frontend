@@ -100,7 +100,7 @@ const ContractMethodForm = <T extends SmartContractMethod>({ data, onSubmit, res
                 return <ContractMethodFieldInputArray key={ index } data={ input } basePath={ `${ index }` } level={ 0 } isDisabled={ isLoading }/>;
               }
 
-              return <ContractMethodFieldInput key={ index } data={ input } path={ `${ index }` } isDisabled={ isLoading }/>;
+              return <ContractMethodFieldInput key={ index } data={ input } path={ `${ index }` } isDisabled={ isLoading } level={ 0 }/>;
             }) }
           </Flex>
           <Button

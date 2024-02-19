@@ -18,9 +18,10 @@ interface Props {
   path: string;
   className?: string;
   isDisabled: boolean;
+  level: number;
 }
 
-const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDisabled }: Props) => {
+const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDisabled, level }: Props) => {
   const ref = React.useRef<HTMLInputElement>(null);
 
   const isNativeCoin = data.fieldType === 'native_coin';
@@ -65,7 +66,7 @@ const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDi
       px="6px"
       py={ isNativeCoin ? 1 : 0 }
     >
-      { !hideLabel && <ContractMethodFieldLabel data={ data } isOptional={ isOptional }/> }
+      { !hideLabel && <ContractMethodFieldLabel data={ data } isOptional={ isOptional } level={ level }/> }
       <FormControl isDisabled={ isDisabled }>
         <InputGroup size="xs">
           <Input

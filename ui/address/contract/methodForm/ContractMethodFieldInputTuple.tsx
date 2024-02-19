@@ -54,6 +54,7 @@ const ContractMethodFieldInputTuple = ({ data, basePath, level, isDisabled, ...a
             data={ component }
             path={ `${ basePath }:${ index }` }
             isDisabled={ isDisabled }
+            level={ level }
           />
         );
       }) }

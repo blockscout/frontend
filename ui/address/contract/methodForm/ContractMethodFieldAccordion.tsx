@@ -30,7 +30,7 @@ const ContractMethodFieldAccordion = ({ label, level, children, onAddClick, onRe
               textAlign="left"
               _hover={{ bgColor: 'inherit' }}
             >
-              <AccordionIcon transform={ isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' }/>
+              <AccordionIcon transform={ isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' } color="gray.500"/>
               <Box fontSize="sm" lineHeight={ 5 } fontWeight={ 700 } mr="auto" ml={ 1 }>
                 { label }
               </Box>

@@ -85,7 +85,7 @@ const ContractMethodsAccordionItem = <T extends SmartContractMethod>({ data, ind
                     the contract cannot receive Ether through regular transactions and throws an exception.`
                   }/>
               ) }
-              <AccordionIcon transform={ isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' }/>
+              <AccordionIcon transform={ isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' } color="gray.500"/>
             </AccordionButton>
           </Element>
           <AccordionPanel pb={ 4 } pr={ 0 } pl="28px" w="calc(100% - 6px)">
