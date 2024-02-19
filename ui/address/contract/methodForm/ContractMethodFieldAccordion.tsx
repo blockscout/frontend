@@ -19,25 +19,29 @@ const ContractMethodFieldAccordion = ({ label, level, children, onAddClick, onRe
   return (
     <Accordion allowToggle w="100%" bgColor={ level === 0 ? bgColorLevel0 : bgColor } borderRadius="base">
       <AccordionItem _first={{ borderTopWidth: 0 }} _last={{ borderBottomWidth: 0 }}>
-        <AccordionButton
-          as="div"
-          cursor="pointer"
-          px="6px"
-          py="6px"
-          wordBreak="break-all"
-          textAlign="left"
-          _hover={{ bgColor: 'inherit' }}
-        >
-          <AccordionIcon mr={ 1 }/>
-          <Box fontSize="sm" lineHeight={ 5 } fontWeight={ 700 } mr="auto">
-            { label }
-          </Box>
-          { onRemoveClick && <ContractMethodArrayButton index={ index } onClick={ onRemoveClick } type="remove"/> }
-          { onAddClick && <ContractMethodArrayButton index={ index } onClick={ onAddClick } type="add" ml={ 2 }/> }
-        </AccordionButton>
-        <AccordionPanel display="flex" flexDir="column" rowGap={ 1 } pl="18px" pr="6px">
-          { children }
-        </AccordionPanel>
+        { ({ isExpanded }) => (
+          <>
+            <AccordionButton
+              as="div"
+              cursor="pointer"
+              px="6px"
+              py="6px"
+              wordBreak="break-all"
+              textAlign="left"
+              _hover={{ bgColor: 'inherit' }}
+            >
+              <AccordionIcon transform={ isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' }/>
+              <Box fontSize="sm" lineHeight={ 5 } fontWeight={ 700 } mr="auto" ml={ 1 }>
+                { label }
+              </Box>
+              { onRemoveClick && <ContractMethodArrayButton index={ index } onClick={ onRemoveClick } type="remove"/> }
+              { onAddClick && <ContractMethodArrayButton index={ index } onClick={ onAddClick } type="add" ml={ 2 }/> }
+            </AccordionButton>
+            <AccordionPanel display="flex" flexDir="column" rowGap={ 1 } pl="18px" pr="6px">
+              { children }
+            </AccordionPanel>
+          </>
+        ) }
       </AccordionItem>
     </Accordion>
   );
