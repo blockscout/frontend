@@ -91,7 +91,7 @@ const ContractWrite = () => {
 
   const renderItemContent = React.useCallback((item: SmartContractWriteMethod, index: number, id: number) => {
     return (
-      <ContractMethodForm<SmartContractWriteMethod>
+      <ContractMethodForm
         key={ id + '_' + index }
         data={ item }
         onSubmit={ handleMethodFormSubmit }

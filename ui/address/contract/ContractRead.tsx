@@ -72,7 +72,7 @@ const ContractRead = () => {
     }
 
     return (
-      <ContractMethodForm<SmartContractReadMethod>
+      <ContractMethodForm
         key={ id + '_' + index }
         data={ item }
         onSubmit={ handleMethodFormSubmit }
