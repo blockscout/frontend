@@ -81,6 +81,7 @@ import type { TxInterpretationResponse } from 'types/api/txInterpretation';
 import type { TTxsFilters } from 'types/api/txsFilters';
 import type { TxStateChanges } from 'types/api/txStateChanges';
 import type { UserOpsResponse, UserOp, UserOpsFilters, UserOpsAccount } from 'types/api/userOps';
+import type { ValidatorsCountersResponse, ValidatorsFilters, ValidatorsResponse, ValidatorsSorting } from 'types/api/validators';
 import type { VerifiedContractsSorting } from 'types/api/verifiedContracts';
 import type { VisualizedContract } from 'types/api/visualization';
 import type { WithdrawalsResponse, WithdrawalsCounters } from 'types/api/withdrawals';
@@ -615,6 +616,17 @@ export const RESOURCES = {
     pathParams: [ 'hash' as const ],
   },
 
+  // VALIDATORS
+  validators: {
+    path: '/api/v2/validators/:chainType',
+    pathParams: [ 'chainType' as const ],
+    filterFields: [ 'address_hash' as const, 'state' as const ],
+  },
+  validators_counters: {
+    path: '/api/v2/validators/:chainType/counters',
+    pathParams: [ 'chainType' as const ],
+  },
+
   // CONFIGS
   config_backend_version: {
     path: '/api/v2/config/backend-version',
@@ -687,7 +699,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'zkevm_l2_txn_batches' | 'zkevm_l2_txn_batch_txs' |
 'withdrawals' | 'address_withdrawals' | 'block_withdrawals' |
 'watchlist' | 'private_tags_address' | 'private_tags_tx' |
-'domains_lookup' | 'addresses_lookup' | 'user_ops';
+'domains_lookup' | 'addresses_lookup' | 'user_ops' | 'validators';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
@@ -805,6 +817,8 @@ never;
 export type ResourcePayloadB<Q extends ResourceName> =
 Q extends 'marketplace_dapps' ? Array<MarketplaceAppOverview> :
 Q extends 'marketplace_dapp' ? MarketplaceAppOverview :
+Q extends 'validators' ? ValidatorsResponse :
+Q extends 'validators_counters' ? ValidatorsCountersResponse :
 never;
 /* eslint-enable @typescript-eslint/indent */
 
@@ -812,8 +826,10 @@ export type ResourcePayload<Q extends ResourceName> = ResourcePayloadA<Q> | Reso
 
 // Right now there is no paginated resources in B-part
 // Add "| ResourcePayloadB<Q>[...]" if it is not true anymore
-export type PaginatedResponseItems<Q extends ResourceName> = Q extends PaginatedResources ? ResourcePayloadA<Q>['items'] : never;
-export type PaginatedResponseNextPageParams<Q extends ResourceName> = Q extends PaginatedResources ? ResourcePayloadA<Q>['next_page_params'] : never;
+export type PaginatedResponseItems<Q extends ResourceName> = Q extends PaginatedResources ? ResourcePayloadA<Q>['items'] | ResourcePayloadB<Q>['items'] : never;
+export type PaginatedResponseNextPageParams<Q extends ResourceName> = Q extends PaginatedResources ?
+  ResourcePayloadA<Q>['next_page_params'] | ResourcePayloadB<Q>['next_page_params'] :
+  never;
 
 /* eslint-disable @typescript-eslint/indent */
 export type PaginationFilters<Q extends PaginatedResources> =
@@ -834,6 +850,7 @@ Q extends 'verified_contracts' ? VerifiedContractsFilters :
 Q extends 'addresses_lookup' ? EnsAddressLookupFilters :
 Q extends 'domains_lookup' ? EnsDomainLookupFilters :
 Q extends 'user_ops' ? UserOpsFilters :
+Q extends 'validators' ? ValidatorsFilters :
 never;
 /* eslint-enable @typescript-eslint/indent */
 
@@ -845,5 +862,6 @@ Q extends 'verified_contracts' ? VerifiedContractsSorting :
 Q extends 'address_txs' ? TransactionsSorting :
 Q extends 'addresses_lookup' ? EnsLookupSorting :
 Q extends 'domains_lookup' ? EnsLookupSorting :
+Q extends 'validators' ? ValidatorsSorting :
 never;
 /* eslint-enable @typescript-eslint/indent */

@@ -22,5 +22,6 @@ export { default as suave } from './suave';
 export { default as swapButton } from './swapButton';
 export { default as txInterpretation } from './txInterpretation';
 export { default as userOps } from './userOps';
+export { default as validators } from './validators';
 export { default as verifiedTokens } from './verifiedTokens';
 export { default as web3Wallet } from './web3Wallet';

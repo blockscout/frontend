@@ -171,3 +171,13 @@ export const userOps: GetServerSideProps<Props> = async(context) => {
 
   return base(context);
 };
+
+export const validators: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.validators.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};

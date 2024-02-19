@@ -39,6 +39,9 @@ export const featureEnvs = {
   userOps: [
     { name: 'NEXT_PUBLIC_HAS_USER_OPS', value: 'true' },
   ],
+  validators: [
+    { name: 'NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE', value: 'stability' },
+  ],
 };
 
 export const viewsEnvs = {

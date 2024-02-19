@@ -40,6 +40,7 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/404': '404',
   '/name-domains': 'Domains search and resolve',
   '/name-domains/[name]': 'Domain details',
+  '/validators': 'Validators list',
 
   // service routes, added only to make typescript happy
   '/login': 'Login',

@@ -66,6 +66,12 @@ export default function useNavItems(): ReturnType {
       icon: 'ENS',
       isActive: pathname === '/name-domains' || pathname === '/name-domains/[name]',
     } : null;
+    const validators = config.features.validators.isEnabled ? {
+      text: 'Top validators',
+      nextRoute: { pathname: '/validators' as const },
+      icon: 'validator',
+      isActive: pathname === '/validators',
+    } : null;
 
     const rollupFeature = config.features.rollup;
 
@@ -84,6 +90,7 @@ export default function useNavItems(): ReturnType {
         ].filter(Boolean),
         [
           topAccounts,
+          validators,
           verifiedContracts,
           ensLookup,
         ].filter(Boolean),
@@ -107,6 +114,7 @@ export default function useNavItems(): ReturnType {
         [
           userOps,
           topAccounts,
+          validators,
           verifiedContracts,
           ensLookup,
         ].filter(Boolean),
@@ -117,6 +125,7 @@ export default function useNavItems(): ReturnType {
         userOps,
         blocks,
         topAccounts,
+        validators,
         verifiedContracts,
         ensLookup,
         config.features.beaconChain.isEnabled && {

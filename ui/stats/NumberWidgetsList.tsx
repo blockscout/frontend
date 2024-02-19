@@ -3,9 +3,9 @@ import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { STATS_COUNTER } from 'stubs/stats';
+import StatsWidget from 'ui/shared/stats/StatsWidget';
 
 import DataFetchAlert from '../shared/DataFetchAlert';
-import NumberWidget from './NumberWidget';
 
 const UNITS_WITHOUT_SPACE = [ 's' ];
 
@@ -36,12 +36,12 @@ const NumberWidgetsList = () => {
           }
 
           return (
-            <NumberWidget
+            <StatsWidget
               key={ id + (isPlaceholderData ? index : '') }
               label={ title }
               value={ `${ Number(value).toLocaleString(undefined, { maximumFractionDigits: 3, notation: 'compact' }) }${ unitsStr }` }
               isLoading={ isPlaceholderData }
-              description={ description }
+              hint={ description }
             />
           );
         })

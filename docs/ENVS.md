@@ -573,6 +573,16 @@ For blockchains that implement SUAVE architecture additional fields will be show
 
 &nbsp;
 
+### Validators list
+
+The feature enables the Validators page which provides detailed information about the validators of the PoS chains.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE | `'stability'` | Chain type | Required | - | `'stability'` |
+
+&nbsp;
+
 ### Sentry error monitoring
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
