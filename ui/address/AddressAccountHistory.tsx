@@ -108,22 +108,17 @@ const AddressAccountHistory = ({ scrollRef }: Props) => {
   );
 
   return (
-    <>
-      { /* should stay before tabs to scroll up with pagination */ }
-      <Box ref={ scrollRef }></Box>
-
-      <DataListDisplay
-        isError={ isError }
-        items={ filteredData }
-        emptyText="There are no transactions."
-        content={ content }
-        actionBar={ actionBar }
-        filterProps={{
-          hasActiveFilters: Boolean(filterValue),
-          emptyFilteredText: 'No match found for current filter',
-        }}
-      />
-    </>
+    <DataListDisplay
+      isError={ isError }
+      items={ filteredData }
+      emptyText="There are no transactions."
+      content={ content }
+      actionBar={ actionBar }
+      filterProps={{
+        hasActiveFilters: Boolean(filterValue),
+        emptyFilteredText: 'No match found for current filter',
+      }}
+    />
   );
 };
 
