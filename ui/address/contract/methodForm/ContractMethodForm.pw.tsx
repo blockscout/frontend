@@ -61,7 +61,6 @@ const data: SmartContractWriteMethod = {
   ],
   method_id: '87201b41',
   name: 'fulfillAvailableAdvancedOrders',
-  // TODO @tom2drum displays complex output structure
   outputs: [
     { internalType: 'bool[]', name: '', type: 'bool[]' },
     {
@@ -92,7 +91,7 @@ const data: SmartContractWriteMethod = {
   constant: false,
 };
 
-test('base view', async({ mount }) => {
+test('base view +@mobile +@dark-mode', async({ mount }) => {
 
   const component = await mount(
     <TestApp>
@@ -115,14 +114,19 @@ test('base view', async({ mount }) => {
   await component.getByPlaceholder('int8', { exact: true }).first().fill('1');
   await component.getByPlaceholder('int8', { exact: true }).last().fill('3');
 
-  // TODO @tom2drum fill more fields
   // expand all sections
   await component.getByText('parameters').click();
   await component.getByText('additionalRecipients').click();
-  await component.getByText('#1 (tuple)').click();
-  await component.getByText('tuple[][]').click();
-  await component.getByText('#1 (tuple[])').click();
-  await component.getByText('#1.1 (tuple)').click();
+  await component.getByText('#1 AdditionalRecipient').click();
+  await component.getByRole('button', { name: 'add' }).first().click();
+  await component.getByPlaceholder('uint256').nth(1).fill('42');
+  await component.getByPlaceholder('address').nth(1).fill('0xd789a607CEac2f0E14867de4EB15b15C9FFB5859');
+
+  await component.getByText('struct FulfillmentComponent[][]').click();
+  await component.getByRole('button', { name: 'add' }).nth(1).click();
+  await component.getByText('#1 FulfillmentComponent[]').click();
+  await component.getByText('#1.1 FulfillmentComponent').click();
+  await component.getByRole('button', { name: 'add' }).nth(1).click();
 
   // submit form
   await component.getByRole('button', { name: 'Write' }).click();
