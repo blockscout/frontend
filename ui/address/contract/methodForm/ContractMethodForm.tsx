@@ -112,7 +112,7 @@ const ContractMethodForm = <T extends SmartContractMethod>({ data, onSubmit, res
           </Button>
         </chakra.form>
       </FormProvider>
-      { 'outputs' in data && methodType === 'write' && <ContractMethodFormOutputs data={ data.outputs }/> }
+      { 'outputs' in data && <ContractMethodFormOutputs data={ data.outputs }/> }
       { result && <ResultComponent item={ data } result={ result } onSettle={ handleTxSettle }/> }
     </Box>
   );

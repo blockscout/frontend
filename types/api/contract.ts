@@ -84,7 +84,7 @@ export type SmartContractWriteMethod = SmartContractMethodBase | SmartContractWr
 export type SmartContractMethod = SmartContractReadMethod | SmartContractWriteMethod;
 
 export interface SmartContractMethodInput {
-  internalType?: SmartContractMethodArgType;
+  internalType?: string; // there could be any string, e.g "enum MyEnum"
   name: string;
   type: SmartContractMethodArgType;
   components?: Array<SmartContractMethodInput>;
