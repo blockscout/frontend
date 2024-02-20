@@ -33,6 +33,9 @@ test('base view +@dark-mode +@mobile', async({ mount, page }) => {
     </TestApp>,
   );
   await page.waitForResponse(GAS_PRICE_CHART_API_URL);
+  await page.waitForFunction(() => {
+    return document.querySelector('path[data-name="chart-Averagegasprice-small"]')?.getAttribute('opacity') === '1';
+  });
 
   await expect(component).toHaveScreenshot();
 });
