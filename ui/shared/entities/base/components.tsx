@@ -13,7 +13,7 @@ import LinkInternal from 'ui/shared/LinkInternal';
 
 import { getIconProps, type IconSize } from './utils';
 
-export type Truncation = 'constant' | 'dynamic' | 'tail' | 'none';
+export type Truncation = 'constant' | 'constant_long' | 'dynamic' | 'tail' | 'none';
 
 export interface EntityBaseProps {
   className?: string;
@@ -117,6 +117,14 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
 
   const children = (() => {
     switch (truncation) {
+      case 'constant_long':
+        return (
+          <HashStringShorten
+            hash={ text }
+            as={ asProp }
+            type="long"
+          />
+        );
       case 'constant':
         return (
           <HashStringShorten

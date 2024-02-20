@@ -33,11 +33,13 @@ declare module "nextjs-routes" {
     | StaticRoute<"/contract-verification">
     | StaticRoute<"/csv-export">
     | StaticRoute<"/deposits">
+    | StaticRoute<"/gas-tracker">
     | StaticRoute<"/graphiql">
     | StaticRoute<"/">
     | StaticRoute<"/login">
     | StaticRoute<"/name-domains">
     | DynamicRoute<"/name-domains/[name]", { "name": string }>
+    | StaticRoute<"/name-domains">
     | DynamicRoute<"/op/[hash]", { "hash": string }>
     | StaticRoute<"/ops">
     | StaticRoute<"/output-roots">
@@ -49,6 +51,7 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/tx/[hash]", { "hash": string }>
     | StaticRoute<"/txs">
     | DynamicRoute<"/txs/kettle/[hash]", { "hash": string }>
+    | StaticRoute<"/validators">
     | StaticRoute<"/verified-contracts">
     | StaticRoute<"/visualize/sol2uml">
     | StaticRoute<"/withdrawals">;

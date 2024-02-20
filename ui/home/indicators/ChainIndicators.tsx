@@ -30,12 +30,7 @@ const ChainIndicators = () => {
   const indicator = indicators.find(({ id }) => id === selectedIndicator);
 
   const queryResult = useFetchChartData(indicator);
-  const statsQueryResult = useApiQuery('homepage_stats', {
-    fetchParams: {
-      headers: {
-        'updated-gas-oracle': 'true',
-      },
-    },
+  const statsQueryResult = useApiQuery('stats', {
     queryOptions: {
       refetchOnMount: false,
       placeholderData: HOMEPAGE_STATS,

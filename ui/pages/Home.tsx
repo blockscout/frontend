@@ -12,6 +12,8 @@ import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
 import SearchBar from 'ui/snippets/searchBar/SearchBar';
 import WalletMenuDesktop from 'ui/snippets/walletMenu/WalletMenuDesktop';
 
+const rollupFeature = config.features.rollup;
+
 const Home = () => {
   return (
     <Box as="main">
@@ -44,7 +46,7 @@ const Home = () => {
       <ChainIndicators/>
       <AdBanner mt={{ base: 6, lg: 8 }} mx="auto" display="flex" justifyContent="center"/>
       <Flex mt={ 8 } direction={{ base: 'column', lg: 'row' }} columnGap={ 12 } rowGap={ 8 }>
-        { config.features.zkEvmRollup.isEnabled ? <LatestZkEvmL2Batches/> : <LatestBlocks/> }
+        { rollupFeature.isEnabled && rollupFeature.type === 'zkEvm' ? <LatestZkEvmL2Batches/> : <LatestBlocks/> }
         <Box flexGrow={ 1 }>
           <Transactions/>
         </Box>

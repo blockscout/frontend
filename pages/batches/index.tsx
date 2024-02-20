@@ -5,12 +5,20 @@ import React from 'react';
 import PageNextJs from 'nextjs/PageNextJs';
 
 import config from 'configs/app';
+const rollupFeature = config.features.rollup;
 
 const Batches = dynamic(() => {
-  if (config.features.zkEvmRollup.isEnabled) {
-    return import('ui/pages/ZkEvmL2TxnBatches');
+  if (!rollupFeature.isEnabled) {
+    throw new Error('Rollup feature is not enabled.');
   }
-  return import('ui/pages/L2TxnBatches');
+
+  switch (rollupFeature.type) {
+    case 'zkEvm':
+      return import('ui/pages/ZkEvmL2TxnBatches');
+    case 'optimistic':
+      return import('ui/pages/OptimisticL2TxnBatches');
+  }
+  throw new Error('Txn batches feature is not enabled.');
 }, { ssr: false });
 
 const Page: NextPage = () => {

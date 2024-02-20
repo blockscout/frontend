@@ -56,6 +56,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
             fontWeight={ 700 }
             noIcon
             maxW="100%"
+            truncation="constant_long"
           />
           { tx.timestamp && <Skeleton color="text_secondary" fontWeight="400" isLoaded={ !isLoading }><span>{ timeAgo }</span></Skeleton> }
         </VStack>
@@ -98,7 +99,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
           current={ currentAddress }
           isLoading={ isLoading }
           mt="2px"
-          mode={{ lg: 'compact', xl: 'long' }}
+          mode="compact"
         />
       </Td>
       { !config.UI.views.tx.hiddenFields?.value && (

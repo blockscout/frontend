@@ -1,4 +1,4 @@
-import type { ZkEvmL2TxnBatchesResponse } from 'types/api/zkEvmL2TxnBatches';
+import type { ZkEvmL2TxnBatchesResponse } from 'types/api/zkEvmL2';
 
 export const txnBatchesData: ZkEvmL2TxnBatchesResponse = {
   items: [

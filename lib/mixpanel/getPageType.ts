@@ -15,8 +15,8 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/tokens': 'Tokens',
   '/token/[hash]': 'Token details',
   '/token/[hash]/instance/[id]': 'Token Instance',
-  '/apps': 'Apps',
-  '/apps/[id]': 'App',
+  '/apps': 'DApps',
+  '/apps/[id]': 'DApp',
   '/stats': 'Stats',
   '/api-docs': 'REST API',
   '/graphiql': 'GraphQL',
@@ -40,6 +40,8 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/404': '404',
   '/name-domains': 'Domains search and resolve',
   '/name-domains/[name]': 'Domain details',
+  '/validators': 'Validators list',
+  '/gas-tracker': 'Gas tracker',
 
   // service routes, added only to make typescript happy
   '/login': 'Login',

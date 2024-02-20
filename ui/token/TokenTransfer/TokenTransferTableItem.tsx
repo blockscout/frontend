@@ -1,4 +1,4 @@
-import { Tr, Td, Grid, Skeleton, Box } from '@chakra-ui/react';
+import { Tr, Td, Flex, Skeleton, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
@@ -35,12 +35,13 @@ const TokenTransferTableItem = ({
   return (
     <Tr alignItems="top">
       <Td>
-        <Grid alignItems="center" gridTemplateColumns="auto 130px" width="fit-content" py="7px">
+        <Flex alignItems="center" py="7px">
           <TxEntity
             hash={ txHash }
             isLoading={ isLoading }
             fontWeight={ 600 }
             noIcon
+            truncation="constant_long"
           />
           { timestamp && (
             <Skeleton isLoaded={ !isLoading } display="inline-block" color="gray.500" fontWeight="400" ml="10px">
@@ -49,7 +50,7 @@ const TokenTransferTableItem = ({
               </span>
             </Skeleton>
           ) }
-        </Grid>
+        </Flex>
       </Td>
       <Td>
         { method ? (

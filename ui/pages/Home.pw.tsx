@@ -17,7 +17,7 @@ test.describe('default view', () => {
   let component: Locator;
 
   test.beforeEach(async({ page, mount }) => {
-    await page.route(buildApiUrl('homepage_stats'), (route) => route.fulfill({
+    await page.route(buildApiUrl('stats'), (route) => route.fulfill({
       status: 200,
       body: JSON.stringify(statsMock.base),
     }));
@@ -36,7 +36,7 @@ test.describe('default view', () => {
         txMock.withTokenTransfer,
       ]),
     }));
-    await page.route(buildApiUrl('homepage_chart_txs'), (route) => route.fulfill({
+    await page.route(buildApiUrl('stats_charts_txs'), (route) => route.fulfill({
       status: 200,
       body: JSON.stringify(dailyTxsMock.base),
     }));
@@ -104,7 +104,7 @@ test.describe('mobile', () => {
   test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 
   test('base view', async({ mount, page }) => {
-    await page.route(buildApiUrl('homepage_stats'), (route) => route.fulfill({
+    await page.route(buildApiUrl('stats'), (route) => route.fulfill({
       status: 200,
       body: JSON.stringify(statsMock.base),
     }));
@@ -123,7 +123,7 @@ test.describe('mobile', () => {
         txMock.withTokenTransfer,
       ]),
     }));
-    await page.route(buildApiUrl('homepage_chart_txs'), (route) => route.fulfill({
+    await page.route(buildApiUrl('stats_charts_txs'), (route) => route.fulfill({
       status: 200,
       body: JSON.stringify(dailyTxsMock.base),
     }));

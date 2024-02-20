@@ -75,6 +75,7 @@ const TokenTransferTableItem = ({
             fontWeight={ 600 }
             noIcon
             mt="7px"
+            truncation="constant_long"
           />
           { timestamp && (
             <Skeleton isLoaded={ !isLoading } color="text_secondary" fontWeight="400" mt="10px" display="inline-block">

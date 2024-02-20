@@ -12,15 +12,17 @@ import { TX_ACTIONS_BLOCK_ID } from 'ui/tx/details/txDetailsActions/TxDetailsAct
 import TxInterpretation from 'ui/tx/interpretation/TxInterpretation';
 
 import NovesSubHeadingInterpretation from './assetFlows/components/NovesSubHeadingInterpretation';
+import type { TxQuery } from './useTxQuery';
 
 type Props = {
   hash?: string;
   hasTag: boolean;
+  txQuery: TxQuery;
 }
 
 const feature = config.features.txInterpretation;
 
-const TxSubHeading = ({ hash, hasTag }: Props) => {
+const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
   const hasInterpretationFeature = feature.isEnabled;
   const isNovesInterpretation = hasInterpretationFeature && feature.provider === 'noves';
 
@@ -40,38 +42,68 @@ const TxSubHeading = ({ hash, hasTag }: Props) => {
     },
   });
 
-  const hasNovesInterpretation = isNovesInterpretation &&
-  (novesInterpretationQuery.isPlaceholderData || Boolean(novesInterpretationQuery.data?.classificationData.description));
+  const content = (() => {
+    const hasNovesInterpretation = isNovesInterpretation &&
+    (novesInterpretationQuery.isPlaceholderData || Boolean(novesInterpretationQuery.data?.classificationData.description));
 
-  const hasInternalInterpretation = (hasInterpretationFeature && !isNovesInterpretation) &&
+    const hasInternalInterpretation = (hasInterpretationFeature && !isNovesInterpretation) &&
     (txInterpretationQuery.isPlaceholderData || Boolean(txInterpretationQuery.data?.data.summaries.length));
 
-  const hasInterpretation = hasNovesInterpretation || hasInternalInterpretation;
+    const hasViewAllInterpretationsLink =
+      !txInterpretationQuery.isPlaceholderData && txInterpretationQuery.data?.data.summaries && txInterpretationQuery.data?.data.summaries.length > 1;
+
+    if (hasNovesInterpretation) {
+      return (
+        <NovesSubHeadingInterpretation
+          data={ novesInterpretationQuery.data }
+          isLoading={ novesInterpretationQuery.isPlaceholderData }
+        />
+      );
+    } else if (hasInternalInterpretation) {
+      return (
+        <Flex mr={{ base: 0, lg: 6 }} flexWrap="wrap" alignItems="center">
+          <TxInterpretation
+            summary={ txInterpretationQuery.data?.data.summaries[0] }
+            isLoading={ txInterpretationQuery.isPlaceholderData }
+            fontSize="lg"
+            mr={ hasViewAllInterpretationsLink ? 3 : 0 }
+          />
+          { hasViewAllInterpretationsLink &&
+          <Link href={ `#${ TX_ACTIONS_BLOCK_ID }` }>View all</Link> }
+        </Flex>
+      );
+    } else if (hasInterpretationFeature && txQuery.data?.method && txQuery.data?.from && txQuery.data?.to) {
+      return (
+        <TxInterpretation
+          summary={{
+            summary_template: `{sender_hash} called {method} on {receiver_hash}`,
+            summary_template_variables: {
+              sender_hash: {
+                type: 'address',
+                value: txQuery.data.from,
+              },
+              method: {
+                type: 'method',
+                value: txQuery.data.method,
+              },
+              receiver_hash: {
+                type: 'address',
+                value: txQuery.data.to,
+              },
+            },
+          }}
+          isLoading={ txQuery.isPlaceholderData }
+          fontSize="lg"
+        />
+      );
+    } else {
+      return <TxEntity hash={ hash } noLink noCopy={ false } fontWeight={ 500 } mr={{ base: 0, lg: 2 }} fontFamily="heading"/>;
+    }
+  })();
 
   return (
     <Box display={{ base: 'block', lg: 'flex' }} alignItems="center" w="100%">
-      { hasNovesInterpretation &&
-        (
-          <NovesSubHeadingInterpretation
-            data={ novesInterpretationQuery.data }
-            isLoading={ novesInterpretationQuery.isPlaceholderData }
-          />
-        )
-      }
-      { hasInternalInterpretation &&
-        (
-          <Flex mr={{ base: 0, lg: 6 }} flexWrap="wrap" alignItems="center">
-            <TxInterpretation
-              summary={ txInterpretationQuery.data?.data.summaries[0] }
-              isLoading={ txInterpretationQuery.isPlaceholderData }
-              fontSize="lg"
-            />
-            { !txInterpretationQuery.isPlaceholderData && txInterpretationQuery.data?.data.summaries && txInterpretationQuery.data?.data.summaries.length > 1 &&
-            <Link ml={ 3 } href={ `#${ TX_ACTIONS_BLOCK_ID }` }>all actions</Link> }
-          </Flex>
-        )
-      }
-      { !hasInterpretation && <TxEntity hash={ hash } noLink noCopy={ false } fontWeight={ 500 } mr={{ base: 0, lg: 2 }} fontFamily="heading"/> }
+      { content }
       <Flex alignItems="center" justifyContent={{ base: 'start', lg: 'space-between' }} flexGrow={ 1 }>
         { !hasTag && <AccountActionsMenu mr={ 3 } mt={{ base: 3, lg: 0 }}/> }
         <NetworkExplorers type="tx" pathParam={ hash } ml={{ base: 0, lg: 'auto' }} mt={{ base: 3, lg: 0 }}/>

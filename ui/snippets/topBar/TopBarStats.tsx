@@ -1,29 +1,16 @@
-import { Flex, Link, Skeleton, Tooltip, chakra, useDisclosure } from '@chakra-ui/react';
+import { Flex, Link, Skeleton, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import dayjs from 'lib/date/dayjs';
-import { currencyUnits } from 'lib/units';
 import { HOMEPAGE_STATS } from 'stubs/stats';
-import GasInfoTooltipContent from 'ui/shared/GasInfoTooltipContent/GasInfoTooltipContent';
+import GasInfoTooltip from 'ui/shared/gas/GasInfoTooltip';
+import GasPrice from 'ui/shared/gas/GasPrice';
 import TextSeparator from 'ui/shared/TextSeparator';
 
 const TopBarStats = () => {
-  // have to implement controlled tooltip because of the issue - https://github.com/chakra-ui/chakra-ui/issues/7107
-  const { isOpen, onOpen, onToggle, onClose } = useDisclosure();
-
-  const handleClick = React.useCallback((event: React.MouseEvent) => {
-    event.stopPropagation();
-    onToggle();
-  }, [ onToggle ]);
-
-  const { data, isPlaceholderData, isError, refetch, dataUpdatedAt } = useApiQuery('homepage_stats', {
-    fetchParams: {
-      headers: {
-        'updated-gas-oracle': 'true',
-      },
-    },
+  const { data, isPlaceholderData, isError, refetch, dataUpdatedAt } = useApiQuery('stats', {
     queryOptions: {
       placeholderData: HOMEPAGE_STATS,
       refetchOnMount: false,
@@ -76,28 +63,15 @@ const TopBarStats = () => {
           ) }
         </Flex>
       ) }
-      { data?.coin_price && config.UI.homepage.showGasTracker && <TextSeparator color="divider"/> }
-      { data?.gas_prices && data.gas_prices.average !== null && config.UI.homepage.showGasTracker && (
+      { data?.coin_price && config.features.gasTracker.isEnabled && <TextSeparator color="divider"/> }
+      { data?.gas_prices && data.gas_prices.average !== null && config.features.gasTracker.isEnabled && (
         <Skeleton isLoaded={ !isPlaceholderData }>
           <chakra.span color="text_secondary">Gas </chakra.span>
-          <Tooltip
-            label={ <GasInfoTooltipContent data={ data } dataUpdatedAt={ dataUpdatedAt }/> }
-            hasArrow={ false }
-            borderRadius="md"
-            offset={ [ 0, 16 ] }
-            bgColor="blackAlpha.900"
-            p={ 0 }
-            isOpen={ isOpen }
-          >
-            <Link
-              _hover={{ textDecoration: 'none', color: 'link_hovered' }}
-              onClick={ handleClick }
-              onMouseEnter={ onOpen }
-              onMouseLeave={ onClose }
-            >
-              { data.gas_prices.average.fiat_price ? `$${ data.gas_prices.average.fiat_price }` : `${ data.gas_prices.average.price } ${ currencyUnits.gwei }` }
+          <GasInfoTooltip data={ data } dataUpdatedAt={ dataUpdatedAt } >
+            <Link>
+              <GasPrice data={ data.gas_prices.average }/>
             </Link>
-          </Tooltip>
+          </GasInfoTooltip>
         </Skeleton>
       ) }
     </Flex>

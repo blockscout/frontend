@@ -1,33 +1,24 @@
-import type { SystemStyleObject, TooltipProps } from '@chakra-ui/react';
-import { Skeleton, Flex, useColorModeValue, chakra, LightMode } from '@chakra-ui/react';
+import type { SystemStyleObject } from '@chakra-ui/react';
+import { Skeleton, Flex, useColorModeValue, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import breakpoints from 'theme/foundations/breakpoints';
-import Hint from 'ui/shared/Hint';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {
   icon: IconName;
   title: string;
-  value: string;
+  value: string | React.ReactNode;
   className?: string;
-  tooltipLabel?: React.ReactNode;
+  tooltip?: React.ReactNode;
   url?: string;
   isLoading?: boolean;
 }
 
 const LARGEST_BREAKPOINT = '1240px';
 
-const TOOLTIP_PROPS: Partial<TooltipProps> = {
-  hasArrow: false,
-  borderRadius: 'md',
-  placement: 'bottom-end',
-  offset: [ 0, 0 ],
-  bgColor: 'blackAlpha.900',
-};
-
-const StatsItem = ({ icon, title, value, className, tooltipLabel, url, isLoading }: Props) => {
+const StatsItem = ({ icon, title, value, className, tooltip, url, isLoading }: Props) => {
   const sxContainer: SystemStyleObject = {
     [`@media screen and (min-width: ${ breakpoints.lg }) and (max-width: ${ LARGEST_BREAKPOINT })`]: { flexDirection: 'column' },
   };
@@ -38,7 +29,6 @@ const StatsItem = ({ icon, title, value, className, tooltipLabel, url, isLoading
 
   const bgColor = useColorModeValue('blue.50', 'blue.800');
   const loadingBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
-  const infoColor = useColorModeValue('gray.600', 'gray.400');
 
   return (
     <Flex
@@ -68,22 +58,10 @@ const StatsItem = ({ icon, title, value, className, tooltipLabel, url, isLoading
           <span>{ title }</span>
         </Skeleton>
         <Skeleton isLoaded={ !isLoading } fontWeight={ 500 } fontSize="md" color={ useColorModeValue('black', 'white') } borderRadius="base">
-          <span>{ value }</span>
+          { typeof value === 'string' ? <span>{ value }</span> : value }
         </Skeleton>
       </Flex>
-      { tooltipLabel && !isLoading && (
-        <LightMode>
-          <Hint
-            label={ tooltipLabel }
-            tooltipProps={ TOOLTIP_PROPS }
-            boxSize={ 6 }
-            color={ infoColor }
-            position="absolute"
-            top={{ base: 'calc(50% - 12px)', lg: '10px', xl: 'calc(50% - 12px)' }}
-            right="10px"
-          />
-        </LightMode>
-      ) }
+      { tooltip }
     </Flex>
   );
 };

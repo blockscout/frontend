@@ -1,3 +1,4 @@
+import { chakra } from '@chakra-ui/react';
 import React, { useEffect, useMemo } from 'react';
 
 import type { StatsIntervalIds } from 'types/client/stats';
@@ -15,13 +16,14 @@ type Props = {
   interval: StatsIntervalIds;
   onLoadingError: () => void;
   isPlaceholderData: boolean;
+  className?: string;
 }
 
 function formatDate(date: Date) {
   return date.toISOString().substring(0, 10);
 }
 
-const ChartWidgetContainer = ({ id, title, description, interval, onLoadingError, units, isPlaceholderData }: Props) => {
+const ChartWidgetContainer = ({ id, title, description, interval, onLoadingError, units, isPlaceholderData, className }: Props) => {
   const selectedInterval = STATS_INTERVALS[interval];
 
   const endDate = selectedInterval.start ? formatDate(new Date()) : undefined;
@@ -58,8 +60,9 @@ const ChartWidgetContainer = ({ id, title, description, interval, onLoadingError
       description={ description }
       isLoading={ isPending }
       minH="230px"
+      className={ className }
     />
   );
 };
 
-export default ChartWidgetContainer;
+export default chakra(ChartWidgetContainer);

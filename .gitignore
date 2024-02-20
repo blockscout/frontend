@@ -51,5 +51,6 @@ yarn-error.log*
 /playwright/.cache/
 /playwright/.browser/
 /playwright/envs.js
+/playwright/affected-tests.txt
 
 **.dec**

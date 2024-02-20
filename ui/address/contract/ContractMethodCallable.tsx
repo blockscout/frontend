@@ -82,6 +82,8 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
       });
   }, [ inputs, onSubmit, data, isWrite ]);
 
+  const outputs = 'outputs' in data && data.outputs ? data.outputs : [];
+
   return (
     <Box>
       <FormProvider { ...formApi }>
@@ -163,16 +165,16 @@ const ContractMethodCallable = <T extends SmartContractMethod>({ data, onSubmit,
           </Button>
         </chakra.form>
       </FormProvider>
-      { 'outputs' in data && !isWrite && data.outputs.length > 0 && (
+      { !isWrite && outputs.length > 0 && (
         <Flex mt={ 3 } fontSize="sm">
           <IconSvg name="arrows/down-right" boxSize={ 5 } mr={ 1 }/>
           <p>
-            { data.outputs.map(({ type, name }, index) => {
+            { outputs.map(({ type, name }, index) => {
               return (
                 <>
                   <chakra.span fontWeight={ 500 }>{ name } </chakra.span>
                   <span>{ name ? `(${ type })` : type }</span>
-                  { index < data.outputs.length - 1 && <span>, </span> }
+                  { index < outputs.length - 1 && <span>, </span> }
                 </>
               );
             }) }
