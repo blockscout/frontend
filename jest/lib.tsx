@@ -21,6 +21,7 @@ const PAGE_PROPS = {
   number: '',
   q: '',
   name: '',
+  tab: '',
 };
 
 const TestApp = ({ children }: {children: React.ReactNode}) => {
