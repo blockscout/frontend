@@ -49,7 +49,6 @@ const UI = Object.freeze({
       background: getEnvValue('NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND') || HOMEPAGE_PLATE_BACKGROUND_DEFAULT,
       textColor: getEnvValue('NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR') || 'white',
     },
-    showGasTracker: getEnvValue('NEXT_PUBLIC_HOMEPAGE_SHOW_GAS_TRACKER') === 'false' ? false : true,
     showAvgBlockTime: getEnvValue('NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME') === 'false' ? false : true,
   },
   views,
@@ -70,6 +69,7 @@ const UI = Object.freeze({
   ides: {
     items: parseEnvJson<Array<ContractCodeIde>>(getEnvValue('NEXT_PUBLIC_CONTRACT_CODE_IDES')) || [],
   },
+  hasContractAuditReports: getEnvValue('NEXT_PUBLIC_HAS_CONTRACT_AUDIT_REPORTS') === 'true' ? true : false,
 });
 
 export default UI;

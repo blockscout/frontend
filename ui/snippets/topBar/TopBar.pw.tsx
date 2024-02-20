@@ -16,7 +16,7 @@ const test = base.extend({
 });
 
 test('default view +@dark-mode +@mobile', async({ mount, page }) => {
-  await page.route(buildApiUrl('homepage_stats'), (route) => route.fulfill({
+  await page.route(buildApiUrl('stats'), (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(statsMock.base),
   }));
@@ -27,7 +27,7 @@ test('default view +@dark-mode +@mobile', async({ mount, page }) => {
     </TestApp>,
   );
 
-  await component.getByText(/\$1\.01/).hover();
+  await component.getByText(/\$1\.39/).click();
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 220 } });
 
   await component.getByLabel('color mode switch').click();

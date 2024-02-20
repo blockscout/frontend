@@ -163,6 +163,7 @@ const AddressPageContent = () => {
       isLoading={ isLoading }
       tagsBefore={ [
         !addressQuery.data?.is_contract ? { label: 'eoa', display_name: 'EOA' } : undefined,
+        config.features.validators.isEnabled && addressQuery.data?.has_validated_blocks ? { label: 'validator', display_name: 'Validator' } : undefined,
         addressQuery.data?.implementation_address ? { label: 'proxy', display_name: 'Proxy' } : undefined,
         addressQuery.data?.token ? { label: 'token', display_name: 'Token' } : undefined,
         isSafeAddress ? { label: 'safe', display_name: 'Multisig: Safe' } : undefined,

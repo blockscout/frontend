@@ -2,14 +2,14 @@ import React from 'react';
 
 import type { AddressParamBasic } from 'types/api/addressParams';
 
-import AddressEntity from '../entities/address/AddressEntity';
-import type { EntityProps } from '../entities/address/AddressEntity';
+import AddressEntity from './AddressEntity';
+import type { EntityProps } from './AddressEntity';
 
 type Props = Omit<EntityProps, 'address'> & {
   address: string | AddressParamBasic;
 }
 
-const UserOpsAddress = ({ address, ...props }: Props) => {
+const AddressStringOrParam = ({ address, ...props }: Props) => {
   let addressParam;
   if (typeof address === 'string') {
     addressParam = { hash: address };
@@ -20,4 +20,4 @@ const UserOpsAddress = ({ address, ...props }: Props) => {
   return <AddressEntity address={ addressParam } { ...props }/>;
 };
 
-export default UserOpsAddress;
+export default AddressStringOrParam;

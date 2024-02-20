@@ -29,6 +29,7 @@ export type TimeChartData = Array<TimeChartDataItem>;
 export interface AxisConfig {
   ticks?: number;
   nice?: boolean;
+  noLabel?: boolean;
 }
 
 export interface AxesConfig {

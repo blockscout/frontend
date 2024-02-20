@@ -7,6 +7,7 @@ import type { Address as AddressInfo } from 'types/api/address';
 
 import { route } from 'nextjs-routes';
 
+import config from 'configs/app';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import dayjs from 'lib/date/dayjs';
 import useSocketChannel from 'lib/socket/useSocketChannel';
@@ -18,6 +19,7 @@ import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
+import ContractSecurityAudits from './ContractSecurityAudits';
 import ContractSourceCode from './ContractSourceCode';
 
 type Props = {
@@ -26,10 +28,17 @@ type Props = {
   noSocket?: boolean;
 }
 
-const InfoItem = chakra(({ label, value, className, isLoading }: { label: string; value: string; className?: string; isLoading: boolean }) => (
+type InfoItemProps = {
+  label: string;
+  content: string | React.ReactNode;
+  className?: string;
+  isLoading: boolean;
+}
+
+const InfoItem = chakra(({ label, content, className, isLoading }: InfoItemProps) => (
   <GridItem display="flex" columnGap={ 6 } wordBreak="break-all" className={ className } alignItems="baseline">
     <Skeleton isLoaded={ !isLoading } w="170px" flexShrink={ 0 } fontWeight={ 500 }>{ label }</Skeleton>
-    <Skeleton isLoaded={ !isLoading }>{ value }</Skeleton>
+    <Skeleton isLoaded={ !isLoading }>{ content }</Skeleton>
   </GridItem>
 ));
 
@@ -221,15 +230,22 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
       </Flex>
       { data?.is_verified && (
         <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} rowGap={ 4 } columnGap={ 6 } mb={ 8 }>
-          { data.name && <InfoItem label="Contract name" value={ data.name } isLoading={ isPlaceholderData }/> }
-          { data.compiler_version && <InfoItem label="Compiler version" value={ data.compiler_version } isLoading={ isPlaceholderData }/> }
-          { data.evm_version && <InfoItem label="EVM version" value={ data.evm_version } textTransform="capitalize" isLoading={ isPlaceholderData }/> }
+          { data.name && <InfoItem label="Contract name" content={ data.name } isLoading={ isPlaceholderData }/> }
+          { data.compiler_version && <InfoItem label="Compiler version" content={ data.compiler_version } isLoading={ isPlaceholderData }/> }
+          { data.evm_version && <InfoItem label="EVM version" content={ data.evm_version } textTransform="capitalize" isLoading={ isPlaceholderData }/> }
           { typeof data.optimization_enabled === 'boolean' &&
-            <InfoItem label="Optimization enabled" value={ data.optimization_enabled ? 'true' : 'false' } isLoading={ isPlaceholderData }/> }
-          { data.optimization_runs && <InfoItem label="Optimization runs" value={ String(data.optimization_runs) } isLoading={ isPlaceholderData }/> }
+            <InfoItem label="Optimization enabled" content={ data.optimization_enabled ? 'true' : 'false' } isLoading={ isPlaceholderData }/> }
+          { data.optimization_runs && <InfoItem label="Optimization runs" content={ String(data.optimization_runs) } isLoading={ isPlaceholderData }/> }
           { data.verified_at &&
-            <InfoItem label="Verified at" value={ dayjs(data.verified_at).format('llll') } wordBreak="break-word" isLoading={ isPlaceholderData }/> }
-          { data.file_path && <InfoItem label="Contract file path" value={ data.file_path } wordBreak="break-word" isLoading={ isPlaceholderData }/> }
+            <InfoItem label="Verified at" content={ dayjs(data.verified_at).format('llll') } wordBreak="break-word" isLoading={ isPlaceholderData }/> }
+          { data.file_path && <InfoItem label="Contract file path" content={ data.file_path } wordBreak="break-word" isLoading={ isPlaceholderData }/> }
+          { config.UI.hasContractAuditReports && (
+            <InfoItem
+              label="Security audit"
+              content={ <ContractSecurityAudits addressHash={ addressHash }/> }
+              isLoading={ isPlaceholderData }
+            />
+          ) }
         </Grid>
       ) }
       <Flex flexDir="column" rowGap={ 6 }>

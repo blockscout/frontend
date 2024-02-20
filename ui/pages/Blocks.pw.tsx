@@ -13,7 +13,7 @@ import * as configs from 'playwright/utils/configs';
 import Blocks from './Blocks';
 
 const BLOCKS_API_URL = buildApiUrl('blocks') + '?type=block';
-const STATS_API_URL = buildApiUrl('homepage_stats');
+const STATS_API_URL = buildApiUrl('stats');
 const hooksConfig = {
   router: {
     query: { tab: 'blocks' },
