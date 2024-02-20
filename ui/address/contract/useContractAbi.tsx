@@ -50,7 +50,7 @@ export default function useContractAbi({ addressHash, isProxy, isCustomAbi }: Pa
     }
 
     if (isCustomAbi) {
-      return customInfo;
+      return customInfo as Abi;
     }
 
     return contractInfo?.abi ?? undefined;

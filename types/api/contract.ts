@@ -55,7 +55,7 @@ export interface SmartContractExternalLibrary {
 
 export interface SmartContractMethodBase {
   inputs: Array<SmartContractMethodInput>;
-  outputs: Array<SmartContractMethodOutput>;
+  outputs?: Array<SmartContractMethodOutput>;
   constant: boolean;
   name: string;
   stateMutability: SmartContractMethodStateMutability;
