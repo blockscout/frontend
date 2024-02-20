@@ -219,8 +219,13 @@ export default function useNavItems(): ReturnType {
             nextRoute: { pathname: '/contract-verification' as const },
             isActive: pathname.startsWith('/contract-verification'),
           },
+          config.features.gasTracker.isEnabled && {
+            text: 'Gas tracker',
+            nextRoute: { pathname: '/gas-tracker' as const },
+            isActive: pathname.startsWith('/gas-tracker'),
+          },
           ...config.UI.sidebar.otherLinks,
-        ],
+        ].filter(Boolean),
       },
     ].filter(Boolean);
 

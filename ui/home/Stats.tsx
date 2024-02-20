@@ -7,23 +7,19 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { WEI } from 'lib/consts';
-import { currencyUnits } from 'lib/units';
 import { HOMEPAGE_STATS } from 'stubs/stats';
-import GasInfoTooltipContent from 'ui/shared/GasInfoTooltipContent/GasInfoTooltipContent';
+import GasInfoTooltip from 'ui/shared/gas/GasInfoTooltip';
+import GasPrice from 'ui/shared/gas/GasPrice';
+import IconSvg from 'ui/shared/IconSvg';
 
 import StatsItem from './StatsItem';
 
-const hasGasTracker = config.UI.homepage.showGasTracker;
+const hasGasTracker = config.features.gasTracker.isEnabled;
 const hasAvgBlockTime = config.UI.homepage.showAvgBlockTime;
 const rollupFeature = config.features.rollup;
 
 const Stats = () => {
-  const { data, isPlaceholderData, isError, dataUpdatedAt } = useApiQuery('homepage_stats', {
-    fetchParams: {
-      headers: {
-        'updated-gas-oracle': 'true',
-      },
-    },
+  const { data, isPlaceholderData, isError, dataUpdatedAt } = useApiQuery('stats', {
     queryOptions: {
       refetchOnMount: false,
       placeholderData: HOMEPAGE_STATS,
@@ -53,19 +49,21 @@ const Stats = () => {
     !data.gas_prices && itemsCount--;
     data.rootstock_locked_btc && itemsCount++;
     const isOdd = Boolean(itemsCount % 2);
-    const gasLabel = hasGasTracker && data.gas_prices ? <GasInfoTooltipContent data={ data } dataUpdatedAt={ dataUpdatedAt }/> : null;
-
-    const gasPriceText = (() => {
-      if (data.gas_prices?.average?.fiat_price) {
-        return `$${ data.gas_prices.average.fiat_price }`;
-      }
-
-      if (data.gas_prices?.average?.price) {
-        return `${ data.gas_prices.average.price.toLocaleString() } ${ currencyUnits.gwei }`;
-      }
-
-      return 'N/A';
-    })();
+    const gasInfoTooltip = hasGasTracker && data.gas_prices ? (
+      <GasInfoTooltip data={ data } dataUpdatedAt={ dataUpdatedAt }>
+        <IconSvg
+          isLoading={ isPlaceholderData }
+          name="info"
+          boxSize={ 5 }
+          display="block"
+          cursor="pointer"
+          _hover={{ color: 'link_hovered' }}
+          position="absolute"
+          top={{ base: 'calc(50% - 12px)', lg: '10px', xl: 'calc(50% - 12px)' }}
+          right="10px"
+        />
+      </GasInfoTooltip>
+    ) : null;
 
     content = (
       <>
@@ -112,9 +110,9 @@ const Stats = () => {
           <StatsItem
             icon="gas"
             title="Gas tracker"
-            value={ gasPriceText }
+            value={ <GasPrice data={ data.gas_prices.average }/> }
             _last={ isOdd ? lastItemTouchStyle : undefined }
-            tooltipLabel={ gasLabel }
+            tooltip={ gasInfoTooltip }
             isLoading={ isPlaceholderData }
           />
         ) }

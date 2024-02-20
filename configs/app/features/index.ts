@@ -6,6 +6,7 @@ export { default as beaconChain } from './beaconChain';
 export { default as bridgedTokens } from './bridgedTokens';
 export { default as blockchainInteraction } from './blockchainInteraction';
 export { default as csvExport } from './csvExport';
+export { default as gasTracker } from './gasTracker';
 export { default as googleAnalytics } from './googleAnalytics';
 export { default as graphqlApiDocs } from './graphqlApiDocs';
 export { default as growthBook } from './growthBook';

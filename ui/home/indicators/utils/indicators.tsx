@@ -7,14 +7,14 @@ import { sortByDateDesc } from 'ui/shared/chart/utils/sorts';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
-const dailyTxsIndicator: TChainIndicator<'homepage_chart_txs'> = {
+const dailyTxsIndicator: TChainIndicator<'stats_charts_txs'> = {
   id: 'daily_txs',
   title: 'Daily transactions',
   value: (stats) => Number(stats.transactions_today).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }),
   icon: <IconSvg name="transactions" boxSize={ 6 } bgColor="#56ACD1" borderRadius="base" color="white"/>,
   hint: `Number of transactions yesterday (0:00 - 23:59 UTC). The chart displays daily transactions for the past 30 days.`,
   api: {
-    resourceName: 'homepage_chart_txs',
+    resourceName: 'stats_charts_txs',
     dataFn: (response) => ([ {
       items: response.chart_data
         .map((item) => ({ date: new Date(item.date), value: item.tx_count }))
@@ -33,14 +33,14 @@ const nativeTokenData = {
   type: 'ERC-20' as const,
 };
 
-const coinPriceIndicator: TChainIndicator<'homepage_chart_market'> = {
+const coinPriceIndicator: TChainIndicator<'stats_charts_market'> = {
   id: 'coin_price',
   title: `${ config.chain.governanceToken.symbol || config.chain.currency.symbol } price`,
   value: (stats) => '$' + Number(stats.coin_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }),
   icon: <TokenEntity.Icon token={ nativeTokenData } boxSize={ 6 } marginRight={ 0 }/>,
   hint: `${ config.chain.governanceToken.symbol || config.chain.currency.symbol } token daily price in USD.`,
   api: {
-    resourceName: 'homepage_chart_market',
+    resourceName: 'stats_charts_market',
     dataFn: (response) => ([ {
       items: response.chart_data
         .map((item) => ({ date: new Date(item.date), value: Number(item.closing_price) }))
@@ -51,7 +51,7 @@ const coinPriceIndicator: TChainIndicator<'homepage_chart_market'> = {
   },
 };
 
-const marketPriceIndicator: TChainIndicator<'homepage_chart_market'> = {
+const marketPriceIndicator: TChainIndicator<'stats_charts_market'> = {
   id: 'market_cap',
   title: 'Market cap',
   value: (stats) => '$' + Number(stats.market_cap).toLocaleString(undefined, { maximumFractionDigits: 0, notation: 'compact' }),
@@ -59,7 +59,7 @@ const marketPriceIndicator: TChainIndicator<'homepage_chart_market'> = {
   // eslint-disable-next-line max-len
   hint: 'The total market value of a cryptocurrency\'s circulating supply. It is analogous to the free-float capitalization in the stock market. Market Cap = Current Price x Circulating Supply.',
   api: {
-    resourceName: 'homepage_chart_market',
+    resourceName: 'stats_charts_market',
     dataFn: (response) => ([ {
       items: response.chart_data
         .map((item) => (
@@ -74,7 +74,7 @@ const marketPriceIndicator: TChainIndicator<'homepage_chart_market'> = {
   },
 };
 
-const tvlIndicator: TChainIndicator<'homepage_chart_market'> = {
+const tvlIndicator: TChainIndicator<'stats_charts_market'> = {
   id: 'tvl',
   title: 'Total value locked',
   value: (stats) => '$' + Number(stats.tvl).toLocaleString(undefined, { maximumFractionDigits: 2, notation: 'compact' }),
@@ -82,7 +82,7 @@ const tvlIndicator: TChainIndicator<'homepage_chart_market'> = {
   // eslint-disable-next-line max-len
   hint: 'Total value of digital assets locked or staked in a chain',
   api: {
-    resourceName: 'homepage_chart_market',
+    resourceName: 'stats_charts_market',
     dataFn: (response) => ([ {
       items: response.chart_data
         .map((item) => (

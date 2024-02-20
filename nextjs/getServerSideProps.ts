@@ -191,3 +191,13 @@ export const validators: GetServerSideProps<Props> = async(context) => {
 
   return base(context);
 };
+
+export const gasTracker: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.gasTracker.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};

@@ -46,6 +46,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/name-domains': DEFAULT_TEMPLATE,
   '/name-domains/[name]': DEFAULT_TEMPLATE,
   '/validators': DEFAULT_TEMPLATE,
+  '/gas-tracker': DEFAULT_TEMPLATE,
 
   // service routes, added only to make typescript happy
   '/login': DEFAULT_TEMPLATE,

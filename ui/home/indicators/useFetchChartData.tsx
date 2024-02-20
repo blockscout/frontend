@@ -8,7 +8,7 @@ import type { ResourcePayload } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 
 export default function useFetchChartData<R extends ChartsResources>(indicator: TChainIndicator<R> | undefined): UseQueryResult<TimeChartData> {
-  const queryResult = useApiQuery(indicator?.api.resourceName || 'homepage_chart_txs', {
+  const queryResult = useApiQuery(indicator?.api.resourceName || 'stats_charts_txs', {
     queryOptions: { enabled: Boolean(indicator) },
   });
 

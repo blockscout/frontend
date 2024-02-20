@@ -33,6 +33,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/contract-verification">
     | StaticRoute<"/csv-export">
     | StaticRoute<"/deposits">
+    | StaticRoute<"/gas-tracker">
     | StaticRoute<"/graphiql">
     | StaticRoute<"/">
     | StaticRoute<"/login">
