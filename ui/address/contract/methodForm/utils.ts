@@ -1,6 +1,6 @@
 import _set from 'lodash/set';
 
-import type { SmartContractMethodArgType } from 'types/api/contract';
+import type { SmartContractMethodInput } from 'types/api/contract';
 
 export type ContractMethodFormFields = Record<string, string | undefined>;
 
@@ -60,6 +60,7 @@ function filterOurEmptyItems(array: Array<unknown>): Array<unknown> {
     .filter((item) => item !== undefined);
 }
 
-export function getFieldLabel(name: string | undefined, type: SmartContractMethodArgType, isRequired?: boolean) {
-  return `${ name || '<arg w/o name>' } (${ type })${ isRequired ? '*' : '' }`;
+export function getFieldLabel(input: SmartContractMethodInput, isRequired?: boolean) {
+  const name = input.name || input.internalType || '<unnamed argument>';
+  return `${ name } (${ input.type })${ isRequired ? '*' : '' }`;
 }

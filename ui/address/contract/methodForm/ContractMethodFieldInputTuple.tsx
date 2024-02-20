@@ -25,7 +25,7 @@ const ContractMethodFieldInputTuple = ({ data, basePath, level, isDisabled, ...a
     <ContractMethodFieldAccordion
       { ...accordionProps }
       level={ level }
-      label={ getFieldLabel(data.name, data.type) }
+      label={ getFieldLabel(data) }
       isInvalid={ isInvalid }
     >
       { data.components?.map((component, index) => {

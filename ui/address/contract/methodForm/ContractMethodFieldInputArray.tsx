@@ -39,19 +39,27 @@ const ContractMethodFieldInputArray = ({ data, level, basePath, onAddClick, onRe
     }
   }, [ ]);
 
-  const childrenType = data.type.slice(0, -2) as SmartContractMethodArgType;
-  const getItemData = (index: number) => ({
-    ...data,
-    type: childrenType,
-    name: `#${ (parentIndex !== undefined ? `${ parentIndex + 1 }.` : '') + (index + 1) }`,
-  });
+  const getItemData = (index: number) => {
+    const childrenType = data.type.slice(0, -2) as SmartContractMethodArgType;
+    const childrenInternalType = data.internalType?.slice(0, parentIndex !== undefined ? -4 : -2).replaceAll('struct ', '');
+
+    const namePostfix = childrenInternalType ? ' ' + childrenInternalType : '';
+    const nameParentIndex = parentIndex !== undefined ? `${ parentIndex + 1 }.` : '';
+    const nameIndex = index + 1;
+
+    return {
+      ...data,
+      type: childrenType,
+      name: `#${ nameParentIndex + nameIndex }${ namePostfix }`,
+    };
+  };
   const isNestedArray = data.type.includes('[][]');
 
   if (isNestedArray) {
     return (
       <ContractMethodFieldAccordion
         level={ level }
-        label={ getFieldLabel(data.name, data.type) }
+        label={ getFieldLabel(data) }
         isInvalid={ isInvalid }
       >
         { registeredIndices.map((registeredIndex, index) => {
@@ -80,7 +88,7 @@ const ContractMethodFieldInputArray = ({ data, level, basePath, onAddClick, onRe
     return (
       <ContractMethodFieldAccordion
         level={ level }
-        label={ getFieldLabel(data.name, data.type) }
+        label={ getFieldLabel(data) }
         onAddClick={ onAddClick }
         onRemoveClick={ onRemoveClick }
         index={ parentIndex }

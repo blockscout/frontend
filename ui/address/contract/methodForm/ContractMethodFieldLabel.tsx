@@ -24,7 +24,7 @@ const ContractMethodFieldLabel = ({ data, isOptional, level }: Props) => {
       fontWeight={ 500 }
       color={ level > 1 ? color : undefined }
     >
-      { getFieldLabel(data.name, data.type, !isOptional) }
+      { getFieldLabel(data, !isOptional) }
     </Box>
   );
 };
