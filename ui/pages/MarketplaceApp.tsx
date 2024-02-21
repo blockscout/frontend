@@ -17,6 +17,7 @@ import * as metadata from 'lib/metadata';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import ContentLoader from 'ui/shared/ContentLoader';
 
+import MarketplaceAppTopBar from '../marketplace/MarketplaceAppTopBar';
 import useAutoConnectWallet from '../marketplace/useAutoConnectWallet';
 import useMarketplaceWallet from '../marketplace/useMarketplaceWallet';
 
@@ -139,16 +140,19 @@ const MarketplaceApp = () => {
   throwOnResourceLoadError(query);
 
   return (
-    <DappscoutIframeProvider
-      address={ address }
-      appUrl={ data?.url }
-      rpcUrl={ config.chain.rpcUrl }
-      sendTransaction={ sendTransaction }
-      signMessage={ signMessage }
-      signTypedData={ signTypedData }
-    >
-      <MarketplaceAppContent address={ address } data={ data } isPending={ isPending }/>
-    </DappscoutIframeProvider>
+    <>
+      <MarketplaceAppTopBar isWalletConnected={ Boolean(address) } data={ data } isPending={ isPending }/>
+      <DappscoutIframeProvider
+        address={ address }
+        appUrl={ data?.url }
+        rpcUrl={ config.chain.rpcUrl }
+        sendTransaction={ sendTransaction }
+        signMessage={ signMessage }
+        signTypedData={ signTypedData }
+      >
+        <MarketplaceAppContent address={ address } data={ data } isPending={ isPending }/>
+      </DappscoutIframeProvider>
+    </>
   );
 };
 
