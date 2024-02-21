@@ -75,7 +75,12 @@ const marketplaceAppSchema: yup.ObjectSchema<MarketplaceAppOverview> = yup
     site: yup.string().test(urlTest),
     twitter: yup.string().test(urlTest),
     telegram: yup.string().test(urlTest),
-    github: yup.string().test(urlTest),
+    github: yup.lazy(value =>
+      Array.isArray(value) ?
+        yup.array().of(yup.string().required().test(urlTest)) :
+        yup.string().test(urlTest),
+    ),
+    discord: yup.string().test(urlTest),
     internalWallet: yup.boolean(),
     priority: yup.number(),
   });
