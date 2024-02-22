@@ -37,6 +37,7 @@ yarn-error.log*
 /configs/envs/.env.secrets
 /configs/envs/.samples
 /.idea
+/.nvim
 # typescript
 *.tsbuildinfo
 
