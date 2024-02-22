@@ -73,9 +73,15 @@ Type extends EventTypes.WALLET_CONNECT ? {
   'Source': 'Header' | 'Smart contracts' | 'Swap button';
   'Status': 'Started' | 'Connected';
 } :
-Type extends EventTypes.WALLET_ACTION ? {
-  'Action': 'Open' | 'Address click';
-} :
+Type extends EventTypes.WALLET_ACTION ? (
+  {
+    'Action': 'Open' | 'Address click';
+  } | {
+    'Action': 'Send Transaction' | 'Sign Message' | 'Sign Typed Data';
+    'Address': string | undefined;
+    'AppId': string;
+  }
+) :
 Type extends EventTypes.CONTRACT_INTERACTION ? {
   'Method type': 'Read' | 'Write';
   'Method name': string;
