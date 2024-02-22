@@ -234,6 +234,7 @@ const AddressPageContent = () => {
         secondRow={ titleSecondRow }
         isLoading={ isLoading }
       />
+      <Box display="none" id="meta-suites__address" data-hash={ hash }/>
       <AddressDetails addressQuery={ addressQuery } scrollRef={ tabsScrollRef }/>
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ tabsScrollRef }></Box>
