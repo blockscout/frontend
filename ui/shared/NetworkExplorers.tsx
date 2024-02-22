@@ -5,6 +5,8 @@ import {
   PopoverTrigger,
   PopoverBody,
   PopoverContent,
+  Show,
+  Hide,
   useColorModeValue,
   chakra,
   useDisclosure,
@@ -52,7 +54,7 @@ const NetworkExplorers = ({ className, type, pathParam }: Props) => {
   }
 
   return (
-    <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start">
+    <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
       <PopoverTrigger>
         <Button
           className={ className }
@@ -67,12 +69,12 @@ const NetworkExplorers = ({ className, type, pathParam }: Props) => {
           flexShrink={ 0 }
         >
           <IconSvg name="explorer" boxSize={ 5 }/>
-          <chakra.span ml={ 1 } display={{ base: 'none', xl: 'block' }} id="meta-suites__explorers-label_full">
-            { explorersLinks.length } Explorer{ explorersLinks.length > 1 ? 's' : '' }
-          </chakra.span>
-          <chakra.span ml={ 1 } display={{ base: 'block', xl: 'none' }} id="meta-suites__explorers-label" data-num={ explorersLinks.length }>
-            { explorersLinks.length }
-          </chakra.span>
+          <Show above="xl">
+            <chakra.span ml={ 1 }>{ explorersLinks.length } Explorer{ explorersLinks.length > 1 ? 's' : '' }</chakra.span>
+          </Show>
+          <Hide above="xl">
+            <chakra.span ml={ 1 }>{ explorersLinks.length }</chakra.span>
+          </Hide>
         </Button>
       </PopoverTrigger>
       <PopoverContent w="auto">

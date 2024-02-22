@@ -129,6 +129,9 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           <HashStringShortenDynamic hash={ data.hash }/>
         </Skeleton>
         <CopyToClipboard text={ data.hash } isLoading={ isLoading }/>
+
+        <TextSeparator color="gray.500" flexShrink={ 0 } display="none" id="meta-suites__tx-explorer-separator"/>
+        <Box display="none" flexShrink={ 0 } id="meta-suites__tx-explorer-link"/>
       </DetailsInfoItem>
       <DetailsInfoItem
         title={ rollupFeature.isEnabled && rollupFeature.type === 'zkEvm' ? 'L2 status and method' : 'Status and method' }
