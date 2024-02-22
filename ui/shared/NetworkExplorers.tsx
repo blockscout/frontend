@@ -5,12 +5,11 @@ import {
   PopoverTrigger,
   PopoverBody,
   PopoverContent,
-  Show,
-  Hide,
   useColorModeValue,
   chakra,
   useDisclosure,
   Grid,
+  Box,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -53,7 +52,7 @@ const NetworkExplorers = ({ className, type, pathParam }: Props) => {
   }
 
   return (
-    <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
+    <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start">
       <PopoverTrigger>
         <Button
           className={ className }
@@ -68,12 +67,12 @@ const NetworkExplorers = ({ className, type, pathParam }: Props) => {
           flexShrink={ 0 }
         >
           <IconSvg name="explorer" boxSize={ 5 }/>
-          <Show above="xl">
-            <chakra.span ml={ 1 }>{ explorersLinks.length } Explorer{ explorersLinks.length > 1 ? 's' : '' }</chakra.span>
-          </Show>
-          <Hide above="xl">
-            <chakra.span ml={ 1 }>{ explorersLinks.length }</chakra.span>
-          </Hide>
+          <chakra.span ml={ 1 } display={{ base: 'none', xl: 'block' }} id="meta-suites__explorers-label_full">
+            { explorersLinks.length } Explorer{ explorersLinks.length > 1 ? 's' : '' }
+          </chakra.span>
+          <chakra.span ml={ 1 } display={{ base: 'block', xl: 'none' }} id="meta-suites__explorers-label" data-num={ explorersLinks.length }>
+            { explorersLinks.length }
+          </chakra.span>
         </Button>
       </PopoverTrigger>
       <PopoverContent w="auto">
@@ -87,6 +86,7 @@ const NetworkExplorers = ({ className, type, pathParam }: Props) => {
             mt={ 3 }
           >
             { explorersLinks }
+            <Box display="none" id="meta-suites__explorer"/>
           </Grid>
         </PopoverBody>
       </PopoverContent>
