@@ -109,7 +109,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
   return (
     <Grid columnGap={ 8 } rowGap={{ base: 3, lg: 3 }} templateColumns={{ base: 'minmax(0, 1fr)', lg: 'max-content minmax(728px, auto)' }}>
 
-      <Box display="none" id="meta-suites__tx-info-label" data-hash={ data.hash } data-status={ data.status }/>
+      <Box display="none" id="meta-suites__tx-info-label" data-hash={ data.hash } data-status={ data.status } data-ready={ !isLoading }/>
       <Box display="none" id="meta-suites__tx-info-value"/>
       <DetailsInfoItemDivider display="none" id="meta-suites__details-info-item-divider"/>
 

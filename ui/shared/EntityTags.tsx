@@ -36,7 +36,7 @@ const EntityTags = ({ className, data, tagsBefore = [], tagsAfter = [], isLoadin
   ]
     .filter(Boolean);
 
-  const metaSuitesPlaceholder = <Box display="none" id="meta-suites__address-tag"/>;
+  const metaSuitesPlaceholder = <Box display="none" id="meta-suites__address-tag" data-ready={ !isLoading }/>;
 
   if (tags.length === 0 && !contentAfter) {
     return metaSuitesPlaceholder;
