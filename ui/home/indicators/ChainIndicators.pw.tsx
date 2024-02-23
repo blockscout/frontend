@@ -10,8 +10,8 @@ import buildApiUrl from 'playwright/utils/buildApiUrl';
 
 import ChainIndicators from './ChainIndicators';
 
-const STATS_API_URL = buildApiUrl('homepage_stats');
-const TX_CHART_API_URL = buildApiUrl('homepage_chart_txs');
+const STATS_API_URL = buildApiUrl('stats');
+const TX_CHART_API_URL = buildApiUrl('stats_charts_txs');
 
 const test = base.extend({
   context: contextWithEnvs([

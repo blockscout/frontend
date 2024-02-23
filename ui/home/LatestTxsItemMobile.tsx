@@ -58,7 +58,7 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
           isLoading={ isLoading }
           hash={ tx.hash }
           fontWeight="700"
-          truncation="constant"
+          truncation="constant_long"
         />
         { tx.timestamp && (
           <Skeleton isLoaded={ !isLoading } color="text_secondary" fontWeight="400" fontSize="sm" ml={ 3 }>

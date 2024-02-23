@@ -1,12 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import _groudBy from 'lodash/groupBy';
 import React from 'react';
 
 import type { MarketplaceAppOverview } from 'types/client/marketplace';
 
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
-import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import useApiFetch from 'lib/hooks/useFetch';
 import { CATEGORIES } from 'stubs/marketplace';
 
@@ -15,7 +13,6 @@ const categoriesUrl = (feature.isEnabled && feature.categoriesUrl) || '';
 
 export default function useMarketplaceCategories(apps: Array<MarketplaceAppOverview> | undefined, isAppsPlaceholderData: boolean) {
   const apiFetch = useApiFetch();
-  const { value: isExperiment } = useFeatureValue('marketplace_exp', false);
 
   const { isPlaceholderData, data } = useQuery<unknown, ResourceError<unknown>, Array<string>>({
     queryKey: [ 'marketplace-categories' ],
@@ -31,18 +28,27 @@ export default function useMarketplaceCategories(apps: Array<MarketplaceAppOverv
     }
 
     let categoryNames: Array<string> = [];
-    const grouped = _groudBy(apps, app => app.categories);
+    const grouped: { [key: string]: number } = {};
 
-    if (data?.length && !isPlaceholderData && isExperiment) {
+    apps?.forEach(app => {
+      app.categories.forEach(category => {
+        if (grouped[category] === undefined) {
+          grouped[category] = 0;
+        }
+        grouped[category]++;
+      });
+    });
+
+    if (data?.length && !isPlaceholderData) {
       categoryNames = data;
     } else {
       categoryNames = Object.keys(grouped);
     }
 
     return categoryNames
-      .map(category => ({ name: category, count: grouped[category]?.length || 0 }))
+      .map(category => ({ name: category, count: grouped[category] || 0 }))
       .filter(c => c.count > 0);
-  }, [ apps, isAppsPlaceholderData, data, isPlaceholderData, isExperiment ]);
+  }, [ apps, isAppsPlaceholderData, data, isPlaceholderData ]);
 
   return React.useMemo(() => ({
     isPlaceholderData: isAppsPlaceholderData || isPlaceholderData,

@@ -16,7 +16,7 @@ export type SearchResultAppItem = {
 }
 
 export const searchCategories: Array<{id: Category; title: string }> = [
-  { id: 'app', title: 'Apps' },
+  { id: 'app', title: 'DApps' },
   { id: 'token', title: 'Tokens (ERC-20)' },
   { id: 'nft', title: 'NFTs (ERC-721 & 1155)' },
   { id: 'address', title: 'Addresses' },
@@ -30,7 +30,7 @@ if (config.features.userOps.isEnabled) {
 }
 
 export const searchItemTitles: Record<Category, { itemTitle: string; itemTitleShort: string }> = {
-  app: { itemTitle: 'App', itemTitleShort: 'App' },
+  app: { itemTitle: 'DApp', itemTitleShort: 'App' },
   token: { itemTitle: 'Token', itemTitleShort: 'Token' },
   nft: { itemTitle: 'NFT', itemTitleShort: 'NFT' },
   address: { itemTitle: 'Address', itemTitleShort: 'Address' },

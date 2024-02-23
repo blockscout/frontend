@@ -1,6 +1,7 @@
 import type { GetServerSideProps } from 'next';
 
 import config from 'configs/app';
+const rollupFeature = config.features.rollup;
 
 export type Props = {
   cookies: string;
@@ -48,8 +49,21 @@ export const verifiedAddresses: GetServerSideProps<Props> = async(context) => {
   return account(context);
 };
 
+export const deposits: GetServerSideProps<Props> = async(context) => {
+  if (!(rollupFeature.isEnabled && (rollupFeature.type === 'optimistic' || rollupFeature.type === 'shibarium'))) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
 export const withdrawals: GetServerSideProps<Props> = async(context) => {
-  if (!config.features.beaconChain.isEnabled && !config.features.optimisticRollup.isEnabled) {
+  if (
+    !config.features.beaconChain.isEnabled &&
+    !(rollupFeature.isEnabled && (rollupFeature.type === 'optimistic' || rollupFeature.type === 'shibarium'))
+  ) {
     return {
       notFound: true,
     };
@@ -59,7 +73,7 @@ export const withdrawals: GetServerSideProps<Props> = async(context) => {
 };
 
 export const rollup: GetServerSideProps<Props> = async(context) => {
-  if (!config.features.optimisticRollup.isEnabled && !config.features.zkEvmRollup.isEnabled) {
+  if (!config.features.rollup.isEnabled) {
     return {
       notFound: true,
     };
@@ -69,7 +83,7 @@ export const rollup: GetServerSideProps<Props> = async(context) => {
 };
 
 export const optimisticRollup: GetServerSideProps<Props> = async(context) => {
-  if (!config.features.optimisticRollup.isEnabled) {
+  if (!(rollupFeature.isEnabled && rollupFeature.type === 'optimistic')) {
     return {
       notFound: true,
     };
@@ -79,7 +93,7 @@ export const optimisticRollup: GetServerSideProps<Props> = async(context) => {
 };
 
 export const zkEvmRollup: GetServerSideProps<Props> = async(context) => {
-  if (!config.features.zkEvmRollup.isEnabled) {
+  if (!(rollupFeature.isEnabled && rollupFeature.type === 'zkEvm')) {
     return {
       notFound: true,
     };
@@ -160,6 +174,26 @@ export const accounts: GetServerSideProps<Props> = async(context) => {
 
 export const userOps: GetServerSideProps<Props> = async(context) => {
   if (!config.features.userOps.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
+export const validators: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.validators.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
+export const gasTracker: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.gasTracker.isEnabled) {
     return {
       notFound: true,
     };

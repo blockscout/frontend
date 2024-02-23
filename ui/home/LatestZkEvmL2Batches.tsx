@@ -4,7 +4,7 @@ import { AnimatePresence } from 'framer-motion';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
-import type { ZkEvmL2TxnBatchesItem } from 'types/api/zkEvmL2TxnBatches';
+import type { ZkEvmL2TxnBatchesItem } from 'types/api/zkEvmL2';
 
 import { route } from 'nextjs-routes';
 

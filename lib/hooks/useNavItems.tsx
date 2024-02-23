@@ -66,8 +66,16 @@ export default function useNavItems(): ReturnType {
       icon: 'ENS',
       isActive: pathname === '/name-domains' || pathname === '/name-domains/[name]',
     } : null;
+    const validators = config.features.validators.isEnabled ? {
+      text: 'Top validators',
+      nextRoute: { pathname: '/validators' as const },
+      icon: 'validator',
+      isActive: pathname === '/validators',
+    } : null;
 
-    if (config.features.zkEvmRollup.isEnabled) {
+    const rollupFeature = config.features.rollup;
+
+    if (rollupFeature.isEnabled && rollupFeature.type === 'zkEvm') {
       blockchainNavItems = [
         [
           txs,
@@ -82,11 +90,12 @@ export default function useNavItems(): ReturnType {
         ].filter(Boolean),
         [
           topAccounts,
+          validators,
           verifiedContracts,
           ensLookup,
         ].filter(Boolean),
       ];
-    } else if (config.features.optimisticRollup.isEnabled) {
+    } else if (rollupFeature.isEnabled && rollupFeature.type === 'optimistic') {
       blockchainNavItems = [
         [
           txs,
@@ -105,6 +114,24 @@ export default function useNavItems(): ReturnType {
         [
           userOps,
           topAccounts,
+          validators,
+          verifiedContracts,
+          ensLookup,
+        ].filter(Boolean),
+      ];
+    } else if (rollupFeature.isEnabled && rollupFeature.type === 'shibarium') {
+      blockchainNavItems = [
+        [
+          txs,
+          // eslint-disable-next-line max-len
+          { text: `Deposits (L1${ rightLineArrow }L2)`, nextRoute: { pathname: '/deposits' as const }, icon: 'arrows/south-east', isActive: pathname === '/deposits' },
+          // eslint-disable-next-line max-len
+          { text: `Withdrawals (L2${ rightLineArrow }L1)`, nextRoute: { pathname: '/withdrawals' as const }, icon: 'arrows/north-east', isActive: pathname === '/withdrawals' },
+        ],
+        [
+          blocks,
+          userOps,
+          topAccounts,
           verifiedContracts,
           ensLookup,
         ].filter(Boolean),
@@ -115,6 +142,7 @@ export default function useNavItems(): ReturnType {
         userOps,
         blocks,
         topAccounts,
+        validators,
         verifiedContracts,
         ensLookup,
         config.features.beaconChain.isEnabled && {
@@ -165,7 +193,7 @@ export default function useNavItems(): ReturnType {
         isActive: pathname.startsWith('/token'),
       },
       config.features.marketplace.isEnabled ? {
-        text: 'Apps',
+        text: 'DApps',
         nextRoute: { pathname: '/apps' as const },
         icon: 'apps',
         isActive: pathname.startsWith('/app'),
@@ -191,8 +219,13 @@ export default function useNavItems(): ReturnType {
             nextRoute: { pathname: '/contract-verification' as const },
             isActive: pathname.startsWith('/contract-verification'),
           },
+          config.features.gasTracker.isEnabled && {
+            text: 'Gas tracker',
+            nextRoute: { pathname: '/gas-tracker' as const },
+            isActive: pathname.startsWith('/gas-tracker'),
+          },
           ...config.UI.sidebar.otherLinks,
-        ],
+        ].filter(Boolean),
       },
     ].filter(Boolean);
 

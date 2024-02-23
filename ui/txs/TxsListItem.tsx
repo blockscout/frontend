@@ -49,7 +49,7 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
         <TxEntity
           isLoading={ isLoading }
           hash={ tx.hash }
-          truncation="constant"
+          truncation="constant_long"
           fontWeight="700"
         />
         { tx.timestamp && (

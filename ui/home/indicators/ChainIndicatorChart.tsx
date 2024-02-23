@@ -23,11 +23,11 @@ const ChainIndicatorChart = ({ data }: Props) => {
   const axesConfig = React.useMemo(() => {
     return {
       x: { ticks: 4 },
-      y: { ticks: 3, nice: true },
+      y: { ticks: 3, nice: true, noLabel: true },
     };
   }, [ ]);
 
-  const { rect, ref, axis, innerWidth, innerHeight } = useTimeChartController({
+  const { rect, ref, axes, innerWidth, innerHeight, chartMargin } = useTimeChartController({
     data,
     margin: CHART_MARGIN,
     axesConfig,
@@ -35,16 +35,16 @@ const ChainIndicatorChart = ({ data }: Props) => {
 
   return (
     <svg width="100%" height="100%" ref={ ref } cursor="pointer">
-      <g transform={ `translate(${ CHART_MARGIN?.left || 0 },${ CHART_MARGIN?.top || 0 })` } opacity={ rect ? 1 : 0 }>
+      <g transform={ `translate(${ chartMargin.left || 0 },${ chartMargin.top || 0 })` } opacity={ rect ? 1 : 0 }>
         <ChartArea
           data={ data[0].items }
-          xScale={ axis.x.scale }
-          yScale={ axis.y.scale }
+          xScale={ axes.x.scale }
+          yScale={ axes.y.scale }
         />
         <ChartLine
           data={ data[0].items }
-          xScale={ axis.x.scale }
-          yScale={ axis.y.scale }
+          xScale={ axes.x.scale }
+          yScale={ axes.y.scale }
           stroke={ lineColor }
           animation="left"
           strokeWidth={ 3 }
@@ -54,8 +54,8 @@ const ChainIndicatorChart = ({ data }: Props) => {
             anchorEl={ overlayRef.current }
             width={ innerWidth }
             height={ innerHeight }
-            xScale={ axis.x.scale }
-            yScale={ axis.y.scale }
+            xScale={ axes.x.scale }
+            yScale={ axes.y.scale }
             data={ data }
           />
         </ChartOverlay>
