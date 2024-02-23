@@ -854,9 +854,6 @@ Q extends 'zkevm_l2_txn_batches_count' ? number :
 Q extends 'zkevm_l2_txn_batch' ? ZkEvmL2TxnBatch :
 Q extends 'zkevm_l2_txn_batch_txs' ? ZkEvmL2TxnBatchTxs :
 Q extends 'config_backend_version' ? BackendVersionConfig :
-Q extends 'noves_transaction' ? NovesResponseData :
-Q extends 'noves_address_history' ? NovesAccountHistoryResponse :
-Q extends 'noves_describe_txs' ? NovesDescribeTxsResponse :
 Q extends 'addresses_lookup' ? EnsAddressLookupResponse :
 Q extends 'domain_info' ? EnsDomainDetailed :
 Q extends 'domain_events' ? EnsDomainEventsResponse :
@@ -880,6 +877,9 @@ Q extends 'shibarium_deposits' ? ShibariumDepositsResponse :
 Q extends 'shibarium_withdrawals_count' ? number :
 Q extends 'shibarium_deposits_count' ? number :
 Q extends 'contract_security_audits' ? SmartContractSecurityAudits :
+Q extends 'noves_transaction' ? NovesResponseData :
+Q extends 'noves_address_history' ? NovesAccountHistoryResponse :
+Q extends 'noves_describe_txs' ? NovesDescribeTxsResponse :
 never;
 /* eslint-enable @typescript-eslint/indent */
 
