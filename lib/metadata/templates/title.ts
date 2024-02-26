@@ -14,7 +14,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/address/[hash]/contract-verification': 'contract verification for %hash%',
   '/tokens': 'tokens',
   '/token/[hash]': '%symbol% token details',
-  '/token/[hash]/instance/[id]': 'token instance for %symbol%',
+  '/token/[hash]/instance/[id]': 'NFT instance',
   '/apps': 'apps marketplace',
   '/apps/[id]': '- %app_name%',
   '/stats': 'statistics',
