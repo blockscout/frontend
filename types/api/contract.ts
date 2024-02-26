@@ -62,11 +62,10 @@ export interface SmartContractMethodBase {
   type: 'function';
   payable: boolean;
   error?: string;
-}
-
-export interface SmartContractReadMethod extends SmartContractMethodBase {
   method_id: string;
 }
+
+export type SmartContractReadMethod = SmartContractMethodBase;
 
 export interface SmartContractWriteFallback {
   payable?: true;
@@ -85,7 +84,7 @@ export type SmartContractWriteMethod = SmartContractMethodBase | SmartContractWr
 export type SmartContractMethod = SmartContractReadMethod | SmartContractWriteMethod;
 
 export interface SmartContractMethodInput {
-  internalType?: SmartContractMethodArgType;
+  internalType?: string; // there could be any string, e.g "enum MyEnum"
   name: string;
   type: SmartContractMethodArgType;
   components?: Array<SmartContractMethodInput>;

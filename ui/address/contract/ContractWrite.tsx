@@ -14,8 +14,8 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import ContractConnectWallet from './ContractConnectWallet';
 import ContractCustomAbiAlert from './ContractCustomAbiAlert';
 import ContractImplementationAddress from './ContractImplementationAddress';
-import ContractMethodCallable from './ContractMethodCallable';
 import ContractWriteResult from './ContractWriteResult';
+import ContractMethodForm from './methodForm/ContractMethodForm';
 import useContractAbi from './useContractAbi';
 import { getNativeCoinValue, prepareAbi } from './utils';
 
@@ -39,12 +39,14 @@ const ContractWrite = () => {
     },
     queryOptions: {
       enabled: Boolean(addressHash),
+      refetchOnMount: false,
     },
   });
 
   const contractAbi = useContractAbi({ addressHash, isProxy, isCustomAbi });
 
-  const handleMethodFormSubmit = React.useCallback(async(item: SmartContractWriteMethod, args: Array<string | Array<unknown>>) => {
+  // TODO @tom2drum maybe move this inside the form
+  const handleMethodFormSubmit = React.useCallback(async(item: SmartContractWriteMethod, args: Array<unknown>) => {
     if (!isConnected) {
       throw new Error('Wallet is not connected');
     }
@@ -66,21 +68,22 @@ const ContractWrite = () => {
       return { hash };
     }
 
-    const _args = 'stateMutability' in item && item.stateMutability === 'payable' ? args.slice(0, -1) : args;
-    const value = 'stateMutability' in item && item.stateMutability === 'payable' ? getNativeCoinValue(args[args.length - 1]) : undefined;
     const methodName = item.name;
 
     if (!methodName) {
       throw new Error('Method name is not defined');
     }
 
+    const _args = args.slice(0, item.inputs.length);
+    const value = getNativeCoinValue(args[item.inputs.length]);
     const abi = prepareAbi(contractAbi, item);
+
     const hash = await walletClient?.writeContract({
       args: _args,
       abi,
       functionName: methodName,
       address: addressHash as `0x${ string }`,
-      value: value as undefined,
+      value,
     });
 
     return { hash };
@@ -88,12 +91,12 @@ const ContractWrite = () => {
 
   const renderItemContent = React.useCallback((item: SmartContractWriteMethod, index: number, id: number) => {
     return (
-      <ContractMethodCallable
+      <ContractMethodForm
         key={ id + '_' + index }
         data={ item }
         onSubmit={ handleMethodFormSubmit }
         resultComponent={ ContractWriteResult }
-        isWrite
+        methodType="write"
       />
     );
   }, [ handleMethodFormSubmit ]);
