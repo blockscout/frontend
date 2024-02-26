@@ -8,7 +8,7 @@ import type { Props as SocialLinkProps } from './SocialLink';
 import WebsiteLink from './WebsiteLink';
 
 interface Props {
-  data: MarketplaceAppOverview;
+  data: MarketplaceAppOverview | undefined;
 }
 
 const SOCIAL_LINKS: Array<Omit<SocialLinkProps, 'href'>> = [
@@ -21,7 +21,7 @@ const SOCIAL_LINKS: Array<Omit<SocialLinkProps, 'href'>> = [
 const Content = ({ data }: Props) => {
   const socialLinks: Array<SocialLinkProps> = [];
   SOCIAL_LINKS.forEach((link) => {
-    const href = data[link.field];
+    const href = data?.[link.field];
     if (href) {
       if (Array.isArray(href)) {
         href.forEach((href) => socialLinks.push({ ...link, href }));
@@ -35,8 +35,8 @@ const Content = ({ data }: Props) => {
     <Flex fontSize="sm" flexDir="column" rowGap={ 5 }>
       <div>
         <Text variant="secondary" fontSize="xs">Project info</Text>
-        <Text fontSize="sm" mt={ 3 }>{ data.shortDescription }</Text>
-        <WebsiteLink url={ data.site }/>
+        <Text fontSize="sm" mt={ 3 }>{ data?.shortDescription }</Text>
+        <WebsiteLink url={ data?.site }/>
       </div>
       { socialLinks.length > 0 && (
         <div>

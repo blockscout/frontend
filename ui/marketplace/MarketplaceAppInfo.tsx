@@ -12,7 +12,7 @@ import Content from './MarketplaceAppInfo/Content';
 import TriggerButton from './MarketplaceAppInfo/TriggerButton';
 
 interface Props {
-  data: MarketplaceAppOverview;
+  data: MarketplaceAppOverview | undefined;
 }
 
 const MarketplaceAppInfo = ({ data }: Props) => {
