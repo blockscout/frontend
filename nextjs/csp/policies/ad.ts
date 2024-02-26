@@ -22,6 +22,7 @@ export function ad(): CspDev.DirectiveDescriptor {
 
       //getit
       'v1.getittech.io',
+      'ipapi.co',
     ],
     'frame-src': [
       // coinzilla
