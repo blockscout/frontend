@@ -24,6 +24,8 @@ export interface Params<Resource extends PaginatedResources> {
 
 type NextPageParams = Record<string, unknown>;
 
+const INITIAL_PAGE_PARAMS = { '1': {} };
+
 function getPaginationParamsFromQuery(queryString: string | Array<string> | undefined) {
   if (queryString) {
     try {
@@ -136,7 +138,7 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
     router.push({ pathname: router.pathname, query: nextRouterQuery }, undefined, { shallow: true }).then(() => {
       queryClient.removeQueries({ queryKey: [ resourceName ] });
       setPage(1);
-      setPageParams({});
+      setPageParams(INITIAL_PAGE_PARAMS);
       window.setTimeout(() => {
         // FIXME after router is updated we still have inactive queries for previously visited page (e.g third), where we came from
         // so have to remove it but with some delay :)
@@ -166,7 +168,7 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
     ).then(() => {
       setHasPages(false);
       setPage(1);
-      setPageParams({});
+      setPageParams(INITIAL_PAGE_PARAMS);
     });
   }, [ router, resource.filterFields, scrollToTop ]);
 
@@ -186,7 +188,7 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
     ).then(() => {
       setHasPages(false);
       setPage(1);
-      setPageParams({});
+      setPageParams(INITIAL_PAGE_PARAMS);
     });
   }, [ router, scrollToTop ]);
 

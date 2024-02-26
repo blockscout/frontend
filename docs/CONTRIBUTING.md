@@ -57,7 +57,7 @@ B. Pre-defined configuration:
 
 1. Optionally, clone `.env.example` file into `configs/envs/.env.secrets`. Fill it with necessary secrets for integrating with [external services](./ENVS.md#external-services-configuration). Include only secrets your need.
 2. Choose one of the predefined configurations located in the `/configs/envs` folder.
-3. Start your local dev server using the `yarn dev:<config_name>` command.
+3. Start your local dev server using the `yarn dev:preset <config_preset_name>` command.
 4. Open your browser and navigate to the URL provided in the command line output (by default, it is `http://localhost:3000`).
 
 
@@ -79,18 +79,21 @@ These are the steps that you have to follow to make everything work:
 2. Make sure that you have added a property to React app config (`configs/app/index.ts`) in appropriate section that is associated with this variable; do not use ENV variable values directly in the application code; decide where this variable belongs to and place it under the certain section:
     - `app` - the front-end app itself
     - `api` - the main API configuration
+    - `chain` - the Blockchain parameters
     - `UI` - the app UI customization
+    - `meta` - SEO and meta-tags customization
     - `features` - the particular feature of the app
-    - `services` - some 3rd party service integration which is not related to one particular feature  
-3. For local development purposes add the variable with its appropriate values to pre-defined ENV configs `configs/envs` where it is needed
-4. Add the variable to CI configs where it is needed
+    - `services` - some 3rd party service integration which is not related to one particular feature
+3. If a new variable is meant to store the URL of an external API service, remember to include its value in the Content-Security-Policy document header. Refer to `nextjs/csp/policies/app.ts` for details.
+4. For local development purposes add the variable with its appropriate values to pre-defined ENV configs `configs/envs` where it is needed
+5. Add the variable to CI configs where it is needed
     - `deploy/values/review/values.yaml.gotmpl` - review development environment
     - `deploy/values/main/values.yaml` - main development environment
     - `deploy/values/review-l2/values.yaml.gotmpl` - review development environment for L2 networks
     - `deploy/values/l2-optimism-goerli/values.yaml` - main development environment
-5. If your variable is meant to receive a link to some external resource (image or JSON-config file), extend the array `ASSETS_ENVS` in `deploy/scripts/download_assets.sh` with your variable name
-6. Add validation schema for the new variable into the file `deploy/tools/envs-validator/schema.ts`
-7. Check if modified validation schema is valid by doing the following steps:
+6. If your variable is meant to receive a link to some external resource (image or JSON-config file), extend the array `ASSETS_ENVS` in `deploy/scripts/download_assets.sh` with your variable name
+7. Add validation schema for the new variable into the file `deploy/tools/envs-validator/schema.ts`
+8. Check if modified validation schema is valid by doing the following steps:
     - change your current directory to `deploy/tools/envs-validator`
     - install deps with `yarn` command
     - add your variable into `./test/.env.base` test preset or create a new test preset if needed
@@ -98,7 +101,7 @@ These are the steps that you have to follow to make everything work:
       - add example of file content into `./test/assets` directory; the file name should be constructed by stripping away prefix `NEXT_PUBLIC_` and postfix `_URL` if any, and converting the remaining string to lowercase (for example, `NEXT_PUBLIC_MARKETPLACE_CONFIG_URL` will become `marketplace_config.json`)
       - in the main script `index.ts` extend array `envsWithJsonConfig` with your variable name
     - run `yarn test` command to see the validation result
-8. Don't forget to mention in the PR notes that new ENV variable was added  
+9. Don't forget to mention in the PR notes that new ENV variable was added  
 
 &nbsp;
 

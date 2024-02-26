@@ -76,6 +76,8 @@ const ContractMethodForm = <T extends SmartContractMethod>({ data, onSubmit, res
     ];
   }, [ data ]);
 
+  const outputs = 'outputs' in data && data.outputs ? data.outputs : [];
+
   return (
     <Box>
       <FormProvider { ...formApi }>
@@ -112,7 +114,7 @@ const ContractMethodForm = <T extends SmartContractMethod>({ data, onSubmit, res
           </Button>
         </chakra.form>
       </FormProvider>
-      { 'outputs' in data && methodType === 'read' && <ContractMethodFormOutputs data={ data.outputs }/> }
+      { methodType === 'read' && <ContractMethodFormOutputs data={ outputs }/> }
       { result && <ResultComponent item={ data } result={ result } onSettle={ handleTxSettle }/> }
     </Box>
   );

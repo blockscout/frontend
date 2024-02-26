@@ -63,7 +63,7 @@ const ContractRead = () => {
       return <Alert status="error" fontSize="sm" wordBreak="break-word">{ item.error }</Alert>;
     }
 
-    if (item.outputs.some(({ value }) => value !== undefined && value !== null)) {
+    if (item.outputs?.some(({ value }) => value !== undefined && value !== null)) {
       return (
         <Flex flexDir="column" rowGap={ 1 }>
           { item.outputs.map((output, index) => <ContractMethodConstant key={ index } data={ output }/>) }
