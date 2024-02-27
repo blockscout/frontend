@@ -1,14 +1,43 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import useApiQuery from 'lib/api/useApiQuery';
+import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { BLOB } from 'stubs/blobs';
+import BlobInfo from 'ui/blob/BlobInfo';
 import TextAd from 'ui/shared/ad/TextAd';
+import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const BlobPageContent = () => {
   const router = useRouter();
   const hash = getQueryParamString(router.query.hash);
+
+  const { data, isPlaceholderData, isError, error } = useApiQuery('blob', {
+    pathParams: { hash },
+    queryOptions: {
+      placeholderData: BLOB,
+      refetchOnMount: false,
+    },
+  });
+
+  const content = (() => {
+    if (isError) {
+      if (error?.status === 422 || error?.status === 404) {
+        throwOnResourceLoadError({ resource: 'blob', error, isError: true });
+      }
+
+      return <DataFetchAlert/>;
+    }
+
+    if (!data) {
+      return null;
+    }
+
+    return <BlobInfo data={ data } isLoading={ isPlaceholderData }/>;
+  })();
 
   const titleSecondRow = (
     <TxEntity hash={ hash } noLink noCopy={ false } fontWeight={ 500 } fontFamily="heading"/>
@@ -21,6 +50,7 @@ const BlobPageContent = () => {
         title="Blob details"
         secondRow={ titleSecondRow }
       />
+      { content }
     </>
   );
 };

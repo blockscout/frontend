@@ -1,7 +1,7 @@
 import { Hide, Show } from '@chakra-ui/react';
 import React from 'react';
 
-import { BLOB } from 'stubs/blobs';
+import { TX_BLOB } from 'stubs/blobs';
 import { generateListStub } from 'stubs/utils';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
@@ -24,7 +24,7 @@ const TxBlobs = ({ txQuery }: Props) => {
     pathParams: { hash: txQuery.data?.hash },
     options: {
       enabled: !txQuery.isPlaceholderData && Boolean(txQuery.data?.hash) && Boolean(txQuery.data?.status),
-      placeholderData: generateListStub<'tx_blobs'>(BLOB, 10, { next_page_params: null }),
+      placeholderData: generateListStub<'tx_blobs'>(TX_BLOB, 10, { next_page_params: null }),
     },
   });
 

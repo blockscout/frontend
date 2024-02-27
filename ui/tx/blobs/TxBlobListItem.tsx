@@ -1,7 +1,7 @@
 import { Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TxBlob } from 'types/api/txBlobs';
+import type { TxBlob } from 'types/api/blobs';
 
 import BlobEntity from 'ui/shared/entities/blob/BlobEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';

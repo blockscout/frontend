@@ -31,6 +31,7 @@ import type {
   AddressNFTTokensFilter,
 } from 'types/api/address';
 import type { AddressesResponse } from 'types/api/addresses';
+import type { TxBlobs, Blob } from 'types/api/blobs';
 import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters, BlockWithdrawalsResponse } from 'types/api/block';
 import type { ChartMarketResponse, ChartTransactionResponse } from 'types/api/charts';
 import type { BackendVersionConfig } from 'types/api/configs';
@@ -86,7 +87,6 @@ import type {
   TransactionsSorting,
   TransactionsResponseWithBlobs,
 } from 'types/api/transaction';
-import type { TxBlobs } from 'types/api/txBlobs';
 import type { TxInterpretationResponse } from 'types/api/txInterpretation';
 import type { TTxsFilters, TTxsWithBlobsFilters } from 'types/api/txsFilters';
 import type { TxStateChanges } from 'types/api/txStateChanges';
@@ -674,6 +674,12 @@ export const RESOURCES = {
     pathParams: [ 'chainType' as const ],
   },
 
+  // BLOBS
+  blob: {
+    path: '/api/v2/blobs/:hash',
+    pathParams: [ 'hash' as const ],
+  },
+
   // CONFIGS
   config_backend_version: {
     path: '/api/v2/config/backend-version',
@@ -858,6 +864,7 @@ never;
 
 /* eslint-disable @typescript-eslint/indent */
 export type ResourcePayloadB<Q extends ResourceName> =
+Q extends 'blob' ? Blob :
 Q extends 'marketplace_dapps' ? Array<MarketplaceAppOverview> :
 Q extends 'marketplace_dapp' ? MarketplaceAppOverview :
 Q extends 'validators' ? ValidatorsResponse :
