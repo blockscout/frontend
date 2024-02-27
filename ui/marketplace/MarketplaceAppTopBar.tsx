@@ -37,7 +37,7 @@ const MarketplaceAppTopBar = ({ data, isLoading }: Props) => {
   return (
     <Flex alignItems="center" flexWrap="wrap" mb={{ base: 6, md: 2 }} rowGap={ 3 } columnGap={ 2 }>
       <Tooltip label="Back to dApps list" order={ 1 }>
-        <LinkInternal display="inline-flex" href={ goBackUrl } h="32px" mr={{ base: 'auto', md: 0 }} isLoading={ isLoading }>
+        <LinkInternal display="inline-flex" href={ goBackUrl } h="32px" isLoading={ isLoading }>
           <IconSvg name="arrows/east" boxSize={ 6 } transform="rotate(180deg)" margin="auto" color="gray.400"/>
         </LinkInternal>
       </Tooltip>
