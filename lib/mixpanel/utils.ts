@@ -17,7 +17,8 @@ export enum EventTypes {
   PAGE_WIDGET = 'Page widget',
   TX_INTERPRETATION_INTERACTION = 'Transaction interpratetion interaction',
   EXPERIMENT_STARTED = 'Experiment started',
-  FILTERS = 'Filters'
+  FILTERS = 'Filters',
+  BUTTON_CLICK = 'Button click',
 }
 
 /* eslint-disable @typescript-eslint/indent */
@@ -106,6 +107,10 @@ Type extends EventTypes.EXPERIMENT_STARTED ? {
 Type extends EventTypes.FILTERS ? {
   'Source': 'Marketplace';
   'Filter name': string;
+} :
+Type extends EventTypes.BUTTON_CLICK ? {
+  'Content': 'Swap button';
+  'Source': string;
 } :
 undefined;
 /* eslint-enable @typescript-eslint/indent */
