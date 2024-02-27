@@ -28,6 +28,7 @@ import RawDataSnippet from 'ui/shared/RawDataSnippet';
 import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
+import BlockDetailsBlobInfo from './details/BlockDetailsBlobInfo';
 import type { BlockQuery } from './useBlockQuery';
 
 interface Props {
@@ -363,6 +364,8 @@ const BlockDetails = ({ query }: Props) => {
       { isExpanded && !isPlaceholderData && (
         <>
           <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
+
+          { !isPlaceholderData && <BlockDetailsBlobInfo data={ data }/> }
 
           { data.bitcoin_merged_mining_header && (
             <DetailsInfoItem

@@ -502,6 +502,36 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       { isExpanded && (
         <>
           <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
+          { (data.blob_gas_used || data.max_fee_per_blob_gas || data.blob_gas_price) && (
+            <>
+              { data.blob_gas_used && (
+                <DetailsInfoItem
+                  title="Blob gas usage"
+                  hint="Blob gas usage"
+                >
+                  { BigNumber(data.blob_gas_used).toFormat() }
+                </DetailsInfoItem>
+              ) }
+              { (data.max_fee_per_blob_gas || data.blob_gas_price) && (
+                <DetailsInfoItem
+                  title={ `Blob gas fees (${ currencyUnits.gwei })` }
+                  hint={ `Blob gas fees (${ currencyUnits.gwei })` }
+                >
+                  { data.blob_gas_price && (
+                    <Text fontWeight="600" as="span">{ BigNumber(data.blob_gas_price).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
+                  ) }
+                  { (data.max_fee_per_blob_gas && data.blob_gas_price) && <TextSeparator/> }
+                  { data.max_fee_per_blob_gas && (
+                    <>
+                      <Text as="span" fontWeight="500" whiteSpace="pre">Max: </Text>
+                      <Text fontWeight="600" as="span">{ BigNumber(data.max_fee_per_blob_gas).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
+                    </>
+                  ) }
+                </DetailsInfoItem>
+              ) }
+              <DetailsInfoItemDivider/>
+            </>
+          ) }
           <TxDetailsOther nonce={ data.nonce } type={ data.type } position={ data.position }/>
           <DetailsInfoItem
             title="Raw input"

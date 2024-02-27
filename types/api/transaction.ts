@@ -81,6 +81,10 @@ export type Transaction = {
   zkevm_sequence_hash?: string;
   // blob tx fields
   blob_versioned_hashes?: Array<string>;
+  blob_gas_used?: string;
+  blob_gas_price?: string;
+  burnt_blob_fee?: string;
+  max_fee_per_blob_gas?: string;
 }
 
 export const ZKEVM_L2_TX_STATUSES = [ 'Confirmed by Sequencer', 'L1 Confirmed' ];

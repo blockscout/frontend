@@ -36,6 +36,11 @@ export interface Block {
   bitcoin_merged_mining_merkle_proof?: string | null;
   hash_for_merged_mining?: string | null;
   minimum_gas_price?: string | null;
+  // BLOB FIELDS
+  blob_gas_price?: string;
+  blob_gas_used?: string;
+  burnt_blob_fees?: string;
+  excess_blob_gas?: string;
 }
 
 export interface BlocksResponse {
