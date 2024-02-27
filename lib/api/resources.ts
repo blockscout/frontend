@@ -84,9 +84,10 @@ import type {
   Transaction,
   TransactionsResponseWatchlist,
   TransactionsSorting,
+  TransactionsResponseWithBlobs,
 } from 'types/api/transaction';
 import type { TxInterpretationResponse } from 'types/api/txInterpretation';
-import type { TTxsFilters } from 'types/api/txsFilters';
+import type { TTxsFilters, TTxsWithBlobsFilters } from 'types/api/txsFilters';
 import type { TxStateChanges } from 'types/api/txStateChanges';
 import type { UserOpsResponse, UserOp, UserOpsFilters, UserOpsAccount } from 'types/api/userOps';
 import type { ValidatorsCountersResponse, ValidatorsFilters, ValidatorsResponse, ValidatorsSorting } from 'types/api/validators';
@@ -278,6 +279,10 @@ export const RESOURCES = {
   txs_pending: {
     path: '/api/v2/transactions',
     filterFields: [ 'filter' as const, 'type' as const, 'method' as const ],
+  },
+  txs_with_blobs: {
+    path: '/api/v2/transactions',
+    filterFields: [ 'type' as const ],
   },
   txs_watchlist: {
     path: '/api/v2/transactions/watchlist',
@@ -723,7 +728,7 @@ export interface ResourceError<T = unknown> {
 export type ResourceErrorAccount<T> = ResourceError<{ errors: T }>
 
 export type PaginatedResources = 'blocks' | 'block_txs' |
-'txs_validated' | 'txs_pending' | 'txs_watchlist' | 'txs_execution_node' |
+'txs_validated' | 'txs_pending' | 'txs_with_blobs' | 'txs_watchlist' | 'txs_execution_node' |
 'tx_internal_txs' | 'tx_logs' | 'tx_token_transfers' | 'tx_state_changes' |
 'addresses' |
 'address_txs' | 'address_internal_txs' | 'address_token_transfers' | 'address_blocks_validated' | 'address_coin_balance' |
@@ -775,6 +780,7 @@ Q extends 'block_txs' ? BlockTransactionsResponse :
 Q extends 'block_withdrawals' ? BlockWithdrawalsResponse :
 Q extends 'txs_validated' ? TransactionsResponseValidated :
 Q extends 'txs_pending' ? TransactionsResponsePending :
+Q extends 'txs_with_blobs' ? TransactionsResponseWithBlobs :
 Q extends 'txs_watchlist' ? TransactionsResponseWatchlist :
 Q extends 'txs_execution_node' ? TransactionsResponseValidated :
 Q extends 'tx' ? Transaction :
@@ -839,13 +845,6 @@ Q extends 'zkevm_l2_txn_batches_count' ? number :
 Q extends 'zkevm_l2_txn_batch' ? ZkEvmL2TxnBatch :
 Q extends 'zkevm_l2_txn_batch_txs' ? ZkEvmL2TxnBatchTxs :
 Q extends 'config_backend_version' ? BackendVersionConfig :
-Q extends 'addresses_lookup' ? EnsAddressLookupResponse :
-Q extends 'domain_info' ? EnsDomainDetailed :
-Q extends 'domain_events' ? EnsDomainEventsResponse :
-Q extends 'domains_lookup' ? EnsDomainLookupResponse :
-Q extends 'user_ops' ? UserOpsResponse :
-Q extends 'user_op' ? UserOp :
-Q extends 'user_ops_account' ? UserOpsAccount :
 never;
 // !!! IMPORTANT !!!
 // See comment above
@@ -862,6 +861,13 @@ Q extends 'shibarium_deposits' ? ShibariumDepositsResponse :
 Q extends 'shibarium_withdrawals_count' ? number :
 Q extends 'shibarium_deposits_count' ? number :
 Q extends 'contract_security_audits' ? SmartContractSecurityAudits :
+Q extends 'addresses_lookup' ? EnsAddressLookupResponse :
+Q extends 'domain_info' ? EnsDomainDetailed :
+Q extends 'domain_events' ? EnsDomainEventsResponse :
+Q extends 'domains_lookup' ? EnsDomainLookupResponse :
+Q extends 'user_ops' ? UserOpsResponse :
+Q extends 'user_op' ? UserOp :
+Q extends 'user_ops_account' ? UserOpsAccount :
 never;
 /* eslint-enable @typescript-eslint/indent */
 
@@ -875,6 +881,7 @@ export type PaginatedResponseNextPageParams<Q extends ResourceName> = Q extends 
 export type PaginationFilters<Q extends PaginatedResources> =
 Q extends 'blocks' ? BlockFilters :
 Q extends 'txs_validated' | 'txs_pending' ? TTxsFilters :
+Q extends 'txs_with_blobs' ? TTxsWithBlobsFilters :
 Q extends 'tx_token_transfers' ? TokenTransferFilters :
 Q extends 'token_transfers' ? TokenTransferFilters :
 Q extends 'address_txs' | 'address_internal_txs' ? AddressTxsFilters :
