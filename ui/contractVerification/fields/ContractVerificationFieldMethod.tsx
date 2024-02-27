@@ -1,6 +1,5 @@
 import {
   Link,
-  Icon,
   chakra,
   Popover,
   PopoverTrigger,
@@ -12,8 +11,6 @@ import {
   DarkMode,
   ListItem,
   OrderedList,
-  Grid,
-  Box,
 } from '@chakra-ui/react';
 import React from 'react';
 import type { ControllerRenderProps, Control } from 'react-hook-form';
@@ -22,9 +19,9 @@ import { Controller } from 'react-hook-form';
 import type { FormFields } from '../types';
 import type { SmartContractVerificationConfig, SmartContractVerificationMethod } from 'types/api/contract';
 
-import infoIcon from 'icons/info.svg';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import FancySelect from 'ui/shared/FancySelect/FancySelect';
+import IconSvg from 'ui/shared/IconSvg';
 
 import { METHOD_LABELS } from '../utils';
 
@@ -99,43 +96,40 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
   }, []);
 
   return (
-    <section>
-      <Grid columnGap="30px" rowGap={{ base: 2, lg: 4 }} templateColumns={{ base: '1fr', lg: 'minmax(auto, 680px) minmax(0, 340px)' }}>
-        <div>
-          <Box mb={ 5 }>
-            <chakra.span fontWeight={ 500 } fontSize="lg" fontFamily="heading">
-            Currently, Blockscout supports { methods.length } contract verification methods
+    <>
+      <div>
+        <chakra.span fontWeight={ 500 } fontSize="lg" fontFamily="heading">
+          Currently, Blockscout supports { methods.length } contract verification methods
+        </chakra.span>
+        <Popover trigger="hover" isLazy placement={ isMobile ? 'bottom-end' : 'right-start' } offset={ [ -8, 8 ] }>
+          <PopoverTrigger>
+            <chakra.span display="inline-block" ml={ 1 } cursor="pointer" verticalAlign="middle" h="22px">
+              <IconSvg name="info" boxSize={ 5 } color="link" _hover={{ color: 'link_hovered' }}/>
             </chakra.span>
-            <Popover trigger="hover" isLazy placement={ isMobile ? 'bottom-end' : 'right-start' } offset={ [ -8, 8 ] }>
-              <PopoverTrigger>
-                <chakra.span display="inline-block" ml={ 1 } cursor="pointer" verticalAlign="middle" h="22px">
-                  <Icon as={ infoIcon } boxSize={ 5 } color="link" _hover={{ color: 'link_hovered' }}/>
-                </chakra.span>
-              </PopoverTrigger>
-              <Portal>
-                <PopoverContent bgColor={ tooltipBg } w={{ base: '300px', lg: '380px' }}>
-                  <PopoverArrow bgColor={ tooltipBg }/>
-                  <PopoverBody color="white">
-                    <DarkMode>
-                      <span>Currently, Blockscout supports { methods.length } methods:</span>
-                      <OrderedList>
-                        { methods.map(renderPopoverListItem) }
-                      </OrderedList>
-                    </DarkMode>
-                  </PopoverBody>
-                </PopoverContent>
-              </Portal>
-            </Popover>
-          </Box>
-          <Controller
-            name="method"
-            control={ control }
-            render={ renderControl }
-            rules={{ required: true }}
-          />
-        </div>
-      </Grid>
-    </section>
+          </PopoverTrigger>
+          <Portal>
+            <PopoverContent bgColor={ tooltipBg } w={{ base: '300px', lg: '380px' }}>
+              <PopoverArrow bgColor={ tooltipBg }/>
+              <PopoverBody color="white">
+                <DarkMode>
+                  <span>Currently, Blockscout supports { methods.length } methods:</span>
+                  <OrderedList>
+                    { methods.map(renderPopoverListItem) }
+                  </OrderedList>
+                </DarkMode>
+              </PopoverBody>
+            </PopoverContent>
+          </Portal>
+        </Popover>
+      </div>
+      <div/>
+      <Controller
+        name="method"
+        control={ control }
+        render={ renderControl }
+        rules={{ required: true }}
+      />
+    </>
   );
 };
 

@@ -1,39 +1,25 @@
 import { Alert, Button, Flex } from '@chakra-ui/react';
-import { useWeb3Modal } from '@web3modal/react';
 import React from 'react';
-import { useAccount, useDisconnect } from 'wagmi';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import useWallet from 'ui/snippets/walletMenu/useWallet';
 
 const ContractConnectWallet = () => {
-  const { open, isOpen } = useWeb3Modal();
-  const { address, isDisconnected } = useAccount();
-  const { disconnect } = useDisconnect();
+  const { isModalOpening, isModalOpen, connect, disconnect, address, isWalletConnected } = useWallet({ source: 'Smart contracts' });
   const isMobile = useIsMobile();
-  const [ isModalOpening, setIsModalOpening ] = React.useState(false);
-
-  const handleConnect = React.useCallback(async() => {
-    setIsModalOpening(true);
-    await open();
-    setIsModalOpening(false);
-  }, [ open ]);
-
-  const handleDisconnect = React.useCallback(() => {
-    disconnect();
-  }, [ disconnect ]);
 
   const content = (() => {
-    if (isDisconnected || !address) {
+    if (!isWalletConnected) {
       return (
         <>
           <span>Disconnected</span>
           <Button
             ml={ 3 }
-            onClick={ handleConnect }
+            onClick={ connect }
             size="sm"
             variant="outline"
-            isLoading={ isModalOpening || isOpen }
+            isLoading={ isModalOpening || isModalOpen }
             loadingText="Connect wallet"
           >
               Connect wallet
@@ -53,7 +39,7 @@ const ContractConnectWallet = () => {
             ml={ 2 }
           />
         </Flex>
-        <Button onClick={ handleDisconnect } size="sm" variant="outline">Disconnect</Button>
+        <Button onClick={ disconnect } size="sm" variant="outline">Disconnect</Button>
       </Flex>
     );
   })();

@@ -1,5 +1,5 @@
 import { defineStyle, defineStyleConfig } from '@chakra-ui/styled-system';
-import { getColor, mode } from '@chakra-ui/theme-tools';
+import { getColor } from '@chakra-ui/theme-tools';
 
 import getDefaultFormColors from '../utils/getDefaultFormColors';
 
@@ -20,7 +20,7 @@ const baseStyle = defineStyle({
 const variantFloating = defineStyle((props) => {
   const { theme, backgroundColor } = props;
   const { focusPlaceholderColor } = getDefaultFormColors(props);
-  const bc = backgroundColor || mode('white', 'black')(props);
+  const bc = backgroundColor || 'transparent';
 
   return {
     left: '2px',
@@ -44,6 +44,18 @@ const variantFloating = defineStyle((props) => {
       fontSize: 'xs',
       lineHeight: '16px',
       borderTopRightRadius: 'none',
+      '& svg': {
+        width: '16px',
+        height: '16px',
+      },
+    },
+    '& svg': {
+      transitionProperty: 'width, height',
+      transitionDuration: 'normal',
+      transitionTimingFunction: 'ease',
+      width: '24px',
+      height: '24px',
+      mr: '2',
     },
   };
 });

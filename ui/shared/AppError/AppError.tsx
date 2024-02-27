@@ -3,6 +3,7 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import getErrorCause from 'lib/errors/getErrorCause';
 import getErrorCauseStatusCode from 'lib/errors/getErrorCauseStatusCode';
 import getErrorObjStatusCode from 'lib/errors/getErrorObjStatusCode';
 import getResourceErrorPayload from 'lib/errors/getResourceErrorPayload';
@@ -36,6 +37,7 @@ const ERROR_TEXTS: Record<string, { title: string; text: string }> = {
 const AppError = ({ error, className }: Props) => {
   const content = (() => {
     const resourceErrorPayload = getResourceErrorPayload(error);
+    const cause = getErrorCause(error);
     const messageInPayload =
           resourceErrorPayload &&
           typeof resourceErrorPayload === 'object' &&
@@ -43,8 +45,9 @@ const AppError = ({ error, className }: Props) => {
           typeof resourceErrorPayload.message === 'string' ?
             resourceErrorPayload.message :
             undefined;
+    const statusCode = getErrorCauseStatusCode(error) || getErrorObjStatusCode(error);
 
-    const isInvalidTxHash = error?.message?.includes('Invalid tx hash');
+    const isInvalidTxHash = cause && 'resource' in cause && cause.resource === 'tx' && statusCode === 422;
     const isBlockConsensus = messageInPayload?.includes('Block lost consensus');
 
     if (isInvalidTxHash) {
@@ -61,8 +64,6 @@ const AppError = ({ error, className }: Props) => {
                 undefined;
       return <AppErrorBlockConsensus hash={ hash }/>;
     }
-
-    const statusCode = getErrorCauseStatusCode(error) || getErrorObjStatusCode(error);
 
     switch (statusCode) {
       case 429: {

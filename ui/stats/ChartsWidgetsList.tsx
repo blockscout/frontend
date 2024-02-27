@@ -4,8 +4,11 @@ import React, { useCallback, useState } from 'react';
 import type { StatsChartsSection } from 'types/api/stats';
 import type { StatsIntervalIds } from 'types/client/stats';
 
+import useApiQuery from 'lib/api/useApiQuery';
 import { apos } from 'lib/html-entities';
 import EmptySearchResult from 'ui/shared/EmptySearchResult';
+import GasInfoTooltip from 'ui/shared/gas/GasInfoTooltip';
+import IconSvg from 'ui/shared/IconSvg';
 
 import ChartsLoadingErrorAlert from './ChartsLoadingErrorAlert';
 import ChartWidgetContainer from './ChartWidgetContainer';
@@ -22,6 +25,12 @@ const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, in
   const [ isSomeChartLoadingError, setIsSomeChartLoadingError ] = useState(false);
   const isAnyChartDisplayed = charts?.some((section) => section.charts.length > 0);
   const isEmptyChartList = Boolean(filterQuery) && !isAnyChartDisplayed;
+
+  const homeStatsQuery = useApiQuery('stats', {
+    queryOptions: {
+      refetchOnMount: false,
+    },
+  });
 
   const handleChartLoadingError = useCallback(
     () => setIsSomeChartLoadingError(true),
@@ -51,10 +60,15 @@ const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, in
                 marginBottom: 0,
               }}
             >
-              <Skeleton isLoaded={ !isPlaceholderData } mb={ 4 } display="inline-block">
+              <Skeleton isLoaded={ !isPlaceholderData } mb={ 4 } display="inline-flex" alignItems="center" columnGap={ 2 } id={ section.id }>
                 <Heading size="md" >
                   { section.title }
                 </Heading>
+                { section.id === 'gas' && homeStatsQuery.data && homeStatsQuery.data.gas_prices && (
+                  <GasInfoTooltip data={ homeStatsQuery.data } dataUpdatedAt={ homeStatsQuery.dataUpdatedAt }>
+                    <IconSvg name="info" boxSize={ 5 } display="block" cursor="pointer" _hover={{ color: 'link_hovered' }}/>
+                  </GasInfoTooltip>
+                ) }
               </Skeleton>
 
               <Grid

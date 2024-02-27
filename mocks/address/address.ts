@@ -15,6 +15,19 @@ export const withName: AddressParam = {
   private_tags: [],
   watchlist_names: [],
   public_tags: [],
+  ens_domain_name: null,
+};
+
+export const withEns: AddressParam = {
+  hash: hash,
+  implementation_name: null,
+  is_contract: false,
+  is_verified: null,
+  name: 'ArianeeStore',
+  private_tags: [],
+  watchlist_names: [],
+  public_tags: [],
+  ens_domain_name: 'kitty.kitty.kitty.cat.eth',
 };
 
 export const withoutName: AddressParam = {
@@ -26,6 +39,7 @@ export const withoutName: AddressParam = {
   private_tags: [],
   watchlist_names: [],
   public_tags: [],
+  ens_domain_name: null,
 };
 
 export const token: Address = {
@@ -56,6 +70,7 @@ export const token: Address = {
   has_token_transfers: true,
   has_tokens: true,
   has_validated_blocks: false,
+  ens_domain_name: null,
 };
 
 export const contract: Address = {
@@ -86,6 +101,7 @@ export const contract: Address = {
   token: null,
   watchlist_names: [ watchlistName ],
   watchlist_address_id: 42,
+  ens_domain_name: null,
 };
 
 export const validator: Address = {
@@ -116,4 +132,5 @@ export const validator: Address = {
   token: null,
   watchlist_names: [],
   watchlist_address_id: null,
+  ens_domain_name: null,
 };

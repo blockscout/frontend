@@ -23,7 +23,7 @@ test('no auth', async({ mount, page }) => {
     { hooksConfig },
   );
 
-  await component.locator('.identicon').click();
+  await component.locator('a').click();
   expect(page.url()).toBe(`${ app.url }/auth/auth0?path=%2F`);
 });
 

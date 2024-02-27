@@ -1,0 +1,133 @@
+name: Checks
+on:
+  workflow_call:
+  workflow_dispatch:
+  pull_request:
+    types: [ opened, synchronize, unlabeled ]
+    paths-ignore:
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.husky/**'
+      - '.vscode/**'
+      - 'deploy/**'
+      - 'docs/**'
+      - 'public/**'
+      - 'stub/**'
+      
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  code_quality:
+    name: Code quality
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.pull_request.labels.*.name, 'WIP') && !(github.event.action == 'unlabeled' && github.event.label.name != 'WIP') }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'yarn'
+
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        id: cache-node-modules
+        with:
+          path: |
+            node_modules
+          key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+  
+      - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: yarn --frozen-lockfile
+
+      - name: Run ESLint
+        run: yarn lint:eslint
+
+      - name: Compile TypeScript
+        run: yarn lint:tsc
+
+  jest_tests:
+    name: Jest tests
+    needs: [ code_quality ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'yarn'
+
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        id: cache-node-modules
+        with:
+          path: |
+            node_modules
+          key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+    
+      - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: yarn --frozen-lockfile
+
+      - name: Run Jest
+        run: yarn test:jest
+
+  pw_tests:
+    name: 'Playwright tests / Project: ${{ matrix.project }}'
+    needs: [ code_quality ]
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.35.1-focal
+
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [ default, mobile, dark-color-mode ]
+
+    steps:
+      - name: Install git-lfs
+        run: apt-get update && apt-get install git-lfs
+
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          lfs: 'true'
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'yarn'
+
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        id: cache-node-modules
+        with:
+          path: |
+            node_modules
+          key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+    
+      - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: yarn --frozen-lockfile
+
+      - name: Run PlayWright
+        run: yarn test:pw:ci
+        env:
+          HOME: /root
+          PW_PROJECT: ${{ matrix.project }}
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: playwright-report-${{ matrix.project }}
+          path: playwright-report
+          retention-days: 10

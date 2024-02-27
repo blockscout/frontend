@@ -21,6 +21,7 @@ test.describe('mobile', () => {
         txMock.base,
         txMock.withContractCreation,
         txMock.withTokenTransfer,
+        txMock.withWatchListNames,
       ]),
     }));
 
@@ -41,6 +42,7 @@ test('default view +@dark-mode', async({ mount, page }) => {
       txMock.base,
       txMock.withContractCreation,
       txMock.withTokenTransfer,
+      txMock.withWatchListNames,
     ]),
   }));
 

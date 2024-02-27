@@ -1,16 +1,14 @@
-import { Tr, Td, Grid, Skeleton, Box } from '@chakra-ui/react';
-import BigNumber from 'bignumber.js';
+import { Tr, Td, Flex, Skeleton, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
-import eastArrowIcon from 'icons/arrows/east.svg';
+import getCurrencyValue from 'lib/getCurrencyValue';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import Icon from 'ui/shared/chakra/Icon';
+import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import Tag from 'ui/shared/chakra/Tag';
-import AddressEntityWithTokenFilter from 'ui/shared/entities/address/AddressEntityWithTokenFilter';
+import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
-import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
 
 type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean }
 
@@ -26,16 +24,24 @@ const TokenTransferTableItem = ({
   isLoading,
 }: Props) => {
   const timeAgo = useTimeAgoIncrement(timestamp, true);
+  const { usd, valueStr } = 'value' in total ? getCurrencyValue({
+    value: total.value,
+    exchangeRate: token.exchange_rate,
+    accuracy: 8,
+    accuracyUsd: 2,
+    decimals: total.decimals || '0',
+  }) : { usd: null, valueStr: null };
 
   return (
     <Tr alignItems="top">
       <Td>
-        <Grid alignItems="center" gridTemplateColumns="auto 130px" width="fit-content" py="7px">
+        <Flex alignItems="center" py="7px">
           <TxEntity
             hash={ txHash }
             isLoading={ isLoading }
             fontWeight={ 600 }
             noIcon
+            truncation="constant_long"
           />
           { timestamp && (
             <Skeleton isLoaded={ !isLoading } display="inline-block" color="gray.500" fontWeight="400" ml="10px">
@@ -44,7 +50,7 @@ const TokenTransferTableItem = ({
               </span>
             </Skeleton>
           ) }
-        </Grid>
+        </Flex>
       </Td>
       <Td>
         { method ? (
@@ -54,36 +60,22 @@ const TokenTransferTableItem = ({
         ) : null }
       </Td>
       <Td>
-        <AddressEntityWithTokenFilter
-          address={ from }
+        <AddressFromTo
+          from={ from }
+          to={ to }
           isLoading={ isLoading }
-          truncation="constant"
+          mt="5px"
+          mode={{ lg: 'compact', xl: 'long' }}
           tokenHash={ token.address }
-          my="5px"
-        />
-      </Td>
-      <Td px={ 0 }>
-        <Box my="3px">
-          <Icon as={ eastArrowIcon } boxSize={ 6 } color="gray.500" isLoading={ isLoading }/>
-        </Box>
-      </Td>
-      <Td>
-        <AddressEntityWithTokenFilter
-          address={ to }
-          isLoading={ isLoading }
-          truncation="constant"
-          tokenHash={ token.address }
-          my="5px"
         />
       </Td>
       { (token.type === 'ERC-721' || token.type === 'ERC-1155') && (
         <Td>
-          { 'token_id' in total ? (
-            <TokenTransferNft
+          { 'token_id' in total && total.token_id !== null ? (
+            <NftEntity
               hash={ token.address }
               id={ total.token_id }
-              justifyContent={ token.type === 'ERC-721' ? 'end' : 'start' }
-              isDisabled={ Boolean(tokenId && tokenId === total.token_id) }
+              noLink={ Boolean(tokenId && tokenId === total.token_id) }
               isLoading={ isLoading }
             />
           ) : ''
@@ -92,9 +84,16 @@ const TokenTransferTableItem = ({
       ) }
       { (token.type === 'ERC-20' || token.type === 'ERC-1155') && (
         <Td isNumeric verticalAlign="top">
-          <Skeleton isLoaded={ !isLoading } my="7px">
-            { 'value' in total && BigNumber(total.value).div(BigNumber(10 ** Number(total.decimals))).dp(8).toFormat() }
-          </Skeleton>
+          { valueStr && (
+            <Skeleton isLoaded={ !isLoading } display="inline-block" mt="7px" wordBreak="break-all">
+              { valueStr }
+            </Skeleton>
+          ) }
+          { usd && (
+            <Skeleton isLoaded={ !isLoading } color="text_secondary" mt="10px" wordBreak="break-all">
+              <span>${ usd }</span>
+            </Skeleton>
+          ) }
         </Td>
       ) }
     </Tr>

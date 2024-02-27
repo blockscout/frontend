@@ -1,9 +1,8 @@
 import { Tooltip, IconButton, HStack, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
-import DeleteIcon from 'icons/delete.svg';
-import EditIcon from 'icons/edit.svg';
 import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
+import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {
   onEditClick: () => void;
@@ -31,7 +30,7 @@ const TableItemActionButtons = ({ onEditClick, onDeleteClick, isLoading }: Props
           variant="simple"
           boxSize={ 5 }
           onClick={ onEditClick }
-          icon={ <EditIcon/> }
+          icon={ <IconSvg name="edit" boxSize={ 5 }/> }
           onFocusCapture={ onFocusCapture }
           display="inline-block"
           flexShrink={ 0 }
@@ -44,7 +43,7 @@ const TableItemActionButtons = ({ onEditClick, onDeleteClick, isLoading }: Props
           variant="simple"
           boxSize={ 5 }
           onClick={ onDeleteClick }
-          icon={ <DeleteIcon/> }
+          icon={ <IconSvg name="delete" boxSize={ 5 }/> }
           onFocusCapture={ onFocusCapture }
           display="inline-block"
           flexShrink={ 0 }

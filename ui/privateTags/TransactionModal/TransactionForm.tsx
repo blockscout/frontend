@@ -21,8 +21,9 @@ import TransactionInput from 'ui/shared/TransactionInput';
 const TAG_MAX_LENGTH = 35;
 
 type Props = {
-  data?: TransactionTag;
+  data?: Partial<TransactionTag>;
   onClose: () => void;
+  onSuccess: () => Promise<void>;
   setAlertVisible: (isAlertVisible: boolean) => void;
 }
 
@@ -31,7 +32,7 @@ type Inputs = {
   tag: string;
 }
 
-const TransactionForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
+const TransactionForm: React.FC<Props> = ({ data, onClose, onSuccess, setAlertVisible }) => {
   const [ pending, setPending ] = useState(false);
   const formBackgroundColor = useColorModeValue('white', 'gray.900');
 
@@ -46,22 +47,23 @@ const TransactionForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) =>
   const queryClient = useQueryClient();
   const apiFetch = useApiFetch();
 
-  const { mutate } = useMutation((formData: Inputs) => {
-    const body = {
-      name: formData?.tag,
-      transaction_hash: formData?.transaction,
-    };
-    const isEdit = data?.id;
+  const { mutate } = useMutation({
+    mutationFn: (formData: Inputs) => {
+      const body = {
+        name: formData?.tag,
+        transaction_hash: formData?.transaction,
+      };
+      const isEdit = data?.id;
 
-    if (isEdit) {
-      return apiFetch('private_tags_tx', {
-        pathParams: { id: data.id },
-        fetchParams: { method: 'PUT', body },
-      });
-    }
+      if (isEdit) {
+        return apiFetch('private_tags_tx', {
+          pathParams: { id: data.id },
+          fetchParams: { method: 'PUT', body },
+        });
+      }
 
-    return apiFetch('private_tags_tx', { fetchParams: { method: 'POST', body } });
-  }, {
+      return apiFetch('private_tags_tx', { fetchParams: { method: 'POST', body } });
+    },
     onError: (error: ResourceErrorAccount<TransactionTagErrors>) => {
       setPending(false);
       const errorMap = error.payload?.errors;
@@ -74,11 +76,11 @@ const TransactionForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) =>
         setAlertVisible(true);
       }
     },
-    onSuccess: () => {
-      queryClient.refetchQueries([ resourceKey('private_tags_tx') ]).then(() => {
-        onClose();
-        setPending(false);
-      });
+    onSuccess: async() => {
+      await queryClient.refetchQueries({ queryKey: [ resourceKey('private_tags_tx') ] });
+      await onSuccess();
+      onClose();
+      setPending(false);
     },
   });
 

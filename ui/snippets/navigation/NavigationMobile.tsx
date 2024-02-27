@@ -1,15 +1,20 @@
-import { Box, Flex, Text, Icon, VStack, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex, Text, VStack, useColorModeValue } from '@chakra-ui/react';
 import { animate, motion, useMotionValue } from 'framer-motion';
 import React, { useCallback } from 'react';
 
-import chevronIcon from 'icons/arrows/east-mini.svg';
 import useHasAccount from 'lib/hooks/useHasAccount';
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
+import IconSvg from 'ui/shared/IconSvg';
 import NavLink from 'ui/snippets/navigation/NavLink';
 
 import NavLinkGroupMobile from './NavLinkGroupMobile';
 
-const NavigationMobile = () => {
+interface Props {
+  onNavLinkClick?: () => void;
+  isMarketplaceAppPage?: boolean;
+}
+
+const NavigationMobile = ({ onNavLinkClick, isMarketplaceAppPage }: Props) => {
   const { mainNavItems, accountNavItems } = useNavItems();
 
   const [ openedGroupIndex, setOpenedGroupIndex ] = React.useState(-1);
@@ -34,6 +39,8 @@ const NavigationMobile = () => {
 
   const openedItem = mainNavItems[openedGroupIndex];
 
+  const isCollapsed = isMarketplaceAppPage ? false : undefined;
+
   return (
     <Flex position="relative" flexDirection="column" flexGrow={ 1 }>
       <Box
@@ -57,9 +64,9 @@ const NavigationMobile = () => {
           >
             { mainNavItems.map((item, index) => {
               if (isGroupItem(item)) {
-                return <NavLinkGroupMobile key={ item.text } item={ item } onClick={ onGroupItemOpen(index) }/>;
+                return <NavLinkGroupMobile key={ item.text } item={ item } onClick={ onGroupItemOpen(index) } isExpanded={ isMarketplaceAppPage }/>;
               } else {
-                return <NavLink key={ item.text } item={ item }/>;
+                return <NavLink key={ item.text } item={ item } onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>;
               }
             }) }
           </VStack>
@@ -73,7 +80,7 @@ const NavigationMobile = () => {
             borderColor="divider"
           >
             <VStack as="ul" spacing="1" alignItems="flex-start">
-              { accountNavItems.map((item) => <NavLink key={ item.text } item={ item }/>) }
+              { accountNavItems.map((item) => <NavLink key={ item.text } item={ item } onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>) }
             </VStack>
           </Box>
         ) }
@@ -89,7 +96,7 @@ const NavigationMobile = () => {
           key="sub"
         >
           <Flex alignItems="center" px={ 3 } py={ 2.5 } w="100%" h="50px" onClick={ onGroupItemClose } mb={ 1 }>
-            <Icon as={ chevronIcon } boxSize={ 6 } mr={ 2 } color={ iconColor }/>
+            <IconSvg name="arrows/east-mini" boxSize={ 6 } mr={ 2 } color={ iconColor }/>
             <Text variant="secondary" fontSize="sm">{ mainNavItems[openedGroupIndex].text }</Text>
           </Flex>
           <Box
@@ -109,10 +116,10 @@ const NavigationMobile = () => {
                     borderColor: 'divider',
                   }}
                 >
-                  { item.map(subItem => <NavLink key={ subItem.text } item={ subItem }/>) }
+                  { item.map(subItem => <NavLink key={ subItem.text } item={ subItem } onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>) }
                 </Box>
               ) :
-                <NavLink key={ item.text } item={ item } mb={ 1 }/>,
+                <NavLink key={ item.text } item={ item } mb={ 1 } onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>,
             ) }
           </Box>
         </Box>

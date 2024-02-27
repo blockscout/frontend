@@ -63,7 +63,8 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
 
   const formBackgroundColor = useColorModeValue('white', 'gray.900');
 
-  const mutation = useMutation(customAbiKey, {
+  const mutation = useMutation({
+    mutationFn: customAbiKey,
     onSuccess: (data) => {
       const response = data as unknown as CustomAbi;
       queryClient.setQueryData([ resourceKey('custom_abi') ], (prevData: CustomAbis | undefined) => {
@@ -175,7 +176,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           size="lg"
           type="submit"
           isDisabled={ !isDirty }
-          isLoading={ mutation.isLoading }
+          isLoading={ mutation.isPending }
         >
           { data ? 'Save' : 'Create custom ABI' }
         </Button>

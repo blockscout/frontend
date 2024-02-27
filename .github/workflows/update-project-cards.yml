@@ -1,0 +1,240 @@
+name: Update project cards for issues
+
+on:
+    workflow_dispatch:
+        inputs:
+            project_name:
+                description: Name of the project
+                default: Front-end tasks
+                required: true
+                type: string
+            field_name:
+                description: Field name to be updated
+                default: Status
+                required: true
+                type: string
+            field_value:
+                description: New value of the field
+                default: Released
+                required: true
+                type: string
+            issues:
+                description: JSON encoded list of issue numbers to be updated
+                required: true
+                type: string
+    workflow_call:
+        inputs: 
+            project_name:
+                description: Name of the project
+                required: true
+                type: string
+            field_name:
+                description: Field name to be updated
+                required: true
+                type: string
+            field_value:
+                description: New value of the field
+                required: true
+                type: string
+            issues:
+                description: JSON encoded list of issue numbers to be updated
+                required: true
+                type: string
+
+jobs:
+    run:
+        name: Run
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Getting project info
+                id: project_info
+                uses: actions/github-script@v6
+                env:
+                    PROJECT_NAME: ${{ inputs.project_name }}
+                    FIELD_NAME: ${{ inputs.field_name }}
+                    FIELD_VALUE: ${{ inputs.field_value }}
+                with:
+                    github-token: ${{ secrets.BOT_LABEL_ISSUE_TOKEN }}
+                    script: |
+                        const response = await github.graphql(`
+                            query ($login: String!, $q: String!) {
+                                organization(login: $login) {
+                                    projectsV2(query: $q, first: 1) {
+                                        nodes {
+                                            id,
+                                            title,
+                                            number,
+                                            fields(first: 20) {
+                                                nodes {
+                                                    ... on ProjectV2Field {
+                                                        id
+                                                        name
+                                                    }
+                                                    ... on ProjectV2SingleSelectField {
+                                                        id
+                                                        name
+                                                        options {
+                                                            id
+                                                            name
+                                                        }
+                                                    }
+                                                }  
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        `, {
+                            login: context.repo.owner,
+                            q: process.env.PROJECT_NAME,
+                        });
+                
+                        const { organization: { projectsV2: { nodes: projects } } } = response;
+
+                        if (projects.length === 0) {
+                            core.setFailed('Project not found.');
+                            return;
+                        }
+                        
+                        if (projects.length > 1) {
+                            core.info(`Fould ${ projects.length } with the similar name:`);
+                            projects.forEach((issue) => {
+                                core.info(`    #${ projects.number } - ${ projects.title }`);
+                            })
+                            core.setFailed('Fould multiple projects with the similar name. Cannot determine which one to use.');
+                            return;
+                        }
+                        
+                        const { id: projectId, fields: { nodes: fields } } = projects[0];
+                        const field = fields.find((field) => field.name === process.env.FIELD_NAME);
+                        
+                        if (!field) {
+                            core.setFailed(`Field with name "${ process.env.FIELD_NAME }" not found in the project.`);
+                            return;
+                        }
+                        
+                        const option = field.options.find((option) => option.name === process.env.FIELD_VALUE);
+                        
+                        if (!option) {
+                            core.setFailed(`Option with name "${ process.env.FIELD_VALUE }" not found in the field possible values.`);
+                            return;
+                        }
+                        
+                        core.info('Found following info:');
+                        core.info(`    project_id:     ${ projectId }`);
+                        core.info(`    field_id:       ${ field.id }`);
+                        core.info(`    field_value_id: ${ option.id }`);
+                        
+                        core.setOutput('id', projectId);
+                        core.setOutput('field_id', field.id);
+                        core.setOutput('field_value_id', option.id);
+
+            -   name: Getting project items that linked to the issues
+                id: items
+                uses: actions/github-script@v6
+                env:
+                    ISSUES: ${{ inputs.issues }}
+                with:
+                    github-token: ${{ secrets.BOT_LABEL_ISSUE_TOKEN }}
+                    script: |
+                        const result = [];
+                        const issues = JSON.parse(process.env.ISSUES);
+
+                        for (const issue of issues) {
+                            const response = await getProjectItemId(issue);
+                            response?.length > 0 && result.push(...response);
+                        }
+                    
+                        return result;
+
+                        async function getProjectItemId(issueId) {
+                            core.info(`Fetching project items for issue #${ issueId }...`);
+
+                            try {
+                                const response = await github.graphql(`
+                                    query ($owner: String!, $repo: String!, $id: Int!) {
+                                            repository(owner: $owner, name: $repo) {
+                                                issue(number: $id) {
+                                                    title,
+                                                    projectItems(first: 10) {
+                                                        nodes {
+                                                            id,
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    `,
+                                    {
+                                        owner: context.repo.owner,
+                                        repo: context.repo.repo,
+                                        id: issueId,
+                                    }
+                                );
+
+                                const { repository: { issue: { projectItems: { nodes: projectItems } } } } = response;
+
+                                if (projectItems.length === 0) {
+                                    core.info('No project items found.\n');
+                                    return [];
+                                }
+
+                                const ids = projectItems.map((item) => item.id);
+                                core.info(`Found [ ${ ids.join(', ') } ].\n`);
+                                return ids;
+
+                            } catch (error) {
+                                if (error.status === 404) {
+                                    core.info('Nothing has found.\n');
+                                    return [];
+                                }
+                            }
+                        }
+
+            -   name: Updating field value of the project items
+                id: updating_items
+                uses: actions/github-script@v6
+                env:
+                    ITEMS: ${{ steps.items.outputs.result }}
+                    PROJECT_ID: ${{ steps.project_info.outputs.id }}
+                    FIELD_ID: ${{ steps.project_info.outputs.field_id }}
+                    FIELD_VALUE_ID: ${{ steps.project_info.outputs.field_value_id }}
+                with:
+                    github-token: ${{ secrets.BOT_LABEL_ISSUE_TOKEN }}
+                    script: |
+                        const items = JSON.parse(process.env.ITEMS);
+
+                        if (items.length === 0) {
+                            core.info('Nothing to update.');
+                            core.notice('No project items found for provided issues. Nothing to update.');
+                            return;
+                        }
+
+                        for (const item of items) {
+                            core.info(`Changing field value for item ${ item }...`);
+                            await changeItemFieldValue(item);
+                            core.info('Done.\n');
+                        }
+
+                        async function changeItemFieldValue(itemId) {
+                            return await github.graphql(
+                                `
+                                    mutation($input: UpdateProjectV2ItemFieldValueInput!) {
+                                        updateProjectV2ItemFieldValue(input: $input) {
+                                            clientMutationId
+                                        }
+                                    }
+                                `, 
+                                {
+                                    input: {
+                                        projectId: process.env.PROJECT_ID,
+                                        fieldId: process.env.FIELD_ID,
+                                        itemId,
+                                        value: {
+                                            singleSelectOptionId: process.env.FIELD_VALUE_ID,
+                                        },
+                                    },
+                                }
+                            );
+                        };
+

@@ -82,7 +82,6 @@ const ContractWriteResultDumb = ({ result, onSettle, txInfo }: Props) => {
   return (
     <Box
       fontSize="sm"
-      pl={ 3 }
       mt={ 3 }
       alignItems="center"
       whiteSpace="pre-wrap"

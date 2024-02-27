@@ -6,10 +6,9 @@ import type { MetadataAttributes } from 'types/client/token';
 
 import parseMetadata from 'lib/token/parseMetadata';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import LinkExternal from 'ui/shared/LinkExternal';
 import TruncatedValue from 'ui/shared/TruncatedValue';
-
-import TokenInstanceDivider from './TokenInstanceDivider';
 
 interface Props {
   data?: TokenInstance;
@@ -34,6 +33,8 @@ const Item = ({ data, isLoading }: ItemProps) => {
           w="100%"
           overflow="hidden"
           href={ data.value }
+          fontSize="sm"
+          lineHeight={ 5 }
         >
           <TruncatedValue value={ data.value } w="calc(100% - 16px)"/>
         </LinkExternal>
@@ -71,7 +72,7 @@ const TokenInstanceMetadataInfo = ({ data, isLoading }: Props) => {
 
   return (
     <>
-      <TokenInstanceDivider/>
+      <DetailsInfoItemDivider/>
       { metadata?.name && (
         <DetailsInfoItem
           title="Name"

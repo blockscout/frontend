@@ -1,30 +1,8 @@
-/**
- * NOTE: This requires `@sentry/nextjs` version 7.3.0 or higher.
- *
- * NOTE: If using this with `next` version 12.2.0 or lower, uncomment the
- * penultimate line in `CustomErrorComponent`.
- *
- * This page is loaded by Nextjs:
- *  - on the server, when data-fetching methods throw or reject
- *  - on the client, when `getInitialProps` throws or rejects
- *  - on the client, when a React lifecycle method throws or rejects, and it's
- *    caught by the built-in Nextjs error boundary
- *
- * See:
- *  - https://nextjs.org/docs/basic-features/data-fetching/overview
- *  - https://nextjs.org/docs/api-reference/data-fetching/get-initial-props
- *  - https://reactjs.org/docs/error-boundaries.html
- */
-
-import * as Sentry from '@sentry/nextjs';
-import type { GetServerSideProps } from 'next';
 import NextErrorComponent from 'next/error';
 import React from 'react';
 
 import type { Props as ServerSidePropsCommon } from 'nextjs/getServerSideProps';
-import { base as getServerSidePropsCommon } from 'nextjs/getServerSideProps';
 
-import sentryConfig from 'configs/sentry/nextjs';
 import * as cookies from 'lib/cookies';
 
 type Props = ServerSidePropsCommon & {
@@ -37,16 +15,3 @@ const CustomErrorComponent = (props: Props) => {
 };
 
 export default CustomErrorComponent;
-
-export const getServerSideProps: GetServerSideProps = async(context) => {
-  Sentry.init(sentryConfig);
-
-  // In case this is running in a serverless function, await this in order to give Sentry
-  // time to send the error before the lambda exits
-  await Sentry.captureUnderscoreErrorException(context);
-
-  const commonSSPResult = await getServerSidePropsCommon(context);
-  const commonSSProps = 'props' in commonSSPResult ? commonSSPResult.props : undefined;
-
-  return { props: { ...commonSSProps, statusCode: context.res.statusCode } };
-};

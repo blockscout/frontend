@@ -1,11 +1,8 @@
-import _debounce from 'lodash/debounce';
 import React from 'react';
 
-import type { RoutedTab } from './types';
+import type { MenuButton, RoutedTab } from './types';
 
-import { menuButton } from './utils';
-
-export default function useAdaptiveTabs(tabs: Array<RoutedTab>, disabled?: boolean) {
+export default function useAdaptiveTabs(tabs: Array<RoutedTab | MenuButton>, disabled?: boolean) {
   // to avoid flickering we set initial value to 0
   // so there will be no displayed tabs initially
   const [ tabsCut, setTabsCut ] = React.useState(disabled ? tabs.length : 0);
@@ -23,17 +20,26 @@ export default function useAdaptiveTabs(tabs: Array<RoutedTab>, disabled?: boole
       return tabs.length;
     }
 
-    const { visibleNum } = tabWidths.slice(0, -1).reduce((result, item, index) => {
+    const { visibleNum } = tabWidths.slice(0, -1).reduce((result, item, index, array) => {
       if (!item) {
         return result;
       }
 
-      if (result.accWidth + item <= listWidth - rightSlotWidth - menuWidth) {
-        return { visibleNum: result.visibleNum + 1, accWidth: result.accWidth + item };
+      if (result.visibleNum < index) {
+        // means that we haven't increased visibleNum on the previous iteration, so there is no space left
+        // we skip now till the end of the loop
+        return result;
       }
 
-      if (result.accWidth + item <= listWidth - rightSlotWidth && index === tabWidths.length - 2) {
-        return { visibleNum: result.visibleNum + 1, accWidth: result.accWidth + item };
+      if (index === array.length - 1) {
+        // last element
+        if (result.accWidth + item < listWidth - rightSlotWidth) {
+          return { visibleNum: result.visibleNum + 1, accWidth: result.accWidth + item };
+        }
+      } else {
+        if (result.accWidth + item + menuWidth < listWidth - rightSlotWidth) {
+          return { visibleNum: result.visibleNum + 1, accWidth: result.accWidth + item };
+        }
       }
 
       return result;
@@ -42,16 +48,8 @@ export default function useAdaptiveTabs(tabs: Array<RoutedTab>, disabled?: boole
     return visibleNum;
   }, [ tabs.length, tabsRefs ]);
 
-  const tabsList = React.useMemo(() => {
-    if (disabled) {
-      return tabs;
-    }
-
-    return [ ...tabs, menuButton ];
-  }, [ tabs, disabled ]);
-
   React.useEffect(() => {
-    setTabsRefs(tabsList.map((_, index) => tabsRefs[index] || React.createRef()));
+    setTabsRefs(tabs.map((_, index) => tabsRefs[index] || React.createRef()));
     setTabsCut(disabled ? tabs.length : 0);
   // update refs only when disabled prop changes
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -63,29 +61,12 @@ export default function useAdaptiveTabs(tabs: Array<RoutedTab>, disabled?: boole
     }
   }, [ calculateCut, disabled, tabsRefs ]);
 
-  React.useEffect(() => {
-    if (tabsRefs.length === 0 || disabled) {
-      return;
-    }
-
-    const resizeHandler = _debounce(() => {
-      setTabsCut(calculateCut());
-    }, 100);
-    const resizeObserver = new ResizeObserver(resizeHandler);
-
-    resizeObserver.observe(document.body);
-    return function cleanup() {
-      resizeObserver.unobserve(document.body);
-    };
-  }, [ calculateCut, disabled, tabsRefs.length ]);
-
   return React.useMemo(() => {
     return {
       tabsCut,
-      tabsList,
       tabsRefs,
       listRef,
       rightSlotRef,
     };
-  }, [ tabsList, tabsCut, tabsRefs, listRef ]);
+  }, [ tabsCut, tabsRefs ]);
 }

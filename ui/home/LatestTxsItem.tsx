@@ -11,13 +11,14 @@ import React from 'react';
 import type { Transaction } from 'types/api/transaction';
 
 import config from 'configs/app';
-import rightArrowIcon from 'icons/arrows/east.svg';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import Icon from 'ui/shared/chakra/Icon';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import { currencyUnits } from 'lib/units';
+import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
-import TxStatus from 'ui/shared/TxStatus';
+import TxStatus from 'ui/shared/statusTag/TxStatus';
+import TxFeeStability from 'ui/shared/tx/TxFeeStability';
+import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 import TxType from 'ui/txs/TxType';
 
@@ -29,87 +30,81 @@ type Props = {
 const LatestTxsItem = ({ tx, isLoading }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
   const timeAgo = useTimeAgoIncrement(tx.timestamp || '0', true);
+  const columnNum = config.UI.views.tx.hiddenFields?.value && config.UI.views.tx.hiddenFields?.tx_fee ? 2 : 3;
 
   return (
-    <Box
+    <Grid
+      gridTemplateColumns={{
+        lg: columnNum === 2 ? '3fr minmax(auto, 180px)' : '3fr minmax(auto, 180px) 150px',
+        xl: columnNum === 2 ? '3fr minmax(auto, 250px)' : '3fr minmax(auto, 275px) 150px',
+      }}
+      gridGap={ 8 }
       width="100%"
       minW="700px"
       borderTop="1px solid"
       borderColor="divider"
       p={ 4 }
       _last={{ borderBottom: '1px solid', borderColor: 'divider' }}
-      display={{ base: 'none', lg: 'block' }}
+      display={{ base: 'none', lg: 'grid' }}
     >
-      <Grid width="100%" gridTemplateColumns="3fr 2fr 150px" gridGap={ 8 }>
-        <Flex overflow="hidden" w="100%">
-          <TxAdditionalInfo tx={ tx } isLoading={ isLoading }/>
-          <Box ml={ 3 } w="calc(100% - 40px)">
-            <HStack>
-              <TxType types={ tx.tx_types } isLoading={ isLoading }/>
-              <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
-            </HStack>
-            <Flex
-              mt={ 2 }
-              alignItems="center"
-            >
-              <TxEntity
-                isLoading={ isLoading }
-                hash={ tx.hash }
-                fontWeight="700"
-              />
-              { tx.timestamp && (
-                <Skeleton
-                  isLoaded={ !isLoading }
-                  color="text_secondary"
-                  fontWeight="400"
-                  fontSize="sm"
-                  flexShrink={ 0 }
-                  ml={ 2 }
-                >
-                  <span>{ timeAgo }</span>
-                </Skeleton>
-              ) }
-            </Flex>
-          </Box>
-        </Flex>
-        <Grid alignItems="center" templateColumns="24px auto">
-          <Icon
-            as={ rightArrowIcon }
-            boxSize={ 6 }
-            color="gray.500"
-            transform="rotate(90deg)"
-            isLoading={ isLoading }
-          />
-          <Box overflow="hidden" ml={ 1 }>
-            <AddressEntity
+      <Flex overflow="hidden" w="100%">
+        <TxAdditionalInfo tx={ tx } isLoading={ isLoading } my="3px"/>
+        <Box ml={ 3 } w="calc(100% - 40px)">
+          <HStack flexWrap="wrap" my="3px">
+            <TxType types={ tx.tx_types } isLoading={ isLoading }/>
+            <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
+            <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
+          </HStack>
+          <Flex
+            alignItems="center"
+            mt="7px"
+            mb="3px"
+          >
+            <TxEntity
               isLoading={ isLoading }
-              address={ tx.from }
-              fontSize="sm"
-              fontWeight="500"
-              mb={ 2 }
+              hash={ tx.hash }
+              fontWeight="700"
             />
-            { dataTo && (
-              <AddressEntity
-                isLoading={ isLoading }
-                address={ dataTo }
+            { tx.timestamp && (
+              <Skeleton
+                isLoaded={ !isLoading }
+                color="text_secondary"
+                fontWeight="400"
                 fontSize="sm"
-                fontWeight="500"
-              />
+                flexShrink={ 0 }
+                ml={ 2 }
+              >
+                <span>{ timeAgo }</span>
+              </Skeleton>
             ) }
-          </Box>
-        </Grid>
-        <Box>
-          <Skeleton isLoaded={ !isLoading } mb={ 2 }>
-            <Text as="span" whiteSpace="pre">{ config.chain.currency.symbol } </Text>
+          </Flex>
+        </Box>
+      </Flex>
+      <AddressFromTo
+        from={ tx.from }
+        to={ dataTo }
+        isLoading={ isLoading }
+        mode="compact"
+      />
+      <Flex flexDir="column">
+        { !config.UI.views.tx.hiddenFields?.value && (
+          <Skeleton isLoaded={ !isLoading } my="3px">
+            <Text as="span" whiteSpace="pre">{ currencyUnits.ether } </Text>
             <Text as="span" variant="secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() }</Text>
           </Skeleton>
-          <Skeleton isLoaded={ !isLoading }>
+        ) }
+        { !config.UI.views.tx.hiddenFields?.tx_fee && (
+          <Skeleton isLoaded={ !isLoading } display="flex" whiteSpace="pre" my="3px">
             <Text as="span">Fee </Text>
-            <Text as="span" variant="secondary">{ getValueWithUnit(tx.fee.value).dp(5).toFormat() }</Text>
+            { tx.stability_fee ? (
+              <TxFeeStability data={ tx.stability_fee } accuracy={ 5 } color="text_secondary" hideUsd/>
+            ) : (
+              <Text as="span" variant="secondary">{ tx.fee.value ? getValueWithUnit(tx.fee.value).dp(5).toFormat() : '-' }</Text>
+            ) }
           </Skeleton>
-        </Box>
-      </Grid>
-    </Box>
+        ) }
+      </Flex>
+    </Grid>
   );
 };
 

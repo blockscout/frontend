@@ -6,6 +6,7 @@ import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { ZERO } from 'lib/consts';
 import getCurrencyValue from 'lib/getCurrencyValue';
+import { currencyUnits } from 'lib/units';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import { getTokensTotalInfo } from '../utils/tokenUtils';
@@ -49,12 +50,12 @@ const TokenBalances = () => {
       <TokenBalancesItem
         name="Net Worth"
         value={ addressData?.exchange_rate ? `${ prefix }$${ totalUsd.toFormat(2) } USD` : 'N/A' }
-        isLoading={ addressQuery.isLoading || tokenQuery.isLoading }
+        isLoading={ addressQuery.isPending || tokenQuery.isPending }
       />
       <TokenBalancesItem
-        name={ `${ config.chain.currency.symbol } Balance` }
-        value={ (!nativeUsd.eq(ZERO) ? `$${ nativeUsd.toFormat(2) } USD | ` : '') + `${ nativeValue } ${ config.chain.currency.symbol }` }
-        isLoading={ addressQuery.isLoading || tokenQuery.isLoading }
+        name={ `${ currencyUnits.ether } Balance` }
+        value={ (!nativeUsd.eq(ZERO) ? `$${ nativeUsd.toFormat(2) } USD | ` : '') + `${ nativeValue } ${ currencyUnits.ether }` }
+        isLoading={ addressQuery.isPending || tokenQuery.isPending }
       />
       <TokenBalancesItem
         name="Tokens"
@@ -62,7 +63,7 @@ const TokenBalances = () => {
           `${ prefix }$${ tokensInfo.usd.toFormat(2) } USD ` +
           tokensNumText
         }
-        isLoading={ addressQuery.isLoading || tokenQuery.isLoading }
+        isLoading={ addressQuery.isPending || tokenQuery.isPending }
       />
     </Flex>
   );

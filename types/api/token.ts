@@ -1,7 +1,8 @@
 import type { TokenInfoApplication } from './account';
 import type { AddressParam } from './addressParams';
 
-export type TokenType = 'ERC-20' | 'ERC-721' | 'ERC-1155';
+export type NFTTokenType = 'ERC-721' | 'ERC-1155';
+export type TokenType = 'ERC-20' | NFTTokenType;
 
 export interface TokenInfo<T extends TokenType = TokenType> {
   address: string;
@@ -14,6 +15,11 @@ export interface TokenInfo<T extends TokenType = TokenType> {
   total_supply: string | null;
   icon_url: string | null;
   circulating_market_cap: string | null;
+  // bridged token fields
+  is_bridged?: boolean | null;
+  bridge_type?: string | null;
+  origin_chain_id?: string | null;
+  foreign_address?: string | null;
 }
 
 export interface TokenCounters {
@@ -26,9 +32,20 @@ export interface TokenHolders {
   next_page_params: TokenHoldersPagination | null;
 }
 
-export type TokenHolder = {
+export type TokenHolder = TokenHolderERC20ERC721 | TokenHolderERC1155;
+
+export type TokenHolderBase = {
   address: AddressParam;
   value: string;
+}
+
+export type TokenHolderERC20ERC721 = TokenHolderBase & {
+  token: TokenInfo<'ERC-20'> | TokenInfo<'ERC-721'>;
+}
+
+export type TokenHolderERC1155 = TokenHolderBase & {
+  token: TokenInfo<'ERC-1155'>;
+  token_id: string;
 }
 
 export type TokenHoldersPagination = {
@@ -45,7 +62,6 @@ export interface TokenInstance {
   external_app_url: string | null;
   metadata: Record<string, unknown> | null;
   owner: AddressParam | null;
-  token: TokenInfo;
 }
 
 export interface TokenInstanceTransfersCount {
@@ -62,3 +78,7 @@ export type TokenInventoryPagination = {
 }
 
 export type TokenVerifiedInfo = Omit<TokenInfoApplication, 'id' | 'status'>;
+
+export type TokenInventoryFilters = {
+  holder_address_hash?: string;
+}

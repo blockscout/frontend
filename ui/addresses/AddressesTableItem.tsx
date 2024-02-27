@@ -11,7 +11,7 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 type Props = {
   item: AddressesItem;
   index: number;
-  totalSupply: string;
+  totalSupply: BigNumber;
   hasPercentage: boolean;
   isLoading?: boolean;
 }
@@ -34,11 +34,12 @@ const AddressesTableItem = ({
           { index }
         </Skeleton>
       </Td>
-      <Td verticalAlign="middle">
+      <Td>
         <AddressEntity
           address={ item }
           isLoading={ isLoading }
           fontWeight={ 700 }
+          my="2px"
         />
       </Td>
       <Td pl={ 10 }>
@@ -47,7 +48,7 @@ const AddressesTableItem = ({
         )) : null }
       </Td>
       <Td isNumeric>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">
+        <Skeleton isLoaded={ !isLoading } display="inline-block" maxW="100%">
           <Text lineHeight="24px" as="span">{ addressBalanceChunks[0] }</Text>
           { addressBalanceChunks[1] && <Text lineHeight="24px" as="span">.</Text> }
           <Text lineHeight="24px" variant="secondary" as="span">{ addressBalanceChunks[1] }</Text>
@@ -55,7 +56,7 @@ const AddressesTableItem = ({
       </Td>
       { hasPercentage && (
         <Td isNumeric>
-          <Text lineHeight="24px">{ addressBalance.div(BigNumber(totalSupply)).multipliedBy(100).dp(8).toFormat() + '%' }</Text>
+          <Text lineHeight="24px">{ addressBalance.div(totalSupply).multipliedBy(100).dp(8).toFormat() + '%' }</Text>
         </Td>
       ) }
       <Td isNumeric>

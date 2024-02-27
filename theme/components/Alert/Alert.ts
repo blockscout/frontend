@@ -13,7 +13,7 @@ function getBg(props: StyleFunctionProps) {
   const { theme, colorScheme: c } = props;
   const darkBg = transparentize(`${ c }.200`, 0.16)(theme);
   return {
-    light: `colors.${ c }.100`,
+    light: `colors.${ c }.${ c === 'red' ? '50' : '100' }`,
     dark: darkBg,
   };
 }
@@ -56,10 +56,10 @@ const variantSubtle = definePartsStyle((props) => {
   return {
     container: {
       [$fg.variable]: colorScheme === 'gray' ? 'colors.blackAlpha.800' : `colors.${ colorScheme }.500`,
-      [$bg.variable]: colorScheme === 'gray' ? 'colors.gray.100' : bg.light,
+      [$bg.variable]: colorScheme === 'gray' ? 'colors.blackAlpha.100' : bg.light,
       _dark: {
         [$fg.variable]: colorScheme === 'gray' ? 'colors.whiteAlpha.800' : `colors.${ colorScheme }.200`,
-        [$bg.variable]: colorScheme === 'gray' ? 'colors.gray.800' : bg.dark,
+        [$bg.variable]: colorScheme === 'gray' ? 'colors.whiteAlpha.200' : bg.dark,
       },
     },
   };

@@ -3,16 +3,18 @@ import type { Route } from 'nextjs-routes';
 const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/': 'blockchain explorer',
   '/txs': 'transactions',
+  '/txs/kettle/[hash]': 'kettle %hash% transactions',
   '/tx/[hash]': 'transaction %hash%',
   '/blocks': 'blocks',
   '/block/[height_or_hash]': 'block %height_or_hash%',
   '/accounts': 'top accounts',
   '/address/[hash]': 'address details for %hash%',
   '/verified-contracts': 'verified contracts',
+  '/contract-verification': 'verify contract',
   '/address/[hash]/contract-verification': 'contract verification for %hash%',
   '/tokens': 'tokens',
   '/token/[hash]': '%symbol% token details',
-  '/token/[hash]/instance/[id]': 'token instance for %symbol%',
+  '/token/[hash]/instance/[id]': 'NFT instance',
   '/apps': 'apps marketplace',
   '/apps/[id]': '- %app_name%',
   '/stats': 'statistics',
@@ -29,11 +31,17 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/withdrawals': 'withdrawals',
   '/visualize/sol2uml': 'Solidity UML diagram',
   '/csv-export': 'export data to CSV',
-  '/l2-deposits': 'deposits (L1 > L2)',
-  '/l2-output-roots': 'output roots',
-  '/l2-txn-batches': 'Tx batches (L2 blocks)',
-  '/l2-withdrawals': 'withdrawals (L2 > L1)',
+  '/deposits': 'deposits (L1 > L2)',
+  '/output-roots': 'output roots',
+  '/batches': 'tx batches (L2 blocks)',
+  '/batches/[number]': 'L2 tx batch %number%',
+  '/ops': 'user operations',
+  '/op/[hash]': 'user operation %hash%',
   '/404': 'error - page not found',
+  '/name-domains': 'domains search and resolve',
+  '/name-domains/[name]': '%name% domain details',
+  '/validators': 'validators list',
+  '/gas-tracker': 'gas tracker',
 
   // service routes, added only to make typescript happy
   '/login': 'login',
@@ -48,5 +56,5 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
 export function make(pathname: Route['pathname']) {
   const template = TEMPLATE_MAP[pathname];
 
-  return `%network_name% ${ template } | Blockscout`;
+  return `%network_name% ${ template }`;
 }

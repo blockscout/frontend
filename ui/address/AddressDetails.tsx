@@ -1,16 +1,11 @@
 import { Box, Text, Grid } from '@chakra-ui/react';
-import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { Address as TAddress } from 'types/api/address';
-
-import type { ResourceError } from 'lib/api/resources';
-import useApiQuery from 'lib/api/useApiQuery';
+import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { ADDRESS_COUNTERS } from 'stubs/address';
 import AddressCounterItem from 'ui/address/details/AddressCounterItem';
-import AddressHeadingInfo from 'ui/shared/AddressHeadingInfo';
+import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -20,9 +15,11 @@ import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import AddressBalance from './details/AddressBalance';
 import AddressNameInfo from './details/AddressNameInfo';
 import TokenSelect from './tokenSelect/TokenSelect';
+import useAddressCountersQuery from './utils/useAddressCountersQuery';
+import type { AddressQuery } from './utils/useAddressQuery';
 
 interface Props {
-  addressQuery: UseQueryResult<TAddress, ResourceError>;
+  addressQuery: AddressQuery;
   scrollRef?: React.RefObject<HTMLDivElement>;
 }
 
@@ -31,12 +28,9 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
 
   const addressHash = getQueryParamString(router.query.hash);
 
-  const countersQuery = useApiQuery('address_counters', {
-    pathParams: { hash: addressHash },
-    queryOptions: {
-      enabled: Boolean(addressHash) && Boolean(addressQuery.data),
-      placeholderData: ADDRESS_COUNTERS,
-    },
+  const countersQuery = useAddressCountersQuery({
+    hash: addressHash,
+    addressQuery,
   });
 
   const handleCounterItemClick = React.useCallback(() => {
@@ -46,7 +40,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
     }, 500);
   }, [ scrollRef ]);
 
-  const errorData = React.useMemo(() => ({
+  const error404Data = React.useMemo(() => ({
     hash: addressHash || '',
     is_contract: false,
     implementation_name: null,
@@ -68,24 +62,23 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
   const is422Error = addressQuery.isError && 'status' in addressQuery.error && addressQuery.error.status === 422;
 
   if (addressQuery.isError && is422Error) {
-    throw Error('Address fetch error', { cause: addressQuery.error as unknown as Error });
+    throwOnResourceLoadError(addressQuery);
   }
 
   if (addressQuery.isError && !is404Error) {
     return <DataFetchAlert/>;
   }
 
-  const data = addressQuery.isError ? errorData : addressQuery.data;
+  const data = addressQuery.isError ? error404Data : addressQuery.data;
 
   if (!data) {
     return null;
   }
 
   return (
-    <Box>
-      <AddressHeadingInfo address={ data } token={ data.token } isLoading={ addressQuery.isPlaceholderData } isLinkDisabled/>
+    <>
+      { addressQuery.isDegradedData && <ServiceDegradationWarning isLoading={ addressQuery.isPlaceholderData } mb={ 6 }/> }
       <Grid
-        mt={ 8 }
         columnGap={ 8 }
         rowGap={{ base: 1, lg: 3 }}
         templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} overflow="hidden"
@@ -142,6 +135,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
               address={ data.hash }
               onClick={ handleCounterItemClick }
               isAddressQueryLoading={ addressQuery.isPlaceholderData }
+              isDegradedData={ addressQuery.isDegradedData }
             />
           ) :
             0 }
@@ -159,27 +153,31 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
                 address={ data.hash }
                 onClick={ handleCounterItemClick }
                 isAddressQueryLoading={ addressQuery.isPlaceholderData }
+                isDegradedData={ addressQuery.isDegradedData }
               />
             ) :
               0 }
           </DetailsInfoItem>
         ) }
-        <DetailsInfoItem
-          title="Gas used"
-          hint="Gas used by the address"
-          isLoading={ addressQuery.isPlaceholderData || countersQuery.isPlaceholderData }
-        >
-          { addressQuery.data ? (
-            <AddressCounterItem
-              prop="gas_usage_count"
-              query={ countersQuery }
-              address={ data.hash }
-              onClick={ handleCounterItemClick }
-              isAddressQueryLoading={ addressQuery.isPlaceholderData }
-            />
-          ) :
-            0 }
-        </DetailsInfoItem>
+        { countersQuery.data?.gas_usage_count && (
+          <DetailsInfoItem
+            title="Gas used"
+            hint="Gas used by the address"
+            isLoading={ addressQuery.isPlaceholderData || countersQuery.isPlaceholderData }
+          >
+            { addressQuery.data ? (
+              <AddressCounterItem
+                prop="gas_usage_count"
+                query={ countersQuery }
+                address={ data.hash }
+                onClick={ handleCounterItemClick }
+                isAddressQueryLoading={ addressQuery.isPlaceholderData }
+                isDegradedData={ addressQuery.isDegradedData }
+              />
+            ) :
+              0 }
+          </DetailsInfoItem>
+        ) }
         { data.has_validated_blocks && (
           <DetailsInfoItem
             title="Blocks validated"
@@ -193,6 +191,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
                 address={ data.hash }
                 onClick={ handleCounterItemClick }
                 isAddressQueryLoading={ addressQuery.isPlaceholderData }
+                isDegradedData={ addressQuery.isDegradedData }
               />
             ) :
               0 }
@@ -213,7 +212,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
           </DetailsInfoItem>
         ) }
       </Grid>
-    </Box>
+    </>
   );
 };
 

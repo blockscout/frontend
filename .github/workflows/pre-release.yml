@@ -1,0 +1,27 @@
+name: Pre-release
+
+on:
+    workflow_dispatch:
+    push:
+        tags:
+            - 'v[0-9]+.[0-9]+.[0-9]+-[a-z]+' # e.g v1.2.3-alpha
+
+jobs:
+    checks:
+        name: Run code checks
+        uses: "./.github/workflows/checks.yml"
+        secrets: inherit
+
+    e2e_tests:
+        name: Run e2e tests
+        needs: checks
+        uses: "./.github/workflows/e2e-tests.yml"
+        secrets: inherit
+
+    label_issues:
+        name: Add pre-release label to issues
+        uses: './.github/workflows/label-issues-in-release.yml'
+        with:
+            tag: ${{ github.ref_name }}
+            label_name: 'pre-release'
+        secrets: inherit

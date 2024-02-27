@@ -11,9 +11,10 @@ interface Props<T extends SmartContractMethod> {
   data: Array<T>;
   addressHash?: string;
   renderItemContent: (item: T, index: number, id: number) => React.ReactNode;
+  tab: string;
 }
 
-const ContractMethodsAccordion = <T extends SmartContractMethod>({ data, addressHash, renderItemContent }: Props<T>) => {
+const ContractMethodsAccordion = <T extends SmartContractMethod>({ data, addressHash, renderItemContent, tab }: Props<T>) => {
   const [ expandedSections, setExpandedSections ] = React.useState<Array<number>>(data.length === 1 ? [ 0 ] : []);
   const [ id, setId ] = React.useState(0);
 
@@ -79,6 +80,7 @@ const ContractMethodsAccordion = <T extends SmartContractMethod>({ data, address
             index={ index }
             addressHash={ addressHash }
             renderContent={ renderItemContent as (item: SmartContractMethod, index: number, id: number) => React.ReactNode }
+            tab={ tab }
           />
         )) }
       </Accordion>

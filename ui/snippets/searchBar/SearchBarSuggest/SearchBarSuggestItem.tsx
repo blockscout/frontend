@@ -12,6 +12,7 @@ import SearchBarSuggestItemLink from './SearchBarSuggestItemLink';
 import SearchBarSuggestLabel from './SearchBarSuggestLabel';
 import SearchBarSuggestToken from './SearchBarSuggestToken';
 import SearchBarSuggestTx from './SearchBarSuggestTx';
+import SearchBarSuggestUserOp from './SearchBarSuggestUserOp';
 
 interface Props {
   data: SearchResultItem;
@@ -38,6 +39,9 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) =>
       case 'block': {
         return route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.block_hash) } });
       }
+      case 'user_operation': {
+        return route({ pathname: '/op/[hash]', query: { hash: data.user_operation_hash } });
+      }
     }
   })();
 
@@ -59,6 +63,9 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) =>
       }
       case 'transaction': {
         return <SearchBarSuggestTx data={ data } searchTerm={ searchTerm } isMobile={ isMobile }/>;
+      }
+      case 'user_operation': {
+        return <SearchBarSuggestUserOp data={ data } searchTerm={ searchTerm } isMobile={ isMobile }/>;
       }
     }
   })();

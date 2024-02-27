@@ -85,6 +85,10 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
     return map;
   }, [ query.data, marketplaceApps.displayedApps ]);
 
+  React.useEffect(() => {
+    categoriesRefs.current = Array(Object.keys(itemsGroups).length).fill('').map((_, i) => categoriesRefs.current[i] || React.createRef());
+  }, [ itemsGroups ]);
+
   const scrollToCategory = React.useCallback((index: number) => () => {
     setTabIndex(index);
     scroller.scrollTo(`cat_${ index }`, {
@@ -98,7 +102,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
   const bgColor = useColorModeValue('white', 'gray.900');
 
   const content = (() => {
-    if (query.isLoading || marketplaceApps.isPlaceholderData) {
+    if (query.isPending || marketplaceApps.isPlaceholderData) {
       return <ContentLoader text="We are searching, please wait... " fontSize="sm"/>;
     }
 
@@ -106,11 +110,11 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
       return <Text>Something went wrong. Try refreshing the page or come back later.</Text>;
     }
 
-    if (!query.data || query.data.length === 0) {
+    const resultCategories = searchCategories.filter(cat => itemsGroups[cat.id]);
+
+    if (resultCategories.length === 0) {
       return <Text>No results found.</Text>;
     }
-
-    const resultCategories = searchCategories.filter(cat => itemsGroups[cat.id]);
 
     return (
       <>

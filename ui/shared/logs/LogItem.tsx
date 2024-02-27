@@ -43,7 +43,7 @@ const LogItem = ({ address, index, topics, data, decoded, type, tx_hash: txHash,
         pt: 0,
       }}
     >
-      { !decoded && type === 'transaction' && (
+      { !decoded && !address.is_verified && type === 'transaction' && (
         <GridItem colSpan={{ base: 1, lg: 2 }}>
           <Alert status="warning" display="inline-table" whiteSpace="normal">
             To see accurate decoded input data, the contract must be verified.{ space }

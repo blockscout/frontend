@@ -13,7 +13,7 @@ interface Props {
 }
 
 const BlocksTabSlot = ({ pagination }: Props) => {
-  const statsQuery = useApiQuery('homepage_stats', {
+  const statsQuery = useApiQuery('stats', {
     queryOptions: {
       placeholderData: HOMEPAGE_STATS,
     },

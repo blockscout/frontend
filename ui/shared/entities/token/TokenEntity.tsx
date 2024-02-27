@@ -1,4 +1,4 @@
-import type { As, ChakraProps } from '@chakra-ui/react';
+import type { ChakraProps } from '@chakra-ui/react';
 import { Image, Skeleton, chakra } from '@chakra-ui/react';
 import _omit from 'lodash/omit';
 import React from 'react';
@@ -29,7 +29,6 @@ const Link = chakra((props: LinkProps) => {
 });
 
 type IconProps = Pick<EntityProps, 'token' | 'isLoading' | 'iconSize' | 'noIcon' | 'className'> & {
-  asProp?: As;
   marginRight?: ChakraProps['marginRight'];
   boxSize?: ChakraProps['boxSize'];
 };
@@ -43,15 +42,17 @@ const Icon = (props: IconProps) => {
     marginRight: props.marginRight ?? 2,
     boxSize: props.boxSize ?? getIconProps(props.iconSize).boxSize,
     borderRadius: 'base',
+    flexShrink: 0,
   };
 
   if (props.isLoading) {
-    return <Skeleton { ...styles } className={ props.className } flexShrink={ 0 }/>;
+    return <Skeleton { ...styles } className={ props.className }/>;
   }
 
   return (
     <Image
       { ...styles }
+      borderRadius={ props.token.type === 'ERC-20' ? 'full' : 'base' }
       className={ props.className }
       src={ props.token.icon_url ?? undefined }
       alt={ `${ props.token.name || 'token' } logo` }
@@ -134,7 +135,7 @@ const Copy = (props: CopyProps) => {
 const Container = EntityBase.Container;
 
 export interface EntityProps extends EntityBase.EntityBaseProps {
-  token: Pick<TokenInfo, 'address' | 'icon_url' | 'name' | 'symbol'>;
+  token: Pick<TokenInfo, 'address' | 'icon_url' | 'name' | 'symbol' | 'type'>;
   noSymbol?: boolean;
   jointSymbol?: boolean;
   onlySymbol?: boolean;

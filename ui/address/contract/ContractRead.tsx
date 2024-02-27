@@ -1,11 +1,12 @@
 import { Alert, Flex } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React from 'react';
-import { useAccount } from 'wagmi';
 
 import type { SmartContractReadMethod, SmartContractQueryMethodRead } from 'types/api/contract';
 
 import useApiFetch from 'lib/api/useApiFetch';
 import useApiQuery from 'lib/api/useApiQuery';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import ContractMethodsAccordion from 'ui/address/contract/ContractMethodsAccordion';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
@@ -13,32 +14,33 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import ContractConnectWallet from './ContractConnectWallet';
 import ContractCustomAbiAlert from './ContractCustomAbiAlert';
 import ContractImplementationAddress from './ContractImplementationAddress';
-import ContractMethodCallable from './ContractMethodCallable';
 import ContractMethodConstant from './ContractMethodConstant';
 import ContractReadResult from './ContractReadResult';
+import ContractMethodForm from './methodForm/ContractMethodForm';
+import useWatchAccount from './useWatchAccount';
 
-interface Props {
-  addressHash?: string;
-  isProxy?: boolean;
-  isCustomAbi?: boolean;
-}
-
-const ContractRead = ({ addressHash, isProxy, isCustomAbi }: Props) => {
+const ContractRead = () => {
   const apiFetch = useApiFetch();
-  const { address: userAddress } = useAccount();
+  const account = useWatchAccount();
+  const router = useRouter();
 
-  const { data, isLoading, isError } = useApiQuery(isProxy ? 'contract_methods_read_proxy' : 'contract_methods_read', {
+  const tab = getQueryParamString(router.query.tab);
+  const addressHash = getQueryParamString(router.query.hash);
+  const isProxy = tab === 'read_proxy';
+  const isCustomAbi = tab === 'read_custom_methods';
+
+  const { data, isPending, isError } = useApiQuery(isProxy ? 'contract_methods_read_proxy' : 'contract_methods_read', {
     pathParams: { hash: addressHash },
     queryParams: {
       is_custom_abi: isCustomAbi ? 'true' : 'false',
-      from: userAddress,
+      from: account?.address,
     },
     queryOptions: {
       enabled: Boolean(addressHash),
     },
   });
 
-  const handleMethodFormSubmit = React.useCallback(async(item: SmartContractReadMethod, args: Array<string | Array<unknown>>) => {
+  const handleMethodFormSubmit = React.useCallback(async(item: SmartContractReadMethod, args: Array<unknown>) => {
     return apiFetch<'contract_method_query', SmartContractQueryMethodRead>('contract_method_query', {
       pathParams: { hash: addressHash },
       queryParams: {
@@ -50,18 +52,18 @@ const ContractRead = ({ addressHash, isProxy, isCustomAbi }: Props) => {
           args,
           method_id: item.method_id,
           contract_type: isProxy ? 'proxy' : 'regular',
-          from: userAddress,
+          from: account?.address,
         },
       },
     });
-  }, [ addressHash, apiFetch, isCustomAbi, isProxy, userAddress ]);
+  }, [ account?.address, addressHash, apiFetch, isCustomAbi, isProxy ]);
 
   const renderItemContent = React.useCallback((item: SmartContractReadMethod, index: number, id: number) => {
     if (item.error) {
       return <Alert status="error" fontSize="sm" wordBreak="break-word">{ item.error }</Alert>;
     }
 
-    if (item.outputs.some(({ value }) => value !== undefined && value !== null)) {
+    if (item.outputs?.some(({ value }) => value !== undefined && value !== null)) {
       return (
         <Flex flexDir="column" rowGap={ 1 }>
           { item.outputs.map((output, index) => <ContractMethodConstant key={ index } data={ output }/>) }
@@ -70,11 +72,12 @@ const ContractRead = ({ addressHash, isProxy, isCustomAbi }: Props) => {
     }
 
     return (
-      <ContractMethodCallable
+      <ContractMethodForm
         key={ id + '_' + index }
         data={ item }
         onSubmit={ handleMethodFormSubmit }
         resultComponent={ ContractReadResult }
+        methodType="read"
       />
     );
   }, [ handleMethodFormSubmit ]);
@@ -83,7 +86,7 @@ const ContractRead = ({ addressHash, isProxy, isCustomAbi }: Props) => {
     return <DataFetchAlert/>;
   }
 
-  if (isLoading) {
+  if (isPending) {
     return <ContentLoader/>;
   }
 
@@ -94,9 +97,9 @@ const ContractRead = ({ addressHash, isProxy, isCustomAbi }: Props) => {
   return (
     <>
       { isCustomAbi && <ContractCustomAbiAlert/> }
-      <ContractConnectWallet/>
+      { account && <ContractConnectWallet/> }
       { isProxy && <ContractImplementationAddress hash={ addressHash }/> }
-      <ContractMethodsAccordion data={ data } addressHash={ addressHash } renderItemContent={ renderItemContent }/>
+      <ContractMethodsAccordion data={ data } addressHash={ addressHash } renderItemContent={ renderItemContent } tab={ tab }/>
     </>
   );
 };

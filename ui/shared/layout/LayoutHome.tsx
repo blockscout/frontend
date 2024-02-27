@@ -2,22 +2,23 @@ import React from 'react';
 
 import type { Props } from './types';
 
-import IndexingAlertBlocks from 'ui/home/IndexingAlertBlocks';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
-import Header from 'ui/snippets/header/Header';
+import HeaderAlert from 'ui/snippets/header/HeaderAlert';
+import HeaderMobile from 'ui/snippets/header/HeaderMobile';
 
 import * as Layout from './components';
 
 const LayoutHome = ({ children }: Props) => {
   return (
     <Layout.Container>
+      <Layout.TopRow/>
+      <HeaderMobile isHomePage/>
       <Layout.MainArea>
         <Layout.SideBar/>
         <Layout.MainColumn
-          paddingTop={{ base: '88px', lg: 9 }}
+          paddingTop={{ base: 3, lg: 6 }}
         >
-          <IndexingAlertBlocks/>
-          <Header isHomePage/>
+          <HeaderAlert/>
           <AppErrorBoundary>
             { children }
           </AppErrorBoundary>

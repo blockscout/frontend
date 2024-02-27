@@ -5,7 +5,8 @@ import React from 'react';
 import type { AddressCoinBalanceHistoryResponse } from 'types/api/address';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
-import config from 'configs/app';
+import type { ResourceError } from 'lib/api/resources';
+import { currencyUnits } from 'lib/units';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -15,7 +16,7 @@ import AddressCoinBalanceListItem from './AddressCoinBalanceListItem';
 import AddressCoinBalanceTableItem from './AddressCoinBalanceTableItem';
 
 interface Props {
-  query: UseQueryResult<AddressCoinBalanceHistoryResponse> & {
+  query: UseQueryResult<AddressCoinBalanceHistoryResponse, ResourceError<unknown>> & {
     pagination: PaginationParams;
   };
 }
@@ -31,7 +32,7 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
               <Th width="20%">Block</Th>
               <Th width="20%">Txn</Th>
               <Th width="20%">Age</Th>
-              <Th width="20%" isNumeric pr={ 1 }>Balance { config.chain.currency.symbol }</Th>
+              <Th width="20%" isNumeric pr={ 1 }>Balance { currencyUnits.ether }</Th>
               <Th width="20%" isNumeric>Delta</Th>
             </Tr>
           </Thead>

@@ -1,4 +1,4 @@
-import { Icon, Text, Box, Input, InputGroup, InputLeftElement, useColorModeValue, Flex, Link } from '@chakra-ui/react';
+import { Text, Box, Input, InputGroup, InputLeftElement, useColorModeValue, Flex, Link } from '@chakra-ui/react';
 import _sumBy from 'lodash/sumBy';
 import type { ChangeEvent } from 'react';
 import React from 'react';
@@ -6,8 +6,7 @@ import React from 'react';
 import type { FormattedData } from './types';
 import type { TokenType } from 'types/api/token';
 
-import arrowIcon from 'icons/arrows/east.svg';
-import searchIcon from 'icons/search.svg';
+import IconSvg from 'ui/shared/IconSvg';
 
 import type { Sort } from '../utils/tokenUtils';
 import { sortTokenGroups, sortingFns } from '../utils/tokenUtils';
@@ -32,7 +31,7 @@ const TokenSelectMenu = ({ erc20sort, erc1155sort, filteredData, onInputChange, 
     <>
       <InputGroup size="xs" mb={ 5 }>
         <InputLeftElement >
-          <Icon as={ searchIcon } boxSize={ 4 } color={ searchIconColor }/>
+          <IconSvg name="search" boxSize={ 4 } color={ searchIconColor }/>
         </InputLeftElement>
         <Input
           paddingInlineStart="38px"
@@ -72,7 +71,7 @@ const TokenSelectMenu = ({ erc20sort, erc1155sort, filteredData, onInputChange, 
                 <Text mb={ 3 } color="gray.500" fontWeight={ 600 } fontSize="sm">{ type } tokens ({ numPrefix }{ tokenInfo.items.length })</Text>
                 { hasSort && (
                   <Link data-type={ type } onClick={ onSortClick } aria-label={ `Sort ${ type } tokens` }>
-                    <Icon as={ arrowIcon } boxSize={ 5 } transform={ arrowTransform } transitionDuration="faster"/>
+                    <IconSvg name="arrows/east" boxSize={ 5 } transform={ arrowTransform } transitionDuration="faster"/>
                   </Link>
                 ) }
               </Flex>

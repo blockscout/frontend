@@ -2,7 +2,7 @@ import type { Feature } from './types';
 
 import { getEnvValue } from '../utils';
 
-const projectToken = getEnvValue(process.env.NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN);
+const projectToken = getEnvValue('NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN');
 
 const title = 'Mixpanel analytics';
 

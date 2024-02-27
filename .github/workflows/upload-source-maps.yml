@@ -1,0 +1,48 @@
+name: Upload source maps to Sentry
+on:
+  workflow_call:
+  workflow_dispatch:
+
+env:
+    SENTRY_ORG: ${{ vars.SENTRY_ORG }}
+    SENTRY_PROJECT: ${{ vars.SENTRY_PROJECT }}
+    SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+    SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+
+jobs:
+    build_and_upload:
+        name: Build app with source maps and upload to Sentry
+        runs-on: ubuntu-latest
+        if: ${{ github.ref_type == 'tag' }}
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v4
+
+            - name: Setup node
+              uses: actions/setup-node@v4
+              with:
+                node-version: 20.11.0
+                cache: 'yarn'
+
+            - name: Cache node_modules
+              uses: actions/cache@v4
+              id: cache-node-modules
+              with:
+                path: |
+                  node_modules
+                key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+
+            - name: Install dependencies
+              if: steps.cache-node-modules.outputs.cache-hit != 'true'
+              run: yarn --frozen-lockfile --ignore-optional
+
+            - name: Make production build with source maps
+              run: yarn build
+              env:
+                NODE_ENV: production
+
+            - name: Inject Sentry debug ID
+              run: yarn sentry-cli sourcemaps inject ./.next
+
+            - name: Upload source maps to Sentry
+              run: yarn sentry-cli sourcemaps upload --release=${{ github.ref_name }} --url-prefix=~/_next/ --validate ./.next

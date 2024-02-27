@@ -5,12 +5,12 @@ import stripTrailingSlash from 'lib/stripTrailingSlash';
 import app from '../app';
 import { getEnvValue } from '../utils';
 
-const authUrl = stripTrailingSlash(getEnvValue(process.env.NEXT_PUBLIC_AUTH_URL) || app.baseUrl);
+const authUrl = stripTrailingSlash(getEnvValue('NEXT_PUBLIC_AUTH_URL') || app.baseUrl);
 
 const logoutUrl = (() => {
   try {
-    const envUrl = getEnvValue(process.env.NEXT_PUBLIC_LOGOUT_URL);
-    const auth0ClientId = getEnvValue(process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID);
+    const envUrl = getEnvValue('NEXT_PUBLIC_LOGOUT_URL');
+    const auth0ClientId = getEnvValue('NEXT_PUBLIC_AUTH0_CLIENT_ID');
     const returnUrl = authUrl + '/auth/logout';
 
     if (!envUrl || !auth0ClientId) {
@@ -31,7 +31,7 @@ const title = 'My account';
 
 const config: Feature<{ authUrl: string; logoutUrl: string }> = (() => {
   if (
-    getEnvValue(process.env.NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED) === 'true' &&
+    getEnvValue('NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED') === 'true' &&
     authUrl &&
     logoutUrl
   ) {

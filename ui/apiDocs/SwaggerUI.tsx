@@ -4,7 +4,8 @@ const SwaggerUIReact = dynamic(() => import('swagger-ui-react'), {
   ssr: false,
 });
 
-import { Box, useColorModeValue } from '@chakra-ui/react';
+import type { SystemStyleObject } from '@chakra-ui/react';
+import { Box, useColorModeValue, useToken } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
@@ -28,12 +29,16 @@ const NeverShowInfoPlugin = () => {
 };
 
 const SwaggerUI = () => {
-  const swaggerStyle = {
-    '.scheme-container, .opblock-tag': {
+  const mainColor = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
+  const borderColor = useToken('colors', 'divider');
+  const mainBgColor = useColorModeValue('blackAlpha.100', 'whiteAlpha.200');
+
+  const swaggerStyle: SystemStyleObject = {
+    '.swagger-ui .scheme-container, .opblock-tag': {
       display: 'none',
     },
     '.swagger-ui': {
-      color: useColorModeValue('blackAlpha.800', 'whiteAlpha.800'),
+      color: mainColor,
     },
     '.swagger-ui .opblock-summary-control:focus': {
       outline: 'none',
@@ -54,15 +59,70 @@ const SwaggerUI = () => {
     '.swagger-ui .wrapper': {
       padding: 0,
     },
+    '.swagger-ui .prop-type': {
+      color: useColorModeValue('blue.600', 'blue.400'),
+    },
+    '.swagger-ui .btn.try-out__btn': {
+      borderColor: useToken('colors', 'link'),
+      color: useToken('colors', 'link'),
+      borderRadius: 'sm',
+    },
+    '.swagger-ui .btn.try-out__btn:hover': {
+      boxShadow: 'none',
+      borderColor: useToken('colors', 'link_hovered'),
+      color: useToken('colors', 'link_hovered'),
+    },
+    '.swagger-ui .btn.try-out__btn.cancel': {
+      borderColor: useToken('colors', 'error'),
+      color: useToken('colors', 'error'),
+    },
+    '.swagger-ui .btn.try-out__btn.cancel:hover': {
+      borderColor: useColorModeValue('red.600', 'red.500'),
+      color: useColorModeValue('red.500', 'red.400'),
+    },
+
+    // MODELS
+    '.swagger-ui section.models': {
+      borderColor: borderColor,
+    },
+    '.swagger-ui section.models h4': {
+      color: mainColor,
+    },
+    '.swagger-ui section.models .model-container': {
+      bgColor: mainBgColor,
+    },
+    '.swagger-ui .model-title': {
+      wordBreak: 'break-all',
+      color: mainColor,
+    },
+    '.swagger-ui .model': {
+      color: mainColor,
+    },
+    '.swagger-ui .model-box-control:focus': {
+      outline: 'none',
+    },
+    '.swagger-ui .model-toggle': {
+      bgColor: useColorModeValue('transparent', 'whiteAlpha.700'),
+      borderRadius: 'sm',
+    },
+    '.swagger-ui .model .property.primitive': {
+      color: useToken('colors', 'text_secondary'),
+      wordBreak: 'break-all',
+    },
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const reqInterceptor = React.useCallback((req: any) => {
     if (!req.loadSpec) {
-      req.url = req.url.replace(DEFAULT_SERVER, config.api.host);
-      const url = new URL(req.url);
-      url.protocol = 'https:';
-      req.url = url.toString();
+      const newUrl = new URL(req.url.replace(DEFAULT_SERVER, config.api.host));
+
+      newUrl.protocol = config.api.protocol + ':';
+
+      if (config.api.port) {
+        newUrl.port = config.api.port;
+      }
+
+      req.url = newUrl.toString();
     }
     return req;
   }, []);

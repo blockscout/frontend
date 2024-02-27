@@ -8,14 +8,13 @@ import type { Block } from 'types/api/block';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import flameIcon from 'icons/flame.svg';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import { WEI } from 'lib/consts';
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
-import Icon from 'ui/shared/chakra/Icon';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
+import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/LinkInternal';
 import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization/Utilization';
@@ -25,6 +24,8 @@ interface Props {
   isLoading?: boolean;
   enableTimeIncrement?: boolean;
 }
+
+const isRollup = config.features.rollup.isEnabled;
 
 const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
   const totalReward = getBlockTotalReward(data);
@@ -49,7 +50,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
             <BlockEntity
               isLoading={ isLoading }
               number={ data.height }
-              hash={ data.type === 'reorg' ? data.hash : undefined }
+              hash={ data.type !== 'block' ? data.hash : undefined }
               noIcon
               fontSize="sm"
               lineHeight={ 5 }
@@ -64,12 +65,15 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           { data.size.toLocaleString() }
         </Skeleton>
       </Td>
-      <Td fontSize="sm">
-        <AddressEntity
-          address={ data.miner }
-          isLoading={ isLoading }
-        />
-      </Td>
+      { !config.UI.views.block.hiddenFields?.miner && (
+        <Td fontSize="sm">
+          <AddressEntity
+            address={ data.miner }
+            isLoading={ isLoading }
+            truncation="constant"
+          />
+        </Td>
+      ) }
       <Td isNumeric fontSize="sm">
         { data.tx_count > 0 ? (
           <Skeleton isLoaded={ !isLoading } display="inline-block">
@@ -82,7 +86,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           </Skeleton>
         ) : data.tx_count }
       </Td>
-      { !config.features.rollup.isEnabled && !config.UI.views.block.hiddenFields?.total_reward && (
+      { !isRollup && !config.UI.views.block.hiddenFields?.total_reward && (
         <Td fontSize="sm">
           <Skeleton isLoaded={ !isLoading } display="inline-block">{ BigNumber(data.gas_used || 0).toFormat() }</Skeleton>
           <Flex mt={ 2 }>
@@ -109,10 +113,10 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           { totalReward.toFixed(8) }
         </Skeleton>
       </Td>
-      { !config.features.rollup.isEnabled && !config.UI.views.block.hiddenFields?.burnt_fees && (
+      { !isRollup && !config.UI.views.block.hiddenFields?.burnt_fees && (
         <Td fontSize="sm">
-          <Flex alignItems="center" columnGap={ 1 }>
-            <Icon as={ flameIcon } boxSize={ 5 } color={ burntFeesIconColor } isLoading={ isLoading }/>
+          <Flex alignItems="center" columnGap={ 2 }>
+            <IconSvg name="flame" boxSize={ 5 } color={ burntFeesIconColor } isLoading={ isLoading }/>
             <Skeleton isLoaded={ !isLoading } display="inline-block">
               { burntFees.dividedBy(WEI).toFixed(8) }
             </Skeleton>

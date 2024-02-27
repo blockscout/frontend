@@ -8,6 +8,14 @@ export interface AddressTag {
 
 export type AddressTags = Array<AddressTag>
 
+export type AddressTagsResponse = {
+  items: AddressTags;
+  next_page_params: {
+    id: number;
+    items_count: number;
+  } | null;
+}
+
 export interface ApiKey {
   api_key: string;
   name: string;
@@ -48,6 +56,14 @@ export interface TransactionTag {
 
 export type TransactionTags = Array<TransactionTag>
 
+export type TransactionTagsResponse = {
+  items: TransactionTags;
+  next_page_params: {
+    id: number;
+    items_count: number;
+  } | null;
+}
+
 export type Transactions = Array<Transaction>
 
 export interface UserInfo {
@@ -77,6 +93,14 @@ export interface WatchlistAddressNew {
 }
 
 export type WatchlistAddresses = Array<WatchlistAddress>
+
+export type WatchlistResponse = {
+  items: WatchlistAddresses;
+  next_page_params: {
+    id: number;
+    items_count: number;
+  } | null;
+}
 
 export interface PublicTag {
   website: string;

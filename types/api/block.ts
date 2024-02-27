@@ -13,7 +13,7 @@ export interface Block {
   hash: string;
   parent_hash: string;
   difficulty: string;
-  total_difficulty: string;
+  total_difficulty: string | null;
   gas_used: string | null;
   gas_limit: string;
   nonce: string;
@@ -69,7 +69,7 @@ export type BlockWithdrawalsResponse = {
   next_page_params: {
     index: number;
     items_count: number;
-  };
+  } | null;
 }
 
 export type BlockWithdrawalsItem = {

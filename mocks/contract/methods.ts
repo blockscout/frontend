@@ -9,12 +9,12 @@ export const read: Array<SmartContractReadMethod> = [
   {
     constant: true,
     inputs: [
-      { internalType: 'address', name: '', type: 'address' },
+      { internalType: 'address', name: 'wallet', type: 'address' },
     ],
     method_id: '70a08231',
     name: 'FLASHLOAN_PREMIUM_TOTAL',
     outputs: [
-      { internalType: 'uint256', name: '', type: 'uint256' },
+      { internalType: 'uint256', name: 'amount', type: 'uint256' },
     ],
     payable: false,
     stateMutability: 'view',
@@ -73,12 +73,31 @@ export const read: Array<SmartContractReadMethod> = [
     stateMutability: 'view',
     type: 'function',
   },
+  {
+    inputs: [],
+    method_id: '69598efe',
+    name: 'totalPartitions',
+    constant: true,
+    payable: false,
+    outputs: [
+      {
+        type: 'bytes32[]',
+        name: 'bytes32[]',
+        value: [
+          '0x7265736572766564000000000000000000000000000000000000000000000000',
+          '0x6973737565640000000000000000000000000000000000000000000000000000',
+        ],
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
 ];
 
 export const readResultSuccess: SmartContractQueryMethodReadSuccess = {
   is_error: false,
   result: {
-    names: [ 'uint256' ],
+    names: [ 'amount' ],
     output: [
       { type: 'uint256', value: '42' },
     ],
@@ -113,6 +132,7 @@ export const write: Array<SmartContractWriteMethod> = [
     payable: false,
     stateMutability: 'nonpayable',
     type: 'function',
+    method_id: '0x01',
   },
   {
     constant: false,
@@ -127,6 +147,7 @@ export const write: Array<SmartContractWriteMethod> = [
     payable: true,
     stateMutability: 'payable',
     type: 'function',
+    method_id: '0x02',
   },
   {
     stateMutability: 'payable',
@@ -140,6 +161,7 @@ export const write: Array<SmartContractWriteMethod> = [
     payable: false,
     stateMutability: 'nonpayable',
     type: 'function',
+    method_id: '0x03',
   },
   {
     constant: false,
@@ -154,6 +176,7 @@ export const write: Array<SmartContractWriteMethod> = [
     payable: false,
     stateMutability: 'nonpayable',
     type: 'function',
+    method_id: '0x04',
   },
   {
     constant: false,
@@ -171,6 +194,7 @@ export const write: Array<SmartContractWriteMethod> = [
     payable: false,
     stateMutability: 'nonpayable',
     type: 'function',
+    method_id: '0x05',
   },
   {
     constant: false,
@@ -189,5 +213,6 @@ export const write: Array<SmartContractWriteMethod> = [
     payable: false,
     stateMutability: 'nonpayable',
     type: 'function',
+    method_id: '0x06',
   },
 ];

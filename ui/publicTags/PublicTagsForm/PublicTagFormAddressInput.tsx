@@ -1,13 +1,12 @@
 import type { InputProps } from '@chakra-ui/react';
-import { IconButton, Icon, Flex } from '@chakra-ui/react';
+import { IconButton, Flex } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 import type { ControllerRenderProps, Control, FieldError } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
-import MinusIcon from 'icons/minus.svg';
-import PlusIcon from 'icons/plus.svg';
 import { ADDRESS_REGEXP } from 'lib/validations/address';
 import AddressInput from 'ui/shared/AddressInput';
+import IconSvg from 'ui/shared/IconSvg';
 
 import type { Inputs } from './PublicTagsForm';
 
@@ -60,7 +59,7 @@ export default function PublicTagFormAction({ control, index, fieldsLength, erro
             w="30px"
             h="30px"
             onClick={ onRemoveFieldClick(index) }
-            icon={ <Icon as={ MinusIcon } w="20px" h="20px"/> }
+            icon={ <IconSvg name="minus" w="20px" h="20px"/> }
           />
         ) }
         { index === fieldsLength - 1 && fieldsLength < MAX_INPUTS_NUM && (
@@ -70,7 +69,7 @@ export default function PublicTagFormAction({ control, index, fieldsLength, erro
             w="30px"
             h="30px"
             onClick={ onAddFieldClick }
-            icon={ <Icon as={ PlusIcon } w="20px" h="20px"/> }
+            icon={ <IconSvg name="plus" w="20px" h="20px"/> }
           />
         ) }
       </Flex>

@@ -4,7 +4,7 @@ import { getEnvValue } from '../utils';
 import account from './account';
 import verifiedTokens from './verifiedTokens';
 
-const adminServiceApiHost = getEnvValue(process.env.NEXT_PUBLIC_ADMIN_SERVICE_API_HOST);
+const adminServiceApiHost = getEnvValue('NEXT_PUBLIC_ADMIN_SERVICE_API_HOST');
 
 const title = 'Address verification in "My account"';
 

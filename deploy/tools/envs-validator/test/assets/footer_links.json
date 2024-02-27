@@ -1,0 +1,28 @@
+[
+    {
+      "title": "Foo",
+      "links": [
+        {
+          "text": "Home",
+          "url": "https://example.com"
+        },
+        {
+          "text": "Brand",
+          "url": "https://example.com"
+        }
+      ]
+    },
+    {
+      "title": "Developers",
+      "links": [
+        {
+          "text": "Develop",
+          "url": "https://example.com"
+        },
+        {
+          "text": "Grants",
+          "url": "https://example.com"
+        }
+      ]
+    }
+  ]

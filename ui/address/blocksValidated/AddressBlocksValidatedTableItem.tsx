@@ -46,11 +46,13 @@ const AddressBlocksValidatedTableItem = (props: Props) => {
           <Skeleton isLoaded={ !props.isLoading } flexBasis="80px">
             { BigNumber(props.gas_used || 0).toFormat() }
           </Skeleton>
-          <Utilization
-            colorScheme="gray"
-            value={ BigNumber(props.gas_used || 0).dividedBy(BigNumber(props.gas_limit)).toNumber() }
-            isLoading={ props.isLoading }
-          />
+          { props.gas_used && props.gas_used !== '0' && (
+            <Utilization
+              colorScheme="gray"
+              value={ BigNumber(props.gas_used).dividedBy(BigNumber(props.gas_limit)).toNumber() }
+              isLoading={ props.isLoading }
+            />
+          ) }
         </Flex>
       </Td>
       { !config.UI.views.block.hiddenFields?.total_reward && (

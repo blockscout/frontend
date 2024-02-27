@@ -10,6 +10,7 @@ import config from 'configs/app';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
+import { currencyUnits } from 'lib/units';
 import { BLOCK } from 'stubs/block';
 import { generateListStub } from 'stubs/utils';
 import ActionBar from 'ui/shared/ActionBar';
@@ -95,7 +96,7 @@ const AddressBlocksValidated = ({ scrollRef }: Props) => {
               <Th width="16%">Txn</Th>
               <Th width="25%">Gas used</Th>
               { !config.UI.views.block.hiddenFields?.total_reward &&
-              <Th width="25%" isNumeric>Reward { config.chain.currency.symbol }</Th> }
+              <Th width="25%" isNumeric>Reward { currencyUnits.ether }</Th> }
             </Tr>
           </Thead>
           <Tbody>

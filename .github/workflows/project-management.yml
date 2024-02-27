@@ -1,0 +1,89 @@
+name: Project management
+on:
+    issues:
+        types: [ closed ]
+    pull_request:
+        types: [ review_requested ]
+
+jobs:
+    not_planned_issue:
+        name: Update task for not planned issue
+        if: ${{ github.event.issue && github.event.action == 'closed' && github.event.issue.state_reason == 'not_planned' }}
+        uses: './.github/workflows/update-project-cards.yml'
+        with:
+            project_name: ${{ vars.PROJECT_NAME }}
+            field_name: Status
+            field_value: Done
+            issues: "[${{ github.event.issue.number }}]"
+        secrets: inherit
+
+    completed_issue:
+        name: Update task for completed issue
+        if: ${{ github.event.issue && github.event.action == 'closed' && github.event.issue.state_reason == 'completed' }}
+        uses: './.github/workflows/update-project-cards.yml'
+        with:
+            project_name: ${{ vars.PROJECT_NAME }}
+            field_name: Status
+            field_value: Ready For Realease
+            issues: "[${{ github.event.issue.number }}]"
+        secrets: inherit
+
+    review_requested_issues:
+        name: Get issues linked to PR
+        runs-on: ubuntu-latest
+        if: ${{ github.event.pull_request && github.event.action == 'review_requested' }}
+        outputs:
+            issues: ${{ steps.linked_issues.outputs.result }}
+        steps:
+            - name: Fetching issues linked to pull request
+              id: linked_issues
+              uses: actions/github-script@v6
+              env:
+                PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
+              with:
+                script: |
+                    const response = await github.graphql(`
+                        query ($owner: String!, $repo: String!, $pr: Int!) {
+                            repository(owner: $owner, name: $repo) {
+                                pullRequest(number: $pr) {
+                                    number
+                                    title
+                                    closingIssuesReferences(first: 100) {
+                                        nodes {
+                                            number
+                                            title
+                                            closed
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        `, {
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        pr: Number(process.env.PULL_REQUEST_NUMBER),
+                    });
+
+                    const { repository: { pullRequest: { closingIssuesReferences } } } = response;
+                    const issues = closingIssuesReferences.nodes.map(({ number }) => number);
+
+                    if (!issues.length) {
+                        core.notice(`No linked issues found for pull request #${ process.env.PULL_REQUEST_NUMBER }`);
+                        return;
+                    }
+
+                    core.info(`Found ${ issues.length } issue(s): ${ issues.join(', ') || '-' }`);
+
+                    return issues;
+
+    review_requested_tasks:
+        name: Update status for issues in review
+        needs: [ review_requested_issues ]
+        if: ${{ needs.review_requested_issues.outputs.issues }}
+        uses: './.github/workflows/update-project-cards.yml'
+        secrets: inherit
+        with:
+            project_name: ${{ vars.PROJECT_NAME }}
+            field_name: Status
+            field_value: Review
+            issues: ${{ needs.review_requested_issues.outputs.issues }}
