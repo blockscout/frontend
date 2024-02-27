@@ -79,6 +79,8 @@ export type Transaction = {
   zkevm_batch_number?: number;
   zkevm_status?: typeof ZKEVM_L2_TX_STATUSES[number];
   zkevm_sequence_hash?: string;
+  // blob tx fields
+  blob_versioned_hashes?: Array<string>;
 }
 
 export const ZKEVM_L2_TX_STATUSES = [ 'Confirmed by Sequencer', 'L1 Confirmed' ];
