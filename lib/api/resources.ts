@@ -86,6 +86,7 @@ import type {
   TransactionsSorting,
   TransactionsResponseWithBlobs,
 } from 'types/api/transaction';
+import type { TxBlobs } from 'types/api/txBlobs';
 import type { TxInterpretationResponse } from 'types/api/txInterpretation';
 import type { TTxsFilters, TTxsWithBlobsFilters } from 'types/api/txsFilters';
 import type { TxStateChanges } from 'types/api/txStateChanges';
@@ -320,6 +321,10 @@ export const RESOURCES = {
     path: '/api/v2/transactions/:hash/state-changes',
     pathParams: [ 'hash' as const ],
     filterFields: [],
+  },
+  tx_blobs: {
+    path: '/api/v2/transactions/:hash/blobs',
+    pathParams: [ 'hash' as const ],
   },
   tx_interpretation: {
     path: '/api/v2/transactions/:hash/summary',
@@ -729,7 +734,7 @@ export type ResourceErrorAccount<T> = ResourceError<{ errors: T }>
 
 export type PaginatedResources = 'blocks' | 'block_txs' |
 'txs_validated' | 'txs_pending' | 'txs_with_blobs' | 'txs_watchlist' | 'txs_execution_node' |
-'tx_internal_txs' | 'tx_logs' | 'tx_token_transfers' | 'tx_state_changes' |
+'tx_internal_txs' | 'tx_logs' | 'tx_token_transfers' | 'tx_state_changes' | 'tx_blobs' |
 'addresses' |
 'address_txs' | 'address_internal_txs' | 'address_token_transfers' | 'address_blocks_validated' | 'address_coin_balance' |
 'search' |
@@ -789,6 +794,7 @@ Q extends 'tx_logs' ? LogsResponseTx :
 Q extends 'tx_token_transfers' ? TokenTransferResponse :
 Q extends 'tx_raw_trace' ? RawTracesResponse :
 Q extends 'tx_state_changes' ? TxStateChanges :
+Q extends 'tx_blobs' ? TxBlobs :
 Q extends 'tx_interpretation' ? TxInterpretationResponse :
 Q extends 'addresses' ? AddressesResponse :
 Q extends 'address' ? Address :
