@@ -50,7 +50,18 @@ class MyDocument extends Document {
           <link rel="apple-touch-icon" href="/favicon/apple-touch-icon-180x180.png"/>
           <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg"/>
 
-          <link rel="preload" as="image" href={ svgSprite.href }/>
+          { /* OG TAGS */ }
+          <meta property="og:title" content="Subspace Nova Explorer"/>
+          <meta
+            property="og:description"
+            // eslint-disable-next-line max-len
+            content="Subspace Labs Gemini Nova Block Explorer"
+          />
+          <meta property="og:image" content={ config.app.baseUrl + '/static/og.png' }/>
+          <meta property="og:site_name" content="Blockscout"/>
+          <meta property="og:type" content="website"/>
+          <meta name="twitter:card" content="summary_large_image"/>
+          <meta property="twitter:image" content={ config.app.baseUrl + '/static/og_twitter.png' }/>
         </Head>
         <body>
           <ColorModeScript initialColorMode={ theme.config.initialColorMode }/>
