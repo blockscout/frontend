@@ -28,6 +28,12 @@ const MarketplaceAppTopBar = ({ data, isLoading }: Props) => {
     return route({ pathname: '/apps' });
   }, [ appProps.referrer ]);
 
+  function getHostname(url: string | undefined) {
+    try {
+      return new URL(url || '').hostname;
+    } catch (err) {}
+  }
+
   return (
     <Flex alignItems="center" flexWrap="wrap" mb={{ base: 6, md: 2 }} rowGap={ 3 } columnGap={ 2 }>
       <Tooltip label="Back to dApps list" order={ 1 }>
@@ -35,7 +41,7 @@ const MarketplaceAppTopBar = ({ data, isLoading }: Props) => {
           <IconSvg name="arrows/east" boxSize={ 6 } transform="rotate(180deg)" margin="auto" color="gray.400"/>
         </LinkInternal>
       </Tooltip>
-      <Skeleton order={{ base: 4, md: 2 }} isLoaded={ !isLoading }>
+      <Skeleton width={{ base: '100%', md: 'auto' }} order={{ base: 4, md: 2 }} isLoaded={ !isLoading }>
         <MarketplaceAppAlert internalWallet={ data?.internalWallet }/>
       </Skeleton>
       <Skeleton order={{ base: 2, md: 3 }} isLoaded={ !isLoading }>
@@ -53,7 +59,7 @@ const MarketplaceAppTopBar = ({ data, isLoading }: Props) => {
         isLoading={ isLoading }
       >
         <chakra.span isTruncated>
-          { data?.url ? (new URL(data.url)).hostname : '' }
+          { getHostname(data?.url) }
         </chakra.span>
       </LinkExternal>
     </Flex>

@@ -11,6 +11,13 @@ const WebsiteLink = ({ url }: Props) => {
   if (!url) {
     return null;
   }
+
+  function getHostname(url: string) {
+    try {
+      return new URL(url).hostname;
+    } catch (err) {}
+  }
+
   return (
     <Link
       href={ url }
@@ -21,7 +28,7 @@ const WebsiteLink = ({ url }: Props) => {
       mt={ 3 }
     >
       <IconSvg name="link" boxSize={ 5 } color="text_secondary"/>
-      <span>{ (new URL(url)).hostname }</span>
+      <span>{ getHostname(url) }</span>
     </Link>
   );
 };

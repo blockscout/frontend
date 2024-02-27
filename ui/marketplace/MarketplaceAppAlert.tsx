@@ -10,7 +10,7 @@ type Props = {
   internalWallet: boolean | undefined;
 }
 
-const MarketplaceAppTopBar = ({ internalWallet }: Props) => {
+const MarketplaceAppAlert = ({ internalWallet }: Props) => {
   const { address } = useMarketplaceWallet();
   const isWalletConnected = Boolean(address);
 
@@ -34,7 +34,6 @@ const MarketplaceAppTopBar = ({ internalWallet }: Props) => {
   return (
     <Alert
       status={ message.status }
-      width={{ base: '100%', md: 'auto' }}
       borderRadius="base"
       px={ 3 }
       py={{ base: 3, md: 1.5 }}
@@ -53,4 +52,4 @@ const MarketplaceAppTopBar = ({ internalWallet }: Props) => {
   );
 };
 
-export default MarketplaceAppTopBar;
+export default MarketplaceAppAlert;
