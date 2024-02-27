@@ -35,7 +35,8 @@ const BlockDetailsBlobInfo = ({ data }: Props) => {
       { data.blob_gas_price && (
         <DetailsInfoItem
           title="Blob gas price"
-          hint="Blob gas price"
+          // eslint-disable-next-line max-len
+          hint="Price per unit of gas used for for blob deployment. Blob gas is independent of normal gas. Both gas prices can affect the priority of transaction execution."
         >
           <Text>{ BigNumber(data.blob_gas_price).dividedBy(WEI).toFixed() } { currencyUnits.ether } </Text>
           <Text variant="secondary" whiteSpace="pre">
@@ -46,7 +47,7 @@ const BlockDetailsBlobInfo = ({ data }: Props) => {
       { data.blob_gas_used && (
         <DetailsInfoItem
           title="Blob gas used"
-          hint="Blob gas used"
+          hint="Actual amount of gas used by the blobs in this block"
         >
           <Text>{ BigNumber(data.blob_gas_used).toFormat() }</Text>
         </DetailsInfoItem>
@@ -54,7 +55,7 @@ const BlockDetailsBlobInfo = ({ data }: Props) => {
       { !burntBlobFees.isEqualTo(ZERO) && (
         <DetailsInfoItem
           title="Blob burnt fees"
-          hint="Blob burnt fees"
+          hint={ `Amount of ${ currencyUnits.ether } used for blobs in this block` }
         >
           <IconSvg name="flame" boxSize={ 5 } color="gray.500" mr={ 2 }/>
           { burntBlobFees.dividedBy(WEI).toFixed() } { currencyUnits.ether }
@@ -70,7 +71,7 @@ const BlockDetailsBlobInfo = ({ data }: Props) => {
       { data.excess_blob_gas && (
         <DetailsInfoItem
           title="Excess blob gas"
-          hint="Excess blob gas"
+          hint="A running total of blob gas consumed in excess of the target, prior to the block."
         >
           <Text>{ BigNumber(data.excess_blob_gas).dividedBy(WEI).toFixed() } { currencyUnits.ether } </Text>
           <Text variant="secondary" whiteSpace="pre">

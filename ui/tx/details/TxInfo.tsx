@@ -507,7 +507,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
               { data.blob_gas_used && (
                 <DetailsInfoItem
                   title="Blob gas usage"
-                  hint="Blob gas usage"
+                  hint="Amount of gas used by the blobs in this transaction"
                 >
                   { BigNumber(data.blob_gas_used).toFormat() }
                 </DetailsInfoItem>
@@ -515,7 +515,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
               { (data.max_fee_per_blob_gas || data.blob_gas_price) && (
                 <DetailsInfoItem
                   title={ `Blob gas fees (${ currencyUnits.gwei })` }
-                  hint={ `Blob gas fees (${ currencyUnits.gwei })` }
+                  hint={ `Amount of ${ currencyUnits.ether } used for blobs in this transaction` }
                 >
                   { data.blob_gas_price && (
                     <Text fontWeight="600" as="span">{ BigNumber(data.blob_gas_price).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
