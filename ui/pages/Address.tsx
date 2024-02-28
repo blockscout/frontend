@@ -1,4 +1,4 @@
-import { Box, Flex, HStack } from '@chakra-ui/react';
+import { Box, Flex, HStack, useColorModeValue } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -68,6 +68,7 @@ const AddressPageContent = () => {
   });
 
   const isSafeAddress = useIsSafeAddress(!addressQuery.isPlaceholderData && addressQuery.data?.is_contract ? hash : undefined);
+  const safeIconColor = useColorModeValue('black', 'white');
 
   const contractTabs = useContractTabs(addressQuery.data);
 
@@ -207,6 +208,7 @@ const AddressPageContent = () => {
         fontWeight={ 500 }
         noLink
         isSafeAddress={ isSafeAddress }
+        iconColor={ isSafeAddress ? safeIconColor : undefined }
         mr={ 4 }
       />
       { !isLoading && addressQuery.data?.is_contract && addressQuery.data.token &&

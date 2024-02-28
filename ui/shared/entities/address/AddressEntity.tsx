@@ -28,7 +28,7 @@ const Link = chakra((props: LinkProps) => {
   );
 });
 
-type IconProps = Pick<EntityProps, 'address' | 'isLoading' | 'iconSize' | 'noIcon' | 'isSafeAddress'> & {
+type IconProps = Pick<EntityProps, 'address' | 'isLoading' | 'iconSize' | 'noIcon' | 'isSafeAddress' | 'iconColor'> & {
   asProp?: As;
 };
 
