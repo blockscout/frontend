@@ -27,7 +27,7 @@ const BlockDetailsBlobInfo = ({ data }: Props) => {
   }
 
   const burntBlobFees = BigNumber(data.burnt_blob_fees || 0);
-  const txFees = BigNumber(data.tx_fees || 0);
+  const blobFees = BigNumber(data.blob_gas_price || 0).multipliedBy(BigNumber(data.blob_gas_used || 0));
 
   return (
     <>
@@ -59,10 +59,10 @@ const BlockDetailsBlobInfo = ({ data }: Props) => {
         >
           <IconSvg name="flame" boxSize={ 5 } color="gray.500" mr={ 2 }/>
           { burntBlobFees.dividedBy(WEI).toFixed() } { currencyUnits.ether }
-          { !txFees.isEqualTo(ZERO) && (
+          { !blobFees.isEqualTo(ZERO) && (
             <Tooltip label="Blob burnt fees / Txn fees * 100%">
               <div>
-                <Utilization ml={ 4 } value={ burntBlobFees.dividedBy(txFees).toNumber() }/>
+                <Utilization ml={ 4 } value={ burntBlobFees.dividedBy(blobFees).toNumber() }/>
               </div>
             </Tooltip>
           ) }
