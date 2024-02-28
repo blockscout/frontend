@@ -1,4 +1,4 @@
-import type { SmartContractQueryMethodRead, SmartContractMethod } from 'types/api/contract';
+import type { SmartContractQueryMethodRead, SmartContractMethod, SmartContractReadMethod } from 'types/api/contract';
 
 import type { ResourceError } from 'lib/api/resources';
 
@@ -12,4 +12,4 @@ export type ContractMethodReadResult = SmartContractQueryMethodRead | ResourceEr
 export type ContractMethodWriteResult = Error | { hash: `0x${ string }` | undefined } | undefined;
 
 export type ContractMethodCallResult<T extends SmartContractMethod> =
-    T extends { method_id: string } ? ContractMethodReadResult : ContractMethodWriteResult;
+    T extends SmartContractReadMethod ? ContractMethodReadResult : ContractMethodWriteResult;

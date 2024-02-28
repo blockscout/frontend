@@ -57,7 +57,7 @@ B. Pre-defined configuration:
 
 1. Optionally, clone `.env.example` file into `configs/envs/.env.secrets`. Fill it with necessary secrets for integrating with [external services](./ENVS.md#external-services-configuration). Include only secrets your need.
 2. Choose one of the predefined configurations located in the `/configs/envs` folder.
-3. Start your local dev server using the `yarn dev:<config_name>` command.
+3. Start your local dev server using the `yarn dev:preset <config_preset_name>` command.
 4. Open your browser and navigate to the URL provided in the command line output (by default, it is `http://localhost:3000`).
 
 

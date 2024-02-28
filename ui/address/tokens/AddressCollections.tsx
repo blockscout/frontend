@@ -33,7 +33,7 @@ const AddressCollections = ({ collectionsQuery, address, hasActiveFilters }: Pro
     </ActionBar>
   );
 
-  const content = data?.items ? data?.items.map((item, index) => {
+  const content = data?.items ? data?.items.filter((item) => item.token_instances.length > 0).map((item, index) => {
     const collectionUrl = route({
       pathname: '/token/[hash]',
       query: {
