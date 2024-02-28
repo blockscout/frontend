@@ -31,14 +31,15 @@ const AddressTxsFilter = ({ onFilterChange, defaultFilter, isActive, isLoading }
           isActive={ isOpen || isActive }
           isLoading={ isInitialLoading }
           onClick={ onToggle }
+          appliedFiltersNum={ isActive ? 1 : 0 }
           as="div"
         />
       </MenuButton>
       <MenuList zIndex={ 2 }>
         <MenuOptionGroup defaultValue={ defaultFilter || 'all' } title="Address" type="radio" onChange={ onFilterChange }>
           <MenuItemOption value="all">All</MenuItemOption>
-          <MenuItemOption value="from">From</MenuItemOption>
-          <MenuItemOption value="to">To</MenuItemOption>
+          <MenuItemOption value="from">Outgoing transactions</MenuItemOption>
+          <MenuItemOption value="to">Incoming transactions</MenuItemOption>
         </MenuOptionGroup>
       </MenuList>
     </Menu>

@@ -7,14 +7,16 @@ import type { AddressCounters } from 'types/api/address';
 
 import { route } from 'nextjs-routes';
 
+import type { ResourceError } from 'lib/api/resources';
 import LinkInternal from 'ui/shared/LinkInternal';
 
 interface Props {
   prop: keyof AddressCounters;
-  query: UseQueryResult<AddressCounters>;
+  query: UseQueryResult<AddressCounters, ResourceError<unknown>>;
   address: string;
   onClick: () => void;
   isAddressQueryLoading: boolean;
+  isDegradedData: boolean;
 }
 
 const PROP_TO_TAB = {
@@ -23,7 +25,7 @@ const PROP_TO_TAB = {
   validations_count: 'blocks_validated',
 };
 
-const AddressCounterItem = ({ prop, query, address, onClick, isAddressQueryLoading }: Props) => {
+const AddressCounterItem = ({ prop, query, address, onClick, isAddressQueryLoading, isDegradedData }: Props) => {
   if (query.isPlaceholderData || isAddressQueryLoading) {
     return <Skeleton h={ 5 } w="80px" borderRadius="full"/>;
   }
@@ -43,6 +45,11 @@ const AddressCounterItem = ({ prop, query, address, onClick, isAddressQueryLoadi
       if (data === '0') {
         return <span>0</span>;
       }
+
+      if (isDegradedData) {
+        return <span>{ Number(data).toLocaleString() }</span>;
+      }
+
       return (
         <LinkInternal href={ route({ pathname: '/address/[hash]', query: { hash: address, tab: PROP_TO_TAB[prop] } }) } onClick={ onClick }>
           { Number(data).toLocaleString() }

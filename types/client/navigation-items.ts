@@ -2,8 +2,10 @@ import type React from 'react';
 
 import type { Route } from 'nextjs-routes';
 
+import type { IconName } from 'ui/shared/IconSvg';
+
 type NavIconOrComponent = {
-  icon?: React.FunctionComponent<React.SVGAttributes<SVGElement>>;
+  icon?: IconName;
 } | {
   iconComponent?: React.FC<{size?: number}>;
 };
@@ -17,7 +19,8 @@ export type NavItemInternal = NavItemCommon & {
   isActive?: boolean;
 }
 
-export type NavItemExternal = NavItemCommon & {
+export type NavItemExternal = {
+  text: string;
   url: string;
 }
 
@@ -27,3 +30,8 @@ export type NavGroupItem = NavItemCommon & {
   isActive?: boolean;
   subItems: Array<NavItem> | Array<Array<NavItem>>;
 }
+
+import type { ArrayElement } from '../utils';
+
+export const NAVIGATION_LINK_IDS = [ 'rpc_api', 'eth_rpc_api' ] as const;
+export type NavigationLinkId = ArrayElement<typeof NAVIGATION_LINK_IDS>;

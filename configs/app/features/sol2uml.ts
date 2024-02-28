@@ -2,7 +2,7 @@ import type { Feature } from './types';
 
 import { getEnvValue } from '../utils';
 
-const apiEndpoint = getEnvValue(process.env.NEXT_PUBLIC_VISUALIZE_API_HOST);
+const apiEndpoint = getEnvValue('NEXT_PUBLIC_VISUALIZE_API_HOST');
 
 const title = 'Solidity to UML diagrams';
 

@@ -1,14 +1,24 @@
-import { LightMode } from '@chakra-ui/react';
-import { test, expect } from '@playwright/experimental-ct-react';
+import { test as base, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
+import { buildExternalAssetFilePath } from 'configs/app/utils';
 import * as textAdMock from 'mocks/ad/textAd';
 import { apps as appsMock } from 'mocks/apps/apps';
 import * as searchMock from 'mocks/search/index';
+import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
+import * as app from 'playwright/utils/app';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
+import * as configs from 'playwright/utils/configs';
 
 import SearchBar from './SearchBar';
+
+const test = base.extend({
+  context: contextWithEnvs([
+    { name: 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', value: '' },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ]) as any,
+});
 
 test.beforeEach(async({ page }) => {
   await page.route('https://request-global.czilladx.com/serve/native.php?z=19260bf627546ab7242', (route) => route.fulfill({
@@ -56,6 +66,7 @@ test('search by contract name  +@mobile +@dark-mode', async({ mount, page }) => 
     status: 200,
     body: JSON.stringify([
       searchMock.contract1,
+      searchMock.address2,
     ]),
   }));
 
@@ -83,9 +94,7 @@ test('search by name homepage +@dark-mode', async({ mount, page }) => {
 
   await mount(
     <TestApp>
-      <LightMode>
-        <SearchBar isHomepage/>
-      </LightMode>
+      <SearchBar isHomepage/>
     </TestApp>,
   );
   await page.getByPlaceholder(/search/i).type('o');
@@ -140,6 +149,8 @@ test('search by block number +@mobile', async({ mount, page }) => {
     status: 200,
     body: JSON.stringify([
       searchMock.block1,
+      searchMock.block2,
+      searchMock.block3,
     ]),
   }));
 
@@ -151,7 +162,7 @@ test('search by block number +@mobile', async({ mount, page }) => {
   await page.getByPlaceholder(/search/i).type(String(searchMock.block1.block_number));
   await page.waitForResponse(API_URL);
 
-  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 600 } });
 });
 
 test('search by block hash +@mobile', async({ mount, page }) => {
@@ -180,6 +191,35 @@ test('search by tx hash +@mobile', async({ mount, page }) => {
     status: 200,
     body: JSON.stringify([
       searchMock.tx1,
+    ]),
+  }));
+
+  await mount(
+    <TestApp>
+      <SearchBar/>
+    </TestApp>,
+  );
+  await page.getByPlaceholder(/search/i).type(searchMock.tx1.tx_hash);
+  await page.waitForResponse(API_URL);
+
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
+});
+
+const testWithUserOps = base.extend({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  context: contextWithEnvs(configs.featureEnvs.userOps) as any,
+});
+
+testWithUserOps('search by user op hash +@mobile', async({ mount, page }) => {
+  await page.route('https://request-global.czilladx.com/serve/native.php?z=19260bf627546ab7242', (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(textAdMock.duck),
+  }));
+  const API_URL = buildApiUrl('quick_search') + `?q=${ searchMock.tx1.tx_hash }`;
+  await page.route(API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify([
+      searchMock.userOp1,
     ]),
   }));
 
@@ -258,13 +298,20 @@ test('recent keywords suggest +@mobile', async({ mount, page }) => {
     </TestApp>,
   );
   // eslint-disable-next-line max-len
-  await page.evaluate(() => window.localStorage.setItem('recent_search_keywords', '["10x1d311959270e0bbdc1fc7bc6dbd8ad645c4dd8d6aa32f5f89d54629a924f112b","0x1d311959270e0bbdc1fc7bc6dbd8ad645c4dd8d6aa32f5f89d54629a924f112b","usd","bob"]'));
+  await page.evaluate(() => window.localStorage.setItem('recent_search_keywords', '["10x2d311959270e0bbdc1fc7bc6dbd8ad645c4dd8d6aa32f5f89d54629a924f112b","0x1d311959270e0bbdc1fc7bc6dbd8ad645c4dd8d6aa32f5f89d54629a924f112b","usd","bob"]'));
   await page.getByPlaceholder(/search/i).click();
+  await page.getByText('0x1d311959270e0bbdc1fc7bc6db').isVisible();
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
 });
 
-test.describe('with apps', () => {
-  const MARKETPLACE_CONFIG_URL = 'https://localhost:3000/marketplace-config.json';
+base.describe('with apps', () => {
+  const MARKETPLACE_CONFIG_URL = app.url + buildExternalAssetFilePath('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', 'https://marketplace-config.json') || '';
+  const test = base.extend({
+    context: contextWithEnvs([
+      { name: 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', value: MARKETPLACE_CONFIG_URL },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ]) as any,
+  });
 
   test('default view +@mobile', async({ mount, page }) => {
     const API_URL = buildApiUrl('quick_search') + '?q=o';

@@ -8,9 +8,11 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import getValueWithUnit from 'lib/getValueWithUnit';
+import { currencyUnits } from 'lib/units';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import LinkInternal from 'ui/shared/LinkInternal';
 import TextSeparator from 'ui/shared/TextSeparator';
+import TxFeeStability from 'ui/shared/tx/TxFeeStability';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
 const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
@@ -30,19 +32,29 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
   return (
     <>
       <Heading as="h4" size="sm" mb={ 6 }>Additional info </Heading>
-      <Box { ...sectionProps } mb={ 4 }>
-        <Text { ...sectionTitleProps }>Transaction fee</Text>
-        <Flex>
-          <CurrencyValue
-            value={ tx.fee.value }
-            currency={ config.chain.currency.symbol }
-            exchangeRate={ tx.exchange_rate }
-            accuracyUsd={ 2 }
-            flexWrap="wrap"
-            rowGap={ 0 }
-          />
-        </Flex>
-      </Box>
+      { !config.UI.views.tx.hiddenFields?.tx_fee && (
+        <Box { ...sectionProps } mb={ 4 }>
+          { (tx.stability_fee !== undefined || tx.fee.value !== null) && (
+            <>
+              <Text { ...sectionTitleProps }>Transaction fee</Text>
+              { tx.stability_fee ? (
+                <TxFeeStability data={ tx.stability_fee }/>
+              ) : (
+                <Flex>
+                  <CurrencyValue
+                    value={ tx.fee.value }
+                    currency={ config.UI.views.tx.hiddenFields?.fee_currency ? '' : currencyUnits.ether }
+                    exchangeRate={ tx.exchange_rate }
+                    accuracyUsd={ 2 }
+                    flexWrap="wrap"
+                    rowGap={ 0 }
+                  />
+                </Flex>
+              ) }
+            </>
+          ) }
+        </Box>
+      ) }
       { tx.gas_used !== null && (
         <Box { ...sectionProps } mb={ 4 }>
           <Text { ...sectionTitleProps }>Gas limit & usage by transaction</Text>
@@ -54,9 +66,10 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
           </Flex>
         </Box>
       ) }
-      { (tx.base_fee_per_gas !== null || tx.max_fee_per_gas !== null || tx.max_priority_fee_per_gas !== null) && (
+      { !config.UI.views.tx.hiddenFields?.gas_fees &&
+        (tx.base_fee_per_gas !== null || tx.max_fee_per_gas !== null || tx.max_priority_fee_per_gas !== null) && (
         <Box { ...sectionProps } mb={ 4 }>
-          <Text { ...sectionTitleProps }>Gas fees (Gwei)</Text>
+          <Text { ...sectionTitleProps }>Gas fees ({ currencyUnits.gwei })</Text>
           { tx.base_fee_per_gas !== null && (
             <Box>
               <Text as="span" fontWeight="500">Base: </Text>

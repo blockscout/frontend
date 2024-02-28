@@ -1,6 +1,7 @@
 import type { GetServerSideProps } from 'next';
 
 import config from 'configs/app';
+const rollupFeature = config.features.rollup;
 
 export type Props = {
   cookies: string;
@@ -8,7 +9,9 @@ export type Props = {
   id: string;
   height_or_hash: string;
   hash: string;
+  number: string;
   q: string;
+  name: string;
 }
 
 export const base: GetServerSideProps<Props> = async({ req, query }) => {
@@ -19,7 +22,9 @@ export const base: GetServerSideProps<Props> = async({ req, query }) => {
       id: query.id?.toString() || '',
       hash: query.hash?.toString() || '',
       height_or_hash: query.height_or_hash?.toString() || '',
+      number: query.number?.toString() || '',
       q: query.q?.toString() || '',
+      name: query.name?.toString() || '',
     },
   };
 };
@@ -44,8 +49,8 @@ export const verifiedAddresses: GetServerSideProps<Props> = async(context) => {
   return account(context);
 };
 
-export const beaconChain: GetServerSideProps<Props> = async(context) => {
-  if (!config.features.beaconChain.isEnabled) {
+export const deposits: GetServerSideProps<Props> = async(context) => {
+  if (!(rollupFeature.isEnabled && (rollupFeature.type === 'optimistic' || rollupFeature.type === 'shibarium'))) {
     return {
       notFound: true,
     };
@@ -54,8 +59,41 @@ export const beaconChain: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-export const L2: GetServerSideProps<Props> = async(context) => {
+export const withdrawals: GetServerSideProps<Props> = async(context) => {
+  if (
+    !config.features.beaconChain.isEnabled &&
+    !(rollupFeature.isEnabled && (rollupFeature.type === 'optimistic' || rollupFeature.type === 'shibarium'))
+  ) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
+export const rollup: GetServerSideProps<Props> = async(context) => {
   if (!config.features.rollup.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
+export const optimisticRollup: GetServerSideProps<Props> = async(context) => {
+  if (!(rollupFeature.isEnabled && rollupFeature.type === 'optimistic')) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
+export const zkEvmRollup: GetServerSideProps<Props> = async(context) => {
+  if (!(rollupFeature.isEnabled && rollupFeature.type === 'zkEvm')) {
     return {
       notFound: true,
     };
@@ -96,6 +134,66 @@ export const csvExport: GetServerSideProps<Props> = async(context) => {
 
 export const stats: GetServerSideProps<Props> = async(context) => {
   if (!config.features.stats.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
+export const suave: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.suave.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
+export const nameService: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.nameService.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
+export const accounts: GetServerSideProps<Props> = async(context) => {
+  if (config.UI.views.address.hiddenViews?.top_accounts) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
+export const userOps: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.userOps.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
+export const validators: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.validators.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
+export const gasTracker: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.gasTracker.isEnabled) {
     return {
       notFound: true,
     };

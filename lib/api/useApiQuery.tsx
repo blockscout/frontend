@@ -23,12 +23,15 @@ export default function useApiQuery<R extends ResourceName, E = unknown>(
 ) {
   const apiFetch = useApiFetch();
 
-  return useQuery<ResourcePayload<R>, ResourceError<E>, ResourcePayload<R>>(
-    getResourceKey(resource, { pathParams, queryParams }),
-    async() => {
+  return useQuery<ResourcePayload<R>, ResourceError<E>, ResourcePayload<R>>({
+    // eslint-disable-next-line @tanstack/query/exhaustive-deps
+    queryKey: getResourceKey(resource, { pathParams, queryParams }),
+    queryFn: async() => {
       // all errors and error typing is handled by react-query
       // so error response will never go to the data
       // that's why we are safe here to do type conversion "as Promise<ResourcePayload<R>>"
       return apiFetch(resource, { pathParams, queryParams, fetchParams }) as Promise<ResourcePayload<R>>;
-    }, queryOptions);
+    },
+    ...queryOptions,
+  });
 }

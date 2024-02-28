@@ -5,14 +5,14 @@ import { getEnvValue } from '../utils';
 const title = 'Beacon chain';
 
 const config: Feature<{ currency: { symbol: string } }> = (() => {
-  if (getEnvValue(process.env.NEXT_PUBLIC_HAS_BEACON_CHAIN) === 'true') {
+  if (getEnvValue('NEXT_PUBLIC_HAS_BEACON_CHAIN') === 'true') {
     return Object.freeze({
       title,
       isEnabled: true,
       currency: {
         symbol:
-          getEnvValue(process.env.NEXT_PUBLIC_BEACON_CHAIN_CURRENCY_SYMBOL) ||
-          getEnvValue(process.env.NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL) ||
+          getEnvValue('NEXT_PUBLIC_BEACON_CHAIN_CURRENCY_SYMBOL') ||
+          getEnvValue('NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL') ||
           '', // maybe we need some other default value here
       },
     });

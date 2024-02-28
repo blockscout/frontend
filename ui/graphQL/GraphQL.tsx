@@ -20,18 +20,19 @@ const GraphQL = () => {
 
   const { colorMode } = useColorMode();
 
+  const graphqlTheme = window.localStorage.getItem('graphiql:theme');
+
   // colorModeState used as a key to re-render GraphiQL conponent after color mode change
-  const [ colorModeState, setColorModeState ] = React.useState(colorMode);
+  const [ colorModeState, setColorModeState ] = React.useState(graphqlTheme);
 
   React.useEffect(() => {
     if (isBrowser()) {
-      const graphqlTheme = window.localStorage.getItem('graphiql:theme');
       if (graphqlTheme !== colorMode) {
         window.localStorage.setItem('graphiql:theme', colorMode);
         setColorModeState(colorMode);
       }
     }
-  }, [ colorMode ]);
+  }, [ colorMode, graphqlTheme ]);
 
   if (!feature.isEnabled) {
     return null;

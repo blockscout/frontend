@@ -12,6 +12,7 @@ interface MethodOption {
 }
 
 export interface FormFieldsFlattenSourceCode {
+  address: string;
   method: MethodOption;
   is_yul: boolean;
   name: string | undefined;
@@ -26,6 +27,7 @@ export interface FormFieldsFlattenSourceCode {
 }
 
 export interface FormFieldsStandardInput {
+  address: string;
   method: MethodOption;
   name: string;
   compiler: Option | null;
@@ -35,12 +37,14 @@ export interface FormFieldsStandardInput {
 }
 
 export interface FormFieldsSourcify {
+  address: string;
   method: MethodOption;
   sources: Array<File>;
   contract_index?: Option;
 }
 
 export interface FormFieldsMultiPartFile {
+  address: string;
   method: MethodOption;
   compiler: Option | null;
   evm_version: Option | null;
@@ -51,6 +55,7 @@ export interface FormFieldsMultiPartFile {
 }
 
 export interface FormFieldsVyperContract {
+  address: string;
   method: MethodOption;
   name: string;
   evm_version: Option | null;
@@ -60,6 +65,7 @@ export interface FormFieldsVyperContract {
 }
 
 export interface FormFieldsVyperMultiPartFile {
+  address: string;
   method: MethodOption;
   compiler: Option | null;
   evm_version: Option | null;
@@ -68,6 +74,7 @@ export interface FormFieldsVyperMultiPartFile {
 }
 
 export interface FormFieldsVyperStandardInput {
+  address: string;
   method: MethodOption;
   compiler: Option | null;
   sources: Array<File>;

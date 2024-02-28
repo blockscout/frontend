@@ -6,6 +6,8 @@ export interface ChartTransactionItem {
 export interface ChartMarketItem {
   date: string;
   closing_price: string;
+  market_cap?: string;
+  tvl?: string | null;
 }
 
 export interface ChartTransactionResponse {

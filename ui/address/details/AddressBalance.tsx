@@ -8,6 +8,7 @@ import config from 'configs/app';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
+import { currencyUnits } from 'lib/units';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 
@@ -66,7 +67,7 @@ const AddressBalance = ({ data, isLoading }: Props) => {
   return (
     <DetailsInfoItem
       title="Balance"
-      hint={ `Address balance in ${ config.chain.currency.symbol }. Doesn't include ERC20, ERC721 and ERC1155 tokens` }
+      hint={ `Address balance in ${ currencyUnits.ether }. Doesn't include ERC20, ERC721 and ERC1155 tokens` }
       flexWrap="nowrap"
       alignItems="flex-start"
       isLoading={ isLoading }
@@ -75,7 +76,7 @@ const AddressBalance = ({ data, isLoading }: Props) => {
         value={ data.coin_balance || '0' }
         exchangeRate={ data.exchange_rate }
         decimals={ String(config.chain.currency.decimals) }
-        currency={ config.chain.currency.symbol }
+        currency={ currencyUnits.ether }
         accuracyUsd={ 2 }
         accuracy={ 8 }
         flexWrap="wrap"

@@ -26,6 +26,7 @@ const VerifiedContractsFilter = ({ onChange, defaultValue, isActive }: Props) =>
       <MenuButton>
         <FilterButton
           isActive={ isOpen || isActive }
+          appliedFiltersNum={ isActive ? 1 : 0 }
           onClick={ onToggle }
           as="div"
         />

@@ -1,6 +1,13 @@
+import dotenv from 'dotenv';
+import { TextEncoder, TextDecoder } from 'util';
+
 import fetchMock from 'jest-fetch-mock';
 
 fetchMock.enableMocks();
+
+const envs = dotenv.config({ path: './configs/envs/.env.jest' });
+
+Object.assign(global, { TextDecoder, TextEncoder });
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -14,6 +21,11 @@ Object.defineProperty(window, 'matchMedia', {
     removeEventListener: jest.fn(),
     dispatchEvent: jest.fn(),
   })),
+});
+
+Object.defineProperty(window, '__envs', {
+  writable: true,
+  value: envs.parsed || {},
 });
 
 // eslint-disable-next-line no-console

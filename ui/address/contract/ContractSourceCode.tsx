@@ -13,6 +13,7 @@ import LinkInternal from 'ui/shared/LinkInternal';
 import CodeEditor from 'ui/shared/monaco/CodeEditor';
 import formatFilePath from 'ui/shared/monaco/utils/formatFilePath';
 
+import ContractCodeIdes from './ContractCodeIdes';
 import ContractExternalLibraries from './ContractExternalLibraries';
 
 const SOURCE_CODE_OPTIONS = [
@@ -116,6 +117,8 @@ const ContractSourceCode = ({ address, implementationAddress }: Props) => {
     <CopyToClipboard text={ activeContractData[0].source_code } isLoading={ isLoading } ml={{ base: 'auto', lg: diagramLink ? '0' : 'auto' }}/> :
     null;
 
+  const ides = sourceType === 'secondary' ? <ContractCodeIdes hash={ implementationAddress }/> : <ContractCodeIdes hash={ address }/>;
+
   const handleSelectChange = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
     setSourceType(event.target.value as SourceCodeType);
   }, []);
@@ -188,6 +191,7 @@ const ContractSourceCode = ({ address, implementationAddress }: Props) => {
         { editorSourceTypeSelector }
         { externalLibraries }
         { diagramLink }
+        { ides }
         { copyToClipboard }
       </Flex>
       { content }

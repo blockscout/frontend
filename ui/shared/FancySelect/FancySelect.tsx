@@ -11,6 +11,7 @@ import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
 interface CommonProps {
   error?: Merge<FieldError, FieldErrorsImpl<Option>> | undefined;
+  placeholderIcon?: React.ReactNode;
 }
 
 interface RegularSelectProps extends SelectProps<Option, boolean, GroupBase<Option>>, CommonProps {
@@ -59,6 +60,7 @@ const FancySelect = (props: Props, ref: React.LegacyRef<HTMLDivElement>) => {
       />
       <InputPlaceholder
         text={ typeof props.placeholder === 'string' ? props.placeholder : '' }
+        icon={ props.placeholderIcon }
         error={ props.error }
         isFancy
       />

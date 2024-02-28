@@ -2,10 +2,8 @@ import { Flex } from '@chakra-ui/react';
 import { test as base, expect, devices } from '@playwright/experimental-ct-react';
 import React from 'react';
 
-import * as coinBalanceMock from 'mocks/address/coinBalanceHistory';
 import * as tokensMock from 'mocks/address/tokens';
 import { tokenInfoERC20a } from 'mocks/tokens/tokenInfo';
-import * as socketServer from 'playwright/fixtures/socketServer';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
 import MockAddressPage from 'ui/address/testUtils/MockAddressPage';
@@ -174,77 +172,4 @@ base('long values', async({ mount, page }) => {
   await page.getByRole('button', { name: /select/i }).click();
 
   await expect(page).toHaveScreenshot({ clip: CLIPPING_AREA });
-});
-
-test.describe('socket', () => {
-  const testWithSocket = test.extend<socketServer.SocketServerFixture>({
-    createSocket: socketServer.createSocket,
-  });
-  testWithSocket.describe.configure({ mode: 'serial' });
-
-  testWithSocket('new item after token balance update', async({ page, mount, createSocket }) => {
-    await mount(
-      <TestApp withSocket>
-        <MockAddressPage>
-          <Flex>
-            <TokenSelect/>
-          </Flex>
-        </MockAddressPage>
-      </TestApp>,
-      { hooksConfig },
-    );
-
-    await page.route(TOKENS_ERC20_API_URL, async(route) => route.fulfill({
-      status: 200,
-      body: JSON.stringify({
-        items: [
-          ...tokensMock.erc20List.items,
-          tokensMock.erc20d,
-        ],
-      }),
-    }), { times: 1 });
-
-    const socket = await createSocket();
-    const channel = await socketServer.joinChannel(socket, 'addresses:1');
-    socketServer.sendMessage(socket, channel, 'token_balance', {
-      block_number: 1,
-    });
-
-    const button = page.getByRole('button', { name: /select/i });
-    const text = await button.innerText();
-    expect(text).toContain('10');
-  });
-
-  testWithSocket('new item after coin balance update', async({ page, mount, createSocket }) => {
-    await mount(
-      <TestApp withSocket>
-        <MockAddressPage>
-          <Flex>
-            <TokenSelect/>
-          </Flex>
-        </MockAddressPage>
-      </TestApp>,
-      { hooksConfig },
-    );
-
-    await page.route(TOKENS_ERC20_API_URL, async(route) => route.fulfill({
-      status: 200,
-      body: JSON.stringify({
-        items: [
-          ...tokensMock.erc20List.items,
-          tokensMock.erc20d,
-        ],
-      }),
-    }), { times: 1 });
-
-    const socket = await createSocket();
-    const channel = await socketServer.joinChannel(socket, 'addresses:1');
-    socketServer.sendMessage(socket, channel, 'coin_balance', {
-      coin_balance: coinBalanceMock.base,
-    });
-
-    const button = page.getByRole('button', { name: /select/i });
-    const text = await button.innerText();
-    expect(text).toContain('10');
-  });
 });

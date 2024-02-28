@@ -106,7 +106,8 @@ const AddressForm: React.FC<Props> = ({ data, onSuccess, setAlertVisible, isAdd 
     }
   }
 
-  const { mutate } = useMutation(updateWatchlist, {
+  const { mutate } = useMutation({
+    mutationFn: updateWatchlist,
     onSuccess: async() => {
       await onSuccess();
       setPending(false);

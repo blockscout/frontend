@@ -8,6 +8,7 @@ import { route } from 'nextjs-routes';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { isInternalItem } from 'lib/hooks/useNavItems';
+import IconSvg from 'ui/shared/IconSvg';
 
 import NavLinkIcon from './NavLinkIcon';
 import useColors from './useColors';
@@ -18,9 +19,10 @@ type Props = {
   isCollapsed?: boolean;
   px?: string | number;
   className?: string;
+  onClick?: () => void;
 }
 
-const NavLink = ({ item, isCollapsed, px, className }: Props) => {
+const NavLink = ({ item, isCollapsed, px, className, onClick }: Props) => {
   const isMobile = useIsMobile();
   const colors = useColors();
 
@@ -41,6 +43,12 @@ const NavLink = ({ item, isCollapsed, px, className }: Props) => {
       px={ px || { base: 3, lg: isExpanded ? 3 : '15px', xl: isCollapsed ? '15px' : 3 } }
       aria-label={ `${ item.text } link` }
       whiteSpace="nowrap"
+      onClick={ onClick }
+      _hover={{
+        '& *': {
+          color: 'link_hovered',
+        },
+      }}
     >
       <Tooltip
         label={ item.text }
@@ -54,7 +62,8 @@ const NavLink = ({ item, isCollapsed, px, className }: Props) => {
         <HStack spacing={ 3 } overflow="hidden">
           <NavLinkIcon item={ item }/>
           <Text { ...styleProps.textProps }>
-            { item.text }
+            <span>{ item.text }</span>
+            { !isInternalLink && <IconSvg name="arrows/north-east" boxSize={ 4 } color="text_secondary" verticalAlign="middle"/> }
           </Text>
         </HStack>
       </Tooltip>

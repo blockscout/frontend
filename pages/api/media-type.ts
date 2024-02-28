@@ -22,7 +22,7 @@ export default async function mediaTypeHandler(req: NextApiRequest, res: NextApi
         return 'video';
       }
 
-      if (contentType === 'text/html') {
+      if (contentType?.startsWith('text/html')) {
         return 'html';
       }
 

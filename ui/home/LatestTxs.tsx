@@ -4,6 +4,7 @@ import React from 'react';
 import { route } from 'nextjs-routes';
 
 import useApiQuery from 'lib/api/useApiQuery';
+import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useNewTxsSocket from 'lib/hooks/useNewTxsSocket';
 import { TX } from 'stubs/tx';
@@ -42,15 +43,17 @@ const LatestTransactions = () => {
             />
           ))) }
         </Box>
-        <Box mb={ 4 } display={{ base: 'none', lg: 'block' }}>
-          { data.slice(0, txsCount).map(((tx, index) => (
-            <LatestTxsItem
-              key={ tx.hash + (isPlaceholderData ? index : '') }
-              tx={ tx }
-              isLoading={ isPlaceholderData }
-            />
-          ))) }
-        </Box>
+        <AddressHighlightProvider>
+          <Box mb={ 4 } display={{ base: 'none', lg: 'block' }}>
+            { data.slice(0, txsCount).map(((tx, index) => (
+              <LatestTxsItem
+                key={ tx.hash + (isPlaceholderData ? index : '') }
+                tx={ tx }
+                isLoading={ isPlaceholderData }
+              />
+            ))) }
+          </Box>
+        </AddressHighlightProvider>
         <Flex justifyContent="center">
           <LinkInternal fontSize="sm" href={ txsUrl }>View all transactions</LinkInternal>
         </Flex>

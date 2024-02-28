@@ -3,6 +3,7 @@ import React from 'react';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
+import { currencyUnits } from 'lib/units';
 import ChartWidget from 'ui/shared/chart/ChartWidget';
 
 interface Props {
@@ -10,7 +11,7 @@ interface Props {
 }
 
 const AddressCoinBalanceChart = ({ addressHash }: Props) => {
-  const { data, isLoading, isError } = useApiQuery('address_coin_balance_chart', {
+  const { data, isPending, isError } = useApiQuery('address_coin_balance_chart', {
     pathParams: { hash: addressHash },
   });
 
@@ -24,9 +25,9 @@ const AddressCoinBalanceChart = ({ addressHash }: Props) => {
       isError={ isError }
       title="Balances"
       items={ items }
-      isLoading={ isLoading }
+      isLoading={ isPending }
       h="300px"
-      units={ config.chain.currency.symbol }
+      units={ currencyUnits.ether }
     />
   );
 };

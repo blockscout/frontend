@@ -1,6 +1,5 @@
 import {
   Table,
-  Thead,
   Tbody,
   Tr,
   Th,
@@ -9,6 +8,8 @@ import React from 'react';
 
 import type { WatchlistAddress } from 'types/api/account';
 
+import TheadSticky from 'ui/shared/TheadSticky';
+
 import WatchlistTableItem from './WatchListTableItem';
 
 interface Props {
@@ -16,19 +17,20 @@ interface Props {
   isLoading?: boolean;
   onEditClick: (data: WatchlistAddress) => void;
   onDeleteClick: (data: WatchlistAddress) => void;
+  top: number;
 }
 
-const WatchlistTable = ({ data, isLoading, onDeleteClick, onEditClick }: Props) => {
+const WatchlistTable = ({ data, isLoading, onDeleteClick, onEditClick, top }: Props) => {
   return (
     <Table variant="simple" minWidth="600px">
-      <Thead>
+      <TheadSticky top={ top }>
         <Tr>
           <Th width="70%">Address</Th>
           <Th width="30%">Private tag</Th>
           <Th width="160px">Email notification</Th>
           <Th width="108px"></Th>
         </Tr>
-      </Thead>
+      </TheadSticky>
       <Tbody>
         { data?.map((item, index) => (
           <WatchlistTableItem

@@ -3,11 +3,32 @@ import type { Counter, HomeStats, StatsChartsSection } from 'types/api/stats';
 export const HOMEPAGE_STATS: HomeStats = {
   average_block_time: 14346,
   coin_price: '1807.68',
+  coin_price_change_percentage: 42,
   gas_prices: {
-    average: 0.1,
-    fast: 0.11,
-    slow: 0.1,
+    average: {
+      fiat_price: '1.01',
+      price: 20.41,
+      time: 12283,
+      base_fee: 2.22222,
+      priority_fee: 12.424242,
+    },
+    fast: {
+      fiat_price: '1.26',
+      price: 25.47,
+      time: 9321,
+      base_fee: 4.44444,
+      priority_fee: 22.242424,
+    },
+    slow: {
+      fiat_price: '0.97',
+      price: 19.55,
+      time: 24543,
+      base_fee: 1.11111,
+      priority_fee: 7.8909,
+    },
   },
+  gas_price_updated_at: '2022-11-11T11:09:49.051171Z',
+  gas_prices_update_in: 300000,
   gas_used_today: '0',
   market_cap: '0',
   network_utilization_percentage: 22.56,
@@ -17,6 +38,7 @@ export const HOMEPAGE_STATS: HomeStats = {
   total_gas_used: '0',
   total_transactions: '193823272',
   transactions_today: '0',
+  tvl: '1767425.102766552',
 };
 
 export const STATS_CHARTS_SECTION: StatsChartsSection = {
@@ -58,5 +80,6 @@ export const STATS_COUNTER: Counter = {
   id: 'stub',
   value: '9074405',
   title: 'Placeholder Counter',
+  description: 'Placeholder description',
   units: '',
 };

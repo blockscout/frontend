@@ -3,9 +3,11 @@ import { test as base, expect } from '@playwright/experimental-ct-react';
 import type { Locator } from '@playwright/test';
 import React from 'react';
 
+import { buildExternalAssetFilePath } from 'configs/app/utils';
 import * as cookies from 'lib/cookies';
 import authFixture from 'playwright/fixtures/auth';
-import contextWithEnvs, { createContextWithEnvs } from 'playwright/fixtures/contextWithEnvs';
+import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
+import createContextWithStorage from 'playwright/fixtures/createContextWithStorage';
 import TestApp from 'playwright/TestApp';
 import * as app from 'playwright/utils/app';
 import * as configs from 'playwright/utils/configs';
@@ -20,7 +22,7 @@ const hooksConfig = {
   },
 };
 
-const FEATURED_NETWORKS_URL = 'https://localhost:3000/featured-networks.json';
+const FEATURED_NETWORKS_URL = app.url + buildExternalAssetFilePath('NEXT_PUBLIC_FEATURED_NETWORKS', 'https://localhost:3000/config.json') || '';
 
 const test = base.extend({
   context: contextWithEnvs([
@@ -60,7 +62,7 @@ test.describe('no auth', () => {
 base.describe('auth', () => {
   const test = base.extend({
     context: async({ browser }, use) => {
-      const context = await createContextWithEnvs(browser, [
+      const context = await createContextWithStorage(browser, [
         { name: 'NEXT_PUBLIC_FEATURED_NETWORKS', value: FEATURED_NETWORKS_URL },
       ]);
       authFixture(context);
@@ -109,7 +111,8 @@ test.describe('with tooltips', () => {
       { hooksConfig },
     );
 
-    await page.locator('svg[aria-label="Expand/Collapse menu"]').click();
+    await component.locator('header').hover();
+    await page.locator('div[aria-label="Expand/Collapse menu"]').click();
     await page.locator('a[aria-label="Tokens link"]').hover();
 
     await expect(component).toHaveScreenshot();
@@ -148,7 +151,7 @@ test.describe('with submenu', () => {
 base.describe('cookie set to false', () => {
   const test = base.extend({
     context: async({ browser }, use) => {
-      const context = await createContextWithEnvs(browser, [
+      const context = await createContextWithStorage(browser, [
         { name: 'NEXT_PUBLIC_FEATURED_NETWORKS', value: FEATURED_NETWORKS_URL },
       ]);
       context.addCookies([ { name: cookies.NAMES.NAV_BAR_COLLAPSED, value: 'false', domain: app.domain, path: '/' } ]);
@@ -188,7 +191,7 @@ base.describe('cookie set to false', () => {
 base.describe('cookie set to true', () => {
   const test = base.extend({
     context: async({ browser }, use) => {
-      const context = await createContextWithEnvs(browser, [
+      const context = await createContextWithStorage(browser, [
         { name: 'NEXT_PUBLIC_FEATURED_NETWORKS', value: FEATURED_NETWORKS_URL },
       ]);
       context.addCookies([ { name: cookies.NAMES.NAV_BAR_COLLAPSED, value: 'true', domain: 'localhost', path: '/' } ]);
@@ -209,5 +212,39 @@ base.describe('cookie set to true', () => {
 
     const networkMenu = component.locator('button[aria-label="Network menu"]');
     expect(await networkMenu.isVisible()).toBe(false);
+  });
+});
+
+test('hover +@dark-mode', async({ mount }) => {
+  const component = await mount(
+    <TestApp>
+      <Flex w="100%" minH="100vh" alignItems="stretch">
+        <NavigationDesktop/>
+        <Box bgColor="lightpink" w="100%"/>
+      </Flex>
+    </TestApp>,
+    { hooksConfig },
+  );
+
+  await component.locator('header').hover();
+  await expect(component).toHaveScreenshot();
+});
+
+test.describe('hover xl screen', () => {
+  test.use({ viewport: configs.viewport.xl });
+
+  test('+@dark-mode', async({ mount }) => {
+    const component = await mount(
+      <TestApp>
+        <Flex w="100%" minH="100vh" alignItems="stretch">
+          <NavigationDesktop/>
+          <Box bgColor="lightpink" w="100%"/>
+        </Flex>
+      </TestApp>,
+      { hooksConfig },
+    );
+
+    await component.locator('header').hover();
+    await expect(component).toHaveScreenshot();
   });
 });

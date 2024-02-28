@@ -1,4 +1,5 @@
 import type { IncomingMessage } from 'http';
+import _pick from 'lodash/pick';
 import type { NextApiRequest } from 'next';
 import type { NextApiRequestCookies } from 'next/dist/server/api-utils';
 import type { RequestInit, Response } from 'node-fetch';
@@ -14,21 +15,29 @@ export default function fetchFactory(
   // first arg can be only a string
   // FIXME migrate to RequestInfo later if needed
   return function fetch(url: string, init?: RequestInit): Promise<Response> {
-    const csrfToken = _req.headers['x-csrf-token'];
-    const authToken = _req.headers['Authorization'];
+    const apiToken = _req.cookies[cookies.NAMES.API_TOKEN];
 
     const headers = {
       accept: _req.headers['accept'] || 'application/json',
       'content-type': _req.headers['content-type'] || 'application/json',
-      cookie: `${ cookies.NAMES.API_TOKEN }=${ _req.cookies[cookies.NAMES.API_TOKEN] }`,
-      ...(csrfToken ? { 'x-csrf-token': String(csrfToken) } : {}),
-      ...(authToken ? { Authorization: String(authToken) } : {}),
+      cookie: apiToken ? `${ cookies.NAMES.API_TOKEN }=${ apiToken }` : '',
+      ..._pick(_req.headers, [
+        'x-csrf-token',
+        'Authorization',
+        // feature flags
+        'updated-gas-oracle',
+      ]) as Record<string, string | undefined>,
     };
 
     httpLogger.logger.info({
       message: 'Trying to call API',
       url,
       req: _req,
+    });
+
+    httpLogger.logger.info({
+      message: 'API request headers',
+      headers,
     });
 
     const body = (() => {

@@ -10,6 +10,7 @@ import type { SmartContractVerificationConfig } from 'types/api/contract';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import FancySelect from 'ui/shared/FancySelect/FancySelect';
+import IconSvg from 'ui/shared/IconSvg';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
@@ -54,7 +55,8 @@ const ContractVerificationFieldCompiler = ({ isVyper }: Props) => {
         loadOptions={ loadOptions }
         defaultOptions
         size={ isMobile ? 'md' : 'lg' }
-        placeholder="Compiler"
+        placeholder="Compiler (enter version or use the dropdown)"
+        placeholderIcon={ <IconSvg name="search"/> }
         isDisabled={ formState.isSubmitting }
         error={ error }
         isRequired

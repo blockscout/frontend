@@ -1,6 +1,8 @@
+import { Box } from '@chakra-ui/react';
 import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
+import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import * as addressMock from 'mocks/address/address';
 import TestApp from 'playwright/TestApp';
 
@@ -8,7 +10,7 @@ import AddressEntity from './AddressEntity';
 
 const iconSizes = [ 'md', 'lg' ];
 
-test.use({ viewport: { width: 180, height: 100 } });
+test.use({ viewport: { width: 180, height: 140 } });
 
 test.describe('icon size', () => {
   iconSizes.forEach((size) => {
@@ -80,6 +82,19 @@ test.describe('loading', () => {
 
     await expect(component).toHaveScreenshot();
   });
+
+});
+
+test('with ENS', async({ mount }) => {
+  const component = await mount(
+    <TestApp>
+      <AddressEntity
+        address={ addressMock.withEns }
+      />
+    </TestApp>,
+  );
+
+  await expect(component).toHaveScreenshot();
 });
 
 test('external link', async({ mount }) => {
@@ -122,4 +137,21 @@ test('customization', async({ mount }) => {
   );
 
   await expect(component).toHaveScreenshot();
+});
+
+test('hover', async({ page, mount }) => {
+  const component = await mount(
+    <TestApp>
+      <AddressHighlightProvider>
+        <Box p={ 3 }>
+          <AddressEntity
+            address={ addressMock.withoutName }
+          />
+        </Box>
+      </AddressHighlightProvider>
+    </TestApp>,
+  );
+
+  await component.getByText(addressMock.hash.slice(0, 4)).hover();
+  await expect(page).toHaveScreenshot();
 });

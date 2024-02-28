@@ -3,20 +3,6 @@ import React from 'react';
 
 import type { TokenVerifiedInfo } from 'types/api/token';
 
-import iconCoinGecko from 'icons/social/coingecko.svg';
-import iconCoinMarketCap from 'icons/social/coinmarketcap.svg';
-import iconDefiLlama from 'icons/social/defi_llama.svg';
-import iconDiscord from 'icons/social/discord_filled.svg';
-import iconFacebook from 'icons/social/facebook_filled.svg';
-import iconGithub from 'icons/social/github_filled.svg';
-import iconLinkedIn from 'icons/social/linkedin_filled.svg';
-import iconMedium from 'icons/social/medium_filled.svg';
-import iconOpenSea from 'icons/social/opensea_filled.svg';
-import iconReddit from 'icons/social/reddit_filled.svg';
-import iconSlack from 'icons/social/slack_filled.svg';
-import iconTelegram from 'icons/social/telegram_filled.svg';
-import iconTwitter from 'icons/social/twitter_filled.svg';
-
 import DocsLink from './DocsLink';
 import type { Props as ServiceLinkProps } from './ServiceLink';
 import ServiceLink from './ServiceLink';
@@ -27,22 +13,22 @@ interface Props {
 }
 
 const SOCIAL_LINKS: Array<Omit<ServiceLinkProps, 'href'>> = [
-  { field: 'github', icon: iconGithub, title: 'Github' },
-  { field: 'twitter', icon: iconTwitter, title: 'Twitter' },
-  { field: 'telegram', icon: iconTelegram, title: 'Telegram' },
-  { field: 'openSea', icon: iconOpenSea, title: 'OpenSea' },
-  { field: 'linkedin', icon: iconLinkedIn, title: 'LinkedIn' },
-  { field: 'facebook', icon: iconFacebook, title: 'Facebook' },
-  { field: 'discord', icon: iconDiscord, title: 'Discord' },
-  { field: 'medium', icon: iconMedium, title: 'Medium' },
-  { field: 'slack', icon: iconSlack, title: 'Slack' },
-  { field: 'reddit', icon: iconReddit, title: 'Reddit' },
+  { field: 'github', icon: 'social/github_filled', title: 'Github' },
+  { field: 'twitter', icon: 'social/twitter_filled', title: 'Twitter' },
+  { field: 'telegram', icon: 'social/telegram_filled', title: 'Telegram' },
+  { field: 'openSea', icon: 'social/opensea_filled', title: 'OpenSea' },
+  { field: 'linkedin', icon: 'social/linkedin_filled', title: 'LinkedIn' },
+  { field: 'facebook', icon: 'social/facebook_filled', title: 'Facebook' },
+  { field: 'discord', icon: 'social/discord_filled', title: 'Discord' },
+  { field: 'medium', icon: 'social/medium_filled', title: 'Medium' },
+  { field: 'slack', icon: 'social/slack_filled', title: 'Slack' },
+  { field: 'reddit', icon: 'social/reddit_filled', title: 'Reddit' },
 ];
 
 const PRICE_TICKERS: Array<Omit<ServiceLinkProps, 'href'>> = [
-  { field: 'coinGeckoTicker', icon: iconCoinGecko, title: 'CoinGecko' },
-  { field: 'coinMarketCapTicker', icon: iconCoinMarketCap, title: 'CoinMarketCap' },
-  { field: 'defiLlamaTicker', icon: iconDefiLlama, title: 'DefiLlama' },
+  { field: 'coinGeckoTicker', icon: 'social/coingecko', title: 'CoinGecko' },
+  { field: 'coinMarketCapTicker', icon: 'social/coinmarketcap', title: 'CoinMarketCap' },
+  { field: 'defiLlamaTicker', icon: 'social/defi_llama', title: 'DefiLlama' },
 ];
 
 export function hasContent(data: TokenVerifiedInfo): boolean {

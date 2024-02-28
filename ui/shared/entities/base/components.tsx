@@ -1,18 +1,19 @@
-import { Box, chakra, Flex, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { chakra, Flex, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import type { As, IconProps } from '@chakra-ui/react';
 import React from 'react';
 
-import IconBase from 'ui/shared/chakra/Icon';
 import type { Props as CopyToClipboardProps } from 'ui/shared/CopyToClipboard';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import type { IconName } from 'ui/shared/IconSvg';
+import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
 
 import { getIconProps, type IconSize } from './utils';
 
-export type Truncation = 'constant' | 'dynamic' | 'tail' | 'none';
+export type Truncation = 'constant' | 'constant_long' | 'dynamic' | 'tail' | 'none';
 
 export interface EntityBaseProps {
   className?: string;
@@ -32,14 +33,17 @@ export interface EntityBaseProps {
 
 export interface ContainerBaseProps extends Pick<EntityBaseProps, 'className'> {
   children: React.ReactNode;
+  onMouseEnter?: (event: React.MouseEvent) => void;
+  onMouseLeave?: (event: React.MouseEvent) => void;
 }
 
-const Container = chakra(({ className, children }: ContainerBaseProps) => {
+const Container = chakra(({ className, children, ...props }: ContainerBaseProps) => {
   return (
     <Flex
       className={ className }
       alignItems="center"
       minWidth={ 0 } // for content truncation - https://css-tricks.com/flexbox-truncated-text/
+      { ...props }
     >
       { children }
     </Flex>
@@ -76,12 +80,12 @@ const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink }:
 });
 
 export interface IconBaseProps extends Pick<EntityBaseProps, 'isLoading' | 'iconSize' | 'noIcon'> {
-  asProp: As;
+  name: IconName;
   color?: IconProps['color'];
   borderRadius?: IconProps['borderRadius'];
 }
 
-const Icon = ({ isLoading, iconSize, noIcon, asProp, color, borderRadius }: IconBaseProps) => {
+const Icon = ({ isLoading, iconSize, noIcon, name, color, borderRadius }: IconBaseProps) => {
   const defaultColor = useColorModeValue('gray.500', 'gray.400');
 
   if (noIcon) {
@@ -90,14 +94,17 @@ const Icon = ({ isLoading, iconSize, noIcon, asProp, color, borderRadius }: Icon
 
   const styles = getIconProps(iconSize);
   return (
-    <Box mr={ 2 } color={ color ?? defaultColor }>
-      <IconBase
-        as={ asProp }
-        boxSize={ styles.boxSize }
-        isLoading={ isLoading }
-        borderRadius={ borderRadius ?? 'base' }
-      />
-    </Box>
+    <IconSvg
+      name={ name }
+      boxSize={ styles.boxSize }
+      isLoading={ isLoading }
+      borderRadius={ borderRadius ?? 'base' }
+      display="block"
+      mr={ 2 }
+      color={ color ?? defaultColor }
+      minW={ 0 }
+      flexShrink={ 0 }
+    />
   );
 };
 
@@ -110,6 +117,14 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
 
   const children = (() => {
     switch (truncation) {
+      case 'constant_long':
+        return (
+          <HashStringShorten
+            hash={ text }
+            as={ asProp }
+            type="long"
+          />
+        );
       case 'constant':
         return (
           <HashStringShorten

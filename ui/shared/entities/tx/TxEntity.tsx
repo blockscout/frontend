@@ -1,11 +1,9 @@
-import type { As } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
 import _omit from 'lodash/omit';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
-import transactionIcon from 'icons/transactions_slim.svg';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'hash'>;
@@ -23,26 +21,26 @@ const Link = chakra((props: LinkProps) => {
   );
 });
 
-type IconProps = Omit<EntityBase.IconBaseProps, 'asProp'> & {
-  asProp?: As;
+type IconProps = Omit<EntityBase.IconBaseProps, 'name'> & {
+  name?: EntityBase.IconBaseProps['name'];
 };
 
 const Icon = (props: IconProps) => {
   return (
     <EntityBase.Icon
       { ...props }
-      asProp={ props.asProp ?? transactionIcon }
+      name={ props.name ?? 'transactions_slim' }
     />
   );
 };
 
-type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'hash'>;
+type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'hash' | 'text'>;
 
 const Content = chakra((props: ContentProps) => {
   return (
     <EntityBase.Content
       { ...props }
-      text={ props.hash }
+      text={ props.text ?? props.hash }
     />
   );
 });
@@ -64,6 +62,7 @@ const Container = EntityBase.Container;
 
 export interface EntityProps extends EntityBase.EntityBaseProps {
   hash: string;
+  text?: string;
 }
 
 const TxEntity = (props: EntityProps) => {

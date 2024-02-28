@@ -1,9 +1,8 @@
-import { Icon, chakra } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import iconFile from './icons/file.svg';
-import iconSolidity from './icons/solidity.svg';
-import iconVyper from './icons/vyper.svg';
+import type { IconName } from 'ui/shared/IconSvg';
+import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   className?: string;
@@ -11,19 +10,19 @@ interface Props {
 }
 
 const CodeEditorFileIcon = ({ className, fileName }: Props) => {
-  const as = (() => {
+  const name: IconName = (() => {
     if (/.vy$/.test(fileName)) {
-      return iconVyper;
+      return 'monaco/vyper';
     }
 
     if (/.sol|.yul$/.test(fileName)) {
-      return iconSolidity;
+      return 'monaco/solidity';
     }
 
-    return iconFile;
+    return 'monaco/file';
   })();
 
-  return <Icon className={ className } as={ as } boxSize="16px"/>;
+  return <IconSvg className={ className } name={ name } boxSize="16px"/>;
 };
 
 export default React.memo(chakra(CodeEditorFileIcon));

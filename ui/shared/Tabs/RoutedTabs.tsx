@@ -13,11 +13,13 @@ interface Props extends ThemingProps<'Tabs'> {
   tabs: Array<RoutedTab>;
   tabListProps?: ChakraProps | (({ isSticky, activeTabIndex }: { isSticky: boolean; activeTabIndex: number }) => ChakraProps);
   rightSlot?: React.ReactNode;
+  rightSlotProps?: ChakraProps;
   stickyEnabled?: boolean;
   className?: string;
+  onTabChange?: (index: number) => void;
 }
 
-const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, ...themeProps }: Props) => {
+const RoutedTabs = ({ tabs, tabListProps, rightSlot, rightSlotProps, stickyEnabled, className, onTabChange, ...themeProps }: Props) => {
   const router = useRouter();
   const tabIndex = useTabIndexFromQuery(tabs);
   const tabsRef = useRef<HTMLDivElement>(null);
@@ -31,7 +33,9 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, .
       undefined,
       { shallow: true },
     );
-  }, [ tabs, router ]);
+
+    onTabChange?.(index);
+  }, [ tabs, router, onTabChange ]);
 
   useEffect(() => {
     if (router.query.scroll_to_tabs) {
@@ -55,6 +59,7 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, stickyEnabled, className, .
       tabs={ tabs }
       tabListProps={ tabListProps }
       rightSlot={ rightSlot }
+      rightSlotProps={ rightSlotProps }
       stickyEnabled={ stickyEnabled }
       onTabChange={ handleTabChange }
       defaultTabIndex={ tabIndex }

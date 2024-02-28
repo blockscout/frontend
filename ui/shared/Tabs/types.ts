@@ -3,7 +3,7 @@ import type React from 'react';
 export interface TabItem {
   id: string;
   title: string | (() => React.ReactNode);
-  count?: number;
+  count?: number | null;
   component: React.ReactNode;
 }
 

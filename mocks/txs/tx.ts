@@ -29,6 +29,7 @@ export const base: Transaction = {
     private_tags: [ ],
     public_tags: [ publicTag ],
     watchlist_names: [],
+    ens_domain_name: 'kitty.kitty.cat.eth',
   },
   gas_limit: '800000',
   gas_price: '48000000000',
@@ -54,6 +55,7 @@ export const base: Transaction = {
     private_tags: [ privateTag ],
     public_tags: [],
     watchlist_names: [ watchlistName ],
+    ens_domain_name: null,
   },
   token_transfers: [],
   token_transfers_overflow: false,
@@ -68,8 +70,25 @@ export const base: Transaction = {
   has_error_in_internal_txs: false,
 };
 
+export const withWatchListNames: Transaction = {
+  ...base,
+  hash: '0x62d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3194',
+  from: {
+    ...base.from,
+    watchlist_names: [
+      { label: 'from #1', display_name: 'from utka' },
+      { label: 'kitty', display_name: 'kitty kitty kitty cat where are you' },
+    ],
+  },
+  to: {
+    ...base.to,
+    watchlist_names: [ { label: 'to #1', display_name: 'to utka' } ],
+  } as Transaction['to'],
+};
+
 export const withContractCreation: Transaction = {
   ...base,
+  hash: '0x62d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3195',
   to: null,
   created_contract: {
     hash: '0xdda21946FF3FAa027104b15BE6970CA756439F5a',
@@ -80,6 +99,7 @@ export const withContractCreation: Transaction = {
     private_tags: [],
     public_tags: [],
     watchlist_names: [],
+    ens_domain_name: null,
   },
   tx_types: [
     'contract_creation',
@@ -88,6 +108,7 @@ export const withContractCreation: Transaction = {
 
 export const withTokenTransfer: Transaction = {
   ...base,
+  hash: '0x62d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3196',
   to: {
     hash: '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859',
     implementation_name: null,
@@ -97,6 +118,7 @@ export const withTokenTransfer: Transaction = {
     private_tags: [ privateTag ],
     public_tags: [],
     watchlist_names: [ watchlistName ],
+    ens_domain_name: null,
   },
   token_transfers: [
     tokenTransferMock.erc20,
@@ -106,6 +128,7 @@ export const withTokenTransfer: Transaction = {
     tokenTransferMock.erc1155C,
     tokenTransferMock.erc1155D,
   ],
+  token_transfers_overflow: true,
   tx_types: [
     'token_transfer',
   ],
@@ -149,6 +172,7 @@ export const withRawRevertReason: Transaction = {
     private_tags: [ ],
     public_tags: [],
     watchlist_names: [ ],
+    ens_domain_name: null,
   },
 };
 
@@ -250,6 +274,49 @@ export const l2tx: Transaction = {
   l1_fee_scalar: '1.0',
   l1_gas_used: '17060',
   l1_fee: '1584574188135760',
+};
+
+export const stabilityTx: Transaction = {
+  ...base,
+  stability_fee: {
+    dapp_address: {
+      hash: '0xDc2B93f3291030F3F7a6D9363ac37757f7AD5C43',
+      implementation_name: null,
+      is_contract: false,
+      is_verified: null,
+      name: null,
+      private_tags: [],
+      public_tags: [],
+      watchlist_names: [],
+      ens_domain_name: null,
+    },
+    dapp_fee: '34381250000000',
+    token: {
+      address: '0xDc2B93f3291030F3F7a6D9363ac37757f7AD5C43',
+      circulating_market_cap: null,
+      decimals: '18',
+      exchange_rate: '123.567',
+      holders: '92',
+      icon_url: null,
+      name: 'Stability Gas',
+      symbol: 'GAS',
+      total_supply: '10000000000000000000000000',
+      type: 'ERC-20',
+    },
+    total_fee: '68762500000000',
+    validator_address: {
+      hash: '0x1432997a4058acbBe562F3c1E79738c142039044',
+      implementation_name: null,
+      is_contract: false,
+      is_verified: null,
+      name: null,
+      private_tags: [],
+      public_tags: [],
+      watchlist_names: [],
+      ens_domain_name: null,
+    },
+    validator_fee: '34381250000000',
+  },
 };
 
 export const base2 = {

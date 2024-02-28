@@ -13,8 +13,8 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
-import TxsContent from 'ui/txs/TxsContent';
 import TxsWatchlist from 'ui/txs/TxsWatchlist';
+import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
 
 const TAB_LIST_PROPS = {
   marginBottom: 0,
@@ -60,12 +60,13 @@ const Transactions = () => {
     {
       id: 'validated',
       title: verifiedTitle,
-      component: <TxsContent query={ txsQuery } showSocketInfo={ txsQuery.pagination.page === 1 } socketInfoNum={ num } socketInfoAlert={ socketAlert }/> },
+      component:
+        <TxsWithFrontendSorting query={ txsQuery } showSocketInfo={ txsQuery.pagination.page === 1 } socketInfoNum={ num } socketInfoAlert={ socketAlert }/> },
     {
       id: 'pending',
       title: 'Pending',
       component: (
-        <TxsContent
+        <TxsWithFrontendSorting
           query={ txsQuery }
           showBlockInfo={ false }
           showSocketInfo={ txsQuery.pagination.page === 1 }

@@ -73,4 +73,21 @@ export const FOOTER_LINKS: Array<CustomLinksGroup> = [
 
     ],
   },
+  {
+    title: 'Partners',
+    links: [
+      {
+        text: 'MetaDock',
+        url: 'https://blocksec.com/metadock',
+      },
+      {
+        text: 'Sourcify',
+        url: 'https://sourcify.dev/',
+      },
+      {
+        text: 'DRPC',
+        url: 'https://drpc.org?ref=559183',
+      },
+    ],
+  },
 ];

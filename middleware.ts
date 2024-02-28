@@ -23,7 +23,6 @@ export function middleware(req: NextRequest) {
   const res = NextResponse.next();
   res.headers.append('Content-Security-Policy', cspPolicy);
   res.headers.append('Server-Timing', `middleware;dur=${ end - start }`);
-  // eslint-disable-next-line no-restricted-properties
   res.headers.append('Docker-ID', process.env.HOSTNAME || '');
 
   return res;

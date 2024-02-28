@@ -11,10 +11,10 @@ import ChainIndicatorChart from './ChainIndicatorChart';
 
 type Props = UseQueryResult<TimeChartData>;
 
-const ChainIndicatorChartContainer = ({ data, isError, isLoading }: Props) => {
+const ChainIndicatorChartContainer = ({ data, isError, isPending }: Props) => {
 
   const content = (() => {
-    if (isLoading) {
+    if (isPending) {
       return <ContentLoader mt="auto"/>;
     }
 

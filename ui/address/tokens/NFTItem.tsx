@@ -1,64 +1,54 @@
-import { Flex, Link, Text, LinkBox, LinkOverlay, useColorModeValue, Skeleton } from '@chakra-ui/react';
+import { Tag, Flex, Text, Link, Skeleton, LightMode } from '@chakra-ui/react';
 import React from 'react';
 
-import type { AddressTokenBalance } from 'types/api/address';
+import type { AddressNFT } from 'types/api/address';
 
 import { route } from 'nextjs-routes';
 
+import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import NftMedia from 'ui/shared/nft/NftMedia';
-import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
-type Props = AddressTokenBalance & { isLoading: boolean };
+import NFTItemContainer from './NFTItemContainer';
 
-const NFTItem = ({ token, token_id: tokenId, token_instance: tokenInstance, isLoading }: Props) => {
-  const tokenLink = route({ pathname: '/token/[hash]', query: { hash: token.address } });
+type Props = AddressNFT & { isLoading: boolean; withTokenLink?: boolean };
+
+const NFTItem = ({ token, value, isLoading, withTokenLink, ...tokenInstance }: Props) => {
+  const tokenInstanceLink = tokenInstance.id ?
+    route({ pathname: '/token/[hash]/instance/[id]', query: { hash: token.address, id: tokenInstance.id } }) :
+    undefined;
 
   return (
-    <LinkBox
-      w={{ base: '100%', lg: '210px' }}
-      border="1px solid"
-      borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
-      borderRadius="12px"
-      p="10px"
-      _hover={{ boxShadow: 'md' }}
-      fontSize="sm"
-      fontWeight={ 500 }
-      lineHeight="20px"
-    >
-      <LinkOverlay href={ isLoading ? undefined : tokenLink }>
+    <NFTItemContainer position="relative">
+      <Skeleton isLoaded={ !isLoading }>
+        <LightMode><Tag background="gray.50" zIndex={ 1 } position="absolute" top="18px" right="18px">{ token.type }</Tag></LightMode>
+      </Skeleton>
+      <Link href={ isLoading ? undefined : tokenInstanceLink }>
         <NftMedia
           mb="18px"
           url={ tokenInstance?.animation_url || tokenInstance?.image_url || null }
           isLoading={ isLoading }
         />
-      </LinkOverlay>
-      { tokenId && (
-        <Flex mb={ 2 } ml={ 1 }>
+      </Link>
+      <Flex justifyContent="space-between" w="100%">
+        <Flex ml={ 1 } overflow="hidden">
           <Text whiteSpace="pre" variant="secondary">ID# </Text>
-          <TruncatedTextTooltip label={ tokenId }>
-            <Skeleton isLoaded={ !isLoading } overflow="hidden" h="20px">
-              <Link
-                w="100%"
-                display="inline-block"
-                whiteSpace="nowrap"
-                textOverflow="ellipsis"
-                overflow="hidden"
-                href={ route({ pathname: '/token/[hash]/instance/[id]', query: { hash: token.address, id: tokenId } }) }
-              >
-                { tokenId }
-              </Link>
-            </Skeleton>
-          </TruncatedTextTooltip>
+          <NftEntity hash={ token.address } id={ tokenInstance.id } isLoading={ isLoading } noIcon/>
         </Flex>
+        <Skeleton isLoaded={ !isLoading }>
+          { Number(value) > 1 && <Flex><Text variant="secondary" whiteSpace="pre">Qty </Text>{ value }</Flex> }
+        </Skeleton>
+      </Flex>
+      { withTokenLink && (
+        <TokenEntity
+          mt={ 2 }
+          token={ token }
+          isLoading={ isLoading }
+          noCopy
+          noSymbol
+        />
       ) }
-      <TokenEntity
-        token={ token }
-        isLoading={ isLoading }
-        noCopy
-        noSymbol
-      />
-    </LinkBox>
+    </NFTItemContainer>
   );
 };
 

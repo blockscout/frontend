@@ -1,10 +1,10 @@
-import { Flex, Link, useBoolean } from '@chakra-ui/react';
+import { Flex, Text, Link, useBoolean } from '@chakra-ui/react';
 import React from 'react';
 
-import TokenTransferNft from 'ui/shared/TokenTransfer/TokenTransferNft';
+import NftEntity from 'ui/shared/entities/nft/NftEntity';
 
 interface Props {
-  items: Array<{total: { token_id: string} }>;
+  items: Array<{total: { token_id: string | null} }>;
   tokenAddress: string;
   isLoading?: boolean;
 }
@@ -14,16 +14,20 @@ const TxStateTokenIdList = ({ items, tokenAddress, isLoading }: Props) => {
 
   return (
     <Flex flexDir="column" rowGap={ 2 }>
-      { items.slice(0, isCut ? 3 : items.length).map((item, index) => (
-        <TokenTransferNft
-          key={ index }
-          hash={ tokenAddress }
-          id={ item.total.token_id }
-          w="auto"
-          truncation="constant"
-          isLoading={ isLoading }
-        />
-      )) }
+      { items.slice(0, isCut ? 3 : items.length).map((item, index) => {
+        if (item.total.token_id !== null) {
+          return (
+            <NftEntity
+              key={ index }
+              hash={ tokenAddress }
+              id={ item.total.token_id }
+              isLoading={ isLoading }
+            />
+          );
+        } else {
+          return <Text key={ index } color="text_secondary">N/A</Text>;
+        }
+      }) }
       { items.length > 3 && (
         <Link
           fontWeight={ 400 }
