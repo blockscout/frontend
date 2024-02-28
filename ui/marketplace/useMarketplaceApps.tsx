@@ -47,7 +47,12 @@ function sortApps(apps: Array<MarketplaceAppOverview>, favoriteApps: Array<strin
   });
 }
 
-export default function useMarketplaceApps(filter: string, selectedCategoryId: string = MarketplaceCategory.ALL, favoriteApps: Array<string> = []) {
+export default function useMarketplaceApps(
+  filter: string,
+  selectedCategoryId: string = MarketplaceCategory.ALL,
+  favoriteApps: Array<string> = [],
+  isFavoriteAppsLoaded: boolean = false, // eslint-disable-line @typescript-eslint/no-inferrable-types
+) {
   const fetch = useFetch();
   const apiFetch = useApiFetch();
 
@@ -55,7 +60,7 @@ export default function useMarketplaceApps(filter: string, selectedCategoryId: s
   const lastFavoriteAppsRef = React.useRef(favoriteApps);
   React.useEffect(() => {
     lastFavoriteAppsRef.current = favoriteApps;
-  }, [ selectedCategoryId ]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [ selectedCategoryId, isFavoriteAppsLoaded ]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const { isPlaceholderData, isError, error, data } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppOverview>>({
     queryKey: [ 'marketplace-dapps' ],
