@@ -657,7 +657,7 @@ export const RESOURCES = {
   validators: {
     path: '/api/v2/validators/:chainType',
     pathParams: [ 'chainType' as const ],
-    filterFields: [ 'address_hash' as const, 'state' as const ],
+    filterFields: [ 'address_hash' as const, 'state_filter' as const ],
   },
   validators_counters: {
     path: '/api/v2/validators/:chainType/counters',
