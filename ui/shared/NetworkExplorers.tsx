@@ -11,7 +11,6 @@ import {
   chakra,
   useDisclosure,
   Grid,
-  Box,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -88,7 +87,6 @@ const NetworkExplorers = ({ className, type, pathParam }: Props) => {
             mt={ 3 }
           >
             { explorersLinks }
-            <Box display="none" id="meta-suites__explorer"/>
           </Grid>
         </PopoverBody>
       </PopoverContent>

@@ -2,6 +2,7 @@ import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import config from 'configs/app';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
 export default function useNotifyOnNavigation() {
@@ -10,10 +11,14 @@ export default function useNotifyOnNavigation() {
   const tab = getQueryParamString(router.query.tab);
 
   React.useEffect(() => {
-    window.postMessage({ source: 'APP_ROUTER', type: 'PATHNAME_CHANGED' }, window.location.origin);
+    if (config.features.metasuites.isEnabled) {
+      window.postMessage({ source: 'APP_ROUTER', type: 'PATHNAME_CHANGED' }, window.location.origin);
+    }
   }, [ pathname ]);
 
   React.useEffect(() => {
-    window.postMessage({ source: 'APP_ROUTER', type: 'TAB_CHANGED' }, window.location.origin);
+    if (config.features.metasuites.isEnabled) {
+      window.postMessage({ source: 'APP_ROUTER', type: 'TAB_CHANGED' }, window.location.origin);
+    }
   }, [ tab ]);
 }

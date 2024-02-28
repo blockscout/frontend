@@ -4,6 +4,7 @@ import React from 'react';
 
 import type { UserTags } from 'types/api/addressParams';
 
+import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import Tag from 'ui/shared/chakra/Tag';
 
@@ -36,7 +37,9 @@ const EntityTags = ({ className, data, tagsBefore = [], tagsAfter = [], isLoadin
   ]
     .filter(Boolean);
 
-  const metaSuitesPlaceholder = <Box display="none" id="meta-suites__address-tag" data-ready={ !isLoading }/>;
+  const metaSuitesPlaceholder = config.features.metasuites.isEnabled ?
+    <Box display="none" id="meta-suites__address-tag" data-ready={ !isLoading }/> :
+    null;
 
   if (tags.length === 0 && !contentAfter) {
     return metaSuitesPlaceholder;
