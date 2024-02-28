@@ -24,7 +24,7 @@ const TxBlobs = ({ txQuery }: Props) => {
     pathParams: { hash: txQuery.data?.hash },
     options: {
       enabled: !txQuery.isPlaceholderData && Boolean(txQuery.data?.hash) && Boolean(txQuery.data?.status),
-      placeholderData: generateListStub<'tx_blobs'>(TX_BLOB, 10, { next_page_params: null }),
+      placeholderData: generateListStub<'tx_blobs'>(TX_BLOB, 3, { next_page_params: null }),
     },
   });
 
