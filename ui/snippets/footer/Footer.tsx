@@ -8,7 +8,7 @@ import type { CustomLinksGroup } from 'types/footerLinks';
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useFetch from 'lib/hooks/useFetch';
-import useIssueUrl from 'lib/hooks/useIssueUrl';
+//import useIssueUrl from 'lib/hooks/useIssueUrl';
 import NetworkAddToWallet from 'ui/shared/NetworkAddToWallet';
 
 import FooterLinkItem from './FooterLinkItem';
@@ -21,6 +21,8 @@ const FRONT_VERSION_URL = `https://github.com/blockscout/frontend/tree/${ config
 const FRONT_COMMIT_URL = `https://github.com/blockscout/frontend/commit/${ config.UI.footer.frontendCommit }`;
 
 const Footer = () => {
+
+  const apiVersionUrl = getApiVersionUrl(config.UI.footer.frontendVersion);
 
   const BLOCKSCOUT_LINKS = [
     {
@@ -117,7 +119,7 @@ const Footer = () => {
         <VStack spacing={ 1 } mt={ 6 } alignItems="start">
           { apiVersionUrl && (
             <Text fontSize="xs">
-              Backend: <Link href={ apiVersionUrl } target="_blank">{ backendVersionData?.backend_version }</Link>
+              Backend: <Link href={ apiVersionUrl } target="_blank">{ config.UI.footer.frontendVersion }</Link>
             </Text>
           ) }
           { frontendLink && (
@@ -128,7 +130,7 @@ const Footer = () => {
         </VStack>
       </Box>
     );
-  }, [ apiVersionUrl, backendVersionData?.backend_version, frontendLink ]);
+  }, [ apiVersionUrl, frontendLink ]);
 
   const containerProps: GridProps = {
     as: 'footer',

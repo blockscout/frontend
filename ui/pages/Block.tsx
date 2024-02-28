@@ -16,7 +16,7 @@ import BlockWithdrawals from 'ui/block/BlockWithdrawals';
 import useBlockQuery from 'ui/block/useBlockQuery';
 import useBlockTxQuery from 'ui/block/useBlockTxQuery';
 import useBlockWithdrawalsQuery from 'ui/block/useBlockWithdrawalsQuery';
-import TextAd from 'ui/shared/ad/TextAd';
+//import TextAd from 'ui/shared/ad/TextAd';
 import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';

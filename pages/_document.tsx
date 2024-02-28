@@ -5,6 +5,7 @@ import React from 'react';
 
 import * as serverTiming from 'nextjs/utils/serverTiming';
 
+import config from 'configs/app';
 import theme from 'theme';
 import * as svgSprite from 'ui/shared/IconSvg';
 

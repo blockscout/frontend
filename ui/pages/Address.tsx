@@ -29,7 +29,7 @@ import AddressEnsDomains from 'ui/address/ensDomains/AddressEnsDomains';
 import SolidityscanReport from 'ui/address/SolidityscanReport';
 import useAddressQuery from 'ui/address/utils/useAddressQuery';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
-import TextAd from 'ui/shared/ad/TextAd';
+//import TextAd from 'ui/shared/ad/TextAd';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';

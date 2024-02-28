@@ -13,7 +13,7 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import { ENS_DOMAIN } from 'stubs/ENS';
 import NameDomainDetails from 'ui/nameDomain/NameDomainDetails';
 import NameDomainHistory from 'ui/nameDomain/NameDomainHistory';
-import TextAd from 'ui/shared/ad/TextAd';
+//import TextAd from 'ui/shared/ad/TextAd';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import IconSvg from 'ui/shared/IconSvg';
@@ -84,7 +84,7 @@ const NameDomain = () => {
 
   return (
     <>
-      <TextAd mb={ 6 }/>
+      { /* <TextAd mb={ 6 }/> */ }
       <PageTitle title="Name details" secondRow={ titleSecondRow }/>
       { infoQuery.isPlaceholderData ? (
         <>

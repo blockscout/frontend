@@ -3,7 +3,7 @@ import _debounce from 'lodash/debounce';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import TextAd from 'ui/shared/ad/TextAd';
+//import TextAd from 'ui/shared/ad/TextAd';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/LinkInternal';
 
@@ -53,7 +53,7 @@ const BackLink = (props: BackLinkProp & { isLoading?: boolean }) => {
   );
 };
 
-const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoading, afterTitle, beforeTitle, secondRow }: Props) => {
+const PageTitle = ({ title, contentAfter, backLink, className, isLoading, afterTitle, beforeTitle, secondRow }: Props) => {
   const tooltip = useDisclosure();
   const isMobile = useIsMobile();
   const [ isTextTruncated, setIsTextTruncated ] = React.useState(false);
@@ -140,7 +140,7 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
           { afterTitle }
         </Flex>
         { contentAfter }
-        { withTextAd && <TextAd order={{ base: -1, lg: 100 }} mb={{ base: 6, lg: 0 }} ml="auto" w={{ base: '100%', lg: 'auto' }}/> }
+        { /* { withTextAd && <TextAd order={{ base: -1, lg: 100 }} mb={{ base: 6, lg: 0 }} ml="auto" w={{ base: '100%', lg: 'auto' }}/> } */ }
       </Flex>
       { secondRow && (
         <Flex alignItems="center" minH={ 10 } overflow="hidden">
