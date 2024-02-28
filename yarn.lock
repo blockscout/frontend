@@ -10194,9 +10194,9 @@ get-tsconfig@^4.5.0:
   integrity sha512-MjhiaIWCJ1sAU4pIQ5i5OfOuHHxVo1oYeNsWTON7jxYkod8pHocXeh+SSbmu5OZZZK73B6cbJ2XADzXehLyovQ==
 
 getit-sdk@^1.0.4:
-  version "1.0.8"
-  resolved "https://registry.yarnpkg.com/getit-sdk/-/getit-sdk-1.0.8.tgz#d66e6f10f43b087a68aa368c56feff4efd1eba80"
-  integrity sha512-3NGimexjU3Lkam+7w56C1PoqmIyvuMn2ZXw1zKoksh1C8wnQLD2cNwdHi759lHqHmu8hHwmZLqfVYAX/oBnRZA==
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/getit-sdk/-/getit-sdk-1.0.9.tgz#c1f600d344fb89a6142cdd395c758d257679622e"
+  integrity sha512-aJoRnubYIWGAsssqxfcQrOAuByInoS6QUNAci7CowGGIzjJ2hPe8KOuzDEPEyIi60TJ4vU/Ve14I4BIfwBKf4Q==
   dependencies:
     axios "^1.6.2"
     jest-transform-css "^6.0.1"
