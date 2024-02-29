@@ -31,7 +31,7 @@ const TxBlobListItem = ({ data, isLoading }: Props) => {
       <ListItemMobileGrid.Label isLoading={ isLoading }>Size</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <Skeleton isLoaded={ !isLoading }>
-          { size }
+          { size.toLocaleString() }
         </Skeleton>
       </ListItemMobileGrid.Value>
     </ListItemMobileGrid.Container>
