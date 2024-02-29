@@ -23,7 +23,7 @@ const BlobInfo = ({ data, isLoading }: Props) => {
     <Grid
       columnGap={ 8 }
       rowGap={ 3 }
-      templateColumns={{ base: 'minmax(0, 1fr)', lg: '216px auto' }}
+      templateColumns={{ base: 'minmax(0, 1fr)', lg: '216px minmax(500px, auto)' }}
     >
       <DetailsInfoItem
         title="Proof"
