@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { TxBlob } from 'types/api/blobs';
 
+import BlobDataType from 'ui/shared/blob/BlobDataType';
 import BlobEntity from 'ui/shared/entities/blob/BlobEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
@@ -23,9 +24,7 @@ const TxBlobListItem = ({ data, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Data</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading }>
-            Raw
-        </Skeleton>
+        <BlobDataType isLoading={ isLoading } data={ data.blob_data }/>
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Size</ListItemMobileGrid.Label>

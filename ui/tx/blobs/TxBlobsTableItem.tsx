@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { TxBlob } from 'types/api/blobs';
 
+import BlobDataType from 'ui/shared/blob/BlobDataType';
 import BlobEntity from 'ui/shared/entities/blob/BlobEntity';
 
 interface Props {
@@ -19,9 +20,7 @@ const TxBlobsTableItem = ({ data, isLoading }: Props) => {
         <BlobEntity hash={ data.hash } noCopy noIcon isLoading={ isLoading }/>
       </Td>
       <Td verticalAlign="middle">
-        <Skeleton isLoaded={ !isLoading } display="inline-block">
-          Raw
-        </Skeleton>
+        <BlobDataType isLoading={ isLoading } data={ data.blob_data }/>
       </Td>
       <Td isNumeric verticalAlign="middle">
         <Skeleton isLoaded={ !isLoading } display="inline-block">
