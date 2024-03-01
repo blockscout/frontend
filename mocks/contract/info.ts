@@ -31,6 +31,7 @@ export const verified: Partial<SmartContract> = {
     { address_hash: '0xa62744BeE8646e237441CDbfdedD3458861748A8', name: 'math' },
   ],
   language: 'solidity',
+  license_type: 'gnu_gpl_v3',
 };
 
 export const withMultiplePaths: Partial<SmartContract> = {

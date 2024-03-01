@@ -40,6 +40,7 @@ export const CONTRACT_CODE_VERIFIED = {
   optimization_runs: 200,
   source_code: 'source_code',
   verified_at: '2023-02-21T14:39:16.906760Z',
+  license_type: 'mit',
 } as unknown as SmartContract;
 
 export const VERIFIED_CONTRACT_INFO: VerifiedContract = {
@@ -52,6 +53,7 @@ export const VERIFIED_CONTRACT_INFO: VerifiedContract = {
   optimization_enabled: false,
   tx_count: 565058,
   verified_at: '2023-04-10T13:16:33.884921Z',
+  license_type: 'mit',
 };
 
 export const VERIFIED_CONTRACTS_COUNTERS: VerifiedContractsCounters = {

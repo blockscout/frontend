@@ -1,4 +1,5 @@
 import type { AddressParam } from './addressParams';
+import type { SmartContractLicenseType } from './contract';
 
 export interface VerifiedContract {
   address: AddressParam;
@@ -10,6 +11,7 @@ export interface VerifiedContract {
   tx_count: number | null;
   verified_at: string;
   market_cap: string | null;
+  license_type: SmartContractLicenseType | null;
 }
 
 export interface VerifiedContractsResponse {

@@ -20,6 +20,7 @@ export const contract1: VerifiedContract = {
   optimization_enabled: false,
   tx_count: 7334224,
   verified_at: '2022-09-16T18:49:29.605179Z',
+  license_type: 'mit',
 };
 
 export const contract2: VerifiedContract = {
@@ -42,6 +43,7 @@ export const contract2: VerifiedContract = {
   optimization_enabled: true,
   tx_count: 440,
   verified_at: '2021-09-07T20:01:56.076979Z',
+  license_type: 'bsd_3_clause',
 };
 
 export const baseResponse: VerifiedContractsResponse = {
