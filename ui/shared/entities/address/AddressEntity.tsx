@@ -1,5 +1,5 @@
 import type { As } from '@chakra-ui/react';
-import { Box, Flex, Skeleton, Tooltip, chakra, VStack, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex, Skeleton, Tooltip, chakra, VStack } from '@chakra-ui/react';
 import _omit from 'lodash/omit';
 import React from 'react';
 
@@ -148,33 +148,16 @@ const AddressEntry = (props: EntityProps) => {
   const partsProps = _omit(props, [ 'className', 'onClick' ]);
 
   const context = useAddressHighlightContext();
-  const highlightedBgColor = useColorModeValue('blue.50', 'blue.900');
-  const highlightedBorderColor = useColorModeValue('blue.200', 'blue.600');
 
   return (
     <Container
-      className={ props.className }
-      data-hash={ props.address.hash }
+      // we have to use the global classnames here, see theme/global.ts
+      // otherwise, if we use sx prop, Chakra will generate the same styles for each instance of the component on the page
+      className={ `${ props.className } address-entity ${ props.noCopy ? 'address-entity_no-copy' : '' }` }
+      data-hash={ context && !props.isLoading ? props.address.hash : undefined }
       onMouseEnter={ context?.onMouseEnter }
       onMouseLeave={ context?.onMouseLeave }
       position="relative"
-      _before={ !props.isLoading && context?.highlightedAddress === props.address.hash ? {
-        content: `" "`,
-        position: 'absolute',
-        py: 1,
-        pl: 1,
-        pr: props.noCopy ? 2 : 0,
-        top: '-5px',
-        left: '-5px',
-        width: `100%`,
-        height: '100%',
-        borderRadius: 'base',
-        borderColor: highlightedBorderColor,
-        borderWidth: '1px',
-        borderStyle: 'dashed',
-        bgColor: highlightedBgColor,
-        zIndex: -1,
-      } : undefined }
     >
       <Icon { ...partsProps }/>
       <Link { ...linkProps }>
