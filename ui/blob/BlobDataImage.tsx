@@ -13,7 +13,6 @@ const BlobDataImage = ({ src }: Props) => {
       bgColor={ bgColor }
       p={ 4 }
       minH="200px"
-      maxH="400px"
       w="100%"
       borderRadius="md"
     >

@@ -23,7 +23,7 @@ const BlobInfo = ({ data, isLoading }: Props) => {
     <Grid
       columnGap={ 8 }
       rowGap={ 3 }
-      templateColumns={{ base: 'minmax(0, 1fr)', lg: '216px minmax(500px, auto)' }}
+      templateColumns={{ base: 'minmax(0, 1fr)', lg: '216px minmax(728px, auto)' }}
     >
       <DetailsInfoItem
         title="Proof"
@@ -57,18 +57,20 @@ const BlobInfo = ({ data, isLoading }: Props) => {
 
       <DetailsInfoItemDivider/>
 
-      <DetailsInfoItem
-        title="Transaction hash"
-        hint="Hash of the transaction with this blob"
-        isLoading={ isLoading }
-      >
-        <TxEntity hash={ data.transaction_hashes[0].transaction_hash } isLoading={ isLoading } noIcon noCopy={ false }/>
-      </DetailsInfoItem>
+      { data.transaction_hashes[0] && (
+        <DetailsInfoItem
+          title="Transaction hash"
+          hint="Hash of the transaction with this blob"
+          isLoading={ isLoading }
+        >
+          <TxEntity hash={ data.transaction_hashes[0].transaction_hash } isLoading={ isLoading } noIcon noCopy={ false }/>
+        </DetailsInfoItem>
+      ) }
       <DetailsSponsoredItem isLoading={ isLoading }/>
 
       <DetailsInfoItemDivider/>
 
-      <BlobData data={ data.blob_data } isLoading={ isLoading }/>
+      <BlobData data={ data.blob_data } hash={ data.hash } isLoading={ isLoading }/>
     </Grid>
   );
 };

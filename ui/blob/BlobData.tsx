@@ -1,8 +1,10 @@
-import { Flex, GridItem, Select, Skeleton } from '@chakra-ui/react';
+import { Flex, GridItem, Select, Skeleton, Button } from '@chakra-ui/react';
 import React from 'react';
 
 import * as blobUtils from 'lib/blob';
+import downloadBlob from 'lib/downloadBlob';
 import hexToBase64 from 'lib/hexToBase64';
+import hexToBytes from 'lib/hexToBytes';
 import hexToUtf8 from 'lib/hexToUtf8';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
@@ -15,10 +17,11 @@ type Format = typeof FORMATS[number];
 
 interface Props {
   data: string;
+  hash: string;
   isLoading?: boolean;
 }
 
-const BlobData = ({ isLoading, data }: Props) => {
+const BlobData = ({ isLoading, data, hash }: Props) => {
   const [ format, setFormat ] = React.useState<Format>('Raw');
 
   const guessedType = React.useMemo(() => {
@@ -34,6 +37,29 @@ const BlobData = ({ isLoading, data }: Props) => {
   const handleSelectChange = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
     setFormat(event.target.value as Format);
   }, []);
+
+  const handleDownloadButtonClick = React.useCallback(() => {
+    const fileBlob = (() => {
+      switch (format) {
+        case 'Image': {
+          const bytes = new Uint8Array(hexToBytes(data));
+          return new Blob([ bytes ], { type: guessedType?.mime });
+        }
+        case 'UTF-8': {
+          return new Blob([ hexToUtf8(data) ], { type: 'text/plain' });
+        }
+        case 'Base64': {
+          return new Blob([ hexToBase64(data) ], { type: 'application/octet-stream' });
+        }
+        case 'Raw': {
+          return new Blob([ data ], { type: 'application/octet-stream' });
+        }
+      }
+    })();
+    const fileName = `blob_${ hash }`;
+
+    downloadBlob(fileBlob, fileName);
+  }, [ data, format, guessedType, hash ]);
 
   const content = (() => {
     switch (format) {
@@ -78,7 +104,16 @@ const BlobData = ({ isLoading, data }: Props) => {
             )) }
           </Select>
         </Skeleton>
-        <CopyToClipboard text={ JSON.stringify(data) } ml="auto" isLoading={ isLoading }/>
+        <Skeleton ml="auto" mr={ 3 } isLoaded={ !isLoading }>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={ handleDownloadButtonClick }
+          >
+            Download
+          </Button>
+        </Skeleton>
+        <CopyToClipboard text={ JSON.stringify(data) } isLoading={ isLoading }/>
       </Flex>
       { content }
     </GridItem>
