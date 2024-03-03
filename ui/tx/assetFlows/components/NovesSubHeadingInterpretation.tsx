@@ -39,6 +39,13 @@ const NovesSubHeadingInterpretation: FC<Props> = ({ data, isLoading }) => {
               ) }
               { item.text }
             </Text>
+            {
+              item.actionText && (
+                <Text fontWeight="500" fontSize="lg" display="inline-flex" alignItems="center" gap={ 2 } wordBreak="break-word" color="gray.500">
+                  { item.actionText }
+                </Text>
+              )
+            }
             { item.hasId && item.token ? (
               <NovesTokenTransferSnippet
                 token={ item.token }

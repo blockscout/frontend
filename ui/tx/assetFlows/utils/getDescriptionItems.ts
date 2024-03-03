@@ -9,13 +9,16 @@ interface TokenWithIndices {
   name: string;
   hasId: boolean;
   indices: Array<number>;
-  token: NovesTokenInfo;
+  token?: NovesTokenInfo;
+  type?: 'action';
 }
 
 export interface DescriptionItems {
   token: NovesTokenInfo | undefined;
   text: string;
   hasId: boolean | undefined;
+  type?: string;
+  actionText?: string;
 }
 
 export const getDescriptionItems = (translateData: NovesResponseData): Array<DescriptionItems> => {
@@ -30,12 +33,17 @@ export const getDescriptionItems = (translateData: NovesResponseData): Array<Des
   const tokensMatchedByName = tokenData.nameList.filter(name => parsedDescription.toUpperCase().includes(` ${ name.toUpperCase() }`));
   let tokensMatchedBySymbol = tokenData.symbolList.filter(symbol => parsedDescription.toUpperCase().includes(` ${ symbol.toUpperCase() }`));
 
+  const actions = [ 'sent', 'Sent', 'Called function', 'called function', 'on contract' ];
+  const actionsMatched = actions.filter(action => parsedDescription.includes(action));
+
   // Filter symbols if they're already matched by name
   tokensMatchedBySymbol = tokensMatchedBySymbol.filter(symbol => !tokensMatchedByName.includes(tokenData.bySymbol[symbol]?.name || ''));
 
   const indices: Array<number> = [];
   let tokensByName;
   let tokensBySymbol;
+
+  let tokensByAction;
 
   if (idsMatched.length) {
     parsedDescription = removeIds(tokensMatchedByName, tokensMatchedBySymbol, idsMatched, tokenData, parsedDescription);
@@ -53,9 +61,15 @@ export const getDescriptionItems = (translateData: NovesResponseData): Array<Des
     tokensBySymbol.forEach(i => indices.push(...i.indices));
   }
 
+  if (actionsMatched.length) {
+    tokensByAction = parseTokensByAction(actionsMatched, parsedDescription);
+
+    tokensByAction.forEach(i => indices.push(...i.indices));
+  }
+
   const indicesSorted = _.uniq(indices.sort((a, b) => a - b));
 
-  const tokensWithIndices = _.uniqBy(_.concat(tokensByName, tokensBySymbol), 'name');
+  const tokensWithIndices = _.uniqBy(_.concat(tokensByName, tokensBySymbol, tokensByAction), 'name');
 
   return createDescriptionItems(indicesSorted, tokensWithIndices, parsedDescription);
 };
@@ -131,27 +145,52 @@ const parseTokensBySymbol = (tokensMatchedBySymbol: Array<string>, idsMatched: A
   return tokensBySymbol;
 };
 
+const parseTokensByAction = (actionsMatched: Array<string>, parsedDescription: string) => {
+  const tokensBySymbol: Array<TokenWithIndices> = actionsMatched.map(action => {
+    return {
+      name: action,
+      indices: [ ...parsedDescription.matchAll(new RegExp(action, 'gi')) ].map(a => a.index) as unknown as Array<number>,
+      hasId: false,
+      type: 'action',
+    };
+  });
+
+  return tokensBySymbol;
+};
+
 const createDescriptionItems = (indicesSorted: Array<number>, tokensWithIndices: Array<TokenWithIndices | undefined>, parsedDescription: string) => {
   // Split the description and create array of objects to render
   const descriptionItems = indicesSorted.map((endIndex, i) => {
     const item = tokensWithIndices.find(t => t?.indices.includes(endIndex));
 
+    let token;
+
     if (i === 0) {
-      return {
+      const isAction = item?.type === 'action';
+
+      token = {
         token: item?.token,
         text: parsedDescription.substring(0, endIndex),
         hasId: item?.hasId,
+        type: isAction ? 'action' : undefined,
+        actionText: isAction ? item.name : undefined,
       };
     } else {
       const previousItem = tokensWithIndices.find(t => t?.indices.includes(indicesSorted[i - 1]));
       // Add the length of the text of the previous token to remove it from the start
       const startIndex = indicesSorted[i - 1] + (previousItem?.name.length || 0) + 1;
-      return {
+      const isAction = item?.type === 'action';
+
+      token = {
         token: item?.token,
         text: parsedDescription.substring(startIndex, endIndex),
         hasId: item?.hasId,
+        type: isAction ? 'action' : undefined,
+        actionText: isAction ? item.name : undefined,
       };
     }
+
+    return token;
   });
 
   const lastIndex = indicesSorted[indicesSorted.length - 1];
@@ -160,7 +199,7 @@ const createDescriptionItems = (indicesSorted: Array<number>, tokensWithIndices:
 
   // Check if there is text left after the last token and push it to the array
   if (restString) {
-    descriptionItems.push({ text: restString, token: undefined, hasId: false });
+    descriptionItems.push({ text: restString, token: undefined, hasId: false, type: undefined, actionText: undefined });
   }
 
   return descriptionItems;
