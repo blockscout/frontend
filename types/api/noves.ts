@@ -82,7 +82,7 @@ export interface NovesAccountHistoryResponse {
   pageNumber: number;
   pageSize: number;
   next_page_params?: {
-    startBlock: null;
+    startBlock: string;
     endBlock: string;
     pageNumber: number;
     pageSize: number;

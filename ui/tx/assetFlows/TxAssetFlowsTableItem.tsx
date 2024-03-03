@@ -15,10 +15,10 @@ const TxAssetFlowsTableItem = (props: Props) => {
 
   return (
     <Tr >
-      <Td px={ 3 } py={ 5 } fontSize="sm" borderColor="gray.200">
+      <Td px={ 3 } py={ 5 } fontSize="sm" borderColor="gray.200" _dark={{ borderColor: 'whiteAlpha.200' }}>
         <NovesActionSnippet item={ props.item } isLoaded={ !props.isPlaceholderData }/>
       </Td>
-      <Td px={ 3 } py="18px" fontSize="sm" borderColor="gray.200" >
+      <Td px={ 3 } py="18px" fontSize="sm" borderColor="gray.200" _dark={{ borderColor: 'whiteAlpha.200' }}>
         <NovesFromTo item={ props.item } isLoaded={ !props.isPlaceholderData }/>
       </Td>
     </Tr>

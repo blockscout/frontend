@@ -1,5 +1,5 @@
 import { Td, Tr, Skeleton, Text, Box } from '@chakra-ui/react';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import type { NovesResponseData } from 'types/api/noves';
 
@@ -16,16 +16,22 @@ type Props = {
 
 const AddressAccountHistoryTableItem = (props: Props) => {
 
+  const parsedDescription = useMemo(() => {
+    const description = props.tx.classificationData.description;
+
+    return description.endsWith('.') ? description.substring(0, description.length - 1) : description;
+  }, [ props.tx.classificationData.description ]);
+
   return (
     <Tr>
-      <Td px={ 3 } py="18px" fontSize="sm" borderColor="gray.200">
+      <Td px={ 3 } py="18px" fontSize="sm" borderColor="gray.200" _dark={{ borderColor: 'whiteAlpha.200' }}>
         <Skeleton borderRadius="sm" flexShrink={ 0 } isLoaded={ !props.isPlaceholderData }>
           <Text as="span" color="text_secondary">
             { dayjs(props.tx.rawTransactionData.timestamp * 1000).fromNow() }
           </Text>
         </Skeleton>
       </Td>
-      <Td px={ 3 } py="18px" fontSize="sm" borderColor="gray.200" >
+      <Td px={ 3 } py="18px" fontSize="sm" borderColor="gray.200" _dark={{ borderColor: 'whiteAlpha.200' }}>
         <Skeleton borderRadius="sm" isLoaded={ !props.isPlaceholderData }>
           <Box display="flex">
             <IconSvg
@@ -43,12 +49,12 @@ const AddressAccountHistoryTableItem = (props: Props) => {
               whiteSpace="break-spaces"
               wordBreak="break-word"
             >
-              { props.tx.classificationData.description }
+              { parsedDescription }
             </LinkInternal>
           </Box>
         </Skeleton>
       </Td>
-      <Td px={ 3 } py="18px" fontSize="sm" borderColor="gray.200" >
+      <Td px={ 3 } py="18px" fontSize="sm" borderColor="gray.200" _dark={{ borderColor: 'whiteAlpha.200' }}>
         <Box flexShrink={ 0 } >
           <NovesFromTo txData={ props.tx } currentAddress={ props.currentAddress } isLoaded={ !props.isPlaceholderData }/>
         </Box>

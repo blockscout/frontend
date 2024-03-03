@@ -24,7 +24,7 @@ const NovesSubHeadingInterpretation: FC<Props> = ({ data, isLoading }) => {
 
   return (
     <Skeleton isLoaded={ !isLoading } overflow="hidden">
-      <Box display="flex" gap={ 2 } alignItems="center" flexWrap="wrap">
+      <Box display="flex" gap={ 2 } alignItems="center" flexWrap="wrap" mr={ 2 }>
         { description.map((item, i) => (
           <Fragment key={ item.text }>
             <Text fontWeight="500" fontSize="lg" display="inline-flex" alignItems="center" gap={ 2 } wordBreak="break-word">

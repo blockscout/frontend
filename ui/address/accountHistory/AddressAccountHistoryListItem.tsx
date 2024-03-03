@@ -1,5 +1,5 @@
 import { Box, Flex, Skeleton, Text } from '@chakra-ui/react';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import type { NovesResponseData } from 'types/api/noves';
 
@@ -16,6 +16,12 @@ type Props = {
 };
 
 const AddressAccountHistoryListItem = (props: Props) => {
+
+  const parsedDescription = useMemo(() => {
+    const description = props.tx.classificationData.description;
+
+    return description.endsWith('.') ? description.substring(0, description.length - 1) : description;
+  }, [ props.tx.classificationData.description ]);
 
   return (
     <ListItemMobile rowGap={ 4 } w="full">
@@ -46,7 +52,7 @@ const AddressAccountHistoryListItem = (props: Props) => {
           whiteSpace="break-spaces"
           wordBreak="break-word"
         >
-          { props.tx.classificationData.description }
+          { parsedDescription }
         </LinkInternal>
       </Skeleton>
 

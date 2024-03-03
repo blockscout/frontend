@@ -1,4 +1,4 @@
-import { Box, Skeleton, Tag, TagLabel } from '@chakra-ui/react';
+import { Box, Skeleton } from '@chakra-ui/react';
 import type { FC } from 'react';
 import React from 'react';
 
@@ -6,6 +6,7 @@ import type { NovesResponseData } from 'types/api/noves';
 
 import type { NovesFlowViewItem } from 'ui/tx/assetFlows/utils/generateFlowViewData';
 
+import Tag from '../chakra/Tag';
 import AddressEntity from '../entities/address/AddressEntity';
 import { getActionFromTo, getFromTo } from './utils';
 
@@ -38,15 +39,10 @@ const NovesFromTo: FC<Props> = ({ isLoaded, txData, currentAddress = '', item })
         <Tag
           colorScheme={ isSent ? 'yellow' : 'green' }
           px={ 0 }
-          pos="relative"
-          minW="max-content"
+          w="113px"
+          textAlign="center"
         >
-          <TagLabel
-            w="113px"
-            textAlign="center"
-          >
-            { data.text }
-          </TagLabel>
+          { data.text }
         </Tag>
 
         <AddressEntity
@@ -54,6 +50,7 @@ const NovesFromTo: FC<Props> = ({ isLoaded, txData, currentAddress = '', item })
           fontWeight="500"
           noCopy={ !data.address }
           noLink={ !data.address }
+          noIcon={ address.name === 'Validators' }
           ml={ 2 }
           truncation="dynamic"
         />
