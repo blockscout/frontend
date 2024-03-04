@@ -9,6 +9,7 @@ const NEXT_ROUTER_MOCK = {
   query: {},
   pathname: '',
   push: () => Promise.resolve(),
+  replace: () => Promise.resolve(),
 };
 
 beforeMount(async({ hooksConfig }) => {
