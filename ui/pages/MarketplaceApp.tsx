@@ -97,13 +97,12 @@ const MarketplaceAppContent = ({ address, data, isPending }: Props) => {
 };
 
 const MarketplaceApp = () => {
-  const { address, sendTransaction, signMessage, signTypedData } = useMarketplaceWallet();
-  useAutoConnectWallet();
-
   const fetch = useFetch();
   const apiFetch = useApiFetch();
   const router = useRouter();
   const id = getQueryParamString(router.query.id);
+  const { address, sendTransaction, signMessage, signTypedData } = useMarketplaceWallet(id);
+  useAutoConnectWallet();
 
   const query = useQuery<unknown, ResourceError<unknown>, MarketplaceAppOverview>({
     queryKey: [ 'marketplace-dapps', id ],

@@ -4,6 +4,7 @@ import type { Account, SignTypedDataParameters } from 'viem';
 import { useAccount, useSendTransaction, useSwitchNetwork, useNetwork, useSignMessage, useSignTypedData } from 'wagmi';
 
 import config from 'configs/app';
+import * as mixpanel from 'lib/mixpanel/index';
 
 type SendTransactionArgs = {
   chainId?: number;
@@ -20,13 +21,20 @@ export type SignTypedDataArgs<
   TPrimaryType extends string = string,
 > = SignTypedDataParameters<TTypedData, TPrimaryType, Account>;
 
-export default function useMarketplaceWallet() {
+export default function useMarketplaceWallet(appId: string) {
   const { address } = useAccount();
   const { chain } = useNetwork();
   const { sendTransactionAsync } = useSendTransaction();
   const { signMessageAsync } = useSignMessage();
   const { signTypedDataAsync } = useSignTypedData();
   const { switchNetworkAsync } = useSwitchNetwork({ chainId: Number(config.chain.id) });
+
+  const logEvent = useCallback((event: mixpanel.EventPayload<mixpanel.EventTypes.WALLET_ACTION>['Action']) => {
+    mixpanel.logEvent(
+      mixpanel.EventTypes.WALLET_ACTION,
+      { Action: event, Address: address, AppId: appId },
+    );
+  }, [ address, appId ]);
 
   const switchNetwork = useCallback(async() => {
     if (Number(config.chain.id) !== chain?.id) {
@@ -37,14 +45,16 @@ export default function useMarketplaceWallet() {
   const sendTransaction = useCallback(async(transaction: SendTransactionArgs) => {
     await switchNetwork();
     const tx = await sendTransactionAsync(transaction);
+    logEvent('Send Transaction');
     return tx.hash;
-  }, [ sendTransactionAsync, switchNetwork ]);
+  }, [ sendTransactionAsync, switchNetwork, logEvent ]);
 
   const signMessage = useCallback(async(message: string) => {
     await switchNetwork();
     const signature = await signMessageAsync({ message });
+    logEvent('Sign Message');
     return signature;
-  }, [ signMessageAsync, switchNetwork ]);
+  }, [ signMessageAsync, switchNetwork, logEvent ]);
 
   const signTypedData = useCallback(async(typedData: SignTypedDataArgs) => {
     await switchNetwork();
@@ -52,8 +62,9 @@ export default function useMarketplaceWallet() {
       typedData.domain.chainId = Number(typedData.domain.chainId);
     }
     const signature = await signTypedDataAsync(typedData);
+    logEvent('Sign Typed Data');
     return signature;
-  }, [ signTypedDataAsync, switchNetwork ]);
+  }, [ signTypedDataAsync, switchNetwork, logEvent ]);
 
   return {
     address,
