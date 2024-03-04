@@ -1,6 +1,5 @@
 import { Flex } from '@chakra-ui/react';
 import { test as base, expect, devices } from '@playwright/experimental-ct-react';
-import type { Page, Route } from '@playwright/test';
 import React from 'react';
 
 import { buildExternalAssetFilePath } from 'configs/app/utils';
@@ -20,14 +19,13 @@ const hooksConfig = {
   },
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const testFn = async({ mount, page }: { mount: any; page: Page }) => {
-  await page.route(MARKETPLACE_CONFIG_URL, (route: Route) => route.fulfill({
+const testFn: Parameters<typeof test>[1] = async({ mount, page }) => {
+  await page.route(MARKETPLACE_CONFIG_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(appsMock),
   }));
 
-  await page.route(appsMock[0].url, (route: Route) =>
+  await page.route(appsMock[0].url, (route) =>
     route.fulfill({
       status: 200,
       path: './mocks/apps/app.html',

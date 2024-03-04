@@ -1,5 +1,4 @@
 import { test, expect, devices } from '@playwright/experimental-ct-react';
-import type { Page, Route } from '@playwright/test';
 import React from 'react';
 
 import { apps as appsMock } from 'mocks/apps/apps';
@@ -14,9 +13,8 @@ const props = {
   isFavorite: false,
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const testFn = async({ mount, page }: { mount: any; page: Page }) => {
-  await page.route(appsMock[0].logo, (route: Route) =>
+const testFn: Parameters<typeof test>[1] = async({ mount, page }) => {
+  await page.route(appsMock[0].logo, (route) =>
     route.fulfill({
       status: 200,
       path: './playwright/mocks/image_s.jpg',
