@@ -95,7 +95,7 @@ export const CONTRACT_LICENSES: Array<ContractLicense> = [
   {
     type: 'bsl_1_1',
     label: 'BSL 1.1',
-    title: 'Business Source License (BSL 1.1)',
+    title: 'Business Source License',
     url: 'https://choosealicense.com/licenses/bsl-1.0/',
   },
 ];

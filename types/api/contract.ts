@@ -153,6 +153,7 @@ export interface SmartContractVerificationConfigRaw {
   vyper_compiler_versions: Array<string>;
   vyper_evm_versions: Array<string>;
   is_rust_verifier_microservice_enabled: boolean;
+  license_types: Record<SmartContractLicenseType, number>;
 }
 
 export interface SmartContractVerificationConfig extends SmartContractVerificationConfigRaw {
