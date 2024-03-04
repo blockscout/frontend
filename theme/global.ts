@@ -2,6 +2,7 @@ import type { StyleFunctionProps } from '@chakra-ui/theme-tools';
 import { mode } from '@chakra-ui/theme-tools';
 
 import scrollbar from './foundations/scrollbar';
+import addressEntity from './globals/address-entity';
 import getDefaultTransitionProps from './utils/getDefaultTransitionProps';
 
 const global = (props: StyleFunctionProps) => ({
@@ -23,6 +24,7 @@ const global = (props: StyleFunctionProps) => ({
     w: '100%',
   },
   ...scrollbar(props),
+  ...addressEntity(props),
 });
 
 export default global;
