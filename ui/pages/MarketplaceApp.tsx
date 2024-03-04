@@ -140,7 +140,7 @@ const MarketplaceApp = () => {
 
   return (
     <>
-      <MarketplaceAppTopBar data={ data } isLoading={ isPending }/>
+      <MarketplaceAppTopBar data={ data } isLoading={ isPending } isWalletConnected={ Boolean(address) }/>
       <DappscoutIframeProvider
         address={ address }
         appUrl={ data?.url }

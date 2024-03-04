@@ -4,16 +4,12 @@ import React from 'react';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
-import useMarketplaceWallet from './useMarketplaceWallet';
-
 type Props = {
   internalWallet: boolean | undefined;
+  isWalletConnected: boolean;
 }
 
-const MarketplaceAppAlert = ({ internalWallet }: Props) => {
-  const { address } = useMarketplaceWallet();
-  const isWalletConnected = Boolean(address);
-
+const MarketplaceAppAlert = ({ internalWallet, isWalletConnected }: Props) => {
   const message = React.useMemo(() => {
     let icon: IconName = 'wallet';
     let text = 'Connect your wallet to Blockscout for full-featured access';

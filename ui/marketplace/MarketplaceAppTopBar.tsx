@@ -16,9 +16,10 @@ import MarketplaceAppInfo from './MarketplaceAppInfo';
 type Props = {
   data: MarketplaceAppOverview | undefined;
   isLoading: boolean;
+  isWalletConnected: boolean;
 }
 
-const MarketplaceAppTopBar = ({ data, isLoading }: Props) => {
+const MarketplaceAppTopBar = ({ data, isLoading, isWalletConnected }: Props) => {
   const appProps = useAppContext();
 
   const goBackUrl = React.useMemo(() => {
@@ -42,7 +43,7 @@ const MarketplaceAppTopBar = ({ data, isLoading }: Props) => {
         </LinkInternal>
       </Tooltip>
       <Skeleton width={{ base: '100%', md: 'auto' }} order={{ base: 4, md: 2 }} isLoaded={ !isLoading }>
-        <MarketplaceAppAlert internalWallet={ data?.internalWallet }/>
+        <MarketplaceAppAlert internalWallet={ data?.internalWallet } isWalletConnected={ isWalletConnected }/>
       </Skeleton>
       <Skeleton order={{ base: 2, md: 3 }} isLoaded={ !isLoading }>
         <MarketplaceAppInfo data={ data }/>
