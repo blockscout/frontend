@@ -20,7 +20,7 @@ const LayoutDefault = ({ children }: Props) => {
         >
           <HeaderDesktop isMarketplaceAppPage/>
           <AppErrorBoundary>
-            <Layout.Content pt={{ base: 0, lg: 6 }}>
+            <Layout.Content pt={{ base: 0, lg: 4 }}>
               { children }
             </Layout.Content>
           </AppErrorBoundary>

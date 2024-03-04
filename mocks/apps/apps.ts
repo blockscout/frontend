@@ -11,6 +11,9 @@ export const apps = [
     description: 'Hop is a scalable rollup-to-rollup general token bridge. It allows users to send tokens from one rollup or sidechain to another almost immediately without having to wait for the networks challenge period.',
     external: true,
     url: 'https://goerli.hop.exchange/send?token=ETH&sourceNetwork=ethereum',
+    github: [ 'https://github.com/hop-protocol/hop', 'https://github.com/hop-protocol/hop-ui' ],
+    discord: 'https://discord.gg/hopprotocol',
+    twitter: 'https://twitter.com/HopProtocol',
   },
   {
     author: 'Blockscout',

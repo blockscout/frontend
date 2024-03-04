@@ -53,3 +53,44 @@ test.describe('daily txs chart', () => {
     });
   });
 });
+
+test('partial data', async({ page, mount }) => {
+  await page.route(STATS_API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(statsMock.base),
+  }));
+  await page.route(TX_CHART_API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(dailyTxsMock.partialData),
+  }));
+
+  const component = await mount(
+    <TestApp>
+      <ChainIndicators/>
+    </TestApp>,
+  );
+  await page.waitForFunction(() => {
+    return document.querySelector('path[data-name="gradient-chart-area"]')?.getAttribute('opacity') === '1';
+  });
+
+  await expect(component).toHaveScreenshot();
+});
+
+test('no data', async({ page, mount }) => {
+  await page.route(STATS_API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(statsMock.noChartData),
+  }));
+  await page.route(TX_CHART_API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(dailyTxsMock.noData),
+  }));
+
+  const component = await mount(
+    <TestApp>
+      <ChainIndicators/>
+    </TestApp>,
+  );
+
+  await expect(component).toHaveScreenshot();
+});

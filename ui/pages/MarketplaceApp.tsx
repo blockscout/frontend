@@ -17,6 +17,7 @@ import * as metadata from 'lib/metadata';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import ContentLoader from 'ui/shared/ContentLoader';
 
+import MarketplaceAppTopBar from '../marketplace/MarketplaceAppTopBar';
 import useAutoConnectWallet from '../marketplace/useAutoConnectWallet';
 import useMarketplaceWallet from '../marketplace/useMarketplaceWallet';
 
@@ -96,13 +97,12 @@ const MarketplaceAppContent = ({ address, data, isPending }: Props) => {
 };
 
 const MarketplaceApp = () => {
-  const { address, sendTransaction, signMessage, signTypedData } = useMarketplaceWallet();
-  useAutoConnectWallet();
-
   const fetch = useFetch();
   const apiFetch = useApiFetch();
   const router = useRouter();
   const id = getQueryParamString(router.query.id);
+  const { address, sendTransaction, signMessage, signTypedData } = useMarketplaceWallet(id);
+  useAutoConnectWallet();
 
   const query = useQuery<unknown, ResourceError<unknown>, MarketplaceAppOverview>({
     queryKey: [ 'marketplace-dapps', id ],
@@ -139,16 +139,19 @@ const MarketplaceApp = () => {
   throwOnResourceLoadError(query);
 
   return (
-    <DappscoutIframeProvider
-      address={ address }
-      appUrl={ data?.url }
-      rpcUrl={ config.chain.rpcUrl }
-      sendTransaction={ sendTransaction }
-      signMessage={ signMessage }
-      signTypedData={ signTypedData }
-    >
-      <MarketplaceAppContent address={ address } data={ data } isPending={ isPending }/>
-    </DappscoutIframeProvider>
+    <>
+      <MarketplaceAppTopBar data={ data } isLoading={ isPending } isWalletConnected={ Boolean(address) }/>
+      <DappscoutIframeProvider
+        address={ address }
+        appUrl={ data?.url }
+        rpcUrl={ config.chain.rpcUrl }
+        sendTransaction={ sendTransaction }
+        signMessage={ signMessage }
+        signTypedData={ signTypedData }
+      >
+        <MarketplaceAppContent address={ address } data={ data } isPending={ isPending }/>
+      </DappscoutIframeProvider>
+    </>
   );
 };
 
