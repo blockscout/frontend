@@ -4,12 +4,12 @@ import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
 import type { Address as AddressInfo } from 'types/api/address';
-import { CONTRACT_LICENSES } from 'types/client/contract';
 
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
+import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
 import dayjs from 'lib/date/dayjs';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';

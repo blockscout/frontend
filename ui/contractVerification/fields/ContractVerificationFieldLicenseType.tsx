@@ -3,8 +3,8 @@ import type { ControllerRenderProps } from 'react-hook-form';
 import { useFormContext, Controller } from 'react-hook-form';
 
 import type { FormFields } from '../types';
-import { CONTRACT_LICENSES } from 'types/client/contract';
 
+import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import FancySelect from 'ui/shared/FancySelect/FancySelect';
 
