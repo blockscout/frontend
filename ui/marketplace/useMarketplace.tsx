@@ -30,6 +30,7 @@ export default function useMarketplace() {
   const [ selectedCategoryId, setSelectedCategoryId ] = React.useState<string>(MarketplaceCategory.ALL);
   const [ filterQuery, setFilterQuery ] = React.useState(defaultFilterQuery);
   const [ favoriteApps, setFavoriteApps ] = React.useState<Array<string>>([]);
+  const [ isFavoriteAppsLoaded, setIsFavoriteAppsLoaded ] = React.useState<boolean>(false);
   const [ isAppInfoModalOpen, setIsAppInfoModalOpen ] = React.useState<boolean>(false);
   const [ isDisclaimerModalOpen, setIsDisclaimerModalOpen ] = React.useState<boolean>(false);
 
@@ -71,11 +72,16 @@ export default function useMarketplace() {
     setSelectedCategoryId(newCategory);
   }, []);
 
-  const { isPlaceholderData, isError, error, data, displayedApps } = useMarketplaceApps(debouncedFilterQuery, selectedCategoryId, favoriteApps);
-  const { isPlaceholderData: isCategoriesPlaceholderData, data: categories } = useMarketplaceCategories(data, isPlaceholderData);
+  const {
+    isPlaceholderData, isError, error, data, displayedApps,
+  } = useMarketplaceApps(debouncedFilterQuery, selectedCategoryId, favoriteApps, isFavoriteAppsLoaded);
+  const {
+    isPlaceholderData: isCategoriesPlaceholderData, data: categories,
+  } = useMarketplaceCategories(data, isPlaceholderData);
 
   React.useEffect(() => {
     setFavoriteApps(getFavoriteApps());
+    setIsFavoriteAppsLoaded(true);
   }, [ ]);
 
   React.useEffect(() => {

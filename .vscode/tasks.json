@@ -338,14 +338,15 @@
             "options": [
               "main",
               "main.L2",
-              "poa_core",
+              "eth",
               "eth_goerli",
               "sepolia",
-              "eth",
-              "rootstock",
               "polygon",
               "zkevm",
               "gnosis",
+              "rootstock",
+              "stability",
+              "poa_core",
               "localhost",
             ],
             "default": "main"

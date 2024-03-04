@@ -27,7 +27,6 @@ const ICONS: Record<keyof GasPrices, IconName> = {
 };
 
 const GasTrackerPriceSnippet = ({ data, type, isLoading }: Props) => {
-
   const bgColors = {
     fast: 'transparent',
     average: useColorModeValue('gray.50', 'whiteAlpha.200'),
@@ -43,19 +42,19 @@ const GasTrackerPriceSnippet = ({ data, type, isLoading }: Props) => {
       w={{ lg: 'calc(100% / 3)' }}
       bgColor={ bgColors[type] }
     >
-      <Skeleton textStyle="h3" display="inline-block" isLoaded={ !isLoading }>{ TITLES[type] }</Skeleton>
+      <Skeleton textStyle="h3" isLoaded={ !isLoading } w="fit-content">{ TITLES[type] }</Skeleton>
       <Flex columnGap={ 3 } alignItems="center" mt={ 3 }>
         <IconSvg name={ ICONS[type] } boxSize={{ base: '30px', xl: 10 }} isLoading={ isLoading } flexShrink={ 0 }/>
         <Skeleton isLoaded={ !isLoading }>
           <GasPrice data={ data } fontSize={{ base: '36px', xl: '48px' }} lineHeight="48px" fontWeight={ 600 } letterSpacing="-1px" fontFamily="heading"/>
         </Skeleton>
       </Flex>
-      <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary" mt={ 3 } display="inline-block">
+      <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary" mt={ 3 } w="fit-content">
         { data.price && data.fiat_price && <GasPrice data={ data } prefix={ `${ asymp } ` } unitMode="secondary"/> }
         <span> per transaction</span>
         { data.time && <span> / { (data.time / SECOND).toLocaleString(undefined, { maximumFractionDigits: 1 }) }s</span> }
       </Skeleton>
-      <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary" mt={ 2 } display="inline-block" whiteSpace="pre">
+      <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary" mt={ 2 } w="fit-content" whiteSpace="pre">
         { data.base_fee && <span>Base { data.base_fee.toLocaleString(undefined, { maximumFractionDigits: 0 }) }</span> }
         { data.base_fee && data.priority_fee && <span> / </span> }
         { data.priority_fee && <span>Priority { data.priority_fee.toLocaleString(undefined, { maximumFractionDigits: 0 }) }</span> }
