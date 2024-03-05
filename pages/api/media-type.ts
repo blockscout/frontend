@@ -22,11 +22,13 @@ export default async function mediaTypeHandler(req: NextApiRequest, res: NextApi
         return 'video';
       }
 
+      if (contentType?.startsWith('image')) {
+        return 'image';
+      }
+
       if (contentType?.startsWith('text/html')) {
         return 'html';
       }
-
-      return 'image';
     })();
     res.status(200).json({ type: mediaType });
   } catch (error) {
