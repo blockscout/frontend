@@ -55,6 +55,12 @@ export interface SearchResultTx {
   url?: string; // not used by the frontend, we build the url ourselves
 }
 
+export interface SearchResultBlob {
+  type: 'blob';
+  blob_hash: string;
+  timestamp: null;
+}
+
 export interface SearchResultUserOp {
   type: 'user_operation';
   user_operation_hash: string;
@@ -62,7 +68,8 @@ export interface SearchResultUserOp {
   url?: string; // not used by the frontend, we build the url ourselves
 }
 
-export type SearchResultItem = SearchResultToken | SearchResultAddressOrContract | SearchResultBlock | SearchResultTx | SearchResultLabel | SearchResultUserOp;
+export type SearchResultItem = SearchResultToken | SearchResultAddressOrContract | SearchResultBlock | SearchResultTx | SearchResultLabel | SearchResultUserOp |
+SearchResultBlob;
 
 export interface SearchResult {
   items: Array<SearchResultItem>;
@@ -86,5 +93,5 @@ export interface SearchResultFilters {
 export interface SearchRedirectResult {
   parameter: string | null;
   redirect: boolean;
-  type: 'address' | 'block' | 'transaction' | 'user_operation' | null;
+  type: 'address' | 'block' | 'transaction' | 'user_operation' | 'blob' | null;
 }

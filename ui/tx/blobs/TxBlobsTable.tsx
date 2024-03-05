@@ -20,7 +20,7 @@ const TxInternalsTable = ({ data, top, isLoading }: Props) => {
       <Thead top={ top }>
         <Tr>
           <Th width="60%">Blob hash</Th>
-          <Th width="20%">Data</Th>
+          <Th width="20%">Data type</Th>
           <Th width="20%" isNumeric>Size</Th>
         </Tr>
       </Thead>

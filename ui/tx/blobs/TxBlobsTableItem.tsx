@@ -17,7 +17,7 @@ const TxBlobsTableItem = ({ data, isLoading }: Props) => {
   return (
     <Tr alignItems="top">
       <Td>
-        <BlobEntity hash={ data.hash } noCopy noIcon isLoading={ isLoading }/>
+        <BlobEntity hash={ data.hash } noIcon isLoading={ isLoading }/>
       </Td>
       <Td verticalAlign="middle">
         <BlobDataType isLoading={ isLoading } data={ data.blob_data }/>

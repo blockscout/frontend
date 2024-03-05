@@ -19,10 +19,10 @@ const TxBlobListItem = ({ data, isLoading }: Props) => {
     <ListItemMobileGrid.Container>
       <ListItemMobileGrid.Label isLoading={ isLoading }>Blob hash</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <BlobEntity hash={ data.hash } isLoading={ isLoading } noCopy/>
+        <BlobEntity hash={ data.hash } isLoading={ isLoading }/>
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>Data</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Data type</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <BlobDataType isLoading={ isLoading } data={ data.blob_data }/>
       </ListItemMobileGrid.Value>
