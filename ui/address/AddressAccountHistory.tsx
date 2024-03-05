@@ -14,7 +14,6 @@ import AddressAccountHistoryTableItem from 'ui/address/accountHistory/AddressAcc
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import { getFromToValue } from 'ui/shared/Noves/utils';
-import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import TheadSticky from 'ui/shared/TheadSticky';
 
@@ -58,7 +57,6 @@ const AddressAccountHistory = ({ scrollRef }: Props) => {
         isLoading={ pagination.isLoading }
       />
 
-      <Pagination ml={{ base: 'auto', lg: 8 }} { ...pagination }/>
     </ActionBar>
   );
 
