@@ -11,7 +11,7 @@ import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
 import BlobDataImage from './BlobDataImage';
 
-const FORMATS = [ 'Raw', 'Image', 'UTF-8', 'Base64' ] as const;
+const FORMATS = [ 'Image', 'Raw', 'UTF-8', 'Base64' ] as const;
 
 type Format = typeof FORMATS[number];
 
@@ -21,7 +21,7 @@ interface Props {
   isLoading?: boolean;
 }
 
-const BlobData = ({ isLoading, data, hash }: Props) => {
+const BlobData = ({ data, isLoading, hash }: Props) => {
   const [ format, setFormat ] = React.useState<Format>('Raw');
 
   const guessedType = React.useMemo(() => {
@@ -33,6 +33,12 @@ const BlobData = ({ isLoading, data, hash }: Props) => {
 
   const isImage = guessedType?.mime?.startsWith('image/');
   const formats = isImage ? FORMATS : FORMATS.filter((format) => format !== 'Image');
+
+  React.useEffect(() => {
+    if (isImage) {
+      setFormat('Image');
+    }
+  }, [ isImage ]);
 
   const handleSelectChange = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
     setFormat(event.target.value as Format);
@@ -46,7 +52,7 @@ const BlobData = ({ isLoading, data, hash }: Props) => {
           return new Blob([ bytes ], { type: guessedType?.mime });
         }
         case 'UTF-8': {
-          return new Blob([ hexToUtf8(data) ], { type: 'text/plain' });
+          return new Blob([ hexToUtf8(data) ], { type: guessedType?.mime ?? 'text/plain' });
         }
         case 'Base64': {
           return new Blob([ hexToBase64(data) ], { type: 'application/octet-stream' });
