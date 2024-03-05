@@ -11,6 +11,7 @@ import {
   DarkMode,
   ListItem,
   OrderedList,
+  Box,
 } from '@chakra-ui/react';
 import React from 'react';
 import type { ControllerRenderProps, Control } from 'react-hook-form';
@@ -97,7 +98,7 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
 
   return (
     <>
-      <div>
+      <Box mt={{ base: 10, lg: 6 }} gridColumn={{ lg: '1 / 3' }}>
         <chakra.span fontWeight={ 500 } fontSize="lg" fontFamily="heading">
           Currently, Blockscout supports { methods.length } contract verification methods
         </chakra.span>
@@ -121,8 +122,7 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
             </PopoverContent>
           </Portal>
         </Popover>
-      </div>
-      <div/>
+      </Box>
       <Controller
         name="method"
         control={ control }

@@ -9,6 +9,7 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
+import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
 import dayjs from 'lib/date/dayjs';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
@@ -117,6 +118,23 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
         Verify & publish
     </Button>
   );
+
+  const licenseLink = (() => {
+    if (!data?.license_type) {
+      return null;
+    }
+
+    const license = CONTRACT_LICENSES.find((license) => license.type === data.license_type);
+    if (!license || license.type === 'none') {
+      return null;
+    }
+
+    return (
+      <LinkExternal href={ license.url }>
+        { license.label }
+      </LinkExternal>
+    );
+  })();
 
   const constructorArgs = (() => {
     if (!data?.decoded_constructor_args) {
@@ -233,6 +251,7 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
           { data.name && <InfoItem label="Contract name" content={ data.name } isLoading={ isPlaceholderData }/> }
           { data.compiler_version && <InfoItem label="Compiler version" content={ data.compiler_version } isLoading={ isPlaceholderData }/> }
           { data.evm_version && <InfoItem label="EVM version" content={ data.evm_version } textTransform="capitalize" isLoading={ isPlaceholderData }/> }
+          { licenseLink && <InfoItem label="License" content={ licenseLink } isLoading={ isPlaceholderData }/> }
           { typeof data.optimization_enabled === 'boolean' &&
             <InfoItem label="Optimization enabled" content={ data.optimization_enabled ? 'true' : 'false' } isLoading={ isPlaceholderData }/> }
           { data.optimization_runs && <InfoItem label="Optimization runs" content={ String(data.optimization_runs) } isLoading={ isPlaceholderData }/> }

@@ -75,7 +75,12 @@ const marketplaceAppSchema: yup.ObjectSchema<MarketplaceAppOverview> = yup
     site: yup.string().test(urlTest),
     twitter: yup.string().test(urlTest),
     telegram: yup.string().test(urlTest),
-    github: yup.string().test(urlTest),
+    github: yup.lazy(value =>
+      Array.isArray(value) ?
+        yup.array().of(yup.string().required().test(urlTest)) :
+        yup.string().test(urlTest),
+    ),
+    discord: yup.string().test(urlTest),
     internalWallet: yup.boolean(),
     priority: yup.number(),
   });
@@ -495,6 +500,7 @@ const schema = yup
     NEXT_PUBLIC_PROMOTE_BLOCKSCOUT_IN_TITLE: yup.boolean(),
     NEXT_PUBLIC_OG_DESCRIPTION: yup.string(),
     NEXT_PUBLIC_OG_IMAGE_URL: yup.string().test(urlTest),
+    NEXT_PUBLIC_SAFE_TX_SERVICE_URL: yup.string().test(urlTest),
     NEXT_PUBLIC_IS_SUAVE_CHAIN: yup.boolean(),
     NEXT_PUBLIC_HAS_USER_OPS: yup.boolean(),
     NEXT_PUBLIC_SWAP_BUTTON_URL: yup.string(),

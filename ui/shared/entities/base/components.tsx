@@ -19,6 +19,7 @@ export interface EntityBaseProps {
   className?: string;
   href?: string;
   iconSize?: IconSize;
+  iconColor?: IconProps['color'];
   isExternal?: boolean;
   isLoading?: boolean;
   noCopy?: boolean;
@@ -79,13 +80,13 @@ const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink }:
   );
 });
 
-export interface IconBaseProps extends Pick<EntityBaseProps, 'isLoading' | 'iconSize' | 'noIcon'> {
+export interface IconBaseProps extends Pick<EntityBaseProps, 'isLoading' | 'iconSize' | 'noIcon' | 'iconColor'> {
   name: IconName;
   color?: IconProps['color'];
   borderRadius?: IconProps['borderRadius'];
 }
 
-const Icon = ({ isLoading, iconSize, noIcon, name, color, borderRadius }: IconBaseProps) => {
+const Icon = ({ isLoading, iconSize, noIcon, name, iconColor, color, borderRadius }: IconBaseProps) => {
   const defaultColor = useColorModeValue('gray.500', 'gray.400');
 
   if (noIcon) {
@@ -101,7 +102,7 @@ const Icon = ({ isLoading, iconSize, noIcon, name, color, borderRadius }: IconBa
       borderRadius={ borderRadius ?? 'base' }
       display="block"
       mr={ 2 }
-      color={ color ?? defaultColor }
+      color={ iconColor ?? color ?? defaultColor }
       minW={ 0 }
       flexShrink={ 0 }
     />

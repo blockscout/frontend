@@ -11,13 +11,17 @@ export type MarketplaceAppPreview = {
   priority?: number;
 }
 
-export type MarketplaceAppOverview = MarketplaceAppPreview & {
+export type MarketplaceAppSocialInfo = {
+  twitter?: string;
+  telegram?: string;
+  github?: string | Array<string>;
+  discord?: string;
+}
+
+export type MarketplaceAppOverview = MarketplaceAppPreview & MarketplaceAppSocialInfo & {
   author: string;
   description: string;
   site?: string;
-  twitter?: string;
-  telegram?: string;
-  github?: string;
 }
 
 export enum MarketplaceCategory {

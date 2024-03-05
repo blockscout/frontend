@@ -5,7 +5,6 @@ interface AddressHighlightProviderProps {
 }
 
 interface TAddressHighlightContext {
-  highlightedAddress: string | null;
   onMouseEnter: (event: React.MouseEvent) => void;
   onMouseLeave: (event: React.MouseEvent) => void;
 }
@@ -13,30 +12,40 @@ interface TAddressHighlightContext {
 export const AddressHighlightContext = React.createContext<TAddressHighlightContext | null>(null);
 
 export function AddressHighlightProvider({ children }: AddressHighlightProviderProps) {
-  const [ highlightedAddress, setHighlightedAddress ] = React.useState<string | null>(null);
   const timeoutId = React.useRef<number | null>(null);
+  const hashRef = React.useRef<string | null>(null);
 
   const onMouseEnter = React.useCallback((event: React.MouseEvent) => {
     const hash = event.currentTarget.getAttribute('data-hash');
     if (hash) {
+      hashRef.current = hash;
       timeoutId.current = window.setTimeout(() => {
-        setHighlightedAddress(hash);
+        // for better performance we update DOM-nodes directly bypassing React reconciliation
+        const nodes = window.document.querySelectorAll(`[data-hash="${ hashRef.current }"]`);
+        for (const node of nodes) {
+          node.classList.add('address-entity_highlighted');
+        }
       }, 100);
     }
   }, []);
 
   const onMouseLeave = React.useCallback(() => {
-    setHighlightedAddress(null);
+    if (hashRef.current) {
+      const nodes = window.document.querySelectorAll(`[data-hash="${ hashRef.current }"]`);
+      for (const node of nodes) {
+        node.classList.remove('address-entity_highlighted');
+      }
+      hashRef.current = null;
+    }
     typeof timeoutId.current === 'number' && window.clearTimeout(timeoutId.current);
   }, []);
 
   const value = React.useMemo(() => {
     return {
-      highlightedAddress,
       onMouseEnter,
       onMouseLeave,
     };
-  }, [ highlightedAddress, onMouseEnter, onMouseLeave ]);
+  }, [ onMouseEnter, onMouseLeave ]);
 
   React.useEffect(() => {
     return () => {
