@@ -13,8 +13,9 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import BlockDetails from 'ui/block/BlockDetails';
 import BlockWithdrawals from 'ui/block/BlockWithdrawals';
+import useBlockBlobTxsQuery from 'ui/block/useBlockBlobTxsQuery';
 import useBlockQuery from 'ui/block/useBlockQuery';
-import useBlockTxQuery from 'ui/block/useBlockTxQuery';
+import useBlockTxsQuery from 'ui/block/useBlockTxsQuery';
 import useBlockWithdrawalsQuery from 'ui/block/useBlockWithdrawalsQuery';
 import TextAd from 'ui/shared/ad/TextAd';
 import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
@@ -40,8 +41,9 @@ const BlockPageContent = () => {
   const tab = getQueryParamString(router.query.tab);
 
   const blockQuery = useBlockQuery({ heightOrHash });
-  const blockTxsQuery = useBlockTxQuery({ heightOrHash, blockQuery, tab });
+  const blockTxsQuery = useBlockTxsQuery({ heightOrHash, blockQuery, tab });
   const blockWithdrawalsQuery = useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab });
+  const blockBlobTxsQuery = useBlockBlobTxsQuery({ heightOrHash, blockQuery, tab });
 
   const tabs: Array<RoutedTab> = React.useMemo(() => ([
     {
@@ -64,6 +66,14 @@ const BlockPageContent = () => {
         </>
       ),
     },
+    blockQuery.data?.blob_tx_count ?
+      {
+        id: 'blob_txs',
+        title: 'Blob txns',
+        component: (
+          <TxsWithFrontendSorting query={ blockBlobTxsQuery } showBlockInfo={ false } showSocketInfo={ false }/>
+        ),
+      } : null,
     config.features.beaconChain.isEnabled && Boolean(blockQuery.data?.withdrawals_count) ?
       {
         id: 'withdrawals',
@@ -75,7 +85,7 @@ const BlockPageContent = () => {
           </>
         ),
       } : null,
-  ].filter(Boolean)), [ blockQuery, blockTxsQuery, blockWithdrawalsQuery ]);
+  ].filter(Boolean)), [ blockBlobTxsQuery, blockQuery, blockTxsQuery, blockWithdrawalsQuery ]);
 
   const hasPagination = !isMobile && (
     (tab === 'txs' && blockTxsQuery.pagination.isVisible) ||

@@ -115,6 +115,31 @@ const BlockDetails = ({ query }: Props) => {
     return config.chain.verificationType === 'validation' ? 'Validated by' : 'Mined by';
   })();
 
+  const txsNum = (() => {
+    const blockTxsNum = (
+      <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash, tab: 'txs' } }) }>
+        { data.tx_count } txn{ data.tx_count === 1 ? '' : 's' }
+      </LinkInternal>
+    );
+
+    const blockBlobTxsNum = data.blob_tx_count ? (
+      <>
+        <span> and </span>
+        <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash, tab: 'blob_txs' } }) }>
+          { data.blob_tx_count } blob txn{ data.blob_tx_count === 1 ? '' : 's' }
+        </LinkInternal>
+      </>
+    ) : null;
+
+    return (
+      <>
+        { blockTxsNum }
+        { blockBlobTxsNum }
+        <span> in this block</span>
+      </>
+    );
+  })();
+
   const blockTypeLabel = (() => {
     switch (data.type) {
       case 'reorg':
@@ -173,9 +198,7 @@ const BlockDetails = ({ query }: Props) => {
         isLoading={ isPlaceholderData }
       >
         <Skeleton isLoaded={ !isPlaceholderData }>
-          <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash, tab: 'txs' } }) }>
-            { data.tx_count } transaction{ data.tx_count === 1 ? '' : 's' }
-          </LinkInternal>
+          { txsNum }
         </Skeleton>
       </DetailsInfoItem>
       { config.features.beaconChain.isEnabled && Boolean(data.withdrawals_count) && (

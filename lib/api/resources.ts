@@ -266,7 +266,7 @@ export const RESOURCES = {
   block_txs: {
     path: '/api/v2/blocks/:height_or_hash/transactions',
     pathParams: [ 'height_or_hash' as const ],
-    filterFields: [],
+    filterFields: [ 'type' as const ],
   },
   block_withdrawals: {
     path: '/api/v2/blocks/:height_or_hash/withdrawals',
@@ -893,6 +893,7 @@ export type PaginatedResponseNextPageParams<Q extends ResourceName> = Q extends 
 /* eslint-disable @typescript-eslint/indent */
 export type PaginationFilters<Q extends PaginatedResources> =
 Q extends 'blocks' ? BlockFilters :
+Q extends 'block_txs' ? TTxsWithBlobsFilters :
 Q extends 'txs_validated' | 'txs_pending' ? TTxsFilters :
 Q extends 'txs_with_blobs' ? TTxsWithBlobsFilters :
 Q extends 'tx_token_transfers' ? TokenTransferFilters :
