@@ -76,7 +76,7 @@ const OptimisticL2Deposits = () => {
       <DataListDisplay
         isError={ isError }
         items={ data?.items }
-        emptyText="There are no withdrawals."
+        emptyText="There are no deposits."
         content={ content }
         actionBar={ actionBar }
       />
