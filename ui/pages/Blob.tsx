@@ -8,7 +8,7 @@ import { BLOB } from 'stubs/blobs';
 import BlobInfo from 'ui/blob/BlobInfo';
 import TextAd from 'ui/shared/ad/TextAd';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import BlobEntity from 'ui/shared/entities/blob/BlobEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const BlobPageContent = () => {
@@ -40,7 +40,7 @@ const BlobPageContent = () => {
   })();
 
   const titleSecondRow = (
-    <TxEntity hash={ hash } noLink noCopy={ false } fontWeight={ 500 } fontFamily="heading"/>
+    <BlobEntity hash={ hash } noLink noCopy={ false } fontWeight={ 500 } fontFamily="heading"/>
   );
 
   return (
