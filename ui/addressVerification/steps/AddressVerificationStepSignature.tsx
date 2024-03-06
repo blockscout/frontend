@@ -80,15 +80,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
 
   const onSubmit = handleSubmit(onFormSubmit);
 
-  const { signMessage, isLoading: isSigning } = useSignMessage({
-    onSuccess: (data) => {
-      setValue('signature', data);
-      onSubmit();
-    },
-    onError: (error) => {
-      return setError('root', { type: 'SIGNING_FAIL', message: (error as Error)?.message || 'Oops! Something went wrong' });
-    },
-  });
+  const { signMessage, isPending: isSigning } = useSignMessage();
 
   const handleSignMethodChange = React.useCallback((value: typeof signMethod) => {
     setSignMethod(value);
@@ -108,8 +100,16 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
     }
 
     const message = getValues('message');
-    signMessage({ message });
-  }, [ clearErrors, isConnected, getValues, signMessage, setError ]);
+    signMessage({ message }, {
+      onSuccess: (data) => {
+        setValue('signature', data);
+        onSubmit();
+      },
+      onError: (error) => {
+        return setError('root', { type: 'SIGNING_FAIL', message: (error as Error)?.message || 'Oops! Something went wrong' });
+      },
+    });
+  }, [ clearErrors, isConnected, getValues, signMessage, setError, setValue, onSubmit ]);
 
   const handleManualSignClick = React.useCallback(() => {
     clearErrors('root');

@@ -1,5 +1,3 @@
-import type { WindowProvider } from 'wagmi';
-
 type CPreferences = {
   zone: string;
   width: string;
@@ -8,7 +6,8 @@ type CPreferences = {
 
 declare global {
   export interface Window {
-    ethereum?: WindowProvider;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ethereum?: any;
     coinzilla_display: Array<CPreferences>;
     ga?: {
       getAll: () => Array<{ get: (prop: string) => string }>;
