@@ -11,6 +11,7 @@
 	| "arrows/north-east"
 	| "arrows/south-east"
 	| "arrows/up-down"
+	| "blob"
 	| "blobs/image"
 	| "blobs/raw"
 	| "blobs/text"

@@ -29,7 +29,7 @@ const Icon = (props: IconProps) => {
   return (
     <EntityBase.Icon
       { ...props }
-      name={ props.name ?? 'transactions_slim' }
+      name={ props.name ?? 'blob' }
     />
   );
 };
