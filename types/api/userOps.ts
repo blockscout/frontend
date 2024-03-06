@@ -49,8 +49,10 @@ export type UserOp = {
   user_logs_start_index: number;
   user_logs_count: number;
   raw: {
+    account_gas_limits?: string;
     call_data: string;
     call_gas_limit: string;
+    gas_fees?: string;
     init_code: string;
     max_fee_per_gas: string;
     max_priority_fee_per_gas: string;
