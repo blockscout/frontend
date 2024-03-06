@@ -61,7 +61,7 @@ const ZkEvmTxnBatchesListItem = ({ item, isLoading }: Props) => {
         </LinkInternal>
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>Verify Tx Has</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Verify tx hash</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         { item.verify_tx_hash ? (
           <TxEntityL1
