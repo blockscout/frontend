@@ -86,7 +86,7 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
         title="Timestamp"
         isLoading={ isPlaceholderData }
       >
-        <DetailsTimestamp timestamp={ data.timestamp } isLoading={ isPlaceholderData }/>
+        { data.timestamp ? <DetailsTimestamp timestamp={ data.timestamp } isLoading={ isPlaceholderData }/> : 'Undefined' }
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Verify tx hash"
@@ -98,7 +98,7 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
             hash={ data.verify_tx_hash }
             maxW="100%"
           />
-        ) : <Text>pending</Text> }
+        ) : <Text>Pending</Text> }
       </DetailsInfoItem>
       <DetailsInfoItem
         title="Transactions"
