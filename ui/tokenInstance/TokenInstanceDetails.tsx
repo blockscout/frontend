@@ -74,7 +74,8 @@ const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
           <TokenNftMarketplaces isLoading={ isLoading } hash={ token.address } id={ data.id }/>
         </Grid>
         <NftMedia
-          url={ data.animation_url || data.image_url }
+          animationUrl={ data.animation_url }
+          imageUrl={ data.image_url }
           w="250px"
           flexShrink={ 0 }
           alignSelf={{ base: 'center', lg: 'flex-start' }}
