@@ -46,7 +46,7 @@ const BlobInfo = ({ data, isLoading }: Props) => {
         </Skeleton>
       </DetailsInfoItem>
       <DetailsInfoItem
-        title="Size"
+        title="Size, bytes"
         hint="Blob size in bytes"
         isLoading={ isLoading }
       >

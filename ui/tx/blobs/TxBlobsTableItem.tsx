@@ -22,7 +22,7 @@ const TxBlobsTableItem = ({ data, isLoading }: Props) => {
       <Td verticalAlign="middle">
         <BlobDataType isLoading={ isLoading } data={ data.blob_data }/>
       </Td>
-      <Td isNumeric verticalAlign="middle">
+      <Td verticalAlign="middle">
         <Skeleton isLoaded={ !isLoading } display="inline-block">
           { size.toLocaleString() }
         </Skeleton>

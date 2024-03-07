@@ -30,6 +30,18 @@ const BlobDataType = ({ data, isLoading }: Props) => {
     if (guessedType?.mime?.startsWith('image/')) {
       return TYPES.image;
     }
+
+    if (
+      guessedType?.mime?.startsWith('text/') ||
+      [
+        'application/json',
+        'application/xml',
+        'application/javascript',
+      ].includes(guessedType?.mime || '')
+    ) {
+      return TYPES.text;
+    }
+
     return TYPES.raw;
   })();
 

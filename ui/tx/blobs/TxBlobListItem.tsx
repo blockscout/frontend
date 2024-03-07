@@ -27,7 +27,7 @@ const TxBlobListItem = ({ data, isLoading }: Props) => {
         <BlobDataType isLoading={ isLoading } data={ data.blob_data }/>
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>Size</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Size, bytes</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <Skeleton isLoaded={ !isLoading }>
           { size.toLocaleString() }

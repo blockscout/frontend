@@ -24,3 +24,12 @@ test('raw data', async({ mount }) => {
   );
   await expect(component).toHaveScreenshot();
 });
+
+test('text data', async({ mount }) => {
+  const component = await mount(
+    <TestApp>
+      <BlobDataType data="0x7b226e616d65223a22706963732f"/>
+    </TestApp>,
+  );
+  await expect(component).toHaveScreenshot();
+});
