@@ -54,7 +54,7 @@ const AddressAccountHistoryTableItem = (props: Props) => {
           </Box>
         </Skeleton>
       </Td>
-      <Td px={ 3 } py="18px" fontSize="sm" borderColor="gray.200" _dark={{ borderColor: 'whiteAlpha.200' }}>
+      <Td px={ 3 } py="18px" fontSize="sm">
         <Box flexShrink={ 0 } >
           <NovesFromTo txData={ props.tx } currentAddress={ props.currentAddress } isLoaded={ !props.isPlaceholderData }/>
         </Box>
