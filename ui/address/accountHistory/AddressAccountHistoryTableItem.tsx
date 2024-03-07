@@ -24,14 +24,14 @@ const AddressAccountHistoryTableItem = (props: Props) => {
 
   return (
     <Tr>
-      <Td px={ 3 } py="18px" fontSize="sm" borderColor="gray.200" _dark={{ borderColor: 'whiteAlpha.200' }}>
+      <Td px={ 3 } py="18px" fontSize="sm" >
         <Skeleton borderRadius="sm" flexShrink={ 0 } isLoaded={ !props.isPlaceholderData }>
           <Text as="span" color="text_secondary">
             { dayjs(props.tx.rawTransactionData.timestamp * 1000).fromNow() }
           </Text>
         </Skeleton>
       </Td>
-      <Td px={ 3 } py="18px" fontSize="sm" borderColor="gray.200" _dark={{ borderColor: 'whiteAlpha.200' }}>
+      <Td px={ 3 } py="18px" fontSize="sm" >
         <Skeleton borderRadius="sm" isLoaded={ !props.isPlaceholderData }>
           <Box display="flex">
             <IconSvg
