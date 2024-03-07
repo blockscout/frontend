@@ -35,6 +35,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/output-roots': 'output roots',
   '/batches': 'tx batches (L2 blocks)',
   '/batches/[number]': 'L2 tx batch %number%',
+  '/blobs/[hash]': 'blob %hash% details',
   '/ops': 'user operations',
   '/op/[hash]': 'user operation %hash%',
   '/404': 'error - page not found',

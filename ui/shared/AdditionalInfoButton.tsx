@@ -37,6 +37,7 @@ const AdditionalInfoButton = ({ isOpen, onClick, className, isLoading }: Props, 
       onClick={ onClick }
       cursor="pointer"
       flexShrink={ 0 }
+      aria-label="Transaction info"
     >
       <IconSvg
         name="info"

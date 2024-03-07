@@ -11999,6 +11999,11 @@ lz-string@^1.5.0:
   resolved "https://registry.yarnpkg.com/lz-string/-/lz-string-1.5.0.tgz#c1ab50f77887b712621201ba9fd4e3a6ed099941"
   integrity sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==
 
+magic-bytes.js@1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/magic-bytes.js/-/magic-bytes.js-1.8.0.tgz#8362793c60cd77c2dd77db6420be727192df68e2"
+  integrity sha512-lyWpfvNGVb5lu8YUAbER0+UMBTdR63w2mcSUlhhBTyVbxJvjgqwyAf3AZD6MprgK0uHuBoWXSDAMWLupX83o3Q==
+
 magic-string@^0.30.5:
   version "0.30.5"
   resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.30.5.tgz#1994d980bd1c8835dc6e78db7cbd4ae4f24746f9"

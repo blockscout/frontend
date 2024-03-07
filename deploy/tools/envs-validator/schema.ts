@@ -32,8 +32,8 @@ import { ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from '../../../types/views/address
 import { BLOCK_FIELDS_IDS } from '../../../types/views/block';
 import type { BlockFieldId } from '../../../types/views/block';
 import type { NftMarketplaceItem } from '../../../types/views/nft';
-import type { TxAdditionalFieldsId, TxFieldsId } from '../../../types/views/tx';
-import { TX_ADDITIONAL_FIELDS_IDS, TX_FIELDS_IDS } from '../../../types/views/tx';
+import type { TxAdditionalFieldsId, TxFieldsId, TxViewId } from '../../../types/views/tx';
+import { TX_ADDITIONAL_FIELDS_IDS, TX_FIELDS_IDS, TX_VIEWS_IDS } from '../../../types/views/tx';
 
 import { replaceQuotes } from '../../../configs/app/utils';
 import * as regexp from '../../../lib/regexp';
@@ -448,6 +448,11 @@ const schema = yup
       .transform(replaceQuotes)
       .json()
       .of(yup.string<TxAdditionalFieldsId>().oneOf(TX_ADDITIONAL_FIELDS_IDS)),
+    NEXT_PUBLIC_VIEWS_TX_HIDDEN_VIEWS: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(yup.string<TxViewId>().oneOf(TX_VIEWS_IDS)),
     NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES: yup
       .array()
       .transform(replaceQuotes)

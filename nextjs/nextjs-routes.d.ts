@@ -28,6 +28,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/auth/unverified-email">
     | DynamicRoute<"/batches/[number]", { "number": string }>
     | StaticRoute<"/batches">
+    | DynamicRoute<"/blobs/[hash]", { "hash": string }>
     | DynamicRoute<"/block/[height_or_hash]", { "height_or_hash": string }>
     | StaticRoute<"/blocks">
     | StaticRoute<"/contract-verification">
