@@ -9,7 +9,7 @@ import Web3ModalProvider from '../Web3ModalProvider';
 
 const GetitAdPlugin = dynamic(() => import('getit-sdk').then(module => module.GetitAdPlugin), { ssr: false });
 
-const GETIT_API_KEY = 'ZFapehuaQQVIVZIjPGlAG6lffqp8EBVCxkkRik3t04EgABF5TyH0GvByhnBBl32uw5wACnMjeT8wHP80UqYkHof0o0bW6J9gY08LuKX0mL2Dj3oR4pB5Bp39tX0zHoVP';
+const GETIT_API_KEY = 'ZmGXVvwYUAW4yXL8RzWQHNKmpSyQmt3TDXsXUxqFqXPdoaiSSFyca3BOyunDcWdyOwTkX3UVVQel28qbjoOoWPxYVpPdNzbUNkAHyFyJX7Lk9TVcPDZKTQmwHlSMzO3a';
 
 const GetitBannerContent = ({ address, className }: { address?: string; className?: string }) => {
   const isMobile = Boolean(useIsMobile());
