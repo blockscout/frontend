@@ -9,9 +9,10 @@ const SCROLL_GRADIENT_HEIGHT = 48;
 type Props = {
   children: React.ReactNode;
   isLoading?: boolean;
+  type: 'tx' | 'user_op';
 }
 
-const TxDetailsActions = ({ children, isLoading }: Props) => {
+const DetailsActionsWrapper = ({ children, isLoading, type }: Props) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [ hasScroll, setHasScroll ] = React.useState(false);
 
@@ -25,8 +26,8 @@ const TxDetailsActions = ({ children, isLoading }: Props) => {
 
   return (
     <DetailsInfoItem
-      title="Transaction action"
-      hint="Highlighted events of the transaction"
+      title={ `${ type === 'tx' ? 'Transaction' : 'User operation' } action` }
+      hint={ `Highlighted events of the ${ type === 'tx' ? 'transaction' : 'user operation' }` }
       note={ hasScroll ? 'Scroll to see more' : undefined }
       position="relative"
       isLoading={ isLoading }
@@ -47,4 +48,4 @@ const TxDetailsActions = ({ children, isLoading }: Props) => {
   );
 };
 
-export default React.memo(TxDetailsActions);
+export default React.memo(DetailsActionsWrapper);

@@ -26,6 +26,8 @@ import UserOpSponsorType from 'ui/shared/userOps/UserOpSponsorType';
 import UserOpStatus from 'ui/shared/userOps/UserOpStatus';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
+import UserOpDetailsActions from './UserOpDetailsActions';
+
 interface Props {
   query: UseQueryResult<UserOp, ResourceError>;
 }
@@ -167,6 +169,8 @@ const UserOpDetails = ({ query }: Props) => {
       >
         <AddressStringOrParam address={ data.entry_point } isLoading={ isPlaceholderData }/>
       </DetailsInfoItem>
+
+      { config.features.txInterpretation.isEnabled && <UserOpDetailsActions hash={ data.hash } isUserOpDataLoading={ isPlaceholderData }/> }
 
       { /* CUT */ }
       <GridItem colSpan={{ base: undefined, lg: 2 }}>
