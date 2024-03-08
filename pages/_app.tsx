@@ -15,6 +15,7 @@ import { ChakraProvider } from 'lib/contexts/chakra';
 import { ScrollDirectionProvider } from 'lib/contexts/scrollDirection';
 import { growthBook } from 'lib/growthbook/init';
 import useLoadFeatures from 'lib/growthbook/useLoadFeatures';
+import useNotifyOnNavigation from 'lib/hooks/useNotifyOnNavigation';
 import { SocketProvider } from 'lib/socket/context';
 import theme from 'theme';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
@@ -44,6 +45,7 @@ const ERROR_SCREEN_STYLES: ChakraProps = {
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   useLoadFeatures();
+  useNotifyOnNavigation();
 
   const queryClient = useQueryClientConfig();
 

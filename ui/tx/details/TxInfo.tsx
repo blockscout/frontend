@@ -109,6 +109,15 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
 
   return (
     <Grid columnGap={ 8 } rowGap={{ base: 3, lg: 3 }} templateColumns={{ base: 'minmax(0, 1fr)', lg: 'max-content minmax(728px, auto)' }}>
+
+      { config.features.metasuites.isEnabled && (
+        <>
+          <Box display="none" id="meta-suites__tx-info-label" data-status={ data.status } data-ready={ !isLoading }/>
+          <Box display="none" id="meta-suites__tx-info-value"/>
+          <DetailsInfoItemDivider display="none" id="meta-suites__details-info-item-divider"/>
+        </>
+      ) }
+
       { socketStatus && (
         <GridItem colSpan={{ base: undefined, lg: 2 }} mb={ 2 }>
           <TxSocketAlert status={ socketStatus }/>
@@ -125,6 +134,13 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           <HashStringShortenDynamic hash={ data.hash }/>
         </Skeleton>
         <CopyToClipboard text={ data.hash } isLoading={ isLoading }/>
+
+        { config.features.metasuites.isEnabled && (
+          <>
+            <TextSeparator color="gray.500" flexShrink={ 0 } display="none" id="meta-suites__tx-explorer-separator"/>
+            <Box display="none" flexShrink={ 0 } id="meta-suites__tx-explorer-link"/>
+          </>
+        ) }
       </DetailsInfoItem>
       <DetailsInfoItem
         title={ rollupFeature.isEnabled && rollupFeature.type === 'zkEvm' ? 'L2 status and method' : 'Status and method' }
