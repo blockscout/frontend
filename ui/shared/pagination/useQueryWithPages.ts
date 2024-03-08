@@ -41,17 +41,6 @@ function getNextPageParams<R extends PaginatedResources>(data: ResourcePayload<R
     return;
   }
 
-  const nextPageParams = data.next_page_params;
-  if (nextPageParams) {
-    // check if a page param is "null" and remove it
-
-    return Object.entries(nextPageParams)
-    //eslint-disable-next-line @typescript-eslint/no-unused-vars
-      .filter(([ _, v ]) => v != null)
-      .reduce((acc, [ k, v ]) => ({ ...acc, [k]: v }), {});
-
-  }
-
   return data.next_page_params;
 }
 
