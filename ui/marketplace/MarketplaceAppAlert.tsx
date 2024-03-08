@@ -19,7 +19,7 @@ const MarketplaceAppAlert = ({ internalWallet, isWalletConnected }: Props) => {
       icon = 'integration/full';
       text = 'Your wallet is connected with Blockscout';
       status = 'success';
-    } else if (isWalletConnected) {
+    } else if (!internalWallet) {
       icon = 'integration/partial';
       text = 'Connect your wallet in the app below';
     }
