@@ -57,13 +57,15 @@ export default function useMarketplaceApps(
   const apiFetch = useApiFetch();
 
   // Update favorite apps only when selectedCategoryId changes to avoid sortApps to be called on each favorite app click
-  const lastFavoriteAppsRef = React.useRef(favoriteApps);
+  const lastFavoriteAppsRef: React.MutableRefObject<Array<string> | undefined> = React.useRef();
   React.useEffect(() => {
-    lastFavoriteAppsRef.current = favoriteApps;
+    if (isFavoriteAppsLoaded) {
+      lastFavoriteAppsRef.current = favoriteApps;
+    }
   }, [ selectedCategoryId, isFavoriteAppsLoaded ]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const { isPlaceholderData, isError, error, data } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppOverview>>({
-    queryKey: [ 'marketplace-dapps' ],
+    queryKey: [ 'marketplace-dapps', lastFavoriteAppsRef.current ],
     queryFn: async() => {
       if (!feature.isEnabled) {
         return [];
@@ -73,10 +75,10 @@ export default function useMarketplaceApps(
         return apiFetch('marketplace_dapps', { pathParams: { chainId: config.chain.id } });
       }
     },
-    select: (data) => sortApps(data as Array<MarketplaceAppOverview>, lastFavoriteAppsRef.current),
+    select: (data) => sortApps(data as Array<MarketplaceAppOverview>, lastFavoriteAppsRef.current || []),
     placeholderData: feature.isEnabled ? Array(9).fill(MARKETPLACE_APP) : undefined,
     staleTime: Infinity,
-    enabled: feature.isEnabled,
+    enabled: feature.isEnabled && Boolean(lastFavoriteAppsRef.current),
   });
 
   const displayedApps = React.useMemo(() => {
