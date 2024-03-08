@@ -19,6 +19,7 @@ import CodeEditorSideBar, { CONTAINER_WIDTH as SIDE_BAR_WIDTH } from './CodeEdit
 import CodeEditorTabs from './CodeEditorTabs';
 import addExternalLibraryWarningDecoration from './utils/addExternalLibraryWarningDecoration';
 import addFileImportDecorations from './utils/addFileImportDecorations';
+import addMainContractCodeDecoration from './utils/addMainContractCodeDecoration';
 import getFullPathOfImportedFile from './utils/getFullPathOfImportedFile';
 import * as themes from './utils/themes';
 import useThemeColors from './utils/useThemeColors';
@@ -42,9 +43,10 @@ interface Props {
   libraries?: Array<SmartContractExternalLibrary>;
   language?: string;
   mainFile?: string;
+  contractName?: string;
 }
 
-const CodeEditor = ({ data, remappings, libraries, language, mainFile }: Props) => {
+const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractName }: Props) => {
   const [ instance, setInstance ] = React.useState<Monaco | undefined>();
   const [ editor, setEditor ] = React.useState<monaco.editor.IStandaloneCodeEditor | undefined>();
   const [ index, setIndex ] = React.useState(0);
@@ -82,9 +84,10 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile }: Props) 
 
     if (language === 'solidity') {
       loadedModels.concat(newModels)
-        .forEach((models) => {
-          addFileImportDecorations(models);
-          libraries?.length && addExternalLibraryWarningDecoration(models, libraries);
+        .forEach((model) => {
+          contractName && mainFile === model.uri.path && addMainContractCodeDecoration(model, contractName, editor);
+          addFileImportDecorations(model);
+          libraries?.length && addExternalLibraryWarningDecoration(model, libraries);
         });
     }
 
@@ -192,6 +195,13 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile }: Props) 
     '.monaco-editor .overflow-guard': {
       'border-bottom-left-radius': borderRadius,
     },
+    '.monaco-editor .core-guide': {
+      zIndex: 1,
+    },
+    // '.monaco-editor .currentFindMatch': // TODO: find a better way to style this
+    '.monaco-editor .findMatch': {
+      backgroundColor: themeColors['custom.findMatchHighlightBackground'],
+    },
     '.highlight': {
       backgroundColor: themeColors['custom.findMatchHighlightBackground'],
     },
@@ -205,6 +215,18 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile }: Props) 
     },
     '.risk-warning': {
       backgroundColor: themeColors['custom.riskWarning.background'],
+    },
+    '.main-contract-header': {
+      backgroundColor: themeColors['custom.mainContract.header'],
+    },
+    '.main-contract-body': {
+      backgroundColor: themeColors['custom.mainContract.body'],
+    },
+    '.main-contract-glyph': {
+      zIndex: 1,
+      background: 'url(/static/contract_star.png) no-repeat center center',
+      backgroundSize: '12px',
+      cursor: 'pointer',
     },
   }), [ editorWidth, themeColors, borderRadius ]);
 

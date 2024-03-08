@@ -163,6 +163,7 @@ const ContractSourceCode = ({ address, implementationAddress }: Props) => {
             libraries={ primaryContractQuery.data?.external_libraries ?? undefined }
             language={ primaryContractQuery.data?.language ?? undefined }
             mainFile={ primaryEditorData[0]?.file_path }
+            contractName={ primaryContractQuery.data?.name || undefined }
           />
         </Box>
         { secondaryEditorData && (
@@ -173,6 +174,7 @@ const ContractSourceCode = ({ address, implementationAddress }: Props) => {
               libraries={ secondaryContractQuery.data?.external_libraries ?? undefined }
               language={ secondaryContractQuery.data?.language ?? undefined }
               mainFile={ secondaryEditorData?.[0]?.file_path }
+              contractName={ secondaryContractQuery.data?.name || undefined }
             />
           </Box>
         ) }
