@@ -80,15 +80,22 @@ type RadioButtonGroupProps<T extends string> = {
   name: string;
   defaultValue: string;
   options: Array<{ value: T } & RadioItemProps>;
+  autoWidth?: boolean;
 }
 
-const RadioButtonGroup = <T extends string>({ onChange, name, defaultValue, options }: RadioButtonGroupProps<T>) => {
+const RadioButtonGroup = <T extends string>({ onChange, name, defaultValue, options, autoWidth = false }: RadioButtonGroupProps<T>) => {
   const { getRootProps, getRadioProps } = useRadioGroup({ name, defaultValue, onChange });
 
   const group = getRootProps();
 
   return (
-    <ButtonGroup { ...group } isAttached size="sm" display="grid" gridTemplateColumns={ `repeat(${ options.length }, 1fr)` }>
+    <ButtonGroup
+      { ...group }
+      isAttached
+      size="sm"
+      display="grid"
+      gridTemplateColumns={ `repeat(${ options.length }, ${ autoWidth ? 'auto' : '1fr' })` }
+    >
       { options.map((option) => {
         const props = getRadioProps({ value: option.value });
         return <RadioButton { ...props } key={ option.value } { ...option }/>;

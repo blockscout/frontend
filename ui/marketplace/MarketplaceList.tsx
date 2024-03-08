@@ -1,5 +1,6 @@
 import { Grid } from '@chakra-ui/react';
 import React from 'react';
+import type { MouseEvent } from 'react';
 
 import type { MarketplaceAppPreview } from 'types/client/marketplace';
 import { MarketplaceCategory } from 'types/client/marketplace';
@@ -12,15 +13,15 @@ import MarketplaceAppCard from './MarketplaceAppCard';
 
 type Props = {
   apps: Array<MarketplaceAppPreview>;
-  onAppClick: (id: string) => void;
+  showAppInfo: (id: string) => void;
   favoriteApps: Array<string>;
   onFavoriteClick: (id: string, isFavorite: boolean) => void;
   isLoading: boolean;
-  showDisclaimer: (id: string) => void;
   selectedCategoryId?: string;
+  onAppClick: (event: MouseEvent, id: string) => void;
 }
 
-const MarketplaceList = ({ apps, onAppClick, favoriteApps, onFavoriteClick, isLoading, showDisclaimer, selectedCategoryId }: Props) => {
+const MarketplaceList = ({ apps, showAppInfo, favoriteApps, onFavoriteClick, isLoading, selectedCategoryId, onAppClick }: Props) => {
   return apps.length > 0 ? (
     <Grid
       templateColumns={{
@@ -33,7 +34,7 @@ const MarketplaceList = ({ apps, onAppClick, favoriteApps, onFavoriteClick, isLo
       { apps.map((app, index) => (
         <MarketplaceAppCard
           key={ app.id + (isLoading ? index : '') }
-          onInfoClick={ onAppClick }
+          onInfoClick={ showAppInfo }
           id={ app.id }
           external={ app.external }
           url={ app.url }
@@ -45,8 +46,8 @@ const MarketplaceList = ({ apps, onAppClick, favoriteApps, onFavoriteClick, isLo
           isFavorite={ favoriteApps.includes(app.id) }
           onFavoriteClick={ onFavoriteClick }
           isLoading={ isLoading }
-          showDisclaimer={ showDisclaimer }
           internalWallet={ app.internalWallet }
+          onAppClick={ onAppClick }
         />
       )) }
     </Grid>

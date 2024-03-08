@@ -15,6 +15,7 @@ export enum NAMES {
   MIXPANEL_DEBUG='_mixpanel_debug',
   ADDRESS_NFT_DISPLAY_TYPE='address_nft_display_type',
   UUID='uuid',
+  MARKETPLACE_DISPLAY_TYPE='marketplace_display_type',
 }
 
 export function get(name?: NAMES | undefined | null, serverCookie?: string) {

@@ -1,20 +1,25 @@
 import { Box, Menu, MenuButton, MenuItem, MenuList, Flex, IconButton } from '@chakra-ui/react';
 import React from 'react';
+import type { MouseEvent } from 'react';
 
 import { MarketplaceCategory } from 'types/client/marketplace';
 import type { TabItem } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
+import { useAppContext } from 'lib/contexts/app';
+import * as cookies from 'lib/cookies';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import MarketplaceAppModal from 'ui/marketplace/MarketplaceAppModal';
 import MarketplaceDisclaimerModal from 'ui/marketplace/MarketplaceDisclaimerModal';
 import MarketplaceList from 'ui/marketplace/MarketplaceList';
+import MarketplaceListWithScores from 'ui/marketplace/MarketplaceListWithScores';
 import FilterInput from 'ui/shared/filters/FilterInput';
 import IconSvg from 'ui/shared/IconSvg';
 import type { IconName } from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/LinkExternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
+import RadioButtonGroup from 'ui/shared/radioButtonGroup/RadioButtonGroup';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import TabsWithScroll from 'ui/shared/Tabs/TabsWithScroll';
 
@@ -38,6 +43,8 @@ if (feature.isEnabled) {
     });
   }
 }
+
+type MarketplaceDisplayType = 'default' | 'scores';
 
 const Marketplace = () => {
   const {
@@ -97,6 +104,22 @@ const Marketplace = () => {
     onCategoryChange(categoryTabs[index].id);
   }, [ categoryTabs, onCategoryChange ]);
 
+  const displayTypeCookie = cookies.get(cookies.NAMES.MARKETPLACE_DISPLAY_TYPE, useAppContext().cookies);
+  const [ displayType, setDisplayType ] = React.useState<MarketplaceDisplayType>(displayTypeCookie === 'default' ? 'default' : 'scores');
+
+  const handleNFTsDisplayTypeChange = React.useCallback((val: MarketplaceDisplayType) => {
+    cookies.set(cookies.NAMES.MARKETPLACE_DISPLAY_TYPE, val);
+    setDisplayType(val);
+  }, []);
+
+  const handleAppClick = React.useCallback((event: MouseEvent, id: string) => {
+    const isShown = window.localStorage.getItem('marketplace-disclaimer-shown');
+    if (!isShown) {
+      event.preventDefault();
+      showDisclaimer(id);
+    }
+  }, [ showDisclaimer ]);
+
   throwOnResourceLoadError(isError && error ? { isError, error } : { isError: false, error: null });
 
   if (!feature.isEnabled) {
@@ -148,29 +171,53 @@ const Marketplace = () => {
             tabs={ categoryTabs }
             onTabChange={ handleCategoryChange }
             defaultTabIndex={ selectedCategoryIndex }
-            marginBottom={{ base: 0, lg: -2 }}
+            marginBottom={ -2 }
           />
         ) }
       </Box>
 
-      <FilterInput
-        initialValue={ filterQuery }
-        onChange={ onSearchInputChange }
-        marginBottom={{ base: '4', lg: '6' }}
-        w="100%"
-        placeholder="Find app"
-        isLoading={ isPlaceholderData }
-      />
+      <Flex direction={{ base: 'column', lg: 'row' }} mb={{ base: 1, lg: 6 }} gap={{ base: 4, lg: 3 }}>
+        <RadioButtonGroup<MarketplaceDisplayType>
+          onChange={ handleNFTsDisplayTypeChange }
+          defaultValue={ displayType }
+          name="type"
+          options={ [
+            { title: 'Discovery', value: 'default', icon: 'apps_xs', onlyIcon: false },
+            { title: 'Apps scores', value: 'scores', icon: 'apps_list', onlyIcon: false },
+          ] }
+          autoWidth
+        />
+        <FilterInput
+          initialValue={ filterQuery }
+          onChange={ onSearchInputChange }
+          placeholder="Find app"
+          isLoading={ isPlaceholderData }
+          size="xs"
+          flex="1"
+        />
+      </Flex>
 
-      <MarketplaceList
-        apps={ displayedApps }
-        onAppClick={ showAppInfo }
-        favoriteApps={ favoriteApps }
-        onFavoriteClick={ onFavoriteClick }
-        isLoading={ isPlaceholderData }
-        showDisclaimer={ showDisclaimer }
-        selectedCategoryId={ selectedCategoryId }
-      />
+      { (displayType === 'scores') ? (
+        <MarketplaceListWithScores
+          apps={ displayedApps }
+          showAppInfo={ showAppInfo }
+          favoriteApps={ favoriteApps }
+          onFavoriteClick={ onFavoriteClick }
+          isLoading={ isPlaceholderData }
+          selectedCategoryId={ selectedCategoryId }
+          onAppClick={ handleAppClick }
+        />
+      ) : (
+        <MarketplaceList
+          apps={ displayedApps }
+          showAppInfo={ showAppInfo }
+          favoriteApps={ favoriteApps }
+          onFavoriteClick={ onFavoriteClick }
+          isLoading={ isPlaceholderData }
+          selectedCategoryId={ selectedCategoryId }
+          onAppClick={ handleAppClick }
+        />
+      ) }
 
       { (selectedApp && isAppInfoModalOpen) && (
         <MarketplaceAppModal
