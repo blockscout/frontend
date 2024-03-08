@@ -20,7 +20,17 @@ export const base2: Blob = {
   ],
 };
 
+export const withoutData: Blob = {
+  blob_data: null,
+  hash: '0x0197fdb17195c176b23160f335daabd4b6a231aaaadd73ec567877c66a3affd3',
+  kzg_commitment: null,
+  kzg_proof: null,
+  transaction_hashes: [
+    { block_consensus: true, transaction_hash: '0x22d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3193' },
+  ],
+};
+
 export const txBlobs: TxBlobs = {
-  items: [ base1, base2 ],
+  items: [ base1, base2, withoutData ],
   next_page_params: null,
 };

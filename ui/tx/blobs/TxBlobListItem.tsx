@@ -13,7 +13,7 @@ interface Props {
 }
 
 const TxBlobListItem = ({ data, isLoading }: Props) => {
-  const size = data.blob_data.replace('0x', '').length / 2;
+  const size = data.blob_data ? data.blob_data.replace('0x', '').length / 2 : '-';
 
   return (
     <ListItemMobileGrid.Container>
@@ -24,7 +24,7 @@ const TxBlobListItem = ({ data, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Data type</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <BlobDataType isLoading={ isLoading } data={ data.blob_data }/>
+        { data.blob_data ? <BlobDataType isLoading={ isLoading } data={ data.blob_data }/> : '-' }
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Size, bytes</ListItemMobileGrid.Label>
