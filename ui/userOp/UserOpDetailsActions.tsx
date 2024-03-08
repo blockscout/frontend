@@ -8,20 +8,20 @@ import TxInterpretation from 'ui/shared/tx/interpretation/TxInterpretation';
 
 interface Props {
   hash?: string;
-  isTxDataLoading: boolean;
+  isUserOpDataLoading: boolean;
 }
 
-const TxDetailsActionsInterpretation = ({ hash, isTxDataLoading }: Props) => {
-  const txInterpretationQuery = useApiQuery('tx_interpretation', {
+const TxDetailsActionsInterpretation = ({ hash, isUserOpDataLoading }: Props) => {
+  const interpretationQuery = useApiQuery('user_op_interpretation', {
     pathParams: { hash },
     queryOptions: {
-      enabled: Boolean(hash) && !isTxDataLoading,
+      enabled: Boolean(hash) && !isUserOpDataLoading,
       placeholderData: TX_INTERPRETATION,
       refetchOnMount: false,
     },
   });
 
-  const actions = txInterpretationQuery.data?.data.summaries;
+  const actions = interpretationQuery.data?.data.summaries;
 
   if (!actions || actions.length < 2) {
     return null;
@@ -29,12 +29,12 @@ const TxDetailsActionsInterpretation = ({ hash, isTxDataLoading }: Props) => {
 
   return (
     <>
-      <DetailsActionsWrapper isLoading={ isTxDataLoading || txInterpretationQuery.isPlaceholderData } type="tx">
+      <DetailsActionsWrapper isLoading={ isUserOpDataLoading || interpretationQuery.isPlaceholderData } type="user_op">
         { actions.map((action, index: number) => (
           <TxInterpretation
             key={ index }
             summary={ action }
-            isLoading={ isTxDataLoading || txInterpretationQuery.isPlaceholderData }
+            isLoading={ isUserOpDataLoading || interpretationQuery.isPlaceholderData }
           />
         ),
         ) }

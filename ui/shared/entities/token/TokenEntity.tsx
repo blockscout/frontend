@@ -66,7 +66,7 @@ type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps
 const Content = chakra((props: ContentProps) => {
   const nameString = [
     !props.onlySymbol && (props.token.name ?? 'Unnamed token'),
-    props.onlySymbol && (props.token.symbol ?? ''),
+    props.onlySymbol && (props.token.symbol ?? props.token.name ?? 'Unnamed token'),
     props.token.symbol && props.jointSymbol && !props.onlySymbol && `(${ props.token.symbol })`,
   ].filter(Boolean).join(' ');
 

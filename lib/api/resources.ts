@@ -662,6 +662,10 @@ export const RESOURCES = {
     path: '/api/v2/proxy/account-abstraction/accounts/:hash',
     pathParams: [ 'hash' as const ],
   },
+  user_op_interpretation: {
+    path: '/api/v2/proxy/account-abstraction/operations/:hash/summary',
+    pathParams: [ 'hash' as const ],
+  },
 
   // VALIDATORS
   validators: {
@@ -881,6 +885,7 @@ Q extends 'domains_lookup' ? EnsDomainLookupResponse :
 Q extends 'user_ops' ? UserOpsResponse :
 Q extends 'user_op' ? UserOp :
 Q extends 'user_ops_account' ? UserOpsAccount :
+Q extends 'user_op_interpretation'? TxInterpretationResponse :
 never;
 /* eslint-enable @typescript-eslint/indent */
 

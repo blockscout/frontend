@@ -5,10 +5,10 @@ import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { TX_INTERPRETATION } from 'stubs/txInterpretation';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
+import { TX_ACTIONS_BLOCK_ID } from 'ui/shared/DetailsActionsWrapper';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
-import { TX_ACTIONS_BLOCK_ID } from 'ui/tx/details/txDetailsActions/TxDetailsActionsWrapper';
-import TxInterpretation from 'ui/tx/interpretation/TxInterpretation';
+import TxInterpretation from 'ui/shared/tx/interpretation/TxInterpretation';
 
 import type { TxQuery } from './useTxQuery';
 
