@@ -71,7 +71,7 @@ const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDi
             { ...field }
             { ...(argTypeMatchInt ? {
               as: NumericFormat,
-              thousandSeparator: ' ',
+              thousandSeparator: '',
               decimalScale: 0,
               allowNegative: !argTypeMatchInt.isUnsigned,
             } : {}) }
