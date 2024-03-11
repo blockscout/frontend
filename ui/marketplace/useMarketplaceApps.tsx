@@ -50,7 +50,7 @@ function sortApps(apps: Array<MarketplaceAppOverview>, favoriteApps: Array<strin
 export default function useMarketplaceApps(
   filter: string,
   selectedCategoryId: string = MarketplaceCategory.ALL,
-  favoriteApps: Array<string> = [],
+  favoriteApps: Array<string> | undefined,
   isFavoriteAppsLoaded: boolean = false, // eslint-disable-line @typescript-eslint/no-inferrable-types
 ) {
   const fetch = useFetch();
@@ -65,7 +65,7 @@ export default function useMarketplaceApps(
   }, [ selectedCategoryId, isFavoriteAppsLoaded ]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const { isPlaceholderData, isError, error, data } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppOverview>>({
-    queryKey: [ 'marketplace-dapps', lastFavoriteAppsRef.current ],
+    queryKey: [ 'marketplace-dapps', lastFavoriteAppsRef.current, favoriteApps ],
     queryFn: async() => {
       if (!feature.isEnabled) {
         return [];
@@ -78,11 +78,11 @@ export default function useMarketplaceApps(
     select: (data) => sortApps(data as Array<MarketplaceAppOverview>, lastFavoriteAppsRef.current || []),
     placeholderData: feature.isEnabled ? Array(9).fill(MARKETPLACE_APP) : undefined,
     staleTime: Infinity,
-    enabled: feature.isEnabled && Boolean(lastFavoriteAppsRef.current),
+    enabled: feature.isEnabled && (!favoriteApps || Boolean(lastFavoriteAppsRef.current)),
   });
 
   const displayedApps = React.useMemo(() => {
-    return data?.filter(app => isAppNameMatches(filter, app) && isAppCategoryMatches(selectedCategoryId, app, favoriteApps)) || [];
+    return data?.filter(app => isAppNameMatches(filter, app) && isAppCategoryMatches(selectedCategoryId, app, favoriteApps || [])) || [];
   }, [ selectedCategoryId, data, filter, favoriteApps ]);
 
   return React.useMemo(() => ({
