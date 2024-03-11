@@ -50,7 +50,7 @@ function sortApps(apps: Array<MarketplaceAppOverview>, favoriteApps: Array<strin
 export default function useMarketplaceApps(
   filter: string,
   selectedCategoryId: string = MarketplaceCategory.ALL,
-  favoriteApps: Array<string> | undefined,
+  favoriteApps: Array<string> | undefined = undefined,
   isFavoriteAppsLoaded: boolean = false, // eslint-disable-line @typescript-eslint/no-inferrable-types
 ) {
   const fetch = useFetch();
