@@ -195,7 +195,7 @@ const VerifiedAddresses = () => {
       <PageTitle title="My verified addresses"/>
       { userWithoutEmail && (
         <Alert status="warning" mb={ 6 }>
-          You need a valid email address to verify contracts. Please logout of MyAccount then login using your email to proceed.
+          You need a valid email address to verify addresses. Please logout of MyAccount then login using your email to proceed.
         </Alert>
       ) }
       <AccountPageDescription allowCut={ false }>
