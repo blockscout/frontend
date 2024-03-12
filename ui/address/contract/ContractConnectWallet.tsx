@@ -19,6 +19,7 @@ const ContractConnectWallet = () => {
             onClick={ connect }
             size="sm"
             variant="outline"
+            colorScheme="orange"
             isLoading={ isModalOpening || isModalOpen }
             loadingText="Connect wallet"
           >
