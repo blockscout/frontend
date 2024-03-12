@@ -105,7 +105,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
     <Box display={{ base: 'block', lg: 'flex' }} alignItems="center" w="100%">
       { content }
       <Flex alignItems="center" justifyContent={{ base: 'start', lg: 'space-between' }} flexGrow={ 1 }>
-        { !hasTag && <AccountActionsMenu mx={ 3 } mt={{ base: 3, lg: 0 }}/> }
+        { !hasTag && <AccountActionsMenu mr={ 3 } mt={{ base: 3, lg: 0 }}/> }
         <NetworkExplorers type="tx" pathParam={ hash } ml={{ base: 0, lg: 'auto' }} mt={{ base: 3, lg: 0 }}/>
       </Flex>
     </Box>
