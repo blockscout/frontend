@@ -116,6 +116,22 @@ test('with actions uniswap +@mobile +@dark-mode', async({ mount, page }) => {
   });
 });
 
+test('with blob', async({ mount, page }) => {
+  const component = await mount(
+    <TestApp>
+      <TxInfo data={ txMock.withBlob } isLoading={ false }/>
+    </TestApp>,
+    { hooksConfig },
+  );
+
+  await page.getByText('View details').click();
+
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(configs.adsBannerSelector) ],
+    maskColor: configs.maskColor,
+  });
+});
+
 const l2Test = test.extend({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   context: contextWithEnvs(configs.featureEnvs.optimisticRollup) as any,

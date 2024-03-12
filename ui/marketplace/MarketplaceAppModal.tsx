@@ -50,11 +50,15 @@ const MarketplaceAppModal = ({
       icon: 'social/tweet' as IconName,
       url: twitter,
     } : null,
-    github ? {
-      icon: 'social/git' as IconName,
-      url: github,
-    } : null,
   ].filter(Boolean);
+
+  if (github) {
+    if (Array.isArray(github)) {
+      github.forEach((url) => socialLinks.push({ icon: 'social/git', url }));
+    } else {
+      socialLinks.push({ icon: 'social/git', url: github });
+    }
+  }
 
   const handleFavoriteClick = useCallback(() => {
     onFavoriteClick(data.id, isFavorite);

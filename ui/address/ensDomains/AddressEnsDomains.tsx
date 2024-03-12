@@ -1,4 +1,4 @@
-import { Button, chakra, Flex, Grid, Hide, Popover, PopoverBody, PopoverContent, PopoverTrigger, Show, Skeleton, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, chakra, Flex, Grid, Hide, Popover, PopoverBody, PopoverContent, PopoverTrigger, Show, Skeleton, useDisclosure } from '@chakra-ui/react';
 import _clamp from 'lodash/clamp';
 import React from 'react';
 
@@ -113,14 +113,14 @@ const AddressEnsDomains = ({ addressHash, mainDomainName }: Props) => {
       <PopoverContent w={{ base: '100vw', lg: '500px' }}>
         <PopoverBody px={ 6 } py={ 5 } fontSize="sm" display="flex" flexDir="column" rowGap={ 5 } alignItems="flex-start">
           { mainDomain && (
-            <div>
+            <Box w="100%">
               <chakra.span color="text_secondary" fontSize="xs">Primary*</chakra.span>
               <Flex alignItems="center" fontSize="md" mt={ 2 }>
                 <EnsEntity name={ mainDomain.name } fontWeight={ 600 } noCopy/>
                 { mainDomain.expiry_date &&
                     <chakra.span color="text_secondary" whiteSpace="pre"> (expires { dayjs(mainDomain.expiry_date).fromNow() })</chakra.span> }
               </Flex>
-            </div>
+            </Box>
           ) }
           { ownedDomains.length > 0 && (
             <div>

@@ -201,3 +201,13 @@ export const gasTracker: GetServerSideProps<Props> = async(context) => {
 
   return base(context);
 };
+
+export const blobs: GetServerSideProps<Props> = async(context) => {
+  if (config.UI.views.tx.hiddenViews?.blob_txs) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};

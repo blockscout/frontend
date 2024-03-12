@@ -80,6 +80,12 @@ export type Transaction = {
   zkevm_batch_number?: number;
   zkevm_status?: typeof ZKEVM_L2_TX_STATUSES[number];
   zkevm_sequence_hash?: string;
+  // blob tx fields
+  blob_versioned_hashes?: Array<string>;
+  blob_gas_used?: string;
+  blob_gas_price?: string;
+  burnt_blob_fee?: string;
+  max_fee_per_blob_gas?: string;
   // Noves-fi
   translation?: NovesTxTranslation;
 }
@@ -107,6 +113,15 @@ export interface TransactionsResponsePending {
   } | null;
 }
 
+export interface TransactionsResponseWithBlobs {
+  items: Array<Transaction>;
+  next_page_params: {
+    block_number: number;
+    index: number;
+    items_count: number;
+  } | null;
+}
+
 export interface TransactionsResponseWatchlist {
   items: Array<Transaction>;
   next_page_params: {
@@ -122,7 +137,8 @@ export type TransactionType = 'rootstock_remasc' |
 'contract_creation' |
 'contract_call' |
 'token_creation' |
-'coin_transfer'
+'coin_transfer' |
+'blob_transaction'
 
 export type TxsResponse = TransactionsResponseValidated | TransactionsResponsePending | BlockTransactionsResponse;
 

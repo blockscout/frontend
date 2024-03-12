@@ -16,3 +16,9 @@ export const TX_ADDITIONAL_FIELDS_IDS = [
 ] as const;
 
 export type TxAdditionalFieldsId = ArrayElement<typeof TX_ADDITIONAL_FIELDS_IDS>;
+
+export const TX_VIEWS_IDS = [
+  'blob_txs',
+] as const;
+
+export type TxViewId = ArrayElement<typeof TX_VIEWS_IDS>;

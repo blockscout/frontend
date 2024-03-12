@@ -30,10 +30,12 @@ frontend:
       kubernetes.io/ingress.class: internal-and-public
       nginx.ingress.kubernetes.io/proxy-body-size: 500m
       nginx.ingress.kubernetes.io/client-max-body-size: "500M"
-      nginx.ingress.kubernetes.io/proxy-buffering: "off"
+      nginx.ingress.kubernetes.io/proxy-buffering: "on"
       nginx.ingress.kubernetes.io/proxy-connect-timeout: "15m"
       nginx.ingress.kubernetes.io/proxy-send-timeout: "15m"
       nginx.ingress.kubernetes.io/proxy-read-timeout: "15m"
+      nginx.ingress.kubernetes.io/proxy-buffer-size: "128k"
+      nginx.ingress.kubernetes.io/proxy-buffers-number: "8"
       cert-manager.io/cluster-issuer: "zerossl-prod"
     hostname: review-l2-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}.k8s-dev.blockscout.com
 

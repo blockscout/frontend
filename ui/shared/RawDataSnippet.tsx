@@ -36,6 +36,7 @@ const RawDataSnippet = ({ data, className, title, rightSlot, beforeSlot, textare
         borderRadius="md"
         wordBreak="break-all"
         whiteSpace="pre-wrap"
+        overflowX="hidden"
         overflowY="auto"
         isLoaded={ !isLoading }
       >

@@ -1,12 +1,12 @@
 export interface ChartTransactionItem {
   date: string;
-  tx_count: number;
+  tx_count: number | null;
 }
 
 export interface ChartMarketItem {
   date: string;
-  closing_price: string;
-  market_cap?: string;
+  closing_price: string | null;
+  market_cap?: string | null;
   tvl?: string | null;
 }
 

@@ -7,6 +7,7 @@ import config from 'configs/app';
 import useHasAccount from 'lib/hooks/useHasAccount';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useNewTxsSocket from 'lib/hooks/useNewTxsSocket';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -26,11 +27,19 @@ const Transactions = () => {
   const verifiedTitle = config.chain.verificationType === 'validation' ? 'Validated' : 'Mined';
   const router = useRouter();
   const isMobile = useIsMobile();
-  const txsQuery = useQueryWithPages({
-    resourceName: router.query.tab === 'pending' ? 'txs_pending' : 'txs_validated',
-    filters: { filter: router.query.tab === 'pending' ? 'pending' : 'validated' },
+  const tab = getQueryParamString(router.query.tab);
+
+  React.useEffect(() => {
+    if (tab === 'blob_txs' && config.UI.views.tx.hiddenViews?.blob_txs) {
+      router.replace({ pathname: '/txs' }, undefined, { shallow: true });
+    }
+  }, [ router, tab ]);
+
+  const txsValidatedQuery = useQueryWithPages({
+    resourceName: 'txs_validated',
+    filters: { filter: 'validated' },
     options: {
-      enabled: !router.query.tab || router.query.tab === 'validated' || router.query.tab === 'pending',
+      enabled: !tab || tab === 'validated',
       placeholderData: generateListStub<'txs_validated'>(TX, 50, { next_page_params: {
         block_number: 9005713,
         index: 5,
@@ -40,10 +49,36 @@ const Transactions = () => {
     },
   });
 
+  const txsPendingQuery = useQueryWithPages({
+    resourceName: 'txs_pending',
+    filters: { filter: 'pending' },
+    options: {
+      enabled: tab === 'pending',
+      placeholderData: generateListStub<'txs_pending'>(TX, 50, { next_page_params: {
+        inserted_at: '2024-02-05T07:04:47.749818Z',
+        hash: '0x00',
+        filter: 'pending',
+      } }),
+    },
+  });
+
+  const txsWithBlobsQuery = useQueryWithPages({
+    resourceName: 'txs_with_blobs',
+    filters: { type: 'blob_transaction' },
+    options: {
+      enabled: !config.UI.views.tx.hiddenViews?.blob_txs && tab === 'blob_txs',
+      placeholderData: generateListStub<'txs_with_blobs'>(TX, 50, { next_page_params: {
+        block_number: 10602877,
+        index: 8,
+        items_count: 50,
+      } }),
+    },
+  });
+
   const txsWatchlistQuery = useQueryWithPages({
     resourceName: 'txs_watchlist',
     options: {
-      enabled: router.query.tab === 'watchlist',
+      enabled: tab === 'watchlist',
       placeholderData: generateListStub<'txs_watchlist'>(TX, 50, { next_page_params: {
         block_number: 9005713,
         index: 5,
@@ -61,15 +96,32 @@ const Transactions = () => {
       id: 'validated',
       title: verifiedTitle,
       component:
-        <TxsWithFrontendSorting query={ txsQuery } showSocketInfo={ txsQuery.pagination.page === 1 } socketInfoNum={ num } socketInfoAlert={ socketAlert }/> },
+        <TxsWithFrontendSorting
+          query={ txsValidatedQuery }
+          showSocketInfo={ txsValidatedQuery.pagination.page === 1 }
+          socketInfoNum={ num }
+          socketInfoAlert={ socketAlert }
+        /> },
     {
       id: 'pending',
       title: 'Pending',
       component: (
         <TxsWithFrontendSorting
-          query={ txsQuery }
+          query={ txsPendingQuery }
           showBlockInfo={ false }
-          showSocketInfo={ txsQuery.pagination.page === 1 }
+          showSocketInfo={ txsPendingQuery.pagination.page === 1 }
+          socketInfoNum={ num }
+          socketInfoAlert={ socketAlert }
+        />
+      ),
+    },
+    !config.UI.views.tx.hiddenViews?.blob_txs && {
+      id: 'blob_txs',
+      title: 'Blob txns',
+      component: (
+        <TxsWithFrontendSorting
+          query={ txsWithBlobsQuery }
+          showSocketInfo={ txsWithBlobsQuery.pagination.page === 1 }
           socketInfoNum={ num }
           socketInfoAlert={ socketAlert }
         />
@@ -82,7 +134,14 @@ const Transactions = () => {
     } : undefined,
   ].filter(Boolean);
 
-  const pagination = router.query.tab === 'watchlist' ? txsWatchlistQuery.pagination : txsQuery.pagination;
+  const pagination = (() => {
+    switch (tab) {
+      case 'pending': return txsPendingQuery.pagination;
+      case 'watchlist': return txsWatchlistQuery.pagination;
+      case 'blob_txs': return txsWithBlobsQuery.pagination;
+      default: return txsValidatedQuery.pagination;
+    }
+  })();
 
   return (
     <>

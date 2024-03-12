@@ -32,8 +32,8 @@ import { ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from '../../../types/views/address
 import { BLOCK_FIELDS_IDS } from '../../../types/views/block';
 import type { BlockFieldId } from '../../../types/views/block';
 import type { NftMarketplaceItem } from '../../../types/views/nft';
-import type { TxAdditionalFieldsId, TxFieldsId } from '../../../types/views/tx';
-import { TX_ADDITIONAL_FIELDS_IDS, TX_FIELDS_IDS } from '../../../types/views/tx';
+import type { TxAdditionalFieldsId, TxFieldsId, TxViewId } from '../../../types/views/tx';
+import { TX_ADDITIONAL_FIELDS_IDS, TX_FIELDS_IDS, TX_VIEWS_IDS } from '../../../types/views/tx';
 
 import { replaceQuotes } from '../../../configs/app/utils';
 import * as regexp from '../../../lib/regexp';
@@ -75,7 +75,12 @@ const marketplaceAppSchema: yup.ObjectSchema<MarketplaceAppOverview> = yup
     site: yup.string().test(urlTest),
     twitter: yup.string().test(urlTest),
     telegram: yup.string().test(urlTest),
-    github: yup.string().test(urlTest),
+    github: yup.lazy(value =>
+      Array.isArray(value) ?
+        yup.array().of(yup.string().required().test(urlTest)) :
+        yup.string().test(urlTest),
+    ),
+    discord: yup.string().test(urlTest),
     internalWallet: yup.boolean(),
     priority: yup.number(),
   });
@@ -443,6 +448,11 @@ const schema = yup
       .transform(replaceQuotes)
       .json()
       .of(yup.string<TxAdditionalFieldsId>().oneOf(TX_ADDITIONAL_FIELDS_IDS)),
+    NEXT_PUBLIC_VIEWS_TX_HIDDEN_VIEWS: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(yup.string<TxViewId>().oneOf(TX_VIEWS_IDS)),
     NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES: yup
       .array()
       .transform(replaceQuotes)
@@ -490,8 +500,10 @@ const schema = yup
     NEXT_PUBLIC_PROMOTE_BLOCKSCOUT_IN_TITLE: yup.boolean(),
     NEXT_PUBLIC_OG_DESCRIPTION: yup.string(),
     NEXT_PUBLIC_OG_IMAGE_URL: yup.string().test(urlTest),
+    NEXT_PUBLIC_SAFE_TX_SERVICE_URL: yup.string().test(urlTest),
     NEXT_PUBLIC_IS_SUAVE_CHAIN: yup.boolean(),
     NEXT_PUBLIC_HAS_USER_OPS: yup.boolean(),
+    NEXT_PUBLIC_METASUITES_ENABLED: yup.boolean(),
     NEXT_PUBLIC_SWAP_BUTTON_URL: yup.string(),
     NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE: yup.string<ValidatorsChainType>().oneOf(VALIDATORS_CHAIN_TYPE),
     NEXT_PUBLIC_GAS_TRACKER_ENABLED: yup.boolean(),
