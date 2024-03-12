@@ -18,7 +18,7 @@ const test = base.extend({
   ]) as any,
 });
 
-test('base view +@dark-mode', async({ mount, page }) => {
+test('base view +@mobile +@dark-mode', async({ mount, page }) => {
   await page.route(MARKETPLACE_CONFIG_URL, (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(appsMock),
