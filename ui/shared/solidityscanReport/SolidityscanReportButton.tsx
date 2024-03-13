@@ -19,9 +19,10 @@ interface Props {
   score: number;
   popoverContent?: React.ReactNode;
   isLoading?: boolean;
+  height?: string;
 }
 
-const SolidityscanReportButton = ({ className, score, popoverContent, isLoading }: Props) => {
+const SolidityscanReportButton = ({ className, score, popoverContent, isLoading, height = '32px' }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
   const { scoreColor } = useScoreLevelAndColor(score);
 
@@ -39,7 +40,7 @@ const SolidityscanReportButton = ({ className, score, popoverContent, isLoading 
             aria-label="SolidityScan score"
             fontWeight={ 500 }
             px="6px"
-            h="32px"
+            h={ height }
             flexShrink={ 0 }
           >
             <IconSvg name={ score < 80 ? 'score/score-not-ok' : 'score/score-ok' } boxSize={ 5 } mr={ 1 }/>

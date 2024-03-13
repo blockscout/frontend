@@ -8,10 +8,11 @@ import * as mixpanel from 'lib/mixpanel/index';
 import IconSvg from 'ui/shared/IconSvg';
 
 import AppLink from './AppLink';
+import AppSecurityReport from './AppSecurityReport';
 import LinkButton from './LinkButton';
 
 type Props = {
-  app: MarketplaceAppPreview;
+  app: MarketplaceAppPreview & { securityReport?: any }; // eslint-disable-line @typescript-eslint/no-explicit-any
   isLoading?: boolean;
   isFavorite: boolean;
   onFavoriteClick: (id: string, isFavorite: boolean) => void;
@@ -28,7 +29,16 @@ const TableItem = ({
   onInfoClick,
 }: Props) => {
 
-  const { id } = app;
+  const {
+    id,
+    securityReport,
+    securityReport: {
+      overallInfo: {
+        verifiedNumber,
+        totalContractsNumber,
+      },
+    },
+  } = app;
 
   const handleInfoClick = React.useCallback((event: MouseEvent) => {
     event.preventDefault();
@@ -52,20 +62,22 @@ const TableItem = ({
           h={ 8 }
           onClick={ handleFavoriteClick }
           icon={ isFavorite ?
-            <IconSvg name="star_filled" w={ 4 } h={ 4 } color="yellow.400"/> :
-            <IconSvg name="star_outline" w={ 4 } h={ 4 } color="gray.300"/>
+            <IconSvg name="star_filled" w={ 5 } h={ 5 } color="yellow.400"/> :
+            <IconSvg name="star_outline" w={ 5 } h={ 5 } color="gray.400"/>
           }
         />
       </Td>
       <Td verticalAlign="middle">
         <AppLink app={ app } isLoading={ isLoading } onAppClick={ onAppClick } isLarge/>
       </Td>
-      <Td verticalAlign="middle"></Td>
       <Td verticalAlign="middle">
-        <LinkButton onClick={ handleInfoClick } icon="contracts">13</LinkButton>
+        <AppSecurityReport securityReport={ securityReport } isLarge/>
       </Td>
       <Td verticalAlign="middle">
-        <LinkButton onClick={ handleInfoClick } icon="contracts_verified" iconColor="green.500">13</LinkButton>
+        <LinkButton onClick={ handleInfoClick } icon="contracts">{ totalContractsNumber }</LinkButton>
+      </Td>
+      <Td verticalAlign="middle">
+        <LinkButton onClick={ handleInfoClick } icon="contracts_verified" iconColor="green.500">{ verifiedNumber }</LinkButton>
       </Td>
       <Td verticalAlign="middle" isNumeric>
         <LinkButton onClick={ handleInfoClick }>More info</LinkButton>

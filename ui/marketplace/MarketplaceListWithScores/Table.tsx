@@ -20,7 +20,7 @@ type Props = {
 const Table = ({ apps, isLoading, favoriteApps, onFavoriteClick, onAppClick, onInfoClick }: Props) => {
   return (
     <ChakraTable>
-      <Thead top={ 80 }>
+      <Thead top={ 0 }>
         <Tr>
           <Th w="5%"></Th>
           <Th w="40%">App</Th>

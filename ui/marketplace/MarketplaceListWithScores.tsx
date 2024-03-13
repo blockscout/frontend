@@ -5,6 +5,7 @@ import type { MouseEvent } from 'react';
 import type { MarketplaceAppPreview } from 'types/client/marketplace';
 import { MarketplaceCategory } from 'types/client/marketplace';
 
+import config from 'configs/app';
 import { apos } from 'lib/html-entities';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import EmptySearchResult from 'ui/shared/EmptySearchResult';
@@ -21,13 +22,39 @@ interface Props {
   isLoading: boolean;
   selectedCategoryId?: string;
   onAppClick: (event: MouseEvent, id: string) => void;
+  securityReports: Array<any> | undefined; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
-const MarketplaceListWithScores = ({ apps, showAppInfo, favoriteApps, onFavoriteClick, isLoading, selectedCategoryId, onAppClick }: Props) => {
+const MarketplaceListWithScores = ({
+  apps,
+  showAppInfo,
+  favoriteApps,
+  onFavoriteClick,
+  isLoading,
+  selectedCategoryId,
+  onAppClick,
+  securityReports = [],
+}: Props) => {
+
+  const displayedApps = React.useMemo(() =>
+    apps
+      .map((app) => {
+        const securityReport = securityReports.find(item => item.appName === app.id)?.chainsData[config.chain.name?.toLowerCase() || ''];
+        if (securityReport) {
+          const issues: Record<string, number> = securityReport.overallInfo.issueSeverityDistribution;
+          securityReport.overallInfo.totalIssues = Object.values(issues).reduce((acc, val) => acc + val, 0);
+          securityReport.overallInfo.securityScore = Number(securityReport.overallInfo.securityScore.toFixed(2));
+        }
+        return { ...app, securityReport };
+      })
+      .filter((app) => app.securityReport)
+      .sort((a, b) => b.securityReport.overallInfo.securityScore - a.securityReport.overallInfo.securityScore)
+  , [ apps, securityReports ]);
+
   const content = apps.length > 0 ? (
     <>
       <Show below="lg" ssr={ false }>
-        { apps.map((app, index) => (
+        { displayedApps.map((app, index) => (
           <ListItem
             key={ app.id + (isLoading ? index : '') }
             app={ app }
@@ -41,7 +68,7 @@ const MarketplaceListWithScores = ({ apps, showAppInfo, favoriteApps, onFavorite
       </Show>
       <Hide below="lg" ssr={ false }>
         <Table
-          apps={ apps }
+          apps={ displayedApps }
           isLoading={ isLoading }
           onAppClick={ onAppClick }
           favoriteApps={ favoriteApps }

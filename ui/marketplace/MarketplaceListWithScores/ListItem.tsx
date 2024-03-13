@@ -1,4 +1,4 @@
-import { Flex, LinkBox, IconButton } from '@chakra-ui/react';
+import { Flex, IconButton } from '@chakra-ui/react';
 import React from 'react';
 import type { MouseEvent } from 'react';
 
@@ -9,10 +9,11 @@ import IconSvg from 'ui/shared/IconSvg';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
 import AppLink from './AppLink';
+import AppSecurityReport from './AppSecurityReport';
 import LinkButton from './LinkButton';
 
-interface Props {
-  app: MarketplaceAppPreview;
+type Props = {
+  app: MarketplaceAppPreview & { securityReport?: any }; // eslint-disable-line @typescript-eslint/no-explicit-any
   onInfoClick: (id: string) => void;
   isFavorite: boolean;
   onFavoriteClick: (id: string, isFavorite: boolean) => void;
@@ -21,7 +22,16 @@ interface Props {
 }
 
 const ListItem = ({ app, onInfoClick, isFavorite, onFavoriteClick, isLoading, onAppClick }: Props) => {
-  const { id } = app;
+  const {
+    id,
+    securityReport,
+    securityReport: {
+      overallInfo: {
+        verifiedNumber,
+        totalContractsNumber,
+      },
+    },
+  } = app;
 
   const handleInfoClick = React.useCallback((event: MouseEvent) => {
     event.preventDefault();
@@ -39,28 +49,19 @@ const ListItem = ({ app, onInfoClick, isFavorite, onFavoriteClick, isLoading, on
       py={ 3 }
       sx={{ ':first-child': { borderTop: 'none' }, ':last-child': { borderBottom: 'none' } }}
     >
-      <LinkBox height="100%" width="100%" role="group">
-        <Flex
-          direction="column"
-          justifyContent="stretch"
-          padding={ 3 }
-        >
+      <Flex
+        direction="column"
+        justifyContent="stretch"
+        padding={ 3 }
+        width="100%"
+      >
+        <Flex position="relative">
           <AppLink app={ app } isLoading={ isLoading } onAppClick={ onAppClick }/>
-          <Flex>
-            <Flex flex={ 1 } gap={ 3 }>
-              <LinkButton onClick={ handleInfoClick } icon="contracts">13</LinkButton>
-              <LinkButton onClick={ handleInfoClick } icon="contracts_verified" iconColor="green.500">13</LinkButton>
-            </Flex>
-            { !isLoading && (
-              <LinkButton onClick={ handleInfoClick }>More info</LinkButton>
-            ) }
-          </Flex>
-
           { !isLoading && (
             <IconButton
               position="absolute"
-              right={ 0 }
-              top={ 0 }
+              right={ -1 }
+              top={ -1 }
               aria-label="Mark as favorite"
               title="Mark as favorite"
               variant="ghost"
@@ -69,13 +70,23 @@ const ListItem = ({ app, onInfoClick, isFavorite, onFavoriteClick, isLoading, on
               h={ 8 }
               onClick={ handleFavoriteClick }
               icon={ isFavorite ?
-                <IconSvg name="star_filled" w={ 4 } h={ 4 } color="yellow.400"/> :
-                <IconSvg name="star_outline" w={ 4 } h={ 4 } color="gray.300"/>
+                <IconSvg name="star_filled" w={ 5 } h={ 5 } color="yellow.400"/> :
+                <IconSvg name="star_outline" w={ 5 } h={ 5 } color="gray.400"/>
               }
             />
           ) }
         </Flex>
-      </LinkBox>
+        <Flex alignItems="center">
+          <Flex flex={ 1 } gap={ 3 } alignItems="center">
+            <AppSecurityReport securityReport={ securityReport }/>
+            <LinkButton onClick={ handleInfoClick } icon="contracts">{ totalContractsNumber }</LinkButton>
+            <LinkButton onClick={ handleInfoClick } icon="contracts_verified" iconColor="green.500">{ verifiedNumber }</LinkButton>
+          </Flex>
+          { !isLoading && (
+            <LinkButton onClick={ handleInfoClick }>More info</LinkButton>
+          ) }
+        </Flex>
+      </Flex>
     </ListItemMobile>
   );
 };

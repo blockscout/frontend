@@ -138,8 +138,8 @@ const MarketplaceAppModal = ({
                 h={ 8 }
                 onClick={ handleFavoriteClick }
                 icon={ isFavorite ?
-                  <IconSvg name="star_filled" w={ 4 } h={ 4 } color="yellow.400"/> :
-                  <IconSvg name="star_outline" w={ 4 } h={ 4 } color="gray.300"/> }
+                  <IconSvg name="star_filled" w={ 5 } h={ 5 } color="yellow.400"/> :
+                  <IconSvg name="star_outline" w={ 5 } h={ 5 } color="gray.600"/> }
               />
             </Box>
           </Box>

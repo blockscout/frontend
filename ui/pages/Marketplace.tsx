@@ -24,6 +24,7 @@ import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import TabsWithScroll from 'ui/shared/Tabs/TabsWithScroll';
 
 import useMarketplace from '../marketplace/useMarketplace';
+import useSecurityReports from '../marketplace/useSecurityReports';
 const feature = config.features.marketplace;
 
 const links: Array<{ label: string; href: string; icon: IconName }> = [];
@@ -68,6 +69,12 @@ const Marketplace = () => {
     appsTotal,
     isCategoriesPlaceholderData,
   } = useMarketplace();
+
+  const {
+    data: securityReports,
+    isPlaceholderData: isSecurityReportsPlaceholderData,
+  } = useSecurityReports();
+
   const isMobile = useIsMobile();
 
   const categoryTabs = React.useMemo(() => {
@@ -203,9 +210,10 @@ const Marketplace = () => {
           showAppInfo={ showAppInfo }
           favoriteApps={ favoriteApps }
           onFavoriteClick={ onFavoriteClick }
-          isLoading={ isPlaceholderData }
+          isLoading={ isPlaceholderData || isSecurityReportsPlaceholderData }
           selectedCategoryId={ selectedCategoryId }
           onAppClick={ handleAppClick }
+          securityReports={ securityReports }
         />
       ) : (
         <MarketplaceList
