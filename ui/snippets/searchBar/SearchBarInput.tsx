@@ -57,7 +57,7 @@ const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHid
     };
   }, [ isMobile, handleScroll ]);
 
-  const bgColor = useColorModeValue('orange.200', 'black');
+  const bgColor = useColorModeValue('orange.50', 'black');
   const transformMobile = scrollDirection !== 'down' ? 'translateY(0)' : 'translateY(-100%)';
 
   return (

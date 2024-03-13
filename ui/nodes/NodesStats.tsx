@@ -2,7 +2,7 @@ import { Grid } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import type { IconName } from 'public/icons/name';
 import React from 'react';
-import { clearInterval, setInterval } from 'timers';
+import { clearInterval, setInterval, setTimeout } from 'timers';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import dayjs from 'lib/date/dayjs';
@@ -142,8 +142,9 @@ const NodesStats = () => {
         // }
         if (timer) {
           clearInterval(timer);
+          clearTimeout(timer);
         }
-        timer = setInterval(() => {
+        timer = setTimeout(() => {
           setEraCounter((val) => val + 1);
         }, 5000);
       } else {
@@ -163,6 +164,7 @@ const NodesStats = () => {
       if (timer) {
         setEraTime(0);
         clearInterval(timer);
+        clearTimeout(timer);
       }
     };
   }, [ eraInfoRes.data ]);
@@ -179,8 +181,9 @@ const NodesStats = () => {
         // }
         if (timer) {
           clearInterval(timer);
+          clearTimeout(timer);
         }
-        timer = setInterval(() => {
+        timer = setTimeout(() => {
           setEpochCounter((val) => val + 1);
         }, 5000);
       } else {
@@ -200,6 +203,7 @@ const NodesStats = () => {
       if (timer) {
         setEpochTime(0);
         clearInterval(timer);
+        clearTimeout(timer);
       }
     };
   }, [ epochInfoRes.data ]);
