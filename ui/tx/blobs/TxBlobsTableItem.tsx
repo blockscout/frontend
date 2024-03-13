@@ -12,7 +12,7 @@ interface Props {
 }
 
 const TxBlobsTableItem = ({ data, isLoading }: Props) => {
-  const size = data.blob_data.replace('0x', '').length / 2;
+  const size = data.blob_data ? data.blob_data.replace('0x', '').length / 2 : '-';
 
   return (
     <Tr alignItems="top">
@@ -20,7 +20,7 @@ const TxBlobsTableItem = ({ data, isLoading }: Props) => {
         <BlobEntity hash={ data.hash } noIcon isLoading={ isLoading }/>
       </Td>
       <Td verticalAlign="middle">
-        <BlobDataType isLoading={ isLoading } data={ data.blob_data }/>
+        { data.blob_data ? <BlobDataType isLoading={ isLoading } data={ data.blob_data }/> : '-' }
       </Td>
       <Td verticalAlign="middle">
         <Skeleton isLoaded={ !isLoading } display="inline-block">

@@ -20,11 +20,11 @@ const ContractMethodFormOutputs = ({ data }: Props) => {
       <p>
         { data.map(({ type, name }, index) => {
           return (
-            <>
+            <React.Fragment key={ index }>
               <chakra.span fontWeight={ 500 }>{ name } </chakra.span>
               <span>{ name ? `(${ type })` : type }</span>
               { index < data.length - 1 && <span>, </span> }
-            </>
+            </React.Fragment>
           );
         }) }
       </p>

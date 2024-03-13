@@ -47,3 +47,22 @@ test('base view +@mobile +@dark-mode', async({ mount, page }) => {
     maskColor: configs.maskColor,
   });
 });
+
+test('without data', async({ mount, page }) => {
+  await page.route(BLOB_API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(blobsMock.withoutData),
+  }));
+
+  const component = await mount(
+    <TestApp>
+      <Blob/>
+    </TestApp>,
+    { hooksConfig },
+  );
+
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(configs.adsBannerSelector) ],
+    maskColor: configs.maskColor,
+  });
+});

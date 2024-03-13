@@ -36,7 +36,7 @@ const ValidatorsFilter = ({ onChange, defaultValue, isActive }: Props) => {
           <MenuItemOption value="all">All</MenuItemOption>
           <MenuItemOption value="active">Active</MenuItemOption>
           <MenuItemOption value="probation">Probation</MenuItemOption>
-          <MenuItemOption value="inactive">Failed</MenuItemOption>
+          <MenuItemOption value="inactive">Inactive</MenuItemOption>
         </MenuOptionGroup>
       </MenuList>
     </Menu>
