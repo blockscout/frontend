@@ -2,7 +2,7 @@ import { Hide, Show } from '@chakra-ui/react';
 import React from 'react';
 import type { MouseEvent } from 'react';
 
-import type { MarketplaceAppPreview } from 'types/client/marketplace';
+import type { MarketplaceAppPreview, ContractListTypes } from 'types/client/marketplace';
 import { MarketplaceCategory } from 'types/client/marketplace';
 
 import config from 'configs/app';
@@ -23,6 +23,7 @@ interface Props {
   selectedCategoryId?: string;
   onAppClick: (event: MouseEvent, id: string) => void;
   securityReports: Array<any> | undefined; // eslint-disable-line @typescript-eslint/no-explicit-any
+  showContractList: (id: string, type: ContractListTypes) => void;
 }
 
 const MarketplaceListWithScores = ({
@@ -34,6 +35,7 @@ const MarketplaceListWithScores = ({
   selectedCategoryId,
   onAppClick,
   securityReports = [],
+  showContractList,
 }: Props) => {
 
   const displayedApps = React.useMemo(() =>
@@ -63,6 +65,7 @@ const MarketplaceListWithScores = ({
             onFavoriteClick={ onFavoriteClick }
             isLoading={ isLoading }
             onAppClick={ onAppClick }
+            showContractList={ showContractList }
           />
         )) }
       </Show>
@@ -74,6 +77,7 @@ const MarketplaceListWithScores = ({
           favoriteApps={ favoriteApps }
           onFavoriteClick={ onFavoriteClick }
           onInfoClick={ showAppInfo }
+          showContractList={ showContractList }
         />
       </Hide>
     </>

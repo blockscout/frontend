@@ -2,7 +2,7 @@ import { Table as ChakraTable, Tbody, Th, Tr } from '@chakra-ui/react';
 import React from 'react';
 import type { MouseEvent } from 'react';
 
-import type { MarketplaceAppPreview } from 'types/client/marketplace';
+import type { MarketplaceAppPreview, ContractListTypes } from 'types/client/marketplace';
 
 import { default as Thead } from 'ui/shared/TheadSticky';
 
@@ -15,9 +15,10 @@ type Props = {
   onFavoriteClick: (id: string, isFavorite: boolean) => void;
   onAppClick: (event: MouseEvent, id: string) => void;
   onInfoClick: (id: string) => void;
+  showContractList: (id: string, type: ContractListTypes) => void;
 }
 
-const Table = ({ apps, isLoading, favoriteApps, onFavoriteClick, onAppClick, onInfoClick }: Props) => {
+const Table = ({ apps, isLoading, favoriteApps, onFavoriteClick, onAppClick, onInfoClick, showContractList }: Props) => {
   return (
     <ChakraTable>
       <Thead top={ 0 }>
@@ -40,6 +41,7 @@ const Table = ({ apps, isLoading, favoriteApps, onFavoriteClick, onAppClick, onI
             onFavoriteClick={ onFavoriteClick }
             onAppClick={ onAppClick }
             onInfoClick={ onInfoClick }
+            showContractList={ showContractList }
           />
         )) }
       </Tbody>

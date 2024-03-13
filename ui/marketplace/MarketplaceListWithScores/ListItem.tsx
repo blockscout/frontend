@@ -2,7 +2,7 @@ import { Flex, IconButton } from '@chakra-ui/react';
 import React from 'react';
 import type { MouseEvent } from 'react';
 
-import type { MarketplaceAppPreview } from 'types/client/marketplace';
+import type { MarketplaceAppPreview, ContractListTypes } from 'types/client/marketplace';
 
 import * as mixpanel from 'lib/mixpanel/index';
 import IconSvg from 'ui/shared/IconSvg';
@@ -19,9 +19,10 @@ type Props = {
   onFavoriteClick: (id: string, isFavorite: boolean) => void;
   isLoading: boolean;
   onAppClick: (event: MouseEvent, id: string) => void;
+  showContractList: (id: string, type: ContractListTypes) => void;
 }
 
-const ListItem = ({ app, onInfoClick, isFavorite, onFavoriteClick, isLoading, onAppClick }: Props) => {
+const ListItem = ({ app, onInfoClick, isFavorite, onFavoriteClick, isLoading, onAppClick, showContractList }: Props) => {
   const {
     id,
     securityReport,
@@ -78,7 +79,7 @@ const ListItem = ({ app, onInfoClick, isFavorite, onFavoriteClick, isLoading, on
         </Flex>
         <Flex alignItems="center">
           <Flex flex={ 1 } gap={ 3 } alignItems="center">
-            <AppSecurityReport securityReport={ securityReport }/>
+            <AppSecurityReport id={ id } securityReport={ securityReport } showContractList={ showContractList }/>
             <LinkButton onClick={ handleInfoClick } icon="contracts">{ totalContractsNumber }</LinkButton>
             <LinkButton onClick={ handleInfoClick } icon="contracts_verified" iconColor="green.500">{ verifiedNumber }</LinkButton>
           </Flex>

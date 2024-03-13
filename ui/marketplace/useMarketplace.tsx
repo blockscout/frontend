@@ -2,6 +2,7 @@ import _pickBy from 'lodash/pickBy';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { ContractListTypes } from 'types/client/marketplace';
 import { MarketplaceCategory } from 'types/client/marketplace';
 
 import useDebounce from 'lib/hooks/useDebounce';
@@ -33,6 +34,7 @@ export default function useMarketplace() {
   const [ isFavoriteAppsLoaded, setIsFavoriteAppsLoaded ] = React.useState<boolean>(false);
   const [ isAppInfoModalOpen, setIsAppInfoModalOpen ] = React.useState<boolean>(false);
   const [ isDisclaimerModalOpen, setIsDisclaimerModalOpen ] = React.useState<boolean>(false);
+  const [ contractListModalType, setContractListModalType ] = React.useState<ContractListTypes | null>(null);
 
   const handleFavoriteClick = React.useCallback((id: string, isFavorite: boolean) => {
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Favorite app', Info: id });
@@ -60,11 +62,17 @@ export default function useMarketplace() {
     setIsDisclaimerModalOpen(true);
   }, []);
 
+  const showContractList = React.useCallback((id: string, type: ContractListTypes) => {
+    setSelectedAppId(id);
+    setContractListModalType(type);
+  }, []);
+
   const debouncedFilterQuery = useDebounce(filterQuery, 500);
   const clearSelectedAppId = React.useCallback(() => {
     setSelectedAppId(null);
     setIsAppInfoModalOpen(false);
     setIsDisclaimerModalOpen(false);
+    setContractListModalType(null);
   }, []);
 
   const handleCategoryChange = React.useCallback((newCategory: string) => {
@@ -133,6 +141,8 @@ export default function useMarketplace() {
     showDisclaimer,
     appsTotal: data?.length || 0,
     isCategoriesPlaceholderData,
+    showContractList,
+    contractListModalType,
   }), [
     selectedCategoryId,
     categories,
@@ -152,5 +162,7 @@ export default function useMarketplace() {
     showDisclaimer,
     data?.length,
     isCategoriesPlaceholderData,
+    showContractList,
+    contractListModalType,
   ]);
 }

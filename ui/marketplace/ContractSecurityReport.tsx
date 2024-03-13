@@ -1,45 +1,34 @@
-import { Box, Text, Link } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import React from 'react';
 
-import { ContractListTypes } from 'types/client/marketplace';
-
 import config from 'configs/app';
-import { apos } from 'lib/html-entities';
+import LinkExternal from 'ui/shared/LinkExternal';
 import SolidityscanReportButton from 'ui/shared/solidityscanReport/SolidityscanReportButton';
 import SolidityscanReportDetails from 'ui/shared/solidityscanReport/SolidityscanReportDetails';
 import SolidityscanReportScore from 'ui/shared/solidityscanReport/SolidityscanReportScore';
 
 type Props = {
-  id: string;
   securityReport?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  isLarge?: boolean;
-  showContractList: (id: string, type: ContractListTypes) => void;
 }
 
-const AppSecurityReport = ({ id, securityReport, isLarge, showContractList }: Props) => {
+const ContractSecurityReport = ({ securityReport }: Props) => {
   const {
-    overallInfo: {
-      securityScore,
-      solidityScanContractsNumber,
-      issueSeverityDistribution,
-      totalIssues,
+    scanner_reference_url: url,
+    scan_summary: {
+      score_v2: securityScore,
+      issue_severity_distribution: issueSeverityDistribution,
     },
   } = securityReport;
 
-  const showAnalyzedContracts = React.useCallback(() => {
-
-    showContractList(id, ContractListTypes.ANALYZED);
-  }, [ showContractList, id ]);
+  const totalIssues = Object.values(issueSeverityDistribution as Record<string, number>).reduce((acc, val) => acc + val, 0);
 
   return (
     <SolidityscanReportButton
-      height={ isLarge ? undefined : '30px' }
       score={ securityScore }
       popoverContent={ (
         <>
           <Box mb={ 5 }>
-            { solidityScanContractsNumber } smart contracts were evaluated to determine
-            this protocol{ apos }s overall security score on the { config.chain.name } network.
+            The security score was derived from evaluating the smart contracts of a protocol on the { config.chain.name } network.
           </Box>
           <SolidityscanReportScore score={ securityScore }/>
           { issueSeverityDistribution && totalIssues > 0 && (
@@ -48,11 +37,11 @@ const AppSecurityReport = ({ id, securityReport, isLarge, showContractList }: Pr
               <SolidityscanReportDetails vulnerabilities={ issueSeverityDistribution } vulnerabilitiesCount={ totalIssues }/>
             </Box>
           ) }
-          <Link onClick={ showAnalyzedContracts }>Analyzed contracts</Link>
+          <LinkExternal href={ url }>View full report</LinkExternal>
         </>
       ) }
     />
   );
 };
 
-export default AppSecurityReport;
+export default ContractSecurityReport;

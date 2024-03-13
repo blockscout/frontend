@@ -28,3 +28,9 @@ export enum MarketplaceCategory {
   ALL = 'All',
   FAVORITES = 'Favorites',
 }
+
+export enum ContractListTypes {
+  ANALYZED = 'Analyzed',
+  ALL = 'All',
+  VERIFIED = 'Verified',
+}

@@ -3,6 +3,7 @@ import React from 'react';
 import type { MouseEvent } from 'react';
 
 import type { MarketplaceAppPreview } from 'types/client/marketplace';
+import { ContractListTypes } from 'types/client/marketplace';
 
 import * as mixpanel from 'lib/mixpanel/index';
 import IconSvg from 'ui/shared/IconSvg';
@@ -18,6 +19,7 @@ type Props = {
   onFavoriteClick: (id: string, isFavorite: boolean) => void;
   onAppClick: (event: MouseEvent, id: string) => void;
   onInfoClick: (id: string) => void;
+  showContractList: (id: string, type: ContractListTypes) => void;
 }
 
 const TableItem = ({
@@ -27,6 +29,7 @@ const TableItem = ({
   onFavoriteClick,
   onAppClick,
   onInfoClick,
+  showContractList,
 }: Props) => {
 
   const {
@@ -50,6 +53,14 @@ const TableItem = ({
     onFavoriteClick(id, isFavorite);
   }, [ onFavoriteClick, id, isFavorite ]);
 
+  const showAllContracts = React.useCallback(() => {
+    showContractList(id, ContractListTypes.ALL);
+  }, [ showContractList, id ]);
+
+  const showVerifiedContracts = React.useCallback(() => {
+    showContractList(id, ContractListTypes.VERIFIED);
+  }, [ showContractList, id ]);
+
   return (
     <Tr>
       <Td verticalAlign="middle" px={ 2 }>
@@ -71,13 +82,13 @@ const TableItem = ({
         <AppLink app={ app } isLoading={ isLoading } onAppClick={ onAppClick } isLarge/>
       </Td>
       <Td verticalAlign="middle">
-        <AppSecurityReport securityReport={ securityReport } isLarge/>
+        <AppSecurityReport id={ id } securityReport={ securityReport } showContractList={ showContractList } isLarge/>
       </Td>
       <Td verticalAlign="middle">
-        <LinkButton onClick={ handleInfoClick } icon="contracts">{ totalContractsNumber }</LinkButton>
+        <LinkButton onClick={ showAllContracts } icon="contracts">{ totalContractsNumber }</LinkButton>
       </Td>
       <Td verticalAlign="middle">
-        <LinkButton onClick={ handleInfoClick } icon="contracts_verified" iconColor="green.500">{ verifiedNumber }</LinkButton>
+        <LinkButton onClick={ showVerifiedContracts } icon="contracts_verified" iconColor="green.500">{ verifiedNumber }</LinkButton>
       </Td>
       <Td verticalAlign="middle" isNumeric>
         <LinkButton onClick={ handleInfoClick }>More info</LinkButton>

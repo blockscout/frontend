@@ -10,6 +10,7 @@ import { useAppContext } from 'lib/contexts/app';
 import * as cookies from 'lib/cookies';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import ContractListModal from 'ui/marketplace/ContractListModal';
 import MarketplaceAppModal from 'ui/marketplace/MarketplaceAppModal';
 import MarketplaceDisclaimerModal from 'ui/marketplace/MarketplaceDisclaimerModal';
 import MarketplaceList from 'ui/marketplace/MarketplaceList';
@@ -68,6 +69,8 @@ const Marketplace = () => {
     showDisclaimer,
     appsTotal,
     isCategoriesPlaceholderData,
+    showContractList,
+    contractListModalType,
   } = useMarketplace();
 
   const {
@@ -134,6 +137,10 @@ const Marketplace = () => {
   }
 
   const selectedApp = displayedApps.find(app => app.id === selectedAppId);
+  const selectedAppContractList = securityReports
+    ?.find(item => item.appName === selectedAppId)
+    ?.chainsData[config.chain.name?.toLowerCase() || '']
+    ?.contractsData;
 
   return (
     <>
@@ -214,6 +221,7 @@ const Marketplace = () => {
           selectedCategoryId={ selectedCategoryId }
           onAppClick={ handleAppClick }
           securityReports={ securityReports }
+          showContractList={ showContractList }
         />
       ) : (
         <MarketplaceList
@@ -241,6 +249,14 @@ const Marketplace = () => {
           isOpen={ isDisclaimerModalOpen }
           onClose={ clearSelectedAppId }
           appId={ selectedApp.id }
+        />
+      ) }
+
+      { (selectedApp && contractListModalType) && (
+        <ContractListModal
+          type={ contractListModalType }
+          contracts={ selectedAppContractList }
+          onClose={ clearSelectedAppId }
         />
       ) }
     </>
