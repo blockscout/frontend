@@ -12,33 +12,7 @@ import StatsItem from 'ui/home/StatsItem';
 import { formatAmount } from './data';
 
 const ProvidersStats = () => {
-  const { data, isLoading } = useApiQuery('provider_stats', {
-    fetchParams: {
-      method: 'GET',
-      headers: {},
-    },
-  });
-
-  const statsData = React.useCallback((key: string) => {
-    const _data = data as any;
-    let value = _data?.[key];
-    let amount = '0';
-
-    if (key === 'unpaidBalance') {
-      value =
-        BigNumber(_data?.['totalReward']).toNumber() -
-        BigNumber(_data?.['totalClaim']).toNumber();
-    }
-
-    if (key === 'totalDevice') {
-      return _data?.['totalDevice'];
-    }
-
-    if (value) {
-      amount = formatAmount(value);
-    }
-    return `${ amount } ${ currencyUnits.ether }`;
-  }, [ data ]);
+  const { data, isLoading } = useApiQuery('provider_stats');
 
   const statsList = useMemo<
   Array<{
@@ -48,6 +22,26 @@ const ProvidersStats = () => {
     icon: IconName;
   }>
   >(() => {
+    const statsData = (key: string) => {
+      const _data = data as any;
+      let value = _data?.[key];
+      let amount = '0';
+
+      if (key === 'unpaidBalance') {
+        value =
+          BigNumber(_data?.['totalReward']).toNumber() -
+          BigNumber(_data?.['totalClaim']).toNumber();
+      }
+
+      if (key === 'totalDevice') {
+        return _data?.['totalDevice'] ?? '0';
+      }
+
+      if (value) {
+        amount = formatAmount(value);
+      }
+      return `${ amount } ${ currencyUnits.ether }`;
+    };
     return [
       {
         id: 'totalDevice',
@@ -80,7 +74,7 @@ const ProvidersStats = () => {
         value: statsData('unpaidBalance'),
       },
     ];
-  }, [ statsData ]);
+  }, [ data ]);
 
   return (
     <Grid

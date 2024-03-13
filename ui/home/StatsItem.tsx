@@ -14,7 +14,7 @@ import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {
-  icon: IconName;
+  icon?: IconName;
   title: string;
   value: string;
   className?: string;
@@ -77,12 +77,14 @@ const StatsItem = ({
         } :
         {}) }
     >
-      <IconSvg
-        name={ icon }
-        boxSize={ 7 }
-        isLoading={ isLoading }
-        borderRadius="base"
-      />
+      { icon && (
+        <IconSvg
+          name={ icon }
+          boxSize={ 7 }
+          isLoading={ isLoading }
+          borderRadius="base"
+        />
+      ) }
       <Flex flexDirection="column" alignItems="start" sx={ sxText }>
         <Skeleton
           isLoaded={ !isLoading }
@@ -102,7 +104,6 @@ const StatsItem = ({
         >
           <span>{ value }</span>
         </Skeleton>
-
       </Flex>
       { tooltipLabel && !isLoading && (
         <LightMode>
