@@ -10,7 +10,7 @@ interface TokenWithIndices {
   hasId: boolean;
   indices: Array<number>;
   token?: NovesTokenInfo;
-  type?: 'action';
+  type?: 'action' | 'contract';
 }
 
 export interface DescriptionItems {
@@ -19,7 +19,10 @@ export interface DescriptionItems {
   hasId: boolean | undefined;
   type?: string;
   actionText?: string;
+  address?: string;
 }
+
+const CONTRACT_REGEXP = /(0x[\da-fA-F]{32}\b)/g;
 
 export const getDescriptionItems = (translateData: NovesResponseData): Array<DescriptionItems> => {
 
@@ -33,8 +36,10 @@ export const getDescriptionItems = (translateData: NovesResponseData): Array<Des
   const tokensMatchedByName = tokenData.nameList.filter(name => parsedDescription.toUpperCase().includes(` ${ name.toUpperCase() }`));
   let tokensMatchedBySymbol = tokenData.symbolList.filter(symbol => parsedDescription.toUpperCase().includes(` ${ symbol.toUpperCase() }`));
 
-  const actions = [ 'sent', 'Sent', 'Called function', 'called function', 'on contract' ];
+  const actions = [ 'sent', 'Sent', 'Called function', 'called function', 'on contract', 'swap', 'Swap' ];
   const actionsMatched = actions.filter(action => parsedDescription.includes(action));
+
+  const contractMatched = parsedDescription.match(CONTRACT_REGEXP) || [];
 
   // Filter symbols if they're already matched by name
   tokensMatchedBySymbol = tokensMatchedBySymbol.filter(symbol => !tokensMatchedByName.includes(tokenData.bySymbol[symbol]?.name || ''));
@@ -44,6 +49,7 @@ export const getDescriptionItems = (translateData: NovesResponseData): Array<Des
   let tokensBySymbol;
 
   let tokensByAction;
+  let tokensByContract;
 
   if (idsMatched.length) {
     parsedDescription = removeIds(tokensMatchedByName, tokensMatchedBySymbol, idsMatched, tokenData, parsedDescription);
@@ -67,9 +73,15 @@ export const getDescriptionItems = (translateData: NovesResponseData): Array<Des
     tokensByAction.forEach(i => indices.push(...i.indices));
   }
 
+  if (contractMatched.length) {
+    tokensByContract = parseTokensByContract(contractMatched, parsedDescription, translateData);
+
+    tokensByContract.forEach(i => indices.push(...i.indices));
+  }
+
   const indicesSorted = _.uniq(indices.sort((a, b) => a - b));
 
-  const tokensWithIndices = _.uniqBy(_.concat(tokensByName, tokensBySymbol, tokensByAction), 'name');
+  const tokensWithIndices = _.uniqBy(_.concat(tokensByName, tokensBySymbol, tokensByAction, tokensByContract), 'name');
 
   return createDescriptionItems(indicesSorted, tokensWithIndices, parsedDescription);
 };
@@ -146,7 +158,7 @@ const parseTokensBySymbol = (tokensMatchedBySymbol: Array<string>, idsMatched: A
 };
 
 const parseTokensByAction = (actionsMatched: Array<string>, parsedDescription: string) => {
-  const tokensBySymbol: Array<TokenWithIndices> = actionsMatched.map(action => {
+  const tokensByAction: Array<TokenWithIndices> = actionsMatched.map(action => {
     return {
       name: action,
       indices: [ ...parsedDescription.matchAll(new RegExp(action, 'gi')) ].map(a => a.index) as unknown as Array<number>,
@@ -155,7 +167,25 @@ const parseTokensByAction = (actionsMatched: Array<string>, parsedDescription: s
     };
   });
 
-  return tokensBySymbol;
+  return tokensByAction;
+};
+
+const parseTokensByContract = (contractMatched: Array<string>, parsedDescription: string, translateData: NovesResponseData) => {
+  const toAddress = translateData.rawTransactionData.toAddress.toLowerCase();
+  const contractFiltered = contractMatched.filter(contract => toAddress.startsWith(contract.toLowerCase()))[0];
+
+  if (!contractFiltered) {
+    return [];
+  }
+
+  const tokensByContract: Array<TokenWithIndices> = [ {
+    name: toAddress,
+    indices: [ ...parsedDescription.matchAll(new RegExp(contractFiltered, 'gi')) ].map(a => a.index) as unknown as Array<number>,
+    hasId: false,
+    type: 'contract',
+  } ];
+
+  return tokensByContract;
 };
 
 const createDescriptionItems = (indicesSorted: Array<number>, tokensWithIndices: Array<TokenWithIndices | undefined>, parsedDescription: string) => {
@@ -167,26 +197,30 @@ const createDescriptionItems = (indicesSorted: Array<number>, tokensWithIndices:
 
     if (i === 0) {
       const isAction = item?.type === 'action';
+      const isContract = item?.type === 'contract';
 
       token = {
         token: item?.token,
         text: parsedDescription.substring(0, endIndex),
         hasId: item?.hasId,
-        type: isAction ? 'action' : undefined,
+        type: item?.type,
         actionText: isAction ? item.name : undefined,
+        address: isContract ? item.name : undefined,
       };
     } else {
       const previousItem = tokensWithIndices.find(t => t?.indices.includes(indicesSorted[i - 1]));
       // Add the length of the text of the previous token to remove it from the start
       const startIndex = indicesSorted[i - 1] + (previousItem?.name.length || 0) + 1;
       const isAction = item?.type === 'action';
+      const isContract = item?.type === 'contract';
 
       token = {
         token: item?.token,
         text: parsedDescription.substring(startIndex, endIndex),
         hasId: item?.hasId,
-        type: isAction ? 'action' : undefined,
+        type: item?.type,
         actionText: isAction ? item.name : undefined,
+        address: isContract ? item.name : undefined,
       };
     }
 
@@ -199,7 +233,7 @@ const createDescriptionItems = (indicesSorted: Array<number>, tokensWithIndices:
 
   // Check if there is text left after the last token and push it to the array
   if (restString) {
-    descriptionItems.push({ text: restString, token: undefined, hasId: false, type: undefined, actionText: undefined });
+    descriptionItems.push({ text: restString, token: undefined, hasId: false, type: undefined, actionText: undefined, address: undefined });
   }
 
   return descriptionItems;

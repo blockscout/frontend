@@ -7,9 +7,28 @@ it('creates sub heading items to render', async() => {
 
   expect(result).toEqual([
     {
-      text: ' Called function \'stake\' on contract 0xef326CdAdA59D3A740A76bB5f4F88Fb2',
       token: undefined,
+      text: ' ',
       hasId: false,
+      type: 'action',
+      actionText: 'Called function',
+      address: undefined,
+    },
+    {
+      token: undefined,
+      text: '\'stake\' ',
+      hasId: false,
+      type: 'action',
+      actionText: 'on contract',
+      address: undefined,
+    },
+    {
+      token: undefined,
+      text: '',
+      hasId: false,
+      type: 'contract',
+      actionText: undefined,
+      address: '0xef326cdada59d3a740a76bb5f4f88fb2f1076164',
     },
   ]);
 });

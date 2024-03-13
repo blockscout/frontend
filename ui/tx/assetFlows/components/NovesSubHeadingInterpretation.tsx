@@ -4,6 +4,7 @@ import React, { Fragment } from 'react';
 
 import type { NovesResponseData } from 'types/api/noves';
 
+import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
 import { getDescriptionItems } from 'ui/tx/assetFlows/utils/getDescriptionItems';
@@ -61,7 +62,17 @@ const NovesSubHeadingInterpretation: FC<Props> = ({ data, isLoading }) => {
                   fontSize="lg"
                   w="fit-content"
                 />
-              ) }
+              )
+            }
+            {
+              item.address && (
+                <AddressEntity
+                  address={{ hash: item.address, is_contract: true, is_verified: true }}
+                  truncation="constant"
+                  whiteSpace="initial"
+                />
+              )
+            }
           </Fragment>
         )) }
       </Box>
