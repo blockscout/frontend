@@ -44,6 +44,6 @@ jobs:
           script: |
             cd /blockscout
             docker load -i explorer-frontend.tar
-            docker-compose down
-            docker-compose pull
-            docker-compose up -d --build --remove-orphans
+            docker compose down
+            docker compose pull
+            docker compose up -d --build --remove-orphans

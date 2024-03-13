@@ -12,6 +12,9 @@ services:
       service: db-init
 
   db:
+    depends_on:
+      db-init:
+        condition: service_completed_successfully
     extends:
       file: ./services/db.yml
       service: db
@@ -26,9 +29,9 @@ services:
     links:
       - db:database
     environment:
-        ETHEREUM_JSONRPC_HTTP_URL: http://116.202.100.101:9944/
-        ETHEREUM_JSONRPC_TRACE_URL: http://116.202.100.101:9944/
-        ETHEREUM_JSONRPC_WS_URL: ws://116.202.100.101:9944/
+        ETHEREUM_JSONRPC_HTTP_URL: https://atleta-testnet-rpc.quark.blue:9944/
+        ETHEREUM_JSONRPC_TRACE_URL: https://atleta-testnet-rpc.quark.blue:9944/
+        ETHEREUM_JSONRPC_WS_URL: wss://atleta-testnet-rpc.quark.blue:9944/
         ETHEREUM_JSONRPC_VARIANT: 'geth'
         CHAIN_ID: '2340'
 
@@ -56,7 +59,8 @@ services:
 
   stats-db:
     depends_on:
-      - backend
+      stats-db-init:
+        condition: service_completed_successfully
     extends:
       file: ./services/stats.yml
       service: stats-db
@@ -64,6 +68,7 @@ services:
   stats:
     depends_on:
       - stats-db
+      - backend
     extends:
       file: ./services/stats.yml
       service: stats
