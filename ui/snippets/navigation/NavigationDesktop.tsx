@@ -46,8 +46,6 @@ const NavigationDesktop = () => {
 
   const isExpanded = isCollapsed === false;
 
-
-
   return (
     <Flex
       display={{ base: 'none', lg: 'flex' }}

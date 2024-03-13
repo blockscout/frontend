@@ -1,5 +1,11 @@
 import type { SystemStyleObject, TooltipProps } from '@chakra-ui/react';
-import { Skeleton, Flex, useColorModeValue, chakra, LightMode } from '@chakra-ui/react';
+import {
+  Skeleton,
+  Flex,
+  useColorModeValue,
+  chakra,
+  LightMode,
+} from '@chakra-ui/react';
 import React from 'react';
 
 import breakpoints from 'theme/foundations/breakpoints';
@@ -15,7 +21,7 @@ type Props = {
   tooltipLabel?: React.ReactNode;
   url?: string;
   isLoading?: boolean;
-}
+};
 
 const LARGEST_BREAKPOINT = '1240px';
 
@@ -27,13 +33,23 @@ const TOOLTIP_PROPS: Partial<TooltipProps> = {
   bgColor: 'blackAlpha.900',
 };
 
-const StatsItem = ({ icon, title, value, className, tooltipLabel, url, isLoading }: Props) => {
+const StatsItem = ({
+  icon,
+  title,
+  value,
+  className,
+  tooltipLabel,
+  url,
+  isLoading,
+}: Props) => {
   const sxContainer: SystemStyleObject = {
-    [`@media screen and (min-width: ${ breakpoints.lg }) and (max-width: ${ LARGEST_BREAKPOINT })`]: { flexDirection: 'column' },
+    [`@media screen and (min-width: ${ breakpoints.lg }) and (max-width: ${ LARGEST_BREAKPOINT })`]:
+      { flexDirection: 'column' },
   };
 
   const sxText: SystemStyleObject = {
-    [`@media screen and (min-width: ${ breakpoints.lg }) and (max-width: ${ LARGEST_BREAKPOINT })`]: { alignItems: 'center' },
+    [`@media screen and (min-width: ${ breakpoints.lg }) and (max-width: ${ LARGEST_BREAKPOINT })`]:
+      { alignItems: 'center' },
   };
 
   // const bgColor = useColorModeValue('orange.200', 'orange.800');
@@ -54,23 +70,39 @@ const StatsItem = ({ icon, title, value, className, tooltipLabel, url, isLoading
       className={ className }
       color={ useColorModeValue('black', 'white') }
       position="relative"
-      { ...(url && !isLoading ? {
-        as: 'a',
-        href: url,
-      } : {}) }
+      { ...(url && !isLoading ?
+        {
+          as: 'a',
+          href: url,
+        } :
+        {}) }
     >
-      <IconSvg name={ icon } boxSize={ 7 } isLoading={ isLoading } borderRadius="base"/>
-      <Flex
-        flexDirection="column"
-        alignItems="start"
-        sx={ sxText }
-      >
-        <Skeleton isLoaded={ !isLoading } color="text_secondary" fontSize="xs" lineHeight="16px" borderRadius="base">
+      <IconSvg
+        name={ icon }
+        boxSize={ 7 }
+        isLoading={ isLoading }
+        borderRadius="base"
+      />
+      <Flex flexDirection="column" alignItems="start" sx={ sxText }>
+        <Skeleton
+          isLoaded={ !isLoading }
+          color="text_secondary"
+          fontSize="xs"
+          lineHeight="16px"
+          borderRadius="base"
+        >
           <span>{ title }</span>
         </Skeleton>
-        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 } fontSize="md" color="orange.500" borderRadius="base">
+        <Skeleton
+          isLoaded={ !isLoading }
+          fontWeight={ 500 }
+          fontSize="md"
+          color="orange.500"
+          borderRadius="base"
+        >
           <span>{ value }</span>
         </Skeleton>
+
       </Flex>
       { tooltipLabel && !isLoading && (
         <LightMode>
@@ -80,7 +112,11 @@ const StatsItem = ({ icon, title, value, className, tooltipLabel, url, isLoading
             boxSize={ 6 }
             color={ infoColor }
             position="absolute"
-            top={{ base: 'calc(50% - 12px)', lg: '10px', xl: 'calc(50% - 12px)' }}
+            top={{
+              base: 'calc(50% - 12px)',
+              lg: '10px',
+              xl: 'calc(50% - 12px)',
+            }}
             right="10px"
           />
         </LightMode>

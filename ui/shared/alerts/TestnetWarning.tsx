@@ -9,7 +9,7 @@ interface Props {
 }
 
 const TestnetWarning = ({ isLoading, className }: Props) => {
-  if (!config.chain.isTestnet&&!config.chain.isDevNet) {
+  if (!config.chain.isTestnet && !config.chain.isDevNet) {
     return null;
   }
 

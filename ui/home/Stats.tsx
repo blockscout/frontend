@@ -60,7 +60,7 @@ const Stats = () => {
       // }
 
       if (data.gas_prices?.average?.price) {
-        return  data.gas_prices.average.price.toLocaleString() + '' + currencyUnits.gwei ;
+        return String(data.gas_prices.average.price.toLocaleString()) + currencyUnits.gwei ;
       }
 
       return 'N/A';
