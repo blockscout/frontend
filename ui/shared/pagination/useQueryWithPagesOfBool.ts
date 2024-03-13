@@ -1,34 +1,32 @@
-import type { UseQueryResult } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
 import omit from 'lodash/omit';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 import { animateScroll } from 'react-scroll';
 
-import type { PaginationParams } from './types';
-
 import type {
-  PaginatedResources,
+  ApiResource,
+  PaginatedResourcesOfBool,
   PaginationFilters,
-  PaginationSorting,
-  ResourceError,
-  ResourcePayload,
+  PaginationSorting } from 'lib/api/resources';
+import {
+  RESOURCES,
+  SORTING_FIELDS,
 } from 'lib/api/resources';
-import { RESOURCES, SORTING_FIELDS } from 'lib/api/resources';
-import type { Params as UseApiQueryParams } from 'lib/api/useApiQuery';
 import useApiQuery from 'lib/api/useApiQuery';
+import type { Params as UseApiQueryParams } from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
-export interface Params<Resource extends PaginatedResources> {
+export interface Params<Resource extends PaginatedResourcesOfBool> {
   resourceName: Resource;
+  filters?: PaginationFilters<Resource>;
   options?: UseApiQueryParams<Resource>['queryOptions'];
   pathParams?: UseApiQueryParams<Resource>['pathParams'];
-  filters?: PaginationFilters<Resource>;
-  sorting?: PaginationSorting<Resource>;
   scrollRef?: React.RefObject<HTMLDivElement>;
+  sorting?: PaginationSorting<Resource>;
 }
 
-type NextPageParams = Record<string, unknown>;
+type NextPageParams = Record<string, any>;
 
 function getPaginationParamsFromQuery(
   queryString: string | Array<string> | undefined,
@@ -44,29 +42,19 @@ function getPaginationParamsFromQuery(
   return {};
 }
 
-export type QueryWithPagesResult<Resource extends PaginatedResources> =
-  UseQueryResult<
-  ResourcePayload<Resource>,
-  ResourceError<unknown>
-  > & {
-    onFilterChange: <R extends PaginatedResources = Resource>(
-      filters: PaginationFilters<R>
-    ) => void;
-    onSortingChange: (sorting?: PaginationSorting<Resource>) => void;
-    pagination: PaginationParams;
-  };
-
-export default function useQueryWithPages<Resource extends PaginatedResources>({
+export default function useQueryWithPagesOfBool<
+  Resource extends PaginatedResourcesOfBool
+>({
   resourceName,
-  filters,
-  sorting,
   options,
   pathParams,
   scrollRef,
-}: Params<Resource>): QueryWithPagesResult<Resource> {
-  const resource = RESOURCES[resourceName];
-  const queryClient = useQueryClient();
+  filters,
+  sorting,
+}: Params<Resource>) {
+  const resource = RESOURCES[resourceName] as ApiResource;
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const [ page, setPage ] = React.useState<number>(
     router.query.page && !Array.isArray(router.query.page) ?
@@ -78,10 +66,14 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
   >({
     [page]: getPaginationParamsFromQuery(router.query.next_page_params),
   });
-  const [ hasPages, setHasPages ] = React.useState(page > 1);
-
   const isMounted = React.useRef(false);
-  const queryParams = { ...pageParams[page], ...filters, ...sorting };
+  const queryParams = {
+    pageNo: 1,
+    pageSize: 50,
+    ...filters,
+    ...sorting,
+    ...pageParams[page],
+  };
 
   const scrollToTop = useCallback(() => {
     scrollRef?.current ?
@@ -91,7 +83,9 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
 
   const queryResult = useApiQuery(resourceName, {
     pathParams,
-    queryParams: Object.keys(queryParams).length ? queryParams : undefined,
+    queryParams: (Object.keys(queryParams).length ?
+      queryParams :
+      undefined) as any,
     queryOptions: {
       staleTime: page === 1 ? 0 : Infinity,
       ...options,
@@ -100,33 +94,37 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
   const { data } = queryResult;
 
   const onNextPageClick = useCallback(() => {
-    if (!data?.next_page_params) {
+    const _data: any = data;
+
+    if (!_data?.totalCount) {
       // we hide next page button if no next_page_params
       return;
     }
 
+    const pageParams = {
+      pageNo: page + 1,
+    };
+
     setPageParams((prev) => ({
       ...prev,
-      [page + 1]: data.next_page_params as NextPageParams,
+      [page + 1]: pageParams as NextPageParams,
     }));
     setPage((prev) => prev + 1);
 
     const nextPageQuery = {
       ...router.query,
       page: String(page + 1),
-      next_page_params: encodeURIComponent(
-        JSON.stringify(data.next_page_params),
-      ),
+      next_page_params: encodeURIComponent(JSON.stringify(pageParams)),
     };
 
-    setHasPages(true);
     scrollToTop();
+
     router.push(
       { pathname: router.pathname, query: nextPageQuery },
       undefined,
       { shallow: true },
     );
-  }, [ data?.next_page_params, page, router, scrollToTop ]);
+  }, [ data, page, router, scrollToTop ]);
 
   const onPrevPageClick = useCallback(() => {
     // returning to the first page
@@ -154,7 +152,6 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
 
   const resetPage = useCallback(() => {
     queryClient.removeQueries({ queryKey: [ resourceName ] });
-
     scrollToTop();
     const nextRouterQuery = omit(router.query, [ 'next_page_params', 'page' ]);
     router
@@ -177,14 +174,14 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
   }, [ queryClient, resourceName, router, scrollToTop ]);
 
   const onFilterChange = useCallback(
-    <R extends PaginatedResources = Resource>(
+    <R extends PaginatedResourcesOfBool = Resource>(
       newFilters: PaginationFilters<R> | undefined,
     ) => {
       const newQuery = omit<typeof router.query>(
         router.query,
         'next_page_params',
         'page',
-        resource.filterFields,
+        resource.filterFields ?? [],
       );
 
       if (newFilters) {
@@ -209,7 +206,6 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
           { shallow: true },
         )
         .then(() => {
-          setHasPages(false);
           setPage(1);
           setPageParams({});
         });
@@ -233,13 +229,12 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
         .push(
           {
             pathname: router.pathname,
-            query: newQuery,
+            query: newQuery as any,
           },
           undefined,
           { shallow: true },
         )
         .then(() => {
-          setHasPages(false);
           setPage(1);
           setPageParams({});
         });
@@ -247,21 +242,21 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
     [ router, scrollToTop ],
   );
 
-  const nextPageParams = data?.next_page_params;
-  const hasNextPage = nextPageParams ?
-    Object.keys(nextPageParams).length > 0 :
-    false;
+  const nextPageParams: any = (data as any)?.totalCount ?
+    data :
+    undefined;
+  const hasNextPage = nextPageParams ? nextPageParams.hasNext : false;
 
   const pagination = {
     page,
     onNextPageClick,
     onPrevPageClick,
     resetPage,
-    hasPages,
+    hasPages: Number(nextPageParams?.totalPage ?? 0) > 0,
     hasNextPage,
-    canGoBackwards: Boolean(pageParams[page - 1]),
+    canGoBackwards: page > 1,
     isLoading: queryResult.isPlaceholderData,
-    isVisible: hasPages || hasNextPage,
+    isVisible: Number(nextPageParams?.totalPage ?? 0) > 0 || hasNextPage,
   };
 
   React.useEffect(() => {

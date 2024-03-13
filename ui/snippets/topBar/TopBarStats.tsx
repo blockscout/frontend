@@ -61,7 +61,7 @@ const TopBarStats = () => {
       fontSize="xs"
       fontWeight={ 500 }
     >
-      {data?.coin_price && (
+      { data?.coin_price && (
         <Flex columnGap={ 1 }>
           <Skeleton isLoaded={ !isPlaceholderData }>
             <chakra.span color="text_secondary">{ config.chain.governanceToken.symbol || config.chain.currency.symbol } </chakra.span>
@@ -75,7 +75,7 @@ const TopBarStats = () => {
             </Skeleton>
           ) }
         </Flex>
-      ) } 
+      ) }
       { data?.coin_price && config.UI.homepage.showGasTracker && <TextSeparator color="divider"/> }
       { data?.gas_prices && data.gas_prices.average !== null && config.UI.homepage.showGasTracker && (
         <Skeleton isLoaded={ !isPlaceholderData }>
@@ -96,7 +96,6 @@ const TopBarStats = () => {
               onMouseEnter={ onOpen }
               onMouseLeave={ onClose }
             >
-              {/* { data.gas_prices.average.fiat_price ? `${ data.gas_prices.average.fiat_price }` : `${ data.gas_prices.average.price } ${ currencyUnits.gwei }` } */}
               { data.gas_prices.average.price } { currencyUnits.gwei }
             </Link>
           </Tooltip>

@@ -1,25 +1,40 @@
-import { Box, Button, Menu, MenuButton, MenuItemOption, MenuList, MenuOptionGroup, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Menu,
+  MenuButton,
+  MenuItemOption,
+  MenuList,
+  MenuOptionGroup,
+  Text,
+} from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import IconSvg from 'ui/shared/IconSvg';
 
 type Props<T extends string> = {
-  items: Array<{id: T; title: string}>;
+  items: Array<{ id: T; title: string }>;
   selectedId: T;
   onSelect: (id: T) => void;
-}
+};
 
-export function StatsDropdownMenu<T extends string>({ items, selectedId, onSelect }: Props<T>) {
-  const selectedCategory = items.find(category => category.id === selectedId);
+export function StatsDropdownMenu<T extends string>({
+  items,
+  selectedId,
+  onSelect,
+}: Props<T>) {
+  const selectedCategory = items.find((category) => category.id === selectedId);
 
-  const handleSelection = useCallback((id: string | Array<string>) => {
-    const selectedId = Array.isArray(id) ? id[0] : id;
-    onSelect(selectedId as T);
-  }, [ onSelect ]);
+  const handleSelection = useCallback(
+    (id: string | Array<string>) => {
+      const selectedId = Array.isArray(id) ? id[0] : id;
+      onSelect(selectedId as T);
+    },
+    [ onSelect ],
+  );
 
   return (
-    <Menu
-    >
+    <Menu>
       <MenuButton
         as={ Button }
         size="md"
@@ -27,33 +42,28 @@ export function StatsDropdownMenu<T extends string>({ items, selectedId, onSelec
         colorScheme="gray"
         w="100%"
       >
-        <Box
-          as="span"
-          display="flex"
-          alignItems="center"
-        >
-          <Text
-            whiteSpace="nowrap"
-            overflow="hidden"
-            textOverflow="ellipsis"
-          >
+        <Box as="span" display="flex" alignItems="center">
+          <Text whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">
             { selectedCategory?.title }
           </Text>
-          <IconSvg transform="rotate(-90deg)" ml="auto" name="arrows/east-mini" w={ 5 } h={ 5 }/>
+          <IconSvg
+            transform="rotate(-90deg)"
+            ml="auto"
+            name="arrows/east-mini"
+            w={ 5 }
+            h={ 5 }
+          />
         </Box>
       </MenuButton>
 
-      <MenuList zIndex={ 3 }>
+      <MenuList zIndex={ 9999 }>
         <MenuOptionGroup
           value={ selectedId }
           type="radio"
           onChange={ handleSelection }
         >
           { items.map((item) => (
-            <MenuItemOption
-              key={ item.id }
-              value={ item.id }
-            >
+            <MenuItemOption key={ item.id } value={ item.id }>
               { item.title }
             </MenuItemOption>
           )) }

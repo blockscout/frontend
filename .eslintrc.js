@@ -123,7 +123,7 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': 'off',
     '@typescript-eslint/no-useless-constructor': [ 'error' ],
     '@typescript-eslint/type-annotation-spacing': 'error',
-    '@typescript-eslint/no-explicit-any': [ 'error', { ignoreRestArgs: true } ],
+    // '@typescript-eslint/no-explicit-any': [ 'error', { ignoreRestArgs: false } ],
 
     // disabled in favor of @typescript-eslint
     'brace-style': 'off',

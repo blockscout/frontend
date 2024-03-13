@@ -10,15 +10,16 @@ const apiEndpoint = [
   '://',
   apiHost,
   apiPort && ':' + apiPort,
-].filter(Boolean).join('');
+]
+  .filter(Boolean)
+  .join('');
 
 const socketSchema = getEnvValue('NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL') || 'wss';
-const socketEndpoint = [
-  socketSchema,
-  '://',
-  apiHost,
-  apiPort && ':' + apiPort,
-].filter(Boolean).join('');
+const socketEndpoint = [ socketSchema, '://', apiHost, apiPort && ':' + apiPort ]
+  .filter(Boolean)
+  .join('');
+
+const boolApi = getEnvValue('NEXT_PUBLIC_BOOL_SCAN_API');
 
 const api = Object.freeze({
   host: apiHost,
@@ -27,6 +28,7 @@ const api = Object.freeze({
   endpoint: apiEndpoint,
   socket: socketEndpoint,
   basePath: stripTrailingSlash(getEnvValue('NEXT_PUBLIC_API_BASE_PATH') || ''),
+  boolApi,
 });
 
 export default api;

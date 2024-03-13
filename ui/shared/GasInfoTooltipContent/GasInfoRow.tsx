@@ -19,7 +19,7 @@ const GasInfoRow = ({ name, info }: Props) => {
 
     return (
       <>
-        {/* <span>{ info.fiat_price ? `${ info.fiat_price }` : `${ info.price } ${ currencyUnits.gwei }` }</span> */}
+        { /* <span>{ info.fiat_price ? `${ info.fiat_price }` : `${ info.price } ${ currencyUnits.gwei }` }</span> */ }
 
         <span>{ `${ info.price } ${ currencyUnits.gwei }` }</span>
 
