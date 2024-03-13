@@ -10194,9 +10194,9 @@ get-tsconfig@^4.5.0:
   integrity sha512-MjhiaIWCJ1sAU4pIQ5i5OfOuHHxVo1oYeNsWTON7jxYkod8pHocXeh+SSbmu5OZZZK73B6cbJ2XADzXehLyovQ==
 
 getit-sdk@^1.0.4:
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/getit-sdk/-/getit-sdk-1.0.9.tgz#c1f600d344fb89a6142cdd395c758d257679622e"
-  integrity sha512-aJoRnubYIWGAsssqxfcQrOAuByInoS6QUNAci7CowGGIzjJ2hPe8KOuzDEPEyIi60TJ4vU/Ve14I4BIfwBKf4Q==
+  version "1.0.13"
+  resolved "https://registry.yarnpkg.com/getit-sdk/-/getit-sdk-1.0.13.tgz#702cd2e8dfeb42884deed6d8d7fbac9af413c73a"
+  integrity sha512-gWDJZNMoy7Uw9S3qOvQ+gVFdmrHuI17ePGhJYbP25DGOzgCwD5n7KDy9JWxGpLqEnf+V3v3aoyTvP8TtZheEaA==
   dependencies:
     axios "^1.6.2"
     jest-transform-css "^6.0.1"
@@ -15819,9 +15819,9 @@ yaml@^1.10.0:
   integrity sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==
 
 yaml@^2.1.1:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.4.0.tgz#2376db1083d157f4b3a452995803dbcf43b08140"
-  integrity sha512-j9iR8g+/t0lArF4V6NE/QCfT+CO7iLqrXAHZbJdo+LfjqP1vR8Fg5bSiaq6Q2lOD1AUEVrEVIgABvBFYojJVYQ==
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/yaml/-/yaml-2.4.1.tgz#2e57e0b5e995292c25c75d2658f0664765210eed"
+  integrity sha512-pIXzoImaqmfOrL7teGUBt/T7ZDnyeGBWyXQBvOVhLkWLN37GXv8NMLK406UY6dS51JfcQHsmcW5cJ441bHg6Lg==
 
 yaml@^2.2.2:
   version "2.3.1"
