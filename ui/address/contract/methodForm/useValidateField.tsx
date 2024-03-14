@@ -18,15 +18,13 @@ export default function useValidateField({ isOptional, argType, argTypeMatchInt 
     return argType.match(BYTES_REGEXP);
   }, [ argType ]);
 
-  // some values are formatted before they are sent to the validator
-  // see ./useFormatFieldValue.tsx hook
-  return React.useCallback((value: string | number | boolean | undefined) => {
+  return React.useCallback((value: string | undefined) => {
     if (value === undefined || value === '') {
       return isOptional ? true : 'Field is required';
     }
 
     if (argType === 'address') {
-      if (typeof value !== 'string' || !isAddress(value)) {
+      if (!isAddress(value)) {
         return 'Invalid address format';
       }
 
@@ -41,11 +39,13 @@ export default function useValidateField({ isOptional, argType, argTypeMatchInt 
     }
 
     if (argTypeMatchInt) {
-      if (typeof value !== 'number' || Object.is(value, NaN)) {
+      const formattedValue = Number(value);
+
+      if (Object.is(formattedValue, NaN)) {
         return 'Invalid integer format';
       }
 
-      if (value > argTypeMatchInt.max || value < argTypeMatchInt.min) {
+      if (formattedValue > argTypeMatchInt.max || formattedValue < argTypeMatchInt.min) {
         const lowerBoundary = argTypeMatchInt.isUnsigned ? '0' : `-1 * 2 ^ ${ Number(argTypeMatchInt.power) - 1 }`;
         const upperBoundary = argTypeMatchInt.isUnsigned ? `2 ^ ${ argTypeMatchInt.power } - 1` : `2 ^ ${ Number(argTypeMatchInt.power) - 1 } - 1`;
         return `Value should be in range from "${ lowerBoundary }" to "${ upperBoundary }" inclusively`;
@@ -55,7 +55,7 @@ export default function useValidateField({ isOptional, argType, argTypeMatchInt 
     }
 
     if (argType === 'bool') {
-      if (typeof value !== 'boolean') {
+      if (value !== 'true' && value !== 'false') {
         return 'Invalid boolean format. Allowed values: true, false';
       }
     }
