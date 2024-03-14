@@ -57,7 +57,16 @@ const ListItem = ({ app, onInfoClick, isFavorite, onFavoriteClick, isLoading, on
     <ListItemMobile
       rowGap={ 3 }
       py={ 3 }
-      sx={{ ':first-child': { borderTop: 'none' }, ':last-child': { borderBottom: 'none' } }}
+      sx={{
+        ':first-child': {
+          borderTop: 'none',
+          paddingTop: 0,
+        },
+        ':last-child': {
+          borderBottom: 'none',
+          paddingBottom: 0,
+        },
+      }}
     >
       <Flex
         direction="column"

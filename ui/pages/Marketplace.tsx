@@ -190,7 +190,7 @@ const Marketplace = () => {
         ) }
       </Box>
 
-      <Flex direction={{ base: 'column', lg: 'row' }} mb={{ base: 1, lg: 6 }} gap={{ base: 4, lg: 3 }}>
+      <Flex direction={{ base: 'column', lg: 'row' }} mb={{ base: 4, lg: 6 }} gap={{ base: 4, lg: 3 }}>
         <RadioButtonGroup<MarketplaceDisplayType>
           onChange={ handleNFTsDisplayTypeChange }
           defaultValue={ displayType }
