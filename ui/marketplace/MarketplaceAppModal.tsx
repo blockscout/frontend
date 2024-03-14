@@ -1,16 +1,19 @@
 import {
   Box, Flex, Heading, IconButton, Image, Link, List, Modal, ModalBody,
-  ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Tag, Text, useColorModeValue,
+  ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Tag, Text, useColorModeValue,
 } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import type { MarketplaceAppOverview } from 'types/client/marketplace';
+import { ContractListTypes } from 'types/client/marketplace';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
+import AppSecurityReport from './AppSecurityReport';
+import ContractListButton, { ContractListButtonVariants } from './ContractListButton';
 import MarketplaceAppModalLink from './MarketplaceAppModalLink';
 
 type Props = {
@@ -18,6 +21,7 @@ type Props = {
   isFavorite: boolean;
   onFavoriteClick: (id: string, isFavorite: boolean) => void;
   data: MarketplaceAppOverview;
+  showContractList: (id: string, type: ContractListTypes) => void;
 }
 
 const MarketplaceAppModal = ({
@@ -25,8 +29,10 @@ const MarketplaceAppModal = ({
   isFavorite,
   onFavoriteClick,
   data,
+  showContractList: showContractListDefault,
 }: Props) => {
   const {
+    id,
     title,
     url,
     external,
@@ -39,6 +45,7 @@ const MarketplaceAppModal = ({
     logo,
     logoDarkMode,
     categories,
+    securityReport,
   } = data;
 
   const socialLinks = [
@@ -64,6 +71,19 @@ const MarketplaceAppModal = ({
     onFavoriteClick(data.id, isFavorite);
   }, [ onFavoriteClick, data.id, isFavorite ]);
 
+  const showContractList = useCallback((id: string, type: ContractListTypes) => {
+    onClose();
+    showContractListDefault(id, type);
+  }, [ onClose, showContractListDefault ]);
+
+  const showAllContracts = React.useCallback(() => {
+    showContractList(id, ContractListTypes.ALL);
+  }, [ showContractList, id ]);
+
+  const showVerifiedContracts = React.useCallback(() => {
+    showContractList(id, ContractListTypes.VERIFIED);
+  }, [ showContractList, id ]);
+
   const isMobile = useIsMobile();
   const logoUrl = useColorModeValue(logo, logoDarkMode || logo);
 
@@ -77,10 +97,11 @@ const MarketplaceAppModal = ({
       <ModalOverlay/>
 
       <ModalContent>
-        <ModalHeader
+        <Box
           display="grid"
           gridTemplateColumns={{ base: 'auto 1fr' }}
           paddingRight={{ sm: 12 }}
+          marginBottom={{ base: 6, sm: 8 }}
         >
           <Flex
             alignItems="center"
@@ -121,29 +142,49 @@ const MarketplaceAppModal = ({
             gridColumn={{ base: '1 / 3', sm: 2 }}
             marginTop={{ base: 6, sm: 0 }}
           >
-            <Box display="flex">
-              <MarketplaceAppModalLink
-                id={ data.id }
-                url={ url }
-                external={ external }
-                title={ title }
-              />
+            <Flex flexWrap="wrap" gap={ 6 }>
+              <Flex width={{ base: '100%', sm: 'auto' }}>
+                <MarketplaceAppModalLink
+                  id={ data.id }
+                  url={ url }
+                  external={ external }
+                  title={ title }
+                />
 
-              <IconButton
-                aria-label="Mark as favorite"
-                title="Mark as favorite"
-                variant="outline"
-                colorScheme="gray"
-                w={ 9 }
-                h={ 8 }
-                onClick={ handleFavoriteClick }
-                icon={ isFavorite ?
-                  <IconSvg name="star_filled" w={ 5 } h={ 5 } color="yellow.400"/> :
-                  <IconSvg name="star_outline" w={ 5 } h={ 5 } color="gray.600"/> }
-              />
-            </Box>
+                <IconButton
+                  aria-label="Mark as favorite"
+                  title="Mark as favorite"
+                  variant="outline"
+                  colorScheme="gray"
+                  w={ 9 }
+                  h={ 8 }
+                  onClick={ handleFavoriteClick }
+                  icon={ isFavorite ?
+                    <IconSvg name="star_filled" w={ 5 } h={ 5 } color="yellow.400"/> :
+                    <IconSvg name="star_outline" w={ 5 } h={ 5 } color="gray.600"/> }
+                />
+              </Flex>
+
+              { securityReport && (
+                <Flex alignItems="center" gap={ 3 }>
+                  <AppSecurityReport id={ data.id } securityReport={ securityReport } showContractList={ showContractList }/>
+                  <ContractListButton
+                    onClick={ showAllContracts }
+                    variant={ ContractListButtonVariants.ALL_CONTRACTS }
+                  >
+                    { securityReport.overallInfo.totalContractsNumber }
+                  </ContractListButton>
+                  <ContractListButton
+                    onClick={ showVerifiedContracts }
+                    variant={ ContractListButtonVariants.VERIFIED_CONTRACTS }
+                  >
+                    { securityReport.overallInfo.verifiedNumber }
+                  </ContractListButton>
+                </Flex>
+              ) }
+            </Flex>
           </Box>
-        </ModalHeader>
+        </Box>
 
         <ModalCloseButton/>
 

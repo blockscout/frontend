@@ -9,6 +9,7 @@ import MarketplaceAppModal from './MarketplaceAppModal';
 const props = {
   onClose: () => {},
   onFavoriteClick: () => {},
+  showContractList: () => {},
   data: appsMock[0],
   isFavorite: false,
 };

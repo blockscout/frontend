@@ -255,6 +255,7 @@ const Marketplace = () => {
           isFavorite={ favoriteApps.includes(selectedApp.id) }
           onFavoriteClick={ onFavoriteClick }
           data={ selectedApp }
+          showContractList={ showContractList }
         />
       ) }
 
