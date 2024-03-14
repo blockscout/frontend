@@ -11,6 +11,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import AppLink from './AppLink';
 import AppSecurityReport from './AppSecurityReport';
 import LinkButton, { LinkButtonVariants } from './LinkButton';
+import MoreInfoButton from './MoreInfoButton';
 
 type Props = {
   app: MarketplaceAppPreview & { securityReport?: any }; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -93,7 +94,7 @@ const TableItem = ({
         <LinkButton onClick={ showVerifiedContracts } variant={ LinkButtonVariants.VERIFIED_CONTRACTS }>{ verifiedNumber }</LinkButton>
       </Td>
       <Td verticalAlign="middle" isNumeric>
-        <LinkButton onClick={ handleInfoClick }>More info</LinkButton>
+        <MoreInfoButton onClick={ handleInfoClick }/>
       </Td>
     </Tr>
   );

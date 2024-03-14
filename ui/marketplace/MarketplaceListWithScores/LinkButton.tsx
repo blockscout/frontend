@@ -7,7 +7,6 @@ import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
 export enum LinkButtonVariants {
-  DEFAULT = 'default',
   ALL_CONTRACTS = 'all contracts',
   VERIFIED_CONTRACTS = 'verified contracts',
 }
@@ -23,20 +22,15 @@ const values = {
     iconColor: 'green.500',
     tooltip: `Number of verified contracts on ${ config.chain.name }`,
   },
-  [LinkButtonVariants.DEFAULT]: {
-    icon: null,
-    iconColor: null,
-    tooltip: null,
-  },
 };
 
 interface Props {
   children: string;
   onClick: (event: MouseEvent) => void;
-  variant?: LinkButtonVariants;
+  variant: LinkButtonVariants;
 }
 
-const LinkButton = ({ children, onClick, variant = LinkButtonVariants.DEFAULT }: Props) => {
+const LinkButton = ({ children, onClick, variant }: Props) => {
   const { icon, iconColor, tooltip } = values[variant];
   return (
     <Tooltip
