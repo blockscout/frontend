@@ -2,7 +2,8 @@ import { Flex, IconButton } from '@chakra-ui/react';
 import React from 'react';
 import type { MouseEvent } from 'react';
 
-import type { MarketplaceAppPreview, ContractListTypes } from 'types/client/marketplace';
+import type { MarketplaceAppPreview } from 'types/client/marketplace';
+import { ContractListTypes } from 'types/client/marketplace';
 
 import * as mixpanel from 'lib/mixpanel/index';
 import IconSvg from 'ui/shared/IconSvg';
@@ -44,6 +45,14 @@ const ListItem = ({ app, onInfoClick, isFavorite, onFavoriteClick, isLoading, on
     onFavoriteClick(id, isFavorite);
   }, [ onFavoriteClick, id, isFavorite ]);
 
+  const showAllContracts = React.useCallback(() => {
+    showContractList(id, ContractListTypes.ALL);
+  }, [ showContractList, id ]);
+
+  const showVerifiedContracts = React.useCallback(() => {
+    showContractList(id, ContractListTypes.VERIFIED);
+  }, [ showContractList, id ]);
+
   return (
     <ListItemMobile
       rowGap={ 3 }
@@ -80,8 +89,8 @@ const ListItem = ({ app, onInfoClick, isFavorite, onFavoriteClick, isLoading, on
         <Flex alignItems="center">
           <Flex flex={ 1 } gap={ 3 } alignItems="center">
             <AppSecurityReport id={ id } securityReport={ securityReport } showContractList={ showContractList }/>
-            <LinkButton onClick={ handleInfoClick } icon="contracts">{ totalContractsNumber }</LinkButton>
-            <LinkButton onClick={ handleInfoClick } icon="contracts_verified" iconColor="green.500">{ verifiedNumber }</LinkButton>
+            <LinkButton onClick={ showAllContracts } icon="contracts">{ totalContractsNumber }</LinkButton>
+            <LinkButton onClick={ showVerifiedContracts } icon="contracts_verified" iconColor="green.500">{ verifiedNumber }</LinkButton>
           </Flex>
           { !isLoading && (
             <LinkButton onClick={ handleInfoClick }>More info</LinkButton>

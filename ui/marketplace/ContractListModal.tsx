@@ -1,5 +1,5 @@
 import {
-  Grid, Modal, ModalBody,
+  Box, Modal, ModalBody,
   ModalCloseButton, ModalContent, ModalHeader, ModalOverlay,
 } from '@chakra-ui/react';
 import React from 'react';
@@ -45,11 +45,21 @@ const ContractListModal = ({ onClose, type, contracts }: Props) => {
       <ModalContent>
         <ModalHeader fontWeight="500" textStyle="h3" mb={ 4 }>Contracts</ModalHeader>
         <ModalCloseButton/>
-        <ModalBody maxH="352px" overflow="scroll" mb={ 0 } display="flex" flexDirection="column" gap={ 2 }>
+        <ModalBody
+          maxH={ isMobile ? 'auto' : '352px' }
+          overflow="scroll"
+          mb={ 0 }
+          display="grid"
+          gridTemplateColumns="max-content 1fr"
+          rowGap={ 2 }
+          columnGap={ type === ContractListTypes.ANALYZED ? 4 : 0 }
+        >
           { displayedContracts.map((contract) => (
-            <Grid key={ contract.address } height={ 8 } alignItems="center" gap={ 6 } templateColumns="max-content 1fr">
+            <>
               { type === ContractListTypes.ANALYZED && (
-                <ContractSecurityReport securityReport={ contract.solidityScanReport }/>
+                <Box gridColumn={ 1 }>
+                  <ContractSecurityReport securityReport={ contract.solidityScanReport }/>
+                </Box>
               ) }
               <AddressEntity
                 address={{
@@ -59,8 +69,10 @@ const ContractListModal = ({ onClose, type, contracts }: Props) => {
                   is_verified: contract.isVerified,
                 }}
                 noCopy
+                gridColumn={ 2 }
+                height="32px"
               />
-            </Grid>
+            </>
           )) }
         </ModalBody>
       </ModalContent>
