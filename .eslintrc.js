@@ -187,9 +187,9 @@ module.exports = {
       keywords: true,
       numbers: true,
     } ],
-    quotes: [ 'error', 'single', {
-      allowTemplateLiterals: true,
-    } ],
+    // quotes: [ 'error', {
+    //   // allowTemplateLiterals: true,
+    // } ],
     'space-before-function-paren': [ 'error', 'never' ],
     'space-before-blocks': [ 'error', 'always' ],
     'space-in-parens': [ 'error', 'never' ],

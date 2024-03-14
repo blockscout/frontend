@@ -31,7 +31,7 @@ export type ProvidersPage = PageData<{
   providerPunishAmount: string;
   providerPunishCount: string;
   providerRewardAmount: string;
-}>
+}>;
 
 export interface TableColumn<T> {
   id: string;
@@ -57,7 +57,7 @@ export type NodesPage = PageData<{
   validatorAllowNominator: boolean;
   validatorLastBlock: string | null;
   validatorRegistrationTime: string;
-}>
+}>;
 
 export interface NodesParams extends PageParams {
   nominatorAddress?: string; // 提名人地址，不传返回所有的验证人列表，传了返回该提名人关联的验证人列表
@@ -75,3 +75,15 @@ export interface EpochInfo {
   epochStartTime: string;
   epochDuration: string;
 }
+
+export interface StakeValidatorInfo {
+  stash_account: string;
+  state: boolean;
+  total_staking: string;
+  owner_staking: string;
+  nominators: string;
+  commission: string;
+  can_nominated: boolean;
+}
+
+export type StakeValidatorInfoParams = Array<Array<string>>;

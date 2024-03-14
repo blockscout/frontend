@@ -3,7 +3,7 @@ import type { NodesPage } from 'types/api/boolscan';
 export const NODES: NodesPage['items'][0] = {
   validatorName: '---',
   validatorIncomeDistributionType: 'staked',
-  validatorAddress: '0x000000000000000000000000000000000000',
+  validatorAddress: '',
   validatorStatus: 'Waiting',
   validatorFeeRatio: '10',
   validatorAllowNominator: true,

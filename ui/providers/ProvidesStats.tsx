@@ -7,9 +7,8 @@ import type { ProviderInfo } from 'types/api/boolscan';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { currencyUnits } from 'lib/units';
+import { formatAmount } from 'lib/utils/helpers';
 import StatsItem from 'ui/home/StatsItem';
-
-import { formatAmount } from './data';
 
 const ProvidersStats = () => {
   const { data, isLoading } = useApiQuery('provider_stats');

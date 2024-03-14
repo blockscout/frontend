@@ -8,33 +8,33 @@ import {
   Skeleton,
   Show,
   HStack,
-} from '@chakra-ui/react';
-import React from 'react';
+} from "@chakra-ui/react";
+import React from "react";
 
-import { PROVIDERS } from 'stubs/providers';
-import { generateListStubOfBool } from 'stubs/utils';
-import ActionBar from 'ui/shared/ActionBar';
-import DataListDisplay from 'ui/shared/DataListDisplay';
-import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPagesOfBool from 'ui/shared/pagination/useQueryWithPagesOfBool';
-import { default as Thead } from 'ui/shared/TheadSticky';
+import { PROVIDERS } from "stubs/providers";
+import { generateListStubOfBool } from "stubs/utils";
+import ActionBar from "ui/shared/ActionBar";
+import DataListDisplay from "ui/shared/DataListDisplay";
+import ListItemMobile from "ui/shared/ListItemMobile/ListItemMobile";
+import Pagination from "ui/shared/pagination/Pagination";
+import useQueryWithPagesOfBool from "ui/shared/pagination/useQueryWithPagesOfBool";
+import { default as Thead } from "ui/shared/TheadSticky";
 
-import { tableColumns } from './data';
+import { tableColumns } from "./data";
 
 const PAGE_SIZE = 50;
 
 const ProvidersTable = () => {
   const { data, isError, pagination, isPlaceholderData } =
     useQueryWithPagesOfBool({
-      resourceName: 'providers',
+      resourceName: "providers",
       filters: { pageSize: PAGE_SIZE },
       options: {
-        placeholderData: generateListStubOfBool<'providers'>(PROVIDERS, 50, {
+        placeholderData: generateListStubOfBool<"providers">(PROVIDERS, 50, {
           hasNext: true,
           hasPrev: false,
           totalPage: 1,
-          totalCount: '50',
+          totalCount: "50",
         } as any),
       },
     });
@@ -137,7 +137,7 @@ const ProvidersTable = () => {
   );
 
   return (
-    <div style={{ paddingTop: '24px' }}>
+    <div style={{ paddingTop: "24px" }}>
       <DataListDisplay
         isError={ isError }
         items={ dataSource }

@@ -1,18 +1,18 @@
 import * as Sentry from '@sentry/react';
 import React from 'react';
 
-import isBodyAllowed from 'lib/api/isBodyAllowed';
+import isBodyAllowed from "lib/api/isBodyAllowed";
 import type {
   ResourceError,
   ResourceName,
   ResourcePath,
-} from 'lib/api/resources';
-import { boolApiNames } from 'lib/api/resources';
+} from "lib/api/resources";
+import { boolApiNames } from "lib/api/resources";
 
 export interface Params {
-  method?: RequestInit['method'];
-  headers?: RequestInit['headers'];
-  signal?: RequestInit['signal'];
+  method?: RequestInit["method"];
+  headers?: RequestInit["headers"];
+  signal?: RequestInit["signal"];
   body?: Record<string, unknown> | FormData;
   credentials?: RequestCredentials;
 }
@@ -51,7 +51,7 @@ export default function useFetch() {
         body,
         headers: {
           ...(withBody && !isFormData ?
-            { 'Content-type': 'application/json' } :
+            { "Content-type": "application/json" } :
             undefined),
           ...params?.headers,
         },
@@ -65,12 +65,12 @@ export default function useFetch() {
           };
 
           if (!meta?.omitSentryErrorLog) {
-            Sentry.captureException(new Error('Client fetch failed'), {
+            Sentry.captureException(new Error("Client fetch failed"), {
               tags: {
-                source: 'fetch',
-                'source.resource': meta?.resource,
-                'status.code': error.status,
-                'status.text': error.statusText,
+                source: "fetch",
+                "source.resource": meta?.resource,
+                "status.code": error.status,
+                "status.text": error.statusText,
               },
             });
           }
@@ -90,10 +90,18 @@ export default function useFetch() {
           if (resourceName && boolApiNames.includes(resourceName)) {
             return new Promise((resolve, reject) => {
               response.json().then((res: any) => {
-                if (res.code === '000') {
-                  resolve(res.data);
+                if (resourceName === "bool_rpc") {
+                  if (!res.error) {
+                    resolve(res.result);
+                  } else {
+                    reject(res.error?.message);
+                  }
                 } else {
-                  reject(new Error(res.message));
+                  if (res.code === "000") {
+                    resolve(res.data);
+                  } else {
+                    reject(new Error(res.message));
+                  }
                 }
               });
             });

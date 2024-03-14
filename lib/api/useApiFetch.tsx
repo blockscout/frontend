@@ -37,6 +37,7 @@ export default function useApiFetch() {
     const resource: ApiResource = RESOURCES[resourceName];
     const url = buildUrl(resourceName, pathParams, queryParams);
     const withBody = isBodyAllowed(fetchParams?.method);
+
     const headers = _pickBy({
       'x-endpoint': resource.endpoint && isNeedProxy() ? resource.endpoint : undefined,
       Authorization: resource.endpoint && resource.needAuth ? apiToken : undefined,
