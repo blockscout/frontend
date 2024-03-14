@@ -7,6 +7,7 @@ import React from 'react';
 import { ContractListTypes } from 'types/client/marketplace';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import { apos } from 'lib/html-entities';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 import ContractSecurityReport from './ContractSecurityReport';
@@ -16,6 +17,12 @@ type Props = {
   type: ContractListTypes;
   contracts: Array<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
+
+const titles = {
+  [ContractListTypes.ALL]: `All app${ apos }s smart contracts`,
+  [ContractListTypes.ANALYZED]: 'Analyzed contracts',
+  [ContractListTypes.VERIFIED]: 'Verified contracts',
+};
 
 const ContractListModal = ({ onClose, type, contracts }: Props) => {
   const isMobile = useIsMobile();
@@ -43,7 +50,7 @@ const ContractListModal = ({ onClose, type, contracts }: Props) => {
     >
       <ModalOverlay/>
       <ModalContent>
-        <ModalHeader fontWeight="500" textStyle="h3" mb={ 4 }>Contracts</ModalHeader>
+        <ModalHeader fontWeight="500" textStyle="h3" mb={ 4 }>{ titles[type] }</ModalHeader>
         <ModalCloseButton/>
         <ModalBody
           maxH={ isMobile ? 'auto' : '352px' }

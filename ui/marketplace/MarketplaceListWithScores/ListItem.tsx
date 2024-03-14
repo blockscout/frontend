@@ -11,7 +11,7 @@ import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
 import AppLink from './AppLink';
 import AppSecurityReport from './AppSecurityReport';
-import LinkButton from './LinkButton';
+import LinkButton, { LinkButtonVariants } from './LinkButton';
 
 type Props = {
   app: MarketplaceAppPreview & { securityReport?: any }; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -89,8 +89,8 @@ const ListItem = ({ app, onInfoClick, isFavorite, onFavoriteClick, isLoading, on
         <Flex alignItems="center">
           <Flex flex={ 1 } gap={ 3 } alignItems="center">
             <AppSecurityReport id={ id } securityReport={ securityReport } showContractList={ showContractList }/>
-            <LinkButton onClick={ showAllContracts } icon="contracts">{ totalContractsNumber }</LinkButton>
-            <LinkButton onClick={ showVerifiedContracts } icon="contracts_verified" iconColor="green.500">{ verifiedNumber }</LinkButton>
+            <LinkButton onClick={ showAllContracts } variant={ LinkButtonVariants.ALL_CONTRACTS }>{ totalContractsNumber }</LinkButton>
+            <LinkButton onClick={ showVerifiedContracts } variant={ LinkButtonVariants.VERIFIED_CONTRACTS }>{ verifiedNumber }</LinkButton>
           </Flex>
           { !isLoading && (
             <LinkButton onClick={ handleInfoClick }>More info</LinkButton>

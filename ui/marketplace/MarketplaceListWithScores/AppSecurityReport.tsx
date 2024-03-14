@@ -5,6 +5,7 @@ import { ContractListTypes } from 'types/client/marketplace';
 
 import config from 'configs/app';
 import { apos } from 'lib/html-entities';
+import IconSvg from 'ui/shared/IconSvg';
 import SolidityscanReportButton from 'ui/shared/solidityscanReport/SolidityscanReportButton';
 import SolidityscanReportDetails from 'ui/shared/solidityscanReport/SolidityscanReportDetails';
 import SolidityscanReportScore from 'ui/shared/solidityscanReport/SolidityscanReportScore';
@@ -48,7 +49,10 @@ const AppSecurityReport = ({ id, securityReport, isLarge, showContractList }: Pr
               <SolidityscanReportDetails vulnerabilities={ issueSeverityDistribution } vulnerabilitiesCount={ totalIssues }/>
             </Box>
           ) }
-          <Link onClick={ showAnalyzedContracts }>Analyzed contracts</Link>
+          <Link onClick={ showAnalyzedContracts } display="inline-flex" alignItems="center">
+            Analyzed contracts
+            <IconSvg name="arrows/north-east" boxSize={ 5 } color="gray.400"/>
+          </Link>
         </>
       ) }
     />

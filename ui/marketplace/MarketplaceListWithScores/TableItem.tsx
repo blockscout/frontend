@@ -10,7 +10,7 @@ import IconSvg from 'ui/shared/IconSvg';
 
 import AppLink from './AppLink';
 import AppSecurityReport from './AppSecurityReport';
-import LinkButton from './LinkButton';
+import LinkButton, { LinkButtonVariants } from './LinkButton';
 
 type Props = {
   app: MarketplaceAppPreview & { securityReport?: any }; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -85,10 +85,12 @@ const TableItem = ({
         <AppSecurityReport id={ id } securityReport={ securityReport } showContractList={ showContractList } isLarge/>
       </Td>
       <Td verticalAlign="middle">
-        <LinkButton onClick={ showAllContracts } icon="contracts">{ totalContractsNumber }</LinkButton>
+        <LinkButton onClick={ showAllContracts } variant={ LinkButtonVariants.ALL_CONTRACTS }>
+          { totalContractsNumber }
+        </LinkButton>
       </Td>
       <Td verticalAlign="middle">
-        <LinkButton onClick={ showVerifiedContracts } icon="contracts_verified" iconColor="green.500">{ verifiedNumber }</LinkButton>
+        <LinkButton onClick={ showVerifiedContracts } variant={ LinkButtonVariants.VERIFIED_CONTRACTS }>{ verifiedNumber }</LinkButton>
       </Td>
       <Td verticalAlign="middle" isNumeric>
         <LinkButton onClick={ handleInfoClick }>More info</LinkButton>
