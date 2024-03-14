@@ -479,6 +479,10 @@ const schema = yup
 
     // Misc
     NEXT_PUBLIC_USE_NEXT_JS_PROXY: yup.boolean(),
+
+    // Bool Pages
+    NEXT_PUBLIC_BOOL_SCAN_API: yup.string(),
+    NEXT_PUBLIC_BOOL_SCAN_RPC: yup.string(),
   })
   .concat(accountSchema)
   .concat(adsBannerSchema)
