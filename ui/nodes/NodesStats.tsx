@@ -6,9 +6,9 @@ import { clearInterval, setInterval, setTimeout } from 'timers';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import dayjs from 'lib/date/dayjs';
+import { secondToTime } from 'lib/utils/helpers';
 import StatsItem from 'ui/home/StatsItem';
 
-import { secondToTime } from './data';
 const pagesParams = {
   pageNo: 1,
   pageSize: 1,

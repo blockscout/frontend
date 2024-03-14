@@ -4,10 +4,10 @@ import {
   Tr,
   Th,
   Hide,
-  Td,
   Skeleton,
   Show,
   HStack,
+  Td,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -22,8 +22,10 @@ import { default as Thead } from 'ui/shared/TheadSticky';
 
 import { tableColumns } from './data';
 import NodesTableBar from './NodesTableBar';
+import NodesTableItem from './NodesTableItem';
+import NodesTableItemMobile from './NodesTableItemMobile';
 
-const PAGE_SIZE = 50;
+const PAGE_SIZE = 10;
 
 const NodesTable: React.FC = () => {
   const router = useRouter();
@@ -89,23 +91,37 @@ const NodesTable: React.FC = () => {
   const tableBody = (
     <Tbody>
       { dataSource.map((item, index) => {
-        return (
-          <Tr key={ index }>
-            { tableColumns.map((col) => {
-              return (
-                <Td key={ col.id } width={ col.width } textAlign={ col.textAlgin }>
-                  <Skeleton
-                    isLoaded={ !isPlaceholderData }
-                    display="inline-block"
-                    minW={ 10 }
-                    lineHeight="24px"
+        if (!item.validatorAddress.trim()) {
+          return (
+            <Tr key={ index } >
+              { tableColumns.map((col) => {
+                return (
+                  <Td
+                    key={ col.id }
+                    width={ col.width }
+                    textAlign={ col.textAlgin }
                   >
-                    { col.render?.(item, index) }
-                  </Skeleton>
-                </Td>
-              );
-            }) }
-          </Tr>
+                    <Skeleton
+                      isLoaded={ !isPlaceholderData }
+                      display="inline-block"
+                      minW={ 10 }
+                      lineHeight="24px"
+                    >
+                      { col.render?.(item, index) }
+                    </Skeleton>
+                  </Td>
+                );
+              }) }
+            </Tr>
+          );
+        }
+        return (
+          <NodesTableItem
+            key={ index }
+            data={ item }
+            index={ index }
+            isLoaded={ !isPlaceholderData }
+          ></NodesTableItem>
         );
       }) }
     </Tbody>
@@ -114,31 +130,43 @@ const NodesTable: React.FC = () => {
   const tableBodyForMobile = (
     <>
       { dataSource.map((item, index) => {
+        if (!item.validatorAddress.trim()) {
+          return (
+            <ListItemMobile key={ index } rowGap={ 3 }>
+              { tableColumns.map((col) => {
+                const text = col.render?.(item, index);
+
+                return (
+                  <HStack key={ col.id } spacing={ 3 }>
+                    <Skeleton
+                      isLoaded={ !isPlaceholderData }
+                      fontSize="sm"
+                      fontWeight={ 500 }
+                    >
+                      { col.label }
+                    </Skeleton>
+                    <Skeleton
+                      isLoaded={ !isPlaceholderData }
+                      fontSize="sm"
+                      ml="auto"
+                      minW={ 10 }
+                      color="text_secondary"
+                    >
+                      <span>{ text }</span>
+                    </Skeleton>
+                  </HStack>
+                );
+              }) }
+            </ListItemMobile>
+          );
+        }
         return (
-          <ListItemMobile key={ index } rowGap={ 3 }>
-            { tableColumns.map((col) => {
-              return (
-                <HStack key={ col.id } spacing={ 3 }>
-                  <Skeleton
-                    isLoaded={ !isPlaceholderData }
-                    fontSize="sm"
-                    fontWeight={ 500 }
-                  >
-                    { col.label }
-                  </Skeleton>
-                  <Skeleton
-                    isLoaded={ !isPlaceholderData }
-                    fontSize="sm"
-                    ml="auto"
-                    minW={ 10 }
-                    color="text_secondary"
-                  >
-                    <span>{ col.render?.(item) }</span>
-                  </Skeleton>
-                </HStack>
-              );
-            }) }
-          </ListItemMobile>
+          <NodesTableItemMobile
+            key={ index }
+            data={ item }
+            index={ index }
+            isLoaded={ !isPlaceholderData }
+          />
         );
       }) }
     </>

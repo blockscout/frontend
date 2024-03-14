@@ -1,14 +1,8 @@
-import BigNumber from 'bignumber.js';
-
 import type { ProvidersPage, TableColumn } from 'types/api/boolscan';
 
-import { WEI } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
 import { currencyUnits } from 'lib/units';
-
-export function formatAmount(value: string, decimal = 6) {
-  return BigNumber(value).dividedBy(WEI).dp(decimal).toFormat();
-}
+import { formatAmount } from 'lib/utils/helpers';
 
 type Provider = ProvidersPage['items'][0];
 export const tableColumns: Array<TableColumn<Provider>> = [

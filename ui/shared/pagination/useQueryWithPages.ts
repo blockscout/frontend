@@ -100,14 +100,14 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
   const { data } = queryResult;
 
   const onNextPageClick = useCallback(() => {
-    if (!data?.next_page_params) {
+    if (!(data as any)?.next_page_params) {
       // we hide next page button if no next_page_params
       return;
     }
 
     setPageParams((prev) => ({
       ...prev,
-      [page + 1]: data.next_page_params as NextPageParams,
+      [page + 1]: (data as any).next_page_params as NextPageParams,
     }));
     setPage((prev) => prev + 1);
 
@@ -115,7 +115,7 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
       ...router.query,
       page: String(page + 1),
       next_page_params: encodeURIComponent(
-        JSON.stringify(data.next_page_params),
+        JSON.stringify((data as any).next_page_params),
       ),
     };
 
@@ -126,7 +126,7 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
       undefined,
       { shallow: true },
     );
-  }, [ data?.next_page_params, page, router, scrollToTop ]);
+  }, [ data, page, router, scrollToTop ]);
 
   const onPrevPageClick = useCallback(() => {
     // returning to the first page
@@ -247,7 +247,7 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
     [ router, scrollToTop ],
   );
 
-  const nextPageParams = data?.next_page_params;
+  const nextPageParams = (data as any)?.next_page_params;
   const hasNextPage = nextPageParams ?
     Object.keys(nextPageParams).length > 0 :
     false;

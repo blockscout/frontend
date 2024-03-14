@@ -1,16 +1,16 @@
-import type { ArrayElement } from 'types/utils';
+import type { ArrayElement } from "types/utils";
 
 import type {
   PaginatedResources,
   PaginatedResourcesOfBool,
   PaginatedResponse,
   ResourcePayloadOfBool,
-} from 'lib/api/resources';
+} from "lib/api/resources";
 
 export function generateListStub<Resource extends PaginatedResources>(
-  stub: ArrayElement<PaginatedResponse<Resource>['items']>,
+  stub: ArrayElement<any>, // PaginatedResponse<Resource>["items"]
   num = 50,
-  rest: Omit<PaginatedResponse<Resource>, 'items'>,
+  rest: Omit<PaginatedResponse<Resource>, "items">,
 ) {
   return {
     items: Array(num).fill(stub),
@@ -21,9 +21,9 @@ export function generateListStub<Resource extends PaginatedResources>(
 export function generateListStubOfBool<
   Resource extends PaginatedResourcesOfBool
 >(
-  stub: ArrayElement<ResourcePayloadOfBool<Resource>['items']>,
+  stub: ArrayElement<ResourcePayloadOfBool<Resource>["items"]>,
   num = 50,
-  rest: Omit<ResourcePayloadOfBool<Resource>, 'items'>,
+  rest: Omit<ResourcePayloadOfBool<Resource>, "items">,
 ) {
   return {
     items: Array(num).fill(stub),
