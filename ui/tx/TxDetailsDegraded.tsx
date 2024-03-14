@@ -14,6 +14,7 @@ import { GET_BLOCK, GET_TRANSACTION, GET_TRANSACTION_RECEIPT, GET_TRANSACTION_CO
 import { unknownAddress } from 'ui/shared/address/utils';
 import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
 import TestnetWarning from 'ui/shared/alerts/TestnetWarning';
+import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import TxInfo from './details/TxInfo';
@@ -142,7 +143,7 @@ const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
   }, [ txQuery.setRefetchOnError ]);
 
   if (!query.data) {
-    if (originalError?.status === 422 || originalError?.status === 404) {
+    if (originalError && isCustomAppError(originalError)) {
       throwOnResourceLoadError({ resource: 'tx', error: originalError, isError: true });
     }
 
