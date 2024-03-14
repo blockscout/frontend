@@ -8,9 +8,9 @@ import { ContractListTypes } from 'types/client/marketplace';
 import * as mixpanel from 'lib/mixpanel/index';
 import IconSvg from 'ui/shared/IconSvg';
 
+import AppSecurityReport from '../AppSecurityReport';
+import ContractListButton, { ContractListButtonVariants } from '../ContractListButton';
 import AppLink from './AppLink';
-import AppSecurityReport from './AppSecurityReport';
-import LinkButton, { LinkButtonVariants } from './LinkButton';
 import MoreInfoButton from './MoreInfoButton';
 
 type Props = {
@@ -86,12 +86,14 @@ const TableItem = ({
         <AppSecurityReport id={ id } securityReport={ securityReport } showContractList={ showContractList } isLarge/>
       </Td>
       <Td verticalAlign="middle">
-        <LinkButton onClick={ showAllContracts } variant={ LinkButtonVariants.ALL_CONTRACTS }>
+        <ContractListButton onClick={ showAllContracts } variant={ ContractListButtonVariants.ALL_CONTRACTS }>
           { totalContractsNumber }
-        </LinkButton>
+        </ContractListButton>
       </Td>
       <Td verticalAlign="middle">
-        <LinkButton onClick={ showVerifiedContracts } variant={ LinkButtonVariants.VERIFIED_CONTRACTS }>{ verifiedNumber }</LinkButton>
+        <ContractListButton onClick={ showVerifiedContracts } variant={ ContractListButtonVariants.VERIFIED_CONTRACTS }>
+          { verifiedNumber }
+        </ContractListButton>
       </Td>
       <Td verticalAlign="middle" isNumeric>
         <MoreInfoButton onClick={ handleInfoClick }/>

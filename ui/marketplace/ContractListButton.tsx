@@ -6,18 +6,18 @@ import config from 'configs/app';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
-export enum LinkButtonVariants {
+export enum ContractListButtonVariants {
   ALL_CONTRACTS = 'all contracts',
   VERIFIED_CONTRACTS = 'verified contracts',
 }
 
 const values = {
-  [LinkButtonVariants.ALL_CONTRACTS]: {
+  [ContractListButtonVariants.ALL_CONTRACTS]: {
     icon: 'contracts' as IconName,
     iconColor: 'gray.500',
     tooltip: `Total number of contracts deployed by the protocol on ${ config.chain.name }`,
   },
-  [LinkButtonVariants.VERIFIED_CONTRACTS]: {
+  [ContractListButtonVariants.VERIFIED_CONTRACTS]: {
     icon: 'contracts_verified' as IconName,
     iconColor: 'green.500',
     tooltip: `Number of verified contracts on ${ config.chain.name }`,
@@ -27,10 +27,10 @@ const values = {
 interface Props {
   children: string;
   onClick: (event: MouseEvent) => void;
-  variant: LinkButtonVariants;
+  variant: ContractListButtonVariants;
 }
 
-const LinkButton = ({ children, onClick, variant }: Props) => {
+const ContractListButton = ({ children, onClick, variant }: Props) => {
   const { icon, iconColor, tooltip } = values[variant];
   return (
     <Tooltip
@@ -54,4 +54,4 @@ const LinkButton = ({ children, onClick, variant }: Props) => {
   );
 };
 
-export default LinkButton;
+export default ContractListButton;

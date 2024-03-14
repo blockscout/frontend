@@ -9,9 +9,9 @@ import * as mixpanel from 'lib/mixpanel/index';
 import IconSvg from 'ui/shared/IconSvg';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
+import AppSecurityReport from '../AppSecurityReport';
+import ContractListButton, { ContractListButtonVariants } from '../ContractListButton';
 import AppLink from './AppLink';
-import AppSecurityReport from './AppSecurityReport';
-import LinkButton, { LinkButtonVariants } from './LinkButton';
 import MoreInfoButton from './MoreInfoButton';
 
 type Props = {
@@ -99,8 +99,12 @@ const ListItem = ({ app, onInfoClick, isFavorite, onFavoriteClick, isLoading, on
         <Flex alignItems="center">
           <Flex flex={ 1 } gap={ 3 } alignItems="center">
             <AppSecurityReport id={ id } securityReport={ securityReport } showContractList={ showContractList }/>
-            <LinkButton onClick={ showAllContracts } variant={ LinkButtonVariants.ALL_CONTRACTS }>{ totalContractsNumber }</LinkButton>
-            <LinkButton onClick={ showVerifiedContracts } variant={ LinkButtonVariants.VERIFIED_CONTRACTS }>{ verifiedNumber }</LinkButton>
+            <ContractListButton onClick={ showAllContracts } variant={ ContractListButtonVariants.ALL_CONTRACTS }>
+              { totalContractsNumber }
+            </ContractListButton>
+            <ContractListButton onClick={ showVerifiedContracts } variant={ ContractListButtonVariants.VERIFIED_CONTRACTS }>
+              { verifiedNumber }
+            </ContractListButton>
           </Flex>
           { !isLoading && (
             <MoreInfoButton onClick={ handleInfoClick }/>
