@@ -157,6 +157,8 @@ export default function useNavItems(): ReturnType {
         txs,
         userOps,
         blocks,
+        provider,
+        nodes,
         topAccounts,
         verifiedContracts,
         ensLookup,
