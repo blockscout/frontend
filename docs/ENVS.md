@@ -610,3 +610,15 @@ For obtaining the variables values please refer to [reCAPTCHA documentation](htt
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY | `string` | Site key | - | - | `<your-secret>` |
+
+
+&nbsp;
+
+## Bool data configuration
+
+### Node And Provider Pages
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_BOOL_SCAN_API | `string` | The api of bool scan backend| - | - | - |
+| NEXT_PUBLIC_BOOL_SCAN_RPC | `string` | The rpc of bool chain | - | - | - |
