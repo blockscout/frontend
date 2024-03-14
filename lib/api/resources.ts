@@ -719,7 +719,7 @@ export const RESOURCES = {
     path: "/node/era-info",
   },
   bool_rpc: {
-    baseUrl: config.api.boolRpc ?? "",
+    baseUrl: config.chain.rpcUrl ?? "",
     path: "/",
   },
 };
