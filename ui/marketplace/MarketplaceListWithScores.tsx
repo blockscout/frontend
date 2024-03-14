@@ -2,10 +2,9 @@ import { Hide, Show } from '@chakra-ui/react';
 import React from 'react';
 import type { MouseEvent } from 'react';
 
-import type { MarketplaceAppPreview, ContractListTypes } from 'types/client/marketplace';
+import type { MarketplaceAppOverview, ContractListTypes } from 'types/client/marketplace';
 import { MarketplaceCategory } from 'types/client/marketplace';
 
-import config from 'configs/app';
 import { apos } from 'lib/html-entities';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import EmptySearchResult from 'ui/shared/EmptySearchResult';
@@ -15,14 +14,13 @@ import ListItem from './MarketplaceListWithScores/ListItem';
 import Table from './MarketplaceListWithScores/Table';
 
 interface Props {
-  apps: Array<MarketplaceAppPreview>;
+  apps: Array<MarketplaceAppOverview>;
   showAppInfo: (id: string) => void;
   favoriteApps: Array<string>;
   onFavoriteClick: (id: string, isFavorite: boolean) => void;
   isLoading: boolean;
   selectedCategoryId?: string;
   onAppClick: (event: MouseEvent, id: string) => void;
-  securityReports: Array<any> | undefined; // eslint-disable-line @typescript-eslint/no-explicit-any
   showContractList: (id: string, type: ContractListTypes) => void;
 }
 
@@ -34,24 +32,14 @@ const MarketplaceListWithScores = ({
   isLoading,
   selectedCategoryId,
   onAppClick,
-  securityReports = [],
   showContractList,
 }: Props) => {
 
   const displayedApps = React.useMemo(() =>
     apps
-      .map((app) => {
-        const securityReport = securityReports.find(item => item.appName === app.id)?.chainsData[config.chain.name?.toLowerCase() || ''];
-        if (securityReport) {
-          const issues: Record<string, number> = securityReport.overallInfo.issueSeverityDistribution;
-          securityReport.overallInfo.totalIssues = Object.values(issues).reduce((acc, val) => acc + val, 0);
-          securityReport.overallInfo.securityScore = Number(securityReport.overallInfo.securityScore.toFixed(2));
-        }
-        return { ...app, securityReport };
-      })
       .filter((app) => app.securityReport)
       .sort((a, b) => b.securityReport.overallInfo.securityScore - a.securityReport.overallInfo.securityScore)
-  , [ apps, securityReports ]);
+  , [ apps ]);
 
   const content = apps.length > 0 ? (
     <>

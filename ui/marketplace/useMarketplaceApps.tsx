@@ -10,6 +10,8 @@ import useApiFetch from 'lib/api/useApiFetch';
 import useFetch from 'lib/hooks/useFetch';
 import { MARKETPLACE_APP } from 'stubs/marketplace';
 
+import useSecurityReports from './useSecurityReports';
+
 const feature = config.features.marketplace;
 
 function isAppNameMatches(q: string, app: MarketplaceAppOverview) {
@@ -56,6 +58,8 @@ export default function useMarketplaceApps(
   const fetch = useFetch();
   const apiFetch = useApiFetch();
 
+  const { data: securityReports, isPlaceholderData: isSecurityReportsPlaceholderData } = useSecurityReports();
+
   // Update favorite apps only when selectedCategoryId changes to avoid sortApps to be called on each favorite app click
   const lastFavoriteAppsRef = React.useRef(favoriteApps);
   React.useEffect(() => {
@@ -79,21 +83,37 @@ export default function useMarketplaceApps(
     enabled: feature.isEnabled,
   });
 
+  const appsWithSecurityReports = React.useMemo(() => {
+    if (!securityReports && !isSecurityReportsPlaceholderData) {
+      return data;
+    }
+    return data?.map((app) => {
+      const securityReport = securityReports?.find(item => item.appName === app.id)?.chainsData[config.chain.name?.toLowerCase() || ''];
+      if (securityReport) {
+        const issues: Record<string, number> = securityReport.overallInfo.issueSeverityDistribution;
+        securityReport.overallInfo.totalIssues = Object.values(issues).reduce((acc, val) => acc + val, 0);
+        securityReport.overallInfo.securityScore = Number(securityReport.overallInfo.securityScore.toFixed(2));
+      }
+      return { ...app, securityReport };
+    });
+  }, [ data, securityReports, isSecurityReportsPlaceholderData ]);
+
   const displayedApps = React.useMemo(() => {
-    return data?.filter(app => isAppNameMatches(filter, app) && isAppCategoryMatches(selectedCategoryId, app, favoriteApps)) || [];
-  }, [ selectedCategoryId, data, filter, favoriteApps ]);
+    return appsWithSecurityReports?.filter(app => isAppNameMatches(filter, app) && isAppCategoryMatches(selectedCategoryId, app, favoriteApps)) || [];
+  }, [ selectedCategoryId, appsWithSecurityReports, filter, favoriteApps ]);
 
   return React.useMemo(() => ({
     data,
     displayedApps,
     error,
     isError,
-    isPlaceholderData,
+    isPlaceholderData: isPlaceholderData || isSecurityReportsPlaceholderData,
   }), [
     data,
     displayedApps,
     error,
     isError,
     isPlaceholderData,
+    isSecurityReportsPlaceholderData,
   ]);
 }

@@ -22,6 +22,7 @@ export type MarketplaceAppOverview = MarketplaceAppPreview & MarketplaceAppSocia
   author: string;
   description: string;
   site?: string;
+  securityReport?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 export enum MarketplaceCategory {

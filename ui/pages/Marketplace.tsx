@@ -25,7 +25,6 @@ import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import TabsWithScroll from 'ui/shared/Tabs/TabsWithScroll';
 
 import useMarketplace from '../marketplace/useMarketplace';
-import useSecurityReports from '../marketplace/useSecurityReports';
 const feature = config.features.marketplace;
 
 const links: Array<{ label: string; href: string; icon: IconName }> = [];
@@ -72,11 +71,6 @@ const Marketplace = () => {
     showContractList,
     contractListModalType,
   } = useMarketplace();
-
-  const {
-    data: securityReports,
-    isPlaceholderData: isSecurityReportsPlaceholderData,
-  } = useSecurityReports();
 
   const isMobile = useIsMobile();
 
@@ -137,10 +131,6 @@ const Marketplace = () => {
   }
 
   const selectedApp = displayedApps.find(app => app.id === selectedAppId);
-  const selectedAppContractList = securityReports
-    ?.find(item => item.appName === selectedAppId)
-    ?.chainsData[config.chain.name?.toLowerCase() || '']
-    ?.contractsData;
 
   return (
     <>
@@ -242,10 +232,9 @@ const Marketplace = () => {
           showAppInfo={ showAppInfo }
           favoriteApps={ favoriteApps }
           onFavoriteClick={ onFavoriteClick }
-          isLoading={ isPlaceholderData || isSecurityReportsPlaceholderData }
+          isLoading={ isPlaceholderData }
           selectedCategoryId={ selectedCategoryId }
           onAppClick={ handleAppClick }
-          securityReports={ securityReports }
           showContractList={ showContractList }
         />
       ) : (
@@ -280,7 +269,7 @@ const Marketplace = () => {
       { (selectedApp && contractListModalType) && (
         <ContractListModal
           type={ contractListModalType }
-          contracts={ selectedAppContractList }
+          contracts={ selectedApp?.securityReport?.contractsData }
           onClose={ clearSelectedAppId }
         />
       ) }
