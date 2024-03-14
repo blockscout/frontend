@@ -92,7 +92,7 @@ const BlobData = ({ data, isLoading, hash }: Props) => {
       case 'Raw':
         return <RawDataSnippet data={ data } showCopy={ false } isLoading={ isLoading }/>;
       default:
-        return <span>fallback</span>;
+        return <span/>;
     }
   })();
 
@@ -125,7 +125,7 @@ const BlobData = ({ data, isLoading, hash }: Props) => {
             Download
           </Button>
         </Skeleton>
-        <CopyToClipboard text={ JSON.stringify(data) } isLoading={ isLoading }/>
+        <CopyToClipboard text={ data } isLoading={ isLoading }/>
       </Flex>
       { content }
     </GridItem>

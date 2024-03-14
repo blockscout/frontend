@@ -4,6 +4,7 @@ import React from 'react';
 import TestApp from 'playwright/TestApp';
 
 import BlobData from './BlobData';
+import imageBlobWithZeroesBytes from './image_with_zeroes.blob';
 
 test.use({ viewport: { width: 500, height: 300 } });
 
@@ -37,6 +38,16 @@ test('image', async({ mount }) => {
   await expect(component).toHaveScreenshot();
 
   await component.locator('select').selectOption('Base64');
+
+  await expect(component).toHaveScreenshot();
+});
+
+test('image blob with zeroes bytes', async({ mount }) => {
+  const component = await mount(
+    <TestApp>
+      <BlobData hash="0x01" data={ imageBlobWithZeroesBytes }/>
+    </TestApp>,
+  );
 
   await expect(component).toHaveScreenshot();
 });
