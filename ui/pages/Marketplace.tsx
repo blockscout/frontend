@@ -196,8 +196,33 @@ const Marketplace = () => {
           defaultValue={ displayType }
           name="type"
           options={ [
-            { title: 'Discovery', value: 'default', icon: 'apps_xs', onlyIcon: false },
-            { title: 'Apps scores', value: 'scores', icon: 'apps_list', onlyIcon: false },
+            {
+              title: 'Discovery',
+              value: 'default',
+              icon: 'apps_xs',
+              onlyIcon: false,
+            },
+            {
+              title: 'Apps scores',
+              value: 'scores',
+              icon: 'apps_list',
+              onlyIcon: false,
+              contentAfter: (
+                <Flex
+                  alignItems="center"
+                  h={ 3 }
+                  bg="red.400"
+                  borderRadius="2px"
+                  fontSize="10px"
+                  fontWeight="500"
+                  color="white"
+                  px="2px"
+                  ml={ 1 }
+                >
+                  { isMobile ? <IconSvg name="beta" boxSize={ 2 }/> : 'beta' }
+                </Flex>
+              ),
+            },
           ] }
           autoWidth
         />

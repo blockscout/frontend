@@ -9,6 +9,7 @@ type RadioItemProps = {
   title: string;
   icon?: IconName;
   onlyIcon: false | undefined;
+  contentAfter?: React.ReactNode;
 } | {
   title: string;
   icon: IconName;
@@ -67,9 +68,11 @@ const RadioButton = (props: RadioButtonProps) => {
     >
       <input { ...input }/>
       <Flex
+        alignItems="center"
         { ...checkbox }
       >
         { props.title }
+        { props.contentAfter }
       </Flex>
     </Button>
   );
