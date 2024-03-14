@@ -13,11 +13,11 @@ import SolidityscanReportScore from 'ui/shared/solidityscanReport/SolidityscanRe
 type Props = {
   id: string;
   securityReport?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-  isLarge?: boolean;
+  height?: string | undefined;
   showContractList: (id: string, type: ContractListTypes) => void;
 }
 
-const AppSecurityReport = ({ id, securityReport, isLarge, showContractList }: Props) => {
+const AppSecurityReport = ({ id, securityReport, height, showContractList }: Props) => {
   const {
     overallInfo: {
       securityScore,
@@ -34,7 +34,7 @@ const AppSecurityReport = ({ id, securityReport, isLarge, showContractList }: Pr
 
   return (
     <SolidityscanReportButton
-      height={ isLarge ? undefined : '30px' }
+      height={ height }
       score={ securityScore }
       popoverContent={ (
         <>

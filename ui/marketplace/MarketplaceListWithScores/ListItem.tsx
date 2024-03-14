@@ -98,7 +98,12 @@ const ListItem = ({ app, onInfoClick, isFavorite, onFavoriteClick, isLoading, on
         </Flex>
         <Flex alignItems="center">
           <Flex flex={ 1 } gap={ 3 } alignItems="center">
-            <AppSecurityReport id={ id } securityReport={ securityReport } showContractList={ showContractList }/>
+            <AppSecurityReport
+              id={ id }
+              securityReport={ securityReport }
+              showContractList={ showContractList }
+              height="30px"
+            />
             <ContractListButton onClick={ showAllContracts } variant={ ContractListButtonVariants.ALL_CONTRACTS }>
               { totalContractsNumber }
             </ContractListButton>

@@ -83,7 +83,7 @@ const TableItem = ({
         <AppLink app={ app } isLoading={ isLoading } onAppClick={ onAppClick } isLarge/>
       </Td>
       <Td verticalAlign="middle">
-        <AppSecurityReport id={ id } securityReport={ securityReport } showContractList={ showContractList } isLarge/>
+        <AppSecurityReport id={ id } securityReport={ securityReport } showContractList={ showContractList }/>
       </Td>
       <Td verticalAlign="middle">
         <ContractListButton onClick={ showAllContracts } variant={ ContractListButtonVariants.ALL_CONTRACTS }>
