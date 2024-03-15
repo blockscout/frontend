@@ -61,6 +61,7 @@ frontend:
     NEXT_PUBLIC_MARKETPLACE_ENABLED: true
     NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM: https://airtable.com/shrqUAcjgGJ4jU88C
     NEXT_PUBLIC_MARKETPLACE_SUGGEST_IDEAS_FORM: https://airtable.com/appiy5yijZpMMSKjT/pag3t82DUCyhGRZZO/form
+    NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL: https://gist.githubusercontent.com/maxaleks/ce5c7e3de53e8f5b240b88265daf5839/raw/328383c958a8f7ecccf6d50c953bcdf8ab3faa0a/security_reports_goerli_test.json
     NEXT_PUBLIC_LOGOUT_URL: https://blockscoutcom.us.auth0.com/v2/logout
     NEXT_PUBLIC_HOMEPAGE_CHARTS: "['daily_txs','coin_price','market_cap']"
     NEXT_PUBLIC_NETWORK_RPC_URL: https://rpc.ankr.com/eth_goerli
@@ -89,4 +90,3 @@ frontend:
     FAVICON_GENERATOR_API_KEY: ref+vault://deployment-values/blockscout/common?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY
     NEXT_PUBLIC_GROWTH_BOOK_CLIENT_KEY: ref+vault://deployment-values/blockscout/dev/review?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_GROWTH_BOOK_CLIENT_KEY
     NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN: ref+vault://deployment-values/blockscout/common?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN
-
