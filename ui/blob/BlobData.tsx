@@ -2,6 +2,8 @@ import { Flex, GridItem, Select, Skeleton, Button } from '@chakra-ui/react';
 import React from 'react';
 
 import * as blobUtils from 'lib/blob';
+import removeNonSignificantZeroBytes from 'lib/blob/removeNonSignificantZeroBytes';
+import bytesToBase64 from 'lib/bytesToBase64';
 import downloadBlob from 'lib/downloadBlob';
 import hexToBase64 from 'lib/hexToBase64';
 import hexToBytes from 'lib/hexToBytes';
@@ -49,7 +51,8 @@ const BlobData = ({ data, isLoading, hash }: Props) => {
       switch (format) {
         case 'Image': {
           const bytes = new Uint8Array(hexToBytes(data));
-          return new Blob([ bytes ], { type: guessedType?.mime });
+          const filteredBytes = removeNonSignificantZeroBytes(bytes);
+          return new Blob([ filteredBytes ], { type: guessedType?.mime });
         }
         case 'UTF-8': {
           return new Blob([ hexToUtf8(data) ], { type: guessedType?.mime ?? 'text/plain' });
@@ -74,19 +77,22 @@ const BlobData = ({ data, isLoading, hash }: Props) => {
           return <RawDataSnippet data="Not an image" showCopy={ false } isLoading={ isLoading }/>;
         }
 
-        const base64 = hexToBase64(data);
+        const bytes = new Uint8Array(hexToBytes(data));
+        const filteredBytes = removeNonSignificantZeroBytes(bytes);
+        const base64 = bytesToBase64(filteredBytes);
+
         const imgSrc = `data:${ guessedType.mime };base64,${ base64 }`;
 
         return <BlobDataImage src={ imgSrc }/>;
       }
       case 'UTF-8':
-        return <RawDataSnippet data={ hexToUtf8(data) } showCopy={ false } isLoading={ isLoading }/>;
+        return <RawDataSnippet data={ hexToUtf8(data) } showCopy={ false } isLoading={ isLoading } contentProps={{ wordBreak: 'break-word' }}/>;
       case 'Base64':
         return <RawDataSnippet data={ hexToBase64(data) } showCopy={ false } isLoading={ isLoading }/>;
       case 'Raw':
         return <RawDataSnippet data={ data } showCopy={ false } isLoading={ isLoading }/>;
       default:
-        return <span>fallback</span>;
+        return <span/>;
     }
   })();
 
@@ -119,7 +125,7 @@ const BlobData = ({ data, isLoading, hash }: Props) => {
             Download
           </Button>
         </Skeleton>
-        <CopyToClipboard text={ JSON.stringify(data) } isLoading={ isLoading }/>
+        <CopyToClipboard text={ data } isLoading={ isLoading }/>
       </Flex>
       { content }
     </GridItem>
