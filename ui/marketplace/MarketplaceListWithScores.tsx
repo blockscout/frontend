@@ -2,7 +2,7 @@ import { Hide, Show } from '@chakra-ui/react';
 import React from 'react';
 import type { MouseEvent } from 'react';
 
-import type { MarketplaceAppOverview, ContractListTypes } from 'types/client/marketplace';
+import type { MarketplaceAppWithSecurityReport, ContractListTypes } from 'types/client/marketplace';
 import { MarketplaceCategory } from 'types/client/marketplace';
 
 import { apos } from 'lib/html-entities';
@@ -14,7 +14,7 @@ import ListItem from './MarketplaceListWithScores/ListItem';
 import Table from './MarketplaceListWithScores/Table';
 
 interface Props {
-  apps: Array<MarketplaceAppOverview>;
+  apps: Array<MarketplaceAppWithSecurityReport>;
   showAppInfo: (id: string) => void;
   favoriteApps: Array<string>;
   onFavoriteClick: (id: string, isFavorite: boolean) => void;

@@ -4,7 +4,7 @@ import {
 } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
-import type { MarketplaceAppOverview } from 'types/client/marketplace';
+import type { MarketplaceAppWithSecurityReport } from 'types/client/marketplace';
 import { ContractListTypes } from 'types/client/marketplace';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -20,7 +20,7 @@ type Props = {
   onClose: () => void;
   isFavorite: boolean;
   onFavoriteClick: (id: string, isFavorite: boolean) => void;
-  data: MarketplaceAppOverview;
+  data: MarketplaceAppWithSecurityReport;
   showContractList: (id: string, type: ContractListTypes) => void;
 }
 

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import type { MarketplaceAppOverview } from 'types/client/marketplace';
+import type { MarketplaceAppWithSecurityReport } from 'types/client/marketplace';
 import { MarketplaceCategory } from 'types/client/marketplace';
 
 import config from 'configs/app';
@@ -14,17 +14,17 @@ import useSecurityReports from './useSecurityReports';
 
 const feature = config.features.marketplace;
 
-function isAppNameMatches(q: string, app: MarketplaceAppOverview) {
+function isAppNameMatches(q: string, app: MarketplaceAppWithSecurityReport) {
   return app.title.toLowerCase().includes(q.toLowerCase());
 }
 
-function isAppCategoryMatches(category: string, app: MarketplaceAppOverview, favoriteApps: Array<string>) {
+function isAppCategoryMatches(category: string, app: MarketplaceAppWithSecurityReport, favoriteApps: Array<string>) {
   return category === MarketplaceCategory.ALL ||
       (category === MarketplaceCategory.FAVORITES && favoriteApps.includes(app.id)) ||
       app.categories.includes(category);
 }
 
-function sortApps(apps: Array<MarketplaceAppOverview>, favoriteApps: Array<string>) {
+function sortApps(apps: Array<MarketplaceAppWithSecurityReport>, favoriteApps: Array<string>) {
   return apps.sort((a, b) => {
     const priorityA = a.priority || 0;
     const priorityB = b.priority || 0;
@@ -66,18 +66,18 @@ export default function useMarketplaceApps(
     lastFavoriteAppsRef.current = favoriteApps;
   }, [ selectedCategoryId, isFavoriteAppsLoaded ]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const { isPlaceholderData, isError, error, data } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppOverview>>({
+  const { isPlaceholderData, isError, error, data } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppWithSecurityReport>>({
     queryKey: [ 'marketplace-dapps' ],
     queryFn: async() => {
       if (!feature.isEnabled) {
         return [];
       } else if ('configUrl' in feature) {
-        return fetch<Array<MarketplaceAppOverview>, unknown>(feature.configUrl, undefined, { resource: 'marketplace-dapps' });
+        return fetch<Array<MarketplaceAppWithSecurityReport>, unknown>(feature.configUrl, undefined, { resource: 'marketplace-dapps' });
       } else {
         return apiFetch('marketplace_dapps', { pathParams: { chainId: config.chain.id } });
       }
     },
-    select: (data) => sortApps(data as Array<MarketplaceAppOverview>, lastFavoriteAppsRef.current),
+    select: (data) => sortApps(data as Array<MarketplaceAppWithSecurityReport>, lastFavoriteAppsRef.current),
     placeholderData: feature.isEnabled ? Array(9).fill(MARKETPLACE_APP) : undefined,
     staleTime: Infinity,
     enabled: feature.isEnabled,
