@@ -88,7 +88,7 @@ export default function useMarketplaceApps(
       return data;
     }
     return data?.map((app) => {
-      const securityReport = securityReports?.find(item => item.appName === app.id)?.chainsData[config.chain.name?.toLowerCase() || ''];
+      const securityReport = securityReports?.find(item => item.appName === app.id)?.chainsData[config.chain.id || ''];
       if (securityReport) {
         const issues: Record<string, number> = securityReport.overallInfo.issueSeverityDistribution;
         securityReport.overallInfo.totalIssues = Object.values(issues).reduce((acc, val) => acc + val, 0);
