@@ -125,6 +125,15 @@ const marketplaceSchema = yup
         // eslint-disable-next-line max-len
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_SUGGEST_IDEAS_FORM cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
       }),
+    NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL: yup
+      .array()
+      .json()
+      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
+        is: true,
+        then: (schema) => schema,
+        // eslint-disable-next-line max-len
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
+      }),
   });
 
 const beaconChainSchema = yup
