@@ -5,12 +5,14 @@ import type { SocketMessage } from 'lib/socket/types';
 import type { Address } from 'types/api/address';
 
 import config from 'configs/app';
-import { getResourceKey } from 'lib/api/useApiQuery';
+import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { currencyUnits } from 'lib/units';
+import { HOMEPAGE_STATS } from 'stubs/stats';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import { NativeIcon } from 'ui/shared/entities/token/TokenEntity';
 
 interface Props {
   data: Pick<Address, 'block_number_balance_updated_at' | 'coin_balance' | 'hash' | 'exchange_rate'>;
@@ -20,6 +22,13 @@ interface Props {
 const AddressBalance = ({ data, isLoading }: Props) => {
   const [ lastBlockNumber, setLastBlockNumber ] = React.useState<number>(data.block_number_balance_updated_at || 0);
   const queryClient = useQueryClient();
+
+  const statsQueryResult = useApiQuery('stats', {
+    queryOptions: {
+      refetchOnMount: false,
+      placeholderData: HOMEPAGE_STATS,
+    },
+  });
 
   const updateData = React.useCallback((balance: string, exchangeRate: string, blockNumber: number) => {
     if (blockNumber < lastBlockNumber) {
@@ -69,9 +78,10 @@ const AddressBalance = ({ data, isLoading }: Props) => {
       title="Balance"
       hint={ `Address balance in ${ currencyUnits.ether }. Doesn't include ERC20, ERC721 and ERC1155 tokens` }
       flexWrap="nowrap"
-      alignItems="flex-start"
+      alignSelf="center"
       isLoading={ isLoading }
     >
+      <NativeIcon src={ statsQueryResult.data?.coin_image } boxSize={ 6 } marginRight={ 2 } isLoading={ isLoading }/>
       <CurrencyValue
         value={ data.coin_balance || '0' }
         exchangeRate={ data.exchange_rate }

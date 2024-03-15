@@ -11,7 +11,7 @@ export interface TChainIndicator<R extends ChartsResources> {
   title: string;
   value: (stats: HomeStats) => string;
   valueDiff?: (stats?: HomeStats) => number | null | undefined;
-  icon: React.ReactNode;
+  icon: (stats?: { data?: HomeStats; isLoading: boolean }) => React.ReactNode;
   hint?: string;
   api: {
     resourceName: R;
