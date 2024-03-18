@@ -1,4 +1,4 @@
-import { Popover, PopoverTrigger, PopoverContent, PopoverBody, useDisclosure } from '@chakra-ui/react';
+import { Popover, PopoverTrigger, PopoverContent, PopoverBody, useDisclosure, Box, useColorModeValue } from '@chakra-ui/react';
 import _debounce from 'lodash/debounce';
 import type { FormEvent, FocusEvent } from 'react';
 import React from 'react';
@@ -20,6 +20,8 @@ const SearchResultsInput = ({ searchTerm, handleSubmit, handleSearchTermChange }
   const menuRef = React.useRef<HTMLDivElement>(null);
   const menuWidth = React.useRef<number>(0);
   const isMobile = useIsMobile();
+
+  const backdropBgColor = useColorModeValue('blackAlpha.400', 'blackAlpha.600');
 
   const recentSearchKeywords = getRecentSearchKeywords();
 
@@ -66,33 +68,48 @@ const SearchResultsInput = ({ searchTerm, handleSubmit, handleSearchTermChange }
     };
   }, [ calculateMenuWidth ]);
 
+  const isSuggestOpen = isOpen && recentSearchKeywords.length > 0 && searchTerm.trim().length === 0;
+
   return (
-    <Popover
-      isOpen={ isOpen && recentSearchKeywords.length > 0 && searchTerm.trim().length === 0 }
-      autoFocus={ false }
-      onClose={ onClose }
-      placement="bottom-start"
-      offset={ isMobile ? [ 16, -12 ] : undefined }
-      isLazy
-    >
-      <PopoverTrigger>
-        <SearchBarInput
-          ref={ inputRef }
-          onChange={ handleSearchTermChange }
-          onSubmit={ handleSubmit }
-          onFocus={ handleFocus }
-          onBlur={ handleBlur }
-          onHide={ handelHide }
-          onClear={ handleClear }
-          value={ searchTerm }
-        />
-      </PopoverTrigger>
-      <PopoverContent w={ `${ menuWidth.current }px` } maxH={{ base: '300px', lg: '500px' }} overflowY="scroll" ref={ menuRef }>
-        <PopoverBody py={ 6 }>
-          <SearchBarRecentKeywords onClick={ handleSearchTermChange } onClear={ onClose }/>
-        </PopoverBody>
-      </PopoverContent>
-    </Popover>
+    <>
+      <Popover
+        isOpen={ isSuggestOpen }
+        autoFocus={ false }
+        onClose={ onClose }
+        placement="bottom-start"
+        offset={ isMobile ? [ 16, -12 ] : undefined }
+        isLazy
+      >
+        <PopoverTrigger>
+          <SearchBarInput
+            ref={ inputRef }
+            onChange={ handleSearchTermChange }
+            onSubmit={ handleSubmit }
+            onFocus={ handleFocus }
+            onBlur={ handleBlur }
+            onHide={ handelHide }
+            onClear={ handleClear }
+            value={ searchTerm }
+            isSuggestOpen={ isSuggestOpen }
+          />
+        </PopoverTrigger>
+        <PopoverContent w={ `${ menuWidth.current }px` } maxH={{ base: '300px', lg: '500px' }} overflowY="scroll" ref={ menuRef }>
+          <PopoverBody py={ 6 }>
+            <SearchBarRecentKeywords onClick={ handleSearchTermChange } onClear={ onClose }/>
+          </PopoverBody>
+        </PopoverContent>
+      </Popover>
+      <Box
+        position="fixed"
+        top={ 0 }
+        left={ 0 }
+        w="100vw"
+        h="100vh"
+        bgColor={ backdropBgColor }
+        zIndex="overlay"
+        display={{ base: 'none', lg: isSuggestOpen ? 'block' : 'none' }}
+      />
+    </>
   );
 };
 
