@@ -35,11 +35,14 @@ const MarketplaceListWithScores = ({
   showContractList,
 }: Props) => {
 
-  const displayedApps = React.useMemo(() =>
-    apps
-      .filter((app) => app.securityReport)
-      .sort((a, b) => b.securityReport.overallInfo.securityScore - a.securityReport.overallInfo.securityScore)
-  , [ apps ]);
+  const displayedApps = React.useMemo(() => apps.sort((a, b) => {
+    if (!a.securityReport) {
+      return 1;
+    } else if (!b.securityReport) {
+      return -1;
+    }
+    return b.securityReport.overallInfo.securityScore - a.securityReport.overallInfo.securityScore;
+  }), [ apps ]);
 
   const content = apps.length > 0 ? (
     <>

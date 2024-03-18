@@ -11,6 +11,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import AppSecurityReport from '../AppSecurityReport';
 import ContractListButton, { ContractListButtonVariants } from '../ContractListButton';
 import AppLink from './AppLink';
+import DataNotAvailable from './DataNotAvailable';
 import MoreInfoButton from './MoreInfoButton';
 
 type Props = {
@@ -33,16 +34,7 @@ const TableItem = ({
   showContractList,
 }: Props) => {
 
-  const {
-    id,
-    securityReport,
-    securityReport: {
-      overallInfo: {
-        verifiedNumber,
-        totalContractsNumber,
-      },
-    },
-  } = app;
+  const { id, securityReport } = app;
 
   const handleInfoClick = React.useCallback((event: MouseEvent) => {
     event.preventDefault();
@@ -83,17 +75,29 @@ const TableItem = ({
         <AppLink app={ app } isLoading={ isLoading } onAppClick={ onAppClick } isLarge/>
       </Td>
       <Td verticalAlign="middle">
-        <AppSecurityReport id={ id } securityReport={ securityReport } showContractList={ showContractList }/>
+        { securityReport ? (
+          <AppSecurityReport id={ id } securityReport={ securityReport } showContractList={ showContractList }/>
+        ) : (
+          <DataNotAvailable/>
+        ) }
       </Td>
       <Td verticalAlign="middle">
-        <ContractListButton onClick={ showAllContracts } variant={ ContractListButtonVariants.ALL_CONTRACTS }>
-          { totalContractsNumber }
-        </ContractListButton>
+        { securityReport ? (
+          <ContractListButton onClick={ showAllContracts } variant={ ContractListButtonVariants.ALL_CONTRACTS }>
+            { securityReport.overallInfo.totalContractsNumber }
+          </ContractListButton>
+        ) : (
+          <DataNotAvailable/>
+        ) }
       </Td>
       <Td verticalAlign="middle">
-        <ContractListButton onClick={ showVerifiedContracts } variant={ ContractListButtonVariants.VERIFIED_CONTRACTS }>
-          { verifiedNumber }
-        </ContractListButton>
+        { securityReport ? (
+          <ContractListButton onClick={ showVerifiedContracts } variant={ ContractListButtonVariants.VERIFIED_CONTRACTS }>
+            { securityReport.overallInfo.verifiedNumber }
+          </ContractListButton>
+        ) : (
+          <DataNotAvailable/>
+        ) }
       </Td>
       <Td verticalAlign="middle" isNumeric>
         <MoreInfoButton onClick={ handleInfoClick }/>

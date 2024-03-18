@@ -1,4 +1,4 @@
-import { Flex, IconButton } from '@chakra-ui/react';
+import { Flex, IconButton, chakra } from '@chakra-ui/react';
 import React from 'react';
 import type { MouseEvent } from 'react';
 
@@ -25,16 +25,7 @@ type Props = {
 }
 
 const ListItem = ({ app, onInfoClick, isFavorite, onFavoriteClick, isLoading, onAppClick, showContractList }: Props) => {
-  const {
-    id,
-    securityReport,
-    securityReport: {
-      overallInfo: {
-        verifiedNumber,
-        totalContractsNumber,
-      },
-    },
-  } = app;
+  const { id, securityReport } = app;
 
   const handleInfoClick = React.useCallback((event: MouseEvent) => {
     event.preventDefault();
@@ -98,18 +89,26 @@ const ListItem = ({ app, onInfoClick, isFavorite, onFavoriteClick, isLoading, on
         </Flex>
         <Flex alignItems="center">
           <Flex flex={ 1 } gap={ 3 } alignItems="center">
-            <AppSecurityReport
-              id={ id }
-              securityReport={ securityReport }
-              showContractList={ showContractList }
-              height="30px"
-            />
-            <ContractListButton onClick={ showAllContracts } variant={ ContractListButtonVariants.ALL_CONTRACTS }>
-              { totalContractsNumber }
-            </ContractListButton>
-            <ContractListButton onClick={ showVerifiedContracts } variant={ ContractListButtonVariants.VERIFIED_CONTRACTS }>
-              { verifiedNumber }
-            </ContractListButton>
+            { securityReport ? (
+              <>
+                <AppSecurityReport
+                  id={ id }
+                  securityReport={ securityReport }
+                  showContractList={ showContractList }
+                  height="30px"
+                />
+                <ContractListButton onClick={ showAllContracts } variant={ ContractListButtonVariants.ALL_CONTRACTS }>
+                  { securityReport.overallInfo.totalContractsNumber }
+                </ContractListButton>
+                <ContractListButton onClick={ showVerifiedContracts } variant={ ContractListButtonVariants.VERIFIED_CONTRACTS }>
+                  { securityReport.overallInfo.verifiedNumber }
+                </ContractListButton>
+              </>
+            ) : (
+              <chakra.span fontWeight="500" fontSize="sm">
+                Data will be available soon
+              </chakra.span>
+            ) }
           </Flex>
           { !isLoading && (
             <MoreInfoButton onClick={ handleInfoClick }/>
