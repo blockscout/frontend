@@ -6,6 +6,7 @@ import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import AddressCounterItem from 'ui/address/details/AddressCounterItem';
 import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
+import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
@@ -59,15 +60,16 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
     has_validated_blocks: false,
   }), [ addressHash ]);
 
-  const is404Error = addressQuery.isError && 'status' in addressQuery.error && addressQuery.error.status === 404;
-  const is422Error = addressQuery.isError && 'status' in addressQuery.error && addressQuery.error.status === 422;
-
-  if (addressQuery.isError && is422Error) {
-    throwOnResourceLoadError(addressQuery);
-  }
-
-  if (addressQuery.isError && !is404Error) {
-    return <DataFetchAlert/>;
+  // error handling (except 404 codes)
+  if (addressQuery.isError) {
+    if (isCustomAppError(addressQuery.error)) {
+      const is404Error = addressQuery.isError && 'status' in addressQuery.error && addressQuery.error.status === 404;
+      if (!is404Error) {
+        throwOnResourceLoadError(addressQuery);
+      }
+    } else {
+      return <DataFetchAlert/>;
+    }
   }
 
   const data = addressQuery.isError ? error404Data : addressQuery.data;

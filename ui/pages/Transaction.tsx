@@ -9,6 +9,7 @@ import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { publicClient } from 'lib/web3/client';
 import TextAd from 'ui/shared/ad/TextAd';
+import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import EntityTags from 'ui/shared/EntityTags';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
@@ -103,7 +104,7 @@ const TransactionPageContent = () => {
   })();
 
   if (isError && !showDegradedView) {
-    if (error?.status === 422 || error?.status === 404) {
+    if (isCustomAppError(error)) {
       throwOnResourceLoadError({ resource: 'tx', error, isError: true });
     }
   }

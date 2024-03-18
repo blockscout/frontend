@@ -12,6 +12,7 @@ import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import { space } from 'lib/html-entities';
 import { currencyUnits } from 'lib/units';
+import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
@@ -48,7 +49,7 @@ const UserOpDetails = ({ query }: Props) => {
   }, []);
 
   if (isError) {
-    if (error?.status === 400 || error?.status === 404 || error?.status === 422) {
+    if (error?.status === 400 || isCustomAppError(error)) {
       throwOnResourceLoadError({ isError, error });
     }
 
