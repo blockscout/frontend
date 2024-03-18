@@ -1,10 +1,11 @@
-import { Popover, PopoverTrigger, PopoverContent, PopoverBody, useDisclosure, Box, useColorModeValue } from '@chakra-ui/react';
+import { Popover, PopoverTrigger, PopoverContent, PopoverBody, useDisclosure } from '@chakra-ui/react';
 import _debounce from 'lodash/debounce';
 import type { FormEvent, FocusEvent } from 'react';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { getRecentSearchKeywords } from 'lib/recentSearchKeywords';
+import SearchBarBackdrop from 'ui/snippets/searchBar/SearchBarBackdrop';
 import SearchBarInput from 'ui/snippets/searchBar/SearchBarInput';
 import SearchBarRecentKeywords from 'ui/snippets/searchBar/SearchBarRecentKeywords';
 
@@ -20,8 +21,6 @@ const SearchResultsInput = ({ searchTerm, handleSubmit, handleSearchTermChange }
   const menuRef = React.useRef<HTMLDivElement>(null);
   const menuWidth = React.useRef<number>(0);
   const isMobile = useIsMobile();
-
-  const backdropBgColor = useColorModeValue('blackAlpha.400', 'blackAlpha.600');
 
   const recentSearchKeywords = getRecentSearchKeywords();
 
@@ -99,16 +98,7 @@ const SearchResultsInput = ({ searchTerm, handleSubmit, handleSearchTermChange }
           </PopoverBody>
         </PopoverContent>
       </Popover>
-      <Box
-        position="fixed"
-        top={ 0 }
-        left={ 0 }
-        w="100vw"
-        h="100vh"
-        bgColor={ backdropBgColor }
-        zIndex="overlay"
-        display={{ base: 'none', lg: isSuggestOpen ? 'block' : 'none' }}
-      />
+      <SearchBarBackdrop isOpen={ isSuggestOpen }/>
     </>
   );
 };

@@ -8,7 +8,6 @@ import {
   PopoverFooter,
   useDisclosure,
   useOutsideClick,
-  useColorModeValue,
 } from '@chakra-ui/react';
 import _debounce from 'lodash/debounce';
 import { useRouter } from 'next/router';
@@ -23,6 +22,7 @@ import * as mixpanel from 'lib/mixpanel/index';
 import { getRecentSearchKeywords, saveToRecentKeywords } from 'lib/recentSearchKeywords';
 import LinkInternal from 'ui/shared/LinkInternal';
 
+import SearchBarBackdrop from './SearchBarBackdrop';
 import SearchBarInput from './SearchBarInput';
 import SearchBarRecentKeywords from './SearchBarRecentKeywords';
 import SearchBarSuggest from './SearchBarSuggest/SearchBarSuggest';
@@ -44,8 +44,6 @@ const SearchBar = ({ isHomepage }: Props) => {
   const router = useRouter();
 
   const recentSearchKeywords = getRecentSearchKeywords();
-
-  const backdropBgColor = useColorModeValue('blackAlpha.400', 'blackAlpha.600');
 
   const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query, pathname } = useQuickSearchQuery();
 
@@ -184,16 +182,7 @@ const SearchBar = ({ isHomepage }: Props) => {
           </PopoverContent>
         </Portal>
       </Popover>
-      <Box
-        position="fixed"
-        top={ 0 }
-        left={ 0 }
-        w="100vw"
-        h="100vh"
-        bgColor={ backdropBgColor }
-        zIndex="overlay"
-        display={{ base: 'none', lg: isOpen ? 'block' : 'none' }}
-      />
+      <SearchBarBackdrop isOpen={ isOpen }/>
     </>
   );
 };
