@@ -640,3 +640,6 @@ For obtaining the variables values please refer to [reCAPTCHA documentation](htt
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY | `string` | Site key | - | - | `<your-secret>` |
+
+# Dummy list (for AltLayer-added variables)
+NEXT_PUBLIC_HOMEPAGE_SHOW_GAS_TRACKER

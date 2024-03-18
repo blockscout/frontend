@@ -512,6 +512,10 @@ const schema = yup
 
     // Misc
     NEXT_PUBLIC_USE_NEXT_JS_PROXY: yup.boolean(),
+
+    // AltLayer-added variables
+    // NEXT_PUBLIC_HOMEPAGE_SHOW_GAS_TRACKER is still needed because our chart is on v1.24.1 and still includes this env by default
+    NEXT_PUBLIC_HOMEPAGE_SHOW_GAS_TRACKER: yup.boolean(),
   })
   .concat(accountSchema)
   .concat(adsBannerSchema)
