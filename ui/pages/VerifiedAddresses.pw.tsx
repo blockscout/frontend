@@ -1,7 +1,9 @@
-import { test, expect } from '@playwright/experimental-ct-react';
+import { test as base, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import * as mocks from 'mocks/account/verifiedAddresses';
+import * as profileMock from 'mocks/user/profile';
+import authFixture from 'playwright/fixtures/auth';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
 
@@ -9,6 +11,14 @@ import VerifiedAddresses from './VerifiedAddresses';
 
 const VERIFIED_ADDRESS_URL = buildApiUrl('verified_addresses', { chainId: '1' });
 const TOKEN_INFO_APPLICATIONS_URL = buildApiUrl('token_info_applications', { chainId: '1', id: undefined });
+const USER_INFO_URL = buildApiUrl('user_info');
+
+const test = base.extend({
+  context: ({ context }, use) => {
+    authFixture(context);
+    use(context);
+  },
+});
 
 test.beforeEach(async({ context }) => {
   await context.route(mocks.TOKEN_INFO_APPLICATION_BASE.iconUrl, (route) => {
@@ -26,6 +36,32 @@ test('base view +@mobile', async({ mount, page }) => {
 
   await page.route(TOKEN_INFO_APPLICATIONS_URL, (route) => route.fulfill({
     body: JSON.stringify(mocks.TOKEN_INFO_APPLICATIONS_RESPONSE.DEFAULT),
+  }));
+
+  await page.route(USER_INFO_URL, (route) => route.fulfill({
+    body: JSON.stringify(profileMock.base),
+  }));
+
+  const component = await mount(
+    <TestApp>
+      <VerifiedAddresses/>
+    </TestApp>,
+  );
+
+  await expect(component).toHaveScreenshot();
+});
+
+test('user without email', async({ mount, page }) => {
+  await page.route(VERIFIED_ADDRESS_URL, (route) => route.fulfill({
+    body: JSON.stringify(mocks.VERIFIED_ADDRESS_RESPONSE.DEFAULT),
+  }));
+
+  await page.route(TOKEN_INFO_APPLICATIONS_URL, (route) => route.fulfill({
+    body: JSON.stringify(mocks.TOKEN_INFO_APPLICATIONS_RESPONSE.DEFAULT),
+  }));
+
+  await page.route(USER_INFO_URL, (route) => route.fulfill({
+    body: JSON.stringify(profileMock.withoutEmail),
   }));
 
   const component = await mount(
@@ -58,6 +94,10 @@ test('address verification flow', async({ mount, page }) => {
       body: JSON.stringify(mocks.ADDRESS_VERIFY_RESPONSE.SUCCESS),
     });
   });
+
+  await page.route(USER_INFO_URL, (route) => route.fulfill({
+    body: JSON.stringify(profileMock.base),
+  }));
 
   await mount(
     <TestApp>
@@ -98,6 +138,10 @@ test('application update flow', async({ mount, page }) => {
 
   await page.route(FORM_CONFIG_URL, (route) => route.fulfill({
     body: JSON.stringify(mocks.TOKEN_INFO_FORM_CONFIG),
+  }));
+
+  await page.route(USER_INFO_URL, (route) => route.fulfill({
+    body: JSON.stringify(profileMock.base),
   }));
 
   // PUT request
