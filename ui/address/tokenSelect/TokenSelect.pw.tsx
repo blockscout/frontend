@@ -148,7 +148,7 @@ base('long values', async({ mount, page }) => {
   }), { times: 1 });
   await page.route(TOKENS_ERC20_API_URL, async(route) => route.fulfill({
     status: 200,
-    body: JSON.stringify({ items: [ tokensMock.erc20LongSymbol ] }),
+    body: JSON.stringify({ items: [ tokensMock.erc20LongSymbol, tokensMock.erc20BigAmount ] }),
   }), { times: 1 });
   await page.route(TOKENS_ERC721_API_URL, async(route) => route.fulfill({
     status: 200,
