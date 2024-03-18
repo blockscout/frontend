@@ -16,10 +16,14 @@ interface Props {
   onHide?: () => void;
   onClear: () => void;
   isHomepage?: boolean;
+  isSuggestOpen?: boolean;
   value: string;
 }
 
-const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHide, onClear, value }: Props, ref: React.ForwardedRef<HTMLFormElement>) => {
+const SearchBarInput = (
+  { onChange, onSubmit, isHomepage, isSuggestOpen, onFocus, onBlur, onHide, onClear, value }: Props,
+  ref: React.ForwardedRef<HTMLFormElement>,
+) => {
   const innerRef = React.useRef<HTMLFormElement>(null);
   React.useImperativeHandle(ref, () => innerRef.current as HTMLFormElement, []);
   const [ isSticky, setIsSticky ] = React.useState(false);
@@ -71,10 +75,10 @@ const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHid
       w="100%"
       backgroundColor={ bgColor }
       borderRadius={{ base: isHomepage ? 'base' : 'none', lg: 'base' }}
-      position={{ base: isHomepage ? 'static' : 'absolute', lg: 'static' }}
+      position={{ base: isHomepage ? 'static' : 'absolute', lg: 'relative' }}
       top={{ base: isHomepage ? 0 : 55, lg: 0 }}
       left="0"
-      zIndex={{ base: isHomepage ? 'auto' : '-1', lg: 'auto' }}
+      zIndex={{ base: isHomepage ? 'auto' : '-1', lg: isSuggestOpen ? 'popover' : 'auto' }}
       paddingX={{ base: isHomepage ? 0 : 4, lg: 0 }}
       paddingTop={{ base: isHomepage ? 0 : 1, lg: 0 }}
       paddingBottom={{ base: isHomepage ? 0 : 2, lg: 0 }}
