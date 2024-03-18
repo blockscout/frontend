@@ -390,11 +390,13 @@ const schema = yup
 
     // 4. UI configuration
     //   a. homepage
+    NEXT_PUBLIC_HOMEPAGE_TITLE: yup.string().optional(),
     NEXT_PUBLIC_HOMEPAGE_CHARTS: yup
       .array()
       .transform(replaceQuotes)
       .json()
       .of(yup.string<ChainIndicatorId>().oneOf([ 'daily_txs', 'coin_price', 'market_cap', 'tvl' ])),
+    NEXT_PUBLIC_HOMEPAGE_PLATE_TITLE: yup.string().optional(),
     NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR: yup.string(),
     NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND: yup.string(),
     NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME: yup.boolean(),
