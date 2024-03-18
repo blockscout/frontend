@@ -8,6 +8,7 @@ import { HOMEPAGE_STATS } from 'stubs/stats';
 import GasTrackerChart from 'ui/gasTracker/GasTrackerChart';
 import GasTrackerNetworkUtilization from 'ui/gasTracker/GasTrackerNetworkUtilization';
 import GasTrackerPrices from 'ui/gasTracker/GasTrackerPrices';
+import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import GasInfoUpdateTimer from 'ui/shared/gas/GasInfoUpdateTimer';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
@@ -24,6 +25,13 @@ const GasTracker = () => {
   }
 
   const isLoading = isPlaceholderData;
+
+  const nativeTokenData = {
+    name: config.chain.currency.name || '',
+    symbol: '',
+    address: '',
+    type: 'ERC-20' as const,
+  };
 
   const titleSecondRow = (
     <Flex
@@ -53,7 +61,12 @@ const GasTracker = () => {
         </Skeleton>
       ) }
       { data?.coin_price && (
-        <Skeleton isLoaded={ !isLoading } ml={{ base: 0, lg: 'auto' }} whiteSpace="pre">
+        <Skeleton isLoaded={ !isLoading } ml={{ base: 0, lg: 'auto' }} whiteSpace="pre" display="flex" alignItems="center">
+          <TokenEntity.Icon
+            token={{ ...nativeTokenData, icon_url: data?.coin_image || '' }}
+            boxSize={ 6 }
+            marginRight={ 0 }
+          />
           <chakra.span color="text_secondary">{ config.chain.currency.symbol }</chakra.span>
           <span> ${ Number(data.coin_price).toLocaleString(undefined, { maximumFractionDigits: 2 }) }</span>
         </Skeleton>
