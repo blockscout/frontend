@@ -83,20 +83,9 @@ export default function useMarketplaceApps(
     enabled: feature.isEnabled,
   });
 
-  const appsWithSecurityReports = React.useMemo(() => {
-    if (!securityReports && !isSecurityReportsPlaceholderData) {
-      return data;
-    }
-    return data?.map((app) => {
-      const securityReport = securityReports?.find(item => item.appName === app.id)?.chainsData[config.chain.id || ''];
-      if (securityReport) {
-        const issues: Record<string, number> = securityReport.overallInfo.issueSeverityDistribution;
-        securityReport.overallInfo.totalIssues = Object.values(issues).reduce((acc, val) => acc + val, 0);
-        securityReport.overallInfo.securityScore = Number(securityReport.overallInfo.securityScore.toFixed(2));
-      }
-      return { ...app, securityReport };
-    });
-  }, [ data, securityReports, isSecurityReportsPlaceholderData ]);
+  const appsWithSecurityReports = React.useMemo(() =>
+    data?.map((app) => ({ ...app, securityReport: securityReports?.[app.id] })),
+  [ data, securityReports ]);
 
   const displayedApps = React.useMemo(() => {
     return appsWithSecurityReports?.filter(app => isAppNameMatches(filter, app) && isAppCategoryMatches(selectedCategoryId, app, favoriteApps)) || [];

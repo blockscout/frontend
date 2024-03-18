@@ -106,7 +106,6 @@ const MarketplaceApp = () => {
   useAutoConnectWallet();
 
   const { data: securityReports, isPending: isSecurityReportsPending } = useSecurityReports();
-  const securityReport = securityReports?.find(item => item.appName === id)?.chainsData[config.chain.id || ''];
 
   const query = useQuery<unknown, ResourceError<unknown>, MarketplaceAppOverview>({
     queryKey: [ 'marketplace-dapps', id ],
@@ -148,7 +147,7 @@ const MarketplaceApp = () => {
         data={ data }
         isLoading={ isPending || isSecurityReportsPending }
         isWalletConnected={ Boolean(address) }
-        securityReport={ securityReport }
+        securityReport={ securityReports?.[id] }
       />
       <DappscoutIframeProvider
         address={ address }
