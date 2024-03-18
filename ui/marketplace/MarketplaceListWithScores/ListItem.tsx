@@ -45,6 +45,10 @@ const ListItem = ({ app, onInfoClick, isFavorite, onFavoriteClick, isLoading, on
     showContractList(id, ContractListTypes.VERIFIED);
   }, [ showContractList, id ]);
 
+  const showAnalyzedContracts = React.useCallback(() => {
+    showContractList(id, ContractListTypes.ANALYZED);
+  }, [ showContractList, id ]);
+
   return (
     <ListItemMobile
       rowGap={ 3 }
@@ -92,9 +96,8 @@ const ListItem = ({ app, onInfoClick, isFavorite, onFavoriteClick, isLoading, on
             { securityReport ? (
               <>
                 <AppSecurityReport
-                  id={ id }
                   securityReport={ securityReport }
-                  showContractList={ showContractList }
+                  showContractList={ showAnalyzedContracts }
                   height="30px"
                 />
                 <ContractListButton onClick={ showAllContracts } variant={ ContractListButtonVariants.ALL_CONTRACTS }>

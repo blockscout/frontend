@@ -68,21 +68,25 @@ const MarketplaceAppModal = ({
   }
 
   const handleFavoriteClick = useCallback(() => {
-    onFavoriteClick(data.id, isFavorite);
-  }, [ onFavoriteClick, data.id, isFavorite ]);
+    onFavoriteClick(id, isFavorite);
+  }, [ onFavoriteClick, id, isFavorite ]);
 
-  const showContractList = useCallback((id: string, type: ContractListTypes) => {
+  const showContractList = useCallback((type: ContractListTypes) => {
     onClose();
     showContractListDefault(id, type);
-  }, [ onClose, showContractListDefault ]);
+  }, [ onClose, showContractListDefault, id ]);
 
   const showAllContracts = React.useCallback(() => {
-    showContractList(id, ContractListTypes.ALL);
-  }, [ showContractList, id ]);
+    showContractList(ContractListTypes.ALL);
+  }, [ showContractList ]);
 
   const showVerifiedContracts = React.useCallback(() => {
-    showContractList(id, ContractListTypes.VERIFIED);
-  }, [ showContractList, id ]);
+    showContractList(ContractListTypes.VERIFIED);
+  }, [ showContractList ]);
+
+  const showAnalyzedContracts = React.useCallback(() => {
+    showContractList(ContractListTypes.ANALYZED);
+  }, [ showContractList ]);
 
   const isMobile = useIsMobile();
   const logoUrl = useColorModeValue(logo, logoDarkMode || logo);
@@ -167,7 +171,7 @@ const MarketplaceAppModal = ({
 
               { securityReport && (
                 <Flex alignItems="center" gap={ 3 }>
-                  <AppSecurityReport id={ data.id } securityReport={ securityReport } showContractList={ showContractList }/>
+                  <AppSecurityReport securityReport={ securityReport } showContractList={ showAnalyzedContracts }/>
                   <ContractListButton
                     onClick={ showAllContracts }
                     variant={ ContractListButtonVariants.ALL_CONTRACTS }

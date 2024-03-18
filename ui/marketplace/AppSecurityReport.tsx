@@ -1,8 +1,6 @@
 import { Box, Text, Link } from '@chakra-ui/react';
 import React from 'react';
 
-import { ContractListTypes } from 'types/client/marketplace';
-
 import config from 'configs/app';
 import { apos } from 'lib/html-entities';
 import IconSvg from 'ui/shared/IconSvg';
@@ -11,13 +9,16 @@ import SolidityscanReportDetails from 'ui/shared/solidityscanReport/Solidityscan
 import SolidityscanReportScore from 'ui/shared/solidityscanReport/SolidityscanReportScore';
 
 type Props = {
-  id: string;
   securityReport?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   height?: string | undefined;
-  showContractList: (id: string, type: ContractListTypes) => void;
+  showContractList: () => void;
 }
 
-const AppSecurityReport = ({ id, securityReport, height, showContractList }: Props) => {
+const AppSecurityReport = ({ securityReport, height, showContractList }: Props) => {
+  if (!securityReport) {
+    return null;
+  }
+
   const {
     overallInfo: {
       securityScore,
@@ -26,11 +27,6 @@ const AppSecurityReport = ({ id, securityReport, height, showContractList }: Pro
       totalIssues,
     },
   } = securityReport;
-
-  const showAnalyzedContracts = React.useCallback(() => {
-
-    showContractList(id, ContractListTypes.ANALYZED);
-  }, [ showContractList, id ]);
 
   return (
     <SolidityscanReportButton
@@ -49,7 +45,7 @@ const AppSecurityReport = ({ id, securityReport, height, showContractList }: Pro
               <SolidityscanReportDetails vulnerabilities={ issueSeverityDistribution } vulnerabilitiesCount={ totalIssues }/>
             </Box>
           ) }
-          <Link onClick={ showAnalyzedContracts } display="inline-flex" alignItems="center">
+          <Link onClick={ showContractList } display="inline-flex" alignItems="center">
             Analyzed contracts
             <IconSvg name="arrows/north-east" boxSize={ 5 } color="gray.400"/>
           </Link>

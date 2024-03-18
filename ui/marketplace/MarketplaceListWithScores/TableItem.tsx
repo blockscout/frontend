@@ -54,6 +54,10 @@ const TableItem = ({
     showContractList(id, ContractListTypes.VERIFIED);
   }, [ showContractList, id ]);
 
+  const showAnalyzedContracts = React.useCallback(() => {
+    showContractList(id, ContractListTypes.ANALYZED);
+  }, [ showContractList, id ]);
+
   return (
     <Tr>
       <Td verticalAlign="middle" px={ 2 }>
@@ -76,7 +80,7 @@ const TableItem = ({
       </Td>
       <Td verticalAlign="middle">
         { securityReport ? (
-          <AppSecurityReport id={ id } securityReport={ securityReport } showContractList={ showContractList }/>
+          <AppSecurityReport securityReport={ securityReport } showContractList={ showAnalyzedContracts }/>
         ) : (
           <DataNotAvailable/>
         ) }
