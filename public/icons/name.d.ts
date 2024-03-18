@@ -134,6 +134,7 @@
 	| "txn_batches"
 	| "unfinalized"
 	| "uniswap"
+	| "up"
 	| "user_op_slim"
 	| "user_op"
 	| "validator"
