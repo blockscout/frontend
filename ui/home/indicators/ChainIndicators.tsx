@@ -68,7 +68,7 @@ const ChainIndicators = () => {
       borderRadius={{ base: 'none', lg: 'lg' }}
       boxShadow={{ base: 'none', lg: 'xl' }}
       bgColor={{ base: bgColorMobile, lg: bgColorDesktop }}
-      columnGap={ 12 }
+      columnGap={ 6 }
       rowGap={ 0 }
       flexDir={{ base: 'column', lg: 'row' }}
       w="100%"
