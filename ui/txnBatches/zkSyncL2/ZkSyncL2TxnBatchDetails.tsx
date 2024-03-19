@@ -52,6 +52,8 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
     return null;
   }
 
+  const txNum = data.l2_tx_count + data.l1_tx_count;
+
   return (
     <Grid
       columnGap={ 8 }
@@ -82,7 +84,7 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
         hint="Status is the short interpretation of the batch lifecycle"
         isLoading={ isPlaceholderData }
       >
-        <VerificationSteps steps={ ZKSYNC_L2_TX_BATCH_STATUSES } currentStep={ data.status } isLoading={ isPlaceholderData }/>
+        <VerificationSteps steps={ ZKSYNC_L2_TX_BATCH_STATUSES.slice(1) } currentStep={ data.status } isLoading={ isPlaceholderData }/>
       </DetailsInfoItem>
 
       <DetailsInfoItem
@@ -100,7 +102,7 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
       >
         <Skeleton isLoaded={ !isPlaceholderData }>
           <LinkInternal href={ route({ pathname: '/batches/[number]', query: { number: data.number.toString(), tab: 'txs' } }) }>
-            { data.l2_tx_count } transaction{ data.l2_tx_count === 1 ? '' : 's' }
+            { txNum } transaction{ txNum === 1 ? '' : 's' }
           </LinkInternal>
         </Skeleton>
       </DetailsInfoItem>
