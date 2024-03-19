@@ -1,6 +1,12 @@
 import type { Transaction } from './transaction';
 
-export const ZKSYNC_L2_TX_BATCH_STATUSES = [ 'Sealed on L2' as const, 'Sent to L1' as const, 'Validated on L1' as const, 'Executed on L1' as const ];
+export const ZKSYNC_L2_TX_BATCH_STATUSES = [
+  'Processed on L2' as const,
+  'Sealed on L2' as const,
+  'Sent to L1' as const,
+  'Validated on L1' as const,
+  'Executed on L1' as const,
+];
 
 export type ZkSyncBatchStatus = typeof ZKSYNC_L2_TX_BATCH_STATUSES[number];
 

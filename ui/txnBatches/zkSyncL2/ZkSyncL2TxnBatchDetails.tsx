@@ -1,4 +1,4 @@
-import { Grid, Text, Skeleton, Flex } from '@chakra-ui/react';
+import { Grid, Skeleton } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -14,10 +14,11 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import DetailsTimestamp from 'ui/shared/DetailsTimestamp';
-import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import LinkInternal from 'ui/shared/LinkInternal';
 import PrevNext from 'ui/shared/PrevNext';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
+
+import ZkSyncL2TxnBatchHashesInfo from './ZkSyncL2TxnBatchHashesInfo';
 
 interface Props {
   query: UseQueryResult<ZkSyncBatch, ResourceError>;
@@ -60,7 +61,7 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
     >
       <DetailsInfoItem
         title="Tx batch number"
-        hint="Batch number indicates the length of Batches produced by grouping L2 blocks to be proven on Ethereum."
+        hint="Batch number indicates the length of batches produced by grouping L2 blocks to be proven on Ethereum."
         isLoading={ isPlaceholderData }
       >
         <Skeleton isLoaded={ !isPlaceholderData }>
@@ -78,7 +79,7 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
 
       <DetailsInfoItem
         title="Status"
-        hint="Status is the short interpretation of the Batch lifecycle"
+        hint="Status is the short interpretation of the batch lifecycle"
         isLoading={ isPlaceholderData }
       >
         <VerificationSteps steps={ ZKSYNC_L2_TX_BATCH_STATUSES } currentStep={ data.status } isLoading={ isPlaceholderData }/>
@@ -106,71 +107,7 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
 
       <DetailsInfoItemDivider/>
 
-      <DetailsInfoItem
-        title="Commit tx hash"
-        hint="Hash of L1 tx on which this Batch was committed"
-        isLoading={ isPlaceholderData }
-      >
-        { data.commit_transaction_hash ? (
-          <>
-            <TxEntityL1
-              isLoading={ isPlaceholderData }
-              hash={ data.commit_transaction_hash }
-              maxW="100%"
-              noCopy={ false }
-            />
-            { data.commit_transaction_timestamp && (
-              <Flex alignItems="center" flexWrap="wrap" rowGap={ 3 }>
-                <DetailsTimestamp timestamp={ data.commit_transaction_timestamp } isLoading={ isPlaceholderData }/>
-              </Flex>
-            ) }
-          </>
-        ) : <Text>Pending</Text> }
-      </DetailsInfoItem>
-
-      <DetailsInfoItem
-        title="Commit tx hash"
-        hint="Hash of L1 tx on which this Batch was proven"
-        isLoading={ isPlaceholderData }
-      >
-        { data.prove_transaction_hash ? (
-          <>
-            <TxEntityL1
-              isLoading={ isPlaceholderData }
-              hash={ data.prove_transaction_hash }
-              maxW="100%"
-              noCopy={ false }
-            />
-            { data.prove_transaction_timestamp && (
-              <Flex alignItems="center" flexWrap="wrap" rowGap={ 3 }>
-                <DetailsTimestamp timestamp={ data.prove_transaction_timestamp } isLoading={ isPlaceholderData }/>
-              </Flex>
-            ) }
-          </>
-        ) : <Text>Pending</Text> }
-      </DetailsInfoItem>
-
-      <DetailsInfoItem
-        title="Execute tx hash"
-        hint="Hash of L1 tx on which this Batch was executed and finalized"
-        isLoading={ isPlaceholderData }
-      >
-        { data.execute_transaction_hash ? (
-          <>
-            <TxEntityL1
-              isLoading={ isPlaceholderData }
-              hash={ data.execute_transaction_hash }
-              maxW="100%"
-
-            />
-            { data.execute_transaction_timestamp && (
-              <Flex alignItems="center" flexWrap="wrap" rowGap={ 3 }>
-                <DetailsTimestamp timestamp={ data.execute_transaction_timestamp } isLoading={ isPlaceholderData }/>
-              </Flex>
-            ) }
-          </>
-        ) : <Text>Pending</Text> }
-      </DetailsInfoItem>
+      <ZkSyncL2TxnBatchHashesInfo isLoading={ isPlaceholderData } data={ data }/>
     </Grid>
   );
 };
