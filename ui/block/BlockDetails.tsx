@@ -242,7 +242,6 @@ const BlockDetails = ({ query }: Props) => {
             <VerificationSteps steps={ ZKSYNC_L2_TX_BATCH_STATUSES } currentStep={ data.zksync.status } isLoading={ isPlaceholderData }/>
           </DetailsInfoItem>
         </>
-
       ) }
 
       { !config.UI.views.block.hiddenFields?.miner && (

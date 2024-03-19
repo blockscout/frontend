@@ -17,6 +17,7 @@ import { scroller, Element } from 'react-scroll';
 
 import type { Transaction } from 'types/api/transaction';
 import { ZKEVM_L2_TX_STATUSES } from 'types/api/transaction';
+import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'types/api/zkSyncL2';
 
 import { route } from 'nextjs-routes';
 
@@ -54,6 +55,7 @@ import TxDetailsWithdrawalStatus from 'ui/tx/details/TxDetailsWithdrawalStatus';
 import TxRevertReason from 'ui/tx/details/TxRevertReason';
 import TxAllowedPeekers from 'ui/tx/TxAllowedPeekers';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
+import ZkSyncL2TxnBatchHashesInfo from 'ui/txnBatches/zkSyncL2/ZkSyncL2TxnBatchHashesInfo';
 
 const rollupFeature = config.features.rollup;
 
@@ -143,7 +145,11 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         ) }
       </DetailsInfoItem>
       <DetailsInfoItem
-        title={ rollupFeature.isEnabled && rollupFeature.type === 'zkEvm' ? 'L2 status and method' : 'Status and method' }
+        title={
+          rollupFeature.isEnabled && (rollupFeature.type === 'zkEvm' || rollupFeature.type === 'zkSync') ?
+            'L2 status and method' :
+            'Status and method'
+        }
         hint="Current transaction state: Success, Failed (Error), or Pending (In Process)"
         isLoading={ isLoading }
       >
@@ -192,6 +198,15 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           <TxRevertReason { ...data.revert_reason }/>
         </DetailsInfoItem>
       ) }
+      { data.zksync && (
+        <DetailsInfoItem
+          title="L1 status"
+          hint="Status is the short interpretation of the batch lifecycle"
+          isLoading={ isLoading }
+        >
+          <VerificationSteps steps={ ZKSYNC_L2_TX_BATCH_STATUSES } currentStep={ data.zksync.status } isLoading={ isLoading }/>
+        </DetailsInfoItem>
+      ) }
       <DetailsInfoItem
         title="Block"
         hint="Block number containing the transaction"
@@ -224,6 +239,20 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             isLoading={ isLoading }
             number={ data.zkevm_batch_number }
           />
+        </DetailsInfoItem>
+      ) }
+      { data.zksync && (
+        <DetailsInfoItem
+          title="Batch"
+          hint="Batch number"
+          isLoading={ isLoading }
+        >
+          { data.zksync.batch_number ? (
+            <BatchEntityL2
+              isLoading={ isLoading }
+              number={ data.zksync.batch_number }
+            />
+          ) : <Skeleton isLoaded={ !isLoading }>Pending</Skeleton> }
         </DetailsInfoItem>
       ) }
       { data.timestamp && (
@@ -564,6 +593,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
               <LogDecodedInputData data={ data.decoded_input }/>
             </DetailsInfoItem>
           ) }
+          { data.zksync && <ZkSyncL2TxnBatchHashesInfo data={ data.zksync } isLoading={ isLoading }/> }
         </>
       ) }
     </Grid>
