@@ -93,18 +93,27 @@ const ListItem = ({ app, onInfoClick, isFavorite, onFavoriteClick, isLoading, on
         </Flex>
         <Flex alignItems="center">
           <Flex flex={ 1 } gap={ 3 } alignItems="center">
-            { securityReport ? (
+            { (securityReport || isLoading) ? (
               <>
                 <AppSecurityReport
+                  isLoading={ isLoading }
                   securityReport={ securityReport }
                   showContractList={ showAnalyzedContracts }
                   height="30px"
                 />
-                <ContractListButton onClick={ showAllContracts } variant={ ContractListButtonVariants.ALL_CONTRACTS }>
-                  { securityReport.overallInfo.totalContractsNumber }
+                <ContractListButton
+                  onClick={ showAllContracts }
+                  variant={ ContractListButtonVariants.ALL_CONTRACTS }
+                  isLoading={ isLoading }
+                >
+                  { securityReport?.overallInfo.totalContractsNumber }
                 </ContractListButton>
-                <ContractListButton onClick={ showVerifiedContracts } variant={ ContractListButtonVariants.VERIFIED_CONTRACTS }>
-                  { securityReport.overallInfo.verifiedNumber }
+                <ContractListButton
+                  onClick={ showVerifiedContracts }
+                  variant={ ContractListButtonVariants.VERIFIED_CONTRACTS }
+                  isLoading={ isLoading }
+                >
+                  { securityReport?.overallInfo.verifiedNumber }
                 </ContractListButton>
               </>
             ) : (
@@ -113,9 +122,7 @@ const ListItem = ({ app, onInfoClick, isFavorite, onFavoriteClick, isLoading, on
               </chakra.span>
             ) }
           </Flex>
-          { !isLoading && (
-            <MoreInfoButton onClick={ handleInfoClick }/>
-          ) }
+          <MoreInfoButton onClick={ handleInfoClick } isLoading={ isLoading }/>
         </Flex>
       </Flex>
     </ListItemMobile>

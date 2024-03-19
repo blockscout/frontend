@@ -1,4 +1,4 @@
-import { Td, Tr, IconButton } from '@chakra-ui/react';
+import { Td, Tr, IconButton, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 import type { MouseEvent } from 'react';
 
@@ -61,50 +61,64 @@ const TableItem = ({
   return (
     <Tr>
       <Td verticalAlign="middle" px={ 2 }>
-        <IconButton
-          aria-label="Mark as favorite"
-          title="Mark as favorite"
-          variant="ghost"
-          colorScheme="gray"
-          w={ 9 }
-          h={ 8 }
-          onClick={ handleFavoriteClick }
-          icon={ isFavorite ?
-            <IconSvg name="star_filled" w={ 5 } h={ 5 } color="yellow.400"/> :
-            <IconSvg name="star_outline" w={ 5 } h={ 5 } color="gray.400"/>
-          }
-        />
+        <Skeleton isLoaded={ !isLoading }>
+          <IconButton
+            aria-label="Mark as favorite"
+            title="Mark as favorite"
+            variant="ghost"
+            colorScheme="gray"
+            w={ 9 }
+            h={ 8 }
+            onClick={ handleFavoriteClick }
+            icon={ isFavorite ?
+              <IconSvg name="star_filled" w={ 5 } h={ 5 } color="yellow.400"/> :
+              <IconSvg name="star_outline" w={ 5 } h={ 5 } color="gray.400"/>
+            }
+          />
+        </Skeleton>
       </Td>
       <Td verticalAlign="middle">
         <AppLink app={ app } isLoading={ isLoading } onAppClick={ onAppClick } isLarge/>
       </Td>
       <Td verticalAlign="middle">
-        { securityReport ? (
-          <AppSecurityReport securityReport={ securityReport } showContractList={ showAnalyzedContracts }/>
+        { (securityReport || isLoading) ? (
+          <AppSecurityReport
+            securityReport={ securityReport }
+            showContractList={ showAnalyzedContracts }
+            isLoading={ isLoading }
+          />
         ) : (
           <DataNotAvailable/>
         ) }
       </Td>
       <Td verticalAlign="middle">
-        { securityReport ? (
-          <ContractListButton onClick={ showAllContracts } variant={ ContractListButtonVariants.ALL_CONTRACTS }>
-            { securityReport.overallInfo.totalContractsNumber }
+        { (securityReport || isLoading) ? (
+          <ContractListButton
+            onClick={ showAllContracts }
+            variant={ ContractListButtonVariants.ALL_CONTRACTS }
+            isLoading={ isLoading }
+          >
+            { securityReport?.overallInfo.totalContractsNumber }
           </ContractListButton>
         ) : (
           <DataNotAvailable/>
         ) }
       </Td>
       <Td verticalAlign="middle">
-        { securityReport ? (
-          <ContractListButton onClick={ showVerifiedContracts } variant={ ContractListButtonVariants.VERIFIED_CONTRACTS }>
-            { securityReport.overallInfo.verifiedNumber }
+        { (securityReport || isLoading) ? (
+          <ContractListButton
+            onClick={ showVerifiedContracts }
+            variant={ ContractListButtonVariants.VERIFIED_CONTRACTS }
+            isLoading={ isLoading }
+          >
+            { securityReport?.overallInfo.verifiedNumber }
           </ContractListButton>
         ) : (
           <DataNotAvailable/>
         ) }
       </Td>
       <Td verticalAlign="middle" isNumeric>
-        <MoreInfoButton onClick={ handleInfoClick }/>
+        <MoreInfoButton onClick={ handleInfoClick } isLoading={ isLoading }/>
       </Td>
     </Tr>
   );

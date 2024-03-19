@@ -12,24 +12,24 @@ type Props = {
   securityReport?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   height?: string | undefined;
   showContractList: () => void;
+  isLoading?: boolean;
 }
 
-const AppSecurityReport = ({ securityReport, height, showContractList }: Props) => {
-  if (!securityReport) {
+const AppSecurityReport = ({ securityReport, height, showContractList, isLoading }: Props) => {
+  if (!securityReport && !isLoading) {
     return null;
   }
 
   const {
-    overallInfo: {
-      securityScore,
-      solidityScanContractsNumber,
-      issueSeverityDistribution,
-      totalIssues,
-    },
-  } = securityReport;
+    securityScore = 0,
+    solidityScanContractsNumber = 0,
+    issueSeverityDistribution = {},
+    totalIssues = 0,
+  } = securityReport?.overallInfo || {};
 
   return (
     <SolidityscanReportButton
+      isLoading={ isLoading }
       height={ height }
       score={ securityScore }
       popoverContent={ (

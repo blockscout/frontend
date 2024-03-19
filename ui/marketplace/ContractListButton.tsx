@@ -1,4 +1,4 @@
-import { Link, Tooltip } from '@chakra-ui/react';
+import { Link, Tooltip, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 import type { MouseEvent } from 'react';
 
@@ -28,9 +28,10 @@ interface Props {
   children: string;
   onClick: (event: MouseEvent) => void;
   variant: ContractListButtonVariants;
+  isLoading?: boolean;
 }
 
-const ContractListButton = ({ children, onClick, variant }: Props) => {
+const ContractListButton = ({ children, onClick, variant, isLoading }: Props) => {
   const { icon, iconColor, tooltip } = values[variant];
   return (
     <Tooltip
@@ -41,15 +42,24 @@ const ContractListButton = ({ children, onClick, variant }: Props) => {
       openDelay={ 500 }
       width="250px"
     >
-      <Link
-        fontSize="sm"
-        onClick={ onClick }
-        fontWeight="500"
+      <Skeleton
+        isLoaded={ !isLoading }
         display="inline-flex"
+        alignItems="center"
+        width={ isLoading ? '40px' : 'auto' }
+        height="30px"
+        borderRadius="base"
       >
-        { icon && <IconSvg name={ icon } boxSize={ 5 } color={ iconColor } mr={ 1 }/> }
-        { children }
-      </Link>
+        <Link
+          fontSize="sm"
+          onClick={ onClick }
+          fontWeight="500"
+          display="inline-flex"
+        >
+          { icon && <IconSvg name={ icon } boxSize={ 5 } color={ iconColor } mr={ 1 }/> }
+          { children }
+        </Link>
+      </Skeleton>
     </Tooltip>
   );
 };
