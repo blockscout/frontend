@@ -9,6 +9,7 @@ import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
 import * as cookies from 'lib/cookies';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
+import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import ContractListModal from 'ui/marketplace/ContractListModal';
 import MarketplaceAppModal from 'ui/marketplace/MarketplaceAppModal';
@@ -73,6 +74,7 @@ const Marketplace = () => {
   } = useMarketplace();
 
   const isMobile = useIsMobile();
+  const { value: isExperiment } = useFeatureValue('security_score_exp', false);
 
   const categoryTabs = React.useMemo(() => {
     const tabs: Array<TabItem> = categories.map(category => ({
@@ -181,52 +183,54 @@ const Marketplace = () => {
       </Box>
 
       <Flex direction={{ base: 'column', lg: 'row' }} mb={{ base: 4, lg: 6 }} gap={{ base: 4, lg: 3 }}>
-        <RadioButtonGroup<MarketplaceDisplayType>
-          onChange={ handleNFTsDisplayTypeChange }
-          defaultValue={ displayType }
-          name="type"
-          options={ [
-            {
-              title: 'Discovery',
-              value: 'default',
-              icon: 'apps_xs',
-              onlyIcon: false,
-            },
-            {
-              title: 'Apps scores',
-              value: 'scores',
-              icon: 'apps_list',
-              onlyIcon: false,
-              contentAfter: (
-                <Flex
-                  alignItems="center"
-                  h={ 3 }
-                  bg="red.400"
-                  borderRadius="2px"
-                  fontSize="10px"
-                  fontWeight="500"
-                  color="white"
-                  px="2px"
-                  ml={ 1 }
-                >
-                  { isMobile ? <IconSvg name="beta" boxSize={ 2 }/> : 'beta' }
-                </Flex>
-              ),
-            },
-          ] }
-          autoWidth
-        />
+        { isExperiment && (
+          <RadioButtonGroup<MarketplaceDisplayType>
+            onChange={ handleNFTsDisplayTypeChange }
+            defaultValue={ displayType }
+            name="type"
+            options={ [
+              {
+                title: 'Discovery',
+                value: 'default',
+                icon: 'apps_xs',
+                onlyIcon: false,
+              },
+              {
+                title: 'Apps scores',
+                value: 'scores',
+                icon: 'apps_list',
+                onlyIcon: false,
+                contentAfter: (
+                  <Flex
+                    alignItems="center"
+                    h={ 3 }
+                    bg="red.400"
+                    borderRadius="2px"
+                    fontSize="10px"
+                    fontWeight="500"
+                    color="white"
+                    px="2px"
+                    ml={ 1 }
+                  >
+                    { isMobile ? <IconSvg name="beta" boxSize={ 2 }/> : 'beta' }
+                  </Flex>
+                ),
+              },
+            ] }
+            autoWidth
+          />
+        ) }
         <FilterInput
           initialValue={ filterQuery }
           onChange={ onSearchInputChange }
           placeholder="Find app"
           isLoading={ isPlaceholderData }
-          size="xs"
+          size={ isExperiment ? 'xs' : 'sm' }
           flex="1"
         />
       </Flex>
 
-      { (displayType === 'scores') ? (
+      { (displayType === 'scores' && isExperiment) ? (
         <MarketplaceListWithScores
           apps={ displayedApps }
           showAppInfo={ showAppInfo }

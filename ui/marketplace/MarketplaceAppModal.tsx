@@ -7,6 +7,7 @@ import React, { useCallback } from 'react';
 import type { MarketplaceAppWithSecurityReport } from 'types/client/marketplace';
 import { ContractListTypes } from 'types/client/marketplace';
 
+import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
 import type { IconName } from 'ui/shared/IconSvg';
@@ -31,6 +32,8 @@ const MarketplaceAppModal = ({
   data,
   showContractList: showContractListDefault,
 }: Props) => {
+  const { value: isExperiment } = useFeatureValue('security_score_exp', false);
+
   const {
     id,
     title,
@@ -169,7 +172,7 @@ const MarketplaceAppModal = ({
                 />
               </Flex>
 
-              { securityReport && (
+              { (isExperiment && securityReport) && (
                 <Flex alignItems="center" gap={ 3 }>
                   <AppSecurityReport securityReport={ securityReport } showContractList={ showAnalyzedContracts }/>
                   <ContractListButton

@@ -7,6 +7,7 @@ import { ContractListTypes } from 'types/client/marketplace';
 import { route } from 'nextjs-routes';
 
 import { useAppContext } from 'lib/contexts/app';
+import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/LinkExternal';
@@ -28,6 +29,7 @@ const MarketplaceAppTopBar = ({ data, isLoading, isWalletConnected, securityRepo
   const [ showContractList, setShowContractList ] = useBoolean(false);
   const appProps = useAppContext();
   const isMobile = useIsMobile();
+  const { value: isExperiment } = useFeatureValue('security_score_exp', false);
 
   const goBackUrl = React.useMemo(() => {
     if (appProps.referrer && appProps.referrer.includes('/apps') && !appProps.referrer.includes('/apps/')) {
@@ -56,7 +58,7 @@ const MarketplaceAppTopBar = ({ data, isLoading, isWalletConnected, securityRepo
         <Skeleton order={{ base: 2, md: 3 }} isLoaded={ !isLoading }>
           <MarketplaceAppInfo data={ data }/>
         </Skeleton>
-        { (securityReport || isLoading) && (
+        { (isExperiment && (securityReport || isLoading)) && (
           <Box order={{ base: 3, md: 4 }}>
             <AppSecurityReport
               securityReport={ securityReport }
