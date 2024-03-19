@@ -38,3 +38,8 @@ export enum ContractListTypes {
   ALL = 'All',
   VERIFIED = 'Verified',
 }
+
+export enum MarketplaceDisplayType {
+  DEFAULT = 'default',
+  SCORES = 'scores',
+}

@@ -1,13 +1,11 @@
-import { Box, Menu, MenuButton, MenuItem, MenuList, Flex, IconButton } from '@chakra-ui/react';
+import { Box, Menu, MenuButton, MenuItem, MenuList, Flex, IconButton, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 import type { MouseEvent } from 'react';
 
-import { MarketplaceCategory } from 'types/client/marketplace';
+import { MarketplaceCategory, MarketplaceDisplayType } from 'types/client/marketplace';
 import type { TabItem } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
-import { useAppContext } from 'lib/contexts/app';
-import * as cookies from 'lib/cookies';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -46,8 +44,6 @@ if (feature.isEnabled) {
   }
 }
 
-type MarketplaceDisplayType = 'default' | 'scores';
-
 const Marketplace = () => {
   const {
     isPlaceholderData,
@@ -71,10 +67,12 @@ const Marketplace = () => {
     isCategoriesPlaceholderData,
     showContractList,
     contractListModalType,
+    selectedDisplayType,
+    onDisplayTypeChange,
   } = useMarketplace();
 
   const isMobile = useIsMobile();
-  const { value: isExperiment } = useFeatureValue('security_score_exp', false);
+  const { value: isExperiment } = useFeatureValue('security_score_exp', true);
 
   const categoryTabs = React.useMemo(() => {
     const tabs: Array<TabItem> = categories.map(category => ({
@@ -109,14 +107,6 @@ const Marketplace = () => {
   const handleCategoryChange = React.useCallback((index: number) => {
     onCategoryChange(categoryTabs[index].id);
   }, [ categoryTabs, onCategoryChange ]);
-
-  const displayTypeCookie = cookies.get(cookies.NAMES.MARKETPLACE_DISPLAY_TYPE, useAppContext().cookies);
-  const [ displayType, setDisplayType ] = React.useState<MarketplaceDisplayType>(displayTypeCookie === 'default' ? 'default' : 'scores');
-
-  const handleNFTsDisplayTypeChange = React.useCallback((val: MarketplaceDisplayType) => {
-    cookies.set(cookies.NAMES.MARKETPLACE_DISPLAY_TYPE, val);
-    setDisplayType(val);
-  }, []);
 
   const handleAppClick = React.useCallback((event: MouseEvent, id: string) => {
     const isShown = window.localStorage.getItem('marketplace-disclaimer-shown');
@@ -184,41 +174,43 @@ const Marketplace = () => {
 
       <Flex direction={{ base: 'column', lg: 'row' }} mb={{ base: 4, lg: 6 }} gap={{ base: 4, lg: 3 }}>
         { isExperiment && (
-          <RadioButtonGroup<MarketplaceDisplayType>
-            onChange={ handleNFTsDisplayTypeChange }
-            defaultValue={ displayType }
-            name="type"
-            options={ [
-              {
-                title: 'Discovery',
-                value: 'default',
-                icon: 'apps_xs',
-                onlyIcon: false,
-              },
-              {
-                title: 'Apps scores',
-                value: 'scores',
-                icon: 'apps_list',
-                onlyIcon: false,
-                contentAfter: (
-                  <Flex
-                    alignItems="center"
-                    h={ 3 }
-                    bg="red.400"
-                    borderRadius="2px"
-                    fontSize="10px"
-                    fontWeight="500"
-                    color="white"
-                    px="2px"
-                    ml={ 1 }
-                  >
-                    { isMobile ? <IconSvg name="beta" boxSize={ 2 }/> : 'beta' }
-                  </Flex>
-                ),
-              },
-            ] }
-            autoWidth
-          />
+          <Skeleton isLoaded={ !isPlaceholderData }>
+            <RadioButtonGroup<MarketplaceDisplayType>
+              onChange={ onDisplayTypeChange }
+              defaultValue={ selectedDisplayType }
+              name="type"
+              options={ [
+                {
+                  title: 'Discovery',
+                  value: MarketplaceDisplayType.DEFAULT,
+                  icon: 'apps_xs',
+                  onlyIcon: false,
+                },
+                {
+                  title: 'Apps scores',
+                  value: MarketplaceDisplayType.SCORES,
+                  icon: 'apps_list',
+                  onlyIcon: false,
+                  contentAfter: (
+                    <Flex
+                      alignItems="center"
+                      h={ 3 }
+                      bg="red.400"
+                      borderRadius="2px"
+                      fontSize="10px"
+                      fontWeight="500"
+                      color="white"
+                      px="2px"
+                      ml={ 1 }
+                    >
+                      { isMobile ? <IconSvg name="beta" boxSize={ 2 }/> : 'beta' }
+                    </Flex>
+                  ),
+                },
+              ] }
+              autoWidth
+            />
+          </Skeleton>
         ) }
         <FilterInput
           initialValue={ filterQuery }
@@ -230,7 +222,7 @@ const Marketplace = () => {
         />
       </Flex>
 
-      { (displayType === 'scores' && isExperiment) ? (
+      { (selectedDisplayType === MarketplaceDisplayType.SCORES && isExperiment) ? (
         <MarketplaceListWithScores
           apps={ displayedApps }
           showAppInfo={ showAppInfo }

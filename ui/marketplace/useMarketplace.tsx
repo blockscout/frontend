@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { ContractListTypes } from 'types/client/marketplace';
-import { MarketplaceCategory } from 'types/client/marketplace';
+import { MarketplaceCategory, MarketplaceDisplayType } from 'types/client/marketplace';
 
 import useDebounce from 'lib/hooks/useDebounce';
 import * as mixpanel from 'lib/mixpanel/index';
@@ -26,9 +26,15 @@ export default function useMarketplace() {
   const router = useRouter();
   const defaultCategoryId = getQueryParamString(router.query.category);
   const defaultFilterQuery = getQueryParamString(router.query.filter);
+  const defaultDisplayType = getQueryParamString(router.query.view);
 
   const [ selectedAppId, setSelectedAppId ] = React.useState<string | null>(null);
   const [ selectedCategoryId, setSelectedCategoryId ] = React.useState<string>(MarketplaceCategory.ALL);
+  const [ selectedDisplayType, setSelectedDisplayType ] = React.useState<string>(
+    Object.values(MarketplaceDisplayType).includes(defaultDisplayType as MarketplaceDisplayType) ?
+      defaultDisplayType :
+      MarketplaceDisplayType.DEFAULT,
+  );
   const [ filterQuery, setFilterQuery ] = React.useState(defaultFilterQuery);
   const [ favoriteApps, setFavoriteApps ] = React.useState<Array<string>>([]);
   const [ isFavoriteAppsLoaded, setIsFavoriteAppsLoaded ] = React.useState<boolean>(false);
@@ -80,6 +86,10 @@ export default function useMarketplace() {
     setSelectedCategoryId(newCategory);
   }, []);
 
+  const handleDisplayTypeChange = React.useCallback((newView: MarketplaceDisplayType) => {
+    setSelectedDisplayType(newView);
+  }, []);
+
   const {
     isPlaceholderData, isError, error, data, displayedApps,
   } = useMarketplaceApps(debouncedFilterQuery, selectedCategoryId, favoriteApps, isFavoriteAppsLoaded);
@@ -101,10 +111,16 @@ export default function useMarketplace() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ isPlaceholderData ]);
 
+  // React.useEffect(() => {
+  //   const isValidDefaultDisplayType = Object.values(MarketplaceDisplayType).includes(defaultDisplayType as MarketplaceDisplayType);
+  //   isValidDefaultDisplayType && setSelectedDisplayType(defaultDisplayType);
+  // }, [ ]); // eslint-disable-line react-hooks/exhaustive-deps
+
   React.useEffect(() => {
     const query = _pickBy({
       category: selectedCategoryId === MarketplaceCategory.ALL ? undefined : selectedCategoryId,
       filter: debouncedFilterQuery,
+      view: selectedDisplayType === MarketplaceDisplayType.DEFAULT ? undefined : selectedDisplayType,
     }, Boolean);
 
     if (debouncedFilterQuery.length > 0) {
@@ -119,7 +135,7 @@ export default function useMarketplace() {
   // omit router in the deps because router.push() somehow modifies it
   // and we get infinite re-renders then
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ debouncedFilterQuery, selectedCategoryId ]);
+  }, [ debouncedFilterQuery, selectedCategoryId, selectedDisplayType ]);
 
   return React.useMemo(() => ({
     selectedCategoryId,
@@ -143,6 +159,8 @@ export default function useMarketplace() {
     isCategoriesPlaceholderData,
     showContractList,
     contractListModalType,
+    selectedDisplayType,
+    onDisplayTypeChange: handleDisplayTypeChange,
   }), [
     selectedCategoryId,
     categories,
@@ -164,5 +182,7 @@ export default function useMarketplace() {
     isCategoriesPlaceholderData,
     showContractList,
     contractListModalType,
+    selectedDisplayType,
+    handleDisplayTypeChange,
   ]);
 }
