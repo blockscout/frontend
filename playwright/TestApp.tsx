@@ -41,6 +41,7 @@ const WALLET_CONNECT_PROJECT_ID = 'PROJECT_ID';
 const wagmiConfig = defaultWagmiConfig({
   chains,
   projectId: WALLET_CONNECT_PROJECT_ID,
+  enableEmail: true,
 });
 
 createWeb3Modal({
