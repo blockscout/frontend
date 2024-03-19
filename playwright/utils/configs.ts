@@ -41,6 +41,10 @@ export const featureEnvs = {
     { name: 'NEXT_PUBLIC_ROLLUP_TYPE', value: 'zkEvm' },
     { name: 'NEXT_PUBLIC_ROLLUP_L1_BASE_URL', value: 'https://localhost:3101' },
   ],
+  zkSyncRollup: [
+    { name: 'NEXT_PUBLIC_ROLLUP_TYPE', value: 'zkSync' },
+    { name: 'NEXT_PUBLIC_ROLLUP_L1_BASE_URL', value: 'https://localhost:3101' },
+  ],
   userOps: [
     { name: 'NEXT_PUBLIC_HAS_USER_OPS', value: 'true' },
   ],
