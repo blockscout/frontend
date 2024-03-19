@@ -27,7 +27,7 @@ export default function generate<R extends Route>(route: R, apiData?: ApiData<R>
     title: title,
     description,
     opengraph: {
-      title: title,
+      title: pageOgType !== 'Regular page' ? config.meta.og.title : '',
       description: pageOgType !== 'Regular page' ? config.meta.og.description : '',
       imageUrl: pageOgType !== 'Regular page' ? config.meta.og.imageUrl : '',
     },
