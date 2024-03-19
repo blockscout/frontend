@@ -496,6 +496,7 @@ const schema = yup
     NEXT_PUBLIC_AD_TEXT_PROVIDER: yup.string<AdTextProviders>().oneOf(SUPPORTED_AD_TEXT_PROVIDERS),
     NEXT_PUBLIC_PROMOTE_BLOCKSCOUT_IN_TITLE: yup.boolean(),
     NEXT_PUBLIC_OG_DESCRIPTION: yup.string(),
+    NEXT_PUBLIC_OG_TITLE: yup.string().optional(),
     NEXT_PUBLIC_OG_IMAGE_URL: yup.string().test(urlTest),
     NEXT_PUBLIC_SAFE_TX_SERVICE_URL: yup.string().test(urlTest),
     NEXT_PUBLIC_IS_SUAVE_CHAIN: yup.boolean(),
