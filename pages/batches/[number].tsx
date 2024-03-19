@@ -5,16 +5,32 @@ import React from 'react';
 import type { Props } from 'nextjs/getServerSideProps';
 import PageNextJs from 'nextjs/PageNextJs';
 
-const ZkEvmL2TxnBatch = dynamic(() => import('ui/pages/ZkEvmL2TxnBatch'), { ssr: false });
+import config from 'configs/app';
+
+const rollupFeature = config.features.rollup;
+
+const Batch = dynamic(() => {
+  if (!rollupFeature.isEnabled) {
+    throw new Error('Rollup feature is not enabled.');
+  }
+
+  switch (rollupFeature.type) {
+    case 'zkEvm':
+      return import('ui/pages/ZkEvmL2TxnBatch');
+    case 'zkSync':
+      return import('ui/pages/ZkSyncL2TxnBatch');
+  }
+  throw new Error('Txn batches feature is not enabled.');
+}, { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
     <PageNextJs pathname="/batches/[number]" query={ props }>
-      <ZkEvmL2TxnBatch/>
+      <Batch/>
     </PageNextJs>
   );
 };
 
 export default Page;
 
-export { zkEvmRollup as getServerSideProps } from 'nextjs/getServerSideProps';
+export { batch as getServerSideProps } from 'nextjs/getServerSideProps';

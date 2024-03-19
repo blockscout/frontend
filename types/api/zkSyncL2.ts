@@ -1,16 +1,20 @@
-export type ZkSyncBatchStatus = 'Sealed on L2' | 'Sent to L1' | 'Validated on L1' | 'Executed on L1';
+import type { Transaction } from './transaction';
 
-export type ZkSyncBatchesItem = {
-  'commit_transaction_hash': string | null;
-  'commit_transaction_timestamp': string | null;
-  'execute_transaction_hash': string | null;
-  'execute_transaction_timestamp': string | null;
-  'number': number;
-  'prove_transaction_hash': string | null;
-  'prove_transaction_timestamp': string | null;
-  'status': ZkSyncBatchStatus;
-  'timestamp': string;
-  'tx_count': number;
+export const ZKSYNC_L2_TX_BATCH_STATUSES = [ 'Sealed on L2' as const, 'Sent to L1' as const, 'Validated on L1' as const, 'Executed on L1' as const ];
+
+export type ZkSyncBatchStatus = typeof ZKSYNC_L2_TX_BATCH_STATUSES[number];
+
+export interface ZkSyncBatchesItem {
+  commit_transaction_hash: string | null;
+  commit_transaction_timestamp: string | null;
+  execute_transaction_hash: string | null;
+  execute_transaction_timestamp: string | null;
+  number: number;
+  prove_transaction_hash: string | null;
+  prove_transaction_timestamp: string | null;
+  status: ZkSyncBatchStatus;
+  timestamp: string;
+  tx_count: number;
 }
 
 export type ZkSyncBatchesResponse = {
@@ -19,4 +23,19 @@ export type ZkSyncBatchesResponse = {
     number: number;
     items_count: number;
   } | null;
+}
+
+export interface ZkSyncBatch extends Omit<ZkSyncBatchesItem, 'tx_count'> {
+  start_block: number;
+  end_block: number;
+  l1_gas_price: string;
+  l1_tx_count: number;
+  l2_fair_gas_price: string;
+  l2_tx_count: number;
+  root_hash: string;
+}
+
+export type ZkSyncBatchTxs = {
+  items: Array<Transaction>;
+  next_page_params: null;
 }

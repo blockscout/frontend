@@ -96,7 +96,7 @@ import type { VerifiedContractsSorting } from 'types/api/verifiedContracts';
 import type { VisualizedContract } from 'types/api/visualization';
 import type { WithdrawalsResponse, WithdrawalsCounters } from 'types/api/withdrawals';
 import type { ZkEvmL2TxnBatch, ZkEvmL2TxnBatchesItem, ZkEvmL2TxnBatchesResponse, ZkEvmL2TxnBatchTxs } from 'types/api/zkEvmL2';
-import type { ZkSyncBatchesResponse } from 'types/api/zkSyncL2';
+import type { ZkSyncBatch, ZkSyncBatchesResponse, ZkSyncBatchTxs } from 'types/api/zkSyncL2';
 import type { MarketplaceAppOverview } from 'types/client/marketplace';
 import type { ArrayElement } from 'types/utils';
 
@@ -626,6 +626,7 @@ export const RESOURCES = {
     path: '/api/v2/zkevm/batches/:number',
     pathParams: [ 'number' as const ],
   },
+
   zkevm_l2_txn_batch_txs: {
     path: '/api/v2/transactions/zkevm-batch/:number',
     pathParams: [ 'number' as const ],
@@ -640,6 +641,17 @@ export const RESOURCES = {
 
   zksync_l2_txn_batches_count: {
     path: '/api/v2/zksync/batches/count',
+  },
+
+  zksync_l2_txn_batch: {
+    path: '/api/v2/zksync/batches/:number',
+    pathParams: [ 'number' as const ],
+  },
+
+  zksync_l2_txn_batch_txs: {
+    path: '/api/v2/transactions/zksync-batch/:number',
+    pathParams: [ 'number' as const ],
+    filterFields: [],
   },
 
   // SHIBARIUM L2
@@ -767,7 +779,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'l2_output_roots' | 'l2_withdrawals' | 'l2_txn_batches' | 'l2_deposits' |
 'shibarium_deposits' | 'shibarium_withdrawals' |
 'zkevm_l2_txn_batches' | 'zkevm_l2_txn_batch_txs' |
-'zksync_l2_txn_batches' |
+'zksync_l2_txn_batches' | 'zksync_l2_txn_batch_txs' |
 'withdrawals' | 'address_withdrawals' | 'block_withdrawals' |
 'watchlist' | 'private_tags_address' | 'private_tags_tx' |
 'domains_lookup' | 'addresses_lookup' | 'user_ops' | 'validators';
@@ -892,6 +904,8 @@ Q extends 'shibarium_withdrawals_count' ? number :
 Q extends 'shibarium_deposits_count' ? number :
 Q extends 'zksync_l2_txn_batches' ? ZkSyncBatchesResponse :
 Q extends 'zksync_l2_txn_batches_count' ? number :
+Q extends 'zksync_l2_txn_batch' ? ZkSyncBatch :
+Q extends 'zksync_l2_txn_batch_txs' ? ZkSyncBatchTxs :
 Q extends 'contract_security_audits' ? SmartContractSecurityAudits :
 Q extends 'addresses_lookup' ? EnsAddressLookupResponse :
 Q extends 'domain_info' ? EnsDomainDetailed :
