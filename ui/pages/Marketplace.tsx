@@ -91,7 +91,7 @@ const Marketplace = () => {
 
     tabs.unshift({
       id: MarketplaceCategory.FAVORITES,
-      title: () => <IconSvg name="star_outline" w={ 4 } h={ 4 }/>,
+      title: () => <IconSvg name="star_outline" w={ 5 } h={ 5 }/>,
       count: null,
       component: null,
     });
