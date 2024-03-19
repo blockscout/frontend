@@ -15,6 +15,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
 - [Blockchain parameters](ENVS.md#blockchain-parameters)
 - [API configuration](ENVS.md#api-configuration)
 - [UI configuration](ENVS.md#ui-configuration)
+  - [Theme](ENVS.md#theme)
   - [Homepage](ENVS.md#homepage)
   - [Sidebar](ENVS.md#sidebar)
   - [Footer](ENVS.md#footer)
@@ -101,6 +102,14 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
 &nbsp;
 
 ## UI configuration
+
+## Theme configuration
+
+| Variable | Type| Description | Compulsoriness | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_THEME_INITIAL_COLOR_MODE | `system \| light \| dark` | initial code mode | - | `light` | `light` |
+
+&nbsp;
 
 ### Homepage
 
