@@ -561,6 +561,9 @@ export const RESOURCES = {
   homepage_zkevm_latest_batch: {
     path: '/api/v2/main-page/zkevm/batches/latest-number',
   },
+  homepage_zksync_latest_batch: {
+    path: '/api/v2/main-page/zksync/batches/latest-number',
+  },
 
   // SEARCH
   quick_search: {
@@ -811,6 +814,7 @@ Q extends 'homepage_deposits' ? Array<OptimisticL2DepositsItem> :
 Q extends 'homepage_zkevm_l2_batches' ? { items: Array<ZkEvmL2TxnBatchesItem> } :
 Q extends 'homepage_indexing_status' ? IndexingStatus :
 Q extends 'homepage_zkevm_latest_batch' ? number :
+Q extends 'homepage_zksync_latest_batch' ? number :
 Q extends 'stats_counters' ? Counters :
 Q extends 'stats_lines' ? StatsCharts :
 Q extends 'stats_line' ? StatsChart :
