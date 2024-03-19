@@ -109,11 +109,11 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_THEME_INITIAL_COLOR_MODE | `system \| light \| dark` | initial code mode | - | `light` | `light` |
 | NEXT_PUBLIC_THEME_STATISTIC_BG_COLOR | - | - | - |  |  |
+| NEXT_PUBLIC_THEME_STATISTIC_BG_DARK_COLOR | - | - | - |  |  |
 | NEXT_PUBLIC_THEME_STATISTIC_TEXT_COLOR | - | - | - |  |  |
+| NEXT_PUBLIC_THEME_STATISTIC_TEXT_DARK_COLOR | - | - | - |  |  |
 | NEXT_PUBLIC_THEME_LINK_COLOR | - | - | - |  |  |
-| NEXT_PUBLIC_THEME_STATISTIC_BG_COLOR: | - | - | - | - |
-| NEXT_PUBLIC_THEME_STATISTIC_TEXT_COLOR: | - | - | - | - |
-| NEXT_PUBLIC_THEME_LINK_COLOR: | - | - | - | - |
+| NEXT_PUBLIC_THEME_LINK_DARK_COLOR | - | - | - |  |  |
 &nbsp;
 
 ### Homepage
