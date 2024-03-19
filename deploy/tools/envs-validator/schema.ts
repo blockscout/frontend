@@ -363,8 +363,6 @@ const schema = yup
 
     // II. Run-time ENVs
     // -----------------
-    // 0. Theme configuraton
-    NEXT_PUBLIC_THEME_INITIAL_COLOR_MODE: yup.string().oneOf([ 'system', 'light', 'dark' ]).optional(),
     // 1. App configuration
     NEXT_PUBLIC_APP_HOST: yup.string().required(),
     NEXT_PUBLIC_APP_PROTOCOL: yup.string().oneOf(protocols),
@@ -513,6 +511,15 @@ const schema = yup
     NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID: yup.string(),
     NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN: yup.string(),
     NEXT_PUBLIC_GROWTH_BOOK_CLIENT_KEY: yup.string(),
+
+    // 7. Theme configuraton
+    NEXT_PUBLIC_THEME_INITIAL_COLOR_MODE: yup.string().oneOf([ 'system', 'light', 'dark' ]).optional(),
+    NEXT_PUBLIC_THEME_STATISTIC_BG_COLOR: yup.string().optional(),
+    NEXT_PUBLIC_THEME_STATISTIC_TEXT_COLOR: yup.string().optional(),
+    NEXT_PUBLIC_THEME_LINK_COLOR: yup.string().optional(),
+    NEXT_PUBLIC_THEME_STATISTIC_BG_DARK_COLOR: yup.string().optional(),
+    NEXT_PUBLIC_THEME_STATISTIC_TEXT_DARK_COLOR: yup.string().optional(),
+    NEXT_PUBLIC_THEME_LINK_DARK_COLOR: yup.string().optional(),
 
     // Misc
     NEXT_PUBLIC_USE_NEXT_JS_PROXY: yup.boolean(),

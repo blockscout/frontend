@@ -27,6 +27,12 @@ const HOMEPAGE_PLATE_BACKGROUND_DEFAULT = 'radial-gradient(103.03% 103.03% at 0%
 const UI = Object.freeze({
   theme: {
     initialColorMode: (getEnvValue('NEXT_PUBLIC_THEME_INITIAL_COLOR_MODE') as ('system' | 'light' | 'dark' | undefined)) || 'system',
+    statisticBgColor: getEnvValue('NEXT_PUBLIC_THEME_STATISTIC_BG_COLOR'),
+    statisticBgDarkColor: getEnvValue('NEXT_PUBLIC_THEME_STATISTIC_BG_DARK_COLOR'),
+    statisticTextColor: getEnvValue('NEXT_PUBLIC_THEME_STATISTIC_TEXT_COLOR'),
+    statisticTextDarkColor: getEnvValue('NEXT_PUBLIC_THEME_STATISTIC_TEXT_DARK_COLOR'),
+    linkColor: getEnvValue('NEXT_PUBLIC_THEME_LINK_COLOR'),
+    linkDarkColor: getEnvValue('NEXT_PUBLIC_THEME_LINK_DARK_COLOR'),
   },
   sidebar: {
     logo: {
