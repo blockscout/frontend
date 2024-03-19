@@ -5,6 +5,7 @@ import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { getRecentSearchKeywords } from 'lib/recentSearchKeywords';
+import SearchBarBackdrop from 'ui/snippets/searchBar/SearchBarBackdrop';
 import SearchBarInput from 'ui/snippets/searchBar/SearchBarInput';
 import SearchBarRecentKeywords from 'ui/snippets/searchBar/SearchBarRecentKeywords';
 
@@ -66,33 +67,39 @@ const SearchResultsInput = ({ searchTerm, handleSubmit, handleSearchTermChange }
     };
   }, [ calculateMenuWidth ]);
 
+  const isSuggestOpen = isOpen && recentSearchKeywords.length > 0 && searchTerm.trim().length === 0;
+
   return (
-    <Popover
-      isOpen={ isOpen && recentSearchKeywords.length > 0 && searchTerm.trim().length === 0 }
-      autoFocus={ false }
-      onClose={ onClose }
-      placement="bottom-start"
-      offset={ isMobile ? [ 16, -12 ] : undefined }
-      isLazy
-    >
-      <PopoverTrigger>
-        <SearchBarInput
-          ref={ inputRef }
-          onChange={ handleSearchTermChange }
-          onSubmit={ handleSubmit }
-          onFocus={ handleFocus }
-          onBlur={ handleBlur }
-          onHide={ handelHide }
-          onClear={ handleClear }
-          value={ searchTerm }
-        />
-      </PopoverTrigger>
-      <PopoverContent w={ `${ menuWidth.current }px` } maxH={{ base: '300px', lg: '500px' }} overflowY="scroll" ref={ menuRef }>
-        <PopoverBody py={ 6 }>
-          <SearchBarRecentKeywords onClick={ handleSearchTermChange } onClear={ onClose }/>
-        </PopoverBody>
-      </PopoverContent>
-    </Popover>
+    <>
+      <Popover
+        isOpen={ isSuggestOpen }
+        autoFocus={ false }
+        onClose={ onClose }
+        placement="bottom-start"
+        offset={ isMobile ? [ 16, -12 ] : undefined }
+        isLazy
+      >
+        <PopoverTrigger>
+          <SearchBarInput
+            ref={ inputRef }
+            onChange={ handleSearchTermChange }
+            onSubmit={ handleSubmit }
+            onFocus={ handleFocus }
+            onBlur={ handleBlur }
+            onHide={ handelHide }
+            onClear={ handleClear }
+            value={ searchTerm }
+            isSuggestOpen={ isSuggestOpen }
+          />
+        </PopoverTrigger>
+        <PopoverContent w={ `${ menuWidth.current }px` } maxH={{ base: '300px', lg: '500px' }} overflowY="scroll" ref={ menuRef }>
+          <PopoverBody py={ 6 }>
+            <SearchBarRecentKeywords onClick={ handleSearchTermChange } onClear={ onClose }/>
+          </PopoverBody>
+        </PopoverContent>
+      </Popover>
+      <SearchBarBackdrop isOpen={ isSuggestOpen }/>
+    </>
   );
 };
 
