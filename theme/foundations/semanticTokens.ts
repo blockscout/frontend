@@ -1,3 +1,5 @@
+import config from 'configs/app';
+
 const semanticTokens = {
   colors: {
     divider: {
@@ -13,8 +15,8 @@ const semanticTokens = {
       _dark: 'gray.400',
     },
     link: {
-      'default': 'blue.600',
-      _dark: 'blue.300',
+      'default': config.UI.theme.linkColor || 'blue.600',
+      _dark: config.UI.theme.linkDarkColor || 'blue.300',
     },
     link_hovered: {
       'default': 'blue.400',

@@ -25,6 +25,15 @@ const hiddenLinks = (() => {
 const HOMEPAGE_PLATE_BACKGROUND_DEFAULT = 'radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%), var(--chakra-colors-blue-400)';
 
 const UI = Object.freeze({
+  theme: {
+    initialColorMode: (getEnvValue('NEXT_PUBLIC_THEME_INITIAL_COLOR_MODE') as ('system' | 'light' | 'dark' | undefined)) || 'system',
+    statisticBgColor: getEnvValue('NEXT_PUBLIC_THEME_STATISTIC_BG_COLOR'),
+    statisticBgDarkColor: getEnvValue('NEXT_PUBLIC_THEME_STATISTIC_BG_DARK_COLOR'),
+    statisticTextColor: getEnvValue('NEXT_PUBLIC_THEME_STATISTIC_TEXT_COLOR'),
+    statisticTextDarkColor: getEnvValue('NEXT_PUBLIC_THEME_STATISTIC_TEXT_DARK_COLOR'),
+    linkColor: getEnvValue('NEXT_PUBLIC_THEME_LINK_COLOR'),
+    linkDarkColor: getEnvValue('NEXT_PUBLIC_THEME_LINK_DARK_COLOR'),
+  },
   sidebar: {
     logo: {
       'default': getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_LOGO'),
@@ -44,8 +53,10 @@ const UI = Object.freeze({
     frontendCommit: getEnvValue('NEXT_PUBLIC_GIT_COMMIT_SHA'),
   },
   homepage: {
+    title: getEnvValue('NEXT_PUBLIC_HOMEPAGE_TITLE') || 'blockchain explorer',
     charts: parseEnvJson<Array<ChainIndicatorId>>(getEnvValue('NEXT_PUBLIC_HOMEPAGE_CHARTS')) || [],
     plate: {
+      title: getEnvValue('NEXT_PUBLIC_HOMEPAGE_PLATE_TITLE') || `${ getEnvValue('NEXT_PUBLIC_NETWORK_NAME') } explorer`,
       background: getEnvValue('NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND') || HOMEPAGE_PLATE_BACKGROUND_DEFAULT,
       textColor: getEnvValue('NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR') || 'white',
     },

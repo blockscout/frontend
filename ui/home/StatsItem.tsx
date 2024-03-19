@@ -2,6 +2,7 @@ import type { SystemStyleObject } from '@chakra-ui/react';
 import { Skeleton, Flex, useColorModeValue, chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import config from 'configs/app';
 import breakpoints from 'theme/foundations/breakpoints';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
@@ -27,12 +28,15 @@ const StatsItem = ({ icon, title, value, className, tooltip, url, isLoading }: P
     [`@media screen and (min-width: ${ breakpoints.lg }) and (max-width: ${ LARGEST_BREAKPOINT })`]: { alignItems: 'center' },
   };
 
-  const bgColor = useColorModeValue('blue.50', 'blue.800');
+  const bgColor = useColorModeValue(config.UI.theme.statisticBgColor, config.UI.theme.statisticBgDarkColor);
+  const defaultBgColor = useColorModeValue('blue.50', 'blue.800');
+  const textColor = useColorModeValue(config.UI.theme.statisticTextColor, config.UI.theme.statisticTextDarkColor);
+  const defaultTextColor = useColorModeValue('black', 'white');
   const loadingBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
   return (
     <Flex
-      backgroundColor={ isLoading ? loadingBgColor : bgColor }
+      backgroundColor={ isLoading ? loadingBgColor : bgColor || defaultBgColor }
       padding={ 3 }
       borderRadius="md"
       flexDirection="row"
@@ -57,7 +61,7 @@ const StatsItem = ({ icon, title, value, className, tooltip, url, isLoading }: P
         <Skeleton isLoaded={ !isLoading } color="text_secondary" fontSize="xs" lineHeight="16px" borderRadius="base">
           <span>{ title }</span>
         </Skeleton>
-        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 } fontSize="md" color={ useColorModeValue('black', 'white') } borderRadius="base">
+        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 } fontSize="md" color={ textColor || defaultTextColor } borderRadius="base">
           { typeof value === 'string' ? <span>{ value }</span> : value }
         </Skeleton>
       </Flex>

@@ -15,6 +15,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
 - [Blockchain parameters](ENVS.md#blockchain-parameters)
 - [API configuration](ENVS.md#api-configuration)
 - [UI configuration](ENVS.md#ui-configuration)
+  - [Theme](ENVS.md#theme)
   - [Homepage](ENVS.md#homepage)
   - [Sidebar](ENVS.md#sidebar)
   - [Footer](ENVS.md#footer)
@@ -102,6 +103,19 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
 
 ## UI configuration
 
+## Theme configuration
+
+| Variable | Type| Description | Compulsoriness | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_THEME_INITIAL_COLOR_MODE | `system \| light \| dark` | initial code mode | - | `light` | `light` |
+| NEXT_PUBLIC_THEME_STATISTIC_BG_COLOR | - | - | - |  |  |
+| NEXT_PUBLIC_THEME_STATISTIC_TEXT_COLOR | - | - | - |  |  |
+| NEXT_PUBLIC_THEME_LINK_COLOR | - | - | - |  |  |
+| NEXT_PUBLIC_THEME_STATISTIC_BG_COLOR: | - | - | - | - |
+| NEXT_PUBLIC_THEME_STATISTIC_TEXT_COLOR: | - | - | - | - |
+| NEXT_PUBLIC_THEME_LINK_COLOR: | - | - | - | - |
+&nbsp;
+
 ### Homepage
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
@@ -110,6 +124,8 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
 | NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR | `string` | Text color of the hero plate on the homepage (escape "#" symbol if you use HEX color codes or use rgba-value instead) | - | `white` | `\#DCFE76` |
 | NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND | `string` | Background css value for hero plate on the homepage (escape "#" symbol if you use HEX color codes or use rgba-value instead) | - | `radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%), var(--chakra-colors-blue-400)` | `radial-gradient(at 15% 86%, hsla(350,65%,70%,1) 0px, transparent 50%)` \| `no-repeat bottom 20% right 0px/100% url(https://placekitten/1400/200)` |
 | NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME | `boolean` | Set to false if average block time is useless for the network | - | `true` | `false` |
+| NEXT_PUBLIC_HOMEPAGE_TITLE | `string` | Tab title for homepage | - | - | 'blockchain explorer' |
+| NEXT_PUBLIC_HOMEPAGE_PLATE_TITLE | `string` | Plate title in homepage | - | - | `${NEXT_PUBLIC_NETWORK_NAME} explorer` |
 
 &nbsp;
 

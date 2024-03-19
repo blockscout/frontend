@@ -1,7 +1,9 @@
 import type { Route } from 'nextjs-routes';
 
+import config from 'configs/app';
+
 const TEMPLATE_MAP: Record<Route['pathname'], string> = {
-  '/': 'blockchain explorer',
+  '/': config.UI.homepage.title,
   '/txs': 'transactions',
   '/txs/kettle/[hash]': 'kettle %hash% transactions',
   '/tx/[hash]': 'transaction %hash%',
