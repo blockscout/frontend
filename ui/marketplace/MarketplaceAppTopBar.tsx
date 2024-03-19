@@ -1,4 +1,4 @@
-import { chakra, Flex, Tooltip, Skeleton, useBoolean } from '@chakra-ui/react';
+import { chakra, Flex, Tooltip, Skeleton, useBoolean, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { MarketplaceAppOverview } from 'types/client/marketplace';
@@ -7,6 +7,7 @@ import { ContractListTypes } from 'types/client/marketplace';
 import { route } from 'nextjs-routes';
 
 import { useAppContext } from 'lib/contexts/app';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
@@ -26,6 +27,7 @@ type Props = {
 const MarketplaceAppTopBar = ({ data, isLoading, isWalletConnected, securityReport }: Props) => {
   const [ showContractList, setShowContractList ] = useBoolean(false);
   const appProps = useAppContext();
+  const isMobile = useIsMobile();
 
   const goBackUrl = React.useMemo(() => {
     if (appProps.referrer && appProps.referrer.includes('/apps') && !appProps.referrer.includes('/apps/')) {
@@ -48,17 +50,24 @@ const MarketplaceAppTopBar = ({ data, isLoading, isWalletConnected, securityRepo
             <IconSvg name="arrows/east" boxSize={ 6 } transform="rotate(180deg)" margin="auto" color="gray.400"/>
           </LinkInternal>
         </Tooltip>
-        <Skeleton width={{ base: '100%', md: 'auto' }} order={{ base: 4, md: 2 }} isLoaded={ !isLoading }>
+        <Skeleton width={{ base: '100%', md: 'auto' }} order={{ base: 5, md: 2 }} isLoaded={ !isLoading }>
           <MarketplaceAppAlert internalWallet={ data?.internalWallet } isWalletConnected={ isWalletConnected }/>
         </Skeleton>
         <Skeleton order={{ base: 2, md: 3 }} isLoaded={ !isLoading }>
           <MarketplaceAppInfo data={ data }/>
         </Skeleton>
-        <Skeleton order={{ base: 2, md: 3 }} isLoaded={ !isLoading }>
-          <AppSecurityReport securityReport={ securityReport } showContractList={ setShowContractList.on }/>
-        </Skeleton>
+        { (securityReport || isLoading) && (
+          <Box order={{ base: 3, md: 4 }}>
+            <AppSecurityReport
+              securityReport={ securityReport }
+              showContractList={ setShowContractList.on }
+              isLoading={ isLoading }
+              onlyIcon={ isMobile }
+            />
+          </Box>
+        ) }
         <LinkExternal
-          order={{ base: 3, md: 4 }}
+          order={{ base: 4, md: 5 }}
           href={ data?.url }
           variant="subtle"
           fontSize="sm"

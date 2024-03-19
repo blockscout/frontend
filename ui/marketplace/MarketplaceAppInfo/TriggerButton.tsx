@@ -5,9 +5,10 @@ import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   onClick: () => void;
+  onlyIcon?: boolean;
 }
 
-const TriggerButton = ({ onClick }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
+const TriggerButton = ({ onClick, onlyIcon }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
   return (
     <Button
       ref={ ref }
@@ -17,11 +18,11 @@ const TriggerButton = ({ onClick }: Props, ref: React.ForwardedRef<HTMLButtonEle
       onClick={ onClick }
       aria-label="Show project info"
       fontWeight={ 500 }
-      px={ 2 }
+      px={ onlyIcon ? 1 : 2 }
       h="32px"
     >
-      <IconSvg name="info" boxSize={ 6 } mr={ 1 }/>
-      <span>Info</span>
+      <IconSvg name="info" boxSize={ 6 } mr={ onlyIcon ? 0 : 1 }/>
+      { !onlyIcon && <span>Info</span> }
     </Button>
   );
 };

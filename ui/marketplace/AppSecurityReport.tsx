@@ -13,9 +13,10 @@ type Props = {
   height?: string | undefined;
   showContractList: () => void;
   isLoading?: boolean;
+  onlyIcon?: boolean;
 }
 
-const AppSecurityReport = ({ securityReport, height, showContractList, isLoading }: Props) => {
+const AppSecurityReport = ({ securityReport, height, showContractList, isLoading, onlyIcon }: Props) => {
   if (!securityReport && !isLoading) {
     return null;
   }
@@ -32,6 +33,7 @@ const AppSecurityReport = ({ securityReport, height, showContractList, isLoading
       isLoading={ isLoading }
       height={ height }
       score={ securityScore }
+      onlyIcon={ onlyIcon }
       popoverContent={ (
         <>
           <Box mb={ 5 }>
