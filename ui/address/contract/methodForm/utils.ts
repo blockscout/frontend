@@ -2,7 +2,7 @@ import _set from 'lodash/set';
 
 import type { SmartContractMethodInput } from 'types/api/contract';
 
-export type ContractMethodFormFields = Record<string, string | undefined>;
+export type ContractMethodFormFields = Record<string, string | boolean | number | undefined>;
 
 export const INT_REGEXP = /^(u)?int(\d+)?$/i;
 
