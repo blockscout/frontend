@@ -8,7 +8,7 @@ import { useAppContext } from 'lib/contexts/app';
 import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { TX_ZKEVM_L2 } from 'stubs/tx';
+import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import { ZKSYNC_L2_TXN_BATCH } from 'stubs/zkSyncL2';
 import TextAd from 'ui/shared/ad/TextAd';
@@ -38,7 +38,7 @@ const ZkSyncL2TxnBatch = () => {
     pathParams: { number },
     options: {
       enabled: Boolean(!batchQuery.isPlaceholderData && batchQuery.data?.number && tab === 'txs'),
-      placeholderData: generateListStub<'zksync_l2_txn_batch_txs'>(TX_ZKEVM_L2, 50, { next_page_params: null }),
+      placeholderData: generateListStub<'zksync_l2_txn_batch_txs'>(TX, 50, { next_page_params: null }),
     },
   });
 
