@@ -22,7 +22,7 @@ import type { SolidityscanReport as TSolidityscanReport } from 'types/api/contra
 // This icon doesn't work properly when it is in the sprite
 // Probably because of the gradient
 // eslint-disable-next-line no-restricted-imports
-import solidityScanIcon from 'icons/solidity_scan.svg';
+import solidityScanIcon from 'icons/brands/solidity_scan.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import { SOLIDITYSCAN_REPORT } from 'stubs/contract';
 import IconSvg from 'ui/shared/IconSvg';
