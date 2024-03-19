@@ -113,6 +113,7 @@
 	| "social/telegram_filled"
 	| "social/tweet"
 	| "social/twitter_filled"
+	| "solidity_scan"
 	| "star_filled"
 	| "star_outline"
 	| "stats"

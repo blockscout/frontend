@@ -13,18 +13,23 @@ import {
   Skeleton,
   Center,
   useColorModeValue,
+  Icon,
 } from '@chakra-ui/react';
 import React from 'react';
 
-import { SolidityscanReport } from 'types/api/contract';
+import type { SolidityscanReport as TSolidityscanReport } from 'types/api/contract';
 
+// This icon doesn't work properly when it is in the sprite
+// Probably because of the gradient
+// eslint-disable-next-line no-restricted-imports
+import solidityScanIcon from 'icons/brands/solidity_scan.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import { SOLIDITYSCAN_REPORT } from 'stubs/contract';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/LinkExternal';
 
 type DistributionItem = {
-  id: keyof SolidityscanReport['scan_report']['scan_summary']['issue_severity_distribution'];
+  id: keyof TSolidityscanReport['scan_report']['scan_summary']['issue_severity_distribution'];
   name: string;
   color: string;
 }
@@ -45,7 +50,7 @@ interface Props {
 
 type ItemProps = {
   item: DistributionItem;
-  vulnerabilities: SolidityscanReport['scan_report']['scan_summary']['issue_severity_distribution'];
+  vulnerabilities: TSolidityscanReport['scan_report']['scan_summary']['issue_severity_distribution'];
   vulnerabilitiesCount: number;
 }
 
@@ -133,7 +138,11 @@ const SolidityscanReport = ({ className, hash }: Props) => {
       </PopoverTrigger>
       <PopoverContent w={{ base: '100vw', lg: '328px' }}>
         <PopoverBody px="26px" py="20px" fontSize="sm">
-          <Box mb={ 5 }>Contract analyzed for 140+ vulnerability patterns by SolidityScan</Box>
+          <Box mb={ 5 } lineHeight="25px">
+            Contract analyzed for 140+ vulnerability patterns by
+            <Icon as={ solidityScanIcon } mr={ 1 } ml="6px" w="23px" h="20px" display="inline-block" verticalAlign="middle"/>
+            <Text fontWeight={ 600 } display="inline-block">SolidityScan</Text>
+          </Box>
           <Flex alignItems="center" mb={ 5 }>
             <Box
               w={ 12 }
