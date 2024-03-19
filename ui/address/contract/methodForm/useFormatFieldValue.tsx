@@ -18,7 +18,7 @@ export default function useFormatFieldValue({ argType, argTypeMatchInt }: Params
 
     if (argTypeMatchInt) {
       const formattedString = value.replace(/\s/g, '');
-      return formattedString;
+      return parseInt(formattedString);
     }
 
     if (argType === 'bool') {
@@ -26,11 +26,11 @@ export default function useFormatFieldValue({ argType, argTypeMatchInt }: Params
 
       switch (formattedValue) {
         case 'true': {
-          return 'true';
+          return true;
         }
 
         case 'false':{
-          return 'false';
+          return false;
         }
 
         default:
