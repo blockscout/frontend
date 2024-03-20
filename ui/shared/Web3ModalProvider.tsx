@@ -26,6 +26,7 @@ const init = () => {
         '--w3m-border-radius-master': '2px',
         '--w3m-z-index': zIndices.modal,
       },
+      featuredWalletIds: [],
     });
   } catch (error) {}
 };

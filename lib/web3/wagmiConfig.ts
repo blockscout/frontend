@@ -4,7 +4,6 @@ import type { CreateConfigParameters } from 'wagmi';
 
 import config from 'configs/app';
 import currentChain from 'lib/web3/currentChain';
-
 const feature = config.features.blockchainInteraction;
 
 const wagmiConfig = (() => {
@@ -17,6 +16,7 @@ const wagmiConfig = (() => {
 
     const wagmiConfig = defaultWagmiConfig({
       chains,
+      multiInjectedProviderDiscovery: true,
       transports: {
         [currentChain.id]: http(),
       },
