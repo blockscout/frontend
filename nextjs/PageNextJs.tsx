@@ -32,11 +32,18 @@ const PageNextJs = (props: Props) => {
 
         { /* OG TAGS */ }
         <meta property="og:title" content={ opengraph.title }/>
-        { opengraph.description && <meta property="og:description" content={ opengraph.description }/> }
-        <meta property="og:image" content={ opengraph.imageUrl }/>
-        <meta name="twitter:card" content="summary_large_image"/>
-        <meta property="twitter:image" content={ opengraph.imageUrl }/>
+        <meta property="og:description" content={ opengraph.description }/>
+        <meta property="og:image" content={ opengraph.url.href }/>
         <meta property="og:type" content="website"/>
+        <meta property="og:url" content={ opengraph.url.origin }/>
+
+        { /* Twitter Meta Tags  */ }
+        <meta name="twitter:card" content="summary_large_image"/>
+        <meta property="twitter:domain" content={ opengraph.url.host }/>
+        <meta property="twitter:url" content={ opengraph.url.origin }/>
+        <meta name="twitter:title" content={ opengraph.title }/>
+        <meta name="twitter:description" content={ opengraph.description }/>
+        <meta name="twitter:image" content={ opengraph.url.href }/>
       </Head>
       { props.children }
     </>
