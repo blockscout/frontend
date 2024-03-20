@@ -67,7 +67,7 @@ const NovesActionSnippet: FC<Props> = ({ item, isLoaded }) => {
           flip={ false }
         >
           <PopoverTrigger>
-            <Box display="flex" gap={ 2 } cursor="pointer" w="fit-content" maxW="100%">
+            <Box display="flex" gap={ 2 } cursor="pointer" w="fit-content" maxW="100%" alignItems="center">
               <IconSvg
                 name="lightning"
                 height="5"
