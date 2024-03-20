@@ -12,6 +12,7 @@ export interface NovesClassificationData {
   description: string;
   sent: Array<NovesSentReceived>;
   received: Array<NovesSentReceived>;
+  approved?: Approved;
   protocol?: {
     name: string | null;
   };
@@ -19,6 +20,13 @@ export interface NovesClassificationData {
     type: string | null;
   };
   message?: string;
+}
+
+export interface Approved {
+  amount: string;
+  spender: string;
+  token?: NovesToken;
+  nft?: NovesNft;
 }
 
 export interface NovesSentReceived {

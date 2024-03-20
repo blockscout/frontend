@@ -11,7 +11,7 @@ import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import TxInterpretation from 'ui/shared/tx/interpretation/TxInterpretation';
 
-import NovesSubHeadingInterpretation from './assetFlows/components/NovesSubHeadingInterpretation';
+import { createNovesSummaryObject } from './assetFlows/utils/createNovesSummaryObject';
 import type { TxQuery } from './useTxQuery';
 
 type Props = {
@@ -52,11 +52,14 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
     const hasViewAllInterpretationsLink =
       !txInterpretationQuery.isPlaceholderData && txInterpretationQuery.data?.data.summaries && txInterpretationQuery.data?.data.summaries.length > 1;
 
-    if (hasNovesInterpretation) {
+    if (hasNovesInterpretation && novesInterpretationQuery.data) {
+      const novesSummary = createNovesSummaryObject(novesInterpretationQuery.data);
+
       return (
-        <NovesSubHeadingInterpretation
-          data={ novesInterpretationQuery.data }
+        <TxInterpretation
+          summary={ novesSummary }
           isLoading={ novesInterpretationQuery.isPlaceholderData }
+          fontSize="lg"
         />
       );
     } else if (hasInternalInterpretation) {
