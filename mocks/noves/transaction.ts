@@ -89,7 +89,7 @@ export const tokenData: TokensData = {
       address: '0x1bfe4298796198f8664b18a98640cec7c89b5baa',
       id: undefined,
     },
-    ETH: { name: 'ETH', symbol: null, address: 'ETH', id: undefined },
+    ETH: { name: 'ETH', symbol: null, address: '', id: undefined },
   },
   bySymbol: {
     PQR: {
@@ -98,6 +98,6 @@ export const tokenData: TokensData = {
       address: '0x1bfe4298796198f8664b18a98640cec7c89b5baa',
       id: undefined,
     },
-    'null': { name: 'ETH', symbol: null, address: 'ETH', id: undefined },
+    'null': { name: 'ETH', symbol: null, address: '', id: undefined },
   },
 };

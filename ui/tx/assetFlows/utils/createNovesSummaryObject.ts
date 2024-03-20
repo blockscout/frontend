@@ -37,7 +37,7 @@ export const createNovesSummaryObject = (translateData: NovesResponseData) => {
   // Filter symbols if they're already matched by name
   tokensMatchedBySymbol = tokensMatchedBySymbol.filter(symbol => !tokensMatchedByName.includes(tokenData.bySymbol[symbol]?.name || ''));
 
-  const summaryValues = [];
+  const summaryValues: Array<SummaryValues> = [];
 
   if (idsMatched.length) {
     parsedDescription = removeIds(tokensMatchedByName, tokensMatchedBySymbol, idsMatched, tokenData, parsedDescription);
