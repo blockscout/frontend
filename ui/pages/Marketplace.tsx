@@ -72,7 +72,7 @@ const Marketplace = () => {
   } = useMarketplace();
 
   const isMobile = useIsMobile();
-  const { value: isExperiment } = useFeatureValue('security_score_exp', true);
+  const { value: isExperiment } = useFeatureValue('security_score_exp', false);
 
   const categoryTabs = React.useMemo(() => {
     const tabs: Array<TabItem> = categories.map(category => ({
