@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import { SolidityscanReport } from 'types/api/contract';
+import type { SolidityscanReport as TSolidityscanReport } from 'types/api/contract';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { SOLIDITYSCAN_REPORT } from 'stubs/contract';
@@ -24,7 +24,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/LinkExternal';
 
 type DistributionItem = {
-  id: keyof SolidityscanReport['scan_report']['scan_summary']['issue_severity_distribution'];
+  id: keyof TSolidityscanReport['scan_report']['scan_summary']['issue_severity_distribution'];
   name: string;
   color: string;
 }
@@ -45,7 +45,7 @@ interface Props {
 
 type ItemProps = {
   item: DistributionItem;
-  vulnerabilities: SolidityscanReport['scan_report']['scan_summary']['issue_severity_distribution'];
+  vulnerabilities: TSolidityscanReport['scan_report']['scan_summary']['issue_severity_distribution'];
   vulnerabilitiesCount: number;
 }
 

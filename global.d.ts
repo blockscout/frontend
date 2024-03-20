@@ -1,3 +1,5 @@
+import type { WalletProvider } from 'types/web3';
+
 type CPreferences = {
   zone: string;
   width: string;
@@ -6,8 +8,7 @@ type CPreferences = {
 
 declare global {
   export interface Window {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ethereum?: any;
+    ethereum?: WalletProvider | undefined;
     coinzilla_display: Array<CPreferences>;
     ga?: {
       getAll: () => Array<{ get: (prop: string) => string }>;
@@ -26,3 +27,5 @@ declare global {
     }
   }
 }
+
+export {};

@@ -1,6 +1,7 @@
 import { test as base, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
-import type { WindowProvider } from 'wagmi';
+
+import type { WalletProvider } from 'types/web3';
 
 import { buildExternalAssetFilePath } from 'configs/app/utils';
 import { FOOTER_LINKS } from 'mocks/config/footerLinks';
@@ -36,7 +37,7 @@ base.describe('with custom links, max cols', () => {
       window.ethereum = {
         isMetaMask: true,
         _events: {},
-      } as WindowProvider;
+      } as WalletProvider;
     });
 
     await page.route(INDEXING_ALERT_API_URL, (route) => route.fulfill({
@@ -95,7 +96,7 @@ base.describe('without custom links', () => {
       window.ethereum = {
         isMetaMask: true,
         _events: {},
-      } as WindowProvider;
+      } as WalletProvider;
     });
     await page.route(BACKEND_VERSION_API_URL, (route) => {
       return route.fulfill({
@@ -118,7 +119,7 @@ base.describe('without custom links', () => {
     await page.evaluate(() => {
       window.ethereum = {
         providers: [ { isMetaMask: true, _events: {} } ],
-      } as WindowProvider;
+      } as WalletProvider;
     });
 
     await page.route(INDEXING_ALERT_API_URL, (route) => route.fulfill({
