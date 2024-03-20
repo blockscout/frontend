@@ -37,7 +37,7 @@ const AppSecurityReport = ({ securityReport, height, showContractList, isLoading
       popoverContent={ (
         <>
           <Box mb={ 5 }>
-            { solidityScanContractsNumber } smart contracts were evaluated to determine
+            { solidityScanContractsNumber } smart contract{ solidityScanContractsNumber === 1 ? ' was' : 's were' } evaluated to determine
             this protocol{ apos }s overall security score on the { config.chain.name } network.
           </Box>
           <SolidityscanReportScore score={ securityScore }/>
