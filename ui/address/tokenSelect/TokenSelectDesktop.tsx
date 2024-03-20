@@ -1,4 +1,4 @@
-import { useColorModeValue, Popover, PopoverTrigger, PopoverContent, PopoverBody, useDisclosure } from '@chakra-ui/react';
+import { Popover, PopoverTrigger, PopoverContent, PopoverBody, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
 import type { FormattedData } from './types';
@@ -15,8 +15,6 @@ interface Props {
 const TokenSelectDesktop = ({ data, isLoading }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
 
-  const bgColor = useColorModeValue('white', 'gray.900');
-
   const result = useTokenSelect(data);
 
   return (
@@ -25,7 +23,7 @@ const TokenSelectDesktop = ({ data, isLoading }: Props) => {
         <TokenSelectButton isOpen={ isOpen } onClick={ onToggle } data={ result.data } isLoading={ isLoading }/>
       </PopoverTrigger>
       <PopoverContent w="355px" maxH="450px" overflowY="scroll">
-        <PopoverBody px={ 4 } py={ 6 } bgColor={ bgColor } boxShadow="2xl" >
+        <PopoverBody px={ 4 } py={ 6 } boxShadow="2xl" >
           <TokenSelectMenu { ...result }/>
         </PopoverBody>
       </PopoverContent>

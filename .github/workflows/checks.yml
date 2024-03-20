@@ -95,6 +95,8 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup node
         uses: actions/setup-node@v4
@@ -115,7 +117,7 @@ jobs:
         run: yarn --frozen-lockfile --ignore-optional
 
       - name: Run Jest
-        run: yarn test:jest --onlyChanged=${{ github.event_name == 'pull_request' }} --passWithNoTests
+        run: yarn test:jest ${{ github.event_name == 'pull_request' && '--changedSince=origin/main' || '' }} --passWithNoTests
 
   pw_affected_tests:
     name: Resolve affected Playwright tests

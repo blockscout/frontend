@@ -11,8 +11,8 @@ import getResourceErrorPayload from 'lib/errors/getResourceErrorPayload';
 import AppErrorIcon from './AppErrorIcon';
 import AppErrorTitle from './AppErrorTitle';
 import AppErrorBlockConsensus from './custom/AppErrorBlockConsensus';
-import AppErrorInvalidTxHash from './custom/AppErrorInvalidTxHash';
 import AppErrorTooManyRequests from './custom/AppErrorTooManyRequests';
+import AppErrorTxNotFound from './custom/AppErrorTxNotFound';
 
 interface Props {
   className?: string;
@@ -47,11 +47,11 @@ const AppError = ({ error, className }: Props) => {
             undefined;
     const statusCode = getErrorCauseStatusCode(error) || getErrorObjStatusCode(error);
 
-    const isInvalidTxHash = cause && 'resource' in cause && cause.resource === 'tx' && statusCode === 422;
+    const isInvalidTxHash = cause && 'resource' in cause && cause.resource === 'tx' && statusCode === 404;
     const isBlockConsensus = messageInPayload?.includes('Block lost consensus');
 
     if (isInvalidTxHash) {
-      return <AppErrorInvalidTxHash/>;
+      return <AppErrorTxNotFound/>;
     }
 
     if (isBlockConsensus) {

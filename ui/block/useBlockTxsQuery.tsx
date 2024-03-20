@@ -33,7 +33,7 @@ interface Params {
   tab: string;
 }
 
-export default function useBlockTxQuery({ heightOrHash, blockQuery, tab }: Params): BlockTxsQuery {
+export default function useBlockTxsQuery({ heightOrHash, blockQuery, tab }: Params): BlockTxsQuery {
   const [ isRefetchEnabled, setRefetchEnabled ] = React.useState(false);
 
   const apiQuery = useQueryWithPages({

@@ -16,7 +16,7 @@ const ValidatorStatus = ({ state, isLoading }: Props) => {
     case 'probation':
       return <StatusTag type="pending" text="Probation" isLoading={ isLoading }/>;
     case 'inactive':
-      return <StatusTag type="error" text="Failed" isLoading={ isLoading }/>;
+      return <StatusTag type="error" text="Inactive" isLoading={ isLoading }/>;
   }
 };
 

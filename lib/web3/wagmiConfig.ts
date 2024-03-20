@@ -27,6 +27,7 @@ const wagmiConfig = (() => {
         url: config.app.baseUrl,
         icons: [ config.UI.sidebar.icon.default ].filter(Boolean),
       },
+      enableEmail: true,
     });
 
     return wagmiConfig;

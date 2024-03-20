@@ -9,10 +9,10 @@ const TokenBalancesItem = ({ name, value, isLoading }: {name: string; value: str
 
   return (
     <Flex p={ 5 } bgColor={ bgColor } borderRadius="16px" alignItems="center">
-      <IconSvg name="wallet" boxSize="30px" mr={ 3 }/>
+      <IconSvg name="wallet" boxSize="30px" mr={ 3 } flexShrink={ 0 }/>
       <Box>
         <Text variant="secondary" fontSize="xs">{ name }</Text>
-        <Skeleton isLoaded={ !isLoading } fontWeight="500">{ value }</Skeleton>
+        <Skeleton isLoaded={ !isLoading } fontWeight="500" whiteSpace="pre-wrap" wordBreak="break-word">{ value }</Skeleton>
       </Box>
     </Flex>
   );

@@ -12,6 +12,7 @@ import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import { space } from 'lib/html-entities';
 import { currencyUnits } from 'lib/units';
+import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
@@ -25,6 +26,8 @@ import RawInputData from 'ui/shared/RawInputData';
 import UserOpSponsorType from 'ui/shared/userOps/UserOpSponsorType';
 import UserOpStatus from 'ui/shared/userOps/UserOpStatus';
 import Utilization from 'ui/shared/Utilization/Utilization';
+
+import UserOpDetailsActions from './UserOpDetailsActions';
 
 interface Props {
   query: UseQueryResult<UserOp, ResourceError>;
@@ -46,7 +49,7 @@ const UserOpDetails = ({ query }: Props) => {
   }, []);
 
   if (isError) {
-    if (error?.status === 400 || error?.status === 404 || error?.status === 422) {
+    if (error?.status === 400 || isCustomAppError(error)) {
       throwOnResourceLoadError({ isError, error });
     }
 
@@ -167,6 +170,8 @@ const UserOpDetails = ({ query }: Props) => {
       >
         <AddressStringOrParam address={ data.entry_point } isLoading={ isPlaceholderData }/>
       </DetailsInfoItem>
+
+      { config.features.txInterpretation.isEnabled && <UserOpDetailsActions hash={ data.hash } isUserOpDataLoading={ isPlaceholderData }/> }
 
       { /* CUT */ }
       <GridItem colSpan={{ base: undefined, lg: 2 }}>

@@ -1,9 +1,10 @@
 import type { ThemingProps } from '@chakra-ui/react';
-import { Flex, chakra, useDisclosure, Popover, PopoverTrigger, PopoverContent, PopoverBody } from '@chakra-ui/react';
+import { Flex, chakra, useDisclosure, Popover, PopoverTrigger, PopoverContent, PopoverBody, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { UserTags } from 'types/api/addressParams';
 
+import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import Tag from 'ui/shared/chakra/Tag';
 
@@ -36,8 +37,12 @@ const EntityTags = ({ className, data, tagsBefore = [], tagsAfter = [], isLoadin
   ]
     .filter(Boolean);
 
+  const metaSuitesPlaceholder = config.features.metasuites.isEnabled ?
+    <Box display="none" id="meta-suites__address-tag" data-ready={ !isLoading }/> :
+    null;
+
   if (tags.length === 0 && !contentAfter) {
-    return null;
+    return metaSuitesPlaceholder;
   }
 
   const content = (() => {
@@ -60,6 +65,7 @@ const EntityTags = ({ className, data, tagsBefore = [], tagsAfter = [], isLoadin
                 </Tag>
               ))
           }
+          { metaSuitesPlaceholder }
           <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
             <PopoverTrigger>
               <Tag isLoading={ isLoading }onClick={ onToggle }>+{ tags.length - 1 }</Tag>
@@ -88,18 +94,23 @@ const EntityTags = ({ className, data, tagsBefore = [], tagsAfter = [], isLoadin
       );
     }
 
-    return tags.map((tag) => (
-      <Tag
-        key={ tag.label }
-        isLoading={ isLoading }
-        isTruncated
-        maxW={{ base: '115px', lg: 'initial' }}
-        colorScheme={ 'colorScheme' in tag ? tag.colorScheme : 'gray' }
-        variant={ 'variant' in tag ? tag.variant : 'subtle' }
-      >
-        { tag.display_name }
-      </Tag>
-    ));
+    return (
+      <>
+        { tags.map((tag) => (
+          <Tag
+            key={ tag.label }
+            isLoading={ isLoading }
+            isTruncated
+            maxW={{ base: '115px', lg: 'initial' }}
+            colorScheme={ 'colorScheme' in tag ? tag.colorScheme : 'gray' }
+            variant={ 'variant' in tag ? tag.variant : 'subtle' }
+          >
+            { tag.display_name }
+          </Tag>
+        )) }
+        { metaSuitesPlaceholder }
+      </>
+    );
   })();
 
   return (

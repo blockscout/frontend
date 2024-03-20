@@ -12,6 +12,7 @@ import * as mixpanel from 'lib/mixpanel/index';
 import { saveToRecentKeywords } from 'lib/recentSearchKeywords';
 import { ADDRESS_REGEXP } from 'lib/validations/address';
 import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import * as BlobEntity from 'ui/shared/entities/blob/BlobEntity';
 import * as BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import * as TxEntity from 'ui/shared/entities/tx/TxEntity';
@@ -285,6 +286,30 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
           </>
         );
       }
+
+      case 'blob': {
+        return (
+          <Td colSpan={ 3 } fontSize="sm">
+            <BlobEntity.Container>
+              <BlobEntity.Icon/>
+              <BlobEntity.Link
+                isLoading={ isLoading }
+                hash={ data.blob_hash }
+                onClick={ handleLinkClick }
+              >
+                <BlobEntity.Content
+                  asProp="mark"
+                  hash={ data.blob_hash }
+                  fontSize="sm"
+                  lineHeight={ 5 }
+                  fontWeight={ 700 }
+                />
+              </BlobEntity.Link>
+            </BlobEntity.Container>
+          </Td>
+        );
+      }
+
       case 'user_operation': {
         return (
           <>

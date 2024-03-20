@@ -45,6 +45,7 @@ import TxFeeStability from 'ui/shared/tx/TxFeeStability';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 import TxDetailsActions from 'ui/tx/details/txDetailsActions/TxDetailsActions';
+import TxDetailsBurntFees from 'ui/tx/details/TxDetailsBurntFees';
 import TxDetailsFeePerGas from 'ui/tx/details/TxDetailsFeePerGas';
 import TxDetailsGasPrice from 'ui/tx/details/TxDetailsGasPrice';
 import TxDetailsOther from 'ui/tx/details/TxDetailsOther';
@@ -108,6 +109,15 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
 
   return (
     <Grid columnGap={ 8 } rowGap={{ base: 3, lg: 3 }} templateColumns={{ base: 'minmax(0, 1fr)', lg: 'max-content minmax(728px, auto)' }}>
+
+      { config.features.metasuites.isEnabled && (
+        <>
+          <Box display="none" id="meta-suites__tx-info-label" data-status={ data.status } data-ready={ !isLoading }/>
+          <Box display="none" id="meta-suites__tx-info-value"/>
+          <DetailsInfoItemDivider display="none" id="meta-suites__details-info-item-divider"/>
+        </>
+      ) }
+
       { socketStatus && (
         <GridItem colSpan={{ base: undefined, lg: 2 }} mb={ 2 }>
           <TxSocketAlert status={ socketStatus }/>
@@ -124,6 +134,13 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           <HashStringShortenDynamic hash={ data.hash }/>
         </Skeleton>
         <CopyToClipboard text={ data.hash } isLoading={ isLoading }/>
+
+        { config.features.metasuites.isEnabled && (
+          <>
+            <TextSeparator color="gray.500" flexShrink={ 0 } display="none" id="meta-suites__tx-explorer-separator"/>
+            <Box display="none" flexShrink={ 0 } id="meta-suites__tx-explorer-link"/>
+          </>
+        ) }
       </DetailsInfoItem>
       <DetailsInfoItem
         title={ rollupFeature.isEnabled && rollupFeature.type === 'zkEvm' ? 'L2 status and method' : 'Status and method' }
@@ -357,7 +374,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       { !config.UI.views.tx.hiddenFields?.tx_fee && (
         <DetailsInfoItem
           title="Transaction fee"
-          hint="Total transaction fee"
+          hint={ data.blob_gas_used ? 'Transaction fee without blob fee' : 'Total transaction fee' }
           isLoading={ isLoading }
         >
           { data.stability_fee ? (
@@ -422,21 +439,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           ) }
         </DetailsInfoItem>
       ) }
-      { data.tx_burnt_fee && !config.UI.views.tx.hiddenFields?.burnt_fees && !(rollupFeature.isEnabled && rollupFeature.type === 'optimistic') && (
-        <DetailsInfoItem
-          title="Burnt fees"
-          hint={ `Amount of ${ currencyUnits.ether } burned for this transaction. Equals Block Base Fee per Gas * Gas Used` }
-        >
-          <IconSvg name="flame" boxSize={ 5 } color="gray.500"/>
-          <CurrencyValue
-            value={ String(data.tx_burnt_fee) }
-            currency={ currencyUnits.ether }
-            exchangeRate={ data.exchange_rate }
-            flexWrap="wrap"
-            ml={ 2 }
-          />
-        </DetailsInfoItem>
-      ) }
+      <TxDetailsBurntFees data={ data } isLoading={ isLoading }/>
       { rollupFeature.isEnabled && rollupFeature.type === 'optimistic' && (
         <>
           { data.l1_gas_used && (
@@ -502,6 +505,50 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       { isExpanded && (
         <>
           <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
+          { (data.blob_gas_used || data.max_fee_per_blob_gas || data.blob_gas_price) && (
+            <>
+              { data.blob_gas_used && data.blob_gas_price && (
+                <DetailsInfoItem
+                  title="Blob fee"
+                  hint="Blob fee for this transaction"
+                >
+                  <CurrencyValue
+                    value={ BigNumber(data.blob_gas_used).multipliedBy(data.blob_gas_price).toString() }
+                    currency={ config.UI.views.tx.hiddenFields?.fee_currency ? '' : currencyUnits.ether }
+                    exchangeRate={ data.exchange_rate }
+                    flexWrap="wrap"
+                    isLoading={ isLoading }
+                  />
+                </DetailsInfoItem>
+              ) }
+              { data.blob_gas_used && (
+                <DetailsInfoItem
+                  title="Blob gas usage"
+                  hint="Amount of gas used by the blobs in this transaction"
+                >
+                  { BigNumber(data.blob_gas_used).toFormat() }
+                </DetailsInfoItem>
+              ) }
+              { (data.max_fee_per_blob_gas || data.blob_gas_price) && (
+                <DetailsInfoItem
+                  title={ `Blob gas fees (${ currencyUnits.gwei })` }
+                  hint={ `Amount of ${ currencyUnits.ether } used for blobs in this transaction` }
+                >
+                  { data.blob_gas_price && (
+                    <Text fontWeight="600" as="span">{ BigNumber(data.blob_gas_price).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
+                  ) }
+                  { (data.max_fee_per_blob_gas && data.blob_gas_price) && <TextSeparator/> }
+                  { data.max_fee_per_blob_gas && (
+                    <>
+                      <Text as="span" fontWeight="500" whiteSpace="pre">Max: </Text>
+                      <Text fontWeight="600" as="span">{ BigNumber(data.max_fee_per_blob_gas).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
+                    </>
+                  ) }
+                </DetailsInfoItem>
+              ) }
+              <DetailsInfoItemDivider/>
+            </>
+          ) }
           <TxDetailsOther nonce={ data.nonce } type={ data.type } position={ data.position }/>
           <DetailsInfoItem
             title="Raw input"

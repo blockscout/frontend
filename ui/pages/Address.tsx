@@ -236,6 +236,7 @@ const AddressPageContent = () => {
         secondRow={ titleSecondRow }
         isLoading={ isLoading }
       />
+      { config.features.metasuites.isEnabled && <Box display="none" id="meta-suites__address" data-ready={ !isLoading }/> }
       <AddressDetails addressQuery={ addressQuery } scrollRef={ tabsScrollRef }/>
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ tabsScrollRef }></Box>

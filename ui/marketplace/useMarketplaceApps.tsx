@@ -50,20 +50,23 @@ function sortApps(apps: Array<MarketplaceAppOverview>, favoriteApps: Array<strin
 export default function useMarketplaceApps(
   filter: string,
   selectedCategoryId: string = MarketplaceCategory.ALL,
-  favoriteApps: Array<string> = [],
+  favoriteApps: Array<string> | undefined = undefined,
   isFavoriteAppsLoaded: boolean = false, // eslint-disable-line @typescript-eslint/no-inferrable-types
 ) {
   const fetch = useFetch();
   const apiFetch = useApiFetch();
 
   // Update favorite apps only when selectedCategoryId changes to avoid sortApps to be called on each favorite app click
-  const lastFavoriteAppsRef = React.useRef(favoriteApps);
+  const [ snapshotFavoriteApps, setSnapshotFavoriteApps ] = React.useState<Array<string> | undefined>();
+
   React.useEffect(() => {
-    lastFavoriteAppsRef.current = favoriteApps;
+    if (isFavoriteAppsLoaded) {
+      setSnapshotFavoriteApps(favoriteApps);
+    }
   }, [ selectedCategoryId, isFavoriteAppsLoaded ]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const { isPlaceholderData, isError, error, data } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppOverview>>({
-    queryKey: [ 'marketplace-dapps' ],
+    queryKey: [ 'marketplace-dapps', snapshotFavoriteApps, favoriteApps ],
     queryFn: async() => {
       if (!feature.isEnabled) {
         return [];
@@ -73,14 +76,14 @@ export default function useMarketplaceApps(
         return apiFetch('marketplace_dapps', { pathParams: { chainId: config.chain.id } });
       }
     },
-    select: (data) => sortApps(data as Array<MarketplaceAppOverview>, lastFavoriteAppsRef.current),
+    select: (data) => sortApps(data as Array<MarketplaceAppOverview>, snapshotFavoriteApps || []),
     placeholderData: feature.isEnabled ? Array(9).fill(MARKETPLACE_APP) : undefined,
     staleTime: Infinity,
-    enabled: feature.isEnabled,
+    enabled: feature.isEnabled && (!favoriteApps || Boolean(snapshotFavoriteApps)),
   });
 
   const displayedApps = React.useMemo(() => {
-    return data?.filter(app => isAppNameMatches(filter, app) && isAppCategoryMatches(selectedCategoryId, app, favoriteApps)) || [];
+    return data?.filter(app => isAppNameMatches(filter, app) && isAppCategoryMatches(selectedCategoryId, app, favoriteApps || [])) || [];
   }, [ selectedCategoryId, data, filter, favoriteApps ]);
 
   return React.useMemo(() => ({

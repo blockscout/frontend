@@ -37,6 +37,7 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/output-roots': 'Root page',
   '/batches': 'Root page',
   '/batches/[number]': 'Regular page',
+  '/blobs/[hash]': 'Regular page',
   '/ops': 'Root page',
   '/op/[hash]': 'Regular page',
   '/404': 'Regular page',

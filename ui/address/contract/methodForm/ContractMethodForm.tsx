@@ -1,4 +1,5 @@
 import { Box, Button, Flex, chakra } from '@chakra-ui/react';
+import _mapValues from 'lodash/mapValues';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -35,7 +36,11 @@ const ContractMethodForm = <T extends SmartContractMethod>({ data, onSubmit, res
   });
 
   const onFormSubmit: SubmitHandler<ContractMethodFormFields> = React.useCallback(async(formData) => {
-    const args = transformFormDataToMethodArgs(formData);
+    // The API used for reading from contracts expects all values to be strings.
+    const formattedData = methodType === 'read' ?
+      _mapValues(formData, (value) => value !== undefined ? String(value) : undefined) :
+      formData;
+    const args = transformFormDataToMethodArgs(formattedData);
 
     setResult(undefined);
     setLoading(true);
