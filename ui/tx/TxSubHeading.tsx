@@ -60,6 +60,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
           summary={ novesSummary }
           isLoading={ novesInterpretationQuery.isPlaceholderData }
           fontSize="lg"
+          mr={{ base: 0, lg: 6 }}
         />
       );
     } else if (hasInternalInterpretation) {
