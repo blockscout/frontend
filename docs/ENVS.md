@@ -126,6 +126,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
 | NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME | `boolean` | Set to false if average block time is useless for the network | - | `true` | `false` |
 | NEXT_PUBLIC_HOMEPAGE_TITLE | `string` | Tab title for homepage | - | - | 'blockchain explorer' |
 | NEXT_PUBLIC_HOMEPAGE_PLATE_TITLE | `string` | Plate title in homepage | - | - | `${NEXT_PUBLIC_NETWORK_NAME} explorer` |
+| NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND_IMAGE | `string` | Background image URL in homepage plate | - | - | - |
 
 &nbsp;
 
