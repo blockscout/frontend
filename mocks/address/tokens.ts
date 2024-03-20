@@ -38,6 +38,17 @@ export const erc20LongSymbol: AddressTokenBalance = {
   token_instance: null,
 };
 
+export const erc20BigAmount: AddressTokenBalance = {
+  token: {
+    ...tokens.tokenInfoERC20LongSymbol,
+    exchange_rate: '4200000000',
+    name: 'DuckDuckGoose Stable Coin',
+  },
+  token_id: null,
+  value: '39000000000000000000',
+  token_instance: null,
+};
+
 export const erc721a: AddressTokenBalance = {
   token: tokens.tokenInfoERC721a,
   token_id: null,

@@ -17,10 +17,12 @@ const TriggerButton = ({ onClick }: Props, ref: React.ForwardedRef<HTMLButtonEle
       onClick={ onClick }
       aria-label="Show project info"
       fontWeight={ 500 }
-      px={ 2 }
+      lineHeight={ 6 }
+      pl={ 1 }
+      pr={ 2 }
       h="32px"
     >
-      <IconSvg name="rocket" boxSize={ 5 } mr={ 1 }/>
+      <IconSvg name="info" boxSize={ 6 } mr={ 1 }/>
       <span>Info</span>
     </Button>
   );

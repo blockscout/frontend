@@ -7,6 +7,7 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import { BLOB } from 'stubs/blobs';
 import BlobInfo from 'ui/blob/BlobInfo';
 import TextAd from 'ui/shared/ad/TextAd';
+import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import BlobEntity from 'ui/shared/entities/blob/BlobEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -25,7 +26,7 @@ const BlobPageContent = () => {
 
   const content = (() => {
     if (isError) {
-      if (error?.status === 422 || error?.status === 404) {
+      if (isCustomAppError(error)) {
         throwOnResourceLoadError({ resource: 'blob', error, isError: true });
       }
 

@@ -7,12 +7,14 @@ import type { Transaction } from 'types/api/transaction';
 
 import { SECOND } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
+import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import hexToDecimal from 'lib/hexToDecimal';
 import { publicClient } from 'lib/web3/client';
 import { GET_BLOCK, GET_TRANSACTION, GET_TRANSACTION_RECEIPT, GET_TRANSACTION_CONFIRMATIONS } from 'stubs/RPC';
 import { unknownAddress } from 'ui/shared/address/utils';
 import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
 import TestnetWarning from 'ui/shared/alerts/TestnetWarning';
+import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import TxInfo from './details/TxInfo';
@@ -141,8 +143,8 @@ const TxDetailsDegraded = ({ hash, txQuery }: Props) => {
   }, [ txQuery.setRefetchOnError ]);
 
   if (!query.data) {
-    if (originalError?.status === 404) {
-      throw Error('Not found', { cause: { status: 404 } as unknown as Error });
+    if (originalError && isCustomAppError(originalError)) {
+      throwOnResourceLoadError({ resource: 'tx', error: originalError, isError: true });
     }
 
     return <DataFetchAlert/>;

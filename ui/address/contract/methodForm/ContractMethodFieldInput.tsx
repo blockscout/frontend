@@ -10,6 +10,7 @@ import ClearButton from 'ui/shared/ClearButton';
 import ContractMethodFieldLabel from './ContractMethodFieldLabel';
 import ContractMethodMultiplyButton from './ContractMethodMultiplyButton';
 import useArgTypeMatchInt from './useArgTypeMatchInt';
+import useFormatFieldValue from './useFormatFieldValue';
 import useValidateField from './useValidateField';
 
 interface Props {
@@ -29,14 +30,21 @@ const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDi
 
   const argTypeMatchInt = useArgTypeMatchInt({ argType: data.type });
   const validate = useValidateField({ isOptional, argType: data.type, argTypeMatchInt });
+  const format = useFormatFieldValue({ argType: data.type, argTypeMatchInt });
 
   const { control, setValue, getValues } = useFormContext();
-  const { field, fieldState } = useController({ control, name, rules: { validate, required: isOptional ? false : 'Field is required' } });
+  const { field, fieldState } = useController({ control, name, rules: { validate } });
 
   const inputBgColor = useColorModeValue('white', 'black');
   const nativeCoinRowBgColor = useColorModeValue('gray.100', 'gray.700');
 
   const hasMultiplyButton = argTypeMatchInt && Number(argTypeMatchInt.power) >= 64;
+
+  const handleChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const formattedValue = format(event.target.value);
+    field.onChange(formattedValue); // data send back to hook form
+    setValue(name, formattedValue); // UI state
+  }, [ field, name, setValue, format ]);
 
   const handleClear = React.useCallback(() => {
     setValue(name, '');
@@ -46,9 +54,9 @@ const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDi
   const handleMultiplyButtonClick = React.useCallback((power: number) => {
     const zeroes = Array(power).fill('0').join('');
     const value = getValues(name);
-    const newValue = value ? value + zeroes : '1' + zeroes;
+    const newValue = format(value ? value + zeroes : '1' + zeroes);
     setValue(name, newValue);
-  }, [ getValues, name, setValue ]);
+  }, [ format, getValues, name, setValue ]);
 
   const error = fieldState.error;
 
@@ -76,6 +84,7 @@ const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDi
               allowNegative: !argTypeMatchInt.isUnsigned,
             } : {}) }
             ref={ ref }
+            onChange={ handleChange }
             required={ !isOptional }
             isInvalid={ Boolean(error) }
             placeholder={ data.type }
@@ -84,7 +93,7 @@ const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDi
             paddingRight={ hasMultiplyButton ? '120px' : '40px' }
           />
           <InputRightElement w="auto" right={ 1 }>
-            { typeof field.value === 'string' && field.value.replace('\n', '') && <ClearButton onClick={ handleClear } isDisabled={ isDisabled }/> }
+            { field.value !== undefined && field.value !== '' && <ClearButton onClick={ handleClear } isDisabled={ isDisabled }/> }
             { hasMultiplyButton && <ContractMethodMultiplyButton onClick={ handleMultiplyButtonClick } isDisabled={ isDisabled }/> }
           </InputRightElement>
         </InputGroup>

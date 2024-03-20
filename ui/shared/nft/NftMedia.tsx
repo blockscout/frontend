@@ -47,6 +47,10 @@ const NftMedia = ({ imageUrl, animationUrl, className, isLoading, withFullscreen
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const content = (() => {
+    if (isLoading) {
+      return null;
+    }
+
     if (!mediaInfo || isLoadingError) {
       const styleProps = withFullscreen ? {} : mediaStyleProps;
       return <NftFallback { ...styleProps }/>;
@@ -78,7 +82,7 @@ const NftMedia = ({ imageUrl, animationUrl, className, isLoading, withFullscreen
   })();
 
   const modal = (() => {
-    if (!mediaInfo || !withFullscreen) {
+    if (!mediaInfo || !withFullscreen || isLoading) {
       return null;
     }
 

@@ -57,6 +57,7 @@ const Icon = (props: IconProps) => {
       src={ props.token.icon_url ?? undefined }
       alt={ `${ props.token.name || 'token' } logo` }
       fallback={ <TokenLogoPlaceholder { ...styles }/> }
+      fallbackStrategy={ props.token.icon_url ? 'onError' : 'beforeLoadOrError' }
     />
   );
 };

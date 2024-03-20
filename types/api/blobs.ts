@@ -1,8 +1,8 @@
 export interface TxBlob {
   hash: string;
-  blob_data: string;
-  kzg_commitment: string;
-  kzg_proof: string;
+  blob_data: string | null;
+  kzg_commitment: string | null;
+  kzg_proof: string | null;
 }
 
 export type TxBlobs = {

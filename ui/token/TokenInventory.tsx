@@ -68,7 +68,7 @@ const TokenInventory = ({ inventoryQuery, tokenQuery, ownerFilter }: Props) => {
       >
         { items.map((item, index) => (
           <TokenInventoryItem
-            key={ token.address + '_' + item.id + (inventoryQuery.isPlaceholderData ? '_' + index : '') }
+            key={ item.id + '_' + index + (inventoryQuery.isPlaceholderData ? '_' + 'placeholder' : '') }
             item={ item }
             isLoading={ inventoryQuery.isPlaceholderData || tokenQuery.isPlaceholderData }
             token={ token }

@@ -2,7 +2,7 @@ import _set from 'lodash/set';
 
 import type { SmartContractMethodInput } from 'types/api/contract';
 
-export type ContractMethodFormFields = Record<string, string | undefined>;
+export type ContractMethodFormFields = Record<string, string | boolean | number | undefined>;
 
 export const INT_REGEXP = /^(u)?int(\d+)?$/i;
 
@@ -15,25 +15,6 @@ export const getIntBoundaries = (power: number, isUnsigned: boolean) => {
   const max = isUnsigned ? maxUnsigned - 1 : maxUnsigned / 2 - 1;
   const min = isUnsigned ? 0 : -maxUnsigned / 2;
   return [ min, max ];
-};
-
-export const formatBooleanValue = (value: string) => {
-  const formattedValue = value.toLowerCase();
-
-  switch (formattedValue) {
-    case 'true':
-    case '1': {
-      return 'true';
-    }
-
-    case 'false':
-    case '0': {
-      return 'false';
-    }
-
-    default:
-      return;
-  }
 };
 
 export function transformFormDataToMethodArgs(formData: ContractMethodFormFields) {

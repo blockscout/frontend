@@ -5,6 +5,7 @@ import React from 'react';
 import type { ItemProps } from './types';
 
 import config from 'configs/app';
+import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import useIsAccountActionAllowed from 'lib/hooks/useIsAccountActionAllowed';
 import * as mixpanel from 'lib/mixpanel/index';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -27,6 +28,8 @@ const AccountActionsMenu = ({ isLoading, className }: Props) => {
   const isTxPage = router.pathname === '/tx/[hash]';
   const isAccountActionAllowed = useIsAccountActionAllowed();
 
+  const userInfoQuery = useFetchProfileInfo();
+
   const handleButtonClick = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Address actions (more button)' });
   }, []);
@@ -35,10 +38,12 @@ const AccountActionsMenu = ({ isLoading, className }: Props) => {
     return null;
   }
 
+  const userWithoutEmail = userInfoQuery.data && !userInfoQuery.data.email;
+
   const items = [
     {
       render: (props: ItemProps) => <TokenInfoMenuItem { ...props }/>,
-      enabled: isTokenPage && config.features.addressVerification.isEnabled,
+      enabled: isTokenPage && config.features.addressVerification.isEnabled && !userWithoutEmail,
     },
     {
       render: (props: ItemProps) => <PrivateTagMenuItem { ...props } entityType={ isTxPage ? 'tx' : 'address' }/>,
