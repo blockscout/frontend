@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import Head from 'next/head';
 import React from 'react';
 
@@ -33,7 +34,7 @@ const PageNextJs = (props: Props) => {
         { /* OG TAGS */ }
         <meta property="og:title" content={ opengraph.title }/>
         <meta property="og:description" content={ opengraph.description }/>
-        <meta property="og:image" content={ opengraph.url.href }/>
+        <meta property="og:image" content="https://ogcdn.net/e4b8c678-7bd5-445d-ba03-bfaad510c686/v3/orbit-demo-bs-custom.alt.technology/This%20is%20NEXT_PUBLIC_OG_TITLE/https%3A%2F%2Forbit-demo-bs-custom.alt.technology%2Fassets%2Fog_image.svg/og.png"/>
         <meta property="og:type" content="website"/>
         <meta property="og:url" content={ opengraph.url.origin }/>
 
@@ -43,7 +44,7 @@ const PageNextJs = (props: Props) => {
         <meta property="twitter:url" content={ opengraph.url.origin }/>
         <meta name="twitter:title" content={ opengraph.title }/>
         <meta name="twitter:description" content={ opengraph.description }/>
-        <meta name="twitter:image" content={ opengraph.url.href }/>
+        <meta name="twitter:image" content="https://ogcdn.net/e4b8c678-7bd5-445d-ba03-bfaad510c686/v3/orbit-demo-bs-custom.alt.technology/This%20is%20NEXT_PUBLIC_OG_TITLE/https%3A%2F%2Forbit-demo-bs-custom.alt.technology%2Fassets%2Fog_image.svg/og.png"/>
       </Head>
       { props.children }
     </>
