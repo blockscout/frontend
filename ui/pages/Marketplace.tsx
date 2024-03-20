@@ -215,7 +215,7 @@ const Marketplace = () => {
         <FilterInput
           initialValue={ filterQuery }
           onChange={ onSearchInputChange }
-          placeholder="Find app"
+          placeholder="Find app by name or keyword..."
           isLoading={ isPlaceholderData }
           size={ isExperiment ? 'xs' : 'sm' }
           flex="1"
