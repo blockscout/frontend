@@ -10,4 +10,5 @@ export const PROVIDERS: ProvidersPage['items'][0] = {
   providerPunishCount: '0',
   providerRewardAmount: '0',
   providerClaimAmount: '0',
+  providerTotalCap: '0',
 };
