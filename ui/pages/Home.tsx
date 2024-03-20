@@ -27,7 +27,12 @@ const Home = () => {
         position="relative"
       >
         <Flex mb={{ base: 6, lg: 8 }} justifyContent="space-between" alignItems="center">
-          <Box position="relative" zIndex={ 1 } padding={{ base: '24px', lg: '48px' }} width={{ base: '100%', lg: '48%' }}>
+          <Box
+            position="relative"
+            zIndex={ 1 }
+            padding={{ base: '24px', lg: '48px' }}
+            width={{ base: '100%', lg: config.UI.homepage.plate.bgImageURL ? '48%' : '100%' }}
+          >
             <Heading
               as="h1"
               size={{ base: 'md', lg: 'xl' }}
