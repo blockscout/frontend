@@ -31,6 +31,7 @@ export type ProvidersPage = PageData<{
   providerPunishAmount: string;
   providerPunishCount: string;
   providerRewardAmount: string;
+  providerTotalCap: string;
 }>;
 
 export interface TableColumn<T> {

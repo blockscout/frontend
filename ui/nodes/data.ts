@@ -42,7 +42,7 @@ export const tableColumns: Array<TableColumn<Provider>> = [
   },
   {
     id: 'validatorStatus',
-    label: 'State',
+    label: 'Status',
     width: '100px',
     textAlgin: 'center',
     render: (data) => {

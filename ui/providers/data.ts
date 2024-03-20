@@ -50,7 +50,7 @@ export const tableColumns: Array<TableColumn<Provider>> = [
     width: '130px',
     textAlgin: 'right',
     render: (data) => {
-      return formatAmount(data.providerCap);
+      return formatAmount(data.providerTotalCap);
     },
   },
   {
