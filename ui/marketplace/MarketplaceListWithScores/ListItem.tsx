@@ -1,4 +1,4 @@
-import { Flex, IconButton, chakra } from '@chakra-ui/react';
+import { Flex, IconButton, Text } from '@chakra-ui/react';
 import React from 'react';
 import type { MouseEvent } from 'react';
 
@@ -117,9 +117,7 @@ const ListItem = ({ app, onInfoClick, isFavorite, onFavoriteClick, isLoading, on
                 </ContractListButton>
               </>
             ) : (
-              <chakra.span fontWeight="500" fontSize="sm">
-                Data will be available soon
-              </chakra.span>
+              <Text variant="secondary" fontSize="sm" fontWeight={ 500 }>Data will be available soon</Text>
             ) }
           </Flex>
           <MoreInfoButton onClick={ handleInfoClick } isLoading={ isLoading }/>

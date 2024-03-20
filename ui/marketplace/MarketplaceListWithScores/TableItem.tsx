@@ -1,4 +1,4 @@
-import { Td, Tr, IconButton, Skeleton } from '@chakra-ui/react';
+import { Td, Tr, IconButton, Skeleton, Text } from '@chakra-ui/react';
 import React from 'react';
 import type { MouseEvent } from 'react';
 
@@ -11,7 +11,6 @@ import IconSvg from 'ui/shared/IconSvg';
 import AppSecurityReport from '../AppSecurityReport';
 import ContractListButton, { ContractListButtonVariants } from '../ContractListButton';
 import AppLink from './AppLink';
-import DataNotAvailable from './DataNotAvailable';
 import MoreInfoButton from './MoreInfoButton';
 
 type Props = {
@@ -80,43 +79,39 @@ const TableItem = ({
       <Td verticalAlign="middle">
         <AppLink app={ app } isLoading={ isLoading } onAppClick={ onAppClick } isLarge/>
       </Td>
-      <Td verticalAlign="middle">
-        { (securityReport || isLoading) ? (
-          <AppSecurityReport
-            securityReport={ securityReport }
-            showContractList={ showAnalyzedContracts }
-            isLoading={ isLoading }
-          />
-        ) : (
-          <DataNotAvailable/>
-        ) }
-      </Td>
-      <Td verticalAlign="middle">
-        { (securityReport || isLoading) ? (
-          <ContractListButton
-            onClick={ showAllContracts }
-            variant={ ContractListButtonVariants.ALL_CONTRACTS }
-            isLoading={ isLoading }
-          >
-            { securityReport?.overallInfo.totalContractsNumber }
-          </ContractListButton>
-        ) : (
-          <DataNotAvailable/>
-        ) }
-      </Td>
-      <Td verticalAlign="middle">
-        { (securityReport || isLoading) ? (
-          <ContractListButton
-            onClick={ showVerifiedContracts }
-            variant={ ContractListButtonVariants.VERIFIED_CONTRACTS }
-            isLoading={ isLoading }
-          >
-            { securityReport?.overallInfo.verifiedNumber }
-          </ContractListButton>
-        ) : (
-          <DataNotAvailable/>
-        ) }
-      </Td>
+      { (securityReport || isLoading) ? (
+        <>
+          <Td verticalAlign="middle">
+            <AppSecurityReport
+              securityReport={ securityReport }
+              showContractList={ showAnalyzedContracts }
+              isLoading={ isLoading }
+            />
+          </Td>
+          <Td verticalAlign="middle">
+            <ContractListButton
+              onClick={ showAllContracts }
+              variant={ ContractListButtonVariants.ALL_CONTRACTS }
+              isLoading={ isLoading }
+            >
+              { securityReport?.overallInfo.totalContractsNumber }
+            </ContractListButton>
+          </Td>
+          <Td verticalAlign="middle">
+            <ContractListButton
+              onClick={ showVerifiedContracts }
+              variant={ ContractListButtonVariants.VERIFIED_CONTRACTS }
+              isLoading={ isLoading }
+            >
+              { securityReport?.overallInfo.verifiedNumber }
+            </ContractListButton>
+          </Td>
+        </>
+      ) : (
+        <Td verticalAlign="middle" colSpan={ 3 }>
+          <Text variant="secondary" fontSize="sm" fontWeight={ 500 }>Data will be available soon</Text>
+        </Td>
+      ) }
       <Td verticalAlign="middle" isNumeric>
         <MoreInfoButton onClick={ handleInfoClick } isLoading={ isLoading }/>
       </Td>
