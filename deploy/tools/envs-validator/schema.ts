@@ -399,6 +399,7 @@ const schema = yup
     NEXT_PUBLIC_HOMEPAGE_PLATE_TITLE: yup.string().optional(),
     NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR: yup.string(),
     NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND: yup.string(),
+    NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND_IMAGE: yup.string().test(urlTest),
     NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME: yup.boolean(),
 
     //     b. sidebar
