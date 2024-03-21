@@ -68,6 +68,10 @@ const config: PlaywrightTestConfig = defineConfig({
           '@metamask/post-message-stream': './playwright/mocks/modules/@metamask/post-message-stream.js',
           '@metamask/providers': './playwright/mocks/modules/@metamask/providers.js',
 
+          // '@metamask/sdk imports the browser module as UMD, but @wagmi/connectors expects it to be ESM
+          // so we do a little remapping here
+          '@metamask/sdk': './node_modules/@metamask/sdk/dist/browser/es/metamask-sdk.js',
+
           // Mock for growthbook to test feature flags
           'lib/growthbook/useFeatureValue': './playwright/mocks/lib/growthbook/useFeatureValue.js',
         },
