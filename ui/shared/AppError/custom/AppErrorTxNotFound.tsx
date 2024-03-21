@@ -1,6 +1,8 @@
 /* eslint-disable max-len */
-import { Box, OrderedList, ListItem, useColorModeValue, Flex, chakra } from '@chakra-ui/react';
+import { Box, OrderedList, ListItem, useColorModeValue, Flex, chakra, Button } from '@chakra-ui/react';
 import React from 'react';
+
+import { route } from 'nextjs-routes';
 
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -51,6 +53,15 @@ const AppErrorTxNotFound = () => {
           <span> for additional information.</span>
         </ListItem>
       </OrderedList>
+      <Button
+        mt={ 8 }
+        size="lg"
+        variant="outline"
+        as="a"
+        href={ route({ pathname: '/' }) }
+      >
+        Back to home
+      </Button>
     </>
   );
 };
