@@ -114,6 +114,17 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
 | NEXT_PUBLIC_THEME_STATISTIC_TEXT_DARK_COLOR | - | - | - |  |  |
 | NEXT_PUBLIC_THEME_LINK_COLOR | - | - | - |  |  |
 | NEXT_PUBLIC_THEME_LINK_DARK_COLOR | - | - | - |  |  |
+| NEXT_PUBLIC_THEME_LINK_HOVER_COLOR | - | - | - |  |  |
+| NEXT_PUBLIC_THEME_LINK_HOVER_DARK_COLOR | - | - | - |  |  |
+| NEXT_PUBLIC_THEME_TEXT_COLOR | - | - | - |  |  |
+| NEXT_PUBLIC_THEME_TEXT_DARK_COLOR | - | - | - |  |  |
+| NEXT_PUBLIC_THEME_TEXT_SECONDARY_COLOR | - | - | - |  |  |
+| NEXT_PUBLIC_THEME_TEXT_SECONDARY_DARK_COLOR | - | - | - |  |  |
+| NEXT_PUBLIC_THEME_ERROR_COLOR | - | - | - |  |  |
+| NEXT_PUBLIC_THEME_ERROR_DARK_COLOR | - | - | - |  |  |
+| NEXT_PUBLIC_THEME_DIVIDER_COLOR | - | - | - |  |  |
+| NEXT_PUBLIC_THEME_DIVIDER_DARK_COLOR | - | - | - |  |  |
+
 &nbsp;
 
 ### Homepage

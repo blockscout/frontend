@@ -3,27 +3,28 @@ import config from 'configs/app';
 const semanticTokens = {
   colors: {
     divider: {
-      'default': 'blackAlpha.200',
-      _dark: 'whiteAlpha.200',
+      'default': config.UI.theme.dividerColor,
+      _dark: config.UI.theme.dividerDarkColor,
     },
     text: {
-      'default': 'blackAlpha.800',
-      _dark: 'whiteAlpha.800',
+      'default': config.UI.theme.textColor,
+      _dark: config.UI.theme.textDarkColor,
     },
     text_secondary: {
-      'default': 'gray.500',
-      _dark: 'gray.400',
+      'default': config.UI.theme.textSecondaryColor,
+      _dark: config.UI.theme.textSecondaryDarkColor,
     },
     link: {
-      'default': config.UI.theme.linkColor || 'blue.600',
-      _dark: config.UI.theme.linkDarkColor || 'blue.300',
+      'default': config.UI.theme.linkColor,
+      _dark: config.UI.theme.linkDarkColor,
     },
     link_hovered: {
-      'default': 'blue.400',
+      'default': config.UI.theme.linkHoverColor,
+      _dark: config.UI.theme.linkHoverDarkColor,
     },
     error: {
-      'default': 'red.400',
-      _dark: 'red.300',
+      'default': config.UI.theme.errorColor,
+      _dark: config.UI.theme.errorDarkColor,
     },
   },
   shadows: {
