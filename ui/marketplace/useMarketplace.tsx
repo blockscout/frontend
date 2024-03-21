@@ -26,7 +26,7 @@ export default function useMarketplace() {
   const router = useRouter();
   const defaultCategoryId = getQueryParamString(router.query.category);
   const defaultFilterQuery = getQueryParamString(router.query.filter);
-  const defaultDisplayType = getQueryParamString(router.query.view);
+  const defaultDisplayType = getQueryParamString(router.query.tab);
 
   const [ selectedAppId, setSelectedAppId ] = React.useState<string | null>(null);
   const [ selectedCategoryId, setSelectedCategoryId ] = React.useState<string>(MarketplaceCategory.ALL);
@@ -86,8 +86,8 @@ export default function useMarketplace() {
     setSelectedCategoryId(newCategory);
   }, []);
 
-  const handleDisplayTypeChange = React.useCallback((newView: MarketplaceDisplayType) => {
-    setSelectedDisplayType(newView);
+  const handleDisplayTypeChange = React.useCallback((newDisplayType: MarketplaceDisplayType) => {
+    setSelectedDisplayType(newDisplayType);
   }, []);
 
   const {
@@ -120,7 +120,7 @@ export default function useMarketplace() {
     const query = _pickBy({
       category: selectedCategoryId === MarketplaceCategory.ALL ? undefined : selectedCategoryId,
       filter: debouncedFilterQuery,
-      view: selectedDisplayType === MarketplaceDisplayType.DEFAULT ? undefined : selectedDisplayType,
+      tab: selectedDisplayType === MarketplaceDisplayType.DEFAULT ? undefined : selectedDisplayType,
     }, Boolean);
 
     if (debouncedFilterQuery.length > 0) {
