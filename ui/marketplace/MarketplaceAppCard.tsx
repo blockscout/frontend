@@ -13,7 +13,7 @@ import MarketplaceAppIntegrationIcon from './MarketplaceAppIntegrationIcon';
 interface Props extends MarketplaceAppPreview {
   onInfoClick: (id: string) => void;
   isFavorite: boolean;
-  onFavoriteClick: (id: string, isFavorite: boolean) => void;
+  onFavoriteClick: (id: string, isFavorite: boolean, source: 'Discovery view') => void;
   isLoading: boolean;
   onAppClick: (event: MouseEvent, id: string) => void;
 }
@@ -38,12 +38,12 @@ const MarketplaceAppCard = ({
 
   const handleInfoClick = useCallback((event: MouseEvent) => {
     event.preventDefault();
-    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'More button', Info: id });
+    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'More button', Info: id, Source: 'Discovery view' });
     onInfoClick(id);
   }, [ onInfoClick, id ]);
 
   const handleFavoriteClick = useCallback(() => {
-    onFavoriteClick(id, isFavorite);
+    onFavoriteClick(id, isFavorite, 'Discovery view');
   }, [ onFavoriteClick, id, isFavorite ]);
 
   const logoUrl = useColorModeValue(logo, logoDarkMode || logo);

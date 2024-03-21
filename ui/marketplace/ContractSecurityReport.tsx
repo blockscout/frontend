@@ -2,6 +2,7 @@ import { Box, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
+import * as mixpanel from 'lib/mixpanel/index';
 import LinkExternal from 'ui/shared/LinkExternal';
 import SolidityscanReportButton from 'ui/shared/solidityscanReport/SolidityscanReportButton';
 import SolidityscanReportDetails from 'ui/shared/solidityscanReport/SolidityscanReportDetails';
@@ -22,9 +23,14 @@ const ContractSecurityReport = ({ securityReport }: Props) => {
 
   const totalIssues = Object.values(issueSeverityDistribution as Record<string, number>).reduce((acc, val) => acc + val, 0);
 
+  const handleClick = React.useCallback(() => {
+    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Security score', Source: 'Analyzed contracts popup' });
+  }, [ ]);
+
   return (
     <SolidityscanReportButton
       score={ securityScore }
+      onClick={ handleClick }
       popoverContent={ (
         <>
           <Box mb={ 5 }>

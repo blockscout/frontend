@@ -17,7 +17,7 @@ type Props = {
   app: MarketplaceAppPreview & { securityReport?: any }; // eslint-disable-line @typescript-eslint/no-explicit-any
   isLoading?: boolean;
   isFavorite: boolean;
-  onFavoriteClick: (id: string, isFavorite: boolean) => void;
+  onFavoriteClick: (id: string, isFavorite: boolean, source: 'Security view') => void;
   onAppClick: (event: MouseEvent, id: string) => void;
   onInfoClick: (id: string) => void;
   showContractList: (id: string, type: ContractListTypes) => void;
@@ -37,19 +37,21 @@ const TableItem = ({
 
   const handleInfoClick = React.useCallback((event: MouseEvent) => {
     event.preventDefault();
-    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'More button', Info: id });
+    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'More button', Info: id, Source: 'Security view' });
     onInfoClick(id);
   }, [ onInfoClick, id ]);
 
   const handleFavoriteClick = React.useCallback(() => {
-    onFavoriteClick(id, isFavorite);
+    onFavoriteClick(id, isFavorite, 'Security view');
   }, [ onFavoriteClick, id, isFavorite ]);
 
   const showAllContracts = React.useCallback(() => {
+    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Total contracts', Info: id, Source: 'Security view' });
     showContractList(id, ContractListTypes.ALL);
   }, [ showContractList, id ]);
 
   const showVerifiedContracts = React.useCallback(() => {
+    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Verified contracts', Info: id, Source: 'Security view' });
     showContractList(id, ContractListTypes.VERIFIED);
   }, [ showContractList, id ]);
 
@@ -83,9 +85,11 @@ const TableItem = ({
         <>
           <Td verticalAlign="middle">
             <AppSecurityReport
+              id={ id }
               securityReport={ securityReport }
               showContractList={ showAnalyzedContracts }
               isLoading={ isLoading }
+              source="Security view"
             />
           </Td>
           <Td verticalAlign="middle">

@@ -21,11 +21,17 @@ interface Props {
   isLoading?: boolean;
   height?: string;
   onlyIcon?: boolean;
+  onClick?: () => void;
 }
 
-const SolidityscanReportButton = ({ className, score, popoverContent, isLoading, height = '32px', onlyIcon }: Props) => {
+const SolidityscanReportButton = ({ className, score, popoverContent, isLoading, height = '32px', onlyIcon, onClick }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
   const { scoreColor } = useScoreLevelAndColor(score);
+
+  const handleClick = React.useCallback(() => {
+    onClick?.();
+    onToggle();
+  }, [ onClick, onToggle ]);
 
   return (
     <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
@@ -37,7 +43,7 @@ const SolidityscanReportButton = ({ className, score, popoverContent, isLoading,
             size="sm"
             variant="outline"
             colorScheme="gray"
-            onClick={ onToggle }
+            onClick={ handleClick }
             aria-label="SolidityScan score"
             fontWeight={ 500 }
             px="6px"

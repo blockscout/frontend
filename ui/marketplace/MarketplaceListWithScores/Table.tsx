@@ -12,7 +12,7 @@ type Props = {
   apps: Array<MarketplaceAppPreview>;
   isLoading?: boolean;
   favoriteApps: Array<string>;
-  onFavoriteClick: (id: string, isFavorite: boolean) => void;
+  onFavoriteClick: (id: string, isFavorite: boolean, source: 'Security view') => void;
   onAppClick: (event: MouseEvent, id: string) => void;
   onInfoClick: (id: string) => void;
   showContractList: (id: string, type: ContractListTypes) => void;

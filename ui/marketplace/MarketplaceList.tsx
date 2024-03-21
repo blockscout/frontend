@@ -11,7 +11,7 @@ type Props = {
   apps: Array<MarketplaceAppPreview>;
   showAppInfo: (id: string) => void;
   favoriteApps: Array<string>;
-  onFavoriteClick: (id: string, isFavorite: boolean) => void;
+  onFavoriteClick: (id: string, isFavorite: boolean, source: 'Discovery view') => void;
   isLoading: boolean;
   selectedCategoryId?: string;
   onAppClick: (event: MouseEvent, id: string) => void;

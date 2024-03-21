@@ -61,10 +61,12 @@ const MarketplaceAppTopBar = ({ data, isLoading, isWalletConnected, securityRepo
         { (isExperiment && (securityReport || isLoading)) && (
           <Box order={{ base: 3, md: 4 }}>
             <AppSecurityReport
+              id={ data?.id || '' }
               securityReport={ securityReport }
               showContractList={ setShowContractList.on }
               isLoading={ isLoading }
               onlyIcon={ isMobile }
+              source="App page"
             />
           </Box>
         ) }

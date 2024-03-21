@@ -10,6 +10,7 @@ import { ContractListTypes } from 'types/client/marketplace';
 import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
+import * as mixpanel from 'lib/mixpanel/index';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -20,7 +21,7 @@ import MarketplaceAppModalLink from './MarketplaceAppModalLink';
 type Props = {
   onClose: () => void;
   isFavorite: boolean;
-  onFavoriteClick: (id: string, isFavorite: boolean) => void;
+  onFavoriteClick: (id: string, isFavorite: boolean, source: 'App modal') => void;
   data: MarketplaceAppWithSecurityReport;
   showContractList: (id: string, type: ContractListTypes) => void;
 }
@@ -71,7 +72,7 @@ const MarketplaceAppModal = ({
   }
 
   const handleFavoriteClick = useCallback(() => {
-    onFavoriteClick(id, isFavorite);
+    onFavoriteClick(id, isFavorite, 'App modal');
   }, [ onFavoriteClick, id, isFavorite ]);
 
   const showContractList = useCallback((type: ContractListTypes) => {
@@ -80,12 +81,14 @@ const MarketplaceAppModal = ({
   }, [ onClose, showContractListDefault, id ]);
 
   const showAllContracts = React.useCallback(() => {
+    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Total contracts', Info: id, Source: 'App modal' });
     showContractList(ContractListTypes.ALL);
-  }, [ showContractList ]);
+  }, [ showContractList, id ]);
 
   const showVerifiedContracts = React.useCallback(() => {
+    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Verified contracts', Info: id, Source: 'App modal' });
     showContractList(ContractListTypes.VERIFIED);
-  }, [ showContractList ]);
+  }, [ showContractList, id ]);
 
   const showAnalyzedContracts = React.useCallback(() => {
     showContractList(ContractListTypes.ANALYZED);
@@ -174,7 +177,12 @@ const MarketplaceAppModal = ({
 
               { (isExperiment && securityReport) && (
                 <Flex alignItems="center" gap={ 3 }>
-                  <AppSecurityReport securityReport={ securityReport } showContractList={ showAnalyzedContracts }/>
+                  <AppSecurityReport
+                    id={ id }
+                    securityReport={ securityReport }
+                    showContractList={ showAnalyzedContracts }
+                    source="App modal"
+                  />
                   <ContractListButton
                     onClick={ showAllContracts }
                     variant={ ContractListButtonVariants.ALL_CONTRACTS }

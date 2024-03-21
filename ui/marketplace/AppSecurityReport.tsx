@@ -3,20 +3,33 @@ import React from 'react';
 
 import config from 'configs/app';
 import { apos } from 'lib/html-entities';
+import * as mixpanel from 'lib/mixpanel/index';
 import IconSvg from 'ui/shared/IconSvg';
 import SolidityscanReportButton from 'ui/shared/solidityscanReport/SolidityscanReportButton';
 import SolidityscanReportDetails from 'ui/shared/solidityscanReport/SolidityscanReportDetails';
 import SolidityscanReportScore from 'ui/shared/solidityscanReport/SolidityscanReportScore';
 
 type Props = {
+  id: string;
   securityReport?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   height?: string | undefined;
   showContractList: () => void;
   isLoading?: boolean;
   onlyIcon?: boolean;
+  source: 'Security view' | 'App modal' | 'App page';
 }
 
-const AppSecurityReport = ({ securityReport, height, showContractList, isLoading, onlyIcon }: Props) => {
+const AppSecurityReport = ({ id, securityReport, height, showContractList, isLoading, onlyIcon, source }: Props) => {
+
+  const handleButtonClick = React.useCallback(() => {
+    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Security score', Info: id, Source: source });
+  }, [ id, source ]);
+
+  const handleLinkClick = React.useCallback(() => {
+    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Analyzed contracts', Info: id, Source: 'Security score popup' });
+    showContractList();
+  }, [ id, showContractList ]);
+
   if (!securityReport && !isLoading) {
     return null;
   }
@@ -34,6 +47,7 @@ const AppSecurityReport = ({ securityReport, height, showContractList, isLoading
       height={ height }
       score={ securityScore }
       onlyIcon={ onlyIcon }
+      onClick={ handleButtonClick }
       popoverContent={ (
         <>
           <Box mb={ 5 }>
@@ -47,7 +61,7 @@ const AppSecurityReport = ({ securityReport, height, showContractList, isLoading
               <SolidityscanReportDetails vulnerabilities={ issueSeverityDistribution } vulnerabilitiesCount={ totalIssues }/>
             </Box>
           ) }
-          <Link onClick={ showContractList } display="inline-flex" alignItems="center">
+          <Link onClick={ handleLinkClick } display="inline-flex" alignItems="center">
             Analyzed contracts
             <IconSvg name="arrows/north-east" boxSize={ 5 } color="gray.400"/>
           </Link>

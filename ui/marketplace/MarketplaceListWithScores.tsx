@@ -14,7 +14,7 @@ interface Props {
   apps: Array<MarketplaceAppWithSecurityReport>;
   showAppInfo: (id: string) => void;
   favoriteApps: Array<string>;
-  onFavoriteClick: (id: string, isFavorite: boolean) => void;
+  onFavoriteClick: (id: string, isFavorite: boolean, source: 'Security view') => void;
   isLoading: boolean;
   selectedCategoryId?: string;
   onAppClick: (event: MouseEvent, id: string) => void;

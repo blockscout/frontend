@@ -42,8 +42,8 @@ export default function useMarketplace() {
   const [ isDisclaimerModalOpen, setIsDisclaimerModalOpen ] = React.useState<boolean>(false);
   const [ contractListModalType, setContractListModalType ] = React.useState<ContractListTypes | null>(null);
 
-  const handleFavoriteClick = React.useCallback((id: string, isFavorite: boolean) => {
-    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Favorite app', Info: id });
+  const handleFavoriteClick = React.useCallback((id: string, isFavorite: boolean, source: 'Discovery view' | 'Security view' | 'App modal') => {
+    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Favorite app', Info: id, Source: source });
 
     const favoriteApps = getFavoriteApps();
 
