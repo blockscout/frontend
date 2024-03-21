@@ -34,6 +34,7 @@ const MarketplaceAppModal = ({
   showContractList: showContractListDefault,
 }: Props) => {
   const { value: isExperiment } = useFeatureValue('security_score_exp', false);
+  const starOutlineIconColor = useColorModeValue('gray.600', 'gray.300');
 
   const {
     id,
@@ -171,7 +172,7 @@ const MarketplaceAppModal = ({
                   onClick={ handleFavoriteClick }
                   icon={ isFavorite ?
                     <IconSvg name="star_filled" w={ 5 } h={ 5 } color="yellow.400"/> :
-                    <IconSvg name="star_outline" w={ 5 } h={ 5 } color="gray.600"/> }
+                    <IconSvg name="star_outline" w={ 5 } h={ 5 } color={ starOutlineIconColor }/> }
                 />
               </Flex>
 
