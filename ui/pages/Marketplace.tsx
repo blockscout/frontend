@@ -192,19 +192,12 @@ const Marketplace = () => {
                   icon: 'apps_list',
                   onlyIcon: false,
                   contentAfter: (
-                    <Flex
-                      alignItems="center"
+                    <IconSvg
+                      name={ isMobile ? 'beta_xs' : 'beta' }
                       h={ 3 }
-                      bg="red.400"
-                      borderRadius="2px"
-                      fontSize="10px"
-                      fontWeight="500"
-                      color="white"
-                      px="2px"
+                      w={ isMobile ? 3 : 7 }
                       ml={ 1 }
-                    >
-                      { isMobile ? <IconSvg name="beta" boxSize={ 2 }/> : 'beta' }
-                    </Flex>
+                    />
                   ),
                 },
               ] }

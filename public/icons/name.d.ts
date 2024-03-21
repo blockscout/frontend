@@ -13,6 +13,7 @@
 	| "arrows/north-east"
 	| "arrows/south-east"
 	| "arrows/up-down"
+	| "beta_xs"
 	| "beta"
 	| "block_slim"
 	| "block"
