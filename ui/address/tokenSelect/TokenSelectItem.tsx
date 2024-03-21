@@ -45,6 +45,22 @@ const TokenSelectItem = ({ data }: Props) => {
           </>
         );
       }
+      case 'ERC-404': {
+        return (
+          <>
+            { data.token_id !== null && (
+              <chakra.span textOverflow="ellipsis" overflow="hidden" mr={ 6 }>
+                #{ data.token_id || 0 }
+              </chakra.span>
+            ) }
+            { data.value !== null && (
+              <span>
+                { BigNumber(data.value).toFormat() }
+              </span>
+            ) }
+          </>
+        );
+      }
     }
   })();
 

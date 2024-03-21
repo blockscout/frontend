@@ -41,6 +41,13 @@ export interface TxStateChangeTokenErc1155 {
   token_id: string;
 }
 
+export interface TxStateChangeTokenErc404 {
+  type: 'token';
+  token: TokenInfo<'ERC-404'>;
+  change: string;
+  token_id: string;
+}
+
 export type TxStateChanges = {
   items: Array<TxStateChange>;
   next_page_params: {

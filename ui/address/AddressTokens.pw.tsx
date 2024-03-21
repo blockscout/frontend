@@ -37,6 +37,10 @@ const test = base.extend({
       items: [ tokensMock.erc1155a, tokensMock.erc1155b ],
       next_page_params: nextPageParams,
     };
+    const response404 = {
+      items: [ tokensMock.erc404a, tokensMock.erc404b ],
+      next_page_params: nextPageParams,
+    };
 
     await page.route(API_URL_ADDRESS, (route) => route.fulfill({
       status: 200,
@@ -53,6 +57,10 @@ const test = base.extend({
     await page.route(API_URL_TOKENS + '?type=ERC-1155', (route) => route.fulfill({
       status: 200,
       body: JSON.stringify(response1155),
+    }));
+    await page.route(API_URL_TOKENS + '?type=ERC-404', (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify(response404),
     }));
     await page.route(API_URL_NFT, (route) => route.fulfill({
       status: 200,
@@ -217,6 +225,10 @@ base.describe('update balances via socket', () => {
       items: [ tokensMock.erc1155a ],
       next_page_params: null,
     };
+    const response404 = {
+      items: [ tokensMock.erc404a ],
+      next_page_params: null,
+    };
 
     await page.route(API_URL_ADDRESS, (route) => route.fulfill({
       status: 200,
@@ -234,6 +246,10 @@ base.describe('update balances via socket', () => {
       status: 200,
       body: JSON.stringify(response1155),
     }));
+    await page.route(API_URL_TOKENS + '?type=ERC-404', (route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify(response404),
+    }));
 
     const component = await mount(
       <TestApp withSocket>
@@ -248,6 +264,7 @@ base.describe('update balances via socket', () => {
     await page.waitForResponse(API_URL_TOKENS + '?type=ERC-20');
     await page.waitForResponse(API_URL_TOKENS + '?type=ERC-721');
     await page.waitForResponse(API_URL_TOKENS + '?type=ERC-1155');
+    await page.waitForResponse(API_URL_TOKENS + '?type=ERC-404');
 
     await expect(component).toHaveScreenshot();
 
