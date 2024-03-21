@@ -10,6 +10,7 @@ export interface TChainIndicator<R extends ChartsResources> {
   id: ChainIndicatorId;
   title: string;
   value: (stats: HomeStats) => string;
+  valueDiff?: (stats?: HomeStats) => number | null | undefined;
   icon: React.ReactNode;
   hint?: string;
   api: {

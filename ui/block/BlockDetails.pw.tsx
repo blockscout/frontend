@@ -51,6 +51,24 @@ test('genesis block', async({ mount, page }) => {
   await expect(component).toHaveScreenshot();
 });
 
+test('with blob txs', async({ mount, page }) => {
+  const query = {
+    data: blockMock.withBlobTxs,
+    isPending: false,
+  } as BlockQuery;
+
+  const component = await mount(
+    <TestApp>
+      <BlockDetails query={ query }/>
+    </TestApp>,
+    { hooksConfig },
+  );
+
+  await page.getByText('View details').click();
+
+  await expect(component).toHaveScreenshot();
+});
+
 const customFieldsTest = test.extend({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   context: contextWithEnvs(configs.viewsEnvs.block.hiddenFields) as any,

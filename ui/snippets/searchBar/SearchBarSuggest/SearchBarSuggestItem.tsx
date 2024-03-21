@@ -7,6 +7,7 @@ import type { SearchResultItem } from 'types/api/search';
 import { route } from 'nextjs-routes';
 
 import SearchBarSuggestAddress from './SearchBarSuggestAddress';
+import SearchBarSuggestBlob from './SearchBarSuggestBlob';
 import SearchBarSuggestBlock from './SearchBarSuggestBlock';
 import SearchBarSuggestItemLink from './SearchBarSuggestItemLink';
 import SearchBarSuggestLabel from './SearchBarSuggestLabel';
@@ -42,6 +43,9 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) =>
       case 'user_operation': {
         return route({ pathname: '/op/[hash]', query: { hash: data.user_operation_hash } });
       }
+      case 'blob': {
+        return route({ pathname: '/blobs/[hash]', query: { hash: data.blob_hash } });
+      }
     }
   })();
 
@@ -66,6 +70,9 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) =>
       }
       case 'user_operation': {
         return <SearchBarSuggestUserOp data={ data } searchTerm={ searchTerm } isMobile={ isMobile }/>;
+      }
+      case 'blob': {
+        return <SearchBarSuggestBlob data={ data } searchTerm={ searchTerm }/>;
       }
     }
   })();

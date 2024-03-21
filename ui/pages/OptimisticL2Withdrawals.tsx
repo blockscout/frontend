@@ -39,7 +39,7 @@ const OptimisticL2Withdrawals = () => {
     <>
       <Show below="lg" ssr={ false }>{ data.items.map(((item, index) => (
         <OptimisticL2WithdrawalsListItem
-          key={ item.l2_tx_hash + (isPlaceholderData ? index : '') }
+          key={ String(item.msg_nonce_version) + item.msg_nonce + (isPlaceholderData ? index : '') }
           item={ item }
           isLoading={ isPlaceholderData }
         />

@@ -9,29 +9,31 @@ import NftImage from './NftImage';
 import NftImageFullscreen from './NftImageFullscreen';
 import NftVideo from './NftVideo';
 import NftVideoFullscreen from './NftVideoFullscreen';
-import useNftMediaType from './useNftMediaType';
+import useNftMediaInfo from './useNftMediaInfo';
 import { mediaStyleProps } from './utils';
 
 interface Props {
-  url: string | null;
+  imageUrl: string | null;
+  animationUrl: string | null;
   className?: string;
   isLoading?: boolean;
   withFullscreen?: boolean;
 }
 
-const NftMedia = ({ url, className, isLoading, withFullscreen }: Props) => {
+const NftMedia = ({ imageUrl, animationUrl, className, isLoading, withFullscreen }: Props) => {
   const [ isMediaLoading, setIsMediaLoading ] = React.useState(true);
   const [ isLoadingError, setIsLoadingError ] = React.useState(false);
 
   const { ref, inView } = useInView({ triggerOnce: true });
 
-  const type = useNftMediaType(url, !isLoading && inView);
+  const mediaInfo = useNftMediaInfo({ imageUrl, animationUrl, isEnabled: !isLoading && inView });
 
   React.useEffect(() => {
-    if (!isLoading) {
-      setIsMediaLoading(Boolean(url));
+    if (!isLoading && !mediaInfo) {
+      setIsMediaLoading(false);
+      setIsLoadingError(true);
     }
-  }, [ isLoading, url ]);
+  }, [ isLoading, mediaInfo ]);
 
   const handleMediaLoaded = React.useCallback(() => {
     setIsMediaLoading(false);
@@ -45,9 +47,19 @@ const NftMedia = ({ url, className, isLoading, withFullscreen }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const content = (() => {
-    if (!url || isLoadingError) {
+    if (isLoading) {
+      return null;
+    }
+
+    if (!mediaInfo || isLoadingError) {
       const styleProps = withFullscreen ? {} : mediaStyleProps;
       return <NftFallback { ...styleProps }/>;
+    }
+
+    const { type, url } = mediaInfo;
+
+    if (!url) {
+      return null;
     }
 
     const props = {
@@ -70,7 +82,13 @@ const NftMedia = ({ url, className, isLoading, withFullscreen }: Props) => {
   })();
 
   const modal = (() => {
-    if (!url || !withFullscreen) {
+    if (!mediaInfo || !withFullscreen || isLoading) {
+      return null;
+    }
+
+    const { type, url } = mediaInfo;
+
+    if (!url) {
       return null;
     }
 

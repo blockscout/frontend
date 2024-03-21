@@ -158,6 +158,31 @@ test('search by tx hash +@mobile', async({ mount, page }) => {
   await expect(component.locator('main')).toHaveScreenshot();
 });
 
+test('search by blob hash +@mobile', async({ mount, page }) => {
+  const hooksConfig = {
+    router: {
+      query: { q: searchMock.blob1.blob_hash },
+    },
+  };
+  await page.route(buildApiUrl('search') + `?q=${ searchMock.blob1.blob_hash }`, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify({
+      items: [
+        searchMock.blob1,
+      ],
+    }),
+  }));
+
+  const component = await mount(
+    <TestApp>
+      <SearchResults/>
+    </TestApp>,
+    { hooksConfig },
+  );
+
+  await expect(component.locator('main')).toHaveScreenshot();
+});
+
 const testWithUserOps = test.extend({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   context: contextWithEnvs(configs.featureEnvs.userOps) as any,

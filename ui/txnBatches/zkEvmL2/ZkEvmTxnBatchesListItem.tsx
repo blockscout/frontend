@@ -18,7 +18,7 @@ const rollupFeature = config.features.rollup;
 type Props = { item: ZkEvmL2TxnBatchesItem; isLoading?: boolean };
 
 const ZkEvmTxnBatchesListItem = ({ item, isLoading }: Props) => {
-  const timeAgo = dayjs(item.timestamp).fromNow();
+  const timeAgo = item.timestamp ? dayjs(item.timestamp).fromNow() : 'Undefined';
 
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'zkEvm') {
     return null;
@@ -61,7 +61,7 @@ const ZkEvmTxnBatchesListItem = ({ item, isLoading }: Props) => {
         </LinkInternal>
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>Verify Tx Has</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Verify tx hash</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         { item.verify_tx_hash ? (
           <TxEntityL1

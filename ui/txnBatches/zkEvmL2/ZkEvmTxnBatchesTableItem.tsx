@@ -17,7 +17,7 @@ const rollupFeature = config.features.rollup;
 type Props = { item: ZkEvmL2TxnBatchesItem; isLoading?: boolean };
 
 const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
-  const timeAgo = dayjs(item.timestamp).fromNow();
+  const timeAgo = item.timestamp ? dayjs(item.timestamp).fromNow() : 'Undefined';
 
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'zkEvm') {
     return null;

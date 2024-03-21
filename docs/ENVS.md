@@ -52,6 +52,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
   - [Bridged tokens](ENVS.md#bridged-tokens)
   - [Safe{Core} address tags](ENVS.md#safecore-address-tags)
   - [SUAVE chain](ENVS.md#suave-chain)
+  - [MetaSuites extension](ENVS.md#metasuites-extension)
   - [Sentry error monitoring](ENVS.md#sentry-error-monitoring)
   - [OpenTelemetry](ENVS.md#opentelemetry)
   - [Swap button](ENVS.md#swap-button)
@@ -218,6 +219,7 @@ Settings for meta tags and OG tags
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_VIEWS_TX_HIDDEN_FIELDS | `Array<TxFieldsId>` | Array of the transaction fields ids that should be hidden. See below the list of the possible id values. | - | - | `'["value","tx_fee"]'` |
 | NEXT_PUBLIC_VIEWS_TX_ADDITIONAL_FIELDS | `Array<TxAdditionalFieldsId>` | Array of the additional fields ids that should be added to the transaction details. See below the list of the possible id values. | - | - | `'["fee_per_gas"]'` |
+| NEXT_PUBLIC_VIEWS_TX_HIDDEN_VIEWS | `Array<TxViewId>` | Transaction views that should be hidden. See below the list of the possible id values. | - | - | `'["blob_txs"]'` |
 
 ##### Transaction fields list
 | Id | Description |
@@ -233,6 +235,11 @@ Settings for meta tags and OG tags
 | Id | Description |
 | --- | --- |
 | `fee_per_gas` | Amount of total fee divided by total amount of gas used by transaction |
+
+##### Transaction view list
+| Id | Description |
+| --- | --- |
+| `blob_txs` | List of all transactions that contain blob data |
 
 &nbsp;
 
@@ -344,7 +351,7 @@ This feature is **enabled by default** with the `slise` ads provider. To switch 
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_AD_BANNER_PROVIDER | `slise` \| `adbutler` \| `coinzilla` \|  `hype` \| `none` | Ads provider  | - | `slise` | `coinzilla` |
+| NEXT_PUBLIC_AD_BANNER_PROVIDER | `slise` \| `adbutler` \| `coinzilla` \|  `hype` \| `getit` \| `none` | Ads provider  | - | `slise` | `coinzilla` |
 | NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP | `{ id: string; width: string; height: string }` | Placement config for desktop Adbutler banner | - | - | `{'id':'123456','width':'728','height':'90'}` |
 | NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE | `{ id: string; width: number; height: number }` | Placement config for mobile Adbutler banner | - | - | `{'id':'654321','width':'300','height':'100'}` |
 
@@ -587,6 +594,16 @@ For blockchains that implement SUAVE architecture additional fields will be show
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_IS_SUAVE_CHAIN | `boolean` | Set to true for blockchains with [SUAVE architecture](https://writings.flashbots.net/mevm-suave-centauri-and-beyond) | Required | - | `true` |
+
+&nbsp;
+
+### MetaSuites extension
+
+Enables [MetaSuites browser extension](https://github.com/blocksecteam/metasuites) to integrate with the app views.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_METASUITES_ENABLED | `boolean` | Set to true to enable integration | Required | - | `true` |
 
 &nbsp;
 

@@ -1,13 +1,14 @@
 /* eslint-disable max-len */
-import { Box, OrderedList, ListItem, useColorModeValue, Flex } from '@chakra-ui/react';
+import { Box, OrderedList, ListItem, useColorModeValue, Flex, chakra, Button } from '@chakra-ui/react';
 import React from 'react';
+
+import { route } from 'nextjs-routes';
 
 import IconSvg from 'ui/shared/IconSvg';
 
 import AppErrorTitle from '../AppErrorTitle';
 
-const AppErrorInvalidTxHash = () => {
-  const textColor = useColorModeValue('gray.500', 'gray.400');
+const AppErrorTxNotFound = () => {
   const snippet = {
     borderColor: useColorModeValue('blackAlpha.300', 'whiteAlpha.300'),
     iconBg: useColorModeValue('blackAlpha.800', 'whiteAlpha.800'),
@@ -36,7 +37,7 @@ const AppErrorInvalidTxHash = () => {
         </Flex>
       </Box>
       <AppErrorTitle title="Sorry, we are unable to locate this transaction hash"/>
-      <OrderedList color={ textColor } mt={ 3 } spacing={ 3 }>
+      <OrderedList mt={ 3 } spacing={ 3 }>
         <ListItem>
             If you have just submitted this transaction please wait for at least 30 seconds before refreshing this page.
         </ListItem>
@@ -47,11 +48,22 @@ const AppErrorInvalidTxHash = () => {
             During times when the network is busy (i.e during ICOs) it can take a while for your transaction to propagate through the network and for us to index it.
         </ListItem>
         <ListItem>
-            If it still does not show up after 1 hour, please check with your sender/exchange/wallet/transaction provider for additional information.
+          <span>If it still does not show up after 1 hour, please check with your </span>
+          <chakra.span fontWeight={ 600 }>sender/exchange/wallet/transaction provider</chakra.span>
+          <span> for additional information.</span>
         </ListItem>
       </OrderedList>
+      <Button
+        mt={ 8 }
+        size="lg"
+        variant="outline"
+        as="a"
+        href={ route({ pathname: '/' }) }
+      >
+        Back to home
+      </Button>
     </>
   );
 };
 
-export default AppErrorInvalidTxHash;
+export default AppErrorTxNotFound;

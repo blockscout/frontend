@@ -1,4 +1,4 @@
-import { chakra, Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import { chakra, Flex, useColorModeValue } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -62,7 +62,7 @@ const TokenSelectItem = ({ data }: Props) => {
       _hover={{
         bgColor: useColorModeValue('blue.50', 'gray.800'),
       }}
-      color="initial"
+      color="unset"
       fontSize="sm"
       href={ url }
     >
@@ -73,8 +73,11 @@ const TokenSelectItem = ({ data }: Props) => {
           noCopy
           noLink
           fontWeight={ 700 }
+          mr={ 2 }
         />
-        { data.usd && <Text fontWeight={ 700 } ml="auto">${ data.usd.toFormat(2) }</Text> }
+        { data.usd && (
+          <TruncatedValue value={ `$${ data.usd.toFormat(2) }` } fontWeight={ 700 } minW="120px" ml="auto" textAlign="right"/>
+        ) }
       </Flex>
       <Flex alignItems="center" justifyContent="space-between" w="100%" whiteSpace="nowrap">
         { secondRow }

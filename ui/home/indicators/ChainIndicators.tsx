@@ -1,10 +1,11 @@
-import { Flex, Skeleton, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex, Skeleton, Text, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import Hint from 'ui/shared/Hint';
+import IconSvg from 'ui/shared/IconSvg';
 
 import ChainIndicatorChartContainer from './ChainIndicatorChartContainer';
 import ChainIndicatorItem from './ChainIndicatorItem';
@@ -56,9 +57,29 @@ const ChainIndicators = () => {
     }
 
     return (
-      <Text fontWeight={ 600 } fontFamily="heading" fontSize="48px" lineHeight="48px" mt={ 3 } mb={ 4 }>
+      <Text fontWeight={ 600 } fontFamily="heading" fontSize="48px" lineHeight="48px" mt={ 3 }>
         { indicator?.value(statsQueryResult.data) }
       </Text>
+    );
+  })();
+
+  const valueDiff = (() => {
+    if (!statsQueryResult.data || !indicator?.valueDiff) {
+      return null;
+    }
+
+    const diff = indicator.valueDiff(statsQueryResult.data);
+    if (diff === undefined || diff === null) {
+      return null;
+    }
+
+    const diffColor = diff >= 0 ? 'green.500' : 'red.500';
+
+    return (
+      <Skeleton isLoaded={ !statsQueryResult.isPlaceholderData } display="flex" alignItems="center" color={ diffColor } mt={ 2 }>
+        <IconSvg name="up" boxSize={ 5 } mr={ 1 } transform={ diff < 0 ? 'rotate(180deg)' : 'rotate(0)' }/>
+        <Text color={ diffColor } fontWeight={ 600 }>{ diff }%</Text>
+      </Skeleton>
     );
   })();
 
@@ -68,7 +89,7 @@ const ChainIndicators = () => {
       borderRadius={{ base: 'none', lg: 'lg' }}
       boxShadow={{ base: 'none', lg: 'xl' }}
       bgColor={{ base: bgColorMobile, lg: bgColorDesktop }}
-      columnGap={ 12 }
+      columnGap={ 6 }
       rowGap={ 0 }
       flexDir={{ base: 'column', lg: 'row' }}
       w="100%"
@@ -80,7 +101,10 @@ const ChainIndicators = () => {
           <Text fontWeight={ 500 } fontFamily="heading" fontSize="lg">{ indicator?.title }</Text>
           { indicator?.hint && <Hint label={ indicator.hint } ml={ 1 }/> }
         </Flex>
-        { valueTitle }
+        <Box mb={ 4 }>
+          { valueTitle }
+          { valueDiff }
+        </Box>
         <ChainIndicatorChartContainer { ...queryResult }/>
       </Flex>
       { indicators.length > 1 && (

@@ -7,6 +7,7 @@ import * as cookies from 'lib/cookies';
 
 import AdbutlerBanner from './AdbutlerBanner';
 import CoinzillaBanner from './CoinzillaBanner';
+import GetitBanner from './GetitBanner';
 import HypeBanner from './HypeBanner';
 import SliseBanner from './SliseBanner';
 
@@ -25,6 +26,8 @@ const AdBanner = ({ className, isLoading }: { className?: string; isLoading?: bo
         return <AdbutlerBanner/>;
       case 'coinzilla':
         return <CoinzillaBanner/>;
+      case 'getit':
+        return <GetitBanner/>;
       case 'hype':
         return <HypeBanner/>;
       case 'slise':

@@ -5,7 +5,7 @@ export type ZkEvmL2TxnBatchesItem = {
   verify_tx_hash: string | null;
   sequence_tx_hash: string | null;
   status: string;
-  timestamp: string;
+  timestamp: string | null;
   tx_count: number;
 }
 
@@ -26,7 +26,7 @@ export type ZkEvmL2TxnBatch = {
   sequence_tx_hash: string;
   state_root: string;
   status: typeof ZKEVM_L2_TX_BATCH_STATUSES[number];
-  timestamp: string;
+  timestamp: string | null;
   transactions: Array<string>;
   verify_tx_hash: string;
 }

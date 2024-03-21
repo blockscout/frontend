@@ -1,6 +1,10 @@
-import { Box, Text, chakra } from '@chakra-ui/react';
+import { Box, Text, chakra, Icon } from '@chakra-ui/react';
 import React from 'react';
 
+// This icon doesn't work properly when it is in the sprite
+// Probably because of the gradient
+// eslint-disable-next-line no-restricted-imports
+import solidityScanIcon from 'icons/brands/solidity_scan.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import { SOLIDITYSCAN_REPORT } from 'stubs/contract';
 import LinkExternal from 'ui/shared/LinkExternal';
@@ -39,7 +43,11 @@ const SolidityscanReport = ({ className, hash }: Props) => {
       isLoading={ isPlaceholderData }
       popoverContent={ (
         <>
-          <Box mb={ 5 }>Contract analyzed for 140+ vulnerability patterns by SolidityScan</Box>
+          <Box mb={ 5 } lineHeight="25px">
+            Contract analyzed for 140+ vulnerability patterns by
+            <Icon as={ solidityScanIcon } mr={ 1 } ml="6px" w="23px" h="20px" display="inline-block" verticalAlign="middle"/>
+            <Text fontWeight={ 600 } display="inline-block">SolidityScan</Text>
+          </Box>
           <SolidityscanReportScore score={ score }/>
           { vulnerabilities && vulnerabilitiesCount > 0 && (
             <Box mb={ 5 }>

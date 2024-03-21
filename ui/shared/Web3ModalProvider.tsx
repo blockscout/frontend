@@ -32,6 +32,7 @@ const getConfig = () => {
     const wagmiConfig = defaultWagmiConfig({
       chains,
       projectId: feature.walletConnect.projectId,
+      enableEmail: true,
     });
 
     createWeb3Modal({

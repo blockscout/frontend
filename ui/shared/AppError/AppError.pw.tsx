@@ -36,8 +36,8 @@ test('status code 500', async({ mount }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('invalid tx hash', async({ mount }) => {
-  const error = { message: 'Invalid tx hash', cause: { status: 422, resource: 'tx' } } as Error;
+test('tx not found', async({ mount }) => {
+  const error = { message: 'Not found', cause: { status: 404, resource: 'tx' } } as Error;
   const component = await mount(
     <TestApp>
       <AppError error={ error }/>

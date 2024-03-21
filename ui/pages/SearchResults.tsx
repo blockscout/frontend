@@ -58,6 +58,11 @@ const SearchResultsPageContent = () => {
             router.replace({ pathname: '/op/[hash]', query: { hash: redirectCheckQuery.data.parameter } });
             return;
           }
+          break;
+        }
+        case 'blob': {
+          router.replace({ pathname: '/blobs/[hash]', query: { hash: redirectCheckQuery.data.parameter } });
+          return;
         }
       }
     }

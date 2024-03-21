@@ -54,6 +54,7 @@ const coinPriceIndicator: TChainIndicator<'stats_charts_market'> = {
   value: (stats) => stats.coin_price === null ?
     '$N/A' :
     '$' + Number(stats.coin_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }),
+  valueDiff: (stats) => stats?.coin_price !== null ? stats?.coin_price_change_percentage : null,
   icon: <TokenEntity.Icon token={ nativeTokenData } boxSize={ 6 } marginRight={ 0 }/>,
   hint: `${ config.chain.governanceToken.symbol || config.chain.currency.symbol } token daily price in USD.`,
   api: {

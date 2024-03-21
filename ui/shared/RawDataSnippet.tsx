@@ -1,3 +1,4 @@
+import type { ChakraProps } from '@chakra-ui/react';
 import { Box, Flex, chakra, useColorModeValue, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
@@ -12,9 +13,10 @@ interface Props {
   textareaMaxHeight?: string;
   showCopy?: boolean;
   isLoading?: boolean;
+  contentProps?: ChakraProps;
 }
 
-const RawDataSnippet = ({ data, className, title, rightSlot, beforeSlot, textareaMaxHeight, showCopy = true, isLoading }: Props) => {
+const RawDataSnippet = ({ data, className, title, rightSlot, beforeSlot, textareaMaxHeight, showCopy = true, isLoading, contentProps }: Props) => {
   // see issue in theme/components/Textarea.ts
   const bgColor = useColorModeValue('#f5f5f6', '#1a1b1b');
   return (
@@ -36,8 +38,10 @@ const RawDataSnippet = ({ data, className, title, rightSlot, beforeSlot, textare
         borderRadius="md"
         wordBreak="break-all"
         whiteSpace="pre-wrap"
+        overflowX="hidden"
         overflowY="auto"
         isLoaded={ !isLoading }
+        { ...contentProps }
       >
         { data }
       </Skeleton>
