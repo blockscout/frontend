@@ -105,7 +105,7 @@ const MarketplaceApp = () => {
   const { address, sendTransaction, signMessage, signTypedData } = useMarketplaceWallet(id);
   useAutoConnectWallet();
 
-  const { data: securityReports, isPending: isSecurityReportsPending } = useSecurityReports();
+  const { data: securityReports, isLoading: isSecurityReportsLoading } = useSecurityReports();
 
   const query = useQuery<unknown, ResourceError<unknown>, MarketplaceAppOverview>({
     queryKey: [ 'marketplace-dapps', id ],
@@ -145,7 +145,7 @@ const MarketplaceApp = () => {
     <>
       <MarketplaceAppTopBar
         data={ data }
-        isLoading={ isPending || isSecurityReportsPending }
+        isLoading={ isPending || isSecurityReportsLoading }
         isWalletConnected={ Boolean(address) }
         securityReport={ securityReports?.[id] }
       />

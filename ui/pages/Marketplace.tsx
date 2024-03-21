@@ -173,7 +173,7 @@ const Marketplace = () => {
       </Box>
 
       <Flex direction={{ base: 'column', lg: 'row' }} mb={{ base: 4, lg: 6 }} gap={{ base: 4, lg: 3 }}>
-        { isExperiment && (
+        { (feature.securityReportsUrl && isExperiment) && (
           <Skeleton isLoaded={ !isPlaceholderData }>
             <RadioButtonGroup<MarketplaceDisplayType>
               onChange={ onDisplayTypeChange }
@@ -210,12 +210,12 @@ const Marketplace = () => {
           onChange={ onSearchInputChange }
           placeholder="Find app by name or keyword..."
           isLoading={ isPlaceholderData }
-          size={ isExperiment ? 'xs' : 'sm' }
+          size={ (feature.securityReportsUrl && isExperiment) ? 'xs' : 'sm' }
           flex="1"
         />
       </Flex>
 
-      { (selectedDisplayType === MarketplaceDisplayType.SCORES && isExperiment) ? (
+      { (selectedDisplayType === MarketplaceDisplayType.SCORES && feature.securityReportsUrl && isExperiment) ? (
         <MarketplaceListWithScores
           apps={ displayedApps }
           showAppInfo={ showAppInfo }
