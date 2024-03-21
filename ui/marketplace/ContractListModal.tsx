@@ -62,7 +62,7 @@ const ContractListModal = ({ onClose, type, contracts }: Props) => {
           columnGap={ type === ContractListTypes.ANALYZED ? 4 : 0 }
         >
           { displayedContracts.map((contract) => (
-            <>
+            <React.Fragment key={ contract.address }>
               { type === ContractListTypes.ANALYZED && (
                 <Box gridColumn={ 1 }>
                   <ContractSecurityReport securityReport={ contract.solidityScanReport }/>
@@ -79,7 +79,7 @@ const ContractListModal = ({ onClose, type, contracts }: Props) => {
                 gridColumn={ 2 }
                 height="32px"
               />
-            </>
+            </React.Fragment>
           )) }
         </ModalBody>
       </ModalContent>

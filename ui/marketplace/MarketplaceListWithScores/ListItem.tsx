@@ -56,11 +56,11 @@ const ListItem = ({ app, onInfoClick, isFavorite, onFavoriteClick, isLoading, on
       rowGap={ 3 }
       py={ 3 }
       sx={{
-        ':first-child': {
+        ':first-of-type': {
           borderTop: 'none',
           paddingTop: 0,
         },
-        ':last-child': {
+        ':last-of-type': {
           borderBottom: 'none',
           paddingBottom: 0,
         },
