@@ -1,4 +1,4 @@
-import { Table, Tbody, Tr, Th, Box, Skeleton, Text, Show, Hide, Divider } from '@chakra-ui/react';
+import { Table, Tbody, Tr, Th, Box, Skeleton, Text, Show, Hide } from '@chakra-ui/react';
 import _ from 'lodash';
 import React, { useMemo, useState } from 'react';
 
@@ -72,8 +72,6 @@ export default function TxAssetFlows(props: FlowViewProps) {
   const content = (
     <>
       <Hide above="lg" >
-        { data?.length && <Divider borderColor="gray.200" mb={ 4 }/> }
-
         { data?.map((item, i) => (
           <TxAssetFlowsListItem
             key={ `${ i }-${ item.accountAddress }` }
