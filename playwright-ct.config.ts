@@ -4,6 +4,8 @@ import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
+import appConfig from 'configs/app';
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -36,6 +38,7 @@ const config: PlaywrightTestConfig = defineConfig({
 
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
+    baseURL: appConfig.app.baseUrl,
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
