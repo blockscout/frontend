@@ -1,7 +1,6 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import { GrowthBookProvider } from '@growthbook/growthbook-react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { createWeb3Modal } from '@web3modal/wagmi/react';
 import { defaultWagmiConfig } from '@web3modal/wagmi/react/config';
 import React from 'react';
 import { http } from 'viem';
@@ -51,11 +50,6 @@ const wagmiConfig = defaultWagmiConfig({
     url: app.url,
     icons: [],
   },
-});
-
-createWeb3Modal({
-  wagmiConfig,
-  projectId: WALLET_CONNECT_PROJECT_ID,
 });
 // <<<<
 
