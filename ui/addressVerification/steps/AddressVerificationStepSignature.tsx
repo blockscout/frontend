@@ -219,7 +219,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
         { !noWeb3Provider && (
           <RadioGroup onChange={ handleSignMethodChange } value={ signMethod } display="flex" flexDir="column" rowGap={ 4 }>
             <Radio value="wallet">Sign via Web3 wallet</Radio>
-            <Radio value="manually">Sign manually</Radio>
+            <Radio value="manual">Sign manually</Radio>
           </RadioGroup>
         ) }
         { signMethod === 'manual' && <AddressVerificationFieldSignature formState={ formState } control={ control }/> }
