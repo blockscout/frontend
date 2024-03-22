@@ -14,7 +14,7 @@ import type { AdTextProviders, AdBannerProviders } from '../../../types/client/a
 import type { ContractCodeIde } from '../../../types/client/contract';
 import { GAS_UNITS } from '../../../types/client/gasTracker';
 import type { GasUnit } from '../../../types/client/gasTracker';
-import type { MarketplaceAppOverview } from '../../../types/client/marketplace';
+import type { MarketplaceAppOverview, MarketplaceAppSecurityReportRaw, MarketplaceAppSecurityReport } from '../../../types/client/marketplace';
 import { NAVIGATION_LINK_IDS } from '../../../types/client/navigation-items';
 import type { NavItemExternal, NavigationLinkId } from '../../../types/client/navigation-items';
 import { ROLLUP_TYPES } from '../../../types/client/rollup';
@@ -85,6 +85,65 @@ const marketplaceAppSchema: yup.ObjectSchema<MarketplaceAppOverview> = yup
     priority: yup.number(),
   });
 
+const issueSeverityDistributionSchema: yup.ObjectSchema<MarketplaceAppSecurityReport['overallInfo']['issueSeverityDistribution']> = yup
+  .object({
+    critical: yup.number().required(),
+    gas: yup.number().required(),
+    high: yup.number().required(),
+    informational: yup.number().required(),
+    low: yup.number().required(),
+    medium: yup.number().required(),
+  });
+
+const solidityscanReportSchema: yup.ObjectSchema<MarketplaceAppSecurityReport['contractsData'][number]['solidityScanReport']> = yup
+  .object({
+    contractname: yup.string().required(),
+    scan_status: yup.string().required(),
+    scan_summary: yup
+      .object({
+        issue_severity_distribution: issueSeverityDistributionSchema.required(),
+        lines_analyzed_count: yup.number().required(),
+        scan_time_taken: yup.number().required(),
+        score: yup.string().required(),
+        score_v2: yup.string().required(),
+        threat_score: yup.string().required(),
+      })
+      .required(),
+    scanner_reference_url: yup.string().required(),
+  });
+
+const contractDataSchema: yup.ObjectSchema<MarketplaceAppSecurityReport['contractsData'][number]> = yup
+  .object({
+    address: yup.string().required(),
+    isVerified: yup.boolean().required(),
+    solidityScanReport: solidityscanReportSchema.nullable().notRequired(),
+  });
+
+const chainsDataSchema = yup.lazy((objValue) => {
+  let schema = yup.object();
+  Object.keys(objValue).forEach((key) => {
+    schema = schema.shape({
+      [key]: yup.object({
+        overallInfo: yup.object({
+          verifiedNumber: yup.number().required(),
+          totalContractsNumber: yup.number().required(),
+          solidityScanContractsNumber: yup.number().required(),
+          securityScore: yup.number().required(),
+          issueSeverityDistribution: issueSeverityDistributionSchema.required(),
+        }).required(),
+        contractsData: yup.array().of(contractDataSchema).required(),
+      }),
+    });
+  });
+  return schema;
+});
+
+const securityReportSchema: yup.ObjectSchema<MarketplaceAppSecurityReportRaw> = yup
+  .object({
+    appName: yup.string().required(),
+    chainsData: chainsDataSchema,
+  });
+
 const marketplaceSchema = yup
   .object()
   .shape({
@@ -128,6 +187,7 @@ const marketplaceSchema = yup
     NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL: yup
       .array()
       .json()
+      .of(securityReportSchema)
       .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
         is: true,
         then: (schema) => schema,
