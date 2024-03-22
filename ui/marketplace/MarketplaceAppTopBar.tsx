@@ -1,7 +1,7 @@
 import { chakra, Flex, Tooltip, Skeleton, useBoolean, Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { MarketplaceAppOverview } from 'types/client/marketplace';
+import type { MarketplaceAppOverview, MarketplaceAppSecurityReport } from 'types/client/marketplace';
 import { ContractListTypes } from 'types/client/marketplace';
 
 import { route } from 'nextjs-routes';
@@ -22,7 +22,7 @@ type Props = {
   data: MarketplaceAppOverview | undefined;
   isLoading: boolean;
   isWalletConnected: boolean;
-  securityReport?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  securityReport?: MarketplaceAppSecurityReport;
 }
 
 const MarketplaceAppTopBar = ({ data, isLoading, isWalletConnected, securityReport }: Props) => {

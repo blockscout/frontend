@@ -1,6 +1,8 @@
 import { Box, Text } from '@chakra-ui/react';
 import React from 'react';
 
+import type { SolidityscanReport } from 'types/api/contract';
+
 import config from 'configs/app';
 import * as mixpanel from 'lib/mixpanel/index';
 import LinkExternal from 'ui/shared/LinkExternal';
@@ -9,34 +11,36 @@ import SolidityscanReportDetails from 'ui/shared/solidityscanReport/Solidityscan
 import SolidityscanReportScore from 'ui/shared/solidityscanReport/SolidityscanReportScore';
 
 type Props = {
-  securityReport?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  securityReport?: SolidityscanReport['scan_report'] | null;
 }
 
 const ContractSecurityReport = ({ securityReport }: Props) => {
-  const {
-    scanner_reference_url: url,
-    scan_summary: {
-      score_v2: securityScore,
-      issue_severity_distribution: issueSeverityDistribution,
-    },
-  } = securityReport;
-
-  const totalIssues = Object.values(issueSeverityDistribution as Record<string, number>).reduce((acc, val) => acc + val, 0);
-
   const handleClick = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Security score', Source: 'Analyzed contracts popup' });
   }, [ ]);
 
+  if (!securityReport) {
+    return null;
+  }
+
+  const url = securityReport?.scanner_reference_url;
+  const {
+    score_v2: securityScore,
+    issue_severity_distribution: issueSeverityDistribution,
+  } = securityReport.scan_summary;
+
+  const totalIssues = Object.values(issueSeverityDistribution as Record<string, number>).reduce((acc, val) => acc + val, 0);
+
   return (
     <SolidityscanReportButton
-      score={ securityScore }
+      score={ parseFloat(securityScore) }
       onClick={ handleClick }
       popoverContent={ (
         <>
           <Box mb={ 5 }>
             The security score was derived from evaluating the smart contracts of a protocol on the { config.chain.name } network.
           </Box>
-          <SolidityscanReportScore score={ securityScore }/>
+          <SolidityscanReportScore score={ parseFloat(securityScore) }/>
           { issueSeverityDistribution && totalIssues > 0 && (
             <Box mb={ 5 }>
               <Text py="7px" variant="secondary" fontSize="xs" fontWeight={ 500 }>Threat score & vulnerabilities</Text>

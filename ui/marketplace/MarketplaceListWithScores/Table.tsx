@@ -2,14 +2,14 @@ import { Table as ChakraTable, Tbody, Th, Tr } from '@chakra-ui/react';
 import React from 'react';
 import type { MouseEvent } from 'react';
 
-import type { MarketplaceAppPreview, ContractListTypes } from 'types/client/marketplace';
+import type { MarketplaceAppWithSecurityReport, ContractListTypes } from 'types/client/marketplace';
 
 import { default as Thead } from 'ui/shared/TheadSticky';
 
 import TableItem from './TableItem';
 
 type Props = {
-  apps: Array<MarketplaceAppPreview>;
+  apps: Array<MarketplaceAppWithSecurityReport>;
   isLoading?: boolean;
   favoriteApps: Array<string>;
   onFavoriteClick: (id: string, isFavorite: boolean, source: 'Security view') => void;

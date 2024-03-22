@@ -25,7 +25,7 @@ const values = {
 };
 
 interface Props {
-  children: string;
+  children: string | number;
   onClick: (event: MouseEvent) => void;
   variant: ContractListButtonVariants;
   isLoading?: boolean;

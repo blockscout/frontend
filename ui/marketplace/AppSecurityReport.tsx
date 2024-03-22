@@ -1,6 +1,8 @@
 import { Box, Text, Link } from '@chakra-ui/react';
 import React from 'react';
 
+import type { MarketplaceAppSecurityReport } from 'types/client/marketplace';
+
 import config from 'configs/app';
 import { apos } from 'lib/html-entities';
 import * as mixpanel from 'lib/mixpanel/index';
@@ -11,7 +13,7 @@ import SolidityscanReportScore from 'ui/shared/solidityscanReport/SolidityscanRe
 
 type Props = {
   id: string;
-  securityReport?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  securityReport?: MarketplaceAppSecurityReport;
   height?: string | undefined;
   showContractList: () => void;
   isLoading?: boolean;
@@ -37,7 +39,7 @@ const AppSecurityReport = ({ id, securityReport, height, showContractList, isLoa
   const {
     securityScore = 0,
     solidityScanContractsNumber = 0,
-    issueSeverityDistribution = {},
+    issueSeverityDistribution = {} as MarketplaceAppSecurityReport['overallInfo']['issueSeverityDistribution'],
     totalIssues = 0,
   } = securityReport?.overallInfo || {};
 

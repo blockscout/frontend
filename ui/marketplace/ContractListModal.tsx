@@ -4,6 +4,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
+import type { MarketplaceAppSecurityReport } from 'types/client/marketplace';
 import { ContractListTypes } from 'types/client/marketplace';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -15,7 +16,7 @@ import ContractSecurityReport from './ContractSecurityReport';
 type Props = {
   onClose: () => void;
   type: ContractListTypes;
-  contracts: Array<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+  contracts?: MarketplaceAppSecurityReport['contractsData'];
 }
 
 const titles = {
@@ -28,6 +29,9 @@ const ContractListModal = ({ onClose, type, contracts }: Props) => {
   const isMobile = useIsMobile();
 
   const displayedContracts = React.useMemo(() => {
+    if (!contracts) {
+      return [];
+    }
     switch (type) {
       default:
       case ContractListTypes.ALL:
@@ -35,11 +39,17 @@ const ContractListModal = ({ onClose, type, contracts }: Props) => {
       case ContractListTypes.ANALYZED:
         return contracts
           .filter((contract) => Boolean(contract.solidityScanReport))
-          .sort((a, b) => b.solidityScanReport.scan_summary.score_v2 - a.solidityScanReport.scan_summary.score_v2);
+          .sort((a, b) =>
+            (parseFloat(b.solidityScanReport?.scan_summary.score_v2 ?? '0')) - (parseFloat(a.solidityScanReport?.scan_summary.score_v2 ?? '0')),
+          );
       case ContractListTypes.VERIFIED:
         return contracts.filter((contract) => contract.isVerified);
     }
   }, [ contracts, type ]);
+
+  if (!contracts) {
+    return null;
+  }
 
   return (
     <Modal

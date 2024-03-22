@@ -1,5 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
+import type { MarketplaceAppSecurityReport, MarketplaceAppSecurityReportRaw } from 'types/client/marketplace';
+
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/hooks/useFetch';
@@ -10,12 +12,12 @@ const securityReportsUrl = (feature.isEnabled && feature.securityReportsUrl) || 
 export default function useSecurityReports() {
   const apiFetch = useApiFetch();
 
-  return useQuery<unknown, ResourceError<unknown>, Record<string, any>>({ // eslint-disable-line @typescript-eslint/no-explicit-any
+  return useQuery<unknown, ResourceError<unknown>, Record<string, MarketplaceAppSecurityReport>>({
     queryKey: [ 'marketplace-security-reports' ],
     queryFn: async() => apiFetch(securityReportsUrl, undefined, { resource: 'marketplace-security-reports' }),
     select: (data) => {
-      const securityReports: Record<string, any> = {}; // eslint-disable-line @typescript-eslint/no-explicit-any
-      (data as Array<any>).forEach((item) => { // eslint-disable-line @typescript-eslint/no-explicit-any
+      const securityReports: Record<string, MarketplaceAppSecurityReport> = {};
+      (data as Array<MarketplaceAppSecurityReportRaw>).forEach((item) => {
         const report = item.chainsData[config.chain.id || ''];
         if (report) {
           const issues: Record<string, number> = report.overallInfo.issueSeverityDistribution;

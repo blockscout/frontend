@@ -2,7 +2,7 @@ import { Td, Tr, IconButton, Skeleton, Text } from '@chakra-ui/react';
 import React from 'react';
 import type { MouseEvent } from 'react';
 
-import type { MarketplaceAppPreview } from 'types/client/marketplace';
+import type { MarketplaceAppWithSecurityReport } from 'types/client/marketplace';
 import { ContractListTypes } from 'types/client/marketplace';
 
 import * as mixpanel from 'lib/mixpanel/index';
@@ -14,7 +14,7 @@ import AppLink from './AppLink';
 import MoreInfoButton from './MoreInfoButton';
 
 type Props = {
-  app: MarketplaceAppPreview & { securityReport?: any }; // eslint-disable-line @typescript-eslint/no-explicit-any
+  app: MarketplaceAppWithSecurityReport;
   isLoading?: boolean;
   isFavorite: boolean;
   onFavoriteClick: (id: string, isFavorite: boolean, source: 'Security view') => void;
@@ -98,7 +98,7 @@ const TableItem = ({
               variant={ ContractListButtonVariants.ALL_CONTRACTS }
               isLoading={ isLoading }
             >
-              { securityReport?.overallInfo.totalContractsNumber }
+              { securityReport?.overallInfo.totalContractsNumber ?? 0 }
             </ContractListButton>
           </Td>
           <Td verticalAlign="middle">
@@ -107,7 +107,7 @@ const TableItem = ({
               variant={ ContractListButtonVariants.VERIFIED_CONTRACTS }
               isLoading={ isLoading }
             >
-              { securityReport?.overallInfo.verifiedNumber }
+              { securityReport?.overallInfo.verifiedNumber ?? 0 }
             </ContractListButton>
           </Td>
         </>
