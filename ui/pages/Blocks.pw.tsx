@@ -22,14 +22,8 @@ const hooksConfig = {
 test.describe.configure({ mode: 'serial' });
 
 test('base view +@dark-mode', async({ render, mockApiResponse }) => {
-  await mockApiResponse(
-    { resourceName: 'blocks', queryParams: { type: 'block' } },
-    blockMock.baseListResponse,
-  );
-  await mockApiResponse(
-    { resourceName: 'stats' },
-    statsMock.base,
-  );
+  await mockApiResponse('blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
+  await mockApiResponse('stats', statsMock.base);
 
   const component = await render(<Blocks/>, { hooksConfig });
 
@@ -41,14 +35,8 @@ const hiddenFieldsTest = test.extend<{ context: BrowserContext }>({
 });
 
 hiddenFieldsTest('hidden fields', async({ render, mockApiResponse }) => {
-  await mockApiResponse(
-    { resourceName: 'blocks', queryParams: { type: 'block' } },
-    blockMock.baseListResponse,
-  );
-  await mockApiResponse(
-    { resourceName: 'stats' },
-    statsMock.base,
-  );
+  await mockApiResponse('blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
+  await mockApiResponse('stats', statsMock.base);
 
   const component = await render(<Blocks/>, { hooksConfig });
 
@@ -59,14 +47,8 @@ test.describe('mobile', () => {
   test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 
   test(' base view', async({ render, mockApiResponse }) => {
-    await mockApiResponse(
-      { resourceName: 'blocks', queryParams: { type: 'block' } },
-      blockMock.baseListResponse,
-    );
-    await mockApiResponse(
-      { resourceName: 'stats' },
-      statsMock.base,
-    );
+    await mockApiResponse('blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
+    await mockApiResponse('stats', statsMock.base);
 
     const component = await render(<Blocks/>, { hooksConfig });
 
@@ -78,14 +60,8 @@ test.describe('mobile', () => {
   });
 
   hiddenFieldsTest('hidden fields', async({ render, mockApiResponse }) => {
-    await mockApiResponse(
-      { resourceName: 'blocks', queryParams: { type: 'block' } },
-      blockMock.baseListResponse,
-    );
-    await mockApiResponse(
-      { resourceName: 'stats' },
-      statsMock.base,
-    );
+    await mockApiResponse('blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
+    await mockApiResponse('stats', statsMock.base);
 
     const component = await render(<Blocks/>, { hooksConfig });
 
@@ -94,10 +70,7 @@ test.describe('mobile', () => {
 });
 
 test('new item from socket', async({ render, mockApiResponse, createSocket }) => {
-  await mockApiResponse(
-    { resourceName: 'blocks', queryParams: { type: 'block' } },
-    blockMock.baseListResponse,
-  );
+  await mockApiResponse('blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
 
   const component = await render(<Blocks/>, { hooksConfig }, { withSocket: true });
 
@@ -116,10 +89,7 @@ test('new item from socket', async({ render, mockApiResponse, createSocket }) =>
 });
 
 test('socket error', async({ render, mockApiResponse, createSocket }) => {
-  await mockApiResponse(
-    { resourceName: 'blocks', queryParams: { type: 'block' } },
-    blockMock.baseListResponse,
-  );
+  await mockApiResponse('blocks', blockMock.baseListResponse, { queryParams: { type: 'block' } });
 
   const component = await render(<Blocks/>, { hooksConfig }, { withSocket: true });
 

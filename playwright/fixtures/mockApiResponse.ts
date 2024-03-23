@@ -3,24 +3,23 @@ import type { TestFixture, Page } from '@playwright/test';
 import buildUrl from 'lib/api/buildUrl';
 import type { ResourceName, ResourcePayload } from 'lib/api/resources';
 
-interface ResourceInfo<R extends ResourceName> {
-  resourceName: Parameters<typeof buildUrl<R>>[0];
+interface Options<R extends ResourceName> {
   pathParams?: Parameters<typeof buildUrl<R>>[1];
   queryParams?: Parameters<typeof buildUrl<R>>[2];
 }
 
-export type MockApiResponseFixture = <R extends ResourceName>(resourceInfo: ResourceInfo<R>, responseMock: ResourcePayload<R>) => Promise<string>;
+export type MockApiResponseFixture = <R extends ResourceName>(resourceName: R, responseMock: ResourcePayload<R>, options?: Options<R>) => Promise<string>;
 
 const fixture: TestFixture<MockApiResponseFixture, { page: Page }> = async({ page }, use) => {
-  await use(async<R extends ResourceName>(resourceInfo: ResourceInfo<R>, responseMock: ResourcePayload<R>) => {
-    const url = buildUrl(resourceInfo.resourceName, resourceInfo.pathParams, resourceInfo.queryParams);
+  await use(async<R extends ResourceName>(resourceName: R, responseMock: ResourcePayload<R>, options?: Options<R>) => {
+    const apiUrl = buildUrl(resourceName, options?.pathParams, options?.queryParams);
 
-    await page.route(url, (route) => route.fulfill({
+    await page.route(apiUrl, (route) => route.fulfill({
       status: 200,
       body: JSON.stringify(responseMock),
     }));
 
-    return url;
+    return apiUrl;
   });
 };
 

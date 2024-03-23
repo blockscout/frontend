@@ -13,14 +13,8 @@ const test = base.extend<{ context: BrowserContext }>({
 });
 
 test('base view', async({ render, mockApiResponse }) => {
-  await mockApiResponse(
-    { resourceName: 'validators', pathParams: { chainType: 'stability' } },
-    validatorsMock.validatorsResponse,
-  );
-  await mockApiResponse(
-    { resourceName: 'validators_counters', pathParams: { chainType: 'stability' } },
-    validatorsMock.validatorsCountersResponse,
-  );
+  await mockApiResponse('validators', validatorsMock.validatorsResponse, { pathParams: { chainType: 'stability' } });
+  await mockApiResponse('validators_counters', validatorsMock.validatorsCountersResponse, { pathParams: { chainType: 'stability' } });
 
   const component = await render(<Validators/>);
 
