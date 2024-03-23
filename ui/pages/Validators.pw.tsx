@@ -1,3 +1,4 @@
+import type { BrowserContext } from '@playwright/test';
 import React from 'react';
 
 import * as validatorsMock from 'mocks/validators/index';
@@ -7,9 +8,8 @@ import * as configs from 'playwright/utils/configs';
 
 import Validators from './Validators';
 
-const test = base.extend({
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  context: contextWithEnvs(configs.featureEnvs.validators) as any,
+const test = base.extend<{ context: BrowserContext }>({
+  context: contextWithEnvs(configs.featureEnvs.validators),
 });
 
 test('base view', async({ render, mockApiResponse }) => {
