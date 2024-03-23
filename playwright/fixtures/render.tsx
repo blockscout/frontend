@@ -17,7 +17,7 @@ type Mount = <HooksConfig extends JsonObject>(component: JSX.Element, options?: 
 
 interface Options extends JsonObject {
   hooksConfig?: {
-    router: Pick<typeof router, 'query' | 'isReady'>;
+    router: Partial<Pick<typeof router, 'query' | 'isReady' | 'asPath' | 'pathname'>>;
   };
 }
 

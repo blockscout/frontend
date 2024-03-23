@@ -5,6 +5,8 @@ import * as textAdMock from 'mocks/ad/textAd';
 
 import type { MockApiResponseFixture } from './fixtures/mockApiResponse';
 import mockApiResponseFixture from './fixtures/mockApiResponse';
+import type { MockAssetResponseFixture } from './fixtures/mockAssetResponse';
+import mockAssetResponseFixture from './fixtures/mockAssetResponse';
 import type { RenderFixture } from './fixtures/render';
 import renderFixture from './fixtures/render';
 import type { CreateSocketFixture } from './fixtures/socketServer';
@@ -13,12 +15,14 @@ import { createSocket as createSocketFixture } from './fixtures/socketServer';
 interface Fixtures {
   render: RenderFixture;
   mockApiResponse: MockApiResponseFixture;
+  mockAssetResponse: MockAssetResponseFixture;
   createSocket: CreateSocketFixture;
 }
 
 const test = base.extend<Fixtures>({
   render: renderFixture,
   mockApiResponse: mockApiResponseFixture,
+  mockAssetResponse: mockAssetResponseFixture,
   createSocket: createSocketFixture,
 });
 

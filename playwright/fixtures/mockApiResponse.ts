@@ -11,7 +11,7 @@ interface Options<R extends ResourceName> {
 export type MockApiResponseFixture = <R extends ResourceName>(resourceName: R, responseMock: ResourcePayload<R>, options?: Options<R>) => Promise<string>;
 
 const fixture: TestFixture<MockApiResponseFixture, { page: Page }> = async({ page }, use) => {
-  await use(async<R extends ResourceName>(resourceName: R, responseMock: ResourcePayload<R>, options?: Options<R>) => {
+  await use(async(resourceName, responseMock, options) => {
     const apiUrl = buildUrl(resourceName, options?.pathParams, options?.queryParams);
 
     await page.route(apiUrl, (route) => route.fulfill({
