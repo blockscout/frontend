@@ -1,20 +1,16 @@
-import type { Chain } from 'wagmi';
+import { type Chain } from 'viem';
 
 import config from 'configs/app';
 
-const currentChain: Chain = {
+const currentChain = {
   id: Number(config.chain.id),
   name: config.chain.name ?? '',
-  network: config.chain.name ?? '',
   nativeCurrency: {
     decimals: config.chain.currency.decimals,
     name: config.chain.currency.name ?? '',
     symbol: config.chain.currency.symbol ?? '',
   },
   rpcUrls: {
-    'public': {
-      http: [ config.chain.rpcUrl ?? '' ],
-    },
     'default': {
       http: [ config.chain.rpcUrl ?? '' ],
     },
@@ -25,6 +21,7 @@ const currentChain: Chain = {
       url: config.app.baseUrl,
     },
   },
-};
+  testnet: config.chain.isTestnet,
+} as const satisfies Chain;
 
 export default currentChain;

@@ -80,15 +80,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
 
   const onSubmit = handleSubmit(onFormSubmit);
 
-  const { signMessage, isLoading: isSigning } = useSignMessage({
-    onSuccess: (data) => {
-      setValue('signature', data);
-      onSubmit();
-    },
-    onError: (error) => {
-      return setError('root', { type: 'SIGNING_FAIL', message: (error as Error)?.message || 'Oops! Something went wrong' });
-    },
-  });
+  const { signMessage, isPending: isSigning } = useSignMessage();
 
   const handleSignMethodChange = React.useCallback((value: typeof signMethod) => {
     setSignMethod(value);
@@ -108,8 +100,16 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
     }
 
     const message = getValues('message');
-    signMessage({ message });
-  }, [ clearErrors, isConnected, getValues, signMessage, setError ]);
+    signMessage({ message }, {
+      onSuccess: (data) => {
+        setValue('signature', data);
+        onSubmit();
+      },
+      onError: (error) => {
+        return setError('root', { type: 'SIGNING_FAIL', message: (error as Error)?.message || 'Oops! Something went wrong' });
+      },
+    });
+  }, [ clearErrors, isConnected, getValues, signMessage, setError, setValue, onSubmit ]);
 
   const handleManualSignClick = React.useCallback(() => {
     clearErrors('root');
@@ -219,7 +219,7 @@ const AddressVerificationStepSignature = ({ address, signingMessage, contractCre
         { !noWeb3Provider && (
           <RadioGroup onChange={ handleSignMethodChange } value={ signMethod } display="flex" flexDir="column" rowGap={ 4 }>
             <Radio value="wallet">Sign via Web3 wallet</Radio>
-            <Radio value="manually">Sign manually</Radio>
+            <Radio value="manual">Sign manually</Radio>
           </RadioGroup>
         ) }
         { signMethod === 'manual' && <AddressVerificationFieldSignature formState={ formState } control={ control }/> }

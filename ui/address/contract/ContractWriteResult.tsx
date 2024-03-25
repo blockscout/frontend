@@ -1,5 +1,5 @@
 import React from 'react';
-import { useWaitForTransaction } from 'wagmi';
+import { useWaitForTransactionReceipt } from 'wagmi';
 
 import type { ResultComponentProps } from './methodForm/types';
 import type { ContractMethodWriteResult } from './types';
@@ -9,7 +9,7 @@ import ContractWriteResultDumb from './ContractWriteResultDumb';
 
 const ContractWriteResult = ({ result, onSettle }: ResultComponentProps<SmartContractWriteMethod>) => {
   const txHash = result && 'hash' in result ? result.hash as `0x${ string }` : undefined;
-  const txInfo = useWaitForTransaction({
+  const txInfo = useWaitForTransactionReceipt({
     hash: txHash,
   });
 

@@ -60,17 +60,26 @@ const config: PlaywrightTestConfig = defineConfig({
         minify: false,
       },
       resolve: {
-        alias: {
+        alias: [
           // There is an issue with building these package using vite that I cannot resolve
           // The solution described here - https://github.com/vitejs/vite/issues/9703#issuecomment-1216662109
           // doesn't seam to work well with our setup
           // so for now we just mock these modules in tests
-          '@metamask/post-message-stream': './playwright/mocks/modules/@metamask/post-message-stream.js',
-          '@metamask/providers': './playwright/mocks/modules/@metamask/providers.js',
+          { find: '@metamask/post-message-stream', replacement: './playwright/mocks/modules/@metamask/post-message-stream.js' },
+          { find: '@metamask/providers', replacement: './playwright/mocks/modules/@metamask/providers.js' },
+
+          // '@metamask/sdk imports the browser module as UMD, but @wagmi/connectors expects it to be ESM
+          // so we do a little remapping here
+          { find: '@metamask/sdk', replacement: './node_modules/@metamask/sdk/dist/browser/es/metamask-sdk.js' },
 
           // Mock for growthbook to test feature flags
-          'lib/growthbook/useFeatureValue': './playwright/mocks/lib/growthbook/useFeatureValue.js',
-        },
+          { find: 'lib/growthbook/useFeatureValue', replacement: './playwright/mocks/lib/growthbook/useFeatureValue.js' },
+
+          // The createWeb3Modal() function from web3modal/wagmi/react somehow pollutes the global styles which causes the tests to fail
+          // We don't call this function in TestApp and since we use useWeb3Modal() and useWeb3ModalState() hooks in the code, we have to mock the module
+          // Otherwise it will complain that createWeb3Modal() is no called before the hooks are used
+          { find: /^@web3modal\/wagmi\/react$/, replacement: './playwright/mocks/modules/@web3modal/wagmi/react.js' },
+        ],
       },
       define: {
         'process.env': '__envs', // Port process.env over window.__envs
