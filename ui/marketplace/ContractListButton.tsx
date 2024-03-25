@@ -3,7 +3,6 @@ import React from 'react';
 import type { MouseEvent } from 'react';
 
 import config from 'configs/app';
-import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
 export enum ContractListButtonVariants {
@@ -13,12 +12,12 @@ export enum ContractListButtonVariants {
 
 const values = {
   [ContractListButtonVariants.ALL_CONTRACTS]: {
-    icon: 'contracts' as IconName,
+    icon: 'contracts' as const,
     iconColor: 'gray.500',
     tooltip: `Total number of contracts deployed by the protocol on ${ config.chain.name }`,
   },
   [ContractListButtonVariants.VERIFIED_CONTRACTS]: {
-    icon: 'contracts_verified' as IconName,
+    icon: 'contracts_verified' as const,
     iconColor: 'green.500',
     tooltip: `Number of verified contracts on ${ config.chain.name }`,
   },

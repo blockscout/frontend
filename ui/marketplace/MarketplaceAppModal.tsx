@@ -31,7 +31,7 @@ const MarketplaceAppModal = ({
   isFavorite,
   onFavoriteClick,
   data,
-  showContractList: showContractListDefault,
+  showContractList: showContractListProp,
 }: Props) => {
   const { value: isExperiment } = useFeatureValue('security_score_exp', false);
   const starOutlineIconColor = useColorModeValue('gray.600', 'gray.300');
@@ -78,8 +78,8 @@ const MarketplaceAppModal = ({
 
   const showContractList = useCallback((type: ContractListTypes) => {
     onClose();
-    showContractListDefault(id, type);
-  }, [ onClose, showContractListDefault, id ]);
+    showContractListProp(id, type);
+  }, [ onClose, showContractListProp, id ]);
 
   const showAllContracts = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Total contracts', Info: id, Source: 'App modal' });
