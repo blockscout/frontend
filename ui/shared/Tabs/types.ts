@@ -5,6 +5,7 @@ export interface TabItem {
   title: string | (() => React.ReactNode);
   count?: number | null;
   component: React.ReactNode;
+  prefetchQueries?: Array<unknown>;
 }
 
 export type RoutedTab = TabItem & { subTabs?: Array<string> }
