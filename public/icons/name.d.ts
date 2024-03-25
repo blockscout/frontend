@@ -41,6 +41,7 @@
 	| "docs"
 	| "donate"
 	| "dots"
+	| "ecosystem"
 	| "edit"
 	| "email-sent"
 	| "email"
