@@ -15,7 +15,7 @@ export enum EventTypes {
   CONTRACT_VERIFICATION = 'Contract verification',
   QR_CODE = 'QR code',
   PAGE_WIDGET = 'Page widget',
-  TX_INTERPRETATION_INTERACTION = 'Transaction interpratetion interaction',
+  TX_INTERPRETATION_INTERACTION = 'Transaction interpretation interaction',
   EXPERIMENT_STARTED = 'Experiment started',
   FILTERS = 'Filters',
   BUTTON_CLICK = 'Button click',
