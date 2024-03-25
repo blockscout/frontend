@@ -111,11 +111,6 @@ export default function useMarketplace() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ isPlaceholderData ]);
 
-  // React.useEffect(() => {
-  //   const isValidDefaultDisplayType = Object.values(MarketplaceDisplayType).includes(defaultDisplayType as MarketplaceDisplayType);
-  //   isValidDefaultDisplayType && setSelectedDisplayType(defaultDisplayType);
-  // }, [ ]); // eslint-disable-line react-hooks/exhaustive-deps
-
   React.useEffect(() => {
     const query = _pickBy({
       category: selectedCategoryId === MarketplaceCategory.ALL ? undefined : selectedCategoryId,
