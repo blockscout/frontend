@@ -43,6 +43,10 @@ export interface ZkSyncBatch extends Omit<ZkSyncBatchesItem, 'tx_count'> {
 
 export type ZkSyncBatchTxs = {
   items: Array<Transaction>;
-  // there is no pagination for now
-  next_page_params: null;
+  next_page_params: {
+    batch_number: string;
+    block_number: number;
+    index: number;
+    items_count: number;
+  } | null;
 }
