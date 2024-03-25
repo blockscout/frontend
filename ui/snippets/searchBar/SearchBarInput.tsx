@@ -100,7 +100,8 @@ const SearchBarInput = ({ onChange, onSubmit, isHomepage, onFocus, onBlur, onHid
           placeholder={ isMobile ? 'Search by address / ... ' : 'Search by address / txn hash / block / token... ' }
           onChange={ handleChange }
           border="none"
-          _focusWithin={{ _placeholder: { color: 'gray.300' } }}
+          boxShadow="none"
+          _focusWithin={{ _placeholder: { color: 'gray.300' }, boxShadow: 'none' }}
           color={ useColorModeValue('black', 'white') }
           value={ value }
         />
