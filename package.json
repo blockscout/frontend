@@ -57,7 +57,7 @@
     "@tanstack/react-query-devtools": "^5.4.3",
     "@types/papaparse": "^5.3.5",
     "@types/react-scroll": "^1.8.4",
-    "@web3modal/wagmi": "3.5.0",
+    "@web3modal/wagmi": "4.0.13",
     "bignumber.js": "^9.1.0",
     "blo": "^1.1.1",
     "chakra-react-select": "^4.4.3",
@@ -99,8 +99,8 @@
     "react-scroll": "^1.8.7",
     "swagger-ui-react": "^5.9.0",
     "use-font-face-observer": "^1.2.1",
-    "viem": "1.20.1",
-    "wagmi": "1.4.12",
+    "viem": "2.7.13",
+    "wagmi": "2.5.7",
     "xss": "^1.0.14"
   },
   "devDependencies": {
@@ -148,7 +148,7 @@
     "svgo": "^2.8.0",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
-    "typescript": "^5.1.0",
+    "typescript": "5.4.2",
     "vite-plugin-svgr": "^2.2.2",
     "vite-tsconfig-paths": "^3.5.2",
     "ws": "^8.11.0"
