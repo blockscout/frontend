@@ -27,6 +27,8 @@ const ZkSyncL2TxnBatchHashesInfo = ({ isLoading, data }: Props) => {
         title="Commit tx hash"
         hint="Hash of L1 tx on which the batch was committed"
         isLoading={ isLoading }
+        flexDir="column"
+        alignItems="flex-start"
       >
         { data.commit_transaction_hash ? (
           <>
@@ -49,6 +51,8 @@ const ZkSyncL2TxnBatchHashesInfo = ({ isLoading, data }: Props) => {
         title="Prove tx hash"
         hint="Hash of L1 tx on which the batch was proven"
         isLoading={ isLoading }
+        flexDir="column"
+        alignItems="flex-start"
       >
         { data.prove_transaction_hash ? (
           <>
@@ -71,6 +75,8 @@ const ZkSyncL2TxnBatchHashesInfo = ({ isLoading, data }: Props) => {
         title="Execute tx hash"
         hint="Hash of L1 tx on which the batch was executed and finalized"
         isLoading={ isLoading }
+        flexDir="column"
+        alignItems="flex-start"
       >
         { data.execute_transaction_hash ? (
           <>
