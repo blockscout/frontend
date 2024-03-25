@@ -55,15 +55,11 @@ export type MarketplaceAppSecurityReport = {
     totalIssues?: number;
     issueSeverityDistribution: SolidityscanReport['scan_report']['scan_summary']['issue_severity_distribution'];
   };
-  contractsData: [
-    {
-      address: string;
-      isVerified: boolean;
-      solidityScanReport?: SolidityscanReport['scan_report'] & {
-        contractname: string;
-      } | null;
-    }
-  ];
+  contractsData: Array<{
+    address: string;
+    isVerified: boolean;
+    solidityScanReport?: SolidityscanReport['scan_report'] | null;
+  }>;
 }
 
 export type MarketplaceAppSecurityReportRaw = {

@@ -109,7 +109,7 @@ const solidityscanReportSchema: yup.ObjectSchema<MarketplaceAppSecurityReport['c
         threat_score: yup.string().required(),
       })
       .required(),
-    scanner_reference_url: yup.string().required(),
+    scanner_reference_url: yup.string().test(urlTest).required(),
   });
 
 const contractDataSchema: yup.ObjectSchema<MarketplaceAppSecurityReport['contractsData'][number]> = yup
