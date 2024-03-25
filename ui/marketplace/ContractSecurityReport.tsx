@@ -1,4 +1,4 @@
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Text, Popover, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SolidityscanReport } from 'types/api/contract';
@@ -15,9 +15,12 @@ type Props = {
 }
 
 const ContractSecurityReport = ({ securityReport }: Props) => {
+  const { isOpen, onToggle, onClose } = useDisclosure();
+
   const handleClick = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Security score', Source: 'Analyzed contracts popup' });
-  }, [ ]);
+    onToggle();
+  }, [ onToggle ]);
 
   if (!securityReport) {
     return null;
@@ -32,15 +35,19 @@ const ContractSecurityReport = ({ securityReport }: Props) => {
   const totalIssues = Object.values(issueSeverityDistribution as Record<string, number>).reduce((acc, val) => acc + val, 0);
 
   return (
-    <SolidityscanReportButton
-      score={ parseFloat(securityScore) }
-      onClick={ handleClick }
-      popoverContent={ (
-        <>
+    <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
+      <PopoverTrigger>
+        <SolidityscanReportButton
+          score={ parseFloat(securityScore) }
+          onClick={ handleClick }
+        />
+      </PopoverTrigger>
+      <PopoverContent w={{ base: '100vw', lg: '328px' }}>
+        <PopoverBody px="26px" py="20px" fontSize="sm">
           <Box mb={ 5 }>
             The security score was derived from evaluating the smart contracts of a protocol on the { config.chain.name } network.
           </Box>
-          <SolidityscanReportScore score={ parseFloat(securityScore) }/>
+          <SolidityscanReportScore score={ parseFloat(securityScore) } mb={ 5 }/>
           { issueSeverityDistribution && totalIssues > 0 && (
             <Box mb={ 5 }>
               <Text py="7px" variant="secondary" fontSize="xs" fontWeight={ 500 }>Threat score & vulnerabilities</Text>
@@ -48,9 +55,9 @@ const ContractSecurityReport = ({ securityReport }: Props) => {
             </Box>
           ) }
           <LinkExternal href={ url }>View full report</LinkExternal>
-        </>
-      ) }
-    />
+        </PopoverBody>
+      </PopoverContent>
+    </Popover>
   );
 };
 

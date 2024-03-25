@@ -6,10 +6,11 @@ import IconSvg from 'ui/shared/IconSvg';
 import useScoreLevelAndColor from './useScoreLevelAndColor';
 
 interface Props {
+  className?: string;
   score: number;
 }
 
-const SolidityscanReportScore = ({ score }: Props) => {
+const SolidityscanReportScore = ({ className, score }: Props) => {
   const { scoreLevel, scoreColor } = useScoreLevelAndColor(score);
 
   const chartGrayColor = useColorModeValue('gray.100', 'gray.700');
@@ -17,7 +18,7 @@ const SolidityscanReportScore = ({ score }: Props) => {
   const popoverBgColor = useColorModeValue('white', 'gray.900');
 
   return (
-    <Flex alignItems="center" mb={ 5 }>
+    <Flex className={ className } alignItems="center">
       <Box
         w={ 12 }
         h={ 12 }

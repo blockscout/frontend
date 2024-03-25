@@ -1,13 +1,4 @@
-import {
-  Button,
-  chakra,
-  Popover,
-  PopoverTrigger,
-  PopoverBody,
-  PopoverContent,
-  useDisclosure,
-  Skeleton,
-} from '@chakra-ui/react';
+import { Button, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import IconSvg from 'ui/shared/IconSvg';
@@ -17,51 +8,39 @@ import useScoreLevelAndColor from './useScoreLevelAndColor';
 interface Props {
   className?: string;
   score: number;
-  popoverContent?: React.ReactNode;
   isLoading?: boolean;
   height?: string;
   onlyIcon?: boolean;
   onClick?: () => void;
 }
 
-const SolidityscanReportButton = ({ className, score, popoverContent, isLoading, height = '32px', onlyIcon, onClick }: Props) => {
-  const { isOpen, onToggle, onClose } = useDisclosure();
+const SolidityscanReportButton = (
+  { className, score, isLoading, height = '32px', onlyIcon, onClick }: Props,
+  ref: React.ForwardedRef<HTMLButtonElement>,
+) => {
   const { scoreColor } = useScoreLevelAndColor(score);
 
-  const handleClick = React.useCallback(() => {
-    onClick?.();
-    onToggle();
-  }, [ onClick, onToggle ]);
-
   return (
-    <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
-      <PopoverTrigger>
-        <Skeleton isLoaded={ !isLoading } borderRadius="base">
-          <Button
-            className={ className }
-            color={ scoreColor }
-            size="sm"
-            variant="outline"
-            colorScheme="gray"
-            onClick={ handleClick }
-            aria-label="SolidityScan score"
-            fontWeight={ 500 }
-            px="6px"
-            h={ height }
-            flexShrink={ 0 }
-          >
-            <IconSvg name={ score < 80 ? 'score/score-not-ok' : 'score/score-ok' } boxSize={ 5 } mr={ onlyIcon ? 0 : 1 }/>
-            { onlyIcon ? null : score }
-          </Button>
-        </Skeleton>
-      </PopoverTrigger>
-      <PopoverContent w={{ base: '100vw', lg: '328px' }}>
-        <PopoverBody px="26px" py="20px" fontSize="sm">
-          { popoverContent }
-        </PopoverBody>
-      </PopoverContent>
-    </Popover>
+    <Skeleton isLoaded={ !isLoading } borderRadius="base">
+      <Button
+        ref={ ref }
+        className={ className }
+        color={ scoreColor }
+        size="sm"
+        variant="outline"
+        colorScheme="gray"
+        onClick={ onClick }
+        aria-label="SolidityScan score"
+        fontWeight={ 500 }
+        px="6px"
+        h={ height }
+        flexShrink={ 0 }
+      >
+        <IconSvg name={ score < 80 ? 'score/score-not-ok' : 'score/score-ok' } boxSize={ 5 } mr={ onlyIcon ? 0 : 1 }/>
+        { onlyIcon ? null : score }
+      </Button>
+    </Skeleton>
   );
 };
 
-export default chakra(SolidityscanReportButton);
+export default React.forwardRef(SolidityscanReportButton);

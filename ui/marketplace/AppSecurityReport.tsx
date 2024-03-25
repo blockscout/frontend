@@ -1,4 +1,4 @@
-import { Box, Text, Link } from '@chakra-ui/react';
+import { Box, Text, Link, Popover, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
 import type { MarketplaceAppSecurityReport } from 'types/client/marketplace';
@@ -22,10 +22,12 @@ type Props = {
 }
 
 const AppSecurityReport = ({ id, securityReport, height, showContractList, isLoading, onlyIcon, source }: Props) => {
+  const { isOpen, onToggle, onClose } = useDisclosure();
 
   const handleButtonClick = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Security score', Info: id, Source: source });
-  }, [ id, source ]);
+    onToggle();
+  }, [ id, source, onToggle ]);
 
   const handleLinkClick = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Analyzed contracts', Info: id, Source: 'Security score popup' });
@@ -44,19 +46,23 @@ const AppSecurityReport = ({ id, securityReport, height, showContractList, isLoa
   } = securityReport?.overallInfo || {};
 
   return (
-    <SolidityscanReportButton
-      isLoading={ isLoading }
-      height={ height }
-      score={ securityScore }
-      onlyIcon={ onlyIcon }
-      onClick={ handleButtonClick }
-      popoverContent={ (
-        <>
+    <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
+      <PopoverTrigger>
+        <SolidityscanReportButton
+          score={ securityScore }
+          isLoading={ isLoading }
+          onClick={ handleButtonClick }
+          height={ height }
+          onlyIcon={ onlyIcon }
+        />
+      </PopoverTrigger>
+      <PopoverContent w={{ base: '100vw', lg: '328px' }}>
+        <PopoverBody px="26px" py="20px" fontSize="sm">
           <Box mb={ 5 }>
             { solidityScanContractsNumber } smart contract{ solidityScanContractsNumber === 1 ? ' was' : 's were' } evaluated to determine
             this protocol{ apos }s overall security score on the { config.chain.name } network.
           </Box>
-          <SolidityscanReportScore score={ securityScore }/>
+          <SolidityscanReportScore score={ securityScore } mb={ 5 }/>
           { issueSeverityDistribution && totalIssues > 0 && (
             <Box mb={ 5 }>
               <Text py="7px" variant="secondary" fontSize="xs" fontWeight={ 500 }>Threat score & vulnerabilities</Text>
@@ -67,9 +73,9 @@ const AppSecurityReport = ({ id, securityReport, height, showContractList, isLoa
             Analyzed contracts
             <IconSvg name="arrows/north-east" boxSize={ 5 } color="gray.400"/>
           </Link>
-        </>
-      ) }
-    />
+        </PopoverBody>
+      </PopoverContent>
+    </Popover>
   );
 };
 

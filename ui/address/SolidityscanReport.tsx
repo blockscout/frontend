@@ -1,4 +1,4 @@
-import { Box, Text, chakra, Icon } from '@chakra-ui/react';
+import { Box, Text, chakra, Icon, Popover, PopoverTrigger, PopoverContent, PopoverBody, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
 // This icon doesn't work properly when it is in the sprite
@@ -18,6 +18,8 @@ interface Props {
 }
 
 const SolidityscanReport = ({ className, hash }: Props) => {
+  const { isOpen, onToggle, onClose } = useDisclosure();
+
   const { data, isPlaceholderData, isError } = useApiQuery('contract_solidityscan_report', {
     pathParams: { hash },
     queryOptions: {
@@ -37,18 +39,23 @@ const SolidityscanReport = ({ className, hash }: Props) => {
   const vulnerabilitiesCount = vulnerabilitiesCounts.reduce((acc, val) => acc + val, 0);
 
   return (
-    <SolidityscanReportButton
-      className={ className }
-      score={ score }
-      isLoading={ isPlaceholderData }
-      popoverContent={ (
-        <>
+    <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
+      <PopoverTrigger>
+        <SolidityscanReportButton
+          className={ className }
+          score={ score }
+          isLoading={ isPlaceholderData }
+          onClick={ onToggle }
+        />
+      </PopoverTrigger>
+      <PopoverContent w={{ base: '100vw', lg: '328px' }}>
+        <PopoverBody px="26px" py="20px" fontSize="sm">
           <Box mb={ 5 } lineHeight="25px">
             Contract analyzed for 140+ vulnerability patterns by
             <Icon as={ solidityScanIcon } mr={ 1 } ml="6px" w="23px" h="20px" display="inline-block" verticalAlign="middle"/>
             <Text fontWeight={ 600 } display="inline-block">SolidityScan</Text>
           </Box>
-          <SolidityscanReportScore score={ score }/>
+          <SolidityscanReportScore score={ score } mb={ 5 }/>
           { vulnerabilities && vulnerabilitiesCount > 0 && (
             <Box mb={ 5 }>
               <Text py="7px" variant="secondary" fontSize="xs" fontWeight={ 500 }>Vulnerabilities distribution</Text>
@@ -56,9 +63,9 @@ const SolidityscanReport = ({ className, hash }: Props) => {
             </Box>
           ) }
           <LinkExternal href={ data?.scan_report.scanner_reference_url }>View full report</LinkExternal>
-        </>
-      ) }
-    />
+        </PopoverBody>
+      </PopoverContent>
+    </Popover>
   );
 };
 
