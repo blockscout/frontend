@@ -2,17 +2,12 @@ import { Grid } from "@chakra-ui/react";
 import BigNumber from "bignumber.js";
 import React from "react";
 
-import type { StakeValidatorInfo } from "types/api/boolscan";
-
 import useApiQuery from "lib/api/useApiQuery";
-import useBoolRpcApi from "lib/api/useBoolRpcApi";
 import { WEI } from "lib/consts";
 import dayjs from "lib/date/dayjs";
-import { currencyUnits } from "lib/units";
-import { formatAmount } from "lib/utils/helpers";
 import ChartWidget from "ui/shared/chart/ChartWidget";
 
-const DHCStatistic = ({ address }: { address: string }) => {
+const ValidatorStatistic = ({ address }: { address: string }) => {
   const queryParams = React.useMemo(() => {
     return {
       startTime: dayjs().subtract(10, "day").valueOf(),
@@ -25,14 +20,6 @@ const DHCStatistic = ({ address }: { address: string }) => {
       ...queryParams,
     },
   });
-
-  const rpcRes = useBoolRpcApi("staking_validatorInfo", {
-    queryParams: [ [ address ] ],
-  });
-
-  const validatorInfo = React.useMemo<StakeValidatorInfo | undefined>(() => {
-    return rpcRes.data?.[0];
-  }, [ rpcRes.data ]);
 
   // const [selectedDates, setSelectedDates] = React.useState<Date[]>([
   //   new Date(),
@@ -86,9 +73,9 @@ const DHCStatistic = ({ address }: { address: string }) => {
         title="Reward"
         isLoading={ isPending }
         isError={ isError }
-        description={ `Total: ${ formatAmount(
-          validatorInfo?.total_staking ?? "0",
-        ) } ${ currencyUnits.ether }` }
+        // description={ `Total: ${ formatAmount(validator?.total_staking ?? "0") } ${
+        //   currencyUnits.ether
+        // }` }
         minH="230px"
       />
 
@@ -97,11 +84,10 @@ const DHCStatistic = ({ address }: { address: string }) => {
         title="Punish"
         isLoading={ isPending }
         isError={ isError }
-        description="Total: -"
         minH="230px"
       />
     </Grid>
   );
 };
 
-export default DHCStatistic;
+export default ValidatorStatistic;

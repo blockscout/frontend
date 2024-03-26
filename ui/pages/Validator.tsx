@@ -2,6 +2,9 @@ import { Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React from "react";
 
+import type { StakeValidatorInfo } from "types/api/boolscan";
+
+import useBoolRpcApi from "lib/api/useBoolRpcApi";
 import { useAppContext } from "lib/contexts/app";
 import AddressEntity from "ui/shared/entities/address/AddressEntity";
 import PageTitle from "ui/shared/Page/PageTitle";
@@ -26,6 +29,14 @@ const ValidatorContext: React.FC = ({}) => {
       url: appProps.referrer,
     };
   }, [ appProps.referrer ]);
+
+  const rpcRes = useBoolRpcApi("staking_validatorInfo", {
+    queryParams: [ [ validatorAddress ] ],
+  });
+
+  const validatorInfo = React.useMemo<StakeValidatorInfo | undefined>(() => {
+    return rpcRes.data?.[0];
+  }, [ rpcRes.data ]);
 
   return (
     <div style={{ width: "100%" }}>
@@ -52,7 +63,11 @@ const ValidatorContext: React.FC = ({}) => {
         />
       </Flex>
       { validatorAddress && (
-        <ValidatorDetails address={ validatorAddress as string }/>
+        <ValidatorDetails
+          address={ validatorAddress as string }
+          validator={ validatorInfo }
+          loading={ rpcRes.isLoading }
+        />
       ) }
       { validatorAddress && (
         <ValidatorStatistic address={ validatorAddress as string }/>
