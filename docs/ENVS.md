@@ -352,6 +352,7 @@ This feature is **enabled by default** with the `slise` ads provider. To switch 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_AD_BANNER_PROVIDER | `slise` \| `adbutler` \| `coinzilla` \|  `hype` \| `getit` \| `none` | Ads provider  | - | `slise` | `coinzilla` |
+| NEXT_PUBLIC_AD_BANNER_ADDITIONAL_PROVIDER | `adbutler` | Additional ads provider to mix with the main one | - | - | `adbutler` |
 | NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP | `{ id: string; width: string; height: string }` | Placement config for desktop Adbutler banner | - | - | `{'id':'123456','width':'728','height':'90'}` |
 | NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE | `{ id: string; width: number; height: number }` | Placement config for mobile Adbutler banner | - | - | `{'id':'654321','width':'300','height':'100'}` |
 
