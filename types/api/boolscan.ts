@@ -39,13 +39,13 @@ export interface TableColumn<T> {
   label: string;
   width?: string;
   textAlgin?:
-  | 'center'
-  | 'end'
-  | 'justify'
-  | 'left'
-  | 'match-parent'
-  | 'right'
-  | 'start';
+  | "center"
+  | "end"
+  | "justify"
+  | "left"
+  | "match-parent"
+  | "right"
+  | "start";
   render?: (data: T, index?: number) => any;
 }
 
@@ -88,3 +88,35 @@ export interface StakeValidatorInfo {
 }
 
 export type StakeValidatorInfoParams = Array<Array<string>>;
+
+export interface StatisticInfos {
+  day: string;
+  reward: string;
+  punish: string;
+}
+
+export type DeviceStatisticInfos = StatisticInfos
+
+export interface ProviderDetails {
+  providerId: string;
+  cap: string;
+  totalCap: string;
+  chainTime: string;
+  deviceId: string;
+  deviceIdVersion: string;
+  totalPunish: string;
+  totalReward: string;
+}
+
+export type ValidatorStatisticInfos = StatisticInfos
+
+export interface ValidatorDetails {
+  validatorIncomeDistributionType: string;
+  validatorStatus: string;
+  validatorAllowNominator: string;
+  validatorAddress: string;
+  validatorName: string;
+  validatorFeeRatio: string;
+  validatorLastBlock: string;
+  validatorRegistrationTime: string;
+}

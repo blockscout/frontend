@@ -58,6 +58,8 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/auth/unverified-email': DEFAULT_TEMPLATE,
   '/validators': DEFAULT_TEMPLATE,
   '/dhcs': DEFAULT_TEMPLATE,
+  '/dhcs/[id]': DEFAULT_TEMPLATE,
+  '/validators/[hash]': DEFAULT_TEMPLATE,
 };
 
 export function make(pathname: Route['pathname']) {

@@ -7,7 +7,7 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 const NodesPageContext: React.FC = () => {
   return (
     <>
-      <PageTitle title="Nodes" withTextAd/>
+      <PageTitle title="Validators" withTextAd/>
       <NodesStats/>
       <NodesTable/>
     </>

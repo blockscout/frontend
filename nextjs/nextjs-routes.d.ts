@@ -30,6 +30,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/blocks">
     | StaticRoute<"/contract-verification">
     | StaticRoute<"/csv-export">
+    | DynamicRoute<"/dhcs/[id]", { "id": string }>
     | StaticRoute<"/dhcs">
     | StaticRoute<"/graphiql">
     | StaticRoute<"/">
@@ -50,6 +51,7 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/tx/[hash]", { "hash": string }>
     | StaticRoute<"/txs">
     | DynamicRoute<"/txs/kettle/[hash]", { "hash": string }>
+    | DynamicRoute<"/validators/[hash]", { "hash": string }>
     | StaticRoute<"/validators">
     | StaticRoute<"/verified-contracts">
     | StaticRoute<"/visualize/sol2uml">

@@ -2,7 +2,6 @@ import {
   Tr,
   Td,
   VStack,
-  Skeleton,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import React from 'react';
@@ -10,12 +9,10 @@ import React from 'react';
 import type { Transaction } from 'types/api/transaction';
 
 import config from 'configs/app';
-import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import Tag from 'ui/shared/chakra/Tag';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TxFeeStability from 'ui/shared/tx/TxFeeStability';
 import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
@@ -31,9 +28,9 @@ type Props = {
   isLoading?: boolean;
 }
 
-const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, isLoading }: Props) => {
+const TxsTableItem = ({ tx, showBlockInfo, currentAddress, isLoading }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
-  const timeAgo = useTimeAgoIncrement(tx.timestamp, enableTimeIncrement);
+  // const timeAgo = useTimeAgoIncrement(tx.timestamp, enableTimeIncrement);
 
   return (
     <Tr
@@ -48,7 +45,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
         <TxAdditionalInfo tx={ tx } isLoading={ isLoading }/>
       </Td>
       <Td pr={ 4 }>
-        <VStack alignItems="start" lineHeight="24px">
+        { /* <VStack alignItems="start" lineHeight="24px">
           <TxEntity
             hash={ tx.hash }
             isLoading={ isLoading }
@@ -57,7 +54,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
             maxW="100%"
           />
           { tx.timestamp && <Skeleton color="text_secondary" fontWeight="400" isLoaded={ !isLoading }><span>{ timeAgo }</span></Skeleton> }
-        </VStack>
+        </VStack> */ }
       </Td>
       <Td>
         <VStack alignItems="start">

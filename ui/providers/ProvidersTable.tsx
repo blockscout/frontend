@@ -11,10 +11,13 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
+import { route } from "nextjs-routes";
+
 import { PROVIDERS } from "stubs/providers";
 import { generateListStubOfBool } from "stubs/utils";
 import ActionBar from "ui/shared/ActionBar";
 import DataListDisplay from "ui/shared/DataListDisplay";
+import * as EntityBase from "ui/shared/entities/base/components";
 import ListItemMobile from "ui/shared/ListItemMobile/ListItemMobile";
 import Pagination from "ui/shared/pagination/Pagination";
 import useQueryWithPagesOfBool from "ui/shared/pagination/useQueryWithPagesOfBool";
@@ -67,7 +70,7 @@ const ProvidersTable = () => {
       { dataSource.map((item, index) => {
         return (
           <Tr key={ index }>
-            { tableColumns.map((col) => {
+            { tableColumns.map((col, i) => {
               return (
                 <Td key={ col.id } width={ col.width } textAlign={ col.textAlgin }>
                   <Skeleton
@@ -76,7 +79,18 @@ const ProvidersTable = () => {
                     minW={ 10 }
                     lineHeight="24px"
                   >
-                    { col.render?.(item, index) }
+                    { i === 0 ? (
+                      <EntityBase.Link
+                        href={ route({
+                          pathname: "/dhcs/[id]",
+                          query: { id: item.providerID },
+                        }) }
+                      >
+                        { col.render?.(item, index) }
+                      </EntityBase.Link>
+                    ) : (
+                      col.render?.(item, index)
+                    ) }
                   </Skeleton>
                 </Td>
               );
@@ -92,7 +106,7 @@ const ProvidersTable = () => {
       { dataSource.map((item, index) => {
         return (
           <ListItemMobile key={ index } rowGap={ 3 }>
-            { tableColumns.map((col) => {
+            { tableColumns.map((col, i) => {
               return (
                 <HStack key={ col.id } spacing={ 3 }>
                   <Skeleton
@@ -109,7 +123,21 @@ const ProvidersTable = () => {
                     minW={ 10 }
                     color="text_secondary"
                   >
-                    <span>{ col.render?.(item) }</span>
+                    <span>
+                      { " " }
+                      { i === 0 ? (
+                        <EntityBase.Link
+                          href={ route({
+                            pathname: "/dhcs/[id]",
+                            query: { id: item.providerID },
+                          }) }
+                        >
+                          { col.render?.(item, index) }
+                        </EntityBase.Link>
+                      ) : (
+                        col.render?.(item, index)
+                      ) }
+                    </span>
                   </Skeleton>
                 </HStack>
               );
