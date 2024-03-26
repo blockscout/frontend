@@ -96,7 +96,7 @@ export default function useNavItems(): ReturnType {
       text: "Validators",
       nextRoute: { pathname: "/validators" as const },
       icon: "bool/nodes",
-      isActive: pathname === "/validators",
+      isActive: pathname.startsWith("/validators"),
     };
 
     if (config.features.zkEvmRollup.isEnabled) {
@@ -245,7 +245,7 @@ export default function useNavItems(): ReturnType {
         text: "DHCs",
         nextRoute: { pathname: "/dhcs" as const },
         icon: "bool/provider",
-        isActive: pathname === "/dhcs",
+        isActive: pathname.startsWith("/dhcs"),
       },
       {
         text: "Ecosystem",

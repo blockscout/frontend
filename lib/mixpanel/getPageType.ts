@@ -53,6 +53,8 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/auth/unverified-email': 'Unverified email',
   '/validators': 'Validators',
   '/dhcs': 'DHCs',
+  '/validators/[hash]': 'Validator Details',
+  '/dhcs/[id]': 'DHC Details',
 };
 
 export default function getPageType(pathname: Route['pathname']) {

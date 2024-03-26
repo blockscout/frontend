@@ -23,7 +23,7 @@ export const tableColumns: Array<TableColumn<Provider>> = [
   {
     id: 'validatorName',
     label: 'Name',
-    width: '100px',
+    width: '130px',
     textAlgin: 'left',
     render: (data) => {
       return data.validatorName;

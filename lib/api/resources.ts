@@ -39,12 +39,17 @@ import type {
   BlockWithdrawalsResponse,
 } from "types/api/block";
 import type {
+  DeviceStatisticInfos,
   EpochInfo,
   EraInfo,
   NodesPage,
   NodesParams,
   PageParams,
+  ProviderDetails,
+  ProviderInfo,
   ProvidersPage,
+  ValidatorDetails,
+  ValidatorStatisticInfos,
 } from "types/api/boolscan";
 import type {
   ChartMarketResponse,
@@ -718,6 +723,38 @@ export const RESOURCES = {
     basePath: "/bool-network",
     path: "/node/era-info",
   },
+  device_statistic: {
+    baseUrl: config.api.boolApi ?? "",
+    basePath: "/bool-network",
+    path: "/blockchain/device" + encodeURIComponent(":statistic"),
+    filterFields: [
+      "providerId" as const,
+      "startTime" as const,
+      "endTime" as const,
+    ],
+  },
+  provider_details: {
+    baseUrl: config.api.boolApi ?? "",
+    basePath: "/bool-network",
+    path: "/blockchain/provider-detail",
+    filterFields: [ "providerId" as const ],
+  },
+  validator_details: {
+    baseUrl: config.api.boolApi ?? "",
+    basePath: "/bool-network",
+    path: "/node/validator-detail",
+    filterFields: [ "address" as const ],
+  },
+  validator_statistic: {
+    baseUrl: config.api.boolApi ?? "",
+    basePath: "/bool-network",
+    path: "/node/validator-statistic",
+    filterFields: [
+      "address" as const,
+      "startTime" as const,
+      "endTime" as const,
+    ],
+  },
   bool_rpc: {
     baseUrl: config.chain.rpcUrl ?? "",
     path: "/",
@@ -731,6 +768,10 @@ export const boolApiNames: Array<ResourceName> = [
   "epoch_info",
   "era_info",
   "bool_rpc",
+  "device_statistic",
+  "provider_details",
+  "validator_details",
+  "validator_statistic",
 ];
 
 export type ResourceName = keyof typeof RESOURCES;
@@ -816,17 +857,25 @@ export type PaginatedResponse<Q extends PaginatedResources> =
   ResourcePayload<Q>;
 
 export type ResourcePayloadOfBool<Q extends ResourceName> =
-  | Q extends "provider_stats"
-    ? NodesPage
+  Q extends "provider_stats"
+    ? ProviderInfo
     : Q extends "era_info"
       ? EraInfo
       : Q extends "epoch_info"
-        ? EpochInfo:
-        Q extends "providers"
+        ? EpochInfo
+        : Q extends "providers"
           ? ProvidersPage
           : Q extends "nodes"
             ? NodesPage
-            : never;
+            : Q extends "device_statistic"
+              ? Array<DeviceStatisticInfos>
+              : Q extends "provider_details"
+                ? ProviderDetails
+                : Q extends "validator_statistic"
+                  ? Array<ValidatorStatisticInfos>
+                  : Q extends "validator_details"
+                    ? ValidatorDetails
+                    : never;
 
 type ResourcePayload2<Q extends ResourceName> = Q extends "user_info"
   ? UserInfo
