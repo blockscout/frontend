@@ -88,6 +88,18 @@ export interface StakeValidatorInfo {
 }
 
 export type StakeValidatorInfoParams = Array<Array<string>>;
+export type ValidatorInfoParams = Array<number>;
+
+export interface ValidatorInfo {
+  pid: string;
+  owner: string;
+  cap_pledge: string;
+  total_pledge: string;
+  devices_num: string;
+  total_punishment: string;
+  total_rewards: string;
+  unpaid_rewards: string;
+}
 
 export interface StatisticInfos {
   day: string;
@@ -95,7 +107,7 @@ export interface StatisticInfos {
   punish: string;
 }
 
-export type DeviceStatisticInfos = StatisticInfos
+export type DeviceStatisticInfos = StatisticInfos;
 
 export interface ProviderDetails {
   providerId: string;
@@ -108,7 +120,7 @@ export interface ProviderDetails {
   totalReward: string;
 }
 
-export type ValidatorStatisticInfos = StatisticInfos
+export type ValidatorStatisticInfos = StatisticInfos;
 
 export interface ValidatorDetails {
   validatorIncomeDistributionType: string;

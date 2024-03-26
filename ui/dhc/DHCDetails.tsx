@@ -1,8 +1,9 @@
 import { Skeleton, Grid } from "@chakra-ui/react";
 import React from "react";
 
-import type { ProviderDetails } from "types/api/boolscan";
+import type { ProviderDetails, ValidatorInfo } from "types/api/boolscan";
 
+import useBoolRpcApi from "lib/api/useBoolRpcApi";
 import dayjs from "lib/date/dayjs";
 import { currencyUnits } from "lib/units";
 import { formatAmount } from "lib/utils/helpers";
@@ -17,6 +18,14 @@ const DHCDetails = ({
   providerDetails?: ProviderDetails;
   isLoading: boolean;
 }) => {
+  const rpcRes = useBoolRpcApi("mining_getProviderInfo", {
+    queryParams: [ Number(providerID) ],
+  });
+
+  const validatorInfo = React.useMemo<ValidatorInfo | undefined>(() => {
+    return rpcRes.data;
+  }, [ rpcRes.data ]);
+
   const formData = React.useMemo(() => {
     return [
       { id: "pid", label: "PID", value: providerID },
@@ -35,12 +44,12 @@ const DHCDetails = ({
       {
         id: "stake",
         label: "Stake",
-        value: `${ formatAmount(providerDetails?.totalCap ?? "0") } ${
+        value: `${ formatAmount(validatorInfo?.total_pledge ?? "0") } ${
           currencyUnits.ether
         }`,
       },
     ];
-  }, [ providerDetails, providerID ]);
+  }, [ providerDetails, providerID, validatorInfo ]);
 
   return (
     <Grid
@@ -55,7 +64,7 @@ const DHCDetails = ({
             key={ item.id }
             title={ item.label }
             alignSelf="center"
-            isLoading={ isLoading }
+            isLoading={ item.id === "stake" ? rpcRes.isLoading : isLoading }
           >
             <Skeleton isLoaded={ !isLoading } display="inline-block">
               <span>{ item.value }</span>

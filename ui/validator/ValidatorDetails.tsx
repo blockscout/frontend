@@ -1,11 +1,23 @@
 import { Skeleton, Grid } from "@chakra-ui/react";
 import React from "react";
 
+import type { StakeValidatorInfo } from "types/api/boolscan";
+
 import useApiQuery from "lib/api/useApiQuery";
 import dayjs from "lib/date/dayjs";
+import { currencyUnits } from "lib/units";
+import { formatAmount } from "lib/utils/helpers";
 import DetailsInfoItem from "ui/shared/DetailsInfoItem";
 
-const ValidatorDetails = ({ address }: { address: string }) => {
+const ValidatorDetails = ({
+  address,
+  validator,
+  loading,
+}: {
+  address: string;
+  validator?: StakeValidatorInfo;
+  loading: boolean;
+}) => {
   const { data, isPending } = useApiQuery("validator_details", {
     queryParams: {
       address,
@@ -21,7 +33,17 @@ const ValidatorDetails = ({ address }: { address: string }) => {
       {
         id: "nominators",
         label: "Nominators",
-        value: data?.validatorAllowNominator ? "YES" : "NO",
+        value: validator?.nominators ?? "0",
+      },
+      {
+        id: "totalStake",
+        label: "Total Stake",
+        value: `${ formatAmount(validator?.total_staking ?? '0') } ${ currencyUnits.ether }`,
+      },
+      {
+        id: "ownerStake",
+        label: "Owner Stake",
+        value: `${ formatAmount(validator?.owner_staking ?? '0') } ${ currencyUnits.ether }`,
       },
       {
         id: "createTime",
@@ -31,7 +53,7 @@ const ValidatorDetails = ({ address }: { address: string }) => {
         ),
       },
     ];
-  }, [ data ]);
+  }, [ data, validator ]);
 
   return (
     <Grid
@@ -46,7 +68,7 @@ const ValidatorDetails = ({ address }: { address: string }) => {
             key={ item.id }
             title={ item.label }
             alignSelf="center"
-            isLoading={ isPending }
+            isLoading={ isPending || loading }
           >
             <Skeleton isLoaded={ !isPending } display="inline-block">
               <span>{ item.value }</span>
