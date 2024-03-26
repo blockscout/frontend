@@ -22,6 +22,8 @@ import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 import TxType from 'ui/txs/TxType';
 
+import TxTranslationType from './TxTranslationType';
+
 type Props = {
   tx: Transaction;
   showBlockInfo: boolean;
@@ -39,7 +41,10 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
     <ListItemMobile display="block" width="100%" isAnimated key={ tx.hash }>
       <Flex justifyContent="space-between" mt={ 4 }>
         <HStack flexWrap="wrap">
-          <TxType types={ tx.tx_types } isLoading={ isLoading }/>
+          { tx.translation ?
+            <TxTranslationType types={ tx.tx_types } isLoading={ isLoading || tx.translation.isLoading } translatationType={ tx.translation.data?.type }/> :
+            <TxType types={ tx.tx_types } isLoading={ isLoading }/>
+          }
           <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
           <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
         </HStack>

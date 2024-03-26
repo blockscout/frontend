@@ -2,6 +2,7 @@ import type { AddressParam } from './addressParams';
 import type { BlockTransactionsResponse } from './block';
 import type { DecodedInput } from './decodedInput';
 import type { Fee } from './fee';
+import type { NovesTxTranslation } from './noves';
 import type { OptimisticL2WithdrawalStatus } from './optimisticL2';
 import type { TokenInfo } from './token';
 import type { TokenTransfer } from './tokenTransfer';
@@ -85,6 +86,8 @@ export type Transaction = {
   blob_gas_price?: string;
   burnt_blob_fee?: string;
   max_fee_per_blob_gas?: string;
+  // Noves-fi
+  translation?: NovesTxTranslation;
 }
 
 export const ZKEVM_L2_TX_STATUSES = [ 'Confirmed by Sequencer', 'L1 Confirmed' ];

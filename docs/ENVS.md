@@ -524,7 +524,7 @@ This feature is **enabled by default** with the `['metamask']` value. To switch 
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_TRANSACTION_INTERPRETATION_PROVIDER | `blockscout` \| `none` | Transaction interpretation provider that displays human readable transaction description | - | `none` | `blockscout` |
+| NEXT_PUBLIC_TRANSACTION_INTERPRETATION_PROVIDER | `blockscout` \| `noves` \| `none` | Transaction interpretation provider that displays human readable transaction description | - | `none` | `blockscout` |
 
 &nbsp;
 

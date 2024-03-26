@@ -12,6 +12,7 @@ import useIsSafeAddress from 'lib/hooks/useIsSafeAddress';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ADDRESS_TABS_COUNTERS } from 'stubs/address';
 import { USER_OPS_ACCOUNT } from 'stubs/userOps';
+import AddressAccountHistory from 'ui/address/AddressAccountHistory';
 import AddressBlocksValidated from 'ui/address/AddressBlocksValidated';
 import AddressCoinBalance from 'ui/address/AddressCoinBalance';
 import AddressContract from 'ui/address/AddressContract';
@@ -41,6 +42,8 @@ import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 
 const TOKEN_TABS = [ 'tokens_erc20', 'tokens_nfts', 'tokens_nfts_collection', 'tokens_nfts_list' ];
+
+const txInterpretation = config.features.txInterpretation;
 
 const AddressPageContent = () => {
   const router = useRouter();
@@ -80,6 +83,13 @@ const AddressPageContent = () => {
         count: addressTabsCountersQuery.data?.transactions_count,
         component: <AddressTxs scrollRef={ tabsScrollRef }/>,
       },
+      txInterpretation.isEnabled && txInterpretation.provider === 'noves' ?
+        {
+          id: 'account_history',
+          title: 'Account history',
+          component: <AddressAccountHistory scrollRef={ tabsScrollRef }/>,
+        } :
+        undefined,
       config.features.userOps.isEnabled && Boolean(userOpsAccountQuery.data?.total_ops) ?
         {
           id: 'user_ops',
