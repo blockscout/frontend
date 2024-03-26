@@ -1,6 +1,7 @@
 import type { GetServerSideProps } from 'next';
 
 import config from 'configs/app';
+import isNeedProxy from 'lib/api/isNeedProxy';
 const rollupFeature = config.features.rollup;
 
 export type Props = {
@@ -194,6 +195,17 @@ export const validators: GetServerSideProps<Props> = async(context) => {
 
 export const gasTracker: GetServerSideProps<Props> = async(context) => {
   if (!config.features.gasTracker.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
+export const login: GetServerSideProps<Props> = async(context) => {
+
+  if (!isNeedProxy()) {
     return {
       notFound: true,
     };
