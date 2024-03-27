@@ -66,7 +66,8 @@ const ContractListModal = ({ onClose, onBack, type, contracts }: Props) => {
           { onBack && (
             <IconSvg
               name="arrows/east"
-              boxSize={ 6 }
+              w={ 6 }
+              h={ 10 }
               transform="rotate(180deg)"
               verticalAlign="middle"
               color="gray.400"
