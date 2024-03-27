@@ -3,6 +3,7 @@ import React from 'react';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
+import { NOVES_TRANSLATE } from 'stubs/noves/NovesTranslate';
 import { TX_INTERPRETATION } from 'stubs/txInterpretation';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import { TX_ACTIONS_BLOCK_ID } from 'ui/shared/DetailsActionsWrapper';
@@ -10,6 +11,7 @@ import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import TxInterpretation from 'ui/shared/tx/interpretation/TxInterpretation';
 
+import { createNovesSummaryObject } from './assetFlows/utils/createNovesSummaryObject';
 import type { TxQuery } from './useTxQuery';
 
 type Props = {
@@ -18,25 +20,50 @@ type Props = {
   txQuery: TxQuery;
 }
 
+const feature = config.features.txInterpretation;
+
 const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
-  const hasInterpretationFeature = config.features.txInterpretation.isEnabled;
+  const hasInterpretationFeature = feature.isEnabled;
+  const isNovesInterpretation = hasInterpretationFeature && feature.provider === 'noves';
 
   const txInterpretationQuery = useApiQuery('tx_interpretation', {
     pathParams: { hash },
     queryOptions: {
-      enabled: Boolean(hash) && hasInterpretationFeature,
+      enabled: Boolean(hash) && (hasInterpretationFeature && !isNovesInterpretation),
       placeholderData: TX_INTERPRETATION,
     },
   });
 
+  const novesInterpretationQuery = useApiQuery('noves_transaction', {
+    pathParams: { hash },
+    queryOptions: {
+      enabled: Boolean(hash) && isNovesInterpretation,
+      placeholderData: NOVES_TRANSLATE,
+    },
+  });
+
   const content = (() => {
-    const hasInterpretation = hasInterpretationFeature &&
+    const hasNovesInterpretation = isNovesInterpretation &&
+    (novesInterpretationQuery.isPlaceholderData || Boolean(novesInterpretationQuery.data?.classificationData.description));
+
+    const hasInternalInterpretation = (hasInterpretationFeature && !isNovesInterpretation) &&
     (txInterpretationQuery.isPlaceholderData || Boolean(txInterpretationQuery.data?.data.summaries.length));
 
     const hasViewAllInterpretationsLink =
       !txInterpretationQuery.isPlaceholderData && txInterpretationQuery.data?.data.summaries && txInterpretationQuery.data?.data.summaries.length > 1;
 
-    if (hasInterpretation) {
+    if (hasNovesInterpretation && novesInterpretationQuery.data) {
+      const novesSummary = createNovesSummaryObject(novesInterpretationQuery.data);
+
+      return (
+        <TxInterpretation
+          summary={ novesSummary }
+          isLoading={ novesInterpretationQuery.isPlaceholderData }
+          fontSize="lg"
+          mr={{ base: 0, lg: 6 }}
+        />
+      );
+    } else if (hasInternalInterpretation) {
       return (
         <Flex mr={{ base: 0, lg: 6 }} flexWrap="wrap" alignItems="center">
           <TxInterpretation

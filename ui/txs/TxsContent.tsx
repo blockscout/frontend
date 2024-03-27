@@ -10,6 +10,7 @@ import DataListDisplay from 'ui/shared/DataListDisplay';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 import getNextSortValue from 'ui/shared/sort/getNextSortValue';
 
+import useDescribeTxs from './noves/useDescribeTxs';
 import TxsHeaderMobile from './TxsHeaderMobile';
 import TxsList from './TxsList';
 import TxsTable from './TxsTable';
@@ -62,7 +63,9 @@ const TxsContent = ({
     setSorting(value);
   }, [ sort, setSorting ]);
 
-  const content = items ? (
+  const itemsWithTranslation = useDescribeTxs(items, currentAddress, query.isPlaceholderData);
+
+  const content = itemsWithTranslation ? (
     <>
       <Show below="lg" ssr={ false }>
         <TxsList
@@ -73,12 +76,12 @@ const TxsContent = ({
           isLoading={ isPlaceholderData }
           enableTimeIncrement={ enableTimeIncrement }
           currentAddress={ currentAddress }
-          items={ items }
+          items={ itemsWithTranslation }
         />
       </Show>
       <Hide below="lg" ssr={ false }>
         <TxsTable
-          txs={ items }
+          txs={ itemsWithTranslation }
           sort={ onSortToggle }
           sorting={ sort }
           showBlockInfo={ showBlockInfo }
@@ -116,7 +119,7 @@ const TxsContent = ({
   return (
     <DataListDisplay
       isError={ isError }
-      items={ items }
+      items={ itemsWithTranslation }
       emptyText="There are no transactions."
       content={ content }
       actionBar={ actionBar }
