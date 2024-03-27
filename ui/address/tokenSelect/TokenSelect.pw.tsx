@@ -163,6 +163,10 @@ base('long values', async({ mount, page }) => {
     status: 200,
     body: JSON.stringify({ items: [ tokensMock.erc1155LongId ] }),
   }), { times: 1 });
+  await page.route(TOKENS_ER404_API_URL, async(route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(tokensMock.erc404List),
+  }), { times: 1 });
 
   await mount(
     <TestApp>

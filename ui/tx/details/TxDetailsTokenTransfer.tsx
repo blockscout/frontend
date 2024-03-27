@@ -75,7 +75,10 @@ const TxDetailsTokenTransfer = ({ data }: Props) => {
           <NftTokenTransferSnippet
             token={ data.token }
             tokenId={ 'token_id' in total ? total.token_id : null }
-            value={ 'value' in total ? total.value || '1' : '1' }
+            value={ 'value' in total && total.value ?
+              getCurrencyValue({ value: total.value, decimals: total.decimals || '0', accuracy: 2 }).valueStr :
+              '1'
+            }
           />
         );
       }
