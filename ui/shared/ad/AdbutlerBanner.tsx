@@ -13,8 +13,9 @@ const feature = config.features.adsBanner;
 const AdbutlerBanner = ({ className }: { className?: string }) => {
   const router = useRouter();
   const isMobile = useIsMobile();
+
   React.useEffect(() => {
-    if (!feature.isEnabled || feature.provider !== 'adbutler') {
+    if (!('adButler' in feature)) {
       return;
     }
 

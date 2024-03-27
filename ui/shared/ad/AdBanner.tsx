@@ -14,14 +14,16 @@ import SliseBanner from './SliseBanner';
 const feature = config.features.adsBanner;
 
 const AdBanner = ({ className, isLoading }: { className?: string; isLoading?: boolean }) => {
+  const provider = useAppContext().adBannerProvider;
+
   const hasAdblockCookie = cookies.get(cookies.NAMES.ADBLOCK_DETECTED, useAppContext().cookies);
 
-  if (!feature.isEnabled || hasAdblockCookie) {
+  if (!feature.isEnabled || hasAdblockCookie || !provider) {
     return null;
   }
 
   const content = (() => {
-    switch (feature.provider) {
+    switch (provider) {
       case 'adbutler':
         return <AdbutlerBanner/>;
       case 'coinzilla':
@@ -40,7 +42,7 @@ const AdBanner = ({ className, isLoading }: { className?: string; isLoading?: bo
       className={ className }
       isLoaded={ !isLoading }
       borderRadius="none"
-      maxW={ feature.provider === 'adbutler' ? feature.adButler.config.desktop.width : '728px' }
+      maxW={ ('adButler' in feature && feature.adButler) ? feature.adButler.config.desktop.width : '728px' }
       w="100%"
     >
       { content }
