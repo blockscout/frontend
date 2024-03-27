@@ -23,7 +23,7 @@ type Props = {
   isFavorite: boolean;
   onFavoriteClick: (id: string, isFavorite: boolean, source: 'App modal') => void;
   data: MarketplaceAppWithSecurityReport;
-  showContractList: (id: string, type: ContractListTypes) => void;
+  showContractList: (id: string, type: ContractListTypes, hasPreviousStep: boolean) => void;
 }
 
 const MarketplaceAppModal = ({
@@ -78,7 +78,7 @@ const MarketplaceAppModal = ({
 
   const showContractList = useCallback((type: ContractListTypes) => {
     onClose();
-    showContractListProp(id, type);
+    showContractListProp(id, type, true);
   }, [ onClose, showContractListProp, id ]);
 
   const showAllContracts = React.useCallback(() => {

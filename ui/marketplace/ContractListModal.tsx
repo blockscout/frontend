@@ -1,5 +1,5 @@
 import {
-  Box, Modal, ModalBody,
+  Box, Modal, Text, ModalBody,
   ModalCloseButton, ModalContent, ModalHeader, ModalOverlay,
 } from '@chakra-ui/react';
 import React from 'react';
@@ -10,11 +10,13 @@ import { ContractListTypes } from 'types/client/marketplace';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { apos } from 'lib/html-entities';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import IconSvg from 'ui/shared/IconSvg';
 
 import ContractSecurityReport from './ContractSecurityReport';
 
 type Props = {
   onClose: () => void;
+  onBack?: () => void;
   type: ContractListTypes;
   contracts?: MarketplaceAppSecurityReport['contractsData'];
 }
@@ -25,7 +27,7 @@ const titles = {
   [ContractListTypes.VERIFIED]: 'Verified contracts',
 };
 
-const ContractListModal = ({ onClose, type, contracts }: Props) => {
+const ContractListModal = ({ onClose, onBack, type, contracts }: Props) => {
   const isMobile = useIsMobile();
 
   const displayedContracts = React.useMemo(() => {
@@ -60,7 +62,23 @@ const ContractListModal = ({ onClose, type, contracts }: Props) => {
     >
       <ModalOverlay/>
       <ModalContent>
-        <ModalHeader fontWeight="500" textStyle="h3" mb={ 4 }>{ titles[type] }</ModalHeader>
+        <ModalHeader display="flex" alignItems="center" mb={ 4 }>
+          { onBack && (
+            <IconSvg
+              name="arrows/east"
+              boxSize={ 6 }
+              transform="rotate(180deg)"
+              verticalAlign="middle"
+              color="gray.400"
+              mr={ 3 }
+              cursor="pointer"
+              onClick={ onBack }
+            />
+          ) }
+          <Text fontWeight="500" textStyle="h3">
+            { titles[type] }
+          </Text>
+        </ModalHeader>
         <ModalCloseButton/>
         <ModalBody
           maxH={ isMobile ? 'auto' : '352px' }

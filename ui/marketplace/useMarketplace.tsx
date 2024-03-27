@@ -41,6 +41,7 @@ export default function useMarketplace() {
   const [ isAppInfoModalOpen, setIsAppInfoModalOpen ] = React.useState<boolean>(false);
   const [ isDisclaimerModalOpen, setIsDisclaimerModalOpen ] = React.useState<boolean>(false);
   const [ contractListModalType, setContractListModalType ] = React.useState<ContractListTypes | null>(null);
+  const [ hasPreviousStep, setHasPreviousStep ] = React.useState<boolean>(false);
 
   const handleFavoriteClick = React.useCallback((id: string, isFavorite: boolean, source: 'Discovery view' | 'Security view' | 'App modal') => {
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Favorite app', Info: id, Source: source });
@@ -68,9 +69,12 @@ export default function useMarketplace() {
     setIsDisclaimerModalOpen(true);
   }, []);
 
-  const showContractList = React.useCallback((id: string, type: ContractListTypes) => {
+  const showContractList = React.useCallback((id: string, type: ContractListTypes, hasPreviousStep?: boolean) => {
     setSelectedAppId(id);
     setContractListModalType(type);
+    if (hasPreviousStep) {
+      setHasPreviousStep(true);
+    }
   }, []);
 
   const debouncedFilterQuery = useDebounce(filterQuery, 500);
@@ -79,6 +83,7 @@ export default function useMarketplace() {
     setIsAppInfoModalOpen(false);
     setIsDisclaimerModalOpen(false);
     setContractListModalType(null);
+    setHasPreviousStep(false);
   }, []);
 
   const handleCategoryChange = React.useCallback((newCategory: string) => {
@@ -156,6 +161,7 @@ export default function useMarketplace() {
     contractListModalType,
     selectedDisplayType,
     onDisplayTypeChange: handleDisplayTypeChange,
+    hasPreviousStep,
   }), [
     selectedCategoryId,
     categories,
@@ -179,5 +185,6 @@ export default function useMarketplace() {
     contractListModalType,
     selectedDisplayType,
     handleDisplayTypeChange,
+    hasPreviousStep,
   ]);
 }

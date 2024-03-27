@@ -69,6 +69,7 @@ const Marketplace = () => {
     contractListModalType,
     selectedDisplayType,
     onDisplayTypeChange,
+    hasPreviousStep,
   } = useMarketplace();
 
   const isMobile = useIsMobile();
@@ -104,6 +105,8 @@ const Marketplace = () => {
     return index === -1 ? 0 : index;
   }, [ categoryTabs, selectedCategoryId ]);
 
+  const selectedApp = displayedApps.find(app => app.id === selectedAppId);
+
   const handleCategoryChange = React.useCallback((index: number) => {
     onCategoryChange(categoryTabs[index].id);
   }, [ categoryTabs, onCategoryChange ]);
@@ -116,13 +119,18 @@ const Marketplace = () => {
     }
   }, [ showDisclaimer ]);
 
+  const handleGoBackInContractListModal = React.useCallback(() => {
+    clearSelectedAppId();
+    if (selectedApp) {
+      showAppInfo(selectedApp.id);
+    }
+  }, [ clearSelectedAppId, showAppInfo, selectedApp ]);
+
   throwOnResourceLoadError(isError && error ? { isError, error } : { isError: false, error: null });
 
   if (!feature.isEnabled) {
     return null;
   }
-
-  const selectedApp = displayedApps.find(app => app.id === selectedAppId);
 
   return (
     <>
@@ -261,6 +269,7 @@ const Marketplace = () => {
           type={ contractListModalType }
           contracts={ selectedApp?.securityReport?.contractsData }
           onClose={ clearSelectedAppId }
+          onBack={ hasPreviousStep ? handleGoBackInContractListModal : undefined }
         />
       ) }
     </>
