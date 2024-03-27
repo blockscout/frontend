@@ -42,6 +42,7 @@ const TabsWithScroll = ({
 }: Props) => {
   const [ activeTabIndex, setActiveTabIndex ] = useState<number>(defaultTabIndex || 0);
   const [ screenWidth, setScreenWidth ] = React.useState(isBrowser() ? window.innerWidth : 0);
+  const [ isLoading, setIsLoading ] = React.useState(true);
 
   const tabsRef = useRef<HTMLDivElement>(null);
 
@@ -71,8 +72,20 @@ const TabsWithScroll = ({
     };
   }, []);
 
+  const handleLoad = React.useCallback(() => {
+    setIsLoading(false);
+  }, []);
+
+  const renderContent = React.useCallback((component: TabItem['component']) => {
+    if (typeof component === 'function') {
+      return component({ onLoad: handleLoad });
+    }
+
+    return component;
+  }, [ handleLoad ]);
+
   if (tabs.length === 1) {
-    return <div>{ tabs[0].component }</div>;
+    return <div>{ renderContent(tabs[0].component) }</div>;
   }
 
   return (
@@ -101,9 +114,10 @@ const TabsWithScroll = ({
         activeTabIndex={ activeTabIndex }
         onItemClick={ handleTabChange }
         themeProps={ themeProps }
+        isLoading={ isLoading }
       />
       <TabPanels>
-        { tabsList.map((tab) => <TabPanel padding={ 0 } key={ tab.id }>{ tab.component }</TabPanel>) }
+        { tabsList.map((tab) => <TabPanel padding={ 0 } key={ tab.id }>{ renderContent(tab.component) }</TabPanel>) }
       </TabPanels>
     </Tabs>
   );
