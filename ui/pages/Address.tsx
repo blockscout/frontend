@@ -39,7 +39,6 @@ import IconSvg from 'ui/shared/IconSvg';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
-import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 
 const TOKEN_TABS = [ 'tokens_erc20', 'tokens_nfts', 'tokens_nfts_collection', 'tokens_nfts_list' ];
 
@@ -81,7 +80,7 @@ const AddressPageContent = () => {
         id: 'txs',
         title: 'Transactions',
         count: addressTabsCountersQuery.data?.transactions_count,
-        component: <AddressTxs scrollRef={ tabsScrollRef }/>,
+        component: ({ onLoad }: { onLoad: () => void }) => <AddressTxs scrollRef={ tabsScrollRef } onLoad={ onLoad }/>,
       },
       txInterpretation.isEnabled && txInterpretation.provider === 'noves' ?
         {
@@ -250,10 +249,7 @@ const AddressPageContent = () => {
       <AddressDetails addressQuery={ addressQuery } scrollRef={ tabsScrollRef }/>
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ tabsScrollRef }></Box>
-      { (isLoading || addressTabsCountersQuery.isPlaceholderData) ?
-        <TabsSkeleton tabs={ tabs }/> :
-        content
-      }
+      { content }
     </>
   );
 };
