@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
-import type { WindowProvider } from 'wagmi';
+
+import type { WalletProvider } from 'types/web3';
 
 import * as addressMock from 'mocks/address/address';
 import * as countersMock from 'mocks/address/counters';
@@ -73,7 +74,7 @@ test('token', async({ mount, page }) => {
   await page.evaluate(() => {
     window.ethereum = {
       providers: [ { isMetaMask: true, _events: {} } ],
-    }as WindowProvider;
+    } as WalletProvider;
   });
 
   const component = await mount(

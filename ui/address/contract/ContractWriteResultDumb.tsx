@@ -11,7 +11,7 @@ interface Props {
   result: ContractMethodWriteResult;
   onSettle: () => void;
   txInfo: {
-    status: 'loading' | 'success' | 'error' | 'idle';
+    status: 'loading' | 'success' | 'error' | 'idle' | 'pending';
     error: Error | null;
   };
 }
@@ -20,7 +20,7 @@ const ContractWriteResultDumb = ({ result, onSettle, txInfo }: Props) => {
   const txHash = result && 'hash' in result ? result.hash : undefined;
 
   React.useEffect(() => {
-    if (txInfo.status !== 'loading') {
+    if (txInfo.status !== 'pending') {
       onSettle();
     }
   }, [ onSettle, txInfo.status ]);
@@ -55,7 +55,7 @@ const ContractWriteResultDumb = ({ result, onSettle, txInfo }: Props) => {
         );
       }
 
-      case 'loading': {
+      case 'pending': {
         return (
           <>
             <Spinner size="sm" mr={ 3 }/>

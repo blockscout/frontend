@@ -55,6 +55,7 @@ test('address verification flow', async({ render, mockApiResponse, page }) => {
   await page.getByRole('button', { name: /continue/i }).click();
 
   // fill second step
+  await page.getByText('Sign manually').click();
   const signatureInput = page.getByLabel(/signature hash/i);
   await signatureInput.fill(mocks.SIGNATURE);
   await page.getByRole('button', { name: /verify/i }).click();

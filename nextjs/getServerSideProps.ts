@@ -1,7 +1,9 @@
 import type { GetServerSideProps } from 'next';
 
 import config from 'configs/app';
+import isNeedProxy from 'lib/api/isNeedProxy';
 const rollupFeature = config.features.rollup;
+const adBannerFeature = config.features.adsBanner;
 
 export type Props = {
   cookies: string;
@@ -12,9 +14,22 @@ export type Props = {
   number: string;
   q: string;
   name: string;
+  adBannerProvider?: string;
 }
 
 export const base: GetServerSideProps<Props> = async({ req, query }) => {
+  const adBannerProvider = (() => {
+    if (adBannerFeature.isEnabled) {
+      if ('additionalProvider' in adBannerFeature && adBannerFeature.additionalProvider) {
+        // we need to get a random ad provider on the server side to keep it consistent with the client side
+        const randomIndex = Math.round(Math.random());
+        return [ adBannerFeature.provider, adBannerFeature.additionalProvider ][randomIndex];
+      } else {
+        return adBannerFeature.provider;
+      }
+    }
+  })();
+
   return {
     props: {
       cookies: req.headers.cookie || '',
@@ -25,6 +40,7 @@ export const base: GetServerSideProps<Props> = async({ req, query }) => {
       number: query.number?.toString() || '',
       q: query.q?.toString() || '',
       name: query.name?.toString() || '',
+      adBannerProvider,
     },
   };
 };
@@ -194,6 +210,17 @@ export const validators: GetServerSideProps<Props> = async(context) => {
 
 export const gasTracker: GetServerSideProps<Props> = async(context) => {
   if (!config.features.gasTracker.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
+export const login: GetServerSideProps<Props> = async(context) => {
+
+  if (!isNeedProxy()) {
     return {
       notFound: true,
     };

@@ -56,6 +56,7 @@ import type {
 import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
 import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
+import type { NovesAccountHistoryResponse, NovesDescribeTxsResponse, NovesResponseData } from 'types/api/noves';
 import type {
   OptimisticL2DepositsResponse,
   OptimisticL2DepositsItem,
@@ -649,6 +650,20 @@ export const RESOURCES = {
     path: '/api/v2/shibarium/withdrawals/count',
   },
 
+  // NOVES-FI
+  noves_transaction: {
+    path: '/api/v2/proxy/noves-fi/transactions/:hash',
+    pathParams: [ 'hash' as const ],
+  },
+  noves_address_history: {
+    path: '/api/v2/proxy/noves-fi/addresses/:address/transactions',
+    pathParams: [ 'address' as const ],
+    filterFields: [],
+  },
+  noves_describe_txs: {
+    path: '/api/v2/proxy/noves-fi/transaction-descriptions',
+  },
+
   // USER OPS
   user_ops: {
     path: '/api/v2/proxy/account-abstraction/operations',
@@ -757,7 +772,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'zkevm_l2_txn_batches' | 'zkevm_l2_txn_batch_txs' |
 'withdrawals' | 'address_withdrawals' | 'block_withdrawals' |
 'watchlist' | 'private_tags_address' | 'private_tags_tx' |
-'domains_lookup' | 'addresses_lookup' | 'user_ops' | 'validators';
+'domains_lookup' | 'addresses_lookup' | 'user_ops' | 'validators' | 'noves_address_history';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
@@ -886,6 +901,9 @@ Q extends 'user_ops' ? UserOpsResponse :
 Q extends 'user_op' ? UserOp :
 Q extends 'user_ops_account' ? UserOpsAccount :
 Q extends 'user_op_interpretation'? TxInterpretationResponse :
+Q extends 'noves_transaction' ? NovesResponseData :
+Q extends 'noves_address_history' ? NovesAccountHistoryResponse :
+Q extends 'noves_describe_txs' ? NovesDescribeTxsResponse :
 never;
 /* eslint-enable @typescript-eslint/indent */
 
