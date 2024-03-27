@@ -12,7 +12,7 @@ const test = base.extend<{ context: BrowserContext }>({
   context: contextWithEnvs(configs.featureEnvs.validators),
 });
 
-test('base view', async({ render, mockApiResponse }) => {
+test('base view +@mobile', async({ render, mockApiResponse }) => {
   await mockApiResponse('validators', validatorsMock.validatorsResponse, { pathParams: { chainType: 'stability' } });
   await mockApiResponse('validators_counters', validatorsMock.validatorsCountersResponse, { pathParams: { chainType: 'stability' } });
 
