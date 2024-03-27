@@ -120,7 +120,7 @@ const TokenPageContent = () => {
   }, [ tokenQuery.data, tokenQuery.isPlaceholderData ]);
 
   const hasData = (tokenQuery.data && !tokenQuery.isPlaceholderData) && (contractQuery.data && !contractQuery.isPlaceholderData);
-  const hasInventoryTab = Boolean(tokenQuery.data?.type) && NFT_TOKEN_TYPE_IDS.includes(tokenQuery.data.type);
+  const hasInventoryTab = tokenQuery.data?.type && NFT_TOKEN_TYPE_IDS.includes(tokenQuery.data.type);
 
   const transfersQuery = useQueryWithPages({
     resourceName: 'token_transfers',
