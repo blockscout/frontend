@@ -38,7 +38,7 @@ const TokenTransferTableItem = ({ holder, token, isLoading }: Props) => {
           { quantity }
         </Skeleton>
       </Td>
-      { token.total_supply && (
+      { token.total_supply && token.type !== 'ERC-404' && (
         <Td verticalAlign="middle" isNumeric>
           <Utilization
             value={ BigNumber(holder.value).div(BigNumber(token.total_supply)).dp(4).toNumber() }

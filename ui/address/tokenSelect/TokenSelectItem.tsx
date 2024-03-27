@@ -4,6 +4,7 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import getCurrencyValue from 'lib/getCurrencyValue';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import LinkInternal from 'ui/shared/LinkInternal';
 import TruncatedValue from 'ui/shared/TruncatedValue';
@@ -55,7 +56,10 @@ const TokenSelectItem = ({ data }: Props) => {
             ) }
             { data.value !== null && (
               <span>
-                { BigNumber(data.value).toFormat() }
+                { data.token.decimals ?
+                  getCurrencyValue({ value: data.value, decimals: data.token.decimals, accuracy: 2 }).valueStr :
+                  BigNumber(data.value).toFormat()
+                }
               </span>
             ) }
           </>

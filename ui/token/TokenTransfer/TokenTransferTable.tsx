@@ -32,9 +32,9 @@ const TokenTransferTable = ({ data, top, showSocketInfo, socketInfoAlert, socket
           <Tr>
             <Th width="280px">Txn hash</Th>
             <Th width="200px">Method</Th>
-            <Th width={{ lg: '224px', xl: '420px' }}>From/To</Th>
+            <Th width={{ lg: '224px', xl: '380px' }}>From/To</Th>
             { (NFT_TOKEN_TYPE_IDS.includes(tokenType)) &&
-              <Th width={ tokenType === 'ERC-1155' ? '50%' : '100%' }>Token ID</Th>
+              <Th width={ tokenType === 'ERC-1155' || tokenType === 'ERC-404' ? '50%' : '100%' }>Token ID</Th>
             }
             { (tokenType === 'ERC-20' || tokenType === 'ERC-1155' || tokenType === 'ERC-404') && (
               <Th width={ tokenType === 'ERC-20' ? '100%' : '50%' } isNumeric>
