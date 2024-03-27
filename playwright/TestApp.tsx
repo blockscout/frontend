@@ -30,6 +30,7 @@ const defaultAppContext = {
     number: '',
     q: '',
     name: '',
+    adBannerProvider: 'slise',
   },
 };
 
