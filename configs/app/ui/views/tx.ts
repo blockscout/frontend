@@ -1,5 +1,5 @@
-import type { TxAdditionalFieldsId, TxFieldsId, TxViewId } from 'types/views/tx';
-import { TX_ADDITIONAL_FIELDS_IDS, TX_FIELDS_IDS, TX_VIEWS_IDS } from 'types/views/tx';
+import type { TxAdditionalFieldsId, TxFieldsId } from 'types/views/tx';
+import { TX_ADDITIONAL_FIELDS_IDS, TX_FIELDS_IDS } from 'types/views/tx';
 
 import { getEnvValue, parseEnvJson } from 'configs/app/utils';
 
@@ -33,31 +33,9 @@ const additionalFields = (() => {
   return result;
 })();
 
-const hiddenViews = (() => {
-  const envValue = getEnvValue('NEXT_PUBLIC_VIEWS_TX_HIDDEN_VIEWS');
-
-  if (!envValue) {
-    return undefined;
-  }
-
-  const parsedValue = parseEnvJson<Array<TxViewId>>(envValue);
-
-  if (!Array.isArray(parsedValue)) {
-    return undefined;
-  }
-
-  const result = TX_VIEWS_IDS.reduce((result, item) => {
-    result[item] = parsedValue.includes(item);
-    return result;
-  }, {} as Record<TxViewId, boolean>);
-
-  return result;
-})();
-
 const config = Object.freeze({
   hiddenFields,
   additionalFields,
-  hiddenViews,
 });
 
 export default config;
