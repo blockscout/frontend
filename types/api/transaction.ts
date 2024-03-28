@@ -7,6 +7,7 @@ import type { OptimisticL2WithdrawalStatus } from './optimisticL2';
 import type { TokenInfo } from './token';
 import type { TokenTransfer } from './tokenTransfer';
 import type { TxAction } from './txAction';
+import type { ZkSyncBatchesItem } from './zkSyncL2';
 
 export type TransactionRevertReason = {
   raw: string;
@@ -80,6 +81,10 @@ export type Transaction = {
   zkevm_batch_number?: number;
   zkevm_status?: typeof ZKEVM_L2_TX_STATUSES[number];
   zkevm_sequence_hash?: string;
+  // zkSync FIELDS
+  zksync?: Omit<ZkSyncBatchesItem, 'number' | 'tx_count' | 'timestamp'> & {
+    'batch_number': number | null;
+  };
   // blob tx fields
   blob_versioned_hashes?: Array<string>;
   blob_gas_used?: string;

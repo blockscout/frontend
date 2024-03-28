@@ -97,6 +97,7 @@ import type { VerifiedContractsSorting } from 'types/api/verifiedContracts';
 import type { VisualizedContract } from 'types/api/visualization';
 import type { WithdrawalsResponse, WithdrawalsCounters } from 'types/api/withdrawals';
 import type { ZkEvmL2TxnBatch, ZkEvmL2TxnBatchesItem, ZkEvmL2TxnBatchesResponse, ZkEvmL2TxnBatchTxs } from 'types/api/zkEvmL2';
+import type { ZkSyncBatch, ZkSyncBatchesResponse, ZkSyncBatchTxs } from 'types/api/zkSyncL2';
 import type { MarketplaceAppOverview } from 'types/client/marketplace';
 import type { ArrayElement } from 'types/utils';
 
@@ -561,6 +562,9 @@ export const RESOURCES = {
   homepage_zkevm_latest_batch: {
     path: '/api/v2/main-page/zkevm/batches/latest-number',
   },
+  homepage_zksync_latest_batch: {
+    path: '/api/v2/main-page/zksync/batches/latest-number',
+  },
 
   // SEARCH
   quick_search: {
@@ -575,7 +579,7 @@ export const RESOURCES = {
     path: '/api/v2/search/check-redirect',
   },
 
-  // L2
+  // optimistic L2
   l2_deposits: {
     path: '/api/v2/optimism/deposits',
     filterFields: [],
@@ -612,6 +616,7 @@ export const RESOURCES = {
     path: '/api/v2/optimism/txn-batches/count',
   },
 
+  // zkEvm L2
   zkevm_l2_txn_batches: {
     path: '/api/v2/zkevm/batches',
     filterFields: [],
@@ -625,8 +630,30 @@ export const RESOURCES = {
     path: '/api/v2/zkevm/batches/:number',
     pathParams: [ 'number' as const ],
   },
+
   zkevm_l2_txn_batch_txs: {
     path: '/api/v2/transactions/zkevm-batch/:number',
+    pathParams: [ 'number' as const ],
+    filterFields: [],
+  },
+
+  // zkSync L2
+  zksync_l2_txn_batches: {
+    path: '/api/v2/zksync/batches',
+    filterFields: [],
+  },
+
+  zksync_l2_txn_batches_count: {
+    path: '/api/v2/zksync/batches/count',
+  },
+
+  zksync_l2_txn_batch: {
+    path: '/api/v2/zksync/batches/:number',
+    pathParams: [ 'number' as const ],
+  },
+
+  zksync_l2_txn_batch_txs: {
+    path: '/api/v2/transactions/zksync-batch/:number',
     pathParams: [ 'number' as const ],
     filterFields: [],
   },
@@ -770,6 +797,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'l2_output_roots' | 'l2_withdrawals' | 'l2_txn_batches' | 'l2_deposits' |
 'shibarium_deposits' | 'shibarium_withdrawals' |
 'zkevm_l2_txn_batches' | 'zkevm_l2_txn_batch_txs' |
+'zksync_l2_txn_batches' | 'zksync_l2_txn_batch_txs' |
 'withdrawals' | 'address_withdrawals' | 'block_withdrawals' |
 'watchlist' | 'private_tags_address' | 'private_tags_tx' |
 'domains_lookup' | 'addresses_lookup' | 'user_ops' | 'validators' | 'noves_address_history';
@@ -801,6 +829,7 @@ Q extends 'homepage_deposits' ? Array<OptimisticL2DepositsItem> :
 Q extends 'homepage_zkevm_l2_batches' ? { items: Array<ZkEvmL2TxnBatchesItem> } :
 Q extends 'homepage_indexing_status' ? IndexingStatus :
 Q extends 'homepage_zkevm_latest_batch' ? number :
+Q extends 'homepage_zksync_latest_batch' ? number :
 Q extends 'stats_counters' ? Counters :
 Q extends 'stats_lines' ? StatsCharts :
 Q extends 'stats_line' ? StatsChart :
@@ -892,6 +921,10 @@ Q extends 'shibarium_withdrawals' ? ShibariumWithdrawalsResponse :
 Q extends 'shibarium_deposits' ? ShibariumDepositsResponse :
 Q extends 'shibarium_withdrawals_count' ? number :
 Q extends 'shibarium_deposits_count' ? number :
+Q extends 'zksync_l2_txn_batches' ? ZkSyncBatchesResponse :
+Q extends 'zksync_l2_txn_batches_count' ? number :
+Q extends 'zksync_l2_txn_batch' ? ZkSyncBatch :
+Q extends 'zksync_l2_txn_batch_txs' ? ZkSyncBatchTxs :
 Q extends 'contract_security_audits' ? SmartContractSecurityAudits :
 Q extends 'addresses_lookup' ? EnsAddressLookupResponse :
 Q extends 'domain_info' ? EnsDomainDetailed :

@@ -136,6 +136,26 @@ export default function useNavItems(): ReturnType {
           ensLookup,
         ].filter(Boolean),
       ];
+    } else if (rollupFeature.isEnabled && rollupFeature.type === 'zkSync') {
+      blockchainNavItems = [
+        [
+          txs,
+          userOps,
+          blocks,
+          {
+            text: 'Txn batches',
+            nextRoute: { pathname: '/batches' as const },
+            icon: 'txn_batches',
+            isActive: pathname === '/batches' || pathname === '/batches/[number]',
+          },
+        ].filter(Boolean),
+        [
+          topAccounts,
+          validators,
+          verifiedContracts,
+          ensLookup,
+        ].filter(Boolean),
+      ];
     } else {
       blockchainNavItems = [
         txs,

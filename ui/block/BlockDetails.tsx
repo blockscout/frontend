@@ -5,6 +5,8 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
+import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'types/api/zkSyncL2';
+
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
@@ -19,6 +21,7 @@ import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import DetailsTimestamp from 'ui/shared/DetailsTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
@@ -27,6 +30,8 @@ import PrevNext from 'ui/shared/PrevNext';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization/Utilization';
+import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
+import ZkSyncL2TxnBatchHashesInfo from 'ui/txnBatches/zkSyncL2/ZkSyncL2TxnBatchHashesInfo';
 
 import BlockDetailsBlobInfo from './details/BlockDetailsBlobInfo';
 import type { BlockQuery } from './useBlockQuery';
@@ -214,6 +219,31 @@ const BlockDetails = ({ query }: Props) => {
           </Skeleton>
         </DetailsInfoItem>
       ) }
+
+      { rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && data.zksync && (
+        <>
+          <DetailsInfoItem
+            title="Batch"
+            hint="Batch number"
+            isLoading={ isPlaceholderData }
+          >
+            { data.zksync.batch_number ? (
+              <BatchEntityL2
+                isLoading={ isPlaceholderData }
+                number={ data.zksync.batch_number }
+              />
+            ) : <Skeleton isLoaded={ !isPlaceholderData }>Pending</Skeleton> }
+          </DetailsInfoItem>
+          <DetailsInfoItem
+            title="Status"
+            hint="Status is the short interpretation of the batch lifecycle"
+            isLoading={ isPlaceholderData }
+          >
+            <VerificationSteps steps={ ZKSYNC_L2_TX_BATCH_STATUSES } currentStep={ data.zksync.status } isLoading={ isPlaceholderData }/>
+          </DetailsInfoItem>
+        </>
+      ) }
+
       { !config.UI.views.block.hiddenFields?.miner && (
         <DetailsInfoItem
           title={ verificationTitle }
@@ -387,6 +417,9 @@ const BlockDetails = ({ query }: Props) => {
       { isExpanded && !isPlaceholderData && (
         <>
           <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
+
+          { rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && data.zksync &&
+            <ZkSyncL2TxnBatchHashesInfo data={ data.zksync } isLoading={ isPlaceholderData }/> }
 
           { !isPlaceholderData && <BlockDetailsBlobInfo data={ data }/> }
 
