@@ -14,7 +14,7 @@ export type Props = {
   number: string;
   q: string;
   name: string;
-  adBannerProvider: string | null;
+  adBannerProvider: string;
 }
 
 export const base: GetServerSideProps<Props> = async({ req, query }) => {
@@ -28,7 +28,7 @@ export const base: GetServerSideProps<Props> = async({ req, query }) => {
         return adBannerFeature.provider;
       }
     }
-    return null;
+    return '';
   })();
 
   return {
