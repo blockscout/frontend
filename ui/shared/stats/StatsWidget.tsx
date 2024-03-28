@@ -11,9 +11,10 @@ type Props = {
   diff?: string | number;
   diffFormatted?: string;
   diffPeriod?: '24h';
+  period?: '1h' | '24h';
 }
 
-const StatsWidget = ({ label, value, isLoading, hint, diff, diffPeriod = '24h', diffFormatted }: Props) => {
+const StatsWidget = ({ label, value, isLoading, hint, diff, diffPeriod = '24h', diffFormatted, period }: Props) => {
   const bgColor = useColorModeValue('blue.50', 'blue.800');
   const skeletonBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
   const hintColor = useColorModeValue('gray.600', 'gray.400');
@@ -53,6 +54,7 @@ const StatsWidget = ({ label, value, isLoading, hint, diff, diffPeriod = '24h', 
               <Text variant="secondary" fontSize="sm">({ diffPeriod })</Text>
             </>
           ) }
+          { period && <Text variant="secondary" fontSize="xs" ml={ 1 }>({ period })</Text> }
         </Skeleton>
       </Box>
       { hint && (

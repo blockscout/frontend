@@ -97,6 +97,13 @@ export type Transaction = {
 
 export const ZKEVM_L2_TX_STATUSES = [ 'Confirmed by Sequencer', 'L1 Confirmed' ];
 
+export interface TransactionsStats {
+  pending_transactions_count: string;
+  transaction_fees_avg_24h: string;
+  transaction_fees_sum_24h: string;
+  transactions_count_24h: string;
+}
+
 export type TransactionsResponse = TransactionsResponseValidated | TransactionsResponsePending;
 
 export interface TransactionsResponseValidated {

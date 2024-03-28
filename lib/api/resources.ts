@@ -87,6 +87,7 @@ import type {
   TransactionsResponseWatchlist,
   TransactionsSorting,
   TransactionsResponseWithBlobs,
+  TransactionsStats,
 } from 'types/api/transaction';
 import type { TxInterpretationResponse } from 'types/api/txInterpretation';
 import type { TTxsFilters, TTxsWithBlobsFilters } from 'types/api/txsFilters';
@@ -274,6 +275,9 @@ export const RESOURCES = {
     path: '/api/v2/blocks/:height_or_hash/withdrawals',
     pathParams: [ 'height_or_hash' as const ],
     filterFields: [],
+  },
+  txs_stats: {
+    path: '/api/v2/transactions/stats',
   },
   txs_validated: {
     path: '/api/v2/transactions',
@@ -841,6 +845,7 @@ Q extends 'blocks' ? BlocksResponse :
 Q extends 'block' ? Block :
 Q extends 'block_txs' ? BlockTransactionsResponse :
 Q extends 'block_withdrawals' ? BlockWithdrawalsResponse :
+Q extends 'txs_stats' ? TransactionsStats :
 Q extends 'txs_validated' ? TransactionsResponseValidated :
 Q extends 'txs_pending' ? TransactionsResponsePending :
 Q extends 'txs_with_blobs' ? TransactionsResponseWithBlobs :
