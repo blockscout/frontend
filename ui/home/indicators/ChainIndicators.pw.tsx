@@ -15,7 +15,7 @@ const TX_CHART_API_URL = buildApiUrl('stats_charts_txs');
 
 const test = base.extend({
   context: contextWithEnvs([
-    { name: 'NEXT_PUBLIC_HOMEPAGE_CHARTS', value: '["daily_txs","coin_price","market_cap","tvl"]' },
+    { name: 'NEXT_PUBLIC_HOMEPAGE_CHARTS', value: '["daily_txs","coin_price","secondary_coin_price","market_cap","tvl"]' },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ]) as any,
 });

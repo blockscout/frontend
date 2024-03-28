@@ -71,6 +71,29 @@ const coinPriceIndicator: TChainIndicator<'stats_charts_market'> = {
   },
 };
 
+const secondaryCoinPriceIndicator: TChainIndicator<'stats_charts_secondary_coin_price'> = {
+  id: 'secondary_coin_price',
+  title: `${ config.chain.governanceToken.symbol || config.chain.currency.symbol } price`,
+  value: (stats) => stats.coin_price === null ?
+    '$N/A' :
+    '$' + Number(stats.coin_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }),
+  valueDiff: (stats) => stats?.coin_price !== null ? stats?.coin_price_change_percentage : null,
+  icon: <TokenEntity.Icon token={ nativeTokenData } boxSize={ 6 } marginRight={ 0 }/>,
+  hint: `${ config.chain.governanceToken.symbol || config.chain.currency.symbol } token daily price in USD.`,
+  api: {
+    resourceName: 'stats_charts_secondary_coin_price',
+    dataFn: (response) => ([ {
+      items: response.chart_data
+        .map((item) => ({ date: new Date(item.date), value: item.closing_price }))
+        .sort(sortByDateDesc)
+        .reduceRight(nonNullTailReducer, [] as Array<TimeChartItemRaw>)
+        .map(mapNullToZero),
+      name: `${ config.chain.governanceToken.symbol || config.chain.currency.symbol } price`,
+      valueFormatter: (x: number) => '$' + x.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }),
+    } ]),
+  },
+};
+
 const marketPriceIndicator: TChainIndicator<'stats_charts_market'> = {
   id: 'market_cap',
   title: 'Market cap',
@@ -138,6 +161,7 @@ const tvlIndicator: TChainIndicator<'stats_charts_market'> = {
 const INDICATORS = [
   dailyTxsIndicator,
   coinPriceIndicator,
+  secondaryCoinPriceIndicator,
   marketPriceIndicator,
   tvlIndicator,
 ];
