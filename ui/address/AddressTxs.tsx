@@ -1,11 +1,12 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
+import useAddressTxsQuery from 'queries/address/addresTxs';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
 import type { AddressFromToFilter, AddressTransactionsResponse } from 'types/api/address';
 import { AddressFromToFilterValues } from 'types/api/address';
-import type { Transaction, TransactionsSortingField, TransactionsSortingValue, TransactionsSorting } from 'types/api/transaction';
+import type { Transaction, TransactionsSortingValue } from 'types/api/transaction';
 
 import { getResourceKey } from 'lib/api/useApiQuery';
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
@@ -13,12 +14,8 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
-import { TX } from 'stubs/tx';
-import { generateListStub } from 'stubs/utils';
 import ActionBar from 'ui/shared/ActionBar';
 import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
-import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
 import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';
 import { sortTxsFromSocket } from 'ui/txs/sortTxs';
 import TxsWithAPISorting from 'ui/txs/TxsWithAPISorting';
@@ -64,20 +61,7 @@ const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Props) => {
 
   const [ filterValue, setFilterValue ] = React.useState<AddressFromToFilter>(getFilterValue(router.query.filter));
 
-  const addressTxsQuery = useQueryWithPages({
-    resourceName: 'address_txs',
-    pathParams: { hash: currentAddress },
-    filters: { filter: filterValue },
-    sorting: getSortParamsFromValue<TransactionsSortingValue, TransactionsSortingField, TransactionsSorting['order']>(sort),
-    scrollRef,
-    options: {
-      placeholderData: generateListStub<'address_txs'>(TX, 50, { next_page_params: {
-        block_number: 9005713,
-        index: 5,
-        items_count: 50,
-      } }),
-    },
-  });
+  const addressTxsQuery = useAddressTxsQuery({ filter: filterValue, sort, scrollRef });
 
   const handleFilterChange = React.useCallback((val: string | Array<string>) => {
 
