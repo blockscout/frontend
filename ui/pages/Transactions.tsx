@@ -30,7 +30,7 @@ const Transactions = () => {
   const tab = getQueryParamString(router.query.tab);
 
   React.useEffect(() => {
-    if (tab === 'blob_txs' && config.UI.views.tx.hiddenViews?.blob_txs) {
+    if (tab === 'blob_txs' && !config.features.dataAvailability.isEnabled) {
       router.replace({ pathname: '/txs' }, undefined, { shallow: true });
     }
   }, [ router, tab ]);
@@ -66,7 +66,7 @@ const Transactions = () => {
     resourceName: 'txs_with_blobs',
     filters: { type: 'blob_transaction' },
     options: {
-      enabled: !config.UI.views.tx.hiddenViews?.blob_txs && tab === 'blob_txs',
+      enabled: config.features.dataAvailability.isEnabled && tab === 'blob_txs',
       placeholderData: generateListStub<'txs_with_blobs'>(TX, 50, { next_page_params: {
         block_number: 10602877,
         index: 8,
@@ -115,7 +115,7 @@ const Transactions = () => {
         />
       ),
     },
-    !config.UI.views.tx.hiddenViews?.blob_txs && {
+    config.features.dataAvailability.isEnabled && {
       id: 'blob_txs',
       title: 'Blob txns',
       component: (
