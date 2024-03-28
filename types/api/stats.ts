@@ -16,6 +16,7 @@ export type HomeStats = {
   network_utilization_percentage: number;
   tvl: string | null;
   rootstock_locked_btc?: string | null;
+  last_output_root_size?: string | null;
 }
 
 export type GasPrices = {
