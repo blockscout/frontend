@@ -1,23 +1,5 @@
-import {
-  Box,
-  Flex,
-  Text,
-  Grid,
-  Button,
-  chakra,
-  Popover,
-  PopoverTrigger,
-  PopoverBody,
-  PopoverContent,
-  useDisclosure,
-  Skeleton,
-  Center,
-  useColorModeValue,
-  Icon,
-} from '@chakra-ui/react';
+import { Box, Text, chakra, Icon, Popover, PopoverTrigger, PopoverContent, PopoverBody, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
-
-import type { SolidityscanReport as TSolidityscanReport } from 'types/api/contract';
 
 // This icon doesn't work properly when it is in the sprite
 // Probably because of the gradient
@@ -25,52 +7,15 @@ import type { SolidityscanReport as TSolidityscanReport } from 'types/api/contra
 import solidityScanIcon from 'icons/brands/solidity_scan.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import { SOLIDITYSCAN_REPORT } from 'stubs/contract';
-import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/LinkExternal';
-
-type DistributionItem = {
-  id: keyof TSolidityscanReport['scan_report']['scan_summary']['issue_severity_distribution'];
-  name: string;
-  color: string;
-}
-
-const DISTRIBUTION_ITEMS: Array<DistributionItem> = [
-  { id: 'critical', name: 'Critical', color: '#891F11' },
-  { id: 'high', name: 'High', color: '#EC672C' },
-  { id: 'medium', name: 'Medium', color: '#FBE74D' },
-  { id: 'low', name: 'Low', color: '#68C88E' },
-  { id: 'informational', name: 'Informational', color: '#A3AEBE' },
-  { id: 'gas', name: 'Gas', color: '#A47585' },
-];
+import SolidityscanReportButton from 'ui/shared/solidityscanReport/SolidityscanReportButton';
+import SolidityscanReportDetails from 'ui/shared/solidityscanReport/SolidityscanReportDetails';
+import SolidityscanReportScore from 'ui/shared/solidityscanReport/SolidityscanReportScore';
 
 interface Props {
   className?: string;
   hash: string;
 }
-
-type ItemProps = {
-  item: DistributionItem;
-  vulnerabilities: TSolidityscanReport['scan_report']['scan_summary']['issue_severity_distribution'];
-  vulnerabilitiesCount: number;
-}
-
-const SolidityScanReportItem = ({ item, vulnerabilities, vulnerabilitiesCount }: ItemProps) => {
-  const bgBar = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
-  const yetAnotherGrayColor = useColorModeValue('gray.400', 'gray.500');
-
-  return (
-    <>
-      <Box w={ 3 } h={ 3 } bg={ item.color } borderRadius="6px" mr={ 2 }></Box>
-      <Flex justifyContent="space-between" mr={ 3 }>
-        <Text>{ item.name }</Text>
-        <Text color={ vulnerabilities[item.id] > 0 ? 'text' : yetAnotherGrayColor }>{ vulnerabilities[item.id] }</Text>
-      </Flex>
-      <Box bg={ bgBar } h="10px" borderRadius="8px">
-        <Box bg={ item.color } w={ vulnerabilities[item.id] / vulnerabilitiesCount } h="10px" borderRadius="8px"/>
-      </Box>
-    </>
-  );
-};
 
 const SolidityscanReport = ({ className, hash }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
@@ -85,29 +30,8 @@ const SolidityscanReport = ({ className, hash }: Props) => {
 
   const score = Number(data?.scan_report.scan_summary.score_v2);
 
-  const chartGrayColor = useColorModeValue('gray.100', 'gray.700');
-  const yetAnotherGrayColor = useColorModeValue('gray.400', 'gray.500');
-  const popoverBgColor = useColorModeValue('white', 'gray.900');
-
-  const greatScoreColor = useColorModeValue('green.600', 'green.400');
-  const averageScoreColor = useColorModeValue('purple.600', 'purple.400');
-  const lowScoreColor = useColorModeValue('red.600', 'red.400');
-
   if (isError || !score) {
     return null;
-  }
-
-  let scoreColor;
-  let scoreLevel;
-  if (score >= 80) {
-    scoreColor = greatScoreColor;
-    scoreLevel = 'GREAT';
-  } else if (score >= 30) {
-    scoreColor = averageScoreColor;
-    scoreLevel = 'AVERAGE';
-  } else {
-    scoreColor = lowScoreColor;
-    scoreLevel = 'LOW';
   }
 
   const vulnerabilities = data?.scan_report.scan_summary.issue_severity_distribution;
@@ -117,24 +41,12 @@ const SolidityscanReport = ({ className, hash }: Props) => {
   return (
     <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
       <PopoverTrigger>
-        <Skeleton isLoaded={ !isPlaceholderData } borderRadius="base">
-          <Button
-            className={ className }
-            color={ scoreColor }
-            size="sm"
-            variant="outline"
-            colorScheme="gray"
-            onClick={ onToggle }
-            aria-label="SolidityScan score"
-            fontWeight={ 500 }
-            px="6px"
-            h="32px"
-            flexShrink={ 0 }
-          >
-            <IconSvg name={ score < 80 ? 'score/score-not-ok' : 'score/score-ok' } boxSize={ 5 } mr={ 1 }/>
-            { score }
-          </Button>
-        </Skeleton>
+        <SolidityscanReportButton
+          className={ className }
+          score={ score }
+          isLoading={ isPlaceholderData }
+          onClick={ onToggle }
+        />
       </PopoverTrigger>
       <PopoverContent w={{ base: '100vw', lg: '328px' }}>
         <PopoverBody px="26px" py="20px" fontSize="sm">
@@ -143,35 +55,11 @@ const SolidityscanReport = ({ className, hash }: Props) => {
             <Icon as={ solidityScanIcon } mr={ 1 } ml="6px" w="23px" h="20px" display="inline-block" verticalAlign="middle"/>
             <Text fontWeight={ 600 } display="inline-block">SolidityScan</Text>
           </Box>
-          <Flex alignItems="center" mb={ 5 }>
-            <Box
-              w={ 12 }
-              h={ 12 }
-              bgGradient={ `conic-gradient(${ scoreColor } 0, ${ scoreColor } ${ score }%, ${ chartGrayColor } 0, ${ chartGrayColor } 100%)` }
-              borderRadius="24px"
-              position="relative"
-              mr={ 3 }
-            >
-              <Center position="absolute" w="38px" h="38px" top="5px" right="5px" bg={ popoverBgColor } borderRadius="20px">
-                <IconSvg name={ score < 80 ? 'score/score-not-ok' : 'score/score-ok' } boxSize={ 5 } color={ scoreColor }/>
-              </Center>
-            </Box>
-            <Box>
-              <Flex>
-                <Text color={ scoreColor } fontSize="lg" fontWeight={ 500 }>{ score }</Text>
-                <Text color={ yetAnotherGrayColor } fontSize="lg" fontWeight={ 500 } whiteSpace="pre"> / 100</Text>
-              </Flex>
-              <Text color={ scoreColor } fontWeight={ 500 }>Security score is { scoreLevel }</Text>
-            </Box>
-          </Flex>
+          <SolidityscanReportScore score={ score } mb={ 5 }/>
           { vulnerabilities && vulnerabilitiesCount > 0 && (
             <Box mb={ 5 }>
               <Text py="7px" variant="secondary" fontSize="xs" fontWeight={ 500 }>Vulnerabilities distribution</Text>
-              <Grid templateColumns="20px 1fr 100px" alignItems="center" rowGap={ 2 }>
-                { DISTRIBUTION_ITEMS.map(item => (
-                  <SolidityScanReportItem item={ item } key={ item.id } vulnerabilities={ vulnerabilities } vulnerabilitiesCount={ vulnerabilitiesCount }/>
-                )) }
-              </Grid>
+              <SolidityscanReportDetails vulnerabilities={ vulnerabilities } vulnerabilitiesCount={ vulnerabilitiesCount }/>
             </Box>
           ) }
           <LinkExternal href={ data?.scan_report.scanner_reference_url }>View full report</LinkExternal>

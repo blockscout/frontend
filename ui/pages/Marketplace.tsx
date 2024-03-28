@@ -1,20 +1,25 @@
-import { Box, Menu, MenuButton, MenuItem, MenuList, Flex, IconButton } from '@chakra-ui/react';
+import { Box, Menu, MenuButton, MenuItem, MenuList, Flex, IconButton, Skeleton } from '@chakra-ui/react';
 import React from 'react';
+import type { MouseEvent } from 'react';
 
-import { MarketplaceCategory } from 'types/client/marketplace';
+import { MarketplaceCategory, MarketplaceDisplayType } from 'types/client/marketplace';
 import type { TabItem } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
+import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import ContractListModal from 'ui/marketplace/ContractListModal';
 import MarketplaceAppModal from 'ui/marketplace/MarketplaceAppModal';
 import MarketplaceDisclaimerModal from 'ui/marketplace/MarketplaceDisclaimerModal';
 import MarketplaceList from 'ui/marketplace/MarketplaceList';
+import MarketplaceListWithScores from 'ui/marketplace/MarketplaceListWithScores';
 import FilterInput from 'ui/shared/filters/FilterInput';
 import IconSvg from 'ui/shared/IconSvg';
 import type { IconName } from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/LinkExternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
+import RadioButtonGroup from 'ui/shared/radioButtonGroup/RadioButtonGroup';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import TabsWithScroll from 'ui/shared/Tabs/TabsWithScroll';
 
@@ -60,8 +65,15 @@ const Marketplace = () => {
     showDisclaimer,
     appsTotal,
     isCategoriesPlaceholderData,
+    showContractList,
+    contractListModalType,
+    selectedDisplayType,
+    onDisplayTypeChange,
+    hasPreviousStep,
   } = useMarketplace();
+
   const isMobile = useIsMobile();
+  const { value: isExperiment } = useFeatureValue('security_score_exp', false);
 
   const categoryTabs = React.useMemo(() => {
     const tabs: Array<TabItem> = categories.map(category => ({
@@ -80,7 +92,7 @@ const Marketplace = () => {
 
     tabs.unshift({
       id: MarketplaceCategory.FAVORITES,
-      title: () => <IconSvg name="star_outline" w={ 4 } h={ 4 }/>,
+      title: () => <IconSvg name="star_outline" w={ 5 } h={ 5 }/>,
       count: null,
       component: null,
     });
@@ -93,17 +105,32 @@ const Marketplace = () => {
     return index === -1 ? 0 : index;
   }, [ categoryTabs, selectedCategoryId ]);
 
+  const selectedApp = displayedApps.find(app => app.id === selectedAppId);
+
   const handleCategoryChange = React.useCallback((index: number) => {
     onCategoryChange(categoryTabs[index].id);
   }, [ categoryTabs, onCategoryChange ]);
+
+  const handleAppClick = React.useCallback((event: MouseEvent, id: string) => {
+    const isShown = window.localStorage.getItem('marketplace-disclaimer-shown');
+    if (!isShown) {
+      event.preventDefault();
+      showDisclaimer(id);
+    }
+  }, [ showDisclaimer ]);
+
+  const handleGoBackInContractListModal = React.useCallback(() => {
+    clearSelectedAppId();
+    if (selectedApp) {
+      showAppInfo(selectedApp.id);
+    }
+  }, [ clearSelectedAppId, showAppInfo, selectedApp ]);
 
   throwOnResourceLoadError(isError && error ? { isError, error } : { isError: false, error: null });
 
   if (!feature.isEnabled) {
     return null;
   }
-
-  const selectedApp = displayedApps.find(app => app.id === selectedAppId);
 
   return (
     <>
@@ -148,29 +175,76 @@ const Marketplace = () => {
             tabs={ categoryTabs }
             onTabChange={ handleCategoryChange }
             defaultTabIndex={ selectedCategoryIndex }
-            marginBottom={{ base: 0, lg: -2 }}
+            marginBottom={ -2 }
           />
         ) }
       </Box>
 
-      <FilterInput
-        initialValue={ filterQuery }
-        onChange={ onSearchInputChange }
-        marginBottom={{ base: '4', lg: '6' }}
-        w="100%"
-        placeholder="Find app"
-        isLoading={ isPlaceholderData }
-      />
+      <Flex direction={{ base: 'column', lg: 'row' }} mb={{ base: 4, lg: 6 }} gap={{ base: 4, lg: 3 }}>
+        { (feature.securityReportsUrl && isExperiment) && (
+          <Skeleton isLoaded={ !isPlaceholderData }>
+            <RadioButtonGroup<MarketplaceDisplayType>
+              onChange={ onDisplayTypeChange }
+              defaultValue={ selectedDisplayType }
+              name="type"
+              options={ [
+                {
+                  title: 'Discovery',
+                  value: MarketplaceDisplayType.DEFAULT,
+                  icon: 'apps_xs',
+                  onlyIcon: false,
+                },
+                {
+                  title: 'Apps scores',
+                  value: MarketplaceDisplayType.SCORES,
+                  icon: 'apps_list',
+                  onlyIcon: false,
+                  contentAfter: (
+                    <IconSvg
+                      name={ isMobile ? 'beta_xs' : 'beta' }
+                      h={ 3 }
+                      w={ isMobile ? 3 : 7 }
+                      ml={ 1 }
+                    />
+                  ),
+                },
+              ] }
+              autoWidth
+            />
+          </Skeleton>
+        ) }
+        <FilterInput
+          initialValue={ filterQuery }
+          onChange={ onSearchInputChange }
+          placeholder="Find app by name or keyword..."
+          isLoading={ isPlaceholderData }
+          size={ (feature.securityReportsUrl && isExperiment) ? 'xs' : 'sm' }
+          flex="1"
+        />
+      </Flex>
 
-      <MarketplaceList
-        apps={ displayedApps }
-        onAppClick={ showAppInfo }
-        favoriteApps={ favoriteApps }
-        onFavoriteClick={ onFavoriteClick }
-        isLoading={ isPlaceholderData }
-        showDisclaimer={ showDisclaimer }
-        selectedCategoryId={ selectedCategoryId }
-      />
+      { (selectedDisplayType === MarketplaceDisplayType.SCORES && feature.securityReportsUrl && isExperiment) ? (
+        <MarketplaceListWithScores
+          apps={ displayedApps }
+          showAppInfo={ showAppInfo }
+          favoriteApps={ favoriteApps }
+          onFavoriteClick={ onFavoriteClick }
+          isLoading={ isPlaceholderData }
+          selectedCategoryId={ selectedCategoryId }
+          onAppClick={ handleAppClick }
+          showContractList={ showContractList }
+        />
+      ) : (
+        <MarketplaceList
+          apps={ displayedApps }
+          showAppInfo={ showAppInfo }
+          favoriteApps={ favoriteApps }
+          onFavoriteClick={ onFavoriteClick }
+          isLoading={ isPlaceholderData }
+          selectedCategoryId={ selectedCategoryId }
+          onAppClick={ handleAppClick }
+        />
+      ) }
 
       { (selectedApp && isAppInfoModalOpen) && (
         <MarketplaceAppModal
@@ -178,6 +252,7 @@ const Marketplace = () => {
           isFavorite={ favoriteApps.includes(selectedApp.id) }
           onFavoriteClick={ onFavoriteClick }
           data={ selectedApp }
+          showContractList={ showContractList }
         />
       ) }
 
@@ -186,6 +261,15 @@ const Marketplace = () => {
           isOpen={ isDisclaimerModalOpen }
           onClose={ clearSelectedAppId }
           appId={ selectedApp.id }
+        />
+      ) }
+
+      { (selectedApp && contractListModalType) && (
+        <ContractListModal
+          type={ contractListModalType }
+          contracts={ selectedApp?.securityReport?.contractsData }
+          onClose={ clearSelectedAppId }
+          onBack={ hasPreviousStep ? handleGoBackInContractListModal : undefined }
         />
       ) }
     </>

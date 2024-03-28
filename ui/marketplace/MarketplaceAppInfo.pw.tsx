@@ -28,7 +28,7 @@ test.describe('mobile', () => {
       </TestApp>,
     );
 
-    await page.getByText('Info').click();
+    await page.getByLabel('Show project info').click();
 
     await expect(page).toHaveScreenshot();
   });

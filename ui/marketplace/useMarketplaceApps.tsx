@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import type { MarketplaceAppOverview } from 'types/client/marketplace';
+import type { MarketplaceAppWithSecurityReport } from 'types/client/marketplace';
 import { MarketplaceCategory } from 'types/client/marketplace';
 
 import config from 'configs/app';
@@ -10,19 +10,21 @@ import useApiFetch from 'lib/api/useApiFetch';
 import useFetch from 'lib/hooks/useFetch';
 import { MARKETPLACE_APP } from 'stubs/marketplace';
 
+import useSecurityReports from './useSecurityReports';
+
 const feature = config.features.marketplace;
 
-function isAppNameMatches(q: string, app: MarketplaceAppOverview) {
+function isAppNameMatches(q: string, app: MarketplaceAppWithSecurityReport) {
   return app.title.toLowerCase().includes(q.toLowerCase());
 }
 
-function isAppCategoryMatches(category: string, app: MarketplaceAppOverview, favoriteApps: Array<string>) {
+function isAppCategoryMatches(category: string, app: MarketplaceAppWithSecurityReport, favoriteApps: Array<string>) {
   return category === MarketplaceCategory.ALL ||
       (category === MarketplaceCategory.FAVORITES && favoriteApps.includes(app.id)) ||
       app.categories.includes(category);
 }
 
-function sortApps(apps: Array<MarketplaceAppOverview>, favoriteApps: Array<string>) {
+function sortApps(apps: Array<MarketplaceAppWithSecurityReport>, favoriteApps: Array<string>) {
   return apps.sort((a, b) => {
     const priorityA = a.priority || 0;
     const priorityB = b.priority || 0;
@@ -56,6 +58,8 @@ export default function useMarketplaceApps(
   const fetch = useFetch();
   const apiFetch = useApiFetch();
 
+  const { data: securityReports, isPlaceholderData: isSecurityReportsPlaceholderData } = useSecurityReports();
+
   // Update favorite apps only when selectedCategoryId changes to avoid sortApps to be called on each favorite app click
   const [ snapshotFavoriteApps, setSnapshotFavoriteApps ] = React.useState<Array<string> | undefined>();
 
@@ -65,38 +69,43 @@ export default function useMarketplaceApps(
     }
   }, [ selectedCategoryId, isFavoriteAppsLoaded ]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const { isPlaceholderData, isError, error, data } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppOverview>>({
+  const { isPlaceholderData, isError, error, data } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppWithSecurityReport>>({
     queryKey: [ 'marketplace-dapps', snapshotFavoriteApps, favoriteApps ],
     queryFn: async() => {
       if (!feature.isEnabled) {
         return [];
       } else if ('configUrl' in feature) {
-        return fetch<Array<MarketplaceAppOverview>, unknown>(feature.configUrl, undefined, { resource: 'marketplace-dapps' });
+        return fetch<Array<MarketplaceAppWithSecurityReport>, unknown>(feature.configUrl, undefined, { resource: 'marketplace-dapps' });
       } else {
         return apiFetch('marketplace_dapps', { pathParams: { chainId: config.chain.id } });
       }
     },
-    select: (data) => sortApps(data as Array<MarketplaceAppOverview>, snapshotFavoriteApps || []),
+    select: (data) => sortApps(data as Array<MarketplaceAppWithSecurityReport>, snapshotFavoriteApps || []),
     placeholderData: feature.isEnabled ? Array(9).fill(MARKETPLACE_APP) : undefined,
     staleTime: Infinity,
     enabled: feature.isEnabled && (!favoriteApps || Boolean(snapshotFavoriteApps)),
   });
 
+  const appsWithSecurityReports = React.useMemo(() =>
+    data?.map((app) => ({ ...app, securityReport: securityReports?.[app.id] })),
+  [ data, securityReports ]);
+
   const displayedApps = React.useMemo(() => {
-    return data?.filter(app => isAppNameMatches(filter, app) && isAppCategoryMatches(selectedCategoryId, app, favoriteApps || [])) || [];
-  }, [ selectedCategoryId, data, filter, favoriteApps ]);
+    return appsWithSecurityReports?.filter(app => isAppNameMatches(filter, app) && isAppCategoryMatches(selectedCategoryId, app, favoriteApps || [])) || [];
+  }, [ selectedCategoryId, appsWithSecurityReports, filter, favoriteApps ]);
 
   return React.useMemo(() => ({
     data,
     displayedApps,
     error,
     isError,
-    isPlaceholderData,
+    isPlaceholderData: isPlaceholderData || isSecurityReportsPlaceholderData,
   }), [
     data,
     displayedApps,
     error,
     isError,
     isPlaceholderData,
+    isSecurityReportsPlaceholderData,
   ]);
 }

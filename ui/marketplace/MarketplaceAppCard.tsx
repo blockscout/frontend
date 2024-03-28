@@ -1,21 +1,21 @@
-import { Box, IconButton, Image, Link, LinkBox, Skeleton, useColorModeValue, Tooltip } from '@chakra-ui/react';
+import { Box, IconButton, Image, Link, LinkBox, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 
 import type { MarketplaceAppPreview } from 'types/client/marketplace';
 
 import * as mixpanel from 'lib/mixpanel/index';
-import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
 import MarketplaceAppCardLink from './MarketplaceAppCardLink';
+import MarketplaceAppIntegrationIcon from './MarketplaceAppIntegrationIcon';
 
 interface Props extends MarketplaceAppPreview {
   onInfoClick: (id: string) => void;
   isFavorite: boolean;
-  onFavoriteClick: (id: string, isFavorite: boolean) => void;
+  onFavoriteClick: (id: string, isFavorite: boolean, source: 'Discovery view') => void;
   isLoading: boolean;
-  showDisclaimer: (id: string) => void;
+  onAppClick: (event: MouseEvent, id: string) => void;
 }
 
 const MarketplaceAppCard = ({
@@ -31,47 +31,22 @@ const MarketplaceAppCard = ({
   isFavorite,
   onFavoriteClick,
   isLoading,
-  showDisclaimer,
   internalWallet,
+  onAppClick,
 }: Props) => {
   const categoriesLabel = categories.join(', ');
 
-  const handleClick = useCallback((event: MouseEvent) => {
-    const isShown = window.localStorage.getItem('marketplace-disclaimer-shown');
-    if (!isShown) {
-      event.preventDefault();
-      showDisclaimer(id);
-    }
-  }, [ showDisclaimer, id ]);
-
   const handleInfoClick = useCallback((event: MouseEvent) => {
     event.preventDefault();
-    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'More button', Info: id });
+    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'More button', Info: id, Source: 'Discovery view' });
     onInfoClick(id);
   }, [ onInfoClick, id ]);
 
   const handleFavoriteClick = useCallback(() => {
-    onFavoriteClick(id, isFavorite);
+    onFavoriteClick(id, isFavorite, 'Discovery view');
   }, [ onFavoriteClick, id, isFavorite ]);
 
   const logoUrl = useColorModeValue(logo, logoDarkMode || logo);
-
-  const [ integrationIcon, integrationIconColor, integrationText ] = React.useMemo(() => {
-    let icon: IconName = 'integration/partial';
-    let color = 'gray.400';
-    let text = 'This app opens in Blockscout without Blockscout wallet functionality. Use your external web3 wallet to connect directly to this application';
-
-    if (external) {
-      icon = 'arrows/north-east';
-      text = 'This app opens in a separate tab';
-    } else if (internalWallet) {
-      icon = 'integration/full';
-      color = 'green.500';
-      text = 'This app opens in Blockscout and your Blockscout wallet connects automatically';
-    }
-
-    return [ icon, color, text ];
-  }, [ external, internalWallet ]);
 
   return (
     <LinkBox
@@ -130,25 +105,9 @@ const MarketplaceAppCard = ({
             url={ url }
             external={ external }
             title={ title }
-            onClick={ handleClick }
+            onClick={ onAppClick }
           />
-          <Tooltip
-            label={ integrationText }
-            textAlign="center"
-            padding={ 2 }
-            openDelay={ 300 }
-            maxW={ 400 }
-          >
-            <IconSvg
-              name={ integrationIcon }
-              boxSize={ 5 }
-              color={ integrationIconColor }
-              position="relative"
-              cursor="pointer"
-              verticalAlign="middle"
-              marginBottom={ 1 }
-            />
-          </Tooltip>
+          <MarketplaceAppIntegrationIcon external={ external } internalWallet={ internalWallet }/>
         </Skeleton>
 
         <Skeleton
@@ -191,8 +150,7 @@ const MarketplaceAppCard = ({
 
         { !isLoading && (
           <IconButton
-            display={{ base: 'block', sm: isFavorite ? 'block' : 'none' }}
-            _groupHover={{ display: 'block' }}
+            display="block"
             position="absolute"
             right={{ base: 3, sm: '10px' }}
             top={{ base: 3, sm: '14px' }}
@@ -204,8 +162,8 @@ const MarketplaceAppCard = ({
             h={ 8 }
             onClick={ handleFavoriteClick }
             icon={ isFavorite ?
-              <IconSvg name="star_filled" w={ 4 } h={ 4 } color="yellow.400"/> :
-              <IconSvg name="star_outline" w={ 4 } h={ 4 } color="gray.300"/>
+              <IconSvg name="star_filled" w={ 5 } h={ 5 } color="yellow.400"/> :
+              <IconSvg name="star_outline" w={ 5 } h={ 5 } color="gray.400"/>
             }
           />
         ) }

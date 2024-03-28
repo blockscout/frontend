@@ -2,7 +2,8 @@ import _pickBy from 'lodash/pickBy';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { MarketplaceCategory } from 'types/client/marketplace';
+import type { ContractListTypes } from 'types/client/marketplace';
+import { MarketplaceCategory, MarketplaceDisplayType } from 'types/client/marketplace';
 
 import useDebounce from 'lib/hooks/useDebounce';
 import * as mixpanel from 'lib/mixpanel/index';
@@ -25,17 +26,25 @@ export default function useMarketplace() {
   const router = useRouter();
   const defaultCategoryId = getQueryParamString(router.query.category);
   const defaultFilterQuery = getQueryParamString(router.query.filter);
+  const defaultDisplayType = getQueryParamString(router.query.tab);
 
   const [ selectedAppId, setSelectedAppId ] = React.useState<string | null>(null);
   const [ selectedCategoryId, setSelectedCategoryId ] = React.useState<string>(MarketplaceCategory.ALL);
+  const [ selectedDisplayType, setSelectedDisplayType ] = React.useState<string>(
+    Object.values(MarketplaceDisplayType).includes(defaultDisplayType as MarketplaceDisplayType) ?
+      defaultDisplayType :
+      MarketplaceDisplayType.DEFAULT,
+  );
   const [ filterQuery, setFilterQuery ] = React.useState(defaultFilterQuery);
   const [ favoriteApps, setFavoriteApps ] = React.useState<Array<string>>([]);
   const [ isFavoriteAppsLoaded, setIsFavoriteAppsLoaded ] = React.useState<boolean>(false);
   const [ isAppInfoModalOpen, setIsAppInfoModalOpen ] = React.useState<boolean>(false);
   const [ isDisclaimerModalOpen, setIsDisclaimerModalOpen ] = React.useState<boolean>(false);
+  const [ contractListModalType, setContractListModalType ] = React.useState<ContractListTypes | null>(null);
+  const [ hasPreviousStep, setHasPreviousStep ] = React.useState<boolean>(false);
 
-  const handleFavoriteClick = React.useCallback((id: string, isFavorite: boolean) => {
-    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Favorite app', Info: id });
+  const handleFavoriteClick = React.useCallback((id: string, isFavorite: boolean, source: 'Discovery view' | 'Security view' | 'App modal') => {
+    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Favorite app', Info: id, Source: source });
 
     const favoriteApps = getFavoriteApps();
 
@@ -60,16 +69,30 @@ export default function useMarketplace() {
     setIsDisclaimerModalOpen(true);
   }, []);
 
+  const showContractList = React.useCallback((id: string, type: ContractListTypes, hasPreviousStep?: boolean) => {
+    setSelectedAppId(id);
+    setContractListModalType(type);
+    if (hasPreviousStep) {
+      setHasPreviousStep(true);
+    }
+  }, []);
+
   const debouncedFilterQuery = useDebounce(filterQuery, 500);
   const clearSelectedAppId = React.useCallback(() => {
     setSelectedAppId(null);
     setIsAppInfoModalOpen(false);
     setIsDisclaimerModalOpen(false);
+    setContractListModalType(null);
+    setHasPreviousStep(false);
   }, []);
 
   const handleCategoryChange = React.useCallback((newCategory: string) => {
     mixpanel.logEvent(mixpanel.EventTypes.FILTERS, { Source: 'Marketplace', 'Filter name': newCategory });
     setSelectedCategoryId(newCategory);
+  }, []);
+
+  const handleDisplayTypeChange = React.useCallback((newDisplayType: MarketplaceDisplayType) => {
+    setSelectedDisplayType(newDisplayType);
   }, []);
 
   const {
@@ -97,6 +120,7 @@ export default function useMarketplace() {
     const query = _pickBy({
       category: selectedCategoryId === MarketplaceCategory.ALL ? undefined : selectedCategoryId,
       filter: debouncedFilterQuery,
+      tab: selectedDisplayType === MarketplaceDisplayType.DEFAULT ? undefined : selectedDisplayType,
     }, Boolean);
 
     if (debouncedFilterQuery.length > 0) {
@@ -111,7 +135,7 @@ export default function useMarketplace() {
   // omit router in the deps because router.push() somehow modifies it
   // and we get infinite re-renders then
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ debouncedFilterQuery, selectedCategoryId ]);
+  }, [ debouncedFilterQuery, selectedCategoryId, selectedDisplayType ]);
 
   return React.useMemo(() => ({
     selectedCategoryId,
@@ -133,6 +157,11 @@ export default function useMarketplace() {
     showDisclaimer,
     appsTotal: data?.length || 0,
     isCategoriesPlaceholderData,
+    showContractList,
+    contractListModalType,
+    selectedDisplayType,
+    onDisplayTypeChange: handleDisplayTypeChange,
+    hasPreviousStep,
   }), [
     selectedCategoryId,
     categories,
@@ -152,5 +181,10 @@ export default function useMarketplace() {
     showDisclaimer,
     data?.length,
     isCategoriesPlaceholderData,
+    showContractList,
+    contractListModalType,
+    selectedDisplayType,
+    handleDisplayTypeChange,
+    hasPreviousStep,
   ]);
 }

@@ -1,6 +1,8 @@
 import { test, expect, devices } from '@playwright/experimental-ct-react';
 import React from 'react';
 
+import type { MarketplaceAppWithSecurityReport } from 'types/client/marketplace';
+
 import { apps as appsMock } from 'mocks/apps/apps';
 import TestApp from 'playwright/TestApp';
 
@@ -9,7 +11,8 @@ import MarketplaceAppModal from './MarketplaceAppModal';
 const props = {
   onClose: () => {},
   onFavoriteClick: () => {},
-  data: appsMock[0],
+  showContractList: () => {},
+  data: appsMock[0] as MarketplaceAppWithSecurityReport,
   isFavorite: false,
 };
 

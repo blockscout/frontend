@@ -1,0 +1,1073 @@
+[
+  {
+    "appName": "paraswap",
+    "doc": "https://developers.paraswap.network/smart-contracts",
+    "chainsData": {
+      "1": {
+        "overallInfo": {
+          "verifiedNumber": 4,
+          "totalContractsNumber": 4,
+          "solidityScanContractsNumber": 4,
+          "securityScore": 77.41749999999999,
+          "issueSeverityDistribution": {
+            "critical": 5,
+            "gas": 58,
+            "high": 9,
+            "informational": 27,
+            "low": 41,
+            "medium": 5
+          }
+        },
+        "contractsData": [
+          {
+            "address": "0xDEF171Fe48CF0115B1d80b88dc8eAB59176FEe57",
+            "isVerified": true,
+            "solidityScanReport": {
+              "connection_id": "",
+              "contract_address": "0xDEF171Fe48CF0115B1d80b88dc8eAB59176FEe57",
+              "contract_chain": "optimism",
+              "contract_platform": "blockscout",
+              "contract_url": "https://optimism.blockscout.com/address/0xDEF171Fe48CF0115B1d80b88dc8eAB59176FEe57",
+              "contractname": "AugustusSwapper",
+              "is_quick_scan": true,
+              "node_reference_id": null,
+              "request_type": "threat_scan",
+              "scanner_reference_url": "https://solidityscan.com/quickscan/0xDEF171Fe48CF0115B1d80b88dc8eAB59176FEe57/blockscout/eth?ref=blockscout",
+              "scan_status": "scan_done",
+              "scan_summary": {
+                "issue_severity_distribution": {
+                  "critical": 0,
+                  "gas": 8,
+                  "high": 4,
+                  "informational": 7,
+                  "low": 8,
+                  "medium": 1
+                },
+                "lines_analyzed_count": 180,
+                "scan_time_taken": 1,
+                "score": "3.61",
+                "score_v2": "72.22",
+                "threat_score": "73.68"
+              }
+            }
+          },
+          {
+            "address": "0x216b4b4ba9f3e719726886d34a177484278bfcae",
+            "isVerified": true,
+            "solidityScanReport": {
+              "connection_id": "",
+              "contract_address": "0x216b4b4ba9f3e719726886d34a177484278bfcae",
+              "contract_chain": "eth",
+              "contract_platform": "blockscout",
+              "contract_url": "https://eth.blockscout.com/address/0x216b4b4ba9f3e719726886d34a177484278bfcae",
+              "contractname": "TokenTransferProxy",
+              "is_quick_scan": true,
+              "node_reference_id": null,
+              "request_type": "threat_scan",
+              "scanner_reference_url": "https://solidityscan.com/quickscan/0x216b4b4ba9f3e719726886d34a177484278bfcae/blockscout/eth?ref=blockscout",
+              "scan_status": "scan_done",
+              "scan_summary": {
+                "issue_severity_distribution": {
+                  "critical": 1,
+                  "gas": 29,
+                  "high": 5,
+                  "informational": 14,
+                  "low": 21,
+                  "medium": 3
+                },
+                "lines_analyzed_count": 553,
+                "scan_time_taken": 1,
+                "score": "3.92",
+                "score_v2": "78.48",
+                "threat_score": "78.95"
+              }
+            }
+          },
+          {
+            "address": "0xa68bEA62Dc4034A689AA0F58A76681433caCa663",
+            "isVerified": true,
+            "solidityScanReport": {
+              "connection_id": "",
+              "contract_address": "0xa68bEA62Dc4034A689AA0F58A76681433caCa663",
+              "contract_chain": "eth",
+              "contract_platform": "blockscout",
+              "contract_url": "https://eth.blockscout.com/address/0xa68bEA62Dc4034A689AA0F58A76681433caCa663",
+              "contractname": "AugustusRegistry",
+              "is_quick_scan": true,
+              "node_reference_id": null,
+              "request_type": "threat_scan",
+              "scanner_reference_url": "https://solidityscan.com/quickscan/0xa68bEA62Dc4034A689AA0F58A76681433caCa663/blockscout/eth?ref=blockscout",
+              "scan_status": "scan_done",
+              "scan_summary": {
+                "issue_severity_distribution": {
+                  "critical": 0,
+                  "gas": 3,
+                  "high": 0,
+                  "informational": 5,
+                  "low": 4,
+                  "medium": 0
+                },
+                "lines_analyzed_count": 103,
+                "scan_time_taken": 0,
+                "score": "4.22",
+                "score_v2": "84.47",
+                "threat_score": "88.89"
+              }
+            }
+          },
+          {
+            "address": "0xeF13101C5bbD737cFb2bF00Bbd38c626AD6952F7",
+            "isVerified": true,
+            "solidityScanReport": {
+              "connection_id": "",
+              "contract_address": "0xeF13101C5bbD737cFb2bF00Bbd38c626AD6952F7",
+              "contract_chain": "eth",
+              "contract_platform": "blockscout",
+              "contract_url": "https://eth.blockscout.com/address/0xeF13101C5bbD737cFb2bF00Bbd38c626AD6952F7",
+              "contractname": "FeeClaimer",
+              "is_quick_scan": true,
+              "node_reference_id": null,
+              "request_type": "threat_scan",
+              "scanner_reference_url": "https://solidityscan.com/quickscan/0xeF13101C5bbD737cFb2bF00Bbd38c626AD6952F7/blockscout/eth?ref=blockscout",
+              "scan_status": "scan_done",
+              "scan_summary": {
+                "issue_severity_distribution": {
+                  "critical": 0,
+                  "gas": 18,
+                  "high": 0,
+                  "informational": 1,
+                  "low": 8,
+                  "medium": 1
+                },
+                "lines_analyzed_count": 149,
+                "scan_time_taken": 0,
+                "score": "3.72",
+                "score_v2": "74.50",
+                "threat_score": "94.74"
+              }
+            }
+          }
+        ]
+      },
+      "10": {
+        "overallInfo": {
+          "verifiedNumber": 3,
+          "totalContractsNumber": 4,
+          "solidityScanContractsNumber": 3,
+          "securityScore": 75.44333333333333,
+          "issueSeverityDistribution": {
+            "critical": 4,
+            "gas": 29,
+            "high": 4,
+            "informational": 20,
+            "low": 20,
+            "medium": 2
+          }
+        },
+        "contractsData": [
+          {
+            "address": "0xDEF171Fe48CF0115B1d80b88dc8eAB59176FEe57",
+            "isVerified": true,
+            "solidityScanReport": {
+              "connection_id": "",
+              "contract_address": "0xDEF171Fe48CF0115B1d80b88dc8eAB59176FEe57",
+              "contract_chain": "optimism",
+              "contract_platform": "blockscout",
+              "contract_url": "https://optimism.blockscout.com/address/0xDEF171Fe48CF0115B1d80b88dc8eAB59176FEe57",
+              "contractname": "AugustusSwapper",
+              "is_quick_scan": true,
+              "node_reference_id": null,
+              "request_type": "threat_scan",
+              "scanner_reference_url": "https://solidityscan.com/quickscan/0xDEF171Fe48CF0115B1d80b88dc8eAB59176FEe57/blockscout/optimism?ref=blockscout",
+              "scan_status": "scan_done",
+              "scan_summary": {
+                "issue_severity_distribution": {
+                  "critical": 0,
+                  "gas": 8,
+                  "high": 4,
+                  "informational": 7,
+                  "low": 8,
+                  "medium": 1
+                },
+                "lines_analyzed_count": 180,
+                "scan_time_taken": 1,
+                "score": "3.61",
+                "score_v2": "72.22",
+                "threat_score": "73.68"
+              }
+            }
+          },
+          {
+            "address": "0x216B4B4Ba9F3e719726886d34a177484278Bfcae",
+            "isVerified": false,
+            "solidityScanReport": null
+          },
+          {
+            "address": "0x6e7bE86000dF697facF4396efD2aE2C322165dC3",
+            "isVerified": true,
+            "solidityScanReport": {
+              "connection_id": "",
+              "contract_address": "0x6e7bE86000dF697facF4396efD2aE2C322165dC3",
+              "contract_chain": "optimism",
+              "contract_platform": "blockscout",
+              "contract_url": "https://optimism.blockscout.com/address/0x6e7bE86000dF697facF4396efD2aE2C322165dC3",
+              "contractname": "AugustusRegistry",
+              "is_quick_scan": true,
+              "node_reference_id": null,
+              "request_type": "threat_scan",
+              "scanner_reference_url": "https://solidityscan.com/quickscan/0x6e7bE86000dF697facF4396efD2aE2C322165dC3/blockscout/optimism?ref=blockscout",
+              "scan_status": "scan_done",
+              "scan_summary": {
+                "issue_severity_distribution": {
+                  "critical": 0,
+                  "gas": 3,
+                  "high": 0,
+                  "informational": 5,
+                  "low": 4,
+                  "medium": 0
+                },
+                "lines_analyzed_count": 102,
+                "scan_time_taken": 0,
+                "score": "4.22",
+                "score_v2": "84.31",
+                "threat_score": "88.89"
+              }
+            }
+          },
+          {
+            "address": "0xA7465CCD97899edcf11C56D2d26B49125674e45F",
+            "isVerified": true,
+            "solidityScanReport": {
+              "connection_id": "",
+              "contract_address": "0xA7465CCD97899edcf11C56D2d26B49125674e45F",
+              "contract_chain": "optimism",
+              "contract_platform": "blockscout",
+              "contract_url": "https://optimism.blockscout.com/address/0xA7465CCD97899edcf11C56D2d26B49125674e45F",
+              "contractname": "FeeClaimer",
+              "is_quick_scan": true,
+              "node_reference_id": null,
+              "request_type": "threat_scan",
+              "scanner_reference_url": "https://solidityscan.com/quickscan/0xA7465CCD97899edcf11C56D2d26B49125674e45F/blockscout/optimism?ref=blockscout",
+              "scan_status": "scan_done",
+              "scan_summary": {
+                "issue_severity_distribution": {
+                  "critical": 0,
+                  "gas": 18,
+                  "high": 0,
+                  "informational": 8,
+                  "low": 8,
+                  "medium": 1
+                },
+                "lines_analyzed_count": 149,
+                "scan_time_taken": 1,
+                "score": "3.49",
+                "score_v2": "69.80",
+                "threat_score": "94.74"
+              }
+            }
+          }
+        ]
+      },
+      "8453": {
+        "overallInfo": {
+          "verifiedNumber": 1,
+          "totalContractsNumber": 4,
+          "solidityScanContractsNumber": 1,
+          "securityScore": 73.33,
+          "issueSeverityDistribution": {
+            "critical": 4,
+            "gas": 8,
+            "high": 4,
+            "informational": 5,
+            "low": 8,
+            "medium": 1
+          }
+        },
+        "contractsData": [
+          {
+            "address": "0x59C7C832e96D2568bea6db468C1aAdcbbDa08A52",
+            "isVerified": true,
+            "solidityScanReport": {
+              "connection_id": "",
+              "contract_address": "0x59C7C832e96D2568bea6db468C1aAdcbbDa08A52",
+              "contract_chain": "base",
+              "contract_platform": "blockscout",
+              "contract_url": "https://base.blockscout.com/address/0x59C7C832e96D2568bea6db468C1aAdcbbDa08A52",
+              "contractname": "AugustusSwapper",
+              "is_quick_scan": true,
+              "node_reference_id": null,
+              "request_type": "threat_scan",
+              "scanner_reference_url": "https://solidityscan.com/quickscan/0x59C7C832e96D2568bea6db468C1aAdcbbDa08A52/blockscout/base?ref=blockscout",
+              "scan_status": "scan_done",
+              "scan_summary": {
+                "issue_severity_distribution": {
+                  "critical": 0,
+                  "gas": 8,
+                  "high": 4,
+                  "informational": 5,
+                  "low": 8,
+                  "medium": 1
+                },
+                "lines_analyzed_count": 180,
+                "scan_time_taken": 1,
+                "score": "3.67",
+                "score_v2": "73.33",
+                "threat_score": "73.68"
+              }
+            }
+          },
+          {
+            "address": "0x93aAAe79a53759cD164340E4C8766E4Db5331cD7",
+            "isVerified": false,
+            "solidityScanReport": null
+          },
+          {
+            "address": "0x7e31b336f9e8ba52ba3c4ac861b033ba90900bb3",
+            "isVerified": false,
+            "solidityScanReport": null
+          },
+          {
+            "address": "0x9aaB4B24541af30fD72784ED98D8756ac0eFb3C7",
+            "isVerified": false,
+            "solidityScanReport": null
+          }
+        ]
+      }
+    }
+  },
+  {
+    "appName": "mean-finance",
+    "doc": "https://docs.mean.finance/guides/smart-contract-registry",
+    "chainsData": {
+      "1": {
+        "overallInfo": {
+          "verifiedNumber": 4,
+          "totalContractsNumber": 6,
+          "solidityScanContractsNumber": 4,
+          "securityScore": 61.36750000000001,
+          "issueSeverityDistribution": {
+            "critical": 6,
+            "gas": 25,
+            "high": 1,
+            "informational": 10,
+            "low": 20,
+            "medium": 3
+          }
+        },
+        "contractsData": [
+          {
+            "address": "0xA5AdC5484f9997fBF7D405b9AA62A7d88883C345",
+            "isVerified": false,
+            "solidityScanReport": null
+          },
+          {
+            "address": "0x20bdAE1413659f47416f769a4B27044946bc9923",
+            "isVerified": true,
+            "solidityScanReport": {
+              "connection_id": "",
+              "contract_address": "0x20bdAE1413659f47416f769a4B27044946bc9923",
+              "contract_chain": "optimism",
+              "contract_platform": "blockscout",
+              "contract_url": "https://optimism.blockscout.com/address/0x20bdAE1413659f47416f769a4B27044946bc9923",
+              "contractname": "DCAPermissionsManager",
+              "is_quick_scan": true,
+              "node_reference_id": null,
+              "request_type": "threat_scan",
+              "scanner_reference_url": "https://solidityscan.com/quickscan/0x20bdAE1413659f47416f769a4B27044946bc9923/blockscout/eth?ref=blockscout",
+              "scan_status": "scan_done",
+              "scan_summary": {
+                "issue_severity_distribution": {
+                  "critical": 2,
+                  "gas": 22,
+                  "high": 0,
+                  "informational": 8,
+                  "low": 11,
+                  "medium": 3
+                },
+                "lines_analyzed_count": 314,
+                "scan_time_taken": 1,
+                "score": "3.87",
+                "score_v2": "77.39",
+                "threat_score": "88.89"
+              }
+            }
+          },
+          {
+            "address": "0xDf0dbc66f85979a1d54671c4D9e439F306Be27EE",
+            "isVerified": false,
+            "solidityScanReport": null
+          },
+          {
+            "address": "0x4ACd4BC402bc8e6BA8aBDdcA639d8011ef0b8a4b",
+            "isVerified": true,
+            "solidityScanReport": {
+              "connection_id": "",
+              "contract_address": "0x4ACd4BC402bc8e6BA8aBDdcA639d8011ef0b8a4b",
+              "contract_chain": "eth",
+              "contract_platform": "blockscout",
+              "contract_url": "https://eth.blockscout.com/address/0x4ACd4BC402bc8e6BA8aBDdcA639d8011ef0b8a4b",
+              "contractname": "DCAHubPositionDescriptor",
+              "is_quick_scan": true,
+              "node_reference_id": null,
+              "request_type": "threat_scan",
+              "scanner_reference_url": "https://solidityscan.com/quickscan/0x4ACd4BC402bc8e6BA8aBDdcA639d8011ef0b8a4b/blockscout/eth?ref=blockscout",
+              "scan_status": "scan_done",
+              "scan_summary": {
+                "issue_severity_distribution": {
+                  "critical": 0,
+                  "gas": 1,
+                  "high": 1,
+                  "informational": 2,
+                  "low": 3,
+                  "medium": 0
+                },
+                "lines_analyzed_count": 280,
+                "scan_time_taken": 1,
+                "score": "4.77",
+                "score_v2": "95.36",
+                "threat_score": "100.00"
+              }
+            }
+          },
+          {
+            "address": "0x49c590F6a2dfB0f809E82B9e2BF788C0Dd1c31f9",
+            "isVerified": true,
+            "solidityScanReport": {
+              "connection_id": "",
+              "contract_address": "0x49c590F6a2dfB0f809E82B9e2BF788C0Dd1c31f9",
+              "contract_chain": "eth",
+              "contract_platform": "blockscout",
+              "contract_url": "https://eth.blockscout.com/address/0x49c590F6a2dfB0f809E82B9e2BF788C0Dd1c31f9",
+              "contractname": "DCAHubCompanion",
+              "is_quick_scan": true,
+              "node_reference_id": null,
+              "request_type": "threat_scan",
+              "scanner_reference_url": "https://solidityscan.com/quickscan/0x49c590F6a2dfB0f809E82B9e2BF788C0Dd1c31f9/blockscout/eth?ref=blockscout",
+              "scan_status": "scan_done",
+              "scan_summary": {
+                "issue_severity_distribution": {
+                  "critical": 0,
+                  "gas": 1,
+                  "high": 0,
+                  "informational": 0,
+                  "low": 3,
+                  "medium": 0
+                },
+                "lines_analyzed_count": 11,
+                "scan_time_taken": 0,
+                "score": "1.82",
+                "score_v2": "36.36",
+                "threat_score": "100.00"
+              }
+            }
+          },
+          {
+            "address": "0x5ad2fED59E8DF461c6164c31B4267Efb7cBaF9C0",
+            "isVerified": true,
+            "solidityScanReport": {
+              "connection_id": "",
+              "contract_address": "0x5ad2fED59E8DF461c6164c31B4267Efb7cBaF9C0",
+              "contract_chain": "eth",
+              "contract_platform": "blockscout",
+              "contract_url": "https://eth.blockscout.com/address/0x5ad2fED59E8DF461c6164c31B4267Efb7cBaF9C0",
+              "contractname": "DCAHubCompanion",
+              "is_quick_scan": true,
+              "node_reference_id": null,
+              "request_type": "threat_scan",
+              "scanner_reference_url": "https://solidityscan.com/quickscan/0x5ad2fED59E8DF461c6164c31B4267Efb7cBaF9C0/blockscout/eth?ref=blockscout",
+              "scan_status": "scan_done",
+              "scan_summary": {
+                "issue_severity_distribution": {
+                  "critical": 0,
+                  "gas": 1,
+                  "high": 0,
+                  "informational": 0,
+                  "low": 3,
+                  "medium": 0
+                },
+                "lines_analyzed_count": 11,
+                "scan_time_taken": 0,
+                "score": "1.82",
+                "score_v2": "36.36",
+                "threat_score": "100.00"
+              }
+            }
+          }
+        ]
+      },
+      "10": {
+        "overallInfo": {
+          "verifiedNumber": 5,
+          "totalContractsNumber": 6,
+          "solidityScanContractsNumber": 5,
+          "securityScore": 66.986,
+          "issueSeverityDistribution": {
+            "critical": 6,
+            "gas": 26,
+            "high": 1,
+            "informational": 10,
+            "low": 23,
+            "medium": 3
+          }
+        },
+        "contractsData": [
+          {
+            "address": "0xA5AdC5484f9997fBF7D405b9AA62A7d88883C345",
+            "isVerified": true,
+            "solidityScanReport": {
+              "connection_id": "",
+              "contract_address": "0xA5AdC5484f9997fBF7D405b9AA62A7d88883C345",
+              "contract_chain": "optimism",
+              "contract_platform": "blockscout",
+              "contract_url": "https://optimism.blockscout.com/address/0xA5AdC5484f9997fBF7D405b9AA62A7d88883C345",
+              "contractname": "DCAHub",
+              "is_quick_scan": true,
+              "node_reference_id": null,
+              "request_type": "threat_scan",
+              "scanner_reference_url": "https://solidityscan.com/quickscan/0xA5AdC5484f9997fBF7D405b9AA62A7d88883C345/blockscout/optimism?ref=blockscout",
+              "scan_status": "scan_done",
+              "scan_summary": {
+                "issue_severity_distribution": {
+                  "critical": 0,
+                  "gas": 1,
+                  "high": 0,
+                  "informational": 0,
+                  "low": 3,
+                  "medium": 0
+                },
+                "lines_analyzed_count": 23,
+                "scan_time_taken": 0,
+                "score": "3.48",
+                "score_v2": "69.57",
+                "threat_score": "94.44"
+              }
+            }
+          },
+          {
+            "address": "0x20bdAE1413659f47416f769a4B27044946bc9923",
+            "isVerified": true,
+            "solidityScanReport": {
+              "connection_id": "",
+              "contract_address": "0x20bdAE1413659f47416f769a4B27044946bc9923",
+              "contract_chain": "optimism",
+              "contract_platform": "blockscout",
+              "contract_url": "https://optimism.blockscout.com/address/0x20bdAE1413659f47416f769a4B27044946bc9923",
+              "contractname": "DCAPermissionsManager",
+              "is_quick_scan": true,
+              "node_reference_id": null,
+              "request_type": "threat_scan",
+              "scanner_reference_url": "https://solidityscan.com/quickscan/0x20bdAE1413659f47416f769a4B27044946bc9923/blockscout/optimism?ref=blockscout",
+              "scan_status": "scan_done",
+              "scan_summary": {
+                "issue_severity_distribution": {
+                  "critical": 2,
+                  "gas": 22,
+                  "high": 0,
+                  "informational": 8,
+                  "low": 11,
+                  "medium": 3
+                },
+                "lines_analyzed_count": 314,
+                "scan_time_taken": 1,
+                "score": "3.87",
+                "score_v2": "77.39",
+                "threat_score": "88.89"
+              }
+            }
+          },
+          {
+            "address": "0xDf0dbc66f85979a1d54671c4D9e439F306Be27EE",
+            "isVerified": true,
+            "solidityScanReport": {
+              "connection_id": "",
+              "contract_address": "0xDf0dbc66f85979a1d54671c4D9e439F306Be27EE",
+              "contract_chain": "optimism",
+              "contract_platform": "blockscout",
+              "contract_url": "https://optimism.blockscout.com/address/0xDf0dbc66f85979a1d54671c4D9e439F306Be27EE",
+              "contractname": "DCAHubCompanion",
+              "is_quick_scan": true,
+              "node_reference_id": null,
+              "request_type": "threat_scan",
+              "scanner_reference_url": "https://solidityscan.com/quickscan/0xDf0dbc66f85979a1d54671c4D9e439F306Be27EE/blockscout/optimism?ref=blockscout",
+              "scan_status": "scan_done",
+              "scan_summary": {
+                "issue_severity_distribution": {
+                  "critical": 0,
+                  "gas": 1,
+                  "high": 0,
+                  "informational": 0,
+                  "low": 3,
+                  "medium": 0
+                },
+                "lines_analyzed_count": 16,
+                "scan_time_taken": 0,
+                "score": "2.81",
+                "score_v2": "56.25",
+                "threat_score": "100.00"
+              }
+            }
+          },
+          {
+            "address": "0x4ACd4BC402bc8e6BA8aBDdcA639d8011ef0b8a4b",
+            "isVerified": true,
+            "solidityScanReport": {
+              "connection_id": "",
+              "contract_address": "0x4ACd4BC402bc8e6BA8aBDdcA639d8011ef0b8a4b",
+              "contract_chain": "eth",
+              "contract_platform": "blockscout",
+              "contract_url": "https://eth.blockscout.com/address/0x4ACd4BC402bc8e6BA8aBDdcA639d8011ef0b8a4b",
+              "contractname": "DCAHubPositionDescriptor",
+              "is_quick_scan": true,
+              "node_reference_id": null,
+              "request_type": "threat_scan",
+              "scanner_reference_url": "https://solidityscan.com/quickscan/0x4ACd4BC402bc8e6BA8aBDdcA639d8011ef0b8a4b/blockscout/optimism?ref=blockscout",
+              "scan_status": "scan_done",
+              "scan_summary": {
+                "issue_severity_distribution": {
+                  "critical": 0,
+                  "gas": 1,
+                  "high": 1,
+                  "informational": 2,
+                  "low": 3,
+                  "medium": 0
+                },
+                "lines_analyzed_count": 280,
+                "scan_time_taken": 1,
+                "score": "4.77",
+                "score_v2": "95.36",
+                "threat_score": "100.00"
+              }
+            }
+          },
+          {
+            "address": "0x49c590F6a2dfB0f809E82B9e2BF788C0Dd1c31f9",
+            "isVerified": true,
+            "solidityScanReport": {
+              "connection_id": "",
+              "contract_address": "0x49c590F6a2dfB0f809E82B9e2BF788C0Dd1c31f9",
+              "contract_chain": "optimism",
+              "contract_platform": "blockscout",
+              "contract_url": "https://optimism.blockscout.com/address/0x49c590F6a2dfB0f809E82B9e2BF788C0Dd1c31f9",
+              "contractname": "DCAHubCompanion",
+              "is_quick_scan": true,
+              "node_reference_id": null,
+              "request_type": "threat_scan",
+              "scanner_reference_url": "https://solidityscan.com/quickscan/0x49c590F6a2dfB0f809E82B9e2BF788C0Dd1c31f9/blockscout/optimism?ref=blockscout",
+              "scan_status": "scan_done",
+              "scan_summary": {
+                "issue_severity_distribution": {
+                  "critical": 0,
+                  "gas": 1,
+                  "high": 0,
+                  "informational": 0,
+                  "low": 3,
+                  "medium": 0
+                },
+                "lines_analyzed_count": 11,
+                "scan_time_taken": 0,
+                "score": "1.82",
+                "score_v2": "36.36",
+                "threat_score": "100.00"
+              }
+            }
+          },
+          {
+            "address": "0x5ad2fED59E8DF461c6164c31B4267Efb7cBaF9C0",
+            "isVerified": false,
+            "solidityScanReport": null
+          }
+        ]
+      },
+      "8453": {
+        "overallInfo": {
+          "verifiedNumber": 4,
+          "totalContractsNumber": 6,
+          "solidityScanContractsNumber": 4,
+          "securityScore": 74.88,
+          "issueSeverityDistribution": {
+            "critical": 6,
+            "gas": 25,
+            "high": 1,
+            "informational": 7,
+            "low": 20,
+            "medium": 3
+          }
+        },
+        "contractsData": [
+          {
+            "address": "0xA5AdC5484f9997fBF7D405b9AA62A7d88883C345",
+            "isVerified": true,
+            "solidityScanReport": {
+              "connection_id": "",
+              "contract_address": "0xA5AdC5484f9997fBF7D405b9AA62A7d88883C345",
+              "contract_chain": "base",
+              "contract_platform": "blockscout",
+              "contract_url": "https://base.blockscout.com/address/0xA5AdC5484f9997fBF7D405b9AA62A7d88883C345",
+              "contractname": "DCAHub",
+              "is_quick_scan": true,
+              "node_reference_id": null,
+              "request_type": "threat_scan",
+              "scanner_reference_url": "https://solidityscan.com/quickscan/0xA5AdC5484f9997fBF7D405b9AA62A7d88883C345/blockscout/base?ref=blockscout",
+              "scan_status": "scan_done",
+              "scan_summary": {
+                "issue_severity_distribution": {
+                  "critical": 0,
+                  "gas": 1,
+                  "high": 0,
+                  "informational": 0,
+                  "low": 3,
+                  "medium": 0
+                },
+                "lines_analyzed_count": 23,
+                "scan_time_taken": 0,
+                "score": "3.48",
+                "score_v2": "69.57",
+                "threat_score": "94.44"
+              }
+            }
+          },
+          {
+            "address": "0x20bdAE1413659f47416f769a4B27044946bc9923",
+            "isVerified": true,
+            "solidityScanReport": {
+              "connection_id": "",
+              "contract_address": "0x20bdAE1413659f47416f769a4B27044946bc9923",
+              "contract_chain": "base",
+              "contract_platform": "blockscout",
+              "contract_url": "https://base.blockscout.com/address/0x20bdAE1413659f47416f769a4B27044946bc9923",
+              "contractname": "DCAPermissionsManager",
+              "is_quick_scan": true,
+              "node_reference_id": null,
+              "request_type": "threat_scan",
+              "scanner_reference_url": "https://solidityscan.com/quickscan/0x20bdAE1413659f47416f769a4B27044946bc9923/blockscout/base?ref=blockscout",
+              "scan_status": "scan_done",
+              "scan_summary": {
+                "issue_severity_distribution": {
+                  "critical": 2,
+                  "gas": 22,
+                  "high": 0,
+                  "informational": 5,
+                  "low": 11,
+                  "medium": 3
+                },
+                "lines_analyzed_count": 314,
+                "scan_time_taken": 1,
+                "score": "3.92",
+                "score_v2": "78.34",
+                "threat_score": "88.89"
+              }
+            }
+          },
+          {
+            "address": "0xDf0dbc66f85979a1d54671c4D9e439F306Be27EE",
+            "isVerified": true,
+            "solidityScanReport": {
+              "connection_id": "",
+              "contract_address": "0xDf0dbc66f85979a1d54671c4D9e439F306Be27EE",
+              "contract_chain": "base",
+              "contract_platform": "blockscout",
+              "contract_url": "https://base.blockscout.com/address/0xDf0dbc66f85979a1d54671c4D9e439F306Be27EE",
+              "contractname": "DCAHubCompanion",
+              "is_quick_scan": true,
+              "node_reference_id": null,
+              "request_type": "threat_scan",
+              "scanner_reference_url": "https://solidityscan.com/quickscan/0xDf0dbc66f85979a1d54671c4D9e439F306Be27EE/blockscout/base?ref=blockscout",
+              "scan_status": "scan_done",
+              "scan_summary": {
+                "issue_severity_distribution": {
+                  "critical": 0,
+                  "gas": 1,
+                  "high": 0,
+                  "informational": 0,
+                  "low": 3,
+                  "medium": 0
+                },
+                "lines_analyzed_count": 16,
+                "scan_time_taken": 0,
+                "score": "2.81",
+                "score_v2": "56.25",
+                "threat_score": "100.00"
+              }
+            }
+          },
+          {
+            "address": "0x4ACd4BC402bc8e6BA8aBDdcA639d8011ef0b8a4b",
+            "isVerified": true,
+            "solidityScanReport": {
+              "connection_id": "",
+              "contract_address": "0x4ACd4BC402bc8e6BA8aBDdcA639d8011ef0b8a4b",
+              "contract_chain": "eth",
+              "contract_platform": "blockscout",
+              "contract_url": "https://eth.blockscout.com/address/0x4ACd4BC402bc8e6BA8aBDdcA639d8011ef0b8a4b",
+              "contractname": "DCAHubPositionDescriptor",
+              "is_quick_scan": true,
+              "node_reference_id": null,
+              "request_type": "threat_scan",
+              "scanner_reference_url": "https://solidityscan.com/quickscan/0x4ACd4BC402bc8e6BA8aBDdcA639d8011ef0b8a4b/blockscout/base?ref=blockscout",
+              "scan_status": "scan_done",
+              "scan_summary": {
+                "issue_severity_distribution": {
+                  "critical": 0,
+                  "gas": 1,
+                  "high": 1,
+                  "informational": 2,
+                  "low": 3,
+                  "medium": 0
+                },
+                "lines_analyzed_count": 280,
+                "scan_time_taken": 1,
+                "score": "4.77",
+                "score_v2": "95.36",
+                "threat_score": "100.00"
+              }
+            }
+          },
+          {
+            "address": "0x49c590F6a2dfB0f809E82B9e2BF788C0Dd1c31f9",
+            "isVerified": false,
+            "solidityScanReport": null
+          },
+          {
+            "address": "0x5ad2fED59E8DF461c6164c31B4267Efb7cBaF9C0",
+            "isVerified": false,
+            "solidityScanReport": null
+          }
+        ]
+      }
+    }
+  },
+  {
+    "appName": "cow-swap",
+    "doc": "https://docs.cow.fi/cow-protocol/reference/contracts/core#deployments",
+    "chainsData": {
+      "1": {
+        "overallInfo": {
+          "verifiedNumber": 3,
+          "totalContractsNumber": 3,
+          "solidityScanContractsNumber": 3,
+          "securityScore": 87.60000000000001,
+          "issueSeverityDistribution": {
+            "critical": 4,
+            "gas": 18,
+            "high": 0,
+            "informational": 13,
+            "low": 14,
+            "medium": 3
+          }
+        },
+        "contractsData": [
+          {
+            "address": "0x9008D19f58AAbD9eD0D60971565AA8510560ab41",
+            "isVerified": true,
+            "solidityScanReport": {
+              "connection_id": "",
+              "contract_address": "0x9008D19f58AAbD9eD0D60971565AA8510560ab41",
+              "contract_chain": "eth",
+              "contract_platform": "blockscout",
+              "contract_url": "https://eth.blockscout.com/address/0x9008D19f58AAbD9eD0D60971565AA8510560ab41",
+              "contractname": "GPv2Settlement",
+              "is_quick_scan": true,
+              "node_reference_id": null,
+              "request_type": "threat_scan",
+              "scanner_reference_url": "https://solidityscan.com/quickscan/0x9008D19f58AAbD9eD0D60971565AA8510560ab41/blockscout/eth?ref=blockscout",
+              "scan_status": "scan_done",
+              "scan_summary": {
+                "issue_severity_distribution": {
+                  "critical": 0,
+                  "gas": 16,
+                  "high": 0,
+                  "informational": 7,
+                  "low": 5,
+                  "medium": 3
+                },
+                "lines_analyzed_count": 493,
+                "scan_time_taken": 1,
+                "score": "4.57",
+                "score_v2": "91.48",
+                "threat_score": "94.74"
+              }
+            }
+          },
+          {
+            "address": "0x2c4c28DDBdAc9C5E7055b4C863b72eA0149D8aFE",
+            "isVerified": true,
+            "solidityScanReport": {
+              "connection_id": "",
+              "contract_address": "0x2c4c28DDBdAc9C5E7055b4C863b72eA0149D8aFE",
+              "contract_chain": "eth",
+              "contract_platform": "blockscout",
+              "contract_url": "https://eth.blockscout.com/address/0x2c4c28DDBdAc9C5E7055b4C863b72eA0149D8aFE",
+              "contractname": "EIP173Proxy",
+              "is_quick_scan": true,
+              "node_reference_id": null,
+              "request_type": "threat_scan",
+              "scanner_reference_url": "https://solidityscan.com/quickscan/0x2c4c28DDBdAc9C5E7055b4C863b72eA0149D8aFE/blockscout/eth?ref=blockscout",
+              "scan_status": "scan_done",
+              "scan_summary": {
+                "issue_severity_distribution": {
+                  "critical": 0,
+                  "gas": 0,
+                  "high": 0,
+                  "informational": 4,
+                  "low": 5,
+                  "medium": 0
+                },
+                "lines_analyzed_count": 94,
+                "scan_time_taken": 0,
+                "score": "4.26",
+                "score_v2": "85.11",
+                "threat_score": "88.89"
+              }
+            }
+          },
+          {
+            "address": "0xC92E8bdf79f0507f65a392b0ab4667716BFE0110",
+            "isVerified": true,
+            "solidityScanReport": {
+              "connection_id": "",
+              "contract_address": "0xC92E8bdf79f0507f65a392b0ab4667716BFE0110",
+              "contract_chain": "eth",
+              "contract_platform": "blockscout",
+              "contract_url": "https://eth.blockscout.com/address/0xC92E8bdf79f0507f65a392b0ab4667716BFE0110",
+              "contractname": "GPv2VaultRelayer",
+              "is_quick_scan": true,
+              "node_reference_id": null,
+              "request_type": "threat_scan",
+              "scanner_reference_url": "https://solidityscan.com/quickscan/0xC92E8bdf79f0507f65a392b0ab4667716BFE0110/blockscout/eth?ref=blockscout",
+              "scan_status": "scan_done",
+              "scan_summary": {
+                "issue_severity_distribution": {
+                  "critical": 0,
+                  "gas": 2,
+                  "high": 0,
+                  "informational": 2,
+                  "low": 4,
+                  "medium": 0
+                },
+                "lines_analyzed_count": 87,
+                "scan_time_taken": 0,
+                "score": "4.31",
+                "score_v2": "86.21",
+                "threat_score": "94.74"
+              }
+            }
+          }
+        ]
+      },
+      "100": {
+        "overallInfo": {
+          "verifiedNumber": 3,
+          "totalContractsNumber": 3,
+          "solidityScanContractsNumber": 3,
+          "securityScore": 87.60000000000001,
+          "issueSeverityDistribution": {
+            "critical": 4,
+            "gas": 18,
+            "high": 0,
+            "informational": 13,
+            "low": 14,
+            "medium": 3
+          }
+        },
+        "contractsData": [
+          {
+            "address": "0x9008D19f58AAbD9eD0D60971565AA8510560ab41",
+            "isVerified": true,
+            "solidityScanReport": {
+              "connection_id": "",
+              "contract_address": "0x9008D19f58AAbD9eD0D60971565AA8510560ab41",
+              "contract_chain": "gnosis",
+              "contract_platform": "blockscout",
+              "contract_url": "https://gnosis.blockscout.com/address/0x9008D19f58AAbD9eD0D60971565AA8510560ab41",
+              "contractname": "GPv2Settlement",
+              "is_quick_scan": true,
+              "node_reference_id": null,
+              "request_type": "threat_scan",
+              "scanner_reference_url": "https://solidityscan.com/quickscan/0x9008D19f58AAbD9eD0D60971565AA8510560ab41/blockscout/gnosis?ref=blockscout",
+              "scan_status": "scan_done",
+              "scan_summary": {
+                "issue_severity_distribution": {
+                  "critical": 0,
+                  "gas": 16,
+                  "high": 0,
+                  "informational": 7,
+                  "low": 5,
+                  "medium": 3
+                },
+                "lines_analyzed_count": 493,
+                "scan_time_taken": 1,
+                "score": "4.57",
+                "score_v2": "91.48",
+                "threat_score": "94.74"
+              }
+            }
+          },
+          {
+            "address": "0x2c4c28DDBdAc9C5E7055b4C863b72eA0149D8aFE",
+            "isVerified": true,
+            "solidityScanReport": {
+              "connection_id": "",
+              "contract_address": "0x2c4c28DDBdAc9C5E7055b4C863b72eA0149D8aFE",
+              "contract_chain": "eth",
+              "contract_platform": "blockscout",
+              "contract_url": "https://eth.blockscout.com/address/0x2c4c28DDBdAc9C5E7055b4C863b72eA0149D8aFE",
+              "contractname": "EIP173Proxy",
+              "is_quick_scan": true,
+              "node_reference_id": null,
+              "request_type": "threat_scan",
+              "scanner_reference_url": "https://solidityscan.com/quickscan/0x2c4c28DDBdAc9C5E7055b4C863b72eA0149D8aFE/blockscout/gnosis?ref=blockscout",
+              "scan_status": "scan_done",
+              "scan_summary": {
+                "issue_severity_distribution": {
+                  "critical": 0,
+                  "gas": 0,
+                  "high": 0,
+                  "informational": 4,
+                  "low": 5,
+                  "medium": 0
+                },
+                "lines_analyzed_count": 94,
+                "scan_time_taken": 0,
+                "score": "4.26",
+                "score_v2": "85.11",
+                "threat_score": "88.89"
+              }
+            }
+          },
+          {
+            "address": "0xC92E8bdf79f0507f65a392b0ab4667716BFE0110",
+            "isVerified": true,
+            "solidityScanReport": {
+              "connection_id": "",
+              "contract_address": "0xC92E8bdf79f0507f65a392b0ab4667716BFE0110",
+              "contract_chain": "eth",
+              "contract_platform": "blockscout",
+              "contract_url": "https://eth.blockscout.com/address/0xC92E8bdf79f0507f65a392b0ab4667716BFE0110",
+              "contractname": "GPv2VaultRelayer",
+              "is_quick_scan": true,
+              "node_reference_id": null,
+              "request_type": "threat_scan",
+              "scanner_reference_url": "https://solidityscan.com/quickscan/0xC92E8bdf79f0507f65a392b0ab4667716BFE0110/blockscout/gnosis?ref=blockscout",
+              "scan_status": "scan_done",
+              "scan_summary": {
+                "issue_severity_distribution": {
+                  "critical": 0,
+                  "gas": 2,
+                  "high": 0,
+                  "informational": 2,
+                  "low": 4,
+                  "medium": 0
+                },
+                "lines_analyzed_count": 87,
+                "scan_time_taken": 0,
+                "score": "4.31",
+                "score_v2": "86.21",
+                "threat_score": "94.74"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+]
