@@ -19,9 +19,9 @@ const TokenHoldersTable = ({ data, token, top, isLoading }: Props) => {
       <Thead top={ top }>
         <Tr>
           <Th>Holder</Th>
-          { token.type === 'ERC-1155' && <Th>ID#</Th> }
+          { (token.type === 'ERC-1155' || token.type === 'ERC-404') && <Th>ID#</Th> }
           <Th isNumeric>Quantity</Th>
-          { token.total_supply && <Th isNumeric width="175px">Percentage</Th> }
+          { token.total_supply && token.type !== 'ERC-404' && <Th isNumeric width="175px">Percentage</Th> }
         </Tr>
       </Thead>
       <Tbody>

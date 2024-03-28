@@ -105,6 +105,20 @@ export const erc1155LongId: AddressTokenBalance = {
   value: '42',
 };
 
+export const erc404a: AddressTokenBalance = {
+  token: tokens.tokenInfoERC404,
+  token_id: '42',
+  token_instance: tokenInstance.base,
+  value: '240000000000000',
+};
+
+export const erc404b: AddressTokenBalance = {
+  token: tokens.tokenInfoERC404,
+  token_instance: null,
+  value: '11',
+  token_id: null,
+};
+
 export const erc20List = {
   items: [
     erc20a,
@@ -129,6 +143,13 @@ export const erc1155List = {
   ],
 };
 
+export const erc404List = {
+  items: [
+    erc404a,
+    erc404b,
+  ],
+};
+
 export const nfts: AddressNFTsResponse = {
   items: [
     {
@@ -142,6 +163,12 @@ export const nfts: AddressNFTsResponse = {
       token: tokens.tokenInfoERC721a,
       token_type: 'ERC-721',
       value: '1',
+    },
+    {
+      ...tokenInstance.unique,
+      token: tokens.tokenInfoERC404,
+      token_type: 'ERC-404',
+      value: '11000',
     },
   ],
   next_page_params: null,

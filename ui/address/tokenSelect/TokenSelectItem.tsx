@@ -4,6 +4,7 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import getCurrencyValue from 'lib/getCurrencyValue';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import LinkInternal from 'ui/shared/LinkInternal';
 import TruncatedValue from 'ui/shared/TruncatedValue';
@@ -42,6 +43,25 @@ const TokenSelectItem = ({ data }: Props) => {
             <span>
               { BigNumber(data.value).toFormat() }
             </span>
+          </>
+        );
+      }
+      case 'ERC-404': {
+        return (
+          <>
+            { data.token_id !== null && (
+              <chakra.span textOverflow="ellipsis" overflow="hidden" mr={ 6 }>
+                #{ data.token_id || 0 }
+              </chakra.span>
+            ) }
+            { data.value !== null && (
+              <span>
+                { data.token.decimals ?
+                  getCurrencyValue({ value: data.value, decimals: data.token.decimals, accuracy: 2 }).valueStr :
+                  BigNumber(data.value).toFormat()
+                }
+              </span>
+            ) }
           </>
         );
       }

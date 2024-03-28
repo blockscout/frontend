@@ -28,7 +28,7 @@ export const tokenInfoERC20a: TokenInfo<'ERC-20'> = {
   symbol: 'HyFi',
   total_supply: '369000000000000000000000000',
   type: 'ERC-20',
-  icon_url: 'https://example.com/token-icon.png',
+  icon_url: 'http://localhost:3000/token-icon.png',
 };
 
 export const tokenInfoERC20b: TokenInfo<'ERC-20'> = {
@@ -172,6 +172,19 @@ export const tokenInfoERC1155WithoutName: TokenInfo<'ERC-1155'> = {
   total_supply: '482',
   type: 'ERC-1155',
   icon_url: null,
+};
+
+export const tokenInfoERC404: TokenInfo<'ERC-404'> = {
+  address: '0xB5C457dDB4cE3312a6C5a2b056a1652bd542a208',
+  circulating_market_cap: '0.0',
+  decimals: '18',
+  exchange_rate: '1484.13',
+  holders: '81',
+  icon_url: null,
+  name: 'OMNI404',
+  symbol: 'O404',
+  total_supply: '6482275000000000000',
+  type: 'ERC-404',
 };
 
 export const bridgedTokenA: TokenInfo<'ERC-20'> = {
