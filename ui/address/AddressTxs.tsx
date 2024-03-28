@@ -10,6 +10,7 @@ import type { Transaction, TransactionsSortingField, TransactionsSortingValue, T
 import { getResourceKey } from 'lib/api/useApiQuery';
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMounted from 'lib/hooks/useIsMounted';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
@@ -49,11 +50,13 @@ type Props = {
   scrollRef?: React.RefObject<HTMLDivElement>;
   // for tests only
   overloadCount?: number;
+  onLoad?: () => void;
 }
 
-const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Props) => {
+const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT, onLoad }: Props) => {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const isMounted = useIsMounted();
 
   const [ socketAlert, setSocketAlert ] = React.useState('');
   const [ newItemsCount, setNewItemsCount ] = React.useState(0);
@@ -78,6 +81,12 @@ const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Props) => {
       } }),
     },
   });
+
+  React.useEffect(() => {
+    if (!addressTxsQuery.isPlaceholderData) {
+      onLoad?.();
+    }
+  }, [ addressTxsQuery.isPlaceholderData, onLoad ]);
 
   const handleFilterChange = React.useCallback((val: string | Array<string>) => {
 
@@ -155,6 +164,10 @@ const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Props) => {
     event: 'pending_transaction',
     handler: handleNewSocketMessage,
   });
+
+  if (!isMounted) {
+    return null;
+  }
 
   const filter = (
     <AddressTxsFilter

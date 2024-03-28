@@ -1,11 +1,10 @@
 import type { NextPage } from 'next';
-import dynamic from 'next/dynamic';
 import React from 'react';
 
 import type { Props } from 'nextjs/getServerSideProps';
 import PageNextJs from 'nextjs/PageNextJs';
 
-const Address = dynamic(() => import('ui/pages/Address'), { ssr: false });
+import Address from 'ui/pages/Address';
 
 const Page: NextPage<Props> = (props: Props) => {
   return (

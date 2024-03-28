@@ -4,7 +4,7 @@ export interface TabItem {
   id: string;
   title: string | (() => React.ReactNode);
   count?: number | null;
-  component: React.ReactNode;
+  component: React.ReactNode | (({ onLoad }: { onLoad: () => void }) => React.ReactNode);
 }
 
 export type RoutedTab = TabItem & { subTabs?: Array<string> }
