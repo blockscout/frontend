@@ -15,7 +15,7 @@ import NFTItemContainer from './NFTItemContainer';
 type Props = AddressNFT & { isLoading: boolean; withTokenLink?: boolean };
 
 const NFTItem = ({ token, value, isLoading, withTokenLink, ...tokenInstance }: Props) => {
-  const valueResult = token.decimals ? getCurrencyValue({ value, decimals: token.decimals, accuracy: 2 }).valueStr : value;
+  const valueResult = token.decimals && value ? getCurrencyValue({ value, decimals: token.decimals, accuracy: 2 }).valueStr : value;
   const tokenInstanceLink = tokenInstance.id ?
     route({ pathname: '/token/[hash]/instance/[id]', query: { hash: token.address, id: tokenInstance.id } }) :
     undefined;
