@@ -11,6 +11,9 @@ export const PROVIDERS: ProvidersPage["items"][0] = {
   providerRewardAmount: "0",
   providerClaimAmount: "0",
   providerTotalCap: "0",
+  deviceId: '0',
+  deviceState: null,
+  deviceIdVersion: null,
 };
 
 export const DHC: DeviceStatisticInfos = {
