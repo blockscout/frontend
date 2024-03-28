@@ -20,7 +20,7 @@ export default function useValidateField({ isOptional, argType, argTypeMatchInt 
 
   // some values are formatted before they are sent to the validator
   // see ./useFormatFieldValue.tsx hook
-  return React.useCallback((value: string | number | boolean | undefined) => {
+  return React.useCallback((value: string | boolean | undefined) => {
     if (value === undefined || value === '') {
       return isOptional ? true : 'Field is required';
     }
@@ -41,11 +41,19 @@ export default function useValidateField({ isOptional, argType, argTypeMatchInt 
     }
 
     if (argTypeMatchInt) {
-      if (typeof value !== 'number' || Object.is(value, NaN)) {
+      const valueBi = (() => {
+        try {
+          return BigInt(value);
+        } catch (error) {
+          return null;
+        }
+      })();
+
+      if (typeof value !== 'string' || valueBi === null) {
         return 'Invalid integer format';
       }
 
-      if (value > argTypeMatchInt.max || value < argTypeMatchInt.min) {
+      if (valueBi > argTypeMatchInt.max || valueBi < argTypeMatchInt.min) {
         const lowerBoundary = argTypeMatchInt.isUnsigned ? '0' : `-1 * 2 ^ ${ Number(argTypeMatchInt.power) - 1 }`;
         const upperBoundary = argTypeMatchInt.isUnsigned ? `2 ^ ${ argTypeMatchInt.power } - 1` : `2 ^ ${ Number(argTypeMatchInt.power) - 1 } - 1`;
         return `Value should be in range from "${ lowerBoundary }" to "${ upperBoundary }" inclusively`;
