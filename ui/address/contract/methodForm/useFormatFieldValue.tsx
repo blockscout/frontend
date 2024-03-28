@@ -17,8 +17,11 @@ export default function useFormatFieldValue({ argType, argTypeMatchInt }: Params
     }
 
     if (argTypeMatchInt) {
+      // we have to store all numbers as strings to avoid precision loss
+      // and we cannot store them as BigInt because the NumberFormat component will not work properly
+      // so we just remove all white spaces here otherwise the `viem` library will throw an error on attempt to write value to a contract
       const formattedString = value.replace(/\s/g, '');
-      return parseInt(formattedString);
+      return formattedString;
     }
 
     if (argType === 'bool') {
