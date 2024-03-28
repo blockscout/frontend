@@ -25,6 +25,7 @@
     "test:pw": "./tools/scripts/pw.sh",
     "test:pw:local": "export NODE_PATH=$(pwd)/node_modules && yarn test:pw",
     "test:pw:docker": "docker run --rm --network host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.41.1-focal ./tools/scripts/pw.docker.sh",
+    "test:pw:docker:deps": "docker run --rm --network host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.41.1-focal ./tools/scripts/pw.docker.deps.sh",
     "test:pw:ci": "yarn test:pw --project=$PW_PROJECT",
     "test:pw:detect-affected": "node ./deploy/tools/affected-tests/index.js",
     "test:jest": "jest",
