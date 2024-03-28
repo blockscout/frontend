@@ -8,6 +8,7 @@ import dayjs from "lib/date/dayjs";
 import { currencyUnits } from "lib/units";
 import { formatAmount } from "lib/utils/helpers";
 import DetailsInfoItem from "ui/shared/DetailsInfoItem";
+import DHCStatusTag from "ui/shared/tags/HDCStatusTag";
 
 const DHCDetails = ({
   providerID,
@@ -30,16 +31,9 @@ const DHCDetails = ({
     return [
       { id: "pid", label: "PID", value: providerID },
       {
-        id: "createTime",
-        label: "Create Time",
-        value: dayjs(Number(providerDetails?.chainTime ?? "0")).format(
-          "YYYY-MM-DD HH:mm",
-        ),
-      },
-      {
-        id: "device",
-        label: "Device",
-        value: providerDetails?.deviceId,
+        id: "status",
+        label: "Status",
+        value: <DHCStatusTag status={ providerDetails?.deviceState }/>,
       },
       {
         id: "stake",
@@ -47,6 +41,18 @@ const DHCDetails = ({
         value: `${ formatAmount(validatorInfo?.total_pledge ?? "0") } ${
           currencyUnits.ether
         }`,
+      },
+      {
+        id: "device",
+        label: "Device",
+        value: providerDetails?.deviceId,
+      },
+      {
+        id: "createTime",
+        label: "Create Time",
+        value: dayjs(Number(providerDetails?.chainTime ?? "0")).format(
+          "YYYY-MM-DD HH:mm",
+        ),
       },
     ];
   }, [ providerDetails, providerID, validatorInfo ]);
