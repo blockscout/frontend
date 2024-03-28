@@ -32,6 +32,9 @@ export type ProvidersPage = PageData<{
   providerPunishCount: string;
   providerRewardAmount: string;
   providerTotalCap: string;
+  deviceId: null | string;
+  deviceIdVersion: null | string;
+  deviceState: null | DHCStatus;
 }>;
 
 export interface TableColumn<T> {
@@ -118,6 +121,7 @@ export interface ProviderDetails {
   deviceIdVersion: string;
   totalPunish: string;
   totalReward: string;
+  deviceState: null | DHCStatus;
 }
 
 export type ValidatorStatisticInfos = StatisticInfos;
@@ -132,3 +136,11 @@ export interface ValidatorDetails {
   validatorLastBlock: string;
   validatorRegistrationTime: string;
 }
+
+export type DHCStatus =
+  | "UnMount"
+  | "TryQuit"
+  | "Started"
+  | "Join"
+  | "Stopped"
+  | "Offline";
