@@ -12,7 +12,7 @@ import wagmiConfig from 'lib/web3/wagmiConfig';
 import * as app from 'playwright/utils/app';
 import theme from 'theme';
 
-type Props = {
+export type Props = {
   children: React.ReactNode;
   withSocket?: boolean;
   appContext?: {

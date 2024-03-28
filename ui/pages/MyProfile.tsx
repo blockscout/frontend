@@ -44,7 +44,7 @@ const MyProfile = () => {
           <Input
             required
             disabled
-            value={ data.email }
+            value={ data.email || '' }
           />
           <FormLabel>Email</FormLabel>
         </FormControl>
