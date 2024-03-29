@@ -37,21 +37,21 @@ export const IDENTICONS: Array<{ label: string; id: IdenticonType; sampleBg: str
   {
     label: 'GitHub',
     id: 'github',
-    sampleBg: 'lightpink',
+    sampleBg: 'url("/static/identicon_logos/github.png") center / contain',
   },
   {
     label: 'Metamask Jazzicon',
     id: 'jazzicon',
-    sampleBg: 'lightpink',
+    sampleBg: 'url("/static/identicon_logos/jazzicon.png") center / contain',
   },
   {
     label: 'Ethereum Blocky',
     id: 'blockie',
-    sampleBg: 'lightpink',
+    sampleBg: 'url("/static/identicon_logos/blockies.png") center / contain',
   },
   {
     label: 'Gradient Avatar',
     id: 'gradient_avatar',
-    sampleBg: 'lightpink',
+    sampleBg: 'url("/static/identicon_logos/gradient_avatar.png") center / contain',
   },
 ];
