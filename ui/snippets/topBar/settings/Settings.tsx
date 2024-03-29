@@ -15,7 +15,7 @@ const Settings = () => {
         <IconButton
           variant="simple"
           colorScheme="blue"
-          aria-label="color mode switch"
+          aria-label="User settings"
           icon={ <IconSvg name="gear_slim" boxSize={ 5 }/> }
           p="1px"
           boxSize={ 5 }
