@@ -9,6 +9,7 @@ import config from 'configs/app';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import Banner from 'ui/marketplace/Banner';
 import ContractListModal from 'ui/marketplace/ContractListModal';
 import MarketplaceAppModal from 'ui/marketplace/MarketplaceAppModal';
 import MarketplaceDisclaimerModal from 'ui/marketplace/MarketplaceDisclaimerModal';
@@ -167,6 +168,16 @@ const Marketplace = () => {
           </Flex>
         ) }
       />
+
+      <Banner
+        apps={ displayedApps }
+        favoriteApps={ favoriteApps }
+        isLoading={ isPlaceholderData }
+        onInfoClick={ showAppInfo }
+        onFavoriteClick={ onFavoriteClick }
+        onAppClick={ handleAppClick }
+      />
+
       <Box marginTop={{ base: 0, lg: 8 }}>
         { (isCategoriesPlaceholderData) ? (
           <TabsSkeleton tabs={ categoryTabs }/>

@@ -100,7 +100,7 @@ Type extends EventTypes.PAGE_WIDGET ? (
   } | {
     'Type': 'Favorite app' | 'More button' | 'Security score' | 'Total contracts' | 'Verified contracts' | 'Analyzed contracts';
     'Info': string;
-    'Source': 'Discovery view' | 'Security view' | 'App modal' | 'App page' | 'Security score popup';
+    'Source': 'Discovery view' | 'Security view' | 'App modal' | 'App page' | 'Security score popup' | 'Banner';
   } | {
     'Type': 'Security score';
     'Source': 'Analyzed contracts popup';
