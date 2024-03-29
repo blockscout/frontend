@@ -60,10 +60,12 @@ const SettingsColorTheme = () => {
     setActiveHex(hex);
   }, [ setTheme ]);
 
+  const activeTheme = COLOR_THEMES.find((theme) => theme.hex === activeHex);
+
   return (
     <div>
       <Box fontWeight={ 600 }>Background</Box>
-      <Box color="text_secondary" mt={ 1 } mb={ 2 }>Light</Box>
+      <Box color="text_secondary" mt={ 1 } mb={ 2 }>{ activeTheme?.label }</Box>
       <Flex>
         { COLOR_THEMES.map((theme) => (
           <SettingsSample

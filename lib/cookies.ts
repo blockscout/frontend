@@ -10,6 +10,7 @@ export enum NAMES {
   TXS_SORT='txs_sort',
   COLOR_MODE='chakra-ui-color-mode',
   COLOR_MODE_HEX='chakra-ui-color-mode-hex',
+  ADDRESS_IDENTICON_TYPE='address_identicon_type',
   INDEXING_ALERT='indexing_alert',
   ADBLOCK_DETECTED='adblock_detected',
   MIXPANEL_DEBUG='_mixpanel_debug',

@@ -1,3 +1,5 @@
+import type { IdenticonType } from 'types/views/address';
+
 export const COLOR_THEMES = [
   {
     label: 'Light',
@@ -30,3 +32,26 @@ export const COLOR_THEMES = [
 ];
 
 export type ColorTheme = typeof COLOR_THEMES[number];
+
+export const IDENTICONS: Array<{ label: string; id: IdenticonType; sampleBg: string }> = [
+  {
+    label: 'GitHub',
+    id: 'github',
+    sampleBg: 'lightpink',
+  },
+  {
+    label: 'Metamask Jazzicon',
+    id: 'jazzicon',
+    sampleBg: 'lightpink',
+  },
+  {
+    label: 'Ethereum Blocky',
+    id: 'blockie',
+    sampleBg: 'lightpink',
+  },
+  {
+    label: 'Gradient Avatar',
+    id: 'gradient_avatar',
+    sampleBg: 'lightpink',
+  },
+];
