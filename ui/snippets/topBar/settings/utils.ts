@@ -33,21 +33,21 @@ export const IDENTICONS: Array<{ label: string; id: IdenticonType; sampleBg: str
   {
     label: 'GitHub',
     id: 'github',
-    sampleBg: 'url("/static/identicon_logos/github.png") center / contain',
+    sampleBg: 'url("/static/identicon_logos/github.png") center / contain no-repeat',
   },
   {
-    label: 'Metamask Jazzicon',
+    label: 'Metamask jazzicon',
     id: 'jazzicon',
-    sampleBg: 'url("/static/identicon_logos/jazzicon.png") center / contain',
+    sampleBg: 'url("/static/identicon_logos/jazzicon.png") center / contain no-repeat',
   },
   {
-    label: 'Ethereum Blockies',
+    label: 'Ethereum blockies',
     id: 'blockie',
-    sampleBg: 'url("/static/identicon_logos/blockies.png") center / contain',
+    sampleBg: 'url("/static/identicon_logos/blockies.png") center / contain no-repeat',
   },
   {
-    label: 'Gradient Avatar',
+    label: 'Gradient avatar',
     id: 'gradient_avatar',
-    sampleBg: 'url("/static/identicon_logos/gradient_avatar.png") center / contain',
+    sampleBg: 'url("/static/identicon_logos/gradient_avatar.png") center / contain no-repeat',
   },
 ];

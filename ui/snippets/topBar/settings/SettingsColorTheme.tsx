@@ -64,7 +64,7 @@ const SettingsColorTheme = () => {
 
   return (
     <div>
-      <Box fontWeight={ 600 }>Background</Box>
+      <Box fontWeight={ 600 }>Color theme</Box>
       <Box color="text_secondary" mt={ 1 } mb={ 2 }>{ activeTheme?.label }</Box>
       <Flex>
         { COLOR_THEMES.map((theme) => (
