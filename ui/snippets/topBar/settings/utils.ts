@@ -12,16 +12,12 @@ export const COLOR_THEMES = [
     colorMode: 'dark',
     hex: '#232B37',
     sampleBg: 'linear-gradient(152deg, #232B37 50%, rgba(255, 255, 255, 0.00) 290.71%)',
-    colors: [
-      { hex: '#232B37', sampleBg: 'linear-gradient(152deg, #232B37 50%, rgba(255, 255, 255, 0.00) 290.71%)' },
-      { hex: '#1B2E48', sampleBg: 'linear-gradient(150deg, #1B2E48 50%, rgba(255, 255, 255, 0.00) 312.75%)' },
-    ],
   },
   {
     label: 'Midnight',
     colorMode: 'dark',
     hex: '#1B2E48',
-    sampleBg: 'linear-gradient(150deg, #1B2E48 50%, rgba(255, 255, 255, 0.00) 312.75%)',
+    sampleBg: 'linear-gradient(148deg, #1B3F71 50%, rgba(255, 255, 255, 0.00) 312.35%)',
   },
   {
     label: 'Dark',
@@ -45,7 +41,7 @@ export const IDENTICONS: Array<{ label: string; id: IdenticonType; sampleBg: str
     sampleBg: 'url("/static/identicon_logos/jazzicon.png") center / contain',
   },
   {
-    label: 'Ethereum Blocky',
+    label: 'Ethereum Blockies',
     id: 'blockie',
     sampleBg: 'url("/static/identicon_logos/blockies.png") center / contain',
   },
