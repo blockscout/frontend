@@ -42,7 +42,6 @@ const MarketplaceAppIntegrationIcon = ({ external, internalWallet }: Props) => {
         position="relative"
         cursor="pointer"
         verticalAlign="middle"
-        marginBottom={ 1 }
       />
     </Tooltip>
   );
