@@ -10,13 +10,19 @@ const submitFormUrl = getEnvValue('NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM');
 const suggestIdeasFormUrl = getEnvValue('NEXT_PUBLIC_MARKETPLACE_SUGGEST_IDEAS_FORM');
 const categoriesUrl = getExternalAssetFilePath('NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL');
 const adminServiceApiHost = getEnvValue('NEXT_PUBLIC_ADMIN_SERVICE_API_HOST');
+const securityReportsUrl = getExternalAssetFilePath('NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL');
 
 const title = 'Marketplace';
 
 const config: Feature<(
   { configUrl: string } |
   { api: { endpoint: string; basePath: string } }
-) & { submitFormUrl: string; categoriesUrl: string | undefined; suggestIdeasFormUrl: string | undefined }
+) & {
+  submitFormUrl: string;
+  categoriesUrl: string | undefined;
+  suggestIdeasFormUrl: string | undefined;
+  securityReportsUrl: string | undefined;
+}
 > = (() => {
   if (enabled === 'true' && chain.rpcUrl && submitFormUrl) {
     if (configUrl) {
@@ -27,6 +33,7 @@ const config: Feature<(
         submitFormUrl,
         categoriesUrl,
         suggestIdeasFormUrl,
+        securityReportsUrl,
       });
     } else if (adminServiceApiHost) {
       return Object.freeze({
@@ -35,6 +42,7 @@ const config: Feature<(
         submitFormUrl,
         categoriesUrl,
         suggestIdeasFormUrl,
+        securityReportsUrl,
         api: {
           endpoint: adminServiceApiHost,
           basePath: '',
