@@ -7,7 +7,7 @@ import SettingsSample from './SettingsSample';
 import { COLOR_THEMES } from './utils';
 
 const SettingsColorTheme = () => {
-  const { setColorMode, colorMode } = useColorMode();
+  const { setColorMode } = useColorMode();
 
   const [ activeHex, setActiveHex ] = React.useState<string>();
 
@@ -35,7 +35,7 @@ const SettingsColorTheme = () => {
         return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       }
 
-      return colorMode;
+      return cookieColorMode;
     })();
 
     const colorModeThemes = COLOR_THEMES.filter(theme => theme.colorMode === nextColorMode);
