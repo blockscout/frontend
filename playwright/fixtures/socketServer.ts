@@ -10,16 +10,16 @@ import type { Transaction } from 'types/api/transaction';
 
 import * as app from 'playwright/utils/app';
 
-type ReturnType = () => Promise<WebSocket>;
+export type CreateSocketFixture = () => Promise<WebSocket>;
 
 type Channel = [string, string, string];
 
 export interface SocketServerFixture {
-  createSocket: ReturnType;
+  createSocket: CreateSocketFixture;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const createSocket: TestFixture<ReturnType, { page: Page}> = async({ page }, use) => {
+export const createSocket: TestFixture<CreateSocketFixture, { page: Page}> = async({ page }, use) => {
   const socketServer = new WebSocketServer({ port: app.socketPort });
 
   const connectionPromise = new Promise<WebSocket>((resolve) => {

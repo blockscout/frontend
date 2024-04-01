@@ -1,51 +1,22 @@
-import { test as base, expect } from '@playwright/experimental-ct-react';
+import type { BrowserContext } from '@playwright/test';
 import React from 'react';
 
-import * as textAdMock from 'mocks/ad/textAd';
 import * as validatorsMock from 'mocks/validators/index';
 import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
-import TestApp from 'playwright/TestApp';
-import buildApiUrl from 'playwright/utils/buildApiUrl';
+import { test as base, expect } from 'playwright/lib';
 import * as configs from 'playwright/utils/configs';
 
 import Validators from './Validators';
 
-const VALIDATORS_API_URL = buildApiUrl('validators', { chainType: 'stability' });
-const VALIDATORS_COUNTERS_API_URL = buildApiUrl('validators_counters', { chainType: 'stability' });
-
-const test = base.extend({
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  context: contextWithEnvs(configs.featureEnvs.validators) as any,
+const test = base.extend<{ context: BrowserContext }>({
+  context: contextWithEnvs(configs.featureEnvs.validators),
 });
 
-test.beforeEach(async({ page }) => {
-  await page.route('https://request-global.czilladx.com/serve/native.php?z=19260bf627546ab7242', (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(textAdMock.duck),
-  }));
-  await page.route(textAdMock.duck.ad.thumbnail, (route) => {
-    return route.fulfill({
-      status: 200,
-      path: './playwright/mocks/image_s.jpg',
-    });
-  });
-});
+test('base view +@mobile', async({ render, mockApiResponse }) => {
+  await mockApiResponse('validators', validatorsMock.validatorsResponse, { pathParams: { chainType: 'stability' } });
+  await mockApiResponse('validators_counters', validatorsMock.validatorsCountersResponse, { pathParams: { chainType: 'stability' } });
 
-test('base view +@mobile', async({ mount, page }) => {
-  await page.route(VALIDATORS_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(validatorsMock.validatorsResponse),
-  }));
-  await page.route(VALIDATORS_COUNTERS_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(validatorsMock.validatorsCountersResponse),
-  }));
-
-  const component = await mount(
-    <TestApp>
-      <Validators/>
-    </TestApp>,
-  );
+  const component = await render(<Validators/>);
 
   await expect(component).toHaveScreenshot();
 });
