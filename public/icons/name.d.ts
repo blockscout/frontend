@@ -62,6 +62,7 @@
 	| "flame"
 	| "gas_xl"
 	| "gas"
+	| "gear_slim"
 	| "gear"
 	| "globe-b"
 	| "globe"

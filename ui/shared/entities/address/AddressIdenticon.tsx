@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import React from 'react';
 
 import config from 'configs/app';
+import * as cookies from 'lib/cookies';
 import IdenticonGithub from 'ui/shared/IdenticonGithub';
 
 interface IconProps {
@@ -12,7 +13,8 @@ interface IconProps {
 
 const Icon = dynamic(
   async() => {
-    switch (config.UI.views.address.identiconType) {
+    const type = cookies.get(cookies.NAMES.ADDRESS_IDENTICON_TYPE) || config.UI.views.address.identiconType;
+    switch (type) {
       case 'github': {
         // eslint-disable-next-line react/display-name
         return (props: IconProps) => <IdenticonGithub size={ props.size } seed={ props.hash }/>;
