@@ -1,3 +1,5 @@
+import type { SolidityscanReport } from 'types/api/contract';
+
 export type MarketplaceAppPreview = {
   id: string;
   external?: boolean;
@@ -24,7 +26,45 @@ export type MarketplaceAppOverview = MarketplaceAppPreview & MarketplaceAppSocia
   site?: string;
 }
 
+export type MarketplaceAppWithSecurityReport = MarketplaceAppOverview & {
+  securityReport?: MarketplaceAppSecurityReport;
+}
+
 export enum MarketplaceCategory {
   ALL = 'All',
   FAVORITES = 'Favorites',
+}
+
+export enum ContractListTypes {
+  ANALYZED = 'Analyzed',
+  ALL = 'All',
+  VERIFIED = 'Verified',
+}
+
+export enum MarketplaceDisplayType {
+  DEFAULT = 'default',
+  SCORES = 'scores',
+}
+
+export type MarketplaceAppSecurityReport = {
+  overallInfo: {
+    verifiedNumber: number;
+    totalContractsNumber: number;
+    solidityScanContractsNumber: number;
+    securityScore: number;
+    totalIssues?: number;
+    issueSeverityDistribution: SolidityscanReport['scan_report']['scan_summary']['issue_severity_distribution'];
+  };
+  contractsData: Array<{
+    address: string;
+    isVerified: boolean;
+    solidityScanReport?: SolidityscanReport['scan_report'] | null;
+  }>;
+}
+
+export type MarketplaceAppSecurityReportRaw = {
+  appName: string;
+  chainsData: {
+    [chainId: string]: MarketplaceAppSecurityReport;
+  };
 }

@@ -98,8 +98,12 @@ Type extends EventTypes.PAGE_WIDGET ? (
   {
     'Type': 'Tokens dropdown' | 'Tokens show all (icon)' | 'Add to watchlist' | 'Address actions (more button)';
   } | {
-    'Type': 'Favorite app' | 'More button';
+    'Type': 'Favorite app' | 'More button' | 'Security score' | 'Total contracts' | 'Verified contracts' | 'Analyzed contracts';
     'Info': string;
+    'Source': 'Discovery view' | 'Security view' | 'App modal' | 'App page' | 'Security score popup';
+  } | {
+    'Type': 'Security score';
+    'Source': 'Analyzed contracts popup';
   }
 ) :
 Type extends EventTypes.TX_INTERPRETATION_INTERACTION ? {

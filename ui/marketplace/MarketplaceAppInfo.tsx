@@ -22,7 +22,7 @@ const MarketplaceAppInfo = ({ data }: Props) => {
   if (isMobile) {
     return (
       <>
-        <TriggerButton onClick={ onToggle }/>
+        <TriggerButton onClick={ onToggle } onlyIcon/>
         <Modal isOpen={ isOpen } onClose={ onClose } size="full">
           <ModalContent>
             <ModalCloseButton/>

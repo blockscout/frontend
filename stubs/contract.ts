@@ -65,6 +65,7 @@ export const VERIFIED_CONTRACTS_COUNTERS: VerifiedContractsCounters = {
 
 export const SOLIDITYSCAN_REPORT: SolidityscanReport = {
   scan_report: {
+    contractname: 'BullRunners',
     scan_status: 'scan_done',
     scan_summary: {
       issue_severity_distribution: {

@@ -178,6 +178,7 @@ export interface SmartContractVerificationError {
 
 export type SolidityscanReport = {
   scan_report: {
+    contractname: string;
     scan_status: string;
     scan_summary: {
       issue_severity_distribution: {
