@@ -9,8 +9,8 @@ interface Params {
 export interface MatchInt {
   isUnsigned: boolean;
   power: string;
-  min: number;
-  max: number;
+  min: bigint;
+  max: bigint;
 }
 
 export default function useArgTypeMatchInt({ argType }: Params): MatchInt | null {
