@@ -17,8 +17,10 @@ import * as metadata from 'lib/metadata';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
+import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import * as addressStubs from 'stubs/address';
 import * as tokenStubs from 'stubs/token';
+import { getTokenHoldersStub } from 'stubs/token';
 import { generateListStub } from 'stubs/utils';
 import AddressContract from 'ui/address/AddressContract';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
@@ -118,7 +120,7 @@ const TokenPageContent = () => {
   }, [ tokenQuery.data, tokenQuery.isPlaceholderData ]);
 
   const hasData = (tokenQuery.data && !tokenQuery.isPlaceholderData) && (contractQuery.data && !contractQuery.isPlaceholderData);
-  const hasInventoryTab = tokenQuery.data?.type === 'ERC-1155' || tokenQuery.data?.type === 'ERC-721';
+  const hasInventoryTab = tokenQuery.data?.type && NFT_TOKEN_TYPE_IDS.includes(tokenQuery.data.type);
 
   const transfersQuery = useQueryWithPages({
     resourceName: 'token_transfers',
@@ -161,8 +163,7 @@ const TokenPageContent = () => {
     scrollRef,
     options: {
       enabled: Boolean(hashString && tab === 'holders' && hasData),
-      placeholderData: generateListStub<'token_holders'>(
-        tokenQuery.data?.type === 'ERC-1155' ? tokenStubs.TOKEN_HOLDER_ERC_1155 : tokenStubs.TOKEN_HOLDER_ERC_20, 50, { next_page_params: null }),
+      placeholderData: getTokenHoldersStub(tokenQuery.data?.type, null),
     },
   });
 
@@ -174,7 +175,7 @@ const TokenPageContent = () => {
   const contractTabs = useContractTabs(contractQuery.data);
 
   const tabs: Array<RoutedTab> = [
-    (tokenQuery.data?.type === 'ERC-1155' || tokenQuery.data?.type === 'ERC-721') ? {
+    hasInventoryTab ? {
       id: 'inventory',
       title: 'Inventory',
       component: <TokenInventory inventoryQuery={ inventoryQuery } tokenQuery={ tokenQuery } ownerFilter={ ownerFilter }/>,
@@ -212,7 +213,7 @@ const TokenPageContent = () => {
   }
 
   // default tab for nfts is token inventory
-  if (((tokenQuery.data?.type === 'ERC-1155' || tokenQuery.data?.type === 'ERC-721') && !tab) || tab === 'inventory') {
+  if ((hasInventoryTab && !tab) || tab === 'inventory') {
     pagination = inventoryQuery.pagination;
   }
 

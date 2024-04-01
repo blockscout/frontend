@@ -36,6 +36,11 @@ export default function useFetchTokens({ hash }: Props) {
     queryParams: { type: 'ERC-1155' },
     queryOptions: { enabled: Boolean(hash), refetchOnMount: false },
   });
+  const erc404query = useApiQuery('address_tokens', {
+    pathParams: { hash },
+    queryParams: { type: 'ERC-404' },
+    queryOptions: { enabled: Boolean(hash), refetchOnMount: false },
+  });
 
   const queryClient = useQueryClient();
 
@@ -78,6 +83,10 @@ export default function useFetchTokens({ hash }: Props) {
     updateTokensData('ERC-1155', payload);
   }, [ updateTokensData ]);
 
+  const handleTokenBalancesErc404Message: SocketMessage.AddressTokenBalancesErc1155['handler'] = React.useCallback((payload) => {
+    updateTokensData('ERC-404', payload);
+  }, [ updateTokensData ]);
+
   const channel = useSocketChannel({
     topic: `addresses:${ hash?.toLowerCase() }`,
     isDisabled: Boolean(hash) && (erc20query.isPlaceholderData || erc721query.isPlaceholderData || erc1155query.isPlaceholderData),
@@ -98,6 +107,11 @@ export default function useFetchTokens({ hash }: Props) {
     event: 'updated_token_balances_erc_1155',
     handler: handleTokenBalancesErc1155Message,
   });
+  useSocketMessage({
+    channel,
+    event: 'updated_token_balances_erc_404',
+    handler: handleTokenBalancesErc404Message,
+  });
 
   const data = React.useMemo(() => {
     return {
@@ -113,12 +127,16 @@ export default function useFetchTokens({ hash }: Props) {
         items: erc1155query.data?.items.map(calculateUsdValue) || [],
         isOverflow: Boolean(erc1155query.data?.next_page_params),
       },
+      'ERC-404': {
+        items: erc404query.data?.items.map(calculateUsdValue) || [],
+        isOverflow: Boolean(erc1155query.data?.next_page_params),
+      },
     };
-  }, [ erc1155query.data, erc20query.data, erc721query.data ]);
+  }, [ erc1155query.data, erc20query.data, erc721query.data, erc404query.data ]);
 
   return {
-    isPending: erc20query.isPending || erc721query.isPending || erc1155query.isPending,
-    isError: erc20query.isError || erc721query.isError || erc1155query.isError,
+    isPending: erc20query.isPending || erc721query.isPending || erc1155query.isPending || erc404query.isPending,
+    isError: erc20query.isError || erc721query.isError || erc1155query.isError || erc404query.isError,
     data,
   };
 }

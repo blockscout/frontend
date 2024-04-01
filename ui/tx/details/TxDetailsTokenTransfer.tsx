@@ -1,7 +1,13 @@
 import { Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenTransfer as TTokenTransfer, Erc20TotalPayload, Erc721TotalPayload, Erc1155TotalPayload } from 'types/api/tokenTransfer';
+import type {
+  TokenTransfer as TTokenTransfer,
+  Erc20TotalPayload,
+  Erc721TotalPayload,
+  Erc1155TotalPayload,
+  Erc404TotalPayload,
+} from 'types/api/tokenTransfer';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
@@ -59,6 +65,20 @@ const TxDetailsTokenTransfer = ({ data }: Props) => {
             token={ data.token }
             tokenId={ total.token_id }
             value={ total.value }
+          />
+        );
+      }
+
+      case 'ERC-404': {
+        const total = data.total as Erc404TotalPayload;
+        return (
+          <NftTokenTransferSnippet
+            token={ data.token }
+            tokenId={ 'token_id' in total ? total.token_id : null }
+            value={ 'value' in total && total.value ?
+              getCurrencyValue({ value: total.value, decimals: total.decimals || '0', accuracy: 2 }).valueStr :
+              '1'
+            }
           />
         );
       }
