@@ -383,7 +383,7 @@ This feature is **enabled by default** with the `coinzilla` ads provider. To swi
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_ROLLUP_TYPE | `'optimistic' \| 'shibarium' \| 'zkEvm' ` | Rollup chain type | Required | - | `'optimistic'` |
+| NEXT_PUBLIC_ROLLUP_TYPE | `'optimistic' \| 'shibarium' \| 'zkEvm' \| 'zkSync' ` | Rollup chain type | Required | - | `'optimistic'` |
 | NEXT_PUBLIC_ROLLUP_L1_BASE_URL | `string` | Blockscout base URL for L1 network | Required | - | `'http://eth-goerli.blockscout.com'` |
 | NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL | `string` | URL for L2 -> L1 withdrawals | - | - | `https://app.optimism.io/bridge/withdraw` |
 
