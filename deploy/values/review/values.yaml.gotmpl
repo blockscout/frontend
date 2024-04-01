@@ -4,7 +4,7 @@ imagePullSecrets:
   - name: regcred
 config:
   network:
-    id: 5
+    id: 11155111
     name: Blockscout
     shortname: Blockscout
     currency:
@@ -67,7 +67,8 @@ frontend:
     NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL: https://gist.githubusercontent.com/maxaleks/ce5c7e3de53e8f5b240b88265daf5839/raw/328383c958a8f7ecccf6d50c953bcdf8ab3faa0a/security_reports_goerli_test.json
     NEXT_PUBLIC_LOGOUT_URL: https://blockscoutcom.us.auth0.com/v2/logout
     NEXT_PUBLIC_HOMEPAGE_CHARTS: "['daily_txs','coin_price','market_cap']"
-    NEXT_PUBLIC_NETWORK_RPC_URL: https://rpc.ankr.com/eth_goerli
+    NEXT_PUBLIC_NETWORK_RPC_URL: https://eth-sepolia.public.blastapi.io
+    NEXT_PUBLIC_NETWORK_ID: '11155111'
     NEXT_PUBLIC_NETWORK_EXPLORERS: "[{'title':'Bitquery','baseUrl':'https://explorer.bitquery.io/','paths':{'tx':'/goerli/tx','address':'/goerli/address','token':'/goerli/token','block':'/goerli/block'}},{'title':'Etherscan','logo':'https://github.com/blockscout/frontend-configs/blob/main/configs/explorer-logos/etherscan.png?raw=true','baseUrl':'https://goerli.etherscan.io/','paths':{'tx':'/tx','address':'/address','token':'/token','block':'/block'}}]"
     NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL: https://raw.githubusercontent.com/blockscout/frontend-configs/dev/configs/marketplace-categories/default.json
     NEXT_PUBLIC_GRAPHIQL_TRANSACTION: 0xf7d4972356e6ae44ae948d0cf19ef2beaf0e574c180997e969a2837da15e349d

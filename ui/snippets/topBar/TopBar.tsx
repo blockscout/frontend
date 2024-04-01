@@ -3,7 +3,7 @@ import React from 'react';
 
 import config from 'configs/app';
 
-import ColorModeSwitch from './ColorModeSwitch';
+import Settings from './settings/Settings';
 import SwapButton from './SwapButton';
 import TopBarStats from './TopBarStats';
 
@@ -28,7 +28,7 @@ const TopBar = () => {
             <Divider mr={ 3 } ml={{ base: 2, sm: 3 }} height={ 4 } orientation="vertical"/>
           </>
         ) }
-        <ColorModeSwitch/>
+        <Settings/>
       </Flex>
     </Flex>
   );

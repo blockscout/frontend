@@ -22,6 +22,7 @@ SocketMessage.AddressTokenBalance |
 SocketMessage.AddressTokenBalancesErc20 |
 SocketMessage.AddressTokenBalancesErc721 |
 SocketMessage.AddressTokenBalancesErc1155 |
+SocketMessage.AddressTokenBalancesErc404 |
 SocketMessage.AddressCoinBalance |
 SocketMessage.AddressTxs |
 SocketMessage.AddressTxsPending |
@@ -57,6 +58,7 @@ export namespace SocketMessage {
   export type AddressTokenBalancesErc20 = SocketMessageParamsGeneric<'updated_token_balances_erc_20', AddressTokensBalancesSocketMessage>;
   export type AddressTokenBalancesErc721 = SocketMessageParamsGeneric<'updated_token_balances_erc_721', AddressTokensBalancesSocketMessage>;
   export type AddressTokenBalancesErc1155 = SocketMessageParamsGeneric<'updated_token_balances_erc_1155', AddressTokensBalancesSocketMessage>;
+  export type AddressTokenBalancesErc404 = SocketMessageParamsGeneric<'updated_token_balances_erc_404', AddressTokensBalancesSocketMessage>;
   export type AddressCoinBalance = SocketMessageParamsGeneric<'coin_balance', { coin_balance: AddressCoinBalanceHistoryItem }>;
   export type AddressTxs = SocketMessageParamsGeneric<'transaction', { transactions: Array<Transaction> }>;
   export type AddressTxsPending = SocketMessageParamsGeneric<'pending_transaction', { transactions: Array<Transaction> }>;
