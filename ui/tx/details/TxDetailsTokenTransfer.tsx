@@ -1,4 +1,4 @@
-import { Flex, chakra } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type {
@@ -9,10 +9,10 @@ import type {
   Erc404TotalPayload,
 } from 'types/api/tokenTransfer';
 
-import getCurrencyValue from 'lib/getCurrencyValue';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
-import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import NftTokenTransferSnippet from 'ui/tx/NftTokenTransferSnippet';
+
+import FtTokenTransferSnippet from '../FtTokenTransferSnippet';
 
 interface Props {
   data: TTokenTransfer;
@@ -24,26 +24,7 @@ const TxDetailsTokenTransfer = ({ data }: Props) => {
     switch (data.token.type) {
       case 'ERC-20': {
         const total = data.total as Erc20TotalPayload;
-        const { valueStr, usd } = getCurrencyValue({
-          value: total.value,
-          exchangeRate: data.token.exchange_rate,
-          accuracyUsd: 2,
-          decimals: total.decimals,
-        });
-
-        return (
-          <>
-            <chakra.span color="text_secondary">for</chakra.span>
-            <span>{ valueStr }</span>
-            <TokenEntity
-              token={{ ...data.token, name: data.token.symbol || data.token.name }}
-              noCopy
-              noSymbol
-              w="auto"
-            />
-            { usd && <chakra.span color="text_secondary">(${ usd })</chakra.span> }
-          </>
-        );
+        return <FtTokenTransferSnippet token={ data.token } value={ total.value } decimals={ total.decimals }/>;
       }
 
       case 'ERC-721': {
@@ -71,16 +52,22 @@ const TxDetailsTokenTransfer = ({ data }: Props) => {
 
       case 'ERC-404': {
         const total = data.total as Erc404TotalPayload;
-        return (
-          <NftTokenTransferSnippet
-            token={ data.token }
-            tokenId={ 'token_id' in total ? total.token_id : null }
-            value={ 'value' in total && total.value ?
-              getCurrencyValue({ value: total.value, decimals: total.decimals || '0', accuracy: 2 }).valueStr :
-              '1'
-            }
-          />
-        );
+
+        if ('token_id' in total) {
+          return (
+            <NftTokenTransferSnippet
+              token={ data.token }
+              tokenId={ total.token_id }
+              value="1"
+            />
+          );
+        } else {
+          if (total.value === null) {
+            return null;
+          }
+
+          return <FtTokenTransferSnippet token={ data.token } value={ total.value } decimals={ total.decimals }/>;
+        }
       }
     }
   })();
