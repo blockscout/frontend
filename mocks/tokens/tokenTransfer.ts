@@ -208,6 +208,7 @@ export const erc404A: TokenTransfer = {
   total: {
     value: '42000000000000000000000000',
     decimals: '18',
+    token_id: null,
   },
   tx_hash: '0x05d6589367633c032d757a69c5fb16c0e33e3994b0d9d1483f82aeee1f05d746',
   type: 'token_transfer',

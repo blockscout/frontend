@@ -53,7 +53,7 @@ const TxDetailsTokenTransfer = ({ data }: Props) => {
       case 'ERC-404': {
         const total = data.total as Erc404TotalPayload;
 
-        if ('token_id' in total) {
+        if (total.token_id !== null) {
           return (
             <NftTokenTransferSnippet
               token={ data.token }
