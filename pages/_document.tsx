@@ -5,6 +5,7 @@ import React from 'react';
 
 import * as serverTiming from 'nextjs/utils/serverTiming';
 
+import getApiDataForSocialPreview from 'lib/metadata/getApiDataForSocialPreview';
 import theme from 'theme';
 import * as svgSprite from 'ui/shared/IconSvg';
 
@@ -20,6 +21,8 @@ class MyDocument extends Document {
 
       return result;
     };
+
+    await getApiDataForSocialPreview(ctx.req, ctx.res, ctx.pathname);
 
     const initialProps = await Document.getInitialProps(ctx);
 

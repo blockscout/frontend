@@ -19,6 +19,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/api/csrf">
     | StaticRoute<"/api/healthz">
     | StaticRoute<"/api/media-type">
+    | StaticRoute<"/api/metrics">
     | StaticRoute<"/api/proxy">
     | StaticRoute<"/api-docs">
     | DynamicRoute<"/apps/[id]", { "id": string }>

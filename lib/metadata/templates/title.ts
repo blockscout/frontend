@@ -46,6 +46,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
 
   // service routes, added only to make typescript happy
   '/login': 'login',
+  '/api/metrics': 'node API prometheus metrics',
   '/api/media-type': 'node API media type',
   '/api/proxy': 'node API proxy',
   '/api/csrf': 'node API CSRF token',
