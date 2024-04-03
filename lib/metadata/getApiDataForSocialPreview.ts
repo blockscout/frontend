@@ -2,10 +2,10 @@ import type { IncomingMessage, ServerResponse } from 'http';
 
 import { httpLogger } from 'nextjs/utils/logger';
 
-import * as metrics from 'lib/monitoring/metrics';
+import metrics from 'lib/monitoring/metrics';
 
 export default async function getApiDataForSocialPreview(req: IncomingMessage | undefined, res: ServerResponse<IncomingMessage> | undefined, pathname: string) {
-  if (!req || !res) {
+  if (!req || !res || !metrics) {
     return;
   }
 

@@ -1,9 +1,20 @@
 import * as promClient from 'prom-client';
 
-promClient.register.clear();
+const metrics = (() => {
+  // eslint-disable-next-line no-restricted-properties
+  if (process.env.PROMETHEUS_METRICS_ENABLED !== 'true') {
+    return;
+  }
 
-export const requestCounter = new promClient.Counter({
-  name: 'request_counter',
-  help: 'Number of incoming requests',
-  labelNames: [ 'route', 'is_bot', 'is_social_preview' ] as const,
-});
+  promClient.register.clear();
+
+  const requestCounter = new promClient.Counter({
+    name: 'request_counter',
+    help: 'Number of incoming requests',
+    labelNames: [ 'route', 'is_bot', 'is_social_preview' ] as const,
+  });
+
+  return { requestCounter };
+})();
+
+export default metrics;
