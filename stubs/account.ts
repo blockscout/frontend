@@ -48,6 +48,10 @@ export const WATCH_LIST_ITEM_WITH_TOKEN_INFO: WatchlistAddress = {
       incoming: true,
       outcoming: true,
     },
+    'ERC-404': {
+      incoming: true,
+      outcoming: true,
+    },
     'native': {
       incoming: true,
       outcoming: true,
