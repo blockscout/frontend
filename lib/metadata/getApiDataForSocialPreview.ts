@@ -17,11 +17,16 @@ export default async function getApiDataForSocialPreview(req: IncomingMessage | 
 
   if (userAgent.toLowerCase().includes('twitter')) {
     httpLogger(req, res);
-    metrics.requestCounter.inc({ route: pathname, is_bot: 'true', is_social_preview: 'true' });
+    metrics.requestCounter.inc({ route: pathname, bot: 'twitter' });
   }
 
   if (userAgent.toLowerCase().includes('facebook')) {
     httpLogger(req, res);
-    metrics.requestCounter.inc({ route: pathname, is_bot: 'true', is_social_preview: 'true' });
+    metrics.requestCounter.inc({ route: pathname, bot: 'facebook' });
+  }
+
+  if (userAgent.toLowerCase().includes('telegram')) {
+    httpLogger(req, res);
+    metrics.requestCounter.inc({ route: pathname, bot: 'telegram' });
   }
 }

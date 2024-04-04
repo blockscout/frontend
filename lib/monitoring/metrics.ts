@@ -11,7 +11,7 @@ const metrics = (() => {
   const requestCounter = new promClient.Counter({
     name: 'request_counter',
     help: 'Number of incoming requests',
-    labelNames: [ 'route', 'is_bot', 'is_social_preview' ] as const,
+    labelNames: [ 'route', 'bot' ] as const,
   });
 
   return { requestCounter };
