@@ -30,7 +30,9 @@
     "test:pw:detect-affected": "node ./deploy/tools/affected-tests/index.js",
     "test:jest": "jest",
     "test:jest:watch": "jest --watch",
-    "favicon:generate:dev": "./tools/scripts/favicon-generator.dev.sh"
+    "favicon:generate:dev": "./tools/scripts/favicon-generator.dev.sh",
+    "monitoring:prometheus:local": "docker run --name blockscout_prometheus -d -p 127.0.0.1:9090:9090 -v $(pwd)/prometheus.yml:/etc/prometheus/prometheus.yml prom/prometheus",
+    "monitoring:grafana:local": "docker run -d -p 4000:3000 --name=blockscout_grafana --user $(id -u) --volume $(pwd)/grafana:/var/lib/grafana grafana/grafana-enterprise"
   },
   "dependencies": {
     "@chakra-ui/react": "2.7.1",
@@ -87,6 +89,7 @@
     "phoenix": "^1.6.15",
     "pino-http": "^8.2.1",
     "pino-pretty": "^9.1.1",
+    "prom-client": "15.1.1",
     "qrcode": "^1.5.1",
     "react": "18.2.0",
     "react-device-detect": "^2.2.3",
