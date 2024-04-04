@@ -84,17 +84,17 @@ const FeaturedApp = ({
   return (
     <LinkBox role="group">
       <Flex
-        gap={{ base: 4, sm: 6 }}
-        borderRadius={{ base: '8px', sm: '12px' }}
-        height={{ base: '135px', sm: '136px' }}
-        padding={{ base: 3, sm: 5 }}
+        gap={ 6 }
+        borderRadius="md"
+        height="136px"
+        padding={ 5 }
         background={ backgroundColor }
         mb={ 6 }
       >
         <Skeleton
           isLoaded={ !isLoading }
-          w={{ base: '64px', sm: '96px' }}
-          h={{ base: '64px', sm: '96px' }}
+          w="96px"
+          h="96px"
           display="flex"
           alignItems="center"
           justifyContent="center"
@@ -102,7 +102,7 @@ const FeaturedApp = ({
           <Image
             src={ isLoading ? undefined : logoUrl }
             alt={ `${ title } app icon` }
-            borderRadius={{ base: '8px', sm: '12px' }}
+            borderRadius="md"
           />
         </Skeleton>
 
@@ -110,7 +110,7 @@ const FeaturedApp = ({
           <Flex alignItems="center" gap={ 3 }>
             <Skeleton
               isLoaded={ !isLoading }
-              fontSize={{ base: 'sm', sm: '30px' }}
+              fontSize="30px"
               fontWeight="semibold"
               fontFamily="heading"
               lineHeight="36px"
@@ -140,7 +140,7 @@ const FeaturedApp = ({
 
             { !isLoading && (
               <Link
-                fontSize={{ base: 'xs', sm: 'sm' }}
+                fontSize="sm"
                 fontWeight="500"
                 href="#"
                 onClick={ handleInfoClick }
@@ -170,7 +170,7 @@ const FeaturedApp = ({
 
           <Skeleton
             isLoaded={ !isLoading }
-            fontSize={{ base: 'xs', sm: 'sm' }}
+            fontSize="sm"
             lineHeight="20px"
             noOfLines={ 2 }
           >
@@ -199,7 +199,7 @@ const IframeBanner = () => {
       position="relative"
       h="136px"
       w="100%"
-      borderRadius="12px"
+      borderRadius="md"
       mb={{ base: 4, sm: 6 }}
       overflow="hidden"
     >
