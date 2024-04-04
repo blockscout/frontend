@@ -43,6 +43,8 @@ const FeaturedApp = ({
   const logoUrl = useColorModeValue(logo, logoDarkMode || logo);
   const categoriesLabel = categories.join(', ');
 
+  const backgroundColor = useColorModeValue('purple.50', 'purple.800');
+
   const onInfoClick = useCallback((id: string) => {
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'More button', Info: id, Source: 'Banner' });
     onInfoClickProp(id);
@@ -73,7 +75,7 @@ const FeaturedApp = ({
         _hover={{ boxShadow: 'none' }}
         _focusWithin={{ boxShadow: 'none' }}
         border="none"
-        background="purple.50"
+        background={ backgroundColor }
         mb={ 4 }
       />
     );
@@ -86,7 +88,7 @@ const FeaturedApp = ({
         borderRadius={{ base: '8px', sm: '12px' }}
         height={{ base: '135px', sm: '136px' }}
         padding={{ base: 3, sm: 5 }}
-        background="purple.50"
+        background={ backgroundColor }
         mb={ 6 }
       >
         <Skeleton
