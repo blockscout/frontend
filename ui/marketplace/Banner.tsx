@@ -1,12 +1,11 @@
-import { Link, Skeleton, useColorModeValue, LinkBox, Flex, Image, LinkOverlay, IconButton } from '@chakra-ui/react';
+import { Link, Skeleton, useColorModeValue, LinkBox, Flex, Image, LinkOverlay, IconButton, Box, useBreakpointValue } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import type { MouseEvent } from 'react';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import type { MarketplaceAppPreview } from 'types/client/marketplace';
 
 import config from 'configs/app';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';
 import { apps as appsMock } from 'mocks/apps/apps';
 import IconSvg from 'ui/shared/IconSvg';
@@ -38,7 +37,7 @@ const FeaturedApp = ({
   app, isFavorite, isLoading, onAppClick,
   onInfoClick: onInfoClickProp, onFavoriteClick: onFavoriteClickProp,
 }: FeaturedAppProps) => {
-  const isMobile = useIsMobile();
+  const isMobile = useBreakpointValue({ base: true, sm: false });
 
   const { id, url, external, title, logo, logoDarkMode, shortDescription, categories, internalWallet } = app;
   const logoUrl = useColorModeValue(logo, logoDarkMode || logo);
@@ -88,6 +87,7 @@ const FeaturedApp = ({
         height={{ base: '135px', sm: '136px' }}
         padding={{ base: 3, sm: 5 }}
         background="purple.50"
+        mb={ 6 }
       >
         <Skeleton
           isLoaded={ !isLoading }
@@ -180,6 +180,49 @@ const FeaturedApp = ({
   );
 };
 
+const IframeBanner = () => {
+  const [ isFrameLoading, setIsFrameLoading ] = useState(true);
+
+  const handleIframeLoad = useCallback(() => {
+    setIsFrameLoading(false);
+  }, []);
+
+  if (!feature.isEnabled) {
+    return null;
+  }
+
+  return (
+    <Skeleton
+      isLoaded={ !isFrameLoading }
+      position="relative"
+      h="136px"
+      w="100%"
+      borderRadius="12px"
+      mb={{ base: 4, sm: 6 }}
+    >
+      <Link
+        href={ feature.banner?.linkUrl }
+        target="_blank"
+        rel="noopener noreferrer"
+        position="absolute"
+        w="100%"
+        h="100%"
+        top={ 0 }
+        left={ 0 }
+        zIndex={ 1 }
+      />
+      <Box
+        as="iframe"
+        h="100%"
+        w="100%"
+        src={ feature.banner?.contentUrl }
+        title="Marketplace banner"
+        onLoad={ handleIframeLoad }
+      />
+    </Skeleton>
+  );
+};
+
 const Banner = ({ apps, favoriteApps, isLoading, onInfoClick, onFavoriteClick, onAppClick }: BannerProps) => {
   if (!feature.isEnabled) {
     return null;
@@ -201,6 +244,8 @@ const Banner = ({ apps, favoriteApps, isLoading, onInfoClick, onFavoriteClick, o
         onAppClick={ onAppClick }
       />
     );
+  } else if (feature.banner) {
+    return <IframeBanner/>;
   }
 
   return null;

@@ -12,7 +12,7 @@ const categoriesUrl = getExternalAssetFilePath('NEXT_PUBLIC_MARKETPLACE_CATEGORI
 const adminServiceApiHost = getEnvValue('NEXT_PUBLIC_ADMIN_SERVICE_API_HOST');
 const securityReportsUrl = getExternalAssetFilePath('NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL');
 const featuredApp = getEnvValue('NEXT_PUBLIC_MARKETPLACE_FEATURED_APP');
-const bannerImageUrl = getExternalAssetFilePath('NEXT_PUBLIC_MARKETPLACE_BANNER_IMAGE_URL');
+const bannerContentUrl = getExternalAssetFilePath('NEXT_PUBLIC_MARKETPLACE_BANNER_CONTENT_URL');
 const bannerLinkUrl = getEnvValue('NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL');
 
 const title = 'Marketplace';
@@ -26,7 +26,7 @@ const config: Feature<(
   suggestIdeasFormUrl: string | undefined;
   securityReportsUrl: string | undefined;
   featuredApp: string | undefined;
-  banner: { imageUrl: string; linkUrl: string } | undefined;
+  banner: { contentUrl: string; linkUrl: string } | undefined;
 }> = (() => {
   if (enabled === 'true' && chain.rpcUrl && submitFormUrl) {
     const props = {
@@ -35,8 +35,8 @@ const config: Feature<(
       suggestIdeasFormUrl,
       securityReportsUrl,
       featuredApp,
-      banner: bannerImageUrl && bannerLinkUrl ? {
-        imageUrl: bannerImageUrl,
+      banner: bannerContentUrl && bannerLinkUrl ? {
+        contentUrl: bannerContentUrl,
         linkUrl: bannerLinkUrl,
       } : undefined,
     };
