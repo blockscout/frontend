@@ -199,6 +199,7 @@ const IframeBanner = () => {
       w="100%"
       borderRadius="12px"
       mb={{ base: 4, sm: 6 }}
+      overflow="hidden"
     >
       <Link
         href={ feature.banner?.linkUrl }
