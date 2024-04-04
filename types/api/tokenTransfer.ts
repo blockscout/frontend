@@ -17,10 +17,11 @@ export type Erc1155TotalPayload = {
 }
 
 export type Erc404TotalPayload = {
-  decimals: string | null;
-  value: string | null;
+  decimals: string;
+  value: string;
+  token_id: null;
 } | {
-  token_id: string | null;
+  token_id: string;
 };
 
 export type TokenTransfer = (

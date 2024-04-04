@@ -27,6 +27,7 @@ const init = () => {
         '--w3m-z-index': zIndices.modal,
       },
       featuredWalletIds: [],
+      allowUnsupportedChain: true,
     });
   } catch (error) {}
 };

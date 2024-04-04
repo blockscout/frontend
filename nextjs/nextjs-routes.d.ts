@@ -18,7 +18,9 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/address/[hash]", { "hash": string }>
     | StaticRoute<"/api/csrf">
     | StaticRoute<"/api/healthz">
+    | StaticRoute<"/api/log">
     | StaticRoute<"/api/media-type">
+    | StaticRoute<"/api/metrics">
     | StaticRoute<"/api/proxy">
     | StaticRoute<"/api-docs">
     | DynamicRoute<"/apps/[id]", { "id": string }>
