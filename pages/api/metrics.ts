@@ -7,10 +7,6 @@ const isEnabled = process.env.PROMETHEUS_METRICS_ENABLED === 'true';
 isEnabled && promClient.collectDefaultMetrics();
 
 export default async function metricsHandler(req: NextApiRequest, res: NextApiResponse) {
-  if (!isEnabled) {
-    return res.status(404).send('Not found');
-  }
-
   const metrics = await promClient.register.metrics();
   res.setHeader('Content-type', promClient.register.contentType);
   res.send(metrics);
