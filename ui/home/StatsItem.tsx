@@ -27,7 +27,7 @@ const StatsItem = ({ icon, title, value, className, tooltip, url, isLoading }: P
     [`@media screen and (min-width: ${ breakpoints.lg }) and (max-width: ${ LARGEST_BREAKPOINT })`]: { alignItems: 'center' },
   };
 
-  const bgColor = useColorModeValue('blue.50', 'blue.800');
+  const bgColor = useColorModeValue('blue.50', 'whiteAlpha.100');
   const loadingBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
   return (
