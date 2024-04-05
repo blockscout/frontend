@@ -125,6 +125,7 @@ const MarketplaceAppModal = ({
             <Image
               src={ logoUrl }
               alt={ `${ title } app icon` }
+              borderRadius="md"
             />
           </Flex>
 
