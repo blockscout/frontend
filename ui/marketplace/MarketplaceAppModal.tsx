@@ -98,6 +98,12 @@ const MarketplaceAppModal = ({
   const isMobile = useIsMobile();
   const logoUrl = useColorModeValue(logo, logoDarkMode || logo);
 
+  function getHostname(url: string | undefined) {
+    try {
+      return new URL(url || '').hostname;
+    } catch (err) {}
+  }
+
   return (
     <Modal
       isOpen={ Boolean(data.id) }
@@ -260,7 +266,7 @@ const MarketplaceAppModal = ({
                 overflow="hidden"
                 textOverflow="ellipsis"
               >
-                { site }
+                { getHostname(site) }
               </Text>
             </Link>
           ) }
