@@ -43,7 +43,7 @@ const FeaturedApp = ({
   const logoUrl = useColorModeValue(logo, logoDarkMode || logo);
   const categoriesLabel = categories.join(', ');
 
-  const backgroundColor = useColorModeValue('purple.50', 'purple.800');
+  const backgroundColor = useColorModeValue('purple.50', 'whiteAlpha.100');
 
   const onInfoClick = useCallback((id: string) => {
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'More button', Info: id, Source: 'Banner' });
