@@ -22,7 +22,7 @@ const hooksConfig = {
 
 const test = base.extend<{ storageState: StorageState }>({
   storageState: storageState.fixture([
-    storageState.envMock('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL),
+    storageState.addEnv('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL),
   ]),
 });
 
@@ -67,7 +67,7 @@ test('submenu', async({ render, page }) => {
 const authTest = base.extend<{ storageState: StorageState }>({
   storageState: storageState.fixture([
     ...storageState.COOKIES.auth,
-    storageState.envMock('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL),
+    storageState.addEnv('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL),
   ]),
 });
 

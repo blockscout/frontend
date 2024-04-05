@@ -22,7 +22,7 @@ const FEATURED_NETWORKS_URL = 'https://localhost:3000/featured-networks.json';
 
 const test = base.extend<{ storageState: StorageState }>({
   storageState: storageState.fixture([
-    storageState.envMock('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL),
+    storageState.addEnv('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL),
   ]),
 });
 
@@ -55,7 +55,7 @@ test.describe('no auth', () => {
 const authTest = base.extend<{ storageState: StorageState }>({
   storageState: storageState.fixture([
     ...storageState.COOKIES.auth,
-    storageState.envMock('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL),
+    storageState.addEnv('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL),
   ]),
 });
 
@@ -134,8 +134,8 @@ test.describe('with submenu', () => {
 
 const noSideBarCookieTest = base.extend<{ storageState: StorageState }>({
   storageState: storageState.fixture([
-    storageState.envMock('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL),
-    storageState.cookieMock(cookies.NAMES.NAV_BAR_COLLAPSED, 'false'),
+    storageState.addEnv('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL),
+    storageState.addCookie(cookies.NAMES.NAV_BAR_COLLAPSED, 'false'),
   ]),
 });
 
@@ -169,8 +169,8 @@ noSideBarCookieTest.describe('cookie set to false', () => {
 
 const sideBarCookieTest = base.extend<{ storageState: StorageState }>({
   storageState: storageState.fixture([
-    storageState.envMock('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL),
-    storageState.cookieMock(cookies.NAMES.NAV_BAR_COLLAPSED, 'true'),
+    storageState.addEnv('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL),
+    storageState.addCookie(cookies.NAMES.NAV_BAR_COLLAPSED, 'true'),
   ]),
 });
 

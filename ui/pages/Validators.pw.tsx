@@ -11,7 +11,7 @@ const chainType = 'stability';
 
 const test = base.extend<{ storageState: StorageState }>({
   storageState: storageState.fixture([
-    storageState.envMock('NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE', chainType),
+    storageState.addEnv('NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE', chainType),
   ]),
 });
 

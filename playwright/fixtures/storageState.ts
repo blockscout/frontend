@@ -8,7 +8,7 @@ export type StorageState = Exclude<BrowserContextOptions['storageState'], undefi
 
 export const fixture: (items: Array<Item>) => TestFixture<StorageState, { page: Page }> = (items) => async({ }, use) => {
   const localStorage = items.filter(({ type }) => type === 'storage');
-  const cookies = items.filter(({ type }) => type === 'cookie') as Array<ReturnType<typeof cookieMock>>;
+  const cookies = items.filter(({ type }) => type === 'cookie') as Array<ReturnType<typeof addCookie>>;
 
   use({
     origins: [ { localStorage, origin: config.app.host ?? 'localhost' } ],
@@ -16,11 +16,11 @@ export const fixture: (items: Array<Item>) => TestFixture<StorageState, { page: 
   });
 };
 
-type Item = ReturnType<typeof envMock> | ReturnType<typeof featureMock> | ReturnType<typeof cookieMock>;
+type Item = ReturnType<typeof addEnv> | ReturnType<typeof addFeature> | ReturnType<typeof addCookie>;
 
-export const envMock = (name: string, value: string) => ({ name, value, type: 'storage' as const });
-export const featureMock = (name: string, value: unknown) => ({ name: `pw_feature:${ name }`, value: JSON.stringify(value), type: 'storage' as const });
-export const cookieMock = (name: string, value: string) => ({
+export const addEnv = (name: string, value: string) => ({ name, value, type: 'storage' as const });
+export const addFeature = (name: string, value: unknown) => ({ name: `pw_feature:${ name }`, value: JSON.stringify(value), type: 'storage' as const });
+export const addCookie = (name: string, value: string) => ({
   name,
   value,
   domain: config.app.host ?? 'localhost',
@@ -32,6 +32,6 @@ export const cookieMock = (name: string, value: string) => ({
   type: 'cookie' as const,
 });
 
-export const COOKIES: Record<string, Array<ReturnType<typeof cookieMock>>> = {
-  auth: [ cookieMock(cookies.NAMES.API_TOKEN, 'api-token') ],
+export const COOKIES: Record<string, Array<ReturnType<typeof addCookie>>> = {
+  auth: [ addCookie(cookies.NAMES.API_TOKEN, 'api-token') ],
 };
