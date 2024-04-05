@@ -182,16 +182,16 @@ const FeaturedApp = ({
   );
 };
 
-const IframeBanner = () => {
+const IframeBanner = ({ contentUrl, linkUrl }: { contentUrl: string; linkUrl: string }) => {
   const [ isFrameLoading, setIsFrameLoading ] = useState(true);
 
   const handleIframeLoad = useCallback(() => {
     setIsFrameLoading(false);
   }, []);
 
-  if (!feature.isEnabled) {
-    return null;
-  }
+  const handleClick = useCallback(() => {
+    mixpanel.logEvent(mixpanel.EventTypes.PROMO_BANNER, { Source: 'Marketplace', Link: linkUrl });
+  }, [ linkUrl ]);
 
   return (
     <Skeleton
@@ -204,9 +204,10 @@ const IframeBanner = () => {
       overflow="hidden"
     >
       <Link
-        href={ feature.banner?.linkUrl }
+        href={ linkUrl }
         target="_blank"
         rel="noopener noreferrer"
+        onClick={ handleClick }
         position="absolute"
         w="100%"
         h="100%"
@@ -218,7 +219,7 @@ const IframeBanner = () => {
         as="iframe"
         h="100%"
         w="100%"
-        src={ feature.banner?.contentUrl }
+        src={ contentUrl }
         title="Marketplace banner"
         onLoad={ handleIframeLoad }
       />
@@ -248,7 +249,7 @@ const Banner = ({ apps, favoriteApps, isLoading, onInfoClick, onFavoriteClick, o
       />
     );
   } else if (feature.banner) {
-    return <IframeBanner/>;
+    return <IframeBanner contentUrl={ feature.banner.contentUrl } linkUrl={ feature.banner.linkUrl }/>;
   }
 
   return null;
