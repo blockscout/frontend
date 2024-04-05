@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import type { TestFixture, Page, BrowserContextOptions } from '@playwright/test';
 
 import config from 'configs/app';
@@ -34,4 +35,15 @@ export const addCookie = (name: string, value: string) => ({
 
 export const COOKIES: Record<string, Array<ReturnType<typeof addCookie>>> = {
   auth: [ addCookie(cookies.NAMES.API_TOKEN, 'api-token') ],
+};
+
+export const ENVS: Record<string, Array<ReturnType<typeof addEnv>>> = {
+  shibariumRollup: [
+    addEnv('NEXT_PUBLIC_ROLLUP_TYPE', 'shibarium'),
+    addEnv('NEXT_PUBLIC_ROLLUP_L1_BASE_URL', 'https://localhost:3101'),
+  ],
+  bridgedTokens: [
+    addEnv('NEXT_PUBLIC_BRIDGED_TOKENS_CHAINS', '[{"id":"1","title":"Ethereum","short_title":"ETH","base_url":"https://eth.blockscout.com/token/"},{"id":"56","title":"Binance Smart Chain","short_title":"BSC","base_url":"https://bscscan.com/token/"},{"id":"99","title":"POA","short_title":"POA","base_url":"https://blockscout.com/poa/core/token/"}]'),
+    addEnv('NEXT_PUBLIC_BRIDGED_TOKENS_BRIDGES', '[{"type":"omni","title":"OmniBridge","short_title":"OMNI"},{"type":"amb","title":"Arbitrary Message Bridge","short_title":"AMB"}]'),
+  ],
 };
