@@ -2,16 +2,14 @@ import React from 'react';
 
 import * as mocks from 'mocks/account/verifiedAddresses';
 import * as profileMock from 'mocks/user/profile';
-import authFixture from 'playwright/fixtures/auth';
+import type { StorageState } from 'playwright/fixtures/storageState';
+import * as storageState from 'playwright/fixtures/storageState';
 import { test as base, expect } from 'playwright/lib';
 
 import VerifiedAddresses from './VerifiedAddresses';
 
-const test = base.extend({
-  context: ({ context }, use) => {
-    authFixture(context);
-    use(context);
-  },
+const test = base.extend<{ storageState: StorageState }>({
+  storageState: storageState.fixture(storageState.COOKIES.auth),
 });
 
 test.beforeEach(async({ mockAssetResponse }) => {

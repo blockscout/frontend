@@ -26,9 +26,9 @@ export const cookieMock = (name: string, value: string) => ({
   domain: config.app.host ?? 'localhost',
   path: '/',
   expires: (Date.now() + YEAR) / SECOND,
-  httpOnly: true,
-  sameSite: 'None' as const,
-  secure: true,
+  httpOnly: false,
+  sameSite: 'Lax' as const,
+  secure: false,
   type: 'cookie' as const,
 });
 

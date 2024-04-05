@@ -1,7 +1,8 @@
 import React from 'react';
 
 import * as profileMock from 'mocks/user/profile';
-import authFixture from 'playwright/fixtures/auth';
+import type { StorageState } from 'playwright/fixtures/storageState';
+import * as storageState from 'playwright/fixtures/storageState';
 import { test, expect } from 'playwright/lib';
 import * as app from 'playwright/utils/app';
 
@@ -20,11 +21,8 @@ test('no auth', async({ render, page }) => {
   expect(page.url()).toBe(`${ app.url }/auth/auth0?path=%2F`);
 });
 
-const authTest = test.extend({
-  context: ({ context }, use) => {
-    authFixture(context);
-    use(context);
-  },
+const authTest = test.extend<{ storageState: StorageState }>({
+  storageState: storageState.fixture(storageState.COOKIES.auth),
 });
 authTest('auth +@dark-mode', async({ render, page, mockApiResponse, mockAssetResponse }) => {
   await mockApiResponse('user_info', profileMock.base);

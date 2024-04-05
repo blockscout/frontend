@@ -7,6 +7,8 @@ import type { MockApiResponseFixture } from './fixtures/mockApiResponse';
 import mockApiResponseFixture from './fixtures/mockApiResponse';
 import type { MockAssetResponseFixture } from './fixtures/mockAssetResponse';
 import mockAssetResponseFixture from './fixtures/mockAssetResponse';
+import type { MockConfigResponseFixture } from './fixtures/mockConfigResponse';
+import mockConfigResponseFixture from './fixtures/mockConfigResponse';
 import type { RenderFixture } from './fixtures/render';
 import renderFixture from './fixtures/render';
 import type { CreateSocketFixture } from './fixtures/socketServer';
@@ -16,6 +18,7 @@ interface Fixtures {
   render: RenderFixture;
   mockApiResponse: MockApiResponseFixture;
   mockAssetResponse: MockAssetResponseFixture;
+  mockConfigResponse: MockConfigResponseFixture;
   createSocket: CreateSocketFixture;
 }
 
@@ -23,6 +26,7 @@ const test = base.extend<Fixtures>({
   render: renderFixture,
   mockApiResponse: mockApiResponseFixture,
   mockAssetResponse: mockAssetResponseFixture,
+  mockConfigResponse: mockConfigResponseFixture,
   createSocket: createSocketFixture,
 });
 
