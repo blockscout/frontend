@@ -35,7 +35,7 @@ const testFn: Parameters<typeof test>[1] = async({ mount, page }) => {
   const component = await mount(
     <TestApp>
       { /* added Flex as a Layout because the iframe has negative margins */ }
-      <Flex flexDirection="column" mx={{ base: 4, lg: 6 }}>
+      <Flex flexDirection="column" mx={{ base: 4, lg: 6 }} h="100vh">
         <MarketplaceApp/>
       </Flex>
     </TestApp>,
