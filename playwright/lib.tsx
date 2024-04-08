@@ -3,16 +3,18 @@ import { test as base } from '@playwright/experimental-ct-react';
 
 import * as textAdMock from 'mocks/ad/textAd';
 
+import type { InjectMetaMaskProvider } from './fixtures/injectMetaMaskProvider';
+import injectMetaMaskProvider from './fixtures/injectMetaMaskProvider';
 import type { MockApiResponseFixture } from './fixtures/mockApiResponse';
-import mockApiResponseFixture from './fixtures/mockApiResponse';
+import mockApiResponse from './fixtures/mockApiResponse';
 import type { MockAssetResponseFixture } from './fixtures/mockAssetResponse';
-import mockAssetResponseFixture from './fixtures/mockAssetResponse';
+import mockAssetResponse from './fixtures/mockAssetResponse';
 import type { MockConfigResponseFixture } from './fixtures/mockConfigResponse';
-import mockConfigResponseFixture from './fixtures/mockConfigResponse';
+import mockConfigResponse from './fixtures/mockConfigResponse';
 import type { RenderFixture } from './fixtures/render';
-import renderFixture from './fixtures/render';
+import render from './fixtures/render';
 import type { CreateSocketFixture } from './fixtures/socketServer';
-import { createSocket as createSocketFixture } from './fixtures/socketServer';
+import { createSocket } from './fixtures/socketServer';
 
 interface Fixtures {
   render: RenderFixture;
@@ -20,14 +22,16 @@ interface Fixtures {
   mockAssetResponse: MockAssetResponseFixture;
   mockConfigResponse: MockConfigResponseFixture;
   createSocket: CreateSocketFixture;
+  injectMetaMaskProvider: InjectMetaMaskProvider;
 }
 
 const test = base.extend<Fixtures>({
-  render: renderFixture,
-  mockApiResponse: mockApiResponseFixture,
-  mockAssetResponse: mockAssetResponseFixture,
-  mockConfigResponse: mockConfigResponseFixture,
-  createSocket: createSocketFixture,
+  render,
+  mockApiResponse,
+  mockAssetResponse,
+  mockConfigResponse,
+  createSocket,
+  injectMetaMaskProvider,
 });
 
 test.beforeEach(async({ page }) => {

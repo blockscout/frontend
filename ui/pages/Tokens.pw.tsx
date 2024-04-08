@@ -77,7 +77,7 @@ bridgedTokenTest.describe('bridged tokens', async() => {
     },
   };
 
-  bridgedTokenTest.only('base view', async({ render, page, mockApiResponse }) => {
+  bridgedTokenTest('base view', async({ render, page, mockApiResponse }) => {
     await mockApiResponse('tokens_bridged', bridgedTokens);
     await mockApiResponse('tokens_bridged', bridgedFilteredTokens, { queryParams: { chain_ids: '99' } });
 

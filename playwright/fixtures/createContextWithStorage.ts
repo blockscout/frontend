@@ -1,6 +1,6 @@
 import type { Browser } from '@playwright/test';
 
-import * as app from 'playwright/utils/app';
+import config from 'configs/app';
 
 /**
  * @deprecated please use storageState fixture
@@ -14,7 +14,7 @@ export default async function createContextWithEnvs(browser: Browser, localStora
   return browser.newContext({
     storageState: {
       origins: [
-        { origin: app.url, localStorage },
+        { origin: config.app.baseUrl, localStorage },
       ],
       cookies: [],
     },
