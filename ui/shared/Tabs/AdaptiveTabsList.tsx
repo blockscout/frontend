@@ -24,7 +24,7 @@ interface Props extends TabsProps {
   activeTabIndex: number;
   onItemClick: (index: number) => void;
   themeProps: ThemingProps<'Tabs'>;
-  isLoading: boolean;
+  isLoading?: boolean;
 }
 
 const AdaptiveTabsList = (props: Props) => {

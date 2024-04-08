@@ -80,7 +80,7 @@ const AddressPageContent = () => {
         id: 'txs',
         title: 'Transactions',
         count: addressTabsCountersQuery.data?.transactions_count,
-        component: ({ onLoad }: { onLoad: () => void }) => <AddressTxs scrollRef={ tabsScrollRef } onLoad={ onLoad }/>,
+        component: <AddressTxs scrollRef={ tabsScrollRef }/>,
       },
       txInterpretation.isEnabled && txInterpretation.provider === 'noves' ?
         {

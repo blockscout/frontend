@@ -80,9 +80,11 @@ const TabsWithScroll = ({
 
   const renderContent = React.useCallback((component: TabItem['component']) => {
     // if (typeof component === 'function') {
-    //   return component({ onLoad: handleLoad });
+    //   return component();
     // }
 
+    // there is a possibility that tab data was shown before we received counters and tab was deleted
+    // add tabs loading prop to the component?
     return component;
   }, [ ]);
 
