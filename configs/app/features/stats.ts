@@ -1,4 +1,5 @@
 import type { Feature } from './types';
+
 import stripTrailingSlash from 'lib/stripTrailingSlash';
 
 import { getEnvValue } from '../utils';
