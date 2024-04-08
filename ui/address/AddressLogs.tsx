@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import useIsMounted from 'lib/hooks/useIsMounted';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { LOG } from 'stubs/log';
 import { generateListStub } from 'stubs/utils';
@@ -14,6 +15,7 @@ import AddressCsvExportLink from './AddressCsvExportLink';
 
 const AddressLogs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}) => {
   const router = useRouter();
+  const isMounted = useIsMounted();
 
   const hash = getQueryParamString(router.query.hash);
   const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
@@ -40,6 +42,10 @@ const AddressLogs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>
       <Pagination ml={{ base: 0, lg: 8 }} { ...pagination }/>
     </ActionBar>
   );
+
+  if (!isMounted) {
+    return null;
+  }
 
   const content = data?.items ? data.items.map((item, index) => <LogItem key={ index } { ...item } type="address" isLoading={ isPlaceholderData }/>) : null;
 

@@ -17,9 +17,10 @@ interface Props extends ThemingProps<'Tabs'> {
   stickyEnabled?: boolean;
   className?: string;
   onTabChange?: (index: number) => void;
+  isLoading?: boolean;
 }
 
-const RoutedTabs = ({ tabs, tabListProps, rightSlot, rightSlotProps, stickyEnabled, className, onTabChange, ...themeProps }: Props) => {
+const RoutedTabs = ({ tabs, tabListProps, rightSlot, rightSlotProps, stickyEnabled, className, onTabChange, isLoading, ...themeProps }: Props) => {
   const router = useRouter();
   const tabIndex = useTabIndexFromQuery(tabs);
   const tabsRef = useRef<HTMLDivElement>(null);
@@ -63,6 +64,7 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, rightSlotProps, stickyEnabl
       stickyEnabled={ stickyEnabled }
       onTabChange={ handleTabChange }
       defaultTabIndex={ tabIndex }
+      isLoading={ isLoading }
       { ...themeProps }
     />
   );

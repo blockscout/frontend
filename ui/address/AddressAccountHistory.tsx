@@ -7,6 +7,7 @@ import type { NovesHistoryFilterValue } from 'types/api/noves';
 import { NovesHistoryFilterValues } from 'types/api/noves';
 
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
+import useIsMounted from 'lib/hooks/useIsMounted';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { NOVES_TRANSLATE } from 'stubs/noves/NovesTranslate';
 import { generateListStub } from 'stubs/utils';
@@ -29,6 +30,7 @@ type Props = {
 
 const AddressAccountHistory = ({ scrollRef }: Props) => {
   const router = useRouter();
+  const isMounted = useIsMounted();
 
   const currentAddress = getQueryParamString(router.query.hash).toLowerCase();
 
@@ -48,6 +50,10 @@ const AddressAccountHistory = ({ scrollRef }: Props) => {
     const newVal = getFilterValue(val);
     setFilterValue(newVal);
   }, [ ]);
+
+  if (!isMounted) {
+    return null;
+  }
 
   const actionBar = (
     <ActionBar mt={ -6 } pb={{ base: 6, md: 5 }}>

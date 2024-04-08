@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import useIsMounted from 'lib/hooks/useIsMounted';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { USER_OPS_ITEM } from 'stubs/userOps';
 import { generateListStub } from 'stubs/utils';
@@ -13,6 +14,7 @@ type Props = {
 
 const AddressUserOps = ({ scrollRef }: Props) => {
   const router = useRouter();
+  const isMounted = useIsMounted();
 
   const hash = getQueryParamString(router.query.hash);
 
@@ -28,6 +30,10 @@ const AddressUserOps = ({ scrollRef }: Props) => {
     },
     filters: { sender: hash },
   });
+
+  if (!isMounted) {
+    return null;
+  }
 
   return <UserOpsContent query={ userOpsQuery } showSender={ false }/>;
 };

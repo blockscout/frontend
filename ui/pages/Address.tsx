@@ -1,5 +1,4 @@
 import { Box, Flex, HStack, useColorModeValue } from '@chakra-ui/react';
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -17,7 +16,7 @@ import AddressAccountHistory from 'ui/address/AddressAccountHistory';
 import AddressBlocksValidated from 'ui/address/AddressBlocksValidated';
 import AddressCoinBalance from 'ui/address/AddressCoinBalance';
 import AddressContract from 'ui/address/AddressContract';
-// import AddressDetails from 'ui/address/AddressDetails';
+import AddressDetails from 'ui/address/AddressDetails';
 import AddressInternalTxs from 'ui/address/AddressInternalTxs';
 import AddressLogs from 'ui/address/AddressLogs';
 import AddressTokens from 'ui/address/AddressTokens';
@@ -40,8 +39,6 @@ import IconSvg from 'ui/shared/IconSvg';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
-
-const AddressDetails = dynamic(() => import('ui/address/AddressDetails'), { ssr: false });
 
 const TOKEN_TABS = [ 'tokens_erc20', 'tokens_nfts', 'tokens_nfts_collection', 'tokens_nfts_list' ];
 
@@ -148,6 +145,7 @@ const AddressPageContent = () => {
           component: <AddressLogs scrollRef={ tabsScrollRef }/>,
         } :
         undefined,
+      // ???????
       addressQuery.data?.is_contract ? {
         id: 'contract',
         title: () => {
@@ -185,7 +183,9 @@ const AddressPageContent = () => {
     />
   );
 
-  const content = (addressQuery.isError || addressQuery.isDegradedData) ? null : <RoutedTabs tabs={ tabs } tabListProps={{ mt: 8 }}/>;
+  const content = (addressQuery.isError || addressQuery.isDegradedData) ?
+    null :
+    <RoutedTabs tabs={ tabs } tabListProps={{ mt: 8 }} isLoading={ isLoading || addressTabsCountersQuery.isPlaceholderData }/>;
 
   const backLink = React.useMemo(() => {
     const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/accounts');
