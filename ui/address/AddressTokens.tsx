@@ -28,7 +28,8 @@ import TokenBalances from './tokens/TokenBalances';
 type TNftDisplayType = 'collection' | 'list';
 
 const TAB_LIST_PROPS = {
-  my: 3,
+  mt: 1,
+  mb: { base: 6, lg: 1 },
   py: 5,
   columnGap: 3,
 };
