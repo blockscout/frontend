@@ -15,6 +15,7 @@ export type Props = {
   q: string;
   name: string;
   adBannerProvider: string;
+  apiData?: Record<string, unknown>;
 }
 
 export const base: GetServerSideProps<Props> = async({ req, query }) => {
