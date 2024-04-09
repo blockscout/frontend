@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import React from 'react';
-import { useAccount, useWalletClient, useNetwork, useSwitchNetwork } from 'wagmi';
+import { useAccount, useWalletClient, useSwitchChain } from 'wagmi';
 
 import type { SmartContractWriteMethod } from 'types/api/contract';
 
@@ -14,16 +14,15 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import ContractConnectWallet from './ContractConnectWallet';
 import ContractCustomAbiAlert from './ContractCustomAbiAlert';
 import ContractImplementationAddress from './ContractImplementationAddress';
-import ContractMethodCallable from './ContractMethodCallable';
 import ContractWriteResult from './ContractWriteResult';
+import ContractMethodForm from './methodForm/ContractMethodForm';
 import useContractAbi from './useContractAbi';
 import { getNativeCoinValue, prepareAbi } from './utils';
 
 const ContractWrite = () => {
   const { data: walletClient } = useWalletClient();
-  const { isConnected } = useAccount();
-  const { chain } = useNetwork();
-  const { switchNetworkAsync } = useSwitchNetwork();
+  const { isConnected, chainId } = useAccount();
+  const { switchChainAsync } = useSwitchChain();
 
   const router = useRouter();
 
@@ -39,18 +38,19 @@ const ContractWrite = () => {
     },
     queryOptions: {
       enabled: Boolean(addressHash),
+      refetchOnMount: false,
     },
   });
 
   const contractAbi = useContractAbi({ addressHash, isProxy, isCustomAbi });
 
-  const handleMethodFormSubmit = React.useCallback(async(item: SmartContractWriteMethod, args: Array<string | Array<unknown>>) => {
+  const handleMethodFormSubmit = React.useCallback(async(item: SmartContractWriteMethod, args: Array<unknown>) => {
     if (!isConnected) {
       throw new Error('Wallet is not connected');
     }
 
-    if (chain?.id && String(chain.id) !== config.chain.id) {
-      await switchNetworkAsync?.(Number(config.chain.id));
+    if (chainId && String(chainId) !== config.chain.id) {
+      await switchChainAsync?.({ chainId: Number(config.chain.id) });
     }
 
     if (!contractAbi) {
@@ -66,34 +66,35 @@ const ContractWrite = () => {
       return { hash };
     }
 
-    const _args = 'stateMutability' in item && item.stateMutability === 'payable' ? args.slice(0, -1) : args;
-    const value = 'stateMutability' in item && item.stateMutability === 'payable' ? getNativeCoinValue(args[args.length - 1]) : undefined;
     const methodName = item.name;
 
     if (!methodName) {
       throw new Error('Method name is not defined');
     }
 
+    const _args = args.slice(0, item.inputs.length);
+    const value = getNativeCoinValue(args[item.inputs.length]);
     const abi = prepareAbi(contractAbi, item);
+
     const hash = await walletClient?.writeContract({
       args: _args,
       abi,
       functionName: methodName,
       address: addressHash as `0x${ string }`,
-      value: value as undefined,
+      value,
     });
 
     return { hash };
-  }, [ isConnected, chain, contractAbi, walletClient, addressHash, switchNetworkAsync ]);
+  }, [ isConnected, chainId, contractAbi, walletClient, addressHash, switchChainAsync ]);
 
   const renderItemContent = React.useCallback((item: SmartContractWriteMethod, index: number, id: number) => {
     return (
-      <ContractMethodCallable
+      <ContractMethodForm
         key={ id + '_' + index }
         data={ item }
         onSubmit={ handleMethodFormSubmit }
         resultComponent={ ContractWriteResult }
-        isWrite
+        methodType="write"
       />
     );
   }, [ handleMethodFormSubmit ]);

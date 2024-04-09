@@ -10,18 +10,20 @@ import shortenUniversalProfile from '../../lib/shortenUniversalProfile';
 interface Props {
   hash: string;
   isTooltipDisabled?: boolean;
+  type?: 'long' | 'short';
   as?: As;
 }
 
-const HashStringShorten = ({ hash, isTooltipDisabled, as = 'span' }: Props) => {
-  const [ shortenedString, setShortenedString ] = useState(shortenString(hash));
+const HashStringShorten = ({ hash, isTooltipDisabled, as = 'span', type }: Props) => {
+  const charNumber = type === 'long' ? 16 : 8;
+  const [ shortenedString, setShortenedString ] = useState(shortenString(hash, charNumber));
   useEffect(() => {
     if (isUniversalProfileEnabled() && hash.includes(' (')) {
       setShortenedString(shortenUniversalProfile(hash));
     }
   }, [ hash ]);
 
-  if (hash.length <= 8) {
+  if (hash.length <= charNumber) {
     return <chakra.span as={ as }>{ hash }</chakra.span>;
   }
 

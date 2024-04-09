@@ -1,0 +1,10 @@
+{
+  "name": "affected-tests",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Vasilii (tom) Goriunov <tom@ohhhh.me>",
+  "license": "MIT",
+  "dependencies": {
+    "dependency-tree": "10.0.9"
+  }
+}

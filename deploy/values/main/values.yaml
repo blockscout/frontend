@@ -78,7 +78,9 @@ blockscout:
     INDEXER_DISABLE_EMPTY_BLOCKS_SANITIZER: 'true'
     INDEXER_DISABLE_PENDING_TRANSACTIONS_FETCHER: 'true'
     INDEXER_RECEIPTS_BATCH_SIZE: 50
-    INDEXER_COIN_BALANCES_BATCH_SIZE: 50
+    INDEXER_COIN_BALANCES_BATCH_SIZE: 10
+    INDEXER_TOKEN_BALANCES_BATCH_SIZE: 15
+    INDEXER_TOKEN_BALANCES_CONCURRENCY: 4
     DISABLE_EXCHANGE_RATES: 'true'
     DISABLE_INDEXER: 'false'
     FIRST_BLOCK: '8739119'
@@ -146,20 +148,26 @@ frontend:
     NEXT_PUBLIC_NETWORK_ICON: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-icons/goerli.svg
 
     NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE: validation
+    NEXT_PUBLIC_MARKETPLACE_ENABLED: true
     NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM: https://airtable.com/shrqUAcjgGJ4jU88C
+    NEXT_PUBLIC_MARKETPLACE_SUGGEST_IDEAS_FORM: https://airtable.com/appiy5yijZpMMSKjT/pag3t82DUCyhGRZZO/form
     NEXT_PUBLIC_APP_ENV: development
     NEXT_PUBLIC_APP_INSTANCE: main
     NEXT_PUBLIC_STATS_API_HOST: https://stats-test.k8s-dev.blockscout.com/
     NEXT_PUBLIC_VISUALIZE_API_HOST: http://visualizer-svc.visualizer-testing.svc.cluster.local/
     NEXT_PUBLIC_CONTRACT_INFO_API_HOST: https://contracts-info-test.k8s-dev.blockscout.com
     NEXT_PUBLIC_ADMIN_SERVICE_API_HOST: https://admin-rs-test.k8s-dev.blockscout.com
+    NEXT_PUBLIC_NAME_SERVICE_API_HOST: https://bens-rs-test.k8s-dev.blockscout.com
     NEXT_PUBLIC_LOGOUT_URL: https://blockscoutcom.us.auth0.com/v2/logout
     NEXT_PUBLIC_NETWORK_RPC_URL: https://rpc.ankr.com/eth_goerli
     NEXT_PUBLIC_HOMEPAGE_CHARTS: "['daily_txs','coin_price','market_cap']"
     NEXT_PUBLIC_MARKETPLACE_CONFIG_URL: https://raw.githubusercontent.com/blockscout/frontend-configs/dev/configs/marketplace/eth-goerli.json
+    NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL: https://raw.githubusercontent.com/blockscout/frontend-configs/dev/configs/marketplace-categories/default.json
     NEXT_PUBLIC_GRAPHIQL_TRANSACTION: 0xf7d4972356e6ae44ae948d0cf19ef2beaf0e574c180997e969a2837da15e349d
     NEXT_PUBLIC_WEB3_WALLETS: "['token_pocket','coinbase','metamask']"
     NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES: "[{'name':'LooksRare','collection_url':'https://goerli.looksrare.org/collections/{hash}','instance_url':'https://goerli.looksrare.org/collections/{hash}/{id}','logo_url':'https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/nft-marketplace-logos/looks-rare.png'}]"
+    NEXT_PUBLIC_CONTRACT_CODE_IDES: "[{'title':'Remix IDE','url':'https://remix.blockscout.com/?address={hash}&blockscout=eth-goerli.blockscout.com','icon_url':'https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/ide-icons/remix.png'}]"
+    NEXT_PUBLIC_SWAP_BUTTON_URL: uniswap
   envFromSecret:
     NEXT_PUBLIC_SENTRY_DSN: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_SENTRY_DSN
     SENTRY_CSP_REPORT_URI: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/SENTRY_CSP_REPORT_URI

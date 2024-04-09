@@ -42,7 +42,7 @@ const ContractVerificationFieldAddress = ({ isReadOnly }: Props) => {
           Contract address to verify
         </chakra.span>
       </ContractVerificationFormRow>
-      <ContractVerificationFormRow mb={ 3 }>
+      <ContractVerificationFormRow>
         <Controller
           name="address"
           control={ control }

@@ -6,6 +6,7 @@ import type { AddressesItem } from 'types/api/addresses';
 
 import config from 'configs/app';
 import { ZERO } from 'lib/consts';
+import { currencyUnits } from 'lib/units';
 import Tag from 'ui/shared/chakra/Tag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
@@ -34,6 +35,7 @@ const AddressesListItem = ({
           isLoading={ isLoading }
           fontWeight={ 700 }
           mr={ 2 }
+          truncation="constant"
         />
         <Skeleton isLoaded={ !isLoading } fontSize="sm" ml="auto" minW={ 6 } color="text_secondary">
           <span>{ index }</span>
@@ -42,9 +44,9 @@ const AddressesListItem = ({
       { item.public_tags !== null && item.public_tags.length > 0 && item.public_tags.map(tag => (
         <Tag key={ tag.label } isLoading={ isLoading }>{ tag.display_name }</Tag>
       )) }
-      <HStack spacing={ 3 }>
-        <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>{ `Balance ${ config.chain.currency.symbol }` }</Skeleton>
-        <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary">
+      <HStack spacing={ 3 } maxW="100%" alignItems="flex-start">
+        <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 } flexShrink={ 0 }>{ `Balance ${ currencyUnits.ether }` }</Skeleton>
+        <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary" minW="0" whiteSpace="pre-wrap">
           <span>{ addressBalance.dp(8).toFormat() }</span>
         </Skeleton>
       </HStack>

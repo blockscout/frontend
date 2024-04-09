@@ -12,6 +12,7 @@ export interface Address extends UserTags {
   creator_address_hash: string | null;
   creation_tx_hash: string | null;
   exchange_rate: string | null;
+  ens_domain_name: string | null;
   // TODO: if we are happy with tabs-counters method, should we delete has_something fields?
   has_beacon_chain_withdrawals?: boolean;
   has_custom_methods_read: boolean;
@@ -38,7 +39,7 @@ export interface Address extends UserTags {
 export interface AddressCounters {
   transactions_count: string;
   token_transfers_count: string;
-  gas_usage_count: string;
+  gas_usage_count: string | null;
   validations_count: string | null;
 }
 

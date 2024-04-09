@@ -6,13 +6,13 @@ import config from 'configs/app';
 
 import * as BlockEntity from './BlockEntity';
 
-const feature = config.features.optimisticRollup;
+const rollupFeature = config.features.rollup;
 
 const BlockEntityL2 = (props: BlockEntity.EntityProps) => {
   const linkProps = _omit(props, [ 'className' ]);
   const partsProps = _omit(props, [ 'className', 'onClick' ]);
 
-  if (!feature.isEnabled) {
+  if (!rollupFeature.isEnabled) {
     return null;
   }
 

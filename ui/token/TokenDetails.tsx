@@ -9,6 +9,7 @@ import type { TokenInfo } from 'types/api/token';
 
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
+import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import { TOKEN_COUNTERS } from 'stubs/token';
 import type { TokenTabs } from 'ui/pages/Token';
@@ -63,9 +64,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
     );
   }, [ tokenCountersQuery.data, tokenCountersQuery.isPlaceholderData, changeUrlAndScroll ]);
 
-  if (tokenQuery.isError) {
-    throw Error('Token fetch error', { cause: tokenQuery.error as unknown as Error });
-  }
+  throwOnResourceLoadError(tokenQuery);
 
   const {
     exchange_rate: exchangeRate,
@@ -78,7 +77,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
 
   let totalSupplyValue;
 
-  if (type === 'ERC-20') {
+  if (decimals) {
     const totalValue = totalSupply ? getCurrencyValue({ value: totalSupply, accuracy: 3, accuracyUsd: 2, exchangeRate, decimals }) : undefined;
     totalSupplyValue = totalValue?.valueStr;
   } else {

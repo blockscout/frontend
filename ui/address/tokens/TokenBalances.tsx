@@ -6,6 +6,7 @@ import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { ZERO } from 'lib/consts';
 import getCurrencyValue from 'lib/getCurrencyValue';
+import { currencyUnits } from 'lib/units';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
 import { getTokensTotalInfo } from '../utils/tokenUtils';
@@ -52,8 +53,8 @@ const TokenBalances = () => {
         isLoading={ addressQuery.isPending || tokenQuery.isPending }
       />
       <TokenBalancesItem
-        name={ `${ config.chain.currency.symbol } Balance` }
-        value={ (!nativeUsd.eq(ZERO) ? `$${ nativeUsd.toFormat(2) } USD | ` : '') + `${ nativeValue } ${ config.chain.currency.symbol }` }
+        name={ `${ currencyUnits.ether } Balance` }
+        value={ (!nativeUsd.eq(ZERO) ? `$${ nativeUsd.toFormat(2) } USD | ` : '') + `${ nativeValue } ${ currencyUnits.ether }` }
         isLoading={ addressQuery.isPending || tokenQuery.isPending }
       />
       <TokenBalancesItem

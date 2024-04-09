@@ -1,16 +1,14 @@
 import React from 'react';
-import type { WindowProvider } from 'wagmi';
-
-import 'wagmi/window';
 
 import type { WalletType } from 'types/client/wallets';
+import type { WalletProvider } from 'types/web3';
 
 import config from 'configs/app';
 
 const feature = config.features.web3Wallet;
 
 export default function useProvider() {
-  const [ provider, setProvider ] = React.useState<WindowProvider>();
+  const [ provider, setProvider ] = React.useState<WalletProvider>();
   const [ wallet, setWallet ] = React.useState<WalletType>();
 
   const initializeProvider = React.useMemo(() => async() => {

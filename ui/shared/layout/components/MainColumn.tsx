@@ -14,7 +14,7 @@ const MainColumn = ({ children, className }: Props) => {
       flexGrow={ 1 }
       w={{ base: '100%', lg: 'auto' }}
       paddingX={{ base: 4, lg: 12 }}
-      paddingTop={{ base: `${ 32 + 60 }px`, lg: 9 }} // 32px is top padding of content area, 60px is search bar height
+      paddingTop={{ base: `${ 12 + 52 }px`, lg: 6 }} // 12px is top padding of content area, 52px is search bar height
       paddingBottom={ 10 }
     >
       { children }

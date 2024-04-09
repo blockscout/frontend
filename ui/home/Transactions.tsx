@@ -7,13 +7,14 @@ import LatestDeposits from 'ui/home/LatestDeposits';
 import LatestTxs from 'ui/home/LatestTxs';
 import LatestWatchlistTxs from 'ui/home/LatestWatchlistTxs';
 import TabsWithScroll from 'ui/shared/Tabs/TabsWithScroll';
+const rollupFeature = config.features.rollup;
 
 const TransactionsHome = () => {
   const hasAccount = useHasAccount();
-  if (config.features.optimisticRollup.isEnabled || hasAccount) {
+  if ((rollupFeature.isEnabled && rollupFeature.type === 'optimistic') || hasAccount) {
     const tabs = [
       { id: 'txn', title: 'Latest txn', component: <LatestTxs/> },
-      config.features.optimisticRollup.isEnabled && { id: 'deposits', title: 'Deposits (L1→L2 txn)', component: <LatestDeposits/> },
+      rollupFeature.isEnabled && rollupFeature.type === 'optimistic' && { id: 'deposits', title: 'Deposits (L1→L2 txn)', component: <LatestDeposits/> },
       hasAccount && { id: 'watchlist', title: 'Watch list', component: <LatestWatchlistTxs/> },
     ].filter(Boolean);
     return (

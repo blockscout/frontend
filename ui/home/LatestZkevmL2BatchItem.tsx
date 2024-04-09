@@ -6,12 +6,12 @@ import {
 import { motion } from 'framer-motion';
 import React from 'react';
 
-import type { ZkEvmL2TxnBatchesItem } from 'types/api/zkEvmL2TxnBatches';
+import type { ZkEvmL2TxnBatchesItem } from 'types/api/zkEvmL2';
 
 import { route } from 'nextjs-routes';
 
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
-import ZkEvmBatchEntityL2 from 'ui/shared/entities/block/ZkEvmBatchEntityL2';
+import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import LinkInternal from 'ui/shared/LinkInternal';
 import ZkEvmL2TxnBatchStatus from 'ui/shared/statusTag/ZkEvmL2TxnBatchStatus';
 
@@ -35,7 +35,7 @@ const LatestZkevmL2BatchItem = ({ batch, isLoading }: Props) => {
       p={ 6 }
     >
       <Flex alignItems="center" overflow="hidden" w="100%" mb={ 3 }>
-        <ZkEvmBatchEntityL2
+        <BatchEntityL2
           isLoading={ isLoading }
           number={ batch.number }
           tailLength={ 2 }
@@ -57,7 +57,7 @@ const LatestZkevmL2BatchItem = ({ batch, isLoading }: Props) => {
         <Flex alignItems="center">
           <Skeleton isLoaded={ !isLoading } mr={ 2 }>Txn</Skeleton>
           <LinkInternal
-            href={ route({ pathname: '/zkevm-l2-txn-batch/[number]', query: { number: batch.number.toString(), tab: 'txs' } }) }
+            href={ route({ pathname: '/batches/[number]', query: { number: batch.number.toString(), tab: 'txs' } }) }
             isLoading={ isLoading }
           >
             <Skeleton isLoaded={ !isLoading }>

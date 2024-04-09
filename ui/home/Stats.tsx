@@ -8,16 +8,20 @@ import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { WEI } from 'lib/consts';
 import { HOMEPAGE_STATS } from 'stubs/stats';
-import GasInfoTooltipContent from 'ui/shared/GasInfoTooltipContent/GasInfoTooltipContent';
+import GasInfoTooltip from 'ui/shared/gas/GasInfoTooltip';
+import GasPrice from 'ui/shared/gas/GasPrice';
+import IconSvg from 'ui/shared/IconSvg';
 
 import StatsItem from './StatsItem';
 
-const hasGasTracker = config.UI.homepage.showGasTracker;
+const hasGasTracker = config.features.gasTracker.isEnabled;
 const hasAvgBlockTime = config.UI.homepage.showAvgBlockTime;
+const rollupFeature = config.features.rollup;
 
 const Stats = () => {
-  const { data, isPlaceholderData, isError } = useApiQuery('homepage_stats', {
+  const { data, isPlaceholderData, isError, dataUpdatedAt } = useApiQuery('stats', {
     queryOptions: {
+      refetchOnMount: false,
       placeholderData: HOMEPAGE_STATS,
     },
   });
@@ -25,13 +29,24 @@ const Stats = () => {
   const zkEvmLatestBatchQuery = useApiQuery('homepage_zkevm_latest_batch', {
     queryOptions: {
       placeholderData: 12345,
-      enabled: config.features.zkEvmRollup.isEnabled,
+      enabled: rollupFeature.isEnabled && rollupFeature.type === 'zkEvm',
     },
   });
 
-  if (isError || zkEvmLatestBatchQuery.isError) {
+  const zkSyncLatestBatchQuery = useApiQuery('homepage_zksync_latest_batch', {
+    queryOptions: {
+      placeholderData: 12345,
+      enabled: rollupFeature.isEnabled && rollupFeature.type === 'zkSync',
+    },
+  });
+
+  if (isError || zkEvmLatestBatchQuery.isError || zkSyncLatestBatchQuery.isError) {
     return null;
   }
+
+  const isLoading = isPlaceholderData ||
+    (rollupFeature.isEnabled && rollupFeature.type === 'zkEvm' && zkEvmLatestBatchQuery.isPlaceholderData) ||
+    (rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && zkSyncLatestBatchQuery.isPlaceholderData);
 
   let content;
 
@@ -45,25 +60,49 @@ const Stats = () => {
     !data.gas_prices && itemsCount--;
     data.rootstock_locked_btc && itemsCount++;
     const isOdd = Boolean(itemsCount % 2);
-    const gasLabel = hasGasTracker && data.gas_prices ? <GasInfoTooltipContent gasPrices={ data.gas_prices }/> : null;
+    const gasInfoTooltip = hasGasTracker && data.gas_prices ? (
+      <GasInfoTooltip data={ data } dataUpdatedAt={ dataUpdatedAt }>
+        <IconSvg
+          isLoading={ isLoading }
+          name="info"
+          boxSize={ 5 }
+          display="block"
+          cursor="pointer"
+          _hover={{ color: 'link_hovered' }}
+          position="absolute"
+          top={{ base: 'calc(50% - 12px)', lg: '10px', xl: 'calc(50% - 12px)' }}
+          right="10px"
+        />
+      </GasInfoTooltip>
+    ) : null;
 
     content = (
       <>
-        { config.features.zkEvmRollup.isEnabled ? (
+        { rollupFeature.isEnabled && rollupFeature.type === 'zkEvm' && (
           <StatsItem
             icon="txn_batches"
             title="Latest batch"
             value={ (zkEvmLatestBatchQuery.data || 0).toLocaleString() }
-            url={ route({ pathname: '/zkevm-l2-txn-batches' }) }
-            isLoading={ zkEvmLatestBatchQuery.isPlaceholderData }
+            url={ route({ pathname: '/batches' }) }
+            isLoading={ isLoading }
           />
-        ) : (
+        ) }
+        { rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && (
+          <StatsItem
+            icon="txn_batches"
+            title="Latest batch"
+            value={ (zkSyncLatestBatchQuery.data || 0).toLocaleString() }
+            url={ route({ pathname: '/batches' }) }
+            isLoading={ isLoading }
+          />
+        ) }
+        { !(rollupFeature.isEnabled && (rollupFeature.type === 'zkEvm' || rollupFeature.type === 'zkSync')) && (
           <StatsItem
             icon="block"
             title="Total blocks"
             value={ Number(data.total_blocks).toLocaleString() }
             url={ route({ pathname: '/blocks' }) }
-            isLoading={ isPlaceholderData }
+            isLoading={ isLoading }
           />
         ) }
         { hasAvgBlockTime && (
@@ -71,7 +110,7 @@ const Stats = () => {
             icon="clock-light"
             title="Average block time"
             value={ `${ (data.average_block_time / 1000).toFixed(1) }s` }
-            isLoading={ isPlaceholderData }
+            isLoading={ isLoading }
           />
         ) }
         <StatsItem
@@ -79,23 +118,23 @@ const Stats = () => {
           title="Total transactions"
           value={ Number(data.total_transactions).toLocaleString() }
           url={ route({ pathname: '/txs' }) }
-          isLoading={ isPlaceholderData }
+          isLoading={ isLoading }
         />
         <StatsItem
           icon="wallet"
           title="Wallet addresses"
           value={ Number(data.total_addresses).toLocaleString() }
           _last={ isOdd ? lastItemTouchStyle : undefined }
-          isLoading={ isPlaceholderData }
+          isLoading={ isLoading }
         />
         { hasGasTracker && data.gas_prices && (
           <StatsItem
             icon="gas"
             title="Gas tracker"
-            value={ data.gas_prices.average !== null ? `${ Number(data.gas_prices.average).toLocaleString() } Gwei` : 'N/A' }
+            value={ <GasPrice data={ data.gas_prices.average }/> }
             _last={ isOdd ? lastItemTouchStyle : undefined }
-            tooltipLabel={ gasLabel }
-            isLoading={ isPlaceholderData }
+            tooltip={ gasInfoTooltip }
+            isLoading={ isLoading }
           />
         ) }
         { data.rootstock_locked_btc && (
@@ -104,7 +143,7 @@ const Stats = () => {
             title="BTC Locked in 2WP"
             value={ `${ BigNumber(data.rootstock_locked_btc).div(WEI).dp(0).toFormat() } RBTC` }
             _last={ isOdd ? lastItemTouchStyle : undefined }
-            isLoading={ isPlaceholderData }
+            isLoading={ isLoading }
           />
         ) }
       </>

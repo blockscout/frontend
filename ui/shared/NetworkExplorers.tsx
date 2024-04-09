@@ -1,4 +1,17 @@
-import { Flex, Button, chakra, Popover, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure } from '@chakra-ui/react';
+import {
+  Image,
+  Button,
+  Popover,
+  PopoverTrigger,
+  PopoverBody,
+  PopoverContent,
+  Show,
+  Hide,
+  useColorModeValue,
+  chakra,
+  useDisclosure,
+  Grid,
+} from '@chakra-ui/react';
 import React from 'react';
 
 import type { NetworkExplorer as TNetworkExplorer } from 'types/networks';
@@ -16,15 +29,24 @@ interface Props {
 
 const NetworkExplorers = ({ className, type, pathParam }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
+  const defaultIconColor = useColorModeValue('gray.400', 'gray.500');
 
   const explorersLinks = React.useMemo(() => {
     return config.UI.explorers.items
       .filter((explorer) => typeof explorer.paths[type] === 'string')
       .map((explorer) => {
         const url = new URL(stripTrailingSlash(explorer.paths[type] || '') + '/' + pathParam, explorer.baseUrl);
-        return <LinkExternal key={ explorer.baseUrl } href={ url.toString() }>{ explorer.title }</LinkExternal>;
+        return (
+          <LinkExternal h="34px" key={ explorer.baseUrl } href={ url.toString() } alignItems="center" display="inline-flex" minW="120px">
+            { explorer.logo ?
+              <Image boxSize={ 5 } mr={ 2 } src={ explorer.logo } alt={ `${ explorer.title } icon` }/> :
+              <IconSvg name="explorer" boxSize={ 5 } color={ defaultIconColor } mr={ 2 }/>
+            }
+            { explorer.title }
+          </LinkExternal>
+        );
       });
-  }, [ pathParam, type ]);
+  }, [ pathParam, type, defaultIconColor ]);
 
   if (explorersLinks.length === 0) {
     return null;
@@ -46,21 +68,26 @@ const NetworkExplorers = ({ className, type, pathParam }: Props) => {
           flexShrink={ 0 }
         >
           <IconSvg name="explorer" boxSize={ 5 }/>
-          <IconSvg name="arrows/east-mini" transform={ isOpen ? 'rotate(90deg)' : 'rotate(-90deg)' } transitionDuration="faster" boxSize={ 5 }/>
+          <Show above="xl">
+            <chakra.span ml={ 1 }>{ explorersLinks.length } Explorer{ explorersLinks.length > 1 ? 's' : '' }</chakra.span>
+          </Show>
+          <Hide above="xl">
+            <chakra.span ml={ 1 }>{ explorersLinks.length }</chakra.span>
+          </Hide>
         </Button>
       </PopoverTrigger>
-      <PopoverContent w="240px">
+      <PopoverContent w="auto">
         <PopoverBody >
           <chakra.span color="text_secondary" fontSize="xs">Verify with other explorers</chakra.span>
-          <Flex
+          <Grid
             alignItems="center"
-            flexWrap="wrap"
-            columnGap={ 6 }
-            rowGap={ 3 }
+            templateColumns={ explorersLinks.length > 1 ? 'auto auto' : '1fr' }
+            columnGap={ 4 }
+            rowGap={ 2 }
             mt={ 3 }
           >
             { explorersLinks }
-          </Flex>
+          </Grid>
         </PopoverBody>
       </PopoverContent>
     </Popover>

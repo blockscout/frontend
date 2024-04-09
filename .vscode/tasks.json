@@ -155,6 +155,27 @@
                 "instanceLimit": 1
             }
         },
+        {
+            "type": "shell",
+            "command": "yarn test:pw:detect-affected",
+            "problemMatcher": [],
+            "label": "pw: detect affected",
+            "detail": "detect PW tests affected by changes in current branch",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "focus": true,
+                "close": false,
+                "revealProblems": "onProblem",
+            },
+            "icon": {
+                "color": "terminal.ansiBlue",
+                "id": "diff"
+            },
+            "runOptions": {
+                "instanceLimit": 1
+            },
+        },
 
         // JEST TESTS
         {
@@ -305,6 +326,7 @@
             "options": [
               "",
               "--update-snapshots",
+              "--update-snapshots --affected",
               "--ui",
             ],
             "default": ""
@@ -316,13 +338,16 @@
             "options": [
               "main",
               "main.L2",
-              "poa_core",
+              "eth",
               "eth_goerli",
               "sepolia",
-              "eth",
-              "rootstock",
               "polygon",
+              "zkevm",
+              "zksync",
               "gnosis",
+              "rootstock",
+              "stability",
+              "poa_core",
               "localhost",
             ],
             "default": "main"

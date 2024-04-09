@@ -23,6 +23,12 @@ export interface SearchResultAddressOrContractOrUniversalProfile {
   address: string;
   is_smart_contract_verified: boolean;
   url?: string; // not used by the frontend, we build the url ourselves
+  ens_info?: {
+    address_hash: string;
+    expiry_date?: string;
+    name: string;
+    names_count: number;
+  };
 }
 
 export interface SearchResultLabel {
@@ -35,7 +41,7 @@ export interface SearchResultLabel {
 
 export interface SearchResultBlock {
   type: 'block';
-  block_type?: 'block' | 'reorg';
+  block_type?: 'block' | 'reorg' | 'uncle';
   block_number: number | string;
   block_hash: string;
   timestamp: string;
@@ -49,12 +55,26 @@ export interface SearchResultTx {
   url?: string; // not used by the frontend, we build the url ourselves
 }
 
-export type SearchResultItem =
-    SearchResultToken |
-    SearchResultAddressOrContractOrUniversalProfile |
-    SearchResultBlock |
-    SearchResultTx |
-    SearchResultLabel
+export interface SearchResultBlob {
+  type: 'blob';
+  blob_hash: string;
+  timestamp: null;
+}
+
+export interface SearchResultUserOp {
+  type: 'user_operation';
+  user_operation_hash: string;
+  timestamp: string;
+  url?: string; // not used by the frontend, we build the url ourselves
+}
+
+export type SearchResultItem = SearchResultToken |
+SearchResultAddressOrContractOrUniversalProfile |
+SearchResultBlock |
+SearchResultTx |
+SearchResultLabel |
+SearchResultUserOp |
+SearchResultBlob;
 
 export interface SearchResult {
   items: Array<SearchResultItem>;
@@ -78,5 +98,5 @@ export interface SearchResultFilters {
 export interface SearchRedirectResult {
   parameter: string | null;
   redirect: boolean;
-  type: 'address' | 'block' | 'transaction' | null;
+  type: 'address' | 'block' | 'transaction' | 'user_operation' | 'blob' | null;
 }

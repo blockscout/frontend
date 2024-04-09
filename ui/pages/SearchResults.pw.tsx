@@ -8,6 +8,7 @@ import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
 import * as app from 'playwright/utils/app';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
+import * as configs from 'playwright/utils/configs';
 
 import SearchResults from './SearchResults';
 
@@ -32,6 +33,7 @@ test.describe('search by name ', () => {
           searchMock.token1,
           searchMock.token2,
           searchMock.contract1,
+          searchMock.address2,
           searchMock.label1,
         ],
       }),
@@ -91,6 +93,7 @@ test('search by block number +@mobile', async({ mount, page }) => {
       items: [
         searchMock.block1,
         searchMock.block2,
+        searchMock.block3,
       ],
     }),
   }));
@@ -141,6 +144,61 @@ test('search by tx hash +@mobile', async({ mount, page }) => {
     body: JSON.stringify({
       items: [
         searchMock.tx1,
+      ],
+    }),
+  }));
+
+  const component = await mount(
+    <TestApp>
+      <SearchResults/>
+    </TestApp>,
+    { hooksConfig },
+  );
+
+  await expect(component.locator('main')).toHaveScreenshot();
+});
+
+test('search by blob hash +@mobile', async({ mount, page }) => {
+  const hooksConfig = {
+    router: {
+      query: { q: searchMock.blob1.blob_hash },
+    },
+  };
+  await page.route(buildApiUrl('search') + `?q=${ searchMock.blob1.blob_hash }`, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify({
+      items: [
+        searchMock.blob1,
+      ],
+    }),
+  }));
+
+  const component = await mount(
+    <TestApp>
+      <SearchResults/>
+    </TestApp>,
+    { hooksConfig },
+  );
+
+  await expect(component.locator('main')).toHaveScreenshot();
+});
+
+const testWithUserOps = test.extend({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  context: contextWithEnvs(configs.featureEnvs.userOps) as any,
+});
+
+testWithUserOps('search by user op hash +@mobile', async({ mount, page }) => {
+  const hooksConfig = {
+    router: {
+      query: { q: searchMock.userOp1.user_operation_hash },
+    },
+  };
+  await page.route(buildApiUrl('search') + `?q=${ searchMock.userOp1.user_operation_hash }`, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify({
+      items: [
+        searchMock.userOp1,
       ],
     }),
   }));

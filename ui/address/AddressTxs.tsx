@@ -20,6 +20,7 @@ import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
 import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';
+import { sortTxsFromSocket } from 'ui/txs/sortTxs';
 import TxsWithAPISorting from 'ui/txs/TxsWithAPISorting';
 import { SORT_OPTIONS } from 'ui/txs/useTxsSort';
 
@@ -85,7 +86,7 @@ const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Props) => {
     addressTxsQuery.onFilterChange({ filter: newVal });
   }, [ addressTxsQuery ]);
 
-  const handleNewSocketMessage: SocketMessage.AddressTxs['handler'] = (payload) => {
+  const handleNewSocketMessage: SocketMessage.AddressTxs['handler'] = React.useCallback((payload) => {
     setSocketAlert('');
 
     queryClient.setQueryData(
@@ -123,10 +124,10 @@ const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Props) => {
           items: [
             ...newItems,
             ...prevData.items,
-          ],
+          ].sort(sortTxsFromSocket(sort)),
         };
       });
-  };
+  }, [ currentAddress, filterValue, overloadCount, queryClient, sort ]);
 
   const handleSocketClose = React.useCallback(() => {
     setSocketAlert('Connection is lost. Please refresh the page to load new transactions.');

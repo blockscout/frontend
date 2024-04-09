@@ -1,4 +1,4 @@
-import type { ZkEvmL2TxnBatch } from 'types/api/zkEvmL2TxnBatches';
+import type { ZkEvmL2TxnBatch } from 'types/api/zkEvmL2';
 
 export const txnBatchData: ZkEvmL2TxnBatch = {
   acc_input_hash: '0x4bf88aabe33713b7817266d7860912c58272d808da7397cdc627ca53b296fad3',

@@ -6,7 +6,8 @@ import React from 'react';
 import { buildExternalAssetFilePath } from 'configs/app/utils';
 import * as cookies from 'lib/cookies';
 import authFixture from 'playwright/fixtures/auth';
-import contextWithEnvs, { createContextWithEnvs } from 'playwright/fixtures/contextWithEnvs';
+import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
+import createContextWithStorage from 'playwright/fixtures/createContextWithStorage';
 import TestApp from 'playwright/TestApp';
 import * as app from 'playwright/utils/app';
 import * as configs from 'playwright/utils/configs';
@@ -61,7 +62,7 @@ test.describe('no auth', () => {
 base.describe('auth', () => {
   const test = base.extend({
     context: async({ browser }, use) => {
-      const context = await createContextWithEnvs(browser, [
+      const context = await createContextWithStorage(browser, [
         { name: 'NEXT_PUBLIC_FEATURED_NETWORKS', value: FEATURED_NETWORKS_URL },
       ]);
       authFixture(context);
@@ -150,7 +151,7 @@ test.describe('with submenu', () => {
 base.describe('cookie set to false', () => {
   const test = base.extend({
     context: async({ browser }, use) => {
-      const context = await createContextWithEnvs(browser, [
+      const context = await createContextWithStorage(browser, [
         { name: 'NEXT_PUBLIC_FEATURED_NETWORKS', value: FEATURED_NETWORKS_URL },
       ]);
       context.addCookies([ { name: cookies.NAMES.NAV_BAR_COLLAPSED, value: 'false', domain: app.domain, path: '/' } ]);
@@ -190,7 +191,7 @@ base.describe('cookie set to false', () => {
 base.describe('cookie set to true', () => {
   const test = base.extend({
     context: async({ browser }, use) => {
-      const context = await createContextWithEnvs(browser, [
+      const context = await createContextWithStorage(browser, [
         { name: 'NEXT_PUBLIC_FEATURED_NETWORKS', value: FEATURED_NETWORKS_URL },
       ]);
       context.addCookies([ { name: cookies.NAMES.NAV_BAR_COLLAPSED, value: 'true', domain: 'localhost', path: '/' } ]);

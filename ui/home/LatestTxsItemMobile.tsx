@@ -12,9 +12,9 @@ import type { Transaction } from 'types/api/transaction';
 import config from 'configs/app';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import { currencyUnits } from 'lib/units';
+import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
-import IconSvg from 'ui/shared/IconSvg';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TxFeeStability from 'ui/shared/tx/TxFeeStability';
 import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
@@ -58,7 +58,7 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
           isLoading={ isLoading }
           hash={ tx.hash }
           fontWeight="700"
-          truncation="constant"
+          truncation="constant_long"
         />
         { tx.timestamp && (
           <Skeleton isLoaded={ !isLoading } color="text_secondary" fontWeight="400" fontSize="sm" ml={ 3 }>
@@ -66,40 +66,23 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
           </Skeleton>
         ) }
       </Flex>
-      <Flex alignItems="center" mb={ 3 }>
-        <AddressEntity
-          isLoading={ isLoading }
-          address={ tx.from }
-          truncation="constant"
-          fontSize="sm"
-          fontWeight="500"
-          mr={ 2 }
-        />
-        <IconSvg
-          name="arrows/east"
-          boxSize={ 6 }
-          color="gray.500"
-          isLoading={ isLoading }
-        />
-        { dataTo && (
-          <AddressEntity
-            isLoading={ isLoading }
-            address={ dataTo }
-            truncation="constant"
-            fontSize="sm"
-            fontWeight="500"
-          />
-        ) }
-      </Flex>
+      <AddressFromTo
+        from={ tx.from }
+        to={ dataTo }
+        isLoading={ isLoading }
+        fontSize="sm"
+        fontWeight="500"
+        mb={ 3 }
+      />
       { !config.UI.views.tx.hiddenFields?.value && (
         <Skeleton isLoaded={ !isLoading } mb={ 2 } fontSize="sm" w="fit-content">
-          <Text as="span">Value { config.chain.currency.symbol } </Text>
+          <Text as="span">Value { currencyUnits.ether } </Text>
           <Text as="span" variant="secondary">{ getValueWithUnit(tx.value).dp(5).toFormat() }</Text>
         </Skeleton>
       ) }
       { !config.UI.views.tx.hiddenFields?.tx_fee && (
         <Skeleton isLoaded={ !isLoading } fontSize="sm" w="fit-content" display="flex" whiteSpace="pre">
-          <Text as="span">Fee { !config.UI.views.tx.hiddenFields?.fee_currency ? `${ config.chain.currency.symbol } ` : '' }</Text>
+          <Text as="span">Fee { !config.UI.views.tx.hiddenFields?.fee_currency ? `${ currencyUnits.ether } ` : '' }</Text>
           { tx.stability_fee ? (
             <TxFeeStability data={ tx.stability_fee } accuracy={ 5 } color="text_secondary" hideUsd/>
           ) : (

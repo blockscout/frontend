@@ -19,7 +19,7 @@ function formatValue(value: string | number, display: string | undefined, trait:
     }
     case 'date': {
       return {
-        value: dayjs(value).format('YYYY-MM-DD'),
+        value: dayjs(Number(value) * 1000).format('YYYY-MM-DD'),
       };
     }
     default: {

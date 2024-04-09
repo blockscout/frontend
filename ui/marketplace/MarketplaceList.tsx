@@ -1,23 +1,23 @@
 import { Grid } from '@chakra-ui/react';
 import React from 'react';
+import type { MouseEvent } from 'react';
 
 import type { MarketplaceAppPreview } from 'types/client/marketplace';
 
-import { apos } from 'lib/html-entities';
-import EmptySearchResult from 'ui/shared/EmptySearchResult';
-
+import EmptySearchResult from './EmptySearchResult';
 import MarketplaceAppCard from './MarketplaceAppCard';
 
 type Props = {
   apps: Array<MarketplaceAppPreview>;
-  onAppClick: (id: string) => void;
+  showAppInfo: (id: string) => void;
   favoriteApps: Array<string>;
-  onFavoriteClick: (id: string, isFavorite: boolean) => void;
+  onFavoriteClick: (id: string, isFavorite: boolean, source: 'Discovery view') => void;
   isLoading: boolean;
-  showDisclaimer: (id: string) => void;
+  selectedCategoryId?: string;
+  onAppClick: (event: MouseEvent, id: string) => void;
 }
 
-const MarketplaceList = ({ apps, onAppClick, favoriteApps, onFavoriteClick, isLoading, showDisclaimer }: Props) => {
+const MarketplaceList = ({ apps, showAppInfo, favoriteApps, onFavoriteClick, isLoading, selectedCategoryId, onAppClick }: Props) => {
   return apps.length > 0 ? (
     <Grid
       templateColumns={{
@@ -30,7 +30,7 @@ const MarketplaceList = ({ apps, onAppClick, favoriteApps, onFavoriteClick, isLo
       { apps.map((app, index) => (
         <MarketplaceAppCard
           key={ app.id + (isLoading ? index : '') }
-          onInfoClick={ onAppClick }
+          onInfoClick={ showAppInfo }
           id={ app.id }
           external={ app.external }
           url={ app.url }
@@ -42,12 +42,13 @@ const MarketplaceList = ({ apps, onAppClick, favoriteApps, onFavoriteClick, isLo
           isFavorite={ favoriteApps.includes(app.id) }
           onFavoriteClick={ onFavoriteClick }
           isLoading={ isLoading }
-          showDisclaimer={ showDisclaimer }
+          internalWallet={ app.internalWallet }
+          onAppClick={ onAppClick }
         />
       )) }
     </Grid>
   ) : (
-    <EmptySearchResult text={ `Couldn${ apos }t find an app that matches your filter query.` }/>
+    <EmptySearchResult selectedCategoryId={ selectedCategoryId } favoriteApps={ favoriteApps }/>
   );
 };
 

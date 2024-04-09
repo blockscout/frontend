@@ -5,13 +5,11 @@ import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
+import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import Tag from 'ui/shared/chakra/Tag';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
-import IconSvg from 'ui/shared/IconSvg';
-import InOutTag from 'ui/shared/InOutTag';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import { getTokenTransferTypeText } from 'ui/shared/TokenTransfer/helpers';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
@@ -37,7 +35,7 @@ const TokenTransferListItem = ({
   isLoading,
 }: Props) => {
   const timeAgo = useTimeAgoIncrement(timestamp, enableTimeIncrement);
-  const { usd, valueStr } = 'value' in total ? getCurrencyValue({
+  const { usd, valueStr } = 'value' in total && total.value !== null ? getCurrencyValue({
     value: total.value,
     exchangeRate: token.exchange_rate,
     accuracy: 8,
@@ -45,7 +43,6 @@ const TokenTransferListItem = ({
     decimals: total.decimals || '0',
   }) : { usd: null, valueStr: null };
 
-  const addressWidth = `calc((100% - ${ baseAddress ? '50px - 24px' : '24px - 24px' }) / 2)`;
   return (
     <ListItemMobile rowGap={ 3 } isAnimated>
       <Flex w="100%" justifyContent="space-between">
@@ -64,13 +61,13 @@ const TokenTransferListItem = ({
           <TxAdditionalInfo hash={ txHash } isMobile isLoading={ isLoading }/>
         ) }
       </Flex>
-      { 'token_id' in total && <NftEntity hash={ token.address } id={ total.token_id } isLoading={ isLoading }/> }
+      { 'token_id' in total && total.token_id !== null && <NftEntity hash={ token.address } id={ total.token_id } isLoading={ isLoading }/> }
       { showTxInfo && txHash && (
         <Flex justifyContent="space-between" alignItems="center" lineHeight="24px" width="100%">
           <TxEntity
             isLoading={ isLoading }
             hash={ txHash }
-            truncation="constant"
+            truncation="constant_long"
             fontWeight="700"
           />
           { timestamp && (
@@ -80,36 +77,13 @@ const TokenTransferListItem = ({
           ) }
         </Flex>
       ) }
-      <Flex w="100%" columnGap={ 3 }>
-        <AddressEntity
-          address={ from }
-          isLoading={ isLoading }
-          noLink={ baseAddress === from.hash }
-          noCopy={ baseAddress === from.hash }
-          flexShrink={ 0 }
-          width={ addressWidth }
-        />
-        { baseAddress ? (
-          <InOutTag
-            isIn={ baseAddress === to.hash }
-            isOut={ baseAddress === from.hash }
-            w="50px"
-            textAlign="center"
-            isLoading={ isLoading }
-            flexShrink={ 0 }
-          />
-        ) :
-          <IconSvg name="arrows/east" boxSize={ 6 } color="gray.500" isLoading={ isLoading } flexShrink={ 0 }/>
-        }
-        <AddressEntity
-          address={ to }
-          isLoading={ isLoading }
-          noLink={ baseAddress === to.hash }
-          noCopy={ baseAddress === to.hash }
-          flexShrink={ 0 }
-          width={ addressWidth }
-        />
-      </Flex>
+      <AddressFromTo
+        from={ from }
+        to={ to }
+        current={ baseAddress }
+        isLoading={ isLoading }
+        w="100%"
+      />
       { valueStr && (
         <Flex columnGap={ 2 } w="100%">
           <Skeleton isLoaded={ !isLoading } fontWeight={ 500 } flexShrink={ 0 }>Value</Skeleton>

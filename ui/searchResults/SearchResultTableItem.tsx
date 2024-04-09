@@ -1,4 +1,4 @@
-import { Tr, Td, Text, Flex, Image, Box, Skeleton, useColorMode, Tag } from '@chakra-ui/react';
+import { chakra, Tr, Td, Text, Flex, Image, Box, Skeleton, useColorMode, Tag } from '@chakra-ui/react';
 import React from 'react';
 import xss from 'xss';
 
@@ -10,17 +10,19 @@ import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
 import * as mixpanel from 'lib/mixpanel/index';
 import { saveToRecentKeywords } from 'lib/recentSearchKeywords';
+import { ADDRESS_REGEXP } from 'lib/validations/address';
 import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import * as BlobEntity from 'ui/shared/entities/blob/BlobEntity';
 import * as BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import * as TxEntity from 'ui/shared/entities/tx/TxEntity';
+import * as UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
 import type { SearchResultAppItem } from 'ui/shared/search/utils';
 import { getItemCategory, searchItemTitles } from 'ui/shared/search/utils';
-
 interface Props {
   data: SearchResultItem | SearchResultAppItem;
   searchTerm: string;
@@ -91,70 +93,51 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
 
       case 'contract':
       case 'address': {
-        if (data.name) {
-          const shouldHighlightHash = data.address.toLowerCase() === searchTerm.toLowerCase();
-          const address = {
-            hash: data.address,
-            is_contract: data.type === 'contract',
-            is_verified: data.is_smart_contract_verified,
-            name: null,
-            implementation_name: null,
-          };
-
-          return (
-            <>
-              <Td fontSize="sm">
-                <AddressEntity.Container>
-                  <AddressEntity.Icon address={ address }/>
-                  <AddressEntity.Link
-                    address={ address }
-                    onClick={ handleLinkClick }
-                  >
-                    <AddressEntity.Content
-                      asProp={ shouldHighlightHash ? 'mark' : 'span' }
-                      address={ address }
-                      fontSize="sm"
-                      lineHeight={ 5 }
-                      fontWeight={ 700 }
-                    />
-                  </AddressEntity.Link>
-                  <AddressEntity.Copy address={ address }/>
-                </AddressEntity.Container>
-              </Td>
-              <Td colSpan={ 2 } fontSize="sm" verticalAlign="middle">
-                <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? xss(data.name) : highlightText(data.name, searchTerm) }}/>
-              </Td>
-            </>
-          );
-        }
-
+        const shouldHighlightHash = ADDRESS_REGEXP.test(searchTerm);
+        const addressName = data.name || data.ens_info?.name;
         const address = {
           hash: data.address,
           is_contract: data.type === 'contract',
           is_verified: data.is_smart_contract_verified,
           name: null,
           implementation_name: null,
+          ens_domain_name: null,
         };
+        const expiresText = data.ens_info?.expiry_date ? ` (expires ${ dayjs(data.ens_info.expiry_date).fromNow() })` : '';
 
         return (
-          <Td colSpan={ 3 } fontSize="sm">
-            <AddressEntity.Container>
-              <AddressEntity.Icon address={ address }/>
-              <AddressEntity.Link
-                address={ address }
-                onClick={ handleLinkClick }
-              >
-                <AddressEntity.Content
-                  asProp="mark"
+          <>
+            <Td fontSize="sm" colSpan={ addressName ? 1 : 3 }>
+              <AddressEntity.Container>
+                <AddressEntity.Icon address={ address }/>
+                <AddressEntity.Link
                   address={ address }
-                  fontSize="sm"
-                  lineHeight={ 5 }
-                  fontWeight={ 700 }
-                />
-              </AddressEntity.Link>
-              <AddressEntity.Copy address={ address }/>
-            </AddressEntity.Container>
-          </Td>
+                  onClick={ handleLinkClick }
+                >
+                  <AddressEntity.Content
+                    asProp={ shouldHighlightHash ? 'mark' : 'span' }
+                    address={ address }
+                    fontSize="sm"
+                    lineHeight={ 5 }
+                    fontWeight={ 700 }
+                  />
+                </AddressEntity.Link>
+                <AddressEntity.Copy address={ address }/>
+              </AddressEntity.Container>
+            </Td>
+            { addressName && (
+              <Td colSpan={ 2 } fontSize="sm" verticalAlign="middle">
+                <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? xss(addressName) : highlightText(addressName, searchTerm) }}/>
+                { data.ens_info &&
+                  (
+                    data.ens_info.names_count > 1 ?
+                      <chakra.span color="text_secondary"> ({ data.ens_info.names_count > 39 ? '40+' : `+${ data.ens_info.names_count - 1 }` })</chakra.span> :
+                      <chakra.span color="text_secondary">{ expiresText }</chakra.span>
+                  )
+                }
+              </Td>
+            ) }
+          </>
         );
       }
 
@@ -263,6 +246,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
             <Td fontSize="sm" verticalAlign="middle">
               <Flex columnGap={ 2 } alignItems="center">
                 { data.block_type === 'reorg' && <Tag flexShrink={ 0 }>Reorg</Tag> }
+                { data.block_type === 'uncle' && <Tag flexShrink={ 0 }>Uncle</Tag> }
                 <Box overflow="hidden" whiteSpace="nowrap" as={ shouldHighlightHash ? 'mark' : 'span' } display="block">
                   <HashStringShortenDynamic hash={ data.block_hash }/>
                 </Box>
@@ -295,6 +279,57 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
                   />
                 </TxEntity.Link>
               </TxEntity.Container>
+            </Td>
+            <Td fontSize="sm" verticalAlign="middle" isNumeric>
+              <Text variant="secondary">{ dayjs(data.timestamp).format('llll') }</Text>
+            </Td>
+          </>
+        );
+      }
+
+      case 'blob': {
+        return (
+          <Td colSpan={ 3 } fontSize="sm">
+            <BlobEntity.Container>
+              <BlobEntity.Icon/>
+              <BlobEntity.Link
+                isLoading={ isLoading }
+                hash={ data.blob_hash }
+                onClick={ handleLinkClick }
+              >
+                <BlobEntity.Content
+                  asProp="mark"
+                  hash={ data.blob_hash }
+                  fontSize="sm"
+                  lineHeight={ 5 }
+                  fontWeight={ 700 }
+                />
+              </BlobEntity.Link>
+            </BlobEntity.Container>
+          </Td>
+        );
+      }
+
+      case 'user_operation': {
+        return (
+          <>
+            <Td colSpan={ 2 } fontSize="sm">
+              <UserOpEntity.Container>
+                <UserOpEntity.Icon/>
+                <UserOpEntity.Link
+                  isLoading={ isLoading }
+                  hash={ data.user_operation_hash }
+                  onClick={ handleLinkClick }
+                >
+                  <UserOpEntity.Content
+                    asProp="mark"
+                    hash={ data.user_operation_hash }
+                    fontSize="sm"
+                    lineHeight={ 5 }
+                    fontWeight={ 700 }
+                  />
+                </UserOpEntity.Link>
+              </UserOpEntity.Container>
             </Td>
             <Td fontSize="sm" verticalAlign="middle" isNumeric>
               <Text variant="secondary">{ dayjs(data.timestamp).format('llll') }</Text>

@@ -4,16 +4,18 @@ import React, { useCallback } from 'react';
 
 import type { MarketplaceAppPreview } from 'types/client/marketplace';
 
+import * as mixpanel from 'lib/mixpanel/index';
 import IconSvg from 'ui/shared/IconSvg';
 
 import MarketplaceAppCardLink from './MarketplaceAppCardLink';
+import MarketplaceAppIntegrationIcon from './MarketplaceAppIntegrationIcon';
 
 interface Props extends MarketplaceAppPreview {
   onInfoClick: (id: string) => void;
   isFavorite: boolean;
-  onFavoriteClick: (id: string, isFavorite: boolean) => void;
+  onFavoriteClick: (id: string, isFavorite: boolean, source: 'Discovery view') => void;
   isLoading: boolean;
-  showDisclaimer: (id: string) => void;
+  onAppClick: (event: MouseEvent, id: string) => void;
 }
 
 const MarketplaceAppCard = ({
@@ -29,29 +31,22 @@ const MarketplaceAppCard = ({
   isFavorite,
   onFavoriteClick,
   isLoading,
-  showDisclaimer,
+  internalWallet,
+  onAppClick,
 }: Props) => {
   const categoriesLabel = categories.join(', ');
 
-  const handleClick = useCallback((event: MouseEvent) => {
-    const isShown = window.localStorage.getItem('marketplace-disclaimer-shown');
-    if (!isShown) {
-      event.preventDefault();
-      showDisclaimer(id);
-    }
-  }, [ showDisclaimer, id ]);
-
   const handleInfoClick = useCallback((event: MouseEvent) => {
     event.preventDefault();
+    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'More button', Info: id, Source: 'Discovery view' });
     onInfoClick(id);
   }, [ onInfoClick, id ]);
 
   const handleFavoriteClick = useCallback(() => {
-    onFavoriteClick(id, isFavorite);
+    onFavoriteClick(id, isFavorite, 'Discovery view');
   }, [ onFavoriteClick, id, isFavorite ]);
 
   const logoUrl = useColorModeValue(logo, logoDarkMode || logo);
-  const moreButtonBgGradient = `linear(to-r, ${ useColorModeValue('whiteAlpha.50', 'blackAlpha.50') }, ${ useColorModeValue('white', 'black') } 20%)`;
 
   return (
     <LinkBox
@@ -69,12 +64,14 @@ const MarketplaceAppCard = ({
       role="group"
     >
       <Box
-        display={{ base: 'grid', sm: 'block' }}
+        display={{ base: 'grid', sm: 'flex' }}
+        flexDirection="column"
         gridTemplateColumns={{ base: '64px 1fr', sm: '1fr' }}
         gridTemplateRows={{ base: 'none', sm: 'none' }}
-        gridRowGap={{ base: 2, sm: 'none' }}
-        gridColumnGap={{ base: 4, sm: 'none' }}
+        gridRowGap={{ base: 2, sm: 0 }}
+        gridColumnGap={{ base: 4, sm: 0 }}
         height="100%"
+        alignContent="start"
       >
         <Skeleton
           isLoaded={ !isLoading }
@@ -108,8 +105,9 @@ const MarketplaceAppCard = ({
             url={ url }
             external={ external }
             title={ title }
-            onClick={ handleClick }
+            onClick={ onAppClick }
           />
+          <MarketplaceAppIntegrationIcon external={ external } internalWallet={ internalWallet }/>
         </Skeleton>
 
         <Skeleton
@@ -125,44 +123,34 @@ const MarketplaceAppCard = ({
           isLoaded={ !isLoading }
           fontSize={{ base: 'xs', sm: 'sm' }}
           lineHeight="20px"
-          noOfLines={ 4 }
+          noOfLines={ 3 }
         >
           { shortDescription }
         </Skeleton>
 
         { !isLoading && (
           <Box
-            position="absolute"
-            right={{ base: 3, sm: '20px' }}
-            bottom={{ base: 3, sm: '20px' }}
-            paddingLeft={ 8 }
-            bgGradient={ moreButtonBgGradient }
+            display="flex"
+            position={{ base: 'absolute', sm: 'relative' }}
+            bottom={{ base: 3, sm: 0 }}
+            left={{ base: 3, sm: 0 }}
+            marginTop={{ base: 0, sm: 'auto' }}
+            paddingTop={{ base: 0, sm: 4 }}
           >
             <Link
               fontSize={{ base: 'xs', sm: 'sm' }}
-              display="flex"
-              alignItems="center"
               paddingRight={{ sm: 2 }}
-              maxW="100%"
-              overflow="hidden"
               href="#"
               onClick={ handleInfoClick }
             >
-            More
-
-              <IconSvg
-                name="arrows/north-east"
-                marginLeft={ 1 }
-                boxSize={ 4 }
-              />
+              More info
             </Link>
           </Box>
         ) }
 
         { !isLoading && (
           <IconButton
-            display={{ base: 'block', sm: isFavorite ? 'block' : 'none' }}
-            _groupHover={{ display: 'block' }}
+            display="block"
             position="absolute"
             right={{ base: 3, sm: '10px' }}
             top={{ base: 3, sm: '14px' }}
@@ -174,8 +162,8 @@ const MarketplaceAppCard = ({
             h={ 8 }
             onClick={ handleFavoriteClick }
             icon={ isFavorite ?
-              <IconSvg name="star_filled" w={ 4 } h={ 4 } color="yellow.400"/> :
-              <IconSvg name="star_outline" w={ 4 } h={ 4 } color="gray.300"/>
+              <IconSvg name="star_filled" w={ 5 } h={ 5 } color="yellow.400"/> :
+              <IconSvg name="star_outline" w={ 5 } h={ 5 } color="gray.400"/>
             }
           />
         ) }

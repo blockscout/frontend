@@ -5,12 +5,11 @@ import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
+import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import Tag from 'ui/shared/chakra/Tag';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
-import InOutTag from 'ui/shared/InOutTag';
 import { getTokenTransferTypeText } from 'ui/shared/TokenTransfer/helpers';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 
@@ -35,7 +34,7 @@ const TokenTransferTableItem = ({
   isLoading,
 }: Props) => {
   const timeAgo = useTimeAgoIncrement(timestamp, enableTimeIncrement);
-  const { usd, valueStr } = 'value' in total ? getCurrencyValue({
+  const { usd, valueStr } = 'value' in total && total.value !== null ? getCurrencyValue({
     value: total.value,
     exchangeRate: token.exchange_rate,
     accuracy: 8,
@@ -66,7 +65,7 @@ const TokenTransferTableItem = ({
         </Flex>
       </Td>
       <Td>
-        { 'token_id' in total && <NftEntity hash={ token.address } id={ total.token_id } isLoading={ isLoading }/> }
+        { 'token_id' in total && total.token_id !== null && <NftEntity hash={ token.address } id={ total.token_id } isLoading={ isLoading }/> }
       </Td>
       { showTxInfo && txHash && (
         <Td>
@@ -76,6 +75,7 @@ const TokenTransferTableItem = ({
             fontWeight={ 600 }
             noIcon
             mt="7px"
+            truncation="constant_long"
           />
           { timestamp && (
             <Skeleton isLoaded={ !isLoading } color="text_secondary" fontWeight="400" mt="10px" display="inline-block">
@@ -85,36 +85,13 @@ const TokenTransferTableItem = ({
         </Td>
       ) }
       <Td>
-        <AddressEntity
-          address={ from }
+        <AddressFromTo
+          from={ from }
+          to={ to }
+          current={ baseAddress }
           isLoading={ isLoading }
-          my="5px"
-          noLink={ baseAddress === from.hash }
-          noCopy={ baseAddress === from.hash }
-          flexGrow={ 1 }
-        />
-      </Td>
-      { baseAddress && (
-        <Td px={ 0 }>
-          <Box mt="3px">
-            <InOutTag
-              isIn={ baseAddress === to.hash }
-              isOut={ baseAddress === from.hash }
-              w="50px"
-              textAlign="center"
-              isLoading={ isLoading }
-            />
-          </Box>
-        </Td>
-      ) }
-      <Td>
-        <AddressEntity
-          address={ to }
-          isLoading={ isLoading }
-          my="5px"
-          noLink={ baseAddress === to.hash }
-          noCopy={ baseAddress === to.hash }
-          flexGrow={ 1 }
+          mt={ 1 }
+          mode={{ lg: 'compact', xl: 'long' }}
         />
       </Td>
       <Td isNumeric verticalAlign="top">

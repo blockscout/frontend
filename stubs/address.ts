@@ -10,7 +10,7 @@ import type {
 import type { AddressesItem } from 'types/api/addresses';
 
 import { ADDRESS_HASH } from './addressParams';
-import { TOKEN_INFO_ERC_1155, TOKEN_INFO_ERC_20, TOKEN_INFO_ERC_721, TOKEN_INSTANCE } from './token';
+import { TOKEN_INFO_ERC_1155, TOKEN_INFO_ERC_20, TOKEN_INFO_ERC_721, TOKEN_INFO_ERC_404, TOKEN_INSTANCE } from './token';
 import { TX_HASH } from './tx';
 
 export const ADDRESS_INFO: Address = {
@@ -41,6 +41,7 @@ export const ADDRESS_INFO: Address = {
   public_tags: [],
   watchlist_names: [],
   watchlist_address_id: null,
+  ens_domain_name: null,
 };
 
 export const ADDRESS_COUNTERS: AddressCounters = {
@@ -71,6 +72,7 @@ export const TOP_ADDRESS: AddressesItem = {
   private_tags: [],
   public_tags: [ ],
   watchlist_names: [],
+  ens_domain_name: null,
 };
 
 export const ADDRESS_COIN_BALANCE: AddressCoinBalanceHistoryItem = {
@@ -98,6 +100,13 @@ export const ADDRESS_NFT_721: AddressNFT = {
 export const ADDRESS_NFT_1155: AddressNFT = {
   token_type: 'ERC-1155',
   token: TOKEN_INFO_ERC_1155,
+  value: '10',
+  ...TOKEN_INSTANCE,
+};
+
+export const ADDRESS_NFT_404: AddressNFT = {
+  token_type: 'ERC-404',
+  token: TOKEN_INFO_ERC_404,
   value: '10',
   ...TOKEN_INSTANCE,
 };

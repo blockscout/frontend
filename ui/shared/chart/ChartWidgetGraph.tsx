@@ -2,7 +2,7 @@ import { useToken } from '@chakra-ui/react';
 import * as d3 from 'd3';
 import React from 'react';
 
-import type { ChartMargin, TimeChartItem } from 'ui/shared/chart/types';
+import type { ChartMargin, TimeChartData, TimeChartItem } from 'ui/shared/chart/types';
 
 import dayjs from 'lib/date/dayjs';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -27,7 +27,7 @@ interface Props {
 
 // temporarily turn off the data aggregation, we need a better algorithm for that
 const MAX_SHOW_ITEMS = 100_000_000_000;
-const DEFAULT_CHART_MARGIN = { bottom: 20, left: 40, right: 20, top: 10 };
+const DEFAULT_CHART_MARGIN = { bottom: 20, left: 10, right: 20, top: 10 };
 
 const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title, margin: marginProps, units }: Props) => {
   const isMobile = useIsMobile();
@@ -51,7 +51,7 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
     }
   }, [ isGroupedValues, rangedItems ]);
 
-  const chartData = React.useMemo(() => ([ { items: displayedData, name: 'Value', color, units } ]), [ color, displayedData, units ]);
+  const chartData: TimeChartData = React.useMemo(() => ([ { items: displayedData, name: 'Value', color, units } ]), [ color, displayedData, units ]);
 
   const margin: ChartMargin = React.useMemo(() => ({ ...DEFAULT_CHART_MARGIN, ...marginProps }), [ marginProps ]);
   const axesConfig = React.useMemo(() => {
@@ -72,7 +72,7 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
     innerWidth,
     innerHeight,
     chartMargin,
-    axis,
+    axes,
   } = useTimeChartController({
     data: chartData,
     margin,
@@ -96,7 +96,7 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
       <g transform={ `translate(${ chartMargin?.left || 0 },${ chartMargin?.top || 0 })` }>
         <ChartGridLine
           type="horizontal"
-          scale={ axis.y.scale }
+          scale={ axes.y.scale }
           ticks={ axesConfig.y.ticks }
           size={ innerWidth }
           disableAnimation
@@ -106,14 +106,14 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
           id={ chartId }
           data={ displayedData }
           color={ color }
-          xScale={ axis.x.scale }
-          yScale={ axis.y.scale }
+          xScale={ axes.x.scale }
+          yScale={ axes.y.scale }
         />
 
         <ChartLine
           data={ displayedData }
-          xScale={ axis.x.scale }
-          yScale={ axis.y.scale }
+          xScale={ axes.x.scale }
+          yScale={ axes.y.scale }
           stroke={ color }
           animation="none"
           strokeWidth={ isMobile ? 1 : 2 }
@@ -121,19 +121,19 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
 
         <ChartAxis
           type="left"
-          scale={ axis.y.scale }
+          scale={ axes.y.scale }
           ticks={ axesConfig.y.ticks }
-          tickFormatGenerator={ axis.y.tickFormatter }
+          tickFormatGenerator={ axes.y.tickFormatter }
           disableAnimation
         />
 
         <ChartAxis
           type="bottom"
-          scale={ axis.x.scale }
+          scale={ axes.x.scale }
           transform={ `translate(0, ${ innerHeight })` }
           ticks={ axesConfig.x.ticks }
           anchorEl={ overlayRef.current }
-          tickFormatGenerator={ axis.x.tickFormatter }
+          tickFormatGenerator={ axes.x.tickFormatter }
           disableAnimation
         />
 
@@ -143,15 +143,15 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
             width={ innerWidth }
             tooltipWidth={ isGroupedValues ? 280 : 200 }
             height={ innerHeight }
-            xScale={ axis.x.scale }
-            yScale={ axis.y.scale }
+            xScale={ axes.x.scale }
+            yScale={ axes.y.scale }
             data={ chartData }
           />
 
           <ChartSelectionX
             anchorEl={ overlayRef.current }
             height={ innerHeight }
-            scale={ axis.x.scale }
+            scale={ axes.x.scale }
             data={ chartData }
             onSelect={ handleRangeSelect }
           />

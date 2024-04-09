@@ -7,11 +7,13 @@ import type { SearchResultItem } from 'types/api/search';
 import { route } from 'nextjs-routes';
 
 import SearchBarSuggestAddress from './SearchBarSuggestAddress';
+import SearchBarSuggestBlob from './SearchBarSuggestBlob';
 import SearchBarSuggestBlock from './SearchBarSuggestBlock';
 import SearchBarSuggestItemLink from './SearchBarSuggestItemLink';
 import SearchBarSuggestLabel from './SearchBarSuggestLabel';
 import SearchBarSuggestToken from './SearchBarSuggestToken';
 import SearchBarSuggestTx from './SearchBarSuggestTx';
+import SearchBarSuggestUserOp from './SearchBarSuggestUserOp';
 
 interface Props {
   data: SearchResultItem;
@@ -39,6 +41,12 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) =>
       case 'block': {
         return route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.block_hash) } });
       }
+      case 'user_operation': {
+        return route({ pathname: '/op/[hash]', query: { hash: data.user_operation_hash } });
+      }
+      case 'blob': {
+        return route({ pathname: '/blobs/[hash]', query: { hash: data.blob_hash } });
+      }
     }
   })();
 
@@ -61,6 +69,12 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) =>
       }
       case 'transaction': {
         return <SearchBarSuggestTx data={ data } searchTerm={ searchTerm } isMobile={ isMobile }/>;
+      }
+      case 'user_operation': {
+        return <SearchBarSuggestUserOp data={ data } searchTerm={ searchTerm } isMobile={ isMobile }/>;
+      }
+      case 'blob': {
+        return <SearchBarSuggestBlob data={ data } searchTerm={ searchTerm }/>;
       }
     }
   })();

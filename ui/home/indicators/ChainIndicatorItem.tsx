@@ -7,18 +7,20 @@ import type { ChainIndicatorId } from 'types/homepage';
 
 import type { ResourceError } from 'lib/api/resources';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   id: ChainIndicatorId;
   title: string;
   value: (stats: HomeStats) => string;
+  valueDiff?: (stats?: HomeStats) => number | null | undefined;
   icon: React.ReactNode;
   isSelected: boolean;
   onClick: (id: ChainIndicatorId) => void;
   stats: UseQueryResult<HomeStats, ResourceError<unknown>>;
 }
 
-const ChainIndicatorItem = ({ id, title, value, icon, isSelected, onClick, stats }: Props) => {
+const ChainIndicatorItem = ({ id, title, value, valueDiff, icon, isSelected, onClick, stats }: Props) => {
   const isMobile = useIsMobile();
 
   const activeBgColorDesktop = useColorModeValue('white', 'gray.900');
@@ -34,7 +36,7 @@ const ChainIndicatorItem = ({ id, title, value, icon, isSelected, onClick, stats
       return null;
     }
 
-    if (stats.isPending) {
+    if (stats.isPlaceholderData) {
       return (
         <Skeleton
           h={ 3 }
@@ -46,11 +48,30 @@ const ChainIndicatorItem = ({ id, title, value, icon, isSelected, onClick, stats
       );
     }
 
-    if (stats.isError) {
+    if (!stats.data) {
       return <Text variant="secondary" fontWeight={ 400 }>no data</Text>;
     }
 
     return <Text variant="secondary" fontWeight={ 600 }>{ value(stats.data) }</Text>;
+  })();
+
+  const valueDiffContent = (() => {
+    if (isMobile || !valueDiff) {
+      return null;
+    }
+    const diff = valueDiff(stats.data);
+    if (diff === undefined || diff === null) {
+      return null;
+    }
+
+    const diffColor = diff >= 0 ? 'green.500' : 'red.500';
+
+    return (
+      <Skeleton isLoaded={ !stats.isPlaceholderData } ml={ 3 } display="flex" alignItems="center" color={ diffColor }>
+        <IconSvg name="up" boxSize={ 5 } mr={ 1 } transform={ diff < 0 ? 'rotate(180deg)' : 'rotate(0)' }/>
+        <Text color={ diffColor } fontWeight={ 600 }>{ diff }%</Text>
+      </Skeleton>
+    );
   })();
 
   return (
@@ -73,7 +94,10 @@ const ChainIndicatorItem = ({ id, title, value, icon, isSelected, onClick, stats
       { icon }
       <Box>
         <Text fontFamily="heading" fontWeight={ 500 }>{ title }</Text>
-        { valueContent }
+        <Flex alignItems="center">
+          { valueContent }
+          { valueDiffContent }
+        </Flex>
       </Box>
     </Flex>
   );

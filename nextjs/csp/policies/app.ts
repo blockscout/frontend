@@ -31,6 +31,8 @@ const getCspReportUrl = () => {
 };
 
 export function app(): CspDev.DirectiveDescriptor {
+  const marketplaceFeaturePayload = getFeaturePayload(config.features.marketplace);
+
   return {
     'default-src': [
       // KEY_WORDS.NONE,
@@ -53,6 +55,8 @@ export function app(): CspDev.DirectiveDescriptor {
       getFeaturePayload(config.features.sol2uml)?.api.endpoint,
       getFeaturePayload(config.features.verifiedTokens)?.api.endpoint,
       getFeaturePayload(config.features.addressVerification)?.api.endpoint,
+      getFeaturePayload(config.features.nameService)?.api.endpoint,
+      marketplaceFeaturePayload && 'api' in marketplaceFeaturePayload ? marketplaceFeaturePayload.api.endpoint : '',
 
       // chain RPC server
       config.chain.rpcUrl,

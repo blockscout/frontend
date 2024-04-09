@@ -43,6 +43,7 @@ const ERC20TokensTableItem = ({
           <AddressEntity
             address={{ hash: token.address }}
             isLoading={ isLoading }
+            truncation="constant"
             noIcon
           />
           <AddressAddToWallet token={ token } ml={ 4 } isLoading={ isLoading } opacity="0"/>

@@ -13,12 +13,13 @@ import LinkInternal from 'ui/shared/LinkInternal';
 
 import { getIconProps, type IconSize } from './utils';
 
-export type Truncation = 'constant' | 'dynamic' | 'tail' | 'none';
+export type Truncation = 'constant' | 'constant_long' | 'dynamic' | 'tail' | 'none';
 
 export interface EntityBaseProps {
   className?: string;
   href?: string;
   iconSize?: IconSize;
+  iconColor?: IconProps['color'];
   isExternal?: boolean;
   isLoading?: boolean;
   noCopy?: boolean;
@@ -33,14 +34,17 @@ export interface EntityBaseProps {
 
 export interface ContainerBaseProps extends Pick<EntityBaseProps, 'className'> {
   children: React.ReactNode;
+  onMouseEnter?: (event: React.MouseEvent) => void;
+  onMouseLeave?: (event: React.MouseEvent) => void;
 }
 
-const Container = chakra(({ className, children }: ContainerBaseProps) => {
+const Container = chakra(({ className, children, ...props }: ContainerBaseProps) => {
   return (
     <Flex
       className={ className }
       alignItems="center"
       minWidth={ 0 } // for content truncation - https://css-tricks.com/flexbox-truncated-text/
+      { ...props }
     >
       { children }
     </Flex>
@@ -76,13 +80,13 @@ const Link = chakra(({ isLoading, children, isExternal, onClick, href, noLink }:
   );
 });
 
-export interface IconBaseProps extends Pick<EntityBaseProps, 'isLoading' | 'iconSize' | 'noIcon'> {
+export interface IconBaseProps extends Pick<EntityBaseProps, 'isLoading' | 'iconSize' | 'noIcon' | 'iconColor'> {
   name: IconName;
   color?: IconProps['color'];
   borderRadius?: IconProps['borderRadius'];
 }
 
-const Icon = ({ isLoading, iconSize, noIcon, name, color, borderRadius }: IconBaseProps) => {
+const Icon = ({ isLoading, iconSize, noIcon, name, iconColor, color, borderRadius }: IconBaseProps) => {
   const defaultColor = useColorModeValue('gray.500', 'gray.400');
 
   if (noIcon) {
@@ -98,7 +102,7 @@ const Icon = ({ isLoading, iconSize, noIcon, name, color, borderRadius }: IconBa
       borderRadius={ borderRadius ?? 'base' }
       display="block"
       mr={ 2 }
-      color={ color ?? defaultColor }
+      color={ iconColor ?? color ?? defaultColor }
       minW={ 0 }
       flexShrink={ 0 }
     />
@@ -114,6 +118,14 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
 
   const children = (() => {
     switch (truncation) {
+      case 'constant_long':
+        return (
+          <HashStringShorten
+            hash={ text }
+            as={ asProp }
+            type="long"
+          />
+        );
       case 'constant':
         return (
           <HashStringShorten

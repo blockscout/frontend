@@ -14,9 +14,9 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import ContractConnectWallet from './ContractConnectWallet';
 import ContractCustomAbiAlert from './ContractCustomAbiAlert';
 import ContractImplementationAddress from './ContractImplementationAddress';
-import ContractMethodCallable from './ContractMethodCallable';
 import ContractMethodConstant from './ContractMethodConstant';
 import ContractReadResult from './ContractReadResult';
+import ContractMethodForm from './methodForm/ContractMethodForm';
 import useWatchAccount from './useWatchAccount';
 
 const ContractRead = () => {
@@ -40,7 +40,7 @@ const ContractRead = () => {
     },
   });
 
-  const handleMethodFormSubmit = React.useCallback(async(item: SmartContractReadMethod, args: Array<string | Array<unknown>>) => {
+  const handleMethodFormSubmit = React.useCallback(async(item: SmartContractReadMethod, args: Array<unknown>) => {
     return apiFetch<'contract_method_query', SmartContractQueryMethodRead>('contract_method_query', {
       pathParams: { hash: addressHash },
       queryParams: {
@@ -63,7 +63,7 @@ const ContractRead = () => {
       return <Alert status="error" fontSize="sm" wordBreak="break-word">{ item.error }</Alert>;
     }
 
-    if (item.outputs.some(({ value }) => value !== undefined && value !== null)) {
+    if (item.outputs?.some(({ value }) => value !== undefined && value !== null)) {
       return (
         <Flex flexDir="column" rowGap={ 1 }>
           { item.outputs.map((output, index) => <ContractMethodConstant key={ index } data={ output }/>) }
@@ -72,11 +72,12 @@ const ContractRead = () => {
     }
 
     return (
-      <ContractMethodCallable
+      <ContractMethodForm
         key={ id + '_' + index }
         data={ item }
         onSubmit={ handleMethodFormSubmit }
         resultComponent={ ContractReadResult }
+        methodType="read"
       />
     );
   }, [ handleMethodFormSubmit ]);

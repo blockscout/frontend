@@ -26,17 +26,23 @@ declare module "nextjs-routes" {
     | StaticRoute<"/auth/auth0">
     | StaticRoute<"/auth/profile">
     | StaticRoute<"/auth/unverified-email">
+    | DynamicRoute<"/batches/[number]", { "number": string }>
+    | StaticRoute<"/batches">
+    | DynamicRoute<"/blobs/[hash]", { "hash": string }>
     | DynamicRoute<"/block/[height_or_hash]", { "height_or_hash": string }>
     | StaticRoute<"/blocks">
     | StaticRoute<"/contract-verification">
     | StaticRoute<"/csv-export">
+    | StaticRoute<"/deposits">
+    | StaticRoute<"/gas-tracker">
     | StaticRoute<"/graphiql">
     | StaticRoute<"/">
-    | StaticRoute<"/l2-deposits">
-    | StaticRoute<"/l2-output-roots">
-    | StaticRoute<"/l2-txn-batches">
-    | StaticRoute<"/l2-withdrawals">
     | StaticRoute<"/login">
+    | DynamicRoute<"/name-domains/[name]", { "name": string }>
+    | StaticRoute<"/name-domains">
+    | DynamicRoute<"/op/[hash]", { "hash": string }>
+    | StaticRoute<"/ops">
+    | StaticRoute<"/output-roots">
     | StaticRoute<"/search-results">
     | StaticRoute<"/stats">
     | DynamicRoute<"/token/[hash]", { "hash": string }>
@@ -45,11 +51,10 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/tx/[hash]", { "hash": string }>
     | StaticRoute<"/txs">
     | DynamicRoute<"/txs/kettle/[hash]", { "hash": string }>
+    | StaticRoute<"/validators">
     | StaticRoute<"/verified-contracts">
     | StaticRoute<"/visualize/sol2uml">
-    | StaticRoute<"/withdrawals">
-    | DynamicRoute<"/zkevm-l2-txn-batch/[number]", { "number": string }>
-    | StaticRoute<"/zkevm-l2-txn-batches">;
+    | StaticRoute<"/withdrawals">;
 
   interface StaticRoute<Pathname> {
     pathname: Pathname;

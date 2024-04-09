@@ -6,22 +6,23 @@ import type { PaginationParams } from 'ui/shared/pagination/types';
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
+import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
+import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { BLOCK } from 'stubs/block';
-import { TX } from 'stubs/tx';
-import { generateListStub } from 'stubs/utils';
-import { WITHDRAWAL } from 'stubs/withdrawals';
 import BlockDetails from 'ui/block/BlockDetails';
 import BlockWithdrawals from 'ui/block/BlockWithdrawals';
+import useBlockBlobTxsQuery from 'ui/block/useBlockBlobTxsQuery';
+import useBlockQuery from 'ui/block/useBlockQuery';
+import useBlockTxsQuery from 'ui/block/useBlockTxsQuery';
+import useBlockWithdrawalsQuery from 'ui/block/useBlockWithdrawalsQuery';
 import TextAd from 'ui/shared/ad/TextAd';
+import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
-import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
@@ -39,54 +40,52 @@ const BlockPageContent = () => {
   const heightOrHash = getQueryParamString(router.query.height_or_hash);
   const tab = getQueryParamString(router.query.tab);
 
-  const blockQuery = useApiQuery('block', {
-    pathParams: { height_or_hash: heightOrHash },
-    queryOptions: {
-      enabled: Boolean(heightOrHash),
-      placeholderData: BLOCK,
-    },
-  });
-
-  const blockTxsQuery = useQueryWithPages({
-    resourceName: 'block_txs',
-    pathParams: { height_or_hash: heightOrHash },
-    options: {
-      enabled: Boolean(!blockQuery.isPlaceholderData && blockQuery.data?.height && tab === 'txs'),
-      placeholderData: generateListStub<'block_txs'>(TX, 50, { next_page_params: {
-        block_number: 9004925,
-        index: 49,
-        items_count: 50,
-      } }),
-    },
-  });
-
-  const blockWithdrawalsQuery = useQueryWithPages({
-    resourceName: 'block_withdrawals',
-    pathParams: { height_or_hash: heightOrHash },
-    options: {
-      enabled: Boolean(!blockQuery.isPlaceholderData && blockQuery.data?.height && config.features.beaconChain.isEnabled && tab === 'withdrawals'),
-      placeholderData: generateListStub<'block_withdrawals'>(WITHDRAWAL, 50, { next_page_params: {
-        index: 5,
-        items_count: 50,
-      } }),
-    },
-  });
-
-  if (!heightOrHash) {
-    throw new Error('Block not found', { cause: { status: 404 } });
-  }
-
-  if (blockQuery.isError) {
-    throw new Error(undefined, { cause: blockQuery.error });
-  }
+  const blockQuery = useBlockQuery({ heightOrHash });
+  const blockTxsQuery = useBlockTxsQuery({ heightOrHash, blockQuery, tab });
+  const blockWithdrawalsQuery = useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab });
+  const blockBlobTxsQuery = useBlockBlobTxsQuery({ heightOrHash, blockQuery, tab });
 
   const tabs: Array<RoutedTab> = React.useMemo(() => ([
-    { id: 'index', title: 'Details', component: <BlockDetails query={ blockQuery }/> },
-    { id: 'txs', title: 'Transactions', component: <TxsWithFrontendSorting query={ blockTxsQuery } showBlockInfo={ false } showSocketInfo={ false }/> },
+    {
+      id: 'index',
+      title: 'Details',
+      component: (
+        <>
+          { blockQuery.isDegradedData && <ServiceDegradationWarning isLoading={ blockQuery.isPlaceholderData } mb={ 6 }/> }
+          <BlockDetails query={ blockQuery }/>
+        </>
+      ),
+    },
+    {
+      id: 'txs',
+      title: 'Transactions',
+      component: (
+        <>
+          { blockTxsQuery.isDegradedData && <ServiceDegradationWarning isLoading={ blockTxsQuery.isPlaceholderData } mb={ 6 }/> }
+          <TxsWithFrontendSorting query={ blockTxsQuery } showBlockInfo={ false } showSocketInfo={ false }/>
+        </>
+      ),
+    },
+    blockQuery.data?.blob_tx_count ?
+      {
+        id: 'blob_txs',
+        title: 'Blob txns',
+        component: (
+          <TxsWithFrontendSorting query={ blockBlobTxsQuery } showBlockInfo={ false } showSocketInfo={ false }/>
+        ),
+      } : null,
     config.features.beaconChain.isEnabled && Boolean(blockQuery.data?.withdrawals_count) ?
-      { id: 'withdrawals', title: 'Withdrawals', component: <BlockWithdrawals blockWithdrawalsQuery={ blockWithdrawalsQuery }/> } :
-      null,
-  ].filter(Boolean)), [ blockQuery, blockTxsQuery, blockWithdrawalsQuery ]);
+      {
+        id: 'withdrawals',
+        title: 'Withdrawals',
+        component: (
+          <>
+            { blockWithdrawalsQuery.isDegradedData && <ServiceDegradationWarning isLoading={ blockWithdrawalsQuery.isPlaceholderData } mb={ 6 }/> }
+            <BlockWithdrawals blockWithdrawalsQuery={ blockWithdrawalsQuery }/>
+          </>
+        ),
+      } : null,
+  ].filter(Boolean)), [ blockBlobTxsQuery, blockQuery, blockTxsQuery, blockWithdrawalsQuery ]);
 
   const hasPagination = !isMobile && (
     (tab === 'txs' && blockTxsQuery.pagination.isVisible) ||
@@ -113,7 +112,21 @@ const BlockPageContent = () => {
     };
   }, [ appProps.referrer ]);
 
-  const title = blockQuery.data?.type === 'reorg' ? `Reorged block #${ blockQuery.data?.height }` : `Block #${ blockQuery.data?.height }`;
+  throwOnAbsentParamError(heightOrHash);
+  throwOnResourceLoadError(blockQuery);
+
+  const title = (() => {
+    switch (blockQuery.data?.type) {
+      case 'reorg':
+        return `Reorged block #${ blockQuery.data?.height }`;
+
+      case 'uncle':
+        return `Uncle block #${ blockQuery.data?.height }`;
+
+      default:
+        return `Block #${ blockQuery.data?.height }`;
+    }
+  })();
   const titleSecondRow = (
     <>
       { !config.UI.views.block.hiddenFields?.miner && (

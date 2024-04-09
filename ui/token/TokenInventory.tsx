@@ -5,6 +5,7 @@ import React from 'react';
 import type { TokenInfo } from 'types/api/token';
 
 import type { ResourceError } from 'lib/api/resources';
+import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
@@ -58,21 +59,23 @@ const TokenInventory = ({ inventoryQuery, tokenQuery, ownerFilter }: Props) => {
   const token = tokenQuery.data;
 
   const content = items && token ? (
-    <Grid
-      w="100%"
-      columnGap={{ base: 3, lg: 6 }}
-      rowGap={{ base: 3, lg: 6 }}
-      gridTemplateColumns={{ base: 'repeat(2, calc((100% - 12px)/2))', lg: 'repeat(auto-fill, minmax(210px, 1fr))' }}
-    >
-      { items.map((item, index) => (
-        <TokenInventoryItem
-          key={ token.address + '_' + item.id + (inventoryQuery.isPlaceholderData ? '_' + index : '') }
-          item={ item }
-          isLoading={ inventoryQuery.isPlaceholderData || tokenQuery.isPlaceholderData }
-          token={ token }
-        />
-      )) }
-    </Grid>
+    <AddressHighlightProvider>
+      <Grid
+        w="100%"
+        columnGap={{ base: 3, lg: 6 }}
+        rowGap={{ base: 3, lg: 6 }}
+        gridTemplateColumns={{ base: 'repeat(2, calc((100% - 12px)/2))', lg: 'repeat(auto-fill, minmax(210px, 1fr))' }}
+      >
+        { items.map((item, index) => (
+          <TokenInventoryItem
+            key={ item.id + '_' + index + (inventoryQuery.isPlaceholderData ? '_' + 'placeholder' : '') }
+            item={ item }
+            isLoading={ inventoryQuery.isPlaceholderData || tokenQuery.isPlaceholderData }
+            token={ token }
+          />
+        )) }
+      </Grid>
+    </AddressHighlightProvider>
   ) : null;
 
   return (
@@ -80,6 +83,10 @@ const TokenInventory = ({ inventoryQuery, tokenQuery, ownerFilter }: Props) => {
       isError={ inventoryQuery.isError }
       items={ items }
       emptyText="There are no tokens."
+      filterProps={{
+        hasActiveFilters: Boolean(ownerFilter),
+        emptyFilteredText: 'No tokens found for the selected owner.',
+      }}
       content={ content }
       actionBar={ actionBar }
     />

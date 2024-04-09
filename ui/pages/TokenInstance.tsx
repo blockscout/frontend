@@ -7,12 +7,16 @@ import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
+import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as metadata from 'lib/metadata';
 import * as regexp from 'lib/regexp';
-import { TOKEN_INSTANCE, TOKEN_INFO_ERC_1155 } from 'stubs/token';
-import * as tokenStubs from 'stubs/token';
-import { generateListStub } from 'stubs/utils';
+import {
+  TOKEN_INSTANCE,
+  TOKEN_INFO_ERC_1155,
+  getTokenInstanceTransfersStub,
+  getTokenInstanceHoldersStub,
+} from 'stubs/token';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import TextAd from 'ui/shared/ad/TextAd';
@@ -65,11 +69,7 @@ const TokenInstanceContent = () => {
     scrollRef,
     options: {
       enabled: Boolean(hash && id && (!tab || tab === 'token_transfers') && !tokenInstanceQuery.isPlaceholderData && tokenInstanceQuery.data),
-      placeholderData: generateListStub<'token_instance_transfers'>(
-        tokenQuery.data?.type === 'ERC-1155' ? tokenStubs.TOKEN_TRANSFER_ERC_1155 : tokenStubs.TOKEN_TRANSFER_ERC_721,
-        10,
-        { next_page_params: null },
-      ),
+      placeholderData: getTokenInstanceTransfersStub(tokenQuery.data?.type, null),
     },
   });
 
@@ -85,8 +85,7 @@ const TokenInstanceContent = () => {
     scrollRef,
     options: {
       enabled: Boolean(hash && tab === 'holders' && shouldFetchHolders),
-      placeholderData: generateListStub<'token_instance_holders'>(
-        tokenQuery.data?.type === 'ERC-1155' ? tokenStubs.TOKEN_HOLDER_ERC_1155 : tokenStubs.TOKEN_HOLDER_ERC_20, 10, { next_page_params: null }),
+      placeholderData: getTokenInstanceHoldersStub(tokenQuery.data?.type, null),
     },
   });
 
@@ -129,9 +128,7 @@ const TokenInstanceContent = () => {
     ) },
   ].filter(Boolean);
 
-  if (tokenInstanceQuery.isError) {
-    throw Error('Token instance fetch failed', { cause: tokenInstanceQuery.error });
-  }
+  throwOnResourceLoadError(tokenInstanceQuery);
 
   const tokenTag = <Tag isLoading={ tokenInstanceQuery.isPlaceholderData }>{ tokenQuery.data?.type }</Tag>;
 

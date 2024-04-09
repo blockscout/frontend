@@ -1,3 +1,9 @@
+export interface TimeChartItemRaw {
+  date: Date;
+  dateLabel?: string;
+  value: number | string | null;
+}
+
 export interface TimeChartItem {
   date: Date;
   dateLabel?: string;
@@ -29,6 +35,7 @@ export type TimeChartData = Array<TimeChartDataItem>;
 export interface AxisConfig {
   ticks?: number;
   nice?: boolean;
+  noLabel?: boolean;
 }
 
 export interface AxesConfig {

@@ -7,12 +7,22 @@ on:
                 description: Image tags
                 required: false
                 type: string
+            platforms:
+                description: Image platforms (you can specify multiple platforms separated by comma)
+                required: false
+                type: string
+                default: linux/amd64
     workflow_call:
         inputs:
             tags:
                 description: Image tags
                 required: false
                 type: string
+            platforms:
+                description: Image platforms (you can specify multiple platforms separated by comma)
+                required: false
+                type: string
+                default: linux/amd64
 
 jobs:
     run:
@@ -20,15 +30,15 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             -   name: Check out the repo
-                uses: actions/checkout@v3
+                uses: actions/checkout@v4
     
             -   name: Set up Docker Buildx
-                uses: docker/setup-buildx-action@v2
+                uses: docker/setup-buildx-action@v3
     
             # Will automatically make nice tags, see the table here https://github.com/docker/metadata-action#basic
             -   name: Docker meta
                 id: meta
-                uses: docker/metadata-action@v4
+                uses: docker/metadata-action@v5
                 with:
                     images: ghcr.io/blockscout/frontend
     
@@ -51,13 +61,14 @@ jobs:
                     echo "ref_name: $REF_NAME"
     
             -   name: Build and push
-                uses: docker/build-push-action@v3
+                uses: docker/build-push-action@v5
                 with:
                     context: .
                     file: ./Dockerfile
                     push: true
                     cache-from: type=gha
                     tags: ${{ inputs.tags || steps.meta.outputs.tags }}
+                    platforms: ${{ inputs.platforms }}
                     labels: ${{ steps.meta.outputs.labels }}
                     build-args: |
                         GIT_COMMIT_SHA=${{ env.SHORT_SHA }}

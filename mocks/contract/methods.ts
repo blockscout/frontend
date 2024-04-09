@@ -132,6 +132,7 @@ export const write: Array<SmartContractWriteMethod> = [
     payable: false,
     stateMutability: 'nonpayable',
     type: 'function',
+    method_id: '0x01',
   },
   {
     constant: false,
@@ -146,6 +147,7 @@ export const write: Array<SmartContractWriteMethod> = [
     payable: true,
     stateMutability: 'payable',
     type: 'function',
+    method_id: '0x02',
   },
   {
     stateMutability: 'payable',
@@ -159,6 +161,7 @@ export const write: Array<SmartContractWriteMethod> = [
     payable: false,
     stateMutability: 'nonpayable',
     type: 'function',
+    method_id: '0x03',
   },
   {
     constant: false,
@@ -173,6 +176,7 @@ export const write: Array<SmartContractWriteMethod> = [
     payable: false,
     stateMutability: 'nonpayable',
     type: 'function',
+    method_id: '0x04',
   },
   {
     constant: false,
@@ -190,6 +194,7 @@ export const write: Array<SmartContractWriteMethod> = [
     payable: false,
     stateMutability: 'nonpayable',
     type: 'function',
+    method_id: '0x05',
   },
   {
     constant: false,
@@ -208,5 +213,6 @@ export const write: Array<SmartContractWriteMethod> = [
     payable: false,
     stateMutability: 'nonpayable',
     type: 'function',
+    method_id: '0x06',
   },
 ];

@@ -25,7 +25,7 @@ interface Props {
   enableTimeIncrement?: boolean;
 }
 
-const isRollup = config.features.optimisticRollup.isEnabled || config.features.zkEvmRollup.isEnabled;
+const isRollup = config.features.rollup.isEnabled;
 
 const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
   const totalReward = getBlockTotalReward(data);
@@ -50,7 +50,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
             <BlockEntity
               isLoading={ isLoading }
               number={ data.height }
-              hash={ data.type === 'reorg' ? data.hash : undefined }
+              hash={ data.type !== 'block' ? data.hash : undefined }
               noIcon
               fontSize="sm"
               lineHeight={ 5 }
@@ -70,6 +70,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           <AddressEntity
             address={ data.miner }
             isLoading={ isLoading }
+            truncation="constant"
           />
         </Td>
       ) }

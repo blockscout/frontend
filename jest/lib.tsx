@@ -1,4 +1,5 @@
 import { ChakraProvider } from '@chakra-ui/react';
+import { GrowthBookProvider } from '@growthbook/growthbook-react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { RenderOptions } from '@testing-library/react';
 import { render } from '@testing-library/react';
@@ -19,6 +20,8 @@ const PAGE_PROPS = {
   hash: '',
   number: '',
   q: '',
+  name: '',
+  adBannerProvider: '',
 };
 
 const TestApp = ({ children }: {children: React.ReactNode}) => {
@@ -36,9 +39,11 @@ const TestApp = ({ children }: {children: React.ReactNode}) => {
       <QueryClientProvider client={ queryClient }>
         <AppContextProvider pageProps={ PAGE_PROPS }>
           <ScrollDirectionProvider>
-            <SocketProvider>
-              { children }
-            </SocketProvider>
+            <GrowthBookProvider>
+              <SocketProvider>
+                { children }
+              </SocketProvider>
+            </GrowthBookProvider>
           </ScrollDirectionProvider>
         </AppContextProvider>
       </QueryClientProvider>

@@ -9,6 +9,7 @@ import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
 import * as app from 'playwright/utils/app';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
+import * as configs from 'playwright/utils/configs';
 
 import SearchBar from './SearchBar';
 
@@ -53,7 +54,7 @@ test('search by token name  +@mobile +@dark-mode', async({ mount, page }) => {
       <SearchBar/>
     </TestApp>,
   );
-  await page.getByPlaceholder(/search/i).type('o');
+  await page.getByPlaceholder(/search/i).fill('o');
   await page.waitForResponse(API_URL);
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
@@ -65,6 +66,7 @@ test('search by contract name  +@mobile +@dark-mode', async({ mount, page }) => 
     status: 200,
     body: JSON.stringify([
       searchMock.contract1,
+      searchMock.address2,
     ]),
   }));
 
@@ -73,7 +75,7 @@ test('search by contract name  +@mobile +@dark-mode', async({ mount, page }) => 
       <SearchBar/>
     </TestApp>,
   );
-  await page.getByPlaceholder(/search/i).type('o');
+  await page.getByPlaceholder(/search/i).fill('o');
   await page.waitForResponse(API_URL);
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
@@ -95,7 +97,7 @@ test('search by name homepage +@dark-mode', async({ mount, page }) => {
       <SearchBar isHomepage/>
     </TestApp>,
   );
-  await page.getByPlaceholder(/search/i).type('o');
+  await page.getByPlaceholder(/search/i).fill('o');
   await page.waitForResponse(API_URL);
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
@@ -115,7 +117,7 @@ test('search by tag  +@mobile +@dark-mode', async({ mount, page }) => {
       <SearchBar/>
     </TestApp>,
   );
-  await page.getByPlaceholder(/search/i).type('o');
+  await page.getByPlaceholder(/search/i).fill('o');
   await page.waitForResponse(API_URL);
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
@@ -135,7 +137,7 @@ test('search by address hash +@mobile', async({ mount, page }) => {
       <SearchBar/>
     </TestApp>,
   );
-  await page.getByPlaceholder(/search/i).type(searchMock.address1.address);
+  await page.getByPlaceholder(/search/i).fill(searchMock.address1.address);
   await page.waitForResponse(API_URL);
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
@@ -148,6 +150,7 @@ test('search by block number +@mobile', async({ mount, page }) => {
     body: JSON.stringify([
       searchMock.block1,
       searchMock.block2,
+      searchMock.block3,
     ]),
   }));
 
@@ -156,7 +159,7 @@ test('search by block number +@mobile', async({ mount, page }) => {
       <SearchBar/>
     </TestApp>,
   );
-  await page.getByPlaceholder(/search/i).type(String(searchMock.block1.block_number));
+  await page.getByPlaceholder(/search/i).fill(String(searchMock.block1.block_number));
   await page.waitForResponse(API_URL);
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 600 } });
@@ -176,7 +179,7 @@ test('search by block hash +@mobile', async({ mount, page }) => {
       <SearchBar/>
     </TestApp>,
   );
-  await page.getByPlaceholder(/search/i).type(searchMock.block1.block_hash);
+  await page.getByPlaceholder(/search/i).fill(searchMock.block1.block_hash);
   await page.waitForResponse(API_URL);
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
@@ -196,7 +199,56 @@ test('search by tx hash +@mobile', async({ mount, page }) => {
       <SearchBar/>
     </TestApp>,
   );
-  await page.getByPlaceholder(/search/i).type(searchMock.tx1.tx_hash);
+  await page.getByPlaceholder(/search/i).fill(searchMock.tx1.tx_hash);
+  await page.waitForResponse(API_URL);
+
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
+});
+
+test('search by blob hash +@mobile', async({ mount, page }) => {
+  const API_URL = buildApiUrl('quick_search') + `?q=${ searchMock.blob1.blob_hash }`;
+  await page.route(API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify([
+      searchMock.blob1,
+    ]),
+  }));
+
+  await mount(
+    <TestApp>
+      <SearchBar/>
+    </TestApp>,
+  );
+  await page.getByPlaceholder(/search/i).fill(searchMock.blob1.blob_hash);
+  await page.waitForResponse(API_URL);
+
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
+});
+
+const testWithUserOps = base.extend({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  context: contextWithEnvs(configs.featureEnvs.userOps) as any,
+});
+
+testWithUserOps('search by user op hash +@mobile', async({ mount, page }) => {
+  await page.route('https://request-global.czilladx.com/serve/native.php?z=19260bf627546ab7242', (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(textAdMock.duck),
+  }));
+  const API_URL = buildApiUrl('quick_search') + `?q=${ searchMock.tx1.tx_hash }`;
+  await page.route(API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify([
+      searchMock.userOp1,
+    ]),
+  }));
+
+  await mount(
+    <TestApp>
+      <SearchBar/>
+    </TestApp>,
+  );
+  await page.getByPlaceholder(/search/i).fill(searchMock.tx1.tx_hash);
   await page.waitForResponse(API_URL);
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
@@ -219,7 +271,7 @@ test('search with view all link', async({ mount, page }) => {
       <SearchBar/>
     </TestApp>,
   );
-  await page.getByPlaceholder(/search/i).type('o');
+  await page.getByPlaceholder(/search/i).fill('o');
 
   await page.waitForResponse(API_URL);
 
@@ -251,7 +303,7 @@ test('scroll suggest to category', async({ mount, page }) => {
       <SearchBar/>
     </TestApp>,
   );
-  await page.getByPlaceholder(/search/i).type('o');
+  await page.getByPlaceholder(/search/i).fill('o');
   await page.waitForResponse(API_URL);
 
   await page.getByRole('tab', { name: 'Addresses' }).click();
@@ -313,7 +365,7 @@ base.describe('with apps', () => {
         <SearchBar/>
       </TestApp>,
     );
-    await page.getByPlaceholder(/search/i).type('o');
+    await page.getByPlaceholder(/search/i).fill('o');
 
     await page.waitForResponse(API_URL);
 

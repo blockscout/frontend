@@ -1,6 +1,7 @@
 import type { LuksoProfile } from '@lukso/web-components/dist/components/lukso-profile';
 import type * as React from 'react';
-import type { WindowProvider } from 'wagmi';
+
+import type { WalletProvider } from 'types/web3';
 
 type CPreferences = {
   zone: string;
@@ -15,7 +16,7 @@ type WebComponent<T> =
 
 declare global {
   export interface Window {
-    ethereum?: WindowProvider;
+    ethereum?: WalletProvider | undefined;
     coinzilla_display: Array<CPreferences>;
     ga?: {
       getAll: () => Array<{ get: (prop: string) => string }>;
@@ -40,3 +41,5 @@ declare global {
     }
   }
 }
+
+export {};

@@ -9,13 +9,19 @@ declare module 'yup' {
 import * as yup from 'yup';
 
 import type { AdButlerConfig } from '../../../types/client/adButlerConfig';
-import { SUPPORTED_AD_TEXT_PROVIDERS, SUPPORTED_AD_BANNER_PROVIDERS } from '../../../types/client/adProviders';
-import type { AdTextProviders, AdBannerProviders } from '../../../types/client/adProviders';
-import type { MarketplaceAppOverview } from '../../../types/client/marketplace';
+import { SUPPORTED_AD_TEXT_PROVIDERS, SUPPORTED_AD_BANNER_PROVIDERS, SUPPORTED_AD_BANNER_ADDITIONAL_PROVIDERS } from '../../../types/client/adProviders';
+import type { AdTextProviders, AdBannerProviders, AdBannerAdditionalProviders } from '../../../types/client/adProviders';
+import type { ContractCodeIde } from '../../../types/client/contract';
+import { GAS_UNITS } from '../../../types/client/gasTracker';
+import type { GasUnit } from '../../../types/client/gasTracker';
+import type { MarketplaceAppOverview, MarketplaceAppSecurityReportRaw, MarketplaceAppSecurityReport } from '../../../types/client/marketplace';
 import { NAVIGATION_LINK_IDS } from '../../../types/client/navigation-items';
 import type { NavItemExternal, NavigationLinkId } from '../../../types/client/navigation-items';
+import { ROLLUP_TYPES } from '../../../types/client/rollup';
 import type { BridgedTokenChain, TokenBridge } from '../../../types/client/token';
 import { PROVIDERS as TX_INTERPRETATION_PROVIDERS } from '../../../types/client/txInterpretation';
+import { VALIDATORS_CHAIN_TYPE } from '../../../types/client/validators';
+import type { ValidatorsChainType } from '../../../types/client/validators';
 import type { WalletType } from '../../../types/client/wallets';
 import { SUPPORTED_WALLETS } from '../../../types/client/wallets';
 import type { CustomLink, CustomLinksGroup } from '../../../types/footerLinks';
@@ -69,22 +75,124 @@ const marketplaceAppSchema: yup.ObjectSchema<MarketplaceAppOverview> = yup
     site: yup.string().test(urlTest),
     twitter: yup.string().test(urlTest),
     telegram: yup.string().test(urlTest),
-    github: yup.string().test(urlTest),
+    github: yup.lazy(value =>
+      Array.isArray(value) ?
+        yup.array().of(yup.string().required().test(urlTest)) :
+        yup.string().test(urlTest),
+    ),
+    discord: yup.string().test(urlTest),
+    internalWallet: yup.boolean(),
+    priority: yup.number(),
+  });
+
+const issueSeverityDistributionSchema: yup.ObjectSchema<MarketplaceAppSecurityReport['overallInfo']['issueSeverityDistribution']> = yup
+  .object({
+    critical: yup.number().required(),
+    gas: yup.number().required(),
+    high: yup.number().required(),
+    informational: yup.number().required(),
+    low: yup.number().required(),
+    medium: yup.number().required(),
+  });
+
+const solidityscanReportSchema: yup.ObjectSchema<MarketplaceAppSecurityReport['contractsData'][number]['solidityScanReport']> = yup
+  .object({
+    contractname: yup.string().required(),
+    scan_status: yup.string().required(),
+    scan_summary: yup
+      .object({
+        issue_severity_distribution: issueSeverityDistributionSchema.required(),
+        lines_analyzed_count: yup.number().required(),
+        scan_time_taken: yup.number().required(),
+        score: yup.string().required(),
+        score_v2: yup.string().required(),
+        threat_score: yup.string().required(),
+      })
+      .required(),
+    scanner_reference_url: yup.string().test(urlTest).required(),
+  });
+
+const contractDataSchema: yup.ObjectSchema<MarketplaceAppSecurityReport['contractsData'][number]> = yup
+  .object({
+    address: yup.string().required(),
+    isVerified: yup.boolean().required(),
+    solidityScanReport: solidityscanReportSchema.nullable().notRequired(),
+  });
+
+const chainsDataSchema = yup.lazy((objValue) => {
+  let schema = yup.object();
+  Object.keys(objValue).forEach((key) => {
+    schema = schema.shape({
+      [key]: yup.object({
+        overallInfo: yup.object({
+          verifiedNumber: yup.number().required(),
+          totalContractsNumber: yup.number().required(),
+          solidityScanContractsNumber: yup.number().required(),
+          securityScore: yup.number().required(),
+          issueSeverityDistribution: issueSeverityDistributionSchema.required(),
+        }).required(),
+        contractsData: yup.array().of(contractDataSchema).required(),
+      }),
+    });
+  });
+  return schema;
+});
+
+const securityReportSchema: yup.ObjectSchema<MarketplaceAppSecurityReportRaw> = yup
+  .object({
+    appName: yup.string().required(),
+    chainsData: chainsDataSchema,
   });
 
 const marketplaceSchema = yup
   .object()
   .shape({
+    NEXT_PUBLIC_MARKETPLACE_ENABLED: yup.boolean(),
     NEXT_PUBLIC_MARKETPLACE_CONFIG_URL: yup
       .array()
       .json()
-      .of(marketplaceAppSchema),
+      .of(marketplaceAppSchema)
+      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
+        is: true,
+        then: (schema) => schema,
+        // eslint-disable-next-line max-len
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
+      }),
+    NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL: yup
+      .array()
+      .json()
+      .of(yup.string())
+      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
+        is: true,
+        then: (schema) => schema,
+        // eslint-disable-next-line max-len
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
+      }),
     NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM: yup
       .string()
-      .when('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', {
-        is: (value: Array<unknown>) => value.length > 0,
+      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
+        is: true,
         then: (schema) => schema.test(urlTest).required(),
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM cannot not be used without NEXT_PUBLIC_MARKETPLACE_CONFIG_URL'),
+        // eslint-disable-next-line max-len
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
+      }),
+    NEXT_PUBLIC_MARKETPLACE_SUGGEST_IDEAS_FORM: yup
+      .string()
+      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
+        is: true,
+        then: (schema) => schema.test(urlTest),
+        // eslint-disable-next-line max-len
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_SUGGEST_IDEAS_FORM cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
+      }),
+    NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL: yup
+      .array()
+      .json()
+      .of(securityReportSchema)
+      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
+        is: true,
+        then: (schema) => schema,
+        // eslint-disable-next-line max-len
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
       }),
   });
 
@@ -107,23 +215,20 @@ const beaconChainSchema = yup
 const rollupSchema = yup
   .object()
   .shape({
-    NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK: yup.boolean(),
-    NEXT_PUBLIC_OPTIMISTIC_L2_WITHDRAWAL_URL: yup
+    NEXT_PUBLIC_ROLLUP_TYPE: yup.string().oneOf(ROLLUP_TYPES),
+    NEXT_PUBLIC_ROLLUP_L1_BASE_URL: yup
       .string()
-      .when('NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK', {
+      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
         is: (value: string) => value,
         then: (schema) => schema.test(urlTest).required(),
-        // eslint-disable-next-line max-len
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_OPTIMISTIC_L2_WITHDRAWAL_URL cannot not be used if NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK is not set to "true"'),
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_ROLLUP_L1_BASE_URL cannot not be used if NEXT_PUBLIC_ROLLUP_TYPE is not defined'),
       }),
-    NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK: yup.boolean(),
-    NEXT_PUBLIC_L1_BASE_URL: yup
+    NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL: yup
       .string()
-      .when([ 'NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK', 'NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK' ], {
-        is: (isOptimistic?: boolean, isZk?: boolean) => isOptimistic || isZk,
+      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
+        is: (value: string) => value === 'optimistic',
         then: (schema) => schema.test(urlTest).required(),
-        // eslint-disable-next-line max-len
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_L1_BASE_URL cannot not be used if NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK or NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK is not set to "true"'),
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL cannot not be used if NEXT_PUBLIC_ROLLUP_TYPE is not defined'),
       }),
   });
 
@@ -140,12 +245,23 @@ const adButlerConfigSchema = yup
         height: yup.number().positive().required(),
       })
       .required(),
+  })
+  .when('NEXT_PUBLIC_AD_BANNER_ADDITIONAL_PROVIDER', {
+    is: (value: AdBannerProviders) => value === 'adbutler',
+    then: (schema) => schema
+      .shape({
+        id: yup.string().required(),
+        width: yup.number().positive().required(),
+        height: yup.number().positive().required(),
+      })
+      .required(),
   });
 
 const adsBannerSchema = yup
   .object()
   .shape({
     NEXT_PUBLIC_AD_BANNER_PROVIDER: yup.string<AdBannerProviders>().oneOf(SUPPORTED_AD_BANNER_PROVIDERS),
+    NEXT_PUBLIC_AD_BANNER_ADDITIONAL_PROVIDER: yup.string<AdBannerAdditionalProviders>().oneOf(SUPPORTED_AD_BANNER_ADDITIONAL_PROVIDERS),
     NEXT_PUBLIC_AD_ADBUTLER_CONFIG_DESKTOP: adButlerConfigSchema,
     NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE: adButlerConfigSchema,
   });
@@ -252,6 +368,7 @@ const footerLinkGroupSchema: yup.ObjectSchema<CustomLinksGroup> = yup
 const networkExplorerSchema: yup.ObjectSchema<NetworkExplorer> = yup
   .object({
     title: yup.string().required(),
+    logo: yup.string().test(urlTest),
     baseUrl: yup.string().test(urlTest).required(),
     paths: yup
       .object()
@@ -261,6 +378,13 @@ const networkExplorerSchema: yup.ObjectSchema<NetworkExplorer> = yup
         token: yup.string(),
         block: yup.string(),
       }),
+  });
+
+const contractCodeIdeSchema: yup.ObjectSchema<ContractCodeIde> = yup
+  .object({
+    title: yup.string().required(),
+    url: yup.string().test(urlTest).required(),
+    icon_url: yup.string().test(urlTest).required(),
   });
 
 const nftMarketplaceSchema: yup.ObjectSchema<NftMarketplaceItem> = yup
@@ -330,6 +454,7 @@ const schema = yup
     NEXT_PUBLIC_NETWORK_ID: yup.number().positive().integer().required(),
     NEXT_PUBLIC_NETWORK_RPC_URL: yup.string().test(urlTest),
     NEXT_PUBLIC_NETWORK_CURRENCY_NAME: yup.string(),
+    NEXT_PUBLIC_NETWORK_CURRENCY_WEI_NAME: yup.string(),
     NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL: yup.string(),
     NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS: yup.number().integer().positive(),
     NEXT_PUBLIC_NETWORK_GOVERNANCE_TOKEN_SYMBOL: yup.string(),
@@ -352,7 +477,6 @@ const schema = yup
       .of(yup.string<ChainIndicatorId>().oneOf([ 'daily_txs', 'coin_price', 'market_cap', 'tvl' ])),
     NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR: yup.string(),
     NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND: yup.string(),
-    NEXT_PUBLIC_HOMEPAGE_SHOW_GAS_TRACKER: yup.boolean(),
     NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME: yup.boolean(),
 
     //     b. sidebar
@@ -416,6 +540,12 @@ const schema = yup
       .transform(replaceQuotes)
       .json()
       .of(networkExplorerSchema),
+    NEXT_PUBLIC_CONTRACT_CODE_IDES: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(contractCodeIdeSchema),
+    NEXT_PUBLIC_HAS_CONTRACT_AUDIT_REPORTS: yup.boolean(),
     NEXT_PUBLIC_HIDE_INDEXING_ALERT_BLOCKS: yup.boolean(),
     NEXT_PUBLIC_HIDE_INDEXING_ALERT_INT_TXS: yup.boolean(),
     NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: yup.string(),
@@ -425,6 +555,7 @@ const schema = yup
     NEXT_PUBLIC_STATS_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_VISUALIZE_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_CONTRACT_INFO_API_HOST: yup.string().test(urlTest),
+    NEXT_PUBLIC_NAME_SERVICE_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_GRAPHIQL_TRANSACTION: yup.string().matches(regexp.HEX_REGEXP),
     NEXT_PUBLIC_WEB3_WALLETS: yup
       .mixed()
@@ -444,7 +575,15 @@ const schema = yup
     NEXT_PUBLIC_PROMOTE_BLOCKSCOUT_IN_TITLE: yup.boolean(),
     NEXT_PUBLIC_OG_DESCRIPTION: yup.string(),
     NEXT_PUBLIC_OG_IMAGE_URL: yup.string().test(urlTest),
+    NEXT_PUBLIC_SAFE_TX_SERVICE_URL: yup.string().test(urlTest),
     NEXT_PUBLIC_IS_SUAVE_CHAIN: yup.boolean(),
+    NEXT_PUBLIC_HAS_USER_OPS: yup.boolean(),
+    NEXT_PUBLIC_METASUITES_ENABLED: yup.boolean(),
+    NEXT_PUBLIC_SWAP_BUTTON_URL: yup.string(),
+    NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE: yup.string<ValidatorsChainType>().oneOf(VALIDATORS_CHAIN_TYPE),
+    NEXT_PUBLIC_GAS_TRACKER_ENABLED: yup.boolean(),
+    NEXT_PUBLIC_GAS_TRACKER_UNITS: yup.array().transform(replaceQuotes).json().of(yup.string<GasUnit>().oneOf(GAS_UNITS)),
+    NEXT_PUBLIC_DATA_AVAILABILITY_ENABLED: yup.boolean(),
 
     // 6. External services envs
     NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: yup.string(),
@@ -455,6 +594,7 @@ const schema = yup
     NEXT_PUBLIC_ALGOLIA_APP_ID: yup.string(),
     NEXT_PUBLIC_ALGOLIA_API_KEY: yup.string(),
     NEXT_PUBLIC_ALGOLIA_INDEX_NAME: yup.string(),
+    NEXT_PUBLIC_GROWTH_BOOK_CLIENT_KEY: yup.string(),
 
     // Misc
     NEXT_PUBLIC_USE_NEXT_JS_PROXY: yup.boolean(),

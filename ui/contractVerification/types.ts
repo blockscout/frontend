@@ -1,4 +1,4 @@
-import type { SmartContractVerificationMethod } from 'types/api/contract';
+import type { SmartContractLicenseType, SmartContractVerificationMethod } from 'types/api/contract';
 import type { Option } from 'ui/shared/FancySelect/types';
 
 export interface ContractLibrary {
@@ -9,6 +9,11 @@ export interface ContractLibrary {
 interface MethodOption {
   label: string;
   value: SmartContractVerificationMethod;
+}
+
+export interface LicenseOption {
+  label: string;
+  value: SmartContractLicenseType;
 }
 
 export interface FormFieldsFlattenSourceCode {
@@ -24,6 +29,7 @@ export interface FormFieldsFlattenSourceCode {
   autodetect_constructor_args: boolean;
   constructor_args: string;
   libraries: Array<ContractLibrary>;
+  license_type: LicenseOption | null;
 }
 
 export interface FormFieldsStandardInput {
@@ -34,6 +40,7 @@ export interface FormFieldsStandardInput {
   sources: Array<File>;
   autodetect_constructor_args: boolean;
   constructor_args: string;
+  license_type: LicenseOption | null;
 }
 
 export interface FormFieldsSourcify {
@@ -41,6 +48,7 @@ export interface FormFieldsSourcify {
   method: MethodOption;
   sources: Array<File>;
   contract_index?: Option;
+  license_type: LicenseOption | null;
 }
 
 export interface FormFieldsMultiPartFile {
@@ -52,6 +60,7 @@ export interface FormFieldsMultiPartFile {
   optimization_runs: string;
   sources: Array<File>;
   libraries: Array<ContractLibrary>;
+  license_type: LicenseOption | null;
 }
 
 export interface FormFieldsVyperContract {
@@ -62,6 +71,7 @@ export interface FormFieldsVyperContract {
   compiler: Option | null;
   code: string;
   constructor_args: string | undefined;
+  license_type: LicenseOption | null;
 }
 
 export interface FormFieldsVyperMultiPartFile {
@@ -71,6 +81,7 @@ export interface FormFieldsVyperMultiPartFile {
   evm_version: Option | null;
   sources: Array<File>;
   interfaces: Array<File>;
+  license_type: LicenseOption | null;
 }
 
 export interface FormFieldsVyperStandardInput {
@@ -78,6 +89,7 @@ export interface FormFieldsVyperStandardInput {
   method: MethodOption;
   compiler: Option | null;
   sources: Array<File>;
+  license_type: LicenseOption | null;
 }
 
 export type FormFields = FormFieldsFlattenSourceCode | FormFieldsStandardInput | FormFieldsSourcify |
