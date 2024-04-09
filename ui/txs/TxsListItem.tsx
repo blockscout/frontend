@@ -56,6 +56,7 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
           hash={ tx.hash }
           truncation="constant_long"
           fontWeight="700"
+          iconName={ tx.tx_types.includes('blob_transaction') ? 'blob' : undefined }
         />
         { tx.timestamp && (
           <Skeleton isLoaded={ !isLoading } color="text_secondary" fontWeight="400" fontSize="sm">
