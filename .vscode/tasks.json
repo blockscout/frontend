@@ -341,6 +341,7 @@
               "eth",
               "eth_goerli",
               "sepolia",
+              "optimism",
               "polygon",
               "zkevm",
               "zksync",
