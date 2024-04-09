@@ -35,33 +35,36 @@ export const baseResponse: AddressCoinBalanceHistoryResponse = {
   next_page_params: null,
 };
 
-export const chartResponse: AddressCoinBalanceHistoryChart = [
-  {
-    date: '2022-11-02',
-    value: '128238612887883515',
-  },
-  {
-    date: '2022-11-03',
-    value: '199807583157570922',
-  },
-  {
-    date: '2022-11-04',
-    value: '114487912907005778',
-  },
-  {
-    date: '2022-11-05',
-    value: '219533112907005778',
-  },
-  {
-    date: '2022-11-06',
-    value: '116487912907005778',
-  },
-  {
-    date: '2022-11-07',
-    value: '199807583157570922',
-  },
-  {
-    date: '2022-11-08',
-    value: '216488112907005778',
-  },
-];
+export const chartResponse: AddressCoinBalanceHistoryChart = {
+  items: [
+    {
+      date: '2022-11-02',
+      value: '128238612887883515',
+    },
+    {
+      date: '2022-11-03',
+      value: '199807583157570922',
+    },
+    {
+      date: '2022-11-04',
+      value: '114487912907005778',
+    },
+    {
+      date: '2022-11-05',
+      value: '219533112907005778',
+    },
+    {
+      date: '2022-11-06',
+      value: '116487912907005778',
+    },
+    {
+      date: '2022-11-07',
+      value: '199807583157570922',
+    },
+    {
+      date: '2022-11-08',
+      value: '216488112907005778',
+    },
+  ],
+  days: 10,
+};
