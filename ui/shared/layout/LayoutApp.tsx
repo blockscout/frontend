@@ -18,7 +18,7 @@ const LayoutDefault = ({ children }: Props) => {
           paddingTop={{ base: 16, lg: 6 }}
           paddingBottom={ 0 }
           paddingX={{ base: 4, lg: 6 }}
-          height={{ base: 'calc(100vh - 92px)', sm: 'auto' }}
+          height={{ base: 'calc(100vh - 92px)', sm: 'auto' }} // 92px = Layout.TopRow + HeaderMobile
         >
           <HeaderDesktop isMarketplaceAppPage/>
           <AppErrorBoundary>
