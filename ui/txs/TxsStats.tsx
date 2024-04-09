@@ -1,8 +1,12 @@
 import { Box } from '@chakra-ui/react';
+import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
+import type { HomeStats } from 'types/api/stats';
+
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
+import getCurrencyValue from 'lib/getCurrencyValue';
 import { TXS_STATS } from 'stubs/tx';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 
@@ -13,9 +17,19 @@ const TxsStats = () => {
     },
   });
 
+  const queryClient = useQueryClient();
+  const statsData = queryClient.getQueryData<HomeStats>(getResourceKey('stats'));
+
   if (!txsStatsQuery.data) {
     return null;
   }
+
+  const txFeeAvg = getCurrencyValue({
+    value: txsStatsQuery.data.transaction_fees_avg_24h,
+    exchangeRate: statsData?.coin_price,
+    decimals: String(config.chain.currency.decimals),
+    accuracyUsd: 2,
+  });
 
   return (
     <Box
@@ -48,10 +62,7 @@ const TxsStats = () => {
       />
       <StatsWidget
         label="Avg. transaction fee"
-        value={
-          (Number(txsStatsQuery.data?.transaction_fees_avg_24h) / (10 ** config.chain.currency.decimals))
-            .toLocaleString(undefined, { maximumSignificantDigits: 2 }) + ' ' + config.chain.currency.symbol
-        }
+        value={ txFeeAvg.usd ? txFeeAvg.usd + ' USD' : txFeeAvg.valueStr + ' ' + config.chain.currency.symbol }
         period="24h"
         isLoading={ txsStatsQuery.isPlaceholderData }
       />
