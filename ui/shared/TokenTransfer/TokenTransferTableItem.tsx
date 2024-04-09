@@ -34,7 +34,7 @@ const TokenTransferTableItem = ({
   isLoading,
 }: Props) => {
   const timeAgo = useTimeAgoIncrement(timestamp, enableTimeIncrement);
-  const { usd, valueStr } = 'value' in total ? getCurrencyValue({
+  const { usd, valueStr } = 'value' in total && total.value !== null ? getCurrencyValue({
     value: total.value,
     exchangeRate: token.exchange_rate,
     accuracy: 8,
@@ -52,14 +52,14 @@ const TokenTransferTableItem = ({
         </Td>
       ) }
       <Td>
-        <Flex flexDir="column" alignItems="flex-start" my="3px" rowGap={ 2 }>
-          <TokenEntity
-            token={ token }
-            isLoading={ isLoading }
-            noSymbol
-            noCopy
-            my="2px"
-          />
+        <TokenEntity
+          token={ token }
+          isLoading={ isLoading }
+          noSymbol
+          noCopy
+          mt={ 1 }
+        />
+        <Flex columnGap={ 2 } rowGap={ 2 } mt={ 2 } flexWrap="wrap">
           <Tag isLoading={ isLoading }>{ token.type }</Tag>
           <Tag colorScheme="orange" isLoading={ isLoading }>{ getTokenTransferTypeText(type) }</Tag>
         </Flex>

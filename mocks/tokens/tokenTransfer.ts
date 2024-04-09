@@ -170,6 +170,64 @@ export const erc1155D: TokenTransfer = {
   total: { token_id: '456', value: '42', decimals: null },
 };
 
+export const erc404A: TokenTransfer = {
+  from: {
+    hash: '0x0000000000000000000000000000000000000000',
+    implementation_name: null,
+    is_contract: false,
+    is_verified: false,
+    name: null,
+    private_tags: [],
+    public_tags: [],
+    watchlist_names: [],
+    ens_domain_name: null,
+  },
+  to: {
+    hash: '0xBb36c792B9B45Aaf8b848A1392B0d6559202729E',
+    implementation_name: null,
+    is_contract: false,
+    is_verified: false,
+    name: null,
+    private_tags: [],
+    public_tags: [],
+    watchlist_names: [],
+    ens_domain_name: 'kitty.kitty.cat.eth',
+  },
+  token: {
+    address: '0xF56b7693E4212C584de4a83117f805B8E89224CB',
+    circulating_market_cap: null,
+    decimals: null,
+    exchange_rate: null,
+    holders: '1',
+    name: null,
+    symbol: 'MY_SYMBOL_IS_VERY_LONG',
+    type: 'ERC-404',
+    total_supply: '0',
+    icon_url: null,
+  },
+  total: {
+    value: '42000000000000000000000000',
+    decimals: '18',
+    token_id: null,
+  },
+  tx_hash: '0x05d6589367633c032d757a69c5fb16c0e33e3994b0d9d1483f82aeee1f05d746',
+  type: 'token_transfer',
+  method: 'swap',
+  timestamp: '2022-10-10T14:34:30.000000Z',
+  block_hash: '1',
+  log_index: '1',
+};
+
+export const erc404B: TokenTransfer = {
+  ...erc404A,
+  token: {
+    ...erc404A.token,
+    name: 'SastanaNFT',
+    symbol: 'ipfs://QmUpFUfVKDCWeZQk5pvDFUxnpQP9N6eLSHhNUy49T1JVtY',
+  },
+  total: { token_id: '4625304364899952' },
+};
+
 export const mixTokens: TokenTransferResponse = {
   items: [
     erc20,
@@ -178,6 +236,8 @@ export const mixTokens: TokenTransferResponse = {
     erc1155B,
     erc1155C,
     erc1155D,
+    erc404A,
+    erc404B,
   ],
   next_page_params: null,
 };

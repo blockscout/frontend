@@ -127,6 +127,8 @@ export const withTokenTransfer: Transaction = {
     tokenTransferMock.erc1155B,
     tokenTransferMock.erc1155C,
     tokenTransferMock.erc1155D,
+    tokenTransferMock.erc404A,
+    tokenTransferMock.erc404B,
   ],
   token_transfers_overflow: true,
   tx_types: [

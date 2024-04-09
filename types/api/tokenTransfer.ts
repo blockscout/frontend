@@ -16,6 +16,14 @@ export type Erc1155TotalPayload = {
   token_id: string | null;
 }
 
+export type Erc404TotalPayload = {
+  decimals: string;
+  value: string;
+  token_id: null;
+} | {
+  token_id: string;
+};
+
 export type TokenTransfer = (
   {
     token: TokenInfo<'ERC-20'>;
@@ -28,6 +36,10 @@ export type TokenTransfer = (
   {
     token: TokenInfo<'ERC-1155'>;
     total: Erc1155TotalPayload;
+  } |
+  {
+    token: TokenInfo<'ERC-404'>;
+    total: Erc404TotalPayload;
   }
 ) & TokenTransferBase
 

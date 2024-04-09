@@ -21,6 +21,7 @@ const PAGE_PROPS = {
   number: '',
   q: '',
   name: '',
+  adBannerProvider: '',
 };
 
 const TestApp = ({ children }: {children: React.ReactNode}) => {

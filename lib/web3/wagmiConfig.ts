@@ -28,6 +28,7 @@ const wagmiConfig = (() => {
         icons: [ config.UI.sidebar.icon.default ].filter(Boolean),
       },
       enableEmail: true,
+      ssr: true,
     });
 
     return wagmiConfig;

@@ -20,6 +20,7 @@ import ContentLoader from 'ui/shared/ContentLoader';
 import MarketplaceAppTopBar from '../marketplace/MarketplaceAppTopBar';
 import useAutoConnectWallet from '../marketplace/useAutoConnectWallet';
 import useMarketplaceWallet from '../marketplace/useMarketplaceWallet';
+import useSecurityReports from '../marketplace/useSecurityReports';
 
 const feature = config.features.marketplace;
 
@@ -104,6 +105,8 @@ const MarketplaceApp = () => {
   const { address, sendTransaction, signMessage, signTypedData } = useMarketplaceWallet(id);
   useAutoConnectWallet();
 
+  const { data: securityReports, isLoading: isSecurityReportsLoading } = useSecurityReports();
+
   const query = useQuery<unknown, ResourceError<unknown>, MarketplaceAppOverview>({
     queryKey: [ 'marketplace-dapps', id ],
     queryFn: async() => {
@@ -140,7 +143,12 @@ const MarketplaceApp = () => {
 
   return (
     <>
-      <MarketplaceAppTopBar data={ data } isLoading={ isPending } isWalletConnected={ Boolean(address) }/>
+      <MarketplaceAppTopBar
+        data={ data }
+        isLoading={ isPending || isSecurityReportsLoading }
+        isWalletConnected={ Boolean(address) }
+        securityReport={ securityReports?.[id] }
+      />
       <DappscoutIframeProvider
         address={ address }
         appUrl={ data?.url }
