@@ -494,6 +494,7 @@ For each application, you need to specify the `MarketplaceCategoryId` to which i
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_VISUALIZE_API_HOST | `string` | Visualize API endpoint url | Required | - | `https://visualizer.services.blockscout.com` |
+| NEXT_PUBLIC_VISUALIZE_API_BASE_PATH | `string` | Base path for Visualize API endpoint url | - | - | `/poa/core` |
 
 &nbsp;
 
@@ -501,7 +502,8 @@ For each application, you need to specify the `MarketplaceCategoryId` to which i
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_STATS_API_HOST | `string` | API endpoint url | Required | - | `https://stats.services.blockscout.com` |
+| NEXT_PUBLIC_STATS_API_HOST | `string` | Stats API endpoint url | Required | - | `https://stats.services.blockscout.com` |
+| NEXT_PUBLIC_STATS_API_BASE_PATH | `string` | Base path for Stats API endpoint url | - | - | `/poa/core` |
 
 &nbsp;
 
