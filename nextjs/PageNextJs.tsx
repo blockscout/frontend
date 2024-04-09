@@ -1,7 +1,9 @@
+import _omit from 'lodash/omit';
 import Head from 'next/head';
 import React from 'react';
 
 import type { Route } from 'nextjs-routes';
+import type { Props as PageProps } from 'nextjs/getServerSideProps';
 
 import useAdblockDetect from 'lib/hooks/useAdblockDetect';
 import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
@@ -9,14 +11,22 @@ import * as metadata from 'lib/metadata';
 import * as mixpanel from 'lib/mixpanel';
 import { init as initSentry } from 'lib/sentry/config';
 
-type Props = Route & {
+interface Props<Pathname extends Route['pathname']> {
+  pathname: Pathname;
   children: React.ReactNode;
+  pageProps?: PageProps;
 }
 
 initSentry();
 
-const PageNextJs = (props: Props) => {
-  const { title, description, opengraph } = metadata.generate(props);
+const PageNextJs = <Pathname extends Route['pathname']>(props: Props<Pathname>) => {
+  const { title, description, opengraph } = React.useMemo(() => {
+    const query = _omit(props.pageProps, 'apiData');
+    return metadata.generate(
+      { pathname: props.pathname, query },
+      props.pageProps?.apiData,
+    );
+  }, [ props.pageProps, props.pathname ]);
 
   useGetCsrfToken();
   useAdblockDetect();

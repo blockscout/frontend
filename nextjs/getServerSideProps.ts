@@ -1,11 +1,14 @@
 import type { GetServerSideProps } from 'next';
 
+import type { Route } from 'nextjs-routes';
+
 import config from 'configs/app';
 import isNeedProxy from 'lib/api/isNeedProxy';
 const rollupFeature = config.features.rollup;
 const adBannerFeature = config.features.adsBanner;
+import type * as metadata from 'lib/metadata';
 
-export type Props = {
+export interface Props<Pathname extends Route['pathname'] = never> {
   cookies: string;
   referrer: string;
   id: string;
@@ -15,7 +18,7 @@ export type Props = {
   q: string;
   name: string;
   adBannerProvider: string;
-  apiData?: Record<string, unknown>;
+  apiData?: metadata.ApiData<Pathname>;
 }
 
 export const base: GetServerSideProps<Props> = async({ req, query }) => {

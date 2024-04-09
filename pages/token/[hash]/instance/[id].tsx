@@ -1,4 +1,3 @@
-import _omit from 'lodash/omit';
 import type { GetServerSideProps, NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
@@ -11,9 +10,8 @@ import fetchApi from 'nextjs/utils/fetchApi';
 const TokenInstance = dynamic(() => import('ui/pages/TokenInstance'), { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => {
-  const query = _omit(props, 'apiData');
   return (
-    <PageNextJs pathname="/token/[hash]/instance/[id]" query={ query }>
+    <PageNextJs pathname="/token/[hash]/instance/[id]" pageProps={ props }>
       <TokenInstance/>
     </PageNextJs>
   );
@@ -21,7 +19,7 @@ const Page: NextPage<Props> = (props: Props) => {
 
 export default Page;
 
-export const getServerSideProps: GetServerSideProps<Props> = async(ctx) => {
+export const getServerSideProps: GetServerSideProps<Props<'/token/[hash]/instance/[id]'>> = async(ctx) => {
   const baseResponse = await gSSP.base(ctx);
 
   if ('props' in baseResponse) {
@@ -31,7 +29,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async(ctx) => {
       timeout: 500,
     });
 
-    (await baseResponse.props).apiData = apiData ? {
+    (await baseResponse.props as Props<'/token/[hash]/instance/[id]'>).apiData = apiData && apiData.symbol ? {
       symbol: apiData.symbol,
     } : undefined;
   }

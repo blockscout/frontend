@@ -9,7 +9,7 @@ const Address = dynamic(() => import('ui/pages/Address'), { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
-    <PageNextJs pathname="/address/[hash]" query={ props }>
+    <PageNextJs pathname="/address/[hash]" pageProps={ props }>
       <Address/>
     </PageNextJs>
   );
