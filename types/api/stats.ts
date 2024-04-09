@@ -17,6 +17,7 @@ export type HomeStats = {
   tvl: string | null;
   rootstock_locked_btc?: string | null;
   last_output_root_size?: string | null;
+  secondary_coin_price?: string | null;
 }
 
 export type GasPrices = {
