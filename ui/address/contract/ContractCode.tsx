@@ -1,4 +1,4 @@
-import { Flex, Skeleton, Button, Grid, GridItem, Alert, Link, chakra, Box } from '@chakra-ui/react';
+import { Flex, Skeleton, Button, Grid, GridItem, Alert, Link, chakra, Box, useColorModeValue } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
@@ -16,6 +16,7 @@ import useSocketMessage from 'lib/socket/useSocketMessage';
 import * as stubs from 'stubs/contract';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import Hint from 'ui/shared/Hint';
 import LinkExternal from 'ui/shared/LinkExternal';
 import LinkInternal from 'ui/shared/LinkInternal';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
@@ -34,11 +35,24 @@ type InfoItemProps = {
   content: string | React.ReactNode;
   className?: string;
   isLoading: boolean;
+  hint?: string;
 }
 
-const InfoItem = chakra(({ label, content, className, isLoading }: InfoItemProps) => (
+const InfoItem = chakra(({ label, content, hint, className, isLoading }: InfoItemProps) => (
   <GridItem display="flex" columnGap={ 6 } wordBreak="break-all" className={ className } alignItems="baseline">
-    <Skeleton isLoaded={ !isLoading } w="170px" flexShrink={ 0 } fontWeight={ 500 }>{ label }</Skeleton>
+    <Skeleton isLoaded={ !isLoading } w="170px" flexShrink={ 0 } fontWeight={ 500 }>
+      <Flex alignItems="center">
+        { label }
+        { hint && (
+          <Hint
+            label={ hint }
+            ml={ 2 }
+            color={ useColorModeValue('gray.600', 'gray.400') }
+            tooltipProps={{ placement: 'bottom' }}
+          />
+        ) }
+      </Flex>
+    </Skeleton>
     <Skeleton isLoaded={ !isLoading }>{ content }</Skeleton>
   </GridItem>
 ));
@@ -251,7 +265,14 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
           { data.name && <InfoItem label="Contract name" content={ data.name } isLoading={ isPlaceholderData }/> }
           { data.compiler_version && <InfoItem label="Compiler version" content={ data.compiler_version } isLoading={ isPlaceholderData }/> }
           { data.evm_version && <InfoItem label="EVM version" content={ data.evm_version } textTransform="capitalize" isLoading={ isPlaceholderData }/> }
-          { licenseLink && <InfoItem label="License" content={ licenseLink } isLoading={ isPlaceholderData }/> }
+          { licenseLink && (
+            <InfoItem
+              label="License"
+              content={ licenseLink }
+              hint="License type is informative field, and initial source code might have different license type from displayed."
+              isLoading={ isPlaceholderData }
+            />
+          ) }
           { typeof data.optimization_enabled === 'boolean' &&
             <InfoItem label="Optimization enabled" content={ data.optimization_enabled ? 'true' : 'false' } isLoading={ isPlaceholderData }/> }
           { data.optimization_runs && <InfoItem label="Optimization runs" content={ String(data.optimization_runs) } isLoading={ isPlaceholderData }/> }
