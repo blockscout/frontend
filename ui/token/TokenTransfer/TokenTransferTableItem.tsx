@@ -4,9 +4,9 @@ import React from 'react';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
-import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
-import AddressFromTo from 'ui/shared/address/AddressFromTo';
+import AddressFrom from 'ui/shared/address/AddressFrom';
+import AddressTo from 'ui/shared/address/AddressTo';
 import Tag from 'ui/shared/chakra/Tag';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
@@ -20,11 +20,10 @@ const TokenTransferTableItem = ({
   from,
   to,
   method,
-  timestamp,
   tokenId,
   isLoading,
 }: Props) => {
-  const timeAgo = useTimeAgoIncrement(timestamp, true);
+  // const timeAgo = useTimeAgoIncrement(timestamp, true);
   const { usd, valueStr } =
     'value' in total && total.value !== null ?
       getCurrencyValue({
@@ -47,30 +46,47 @@ const TokenTransferTableItem = ({
             noIcon
             truncation="constant_long"
           />
-          { timestamp && (
+          { /* {timestamp && (
             <Skeleton
-              isLoaded={ !isLoading }
+              isLoaded={!isLoading}
               display="inline-block"
               color="gray.500"
               fontWeight="400"
               ml="10px"
             >
-              <span>{ timeAgo }</span>
+              <span>{timeAgo}</span>
             </Skeleton>
-          ) }
+          )} */ }
         </Flex>
       </Td>
-      <Td textAlign="center">
+      <Td>
         { method ? (
-          <Box my="3px">
-            <Tag isLoading={ isLoading } isTruncated>
+          <Box>
+            <Tag
+              isLoading={ isLoading }
+              isTruncated
+              backgroundColor="rgba(248, 249, 250, 1)"
+              border="1px solid rgba(0, 0, 0, 0.1)"
+              padding="6px 16px"
+              color="rgba(0, 0, 0, 1)"
+              fontSize="14px"
+              fontWeight="medium"
+            >
               { method }
             </Tag>
           </Box>
         ) : null }
       </Td>
       <Td>
-        <AddressFromTo
+        <AddressFrom
+          from={ from }
+          isLoading={ isLoading }
+          mt="5px"
+          tokenHash={ token.address }
+        />
+      </Td>
+      <Td>
+        <AddressTo
           from={ from }
           to={ to }
           isLoading={ isLoading }

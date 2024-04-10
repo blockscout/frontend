@@ -6,7 +6,6 @@ import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
-import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import { default as Thead } from 'ui/shared/TheadSticky';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 import TokenTransferTableItem from 'ui/token/TokenTransfer/TokenTransferTableItem';
@@ -14,7 +13,7 @@ import TokenTransferTableItem from 'ui/token/TokenTransfer/TokenTransferTableIte
 interface Props {
   data: Array<TokenTransfer>;
   top: number;
-  showSocketInfo: boolean;
+  showSocketInfo?: boolean;
   socketInfoAlert?: string;
   socketInfoNum?: number;
   tokenId?: string;
@@ -25,9 +24,6 @@ interface Props {
 const TokenTransferTable = ({
   data,
   top,
-  showSocketInfo,
-  socketInfoAlert,
-  socketInfoNum,
   tokenId,
   isLoading,
   token,
@@ -40,13 +36,9 @@ const TokenTransferTable = ({
         <Thead top={ top }>
           <Tr>
             <Th width="25%">Txn hash</Th>
-            <Th width="15%" textAlign="center">
-              Method
-            </Th>
-            <Th width="40%" textAlign="center">
-              From/To
-            </Th>
-            { /* <Th width="200px">To</Th> */ }
+            <Th width="15%">Method</Th>
+            <Th width="20%">From</Th>
+            <Th width="20%">To</Th>
 
             { NFT_TOKEN_TYPE_IDS.includes(tokenType) && (
               <Th
@@ -73,7 +65,7 @@ const TokenTransferTable = ({
           </Tr>
         </Thead>
         <Tbody>
-          { showSocketInfo && (
+          { /* { showSocketInfo && (
             <SocketNewItemsNotice.Desktop
               url={ window.location.href }
               alert={ socketInfoAlert }
@@ -81,7 +73,7 @@ const TokenTransferTable = ({
               type="token_transfer"
               isLoading={ isLoading }
             />
-          ) }
+          ) } */ }
           { data.map((item, index) => (
             <TokenTransferTableItem
               key={

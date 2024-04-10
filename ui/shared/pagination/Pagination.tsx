@@ -37,7 +37,9 @@ const Pagination = ({
       >
         <Button
           variant="outline"
-          size="sm"
+          fontSize="12px"
+          padding="6px 12px"
+          height="auto"
           onClick={ resetPage }
           isDisabled={ page === 1 || isLoading }
           color="#141414"
@@ -57,7 +59,8 @@ const Pagination = ({
           onClick={ onPrevPageClick }
           size="sm"
           aria-label="Prev page"
-          w="36px"
+          w={ 9 }
+          height={ 7 }
           color="#141414"
           borderColor="#727272"
           icon={ <IconSvg name="arrows/east-mini" w={ 5 } h={ 5 }/> }
@@ -70,7 +73,6 @@ const Pagination = ({
         borderRadius="base"
       >
         <Button
-          size="sm"
           borderWidth="1px"
           fontWeight={ 400 }
           h={ 8 }
@@ -79,6 +81,9 @@ const Pagination = ({
           color="#141414"
           style={{ backgroundColor: 'white' }}
           borderColor="#727272"
+          fontSize="12px"
+          padding="6px 12px"
+          height="auto"
         >
           { page }
         </Button>
@@ -94,14 +99,15 @@ const Pagination = ({
           onClick={ onNextPageClick }
           size="sm"
           aria-label="Next page"
-          w="36px"
+          w={ 9 }
+          height={ 7 }
           color="#141414"
           borderColor="#727272"
           icon={ (
             <IconSvg
               name="arrows/east-mini"
-              w={ 5 }
-              h={ 5 }
+              w={ 3 }
+              h={ 3 }
               transform="rotate(180deg)"
             />
           ) }

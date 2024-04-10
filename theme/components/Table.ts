@@ -13,8 +13,9 @@ const variantSimple = definePartsStyle((props) => {
   return {
     th: {
       border: 0,
+      backgroundColor: 'rgba(244, 244, 244, 1)',
       color: mode('blackAlpha.700', 'whiteAlpha.700')(props),
-      backgroundColor: mode('blackAlpha.100', 'whiteAlpha.200')(props),
+      // backgroundColor: mode("blackAlpha.100", "whiteAlpha.200")(props),
       ...transitionProps,
     },
     thead: {

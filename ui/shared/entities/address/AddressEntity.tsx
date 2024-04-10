@@ -164,9 +164,9 @@ const AddressEntry = (props: EntityProps) => {
       onMouseLeave={ context?.onMouseLeave }
       position="relative"
     >
-      <Icon { ...partsProps } color={ props.iconColor }/>
+      { /* <Icon {...partsProps} color={props.iconColor} /> */ }
       <Link { ...linkProps }>
-        <Content { ...partsProps }/>
+        <Content { ...partsProps } color="rgba(0, 0, 0, 1)"/>
       </Link>
       <Copy { ...partsProps }/>
     </Container>

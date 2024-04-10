@@ -115,7 +115,7 @@ const TokenDetails = ({ tokenQuery, address }: Props) => {
         borderRadius="2xl"
         padding="5"
         maxWidth="380px"
-        width="100%"
+        minHeight="250px"
       >
         <Text
           color="#292929"
@@ -170,7 +170,7 @@ const TokenDetails = ({ tokenQuery, address }: Props) => {
         borderRadius="2xl"
         padding="5"
         maxWidth="380px"
-        width="100%"
+        minHeight="250px"
       >
         <Text
           color="#292929"
@@ -215,6 +215,7 @@ const TokenDetails = ({ tokenQuery, address }: Props) => {
         borderRadius="2xl"
         padding="5"
         maxWidth="380px"
+        minHeight="250px"
       >
         <Text
           color="#292929"
