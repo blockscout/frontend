@@ -17,11 +17,11 @@ export default async function logRequestFromBot(req: IncomingMessage | undefined
 
   switch (botInfo.type) {
     case 'search_engine': {
-      metrics.searchEngineBotRequestCount.inc({ route: pathname, bot: botInfo.bot });
+      metrics.searchEngineBotRequests.inc({ route: pathname, bot: botInfo.bot });
       return;
     }
     case 'social_preview': {
-      metrics.socialPreviewBotRequestCount.inc({ route: pathname, bot: botInfo.bot });
+      metrics.socialPreviewBotRequests.inc({ route: pathname, bot: botInfo.bot });
       return;
     }
   }
