@@ -106,6 +106,7 @@ const TokenDetails = ({ tokenQuery, address }: Props) => {
   return (
     <Grid
       columnGap={ 4 }
+      rowGap={ 3 }
       templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(3, 1fr)' }}
       justifyContent="space-between"
     >
@@ -113,7 +114,8 @@ const TokenDetails = ({ tokenQuery, address }: Props) => {
         border="1px solid #7272728A"
         borderRadius="2xl"
         padding="5"
-        maxWidth="400px"
+        maxWidth="380px"
+        width="100%"
       >
         <Text
           color="#292929"
@@ -167,7 +169,8 @@ const TokenDetails = ({ tokenQuery, address }: Props) => {
         border="1px solid #7272728A"
         borderRadius="2xl"
         padding="5"
-        maxWidth="400px"
+        maxWidth="380px"
+        width="100%"
       >
         <Text
           color="#292929"
@@ -211,7 +214,7 @@ const TokenDetails = ({ tokenQuery, address }: Props) => {
         border="1px solid #7272728A"
         borderRadius="2xl"
         padding="5"
-        maxWidth="400px"
+        maxWidth="380px"
       >
         <Text
           color="#292929"
