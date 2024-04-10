@@ -7,11 +7,13 @@ import * as gSSP from 'nextjs/getServerSideProps';
 import PageNextJs from 'nextjs/PageNextJs';
 import fetchApi from 'nextjs/utils/fetchApi';
 
+import getQueryParamString from 'lib/router/getQueryParamString';
+
 const TokenInstance = dynamic(() => import('ui/pages/TokenInstance'), { ssr: false });
 
-const Page: NextPage<Props> = (props: Props) => {
+const Page: NextPage<Props<'/token/[hash]/instance/[id]'>> = (props: Props<'/token/[hash]/instance/[id]'>) => {
   return (
-    <PageNextJs pathname="/token/[hash]/instance/[id]" pageProps={ props }>
+    <PageNextJs pathname="/token/[hash]/instance/[id]" query={ props.query } apiData={ props.apiData }>
       <TokenInstance/>
     </PageNextJs>
   );
@@ -25,7 +27,7 @@ export const getServerSideProps: GetServerSideProps<Props<'/token/[hash]/instanc
   if ('props' in baseResponse) {
     const apiData = await fetchApi({
       resource: 'token',
-      pathParams: { hash: (await baseResponse.props).hash },
+      pathParams: { hash: getQueryParamString(ctx.query.hash) },
       timeout: 500,
     });
 

@@ -10,13 +10,8 @@ type Props = {
 const AppContext = createContext<PageProps>({
   cookies: '',
   referrer: '',
-  id: '',
-  height_or_hash: '',
-  hash: '',
-  number: '',
-  q: '',
-  name: '',
-  adBannerProvider: '',
+  query: {},
+  adBannerProvider: undefined,
 });
 
 export function AppContextProvider({ children, pageProps }: Props) {

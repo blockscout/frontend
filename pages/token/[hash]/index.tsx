@@ -9,7 +9,7 @@ const Token = dynamic(() => import('ui/pages/Token'), { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
-    <PageNextJs pathname="/token/[hash]" pageProps={ props }>
+    <PageNextJs pathname="/token/[hash]" query={ props.query }>
       <Token/>
     </PageNextJs>
   );

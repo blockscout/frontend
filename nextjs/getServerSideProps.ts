@@ -1,5 +1,7 @@
 import type { GetServerSideProps } from 'next';
 
+import type { AdBannerProviders } from 'types/client/adProviders';
+
 import type { Route } from 'nextjs-routes';
 
 import config from 'configs/app';
@@ -9,15 +11,10 @@ const adBannerFeature = config.features.adsBanner;
 import type * as metadata from 'lib/metadata';
 
 export interface Props<Pathname extends Route['pathname'] = never> {
+  query: Route['query'];
   cookies: string;
   referrer: string;
-  id: string;
-  height_or_hash: string;
-  hash: string;
-  number: string;
-  q: string;
-  name: string;
-  adBannerProvider: string;
+  adBannerProvider: AdBannerProviders | undefined;
   apiData?: metadata.ApiData<Pathname>;
 }
 
@@ -32,19 +29,14 @@ export const base: GetServerSideProps<Props> = async({ req, query }) => {
         return adBannerFeature.provider;
       }
     }
-    return '';
+    return;
   })();
 
   return {
     props: {
+      query,
       cookies: req.headers.cookie || '',
       referrer: req.headers.referer || '',
-      id: query.id?.toString() || '',
-      hash: query.hash?.toString() || '',
-      height_or_hash: query.height_or_hash?.toString() || '',
-      number: query.number?.toString() || '',
-      q: query.q?.toString() || '',
-      name: query.name?.toString() || '',
       adBannerProvider,
     },
   };

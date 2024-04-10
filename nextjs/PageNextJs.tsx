@@ -1,4 +1,3 @@
-import _omit from 'lodash/omit';
 import Head from 'next/head';
 import React from 'react';
 
@@ -14,19 +13,14 @@ import { init as initSentry } from 'lib/sentry/config';
 interface Props<Pathname extends Route['pathname']> {
   pathname: Pathname;
   children: React.ReactNode;
-  pageProps?: PageProps;
+  query?: PageProps<Pathname>['query'];
+  apiData?: PageProps<Pathname>['apiData'];
 }
 
 initSentry();
 
 const PageNextJs = <Pathname extends Route['pathname']>(props: Props<Pathname>) => {
-  const { title, description, opengraph } = React.useMemo(() => {
-    const query = _omit(props.pageProps, 'apiData');
-    return metadata.generate(
-      { pathname: props.pathname, query },
-      props.pageProps?.apiData,
-    );
-  }, [ props.pageProps, props.pathname ]);
+  const { title, description, opengraph } = metadata.generate(props, props?.apiData);
 
   useGetCsrfToken();
   useAdblockDetect();
