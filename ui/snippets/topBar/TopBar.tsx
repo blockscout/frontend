@@ -35,7 +35,15 @@ const TopBar = () => {
             />
           </>
         ) }
-        <Button onClick={ connect } fontSize="xs">
+        <Button
+          onClick={ connect }
+          fontSize="sm"
+          backgroundColor="rgba(0, 0, 0, 1)"
+          color="white"
+          borderRadius="56px"
+          fontWeight="semibold"
+          _hover="none"
+        >
           { address ? <p>{ address.slice(0, 10) }...</p> : 'Connet Wallet' }
         </Button>
         <Settings/>
