@@ -1,4 +1,12 @@
-import { Heading, Flex, Tooltip, Link, chakra, Skeleton, useDisclosure } from '@chakra-ui/react';
+import {
+  Heading,
+  Flex,
+  Tooltip,
+  Link,
+  chakra,
+  Skeleton,
+  useDisclosure,
+} from '@chakra-ui/react';
 import _debounce from 'lodash/debounce';
 import React from 'react';
 
@@ -7,7 +15,9 @@ import TextAd from 'ui/shared/ad/TextAd';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/LinkInternal';
 
-type BackLinkProp = { label: string; url: string } | { label: string; onClick: () => void };
+type BackLinkProp =
+  | { label: string; url: string }
+  | { label: string; onClick: () => void };
 
 type Props = {
   title: string;
@@ -19,7 +29,7 @@ type Props = {
   secondRow?: React.ReactNode;
   isLoading?: boolean;
   withTextAd?: boolean;
-}
+};
 
 const TEXT_MAX_LINES = 1;
 
@@ -29,10 +39,28 @@ const BackLink = (props: BackLinkProp & { isLoading?: boolean }) => {
   }
 
   if (props.isLoading) {
-    return <Skeleton boxSize={ 6 } display="inline-block" borderRadius="base" mr={ 3 } my={ 2 } verticalAlign="text-bottom" isLoaded={ !props.isLoading }/>;
+    return (
+      <Skeleton
+        boxSize={ 6 }
+        display="inline-block"
+        borderRadius="base"
+        mr={ 3 }
+        my={ 2 }
+        verticalAlign="text-bottom"
+        isLoaded={ !props.isLoading }
+      />
+    );
   }
 
-  const icon = <IconSvg name="arrows/east" boxSize={ 6 } transform="rotate(180deg)" margin="auto" color="gray.400"/>;
+  const icon = (
+    <IconSvg
+      name="arrows/east"
+      boxSize={ 6 }
+      transform="rotate(180deg)"
+      margin="auto"
+      color="gray.400"
+    />
+  );
 
   if ('url' in props) {
     return (
@@ -53,7 +81,17 @@ const BackLink = (props: BackLinkProp & { isLoading?: boolean }) => {
   );
 };
 
-const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoading, afterTitle, beforeTitle, secondRow }: Props) => {
+const PageTitle = ({
+  title,
+  contentAfter,
+  withTextAd,
+  backLink,
+  className,
+  isLoading,
+  afterTitle,
+  beforeTitle,
+  secondRow,
+}: Props) => {
   const tooltip = useDisclosure();
   const isMobile = useIsMobile();
   const [ isTextTruncated, setIsTextTruncated ] = React.useState(false);
@@ -99,13 +137,14 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
         columnGap={ 3 }
         alignItems="center"
       >
-        <Flex h={{ base: 'auto', lg: isLoading ? 10 : 'auto' }} maxW="100%" alignItems="center">
+        <Flex
+          h={{ base: 'auto', lg: isLoading ? 10 : 'auto' }}
+          maxW="100%"
+          alignItems="center"
+        >
           { backLink && <BackLink { ...backLink } isLoading={ isLoading }/> }
           { beforeTitle }
-          <Skeleton
-            isLoaded={ !isLoading }
-            overflow="hidden"
-          >
+          <Skeleton isLoaded={ !isLoading } overflow="hidden">
             <Tooltip
               label={ title }
               isOpen={ tooltip.isOpen }
@@ -131,19 +170,29 @@ const PageTitle = ({ title, contentAfter, withTextAd, backLink, className, isLoa
                 onMouseLeave={ tooltip.onClose }
                 onClick={ isMobile ? tooltip.onToggle : undefined }
               >
-                <span ref={ textRef }>
-                  { title }
-                </span>
+                <span ref={ textRef }>{ title }</span>
               </Heading>
             </Tooltip>
           </Skeleton>
           { afterTitle }
         </Flex>
         { contentAfter }
-        { withTextAd && <TextAd order={{ base: -1, lg: 100 }} mb={{ base: 6, lg: 0 }} ml="auto" w={{ base: '100%', lg: 'auto' }}/> }
+        { withTextAd && (
+          <TextAd
+            order={{ base: -1, lg: 100 }}
+            mb={{ base: 6, lg: 0 }}
+            ml="auto"
+            w={{ base: '100%', lg: 'auto' }}
+          />
+        ) }
       </Flex>
       { secondRow && (
-        <Flex alignItems="center" minH={ 10 } overflow="hidden" _empty={{ display: 'none' }}>
+        <Flex
+          alignItems="center"
+          minH={ 10 }
+          overflow="hidden"
+          _empty={{ display: 'none' }}
+        >
           { secondRow }
         </Flex>
       ) }

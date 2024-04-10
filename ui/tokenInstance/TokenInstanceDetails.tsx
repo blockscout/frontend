@@ -37,12 +37,20 @@ const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
 
   return (
     <>
-      <Flex alignItems="flex-start" flexDir={{ base: 'column-reverse', lg: 'row' }} columnGap={ 6 } rowGap={ 6 }>
+      <Flex
+        alignItems="flex-start"
+        flexDir={{ base: 'column-reverse', lg: 'row' }}
+        columnGap={ 6 }
+        rowGap={ 6 }
+      >
         <Grid
           flexGrow={ 1 }
           columnGap={ 8 }
           rowGap={{ base: 1, lg: 3 }}
-          templateColumns={{ base: 'minmax(0, 1fr)', lg: '200px minmax(0, 1fr)' }}
+          templateColumns={{
+            base: 'minmax(0, 1fr)',
+            lg: '200px minmax(0, 1fr)',
+          }}
           overflow="hidden"
         >
           { data.is_unique && data.owner && (
@@ -51,10 +59,7 @@ const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
               hint="Current owner of this token instance"
               isLoading={ isLoading }
             >
-              <AddressEntity
-                address={ data.owner }
-                isLoading={ isLoading }
-              />
+              <AddressEntity address={ data.owner } isLoading={ isLoading }/>
             </DetailsInfoItem>
           ) }
           <TokenInstanceCreatorAddress hash={ isLoading ? '' : token.address }/>
@@ -64,14 +69,27 @@ const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
             isLoading={ isLoading }
           >
             <Flex alignItems="center" overflow="hidden">
-              <Skeleton isLoaded={ !isLoading } overflow="hidden" display="inline-block" w="100%">
+              <Skeleton
+                isLoaded={ !isLoading }
+                overflow="hidden"
+                display="inline-block"
+                w="100%"
+              >
                 <HashStringShortenDynamic hash={ data.id }/>
               </Skeleton>
               <CopyToClipboard text={ data.id } isLoading={ isLoading }/>
             </Flex>
           </DetailsInfoItem>
-          <TokenInstanceTransfersCount hash={ isLoading ? '' : token.address } id={ isLoading ? '' : data.id } onClick={ handleCounterItemClick }/>
-          <TokenNftMarketplaces isLoading={ isLoading } hash={ token.address } id={ data.id }/>
+          <TokenInstanceTransfersCount
+            hash={ isLoading ? '' : token.address }
+            id={ isLoading ? '' : data.id }
+            onClick={ handleCounterItemClick }
+          />
+          <TokenNftMarketplaces
+            isLoading={ isLoading }
+            hash={ token.address }
+            id={ data.id }
+          />
         </Grid>
         <NftMedia
           animationUrl={ data.animation_url }

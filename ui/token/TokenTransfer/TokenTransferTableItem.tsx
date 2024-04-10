@@ -11,7 +11,7 @@ import Tag from 'ui/shared/chakra/Tag';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 
-type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean }
+type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean };
 
 const TokenTransferTableItem = ({
   token,
@@ -25,18 +25,21 @@ const TokenTransferTableItem = ({
   isLoading,
 }: Props) => {
   const timeAgo = useTimeAgoIncrement(timestamp, true);
-  const { usd, valueStr } = 'value' in total && total.value !== null ? getCurrencyValue({
-    value: total.value,
-    exchangeRate: token.exchange_rate,
-    accuracy: 8,
-    accuracyUsd: 2,
-    decimals: total.decimals || '0',
-  }) : { usd: null, valueStr: null };
+  const { usd, valueStr } =
+    'value' in total && total.value !== null ?
+      getCurrencyValue({
+        value: total.value,
+        exchangeRate: token.exchange_rate,
+        accuracy: 8,
+        accuracyUsd: 2,
+        decimals: total.decimals || '0',
+      }) :
+      { usd: null, valueStr: null };
 
   return (
     <Tr alignItems="top">
       <Td>
-        <Flex alignItems="center" py="7px">
+        <Flex alignItems="center">
           <TxEntity
             hash={ txHash }
             isLoading={ isLoading }
@@ -45,18 +48,24 @@ const TokenTransferTableItem = ({
             truncation="constant_long"
           />
           { timestamp && (
-            <Skeleton isLoaded={ !isLoading } display="inline-block" color="gray.500" fontWeight="400" ml="10px">
-              <span>
-                { timeAgo }
-              </span>
+            <Skeleton
+              isLoaded={ !isLoading }
+              display="inline-block"
+              color="gray.500"
+              fontWeight="400"
+              ml="10px"
+            >
+              <span>{ timeAgo }</span>
             </Skeleton>
           ) }
         </Flex>
       </Td>
-      <Td>
+      <Td textAlign="center">
         { method ? (
           <Box my="3px">
-            <Tag isLoading={ isLoading } isTruncated>{ method }</Tag>
+            <Tag isLoading={ isLoading } isTruncated>
+              { method }
+            </Tag>
           </Box>
         ) : null }
       </Td>
@@ -66,11 +75,10 @@ const TokenTransferTableItem = ({
           to={ to }
           isLoading={ isLoading }
           mt="5px"
-          mode={{ lg: 'compact', xl: 'long' }}
           tokenHash={ token.address }
         />
       </Td>
-      { (NFT_TOKEN_TYPE_IDS.includes(token.type)) && (
+      { NFT_TOKEN_TYPE_IDS.includes(token.type) && (
         <Td>
           { 'token_id' in total && total.token_id !== null ? (
             <NftEntity
@@ -79,19 +87,32 @@ const TokenTransferTableItem = ({
               noLink={ Boolean(tokenId && tokenId === total.token_id) }
               isLoading={ isLoading }
             />
-          ) : ''
-          }
+          ) : (
+            ''
+          ) }
         </Td>
       ) }
-      { (token.type === 'ERC-20' || token.type === 'ERC-1155' || token.type === 'ERC-404') && (
+      { (token.type === 'ERC-20' ||
+        token.type === 'ERC-1155' ||
+        token.type === 'ERC-404') && (
         <Td isNumeric verticalAlign="top">
           { valueStr && (
-            <Skeleton isLoaded={ !isLoading } display="inline-block" mt="7px" wordBreak="break-all">
+            <Skeleton
+              isLoaded={ !isLoading }
+              display="inline-block"
+              mt="7px"
+              wordBreak="break-all"
+            >
               { valueStr }
             </Skeleton>
           ) }
           { usd && (
-            <Skeleton isLoaded={ !isLoading } color="text_secondary" mt="10px" wordBreak="break-all">
+            <Skeleton
+              isLoaded={ !isLoading }
+              color="text_secondary"
+              mt="10px"
+              wordBreak="break-all"
+            >
               <span>${ usd }</span>
             </Skeleton>
           ) }

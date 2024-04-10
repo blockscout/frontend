@@ -22,7 +22,16 @@ interface Props {
   token?: TokenInfo;
 }
 
-const TokenTransferTable = ({ data, top, showSocketInfo, socketInfoAlert, socketInfoNum, tokenId, isLoading, token }: Props) => {
+const TokenTransferTable = ({
+  data,
+  top,
+  showSocketInfo,
+  socketInfoAlert,
+  socketInfoNum,
+  tokenId,
+  isLoading,
+  token,
+}: Props) => {
   const tokenType = data[0].token.type;
 
   return (
@@ -30,15 +39,35 @@ const TokenTransferTable = ({ data, top, showSocketInfo, socketInfoAlert, socket
       <Table variant="simple" size="sm" minW="950px">
         <Thead top={ top }>
           <Tr>
-            <Th width="280px">Txn hash</Th>
-            <Th width="200px">Method</Th>
-            <Th width={{ lg: '224px', xl: '380px' }}>From/To</Th>
-            { (NFT_TOKEN_TYPE_IDS.includes(tokenType)) &&
-              <Th width={ tokenType === 'ERC-1155' || tokenType === 'ERC-404' ? '50%' : '100%' }>Token ID</Th>
-            }
-            { (tokenType === 'ERC-20' || tokenType === 'ERC-1155' || tokenType === 'ERC-404') && (
-              <Th width={ tokenType === 'ERC-20' ? '100%' : '50%' } isNumeric>
-                <TruncatedValue value={ `Value ${ token?.symbol || '' }` } w="100%" verticalAlign="middle"/>
+            <Th width="25%">Txn hash</Th>
+            <Th width="15%" textAlign="center">
+              Method
+            </Th>
+            <Th width="40%" textAlign="center">
+              From/To
+            </Th>
+            { /* <Th width="200px">To</Th> */ }
+
+            { NFT_TOKEN_TYPE_IDS.includes(tokenType) && (
+              <Th
+                width={
+                  tokenType === 'ERC-1155' || tokenType === 'ERC-404' ?
+                    '50%' :
+                    '100%'
+                }
+              >
+                Token ID
+              </Th>
+            ) }
+            { (tokenType === 'ERC-20' ||
+              tokenType === 'ERC-1155' ||
+              tokenType === 'ERC-404') && (
+              <Th width="20%" isNumeric>
+                <TruncatedValue
+                  value={ `Value ${ token?.symbol || '' }` }
+                  w="100%"
+                  verticalAlign="middle"
+                />
               </Th>
             ) }
           </Tr>
@@ -55,7 +84,9 @@ const TokenTransferTable = ({ data, top, showSocketInfo, socketInfoAlert, socket
           ) }
           { data.map((item, index) => (
             <TokenTransferTableItem
-              key={ item.tx_hash + item.block_hash + item.log_index + '_' + index }
+              key={
+                item.tx_hash + item.block_hash + item.log_index + '_' + index
+              }
               { ...item }
               tokenId={ tokenId }
               isLoading={ isLoading }

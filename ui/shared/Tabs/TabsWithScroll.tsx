@@ -1,11 +1,6 @@
 import type { LazyMode } from '@chakra-ui/lazy-utils';
 import type { ChakraProps, ThemingProps } from '@chakra-ui/react';
-import {
-  Tabs,
-  TabPanel,
-  TabPanels,
-  chakra,
-} from '@chakra-ui/react';
+import { Tabs, TabPanel, TabPanels, chakra, Box, Flex } from '@chakra-ui/react';
 import _debounce from 'lodash/debounce';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -14,12 +9,21 @@ import type { TabItem } from './types';
 import isBrowser from 'lib/isBrowser';
 
 import AdaptiveTabsList from './AdaptiveTabsList';
+import useAdaptiveTabs from './useAdaptiveTabs';
 import { menuButton } from './utils';
 
 export interface Props extends ThemingProps<'Tabs'> {
   tabs: Array<TabItem>;
   lazyBehavior?: LazyMode;
-  tabListProps?: ChakraProps | (({ isSticky, activeTabIndex }: { isSticky: boolean; activeTabIndex: number }) => ChakraProps);
+  tabListProps?:
+  | ChakraProps
+  | (({
+    isSticky,
+    activeTabIndex,
+  }: {
+    isSticky: boolean;
+    activeTabIndex: number;
+  }) => ChakraProps);
   rightSlot?: React.ReactNode;
   rightSlotProps?: ChakraProps;
   stickyEnabled?: boolean;
@@ -40,8 +44,13 @@ const TabsWithScroll = ({
   className,
   ...themeProps
 }: Props) => {
-  const [ activeTabIndex, setActiveTabIndex ] = useState<number>(defaultTabIndex || 0);
-  const [ screenWidth, setScreenWidth ] = React.useState(isBrowser() ? window.innerWidth : 0);
+  const [ activeTabIndex, setActiveTabIndex ] = useState<number>(
+    defaultTabIndex || 0,
+  );
+  const [ screenWidth, setScreenWidth ] = React.useState(
+    isBrowser() ? window.innerWidth : 0,
+  );
+  const { tabsCut, rightSlotRef } = useAdaptiveTabs(tabs);
 
   const tabsRef = useRef<HTMLDivElement>(null);
 
@@ -49,9 +58,12 @@ const TabsWithScroll = ({
     return [ ...tabs, menuButton ];
   }, [ tabs ]);
 
-  const handleTabChange = React.useCallback((index: number) => {
-    onTabChange ? onTabChange(index) : setActiveTabIndex(index);
-  }, [ onTabChange ]);
+  const handleTabChange = React.useCallback(
+    (index: number) => {
+      onTabChange ? onTabChange(index) : setActiveTabIndex(index);
+    },
+    [ onTabChange ],
+  );
 
   useEffect(() => {
     if (defaultTabIndex !== undefined) {
@@ -89,9 +101,6 @@ const TabsWithScroll = ({
       lazyBehavior={ lazyBehavior }
     >
       <AdaptiveTabsList
-        // the easiest and most readable way to achieve correct tab's cut recalculation when screen is resized
-        // is to do full re-render of the tabs list
-        // so we use screenWidth as a key for the TabsList component
         key={ screenWidth }
         tabs={ tabs }
         tabListProps={ tabListProps }
@@ -102,9 +111,31 @@ const TabsWithScroll = ({
         onItemClick={ handleTabChange }
         themeProps={ themeProps }
       />
-      <TabPanels>
-        { tabsList.map((tab) => <TabPanel padding={ 0 } key={ tab.id }>{ tab.component }</TabPanel>) }
-      </TabPanels>
+      <Box
+        border="1.5px solid rgba(114, 114, 114, 0.54)"
+        padding="20px 0px"
+        borderTopLeftRadius="20px"
+        borderTopRightRadius="20px"
+      >
+        { rightSlot && tabsCut > 0 ? (
+          <Flex
+            ref={ rightSlotRef }
+            ml="auto"
+            margin="24px 20px"
+            marginTop="0px"
+            justifyContent="end"
+          >
+            <Box>{ rightSlot }</Box>
+          </Flex>
+        ) : null }
+        <TabPanels>
+          { tabsList.map((tab) => (
+            <TabPanel padding={ 0 } key={ tab.id }>
+              { tab.component }
+            </TabPanel>
+          )) }
+        </TabPanels>
+      </Box>
     </Tabs>
   );
 };

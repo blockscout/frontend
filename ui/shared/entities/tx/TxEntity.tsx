@@ -9,13 +9,13 @@ import * as EntityBase from 'ui/shared/entities/base/components';
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'hash'>;
 
 const Link = chakra((props: LinkProps) => {
-  const defaultHref = route({ pathname: '/tx/[hash]', query: { hash: props.hash } });
+  const defaultHref = route({
+    pathname: '/tx/[hash]',
+    query: { hash: props.hash },
+  });
 
   return (
-    <EntityBase.Link
-      { ...props }
-      href={ props.href ?? defaultHref }
-    >
+    <EntityBase.Link { ...props } href={ props.href ?? defaultHref }>
       { props.children }
     </EntityBase.Link>
   );
@@ -27,25 +27,19 @@ type IconProps = Omit<EntityBase.IconBaseProps, 'name'> & {
 
 const Icon = (props: IconProps) => {
   return (
-    <EntityBase.Icon
-      { ...props }
-      name={ props.name ?? 'transactions_slim' }
-    />
+    <EntityBase.Icon { ...props } name={ props.name ?? 'transactions_slim' }/>
   );
 };
 
-type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'hash' | 'text'>;
+type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> &
+Pick<EntityProps, 'hash' | 'text'>;
 
 const Content = chakra((props: ContentProps) => {
-  return (
-    <EntityBase.Content
-      { ...props }
-      text={ props.text ?? props.hash }
-    />
-  );
+  return <EntityBase.Content { ...props } text={ props.text ?? props.hash }/>;
 });
 
-type CopyProps = Omit<EntityBase.CopyBaseProps, 'text'> & Pick<EntityProps, 'hash'>;
+type CopyProps = Omit<EntityBase.CopyBaseProps, 'text'> &
+Pick<EntityProps, 'hash'>;
 
 const Copy = (props: CopyProps) => {
   return (
@@ -82,10 +76,4 @@ const TxEntity = (props: EntityProps) => {
 
 export default React.memo(chakra(TxEntity));
 
-export {
-  Container,
-  Link,
-  Icon,
-  Content,
-  Copy,
-};
+export { Container, Link, Icon, Content, Copy };
