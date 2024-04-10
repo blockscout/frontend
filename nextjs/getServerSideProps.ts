@@ -1,4 +1,4 @@
-import type { GetServerSideProps } from 'next';
+import type { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 
 import type { AdBannerProviders } from 'types/client/adProviders';
 
@@ -18,7 +18,8 @@ export interface Props<Pathname extends Route['pathname'] = never> {
   apiData?: metadata.ApiData<Pathname>;
 }
 
-export const base: GetServerSideProps<Props> = async({ req, query }) => {
+export const base = async <Pathname extends Route['pathname'] = never>({ req, query }: GetServerSidePropsContext):
+Promise<GetServerSidePropsResult<Props<Pathname>>> => {
   const adBannerProvider = (() => {
     if (adBannerFeature.isEnabled) {
       if ('additionalProvider' in adBannerFeature && adBannerFeature.additionalProvider) {
