@@ -1,15 +1,16 @@
-import { Link, Skeleton, useColorModeValue, LinkBox, Flex, Image, LinkOverlay, IconButton, useBreakpointValue } from '@chakra-ui/react';
+import { Link, Skeleton, useColorModeValue, LinkBox, Flex, Image, LinkOverlay, IconButton } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 
 import type { MarketplaceAppPreview } from 'types/client/marketplace';
 
+import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';
 import IconSvg from 'ui/shared/IconSvg';
 
-import MarketplaceAppCard from '../MarketplaceAppCard';
 import MarketplaceAppIntegrationIcon from '../MarketplaceAppIntegrationIcon';
+import FeaturedAppMobile from './FeaturedAppMobile';
 
 type FeaturedAppProps = {
   app: MarketplaceAppPreview;
@@ -22,9 +23,9 @@ type FeaturedAppProps = {
 
 const FeaturedApp = ({
   app, isFavorite, isLoading, onAppClick,
-  onInfoClick: onInfoClickProp, onFavoriteClick: onFavoriteClickProp,
+  onInfoClick, onFavoriteClick,
 }: FeaturedAppProps) => {
-  const isMobile = useBreakpointValue({ base: true, sm: false });
+  const isMobile = useIsMobile();
 
   const { id, url, external, title, logo, logoDarkMode, shortDescription, categories, internalWallet } = app;
   const logoUrl = useColorModeValue(logo, logoDarkMode || logo);
@@ -32,38 +33,25 @@ const FeaturedApp = ({
 
   const backgroundColor = useColorModeValue('purple.50', 'whiteAlpha.100');
 
-  const onInfoClick = useCallback((id: string) => {
-    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'More button', Info: id, Source: 'Banner' });
-    onInfoClickProp(id);
-  }, [ onInfoClickProp ]);
-
-  const onFavoriteClick = useCallback((id: string, isFavorite: boolean) => {
-    onFavoriteClickProp(id, isFavorite, 'Banner');
-  }, [ onFavoriteClickProp ]);
-
   const handleInfoClick = useCallback((event: MouseEvent) => {
     event.preventDefault();
+    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'More button', Info: id, Source: 'Banner' });
     onInfoClick(id);
   }, [ onInfoClick, id ]);
 
   const handleFavoriteClick = useCallback(() => {
-    onFavoriteClick(id, isFavorite);
+    onFavoriteClick(id, isFavorite, 'Banner');
   }, [ onFavoriteClick, id, isFavorite ]);
 
   if (isMobile) {
     return (
-      <MarketplaceAppCard
+      <FeaturedAppMobile
         { ...app }
-        onInfoClick={ onInfoClick }
+        onInfoClick={ handleInfoClick }
         isFavorite={ isFavorite }
-        onFavoriteClick={ onFavoriteClick }
+        onFavoriteClick={ handleFavoriteClick }
         isLoading={ isLoading }
         onAppClick={ onAppClick }
-        _hover={{ boxShadow: 'none' }}
-        _focusWithin={{ boxShadow: 'none' }}
-        border="none"
-        background={ backgroundColor }
-        mb={ 4 }
       />
     );
   }
