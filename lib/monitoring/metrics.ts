@@ -8,13 +8,19 @@ const metrics = (() => {
 
   promClient.register.clear();
 
-  const requestCounter = new promClient.Counter({
-    name: 'request_counter',
-    help: 'Number of incoming requests',
+  const socialPreviewBotRequestCount = new promClient.Counter({
+    name: 'social_preview_bot_request_count',
+    help: 'Number of incoming requests from social preview bots',
     labelNames: [ 'route', 'bot' ] as const,
   });
 
-  return { requestCounter };
+  const searchEngineBotRequestCount = new promClient.Counter({
+    name: 'search_engine_bot_request_count',
+    help: 'Number of incoming requests from search engine bots',
+    labelNames: [ 'route', 'bot' ] as const,
+  });
+
+  return { socialPreviewBotRequestCount, searchEngineBotRequestCount };
 })();
 
 export default metrics;
