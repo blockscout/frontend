@@ -39,7 +39,7 @@ const TransactionPageContent = () => {
   const txQuery = useTxQuery();
   const { data, isPlaceholderData, isError, error, errorUpdateCount } = txQuery;
 
-  const showDegradedView = publicClient && (isError || isPlaceholderData) && errorUpdateCount > 0;
+  const showDegradedView = publicClient && ((isError && error.status !== 422) || isPlaceholderData) && errorUpdateCount > 0;
 
   const tabs: Array<RoutedTab> = (() => {
     const detailsComponent = showDegradedView ?
