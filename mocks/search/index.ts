@@ -7,6 +7,7 @@ import type {
   SearchResult,
   SearchResultUserOp,
   SearchResultBlob,
+  SearchResultDomain,
 } from 'types/api/search';
 
 export const token1: SearchResultToken = {
@@ -123,6 +124,20 @@ export const blob1: SearchResultBlob = {
   timestamp: null,
 };
 
+export const domain1: SearchResultDomain = {
+  address: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
+  ens_info: {
+    address_hash: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
+    expiry_date: '2039-09-01T07:36:18.000Z',
+    name: 'vitalik.eth',
+    names_count: 1,
+  },
+  is_smart_contract_verified: false,
+  name: null,
+  type: 'ens_domain',
+  url: '/address/0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045',
+};
+
 export const baseResponse: SearchResult = {
   items: [
     token1,
@@ -132,6 +147,7 @@ export const baseResponse: SearchResult = {
     contract1,
     tx1,
     blob1,
+    domain1,
   ],
   next_page_params: null,
 };
