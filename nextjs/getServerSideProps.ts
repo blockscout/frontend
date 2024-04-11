@@ -15,7 +15,7 @@ export interface Props<Pathname extends Route['pathname'] = never> {
   cookies: string;
   referrer: string;
   adBannerProvider: AdBannerProviders | undefined;
-  apiData?: metadata.ApiData<Pathname>;
+  apiData?: metadata.ApiData<Pathname> | null;
 }
 
 export const base = async <Pathname extends Route['pathname'] = never>({ req, query }: GetServerSidePropsContext):
@@ -116,14 +116,15 @@ export const batch: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-export const marketplace: GetServerSideProps<Props> = async(context) => {
+export const marketplace = async <Pathname extends Route['pathname'] = never>(context: GetServerSidePropsContext):
+Promise<GetServerSidePropsResult<Props<Pathname>>> => {
   if (!config.features.marketplace.isEnabled) {
     return {
       notFound: true,
     };
   }
 
-  return base(context);
+  return base<Pathname>(context);
 };
 
 export const apiDocs: GetServerSideProps<Props> = async(context) => {

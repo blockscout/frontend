@@ -6,6 +6,7 @@ import type { Route } from 'nextjs-routes';
 import type { Props } from 'nextjs/getServerSideProps';
 import * as gSSP from 'nextjs/getServerSideProps';
 import PageNextJs from 'nextjs/PageNextJs';
+import detectBotRequest from 'nextjs/utils/detectBotRequest';
 import fetchApi from 'nextjs/utils/fetchApi';
 
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -28,15 +29,20 @@ export const getServerSideProps: GetServerSideProps<Props<typeof pathname>> = as
   const baseResponse = await gSSP.base<typeof pathname>(ctx);
 
   if ('props' in baseResponse) {
-    const tokenData = await fetchApi({
-      resource: 'token',
-      pathParams: { hash: getQueryParamString(ctx.query.hash) },
-      timeout: 500,
-    });
+    const botInfo = detectBotRequest(ctx.req);
 
-    (await baseResponse.props).apiData = tokenData && tokenData.symbol ? {
-      symbol: tokenData.symbol,
-    } : undefined;
+    if (botInfo?.type === 'social_preview') {
+      const tokenData = await fetchApi({
+        resource: 'token',
+        pathParams: { hash: getQueryParamString(ctx.query.hash) },
+        timeout: 1_000,
+      });
+
+      (await baseResponse.props).apiData = tokenData && tokenData.symbol ? {
+        symbol: tokenData.symbol,
+      } : null;
+    }
   }
+
   return baseResponse;
 };

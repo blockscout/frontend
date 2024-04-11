@@ -3,6 +3,7 @@ import nodeFetch from 'node-fetch';
 
 import { httpLogger } from 'nextjs/utils/logger';
 
+import metrics from 'lib/monitoring/metrics';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
 export default async function mediaTypeHandler(req: NextApiRequest, res: NextApiResponse) {
@@ -10,7 +11,10 @@ export default async function mediaTypeHandler(req: NextApiRequest, res: NextApi
 
   try {
     const url = getQueryParamString(req.query.url);
+
+    const end = metrics?.apiRequestDuration.startTimer();
     const response = await nodeFetch(url, { method: 'HEAD' });
+    end?.({ route: '/media-type', code: response.status });
 
     if (response.status !== 200) {
       throw new Error();
