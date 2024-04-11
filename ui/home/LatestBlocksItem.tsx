@@ -1,7 +1,6 @@
 import {
   Box,
   Flex,
-  Grid,
   Skeleton,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
@@ -33,7 +32,9 @@ const LatestBlocksItem = ({ block, isLoading }: Props) => {
       transitionTimingFunction="linear"
       borderRadius="md"
       border="1px solid"
-      borderColor="divider"
+      borderColor="#7272728A"
+      minWidth="300px"
+      backgroundColor="white"
       p={ 6 }
     >
       <Flex alignItems="center" overflow="hidden" w="100%" mb={ 3 }>
@@ -55,20 +56,22 @@ const LatestBlocksItem = ({ block, isLoading }: Props) => {
           ml={ 2 }
         />
       </Flex>
-      <Grid gridGap={ 2 } templateColumns="auto minmax(0, 1fr)" fontSize="sm">
-        <Skeleton isLoaded={ !isLoading }>Txn</Skeleton>
-        <Skeleton isLoaded={ !isLoading } color="text_secondary"><span>{ block.tx_count }</span></Skeleton>
+      <Flex flexDirection="column" gridGap={ 2 } templateColumns="auto minmax(0, 1fr)" fontSize="sm">
+        <Flex gap="10px">
+          <Skeleton isLoaded={ !isLoading } color="text_secondary">TXN</Skeleton>
+          <Skeleton isLoaded={ !isLoading } ><span style={{ fontWeight: '500' }}>{ block.tx_count }</span></Skeleton>
+        </Flex>
 
         { !config.features.rollup.isEnabled && !config.UI.views.block.hiddenFields?.total_reward && (
-          <>
-            <Skeleton isLoaded={ !isLoading }>Reward</Skeleton>
-            <Skeleton isLoaded={ !isLoading } color="text_secondary"><span>{ totalReward.dp(10).toFixed() }</span></Skeleton>
-          </>
+          <Flex gap="10px">
+            <Skeleton isLoaded={ !isLoading } color="text_secondary" >REWARDS</Skeleton>
+            <Skeleton isLoaded={ !isLoading } ><span style={{ fontWeight: '500' }}>{ totalReward.dp(10).toFixed() }</span></Skeleton>
+          </Flex>
         ) }
 
         { !config.features.rollup.isEnabled && !config.UI.views.block.hiddenFields?.miner && (
-          <>
-            <Skeleton isLoaded={ !isLoading } textTransform="capitalize">{ getNetworkValidatorTitle() }</Skeleton>
+          <Flex gap="10px">
+            <Skeleton isLoaded={ !isLoading } textTransform="capitalize" color="text_secondary">{ getNetworkValidatorTitle().toUpperCase() }</Skeleton>
             <AddressEntity
               address={ block.miner }
               isLoading={ isLoading }
@@ -76,9 +79,9 @@ const LatestBlocksItem = ({ block, isLoading }: Props) => {
               noCopy
               truncation="constant"
             />
-          </>
+          </Flex>
         ) }
-      </Grid>
+      </Flex>
     </Box>
   );
 };

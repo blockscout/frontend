@@ -72,9 +72,9 @@ const SearchBarInput = (
       onSubmit={ onSubmit }
       onBlur={ onBlur }
       onFocus={ onFocus }
-      w="100%"
+      w={{ base: '70%', md: '80%' }}
       backgroundColor={ bgColor }
-      borderRadius={{ base: isHomepage ? 'base' : 'none', lg: 'base' }}
+      borderRadius={{ base: isHomepage ? 'base' : 'none', lg: '2.5em' }}
       position={{ base: isHomepage ? 'static' : 'absolute', lg: 'relative' }}
       top={{ base: isHomepage ? 0 : 55, lg: 0 }}
       left="0"
@@ -87,6 +87,7 @@ const SearchBarInput = (
       transitionProperty="transform,box-shadow,background-color,color,border-color"
       transitionDuration="normal"
       transitionTimingFunction="ease"
+      mx="auto"
     >
       <InputGroup size={{ base: isHomepage ? 'md' : 'sm', lg: 'md' }}>
         <InputLeftElement w={{ base: isHomepage ? 6 : 4, lg: 6 }} ml={{ base: isHomepage ? 4 : 3, lg: 4 }} h="100%">
@@ -112,7 +113,7 @@ const SearchBarInput = (
           value={ value }
         />
         { value && (
-          <InputRightElement top={{ base: isHomepage ? '18px' : 2, lg: '18px' }} right={ 2 }>
+          <InputRightElement top={{ base: isHomepage ? '18px' : 2, lg: '18px' }} right={ 2 } >
             <ClearButton onClick={ onClear }/>
           </InputRightElement>
         ) }
