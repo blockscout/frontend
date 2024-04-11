@@ -9,6 +9,7 @@ import PageNextJs from 'nextjs/PageNextJs';
 import detectBotRequest from 'nextjs/utils/detectBotRequest';
 import fetchApi from 'nextjs/utils/fetchApi';
 
+import config from 'configs/app';
 import getQueryParamString from 'lib/router/getQueryParamString';
 const Address = dynamic(() => import('ui/pages/Address'), { ssr: false });
 
@@ -27,7 +28,7 @@ export default Page;
 export const getServerSideProps: GetServerSideProps<Props<typeof pathname>> = async(ctx) => {
   const baseResponse = await gSSP.base<typeof pathname>(ctx);
 
-  if ('props' in baseResponse) {
+  if (config.meta.og.enhancedDataEnabled && 'props' in baseResponse) {
     const botInfo = detectBotRequest(ctx.req);
 
     if (botInfo?.type === 'social_preview') {

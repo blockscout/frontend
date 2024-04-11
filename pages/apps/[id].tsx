@@ -42,7 +42,7 @@ export default Page;
 export const getServerSideProps: GetServerSideProps<Props<typeof pathname>> = async(ctx) => {
   const baseResponse = await gSSP.marketplace<typeof pathname>(ctx);
 
-  if ('props' in baseResponse && feature.isEnabled) {
+  if (config.meta.og.enhancedDataEnabled && 'props' in baseResponse && feature.isEnabled) {
     const botInfo = detectBotRequest(ctx.req);
 
     if (botInfo?.type === 'social_preview') {
