@@ -26,6 +26,7 @@ const defaultAppContext = {
     referrer: '',
     query: {},
     adBannerProvider: 'slise' as const,
+    apiData: null,
   },
 };
 

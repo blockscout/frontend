@@ -10,7 +10,7 @@ import compileValue from './compileValue';
 import getPageOgType from './getPageOgType';
 import * as templates from './templates';
 
-export default function generate<Pathname extends Route['pathname']>(route: RouteParams<Pathname>, apiData?: ApiData<Pathname>): Metadata {
+export default function generate<Pathname extends Route['pathname']>(route: RouteParams<Pathname>, apiData: ApiData<Pathname> = null): Metadata {
   const params = {
     ...route.query,
     ...apiData,

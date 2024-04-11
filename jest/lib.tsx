@@ -17,6 +17,7 @@ const PAGE_PROPS = {
   referrer: '',
   query: {},
   adBannerProvider: undefined,
+  apiData: null,
 };
 
 const TestApp = ({ children }: {children: React.ReactNode}) => {

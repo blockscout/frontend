@@ -15,7 +15,9 @@ export interface Props<Pathname extends Route['pathname'] = never> {
   cookies: string;
   referrer: string;
   adBannerProvider: AdBannerProviders | undefined;
-  apiData?: metadata.ApiData<Pathname> | null;
+  // if apiData is undefined, Next.js will complain that it is not serializable
+  // so we force it to be always present in the props but it can be null
+  apiData: metadata.ApiData<Pathname> | null;
 }
 
 export const base = async <Pathname extends Route['pathname'] = never>({ req, query }: GetServerSidePropsContext):
@@ -39,6 +41,7 @@ Promise<GetServerSidePropsResult<Props<Pathname>>> => {
       cookies: req.headers.cookie || '',
       referrer: req.headers.referer || '',
       adBannerProvider,
+      apiData: null,
     },
   };
 };
