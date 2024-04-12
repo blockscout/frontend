@@ -1,16 +1,16 @@
+import type { BrowserContext } from '@playwright/test';
 import React from 'react';
 
 import { FEATURED_NETWORKS_MOCK } from 'mocks/config/network';
-import type { StorageState } from 'playwright/fixtures/storageState';
-import * as storageState from 'playwright/fixtures/storageState';
-import { test as base, expect, devices } from 'playwright/lib';
+import { contextWithAuth } from 'playwright/fixtures/auth';
+import { test, expect, devices } from 'playwright/lib';
 
 import Burger from './Burger';
 
 const FEATURED_NETWORKS_URL = 'https://localhost:3000/featured-networks.json';
 const LOGO_URL = 'https://localhost:3000/my-logo.png';
 
-base.use({ viewport: devices['iPhone 13 Pro'].viewport });
+test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 
 const hooksConfig = {
   router: {
@@ -20,16 +20,15 @@ const hooksConfig = {
   },
 };
 
-const test = base.extend<{ storageState: StorageState }>({
-  storageState: storageState.fixture([
-    storageState.addEnv('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL),
-  ]),
-});
-
-test('base view', async({ render, page, mockAssetResponse, mockConfigResponse }) => {
+test.beforeEach(async({ mockEnvs, mockConfigResponse, mockAssetResponse }) => {
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL ],
+  ]);
   await mockConfigResponse('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL, FEATURED_NETWORKS_MOCK);
   await mockAssetResponse(LOGO_URL, './playwright/mocks/image_s.jpg');
+});
 
+test('base view', async({ render, page }) => {
   const component = await render(<Burger/>, { hooksConfig });
 
   await component.locator('div[aria-label="Menu button"]').click();
@@ -42,10 +41,7 @@ test('base view', async({ render, page, mockAssetResponse, mockConfigResponse })
 test.describe('dark mode', () => {
   test.use({ colorScheme: 'dark' });
 
-  test('base view', async({ render, page, mockAssetResponse, mockConfigResponse }) => {
-    await mockConfigResponse('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL, FEATURED_NETWORKS_MOCK);
-    await mockAssetResponse(LOGO_URL, './playwright/mocks/image_s.jpg');
-
+  test('base view', async({ render, page }) => {
     const component = await render(<Burger/>, { hooksConfig });
 
     await component.locator('div[aria-label="Menu button"]').click();
@@ -64,11 +60,8 @@ test('submenu', async({ render, page }) => {
   await expect(page).toHaveScreenshot();
 });
 
-const authTest = base.extend<{ storageState: StorageState }>({
-  storageState: storageState.fixture([
-    ...storageState.COOKIES.auth,
-    storageState.addEnv('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL),
-  ]),
+const authTest = test.extend<{ context: BrowserContext }>({
+  context: contextWithAuth,
 });
 
 authTest.describe('auth', () => {

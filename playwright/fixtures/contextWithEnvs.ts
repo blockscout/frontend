@@ -8,7 +8,7 @@ interface Env {
 }
 
 /**
- * @deprecated please use storageState fixture
+ * @deprecated please use mockEnvs fixture
  *
  * @export
  * @param {Array<Env>} envs

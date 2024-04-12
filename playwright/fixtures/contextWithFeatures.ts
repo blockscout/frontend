@@ -8,7 +8,7 @@ interface Feature {
 }
 
 /**
- * @deprecated please use storageState fixture
+ * @deprecated please use mockFeatures fixture
  *
  * @export
  * @param {Array<Feature>} envs

@@ -2,20 +2,15 @@ import React from 'react';
 
 import { apps as appsMock } from 'mocks/apps/apps';
 import * as searchMock from 'mocks/search/index';
-import type { StorageState } from 'playwright/fixtures/storageState';
-import * as storageState from 'playwright/fixtures/storageState';
-import { test as base, expect } from 'playwright/lib';
+import { test, expect } from 'playwright/lib';
 
 import SearchBar from './SearchBar';
 
-const test = base.extend<{ storageState: StorageState }>({
-  storageState: storageState.fixture([
-    storageState.addEnv('NEXT_PUBLIC_MARKETPLACE_ENABLED', 'false'),
-  ]),
-});
-
-test.beforeEach(async({ mockAssetResponse }) => {
+test.beforeEach(async({ mockAssetResponse, mockEnvs }) => {
   await mockAssetResponse(searchMock.token1.icon_url as string, './playwright/mocks/image_s.jpg');
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_MARKETPLACE_ENABLED', 'false' ],
+  ]);
 });
 
 test('search by token name  +@mobile +@dark-mode', async({ render, page, mockApiResponse }) => {
@@ -124,11 +119,10 @@ test('search by blob hash +@mobile', async({ render, page, mockApiResponse }) =>
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
 });
 
-const userOpsTest = base.extend<{ storageState: StorageState }>({
-  storageState: storageState.fixture(storageState.ENVS.userOps),
-});
-
-userOpsTest('search by user op hash +@mobile', async({ render, page, mockApiResponse }) => {
+test('search by user op hash +@mobile', async({ render, page, mockApiResponse, mockEnvs }) => {
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_HAS_USER_OPS', 'true' ],
+  ]);
   const apiUrl = await mockApiResponse('quick_search', [
     searchMock.userOp1,
   ], { queryParams: { q: searchMock.tx1.tx_hash } });
@@ -186,15 +180,14 @@ test('recent keywords suggest +@mobile', async({ render, page }) => {
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
 });
 
-const MARKETPLACE_CONFIG_URL = 'https://marketplace-config.json';
-const dappsTest = base.extend<{ storageState: StorageState }>({
-  storageState: storageState.fixture([
-    storageState.addEnv('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', MARKETPLACE_CONFIG_URL),
-  ]),
-});
+test.describe('with apps', () => {
+  const MARKETPLACE_CONFIG_URL = 'https://marketplace-config.json';
 
-dappsTest.describe('with apps', () => {
-  dappsTest('default view +@mobile', async({ render, page, mockApiResponse, mockConfigResponse, mockAssetResponse }) => {
+  test('default view +@mobile', async({ render, page, mockApiResponse, mockConfigResponse, mockAssetResponse, mockEnvs }) => {
+    await mockEnvs([
+      [ 'NEXT_PUBLIC_MARKETPLACE_ENABLED', 'true' ],
+      [ 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', MARKETPLACE_CONFIG_URL ],
+    ]);
     const apiUrl = await mockApiResponse('quick_search', [
       searchMock.token1,
     ], { queryParams: { q: 'o' } });

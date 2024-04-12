@@ -1,14 +1,14 @@
+import type { BrowserContext } from '@playwright/test';
 import React from 'react';
 
 import * as profileMock from 'mocks/user/profile';
-import type { StorageState } from 'playwright/fixtures/storageState';
-import * as storageState from 'playwright/fixtures/storageState';
+import { contextWithAuth } from 'playwright/fixtures/auth';
 import { test as base, expect } from 'playwright/lib';
 
 import AccountActionsMenu from './AccountActionsMenu';
 
-const test = base.extend<{ storageState: StorageState }>({
-  storageState: storageState.fixture(storageState.COOKIES.auth),
+const test = base.extend<{ context: BrowserContext }>({
+  context: contextWithAuth,
 });
 
 test.use({ viewport: { width: 200, height: 200 } });

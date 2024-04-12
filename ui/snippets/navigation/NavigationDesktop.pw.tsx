@@ -1,11 +1,12 @@
 import { Box, Flex } from '@chakra-ui/react';
-import type { Locator } from '@playwright/test';
+import type { BrowserContext, Locator } from '@playwright/test';
 import React from 'react';
 
+import config from 'configs/app';
 import * as cookies from 'lib/cookies';
-import type { StorageState } from 'playwright/fixtures/storageState';
-import * as storageState from 'playwright/fixtures/storageState';
-import { test as base, expect } from 'playwright/lib';
+import { FEATURED_NETWORKS_MOCK } from 'mocks/config/network';
+import { contextWithAuth } from 'playwright/fixtures/auth';
+import { test, expect } from 'playwright/lib';
 import * as configs from 'playwright/utils/configs';
 
 import NavigationDesktop from './NavigationDesktop';
@@ -20,10 +21,11 @@ const hooksConfig = {
 
 const FEATURED_NETWORKS_URL = 'https://localhost:3000/featured-networks.json';
 
-const test = base.extend<{ storageState: StorageState }>({
-  storageState: storageState.fixture([
-    storageState.addEnv('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL),
-  ]),
+test.beforeEach(async({ mockEnvs, mockConfigResponse }) => {
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL ],
+  ]);
+  await mockConfigResponse('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL, FEATURED_NETWORKS_MOCK);
 });
 
 test.describe('no auth', () => {
@@ -52,11 +54,8 @@ test.describe('no auth', () => {
   });
 });
 
-const authTest = base.extend<{ storageState: StorageState }>({
-  storageState: storageState.fixture([
-    ...storageState.COOKIES.auth,
-    storageState.addEnv('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL),
-  ]),
+const authTest = test.extend<{ context: BrowserContext }>({
+  context: contextWithAuth,
 });
 
 authTest.describe('auth', () => {
@@ -132,11 +131,11 @@ test.describe('with submenu', () => {
   });
 });
 
-const noSideBarCookieTest = base.extend<{ storageState: StorageState }>({
-  storageState: storageState.fixture([
-    storageState.addEnv('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL),
-    storageState.addCookie(cookies.NAMES.NAV_BAR_COLLAPSED, 'false'),
-  ]),
+const noSideBarCookieTest = test.extend({
+  context: ({ context }, use) => {
+    context.addCookies([ { name: cookies.NAMES.NAV_BAR_COLLAPSED, value: 'false', domain: config.app.host, path: '/' } ]);
+    use(context);
+  },
 });
 
 noSideBarCookieTest.describe('cookie set to false', () => {
@@ -167,11 +166,11 @@ noSideBarCookieTest.describe('cookie set to false', () => {
   });
 });
 
-const sideBarCookieTest = base.extend<{ storageState: StorageState }>({
-  storageState: storageState.fixture([
-    storageState.addEnv('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL),
-    storageState.addCookie(cookies.NAMES.NAV_BAR_COLLAPSED, 'true'),
-  ]),
+const sideBarCookieTest = test.extend({
+  context: ({ context }, use) => {
+    context.addCookies([ { name: cookies.NAMES.NAV_BAR_COLLAPSED, value: 'true', domain: config.app.host, path: '/' } ]);
+    use(context);
+  },
 });
 
 sideBarCookieTest.describe('cookie set to true', () => {

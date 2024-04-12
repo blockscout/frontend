@@ -3,7 +3,7 @@ import type { Browser } from '@playwright/test';
 import config from 'configs/app';
 
 /**
- * @deprecated please use storageState fixture
+ * @deprecated please use mockEnvs or mockFeatures fixture
  *
  * @export
  * @param {Browser} browser

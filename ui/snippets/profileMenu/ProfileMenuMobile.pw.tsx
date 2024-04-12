@@ -1,9 +1,9 @@
+import type { BrowserContext } from '@playwright/test';
 import React from 'react';
 
 import config from 'configs/app';
 import * as profileMock from 'mocks/user/profile';
-import type { StorageState } from 'playwright/fixtures/storageState';
-import * as storageState from 'playwright/fixtures/storageState';
+import { contextWithAuth } from 'playwright/fixtures/auth';
 import { test, expect, devices } from 'playwright/lib';
 
 import ProfileMenuMobile from './ProfileMenuMobile';
@@ -23,8 +23,8 @@ test('no auth', async({ render, page }) => {
 
 test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 
-const authTest = test.extend<{ storageState: StorageState }>({
-  storageState: storageState.fixture(storageState.COOKIES.auth),
+const authTest = test.extend<{ context: BrowserContext }>({
+  context: contextWithAuth,
 });
 
 authTest.describe('auth', () => {

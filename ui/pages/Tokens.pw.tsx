@@ -2,13 +2,12 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import * as tokens from 'mocks/tokens/tokenInfo';
-import type { StorageState } from 'playwright/fixtures/storageState';
-import * as storageState from 'playwright/fixtures/storageState';
-import { test as base, expect } from 'playwright/lib';
+import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
+import { test, expect } from 'playwright/lib';
 
 import Tokens from './Tokens';
 
-base('base view +@mobile +@dark-mode', async({ render, mockApiResponse }) => {
+test('base view +@mobile +@dark-mode', async({ render, mockApiResponse }) => {
   const allTokens = {
     items: [
       tokens.tokenInfoERC20a, tokens.tokenInfoERC20b, tokens.tokenInfoERC20c, tokens.tokenInfoERC20d,
@@ -47,11 +46,7 @@ base('base view +@mobile +@dark-mode', async({ render, mockApiResponse }) => {
   await expect(component).toHaveScreenshot();
 });
 
-const bridgedTokenTest = base.extend<{ storageState: StorageState }>({
-  storageState: storageState.fixture(storageState.ENVS.bridgedTokens),
-});
-
-bridgedTokenTest.describe('bridged tokens', async() => {
+test.describe('bridged tokens', async() => {
   const bridgedTokens = {
     items: [
       tokens.bridgedTokenA,
@@ -77,7 +72,8 @@ bridgedTokenTest.describe('bridged tokens', async() => {
     },
   };
 
-  bridgedTokenTest('base view', async({ render, page, mockApiResponse }) => {
+  test('base view', async({ render, page, mockApiResponse, mockEnvs }) => {
+    await mockEnvs(ENVS_MAP.bridgedTokens);
     await mockApiResponse('tokens_bridged', bridgedTokens);
     await mockApiResponse('tokens_bridged', bridgedFilteredTokens, { queryParams: { chain_ids: '99' } });
 

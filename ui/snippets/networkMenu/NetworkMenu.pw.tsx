@@ -1,24 +1,19 @@
 import React from 'react';
 
 import { FEATURED_NETWORKS_MOCK } from 'mocks/config/network';
-import type { StorageState } from 'playwright/fixtures/storageState';
-import * as storageState from 'playwright/fixtures/storageState';
-import { test as base, expect } from 'playwright/lib';
+import { test, expect } from 'playwright/lib';
 
 import NetworkMenu from './NetworkMenu';
 
 const FEATURED_NETWORKS_URL = 'https://localhost:3000/featured-networks.json';
 const LOGO_URL = 'https://localhost:3000/my-logo.png';
 
-const test = base.extend<{ storageState: StorageState }>({
-  storageState: storageState.fixture([
-    storageState.addEnv('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL),
-  ]),
-});
-
 test.use({ viewport: { width: 1600, height: 1000 } });
 
-test('base view +@dark-mode', async({ render, page, mockConfigResponse, mockAssetResponse }) => {
+test('base view +@dark-mode', async({ render, page, mockConfigResponse, mockAssetResponse, mockEnvs }) => {
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL ],
+  ]);
   await mockConfigResponse('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL, FEATURED_NETWORKS_MOCK);
   await mockAssetResponse(LOGO_URL, './playwright/mocks/image_s.jpg');
 

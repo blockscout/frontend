@@ -2,9 +2,7 @@ import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import { apps as appsMock } from 'mocks/apps/apps';
-import type { StorageState } from 'playwright/fixtures/storageState';
-import * as storageState from 'playwright/fixtures/storageState';
-import { test as base, expect, devices } from 'playwright/lib';
+import { test, expect, devices } from 'playwright/lib';
 
 import MarketplaceApp from './MarketplaceApp';
 
@@ -16,13 +14,12 @@ const hooksConfig = {
 };
 
 const MARKETPLACE_CONFIG_URL = 'https://marketplace-config.json';
-const test = base.extend<{ storageState: StorageState }>({
-  storageState: storageState.fixture([
-    storageState.addEnv('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', MARKETPLACE_CONFIG_URL),
-  ]),
-});
 
-const testFn: Parameters<typeof test>[1] = async({ render, mockConfigResponse, mockAssetResponse }) => {
+const testFn: Parameters<typeof test>[1] = async({ render, mockConfigResponse, mockAssetResponse, mockEnvs }) => {
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_MARKETPLACE_ENABLED', 'true' ],
+    [ 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', MARKETPLACE_CONFIG_URL ],
+  ]);
   await mockConfigResponse('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', MARKETPLACE_CONFIG_URL, JSON.stringify(appsMock));
   await mockAssetResponse(appsMock[0].url, './mocks/apps/app.html');
 

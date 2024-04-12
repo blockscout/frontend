@@ -2,20 +2,13 @@ import React from 'react';
 
 import { apps as appsMock } from 'mocks/apps/apps';
 import * as searchMock from 'mocks/search/index';
-import type { StorageState } from 'playwright/fixtures/storageState';
-import * as storageState from 'playwright/fixtures/storageState';
-import { test as base, expect } from 'playwright/lib';
+import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
+import { test, expect } from 'playwright/lib';
 
 import SearchResults from './SearchResults';
 
-const noDappsTest = base.extend<{ storageState: StorageState }>({
-  storageState: storageState.fixture([
-    storageState.addEnv('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', ''),
-  ]),
-});
-
-noDappsTest.describe('search by name ', () => {
-  noDappsTest('+@mobile +@dark-mode', async({ render, mockApiResponse, mockAssetResponse }) => {
+test.describe('search by name ', () => {
+  test('+@mobile +@dark-mode', async({ render, mockApiResponse, mockAssetResponse, mockEnvs }) => {
     const hooksConfig = {
       router: {
         query: { q: 'o' },
@@ -31,6 +24,9 @@ noDappsTest.describe('search by name ', () => {
       ],
       next_page_params: null,
     };
+    await mockEnvs([
+      [ 'NEXT_PUBLIC_MARKETPLACE_ENABLED', 'false' ],
+    ]);
     await mockApiResponse('search', data, { queryParams: { q: 'o' } });
     await mockAssetResponse(searchMock.token1.icon_url as string, './playwright/mocks/image_s.jpg');
     const component = await render(<SearchResults/>, { hooksConfig });
@@ -39,7 +35,7 @@ noDappsTest.describe('search by name ', () => {
   });
 });
 
-base('search by address hash +@mobile', async({ render, mockApiResponse }) => {
+test('search by address hash +@mobile', async({ render, mockApiResponse }) => {
   const hooksConfig = {
     router: {
       query: { q: searchMock.address1.address },
@@ -56,7 +52,7 @@ base('search by address hash +@mobile', async({ render, mockApiResponse }) => {
   await expect(component.locator('main')).toHaveScreenshot();
 });
 
-base('search by block number +@mobile', async({ render, mockApiResponse }) => {
+test('search by block number +@mobile', async({ render, mockApiResponse }) => {
   const hooksConfig = {
     router: {
       query: { q: String(searchMock.block1.block_number) },
@@ -72,7 +68,7 @@ base('search by block number +@mobile', async({ render, mockApiResponse }) => {
   await expect(component.locator('main')).toHaveScreenshot();
 });
 
-base('search by block hash +@mobile', async({ render, mockApiResponse }) => {
+test('search by block hash +@mobile', async({ render, mockApiResponse }) => {
   const hooksConfig = {
     router: {
       query: { q: searchMock.block1.block_hash },
@@ -88,7 +84,7 @@ base('search by block hash +@mobile', async({ render, mockApiResponse }) => {
   await expect(component.locator('main')).toHaveScreenshot();
 });
 
-base('search by tx hash +@mobile', async({ render, mockApiResponse }) => {
+test('search by tx hash +@mobile', async({ render, mockApiResponse }) => {
   const hooksConfig = {
     router: {
       query: { q: searchMock.tx1.tx_hash },
@@ -104,7 +100,7 @@ base('search by tx hash +@mobile', async({ render, mockApiResponse }) => {
   await expect(component.locator('main')).toHaveScreenshot();
 });
 
-base('search by blob hash +@mobile', async({ render, mockApiResponse }) => {
+test('search by blob hash +@mobile', async({ render, mockApiResponse }) => {
   const hooksConfig = {
     router: {
       query: { q: searchMock.blob1.blob_hash },
@@ -120,11 +116,7 @@ base('search by blob hash +@mobile', async({ render, mockApiResponse }) => {
   await expect(component.locator('main')).toHaveScreenshot();
 });
 
-const userOpsTest = base.extend<{ storageState: StorageState }>({
-  storageState: storageState.fixture(storageState.ENVS.userOps),
-});
-
-userOpsTest('search by user op hash +@mobile', async({ render, mockApiResponse }) => {
+test('search by user op hash +@mobile', async({ render, mockApiResponse, mockEnvs }) => {
   const hooksConfig = {
     router: {
       query: { q: searchMock.userOp1.user_operation_hash },
@@ -134,21 +126,16 @@ userOpsTest('search by user op hash +@mobile', async({ render, mockApiResponse }
     items: [ searchMock.userOp1 ],
     next_page_params: null,
   };
+  await mockEnvs(ENVS_MAP.userOps);
   await mockApiResponse('search', data, { queryParams: { q: searchMock.userOp1.user_operation_hash } });
   const component = await render(<SearchResults/>, { hooksConfig });
 
   await expect(component.locator('main')).toHaveScreenshot();
 });
 
-const MARKETPLACE_CONFIG_URL = 'https://marketplace-config.json';
-const dappsTest = base.extend<{ storageState: StorageState }>({
-  storageState: storageState.fixture([
-    storageState.addEnv('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', MARKETPLACE_CONFIG_URL),
-  ]),
-});
-
-dappsTest.describe('with apps', () => {
-  dappsTest('default view +@mobile', async({ render, mockApiResponse, mockConfigResponse, mockAssetResponse }) => {
+test.describe('with apps', () => {
+  test('default view +@mobile', async({ render, mockApiResponse, mockConfigResponse, mockAssetResponse, mockEnvs }) => {
+    const MARKETPLACE_CONFIG_URL = 'https://marketplace-config.json';
     const hooksConfig = {
       router: {
         query: { q: 'o' },
@@ -168,6 +155,10 @@ dappsTest.describe('with apps', () => {
         tx_hash: null,
       },
     };
+    await mockEnvs([
+      [ 'NEXT_PUBLIC_MARKETPLACE_ENABLED', 'true' ],
+      [ 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', MARKETPLACE_CONFIG_URL ],
+    ]);
     await mockApiResponse('search', data, { queryParams: { q: 'o' } });
     await mockConfigResponse('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', MARKETPLACE_CONFIG_URL, JSON.stringify(appsMock));
     await mockAssetResponse(appsMock[0].logo, './playwright/mocks/image_s.jpg');
