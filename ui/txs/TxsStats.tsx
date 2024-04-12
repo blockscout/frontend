@@ -1,12 +1,10 @@
 import { Box } from '@chakra-ui/react';
-import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
-import type { HomeStats } from 'types/api/stats';
-
 import config from 'configs/app';
-import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
+import useApiQuery from 'lib/api/useApiQuery';
 import getCurrencyValue from 'lib/getCurrencyValue';
+import { HOMEPAGE_STATS } from 'stubs/stats';
 import { TXS_STATS } from 'stubs/tx';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 
@@ -17,8 +15,11 @@ const TxsStats = () => {
     },
   });
 
-  const queryClient = useQueryClient();
-  const statsData = queryClient.getQueryData<HomeStats>(getResourceKey('stats'));
+  const statsQuery = useApiQuery('stats', {
+    queryOptions: {
+      placeholderData: HOMEPAGE_STATS,
+    },
+  });
 
   if (!txsStatsQuery.data) {
     return null;
@@ -26,7 +27,7 @@ const TxsStats = () => {
 
   const txFeeAvg = getCurrencyValue({
     value: txsStatsQuery.data.transaction_fees_avg_24h,
-    exchangeRate: statsData?.coin_price,
+    exchangeRate: statsQuery.data?.coin_price,
     decimals: String(config.chain.currency.decimals),
     accuracyUsd: 2,
   });
