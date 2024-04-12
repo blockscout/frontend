@@ -4,6 +4,7 @@ import React from 'react';
 import type { OptimisticL2WithdrawalStatus } from 'types/api/optimisticL2';
 import { WITHDRAWAL_STATUSES } from 'types/api/optimisticL2';
 
+import config from 'configs/app';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 
@@ -12,8 +13,10 @@ interface Props {
   l1TxHash: string | undefined;
 }
 
+const rollupFeature = config.features.rollup;
+
 const TxDetailsWithdrawalStatus = ({ status, l1TxHash }: Props) => {
-  if (!status || !WITHDRAWAL_STATUSES.includes(status)) {
+  if (!status || !WITHDRAWAL_STATUSES.includes(status) || !rollupFeature.isEnabled || rollupFeature.type !== 'optimistic') {
     return null;
   }
 
@@ -46,7 +49,7 @@ const TxDetailsWithdrawalStatus = ({ status, l1TxHash }: Props) => {
       variant="outline"
       size="sm"
       as="a"
-      href="https://app.optimism.io/bridge/withdraw"
+      href={ rollupFeature.L2WithdrawalUrl }
       target="_blank"
     >
       Claim funds
