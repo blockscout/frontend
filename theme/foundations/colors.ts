@@ -55,7 +55,7 @@ const colors = {
   linkedin: '#1564BA',
   discord: '#9747FF',
   slack: '#1BA27A',
-  twitter: '#63B3ED',
+  twitter: '#000000',
   opensea: '#2081E2',
   facebook: '#4460A0',
   medium: '#231F20',

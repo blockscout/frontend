@@ -100,7 +100,7 @@ const AddressVerificationModal = ({ defaultAddress, isOpen, onClose, onSubmit, o
         <ModalHeader fontWeight="500" textStyle="h3" mb={ 6 }>
           { stepIndex !== 0 && (
             <Link mr={ 3 } onClick={ handleGoToPrevStep }>
-              <IconSvg name="arrows/east" boxSize={ 6 } transform="rotate(180deg)" verticalAlign="middle"/>
+              <IconSvg name="arrows/east" boxSize={ 6 } transform="rotate(180deg)" verticalAlign="middle" color="gray.400"/>
             </Link>
           ) }
           <span>{ step.title }</span>

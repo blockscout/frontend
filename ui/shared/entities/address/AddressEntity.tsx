@@ -28,8 +28,9 @@ const Link = chakra((props: LinkProps) => {
   );
 });
 
-type IconProps = Pick<EntityProps, 'address' | 'isLoading' | 'iconSize' | 'noIcon' | 'isSafeAddress' | 'iconColor'> & {
+type IconProps = Omit<EntityBase.IconBaseProps, 'name'> & Pick<EntityProps, 'address' | 'isSafeAddress'> & {
   asProp?: As;
+  name?: EntityBase.IconBaseProps['name'];
 };
 
 const Icon = (props: IconProps) => {
@@ -159,7 +160,7 @@ const AddressEntry = (props: EntityProps) => {
       onMouseLeave={ context?.onMouseLeave }
       position="relative"
     >
-      <Icon { ...partsProps }/>
+      <Icon { ...partsProps } color={ props.iconColor }/>
       <Link { ...linkProps }>
         <Content { ...partsProps }/>
       </Link>

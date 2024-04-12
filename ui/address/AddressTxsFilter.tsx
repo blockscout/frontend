@@ -36,7 +36,7 @@ const AddressTxsFilter = ({ onFilterChange, defaultFilter, isActive, isLoading }
         />
       </MenuButton>
       <MenuList zIndex={ 2 }>
-        <MenuOptionGroup defaultValue={ defaultFilter || 'all' } title="Address" type="radio" onChange={ onFilterChange }>
+        <MenuOptionGroup defaultValue={ defaultFilter || 'all' } type="radio" onChange={ onFilterChange }>
           <MenuItemOption value="all">All</MenuItemOption>
           <MenuItemOption value="from">Outgoing transactions</MenuItemOption>
           <MenuItemOption value="to">Incoming transactions</MenuItemOption>

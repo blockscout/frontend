@@ -14,7 +14,7 @@ type Props = {
 }
 
 const StatsWidget = ({ label, value, isLoading, hint, diff, diffPeriod = '24h', diffFormatted }: Props) => {
-  const bgColor = useColorModeValue('blue.50', 'blue.800');
+  const bgColor = useColorModeValue('blue.50', 'whiteAlpha.100');
   const skeletonBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
   const hintColor = useColorModeValue('gray.600', 'gray.400');
 

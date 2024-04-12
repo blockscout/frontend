@@ -38,7 +38,7 @@ const TokenTransferTable = ({
         <Thead top={ top }>
           <Tr>
             { showTxInfo && <Th width="44px"></Th> }
-            <Th width="200px">Token</Th>
+            <Th width="230px">Token</Th>
             <Th width="160px">Token ID</Th>
             { showTxInfo && <Th width="200px">Txn hash</Th> }
             <Th width="60%">From/To</Th>

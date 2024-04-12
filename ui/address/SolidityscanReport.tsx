@@ -51,7 +51,7 @@ const SolidityscanReport = ({ className, hash }: Props) => {
       <PopoverContent w={{ base: '100vw', lg: '328px' }}>
         <PopoverBody px="26px" py="20px" fontSize="sm">
           <Box mb={ 5 } lineHeight="25px">
-            Contract analyzed for 140+ vulnerability patterns by
+            Contract analyzed for 160+ vulnerability patterns by
             <Icon as={ solidityScanIcon } mr={ 1 } ml="6px" w="23px" h="20px" display="inline-block" verticalAlign="middle"/>
             <Text fontWeight={ 600 } display="inline-block">SolidityScan</Text>
           </Box>

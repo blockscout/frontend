@@ -64,7 +64,7 @@ const AddressCollections = ({ collectionsQuery, address, hasActiveFilters }: Pro
         </Flex>
         <Grid
           w="100%"
-          mb={ 7 }
+          mb={ 6 }
           columnGap={{ base: 3, lg: 6 }}
           rowGap={{ base: 3, lg: 6 }}
           gridTemplateColumns={{ base: 'repeat(2, calc((100% - 12px)/2))', lg: 'repeat(auto-fill, minmax(210px, 1fr))' }}
