@@ -11,6 +11,7 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
+import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useFetch from 'lib/hooks/useFetch';
 import * as metadata from 'lib/metadata';
@@ -129,6 +130,7 @@ const MarketplaceApp = () => {
     enabled: feature.isEnabled,
   });
   const { data, isPending } = query;
+  const { setIsAutoConnectDisabled } = useMarketplaceContext();
 
   useEffect(() => {
     if (data) {
@@ -136,8 +138,9 @@ const MarketplaceApp = () => {
         { pathname: '/apps/[id]', query: { id: data.id } },
         { app_name: data.title },
       );
+      setIsAutoConnectDisabled(!data.internalWallet);
     }
-  }, [ data ]);
+  }, [ data, setIsAutoConnectDisabled ]);
 
   throwOnResourceLoadError(query);
 
