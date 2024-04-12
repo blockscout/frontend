@@ -46,7 +46,7 @@ const Home = () => {
         </Flex>
         <SearchBar isHomepage/>
       </Box>
-      <Box backgroundColor="white" roundedTop="2em" h="100%" p="3em">
+      <Box backgroundColor="white" roundedTop="2em" h="100%" p="3em" boxShadow="lg">
         <Box my="1.5em" display="flex" gap="10px" >
           { /* eslint-disable-next-line react/jsx-no-bind */ }
           <Button onClick={ () => setIsBlockSelected(true) }
