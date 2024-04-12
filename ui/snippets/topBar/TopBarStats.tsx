@@ -66,7 +66,7 @@ const TopBarStats = () => {
           ) }
         </Flex>
       ) }
-      { !isMobile && data?.secondary_coin_price && (
+      { !isMobile && data?.secondary_coin_price && config.chain.secondaryCoin.symbol && (
         <Flex columnGap={ 1 } ml={ data?.coin_price ? 3 : 0 }>
           <Skeleton isLoaded={ !isPlaceholderData }>
             <chakra.span color="text_secondary">{ config.chain.secondaryCoin.symbol } </chakra.span>
