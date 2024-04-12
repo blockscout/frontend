@@ -33,7 +33,7 @@ const WalletMenuContent = ({ address, disconnect, isAutoConnectDisabled }: Props
         >
           <IconSvg
             name="integration/partial"
-            color="current"
+            color="text"
             boxSize={ 5 }
             flexShrink={ 0 }
             mr={ 2 }
