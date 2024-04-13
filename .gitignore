@@ -54,6 +54,7 @@ yarn-error.log*
 .env.example
 
 #YARN
+.yarn
 .yarnrc
 package-lock.json
 yarn.lock
