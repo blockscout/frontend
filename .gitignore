@@ -46,6 +46,18 @@ yarn-error.log*
 # Sentry
 .sentryclirc
 
+#INTELLIJ
+.idea
+
+#ENVS
+.env
+.env.example
+
+#YARN
+.yarnrc
+package-lock.json
+yarn.lock
+
 **.decrypted~**
 /test-results/
 /playwright-report/
@@ -55,3 +67,4 @@ yarn-error.log*
 /playwright/affected-tests.txt
 
 **.dec**
+
