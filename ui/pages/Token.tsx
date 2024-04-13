@@ -62,8 +62,9 @@ import BWButton from "../shared/BWbutton";
 
 export type TokenTabs = "token_transfers" | "holders" | "inventory";
 
-interface TableAreaButtonProps extends ButtonProps {
+interface TableAreaButtonProps {
   children: React.ReactNode;
+  display?: any;
 }
 
 const TokenPageContent = () => {
@@ -494,6 +495,8 @@ const TokenPageContent = () => {
     );
   };
 
+  // @ts-ignore
+  // @ts-ignore
   return (
     <>
       {/*<TextAd mb={ 6 }/>*/}
@@ -504,12 +507,14 @@ const TokenPageContent = () => {
         gap={{ base: "20px", md: "0" }} // Adding gap only in mobile view
       >
         <Flex gap="10px">
-          <img
-            src={tokenQuery?.data?.icon_url}
-            height="80"
-            width="80"
-            alt="crypto logo"
-          />
+          {tokenQuery?.data?.icon_url && (
+            <img
+              src={tokenQuery.data.icon_url}
+              height="80"
+              width="80"
+              alt="crypto logo"
+            />
+          )}
           <Box>
             <Text fontSize="22px" color="#29292969">
               Token

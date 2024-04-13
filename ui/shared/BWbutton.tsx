@@ -4,7 +4,7 @@ import React from 'react';
 
 // Define the props by extending the ButtonProps from Chakra UI
 interface BWButtonProps extends ButtonProps {
-  active: boolean; // explicitly declare 'active' prop which is used in this component
+  active?: boolean; // explicitly declare 'active' prop which is used in this component
 }
 
 const BWButton: React.FC<BWButtonProps> = ({ active, ...props }) => {

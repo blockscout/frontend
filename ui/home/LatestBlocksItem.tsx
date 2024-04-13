@@ -1,8 +1,4 @@
-import {
-  Box,
-  Flex,
-  Skeleton,
-} from '@chakra-ui/react';
+import { Box, Flex, Skeleton } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import React from 'react';
 
@@ -18,7 +14,7 @@ import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 type Props = {
   block: Block;
   isLoading?: boolean;
-}
+};
 
 const LatestBlocksItem = ({ block, isLoading }: Props) => {
   const totalReward = getBlockTotalReward(block);
@@ -56,22 +52,45 @@ const LatestBlocksItem = ({ block, isLoading }: Props) => {
           ml={ 2 }
         />
       </Flex>
-      <Flex flexDirection="column" gridGap={ 2 } templateColumns="auto minmax(0, 1fr)" fontSize="sm">
+      <Flex
+        flexDirection="column"
+        gridGap={ 2 }
+        gridTemplateColumns="auto minmax(0, 1fr)"
+        fontSize="sm"
+      >
         <Flex gap="10px">
-          <Skeleton isLoaded={ !isLoading } color="text_secondary">TXN</Skeleton>
-          <Skeleton isLoaded={ !isLoading } ><span style={{ fontWeight: '500' }}>{ block.tx_count }</span></Skeleton>
+          <Skeleton isLoaded={ !isLoading } color="text_secondary">
+            TXN
+          </Skeleton>
+          <Skeleton isLoaded={ !isLoading }>
+            <span style={{ fontWeight: '500' }}>{ block.tx_count }</span>
+          </Skeleton>
         </Flex>
 
-        { !config.features.rollup.isEnabled && !config.UI.views.block.hiddenFields?.total_reward && (
+        { !config.features.rollup.isEnabled &&
+          !config.UI.views.block.hiddenFields?.total_reward && (
           <Flex gap="10px">
-            <Skeleton isLoaded={ !isLoading } color="text_secondary" >REWARDS</Skeleton>
-            <Skeleton isLoaded={ !isLoading } ><span style={{ fontWeight: '500' }}>{ totalReward.dp(10).toFixed() }</span></Skeleton>
+            <Skeleton isLoaded={ !isLoading } color="text_secondary">
+                REWARDS
+            </Skeleton>
+            <Skeleton isLoaded={ !isLoading }>
+              <span style={{ fontWeight: '500' }}>
+                { totalReward.dp(10).toFixed() }
+              </span>
+            </Skeleton>
           </Flex>
         ) }
 
-        { !config.features.rollup.isEnabled && !config.UI.views.block.hiddenFields?.miner && (
+        { !config.features.rollup.isEnabled &&
+          !config.UI.views.block.hiddenFields?.miner && (
           <Flex gap="10px">
-            <Skeleton isLoaded={ !isLoading } textTransform="capitalize" color="text_secondary">{ getNetworkValidatorTitle().toUpperCase() }</Skeleton>
+            <Skeleton
+              isLoaded={ !isLoading }
+              textTransform="capitalize"
+              color="text_secondary"
+            >
+              { getNetworkValidatorTitle().toUpperCase() }
+            </Skeleton>
             <AddressEntity
               address={ block.miner }
               isLoading={ isLoading }
