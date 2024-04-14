@@ -3,13 +3,10 @@
   "version": "1.0.0",
   "private": false,
   "homepage": "https://github.com/blockscout/frontend#readme",
-  "engines": {
-    "node": "20.11.0",
-    "npm": "10.2.4"
-  },
   "scripts": {
     "dev": "./tools/scripts/dev.sh",
     "dev:preset": "./tools/scripts/dev.preset.sh",
+    "dev:p": "next dev",
     "build": "next build",
     "build:docker": "docker build --build-arg GIT_COMMIT_SHA=$(git rev-parse --short HEAD) --build-arg GIT_TAG=$(git describe --tags --abbrev=0) -t blockscout-frontend:local ./",
     "start": "next start",

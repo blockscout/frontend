@@ -93,7 +93,7 @@ const Footer = () => {
     return (
       <Box gridArea={ gridArea }>
         <Text mt={ 3 } fontSize="xs">
-          Zenchain explorer is a tool for inspecting and analyzing Zenchain blockchain.
+          Zenchain explorer is a tool for inspecting and analyzing the Zenchain blockchain.
         </Text>
         <VStack spacing={ 1 } mt={ 6 } alignItems="start">
           { apiVersionUrl && (

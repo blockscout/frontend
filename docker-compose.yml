@@ -10,7 +10,7 @@ services:
       context: .
       dockerfile: ./Dockerfile
     env_file:
-      -  ./envs/common-frontend.env
+      -  ./.env
     ports:
       - target: 3000
         published: 3000
