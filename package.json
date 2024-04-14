@@ -4,7 +4,7 @@
   "private": false,
   "homepage": "https://github.com/blockscout/frontend#readme",
   "engines": {
-    "node": "20.11.0",
+    "node": "20.12.2",
     "npm": "10.2.4"
   },
   "scripts": {
