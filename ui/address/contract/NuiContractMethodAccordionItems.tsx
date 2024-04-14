@@ -76,9 +76,7 @@ const NuiContractMethodsAccordionItem = ({
         } }
       >
         <Flex gap={ 2 } fontWeight="medium" fontSize="16px">
-          { serialNo && (
-            <p> { serialNo + 1 }.</p>
-          ) }
+          <p> { Number(serialNo) + 1 }.</p>
           <Box>{ data?.name }</Box>
         </Flex>
         <AccordionIcon

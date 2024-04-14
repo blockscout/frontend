@@ -1,6 +1,7 @@
 import { chakra } from '@chakra-ui/react';
 import _omit from 'lodash/omit';
 import React from 'react';
+import { FaCube } from 'react-icons/fa';
 
 import { route } from 'nextjs-routes';
 
@@ -60,7 +61,7 @@ const BlockEntity = (props: EntityProps) => {
 
   return (
     <Container className={ props.className }>
-      <Icon { ...partsProps }/>
+      <FaCube { ...partsProps }/>
       <Link { ...linkProps }>
         <Content { ...partsProps }/>
       </Link>
