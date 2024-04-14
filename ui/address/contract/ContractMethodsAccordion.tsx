@@ -14,8 +14,15 @@ interface Props<T extends SmartContractMethod> {
   tab: string;
 }
 
-const ContractMethodsAccordion = <T extends SmartContractMethod>({ data, addressHash, renderItemContent, tab }: Props<T>) => {
-  const [ expandedSections, setExpandedSections ] = React.useState<Array<number>>(data.length === 1 ? [ 0 ] : []);
+const ContractMethodsAccordion = <T extends SmartContractMethod>({
+  data,
+  addressHash,
+  renderItemContent,
+  tab,
+}: Props<T>) => {
+  const [ expandedSections, setExpandedSections ] = React.useState<Array<number>>(
+    data.length === 1 ? [ 0 ] : [],
+  );
   const [ id, setId ] = React.useState(0);
 
   React.useEffect(() => {
@@ -25,7 +32,9 @@ const ContractMethodsAccordion = <T extends SmartContractMethod>({ data, address
       return;
     }
 
-    const index = data.findIndex((item) => 'method_id' in item && item.method_id === hash);
+    const index = data.findIndex(
+      (item) => 'method_id' in item && item.method_id === hash,
+    );
     if (index > -1) {
       scroller.scrollTo(`method_${ hash }`, {
         duration: 500,
@@ -36,9 +45,12 @@ const ContractMethodsAccordion = <T extends SmartContractMethod>({ data, address
     }
   }, [ data ]);
 
-  const handleAccordionStateChange = React.useCallback((newValue: Array<number>) => {
-    setExpandedSections(newValue);
-  }, []);
+  const handleAccordionStateChange = React.useCallback(
+    (newValue: Array<number>) => {
+      setExpandedSections(newValue);
+    },
+    [],
+  );
 
   const handleExpandAll = React.useCallback(() => {
     if (!data) {
@@ -63,15 +75,25 @@ const ContractMethodsAccordion = <T extends SmartContractMethod>({ data, address
   return (
     <>
       <Flex mb={ 3 }>
-        <Box fontWeight={ 500 } mr="auto">Contract information</Box>
+        <Box fontWeight={ 500 } mr="auto">
+          Contract information
+        </Box>
         { data.length > 1 && (
           <Link onClick={ handleExpandAll }>
-            { expandedSections.length === data.length ? 'Collapse' : 'Expand' } all
+            { expandedSections.length === data.length ? 'Collapse' : 'Expand' }{ ' ' }
+            all
           </Link>
         ) }
-        <Link onClick={ handleReset } ml={ 3 }>Reset</Link>
+        <Link onClick={ handleReset } ml={ 3 }>
+          Reset
+        </Link>
       </Flex>
-      <Accordion allowMultiple position="relative" onChange={ handleAccordionStateChange } index={ expandedSections }>
+      <Accordion
+        allowMultiple
+        position="relative"
+        onChange={ handleAccordionStateChange }
+        index={ expandedSections }
+      >
         { data.map((item, index) => (
           <ContractMethodsAccordionItem
             key={ index }
@@ -79,7 +101,13 @@ const ContractMethodsAccordion = <T extends SmartContractMethod>({ data, address
             id={ id }
             index={ index }
             addressHash={ addressHash }
-            renderContent={ renderItemContent as (item: SmartContractMethod, index: number, id: number) => React.ReactNode }
+            renderContent={
+              renderItemContent as (
+                item: SmartContractMethod,
+                index: number,
+                id: number
+              ) => React.ReactNode
+            }
             tab={ tab }
           />
         )) }
@@ -88,4 +116,6 @@ const ContractMethodsAccordion = <T extends SmartContractMethod>({ data, address
   );
 };
 
-export default React.memo(ContractMethodsAccordion) as typeof ContractMethodsAccordion;
+export default React.memo(
+  ContractMethodsAccordion,
+) as typeof ContractMethodsAccordion;

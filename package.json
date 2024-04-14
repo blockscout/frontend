@@ -102,10 +102,12 @@
     "react-jazzicon": "^1.0.4",
     "react-number-format": "^5.3.1",
     "react-scroll": "^1.8.7",
+    "solc": "^0.8.25",
     "swagger-ui-react": "^5.9.0",
     "use-font-face-observer": "^1.2.1",
     "viem": "2.9.6",
     "wagmi": "2.5.16",
+    "web3": "^4.7.0",
     "xss": "^1.0.14"
   },
   "devDependencies": {

@@ -12,7 +12,10 @@ interface Props extends HTMLChakraProps<'div'> {
   isLoading?: boolean;
 }
 
-const IconSvg = ({ name, isLoading, ...props }: Props, ref: React.ForwardedRef<HTMLDivElement>) => {
+const IconSvg = (
+  { name, isLoading, ...props }: Props,
+  ref: React.ForwardedRef<HTMLDivElement>,
+) => {
   return (
     <Skeleton isLoaded={ !isLoading } display="inline-block" { ...props } ref={ ref }>
       <chakra.svg w="100%" h="100%">

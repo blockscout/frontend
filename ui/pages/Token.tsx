@@ -59,6 +59,10 @@ import TokenTransfer from "ui/token/TokenTransfer/TokenTransfer";
 import TokenVerifiedInfo from "ui/token/TokenVerifiedInfo";
 
 import BWButton from "../shared/BWbutton";
+import TokenDetails from "ui/token/TokenDetails";
+import TabsSkeleton from "ui/shared/Tabs/TabsSkeleton";
+import RoutedTabs from "ui/shared/Tabs/RoutedTabs";
+import Pagination from "ui/shared/pagination/Pagination";
 
 export type TokenTabs = "token_transfers" | "holders" | "inventory";
 
@@ -79,8 +83,7 @@ const TokenPageContent = () => {
 
   const hashString = getQueryParamString(router.query.hash);
   const tab = getQueryParamString(router.query.tab);
-  const ownerFilter =
-    getQueryParamString(router.query.holder_address_hash) || undefined;
+  const ownerFilter = getQueryParamString(router.query.holder_address_hash) || undefined;
 
   const queryClient = useQueryClient();
 
@@ -103,7 +106,7 @@ const TokenPageContent = () => {
   React.useEffect(() => {
     if (tokenQuery.data && totalSupplySocket) {
       queryClient.setQueryData(
-        getResourceKey("token", { pathParams: { hash: hashString } }),
+        getResourceKey('token', { pathParams: { hash: hashString } }),
         (prevData: TokenInfo | undefined) => {
           if (prevData) {
             return { ...prevData, total_supply: totalSupplySocket.toString() };
@@ -113,17 +116,16 @@ const TokenPageContent = () => {
     }
   }, [tokenQuery.data, totalSupplySocket, hashString, queryClient]);
 
-  const handleTotalSupplyMessage: SocketMessage.TokenTotalSupply["handler"] =
-    React.useCallback(
+  const handleTotalSupplyMessage: SocketMessage.TokenTotalSupply['handler'] = React.useCallback(
       (payload) => {
         const prevData = queryClient.getQueryData(
-          getResourceKey("token", { pathParams: { hash: hashString } }),
+          getResourceKey('token', { pathParams: { hash: hashString } }),
         );
         if (!prevData) {
           setTotalSupplySocket(payload.total_supply);
         }
         queryClient.setQueryData(
-          getResourceKey("token", { pathParams: { hash: hashString } }),
+          getResourceKey('token', { pathParams: { hash: hashString } }),
           (prevData: TokenInfo | undefined) => {
             if (prevData) {
               return {
@@ -134,7 +136,7 @@ const TokenPageContent = () => {
           },
         );
       },
-      [queryClient, hashString],
+      [ queryClient, hashString ],
     );
 
   const enableQuery = React.useCallback(() => setIsQueryEnabled(true), []);
@@ -154,19 +156,14 @@ const TokenPageContent = () => {
   useEffect(() => {
     if (tokenQuery.data && !tokenQuery.isPlaceholderData) {
       metadata.update(
-        { pathname: "/token/[hash]", query: { hash: tokenQuery.data.address } },
-        { symbol: tokenQuery.data.symbol ?? "" },
+        { pathname: '/token/[hash]', query: { hash: tokenQuery.data.address } },
+        { symbol: tokenQuery.data.symbol ?? '' },
       );
     }
   }, [tokenQuery.data, tokenQuery.isPlaceholderData]);
 
-  const hasData =
-    tokenQuery.data &&
-    !tokenQuery.isPlaceholderData &&
-    contractQuery.data &&
-    !contractQuery.isPlaceholderData;
-  const hasInventoryTab =
-    tokenQuery.data?.type && NFT_TOKEN_TYPE_IDS.includes(tokenQuery.data.type);
+  const hasData = tokenQuery.data && !tokenQuery.isPlaceholderData && contractQuery.data && !contractQuery.isPlaceholderData;
+  const hasInventoryTab = tokenQuery.data?.type && NFT_TOKEN_TYPE_IDS.includes(tokenQuery.data.type);
 
   const transfersQuery = useQueryWithPages({
     resourceName: "token_transfers",
@@ -176,7 +173,7 @@ const TokenPageContent = () => {
       enabled: Boolean(
         hasData &&
           hashString &&
-          ((!hasInventoryTab && !tab) || tab === "token_transfers"),
+          ((!hasInventoryTab && !tab) || tab === 'token_transfers'),
       ),
       placeholderData: tokenStubs.getTokenTransfersStub(tokenQuery.data?.type),
     },
@@ -191,9 +188,9 @@ const TokenPageContent = () => {
       enabled: Boolean(
         hasData &&
           hashString &&
-          ((hasInventoryTab && !tab) || tab === "inventory"),
+          ((hasInventoryTab && !tab) || tab === 'inventory'),
       ),
-      placeholderData: generateListStub<"token_inventory">(
+      placeholderData: generateListStub<'token_inventory'>(
         tokenStubs.TOKEN_INSTANCE,
         50,
         { next_page_params: { unique_token: 1 } },
@@ -223,68 +220,68 @@ const TokenPageContent = () => {
 
   // eslint-disable-next-line no-unused-vars
   const tabs: Array<RoutedTab> = [
-    hasInventoryTab
-      ? {
-          id: "inventory",
-          title: "Inventory",
-          component: (
-            <TokenInventory
-              inventoryQuery={inventoryQuery}
-              tokenQuery={tokenQuery}
-              ownerFilter={ownerFilter}
-            />
-          ),
-        }
-      : undefined,
+    hasInventoryTab ?
+      {
+        id: 'inventory',
+        title: 'Inventory',
+        component: (
+          <TokenInventory
+            inventoryQuery={ inventoryQuery }
+            tokenQuery={ tokenQuery }
+            ownerFilter={ ownerFilter }
+          />
+        ),
+      } :
+      undefined,
     {
-      id: "token_transfers",
-      title: "Token transfers",
+      id: 'token_transfers',
+      title: 'Token transfers',
       component: (
         <TokenTransfer
-          transfersQuery={transfersQuery}
-          token={tokenQuery.data}
+          transfersQuery={ transfersQuery }
+          token={ tokenQuery.data }
         />
       ),
     },
+    contractQuery.data?.is_contract ?
+      {
+        id: 'contract',
+        title: () => {
+          if (contractQuery.data?.is_verified) {
+            return (
+              <>
+                <span>Contract</span>
+                <IconSvg
+                  name="status/success"
+                  boxSize="14px"
+                  color="green.500"
+                  ml={ 1 }
+                />
+              </>
+            );
+          }
+
+          return 'Contract';
+        },
+        component: <AddressContract tabs={ contractTabs }/>,
+        subTabs: contractTabs.map((tab) => tab.id),
+      } :
+      undefined,
     {
-      id: "holders",
-      title: "Holders",
+      id: 'holders',
+      title: 'Holders',
       component: (
-        <TokenHolders token={tokenQuery.data} holdersQuery={holdersQuery} />
+        <TokenHolders token={ tokenQuery.data } holdersQuery={ holdersQuery }/>
       ),
     },
-    contractQuery.data?.is_contract
-      ? {
-          id: "contract",
-          title: () => {
-            if (contractQuery.data?.is_verified) {
-              return (
-                <>
-                  <span>Contract</span>
-                  <IconSvg
-                    name="status/success"
-                    boxSize="14px"
-                    color="green.500"
-                    ml={1}
-                  />
-                </>
-              );
-            }
-
-            return "Contract";
-          },
-          component: <AddressContract tabs={contractTabs} />,
-          subTabs: contractTabs.map((tab) => tab.id),
-        }
-      : undefined,
   ].filter(Boolean);
 
   let pagination: PaginationParams | undefined;
 
   // default tab for erc-20 is token transfers
   if (
-    (tokenQuery.data?.type === "ERC-20" && !tab) ||
-    tab === "token_transfers"
+    (tokenQuery.data?.type === 'ERC-20' && !tab) ||
+    tab === 'token_transfers'
   ) {
     pagination = transfersQuery.pagination;
   }
@@ -394,44 +391,47 @@ const TokenPageContent = () => {
     </>
   );
 
-  const isLoading =
-    tokenQuery.isPlaceholderData || contractQuery.isPlaceholderData;
+  const isLoading = tokenQuery.isPlaceholderData || contractQuery.isPlaceholderData;
 
   // eslint-disable-next-line no-unused-vars
   const titleSecondRow = (
-    <Flex
-      alignItems="center"
-      w="100%"
-      minW={0}
-      columnGap={2}
-      rowGap={2}
-      flexWrap={{ base: "wrap", lg: "nowrap" }}
-    >
-      <AddressEntity
-        address={{ ...contractQuery.data, name: "" }}
-        isLoading={isLoading}
-        fontFamily="heading"
-        fontSize="lg"
-        fontWeight={500}
-      />
-      {!isLoading && tokenQuery.data && (
-        <AddressAddToWallet token={tokenQuery.data} variant="button" />
-      )}
-      <AddressQrCode address={contractQuery.data} isLoading={isLoading} />
-      <AccountActionsMenu isLoading={isLoading} />
-      <Flex
-        ml={{ base: 0, lg: "auto" }}
-        columnGap={2}
-        flexGrow={{ base: 1, lg: 0 }}
-      >
-        <TokenVerifiedInfo verifiedInfoQuery={verifiedInfoQuery} />
-        <NetworkExplorers
-          type="token"
-          pathParam={hashString}
-          ml={{ base: "auto", lg: 0 }}
-        />
-      </Flex>
-    </Flex>
+    // <Flex
+    //   alignItems="center"
+    //   w="100%"
+    //   minW={0}
+    //   columnGap={2}
+    //   rowGap={2}
+    //   flexWrap={{ base: "wrap", lg: "nowrap" }}
+    // >
+    //   <AddressEntity
+    //     address={{ ...contractQuery.data, name: "" }}
+    //     isLoading={isLoading}
+    //     fontFamily="heading"
+    //     fontSize="lg"
+    //     fontWeight={500}
+    //   />
+    //   {!isLoading && tokenQuery.data && (
+    //     <AddressAddToWallet token={tokenQuery.data} variant="button" />
+    //   )}
+    //   <AddressQrCode address={contractQuery.data} isLoading={isLoading} />
+    //   <AccountActionsMenu isLoading={isLoading} />
+    //   <Flex
+    //     ml={{ base: 0, lg: "auto" }}
+    //     columnGap={2}
+    //     flexGrow={{ base: 1, lg: 0 }}
+    //   >
+    //     <TokenVerifiedInfo verifiedInfoQuery={verifiedInfoQuery} />
+    //     <NetworkExplorers
+    //       type="token"
+    //       pathParam={hashString}
+    //       ml={{ base: "auto", lg: 0 }}
+    //     />
+    //   </Flex>
+    // </Flex>
+    <AddressEntity
+      address={{ ...contractQuery.data, name: '' }}
+      fontSize="lg"
+    />
   );
 
   const OverviewBox = () => {
@@ -499,7 +499,6 @@ const TokenPageContent = () => {
   // @ts-ignore
   return (
     <>
-      {/*<TextAd mb={ 6 }/>*/}
       <Flex
         justifyContent="space-between"
         padding={{ base: "1em", md: "2.5em" }}
@@ -546,24 +545,6 @@ const TokenPageContent = () => {
           </Select>
         </Flex>
       </Flex>
-      {/*<PageTitle*/}
-      {/*  title={ `${ tokenQuery.data?.name || 'Unnamed token' }${ tokenSymbolText }` }*/}
-      {/*  isLoading={ isLoading }*/}
-      {/*  backLink={ backLink }*/}
-      {/*  beforeTitle={ tokenQuery.data ? (*/}
-      {/*    <TokenEntity.Icon*/}
-      {/*      token={ tokenQuery.data }*/}
-      {/*      isLoading={ isLoading }*/}
-      {/*      iconSize="lg"*/}
-      {/*    />*/}
-      {/*  ) : null }*/}
-      {/*  contentAfter={ titleContentAfter }*/}
-      {/*  secondRow={ titleSecondRow }*/}
-      {/*/>*/}
-
-      {/*<TokenDetails tokenQuery={ tokenQuery }/>*/}
-
-      {/* should stay before tabs to scroll up with pagination */}
       <Box
         bg="white"
         borderTopRadius="2.5em"
@@ -572,10 +553,12 @@ const TokenPageContent = () => {
           md: "3em",
         }}
         paddingY="3em"
-        minW="100%"
-        maxW="100vw"
+        // w="100vw"
+        // maxW="100vw"
       >
-        <Grid
+        <TokenDetails tokenQuery={ tokenQuery } address={ titleSecondRow }/>
+
+        {/* <Grid
           templateColumns={{
             base: "repeat(1, 1fr)",
             md: "repeat(2, 1fr)",
@@ -588,8 +571,8 @@ const TokenPageContent = () => {
           <OverviewBox />
           <OverviewBox />
           <OverviewBox />
-        </Grid>
-        <Box overflowX="auto">
+        </Grid> */}
+        {/* <Box overflowX="auto">
           <Flex py="2em" gap={3} minWidth="1000px">
             <BWButton active={true}>TRANSACTIONS (50)</BWButton>
             <BWButton>TOKEN TRANSFER</BWButton>
@@ -599,114 +582,22 @@ const TokenPageContent = () => {
             <BWButton>LOGS</BWButton>
             <BWButton>CONTRACT</BWButton>
           </Flex>
-        </Box>
-        {/*<Box ref={ scrollRef }></Box>*/}
-
-        {/*{ isLoading ?*/}
-        {/*  <TabsSkeleton tabs={ tabs }/> :*/}
-        {/*  (*/}
-        {/*    <RoutedTabs*/}
-        {/*      tabs={ tabs }*/}
-        {/*      tabListProps={ tabListProps }*/}
-        {/*      rightSlot={ !isMobile && pagination?.isVisible ? <Pagination { ...pagination }/> : null }*/}
-        {/*      stickyEnabled={ !isMobile }*/}
-        {/*    />*/}
-        {/*  ) }*/}
-
-        <Box
-          borderRadius={{
-            base: "none",
-            md: "2em",
-          }}
-          border={{
-            base: "none",
-            md: "1px",
-          }}
-          borderColor="#7272728A"
-          py="1.5em"
-        >
-          <Flex justifyContent="space-between" py={5} px={3}>
-            <TableAreaButton>
-              <IoFilter />
-              Filter
-            </TableAreaButton>
-            <Flex gap={3}>
-              <TableAreaButton>
-                <TbFileTypeCsv />
-                Download CSV
-              </TableAreaButton>
-              <TableAreaButton
-                display={{
-                  base: "none",
-                  md: "block",
-                }}
-              >
-                First
-              </TableAreaButton>
-              <TableAreaButton>
-                <FiChevronLeft />
-              </TableAreaButton>
-              <Input width="20px" height="15px" placeholder="1" value={1} />
-              <TableAreaButton>
-                <FiChevronRight />
-              </TableAreaButton>
-            </Flex>
-          </Flex>
-
-          <Box overflowX="auto">
-            <TableContainer minW="1300px">
-              <Table variant="simple">
-                <Thead>
-                  <Tr>
-                    <Th width="5%">
-                      <FaRegQuestionCircle />
-                    </Th>
-                    <Th width="15%">TXN HASH</Th>
-                    <Th width="10%">METHOD</Th>
-                    <Th width="10%">BLOCK</Th>
-                    <Th width="10%">AGE</Th>
-                    <Th width="20%">FROM</Th>
-                    <Th width="20%">TO</Th>
-                    <Th width="10%">QUANTITY</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  <Tr>
-                    <Td>
-                      <FaRegEye />
-                    </Td>
-                    <Td>0x5a96fe4fe5a</Td>
-                    <Td>
-                      <Button
-                        border="1px"
-                        color="black"
-                        backgroundColor="transparent"
-                      >
-                        Unoswap2
-                      </Button>
-                    </Td>
-                    <Td>19602833</Td>
-                    <Td>5 secs ago</Td>
-                    <Td>
-                      <Flex>
-                        <IoDocumentTextOutline />
-                        Uniswap V3: FET 2 <FaRegCopy />
-                      </Flex>
-                    </Td>
-                    <Td>
-                      <Flex>
-                        <BsArrowRightCircleFill />
-                        0x7Ef1f108...459e77680
-                        <FaRegCopy />
-                      </Flex>
-                    </Td>
-                    <Td>502.8154</Td>
-                  </Tr>
-                </Tbody>
-              </Table>
-            </TableContainer>
-          </Box>
-        </Box>
+        </Box> */}
+        {isLoading ? (
+          <TabsSkeleton tabs={tabs} />
+        ) : (
+          <RoutedTabs
+            tabs={tabs}
+            type="parent_tabs"
+            tabListProps={tabListProps}
+            rightSlot={
+              !isMobile && pagination?.isVisible ? (
+                <Pagination {...pagination} />
+              ) : null
+            }
+            stickyEnabled={!isMobile}
+          />
+        )}
       </Box>
     </>
   );

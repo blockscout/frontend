@@ -9,8 +9,18 @@ interface Props extends PaginationParams {
   className?: string;
 }
 
-const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasPages, hasNextPage, className, canGoBackwards, isLoading, isVisible }: Props) => {
-
+const Pagination = ({
+  page,
+  onNextPageClick,
+  onPrevPageClick,
+  resetPage,
+  hasPages,
+  hasNextPage,
+  className,
+  canGoBackwards,
+  isLoading,
+  isVisible,
+}: Props) => {
   if (!isVisible) {
     return null;
   }
@@ -18,54 +28,89 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasPage
   const showSkeleton = page === 1 && !hasPages && isLoading;
 
   return (
-    <Flex
-      className={ className }
-      fontSize="sm"
-      alignItems="center"
-    >
-      <Skeleton isLoaded={ !showSkeleton } display="inline-block" mr={ 4 } borderRadius="base">
+    <Flex className={ className } fontSize="sm" alignItems="center">
+      <Skeleton
+        isLoaded={ !showSkeleton }
+        display="inline-block"
+        mr={ 4 }
+        borderRadius="base"
+      >
         <Button
           variant="outline"
-          size="sm"
+          fontSize="12px"
+          padding="6px 12px"
+          height="auto"
           onClick={ resetPage }
           isDisabled={ page === 1 || isLoading }
+          color="#141414"
+          borderColor="#727272"
         >
-        First
+          First
         </Button>
       </Skeleton>
-      <Skeleton isLoaded={ !showSkeleton } display="inline-block" mr={ 3 } borderRadius="base">
+      <Skeleton
+        isLoaded={ !showSkeleton }
+        display="inline-block"
+        mr={ 3 }
+        borderRadius="base"
+      >
         <IconButton
           variant="outline"
           onClick={ onPrevPageClick }
           size="sm"
           aria-label="Prev page"
-          w="36px"
+          w={ 9 }
+          height={ 7 }
+          color="#141414"
+          borderColor="#727272"
           icon={ <IconSvg name="arrows/east-mini" w={ 5 } h={ 5 }/> }
           isDisabled={ !canGoBackwards || isLoading }
         />
       </Skeleton>
-      <Skeleton isLoaded={ !showSkeleton } display="inline-block" borderRadius="base">
+      <Skeleton
+        isLoaded={ !showSkeleton }
+        display="inline-block"
+        borderRadius="base"
+      >
         <Button
-          variant="outline"
-          size="sm"
-          isActive
           borderWidth="1px"
           fontWeight={ 400 }
           h={ 8 }
           minW="36px"
           cursor="unset"
+          color="#141414"
+          style={{ backgroundColor: 'white' }}
+          borderColor="#727272"
+          fontSize="12px"
+          padding="6px 12px"
+          height="auto"
         >
           { page }
         </Button>
       </Skeleton>
-      <Skeleton isLoaded={ !showSkeleton } display="inline-block" ml={ 3 } borderRadius="base">
+      <Skeleton
+        isLoaded={ !showSkeleton }
+        display="inline-block"
+        ml={ 3 }
+        borderRadius="base"
+      >
         <IconButton
           variant="outline"
           onClick={ onNextPageClick }
           size="sm"
           aria-label="Next page"
-          w="36px"
-          icon={ <IconSvg name="arrows/east-mini" w={ 5 } h={ 5 } transform="rotate(180deg)"/> }
+          w={ 9 }
+          height={ 7 }
+          color="#141414"
+          borderColor="#727272"
+          icon={ (
+            <IconSvg
+              name="arrows/east-mini"
+              w={ 3 }
+              h={ 3 }
+              transform="rotate(180deg)"
+            />
+          ) }
           isDisabled={ !hasNextPage || isLoading }
         />
       </Skeleton>
@@ -74,7 +119,6 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasPage
             Go to <Input w="84px" size="xs" ml={ 2 }/>
       </Flex> */ }
     </Flex>
-
   );
 };
 

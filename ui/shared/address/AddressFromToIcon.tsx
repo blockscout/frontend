@@ -39,12 +39,15 @@ const AddressFromToIcon = ({ isLoading, type, className }: Props) => {
   const icon = (
     <IconSvg
       name="arrows/east"
-      { ...(styles[type]) }
+      { ...styles[type] }
       className={ className }
       isLoading={ isLoading }
       boxSize={ 5 }
       flexShrink={ 0 }
-      borderRadius="sm"
+      backgroundColor="rgba(0, 161, 134, 0.1)"
+      borderRadius="50%"
+      padding={ 1 }
+      border="1px solid rgba(0, 161, 134, 0.25)"
     />
   );
 
@@ -52,11 +55,7 @@ const AddressFromToIcon = ({ isLoading, type, className }: Props) => {
     return icon;
   }
 
-  return (
-    <Tooltip label={ labels[type] }>
-      { icon }
-    </Tooltip>
-  );
+  return <Tooltip label={ labels[type] }>{ icon }</Tooltip>;
 };
 
 export default React.memo(chakra(AddressFromToIcon));

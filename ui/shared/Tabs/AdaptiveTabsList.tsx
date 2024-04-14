@@ -1,5 +1,5 @@
 import type { StyleProps, ThemingProps } from '@chakra-ui/react';
-import { Box, Tab, TabList, useColorModeValue } from '@chakra-ui/react';
+import { Tab, TabList, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import { useScrollDirection } from 'lib/contexts/scrollDirection';
@@ -24,10 +24,10 @@ interface Props extends TabsProps {
   activeTabIndex: number;
   onItemClick: (index: number) => void;
   themeProps: ThemingProps<'Tabs'>;
+  type?: string;
 }
 
 const AdaptiveTabsList = (props: Props) => {
-
   const scrollDirection = useScrollDirection();
   const listBgColor = useColorModeValue('white', 'black');
   const isMobile = useIsMobile();
@@ -36,46 +36,53 @@ const AdaptiveTabsList = (props: Props) => {
     return [ ...props.tabs, menuButton ];
   }, [ props.tabs ]);
 
-  const { tabsCut, tabsRefs, listRef, rightSlotRef } = useAdaptiveTabs(tabsList, isMobile);
+  const { tabsCut, tabsRefs, listRef } = useAdaptiveTabs(tabsList, isMobile);
   const isSticky = useIsSticky(listRef, 5, props.stickyEnabled);
-  useScrollToActiveTab({ activeTabIndex: props.activeTabIndex, listRef, tabsRefs, isMobile });
+  useScrollToActiveTab({
+    activeTabIndex: props.activeTabIndex,
+    listRef,
+    tabsRefs,
+    isMobile,
+  });
 
   return (
     <TabList
-      marginBottom={{ base: 6, lg: 8 }}
+      // marginBottom={{ base: 6, lg: 8 }}
       mx={{ base: '-16px', lg: 'unset' }}
-      px={{ base: '16px', lg: 'unset' }}
+      px={{
+        base: '16px',
+        lg: props?.type !== 'parent_tabs' ? '20px' : 'unset',
+      }}
       flexWrap="nowrap"
       whiteSpace="nowrap"
       ref={ listRef }
+      gap={ 2 }
       overflowX={{ base: 'auto', lg: 'initial' }}
       overscrollBehaviorX="contain"
       css={{
         'scroll-snap-type': 'x mandatory',
         // hide scrollbar
-        '&::-webkit-scrollbar': { /* Chromiums */
-          display: 'none',
+        '&::-webkit-scrollbar': {
+          /* Chromiums */ display: 'none',
         },
-        '-ms-overflow-style': 'none', /* IE and Edge */
-        'scrollbar-width': 'none', /* Firefox */
+        '-ms-overflow-style': 'none' /* IE and Edge */,
+        'scrollbar-width': 'none' /* Firefox */,
       }}
       bgColor={ listBgColor }
       transitionProperty="top,box-shadow,background-color,color"
       transitionDuration="normal"
       transitionTimingFunction="ease"
-      {
-        ...(props.stickyEnabled ? {
+      { ...(props.stickyEnabled ?
+        {
           position: 'sticky',
           boxShadow: { base: isSticky ? 'md' : 'none', lg: 'none' },
           top: { base: scrollDirection === 'down' ? `0px` : `106px`, lg: 0 },
           zIndex: { base: 'sticky2', lg: 'docked' },
-        } : { })
-      }
-      {
-        ...(typeof props.tabListProps === 'function' ?
-          props.tabListProps({ isSticky, activeTabIndex: props.activeTabIndex }) :
-          props.tabListProps)
-      }
+        } :
+        {}) }
+      { ...(typeof props.tabListProps === 'function' ?
+        props.tabListProps({ isSticky, activeTabIndex: props.activeTabIndex }) :
+        props.tabListProps) }
     >
       { tabsList.map((tab, index) => {
         if (!tab.id) {
@@ -86,13 +93,7 @@ const AdaptiveTabsList = (props: Props) => {
               activeTab={ props.tabs[props.activeTabIndex] }
               tabsCut={ tabsCut }
               isActive={ props.activeTabIndex >= tabsCut }
-              styles={ tabsCut < props.tabs.length ?
-              // initially our cut is 0 and we don't want to show the menu button too
-              // but we want to keep it in the tabs row so it won't collapse
-              // that's why we only change opacity but not the position itself
-                { opacity: tabsCut === 0 ? 0 : 1 } :
-                hiddenItemStyles
-              }
+              styles={ tabsCut < props.tabs.length ? { opacity: tabsCut === 0 ? 0 : 1 } : hiddenItemStyles }
               onItemClick={ props.onItemClick }
               buttonRef={ tabsRefs[index] }
               size={ props.themeProps.size || 'md' }
@@ -107,6 +108,13 @@ const AdaptiveTabsList = (props: Props) => {
             { ...(index < tabsCut ? {} : hiddenItemStyles) }
             scrollSnapAlign="start"
             flexShrink={ 0 }
+            borderRadius={ props?.type !== 'parent_tabs' ? '8px' : '32px' }
+            fontSize="16px"
+            padding="16px"
+            fontWeight={ props?.type !== 'parent_tabs' ? 'medium' : 'semibold' }
+            color="#141414"
+            background="#F4F4F4"
+            _selected={{ background: '#141414', color: '#F9FAFB' }}
             sx={{
               '&:hover span': {
                 color: 'inherit',
@@ -118,11 +126,12 @@ const AdaptiveTabsList = (props: Props) => {
           </Tab>
         );
       }) }
-      {
-        props.rightSlot && tabsCut > 0 ?
-          <Box ref={ rightSlotRef } ml="auto" { ...props.rightSlotProps }> { props.rightSlot } </Box> :
-          null
-      }
+      { /* {props.rightSlot && tabsCut > 0 ? (
+        <Box ref={rightSlotRef} ml="auto" {...props.rightSlotProps}>
+          {" "}
+          {props.rightSlot}{" "}
+        </Box>
+      ) : null} */ }
     </TabList>
   );
 };
