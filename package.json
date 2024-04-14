@@ -1,7 +1,6 @@
 {
   "name": "blockscout-frontend",
   "version": "1.0.0",
-  "private": false,
   "homepage": "https://github.com/blockscout/frontend#readme",
   "engines": {
     "node": "20.11.0",
@@ -162,5 +161,6 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint --cache --fix"
-  }
+  },
+  "packageManager": "yarn@1.22.19"
 }

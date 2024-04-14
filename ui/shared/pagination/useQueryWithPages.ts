@@ -41,7 +41,7 @@ function getNextPageParams<R extends PaginatedResources>(data: ResourcePayload<R
     return;
   }
 
-  return data.next_page_params;
+  return (data as ResourcePayload<R>).next_page_params;
 }
 
 export type QueryWithPagesResult<Resource extends PaginatedResources> =
