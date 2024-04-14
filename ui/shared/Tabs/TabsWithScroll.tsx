@@ -117,10 +117,10 @@ const TabsWithScroll = ({
       />
       <Box
         border={
-          type === 'parent_tabs' && '1.5px solid rgba(114, 114, 114, 0.54)'
+          type === 'parent_tabs' ? '1.5px solid rgba(114, 114, 114, 0.54)' : undefined
         }
         paddingTop="20px"
-        padding={ !type && '20px' }
+        padding={ !type ? '20px' : undefined }
         borderTopLeftRadius="20px"
         borderTopRightRadius="20px"
       >

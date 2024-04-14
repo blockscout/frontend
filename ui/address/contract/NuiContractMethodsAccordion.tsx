@@ -16,7 +16,7 @@ export type ContractItemTypes = {
 
 export type PropTypes = {
   data: Record<string, any>;
-  currentTab: string;
+  currentTab: 'contract' | 'transactions' | 'write' | 'read';
 };
 
 const NuiContractMethodsAccordion = ({ data, currentTab }: PropTypes) => {

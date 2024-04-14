@@ -11,7 +11,7 @@ import NuiContractMethodsAccordion from './NuiContractMethodsAccordion';
 import { findMostMatchedString } from './utils';
 
 type PropTypes = {
-  currentTab: string;
+  currentTab: 'contract' | 'transactions' | 'write' | 'read';
 };
 
 const NuiContractRead = ({ currentTab }: PropTypes) => {
@@ -75,7 +75,7 @@ const NuiContractRead = ({ currentTab }: PropTypes) => {
         });
         return false;
       }
-      const data = await response.json();
+      const data: any = await response.json();
       if (data?.exists) {
         compileCode(data?.raw_code?.source_code, byteCode);
       } else {

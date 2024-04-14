@@ -53,11 +53,13 @@ const NuiContractMethodsAccordionItem = ({
   return (
     <AccordionItem
       borderTopWidth={
-        expandedIndex === serialNo || serialNo === expandedIndex + 1 ?
+        expandedIndex === serialNo || serialNo === Number(expandedIndex) + 1 ?
           'inherit' :
           '1px'
       }
-      borderBottomWidth={ lastIndex === expandedIndex && 'inherit !important' }
+      borderBottomWidth={
+        lastIndex === expandedIndex ? 'inherit !important' : undefined
+      }
     >
       <AccordionButton
         display="flex"
@@ -74,7 +76,9 @@ const NuiContractMethodsAccordionItem = ({
         } }
       >
         <Flex gap={ 2 } fontWeight="medium" fontSize="16px">
-          <p> { serialNo + 1 }.</p>
+          { serialNo && (
+            <p> { serialNo + 1 }.</p>
+          ) }
           <Box>{ data?.name }</Box>
         </Flex>
         <AccordionIcon
@@ -90,7 +94,7 @@ const NuiContractMethodsAccordionItem = ({
         borderBottomRadius="12px"
       >
         <Flex direction="column" gap={ 2 }>
-          { data?.inputs?.map((ele: any) => {
+          { data?.inputs && data?.inputs?.map((ele: any) => {
             let eleName = ele?.name;
             if (!eleName && ele?.type === 'string') {
               eleName = '<input>';
@@ -149,7 +153,7 @@ const NuiContractMethodsAccordionItem = ({
         { currentTab === 'read' && (data?.inputs as Array<any>)?.length > 0 && (
           <Button className="w-32 bg-blue-500">Query</Button>
         ) }
-        { data?.outputs?.length > 0 && (
+        { data?.outputs && data?.outputs?.length > 0 && (
           <Flex gap={ 2 } alignItems="center">
             <IconSvg name="arrows/down-right" boxSize={ 5 }/>
             <Text color="black_secondary" fontWeight="semibold">
