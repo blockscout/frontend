@@ -151,6 +151,9 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
     <Skeleton
       className={ className }
       isLoaded={ !isLoading }
+      color="black"
+      fontWeight="bold"
+      ml="0.5em"
       overflow="hidden"
       whiteSpace="nowrap"
     >

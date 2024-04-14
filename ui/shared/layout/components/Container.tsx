@@ -7,7 +7,7 @@ interface Props {
 
 const Container = ({ children }: Props) => {
   return (
-    <Box minWidth={{ base: '100vw', lg: 'fit-content' }}>
+    <Box minWidth={{ base: '100vw', lg: 'fit-content' }} bgImage="url('/background-pattern.png')">
       { children }
     </Box>
   );
