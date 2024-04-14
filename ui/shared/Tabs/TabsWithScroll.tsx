@@ -10,7 +10,6 @@ import isBrowser from 'lib/isBrowser';
 
 import AdaptiveTabsList from './AdaptiveTabsList';
 import useAdaptiveTabs from './useAdaptiveTabs';
-import { menuButton } from './utils';
 
 export interface Props extends ThemingProps<'Tabs'> {
   tabs: Array<TabItem>;
@@ -30,6 +29,7 @@ export interface Props extends ThemingProps<'Tabs'> {
   onTabChange?: (index: number) => void;
   defaultTabIndex?: number;
   className?: string;
+  type?: string;
 }
 
 const TabsWithScroll = ({
@@ -42,6 +42,7 @@ const TabsWithScroll = ({
   onTabChange,
   defaultTabIndex,
   className,
+  type,
   ...themeProps
 }: Props) => {
   const [ activeTabIndex, setActiveTabIndex ] = useState<number>(
@@ -54,9 +55,9 @@ const TabsWithScroll = ({
 
   const tabsRef = useRef<HTMLDivElement>(null);
 
-  const tabsList = React.useMemo(() => {
-    return [ ...tabs, menuButton ];
-  }, [ tabs ]);
+  // const tabsList = React.useMemo(() => {
+  //   return [...tabs, menuButton];
+  // }, [tabs]);
 
   const handleTabChange = React.useCallback(
     (index: number) => {
@@ -87,6 +88,8 @@ const TabsWithScroll = ({
     return <div>{ tabs[0].component }</div>;
   }
 
+  // console.log({ tabsList });
+
   return (
     <Tabs
       className={ className }
@@ -103,6 +106,7 @@ const TabsWithScroll = ({
       <AdaptiveTabsList
         key={ screenWidth }
         tabs={ tabs }
+        type={ type }
         tabListProps={ tabListProps }
         rightSlot={ rightSlot }
         rightSlotProps={ rightSlotProps }
@@ -112,8 +116,11 @@ const TabsWithScroll = ({
         themeProps={ themeProps }
       />
       <Box
-        border="1.5px solid rgba(114, 114, 114, 0.54)"
+        border={
+          type === 'parent_tabs' && '1.5px solid rgba(114, 114, 114, 0.54)'
+        }
         paddingTop="20px"
+        padding={ !type && '20px' }
         borderTopLeftRadius="20px"
         borderTopRightRadius="20px"
       >
@@ -129,7 +136,7 @@ const TabsWithScroll = ({
           </Flex>
         ) : null }
         <TabPanels>
-          { tabsList.map((tab) => (
+          { tabs.map((tab) => (
             <TabPanel padding={ 0 } key={ tab.id }>
               { tab.component }
             </TabPanel>

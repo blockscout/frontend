@@ -193,7 +193,6 @@ const TokenPageContent = () => {
   });
 
   const contractTabs = useContractTabs(contractQuery.data);
-
   const tabs: Array<RoutedTab> = [
     hasInventoryTab ?
       {
@@ -216,13 +215,6 @@ const TokenPageContent = () => {
           transfersQuery={ transfersQuery }
           token={ tokenQuery.data }
         />
-      ),
-    },
-    {
-      id: 'holders',
-      title: 'Holders',
-      component: (
-        <TokenHolders token={ tokenQuery.data } holdersQuery={ holdersQuery }/>
       ),
     },
     contractQuery.data?.is_contract ?
@@ -249,6 +241,13 @@ const TokenPageContent = () => {
         subTabs: contractTabs.map((tab) => tab.id),
       } :
       undefined,
+    {
+      id: 'holders',
+      title: 'Holders',
+      component: (
+        <TokenHolders token={ tokenQuery.data } holdersQuery={ holdersQuery }/>
+      ),
+    },
   ].filter(Boolean);
 
   let pagination: PaginationParams | undefined;
@@ -435,6 +434,7 @@ const TokenPageContent = () => {
       ) : (
         <RoutedTabs
           tabs={ tabs }
+          type="parent_tabs"
           tabListProps={ tabListProps }
           rightSlot={
             !isMobile && pagination?.isVisible ? (

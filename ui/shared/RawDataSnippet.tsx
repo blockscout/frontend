@@ -1,5 +1,11 @@
 import type { ChakraProps } from '@chakra-ui/react';
-import { Box, Flex, chakra, useColorModeValue, Skeleton } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  chakra,
+  useColorModeValue,
+  Skeleton,
+} from '@chakra-ui/react';
 import React from 'react';
 
 import CopyToClipboard from './CopyToClipboard';
@@ -16,30 +22,58 @@ interface Props {
   contentProps?: ChakraProps;
 }
 
-const RawDataSnippet = ({ data, className, title, rightSlot, beforeSlot, textareaMaxHeight, showCopy = true, isLoading, contentProps }: Props) => {
+const RawDataSnippet = ({
+  data,
+  className,
+  title,
+  rightSlot,
+  beforeSlot,
+  textareaMaxHeight,
+  showCopy = true,
+  isLoading,
+  contentProps,
+}: Props) => {
   // see issue in theme/components/Textarea.ts
-  const bgColor = useColorModeValue('#f5f5f6', '#1a1b1b');
+  const bgColor = useColorModeValue('gray.1000', '#1a1b1b');
   return (
     <Box className={ className } as="section" title={ title }>
       { (title || rightSlot || showCopy) && (
-        <Flex justifyContent={ title ? 'space-between' : 'flex-end' } alignItems="center" mb={ 3 }>
-          { title && <Skeleton fontWeight={ 500 } isLoaded={ !isLoading }>{ title }</Skeleton> }
+        <Flex
+          // justifyContent={title ? 'space-between' : 'flex-end'}
+
+          alignItems="center"
+          mb={ 4 }
+        >
+          { title && (
+            <Skeleton
+              fontWeight={ 500 }
+              fontSize="large"
+              isLoaded={ !isLoading }
+              color="black_secondary"
+            >
+              { title }
+            </Skeleton>
+          ) }
           { rightSlot }
-          { typeof data === 'string' && showCopy && <CopyToClipboard text={ data } isLoading={ isLoading }/> }
+          { typeof data === 'string' && showCopy && (
+            <CopyToClipboard text={ data } isLoading={ isLoading }/>
+          ) }
         </Flex>
       ) }
       { beforeSlot }
       <Skeleton
-        p={ 4 }
+        p={ 5 }
         bgColor={ isLoading ? 'inherit' : bgColor }
         maxH={ textareaMaxHeight || '400px' }
         minH={ isLoading ? '200px' : undefined }
-        fontSize="sm"
-        borderRadius="md"
+        color="black_secondary"
+        fontSize="14px"
+        borderRadius="3xl"
         wordBreak="break-all"
         whiteSpace="pre-wrap"
         overflowX="hidden"
         overflowY="auto"
+        fontWeight="medium"
         isLoaded={ !isLoading }
         { ...contentProps }
       >

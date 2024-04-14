@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import type { SystemStyleObject } from '@chakra-ui/react';
 import { Box, useColorMode, Flex, useToken, Center } from '@chakra-ui/react';
 import type { EditorProps } from '@monaco-editor/react';
@@ -15,7 +16,9 @@ import ErrorBoundary from 'ui/shared/ErrorBoundary';
 
 import CodeEditorBreadcrumbs from './CodeEditorBreadcrumbs';
 import CodeEditorLoading from './CodeEditorLoading';
-import CodeEditorSideBar, { CONTAINER_WIDTH as SIDE_BAR_WIDTH } from './CodeEditorSideBar';
+import CodeEditorSideBar, {
+  CONTAINER_WIDTH as SIDE_BAR_WIDTH,
+} from './CodeEditorSideBar';
 import CodeEditorTabs from './CodeEditorTabs';
 import addExternalLibraryWarningDecoration from './utils/addExternalLibraryWarningDecoration';
 import addFileImportDecorations from './utils/addFileImportDecorations';
@@ -46,9 +49,18 @@ interface Props {
   contractName?: string;
 }
 
-const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractName }: Props) => {
+const CodeEditor = ({
+  data,
+  remappings,
+  libraries,
+  language,
+  mainFile,
+  contractName,
+}: Props) => {
   const [ instance, setInstance ] = React.useState<Monaco | undefined>();
-  const [ editor, setEditor ] = React.useState<monaco.editor.IStandaloneCodeEditor | undefined>();
+  const [ editor, setEditor ] = React.useState<
+  monaco.editor.IStandaloneCodeEditor | undefined
+  >();
   const [ index, setIndex ] = React.useState(0);
   const [ tabs, setTabs ] = React.useState([ data[index].file_path ]);
   const [ isMetaPressed, setIsMetaPressed ] = React.useState(false);
@@ -60,118 +72,160 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
   const isMobile = useIsMobile();
   const themeColors = useThemeColors();
 
-  const editorWidth = containerRect ? containerRect.width - (isMobile ? 0 : SIDE_BAR_WIDTH) : 0;
+  const editorWidth = containerRect ?
+    containerRect.width - (isMobile ? 0 : SIDE_BAR_WIDTH) :
+    0;
 
   const editorLanguage = language === 'vyper' ? 'elixir' : 'sol';
 
   React.useEffect(() => {
-    instance?.editor.setTheme(colorMode === 'light' ? 'blockscout-light' : 'blockscout-dark');
+    instance?.editor.setTheme(
+      colorMode === 'light' ? 'blockscout-light' : 'blockscout-dark',
+    );
   }, [ colorMode, instance?.editor ]);
 
-  const handleEditorDidMount = React.useCallback((editor: monaco.editor.IStandaloneCodeEditor, monaco: Monaco) => {
-    setInstance(monaco);
-    setEditor(editor);
+  const handleEditorDidMount = React.useCallback(
+    (editor: monaco.editor.IStandaloneCodeEditor, monaco: Monaco) => {
+      setInstance(monaco);
+      setEditor(editor);
 
-    monaco.editor.defineTheme('blockscout-light', themes.light);
-    monaco.editor.defineTheme('blockscout-dark', themes.dark);
-    monaco.editor.setTheme(colorMode === 'light' ? 'blockscout-light' : 'blockscout-dark');
+      monaco.editor.defineTheme('blockscout-light', themes.light);
+      monaco.editor.defineTheme('blockscout-dark', themes.dark);
+      monaco.editor.setTheme(
+        colorMode === 'light' ? 'blockscout-light' : 'blockscout-dark',
+      );
 
-    const loadedModels = monaco.editor.getModels();
-    const loadedModelsPaths = loadedModels.map((model) => model.uri.path);
-    const newModels = data.slice(1)
-      .filter((file) => !loadedModelsPaths.includes(file.file_path))
-      .map((file) => monaco.editor.createModel(file.source_code, editorLanguage, monaco.Uri.parse(file.file_path)));
+      const loadedModels = monaco.editor.getModels();
+      const loadedModelsPaths = loadedModels.map((model) => model.uri.path);
+      const newModels = data
+        .slice(1)
+        .filter((file) => !loadedModelsPaths.includes(file.file_path))
+        .map((file) =>
+          monaco.editor.createModel(
+            file.source_code,
+            editorLanguage,
+            monaco.Uri.parse(file.file_path),
+          ),
+        );
 
-    if (language === 'solidity') {
-      loadedModels.concat(newModels)
-        .forEach((model) => {
-          contractName && mainFile === model.uri.path && addMainContractCodeDecoration(model, contractName, editor);
+      if (language === 'solidity') {
+        loadedModels.concat(newModels).forEach((model) => {
+          contractName &&
+            mainFile === model.uri.path &&
+            addMainContractCodeDecoration(model, contractName, editor);
           addFileImportDecorations(model);
-          libraries?.length && addExternalLibraryWarningDecoration(model, libraries);
+          libraries?.length &&
+            addExternalLibraryWarningDecoration(model, libraries);
         });
-    }
+      }
 
-    editor.addAction({
-      id: 'close-tab',
-      label: 'Close current tab',
-      keybindings: [
-        monaco.KeyMod.Alt | monaco.KeyCode.KeyW,
-      ],
-      contextMenuGroupId: 'navigation',
-      contextMenuOrder: 1.7,
-      run: function(editor) {
-        const model = editor.getModel();
-        const path = model?.uri.path;
-        if (path) {
-          handleTabClose(path, true);
-        }
-      },
-    });
-  // componentDidMount
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ ]);
+      editor.addAction({
+        id: 'close-tab',
+        label: 'Close current tab',
+        keybindings: [ monaco.KeyMod.Alt | monaco.KeyCode.KeyW ],
+        contextMenuGroupId: 'navigation',
+        contextMenuOrder: 1.7,
+        run: function(editor) {
+          const model = editor.getModel();
+          const path = model?.uri.path;
+          if (path) {
+            handleTabClose(path, true);
+          }
+        },
+      });
+      // componentDidMount
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    },
+    [],
+  );
 
-  const handleSelectFile = React.useCallback((index: number, lineNumber?: number) => {
-    setIndex(index);
-    setTabs((prev) => prev.some((item) => item === data[index].file_path) ? prev : ([ ...prev, data[index].file_path ]));
-    if (lineNumber !== undefined && !Object.is(lineNumber, NaN)) {
-      window.setTimeout(() => {
-        editor?.revealLineInCenter(lineNumber);
-      }, 0);
-    }
-    editor?.focus();
-  }, [ data, editor ]);
-
-  const handleTabSelect = React.useCallback((path: string) => {
-    const index = data.findIndex((item) => item.file_path === path);
-    if (index > -1) {
+  const handleSelectFile = React.useCallback(
+    (index: number, lineNumber?: number) => {
       setIndex(index);
-    }
-  }, [ data ]);
+      setTabs((prev) =>
+        prev.some((item) => item === data[index].file_path) ?
+          prev :
+          [ ...prev, data[index].file_path ],
+      );
+      if (lineNumber !== undefined && !Object.is(lineNumber, NaN)) {
+        window.setTimeout(() => {
+          editor?.revealLineInCenter(lineNumber);
+        }, 0);
+      }
+      editor?.focus();
+    },
+    [ data, editor ],
+  );
 
-  const handleTabClose = React.useCallback((path: string, _isActive?: boolean) => {
-    setTabs((prev) => {
-      if (prev.length > 1) {
-        const tabIndex = prev.findIndex((item) => item === path);
-        const isActive = _isActive !== undefined ? _isActive : data[index].file_path === path;
+  const handleTabSelect = React.useCallback(
+    (path: string) => {
+      const index = data.findIndex((item) => item.file_path === path);
+      if (index > -1) {
+        setIndex(index);
+      }
+    },
+    [ data ],
+  );
 
-        if (isActive) {
-          const nextActiveIndex = data.findIndex((item) => item.file_path === prev[(tabIndex === 0 ? 1 : tabIndex - 1)]);
-          setIndex(nextActiveIndex);
+  const handleTabClose = React.useCallback(
+    (path: string, _isActive?: boolean) => {
+      setTabs((prev) => {
+        if (prev.length > 1) {
+          const tabIndex = prev.findIndex((item) => item === path);
+          const isActive =
+            _isActive !== undefined ?
+              _isActive :
+              data[index].file_path === path;
+
+          if (isActive) {
+            const nextActiveIndex = data.findIndex(
+              (item) =>
+                item.file_path === prev[tabIndex === 0 ? 1 : tabIndex - 1],
+            );
+            setIndex(nextActiveIndex);
+          }
+
+          return prev.filter((item) => item !== path);
         }
 
-        return prev.filter((item) => item !== path);
+        return prev;
+      });
+    },
+    [ data, index ],
+  );
+
+  const handleClick = React.useCallback(
+    (event: React.MouseEvent) => {
+      if (!isMetaPressed && !isMobile) {
+        return;
       }
 
-      return prev;
-    });
-  }, [ data, index ]);
+      const target = event.target as HTMLSpanElement;
+      const isImportLink = target.classList.contains('import-link');
+      if (isImportLink) {
+        const path = [
+          target.previousElementSibling as HTMLSpanElement,
+          target,
+          target.nextElementSibling as HTMLSpanElement,
+        ]
+          .filter((element) => element?.classList.contains('import-link'))
+          .map((element: HTMLSpanElement) => element.innerText)
+          .join('');
 
-  const handleClick = React.useCallback((event: React.MouseEvent) => {
-    if (!isMetaPressed && !isMobile) {
-      return;
-    }
-
-    const target = event.target as HTMLSpanElement;
-    const isImportLink = target.classList.contains('import-link');
-    if (isImportLink) {
-      const path = [
-        target.previousElementSibling as HTMLSpanElement,
-        target,
-        target.nextElementSibling as HTMLSpanElement,
-      ]
-        .filter((element) => element?.classList.contains('import-link'))
-        .map((element: HTMLSpanElement) => element.innerText)
-        .join('');
-
-      const fullPath = getFullPathOfImportedFile(data[index].file_path, path, remappings);
-      const fileIndex = data.findIndex((file) => file.file_path === fullPath);
-      if (fileIndex > -1) {
-        event.stopPropagation();
-        handleSelectFile(fileIndex);
+        const fullPath = getFullPathOfImportedFile(
+          data[index].file_path,
+          path,
+          remappings,
+        );
+        const fileIndex = data.findIndex((file) => file.file_path === fullPath);
+        if (fileIndex > -1) {
+          event.stopPropagation();
+          handleSelectFile(fileIndex);
+        }
       }
-    }
-  }, [ data, handleSelectFile, index, isMetaPressed, isMobile, remappings ]);
+    },
+    [ data, handleSelectFile, index, isMetaPressed, isMobile, remappings ],
+  );
 
   const handleKeyDown = React.useCallback((event: React.KeyboardEvent) => {
     isMetaKey(event) && setIsMetaPressed(true);
@@ -181,57 +235,69 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
     setIsMetaPressed(false);
   }, []);
 
-  const containerSx: SystemStyleObject = React.useMemo(() => ({
-    '.editor-container': {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: `${ editorWidth }px`,
-      height: '100%',
-    },
-    '.monaco-editor': {
-      'border-bottom-left-radius': borderRadius,
-    },
-    '.monaco-editor .overflow-guard': {
-      'border-bottom-left-radius': borderRadius,
-    },
-    '.monaco-editor .core-guide': {
-      zIndex: 1,
-    },
-    // '.monaco-editor .currentFindMatch': // TODO: find a better way to style this
-    '.monaco-editor .findMatch': {
-      backgroundColor: themeColors['custom.findMatchHighlightBackground'],
-    },
-    '.highlight': {
-      backgroundColor: themeColors['custom.findMatchHighlightBackground'],
-    },
-    '&&.meta-pressed .import-link:hover, &&.meta-pressed .import-link:hover + .import-link': {
-      color: themeColors['custom.fileLink.hoverForeground'],
-      textDecoration: 'underline',
-      cursor: 'pointer',
-    },
-    '.risk-warning-primary': {
-      backgroundColor: themeColors['custom.riskWarning.primaryBackground'],
-    },
-    '.risk-warning': {
-      backgroundColor: themeColors['custom.riskWarning.background'],
-    },
-    '.main-contract-header': {
-      backgroundColor: themeColors['custom.mainContract.header'],
-    },
-    '.main-contract-body': {
-      backgroundColor: themeColors['custom.mainContract.body'],
-    },
-    '.main-contract-glyph': {
-      zIndex: 1,
-      background: 'url(/static/contract_star.png) no-repeat center center',
-      backgroundSize: '12px',
-      cursor: 'pointer',
-    },
-  }), [ editorWidth, themeColors, borderRadius ]);
+  const containerSx: SystemStyleObject = React.useMemo(
+    () => ({
+      '.editor-container': {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: `${ editorWidth }px`,
+        height: '100%',
+      },
+      '.monaco-editor': {
+        'border-bottom-left-radius': borderRadius,
+      },
+      '.monaco-editor .overflow-guard': {
+        'border-bottom-left-radius': borderRadius,
+      },
+      '.monaco-editor .core-guide': {
+        zIndex: 1,
+      },
+      // '.monaco-editor .currentFindMatch': // TODO: find a better way to style this
+      '.monaco-editor .findMatch': {
+        backgroundColor: themeColors['custom.findMatchHighlightBackground'],
+      },
+      '.highlight': {
+        backgroundColor: themeColors['custom.findMatchHighlightBackground'],
+      },
+      '&&.meta-pressed .import-link:hover, &&.meta-pressed .import-link:hover + .import-link':
+        {
+          color: themeColors['custom.fileLink.hoverForeground'],
+          textDecoration: 'underline',
+          cursor: 'pointer',
+        },
+      '.risk-warning-primary': {
+        backgroundColor: themeColors['custom.riskWarning.primaryBackground'],
+      },
+      '.risk-warning': {
+        backgroundColor: themeColors['custom.riskWarning.background'],
+      },
+      '.main-contract-header': {
+        backgroundColor: themeColors['custom.mainContract.header'],
+      },
+      '.main-contract-body': {
+        backgroundColor: themeColors['custom.mainContract.body'],
+      },
+      '.main-contract-glyph': {
+        zIndex: 1,
+        background: 'url(/static/contract_star.png) no-repeat center center',
+        backgroundSize: '12px',
+        cursor: 'pointer',
+      },
+    }),
+    [ editorWidth, themeColors, borderRadius ],
+  );
 
   const renderErrorScreen = React.useCallback(() => {
-    return <Center bgColor={ themeColors['editor.background'] } w="100%" borderRadius="md">Oops! Something went wrong!</Center>;
+    return (
+      <Center
+        bgColor={ themeColors['editor.background'] }
+        w="100%"
+        borderRadius="md"
+      >
+        Oops! Something went wrong!
+      </Center>
+    );
   }, [ themeColors ]);
 
   if (data.length === 1) {
@@ -246,7 +312,12 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
     };
 
     return (
-      <Box height={ `${ EDITOR_HEIGHT }px` } width="100%" sx={ sx } ref={ containerNodeRef }>
+      <Box
+        height={ `${ EDITOR_HEIGHT }px` }
+        width="100%"
+        sx={ sx }
+        ref={ containerNodeRef }
+      >
         <ErrorBoundary renderErrorScreen={ renderErrorScreen }>
           <MonacoEditor
             className="editor-container"

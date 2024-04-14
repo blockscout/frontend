@@ -35,8 +35,10 @@ const colors = {
     '700': '#2D3748',
     '800': '#1A202C',
     '900': '#171923',
+    '1000': '#F4F4F4',
   },
   black: '#101112',
+  black_secondary: '#292929',
   white: '#ffffff',
   blackAlpha: {
     '50': 'RGBA(16, 17, 18, 0.04)',

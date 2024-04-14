@@ -40,7 +40,9 @@ interface Props {
 }
 
 const Fallback = ({ children, fallback }: Props) => {
-  return typeof fallback === 'function' ? fallback() : (fallback || <>{ children }</>); // eslint-disable-line react/jsx-no-useless-fragment
+  return typeof fallback === 'function' ?
+    fallback() :
+    fallback || <>{ children }</>; // eslint-disable-line react/jsx-no-useless-fragment
 };
 
 const Provider = ({ children, fallback }: Props) => {
@@ -56,13 +58,10 @@ const Provider = ({ children, fallback }: Props) => {
     return <Fallback fallback={ fallback }>{ children }</Fallback>;
   }
 
-  return (
-    <WagmiProvider config={ wagmiConfig }>
-      { children }
-    </WagmiProvider>
-  );
+  return <WagmiProvider config={ wagmiConfig }>{ children }</WagmiProvider>;
 };
 
-const Web3ModalProvider = wagmiConfig && feature.isEnabled ? Provider : Fallback;
+const Web3ModalProvider =
+  wagmiConfig && feature.isEnabled ? Provider : Fallback;
 
 export default Web3ModalProvider;

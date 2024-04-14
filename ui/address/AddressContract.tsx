@@ -16,15 +16,32 @@ const TAB_LIST_PROPS = {
 
 const AddressContract = ({ tabs }: Props) => {
   const fallback = React.useCallback(() => {
-    const noProviderTabs = tabs.filter(({ id }) => id === 'contact_code' || id.startsWith('read_'));
+    const noProviderTabs = tabs.filter(
+      ({ id }) =>
+        id === 'contact_code' ||
+        id.startsWith('read_') ||
+        id.startsWith('write'),
+    );
     return (
-      <RoutedTabs tabs={ noProviderTabs } variant="outline" colorScheme="gray" size="sm" tabListProps={ TAB_LIST_PROPS }/>
+      <RoutedTabs
+        tabs={ noProviderTabs }
+        variant="outline"
+        colorScheme="gray"
+        size="sm"
+        tabListProps={ TAB_LIST_PROPS }
+      />
     );
   }, [ tabs ]);
 
   return (
     <Web3ModalProvider fallback={ fallback }>
-      <RoutedTabs tabs={ tabs } variant="outline" colorScheme="gray" size="sm" tabListProps={ TAB_LIST_PROPS }/>
+      <RoutedTabs
+        tabs={ tabs }
+        variant="outline"
+        colorScheme="gray"
+        size="sm"
+        tabListProps={ TAB_LIST_PROPS }
+      />
     </Web3ModalProvider>
   );
 };

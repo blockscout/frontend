@@ -5,7 +5,6 @@ import {
   Grid,
   GridItem,
   Alert,
-  Link,
   chakra,
   Box,
 } from '@chakra-ui/react';
@@ -27,7 +26,6 @@ import * as stubs from 'stubs/contract';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import LinkExternal from 'ui/shared/LinkExternal';
-import LinkInternal from 'ui/shared/LinkInternal';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
 import ContractSecurityAudits from './ContractSecurityAudits';
@@ -49,16 +47,28 @@ type InfoItemProps = {
 const InfoItem = chakra(
   ({ label, content, className, isLoading }: InfoItemProps) => (
     <GridItem
-      display="flex"
+      // display='flex'
       columnGap={ 6 }
       wordBreak="break-all"
       className={ className }
       alignItems="baseline"
+      fontWeight="medium"
     >
-      <Skeleton isLoaded={ !isLoading } w="170px" flexShrink={ 0 } fontWeight={ 500 }>
+      <Skeleton
+        isLoaded={ !isLoading }
+        fontSize="14px"
+        color="rgba(30, 30, 30, 0.4)"
+      >
         { label }
       </Skeleton>
-      <Skeleton isLoaded={ !isLoading }>{ content }</Skeleton>
+      <Skeleton
+        isLoaded={ !isLoading }
+        color="black_secondary"
+        fontSize="16px"
+        mt={ 1 }
+      >
+        { content }
+      </Skeleton>
     </GridItem>
   ),
 );
@@ -207,48 +217,48 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
     );
   })();
 
-  const verificationAlert = (() => {
-    if (data?.is_verified_via_eth_bytecode_db) {
-      return (
-        <Alert status="warning" whiteSpace="pre-wrap" flexWrap="wrap">
-          <span>
-            This contract has been{ ' ' }
-            { data.is_partially_verified ? 'partially ' : '' }verified using{ ' ' }
-          </span>
-          <LinkExternal
-            href="https://docs.blockscout.com/about/features/ethereum-bytecode-database-microservice"
-            fontSize="md"
-          >
-            Blockscout Bytecode Database
-          </LinkExternal>
-        </Alert>
-      );
-    }
+  // const verificationAlert = (() => {
+  //   if (data?.is_verified_via_eth_bytecode_db) {
+  //     return (
+  //       <Alert status="warning" whiteSpace="pre-wrap" flexWrap="wrap">
+  //         <span>
+  //           This contract has been{" "}
+  //           {data.is_partially_verified ? "partially " : ""}verified using{" "}
+  //         </span>
+  //         <LinkExternal
+  //           href="https://docs.blockscout.com/about/features/ethereum-bytecode-database-microservice"
+  //           fontSize="md"
+  //         >
+  //           Blockscout Bytecode Database
+  //         </LinkExternal>
+  //       </Alert>
+  //     );
+  //   }
 
-    if (data?.is_verified_via_sourcify) {
-      return (
-        <Alert status="warning" whiteSpace="pre-wrap" flexWrap="wrap">
-          <span>
-            This contract has been{ ' ' }
-            { data.is_partially_verified ? 'partially ' : '' }verified via
-            Sourcify.{ ' ' }
-          </span>
-          { data.sourcify_repo_url && (
-            <LinkExternal href={ data.sourcify_repo_url } fontSize="md">
-              View contract in Sourcify repository
-            </LinkExternal>
-          ) }
-        </Alert>
-      );
-    }
+  //   if (data?.is_verified_via_sourcify) {
+  //     return (
+  //       <Alert status="warning" whiteSpace="pre-wrap" flexWrap="wrap">
+  //         <span>
+  //           This contract has been{" "}
+  //           {data.is_partially_verified ? "partially " : ""}verified via
+  //           Sourcify.{" "}
+  //         </span>
+  //         {data.sourcify_repo_url && (
+  //           <LinkExternal href={data.sourcify_repo_url} fontSize="md">
+  //             View contract in Sourcify repository
+  //           </LinkExternal>
+  //         )}
+  //       </Alert>
+  //     );
+  //   }
 
-    return null;
-  })();
+  //   return null;
+  // })();
 
   return (
     <>
       <Flex flexDir="column" rowGap={ 2 } mb={ 6 } _empty={{ display: 'none' }}>
-        { data?.is_verified && (
+        { /* { data?.is_verified && (
           <Skeleton isLoaded={ !isPlaceholderData }>
             <Alert status="success" flexWrap="wrap" rowGap={ 3 } columnGap={ 5 }>
               <span>
@@ -258,8 +268,8 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
               { data.is_partially_verified ? verificationButton : null }
             </Alert>
           </Skeleton>
-        ) }
-        { verificationAlert }
+        ) } */ }
+        { /* {verificationAlert} */ }
         { (data?.is_changed_bytecode || isChangedBytecodeSocket) && (
           <Alert status="warning">
             Warning! Contract bytecode has been changed and does not match the
@@ -267,40 +277,40 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
             risky.
           </Alert>
         ) }
-        { !data?.is_verified &&
+        { /* {!data?.is_verified &&
           data?.verified_twin_address_hash &&
           !data?.minimal_proxy_address_hash && (
-          <Alert status="warning" whiteSpace="pre-wrap" flexWrap="wrap">
-            <span>
+            <Alert status="warning" whiteSpace="pre-wrap" flexWrap="wrap">
+              <span>
                 Contract is not verified. However, we found a verified contract
-                with the same bytecode in Blockscout DB{ ' ' }
-            </span>
-            <AddressEntity
-              address={{
-                hash: data.verified_twin_address_hash,
-                is_contract: true,
-                implementation_name: null,
-              }}
-              truncation="constant"
-              fontSize="sm"
-              fontWeight="500"
-            />
-            <chakra.span mt={ 1 }>
+                with the same bytecode in Blockscout DB{" "}
+              </span>
+              <AddressEntity
+                address={{
+                  hash: data.verified_twin_address_hash,
+                  is_contract: true,
+                  implementation_name: null,
+                }}
+                truncation="constant"
+                fontSize="sm"
+                fontWeight="500"
+              />
+              <chakra.span mt={1}>
                 All functions displayed below are from ABI of that contract. In
-                order to verify current contract, proceed with{ ' ' }
-            </chakra.span>
-            <LinkInternal
-              href={ route({
-                pathname: '/address/[hash]/contract-verification',
-                query: { hash: addressHash || '' },
-              }) }
-            >
+                order to verify current contract, proceed with{" "}
+              </chakra.span>
+              <LinkInternal
+                href={route({
+                  pathname: "/address/[hash]/contract-verification",
+                  query: { hash: addressHash || "" },
+                })}
+              >
                 Verify & Publish
-            </LinkInternal>
-            <span> page</span>
-          </Alert>
-        ) }
-        { data?.minimal_proxy_address_hash && (
+              </LinkInternal>
+              <span> page</span>
+            </Alert>
+          )}
+        {data?.minimal_proxy_address_hash && (
           <Alert status="warning" flexWrap="wrap" whiteSpace="pre-wrap">
             <span>Minimal Proxy Contract for </span>
             <AddressEntity
@@ -320,20 +330,24 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
                 EIP-1167
               </Link>
               <span>
-                { ' ' }
+                {" "}
                 - minimal bytecode implementation that delegates all calls to a
                 known address
               </span>
             </Box>
           </Alert>
-        ) }
+        )} */ }
       </Flex>
       { data?.is_verified && (
         <Grid
-          templateColumns={{ base: '1fr', lg: '1fr 1fr' }}
+          templateColumns={{ base: '1fr', lg: '1fr 1fr 1fr' }}
           rowGap={ 4 }
-          columnGap={ 6 }
+          backgroundColor="gray.1000"
+          borderRadius="3xl"
+          padding={ 5 }
+          columnGap={ 2 }
           mb={ 8 }
+          mt={ 2 }
         >
           { data.name && (
             <InfoItem

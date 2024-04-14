@@ -24,6 +24,7 @@ interface Props extends TabsProps {
   activeTabIndex: number;
   onItemClick: (index: number) => void;
   themeProps: ThemingProps<'Tabs'>;
+  type?: string;
 }
 
 const AdaptiveTabsList = (props: Props) => {
@@ -46,9 +47,12 @@ const AdaptiveTabsList = (props: Props) => {
 
   return (
     <TabList
-      marginBottom={{ base: 6, lg: 8 }}
+      // marginBottom={{ base: 6, lg: 8 }}
       mx={{ base: '-16px', lg: 'unset' }}
-      px={{ base: '16px', lg: 'unset' }}
+      px={{
+        base: '16px',
+        lg: props?.type !== 'parent_tabs' ? '20px' : 'unset',
+      }}
       flexWrap="nowrap"
       whiteSpace="nowrap"
       ref={ listRef }
@@ -89,13 +93,7 @@ const AdaptiveTabsList = (props: Props) => {
               activeTab={ props.tabs[props.activeTabIndex] }
               tabsCut={ tabsCut }
               isActive={ props.activeTabIndex >= tabsCut }
-              styles={
-                tabsCut < props.tabs.length ? // initially our cut is 0 and we don't want to show the menu button too
-                // but we want to keep it in the tabs row so it won't collapse
-                // that's why we only change opacity but not the position itself
-                  { opacity: tabsCut === 0 ? 0 : 1 } :
-                  hiddenItemStyles
-              }
+              styles={ tabsCut < props.tabs.length ? { opacity: tabsCut === 0 ? 0 : 1 } : hiddenItemStyles }
               onItemClick={ props.onItemClick }
               buttonRef={ tabsRefs[index] }
               size={ props.themeProps.size || 'md' }
@@ -110,8 +108,10 @@ const AdaptiveTabsList = (props: Props) => {
             { ...(index < tabsCut ? {} : hiddenItemStyles) }
             scrollSnapAlign="start"
             flexShrink={ 0 }
-            borderRadius="32px"
-            fontSize="medium"
+            borderRadius={ props?.type !== 'parent_tabs' ? '8px' : '32px' }
+            fontSize="16px"
+            padding="16px"
+            fontWeight={ props?.type !== 'parent_tabs' ? 'medium' : 'semibold' }
             color="#141414"
             background="#F4F4F4"
             _selected={{ background: '#141414', color: '#F9FAFB' }}
