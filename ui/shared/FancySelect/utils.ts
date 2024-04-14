@@ -57,14 +57,14 @@ const getChakraStyles: (colorMode: ColorMode) => ChakraStylesConfig<Option> = (c
     }),
     valueContainer: (provided, state) => ({
       ...provided,
-      ...getValueContainerStyles(state.selectProps.size),
+      ...getValueContainerStyles((state.selectProps.size as 'sm' | 'md' | 'lg')),
       py: 0,
     }),
     singleValue: (provided, state) => ({
       ...provided,
       mx: 0,
       transform: 'none',
-      ...getSingleValueStyles(state.selectProps.size),
+      ...getSingleValueStyles((state.selectProps.size as 'sm' | 'md' | 'lg')),
     }),
   };
 };
