@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable quotes */
 import { useToast } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
@@ -6,14 +7,16 @@ export default function useUnisatWallet() {
   const [ address, setAddress ] = useState<string>("");
   const toast = useToast();
   useEffect(() => {
-    window.unisat.on("accountsChanged", (accounts) => {
-      setAddress(accounts[0]);
-    });
+    if ((window as any)?.unisat) {
+      (window as any).unisat.on(
+        "accountsChanged",
+        (accounts: Array<string>) => setAddress(accounts[0]));
+    }
   }, []);
 
   const unisatHandler = async() => {
     try {
-      const accounts = await window.unisat.requestAccounts();
+      const accounts = await (window as any).unisat.requestAccounts();
       if (accounts[0].substring(0, 3) === "bc1") {
         setAddress(accounts[0]);
       } else {
@@ -34,15 +37,15 @@ export default function useUnisatWallet() {
   const switchUnisatNetwork = async() => {
     try {
       // eslint-disable-next-line no-unused-vars
-      await window?.unisat.switchNetwork("livenet");
+      await (window as any).unisat.switchNetwork("livenet");
       await unisatHandler();
     } catch (e) {}
   };
 
   const connect = async() => {
-    if (window.unisat) {
+    if ((window as any).unisat) {
       try {
-        const res = await window.unisat.getNetwork();
+        const res = await (window as any).unisat.getNetwork();
         if (res === "livenet") {
           await unisatHandler();
         } else {
@@ -50,7 +53,7 @@ export default function useUnisatWallet() {
         }
       } catch (e) {
         toast({
-          description: e,
+          description: (e as any),
           status: "error",
         });
       }
