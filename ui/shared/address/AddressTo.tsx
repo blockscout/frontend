@@ -10,7 +10,15 @@ import AddressFromToIcon from './AddressFromToIcon';
 
 interface Props {
   from: AddressParam;
-  to: AddressParam | null;
+  to: Pick<
+  AddressParam,
+  | 'hash'
+  | 'name'
+  | 'is_contract'
+  | 'is_verified'
+  | 'implementation_name'
+  | 'ens_domain_name'
+  >;
   isLoading?: boolean;
   tokenHash?: string;
 }
