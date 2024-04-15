@@ -553,7 +553,9 @@ const schema = yup
     // 5. Features configuration
     NEXT_PUBLIC_API_SPEC_URL: yup.string().test(urlTest),
     NEXT_PUBLIC_STATS_API_HOST: yup.string().test(urlTest),
+    NEXT_PUBLIC_STATS_API_BASE_PATH: yup.string(),
     NEXT_PUBLIC_VISUALIZE_API_HOST: yup.string().test(urlTest),
+    NEXT_PUBLIC_VISUALIZE_API_BASE_PATH: yup.string(),
     NEXT_PUBLIC_CONTRACT_INFO_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_NAME_SERVICE_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_GRAPHIQL_TRANSACTION: yup.string().matches(regexp.HEX_REGEXP),

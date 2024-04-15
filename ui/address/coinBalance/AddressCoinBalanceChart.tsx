@@ -15,10 +15,17 @@ const AddressCoinBalanceChart = ({ addressHash }: Props) => {
     pathParams: { hash: addressHash },
   });
 
-  const items = React.useMemo(() => data?.map(({ date, value }) => ({
-    date: new Date(date),
-    value: BigNumber(value).div(10 ** config.chain.currency.decimals).toNumber(),
-  })), [ data ]);
+  const items = React.useMemo(() => {
+    if (!data) {
+      return undefined;
+    }
+
+    const dataItems = 'items' in data ? data.items : data;
+    return dataItems.map(({ date, value }) => ({
+      date: new Date(date),
+      value: BigNumber(value).div(10 ** config.chain.currency.decimals).toNumber(),
+    }));
+  }, [ data ]);
 
   return (
     <ChartWidget
@@ -28,6 +35,7 @@ const AddressCoinBalanceChart = ({ addressHash }: Props) => {
       isLoading={ isPending }
       h="300px"
       units={ currencyUnits.ether }
+      emptyText={ data && 'days' in data && `Insufficient data for the past ${ data.days } days` }
     />
   );
 };

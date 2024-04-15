@@ -39,7 +39,7 @@ const TransactionPageContent = () => {
   const txQuery = useTxQuery();
   const { data, isPlaceholderData, isError, error, errorUpdateCount } = txQuery;
 
-  const showDegradedView = publicClient && (isError || isPlaceholderData) && errorUpdateCount > 0;
+  const showDegradedView = publicClient && ((isError && error.status !== 422) || isPlaceholderData) && errorUpdateCount > 0;
 
   const tabs: Array<RoutedTab> = (() => {
     const detailsComponent = showDegradedView ?
@@ -63,7 +63,7 @@ const TransactionPageContent = () => {
         { id: 'user_ops', title: 'User operations', component: <TxUserOps txQuery={ txQuery }/> } :
         undefined,
       { id: 'internal', title: 'Internal txns', component: <TxInternals txQuery={ txQuery }/> },
-      txQuery.data?.blob_versioned_hashes?.length ?
+      config.features.dataAvailability.isEnabled && txQuery.data?.blob_versioned_hashes?.length ?
         { id: 'blobs', title: 'Blobs', component: <TxBlobs txQuery={ txQuery }/> } :
         undefined,
       { id: 'logs', title: 'Logs', component: <TxLogs txQuery={ txQuery }/> },

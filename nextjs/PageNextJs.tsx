@@ -4,6 +4,7 @@ import React from 'react';
 import type { Route } from 'nextjs-routes';
 import type { Props as PageProps } from 'nextjs/getServerSideProps';
 
+import config from 'configs/app';
 import useAdblockDetect from 'lib/hooks/useAdblockDetect';
 import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
 import * as metadata from 'lib/metadata';
@@ -38,9 +39,14 @@ const PageNextJs = <Pathname extends Route['pathname']>(props: Props<Pathname>) 
         <meta property="og:title" content={ opengraph.title }/>
         { opengraph.description && <meta property="og:description" content={ opengraph.description }/> }
         <meta property="og:image" content={ opengraph.imageUrl }/>
-        <meta name="twitter:card" content="summary_large_image"/>
-        <meta property="twitter:image" content={ opengraph.imageUrl }/>
         <meta property="og:type" content="website"/>
+
+        { /* Twitter Meta Tags */ }
+        <meta name="twitter:card" content="summary_large_image"/>
+        <meta property="twitter:domain" content={ config.app.host }/>
+        <meta name="twitter:title" content={ opengraph.title }/>
+        { opengraph.description && <meta name="twitter:description" content={ opengraph.description }/> }
+        <meta property="twitter:image" content={ opengraph.imageUrl }/>
       </Head>
       { props.children }
     </>
