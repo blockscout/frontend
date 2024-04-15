@@ -6,7 +6,6 @@ import { render } from '@testing-library/react';
 import React from 'react';
 
 import { AppContextProvider } from 'lib/contexts/app';
-import { MarketplaceContextProvider } from 'lib/contexts/marketplace';
 import { ScrollDirectionProvider } from 'lib/contexts/scrollDirection';
 import { SocketProvider } from 'lib/socket/context';
 import theme from 'theme';
@@ -42,9 +41,7 @@ const TestApp = ({ children }: {children: React.ReactNode}) => {
           <ScrollDirectionProvider>
             <GrowthBookProvider>
               <SocketProvider>
-                <MarketplaceContextProvider>
-                  { children }
-                </MarketplaceContextProvider>
+                { children }
               </SocketProvider>
             </GrowthBookProvider>
           </ScrollDirectionProvider>
