@@ -13,7 +13,7 @@
 /.next/
 /out/
 /public/assets/
-/public/envs.js
+# /public/envs.js
 /public/icons/sprite.svg
 /public/icons/README.md
 /analyze
