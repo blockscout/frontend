@@ -1,24 +1,23 @@
-import { Box, IconButton, Image, Link, LinkBox, Skeleton, useColorModeValue, chakra, Flex } from '@chakra-ui/react';
+import { IconButton, Image, Link, LinkBox, Skeleton, useColorModeValue, Flex } from '@chakra-ui/react';
 import type { MouseEvent } from 'react';
-import React, { useCallback } from 'react';
+import React from 'react';
 
 import type { MarketplaceAppPreview } from 'types/client/marketplace';
 
 import IconSvg from 'ui/shared/IconSvg';
 
-import MarketplaceAppCardLink from './MarketplaceAppCardLink';
-import MarketplaceAppIntegrationIcon from './MarketplaceAppIntegrationIcon';
+import MarketplaceAppCardLink from '../MarketplaceAppCardLink';
+import MarketplaceAppIntegrationIcon from '../MarketplaceAppIntegrationIcon';
 
 interface Props extends MarketplaceAppPreview {
-  onInfoClick: (id: string) => void;
+  onInfoClick: (event: MouseEvent) => void;
   isFavorite: boolean;
-  onFavoriteClick: (id: string, isFavorite: boolean) => void;
+  onFavoriteClick: () => void;
   isLoading: boolean;
   onAppClick: (event: MouseEvent, id: string) => void;
-  className?: string;
 }
 
-const MarketplaceAppCard = ({
+const FeaturedAppMobile = ({
   id,
   url,
   external,
@@ -33,57 +32,37 @@ const MarketplaceAppCard = ({
   isLoading,
   internalWallet,
   onAppClick,
-  className,
 }: Props) => {
   const categoriesLabel = categories.join(', ');
-
-  const handleInfoClick = useCallback((event: MouseEvent) => {
-    event.preventDefault();
-    onInfoClick(id);
-  }, [ onInfoClick, id ]);
-
-  const handleFavoriteClick = useCallback(() => {
-    onFavoriteClick(id, isFavorite);
-  }, [ onFavoriteClick, id, isFavorite ]);
 
   const logoUrl = useColorModeValue(logo, logoDarkMode || logo);
 
   return (
     <LinkBox
-      className={ className }
-      _hover={{
-        boxShadow: isLoading ? 'none' : 'md',
-      }}
-      _focusWithin={{
-        boxShadow: isLoading ? 'none' : 'md',
-      }}
       borderRadius="md"
       padding={{ base: 3, sm: '20px' }}
-      border="1px"
-      borderColor={ useColorModeValue('gray.200', 'gray.600') }
       role="group"
+      background={ useColorModeValue('purple.50', 'whiteAlpha.100') }
+      mb={ 4 }
     >
       <Flex
-        flexDirection={{ base: 'row', sm: 'column' }}
+        flexDirection="row"
         height="100%"
         alignContent="start"
-        gap={{ base: 4, sm: 0 }}
+        gap={ 4 }
       >
         <Flex
-          display={{ base: 'flex', sm: 'contents' }}
           flexDirection="column"
           alignItems="center"
           justifyContent="space-between"
         >
           <Skeleton
             isLoaded={ !isLoading }
-            marginBottom={ 4 }
             w={{ base: '64px', sm: '96px' }}
             h={{ base: '64px', sm: '96px' }}
             display="flex"
             alignItems="center"
             justifyContent="center"
-            order={{ base: 'auto', sm: 1 }}
           >
             <Image
               src={ isLoading ? undefined : logoUrl }
@@ -93,40 +72,33 @@ const MarketplaceAppCard = ({
           </Skeleton>
 
           { !isLoading && (
-            <Box
-              display="flex"
-              marginTop={{ base: 0, sm: 'auto' }}
-              paddingTop={{ base: 0, sm: 4 }}
-              order={{ base: 'auto', sm: 5 }}
+            <Flex
+              position={{ base: 'relative', sm: 'absolute' }}
+              right={{ base: 0, sm: '50px' }}
+              top={{ base: 0, sm: '24px' }}
             >
               <Link
                 fontSize={{ base: 'xs', sm: 'sm' }}
                 fontWeight="500"
                 paddingRight={{ sm: 2 }}
                 href="#"
-                onClick={ handleInfoClick }
+                onClick={ onInfoClick }
               >
                 More info
               </Link>
-            </Box>
+            </Flex>
           ) }
         </Flex>
 
-        <Flex
-          display={{ base: 'flex', sm: 'contents' }}
-          flexDirection="column"
-          gap={ 2 }
-        >
+        <Flex flexDirection="column" gap={ 2 }>
           <Skeleton
             isLoaded={ !isLoading }
-            marginBottom={{ base: 0, sm: 2 }}
             fontSize={{ base: 'sm', sm: 'lg' }}
             lineHeight={{ base: '20px', sm: '28px' }}
-            paddingRight={{ base: '25px', sm: 0 }}
+            paddingRight={{ base: '25px', sm: '110px' }}
             fontWeight="semibold"
             fontFamily="heading"
             display="inline-block"
-            order={{ base: 'auto', sm: 2 }}
           >
             <MarketplaceAppCardLink
               id={ id }
@@ -140,11 +112,9 @@ const MarketplaceAppCard = ({
 
           <Skeleton
             isLoaded={ !isLoading }
-            marginBottom={{ base: 0, sm: 2 }}
             color="text_secondary"
             fontSize="xs"
             lineHeight="16px"
-            order={{ base: 'auto', sm: 3 }}
           >
             <span>{ categoriesLabel }</span>
           </Skeleton>
@@ -154,7 +124,6 @@ const MarketplaceAppCard = ({
             fontSize={{ base: 'xs', sm: 'sm' }}
             lineHeight="20px"
             noOfLines={ 3 }
-            order={{ base: 'auto', sm: 4 }}
           >
             { shortDescription }
           </Skeleton>
@@ -167,14 +136,14 @@ const MarketplaceAppCard = ({
             justifyContent="center"
             position="absolute"
             right={{ base: 1, sm: '10px' }}
-            top={{ base: 1, sm: '10px' }}
+            top={{ base: 1, sm: '18px' }}
             aria-label="Mark as favorite"
             title="Mark as favorite"
             variant="ghost"
             colorScheme="gray"
             w={ 9 }
             h={ 8 }
-            onClick={ handleFavoriteClick }
+            onClick={ onFavoriteClick }
             icon={ isFavorite ?
               <IconSvg name="star_filled" w={ 5 } h={ 5 } color="yellow.400"/> :
               <IconSvg name="star_outline" w={ 5 } h={ 5 } color="gray.400"/>
@@ -186,4 +155,4 @@ const MarketplaceAppCard = ({
   );
 };
 
-export default React.memo(chakra(MarketplaceAppCard));
+export default React.memo(FeaturedAppMobile);
