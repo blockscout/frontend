@@ -1,5 +1,4 @@
 import { Box, Flex, HStack, useColorModeValue } from '@chakra-ui/react';
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -17,7 +16,7 @@ import AddressAccountHistory from 'ui/address/AddressAccountHistory';
 import AddressBlocksValidated from 'ui/address/AddressBlocksValidated';
 import AddressCoinBalance from 'ui/address/AddressCoinBalance';
 import AddressContract from 'ui/address/AddressContract';
-// import AddressDetails from 'ui/address/AddressDetails';
+import AddressDetails from 'ui/address/AddressDetails';
 import AddressInternalTxs from 'ui/address/AddressInternalTxs';
 import AddressLogs from 'ui/address/AddressLogs';
 import AddressTokens from 'ui/address/AddressTokens';
@@ -40,8 +39,6 @@ import IconSvg from 'ui/shared/IconSvg';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
-
-const AddressDetails = dynamic(() => import('ui/address/AddressDetails'), { ssr: false });
 
 const TOKEN_TABS = [ 'tokens_erc20', 'tokens_nfts', 'tokens_nfts_collection', 'tokens_nfts_list' ];
 
@@ -77,19 +74,22 @@ const AddressPageContent = () => {
 
   const contractTabs = useContractTabs(addressQuery.data);
 
+  const isLoading = addressQuery.isPlaceholderData || (config.features.userOps.isEnabled && userOpsAccountQuery.isPlaceholderData);
+  const isTabsLoading = isLoading || addressTabsCountersQuery.isPlaceholderData;
+
   const tabs: Array<RoutedTab> = React.useMemo(() => {
     return [
       {
         id: 'txs',
         title: 'Transactions',
         count: addressTabsCountersQuery.data?.transactions_count,
-        component: ({ onLoad }: { onLoad: () => void }) => <AddressTxs scrollRef={ tabsScrollRef } onLoad={ onLoad }/>,
+        component: <AddressTxs scrollRef={ tabsScrollRef } isTabsLoading={ isTabsLoading }/>,
       },
       txInterpretation.isEnabled && txInterpretation.provider === 'noves' ?
         {
           id: 'account_history',
           title: 'Account history',
-          component: <AddressAccountHistory scrollRef={ tabsScrollRef }/>,
+          component: <AddressAccountHistory scrollRef={ tabsScrollRef } isTabsLoading={ isTabsLoading }/>,
         } :
         undefined,
       config.features.userOps.isEnabled && Boolean(userOpsAccountQuery.data?.total_ops) ?
@@ -97,7 +97,7 @@ const AddressPageContent = () => {
           id: 'user_ops',
           title: 'User operations',
           count: userOpsAccountQuery.data?.total_ops,
-          component: <AddressUserOps/>,
+          component: <AddressUserOps isTabsLoading={ isTabsLoading }/>,
         } :
         undefined,
       config.features.beaconChain.isEnabled && addressTabsCountersQuery.data?.withdrawals_count ?
@@ -105,39 +105,39 @@ const AddressPageContent = () => {
           id: 'withdrawals',
           title: 'Withdrawals',
           count: addressTabsCountersQuery.data?.withdrawals_count,
-          component: <AddressWithdrawals scrollRef={ tabsScrollRef }/>,
+          component: <AddressWithdrawals scrollRef={ tabsScrollRef } isTabsLoading={ isTabsLoading }/>,
         } :
         undefined,
       {
         id: 'token_transfers',
         title: 'Token transfers',
         count: addressTabsCountersQuery.data?.token_transfers_count,
-        component: <AddressTokenTransfers scrollRef={ tabsScrollRef }/>,
+        component: <AddressTokenTransfers scrollRef={ tabsScrollRef } isTabsLoading={ isTabsLoading }/>,
       },
       {
         id: 'tokens',
         title: 'Tokens',
         count: addressTabsCountersQuery.data?.token_balances_count,
-        component: <AddressTokens/>,
+        component: <AddressTokens isTabsLoading={ isTabsLoading }/>,
         subTabs: TOKEN_TABS,
       },
       {
         id: 'internal_txns',
         title: 'Internal txns',
         count: addressTabsCountersQuery.data?.internal_txs_count,
-        component: <AddressInternalTxs scrollRef={ tabsScrollRef }/>,
+        component: <AddressInternalTxs scrollRef={ tabsScrollRef } isTabsLoading={ isTabsLoading }/>,
       },
       {
         id: 'coin_balance_history',
         title: 'Coin balance history',
-        component: <AddressCoinBalance/>,
+        component: <AddressCoinBalance isTabsLoading={ isTabsLoading }/>,
       },
       config.chain.verificationType === 'validation' && addressTabsCountersQuery.data?.validations_count ?
         {
           id: 'blocks_validated',
           title: 'Blocks validated',
           count: addressTabsCountersQuery.data?.validations_count,
-          component: <AddressBlocksValidated scrollRef={ tabsScrollRef }/>,
+          component: <AddressBlocksValidated scrollRef={ tabsScrollRef } isTabsLoading={ isTabsLoading }/>,
         } :
         undefined,
       addressTabsCountersQuery.data?.logs_count ?
@@ -145,9 +145,10 @@ const AddressPageContent = () => {
           id: 'logs',
           title: 'Logs',
           count: addressTabsCountersQuery.data?.logs_count,
-          component: <AddressLogs scrollRef={ tabsScrollRef }/>,
+          component: <AddressLogs scrollRef={ tabsScrollRef } isTabsLoading={ isTabsLoading }/>,
         } :
         undefined,
+
       addressQuery.data?.is_contract ? {
         id: 'contract',
         title: () => {
@@ -166,9 +167,7 @@ const AddressPageContent = () => {
         subTabs: contractTabs.map(tab => tab.id),
       } : undefined,
     ].filter(Boolean);
-  }, [ addressQuery.data, contractTabs, addressTabsCountersQuery.data, userOpsAccountQuery.data ]);
-
-  const isLoading = addressQuery.isPlaceholderData || (config.features.userOps.isEnabled && userOpsAccountQuery.isPlaceholderData);
+  }, [ addressQuery.data, contractTabs, addressTabsCountersQuery.data, userOpsAccountQuery.data, isTabsLoading ]);
 
   const tags = (
     <EntityTags
@@ -185,7 +184,9 @@ const AddressPageContent = () => {
     />
   );
 
-  const content = (addressQuery.isError || addressQuery.isDegradedData) ? null : <RoutedTabs tabs={ tabs } tabListProps={{ mt: 8 }}/>;
+  const content = (addressQuery.isError || addressQuery.isDegradedData) ?
+    null :
+    <RoutedTabs tabs={ tabs } tabListProps={{ mt: 8 }} isLoading={ isLoading || addressTabsCountersQuery.isPlaceholderData }/>;
 
   const backLink = React.useMemo(() => {
     const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/accounts');

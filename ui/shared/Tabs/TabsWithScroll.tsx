@@ -25,6 +25,7 @@ export interface Props extends ThemingProps<'Tabs'> {
   stickyEnabled?: boolean;
   onTabChange?: (index: number) => void;
   defaultTabIndex?: number;
+  isLoading?: boolean;
   className?: string;
 }
 
@@ -37,12 +38,12 @@ const TabsWithScroll = ({
   stickyEnabled,
   onTabChange,
   defaultTabIndex,
+  isLoading,
   className,
   ...themeProps
 }: Props) => {
   const [ activeTabIndex, setActiveTabIndex ] = useState<number>(defaultTabIndex || 0);
   const [ screenWidth, setScreenWidth ] = React.useState(isBrowser() ? window.innerWidth : 0);
-  const [ isLoading, setIsLoading ] = React.useState(true);
 
   const tabsRef = useRef<HTMLDivElement>(null);
 
@@ -72,20 +73,8 @@ const TabsWithScroll = ({
     };
   }, []);
 
-  const handleLoad = React.useCallback(() => {
-    setIsLoading(false);
-  }, []);
-
-  const renderContent = React.useCallback((component: TabItem['component']) => {
-    if (typeof component === 'function') {
-      return component({ onLoad: handleLoad });
-    }
-
-    return component;
-  }, [ handleLoad ]);
-
   if (tabs.length === 1) {
-    return <div>{ renderContent(tabs[0].component) }</div>;
+    return <div>{ tabs[0].component }</div>;
   }
 
   return (
@@ -117,7 +106,7 @@ const TabsWithScroll = ({
         isLoading={ isLoading }
       />
       <TabPanels>
-        { tabsList.map((tab) => <TabPanel padding={ 0 } key={ tab.id }>{ renderContent(tab.component) }</TabPanel>) }
+        { tabsList.map((tab) => <TabPanel padding={ 0 } key={ tab.id }>{ tab.component }</TabPanel>) }
       </TabPanels>
     </Tabs>
   );

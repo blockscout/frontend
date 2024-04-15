@@ -48,12 +48,12 @@ const matchFilter = (filterValue: AddressFromToFilter, transaction: Transaction,
 
 type Props = {
   scrollRef?: React.RefObject<HTMLDivElement>;
+  isTabsLoading?: boolean;
   // for tests only
   overloadCount?: number;
-  onLoad?: () => void;
 }
 
-const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT, onLoad }: Props) => {
+const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT, isTabsLoading }: Props) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const isMounted = useIsMounted();
@@ -81,12 +81,6 @@ const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT, onLoad }: Props
       } }),
     },
   });
-
-  React.useEffect(() => {
-    if (!addressTxsQuery.isPlaceholderData) {
-      onLoad?.();
-    }
-  }, [ addressTxsQuery.isPlaceholderData, onLoad ]);
 
   const handleFilterChange = React.useCallback((val: string | Array<string>) => {
 
@@ -165,7 +159,7 @@ const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT, onLoad }: Props
     handler: handleNewSocketMessage,
   });
 
-  if (!isMounted) {
+  if (!isMounted || isTabsLoading) {
     return null;
   }
 
