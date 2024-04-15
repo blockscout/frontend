@@ -44,7 +44,7 @@ const TxInternalsTable = ({ data, sort, onSortToggle, top, isLoading }: Props) =
         </Thead>
         <Tbody>
           { data.map((item, index) => (
-            <TxInternalsTableItem key={ item.transaction_hash + (isLoading ? index : '') } { ...item } isLoading={ isLoading }/>
+            <TxInternalsTableItem key={ item.index.toString() + (isLoading ? index : '') } { ...item } isLoading={ isLoading }/>
           )) }
         </Tbody>
       </Table>
