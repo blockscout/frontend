@@ -24,7 +24,7 @@ const VerifiedContractsCounters = () => {
         diff={ countersQuery.data.new_smart_contracts_24h }
         diffFormatted={ Number(countersQuery.data.new_smart_contracts_24h).toLocaleString() }
         isLoading={ countersQuery.isPlaceholderData }
-        href={{ pathname: '/stats', hash: 'contracts' }}
+        href={{ pathname: '/stats', query: { chartId: 'contractsGrowth' } }}
       />
       <StatsWidget
         label="Verified contracts"
@@ -32,7 +32,7 @@ const VerifiedContractsCounters = () => {
         diff={ countersQuery.data.new_verified_smart_contracts_24h }
         diffFormatted={ Number(countersQuery.data.new_verified_smart_contracts_24h).toLocaleString() }
         isLoading={ countersQuery.isPlaceholderData }
-        href={{ pathname: '/stats', hash: 'contracts' }}
+        href={{ pathname: '/stats', query: { chartId: 'verifiedContractsGrowth' } }}
       />
     </Box>
   );

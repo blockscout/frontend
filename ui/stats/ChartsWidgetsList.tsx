@@ -15,16 +15,26 @@ import ChartWidgetContainer from './ChartWidgetContainer';
 
 type Props = {
   filterQuery: string;
+  initialFilterQuery: string;
   isError: boolean;
   isPlaceholderData: boolean;
   charts?: Array<StatsChartsSection>;
   interval: StatsIntervalIds;
 }
 
-const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, interval }: Props) => {
+const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, interval, initialFilterQuery }: Props) => {
   const [ isSomeChartLoadingError, setIsSomeChartLoadingError ] = useState(false);
   const isAnyChartDisplayed = charts?.some((section) => section.charts.length > 0);
   const isEmptyChartList = Boolean(filterQuery) && !isAnyChartDisplayed;
+  const sectionRef = React.useRef<HTMLUListElement | null>(null);
+
+  const shouldScrollToSection = Boolean(initialFilterQuery);
+
+  React.useEffect(() => {
+    if (shouldScrollToSection) {
+      sectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [ shouldScrollToSection ]);
 
   const homeStatsQuery = useApiQuery('stats', {
     queryOptions: {
@@ -50,7 +60,7 @@ const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, in
         <ChartsLoadingErrorAlert/>
       ) }
 
-      <List>
+      <List ref={ sectionRef }>
         {
           charts?.map((section) => (
             <ListItem

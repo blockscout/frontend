@@ -1,4 +1,4 @@
-import { Grid, GridItem } from '@chakra-ui/react';
+import { Grid, GridItem, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { StatsChartsSection } from 'types/api/stats';
@@ -21,6 +21,8 @@ type Props = {
   interval: StatsIntervalIds;
   onIntervalChange: (newInterval: StatsIntervalIds) => void;
   onFilterInputChange: (q: string) => void;
+  isLoading: boolean;
+  initialFilterValue: string;
 }
 
 const StatsFilters = ({
@@ -30,8 +32,9 @@ const StatsFilters = ({
   interval,
   onIntervalChange,
   onFilterInputChange,
+  isLoading,
+  initialFilterValue,
 }: Props) => {
-
   const sectionsList = [ {
     id: 'all',
     title: 'All',
@@ -51,22 +54,26 @@ const StatsFilters = ({
         w={{ base: '100%', lg: 'auto' }}
         area="section"
       >
-        <StatsDropdownMenu
-          items={ sectionsList }
-          selectedId={ currentSection }
-          onSelect={ onSectionChange }
-        />
+        { isLoading ? <Skeleton w={{ base: '100%', lg: '76px' }} h="40px" borderRadius="base"/> : (
+          <StatsDropdownMenu
+            items={ sectionsList }
+            selectedId={ currentSection }
+            onSelect={ onSectionChange }
+          />
+        ) }
       </GridItem>
 
       <GridItem
         w={{ base: '100%', lg: 'auto' }}
         area="interval"
       >
-        <StatsDropdownMenu
-          items={ intervalList }
-          selectedId={ interval }
-          onSelect={ onIntervalChange }
-        />
+        { isLoading ? <Skeleton w={{ base: '100%', lg: '118px' }} h="40px" borderRadius="base"/> : (
+          <StatsDropdownMenu
+            items={ intervalList }
+            selectedId={ interval }
+            onSelect={ onIntervalChange }
+          />
+        ) }
       </GridItem>
 
       <GridItem
@@ -74,8 +81,12 @@ const StatsFilters = ({
         area="input"
       >
         <FilterInput
+          key={ initialFilterValue }
+          isLoading={ isLoading }
           onChange={ onFilterInputChange }
-          placeholder="Find chart, metric..."/>
+          placeholder="Find chart, metric..."
+          initialValue={ initialFilterValue }
+        />
       </GridItem>
     </Grid>
   );
