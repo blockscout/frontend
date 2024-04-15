@@ -29,12 +29,6 @@ const Transactions = () => {
   const isMobile = useIsMobile();
   const tab = getQueryParamString(router.query.tab);
 
-  React.useEffect(() => {
-    if (tab === 'blob_txs' && !config.features.dataAvailability.isEnabled) {
-      router.replace({ pathname: '/txs' }, undefined, { shallow: true });
-    }
-  }, [ router, tab ]);
-
   const txsValidatedQuery = useQueryWithPages({
     resourceName: 'txs_validated',
     filters: { filter: 'validated' },
