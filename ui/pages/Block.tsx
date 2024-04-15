@@ -66,7 +66,7 @@ const BlockPageContent = () => {
         </>
       ),
     },
-    blockQuery.data?.blob_tx_count ?
+    config.features.dataAvailability.isEnabled && blockQuery.data?.blob_tx_count ?
       {
         id: 'blob_txs',
         title: 'Blob txns',
