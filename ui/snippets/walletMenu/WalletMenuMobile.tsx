@@ -28,7 +28,12 @@ const WalletMenuMobile = () => {
 
   return (
     <>
-      <WalletTooltip isDisabled={ isWalletConnected || isMobile === undefined || !isMobile } isMobile>
+      <WalletTooltip
+        isDisabled={ isMobile === undefined || !isMobile }
+        isMobile
+        isWalletConnected={ isWalletConnected }
+        isAutoConnectDisabled={ isAutoConnectDisabled }
+      >
         <IconButton
           aria-label="wallet menu"
           icon={ isWalletConnected ?
