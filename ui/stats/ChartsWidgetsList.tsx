@@ -61,7 +61,7 @@ const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, in
               }}
             >
               <Skeleton isLoaded={ !isPlaceholderData } mb={ 4 } display="inline-flex" alignItems="center" columnGap={ 2 } id={ section.id }>
-                <Heading size="md" >
+                <Heading size="md" id={ section.id }>
                   { section.title }
                 </Heading>
                 { section.id === 'gas' && homeStatsQuery.data && homeStatsQuery.data.gas_prices && (

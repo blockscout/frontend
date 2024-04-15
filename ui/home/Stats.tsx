@@ -59,7 +59,7 @@ const Stats = () => {
   if (data) {
     !data.gas_prices && itemsCount--;
     data.rootstock_locked_btc && itemsCount++;
-    data.last_output_root_size && itemsCount++;
+    rollupFeature.isEnabled && data.last_output_root_size && itemsCount++;
     const isOdd = Boolean(itemsCount % 2);
     const gasInfoTooltip = hasGasTracker && data.gas_prices ? (
       <GasInfoTooltip data={ data } dataUpdatedAt={ dataUpdatedAt }>
@@ -121,7 +121,7 @@ const Stats = () => {
           url={ route({ pathname: '/txs' }) }
           isLoading={ isLoading }
         />
-        { data.last_output_root_size && (
+        { rollupFeature.isEnabled && data.last_output_root_size && (
           <StatsItem
             icon="txn_batches"
             title="Latest L1 state batch"

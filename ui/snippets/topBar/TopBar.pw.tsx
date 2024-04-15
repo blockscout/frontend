@@ -29,6 +29,7 @@ test('default view +@dark-mode +@mobile', async({ mount, page }) => {
   );
 
   await component.getByText(/\$1\.39/).click();
+  await page.getByText(/last update/i).isVisible();
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 220 } });
 
   await component.getByLabel('User settings').click();

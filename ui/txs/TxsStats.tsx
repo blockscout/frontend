@@ -4,6 +4,7 @@ import React from 'react';
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import getCurrencyValue from 'lib/getCurrencyValue';
+import { thinsp } from 'lib/html-entities';
 import { HOMEPAGE_STATS } from 'stubs/stats';
 import { TXS_STATS } from 'stubs/tx';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
@@ -35,7 +36,7 @@ const TxsStats = () => {
   return (
     <Box
       display="grid"
-      gridTemplateColumns={{ base: '1fr', lg: 'repeat(4, 1fr)' }}
+      gridTemplateColumns={{ base: '1fr', lg: 'repeat(4, calc(25% - 9px))' }}
       rowGap={ 3 }
       columnGap={ 3 }
       mb={ 6 }
@@ -45,6 +46,7 @@ const TxsStats = () => {
         value={ Number(txsStatsQuery.data?.transactions_count_24h).toLocaleString() }
         period="24h"
         isLoading={ txsStatsQuery.isPlaceholderData }
+        href={{ pathname: '/stats', hash: 'transactions' }}
       />
       <StatsWidget
         label="Pending transactions"
@@ -56,16 +58,21 @@ const TxsStats = () => {
         label="Transactions fees"
         value={
           (Number(txsStatsQuery.data?.transaction_fees_sum_24h) / (10 ** config.chain.currency.decimals))
-            .toLocaleString(undefined, { maximumFractionDigits: 2 }) + ' ' + config.chain.currency.symbol
+            .toLocaleString(undefined, { maximumFractionDigits: 2 })
         }
+        valuePostfix={ thinsp + config.chain.currency.symbol }
         period="24h"
         isLoading={ txsStatsQuery.isPlaceholderData }
+        href={{ pathname: '/stats', hash: 'transactions' }}
       />
       <StatsWidget
         label="Avg. transaction fee"
-        value={ txFeeAvg.usd ? txFeeAvg.usd + ' USD' : txFeeAvg.valueStr + ' ' + config.chain.currency.symbol }
+        value={ txFeeAvg.usd ? txFeeAvg.usd : txFeeAvg.valueStr }
+        valuePrefix={ txFeeAvg.usd ? '$' : undefined }
+        valuePostfix={ txFeeAvg.usd ? undefined : thinsp + config.chain.currency.symbol }
         period="24h"
         isLoading={ txsStatsQuery.isPlaceholderData }
+        href={{ pathname: '/stats', hash: 'transactions' }}
       />
     </Box>
   );
