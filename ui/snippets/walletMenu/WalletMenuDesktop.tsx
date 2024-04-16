@@ -70,13 +70,13 @@ const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
       isOpen={ isPopoverOpen }
       onClose={ setIsPopoverOpen.off }
     >
-      <WalletTooltip
-        isDisabled={ isMobile === undefined || isMobile }
-        isWalletConnected={ isWalletConnected }
-        isAutoConnectDisabled={ isAutoConnectDisabled }
-      >
-        <Box ml={ 2 }>
-          <PopoverTrigger>
+      <Box ml={ 2 }>
+        <PopoverTrigger>
+          <WalletTooltip
+            isDisabled={ isMobile === undefined || isMobile }
+            isWalletConnected={ isWalletConnected }
+            isAutoConnectDisabled={ isAutoConnectDisabled }
+          >
             <Button
               className={ className }
               variant={ variant }
@@ -96,9 +96,9 @@ const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
                 </>
               ) : 'Connect wallet' }
             </Button>
-          </PopoverTrigger>
-        </Box>
-      </WalletTooltip>
+          </WalletTooltip>
+        </PopoverTrigger>
+      </Box>
       { isWalletConnected && (
         <PopoverContent w="235px">
           <PopoverBody padding="24px 16px 16px 16px">

@@ -1,4 +1,4 @@
-import { Tooltip, useBoolean, useOutsideClick } from '@chakra-ui/react';
+import { Tooltip, useBoolean, useOutsideClick, Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -15,11 +15,11 @@ type Props = {
 
 const LOCAL_STORAGE_KEY = 'wallet-connect-tooltip-shown';
 
-const WalletTooltip = ({ children, isDisabled, isMobile, isWalletConnected, isAutoConnectDisabled }: Props) => {
+const WalletTooltip = ({ children, isDisabled, isMobile, isWalletConnected, isAutoConnectDisabled }: Props, ref: React.ForwardedRef<HTMLDivElement>) => {
   const router = useRouter();
   const [ isTooltipShown, setIsTooltipShown ] = useBoolean(false);
-  const ref = React.useRef(null);
-  useOutsideClick({ ref, handler: setIsTooltipShown.off });
+  const innerRef = React.useRef(null);
+  useOutsideClick({ ref: innerRef, handler: setIsTooltipShown.off });
 
   const label = React.useMemo(() => {
     if (isWalletConnected) {
@@ -62,20 +62,22 @@ const WalletTooltip = ({ children, isDisabled, isMobile, isWalletConnected, isAu
   }, [ setIsTooltipShown, isDisabled, router, isAppPage ]);
 
   return (
-    <Tooltip
-      label={ label }
-      textAlign="center"
-      padding={ 2 }
-      isDisabled={ isDisabled || (isWalletConnected && !isAppPage) }
-      openDelay={ 500 }
-      isOpen={ isTooltipShown || (isMobile ? false : undefined) }
-      onClose={ setIsTooltipShown.off }
-      display={ isMobile ? { base: 'flex', lg: 'none' } : { base: 'none', lg: 'flex' } }
-      ref={ ref }
-    >
-      { children }
-    </Tooltip>
+    <Box ref={ ref }>
+      <Tooltip
+        label={ label }
+        textAlign="center"
+        padding={ 2 }
+        isDisabled={ isDisabled || (isWalletConnected && !isAppPage) }
+        openDelay={ 500 }
+        isOpen={ isTooltipShown || (isMobile ? false : undefined) }
+        onClose={ setIsTooltipShown.off }
+        display={ isMobile ? { base: 'flex', lg: 'none' } : { base: 'none', lg: 'flex' } }
+        ref={ innerRef }
+      >
+        { children }
+      </Tooltip>
+    </Box>
   );
 };
 
-export default WalletTooltip;
+export default React.forwardRef(WalletTooltip);
