@@ -174,20 +174,34 @@ const TokenInstanceContent = () => {
     pagination = holdersQuery.pagination;
   }
 
+  const title = (() => {
+    if (typeof tokenInstanceQuery.data?.metadata?.name === 'string') {
+      return tokenInstanceQuery.data.metadata.name;
+    }
+
+    if (tokenQuery.data?.symbol) {
+      return (tokenQuery.data.name || tokenQuery.data.symbol) + ' #' + tokenInstanceQuery.data?.id;
+    }
+
+    return `ID ${ tokenInstanceQuery.data?.id }`;
+  })();
+
   const titleSecondRow = (
     <Flex alignItems="center" w="100%" minW={ 0 } columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
-      <TokenEntity
-        token={ tokenQuery.data }
-        isLoading={ isLoading }
-        noSymbol
-        noCopy
-        jointSymbol
-        fontFamily="heading"
-        fontSize="lg"
-        fontWeight={ 500 }
-        w="auto"
-        maxW="700px"
-      />
+      { tokenQuery.data && (
+        <TokenEntity
+          token={ tokenQuery.data }
+          isLoading={ isLoading }
+          noSymbol
+          noCopy
+          jointSymbol
+          fontFamily="heading"
+          fontSize="lg"
+          fontWeight={ 500 }
+          w="auto"
+          maxW="700px"
+        />
+      ) }
       { !isLoading && tokenInstanceQuery.data && <AddressAddToWallet token={ tokenQuery.data } variant="button"/> }
       <AddressQrCode address={ address } isLoading={ isLoading }/>
       <AccountActionsMenu isLoading={ isLoading }/>
@@ -199,7 +213,7 @@ const TokenInstanceContent = () => {
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        title={ `ID ${ tokenInstanceQuery.data?.id }` }
+        title={ title }
         backLink={ backLink }
         contentAfter={ tokenTag }
         secondRow={ titleSecondRow }
