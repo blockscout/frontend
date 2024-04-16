@@ -58,18 +58,21 @@ const NetworkExplorers = ({ className, type, pathParam }: Props) => {
         <Button
           className={ className }
           size="sm"
+          bg="white"
           variant="outline"
           colorScheme="gray"
           onClick={ onToggle }
           aria-label="Verify in other explorers"
           fontWeight={ 500 }
-          px={ 2 }
-          h="32px"
+          px={ 6 }
+          py={ 5 }
+          // h="32px"
           flexShrink={ 0 }
+          rounded="full"
         >
           <IconSvg name="explorer" boxSize={ 5 }/>
           <Show above="xl">
-            <chakra.span ml={ 1 }>{ explorersLinks.length } Explorer{ explorersLinks.length > 1 ? 's' : '' }</chakra.span>
+            <chakra.span ml={ 1 }>{ explorersLinks.length } EXPLORER{ explorersLinks.length > 1 ? 's' : '' }</chakra.span>
           </Show>
           <Hide above="xl">
             <chakra.span ml={ 1 }>{ explorersLinks.length }</chakra.span>

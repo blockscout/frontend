@@ -32,7 +32,6 @@ import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
-import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import DetailsTimestamp from 'ui/shared/DetailsTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
@@ -112,15 +111,16 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
 
   return (
   // eslint-disable-next-line react/jsx-no-useless-fragment
-    <Flex direction="column" gap={ 6 }>
+    <Flex direction="column" gap={ 6 } width="100%">
       <Grid
         padding={ 6 }
-        border="1px solid #00000012"
+        border="1px solid rgba(114, 114, 114, 0.54)"
+        rounded={ 20 }
         columnGap={{ base: 12, lg: 24 }}
         rowGap={{ base: 3, lg: 3 }}
         templateColumns={{ base: 'minmax(0, 1fr)', lg: 'max-content minmax(728px, auto)' }}
-        rounded={ 16 }
         shadow="base"
+        // width="100%"
       >
 
         { config.features.metasuites.isEnabled && (
@@ -298,7 +298,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         { data.allowed_peekers && data.allowed_peekers.length > 0 && (
           <TxAllowedPeekers items={ data.allowed_peekers }/>
         ) }
-        <DetailsSponsoredItem isLoading={ isLoading }/>
+        { /* <DetailsSponsoredItem isLoading={ isLoading }/> */ }
 
         <DetailsInfoItemDivider/>
 
@@ -530,46 +530,48 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       </Grid>
       <Grid
         padding={ 6 }
-        border="1px solid #00000012"
+        border="1px solid rgba(114, 114, 114, 0.54)"
+        rounded={ 20 }
         columnGap={{ base: 12, lg: 24 }}
         rowGap={{ base: 3, lg: 3 }}
         templateColumns={{ base: 'minmax(0, 1fr)', lg: 'max-content minmax(728px, auto)' }}
-        rounded={ 16 }
         shadow="base">
-        <DetailsInfoItem
-          title="More Details"
-          // hint="Unique character string (TxID) assigned to every verified transaction"
-          flexWrap="nowrap"
-          isLoading={ isLoading }
-        >
-          { /* <Element name="TxInfo__cutLink"> */ }
-          <Skeleton isLoaded={ !isLoading } display="inline-block">
-            <Link
-              display="inline-block"
-              fontWeight={ 600 }
-              onClick={ handleCutClick }
-              color="black"
-              textDecoration="none"
-              _hover={{
-                textDecoration: 'none',
-                color: 'black',
-              }}
-            >
-              { isExpanded ? (
-                <Flex gap={ 2 }>
-                  <LuMinus/>
+        <GridItem colSpan={{ base: undefined, lg: 2 }}>
+          <DetailsInfoItem
+            title="More Details"
+            // hint="Unique character string (TxID) assigned to every verified transaction"
+            // flexWrap="nowrap"
+            isLoading={ isLoading }
+          >
+            { /* <Element name="TxInfo__cutLink"> */ }
+            <Skeleton isLoaded={ !isLoading } display="inline-block">
+              <Link
+                display="inline-block"
+                fontWeight={ 600 }
+                onClick={ handleCutClick }
+                color="black"
+                textDecoration="none"
+                _hover={{
+                  textDecoration: 'none',
+                  color: 'black',
+                }}
+              >
+                { isExpanded ? (
+                  <Flex gap={ 2 }>
+                    <LuMinus/>
                   Hide more details
-                </Flex>
-              ) : (
-                <Flex gap={ 2 }>
-                  <LuPlus/>
+                  </Flex>
+                ) : (
+                  <Flex gap={ 2 }>
+                    <LuPlus/>
                   View more details
-                </Flex>
-              ) }
-            </Link>
-          </Skeleton>
-          { /* </Element> */ }
-        </DetailsInfoItem>
+                  </Flex>
+                ) }
+              </Link>
+            </Skeleton>
+            { /* </Element> */ }
+          </DetailsInfoItem>
+        </GridItem>
         { isExpanded && (
           <>
             <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>

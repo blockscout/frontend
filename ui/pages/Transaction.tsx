@@ -109,7 +109,7 @@ const TransactionPageContent = () => {
   return (
     <>
       <TextAd mb={ 6 }/>
-      <Flex direction="column" paddingX={{ base: 6, lg: 12 }}>
+      <Flex direction="column" paddingX={{ base: 4, lg: 8 }}>
         <PageTitle
           title="Transaction details"
           backLink={ backLink }
@@ -117,7 +117,15 @@ const TransactionPageContent = () => {
           secondRow={ titleSecondRow }
         />
       </Flex>
-      <Flex minH="75vh" roundedTop="2em" bg="white" direction="column" paddingTop={{ base: 8, lg: 12 }} paddingX={{ base: 8, lg: 12 }}>
+      <Flex minH="75vh" bg="white"
+        borderTopRadius="2.5em"
+        paddingY={{
+          base: '1em',
+          md: '2em',
+        }}
+        paddingX="1em"
+        width="100%"
+      >
         { content }
       </Flex>
     </>

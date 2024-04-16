@@ -16,7 +16,7 @@ const DetailsInfoItem = ({ title, hint, note, children, id, isLoading, ...styles
   return (
     <>
       <GridItem py={{ base: 1, lg: 2 }} id={ id } lineHeight={ 5 } { ...styles } _notFirst={{ mt: { base: 3, lg: 0 } }}>
-        <Flex columnGap={ 2 } alignItems="flex-start">
+        <Flex columnGap={ 2 } alignItems="flex-start" minW={ 225 }>
           { hint && <Hint label={ hint } isLoading={ isLoading }/> }
           <Skeleton isLoaded={ !isLoading }>
             <Text fontWeight={{ base: 700, lg: 500 }}>

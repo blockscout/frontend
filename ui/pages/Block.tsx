@@ -1,4 +1,4 @@
-import { chakra, Skeleton } from '@chakra-ui/react';
+import { chakra, Flex, Skeleton } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -151,20 +151,32 @@ const BlockPageContent = () => {
   return (
     <>
       <TextAd mb={ 6 }/>
-      <PageTitle
-        title={ title }
-        backLink={ backLink }
-        secondRow={ titleSecondRow }
-        isLoading={ blockQuery.isPlaceholderData }
-      />
-      { blockQuery.isPlaceholderData ? <TabsSkeleton tabs={ tabs }/> : (
-        <RoutedTabs
-          tabs={ tabs }
-          tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
-          rightSlot={ hasPagination ? <Pagination { ...(pagination as PaginationParams) }/> : null }
-          stickyEnabled={ hasPagination }
+      <Flex direction="column" paddingX={{ base: 4, lg: 8 }}>
+        <PageTitle
+          title={ title }
+          backLink={ backLink }
+          secondRow={ titleSecondRow }
+          isLoading={ blockQuery.isPlaceholderData }
         />
-      ) }
+      </Flex>
+      <Flex minH="75vh" bg="white"
+        borderTopRadius="2.5em"
+        paddingY={{
+          base: '1em',
+          md: '2em',
+        }}
+        paddingX="1em"
+        width="100%"
+      >
+        { blockQuery.isPlaceholderData ? <TabsSkeleton tabs={ tabs }/> : (
+          <RoutedTabs
+            tabs={ tabs }
+            tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
+            rightSlot={ hasPagination ? <Pagination { ...(pagination as PaginationParams) }/> : null }
+            stickyEnabled={ hasPagination }
+          />
+        ) }
+      </Flex>
     </>
   );
 };

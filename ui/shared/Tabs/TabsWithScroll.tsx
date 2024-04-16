@@ -102,6 +102,8 @@ const TabsWithScroll = ({
       size={ themeProps.size || 'md' }
       ref={ tabsRef }
       lazyBehavior={ lazyBehavior }
+      // bg="red"
+      width="100%"
     >
       <AdaptiveTabsList
         key={ screenWidth }

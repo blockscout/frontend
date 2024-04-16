@@ -89,7 +89,6 @@ const PageTitle = ({
   className,
   isLoading,
   afterTitle,
-  beforeTitle,
   secondRow,
 }: Props) => {
   const tooltip = useDisclosure();
@@ -143,7 +142,7 @@ const PageTitle = ({
           alignItems="center"
         >
           { backLink && <BackLink { ...backLink } isLoading={ isLoading }/> }
-          { beforeTitle }
+          { /* { beforeTitle } */ }
           <Skeleton isLoaded={ !isLoading } overflow="hidden">
             <Tooltip
               label={ title }
