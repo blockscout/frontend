@@ -37,7 +37,7 @@ const TxInternalsTable = ({ data, sort, onSortToggle, top, isLoading }: Props) =
             <Th width="16%" isNumeric>
               <Link display="flex" alignItems="center" justifyContent="flex-end" onClick={ onSortToggle('gas-limit') } columnGap={ 1 }>
                 { sort?.includes('gas-limit') && <IconSvg name="arrows/east" boxSize={ 4 } transform={ sortIconTransform }/> }
-                Gas limit { currencyUnits.ether }
+                Gas limit
               </Link>
             </Th>
           </Tr>
