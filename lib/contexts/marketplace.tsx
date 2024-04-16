@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useEffect } from 'react';
 
 type Props = {
   children: React.ReactNode;
@@ -19,9 +19,17 @@ export function MarketplaceContextProvider({ children }: Props) {
   const router = useRouter();
   const [ isAutoConnectDisabled, setIsAutoConnectDisabled ] = React.useState(false);
 
-  React.useEffect(() => {
-    setIsAutoConnectDisabled(false);
-  }, [ router.pathname ]);
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setIsAutoConnectDisabled(false);
+    };
+
+    router.events.on('routeChangeStart', handleRouteChange);
+
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange);
+    };
+  }, [ router.events ]);
 
   return (
     <MarketplaceContext.Provider value={{ isAutoConnectDisabled, setIsAutoConnectDisabled }}>
