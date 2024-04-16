@@ -9,6 +9,7 @@ import config from 'configs/app';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import Banner from 'ui/marketplace/Banner';
 import ContractListModal from 'ui/marketplace/ContractListModal';
 import MarketplaceAppModal from 'ui/marketplace/MarketplaceAppModal';
 import MarketplaceDisclaimerModal from 'ui/marketplace/MarketplaceDisclaimerModal';
@@ -20,7 +21,6 @@ import type { IconName } from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/LinkExternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RadioButtonGroup from 'ui/shared/radioButtonGroup/RadioButtonGroup';
-import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import TabsWithScroll from 'ui/shared/Tabs/TabsWithScroll';
 
 import useMarketplace from '../marketplace/useMarketplace';
@@ -55,6 +55,7 @@ const Marketplace = () => {
     filterQuery,
     onSearchInputChange,
     showAppInfo,
+    apps,
     displayedApps,
     selectedAppId,
     clearSelectedAppId,
@@ -92,7 +93,7 @@ const Marketplace = () => {
 
     tabs.unshift({
       id: MarketplaceCategory.FAVORITES,
-      title: () => <IconSvg name="star_outline" w={ 5 } h={ 5 }/>,
+      title: () => <IconSvg name="star_outline" w={ 5 } h={ 5 } display="flex"/>,
       count: null,
       component: null,
     });
@@ -167,17 +168,24 @@ const Marketplace = () => {
           </Flex>
         ) }
       />
+
+      <Banner
+        apps={ apps }
+        favoriteApps={ favoriteApps }
+        isLoading={ isPlaceholderData }
+        onInfoClick={ showAppInfo }
+        onFavoriteClick={ onFavoriteClick }
+        onAppClick={ handleAppClick }
+      />
+
       <Box marginTop={{ base: 0, lg: 8 }}>
-        { (isCategoriesPlaceholderData) ? (
-          <TabsSkeleton tabs={ categoryTabs }/>
-        ) : (
-          <TabsWithScroll
-            tabs={ categoryTabs }
-            onTabChange={ handleCategoryChange }
-            defaultTabIndex={ selectedCategoryIndex }
-            marginBottom={ -2 }
-          />
-        ) }
+        <TabsWithScroll
+          tabs={ categoryTabs }
+          onTabChange={ handleCategoryChange }
+          defaultTabIndex={ selectedCategoryIndex }
+          marginBottom={ -2 }
+          isLoading={ isCategoriesPlaceholderData }
+        />
       </Box>
 
       <Flex direction={{ base: 'column', lg: 'row' }} mb={{ base: 4, lg: 6 }} gap={{ base: 4, lg: 3 }}>

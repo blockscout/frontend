@@ -23,7 +23,7 @@ const sizes = {
       minH: 6,
       minW: 6,
       fontSize: 'sm',
-      px: 2,
+      px: 1,
       py: '2px',
       lineHeight: 5,
     },

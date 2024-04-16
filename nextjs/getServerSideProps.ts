@@ -1,23 +1,27 @@
-import type { GetServerSideProps } from 'next';
+import type { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
+
+import type { AdBannerProviders } from 'types/client/adProviders';
+
+import type { Route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import isNeedProxy from 'lib/api/isNeedProxy';
 const rollupFeature = config.features.rollup;
 const adBannerFeature = config.features.adsBanner;
+import type * as metadata from 'lib/metadata';
 
-export type Props = {
+export interface Props<Pathname extends Route['pathname'] = never> {
+  query: Route['query'];
   cookies: string;
   referrer: string;
-  id: string;
-  height_or_hash: string;
-  hash: string;
-  number: string;
-  q: string;
-  name: string;
-  adBannerProvider: string;
+  adBannerProvider: AdBannerProviders | undefined;
+  // if apiData is undefined, Next.js will complain that it is not serializable
+  // so we force it to be always present in the props but it can be null
+  apiData: metadata.ApiData<Pathname> | null;
 }
 
-export const base: GetServerSideProps<Props> = async({ req, query }) => {
+export const base = async <Pathname extends Route['pathname'] = never>({ req, query }: GetServerSidePropsContext):
+Promise<GetServerSidePropsResult<Props<Pathname>>> => {
   const adBannerProvider = (() => {
     if (adBannerFeature.isEnabled) {
       if ('additionalProvider' in adBannerFeature && adBannerFeature.additionalProvider) {
@@ -28,20 +32,16 @@ export const base: GetServerSideProps<Props> = async({ req, query }) => {
         return adBannerFeature.provider;
       }
     }
-    return '';
+    return;
   })();
 
   return {
     props: {
+      query,
       cookies: req.headers.cookie || '',
       referrer: req.headers.referer || '',
-      id: query.id?.toString() || '',
-      hash: query.hash?.toString() || '',
-      height_or_hash: query.height_or_hash?.toString() || '',
-      number: query.number?.toString() || '',
-      q: query.q?.toString() || '',
-      name: query.name?.toString() || '',
       adBannerProvider,
+      apiData: null,
     },
   };
 };
@@ -119,14 +119,15 @@ export const batch: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-export const marketplace: GetServerSideProps<Props> = async(context) => {
+export const marketplace = async <Pathname extends Route['pathname'] = never>(context: GetServerSidePropsContext):
+Promise<GetServerSidePropsResult<Props<Pathname>>> => {
   if (!config.features.marketplace.isEnabled) {
     return {
       notFound: true,
     };
   }
 
-  return base(context);
+  return base<Pathname>(context);
 };
 
 export const apiDocs: GetServerSideProps<Props> = async(context) => {

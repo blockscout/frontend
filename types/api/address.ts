@@ -148,10 +148,19 @@ export interface AddressCoinBalanceHistoryResponse {
   } | null;
 }
 
-export type AddressCoinBalanceHistoryChart = Array<{
+// remove after api release
+export type AddressCoinBalanceHistoryChartOld = Array<{
   date: string;
   value: string;
 }>
+
+export type AddressCoinBalanceHistoryChart = {
+  items: Array<{
+    date: string;
+    value: string;
+  }>;
+  days: number;
+};
 
 export interface AddressBlocksValidatedResponse {
   items: Array<Block>;

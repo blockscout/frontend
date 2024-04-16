@@ -30,14 +30,9 @@ export default function fetchFactory(
     };
 
     httpLogger.logger.info({
-      message: 'Trying to call API',
+      message: 'API fetch via Next.js proxy',
       url,
-      req: _req,
-    });
-
-    httpLogger.logger.info({
-      message: 'API request headers',
-      headers,
+      // headers,
     });
 
     const body = (() => {
