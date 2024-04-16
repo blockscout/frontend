@@ -19,10 +19,10 @@ import AddressCoinBalanceChart from './coinBalance/AddressCoinBalanceChart';
 import AddressCoinBalanceHistory from './coinBalance/AddressCoinBalanceHistory';
 
 type Props = {
-  isTabsLoading?: boolean;
+  shouldRender?: boolean;
 }
 
-const AddressCoinBalance = ({ isTabsLoading }: Props) => {
+const AddressCoinBalance = ({ shouldRender = true }: Props) => {
   const [ socketAlert, setSocketAlert ] = React.useState(false);
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -85,7 +85,7 @@ const AddressCoinBalance = ({ isTabsLoading }: Props) => {
     handler: handleNewSocketMessage,
   });
 
-  if (!isMounted || isTabsLoading) {
+  if (!isMounted || !shouldRender) {
     return null;
   }
 

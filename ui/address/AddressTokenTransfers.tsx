@@ -64,12 +64,12 @@ const matchFilters = (filters: Filters, tokenTransfer: TokenTransfer, address?: 
 
 type Props = {
   scrollRef?: React.RefObject<HTMLDivElement>;
-  isTabsLoading?: boolean;
+  shouldRender?: boolean;
   // for tests only
   overloadCount?: number;
 }
 
-const AddressTokenTransfers = ({ scrollRef, overloadCount = OVERLOAD_COUNT, isTabsLoading }: Props) => {
+const AddressTokenTransfers = ({ scrollRef, overloadCount = OVERLOAD_COUNT, shouldRender = true }: Props) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const isMobile = useIsMobile();
@@ -190,7 +190,7 @@ const AddressTokenTransfers = ({ scrollRef, overloadCount = OVERLOAD_COUNT, isTa
     type: 'ERC-20' as const,
   }), [ tokenFilter ]);
 
-  if (!isMounted || isTabsLoading) {
+  if (!isMounted || !shouldRender) {
     return null;
   }
 

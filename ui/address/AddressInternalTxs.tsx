@@ -25,9 +25,9 @@ const getFilterValue = (getFilterValueFromQuery<AddressFromToFilter>).bind(null,
 
 type Props = {
   scrollRef?: React.RefObject<HTMLDivElement>;
-  isTabsLoading?: boolean;
+  shouldRender?: boolean;
 }
-const AddressInternalTxs = ({ scrollRef, isTabsLoading }: Props) => {
+const AddressInternalTxs = ({ scrollRef, shouldRender = true }: Props) => {
   const router = useRouter();
   const isMounted = useIsMounted();
 
@@ -62,7 +62,7 @@ const AddressInternalTxs = ({ scrollRef, isTabsLoading }: Props) => {
     onFilterChange({ filter: newVal });
   }, [ onFilterChange ]);
 
-  if (!isMounted || isTabsLoading) {
+  if (!isMounted || !shouldRender) {
     return null;
   }
 

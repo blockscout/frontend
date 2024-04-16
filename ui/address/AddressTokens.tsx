@@ -43,10 +43,10 @@ const TAB_LIST_PROPS_MOBILE = {
 const getTokenFilterValue = (getFilterValuesFromQuery<NFTTokenType>).bind(null, NFT_TOKEN_TYPE_IDS);
 
 type Props = {
-  isTabsLoading?: boolean;
+  shouldRender?: boolean;
 }
 
-const AddressTokens = ({ isTabsLoading }: Props) => {
+const AddressTokens = ({ shouldRender = true }: Props) => {
   const router = useRouter();
   const isMobile = useIsMobile();
   const isMounted = useIsMounted();
@@ -105,7 +105,7 @@ const AddressTokens = ({ isTabsLoading }: Props) => {
     setTokenTypes(value);
   }, [ nftsQuery, collectionsQuery ]);
 
-  if (!isMounted || isTabsLoading) {
+  if (!isMounted || !shouldRender) {
     return null;
   }
 

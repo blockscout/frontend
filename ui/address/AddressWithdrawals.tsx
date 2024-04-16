@@ -15,9 +15,9 @@ import BeaconChainWithdrawalsTable from 'ui/withdrawals/beaconChain/BeaconChainW
 
 type Props = {
   scrollRef?: React.RefObject<HTMLDivElement>;
-  isTabsLoading?: boolean;
+  shouldRender?: boolean;
 }
-const AddressWithdrawals = ({ scrollRef, isTabsLoading }: Props) => {
+const AddressWithdrawals = ({ scrollRef, shouldRender = true }: Props) => {
   const router = useRouter();
   const isMounted = useIsMounted();
 
@@ -35,7 +35,7 @@ const AddressWithdrawals = ({ scrollRef, isTabsLoading }: Props) => {
     },
   });
 
-  if (!isMounted || isTabsLoading) {
+  if (!isMounted || !shouldRender) {
     return null;
   }
 

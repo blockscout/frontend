@@ -26,10 +26,10 @@ import AddressBlocksValidatedTableItem from './blocksValidated/AddressBlocksVali
 
 interface Props {
   scrollRef?: React.RefObject<HTMLDivElement>;
-  isTabsLoading?: boolean;
+  shouldRender?: boolean;
 }
 
-const AddressBlocksValidated = ({ scrollRef, isTabsLoading }: Props) => {
+const AddressBlocksValidated = ({ scrollRef, shouldRender = true }: Props) => {
   const [ socketAlert, setSocketAlert ] = React.useState(false);
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -87,7 +87,7 @@ const AddressBlocksValidated = ({ scrollRef, isTabsLoading }: Props) => {
     handler: handleNewSocketMessage,
   });
 
-  if (!isMounted || isTabsLoading) {
+  if (!isMounted || !shouldRender) {
     return null;
   }
 

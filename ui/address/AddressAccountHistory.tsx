@@ -26,10 +26,10 @@ const getFilterValue = (getFilterValueFromQuery<NovesHistoryFilterValue>).bind(n
 
 type Props = {
   scrollRef?: React.RefObject<HTMLDivElement>;
-  isTabsLoading?: boolean;
+  shouldRender?: boolean;
 }
 
-const AddressAccountHistory = ({ scrollRef, isTabsLoading }: Props) => {
+const AddressAccountHistory = ({ scrollRef, shouldRender = true }: Props) => {
   const router = useRouter();
   const isMounted = useIsMounted();
 
@@ -52,7 +52,7 @@ const AddressAccountHistory = ({ scrollRef, isTabsLoading }: Props) => {
     setFilterValue(newVal);
   }, [ ]);
 
-  if (!isMounted || isTabsLoading) {
+  if (!isMounted || !shouldRender) {
     return null;
   }
 

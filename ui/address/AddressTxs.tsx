@@ -48,12 +48,12 @@ const matchFilter = (filterValue: AddressFromToFilter, transaction: Transaction,
 
 type Props = {
   scrollRef?: React.RefObject<HTMLDivElement>;
-  isTabsLoading?: boolean;
+  shouldRender?: boolean;
   // for tests only
   overloadCount?: number;
 }
 
-const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT, isTabsLoading }: Props) => {
+const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT, shouldRender = true }: Props) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const isMounted = useIsMounted();
@@ -159,7 +159,7 @@ const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT, isTabsLoading }
     handler: handleNewSocketMessage,
   });
 
-  if (!isMounted || isTabsLoading) {
+  if (!isMounted || !shouldRender) {
     return null;
   }
 

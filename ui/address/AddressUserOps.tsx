@@ -10,10 +10,10 @@ import UserOpsContent from 'ui/userOps/UserOpsContent';
 
 type Props = {
   scrollRef?: React.RefObject<HTMLDivElement>;
-  isTabsLoading?: boolean;
+  shouldRender?: boolean;
 }
 
-const AddressUserOps = ({ scrollRef, isTabsLoading }: Props) => {
+const AddressUserOps = ({ scrollRef, shouldRender = true }: Props) => {
   const router = useRouter();
   const isMounted = useIsMounted();
 
@@ -32,7 +32,7 @@ const AddressUserOps = ({ scrollRef, isTabsLoading }: Props) => {
     filters: { sender: hash },
   });
 
-  if (!isMounted || isTabsLoading) {
+  if (!isMounted || !shouldRender) {
     return null;
   }
 

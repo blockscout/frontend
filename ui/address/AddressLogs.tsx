@@ -15,10 +15,10 @@ import AddressCsvExportLink from './AddressCsvExportLink';
 
 type Props ={
   scrollRef?: React.RefObject<HTMLDivElement>;
-  isTabsLoading?: boolean;
+  shouldRender?: boolean;
 }
 
-const AddressLogs = ({ scrollRef, isTabsLoading }: Props) => {
+const AddressLogs = ({ scrollRef, shouldRender = true }: Props) => {
   const router = useRouter();
   const isMounted = useIsMounted();
 
@@ -48,7 +48,7 @@ const AddressLogs = ({ scrollRef, isTabsLoading }: Props) => {
     </ActionBar>
   );
 
-  if (!isMounted || isTabsLoading) {
+  if (!isMounted || !shouldRender) {
     return null;
   }
 
