@@ -3,9 +3,9 @@ import type { DocumentContext } from 'next/document';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import React from 'react';
 
+import logRequestFromBot from 'nextjs/utils/logRequestFromBot';
 import * as serverTiming from 'nextjs/utils/serverTiming';
 
-import getApiDataForSocialPreview from 'lib/metadata/getApiDataForSocialPreview';
 import theme from 'theme';
 import * as svgSprite from 'ui/shared/IconSvg';
 
@@ -22,7 +22,7 @@ class MyDocument extends Document {
       return result;
     };
 
-    await getApiDataForSocialPreview(ctx.req, ctx.res, ctx.pathname);
+    await logRequestFromBot(ctx.req, ctx.res, ctx.pathname);
 
     const initialProps = await Document.getInitialProps(ctx);
 

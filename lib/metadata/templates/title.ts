@@ -13,10 +13,10 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/contract-verification': 'verify contract',
   '/address/[hash]/contract-verification': 'contract verification for %hash%',
   '/tokens': 'tokens',
-  '/token/[hash]': '%symbol% token details',
+  '/token/[hash]': 'token details',
   '/token/[hash]/instance/[id]': 'NFT instance',
   '/apps': 'apps marketplace',
-  '/apps/[id]': '- %app_name%',
+  '/apps/[id]': 'marketplace app',
   '/stats': 'statistics',
   '/api-docs': 'REST API',
   '/graphiql': 'GraphQL',
@@ -56,8 +56,15 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/auth/unverified-email': 'unverified email',
 };
 
-export function make(pathname: Route['pathname']) {
-  const template = TEMPLATE_MAP[pathname];
+const TEMPLATE_MAP_ENHANCED: Partial<Record<Route['pathname'], string>> = {
+  '/token/[hash]': '%symbol% token details',
+  '/token/[hash]/instance/[id]': 'token instance for %symbol%',
+  '/apps/[id]': '- %app_name%',
+  '/address/[hash]': 'address details for %domain_name%',
+};
+
+export function make(pathname: Route['pathname'], isEnriched = false) {
+  const template = (isEnriched ? TEMPLATE_MAP_ENHANCED[pathname] : undefined) ?? TEMPLATE_MAP[pathname];
 
   return `%network_name% ${ template }`;
 }

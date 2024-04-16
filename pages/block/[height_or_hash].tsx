@@ -9,7 +9,7 @@ const Block = dynamic(() => import('ui/pages/Block'), { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
-    <PageNextJs pathname="/block/[height_or_hash]" query={ props }>
+    <PageNextJs pathname="/block/[height_or_hash]" query={ props.query }>
       <Block/>
     </PageNextJs>
   );
