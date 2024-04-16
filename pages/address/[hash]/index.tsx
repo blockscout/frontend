@@ -1,5 +1,4 @@
 import type { GetServerSideProps, NextPage } from 'next';
-import dynamic from 'next/dynamic';
 import React from 'react';
 
 import type { Route } from 'nextjs-routes';
@@ -11,7 +10,7 @@ import fetchApi from 'nextjs/utils/fetchApi';
 
 import config from 'configs/app';
 import getQueryParamString from 'lib/router/getQueryParamString';
-const Address = dynamic(() => import('ui/pages/Address'), { ssr: false });
+import Address from 'ui/pages/Address';
 
 const pathname: Route['pathname'] = '/address/[hash]';
 

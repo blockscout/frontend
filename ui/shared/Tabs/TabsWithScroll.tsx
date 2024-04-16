@@ -25,6 +25,7 @@ export interface Props extends ThemingProps<'Tabs'> {
   stickyEnabled?: boolean;
   onTabChange?: (index: number) => void;
   defaultTabIndex?: number;
+  isLoading?: boolean;
   className?: string;
 }
 
@@ -37,6 +38,7 @@ const TabsWithScroll = ({
   stickyEnabled,
   onTabChange,
   defaultTabIndex,
+  isLoading,
   className,
   ...themeProps
 }: Props) => {
@@ -101,6 +103,7 @@ const TabsWithScroll = ({
         activeTabIndex={ activeTabIndex }
         onItemClick={ handleTabChange }
         themeProps={ themeProps }
+        isLoading={ isLoading }
       />
       <TabPanels>
         { tabsList.map((tab) => <TabPanel padding={ 0 } key={ tab.id }>{ tab.component }</TabPanel>) }
