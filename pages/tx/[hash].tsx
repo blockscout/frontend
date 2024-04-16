@@ -9,7 +9,7 @@ const Transaction = dynamic(() => import('ui/pages/Transaction'), { ssr: false }
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
-    <PageNextJs pathname="/tx/[hash]" query={ props }>
+    <PageNextJs pathname="/tx/[hash]" query={ props.query }>
       <Transaction/>
     </PageNextJs>
   );

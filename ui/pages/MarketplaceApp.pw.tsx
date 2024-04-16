@@ -24,7 +24,7 @@ const testFn: Parameters<typeof test>[1] = async({ render, mockConfigResponse, m
   await mockAssetResponse(appsMock[0].url, './mocks/apps/app.html');
 
   const component = await render(
-    <Flex flexDirection="column" mx={{ base: 4, lg: 6 }}>
+    <Flex flexDirection="column" mx={{ base: 4, lg: 6 }} h="100vh">
       <MarketplaceApp/>
     </Flex>,
     { hooksConfig },

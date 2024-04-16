@@ -6,7 +6,7 @@ import { test, expect } from 'playwright/lib';
 
 import Marketplace from './Marketplace';
 
-const MARKETPLACE_CONFIG_URL = 'https://marketplace-config.json';
+const MARKETPLACE_CONFIG_URL = 'http://localhost/marketplace-config.json';
 
 test.beforeEach(async({ mockConfigResponse, mockEnvs, mockAssetResponse }) => {
   await mockEnvs([
@@ -18,6 +18,29 @@ test.beforeEach(async({ mockConfigResponse, mockEnvs, mockAssetResponse }) => {
 });
 
 test('base view +@mobile +@dark-mode', async({ render }) => {
+  const component = await render(<Marketplace/>);
+
+  await expect(component).toHaveScreenshot();
+});
+
+test('with featured app +@mobile +@dark-mode', async({ render, mockEnvs }) => {
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_MARKETPLACE_FEATURED_APP', 'hop-exchange' ],
+  ]);
+  const component = await render(<Marketplace/>);
+
+  await expect(component).toHaveScreenshot();
+});
+
+test('with banner +@mobile +@dark-mode', async({ render, mockEnvs, mockConfigResponse }) => {
+  const MARKETPLACE_BANNER_CONTENT_URL = 'https://localhost/marketplace-banner.html';
+  const MARKETPLACE_BANNER_LINK_URL = 'https://example.com';
+
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_MARKETPLACE_BANNER_CONTENT_URL', MARKETPLACE_BANNER_CONTENT_URL ],
+    [ 'NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL', MARKETPLACE_BANNER_LINK_URL ],
+  ]);
+  await mockConfigResponse('MARKETPLACE_BANNER_CONTENT_URL', MARKETPLACE_BANNER_CONTENT_URL, './playwright/mocks/page.html', true);
   const component = await render(<Marketplace/>);
 
   await expect(component).toHaveScreenshot();

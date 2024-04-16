@@ -9,7 +9,7 @@ const Blob = dynamic(() => import('ui/pages/Blob'), { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
-    <PageNextJs pathname="/blobs/[hash]" query={ props }>
+    <PageNextJs pathname="/blobs/[hash]" query={ props.query }>
       <Blob/>
     </PageNextJs>
   );

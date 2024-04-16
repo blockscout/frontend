@@ -25,13 +25,9 @@ const defaultAppContext = {
   pageProps: {
     cookies: '',
     referrer: '',
-    id: '',
-    height_or_hash: '',
-    hash: '',
-    number: '',
-    q: '',
-    name: '',
-    adBannerProvider: 'slise',
+    query: {},
+    adBannerProvider: 'slise' as const,
+    apiData: null,
   },
 };
 

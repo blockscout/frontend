@@ -1,8 +1,10 @@
 import { Grid } from '@chakra-ui/react';
-import React from 'react';
+import React, { useCallback } from 'react';
 import type { MouseEvent } from 'react';
 
 import type { MarketplaceAppPreview } from 'types/client/marketplace';
+
+import * as mixpanel from 'lib/mixpanel/index';
 
 import EmptySearchResult from './EmptySearchResult';
 import MarketplaceAppCard from './MarketplaceAppCard';
@@ -18,6 +20,15 @@ type Props = {
 }
 
 const MarketplaceList = ({ apps, showAppInfo, favoriteApps, onFavoriteClick, isLoading, selectedCategoryId, onAppClick }: Props) => {
+  const handleInfoClick = useCallback((id: string) => {
+    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'More button', Info: id, Source: 'Discovery view' });
+    showAppInfo(id);
+  }, [ showAppInfo ]);
+
+  const handleFavoriteClick = useCallback((id: string, isFavorite: boolean) => {
+    onFavoriteClick(id, isFavorite, 'Discovery view');
+  }, [ onFavoriteClick ]);
+
   return apps.length > 0 ? (
     <Grid
       templateColumns={{
@@ -30,7 +41,7 @@ const MarketplaceList = ({ apps, showAppInfo, favoriteApps, onFavoriteClick, isL
       { apps.map((app, index) => (
         <MarketplaceAppCard
           key={ app.id + (isLoading ? index : '') }
-          onInfoClick={ showAppInfo }
+          onInfoClick={ handleInfoClick }
           id={ app.id }
           external={ app.external }
           url={ app.url }
@@ -40,7 +51,7 @@ const MarketplaceList = ({ apps, showAppInfo, favoriteApps, onFavoriteClick, isL
           shortDescription={ app.shortDescription }
           categories={ app.categories }
           isFavorite={ favoriteApps.includes(app.id) }
-          onFavoriteClick={ onFavoriteClick }
+          onFavoriteClick={ handleFavoriteClick }
           isLoading={ isLoading }
           internalWallet={ app.internalWallet }
           onAppClick={ onAppClick }

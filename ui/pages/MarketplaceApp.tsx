@@ -1,4 +1,4 @@
-import { Box, Center, useColorMode } from '@chakra-ui/react';
+import { Box, Center, useColorMode, Flex } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { DappscoutIframeProvider, useDappscoutIframe } from 'dappscout-iframe';
 import { useRouter } from 'next/router';
@@ -71,7 +71,7 @@ const MarketplaceAppContent = ({ address, data, isPending }: Props) => {
 
   return (
     <Center
-      h="100vh"
+      flexGrow={ 1 }
       mx={{ base: -4, lg: -6 }}
     >
       { (isFrameLoading) && (
@@ -142,7 +142,7 @@ const MarketplaceApp = () => {
   throwOnResourceLoadError(query);
 
   return (
-    <>
+    <Flex flexDirection="column" h="100%">
       <MarketplaceAppTopBar
         data={ data }
         isLoading={ isPending || isSecurityReportsLoading }
@@ -159,7 +159,7 @@ const MarketplaceApp = () => {
       >
         <MarketplaceAppContent address={ address } data={ data } isPending={ isPending }/>
       </DappscoutIframeProvider>
-    </>
+    </Flex>
   );
 };
 

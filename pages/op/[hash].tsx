@@ -9,7 +9,7 @@ const UserOp = dynamic(() => import('ui/pages/UserOp'), { ssr: false });
 
 const Page: NextPage<Props> = (props: Props) => {
   return (
-    <PageNextJs pathname="/op/[hash]" query={ props }>
+    <PageNextJs pathname="/op/[hash]" query={ props.query }>
       <UserOp/>
     </PageNextJs>
   );
