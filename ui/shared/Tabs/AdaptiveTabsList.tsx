@@ -108,9 +108,10 @@ const AdaptiveTabsList = (props: Props) => {
             { ...(index < tabsCut ? {} : hiddenItemStyles) }
             scrollSnapAlign="start"
             flexShrink={ 0 }
-            borderRadius={ props?.type !== 'parent_tabs' ? '8px' : '32px' }
+            borderRadius={ props?.type !== 'parent_tabs' ? '25px' : '32px' }
             fontSize="16px"
-            padding="16px"
+            paddingX="28px"
+            paddingY="16px"
             fontWeight={ props?.type !== 'parent_tabs' ? 'medium' : 'semibold' }
             color="#141414"
             background="#F4F4F4"

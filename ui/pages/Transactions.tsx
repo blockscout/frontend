@@ -1,3 +1,4 @@
+import { Box, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -145,15 +146,30 @@ const Transactions = () => {
 
   return (
     <>
-      <PageTitle title="Transactions" withTextAd/>
-      <RoutedTabs
-        tabs={ tabs }
-        tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
-        rightSlot={ (
-          pagination.isVisible && !isMobile ? <Pagination my={ 1 } { ...pagination }/> : null
-        ) }
-        stickyEnabled={ !isMobile }
-      />
+      <Flex direction="column" paddingX={{ base: 4, lg: 8 }}>
+        <PageTitle title="Transactions" withTextAd/>
+      </Flex>
+      <Box
+        bg="white"
+        borderTopRadius="2.5em"
+        padding={{
+          base: '1em',
+          md: '2em',
+        }}
+        paddingY="2em"
+      >
+        <RoutedTabs
+          tabs={ tabs }
+          type="parent_tabs"
+          tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
+          rightSlot={
+            pagination.isVisible && !isMobile ? (
+              <Pagination my={ 1 } { ...pagination }/>
+            ) : null
+          }
+          stickyEnabled={ !isMobile }
+        />
+      </Box>
     </>
   );
 };

@@ -87,7 +87,6 @@ const TokenTransferTableItem = ({
       </Td>
       <Td>
         <AddressTo
-          from={ from }
           to={ to }
           isLoading={ isLoading }
           mt="5px"

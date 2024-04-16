@@ -14,12 +14,17 @@ export default function useNavLinkProps({ isExpanded, isCollapsed, isActive }: P
 
   return {
     itemProps: {
-      py: 2.5,
+      py: 0,
       display: 'flex',
-      color: isActive ? colors.text.active : colors.text.default,
-      bgColor: isActive ? colors.bg.active : colors.bg.default,
-      _hover: { color: isActive ? colors.text.active : colors.text.hover },
-      borderRadius: 'base',
+      color: colors.text.default,
+      bgColor: colors.bg.default,
+      _hover: { color: 'black', borderBottom: '1px solid black' },
+      // borderRadius: 'base',
+      ...(isActive && {
+        borderBottom: '2px solid black',
+        fontWeight: 600,
+      }),
+      // width: '120px',
       ...getDefaultTransitionProps({ transitionProperty: 'width, padding' }),
     },
     textProps: {

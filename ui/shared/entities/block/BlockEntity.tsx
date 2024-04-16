@@ -63,7 +63,7 @@ const BlockEntity = (props: EntityProps) => {
     <Container className={ props.className }>
       <FaCube { ...partsProps }/>
       <Link { ...linkProps }>
-        <Content { ...partsProps }/>
+        <Content { ...partsProps } color="rgba(0, 0, 0, 1)" fontWeight="500"/>
       </Link>
     </Container>
   );

@@ -1,4 +1,4 @@
-import { Link, Text, HStack, Tooltip, Box, useBreakpointValue, chakra, shouldForwardProp } from '@chakra-ui/react';
+import { Link, Text, HStack, Tooltip, Box, useBreakpointValue, chakra, shouldForwardProp, Flex } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React from 'react';
 
@@ -22,7 +22,7 @@ type Props = {
   onClick?: () => void;
 }
 
-const NavLink = ({ item, isCollapsed, px, className, onClick }: Props) => {
+const NavLink = ({ item, isCollapsed, className, onClick }: Props) => {
   const isMobile = useIsMobile();
   const colors = useColors();
 
@@ -40,7 +40,7 @@ const NavLink = ({ item, isCollapsed, px, className, onClick }: Props) => {
       { ...styleProps.itemProps }
       w={{ base: '100%', lg: isExpanded ? '100%' : '60px', xl: isCollapsed ? '60px' : '100%' }}
       display="flex"
-      px={ px || { base: 3, lg: isExpanded ? 3 : '15px', xl: isCollapsed ? '15px' : 3 } }
+      px={{ base: 3, lg: isExpanded ? 3 : '15px', xl: isCollapsed ? '15px' : 3 }}
       aria-label={ `${ item.text } link` }
       whiteSpace="nowrap"
       onClick={ onClick }
@@ -73,9 +73,11 @@ const NavLink = ({ item, isCollapsed, px, className, onClick }: Props) => {
   return (
     <Box as="li" listStyleType="none" w="100%" className={ className }>
       { isInternalLink ? (
-        <NextLink href={ item.nextRoute } passHref legacyBehavior>
-          { content }
-        </NextLink>
+        <Flex>
+          <NextLink href={ item.nextRoute } passHref legacyBehavior>
+            { content }
+          </NextLink>
+        </Flex>
       ) : content }
     </Box>
   );

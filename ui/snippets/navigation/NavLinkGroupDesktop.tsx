@@ -33,19 +33,20 @@ const NavLinkGroupDesktop = ({ item, isCollapsed }: Props) => {
     <Box as="li" listStyleType="none" w="100%">
       <Popover
         trigger="hover"
-        placement="right-start"
+        placement="bottom"
         isLazy
       >
         <PopoverTrigger>
           <Link
             { ...styleProps.itemProps }
-            w={{ lg: isExpanded ? '180px' : '60px', xl: isCollapsed ? '60px' : '180px' }}
-            pl={{ lg: isExpanded ? 3 : '15px', xl: isCollapsed ? '15px' : 3 }}
-            pr={{ lg: isExpanded ? 0 : '15px', xl: isCollapsed ? '15px' : 0 }}
+            w={{ lg: isExpanded ? '100%' : '60px', xl: isCollapsed ? '60px' : '100%' }}
+            // pl={{ lg: isExpanded ? 3 : '15px', xl: isCollapsed ? '15px' : 3 }}
+            px={ 2 }
+            // pr={{ lg: isExpanded ? 0 : '15px', xl: isCollapsed ? '15px' : 0 }}
             aria-label={ `${ item.text } link group` }
             position="relative"
           >
-            <HStack spacing={ 3 } overflow="hidden">
+            <HStack spacing={ 1 } overflow="hidden">
               <NavLinkIcon item={ item }/>
               <Text
                 { ...styleProps.textProps }
@@ -66,7 +67,7 @@ const NavLinkGroupDesktop = ({ item, isCollapsed }: Props) => {
             </HStack>
           </Link>
         </PopoverTrigger>
-        <PopoverContent width="252px" top={{ lg: isExpanded ? '-16px' : 0, xl: isCollapsed ? 0 : '-16px' }}>
+        <PopoverContent margin={ 0 } width="252px" top={{ lg: isExpanded ? '-5px' : 0, xl: isCollapsed ? 0 : '-5px' }}>
           <PopoverBody p={ 4 }>
             <Text variant="secondary" fontSize="sm" mb={ 2 } display={{ lg: isExpanded ? 'none' : 'block', xl: isCollapsed ? 'block' : 'none' }}>
               { item.text }

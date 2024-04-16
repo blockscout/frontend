@@ -1,9 +1,16 @@
+/* eslint-disable react/jsx-no-bind */
 import type { LinkProps } from '@chakra-ui/react';
-import { Box, Link, Button, Text } from '@chakra-ui/react';
+import { Box, Link, Button, Text, Flex } from '@chakra-ui/react';
 import Image from 'next/image';
 import React from 'react';
 import { IoMenu } from 'react-icons/io5';
 import { MdArrowOutward } from 'react-icons/md';
+
+import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
+import useUnisatWallet from 'lib/useUnisatWallet';
+import NavLink from 'ui/snippets/navigation/NavLink';
+import NavLinkGroupDesktop from 'ui/snippets/navigation/NavLinkGroupDesktop';
+import Settings from 'ui/snippets/topBar/settings/Settings';
 
 const HeaderLink: React.FC<LinkProps & { children?: React.ReactNode }> = (props) => {
   return (
@@ -12,10 +19,17 @@ const HeaderLink: React.FC<LinkProps & { children?: React.ReactNode }> = (props)
 };
 
 const Header = () => {
+  const { mainNavItems } = useNavItems();
   const [ showMobileMenu, setShowMobileMenu ] = React.useState(false);
+  const { connect, address } = useUnisatWallet();
+
   return (
     <>
-      <Box display="flex" justifyContent="space-between" alignItems="center" p="1.5em"
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        p="1.5em"
       >
         <Box>
           <Image src="/stats-logo.png" alt="Example" width={ 200 } height={ 300 }/>
@@ -31,19 +45,65 @@ const Header = () => {
           px="1.5em"
           backgroundColor="white"
         >
-          <HeaderLink >DASHBOARD</HeaderLink>
+          { /* <HeaderLink >DASHBOARD</HeaderLink>
           <HeaderLink >DEPLOY SMART CONTRACT</HeaderLink>
           <HeaderLink >INTERACT WITH CONTRACT</HeaderLink>
-          <HeaderLink >WHITEPAPER</HeaderLink>
+          <HeaderLink >WHITEPAPER</HeaderLink> */ }
+          { mainNavItems.map((item) => {
+            if (isGroupItem(item)) {
+              return (
+                <NavLinkGroupDesktop
+                  key={ item.text }
+                  item={ item }
+                  isCollapsed={ false }
+                />
+              );
+            } else {
+              return (
+                <NavLink key={ item.text } item={ item } isCollapsed={ false }/>
+              );
+            }
+          }) }
         </Box>
-        <Box display={{ base: 'none', md: 'block' }} >
-          <Button display="flex" gap="7px" borderRadius="1.5em" backgroundColor="black" >
-            <Text color="linear-gradient(180deg, #FFFFFF 0%, #999999 100%)" >CONNECT</Text>
-            <Box background="linear-gradient(180deg, #FFFFFF 0%, #999999 100%)" borderRadius="2em" p="4px"><MdArrowOutward color="black"/></Box>
-          </Button>
-        </Box>
+        <Flex gap={ 4 } alignItems="center">
+          <Box
+            display={{ base: 'none', md: 'block' }}
+            onClick={ connect }
+            _disabled={ address }
+          >
+            <Button
+              display="flex"
+              gap="7px"
+              borderRadius="1.5em"
+              backgroundColor="black"
+              _hover={{ backgroundColor: 'black' }}
+            >
+              { address ? (
+                <Text color="linear-gradient(180deg, #FFFFFF 0%, #999999 100%)">
+                  { address.slice(0, 10) }...
+                </Text>
+              ) : (
+                <>
+                  <Text color="linear-gradient(180deg, #FFFFFF 0%, #999999 100%)">
+                  CONNECT
+                  </Text>
+                  <Box
+                    background="linear-gradient(180deg, #FFFFFF 0%, #999999 100%)"
+                    borderRadius="2em"
+                    p="4px"
+                  >
+                    <MdArrowOutward color="black"/>
+                  </Box>
+                </>
+              ) }
+            </Button>
+          </Box>
+          <Settings/>
+        </Flex>
+
         { /* eslint-disable-next-line react/jsx-no-bind */ }
-        <Button onClick={ () => setShowMobileMenu(!showMobileMenu) }
+        <Button
+          onClick={ () => setShowMobileMenu(!showMobileMenu) }
           display={{ base: 'block', md: 'none' }}
           _hover={{ backgroundColor: 'transparent' }}
           padding="0"
@@ -53,18 +113,55 @@ const Header = () => {
         </Button>
       </Box>
       { showMobileMenu && (
-        <Box display="flex" flexDirection="column" background="white" borderRadius="1.5em" padding="20px" >
-          <Box display="flex" flexDirection="column" alignItems="center" gap="1em"
-            borderRadius="1.5em" py="0.75em" px="1.5em" backgroundColor="white">
+        <Box
+          display="flex"
+          flexDirection="column"
+          background="white"
+          borderRadius="1.5em"
+          padding="20px"
+          height="90vh"
+        >
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            gap="1em"
+            borderRadius="1.5em"
+            py="0.75em"
+            px="1.5em"
+            backgroundColor="white"
+          >
             <HeaderLink>DASHBOARD</HeaderLink>
             <HeaderLink>DEPLOY SMART CONTRACT</HeaderLink>
             <HeaderLink>INTERACT WITH CONTRACT</HeaderLink>
             <HeaderLink>WHITEPAPER</HeaderLink>
+            <Button
+              display="flex"
+              gap="7px"
+              borderRadius="1.5em"
+              backgroundColor="black"
+              _hover={{ backgroundColor: 'black' }}
+            >
+              { address ? (
+                <Text color="linear-gradient(180deg, #FFFFFF 0%, #999999 100%)">
+                  { address.slice(0, 10) }...
+                </Text>
+              ) : (
+                <>
+                  <Text color="linear-gradient(180deg, #FFFFFF 0%, #999999 100%)">
+                    CONNECT
+                  </Text>
+                  <Box
+                    background="linear-gradient(180deg, #FFFFFF 0%, #999999 100%)"
+                    borderRadius="2em"
+                    p="4px"
+                  >
+                    <MdArrowOutward color="black"/>
+                  </Box>
+                </>
+              ) }
+            </Button>
           </Box>
-          <Button display="flex" gap="7px" borderRadius="1.5em" backgroundColor="black" _hover={{ backgroundColor: 'black' }} >
-            <Text color="linear-gradient(180deg, #FFFFFF 0%, #999999 100%)" >CONNECT</Text>
-            <Box background="linear-gradient(180deg, #FFFFFF 0%, #999999 100%)" borderRadius="2em" p="4px"><MdArrowOutward color="black"/></Box>
-          </Button>
         </Box>
       ) }
     </>

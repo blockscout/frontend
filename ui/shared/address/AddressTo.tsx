@@ -9,7 +9,6 @@ import AddressEntityWithTokenFilter from 'ui/shared/entities/address/AddressEnti
 import AddressFromToIcon from './AddressFromToIcon';
 
 interface Props {
-  from: AddressParam;
   to: Pick<
   AddressParam,
   | 'hash'
@@ -24,6 +23,7 @@ interface Props {
 }
 
 const AddressTo = ({ to, isLoading, tokenHash = '' }: Props) => {
+
   const Entity = tokenHash ? AddressEntityWithTokenFilter : AddressEntity;
 
   return (

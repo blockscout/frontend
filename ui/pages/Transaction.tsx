@@ -1,3 +1,4 @@
+import { Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -15,21 +16,11 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import useTabIndexFromQuery from 'ui/shared/Tabs/useTabIndexFromQuery';
-import TxAssetFlows from 'ui/tx/TxAssetFlows';
-import TxBlobs from 'ui/tx/TxBlobs';
 import TxDetails from 'ui/tx/TxDetails';
 import TxDetailsDegraded from 'ui/tx/TxDetailsDegraded';
-import TxDetailsWrapped from 'ui/tx/TxDetailsWrapped';
-import TxInternals from 'ui/tx/TxInternals';
-import TxLogs from 'ui/tx/TxLogs';
-import TxRawTrace from 'ui/tx/TxRawTrace';
 import TxState from 'ui/tx/TxState';
 import TxSubHeading from 'ui/tx/TxSubHeading';
-import TxTokenTransfer from 'ui/tx/TxTokenTransfer';
-import TxUserOps from 'ui/tx/TxUserOps';
 import useTxQuery from 'ui/tx/useTxQuery';
-
-const txInterpretation = config.features.txInterpretation;
 
 const TransactionPageContent = () => {
   const router = useRouter();
@@ -52,23 +43,23 @@ const TransactionPageContent = () => {
         title: config.features.suave.isEnabled && data?.wrapped ? 'Confidential compute tx details' : 'Details',
         component: detailsComponent,
       },
-      txInterpretation.isEnabled && txInterpretation.provider === 'noves' ?
-        { id: 'asset_flows', title: 'Asset Flows', component: <TxAssetFlows hash={ hash }/> } :
-        undefined,
-      config.features.suave.isEnabled && data?.wrapped ?
-        { id: 'wrapped', title: 'Regular tx details', component: <TxDetailsWrapped data={ data.wrapped }/> } :
-        undefined,
-      { id: 'token_transfers', title: 'Token transfers', component: <TxTokenTransfer txQuery={ txQuery }/> },
-      config.features.userOps.isEnabled ?
-        { id: 'user_ops', title: 'User operations', component: <TxUserOps txQuery={ txQuery }/> } :
-        undefined,
-      { id: 'internal', title: 'Internal txns', component: <TxInternals txQuery={ txQuery }/> },
-      txQuery.data?.blob_versioned_hashes?.length ?
-        { id: 'blobs', title: 'Blobs', component: <TxBlobs txQuery={ txQuery }/> } :
-        undefined,
-      { id: 'logs', title: 'Logs', component: <TxLogs txQuery={ txQuery }/> },
+      // txInterpretation.isEnabled && txInterpretation.provider === 'noves' ?
+      //   { id: 'asset_flows', title: 'Asset Flows', component: <TxAssetFlows hash={ hash }/> } :
+      //   undefined,
+      // config.features.suave.isEnabled && data?.wrapped ?
+      //   { id: 'wrapped', title: 'Regular tx details', component: <TxDetailsWrapped data={ data.wrapped }/> } :
+      //   undefined,
+      // { id: 'token_transfers', title: 'Token transfers', component: <TxTokenTransfer txQuery={ txQuery }/> },
+      // config.features.userOps.isEnabled ?
+      //   { id: 'user_ops', title: 'User operations', component: <TxUserOps txQuery={ txQuery }/> } :
+      //   undefined,
+      // { id: 'internal', title: 'Internal txns', component: <TxInternals txQuery={ txQuery }/> },
+      // txQuery.data?.blob_versioned_hashes?.length ?
+      //   { id: 'blobs', title: 'Blobs', component: <TxBlobs txQuery={ txQuery }/> } :
+      //   undefined,
+      // { id: 'logs', title: 'Logs', component: <TxLogs txQuery={ txQuery }/> },
       { id: 'state', title: 'State', component: <TxState txQuery={ txQuery }/> },
-      { id: 'raw_trace', title: 'Raw trace', component: <TxRawTrace txQuery={ txQuery }/> },
+      // { id: 'raw_trace', title: 'Raw trace', component: <TxRawTrace txQuery={ txQuery }/> },
     ].filter(Boolean);
   })();
 
@@ -118,13 +109,17 @@ const TransactionPageContent = () => {
   return (
     <>
       <TextAd mb={ 6 }/>
-      <PageTitle
-        title="Transaction details"
-        backLink={ backLink }
-        contentAfter={ tags }
-        secondRow={ titleSecondRow }
-      />
-      { content }
+      <Flex direction="column" paddingX={{ base: 6, lg: 12 }}>
+        <PageTitle
+          title="Transaction details"
+          backLink={ backLink }
+          contentAfter={ tags }
+          secondRow={ titleSecondRow }
+        />
+      </Flex>
+      <Flex minH="75vh" roundedTop="2em" bg="white" direction="column" paddingTop={{ base: 8, lg: 12 }} paddingX={{ base: 8, lg: 12 }}>
+        { content }
+      </Flex>
     </>
   );
 };

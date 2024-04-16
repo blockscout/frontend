@@ -10,7 +10,7 @@ import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import { currencyUnits } from 'lib/units';
 import BlocksTableItem from 'ui/blocks/BlocksTableItem';
-import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
+// import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import { default as Thead } from 'ui/shared/TheadSticky';
 
 interface Props {
@@ -30,8 +30,8 @@ const FEES_COL_WEIGHT = 22;
 
 const isRollup = config.features.rollup.isEnabled;
 
-const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum, socketInfoAlert }: Props) => {
-
+// const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum, socketInfoAlert }: Props) => {
+const BlocksTable = ({ data, isLoading, top, page }: Props) => {
   const widthBase =
     (!config.UI.views.block.hiddenFields?.miner ? VALIDATOR_COL_WEIGHT : 0) +
     GAS_COL_WEIGHT +
@@ -47,7 +47,7 @@ const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum
             <Th width="120px">Size, bytes</Th>
             { !config.UI.views.block.hiddenFields?.miner &&
             <Th width={ `${ VALIDATOR_COL_WEIGHT / widthBase * 100 }%` } minW="160px">{ capitalize(getNetworkValidatorTitle()) }</Th> }
-            <Th width="64px" isNumeric>Txn</Th>
+            <Th width="120px">Txn</Th>
             <Th width={ `${ GAS_COL_WEIGHT / widthBase * 100 }%` }>Gas used</Th>
             { !isRollup && !config.UI.views.block.hiddenFields?.total_reward &&
               <Th width={ `${ REWARD_COL_WEIGHT / widthBase * 100 }%` }>Reward { currencyUnits.ether }</Th> }
@@ -56,7 +56,7 @@ const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum
           </Tr>
         </Thead>
         <Tbody>
-          { showSocketInfo && (
+          { /* { showSocketInfo && (
             <SocketNewItemsNotice.Desktop
               url={ window.location.href }
               alert={ socketInfoAlert }
@@ -64,7 +64,7 @@ const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum
               type="block"
               isLoading={ isLoading }
             />
-          ) }
+          ) } */ }
           <AnimatePresence initial={ false }>
             { data.map((item, index) => (
               <BlocksTableItem

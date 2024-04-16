@@ -46,7 +46,10 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
     >
       <Td fontSize="sm">
         <Flex columnGap={ 2 } alignItems="center" mb={ 2 }>
-          <Tooltip isDisabled={ data.type !== 'reorg' } label="Chain reorganizations">
+          <Tooltip
+            isDisabled={ data.type !== 'reorg' }
+            label="Chain reorganizations"
+          >
             <BlockEntity
               isLoading={ isLoading }
               number={ data.height }
@@ -54,14 +57,23 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
               noIcon
               fontSize="sm"
               lineHeight={ 5 }
-              fontWeight={ 600 }
+              fontWeight={ 500 }
             />
           </Tooltip>
         </Flex>
-        <BlockTimestamp ts={ data.timestamp } isEnabled={ enableTimeIncrement } isLoading={ isLoading }/>
+        <BlockTimestamp
+          ts={ data.timestamp }
+          isEnabled={ enableTimeIncrement }
+          isLoading={ isLoading }
+        />
       </Td>
       <Td fontSize="sm">
-        <Skeleton isLoaded={ !isLoading } display="inline-block">
+        <Skeleton
+          isLoaded={ !isLoading }
+          display="inline-block"
+          color="rgba(0, 0, 0, 1)"
+          fontWeight="500"
+        >
           { data.size.toLocaleString() }
         </Skeleton>
       </Td>
@@ -74,27 +86,37 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           />
         </Td>
       ) }
-      <Td isNumeric fontSize="sm">
+      <Td fontSize="sm">
         { data.tx_count > 0 ? (
           <Skeleton isLoaded={ !isLoading } display="inline-block">
-            <LinkInternal href={ route({
-              pathname: '/block/[height_or_hash]',
-              query: { height_or_hash: String(data.height), tab: 'txs' },
-            }) }>
+            <LinkInternal
+              href={ route({
+                pathname: '/block/[height_or_hash]',
+                query: { height_or_hash: String(data.height), tab: 'txs' },
+              }) }
+              color="rgba(0, 0, 0, 1)"
+              fontWeight="500"
+            >
               { data.tx_count }
             </LinkInternal>
           </Skeleton>
-        ) : data.tx_count }
+        ) : (
+          data.tx_count
+        ) }
       </Td>
       { !isRollup && !config.UI.views.block.hiddenFields?.total_reward && (
         <Td fontSize="sm">
-          <Skeleton isLoaded={ !isLoading } display="inline-block">{ BigNumber(data.gas_used || 0).toFormat() }</Skeleton>
+          <Skeleton isLoaded={ !isLoading } display="inline-block">
+            { BigNumber(data.gas_used || 0).toFormat() }
+          </Skeleton>
           <Flex mt={ 2 }>
             <Tooltip label={ isLoading ? undefined : 'Gas Used %' }>
               <Box>
                 <Utilization
                   colorScheme="gray"
-                  value={ BigNumber(data.gas_used || 0).dividedBy(BigNumber(data.gas_limit)).toNumber() }
+                  value={ BigNumber(data.gas_used || 0)
+                    .dividedBy(BigNumber(data.gas_limit))
+                    .toNumber() }
                   isLoading={ isLoading }
                 />
               </Box>
@@ -102,7 +124,10 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
             { data.gas_target_percentage && (
               <>
                 <TextSeparator color={ separatorColor } mx={ 1 }/>
-                <GasUsedToTargetRatio value={ data.gas_target_percentage } isLoading={ isLoading }/>
+                <GasUsedToTargetRatio
+                  value={ data.gas_target_percentage }
+                  isLoading={ isLoading }
+                />
               </>
             ) }
           </Flex>
@@ -116,14 +141,25 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
       { !isRollup && !config.UI.views.block.hiddenFields?.burnt_fees && (
         <Td fontSize="sm">
           <Flex alignItems="center" columnGap={ 2 }>
-            <IconSvg name="flame" boxSize={ 5 } color={ burntFeesIconColor } isLoading={ isLoading }/>
+            <IconSvg
+              name="flame"
+              boxSize={ 5 }
+              color={ burntFeesIconColor }
+              isLoading={ isLoading }
+            />
             <Skeleton isLoaded={ !isLoading } display="inline-block">
               { burntFees.dividedBy(WEI).toFixed(8) }
             </Skeleton>
           </Flex>
-          <Tooltip label={ isLoading ? undefined : 'Burnt fees / Txn fees * 100%' }>
+          <Tooltip
+            label={ isLoading ? undefined : 'Burnt fees / Txn fees * 100%' }
+          >
             <Box w="min-content">
-              <Utilization mt={ 2 } value={ burntFees.div(txFees).toNumber() } isLoading={ isLoading }/>
+              <Utilization
+                mt={ 2 }
+                value={ burntFees.div(txFees).toNumber() }
+                isLoading={ isLoading }
+              />
             </Box>
           </Tooltip>
         </Td>

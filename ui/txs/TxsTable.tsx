@@ -1,6 +1,7 @@
 import { Link, Table, Tbody, Tr, Th } from '@chakra-ui/react';
 import { AnimatePresence } from 'framer-motion';
 import React from 'react';
+import { FaRegCircleQuestion } from 'react-icons/fa6';
 
 import type { Transaction, TransactionsSortingField, TransactionsSortingValue } from 'types/api/transaction';
 
@@ -9,7 +10,6 @@ import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
 import { currencyUnits } from 'lib/units';
 import IconSvg from 'ui/shared/IconSvg';
-import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import TheadSticky from 'ui/shared/TheadSticky';
 
 import TxsTableItem from './TxsTableItem';
@@ -34,9 +34,6 @@ const TxsTable = ({
   sorting,
   top,
   showBlockInfo,
-  showSocketInfo,
-  socketInfoAlert,
-  socketInfoNum,
   currentAddress,
   enableTimeIncrement,
   isLoading,
@@ -48,41 +45,80 @@ const TxsTable = ({
       <Table variant="simple" minWidth="950px" size="xs">
         <TheadSticky top={ top }>
           <Tr>
-            <Th width="54px"></Th>
+            <Th width="54px" pl={ 4 }><FaRegCircleQuestion/></Th>
             <Th width="180px">Txn hash</Th>
             <Th width="160px">Type</Th>
             <Th width="20%">Method</Th>
             { showBlockInfo && <Th width="18%">Block</Th> }
-            <Th width="224px">From/To</Th>
+            <Th width="224px">From</Th>
+            <Th width="224px">To</Th>
             { !config.UI.views.tx.hiddenFields?.value && (
               <Th width="20%" isNumeric>
-                <Link onClick={ sort('value') } display="flex" justifyContent="end">
-                  { sorting === 'value-asc' && <IconSvg boxSize={ 5 } name="arrows/east" transform="rotate(-90deg)"/> }
-                  { sorting === 'value-desc' && <IconSvg boxSize={ 5 } name="arrows/east" transform="rotate(90deg)"/> }
+                <Link
+                  onClick={ sort('value') }
+                  display="flex"
+                  justifyContent="end"
+                  color="blackAlpha.700"
+                >
+                  { sorting === 'value-asc' && (
+                    <IconSvg
+                      boxSize={ 5 }
+                      name="arrows/east"
+                      transform="rotate(-90deg)"
+                    />
+                  ) }
+                  { sorting === 'value-desc' && (
+                    <IconSvg
+                      boxSize={ 5 }
+                      name="arrows/east"
+                      transform="rotate(90deg)"
+                    />
+                  ) }
                   { `Value ${ currencyUnits.ether }` }
                 </Link>
               </Th>
             ) }
             { !config.UI.views.tx.hiddenFields?.tx_fee && (
               <Th width="20%" isNumeric pr={ 5 }>
-                <Link onClick={ sort('fee') } display="flex" justifyContent="end">
-                  { sorting === 'fee-asc' && <IconSvg boxSize={ 5 } name="arrows/east" transform="rotate(-90deg)"/> }
-                  { sorting === 'fee-desc' && <IconSvg boxSize={ 5 } name="arrows/east" transform="rotate(90deg)"/> }
-                  { `Fee${ config.UI.views.tx.hiddenFields?.fee_currency ? '' : ` ${ currencyUnits.ether }` }` }
+                <Link
+                  onClick={ sort('fee') }
+                  display="flex"
+                  justifyContent="end"
+                  color="blackAlpha.700"
+                >
+                  { sorting === 'fee-asc' && (
+                    <IconSvg
+                      boxSize={ 5 }
+                      name="arrows/east"
+                      transform="rotate(-90deg)"
+                    />
+                  ) }
+                  { sorting === 'fee-desc' && (
+                    <IconSvg
+                      boxSize={ 5 }
+                      name="arrows/east"
+                      transform="rotate(90deg)"
+                    />
+                  ) }
+                  { `Fee${
+                    config.UI.views.tx.hiddenFields?.fee_currency ?
+                      '' :
+                      ` ${ currencyUnits.ether }`
+                  }` }
                 </Link>
               </Th>
             ) }
           </Tr>
         </TheadSticky>
         <Tbody>
-          { showSocketInfo && (
+          { /* { showSocketInfo && (
             <SocketNewItemsNotice.Desktop
               url={ window.location.href }
               alert={ socketInfoAlert }
               num={ socketInfoNum }
               isLoading={ isLoading }
             />
-          ) }
+          ) } */ }
           <AnimatePresence initial={ false }>
             { txs.slice(0, renderedItemsNum).map((item, index) => (
               <TxsTableItem
