@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { SearchResultDomain } from 'types/api/search';
 
+import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
@@ -39,6 +40,14 @@ const SearchBarSuggestDomain = ({ data, isMobile, searchTerm }: Props) => {
 
   const isContractVerified = data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" flexShrink={ 0 }/>;
 
+  const expiresText = data.ens_info?.expiry_date ? ` expires ${ dayjs(data.ens_info.expiry_date).fromNow() }` : '';
+  const ensNamesCount = data?.ens_info.names_count > 39 ? '40+' : `+${ data.ens_info.names_count - 1 }`;
+  const additionalInfo = (
+    <Text variant="secondary" textAlign={ isMobile ? 'start' : 'end' }>
+      { data?.ens_info.names_count > 1 ? ensNamesCount : expiresText }
+    </Text>
+  );
+
   if (isMobile) {
     return (
       <>
@@ -50,12 +59,13 @@ const SearchBarSuggestDomain = ({ data, isMobile, searchTerm }: Props) => {
           { address }
           { isContractVerified }
         </Flex>
+        { additionalInfo }
       </>
     );
   }
 
   return (
-    <Grid alignItems="center" gridTemplateColumns="228px max-content 24px" gap={ 2 }>
+    <Grid alignItems="center" gridTemplateColumns="228px minmax(auto, max-content) auto" gap={ 2 }>
       <Flex alignItems="center" gap={ 2 }>
         { icon }
         { name }
@@ -64,6 +74,7 @@ const SearchBarSuggestDomain = ({ data, isMobile, searchTerm }: Props) => {
         { address }
         { isContractVerified }
       </Flex>
+      { additionalInfo }
     </Grid>
   );
 };
