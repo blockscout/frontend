@@ -1,5 +1,4 @@
 import type { GetServerSideProps, NextPage } from 'next';
-import dynamic from 'next/dynamic';
 import React from 'react';
 
 import type { Route } from 'nextjs-routes';
