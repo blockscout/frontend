@@ -56,6 +56,7 @@ const Marketplace = () => {
     filterQuery,
     onSearchInputChange,
     showAppInfo,
+    apps,
     displayedApps,
     selectedAppId,
     clearSelectedAppId,
@@ -170,7 +171,7 @@ const Marketplace = () => {
       />
 
       <Banner
-        apps={ displayedApps }
+        apps={ apps }
         favoriteApps={ favoriteApps }
         isLoading={ isPlaceholderData }
         onInfoClick={ showAppInfo }
