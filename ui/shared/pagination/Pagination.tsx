@@ -1,4 +1,4 @@
-import { Button, Skeleton, Flex, IconButton, chakra } from '@chakra-ui/react';
+import { Button, Skeleton, Flex, IconButton, chakra, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { PaginationParams } from './types';
@@ -21,6 +21,10 @@ const Pagination = ({
   isLoading,
   isVisible,
 }: Props) => {
+
+  const borderColor = useColorModeValue('#727272', 'rgba(114, 114, 114, 0.8)');
+  const color = useColorModeValue('#141414', 'gray.1300');
+  const bgColor = useColorModeValue('white', 'blue.1000');
   if (!isVisible) {
     return null;
   }
@@ -42,8 +46,8 @@ const Pagination = ({
           height="auto"
           onClick={ resetPage }
           isDisabled={ page === 1 || isLoading }
-          color="#141414"
-          borderColor="#727272"
+          color={ color }
+          borderColor={ borderColor }
         >
           First
         </Button>
@@ -61,8 +65,8 @@ const Pagination = ({
           aria-label="Prev page"
           w={ 9 }
           height={ 7 }
-          color="#141414"
-          borderColor="#727272"
+          color={ color }
+          borderColor={ borderColor }
           icon={ <IconSvg name="arrows/east-mini" w={ 5 } h={ 5 }/> }
           isDisabled={ !canGoBackwards || isLoading }
         />
@@ -78,9 +82,9 @@ const Pagination = ({
           h={ 8 }
           minW="36px"
           cursor="unset"
-          color="#141414"
-          style={{ backgroundColor: 'white' }}
-          borderColor="#727272"
+          color={ color }
+          bg={ bgColor }
+          borderColor={ borderColor }
           fontSize="12px"
           padding="6px 12px"
           height="auto"
@@ -101,8 +105,8 @@ const Pagination = ({
           aria-label="Next page"
           w={ 9 }
           height={ 7 }
-          color="#141414"
-          borderColor="#727272"
+          color={ color }
+          borderColor={ borderColor }
           icon={ (
             <IconSvg
               name="arrows/east-mini"

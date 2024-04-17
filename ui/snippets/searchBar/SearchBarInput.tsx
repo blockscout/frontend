@@ -62,7 +62,7 @@ const SearchBarInput = (
     };
   }, [ isMobile, handleScroll ]);
 
-  const bgColor = useColorModeValue('white', 'black');
+  const bgColor = useColorModeValue('white', 'rgba(36, 43, 55, 1)');
   const transformMobile = scrollDirection !== 'down' ? 'translateY(0)' : 'translateY(-100%)';
 
   return (
@@ -78,7 +78,10 @@ const SearchBarInput = (
       position={{ base: isHomepage ? 'static' : 'absolute', lg: 'relative' }}
       top={{ base: isHomepage ? 0 : 55, lg: 0 }}
       left="0"
-      zIndex={{ base: isHomepage ? 'auto' : '-1', lg: isSuggestOpen ? 'popover' : 'auto' }}
+      zIndex={{
+        base: isHomepage ? 'auto' : '-1',
+        lg: isSuggestOpen ? 'popover' : 'auto',
+      }}
       paddingX={{ base: isHomepage ? 0 : 4, lg: 0 }}
       paddingTop={{ base: isHomepage ? 0 : 1, lg: 0 }}
       paddingBottom={{ base: isHomepage ? 0 : 2, lg: 0 }}
@@ -90,8 +93,16 @@ const SearchBarInput = (
       mx="auto"
     >
       <InputGroup size={{ base: isHomepage ? 'md' : 'sm', lg: 'md' }}>
-        <InputLeftElement w={{ base: isHomepage ? 6 : 4, lg: 6 }} ml={{ base: isHomepage ? 4 : 3, lg: 4 }} h="100%">
-          <IconSvg name="search" boxSize={{ base: isHomepage ? 6 : 4, lg: 6 }} color={ useColorModeValue('blackAlpha.600', 'whiteAlpha.600') }/>
+        <InputLeftElement
+          w={{ base: isHomepage ? 6 : 4, lg: 6 }}
+          ml={{ base: isHomepage ? 4 : 3, lg: 4 }}
+          h="100%"
+        >
+          <IconSvg
+            name="search"
+            boxSize={{ base: isHomepage ? 6 : 4, lg: 6 }}
+            color={ useColorModeValue('blackAlpha.600', 'whiteAlpha.600') }
+          />
         </InputLeftElement>
         <Input
           pl={{ base: isHomepage ? '50px' : '38px', lg: '50px' }}
@@ -104,7 +115,11 @@ const SearchBarInput = (
               paddingRight: '36px',
             },
           }}
-          placeholder={ isMobile ? 'Search by address / ... ' : 'Search by address / txn hash / block / token... ' }
+          placeholder={
+            isMobile ?
+              'Search by address / ... ' :
+              'Search by address, Tnx hash, Block or Token... '
+          }
           onChange={ handleChange }
           border={ isHomepage ? 'none' : '2px solid' }
           borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
@@ -113,7 +128,10 @@ const SearchBarInput = (
           value={ value }
         />
         { value && (
-          <InputRightElement top={{ base: isHomepage ? '18px' : 2, lg: '18px' }} right={ 2 } >
+          <InputRightElement
+            top={{ base: isHomepage ? '18px' : 2, lg: '18px' }}
+            right={ 2 }
+          >
             <ClearButton onClick={ onClear }/>
           </InputRightElement>
         ) }

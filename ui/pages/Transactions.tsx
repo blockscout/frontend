@@ -1,4 +1,4 @@
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex, useColorModeValue } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -11,9 +11,9 @@ import useNewTxsSocket from 'lib/hooks/useNewTxsSocket';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
-import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
+import SearchContainer from 'ui/shared/SearchContainer';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TxsWatchlist from 'ui/txs/TxsWatchlist';
 import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
@@ -29,6 +29,7 @@ const Transactions = () => {
   const router = useRouter();
   const isMobile = useIsMobile();
   const tab = getQueryParamString(router.query.tab);
+  const listBgColor = useColorModeValue('white', 'blue.1000');
 
   React.useEffect(() => {
     if (tab === 'blob_txs' && !config.features.dataAvailability.isEnabled) {
@@ -147,10 +148,10 @@ const Transactions = () => {
   return (
     <>
       <Flex direction="column" paddingX={{ base: 4, lg: 8 }}>
-        <PageTitle title="Transactions" withTextAd/>
+        <SearchContainer title="Transactions"/>
       </Flex>
       <Box
-        bg="white"
+        bgColor={ listBgColor }
         borderTopRadius="2.5em"
         padding={{
           base: '1em',

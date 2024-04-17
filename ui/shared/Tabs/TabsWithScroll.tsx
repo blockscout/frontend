@@ -1,6 +1,6 @@
 import type { LazyMode } from '@chakra-ui/lazy-utils';
 import type { ChakraProps, ThemingProps } from '@chakra-ui/react';
-import { Tabs, TabPanel, TabPanels, chakra, Box, Flex } from '@chakra-ui/react';
+import { Tabs, TabPanel, TabPanels, chakra, Box, Flex, useColorModeValue } from '@chakra-ui/react';
 import _debounce from 'lodash/debounce';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -118,9 +118,11 @@ const TabsWithScroll = ({
         themeProps={ themeProps }
       />
       <Box
-        border={
-          type === 'parent_tabs' ? '1.5px solid rgba(114, 114, 114, 0.54)' : undefined
+        borderWidth={
+          type === 'parent_tabs' ? '1.5px' : undefined
         }
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        borderColor={ useColorModeValue('rgba(114, 114, 114, 0.54)', 'blue.1000') }
         paddingTop="20px"
         padding={ !type ? '20px' : undefined }
         borderTopLeftRadius="20px"

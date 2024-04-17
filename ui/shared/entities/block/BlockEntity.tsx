@@ -1,4 +1,4 @@
-import { chakra } from '@chakra-ui/react';
+import { chakra, useColorModeValue } from '@chakra-ui/react';
 import _omit from 'lodash/omit';
 import React from 'react';
 import { FaCube } from 'react-icons/fa';
@@ -58,12 +58,13 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
 const BlockEntity = (props: EntityProps) => {
   const linkProps = _omit(props, [ 'className' ]);
   const partsProps = _omit(props, [ 'className', 'onClick' ]);
+  const color = useColorModeValue('black', 'gray.1300');
 
   return (
     <Container className={ props.className }>
       <FaCube { ...partsProps }/>
       <Link { ...linkProps }>
-        <Content { ...partsProps } color="rgba(0, 0, 0, 1)" fontWeight="500"/>
+        <Content { ...partsProps } color={ color } fontWeight="500"/>
       </Link>
     </Container>
   );

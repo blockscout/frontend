@@ -44,10 +44,13 @@ const NavLink = ({ item, isCollapsed, className, onClick }: Props) => {
       aria-label={ `${ item.text } link` }
       whiteSpace="nowrap"
       onClick={ onClick }
+      // py={ 2 }
+      minHeight={ 35 }
+      minWidth={ 150 }
       _hover={{
-        '& *': {
-          color: 'link_hovered',
-        },
+        color: 'black', background: '#f1f1f1', borderRadius: 16,
+        // '& *': {
+        // },
       }}
     >
       <Tooltip

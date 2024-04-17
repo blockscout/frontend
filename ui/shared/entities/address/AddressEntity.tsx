@@ -1,5 +1,5 @@
 import type { As } from '@chakra-ui/react';
-import { Box, Flex, Skeleton, Tooltip, chakra, VStack } from '@chakra-ui/react';
+import { Box, Flex, Skeleton, Tooltip, chakra, VStack, useColorModeValue } from '@chakra-ui/react';
 import _omit from 'lodash/omit';
 import React from 'react';
 
@@ -149,6 +149,7 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
 const AddressEntry = (props: EntityProps) => {
   const linkProps = _omit(props, [ 'className' ]);
   const partsProps = _omit(props, [ 'className', 'onClick' ]);
+  const color = useColorModeValue('black', 'gray.1300');
 
   const context = useAddressHighlightContext();
 
@@ -166,7 +167,7 @@ const AddressEntry = (props: EntityProps) => {
     >
       { /* <Icon {...partsProps} color={props.iconColor} /> */ }
       <Link { ...linkProps }>
-        <Content { ...partsProps } color="rgba(0, 0, 0, 1)" fontWeight="medium"/>
+        <Content { ...partsProps } color={ color } fontWeight="medium"/>
       </Link>
       <Copy { ...partsProps }/>
     </Container>

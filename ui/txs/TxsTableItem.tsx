@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Tr,
   Td,
   VStack,
   Skeleton,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import React from 'react';
@@ -22,7 +24,7 @@ import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 
 import TxTranslationType from './TxTranslationType';
-import TxType from './TxType';
+// import TxType from './TxType';
 
 type Props = {
   tx: any;
@@ -35,6 +37,10 @@ type Props = {
 const TxsTableItem = ({ tx, showBlockInfo, enableTimeIncrement, isLoading }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
   const timeAgo = useTimeAgoIncrement(tx.timestamp, enableTimeIncrement);
+  const color = useColorModeValue('rgba(33, 37, 41, 1)', 'gray.1300');
+  const tagBg = useColorModeValue('rgba(248, 249, 250, 1)', 'blue.1000');
+  const tagColor = useColorModeValue('rgba(0, 0, 0, 1)', 'gray.1300');
+  const tagBorderColor = useColorModeValue('rgba(0, 0, 0, 0.1)', 'gray.1400');
 
   return (
     <Tr
@@ -58,11 +64,7 @@ const TxsTableItem = ({ tx, showBlockInfo, enableTimeIncrement, isLoading }: Pro
             truncation="constant_long"
           />
           { tx.timestamp && (
-            <Skeleton
-              fontWeight="500"
-              color="rgba(33, 37, 41, 1)"
-              isLoaded={ !isLoading }
-            >
+            <Skeleton fontWeight="500" color={ color } isLoaded={ !isLoading }>
               <span>{ timeAgo }</span>
             </Skeleton>
           ) }
@@ -77,7 +79,20 @@ const TxsTableItem = ({ tx, showBlockInfo, enableTimeIncrement, isLoading }: Pro
               translatationType={ tx.translation.data?.type }
             />
           ) : (
-            <TxType types={ tx.tx_types } isLoading={ isLoading }/>
+          // { tx.translation ? (
+          //   <TxTranslationType
+          //     types={ tx.tx_types }
+          //     isLoading={ isLoading || tx.translation.isLoading }
+          //     translatationType={ tx.translation.data?.type }
+          //   />
+          // ) : (
+          //   <TxType types={ tx.tx_types } isLoading={ isLoading }/>
+          // ) }
+            <TxStatus
+              status={ tx.status }
+              errorText={ tx.status === 'error' ? tx.result : undefined }
+              isLoading={ isLoading }
+            />
           ) }
           <TxStatus
             status={ tx.status }
@@ -90,14 +105,15 @@ const TxsTableItem = ({ tx, showBlockInfo, enableTimeIncrement, isLoading }: Pro
       <Td whiteSpace="nowrap">
         { tx.method && (
           <Tag
-            color="rgba(0, 0, 0, 1)"
+            color={ tagColor }
             fontWeight={ 500 }
             fontSize="13px"
             padding="4px 16px"
             isLoading={ isLoading }
             isTruncated
-            border="1px solid rgba(0, 0, 0, 0.1)"
-            backgroundColor="rgba(248, 249, 250, 1)"
+            border="1px"
+            borderColor={ tagBorderColor }
+            backgroundColor={ tagBg }
           >
             { tx.method }
           </Tag>
@@ -118,18 +134,10 @@ const TxsTableItem = ({ tx, showBlockInfo, enableTimeIncrement, isLoading }: Pro
         </Td>
       ) }
       <Td>
-        <AddressFrom
-          from={ tx.from }
-          isLoading={ isLoading }
-          mt="2px"
-        />
+        <AddressFrom from={ tx.from } isLoading={ isLoading } mt="2px"/>
       </Td>
       <Td>
-        <AddressTo
-          to={ dataTo }
-          isLoading={ isLoading }
-          mt="2px"
-        />
+        <AddressTo to={ dataTo } isLoading={ isLoading } mt="2px"/>
       </Td>
       { !config.UI.views.tx.hiddenFields?.value && (
         <Td isNumeric>

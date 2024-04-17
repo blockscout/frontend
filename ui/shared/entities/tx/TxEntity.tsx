@@ -1,4 +1,4 @@
-import { chakra } from '@chakra-ui/react';
+import { chakra, useColorModeValue } from '@chakra-ui/react';
 import _omit from 'lodash/omit';
 import React from 'react';
 
@@ -62,12 +62,13 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
 const TxEntity = (props: EntityProps) => {
   const linkProps = _omit(props, [ 'className' ]);
   const partsProps = _omit(props, [ 'className', 'onClick' ]);
+  const color = useColorModeValue('black', 'gray.1300');
 
   return (
     <Container className={ props.className }>
       <Icon { ...partsProps } name={ props.iconName } color={ props.iconColor }/>
       <Link { ...linkProps }>
-        <Content { ...partsProps } color="rgba(20, 20, 20, 1)" fontWeight="600"/>
+        <Content { ...partsProps } color={ color } fontWeight="600"/>
       </Link>
       <Copy { ...partsProps }/>
     </Container>

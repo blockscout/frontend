@@ -1,4 +1,4 @@
-import { Link, Table, Tbody, Tr, Th } from '@chakra-ui/react';
+import { Link, Table, Tbody, Tr, Th, useColorModeValue } from '@chakra-ui/react';
 import { AnimatePresence } from 'framer-motion';
 import React from 'react';
 import { FaRegCircleQuestion } from 'react-icons/fa6';
@@ -39,13 +39,16 @@ const TxsTable = ({
   isLoading,
 }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList(txs, !isLoading);
+  const color = useColorModeValue('gray.1200', 'gray.1100');
 
   return (
     <AddressHighlightProvider>
       <Table variant="simple" minWidth="950px" size="xs">
         <TheadSticky top={ top }>
           <Tr>
-            <Th width="54px" pl={ 4 }><FaRegCircleQuestion/></Th>
+            <Th width="54px" pl={ 7 }>
+              <FaRegCircleQuestion fontSize={ 8 }/>
+            </Th>
             <Th width="180px">Txn hash</Th>
             <Th width="160px">Type</Th>
             <Th width="20%">Method</Th>
@@ -58,7 +61,7 @@ const TxsTable = ({
                   onClick={ sort('value') }
                   display="flex"
                   justifyContent="end"
-                  color="blackAlpha.700"
+                  color={ color }
                 >
                   { sorting === 'value-asc' && (
                     <IconSvg
@@ -84,7 +87,7 @@ const TxsTable = ({
                   onClick={ sort('fee') }
                   display="flex"
                   justifyContent="end"
-                  color="blackAlpha.700"
+                  color={ color }
                 >
                   { sorting === 'fee-asc' && (
                     <IconSvg

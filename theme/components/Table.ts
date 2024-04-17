@@ -1,21 +1,21 @@
 import { tableAnatomy as parts } from '@chakra-ui/anatomy';
+import { useColorModeValue } from '@chakra-ui/react';
 import { createMultiStyleConfigHelpers } from '@chakra-ui/styled-system';
-import { mode } from '@chakra-ui/theme-tools';
 
 import getDefaultTransitionProps from '../utils/getDefaultTransitionProps';
 
 const { defineMultiStyleConfig, definePartsStyle } =
   createMultiStyleConfigHelpers(parts.keys);
 
-const variantSimple = definePartsStyle((props) => {
+const variantSimple = definePartsStyle(() => {
   const transitionProps = getDefaultTransitionProps();
-
+  const bgColor = useColorModeValue('gray.1000', 'gray.1500');
+  const color = useColorModeValue('gray.1200', 'gray.1100');
   return {
     th: {
       border: 0,
-      backgroundColor: 'rgba(244, 244, 244, 1)',
-      color: mode('blackAlpha.700', 'whiteAlpha.700')(props),
-      // backgroundColor: mode("blackAlpha.100", "whiteAlpha.200")(props),
+      backgroundColor: bgColor,
+      color: color,
       ...transitionProps,
     },
     thead: {

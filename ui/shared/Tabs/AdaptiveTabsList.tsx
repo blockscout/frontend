@@ -29,7 +29,11 @@ interface Props extends TabsProps {
 
 const AdaptiveTabsList = (props: Props) => {
   const scrollDirection = useScrollDirection();
-  const listBgColor = useColorModeValue('white', 'black');
+  const listBgColor = useColorModeValue('white', 'blue.1000');
+  const color = useColorModeValue('#141414', 'gray.1300');
+  const selectedColor = useColorModeValue('#F9FAFB', 'gray.1300');
+  const selectedBgColor = useColorModeValue('#141414', 'rgba(36, 43, 55, 1)');
+  const bgColor = useColorModeValue('#F4F4F4', 'rgba(255, 255, 255, 0.03)');
   const isMobile = useIsMobile();
 
   const tabsList = React.useMemo(() => {
@@ -113,9 +117,9 @@ const AdaptiveTabsList = (props: Props) => {
             paddingX="28px"
             paddingY="16px"
             fontWeight={ props?.type !== 'parent_tabs' ? 'medium' : 'semibold' }
-            color="#141414"
-            background="#F4F4F4"
-            _selected={{ background: '#141414', color: '#F9FAFB' }}
+            color={ color }
+            background={ bgColor }
+            _selected={{ background: selectedBgColor, color: selectedColor }}
             sx={{
               '&:hover span': {
                 color: 'inherit',

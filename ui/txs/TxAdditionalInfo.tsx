@@ -9,6 +9,7 @@ import {
   PopoverBody,
   useDisclosure,
   Flex,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import React from 'react';
 import { FaRegEye } from 'react-icons/fa6';
@@ -34,12 +35,15 @@ type Props =
 
 const TxAdditionalInfo = ({ hash, tx, isMobile }: Props) => {
   const { isOpen, onClose } = useDisclosure();
+  const borderColor = useColorModeValue('rgba(233, 236, 239, 1)', 'blue.1100');
 
   const content = hash !== undefined ? <TxAdditionalInfoContainer hash={ hash }/> : <TxAdditionalInfoContent tx={ tx }/>;
 
   if (isMobile) {
     return (
       <>
+        { /* <AdditionalInfoButton onClick={ onOpen } isLoading={ isLoading } className={ className }/> */ }
+
         { /* <AdditionalInfoButton onClick={ onOpen } isLoading={ isLoading } className={ className }/> */ }
 
         <Modal isOpen={ isOpen } onClose={ onClose } size="full">
@@ -57,13 +61,15 @@ const TxAdditionalInfo = ({ hash, tx, isMobile }: Props) => {
         <>
           <PopoverTrigger>
             <Flex
-              border="1px solid rgba(233, 236, 239, 1)"
+              border="1px solid"
+              borderColor={ borderColor }
               justify="center"
-              padding={ 2 }
+              px={ 1 }
+              py={ 2 }
               borderRadius="6px"
               alignItems="center"
             >
-              <FaRegEye/>
+              <FaRegEye fontSize={ 8 }/>
             </Flex>
           </PopoverTrigger>
           <PopoverContent border="1px solid" borderColor="divider">
