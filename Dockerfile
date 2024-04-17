@@ -119,6 +119,11 @@ RUN ["chmod", "-R", "777", "./public"]
 COPY --from=builder /app/.env.registry .
 COPY --from=builder /app/.env .
 
+# Copy ENVs presets
+ARG ENVS_PRESET
+ENV ENVS_PRESET=$ENVS_PRESET
+COPY ./configs/envs ./configs/envs
+
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
