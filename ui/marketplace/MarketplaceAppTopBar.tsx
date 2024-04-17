@@ -24,11 +24,10 @@ import MarketplaceAppInfo from './MarketplaceAppInfo';
 type Props = {
   data: MarketplaceAppOverview | undefined;
   isLoading: boolean;
-  isWalletConnected: boolean;
   securityReport?: MarketplaceAppSecurityReport;
 }
 
-const MarketplaceAppTopBar = ({ data, isLoading, /* isWalletConnected, */ securityReport }: Props) => {
+const MarketplaceAppTopBar = ({ data, isLoading, securityReport }: Props) => {
   const [ showContractList, setShowContractList ] = useBoolean(false);
   const appProps = useAppContext();
   const isMobile = useIsMobile();

@@ -149,7 +149,6 @@ const MarketplaceApp = () => {
       <MarketplaceAppTopBar
         data={ data }
         isLoading={ isPending || isSecurityReportsLoading }
-        isWalletConnected={ Boolean(address) }
         securityReport={ securityReports?.[id] }
       />
       <DappscoutIframeProvider
