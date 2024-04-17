@@ -2,6 +2,20 @@ name: Deploy review environment
 
 on:
   workflow_dispatch:
+    inputs:
+      envs_preset:
+          description: ENVs preset
+          required: false
+          type: choice
+          options:
+            - eth
+            - gnosis
+            - optimism
+            - polygon
+            - rootstock
+            - sepolia
+            - zkevm
+            - zksync
 
 jobs:
   make_slug:
@@ -23,6 +37,7 @@ jobs:
     uses: './.github/workflows/publish-image.yml'
     with:
         tags: ghcr.io/blockscout/frontend:review-${{ needs.make_slug.outputs.REF_SLUG }}
+        build_args: ENVS_PRESET=${{ inputs.envs_preset }}
     secrets: inherit
 
   deploy_review:
