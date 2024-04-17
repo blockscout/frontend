@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React, { createContext, useContext, useEffect } from 'react';
+import React, { createContext, useContext, useEffect, useState, useMemo } from 'react';
 
 type Props = {
   children: React.ReactNode;
@@ -17,7 +17,7 @@ const MarketplaceContext = createContext<TMarketplaceContext>({
 
 export function MarketplaceContextProvider({ children }: Props) {
   const router = useRouter();
-  const [ isAutoConnectDisabled, setIsAutoConnectDisabled ] = React.useState(false);
+  const [ isAutoConnectDisabled, setIsAutoConnectDisabled ] = useState(false);
 
   useEffect(() => {
     const handleRouteChange = () => {
@@ -31,8 +31,13 @@ export function MarketplaceContextProvider({ children }: Props) {
     };
   }, [ router.events ]);
 
+  const value = useMemo(() => ({
+    isAutoConnectDisabled,
+    setIsAutoConnectDisabled,
+  }), [ isAutoConnectDisabled, setIsAutoConnectDisabled ]);
+
   return (
-    <MarketplaceContext.Provider value={{ isAutoConnectDisabled, setIsAutoConnectDisabled }}>
+    <MarketplaceContext.Provider value={ value }>
       { children }
     </MarketplaceContext.Provider>
   );
