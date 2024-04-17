@@ -225,6 +225,26 @@ test('search by blob hash +@mobile', async({ mount, page }) => {
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
 });
 
+test('search by domain name +@mobile', async({ mount, page }) => {
+  const API_URL = buildApiUrl('quick_search') + `?q=${ searchMock.domain1.ens_info.name }`;
+  await page.route(API_URL, (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify([
+      searchMock.domain1,
+    ]),
+  }));
+
+  await mount(
+    <TestApp>
+      <SearchBar/>
+    </TestApp>,
+  );
+  await page.getByPlaceholder(/search/i).fill(searchMock.domain1.ens_info.name);
+  await page.waitForResponse(API_URL);
+
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
+});
+
 const testWithUserOps = base.extend({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   context: contextWithEnvs(configs.featureEnvs.userOps) as any,
