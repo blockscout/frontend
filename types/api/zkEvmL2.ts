@@ -18,6 +18,24 @@ export type ZkEvmL2DepositsResponse = {
   };
 }
 
+export type ZkEvmL2WithdrawalsItem = {
+  block_number: number;
+  index: number;
+  l1_transaction_hash: string | null;
+  l2_transaction_hash: string;
+  timestamp: string;
+  value: string;
+  symbol: string;
+}
+
+export type ZkEvmL2WithdrawalsResponse = {
+  items: Array<ZkEvmL2WithdrawalsItem>;
+  next_page_params: {
+    items_count: number;
+    index: number;
+  };
+}
+
 export type ZkEvmL2TxnBatchesItem = {
   number: number;
   verify_tx_hash: string | null;

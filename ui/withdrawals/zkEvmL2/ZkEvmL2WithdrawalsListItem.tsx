@@ -2,20 +2,20 @@ import { Skeleton, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import type { ZkEvmL2DepositsItem } from 'types/api/zkEvmL2';
+import type { ZkEvmL2WithdrawalsItem } from 'types/api/zkEvmL2';
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
-import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
+import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
 const rollupFeature = config.features.rollup;
 
-type Props = { item: ZkEvmL2DepositsItem; isLoading?: boolean };
+type Props = { item: ZkEvmL2WithdrawalsItem; isLoading?: boolean };
 
-const ZkEvmL2DepositsListItem = ({ item, isLoading }: Props) => {
+const ZkEvmL2WithdrawalsListItem = ({ item, isLoading }: Props) => {
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'zkEvm') {
     return null;
   }
@@ -25,9 +25,9 @@ const ZkEvmL2DepositsListItem = ({ item, isLoading }: Props) => {
   return (
     <ListItemMobileGrid.Container>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>L1 block</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Block</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <BlockEntityL1
+        <BlockEntity
           number={ item.block_number }
           isLoading={ isLoading }
           fontSize="sm"
@@ -43,11 +43,11 @@ const ZkEvmL2DepositsListItem = ({ item, isLoading }: Props) => {
         </Skeleton>
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn hash</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>L2 txn hash</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <TxEntityL1
+        <TxEntity
           isLoading={ isLoading }
-          hash={ item.l1_transaction_hash }
+          hash={ item.l2_transaction_hash }
           fontSize="sm"
           lineHeight={ 5 }
           truncation="constant_long"
@@ -59,19 +59,19 @@ const ZkEvmL2DepositsListItem = ({ item, isLoading }: Props) => {
         <Skeleton isLoaded={ !isLoading } display="inline-block">{ timeAgo }</Skeleton>
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>L2 txn hash</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn hash</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        { item.l2_transaction_hash ? (
-          <TxEntity
+        { item.l1_transaction_hash ? (
+          <TxEntityL1
             isLoading={ isLoading }
-            hash={ item.l2_transaction_hash }
+            hash={ item.l1_transaction_hash }
             fontSize="sm"
             lineHeight={ 5 }
             truncation="constant_long"
           />
         ) : (
           <chakra.span color="text_secondary">
-          Pending Claim
+            Pending Claim
           </chakra.span>
         ) }
       </ListItemMobileGrid.Value>
@@ -94,4 +94,4 @@ const ZkEvmL2DepositsListItem = ({ item, isLoading }: Props) => {
   );
 };
 
-export default ZkEvmL2DepositsListItem;
+export default ZkEvmL2WithdrawalsListItem;
