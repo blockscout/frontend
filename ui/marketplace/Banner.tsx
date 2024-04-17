@@ -12,7 +12,7 @@ import IframeBanner from './Banner/IframeBanner';
 const feature = config.features.marketplace;
 
 type BannerProps = {
-  apps: Array<MarketplaceAppPreview>;
+  apps: Array<MarketplaceAppPreview> | undefined;
   favoriteApps: Array<string>;
   isLoading: boolean;
   onInfoClick: (id: string) => void;
@@ -20,7 +20,7 @@ type BannerProps = {
   onAppClick: (event: MouseEvent, id: string) => void;
 }
 
-const Banner = ({ apps, favoriteApps, isLoading, onInfoClick, onFavoriteClick, onAppClick }: BannerProps) => {
+const Banner = ({ apps = [], favoriteApps, isLoading, onInfoClick, onFavoriteClick, onAppClick }: BannerProps) => {
   if (!feature.isEnabled) {
     return null;
   }

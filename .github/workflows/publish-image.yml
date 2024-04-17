@@ -7,6 +7,10 @@ on:
                 description: Image tags
                 required: false
                 type: string
+            build_args:
+                description: Build-time variables
+                required: false
+                type: string
             platforms:
                 description: Image platforms (you can specify multiple platforms separated by comma)
                 required: false
@@ -16,6 +20,10 @@ on:
         inputs:
             tags:
                 description: Image tags
+                required: false
+                type: string
+            build_args:
+                description: Build-time variables
                 required: false
                 type: string
             platforms:
@@ -73,3 +81,4 @@ jobs:
                     build-args: |
                         GIT_COMMIT_SHA=${{ env.SHORT_SHA }}
                         GIT_TAG=${{ github.ref_type == 'tag' && github.ref_name || '' }}
+                        ${{ inputs.build_args }}

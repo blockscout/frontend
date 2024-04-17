@@ -78,7 +78,8 @@ const ChainIndicatorItem = ({ id, title, value, valueDiff, icon, isSelected, onC
     <Flex
       alignItems="center"
       columnGap={ 3 }
-      p={ 4 }
+      px={ 4 }
+      py={ 2 }
       as="li"
       borderRadius="md"
       cursor="pointer"
