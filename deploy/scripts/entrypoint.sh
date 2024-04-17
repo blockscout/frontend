@@ -6,6 +6,10 @@ export_envs_from_preset() {
       return
   fi
 
+  if [ "$ENVS_PRESET" = "none" ]; then
+      return
+  fi
+
   local preset_file="./configs/envs/.env.$ENVS_PRESET"
 
   if [ ! -f "$preset_file" ]; then

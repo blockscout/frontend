@@ -6,14 +6,19 @@ on:
       envs_preset:
           description: ENVs preset
           required: false
+          default: ""
           type: choice
           options:
-            - eth
+            - none
             - gnosis
+            - eth
+            - eth_sepolia
+            - eth_goerli
             - optimism
+            - optimism_sepolia
             - polygon
             - rootstock
-            - sepolia
+            - stability
             - zkevm
             - zksync
 
