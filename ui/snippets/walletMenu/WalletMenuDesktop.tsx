@@ -58,7 +58,7 @@ const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
 
   const openPopover = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.WALLET_ACTION, { Action: 'Open' });
-    setIsPopoverOpen.on();
+    setIsPopoverOpen.toggle();
   }, [ setIsPopoverOpen ]);
 
   return (
