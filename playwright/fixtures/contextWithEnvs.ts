@@ -7,7 +7,13 @@ interface Env {
   value: string;
 }
 
-// keep in mind that all passed variables here should be present in env config files (.env.pw or .env.poa)
+/**
+ * @deprecated please use mockEnvs fixture
+ *
+ * @export
+ * @param {Array<Env>} envs
+ * @return {*}  {Parameters<typeof test.extend>[0]['context']}
+ */
 export default function contextWithEnvsFixture(envs: Array<Env>): Parameters<typeof test.extend>[0]['context'] {
   return async({ browser }, use) => {
     const context = await createContextWithStorage(browser, envs);

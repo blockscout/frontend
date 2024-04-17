@@ -1,21 +1,15 @@
-import { test as base, expect, devices } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import * as verifiedAddressesMocks from 'mocks/account/verifiedAddresses';
 import { token as contract } from 'mocks/address/address';
 import { tokenInfo, tokenCounters, bridgedTokenA } from 'mocks/tokens/tokenInfo';
-import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
+import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import * as socketServer from 'playwright/fixtures/socketServer';
-import TestApp from 'playwright/TestApp';
-import buildApiUrl from 'playwright/utils/buildApiUrl';
+import { test, expect, devices } from 'playwright/lib';
 import * as configs from 'playwright/utils/configs';
 
 import Token from './Token';
 
-const TOKEN_API_URL = buildApiUrl('token', { hash: '1' });
-const TOKEN_COUNTERS_API_URL = buildApiUrl('token_counters', { hash: '1' });
-const TOKEN_TRANSFERS_API_URL = buildApiUrl('token_transfers', { hash: '1' });
-const ADDRESS_API_URL = buildApiUrl('address', { hash: '1' });
 const hooksConfig = {
   router: {
     query: { hash: '1', tab: 'token_transfers' },
@@ -23,45 +17,19 @@ const hooksConfig = {
   },
 };
 
-const test = base.extend<socketServer.SocketServerFixture>({
-  createSocket: socketServer.createSocket,
-});
-
 // FIXME
 // test cases which use socket cannot run in parallel since the socket server always run on the same port
 test.describe.configure({ mode: 'serial' });
 
-test.beforeEach(async({ page }) => {
-  await page.route('https://request-global.czilladx.com/serve/native.php?z=19260bf627546ab7242', (route) => route.fulfill({
-    status: 200,
-    body: '',
-  }));
-
-  await page.route(TOKEN_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(tokenInfo),
-  }));
-  await page.route(ADDRESS_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(contract),
-  }));
-  await page.route(TOKEN_COUNTERS_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(tokenCounters),
-  }));
-  await page.route(TOKEN_TRANSFERS_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify({}),
-  }));
+test.beforeEach(async({ mockApiResponse }) => {
+  await mockApiResponse('token', tokenInfo, { pathParams: { hash: '1' } });
+  await mockApiResponse('address', contract, { pathParams: { hash: '1' } });
+  await mockApiResponse('token_counters', tokenCounters, { pathParams: { hash: '1' } });
+  await mockApiResponse('token_transfers', { items: [], next_page_params: null }, { pathParams: { hash: '1' } });
 });
 
-test('base view', async({ mount, page, createSocket }) => {
-  const component = await mount(
-    <TestApp withSocket>
-      <Token/>
-    </TestApp>,
-    { hooksConfig },
-  );
+test('base view', async({ render, page, createSocket }) => {
+  const component = await render(<Token/>, { hooksConfig }, { withSocket: true });
 
   const socket = await createSocket();
   const channel = await socketServer.joinChannel(socket, 'tokens:1');
@@ -73,24 +41,11 @@ test('base view', async({ mount, page, createSocket }) => {
   });
 });
 
-test('with verified info', async({ mount, page, createSocket }) => {
-  const VERIFIED_INFO_URL = buildApiUrl('token_verified_info', { chainId: '1', hash: '1' });
-  await page.route(VERIFIED_INFO_URL, (route) => route.fulfill({
-    body: JSON.stringify(verifiedAddressesMocks.TOKEN_INFO_APPLICATION.APPROVED),
-  }));
-  await page.route(tokenInfo.icon_url as string, (route) => {
-    return route.fulfill({
-      status: 200,
-      path: './playwright/mocks/image_s.jpg',
-    });
-  });
+test('with verified info', async({ render, page, createSocket, mockApiResponse, mockAssetResponse }) => {
+  await mockApiResponse('token_verified_info', verifiedAddressesMocks.TOKEN_INFO_APPLICATION.APPROVED, { pathParams: { chainId: '1', hash: '1' } });
+  await mockAssetResponse(tokenInfo.icon_url as string, './playwright/mocks/image_s.jpg');
 
-  const component = await mount(
-    <TestApp withSocket>
-      <Token/>
-    </TestApp>,
-    { hooksConfig },
-  );
+  const component = await render(<Token/>, { hooksConfig }, { withSocket: true });
 
   const socket = await createSocket();
   const channel = await socketServer.joinChannel(socket, 'tokens:1');
@@ -104,55 +59,16 @@ test('with verified info', async({ mount, page, createSocket }) => {
   });
 });
 
-const bridgedTokenTest = base.extend<socketServer.SocketServerFixture>({
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  context: contextWithEnvs(configs.featureEnvs.bridgedTokens) as any,
-  createSocket: socketServer.createSocket,
-});
+test('bridged token', async({ render, page, createSocket, mockApiResponse, mockAssetResponse, mockEnvs }) => {
+  await mockEnvs(ENVS_MAP.bridgedTokens);
+  await mockApiResponse('token', bridgedTokenA, { pathParams: { hash: '1' } });
+  await mockApiResponse('address', contract, { pathParams: { hash: '1' } });
+  await mockApiResponse('token_counters', tokenCounters, { pathParams: { hash: '1' } });
+  await mockApiResponse('token_transfers', { items: [], next_page_params: null }, { pathParams: { hash: '1' } });
+  await mockApiResponse('token_verified_info', verifiedAddressesMocks.TOKEN_INFO_APPLICATION.APPROVED, { pathParams: { chainId: '1', hash: '1' } });
+  await mockAssetResponse(tokenInfo.icon_url as string, './playwright/mocks/image_s.jpg');
 
-bridgedTokenTest('bridged token', async({ mount, page, createSocket }) => {
-
-  const VERIFIED_INFO_URL = buildApiUrl('token_verified_info', { chainId: '1', hash: '1' });
-
-  await page.route('https://request-global.czilladx.com/serve/native.php?z=19260bf627546ab7242', (route) => route.fulfill({
-    status: 200,
-    body: '',
-  }));
-
-  await page.route(TOKEN_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(bridgedTokenA),
-  }));
-  await page.route(ADDRESS_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(contract),
-  }));
-  await page.route(TOKEN_COUNTERS_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(tokenCounters),
-  }));
-  await page.route(TOKEN_TRANSFERS_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify({}),
-  }));
-  await page.route(VERIFIED_INFO_URL, (route) => route.fulfill({
-    body: JSON.stringify(verifiedAddressesMocks.TOKEN_INFO_APPLICATION.APPROVED),
-  }));
-
-  await page.route(tokenInfo.icon_url as string, (route) => {
-    return route.fulfill({
-      status: 200,
-      path: './playwright/mocks/image_s.jpg',
-    });
-  });
-
-  const component = await mount(
-    <TestApp withSocket>
-      <Token/>
-    </TestApp>,
-    { hooksConfig },
-  );
-
+  const component = await render(<Token/>, { hooksConfig }, { withSocket: true });
   const socket = await createSocket();
   const channel = await socketServer.joinChannel(socket, 'tokens:1');
   socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
@@ -165,14 +81,9 @@ bridgedTokenTest('bridged token', async({ mount, page, createSocket }) => {
 
 test.describe('mobile', () => {
   test.use({ viewport: devices['iPhone 13 Pro'].viewport });
-  test('base view', async({ mount, page, createSocket }) => {
-    const component = await mount(
-      <TestApp withSocket>
-        <Token/>
-      </TestApp>,
-      { hooksConfig },
-    );
 
+  test('base view', async({ render, page, createSocket }) => {
+    const component = await render(<Token/>, { hooksConfig }, { withSocket: true });
     const socket = await createSocket();
     const channel = await socketServer.joinChannel(socket, 'tokens:1');
     socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
@@ -183,25 +94,11 @@ test.describe('mobile', () => {
     });
   });
 
-  test('with verified info', async({ mount, page, createSocket }) => {
-    const VERIFIED_INFO_URL = buildApiUrl('token_verified_info', { chainId: '1', hash: '1' });
-    await page.route(VERIFIED_INFO_URL, (route) => route.fulfill({
-      body: JSON.stringify(verifiedAddressesMocks.TOKEN_INFO_APPLICATION.APPROVED),
-    }));
-    await page.route(tokenInfo.icon_url as string, (route) => {
-      return route.fulfill({
-        status: 200,
-        path: './playwright/mocks/image_s.jpg',
-      });
-    });
+  test('with verified info', async({ render, page, createSocket, mockApiResponse, mockAssetResponse }) => {
+    await mockApiResponse('token_verified_info', verifiedAddressesMocks.TOKEN_INFO_APPLICATION.APPROVED, { pathParams: { chainId: '1', hash: '1' } });
+    await mockAssetResponse(tokenInfo.icon_url as string, './playwright/mocks/image_s.jpg');
 
-    const component = await mount(
-      <TestApp withSocket>
-        <Token/>
-      </TestApp>,
-      { hooksConfig },
-    );
-
+    const component = await render(<Token/>, { hooksConfig }, { withSocket: true });
     const socket = await createSocket();
     const channel = await socketServer.joinChannel(socket, 'tokens:1');
     socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });

@@ -4,8 +4,6 @@ import config from 'configs/app';
 import type { ResourceName, ResourcePathParams } from 'lib/api/resources';
 import { RESOURCES } from 'lib/api/resources';
 
-// DEPRECATED
-
 /**
  * @deprecated please use fixture mockApiResponse from playwright/lib.tsx for rendering test suite
  *

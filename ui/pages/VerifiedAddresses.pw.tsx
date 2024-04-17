@@ -1,17 +1,15 @@
+import type { BrowserContext } from '@playwright/test';
 import React from 'react';
 
 import * as mocks from 'mocks/account/verifiedAddresses';
 import * as profileMock from 'mocks/user/profile';
-import authFixture from 'playwright/fixtures/auth';
+import { contextWithAuth } from 'playwright/fixtures/auth';
 import { test as base, expect } from 'playwright/lib';
 
 import VerifiedAddresses from './VerifiedAddresses';
 
-const test = base.extend({
-  context: ({ context }, use) => {
-    authFixture(context);
-    use(context);
-  },
+const test = base.extend<{ context: BrowserContext }>({
+  context: contextWithAuth,
 });
 
 test.beforeEach(async({ mockAssetResponse }) => {

@@ -7,6 +7,13 @@ interface Feature {
   value: unknown;
 }
 
+/**
+ * @deprecated please use mockFeatures fixture
+ *
+ * @export
+ * @param {Array<Feature>} envs
+ * @return {*}  {Parameters<typeof test.extend>[0]['context']}
+ */
 export default function contextWithFeaturesFixture(envs: Array<Feature>): Parameters<typeof test.extend>[0]['context'] {
   return async({ browser }, use) => {
     const storageItems = envs.map(({ id, value }) => ({ name: `pw_feature:${ id }`, value: JSON.stringify(value) }));

@@ -6,6 +6,7 @@ import { WagmiProvider } from 'wagmi';
 
 import type { Props as PageProps } from 'nextjs/getServerSideProps';
 
+import config from 'configs/app';
 import { AppContextProvider } from 'lib/contexts/app';
 import { SocketProvider } from 'lib/socket/context';
 import wagmiConfig from 'lib/web3/wagmiConfig';
@@ -43,7 +44,7 @@ const TestApp = ({ children, withSocket, appContext = defaultAppContext }: Props
   return (
     <ChakraProvider theme={ theme }>
       <QueryClientProvider client={ queryClient }>
-        <SocketProvider url={ withSocket ? `ws://${ app.domain }:${ app.socketPort }` : undefined }>
+        <SocketProvider url={ withSocket ? `ws://${ config.app.host }:${ app.socketPort }` : undefined }>
           <AppContextProvider { ...appContext }>
             <GrowthBookProvider>
               <WagmiProvider config={ wagmiConfig! }>
