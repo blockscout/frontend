@@ -98,7 +98,7 @@ import type { ValidatorsCountersResponse, ValidatorsFilters, ValidatorsResponse,
 import type { VerifiedContractsSorting } from 'types/api/verifiedContracts';
 import type { VisualizedContract } from 'types/api/visualization';
 import type { WithdrawalsResponse, WithdrawalsCounters } from 'types/api/withdrawals';
-import type { ZkEvmL2TxnBatch, ZkEvmL2TxnBatchesItem, ZkEvmL2TxnBatchesResponse, ZkEvmL2TxnBatchTxs } from 'types/api/zkEvmL2';
+import type { ZkEvmL2DepositsResponse, ZkEvmL2TxnBatch, ZkEvmL2TxnBatchesItem, ZkEvmL2TxnBatchesResponse, ZkEvmL2TxnBatchTxs } from 'types/api/zkEvmL2';
 import type { ZkSyncBatch, ZkSyncBatchesResponse, ZkSyncBatchTxs } from 'types/api/zkSyncL2';
 import type { MarketplaceAppOverview } from 'types/client/marketplace';
 import type { ArrayElement } from 'types/utils';
@@ -588,6 +588,7 @@ export const RESOURCES = {
   },
 
   // optimistic L2
+  // TODO @tom2drum rename these resources to be consistent with other L2s
   l2_deposits: {
     path: '/api/v2/optimism/deposits',
     filterFields: [],
@@ -625,6 +626,15 @@ export const RESOURCES = {
   },
 
   // zkEvm L2
+  zkevm_l2_deposits: {
+    path: '/api/v2/zkevm/deposits',
+    filterFields: [],
+  },
+
+  zkevm_l2_deposits_count: {
+    path: '/api/v2/zkevm/deposits/count',
+  },
+
   zkevm_l2_txn_batches: {
     path: '/api/v2/zkevm/batches',
     filterFields: [],
@@ -804,7 +814,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'verified_contracts' |
 'l2_output_roots' | 'l2_withdrawals' | 'l2_txn_batches' | 'l2_deposits' |
 'shibarium_deposits' | 'shibarium_withdrawals' |
-'zkevm_l2_txn_batches' | 'zkevm_l2_txn_batch_txs' |
+'zkevm_l2_deposits' | 'zkevm_l2_txn_batches' | 'zkevm_l2_txn_batch_txs' |
 'zksync_l2_txn_batches' | 'zksync_l2_txn_batch_txs' |
 'withdrawals' | 'address_withdrawals' | 'block_withdrawals' |
 'watchlist' | 'private_tags_address' | 'private_tags_tx' |
@@ -910,10 +920,6 @@ Q extends 'l2_output_roots_count' ? number :
 Q extends 'l2_withdrawals_count' ? number :
 Q extends 'l2_deposits_count' ? number :
 Q extends 'l2_txn_batches_count' ? number :
-Q extends 'zkevm_l2_txn_batches' ? ZkEvmL2TxnBatchesResponse :
-Q extends 'zkevm_l2_txn_batches_count' ? number :
-Q extends 'zkevm_l2_txn_batch' ? ZkEvmL2TxnBatch :
-Q extends 'zkevm_l2_txn_batch_txs' ? ZkEvmL2TxnBatchTxs :
 Q extends 'config_backend_version' ? BackendVersionConfig :
 never;
 // !!! IMPORTANT !!!
@@ -931,6 +937,12 @@ Q extends 'shibarium_withdrawals' ? ShibariumWithdrawalsResponse :
 Q extends 'shibarium_deposits' ? ShibariumDepositsResponse :
 Q extends 'shibarium_withdrawals_count' ? number :
 Q extends 'shibarium_deposits_count' ? number :
+Q extends 'zkevm_l2_deposits' ? ZkEvmL2DepositsResponse :
+Q extends 'zkevm_l2_deposits_count' ? number :
+Q extends 'zkevm_l2_txn_batches' ? ZkEvmL2TxnBatchesResponse :
+Q extends 'zkevm_l2_txn_batches_count' ? number :
+Q extends 'zkevm_l2_txn_batch' ? ZkEvmL2TxnBatch :
+Q extends 'zkevm_l2_txn_batch_txs' ? ZkEvmL2TxnBatchTxs :
 Q extends 'zksync_l2_txn_batches' ? ZkSyncBatchesResponse :
 Q extends 'zksync_l2_txn_batches_count' ? number :
 Q extends 'zksync_l2_txn_batch' ? ZkSyncBatch :

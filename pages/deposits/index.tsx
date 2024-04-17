@@ -16,7 +16,11 @@ const Deposits = dynamic(() => {
     return import('ui/pages/ShibariumDeposits');
   }
 
-  throw new Error('Withdrawals feature is not enabled.');
+  if (rollupFeature.isEnabled && rollupFeature.type === 'zkEvm') {
+    return import('ui/pages/ZkEvmL2Deposits');
+  }
+
+  throw new Error('Deposits feature is not enabled.');
 }, { ssr: false });
 
 const Page: NextPage = () => {

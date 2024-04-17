@@ -72,45 +72,45 @@ export default function useNavItems(): ReturnType {
       icon: 'validator',
       isActive: pathname === '/validators',
     } : null;
+    const rollupDeposits = {
+      text: `Deposits (L1${ rightLineArrow }L2)`,
+      nextRoute: { pathname: '/deposits' as const },
+      icon: 'arrows/south-east',
+      isActive: pathname === '/deposits',
+    };
+    const rollupWithdrawals = {
+      text: `Withdrawals (L2${ rightLineArrow }L1)`,
+      nextRoute: { pathname: '/withdrawals' as const },
+      icon: 'arrows/north-east',
+      isActive: pathname === '/withdrawals',
+    };
+    const rollupTxnBatches = {
+      text: 'Txn batches',
+      nextRoute: { pathname: '/batches' as const },
+      icon: 'txn_batches',
+      isActive: pathname === '/batches',
+    };
+    const rollupOutputRoots = {
+      text: 'Output roots',
+      nextRoute: { pathname: '/output-roots' as const },
+      icon: 'output_roots',
+      isActive: pathname === '/output-roots',
+    };
 
     const rollupFeature = config.features.rollup;
 
-    if (rollupFeature.isEnabled && rollupFeature.type === 'zkEvm') {
+    if (rollupFeature.isEnabled && (rollupFeature.type === 'optimistic' || rollupFeature.type === 'zkEvm')) {
       blockchainNavItems = [
         [
           txs,
-          userOps,
-          blocks,
-          {
-            text: 'Txn batches',
-            nextRoute: { pathname: '/batches' as const },
-            icon: 'txn_batches',
-            isActive: pathname === '/batches' || pathname === '/batches/[number]',
-          },
-        ].filter(Boolean),
-        [
-          topAccounts,
-          validators,
-          verifiedContracts,
-          ensLookup,
-        ].filter(Boolean),
-      ];
-    } else if (rollupFeature.isEnabled && rollupFeature.type === 'optimistic') {
-      blockchainNavItems = [
-        [
-          txs,
-          // eslint-disable-next-line max-len
-          { text: `Deposits (L1${ rightLineArrow }L2)`, nextRoute: { pathname: '/deposits' as const }, icon: 'arrows/south-east', isActive: pathname === '/deposits' },
-          // eslint-disable-next-line max-len
-          { text: `Withdrawals (L2${ rightLineArrow }L1)`, nextRoute: { pathname: '/withdrawals' as const }, icon: 'arrows/north-east', isActive: pathname === '/withdrawals' },
+          rollupDeposits,
+          rollupWithdrawals,
         ],
         [
           blocks,
-          // eslint-disable-next-line max-len
-          { text: 'Txn batches', nextRoute: { pathname: '/batches' as const }, icon: 'txn_batches', isActive: pathname === '/batches' },
-          // eslint-disable-next-line max-len
-          { text: 'Output roots', nextRoute: { pathname: '/output-roots' as const }, icon: 'output_roots', isActive: pathname === '/output-roots' },
-        ],
+          rollupTxnBatches,
+          rollupFeature.type === 'optimistic' ? rollupOutputRoots : undefined,
+        ].filter(Boolean),
         [
           userOps,
           topAccounts,
@@ -123,10 +123,8 @@ export default function useNavItems(): ReturnType {
       blockchainNavItems = [
         [
           txs,
-          // eslint-disable-next-line max-len
-          { text: `Deposits (L1${ rightLineArrow }L2)`, nextRoute: { pathname: '/deposits' as const }, icon: 'arrows/south-east', isActive: pathname === '/deposits' },
-          // eslint-disable-next-line max-len
-          { text: `Withdrawals (L2${ rightLineArrow }L1)`, nextRoute: { pathname: '/withdrawals' as const }, icon: 'arrows/north-east', isActive: pathname === '/withdrawals' },
+          rollupDeposits,
+          rollupWithdrawals,
         ],
         [
           blocks,
@@ -142,12 +140,7 @@ export default function useNavItems(): ReturnType {
           txs,
           userOps,
           blocks,
-          {
-            text: 'Txn batches',
-            nextRoute: { pathname: '/batches' as const },
-            icon: 'txn_batches',
-            isActive: pathname === '/batches' || pathname === '/batches/[number]',
-          },
+          rollupTxnBatches,
         ].filter(Boolean),
         [
           topAccounts,

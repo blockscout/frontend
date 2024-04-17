@@ -1,6 +1,16 @@
-import type { ZkEvmL2TxnBatch, ZkEvmL2TxnBatchesItem } from 'types/api/zkEvmL2';
+import type { ZkEvmL2DepositsItem, ZkEvmL2TxnBatch, ZkEvmL2TxnBatchesItem } from 'types/api/zkEvmL2';
 
 import { TX_HASH } from './tx';
+
+export const ZKEVM_DEPOSITS_ITEM: ZkEvmL2DepositsItem = {
+  block_number: 19674901,
+  index: 181920,
+  l1_transaction_hash: '0xa74edfa5824a07a5f95ca1145140ed589df7f05bb17796bf18090b14c4566b5d',
+  l2_transaction_hash: '0x436d1c7ada270466ca0facdb96ecc22934d68d13b8a08f541b8df11b222967b5',
+  symbol: 'ETH',
+  timestamp: '2023-06-01T14:46:48.000000Z',
+  value: '0.13040262',
+};
 
 export const ZKEVM_L2_TXN_BATCHES_ITEM: ZkEvmL2TxnBatchesItem = {
   timestamp: '2023-06-01T14:46:48.000000Z',
