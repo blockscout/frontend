@@ -1,5 +1,5 @@
 import type { RawTracesResponse } from 'types/api/rawTrace';
-import type { Transaction } from 'types/api/transaction';
+import type { Transaction, TransactionsStats } from 'types/api/transaction';
 
 import { ADDRESS_PARAMS } from './addressParams';
 
@@ -59,3 +59,10 @@ export const TX_ZKEVM_L2: Transaction = {
 };
 
 export const TX_RAW_TRACE: RawTracesResponse = [];
+
+export const TXS_STATS: TransactionsStats = {
+  pending_transactions_count: '4200',
+  transaction_fees_avg_24h: '22342870314428',
+  transaction_fees_sum_24h: '22184012506492688277',
+  transactions_count_24h: '992890',
+};

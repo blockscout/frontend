@@ -4,7 +4,7 @@ import type { TimeChartData } from 'ui/shared/chart/types';
 
 import type { ResourcePayload } from 'lib/api/resources';
 
-export type ChartsResources = 'stats_charts_txs' | 'stats_charts_market';
+export type ChartsResources = 'stats_charts_txs' | 'stats_charts_market' | 'stats_charts_secondary_coin_price';
 
 export interface TChainIndicator<R extends ChartsResources> {
   id: ChainIndicatorId;

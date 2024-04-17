@@ -18,3 +18,8 @@ export interface ChartMarketResponse {
   available_supply: string;
   chart_data: Array<ChartMarketItem>;
 }
+
+export interface ChartSecondaryCoinPriceResponse {
+  available_supply: string;
+  chart_data: Array<ChartMarketItem>;
+}
