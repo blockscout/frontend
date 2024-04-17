@@ -16,11 +16,11 @@ const LOGO_IMAGE_PROPS = {
 };
 
 type Props = {
-  isHomePage?: boolean;
+  hideSearchBar?: boolean;
   renderSearchBar?: () => React.ReactNode;
 }
 
-const HeaderMobile = ({ isHomePage, renderSearchBar }: Props) => {
+const HeaderMobile = ({ hideSearchBar, renderSearchBar }: Props) => {
   const bgColor = useColorModeValue('white', 'black');
   const scrollDirection = useScrollDirection();
   const { ref, inView } = useInView({ threshold: 1 });
@@ -57,7 +57,7 @@ const HeaderMobile = ({ isHomePage, renderSearchBar }: Props) => {
           { config.features.blockchainInteraction.isEnabled && <WalletMenuMobile/> }
         </Flex>
       </Flex>
-      { !isHomePage && searchBar }
+      { !hideSearchBar && searchBar }
     </Box>
   );
 };
