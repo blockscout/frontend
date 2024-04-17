@@ -13,16 +13,17 @@ interface Props {
   height?: string;
   onlyIcon?: boolean;
   onClick?: () => void;
+  label?: string;
 }
 
 const SolidityscanReportButton = (
-  { className, score, isLoading, height = '32px', onlyIcon, onClick }: Props,
+  { className, score, isLoading, height = '32px', onlyIcon, onClick, label = 'Security score' }: Props,
   ref: React.ForwardedRef<HTMLButtonElement>,
 ) => {
   const { scoreColor } = useScoreLevelAndColor(score);
 
   return (
-    <PopoverTriggerTooltip label="Security score" isLoading={ isLoading } className={ className }>
+    <PopoverTriggerTooltip label={ label } isLoading={ isLoading } className={ className }>
       <Button
         ref={ ref }
         color={ scoreColor }

@@ -1,4 +1,4 @@
-import { Tooltip, useBoolean, useOutsideClick } from '@chakra-ui/react';
+import { Tooltip, useBoolean, useOutsideClick, Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -9,38 +9,46 @@ type Props = {
   children: React.ReactNode;
   isDisabled?: boolean;
   isMobile?: boolean;
+  isWalletConnected?: boolean;
+  isAutoConnectDisabled?: boolean;
 };
 
-const WalletTooltip = ({ children, isDisabled, isMobile }: Props) => {
+const LOCAL_STORAGE_KEY = 'wallet-connect-tooltip-shown';
+
+const WalletTooltip = ({ children, isDisabled, isMobile, isWalletConnected, isAutoConnectDisabled }: Props, ref: React.ForwardedRef<HTMLDivElement>) => {
   const router = useRouter();
   const [ isTooltipShown, setIsTooltipShown ] = useBoolean(false);
-  const ref = React.useRef(null);
-  useOutsideClick({ ref, handler: setIsTooltipShown.off });
+  const innerRef = React.useRef(null);
+  useOutsideClick({ ref: innerRef, handler: setIsTooltipShown.off });
 
-  const { defaultLabel, label, localStorageKey } = React.useMemo(() => {
-    const isAppPage = router.pathname === '/apps/[id]';
-    const defaultLabel = <span>Your wallet is used to interact with<br/>apps and contracts in the explorer</span>;
-    const label = isAppPage ?
-      <span>Connect once to use your wallet with<br/>all apps in the DAppscout marketplace!</span> :
-      defaultLabel;
-    const localStorageKey = `${ isAppPage ? 'dapp-' : '' }wallet-connect-tooltip-shown`;
-    return { defaultLabel, label, localStorageKey };
-  }, [ router.pathname ]);
+  const label = React.useMemo(() => {
+    if (isWalletConnected) {
+      if (isAutoConnectDisabled) {
+        return <span>Your wallet is not<br/>connected to this app.<br/>Connect your wallet<br/>in the app directly</span>;
+      }
+      return <span>Your wallet is connected<br/>with Blockscout</span>;
+    }
+    return <span>Connect your wallet<br/>to Blockscout for<br/>full-featured access</span>;
+  }, [ isWalletConnected, isAutoConnectDisabled ]);
+
+  const isAppPage = router.pathname === '/apps/[id]';
 
   React.useEffect(() => {
-    const wasShown = window.localStorage.getItem(localStorageKey);
-    const isMarketplacePage = [ '/apps', '/apps/[id]' ].includes(router.pathname);
+    const wasShown = window.localStorage.getItem(LOCAL_STORAGE_KEY);
+    const isMarketplacePage = router.pathname === '/apps';
     const isTooltipShowAction = router.query.action === 'tooltip';
     const isConnectWalletAction = router.query.action === 'connect';
-    const needToShow = (!wasShown && !isConnectWalletAction) || isTooltipShowAction;
+    const needToShow = (isAppPage && !isConnectWalletAction) || isTooltipShowAction || (!wasShown && isMarketplacePage);
     let timer1: ReturnType<typeof setTimeout>;
     let timer2: ReturnType<typeof setTimeout>;
 
-    if (!isDisabled && isMarketplacePage && needToShow) {
+    if (!isDisabled && needToShow) {
       timer1 = setTimeout(() => {
         setIsTooltipShown.on();
-        window.localStorage.setItem(localStorageKey, 'true');
         timer2 = setTimeout(() => setIsTooltipShown.off(), 5 * SECOND);
+        if (!wasShown && isMarketplacePage) {
+          window.localStorage.setItem(LOCAL_STORAGE_KEY, 'true');
+        }
         if (isTooltipShowAction) {
           removeQueryParam(router, 'action');
         }
@@ -51,23 +59,25 @@ const WalletTooltip = ({ children, isDisabled, isMobile }: Props) => {
       clearTimeout(timer1);
       clearTimeout(timer2);
     };
-  }, [ setIsTooltipShown, localStorageKey, isDisabled, router ]);
+  }, [ setIsTooltipShown, isDisabled, router, isAppPage ]);
 
   return (
-    <Tooltip
-      label={ isTooltipShown ? label : defaultLabel }
-      textAlign="center"
-      padding={ 2 }
-      isDisabled={ isDisabled }
-      openDelay={ 500 }
-      isOpen={ isTooltipShown || (isMobile ? false : undefined) }
-      onClose={ setIsTooltipShown.off }
-      display={ isMobile ? { base: 'flex', lg: 'none' } : { base: 'none', lg: 'flex' } }
-      ref={ ref }
-    >
-      { children }
-    </Tooltip>
+    <Box ref={ ref }>
+      <Tooltip
+        label={ label }
+        textAlign="center"
+        padding={ 2 }
+        isDisabled={ isDisabled || (isWalletConnected && !isAppPage) }
+        openDelay={ 500 }
+        isOpen={ isTooltipShown || (isMobile ? false : undefined) }
+        onClose={ setIsTooltipShown.off }
+        display={ isMobile ? { base: 'flex', lg: 'none' } : { base: 'none', lg: 'flex' } }
+        ref={ innerRef }
+      >
+        { children }
+      </Tooltip>
+    </Box>
   );
 };
 
-export default WalletTooltip;
+export default React.forwardRef(WalletTooltip);

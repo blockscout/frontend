@@ -116,6 +116,21 @@ test('search by blob hash +@mobile', async({ render, mockApiResponse }) => {
   await expect(component.locator('main')).toHaveScreenshot();
 });
 
+test('search by domain name +@mobile', async({ render, mockApiResponse }) => {
+  const hooksConfig = {
+    router: {
+      query: { q: searchMock.domain1.ens_info.name },
+    },
+  };
+  const data = {
+    items: [ searchMock.domain1 ],
+    next_page_params: null,
+  };
+  await mockApiResponse('search', data, { queryParams: { q: searchMock.domain1.ens_info.name } });
+  const component = await render(<SearchResults/>, { hooksConfig });
+  await expect(component.locator('main')).toHaveScreenshot();
+});
+
 test('search by user op hash +@mobile', async({ render, mockApiResponse, mockEnvs }) => {
   const hooksConfig = {
     router: {

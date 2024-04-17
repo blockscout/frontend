@@ -119,6 +119,18 @@ test('search by blob hash +@mobile', async({ render, page, mockApiResponse }) =>
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
 });
 
+test('search by domain name +@mobile', async({ render, page, mockApiResponse }) => {
+  const apiUrl = await mockApiResponse('quick_search', [
+    searchMock.domain1,
+  ], { queryParams: { q: searchMock.domain1.ens_info.name } });
+
+  await render(<SearchBar/>);
+  await page.getByPlaceholder(/search/i).fill(searchMock.domain1.ens_info.name);
+  await page.waitForResponse(apiUrl);
+
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
+});
+
 test('search by user op hash +@mobile', async({ render, page, mockApiResponse, mockEnvs }) => {
   await mockEnvs([
     [ 'NEXT_PUBLIC_HAS_USER_OPS', 'true' ],

@@ -8,6 +8,7 @@ import type { AddressBlocksValidatedResponse } from 'types/api/address';
 
 import config from 'configs/app';
 import { getResourceKey } from 'lib/api/useApiQuery';
+import useIsMounted from 'lib/hooks/useIsMounted';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { currencyUnits } from 'lib/units';
@@ -25,12 +26,14 @@ import AddressBlocksValidatedTableItem from './blocksValidated/AddressBlocksVali
 
 interface Props {
   scrollRef?: React.RefObject<HTMLDivElement>;
+  shouldRender?: boolean;
 }
 
-const AddressBlocksValidated = ({ scrollRef }: Props) => {
+const AddressBlocksValidated = ({ scrollRef, shouldRender = true }: Props) => {
   const [ socketAlert, setSocketAlert ] = React.useState(false);
   const queryClient = useQueryClient();
   const router = useRouter();
+  const isMounted = useIsMounted();
 
   const addressHash = String(router.query.hash);
   const query = useQueryWithPages({
@@ -83,6 +86,10 @@ const AddressBlocksValidated = ({ scrollRef }: Props) => {
     event: 'new_block',
     handler: handleNewSocketMessage,
   });
+
+  if (!isMounted || !shouldRender) {
+    return null;
+  }
 
   const content = query.data?.items ? (
     <>

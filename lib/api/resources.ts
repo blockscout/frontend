@@ -34,7 +34,7 @@ import type {
 import type { AddressesResponse } from 'types/api/addresses';
 import type { TxBlobs, Blob } from 'types/api/blobs';
 import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters, BlockWithdrawalsResponse } from 'types/api/block';
-import type { ChartMarketResponse, ChartTransactionResponse } from 'types/api/charts';
+import type { ChartMarketResponse, ChartSecondaryCoinPriceResponse, ChartTransactionResponse } from 'types/api/charts';
 import type { BackendVersionConfig } from 'types/api/configs';
 import type {
   SmartContract,
@@ -88,6 +88,7 @@ import type {
   TransactionsResponseWatchlist,
   TransactionsSorting,
   TransactionsResponseWithBlobs,
+  TransactionsStats,
 } from 'types/api/transaction';
 import type { TxInterpretationResponse } from 'types/api/txInterpretation';
 import type { TTxsFilters, TTxsWithBlobsFilters } from 'types/api/txsFilters';
@@ -275,6 +276,9 @@ export const RESOURCES = {
     path: '/api/v2/blocks/:height_or_hash/withdrawals',
     pathParams: [ 'height_or_hash' as const ],
     filterFields: [],
+  },
+  txs_stats: {
+    path: '/api/v2/transactions/stats',
   },
   txs_validated: {
     path: '/api/v2/transactions',
@@ -539,6 +543,9 @@ export const RESOURCES = {
   },
   stats_charts_market: {
     path: '/api/v2/stats/charts/market',
+  },
+  stats_charts_secondary_coin_price: {
+    path: '/api/v2/stats/charts/secondary-coin-market',
   },
 
   // HOMEPAGE
@@ -823,6 +830,7 @@ Q extends 'token_info_applications' ? TokenInfoApplications :
 Q extends 'stats' ? HomeStats :
 Q extends 'stats_charts_txs' ? ChartTransactionResponse :
 Q extends 'stats_charts_market' ? ChartMarketResponse :
+Q extends 'stats_charts_secondary_coin_price' ? ChartSecondaryCoinPriceResponse :
 Q extends 'homepage_blocks' ? Array<Block> :
 Q extends 'homepage_txs' ? Array<Transaction> :
 Q extends 'homepage_txs_watchlist' ? Array<Transaction> :
@@ -838,6 +846,7 @@ Q extends 'blocks' ? BlocksResponse :
 Q extends 'block' ? Block :
 Q extends 'block_txs' ? BlockTransactionsResponse :
 Q extends 'block_withdrawals' ? BlockWithdrawalsResponse :
+Q extends 'txs_stats' ? TransactionsStats :
 Q extends 'txs_validated' ? TransactionsResponseValidated :
 Q extends 'txs_pending' ? TransactionsResponsePending :
 Q extends 'txs_with_blobs' ? TransactionsResponseWithBlobs :
