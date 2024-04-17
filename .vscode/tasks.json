@@ -340,7 +340,7 @@
               "main.L2",
               "eth",
               "eth_goerli",
-              "sepolia",
+              "eth_sepolia",
               "polygon",
               "zkevm",
               "zksync",
