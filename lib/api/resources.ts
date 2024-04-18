@@ -595,40 +595,39 @@ export const RESOURCES = {
   },
 
   // optimistic L2
-  // TODO @tom2drum rename these resources to be consistent with other L2s
-  l2_deposits: {
+  optimistic_l2_deposits: {
     path: '/api/v2/optimism/deposits',
     filterFields: [],
   },
 
-  l2_deposits_count: {
+  optimistic_l2_deposits_count: {
     path: '/api/v2/optimism/deposits/count',
   },
 
-  l2_withdrawals: {
+  optimistic_l2_withdrawals: {
     path: '/api/v2/optimism/withdrawals',
     filterFields: [],
   },
 
-  l2_withdrawals_count: {
+  optimistic_l2_withdrawals_count: {
     path: '/api/v2/optimism/withdrawals/count',
   },
 
-  l2_output_roots: {
+  optimistic_l2_output_roots: {
     path: '/api/v2/optimism/output-roots',
     filterFields: [],
   },
 
-  l2_output_roots_count: {
+  optimistic_l2_output_roots_count: {
     path: '/api/v2/optimism/output-roots/count',
   },
 
-  l2_txn_batches: {
+  optimistic_l2_txn_batches: {
     path: '/api/v2/optimism/txn-batches',
     filterFields: [],
   },
 
-  l2_txn_batches_count: {
+  optimistic_l2_txn_batches_count: {
     path: '/api/v2/optimism/txn-batches/count',
   },
 
@@ -828,7 +827,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'token_transfers' | 'token_holders' | 'token_inventory' | 'tokens' | 'tokens_bridged' |
 'token_instance_transfers' | 'token_instance_holders' |
 'verified_contracts' |
-'l2_output_roots' | 'l2_withdrawals' | 'l2_txn_batches' | 'l2_deposits' |
+'optimistic_l2_output_roots' | 'optimistic_l2_withdrawals' | 'optimistic_l2_txn_batches' | 'optimistic_l2_deposits' |
 'shibarium_deposits' | 'shibarium_withdrawals' |
 'zkevm_l2_deposits' | 'zkevm_l2_withdrawals' | 'zkevm_l2_txn_batches' | 'zkevm_l2_txn_batch_txs' |
 'zksync_l2_txn_batches' | 'zksync_l2_txn_batch_txs' |
@@ -928,14 +927,14 @@ Q extends 'visualize_sol2uml' ? VisualizedContract :
 Q extends 'contract_verification_config' ? SmartContractVerificationConfig :
 Q extends 'withdrawals' ? WithdrawalsResponse :
 Q extends 'withdrawals_counters' ? WithdrawalsCounters :
-Q extends 'l2_output_roots' ? OptimisticL2OutputRootsResponse :
-Q extends 'l2_withdrawals' ? OptimisticL2WithdrawalsResponse :
-Q extends 'l2_deposits' ? OptimisticL2DepositsResponse :
-Q extends 'l2_txn_batches' ? OptimisticL2TxnBatchesResponse :
-Q extends 'l2_output_roots_count' ? number :
-Q extends 'l2_withdrawals_count' ? number :
-Q extends 'l2_deposits_count' ? number :
-Q extends 'l2_txn_batches_count' ? number :
+Q extends 'optimistic_l2_output_roots' ? OptimisticL2OutputRootsResponse :
+Q extends 'optimistic_l2_withdrawals' ? OptimisticL2WithdrawalsResponse :
+Q extends 'optimistic_l2_deposits' ? OptimisticL2DepositsResponse :
+Q extends 'optimistic_l2_txn_batches' ? OptimisticL2TxnBatchesResponse :
+Q extends 'optimistic_l2_output_roots_count' ? number :
+Q extends 'optimistic_l2_withdrawals_count' ? number :
+Q extends 'optimistic_l2_deposits_count' ? number :
+Q extends 'optimistic_l2_txn_batches_count' ? number :
 Q extends 'config_backend_version' ? BackendVersionConfig :
 never;
 // !!! IMPORTANT !!!

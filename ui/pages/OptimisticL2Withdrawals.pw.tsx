@@ -14,8 +14,8 @@ const test = base.extend({
   context: contextWithEnvs(configs.featureEnvs.optimisticRollup) as any,
 });
 
-const WITHDRAWALS_API_URL = buildApiUrl('l2_withdrawals');
-const WITHDRAWALS_COUNT_API_URL = buildApiUrl('l2_withdrawals_count');
+const WITHDRAWALS_API_URL = buildApiUrl('optimistic_l2_withdrawals');
+const WITHDRAWALS_COUNT_API_URL = buildApiUrl('optimistic_l2_withdrawals_count');
 
 test('base view +@mobile', async({ mount, page }) => {
   // test on mobile is flaky
