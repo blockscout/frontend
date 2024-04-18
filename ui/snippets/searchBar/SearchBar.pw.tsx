@@ -1,322 +1,190 @@
-import { test as base, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
-import { buildExternalAssetFilePath } from 'configs/app/utils';
-import * as textAdMock from 'mocks/ad/textAd';
 import { apps as appsMock } from 'mocks/apps/apps';
 import * as searchMock from 'mocks/search/index';
-import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
-import TestApp from 'playwright/TestApp';
-import * as app from 'playwright/utils/app';
-import buildApiUrl from 'playwright/utils/buildApiUrl';
-import * as configs from 'playwright/utils/configs';
+import { test, expect } from 'playwright/lib';
 
 import SearchBar from './SearchBar';
 
-const test = base.extend({
-  context: contextWithEnvs([
-    { name: 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', value: '' },
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ]) as any,
+test.beforeEach(async({ mockAssetResponse, mockEnvs }) => {
+  await mockAssetResponse(searchMock.token1.icon_url as string, './playwright/mocks/image_s.jpg');
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_MARKETPLACE_ENABLED', 'false' ],
+  ]);
 });
 
-test.beforeEach(async({ page }) => {
-  await page.route('https://request-global.czilladx.com/serve/native.php?z=19260bf627546ab7242', (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(textAdMock.duck),
-  }));
-  await page.route(textAdMock.duck.ad.thumbnail, (route) => {
-    return route.fulfill({
-      status: 200,
-      path: './playwright/mocks/image_s.jpg',
-    });
-  });
-  await page.route(searchMock.token1.icon_url as string, (route) => {
-    return route.fulfill({
-      status: 200,
-      path: './playwright/mocks/image_s.jpg',
-    });
-  });
-});
-
-test('search by token name  +@mobile +@dark-mode', async({ mount, page }) => {
-  const API_URL = buildApiUrl('quick_search') + '?q=o';
-  await page.route(API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify([
-      searchMock.token1,
-      searchMock.token2,
-    ]),
-  }));
-
-  await mount(
-    <TestApp>
-      <SearchBar/>
-    </TestApp>,
-  );
+test('search by token name  +@mobile +@dark-mode', async({ render, page, mockApiResponse }) => {
+  const apiUrl = await mockApiResponse('quick_search', [
+    searchMock.token1,
+    searchMock.token2,
+  ], { queryParams: { q: 'o' } });
+  await render(<SearchBar/>);
   await page.getByPlaceholder(/search/i).fill('o');
-  await page.waitForResponse(API_URL);
+  await page.waitForResponse(apiUrl);
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
 });
 
-test('search by contract name  +@mobile +@dark-mode', async({ mount, page }) => {
-  const API_URL = buildApiUrl('quick_search') + '?q=o';
-  await page.route(API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify([
-      searchMock.contract1,
-      searchMock.address2,
-    ]),
-  }));
+test('search by contract name  +@mobile +@dark-mode', async({ render, page, mockApiResponse }) => {
+  const apiUrl = await mockApiResponse('quick_search', [
+    searchMock.contract1,
+    searchMock.address2,
+  ], { queryParams: { q: 'o' } });
 
-  await mount(
-    <TestApp>
-      <SearchBar/>
-    </TestApp>,
-  );
+  await render(<SearchBar/>);
   await page.getByPlaceholder(/search/i).fill('o');
-  await page.waitForResponse(API_URL);
+  await page.waitForResponse(apiUrl);
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
 });
 
-test('search by name homepage +@dark-mode', async({ mount, page }) => {
-  const API_URL = buildApiUrl('quick_search') + '?q=o';
-  await page.route(API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify([
-      searchMock.token1,
-      searchMock.token2,
-      searchMock.contract1,
-    ]),
-  }));
-
-  await mount(
-    <TestApp>
-      <SearchBar isHomepage/>
-    </TestApp>,
-  );
+test('search by name homepage +@dark-mode', async({ render, page, mockApiResponse }) => {
+  const apiUrl = await mockApiResponse('quick_search', [
+    searchMock.token1,
+    searchMock.token2,
+    searchMock.contract1,
+  ], { queryParams: { q: 'o' } });
+  await render(<SearchBar isHomepage/>);
   await page.getByPlaceholder(/search/i).fill('o');
-  await page.waitForResponse(API_URL);
+  await page.waitForResponse(apiUrl);
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
 });
 
-test('search by tag  +@mobile +@dark-mode', async({ mount, page }) => {
-  const API_URL = buildApiUrl('quick_search') + '?q=o';
-  await page.route(API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify([
-      searchMock.label1,
-    ]),
-  }));
-
-  await mount(
-    <TestApp>
-      <SearchBar/>
-    </TestApp>,
-  );
+test('search by tag  +@mobile +@dark-mode', async({ render, page, mockApiResponse }) => {
+  const apiUrl = await mockApiResponse('quick_search', [
+    searchMock.label1,
+  ], { queryParams: { q: 'o' } });
+  await render(<SearchBar/>);
   await page.getByPlaceholder(/search/i).fill('o');
-  await page.waitForResponse(API_URL);
+  await page.waitForResponse(apiUrl);
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
 });
 
-test('search by address hash +@mobile', async({ mount, page }) => {
-  const API_URL = buildApiUrl('quick_search') + `?q=${ searchMock.address1.address }`;
-  await page.route(API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify([
-      searchMock.address1,
-    ]),
-  }));
-
-  await mount(
-    <TestApp>
-      <SearchBar/>
-    </TestApp>,
-  );
+test('search by address hash +@mobile', async({ render, page, mockApiResponse }) => {
+  const apiUrl = await mockApiResponse('quick_search', [
+    searchMock.address1,
+  ], { queryParams: { q: searchMock.address1.address } });
+  await render(<SearchBar/>);
   await page.getByPlaceholder(/search/i).fill(searchMock.address1.address);
-  await page.waitForResponse(API_URL);
+  await page.waitForResponse(apiUrl);
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
 });
 
-test('search by block number +@mobile', async({ mount, page }) => {
-  const API_URL = buildApiUrl('quick_search') + `?q=${ searchMock.block1.block_number }`;
-  await page.route(API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify([
-      searchMock.block1,
-      searchMock.block2,
-      searchMock.block3,
-    ]),
-  }));
-
-  await mount(
-    <TestApp>
-      <SearchBar/>
-    </TestApp>,
-  );
+test('search by block number +@mobile', async({ render, page, mockApiResponse }) => {
+  const apiUrl = await mockApiResponse('quick_search', [
+    searchMock.block1,
+    searchMock.block2,
+    searchMock.block3,
+  ], { queryParams: { q: searchMock.block1.block_number } });
+  await render(<SearchBar/>);
   await page.getByPlaceholder(/search/i).fill(String(searchMock.block1.block_number));
-  await page.waitForResponse(API_URL);
+  await page.waitForResponse(apiUrl);
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 600 } });
 });
 
-test('search by block hash +@mobile', async({ mount, page }) => {
-  const API_URL = buildApiUrl('quick_search') + `?q=${ searchMock.block1.block_hash }`;
-  await page.route(API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify([
-      searchMock.block1,
-    ]),
-  }));
-
-  await mount(
-    <TestApp>
-      <SearchBar/>
-    </TestApp>,
-  );
+test('search by block hash +@mobile', async({ render, page, mockApiResponse }) => {
+  const apiUrl = await mockApiResponse('quick_search', [
+    searchMock.block1,
+  ], { queryParams: { q: searchMock.block1.block_hash } });
+  await render(<SearchBar/>);
   await page.getByPlaceholder(/search/i).fill(searchMock.block1.block_hash);
-  await page.waitForResponse(API_URL);
+  await page.waitForResponse(apiUrl);
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
 });
 
-test('search by tx hash +@mobile', async({ mount, page }) => {
-  const API_URL = buildApiUrl('quick_search') + `?q=${ searchMock.tx1.tx_hash }`;
-  await page.route(API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify([
-      searchMock.tx1,
-    ]),
-  }));
-
-  await mount(
-    <TestApp>
-      <SearchBar/>
-    </TestApp>,
-  );
+test('search by tx hash +@mobile', async({ render, page, mockApiResponse }) => {
+  const apiUrl = await mockApiResponse('quick_search', [
+    searchMock.tx1,
+  ], { queryParams: { q: searchMock.tx1.tx_hash } });
+  await render(<SearchBar/>);
   await page.getByPlaceholder(/search/i).fill(searchMock.tx1.tx_hash);
-  await page.waitForResponse(API_URL);
+  await page.waitForResponse(apiUrl);
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
 });
 
-test('search by blob hash +@mobile', async({ mount, page }) => {
-  const API_URL = buildApiUrl('quick_search') + `?q=${ searchMock.blob1.blob_hash }`;
-  await page.route(API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify([
-      searchMock.blob1,
-    ]),
-  }));
-
-  await mount(
-    <TestApp>
-      <SearchBar/>
-    </TestApp>,
-  );
+test('search by blob hash +@mobile', async({ render, page, mockApiResponse }) => {
+  const apiUrl = await mockApiResponse('quick_search', [
+    searchMock.blob1,
+  ], { queryParams: { q: searchMock.blob1.blob_hash } });
+  await render(<SearchBar/>);
   await page.getByPlaceholder(/search/i).fill(searchMock.blob1.blob_hash);
-  await page.waitForResponse(API_URL);
+  await page.waitForResponse(apiUrl);
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
 });
 
-const testWithUserOps = base.extend({
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  context: contextWithEnvs(configs.featureEnvs.userOps) as any,
+test('search by domain name +@mobile', async({ render, page, mockApiResponse }) => {
+  const apiUrl = await mockApiResponse('quick_search', [
+    searchMock.domain1,
+  ], { queryParams: { q: searchMock.domain1.ens_info.name } });
+
+  await render(<SearchBar/>);
+  await page.getByPlaceholder(/search/i).fill(searchMock.domain1.ens_info.name);
+  await page.waitForResponse(apiUrl);
+
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
 });
 
-testWithUserOps('search by user op hash +@mobile', async({ mount, page }) => {
-  await page.route('https://request-global.czilladx.com/serve/native.php?z=19260bf627546ab7242', (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(textAdMock.duck),
-  }));
-  const API_URL = buildApiUrl('quick_search') + `?q=${ searchMock.tx1.tx_hash }`;
-  await page.route(API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify([
-      searchMock.userOp1,
-    ]),
-  }));
-
-  await mount(
-    <TestApp>
-      <SearchBar/>
-    </TestApp>,
-  );
+test('search by user op hash +@mobile', async({ render, page, mockApiResponse, mockEnvs }) => {
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_HAS_USER_OPS', 'true' ],
+  ]);
+  const apiUrl = await mockApiResponse('quick_search', [
+    searchMock.userOp1,
+  ], { queryParams: { q: searchMock.tx1.tx_hash } });
+  await render(<SearchBar/>);
   await page.getByPlaceholder(/search/i).fill(searchMock.tx1.tx_hash);
-  await page.waitForResponse(API_URL);
+  await page.waitForResponse(apiUrl);
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
 });
 
-test('search with view all link', async({ mount, page }) => {
-  const API_URL = buildApiUrl('quick_search') + '?q=o';
-  await page.route(API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify([
-      searchMock.token1,
-      searchMock.token2,
-      searchMock.contract1,
-      ...Array(47).fill(searchMock.contract1),
-    ]),
-  }));
-
-  await mount(
-    <TestApp>
-      <SearchBar/>
-    </TestApp>,
-  );
+test('search with view all link', async({ render, page, mockApiResponse }) => {
+  const apiUrl = await mockApiResponse('quick_search', [
+    searchMock.token1,
+    searchMock.token2,
+    searchMock.contract1,
+    ...Array(47).fill(searchMock.contract1),
+  ], { queryParams: { q: 'o' } });
+  await render(<SearchBar/>);
   await page.getByPlaceholder(/search/i).fill('o');
-
-  await page.waitForResponse(API_URL);
+  await page.waitForResponse(apiUrl);
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
 });
 
-test('scroll suggest to category', async({ mount, page }) => {
-  const API_URL = buildApiUrl('quick_search') + '?q=o';
-  await page.route(API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify([
-      searchMock.token1,
-      searchMock.token2,
-      searchMock.contract1,
-      searchMock.token1,
-      searchMock.token2,
-      searchMock.contract1,
-      searchMock.token1,
-      searchMock.token2,
-      searchMock.contract1,
-      searchMock.token1,
-      searchMock.token2,
-      searchMock.contract1,
-    ]),
-  }));
-
-  await mount(
-    <TestApp>
-      <SearchBar/>
-    </TestApp>,
-  );
+test('scroll suggest to category', async({ render, page, mockApiResponse }) => {
+  const apiUrl = await mockApiResponse('quick_search', [
+    searchMock.token1,
+    searchMock.token2,
+    searchMock.contract1,
+    searchMock.token1,
+    searchMock.token2,
+    searchMock.contract1,
+    searchMock.token1,
+    searchMock.token2,
+    searchMock.contract1,
+    searchMock.token1,
+    searchMock.token2,
+    searchMock.contract1,
+  ], { queryParams: { q: 'o' } });
+  await render(<SearchBar/>);
   await page.getByPlaceholder(/search/i).fill('o');
-  await page.waitForResponse(API_URL);
+  await page.waitForResponse(apiUrl);
 
   await page.getByRole('tab', { name: 'Addresses' }).click();
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
 });
 
-test('recent keywords suggest +@mobile', async({ mount, page }) => {
-  await mount(
-    <TestApp>
-      <SearchBar/>
-    </TestApp>,
-  );
+test('recent keywords suggest +@mobile', async({ render, page }) => {
+  await render(<SearchBar/>);
   // eslint-disable-next-line max-len
   await page.evaluate(() => window.localStorage.setItem('recent_search_keywords', '["10x2d311959270e0bbdc1fc7bc6dbd8ad645c4dd8d6aa32f5f89d54629a924f112b","0x1d311959270e0bbdc1fc7bc6dbd8ad645c4dd8d6aa32f5f89d54629a924f112b","usd","bob"]'));
   await page.getByPlaceholder(/search/i).click();
@@ -324,50 +192,24 @@ test('recent keywords suggest +@mobile', async({ mount, page }) => {
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
 });
 
-base.describe('with apps', () => {
-  const MARKETPLACE_CONFIG_URL = app.url + buildExternalAssetFilePath('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', 'https://marketplace-config.json') || '';
-  const test = base.extend({
-    context: contextWithEnvs([
-      { name: 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', value: MARKETPLACE_CONFIG_URL },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ]) as any,
-  });
+test.describe('with apps', () => {
+  const MARKETPLACE_CONFIG_URL = 'https://marketplace-config.json';
 
-  test('default view +@mobile', async({ mount, page }) => {
-    const API_URL = buildApiUrl('quick_search') + '?q=o';
-    await page.route(API_URL, (route) => route.fulfill({
-      status: 200,
-      body: JSON.stringify([
-        searchMock.token1,
-      ]),
-    }));
+  test('default view +@mobile', async({ render, page, mockApiResponse, mockConfigResponse, mockAssetResponse, mockEnvs }) => {
+    await mockEnvs([
+      [ 'NEXT_PUBLIC_MARKETPLACE_ENABLED', 'true' ],
+      [ 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', MARKETPLACE_CONFIG_URL ],
+    ]);
+    const apiUrl = await mockApiResponse('quick_search', [
+      searchMock.token1,
+    ], { queryParams: { q: 'o' } });
+    await mockConfigResponse('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', MARKETPLACE_CONFIG_URL, JSON.stringify(appsMock));
+    await mockAssetResponse(appsMock[0].logo, './playwright/mocks/image_s.jpg');
+    await mockAssetResponse(appsMock[1].logo, './playwright/mocks/image_s.jpg');
 
-    await page.route(MARKETPLACE_CONFIG_URL, (route) => route.fulfill({
-      status: 200,
-      body: JSON.stringify(appsMock),
-    }));
-
-    await page.route(appsMock[0].logo, (route) => {
-      return route.fulfill({
-        status: 200,
-        path: './playwright/mocks/image_s.jpg',
-      });
-    });
-    await page.route(appsMock[1].logo as string, (route) => {
-      return route.fulfill({
-        status: 200,
-        path: './playwright/mocks/image_s.jpg',
-      });
-    });
-
-    await mount(
-      <TestApp>
-        <SearchBar/>
-      </TestApp>,
-    );
+    await render(<SearchBar/>);
     await page.getByPlaceholder(/search/i).fill('o');
-
-    await page.waitForResponse(API_URL);
+    await page.waitForResponse(apiUrl);
 
     await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
   });

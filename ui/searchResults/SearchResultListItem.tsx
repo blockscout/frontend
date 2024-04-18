@@ -14,6 +14,7 @@ import { ADDRESS_REGEXP } from 'lib/validations/address';
 import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as BlobEntity from 'ui/shared/entities/blob/BlobEntity';
 import * as BlockEntity from 'ui/shared/entities/block/BlockEntity';
+import * as EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import * as TxEntity from 'ui/shared/entities/tx/TxEntity';
 import * as UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
@@ -243,6 +244,30 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
           </UserOpEntity.Container>
         );
       }
+
+      case 'ens_domain': {
+        return (
+          <EnsEntity.Container>
+            <EnsEntity.Icon/>
+            <LinkInternal
+              href={ route({ pathname: '/address/[hash]', query: { hash: data.address } }) }
+              fontWeight={ 700 }
+              wordBreak="break-all"
+              isLoading={ isLoading }
+              onClick={ handleLinkClick }
+              overflow="hidden"
+            >
+              <Skeleton
+                isLoaded={ !isLoading }
+                dangerouslySetInnerHTML={{ __html: highlightText(data.ens_info.name, searchTerm) }}
+                whiteSpace="nowrap"
+                overflow="hidden"
+                textOverflow="ellipsis"
+              />
+            </LinkInternal>
+          </EnsEntity.Container>
+        );
+      }
     }
   })();
 
@@ -333,6 +358,21 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
           </>
         ) :
           null;
+      }
+      case 'ens_domain': {
+        const expiresText = data.ens_info?.expiry_date ? ` expires ${ dayjs(data.ens_info.expiry_date).fromNow() }` : '';
+        return (
+          <Flex alignItems="center" gap={ 3 }>
+            <Box overflow="hidden">
+              <HashStringShortenDynamic hash={ data.address }/>
+            </Box>
+            {
+              data.ens_info.names_count > 1 ?
+                <chakra.span color="text_secondary"> ({ data.ens_info.names_count > 39 ? '40+' : `+${ data.ens_info.names_count - 1 }` })</chakra.span> :
+                <chakra.span color="text_secondary">{ expiresText }</chakra.span>
+            }
+          </Flex>
+        );
       }
 
       default:

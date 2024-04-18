@@ -80,7 +80,7 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
   const iconSize = 20;
 
   return (
-    <Grid className={ className } alignItems="center" gridTemplateColumns={ `fit-content(100%) ${ iconSize }px fit-content(100%)` }>
+    <Grid className={ className } alignItems="center" gridTemplateColumns={ `minmax(auto, min-content) ${ iconSize }px minmax(auto, min-content)` }>
       <Entity
         address={ from }
         isLoading={ isLoading }

@@ -14,6 +14,7 @@ import { ADDRESS_REGEXP } from 'lib/validations/address';
 import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as BlobEntity from 'ui/shared/entities/blob/BlobEntity';
 import * as BlockEntity from 'ui/shared/entities/block/BlockEntity';
+import * as EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import * as TxEntity from 'ui/shared/entities/tx/TxEntity';
 import * as UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
@@ -333,6 +334,48 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
             </Td>
             <Td fontSize="sm" verticalAlign="middle" isNumeric>
               <Text variant="secondary">{ dayjs(data.timestamp).format('llll') }</Text>
+            </Td>
+          </>
+        );
+      }
+
+      case 'ens_domain': {
+        const expiresText = data.ens_info?.expiry_date ? ` expires ${ dayjs(data.ens_info.expiry_date).fromNow() }` : '';
+        return (
+          <>
+            <Td fontSize="sm">
+              <EnsEntity.Container>
+                <EnsEntity.Icon/>
+                <LinkInternal
+                  href={ route({ pathname: '/address/[hash]', query: { hash: data.address } }) }
+                  fontWeight={ 700 }
+                  wordBreak="break-all"
+                  isLoading={ isLoading }
+                  onClick={ handleLinkClick }
+                  overflow="hidden"
+                >
+                  <Skeleton
+                    isLoaded={ !isLoading }
+                    dangerouslySetInnerHTML={{ __html: highlightText(data.ens_info.name, searchTerm) }}
+                    whiteSpace="nowrap"
+                    overflow="hidden"
+                    textOverflow="ellipsis"
+                  />
+                </LinkInternal>
+              </EnsEntity.Container>
+            </Td>
+            <Td>
+              <Flex alignItems="center" overflow="hidden">
+                <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-28px)' : 'unset' }>
+                  <HashStringShortenDynamic hash={ data.address }/>
+                </Box>
+                { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
+              </Flex>
+            </Td>
+            <Td>
+              { data.ens_info.names_count > 1 ?
+                <chakra.span color="text_secondary"> ({ data.ens_info.names_count > 39 ? '40+' : `+${ data.ens_info.names_count - 1 }` })</chakra.span> :
+                <chakra.span color="text_secondary">{ expiresText }</chakra.span> }
             </Td>
           </>
         );

@@ -3,27 +3,35 @@ import { test as base } from '@playwright/experimental-ct-react';
 
 import * as textAdMock from 'mocks/ad/textAd';
 
-import type { MockApiResponseFixture } from './fixtures/mockApiResponse';
-import mockApiResponseFixture from './fixtures/mockApiResponse';
-import type { MockAssetResponseFixture } from './fixtures/mockAssetResponse';
-import mockAssetResponseFixture from './fixtures/mockAssetResponse';
-import type { RenderFixture } from './fixtures/render';
-import renderFixture from './fixtures/render';
-import type { CreateSocketFixture } from './fixtures/socketServer';
-import { createSocket as createSocketFixture } from './fixtures/socketServer';
+import * as injectMetaMaskProvider from './fixtures/injectMetaMaskProvider';
+import * as mockApiResponse from './fixtures/mockApiResponse';
+import * as mockAssetResponse from './fixtures/mockAssetResponse';
+import * as mockConfigResponse from './fixtures/mockConfigResponse';
+import * as mockEnvs from './fixtures/mockEnvs';
+import * as mockFeatures from './fixtures/mockFeatures';
+import * as render from './fixtures/render';
+import * as socketServer from './fixtures/socketServer';
 
 interface Fixtures {
-  render: RenderFixture;
-  mockApiResponse: MockApiResponseFixture;
-  mockAssetResponse: MockAssetResponseFixture;
-  createSocket: CreateSocketFixture;
+  render: render.RenderFixture;
+  mockApiResponse: mockApiResponse.MockApiResponseFixture;
+  mockAssetResponse: mockAssetResponse.MockAssetResponseFixture;
+  mockConfigResponse: mockConfigResponse.MockConfigResponseFixture;
+  mockEnvs: mockEnvs.MockEnvsFixture;
+  mockFeatures: mockFeatures.MockFeaturesFixture;
+  createSocket: socketServer.CreateSocketFixture;
+  injectMetaMaskProvider: injectMetaMaskProvider.InjectMetaMaskProvider;
 }
 
 const test = base.extend<Fixtures>({
-  render: renderFixture,
-  mockApiResponse: mockApiResponseFixture,
-  mockAssetResponse: mockAssetResponseFixture,
-  createSocket: createSocketFixture,
+  render: render.default,
+  mockApiResponse: mockApiResponse.default,
+  mockAssetResponse: mockAssetResponse.default,
+  mockConfigResponse: mockConfigResponse.default,
+  mockEnvs: mockEnvs.default,
+  mockFeatures: mockFeatures.default,
+  createSocket: socketServer.createSocket,
+  injectMetaMaskProvider: injectMetaMaskProvider.default,
 });
 
 test.beforeEach(async({ page }) => {

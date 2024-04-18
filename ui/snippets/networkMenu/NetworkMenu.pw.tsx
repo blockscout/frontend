@@ -1,45 +1,23 @@
-import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
-import { buildExternalAssetFilePath } from 'configs/app/utils';
 import { FEATURED_NETWORKS_MOCK } from 'mocks/config/network';
-import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
-import TestApp from 'playwright/TestApp';
-import * as app from 'playwright/utils/app';
+import { test, expect } from 'playwright/lib';
 
 import NetworkMenu from './NetworkMenu';
 
-const FEATURED_NETWORKS_URL = app.url + buildExternalAssetFilePath('NEXT_PUBLIC_FEATURED_NETWORKS', 'https://localhost:3000/featured-networks.json') || '';
+const FEATURED_NETWORKS_URL = 'https://localhost:3000/featured-networks.json';
+const LOGO_URL = 'https://localhost:3000/my-logo.png';
 
-const extendedTest = test.extend({
-  context: contextWithEnvs([
-    { name: 'NEXT_PUBLIC_FEATURED_NETWORKS', value: FEATURED_NETWORKS_URL },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ]) as any,
-});
+test.use({ viewport: { width: 1600, height: 1000 } });
 
-extendedTest.use({ viewport: { width: 1600, height: 1000 } });
+test('base view +@dark-mode', async({ render, page, mockConfigResponse, mockAssetResponse, mockEnvs }) => {
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL ],
+  ]);
+  await mockConfigResponse('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL, FEATURED_NETWORKS_MOCK);
+  await mockAssetResponse(LOGO_URL, './playwright/mocks/image_s.jpg');
 
-extendedTest('base view +@dark-mode', async({ mount, page }) => {
-  const LOGO_URL = 'https://localhost:3000/my-logo.png';
-  await page.route(LOGO_URL, (route) => {
-    return route.fulfill({
-      status: 200,
-      path: './playwright/mocks/image_s.jpg',
-    });
-  });
-  await page.route(FEATURED_NETWORKS_URL, (route) => {
-    return route.fulfill({
-      status: 200,
-      body: FEATURED_NETWORKS_MOCK,
-    });
-  });
-
-  const component = await mount(
-    <TestApp>
-      <NetworkMenu/>
-    </TestApp>,
-  );
+  const component = await render(<NetworkMenu/>);
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 36, height: 36 } });
 

@@ -8,7 +8,7 @@ export type TokensResponse = {
     items_count: number;
     name: string;
     market_cap: string | null;
-  };
+  } | null;
 }
 
 export type TokensFilters = { q: string; type: Array<TokenType> | undefined };

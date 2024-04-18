@@ -1,20 +1,16 @@
-import { test as base, expect, devices } from '@playwright/experimental-ct-react';
+import type { BrowserContext } from '@playwright/test';
 import React from 'react';
 
-import { buildExternalAssetFilePath } from 'configs/app/utils';
 import { FEATURED_NETWORKS_MOCK } from 'mocks/config/network';
-import authFixture from 'playwright/fixtures/auth';
-import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
-import createContextWithStorage from 'playwright/fixtures/createContextWithStorage';
-import TestApp from 'playwright/TestApp';
-import * as app from 'playwright/utils/app';
+import { contextWithAuth } from 'playwright/fixtures/auth';
+import { test, expect, devices } from 'playwright/lib';
 
 import Burger from './Burger';
 
-const FEATURED_NETWORKS_URL = app.url + buildExternalAssetFilePath('NEXT_PUBLIC_FEATURED_NETWORKS', 'https://localhost:3000/featured-networks.json') || '';
+const FEATURED_NETWORKS_URL = 'https://localhost:3000/featured-networks.json';
 const LOGO_URL = 'https://localhost:3000/my-logo.png';
 
-base.use({ viewport: devices['iPhone 13 Pro'].viewport });
+test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 
 const hooksConfig = {
   router: {
@@ -24,32 +20,16 @@ const hooksConfig = {
   },
 };
 
-const test = base.extend({
-  context: contextWithEnvs([
-    { name: 'NEXT_PUBLIC_FEATURED_NETWORKS', value: FEATURED_NETWORKS_URL },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ]) as any,
+test.beforeEach(async({ mockEnvs, mockConfigResponse, mockAssetResponse }) => {
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL ],
+  ]);
+  await mockConfigResponse('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL, FEATURED_NETWORKS_MOCK);
+  await mockAssetResponse(LOGO_URL, './playwright/mocks/image_s.jpg');
 });
 
-test('base view', async({ mount, page }) => {
-  await page.route(FEATURED_NETWORKS_URL, (route) => {
-    return route.fulfill({
-      body: FEATURED_NETWORKS_MOCK,
-    });
-  });
-  await page.route(LOGO_URL, (route) => {
-    return route.fulfill({
-      status: 200,
-      path: './playwright/mocks/image_s.jpg',
-    });
-  });
-
-  const component = await mount(
-    <TestApp>
-      <Burger/>
-    </TestApp>,
-    { hooksConfig },
-  );
+test('base view', async({ render, page }) => {
+  const component = await render(<Burger/>, { hooksConfig });
 
   await component.locator('div[aria-label="Menu button"]').click();
   await expect(page.locator('.chakra-modal__content-container')).toHaveScreenshot();
@@ -61,25 +41,8 @@ test('base view', async({ mount, page }) => {
 test.describe('dark mode', () => {
   test.use({ colorScheme: 'dark' });
 
-  test('base view', async({ mount, page }) => {
-    await page.route(FEATURED_NETWORKS_URL, (route) => {
-      return route.fulfill({
-        body: FEATURED_NETWORKS_MOCK,
-      });
-    });
-    await page.route(LOGO_URL, (route) => {
-      return route.fulfill({
-        status: 200,
-        path: './playwright/mocks/image_s.jpg',
-      });
-    });
-
-    const component = await mount(
-      <TestApp>
-        <Burger/>
-      </TestApp>,
-      { hooksConfig },
-    );
+  test('base view', async({ render, page }) => {
+    const component = await render(<Burger/>, { hooksConfig });
 
     await component.locator('div[aria-label="Menu button"]').click();
     await expect(page).toHaveScreenshot();
@@ -89,39 +52,23 @@ test.describe('dark mode', () => {
   });
 });
 
-test('submenu', async({ mount, page }) => {
-  const component = await mount(
-    <TestApp>
-      <Burger/>
-    </TestApp>,
-    { hooksConfig },
-  );
+test('submenu', async({ render, page }) => {
+  const component = await render(<Burger/>, { hooksConfig });
 
   await component.locator('div[aria-label="Menu button"]').click();
   await page.locator('div[aria-label="Blockchain link group"]').click();
   await expect(page).toHaveScreenshot();
 });
 
-test.describe('auth', () => {
-  const extendedTest = base.extend({
-    context: async({ browser }, use) => {
-      const context = await createContextWithStorage(browser, [
-        { name: 'NEXT_PUBLIC_FEATURED_NETWORKS', value: FEATURED_NETWORKS_URL },
-      ]);
-      authFixture(context);
-      use(context);
-    },
-  });
+const authTest = test.extend<{ context: BrowserContext }>({
+  context: contextWithAuth,
+});
 
-  extendedTest.use({ viewport: { width: devices['iPhone 13 Pro'].viewport.width, height: 800 } });
+authTest.describe('auth', () => {
+  authTest.use({ viewport: { width: devices['iPhone 13 Pro'].viewport.width, height: 800 } });
 
-  extendedTest('base view', async({ mount, page }) => {
-    const component = await mount(
-      <TestApp>
-        <Burger/>
-      </TestApp>,
-      { hooksConfig },
-    );
+  authTest('base view', async({ render, page }) => {
+    const component = await render(<Burger/>, { hooksConfig });
 
     await component.locator('div[aria-label="Menu button"]').click();
     await expect(page).toHaveScreenshot();
