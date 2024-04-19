@@ -80,6 +80,10 @@ const AdaptiveTabsList = (props: Props) => {
     >
       { tabsList.map((tab, index) => {
         if (!tab.id) {
+          if (props.isLoading) {
+            return null;
+          }
+
           return (
             <TabsMenu
               key="menu"
