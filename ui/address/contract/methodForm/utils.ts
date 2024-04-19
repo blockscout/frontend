@@ -10,16 +10,38 @@ export const BYTES_REGEXP = /^bytes(\d+)?$/i;
 
 export const ARRAY_REGEXP = /^(.*)\[(\d*)\]$/;
 
+export interface MatchArray {
+  itemType: SmartContractMethodArgType;
+  size: number;
+  isNested: boolean;
+}
+
+export const matchArray = (argType: SmartContractMethodArgType): MatchArray | null => {
+  const match = argType.match(ARRAY_REGEXP);
+  if (!match) {
+    return null;
+  }
+
+  const [ , itemType, size ] = match;
+  const isNested = Boolean(matchArray(itemType as SmartContractMethodArgType));
+
+  return {
+    itemType: itemType as SmartContractMethodArgType,
+    size: size ? Number(size) : Infinity,
+    isNested,
+  };
+};
+
 export const transformDataForArrayItem = (data: SmartContractMethodInput, index: number): SmartContractMethodInput => {
-  // TODO @tom2drum handle the case when array has size
-  const childrenType = data.type.slice(0, -2) as SmartContractMethodArgType;
-  const childrenInternalType = data.internalType?.slice(0, -2).replaceAll('struct ', '');
+  const arrayMatchType = matchArray(data.type);
+  const arrayMatchInternalType = data.internalType ? matchArray(data.internalType as SmartContractMethodArgType) : null;
+  const childrenInternalType = arrayMatchInternalType?.itemType.replaceAll('struct ', '');
 
   const postfix = childrenInternalType ? ' ' + childrenInternalType : '';
 
   return {
     ...data,
-    type: childrenType,
+    type: arrayMatchType?.itemType || data.type,
     internalType: childrenInternalType,
     name: `#${ index + 1 }${ postfix }`,
   };

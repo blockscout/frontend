@@ -10,7 +10,7 @@ import ContractMethodFieldAccordion from './ContractMethodFieldAccordion';
 import ContractMethodFieldInput from './ContractMethodFieldInput';
 import ContractMethodFieldInputTuple from './ContractMethodFieldInputTuple';
 import ContractMethodFieldLabel from './ContractMethodFieldLabel';
-import { getFieldLabel, transformDataForArrayItem } from './utils';
+import { getFieldLabel, matchArray, transformDataForArrayItem } from './utils';
 
 interface Props extends Pick<AccordionProps, 'onAddClick' | 'onRemoveClick' | 'index'> {
   data: SmartContractMethodInput;
@@ -18,14 +18,27 @@ interface Props extends Pick<AccordionProps, 'onAddClick' | 'onRemoveClick' | 'i
   basePath: string;
   isDisabled: boolean;
   isArrayElement?: boolean;
+  size?: number;
 }
 
-const ContractMethodFieldInputArray = ({ data, level, basePath, onAddClick, onRemoveClick, index: parentIndex, isDisabled, isArrayElement }: Props) => {
+const ContractMethodFieldInputArray = ({
+  data,
+  level,
+  basePath,
+  onAddClick,
+  onRemoveClick,
+  index: parentIndex,
+  isDisabled,
+  isArrayElement,
+}: Props) => {
   const { formState: { errors } } = useFormContext();
   const fieldsWithErrors = Object.keys(errors);
   const isInvalid = fieldsWithErrors.some((field) => field.startsWith(basePath));
 
-  const [ registeredIndices, setRegisteredIndices ] = React.useState([ 0 ]);
+  const arrayMatch = matchArray(data.type);
+  const hasFixedSize = arrayMatch !== null && arrayMatch.size !== Infinity;
+
+  const [ registeredIndices, setRegisteredIndices ] = React.useState(hasFixedSize ? Array(arrayMatch.size).fill(0).map((_, i) => i) : [ 0 ]);
 
   const handleAddButtonClick = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -40,9 +53,7 @@ const ContractMethodFieldInputArray = ({ data, level, basePath, onAddClick, onRe
     }
   }, [ ]);
 
-  const isNestedArray = data.type.includes('[][]');
-
-  if (isNestedArray) {
+  if (arrayMatch?.isNested) {
     return (
       <>
         {
@@ -57,8 +68,8 @@ const ContractMethodFieldInputArray = ({ data, level, basePath, onAddClick, onRe
                 level={ level + 1 }
                 label={ getFieldLabel(itemData) }
                 isInvalid={ itemIsInvalid }
-                onAddClick={ index === registeredIndices.length - 1 ? handleAddButtonClick : undefined }
-                onRemoveClick={ registeredIndices.length > 1 ? handleRemoveButtonClick : undefined }
+                onAddClick={ !hasFixedSize && index === registeredIndices.length - 1 ? handleAddButtonClick : undefined }
+                onRemoveClick={ !hasFixedSize && registeredIndices.length > 1 ? handleRemoveButtonClick : undefined }
                 index={ registeredIndex }
               >
                 <ContractMethodFieldInputArray
@@ -77,7 +88,7 @@ const ContractMethodFieldInputArray = ({ data, level, basePath, onAddClick, onRe
     );
   }
 
-  const isTupleArray = data.type.includes('tuple');
+  const isTupleArray = arrayMatch?.itemType.includes('tuple');
 
   if (isTupleArray) {
     const content = (
@@ -91,8 +102,8 @@ const ContractMethodFieldInputArray = ({ data, level, basePath, onAddClick, onRe
               data={ itemData }
               basePath={ `${ basePath }:${ registeredIndex }` }
               level={ level + 1 }
-              onAddClick={ index === registeredIndices.length - 1 ? handleAddButtonClick : undefined }
-              onRemoveClick={ registeredIndices.length > 1 ? handleRemoveButtonClick : undefined }
+              onAddClick={ !hasFixedSize && index === registeredIndices.length - 1 ? handleAddButtonClick : undefined }
+              onRemoveClick={ !hasFixedSize && registeredIndices.length > 1 ? handleRemoveButtonClick : undefined }
               index={ registeredIndex }
               isDisabled={ isDisabled }
             />
@@ -137,9 +148,9 @@ const ContractMethodFieldInputArray = ({ data, level, basePath, onAddClick, onRe
                 px={ 0 }
                 isDisabled={ isDisabled }
               />
-              { registeredIndices.length > 1 &&
+              { !hasFixedSize && registeredIndices.length > 1 &&
                 <ContractMethodArrayButton index={ registeredIndex } onClick={ handleRemoveButtonClick } type="remove" my="6px"/> }
-              { index === registeredIndices.length - 1 &&
+              { !hasFixedSize && index === registeredIndices.length - 1 &&
                 <ContractMethodArrayButton index={ registeredIndex } onClick={ handleAddButtonClick } type="add" my="6px"/> }
             </Flex>
           );

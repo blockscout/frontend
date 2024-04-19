@@ -16,7 +16,7 @@ import ContractMethodFieldInput from './ContractMethodFieldInput';
 import ContractMethodFieldInputArray from './ContractMethodFieldInputArray';
 import ContractMethodFieldInputTuple from './ContractMethodFieldInputTuple';
 import ContractMethodFormOutputs from './ContractMethodFormOutputs';
-import { ARRAY_REGEXP, getFieldLabel, transformFormDataToMethodArgs } from './utils';
+import { getFieldLabel, matchArray, transformFormDataToMethodArgs } from './utils';
 import type { ContractMethodFormFields } from './utils';
 
 interface Props<T extends SmartContractMethod> {
@@ -98,25 +98,25 @@ const ContractMethodForm = <T extends SmartContractMethod>({ data, onSubmit, res
                 return <ContractMethodFieldInputTuple key={ index } data={ input } basePath={ `${ index }` } level={ 0 } isDisabled={ isLoading }/>;
               }
 
-              const isNestedArray = input.type.includes('[][]');
-              if (isNestedArray) {
-                const fieldsWithErrors = Object.keys(formApi.formState.errors);
-                const isInvalid = fieldsWithErrors.some((field) => field.startsWith(index + ':'));
+              const arrayMatch = matchArray(input.type);
 
-                return (
-                  <ContractMethodFieldAccordion
-                    key={ index }
-                    level={ 0 }
-                    label={ getFieldLabel(input) }
-                    isInvalid={ isInvalid }
-                  >
-                    <ContractMethodFieldInputArray data={ input } basePath={ `${ index }` } level={ 0 } isDisabled={ isLoading }/>
-                  </ContractMethodFieldAccordion>
-                );
-              }
-
-              const arrayMatch = input.type.match(ARRAY_REGEXP);
               if (arrayMatch) {
+                if (arrayMatch.isNested) {
+                  const fieldsWithErrors = Object.keys(formApi.formState.errors);
+                  const isInvalid = fieldsWithErrors.some((field) => field.startsWith(index + ':'));
+
+                  return (
+                    <ContractMethodFieldAccordion
+                      key={ index }
+                      level={ 0 }
+                      label={ getFieldLabel(input) }
+                      isInvalid={ isInvalid }
+                    >
+                      <ContractMethodFieldInputArray data={ input } basePath={ `${ index }` } level={ 0 } isDisabled={ isLoading }/>
+                    </ContractMethodFieldAccordion>
+                  );
+                }
+
                 return <ContractMethodFieldInputArray key={ index } data={ input } basePath={ `${ index }` } level={ 0 } isDisabled={ isLoading }/>;
               }
 
