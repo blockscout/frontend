@@ -32,6 +32,25 @@ export const matchArray = (argType: SmartContractMethodArgType): MatchArray | nu
   };
 };
 
+export interface MatchInt {
+  isUnsigned: boolean;
+  power: string;
+  min: bigint;
+  max: bigint;
+}
+
+export const matchInt = (argType: SmartContractMethodArgType): MatchInt | null => {
+  const match = argType.match(INT_REGEXP);
+  if (!match) {
+    return null;
+  }
+
+  const [ , isUnsigned, power = '256' ] = match;
+  const [ min, max ] = getIntBoundaries(Number(power), Boolean(isUnsigned));
+
+  return { isUnsigned: Boolean(isUnsigned), power, min, max };
+};
+
 export const transformDataForArrayItem = (data: SmartContractMethodInput, index: number): SmartContractMethodInput => {
   const arrayMatchType = matchArray(data.type);
   const arrayMatchInternalType = data.internalType ? matchArray(data.internalType as SmartContractMethodArgType) : null;
