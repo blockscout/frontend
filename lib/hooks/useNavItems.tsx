@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable max-len */
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -25,7 +26,7 @@ export function isInternalItem(item: NavItem): item is NavItemInternal {
 
 export default function useNavItems(): ReturnType {
   const router = useRouter();
-  const pathname = router.pathname;
+  const pathname: any = router.pathname;
 
   return React.useMemo(() => {
     // const blockchainNavItems: Array<NavItem> | Array<Array<NavItem>> = [];
@@ -36,17 +37,22 @@ export default function useNavItems(): ReturnType {
       icon: 'block',
       isActive: pathname === '/blocks' || pathname === '/block/[height_or_hash]',
     };
-    const compiler: NavItem | null = {
+    const compiler: any = {
       text: 'Compiler',
-      nextRoute: { pathname: '/compiler' as const },
+      url: 'https://satschain.xyz/compiler',
       icon: <IoCodeSlash fontSize={ 20 } fontWeight={ 300 }/>,
-      isActive: pathname === '/compiler',
     };
     const txs: NavItem | null = {
       text: 'Transactions',
       nextRoute: { pathname: '/txs' as const },
       icon: 'transactions',
       isActive: pathname === '/txs' || pathname === '/tx/[hash]',
+    };
+    const tokens: NavItem | null = {
+      text: 'Tokens',
+      nextRoute: { pathname: '/tokens' as const },
+      icon: 'token',
+      isActive: pathname.startsWith('/token'),
     };
     // const verifiedContracts: NavItem | null =
     //  {
@@ -199,6 +205,7 @@ export default function useNavItems(): ReturnType {
     const mainNavItems: ReturnType['mainNavItems'] = [
       txs,
       blocks,
+      tokens,
       compiler,
       // config.features.marketplace.isEnabled ? {
       //   text: 'DApps',

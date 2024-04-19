@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react';
+import { Box, Flex, useColorModeValue } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -49,6 +49,8 @@ const Tokens = () => {
   const [ sort, setSort ] = React.useState<TokensSortingValue | undefined>(getSortValueFromQuery<TokensSortingValue>(router.query, SORT_OPTIONS));
   const [ tokenTypes, setTokenTypes ] = React.useState<Array<TokenType> | undefined>(getTokenFilterValue(router.query.type));
   const [ bridgeChains, setBridgeChains ] = React.useState<Array<string> | undefined>(getBridgedChainsFilterValue(router.query.chain_ids));
+
+  const listBgColor = useColorModeValue('white', 'blue.1000');
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
@@ -172,16 +174,28 @@ const Tokens = () => {
 
   return (
     <>
-      <PageTitle title="Tokens" withTextAd/>
-      { tabs.length === 1 && !isMobile && actionBar }
-      <RoutedTabs
-        tabs={ tabs }
-        tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
-        rightSlot={ !isMobile ? actionBar : null }
-        rightSlotProps={ !isMobile ? TABS_RIGHT_SLOT_PROPS : undefined }
-        stickyEnabled={ !isMobile }
-        onTabChange={ handleTabChange }
-      />
+      <Flex direction="column" paddingX={{ base: 6, lg: 12 }}>
+        <PageTitle title="Tokens"/>
+      </Flex>
+      <Box
+        bgColor={ listBgColor }
+        borderTopRadius="2.5em"
+        padding={{
+          base: '1.5em',
+          md: '3em',
+        }}
+        paddingY="3em"
+      >
+        { tabs.length === 1 && !isMobile && actionBar }
+        <RoutedTabs
+          tabs={ tabs }
+          tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
+          rightSlot={ !isMobile ? actionBar : null }
+          rightSlotProps={ !isMobile ? TABS_RIGHT_SLOT_PROPS : undefined }
+          stickyEnabled={ !isMobile }
+          onTabChange={ handleTabChange }
+        />
+      </Box>
     </>
   );
 };

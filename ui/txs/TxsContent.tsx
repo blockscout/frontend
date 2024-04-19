@@ -1,4 +1,4 @@
-import { Show, Hide } from '@chakra-ui/react';
+// import { Show, Hide } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressFromToFilter } from 'types/api/address';
@@ -12,7 +12,7 @@ import getNextSortValue from 'ui/shared/sort/getNextSortValue';
 
 import useDescribeTxs from './noves/useDescribeTxs';
 import TxsHeaderMobile from './TxsHeaderMobile';
-import TxsList from './TxsList';
+// import TxsList from './TxsList';
 import TxsTable from './TxsTable';
 
 const SORT_SEQUENCE: Record<TransactionsSortingField, Array<TransactionsSortingValue | undefined>> = {
@@ -67,7 +67,7 @@ const TxsContent = ({
 
   const content = itemsWithTranslation ? (
     <>
-      <Show below="lg" ssr={ false }>
+      { /* <Show below="lg" ssr={ false }>
         <TxsList
           showBlockInfo={ showBlockInfo }
           showSocketInfo={ showSocketInfo }
@@ -78,22 +78,22 @@ const TxsContent = ({
           currentAddress={ currentAddress }
           items={ itemsWithTranslation }
         />
-      </Show>
-      <Hide below="lg" ssr={ false }>
-        <TxsTable
-          txs={ itemsWithTranslation }
-          sort={ onSortToggle }
-          sorting={ sort }
-          showBlockInfo={ showBlockInfo }
-          showSocketInfo={ showSocketInfo }
-          socketInfoAlert={ socketInfoAlert }
-          socketInfoNum={ socketInfoNum }
-          top={ top || query.pagination.isVisible ? 80 : 0 }
-          currentAddress={ currentAddress }
-          enableTimeIncrement={ enableTimeIncrement }
-          isLoading={ isPlaceholderData }
-        />
-      </Hide>
+      </Show> */ }
+      { /* <Hide below="lg" ssr={ false }> */ }
+      <TxsTable
+        txs={ itemsWithTranslation }
+        sort={ onSortToggle }
+        sorting={ sort }
+        showBlockInfo={ showBlockInfo }
+        showSocketInfo={ showSocketInfo }
+        socketInfoAlert={ socketInfoAlert }
+        socketInfoNum={ socketInfoNum }
+        top={ top || query.pagination.isVisible ? 80 : 0 }
+        currentAddress={ currentAddress }
+        enableTimeIncrement={ enableTimeIncrement }
+        isLoading={ isPlaceholderData }
+      />
+      { /* </Hide> */ }
     </>
   ) : null;
 

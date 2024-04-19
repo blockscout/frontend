@@ -1,4 +1,4 @@
-import { Box, Flex, Skeleton } from '@chakra-ui/react';
+import { Box, Flex, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import React from 'react';
 
@@ -17,6 +17,7 @@ type Props = {
 };
 
 const LatestBlocksItem = ({ block, isLoading }: Props) => {
+  const listBgColor = useColorModeValue('white', 'blue.1000');
   const totalReward = getBlockTotalReward(block);
   return (
     <Box
@@ -30,7 +31,7 @@ const LatestBlocksItem = ({ block, isLoading }: Props) => {
       border="1px solid"
       borderColor="#7272728A"
       minWidth="300px"
-      backgroundColor="white"
+      backgroundColor={ listBgColor }
       p={ 6 }
     >
       <Flex alignItems="center" overflow="hidden" w="100%" mb={ 3 }>

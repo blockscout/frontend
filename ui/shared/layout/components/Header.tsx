@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-bind */
 import type { LinkProps } from '@chakra-ui/react';
-import { Box, Link, Button, Text, Flex } from '@chakra-ui/react';
+import { Box, Link, Button, Text, Flex, useColorModeValue } from '@chakra-ui/react';
 import Image from 'next/image';
 import React from 'react';
 import { IoMenu } from 'react-icons/io5';
@@ -22,6 +22,7 @@ const Header = () => {
   const { mainNavItems } = useNavItems();
   const [ showMobileMenu, setShowMobileMenu ] = React.useState(false);
   const { connect, address } = useUnisatWallet();
+  const bgColor = useColorModeValue('gray.1000', 'gray.1500');
 
   return (
     <>
@@ -32,7 +33,7 @@ const Header = () => {
         p="1.5em"
       >
         <Box>
-          <Image src="/stats-logo.png" alt="Example" width={ 200 } height={ 300 }/>
+          <Image src={ useColorModeValue('/stats-logo.png', '/logo.png') } alt="Example" width={ 200 } height={ 300 }/>
         </Box>
         <Box
           display={{ base: 'none', md: 'flex' }}
@@ -43,7 +44,7 @@ const Header = () => {
           borderRadius="1.5em"
           py="0.75em"
           px="1.5em"
-          backgroundColor="white"
+          backgroundColor={ bgColor }
         >
           { /* <HeaderLink >DASHBOARD</HeaderLink>
           <HeaderLink >DEPLOY SMART CONTRACT</HeaderLink>

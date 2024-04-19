@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Tr, Td, Flex, Box, Tooltip, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import { motion } from 'framer-motion';
@@ -71,7 +72,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
         <Skeleton
           isLoaded={ !isLoading }
           display="inline-block"
-          color="rgba(0, 0, 0, 1)"
+          color={ useColorModeValue('black', 'gray.1300') }
           fontWeight="500"
         >
           { data.size.toLocaleString() }
@@ -94,7 +95,7 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
                 pathname: '/block/[height_or_hash]',
                 query: { height_or_hash: String(data.height), tab: 'txs' },
               }) }
-              color="rgba(0, 0, 0, 1)"
+              color={ useColorModeValue('black', 'gray.1300') }
               fontWeight="500"
             >
               { data.tx_count }

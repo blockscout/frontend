@@ -1,13 +1,9 @@
 import {
   chakra,
-  Modal,
-  ModalContent,
-  ModalCloseButton,
   Popover,
   PopoverTrigger,
   PopoverContent,
   PopoverBody,
-  useDisclosure,
   Flex,
   useColorModeValue,
 } from '@chakra-ui/react';
@@ -33,28 +29,27 @@ type Props =
     className?: string;
   }
 
-const TxAdditionalInfo = ({ hash, tx, isMobile }: Props) => {
-  const { isOpen, onClose } = useDisclosure();
+const TxAdditionalInfo = ({ hash, tx }: Props) => {
   const borderColor = useColorModeValue('rgba(233, 236, 239, 1)', 'blue.1100');
 
   const content = hash !== undefined ? <TxAdditionalInfoContainer hash={ hash }/> : <TxAdditionalInfoContent tx={ tx }/>;
 
-  if (isMobile) {
-    return (
-      <>
-        { /* <AdditionalInfoButton onClick={ onOpen } isLoading={ isLoading } className={ className }/> */ }
+  // if (isMobile) {
+  //   return (
+  //     <>
+  //       { /* <AdditionalInfoButton onClick={ onOpen } isLoading={ isLoading } className={ className }/> */ }
 
-        { /* <AdditionalInfoButton onClick={ onOpen } isLoading={ isLoading } className={ className }/> */ }
+  //       { /* <AdditionalInfoButton onClick={ onOpen } isLoading={ isLoading } className={ className }/> */ }
 
-        <Modal isOpen={ isOpen } onClose={ onClose } size="full">
-          <ModalContent paddingTop={ 4 }>
-            <ModalCloseButton/>
-            { content }
-          </ModalContent>
-        </Modal>
-      </>
-    );
-  }
+  //       <Modal isOpen={ isOpen } onClose={ onClose } size="full">
+  //         <ModalContent paddingTop={ 4 }>
+  //           <ModalCloseButton/>
+  //           { content }
+  //         </ModalContent>
+  //       </Modal>
+  //     </>
+  //   );
+  // }
   return (
     <Popover placement="right-start" openDelay={ 300 } isLazy>
       { () => (

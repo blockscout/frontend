@@ -4,7 +4,7 @@ import React from 'react';
 import type { Transaction } from 'types/api/transaction';
 
 import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
-import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
+// import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
 import TxsListItem from './TxsListItem';
 
@@ -24,14 +24,14 @@ const TxsList = (props: Props) => {
 
   return (
     <Box>
-      { props.showSocketInfo && (
+      { /* { props.showSocketInfo && (
         <SocketNewItemsNotice.Mobile
           url={ window.location.href }
           num={ props.socketInfoNum }
           alert={ props.socketInfoAlert }
           isLoading={ props.isLoading }
         />
-      ) }
+      ) } */ }
       { props.items.slice(0, renderedItemsNum).map((tx, index) => (
         <TxsListItem
           key={ tx.hash + (props.isLoading ? index : '') }

@@ -6,6 +6,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import type { TabItem } from './types';
 
+import useIsMobile from 'lib/hooks/useIsMobile';
 import isBrowser from 'lib/isBrowser';
 
 import AdaptiveTabsList from './AdaptiveTabsList';
@@ -48,6 +49,7 @@ const TabsWithScroll = ({
   const [ activeTabIndex, setActiveTabIndex ] = useState<number>(
     defaultTabIndex || 0,
   );
+  const isMobile = useIsMobile();
   const [ screenWidth, setScreenWidth ] = React.useState(
     isBrowser() ? window.innerWidth : 0,
   );
@@ -96,6 +98,7 @@ const TabsWithScroll = ({
       variant={ themeProps.variant || 'soft-rounded' }
       colorScheme={ themeProps.colorScheme || 'blue' }
       isLazy
+      overflow="scroll"
       onChange={ handleTabChange }
       index={ activeTabIndex }
       position="relative"
@@ -119,7 +122,7 @@ const TabsWithScroll = ({
       />
       <Box
         borderWidth={
-          type === 'parent_tabs' ? '1.5px' : undefined
+          !isMobile && type === 'parent_tabs' ? '1.5px' : undefined
         }
         // eslint-disable-next-line react-hooks/rules-of-hooks
         borderColor={ useColorModeValue('rgba(114, 114, 114, 0.54)', 'blue.1000') }

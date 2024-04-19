@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import {
   Flex,
   Skeleton,
@@ -5,8 +6,8 @@ import {
   Grid,
   GridItem,
   Alert,
-  chakra,
   Box,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
@@ -44,34 +45,31 @@ type InfoItemProps = {
   isLoading: boolean;
 };
 
-const InfoItem = chakra(
-  ({ label, content, className, isLoading }: InfoItemProps) => (
+const InfoItem = ({ label, content, className, isLoading }: InfoItemProps) => {
+  const headingColor = useColorModeValue('rgba(30, 30, 30, 0.4)', 'gray.1300');
+  const subHeadingColor = useColorModeValue('black_secondary', 'gray.1100');
+  return (
     <GridItem
-      // display='flex'
       columnGap={ 6 }
       wordBreak="break-all"
       className={ className }
       alignItems="baseline"
       fontWeight="medium"
     >
-      <Skeleton
-        isLoaded={ !isLoading }
-        fontSize="14px"
-        color="rgba(30, 30, 30, 0.4)"
-      >
+      <Skeleton isLoaded={ !isLoading } fontSize="14px" color={ headingColor }>
         { label }
       </Skeleton>
       <Skeleton
         isLoaded={ !isLoading }
-        color="black_secondary"
+        color={ subHeadingColor }
         fontSize="16px"
         mt={ 1 }
       >
         { content }
       </Skeleton>
     </GridItem>
-  ),
-);
+  );
+};
 
 const ContractCode = ({ addressHash, noSocket }: Props) => {
   const [ isQueryEnabled, setIsQueryEnabled ] = React.useState(false);
@@ -82,6 +80,8 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
   const addressInfo = queryClient.getQueryData<AddressInfo>(
     getResourceKey('address', { pathParams: { hash: addressHash } }),
   );
+
+  const backgroundColor = useColorModeValue('gray.1000', '');
 
   const { data, isPlaceholderData, isError } = useApiQuery('contract', {
     pathParams: { hash: addressHash },
@@ -342,7 +342,9 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
         <Grid
           templateColumns={{ base: '1fr', lg: '1fr 1fr 1fr' }}
           rowGap={ 4 }
-          backgroundColor="gray.1000"
+          backgroundColor={ backgroundColor }
+          border="1px solid"
+          borderColor={ useColorModeValue('', '#7272728A') }
           borderRadius="3xl"
           padding={ 5 }
           columnGap={ 2 }
@@ -367,7 +369,6 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
             <InfoItem
               label="EVM version"
               content={ data.evm_version }
-              textTransform="capitalize"
               isLoading={ isPlaceholderData }
             />
           ) }
@@ -396,7 +397,6 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
             <InfoItem
               label="Verified at"
               content={ dayjs(data.verified_at).format('llll') }
-              wordBreak="break-word"
               isLoading={ isPlaceholderData }
             />
           ) }
@@ -404,7 +404,6 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
             <InfoItem
               label="Contract file path"
               content={ data.file_path }
-              wordBreak="break-word"
               isLoading={ isPlaceholderData }
             />
           ) }

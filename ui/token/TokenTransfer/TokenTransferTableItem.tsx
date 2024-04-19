@@ -1,4 +1,4 @@
-import { Tr, Td, Flex, Skeleton, Box } from '@chakra-ui/react';
+import { Tr, Td, Flex, Skeleton, Box, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenTransfer } from 'types/api/tokenTransfer';
@@ -24,6 +24,10 @@ const TokenTransferTableItem = ({
   isLoading,
 }: Props) => {
   // const timeAgo = useTimeAgoIncrement(timestamp, true);
+  // const color = useColorModeValue("rgba(33, 37, 41, 1)", "gray.1300");
+  const tagBg = useColorModeValue('rgba(248, 249, 250, 1)', 'blue.1000');
+  const tagColor = useColorModeValue('rgba(0, 0, 0, 1)', 'gray.1300');
+  const tagBorderColor = useColorModeValue('rgba(0, 0, 0, 0.1)', 'gray.1400');
   const { usd, valueStr } =
     'value' in total && total.value !== null ?
       getCurrencyValue({
@@ -65,12 +69,13 @@ const TokenTransferTableItem = ({
             <Tag
               isLoading={ isLoading }
               isTruncated
-              backgroundColor="rgba(248, 249, 250, 1)"
-              border="1px solid rgba(0, 0, 0, 0.1)"
+              border="1px solid"
               padding="6px 16px"
-              color="rgba(0, 0, 0, 1)"
               fontSize="14px"
               fontWeight="medium"
+              color={ tagColor }
+              borderColor={ tagBorderColor }
+              backgroundColor={ tagBg }
             >
               { method }
             </Tag>

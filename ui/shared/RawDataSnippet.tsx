@@ -1,3 +1,5 @@
+/* eslint-disable quotes */
+/* eslint-disable react-hooks/rules-of-hooks */
 import type { ChakraProps } from '@chakra-ui/react';
 import {
   Box,
@@ -49,7 +51,7 @@ const RawDataSnippet = ({
               fontWeight={ 500 }
               fontSize="large"
               isLoaded={ !isLoading }
-              color="black_secondary"
+              color={ useColorModeValue("black_secondary", "gray.1000") }
             >
               { title }
             </Skeleton>
@@ -66,7 +68,7 @@ const RawDataSnippet = ({
         bgColor={ isLoading ? 'inherit' : bgColor }
         maxH={ textareaMaxHeight || '400px' }
         minH={ isLoading ? '200px' : undefined }
-        color="black_secondary"
+        color={ useColorModeValue("black_secondary", "#D4D4D4") }
         fontSize="14px"
         borderRadius="3xl"
         wordBreak="break-all"

@@ -15,6 +15,7 @@ import {
   Table,
   Thead,
   Tbody,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/router";
@@ -74,6 +75,9 @@ interface TableAreaButtonProps {
 const TokenPageContent = () => {
   const [isQueryEnabled, setIsQueryEnabled] = React.useState(false);
   const [totalSupplySocket, setTotalSupplySocket] = React.useState<number>();
+  const listBgColor = useColorModeValue("white", "blue.1000");
+  const HeadingColor = useColorModeValue("#29292969", "gray.1300");
+  const selectBackgroundColor = useColorModeValue("white","")
   const router = useRouter();
   const isMobile = useIsMobile();
 
@@ -297,11 +301,6 @@ const TokenPageContent = () => {
   }
 
   // eslint-disable-next-line no-unused-vars
-  const tokenSymbolText = tokenQuery.data?.symbol
-    ? ` (${tokenQuery.data.symbol})`
-    : "";
-
-  // eslint-disable-next-line no-unused-vars
   const tabListProps = React.useCallback(
     ({
       isSticky,
@@ -324,150 +323,17 @@ const TokenPageContent = () => {
     [isMobile],
   );
 
-  // eslint-disable-next-line no-unused-vars
-  const backLink = React.useMemo(() => {
-    const hasGoBackLink =
-      appProps.referrer && appProps.referrer.includes("/tokens");
-
-    if (!hasGoBackLink) {
-      return;
-    }
-
-    return {
-      label: "Back to tokens list",
-      url: appProps.referrer,
-    };
-  }, [appProps.referrer]);
-
-  const titleContentAfter = (
-    <>
-      {verifiedInfoQuery.data?.tokenAddress && (
-        <Tooltip
-          label={`Information on this token has been verified by ${config.chain.name}`}
-        >
-          <Box boxSize={6}>
-            <IconSvg
-              name="verified_token"
-              color="green.500"
-              boxSize={6}
-              cursor="pointer"
-            />
-          </Box>
-        </Tooltip>
-      )}
-      <EntityTags
-        data={contractQuery.data}
-        isLoading={
-          tokenQuery.isPlaceholderData || contractQuery.isPlaceholderData
-        }
-        tagsBefore={[
-          tokenQuery.data
-            ? {
-                label: tokenQuery.data?.type,
-                display_name: tokenQuery.data?.type,
-              }
-            : undefined,
-          config.features.bridgedTokens.isEnabled && tokenQuery.data?.is_bridged
-            ? {
-                label: "bridged",
-                display_name: "Bridged",
-                colorScheme: "blue",
-                variant: "solid",
-              }
-            : undefined,
-        ]}
-        tagsAfter={
-          verifiedInfoQuery.data?.projectSector
-            ? [
-                {
-                  label: verifiedInfoQuery.data.projectSector,
-                  display_name: verifiedInfoQuery.data.projectSector,
-                },
-              ]
-            : undefined
-        }
-        flexGrow={1}
-      />
-    </>
-  );
 
   const isLoading = tokenQuery.isPlaceholderData || contractQuery.isPlaceholderData;
 
   // eslint-disable-next-line no-unused-vars
   const titleSecondRow = (
-    // <Flex
-    //   alignItems="center"
-    //   w="100%"
-    //   minW={0}
-    //   columnGap={2}
-    //   rowGap={2}
-    //   flexWrap={{ base: "wrap", lg: "nowrap" }}
-    // >
-    //   <AddressEntity
-    //     address={{ ...contractQuery.data, name: "" }}
-    //     isLoading={isLoading}
-    //     fontFamily="heading"
-    //     fontSize="lg"
-    //     fontWeight={500}
-    //   />
-    //   {!isLoading && tokenQuery.data && (
-    //     <AddressAddToWallet token={tokenQuery.data} variant="button" />
-    //   )}
-    //   <AddressQrCode address={contractQuery.data} isLoading={isLoading} />
-    //   <AccountActionsMenu isLoading={isLoading} />
-    //   <Flex
-    //     ml={{ base: 0, lg: "auto" }}
-    //     columnGap={2}
-    //     flexGrow={{ base: 1, lg: 0 }}
-    //   >
-    //     <TokenVerifiedInfo verifiedInfoQuery={verifiedInfoQuery} />
-    //     <NetworkExplorers
-    //       type="token"
-    //       pathParam={hashString}
-    //       ml={{ base: "auto", lg: 0 }}
-    //     />
-    //   </Flex>
-    // </Flex>
     <AddressEntity
       address={{ ...contractQuery.data, name: '' }}
       fontSize="lg"
     />
   );
 
-  const OverviewBox = () => {
-    return (
-      <Flex
-        borderRadius="1.5em"
-        border="1px"
-        padding="1.5em"
-        flexDirection="column"
-        gap={6}
-        maxW="400px"
-        borderColor="#7272728A"
-        background="linear-gradient(300.97deg, #F4F4F4 -153.4%, rgba(142, 142, 142, 0) 23.1%)"
-      >
-        <Text fontWeight="800">OVERVIEW</Text>
-        <Box>
-          <Text color="#1E1E1E66" fontWeight="500" mb={1}>
-            Max Supply
-          </Text>
-          <Text fontWeight="700">1,152,997,574 FET</Text>
-        </Box>
-        <Box>
-          <Text color="#1E1E1E66" fontWeight="500" mb={1}>
-            Holders
-          </Text>
-          <Text fontWeight="700">74,292</Text>
-        </Box>
-        <Box>
-          <Text color="#1E1E1E66" fontWeight="500" mb={1}>
-            Total Transfer
-          </Text>
-          <Text fontWeight="700">683,427</Text>
-        </Box>
-      </Flex>
-    );
-  };
 
   const TableAreaButton: React.FC<TableAreaButtonProps> = ({
     children,
@@ -515,7 +381,7 @@ const TokenPageContent = () => {
             />
           )}
           <Box>
-            <Text fontSize="22px" color="#29292969">
+            <Text fontSize="22px" color={HeadingColor}>
               Token
             </Text>
             <Text fontSize="24px" fontWeight="800">
@@ -523,22 +389,26 @@ const TokenPageContent = () => {
             </Text>
           </Box>
         </Flex>
-        <Flex>
-          <Select placeholder="BUY" backgroundColor="white" borderRadius="2em">
-            <option value="option1">Option 1</option>
-            <option value="option2">Option 2</option>
-            <option value="option3">Option 3</option>
-          </Select>
+        <Flex gap={5}>
           <Select
-            placeholder="Exchange"
-            backgroundColor="white"
+            placeholder="BUY"
+            backgroundColor={selectBackgroundColor}
             borderRadius="2em"
           >
             <option value="option1">Option 1</option>
             <option value="option2">Option 2</option>
             <option value="option3">Option 3</option>
           </Select>
-          <Select placeholder="Play" backgroundColor="white" borderRadius="2em">
+          <Select
+            placeholder="Exchange"
+            backgroundColor={selectBackgroundColor}
+            borderRadius="2em"
+          >
+            <option value="option1">Option 1</option>
+            <option value="option2">Option 2</option>
+            <option value="option3">Option 3</option>
+          </Select>
+          <Select placeholder="Play" backgroundColor={selectBackgroundColor} borderRadius="2em">
             <option value="option1">Option 1</option>
             <option value="option2">Option 2</option>
             <option value="option3">Option 3</option>
@@ -546,43 +416,15 @@ const TokenPageContent = () => {
         </Flex>
       </Flex>
       <Box
-        bg="white"
+        bg={listBgColor}
         borderTopRadius="2.5em"
         padding={{
           base: "1.5em",
           md: "3em",
         }}
         paddingY="3em"
-        // w="100vw"
-        // maxW="100vw"
       >
-        <TokenDetails tokenQuery={ tokenQuery } address={ titleSecondRow }/>
-
-        {/* <Grid
-          templateColumns={{
-            base: "repeat(1, 1fr)",
-            md: "repeat(2, 1fr)",
-            lg: "repeat(3, 1fr)",
-          }} // Responsive grid columns
-          gap={6}
-          maxW="1400px"
-          mx="auto" // Center the grid horizontally on all screen sizes
-        >
-          <OverviewBox />
-          <OverviewBox />
-          <OverviewBox />
-        </Grid> */}
-        {/* <Box overflowX="auto">
-          <Flex py="2em" gap={3} minWidth="1000px">
-            <BWButton active={true}>TRANSACTIONS (50)</BWButton>
-            <BWButton>TOKEN TRANSFER</BWButton>
-            <BWButton>TOKENS</BWButton>
-            <BWButton>INTERNAL TNXS</BWButton>
-            <BWButton>COIN BALANCE HISTORY</BWButton>
-            <BWButton>LOGS</BWButton>
-            <BWButton>CONTRACT</BWButton>
-          </Flex>
-        </Box> */}
+        <TokenDetails tokenQuery={tokenQuery} address={titleSecondRow} />
         {isLoading ? (
           <TabsSkeleton tabs={tabs} />
         ) : (

@@ -43,20 +43,20 @@ const TxsTable = ({
 
   return (
     <AddressHighlightProvider>
-      <Table variant="simple" minWidth="950px" size="xs">
+      <Table variant="simple" minWidth="950px" size="xs" overflowX="scroll">
         <TheadSticky top={ top }>
           <Tr>
-            <Th width="54px" pl={ 7 }>
+            <Th width="50px" pl={ 5 }>
               <FaRegCircleQuestion fontSize={ 8 }/>
             </Th>
-            <Th width="180px">Txn hash</Th>
-            <Th width="160px">Type</Th>
-            <Th width="20%">Method</Th>
-            { showBlockInfo && <Th width="18%">Block</Th> }
-            <Th width="224px">From</Th>
-            <Th width="224px">To</Th>
+            <Th minWidth="180px">Txn hash</Th>
+            <Th minWidth="160px">Type</Th>
+            <Th minWidth="100">Method</Th>
+            { showBlockInfo && <Th minWidth="18%">Block</Th> }
+            <Th minWidth="224px">From</Th>
+            <Th minWidth="224px">To</Th>
             { !config.UI.views.tx.hiddenFields?.value && (
-              <Th width="20%" isNumeric>
+              <Th minWidth="100px" isNumeric>
                 <Link
                   onClick={ sort('value') }
                   display="flex"
@@ -82,7 +82,7 @@ const TxsTable = ({
               </Th>
             ) }
             { !config.UI.views.tx.hiddenFields?.tx_fee && (
-              <Th width="20%" isNumeric pr={ 5 }>
+              <Th minWidth="100px" isNumeric pr={ 5 }>
                 <Link
                   onClick={ sort('fee') }
                   display="flex"

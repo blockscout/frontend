@@ -1,3 +1,5 @@
+import { useColorModeValue } from '@chakra-ui/react';
+
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 
 import useColors from './useColors';
@@ -11,17 +13,17 @@ type Props = {
 
 export default function useNavLinkProps({ isExpanded, isCollapsed, isActive }: Props) {
   const colors = useColors();
-
+  const bgColor = useColorModeValue('gray.200', 'gray.1200');
   return {
     itemProps: {
       py: 0,
       display: 'flex',
-      color: colors.text.default,
+      // color: colors.text.default,
       bgColor: colors.bg.default,
-      _hover: { color: 'black', background: '#f1f1f1', borderRadius: 16 },
+      // _hover: { color: 'black', background: '#f1f1f1', borderRadius: 16 },
       // borderRadius: 'base',
       ...(isActive && {
-        background: '#f1f1f1',
+        background: bgColor,
         fontWeight: 600,
         borderRadius: 16,
       }),

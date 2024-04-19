@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import { Box, Heading, Flex } from "@chakra-ui/react";
+import { Box, Heading, Flex, useColorModeValue } from "@chakra-ui/react";
 import React, { useState } from "react";
 
 import config from "configs/app";
@@ -16,6 +16,8 @@ const rollupFeature = config.features.rollup;
 
 const Home = () => {
   const [isBlockSelected, setIsBlockSelected] = useState(true);
+  const listBgColor = useColorModeValue('white', 'blue.1000');
+
   return (
     <Box as="main" w="100%">
       <Box
@@ -59,7 +61,7 @@ const Home = () => {
         <SearchBar isHomepage />
       </Box>
       <Box
-        backgroundColor="white"
+        backgroundColor={listBgColor}
         roundedTop="2em"
         h="100%"
         p="3em"

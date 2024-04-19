@@ -7,7 +7,7 @@ import IconSvg from 'ui/shared/IconSvg';
 type Props = {
   icon?: IconName;
   iconSize?: string;
-  text: string;
+  text?: string;
   url: string;
   isLoading?: boolean;
 }

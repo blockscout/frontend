@@ -1,4 +1,4 @@
-import { Box, Grid, GridItem, Link, Skeleton, Text } from '@chakra-ui/react';
+import { Grid, GridItem, Link, Skeleton, Text, useColorModeValue } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
 import { useRouter } from 'next/router';
@@ -24,6 +24,7 @@ interface Props {
 const TokenDetails = ({ tokenQuery, address }: Props) => {
   const router = useRouter();
   const hash = router.query.hash?.toString();
+  const headingColor = useColorModeValue('#292929', 'gray.17000');
 
   const tokenCountersQuery = useApiQuery('token_counters', {
     pathParams: { hash },
@@ -118,7 +119,7 @@ const TokenDetails = ({ tokenQuery, address }: Props) => {
         minHeight="250px"
       >
         <Text
-          color="#292929"
+          color={ headingColor }
           fontSize="larger"
           fontWeight="bold"
           marginBottom="3"
@@ -142,7 +143,6 @@ const TokenDetails = ({ tokenQuery, address }: Props) => {
               maxW="80%"
               flexShrink={ 0 }
             />
-            <Box flexShrink={ 0 }> </Box>
             <TruncatedValue value={ symbol || '' }/>
           </Skeleton>
         </NewDetailsInfoItem>
@@ -173,7 +173,7 @@ const TokenDetails = ({ tokenQuery, address }: Props) => {
         minHeight="250px"
       >
         <Text
-          color="#292929"
+          color={ headingColor }
           fontSize="larger"
           fontWeight="bold"
           marginBottom="3"
@@ -218,7 +218,7 @@ const TokenDetails = ({ tokenQuery, address }: Props) => {
         minHeight="250px"
       >
         <Text
-          color="#292929"
+          color={ headingColor }
           fontSize="larger"
           fontWeight="bold"
           marginBottom="3"

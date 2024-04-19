@@ -11,6 +11,7 @@ import {
   Flex,
   Input,
   Text,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import React, { useMemo, useState } from 'react';
 
@@ -65,7 +66,7 @@ const NuiContractMethodsAccordionItem = ({
         display="flex"
         gap={ 2 }
         padding="24px 16px"
-        color="black_secondary"
+        color={ useColorModeValue('black_secondary', 'gray.1300') }
         _expanded={{ bg: 'gray.1000', borderTopRadius: '12px' }}
         onClick={ () => {
           if (expandedIndex === serialNo) {

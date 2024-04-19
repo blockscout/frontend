@@ -1,4 +1,4 @@
-import { Box, Flex, Select, Skeleton, Text, Tooltip } from '@chakra-ui/react';
+import { Box, Flex, Select, Skeleton, Text, Tooltip, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SmartContract } from 'types/api/contract';
@@ -103,7 +103,7 @@ const ContractSourceCode = ({ address, implementationAddress }: Props) => {
       isLoaded={ !isLoading }
       fontWeight={ 500 }
       fontSize="large"
-      color="black_secondary"
+      color={ useColorModeValue('black_secondary', 'gray.1000') }
     >
       <span>Contract source code</span>
       { activeContract?.language && (

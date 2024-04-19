@@ -1,4 +1,4 @@
-import { Link, Text, HStack, Tooltip, Box, useBreakpointValue, chakra, shouldForwardProp, Flex } from '@chakra-ui/react';
+import { Link, Text, HStack, Tooltip, Box, useBreakpointValue, chakra, shouldForwardProp, Flex, useColorModeValue } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React from 'react';
 
@@ -25,6 +25,9 @@ type Props = {
 const NavLink = ({ item, isCollapsed, className, onClick }: Props) => {
   const isMobile = useIsMobile();
   const colors = useColors();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const bgColor = useColorModeValue('gray.200', 'gray.1200');
+  const color = useColorModeValue('gray.1200', 'gray.1100');
 
   const isExpanded = isCollapsed === false;
   const isInternalLink = isInternalItem(item);
@@ -47,8 +50,10 @@ const NavLink = ({ item, isCollapsed, className, onClick }: Props) => {
       // py={ 2 }
       minHeight={ 35 }
       minWidth={ 150 }
+      // bg={ bgColor }
+      color={ color }
       _hover={{
-        color: 'black', background: '#f1f1f1', borderRadius: 16,
+        color: color, background: bgColor, borderRadius: 16,
         // '& *': {
         // },
       }}

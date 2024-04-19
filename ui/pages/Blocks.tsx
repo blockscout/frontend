@@ -1,4 +1,4 @@
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex, useColorModeValue } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -24,6 +24,7 @@ const BlocksPageContent = () => {
   const router = useRouter();
   const isMobile = useIsMobile();
   const tab = getQueryParamString(router.query.tab);
+  const listBgColor = useColorModeValue('white', 'blue.1000');
 
   const blocksQuery = useQueryWithPages({
     resourceName: 'blocks',
@@ -81,7 +82,7 @@ const BlocksPageContent = () => {
         <PageTitle title="Blocks" withTextAd/>
       </Flex>
       <Box
-        bg="white"
+        bgColor={ listBgColor }
         borderTopRadius="2.5em"
         padding={{
           base: '1.5em',

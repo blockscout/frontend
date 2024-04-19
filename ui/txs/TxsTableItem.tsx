@@ -51,7 +51,7 @@ const TxsTableItem = ({ tx, showBlockInfo, enableTimeIncrement, isLoading }: Pro
       transitionTimingFunction="linear"
       key={ tx.hash }
     >
-      <Td pl={ 4 }>
+      <Td pl={ 2 }>
         <TxAdditionalInfo tx={ tx } isLoading={ isLoading }/>
       </Td>
       <Td pr={ 4 }>
@@ -79,39 +79,27 @@ const TxsTableItem = ({ tx, showBlockInfo, enableTimeIncrement, isLoading }: Pro
               translatationType={ tx.translation.data?.type }
             />
           ) : (
-          // { tx.translation ? (
-          //   <TxTranslationType
-          //     types={ tx.tx_types }
-          //     isLoading={ isLoading || tx.translation.isLoading }
-          //     translatationType={ tx.translation.data?.type }
-          //   />
-          // ) : (
-          //   <TxType types={ tx.tx_types } isLoading={ isLoading }/>
-          // ) }
-            <TxStatus
-              status={ tx.status }
-              errorText={ tx.status === 'error' ? tx.result : undefined }
-              isLoading={ isLoading }
-            />
+            <>
+              <TxStatus
+                status={ tx.status }
+                errorText={ tx.status === 'error' ? tx.result : undefined }
+                isLoading={ isLoading }
+              />
+              <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
+            </>
           ) }
-          <TxStatus
-            status={ tx.status }
-            errorText={ tx.status === 'error' ? tx.result : undefined }
-            isLoading={ isLoading }
-          />
-          <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
         </VStack>
       </Td>
       <Td whiteSpace="nowrap">
         { tx.method && (
           <Tag
-            color={ tagColor }
             fontWeight={ 500 }
             fontSize="13px"
             padding="4px 16px"
             isLoading={ isLoading }
             isTruncated
             border="1px"
+            color={ tagColor }
             borderColor={ tagBorderColor }
             backgroundColor={ tagBg }
           >

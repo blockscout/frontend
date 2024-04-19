@@ -78,7 +78,7 @@ const AdaptiveTabsList = (props: Props) => {
       transitionTimingFunction="ease"
       { ...(props.stickyEnabled ?
         {
-          position: 'sticky',
+          // position: 'sticky',
           boxShadow: { base: isSticky ? 'md' : 'none', lg: 'none' },
           top: { base: scrollDirection === 'down' ? `0px` : `106px`, lg: 0 },
           zIndex: { base: 'sticky2', lg: 'docked' },

@@ -11,14 +11,14 @@ const SearchContainer = ({ title }: Props) => {
   return (
     <div>
       <Box
-        w={{ base: '90%', md: '100%' }}
+        // w={{ base: '90%', md: '100%' }}
         maxWidth="1360px"
         mx="auto"
         px="3em"
         my="3em"
         background={ headingBgColor }
         borderRadius="24px"
-        padding={{ base: '24px', lg: '48px' }}
+        padding={{ base: '48px 24px', lg: '48px' }}
         minW={{ base: '300px', lg: '900px' }}
         data-label="hero plate"
       >
