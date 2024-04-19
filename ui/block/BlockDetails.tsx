@@ -127,7 +127,7 @@ const BlockDetails = ({ query }: Props) => {
       </LinkInternal>
     );
 
-    const blockBlobTxsNum = data.blob_tx_count ? (
+    const blockBlobTxsNum = (config.features.dataAvailability.isEnabled && data.blob_tx_count) ? (
       <>
         <span> and </span>
         <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash, tab: 'blob_txs' } }) }>

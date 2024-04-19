@@ -1,8 +1,8 @@
-import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import * as blockMock from 'mocks/blocks/block';
 import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
+import { test, expect } from 'playwright/lib';
 import TestApp from 'playwright/TestApp';
 import * as configs from 'playwright/utils/configs';
 
@@ -51,7 +51,10 @@ test('genesis block', async({ mount, page }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('with blob txs', async({ mount, page }) => {
+test('with blob txs', async({ mount, page, mockEnvs }) => {
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_DATA_AVAILABILITY_ENABLED', 'true' ],
+  ]);
   const query = {
     data: blockMock.withBlobTxs,
     isPending: false,
