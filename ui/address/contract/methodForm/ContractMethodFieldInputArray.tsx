@@ -2,7 +2,7 @@ import { Flex } from '@chakra-ui/react';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import type { SmartContractMethodInput, SmartContractMethodArgType } from 'types/api/contract';
+import type { SmartContractMethodInput } from 'types/api/contract';
 
 import ContractMethodArrayButton from './ContractMethodArrayButton';
 import type { Props as AccordionProps } from './ContractMethodFieldAccordion';
@@ -10,16 +10,17 @@ import ContractMethodFieldAccordion from './ContractMethodFieldAccordion';
 import ContractMethodFieldInput from './ContractMethodFieldInput';
 import ContractMethodFieldInputTuple from './ContractMethodFieldInputTuple';
 import ContractMethodFieldLabel from './ContractMethodFieldLabel';
-import { getFieldLabel } from './utils';
+import { getFieldLabel, transformDataForArrayItem } from './utils';
 
 interface Props extends Pick<AccordionProps, 'onAddClick' | 'onRemoveClick' | 'index'> {
   data: SmartContractMethodInput;
   level: number;
   basePath: string;
   isDisabled: boolean;
+  isArrayElement?: boolean;
 }
 
-const ContractMethodFieldInputArray = ({ data, level, basePath, onAddClick, onRemoveClick, index: parentIndex, isDisabled }: Props) => {
+const ContractMethodFieldInputArray = ({ data, level, basePath, onAddClick, onRemoveClick, index: parentIndex, isDisabled, isArrayElement }: Props) => {
   const { formState: { errors } } = useFormContext();
   const fieldsWithErrors = Object.keys(errors);
   const isInvalid = fieldsWithErrors.some((field) => field.startsWith(basePath));
@@ -39,63 +40,50 @@ const ContractMethodFieldInputArray = ({ data, level, basePath, onAddClick, onRe
     }
   }, [ ]);
 
-  const getItemData = (index: number) => {
-    const childrenType = data.type.slice(0, -2) as SmartContractMethodArgType;
-    const childrenInternalType = data.internalType?.slice(0, parentIndex !== undefined ? -4 : -2).replaceAll('struct ', '');
-
-    const namePostfix = childrenInternalType ? ' ' + childrenInternalType : '';
-    const nameParentIndex = parentIndex !== undefined ? `${ parentIndex + 1 }.` : '';
-    const nameIndex = index + 1;
-
-    return {
-      ...data,
-      type: childrenType,
-      name: `#${ nameParentIndex + nameIndex }${ namePostfix }`,
-    };
-  };
   const isNestedArray = data.type.includes('[][]');
 
   if (isNestedArray) {
     return (
-      <ContractMethodFieldAccordion
-        level={ level }
-        label={ getFieldLabel(data) }
-        isInvalid={ isInvalid }
-      >
-        { registeredIndices.map((registeredIndex, index) => {
-          const itemData = getItemData(index);
+      <>
+        {
+          registeredIndices.map((registeredIndex, index) => {
+            const itemData = transformDataForArrayItem(data, index);
+            const itemBasePath = `${ basePath }:${ registeredIndex }`;
+            const itemIsInvalid = fieldsWithErrors.some((field) => field.startsWith(itemBasePath));
 
-          return (
-            <ContractMethodFieldInputArray
-              key={ registeredIndex }
-              data={ itemData }
-              basePath={ `${ basePath }:${ registeredIndex }` }
-              level={ level + 1 }
-              onAddClick={ index === registeredIndices.length - 1 ? handleAddButtonClick : undefined }
-              onRemoveClick={ registeredIndices.length > 1 ? handleRemoveButtonClick : undefined }
-              index={ registeredIndex }
-              isDisabled={ isDisabled }
-            />
-          );
-        }) }
-      </ContractMethodFieldAccordion>
+            return (
+              <ContractMethodFieldAccordion
+                key={ registeredIndex }
+                level={ level + 1 }
+                label={ getFieldLabel(itemData) }
+                isInvalid={ itemIsInvalid }
+                onAddClick={ index === registeredIndices.length - 1 ? handleAddButtonClick : undefined }
+                onRemoveClick={ registeredIndices.length > 1 ? handleRemoveButtonClick : undefined }
+                index={ registeredIndex }
+              >
+                <ContractMethodFieldInputArray
+                  key={ registeredIndex }
+                  data={ itemData }
+                  basePath={ itemBasePath }
+                  level={ level + 1 }
+                  isDisabled={ isDisabled }
+                  isArrayElement
+                />
+              </ContractMethodFieldAccordion>
+            );
+          })
+        }
+      </>
     );
   }
 
   const isTupleArray = data.type.includes('tuple');
 
   if (isTupleArray) {
-    return (
-      <ContractMethodFieldAccordion
-        level={ level }
-        label={ getFieldLabel(data) }
-        onAddClick={ onAddClick }
-        onRemoveClick={ onRemoveClick }
-        index={ parentIndex }
-        isInvalid={ isInvalid }
-      >
+    const content = (
+      <>
         { registeredIndices.map((registeredIndex, index) => {
-          const itemData = getItemData(index);
+          const itemData = transformDataForArrayItem(data, index);
 
           return (
             <ContractMethodFieldInputTuple
@@ -110,6 +98,23 @@ const ContractMethodFieldInputArray = ({ data, level, basePath, onAddClick, onRe
             />
           );
         }) }
+      </>
+    );
+
+    if (isArrayElement) {
+      return content;
+    }
+
+    return (
+      <ContractMethodFieldAccordion
+        level={ level }
+        label={ getFieldLabel(data) }
+        onAddClick={ onAddClick }
+        onRemoveClick={ onRemoveClick }
+        index={ parentIndex }
+        isInvalid={ isInvalid }
+      >
+        { content }
       </ContractMethodFieldAccordion>
     );
   }
@@ -117,10 +122,10 @@ const ContractMethodFieldInputArray = ({ data, level, basePath, onAddClick, onRe
   // primitive value array
   return (
     <Flex flexDir={{ base: 'column', md: 'row' }} alignItems="flex-start" columnGap={ 3 } px="6px">
-      <ContractMethodFieldLabel data={ data } level={ level }/>
+      { !isArrayElement && <ContractMethodFieldLabel data={ data } level={ level }/> }
       <Flex flexDir="column" rowGap={ 1 } w="100%">
         { registeredIndices.map((registeredIndex, index) => {
-          const itemData = getItemData(index);
+          const itemData = transformDataForArrayItem(data, index);
 
           return (
             <Flex key={ registeredIndex } alignItems="flex-start" columnGap={ 3 }>

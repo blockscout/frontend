@@ -1,6 +1,6 @@
 import _set from 'lodash/set';
 
-import type { SmartContractMethodInput } from 'types/api/contract';
+import type { SmartContractMethodArgType, SmartContractMethodInput } from 'types/api/contract';
 
 export type ContractMethodFormFields = Record<string, string | boolean | undefined>;
 
@@ -9,6 +9,21 @@ export const INT_REGEXP = /^(u)?int(\d+)?$/i;
 export const BYTES_REGEXP = /^bytes(\d+)?$/i;
 
 export const ARRAY_REGEXP = /^(.*)\[(\d*)\]$/;
+
+export const transformDataForArrayItem = (data: SmartContractMethodInput, index: number): SmartContractMethodInput => {
+  // TODO @tom2drum handle the case when array has size
+  const childrenType = data.type.slice(0, -2) as SmartContractMethodArgType;
+  const childrenInternalType = data.internalType?.slice(0, -2).replaceAll('struct ', '');
+
+  const postfix = childrenInternalType ? ' ' + childrenInternalType : '';
+
+  return {
+    ...data,
+    type: childrenType,
+    internalType: childrenInternalType,
+    name: `#${ index + 1 }${ postfix }`,
+  };
+};
 
 export const getIntBoundaries = (power: number, isUnsigned: boolean) => {
   const maxUnsigned = BigInt(2 ** power);

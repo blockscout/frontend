@@ -11,11 +11,12 @@ import type { SmartContractMethod, SmartContractMethodInput } from 'types/api/co
 import config from 'configs/app';
 import * as mixpanel from 'lib/mixpanel/index';
 
+import ContractMethodFieldAccordion from './ContractMethodFieldAccordion';
 import ContractMethodFieldInput from './ContractMethodFieldInput';
 import ContractMethodFieldInputArray from './ContractMethodFieldInputArray';
 import ContractMethodFieldInputTuple from './ContractMethodFieldInputTuple';
 import ContractMethodFormOutputs from './ContractMethodFormOutputs';
-import { ARRAY_REGEXP, transformFormDataToMethodArgs } from './utils';
+import { ARRAY_REGEXP, getFieldLabel, transformFormDataToMethodArgs } from './utils';
 import type { ContractMethodFormFields } from './utils';
 
 interface Props<T extends SmartContractMethod> {
@@ -95,6 +96,23 @@ const ContractMethodForm = <T extends SmartContractMethod>({ data, onSubmit, res
             { inputs.map((input, index) => {
               if (input.components && input.type === 'tuple') {
                 return <ContractMethodFieldInputTuple key={ index } data={ input } basePath={ `${ index }` } level={ 0 } isDisabled={ isLoading }/>;
+              }
+
+              const isNestedArray = input.type.includes('[][]');
+              if (isNestedArray) {
+                const fieldsWithErrors = Object.keys(formApi.formState.errors);
+                const isInvalid = fieldsWithErrors.some((field) => field.startsWith(index + ':'));
+
+                return (
+                  <ContractMethodFieldAccordion
+                    key={ index }
+                    level={ 0 }
+                    label={ getFieldLabel(input) }
+                    isInvalid={ isInvalid }
+                  >
+                    <ContractMethodFieldInputArray data={ input } basePath={ `${ index }` } level={ 0 } isDisabled={ isLoading }/>
+                  </ContractMethodFieldAccordion>
+                );
               }
 
               const arrayMatch = input.type.match(ARRAY_REGEXP);
