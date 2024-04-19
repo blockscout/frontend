@@ -39,7 +39,7 @@ export default function useContractAbi({ addressHash, isProxy, isCustomAbi }: Pa
     pathParams: { hash: addressHash },
     queryParams: { is_custom_abi: 'true' },
     queryOptions: {
-      enabled: Boolean(addressInfo?.has_custom_methods_write),
+      enabled: Boolean(contractInfo?.has_custom_methods_write),
       refetchOnMount: false,
     },
   });

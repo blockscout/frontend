@@ -41,6 +41,12 @@ export const CONTRACT_CODE_VERIFIED = {
   source_code: 'source_code',
   verified_at: '2023-02-21T14:39:16.906760Z',
   license_type: 'mit',
+  has_methods_read: true,
+  has_methods_read_proxy: false,
+  has_methods_write: true,
+  has_methods_write_proxy: false,
+  has_custom_methods_read: false,
+  has_custom_methods_write: false,
 } as unknown as SmartContract;
 
 export const VERIFIED_CONTRACT_INFO: VerifiedContract = {

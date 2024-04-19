@@ -33,6 +33,14 @@ export interface SmartContract {
   is_verified: boolean | null;
   is_verified_via_eth_bytecode_db: boolean | null;
   is_changed_bytecode: boolean | null;
+
+  has_methods_read: boolean;
+  has_methods_read_proxy: boolean;
+  has_methods_write: boolean;
+  has_methods_write_proxy: boolean;
+  has_custom_methods_read: boolean;
+  has_custom_methods_write: boolean;
+
   // sourcify info >>>
   is_verified_via_sourcify: boolean | null;
   is_fully_verified: boolean | null;
