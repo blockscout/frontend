@@ -38,6 +38,6 @@ NEXT_PUBLIC_APP_PROTOCOL: "https",
 NEXT_PUBLIC_APP_HOST: "explorer.satschain.xyz",
 NEXT_PUBLIC_APP_PORT: "",
 NEXT_PUBLIC_API_PROTOCOL: "https",
-NEXT_PUBLIC_API_HOST: "eth.blockscount.com",
+NEXT_PUBLIC_API_HOST: "explorer.satschain.xyz",
 NEXT_PUBLIC_API_PORT: "",
 }
