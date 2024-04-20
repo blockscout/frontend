@@ -8,7 +8,7 @@ import { route } from 'nextjs-routes';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { isInternalItem } from 'lib/hooks/useNavItems';
-import IconSvg from 'ui/shared/IconSvg';
+// import IconSvg from 'ui/shared/IconSvg';
 
 import NavLinkIcon from './NavLinkIcon';
 import useColors from './useColors';
@@ -71,7 +71,6 @@ const NavLink = ({ item, isCollapsed, className, onClick }: Props) => {
           <NavLinkIcon item={ item }/>
           <Text { ...styleProps.textProps }>
             <span>{ item.text }</span>
-            { !isInternalLink && <IconSvg name="arrows/north-east" boxSize={ 4 } color="text_secondary" verticalAlign="middle"/> }
           </Text>
         </HStack>
       </Tooltip>
