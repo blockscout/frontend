@@ -180,6 +180,7 @@ const Tokens = () => {
       <Box
         bgColor={ listBgColor }
         borderTopRadius="2.5em"
+        overflowX="scroll"
         padding={{
           base: '1.5em',
           md: '3em',

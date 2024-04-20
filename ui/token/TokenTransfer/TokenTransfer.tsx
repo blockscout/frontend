@@ -1,4 +1,3 @@
-import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -13,8 +12,6 @@ import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
-import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
-import TokenTransferList from 'ui/token/TokenTransfer/TokenTransferList';
 import TokenTransferTable from 'ui/token/TokenTransfer/TokenTransferTable';
 
 type Props = {
@@ -57,32 +54,17 @@ const TokenTransfer = ({ transfersQuery, tokenId, token }: Props) => {
 
   const content = data?.items ? (
 
-    <>
-      <Box display={{ base: 'none', lg: 'block' }}>
-        <TokenTransferTable
-          data={ data?.items }
-          top={ pagination.isVisible ? 80 : 0 }
-          showSocketInfo={ pagination.page === 1 }
-          socketInfoAlert={ socketAlert }
-          socketInfoNum={ newItemsCount }
-          tokenId={ tokenId }
-          token={ token }
-          isLoading={ isPlaceholderData }
-        />
-      </Box>
-      <Box display={{ base: 'block', lg: 'none' }}>
-        { pagination.page === 1 && (
-          <SocketNewItemsNotice.Mobile
-            url={ window.location.href }
-            num={ newItemsCount }
-            alert={ socketAlert }
-            type="token_transfer"
-            isLoading={ isPlaceholderData }
-          />
-        ) }
-        <TokenTransferList data={ data?.items } tokenId={ tokenId } isLoading={ isPlaceholderData }/>
-      </Box>
-    </>
+    <TokenTransferTable
+      data={ data?.items }
+      top={ pagination.isVisible ? 80 : 0 }
+      showSocketInfo={ pagination.page === 1 }
+      socketInfoAlert={ socketAlert }
+      socketInfoNum={ newItemsCount }
+      tokenId={ tokenId }
+      token={ token }
+      isLoading={ isPlaceholderData }
+    />
+
   ) : null;
 
   const actionBar = isMobile && pagination.isVisible ? (

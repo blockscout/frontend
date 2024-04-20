@@ -85,7 +85,7 @@ const BlocksPageContent = () => {
         bgColor={ listBgColor }
         borderTopRadius="2.5em"
         padding={{
-          base: '1.5em',
+          base: '1em',
           md: '3em',
         }}
         paddingY="3em"

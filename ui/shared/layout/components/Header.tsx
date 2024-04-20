@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-bind */
 import type { LinkProps } from '@chakra-ui/react';
-import { Box, Link, Button, Text, Flex, useColorModeValue } from '@chakra-ui/react';
+import { Box, Link, Button, Text, useColorModeValue } from '@chakra-ui/react';
 import Image from 'next/image';
 import React from 'react';
 import { IoMenu } from 'react-icons/io5';
@@ -33,7 +33,12 @@ const Header = () => {
         p="1.5em"
       >
         <Box>
-          <Image src={ useColorModeValue('/stats-logo.png', '/logo.png') } alt="Example" width={ 200 } height={ 300 }/>
+          <Image
+            src={ useColorModeValue('/stats-logo.png', '/logo.png') }
+            alt="Example"
+            width={ 200 }
+            height={ 300 }
+          />
         </Box>
         <Box
           display={{ base: 'none', md: 'flex' }}
@@ -66,12 +71,8 @@ const Header = () => {
             }
           }) }
         </Box>
-        <Flex gap={ 4 } alignItems="center">
-          <Box
-            display={{ base: 'none', md: 'block' }}
-            onClick={ connect }
-            _disabled={ address }
-          >
+        <Box gap={ 4 } alignItems="center" display={{ base: 'none', md: 'flex' }}>
+          <Box onClick={ connect } _disabled={ address }>
             <Button
               display="flex"
               gap="7px"
@@ -86,7 +87,7 @@ const Header = () => {
               ) : (
                 <>
                   <Text color="linear-gradient(180deg, #FFFFFF 0%, #999999 100%)">
-                  CONNECT
+                    CONNECT
                   </Text>
                   <Box
                     background="linear-gradient(180deg, #FFFFFF 0%, #999999 100%)"
@@ -100,18 +101,20 @@ const Header = () => {
             </Button>
           </Box>
           <Settings/>
-        </Flex>
-
+        </Box>
         { /* eslint-disable-next-line react/jsx-no-bind */ }
-        <Button
-          onClick={ () => setShowMobileMenu(!showMobileMenu) }
-          display={{ base: 'block', md: 'none' }}
-          _hover={{ backgroundColor: 'transparent' }}
-          padding="0"
-          background="transparent"
-        >
-          <IoMenu color="black" size="32"/>
-        </Button>
+        <Box gap={ 3 } alignItems="center" display={{ md: 'none', base: 'flex' }}>
+          <Settings/>
+          <Button
+            onClick={ () => setShowMobileMenu(!showMobileMenu) }
+            display={{ base: 'block', md: 'none' }}
+            _hover={{ backgroundColor: 'transparent' }}
+            padding="0"
+            background="transparent"
+          >
+            <IoMenu color="black" size="32"/>
+          </Button>
+        </Box>
       </Box>
       { showMobileMenu && (
         <Box

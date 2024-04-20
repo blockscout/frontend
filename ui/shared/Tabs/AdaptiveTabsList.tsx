@@ -52,7 +52,7 @@ const AdaptiveTabsList = (props: Props) => {
   return (
     <TabList
       // marginBottom={{ base: 6, lg: 8 }}
-      mx={{ base: '-16px', lg: 'unset' }}
+      // mx={{ base: '-16px', lg: 'unset' }}
       px={{
         base: '16px',
         lg: props?.type !== 'parent_tabs' ? '20px' : 'unset',

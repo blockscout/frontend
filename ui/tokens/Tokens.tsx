@@ -1,4 +1,3 @@
-import { Hide, Show } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokensSortingValue } from 'types/api/tokens';
@@ -8,7 +7,6 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 
-import TokensListItem from './TokensListItem';
 import TokensTable from './TokensTable';
 
 interface Props {
@@ -20,7 +18,7 @@ interface Props {
   description?: React.ReactNode;
 }
 
-const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFilters }: Props) => {
+const Tokens = ({ query, onSortChange, sort, actionBar, hasActiveFilters }: Props) => {
 
   const { isError, isPlaceholderData, data, pagination } = query;
 
@@ -29,30 +27,13 @@ const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFi
   }
 
   const content = data?.items ? (
-    <>
-      <Show below="lg" ssr={ false }>
-        { description }
-        { data.items.map((item, index) => (
-          <TokensListItem
-            key={ item.address + (isPlaceholderData ? index : '') }
-            token={ item }
-            index={ index }
-            page={ pagination.page }
-            isLoading={ isPlaceholderData }
-          />
-        )) }
-      </Show>
-      <Hide below="lg" ssr={ false }>
-        { description }
-        <TokensTable
-          items={ data.items }
-          page={ pagination.page }
-          isLoading={ isPlaceholderData }
-          setSorting={ onSortChange }
-          sorting={ sort }
-        />
-      </Hide>
-    </>
+    <TokensTable
+      items={ data.items }
+      page={ pagination.page }
+      isLoading={ isPlaceholderData }
+      setSorting={ onSortChange }
+      sorting={ sort }
+    />
   ) : null;
 
   return (
