@@ -13,7 +13,7 @@ NEXT_PUBLIC_NETWORK_EXPLORERS: "[{'title':'Etherscan','logo':'https://github.com
 NEXT_PUBLIC_NETWORK_CURRENCY_NAME: "Ether",
 NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL: "ETH",
 NEXT_PUBLIC_HOMEPAGE_CHARTS: "['daily_txs', 'coin_price', 'market_cap']",
-NEXT_PUBLIC_API_HOST: "eth.blockscout.com",
+NEXT_PUBLIC_API_HOST: "explorer-api.satschain.xyz",
 NEXT_PUBLIC_ADMIN_SERVICE_API_HOST: "https://admin-rs.services.blockscout.com",
 NEXT_PUBLIC_FEATURED_NETWORKS: "https://raw.githubusercontent.com/blockscout/frontend-configs/dev/configs/featured-networks/eth.json",
 NEXT_PUBLIC_TRANSACTION_INTERPRETATION_PROVIDER: "blockscout",
