@@ -35,13 +35,25 @@ function getPaginationParamsFromQuery(queryString: string | Array<string> | unde
 
   return {};
 }
+function isResourcePayloadA<R extends PaginatedResources>(
+  data: ResourcePayload<R> | undefined,
+): data is ResourcePayload<R> {
+  // eslint-disable-next-line no-implicit-coercion
+  return !!data && 'next_page_params' in data;
+}
 
-function getNextPageParams<R extends PaginatedResources>(data: ResourcePayload<R> | undefined) {
-  if (!data || typeof data !== 'object' || !('next_page_params' in data)) {
+function getNextPageParams<R extends PaginatedResources>(
+  data: ResourcePayload<R> | undefined,
+) {
+  if (!data || typeof data !== 'object') {
     return;
   }
 
-  return (data as ResourcePayload<R>).next_page_params;
+  if (isResourcePayloadA<R>(data)) {
+    return data.next_page_params;
+  }
+
+  // Handle ResourcePayloadB<R> if needed
 }
 
 export type QueryWithPagesResult<Resource extends PaginatedResources> =
