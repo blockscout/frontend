@@ -8,6 +8,7 @@ import type { NavItemInternal, NavItem, NavGroupItem } from 'types/client/naviga
 
 import config from 'configs/app';
 // import { rightLineArrow } from 'lib/html-entities';
+// import { rightLineArrow } from 'lib/html-entities';
 import UserAvatar from 'ui/shared/UserAvatar';
 
 interface ReturnType {
@@ -29,6 +30,7 @@ export default function useNavItems(): ReturnType {
   const pathname: any = router.pathname;
 
   return React.useMemo(() => {
+    // const blockchainNavItems: Array<NavItem> | Array<Array<NavItem>> = [];
     // const blockchainNavItems: Array<NavItem> | Array<Array<NavItem>> = [];
 
     const blocks: NavItem | null = {
