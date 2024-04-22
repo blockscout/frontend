@@ -269,7 +269,7 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
             <InfoItem
               label="License"
               content={ licenseLink }
-              hint="License type is informative field, and initial source code might have different license type from displayed."
+              hint="License type is entered manually during verification. The initial source code may contain a different license type than the one displayed."
               isLoading={ isPlaceholderData }
             />
           ) }
