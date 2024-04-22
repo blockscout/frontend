@@ -19,8 +19,10 @@ const hooksConfig = {
 // test cases which use socket cannot run in parallel since the socket server always run on the same port
 test.describe.configure({ mode: 'serial' });
 
+let addressApiUrl: string;
+
 test.beforeEach(async({ mockApiResponse }) => {
-  await mockApiResponse('address', addressMock.contract, { pathParams: { hash: addressMock.contract.hash } });
+  addressApiUrl = await mockApiResponse('address', addressMock.contract, { pathParams: { hash: addressMock.contract.hash } });
 });
 
 test('full view +@mobile +@dark-mode', async({ render, mockApiResponse, createSocket }) => {
@@ -52,8 +54,7 @@ test('verified via lookup in eth_bytecode_db', async({ render, mockApiResponse, 
   const channel = await socketServer.joinChannel(socket, 'addresses:' + addressMock.contract.hash.toLowerCase());
   await page.waitForResponse(contractApiUrl);
   socketServer.sendMessage(socket, channel, 'smart_contract_was_verified', {});
-
-  const request = await page.waitForRequest(contractApiUrl);
+  const request = await page.waitForRequest(addressApiUrl);
 
   expect(request).toBeTruthy();
 });
