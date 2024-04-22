@@ -38,8 +38,10 @@ function getPaginationParamsFromQuery(queryString: string | Array<string> | unde
 function isResourcePayloadA<R extends PaginatedResources>(
   data: ResourcePayload<R> | undefined,
 ): data is ResourcePayload<R> {
-  // eslint-disable-next-line no-implicit-coercion
-  return !!data && 'next_page_params' in data;
+  return (
+    Boolean(data) &&
+    'next_page_params' in (data as ResourcePayload<PaginatedResources>)
+  );
 }
 
 function getNextPageParams<R extends PaginatedResources>(
