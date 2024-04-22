@@ -19,9 +19,7 @@ const CONTRACT_TAB_IDS = [
   'write_contract',
   'write_proxy',
   'write_custom_methods',
-];
-
-const EMPTY_ARRAY: Array<never> = [];
+] as const;
 
 interface ContractTab {
   id: typeof CONTRACT_TAB_IDS[number];
@@ -29,13 +27,18 @@ interface ContractTab {
   component: JSX.Element;
 }
 
-export default function useContractTabs(data: Address | undefined): Array<ContractTab> {
+interface ReturnType {
+  tabs: Array<ContractTab>;
+  isLoading: boolean;
+}
+
+export default function useContractTabs(data: Address | undefined, isPlaceholderData: boolean): ReturnType {
   const [ isQueryEnabled, setIsQueryEnabled ] = React.useState(false);
 
   const router = useRouter();
   const tab = getQueryParamString(router.query.tab);
 
-  const isEnabled = Boolean(data?.hash) && CONTRACT_TAB_IDS.concat('contract').includes(tab);
+  const isEnabled = Boolean(data?.hash) && !isPlaceholderData && CONTRACT_TAB_IDS.concat('contract' as never).includes(tab);
 
   const enableQuery = React.useCallback(() => {
     setIsQueryEnabled(true);
@@ -58,34 +61,33 @@ export default function useContractTabs(data: Address | undefined): Array<Contra
   });
 
   return React.useMemo(() => {
-    if (!isEnabled) {
-      return EMPTY_ARRAY;
-    }
-
-    return [
-      {
-        id: 'contact_code',
-        title: 'Code',
-        component: <ContractCode contractQuery={ contractQuery } channel={ channel } addressHash={ data?.hash }/>,
-      },
-      contractQuery.data?.has_methods_read ?
-        { id: 'read_contract', title: 'Read contract', component: <ContractRead/> } :
-        undefined,
-      contractQuery.data?.has_methods_read_proxy ?
-        { id: 'read_proxy', title: 'Read proxy', component: <ContractRead/> } :
-        undefined,
-      contractQuery.data?.has_custom_methods_read ?
-        { id: 'read_custom_methods', title: 'Read custom', component: <ContractRead/> } :
-        undefined,
-      contractQuery.data?.has_methods_write ?
-        { id: 'write_contract', title: 'Write contract', component: <ContractWrite/> } :
-        undefined,
-      contractQuery.data?.has_methods_write_proxy ?
-        { id: 'write_proxy', title: 'Write proxy', component: <ContractWrite/> } :
-        undefined,
-      contractQuery.data?.has_custom_methods_write ?
-        { id: 'write_custom_methods', title: 'Write custom', component: <ContractWrite/> } :
-        undefined,
-    ].filter(Boolean);
-  }, [ isEnabled, contractQuery, channel, data?.hash ]);
+    return {
+      tabs: [
+        {
+          id: 'contract_code' as const,
+          title: 'Code',
+          component: <ContractCode contractQuery={ contractQuery } channel={ channel } addressHash={ data?.hash }/>,
+        },
+        contractQuery.data?.has_methods_read ?
+          { id: 'read_contract' as const, title: 'Read contract', component: <ContractRead isLoading={ contractQuery.isPlaceholderData }/> } :
+          undefined,
+        contractQuery.data?.has_methods_read_proxy ?
+          { id: 'read_proxy' as const, title: 'Read proxy', component: <ContractRead isLoading={ contractQuery.isPlaceholderData }/> } :
+          undefined,
+        contractQuery.data?.has_custom_methods_read ?
+          { id: 'read_custom_methods' as const, title: 'Read custom', component: <ContractRead isLoading={ contractQuery.isPlaceholderData }/> } :
+          undefined,
+        contractQuery.data?.has_methods_write ?
+          { id: 'write_contract' as const, title: 'Write contract', component: <ContractWrite isLoading={ contractQuery.isPlaceholderData }/> } :
+          undefined,
+        contractQuery.data?.has_methods_write_proxy ?
+          { id: 'write_proxy' as const, title: 'Write proxy', component: <ContractWrite isLoading={ contractQuery.isPlaceholderData }/> } :
+          undefined,
+        contractQuery.data?.has_custom_methods_write ?
+          { id: 'write_custom_methods' as const, title: 'Write custom', component: <ContractWrite isLoading={ contractQuery.isPlaceholderData }/> } :
+          undefined,
+      ].filter(Boolean),
+      isLoading: contractQuery.isPlaceholderData,
+    };
+  }, [ contractQuery, channel, data?.hash ]);
 }

@@ -19,7 +19,11 @@ import ContractReadResult from './ContractReadResult';
 import ContractMethodForm from './methodForm/ContractMethodForm';
 import useWatchAccount from './useWatchAccount';
 
-const ContractRead = () => {
+interface Props {
+  isLoading?: boolean;
+}
+
+const ContractRead = ({ isLoading }: Props) => {
   const apiFetch = useApiFetch();
   const account = useWatchAccount();
   const router = useRouter();
@@ -36,7 +40,7 @@ const ContractRead = () => {
       from: account?.address,
     },
     queryOptions: {
-      enabled: Boolean(addressHash),
+      enabled: !isLoading,
     },
   });
 

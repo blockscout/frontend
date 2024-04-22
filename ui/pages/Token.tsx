@@ -172,7 +172,7 @@ const TokenPageContent = () => {
     queryOptions: { enabled: Boolean(tokenQuery.data) && config.features.verifiedTokens.isEnabled },
   });
 
-  const contractTabs = useContractTabs(addressQuery.data);
+  const contractTabs = useContractTabs(addressQuery.data, addressQuery.isPlaceholderData);
 
   const tabs: Array<RoutedTab> = [
     hasInventoryTab ? {
@@ -196,8 +196,8 @@ const TokenPageContent = () => {
 
         return 'Contract';
       },
-      component: <AddressContract tabs={ contractTabs }/>,
-      subTabs: contractTabs.map(tab => tab.id),
+      component: <AddressContract tabs={ contractTabs.tabs } isLoading={ contractTabs.isLoading }/>,
+      subTabs: contractTabs.tabs.map(tab => tab.id),
     } : undefined,
   ].filter(Boolean);
 

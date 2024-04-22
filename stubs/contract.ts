@@ -7,6 +7,12 @@ export const CONTRACT_CODE_UNVERIFIED = {
   creation_bytecode: '0x60806040526e',
   deployed_bytecode: '0x608060405233',
   is_self_destructed: false,
+  has_methods_read: true,
+  has_methods_read_proxy: true,
+  has_methods_write: true,
+  has_methods_write_proxy: true,
+  has_custom_methods_read: true,
+  has_custom_methods_write: true,
 } as SmartContract;
 
 export const CONTRACT_CODE_VERIFIED = {
@@ -42,11 +48,11 @@ export const CONTRACT_CODE_VERIFIED = {
   verified_at: '2023-02-21T14:39:16.906760Z',
   license_type: 'mit',
   has_methods_read: true,
-  has_methods_read_proxy: false,
+  has_methods_read_proxy: true,
   has_methods_write: true,
-  has_methods_write_proxy: false,
-  has_custom_methods_read: false,
-  has_custom_methods_write: false,
+  has_methods_write_proxy: true,
+  has_custom_methods_read: true,
+  has_custom_methods_write: true,
 } as unknown as SmartContract;
 
 export const VERIFIED_CONTRACT_INFO: VerifiedContract = {
