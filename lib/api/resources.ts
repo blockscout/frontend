@@ -739,6 +739,12 @@ export const RESOURCES = {
     path: '/api/v2/config/backend-version',
   },
 
+  // CSV EXPORT
+  csv_export_token_holders: {
+    path: '/api/v2/tokens/:hash/holders/csv',
+    pathParams: [ 'hash' as const ],
+  },
+
   // OTHER
   api_v2_key: {
     path: '/api/v2/key',
