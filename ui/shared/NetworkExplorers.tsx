@@ -60,7 +60,9 @@ const NetworkExplorers = ({ className, type, pathParam }: Props) => {
           size="sm"
           bg="white"
           variant="outline"
-          colorScheme="gray"
+          color="black"
+          border="0px"
+          _hover="white"
           onClick={ onToggle }
           aria-label="Verify in other explorers"
           fontWeight={ 500 }

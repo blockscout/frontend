@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import {
   Box,
   Grid,
@@ -110,24 +111,37 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
   ) : null;
 
   return (
-  // eslint-disable-next-line react/jsx-no-useless-fragment
+    // eslint-disable-next-line react/jsx-no-useless-fragment
     <Flex direction="column" gap={ 6 } width="100%">
       <Grid
         padding={ 6 }
-        border="1px solid rgba(114, 114, 114, 0.54)"
+        border="1px solid"
+        borderColor={ useColorModeValue(
+          'rgba(114, 114, 114, 0.54)',
+          'rgba(255, 255, 255, 0.08)',
+        ) }
+        boxShadow="0px 9.89px 23.75px 0px #BDC5D133"
         rounded={ 20 }
         columnGap={{ base: 12, lg: 24 }}
         rowGap={{ base: 3, lg: 3 }}
-        templateColumns={{ base: 'minmax(0, 1fr)', lg: 'max-content minmax(728px, auto)' }}
-        shadow="base"
-        // width="100%"
+        templateColumns={{
+          base: 'minmax(0, 1fr)',
+          lg: 'max-content minmax(728px, auto)',
+        }}
       >
-
         { config.features.metasuites.isEnabled && (
           <>
-            <Box display="none" id="meta-suites__tx-info-label" data-status={ data.status } data-ready={ !isLoading }/>
+            <Box
+              display="none"
+              id="meta-suites__tx-info-label"
+              data-status={ data.status }
+              data-ready={ !isLoading }
+            />
             <Box display="none" id="meta-suites__tx-info-value"/>
-            <DetailsInfoItemDivider display="none" id="meta-suites__details-info-item-divider"/>
+            <DetailsInfoItemDivider
+              display="none"
+              id="meta-suites__details-info-item-divider"
+            />
           </>
         ) }
 
@@ -150,28 +164,50 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
 
           { config.features.metasuites.isEnabled && (
             <>
-              <TextSeparator color="gray.500" flexShrink={ 0 } display="none" id="meta-suites__tx-explorer-separator"/>
-              <Box display="none" flexShrink={ 0 } id="meta-suites__tx-explorer-link"/>
+              <TextSeparator
+                color="gray.500"
+                flexShrink={ 0 }
+                display="none"
+                id="meta-suites__tx-explorer-separator"
+              />
+              <Box
+                display="none"
+                flexShrink={ 0 }
+                id="meta-suites__tx-explorer-link"
+              />
             </>
           ) }
         </DetailsInfoItem>
         <DetailsInfoItem
           title={
-            rollupFeature.isEnabled && (rollupFeature.type === 'zkEvm' || rollupFeature.type === 'zkSync') ?
+            rollupFeature.isEnabled &&
+            (rollupFeature.type === 'zkEvm' || rollupFeature.type === 'zkSync') ?
               'L2 status and method' :
               'Status and method'
           }
           hint="Current transaction state: Success, Failed (Error), or Pending (In Process)"
           isLoading={ isLoading }
         >
-          <TxStatus status={ data.status } errorText={ data.status === 'error' ? data.result : undefined } isLoading={ isLoading }/>
+          <TxStatus
+            status={ data.status }
+            errorText={ data.status === 'error' ? data.result : undefined }
+            isLoading={ isLoading }
+          />
           { data.method && (
-            <Tag colorScheme={ data.method === 'Multicall' ? 'teal' : 'gray' } isLoading={ isLoading } isTruncated ml={ 3 }>
+            <Tag
+              colorScheme={ data.method === 'Multicall' ? 'teal' : 'gray' }
+              isLoading={ isLoading }
+              isTruncated
+              ml={ 3 }
+            >
               { data.method }
             </Tag>
           ) }
         </DetailsInfoItem>
-        { rollupFeature.isEnabled && rollupFeature.type === 'optimistic' && data.op_withdrawals && data.op_withdrawals.length > 0 && (
+        { rollupFeature.isEnabled &&
+          rollupFeature.type === 'optimistic' &&
+          data.op_withdrawals &&
+          data.op_withdrawals.length > 0 && (
           <DetailsInfoItem
             title="Withdrawal status"
             hint="Detailed status progress of the transaction"
@@ -181,7 +217,9 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
                 <Box key={ withdrawal.nonce }>
                   <Box mb={ 2 }>
                     <span>Nonce: </span>
-                    <chakra.span fontWeight={ 600 }>{ withdrawal.nonce }</chakra.span>
+                    <chakra.span fontWeight={ 600 }>
+                      { withdrawal.nonce }
+                    </chakra.span>
                   </Box>
                   <TxDetailsWithdrawalStatus
                     status={ withdrawal.status }
@@ -198,7 +236,11 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             hint="Status of the transaction confirmation path to L1"
             isLoading={ isLoading }
           >
-            <VerificationSteps currentStep={ data.zkevm_status } steps={ ZKEVM_L2_TX_STATUSES } isLoading={ isLoading }/>
+            <VerificationSteps
+              currentStep={ data.zkevm_status }
+              steps={ ZKEVM_L2_TX_STATUSES }
+              isLoading={ isLoading }
+            />
           </DetailsInfoItem>
         ) }
         { data.revert_reason && (
@@ -215,7 +257,11 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             hint="Status is the short interpretation of the batch lifecycle"
             isLoading={ isLoading }
           >
-            <VerificationSteps steps={ ZKSYNC_L2_TX_BATCH_STATUSES } currentStep={ data.zksync.status } isLoading={ isLoading }/>
+            <VerificationSteps
+              steps={ ZKSYNC_L2_TX_BATCH_STATUSES }
+              currentStep={ data.zksync.status }
+              isLoading={ isLoading }
+            />
           </DetailsInfoItem>
         ) }
         <DetailsInfoItem
@@ -223,14 +269,11 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           hint="Block number containing the transaction"
           isLoading={ isLoading }
         >
-          { data.block === null ?
-            <Text>Pending</Text> : (
-              <BlockEntity
-                isLoading={ isLoading }
-                number={ data.block }
-                noIcon
-              />
-            ) }
+          { data.block === null ? (
+            <Text>Pending</Text>
+          ) : (
+            <BlockEntity isLoading={ isLoading } number={ data.block } noIcon/>
+          ) }
           { Boolean(data.confirmations) && (
             <>
               <TextSeparator color="gray.500"/>
@@ -263,7 +306,9 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
                 isLoading={ isLoading }
                 number={ data.zksync.batch_number }
               />
-            ) : <Skeleton isLoaded={ !isLoading }>Pending</Skeleton> }
+            ) : (
+              <Skeleton isLoaded={ !isLoading }>Pending</Skeleton>
+            ) }
           </DetailsInfoItem>
         ) }
         { data.timestamp && (
@@ -272,12 +317,17 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             hint="Date & time of transaction inclusion, including length of time for confirmation"
             isLoading={ isLoading }
           >
-            <DetailsTimestamp timestamp={ data.timestamp } isLoading={ isLoading }/>
+            <DetailsTimestamp
+              timestamp={ data.timestamp }
+              isLoading={ isLoading }
+            />
             { data.confirmation_duration && (
               <>
                 <TextSeparator color="gray.500"/>
                 <Skeleton isLoaded={ !isLoading } color="text_secondary">
-                  <span>{ getConfirmationDuration(data.confirmation_duration) }</span>
+                  <span>
+                    { getConfirmationDuration(data.confirmation_duration) }
+                  </span>
                 </Skeleton>
               </>
             ) }
@@ -291,7 +341,10 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           >
             <AddressEntity
               address={ data.execution_node }
-              href={ route({ pathname: '/txs/kettle/[hash]', query: { hash: data.execution_node.hash } }) }
+              href={ route({
+                pathname: '/txs/kettle/[hash]',
+                query: { hash: data.execution_node.hash },
+              }) }
             />
           </DetailsInfoItem>
         ) }
@@ -302,7 +355,11 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
 
         <DetailsInfoItemDivider/>
 
-        <TxDetailsActions hash={ data.hash } actions={ data.actions } isTxDataLoading={ isLoading }/>
+        <TxDetailsActions
+          hash={ data.hash }
+          actions={ data.actions }
+          isTxDataLoading={ isLoading }
+        />
 
         <DetailsInfoItem
           title="From"
@@ -310,15 +367,10 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           isLoading={ isLoading }
           columnGap={ 3 }
         >
-          <AddressEntity
-            address={ data.from }
-            isLoading={ isLoading }
-          />
+          <AddressEntity address={ data.from } isLoading={ isLoading }/>
           { data.from.name && <Text>{ data.from.name }</Text> }
           { addressFromTags.length > 0 && (
-            <Flex columnGap={ 3 }>
-              { addressFromTags }
-            </Flex>
+            <Flex columnGap={ 3 }>{ addressFromTags }</Flex>
           ) }
         </DetailsInfoItem>
         <DetailsInfoItem
@@ -332,15 +384,17 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             <>
               { data.to && data.to.hash ? (
                 <Flex flexWrap="nowrap" alignItems="center" maxW="100%">
-                  <AddressEntity
-                    address={ toAddress }
-                    isLoading={ isLoading }
-                  />
+                  <AddressEntity address={ toAddress } isLoading={ isLoading }/>
                   { executionSuccessBadge }
                   { executionFailedBadge }
                 </Flex>
               ) : (
-                <Flex width="100%" whiteSpace="pre" alignItems="center" flexShrink={ 0 }>
+                <Flex
+                  width="100%"
+                  whiteSpace="pre"
+                  alignItems="center"
+                  flexShrink={ 0 }
+                >
                   <span>[Contract </span>
                   <AddressEntity
                     address={ toAddress }
@@ -353,16 +407,20 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
                 </Flex>
               ) }
               { addressToTags.length > 0 && (
-                <Flex columnGap={ 3 }>
-                  { addressToTags }
-                </Flex>
+                <Flex columnGap={ 3 }>{ addressToTags }</Flex>
               ) }
             </>
           ) : (
             <span>[ Contract creation ]</span>
           ) }
         </DetailsInfoItem>
-        { data.token_transfers && <TxDetailsTokenTransfers data={ data.token_transfers } txHash={ data.hash } isOverflow={ data.token_transfers_overflow }/> }
+        { data.token_transfers && (
+          <TxDetailsTokenTransfers
+            data={ data.token_transfers }
+            txHash={ data.hash }
+            isOverflow={ data.token_transfers_overflow }
+          />
+        ) }
 
         <DetailsInfoItemDivider/>
 
@@ -370,13 +428,15 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           <DetailsInfoItem
             title="Sequence tx hash"
             flexWrap="nowrap"
-
             isLoading={ isLoading }
           >
             <Skeleton isLoaded={ !isLoading } overflow="hidden">
               <HashStringShortenDynamic hash={ data.zkevm_sequence_hash }/>
             </Skeleton>
-            <CopyToClipboard text={ data.zkevm_sequence_hash } isLoading={ isLoading }/>
+            <CopyToClipboard
+              text={ data.zkevm_sequence_hash }
+              isLoading={ isLoading }
+            />
           </DetailsInfoItem>
         ) }
         { data.zkevm_verify_hash && (
@@ -386,15 +446,18 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             isLoading={ isLoading }
           >
             <Skeleton isLoaded={ !isLoading } overflow="hidden">
-
               <HashStringShortenDynamic hash={ data.zkevm_verify_hash }/>
             </Skeleton>
-            <CopyToClipboard text={ data.zkevm_verify_hash } isLoading={ isLoading }/>
-
+            <CopyToClipboard
+              text={ data.zkevm_verify_hash }
+              isLoading={ isLoading }
+            />
           </DetailsInfoItem>
         ) }
 
-        { (data.zkevm_batch_number || data.zkevm_verify_hash) && <DetailsInfoItemDivider/> }
+        { (data.zkevm_batch_number || data.zkevm_verify_hash) && (
+          <DetailsInfoItemDivider/>
+        ) }
 
         { !config.UI.views.tx.hiddenFields?.value && (
           <DetailsInfoItem
@@ -414,7 +477,11 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         { !config.UI.views.tx.hiddenFields?.tx_fee && (
           <DetailsInfoItem
             title="Transaction fee"
-            hint={ data.blob_gas_used ? 'Transaction fee without blob fee' : 'Total transaction fee' }
+            hint={
+              data.blob_gas_used ?
+                'Transaction fee without blob fee' :
+                'Total transaction fee'
+            }
             isLoading={ isLoading }
           >
             { data.stability_fee ? (
@@ -422,7 +489,11 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             ) : (
               <CurrencyValue
                 value={ data.fee.value }
-                currency={ config.UI.views.tx.hiddenFields?.fee_currency ? '' : currencyUnits.ether }
+                currency={
+                  config.UI.views.tx.hiddenFields?.fee_currency ?
+                    '' :
+                    currencyUnits.ether
+                }
                 exchangeRate={ data.exchange_rate }
                 flexWrap="wrap"
                 isLoading={ isLoading }
@@ -433,20 +504,36 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
 
         <TxDetailsGasPrice gasPrice={ data.gas_price } isLoading={ isLoading }/>
 
-        <TxDetailsFeePerGas txFee={ data.fee.value } gasUsed={ data.gas_used } isLoading={ isLoading }/>
+        <TxDetailsFeePerGas
+          txFee={ data.fee.value }
+          gasUsed={ data.gas_used }
+          isLoading={ isLoading }
+        />
 
         <DetailsInfoItem
           title="Gas usage & limit by txn"
           hint="Actual gas amount used by the transaction"
           isLoading={ isLoading }
         >
-          <Skeleton isLoaded={ !isLoading }>{ BigNumber(data.gas_used || 0).toFormat() }</Skeleton>
+          <Skeleton isLoaded={ !isLoading }>
+            { BigNumber(data.gas_used || 0).toFormat() }
+          </Skeleton>
           <TextSeparator/>
-          <Skeleton isLoaded={ !isLoading }>{ BigNumber(data.gas_limit).toFormat() }</Skeleton>
-          <Utilization ml={ 4 } value={ BigNumber(data.gas_used || 0).dividedBy(BigNumber(data.gas_limit)).toNumber() } isLoading={ isLoading }/>
+          <Skeleton isLoaded={ !isLoading }>
+            { BigNumber(data.gas_limit).toFormat() }
+          </Skeleton>
+          <Utilization
+            ml={ 4 }
+            value={ BigNumber(data.gas_used || 0)
+              .dividedBy(BigNumber(data.gas_limit))
+              .toNumber() }
+            isLoading={ isLoading }
+          />
         </DetailsInfoItem>
         { !config.UI.views.tx.hiddenFields?.gas_fees &&
-            (data.base_fee_per_gas || data.max_fee_per_gas || data.max_priority_fee_per_gas) && (
+          (data.base_fee_per_gas ||
+            data.max_fee_per_gas ||
+            data.max_priority_fee_per_gas) && (
           <DetailsInfoItem
             title={ `Gas fees (${ currencyUnits.gwei })` }
             // eslint-disable-next-line max-len
@@ -459,22 +546,42 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           >
             { data.base_fee_per_gas && (
               <Skeleton isLoaded={ !isLoading }>
-                <Text as="span" fontWeight="500">Base: </Text>
-                <Text fontWeight="600" as="span">{ BigNumber(data.base_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
-                { (data.max_fee_per_gas || data.max_priority_fee_per_gas) && <TextSeparator/> }
+                <Text as="span" fontWeight="500">
+                    Base:{ ' ' }
+                </Text>
+                <Text fontWeight="600" as="span">
+                  { BigNumber(data.base_fee_per_gas)
+                    .dividedBy(WEI_IN_GWEI)
+                    .toFixed() }
+                </Text>
+                { (data.max_fee_per_gas || data.max_priority_fee_per_gas) && (
+                  <TextSeparator/>
+                ) }
               </Skeleton>
             ) }
             { data.max_fee_per_gas && (
               <Skeleton isLoaded={ !isLoading }>
-                <Text as="span" fontWeight="500">Max: </Text>
-                <Text fontWeight="600" as="span">{ BigNumber(data.max_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
+                <Text as="span" fontWeight="500">
+                    Max:{ ' ' }
+                </Text>
+                <Text fontWeight="600" as="span">
+                  { BigNumber(data.max_fee_per_gas)
+                    .dividedBy(WEI_IN_GWEI)
+                    .toFixed() }
+                </Text>
                 { data.max_priority_fee_per_gas && <TextSeparator/> }
               </Skeleton>
             ) }
             { data.max_priority_fee_per_gas && (
               <Skeleton isLoaded={ !isLoading }>
-                <Text as="span" fontWeight="500">Max priority: </Text>
-                <Text fontWeight="600" as="span">{ BigNumber(data.max_priority_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
+                <Text as="span" fontWeight="500">
+                    Max priority:{ ' ' }
+                </Text>
+                <Text fontWeight="600" as="span">
+                  { BigNumber(data.max_priority_fee_per_gas)
+                    .dividedBy(WEI_IN_GWEI)
+                    .toFixed() }
+                </Text>
               </Skeleton>
             ) }
           </DetailsInfoItem>
@@ -497,8 +604,17 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
                 hint="L1 gas price"
                 isLoading={ isLoading }
               >
-                <Text mr={ 1 }>{ BigNumber(data.l1_gas_price).dividedBy(WEI).toFixed() } { currencyUnits.ether }</Text>
-                <Text variant="secondary">({ BigNumber(data.l1_gas_price).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })</Text>
+                <Text mr={ 1 }>
+                  { BigNumber(data.l1_gas_price).dividedBy(WEI).toFixed() }{ ' ' }
+                  { currencyUnits.ether }
+                </Text>
+                <Text variant="secondary">
+                  (
+                  { BigNumber(data.l1_gas_price)
+                    .dividedBy(WEI_IN_GWEI)
+                    .toFixed() }{ ' ' }
+                  { currencyUnits.gwei })
+                </Text>
               </DetailsInfoItem>
             ) }
             { data.l1_fee && (
@@ -530,52 +646,55 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       </Grid>
       <Grid
         padding={ 6 }
-        border="1px solid rgba(114, 114, 114, 0.54)"
+        border="1px solid"
+        borderColor={ useColorModeValue(
+          'rgba(114, 114, 114, 0.54)',
+          'rgba(255, 255, 255, 0.08)',
+        ) }
+        boxShadow="0px 9.89px 23.75px 0px #BDC5D133"
         rounded={ 20 }
         columnGap={{ base: 12, lg: 24 }}
         rowGap={{ base: 3, lg: 3 }}
-        templateColumns={{ base: 'minmax(0, 1fr)', lg: 'max-content minmax(728px, auto)' }}
-        shadow="base">
-        <GridItem colSpan={{ base: undefined, lg: 2 }}>
-          <DetailsInfoItem
-            title="More Details"
-            // hint="Unique character string (TxID) assigned to every verified transaction"
-            // flexWrap="nowrap"
-            isLoading={ isLoading }
-          >
-            { /* <Element name="TxInfo__cutLink"> */ }
-            <Skeleton isLoaded={ !isLoading } display="inline-block">
-              <Link
-                display="inline-block"
-                fontWeight={ 600 }
-                onClick={ handleCutClick }
-                color="black"
-                textDecoration="none"
-                _hover={{
-                  textDecoration: 'none',
-                  color: 'black',
-                }}
-              >
-                { isExpanded ? (
-                  <Flex gap={ 2 }>
-                    <LuMinus/>
+        templateColumns={{
+          base: 'minmax(0, 1fr)',
+          lg: 'max-content minmax(728px, auto)',
+        }}
+      >
+        <DetailsInfoItem title="More Details" isLoading={ isLoading }>
+          <Skeleton isLoaded={ !isLoading } display="inline-block">
+            <Link
+              display="inline-block"
+              fontWeight={ 600 }
+              onClick={ handleCutClick }
+              textDecoration="none"
+              _hover={{
+                textDecoration: 'none',
+                color: 'black',
+              }}
+            >
+              { isExpanded ? (
+                <Flex gap={ 2 } color={ useColorModeValue('black', 'gray.400') }>
+                  <LuMinus/>
                   Hide more details
-                  </Flex>
-                ) : (
-                  <Flex gap={ 2 }>
-                    <LuPlus/>
+                </Flex>
+              ) : (
+                <Flex gap={ 2 } color={ useColorModeValue('black', 'gray.400') }>
+                  <LuPlus/>
                   View more details
-                  </Flex>
-                ) }
-              </Link>
-            </Skeleton>
-            { /* </Element> */ }
-          </DetailsInfoItem>
-        </GridItem>
+                </Flex>
+              ) }
+            </Link>
+          </Skeleton>
+        </DetailsInfoItem>
         { isExpanded && (
           <>
-            <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
-            { (data.blob_gas_used || data.max_fee_per_blob_gas || data.blob_gas_price) && (
+            <GridItem
+              colSpan={{ base: undefined, lg: 2 }}
+              mt={{ base: 1, lg: 4 }}
+            />
+            { (data.blob_gas_used ||
+              data.max_fee_per_blob_gas ||
+              data.blob_gas_price) && (
               <>
                 { data.blob_gas_used && data.blob_gas_price && (
                   <DetailsInfoItem
@@ -583,8 +702,14 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
                     hint="Blob fee for this transaction"
                   >
                     <CurrencyValue
-                      value={ BigNumber(data.blob_gas_used).multipliedBy(data.blob_gas_price).toString() }
-                      currency={ config.UI.views.tx.hiddenFields?.fee_currency ? '' : currencyUnits.ether }
+                      value={ BigNumber(data.blob_gas_used)
+                        .multipliedBy(data.blob_gas_price)
+                        .toString() }
+                      currency={
+                        config.UI.views.tx.hiddenFields?.fee_currency ?
+                          '' :
+                          currencyUnits.ether
+                      }
                       exchangeRate={ data.exchange_rate }
                       flexWrap="wrap"
                       isLoading={ isLoading }
@@ -605,13 +730,25 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
                     hint={ `Amount of ${ currencyUnits.ether } used for blobs in this transaction` }
                   >
                     { data.blob_gas_price && (
-                      <Text fontWeight="600" as="span">{ BigNumber(data.blob_gas_price).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
+                      <Text fontWeight="600" as="span">
+                        { BigNumber(data.blob_gas_price)
+                          .dividedBy(WEI_IN_GWEI)
+                          .toFixed() }
+                      </Text>
                     ) }
-                    { (data.max_fee_per_blob_gas && data.blob_gas_price) && <TextSeparator/> }
+                    { data.max_fee_per_blob_gas && data.blob_gas_price && (
+                      <TextSeparator/>
+                    ) }
                     { data.max_fee_per_blob_gas && (
                       <>
-                        <Text as="span" fontWeight="500" whiteSpace="pre">Max: </Text>
-                        <Text fontWeight="600" as="span">{ BigNumber(data.max_fee_per_blob_gas).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
+                        <Text as="span" fontWeight="500" whiteSpace="pre">
+                          Max:{ ' ' }
+                        </Text>
+                        <Text fontWeight="600" as="span">
+                          { BigNumber(data.max_fee_per_blob_gas)
+                            .dividedBy(WEI_IN_GWEI)
+                            .toFixed() }
+                        </Text>
                       </>
                     ) }
                   </DetailsInfoItem>
@@ -619,7 +756,11 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
                 <DetailsInfoItemDivider/>
               </>
             ) }
-            <TxDetailsOther nonce={ data.nonce } type={ data.type } position={ data.position }/>
+            <TxDetailsOther
+              nonce={ data.nonce }
+              type={ data.type }
+              position={ data.position }
+            />
             <DetailsInfoItem
               title="Raw input"
               hint="Binary data included with the transaction. See logs tab for additional info"
@@ -634,7 +775,12 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
                 <LogDecodedInputData data={ data.decoded_input }/>
               </DetailsInfoItem>
             ) }
-            { data.zksync && <ZkSyncL2TxnBatchHashesInfo data={ data.zksync } isLoading={ isLoading }/> }
+            { data.zksync && (
+              <ZkSyncL2TxnBatchHashesInfo
+                data={ data.zksync }
+                isLoading={ isLoading }
+              />
+            ) }
           </>
         ) }
       </Grid>

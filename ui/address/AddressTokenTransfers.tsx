@@ -1,22 +1,16 @@
-import { Flex, Hide, Show, Text } from '@chakra-ui/react';
-import { useQueryClient } from '@tanstack/react-query';
+import { Flex, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { SocketMessage } from 'lib/socket/types';
 import { AddressFromToFilterValues } from 'types/api/address';
-import type { AddressFromToFilter, AddressTokenTransferResponse } from 'types/api/address';
+import type { AddressFromToFilter } from 'types/api/address';
 import type { TokenType } from 'types/api/token';
-import type { TokenTransfer } from 'types/api/tokenTransfer';
 
-import { getResourceKey } from 'lib/api/useApiQuery';
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import useSocketChannel from 'lib/socket/useSocketChannel';
-import useSocketMessage from 'lib/socket/useSocketMessage';
 import { TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import { getTokenTransfersStub } from 'stubs/token';
 import ActionBar from 'ui/shared/ActionBar';
@@ -26,9 +20,7 @@ import HashStringShorten from 'ui/shared/HashStringShorten';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import ResetIconButton from 'ui/shared/ResetIconButton';
-import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import TokenTransferFilter from 'ui/shared/TokenTransfer/TokenTransferFilter';
-import TokenTransferList from 'ui/shared/TokenTransfer/TokenTransferList';
 import TokenTransferTable from 'ui/shared/TokenTransfer/TokenTransferTable';
 
 import AddressCsvExportLink from './AddressCsvExportLink';
@@ -41,42 +33,16 @@ type Filters = {
 const getTokenFilterValue = (getFilterValuesFromQuery<TokenType>).bind(null, TOKEN_TYPE_IDS);
 const getAddressFilterValue = (getFilterValueFromQuery<AddressFromToFilter>).bind(null, AddressFromToFilterValues);
 
-const OVERLOAD_COUNT = 75;
-
-const matchFilters = (filters: Filters, tokenTransfer: TokenTransfer, address?: string) => {
-  if (filters.filter) {
-    if (filters.filter === 'from' && tokenTransfer.from.hash !== address) {
-      return false;
-    }
-    if (filters.filter === 'to' && tokenTransfer.to.hash !== address) {
-      return false;
-    }
-  }
-  if (filters.type && filters.type.length) {
-    if (!filters.type.includes(tokenTransfer.token.type)) {
-      return false;
-    }
-  }
-
-  return true;
-};
-
 type Props = {
   scrollRef?: React.RefObject<HTMLDivElement>;
   // for tests only
   overloadCount?: number;
 }
 
-const AddressTokenTransfers = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Props) => {
+const AddressTokenTransfers = ({ scrollRef }: Props) => {
   const router = useRouter();
-  const queryClient = useQueryClient();
   const isMobile = useIsMobile();
-
   const currentAddress = getQueryParamString(router.query.hash);
-
-  const [ socketAlert, setSocketAlert ] = React.useState('');
-  const [ newItemsCount, setNewItemsCount ] = React.useState(0);
-
   const tokenFilter = getQueryParamString(router.query.token) || undefined;
 
   const [ filters, setFilters ] = React.useState<Filters>(
@@ -115,107 +81,18 @@ const AddressTokenTransfers = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Pr
     onFilterChange({});
   }, [ onFilterChange ]);
 
-  const handleNewSocketMessage: SocketMessage.AddressTokenTransfer['handler'] = (payload) => {
-    setSocketAlert('');
-
-    const newItems: Array<TokenTransfer> = [];
-    let newCount = 0;
-
-    payload.token_transfers.forEach(transfer => {
-      if (data?.items && data.items.length + newItems.length >= overloadCount) {
-        if (matchFilters(filters, transfer, currentAddress)) {
-          newCount++;
-        }
-      } else {
-        if (matchFilters(filters, transfer, currentAddress)) {
-          newItems.push(transfer);
-        }
-      }
-    });
-
-    if (newCount > 0) {
-      setNewItemsCount(prev => prev + newCount);
-    }
-
-    if (newItems.length > 0) {
-      queryClient.setQueryData(
-        getResourceKey('address_token_transfers', { pathParams: { hash: currentAddress }, queryParams: { ...filters } }),
-        (prevData: AddressTokenTransferResponse | undefined) => {
-          if (!prevData) {
-            return;
-          }
-
-          return {
-            ...prevData,
-            items: [
-              ...newItems,
-              ...prevData.items,
-            ],
-          };
-        },
-      );
-    }
-
-  };
-
-  const handleSocketClose = React.useCallback(() => {
-    setSocketAlert('Connection is lost. Please refresh the page to load new token transfers.');
-  }, []);
-
-  const handleSocketError = React.useCallback(() => {
-    setSocketAlert('An error has occurred while fetching new token transfers. Please refresh the page.');
-  }, []);
-
-  const channel = useSocketChannel({
-    topic: `addresses:${ currentAddress.toLowerCase() }`,
-    onSocketClose: handleSocketClose,
-    onSocketError: handleSocketError,
-    isDisabled: pagination.page !== 1 || Boolean(tokenFilter),
-  });
-
-  useSocketMessage({
-    channel,
-    event: 'token_transfer',
-    handler: handleNewSocketMessage,
-  });
-
   const numActiveFilters = (filters.type?.length || 0) + (filters.filter ? 1 : 0);
   const isActionBarHidden = !tokenFilter && !numActiveFilters && !data?.items.length && !currentAddress;
 
   const content = data?.items ? (
-    <>
-      <Hide below="lg" ssr={ false }>
-        <TokenTransferTable
-          data={ data?.items }
-          baseAddress={ currentAddress }
-          showTxInfo
-          top={ isActionBarHidden ? 0 : 80 }
-          enableTimeIncrement
-          showSocketInfo={ pagination.page === 1 && !tokenFilter }
-          socketInfoAlert={ socketAlert }
-          socketInfoNum={ newItemsCount }
-          isLoading={ isPlaceholderData }
-        />
-      </Hide>
-      <Show below="lg" ssr={ false }>
-        { pagination.page === 1 && !tokenFilter && (
-          <SocketNewItemsNotice.Mobile
-            url={ window.location.href }
-            num={ newItemsCount }
-            alert={ socketAlert }
-            type="token_transfer"
-            isLoading={ isPlaceholderData }
-          />
-        ) }
-        <TokenTransferList
-          data={ data?.items }
-          baseAddress={ currentAddress }
-          showTxInfo
-          enableTimeIncrement
-          isLoading={ isPlaceholderData }
-        />
-      </Show>
-    </>
+    <TokenTransferTable
+      data={ data?.items }
+      baseAddress={ currentAddress }
+      showTxInfo
+      top={ isActionBarHidden ? 0 : 80 }
+      enableTimeIncrement
+      isLoading={ isPlaceholderData }
+    />
   ) : null;
 
   const tokenData = React.useMemo(() => ({

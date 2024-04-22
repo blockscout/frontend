@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { Grid, GridItem, Text, Link, Box, Tooltip, useColorModeValue, Skeleton, Flex } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import capitalize from 'lodash/capitalize';
@@ -161,22 +162,27 @@ const BlockDetails = ({ query }: Props) => {
     <Flex direction="column" gap={ 6 } width="100%">
       <Grid
         padding={ 6 }
-        border="1px solid rgba(114, 114, 114, 0.54)"
+        border="1px solid"
+        borderColor={ useColorModeValue(
+          'rgba(114, 114, 114, 0.54)',
+          'rgba(255, 255, 255, 0.08)',
+        ) }
+        boxShadow="0px 9.89px 23.75px 0px #BDC5D133"
         rounded={ 20 }
         columnGap={{ base: 12, lg: 24 }}
         rowGap={{ base: 3, lg: 3 }}
-        templateColumns={{ base: 'minmax(0, 1fr)', lg: 'minmax(min-content, 200px) minmax(0, 1fr)' }}
+        templateColumns={{
+          base: 'minmax(0, 1fr)',
+          lg: 'minmax(min-content, 200px) minmax(0, 1fr)',
+        }}
         overflow="hidden"
-        shadow="base"
       >
         <DetailsInfoItem
           title={ `${ blockTypeLabel } height` }
           hint="The block height of a particular block is defined as the number of blocks preceding it in the blockchain"
           isLoading={ isPlaceholderData }
         >
-          <Skeleton isLoaded={ !isPlaceholderData }>
-            { data.height }
-          </Skeleton>
+          <Skeleton isLoaded={ !isPlaceholderData }>{ data.height }</Skeleton>
           { data.height === 0 && <Text whiteSpace="pre"> - Genesis Block</Text> }
           <PrevNext
             ml={ 6 }
@@ -201,32 +207,42 @@ const BlockDetails = ({ query }: Props) => {
           hint="Date & time at which block was produced."
           isLoading={ isPlaceholderData }
         >
-          <DetailsTimestamp timestamp={ data.timestamp } isLoading={ isPlaceholderData }/>
+          <DetailsTimestamp
+            timestamp={ data.timestamp }
+            isLoading={ isPlaceholderData }
+          />
         </DetailsInfoItem>
         <DetailsInfoItem
           title="Transactions"
           hint="The number of transactions in the block"
           isLoading={ isPlaceholderData }
         >
-          <Skeleton isLoaded={ !isPlaceholderData }>
-            { txsNum }
-          </Skeleton>
+          <Skeleton isLoaded={ !isPlaceholderData }>{ txsNum }</Skeleton>
         </DetailsInfoItem>
-        { config.features.beaconChain.isEnabled && Boolean(data.withdrawals_count) && (
+        { config.features.beaconChain.isEnabled &&
+          Boolean(data.withdrawals_count) && (
           <DetailsInfoItem
             title="Withdrawals"
             hint="The number of beacon withdrawals in the block"
             isLoading={ isPlaceholderData }
           >
             <Skeleton isLoaded={ !isPlaceholderData }>
-              <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash, tab: 'withdrawals' } }) }>
-                { data.withdrawals_count } withdrawal{ data.withdrawals_count === 1 ? '' : 's' }
+              <LinkInternal
+                href={ route({
+                  pathname: '/block/[height_or_hash]',
+                  query: { height_or_hash: heightOrHash, tab: 'withdrawals' },
+                }) }
+              >
+                { data.withdrawals_count } withdrawal
+                { data.withdrawals_count === 1 ? '' : 's' }
               </LinkInternal>
             </Skeleton>
           </DetailsInfoItem>
         ) }
 
-        { rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && data.zksync && (
+        { rollupFeature.isEnabled &&
+          rollupFeature.type === 'zkSync' &&
+          data.zksync && (
           <>
             <DetailsInfoItem
               title="Batch"
@@ -238,14 +254,20 @@ const BlockDetails = ({ query }: Props) => {
                   isLoading={ isPlaceholderData }
                   number={ data.zksync.batch_number }
                 />
-              ) : <Skeleton isLoaded={ !isPlaceholderData }>Pending</Skeleton> }
+              ) : (
+                <Skeleton isLoaded={ !isPlaceholderData }>Pending</Skeleton>
+              ) }
             </DetailsInfoItem>
             <DetailsInfoItem
               title="Status"
               hint="Status is the short interpretation of the batch lifecycle"
               isLoading={ isPlaceholderData }
             >
-              <VerificationSteps steps={ ZKSYNC_L2_TX_BATCH_STATUSES } currentStep={ data.zksync.status } isLoading={ isPlaceholderData }/>
+              <VerificationSteps
+                steps={ ZKSYNC_L2_TX_BATCH_STATUSES }
+                currentStep={ data.zksync.status }
+                isLoading={ isPlaceholderData }
+              />
             </DetailsInfoItem>
           </>
         ) }
@@ -257,21 +279,20 @@ const BlockDetails = ({ query }: Props) => {
             columnGap={ 1 }
             isLoading={ isPlaceholderData }
           >
-            <AddressEntity
-              address={ data.miner }
-              isLoading={ isPlaceholderData }
-            />
+            <AddressEntity address={ data.miner } isLoading={ isPlaceholderData }/>
             { /* api doesn't return the block processing time yet */ }
             { /* <Text>{ dayjs.duration(block.minedIn, 'second').humanize(true) }</Text> */ }
           </DetailsInfoItem>
         ) }
-        { !rollupFeature.isEnabled && !totalReward.isEqualTo(ZERO) && !config.UI.views.block.hiddenFields?.total_reward && (
+        { !rollupFeature.isEnabled &&
+          !totalReward.isEqualTo(ZERO) &&
+          !config.UI.views.block.hiddenFields?.total_reward && (
           <DetailsInfoItem
             title="Block reward"
-            hint={
-              `For each block, the ${ validatorTitle } is rewarded with a finite amount of ${ config.chain.currency.symbol || 'native token' } 
-          on top of the fees paid for all transactions in the block`
-            }
+            hint={ `For each block, the ${ validatorTitle } is rewarded with a finite amount of ${
+              config.chain.currency.symbol || 'native token'
+            } 
+          on top of the fees paid for all transactions in the block` }
             columnGap={ 1 }
             isLoading={ isPlaceholderData }
           >
@@ -282,18 +303,21 @@ const BlockDetails = ({ query }: Props) => {
           </DetailsInfoItem>
         ) }
         { data.rewards
-          ?.filter(({ type }) => type !== 'Validator Reward' && type !== 'Miner Reward')
+          ?.filter(
+            ({ type }) => type !== 'Validator Reward' && type !== 'Miner Reward',
+          )
           .map(({ type, reward }) => (
             <DetailsInfoItem
               key={ type }
               title={ type }
               // is this text correct for validators?
-              hint={ `Amount of distributed reward. ${ capitalize(validatorTitle) }s receive a static block reward + Tx fees + uncle fees` }
+              hint={ `Amount of distributed reward. ${ capitalize(
+                validatorTitle,
+              ) }s receive a static block reward + Tx fees + uncle fees` }
             >
               { BigNumber(reward).dividedBy(WEI).toFixed() } { currencyUnits.ether }
             </DetailsInfoItem>
-          ))
-        }
+          )) }
 
         <DetailsInfoItemDivider/>
 
@@ -308,13 +332,18 @@ const BlockDetails = ({ query }: Props) => {
           <Utilization
             ml={ 4 }
             colorScheme="gray"
-            value={ BigNumber(data.gas_used || 0).dividedBy(BigNumber(data.gas_limit)).toNumber() }
+            value={ BigNumber(data.gas_used || 0)
+              .dividedBy(BigNumber(data.gas_limit))
+              .toNumber() }
             isLoading={ isPlaceholderData }
           />
           { data.gas_target_percentage && (
             <>
               <TextSeparator color={ separatorColor } mx={ 1 }/>
-              <GasUsedToTargetRatio value={ data.gas_target_percentage } isLoading={ isPlaceholderData }/>
+              <GasUsedToTargetRatio
+                value={ data.gas_target_percentage }
+                isLoading={ isPlaceholderData }
+              />
             </>
           ) }
         </DetailsInfoItem>
@@ -334,7 +363,8 @@ const BlockDetails = ({ query }: Props) => {
             isLoading={ isPlaceholderData }
           >
             <Skeleton isLoaded={ !isPlaceholderData }>
-              { BigNumber(data.minimum_gas_price).dividedBy(GWEI).toFormat() } { currencyUnits.gwei }
+              { BigNumber(data.minimum_gas_price).dividedBy(GWEI).toFormat() }{ ' ' }
+              { currencyUnits.gwei }
             </Skeleton>
           </DetailsInfoItem>
         ) }
@@ -345,28 +375,46 @@ const BlockDetails = ({ query }: Props) => {
             isLoading={ isPlaceholderData }
           >
             { isPlaceholderData ? (
-              <Skeleton isLoaded={ !isPlaceholderData } h="20px" maxW="380px" w="100%"/>
+              <Skeleton
+                isLoaded={ !isPlaceholderData }
+                h="20px"
+                maxW="380px"
+                w="100%"
+              />
             ) : (
               <>
-                <Text>{ BigNumber(data.base_fee_per_gas).dividedBy(WEI).toFixed() } { currencyUnits.ether } </Text>
+                <Text>
+                  { BigNumber(data.base_fee_per_gas).dividedBy(WEI).toFixed() }{ ' ' }
+                  { currencyUnits.ether }{ ' ' }
+                </Text>
                 <Text variant="secondary" whiteSpace="pre">
-                  { space }({ BigNumber(data.base_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })
+                  { space }(
+                  { BigNumber(data.base_fee_per_gas)
+                    .dividedBy(WEI_IN_GWEI)
+                    .toFixed() }{ ' ' }
+                  { currencyUnits.gwei })
                 </Text>
               </>
             ) }
           </DetailsInfoItem>
         ) }
-        { !config.UI.views.block.hiddenFields?.burnt_fees && !burntFees.isEqualTo(ZERO) && (
+        { !config.UI.views.block.hiddenFields?.burnt_fees &&
+          !burntFees.isEqualTo(ZERO) && (
           <DetailsInfoItem
             title="Burnt fees"
-            hint={
-              `Amount of ${ config.chain.currency.symbol || 'native token' } burned from transactions included in the block.
+            hint={ `Amount of ${
+              config.chain.currency.symbol || 'native token'
+            } burned from transactions included in the block.
 
-          Equals Block Base Fee per Gas * Gas Used`
-            }
+          Equals Block Base Fee per Gas * Gas Used` }
             isLoading={ isPlaceholderData }
           >
-            <IconSvg name="flame" boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
+            <IconSvg
+              name="flame"
+              boxSize={ 5 }
+              color="gray.500"
+              isLoading={ isPlaceholderData }
+            />
             <Skeleton isLoaded={ !isPlaceholderData } ml={ 2 }>
               { burntFees.dividedBy(WEI).toFixed() } { currencyUnits.ether }
             </Skeleton>
@@ -383,14 +431,16 @@ const BlockDetails = ({ query }: Props) => {
             ) }
           </DetailsInfoItem>
         ) }
-        { data.priority_fee !== null && BigNumber(data.priority_fee).gt(ZERO) && (
+        { data.priority_fee !== null &&
+          BigNumber(data.priority_fee).gt(ZERO) && (
           <DetailsInfoItem
             title="Priority fee / Tip"
             hint="User-defined tips sent to validator for transaction priority/inclusion"
             isLoading={ isPlaceholderData }
           >
             <Skeleton isLoaded={ !isPlaceholderData }>
-              { BigNumber(data.priority_fee).dividedBy(WEI).toFixed() } { currencyUnits.ether }
+              { BigNumber(data.priority_fee).dividedBy(WEI).toFixed() }{ ' ' }
+              { currencyUnits.ether }
             </Skeleton>
           </DetailsInfoItem>
         ) }
@@ -402,21 +452,26 @@ const BlockDetails = ({ query }: Props) => {
         <Text whiteSpace="pre">{ data.extra_data } </Text>
         <Text variant="secondary">(Hex: { data.extra_data })</Text>
       </DetailsInfoItem> */ }
-
       </Grid>
       <Grid
         padding={ 6 }
-        border="1px solid rgba(114, 114, 114, 0.54)"
+        border="1px solid"
+        borderColor={ useColorModeValue(
+          'rgba(114, 114, 114, 0.54)',
+          'rgba(255, 255, 255, 0.08)',
+        ) }
+        boxShadow="0px 9.89px 23.75px 0px #BDC5D133"
         rounded={ 20 }
         columnGap={{ base: 12, lg: 24 }}
         rowGap={{ base: 3, lg: 3 }}
-        templateColumns={{ base: 'minmax(0, 1fr)', lg: 'max-content minmax(728px, auto)' }}
-        shadow="base">
+        templateColumns={{
+          base: 'minmax(0, 1fr)',
+          lg: 'max-content minmax(728px, auto)',
+        }}
+      >
         { /* CUT */ }
         { /* <GridItem colSpan={{ base: undefined, lg: 2 }}> */ }
-        <DetailsInfoItem
-          title="More Details"
-        >
+        <DetailsInfoItem title="More Details">
           <Skeleton isLoaded={ !isPlaceholderData } display="inline-block">
             <Link
               textDecoration="none"
@@ -430,12 +485,12 @@ const BlockDetails = ({ query }: Props) => {
               onClick={ handleCutClick }
             >
               { isExpanded ? (
-                <Flex gap={ 2 }>
+                <Flex gap={ 2 } color={ useColorModeValue('black', 'gray.400') }>
                   <LuMinus/>
                   Hide more details
                 </Flex>
               ) : (
-                <Flex gap={ 2 }>
+                <Flex gap={ 2 } color={ useColorModeValue('black', 'gray.400') }>
                   <LuPlus/>
                   View more details
                 </Flex>
@@ -448,10 +503,19 @@ const BlockDetails = ({ query }: Props) => {
         { /* ADDITIONAL INFO */ }
         { isExpanded && !isPlaceholderData && (
           <>
-            <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
+            <GridItem
+              colSpan={{ base: undefined, lg: 2 }}
+              mt={{ base: 1, lg: 4 }}
+            />
 
-            { rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && data.zksync &&
-            <ZkSyncL2TxnBatchHashesInfo data={ data.zksync } isLoading={ isPlaceholderData }/> }
+            { rollupFeature.isEnabled &&
+              rollupFeature.type === 'zkSync' &&
+              data.zksync && (
+              <ZkSyncL2TxnBatchHashesInfo
+                data={ data.zksync }
+                isLoading={ isPlaceholderData }
+              />
+            ) }
 
             { !isPlaceholderData && <BlockDetailsBlobInfo data={ data }/> }
 
@@ -463,7 +527,9 @@ const BlockDetails = ({ query }: Props) => {
                 alignSelf="flex-start"
               >
                 <Box whiteSpace="nowrap" overflow="hidden">
-                  <HashStringShortenDynamic hash={ data.bitcoin_merged_mining_header }/>
+                  <HashStringShortenDynamic
+                    hash={ data.bitcoin_merged_mining_header }
+                  />
                 </Box>
                 <CopyToClipboard text={ data.bitcoin_merged_mining_header }/>
               </DetailsInfoItem>
@@ -502,7 +568,9 @@ const BlockDetails = ({ query }: Props) => {
                 alignSelf="flex-start"
               >
                 <Box whiteSpace="nowrap" overflow="hidden">
-                  <HashStringShortenDynamic hash={ data.hash_for_merged_mining }/>
+                  <HashStringShortenDynamic
+                    hash={ data.hash_for_merged_mining }
+                  />
                 </Box>
                 <CopyToClipboard text={ data.hash_for_merged_mining }/>
               </DetailsInfoItem>
@@ -513,7 +581,9 @@ const BlockDetails = ({ query }: Props) => {
               hint={ `Block difficulty for ${ validatorTitle }, used to calibrate block generation time` }
             >
               <Box whiteSpace="nowrap" overflow="hidden">
-                <HashStringShortenDynamic hash={ BigNumber(data.difficulty).toFormat() }/>
+                <HashStringShortenDynamic
+                  hash={ BigNumber(data.difficulty).toFormat() }
+                />
               </Box>
             </DetailsInfoItem>
             { data.total_difficulty && (
@@ -522,7 +592,9 @@ const BlockDetails = ({ query }: Props) => {
                 hint="Total difficulty of the chain until this block"
               >
                 <Box whiteSpace="nowrap" overflow="hidden">
-                  <HashStringShortenDynamic hash={ BigNumber(data.total_difficulty).toFormat() }/>
+                  <HashStringShortenDynamic
+                    hash={ BigNumber(data.total_difficulty).toFormat() }
+                  />
                 </Box>
               </DetailsInfoItem>
             ) }
@@ -546,13 +618,14 @@ const BlockDetails = ({ query }: Props) => {
                 flexWrap="nowrap"
               >
                 <LinkInternal
-                  href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.height - 1) } }) }
+                  href={ route({
+                    pathname: '/block/[height_or_hash]',
+                    query: { height_or_hash: String(data.height - 1) },
+                  }) }
                   overflow="hidden"
                   whiteSpace="nowrap"
                 >
-                  <HashStringShortenDynamic
-                    hash={ data.parent_hash }
-                  />
+                  <HashStringShortenDynamic hash={ data.parent_hash }/>
                 </LinkInternal>
                 <CopyToClipboard text={ data.parent_hash }/>
               </DetailsInfoItem>

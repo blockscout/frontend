@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react';
+import { Flex, useColorModeValue } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -24,6 +24,7 @@ import useTxQuery from 'ui/tx/useTxQuery';
 const TransactionPageContent = () => {
   const router = useRouter();
   const appProps = useAppContext();
+  const listBgColor = useColorModeValue('white', 'blue.1000');
 
   const hash = getQueryParamString(router.query.hash);
   const txQuery = useTxQuery();
@@ -115,7 +116,9 @@ const TransactionPageContent = () => {
           secondRow={ titleSecondRow }
         />
       </Flex>
-      <Flex minH="75vh" bg="white"
+      <Flex
+        minH="75vh"
+        bg={ listBgColor }
         borderTopRadius="2.5em"
         paddingY={{
           base: '1em',

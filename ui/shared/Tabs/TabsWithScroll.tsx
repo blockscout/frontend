@@ -121,13 +121,14 @@ const TabsWithScroll = ({
         themeProps={ themeProps }
       />
       <Box
-        borderWidth={
-          !isMobile && type === 'parent_tabs' ? '1.5px' : undefined
-        }
+        borderWidth={ !isMobile && type === 'parent_tabs' ? '1.5px' : undefined }
         // eslint-disable-next-line react-hooks/rules-of-hooks
-        borderColor={ useColorModeValue('rgba(114, 114, 114, 0.54)', 'blue.1000') }
+        borderColor={ useColorModeValue(
+          'rgba(114, 114, 114, 0.54)',
+          'blue.1000',
+        ) }
         paddingTop="20px"
-        padding={ !type ? '20px' : undefined }
+        padding={ (!type && !isMobile) ? '20px' : undefined }
         borderTopLeftRadius="20px"
         borderTopRightRadius="20px"
       >

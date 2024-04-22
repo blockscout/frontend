@@ -1,4 +1,4 @@
-import { chakra, Flex, Skeleton } from '@chakra-ui/react';
+import { chakra, Flex, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -43,6 +43,7 @@ const BlockPageContent = () => {
   const blockTxsQuery = useBlockTxsQuery({ heightOrHash, blockQuery, tab });
   const blockWithdrawalsQuery = useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab });
   const blockBlobTxsQuery = useBlockBlobTxsQuery({ heightOrHash, blockQuery, tab });
+  const listBgColor = useColorModeValue('white', 'blue.1000');
 
   const tabs: Array<RoutedTab> = React.useMemo(() => ([
     {
@@ -157,7 +158,9 @@ const BlockPageContent = () => {
           isLoading={ blockQuery.isPlaceholderData }
         />
       </Flex>
-      <Flex minH="75vh" bg="white"
+      <Flex
+        minH="75vh"
+        bg={ listBgColor }
         borderTopRadius="2.5em"
         paddingY={{
           base: '1em',
@@ -166,11 +169,17 @@ const BlockPageContent = () => {
         paddingX="1em"
         width="100%"
       >
-        { blockQuery.isPlaceholderData ? <TabsSkeleton tabs={ tabs }/> : (
+        { blockQuery.isPlaceholderData ? (
+          <TabsSkeleton tabs={ tabs }/>
+        ) : (
           <RoutedTabs
             tabs={ tabs }
             tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
-            rightSlot={ hasPagination ? <Pagination { ...(pagination as PaginationParams) }/> : null }
+            rightSlot={
+              hasPagination ? (
+                <Pagination { ...(pagination as PaginationParams) }/>
+              ) : null
+            }
             stickyEnabled={ hasPagination }
           />
         ) }

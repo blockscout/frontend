@@ -9,14 +9,11 @@ import type { Transaction, TransactionsSortingField, TransactionsSortingValue, T
 
 import { getResourceKey } from 'lib/api/useApiQuery';
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
-import ActionBar from 'ui/shared/ActionBar';
-import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
 import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';
@@ -24,7 +21,6 @@ import { sortTxsFromSocket } from 'ui/txs/sortTxs';
 import TxsWithAPISorting from 'ui/txs/TxsWithAPISorting';
 import { SORT_OPTIONS } from 'ui/txs/useTxsSort';
 
-import AddressCsvExportLink from './AddressCsvExportLink';
 import AddressTxsFilter from './AddressTxsFilter';
 
 const OVERLOAD_COUNT = 75;
@@ -59,7 +55,6 @@ const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Props) => {
   const [ newItemsCount, setNewItemsCount ] = React.useState(0);
   const [ sort, setSort ] = React.useState<TransactionsSortingValue | undefined>(getSortValueFromQuery<TransactionsSortingValue>(router.query, SORT_OPTIONS));
 
-  const isMobile = useIsMobile();
   const currentAddress = getQueryParamString(router.query.hash);
 
   const [ filterValue, setFilterValue ] = React.useState<AddressFromToFilter>(getFilterValue(router.query.filter));
@@ -165,38 +160,20 @@ const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Props) => {
     />
   );
 
-  const csvExportLink = (
-    <AddressCsvExportLink
-      address={ currentAddress }
-      params={{ type: 'transactions', filterType: 'address', filterValue }}
-      ml="auto"
-      isLoading={ addressTxsQuery.pagination.isLoading }
-    />
-  );
-
   return (
-    <>
-      { !isMobile && (
-        <ActionBar mt={ -6 }>
-          { filter }
-          { currentAddress && csvExportLink }
-          <Pagination { ...addressTxsQuery.pagination } ml={ 8 }/>
-        </ActionBar>
-      ) }
-      <TxsWithAPISorting
-        filter={ filter }
-        filterValue={ filterValue }
-        query={ addressTxsQuery }
-        currentAddress={ typeof currentAddress === 'string' ? currentAddress : undefined }
-        enableTimeIncrement
-        showSocketInfo={ addressTxsQuery.pagination.page === 1 }
-        socketInfoAlert={ socketAlert }
-        socketInfoNum={ newItemsCount }
-        top={ 80 }
-        sorting={ sort }
-        setSort={ setSort }
-      />
-    </>
+    <TxsWithAPISorting
+      filter={ filter }
+      filterValue={ filterValue }
+      query={ addressTxsQuery }
+      currentAddress={ typeof currentAddress === 'string' ? currentAddress : undefined }
+      enableTimeIncrement
+      showSocketInfo={ addressTxsQuery.pagination.page === 1 }
+      socketInfoAlert={ socketAlert }
+      socketInfoNum={ newItemsCount }
+      top={ 80 }
+      sorting={ sort }
+      setSort={ setSort }
+    />
   );
 };
 

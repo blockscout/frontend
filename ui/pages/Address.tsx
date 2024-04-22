@@ -30,7 +30,6 @@ import AddressEnsDomains from 'ui/address/ensDomains/AddressEnsDomains';
 import SolidityscanReport from 'ui/address/SolidityscanReport';
 import useAddressQuery from 'ui/address/utils/useAddressQuery';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
-import TextAd from 'ui/shared/ad/TextAd';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
@@ -53,6 +52,7 @@ const AddressPageContent = () => {
   const hash = getQueryParamString(router.query.hash);
 
   const addressQuery = useAddressQuery({ hash });
+  const listBgColor = useColorModeValue('white', 'blue.1000');
 
   const addressTabsCountersQuery = useApiQuery('address_tabs_counters', {
     pathParams: { hash },
@@ -238,22 +238,34 @@ const AddressPageContent = () => {
 
   return (
     <>
-      <TextAd mb={ 6 }/>
-      <PageTitle
-        title={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }
-        backLink={ backLink }
-        contentAfter={ tags }
-        secondRow={ titleSecondRow }
-        isLoading={ isLoading }
-      />
-      { config.features.metasuites.isEnabled && <Box display="none" id="meta-suites__address" data-ready={ !isLoading }/> }
-      <AddressDetails addressQuery={ addressQuery } scrollRef={ tabsScrollRef }/>
-      { /* should stay before tabs to scroll up with pagination */ }
-      <Box ref={ tabsScrollRef }></Box>
-      { (isLoading || addressTabsCountersQuery.isPlaceholderData) ?
-        <TabsSkeleton tabs={ tabs }/> :
-        content
-      }
+      <Flex direction="column" paddingX={{ base: 4, lg: 8 }}>
+        <PageTitle
+          title={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }
+          backLink={ backLink }
+          contentAfter={ tags }
+          secondRow={ titleSecondRow }
+          isLoading={ isLoading }
+        />
+      </Flex>
+      <Box
+        minH="75vh"
+        bg={ listBgColor }
+        borderTopRadius="2.5em"
+        paddingY={{
+          base: '1em',
+          md: '2em',
+        }}
+        paddingX="1em"
+        width="100%"
+      >
+
+        <AddressDetails addressQuery={ addressQuery } scrollRef={ tabsScrollRef }/>
+        { (isLoading || addressTabsCountersQuery.isPlaceholderData) ?
+          <TabsSkeleton tabs={ tabs }/> :
+          content
+        }
+      </Box>
+
     </>
   );
 };
