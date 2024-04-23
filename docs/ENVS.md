@@ -49,6 +49,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
   - [Transaction interpretation](ENVS.md#transaction-interpretation)
   - [Verified tokens info](ENVS.md#verified-tokens-info)
   - [Name service integration](ENVS.md#name-service-integration)
+  - [Metadata service integration](ENVS.md#metadata-service-integration)
   - [Bridged tokens](ENVS.md#bridged-tokens)
   - [Safe{Core} address tags](ENVS.md#safecore-address-tags)
   - [SUAVE chain](ENVS.md#suave-chain)
@@ -547,6 +548,16 @@ This feature allows resolving blockchain addresses using human-readable domain n
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_NAME_SERVICE_API_HOST | `string` | Name Service API endpoint url | Required | - | `https://bens.services.blockscout.com` |
+
+&nbsp;
+
+### Metadata service integration
+
+This feature allows name tags and other public tags for addresses.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_METADATA_SERVICE_API_HOST | `string` | Metadata Service API endpoint url | Required | - | `https://metadata.services.blockscout.com` |
 
 &nbsp;
 

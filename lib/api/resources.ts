@@ -237,6 +237,18 @@ export const RESOURCES = {
     filterFields: [ 'name' as const, 'only_active' as const ],
   },
 
+  // METADATA SERVICE
+  address_metadata_info: {
+    path: '/api/v1/metadata',
+    endpoint: getFeaturePayload(config.features.addressMetadata)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.addressMetadata)?.api.basePath,
+  },
+  address_metadata_tag_search: {
+    path: '/api/v1/tags:search',
+    endpoint: getFeaturePayload(config.features.addressMetadata)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.addressMetadata)?.api.basePath,
+  },
+
   // VISUALIZATION
   visualize_sol2uml: {
     path: '/api/v1/solidity\\:visualize-contracts',
