@@ -9,8 +9,8 @@ import * as configs from 'playwright/utils/configs';
 
 import OptimisticL2Deposits from './OptimisticL2Deposits';
 
-const DEPOSITS_API_URL = buildApiUrl('l2_deposits');
-const DEPOSITS_COUNT_API_URL = buildApiUrl('l2_deposits_count');
+const DEPOSITS_API_URL = buildApiUrl('optimistic_l2_deposits');
+const DEPOSITS_COUNT_API_URL = buildApiUrl('optimistic_l2_deposits_count');
 
 const test = base.extend({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

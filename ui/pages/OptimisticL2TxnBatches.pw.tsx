@@ -14,8 +14,8 @@ const test = base.extend({
   context: contextWithEnvs(configs.featureEnvs.optimisticRollup) as any,
 });
 
-const TXN_BATCHES_API_URL = buildApiUrl('l2_txn_batches');
-const TXN_BATCHES_COUNT_API_URL = buildApiUrl('l2_txn_batches_count');
+const TXN_BATCHES_API_URL = buildApiUrl('optimistic_l2_txn_batches');
+const TXN_BATCHES_COUNT_API_URL = buildApiUrl('optimistic_l2_txn_batches_count');
 
 test('base view +@mobile', async({ mount, page }) => {
   // test on mobile is flaky

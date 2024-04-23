@@ -3,34 +3,28 @@ import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { rightLineArrow, nbsp } from 'lib/html-entities';
-import { L2_DEPOSIT_ITEM } from 'stubs/L2';
 import { generateListStub } from 'stubs/utils';
-import OptimisticDepositsListItem from 'ui/deposits/optimisticL2/OptimisticDepositsListItem';
-import OptimisticDepositsTable from 'ui/deposits/optimisticL2/OptimisticDepositsTable';
+import { ZKEVM_WITHDRAWALS_ITEM } from 'stubs/zkEvmL2';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
+import ZkEvmL2WithdrawalsListItem from 'ui/withdrawals/zkEvmL2/ZkEvmL2WithdrawalsListItem';
+import ZkEvmL2WithdrawalsTable from 'ui/withdrawals/zkEvmL2/ZkEvmL2WithdrawalsTable';
 
-const OptimisticL2Deposits = () => {
+const ZkEvmL2Withdrawals = () => {
   const { data, isError, isPlaceholderData, pagination } = useQueryWithPages({
-    resourceName: 'optimistic_l2_deposits',
+    resourceName: 'zkevm_l2_withdrawals',
     options: {
-      placeholderData: generateListStub<'optimistic_l2_deposits'>(
-        L2_DEPOSIT_ITEM,
+      placeholderData: generateListStub<'zkevm_l2_withdrawals'>(
+        ZKEVM_WITHDRAWALS_ITEM,
         50,
-        {
-          next_page_params: {
-            items_count: 50,
-            l1_block_number: 9045200,
-            tx_hash: '',
-          },
-        },
+        { next_page_params: { items_count: 50, index: 1 } },
       ),
     },
   });
 
-  const countersQuery = useApiQuery('optimistic_l2_deposits_count', {
+  const countersQuery = useApiQuery('zkevm_l2_withdrawals_count', {
     queryOptions: {
       placeholderData: 1927029,
     },
@@ -40,15 +34,15 @@ const OptimisticL2Deposits = () => {
     <>
       <Show below="lg" ssr={ false }>
         { data.items.map(((item, index) => (
-          <OptimisticDepositsListItem
-            key={ item.l2_tx_hash + (isPlaceholderData ? index : '') }
+          <ZkEvmL2WithdrawalsListItem
+            key={ String(item.index) + (isPlaceholderData ? index : '') }
             isLoading={ isPlaceholderData }
             item={ item }
           />
         ))) }
       </Show>
       <Hide below="lg" ssr={ false }>
-        <OptimisticDepositsTable items={ data.items } top={ pagination.isVisible ? 80 : 0 } isLoading={ isPlaceholderData }/>
+        <ZkEvmL2WithdrawalsTable items={ data.items } top={ pagination.isVisible ? 80 : 0 } isLoading={ isPlaceholderData }/>
       </Hide>
     </>
   ) : null;
@@ -63,7 +57,7 @@ const OptimisticL2Deposits = () => {
         isLoaded={ !countersQuery.isPlaceholderData }
         display="inline-block"
       >
-        A total of { countersQuery.data?.toLocaleString() } deposits found
+        A total of { countersQuery.data?.toLocaleString() } withdrawals found
       </Skeleton>
     );
   })();
@@ -72,11 +66,11 @@ const OptimisticL2Deposits = () => {
 
   return (
     <>
-      <PageTitle title={ `Deposits (L1${ nbsp }${ rightLineArrow }${ nbsp }L2)` } withTextAd/>
+      <PageTitle title={ `Withdrawals (L2${ nbsp }${ rightLineArrow }${ nbsp }L1)` } withTextAd/>
       <DataListDisplay
         isError={ isError }
         items={ data?.items }
-        emptyText="There are no deposits."
+        emptyText="There are no withdrawals."
         content={ content }
         actionBar={ actionBar }
       />
@@ -84,4 +78,4 @@ const OptimisticL2Deposits = () => {
   );
 };
 
-export default OptimisticL2Deposits;
+export default ZkEvmL2Withdrawals;
