@@ -2,6 +2,7 @@ import React from 'react';
 
 import * as addressMock from 'mocks/address/address';
 import * as addressCountersMock from 'mocks/address/counters';
+import * as addressTabCountersMock from 'mocks/address/tabCounters';
 import * as socketServer from 'playwright/fixtures/socketServer';
 import { test, expect } from 'playwright/lib';
 
@@ -16,11 +17,10 @@ const hooksConfig = {
 test.describe('fetched bytecode', () => {
   test('should refetch address query', async({ render, mockApiResponse, createSocket, page }) => {
     const addressApiUrl = await mockApiResponse('address', addressMock.contract, { pathParams: { hash: addressMock.hash } });
-    const addressCountersApiUrl = await mockApiResponse('address_counters', addressCountersMock.forContract, { pathParams: { hash: addressMock.hash } });
+    await mockApiResponse('address_counters', addressCountersMock.forContract, { pathParams: { hash: addressMock.hash } });
+    await mockApiResponse('address_tabs_counters', addressTabCountersMock.base, { pathParams: { hash: addressMock.hash } });
+    await mockApiResponse('address_txs', { items: [], next_page_params: null }, { pathParams: { hash: addressMock.hash } });
     await render(<Address/>, { hooksConfig }, { withSocket: true });
-
-    await page.waitForResponse(addressApiUrl);
-    await page.waitForResponse(addressCountersApiUrl);
 
     const socket = await createSocket();
     const channel = await socketServer.joinChannel(socket, `addresses:${ addressMock.hash.toLowerCase() }`);
