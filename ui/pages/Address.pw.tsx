@@ -16,8 +16,8 @@ const hooksConfig = {
 
 test.describe('fetched bytecode', () => {
   test('should refetch address query', async({ render, mockApiResponse, createSocket, page }) => {
-    const addressApiUrl = await mockApiResponse('address', addressMock.contract, { pathParams: { hash: addressMock.hash } });
-    await mockApiResponse('address_counters', addressCountersMock.forContract, { pathParams: { hash: addressMock.hash } });
+    const addressApiUrl = await mockApiResponse('address', addressMock.validator, { pathParams: { hash: addressMock.hash } });
+    await mockApiResponse('address_counters', addressCountersMock.forValidator, { pathParams: { hash: addressMock.hash } });
     await mockApiResponse('address_tabs_counters', addressTabCountersMock.base, { pathParams: { hash: addressMock.hash } });
     await mockApiResponse('address_txs', { items: [], next_page_params: null }, { pathParams: { hash: addressMock.hash } });
     await render(<Address/>, { hooksConfig }, { withSocket: true });

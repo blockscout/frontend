@@ -80,7 +80,7 @@ const AddressPageContent = () => {
 
   const channel = useSocketChannel({
     topic: `addresses:${ hash?.toLowerCase() }`,
-    isDisabled: isTabsLoading || addressQuery.isDegradedData || !addressQuery.data?.is_contract,
+    isDisabled: isTabsLoading || addressQuery.isDegradedData || Boolean(addressQuery.data?.is_contract),
   });
   useSocketMessage({
     channel,
