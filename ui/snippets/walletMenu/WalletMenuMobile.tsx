@@ -65,8 +65,8 @@ const WalletMenuMobile = () => {
                 address={ address }
                 disconnect={ disconnect }
                 isAutoConnectDisabled={ isAutoConnectDisabled }
-                openModal={ openModal }
-                close={ onClose }
+                openWeb3Modal={ openModal }
+                closeWalletMenu={ onClose }
               />
             </DrawerBody>
           </DrawerContent>

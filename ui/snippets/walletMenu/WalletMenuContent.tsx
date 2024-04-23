@@ -12,11 +12,11 @@ type Props = {
   address?: string;
   disconnect?: () => void;
   isAutoConnectDisabled?: boolean;
-  openModal: () => void;
-  close: () => void;
+  openWeb3Modal: () => void;
+  closeWalletMenu: () => void;
 };
 
-const WalletMenuContent = ({ address, disconnect, isAutoConnectDisabled, openModal, close }: Props) => {
+const WalletMenuContent = ({ address, disconnect, isAutoConnectDisabled, openWeb3Modal, closeWalletMenu }: Props) => {
   const { themedBackgroundOrange } = useMenuButtonColors();
   const [ isModalOpening, setIsModalOpening ] = React.useState(false);
 
@@ -24,14 +24,14 @@ const WalletMenuContent = ({ address, disconnect, isAutoConnectDisabled, openMod
     mixpanel.logEvent(mixpanel.EventTypes.WALLET_ACTION, { Action: 'Address click' });
   }, []);
 
-  const handleOpenModal = React.useCallback(async() => {
+  const handleOpenWeb3Modal = React.useCallback(async() => {
     setIsModalOpening(true);
-    await openModal();
+    await openWeb3Modal();
     setTimeout(() => {
       setIsModalOpening(false);
-      close();
+      closeWalletMenu();
     }, 500);
-  }, [ openModal, close ]);
+  }, [ openWeb3Modal, closeWalletMenu ]);
 
   return (
     <Box>
@@ -90,7 +90,7 @@ const WalletMenuContent = ({ address, disconnect, isAutoConnectDisabled, openMod
           h="20px"
           w="20px"
           ml={ 1 }
-          onClick={ handleOpenModal }
+          onClick={ handleOpenWeb3Modal }
           isLoading={ isModalOpening }
         />
       </Flex>

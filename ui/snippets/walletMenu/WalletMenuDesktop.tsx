@@ -106,8 +106,8 @@ const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
               address={ address }
               disconnect={ disconnect }
               isAutoConnectDisabled={ isAutoConnectDisabled }
-              openModal={ openModal }
-              close={ setIsPopoverOpen.off }
+              openWeb3Modal={ openModal }
+              closeWalletMenu={ setIsPopoverOpen.off }
             />
           </PopoverBody>
         </PopoverContent>
