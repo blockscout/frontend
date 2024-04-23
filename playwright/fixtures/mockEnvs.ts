@@ -31,4 +31,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   userOps: [
     [ 'NEXT_PUBLIC_HAS_USER_OPS', 'true' ],
   ],
+  hasContractAuditReports: [
+    [ 'NEXT_PUBLIC_HAS_CONTRACT_AUDIT_REPORTS', 'true' ],
+  ],
 };

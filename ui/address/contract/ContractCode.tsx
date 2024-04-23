@@ -1,19 +1,21 @@
 import { Flex, Skeleton, Button, Grid, GridItem, Alert, Link, chakra, Box, useColorModeValue } from '@chakra-ui/react';
+import type { UseQueryResult } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
+import type { Channel } from 'phoenix';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
 import type { Address as AddressInfo } from 'types/api/address';
+import type { SmartContract } from 'types/api/contract';
 
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
+import type { ResourceError } from 'lib/api/resources';
+import { getResourceKey } from 'lib/api/useApiQuery';
 import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
 import dayjs from 'lib/date/dayjs';
-import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
-import * as stubs from 'stubs/contract';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import Hint from 'ui/shared/Hint';
@@ -26,8 +28,8 @@ import ContractSourceCode from './ContractSourceCode';
 
 type Props = {
   addressHash?: string;
-  // prop for pw tests only
-  noSocket?: boolean;
+  contractQuery: UseQueryResult<SmartContract, ResourceError<unknown>>;
+  channel: Channel | undefined;
 }
 
 type InfoItemProps = {
@@ -57,21 +59,13 @@ const InfoItem = chakra(({ label, content, hint, className, isLoading }: InfoIte
   </GridItem>
 ));
 
-const ContractCode = ({ addressHash, noSocket }: Props) => {
-  const [ isQueryEnabled, setIsQueryEnabled ] = React.useState(false);
+const ContractCode = ({ addressHash, contractQuery, channel }: Props) => {
   const [ isChangedBytecodeSocket, setIsChangedBytecodeSocket ] = React.useState<boolean>();
 
   const queryClient = useQueryClient();
   const addressInfo = queryClient.getQueryData<AddressInfo>(getResourceKey('address', { pathParams: { hash: addressHash } }));
 
-  const { data, isPlaceholderData, isError } = useApiQuery('contract', {
-    pathParams: { hash: addressHash },
-    queryOptions: {
-      enabled: Boolean(addressHash) && (noSocket || isQueryEnabled),
-      refetchOnMount: false,
-      placeholderData: addressInfo?.is_verified ? stubs.CONTRACT_CODE_VERIFIED : stubs.CONTRACT_CODE_UNVERIFIED,
-    },
-  });
+  const { data, isPlaceholderData, isError } = contractQuery;
 
   const handleChangedBytecodeMessage: SocketMessage.AddressChangedBytecode['handler'] = React.useCallback(() => {
     setIsChangedBytecodeSocket(true);
@@ -86,14 +80,6 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
     });
   }, [ addressHash, queryClient ]);
 
-  const enableQuery = React.useCallback(() => setIsQueryEnabled(true), []);
-
-  const channel = useSocketChannel({
-    topic: `addresses:${ addressHash?.toLowerCase() }`,
-    isDisabled: !addressHash,
-    onJoin: enableQuery,
-    onSocketError: enableQuery,
-  });
   useSocketMessage({
     channel,
     event: 'changed_bytecode',

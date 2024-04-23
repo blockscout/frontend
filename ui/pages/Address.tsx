@@ -87,7 +87,7 @@ const AddressPageContent = () => {
   const isSafeAddress = useIsSafeAddress(!addressQuery.isPlaceholderData && addressQuery.data?.is_contract ? hash : undefined);
   const safeIconColor = useColorModeValue('black', 'white');
 
-  const contractTabs = useContractTabs(addressQuery.data);
+  const contractTabs = useContractTabs(addressQuery.data, addressQuery.isPlaceholderData);
 
   const isLoading = addressQuery.isPlaceholderData || (config.features.userOps.isEnabled && userOpsAccountQuery.isPlaceholderData);
   const isTabsLoading = isLoading || addressTabsCountersQuery.isPlaceholderData;
@@ -178,8 +178,8 @@ const AddressPageContent = () => {
 
           return 'Contract';
         },
-        component: <AddressContract tabs={ contractTabs }/>,
-        subTabs: contractTabs.map(tab => tab.id),
+        component: <AddressContract tabs={ contractTabs.tabs } shouldRender={ !isTabsLoading } isLoading={ contractTabs.isLoading }/>,
+        subTabs: contractTabs.tabs.map(tab => tab.id),
       } : undefined,
     ].filter(Boolean);
   }, [ addressQuery.data, contractTabs, addressTabsCountersQuery.data, userOpsAccountQuery.data, isTabsLoading ]);

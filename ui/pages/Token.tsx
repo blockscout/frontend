@@ -69,7 +69,7 @@ const TokenPageContent = () => {
     },
   });
 
-  const contractQuery = useApiQuery('address', {
+  const addressQuery = useApiQuery('address', {
     pathParams: { hash: hashString },
     queryOptions: {
       enabled: isQueryEnabled && Boolean(router.query.hash),
@@ -119,7 +119,7 @@ const TokenPageContent = () => {
     }
   }, [ tokenQuery.data, tokenQuery.isPlaceholderData ]);
 
-  const hasData = (tokenQuery.data && !tokenQuery.isPlaceholderData) && (contractQuery.data && !contractQuery.isPlaceholderData);
+  const hasData = (tokenQuery.data && !tokenQuery.isPlaceholderData) && (addressQuery.data && !addressQuery.isPlaceholderData);
   const hasInventoryTab = tokenQuery.data?.type && NFT_TOKEN_TYPE_IDS.includes(tokenQuery.data.type);
 
   const transfersQuery = useQueryWithPages({
@@ -172,7 +172,7 @@ const TokenPageContent = () => {
     queryOptions: { enabled: Boolean(tokenQuery.data) && config.features.verifiedTokens.isEnabled },
   });
 
-  const contractTabs = useContractTabs(contractQuery.data);
+  const contractTabs = useContractTabs(addressQuery.data, addressQuery.isPlaceholderData);
 
   const tabs: Array<RoutedTab> = [
     hasInventoryTab ? {
@@ -182,10 +182,10 @@ const TokenPageContent = () => {
     } : undefined,
     { id: 'token_transfers', title: 'Token transfers', component: <TokenTransfer transfersQuery={ transfersQuery } token={ tokenQuery.data }/> },
     { id: 'holders', title: 'Holders', component: <TokenHolders token={ tokenQuery.data } holdersQuery={ holdersQuery }/> },
-    contractQuery.data?.is_contract ? {
+    addressQuery.data?.is_contract ? {
       id: 'contract',
       title: () => {
-        if (contractQuery.data?.is_verified) {
+        if (addressQuery.data?.is_verified) {
           return (
             <>
               <span>Contract</span>
@@ -196,8 +196,8 @@ const TokenPageContent = () => {
 
         return 'Contract';
       },
-      component: <AddressContract tabs={ contractTabs }/>,
-      subTabs: contractTabs.map(tab => tab.id),
+      component: <AddressContract tabs={ contractTabs.tabs } isLoading={ contractTabs.isLoading }/>,
+      subTabs: contractTabs.tabs.map(tab => tab.id),
     } : undefined,
   ].filter(Boolean);
 
@@ -255,8 +255,8 @@ const TokenPageContent = () => {
         </Tooltip>
       ) }
       <EntityTags
-        data={ contractQuery.data }
-        isLoading={ tokenQuery.isPlaceholderData || contractQuery.isPlaceholderData }
+        data={ addressQuery.data }
+        isLoading={ tokenQuery.isPlaceholderData || addressQuery.isPlaceholderData }
         tagsBefore={ [
           tokenQuery.data ? { label: tokenQuery.data?.type, display_name: tokenQuery.data?.type } : undefined,
           config.features.bridgedTokens.isEnabled && tokenQuery.data?.is_bridged ?
@@ -273,19 +273,19 @@ const TokenPageContent = () => {
     </>
   );
 
-  const isLoading = tokenQuery.isPlaceholderData || contractQuery.isPlaceholderData;
+  const isLoading = tokenQuery.isPlaceholderData || addressQuery.isPlaceholderData;
 
   const titleSecondRow = (
     <Flex alignItems="center" w="100%" minW={ 0 } columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
       <AddressEntity
-        address={{ ...contractQuery.data, name: '' }}
+        address={{ ...addressQuery.data, name: '' }}
         isLoading={ isLoading }
         fontFamily="heading"
         fontSize="lg"
         fontWeight={ 500 }
       />
       { !isLoading && tokenQuery.data && <AddressAddToWallet token={ tokenQuery.data } variant="button"/> }
-      <AddressQrCode address={ contractQuery.data } isLoading={ isLoading }/>
+      <AddressQrCode address={ addressQuery.data } isLoading={ isLoading }/>
       <AccountActionsMenu isLoading={ isLoading }/>
       <Flex ml={{ base: 0, lg: 'auto' }} columnGap={ 2 } flexGrow={{ base: 1, lg: 0 }}>
         <TokenVerifiedInfo verifiedInfoQuery={ verifiedInfoQuery }/>
