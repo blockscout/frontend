@@ -57,6 +57,7 @@ import type {
 import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
 import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
+import type { AddressMetadataInfo } from 'types/api/metadata';
 import type { NovesAccountHistoryResponse, NovesDescribeTxsResponse, NovesResponseData } from 'types/api/noves';
 import type {
   OptimisticL2DepositsResponse,
@@ -954,6 +955,7 @@ Q extends 'optimistic_l2_withdrawals_count' ? number :
 Q extends 'optimistic_l2_deposits_count' ? number :
 Q extends 'optimistic_l2_txn_batches_count' ? number :
 Q extends 'config_backend_version' ? BackendVersionConfig :
+Q extends 'address_metadata_info' ? AddressMetadataInfo :
 never;
 // !!! IMPORTANT !!!
 // See comment above
