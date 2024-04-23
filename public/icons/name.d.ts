@@ -102,7 +102,6 @@
 	| "score/score-not-ok"
 	| "score/score-ok"
 	| "search"
-	| "settings"
 	| "social/canny"
 	| "social/coingecko"
 	| "social/coinmarketcap"

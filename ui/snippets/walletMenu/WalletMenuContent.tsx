@@ -85,7 +85,7 @@ const WalletMenuContent = ({ address, disconnect, isAutoConnectDisabled, openMod
         />
         <IconButton
           aria-label="open wallet"
-          icon={ <IconSvg name="settings" boxSize={ 5 }/> }
+          icon={ <IconSvg name="gear_slim" boxSize={ 5 }/> }
           variant="simple"
           h="20px"
           w="20px"
