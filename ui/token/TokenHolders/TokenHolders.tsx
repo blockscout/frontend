@@ -4,6 +4,7 @@ import React from 'react';
 import type { TokenInfo } from 'types/api/token';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DataListDisplay from 'ui/shared/DataListDisplay';
@@ -27,6 +28,11 @@ const TokenHoldersContent = ({ holdersQuery, token }: Props) => {
 
   const actionBar = isMobile && holdersQuery.pagination.isVisible && (
     <ActionBar mt={ -6 }>
+      <AddressCsvExportLink
+        address={ token?.address }
+        params={{ type: 'holders' }}
+        isLoading={ holdersQuery.pagination.isLoading }
+      />
       <Pagination ml="auto" { ...holdersQuery.pagination }/>
     </ActionBar>
   );

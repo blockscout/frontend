@@ -23,6 +23,7 @@ import * as tokenStubs from 'stubs/token';
 import { getTokenHoldersStub } from 'stubs/token';
 import { generateListStub } from 'stubs/utils';
 import AddressContract from 'ui/address/AddressContract';
+import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import TextAd from 'ui/shared/ad/TextAd';
@@ -44,6 +45,12 @@ import TokenTransfer from 'ui/token/TokenTransfer/TokenTransfer';
 import TokenVerifiedInfo from 'ui/token/TokenVerifiedInfo';
 
 export type TokenTabs = 'token_transfers' | 'holders' | 'inventory';
+
+const TABS_RIGHT_SLOT_PROPS = {
+  display: 'flex',
+  alignItems: 'center',
+  columnGap: 4,
+};
 
 const TokenPageContent = () => {
   const [ isQueryEnabled, setIsQueryEnabled ] = React.useState(false);
@@ -294,6 +301,25 @@ const TokenPageContent = () => {
     </Flex>
   );
 
+  const tabsRightSlot = React.useMemo(() => {
+    if (isMobile) {
+      return null;
+    }
+
+    return (
+      <>
+        { tab === 'holders' && (
+          <AddressCsvExportLink
+            address={ hashString }
+            params={{ type: 'holders' }}
+            isLoading={ pagination?.isLoading }
+          />
+        ) }
+        { pagination?.isVisible && <Pagination { ...pagination }/> }
+      </>
+    );
+  }, [ hashString, isMobile, pagination, tab ]);
+
   return (
     <>
       <TextAd mb={ 6 }/>
@@ -323,7 +349,8 @@ const TokenPageContent = () => {
           <RoutedTabs
             tabs={ tabs }
             tabListProps={ tabListProps }
-            rightSlot={ !isMobile && pagination?.isVisible ? <Pagination { ...pagination }/> : null }
+            rightSlot={ tabsRightSlot }
+            rightSlotProps={ TABS_RIGHT_SLOT_PROPS }
             stickyEnabled={ !isMobile }
           />
         ) }
