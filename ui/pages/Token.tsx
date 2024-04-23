@@ -30,7 +30,8 @@ import TextAd from 'ui/shared/ad/TextAd';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
-import EntityTags from 'ui/shared/EntityTags';
+import EntityTags from 'ui/shared/EntityTags/EntityTags';
+import formatUserTags from 'ui/shared/EntityTags/formatUserTags';
 import IconSvg from 'ui/shared/IconSvg';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -252,6 +253,20 @@ const TokenPageContent = () => {
     };
   }, [ appProps.referrer ]);
 
+  const tags = React.useMemo(() => {
+    return [
+      tokenQuery.data ? { slug: tokenQuery.data?.type, name: tokenQuery.data?.type, tagType: 'custom' as const } : undefined,
+      config.features.bridgedTokens.isEnabled && tokenQuery.data?.is_bridged ?
+        { slug: 'bridged', name: 'Bridged', tagType: 'custom' as const } :
+        // TODO @tom2drum pass correct bgColor and textColor -  colorScheme: 'blue', variant: 'solid'
+        undefined,
+      ...formatUserTags(addressQuery.data),
+      verifiedInfoQuery.data?.projectSector ?
+        { slug: verifiedInfoQuery.data.projectSector, name: verifiedInfoQuery.data.projectSector, tagType: 'custom' as const } :
+        undefined,
+    ].filter(Boolean);
+  }, [ addressQuery.data, tokenQuery.data, verifiedInfoQuery.data?.projectSector ]);
+
   const titleContentAfter = (
     <>
       { verifiedInfoQuery.data?.tokenAddress && (
@@ -262,19 +277,8 @@ const TokenPageContent = () => {
         </Tooltip>
       ) }
       <EntityTags
-        data={ addressQuery.data }
         isLoading={ tokenQuery.isPlaceholderData || addressQuery.isPlaceholderData }
-        tagsBefore={ [
-          tokenQuery.data ? { label: tokenQuery.data?.type, display_name: tokenQuery.data?.type } : undefined,
-          config.features.bridgedTokens.isEnabled && tokenQuery.data?.is_bridged ?
-            { label: 'bridged', display_name: 'Bridged', colorScheme: 'blue', variant: 'solid' } :
-            undefined,
-        ] }
-        tagsAfter={
-          verifiedInfoQuery.data?.projectSector ?
-            [ { label: verifiedInfoQuery.data.projectSector, display_name: verifiedInfoQuery.data.projectSector } ] :
-            undefined
-        }
+        tags={ tags }
         flexGrow={ 1 }
       />
     </>

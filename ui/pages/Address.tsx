@@ -34,7 +34,8 @@ import TextAd from 'ui/shared/ad/TextAd';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
-import EntityTags from 'ui/shared/EntityTags';
+import EntityTags from 'ui/shared/EntityTags/EntityTags';
+import formatUserTags from 'ui/shared/EntityTags/formatUserTags';
 import IconSvg from 'ui/shared/IconSvg';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -70,19 +71,19 @@ const AddressPageContent = () => {
   });
 
   // TEST EXAMPLE OF METADATA API USAGE
-  // useApiQuery('address_metadata_info', {
-  //   fetchParams: {
-  //     method: 'POST',
-  //     body: {
-  //       addresses: [ hash ],
-  //       chainId: config.chain.id,
-  //       tags: { limit: '10' },
-  //     },
-  //   },
-  //   queryOptions: {
-  //     enabled: Boolean(hash) && config.features.addressMetadata.isEnabled,
-  //   },
-  // });
+  const addressMetadataQuery = useApiQuery('address_metadata_info', {
+    fetchParams: {
+      method: 'POST',
+      body: {
+        addresses: [ hash ],
+        chainId: config.chain.id,
+        tags: { limit: '10' },
+      },
+    },
+    queryOptions: {
+      enabled: Boolean(hash) && config.features.addressMetadata.isEnabled,
+    },
+  });
 
   const isSafeAddress = useIsSafeAddress(!addressQuery.isPlaceholderData && addressQuery.data?.is_contract ? hash : undefined);
   const safeIconColor = useColorModeValue('black', 'white');
@@ -184,18 +185,27 @@ const AddressPageContent = () => {
     ].filter(Boolean);
   }, [ addressQuery.data, contractTabs, addressTabsCountersQuery.data, userOpsAccountQuery.data, isTabsLoading ]);
 
-  const tags = (
+  const tags = React.useMemo(() => {
+    return [
+      !addressQuery.data?.is_contract ? { slug: 'eoa', name: 'EOA', tagType: 'custom' as const } : undefined,
+      config.features.validators.isEnabled && addressQuery.data?.has_validated_blocks ?
+        { slug: 'validator', name: 'Validator', tagType: 'custom' as const } :
+        undefined,
+      addressQuery.data?.implementation_address ? { slug: 'proxy', name: 'Proxy', tagType: 'custom' as const } : undefined,
+      addressQuery.data?.token ? { slug: 'token', name: 'Token', tagType: 'custom' as const } : undefined,
+      isSafeAddress ? { slug: 'safe', name: 'Multisig: Safe', tagType: 'custom' as const } : undefined,
+      config.features.userOps.isEnabled && userOpsAccountQuery.data ?
+        { slug: 'user_ops_acc', name: 'Smart contract wallet', tagType: 'custom' as const } :
+        undefined,
+      ...formatUserTags(addressQuery.data),
+      ...(addressMetadataQuery.data?.addresses?.[hash]?.tags || []),
+    ].filter(Boolean);
+  }, [ addressMetadataQuery.data, addressQuery.data, hash, isSafeAddress, userOpsAccountQuery.data ]);
+
+  const titleContentAfter = (
     <EntityTags
-      data={ addressQuery.data }
+      tags={ tags }
       isLoading={ isLoading }
-      tagsBefore={ [
-        !addressQuery.data?.is_contract ? { label: 'eoa', display_name: 'EOA' } : undefined,
-        config.features.validators.isEnabled && addressQuery.data?.has_validated_blocks ? { label: 'validator', display_name: 'Validator' } : undefined,
-        addressQuery.data?.implementation_address ? { label: 'proxy', display_name: 'Proxy' } : undefined,
-        addressQuery.data?.token ? { label: 'token', display_name: 'Token' } : undefined,
-        isSafeAddress ? { label: 'safe', display_name: 'Multisig: Safe' } : undefined,
-        config.features.userOps.isEnabled && userOpsAccountQuery.data ? { label: 'user_ops_acc', display_name: 'Smart contract wallet' } : undefined,
-      ] }
     />
   );
 
@@ -260,7 +270,7 @@ const AddressPageContent = () => {
       <PageTitle
         title={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }
         backLink={ backLink }
-        contentAfter={ tags }
+        contentAfter={ titleContentAfter }
         secondRow={ titleSecondRow }
         isLoading={ isLoading }
       />
