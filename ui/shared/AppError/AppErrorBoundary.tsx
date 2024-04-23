@@ -1,9 +1,9 @@
-import { chakra } from '@chakra-ui/react';
-import React from 'react';
+import { chakra } from "@chakra-ui/react";
+import React from "react";
 
-import ErrorBoundary from 'ui/shared/ErrorBoundary';
+import ErrorBoundary from "ui/shared/ErrorBoundary";
 
-import AppError from './AppError';
+import AppError from "./AppError";
 
 interface Props {
   className?: string;
@@ -12,14 +12,16 @@ interface Props {
 }
 
 const AppErrorBoundary = ({ className, children, onError }: Props) => {
-
-  const renderErrorScreen = React.useCallback((error?: Error) => {
-    return <AppError error={ error } className={ className }/>;
-  }, [ className ]);
+  const renderErrorScreen = React.useCallback(
+    (error?: Error) => {
+      return <AppError error={error} className={className} />;
+    },
+    [className]
+  );
 
   return (
-    <ErrorBoundary renderErrorScreen={ renderErrorScreen } onError={ onError }>
-      { children }
+    <ErrorBoundary renderErrorScreen={renderErrorScreen} onError={onError}>
+      {children}
     </ErrorBoundary>
   );
 };
