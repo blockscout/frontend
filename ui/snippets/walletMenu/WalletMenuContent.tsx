@@ -27,10 +27,7 @@ const WalletMenuContent = ({ address, disconnect, isAutoConnectDisabled, openWeb
   const handleOpenWeb3Modal = React.useCallback(async() => {
     setIsModalOpening(true);
     await openWeb3Modal();
-    setTimeout(() => {
-      setIsModalOpening(false);
-      closeWalletMenu();
-    }, 500);
+    setTimeout(closeWalletMenu, 300);
   }, [ openWeb3Modal, closeWalletMenu ]);
 
   return (
