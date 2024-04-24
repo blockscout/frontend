@@ -29,8 +29,6 @@ const StatusTag = ({ type, text, errorText, isLoading }: Props) => {
       break;
     case 'pending':
       icon = 'status/pending';
-      // FIXME: it's not gray on mockups
-      // need to implement new color scheme or redefine colors here
       colorScheme = 'gray';
       break;
   }
