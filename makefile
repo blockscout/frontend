@@ -6,3 +6,5 @@ docker_build_detached:
 	docker compose up --build -d
 docker_up_detached:
 	docker compose up --build -d
+docker_down:
+	docker-compose down
