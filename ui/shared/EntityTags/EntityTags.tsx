@@ -35,7 +35,7 @@ const EntityTags = ({ tags, className, isLoading }: Props) => {
           { metaSuitesPlaceholder }
           <Popover trigger="click" placement="bottom-start" isLazy>
             <PopoverTrigger>
-              <Tag isLoading={ isLoading } cursor="pointer" as="button">
+              <Tag isLoading={ isLoading } cursor="pointer" as="button" _hover={{ color: 'link_hovered' }}>
                 +{ tags.length - visibleNum }
               </Tag>
             </PopoverTrigger>
