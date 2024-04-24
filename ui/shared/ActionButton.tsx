@@ -1,6 +1,8 @@
 import { Button, Image, Text, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
+import { route } from 'nextjs-routes';
+
 import LinkExternal from './LinkExternal';
 
 type Props = {
@@ -15,8 +17,8 @@ type Props = {
 }
 
 const mockData = {
-  appId: '1',
-  actionUrl: 'https://github.com/',
+  appId: 'uniswap',
+  actionUrl: 'https://app.uniswap.org/swap?inputCurrency=ETH&outputCurrency=0x6B175474E89094C44Da98b954EedeAC495271d0F',
   textColor: '#E2E8F0',
   bgColor: '#9747FF',
   text: 'Mint NFT',
@@ -47,7 +49,7 @@ const ActionButton = ({ data = mockData }: Props) => {
   return appId ? (
     <Button
       as="a"
-      href={ actionUrl }
+      href={ route({ pathname: '/apps/[id]', query: { id: appId, action: 'connect', url: actionUrl } }) }
       display="flex"
       size="sm"
       px={ 2 }
