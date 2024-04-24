@@ -4,7 +4,7 @@ import React from 'react';
 
 import TestApp from 'playwright/TestApp';
 
-[ 'blue', 'gray', 'orange', 'green', 'purple', 'cyan', 'teal' ].forEach((colorScheme) => {
+[ 'blue', 'gray', 'gray-blue', 'orange', 'green', 'purple', 'cyan', 'teal' ].forEach((colorScheme) => {
   test(`${ colorScheme } color scheme +@dark-mode`, async({ mount }) => {
     const component = await mount(
       <TestApp>
