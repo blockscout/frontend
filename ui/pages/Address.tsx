@@ -69,21 +69,6 @@ const AddressPageContent = () => {
     },
   });
 
-  // TEST EXAMPLE OF METADATA API USAGE
-  // useApiQuery('address_metadata_info', {
-  //   fetchParams: {
-  //     method: 'POST',
-  //     body: {
-  //       addresses: [ hash ],
-  //       chainId: config.chain.id,
-  //       tags: { limit: '10' },
-  //     },
-  //   },
-  //   queryOptions: {
-  //     enabled: Boolean(hash) && config.features.addressMetadata.isEnabled,
-  //   },
-  // });
-
   const isSafeAddress = useIsSafeAddress(!addressQuery.isPlaceholderData && addressQuery.data?.is_contract ? hash : undefined);
   const safeIconColor = useColorModeValue('black', 'white');
 
