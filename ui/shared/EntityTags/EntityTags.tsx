@@ -1,4 +1,4 @@
-import { Box, Flex, Popover, PopoverBody, PopoverContent, PopoverTrigger, useDisclosure, chakra } from '@chakra-ui/react';
+import { Box, Flex, Popover, PopoverBody, PopoverContent, PopoverTrigger, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { EntityTag as TEntityTag } from './types';
@@ -6,6 +6,8 @@ import type { EntityTag as TEntityTag } from './types';
 import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import Tag from 'ui/shared/chakra/Tag';
+
+import EntityTag from './EntityTag';
 
 interface Props {
   className?: string;
@@ -15,7 +17,7 @@ interface Props {
 
 const EntityTags = ({ tags, className, isLoading }: Props) => {
   const isMobile = useIsMobile();
-  const { isOpen, onToggle, onClose } = useDisclosure();
+  const visibleNum = isMobile ? 2 : 3;
 
   const metaSuitesPlaceholder = config.features.metasuites.isEnabled ?
     <Box display="none" id="meta-suites__address-tag" data-ready={ !isLoading }/> :
@@ -26,46 +28,21 @@ const EntityTags = ({ tags, className, isLoading }: Props) => {
   }
 
   const content = (() => {
-    if (isMobile && tags.length > 2) {
+    if (tags.length > visibleNum) {
       return (
         <>
-          {
-            tags
-              .slice(0, 2)
-              .map((tag) => (
-                <Tag
-                  key={ tag.slug }
-                  isLoading={ isLoading }
-                  isTruncated
-                  maxW={{ base: '115px', lg: 'initial' }}
-                  colorScheme="gray"
-                  variant="subtle"
-                >
-                  { tag.name }
-                </Tag>
-              ))
-          }
+          { tags .slice(0, visibleNum) .map((tag) => <EntityTag key={ tag.slug } data={ tag } isLoading={ isLoading } truncate/>) }
           { metaSuitesPlaceholder }
-          <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
+          <Popover trigger="click" placement="bottom-start" isLazy>
             <PopoverTrigger>
-              <Tag isLoading={ isLoading }onClick={ onToggle }>+{ tags.length - 1 }</Tag>
+              <Tag isLoading={ isLoading } cursor="pointer" as="button">
+                +{ tags.length - visibleNum }
+              </Tag>
             </PopoverTrigger>
-            <PopoverContent w="240px">
+            <PopoverContent w="300px">
               <PopoverBody >
                 <Flex columnGap={ 2 } rowGap={ 2 } flexWrap="wrap">
-                  {
-                    tags
-                      .slice(2)
-                      .map((tag) => (
-                        <Tag
-                          key={ tag.slug }
-                          colorScheme="gray"
-                          variant="subtle"
-                        >
-                          { tag.name }
-                        </Tag>
-                      ))
-                  }
+                  { tags .slice(visibleNum) .map((tag) => <EntityTag key={ tag.slug } data={ tag }/>) }
                 </Flex>
               </PopoverBody>
             </PopoverContent>
@@ -76,18 +53,7 @@ const EntityTags = ({ tags, className, isLoading }: Props) => {
 
     return (
       <>
-        { tags.map((tag) => (
-          <Tag
-            key={ tag.slug }
-            isLoading={ isLoading }
-            isTruncated
-            maxW={{ base: '115px', lg: 'initial' }}
-            colorScheme="gray"
-            variant="subtle"
-          >
-            { tag.name }
-          </Tag>
-        )) }
+        { tags.map((tag) => <EntityTag key={ tag.slug } data={ tag } isLoading={ isLoading } truncate/>) }
         { metaSuitesPlaceholder }
       </>
     );

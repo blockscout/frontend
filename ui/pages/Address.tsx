@@ -5,6 +5,7 @@ import React from 'react';
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
+import useAddressMetadataInfoQuery from 'lib/address/useAddressMetadataInfoQuery';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import useContractTabs from 'lib/hooks/useContractTabs';
@@ -70,20 +71,8 @@ const AddressPageContent = () => {
     },
   });
 
-  // TEST EXAMPLE OF METADATA API USAGE
-  const addressMetadataQuery = useApiQuery('address_metadata_info', {
-    fetchParams: {
-      method: 'POST',
-      body: {
-        addresses: [ hash ],
-        chainId: config.chain.id,
-        tags: { limit: '10' },
-      },
-    },
-    queryOptions: {
-      enabled: Boolean(hash) && config.features.addressMetadata.isEnabled,
-    },
-  });
+  const addressesForMetadataQuery = React.useMemo(() => ([ hash ].filter(Boolean)), [ hash ]);
+  const addressMetadataQuery = useAddressMetadataInfoQuery(addressesForMetadataQuery);
 
   const isSafeAddress = useIsSafeAddress(!addressQuery.isPlaceholderData && addressQuery.data?.is_contract ? hash : undefined);
   const safeIconColor = useColorModeValue('black', 'white');
