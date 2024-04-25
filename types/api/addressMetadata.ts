@@ -12,5 +12,5 @@ export interface AddressMetadataTag {
   name: string;
   tagType: AddressMetadataTagType;
   ordinal: number;
-  meta: Record<string, unknown>;
+  meta: string | null;
 }
