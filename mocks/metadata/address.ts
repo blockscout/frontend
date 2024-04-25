@@ -1,4 +1,4 @@
-import type { AddressMetadataInfo, AddressMetadataTag } from 'types/api/metadata';
+import type { AddressMetadataInfo, AddressMetadataTag } from 'types/api/addressMetadata';
 
 import { hash } from '../address/address';
 
@@ -7,7 +7,7 @@ export const nameTag1: AddressMetadataTag = {
   name: 'Ethermine.ru',
   tagType: 'name',
   ordinal: 0,
-  meta: {},
+  meta: null,
 };
 
 export const genericTag1: AddressMetadataTag = {
@@ -15,7 +15,7 @@ export const genericTag1: AddressMetadataTag = {
   name: 'Ethermine.ru',
   tagType: 'generic',
   ordinal: 0,
-  meta: {},
+  meta: null,
 };
 
 export const protocolTag1: AddressMetadataTag = {
@@ -23,7 +23,7 @@ export const protocolTag1: AddressMetadataTag = {
   name: 'Aerodrome',
   tagType: 'protocol',
   ordinal: 0,
-  meta: {},
+  meta: null,
 };
 
 export const baseInfo: AddressMetadataInfo = {
