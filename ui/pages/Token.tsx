@@ -8,6 +8,7 @@ import type { TokenInfo } from 'types/api/token';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
+import config from 'configs/app';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import useContractTabs from 'lib/hooks/useContractTabs';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -103,7 +104,7 @@ const TokenPageContent = () => {
   });
 
   useEffect(() => {
-    if (tokenQuery.data && !tokenQuery.isPlaceholderData) {
+    if (tokenQuery.data && !tokenQuery.isPlaceholderData && !config.meta.seo.enhancedDataEnabled) {
       metadata.update({ pathname: '/token/[hash]', query: { hash: tokenQuery.data.address } }, tokenQuery.data);
     }
   }, [ tokenQuery.data, tokenQuery.isPlaceholderData ]);
