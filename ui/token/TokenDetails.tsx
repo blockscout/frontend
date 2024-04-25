@@ -22,10 +22,9 @@ import TokenNftMarketplaces from './TokenNftMarketplaces';
 
 interface Props {
   tokenQuery: UseQueryResult<TokenInfo, ResourceError<unknown>>;
-  shouldRender?: boolean;
 }
 
-const TokenDetails = ({ tokenQuery, shouldRender = true }: Props) => {
+const TokenDetails = ({ tokenQuery }: Props) => {
   const router = useRouter();
   const isMounted = useIsMounted();
   const hash = router.query.hash?.toString();
@@ -69,7 +68,7 @@ const TokenDetails = ({ tokenQuery, shouldRender = true }: Props) => {
 
   throwOnResourceLoadError(tokenQuery);
 
-  if (!isMounted || !shouldRender) {
+  if (!isMounted) {
     return null;
   }
 

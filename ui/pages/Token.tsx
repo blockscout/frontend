@@ -246,9 +246,9 @@ const TokenPageContent = () => {
     <>
       <TextAd mb={ 6 }/>
 
-      <TokenPageTitle tokenQuery={ tokenQuery } addressQuery={ addressQuery } isLoading={ isLoading }/>
+      <TokenPageTitle tokenQuery={ tokenQuery } addressQuery={ addressQuery }/>
 
-      <TokenDetails tokenQuery={ tokenQuery } shouldRender={ !isLoading }/>
+      <TokenDetails tokenQuery={ tokenQuery }/>
 
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ scrollRef }></Box>

@@ -24,10 +24,9 @@ import TokenVerifiedInfo from './TokenVerifiedInfo';
 interface Props {
   tokenQuery: UseQueryResult<TokenInfo, ResourceError<unknown>>;
   addressQuery: UseQueryResult<Address, ResourceError<unknown>>;
-  isLoading?: boolean;
 }
 
-const TokenPageTitle = ({ tokenQuery, addressQuery, isLoading }: Props) => {
+const TokenPageTitle = ({ tokenQuery, addressQuery }: Props) => {
   const appProps = useAppContext();
   const addressHash = !tokenQuery.isPlaceholderData ? (tokenQuery.data?.address || '') : '';
 
@@ -35,6 +34,10 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, isLoading }: Props) => {
     pathParams: { hash: addressHash, chainId: config.chain.id },
     queryOptions: { enabled: Boolean(tokenQuery.data) && !tokenQuery.isPlaceholderData && config.features.verifiedTokens.isEnabled },
   });
+
+  const isLoading = tokenQuery.isPlaceholderData || addressQuery.isPlaceholderData || (
+    config.features.verifiedTokens.isEnabled ? verifiedInfoQuery.isPending : false
+  );
 
   const tokenSymbolText = tokenQuery.data?.symbol ? ` (${ tokenQuery.data.symbol })` : '';
 
@@ -62,7 +65,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, isLoading }: Props) => {
       ) }
       <EntityTags
         data={ addressQuery.data }
-        isLoading={ tokenQuery.isPlaceholderData || addressQuery.isPlaceholderData }
+        isLoading={ isLoading }
         tagsBefore={ [
           tokenQuery.data ? { label: tokenQuery.data?.type, display_name: tokenQuery.data?.type } : undefined,
           config.features.bridgedTokens.isEnabled && tokenQuery.data?.is_bridged ?
@@ -101,12 +104,12 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, isLoading }: Props) => {
   return (
     <PageTitle
       title={ `${ tokenQuery.data?.name || 'Unnamed token' }${ tokenSymbolText }` }
-      isLoading={ isLoading }
+      isLoading={ tokenQuery.isPlaceholderData }
       backLink={ backLink }
       beforeTitle={ tokenQuery.data ? (
         <TokenEntity.Icon
           token={ tokenQuery.data }
-          isLoading={ isLoading }
+          isLoading={ tokenQuery.isPlaceholderData }
           iconSize="lg"
         />
       ) : null }
