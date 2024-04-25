@@ -27,7 +27,6 @@ import IconSvg from 'ui/shared/IconSvg';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
-import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import TokenDetails from 'ui/token/TokenDetails';
 import TokenHolders from 'ui/token/TokenHolders/TokenHolders';
 import TokenInventory from 'ui/token/TokenInventory';
@@ -157,16 +156,25 @@ const TokenPageContent = () => {
     },
   });
 
+  const isLoading = tokenQuery.isPlaceholderData || addressQuery.isPlaceholderData;
   const contractTabs = useContractTabs(addressQuery.data, addressQuery.isPlaceholderData);
 
   const tabs: Array<RoutedTab> = [
     hasInventoryTab ? {
       id: 'inventory',
       title: 'Inventory',
-      component: <TokenInventory inventoryQuery={ inventoryQuery } tokenQuery={ tokenQuery } ownerFilter={ ownerFilter }/>,
+      component: <TokenInventory inventoryQuery={ inventoryQuery } tokenQuery={ tokenQuery } ownerFilter={ ownerFilter } shouldRender={ !isLoading }/>,
     } : undefined,
-    { id: 'token_transfers', title: 'Token transfers', component: <TokenTransfer transfersQuery={ transfersQuery } token={ tokenQuery.data }/> },
-    { id: 'holders', title: 'Holders', component: <TokenHolders token={ tokenQuery.data } holdersQuery={ holdersQuery }/> },
+    {
+      id: 'token_transfers',
+      title: 'Token transfers',
+      component: <TokenTransfer transfersQuery={ transfersQuery } token={ tokenQuery.data } shouldRender={ !isLoading }/>,
+    },
+    {
+      id: 'holders',
+      title: 'Holders',
+      component: <TokenHolders token={ tokenQuery.data } holdersQuery={ holdersQuery } shouldRender={ !isLoading }/>,
+    },
     addressQuery.data?.is_contract ? {
       id: 'contract',
       title: () => {
@@ -181,7 +189,7 @@ const TokenPageContent = () => {
 
         return 'Contract';
       },
-      component: <AddressContract tabs={ contractTabs.tabs } isLoading={ contractTabs.isLoading }/>,
+      component: <AddressContract tabs={ contractTabs.tabs } isLoading={ contractTabs.isLoading } shouldRender={ !isLoading }/>,
       subTabs: contractTabs.tabs.map(tab => tab.id),
     } : undefined,
   ].filter(Boolean);
@@ -215,8 +223,6 @@ const TokenPageContent = () => {
     };
   }, [ isMobile ]);
 
-  const isLoading = tokenQuery.isPlaceholderData || addressQuery.isPlaceholderData;
-
   const tabsRightSlot = React.useMemo(() => {
     if (isMobile) {
       return null;
@@ -242,22 +248,19 @@ const TokenPageContent = () => {
 
       <TokenPageTitle tokenQuery={ tokenQuery } addressQuery={ addressQuery } isLoading={ isLoading }/>
 
-      <TokenDetails tokenQuery={ tokenQuery }/>
+      <TokenDetails tokenQuery={ tokenQuery } shouldRender={ !isLoading }/>
 
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ scrollRef }></Box>
 
-      { isLoading ?
-        <TabsSkeleton tabs={ tabs }/> :
-        (
-          <RoutedTabs
-            tabs={ tabs }
-            tabListProps={ tabListProps }
-            rightSlot={ tabsRightSlot }
-            rightSlotProps={ TABS_RIGHT_SLOT_PROPS }
-            stickyEnabled={ !isMobile }
-          />
-        ) }
+      <RoutedTabs
+        tabs={ tabs }
+        tabListProps={ tabListProps }
+        rightSlot={ tabsRightSlot }
+        rightSlotProps={ TABS_RIGHT_SLOT_PROPS }
+        stickyEnabled={ !isMobile }
+        isLoading={ isLoading }
+      />
     </>
   );
 };

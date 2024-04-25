@@ -7,6 +7,7 @@ import type { TokenInfo } from 'types/api/token';
 
 import useGradualIncrement from 'lib/hooks/useGradualIncrement';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMounted from 'lib/hooks/useIsMounted';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import ActionBar from 'ui/shared/ActionBar';
@@ -21,10 +22,12 @@ type Props = {
   transfersQuery: QueryWithPagesResult<'token_transfers'> | QueryWithPagesResult<'token_instance_transfers'>;
   tokenId?: string;
   token?: TokenInfo;
+  shouldRender?: boolean;
 }
 
-const TokenTransfer = ({ transfersQuery, tokenId, token }: Props) => {
+const TokenTransfer = ({ transfersQuery, tokenId, token, shouldRender = true }: Props) => {
   const isMobile = useIsMobile();
+  const isMounted = useIsMounted();
   const router = useRouter();
   const { isError, isPlaceholderData, data, pagination } = transfersQuery;
 
@@ -55,8 +58,11 @@ const TokenTransfer = ({ transfersQuery, tokenId, token }: Props) => {
     handler: handleNewTransfersMessage,
   });
 
-  const content = data?.items ? (
+  if (!isMounted || !shouldRender) {
+    return null;
+  }
 
+  const content = data?.items ? (
     <>
       <Box display={{ base: 'none', lg: 'block' }}>
         <TokenTransferTable
