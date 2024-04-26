@@ -7,11 +7,12 @@ import { route } from 'nextjs-routes';
 
 import type { Props as TagProps } from 'ui/shared/chakra/Tag';
 import Tag from 'ui/shared/chakra/Tag';
+import IconSvg from 'ui/shared/IconSvg';
+import LinkExternal from 'ui/shared/LinkExternal';
+import LinkInternal from 'ui/shared/LinkInternal';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
-import IconSvg from '../IconSvg';
-import LinkExternal from '../LinkExternal';
-import LinkInternal from '../LinkInternal';
+import EntityTagPopover from './EntityTagPopover';
 
 interface Props {
   data: TEntityTag;
@@ -65,7 +66,7 @@ const EntityTag = ({ data, isLoading, truncate }: Props) => {
     case 'information': {
       if (data.meta?.actionURL) {
         return (
-          <Tag { ...tagProps } colorScheme="gray-blue">
+          <Tag { ...tagProps } isTruncated={ false } colorScheme="gray-blue">
             <LinkExternal href={ data.meta.actionURL } color="inherit">
               { data.name }
             </LinkExternal>
@@ -75,11 +76,18 @@ const EntityTag = ({ data, isLoading, truncate }: Props) => {
     }
   }
 
-  return (
-    <Tag { ...tagProps } >
-      { data.name }
+  const hasPopover = Boolean(data.meta?.tooltipIcon || data.meta?.tooltipTitle || data.meta?.tooltipDescription || data.meta?.tooltipUrl);
+  const content = (
+    <Tag { ...tagProps } isTruncated={ false } display="inline-flex" overflow="hidden" maxW="150px">
+      <TruncatedValue value={ data.name }/>
     </Tag>
   );
+
+  if (hasPopover) {
+    return <EntityTagPopover data={ data }>{ content }</EntityTagPopover>;
+  }
+
+  return content;
 };
 
 export default React.memo(EntityTag);

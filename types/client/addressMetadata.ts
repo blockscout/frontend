@@ -16,5 +16,9 @@ export interface AddressMetadataTagFormatted {
     textColor?: string;
     bgColor?: string;
     actionURL?: string;
+    tooltipIcon?: string;
+    tooltipTitle?: string;
+    tooltipDescription?: string;
+    tooltipUrl?: string;
   } | null;
 }
