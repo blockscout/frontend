@@ -1,17 +1,12 @@
-import { chakra } from '@chakra-ui/react';
+import { chakra, Skeleton, Tag } from '@chakra-ui/react';
 import React from 'react';
 
 import type { EntityTag as TEntityTag } from './types';
 
-import { route } from 'nextjs-routes';
-
-import type { Props as TagProps } from 'ui/shared/chakra/Tag';
-import Tag from 'ui/shared/chakra/Tag';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkExternal from 'ui/shared/LinkExternal';
-import LinkInternal from 'ui/shared/LinkInternal';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
+import EntityTagLink from './EntityTagLink';
 import EntityTagPopover from './EntityTagPopover';
 
 interface Props {
@@ -21,73 +16,34 @@ interface Props {
 }
 
 const EntityTag = ({ data, isLoading, truncate }: Props) => {
-  const tagProps: TagProps = {
-    isLoading,
-    isTruncated: truncate,
-    maxW: truncate ? { base: '115px', lg: 'initial' } : undefined,
-    bg: data.meta?.bgColor,
-    color: data.meta?.textColor,
-  };
 
-  switch (data.tagType) {
-    case 'generic':
-    case 'protocol': {
-      return (
-        <Tag { ...tagProps } colorScheme="gray-blue">
-          <chakra.span color="gray.400"># </chakra.span>
-          <LinkInternal href={ route({ pathname: '/' }) } color="inherit">
-            { data.name }
-          </LinkInternal>
-        </Tag>
-      );
-    }
-    case 'name': {
-      const icon = <IconSvg name="publictags_slim" boxSize={ 3 } mr={ 1 } flexShrink={ 0 }/>;
-
-      if (data.meta?.actionURL) {
-        return (
-          <Tag { ...tagProps } colorScheme="gray-blue" display="flex" alignItems="center" minW={ 0 }>
-            { icon }
-            <LinkExternal href={ data.meta.actionURL } display="inline-flex" overflow="hidden" color="inherit">
-              <TruncatedValue value={ data.name }/>
-            </LinkExternal>
-          </Tag>
-        );
-      }
-
-      return (
-        <Tag { ...tagProps }>
-          { icon }
-          { data.name }
-        </Tag>
-      );
-    }
-    case 'classifier':
-    case 'information': {
-      if (data.meta?.actionURL) {
-        return (
-          <Tag { ...tagProps } isTruncated={ false } colorScheme="gray-blue">
-            <LinkExternal href={ data.meta.actionURL } color="inherit">
-              { data.name }
-            </LinkExternal>
-          </Tag>
-        );
-      }
-    }
+  if (isLoading) {
+    return <Skeleton borderRadius="sm" w="100px" h="24px"/>;
   }
 
-  const hasPopover = Boolean(data.meta?.tooltipIcon || data.meta?.tooltipTitle || data.meta?.tooltipDescription || data.meta?.tooltipUrl);
-  const content = (
-    <Tag { ...tagProps } isTruncated={ false } display="inline-flex" overflow="hidden" maxW="150px">
-      <TruncatedValue value={ data.name }/>
-    </Tag>
+  const hasLink = Boolean(data.meta?.actionURL || data.tagType === 'generic' || data.tagType === 'protocol');
+  const iconColor = data.meta?.textColor ?? 'gray.400';
+
+  return (
+    <EntityTagPopover data={ data }>
+      <Tag
+        display="flex"
+        alignItems="center"
+        minW={ 0 }
+        maxW={ truncate ? { base: '150px', lg: '300px' } : undefined }
+        bg={ data.meta?.bgColor }
+        color={ data.meta?.textColor }
+        colorScheme={ hasLink ? 'gray-blue' : 'gray' }
+        _hover={ hasLink ? { opacity: 0.76 } : undefined }
+      >
+        <EntityTagLink data={ data }>
+          { data.tagType === 'name' && <IconSvg name="publictags_slim" boxSize={ 3 } mr={ 1 } flexShrink={ 0 } color={ iconColor }/> }
+          { (data.tagType === 'protocol' || data.tagType === 'generic') && <chakra.span color={ iconColor } whiteSpace="pre"># </chakra.span> }
+          <TruncatedValue value={ data.name } tooltipPlacement="top"/>
+        </EntityTagLink>
+      </Tag>
+    </EntityTagPopover>
   );
-
-  if (hasPopover) {
-    return <EntityTagPopover data={ data }>{ content }</EntityTagPopover>;
-  }
-
-  return content;
 };
 
 export default React.memo(EntityTag);

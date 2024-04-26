@@ -14,6 +14,12 @@ interface Props {
 const EntityTagPopover = ({ data, children }: Props) => {
   const bgColor = useColorModeValue('gray.700', 'gray.900');
   const link = makePrettyLink(data.meta?.tooltipUrl);
+  const hasPopover = Boolean(data.meta?.tooltipIcon || data.meta?.tooltipTitle || data.meta?.tooltipDescription || data.meta?.tooltipUrl);
+
+  if (!hasPopover) {
+    // eslint-disable-next-line react/jsx-no-useless-fragment
+    return <>{ children }</>;
+  }
 
   return (
     <Popover trigger="hover" isLazy>
