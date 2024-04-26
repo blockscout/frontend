@@ -1,9 +1,9 @@
-import type { AddressMetadataTag, AddressMetadataTagType } from 'types/api/metadata';
+import type { AddressMetadataTagType } from 'types/api/addressMetadata';
+import type { AddressMetadataTagFormatted } from 'types/client/addressMetadata';
 
 export type EntityTagType = AddressMetadataTagType | 'custom' | 'watchlist' | 'private_tag';
 
-export interface EntityTag extends Pick<AddressMetadataTag, 'slug' | 'name'> {
+export interface EntityTag extends Pick<AddressMetadataTagFormatted, 'slug' | 'name' | 'ordinal'> {
   tagType: EntityTagType;
-  ordinal?: number;
-  meta?: Record<string, unknown>;
+  meta?: AddressMetadataTagFormatted['meta'];
 }

@@ -1,14 +1,16 @@
-import { Box, Flex, Tooltip } from '@chakra-ui/react';
+import { Box, Flex, Tooltip, useToken } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
 import type { TokenInfo } from 'types/api/token';
+import type { EntityTag } from 'ui/shared/EntityTags/types';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
+import useAddressMetadataInfoQuery from 'lib/address/useAddressMetadataInfoQuery';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import useContractTabs from 'lib/hooks/useContractTabs';
@@ -32,6 +34,7 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EntityTags from 'ui/shared/EntityTags/EntityTags';
 import formatUserTags from 'ui/shared/EntityTags/formatUserTags';
+import sortEntityTags from 'ui/shared/EntityTags/sortEntityTags';
 import IconSvg from 'ui/shared/IconSvg';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -84,6 +87,9 @@ const TokenPageContent = () => {
       placeholderData: addressStubs.ADDRESS_INFO,
     },
   });
+
+  const addressesForMetadataQuery = React.useMemo(() => ([ hashString ].filter(Boolean)), [ hashString ]);
+  const addressMetadataQuery = useAddressMetadataInfoQuery(addressesForMetadataQuery);
 
   React.useEffect(() => {
     if (tokenQuery.data && totalSupplySocket) {
@@ -253,19 +259,36 @@ const TokenPageContent = () => {
     };
   }, [ appProps.referrer ]);
 
-  const tags = React.useMemo(() => {
+  const bridgedTokenTagBgColor = useToken('colors', 'blue.500');
+  const bridgedTokenTagTextColor = useToken('colors', 'white');
+
+  const tags: Array<EntityTag> = React.useMemo(() => {
     return [
-      tokenQuery.data ? { slug: tokenQuery.data?.type, name: tokenQuery.data?.type, tagType: 'custom' as const } : undefined,
+      tokenQuery.data ? { slug: tokenQuery.data?.type, name: tokenQuery.data?.type, tagType: 'custom' as const, ordinal: -20 } : undefined,
       config.features.bridgedTokens.isEnabled && tokenQuery.data?.is_bridged ?
-        { slug: 'bridged', name: 'Bridged', tagType: 'custom' as const } :
-        // TODO @tom2drum pass correct bgColor and textColor -  colorScheme: 'blue', variant: 'solid'
+        {
+          slug: 'bridged',
+          name: 'Bridged',
+          tagType: 'custom' as const,
+          ordinal: -10,
+          meta: { bgColor: bridgedTokenTagBgColor, textColor: bridgedTokenTagTextColor },
+        } :
         undefined,
       ...formatUserTags(addressQuery.data),
       verifiedInfoQuery.data?.projectSector ?
-        { slug: verifiedInfoQuery.data.projectSector, name: verifiedInfoQuery.data.projectSector, tagType: 'custom' as const } :
+        { slug: verifiedInfoQuery.data.projectSector, name: verifiedInfoQuery.data.projectSector, tagType: 'custom' as const, ordinal: -30 } :
         undefined,
-    ].filter(Boolean);
-  }, [ addressQuery.data, tokenQuery.data, verifiedInfoQuery.data?.projectSector ]);
+      ...(addressMetadataQuery.data?.addresses?.[hashString.toLowerCase()]?.tags || []),
+    ].filter(Boolean).sort(sortEntityTags);
+  }, [
+    addressMetadataQuery.data?.addresses,
+    addressQuery.data,
+    bridgedTokenTagBgColor,
+    bridgedTokenTagTextColor,
+    tokenQuery.data,
+    verifiedInfoQuery.data?.projectSector,
+    hashString,
+  ]);
 
   const titleContentAfter = (
     <>
@@ -277,7 +300,11 @@ const TokenPageContent = () => {
         </Tooltip>
       ) }
       <EntityTags
-        isLoading={ tokenQuery.isPlaceholderData || addressQuery.isPlaceholderData }
+        isLoading={
+          tokenQuery.isPlaceholderData ||
+          addressQuery.isPlaceholderData ||
+          (config.features.addressMetadata.isEnabled && addressMetadataQuery.isPending)
+        }
         tags={ tags }
         flexGrow={ 1 }
       />

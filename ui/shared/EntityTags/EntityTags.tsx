@@ -31,7 +31,7 @@ const EntityTags = ({ tags, className, isLoading }: Props) => {
     if (tags.length > visibleNum) {
       return (
         <>
-          { tags .slice(0, visibleNum) .map((tag) => <EntityTag key={ tag.slug } data={ tag } isLoading={ isLoading } truncate/>) }
+          { tags.slice(0, visibleNum).map((tag) => <EntityTag key={ tag.slug } data={ tag } isLoading={ isLoading } truncate/>) }
           { metaSuitesPlaceholder }
           <Popover trigger="click" placement="bottom-start" isLazy>
             <PopoverTrigger>
@@ -42,7 +42,7 @@ const EntityTags = ({ tags, className, isLoading }: Props) => {
             <PopoverContent w="300px">
               <PopoverBody >
                 <Flex columnGap={ 2 } rowGap={ 2 } flexWrap="wrap">
-                  { tags .slice(visibleNum) .map((tag) => <EntityTag key={ tag.slug } data={ tag }/>) }
+                  { tags.slice(visibleNum).map((tag) => <EntityTag key={ tag.slug } data={ tag }/>) }
                 </Flex>
               </PopoverBody>
             </PopoverContent>
