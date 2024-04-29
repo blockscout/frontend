@@ -28,7 +28,7 @@ const EmptySearchResult = ({ favoriteApps, selectedCategoryId }: Props) => (
           No matching apps found.
           { 'suggestIdeasFormUrl' in feature && (
             <>
-              { ' ' }Have a groundbreaking idea or app suggestion?{ ' ' }
+              { ' ' }Have a groundbreaking idea or app suggestion?<br/>
               <LinkExternal href={ feature.suggestIdeasFormUrl }>Share it with us</LinkExternal>
             </>
           ) }
