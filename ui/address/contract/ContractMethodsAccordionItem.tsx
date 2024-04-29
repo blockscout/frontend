@@ -7,6 +7,8 @@ import type { SmartContractMethod } from 'types/api/contract';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
+import Tag from 'ui/shared/chakra/Tag';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import Hint from 'ui/shared/Hint';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -42,6 +44,10 @@ const ContractMethodsAccordionItem = <T extends SmartContractMethod>({ data, ind
     event.stopPropagation();
     onCopy();
   }, [ onCopy ]);
+
+  const handleCopyMethodIdClick = React.useCallback((event: React.MouseEvent) => {
+    event.stopPropagation();
+  }, []);
 
   return (
     <AccordionItem as="section" _first={{ borderTopWidth: 0 }} _last={{ borderBottomWidth: 0 }}>
@@ -84,6 +90,12 @@ const ContractMethodsAccordionItem = <T extends SmartContractMethod>({ data, ind
                     If neither a receive Ether nor a payable fallback function is present, 
                     the contract cannot receive Ether through regular transactions and throws an exception.`
                   }/>
+              ) }
+              { 'method_id' in data && (
+                <>
+                  <Tag>{ data.method_id }</Tag>
+                  <CopyToClipboard value={ data.method_id } onClick={ handleCopyMethodIdClick }/>
+                </>
               ) }
               <AccordionIcon transform={ isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' } color="gray.500"/>
             </AccordionButton>
