@@ -7,6 +7,7 @@ import type { TokenInfo } from 'types/api/token';
 import type { ResourceError } from 'lib/api/resources';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMounted from 'lib/hooks/useIsMounted';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -20,14 +21,20 @@ type Props = {
   inventoryQuery: QueryWithPagesResult<'token_inventory'>;
   tokenQuery: UseQueryResult<TokenInfo, ResourceError<unknown>>;
   ownerFilter?: string;
+  shouldRender?: boolean;
 }
 
-const TokenInventory = ({ inventoryQuery, tokenQuery, ownerFilter }: Props) => {
+const TokenInventory = ({ inventoryQuery, tokenQuery, ownerFilter, shouldRender = true }: Props) => {
   const isMobile = useIsMobile();
+  const isMounted = useIsMounted();
 
   const resetOwnerFilter = React.useCallback(() => {
     inventoryQuery.onFilterChange({});
   }, [ inventoryQuery ]);
+
+  if (!isMounted || !shouldRender) {
+    return null;
+  }
 
   const isActionBarHidden = !ownerFilter && !inventoryQuery.data?.items.length;
 

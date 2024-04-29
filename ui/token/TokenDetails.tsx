@@ -11,6 +11,7 @@ import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getCurrencyValue from 'lib/getCurrencyValue';
+import useIsMounted from 'lib/hooks/useIsMounted';
 import { TOKEN_COUNTERS } from 'stubs/token';
 import type { TokenTabs } from 'ui/pages/Token';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
@@ -25,6 +26,7 @@ interface Props {
 
 const TokenDetails = ({ tokenQuery }: Props) => {
   const router = useRouter();
+  const isMounted = useIsMounted();
   const hash = router.query.hash?.toString();
 
   const tokenCountersQuery = useApiQuery('token_counters', {
@@ -65,6 +67,10 @@ const TokenDetails = ({ tokenQuery }: Props) => {
   }, [ tokenCountersQuery.data, tokenCountersQuery.isPlaceholderData, changeUrlAndScroll ]);
 
   throwOnResourceLoadError(tokenQuery);
+
+  if (!isMounted) {
+    return null;
+  }
 
   const {
     exchange_rate: exchangeRate,
