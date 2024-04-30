@@ -78,7 +78,14 @@ export interface SmartContractExternalLibrary {
   name: string;
 }
 
-export type SmartContractMethodBase = (AbiFunction & { method_id: string })
+export type SmartContractMethodOutputValue = string | boolean | object;
+export type SmartContractMethodOutput = AbiFunction['outputs'][number] & { value?: SmartContractMethodOutputValue };
+export type SmartContractMethodBase = Omit<AbiFunction, 'outputs'> & {
+  method_id: string;
+  outputs: Array<SmartContractMethodOutput>;
+  constant?: boolean;
+  error?: string;
+};
 export type SmartContractReadMethod = SmartContractMethodBase;
 export type SmartContractWriteMethod = SmartContractMethodBase | AbiFallback | AbiReceive;
 export type SmartContractMethod = SmartContractReadMethod | SmartContractWriteMethod;

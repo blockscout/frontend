@@ -1,4 +1,4 @@
-import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Tooltip, useClipboard, useDisclosure } from '@chakra-ui/react';
+import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Alert, Box, Flex, Tooltip, useClipboard, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 import { Element } from 'react-scroll';
 
@@ -12,6 +12,7 @@ import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import Hint from 'ui/shared/Hint';
 import IconSvg from 'ui/shared/IconSvg';
 
+import ContractAbiItemConstant from './ContractAbiItemConstant';
 import ContractMethodForm from './form/ContractMethodForm';
 import { getElementName } from './useScrollToMethod';
 
@@ -52,6 +53,31 @@ const ContractAbiItem = ({ data, index, id, addressHash, tab, onSubmit, methodTy
   const handleCopyMethodIdClick = React.useCallback((event: React.MouseEvent) => {
     event.stopPropagation();
   }, []);
+
+  const content = (() => {
+    if ('error' in data && data.error) {
+      return <Alert status="error" fontSize="sm" wordBreak="break-word">{ data.error }</Alert>;
+    }
+
+    const hasConstantOutputs = 'outputs' in data && data.outputs.some(({ value }) => value !== undefined && value !== null);
+
+    if (hasConstantOutputs) {
+      return (
+        <Flex flexDir="column" rowGap={ 1 }>
+          { data.outputs.map((output, index) => <ContractAbiItemConstant key={ index } data={ output }/>) }
+        </Flex>
+      );
+    }
+
+    return (
+      <ContractMethodForm
+        key={ id + '_' + index }
+        data={ data }
+        onSubmit={ onSubmit }
+        methodType={ methodType }
+      />
+    );
+  })();
 
   return (
     <AccordionItem as="section" _first={{ borderTopWidth: 0 }} _last={{ borderBottomWidth: 0 }}>
@@ -105,12 +131,7 @@ const ContractAbiItem = ({ data, index, id, addressHash, tab, onSubmit, methodTy
             </AccordionButton>
           </Element>
           <AccordionPanel pb={ 4 } pr={ 0 } pl="28px" w="calc(100% - 6px)">
-            <ContractMethodForm
-              key={ id + '_' + index }
-              data={ data }
-              onSubmit={ onSubmit }
-              methodType={ methodType }
-            />
+            { content }
           </AccordionPanel>
         </>
       ) }

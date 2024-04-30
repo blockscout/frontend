@@ -4,7 +4,7 @@ import type { ChangeEvent } from 'react';
 import React from 'react';
 import { getAddress } from 'viem';
 
-import type { ContractAbiItemOutput } from './ABI/types';
+import type { ContractAbiItemOutput } from './types';
 
 import { WEI } from 'lib/consts';
 import { currencyUnits } from 'lib/units';
@@ -31,7 +31,7 @@ interface Props {
   data: ContractAbiItemOutput;
 }
 
-const ContractMethodStatic = ({ data }: Props) => {
+const ContractAbiItemConstant = ({ data }: Props) => {
   const [ value, setValue ] = React.useState<string>(castValueToString(data.value));
   const [ label, setLabel ] = React.useState(currencyUnits.wei.toUpperCase());
 
@@ -68,4 +68,4 @@ const ContractMethodStatic = ({ data }: Props) => {
   );
 };
 
-export default ContractMethodStatic;
+export default ContractAbiItemConstant;

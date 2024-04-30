@@ -32,10 +32,6 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
       await switchChainAsync?.({ chainId: Number(config.chain.id) });
     }
 
-    // if (!contractAbi) {
-    //   throw new Error('Something went wrong. Try again later.');
-    // }
-
     if (item.type === 'receive' || item.type === 'fallback') {
       const value = getNativeCoinValue(args[0]);
       const hash = await walletClient.sendTransaction({
@@ -53,10 +49,16 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
 
     const _args = args.slice(0, item.inputs.length);
     const value = getNativeCoinValue(args[item.inputs.length]);
-    // const abi = prepareAbi(contractAbi, item);
 
     const hash = await walletClient.writeContract({
       args: _args,
+      // Here we provide the ABI as an array containing only one item from the submitted form.
+      // This is a workaround for the issue with the "viem" library.
+      // It lacks a "method_id" field to uniquely identify the correct method and instead attempts to find a method based on its name.
+      // But the name is not unique in the contract ABI and this behavior in the "viem" could result in calling the wrong method.
+      // See related issues:
+      //    - https://github.com/blockscout/frontend/issues/1032,
+      //    - https://github.com/blockscout/frontend/issues/1327
       abi: [ item ] as Abi,
       functionName: methodName,
       address: addressHash as `0x${ string }`,
