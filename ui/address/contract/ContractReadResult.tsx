@@ -1,7 +1,7 @@
 import { Alert, Box, chakra, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ContractMethodReadResult } from './types';
+import type { ContractMethodReadResult } from './ABI/types';
 import type { SmartContractQueryMethodReadSuccess, SmartContractReadMethod } from 'types/api/contract';
 
 import hexToUtf8 from 'lib/hexToUtf8';

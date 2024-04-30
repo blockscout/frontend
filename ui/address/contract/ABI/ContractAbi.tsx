@@ -2,7 +2,7 @@ import { Accordion, Box, Flex, Link } from '@chakra-ui/react';
 import _range from 'lodash/range';
 import React from 'react';
 
-import type { MethodType, ContractAbi as TContractAbi } from '../types';
+import type { MethodType, ContractAbi as TContractAbi } from './types';
 
 import ContractAbiItem from './ContractAbiItem';
 import useFormSubmit from './useFormSubmit';

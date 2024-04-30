@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { FormSubmitHandler } from '../types';
+import type { FormSubmitHandler } from './types';
 
 import config from 'configs/app';
 

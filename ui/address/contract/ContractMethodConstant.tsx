@@ -4,7 +4,7 @@ import type { ChangeEvent } from 'react';
 import React from 'react';
 import { getAddress } from 'viem';
 
-import type { ContractAbiItemOutput } from './types';
+import type { ContractAbiItemOutput } from './ABI/types';
 
 import { WEI } from 'lib/consts';
 import { currencyUnits } from 'lib/units';

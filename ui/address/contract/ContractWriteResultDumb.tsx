@@ -1,7 +1,7 @@
 import { Box, chakra, Spinner } from '@chakra-ui/react';
 import React from 'react';
 
-import type { ContractMethodWriteResult } from './types';
+import type { ContractMethodWriteResult } from './ABI/types';
 
 import { route } from 'nextjs-routes';
 

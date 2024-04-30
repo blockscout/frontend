@@ -1,7 +1,7 @@
 import React from 'react';
 import { scroller } from 'react-scroll';
 
-import type { ContractAbi } from '../types';
+import type { ContractAbi } from './types';
 
 export const getElementName = (id: string) => `method_${ id }`;
 

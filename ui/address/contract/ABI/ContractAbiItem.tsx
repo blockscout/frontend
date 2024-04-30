@@ -2,7 +2,7 @@ import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Too
 import React from 'react';
 import { Element } from 'react-scroll';
 
-import type { FormSubmitHandler, MethodType, ContractAbiItem as TContractAbiItem } from '../types';
+import type { FormSubmitHandler, MethodType, ContractAbiItem as TContractAbiItem } from './types';
 
 import { route } from 'nextjs-routes';
 
@@ -12,7 +12,7 @@ import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import Hint from 'ui/shared/Hint';
 import IconSvg from 'ui/shared/IconSvg';
 
-import ContractMethodForm from '../methodForm/ContractMethodForm';
+import ContractMethodForm from './form/ContractMethodForm';
 import { getElementName } from './useScrollToMethod';
 
 interface Props {

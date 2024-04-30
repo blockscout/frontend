@@ -1,8 +1,8 @@
 import React from 'react';
 import { useWaitForTransactionReceipt } from 'wagmi';
 
-import type { ResultComponentProps } from './methodForm/types';
-import type { ContractMethodWriteResult } from './types';
+import type { ResultComponentProps } from './ABI/form/types';
+import type { ContractMethodWriteResult } from './ABI/types';
 import type { SmartContractWriteMethod } from 'types/api/contract';
 
 import ContractWriteResultDumb from './ContractWriteResultDumb';

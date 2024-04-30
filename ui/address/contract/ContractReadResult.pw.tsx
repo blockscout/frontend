@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
-import type { ContractMethodReadResult } from './types';
+import type { ContractMethodReadResult } from './ABI/types';
 
 import * as contractMethodsMock from 'mocks/contract/methods';
 import TestApp from 'playwright/TestApp';
