@@ -1,22 +1,35 @@
-import { Box, chakra, Spinner } from '@chakra-ui/react';
+import { chakra, Spinner, Box } from '@chakra-ui/react';
 import React from 'react';
+import type { UseWaitForTransactionReceiptReturnType } from 'wagmi';
+import { useWaitForTransactionReceipt } from 'wagmi';
 
-import type { ContractMethodWriteResult } from './ABI/types';
+import type { FormSubmitResultWalletClient } from '../types';
 
 import { route } from 'nextjs-routes';
 
 import LinkInternal from 'ui/shared/LinkInternal';
 
 interface Props {
-  result: ContractMethodWriteResult;
+  result: FormSubmitResultWalletClient['result'];
   onSettle: () => void;
-  txInfo: {
-    status: 'loading' | 'success' | 'error' | 'idle' | 'pending';
-    error: Error | null;
-  };
 }
 
-const ContractWriteResultDumb = ({ result, onSettle, txInfo }: Props) => {
+const ContractMethodResultWalletClient = ({ result, onSettle }: Props) => {
+  const txHash = result && 'hash' in result ? result.hash as `0x${ string }` : undefined;
+  const txInfo = useWaitForTransactionReceipt({
+    hash: txHash,
+  });
+
+  return <ContractMethodResultWalletClientDumb result={ result } onSettle={ onSettle } txInfo={ txInfo }/>;
+};
+
+export interface PropsDumb {
+  result: FormSubmitResultWalletClient['result'];
+  onSettle: () => void;
+  txInfo: UseWaitForTransactionReceiptReturnType;
+}
+
+export const ContractMethodResultWalletClientDumb = ({ result, onSettle, txInfo }: PropsDumb) => {
   const txHash = result && 'hash' in result ? result.hash : undefined;
 
   React.useEffect(() => {
@@ -93,4 +106,4 @@ const ContractWriteResultDumb = ({ result, onSettle, txInfo }: Props) => {
   );
 };
 
-export default React.memo(ContractWriteResultDumb);
+export default React.memo(ContractMethodResultWalletClient);

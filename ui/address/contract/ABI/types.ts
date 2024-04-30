@@ -1,6 +1,6 @@
 import type { AbiFallback, AbiFunction, AbiReceive } from 'abitype';
 
-import type { SmartContractQueryMethodRead, SmartContractMethod, SmartContractReadMethod } from 'types/api/contract';
+import type { SmartContractQueryMethod, SmartContractMethod, SmartContractReadMethod } from 'types/api/contract';
 
 import type { ResourceError } from 'lib/api/resources';
 
@@ -9,7 +9,7 @@ export type MethodFormFieldsFormatted = Record<string, MethodArgType>;
 
 export type MethodArgType = string | boolean | Array<MethodArgType>;
 
-export type ContractMethodReadResult = SmartContractQueryMethodRead | ResourceError;
+export type ContractMethodReadResult = SmartContractQueryMethod | ResourceError;
 
 export type ContractMethodWriteResult = Error | { hash: `0x${ string }` | undefined } | undefined;
 
@@ -24,8 +24,16 @@ export type ContractAbiItemOutput = AbiFunction['outputs'][number] & { value?: s
 export type ContractAbi = Array<ContractAbiItem>;
 
 export type MethodType = 'read' | 'write';
-export type FormSubmitType = 'call' | 'simulate';
+export type MethodCallStrategy = 'api' | 'wallet_client';
 
-export type FormSubmitResult = unknown;
+export interface FormSubmitResultApi {
+  source: 'api';
+  result: SmartContractQueryMethod | ResourceError | Error;
+}
+export interface FormSubmitResultWalletClient {
+  source: 'wallet_client';
+  result: Error | { hash: `0x${ string }` | undefined } | undefined;
+}
+export type FormSubmitResult = FormSubmitResultApi | FormSubmitResultWalletClient;
 
-export type FormSubmitHandler = (item: ContractAbiItem, args: Array<unknown>, submitType: FormSubmitType | undefined) => Promise<FormSubmitResult>;
+export type FormSubmitHandler = (item: ContractAbiItem, args: Array<unknown>, submitType: MethodCallStrategy | undefined) => Promise<FormSubmitResult>;

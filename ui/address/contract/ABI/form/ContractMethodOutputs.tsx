@@ -8,7 +8,7 @@ interface Props {
   data: AbiFunction['outputs'];
 }
 
-const ContractMethodFormOutputs = ({ data }: Props) => {
+const ContractMethodOutputs = ({ data }: Props) => {
   if (data.length === 0) {
     return null;
   }
@@ -31,4 +31,4 @@ const ContractMethodFormOutputs = ({ data }: Props) => {
   );
 };
 
-export default React.memo(ContractMethodFormOutputs);
+export default React.memo(ContractMethodOutputs);

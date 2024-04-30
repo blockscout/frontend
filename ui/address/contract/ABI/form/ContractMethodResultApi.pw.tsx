@@ -1,69 +1,56 @@
-import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
-import type { ContractMethodReadResult } from './ABI/types';
+import type { FormSubmitResultApi } from '../types';
 
 import * as contractMethodsMock from 'mocks/contract/methods';
-import TestApp from 'playwright/TestApp';
+import { test, expect } from 'playwright/lib';
 
-import ContractReadResult from './ContractReadResult';
+import ContractMethodResultApi from './ContractMethodResultApi';
 
 const item = contractMethodsMock.read[0];
 const onSettle = () => Promise.resolve();
 
 test.use({ viewport: { width: 500, height: 500 } });
 
-test('default error', async({ mount }) => {
-  const result: ContractMethodReadResult = {
+test('default error', async({ render }) => {
+  const result: FormSubmitResultApi['result'] = {
     is_error: true,
     result: {
       error: 'I am an error',
     },
   };
-  const component = await mount(
-    <TestApp>
-      <ContractReadResult item={ item } onSettle={ onSettle } result={ result }/>
-    </TestApp>,
-  );
+  const component = await render(<ContractMethodResultApi item={ item } onSettle={ onSettle } result={ result }/>);
 
   await expect(component).toHaveScreenshot();
 });
 
-test('error with code', async({ mount }) => {
-  const result: ContractMethodReadResult = {
+test('error with code', async({ render }) => {
+  const result: FormSubmitResultApi['result'] = {
     is_error: true,
     result: {
       message: 'I am an error',
       code: -32017,
     },
   };
-  const component = await mount(
-    <TestApp>
-      <ContractReadResult item={ item } onSettle={ onSettle } result={ result }/>
-    </TestApp>,
-  );
+  const component = await render(<ContractMethodResultApi item={ item } onSettle={ onSettle } result={ result }/>);
 
   await expect(component).toHaveScreenshot();
 });
 
-test('raw error', async({ mount }) => {
-  const result: ContractMethodReadResult = {
+test('raw error', async({ render }) => {
+  const result: FormSubmitResultApi['result'] = {
     is_error: true,
     result: {
       raw: '49276d20616c7761797320726576657274696e67207769746820616e206572726f72',
     },
   };
-  const component = await mount(
-    <TestApp>
-      <ContractReadResult item={ item } onSettle={ onSettle } result={ result }/>
-    </TestApp>,
-  );
+  const component = await render(<ContractMethodResultApi item={ item } onSettle={ onSettle } result={ result }/>);
 
   await expect(component).toHaveScreenshot();
 });
 
-test('complex error', async({ mount }) => {
-  const result: ContractMethodReadResult = {
+test('complex error', async({ render }) => {
+  const result: FormSubmitResultApi['result'] = {
     is_error: true,
     result: {
       method_call: 'SomeCustomError(address addr, uint256 balance)',
@@ -74,34 +61,26 @@ test('complex error', async({ mount }) => {
       ],
     },
   };
-  const component = await mount(
-    <TestApp>
-      <ContractReadResult item={ item } onSettle={ onSettle } result={ result }/>
-    </TestApp>,
-  );
+  const component = await render(<ContractMethodResultApi item={ item } onSettle={ onSettle } result={ result }/>);
 
   await expect(component).toHaveScreenshot();
 });
 
-test('success', async({ mount }) => {
-  const result: ContractMethodReadResult = {
+test('success', async({ render }) => {
+  const result: FormSubmitResultApi['result'] = {
     is_error: false,
     result: {
       names: [ 'address' ],
       output: [ { type: 'address', value: '0x0000000000000000000000000000000000000000' } ],
     },
   };
-  const component = await mount(
-    <TestApp>
-      <ContractReadResult item={ item } onSettle={ onSettle } result={ result }/>
-    </TestApp>,
-  );
+  const component = await render(<ContractMethodResultApi item={ item } onSettle={ onSettle } result={ result }/>);
 
   await expect(component).toHaveScreenshot();
 });
 
-test('complex success', async({ mount }) => {
-  const result: ContractMethodReadResult = {
+test('complex success', async({ render }) => {
+  const result: FormSubmitResultApi['result'] = {
     is_error: false,
     result: {
       names: [
@@ -122,11 +101,7 @@ test('complex success', async({ mount }) => {
       ],
     },
   };
-  const component = await mount(
-    <TestApp>
-      <ContractReadResult item={ item } onSettle={ onSettle } result={ result }/>
-    </TestApp>,
-  );
+  const component = await render(<ContractMethodResultApi item={ item } onSettle={ onSettle } result={ result }/>);
 
   await expect(component).toHaveScreenshot();
 });

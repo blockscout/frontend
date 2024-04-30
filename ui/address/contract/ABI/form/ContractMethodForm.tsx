@@ -5,7 +5,7 @@ import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
 import type { AbiFunction } from 'viem';
 
-import type { FormSubmitHandler, FormSubmitResult, FormSubmitType, MethodType, ContractAbiItem } from '../types';
+import type { FormSubmitHandler, FormSubmitResult, MethodCallStrategy, MethodType, ContractAbiItem } from '../types';
 
 import config from 'configs/app';
 import * as mixpanel from 'lib/mixpanel/index';
@@ -13,8 +13,8 @@ import * as mixpanel from 'lib/mixpanel/index';
 import ContractMethodFieldInput from './ContractMethodFieldInput';
 import ContractMethodFieldInputArray from './ContractMethodFieldInputArray';
 import ContractMethodFieldInputTuple from './ContractMethodFieldInputTuple';
-import ContractMethodFormOutputs from './ContractMethodFormOutputs';
-import ContractMethodFormResult from './ContractMethodFormResult';
+import ContractMethodOutputs from './ContractMethodOutputs';
+import ContractMethodResult from './ContractMethodResult';
 import { ARRAY_REGEXP, transformFormDataToMethodArgs } from './utils';
 import type { ContractMethodFormFields } from './utils';
 
@@ -28,8 +28,8 @@ const ContractMethodForm = ({ data, onSubmit, methodType }: Props) => {
 
   const [ result, setResult ] = React.useState<FormSubmitResult>();
   const [ isLoading, setLoading ] = React.useState(false);
-  const [ submitType, setSubmitType ] = React.useState<FormSubmitType>();
-  const submitTypeRef = React.useRef(submitType);
+  const [ callStrategy, setCallStrategy ] = React.useState<MethodCallStrategy>();
+  const callStrategyRef = React.useRef(callStrategy);
 
   const formApi = useForm<ContractMethodFormFields>({
     mode: 'all',
@@ -37,14 +37,14 @@ const ContractMethodForm = ({ data, onSubmit, methodType }: Props) => {
   });
 
   const handleButtonClick = React.useCallback((event: React.MouseEvent) => {
-    const submitType = event?.currentTarget.getAttribute('data-submit-type');
-    setSubmitType(submitType as FormSubmitType);
-    submitTypeRef.current = submitType as FormSubmitType;
+    const callStrategy = event?.currentTarget.getAttribute('data-call-strategy');
+    setCallStrategy(callStrategy as MethodCallStrategy);
+    callStrategyRef.current = callStrategy as MethodCallStrategy;
   }, []);
 
   const onFormSubmit: SubmitHandler<ContractMethodFormFields> = React.useCallback(async(formData) => {
     // The API used for reading from contracts expects all values to be strings.
-    const formattedData = methodType === 'read' ?
+    const formattedData = callStrategyRef.current === 'api' ?
       _mapValues(formData, (value) => value !== undefined ? String(value) : undefined) :
       formData;
     const args = transformFormDataToMethodArgs(formattedData);
@@ -52,12 +52,15 @@ const ContractMethodForm = ({ data, onSubmit, methodType }: Props) => {
     setResult(undefined);
     setLoading(true);
 
-    onSubmit(data, args, submitTypeRef.current)
+    onSubmit(data, args, callStrategyRef.current)
       .then((result) => {
         setResult(result);
       })
       .catch((error) => {
-        setResult(error?.error || error?.data || (error?.reason && { message: error.reason }) || error);
+        setResult({
+          source: callStrategyRef.current ?? 'wallet_client',
+          result: error?.error || error?.data || (error?.reason && { message: error.reason }) || error,
+        });
         setLoading(false);
       })
       .finally(() => {
@@ -90,6 +93,29 @@ const ContractMethodForm = ({ data, onSubmit, methodType }: Props) => {
 
   const outputs = 'outputs' in data && data.outputs ? data.outputs : [];
 
+  const callStrategies = (() => {
+    switch (methodType) {
+      case 'read': {
+        return { primary: 'api', secondary: undefined };
+      }
+
+      case 'write': {
+        if (!config.features.blockchainInteraction.isEnabled) {
+          return { primary: undefined, secondary: 'api' };
+        }
+
+        return {
+          primary: 'wallet_client',
+          secondary: 'outputs' in data && Boolean(data.outputs?.length) ? 'api' : undefined,
+        };
+      }
+
+      default: {
+        return { primary: undefined, secondary: undefined };
+      }
+    }
+  })();
+
   return (
     <Box>
       <FormProvider { ...formApi }>
@@ -112,9 +138,9 @@ const ContractMethodForm = ({ data, onSubmit, methodType }: Props) => {
               return <ContractMethodFieldInput key={ index } data={ input } path={ `${ index }` } isDisabled={ isLoading } level={ 0 }/>;
             }) }
           </Flex>
-          { methodType === 'write' && 'outputs' in data && Boolean(data.outputs?.length) && (
+          { callStrategies.secondary && (
             <Button
-              isLoading={ submitType === 'simulate' && isLoading }
+              isLoading={ callStrategy === callStrategies.secondary && isLoading }
               isDisabled={ isLoading }
               onClick={ handleButtonClick }
               loadingText="Simulate"
@@ -125,30 +151,32 @@ const ContractMethodForm = ({ data, onSubmit, methodType }: Props) => {
               px={ 4 }
               mr={ 3 }
               type="submit"
-              data-submit-type="simulate"
+              data-call-strategy={ callStrategies.secondary }
             >
               Simulate
             </Button>
           ) }
-          <Button
-            isLoading={ submitType === 'call' && isLoading }
-            isDisabled={ isLoading }
-            onClick={ handleButtonClick }
-            loadingText={ methodType === 'write' ? 'Write' : 'Read' }
-            variant="outline"
-            size="sm"
-            flexShrink={ 0 }
-            width="min-content"
-            px={ 4 }
-            type="submit"
-            data-submit-type="call"
-          >
-            { methodType === 'write' ? 'Write' : 'Read' }
-          </Button>
+          { callStrategies.primary && (
+            <Button
+              isLoading={ callStrategy === callStrategies.primary && isLoading }
+              isDisabled={ isLoading }
+              onClick={ handleButtonClick }
+              loadingText={ methodType === 'write' ? 'Write' : 'Read' }
+              variant="outline"
+              size="sm"
+              flexShrink={ 0 }
+              width="min-content"
+              px={ 4 }
+              type="submit"
+              data-call-strategy={ callStrategies.primary }
+            >
+              { methodType === 'write' ? 'Write' : 'Read' }
+            </Button>
+          ) }
         </chakra.form>
       </FormProvider>
-      { methodType === 'read' && <ContractMethodFormOutputs data={ outputs }/> }
-      { Boolean(result) && <ContractMethodFormResult abiItem={ data } result={ result } onSettle={ handleTxSettle }/> }
+      { 'outputs' in data && Boolean(data.outputs?.length) && <ContractMethodOutputs data={ outputs }/> }
+      { result && <ContractMethodResult abiItem={ data } result={ result } onSettle={ handleTxSettle }/> }
     </Box>
   );
 };

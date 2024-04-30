@@ -83,7 +83,7 @@ export type SmartContractReadMethod = SmartContractMethodBase;
 export type SmartContractWriteMethod = SmartContractMethodBase | AbiFallback | AbiReceive;
 export type SmartContractMethod = SmartContractReadMethod | SmartContractWriteMethod;
 
-export interface SmartContractQueryMethodReadSuccess {
+export interface SmartContractQueryMethodSuccess {
   is_error: false;
   result: {
     names: Array<string | [ string, Array<string> ]>;
@@ -94,7 +94,7 @@ export interface SmartContractQueryMethodReadSuccess {
   };
 }
 
-export interface SmartContractQueryMethodReadError {
+export interface SmartContractQueryMethodError {
   is_error: true;
   result: {
     code: number;
@@ -110,7 +110,7 @@ export interface SmartContractQueryMethodReadError {
   };
 }
 
-export type SmartContractQueryMethodRead = SmartContractQueryMethodReadSuccess | SmartContractQueryMethodReadError;
+export type SmartContractQueryMethod = SmartContractQueryMethodSuccess | SmartContractQueryMethodError;
 
 // VERIFICATION
 

@@ -21,7 +21,7 @@ const ContractAbi = ({ data, addressHash, tab, methodType }: Props) => {
 
   useScrollToMethod(data, setExpandedSections);
 
-  const handleFormSubmit = useFormSubmit();
+  const handleFormSubmit = useFormSubmit({ addressHash, tab });
 
   const handleAccordionStateChange = React.useCallback((newValue: Array<number>) => {
     setExpandedSections(newValue);

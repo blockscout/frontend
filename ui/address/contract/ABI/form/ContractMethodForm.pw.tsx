@@ -1,16 +1,15 @@
 import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
-import type { SmartContractWriteMethod } from 'types/api/contract';
+import type { ContractAbiItem } from '../types';
 
 import TestApp from 'playwright/TestApp';
 
 import ContractMethodForm from './ContractMethodForm';
 
-const onSubmit = () => Promise.resolve({ hash: '0x0000' as `0x${ string }` });
-const resultComponent = () => null;
+const onSubmit = () => Promise.resolve({ source: 'wallet_client' as const, result: { hash: '0x0000' as `0x${ string }` } });
 
-const data: SmartContractWriteMethod = {
+const data: ContractAbiItem = {
   inputs: [
     // TUPLE
     {
@@ -95,10 +94,9 @@ test('base view +@mobile +@dark-mode', async({ mount }) => {
 
   const component = await mount(
     <TestApp>
-      <ContractMethodForm<SmartContractWriteMethod>
+      <ContractMethodForm
         data={ data }
         onSubmit={ onSubmit }
-        resultComponent={ resultComponent }
         methodType="write"
       />
     </TestApp>,
