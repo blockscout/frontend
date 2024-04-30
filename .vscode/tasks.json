@@ -339,6 +339,7 @@
               "main",
               "main.L2",
               "localhost",
+              "base",
               "gnosis",
               "eth",
               "eth_goerli",

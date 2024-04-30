@@ -1,7 +1,7 @@
 import { test as base, expect, devices } from '@playwright/experimental-ct-react';
 import React from 'react';
 
-import { txnBatchData } from 'mocks/zkevmL2txnBatches/zkevmL2txnBatch';
+import { txnBatchData } from 'mocks/zkEvm/txnBatches';
 import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';

@@ -14,8 +14,8 @@ const test = base.extend({
   context: contextWithEnvs(configs.featureEnvs.optimisticRollup) as any,
 });
 
-const OUTPUT_ROOTS_API_URL = buildApiUrl('l2_output_roots');
-const OUTPUT_ROOTS_COUNT_API_URL = buildApiUrl('l2_output_roots_count');
+const OUTPUT_ROOTS_API_URL = buildApiUrl('optimistic_l2_output_roots');
+const OUTPUT_ROOTS_COUNT_API_URL = buildApiUrl('optimistic_l2_output_roots_count');
 
 test('base view +@mobile', async({ mount, page }) => {
   // test on mobile is flaky

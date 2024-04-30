@@ -6,7 +6,8 @@ import { test, expect } from 'playwright/lib';
 
 import SearchBar from './SearchBar';
 
-test.beforeEach(async({ mockAssetResponse, mockEnvs }) => {
+test.beforeEach(async({ mockAssetResponse, mockEnvs, mockTextAd }) => {
+  await mockTextAd();
   await mockAssetResponse(searchMock.token1.icon_url as string, './playwright/mocks/image_s.jpg');
   await mockEnvs([
     [ 'NEXT_PUBLIC_MARKETPLACE_ENABLED', 'false' ],

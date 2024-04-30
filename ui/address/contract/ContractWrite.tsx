@@ -19,7 +19,11 @@ import ContractMethodForm from './methodForm/ContractMethodForm';
 import useContractAbi from './useContractAbi';
 import { getNativeCoinValue, prepareAbi } from './utils';
 
-const ContractWrite = () => {
+interface Props {
+  isLoading?: boolean;
+}
+
+const ContractWrite = ({ isLoading }: Props) => {
   const { data: walletClient } = useWalletClient();
   const { isConnected, chainId } = useAccount();
   const { switchChainAsync } = useSwitchChain();
@@ -37,7 +41,7 @@ const ContractWrite = () => {
       is_custom_abi: isCustomAbi ? 'true' : 'false',
     },
     queryOptions: {
-      enabled: Boolean(addressHash),
+      enabled: !isLoading,
       refetchOnMount: false,
     },
   });

@@ -21,9 +21,10 @@ interface Props {
   filterType?: CsvExportParams['filterType'] | null;
   filterValue?: CsvExportParams['filterValue'] | null;
   fileNameTemplate: string;
+  exportType: CsvExportParams['type'] | undefined;
 }
 
-const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTemplate }: Props) => {
+const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTemplate, exportType }: Props) => {
   const formApi = useForm<FormFields>({
     mode: 'onBlur',
     defaultValues: {
@@ -36,10 +37,10 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
 
   const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(data) => {
     try {
-      const url = buildUrl(resource, undefined, {
+      const url = buildUrl(resource, { hash } as never, {
         address_id: hash,
-        from_period: data.from,
-        to_period: data.to,
+        from_period: exportType !== 'holders' ? data.from : null,
+        to_period: exportType !== 'holders' ? data.to : null,
         filter_type: filterType,
         filter_value: filterValue,
         recaptcha_response: data.reCaptcha,
@@ -56,11 +57,11 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
       }
 
       const blob = await response.blob();
-      downloadBlob(
-        blob,
-        `${ fileNameTemplate }_${ hash }_${ data.from }_${ data.to }
-        ${ filterType && filterValue ? '_with_filter_type_' + filterType + '_value_' + filterValue : '' }.csv`,
-      );
+      const fileName = exportType === 'holders' ?
+        `${ fileNameTemplate }_${ hash }.csv` :
+        // eslint-disable-next-line max-len
+        `${ fileNameTemplate }_${ hash }_${ data.from }_${ data.to }${ filterType && filterValue ? '_with_filter_type_' + filterType + '_value_' + filterValue : '' }.csv`;
+      downloadBlob(blob, fileName);
 
     } catch (error) {
       toast({
@@ -73,7 +74,7 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
       });
     }
 
-  }, [ fileNameTemplate, hash, resource, filterType, filterValue, toast ]);
+  }, [ resource, hash, exportType, filterType, filterValue, fileNameTemplate, toast ]);
 
   return (
     <FormProvider { ...formApi }>
@@ -82,8 +83,8 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
         onSubmit={ handleSubmit(onFormSubmit) }
       >
         <Flex columnGap={ 5 } rowGap={ 3 } flexDir={{ base: 'column', lg: 'row' }} alignItems={{ base: 'flex-start', lg: 'center' }} flexWrap="wrap">
-          <CsvExportFormField name="from" formApi={ formApi }/>
-          <CsvExportFormField name="to" formApi={ formApi }/>
+          { exportType !== 'holders' && <CsvExportFormField name="from" formApi={ formApi }/> }
+          { exportType !== 'holders' && <CsvExportFormField name="to" formApi={ formApi }/> }
           <CsvExportFormReCaptcha formApi={ formApi }/>
         </Flex>
         <Button
