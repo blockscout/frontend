@@ -1,13 +1,11 @@
 import React from 'react';
 import { getAddress, isAddress, isHex } from 'viem';
 
-import type { SmartContractMethodArgType } from 'types/api/contract';
-
 import type { MatchInt } from './useArgTypeMatchInt';
 import { BYTES_REGEXP } from './utils';
 
 interface Params {
-  argType: SmartContractMethodArgType;
+  argType: string;
   argTypeMatchInt: MatchInt | null;
   isOptional: boolean;
 }

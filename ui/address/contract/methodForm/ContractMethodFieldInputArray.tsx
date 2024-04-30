@@ -2,7 +2,8 @@ import { Flex } from '@chakra-ui/react';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import type { SmartContractMethodInput, SmartContractMethodArgType } from 'types/api/contract';
+import type { ContractAbiItemInput } from '../types';
+import type { SmartContractMethodArgType } from 'types/api/contract';
 
 import ContractMethodArrayButton from './ContractMethodArrayButton';
 import type { Props as AccordionProps } from './ContractMethodFieldAccordion';
@@ -13,7 +14,7 @@ import ContractMethodFieldLabel from './ContractMethodFieldLabel';
 import { getFieldLabel } from './utils';
 
 interface Props extends Pick<AccordionProps, 'onAddClick' | 'onRemoveClick' | 'index'> {
-  data: SmartContractMethodInput;
+  data: ContractAbiItemInput;
   level: number;
   basePath: string;
   isDisabled: boolean;

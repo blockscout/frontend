@@ -1,6 +1,6 @@
 import _set from 'lodash/set';
 
-import type { SmartContractMethodInput } from 'types/api/contract';
+import type { ContractAbiItemInput } from '../types';
 
 export type ContractMethodFormFields = Record<string, string | boolean | undefined>;
 
@@ -41,7 +41,7 @@ function filterOurEmptyItems(array: Array<unknown>): Array<unknown> {
     .filter((item) => item !== undefined);
 }
 
-export function getFieldLabel(input: SmartContractMethodInput, isRequired?: boolean) {
+export function getFieldLabel(input: ContractAbiItemInput, isRequired?: boolean) {
   const name = input.name || input.internalType || '<unnamed argument>';
   return `${ name } (${ input.type })${ isRequired ? '*' : '' }`;
 }

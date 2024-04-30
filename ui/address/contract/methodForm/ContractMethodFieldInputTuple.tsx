@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
-import type { SmartContractMethodInput } from 'types/api/contract';
+import type { ContractAbiItemInput } from '../types';
 
 import type { Props as AccordionProps } from './ContractMethodFieldAccordion';
 import ContractMethodFieldAccordion from './ContractMethodFieldAccordion';
@@ -10,7 +10,7 @@ import ContractMethodFieldInputArray from './ContractMethodFieldInputArray';
 import { ARRAY_REGEXP, getFieldLabel } from './utils';
 
 interface Props extends Pick<AccordionProps, 'onAddClick' | 'onRemoveClick' | 'index'> {
-  data: SmartContractMethodInput;
+  data: ContractAbiItemInput;
   basePath: string;
   level: number;
   isDisabled: boolean;
@@ -21,6 +21,10 @@ const ContractMethodFieldInputTuple = ({ data, basePath, level, isDisabled, ...a
   const fieldsWithErrors = Object.keys(errors);
   const isInvalid = fieldsWithErrors.some((field) => field.startsWith(basePath));
 
+  if (!('components' in data)) {
+    return null;
+  }
+
   return (
     <ContractMethodFieldAccordion
       { ...accordionProps }
@@ -29,7 +33,7 @@ const ContractMethodFieldInputTuple = ({ data, basePath, level, isDisabled, ...a
       isInvalid={ isInvalid }
     >
       { data.components?.map((component, index) => {
-        if (component.components && component.type === 'tuple') {
+        if ('components' in component && component.type === 'tuple') {
           return (
             <ContractMethodFieldInputTuple
               key={ index }

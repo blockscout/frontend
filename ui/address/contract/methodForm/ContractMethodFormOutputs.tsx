@@ -1,12 +1,11 @@
 import { Flex, chakra } from '@chakra-ui/react';
 import React from 'react';
-
-import type { SmartContractMethodOutput } from 'types/api/contract';
+import type { AbiFunction } from 'viem';
 
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
-  data: Array<SmartContractMethodOutput>;
+  data: AbiFunction['outputs'];
 }
 
 const ContractMethodFormOutputs = ({ data }: Props) => {

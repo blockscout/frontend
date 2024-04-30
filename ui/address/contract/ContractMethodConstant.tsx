@@ -4,7 +4,7 @@ import type { ChangeEvent } from 'react';
 import React from 'react';
 import { getAddress } from 'viem';
 
-import type { SmartContractMethodOutput } from 'types/api/contract';
+import type { ContractAbiItemOutput } from './types';
 
 import { WEI } from 'lib/consts';
 import { currencyUnits } from 'lib/units';
@@ -28,7 +28,7 @@ function castValueToString(value: number | string | boolean | object | bigint | 
 }
 
 interface Props {
-  data: SmartContractMethodOutput;
+  data: ContractAbiItemOutput;
 }
 
 const ContractMethodStatic = ({ data }: Props) => {

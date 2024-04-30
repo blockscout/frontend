@@ -1,4 +1,4 @@
-import type { Abi, AbiType } from 'abitype';
+import type { Abi, AbiType, AbiFallback, AbiFunction, AbiReceive } from 'abitype';
 
 export type SmartContractMethodArgType = AbiType;
 export type SmartContractMethodStateMutability = 'view' | 'nonpayable' | 'payable';
@@ -78,47 +78,10 @@ export interface SmartContractExternalLibrary {
   name: string;
 }
 
-export interface SmartContractMethodBase {
-  inputs: Array<SmartContractMethodInput>;
-  outputs?: Array<SmartContractMethodOutput>;
-  constant: boolean;
-  name: string;
-  stateMutability: SmartContractMethodStateMutability;
-  type: 'function';
-  payable: boolean;
-  error?: string;
-  method_id: string;
-}
-
+export type SmartContractMethodBase = (AbiFunction & { method_id: string })
 export type SmartContractReadMethod = SmartContractMethodBase;
-
-export interface SmartContractWriteFallback {
-  payable?: true;
-  stateMutability: 'payable';
-  type: 'fallback';
-}
-
-export interface SmartContractWriteReceive {
-  payable?: true;
-  stateMutability: 'payable';
-  type: 'receive';
-}
-
-export type SmartContractWriteMethod = SmartContractMethodBase | SmartContractWriteFallback | SmartContractWriteReceive;
-
+export type SmartContractWriteMethod = SmartContractMethodBase | AbiFallback | AbiReceive;
 export type SmartContractMethod = SmartContractReadMethod | SmartContractWriteMethod;
-
-export interface SmartContractMethodInput {
-  internalType?: string; // there could be any string, e.g "enum MyEnum"
-  name: string;
-  type: SmartContractMethodArgType;
-  components?: Array<SmartContractMethodInput>;
-  fieldType?: 'native_coin';
-}
-
-export interface SmartContractMethodOutput extends SmartContractMethodInput {
-  value?: string | boolean | object;
-}
 
 export interface SmartContractQueryMethodReadSuccess {
   is_error: false;

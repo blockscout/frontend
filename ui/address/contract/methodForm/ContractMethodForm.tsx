@@ -3,10 +3,9 @@ import _mapValues from 'lodash/mapValues';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
+import type { AbiFunction } from 'viem';
 
-import type { ContractMethodCallResult } from '../types';
-import type { FormSubmitType, ResultComponentProps } from './types';
-import type { SmartContractMethod, SmartContractMethodInput } from 'types/api/contract';
+import type { FormSubmitHandler, FormSubmitResult, FormSubmitType, MethodType, ContractAbiItem } from '../types';
 
 import config from 'configs/app';
 import * as mixpanel from 'lib/mixpanel/index';
@@ -15,19 +14,19 @@ import ContractMethodFieldInput from './ContractMethodFieldInput';
 import ContractMethodFieldInputArray from './ContractMethodFieldInputArray';
 import ContractMethodFieldInputTuple from './ContractMethodFieldInputTuple';
 import ContractMethodFormOutputs from './ContractMethodFormOutputs';
+import ContractMethodFormResult from './ContractMethodFormResult';
 import { ARRAY_REGEXP, transformFormDataToMethodArgs } from './utils';
 import type { ContractMethodFormFields } from './utils';
 
-interface Props<T extends SmartContractMethod> {
-  data: T;
-  onSubmit: (data: T, args: Array<unknown>, submitType: FormSubmitType | undefined) => Promise<ContractMethodCallResult<T>>;
-  resultComponent: (props: ResultComponentProps<T>) => JSX.Element | null;
-  methodType: 'read' | 'write';
+interface Props {
+  data: ContractAbiItem;
+  onSubmit: FormSubmitHandler;
+  methodType: MethodType;
 }
 
-const ContractMethodForm = <T extends SmartContractMethod>({ data, onSubmit, resultComponent: ResultComponent, methodType }: Props<T>) => {
+const ContractMethodForm = ({ data, onSubmit, methodType }: Props) => {
 
-  const [ result, setResult ] = React.useState<ContractMethodCallResult<T>>();
+  const [ result, setResult ] = React.useState<FormSubmitResult>();
   const [ isLoading, setLoading ] = React.useState(false);
   const [ submitType, setSubmitType ] = React.useState<FormSubmitType>();
   const submitTypeRef = React.useRef(submitType);
@@ -77,9 +76,9 @@ const ContractMethodForm = <T extends SmartContractMethod>({ data, onSubmit, res
     result && setResult(undefined);
   }, [ result ]);
 
-  const inputs: Array<SmartContractMethodInput> = React.useMemo(() => {
+  const inputs: AbiFunction['inputs'] = React.useMemo(() => {
     return [
-      ...('inputs' in data ? data.inputs : []),
+      ...('inputs' in data && data.inputs ? data.inputs : []),
       ...('stateMutability' in data && data.stateMutability === 'payable' ? [ {
         name: `Send native ${ config.chain.currency.symbol || 'coin' }`,
         type: 'uint256' as const,
@@ -101,7 +100,7 @@ const ContractMethodForm = <T extends SmartContractMethod>({ data, onSubmit, res
         >
           <Flex flexDir="column" rowGap={ 3 } mb={ 6 } _empty={{ display: 'none' }}>
             { inputs.map((input, index) => {
-              if (input.components && input.type === 'tuple') {
+              if ('components' in input && input.components && input.type === 'tuple') {
                 return <ContractMethodFieldInputTuple key={ index } data={ input } basePath={ `${ index }` } level={ 0 } isDisabled={ isLoading }/>;
               }
 
@@ -149,7 +148,7 @@ const ContractMethodForm = <T extends SmartContractMethod>({ data, onSubmit, res
         </chakra.form>
       </FormProvider>
       { methodType === 'read' && <ContractMethodFormOutputs data={ outputs }/> }
-      { result && <ResultComponent item={ data } result={ result } onSettle={ handleTxSettle }/> }
+      { Boolean(result) && <ContractMethodFormResult abiItem={ data } result={ result } onSettle={ handleTxSettle }/> }
     </Box>
   );
 };

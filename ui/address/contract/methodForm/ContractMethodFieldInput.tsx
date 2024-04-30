@@ -3,7 +3,7 @@ import React from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
 
-import type { SmartContractMethodInput } from 'types/api/contract';
+import type { ContractAbiItemInput } from '../types';
 
 import ClearButton from 'ui/shared/ClearButton';
 
@@ -14,7 +14,7 @@ import useFormatFieldValue from './useFormatFieldValue';
 import useValidateField from './useValidateField';
 
 interface Props {
-  data: SmartContractMethodInput;
+  data: ContractAbiItemInput;
   hideLabel?: boolean;
   path: string;
   className?: string;

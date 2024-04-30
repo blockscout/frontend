@@ -1,11 +1,9 @@
 import React from 'react';
 
-import type { SmartContractMethodArgType } from 'types/api/contract';
-
 import type { MatchInt } from './useArgTypeMatchInt';
 
 interface Params {
-  argType: SmartContractMethodArgType;
+  argType: string;
   argTypeMatchInt: MatchInt | null;
 }
 

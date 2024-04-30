@@ -1,12 +1,12 @@
 import { Box, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
-import type { SmartContractMethodInput } from 'types/api/contract';
+import type { ContractAbiItemInput } from '../types';
 
 import { getFieldLabel } from './utils';
 
 interface Props {
-  data: SmartContractMethodInput;
+  data: ContractAbiItemInput;
   isOptional?: boolean;
   level: number;
 }
