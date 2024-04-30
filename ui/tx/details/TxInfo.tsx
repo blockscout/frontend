@@ -52,6 +52,7 @@ import TxDetailsGasPrice from 'ui/tx/details/TxDetailsGasPrice';
 import TxDetailsOther from 'ui/tx/details/TxDetailsOther';
 import TxDetailsTokenTransfers from 'ui/tx/details/TxDetailsTokenTransfers';
 import TxDetailsWithdrawalStatus from 'ui/tx/details/TxDetailsWithdrawalStatus';
+import TxNearExplorer from 'ui/tx/details/TxNearExplorer';
 import TxRevertReason from 'ui/tx/details/TxRevertReason';
 import TxAllowedPeekers from 'ui/tx/TxAllowedPeekers';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
@@ -440,8 +441,8 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           title={ `Gas fees (${ currencyUnits.gwei })` }
           // eslint-disable-next-line max-len
           hint={ `
-                Base Fee refers to the network Base Fee at the time of the block, 
-                while Max Fee & Max Priority Fee refer to the max amount a user is willing to pay 
+                Base Fee refers to the network Base Fee at the time of the block,
+                while Max Fee & Max Priority Fee refer to the max amount a user is willing to pay
                 for their tx & to give to the ${ getNetworkValidatorTitle() } respectively
               ` }
           isLoading={ isLoading }
@@ -466,6 +467,23 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
               <Text fontWeight="600" as="span">{ BigNumber(data.max_priority_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
             </Skeleton>
           ) }
+        </DetailsInfoItem>
+      ) }
+      { data.near_receipt_hash && (
+        <DetailsInfoItem
+          title="Near receipt hash"
+          hint="Near receipt hash"
+        >
+          <TxNearExplorer hash={ data.near_receipt_hash }/>
+        </DetailsInfoItem>
+      ) }
+
+      { data.near_transaction_hash && (
+        <DetailsInfoItem
+          title="Near transaction hash"
+          hint="Near transaction hash"
+        >
+          <TxNearExplorer hash={ data.near_transaction_hash } isLink/>
         </DetailsInfoItem>
       ) }
       <TxDetailsBurntFees data={ data } isLoading={ isLoading }/>
