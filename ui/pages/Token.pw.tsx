@@ -25,11 +25,12 @@ const hooksConfig = {
 // test cases which use socket cannot run in parallel since the socket server always run on the same port
 test.describe.configure({ mode: 'serial' });
 
-test.beforeEach(async({ mockApiResponse }) => {
+test.beforeEach(async({ mockApiResponse, mockTextAd }) => {
   await mockApiResponse('token', tokenInfo, { pathParams: { hash } });
   await mockApiResponse('address', contract, { pathParams: { hash } });
   await mockApiResponse('token_counters', tokenCounters, { pathParams: { hash } });
   await mockApiResponse('token_transfers', { items: [], next_page_params: null }, { pathParams: { hash } });
+  await mockTextAd();
 });
 
 test('base view', async({ render, page, createSocket }) => {

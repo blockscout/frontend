@@ -7,6 +7,10 @@ import { test, expect } from 'playwright/lib';
 
 import Tokens from './Tokens';
 
+test.beforeEach(async({ mockTextAd }) => {
+  await mockTextAd();
+});
+
 test('base view +@mobile +@dark-mode', async({ render, mockApiResponse }) => {
   const allTokens = {
     items: [

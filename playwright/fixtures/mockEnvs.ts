@@ -34,4 +34,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   hasContractAuditReports: [
     [ 'NEXT_PUBLIC_HAS_CONTRACT_AUDIT_REPORTS', 'true' ],
   ],
+  blockHiddenFields: [
+    [ 'NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS', '["burnt_fees", "total_reward", "nonce"]' ],
+  ],
 };
