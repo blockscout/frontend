@@ -5,7 +5,7 @@ import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
 
 import type { ContractMethodCallResult } from '../types';
-import type { ResultComponentProps } from './types';
+import type { FormSubmitType, ResultComponentProps } from './types';
 import type { SmartContractMethod, SmartContractMethodInput } from 'types/api/contract';
 
 import config from 'configs/app';
@@ -20,7 +20,7 @@ import type { ContractMethodFormFields } from './utils';
 
 interface Props<T extends SmartContractMethod> {
   data: T;
-  onSubmit: (data: T, args: Array<unknown>) => Promise<ContractMethodCallResult<T>>;
+  onSubmit: (data: T, args: Array<unknown>, submitType: FormSubmitType | undefined) => Promise<ContractMethodCallResult<T>>;
   resultComponent: (props: ResultComponentProps<T>) => JSX.Element | null;
   methodType: 'read' | 'write';
 }
@@ -29,11 +29,19 @@ const ContractMethodForm = <T extends SmartContractMethod>({ data, onSubmit, res
 
   const [ result, setResult ] = React.useState<ContractMethodCallResult<T>>();
   const [ isLoading, setLoading ] = React.useState(false);
+  const [ submitType, setSubmitType ] = React.useState<FormSubmitType>();
+  const submitTypeRef = React.useRef(submitType);
 
   const formApi = useForm<ContractMethodFormFields>({
     mode: 'all',
     shouldUnregister: true,
   });
+
+  const handleButtonClick = React.useCallback((event: React.MouseEvent) => {
+    const submitType = event?.currentTarget.getAttribute('data-submit-type');
+    setSubmitType(submitType as FormSubmitType);
+    submitTypeRef.current = submitType as FormSubmitType;
+  }, []);
 
   const onFormSubmit: SubmitHandler<ContractMethodFormFields> = React.useCallback(async(formData) => {
     // The API used for reading from contracts expects all values to be strings.
@@ -45,7 +53,7 @@ const ContractMethodForm = <T extends SmartContractMethod>({ data, onSubmit, res
     setResult(undefined);
     setLoading(true);
 
-    onSubmit(data, args)
+    onSubmit(data, args, submitTypeRef.current)
       .then((result) => {
         setResult(result);
       })
@@ -105,8 +113,28 @@ const ContractMethodForm = <T extends SmartContractMethod>({ data, onSubmit, res
               return <ContractMethodFieldInput key={ index } data={ input } path={ `${ index }` } isDisabled={ isLoading } level={ 0 }/>;
             }) }
           </Flex>
+          { methodType === 'write' && 'outputs' in data && Boolean(data.outputs?.length) && (
+            <Button
+              isLoading={ submitType === 'simulate' && isLoading }
+              isDisabled={ isLoading }
+              onClick={ handleButtonClick }
+              loadingText="Simulate"
+              variant="outline"
+              size="sm"
+              flexShrink={ 0 }
+              width="min-content"
+              px={ 4 }
+              mr={ 3 }
+              type="submit"
+              data-submit-type="simulate"
+            >
+              Simulate
+            </Button>
+          ) }
           <Button
-            isLoading={ isLoading }
+            isLoading={ submitType === 'call' && isLoading }
+            isDisabled={ isLoading }
+            onClick={ handleButtonClick }
             loadingText={ methodType === 'write' ? 'Write' : 'Read' }
             variant="outline"
             size="sm"
@@ -114,6 +142,7 @@ const ContractMethodForm = <T extends SmartContractMethod>({ data, onSubmit, res
             width="min-content"
             px={ 4 }
             type="submit"
+            data-submit-type="call"
           >
             { methodType === 'write' ? 'Write' : 'Read' }
           </Button>
