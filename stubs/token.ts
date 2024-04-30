@@ -1,4 +1,13 @@
-import type { TokenCounters, TokenHolder, TokenInfo, TokenInstance, TokenType } from 'types/api/token';
+import type {
+  TokenCounters,
+  TokenHolder,
+  TokenHolders,
+  TokenHoldersPagination,
+  TokenInfo,
+  TokenInstance,
+  TokenType,
+} from 'types/api/token';
+import type { TokenInstanceTransferPagination, TokenInstanceTransferResponse } from 'types/api/tokens';
 import type { TokenTransfer, TokenTransferPagination, TokenTransferResponse } from 'types/api/tokenTransfer';
 
 import { ADDRESS_PARAMS, ADDRESS_HASH } from './addressParams';
@@ -31,6 +40,12 @@ export const TOKEN_INFO_ERC_1155: TokenInfo<'ERC-1155'> = {
   type: 'ERC-1155',
 };
 
+export const TOKEN_INFO_ERC_404: TokenInfo<'ERC-404'> = {
+  ...TOKEN_INFO_ERC_20,
+  circulating_market_cap: null,
+  type: 'ERC-404',
+};
+
 export const TOKEN_COUNTERS: TokenCounters = {
   token_holders_count: '123456',
   transfers_count: '123456',
@@ -38,15 +53,39 @@ export const TOKEN_COUNTERS: TokenCounters = {
 
 export const TOKEN_HOLDER_ERC_20: TokenHolder = {
   address: ADDRESS_PARAMS,
-  token: TOKEN_INFO_ERC_20,
   value: '1021378038331138520',
 };
 
 export const TOKEN_HOLDER_ERC_1155: TokenHolder = {
   address: ADDRESS_PARAMS,
-  token: TOKEN_INFO_ERC_1155,
   token_id: '12345',
   value: '1021378038331138520',
+};
+
+export const getTokenHoldersStub = (type?: TokenType, pagination: TokenHoldersPagination | null = null): TokenHolders => {
+  switch (type) {
+    case 'ERC-721':
+      return generateListStub<'token_holders'>(TOKEN_HOLDER_ERC_20, 50, { next_page_params: pagination });
+    case 'ERC-1155':
+      return generateListStub<'token_holders'>(TOKEN_HOLDER_ERC_1155, 50, { next_page_params: pagination });
+    case 'ERC-404':
+      return generateListStub<'token_holders'>(TOKEN_HOLDER_ERC_1155, 50, { next_page_params: pagination });
+    default:
+      return generateListStub<'token_holders'>(TOKEN_HOLDER_ERC_20, 50, { next_page_params: pagination });
+  }
+};
+
+export const getTokenInstanceHoldersStub = (type?: TokenType, pagination: TokenHoldersPagination | null = null): TokenHolders => {
+  switch (type) {
+    case 'ERC-721':
+      return generateListStub<'token_instance_holders'>(TOKEN_HOLDER_ERC_20, 10, { next_page_params: pagination });
+    case 'ERC-1155':
+      return generateListStub<'token_instance_holders'>(TOKEN_HOLDER_ERC_1155, 10, { next_page_params: pagination });
+    case 'ERC-404':
+      return generateListStub<'token_instance_holders'>(TOKEN_HOLDER_ERC_1155, 10, { next_page_params: pagination });
+    default:
+      return generateListStub<'token_instance_holders'>(TOKEN_HOLDER_ERC_20, 10, { next_page_params: pagination });
+  }
 };
 
 export const TOKEN_TRANSFER_ERC_20: TokenTransfer = {
@@ -83,14 +122,39 @@ export const TOKEN_TRANSFER_ERC_1155: TokenTransfer = {
   token: TOKEN_INFO_ERC_1155,
 };
 
+export const TOKEN_TRANSFER_ERC_404: TokenTransfer = {
+  ...TOKEN_TRANSFER_ERC_20,
+  total: {
+    token_id: '35870',
+    value: '123',
+    decimals: '18',
+  },
+  token: TOKEN_INFO_ERC_404,
+};
+
 export const getTokenTransfersStub = (type?: TokenType, pagination: TokenTransferPagination | null = null): TokenTransferResponse => {
   switch (type) {
     case 'ERC-721':
       return generateListStub<'token_transfers'>(TOKEN_TRANSFER_ERC_721, 50, { next_page_params: pagination });
     case 'ERC-1155':
       return generateListStub<'token_transfers'>(TOKEN_TRANSFER_ERC_1155, 50, { next_page_params: pagination });
+    case 'ERC-404':
+      return generateListStub<'token_transfers'>(TOKEN_TRANSFER_ERC_404, 50, { next_page_params: pagination });
     default:
       return generateListStub<'token_transfers'>(TOKEN_TRANSFER_ERC_20, 50, { next_page_params: pagination });
+  }
+};
+
+export const getTokenInstanceTransfersStub = (type?: TokenType, pagination: TokenInstanceTransferPagination | null = null): TokenInstanceTransferResponse => {
+  switch (type) {
+    case 'ERC-721':
+      return generateListStub<'token_instance_transfers'>(TOKEN_TRANSFER_ERC_721, 10, { next_page_params: pagination });
+    case 'ERC-1155':
+      return generateListStub<'token_instance_transfers'>(TOKEN_TRANSFER_ERC_1155, 10, { next_page_params: pagination });
+    case 'ERC-404':
+      return generateListStub<'token_instance_transfers'>(TOKEN_TRANSFER_ERC_404, 10, { next_page_params: pagination });
+    default:
+      return generateListStub<'token_instance_transfers'>(TOKEN_TRANSFER_ERC_20, 10, { next_page_params: pagination });
   }
 };
 

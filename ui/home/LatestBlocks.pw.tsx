@@ -11,7 +11,7 @@ import * as configs from 'playwright/utils/configs';
 
 import LatestBlocks from './LatestBlocks';
 
-const STATS_API_URL = buildApiUrl('homepage_stats');
+const STATS_API_URL = buildApiUrl('stats');
 const BLOCKS_API_URL = buildApiUrl('homepage_blocks');
 
 export const test = base.extend<socketServer.SocketServerFixture>({

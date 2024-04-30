@@ -22,6 +22,10 @@ const ChainIndicatorChartContainer = ({ data, isError, isPending }: Props) => {
       return <DataFetchAlert/>;
     }
 
+    if (data[0].items.length === 0) {
+      return <span>no data</span>;
+    }
+
     return <ChainIndicatorChart data={ data }/>;
   })();
 

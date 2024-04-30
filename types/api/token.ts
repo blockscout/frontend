@@ -1,7 +1,7 @@
 import type { TokenInfoApplication } from './account';
 import type { AddressParam } from './addressParams';
 
-export type NFTTokenType = 'ERC-721' | 'ERC-1155';
+export type NFTTokenType = 'ERC-721' | 'ERC-1155' | 'ERC-404';
 export type TokenType = 'ERC-20' | NFTTokenType;
 
 export interface TokenInfo<T extends TokenType = TokenType> {
@@ -39,12 +39,9 @@ export type TokenHolderBase = {
   value: string;
 }
 
-export type TokenHolderERC20ERC721 = TokenHolderBase & {
-  token: TokenInfo<'ERC-20'> | TokenInfo<'ERC-721'>;
-}
+export type TokenHolderERC20ERC721 = TokenHolderBase
 
 export type TokenHolderERC1155 = TokenHolderBase & {
-  token: TokenInfo<'ERC-1155'>;
   token_id: string;
 }
 

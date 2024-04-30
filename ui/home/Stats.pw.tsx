@@ -10,7 +10,7 @@ import * as configs from 'playwright/utils/configs';
 
 import Stats from './Stats';
 
-const API_URL = buildApiUrl('homepage_stats');
+const API_URL = buildApiUrl('stats');
 
 test.describe('all items', () => {
   let component: Locator;
@@ -69,7 +69,7 @@ test.describe('3 items', () => {
   const extendedTest = test.extend({
     context: contextWithEnvs([
       { name: 'NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME', value: 'false' },
-      { name: 'NEXT_PUBLIC_HOMEPAGE_SHOW_GAS_TRACKER', value: 'false' },
+      { name: 'NEXT_PUBLIC_GAS_TRACKER_ENABLED', value: 'false' },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ]) as any,
   });

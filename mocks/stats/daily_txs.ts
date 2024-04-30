@@ -126,3 +126,24 @@ export const base = {
     },
   ],
 };
+
+export const partialData = {
+  chart_data: [
+    { date: '2022-11-28', tx_count: 26815 },
+    { date: '2022-11-27', tx_count: 34784 },
+    { date: '2022-11-26', tx_count: 77527 },
+    { date: '2022-11-25', tx_count: null },
+    { date: '2022-11-24', tx_count: null },
+    { date: '2022-11-23', tx_count: null },
+    { date: '2022-11-22', tx_count: 63433 },
+    { date: '2022-11-21', tx_count: null },
+  ],
+};
+
+export const noData = {
+  chart_data: [
+    { date: '2022-11-25', tx_count: null },
+    { date: '2022-11-24', tx_count: null },
+    { date: '2022-11-23', tx_count: null },
+  ],
+};

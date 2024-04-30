@@ -10,7 +10,7 @@ import type {
 import type { AddressesItem } from 'types/api/addresses';
 
 import { ADDRESS_HASH } from './addressParams';
-import { TOKEN_INFO_ERC_1155, TOKEN_INFO_ERC_20, TOKEN_INFO_ERC_721, TOKEN_INSTANCE } from './token';
+import { TOKEN_INFO_ERC_1155, TOKEN_INFO_ERC_20, TOKEN_INFO_ERC_721, TOKEN_INFO_ERC_404, TOKEN_INSTANCE } from './token';
 import { TX_HASH } from './tx';
 
 export const ADDRESS_INFO: Address = {
@@ -19,28 +19,23 @@ export const ADDRESS_INFO: Address = {
   creation_tx_hash: null,
   creator_address_hash: ADDRESS_HASH,
   exchange_rate: null,
-  has_custom_methods_read: false,
-  has_custom_methods_write: false,
   has_decompiled_code: false,
   has_logs: true,
-  has_methods_read: false,
-  has_methods_read_proxy: false,
-  has_methods_write: false,
-  has_methods_write_proxy: false,
   has_token_transfers: false,
   has_tokens: false,
   has_validated_blocks: false,
   hash: ADDRESS_HASH,
   implementation_address: null,
   implementation_name: null,
-  is_contract: false,
-  is_verified: false,
+  is_contract: true,
+  is_verified: true,
   name: 'ChainLink Token (goerli)',
   token: TOKEN_INFO_ERC_20,
   private_tags: [],
   public_tags: [],
   watchlist_names: [],
   watchlist_address_id: null,
+  ens_domain_name: null,
 };
 
 export const ADDRESS_COUNTERS: AddressCounters = {
@@ -71,6 +66,7 @@ export const TOP_ADDRESS: AddressesItem = {
   private_tags: [],
   public_tags: [ ],
   watchlist_names: [],
+  ens_domain_name: null,
 };
 
 export const ADDRESS_COIN_BALANCE: AddressCoinBalanceHistoryItem = {
@@ -98,6 +94,13 @@ export const ADDRESS_NFT_721: AddressNFT = {
 export const ADDRESS_NFT_1155: AddressNFT = {
   token_type: 'ERC-1155',
   token: TOKEN_INFO_ERC_1155,
+  value: '10',
+  ...TOKEN_INSTANCE,
+};
+
+export const ADDRESS_NFT_404: AddressNFT = {
+  token_type: 'ERC-404',
+  token: TOKEN_INFO_ERC_404,
   value: '10',
   ...TOKEN_INSTANCE,
 };

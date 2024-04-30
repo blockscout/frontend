@@ -8,6 +8,7 @@ import config from 'configs/app';
 import { ZERO_ADDRESS } from 'lib/consts';
 import { nbsp, space } from 'lib/html-entities';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
+import { currencyUnits } from 'lib/units';
 import Tag from 'ui/shared/chakra/Tag';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
@@ -59,12 +60,12 @@ export function getStateElements(data: TxStateChange, isLoading?: boolean) {
       return {
         before: (
           <Skeleton isLoaded={ !isLoading } wordBreak="break-all" display="inline-block">
-            { beforeBn.toFormat() } { config.chain.currency.symbol }
+            { beforeBn.toFormat() } { currencyUnits.ether }
           </Skeleton>
         ),
         after: (
           <Skeleton isLoaded={ !isLoading } wordBreak="break-all" display="inline-block">
-            { afterBn.toFormat() } { config.chain.currency.symbol }
+            { afterBn.toFormat() } { currencyUnits.ether }
           </Skeleton>
         ),
         change: (

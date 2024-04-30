@@ -11,6 +11,7 @@ import config from 'configs/app';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import { WEI } from 'lib/consts';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
+import { currencyUnits } from 'lib/units';
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
@@ -27,7 +28,7 @@ interface Props {
   enableTimeIncrement?: boolean;
 }
 
-const isRollup = config.features.optimisticRollup.isEnabled || config.features.zkEvmRollup.isEnabled;
+const isRollup = config.features.rollup.isEnabled;
 
 const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
   const totalReward = getBlockTotalReward(data);
@@ -43,7 +44,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           <BlockEntity
             isLoading={ isLoading }
             number={ data.height }
-            hash={ data.type === 'reorg' ? data.hash : undefined }
+            hash={ data.type !== 'block' ? data.hash : undefined }
             noIcon
             fontWeight={ 600 }
           />
@@ -62,6 +63,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           <AddressEntity
             address={ data.miner }
             isLoading={ isLoading }
+            truncation="constant"
           />
         </Flex>
       ) }
@@ -94,7 +96,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
       </Box>
       { !isRollup && !config.UI.views.block.hiddenFields?.total_reward && (
         <Flex columnGap={ 2 }>
-          <Text fontWeight={ 500 }>Reward { config.chain.currency.symbol }</Text>
+          <Text fontWeight={ 500 }>Reward { currencyUnits.ether }</Text>
           <Skeleton isLoaded={ !isLoading } display="inline-block" color="text_secondary">
             <span>{ totalReward.toFixed() }</span>
           </Skeleton>

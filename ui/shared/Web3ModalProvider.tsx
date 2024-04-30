@@ -1,83 +1,38 @@
 import { useColorMode } from '@chakra-ui/react';
-import { jsonRpcProvider } from '@wagmi/core/providers/jsonRpc';
-import { createWeb3Modal, useWeb3ModalTheme, defaultWagmiConfig } from '@web3modal/wagmi/react';
+import { createWeb3Modal, useWeb3ModalTheme } from '@web3modal/wagmi/react';
 import React from 'react';
-import type { Chain } from 'wagmi';
-import { configureChains, WagmiConfig } from 'wagmi';
+import { WagmiProvider } from 'wagmi';
 
 import config from 'configs/app';
+import wagmiConfig from 'lib/web3/wagmiConfig';
 import colors from 'theme/foundations/colors';
 import { BODY_TYPEFACE } from 'theme/foundations/typography';
 import zIndices from 'theme/foundations/zIndices';
 
 const feature = config.features.blockchainInteraction;
 
-const getConfig = () => {
+const init = () => {
   try {
-    if (!feature.isEnabled) {
-      throw new Error();
+    if (!wagmiConfig || !feature.isEnabled) {
+      return;
     }
-
-    const currentChain: Chain = {
-      id: Number(config.chain.id),
-      name: config.chain.name || '',
-      network: config.chain.name || '',
-      nativeCurrency: {
-        decimals: config.chain.currency.decimals,
-        name: config.chain.currency.name || '',
-        symbol: config.chain.currency.symbol || '',
-      },
-      rpcUrls: {
-        'public': {
-          http: [ config.chain.rpcUrl || '' ],
-        },
-        'default': {
-          http: [ config.chain.rpcUrl || '' ],
-        },
-      },
-      blockExplorers: {
-        'default': {
-          name: 'Blockscout',
-          url: config.app.baseUrl,
-        },
-      },
-    };
-
-    const { chains } = configureChains(
-      [ currentChain ],
-      [
-        jsonRpcProvider({
-          rpc: () => ({
-            http: config.chain.rpcUrl || '',
-          }),
-        }),
-      ],
-    );
-
-    const wagmiConfig = defaultWagmiConfig({
-      chains,
-      projectId: feature.walletConnect.projectId,
-    });
 
     createWeb3Modal({
       wagmiConfig,
       projectId: feature.walletConnect.projectId,
-      chains,
       themeVariables: {
         '--w3m-font-family': `${ BODY_TYPEFACE }, sans-serif`,
         '--w3m-accent': colors.blue[600],
         '--w3m-border-radius-master': '2px',
         '--w3m-z-index': zIndices.modal,
       },
+      featuredWalletIds: [],
+      allowUnsupportedChain: true,
     });
-
-    return { wagmiConfig };
-  } catch (error) {
-    return { };
-  }
+  } catch (error) {}
 };
 
-const { wagmiConfig } = getConfig();
+init();
 
 interface Props {
   children: React.ReactNode;
@@ -102,9 +57,9 @@ const Provider = ({ children, fallback }: Props) => {
   }
 
   return (
-    <WagmiConfig config={ wagmiConfig }>
+    <WagmiProvider config={ wagmiConfig }>
       { children }
-    </WagmiConfig>
+    </WagmiProvider>
   );
 };
 

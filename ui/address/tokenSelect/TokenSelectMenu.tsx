@@ -16,12 +16,13 @@ interface Props {
   searchTerm: string;
   erc20sort: Sort;
   erc1155sort: Sort;
+  erc404sort: Sort;
   filteredData: FormattedData;
   onInputChange: (event: ChangeEvent<HTMLInputElement>) => void;
   onSortClick: (event: React.SyntheticEvent) => void;
 }
 
-const TokenSelectMenu = ({ erc20sort, erc1155sort, filteredData, onInputChange, onSortClick, searchTerm }: Props) => {
+const TokenSelectMenu = ({ erc20sort, erc1155sort, erc404sort, filteredData, onInputChange, onSortClick, searchTerm }: Props) => {
   const searchIconColor = useColorModeValue('blackAlpha.600', 'whiteAlpha.600');
   const inputBorderColor = useColorModeValue('blackAlpha.100', 'whiteAlpha.200');
 
@@ -43,15 +44,17 @@ const TokenSelectMenu = ({ erc20sort, erc1155sort, filteredData, onInputChange, 
       </InputGroup>
       <Flex flexDir="column" rowGap={ 6 }>
         { Object.entries(filteredData).sort(sortTokenGroups).map(([ tokenType, tokenInfo ]) => {
-
           if (tokenInfo.items.length === 0) {
             return null;
           }
 
           const type = tokenType as TokenType;
-          const arrowTransform = (type === 'ERC-1155' && erc1155sort === 'desc') || (type === 'ERC-20' && erc20sort === 'desc') ?
-            'rotate(90deg)' :
-            'rotate(-90deg)';
+          const arrowTransform =
+            (type === 'ERC-1155' && erc1155sort === 'desc') ||
+            (type === 'ERC-404' && erc404sort === 'desc') ||
+            (type === 'ERC-20' && erc20sort === 'desc') ?
+              'rotate(90deg)' :
+              'rotate(-90deg)';
           const sortDirection: Sort = (() => {
             switch (type) {
               case 'ERC-1155':
@@ -62,7 +65,10 @@ const TokenSelectMenu = ({ erc20sort, erc1155sort, filteredData, onInputChange, 
                 return 'desc';
             }
           })();
-          const hasSort = type === 'ERC-1155' || (type === 'ERC-20' && tokenInfo.items.some(({ usd }) => usd));
+          const hasSort =
+            (type === 'ERC-404' && tokenInfo.items.some(item => item.value)) ||
+            type === 'ERC-1155' ||
+            (type === 'ERC-20' && tokenInfo.items.some(({ usd }) => usd));
           const numPrefix = tokenInfo.isOverflow ? '>' : '';
 
           return (

@@ -8,13 +8,13 @@ import config from 'configs/app';
 
 import * as TxEntity from './TxEntity';
 
-const feature = config.features.optimisticRollup.isEnabled ? config.features.optimisticRollup : config.features.zkEvmRollup;
+const rollupFeature = config.features.rollup;
 
 const TxEntityL1 = (props: TxEntity.EntityProps) => {
   const partsProps = _omit(props, [ 'className', 'onClick' ]);
   const linkProps = _omit(props, [ 'className' ]);
 
-  if (!feature.isEnabled) {
+  if (!rollupFeature.isEnabled) {
     return null;
   }
 
@@ -24,7 +24,7 @@ const TxEntityL1 = (props: TxEntity.EntityProps) => {
       <TxEntity.Link
         { ...linkProps }
         isExternal
-        href={ feature.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: props.hash } }) }
+        href={ rollupFeature.L1BaseUrl + route({ pathname: '/tx/[hash]', query: { hash: props.hash } }) }
       >
         <TxEntity.Content { ...partsProps }/>
       </TxEntity.Link>

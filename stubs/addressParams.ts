@@ -11,4 +11,5 @@ export const ADDRESS_PARAMS: AddressParam = {
   private_tags: [],
   public_tags: [],
   watchlist_names: [],
+  ens_domain_name: null,
 };

@@ -1,30 +1,17 @@
 import { Box } from '@chakra-ui/react';
-import { test as base, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
-import * as textAdMock from 'mocks/ad/textAd';
 import * as tokens from 'mocks/tokens/tokenInfo';
-import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
-import TestApp from 'playwright/TestApp';
-import buildApiUrl from 'playwright/utils/buildApiUrl';
-import * as configs from 'playwright/utils/configs';
+import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
+import { test, expect } from 'playwright/lib';
 
 import Tokens from './Tokens';
 
-base.beforeEach(async({ page }) => {
-  await page.route('https://request-global.czilladx.com/serve/native.php?z=19260bf627546ab7242', (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(textAdMock.duck),
-  }));
-  await page.route(textAdMock.duck.ad.thumbnail, (route) => {
-    return route.fulfill({
-      status: 200,
-      path: './playwright/mocks/image_s.jpg',
-    });
-  });
+test.beforeEach(async({ mockTextAd }) => {
+  await mockTextAd();
 });
 
-base('base view +@mobile +@dark-mode', async({ mount, page }) => {
+test('base view +@mobile +@dark-mode', async({ render, mockApiResponse }) => {
   const allTokens = {
     items: [
       tokens.tokenInfoERC20a, tokens.tokenInfoERC20b, tokens.tokenInfoERC20c, tokens.tokenInfoERC20d,
@@ -35,6 +22,7 @@ base('base view +@mobile +@dark-mode', async({ mount, page }) => {
       holder_count: 1,
       items_count: 1,
       name: 'a',
+      market_cap: '0',
     },
   };
   const filteredTokens = {
@@ -44,40 +32,25 @@ base('base view +@mobile +@dark-mode', async({ mount, page }) => {
     next_page_params: null,
   };
 
-  const ALL_TOKENS_API_URL = buildApiUrl('tokens');
-  const FILTERED_TOKENS_API_URL = buildApiUrl('tokens') + '?q=foo';
+  await mockApiResponse('tokens', allTokens);
+  await mockApiResponse('tokens', filteredTokens, { queryParams: { q: 'foo' } });
 
-  await page.route(ALL_TOKENS_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(allTokens),
-  }));
-
-  await page.route(FILTERED_TOKENS_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(filteredTokens),
-  }));
-
-  const component = await mount(
-    <TestApp>
+  const component = await render(
+    <div>
       <Box h={{ base: '134px', lg: 6 }}/>
       <Tokens/>
-    </TestApp>,
+    </div>,
   );
 
   await expect(component).toHaveScreenshot();
 
   await component.getByRole('textbox', { name: 'Token name or symbol' }).focus();
-  await component.getByRole('textbox', { name: 'Token name or symbol' }).type('foo');
+  await component.getByRole('textbox', { name: 'Token name or symbol' }).fill('foo');
 
   await expect(component).toHaveScreenshot();
 });
 
-base.describe('bridged tokens', async() => {
-  const test = base.extend({
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    context: contextWithEnvs(configs.featureEnvs.bridgedTokens) as any,
-  });
-
+test.describe('bridged tokens', async() => {
   const bridgedTokens = {
     items: [
       tokens.bridgedTokenA,
@@ -88,6 +61,7 @@ base.describe('bridged tokens', async() => {
       holder_count: 1,
       items_count: 1,
       name: 'a',
+      market_cap: null,
     },
   };
   const bridgedFilteredTokens = {
@@ -101,26 +75,17 @@ base.describe('bridged tokens', async() => {
       query: { tab: 'bridged' },
     },
   };
-  const BRIDGED_TOKENS_API_URL = buildApiUrl('tokens_bridged');
 
-  test.beforeEach(async({ page }) => {
-    await page.route(BRIDGED_TOKENS_API_URL, (route) => route.fulfill({
-      status: 200,
-      body: JSON.stringify(bridgedTokens),
-    }));
-  });
+  test('base view', async({ render, page, mockApiResponse, mockEnvs }) => {
+    await mockEnvs(ENVS_MAP.bridgedTokens);
+    await mockApiResponse('tokens_bridged', bridgedTokens);
+    await mockApiResponse('tokens_bridged', bridgedFilteredTokens, { queryParams: { chain_ids: '99' } });
 
-  test('base view', async({ mount, page }) => {
-    await page.route(BRIDGED_TOKENS_API_URL + '?chain_ids=99', (route) => route.fulfill({
-      status: 200,
-      body: JSON.stringify(bridgedFilteredTokens),
-    }));
-
-    const component = await mount(
-      <TestApp>
+    const component = await render(
+      <div>
         <Box h={{ base: '134px', lg: 6 }}/>
         <Tokens/>
-      </TestApp>,
+      </div>,
       { hooksConfig },
     );
 

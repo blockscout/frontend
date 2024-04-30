@@ -1,5 +1,5 @@
 import type { StyleProps, ThemingProps } from '@chakra-ui/react';
-import { Box, Tab, TabList, useColorModeValue } from '@chakra-ui/react';
+import { Box, Skeleton, Tab, TabList, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import { useScrollDirection } from 'lib/contexts/scrollDirection';
@@ -24,6 +24,7 @@ interface Props extends TabsProps {
   activeTabIndex: number;
   onItemClick: (index: number) => void;
   themeProps: ThemingProps<'Tabs'>;
+  isLoading?: boolean;
 }
 
 const AdaptiveTabsList = (props: Props) => {
@@ -79,6 +80,10 @@ const AdaptiveTabsList = (props: Props) => {
     >
       { tabsList.map((tab, index) => {
         if (!tab.id) {
+          if (props.isLoading) {
+            return null;
+          }
+
           return (
             <TabsMenu
               key="menu"
@@ -113,8 +118,10 @@ const AdaptiveTabsList = (props: Props) => {
               },
             }}
           >
-            { typeof tab.title === 'function' ? tab.title() : tab.title }
-            <TabCounter count={ tab.count }/>
+            <Skeleton isLoaded={ !props.isLoading }>
+              { typeof tab.title === 'function' ? tab.title() : tab.title }
+              <TabCounter count={ tab.count }/>
+            </Skeleton>
           </Tab>
         );
       }) }

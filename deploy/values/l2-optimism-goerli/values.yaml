@@ -179,9 +179,12 @@ frontend:
     NEXT_PUBLIC_NETWORK_LOGO: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-logos/base.svg
     NEXT_PUBLIC_NETWORK_ICON: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/network-icons/base.svg
     NEXT_PUBLIC_FEATURED_NETWORKS: https://raw.githubusercontent.com/blockscout/frontend-configs/main/configs/featured-networks/base-goerli.json
+    NEXT_PUBLIC_MARKETPLACE_ENABLED: true
     NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM: https://airtable.com/shrqUAcjgGJ4jU88C
+    NEXT_PUBLIC_MARKETPLACE_SUGGEST_IDEAS_FORM: https://airtable.com/appiy5yijZpMMSKjT/pag3t82DUCyhGRZZO/form
     NEXT_PUBLIC_LOGOUT_URL: https://blockscoutcom.us.auth0.com/v2/logout
     NEXT_PUBLIC_MARKETPLACE_CONFIG_URL: https://raw.githubusercontent.com/blockscout/frontend-configs/dev/configs/marketplace/base-goerli.json
+    NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL: https://raw.githubusercontent.com/blockscout/frontend-configs/dev/configs/marketplace-categories/default.json
     NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND: "linear-gradient(136.9deg,rgb(107 94 236) 1.5%,rgb(0 82 255) 56.84%,rgb(82 62 231) 98.54%)"
     NEXT_PUBLIC_NETWORK_RPC_URL: https://goerli.optimism.io
     NEXT_PUBLIC_WEB3_WALLETS: "['coinbase']"
@@ -190,10 +193,11 @@ frontend:
     NEXT_PUBLIC_VISUALIZE_API_HOST: https://visualizer-test.k8s-dev.blockscout.com
     NEXT_PUBLIC_CONTRACT_INFO_API_HOST: https://contracts-info-test.k8s-dev.blockscout.com
     NEXT_PUBLIC_ADMIN_SERVICE_API_HOST: https://admin-rs-test.k8s-dev.blockscout.com
-    NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK: "true"
-    NEXT_PUBLIC_L1_BASE_URL: https://eth-goerli.blockscout.com/
-    NEXT_PUBLIC_OPTIMISTIC_L2_WITHDRAWAL_URL: https://app.optimism.io/bridge/withdraw
+    NEXT_PUBLIC_ROLLUP_TYPE: optimistic
+    NEXT_PUBLIC_ROLLUP_L1_BASE_URL: https://eth-goerli.blockscout.com/
+    NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL: https://app.optimism.io/bridge/withdraw
     NEXT_PUBLIC_GRAPHIQL_TRANSACTION: 0x4a0ed8ddf751a7cb5297f827699117b0f6d21a0b2907594d300dc9fed75c7e62
+    NEXT_PUBLIC_SWAP_BUTTON_URL: sushiswap
   envFromSecret:
     NEXT_PUBLIC_AUTH0_CLIENT_ID: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_AUTH0_CLIENT_ID
     NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: ref+vault://deployment-values/blockscout/dev/front-main?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID

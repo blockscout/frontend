@@ -21,6 +21,7 @@ const addresses: AddressesResponse = {
       ...addressMocks.token,
       tx_count: '109123890123',
       coin_balance: '22222345678901234567890000',
+      ens_domain_name: null,
     }, {
       ...addressMocks.withoutName,
       tx_count: '11',

@@ -32,7 +32,7 @@ jobs:
         steps:
             -   name: Determine if it is the initial version of the pre-release
                 id: is_initial
-                uses: actions/github-script@v6
+                uses: actions/github-script@v7
                 env:
                     TAG: ${{ github.ref_name }}
                 with:

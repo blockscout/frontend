@@ -49,6 +49,13 @@ export default function getOutlinedFieldStyles(props: StyleFunctionProps) {
     },
     // not filled input
     ':placeholder-shown:not(:focus-visible):not(:hover):not([aria-invalid=true])': { borderColor: borderColor || mode('gray.100', 'gray.700')(props) },
+
+    // not filled input with type="date"
+    ':not(:placeholder-shown)[value=""]:not(:focus-visible):not(:hover):not([aria-invalid=true])': {
+      borderColor: borderColor || mode('gray.100', 'gray.700')(props),
+      color: 'gray.500',
+    },
+
     ':-webkit-autofill': { transition: 'background-color 5000s ease-in-out 0s' },
     ':-webkit-autofill:hover': { transition: 'background-color 5000s ease-in-out 0s' },
     ':-webkit-autofill:focus': { transition: 'background-color 5000s ease-in-out 0s' },

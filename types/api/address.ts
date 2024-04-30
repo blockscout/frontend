@@ -12,16 +12,11 @@ export interface Address extends UserTags {
   creator_address_hash: string | null;
   creation_tx_hash: string | null;
   exchange_rate: string | null;
+  ens_domain_name: string | null;
   // TODO: if we are happy with tabs-counters method, should we delete has_something fields?
   has_beacon_chain_withdrawals?: boolean;
-  has_custom_methods_read: boolean;
-  has_custom_methods_write: boolean;
   has_decompiled_code: boolean;
   has_logs: boolean;
-  has_methods_read: boolean;
-  has_methods_read_proxy: boolean;
-  has_methods_write: boolean;
-  has_methods_write_proxy: boolean;
   has_token_transfers: boolean;
   has_tokens: boolean;
   has_validated_blocks: boolean;
@@ -38,7 +33,7 @@ export interface Address extends UserTags {
 export interface AddressCounters {
   transactions_count: string;
   token_transfers_count: string;
-  gas_usage_count: string;
+  gas_usage_count: string | null;
   validations_count: string | null;
 }
 
@@ -147,10 +142,19 @@ export interface AddressCoinBalanceHistoryResponse {
   } | null;
 }
 
-export type AddressCoinBalanceHistoryChart = Array<{
+// remove after api release
+export type AddressCoinBalanceHistoryChartOld = Array<{
   date: string;
   value: string;
 }>
+
+export type AddressCoinBalanceHistoryChart = {
+  items: Array<{
+    date: string;
+    value: string;
+  }>;
+  days: number;
+};
 
 export interface AddressBlocksValidatedResponse {
   items: Array<Block>;

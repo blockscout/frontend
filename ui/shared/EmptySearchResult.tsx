@@ -1,10 +1,13 @@
-import { Box, Heading, Text } from '@chakra-ui/react';
+import { Box, Heading, Text, Icon } from '@chakra-ui/react';
 import React from 'react';
 
-import IconSvg from 'ui/shared/IconSvg';
+// This icon doesn't work properly when it is in the sprite
+// Probably because of radial gradient
+// eslint-disable-next-line no-restricted-imports
+import emptySearchResultIcon from 'icons/empty_search_result.svg';
 
 interface Props {
-  text: string;
+  text: string | JSX.Element;
 }
 
 const EmptySearchResult = ({ text }: Props) => {
@@ -14,11 +17,7 @@ const EmptySearchResult = ({ text }: Props) => {
       flexDirection="column"
       alignItems="center"
     >
-      <IconSvg
-        name="empty_search_result"
-        boxSize={ 60 }
-        display="block"
-      />
+      <Icon as={ emptySearchResultIcon } boxSize={ 60 }/>
 
       <Heading
         as="h3"

@@ -4,7 +4,7 @@ import React from 'react';
 import type { VerifiedContract } from 'types/api/contracts';
 import type { VerifiedContractsSorting, VerifiedContractsSortingField, VerifiedContractsSortingValue } from 'types/api/verifiedContracts';
 
-import config from 'configs/app';
+import { currencyUnits } from 'lib/units';
 import IconSvg from 'ui/shared/IconSvg';
 import getNextSortValue from 'ui/shared/sort/getNextSortValue';
 import { default as Thead } from 'ui/shared/TheadSticky';
@@ -35,7 +35,7 @@ const VerifiedContractsTable = ({ data, sort, setSorting, isLoading }: Props) =>
           <Th width="130px" isNumeric>
             <Link display="flex" alignItems="center" justifyContent="flex-end" onClick={ isLoading ? undefined : onSortToggle('balance') } columnGap={ 1 }>
               { sort?.includes('balance') && <IconSvg name="arrows/east" boxSize={ 4 } transform={ sortIconTransform }/> }
-                Balance { config.chain.currency.symbol }
+                Balance { currencyUnits.ether }
             </Link>
           </Th>
           <Th width="130px" isNumeric>
@@ -47,7 +47,7 @@ const VerifiedContractsTable = ({ data, sort, setSorting, isLoading }: Props) =>
           <Th width="50%">Compiler / version</Th>
           <Th width="80px">Settings</Th>
           <Th width="150px">Verified</Th>
-          { /* <Th width="120px">Market cap</Th> */ }
+          <Th width="130px">License</Th>
         </Tr>
       </Thead>
       <Tbody>

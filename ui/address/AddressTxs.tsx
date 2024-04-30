@@ -10,6 +10,7 @@ import type { Transaction, TransactionsSortingField, TransactionsSortingValue, T
 import { getResourceKey } from 'lib/api/useApiQuery';
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMounted from 'lib/hooks/useIsMounted';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
@@ -20,6 +21,7 @@ import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
 import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';
+import { sortTxsFromSocket } from 'ui/txs/sortTxs';
 import TxsWithAPISorting from 'ui/txs/TxsWithAPISorting';
 import { SORT_OPTIONS } from 'ui/txs/useTxsSort';
 
@@ -46,13 +48,15 @@ const matchFilter = (filterValue: AddressFromToFilter, transaction: Transaction,
 
 type Props = {
   scrollRef?: React.RefObject<HTMLDivElement>;
+  shouldRender?: boolean;
   // for tests only
   overloadCount?: number;
 }
 
-const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Props) => {
+const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT, shouldRender = true }: Props) => {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const isMounted = useIsMounted();
 
   const [ socketAlert, setSocketAlert ] = React.useState('');
   const [ newItemsCount, setNewItemsCount ] = React.useState(0);
@@ -85,7 +89,7 @@ const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Props) => {
     addressTxsQuery.onFilterChange({ filter: newVal });
   }, [ addressTxsQuery ]);
 
-  const handleNewSocketMessage: SocketMessage.AddressTxs['handler'] = (payload) => {
+  const handleNewSocketMessage: SocketMessage.AddressTxs['handler'] = React.useCallback((payload) => {
     setSocketAlert('');
 
     queryClient.setQueryData(
@@ -123,10 +127,10 @@ const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Props) => {
           items: [
             ...newItems,
             ...prevData.items,
-          ],
+          ].sort(sortTxsFromSocket(sort)),
         };
       });
-  };
+  }, [ currentAddress, filterValue, overloadCount, queryClient, sort ]);
 
   const handleSocketClose = React.useCallback(() => {
     setSocketAlert('Connection is lost. Please refresh the page to load new transactions.');
@@ -154,6 +158,10 @@ const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Props) => {
     event: 'pending_transaction',
     handler: handleNewSocketMessage,
   });
+
+  if (!isMounted || !shouldRender) {
+    return null;
+  }
 
   const filter = (
     <AddressTxsFilter

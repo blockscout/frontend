@@ -1,4 +1,5 @@
 import {
+  chakra,
   Modal,
   ModalContent,
   ModalCloseButton,
@@ -28,9 +29,10 @@ type Props =
   }) & {
     isMobile?: boolean;
     isLoading?: boolean;
+    className?: string;
   }
 
-const TxAdditionalInfo = ({ hash, tx, isMobile, isLoading }: Props) => {
+const TxAdditionalInfo = ({ hash, tx, isMobile, isLoading, className }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const content = hash !== undefined ? <TxAdditionalInfoContainer hash={ hash }/> : <TxAdditionalInfoContent tx={ tx }/>;
@@ -38,7 +40,7 @@ const TxAdditionalInfo = ({ hash, tx, isMobile, isLoading }: Props) => {
   if (isMobile) {
     return (
       <>
-        <AdditionalInfoButton onClick={ onOpen } isLoading={ isLoading }/>
+        <AdditionalInfoButton onClick={ onOpen } isLoading={ isLoading } className={ className }/>
         <Modal isOpen={ isOpen } onClose={ onClose } size="full">
           <ModalContent paddingTop={ 4 }>
             <ModalCloseButton/>
@@ -53,10 +55,10 @@ const TxAdditionalInfo = ({ hash, tx, isMobile, isLoading }: Props) => {
       { ({ isOpen }) => (
         <>
           <PopoverTrigger>
-            <AdditionalInfoButton isOpen={ isOpen } isLoading={ isLoading }/>
+            <AdditionalInfoButton isOpen={ isOpen } isLoading={ isLoading } className={ className }/>
           </PopoverTrigger>
           <PopoverContent border="1px solid" borderColor="divider">
-            <PopoverBody>
+            <PopoverBody fontWeight={ 400 } fontSize="sm">
               { content }
             </PopoverBody>
           </PopoverContent>
@@ -66,4 +68,4 @@ const TxAdditionalInfo = ({ hash, tx, isMobile, isLoading }: Props) => {
   );
 };
 
-export default React.memo(TxAdditionalInfo);
+export default React.memo(chakra(TxAdditionalInfo));

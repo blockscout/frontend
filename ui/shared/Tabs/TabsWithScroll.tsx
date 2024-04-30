@@ -11,6 +11,8 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import type { TabItem } from './types';
 
+import isBrowser from 'lib/isBrowser';
+
 import AdaptiveTabsList from './AdaptiveTabsList';
 import { menuButton } from './utils';
 
@@ -23,6 +25,7 @@ export interface Props extends ThemingProps<'Tabs'> {
   stickyEnabled?: boolean;
   onTabChange?: (index: number) => void;
   defaultTabIndex?: number;
+  isLoading?: boolean;
   className?: string;
 }
 
@@ -35,11 +38,12 @@ const TabsWithScroll = ({
   stickyEnabled,
   onTabChange,
   defaultTabIndex,
+  isLoading,
   className,
   ...themeProps
 }: Props) => {
   const [ activeTabIndex, setActiveTabIndex ] = useState<number>(defaultTabIndex || 0);
-  const [ screenWidth, setScreenWidth ] = React.useState(0);
+  const [ screenWidth, setScreenWidth ] = React.useState(isBrowser() ? window.innerWidth : 0);
 
   const tabsRef = useRef<HTMLDivElement>(null);
 
@@ -87,10 +91,12 @@ const TabsWithScroll = ({
       lazyBehavior={ lazyBehavior }
     >
       <AdaptiveTabsList
-        // the easiest and most readable way to achieve correct tab's cut recalculation when screen is resized
+        // the easiest and most readable way to achieve correct tab's cut recalculation when
+        //    - screen is resized or
+        //    - tabs list is changed when API data is loaded
         // is to do full re-render of the tabs list
-        // so we use screenWidth as a key for the TabsList component
-        key={ screenWidth }
+        // so we use screenWidth + tabIds as a key for the TabsList component
+        key={ screenWidth + '_' + tabsList.map((tab) => tab.id).join(':') }
         tabs={ tabs }
         tabListProps={ tabListProps }
         rightSlot={ rightSlot }
@@ -99,6 +105,7 @@ const TabsWithScroll = ({
         activeTabIndex={ activeTabIndex }
         onItemClick={ handleTabChange }
         themeProps={ themeProps }
+        isLoading={ isLoading }
       />
       <TabPanels>
         { tabsList.map((tab) => <TabPanel padding={ 0 } key={ tab.id }>{ tab.component }</TabPanel>) }

@@ -1,7 +1,7 @@
 import { test as base, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
-import { txnBatchesData } from 'mocks/zkevmL2txnBatches/zkevmL2txnBatches';
+import { txnBatchesData } from 'mocks/zkEvm/txnBatches';
 import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
 import TestApp from 'playwright/TestApp';
 import buildApiUrl from 'playwright/utils/buildApiUrl';
@@ -11,7 +11,7 @@ import ZkEvmL2TxnBatches from './ZkEvmL2TxnBatches';
 
 const test = base.extend({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  context: contextWithEnvs(configs.featureEnvs.zkRollup) as any,
+  context: contextWithEnvs(configs.featureEnvs.zkEvmRollup) as any,
 });
 
 const BATCHES_API_URL = buildApiUrl('zkevm_l2_txn_batches');

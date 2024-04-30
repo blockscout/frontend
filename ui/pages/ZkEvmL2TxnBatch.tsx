@@ -5,6 +5,8 @@ import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
+import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
+import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { TX_ZKEVM_L2 } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
@@ -14,8 +16,8 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
+import ZkEvmL2TxnBatchDetails from 'ui/txnBatches/zkEvmL2/ZkEvmL2TxnBatchDetails';
 import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
-import ZkEvmL2TxnBatchDetails from 'ui/zkEvmL2TxnBatches/ZkEvmL2TxnBatchDetails';
 
 const ZkEvmL2TxnBatch = () => {
   const router = useRouter();
@@ -41,13 +43,8 @@ const ZkEvmL2TxnBatch = () => {
     },
   });
 
-  if (!number) {
-    throw new Error('Tx batch not found', { cause: { status: 404 } });
-  }
-
-  if (batchQuery.isError) {
-    throw new Error(undefined, { cause: batchQuery.error });
-  }
+  throwOnAbsentParamError(number);
+  throwOnResourceLoadError(batchQuery);
 
   const tabs: Array<RoutedTab> = React.useMemo(() => ([
     { id: 'index', title: 'Details', component: <ZkEvmL2TxnBatchDetails query={ batchQuery }/> },

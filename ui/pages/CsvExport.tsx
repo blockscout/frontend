@@ -8,12 +8,14 @@ import type { CsvExportParams } from 'types/client/address';
 import type { ResourceName } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
+import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
+import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
 import CsvExportForm from 'ui/csvExport/CsvExportForm';
 import ContentLoader from 'ui/shared/ContentLoader';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 interface ExportTypeEntity {
@@ -52,6 +54,11 @@ const EXPORT_TYPES: Record<CsvExportParams['type'], ExportTypeEntity> = {
     fileNameTemplate: 'logs',
     filterType: 'topic',
   },
+  holders: {
+    text: 'holders',
+    resource: 'csv_export_token_holders',
+    fileNameTemplate: 'holders',
+  },
 };
 
 const isCorrectExportType = (type: string): type is CsvExportParams['type'] => Object.keys(EXPORT_TYPES).includes(type);
@@ -62,7 +69,8 @@ const CsvExport = () => {
   const isMobile = useIsMobile();
 
   const addressHash = router.query.address?.toString() || '';
-  const exportType = router.query.type?.toString() || '';
+  const exportTypeParam = router.query.type?.toString() || '';
+  const exportType = isCorrectExportType(exportTypeParam) ? EXPORT_TYPES[exportTypeParam] : null;
   const filterTypeFromQuery = router.query.filterType?.toString() || null;
   const filterValueFromQuery = router.query.filterValue?.toString();
 
@@ -72,6 +80,15 @@ const CsvExport = () => {
       enabled: Boolean(addressHash),
     },
   });
+
+  const tokenQuery = useApiQuery('token', {
+    pathParams: { hash: addressHash },
+    queryOptions: {
+      enabled: Boolean(addressHash) && exportTypeParam === 'holders',
+    },
+  });
+
+  const isLoading = addressQuery.isPending || (exportTypeParam === 'holders' && tokenQuery.isPending);
 
   const backLink = React.useMemo(() => {
     const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/address');
@@ -86,17 +103,20 @@ const CsvExport = () => {
     };
   }, [ appProps.referrer ]);
 
-  if (!isCorrectExportType(exportType) || !addressHash || addressQuery.error?.status === 400) {
-    throw Error('Not found', { cause: { status: 404 } });
+  throwOnAbsentParamError(addressHash);
+  throwOnAbsentParamError(exportType);
+
+  if (!exportType) {
+    return null;
   }
 
-  const filterType = filterTypeFromQuery === EXPORT_TYPES[exportType].filterType ? filterTypeFromQuery : null;
+  const filterType = filterTypeFromQuery === exportType.filterType ? filterTypeFromQuery : null;
   const filterValue = (() => {
     if (!filterType || !filterValueFromQuery) {
       return null;
     }
 
-    if (EXPORT_TYPES[exportType].filterValues && !EXPORT_TYPES[exportType].filterValues?.includes(filterValueFromQuery)) {
+    if (exportType.filterValues && !exportType.filterValues?.includes(filterValueFromQuery)) {
       return null;
     }
 
@@ -104,22 +124,59 @@ const CsvExport = () => {
   })();
 
   const content = (() => {
-    if (addressQuery.isError) {
-      return <DataFetchAlert/>;
-    }
+    throwOnResourceLoadError(addressQuery);
 
-    if (addressQuery.isPending) {
+    if (isLoading) {
       return <ContentLoader/>;
     }
 
     return (
       <CsvExportForm
         hash={ addressHash }
-        resource={ EXPORT_TYPES[exportType].resource }
+        resource={ exportType.resource }
+        exportType={ isCorrectExportType(exportTypeParam) ? exportTypeParam : undefined }
         filterType={ filterType }
         filterValue={ filterValue }
-        fileNameTemplate={ EXPORT_TYPES[exportType].fileNameTemplate }
+        fileNameTemplate={ exportType.fileNameTemplate }
       />
+    );
+  })();
+
+  const description = (() => {
+    if (isLoading) {
+      return null;
+    }
+
+    if (exportTypeParam === 'holders') {
+      return (
+        <Flex mb={ 10 } whiteSpace="pre-wrap" flexWrap="wrap">
+          <span>Export { exportType.text } for token </span>
+          <TokenEntity
+            token={ tokenQuery.data }
+            truncation={ isMobile ? 'constant' : 'dynamic' }
+            w="min-content"
+            noCopy
+            noSymbol
+          />
+          <span> to CSV file. </span>
+          <span>Exports are limited to the last 10K { exportType.text }.</span>
+        </Flex>
+      );
+    }
+
+    return (
+      <Flex mb={ 10 } whiteSpace="pre-wrap" flexWrap="wrap">
+        <span>Export { exportType.text } for address </span>
+        <AddressEntity
+          address={ addressQuery.data }
+          truncation={ isMobile ? 'constant' : 'dynamic' }
+          noCopy
+        />
+        <span>{ nbsp }</span>
+        { filterType && filterValue && <span>with applied filter by { filterType } ({ filterValue }) </span> }
+        <span>to CSV file. </span>
+        <span>Exports are limited to the last 10K { exportType.text }.</span>
+      </Flex>
     );
   })();
 
@@ -129,18 +186,7 @@ const CsvExport = () => {
         title="Export data to CSV file"
         backLink={ backLink }
       />
-      <Flex mb={ 10 } whiteSpace="pre-wrap" flexWrap="wrap">
-        <span>Export { EXPORT_TYPES[exportType].text } for address </span>
-        <AddressEntity
-          address={{ hash: addressHash, is_contract: true, implementation_name: null }}
-          truncation={ isMobile ? 'constant' : 'dynamic' }
-          noCopy
-        />
-        <span>{ nbsp }</span>
-        { filterType && filterValue && <span>with applied filter by { filterType } ({ filterValue }) </span> }
-        <span>to CSV file. </span>
-        <span>Exports are limited to the last 10K { EXPORT_TYPES[exportType].text }.</span>
-      </Flex>
+      { description }
       { content }
     </>
   );

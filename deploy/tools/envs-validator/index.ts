@@ -36,11 +36,15 @@ async function validateEnvs(appEnvs: Record<string, string>) {
     const envsWithJsonConfig = [
       'NEXT_PUBLIC_FEATURED_NETWORKS',
       'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL',
+      'NEXT_PUBLIC_MARKETPLACE_CATEGORIES_URL',
+      'NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL',
       'NEXT_PUBLIC_FOOTER_LINKS',
     ];
 
     for await (const envName of envsWithJsonConfig) {
-      appEnvs[envName] = await(appEnvs[envName] ? getExternalJsonContent(envName) : Promise.resolve()) || '[]';
+      if (appEnvs[envName]) {
+        appEnvs[envName] = await getExternalJsonContent(envName) || '[]';
+      }
     }
 
     await schema.validate(appEnvs, { stripUnknown: false, abortEarly: false });
@@ -99,7 +103,7 @@ async function checkPlaceholdersCongruity(envsMap: Record<string, string>) {
       inconsistencies.forEach((env) => {
         console.log(`     ${ env }`);
       });
-      console.log(`   They are either deprecated or running the app with them may lead to unexpected behavior. 
+      console.log(`   They are either deprecated or running the app with them may lead to unexpected behavior.
    Please check the documentation for more details - https://github.com/blockscout/frontend/blob/main/docs/ENVS.md
       `);
       throw new Error();

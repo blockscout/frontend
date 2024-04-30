@@ -36,6 +36,7 @@ export interface NotificationSettings {
   'native': NotificationDirection;
   'ERC-20': NotificationDirection;
   'ERC-721': NotificationDirection;
+  'ERC-404': NotificationDirection;
 }
 
 export interface NotificationMethods {
@@ -69,7 +70,7 @@ export type Transactions = Array<Transaction>
 export interface UserInfo {
   name?: string;
   nickname?: string;
-  email: string;
+  email: string | null;
   avatar?: string;
 }
 

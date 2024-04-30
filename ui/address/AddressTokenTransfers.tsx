@@ -13,6 +13,7 @@ import { getResourceKey } from 'lib/api/useApiQuery';
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMounted from 'lib/hooks/useIsMounted';
 import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
@@ -63,14 +64,16 @@ const matchFilters = (filters: Filters, tokenTransfer: TokenTransfer, address?: 
 
 type Props = {
   scrollRef?: React.RefObject<HTMLDivElement>;
+  shouldRender?: boolean;
   // for tests only
   overloadCount?: number;
 }
 
-const AddressTokenTransfers = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Props) => {
+const AddressTokenTransfers = ({ scrollRef, overloadCount = OVERLOAD_COUNT, shouldRender = true }: Props) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const isMobile = useIsMobile();
+  const isMounted = useIsMounted();
 
   const currentAddress = getQueryParamString(router.query.hash);
 
@@ -179,6 +182,18 @@ const AddressTokenTransfers = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Pr
     handler: handleNewSocketMessage,
   });
 
+  const tokenData = React.useMemo(() => ({
+    address: tokenFilter || '',
+    name: '',
+    icon_url: '',
+    symbol: '',
+    type: 'ERC-20' as const,
+  }), [ tokenFilter ]);
+
+  if (!isMounted || !shouldRender) {
+    return null;
+  }
+
   const numActiveFilters = (filters.type?.length || 0) + (filters.filter ? 1 : 0);
   const isActionBarHidden = !tokenFilter && !numActiveFilters && !data?.items.length && !currentAddress;
 
@@ -217,14 +232,6 @@ const AddressTokenTransfers = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Pr
       </Show>
     </>
   ) : null;
-
-  const tokenData = React.useMemo(() => ({
-    address: tokenFilter || '',
-    name: '',
-    icon_url: '',
-    symbol: '',
-    type: 'ERC-20' as const,
-  }), [ tokenFilter ]);
 
   const tokenFilterComponent = tokenFilter && (
     <Flex alignItems="center" flexWrap="wrap" mb={{ base: isActionBarHidden ? 3 : 6, lg: 0 }} mr={ 4 }>

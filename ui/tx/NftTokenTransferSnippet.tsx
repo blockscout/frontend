@@ -1,4 +1,4 @@
-import { Flex, chakra } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
@@ -9,23 +9,22 @@ import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 interface Props {
   token: TokenInfo;
   value: string;
-  tokenId: string;
+  tokenId: string | null;
 }
 
 const NftTokenTransferSnippet = ({ value, token, tokenId }: Props) => {
   const num = value === '1' ? '' : value;
 
-  return (
-    <Flex alignItems="center" columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
-      { num ? (
-        <>
-          <chakra.span color="text_secondary">for</chakra.span>
-          <span>{ num }</span>
-          <chakra.span color="text_secondary">token ID</chakra.span>
-        </>
-      ) : (
-        <chakra.span color="text_secondary">for token ID</chakra.span>
-      ) }
+  const tokenIdContent = (() => {
+    if (tokenId === null) {
+      // ERC-404 may not have an ID
+      if (token.type === 'ERC-404') {
+        return null;
+      }
+      return <chakra.span color="text_secondary"> N/A </chakra.span>;
+    }
+
+    return (
       <NftEntity
         hash={ token.address }
         id={ tokenId }
@@ -35,6 +34,22 @@ const NftTokenTransferSnippet = ({ value, token, tokenId }: Props) => {
         w="auto"
         flexShrink={ 0 }
       />
+    );
+
+  })();
+
+  return (
+    <>
+      { num ? (
+        <>
+          <chakra.span color="text_secondary">for</chakra.span>
+          <span>{ num }</span>
+          <chakra.span color="text_secondary">token ID</chakra.span>
+        </>
+      ) : (
+        <chakra.span color="text_secondary">for token ID</chakra.span>
+      ) }
+      { tokenIdContent }
       <chakra.span color="text_secondary">of</chakra.span>
       <TokenEntity
         token={ token }
@@ -42,7 +57,7 @@ const NftTokenTransferSnippet = ({ value, token, tokenId }: Props) => {
         w="auto"
         flexGrow={ 1 }
       />
-    </Flex>
+    </>
   );
 };
 

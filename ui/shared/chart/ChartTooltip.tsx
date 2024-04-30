@@ -82,7 +82,7 @@ const ChartTooltip = ({ xScale, yScale, width, tooltipWidth = 200, height, data,
       .selectAll<Element, TimeChartData>('.ChartTooltip__value')
       .filter((td, tIndex) => tIndex === i)
       .text(
-        (data[i].valueFormatter?.(d.value) || d.value.toLocaleString()) +
+        (data[i].valueFormatter?.(d.value) || d.value.toLocaleString(undefined, { minimumSignificantDigits: 1 })) +
         (data[i].units ? ` ${ data[i].units }` : ''),
       )
       .nodes();
