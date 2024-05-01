@@ -10,7 +10,7 @@ import { WEI } from 'lib/consts';
 import { currencyUnits } from 'lib/units';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
-import useArgTypeMatchInt from './form/useArgTypeMatchInt';
+import { matchInt } from './form/utils';
 
 function castValueToString(value: number | string | boolean | object | bigint | undefined): string {
   switch (typeof value) {
@@ -37,7 +37,7 @@ const ContractAbiItemConstant = ({ data }: Props) => {
   const [ value, setValue ] = React.useState<string>(castValueToString(data.value));
   const [ label, setLabel ] = React.useState(currencyUnits.wei.toUpperCase());
 
-  const intMatch = useArgTypeMatchInt({ argType: data.type });
+  const intMatch = matchInt(data.type);
 
   const handleCheckboxChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
     const initialValue = castValueToString(data.value);

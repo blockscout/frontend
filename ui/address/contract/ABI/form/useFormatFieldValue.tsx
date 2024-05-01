@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { MatchInt } from './useArgTypeMatchInt';
+import type { MatchInt } from './utils';
 
 interface Params {
   argType: string;
