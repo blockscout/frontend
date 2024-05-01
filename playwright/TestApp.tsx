@@ -18,6 +18,7 @@ import theme from 'theme';
 export type Props = {
   children: React.ReactNode;
   withSocket?: boolean;
+  withWalletClient?: boolean;
   appContext?: {
     pageProps: PageProps;
   };
@@ -47,7 +48,20 @@ const wagmiConfig = createConfig({
   },
 });
 
-const TestApp = ({ children, withSocket, appContext = defaultAppContext }: Props) => {
+const WalletClientProvider = ({ children, withWalletClient }: { children: React.ReactNode; withWalletClient?: boolean }) => {
+  if (withWalletClient) {
+    return (
+      <WagmiProvider config={ wagmiConfig }>
+        { children }
+      </WagmiProvider>
+    );
+  }
+
+  // eslint-disable-next-line react/jsx-no-useless-fragment
+  return <>{ children }</>;
+};
+
+const TestApp = ({ children, withSocket, withWalletClient = true, appContext = defaultAppContext }: Props) => {
   const [ queryClient ] = React.useState(() => new QueryClient({
     defaultOptions: {
       queries: {
@@ -63,9 +77,9 @@ const TestApp = ({ children, withSocket, appContext = defaultAppContext }: Props
         <SocketProvider url={ withSocket ? `ws://${ config.app.host }:${ app.socketPort }` : undefined }>
           <AppContextProvider { ...appContext }>
             <GrowthBookProvider>
-              <WagmiProvider config={ wagmiConfig }>
+              <WalletClientProvider withWalletClient={ withWalletClient }>
                 { children }
-              </WagmiProvider>
+              </WalletClientProvider>
             </GrowthBookProvider>
           </AppContextProvider>
         </SocketProvider>
