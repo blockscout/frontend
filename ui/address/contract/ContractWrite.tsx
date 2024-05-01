@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import ContentLoader from 'ui/shared/ContentLoader';
@@ -49,7 +50,7 @@ const ContractWrite = ({ isLoading }: Props) => {
   return (
     <>
       { isCustomAbi && <ContractCustomAbiAlert/> }
-      <ContractConnectWallet/>
+      { config.features.blockchainInteraction.isEnabled && <ContractConnectWallet/> }
       { isProxy && <ContractImplementationAddress hash={ addressHash }/> }
       <ContractAbi data={ data } addressHash={ addressHash } tab={ tab } methodType="write"/>
     </>

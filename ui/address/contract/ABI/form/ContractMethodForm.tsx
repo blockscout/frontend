@@ -1,4 +1,4 @@
-import { Box, Button, Flex, chakra } from '@chakra-ui/react';
+import { Box, Button, Flex, Tooltip, chakra } from '@chakra-ui/react';
 import _mapValues from 'lodash/mapValues';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
@@ -100,12 +100,8 @@ const ContractMethodForm = ({ data, onSubmit, methodType }: Props) => {
       }
 
       case 'write': {
-        if (!config.features.blockchainInteraction.isEnabled) {
-          return { primary: undefined, secondary: 'api' };
-        }
-
         return {
-          primary: 'wallet_client',
+          primary: config.features.blockchainInteraction.isEnabled ? 'wallet_client' : undefined,
           secondary: 'outputs' in data && Boolean(data.outputs?.length) ? 'api' : undefined,
         };
       }
@@ -115,6 +111,9 @@ const ContractMethodForm = ({ data, onSubmit, methodType }: Props) => {
       }
     }
   })();
+
+  // eslint-disable-next-line max-len
+  const noWalletClientText = 'Blockchain interaction is not available at the moment since WalletConnect is not configured for this application. Please contact the service maintainer to make necessary changes in the service configuration.';
 
   return (
     <Box>
@@ -156,10 +155,10 @@ const ContractMethodForm = ({ data, onSubmit, methodType }: Props) => {
               Simulate
             </Button>
           ) }
-          { callStrategies.primary && (
+          <Tooltip label={ !callStrategies.primary ? noWalletClientText : undefined } maxW="300px">
             <Button
               isLoading={ callStrategy === callStrategies.primary && isLoading }
-              isDisabled={ isLoading }
+              isDisabled={ isLoading || !callStrategies.primary }
               onClick={ handleButtonClick }
               loadingText={ methodType === 'write' ? 'Write' : 'Read' }
               variant="outline"
@@ -172,7 +171,7 @@ const ContractMethodForm = ({ data, onSubmit, methodType }: Props) => {
             >
               { methodType === 'write' ? 'Write' : 'Read' }
             </Button>
-          ) }
+          </Tooltip>
         </chakra.form>
       </FormProvider>
       { 'outputs' in data && Boolean(data.outputs?.length) && <ContractMethodOutputs data={ outputs }/> }

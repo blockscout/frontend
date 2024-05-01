@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useAccount from 'lib/web3/useAccount';
@@ -17,7 +18,7 @@ interface Props {
 }
 
 const ContractRead = ({ isLoading }: Props) => {
-  const account = useAccount();
+  const { address } = useAccount();
   const router = useRouter();
 
   const tab = getQueryParamString(router.query.tab);
@@ -29,7 +30,7 @@ const ContractRead = ({ isLoading }: Props) => {
     pathParams: { hash: addressHash },
     queryParams: {
       is_custom_abi: isCustomAbi ? 'true' : 'false',
-      from: account?.address,
+      from: address,
     },
     queryOptions: {
       enabled: !isLoading,
@@ -51,7 +52,7 @@ const ContractRead = ({ isLoading }: Props) => {
   return (
     <>
       { isCustomAbi && <ContractCustomAbiAlert/> }
-      { account && <ContractConnectWallet/> }
+      { config.features.blockchainInteraction.isEnabled && <ContractConnectWallet/> }
       { isProxy && <ContractImplementationAddress hash={ addressHash }/> }
       <ContractAbi data={ data } addressHash={ addressHash } tab={ tab } methodType="read"/>
     </>
