@@ -53,6 +53,13 @@ const data: SmartContractWriteMethod = {
       type: 'tuple[][]',
     },
 
+    // TOP LEVEL NESTED ARRAY
+    {
+      internalType: 'int256[2][][3]',
+      name: 'ParentArray',
+      type: 'int256[2][][3]',
+    },
+
     // LITERALS
     { internalType: 'bytes32', name: 'fulfillerConduitKey', type: 'bytes32' },
     { internalType: 'address', name: 'recipient', type: 'address' },
@@ -125,8 +132,12 @@ test('base view +@mobile +@dark-mode', async({ mount }) => {
   await component.getByText('struct FulfillmentComponent[][]').click();
   await component.getByRole('button', { name: 'add' }).nth(1).click();
   await component.getByText('#1 FulfillmentComponent[]').click();
-  await component.getByText('#1.1 FulfillmentComponent').click();
+  await component.getByLabel('#1 FulfillmentComponent[] (tuple[])').getByText('#1 FulfillmentComponent (tuple)').click();
   await component.getByRole('button', { name: 'add' }).nth(1).click();
+
+  await component.getByText('ParentArray (int256[2][][3])').click();
+  await component.getByText('#1 int256[2][] (int256[2][])').click();
+  await component.getByLabel('#1 int256[2][] (int256[2][])').getByText('#1 int256[2] (int256[2])').click();
 
   // submit form
   await component.getByRole('button', { name: 'Write' }).click();
