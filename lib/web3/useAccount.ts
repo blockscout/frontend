@@ -3,7 +3,6 @@ import { useAccount } from 'wagmi';
 
 import config from 'configs/app';
 
-// TODO @tom2drum search for other place where we need account with fallback
 function useAccountFallback(): UseAccountReturnType {
   return {
     address: undefined,

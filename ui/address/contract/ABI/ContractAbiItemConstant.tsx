@@ -10,6 +10,8 @@ import { WEI } from 'lib/consts';
 import { currencyUnits } from 'lib/units';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
+import useArgTypeMatchInt from './form/useArgTypeMatchInt';
+
 function castValueToString(value: number | string | boolean | object | bigint | undefined): string {
   switch (typeof value) {
     case 'string':
@@ -34,6 +36,8 @@ interface Props {
 const ContractAbiItemConstant = ({ data }: Props) => {
   const [ value, setValue ] = React.useState<string>(castValueToString(data.value));
   const [ label, setLabel ] = React.useState(currencyUnits.wei.toUpperCase());
+
+  const intMatch = useArgTypeMatchInt({ argType: data.type });
 
   const handleCheckboxChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
     const initialValue = castValueToString(data.value);
@@ -63,7 +67,7 @@ const ContractAbiItemConstant = ({ data }: Props) => {
   return (
     <Flex flexDir={{ base: 'column', lg: 'row' }} columnGap={ 2 } rowGap={ 2 }>
       { content }
-      { (data.type.includes('int256') || data.type.includes('int128')) && <Checkbox onChange={ handleCheckboxChange }>{ label }</Checkbox> }
+      { Number(intMatch?.power) >= 128 && <Checkbox onChange={ handleCheckboxChange }>{ label }</Checkbox> }
     </Flex>
   );
 };
