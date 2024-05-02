@@ -1,4 +1,4 @@
-import { chakra, Image, Flex, Popover, PopoverArrow, PopoverBody, PopoverContent, PopoverTrigger, useColorModeValue } from '@chakra-ui/react';
+import { chakra, Image, Flex, Popover, PopoverArrow, PopoverBody, PopoverContent, PopoverTrigger, useColorModeValue, DarkMode } from '@chakra-ui/react';
 import React from 'react';
 
 import type { EntityTag } from './types';
@@ -41,16 +41,18 @@ const EntityTagPopover = ({ data, children }: Props) => {
       </PopoverTrigger>
       <PopoverContent bgColor={ bgColor } borderRadius="sm">
         <PopoverArrow bgColor={ bgColor }/>
-        <PopoverBody color="white" p={ 2 } fontSize="sm" display="flex" flexDir="column" rowGap={ 2 }>
-          { (data.meta?.tooltipIcon || data.meta?.tooltipTitle) && (
-            <Flex columnGap={ 3 } alignItems="center">
-              { data.meta?.tooltipIcon && <Image src={ data.meta.tooltipIcon } boxSize="30px" alt={ `${ data.name } tag logo` }/> }
-              { data.meta?.tooltipTitle && <chakra.span fontWeight="600">{ data.meta.tooltipTitle }</chakra.span> }
-            </Flex>
-          ) }
-          { data.meta?.tooltipDescription && <chakra.span>{ data.meta.tooltipDescription }</chakra.span> }
-          { link && <LinkExternal href={ link.url } onClick={ handleLinkClick }>{ link.domain }</LinkExternal> }
-        </PopoverBody>
+        <DarkMode>
+          <PopoverBody color="white" p={ 2 } fontSize="sm" display="flex" flexDir="column" rowGap={ 2 }>
+            { (data.meta?.tooltipIcon || data.meta?.tooltipTitle) && (
+              <Flex columnGap={ 3 } alignItems="center">
+                { data.meta?.tooltipIcon && <Image src={ data.meta.tooltipIcon } boxSize="30px" alt={ `${ data.name } tag logo` }/> }
+                { data.meta?.tooltipTitle && <chakra.span fontWeight="600">{ data.meta.tooltipTitle }</chakra.span> }
+              </Flex>
+            ) }
+            { data.meta?.tooltipDescription && <chakra.span>{ data.meta.tooltipDescription }</chakra.span> }
+            { link && <LinkExternal href={ link.url } onClick={ handleLinkClick }>{ link.domain }</LinkExternal> }
+          </PopoverBody>
+        </DarkMode>
       </PopoverContent>
     </Popover>
   );
