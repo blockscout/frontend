@@ -32,7 +32,7 @@ const EntityTag = ({ data, isLoading, truncate }: Props) => {
         display="flex"
         alignItems="center"
         minW={ 0 }
-        maxW={ truncate ? { base: '150px', lg: '300px' } : undefined }
+        maxW={ truncate ? { base: '125px', lg: '300px' } : undefined }
         bg={ data.meta?.bgColor }
         color={ data.meta?.textColor }
         colorScheme={ hasLink ? 'gray-blue' : 'gray' }

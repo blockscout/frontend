@@ -45,8 +45,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
 
   const isLoading = tokenQuery.isPlaceholderData ||
     addressQuery.isPlaceholderData ||
-    (config.features.verifiedTokens.isEnabled && verifiedInfoQuery.isPending) ||
-    (config.features.addressMetadata.isEnabled && addressMetadataQuery.isPending);
+    (config.features.verifiedTokens.isEnabled && verifiedInfoQuery.isPending);
 
   const tokenSymbolText = tokenQuery.data?.symbol ? ` (${ tokenQuery.data.symbol })` : '';
 
@@ -104,7 +103,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
         </Tooltip>
       ) }
       <EntityTags
-        isLoading={ isLoading }
+        isLoading={ isLoading || (config.features.addressMetadata.isEnabled && addressMetadataQuery.isPending) }
         tags={ tags }
         flexGrow={ 1 }
       />
