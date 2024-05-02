@@ -105,6 +105,10 @@ Type extends EventTypes.PAGE_WIDGET ? (
   } | {
     'Type': 'Security score';
     'Source': 'Analyzed contracts popup';
+  } | {
+    'Type': 'Address tag';
+    'Info': string;
+    'URL': string;
   }
 ) :
 Type extends EventTypes.TX_INTERPRETATION_INTERACTION ? {

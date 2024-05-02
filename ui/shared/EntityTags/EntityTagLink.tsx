@@ -3,10 +3,11 @@ import React from 'react';
 
 import type { EntityTag } from './types';
 
-import { route } from 'nextjs-routes';
-
+import * as mixpanel from 'lib/mixpanel/index';
 import LinkExternal from 'ui/shared/LinkExternal';
-import LinkInternal from 'ui/shared/LinkInternal';
+
+// import { route } from 'nextjs-routes';
+// import LinkInternal from 'ui/shared/LinkInternal';
 
 interface Props {
   data: EntityTag;
@@ -14,26 +15,41 @@ interface Props {
 }
 
 const EntityTagLink = ({ data, children }: Props) => {
+
+  const handleLinkClick = React.useCallback(() => {
+    if (!data.meta?.actionURL) {
+      return;
+    }
+
+    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, {
+      Type: 'Address tag',
+      Info: data.slug,
+      URL: data.meta.actionURL,
+    });
+  }, [ data.meta?.actionURL, data.slug ]);
+
   const linkProps: LinkProps = {
     color: 'inherit',
     display: 'inline-flex',
     overflow: 'hidden',
     _hover: { textDecor: 'none', color: 'inherit' },
+    onClick: handleLinkClick,
   };
 
-  switch (data.tagType) {
-    case 'generic':
-    case 'protocol': {
-      return (
-        <LinkInternal
-          { ...linkProps }
-          href={ route({ pathname: '/' }) }
-        >
-          { children }
-        </LinkInternal>
-      );
-    }
-  }
+  // Uncomment this block when "Tag search" page is ready - issue #1869
+  // switch (data.tagType) {
+  //   case 'generic':
+  //   case 'protocol': {
+  //     return (
+  //       <LinkInternal
+  //         { ...linkProps }
+  //         href={ route({ pathname: '/' }) }
+  //       >
+  //         { children }
+  //       </LinkInternal>
+  //     );
+  //   }
+  // }
 
   if (data.meta?.actionURL) {
     return (

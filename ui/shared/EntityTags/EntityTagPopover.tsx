@@ -4,6 +4,7 @@ import React from 'react';
 import type { EntityTag } from './types';
 
 import makePrettyLink from 'lib/makePrettyLink';
+import * as mixpanel from 'lib/mixpanel/index';
 import LinkExternal from 'ui/shared/LinkExternal';
 
 interface Props {
@@ -15,6 +16,18 @@ const EntityTagPopover = ({ data, children }: Props) => {
   const bgColor = useColorModeValue('gray.700', 'gray.900');
   const link = makePrettyLink(data.meta?.tooltipUrl);
   const hasPopover = Boolean(data.meta?.tooltipIcon || data.meta?.tooltipTitle || data.meta?.tooltipDescription || data.meta?.tooltipUrl);
+
+  const handleLinkClick = React.useCallback(() => {
+    if (!data.meta?.tooltipUrl) {
+      return;
+    }
+
+    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, {
+      Type: 'Address tag',
+      Info: data.slug,
+      URL: data.meta.tooltipUrl,
+    });
+  }, [ data.meta?.tooltipUrl, data.slug ]);
 
   if (!hasPopover) {
     // eslint-disable-next-line react/jsx-no-useless-fragment
@@ -36,7 +49,7 @@ const EntityTagPopover = ({ data, children }: Props) => {
             </Flex>
           ) }
           { data.meta?.tooltipDescription && <chakra.span>{ data.meta.tooltipDescription }</chakra.span> }
-          { link && <LinkExternal href={ link.url }>{ link.domain }</LinkExternal> }
+          { link && <LinkExternal href={ link.url } onClick={ handleLinkClick }>{ link.domain }</LinkExternal> }
         </PopoverBody>
       </PopoverContent>
     </Popover>

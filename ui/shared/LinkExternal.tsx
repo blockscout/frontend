@@ -11,9 +11,10 @@ interface Props {
   isLoading?: boolean;
   variant?: 'subtle';
   iconColor?: LinkProps['color'];
+  onClick?: LinkProps['onClick'];
 }
 
-const LinkExternal = ({ href, children, className, isLoading, variant, iconColor }: Props) => {
+const LinkExternal = ({ href, children, className, isLoading, variant, iconColor, onClick }: Props) => {
   const subtleLinkBg = useColorModeValue('gray.100', 'gray.700');
 
   const styleProps: ChakraProps = (() => {
@@ -58,7 +59,7 @@ const LinkExternal = ({ href, children, className, isLoading, variant, iconColor
   }
 
   return (
-    <Link className={ className } { ...styleProps } target="_blank" href={ href }>
+    <Link className={ className } { ...styleProps } target="_blank" href={ href } onClick={ onClick }>
       { children }
       <IconSvg name="arrows/north-east" boxSize={ 4 } verticalAlign="middle" color={ iconColor ?? 'gray.400' } flexShrink={ 0 }/>
     </Link>
