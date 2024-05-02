@@ -1,40 +1,36 @@
-import { Button, Image, Text, useColorModeValue } from '@chakra-ui/react';
+import { Button, Image, Text, useColorModeValue, chakra } from '@chakra-ui/react';
 import React from 'react';
+
+import type { AddressMetadataTagFormatted } from 'types/client/addressMetadata';
 
 import { route } from 'nextjs-routes';
 
-import LinkExternal from './LinkExternal';
+import config from 'configs/app';
+
+import LinkExternal from '../LinkExternal';
 
 type Props = {
-  data?: {
-    appId?: string;
-    actionUrl: string;
-    textColor: string;
-    bgColor: string;
-    text: string;
-    logoUrl: string;
-  };
+  data?: AddressMetadataTagFormatted['meta'];
+  className?: string;
+  txHash?: string;
 }
 
-const mockData = {
-  appId: 'uniswap',
-  actionUrl: 'https://app.uniswap.org/swap?inputCurrency=ETH&outputCurrency=0x6B175474E89094C44Da98b954EedeAC495271d0F',
-  textColor: '#E2E8F0',
-  bgColor: '#9747FF',
-  text: 'Mint NFT',
-  logoUrl: 'https://i.ibb.co/PGZ0y9r/tg-image-883021928.jpg',
-};
-
-const ActionButton = ({ data = mockData }: Props) => {
-  const { appId, actionUrl, textColor, bgColor, text, logoUrl } = data;
-
+const ActionButton = ({ data, className, txHash }: Props) => {
   const defaultTextColor = useColorModeValue('blue.600', 'blue.300');
   const defaultBg = useColorModeValue('gray.100', 'gray.700');
+
+  if (!data) {
+    return null;
+  }
+
+  const { appID, textColor, bgColor, text, logoURL } = data;
+
+  const actionURL = data.actionURL?.replace('{chainId}', config.chain.id || '').replace('{txHash}', txHash || '');
 
   const content = (
     <>
       <Image
-        src={ logoUrl }
+        src={ logoURL }
         alt={ `${ text } button` }
         boxSize={ 5 }
         borderRadius="sm"
@@ -46,10 +42,11 @@ const ActionButton = ({ data = mockData }: Props) => {
     </>
   );
 
-  return appId ? (
+  return appID ? (
     <Button
+      className={ className }
       as="a"
-      href={ route({ pathname: '/apps/[id]', query: { id: appId, action: 'connect', url: actionUrl } }) }
+      href={ route({ pathname: '/apps/[id]', query: { id: appID, action: 'connect', ...(actionURL ? { url: actionURL } : {}) } }) }
       display="flex"
       size="sm"
       px={ 2 }
@@ -62,7 +59,8 @@ const ActionButton = ({ data = mockData }: Props) => {
     </Button>
   ) : (
     <LinkExternal
-      href={ actionUrl }
+      className={ className }
+      href={ actionURL }
       variant="subtle"
       display="flex"
       px={ 2 }
@@ -76,4 +74,4 @@ const ActionButton = ({ data = mockData }: Props) => {
   );
 };
 
-export default ActionButton;
+export default chakra(ActionButton);
