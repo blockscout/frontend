@@ -1,6 +1,6 @@
 import _set from 'lodash/set';
 
-import type { SmartContractMethodInput } from 'types/api/contract';
+import type { SmartContractMethodArgType, SmartContractMethodInput } from 'types/api/contract';
 
 export type ContractMethodFormFields = Record<string, string | boolean | undefined>;
 
@@ -9,6 +9,62 @@ export const INT_REGEXP = /^(u)?int(\d+)?$/i;
 export const BYTES_REGEXP = /^bytes(\d+)?$/i;
 
 export const ARRAY_REGEXP = /^(.*)\[(\d*)\]$/;
+
+export interface MatchArray {
+  itemType: SmartContractMethodArgType;
+  size: number;
+  isNested: boolean;
+}
+
+export const matchArray = (argType: SmartContractMethodArgType): MatchArray | null => {
+  const match = argType.match(ARRAY_REGEXP);
+  if (!match) {
+    return null;
+  }
+
+  const [ , itemType, size ] = match;
+  const isNested = Boolean(matchArray(itemType as SmartContractMethodArgType));
+
+  return {
+    itemType: itemType as SmartContractMethodArgType,
+    size: size ? Number(size) : Infinity,
+    isNested,
+  };
+};
+
+export interface MatchInt {
+  isUnsigned: boolean;
+  power: string;
+  min: bigint;
+  max: bigint;
+}
+
+export const matchInt = (argType: SmartContractMethodArgType): MatchInt | null => {
+  const match = argType.match(INT_REGEXP);
+  if (!match) {
+    return null;
+  }
+
+  const [ , isUnsigned, power = '256' ] = match;
+  const [ min, max ] = getIntBoundaries(Number(power), Boolean(isUnsigned));
+
+  return { isUnsigned: Boolean(isUnsigned), power, min, max };
+};
+
+export const transformDataForArrayItem = (data: SmartContractMethodInput, index: number): SmartContractMethodInput => {
+  const arrayMatchType = matchArray(data.type);
+  const arrayMatchInternalType = data.internalType ? matchArray(data.internalType as SmartContractMethodArgType) : null;
+  const childrenInternalType = arrayMatchInternalType?.itemType.replaceAll('struct ', '');
+
+  const postfix = childrenInternalType ? ' ' + childrenInternalType : '';
+
+  return {
+    ...data,
+    type: arrayMatchType?.itemType || data.type,
+    internalType: childrenInternalType,
+    name: `#${ index + 1 }${ postfix }`,
+  };
+};
 
 export const getIntBoundaries = (power: number, isUnsigned: boolean) => {
   const maxUnsigned = BigInt(2 ** power);

@@ -4,6 +4,7 @@ import React from 'react';
 import type { TokenInfo } from 'types/api/token';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import useIsMounted from 'lib/hooks/useIsMounted';
 import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import ActionBar from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
@@ -17,11 +18,17 @@ import TokenHoldersTable from './TokenHoldersTable';
 type Props = {
   token?: TokenInfo;
   holdersQuery: QueryWithPagesResult<'token_holders'>;
+  shouldRender?: boolean;
 }
 
-const TokenHoldersContent = ({ holdersQuery, token }: Props) => {
-
+const TokenHoldersContent = ({ holdersQuery, token, shouldRender = true }: Props) => {
   const isMobile = useIsMobile();
+  const isMounted = useIsMounted();
+
+  if (!isMounted || !shouldRender) {
+    return null;
+  }
+
   if (holdersQuery.isError) {
     return <DataFetchAlert/>;
   }

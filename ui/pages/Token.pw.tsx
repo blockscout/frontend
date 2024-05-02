@@ -1,5 +1,6 @@
 import React from 'react';
 
+import config from 'configs/app';
 import * as verifiedAddressesMocks from 'mocks/account/verifiedAddresses';
 import { token as contract } from 'mocks/address/address';
 import { tokenInfo, tokenCounters, bridgedTokenA } from 'mocks/tokens/tokenInfo';
@@ -10,9 +11,12 @@ import * as configs from 'playwright/utils/configs';
 
 import Token from './Token';
 
+const hash = tokenInfo.address;
+const chainId = config.chain.id;
+
 const hooksConfig = {
   router: {
-    query: { hash: '1', tab: 'token_transfers' },
+    query: { hash, tab: 'token_transfers' },
     isReady: true,
   },
 };
@@ -21,18 +25,19 @@ const hooksConfig = {
 // test cases which use socket cannot run in parallel since the socket server always run on the same port
 test.describe.configure({ mode: 'serial' });
 
-test.beforeEach(async({ mockApiResponse }) => {
-  await mockApiResponse('token', tokenInfo, { pathParams: { hash: '1' } });
-  await mockApiResponse('address', contract, { pathParams: { hash: '1' } });
-  await mockApiResponse('token_counters', tokenCounters, { pathParams: { hash: '1' } });
-  await mockApiResponse('token_transfers', { items: [], next_page_params: null }, { pathParams: { hash: '1' } });
+test.beforeEach(async({ mockApiResponse, mockTextAd }) => {
+  await mockApiResponse('token', tokenInfo, { pathParams: { hash } });
+  await mockApiResponse('address', contract, { pathParams: { hash } });
+  await mockApiResponse('token_counters', tokenCounters, { pathParams: { hash } });
+  await mockApiResponse('token_transfers', { items: [], next_page_params: null }, { pathParams: { hash } });
+  await mockTextAd();
 });
 
 test('base view', async({ render, page, createSocket }) => {
   const component = await render(<Token/>, { hooksConfig }, { withSocket: true });
 
   const socket = await createSocket();
-  const channel = await socketServer.joinChannel(socket, 'tokens:1');
+  const channel = await socketServer.joinChannel(socket, `tokens:${ hash }`);
   socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
 
   await expect(component).toHaveScreenshot({
@@ -42,13 +47,13 @@ test('base view', async({ render, page, createSocket }) => {
 });
 
 test('with verified info', async({ render, page, createSocket, mockApiResponse, mockAssetResponse }) => {
-  await mockApiResponse('token_verified_info', verifiedAddressesMocks.TOKEN_INFO_APPLICATION.APPROVED, { pathParams: { chainId: '1', hash: '1' } });
+  await mockApiResponse('token_verified_info', verifiedAddressesMocks.TOKEN_INFO_APPLICATION.APPROVED, { pathParams: { chainId, hash } });
   await mockAssetResponse(tokenInfo.icon_url as string, './playwright/mocks/image_s.jpg');
 
   const component = await render(<Token/>, { hooksConfig }, { withSocket: true });
 
   const socket = await createSocket();
-  const channel = await socketServer.joinChannel(socket, 'tokens:1');
+  const channel = await socketServer.joinChannel(socket, `tokens:${ hash }`);
   socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
 
   await page.getByRole('button', { name: /project info/i }).click();
@@ -60,17 +65,24 @@ test('with verified info', async({ render, page, createSocket, mockApiResponse, 
 });
 
 test('bridged token', async({ render, page, createSocket, mockApiResponse, mockAssetResponse, mockEnvs }) => {
+  const hash = bridgedTokenA.address;
+  const hooksConfig = {
+    router: {
+      query: { hash, tab: 'token_transfers' },
+    },
+  };
+
   await mockEnvs(ENVS_MAP.bridgedTokens);
-  await mockApiResponse('token', bridgedTokenA, { pathParams: { hash: '1' } });
-  await mockApiResponse('address', contract, { pathParams: { hash: '1' } });
-  await mockApiResponse('token_counters', tokenCounters, { pathParams: { hash: '1' } });
-  await mockApiResponse('token_transfers', { items: [], next_page_params: null }, { pathParams: { hash: '1' } });
-  await mockApiResponse('token_verified_info', verifiedAddressesMocks.TOKEN_INFO_APPLICATION.APPROVED, { pathParams: { chainId: '1', hash: '1' } });
+  await mockApiResponse('token', bridgedTokenA, { pathParams: { hash } });
+  await mockApiResponse('address', contract, { pathParams: { hash } });
+  await mockApiResponse('token_counters', tokenCounters, { pathParams: { hash } });
+  await mockApiResponse('token_transfers', { items: [], next_page_params: null }, { pathParams: { hash } });
+  await mockApiResponse('token_verified_info', verifiedAddressesMocks.TOKEN_INFO_APPLICATION.APPROVED, { pathParams: { chainId, hash } });
   await mockAssetResponse(tokenInfo.icon_url as string, './playwright/mocks/image_s.jpg');
 
   const component = await render(<Token/>, { hooksConfig }, { withSocket: true });
   const socket = await createSocket();
-  const channel = await socketServer.joinChannel(socket, 'tokens:1');
+  const channel = await socketServer.joinChannel(socket, `tokens:${ hash.toLowerCase() }`);
   socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
 
   await expect(component).toHaveScreenshot({
@@ -85,7 +97,7 @@ test.describe('mobile', () => {
   test('base view', async({ render, page, createSocket }) => {
     const component = await render(<Token/>, { hooksConfig }, { withSocket: true });
     const socket = await createSocket();
-    const channel = await socketServer.joinChannel(socket, 'tokens:1');
+    const channel = await socketServer.joinChannel(socket, `tokens:${ hash }`);
     socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
 
     await expect(component).toHaveScreenshot({
@@ -95,12 +107,12 @@ test.describe('mobile', () => {
   });
 
   test('with verified info', async({ render, page, createSocket, mockApiResponse, mockAssetResponse }) => {
-    await mockApiResponse('token_verified_info', verifiedAddressesMocks.TOKEN_INFO_APPLICATION.APPROVED, { pathParams: { chainId: '1', hash: '1' } });
+    await mockApiResponse('token_verified_info', verifiedAddressesMocks.TOKEN_INFO_APPLICATION.APPROVED, { pathParams: { chainId, hash } });
     await mockAssetResponse(tokenInfo.icon_url as string, './playwright/mocks/image_s.jpg');
 
     const component = await render(<Token/>, { hooksConfig }, { withSocket: true });
     const socket = await createSocket();
-    const channel = await socketServer.joinChannel(socket, 'tokens:1');
+    const channel = await socketServer.joinChannel(socket, `tokens:${ hash }`);
     socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
 
     await expect(component).toHaveScreenshot({

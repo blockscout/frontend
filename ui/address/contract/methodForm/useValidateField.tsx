@@ -3,7 +3,7 @@ import { getAddress, isAddress, isHex } from 'viem';
 
 import type { SmartContractMethodArgType } from 'types/api/contract';
 
-import type { MatchInt } from './useArgTypeMatchInt';
+import type { MatchInt } from './utils';
 import { BYTES_REGEXP } from './utils';
 
 interface Params {
