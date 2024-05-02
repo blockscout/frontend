@@ -6,6 +6,8 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { NOVES_TRANSLATE } from 'stubs/noves/NovesTranslate';
 import { TX_INTERPRETATION } from 'stubs/txInterpretation';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
+import ActionButton from 'ui/shared/ActionButton/ActionButton';
+import useActionData from 'ui/shared/ActionButton/useActionData';
 import { TX_ACTIONS_BLOCK_ID } from 'ui/shared/DetailsActionsWrapper';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
@@ -25,6 +27,8 @@ const feature = config.features.txInterpretation;
 const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
   const hasInterpretationFeature = feature.isEnabled;
   const isNovesInterpretation = hasInterpretationFeature && feature.provider === 'noves';
+
+  const actionData = useActionData(txQuery.data?.to?.hash);
 
   const txInterpretationQuery = useApiQuery('tx_interpretation', {
     pathParams: { hash },
@@ -108,9 +112,16 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
   return (
     <Box display={{ base: 'block', lg: 'flex' }} alignItems="center" w="100%">
       { content }
-      <Flex alignItems="center" justifyContent={{ base: 'start', lg: 'space-between' }} flexGrow={ 1 }>
-        { !hasTag && <AccountActionsMenu mr={ 3 } mt={{ base: 3, lg: 0 }}/> }
-        <NetworkExplorers type="tx" pathParam={ hash } ml={{ base: 0, lg: 'auto' }} mt={{ base: 3, lg: 0 }}/>
+      <Flex
+        alignItems="center"
+        justifyContent={{ base: 'start', lg: 'space-between' }}
+        flexGrow={ 1 }
+        gap={ 3 }
+        mt={{ base: 3, lg: 0 }}
+      >
+        { !hasTag && <AccountActionsMenu/> }
+        <ActionButton data={ actionData } txHash={ hash }/>
+        <NetworkExplorers type="tx" pathParam={ hash } ml={{ base: 0, lg: 'auto' }}/>
       </Flex>
     </Box>
   );
