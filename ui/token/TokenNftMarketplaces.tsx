@@ -1,16 +1,21 @@
 import { Image, Link, Skeleton, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 
+import type { AddressMetadataTagFormatted } from 'types/client/addressMetadata';
+
 import config from 'configs/app';
+import ActionButton from 'ui/shared/ActionButton/ActionButton';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import TextSeparator from 'ui/shared/TextSeparator';
 
 interface Props {
   hash: string | undefined;
   id?: string;
   isLoading?: boolean;
+  actionData?: AddressMetadataTagFormatted['meta'];
 }
 
-const TokenNftMarketplaces = ({ hash, id, isLoading }: Props) => {
+const TokenNftMarketplaces = ({ hash, id, isLoading, actionData }: Props) => {
   if (!hash || config.UI.views.nft.marketplaces.length === 0) {
     return null;
   }
@@ -21,8 +26,9 @@ const TokenNftMarketplaces = ({ hash, id, isLoading }: Props) => {
       hint="Marketplaces trading this NFT"
       alignSelf="center"
       isLoading={ isLoading }
+      py={ actionData ? 1 : 2 }
     >
-      <Skeleton isLoaded={ !isLoading } display="flex" columnGap={ 3 } flexWrap="wrap">
+      <Skeleton isLoaded={ !isLoading } display="flex" columnGap={ 3 } flexWrap="wrap" alignItems="center">
         { config.UI.views.nft.marketplaces.map((item) => {
 
           const hrefTemplate = id ? item.instance_url : item.collection_url;
@@ -41,6 +47,12 @@ const TokenNftMarketplaces = ({ hash, id, isLoading }: Props) => {
             </Tooltip>
           );
         }) }
+        { actionData && (
+          <>
+            <TextSeparator color="gray.500" margin={ 0 }/>
+            <ActionButton data={ actionData } height="30px"/>
+          </>
+        ) }
       </Skeleton>
     </DetailsInfoItem>
   );

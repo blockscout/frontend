@@ -7,6 +7,7 @@ import { scroller } from 'react-scroll';
 
 import type { TokenInfo } from 'types/api/token';
 
+import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
@@ -14,6 +15,8 @@ import getCurrencyValue from 'lib/getCurrencyValue';
 import useIsMounted from 'lib/hooks/useIsMounted';
 import { TOKEN_COUNTERS } from 'stubs/token';
 import type { TokenTabs } from 'ui/pages/Token';
+import ActionButton from 'ui/shared/ActionButton/ActionButton';
+import useActionData from 'ui/shared/ActionButton/useActionData';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import TruncatedValue from 'ui/shared/TruncatedValue';
@@ -33,6 +36,8 @@ const TokenDetails = ({ tokenQuery }: Props) => {
     pathParams: { hash },
     queryOptions: { enabled: Boolean(router.query.hash), placeholderData: TOKEN_COUNTERS },
   });
+
+  const actionData = useActionData(hash);
 
   const changeUrlAndScroll = useCallback((tab: TokenTabs) => () => {
     router.push(
@@ -167,7 +172,18 @@ const TokenDetails = ({ tokenQuery }: Props) => {
         </DetailsInfoItem>
       ) }
 
-      { type !== 'ERC-20' && <TokenNftMarketplaces hash={ hash } isLoading={ tokenQuery.isPlaceholderData }/> }
+      { type !== 'ERC-20' && <TokenNftMarketplaces hash={ hash } isLoading={ tokenQuery.isPlaceholderData } actionData={ actionData }/> }
+
+      { (type !== 'ERC-20' && config.UI.views.nft.marketplaces.length === 0 && actionData) && (
+        <DetailsInfoItem
+          title="Dapp"
+          hint="Link to the dapp"
+          alignSelf="center"
+          py={ 1 }
+        >
+          <ActionButton data={ actionData } height="30px"/>
+        </DetailsInfoItem>
+      ) }
 
       <DetailsSponsoredItem isLoading={ tokenQuery.isPlaceholderData }/>
     </Grid>

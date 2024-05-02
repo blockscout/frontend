@@ -3,6 +3,9 @@ import React from 'react';
 
 import type { TokenInfo, TokenInstance } from 'types/api/token';
 
+import config from 'configs/app';
+import ActionButton from 'ui/shared/ActionButton/ActionButton';
+import useActionData from 'ui/shared/ActionButton/useActionData';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
@@ -24,6 +27,8 @@ interface Props {
 }
 
 const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
+  const actionData = useActionData(token?.address);
+
   const handleCounterItemClick = React.useCallback(() => {
     window.setTimeout(() => {
       // cannot do scroll instantly, have to wait a little
@@ -71,7 +76,17 @@ const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
             </Flex>
           </DetailsInfoItem>
           <TokenInstanceTransfersCount hash={ isLoading ? '' : token.address } id={ isLoading ? '' : data.id } onClick={ handleCounterItemClick }/>
-          <TokenNftMarketplaces isLoading={ isLoading } hash={ token.address } id={ data.id }/>
+          <TokenNftMarketplaces isLoading={ isLoading } hash={ token.address } id={ data.id } actionData={ actionData }/>
+          { (config.UI.views.nft.marketplaces.length === 0 && actionData) && (
+            <DetailsInfoItem
+              title="Dapp"
+              hint="Link to the dapp"
+              alignSelf="center"
+              py={ 1 }
+            >
+              <ActionButton data={ actionData } height="30px"/>
+            </DetailsInfoItem>
+          ) }
         </Grid>
         <NftMedia
           animationUrl={ data.animation_url }
