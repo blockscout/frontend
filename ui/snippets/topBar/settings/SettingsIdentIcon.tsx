@@ -3,9 +3,9 @@ import React from 'react';
 
 import config from 'configs/app';
 import * as cookies from 'lib/cookies';
+import { IDENTICONS } from 'lib/settings/identIcon';
 
 import SettingsSample from './SettingsSample';
-import { IDENTICONS } from './utils';
 
 const SettingsIdentIcon = () => {
   const [ activeId, setActiveId ] = React.useState<string>();
