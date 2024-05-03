@@ -36,7 +36,8 @@ const GasTracker = () => {
       rowGap={ 1 }
       flexDir={{ base: 'column', lg: 'row' }}
     >
-      { data?.network_utilization_percentage && <GasTrackerNetworkUtilization percentage={ data.network_utilization_percentage } isLoading={ isLoading }/> }
+      { typeof data?.network_utilization_percentage === 'number' &&
+        <GasTrackerNetworkUtilization percentage={ data.network_utilization_percentage } isLoading={ isLoading }/> }
       { data?.gas_price_updated_at && (
         <Skeleton isLoaded={ !isLoading } whiteSpace="pre" display="flex" alignItems="center">
           <span>Last updated </span>
