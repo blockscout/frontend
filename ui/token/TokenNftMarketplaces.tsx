@@ -28,7 +28,7 @@ const TokenNftMarketplaces = ({ hash, id, isLoading, actionData, source, isExper
       hint="Marketplaces trading this NFT"
       alignSelf="center"
       isLoading={ isLoading }
-      py={ (actionData && isExperiment) ? 1 : 2 }
+      py={ (actionData && isExperiment) ? 1 : { base: 1, lg: 2 } }
     >
       <Skeleton isLoaded={ !isLoading } display="flex" columnGap={ 3 } flexWrap="wrap" alignItems="center">
         { config.UI.views.nft.marketplaces.map((item) => {
