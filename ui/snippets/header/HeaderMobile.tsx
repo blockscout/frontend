@@ -46,7 +46,7 @@ const HeaderMobile = ({ hideSearchBar, renderSearchBar }: Props) => {
         boxShadow={ !inView && scrollDirection === 'down' ? 'md' : 'none' }
       >
         <Burger/>
-        <NetworkLogo flexGrow={ 1 } ml={ 2 }/>
+        <NetworkLogo ml={ 2 } mr="auto"/>
         <Flex columnGap={ 2 }>
           { config.features.account.isEnabled ? <ProfileMenuMobile/> : <Box boxSize={ 10 }/> }
           { config.features.blockchainInteraction.isEnabled && <WalletMenuMobile/> }
