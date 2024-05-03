@@ -4,6 +4,7 @@ import React from 'react';
 import type { TokenInfo, TokenInstance } from 'types/api/token';
 
 import config from 'configs/app';
+import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import ActionButton from 'ui/shared/ActionButton/ActionButton';
 import useActionData from 'ui/shared/ActionButton/useActionData';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
@@ -28,6 +29,7 @@ interface Props {
 
 const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
   const actionData = useActionData(token?.address);
+  const { value: isExperiment } = useFeatureValue('action_button_exp', false);
 
   const handleCounterItemClick = React.useCallback(() => {
     window.setTimeout(() => {
@@ -76,15 +78,22 @@ const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
             </Flex>
           </DetailsInfoItem>
           <TokenInstanceTransfersCount hash={ isLoading ? '' : token.address } id={ isLoading ? '' : data.id } onClick={ handleCounterItemClick }/>
-          <TokenNftMarketplaces isLoading={ isLoading } hash={ token.address } id={ data.id } actionData={ actionData }/>
-          { (config.UI.views.nft.marketplaces.length === 0 && actionData) && (
+          <TokenNftMarketplaces
+            isLoading={ isLoading }
+            hash={ token.address }
+            id={ data.id }
+            actionData={ actionData }
+            source="NFT item"
+            isExperiment={ isExperiment }
+          />
+          { (config.UI.views.nft.marketplaces.length === 0 && actionData && isExperiment) && (
             <DetailsInfoItem
               title="Dapp"
               hint="Link to the dapp"
               alignSelf="center"
               py={ 1 }
             >
-              <ActionButton data={ actionData } height="30px"/>
+              <ActionButton data={ actionData } height="30px" source="NFT item"/>
             </DetailsInfoItem>
           ) }
         </Grid>

@@ -6,26 +6,31 @@ import type { AddressMetadataTagFormatted } from 'types/client/addressMetadata';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
+import * as mixpanel from 'lib/mixpanel/index';
 
 import LinkExternal from '../LinkExternal';
 
 type Props = {
-  data?: AddressMetadataTagFormatted['meta'];
+  data: NonNullable<AddressMetadataTagFormatted['meta']>;
   className?: string;
   txHash?: string;
+  source: 'Txn' | 'NFT collection' | 'NFT item';
 }
 
-const ActionButton = ({ data, className, txHash }: Props) => {
+const ActionButton = ({ data, className, txHash, source }: Props) => {
   const defaultTextColor = useColorModeValue('blue.600', 'blue.300');
   const defaultBg = useColorModeValue('gray.100', 'gray.700');
-
-  if (!data) {
-    return null;
-  }
 
   const { appID, textColor, bgColor, text, logoURL } = data;
 
   const actionURL = data.actionURL?.replace('{chainId}', config.chain.id || '').replace('{txHash}', txHash || '');
+
+  const handleClick = React.useCallback(() => {
+    const info = appID || actionURL;
+    if (info) {
+      mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Action button', Info: info, Source: source });
+    }
+  }, [ source, appID, actionURL ]);
 
   const content = (
     <>
@@ -47,6 +52,7 @@ const ActionButton = ({ data, className, txHash }: Props) => {
       className={ className }
       as="a"
       href={ route({ pathname: '/apps/[id]', query: { id: appID, action: 'connect', ...(actionURL ? { url: actionURL } : {}) } }) }
+      onClick={ handleClick }
       display="flex"
       size="sm"
       px={ 2 }
@@ -61,6 +67,7 @@ const ActionButton = ({ data, className, txHash }: Props) => {
     <LinkExternal
       className={ className }
       href={ actionURL }
+      onClick={ handleClick }
       variant="subtle"
       display="flex"
       px={ 2 }

@@ -12,6 +12,7 @@ import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getCurrencyValue from 'lib/getCurrencyValue';
+import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import useIsMounted from 'lib/hooks/useIsMounted';
 import { TOKEN_COUNTERS } from 'stubs/token';
 import type { TokenTabs } from 'ui/pages/Token';
@@ -30,6 +31,8 @@ interface Props {
 const TokenDetails = ({ tokenQuery }: Props) => {
   const router = useRouter();
   const isMounted = useIsMounted();
+  const { value: isExperiment } = useFeatureValue('action_button_exp', false);
+
   const hash = router.query.hash?.toString();
 
   const tokenCountersQuery = useApiQuery('token_counters', {
@@ -172,16 +175,24 @@ const TokenDetails = ({ tokenQuery }: Props) => {
         </DetailsInfoItem>
       ) }
 
-      { type !== 'ERC-20' && <TokenNftMarketplaces hash={ hash } isLoading={ tokenQuery.isPlaceholderData } actionData={ actionData }/> }
+      { type !== 'ERC-20' && (
+        <TokenNftMarketplaces
+          hash={ hash }
+          isLoading={ tokenQuery.isPlaceholderData }
+          actionData={ actionData }
+          source="NFT collection"
+          isExperiment={ isExperiment }
+        />
+      ) }
 
-      { (type !== 'ERC-20' && config.UI.views.nft.marketplaces.length === 0 && actionData) && (
+      { (type !== 'ERC-20' && config.UI.views.nft.marketplaces.length === 0 && actionData && isExperiment) && (
         <DetailsInfoItem
           title="Dapp"
           hint="Link to the dapp"
           alignSelf="center"
           py={ 1 }
         >
-          <ActionButton data={ actionData } height="30px"/>
+          <ActionButton data={ actionData } height="30px" source="NFT collection"/>
         </DetailsInfoItem>
       ) }
 

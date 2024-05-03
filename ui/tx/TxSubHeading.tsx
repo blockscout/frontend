@@ -3,6 +3,7 @@ import React from 'react';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
+import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import { NOVES_TRANSLATE } from 'stubs/noves/NovesTranslate';
 import { TX_INTERPRETATION } from 'stubs/txInterpretation';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
@@ -29,6 +30,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
   const isNovesInterpretation = hasInterpretationFeature && feature.provider === 'noves';
 
   const actionData = useActionData(txQuery.data?.to?.hash);
+  const { value: isExperiment } = useFeatureValue('action_button_exp', false);
 
   const txInterpretationQuery = useApiQuery('tx_interpretation', {
     pathParams: { hash },
@@ -120,7 +122,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
         mt={{ base: 3, lg: 0 }}
       >
         { !hasTag && <AccountActionsMenu/> }
-        <ActionButton data={ actionData } txHash={ hash }/>
+        { (actionData && isExperiment) && <ActionButton data={ actionData } txHash={ hash } source="Txn"/> }
         <NetworkExplorers type="tx" pathParam={ hash } ml={{ base: 0, lg: 'auto' }}/>
       </Flex>
     </Box>
