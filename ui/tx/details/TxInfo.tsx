@@ -110,6 +110,14 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
     </Tooltip>
   ) : null;
 
+  const getTxStatus = () => {
+    if (!data.block && data.error) {
+      return 'error';
+    } else {
+      return data.status;
+    }
+  };
+
   return (
     <Grid columnGap={ 8 } rowGap={{ base: 3, lg: 3 }} templateColumns={{ base: 'minmax(0, 1fr)', lg: 'max-content minmax(728px, auto)' }}>
 
@@ -132,7 +140,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         flexWrap="nowrap"
         isLoading={ isLoading }
       >
-        { data.status === null && <Spinner mr={ 2 } size="sm" flexShrink={ 0 }/> }
+        { (data.status === null && !data.error) && <Spinner mr={ 2 } size="sm" flexShrink={ 0 }/> }
         <Skeleton isLoaded={ !isLoading } overflow="hidden">
           <HashStringShortenDynamic hash={ data.hash }/>
         </Skeleton>
@@ -154,7 +162,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         hint="Current transaction state: Success, Failed (Error), or Pending (In Process)"
         isLoading={ isLoading }
       >
-        <TxStatus status={ data.status } errorText={ data.status === 'error' ? data.result : undefined } isLoading={ isLoading }/>
+        <TxStatus status={ getTxStatus() } errorText={ data.status === 'error' ? data.result : undefined } isLoading={ isLoading }/>
         { data.method && (
           <Tag colorScheme={ data.method === 'Multicall' ? 'teal' : 'gray' } isLoading={ isLoading } isTruncated ml={ 3 }>
             { data.method }
@@ -197,6 +205,14 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           hint="The revert reason of the transaction"
         >
           <TxRevertReason { ...data.revert_reason }/>
+        </DetailsInfoItem>
+      ) }
+      { !data.block && data.error && (
+        <DetailsInfoItem
+          title="Revert reason"
+          hint="The revert reason of the transaction"
+        >
+          <TxRevertReason raw={ data.error }/>
         </DetailsInfoItem>
       ) }
       { data.zksync && (
