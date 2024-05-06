@@ -47,6 +47,7 @@ const MarketplaceAppModal = ({
     github,
     telegram,
     twitter,
+    discord,
     logo,
     logoDarkMode,
     categories,
@@ -61,6 +62,10 @@ const MarketplaceAppModal = ({
     twitter ? {
       icon: 'social/twitter_filled' as IconName,
       url: twitter,
+    } : null,
+    discord ? {
+      icon: 'social/discord_filled' as IconName,
+      url: discord,
     } : null,
   ].filter(Boolean);
 
