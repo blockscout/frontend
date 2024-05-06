@@ -36,9 +36,9 @@ const Footer = () => {
       url: 'https://github.com/aurora-is-near',
     },
     {
-      icon: 'social/tweet' as const,
+      icon: 'social/twitter' as const,
       iconSize: '18px',
-      text: 'Twitter',
+      text: 'X (ex-Twitter)',
       url: 'https://twitter.com/auroraisnear',
     },
     {

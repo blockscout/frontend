@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import type { SmartContract } from 'types/api/contract';
 
-export const verified: Partial<SmartContract> = {
+export const verified: SmartContract = {
   abi: [ { anonymous: false, inputs: [ { indexed: true, internalType: 'address', name: 'src', type: 'address' }, { indexed: true, internalType: 'address', name: 'guy', type: 'address' }, { indexed: false, internalType: 'uint256', name: 'wad', type: 'uint256' } ], name: 'Approval', type: 'event' } ],
   can_be_visualized_via_sol2uml: true,
   compiler_version: 'v0.5.16+commit.9c3226ce',
@@ -31,9 +31,27 @@ export const verified: Partial<SmartContract> = {
     { address_hash: '0xa62744BeE8646e237441CDbfdedD3458861748A8', name: 'math' },
   ],
   language: 'solidity',
+  license_type: 'gnu_gpl_v3',
+  has_methods_read: true,
+  has_methods_read_proxy: false,
+  has_methods_write: true,
+  has_methods_write_proxy: false,
+  has_custom_methods_read: false,
+  has_custom_methods_write: false,
+  is_self_destructed: false,
+  is_verified_via_eth_bytecode_db: null,
+  is_changed_bytecode: null,
+  is_verified_via_sourcify: null,
+  is_fully_verified: null,
+  is_partially_verified: null,
+  sourcify_repo_url: null,
+  file_path: '',
+  additional_sources: [],
+  verified_twin_address_hash: null,
+  minimal_proxy_address_hash: null,
 };
 
-export const withMultiplePaths: Partial<SmartContract> = {
+export const withMultiplePaths: SmartContract = {
   ...verified,
   file_path: './simple_storage.sol',
   additional_sources: [
@@ -44,7 +62,7 @@ export const withMultiplePaths: Partial<SmartContract> = {
   ],
 };
 
-export const verifiedViaSourcify: Partial<SmartContract> = {
+export const verifiedViaSourcify: SmartContract = {
   ...verified,
   is_verified_via_sourcify: true,
   is_fully_verified: false,
@@ -52,36 +70,67 @@ export const verifiedViaSourcify: Partial<SmartContract> = {
   sourcify_repo_url: 'https://repo.sourcify.dev/contracts//full_match/99/0x51891596E158b2857e5356DC847e2D15dFbCF2d0/',
 };
 
-export const verifiedViaEthBytecodeDb: Partial<SmartContract> = {
+export const verifiedViaEthBytecodeDb: SmartContract = {
   ...verified,
   is_verified_via_eth_bytecode_db: true,
 };
 
-export const withTwinAddress: Partial<SmartContract> = {
+export const withTwinAddress: SmartContract = {
   ...verified,
   is_verified: false,
   verified_twin_address_hash: '0xa62744bee8646e237441cdbfdedd3458861748a8',
 };
 
-export const withProxyAddress: Partial<SmartContract> = {
+export const withProxyAddress: SmartContract = {
   ...verified,
   is_verified: false,
   verified_twin_address_hash: '0xa62744bee8646e237441cdbfdedd3458861748a8',
   minimal_proxy_address_hash: '0xa62744bee8646e237441cdbfdedd3458861748a8',
 };
 
-export const selfDestructed: Partial<SmartContract> = {
+export const selfDestructed: SmartContract = {
   ...verified,
   is_self_destructed: true,
 };
 
-export const withChangedByteCode: Partial<SmartContract> = {
+export const withChangedByteCode: SmartContract = {
   ...verified,
   is_changed_bytecode: true,
 };
 
-export const nonVerified: Partial<SmartContract> = {
+export const nonVerified: SmartContract = {
   is_verified: false,
   creation_bytecode: 'creation_bytecode',
   deployed_bytecode: 'deployed_bytecode',
+  is_self_destructed: false,
+  abi: null,
+  compiler_version: null,
+  evm_version: null,
+  optimization_enabled: null,
+  optimization_runs: null,
+  name: null,
+  verified_at: null,
+  is_verified_via_eth_bytecode_db: null,
+  is_changed_bytecode: null,
+  has_methods_read: false,
+  has_methods_read_proxy: false,
+  has_methods_write: false,
+  has_methods_write_proxy: false,
+  has_custom_methods_read: false,
+  has_custom_methods_write: false,
+  is_verified_via_sourcify: null,
+  is_fully_verified: null,
+  is_partially_verified: null,
+  sourcify_repo_url: null,
+  source_code: null,
+  constructor_args: null,
+  decoded_constructor_args: null,
+  can_be_visualized_via_sol2uml: null,
+  file_path: '',
+  additional_sources: [],
+  external_libraries: null,
+  verified_twin_address_hash: null,
+  minimal_proxy_address_hash: null,
+  language: null,
+  license_type: null,
 };

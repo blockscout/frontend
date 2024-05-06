@@ -1,5 +1,5 @@
 import type { SmartContract, SolidityscanReport } from 'types/api/contract';
-import type { VerifiedContract } from 'types/api/contracts';
+import type { VerifiedContract, VerifiedContractsCounters } from 'types/api/contracts';
 
 import { ADDRESS_PARAMS } from './addressParams';
 
@@ -7,6 +7,12 @@ export const CONTRACT_CODE_UNVERIFIED = {
   creation_bytecode: '0x60806040526e',
   deployed_bytecode: '0x608060405233',
   is_self_destructed: false,
+  has_methods_read: true,
+  has_methods_read_proxy: true,
+  has_methods_write: true,
+  has_methods_write_proxy: true,
+  has_custom_methods_read: true,
+  has_custom_methods_write: true,
 } as SmartContract;
 
 export const CONTRACT_CODE_VERIFIED = {
@@ -40,6 +46,13 @@ export const CONTRACT_CODE_VERIFIED = {
   optimization_runs: 200,
   source_code: 'source_code',
   verified_at: '2023-02-21T14:39:16.906760Z',
+  license_type: 'mit',
+  has_methods_read: true,
+  has_methods_read_proxy: true,
+  has_methods_write: true,
+  has_methods_write_proxy: true,
+  has_custom_methods_read: true,
+  has_custom_methods_write: true,
 } as unknown as SmartContract;
 
 export const VERIFIED_CONTRACT_INFO: VerifiedContract = {
@@ -52,10 +65,19 @@ export const VERIFIED_CONTRACT_INFO: VerifiedContract = {
   optimization_enabled: false,
   tx_count: 565058,
   verified_at: '2023-04-10T13:16:33.884921Z',
+  license_type: 'mit',
+};
+
+export const VERIFIED_CONTRACTS_COUNTERS: VerifiedContractsCounters = {
+  smart_contracts: '123456789',
+  new_smart_contracts_24h: '12345',
+  verified_smart_contracts: '654321',
+  new_verified_smart_contracts_24h: '1234',
 };
 
 export const SOLIDITYSCAN_REPORT: SolidityscanReport = {
   scan_report: {
+    contractname: 'BullRunners',
     scan_status: 'scan_done',
     scan_summary: {
       issue_severity_distribution: {

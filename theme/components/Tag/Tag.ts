@@ -18,12 +18,12 @@ const variants = {
 };
 
 const sizes = {
-  md: definePartsStyle({
+  sm: definePartsStyle({
     container: {
       minH: 6,
       minW: 6,
       fontSize: 'sm',
-      px: 2,
+      px: 1,
       py: '2px',
       lineHeight: 5,
     },
@@ -48,7 +48,7 @@ const Tag = defineMultiStyleConfig({
   variants,
   sizes,
   defaultProps: {
-    size: 'md',
+    size: 'sm',
     variant: 'subtle',
     colorScheme: 'gray',
   },

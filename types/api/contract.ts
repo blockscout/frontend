@@ -1,7 +1,23 @@
-import type { Abi } from 'abitype';
+import type { Abi, AbiType } from 'abitype';
 
-export type SmartContractMethodArgType = 'address' | 'uint256' | 'bool' | 'string' | 'bytes' | 'bytes32' | 'bytes32[]';
+export type SmartContractMethodArgType = AbiType;
 export type SmartContractMethodStateMutability = 'view' | 'nonpayable' | 'payable';
+
+export type SmartContractLicenseType =
+'none' |
+'unlicense' |
+'mit' |
+'gnu_gpl_v2' |
+'gnu_gpl_v3' |
+'gnu_lgpl_v2_1' |
+'gnu_lgpl_v3' |
+'bsd_2_clause' |
+'bsd_3_clause' |
+'mpl_2_0' |
+'osl_3_0' |
+'apache_2_0' |
+'gnu_agpl_v3' |
+'bsl_1_1';
 
 export interface SmartContract {
   deployed_bytecode: string | null;
@@ -17,6 +33,14 @@ export interface SmartContract {
   is_verified: boolean | null;
   is_verified_via_eth_bytecode_db: boolean | null;
   is_changed_bytecode: boolean | null;
+
+  has_methods_read: boolean;
+  has_methods_read_proxy: boolean;
+  has_methods_write: boolean;
+  has_methods_write_proxy: boolean;
+  has_custom_methods_read: boolean;
+  has_custom_methods_write: boolean;
+
   // sourcify info >>>
   is_verified_via_sourcify: boolean | null;
   is_fully_verified: boolean | null;
@@ -37,6 +61,7 @@ export interface SmartContract {
   verified_twin_address_hash: string | null;
   minimal_proxy_address_hash: string | null;
   language: string | null;
+  license_type: SmartContractLicenseType | null;
 }
 
 export type SmartContractDecodedConstructorArg = [
@@ -55,18 +80,17 @@ export interface SmartContractExternalLibrary {
 
 export interface SmartContractMethodBase {
   inputs: Array<SmartContractMethodInput>;
-  outputs: Array<SmartContractMethodOutput>;
+  outputs?: Array<SmartContractMethodOutput>;
   constant: boolean;
   name: string;
   stateMutability: SmartContractMethodStateMutability;
   type: 'function';
   payable: boolean;
   error?: string;
-}
-
-export interface SmartContractReadMethod extends SmartContractMethodBase {
   method_id: string;
 }
+
+export type SmartContractReadMethod = SmartContractMethodBase;
 
 export interface SmartContractWriteFallback {
   payable?: true;
@@ -85,9 +109,11 @@ export type SmartContractWriteMethod = SmartContractMethodBase | SmartContractWr
 export type SmartContractMethod = SmartContractReadMethod | SmartContractWriteMethod;
 
 export interface SmartContractMethodInput {
-  internalType?: SmartContractMethodArgType;
+  internalType?: string; // there could be any string, e.g "enum MyEnum"
   name: string;
   type: SmartContractMethodArgType;
+  components?: Array<SmartContractMethodInput>;
+  fieldType?: 'native_coin';
 }
 
 export interface SmartContractMethodOutput extends SmartContractMethodInput {
@@ -135,6 +161,7 @@ export interface SmartContractVerificationConfigRaw {
   vyper_compiler_versions: Array<string>;
   vyper_evm_versions: Array<string>;
   is_rust_verifier_microservice_enabled: boolean;
+  license_types: Record<SmartContractLicenseType, number>;
 }
 
 export interface SmartContractVerificationConfig extends SmartContractVerificationConfigRaw {
@@ -159,6 +186,7 @@ export interface SmartContractVerificationError {
 
 export type SolidityscanReport = {
   scan_report: {
+    contractname: string;
     scan_status: string;
     scan_summary: {
       issue_severity_distribution: {
@@ -177,4 +205,27 @@ export type SolidityscanReport = {
     };
     scanner_reference_url: string;
   };
+}
+
+type SmartContractSecurityAudit = {
+  audit_company_name: string;
+  audit_publish_date: string;
+  audit_report_url: string;
+}
+
+export type SmartContractSecurityAudits = {
+  items: Array<SmartContractSecurityAudit>;
+}
+
+export type SmartContractSecurityAuditSubmission = {
+  'address_hash': string;
+  'submitter_name': string;
+  'submitter_email': string;
+  'is_project_owner': boolean;
+  'project_name': string;
+  'project_url': string;
+  'audit_company_name': string;
+  'audit_report_url': string;
+  'audit_publish_date': string;
+  'comment'?: string;
 }

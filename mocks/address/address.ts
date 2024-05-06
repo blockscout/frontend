@@ -15,6 +15,19 @@ export const withName: AddressParam = {
   private_tags: [],
   watchlist_names: [],
   public_tags: [],
+  ens_domain_name: null,
+};
+
+export const withEns: AddressParam = {
+  hash: hash,
+  implementation_name: null,
+  is_contract: false,
+  is_verified: null,
+  name: 'ArianeeStore',
+  private_tags: [],
+  watchlist_names: [],
+  public_tags: [],
+  ens_domain_name: 'kitty.kitty.kitty.cat.eth',
 };
 
 export const withoutName: AddressParam = {
@@ -26,6 +39,7 @@ export const withoutName: AddressParam = {
   private_tags: [],
   watchlist_names: [],
   public_tags: [],
+  ens_domain_name: null,
 };
 
 export const token: Address = {
@@ -45,17 +59,12 @@ export const token: Address = {
   creator_address_hash: '0x34A9c688512ebdB575e82C50c9803F6ba2916E72',
   exchange_rate: null,
   implementation_address: null,
-  has_custom_methods_read: false,
-  has_custom_methods_write: false,
   has_decompiled_code: false,
   has_logs: false,
-  has_methods_read: false,
-  has_methods_read_proxy: false,
-  has_methods_write: false,
-  has_methods_write_proxy: false,
   has_token_transfers: true,
   has_tokens: true,
   has_validated_blocks: false,
+  ens_domain_name: null,
 };
 
 export const contract: Address = {
@@ -64,14 +73,8 @@ export const contract: Address = {
   creation_tx_hash: '0xf2aff6501b632604c39978b47d309813d8a1bcca721864bbe86abf59704f195e',
   creator_address_hash: '0x803ad3F50b9e1fF68615e8B053A186e1be288943',
   exchange_rate: '0.04311',
-  has_custom_methods_read: false,
-  has_custom_methods_write: false,
   has_decompiled_code: false,
   has_logs: true,
-  has_methods_read: true,
-  has_methods_read_proxy: true,
-  has_methods_write: true,
-  has_methods_write_proxy: true,
   has_token_transfers: false,
   has_tokens: false,
   has_validated_blocks: false,
@@ -86,6 +89,7 @@ export const contract: Address = {
   token: null,
   watchlist_names: [ watchlistName ],
   watchlist_address_id: 42,
+  ens_domain_name: null,
 };
 
 export const validator: Address = {
@@ -94,14 +98,8 @@ export const validator: Address = {
   creation_tx_hash: null,
   creator_address_hash: null,
   exchange_rate: '0.00432018',
-  has_custom_methods_read: false,
-  has_custom_methods_write: false,
   has_decompiled_code: false,
   has_logs: false,
-  has_methods_read: false,
-  has_methods_read_proxy: false,
-  has_methods_write: false,
-  has_methods_write_proxy: false,
   has_token_transfers: false,
   has_tokens: false,
   has_validated_blocks: true,
@@ -116,4 +114,5 @@ export const validator: Address = {
   token: null,
   watchlist_names: [],
   watchlist_address_id: null,
+  ens_domain_name: null,
 };

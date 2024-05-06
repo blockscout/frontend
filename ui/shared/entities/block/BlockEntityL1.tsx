@@ -8,13 +8,13 @@ import config from 'configs/app';
 
 import * as BlockEntity from './BlockEntity';
 
-const feature = config.features.optimisticRollup;
+const rollupFeature = config.features.rollup;
 
 const BlockEntityL1 = (props: BlockEntity.EntityProps) => {
   const linkProps = _omit(props, [ 'className' ]);
   const partsProps = _omit(props, [ 'className', 'onClick' ]);
 
-  if (!feature.isEnabled) {
+  if (!rollupFeature.isEnabled) {
     return null;
   }
 
@@ -24,7 +24,7 @@ const BlockEntityL1 = (props: BlockEntity.EntityProps) => {
       <BlockEntity.Link
         { ...linkProps }
         isExternal
-        href={ feature.L1BaseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: props.hash ?? String(props.number) } }) }
+        href={ rollupFeature.L1BaseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: props.hash ?? String(props.number) } }) }
       >
         <BlockEntity.Content { ...partsProps }/>
       </BlockEntity.Link>

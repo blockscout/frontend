@@ -1,13 +1,18 @@
-import { Flex, chakra } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
-import type { TokenTransfer as TTokenTransfer, Erc20TotalPayload, Erc721TotalPayload, Erc1155TotalPayload } from 'types/api/tokenTransfer';
+import type {
+  TokenTransfer as TTokenTransfer,
+  Erc20TotalPayload,
+  Erc721TotalPayload,
+  Erc1155TotalPayload,
+  Erc404TotalPayload,
+} from 'types/api/tokenTransfer';
 
-import getCurrencyValue from 'lib/getCurrencyValue';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import TokenEntity from 'ui/shared/entities/token/TokenEntity';
-import IconSvg from 'ui/shared/IconSvg';
+import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import NftTokenTransferSnippet from 'ui/tx/NftTokenTransferSnippet';
+
+import FtTokenTransferSnippet from '../FtTokenTransferSnippet';
 
 interface Props {
   data: TTokenTransfer;
@@ -19,26 +24,7 @@ const TxDetailsTokenTransfer = ({ data }: Props) => {
     switch (data.token.type) {
       case 'ERC-20': {
         const total = data.total as Erc20TotalPayload;
-        const { valueStr, usd } = getCurrencyValue({
-          value: total.value,
-          exchangeRate: data.token.exchange_rate,
-          accuracyUsd: 2,
-          decimals: total.decimals,
-        });
-
-        return (
-          <Flex flexWrap="wrap" columnGap={ 2 } rowGap={ 2 }>
-            <chakra.span color="text_secondary">for</chakra.span>
-            <span>{ valueStr }</span>
-            <TokenEntity
-              token={{ ...data.token, name: data.token.symbol || data.token.name }}
-              noCopy
-              noSymbol
-              w="auto"
-            />
-            { usd && <chakra.span color="text_secondary">(${ usd })</chakra.span> }
-          </Flex>
-        );
+        return <FtTokenTransferSnippet token={ data.token } value={ total.value } decimals={ total.decimals }/>;
       }
 
       case 'ERC-721': {
@@ -63,26 +49,47 @@ const TxDetailsTokenTransfer = ({ data }: Props) => {
           />
         );
       }
+
+      case 'ERC-404': {
+        const total = data.total as Erc404TotalPayload;
+
+        if (total.token_id !== null) {
+          return (
+            <NftTokenTransferSnippet
+              token={ data.token }
+              tokenId={ total.token_id }
+              value="1"
+            />
+          );
+        } else {
+          if (total.value === null) {
+            return null;
+          }
+
+          return <FtTokenTransferSnippet token={ data.token } value={ total.value } decimals={ total.decimals }/>;
+        }
+      }
     }
   })();
 
   return (
     <Flex
       alignItems="flex-start"
-      flexWrap={{ base: 'wrap', lg: 'nowrap' }}
+      flexWrap="wrap"
       columnGap={ 2 }
       rowGap={ 3 }
       flexDir="row"
       w="100%"
+      fontWeight={ 500 }
     >
-      <Flex alignItems="center" fontWeight="500">
-        <AddressEntity address={ data.from } truncation="constant" noIcon maxW="150px"/>
-        <IconSvg name="arrows/east" boxSize={ 5 } mx={ 2 } color="gray.500"/>
-        <AddressEntity address={ data.to } truncation="constant" noIcon maxW="150px"/>
-      </Flex>
-      <Flex flexDir="column" rowGap={ 5 } w="100%" overflow="hidden" fontWeight={ 500 }>
-        { content }
-      </Flex>
+      <AddressFromTo
+        from={ data.from }
+        to={ data.to }
+        truncation="constant"
+        noIcon
+        fontWeight="500"
+      />
+      { content }
     </Flex>
   );
 };

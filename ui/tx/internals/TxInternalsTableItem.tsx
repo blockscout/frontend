@@ -5,9 +5,8 @@ import React from 'react';
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
 import config from 'configs/app';
+import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import Tag from 'ui/shared/chakra/Tag';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import IconSvg from 'ui/shared/IconSvg';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
@@ -32,21 +31,11 @@ const TxInternalTableItem = ({ type, from, to, value, success, error, gas_limit:
         </Flex>
       </Td>
       <Td verticalAlign="middle">
-        <AddressEntity
-          address={ from }
+        <AddressFromTo
+          from={ from }
+          to={ toData }
           isLoading={ isLoading }
         />
-      </Td>
-      <Td px={ 0 } verticalAlign="middle">
-        <IconSvg name="arrows/east" boxSize={ 6 } color="gray.500" isLoading={ isLoading } display="block"/>
-      </Td>
-      <Td verticalAlign="middle">
-        { toData && (
-          <AddressEntity
-            address={ toData }
-            isLoading={ isLoading }
-          />
-        ) }
       </Td>
       <Td isNumeric verticalAlign="middle">
         <Skeleton isLoaded={ !isLoading } display="inline-block">

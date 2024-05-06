@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import buildUrl from 'nextjs/utils/buildUrl';
-import fetchFactory from 'nextjs/utils/fetch';
+import fetchFactory from 'nextjs/utils/fetchProxy';
 import { httpLogger } from 'nextjs/utils/logger';
 
 export default async function csrfHandler(_req: NextApiRequest, res: NextApiResponse) {

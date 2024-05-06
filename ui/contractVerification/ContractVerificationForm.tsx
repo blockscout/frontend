@@ -18,6 +18,7 @@ import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 
 import ContractVerificationFieldAddress from './fields/ContractVerificationFieldAddress';
+import ContractVerificationFieldLicenseType from './fields/ContractVerificationFieldLicenseType';
 import ContractVerificationFieldMethod from './fields/ContractVerificationFieldMethod';
 import ContractVerificationFlattenSourceCode from './methods/ContractVerificationFlattenSourceCode';
 import ContractVerificationMultiPartFile from './methods/ContractVerificationMultiPartFile';
@@ -37,7 +38,7 @@ interface Props {
 const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Props) => {
   const formApi = useForm<FormFields>({
     mode: 'onBlur',
-    defaultValues: methodFromQuery ? getDefaultValues(methodFromQuery, config, hash) : undefined,
+    defaultValues: methodFromQuery ? getDefaultValues(methodFromQuery, config, hash, null) : undefined,
   });
   const { control, handleSubmit, watch, formState, setError, reset, getFieldState } = formApi;
   const submitPromiseResolver = React.useRef<(value: unknown) => void>();
@@ -161,12 +162,13 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
     };
   }, [ config ]);
   const method = watch('method');
+  const licenseType = watch('license_type');
   const content = methods[method?.value] || null;
   const methodValue = method?.value;
 
   useUpdateEffect(() => {
     if (methodValue) {
-      reset(getDefaultValues(methodValue, config, address || hash));
+      reset(getDefaultValues(methodValue, config, hash || address, licenseType));
 
       const methodName = METHOD_LABELS[methodValue];
       mixpanel.logEvent(mixpanel.EventTypes.CONTRACT_VERIFICATION, { Status: 'Method selected', Method: methodName });
@@ -183,6 +185,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
       >
         <Grid as="section" columnGap="30px" rowGap={{ base: 2, lg: 5 }} templateColumns={{ base: '1fr', lg: 'minmax(auto, 680px) minmax(0, 340px)' }}>
           { !hash && <ContractVerificationFieldAddress/> }
+          <ContractVerificationFieldLicenseType/>
           <ContractVerificationFieldMethod
             control={ control }
             methods={ config.verification_options }

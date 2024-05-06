@@ -29,17 +29,15 @@ const StatusTag = ({ type, text, errorText, isLoading }: Props) => {
       break;
     case 'pending':
       icon = 'status/pending';
-      // FIXME: it's not gray on mockups
-      // need to implement new color scheme or redefine colors here
       colorScheme = 'gray';
       break;
   }
 
   return (
     <Tooltip label={ errorText }>
-      <Tag colorScheme={ colorScheme } display="inline-flex" isLoading={ isLoading }>
-        <IconSvg boxSize={ 2.5 } name={ icon } mr={ 2 }/>
-        <TagLabel>{ text }</TagLabel>
+      <Tag colorScheme={ colorScheme } display="flex" isLoading={ isLoading } >
+        <IconSvg boxSize={ 2.5 } name={ icon } mr={ 1 } flexShrink={ 0 }/>
+        <TagLabel display="block">{ text }</TagLabel>
       </Tag>
     </Tooltip>
   );

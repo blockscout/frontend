@@ -21,6 +21,7 @@ const Stats = () => {
     handleFilterChange,
     displayedCharts,
     filterQuery,
+    initialFilterQuery,
   } = useStats();
 
   return (
@@ -33,6 +34,8 @@ const Stats = () => {
 
       <Box mb={{ base: 6, sm: 8 }}>
         <StatsFilters
+          isLoading={ isPlaceholderData }
+          initialFilterValue={ initialFilterQuery }
           sections={ sections }
           currentSection={ currentSection }
           onSectionChange={ handleSectionChange }
@@ -44,6 +47,7 @@ const Stats = () => {
 
       <ChartsWidgetsList
         filterQuery={ filterQuery }
+        initialFilterQuery={ initialFilterQuery }
         isError={ isError }
         isPlaceholderData={ isPlaceholderData }
         charts={ displayedCharts }

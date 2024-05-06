@@ -1,24 +1,31 @@
 import { watchAccount, getAccount } from '@wagmi/core';
 import React from 'react';
+import type { Config } from 'wagmi';
+import { useConfig } from 'wagmi';
 
-export function getWalletAccount() {
+export function getWalletAccount(config: Config) {
   try {
-    return getAccount();
+    return getAccount(config);
   } catch (error) {
     return null;
   }
 }
 
 export default function useWatchAccount() {
-  const [ account, setAccount ] = React.useState(getWalletAccount());
+  const config = useConfig();
+  const [ account, setAccount ] = React.useState(getWalletAccount(config));
 
   React.useEffect(() => {
     if (!account) {
       return;
     }
 
-    return watchAccount(setAccount);
-  }, [ account ]);
+    return watchAccount(config, {
+      onChange(account) {
+        setAccount(account);
+      },
+    });
+  }, [ account, config ]);
 
   return account;
 }

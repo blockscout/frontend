@@ -12,11 +12,11 @@ const LayoutHome = ({ children }: Props) => {
   return (
     <Layout.Container>
       <Layout.TopRow/>
-      <HeaderMobile isHomePage/>
+      <HeaderMobile hideSearchBar/>
       <Layout.MainArea>
         <Layout.SideBar/>
         <Layout.MainColumn
-          paddingTop={{ base: 6, lg: 9 }}
+          paddingTop={{ base: 3, lg: 6 }}
         >
           <HeaderAlert/>
           <AppErrorBoundary>

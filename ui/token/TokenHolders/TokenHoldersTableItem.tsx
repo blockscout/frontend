@@ -26,7 +26,7 @@ const TokenTransferTableItem = ({ holder, token, isLoading }: Props) => {
           fontWeight="700"
         />
       </Td>
-      { token.type === 'ERC-1155' && 'token_id' in holder && (
+      { (token.type === 'ERC-1155' || token.type === 'ERC-404') && 'token_id' in holder && (
         <Td verticalAlign="middle">
           <Skeleton isLoaded={ !isLoading } display="inline-block">
             { 'token_id' in holder && holder.token_id }
@@ -38,7 +38,7 @@ const TokenTransferTableItem = ({ holder, token, isLoading }: Props) => {
           { quantity }
         </Skeleton>
       </Td>
-      { token.total_supply && (
+      { token.total_supply && token.type !== 'ERC-404' && (
         <Td verticalAlign="middle" isNumeric>
           <Utilization
             value={ BigNumber(holder.value).div(BigNumber(token.total_supply)).dp(4).toNumber() }

@@ -8,7 +8,7 @@ export const connectAdbutler = `if (!window.AdButler){(function(){var s = docume
 export const placeAd = (() => {
   const feature = config.features.adsBanner;
 
-  if (!feature.isEnabled || feature.provider !== 'adbutler') {
+  if (!('adButler' in feature)) {
     return;
   }
 

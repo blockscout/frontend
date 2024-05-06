@@ -5,6 +5,7 @@ import React from 'react';
 import type { VerifiedContract } from 'types/api/contracts';
 
 import config from 'configs/app';
+import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
 import dayjs from 'lib/date/dayjs';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -20,6 +21,15 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
   const balance = data.coin_balance && data.coin_balance !== '0' ?
     BigNumber(data.coin_balance).div(10 ** config.chain.currency.decimals).dp(6).toFormat() :
     '0';
+
+  const license = (() => {
+    const license = CONTRACT_LICENSES.find((license) => license.type === data.license_type);
+    if (!license || license.type === 'none') {
+      return '-';
+    }
+
+    return license.label;
+  })();
 
   return (
     <Tr>
@@ -51,8 +61,10 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
       <Td>
         <Flex flexWrap="wrap" columnGap={ 2 }>
           <Skeleton isLoaded={ !isLoading } textTransform="capitalize" my={ 1 }>{ data.language }</Skeleton>
-          <Skeleton isLoaded={ !isLoading } color="text_secondary" wordBreak="break-all" my={ 1 }>
-            <span>{ data.compiler_version }</span>
+          <Skeleton isLoaded={ !isLoading } color="text_secondary" wordBreak="break-all" my={ 1 } cursor="pointer">
+            <Tooltip label={ data.compiler_version }>
+              <span>{ data.compiler_version.split('+')[0] }</span>
+            </Tooltip>
           </Skeleton>
         </Flex>
       </Td>
@@ -80,9 +92,11 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
           </Skeleton>
         </Flex>
       </Td>
-      { /* <Td>
-        N/A
-      </Td> */ }
+      <Td>
+        <Skeleton isLoaded={ !isLoading } my={ 1 } display="inline-block">
+          { license }
+        </Skeleton>
+      </Td>
     </Tr>
   );
 };

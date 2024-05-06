@@ -7,6 +7,7 @@ import type { AddressParam } from 'types/api/addressParams';
 
 import { route } from 'nextjs-routes';
 
+import { useAddressHighlightContext } from 'lib/contexts/addressHighlight';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
 import { getIconProps } from '../base/utils';
@@ -27,8 +28,9 @@ const Link = chakra((props: LinkProps) => {
   );
 });
 
-type IconProps = Pick<EntityProps, 'address' | 'isLoading' | 'iconSize' | 'noIcon' | 'isSafeAddress'> & {
+type IconProps = Omit<EntityBase.IconBaseProps, 'name'> & Pick<EntityProps, 'address' | 'isSafeAddress'> & {
   asProp?: As;
+  name?: EntityBase.IconBaseProps['name'];
 };
 
 const Icon = (props: IconProps) => {
@@ -98,18 +100,19 @@ const Icon = (props: IconProps) => {
 type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'address'>;
 
 const Content = chakra((props: ContentProps) => {
-  if (props.address.name) {
+  if (props.address.name || props.address.ens_domain_name) {
+    const text = props.address.ens_domain_name || props.address.name;
     const label = (
       <VStack gap={ 0 } py={ 1 } color="inherit">
-        <Box fontWeight={ 600 } whiteSpace="pre-wrap" wordBreak="break-word">{ props.address.name }</Box>
+        <Box fontWeight={ 600 } whiteSpace="pre-wrap" wordBreak="break-word">{ text }</Box>
         <Box whiteSpace="pre-wrap" wordBreak="break-word">{ props.address.hash }</Box>
       </VStack>
     );
 
     return (
-      <Tooltip label={ label } maxW="100vw">
+      <Tooltip label={ label } maxW={{ base: '100vw', lg: '400px' }}>
         <Skeleton isLoaded={ !props.isLoading } overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" as="span">
-          { props.address.name }
+          { text }
         </Skeleton>
       </Tooltip>
     );
@@ -137,7 +140,7 @@ const Copy = (props: CopyProps) => {
 const Container = EntityBase.Container;
 
 export interface EntityProps extends EntityBase.EntityBaseProps {
-  address: Pick<AddressParam, 'hash' | 'name' | 'is_contract' | 'is_verified' | 'implementation_name'>;
+  address: Pick<AddressParam, 'hash' | 'name' | 'is_contract' | 'is_verified' | 'implementation_name' | 'ens_domain_name'>;
   isSafeAddress?: boolean;
 }
 
@@ -145,9 +148,19 @@ const AddressEntry = (props: EntityProps) => {
   const linkProps = _omit(props, [ 'className' ]);
   const partsProps = _omit(props, [ 'className', 'onClick' ]);
 
+  const context = useAddressHighlightContext();
+
   return (
-    <Container className={ props.className }>
-      <Icon { ...partsProps }/>
+    <Container
+      // we have to use the global classnames here, see theme/global.ts
+      // otherwise, if we use sx prop, Chakra will generate the same styles for each instance of the component on the page
+      className={ `${ props.className } address-entity ${ props.noCopy ? 'address-entity_no-copy' : '' }` }
+      data-hash={ context && !props.isLoading ? props.address.hash : undefined }
+      onMouseEnter={ context?.onMouseEnter }
+      onMouseLeave={ context?.onMouseLeave }
+      position="relative"
+    >
+      <Icon { ...partsProps } color={ props.iconColor }/>
       <Link { ...linkProps }>
         <Content { ...partsProps }/>
       </Link>

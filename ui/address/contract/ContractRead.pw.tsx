@@ -28,7 +28,7 @@ test('base view +@mobile +@dark-mode', async({ mount, page }) => {
 
   const component = await mount(
     <TestApp>
-      <ContractRead addressHash={ addressHash }/>
+      <ContractRead/>
     </TestApp>,
     { hooksConfig },
   );
@@ -37,8 +37,8 @@ test('base view +@mobile +@dark-mode', async({ mount, page }) => {
 
   await expect(component).toHaveScreenshot();
 
-  await component.getByPlaceholder(/address/i).type('address-hash');
-  await component.getByText(/query/i).click();
+  await component.getByPlaceholder(/address/i).fill('0xa113Ce24919C08a26C952E81681dAc861d6a2466');
+  await component.getByText(/read/i).click();
 
   await component.getByText(/wei/i).click();
 

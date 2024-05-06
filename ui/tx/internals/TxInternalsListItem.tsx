@@ -1,13 +1,13 @@
-import { Flex, Box, HStack, Skeleton } from '@chakra-ui/react';
+import { Flex, HStack, Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
 import config from 'configs/app';
+import { currencyUnits } from 'lib/units';
+import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import Tag from 'ui/shared/chakra/Tag';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import IconSvg from 'ui/shared/IconSvg';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
@@ -24,23 +24,15 @@ const TxInternalsListItem = ({ type, from, to, value, success, error, gas_limit:
         { typeTitle && <Tag colorScheme="cyan" isLoading={ isLoading }>{ typeTitle }</Tag> }
         <TxStatus status={ success ? 'ok' : 'error' } errorText={ error } isLoading={ isLoading }/>
       </Flex>
-      <Box w="100%" display="flex" columnGap={ 3 } fontWeight="500">
-        <AddressEntity
-          address={ from }
-          isLoading={ isLoading }
-          width="calc((100% - 48px) / 2)"
-        />
-        <IconSvg name="arrows/east" boxSize={ 6 } color="gray.500" isLoading={ isLoading }/>
-        { toData && (
-          <AddressEntity
-            address={ toData }
-            isLoading={ isLoading }
-            width="calc((100% - 48px) / 2)"
-          />
-        ) }
-      </Box>
+      <AddressFromTo
+        from={ from }
+        to={ toData }
+        isLoading={ isLoading }
+        w="100%"
+        fontWeight="500"
+      />
       <HStack spacing={ 3 }>
-        <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>Value { config.chain.currency.symbol }</Skeleton>
+        <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>Value { currencyUnits.ether }</Skeleton>
         <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary">
           { BigNumber(value).div(BigNumber(10 ** config.chain.currency.decimals)).toFormat() }
         </Skeleton>

@@ -19,7 +19,7 @@ const FilterButton = ({ isActive, isLoading, appliedFiltersNum, onClick, as }: P
   const badgeBgColor = useColorModeValue('blue.700', 'gray.50');
 
   if (isLoading) {
-    return <Skeleton w={{ base: 9, lg: '78px' }} h={ 8 } borderRadius="base"/>;
+    return <Skeleton w={{ base: 9, lg: '78px' }} h={ 8 } borderRadius="base" flexShrink={ 0 }/>;
   }
 
   return (
@@ -35,6 +35,7 @@ const FilterButton = ({ isActive, isLoading, appliedFiltersNum, onClick, as }: P
       px={ 1.5 }
       flexShrink={ 0 }
       as={ as }
+      pointerEvents="all"
     >
       { FilterIcon }
       <Box display={{ base: 'none', lg: 'block' }}>Filter</Box>

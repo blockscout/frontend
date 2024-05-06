@@ -8,7 +8,7 @@ import ContractWriteResultDumb from './ContractWriteResultDumb';
 test('loading', async({ mount }) => {
   const props = {
     txInfo: {
-      status: 'loading' as const,
+      status: 'pending' as const,
       error: null,
     },
     result: {

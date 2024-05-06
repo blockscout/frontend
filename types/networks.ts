@@ -13,6 +13,7 @@ export interface FeaturedNetwork {
 }
 
 export interface NetworkExplorer {
+  logo?: string;
   title: string;
   baseUrl: string;
   paths: {

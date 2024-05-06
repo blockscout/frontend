@@ -14,6 +14,7 @@ const ASSET_URL = tokenInfoERC20a.icon_url as string;
 const TOKENS_ERC20_API_URL = buildApiUrl('address_tokens', { hash: '1' }) + '?type=ERC-20';
 const TOKENS_ERC721_API_URL = buildApiUrl('address_tokens', { hash: '1' }) + '?type=ERC-721';
 const TOKENS_ER1155_API_URL = buildApiUrl('address_tokens', { hash: '1' }) + '?type=ERC-1155';
+const TOKENS_ER404_API_URL = buildApiUrl('address_tokens', { hash: '1' }) + '?type=ERC-404';
 const ADDRESS_API_URL = buildApiUrl('address', { hash: '1' });
 const hooksConfig = {
   router: {
@@ -45,6 +46,10 @@ const test = base.extend({
     await page.route(TOKENS_ER1155_API_URL, async(route) => route.fulfill({
       status: 200,
       body: JSON.stringify(tokensMock.erc1155List),
+    }), { times: 1 });
+    await page.route(TOKENS_ER404_API_URL, async(route) => route.fulfill({
+      status: 200,
+      body: JSON.stringify(tokensMock.erc404List),
     }), { times: 1 });
 
     use(page);
@@ -148,7 +153,7 @@ base('long values', async({ mount, page }) => {
   }), { times: 1 });
   await page.route(TOKENS_ERC20_API_URL, async(route) => route.fulfill({
     status: 200,
-    body: JSON.stringify({ items: [ tokensMock.erc20LongSymbol ] }),
+    body: JSON.stringify({ items: [ tokensMock.erc20LongSymbol, tokensMock.erc20BigAmount ] }),
   }), { times: 1 });
   await page.route(TOKENS_ERC721_API_URL, async(route) => route.fulfill({
     status: 200,
@@ -157,6 +162,10 @@ base('long values', async({ mount, page }) => {
   await page.route(TOKENS_ER1155_API_URL, async(route) => route.fulfill({
     status: 200,
     body: JSON.stringify({ items: [ tokensMock.erc1155LongId ] }),
+  }), { times: 1 });
+  await page.route(TOKENS_ER404_API_URL, async(route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(tokensMock.erc404List),
   }), { times: 1 });
 
   await mount(

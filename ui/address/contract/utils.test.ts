@@ -46,6 +46,7 @@ describe('function prepareAbi()', () => {
     type: 'function' as const,
     constant: false,
     payable: true,
+    method_id: '0x2e0e2d3e',
   };
 
   it('if there is only one method with provided name, does nothing', () => {

@@ -54,6 +54,22 @@ const formConfig: SmartContractVerificationConfig = {
     'petersburg',
     'istanbul',
   ],
+  license_types: {
+    apache_2_0: 12,
+    bsd_2_clause: 8,
+    bsd_3_clause: 9,
+    bsl_1_1: 14,
+    gnu_agpl_v3: 13,
+    gnu_gpl_v2: 4,
+    gnu_gpl_v3: 5,
+    gnu_lgpl_v2_1: 6,
+    gnu_lgpl_v3: 7,
+    mit: 3,
+    mpl_2_0: 10,
+    none: 1,
+    osl_3_0: 11,
+    unlicense: 2,
+  },
 };
 
 test('flatten source code method +@dark-mode +@mobile', async({ mount, page }) => {
@@ -64,9 +80,16 @@ test('flatten source code method +@dark-mode +@mobile', async({ mount, page }) =
     { hooksConfig },
   );
 
+  // select license
+  await component.getByLabel(/contract license/i).focus();
+  await component.getByLabel(/contract license/i).fill('mit');
+  await page.getByRole('button', { name: /mit license/i }).click();
+
+  // select method
   await component.getByLabel(/verification method/i).focus();
-  await component.getByLabel(/verification method/i).type('solidity');
+  await component.getByLabel(/verification method/i).fill('solidity');
   await page.getByRole('button', { name: /flattened source code/i }).click();
+
   await page.getByText(/add contract libraries/i).click();
   await page.locator('button[aria-label="add"]').click();
 
@@ -81,8 +104,9 @@ test('standard input json method', async({ mount, page }) => {
     { hooksConfig },
   );
 
+  // select method
   await component.getByLabel(/verification method/i).focus();
-  await component.getByLabel(/verification method/i).type('solidity');
+  await component.getByLabel(/verification method/i).fill('solidity');
   await page.getByRole('button', { name: /standard json input/i }).click();
 
   await expect(component).toHaveScreenshot();
@@ -102,8 +126,9 @@ test.describe('sourcify', () => {
       { hooksConfig },
     );
 
+    // select method
     await component.getByLabel(/verification method/i).focus();
-    await component.getByLabel(/verification method/i).type('solidity');
+    await component.getByLabel(/verification method/i).fill('solidity');
     await page.getByRole('button', { name: /sourcify/i }).click();
 
     await page.getByText(/drop files/i).click();
@@ -129,7 +154,7 @@ test.describe('sourcify', () => {
     });
 
     await component.getByLabel(/contract name/i).focus();
-    await component.getByLabel(/contract name/i).type('e');
+    await component.getByLabel(/contract name/i).fill('e');
     const contractNameOption = page.getByRole('button', { name: /MockERC20/i });
 
     await expect(contractNameOption).toBeVisible();
@@ -146,8 +171,9 @@ test('multi-part files method', async({ mount, page }) => {
     { hooksConfig },
   );
 
+  // select method
   await component.getByLabel(/verification method/i).focus();
-  await component.getByLabel(/verification method/i).type('solidity');
+  await component.getByLabel(/verification method/i).fill('solidity');
   await page.getByRole('button', { name: /multi-part files/i }).click();
 
   await expect(component).toHaveScreenshot();
@@ -161,8 +187,9 @@ test('vyper contract method', async({ mount, page }) => {
     { hooksConfig },
   );
 
+  // select method
   await component.getByLabel(/verification method/i).focus();
-  await component.getByLabel(/verification method/i).type('vyper');
+  await component.getByLabel(/verification method/i).fill('vyper');
   await page.getByRole('button', { name: /contract/i }).click();
 
   await expect(component).toHaveScreenshot();
@@ -176,8 +203,9 @@ test('vyper multi-part method', async({ mount, page }) => {
     { hooksConfig },
   );
 
+  // select method
   await component.getByLabel(/verification method/i).focus();
-  await component.getByLabel(/verification method/i).type('vyper');
+  await component.getByLabel(/verification method/i).fill('vyper');
   await page.getByRole('button', { name: /multi-part files/i }).click();
 
   await expect(component).toHaveScreenshot();
@@ -191,8 +219,9 @@ test('vyper vyper-standard-input method', async({ mount, page }) => {
     { hooksConfig },
   );
 
+  // select method
   await component.getByLabel(/verification method/i).focus();
-  await component.getByLabel(/verification method/i).type('vyper');
+  await component.getByLabel(/verification method/i).fill('vyper');
   await page.getByRole('button', { name: /standard json input/i }).click();
 
   await expect(component).toHaveScreenshot();

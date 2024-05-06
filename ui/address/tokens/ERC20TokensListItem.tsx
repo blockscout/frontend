@@ -46,17 +46,17 @@ const ERC20TokensListItem = ({ token, value, isLoading }: Props) => {
           </Skeleton>
         </HStack>
       ) }
-      <HStack spacing={ 3 }>
+      <HStack spacing={ 3 } alignItems="baseline">
         <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>Quantity</Skeleton>
-        <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary">
+        <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary" whiteSpace="pre-wrap" wordBreak="break-word">
           <span>{ tokenQuantity }</span>
         </Skeleton>
       </HStack>
       { tokenValue !== undefined && (
-        <HStack spacing={ 3 }>
+        <HStack spacing={ 3 } alignItems="baseline">
           <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>Value</Skeleton>
-          <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary">
-            <span>{ tokenValue }</span>
+          <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary" whiteSpace="pre-wrap" wordBreak="break-word">
+            <span>${ tokenValue }</span>
           </Skeleton>
         </HStack>
       ) }

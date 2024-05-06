@@ -2,6 +2,7 @@ import * as Sentry from '@sentry/react';
 import { BrowserTracing } from '@sentry/tracing';
 
 import appConfig from 'configs/app';
+import { RESOURCE_LOAD_ERROR_MESSAGE } from 'lib/errors/throwOnResourceLoadError';
 
 const feature = appConfig.features.sentry;
 
@@ -59,6 +60,9 @@ export const config: Sentry.BrowserOptions | undefined = (() => {
       'The quota has been exceeded',
       'Attempt to connect to relay via',
       'WebSocket connection failed for URL: wss://relay.walletconnect.com',
+
+      // API errors
+      RESOURCE_LOAD_ERROR_MESSAGE,
     ],
     denyUrls: [
       // Facebook flakiness

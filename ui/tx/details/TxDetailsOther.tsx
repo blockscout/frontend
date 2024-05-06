@@ -21,6 +21,7 @@ const TxDetailsOther = ({ nonce, type, position }: Props) => {
               <Text as="span" fontWeight="500">Txn type: </Text>
               <Text fontWeight="600" as="span">{ type }</Text>
               { type === 2 && <Text fontWeight="400" as="span" ml={ 1 } variant="secondary">(EIP-1559)</Text> }
+              { type === 3 && <Text fontWeight="400" as="span" ml={ 1 } variant="secondary">(EIP-4844)</Text> }
             </Box>
           ),
           <Box key="nonce">

@@ -35,11 +35,12 @@ export type Props = {
   isLoading: boolean;
   className?: string;
   isError: boolean;
+  emptyText?: string;
 }
 
 const DOWNLOAD_IMAGE_SCALE = 5;
 
-const ChartWidget = ({ items, title, description, isLoading, className, isError, units }: Props) => {
+const ChartWidget = ({ items, title, description, isLoading, className, isError, units, emptyText }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   const [ isFullscreen, setIsFullscreen ] = useState(false);
   const [ isZoomResetInitial, setIsZoomResetInitial ] = React.useState(true);
@@ -134,7 +135,7 @@ const ChartWidget = ({ items, title, description, isLoading, className, isError,
     if (!hasItems) {
       return (
         <Center flexGrow={ 1 }>
-          <Text variant="secondary" fontSize="sm">No data</Text>
+          <Text variant="secondary" fontSize="sm">{ emptyText || 'No data' }</Text>
         </Center>
       );
     }
@@ -207,7 +208,7 @@ const ChartWidget = ({ items, title, description, isLoading, className, isError,
                   <MenuButton
                     w="36px"
                     h="32px"
-                    icon={ <IconSvg name="vertical_dots" w={ 4 } h={ 4 }/> }
+                    icon={ <IconSvg name="dots" boxSize={ 4 } transform="rotate(-90deg)"/> }
                     colorScheme="gray"
                     variant="ghost"
                     as={ IconButton }

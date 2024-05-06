@@ -14,7 +14,7 @@ interface Props {
 
 const SOCIAL_LINKS: Array<Omit<ServiceLinkProps, 'href'>> = [
   { field: 'github', icon: 'social/github_filled', title: 'Github' },
-  { field: 'twitter', icon: 'social/twitter_filled', title: 'Twitter' },
+  { field: 'twitter', icon: 'social/twitter_filled', title: 'X (ex-Twitter)' },
   { field: 'telegram', icon: 'social/telegram_filled', title: 'Telegram' },
   { field: 'openSea', icon: 'social/opensea_filled', title: 'OpenSea' },
   { field: 'linkedin', icon: 'social/linkedin_filled', title: 'LinkedIn' },

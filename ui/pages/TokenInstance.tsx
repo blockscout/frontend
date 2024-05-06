@@ -7,12 +7,16 @@ import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
+import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as metadata from 'lib/metadata';
 import * as regexp from 'lib/regexp';
-import { TOKEN_INSTANCE, TOKEN_INFO_ERC_1155 } from 'stubs/token';
-import * as tokenStubs from 'stubs/token';
-import { generateListStub } from 'stubs/utils';
+import {
+  TOKEN_INSTANCE,
+  TOKEN_INFO_ERC_1155,
+  getTokenInstanceTransfersStub,
+  getTokenInstanceHoldersStub,
+} from 'stubs/token';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import TextAd from 'ui/shared/ad/TextAd';
@@ -65,11 +69,7 @@ const TokenInstanceContent = () => {
     scrollRef,
     options: {
       enabled: Boolean(hash && id && (!tab || tab === 'token_transfers') && !tokenInstanceQuery.isPlaceholderData && tokenInstanceQuery.data),
-      placeholderData: generateListStub<'token_instance_transfers'>(
-        tokenQuery.data?.type === 'ERC-1155' ? tokenStubs.TOKEN_TRANSFER_ERC_1155 : tokenStubs.TOKEN_TRANSFER_ERC_721,
-        10,
-        { next_page_params: null },
-      ),
+      placeholderData: getTokenInstanceTransfersStub(tokenQuery.data?.type, null),
     },
   });
 
@@ -85,8 +85,7 @@ const TokenInstanceContent = () => {
     scrollRef,
     options: {
       enabled: Boolean(hash && tab === 'holders' && shouldFetchHolders),
-      placeholderData: generateListStub<'token_instance_holders'>(
-        tokenQuery.data?.type === 'ERC-1155' ? tokenStubs.TOKEN_HOLDER_ERC_1155 : tokenStubs.TOKEN_HOLDER_ERC_20, 10, { next_page_params: null }),
+      placeholderData: getTokenInstanceHoldersStub(tokenQuery.data?.type, null),
     },
   });
 
@@ -129,9 +128,7 @@ const TokenInstanceContent = () => {
     ) },
   ].filter(Boolean);
 
-  if (tokenInstanceQuery.isError) {
-    throw Error('Token instance fetch failed', { cause: tokenInstanceQuery.error });
-  }
+  throwOnResourceLoadError(tokenInstanceQuery);
 
   const tokenTag = <Tag isLoading={ tokenInstanceQuery.isPlaceholderData }>{ tokenQuery.data?.type }</Tag>;
 
@@ -177,20 +174,34 @@ const TokenInstanceContent = () => {
     pagination = holdersQuery.pagination;
   }
 
+  const title = (() => {
+    if (typeof tokenInstanceQuery.data?.metadata?.name === 'string') {
+      return tokenInstanceQuery.data.metadata.name;
+    }
+
+    if (tokenQuery.data?.symbol) {
+      return (tokenQuery.data.name || tokenQuery.data.symbol) + ' #' + tokenInstanceQuery.data?.id;
+    }
+
+    return `ID ${ tokenInstanceQuery.data?.id }`;
+  })();
+
   const titleSecondRow = (
     <Flex alignItems="center" w="100%" minW={ 0 } columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
-      <TokenEntity
-        token={ tokenQuery.data }
-        isLoading={ isLoading }
-        noSymbol
-        noCopy
-        jointSymbol
-        fontFamily="heading"
-        fontSize="lg"
-        fontWeight={ 500 }
-        w="auto"
-        maxW="700px"
-      />
+      { tokenQuery.data && (
+        <TokenEntity
+          token={ tokenQuery.data }
+          isLoading={ isLoading }
+          noSymbol
+          noCopy
+          jointSymbol
+          fontFamily="heading"
+          fontSize="lg"
+          fontWeight={ 500 }
+          w="auto"
+          maxW="700px"
+        />
+      ) }
       { !isLoading && tokenInstanceQuery.data && <AddressAddToWallet token={ tokenQuery.data } variant="button"/> }
       <AddressQrCode address={ address } isLoading={ isLoading }/>
       <AccountActionsMenu isLoading={ isLoading }/>
@@ -202,7 +213,7 @@ const TokenInstanceContent = () => {
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        title={ `ID ${ tokenInstanceQuery.data?.id }` }
+        title={ title }
         backLink={ backLink }
         contentAfter={ tokenTag }
         secondRow={ titleSecondRow }
