@@ -37,4 +37,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   blockHiddenFields: [
     [ 'NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS', '["burnt_fees", "total_reward", "nonce"]' ],
   ],
+  noWalletClient: [
+    [ 'NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID', '' ],
+  ],
 };
