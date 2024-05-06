@@ -1,9 +1,7 @@
-import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import * as statsMock from 'mocks/stats/index';
-import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
-import TestApp from 'playwright/TestApp';
+import { test, expect } from 'playwright/lib';
 import * as configs from 'playwright/utils/configs';
 
 import GasTrackerPriceSnippet from './GasTrackerPriceSnippet';
@@ -13,48 +11,57 @@ test.use({ viewport: configs.viewport.md });
 const data = statsMock.base.gas_prices.fast;
 const clip = { x: 0, y: 0, width: 334, height: 204 };
 
-test('with usd as primary unit +@dark-mode', async({ mount, page }) => {
-  await mount(
-    <TestApp>
-      <GasTrackerPriceSnippet
-        data={ data }
-        type="fast"
-        isLoading={ false }
-      />
-    </TestApp>,
+test('with usd as primary unit +@dark-mode', async({ render, page }) => {
+  await render(
+    <GasTrackerPriceSnippet
+      data={ data }
+      type="fast"
+      isLoading={ false }
+    />,
   );
   await expect(page).toHaveScreenshot({ clip });
 });
 
-test('loading state', async({ mount, page }) => {
-  await mount(
-    <TestApp>
-      <GasTrackerPriceSnippet
-        data={ data }
-        type="fast"
-        isLoading={ true }
-      />
-    </TestApp>,
+test('loading state', async({ render, page }) => {
+  await render(
+    <GasTrackerPriceSnippet
+      data={ data }
+      type="fast"
+      isLoading={ true }
+    />,
   );
   await expect(page).toHaveScreenshot({ clip });
 });
 
-const gweiUnitsTest = test.extend({
-  context: contextWithEnvs([
-    { name: 'NEXT_PUBLIC_GAS_TRACKER_UNITS', value: '["gwei","usd"]' },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ]) as any,
+test('with gwei as primary unit +@dark-mode', async({ render, page, mockEnvs }) => {
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_GAS_TRACKER_UNITS', '["gwei","usd"]' ],
+  ]);
+  await render(
+    <GasTrackerPriceSnippet
+      data={ data }
+      type="slow"
+      isLoading={ false }
+    />,
+  );
+  await expect(page).toHaveScreenshot({ clip });
 });
 
-gweiUnitsTest('with gwei as primary unit +@dark-mode', async({ mount, page }) => {
-  await mount(
-    <TestApp>
-      <GasTrackerPriceSnippet
-        data={ data }
-        type="slow"
-        isLoading={ false }
-      />
-    </TestApp>,
+test('with zero values', async({ render, page }) => {
+  const data = {
+    fiat_price: '1.74',
+    price: 0.0,
+    time: 0,
+    base_fee: 0,
+    priority_fee: 0,
+  };
+
+  await render(
+    <GasTrackerPriceSnippet
+      data={ data }
+      type="slow"
+      isLoading={ false }
+    />,
   );
   await expect(page).toHaveScreenshot({ clip });
 });

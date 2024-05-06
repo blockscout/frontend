@@ -66,7 +66,7 @@ const ProfileMenuMobile = () => {
           autoFocus={ false }
         >
           <DrawerOverlay/>
-          <DrawerContent maxWidth="260px">
+          <DrawerContent maxWidth="300px">
             <DrawerBody p={ 6 }>
               <ProfileMenuContent data={ data } onNavLinkClick={ onClose }/>
             </DrawerBody>

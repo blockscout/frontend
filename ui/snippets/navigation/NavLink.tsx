@@ -20,16 +20,17 @@ type Props = {
   px?: string | number;
   className?: string;
   onClick?: () => void;
+  disableActiveState?: boolean;
 }
 
-const NavLink = ({ item, isCollapsed, px, className, onClick }: Props) => {
+const NavLink = ({ item, isCollapsed, px, className, onClick, disableActiveState }: Props) => {
   const isMobile = useIsMobile();
   const colors = useColors();
 
   const isExpanded = isCollapsed === false;
   const isInternalLink = isInternalItem(item);
 
-  const styleProps = useNavLinkStyleProps({ isCollapsed, isExpanded, isActive: isInternalLink && item.isActive });
+  const styleProps = useNavLinkStyleProps({ isCollapsed, isExpanded, isActive: isInternalLink && item.isActive && !disableActiveState });
   const isXLScreen = useBreakpointValue({ base: false, xl: true });
   const href = isInternalLink ? route(item.nextRoute) : item.url;
 
