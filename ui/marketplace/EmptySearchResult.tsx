@@ -20,7 +20,7 @@ const EmptySearchResult = ({ favoriteApps, selectedCategoryId }: Props) => (
     text={
       (selectedCategoryId === MarketplaceCategory.FAVORITES && !favoriteApps.length) ? (
         <>
-          You don{ apos }t have any favorite apps.
+          You don{ apos }t have any favorite apps.<br/>
           Click on the <IconSvg name="star_outline" w={ 4 } h={ 4 } mb={ -0.5 }/> icon on the app{ apos }s card to add it to Favorites.
         </>
       ) : (
@@ -28,7 +28,7 @@ const EmptySearchResult = ({ favoriteApps, selectedCategoryId }: Props) => (
           No matching apps found.
           { 'suggestIdeasFormUrl' in feature && (
             <>
-              { ' ' }Have a groundbreaking idea or app suggestion?{ ' ' }
+              { ' ' }Have a groundbreaking idea or app suggestion?<br/>
               <LinkExternal href={ feature.suggestIdeasFormUrl }>Share it with us</LinkExternal>
             </>
           ) }

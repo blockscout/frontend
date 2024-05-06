@@ -45,6 +45,7 @@ export default function useWallet({ source }: Params) {
   const isWalletConnected = isClientLoaded && !isDisconnected && address !== undefined;
 
   return {
+    openModal: open,
     isWalletConnected,
     address: address || '',
     connect: handleConnect,

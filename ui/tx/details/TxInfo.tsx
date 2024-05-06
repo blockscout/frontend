@@ -160,7 +160,8 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           </Tag>
         ) }
       </DetailsInfoItem>
-      { rollupFeature.isEnabled && rollupFeature.type === 'optimistic' && data.op_withdrawals && data.op_withdrawals.length > 0 && (
+      { rollupFeature.isEnabled && rollupFeature.type === 'optimistic' && data.op_withdrawals && data.op_withdrawals.length > 0 &&
+      !config.UI.views.tx.hiddenFields?.L1_status && (
         <DetailsInfoItem
           title="Withdrawal status"
           hint="Detailed status progress of the transaction"
@@ -181,7 +182,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           </Flex>
         </DetailsInfoItem>
       ) }
-      { data.zkevm_status && (
+      { data.zkevm_status && !config.UI.views.tx.hiddenFields?.L1_status && (
         <DetailsInfoItem
           title="Confirmation status"
           hint="Status of the transaction confirmation path to L1"
@@ -198,7 +199,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           <TxRevertReason { ...data.revert_reason }/>
         </DetailsInfoItem>
       ) }
-      { data.zksync && (
+      { data.zksync && !config.UI.views.tx.hiddenFields?.L1_status && (
         <DetailsInfoItem
           title="L1 status"
           hint="Status is the short interpretation of the batch lifecycle"
@@ -229,7 +230,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           </>
         ) }
       </DetailsInfoItem>
-      { data.zkevm_batch_number && (
+      { data.zkevm_batch_number && !config.UI.views.tx.hiddenFields?.batch && (
         <DetailsInfoItem
           title="Tx batch"
           hint="Batch index for this transaction"
@@ -241,7 +242,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           />
         </DetailsInfoItem>
       ) }
-      { data.zksync && (
+      { data.zksync && !config.UI.views.tx.hiddenFields?.batch && (
         <DetailsInfoItem
           title="Batch"
           hint="Batch number"

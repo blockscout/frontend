@@ -1,4 +1,4 @@
-import { Box, Button, Text, VStack, useColorModeValue } from '@chakra-ui/react';
+import { Box, Button, VStack, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { UserInfo } from 'types/api/account';
@@ -18,7 +18,6 @@ type Props = {
 
 const ProfileMenuContent = ({ data, onNavLinkClick }: Props) => {
   const { accountNavItems, profileItem } = useNavItems();
-  const primaryTextColor = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
 
   const handleSingOutClick = React.useCallback(() => {
     mixpanel.logEvent(
@@ -32,37 +31,28 @@ const ProfileMenuContent = ({ data, onNavLinkClick }: Props) => {
     return null;
   }
 
+  const userName = data?.email || data?.nickname || data?.name;
+
   return (
     <Box>
-      { (data?.name || data?.nickname) && (
-        <Text
+      { userName && (
+        <Box
           fontSize="sm"
           fontWeight={ 500 }
-          color={ primaryTextColor }
-          { ...getDefaultTransitionProps() }
-        >
-        Signed in as { data.name || data.nickname }
-        </Text>
-      ) }
-      { data?.email && (
-        <Text
-          fontSize="sm"
           mb={ 1 }
-          fontWeight={ 500 }
-          color="gray.500"
-          { ...getDefaultTransitionProps() }
         >
-          { data.email }
-        </Text>
+          <span>Signed in as </span>
+          <chakra.span color="text_secondary">{ userName }</chakra.span>
+        </Box>
       ) }
-      <NavLink item={ profileItem } isActive={ undefined } px="0px" isCollapsed={ false } onClick={ onNavLinkClick }/>
+      <NavLink item={ profileItem } disableActiveState={ true } px="0px" isCollapsed={ false } onClick={ onNavLinkClick }/>
       <Box as="nav" mt={ 2 } pt={ 2 } borderTopColor="divider" borderTopWidth="1px" { ...getDefaultTransitionProps() }>
         <VStack as="ul" spacing="0" alignItems="flex-start" overflow="hidden">
           { accountNavItems.map((item) => (
             <NavLink
               key={ item.text }
               item={ item }
-              isActive={ undefined }
+              disableActiveState={ true }
               isCollapsed={ false }
               px="0px"
               onClick={ onNavLinkClick }

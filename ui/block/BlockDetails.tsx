@@ -220,28 +220,28 @@ const BlockDetails = ({ query }: Props) => {
         </DetailsInfoItem>
       ) }
 
-      { rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && data.zksync && (
-        <>
-          <DetailsInfoItem
-            title="Batch"
-            hint="Batch number"
-            isLoading={ isPlaceholderData }
-          >
-            { data.zksync.batch_number ? (
-              <BatchEntityL2
-                isLoading={ isPlaceholderData }
-                number={ data.zksync.batch_number }
-              />
-            ) : <Skeleton isLoaded={ !isPlaceholderData }>Pending</Skeleton> }
-          </DetailsInfoItem>
-          <DetailsInfoItem
-            title="Status"
-            hint="Status is the short interpretation of the batch lifecycle"
-            isLoading={ isPlaceholderData }
-          >
-            <VerificationSteps steps={ ZKSYNC_L2_TX_BATCH_STATUSES } currentStep={ data.zksync.status } isLoading={ isPlaceholderData }/>
-          </DetailsInfoItem>
-        </>
+      { rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && data.zksync && !config.UI.views.block.hiddenFields?.batch && (
+        <DetailsInfoItem
+          title="Batch"
+          hint="Batch number"
+          isLoading={ isPlaceholderData }
+        >
+          { data.zksync.batch_number ? (
+            <BatchEntityL2
+              isLoading={ isPlaceholderData }
+              number={ data.zksync.batch_number }
+            />
+          ) : <Skeleton isLoaded={ !isPlaceholderData }>Pending</Skeleton> }
+        </DetailsInfoItem>
+      ) }
+      { rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && data.zksync && !config.UI.views.block.hiddenFields?.L1_status && (
+        <DetailsInfoItem
+          title="Status"
+          hint="Status is the short interpretation of the batch lifecycle"
+          isLoading={ isPlaceholderData }
+        >
+          <VerificationSteps steps={ ZKSYNC_L2_TX_BATCH_STATUSES } currentStep={ data.zksync.status } isLoading={ isPlaceholderData }/>
+        </DetailsInfoItem>
       ) }
 
       { !config.UI.views.block.hiddenFields?.miner && (
