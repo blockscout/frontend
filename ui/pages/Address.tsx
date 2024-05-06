@@ -10,6 +10,8 @@ import { useAppContext } from 'lib/contexts/app';
 import useContractTabs from 'lib/hooks/useContractTabs';
 import useIsSafeAddress from 'lib/hooks/useIsSafeAddress';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import useSocketChannel from 'lib/socket/useSocketChannel';
+import useSocketMessage from 'lib/socket/useSocketMessage';
 import { ADDRESS_TABS_COUNTERS } from 'stubs/address';
 import { USER_OPS_ACCOUNT } from 'stubs/userOps';
 import AddressAccountHistory from 'ui/address/AddressAccountHistory';
@@ -69,13 +71,27 @@ const AddressPageContent = () => {
     },
   });
 
+  const isLoading = addressQuery.isPlaceholderData || (config.features.userOps.isEnabled && userOpsAccountQuery.isPlaceholderData);
+  const isTabsLoading = isLoading || addressTabsCountersQuery.isPlaceholderData;
+
+  const handleFetchedBytecodeMessage = React.useCallback(() => {
+    addressQuery.refetch();
+  }, [ addressQuery ]);
+
+  const channel = useSocketChannel({
+    topic: `addresses:${ hash?.toLowerCase() }`,
+    isDisabled: isTabsLoading || addressQuery.isDegradedData || Boolean(addressQuery.data?.is_contract),
+  });
+  useSocketMessage({
+    channel,
+    event: 'fetched_bytecode',
+    handler: handleFetchedBytecodeMessage,
+  });
+
   const isSafeAddress = useIsSafeAddress(!addressQuery.isPlaceholderData && addressQuery.data?.is_contract ? hash : undefined);
   const safeIconColor = useColorModeValue('black', 'white');
 
   const contractTabs = useContractTabs(addressQuery.data, addressQuery.isPlaceholderData);
-
-  const isLoading = addressQuery.isPlaceholderData || (config.features.userOps.isEnabled && userOpsAccountQuery.isPlaceholderData);
-  const isTabsLoading = isLoading || addressTabsCountersQuery.isPlaceholderData;
 
   const tabs: Array<RoutedTab> = React.useMemo(() => {
     return [

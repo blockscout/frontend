@@ -52,8 +52,11 @@ const TabsWithScroll = ({
   }, [ tabs ]);
 
   const handleTabChange = React.useCallback((index: number) => {
+    if (isLoading) {
+      return;
+    }
     onTabChange ? onTabChange(index) : setActiveTabIndex(index);
-  }, [ onTabChange ]);
+  }, [ isLoading, onTabChange ]);
 
   useEffect(() => {
     if (defaultTabIndex !== undefined) {
