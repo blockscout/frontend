@@ -48,16 +48,18 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
     },
   });
 
-  const content = (() => {
-    const hasNovesInterpretation = isNovesInterpretation &&
+  const hasNovesInterpretation = isNovesInterpretation &&
     (novesInterpretationQuery.isPlaceholderData || Boolean(novesInterpretationQuery.data?.classificationData.description));
 
-    const hasInternalInterpretation = (hasInterpretationFeature && !isNovesInterpretation) &&
-    (txInterpretationQuery.isPlaceholderData || Boolean(txInterpretationQuery.data?.data.summaries.length));
+  const hasInternalInterpretation = (hasInterpretationFeature && !isNovesInterpretation) &&
+  (txInterpretationQuery.isPlaceholderData || Boolean(txInterpretationQuery.data?.data.summaries.length));
 
-    const hasViewAllInterpretationsLink =
-      !txInterpretationQuery.isPlaceholderData && txInterpretationQuery.data?.data.summaries && txInterpretationQuery.data?.data.summaries.length > 1;
+  const hasViewAllInterpretationsLink =
+    !txInterpretationQuery.isPlaceholderData && txInterpretationQuery.data?.data.summaries && txInterpretationQuery.data?.data.summaries.length > 1;
 
+  const hasAnyInterpretation = (hasNovesInterpretation && novesInterpretationQuery.data) || hasInternalInterpretation;
+
+  const content = (() => {
     if (hasNovesInterpretation && novesInterpretationQuery.data) {
       const novesSummary = createNovesSummaryObject(novesInterpretationQuery.data);
 
@@ -122,7 +124,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
         mt={{ base: 3, lg: 0 }}
       >
         { !hasTag && <AccountActionsMenu/> }
-        { (actionData && isExperiment) && <ActionButton data={ actionData } txHash={ hash } source="Txn"/> }
+        { (actionData && isExperiment && hasAnyInterpretation) && <ActionButton data={ actionData } txHash={ hash } source="Txn"/> }
         <NetworkExplorers type="tx" pathParam={ hash } ml={{ base: 0, lg: 'auto' }}/>
       </Flex>
     </Box>
