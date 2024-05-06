@@ -32,7 +32,7 @@ const MarketplaceListWithScores = ({
   showContractList,
 }: Props) => {
 
-  const displayedApps = React.useMemo(() => apps.sort((a, b) => {
+  const displayedApps = React.useMemo(() => [ ...apps ].sort((a, b) => {
     if (!a.securityReport) {
       return 1;
     } else if (!b.securityReport) {

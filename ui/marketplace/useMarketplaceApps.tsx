@@ -18,13 +18,13 @@ function isAppNameMatches(q: string, app: MarketplaceAppWithSecurityReport) {
   return app.title.toLowerCase().includes(q.toLowerCase());
 }
 
-function isAppCategoryMatches(category: string, app: MarketplaceAppWithSecurityReport, favoriteApps: Array<string>) {
+function isAppCategoryMatches(category: string, app: MarketplaceAppWithSecurityReport, favoriteApps: Array<string> = []) {
   return category === MarketplaceCategory.ALL ||
       (category === MarketplaceCategory.FAVORITES && favoriteApps.includes(app.id)) ||
       app.categories.includes(category);
 }
 
-function sortApps(apps: Array<MarketplaceAppWithSecurityReport>, favoriteApps: Array<string>) {
+function sortApps(apps: Array<MarketplaceAppWithSecurityReport>, favoriteApps: Array<string> = []) {
   return apps.sort((a, b) => {
     const priorityA = a.priority || 0;
     const priorityB = b.priority || 0;
@@ -60,17 +60,19 @@ export default function useMarketplaceApps(
 
   const { data: securityReports, isPlaceholderData: isSecurityReportsPlaceholderData } = useSecurityReports();
 
-  // Update favorite apps only when selectedCategoryId changes to avoid sortApps to be called on each favorite app click
+  // Set the value only 1 time to avoid unnecessary useQuery calls and re-rendering of all applications
   const [ snapshotFavoriteApps, setSnapshotFavoriteApps ] = React.useState<Array<string> | undefined>();
+  const isInitialSetup = React.useRef(true);
 
   React.useEffect(() => {
-    if (isFavoriteAppsLoaded) {
-      setSnapshotFavoriteApps(favoriteApps);
+    if (isInitialSetup.current && (isFavoriteAppsLoaded || favoriteApps === undefined)) {
+      setSnapshotFavoriteApps(favoriteApps || []);
+      isInitialSetup.current = false;
     }
-  }, [ selectedCategoryId, isFavoriteAppsLoaded ]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [ isFavoriteAppsLoaded, favoriteApps ]);
 
   const { isPlaceholderData, isError, error, data } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppWithSecurityReport>>({
-    queryKey: [ 'marketplace-dapps', snapshotFavoriteApps, favoriteApps ],
+    queryKey: [ 'marketplace-dapps', snapshotFavoriteApps ],
     queryFn: async() => {
       if (!feature.isEnabled) {
         return [];
@@ -80,10 +82,10 @@ export default function useMarketplaceApps(
         return apiFetch('marketplace_dapps', { pathParams: { chainId: config.chain.id } });
       }
     },
-    select: (data) => sortApps(data as Array<MarketplaceAppWithSecurityReport>, snapshotFavoriteApps || []),
+    select: (data) => sortApps(data as Array<MarketplaceAppWithSecurityReport>, snapshotFavoriteApps),
     placeholderData: feature.isEnabled ? Array(9).fill(MARKETPLACE_APP) : undefined,
     staleTime: Infinity,
-    enabled: feature.isEnabled && (!favoriteApps || Boolean(snapshotFavoriteApps)),
+    enabled: feature.isEnabled && Boolean(snapshotFavoriteApps),
   });
 
   const appsWithSecurityReports = React.useMemo(() =>
@@ -91,7 +93,7 @@ export default function useMarketplaceApps(
   [ data, securityReports ]);
 
   const displayedApps = React.useMemo(() => {
-    return appsWithSecurityReports?.filter(app => isAppNameMatches(filter, app) && isAppCategoryMatches(selectedCategoryId, app, favoriteApps || [])) || [];
+    return appsWithSecurityReports?.filter(app => isAppNameMatches(filter, app) && isAppCategoryMatches(selectedCategoryId, app, favoriteApps)) || [];
   }, [ selectedCategoryId, appsWithSecurityReports, filter, favoriteApps ]);
 
   return React.useMemo(() => ({
