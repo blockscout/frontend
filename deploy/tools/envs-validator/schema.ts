@@ -349,12 +349,20 @@ const accountSchema = yup
         then: (schema) => schema.test(urlTest).required(),
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_LOGOUT_URL cannot not be used if NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED is not set to "true"'),
       }),
+  });
+
+const adminServiceSchema = yup
+  .object()
+  .shape({
     NEXT_PUBLIC_ADMIN_SERVICE_API_HOST: yup
       .string()
-      .when('NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED', {
-        is: (value: boolean) => value,
+      .when([ 'NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED', 'NEXT_PUBLIC_MARKETPLACE_ENABLED' ], {
+        is: (value1: boolean, value2: boolean) => value1 || value2,
         then: (schema) => schema.test(urlTest),
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_ADMIN_SERVICE_API_HOST cannot not be used if NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED is not set to "true"'),
+        otherwise: (schema) => schema.max(
+          -1,
+          'NEXT_PUBLIC_ADMIN_SERVICE_API_HOST cannot not be used if NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED or NEXT_PUBLIC_MARKETPLACE_ENABLED is not set to "true"',
+        ),
       }),
   });
 
@@ -631,6 +639,7 @@ const schema = yup
   .concat(rollupSchema)
   .concat(beaconChainSchema)
   .concat(bridgedTokensSchema)
-  .concat(sentrySchema);
+  .concat(sentrySchema)
+  .concat(adminServiceSchema);
 
 export default schema;

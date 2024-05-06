@@ -7,7 +7,6 @@ import { STORAGE_KEY, STORAGE_LIMIT } from './consts';
 
 export interface GrowthBookFeatures {
   test_value: string;
-  security_score_exp: boolean;
   action_button_exp: boolean;
 }
 

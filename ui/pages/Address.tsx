@@ -2,14 +2,18 @@ import { Box, Flex, HStack, useColorModeValue } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { EntityTag } from 'ui/shared/EntityTags/types';
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
+import useAddressMetadataInfoQuery from 'lib/address/useAddressMetadataInfoQuery';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import useContractTabs from 'lib/hooks/useContractTabs';
 import useIsSafeAddress from 'lib/hooks/useIsSafeAddress';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import useSocketChannel from 'lib/socket/useSocketChannel';
+import useSocketMessage from 'lib/socket/useSocketMessage';
 import { ADDRESS_TABS_COUNTERS } from 'stubs/address';
 import { USER_OPS_ACCOUNT } from 'stubs/userOps';
 import AddressAccountHistory from 'ui/address/AddressAccountHistory';
@@ -34,7 +38,9 @@ import TextAd from 'ui/shared/ad/TextAd';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
-import EntityTags from 'ui/shared/EntityTags';
+import EntityTags from 'ui/shared/EntityTags/EntityTags';
+import formatUserTags from 'ui/shared/EntityTags/formatUserTags';
+import sortEntityTags from 'ui/shared/EntityTags/sortEntityTags';
 import IconSvg from 'ui/shared/IconSvg';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -69,13 +75,30 @@ const AddressPageContent = () => {
     },
   });
 
+  const addressesForMetadataQuery = React.useMemo(() => ([ hash ].filter(Boolean)), [ hash ]);
+  const addressMetadataQuery = useAddressMetadataInfoQuery(addressesForMetadataQuery);
+
+  const isLoading = addressQuery.isPlaceholderData || (config.features.userOps.isEnabled && userOpsAccountQuery.isPlaceholderData);
+  const isTabsLoading = isLoading || addressTabsCountersQuery.isPlaceholderData;
+
+  const handleFetchedBytecodeMessage = React.useCallback(() => {
+    addressQuery.refetch();
+  }, [ addressQuery ]);
+
+  const channel = useSocketChannel({
+    topic: `addresses:${ hash?.toLowerCase() }`,
+    isDisabled: isTabsLoading || addressQuery.isDegradedData || Boolean(addressQuery.data?.is_contract),
+  });
+  useSocketMessage({
+    channel,
+    event: 'fetched_bytecode',
+    handler: handleFetchedBytecodeMessage,
+  });
+
   const isSafeAddress = useIsSafeAddress(!addressQuery.isPlaceholderData && addressQuery.data?.is_contract ? hash : undefined);
   const safeIconColor = useColorModeValue('black', 'white');
 
   const contractTabs = useContractTabs(addressQuery.data, addressQuery.isPlaceholderData);
-
-  const isLoading = addressQuery.isPlaceholderData || (config.features.userOps.isEnabled && userOpsAccountQuery.isPlaceholderData);
-  const isTabsLoading = isLoading || addressTabsCountersQuery.isPlaceholderData;
 
   const tabs: Array<RoutedTab> = React.useMemo(() => {
     return [
@@ -169,18 +192,27 @@ const AddressPageContent = () => {
     ].filter(Boolean);
   }, [ addressQuery.data, contractTabs, addressTabsCountersQuery.data, userOpsAccountQuery.data, isTabsLoading ]);
 
-  const tags = (
+  const tags: Array<EntityTag> = React.useMemo(() => {
+    return [
+      !addressQuery.data?.is_contract ? { slug: 'eoa', name: 'EOA', tagType: 'custom' as const, ordinal: -1 } : undefined,
+      config.features.validators.isEnabled && addressQuery.data?.has_validated_blocks ?
+        { slug: 'validator', name: 'Validator', tagType: 'custom' as const, ordinal: 10 } :
+        undefined,
+      addressQuery.data?.implementation_address ? { slug: 'proxy', name: 'Proxy', tagType: 'custom' as const, ordinal: -1 } : undefined,
+      addressQuery.data?.token ? { slug: 'token', name: 'Token', tagType: 'custom' as const, ordinal: -1 } : undefined,
+      isSafeAddress ? { slug: 'safe', name: 'Multisig: Safe', tagType: 'custom' as const, ordinal: -10 } : undefined,
+      config.features.userOps.isEnabled && userOpsAccountQuery.data ?
+        { slug: 'user_ops_acc', name: 'Smart contract wallet', tagType: 'custom' as const, ordinal: -10 } :
+        undefined,
+      ...formatUserTags(addressQuery.data),
+      ...(addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags || []),
+    ].filter(Boolean).sort(sortEntityTags);
+  }, [ addressMetadataQuery.data, addressQuery.data, hash, isSafeAddress, userOpsAccountQuery.data ]);
+
+  const titleContentAfter = (
     <EntityTags
-      data={ addressQuery.data }
-      isLoading={ isLoading }
-      tagsBefore={ [
-        !addressQuery.data?.is_contract ? { label: 'eoa', display_name: 'EOA' } : undefined,
-        config.features.validators.isEnabled && addressQuery.data?.has_validated_blocks ? { label: 'validator', display_name: 'Validator' } : undefined,
-        addressQuery.data?.implementation_address ? { label: 'proxy', display_name: 'Proxy' } : undefined,
-        addressQuery.data?.token ? { label: 'token', display_name: 'Token' } : undefined,
-        isSafeAddress ? { label: 'safe', display_name: 'Multisig: Safe' } : undefined,
-        config.features.userOps.isEnabled && userOpsAccountQuery.data ? { label: 'user_ops_acc', display_name: 'Smart contract wallet' } : undefined,
-      ] }
+      tags={ tags }
+      isLoading={ isLoading || (config.features.addressMetadata.isEnabled && addressMetadataQuery.isPending) }
     />
   );
 
@@ -245,7 +277,7 @@ const AddressPageContent = () => {
       <PageTitle
         title={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }
         backLink={ backLink }
-        contentAfter={ tags }
+        contentAfter={ titleContentAfter }
         secondRow={ titleSecondRow }
         isLoading={ isLoading }
       />

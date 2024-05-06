@@ -20,6 +20,7 @@ export default function parseMetaPayload(meta: AddressMetadataTag['meta']): Addr
       'appID',
       'logoURL',
       'text',
+      'tagUrl',
       'tooltipIcon',
       'tooltipTitle',
       'tooltipDescription',

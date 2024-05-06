@@ -100,11 +100,13 @@ const Icon = (props: IconProps) => {
 type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'address'>;
 
 const Content = chakra((props: ContentProps) => {
-  if (props.address.name || props.address.ens_domain_name) {
-    const text = props.address.ens_domain_name || props.address.name;
+  const nameTag = props.address.metadata?.tags.find(tag => tag.tagType === 'name')?.name;
+  const nameText = nameTag || props.address.ens_domain_name || props.address.name;
+
+  if (nameText) {
     const label = (
       <VStack gap={ 0 } py={ 1 } color="inherit">
-        <Box fontWeight={ 600 } whiteSpace="pre-wrap" wordBreak="break-word">{ text }</Box>
+        <Box fontWeight={ 600 } whiteSpace="pre-wrap" wordBreak="break-word">{ nameText }</Box>
         <Box whiteSpace="pre-wrap" wordBreak="break-word">{ props.address.hash }</Box>
       </VStack>
     );
@@ -112,7 +114,7 @@ const Content = chakra((props: ContentProps) => {
     return (
       <Tooltip label={ label } maxW={{ base: '100vw', lg: '400px' }}>
         <Skeleton isLoaded={ !props.isLoading } overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" as="span">
-          { text }
+          { nameText }
         </Skeleton>
       </Tooltip>
     );
@@ -140,7 +142,7 @@ const Copy = (props: CopyProps) => {
 const Container = EntityBase.Container;
 
 export interface EntityProps extends EntityBase.EntityBaseProps {
-  address: Pick<AddressParam, 'hash' | 'name' | 'is_contract' | 'is_verified' | 'implementation_name' | 'ens_domain_name'>;
+  address: Pick<AddressParam, 'hash' | 'name' | 'is_contract' | 'is_verified' | 'implementation_name' | 'ens_domain_name' | 'metadata'>;
   isSafeAddress?: boolean;
 }
 

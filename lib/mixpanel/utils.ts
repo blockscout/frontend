@@ -109,6 +109,10 @@ Type extends EventTypes.PAGE_WIDGET ? (
     'Type': 'Action button';
     'Info': string;
     'Source': 'Txn' | 'NFT collection' | 'NFT item';
+  } | {
+    'Type': 'Address tag';
+    'Info': string;
+    'URL': string;
   }
 ) :
 Type extends EventTypes.TX_INTERPRETATION_INTERACTION ? {

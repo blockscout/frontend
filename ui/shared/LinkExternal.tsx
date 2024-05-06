@@ -1,4 +1,4 @@
-import type { ChakraProps } from '@chakra-ui/react';
+import type { ChakraProps, LinkProps } from '@chakra-ui/react';
 import { Link, chakra, Box, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
@@ -10,10 +10,11 @@ interface Props {
   children: React.ReactNode;
   isLoading?: boolean;
   variant?: 'subtle';
-  onClick?: () => void;
+  iconColor?: LinkProps['color'];
+  onClick?: LinkProps['onClick'];
 }
 
-const LinkExternal = ({ href, children, className, isLoading, variant, onClick }: Props) => {
+const LinkExternal = ({ href, children, className, isLoading, variant, iconColor, onClick }: Props) => {
   const subtleLinkBg = useColorModeValue('gray.100', 'gray.700');
 
   const styleProps: ChakraProps = (() => {
@@ -60,7 +61,7 @@ const LinkExternal = ({ href, children, className, isLoading, variant, onClick }
   return (
     <Link className={ className } { ...styleProps } target="_blank" href={ href } onClick={ onClick }>
       { children }
-      <IconSvg name="arrows/north-east" boxSize={ 4 } verticalAlign="middle" color="gray.400" flexShrink={ 0 }/>
+      <IconSvg name="arrows/north-east" boxSize={ 4 } verticalAlign="middle" color={ iconColor ?? 'gray.400' } flexShrink={ 0 }/>
     </Link>
   );
 };

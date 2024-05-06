@@ -10,6 +10,7 @@ const headers = require('./nextjs/headers');
 const redirects = require('./nextjs/redirects');
 const rewrites = require('./nextjs/rewrites');
 
+/** @type {import('next').NextConfig} */
 const moduleExports = {
   transpilePackages: [
     'react-syntax-highlighter',
@@ -46,6 +47,14 @@ const moduleExports = {
   productionBrowserSourceMaps: true,
   experimental: {
     instrumentationHook: true,
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: [ '@svgr/webpack' ],
+          as: '*.js',
+        },
+      },
+    },
   },
 };
 

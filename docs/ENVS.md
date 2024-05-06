@@ -200,6 +200,8 @@ Settings for meta tags, OG tags and SEO
 | `total_reward` | Total block reward |
 | `nonce` | Block nonce |
 | `miner` | Address of block's miner or validator |
+| `L1_status` | Short interpretation of the batch lifecycle (applicable for Rollup chains) |
+| `batch` | Batch index (applicable for Rollup chains) |
 
 &nbsp;
 
@@ -234,6 +236,8 @@ Settings for meta tags, OG tags and SEO
 | `tx_fee` | Total transaction fee |
 | `gas_fees` | Gas fees breakdown |
 | `burnt_fees` | Amount of native coin burnt for transaction |
+| `L1_status` | Short interpretation of the batch lifecycle (applicable for Rollup chains) |
+| `batch` | Batch index (applicable for Rollup chains) |
 
 ##### Transaction additional fields list
 | Id | Description |
