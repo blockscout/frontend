@@ -17,16 +17,16 @@ interface Props {
 const EntityTagLink = ({ data, children }: Props) => {
 
   const handleLinkClick = React.useCallback(() => {
-    if (!data.meta?.actionURL) {
+    if (!data.meta?.tagUrl) {
       return;
     }
 
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, {
       Type: 'Address tag',
       Info: data.slug,
-      URL: data.meta.actionURL,
+      URL: data.meta.tagUrl,
     });
-  }, [ data.meta?.actionURL, data.slug ]);
+  }, [ data.meta?.tagUrl, data.slug ]);
 
   const linkProps: LinkProps = {
     color: 'inherit',
@@ -51,11 +51,11 @@ const EntityTagLink = ({ data, children }: Props) => {
   //   }
   // }
 
-  if (data.meta?.actionURL) {
+  if (data.meta?.tagUrl) {
     return (
       <LinkExternal
         { ...linkProps }
-        href={ data.meta.actionURL }
+        href={ data.meta.tagUrl }
         iconColor={ data.meta.textColor }
       >
         { children }

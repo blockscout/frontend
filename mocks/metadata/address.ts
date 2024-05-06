@@ -15,7 +15,7 @@ export const customNameTag: AddressMetadataTagApi = {
   tagType: 'name',
   ordinal: 777,
   meta: {
-    actionURL: 'https://example.com',
+    tagUrl: 'https://example.com',
     bgColor: 'linear-gradient(45deg, deeppink, deepskyblue)',
     textColor: '#FFFFFF',
   },
@@ -37,7 +37,7 @@ export const infoTagWithLink: AddressMetadataTagApi = {
   tagType: 'classifier',
   ordinal: 11,
   meta: {
-    actionURL: 'https://example.com',
+    tagUrl: 'https://example.com',
   },
 };
 

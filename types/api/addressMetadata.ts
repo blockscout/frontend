@@ -21,7 +21,7 @@ export interface AddressMetadataTagApi extends Omit<AddressMetadataTag, 'meta'> 
   meta: {
     textColor?: string;
     bgColor?: string;
-    actionURL?: string;
+    tagUrl?: string;
     tooltipIcon?: string;
     tooltipTitle?: string;
     tooltipDescription?: string;

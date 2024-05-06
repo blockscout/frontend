@@ -21,9 +21,9 @@ const EntityTag = ({ data, isLoading, truncate }: Props) => {
     return <Skeleton borderRadius="sm" w="100px" h="24px"/>;
   }
 
-  // const hasLink = Boolean(data.meta?.actionURL || data.tagType === 'generic' || data.tagType === 'protocol');
+  // const hasLink = Boolean(data.meta?.tagUrl || data.tagType === 'generic' || data.tagType === 'protocol');
   // Change the condition when "Tag search" page is ready - issue #1869
-  const hasLink = Boolean(data.meta?.actionURL);
+  const hasLink = Boolean(data.meta?.tagUrl);
   const iconColor = data.meta?.textColor ?? 'gray.400';
 
   return (
