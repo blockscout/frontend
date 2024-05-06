@@ -9,9 +9,9 @@ import ClearButton from 'ui/shared/ClearButton';
 
 import ContractMethodFieldLabel from './ContractMethodFieldLabel';
 import ContractMethodMultiplyButton from './ContractMethodMultiplyButton';
-import useArgTypeMatchInt from './useArgTypeMatchInt';
 import useFormatFieldValue from './useFormatFieldValue';
 import useValidateField from './useValidateField';
+import { matchInt } from './utils';
 
 interface Props {
   data: SmartContractMethodInput;
@@ -28,7 +28,7 @@ const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDi
   const isNativeCoin = data.fieldType === 'native_coin';
   const isOptional = isNativeCoin;
 
-  const argTypeMatchInt = useArgTypeMatchInt({ argType: data.type });
+  const argTypeMatchInt = React.useMemo(() => matchInt(data.type), [ data.type ]);
   const validate = useValidateField({ isOptional, argType: data.type, argTypeMatchInt });
   const format = useFormatFieldValue({ argType: data.type, argTypeMatchInt });
 

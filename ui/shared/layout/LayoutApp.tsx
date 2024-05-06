@@ -11,7 +11,7 @@ const LayoutDefault = ({ children }: Props) => {
   return (
     <Layout.Container
       overflowY="hidden"
-      height={ [ '-webkit-fill-available', '100vh' ] }
+      height="$100vh"
       display="flex"
       flexDirection="column"
     >

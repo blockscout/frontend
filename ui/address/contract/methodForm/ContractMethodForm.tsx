@@ -11,11 +11,12 @@ import type { SmartContractMethod, SmartContractMethodInput } from 'types/api/co
 import config from 'configs/app';
 import * as mixpanel from 'lib/mixpanel/index';
 
+import ContractMethodFieldAccordion from './ContractMethodFieldAccordion';
 import ContractMethodFieldInput from './ContractMethodFieldInput';
 import ContractMethodFieldInputArray from './ContractMethodFieldInputArray';
 import ContractMethodFieldInputTuple from './ContractMethodFieldInputTuple';
 import ContractMethodFormOutputs from './ContractMethodFormOutputs';
-import { ARRAY_REGEXP, transformFormDataToMethodArgs } from './utils';
+import { getFieldLabel, matchArray, transformFormDataToMethodArgs } from './utils';
 import type { ContractMethodFormFields } from './utils';
 
 interface Props<T extends SmartContractMethod> {
@@ -97,8 +98,25 @@ const ContractMethodForm = <T extends SmartContractMethod>({ data, onSubmit, res
                 return <ContractMethodFieldInputTuple key={ index } data={ input } basePath={ `${ index }` } level={ 0 } isDisabled={ isLoading }/>;
               }
 
-              const arrayMatch = input.type.match(ARRAY_REGEXP);
+              const arrayMatch = matchArray(input.type);
+
               if (arrayMatch) {
+                if (arrayMatch.isNested) {
+                  const fieldsWithErrors = Object.keys(formApi.formState.errors);
+                  const isInvalid = fieldsWithErrors.some((field) => field.startsWith(index + ':'));
+
+                  return (
+                    <ContractMethodFieldAccordion
+                      key={ index }
+                      level={ 0 }
+                      label={ getFieldLabel(input) }
+                      isInvalid={ isInvalid }
+                    >
+                      <ContractMethodFieldInputArray data={ input } basePath={ `${ index }` } level={ 0 } isDisabled={ isLoading }/>
+                    </ContractMethodFieldAccordion>
+                  );
+                }
+
                 return <ContractMethodFieldInputArray key={ index } data={ input } basePath={ `${ index }` } level={ 0 } isDisabled={ isLoading }/>;
               }
 
