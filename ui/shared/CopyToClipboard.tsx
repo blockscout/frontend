@@ -7,9 +7,10 @@ export interface Props {
   text: string;
   className?: string;
   isLoading?: boolean;
+  onClick?: (event: React.MouseEvent) => void;
 }
 
-const CopyToClipboard = ({ text, className, isLoading }: Props) => {
+const CopyToClipboard = ({ text, className, isLoading, onClick }: Props) => {
   const { hasCopied, onCopy } = useClipboard(text, 1000);
   const [ copied, setCopied ] = useState(false);
   // have to implement controlled tooltip because of the issue - https://github.com/chakra-ui/chakra-ui/issues/7107
@@ -23,6 +24,11 @@ const CopyToClipboard = ({ text, className, isLoading }: Props) => {
       setCopied(false);
     }
   }, [ hasCopied ]);
+
+  const handleClick = React.useCallback((event: React.MouseEvent) => {
+    onCopy();
+    onClick?.(event);
+  }, [ onClick, onCopy ]);
 
   if (isLoading) {
     return <Skeleton boxSize={ 5 } className={ className } borderRadius="sm" flexShrink={ 0 } ml={ 2 } display="inline-block"/>;
@@ -39,7 +45,7 @@ const CopyToClipboard = ({ text, className, isLoading }: Props) => {
         variant="simple"
         display="inline-block"
         flexShrink={ 0 }
-        onClick={ onCopy }
+        onClick={ handleClick }
         className={ className }
         onMouseEnter={ onOpen }
         onMouseLeave={ onClose }

@@ -16,12 +16,21 @@ const fixture: TestFixture<MockEnvsFixture, { page: Page }> = async({ page }, us
 export default fixture;
 
 export const ENVS_MAP: Record<string, Array<[string, string]>> = {
+  optimisticRollup: [
+    [ 'NEXT_PUBLIC_ROLLUP_TYPE', 'optimistic' ],
+    [ 'NEXT_PUBLIC_ROLLUP_L1_BASE_URL', 'https://localhost:3101' ],
+    [ 'NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL', 'https://localhost:3102' ],
+  ],
   shibariumRollup: [
     [ 'NEXT_PUBLIC_ROLLUP_TYPE', 'shibarium' ],
     [ 'NEXT_PUBLIC_ROLLUP_L1_BASE_URL', 'https://localhost:3101' ],
   ],
   zkEvmRollup: [
     [ 'NEXT_PUBLIC_ROLLUP_TYPE', 'zkEvm' ],
+    [ 'NEXT_PUBLIC_ROLLUP_L1_BASE_URL', 'https://localhost:3101' ],
+  ],
+  zkSyncRollup: [
+    [ 'NEXT_PUBLIC_ROLLUP_TYPE', 'zkSync' ],
     [ 'NEXT_PUBLIC_ROLLUP_L1_BASE_URL', 'https://localhost:3101' ],
   ],
   bridgedTokens: [
@@ -36,5 +45,18 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   ],
   blockHiddenFields: [
     [ 'NEXT_PUBLIC_VIEWS_BLOCK_HIDDEN_FIELDS', '["burnt_fees", "total_reward", "nonce"]' ],
+  ],
+  stabilityEnvs: [
+    [ 'NEXT_PUBLIC_VIEWS_ADDRESS_HIDDEN_VIEWS', '["top_accounts"]' ],
+    [ 'NEXT_PUBLIC_VIEWS_TX_HIDDEN_FIELDS', '["value","fee_currency","gas_price","gas_fees","burnt_fees"]' ],
+    [ 'NEXT_PUBLIC_VIEWS_TX_ADDITIONAL_FIELDS', '["fee_per_gas"]' ],
+  ],
+  beaconChain: [
+    [ 'NEXT_PUBLIC_HAS_BEACON_CHAIN', 'true' ],
+  ],
+  txInterpretation: [
+    [ 'NEXT_PUBLIC_TRANSACTION_INTERPRETATION_PROVIDER', 'blockscout' ],
+  noWalletClient: [
+    [ 'NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID', '' ],
   ],
 };

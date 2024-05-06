@@ -2,15 +2,22 @@ import { Flex, chakra } from '@chakra-ui/react';
 import { Banner, setWalletAddresses } from '@hypelab/sdk-react';
 import Script from 'next/script';
 import React from 'react';
-import { useAccount } from 'wagmi';
 
-import Web3ModalProvider from '../Web3ModalProvider';
+import useAccount from 'lib/web3/useAccount';
+
 import { hypeInit } from './hypeBannerScript';
 
 const DESKTOP_BANNER_SLUG = 'b1559fc3e7';
 const MOBILE_BANNER_SLUG = '668ed80a9e';
 
-const HypeBannerContent = ({ className }: { className?: string }) => {
+const HypeBanner = ({ className }: { className?: string }) => {
+  const { address } = useAccount();
+
+  React.useEffect(() => {
+    if (address) {
+      setWalletAddresses([ address ]);
+    }
+  }, [ address ]);
 
   return (
     <>
@@ -25,30 +32,6 @@ const HypeBannerContent = ({ className }: { className?: string }) => {
         <Banner placement={ MOBILE_BANNER_SLUG }/>
       </Flex>
     </>
-  );
-};
-
-const HypeBannerWithWalletAddress = ({ className }: { className?: string }) => {
-  const { address } = useAccount();
-  React.useEffect(() => {
-    if (address) {
-      setWalletAddresses([ address ]);
-    }
-  }, [ address ]);
-
-  return <HypeBannerContent className={ className }/>;
-};
-
-const HypeBanner = ({ className }: { className?: string }) => {
-
-  const fallback = React.useCallback(() => {
-    return <HypeBannerContent className={ className }/>;
-  }, [ className ]);
-
-  return (
-    <Web3ModalProvider fallback={ fallback }>
-      <HypeBannerWithWalletAddress className={ className }/>
-    </Web3ModalProvider>
   );
 };
 
