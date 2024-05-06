@@ -7,7 +7,6 @@ import React, { useCallback } from 'react';
 import type { MarketplaceAppWithSecurityReport } from 'types/client/marketplace';
 import { ContractListTypes } from 'types/client/marketplace';
 
-import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
 import * as mixpanel from 'lib/mixpanel/index';
@@ -33,7 +32,6 @@ const MarketplaceAppModal = ({
   data,
   showContractList: showContractListProp,
 }: Props) => {
-  const { value: isExperiment } = useFeatureValue('security_score_exp', false);
   const starOutlineIconColor = useColorModeValue('gray.600', 'gray.300');
 
   const {
@@ -188,7 +186,7 @@ const MarketplaceAppModal = ({
                 />
               </Flex>
 
-              { (isExperiment && securityReport) && (
+              { securityReport && (
                 <Flex alignItems="center" gap={ 3 }>
                   <AppSecurityReport
                     id={ id }
