@@ -1,32 +1,15 @@
-import { test as base, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import { txnBatchesData } from 'mocks/zkEvm/txnBatches';
-import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
-import TestApp from 'playwright/TestApp';
-import buildApiUrl from 'playwright/utils/buildApiUrl';
-import * as configs from 'playwright/utils/configs';
+import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
+import { test, expect } from 'playwright/lib';
 
 import LatestZkEvmL2Batches from './LatestZkEvmL2Batches';
 
-const BATCHES_API_URL = buildApiUrl('homepage_zkevm_l2_batches');
+test('default view +@mobile +@dark-mode', async({ render, mockEnvs, mockApiResponse }) => {
+  await mockEnvs(ENVS_MAP.zkEvmRollup);
+  await mockApiResponse('homepage_zkevm_l2_batches', txnBatchesData);
 
-const test = base.extend({
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  context: contextWithEnvs(configs.featureEnvs.zkEvmRollup) as any,
-});
-
-test('default view +@mobile +@dark-mode', async({ mount, page }) => {
-  await page.route(BATCHES_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(txnBatchesData),
-  }));
-
-  const component = await mount(
-    <TestApp>
-      <LatestZkEvmL2Batches/>
-    </TestApp>,
-  );
-
+  const component = await render(<LatestZkEvmL2Batches/>);
   await expect(component).toHaveScreenshot();
 });
