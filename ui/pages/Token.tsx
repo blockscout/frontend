@@ -247,7 +247,7 @@ const TokenPageContent = () => {
     <>
       <TextAd mb={ 6 }/>
 
-      <TokenPageTitle tokenQuery={ tokenQuery } addressQuery={ addressQuery }/>
+      <TokenPageTitle tokenQuery={ tokenQuery } addressQuery={ addressQuery } hash={ hashString }/>
 
       <TokenDetails tokenQuery={ tokenQuery }/>
 

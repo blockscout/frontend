@@ -97,6 +97,18 @@ test('with ENS', async({ mount }) => {
   await expect(component).toHaveScreenshot();
 });
 
+test('with name tag', async({ mount }) => {
+  const component = await mount(
+    <TestApp>
+      <AddressEntity
+        address={ addressMock.withNameTag }
+      />
+    </TestApp>,
+  );
+
+  await expect(component).toHaveScreenshot();
+});
+
 test('external link', async({ mount }) => {
   const component = await mount(
     <TestApp>

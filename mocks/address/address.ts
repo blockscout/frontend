@@ -30,6 +30,24 @@ export const withEns: AddressParam = {
   ens_domain_name: 'kitty.kitty.kitty.cat.eth',
 };
 
+export const withNameTag: AddressParam = {
+  hash: hash,
+  implementation_name: null,
+  is_contract: false,
+  is_verified: null,
+  name: 'ArianeeStore',
+  private_tags: [],
+  watchlist_names: [],
+  public_tags: [],
+  ens_domain_name: 'kitty.kitty.kitty.cat.eth',
+  metadata: {
+    reputation: null,
+    tags: [
+      { tagType: 'name', name: 'Mrs. Duckie', slug: 'mrs-duckie', ordinal: 0, meta: null },
+    ],
+  },
+};
+
 export const withoutName: AddressParam = {
   hash: hash,
   implementation_name: null,
