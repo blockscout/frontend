@@ -60,4 +60,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   noWalletClient: [
     [ 'NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID', '' ],
   ],
+  noNftMarketplaces: [
+    [ 'NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES', '' ],
+  ],
 };
