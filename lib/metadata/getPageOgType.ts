@@ -29,6 +29,7 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/account/custom-abi': 'Regular page',
   '/account/tag-address': 'Regular page',
   '/account/verified-addresses': 'Root page',
+  '/public-tags/submit': 'Regular page',
   '/withdrawals': 'Root page',
   '/visualize/sol2uml': 'Regular page',
   '/csv-export': 'Regular page',

@@ -27,6 +27,7 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/account/custom-abi': 'Custom ABI',
   '/account/tag-address': 'Private tags',
   '/account/verified-addresses': 'Verified addresses',
+  '/public-tags/submit': 'Submit public tag',
   '/withdrawals': 'Withdrawals',
   '/visualize/sol2uml': 'Solidity UML diagram',
   '/csv-export': 'Export data to CSV file',

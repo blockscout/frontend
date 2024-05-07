@@ -237,6 +237,11 @@ export default function useNavItems(): ReturnType {
             nextRoute: { pathname: '/gas-tracker' as const },
             isActive: pathname.startsWith('/gas-tracker'),
           },
+          config.features.publicTagsSubmission.isEnabled && {
+            text: 'Submit public tag',
+            nextRoute: { pathname: '/public-tags/submit' as const },
+            isActive: pathname.startsWith('/public-tags/submit'),
+          },
           ...config.UI.sidebar.otherLinks,
         ].filter(Boolean),
       },

@@ -27,6 +27,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/account/custom-abi': '- custom ABI',
   '/account/tag-address': '- private tags',
   '/account/verified-addresses': '- my verified addresses',
+  '/public-tags/submit': 'submit public tag',
   '/withdrawals': 'withdrawals',
   '/visualize/sol2uml': 'Solidity UML diagram',
   '/csv-export': 'export data to CSV',
