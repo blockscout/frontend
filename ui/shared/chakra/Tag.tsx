@@ -4,7 +4,7 @@ import React from 'react';
 
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
 
-interface Props extends TagProps {
+export interface Props extends TagProps {
   isLoading?: boolean;
 }
 
