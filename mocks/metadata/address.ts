@@ -63,15 +63,15 @@ export const protocolTag: AddressMetadataTagApi = {
 };
 
 export const protocolTagWithMeta: AddressMetadataTagApi = {
-  slug: 'furucombo',
-  name: 'Furucombo',
+  slug: 'uniswap',
+  name: 'Uniswap',
   tagType: 'protocol',
   ordinal: 0,
   meta: {
-    appID: 'furucombo',
-    appMarketplaceURL: 'https://furucombo.app/decombo?chainId={chainId}&txHash={txHash}&utm_source=Blockscout',
-    appLogoURL: 'https://blockscout-content.s3.amazonaws.com/furucombo-action-btn.svg',
-    appActionButtonText: 'Decombo',
+    appID: 'uniswap',
+    appMarketplaceURL: 'https://example.com',
+    appLogoURL: 'https://localhost:3100/icon.svg',
+    appActionButtonText: 'Swap',
     textColor: '#FFFFFF',
     bgColor: '#1B1B21',
   },
