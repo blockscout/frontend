@@ -58,7 +58,7 @@ const PublicTagsSubmitFieldAddresses = () => {
       { fields.map((field, index) => {
         return (
           <React.Fragment key={ field.id }>
-            <GridItem colSpan={ 2 }>
+            <GridItem colSpan={{ base: 1, lg: 2 }}>
               <Controller
                 name={ `addresses.${ index }.hash` }
                 control={ control }
