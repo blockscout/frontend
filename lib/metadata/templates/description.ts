@@ -30,7 +30,6 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/account/watchlist': DEFAULT_TEMPLATE,
   '/account/api-key': DEFAULT_TEMPLATE,
   '/account/custom-abi': DEFAULT_TEMPLATE,
-  '/account/public-tags-request': DEFAULT_TEMPLATE,
   '/account/tag-address': DEFAULT_TEMPLATE,
   '/account/verified-addresses': DEFAULT_TEMPLATE,
   '/withdrawals': DEFAULT_TEMPLATE,

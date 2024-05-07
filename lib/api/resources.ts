@@ -2,7 +2,6 @@ import { getFeaturePayload } from 'configs/app/features/types';
 import type {
   UserInfo,
   CustomAbis,
-  PublicTags,
   ApiKeys,
   VerifiedAddressResponse,
   TokenInfoApplicationConfig,
@@ -146,10 +145,6 @@ export const RESOURCES = {
     path: '/api/account/v2/user/watchlist/:id?',
     pathParams: [ 'id' as const ],
     filterFields: [ ],
-  },
-  public_tags: {
-    path: '/api/account/v2/user/public_tags/:id?',
-    pathParams: [ 'id' as const ],
   },
   private_tags_address: {
     path: '/api/account/v2/user/tags/address/:id?',
@@ -863,7 +858,6 @@ export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>
 export type ResourcePayloadA<Q extends ResourceName> =
 Q extends 'user_info' ? UserInfo :
 Q extends 'custom_abi' ? CustomAbis :
-Q extends 'public_tags' ? PublicTags :
 Q extends 'private_tags_address' ? AddressTagsResponse :
 Q extends 'private_tags_tx' ? TransactionTagsResponse :
 Q extends 'api_keys' ? ApiKeys :

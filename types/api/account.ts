@@ -103,23 +103,6 @@ export type WatchlistResponse = {
   } | null;
 }
 
-export interface PublicTag {
-  website: string;
-  tags: string; // tag_1;tag_2;tag_3 etc.
-  is_owner: boolean;
-  id: number;
-  full_name: string;
-  email: string;
-  company: string;
-  addresses: Array<string>;
-  addresses_with_info: Array<AddressParam>;
-  additional_comment: string;
-}
-
-export type PublicTagNew = Omit<PublicTag, 'id' | 'addresses_with_info'>
-
-export type PublicTags = Array<PublicTag>;
-
 export type CustomAbis = Array<CustomAbi>
 
 export interface CustomAbi {
@@ -173,14 +156,6 @@ export type TransactionTagErrors = {
   tx_hash: Array<string>;
   name: Array<string>;
   identity_id?: Array<string>;
-}
-
-export type PublicTagErrors = {
-  additional_comment: Array<string>;
-  addresses: Array<string>;
-  email: Array<string>;
-  full_name: Array<string>;
-  tags: Array<string>;
 }
 
 export interface VerifiedAddress {

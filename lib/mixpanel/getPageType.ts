@@ -25,7 +25,6 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/account/watchlist': 'Watchlist',
   '/account/api-key': 'API keys',
   '/account/custom-abi': 'Custom ABI',
-  '/account/public-tags-request': 'Public tags',
   '/account/tag-address': 'Private tags',
   '/account/verified-addresses': 'Verified addresses',
   '/withdrawals': 'Withdrawals',

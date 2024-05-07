@@ -256,12 +256,6 @@ export default function useNavItems(): ReturnType {
         isActive: pathname === '/account/tag-address',
       },
       {
-        text: 'Public tags',
-        nextRoute: { pathname: '/account/public-tags-request' as const },
-        icon: 'publictags',
-        isActive: pathname === '/account/public-tags-request',
-      },
-      {
         text: 'API keys',
         nextRoute: { pathname: '/account/api-key' as const },
         icon: 'API',

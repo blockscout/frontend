@@ -27,7 +27,6 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/account/watchlist': 'Regular page',
   '/account/api-key': 'Regular page',
   '/account/custom-abi': 'Regular page',
-  '/account/public-tags-request': 'Regular page',
   '/account/tag-address': 'Regular page',
   '/account/verified-addresses': 'Root page',
   '/withdrawals': 'Root page',

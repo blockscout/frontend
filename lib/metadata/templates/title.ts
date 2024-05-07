@@ -25,7 +25,6 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/account/watchlist': '- watchlist',
   '/account/api-key': '- API keys',
   '/account/custom-abi': '- custom ABI',
-  '/account/public-tags-request': '- public tag requests',
   '/account/tag-address': '- private tags',
   '/account/verified-addresses': '- my verified addresses',
   '/withdrawals': 'withdrawals',
