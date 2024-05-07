@@ -9,7 +9,11 @@ import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
 const PublicTagsSubmitFieldRequesterEmail = () => {
   const { control } = useFormContext<FormFields>();
-  const { field, fieldState, formState } = useController<FormFields>({ control, name: 'requesterEmail', rules: { required: true, pattern: EMAIL_REGEXP } });
+  const { field, fieldState, formState } = useController<FormFields, 'requesterEmail'>({
+    control,
+    name: 'requesterEmail',
+    rules: { required: true, pattern: EMAIL_REGEXP },
+  });
 
   const isDisabled = formState.isSubmitting;
 

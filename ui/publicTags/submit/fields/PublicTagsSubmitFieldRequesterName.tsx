@@ -8,7 +8,7 @@ import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
 const PublicTagsSubmitFieldRequesterName = () => {
   const { control } = useFormContext<FormFields>();
-  const { field, fieldState, formState } = useController<FormFields>({ control, name: 'requesterName', rules: { required: true } });
+  const { field, fieldState, formState } = useController<FormFields, 'requesterName'>({ control, name: 'requesterName', rules: { required: true } });
 
   const isDisabled = formState.isSubmitting;
 

@@ -8,6 +8,7 @@ import type { PublicTagTypesResponse } from 'types/api/addressMetadata';
 
 import Hint from 'ui/shared/Hint';
 
+import PublicTagsSubmitFieldAddresses from './fields/PublicTagsSubmitFieldAddresses';
 import PublicTagsSubmitFieldRequesterEmail from './fields/PublicTagsSubmitFieldRequesterEmail';
 import PublicTagsSubmitFieldRequesterName from './fields/PublicTagsSubmitFieldRequesterName';
 
@@ -18,6 +19,9 @@ interface Props {
 const PublicTagsSubmitForm = ({ config }: Props) => {
   const formApi = useForm<FormFields>({
     mode: 'onBlur',
+    defaultValues: {
+      addresses: [ { hash: '' } ],
+    },
   });
 
   const onFormSubmit: SubmitHandler<FormFields> = React.useCallback((data) => {
@@ -34,7 +38,7 @@ const PublicTagsSubmitForm = ({ config }: Props) => {
         <Grid
           columnGap={ 5 }
           rowGap={{ base: 5, lg: 4 }}
-          templateColumns={{ base: '1fr', lg: '1fr 1fr minmax(0, 200px)' }}
+          templateColumns={{ base: '1fr', lg: '1fr 1fr minmax(0, 200px)', xl: '1fr 1fr minmax(0, 250px)' }}
         >
           <GridItem colSpan={ 3 } as="h2" textStyle="h4">
             Company info
@@ -48,8 +52,9 @@ const PublicTagsSubmitForm = ({ config }: Props) => {
 
           <GridItem colSpan={ 3 } as="h2" textStyle="h4" mt={ 3 }>
             Public tags/labels
-            <Hint label="Submit a public tag proposal for our moderation team to review" ml={ 1 }/>
+            <Hint label="Submit a public tag proposal for our moderation team to review" ml={ 1 } color="link"/>
           </GridItem>
+          <PublicTagsSubmitFieldAddresses/>
           <chakra.div bgColor="blue.100" h={ 20 }/>
           <chakra.div bgColor="blue.100" h={ 20 }/>
           <chakra.div bgColor="yellow.100" h={ 20 }/>
