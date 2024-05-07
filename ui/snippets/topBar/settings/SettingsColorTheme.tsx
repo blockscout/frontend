@@ -2,9 +2,9 @@ import { Box, Flex, useColorMode } from '@chakra-ui/react';
 import React from 'react';
 
 import * as cookies from 'lib/cookies';
+import { COLOR_THEMES } from 'lib/settings/colorTheme';
 
 import SettingsSample from './SettingsSample';
-import { COLOR_THEMES } from './utils';
 
 const SettingsColorTheme = () => {
   const { setColorMode } = useColorMode();
