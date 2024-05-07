@@ -28,3 +28,15 @@ export interface AddressMetadataTagApi extends Omit<AddressMetadataTag, 'meta'> 
     tooltipUrl?: string;
   } | null;
 }
+
+// TAG SUBMISSION
+
+interface PublicTagType {
+  id: string;
+  type: AddressMetadataTagType;
+  description: string;
+}
+
+export interface PublicTagTypesResponse {
+  tagTypes: Array<PublicTagType>;
+}

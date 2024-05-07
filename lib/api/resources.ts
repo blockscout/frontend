@@ -31,7 +31,7 @@ import type {
   AddressCoinBalanceHistoryChartOld,
 } from 'types/api/address';
 import type { AddressesResponse } from 'types/api/addresses';
-import type { AddressMetadataInfo } from 'types/api/addressMetadata';
+import type { AddressMetadataInfo, PublicTagTypesResponse } from 'types/api/addressMetadata';
 import type { TxBlobs, Blob } from 'types/api/blobs';
 import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters, BlockWithdrawalsResponse } from 'types/api/block';
 import type { ChartMarketResponse, ChartSecondaryCoinPriceResponse, ChartTransactionResponse } from 'types/api/charts';
@@ -248,6 +248,11 @@ export const RESOURCES = {
   },
   address_metadata_tag_search: {
     path: '/api/v1/tags:search',
+    endpoint: getFeaturePayload(config.features.addressMetadata)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.addressMetadata)?.api.basePath,
+  },
+  address_metadata_tag_types: {
+    path: '/api/v1/public-tag-types',
     endpoint: getFeaturePayload(config.features.addressMetadata)?.api.endpoint,
     basePath: getFeaturePayload(config.features.addressMetadata)?.api.basePath,
   },
@@ -950,6 +955,7 @@ Q extends 'optimistic_l2_deposits_count' ? number :
 Q extends 'optimistic_l2_txn_batches_count' ? number :
 Q extends 'config_backend_version' ? BackendVersionConfig :
 Q extends 'address_metadata_info' ? AddressMetadataInfo :
+Q extends 'address_metadata_tag_types' ? PublicTagTypesResponse :
 never;
 // !!! IMPORTANT !!!
 // See comment above
