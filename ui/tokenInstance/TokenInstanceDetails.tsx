@@ -5,8 +5,8 @@ import type { TokenInfo, TokenInstance } from 'types/api/token';
 
 import config from 'configs/app';
 import useFeatureValue from 'lib/growthbook/useFeatureValue';
-import ActionButton from 'ui/shared/ActionButton/ActionButton';
-import useActionData from 'ui/shared/ActionButton/useActionData';
+import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';
+import useAppActionData from 'ui/shared/AppActionButton/useAppActionData';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
@@ -28,8 +28,8 @@ interface Props {
 }
 
 const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
-  const actionData = useActionData(token?.address);
-  const { value: isExperiment } = useFeatureValue('action_button_exp', false);
+  const appActionData = useAppActionData(token?.address);
+  const { value: isActionButtonExperiment } = useFeatureValue('action_button_exp', false);
 
   const handleCounterItemClick = React.useCallback(() => {
     window.setTimeout(() => {
@@ -82,18 +82,18 @@ const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
             isLoading={ isLoading }
             hash={ token.address }
             id={ data.id }
-            actionData={ actionData }
+            appActionData={ appActionData }
             source="NFT item"
-            isExperiment={ isExperiment }
+            isActionButtonExperiment={ isActionButtonExperiment }
           />
-          { (config.UI.views.nft.marketplaces.length === 0 && actionData && isExperiment) && (
+          { (config.UI.views.nft.marketplaces.length === 0 && appActionData && isActionButtonExperiment) && (
             <DetailsInfoItem
               title="Dapp"
               hint="Link to the dapp"
               alignSelf="center"
               py={ 1 }
             >
-              <ActionButton data={ actionData } height="30px" source="NFT item"/>
+              <AppActionButton data={ appActionData } height="30px" source="NFT item"/>
             </DetailsInfoItem>
           ) }
         </Grid>

@@ -7,8 +7,8 @@ import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import { NOVES_TRANSLATE } from 'stubs/noves/NovesTranslate';
 import { TX_INTERPRETATION } from 'stubs/txInterpretation';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
-import ActionButton from 'ui/shared/ActionButton/ActionButton';
-import useActionData from 'ui/shared/ActionButton/useActionData';
+import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';
+import useAppActionData from 'ui/shared/AppActionButton/useAppActionData';
 import { TX_ACTIONS_BLOCK_ID } from 'ui/shared/DetailsActionsWrapper';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
@@ -29,8 +29,8 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
   const hasInterpretationFeature = feature.isEnabled;
   const isNovesInterpretation = hasInterpretationFeature && feature.provider === 'noves';
 
-  const actionData = useActionData(txQuery.data?.to?.hash);
-  const { value: isExperiment } = useFeatureValue('action_button_exp', false);
+  const appActionData = useAppActionData(txQuery.data?.to?.hash);
+  const { value: isActionButtonExperiment } = useFeatureValue('action_button_exp', false);
 
   const txInterpretationQuery = useApiQuery('tx_interpretation', {
     pathParams: { hash },
@@ -124,7 +124,9 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
         mt={{ base: 3, lg: 0 }}
       >
         { !hasTag && <AccountActionsMenu/> }
-        { (actionData && isExperiment && hasAnyInterpretation) && <ActionButton data={ actionData } txHash={ hash } source="Txn"/> }
+        { (appActionData && isActionButtonExperiment && hasAnyInterpretation) && (
+          <AppActionButton data={ appActionData } txHash={ hash } source="Txn"/>
+        ) }
         <NetworkExplorers type="tx" pathParam={ hash } ml={{ base: 0, lg: 'auto' }}/>
       </Flex>
     </Box>

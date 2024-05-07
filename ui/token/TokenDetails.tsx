@@ -16,8 +16,8 @@ import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import useIsMounted from 'lib/hooks/useIsMounted';
 import { TOKEN_COUNTERS } from 'stubs/token';
 import type { TokenTabs } from 'ui/pages/Token';
-import ActionButton from 'ui/shared/ActionButton/ActionButton';
-import useActionData from 'ui/shared/ActionButton/useActionData';
+import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';
+import useAppActionData from 'ui/shared/AppActionButton/useAppActionData';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import TruncatedValue from 'ui/shared/TruncatedValue';
@@ -31,7 +31,7 @@ interface Props {
 const TokenDetails = ({ tokenQuery }: Props) => {
   const router = useRouter();
   const isMounted = useIsMounted();
-  const { value: isExperiment } = useFeatureValue('action_button_exp', false);
+  const { value: isActionButtonExperiment } = useFeatureValue('action_button_exp', false);
 
   const hash = router.query.hash?.toString();
 
@@ -40,7 +40,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
     queryOptions: { enabled: Boolean(router.query.hash), placeholderData: TOKEN_COUNTERS },
   });
 
-  const actionData = useActionData(hash);
+  const appActionData = useAppActionData(hash);
 
   const changeUrlAndScroll = useCallback((tab: TokenTabs) => () => {
     router.push(
@@ -179,20 +179,20 @@ const TokenDetails = ({ tokenQuery }: Props) => {
         <TokenNftMarketplaces
           hash={ hash }
           isLoading={ tokenQuery.isPlaceholderData }
-          actionData={ actionData }
+          appActionData={ appActionData }
           source="NFT collection"
-          isExperiment={ isExperiment }
+          isActionButtonExperiment={ isActionButtonExperiment }
         />
       ) }
 
-      { (type !== 'ERC-20' && config.UI.views.nft.marketplaces.length === 0 && actionData && isExperiment) && (
+      { (type !== 'ERC-20' && config.UI.views.nft.marketplaces.length === 0 && appActionData && isActionButtonExperiment) && (
         <DetailsInfoItem
           title="Dapp"
           hint="Link to the dapp"
           alignSelf="center"
           py={ 1 }
         >
-          <ActionButton data={ actionData } height="30px" source="NFT collection"/>
+          <AppActionButton data={ appActionData } height="30px" source="NFT collection"/>
         </DetailsInfoItem>
       ) }
 

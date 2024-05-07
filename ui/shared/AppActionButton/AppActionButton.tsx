@@ -17,7 +17,7 @@ type Props = {
   source: 'Txn' | 'NFT collection' | 'NFT item';
 }
 
-const ActionButton = ({ data, className, txHash, source }: Props) => {
+const AppActionButton = ({ data, className, txHash, source }: Props) => {
   const defaultTextColor = useColorModeValue('blue.600', 'blue.300');
   const defaultBg = useColorModeValue('gray.100', 'gray.700');
 
@@ -81,4 +81,4 @@ const ActionButton = ({ data, className, txHash, source }: Props) => {
   );
 };
 
-export default chakra(ActionButton);
+export default chakra(AppActionButton);
