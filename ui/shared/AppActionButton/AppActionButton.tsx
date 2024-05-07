@@ -21,9 +21,9 @@ const AppActionButton = ({ data, className, txHash, source }: Props) => {
   const defaultTextColor = useColorModeValue('blue.600', 'blue.300');
   const defaultBg = useColorModeValue('gray.100', 'gray.700');
 
-  const { appID, textColor, bgColor, appActionButtonText, appLogoURL } = data;
+  const { appID, textColor, bgColor, appActionButtonText, appLogoURL, appMarketplaceURL } = data;
 
-  const actionURL = data.appMarketplaceURL?.replace('{chainId}', config.chain.id || '').replace('{txHash}', txHash || '');
+  const actionURL = appMarketplaceURL?.replace('{chainId}', config.chain.id || '').replace('{txHash}', txHash || '');
 
   const handleClick = React.useCallback(() => {
     const info = appID || actionURL;
@@ -32,15 +32,21 @@ const AppActionButton = ({ data, className, txHash, source }: Props) => {
     }
   }, [ source, appID, actionURL ]);
 
+  if ((!appID && !appMarketplaceURL) || (!appActionButtonText && !appLogoURL)) {
+    return null;
+  }
+
   const content = (
     <>
-      <Image
-        src={ appLogoURL }
-        alt={ `${ appActionButtonText } button` }
-        boxSize={ 5 }
-        borderRadius="sm"
-        mr={ 2 }
-      />
+      { appLogoURL && (
+        <Image
+          src={ appLogoURL }
+          alt={ `${ appActionButtonText } button` }
+          boxSize={ 5 }
+          borderRadius="sm"
+          mr={ 2 }
+        />
+      ) }
       <Text fontSize="sm" fontWeight="500" color="currentColor">
         { appActionButtonText }
       </Text>
