@@ -71,6 +71,7 @@ const AppActionButton = ({ data, className, txHash, source }: Props) => {
       variant="subtle"
       display="flex"
       px={ 2 }
+      iconColor={ textColor }
       color={ textColor }
       bg={ bgColor }
       _hover={{ color: textColor }}
