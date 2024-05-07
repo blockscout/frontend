@@ -73,6 +73,6 @@ export const protocolTagWithMeta: AddressMetadataTagApi = {
     appLogoURL: 'https://localhost:3100/icon.svg',
     appActionButtonText: 'Swap',
     textColor: '#FFFFFF',
-    bgColor: '#1B1B21',
+    bgColor: '#FF007A',
   },
 };
