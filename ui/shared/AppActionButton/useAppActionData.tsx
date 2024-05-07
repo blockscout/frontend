@@ -7,7 +7,7 @@ export default function useAppActionData(address: string | undefined = '') {
   const { data } = useAddressMetadataInfoQuery(memoizedArray);
   const metadata = data?.addresses[address?.toLowerCase()];
   const tag = metadata?.tags?.find(({ tagType }) => tagType === 'protocol');
-  if (tag?.meta?.actionURL || tag?.meta?.appID) {
+  if (tag?.meta?.appMarketplaceURL || tag?.meta?.appID) {
     return tag.meta;
   }
   return null;

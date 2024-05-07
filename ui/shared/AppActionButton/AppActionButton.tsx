@@ -21,9 +21,9 @@ const AppActionButton = ({ data, className, txHash, source }: Props) => {
   const defaultTextColor = useColorModeValue('blue.600', 'blue.300');
   const defaultBg = useColorModeValue('gray.100', 'gray.700');
 
-  const { appID, textColor, bgColor, text, logoURL } = data;
+  const { appID, textColor, bgColor, appActionButtonText, appLogoURL } = data;
 
-  const actionURL = data.actionURL?.replace('{chainId}', config.chain.id || '').replace('{txHash}', txHash || '');
+  const actionURL = data.appMarketplaceURL?.replace('{chainId}', config.chain.id || '').replace('{txHash}', txHash || '');
 
   const handleClick = React.useCallback(() => {
     const info = appID || actionURL;
@@ -35,14 +35,14 @@ const AppActionButton = ({ data, className, txHash, source }: Props) => {
   const content = (
     <>
       <Image
-        src={ logoURL }
-        alt={ `${ text } button` }
+        src={ appLogoURL }
+        alt={ `${ appActionButtonText } button` }
         boxSize={ 5 }
         borderRadius="sm"
         mr={ 2 }
       />
       <Text fontSize="sm" fontWeight="500" color="currentColor">
-        { text }
+        { appActionButtonText }
       </Text>
     </>
   );
