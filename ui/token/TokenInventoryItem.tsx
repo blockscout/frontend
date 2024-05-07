@@ -23,6 +23,7 @@ const TokenInventoryItem = ({ item, token, isLoading }: Props) => {
       animationUrl={ item.animation_url }
       imageUrl={ item.image_url }
       isLoading={ isLoading }
+      autoplayVideo={ false }
     />
   );
 
