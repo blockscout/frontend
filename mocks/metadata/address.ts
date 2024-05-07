@@ -61,3 +61,18 @@ export const protocolTag: AddressMetadataTagApi = {
   ordinal: 0,
   meta: null,
 };
+
+export const protocolTagWithMeta: AddressMetadataTagApi = {
+  slug: 'furucombo',
+  name: 'Furucombo',
+  tagType: 'protocol',
+  ordinal: 0,
+  meta: {
+    appID: 'furucombo',
+    appMarketplaceURL: 'https://furucombo.app/decombo?chainId={chainId}&txHash={txHash}&utm_source=Blockscout',
+    appLogoURL: 'https://blockscout-content.s3.amazonaws.com/furucombo-action-btn.svg',
+    appActionButtonText: 'Decombo',
+    textColor: '#FFFFFF',
+    bgColor: '#1B1B21',
+  },
+};
