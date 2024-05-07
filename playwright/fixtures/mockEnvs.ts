@@ -56,6 +56,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   ],
   txInterpretation: [
     [ 'NEXT_PUBLIC_TRANSACTION_INTERPRETATION_PROVIDER', 'blockscout' ],
+  ],
   noWalletClient: [
     [ 'NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID', '' ],
   ],
