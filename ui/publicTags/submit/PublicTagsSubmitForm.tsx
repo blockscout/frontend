@@ -12,6 +12,7 @@ import PublicTagsSubmitFieldAddresses from './fields/PublicTagsSubmitFieldAddres
 import PublicTagsSubmitFieldDescription from './fields/PublicTagsSubmitFieldDescription';
 import PublicTagsSubmitFieldRequesterEmail from './fields/PublicTagsSubmitFieldRequesterEmail';
 import PublicTagsSubmitFieldRequesterName from './fields/PublicTagsSubmitFieldRequesterName';
+import PublicTagsSubmitFieldTags from './fields/PublicTagsSubmitFieldTags';
 
 interface Props {
   config: PublicTagTypesResponse | undefined;
@@ -22,6 +23,7 @@ const PublicTagsSubmitForm = ({ config }: Props) => {
     mode: 'onBlur',
     defaultValues: {
       addresses: [ { hash: '' } ],
+      tags: [ { name: '', type: 'name', url: undefined, bgColor: undefined, textColor: undefined } ],
     },
   });
 
@@ -56,10 +58,7 @@ const PublicTagsSubmitForm = ({ config }: Props) => {
             <Hint label="Submit a public tag proposal for our moderation team to review" ml={ 1 } color="link"/>
           </GridItem>
           <PublicTagsSubmitFieldAddresses/>
-          <chakra.div bgColor="blue.100" h={ 20 }/>
-          <chakra.div bgColor="blue.100" h={ 20 }/>
-          <chakra.div bgColor="yellow.100" h={ 20 }/>
-
+          <PublicTagsSubmitFieldTags tagTypes={ config?.tagTypes }/>
           <GridItem colSpan={{ base: 1, lg: 2 }}>
             <PublicTagsSubmitFieldDescription/>
           </GridItem>

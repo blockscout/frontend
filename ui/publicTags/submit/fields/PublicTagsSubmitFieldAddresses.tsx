@@ -8,7 +8,7 @@ import { ADDRESS_REGEXP } from 'lib/validations/address';
 import IconSvg from 'ui/shared/IconSvg';
 import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
-const LIMIT = 10;
+const LIMIT = 20;
 
 const PublicTagsSubmitFieldAddresses = () => {
   const { control, formState, register } = useFormContext<FormFields>();
@@ -51,14 +51,13 @@ const PublicTagsSubmitFieldAddresses = () => {
                 <InputPlaceholder text="Smart contract / Address (0x...)" error={ error }/>
               </FormControl>
             </GridItem>
-            <GridItem display="flex" alignItems="center" columnGap={ 5 }>
+            <GridItem display="flex" alignItems="center" columnGap={ 5 } justifyContent={{ base: 'flex-end', lg: 'flex-start' }}>
               { fields.length < LIMIT && !(fields.length > 1 && index === 0) && (
                 <IconButton
                   aria-label="add"
                   data-index={ index }
                   variant="outline"
-                  w="30px"
-                  h="30px"
+                  boxSize="30px"
                   onClick={ handleAddFieldClick }
                   icon={ <IconSvg name="plus" boxSize={ 5 }/> }
                   isDisabled={ isDisabled }
@@ -69,8 +68,7 @@ const PublicTagsSubmitFieldAddresses = () => {
                   aria-label="delete"
                   data-index={ index }
                   variant="outline"
-                  w="30px"
-                  h="30px"
+                  boxSize="30px"
                   onClick={ handleRemoveFieldClick }
                   icon={ <IconSvg name="minus" boxSize={ 5 }/> }
                   isDisabled={ isDisabled }

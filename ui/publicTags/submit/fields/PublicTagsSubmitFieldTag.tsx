@@ -1,0 +1,140 @@
+import { chakra, Flex, FormControl, Grid, GridItem, IconButton, Input, Textarea, useColorModeValue } from '@chakra-ui/react';
+import React from 'react';
+import type { FieldError, FieldErrorsImpl, Merge, UseFormRegister } from 'react-hook-form';
+
+import type { FormFields, FormFieldTag } from '../types';
+import type { PublicTagType } from 'types/api/addressMetadata';
+
+import useIsMobile from 'lib/hooks/useIsMobile';
+import { validator as urlValidator } from 'lib/validations/url';
+import FancySelect from 'ui/shared/FancySelect/FancySelect';
+import IconSvg from 'ui/shared/IconSvg';
+import InputPlaceholder from 'ui/shared/InputPlaceholder';
+
+interface Props {
+  index: number;
+  tagTypes: Array<PublicTagType> | undefined;
+  register: UseFormRegister<FormFields>;
+  errors: Merge<FieldError, FieldErrorsImpl<FormFieldTag>> | undefined;
+  isDisabled: boolean;
+  onAddClick?: (index: number) => void;
+  onRemoveClick?: (index: number) => void;
+}
+
+const PublicTagsSubmitFieldTag = ({ index, isDisabled, register, errors, onAddClick, onRemoveClick, tagTypes }: Props) => {
+  const isMobile = useIsMobile();
+  const bgColorDefault = useColorModeValue('blackAlpha.50', 'whiteAlpha.100');
+  const inputBgColor = useColorModeValue('white', 'gray.900');
+
+  const handleAddClick = React.useCallback(() => {
+    onAddClick?.(index);
+  }, [ index, onAddClick ]);
+
+  const handleRemoveClick = React.useCallback(() => {
+    onRemoveClick?.(index);
+  }, [ index, onRemoveClick ]);
+
+  const typeOptions = React.useMemo(() => tagTypes?.map((type) => ({
+    value: type.type,
+    label: type.type,
+  })), [ tagTypes ]);
+
+  return (
+    <>
+      <GridItem colSpan={{ base: 1, lg: 2 }} p="10px" borderRadius="base" bgColor={ bgColorDefault }>
+        <Grid
+          rowGap={ 2 }
+          columnGap={ 2 }
+          templateColumns={{ base: '1fr', lg: 'repeat(4, 1fr)' }}
+        >
+          <GridItem colSpan={{ base: 1, lg: 2 }}>
+            <FormControl variant="floating" isRequired size={{ base: 'md', lg: 'lg' }}>
+              <Input
+                { ...register(`tags.${ index }.name`, { required: true, maxLength: 35 }) }
+                isInvalid={ Boolean(errors?.name) }
+                isDisabled={ isDisabled }
+                autoComplete="off"
+                bgColor={ inputBgColor }
+              />
+              <InputPlaceholder text="Tag (max 35 characters)" error={ errors?.name }/>
+            </FormControl>
+          </GridItem>
+          <GridItem colSpan={{ base: 1, lg: 2 }}>
+            <FancySelect
+              { ...register(`tags.${ index }.type`) }
+              options={ typeOptions }
+              size={ isMobile ? 'md' : 'lg' }
+              placeholder="Tag type"
+              isDisabled={ isDisabled }
+              isRequired
+              isAsync={ false }
+              bgColor={ inputBgColor }
+            />
+          </GridItem>
+          <GridItem colSpan={{ base: 1, lg: 2 }}>
+            <FormControl variant="floating" size={{ base: 'md', lg: 'lg' }}>
+              <Input
+                { ...register(`tags.${ index }.url`, { validate: urlValidator }) }
+                isInvalid={ Boolean(errors?.url) }
+                isDisabled={ isDisabled }
+                autoComplete="off"
+                bgColor={ inputBgColor }
+              />
+              <InputPlaceholder text="Label URL" error={ errors?.url }/>
+            </FormControl>
+          </GridItem>
+          <chakra.div bgColor="blue.100" h={ 20 }/>
+          <chakra.div bgColor="blue.100" h={ 20 }/>
+          <GridItem colSpan={{ base: 1, lg: 4 }}>
+            <FormControl variant="floating" size={{ base: 'md', lg: 'lg' }}>
+              <Textarea
+                { ...register(`tags.${ index }.tooltipDescription`, { maxLength: 80 }) }
+                isInvalid={ Boolean(errors?.tooltipDescription) }
+                isDisabled={ isDisabled }
+                autoComplete="off"
+                bgColor={ inputBgColor }
+                maxH="160px"
+              />
+              <InputPlaceholder text="Label description - any text to be shown on label hover (max 80 characters)" error={ errors?.tooltipDescription }/>
+            </FormControl>
+          </GridItem>
+        </Grid>
+
+      </GridItem>
+      <GridItem py={{ lg: '10px' }}>
+        <Flex
+          alignItems="center"
+          columnGap={ 5 }
+          justifyContent={{ base: 'flex-end', lg: 'flex-start' }}
+          h={{ base: 'auto', lg: '80px' }}
+        >
+          { onAddClick && (
+            <IconButton
+              aria-label="add"
+              data-index={ index }
+              variant="outline"
+              boxSize="30px"
+              onClick={ handleAddClick }
+              icon={ <IconSvg name="plus" boxSize={ 5 }/> }
+              isDisabled={ isDisabled }
+            />
+          ) }
+          { onRemoveClick && (
+            <IconButton
+              aria-label="delete"
+              data-index={ index }
+              variant="outline"
+              boxSize="30px"
+              onClick={ handleRemoveClick }
+              icon={ <IconSvg name="minus" boxSize={ 5 }/> }
+              isDisabled={ isDisabled }
+            />
+          ) }
+        </Flex>
+        { !isMobile && <chakra.div bgColor="yellow.100" h={ 40 } mt="10px"/> }
+      </GridItem>
+    </>
+  );
+};
+
+export default React.memo(PublicTagsSubmitFieldTag);

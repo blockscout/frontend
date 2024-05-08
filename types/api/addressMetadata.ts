@@ -31,7 +31,7 @@ export interface AddressMetadataTagApi extends Omit<AddressMetadataTag, 'meta'> 
 
 // TAG SUBMISSION
 
-interface PublicTagType {
+export interface PublicTagType {
   id: string;
   type: AddressMetadataTagType;
   description: string;
