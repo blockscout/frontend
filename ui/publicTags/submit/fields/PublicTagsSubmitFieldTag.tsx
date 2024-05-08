@@ -1,15 +1,17 @@
 import { chakra, Flex, FormControl, Grid, GridItem, IconButton, Input, Textarea, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
-import type { FieldError, FieldErrorsImpl, Merge, UseFormRegister } from 'react-hook-form';
+import { type FieldError, type FieldErrorsImpl, type Merge, type UseFormRegister } from 'react-hook-form';
 
 import type { FormFields, FormFieldTag } from '../types';
 import type { PublicTagType } from 'types/api/addressMetadata';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { validator as urlValidator } from 'lib/validations/url';
-import FancySelect from 'ui/shared/FancySelect/FancySelect';
 import IconSvg from 'ui/shared/IconSvg';
 import InputPlaceholder from 'ui/shared/InputPlaceholder';
+
+import PublicTagsSubmitFieldTagColor from './PublicTagsSubmitFieldTagColor';
+import PublicTagsSubmitFieldTagType from './PublicTagsSubmitFieldTagType';
 
 interface Props {
   index: number;
@@ -24,7 +26,7 @@ interface Props {
 const PublicTagsSubmitFieldTag = ({ index, isDisabled, register, errors, onAddClick, onRemoveClick, tagTypes }: Props) => {
   const isMobile = useIsMobile();
   const bgColorDefault = useColorModeValue('blackAlpha.50', 'whiteAlpha.100');
-  const inputBgColor = useColorModeValue('white', 'gray.900');
+  const inputBgColor = useColorModeValue('white', 'black');
 
   const handleAddClick = React.useCallback(() => {
     onAddClick?.(index);
@@ -33,11 +35,6 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, register, errors, onAddCl
   const handleRemoveClick = React.useCallback(() => {
     onRemoveClick?.(index);
   }, [ index, onRemoveClick ]);
-
-  const typeOptions = React.useMemo(() => tagTypes?.map((type) => ({
-    value: type.type,
-    label: type.type,
-  })), [ tagTypes ]);
 
   return (
     <>
@@ -60,16 +57,7 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, register, errors, onAddCl
             </FormControl>
           </GridItem>
           <GridItem colSpan={{ base: 1, lg: 2 }}>
-            <FancySelect
-              { ...register(`tags.${ index }.type`) }
-              options={ typeOptions }
-              size={ isMobile ? 'md' : 'lg' }
-              placeholder="Tag type"
-              isDisabled={ isDisabled }
-              isRequired
-              isAsync={ false }
-              bgColor={ inputBgColor }
-            />
+            <PublicTagsSubmitFieldTagType index={ index } tagTypes={ tagTypes } isDisabled={ isDisabled }/>
           </GridItem>
           <GridItem colSpan={{ base: 1, lg: 2 }}>
             <FormControl variant="floating" size={{ base: 'md', lg: 'lg' }}>
@@ -83,8 +71,22 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, register, errors, onAddCl
               <InputPlaceholder text="Label URL" error={ errors?.url }/>
             </FormControl>
           </GridItem>
-          <chakra.div bgColor="blue.100" h={ 20 }/>
-          <chakra.div bgColor="blue.100" h={ 20 }/>
+          <PublicTagsSubmitFieldTagColor
+            fieldName="bgColor"
+            placeholder="Background color"
+            index={ index }
+            register={ register }
+            errors={ errors }
+            isDisabled={ isDisabled }
+          />
+          <PublicTagsSubmitFieldTagColor
+            fieldName="textColor"
+            placeholder="Text color"
+            index={ index }
+            register={ register }
+            errors={ errors }
+            isDisabled={ isDisabled }
+          />
           <GridItem colSpan={{ base: 1, lg: 4 }}>
             <FormControl variant="floating" size={{ base: 'md', lg: 'lg' }}>
               <Textarea

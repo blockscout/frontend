@@ -22,7 +22,14 @@ const PublicTagsSubmitFieldTags = ({ tagTypes }: Props) => {
   const isDisabled = formState.isSubmitting;
 
   const handleAddFieldClick = React.useCallback((index: number) => {
-    insert(index + 1, { name: '', type: 'name', url: undefined, bgColor: undefined, textColor: undefined, tooltipDescription: undefined });
+    insert(index + 1, {
+      name: '',
+      type: { label: 'name', value: 'name' },
+      url: undefined,
+      bgColor: undefined,
+      textColor: undefined,
+      tooltipDescription: undefined,
+    });
   }, [ insert ]);
 
   const handleRemoveFieldClick = React.useCallback((index: number) => {

@@ -23,7 +23,7 @@ const PublicTagsSubmitForm = ({ config }: Props) => {
     mode: 'onBlur',
     defaultValues: {
       addresses: [ { hash: '' } ],
-      tags: [ { name: '', type: 'name', url: undefined, bgColor: undefined, textColor: undefined } ],
+      tags: [ { name: '', type: { label: 'name', value: 'name' }, url: undefined, bgColor: undefined, textColor: undefined } ],
     },
   });
 

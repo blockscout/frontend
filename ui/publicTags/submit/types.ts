@@ -10,7 +10,10 @@ export interface FormFields {
 
 export interface FormFieldTag {
   name: string;
-  type: AddressMetadataTagType;
+  type: {
+    label: string;
+    value: AddressMetadataTagType;
+  };
   url: string | undefined;
   bgColor: string | undefined;
   textColor: string | undefined;
