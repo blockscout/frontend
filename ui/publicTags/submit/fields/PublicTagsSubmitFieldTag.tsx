@@ -72,19 +72,19 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, register, errors, onAddCl
             </FormControl>
           </GridItem>
           <PublicTagsSubmitFieldTagColor
-            fieldName="bgColor"
+            fieldName={ `tags.${ index }.bgColor` }
             placeholder="Background color"
             index={ index }
             register={ register }
-            errors={ errors }
+            error={ errors?.bgColor }
             isDisabled={ isDisabled }
           />
           <PublicTagsSubmitFieldTagColor
-            fieldName="textColor"
+            fieldName={ `tags.${ index }.textColor` }
             placeholder="Text color"
             index={ index }
             register={ register }
-            errors={ errors }
+            error={ errors?.textColor }
             isDisabled={ isDisabled }
           />
           <GridItem colSpan={{ base: 1, lg: 4 }}>
