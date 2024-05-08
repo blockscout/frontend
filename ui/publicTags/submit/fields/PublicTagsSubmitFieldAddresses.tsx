@@ -1,7 +1,6 @@
 import { FormControl, GridItem, IconButton, Input } from '@chakra-ui/react';
 import React from 'react';
-import type { ControllerFieldState, ControllerRenderProps, UseFormStateReturn } from 'react-hook-form';
-import { Controller, useFieldArray, useFormContext } from 'react-hook-form';
+import { useFieldArray, useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 
@@ -12,7 +11,7 @@ import InputPlaceholder from 'ui/shared/InputPlaceholder';
 const LIMIT = 10;
 
 const PublicTagsSubmitFieldAddresses = () => {
-  const { control, formState } = useFormContext<FormFields>();
+  const { control, formState, register } = useFormContext<FormFields>();
   const { fields, insert, remove } = useFieldArray<FormFields, 'addresses'>({
     name: 'addresses',
     control,
@@ -34,37 +33,23 @@ const PublicTagsSubmitFieldAddresses = () => {
     }
   }, [ remove ]);
 
-  const renderControl = React.useCallback(({ field, formState, fieldState }: {
-    field: ControllerRenderProps<FormFields, `addresses.${ number }.hash`>;
-    fieldState: ControllerFieldState;
-    formState: UseFormStateReturn<FormFields>;
-  }) => {
-    return (
-      <FormControl variant="floating" id={ field.name } isRequired size={{ base: 'md', lg: 'lg' }}>
-        <Input
-          { ...field }
-          isInvalid={ Boolean(fieldState.error) }
-          isDisabled={ formState.isSubmitting }
-          required
-          autoComplete="off"
-        />
-        <InputPlaceholder text="Smart contract / Address (0x...)" error={ fieldState.error }/>
-      </FormControl>
-    );
-  }, []);
-
   return (
     <>
       { fields.map((field, index) => {
+        const error = formState.errors?.addresses?.[ index ]?.hash;
+
         return (
           <React.Fragment key={ field.id }>
             <GridItem colSpan={{ base: 1, lg: 2 }}>
-              <Controller
-                name={ `addresses.${ index }.hash` }
-                control={ control }
-                render={ renderControl }
-                rules={{ required: true, pattern: ADDRESS_REGEXP }}
-              />
+              <FormControl variant="floating" isRequired size={{ base: 'md', lg: 'lg' }}>
+                <Input
+                  { ...register(`addresses.${ index }.hash`, { required: true, pattern: ADDRESS_REGEXP }) }
+                  isInvalid={ Boolean(error) }
+                  isDisabled={ formState.isSubmitting }
+                  autoComplete="off"
+                />
+                <InputPlaceholder text="Smart contract / Address (0x...)" error={ error }/>
+              </FormControl>
             </GridItem>
             <GridItem display="flex" alignItems="center" columnGap={ 5 }>
               { fields.length < LIMIT && !(fields.length > 1 && index === 0) && (
