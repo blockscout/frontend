@@ -48,10 +48,10 @@ const PublicTagsSubmitForm = ({ config }: Props) => {
           </GridItem>
           <PublicTagsSubmitFieldRequesterName/>
           <chakra.div bgColor="blue.100" h={ 20 }/>
-          <chakra.div bgColor="yellow.100" h={ 20 }/>
+          <div/>
           <PublicTagsSubmitFieldRequesterEmail/>
           <chakra.div bgColor="blue.100" h={ 20 }/>
-          <chakra.div bgColor="yellow.100" h={ 20 }/>
+          <div/>
 
           <GridItem colSpan={{ base: 1, lg: 3 }} as="h2" textStyle="h4" mt={ 3 }>
             Public tags/labels

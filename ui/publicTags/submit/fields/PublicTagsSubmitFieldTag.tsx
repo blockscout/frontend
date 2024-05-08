@@ -7,6 +7,7 @@ import type { PublicTagType } from 'types/api/addressMetadata';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { validator as urlValidator } from 'lib/validations/url';
+import EntityTag from 'ui/shared/EntityTags/EntityTag';
 import IconSvg from 'ui/shared/IconSvg';
 import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
@@ -15,6 +16,7 @@ import PublicTagsSubmitFieldTagType from './PublicTagsSubmitFieldTagType';
 
 interface Props {
   index: number;
+  field: FormFieldTag;
   tagTypes: Array<PublicTagType> | undefined;
   register: UseFormRegister<FormFields>;
   errors: Merge<FieldError, FieldErrorsImpl<FormFieldTag>> | undefined;
@@ -23,7 +25,7 @@ interface Props {
   onRemoveClick?: (index: number) => void;
 }
 
-const PublicTagsSubmitFieldTag = ({ index, isDisabled, register, errors, onAddClick, onRemoveClick, tagTypes }: Props) => {
+const PublicTagsSubmitFieldTag = ({ index, isDisabled, register, errors, onAddClick, onRemoveClick, tagTypes, field }: Props) => {
   const isMobile = useIsMobile();
   const bgColorDefault = useColorModeValue('blackAlpha.50', 'whiteAlpha.100');
   const inputBgColor = useColorModeValue('white', 'black');
@@ -101,7 +103,6 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, register, errors, onAddCl
             </FormControl>
           </GridItem>
         </Grid>
-
       </GridItem>
       <GridItem py={{ lg: '10px' }}>
         <Flex
@@ -133,10 +134,28 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, register, errors, onAddCl
             />
           ) }
         </Flex>
-        { !isMobile && <chakra.div bgColor="yellow.100" h={ 40 } mt="10px"/> }
+        { !isMobile && (
+          <Flex flexDir="column" alignItems="flex-start" mt="10px" rowGap={ 2 }>
+            <EntityTag data={{
+              name: field.name || 'Tag name',
+              tagType: field.type.value,
+              meta: {
+                tagUrl: field.url,
+                bgColor: field.bgColor ? `#${ field.bgColor }` : undefined,
+                textColor: field.textColor ? `#${ field.textColor }` : undefined,
+                tooltipDescription: field.tooltipDescription,
+              },
+              slug: 'new',
+              ordinal: 0,
+            }}/>
+            <chakra.span color="text_secondary" fontSize="sm">
+              { tagTypes?.find(({ type }) => type === field.type.value)?.description }
+            </chakra.span>
+          </Flex>
+        ) }
       </GridItem>
     </>
   );
 };
 
-export default React.memo(PublicTagsSubmitFieldTag);
+export default PublicTagsSubmitFieldTag;

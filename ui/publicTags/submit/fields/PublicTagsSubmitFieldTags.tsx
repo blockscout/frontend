@@ -13,7 +13,7 @@ interface Props {
 }
 
 const PublicTagsSubmitFieldTags = ({ tagTypes }: Props) => {
-  const { control, formState, register } = useFormContext<FormFields>();
+  const { control, formState, register, watch } = useFormContext<FormFields>();
   const { fields, insert, remove } = useFieldArray<FormFields, 'tags'>({
     name: 'tags',
     control,
@@ -44,6 +44,7 @@ const PublicTagsSubmitFieldTags = ({ tagTypes }: Props) => {
         return (
           <PublicTagsSubmitFieldTag
             key={ field.id }
+            field={ watch(`tags.${ index }`) }
             index={ index }
             tagTypes={ tagTypes }
             register={ register }

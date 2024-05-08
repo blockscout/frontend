@@ -24,7 +24,10 @@ const PublicTagsSubmitFieldDescription = () => {
         maxH="160px"
         maxLength={ MAX_LENGTH }
       />
-      <InputPlaceholder text="Any comments for moderation... Specify the reason for adding tags and color preference(s)." error={ fieldState.error }/>
+      <InputPlaceholder
+        text="Comment - for moderation purposes. Please provide a way to confirm the connection between address and tags."
+        error={ fieldState.error }
+      />
     </FormControl>
   );
 };
