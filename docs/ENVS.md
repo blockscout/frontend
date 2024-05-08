@@ -201,6 +201,8 @@ Settings for meta tags, OG tags and SEO
 | `total_reward` | Total block reward |
 | `nonce` | Block nonce |
 | `miner` | Address of block's miner or validator |
+| `L1_status` | Short interpretation of the batch lifecycle (applicable for Rollup chains) |
+| `batch` | Batch index (applicable for Rollup chains) |
 
 &nbsp;
 
@@ -235,6 +237,8 @@ Settings for meta tags, OG tags and SEO
 | `tx_fee` | Total transaction fee |
 | `gas_fees` | Gas fees breakdown |
 | `burnt_fees` | Amount of native coin burnt for transaction |
+| `L1_status` | Short interpretation of the batch lifecycle (applicable for Rollup chains) |
+| `batch` | Batch index (applicable for Rollup chains) |
 
 ##### Transaction additional fields list
 | Id | Description |
@@ -272,6 +276,7 @@ Settings for meta tags, OG tags and SEO
 | NEXT_PUBLIC_HIDE_INDEXING_ALERT_BLOCKS | `boolean` | Set to `true` to hide indexing alert in the page header about indexing chain's blocks | - | `false` | `true` |
 | NEXT_PUBLIC_HIDE_INDEXING_ALERT_INT_TXS | `boolean` | Set to `true` to hide indexing alert in the page footer about indexing block's internal transactions | - | `false` | `true` |
 | NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE | `string` | Used for displaying custom announcements or alerts in the header of the site. Could be a regular string or a HTML code. | - | - | `Hello world! 🤪` |
+| NEXT_PUBLIC_COLOR_THEME_DEFAULT | `'light' \| 'dim' \| 'midnight' \| 'dark'` | Preferred color theme of the app | - | - | `midnight` |
 
 #### Network explorer configuration properties
 

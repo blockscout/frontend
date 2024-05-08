@@ -46,13 +46,10 @@ test('with banner +@dark-mode', async({ render, mockEnvs, mockConfigResponse }) 
   await expect(component).toHaveScreenshot();
 });
 
-test('with scores +@dark-mode', async({ render, mockConfigResponse, mockEnvs, mockFeatures }) => {
+test('with scores +@dark-mode', async({ render, mockConfigResponse, mockEnvs }) => {
   const MARKETPLACE_SECURITY_REPORTS_URL = 'https://marketplace-security-reports.json';
   await mockEnvs([
     [ 'NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL', MARKETPLACE_SECURITY_REPORTS_URL ],
-  ]);
-  await mockFeatures([
-    [ 'security_score_exp', true ],
   ]);
   await mockConfigResponse('NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL', MARKETPLACE_SECURITY_REPORTS_URL, JSON.stringify(securityReportsMock));
   const component = await render(<Marketplace/>);
@@ -95,13 +92,10 @@ test.describe('mobile', () => {
     await expect(component).toHaveScreenshot();
   });
 
-  test('with scores', async({ render, mockConfigResponse, mockEnvs, mockFeatures }) => {
+  test('with scores', async({ render, mockConfigResponse, mockEnvs }) => {
     const MARKETPLACE_SECURITY_REPORTS_URL = 'https://marketplace-security-reports.json';
     await mockEnvs([
       [ 'NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL', MARKETPLACE_SECURITY_REPORTS_URL ],
-    ]);
-    await mockFeatures([
-      [ 'security_score_exp', true ],
     ]);
     await mockConfigResponse('NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL', MARKETPLACE_SECURITY_REPORTS_URL, JSON.stringify(securityReportsMock));
     const component = await render(<Marketplace/>);

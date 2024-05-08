@@ -14,7 +14,7 @@ import WalletTooltip from './WalletTooltip';
 
 const WalletMenuMobile = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { isWalletConnected, address, connect, disconnect, isModalOpening, isModalOpen } = useWallet({ source: 'Header' });
+  const { isWalletConnected, address, connect, disconnect, isModalOpening, isModalOpen, openModal } = useWallet({ source: 'Header' });
   const { themedBackground, themedBackgroundOrange, themedBorderColor, themedColor } = useMenuButtonColors();
   const isMobile = useIsMobile();
   const { isAutoConnectDisabled } = useMarketplaceContext();
@@ -48,7 +48,7 @@ const WalletMenuMobile = () => {
           color={ themedColor }
           borderColor={ !isWalletConnected ? themedBorderColor : undefined }
           onClick={ isWalletConnected ? openPopover : connect }
-          isLoading={ isModalOpening || isModalOpen }
+          isLoading={ (isModalOpening || isModalOpen) && !isWalletConnected }
         />
       </WalletTooltip>
       { isWalletConnected && (
@@ -61,7 +61,13 @@ const WalletMenuMobile = () => {
           <DrawerOverlay/>
           <DrawerContent maxWidth="260px">
             <DrawerBody p={ 6 }>
-              <WalletMenuContent address={ address } disconnect={ disconnect } isAutoConnectDisabled={ isAutoConnectDisabled }/>
+              <WalletMenuContent
+                address={ address }
+                disconnect={ disconnect }
+                isAutoConnectDisabled={ isAutoConnectDisabled }
+                openWeb3Modal={ openModal }
+                closeWalletMenu={ onClose }
+              />
             </DrawerBody>
           </DrawerContent>
         </Drawer>

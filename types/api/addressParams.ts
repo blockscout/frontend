@@ -1,3 +1,5 @@
+import type { AddressMetadataTagApi } from './addressMetadata';
+
 export interface AddressTag {
   label: string;
   display_name: string;
@@ -22,6 +24,10 @@ export type AddressParamBasic = {
   is_contract: boolean;
   is_verified: boolean | null;
   ens_domain_name: string | null;
+  metadata?: {
+    reputation: number | null;
+    tags: Array<AddressMetadataTagApi>;
+  } | null;
 }
 
 export type AddressParam = UserTags & AddressParamBasic;

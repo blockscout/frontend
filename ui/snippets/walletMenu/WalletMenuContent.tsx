@@ -1,4 +1,4 @@
-import { Box, Button, Text, Flex } from '@chakra-ui/react';
+import { Box, Button, Text, Flex, IconButton } from '@chakra-ui/react';
 import React from 'react';
 
 import * as mixpanel from 'lib/mixpanel/index';
@@ -12,14 +12,23 @@ type Props = {
   address?: string;
   disconnect?: () => void;
   isAutoConnectDisabled?: boolean;
+  openWeb3Modal: () => void;
+  closeWalletMenu: () => void;
 };
 
-const WalletMenuContent = ({ address, disconnect, isAutoConnectDisabled }: Props) => {
+const WalletMenuContent = ({ address, disconnect, isAutoConnectDisabled, openWeb3Modal, closeWalletMenu }: Props) => {
   const { themedBackgroundOrange } = useMenuButtonColors();
+  const [ isModalOpening, setIsModalOpening ] = React.useState(false);
 
   const onAddressClick = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.WALLET_ACTION, { Action: 'Address click' });
   }, []);
+
+  const handleOpenWeb3Modal = React.useCallback(async() => {
+    setIsModalOpening(true);
+    await openWeb3Modal();
+    setTimeout(closeWalletMenu, 300);
+  }, [ openWeb3Modal, closeWalletMenu ]);
 
   return (
     <Box>
@@ -60,16 +69,28 @@ const WalletMenuContent = ({ address, disconnect, isAutoConnectDisabled }: Props
       >
         Your wallet is used to interact with apps and contracts in the explorer.
       </Text>
-      <AddressEntity
-        address={{ hash: address }}
-        noTooltip
-        truncation="dynamic"
-        fontSize="sm"
-        fontWeight={ 700 }
-        color="text"
-        mb={ 6 }
-        onClick={ onAddressClick }
-      />
+      <Flex alignItems="center" mb={ 6 }>
+        <AddressEntity
+          address={{ hash: address }}
+          noTooltip
+          truncation="dynamic"
+          fontSize="sm"
+          fontWeight={ 700 }
+          color="text"
+          onClick={ onAddressClick }
+          flex={ 1 }
+        />
+        <IconButton
+          aria-label="open wallet"
+          icon={ <IconSvg name="gear_slim" boxSize={ 5 }/> }
+          variant="simple"
+          h="20px"
+          w="20px"
+          ml={ 1 }
+          onClick={ handleOpenWeb3Modal }
+          isLoading={ isModalOpening }
+        />
+      </Flex>
       <Button size="sm" width="full" variant="outline" onClick={ disconnect }>
         Disconnect
       </Button>

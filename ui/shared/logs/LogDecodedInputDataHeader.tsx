@@ -1,13 +1,15 @@
 import { Divider, Flex, Skeleton, VStack } from '@chakra-ui/react';
 import React from 'react';
 
+import Tag from 'ui/shared/chakra/Tag';
+
 interface Props {
   methodId: string;
   methodCall: string;
   isLoading?: boolean;
 }
 
-const Item = ({ label, text, isLoading }: { label: string; text: string; isLoading?: boolean}) => {
+const Item = ({ label, children, isLoading }: { label: string; children: React.ReactNode; isLoading?: boolean}) => {
   return (
     <Flex
       columnGap={ 5 }
@@ -19,7 +21,7 @@ const Item = ({ label, text, isLoading }: { label: string; text: string; isLoadi
       <Skeleton fontWeight={ 600 } w={{ base: 'auto', lg: '80px' }} flexShrink={ 0 } isLoaded={ !isLoading }>
         { label }
       </Skeleton >
-      <Skeleton isLoaded={ !isLoading } whiteSpace="pre-wrap">{ text }</Skeleton>
+      { children }
     </Flex>
   );
 };
@@ -32,8 +34,12 @@ const LogDecodedInputDataHeader = ({ methodId, methodCall, isLoading }: Props) =
       fontSize="sm"
       lineHeight={ 5 }
     >
-      <Item label="Method id" text={ methodId } isLoading={ isLoading }/>
-      <Item label="Call" text={ methodCall } isLoading={ isLoading }/>
+      <Item label="Method id" isLoading={ isLoading }>
+        <Tag isLoading={ isLoading }>{ methodId }</Tag>
+      </Item>
+      <Item label="Call" isLoading={ isLoading }>
+        <Skeleton isLoaded={ !isLoading } whiteSpace="pre-wrap">{ methodCall }</Skeleton>
+      </Item>
     </VStack>
   );
 };

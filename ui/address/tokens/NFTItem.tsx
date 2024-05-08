@@ -31,6 +31,7 @@ const NFTItem = ({ token, value, isLoading, withTokenLink, ...tokenInstance }: P
           animationUrl={ tokenInstance?.animation_url ?? null }
           imageUrl={ tokenInstance?.image_url ?? null }
           isLoading={ isLoading }
+          autoplayVideo={ false }
         />
       </Link>
       <Flex justifyContent="space-between" w="100%" flexWrap="wrap">

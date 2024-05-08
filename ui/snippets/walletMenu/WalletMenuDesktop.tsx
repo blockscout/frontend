@@ -20,7 +20,7 @@ type Props = {
 };
 
 const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
-  const { isWalletConnected, address, connect, disconnect, isModalOpening, isModalOpen } = useWallet({ source: 'Header' });
+  const { isWalletConnected, address, connect, disconnect, isModalOpening, isModalOpen, openModal } = useWallet({ source: 'Header' });
   const { themedBackground, themedBackgroundOrange, themedBorderColor, themedColor } = useMenuButtonColors();
   const [ isPopoverOpen, setIsPopoverOpen ] = useBoolean(false);
   const isMobile = useIsMobile();
@@ -82,7 +82,7 @@ const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
               variant={ variant }
               colorScheme="blue"
               flexShrink={ 0 }
-              isLoading={ isModalOpening || isModalOpen }
+              isLoading={ (isModalOpening || isModalOpen) && !isWalletConnected }
               loadingText="Connect wallet"
               onClick={ isWalletConnected ? openPopover : connect }
               fontSize="sm"
@@ -102,7 +102,13 @@ const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
       { isWalletConnected && (
         <PopoverContent w="235px">
           <PopoverBody padding="24px 16px 16px 16px">
-            <WalletMenuContent address={ address } disconnect={ disconnect } isAutoConnectDisabled={ isAutoConnectDisabled }/>
+            <WalletMenuContent
+              address={ address }
+              disconnect={ disconnect }
+              isAutoConnectDisabled={ isAutoConnectDisabled }
+              openWeb3Modal={ openModal }
+              closeWalletMenu={ setIsPopoverOpen.off }
+            />
           </PopoverBody>
         </PopoverContent>
       ) }
