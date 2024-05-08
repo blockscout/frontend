@@ -40,7 +40,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
     queryOptions: { enabled: Boolean(router.query.hash), placeholderData: TOKEN_COUNTERS },
   });
 
-  const appActionData = useAppActionData(hash);
+  const appActionData = useAppActionData(hash, isActionButtonExperiment);
 
   const changeUrlAndScroll = useCallback((tab: TokenTabs) => () => {
     router.push(

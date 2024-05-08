@@ -28,8 +28,8 @@ interface Props {
 }
 
 const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
-  const appActionData = useAppActionData(token?.address);
   const { value: isActionButtonExperiment } = useFeatureValue('action_button_exp', false);
+  const appActionData = useAppActionData(token?.address, isActionButtonExperiment && !isLoading);
 
   const handleCounterItemClick = React.useCallback(() => {
     window.setTimeout(() => {

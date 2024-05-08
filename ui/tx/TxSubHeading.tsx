@@ -29,8 +29,8 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
   const hasInterpretationFeature = feature.isEnabled;
   const isNovesInterpretation = hasInterpretationFeature && feature.provider === 'noves';
 
-  const appActionData = useAppActionData(txQuery.data?.to?.hash);
   const { value: isActionButtonExperiment } = useFeatureValue('action_button_exp', false);
+  const appActionData = useAppActionData(txQuery.data?.to?.hash, isActionButtonExperiment && !txQuery.isPlaceholderData);
 
   const txInterpretationQuery = useApiQuery('tx_interpretation', {
     pathParams: { hash },
@@ -57,7 +57,9 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
   const hasViewAllInterpretationsLink =
     !txInterpretationQuery.isPlaceholderData && txInterpretationQuery.data?.data.summaries && txInterpretationQuery.data?.data.summaries.length > 1;
 
-  const hasAnyInterpretation = (hasNovesInterpretation && novesInterpretationQuery.data) || hasInternalInterpretation;
+  const hasAnyInterpretation =
+    (hasNovesInterpretation && novesInterpretationQuery.data && !novesInterpretationQuery.isPlaceholderData) ||
+    (hasInternalInterpretation && !txInterpretationQuery.isPlaceholderData);
 
   const content = (() => {
     if (hasNovesInterpretation && novesInterpretationQuery.data) {
