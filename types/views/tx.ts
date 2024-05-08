@@ -7,6 +7,8 @@ export const TX_FIELDS_IDS = [
   'tx_fee',
   'gas_fees',
   'burnt_fees',
+  'L1_status',
+  'batch',
 ] as const;
 
 export type TxFieldsId = ArrayElement<typeof TX_FIELDS_IDS>;

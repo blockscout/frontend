@@ -7,7 +7,6 @@ import type { TabItem } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
-import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import Banner from 'ui/marketplace/Banner';
 import ContractListModal from 'ui/marketplace/ContractListModal';
@@ -74,7 +73,6 @@ const Marketplace = () => {
   } = useMarketplace();
 
   const isMobile = useIsMobile();
-  const { value: isExperiment } = useFeatureValue('security_score_exp', false);
 
   const categoryTabs = React.useMemo(() => {
     const tabs: Array<TabItem> = categories.map(category => ({
@@ -189,7 +187,7 @@ const Marketplace = () => {
       </Box>
 
       <Flex direction={{ base: 'column', lg: 'row' }} mb={{ base: 4, lg: 6 }} gap={{ base: 4, lg: 3 }}>
-        { (feature.securityReportsUrl && isExperiment) && (
+        { feature.securityReportsUrl && (
           <Skeleton isLoaded={ !isPlaceholderData }>
             <RadioButtonGroup<MarketplaceDisplayType>
               onChange={ onDisplayTypeChange }
@@ -226,12 +224,12 @@ const Marketplace = () => {
           onChange={ onSearchInputChange }
           placeholder="Find app by name or keyword..."
           isLoading={ isPlaceholderData }
-          size={ (feature.securityReportsUrl && isExperiment) ? 'xs' : 'sm' }
+          size={ feature.securityReportsUrl ? 'xs' : 'sm' }
           flex="1"
         />
       </Flex>
 
-      { (selectedDisplayType === MarketplaceDisplayType.SCORES && feature.securityReportsUrl && isExperiment) ? (
+      { (selectedDisplayType === MarketplaceDisplayType.SCORES && feature.securityReportsUrl) ? (
         <MarketplaceListWithScores
           apps={ displayedApps }
           showAppInfo={ showAppInfo }

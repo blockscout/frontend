@@ -2,6 +2,9 @@ import type { ContractCodeIde } from 'types/client/contract';
 import { NAVIGATION_LINK_IDS, type NavItemExternal, type NavigationLinkId } from 'types/client/navigation-items';
 import type { ChainIndicatorId } from 'types/homepage';
 import type { NetworkExplorer } from 'types/networks';
+import type { ColorThemeId } from 'types/settings';
+
+import { COLOR_THEMES } from 'lib/settings/colorTheme';
 
 import * as views from './ui/views';
 import { getEnvValue, getExternalAssetFilePath, parseEnvJson } from './utils';
@@ -19,6 +22,11 @@ const hiddenLinks = (() => {
   }, {} as Record<NavigationLinkId, boolean>);
 
   return result;
+})();
+
+const defaultColorTheme = (() => {
+  const envValue = getEnvValue('NEXT_PUBLIC_COLOR_THEME_DEFAULT') as ColorThemeId | undefined;
+  return COLOR_THEMES.find((theme) => theme.id === envValue);
 })();
 
 // eslint-disable-next-line max-len
@@ -70,6 +78,9 @@ const UI = Object.freeze({
     items: parseEnvJson<Array<ContractCodeIde>>(getEnvValue('NEXT_PUBLIC_CONTRACT_CODE_IDES')) || [],
   },
   hasContractAuditReports: getEnvValue('NEXT_PUBLIC_HAS_CONTRACT_AUDIT_REPORTS') === 'true' ? true : false,
+  colorTheme: {
+    'default': defaultColorTheme,
+  },
 });
 
 export default UI;

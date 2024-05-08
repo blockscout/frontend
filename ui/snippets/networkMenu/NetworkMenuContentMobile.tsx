@@ -45,10 +45,12 @@ const NetworkMenuContentMobile = ({ items, tabs }: Props) => {
     </>
   ) : (
     <>
-      <Select size="xs" borderRadius="base" value={ selectedTab } onChange={ handleSelectChange } focusBorderColor="none">
-        { tabs.map((tab) => <option key={ tab } value={ tab }>{ capitalize(tab) }</option>) }
-      </Select>
-      <VStack as="ul" spacing={ 2 } alignItems="stretch" mt={ 6 }>
+      { tabs.length > 1 && (
+        <Select size="xs" borderRadius="base" value={ selectedTab } onChange={ handleSelectChange } focusBorderColor="none" mb={ 6 }>
+          { tabs.map((tab) => <option key={ tab } value={ tab }>{ capitalize(tab) }</option>) }
+        </Select>
+      ) }
+      <VStack as="ul" spacing={ 2 } alignItems="stretch">
         { items
           .filter(({ group }) => group === selectedTab)
           .map((network) => (

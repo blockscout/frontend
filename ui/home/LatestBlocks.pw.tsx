@@ -1,145 +1,49 @@
-import { test as base, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import * as blockMock from 'mocks/blocks/block';
 import * as statsMock from 'mocks/stats/index';
-import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
+import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import * as socketServer from 'playwright/fixtures/socketServer';
-import TestApp from 'playwright/TestApp';
-import buildApiUrl from 'playwright/utils/buildApiUrl';
-import * as configs from 'playwright/utils/configs';
+import { test, expect } from 'playwright/lib';
 
 import LatestBlocks from './LatestBlocks';
 
-const STATS_API_URL = buildApiUrl('stats');
-const BLOCKS_API_URL = buildApiUrl('homepage_blocks');
-
-export const test = base.extend<socketServer.SocketServerFixture>({
-  createSocket: socketServer.createSocket,
-});
-
-test('default view +@mobile +@dark-mode', async({ mount, page }) => {
-  await page.route(STATS_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(statsMock.base),
-  }));
-  await page.route(BLOCKS_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify([
-      blockMock.base,
-      blockMock.base2,
-    ]),
-  }));
-
-  const component = await mount(
-    <TestApp>
-      <LatestBlocks/>
-    </TestApp>,
-  );
-
+test('default view +@mobile +@dark-mode', async({ render, mockApiResponse }) => {
+  await mockApiResponse('stats', statsMock.base);
+  await mockApiResponse('homepage_blocks', [ blockMock.base, blockMock.base2 ]);
+  const component = await render(<LatestBlocks/>);
   await expect(component).toHaveScreenshot();
 });
 
-const testL2 = test.extend({
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  context: contextWithEnvs(configs.featureEnvs.optimisticRollup) as any,
-});
-
-testL2('L2 view', async({ mount, page }) => {
-  await page.route(STATS_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(statsMock.base),
-  }));
-  await page.route(BLOCKS_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify([
-      blockMock.base,
-      blockMock.base2,
-    ]),
-  }));
-
-  const component = await mount(
-    <TestApp>
-      <LatestBlocks/>
-    </TestApp>,
-  );
-
+test('L2 view', async({ render, mockEnvs, mockApiResponse }) => {
+  await mockEnvs(ENVS_MAP.optimisticRollup);
+  await mockApiResponse('stats', statsMock.base);
+  await mockApiResponse('homepage_blocks', [ blockMock.base, blockMock.base2 ]);
+  const component = await render(<LatestBlocks/>);
   await expect(component).toHaveScreenshot();
 });
 
-const testNoReward = test.extend({
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  context: contextWithEnvs(configs.viewsEnvs.block.hiddenFields) as any,
-});
-
-testNoReward('no reward view', async({ mount, page }) => {
-  await page.route(STATS_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(statsMock.base),
-  }));
-  await page.route(BLOCKS_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify([
-      blockMock.base,
-      blockMock.base2,
-    ]),
-  }));
-
-  const component = await mount(
-    <TestApp>
-      <LatestBlocks/>
-    </TestApp>,
-  );
-
+test('no reward view', async({ render, mockEnvs, mockApiResponse }) => {
+  await mockEnvs(ENVS_MAP.blockHiddenFields);
+  await mockApiResponse('stats', statsMock.base);
+  await mockApiResponse('homepage_blocks', [ blockMock.base, blockMock.base2 ]);
+  const component = await render(<LatestBlocks/>);
   await expect(component).toHaveScreenshot();
 });
 
-test('with long block height', async({ mount, page }) => {
-  await page.route(STATS_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(statsMock.base),
-  }));
-  await page.route(BLOCKS_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify([
-      {
-        ...blockMock.base,
-        height: 123456789012345,
-      },
-    ]),
-  }));
-
-  const component = await mount(
-    <TestApp>
-      <LatestBlocks/>
-    </TestApp>,
-  );
-
+test('with long block height', async({ render, mockApiResponse }) => {
+  await mockApiResponse('stats', statsMock.base);
+  await mockApiResponse('homepage_blocks', [ { ...blockMock.base, height: 123456789012345 } ]);
+  const component = await render(<LatestBlocks/>);
   await expect(component).toHaveScreenshot();
 });
 
 test.describe('socket', () => {
   test.describe.configure({ mode: 'serial' });
-
-  test('new item', async({ mount, page, createSocket }) => {
-    await page.route(STATS_API_URL, (route) => route.fulfill({
-      status: 200,
-      body: JSON.stringify(statsMock.base),
-    }));
-    await page.route(BLOCKS_API_URL, (route) => route.fulfill({
-      status: 200,
-      body: JSON.stringify([
-        blockMock.base,
-        blockMock.base2,
-      ]),
-    }));
-
-    const component = await mount(
-      <TestApp withSocket>
-        <LatestBlocks/>
-      </TestApp>,
-    );
-
+  test('new item', async({ render, mockApiResponse, createSocket }) => {
+    await mockApiResponse('stats', statsMock.base);
+    await mockApiResponse('homepage_blocks', [ blockMock.base, blockMock.base2 ]);
+    const component = await render(<LatestBlocks/>, undefined, { withSocket: true });
     const socket = await createSocket();
     const channel = await socketServer.joinChannel(socket, 'blocks:new_block');
     socketServer.sendMessage(socket, channel, 'new_block', {
@@ -150,7 +54,6 @@ test.describe('socket', () => {
         timestamp: '2022-11-11T11:59:58Z',
       },
     });
-
     await expect(component).toHaveScreenshot();
   });
 });

@@ -1,6 +1,8 @@
 import type { AddressMetadataTag } from 'types/api/addressMetadata';
 import type { AddressMetadataTagFormatted } from 'types/client/addressMetadata';
 
+type MetaParsed = NonNullable<AddressMetadataTagFormatted['meta']>;
+
 export default function parseMetaPayload(meta: AddressMetadataTag['meta']): AddressMetadataTagFormatted['meta'] {
   try {
     const parsedMeta = JSON.parse(meta || '');
@@ -11,16 +13,20 @@ export default function parseMetaPayload(meta: AddressMetadataTag['meta']): Addr
 
     const result: AddressMetadataTagFormatted['meta'] = {};
 
-    if ('textColor' in parsedMeta && typeof parsedMeta.textColor === 'string') {
-      result.textColor = parsedMeta.textColor;
-    }
+    const stringFields: Array<keyof MetaParsed> = [
+      'textColor',
+      'bgColor',
+      'tagUrl',
+      'tooltipIcon',
+      'tooltipTitle',
+      'tooltipDescription',
+      'tooltipUrl',
+    ];
 
-    if ('bgColor' in parsedMeta && typeof parsedMeta.bgColor === 'string') {
-      result.bgColor = parsedMeta.bgColor;
-    }
-
-    if ('actionURL' in parsedMeta && typeof parsedMeta.actionURL === 'string') {
-      result.actionURL = parsedMeta.actionURL;
+    for (const stringField of stringFields) {
+      if (stringField in parsedMeta && typeof parsedMeta[stringField as keyof typeof parsedMeta] === 'string') {
+        result[stringField] = parsedMeta[stringField as keyof typeof parsedMeta];
+      }
     }
 
     return result;

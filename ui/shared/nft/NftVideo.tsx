@@ -5,15 +5,17 @@ import { mediaStyleProps, videoPlayProps } from './utils';
 
 interface Props {
   src: string;
+  autoPlay?: boolean;
   onLoad: () => void;
   onError: () => void;
   onClick?: () => void;
 }
 
-const NftVideo = ({ src, onLoad, onError, onClick }: Props) => {
+const NftVideo = ({ src, autoPlay = true, onLoad, onError, onClick }: Props) => {
   return (
     <chakra.video
       { ...videoPlayProps }
+      autoPlay={ autoPlay }
       src={ src }
       onCanPlayThrough={ onLoad }
       onError={ onError }
