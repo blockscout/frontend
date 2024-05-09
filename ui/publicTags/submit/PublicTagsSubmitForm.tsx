@@ -3,7 +3,7 @@ import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
 
-import type { FormFields } from './types';
+import type { FormFields, FormSubmitResult } from './types';
 import type { PublicTagTypesResponse } from 'types/api/addressMetadata';
 
 import delay from 'lib/delay';
@@ -21,9 +21,10 @@ import PublicTagsSubmitFieldTags from './fields/PublicTagsSubmitFieldTags';
 
 interface Props {
   config: PublicTagTypesResponse | undefined;
+  onSubmitResult: (result: FormSubmitResult) => void;
 }
 
-const PublicTagsSubmitForm = ({ config }: Props) => {
+const PublicTagsSubmitForm = ({ config, onSubmitResult }: Props) => {
   const isMobile = useIsMobile();
 
   const formApi = useForm<FormFields>({
@@ -38,8 +39,11 @@ const PublicTagsSubmitForm = ({ config }: Props) => {
     // eslint-disable-next-line no-console
     console.log('__>__', data, config);
 
-    await delay(5000);
-  }, [ config ]);
+    await delay(1000);
+    onSubmitResult([
+      { error: null, payload: data },
+    ]);
+  }, [ config, onSubmitResult ]);
 
   return (
     <FormProvider { ...formApi }>

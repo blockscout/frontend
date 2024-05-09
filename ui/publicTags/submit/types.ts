@@ -22,3 +22,10 @@ export interface FormFieldTag {
   textColor: string | undefined;
   tooltipDescription: string | undefined;
 }
+
+export interface FormSubmitResultItem {
+  error: unknown | null;
+  payload: FormFields;
+}
+
+export type FormSubmitResult = Array<FormSubmitResultItem>;

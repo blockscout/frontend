@@ -1,6 +1,9 @@
 import React from 'react';
 
+import type { FormSubmitResult } from 'ui/publicTags/submit/types';
+
 import useApiQuery from 'lib/api/useApiQuery';
+import * as mocks from 'ui/publicTags/submit/mocks';
 import PublicTagsSubmitForm from 'ui/publicTags/submit/PublicTagsSubmitForm';
 import PublicTagsSubmitResult from 'ui/publicTags/submit/PublicTagsSubmitResult';
 import ContentLoader from 'ui/shared/ContentLoader';
@@ -11,15 +14,23 @@ type Screen = 'form' | 'result' | 'initializing' | 'error';
 
 const PublicTagsSubmit = () => {
 
-  const [ screen, setScreen ] = React.useState<Screen>('initializing');
+  const [ screen, setScreen ] = React.useState<Screen>('result');
+  const [ submitResult, setSubmitResult ] = React.useState<FormSubmitResult>([
+    mocks.item1,
+  ]);
 
   const configQuery = useApiQuery('address_metadata_tag_types');
 
   React.useEffect(() => {
     if (!configQuery.isPending) {
-      setScreen(configQuery.isError ? 'error' : 'form');
+      setScreen(configQuery.isError ? 'error' : 'result');
     }
   }, [ configQuery.isError, configQuery.isPending ]);
+
+  const handleFormSubmitResult = React.useCallback((result: FormSubmitResult) => {
+    setSubmitResult(result);
+    setScreen('result');
+  }, []);
 
   const content = (() => {
     switch (screen) {
@@ -28,9 +39,9 @@ const PublicTagsSubmit = () => {
       case 'error':
         return <DataFetchAlert/>;
       case 'form':
-        return <PublicTagsSubmitForm config={ configQuery.data }/>;
+        return <PublicTagsSubmitForm config={ configQuery.data } onSubmitResult={ handleFormSubmitResult }/>;
       case 'result':
-        return <PublicTagsSubmitResult/>;
+        return <PublicTagsSubmitResult data={ submitResult }/>;
       default:
         return null;
     }
