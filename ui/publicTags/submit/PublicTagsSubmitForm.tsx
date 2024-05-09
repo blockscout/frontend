@@ -8,13 +8,13 @@ import type { PublicTagTypesResponse } from 'types/api/addressMetadata';
 
 import delay from 'lib/delay';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import FormFieldReCaptcha from 'ui/shared/forms/fields/FormFieldReCaptcha';
 import Hint from 'ui/shared/Hint';
 
 import PublicTagsSubmitFieldAddresses from './fields/PublicTagsSubmitFieldAddresses';
 import PublicTagsSubmitFieldCompanyName from './fields/PublicTagsSubmitFieldCompanyName';
 import PublicTagsSubmitFieldCompanyWebsite from './fields/PublicTagsSubmitFieldCompanyWebsite';
 import PublicTagsSubmitFieldDescription from './fields/PublicTagsSubmitFieldDescription';
-import PublicTagsSubmitFieldReCaptcha from './fields/PublicTagsSubmitFieldReCaptcha';
 import PublicTagsSubmitFieldRequesterEmail from './fields/PublicTagsSubmitFieldRequesterEmail';
 import PublicTagsSubmitFieldRequesterName from './fields/PublicTagsSubmitFieldRequesterName';
 import PublicTagsSubmitFieldTags from './fields/PublicTagsSubmitFieldTags';
@@ -73,7 +73,7 @@ const PublicTagsSubmitForm = ({ config }: Props) => {
           </GridItem>
 
           <GridItem colSpan={{ base: 1, lg: 3 }}>
-            <PublicTagsSubmitFieldReCaptcha formApi={ formApi }/>
+            <FormFieldReCaptcha/>
           </GridItem>
 
           <Button
