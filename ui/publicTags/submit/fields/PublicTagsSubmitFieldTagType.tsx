@@ -1,13 +1,17 @@
-import { FormControl, useColorModeValue } from '@chakra-ui/react';
+import { chakra, Flex, FormControl, useColorModeValue } from '@chakra-ui/react';
+import type { GroupBase, SelectComponentsConfig, SingleValueProps } from 'chakra-react-select';
+import { chakraComponents } from 'chakra-react-select';
 import React from 'react';
 import type { ControllerRenderProps } from 'react-hook-form';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 import type { PublicTagType } from 'types/api/addressMetadata';
+import type { Option } from 'ui/shared/FancySelect/types';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import FancySelect from 'ui/shared/FancySelect/FancySelect';
+import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   index: number;
@@ -17,13 +21,43 @@ interface Props {
 
 const PublicTagsSubmitFieldTagType = ({ index, tagTypes, isDisabled }: Props) => {
   const isMobile = useIsMobile();
-  const { control } = useFormContext<FormFields>();
+  const { control, watch } = useFormContext<FormFields>();
   const inputBgColor = useColorModeValue('white', 'black');
 
   const typeOptions = React.useMemo(() => tagTypes?.map((type) => ({
     value: type.type,
     label: type.type,
   })), [ tagTypes ]);
+
+  const fieldValue = watch(`tags.${ index }.type`).value;
+
+  const selectComponents: SelectComponentsConfig<Option, boolean, GroupBase<Option>> = React.useMemo(() => {
+    type SingleValueComponentProps = SingleValueProps<Option, boolean, GroupBase<Option>> & { children: React.ReactNode }
+    const SingleValue = ({ children, ...props }: SingleValueComponentProps) => {
+      switch (fieldValue) {
+        case 'name': {
+          return (
+            <chakraComponents.SingleValue { ...props }>
+              <Flex alignItems="center" columnGap={ 1 }>
+                <IconSvg name="publictags_slim" boxSize={ 4 } flexShrink={ 0 } color="gray.400"/>
+                { children }
+              </Flex>
+            </chakraComponents.SingleValue>
+          );
+        }
+        case 'protocol':
+        case 'generic': {
+          return (<chakraComponents.SingleValue { ...props }><chakra.span color="gray.400">#</chakra.span> { children }</chakraComponents.SingleValue>);
+        }
+
+        default: {
+          return (<chakraComponents.SingleValue { ...props }>{ children }</chakraComponents.SingleValue>);
+        }
+      }
+    };
+
+    return { SingleValue };
+  }, [ fieldValue ]);
 
   const renderControl = React.useCallback(({ field }: { field: ControllerRenderProps<FormFields, `tags.${ number }.type`> }) => {
     return (
@@ -36,6 +70,8 @@ const PublicTagsSubmitFieldTagType = ({ index, tagTypes, isDisabled }: Props) =>
           isDisabled={ isDisabled }
           isRequired
           isAsync={ false }
+          isSearchable={ false }
+          components={ selectComponents }
           formControlStyles={{
             bgColor: inputBgColor,
             borderRadius: 'base',
@@ -43,7 +79,7 @@ const PublicTagsSubmitFieldTagType = ({ index, tagTypes, isDisabled }: Props) =>
         />
       </FormControl>
     );
-  }, [ inputBgColor, isDisabled, isMobile, typeOptions ]);
+  }, [ inputBgColor, isDisabled, isMobile, selectComponents, typeOptions ]);
 
   return (
     <Controller
