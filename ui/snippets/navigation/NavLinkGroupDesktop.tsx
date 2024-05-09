@@ -15,8 +15,10 @@ import type { NavGroupItem } from 'types/client/navigation-items';
 
 import IconSvg from 'ui/shared/IconSvg';
 
+import LightningLabel from './LightningLabel';
 import NavLink from './NavLink';
 import NavLinkIcon from './NavLinkIcon';
+import useLightningLabel from './useLightningLabel';
 import useNavLinkStyleProps from './useNavLinkStyleProps';
 
 type Props = {
@@ -28,6 +30,8 @@ const NavLinkGroupDesktop = ({ item, isCollapsed }: Props) => {
   const isExpanded = isCollapsed === false;
 
   const styleProps = useNavLinkStyleProps({ isCollapsed, isExpanded, isActive: item.isActive });
+
+  const hasLightningLabel = useLightningLabel(item.subItems);
 
   return (
     <Box as="li" listStyleType="none" w="100%">
@@ -45,13 +49,17 @@ const NavLinkGroupDesktop = ({ item, isCollapsed }: Props) => {
             aria-label={ `${ item.text } link group` }
             position="relative"
           >
-            <HStack spacing={ 3 } overflow="hidden">
+            <HStack spacing={ 0 } overflow="hidden">
               <NavLinkIcon item={ item }/>
               <Text
                 { ...styleProps.textProps }
+                ml={ 3 }
               >
                 { item.text }
               </Text>
+              { hasLightningLabel && (
+                <LightningLabel bgColor={ styleProps.itemProps.bgColor } isCollapsed={ isCollapsed }/>
+              ) }
               <IconSvg
                 name="arrows/east-mini"
                 position="absolute"

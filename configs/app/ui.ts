@@ -24,6 +24,11 @@ const hiddenLinks = (() => {
   return result;
 })();
 
+const lightningLabels = (() => {
+  const parsedValue = parseEnvJson<Array<NavigationLinkId>>(getEnvValue('NEXT_PUBLIC_MENU_LIGTHNING_LABELS'));
+  return Array.isArray(parsedValue) ? parsedValue : [];
+})();
+
 const defaultColorTheme = (() => {
   const envValue = getEnvValue('NEXT_PUBLIC_COLOR_THEME_DEFAULT') as ColorThemeId | undefined;
   return COLOR_THEMES.find((theme) => theme.id === envValue);
@@ -43,6 +48,7 @@ const UI = Object.freeze({
       dark: getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_ICON_DARK'),
     },
     hiddenLinks,
+    lightningLabels,
     otherLinks: parseEnvJson<Array<NavItemExternal>>(getEnvValue('NEXT_PUBLIC_OTHER_LINKS')) || [],
     featuredNetworks: getExternalAssetFilePath('NEXT_PUBLIC_FEATURED_NETWORKS'),
   },
