@@ -51,6 +51,7 @@ import type {
   ArbitrumL2TxnBatchesItem,
   ArbitrumLatestDepositsResponse,
 } from 'types/api/arbitrumL2';
+import type { AdvancedFilterParams, AdvancedFilterResponse, AdvancedFilterMethodsResponse } from 'types/api/advancedFilter';
 import type { TxBlobs, Blob } from 'types/api/blobs';
 import type {
   BlocksResponse,
@@ -1089,6 +1090,33 @@ export const RESOURCES = {
     pathParams: [ 'hash' as const ],
   },
 
+  // ADVANCED FILTER
+  advanced_filter: {
+    path: '/api/v2/advanced-filters',
+    filterFields: [
+      'tx_types' as const,
+      'methods' as const,
+      'age_from' as const,
+      'age_to' as const,
+      'age' as const /* frontend only */,
+      'from_address_hashes' as const,
+      'to_address_hashes' as const,
+      'address_relation' as const,
+      'amount_from' as const,
+      'amount_to' as const,
+      'token_contract_address_hashes_to_include' as const,
+      'token_contract_address_hashes_to_exclude' as const,
+      'block_number' as const,
+      'transaction_index' as const,
+      'internal_transaction_index' as const,
+      'token_transfer_index' as const,
+    ],
+  },
+  advanced_filter_methods: {
+    path: '/api/v2/advanced-filters/methods',
+    filterFields: [ 'q' as const ],
+  },
+
   // CONFIGS
   config_backend_version: {
     path: '/api/v2/config/backend-version',
@@ -1183,7 +1211,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' | 'block_election_reward
 'watchlist' | 'private_tags_address' | 'private_tags_tx' |
 'domains_lookup' | 'addresses_lookup' | 'user_ops' | 'validators_stability' | 'validators_blackfort' | 'noves_address_history' |
 'token_transfers_all' | 'scroll_l2_txn_batches' | 'scroll_l2_txn_batch_txs' | 'scroll_l2_txn_batch_blocks' |
-'scroll_l2_deposits' | 'scroll_l2_withdrawals';
+'scroll_l2_deposits' | 'scroll_l2_withdrawals' | 'advanced_filter';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
@@ -1375,6 +1403,8 @@ Q extends 'scroll_l2_deposits' ? ScrollL2MessagesResponse :
 Q extends 'scroll_l2_deposits_count' ? number :
 Q extends 'scroll_l2_withdrawals' ? ScrollL2MessagesResponse :
 Q extends 'scroll_l2_withdrawals_count' ? number :
+Q extends 'advanced_filter' ? AdvancedFilterResponse :
+Q extends 'advanced_filter_methods' ? AdvancedFilterMethodsResponse :
 never;
 /* eslint-enable @stylistic/indent */
 
@@ -1410,6 +1440,7 @@ Q extends 'validators_stability' ? ValidatorsStabilityFilters :
 Q extends 'address_mud_tables' ? AddressMudTablesFilter :
 Q extends 'address_mud_records' ? AddressMudRecordsFilter :
 Q extends 'token_transfers_all' ? TokenTransferFilters :
+Q extends 'advanced_filter' ? AdvancedFilterParams :
 never;
 /* eslint-enable @stylistic/indent */
 

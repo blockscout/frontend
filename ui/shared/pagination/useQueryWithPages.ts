@@ -158,6 +158,7 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
       });
     }
     scrollToTop();
+
     router.push(
       {
         pathname: router.pathname,
