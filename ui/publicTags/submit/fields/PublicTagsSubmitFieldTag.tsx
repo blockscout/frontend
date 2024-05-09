@@ -6,6 +6,7 @@ import type { FormFields, FormFieldTag } from '../types';
 import type { PublicTagType } from 'types/api/addressMetadata';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import { validator as colorValidator } from 'lib/validations/color';
 import { validator as urlValidator } from 'lib/validations/url';
 import EntityTag from 'ui/shared/EntityTags/EntityTag';
 import IconSvg from 'ui/shared/IconSvg';
@@ -74,6 +75,7 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, register, errors, onAddCl
             </FormControl>
           </GridItem>
           <PublicTagsSubmitFieldTagColor
+            fieldType="bgColor"
             fieldName={ `tags.${ index }.bgColor` }
             placeholder="Background color"
             index={ index }
@@ -82,6 +84,7 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, register, errors, onAddCl
             isDisabled={ isDisabled }
           />
           <PublicTagsSubmitFieldTagColor
+            fieldType="textColor"
             fieldName={ `tags.${ index }.textColor` }
             placeholder="Text color"
             index={ index }
@@ -141,8 +144,8 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, register, errors, onAddCl
               tagType: field.type.value,
               meta: {
                 tagUrl: field.url,
-                bgColor: field.bgColor ? `#${ field.bgColor }` : undefined,
-                textColor: field.textColor ? `#${ field.textColor }` : undefined,
+                bgColor: field.bgColor && colorValidator(field.bgColor) === true ? `#${ field.bgColor }` : undefined,
+                textColor: field.textColor && colorValidator(field.textColor) === true ? `#${ field.textColor }` : undefined,
                 tooltipDescription: field.tooltipDescription,
               },
               slug: 'new',

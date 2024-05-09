@@ -5,10 +5,14 @@ import { useFormContext, type FieldError, type UseFormRegister } from 'react-hoo
 import type { FormFields } from '../types';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import { validator as colorValidator } from 'lib/validations/color';
 import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
-interface Props {
-  fieldName: `tags.${ number }.${ 'bgColor' | 'textColor' }`;
+type ColorFieldTypes = 'bgColor' | 'textColor';
+
+interface Props<Type extends ColorFieldTypes> {
+  fieldType: Type;
+  fieldName: `tags.${ number }.${ Type }`;
   index: number;
   isDisabled: boolean;
   register: UseFormRegister<FormFields>;
@@ -16,30 +20,15 @@ interface Props {
   placeholder: string;
 }
 
-const COLOR_HEX_REGEXP = /^[A-Fa-f\d]{3,6}$/;
-
-const validate = (value: string | undefined) => {
-  if (!value || value.length === 0) {
-    return true;
-  }
-
-  if (value.length !== 3 && value.length !== 6) {
-    return 'Invalid length';
-  }
-
-  if (!COLOR_HEX_REGEXP.test(value)) {
-    return 'Invalid hex code';
-  }
-
-  return true;
-};
-
-const PublicTagsSubmitFieldTagColor = ({ isDisabled, error, fieldName, placeholder }: Props) => {
+const PublicTagsSubmitFieldTagColor = <Type extends ColorFieldTypes>({ isDisabled, error, fieldName, placeholder, fieldType }: Props<Type>) => {
   const { getValues, register } = useFormContext<FormFields>();
   const inputBgColor = useColorModeValue('white', 'black');
-  const circleBgColorDefault = useColorModeValue('gray.100', 'gray.700');
+  const circleBgColorDefault = {
+    bgColor: useColorModeValue('gray.100', 'gray.700'),
+    textColor: useColorModeValue('blackAlpha.800', 'whiteAlpha.800'),
+  };
   const isMobile = useIsMobile();
-  const field = register(fieldName, { validate, maxLength: 6 });
+  const field = register(fieldName, { validate: colorValidator, maxLength: 6 });
   const value = getValues(fieldName);
 
   return (
@@ -57,7 +46,7 @@ const PublicTagsSubmitFieldTagColor = ({ isDisabled, error, fieldName, placehold
         <InputRightElement w="30px" right={ 4 } zIndex={ 10 }>
           <Circle
             size="30px"
-            bgColor={ !value ? circleBgColorDefault : `#${ value }` }
+            bgColor={ value && colorValidator(value) === true ? `#${ value }` : circleBgColorDefault[fieldType] }
             borderColor="gray.300"
             borderWidth="1px"
           />
