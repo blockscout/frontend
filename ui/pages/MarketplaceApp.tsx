@@ -2,7 +2,7 @@ import { Box, Center, useColorMode, Flex } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { DappscoutIframeProvider, useDappscoutIframe } from 'dappscout-iframe';
 import { useRouter } from 'next/router';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useMemo } from 'react';
 
 import type { MarketplaceAppOverview } from 'types/client/marketplace';
 
@@ -16,6 +16,7 @@ import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useFetch from 'lib/hooks/useFetch';
 import * as metadata from 'lib/metadata';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import removeQueryParam from 'lib/router/removeQueryParam';
 import ContentLoader from 'ui/shared/ContentLoader';
 
 import MarketplaceAppTopBar from '../marketplace/MarketplaceAppTopBar';
@@ -36,9 +37,10 @@ type Props = {
   address: string | undefined;
   data: MarketplaceAppOverview | undefined;
   isPending: boolean;
+  appUrl?: string;
 };
 
-const MarketplaceAppContent = ({ address, data, isPending }: Props) => {
+const MarketplaceAppContent = ({ address, data, isPending, appUrl }: Props) => {
   const { iframeRef, isReady } = useDappscoutIframe();
 
   const [ iframeKey, setIframeKey ] = useState(0);
@@ -89,7 +91,7 @@ const MarketplaceAppContent = ({ address, data, isPending }: Props) => {
           h="100%"
           w="100%"
           display={ isFrameLoading ? 'none' : 'block' }
-          src={ data.url }
+          src={ appUrl }
           title={ data.title }
           onLoad={ handleIframeLoad }
         />
@@ -132,6 +134,26 @@ const MarketplaceApp = () => {
   const { data, isPending } = query;
   const { setIsAutoConnectDisabled } = useMarketplaceContext();
 
+  const appUrl = useMemo(() => {
+    if (!data?.url) {
+      return;
+    }
+
+    try {
+      const customUrl = getQueryParamString(router.query.url);
+      const customOrigin = new URL(customUrl).origin;
+      const appOrigin = new URL(data.url).origin;
+
+      if (customOrigin === appOrigin) {
+        return customUrl;
+      } else {
+        removeQueryParam(router, 'url');
+      }
+    } catch (err) {}
+
+    return data.url;
+  }, [ data?.url, router ]);
+
   useEffect(() => {
     if (data) {
       metadata.update(
@@ -153,13 +175,13 @@ const MarketplaceApp = () => {
       />
       <DappscoutIframeProvider
         address={ address }
-        appUrl={ data?.url }
+        appUrl={ appUrl }
         rpcUrl={ config.chain.rpcUrl }
         sendTransaction={ sendTransaction }
         signMessage={ signMessage }
         signTypedData={ signTypedData }
       >
-        <MarketplaceAppContent address={ address } data={ data } isPending={ isPending }/>
+        <MarketplaceAppContent address={ address } data={ data } isPending={ isPending } appUrl={ appUrl }/>
       </DappscoutIframeProvider>
     </Flex>
   );
