@@ -9,6 +9,8 @@ import type { PublicTagTypesResponse } from 'types/api/addressMetadata';
 import Hint from 'ui/shared/Hint';
 
 import PublicTagsSubmitFieldAddresses from './fields/PublicTagsSubmitFieldAddresses';
+import PublicTagsSubmitFieldCompanyName from './fields/PublicTagsSubmitFieldCompanyName';
+import PublicTagsSubmitFieldCompanyWebsite from './fields/PublicTagsSubmitFieldCompanyWebsite';
 import PublicTagsSubmitFieldDescription from './fields/PublicTagsSubmitFieldDescription';
 import PublicTagsSubmitFieldRequesterEmail from './fields/PublicTagsSubmitFieldRequesterEmail';
 import PublicTagsSubmitFieldRequesterName from './fields/PublicTagsSubmitFieldRequesterName';
@@ -23,7 +25,7 @@ const PublicTagsSubmitForm = ({ config }: Props) => {
     mode: 'onBlur',
     defaultValues: {
       addresses: [ { hash: '' } ],
-      tags: [ { name: '', type: { label: 'name', value: 'name' }, url: undefined, bgColor: undefined, textColor: undefined } ],
+      tags: [ { name: '', type: { label: 'name', value: 'name' } } ],
     },
   });
 
@@ -47,10 +49,10 @@ const PublicTagsSubmitForm = ({ config }: Props) => {
             Company info
           </GridItem>
           <PublicTagsSubmitFieldRequesterName/>
-          <chakra.div bgColor="blue.100" h={ 20 }/>
+          <PublicTagsSubmitFieldCompanyName/>
           <div/>
           <PublicTagsSubmitFieldRequesterEmail/>
-          <chakra.div bgColor="blue.100" h={ 20 }/>
+          <PublicTagsSubmitFieldCompanyWebsite/>
           <div/>
 
           <GridItem colSpan={{ base: 1, lg: 3 }} as="h2" textStyle="h4" mt={ 3 }>

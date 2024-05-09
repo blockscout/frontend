@@ -3,9 +3,11 @@ import type { AddressMetadataTagType } from 'types/api/addressMetadata';
 export interface FormFields {
   requesterName: string;
   requesterEmail: string;
+  companyName: string | undefined;
+  companyWebsite: string | undefined;
   addresses: Array<{ hash: string }>;
   tags: Array<FormFieldTag>;
-  description: string;
+  description: string | undefined;
 }
 
 export interface FormFieldTag {
