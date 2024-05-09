@@ -22,7 +22,11 @@ interface Props<Type extends ColorFieldTypes> {
 
 const PublicTagsSubmitFieldTagColor = <Type extends ColorFieldTypes>({ isDisabled, error, fieldName, placeholder, fieldType }: Props<Type>) => {
   const { getValues, register } = useFormContext<FormFields>();
+
+  // TODO @tom2drum remove these custom colors after #1903 is done
   const inputBgColor = useColorModeValue('white', 'black');
+  const inputBgColorDisabled = useColorModeValue('#ececec', '#232425');
+
   const circleBgColorDefault = {
     bgColor: useColorModeValue('gray.100', 'gray.700'),
     textColor: useColorModeValue('blackAlpha.800', 'whiteAlpha.800'),
@@ -41,6 +45,7 @@ const PublicTagsSubmitFieldTagColor = <Type extends ColorFieldTypes>({ isDisable
           autoComplete="off"
           bgColor={ inputBgColor }
           maxLength={ 6 }
+          _disabled={{ bgColor: inputBgColorDisabled }}
         />
         <InputPlaceholder text={ placeholder } error={ error }/>
         <InputRightElement w="30px" right={ 4 } zIndex={ 10 }>

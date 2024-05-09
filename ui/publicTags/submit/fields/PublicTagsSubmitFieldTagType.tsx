@@ -22,6 +22,8 @@ interface Props {
 const PublicTagsSubmitFieldTagType = ({ index, tagTypes, isDisabled }: Props) => {
   const isMobile = useIsMobile();
   const { control, watch } = useFormContext<FormFields>();
+
+  // TODO @tom2drum remove these custom colors after #1903 is done
   const inputBgColor = useColorModeValue('white', 'black');
 
   const typeOptions = React.useMemo(() => tagTypes?.map((type) => ({

@@ -6,12 +6,15 @@ import { useForm, FormProvider } from 'react-hook-form';
 import type { FormFields } from './types';
 import type { PublicTagTypesResponse } from 'types/api/addressMetadata';
 
+import delay from 'lib/delay';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import Hint from 'ui/shared/Hint';
 
 import PublicTagsSubmitFieldAddresses from './fields/PublicTagsSubmitFieldAddresses';
 import PublicTagsSubmitFieldCompanyName from './fields/PublicTagsSubmitFieldCompanyName';
 import PublicTagsSubmitFieldCompanyWebsite from './fields/PublicTagsSubmitFieldCompanyWebsite';
 import PublicTagsSubmitFieldDescription from './fields/PublicTagsSubmitFieldDescription';
+import PublicTagsSubmitFieldReCaptcha from './fields/PublicTagsSubmitFieldReCaptcha';
 import PublicTagsSubmitFieldRequesterEmail from './fields/PublicTagsSubmitFieldRequesterEmail';
 import PublicTagsSubmitFieldRequesterName from './fields/PublicTagsSubmitFieldRequesterName';
 import PublicTagsSubmitFieldTags from './fields/PublicTagsSubmitFieldTags';
@@ -21,6 +24,8 @@ interface Props {
 }
 
 const PublicTagsSubmitForm = ({ config }: Props) => {
+  const isMobile = useIsMobile();
+
   const formApi = useForm<FormFields>({
     mode: 'onBlur',
     defaultValues: {
@@ -29,9 +34,11 @@ const PublicTagsSubmitForm = ({ config }: Props) => {
     },
   });
 
-  const onFormSubmit: SubmitHandler<FormFields> = React.useCallback((data) => {
+  const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(data) => {
     // eslint-disable-next-line no-console
     console.log('__>__', data, config);
+
+    await delay(5000);
   }, [ config ]);
 
   return (
@@ -50,10 +57,10 @@ const PublicTagsSubmitForm = ({ config }: Props) => {
           </GridItem>
           <PublicTagsSubmitFieldRequesterName/>
           <PublicTagsSubmitFieldCompanyName/>
-          <div/>
+          { !isMobile && <div/> }
           <PublicTagsSubmitFieldRequesterEmail/>
           <PublicTagsSubmitFieldCompanyWebsite/>
-          <div/>
+          { !isMobile && <div/> }
 
           <GridItem colSpan={{ base: 1, lg: 3 }} as="h2" textStyle="h4" mt={ 3 }>
             Public tags/labels
@@ -64,13 +71,17 @@ const PublicTagsSubmitForm = ({ config }: Props) => {
           <GridItem colSpan={{ base: 1, lg: 2 }}>
             <PublicTagsSubmitFieldDescription/>
           </GridItem>
-          <GridItem/>
+
+          <GridItem colSpan={{ base: 1, lg: 3 }}>
+            <PublicTagsSubmitFieldReCaptcha formApi={ formApi }/>
+          </GridItem>
 
           <Button
             variant="solid"
             size="lg"
             type="submit"
             mt={ 3 }
+            isDisabled={ !formApi.formState.isValid }
             isLoading={ formApi.formState.isSubmitting }
             loadingText="Send request"
             w="min-content"
