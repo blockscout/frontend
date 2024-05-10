@@ -7,8 +7,10 @@ export type AdvancedFilterParams = {
   age_from?: string;
   age_to?: string;
   age?: AdvancedFilterAge; /* frontend only */
-  from_address_hashes?: Array<string>;
-  to_address_hashes?: Array<string>;
+  from_address_hashes_to_include?: Array<string>;
+  from_address_hashes_to_exclude?: Array<string>;
+  to_address_hashes_to_include?: Array<string>;
+  to_address_hashes_to_exclude?: Array<string>;
   address_relation?: 'or' | 'and';
   amount_from?: string;
   amount_to?: string;
@@ -25,6 +27,7 @@ export type AdvancedFilterAge = typeof ADVANCED_FILTER_AGES[number];
 export type AdvancedFilterResponseItem = {
   fee: string;
   from: AddressParam;
+  created_contract?: AddressParam;
   hash: string;
   method: string | null;
   timestamp: string;
@@ -39,8 +42,8 @@ export type AdvancedFilterResponseItem = {
 }
 
 export type AdvancedFiltersSearchParams = {
-  methods: Array<AdvancedFilterMethodInfo>;
-  tokens: Array<TokenInfo>;
+  methods: Record<string, AdvancedFilterMethodInfo>;
+  tokens: Record<string, TokenInfo>;
 }
 
 export type AdvancedFilterResponse = {
@@ -59,5 +62,5 @@ export type AdvancedFilterMethodsResponse = Array<AdvancedFilterMethodInfo>;
 
 export type AdvancedFilterMethodInfo = {
   method_id: string;
-  name: string;
+  name?: string;
 }

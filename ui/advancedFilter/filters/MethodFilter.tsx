@@ -1,5 +1,5 @@
 import { Flex, Checkbox, CheckboxGroup, Spinner, chakra } from '@chakra-ui/react';
-import difference from 'lodash/difference';
+import differenceBy from 'lodash/differenceBy';
 import without from 'lodash/without';
 import type { ChangeEvent } from 'react';
 import React from 'react';
@@ -16,19 +16,17 @@ const RESET_VALUE = 'all';
 
 const FILTER_PARAM = 'methods';
 
-// !!!!!!
-// test when search params are ready
-
 type Props = {
   value?: Array<AdvancedFilterMethodInfo>;
   handleFilterChange: (filed: keyof AdvancedFilterParams, val: Array<string>) => void;
   columnName: string;
+  isLoading?: boolean;
 }
 
-const MethodFilter = ({ value = [], handleFilterChange, columnName }: Props) => {
+const MethodFilter = ({ value = [], handleFilterChange, columnName, isLoading }: Props) => {
   const [ currentValue, setCurrentValue ] = React.useState<Array<AdvancedFilterMethodInfo>>(value);
   const [ searchTerm, setSearchTerm ] = React.useState<string>('');
-  const [ methodsList, setMethodsList ] = React.useState<Array<AdvancedFilterMethodInfo>>();
+  const [ methodsList, setMethodsList ] = React.useState<Array<AdvancedFilterMethodInfo>>([]);
 
   const onSearchChange = React.useCallback((value: string) => {
     setSearchTerm(value);
@@ -37,8 +35,8 @@ const MethodFilter = ({ value = [], handleFilterChange, columnName }: Props) => 
   // q should work whem Max replace method /search with common one
   const methodsQuery = useApiQuery('advanced_filter_methods', { queryParams: { q: searchTerm } });
   React.useEffect(() => {
-    if (!methodsList && methodsQuery.data) {
-      setMethodsList([ ...difference(value, methodsQuery.data), ...methodsQuery.data ]);
+    if (!methodsList.length && methodsQuery.data) {
+      setMethodsList([ ...differenceBy(value, methodsQuery.data, i => i.method_id), ...methodsQuery.data ]);
     }
   }, [ methodsQuery.data, value, methodsList ]);
 
@@ -51,7 +49,9 @@ const MethodFilter = ({ value = [], handleFilterChange, columnName }: Props) => 
     } else {
       const methodInfo = methodsQuery.data?.find(m => m.method_id === id);
       if (methodInfo) {
-        setCurrentValue(prev => checked ? [ ...prev, methodInfo ] : without(prev, methodInfo));
+        setCurrentValue(prev => {
+          return checked ? [ ...prev, methodInfo ] : without(prev, methodInfo);
+        });
         searchTerm && checked && setMethodsList(prev => [ methodInfo, ...(prev || []) ]);
       }
     }
@@ -71,6 +71,7 @@ const MethodFilter = ({ value = [], handleFilterChange, columnName }: Props) => 
       isFilled={ Boolean(currentValue.length) }
       onFilter={ onFilter }
       onReset={ onReset }
+      isLoading={ isLoading }
       w="350px"
     >
       <FilterInput
@@ -100,7 +101,7 @@ const MethodFilter = ({ value = [], handleFilterChange, columnName }: Props) => 
                     },
                   }}
                 >
-                  <chakra.span overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">{ method.name }</chakra.span>
+                  <chakra.span overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">{ method.name || method.method_id }</chakra.span>
                 </Checkbox>
                 <Tag colorScheme="gray" isTruncated ml={ 2 }>
                   { method.method_id }

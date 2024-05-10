@@ -16,9 +16,10 @@ type Props = {
   value?: Array<AdvancedFilterType>;
   handleFilterChange: (filed: keyof AdvancedFilterParams, value: Array<AdvancedFilterType>) => void;
   columnName: string;
+  isLoading?: boolean;
 }
 
-const TypeFilter = ({ value = [], handleFilterChange, columnName }: Props) => {
+const TypeFilter = ({ value = [], handleFilterChange, columnName, isLoading }: Props) => {
   const [ currentValue, setCurrentValue ] = React.useState<Array<AdvancedFilterType>>(value);
 
   const handleChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
@@ -42,9 +43,10 @@ const TypeFilter = ({ value = [], handleFilterChange, columnName }: Props) => {
       columnName={ columnName }
       title="Type of transfer"
       isActive={ Boolean(value.length) }
-      isFilled={ Boolean(currentValue.length) }
+      isFilled={ true }
       onFilter={ onFilter }
       onReset={ onReset }
+      isLoading={ isLoading }
     >
       <Flex display="flex" flexDir="column" rowGap={ 3 }>
         <CheckboxGroup value={ currentValue.length ? currentValue : [ 'all' ] }>

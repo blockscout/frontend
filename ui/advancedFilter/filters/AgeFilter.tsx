@@ -21,9 +21,10 @@ type Props = {
   value?: AgeFromToValue;
   handleFilterChange: (filed: keyof AdvancedFilterParams, value?: string) => void;
   columnName: string;
+  isLoading?: boolean;
 }
 
-const AgeFilter = ({ value = {}, handleFilterChange, columnName }: Props) => {
+const AgeFilter = ({ value = {}, handleFilterChange, columnName, isLoading }: Props) => {
   const [ currentValue, setCurrentValue ] = React.useState<AgeFromToValue>(value || defaultValue);
 
   const handleFromChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
@@ -59,6 +60,7 @@ const AgeFilter = ({ value = {}, handleFilterChange, columnName }: Props) => {
       isActive={ Boolean(value.from || value.to || value.age) }
       onFilter={ onFilter }
       onReset={ onReset }
+      isLoading={ isLoading }
       w="382px"
     >
       <Flex gap={ 3 }>

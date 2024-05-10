@@ -12,6 +12,8 @@ import dayjs from 'lib/date/dayjs';
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { ADVANCED_FILTER_ITEM } from 'stubs/advancedFilter';
+import { generateListStub } from 'stubs/utils';
 import ColumnsButton from 'ui/advancedFilter/ColumnsButton';
 import FilterByColumn from 'ui/advancedFilter/FilterByColumn';
 import ItemByColumn from 'ui/advancedFilter/ItemByColumn';
@@ -94,12 +96,40 @@ const AdvancedFilter = () => {
         router.query.token_contract_address_hashes_to_exclude ? castArray(router.query.token_contract_address_hashes_to_exclude) : undefined,
       token_contract_address_hashes_to_include:
         router.query.token_contract_address_hashes_to_include ? castArray(router.query.token_contract_address_hashes_to_include) : undefined,
+      to_address_hashes_to_include:
+        router.query.to_address_hashes_to_include ? castArray(router.query.to_address_hashes_to_include) : undefined,
+      from_address_hashes_to_include:
+        router.query.from_address_hashes_to_include ? castArray(router.query.from_address_hashes_to_include) : undefined,
+      to_address_hashes_to_exclude:
+        router.query.to_address_hashes_to_exclude ? castArray(router.query.to_address_hashes_to_exclude) : undefined,
+      from_address_hashes_to_exclude:
+        router.query.from_address_hashes_to_exclude ? castArray(router.query.from_address_hashes_to_exclude) : undefined,
     };
   });
+
   const [ columns, setColumns ] = React.useState<Record<ColumnsIds, boolean>>(COLUMNS_CHECKED);
-  const { data, isError, isLoading, pagination, onFilterChange } = useQueryWithPages({
+  const { data, isError, isLoading, pagination, onFilterChange, isPlaceholderData } = useQueryWithPages({
     resourceName: 'advanced_filter',
     filters,
+    options: {
+      placeholderData: generateListStub<'advanced_filter'>(
+        ADVANCED_FILTER_ITEM,
+        50,
+        {
+          next_page_params: {
+            block_number: 5867485,
+            internal_transaction_index: 0,
+            items_count: 50,
+            token_transfer_index: null,
+            transaction_index: 2,
+          },
+          search_params: {
+            tokens: {},
+            methods: {},
+          },
+        },
+      ),
+    },
   });
 
   const handleFilterChange = React.useCallback((field: keyof AdvancedFilterParams, val: unknown) => {
@@ -137,6 +167,7 @@ const AdvancedFilter = () => {
                     handleFilterChange={ handleFilterChange }
                     filters={ filters }
                     searchParams={ data?.search_params }
+                    isLoading={ isPlaceholderData }
                   />
                 </Th>
               );
@@ -144,11 +175,11 @@ const AdvancedFilter = () => {
           </Tr>
         </TheadSticky>
         <Tbody>
-          { data?.items.map(item => (
-            <Tr key={ item.hash }>
+          { data?.items.map((item, index) => (
+            <Tr key={ item.hash + String(index) }>
               { columnsToShow.map(column => (
                 <Td key={ item.hash + column.id } isNumeric={ column.isNumeric }>
-                  <ItemByColumn item={ item } column={ column.id }/>
+                  <ItemByColumn item={ item } column={ column.id } isLoading={ isPlaceholderData }/>
                 </Td>
               )) }
             </Tr>

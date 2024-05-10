@@ -45,9 +45,10 @@ type Props = {
   value?: AmountValue;
   handleFilterChange: (filed: keyof AdvancedFilterParams, value?: string) => void;
   columnName: string;
+  isLoading?: boolean;
 }
 
-const AmountFilter = ({ value = {}, handleFilterChange, columnName }: Props) => {
+const AmountFilter = ({ value = {}, handleFilterChange, columnName, isLoading }: Props) => {
   const [ currentValue, setCurrentValue ] = React.useState<AmountValue>(value || defaultValue);
 
   const handleFromChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
@@ -78,6 +79,7 @@ const AmountFilter = ({ value = {}, handleFilterChange, columnName }: Props) => 
       isActive={ Boolean(value.from || value.to) }
       onFilter={ onFilter }
       onReset={ onReset }
+      isLoading={ isLoading }
       w="382px"
     >
       <Flex gap={ 3 }>
