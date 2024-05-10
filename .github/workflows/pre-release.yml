@@ -55,7 +55,10 @@ jobs:
             label_description: Tasks in pre-release right now
         secrets: inherit
 
+    # Temporary disable this step because it is broken
+    # There is an issue with building web3modal deps
     upload_source_maps:
         name: Upload source maps to Sentry
+        if: false
         uses: './.github/workflows/upload-source-maps.yml'
         secrets: inherit
