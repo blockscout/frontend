@@ -1,37 +1,59 @@
 import type { FormSubmitResultItem } from './types';
 
-export const item1: FormSubmitResultItem = {
-  error: null,
-  payload: {
-    addresses: [
-      { hash: '0xa8FCe579a11E551635b9c9CB915BEcd873C51254' },
-      { hash: '0xa8FCe579a11E551635b9c9CB915BEcd873C51255' },
-      { hash: '0xa8FCe579a11E551635b9c9CB915BEcd873C51256' },
-      { hash: '0xa8FCe579a11E551635b9c9CB915BEcd873C51257' },
-    ],
-    tags: [
-      {
-        name: 'hello',
-        type: { label: 'name', value: 'name' },
-        url: 'https://ohhhh.me',
-        tooltipDescription: 'hello again',
-        bgColor: 'add',
-        textColor: '00aa11',
-      },
-      {
-        name: 'hello it is me.. i was wondering if after all these years you would like to meet',
-        type: { label: 'generic', value: 'generic' },
-        url: undefined,
-        tooltipDescription: undefined,
-        bgColor: undefined,
-        textColor: undefined,
-      },
-    ],
-    requesterName: 'tommasdf jalskdfj asdflkjkas lasdfkj ',
-    requesterEmail: 'tom@ohhhh.me',
-    companyName: 'OHHHH',
-    companyWebsite: 'https://ohhhh.me',
-    description: 'chao',
-    reCaptcha: 'xxxx',
+const address1 = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859';
+const address2 = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5858';
+const address3 = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5857';
+const address4 = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5856';
+const address5 = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5855';
+
+const responseBaseFields = {
+  requesterName: 'John Doe',
+  requesterEmail: 'jonh.doe@duck.me',
+  companyName: 'DuckDuckMe',
+  companyWebsite: 'https://duck.me',
+  description: 'Quack quack',
+};
+
+const tag1 = {
+  name: 'Unicorn Uproar',
+  tagType: 'name' as const,
+  meta: {
+    tagUrl: 'https://example.com',
+    bgColor: '#ff1493',
+    textColor: '#FFFFFF',
+    tooltipDescription: undefined,
   },
 };
+
+const tag2 = {
+  name: 'Hello',
+  tagType: 'generic' as const,
+  meta: {
+    tooltipDescription: 'Hello, it is me... I was wondering if after all these years you would like to meet',
+  },
+};
+
+const tag3 = {
+  name: 'duck owner 🦆',
+  tagType: 'classifier' as const,
+  meta: {
+    bgColor: '#fff300',
+  },
+};
+
+export const allSuccessResponses: Array<FormSubmitResultItem> = [
+  address1,
+  address2,
+  address3,
+  address4,
+  address5,
+]
+  .map((address) => ([ tag1, tag2, tag3 ].map((tag) => ({
+    error: null,
+    payload: {
+      ...responseBaseFields,
+      ...tag,
+      address,
+    },
+  }))))
+  .flat();

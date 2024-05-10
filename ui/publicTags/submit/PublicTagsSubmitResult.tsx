@@ -10,14 +10,16 @@ import LinkExternal from 'ui/shared/LinkExternal';
 
 import PublicTagsSubmitResultSuccess from './result/PublicTagsSubmitResultSuccess';
 import PublicTagsSubmitResultWithErrors from './result/PublicTagsSubmitResultWithErrors';
+import { groupSubmitResult } from './utils';
 
 interface Props {
   data: FormSubmitResult;
 }
 
 const PublicTagsSubmitResult = ({ data }: Props) => {
-  const hasErrors = data.some((item) => item.error !== null);
-  const companyWebsite = makePrettyLink(data[0].payload.companyWebsite);
+  const groupedData = React.useMemo(() => groupSubmitResult(data), [ data ]);
+  const hasErrors = groupedData.items.length > 0 && groupedData.items[0].error !== null;
+  const companyWebsite = makePrettyLink(groupedData.companyWebsite);
 
   return (
     <div>
@@ -30,13 +32,13 @@ const PublicTagsSubmitResult = ({ data }: Props) => {
       <Box as="h2" textStyle="h4">Company info</Box>
       <Grid rowGap={ 3 } columnGap={ 6 } gridTemplateColumns="170px 1fr" mt={ 6 }>
         <GridItem>Your name</GridItem>
-        <GridItem>{ data[0].payload.requesterName }</GridItem>
+        <GridItem>{ groupedData.requesterName }</GridItem>
         <GridItem>Email</GridItem>
-        <GridItem>{ data[0].payload.requesterEmail }</GridItem>
-        { data[0].payload.companyName && (
+        <GridItem>{ groupedData.requesterEmail }</GridItem>
+        { groupedData.companyName && (
           <>
             <GridItem>Company name</GridItem>
-            <GridItem>{ data[0].payload.companyName }</GridItem>
+            <GridItem>{ groupedData.companyName }</GridItem>
           </>
         ) }
         { companyWebsite && (
@@ -50,7 +52,7 @@ const PublicTagsSubmitResult = ({ data }: Props) => {
       </Grid>
 
       <Box as="h2" textStyle="h4" mt={ 8 } mb={ 5 }>Public tags/labels</Box>
-      { hasErrors ? <PublicTagsSubmitResultWithErrors data={ data }/> : <PublicTagsSubmitResultSuccess data={ data }/> }
+      { hasErrors ? <PublicTagsSubmitResultWithErrors data={ data }/> : <PublicTagsSubmitResultSuccess data={ groupedData }/> }
 
       <Button size="lg" mt={ 8 } as="a" href={ route({ pathname: '/public-tags/submit' }) }>Add new tag</Button>
     </div>
