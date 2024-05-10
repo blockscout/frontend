@@ -39,6 +39,7 @@ jobs:
                         'enhancement',
                         'refactoring',
                         'tech',
+                        'ENVs',
                     ]
 
                     const labels = await Promise.all(issues.map(getIssueLabels));
