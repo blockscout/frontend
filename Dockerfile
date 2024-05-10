@@ -34,11 +34,13 @@ RUN yarn --frozen-lockfile
 FROM node:20.11.0-alpine AS builder
 RUN apk add --no-cache --upgrade libc6-compat bash
 
-# pass commit sha and git tag to the app image
+# pass build args to env variables
 ARG GIT_COMMIT_SHA
 ENV NEXT_PUBLIC_GIT_COMMIT_SHA=$GIT_COMMIT_SHA
 ARG GIT_TAG
 ENV NEXT_PUBLIC_GIT_TAG=$GIT_TAG
+ARG NEXT_OPEN_TELEMETRY_ENABLED
+ENV NEXT_OPEN_TELEMETRY_ENABLED=$NEXT_OPEN_TELEMETRY_ENABLED
 
 ENV NODE_ENV production
 
