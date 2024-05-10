@@ -56,7 +56,7 @@ jobs:
                         core.info(`Obtaining labels list for the issue #${ issue }...`);
                     
                         try {
-                            const response = await octokit.request('GET /repos/{owner}/{repo}/issues/{issue_number}/labels', {
+                            const response = await github.request('GET /repos/{owner}/{repo}/issues/{issue_number}/labels', {
                                 owner: 'blockscout',
                                 repo: 'frontend',
                                 issue_number: issue,
@@ -96,7 +96,7 @@ jobs:
                     async function addLabelToPr(prNumber, label) {
                         console.log(`Adding label to the pull request #${ prNumber }...`);
                     
-                        return await octokit.request('POST /repos/{owner}/{repo}/issues/{issue_number}/labels', {
+                        return await github.request('POST /repos/{owner}/{repo}/issues/{issue_number}/labels', {
                             owner: 'blockscout',
                             repo: 'frontend',
                             issue_number: prNumber,
