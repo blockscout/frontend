@@ -24,11 +24,18 @@ type Props = {
   value: Value;
   handleFilterChange: (filed: keyof AdvancedFilterParams, val: Array<string>) => void;
   columnName: string;
+  isLoading?: boolean;
 }
 
-const AssetFilter = ({ value, handleFilterChange, columnName }: Props) => {
+const AssetFilter = ({ value, handleFilterChange, columnName, isLoading }: Props) => {
   const [ currentValue, setCurrentValue ] = React.useState<Value>(value || []);
   const [ searchTerm, setSearchTerm ] = React.useState<string>('');
+
+  React.useEffect(() => {
+    if (!currentValue.length && value.length) {
+      setCurrentValue(value);
+    }
+  }, [ value, currentValue.length ]);
 
   const onSearchChange = React.useCallback((value: string) => {
     setSearchTerm(value);
@@ -58,6 +65,7 @@ const AssetFilter = ({ value, handleFilterChange, columnName }: Props) => {
   const onReset = React.useCallback(() => setCurrentValue([]), []);
 
   const onFilter = React.useCallback(() => {
+    setSearchTerm('');
     handleFilterChange(FILTER_PARAM_INCLUDE, currentValue.filter(i => i.mode === 'include').map(i => i.token.address));
     handleFilterChange(FILTER_PARAM_EXCLUDE, currentValue.filter(i => i.mode === 'exclude').map(i => i.token.address));
     return;
@@ -71,6 +79,7 @@ const AssetFilter = ({ value, handleFilterChange, columnName }: Props) => {
       isActive={ Boolean(value.length) }
       onFilter={ onFilter }
       onReset={ onReset }
+      isLoading={ isLoading }
       w="382px"
     >
       <FilterInput

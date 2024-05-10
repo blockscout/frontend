@@ -1,4 +1,4 @@
-import { Text } from '@chakra-ui/react';
+import { Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AdvancedFilterResponseItem } from 'types/api/advancedFilter';
@@ -17,39 +17,50 @@ import { ADVANCED_FILTER_TYPES } from './constants';
 type Props = {
   item: AdvancedFilterResponseItem;
   column: ColumnsIds;
+  isLoading?: boolean;
 }
-const ItemByColumn = ({ item, column }: Props) => {
+const ItemByColumn = ({ item, column, isLoading }: Props) => {
   switch (column) {
     case 'tx_hash':
-      return <TxEntity truncation="constant_long" hash={ item.hash }/>;
+      return <TxEntity truncation="constant_long" hash={ item.hash } isLoading={ isLoading }/>;
     case 'type': {
       const type = ADVANCED_FILTER_TYPES.find(t => t.id === item.type);
       if (!type) {
         return null;
       }
-      return <Tag>{ type.name }</Tag>;
+      return <Tag isLoading={ isLoading }>{ type.name }</Tag>;
     }
     case 'method':
-      return item.method ? <Tag>{ item.method }</Tag> : null;
+      return item.method ? <Tag isLoading={ isLoading }>{ item.method }</Tag> : null;
     case 'age':
-      return <Text>{ dayjs(item.timestamp).fromNow() }</Text>;
+      return <Skeleton isLoaded={ !isLoading }>{ dayjs(item.timestamp).fromNow() }</Skeleton>;
     case 'from':
-      return <AddressEntity address={ item.from } truncation="constant"/>;
+      return <AddressEntity address={ item.from } truncation="constant" isLoading={ isLoading }/>;
     case 'to':
-      return <AddressEntity address={ item.to } truncation="constant"/>;
+      return <AddressEntity address={ item.to ? item.to : item.created_contract } truncation="constant" isLoading={ isLoading }/>;
     case 'amount': {
       if (item.total) {
-        return <Text>{ getCurrencyValue({ value: item.total?.value, decimals: item.total.decimals, accuracy: 8 }).valueStr }</Text>;
+        return (
+          <Skeleton isLoaded={ !isLoading }>
+            { getCurrencyValue({ value: item.total?.value, decimals: item.total.decimals, accuracy: 8 }).valueStr }
+          </Skeleton>
+        );
       }
       if (item.value) {
-        return <Text>{ getCurrencyValue({ value: item.value, decimals: config.chain.currency.decimals.toString(), accuracy: 8 }).valueStr }</Text>;
+        return (
+          <Skeleton isLoaded={ !isLoading }>
+            { getCurrencyValue({ value: item.value, decimals: config.chain.currency.decimals.toString(), accuracy: 8 }).valueStr }
+          </Skeleton>
+        );
       }
       return null;
     }
     case 'asset':
-      return item.token ? <TokenEntity token={ item.token }/> : <Text>{ `${ config.chain.currency.name } (${ config.chain.currency.symbol })` }</Text>;
+      return item.token ?
+        <TokenEntity token={ item.token } isLoading={ isLoading }/> :
+        <Skeleton isLoaded={ !isLoading }>{ `${ config.chain.currency.name } (${ config.chain.currency.symbol })` }</Skeleton>;
     case 'fee':
-      return <Text>{ item.fee ? getCurrencyValue({ value: item.fee, accuracy: 8 }).valueStr : '-' }</Text>;
+      return <Skeleton isLoaded={ !isLoading }>{ item.fee ? getCurrencyValue({ value: item.fee, accuracy: 8 }).valueStr : '-' }</Skeleton>;
     default:
       return null;
   }
