@@ -28,7 +28,7 @@ jobs:
             issues: "[${{ github.event.issue.number }}]"
         secrets: inherit
 
-    review_requested_issues:
+    pr_linked_issues:
         name: Get issues linked to PR
         runs-on: ubuntu-latest
         if: ${{ github.event.pull_request && github.event.action == 'review_requested' }}
@@ -76,14 +76,24 @@ jobs:
 
                     return issues;
 
-    review_requested_tasks:
+    issues_in_review:
         name: Update status for issues in review
-        needs: [ review_requested_issues ]
-        if: ${{ needs.review_requested_issues.outputs.issues }}
+        needs: [ pr_linked_issues ]
+        if: ${{ needs.pr_linked_issues.outputs.issues }}
         uses: './.github/workflows/update-project-cards.yml'
         secrets: inherit
         with:
             project_name: ${{ vars.PROJECT_NAME }}
             field_name: Status
             field_value: Review
-            issues: ${{ needs.review_requested_issues.outputs.issues }}
+            issues: ${{ needs.pr_linked_issues.outputs.issues }}
+
+    copy_labels:
+        name: Copy issues labels to pull request
+        needs: [ pr_linked_issues ]
+        if: ${{ needs.pr_linked_issues.outputs.issues }}
+        uses: './.github/workflows/copy-issues-labels.yml'
+        secrets: inherit
+        with:
+            pr_number: ${{ github.event.pull_request.number }}
+            issues: ${{ needs.pr_linked_issues.outputs.issues }}
