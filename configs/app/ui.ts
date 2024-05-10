@@ -25,7 +25,7 @@ const hiddenLinks = (() => {
 })();
 
 const lightningLabels = (() => {
-  const parsedValue = parseEnvJson<Array<NavigationLinkId>>(getEnvValue('NEXT_PUBLIC_MENU_LIGTHNING_LABELS'));
+  const parsedValue = parseEnvJson<Array<NavigationLinkId>>(getEnvValue('NEXT_PUBLIC_MENU_LIGHTNING_LABELS'));
   return Array.isArray(parsedValue) ? parsedValue : [];
 })();
 
