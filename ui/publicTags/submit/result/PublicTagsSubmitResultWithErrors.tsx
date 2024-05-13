@@ -1,7 +1,10 @@
 import { Box, Button, Flex, Grid, GridItem, useColorModeValue } from '@chakra-ui/react';
+import _pickBy from 'lodash/pickBy';
 import React from 'react';
 
 import type { FormSubmitResultGrouped } from '../types';
+
+import { route } from 'nextjs-routes';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -19,6 +22,14 @@ const PublicTagsSubmitResultWithErrors = ({ data }: Props) => {
   return (
     <Flex flexDir="column" rowGap={ 3 }>
       { data.items.map((item, index) => {
+
+        const startOverButtonQuery = _pickBy({
+          addresses: item.addresses,
+          requesterName: data.requesterName,
+          requesterEmail: data.requesterEmail,
+          companyName: data.companyName,
+          companyWebsite: data.companyWebsite,
+        }, Boolean);
 
         return (
           <Flex key={ index } flexDir={{ base: 'column', lg: 'row' }}>
@@ -65,6 +76,8 @@ const PublicTagsSubmitResultWithErrors = ({ data }: Props) => {
                 mt={{ base: 1, lg: 6 }}
                 ml={{ base: 0, lg: 6 }}
                 w="min-content"
+                as="a"
+                href={ route({ pathname: '/public-tags/submit', query: startOverButtonQuery }) }
               >
                 Start  over
               </Button>

@@ -3,7 +3,6 @@ import React from 'react';
 import type { FormSubmitResult } from 'ui/publicTags/submit/types';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import * as mocks from 'ui/publicTags/submit/mocks';
 import PublicTagsSubmitForm from 'ui/publicTags/submit/PublicTagsSubmitForm';
 import PublicTagsSubmitResult from 'ui/publicTags/submit/PublicTagsSubmitResult';
 import ContentLoader from 'ui/shared/ContentLoader';
@@ -14,14 +13,14 @@ type Screen = 'form' | 'result' | 'initializing' | 'error';
 
 const PublicTagsSubmit = () => {
 
-  const [ screen, setScreen ] = React.useState<Screen>('result');
-  const [ submitResult, setSubmitResult ] = React.useState<FormSubmitResult>(mocks.mixedResponses);
+  const [ screen, setScreen ] = React.useState<Screen>('initializing');
+  const [ submitResult, setSubmitResult ] = React.useState<FormSubmitResult>();
 
   const configQuery = useApiQuery('address_metadata_tag_types');
 
   React.useEffect(() => {
     if (!configQuery.isPending) {
-      setScreen(configQuery.isError ? 'error' : 'result');
+      setScreen(configQuery.isError ? 'error' : 'form');
     }
   }, [ configQuery.isError, configQuery.isPending ]);
 

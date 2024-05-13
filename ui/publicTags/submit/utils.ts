@@ -2,7 +2,15 @@ import _isEqual from 'lodash/isEqual';
 
 import type { FormSubmitResult, FormSubmitResultGrouped, FormSubmitResultItemGrouped } from './types';
 
-export function groupSubmitResult(data: FormSubmitResult): FormSubmitResultGrouped {
+import type { Route } from 'nextjs-routes';
+
+import getQueryParamString from 'lib/router/getQueryParamString';
+
+export function groupSubmitResult(data: FormSubmitResult | undefined): FormSubmitResultGrouped | undefined {
+  if (!data) {
+    return;
+  }
+
   const _items: Array<FormSubmitResultItemGrouped> = [];
 
   // group by error and address
@@ -48,4 +56,27 @@ export function groupSubmitResult(data: FormSubmitResult): FormSubmitResultGroup
       return 0;
     }),
   };
+}
+
+export function getDefaultValuesFromQuery(query: Route['query']) {
+  return {
+    addresses: getAddressesFromQuery(query),
+    requesterName: getQueryParamString(query?.requesterName),
+    requesterEmail: getQueryParamString(query?.requesterEmail),
+    companyName: getQueryParamString(query?.companyName),
+    companyWebsite: getQueryParamString(query?.companyWebsite),
+    tags: [ { name: '', type: { label: 'name', value: 'name' as const } } ],
+  };
+}
+
+function getAddressesFromQuery(query: Route['query']) {
+  if (!query?.addresses) {
+    return [ { hash: '' } ];
+  }
+
+  if (Array.isArray(query.addresses)) {
+    return query.addresses.map((hash) => ({ hash }));
+  }
+
+  return [ { hash: query.addresses } ];
 }

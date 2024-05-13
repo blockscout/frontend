@@ -13,11 +13,16 @@ import PublicTagsSubmitResultWithErrors from './result/PublicTagsSubmitResultWit
 import { groupSubmitResult } from './utils';
 
 interface Props {
-  data: FormSubmitResult;
+  data: FormSubmitResult | undefined;
 }
 
 const PublicTagsSubmitResult = ({ data }: Props) => {
   const groupedData = React.useMemo(() => groupSubmitResult(data), [ data ]);
+
+  if (!groupedData) {
+    return null;
+  }
+
   const hasErrors = groupedData.items.some((item) => item.error !== null);
   const companyWebsite = makePrettyLink(groupedData.companyWebsite);
 

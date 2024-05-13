@@ -1,4 +1,5 @@
 import { Button, chakra, Grid, GridItem } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -18,6 +19,8 @@ import PublicTagsSubmitFieldDescription from './fields/PublicTagsSubmitFieldDesc
 import PublicTagsSubmitFieldRequesterEmail from './fields/PublicTagsSubmitFieldRequesterEmail';
 import PublicTagsSubmitFieldRequesterName from './fields/PublicTagsSubmitFieldRequesterName';
 import PublicTagsSubmitFieldTags from './fields/PublicTagsSubmitFieldTags';
+import * as mocks from './mocks';
+import { getDefaultValuesFromQuery } from './utils';
 
 interface Props {
   config: PublicTagTypesResponse | undefined;
@@ -26,14 +29,28 @@ interface Props {
 
 const PublicTagsSubmitForm = ({ config, onSubmitResult }: Props) => {
   const isMobile = useIsMobile();
+  const router = useRouter();
 
   const formApi = useForm<FormFields>({
     mode: 'onBlur',
-    defaultValues: {
-      addresses: [ { hash: '' } ],
-      tags: [ { name: '', type: { label: 'name', value: 'name' } } ],
-    },
+    defaultValues: getDefaultValuesFromQuery(router.query),
   });
+
+  React.useEffect(() => {
+    if (
+      router.query.addresses ||
+      router.query.requesterName ||
+      router.query.requesterEmail ||
+      router.query.companyName ||
+      router.query.companyWebsite
+    ) {
+      router.push({ pathname: '/public-tags/submit' }, undefined, { shallow: true });
+    }
+  }, [ router.query.addresses, router ]);
+
+  const handleMockClick = React.useCallback(async() => {
+    return onSubmitResult(mocks.mixedResponses);
+  }, [ onSubmitResult ]);
 
   const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(data) => {
     // eslint-disable-next-line no-console
@@ -91,6 +108,15 @@ const PublicTagsSubmitForm = ({ config, onSubmitResult }: Props) => {
             w="min-content"
           >
             Send request
+          </Button>
+          <Button
+            onClick={ handleMockClick }
+            size="lg"
+            mt={ 3 }
+            colorScheme="gray"
+            w="min-content"
+          >
+            Mock
           </Button>
         </Grid>
       </chakra.form>
