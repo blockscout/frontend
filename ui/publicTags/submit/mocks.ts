@@ -1,9 +1,9 @@
 import type { FormSubmitResultItem } from './types';
 
-const address1 = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859';
-const address2 = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5858';
-const address3 = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5857';
-const address4 = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5856';
+const address1 = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5851';
+const address2 = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5852';
+const address3 = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5853';
+const address4 = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5854';
 const address5 = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5855';
 
 const responseBaseFields = {
@@ -57,3 +57,41 @@ export const allSuccessResponses: Array<FormSubmitResultItem> = [
     },
   }))))
   .flat();
+
+export const mixedResponses: Array<FormSubmitResultItem> = [
+  // address1
+  {
+    error: null,
+    payload: { address: address1, ...tag1 },
+  },
+  {
+    error: 'Some error',
+    payload: { address: address1, ...tag2 },
+  },
+  {
+    error: 'Some error',
+    payload: { address: address1, ...tag3 },
+  },
+  // address2
+  {
+    error: 'Some error',
+    payload: { address: address2, ...tag2 },
+  },
+  {
+    error: 'Some error',
+    payload: { address: address2, ...tag3 },
+  },
+  // address3
+  {
+    error: 'Some error',
+    payload: { address: address3, ...tag1 },
+  },
+  {
+    error: 'Another nasty error',
+    payload: { address: address3, ...tag2 },
+  },
+  {
+    error: null,
+    payload: { address: address3, ...tag3 },
+  },
+].map((item) => ({ ...item, payload: { ...item.payload, ...responseBaseFields } }));

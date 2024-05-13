@@ -18,7 +18,7 @@ const PublicTagsSubmitResultSuccess = ({ data }: Props) => {
     <Grid gridTemplateColumns={{ base: '1fr', lg: '1fr 1fr' }} rowGap={ 3 } columnGap={ 3 }>
       <GridItem>
         <Box fontSize="sm" color="text_secondary" fontWeight={ 500 }>Smart contract / Address (0x...)</Box>
-        <Flex flexDir="column" rowGap={ 3 } mt={ 2 }>
+        <Flex flexDir="column" rowGap={ 2 } mt={ 2 }>
           { data.items
             .map(({ addresses }) => addresses)
             .flat()

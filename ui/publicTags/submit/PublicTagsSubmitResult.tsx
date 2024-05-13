@@ -18,7 +18,7 @@ interface Props {
 
 const PublicTagsSubmitResult = ({ data }: Props) => {
   const groupedData = React.useMemo(() => groupSubmitResult(data), [ data ]);
-  const hasErrors = groupedData.items.length > 0 && groupedData.items[0].error !== null;
+  const hasErrors = groupedData.items.some((item) => item.error !== null);
   const companyWebsite = makePrettyLink(groupedData.companyWebsite);
 
   return (
@@ -52,7 +52,7 @@ const PublicTagsSubmitResult = ({ data }: Props) => {
       </Grid>
 
       <Box as="h2" textStyle="h4" mt={ 8 } mb={ 5 }>Public tags/labels</Box>
-      { hasErrors ? <PublicTagsSubmitResultWithErrors data={ data }/> : <PublicTagsSubmitResultSuccess data={ groupedData }/> }
+      { hasErrors ? <PublicTagsSubmitResultWithErrors data={ groupedData }/> : <PublicTagsSubmitResultSuccess data={ groupedData }/> }
 
       <Button size="lg" mt={ 8 } as="a" href={ route({ pathname: '/public-tags/submit' }) }>Add new tag</Button>
     </div>

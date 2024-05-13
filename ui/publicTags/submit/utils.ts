@@ -1,6 +1,6 @@
-import type { FormSubmitResult, FormSubmitResultGrouped, FormSubmitResultItemGrouped } from './types';
+import _isEqual from 'lodash/isEqual';
 
-const tagIdentity = (tag: FormSubmitResultItemGrouped['tags'][number]) => tag.name + ':' + tag.tagType;
+import type { FormSubmitResult, FormSubmitResultGrouped, FormSubmitResultItemGrouped } from './types';
 
 export function groupSubmitResult(data: FormSubmitResult): FormSubmitResultGrouped {
   const _items: Array<FormSubmitResultItemGrouped> = [];
@@ -24,9 +24,7 @@ export function groupSubmitResult(data: FormSubmitResult): FormSubmitResultGroup
 
   // merge items with the same error and tags
   for (const item of _items) {
-    const existingItem = items.find(({ error, tags }) => error === item.error &&
-        tags.length === item.tags.length && tags.every(tagIdentity),
-    );
+    const existingItem = items.find(({ error, tags }) => error === item.error && _isEqual(tags, item.tags));
     if (existingItem) {
       existingItem.addresses.push(...item.addresses);
       continue;
@@ -40,6 +38,14 @@ export function groupSubmitResult(data: FormSubmitResult): FormSubmitResultGroup
     requesterEmail: data[0].payload.requesterEmail,
     companyName: data[0].payload.companyName,
     companyWebsite: data[0].payload.companyWebsite,
-    items,
+    items: items.sort((a, b) => {
+      if (a.error && !b.error) {
+        return 1;
+      }
+      if (!a.error && b.error) {
+        return -1;
+      }
+      return 0;
+    }),
   };
 }

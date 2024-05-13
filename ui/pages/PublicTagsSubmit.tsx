@@ -15,7 +15,7 @@ type Screen = 'form' | 'result' | 'initializing' | 'error';
 const PublicTagsSubmit = () => {
 
   const [ screen, setScreen ] = React.useState<Screen>('result');
-  const [ submitResult, setSubmitResult ] = React.useState<FormSubmitResult>(mocks.allSuccessResponses);
+  const [ submitResult, setSubmitResult ] = React.useState<FormSubmitResult>(mocks.mixedResponses);
 
   const configQuery = useApiQuery('address_metadata_tag_types');
 
