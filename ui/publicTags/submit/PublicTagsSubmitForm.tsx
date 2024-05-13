@@ -5,6 +5,7 @@ import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
 
 import type { FormFields, FormSubmitResult } from './types';
+import type { UserInfo } from 'types/api/account';
 import type { PublicTagTypesResponse } from 'types/api/addressMetadata';
 
 import appConfig from 'configs/app';
@@ -23,21 +24,22 @@ import PublicTagsSubmitFieldRequesterEmail from './fields/PublicTagsSubmitFieldR
 import PublicTagsSubmitFieldRequesterName from './fields/PublicTagsSubmitFieldRequesterName';
 import PublicTagsSubmitFieldTags from './fields/PublicTagsSubmitFieldTags';
 import * as mocks from './mocks';
-import { convertFormDataToRequestsBody, getDefaultValuesFromQuery } from './utils';
+import { convertFormDataToRequestsBody, getFormDefaultValues } from './utils';
 
 interface Props {
-  config: PublicTagTypesResponse | undefined;
+  config?: PublicTagTypesResponse | undefined;
+  userInfo?: UserInfo | undefined;
   onSubmitResult: (result: FormSubmitResult) => void;
 }
 
-const PublicTagsSubmitForm = ({ config, onSubmitResult }: Props) => {
+const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
   const isMobile = useIsMobile();
   const router = useRouter();
   const apiFetch = useApiFetch();
 
   const formApi = useForm<FormFields>({
     mode: 'onBlur',
-    defaultValues: getDefaultValuesFromQuery(router.query),
+    defaultValues: getFormDefaultValues(router.query, userInfo),
   });
 
   React.useEffect(() => {

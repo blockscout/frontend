@@ -2,6 +2,7 @@ import _isEqual from 'lodash/isEqual';
 import _pickBy from 'lodash/pickBy';
 
 import type { FormFieldTag, FormFields, FormSubmitResult, FormSubmitResultGrouped, FormSubmitResultItemGrouped, SubmitRequestBody } from './types';
+import type { UserInfo } from 'types/api/account';
 
 import type { Route } from 'nextjs-routes';
 
@@ -97,11 +98,11 @@ export function groupSubmitResult(data: FormSubmitResult | undefined): FormSubmi
   };
 }
 
-export function getDefaultValuesFromQuery(query: Route['query']) {
+export function getFormDefaultValues(query: Route['query'], userInfo: UserInfo | undefined) {
   return {
     addresses: getAddressesFromQuery(query),
-    requesterName: getQueryParamString(query?.requesterName),
-    requesterEmail: getQueryParamString(query?.requesterEmail),
+    requesterName: getQueryParamString(query?.requesterName) || userInfo?.nickname || userInfo?.name || undefined,
+    requesterEmail: getQueryParamString(query?.requesterEmail) || userInfo?.email || undefined,
     companyName: getQueryParamString(query?.companyName),
     companyWebsite: getQueryParamString(query?.companyWebsite),
     tags: [ { name: '', type: { label: 'name', value: 'name' as const } } ],
