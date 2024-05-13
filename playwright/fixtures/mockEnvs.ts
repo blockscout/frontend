@@ -63,4 +63,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   noNftMarketplaces: [
     [ 'NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES', '' ],
   ],
+  menuLightningLabels: [
+    [ 'NEXT_PUBLIC_MENU_LIGHTNING_LABELS', '["/blocks", "/apps"]' ],
+  ],
 };

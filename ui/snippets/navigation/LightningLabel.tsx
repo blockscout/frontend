@@ -1,29 +1,32 @@
-import { useColorModeValue } from '@chakra-ui/react';
+import { useColorModeValue, useBreakpointValue } from '@chakra-ui/react';
 import React from 'react';
 
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 import IconSvg from 'ui/shared/IconSvg';
 
 const LightningLabel = ({ bgColor, isCollapsed }: { bgColor?: string; isCollapsed?: boolean }) => {
+  const isLgScreen = useBreakpointValue({ base: false, lg: true, xl: false });
   const themeBgColor = useColorModeValue('white', 'black');
   const defaultTransitionProps = getDefaultTransitionProps({ transitionProperty: 'color' });
 
+  const isExpanded = isCollapsed === false;
+
   const color = React.useMemo(() => {
-    if (isCollapsed) {
+    if (isCollapsed || (!isExpanded && isLgScreen)) {
       return (bgColor && bgColor !== 'transparent') ? bgColor : themeBgColor;
     }
     return 'transparent';
-  }, [ bgColor, themeBgColor, isCollapsed ]);
+  }, [ bgColor, themeBgColor, isCollapsed, isExpanded, isLgScreen ]);
 
   return (
     <IconSvg
       className="lightning-label"
       name="lightning_sidebar"
       boxSize={ 4 }
-      ml={ isCollapsed ? 0 : 1 }
-      position={ isCollapsed ? 'absolute' : 'relative' }
-      top={ isCollapsed ? '10px' : '0' }
-      right={ isCollapsed ? '15px' : '0' }
+      ml={{ base: 1, lg: isExpanded ? 1 : 0, xl: isCollapsed ? 0 : 1 }}
+      position={{ lg: isExpanded ? 'relative' : 'absolute', xl: isCollapsed ? 'absolute' : 'relative' }}
+      top={{ lg: isExpanded ? '0' : '10px', xl: isCollapsed ? '10px' : '0' }}
+      right={{ lg: isExpanded ? '0' : '15px', xl: isCollapsed ? '15px' : '0' }}
       color={ color }
       { ...defaultTransitionProps }
     />
