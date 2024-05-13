@@ -23,7 +23,6 @@ import PublicTagsSubmitFieldDescription from './fields/PublicTagsSubmitFieldDesc
 import PublicTagsSubmitFieldRequesterEmail from './fields/PublicTagsSubmitFieldRequesterEmail';
 import PublicTagsSubmitFieldRequesterName from './fields/PublicTagsSubmitFieldRequesterName';
 import PublicTagsSubmitFieldTags from './fields/PublicTagsSubmitFieldTags';
-import * as mocks from './mocks';
 import { convertFormDataToRequestsBody, getFormDefaultValues } from './utils';
 
 interface Props {
@@ -53,10 +52,6 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
       router.replace({ pathname: '/public-tags/submit' }, undefined, { shallow: true });
     }
   }, [ router.query.addresses, router ]);
-
-  const handleMockClick = React.useCallback(async() => {
-    return onSubmitResult(mocks.mixedResponses);
-  }, [ onSubmitResult ]);
 
   const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(data) => {
     const requestsBody = convertFormDataToRequestsBody(data);
@@ -128,15 +123,6 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
             w="min-content"
           >
             Send request
-          </Button>
-          <Button
-            onClick={ handleMockClick }
-            size="lg"
-            mt={ 3 }
-            colorScheme="gray"
-            w="min-content"
-          >
-            Mock
           </Button>
         </Grid>
       </chakra.form>
