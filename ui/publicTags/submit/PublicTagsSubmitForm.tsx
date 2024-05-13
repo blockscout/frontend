@@ -48,7 +48,7 @@ const PublicTagsSubmitForm = ({ config, onSubmitResult }: Props) => {
       router.query.companyName ||
       router.query.companyWebsite
     ) {
-      router.push({ pathname: '/public-tags/submit' }, undefined, { shallow: true });
+      router.replace({ pathname: '/public-tags/submit' }, undefined, { shallow: true });
     }
   }, [ router.query.addresses, router ]);
 
