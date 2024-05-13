@@ -1,4 +1,5 @@
 import { Alert, Box, Button, Grid, GridItem } from '@chakra-ui/react';
+import _pickBy from 'lodash/pickBy';
 import React from 'react';
 
 import type { FormSubmitResult } from './types';
@@ -25,6 +26,12 @@ const PublicTagsSubmitResult = ({ data }: Props) => {
 
   const hasErrors = groupedData.items.some((item) => item.error !== null);
   const companyWebsite = makePrettyLink(groupedData.companyWebsite);
+  const startOverButtonQuery = hasErrors ? _pickBy({
+    requesterName: groupedData.requesterName,
+    requesterEmail: groupedData.requesterEmail,
+    companyName: groupedData.companyName,
+    companyWebsite: groupedData.companyWebsite,
+  }, Boolean) : undefined;
 
   return (
     <div>
@@ -59,6 +66,11 @@ const PublicTagsSubmitResult = ({ data }: Props) => {
       <Box as="h2" textStyle="h4" mt={ 8 } mb={ 5 }>Public tags/labels</Box>
       { hasErrors ? <PublicTagsSubmitResultWithErrors data={ groupedData }/> : <PublicTagsSubmitResultSuccess data={ groupedData }/> }
 
+      { hasErrors && (
+        <Button size="lg" variant="outline" mt={ 8 } mr={ 6 } as="a" href={ route({ pathname: '/public-tags/submit', query: startOverButtonQuery }) }>
+          Start over
+        </Button>
+      ) }
       <Button size="lg" mt={ 8 } as="a" href={ route({ pathname: '/public-tags/submit' }) }>Add new tag</Button>
     </div>
   );
