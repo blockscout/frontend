@@ -1,12 +1,12 @@
 import type { FormSubmitResultItem } from './types';
 
-const address1 = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5851';
-const address2 = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5852';
-const address3 = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5853';
-const address4 = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5854';
-const address5 = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5855';
+export const address1 = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5851';
+export const address2 = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5852';
+export const address3 = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5853';
+export const address4 = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5854';
+export const address5 = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5855';
 
-const responseBaseFields = {
+export const baseFields = {
   requesterName: 'John Doe',
   requesterEmail: 'jonh.doe@duck.me',
   companyName: 'DuckDuckMe',
@@ -14,7 +14,7 @@ const responseBaseFields = {
   description: 'Quack quack',
 };
 
-const tag1 = {
+export const tag1 = {
   name: 'Unicorn Uproar',
   tagType: 'name' as const,
   meta: {
@@ -25,7 +25,7 @@ const tag1 = {
   },
 };
 
-const tag2 = {
+export const tag2 = {
   name: 'Hello',
   tagType: 'generic' as const,
   meta: {
@@ -33,7 +33,7 @@ const tag2 = {
   },
 };
 
-const tag3 = {
+export const tag3 = {
   name: 'duck owner 🦆',
   tagType: 'classifier' as const,
   meta: {
@@ -51,7 +51,7 @@ export const allSuccessResponses: Array<FormSubmitResultItem> = [
   .map((address) => ([ tag1, tag2, tag3 ].map((tag) => ({
     error: null,
     payload: {
-      ...responseBaseFields,
+      ...baseFields,
       ...tag,
       address,
     },
@@ -94,4 +94,4 @@ export const mixedResponses: Array<FormSubmitResultItem> = [
     error: null,
     payload: { address: address3, ...tag3 },
   },
-].map((item) => ({ ...item, payload: { ...item.payload, ...responseBaseFields } }));
+].map((item) => ({ ...item, payload: { ...item.payload, ...baseFields } }));

@@ -10,12 +10,16 @@ const MAX_LENGTH = 80;
 
 const PublicTagsSubmitFieldDescription = () => {
   const { control } = useFormContext<FormFields>();
-  const { field, fieldState, formState } = useController<FormFields, 'description'>({ control, name: 'description', rules: { maxLength: MAX_LENGTH } });
+  const { field, fieldState, formState } = useController<FormFields, 'description'>({
+    control,
+    name: 'description',
+    rules: { maxLength: MAX_LENGTH, required: true },
+  });
 
   const isDisabled = formState.isSubmitting;
 
   return (
-    <FormControl variant="floating" isDisabled={ isDisabled } size={{ base: 'md', lg: 'lg' }}>
+    <FormControl variant="floating" isDisabled={ isDisabled } isRequired size={{ base: 'md', lg: 'lg' }}>
       <Textarea
         { ...field }
         isInvalid={ Boolean(fieldState.error) }

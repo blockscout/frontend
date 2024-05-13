@@ -7,7 +7,10 @@ import { useForm, FormProvider } from 'react-hook-form';
 import type { FormFields, FormSubmitResult } from './types';
 import type { PublicTagTypesResponse } from 'types/api/addressMetadata';
 
-import delay from 'lib/delay';
+import appConfig from 'configs/app';
+import useApiFetch from 'lib/api/useApiFetch';
+import getErrorObj from 'lib/errors/getErrorObj';
+import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import FormFieldReCaptcha from 'ui/shared/forms/fields/FormFieldReCaptcha';
 import Hint from 'ui/shared/Hint';
@@ -20,7 +23,7 @@ import PublicTagsSubmitFieldRequesterEmail from './fields/PublicTagsSubmitFieldR
 import PublicTagsSubmitFieldRequesterName from './fields/PublicTagsSubmitFieldRequesterName';
 import PublicTagsSubmitFieldTags from './fields/PublicTagsSubmitFieldTags';
 import * as mocks from './mocks';
-import { getDefaultValuesFromQuery } from './utils';
+import { convertFormDataToRequestsBody, getDefaultValuesFromQuery } from './utils';
 
 interface Props {
   config: PublicTagTypesResponse | undefined;
@@ -30,6 +33,7 @@ interface Props {
 const PublicTagsSubmitForm = ({ config, onSubmitResult }: Props) => {
   const isMobile = useIsMobile();
   const router = useRouter();
+  const apiFetch = useApiFetch();
 
   const formApi = useForm<FormFields>({
     mode: 'onBlur',
@@ -53,14 +57,28 @@ const PublicTagsSubmitForm = ({ config, onSubmitResult }: Props) => {
   }, [ onSubmitResult ]);
 
   const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(data) => {
-    // eslint-disable-next-line no-console
-    console.log('__>__', data, config);
+    const requestsBody = convertFormDataToRequestsBody(data);
 
-    await delay(1000);
-    onSubmitResult([
-      { error: null, payload: data },
-    ]);
-  }, [ config, onSubmitResult ]);
+    const result = await Promise.all(requestsBody.map(async(body) => {
+      return apiFetch<'public_tag_application', unknown, { message: string }>('public_tag_application', {
+        pathParams: { chainId: appConfig.chain.id },
+        fetchParams: {
+          method: 'POST',
+          body: { submission: body },
+        },
+      })
+        .then(() => ({ error: null, payload: body }))
+        .catch((error: unknown) => {
+          const errorObj = getErrorObj(error);
+          const messageFromPayload = getErrorObjPayload<{ message?: string }>(errorObj)?.message;
+          const messageFromError = errorObj && 'message' in errorObj && typeof errorObj.message === 'string' ? errorObj.message : undefined;
+          const message = messageFromPayload || messageFromError || 'Something went wrong.';
+          return { error: message, payload: body };
+        });
+    }));
+
+    onSubmitResult(result);
+  }, [ apiFetch, onSubmitResult ]);
 
   return (
     <FormProvider { ...formApi }>

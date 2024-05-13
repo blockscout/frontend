@@ -1,10 +1,49 @@
 import _isEqual from 'lodash/isEqual';
+import _pickBy from 'lodash/pickBy';
 
-import type { FormSubmitResult, FormSubmitResultGrouped, FormSubmitResultItemGrouped } from './types';
+import type { FormFieldTag, FormFields, FormSubmitResult, FormSubmitResultGrouped, FormSubmitResultItemGrouped, SubmitRequestBody } from './types';
 
 import type { Route } from 'nextjs-routes';
 
 import getQueryParamString from 'lib/router/getQueryParamString';
+
+export function convertFormDataToRequestsBody(data: FormFields): Array<SubmitRequestBody> {
+  const result: Array<SubmitRequestBody> = [];
+
+  for (const address of data.addresses) {
+    for (const tag of data.tags) {
+      result.push({
+        requesterName: data.requesterName,
+        requesterEmail: data.requesterEmail,
+        companyName: data.companyName,
+        companyWebsite: data.companyWebsite,
+        address: address.hash,
+        name: tag.name,
+        tagType: tag.type.value,
+        description: data.description,
+        meta: _pickBy({
+          bgColor: tag.bgColor,
+          textColor: tag.textColor,
+          tagUrl: tag.url,
+          tooltipDescription: tag.tooltipDescription,
+        }, Boolean),
+      });
+    }
+  }
+
+  return result;
+}
+
+export function convertTagApiFieldsToFormFields(tag: Pick<SubmitRequestBody, 'name' | 'tagType' | 'meta'>): FormFieldTag {
+  return {
+    name: tag.name,
+    type: { label: tag.tagType, value: tag.tagType },
+    url: tag.meta.tagUrl,
+    bgColor: tag.meta.bgColor,
+    textColor: tag.meta.textColor,
+    tooltipDescription: tag.meta.tooltipDescription,
+  };
+}
 
 export function groupSubmitResult(data: FormSubmitResult | undefined): FormSubmitResultGrouped | undefined {
   if (!data) {

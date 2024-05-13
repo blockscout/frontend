@@ -240,7 +240,7 @@ export const RESOURCES = {
     filterFields: [ 'name' as const, 'only_active' as const ],
   },
 
-  // METADATA SERVICE
+  // METADATA SERVICE & PUBLIC TAGS
   address_metadata_info: {
     path: '/api/v1/metadata',
     endpoint: getFeaturePayload(config.features.addressMetadata)?.api.endpoint,
@@ -255,6 +255,12 @@ export const RESOURCES = {
     path: '/api/v1/public-tag-types',
     endpoint: getFeaturePayload(config.features.addressMetadata)?.api.endpoint,
     basePath: getFeaturePayload(config.features.addressMetadata)?.api.basePath,
+  },
+  public_tag_application: {
+    path: '/api/v1/chains/:chainId/metadata-submissions/tag',
+    pathParams: [ 'chainId' as const ],
+    endpoint: getFeaturePayload(config.features.publicTagsSubmission)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.publicTagsSubmission)?.api.basePath,
   },
 
   // VISUALIZATION
