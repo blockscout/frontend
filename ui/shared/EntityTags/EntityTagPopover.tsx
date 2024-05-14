@@ -5,7 +5,7 @@ import type { EntityTag } from './types';
 
 import makePrettyLink from 'lib/makePrettyLink';
 import * as mixpanel from 'lib/mixpanel/index';
-import LinkExternal from 'ui/shared/LinkExternal';
+import LinkExternal from 'ui/shared/links/LinkExternal';
 
 interface Props {
   data: EntityTag;

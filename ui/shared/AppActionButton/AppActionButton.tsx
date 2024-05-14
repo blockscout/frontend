@@ -8,7 +8,7 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import * as mixpanel from 'lib/mixpanel/index';
 
-import LinkExternal from '../LinkExternal';
+import LinkExternal from '../links/LinkExternal';
 
 type Props = {
   data: NonNullable<AddressMetadataTagFormatted['meta']>;

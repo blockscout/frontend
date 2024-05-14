@@ -7,7 +7,7 @@ import type { MetadataAttributes } from 'types/client/token';
 import parseMetadata from 'lib/token/parseMetadata';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
-import LinkExternal from 'ui/shared/LinkExternal';
+import LinkExternal from 'ui/shared/links/LinkExternal';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
 interface Props {

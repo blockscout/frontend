@@ -20,8 +20,8 @@ import * as TxEntity from 'ui/shared/entities/tx/TxEntity';
 import * as UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkExternal from 'ui/shared/LinkExternal';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkExternal from 'ui/shared/links/LinkExternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 import type { SearchResultAppItem } from 'ui/shared/search/utils';
 import { getItemCategory, searchItemTitles } from 'ui/shared/search/utils';
 interface Props {

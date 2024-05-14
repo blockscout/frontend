@@ -4,8 +4,8 @@ import React from 'react';
 import type { EntityTag } from './types';
 
 import * as mixpanel from 'lib/mixpanel/index';
-import LinkExternal from 'ui/shared/LinkExternal';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkExternal from 'ui/shared/links/LinkExternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 
 import { getTagLinkParams } from './utils';
 
