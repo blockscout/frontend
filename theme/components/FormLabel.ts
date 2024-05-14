@@ -67,7 +67,7 @@ const sizes = {
       return {
         fontSize: 'md',
         lineHeight: '24px',
-        padding: '28px 4px 28px 24px',
+        padding: '26px 4px 26px 24px',
         right: '22px',
         _focusWithin: {
           padding: '16px 0 2px 24px',

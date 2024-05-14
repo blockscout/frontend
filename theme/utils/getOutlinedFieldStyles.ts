@@ -19,6 +19,7 @@ export default function getOutlinedFieldStyles(props: StyleFunctionProps) {
     _readOnly: {
       boxShadow: 'none !important',
       userSelect: 'all',
+      pointerEvents: 'none',
       ...formStyles.input.readOnly,
       _hover: {
         ...formStyles.input.readOnly,
@@ -51,12 +52,12 @@ export default function getOutlinedFieldStyles(props: StyleFunctionProps) {
       color: formStyles.placeholder.default.color,
     },
     // not filled input
-    ':placeholder-shown:not(:focus-visible):not(:hover):not([aria-invalid=true])': {
+    ':placeholder-shown:not(:focus-visible):not(:hover):not([aria-invalid=true]):not([aria-readonly=true])': {
       ...formStyles.input.empty,
     },
 
     // not filled input with type="date"
-    ':not(:placeholder-shown)[value=""]:not(:focus-visible):not(:hover):not([aria-invalid=true])': {
+    ':not(:placeholder-shown)[value=""]:not(:focus-visible):not(:hover):not([aria-invalid=true]):not([aria-readonly=true])': {
       ...formStyles.input.empty,
     },
 
