@@ -7,7 +7,7 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 
 import GasInfoTooltipRow from './GasInfoTooltipRow';
 import GasInfoUpdateTimer from './GasInfoUpdateTimer';

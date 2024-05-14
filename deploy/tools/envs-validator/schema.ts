@@ -15,6 +15,7 @@ import type { ContractCodeIde } from '../../../types/client/contract';
 import { GAS_UNITS } from '../../../types/client/gasTracker';
 import type { GasUnit } from '../../../types/client/gasTracker';
 import type { MarketplaceAppOverview, MarketplaceAppSecurityReportRaw, MarketplaceAppSecurityReport } from '../../../types/client/marketplace';
+import type { MultichainProviderConfig } from '../../../types/client/multichainProviderConfig';
 import { NAVIGATION_LINK_IDS } from '../../../types/client/navigation-items';
 import type { NavItemExternal, NavigationLinkId } from '../../../types/client/navigation-items';
 import { ROLLUP_TYPES } from '../../../types/client/rollup';
@@ -620,6 +621,11 @@ const schema = yup
     NEXT_PUBLIC_HAS_USER_OPS: yup.boolean(),
     NEXT_PUBLIC_METASUITES_ENABLED: yup.boolean(),
     NEXT_PUBLIC_SWAP_BUTTON_URL: yup.string(),
+    NEXT_PUBLIC_MULTICHAIN_PROVIDER_CONFIG: yup.object<MultichainProviderConfig>().transform(replaceQuotes).json().shape({
+      name: yup.string().required(),
+      url: yup.string().required(),
+      logo: yup.string(),
+    }).nullable().notRequired(),
     NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE: yup.string<ValidatorsChainType>().oneOf(VALIDATORS_CHAIN_TYPE),
     NEXT_PUBLIC_GAS_TRACKER_ENABLED: yup.boolean(),
     NEXT_PUBLIC_GAS_TRACKER_UNITS: yup.array().transform(replaceQuotes).json().of(yup.string<GasUnit>().oneOf(GAS_UNITS)),

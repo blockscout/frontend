@@ -12,7 +12,7 @@ import { route } from 'nextjs-routes';
 
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 import ZkEvmL2TxnBatchStatus from 'ui/shared/statusTag/ZkEvmL2TxnBatchStatus';
 
 type Props = {

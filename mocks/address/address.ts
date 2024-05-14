@@ -75,7 +75,7 @@ export const token: Address = {
   coin_balance: '1',
   creation_tx_hash: '0xc38cf7377bf72d6436f63c37b01b24d032101f20ec1849286dc703c712f10c98',
   creator_address_hash: '0x34A9c688512ebdB575e82C50c9803F6ba2916E72',
-  exchange_rate: null,
+  exchange_rate: '0.04311',
   implementation_address: null,
   has_decompiled_code: false,
   has_logs: false,

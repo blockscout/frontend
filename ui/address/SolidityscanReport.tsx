@@ -7,7 +7,7 @@ import React from 'react';
 import solidityScanIcon from 'icons/brands/solidity_scan.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import { SOLIDITYSCAN_REPORT } from 'stubs/contract';
-import LinkExternal from 'ui/shared/LinkExternal';
+import LinkExternal from 'ui/shared/links/LinkExternal';
 import SolidityscanReportButton from 'ui/shared/solidityscanReport/SolidityscanReportButton';
 import SolidityscanReportDetails from 'ui/shared/solidityscanReport/SolidityscanReportDetails';
 import SolidityscanReportScore from 'ui/shared/solidityscanReport/SolidityscanReportScore';
