@@ -3,6 +3,9 @@ import type { Size, ChakraStylesConfig } from 'chakra-react-select';
 
 import type { Option } from './types';
 
+import theme from 'theme';
+import getFormStyles from 'theme/utils/getFormStyles';
+
 function getValueContainerStyles(size?: Size) {
   switch (size) {
     case 'sm':
@@ -42,13 +45,12 @@ function getSingleValueStyles(size?: Size) {
 }
 
 const getChakraStyles: (colorMode: ColorMode) => ChakraStylesConfig<Option> = (colorMode) => {
-  const emptyInputBorderColor = colorMode === 'dark' ? 'gray.700' : 'gray.100';
-  const filledInputBorderColor = colorMode === 'dark' ? 'gray.600' : 'gray.300';
+  const formColor = getFormStyles({ colorMode, colorScheme: 'blue', theme });
 
   return {
     control: (provided, state) => ({
       ...provided,
-      borderColor: state.hasValue ? filledInputBorderColor : emptyInputBorderColor,
+      borderColor: state.hasValue ? formColor.input.filled.borderColor : formColor.input.empty.borderColor,
     }),
     inputContainer: (provided) => ({
       ...provided,

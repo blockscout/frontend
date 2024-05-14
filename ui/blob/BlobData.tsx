@@ -108,7 +108,6 @@ const BlobData = ({ data, isLoading, hash }: Props) => {
             borderRadius="base"
             value={ format }
             onChange={ handleSelectChange }
-            focusBorderColor="none"
             w="auto"
           >
             { formats.map((format) => (
