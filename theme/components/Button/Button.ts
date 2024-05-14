@@ -48,18 +48,18 @@ const variantOutline = defineStyle((props) => {
   const isGrayTheme = c === 'gray' || c === 'gray-dark';
   const color = isGrayTheme ? mode('blackAlpha.800', 'whiteAlpha.800')(props) : mode(`${ c }.600`, `${ c }.300`)(props);
   const borderColor = isGrayTheme ? mode('gray.200', 'gray.600')(props) : mode(`${ c }.600`, `${ c }.300`)(props);
-  const activeBg = isGrayTheme ? mode('blue.50', 'gray.600')(props) : mode(`${ c }.50`, 'gray.600')(props);
+  const activeBg = isGrayTheme ? mode('green.50', 'gray.600')(props) : mode(`${ c }.50`, 'gray.600')(props);
   const activeColor = (() => {
     if (c === 'gray') {
-      return mode('blue.600', 'gray.50')(props);
+      return mode('green.600', 'gray.50')(props);
     }
     if (c === 'gray-dark') {
-      return mode('blue.600', 'gray.50')(props);
+      return mode('green.600', 'gray.50')(props);
     }
     if (c === 'blue') {
-      return mode('blue.600', 'gray.50')(props);
+      return mode('green.600', 'gray.50')(props);
     }
-    return 'blue.600';
+    return 'green.600';
   })();
 
   return {

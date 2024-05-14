@@ -31,7 +31,7 @@ const baseStyleItem = defineStyle({
     },
   },
   _hover: {
-    [$bg.variable]: 'colors.blue.50',
+    [$bg.variable]: 'colors.green.50',
     _dark: {
       [$bg.variable]: 'colors.whiteAlpha.100',
     },
