@@ -8,16 +8,17 @@ interface Options<R extends ResourceName> {
   queryParams?: Parameters<typeof buildUrl<R>>[2];
 }
 
-export type MockApiResponseFixture = <R extends ResourceName>(resourceName: R, responseMock: ResourcePayload<R>, options?: Options<R>) => Promise<string>;
+export type MockApiResponseFixture = <R extends ResourceName>
+(resourceName: R, responseMock: ResourcePayload<R>, options?: Options<R>, times?: number) => Promise<string>;
 
 const fixture: TestFixture<MockApiResponseFixture, { page: Page }> = async({ page }, use) => {
-  await use(async(resourceName, responseMock, options) => {
+  await use(async(resourceName, responseMock, options, times) => {
     const apiUrl = buildUrl(resourceName, options?.pathParams, options?.queryParams);
 
     await page.route(apiUrl, (route) => route.fulfill({
       status: 200,
       body: JSON.stringify(responseMock),
-    }));
+    }), { times });
 
     return apiUrl;
   });

@@ -1,13 +1,10 @@
-import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
-
-import type { WalletProvider } from 'types/web3';
 
 import * as addressMock from 'mocks/address/address';
 import * as countersMock from 'mocks/address/counters';
 import * as tokensMock from 'mocks/address/tokens';
+import { test, expect, devices } from 'playwright/lib';
 import TestApp from 'playwright/TestApp';
-import buildApiUrl from 'playwright/utils/buildApiUrl';
 import * as configs from 'playwright/utils/configs';
 
 import AddressDetails from './AddressDetails';
@@ -15,27 +12,53 @@ import MockAddressPage from './testUtils/MockAddressPage';
 import type { AddressQuery } from './utils/useAddressQuery';
 
 const ADDRESS_HASH = addressMock.hash;
-const API_URL_ADDRESS = buildApiUrl('address', { hash: ADDRESS_HASH });
-const API_URL_COUNTERS = buildApiUrl('address_counters', { hash: ADDRESS_HASH });
-const API_URL_TOKENS_ERC20 = buildApiUrl('address_tokens', { hash: ADDRESS_HASH }) + '?type=ERC-20';
-const API_URL_TOKENS_ERC721 = buildApiUrl('address_tokens', { hash: ADDRESS_HASH }) + '?type=ERC-721';
-const API_URL_TOKENS_ER1155 = buildApiUrl('address_tokens', { hash: ADDRESS_HASH }) + '?type=ERC-1155';
-const API_URL_TOKENS_ERC404 = buildApiUrl('address_tokens', { hash: ADDRESS_HASH }) + '?type=ERC-404';
 const hooksConfig = {
   router: {
     query: { hash: ADDRESS_HASH },
   },
 };
 
-test('contract +@mobile', async({ mount, page }) => {
-  await page.route(API_URL_ADDRESS, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(addressMock.contract),
-  }));
-  await page.route(API_URL_COUNTERS, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(countersMock.forContract),
-  }));
+test.describe('mobile', () => {
+  test.use({ viewport: devices['iPhone 13 Pro'].viewport });
+
+  test('contract', async({ mount, page, mockApiResponse }) => {
+    await mockApiResponse('address', addressMock.contract, { pathParams: { hash: ADDRESS_HASH } });
+    await mockApiResponse('address_counters', countersMock.forContract, { pathParams: { hash: ADDRESS_HASH } });
+
+    const component = await mount(
+      <TestApp>
+        <AddressDetails addressQuery={{ data: addressMock.contract } as AddressQuery}/>
+      </TestApp>,
+      { hooksConfig },
+    );
+
+    await expect(component).toHaveScreenshot({
+      mask: [ page.locator(configs.adsBannerSelector) ],
+      maskColor: configs.maskColor,
+    });
+  });
+
+  test('validator', async({ mount, page, mockApiResponse }) => {
+    await mockApiResponse('address', addressMock.validator, { pathParams: { hash: ADDRESS_HASH } });
+    await mockApiResponse('address_counters', countersMock.forValidator, { pathParams: { hash: ADDRESS_HASH } });
+
+    const component = await mount(
+      <TestApp>
+        <AddressDetails addressQuery={{ data: addressMock.validator } as AddressQuery}/>
+      </TestApp>,
+      { hooksConfig },
+    );
+
+    await expect(component).toHaveScreenshot({
+      mask: [ page.locator(configs.adsBannerSelector) ],
+      maskColor: configs.maskColor,
+    });
+  });
+});
+
+test('contract', async({ mount, page, mockApiResponse }) => {
+  await mockApiResponse('address', addressMock.contract, { pathParams: { hash: ADDRESS_HASH } });
+  await mockApiResponse('address_counters', countersMock.forContract, { pathParams: { hash: ADDRESS_HASH } });
 
   const component = await mount(
     <TestApp>
@@ -50,37 +73,34 @@ test('contract +@mobile', async({ mount, page }) => {
   });
 });
 
-test('token', async({ mount, page }) => {
-  await page.route(API_URL_ADDRESS, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(addressMock.token),
-  }));
-  await page.route(API_URL_COUNTERS, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(countersMock.forToken),
-  }));
-  await page.route(API_URL_TOKENS_ERC20, async(route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(tokensMock.erc20List),
-  }), { times: 1 });
-  await page.route(API_URL_TOKENS_ERC721, async(route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(tokensMock.erc721List),
-  }), { times: 1 });
-  await page.route(API_URL_TOKENS_ER1155, async(route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(tokensMock.erc1155List),
-  }), { times: 1 });
-  await page.route(API_URL_TOKENS_ERC404, async(route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(tokensMock.erc404List),
-  }), { times: 1 });
-
-  await page.evaluate(() => {
-    window.ethereum = {
-      providers: [ { isMetaMask: true, _events: {} } ],
-    } as WalletProvider;
-  });
+test('token', async({ mount, page, mockApiResponse, injectMetaMaskProvider }) => {
+  await mockApiResponse('address', addressMock.token, { pathParams: { hash: ADDRESS_HASH } });
+  await mockApiResponse('address_counters', countersMock.forToken, { pathParams: { hash: ADDRESS_HASH } });
+  await mockApiResponse(
+    'address_tokens',
+    { ...tokensMock.erc20List, next_page_params: null },
+    { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-20' } },
+    1,
+  );
+  await mockApiResponse(
+    'address_tokens',
+    { ...tokensMock.erc721List, next_page_params: null },
+    { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-721' } },
+    1,
+  );
+  await mockApiResponse(
+    'address_tokens',
+    { ...tokensMock.erc1155List, next_page_params: null },
+    { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-1155' } },
+    1,
+  );
+  await mockApiResponse(
+    'address_tokens',
+    { ...tokensMock.erc404List, next_page_params: null },
+    { pathParams: { hash: ADDRESS_HASH }, queryParams: { type: 'ERC-404' } },
+    1,
+  );
+  await injectMetaMaskProvider();
 
   const component = await mount(
     <TestApp>
@@ -97,15 +117,9 @@ test('token', async({ mount, page }) => {
   });
 });
 
-test('validator +@mobile', async({ mount, page }) => {
-  await page.route(API_URL_ADDRESS, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(addressMock.validator),
-  }));
-  await page.route(API_URL_COUNTERS, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(countersMock.forValidator),
-  }));
+test('validator', async({ mount, page, mockApiResponse }) => {
+  await mockApiResponse('address', addressMock.validator, { pathParams: { hash: ADDRESS_HASH } });
+  await mockApiResponse('address_counters', countersMock.forValidator, { pathParams: { hash: ADDRESS_HASH } });
 
   const component = await mount(
     <TestApp>
