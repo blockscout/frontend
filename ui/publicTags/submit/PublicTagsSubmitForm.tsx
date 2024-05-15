@@ -92,9 +92,9 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
             Company info
           </GridItem>
           <PublicTagsSubmitFieldRequesterName/>
-          <PublicTagsSubmitFieldCompanyName/>
-          { !isMobile && <div/> }
           <PublicTagsSubmitFieldRequesterEmail/>
+          { !isMobile && <div/> }
+          <PublicTagsSubmitFieldCompanyName/>
           <PublicTagsSubmitFieldCompanyWebsite/>
           { !isMobile && <div/> }
 

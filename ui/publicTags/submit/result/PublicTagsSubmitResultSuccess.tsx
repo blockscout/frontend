@@ -3,7 +3,6 @@ import React from 'react';
 
 import type { FormSubmitResultGrouped } from '../types';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EntityTag from 'ui/shared/EntityTags/EntityTag';
 
@@ -12,11 +11,9 @@ interface Props {
 }
 
 const PublicTagsSubmitResultSuccess = ({ data }: Props) => {
-  const isMobile = useIsMobile();
-
   return (
     <Grid gridTemplateColumns={{ base: '1fr', lg: '1fr 1fr' }} rowGap={ 3 } columnGap={ 3 }>
-      <GridItem>
+      <GridItem overflow="hidden">
         <Box fontSize="sm" color="text_secondary" fontWeight={ 500 }>Smart contract / Address (0x...)</Box>
         <Flex flexDir="column" rowGap={ 2 } mt={ 2 }>
           { data.items
@@ -27,7 +24,6 @@ const PublicTagsSubmitResultSuccess = ({ data }: Props) => {
                 key={ hash }
                 address={{ hash }}
                 noIcon
-                truncation={ isMobile ? 'constant' : 'dynamic' }
               />
             )) }
         </Flex>

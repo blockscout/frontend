@@ -105,7 +105,7 @@ export function getFormDefaultValues(query: Route['query'], userInfo: UserInfo |
     requesterEmail: getQueryParamString(query?.requesterEmail) || userInfo?.email || undefined,
     companyName: getQueryParamString(query?.companyName),
     companyWebsite: getQueryParamString(query?.companyWebsite),
-    tags: [ { name: '', type: { label: 'name', value: 'name' as const } } ],
+    tags: [ { name: '', type: { label: 'Name', value: 'name' as const } } ],
   };
 }
 

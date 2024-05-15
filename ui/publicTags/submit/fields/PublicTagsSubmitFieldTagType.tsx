@@ -1,6 +1,7 @@
 import { chakra, Flex, FormControl, useColorModeValue } from '@chakra-ui/react';
 import type { GroupBase, SelectComponentsConfig, SingleValueProps } from 'chakra-react-select';
 import { chakraComponents } from 'chakra-react-select';
+import _capitalize from 'lodash/capitalize';
 import React from 'react';
 import type { ControllerRenderProps } from 'react-hook-form';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -28,7 +29,7 @@ const PublicTagsSubmitFieldTagType = ({ index, tagTypes, isDisabled }: Props) =>
 
   const typeOptions = React.useMemo(() => tagTypes?.map((type) => ({
     value: type.type,
-    label: type.type,
+    label: _capitalize(type.type),
   })), [ tagTypes ]);
 
   const fieldValue = watch(`tags.${ index }.type`).value;
@@ -49,7 +50,11 @@ const PublicTagsSubmitFieldTagType = ({ index, tagTypes, isDisabled }: Props) =>
         }
         case 'protocol':
         case 'generic': {
-          return (<chakraComponents.SingleValue { ...props }><chakra.span color="gray.400">#</chakra.span> { children }</chakraComponents.SingleValue>);
+          return (
+            <chakraComponents.SingleValue { ...props }>
+              <chakra.span color="gray.400">#</chakra.span> { children }
+            </chakraComponents.SingleValue>
+          );
         }
 
         default: {

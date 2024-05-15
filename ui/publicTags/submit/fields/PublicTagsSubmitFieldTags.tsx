@@ -24,7 +24,7 @@ const PublicTagsSubmitFieldTags = ({ tagTypes }: Props) => {
   const handleAddFieldClick = React.useCallback((index: number) => {
     insert(index + 1, {
       name: '',
-      type: { label: 'name', value: 'name' },
+      type: { label: 'Name', value: 'name' },
       url: undefined,
       bgColor: undefined,
       textColor: undefined,

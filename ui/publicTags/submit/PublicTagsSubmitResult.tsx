@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Grid, GridItem } from '@chakra-ui/react';
+import { Alert, Box, Button, Flex, Grid, GridItem } from '@chakra-ui/react';
 import _pickBy from 'lodash/pickBy';
 import React from 'react';
 
@@ -66,12 +66,14 @@ const PublicTagsSubmitResult = ({ data }: Props) => {
       <Box as="h2" textStyle="h4" mt={ 8 } mb={ 5 }>Public tags/labels</Box>
       { hasErrors ? <PublicTagsSubmitResultWithErrors data={ groupedData }/> : <PublicTagsSubmitResultSuccess data={ groupedData }/> }
 
-      { hasErrors && (
-        <Button size="lg" variant="outline" mt={ 8 } mr={ 6 } as="a" href={ route({ pathname: '/public-tags/submit', query: startOverButtonQuery }) }>
-          Start over
-        </Button>
-      ) }
-      <Button size="lg" mt={ 8 } as="a" href={ route({ pathname: '/public-tags/submit' }) }>Add new tag</Button>
+      <Flex flexDir={{ base: 'column', lg: 'row' }} columnGap={ 6 } mt={ 8 } rowGap={ 3 }>
+        { hasErrors && (
+          <Button size="lg" variant="outline" as="a" href={ route({ pathname: '/public-tags/submit', query: startOverButtonQuery }) }>
+            Start over
+          </Button>
+        ) }
+        <Button size="lg" as="a" href={ route({ pathname: '/public-tags/submit' }) }>Add new tag</Button>
+      </Flex>
     </div>
   );
 };
