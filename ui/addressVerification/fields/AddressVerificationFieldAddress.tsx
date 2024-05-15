@@ -1,4 +1,4 @@
-import { FormControl, Input, useColorModeValue } from '@chakra-ui/react';
+import { FormControl, Input } from '@chakra-ui/react';
 import React from 'react';
 import type { Control, ControllerRenderProps, FormState } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
@@ -15,13 +15,11 @@ interface Props {
 }
 
 const AddressVerificationFieldAddress = ({ formState, control }: Props) => {
-  const backgroundColor = useColorModeValue('white', 'gray.900');
-
   const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<Fields, 'address'>}) => {
     const error = 'address' in formState.errors ? formState.errors.address : undefined;
 
     return (
-      <FormControl variant="floating" id={ field.name } isRequired size="md" backgroundColor={ backgroundColor } mt={ 8 }>
+      <FormControl variant="floating" id={ field.name } isRequired size="md" bgColor="dialog_bg" mt={ 8 }>
         <Input
           { ...field }
           required
@@ -29,11 +27,12 @@ const AddressVerificationFieldAddress = ({ formState, control }: Props) => {
           maxLength={ ADDRESS_LENGTH }
           isDisabled={ formState.isSubmitting }
           autoComplete="off"
+          bgColor="dialog_bg"
         />
         <InputPlaceholder text="Smart contract address (0x...)" error={ error }/>
       </FormControl>
     );
-  }, [ formState.errors, formState.isSubmitting, backgroundColor ]);
+  }, [ formState.errors, formState.isSubmitting ]);
 
   return (
     <Controller
