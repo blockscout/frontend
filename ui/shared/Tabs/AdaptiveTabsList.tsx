@@ -44,8 +44,8 @@ const AdaptiveTabsList = (props: Props) => {
   return (
     <TabList
       marginBottom={{ base: 6, lg: 8 }}
-      mx={{ base: '-16px', lg: 'unset' }}
-      px={{ base: '16px', lg: 'unset' }}
+      mx={{ base: '-12px', lg: 'unset' }}
+      px={{ base: '12px', lg: 'unset' }}
       flexWrap="nowrap"
       whiteSpace="nowrap"
       ref={ listRef }

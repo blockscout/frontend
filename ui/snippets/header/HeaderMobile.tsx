@@ -36,7 +36,7 @@ const HeaderMobile = ({ hideSearchBar, renderSearchBar }: Props) => {
     >
       <Flex
         as="header"
-        paddingX={ 4 }
+        paddingX={ 3 }
         paddingY={ 2 }
         bgColor={ bgColor }
         width="100%"
