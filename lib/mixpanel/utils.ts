@@ -106,6 +106,10 @@ Type extends EventTypes.PAGE_WIDGET ? (
     'Type': 'Security score';
     'Source': 'Analyzed contracts popup';
   } | {
+    'Type': 'Action button';
+    'Info': string;
+    'Source': 'Txn' | 'NFT collection' | 'NFT item';
+  } | {
     'Type': 'Address tag';
     'Info': string;
     'URL': string;

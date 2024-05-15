@@ -21,6 +21,10 @@ export default function parseMetaPayload(meta: AddressMetadataTag['meta']): Addr
       'tooltipTitle',
       'tooltipDescription',
       'tooltipUrl',
+      'appID',
+      'appMarketplaceURL',
+      'appLogoURL',
+      'appActionButtonText',
     ];
 
     for (const stringField of stringFields) {

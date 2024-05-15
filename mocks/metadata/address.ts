@@ -61,3 +61,18 @@ export const protocolTag: AddressMetadataTagApi = {
   ordinal: 0,
   meta: null,
 };
+
+export const protocolTagWithMeta: AddressMetadataTagApi = {
+  slug: 'uniswap',
+  name: 'Uniswap',
+  tagType: 'protocol',
+  ordinal: 0,
+  meta: {
+    appID: 'uniswap',
+    appMarketplaceURL: 'https://example.com',
+    appLogoURL: 'https://localhost:3100/icon.svg',
+    appActionButtonText: 'Swap',
+    textColor: '#FFFFFF',
+    bgColor: '#FF007A',
+  },
+};

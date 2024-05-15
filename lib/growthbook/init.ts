@@ -7,6 +7,7 @@ import { STORAGE_KEY, STORAGE_LIMIT } from './consts';
 
 export interface GrowthBookFeatures {
   test_value: string;
+  action_button_exp: boolean;
 }
 
 export const growthBook = (() => {

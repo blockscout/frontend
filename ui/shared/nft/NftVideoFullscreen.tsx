@@ -18,6 +18,7 @@ const NftVideoFullscreen = ({ src, isOpen, onClose }: Props) => {
         src={ src }
         maxH="90vh"
         maxW="90vw"
+        autoPlay={ true }
       />
     </NftMediaFullscreenModal>
   );
