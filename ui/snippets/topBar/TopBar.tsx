@@ -3,11 +3,11 @@ import React from 'react';
 
 import config from 'configs/app';
 
+import DeFiDropdown from './DeFiDropdown';
 import Settings from './settings/Settings';
-import SwapButton from './SwapButton';
 import TopBarStats from './TopBarStats';
 
-const feature = config.features.swapButton;
+const feature = config.features.deFi;
 
 const TopBar = () => {
   const bgColor = useColorModeValue('gray.50', 'whiteAlpha.100');
@@ -24,7 +24,7 @@ const TopBar = () => {
       <Flex alignItems="center">
         { feature.isEnabled && (
           <>
-            <SwapButton/>
+            <DeFiDropdown/>
             <Divider mr={ 3 } ml={{ base: 2, sm: 3 }} height={ 4 } orientation="vertical"/>
           </>
         ) }
