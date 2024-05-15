@@ -686,7 +686,7 @@ If the feature is enabled, a Multichain balance button will be displayed on the 
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_MULTICHAIN_PROVIDER_CONFIG | `{ name: string; url: string; logo?: string }` | Multichain portfolio application config See [below](#multichain-button-configuration-properties) | - | - | `{ name: 'zerion', url: 'zerion', logo: 'https://example.com/icon.svg'` |
+| NEXT_PUBLIC_MULTICHAIN_PROVIDER_CONFIG | `{ name: string; url_template: string; logo?: string }` | Multichain portfolio application config See [below](#multichain-button-configuration-properties) | - | - | `{ name: 'zerion', url_template: '/apps/zerion/{address}/overview', logo: 'https://example.com/icon.svg'` |
 
 &nbsp;
 
@@ -695,7 +695,7 @@ If the feature is enabled, a Multichain balance button will be displayed on the 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | name | `string` | Multichain portfolio application name | Required | - | `zerion` |
-| url | `string` | Application ID in the marketplace or website URL  | Required | - | `zerion` |
+| url_template | `string` | Absolute (for external links) or relative (for internal links) path template to the portfolio. Should be a template with `{address}` variable | Required | - | `/apps/zerion/{address}/overview` |
 | logo | `string` | Multichain portfolio application logo (.svg) url | - | - | `https://example.com/icon.svg` |
 
 &nbsp;

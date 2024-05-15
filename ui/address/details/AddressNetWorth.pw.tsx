@@ -20,7 +20,7 @@ test.beforeEach(async({ mockApiResponse }) => {
 test('base view', async({ mount }) => {
   const component = await mount(
     <TestApp>
-      <AddressNetWorth addressData={ addressMock.token }/>
+      <AddressNetWorth addressData={ addressMock.token } addressHash={ ADDRESS_HASH }/>
     </TestApp>,
   );
 
@@ -29,13 +29,13 @@ test('base view', async({ mount }) => {
 
 test('with multichain button internal +@dark-mode', async({ mount, mockEnvs, mockAssetResponse }) => {
   await mockEnvs([
-    [ 'NEXT_PUBLIC_MULTICHAIN_PROVIDER_CONFIG', `{"name": "zerion", "url": "zerion", "logo": "${ ICON_URL }"}` ],
+    [ 'NEXT_PUBLIC_MULTICHAIN_PROVIDER_CONFIG', `{"name": "zerion", "url_template": "/apps/zerion/{address}/overview", "logo": "${ ICON_URL }"}` ],
   ]);
   await mockAssetResponse(ICON_URL, './playwright/mocks/image_svg.svg');
 
   const component = await mount(
     <TestApp>
-      <AddressNetWorth addressData={ addressMock.token }/>
+      <AddressNetWorth addressData={ addressMock.token } addressHash={ ADDRESS_HASH }/>
     </TestApp>,
   );
 
@@ -44,13 +44,13 @@ test('with multichain button internal +@dark-mode', async({ mount, mockEnvs, moc
 
 test('with multichain button external', async({ mount, mockEnvs, mockAssetResponse }) => {
   await mockEnvs([
-    [ 'NEXT_PUBLIC_MULTICHAIN_PROVIDER_CONFIG', `{"name": "zerion", "url": "https://duck.url", "logo": "${ ICON_URL }"}` ],
+    [ 'NEXT_PUBLIC_MULTICHAIN_PROVIDER_CONFIG', `{"name": "zerion", "url_template": "https://duck.url/{address}", "logo": "${ ICON_URL }"}` ],
   ]);
   await mockAssetResponse(ICON_URL, './playwright/mocks/image_svg.svg');
 
   const component = await mount(
     <TestApp>
-      <AddressNetWorth addressData={ addressMock.token }/>
+      <AddressNetWorth addressData={ addressMock.token } addressHash={ ADDRESS_HASH }/>
     </TestApp>,
   );
 

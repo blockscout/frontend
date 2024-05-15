@@ -1,5 +1,5 @@
 export type MultichainProviderConfig = {
   name: string;
-  url: string;
+  url_template: string;
   logo?: string;
 };
