@@ -31,10 +31,6 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, register, errors, onAddCl
   const bgColorDefault = useColorModeValue('blackAlpha.50', 'whiteAlpha.100');
   const bgColorError = useColorModeValue('red.50', 'red.900');
 
-  // TODO @tom2drum remove these custom colors after #1903 is done
-  const inputBgColor = useColorModeValue('white', 'black');
-  const inputBgColorDisabled = useColorModeValue('#ececec', '#232425');
-
   const handleAddClick = React.useCallback(() => {
     onAddClick?.(index);
   }, [ index, onAddClick ]);
@@ -58,8 +54,6 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, register, errors, onAddCl
                 isInvalid={ Boolean(errors?.name) }
                 isDisabled={ isDisabled }
                 autoComplete="off"
-                bgColor={ inputBgColor }
-                _disabled={{ bgColor: inputBgColorDisabled }}
               />
               <InputPlaceholder text="Tag (max 35 characters)" error={ errors?.name }/>
             </FormControl>
@@ -74,8 +68,6 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, register, errors, onAddCl
                 isInvalid={ Boolean(errors?.url) }
                 isDisabled={ isDisabled }
                 autoComplete="off"
-                bgColor={ inputBgColor }
-                _disabled={{ bgColor: inputBgColorDisabled }}
               />
               <InputPlaceholder text="Label URL" error={ errors?.url }/>
             </FormControl>
@@ -105,9 +97,7 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, register, errors, onAddCl
                 isInvalid={ Boolean(errors?.tooltipDescription) }
                 isDisabled={ isDisabled }
                 autoComplete="off"
-                bgColor={ inputBgColor }
                 maxH="160px"
-                _disabled={{ bgColor: inputBgColorDisabled }}
               />
               <InputPlaceholder
                 text="Label description - any text to be shown on label hover (max 80 characters)"

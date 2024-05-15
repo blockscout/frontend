@@ -1,4 +1,4 @@
-import { chakra, Flex, FormControl, useColorModeValue } from '@chakra-ui/react';
+import { chakra, Flex, FormControl } from '@chakra-ui/react';
 import type { GroupBase, SelectComponentsConfig, SingleValueProps } from 'chakra-react-select';
 import { chakraComponents } from 'chakra-react-select';
 import _capitalize from 'lodash/capitalize';
@@ -23,9 +23,6 @@ interface Props {
 const PublicTagsSubmitFieldTagType = ({ index, tagTypes, isDisabled }: Props) => {
   const isMobile = useIsMobile();
   const { control, watch } = useFormContext<FormFields>();
-
-  // TODO @tom2drum remove these custom colors after #1903 is done
-  const inputBgColor = useColorModeValue('white', 'black');
 
   const typeOptions = React.useMemo(() => tagTypes?.map((type) => ({
     value: type.type,
@@ -79,14 +76,10 @@ const PublicTagsSubmitFieldTagType = ({ index, tagTypes, isDisabled }: Props) =>
           isAsync={ false }
           isSearchable={ false }
           components={ selectComponents }
-          formControlStyles={{
-            bgColor: inputBgColor,
-            borderRadius: 'base',
-          }}
         />
       </FormControl>
     );
-  }, [ inputBgColor, isDisabled, isMobile, selectComponents, typeOptions ]);
+  }, [ isDisabled, isMobile, selectComponents, typeOptions ]);
 
   return (
     <Controller

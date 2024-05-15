@@ -1,4 +1,3 @@
-import type { ChakraProps } from '@chakra-ui/react';
 import { FormControl, useToken, useColorMode } from '@chakra-ui/react';
 import type { CSSObjectWithLabel, GroupBase, SingleValue, MultiValue, AsyncProps, Props as SelectProps } from 'chakra-react-select';
 import { Select, AsyncSelect } from 'chakra-react-select';
@@ -13,7 +12,6 @@ import InputPlaceholder from 'ui/shared/InputPlaceholder';
 interface CommonProps {
   error?: Merge<FieldError, FieldErrorsImpl<Option>> | undefined;
   placeholderIcon?: React.ReactNode;
-  formControlStyles?: ChakraProps;
 }
 
 interface RegularSelectProps extends SelectProps<Option, boolean, GroupBase<Option>>, CommonProps {
@@ -49,7 +47,6 @@ const FancySelect = (props: Props, ref: React.LegacyRef<HTMLDivElement>) => {
       { ...(props.error ? { 'aria-invalid': true } : {}) }
       { ...(props.isDisabled ? { 'aria-disabled': true } : {}) }
       { ...(props.value ? { 'data-active': true } : {}) }
-      { ...props.formControlStyles }
     >
       <SelectComponent
         { ...props }
