@@ -2,6 +2,7 @@ import { Box, Text, Grid } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import config from 'configs/app';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMounted from 'lib/hooks/useIsMounted';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -130,14 +131,14 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
             { addressQuery.data ? <TokenSelect onClick={ handleCounterItemClick }/> : <Box py="6px">0</Box> }
           </DetailsInfoItem>
         ) }
-        { (data.exchange_rate && data.has_tokens) && (
+        { (config.features.multichainButton.isEnabled || (data.exchange_rate && data.has_tokens)) && (
           <DetailsInfoItem
             title="Net worth"
             hint="Total net worth in USD of all tokens for the address"
             alignSelf="center"
             isLoading={ addressQuery.isPlaceholderData }
           >
-            <AddressNetWorth addressData={ addressQuery.data } isLoading={ addressQuery.isPlaceholderData }/>
+            <AddressNetWorth addressData={ addressQuery.data } addressHash={ addressHash } isLoading={ addressQuery.isPlaceholderData }/>
           </DetailsInfoItem>
         )
         }

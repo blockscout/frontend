@@ -4,11 +4,10 @@ import React from 'react';
 
 import type { Address } from 'types/api/address';
 
-import { route } from 'nextjs-routes';
-
 import config from 'configs/app';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import * as mixpanel from 'lib/mixpanel/index';
+import * as regexp from 'lib/regexp';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import TextSeparator from 'ui/shared/TextSeparator';
@@ -16,15 +15,18 @@ import TextSeparator from 'ui/shared/TextSeparator';
 import { getTokensTotalInfo } from '../utils/tokenUtils';
 import useFetchTokens from '../utils/useFetchTokens';
 
+const TEMPLATE_ADDRESS = '{address}';
+
 const multichainFeature = config.features.multichainButton;
 
 type Props = {
+  addressHash: string;
   addressData?: Address;
   isLoading?: boolean;
 }
 
-const AddressNetWorth = ({ addressData, isLoading }: Props) => {
-  const { data, isError, isPending } = useFetchTokens({ hash: addressData?.hash });
+const AddressNetWorth = ({ addressData, isLoading, addressHash }: Props) => {
+  const { data, isError, isPending } = useFetchTokens({ hash: addressData?.hash, enabled: addressData?.has_tokens });
 
   const { usdBn: nativeUsd } = getCurrencyValue({
     value: addressData?.coin_balance || '0',
@@ -63,20 +65,27 @@ const AddressNetWorth = ({ addressData, isLoading }: Props) => {
       onClick: onMultichainClick,
     };
 
+    const urlString = multichainFeature.url_template.replace(TEMPLATE_ADDRESS, addressHash);
+    const isExternal = regexp.URL_PREFIX.test(urlString);
+    const url = isExternal ? new URL(urlString) : new URL(urlString, config.app.baseUrl);
+
+    url.searchParams.append('utm_source', 'blockscout');
+    url.searchParams.append('utm_medium', 'address');
+
     multichainItem = (
       <>
         <TextSeparator mx={ 3 } color="gray.500"/>
         <Text mr={ 2 }>Multichain</Text>
-        { 'url' in multichainFeature ? (
+        { isExternal ? (
           <LinkExternal
-            href={ multichainFeature.url }
+            href={ url.toString() }
             { ...linkProps }
           >
             { buttonContent }
           </LinkExternal>
         ) : (
           <LinkInternal
-            href={ route({ pathname: '/apps/[id]', query: { id: multichainFeature.dappId, utm_source: 'blockscout', utm_medium: 'address-page' } }) }
+            href={ url.toString() }
             { ...linkProps }
           >
             { buttonContent }
@@ -87,9 +96,9 @@ const AddressNetWorth = ({ addressData, isLoading }: Props) => {
   }
 
   return (
-    <Skeleton display="flex" alignItems="center" isLoaded={ !isLoading && !isPending }>
+    <Skeleton display="flex" alignItems="center" isLoaded={ !isLoading && !(addressData?.has_tokens && isPending) }>
       <Text>
-        { isError ? 'N/A' : `${ prefix }$${ totalUsd.toFormat(2) }` }
+        { (isError || !addressData?.exchange_rate) ? 'N/A' : `${ prefix }$${ totalUsd.toFormat(2) }` }
       </Text>
       { multichainItem }
     </Skeleton>
