@@ -6,12 +6,10 @@ interface Props {
   text: string;
   icon?: React.ReactNode;
   error?: Partial<FieldError>;
-  className?: string;
   isFancy?: boolean;
-  isInModal?: boolean;
 }
 
-const InputPlaceholder = ({ text, icon, error, className, isFancy, isInModal }: Props) => {
+const InputPlaceholder = ({ text, icon, error, isFancy }: Props) => {
   let errorMessage = error?.message;
 
   if (!errorMessage && error?.type === 'pattern') {
@@ -20,10 +18,10 @@ const InputPlaceholder = ({ text, icon, error, className, isFancy, isInModal }: 
 
   return (
     <FormLabel
-      className={ className }
       alignItems="center"
       { ...(isFancy ? { 'data-fancy': true } : {}) }
-      { ...(isInModal ? { 'data-in-modal': true } : {}) }
+      variant="floating"
+      bgColor="deeppink"
     >
       { icon }
       <chakra.span>{ text }</chakra.span>
@@ -32,4 +30,4 @@ const InputPlaceholder = ({ text, icon, error, className, isFancy, isInModal }: 
   );
 };
 
-export default chakra(InputPlaceholder);
+export default React.memo(InputPlaceholder);

@@ -65,6 +65,19 @@ test.describe('floating label size md +@dark-mode', () => {
     await expect(component).toHaveScreenshot();
   });
 
+  test('filled read-only', async({ mount }) => {
+    const component = await mount(
+      <TestApp>
+        <FormControl variant="floating" id="name" isRequired size="md">
+          <Input required value="foo" isReadOnly/>
+          <FormLabel>Smart contract / Address (0x...)</FormLabel>
+        </FormControl>
+      </TestApp>,
+    );
+
+    await expect(component).toHaveScreenshot();
+  });
+
   test('filled error', async({ mount }) => {
     const component = await mount(
       <TestApp>
