@@ -56,7 +56,7 @@ const GasTracker = () => {
       ) }
       { data?.coin_price && (
         <Skeleton isLoaded={ !isLoading } ml={{ base: 0, lg: 'auto' }} whiteSpace="pre" display="flex" alignItems="center">
-          <NativeIcon src={ data?.coin_image } boxSize={ 6 } marginRight={ 0 }/>
+          <NativeIcon src={ data?.coin_image } boxSize={ 6 }/>
           <chakra.span color="text_secondary">{ config.chain.currency.symbol }</chakra.span>
           <span> ${ Number(data.coin_price).toLocaleString(undefined, { maximumFractionDigits: 2 }) }</span>
         </Skeleton>

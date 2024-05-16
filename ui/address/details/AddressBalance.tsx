@@ -81,7 +81,7 @@ const AddressBalance = ({ data, isLoading }: Props) => {
       alignSelf="center"
       isLoading={ isLoading }
     >
-      <NativeIcon src={ statsQueryResult.data?.coin_image } boxSize={ 6 } marginRight={ 2 } isLoading={ isLoading }/>
+      <NativeIcon src={ statsQueryResult.data?.coin_image } boxSize={ 6 } isLoading={ isLoading }/>
       <CurrencyValue
         value={ data.coin_balance || '0' }
         exchangeRate={ data.exchange_rate }
