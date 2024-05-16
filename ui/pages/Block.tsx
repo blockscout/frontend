@@ -29,7 +29,8 @@ import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
 
 const TAB_LIST_PROPS = {
   marginBottom: 0,
-  py: 5,
+  pt: 6,
+  pb: 3,
   marginTop: -5,
 };
 
@@ -62,7 +63,7 @@ const BlockPageContent = () => {
       component: (
         <>
           { blockTxsQuery.isDegradedData && <ServiceDegradationWarning isLoading={ blockTxsQuery.isPlaceholderData } mb={ 6 }/> }
-          <TxsWithFrontendSorting query={ blockTxsQuery } showBlockInfo={ false } showSocketInfo={ false }/>
+          <TxsWithFrontendSorting query={ blockTxsQuery } showBlockInfo={ false } showSocketInfo={ false } top={ 76 }/>
         </>
       ),
     },
@@ -71,7 +72,7 @@ const BlockPageContent = () => {
         id: 'blob_txs',
         title: 'Blob txns',
         component: (
-          <TxsWithFrontendSorting query={ blockBlobTxsQuery } showBlockInfo={ false } showSocketInfo={ false }/>
+          <TxsWithFrontendSorting query={ blockBlobTxsQuery } showBlockInfo={ false } showSocketInfo={ false } top={ 76 }/>
         ),
       } : null,
     config.features.beaconChain.isEnabled && Boolean(blockQuery.data?.withdrawals_count) ?

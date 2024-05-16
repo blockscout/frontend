@@ -24,7 +24,7 @@ const BlockWithdrawals = ({ blockWithdrawalsQuery }: Props) => {
         <BeaconChainWithdrawalsTable
           items={ blockWithdrawalsQuery.data.items }
           isLoading={ blockWithdrawalsQuery.isPlaceholderData }
-          top={ blockWithdrawalsQuery.pagination.isVisible ? 80 : 0 }
+          top={ blockWithdrawalsQuery.pagination.isVisible ? 76 : 0 }
           view="block"
         />
       </Hide>

@@ -9,7 +9,7 @@ import { getResourceKey } from 'lib/api/useApiQuery';
 import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import { WATCH_LIST_ITEM_WITH_TOKEN_INFO } from 'stubs/account';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
-import ActionBar from 'ui/shared/ActionBar';
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -102,7 +102,7 @@ const WatchList: React.FC = () => {
             isLoading={ isPlaceholderData }
             onDeleteClick={ onDeleteClick }
             onEditClick={ onEditClick }
-            top={ pagination.isVisible ? 80 : 0 }
+            top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
           />
         </Box>
       </>

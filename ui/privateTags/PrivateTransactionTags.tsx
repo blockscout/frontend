@@ -5,7 +5,7 @@ import type { TransactionTag } from 'types/api/account';
 
 import { PRIVATE_TAG_TX } from 'stubs/account';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
-import ActionBar from 'ui/shared/ActionBar';
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -76,7 +76,7 @@ const PrivateTransactionTags = () => {
           isLoading={ isPlaceholderData }
           onDeleteClick={ onDeleteClick }
           onEditClick={ onEditClick }
-          top={ pagination.isVisible ? 80 : 0 }
+          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
         />
       </Box>
     </>

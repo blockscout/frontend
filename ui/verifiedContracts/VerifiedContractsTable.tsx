@@ -5,6 +5,7 @@ import type { VerifiedContract } from 'types/api/contracts';
 import type { VerifiedContractsSorting, VerifiedContractsSortingField, VerifiedContractsSortingValue } from 'types/api/verifiedContracts';
 
 import { currencyUnits } from 'lib/units';
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import IconSvg from 'ui/shared/IconSvg';
 import getNextSortValue from 'ui/shared/sort/getNextSortValue';
 import { default as Thead } from 'ui/shared/TheadSticky';
@@ -29,7 +30,7 @@ const VerifiedContractsTable = ({ data, sort, setSorting, isLoading }: Props) =>
 
   return (
     <Table variant="simple" size="sm">
-      <Thead top={ 80 }>
+      <Thead top={ ACTION_BAR_HEIGHT_DESKTOP }>
         <Tr>
           <Th width="50%">Contract</Th>
           <Th width="130px" isNumeric>
