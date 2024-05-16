@@ -50,3 +50,27 @@ test('with secondary coin price +@mobile', async({ mount, page }) => {
 
   await expect(component).toHaveScreenshot();
 });
+
+const testWithDropdown = base.extend({
+  context: contextWithEnvs([
+    { name: 'NEXT_PUBLIC_SWAP_BUTTON_URL', value: 'uniswap' },
+    { name: 'NEXT_PUBLIC_PAYMENT_LINK_URL', value: 'peanut-protocol' },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ]) as any,
+});
+
+testWithDropdown('with DeFi dropdown +@dark-mode +@mobile', async({ mount, page }) => {
+  await page.route(buildApiUrl('stats'), (route) => route.fulfill({
+    status: 200,
+    body: JSON.stringify(statsMock.base),
+  }));
+
+  const component = await mount(
+    <TestApp>
+      <TopBar/>
+    </TestApp>,
+  );
+
+  await component.getByText(/DeFi/i).click();
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 220 } });
+});
