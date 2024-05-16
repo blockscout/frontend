@@ -133,6 +133,10 @@ export function app(): CspDev.DirectiveDescriptor {
       '*',
     ],
 
+    'frame-ancestors': [
+      KEY_WORDS.SELF,
+    ],
+
     ...((() => {
       if (!config.features.sentry.isEnabled) {
         return {};
