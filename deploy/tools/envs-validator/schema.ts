@@ -620,6 +620,7 @@ const schema = yup
     NEXT_PUBLIC_HAS_USER_OPS: yup.boolean(),
     NEXT_PUBLIC_METASUITES_ENABLED: yup.boolean(),
     NEXT_PUBLIC_SWAP_BUTTON_URL: yup.string(),
+    NEXT_PUBLIC_PAYMENT_LINK_URL: yup.string(),
     NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE: yup.string<ValidatorsChainType>().oneOf(VALIDATORS_CHAIN_TYPE),
     NEXT_PUBLIC_GAS_TRACKER_ENABLED: yup.boolean(),
     NEXT_PUBLIC_GAS_TRACKER_UNITS: yup.array().transform(replaceQuotes).json().of(yup.string<GasUnit>().oneOf(GAS_UNITS)),
