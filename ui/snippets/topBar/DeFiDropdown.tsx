@@ -84,7 +84,7 @@ const DeFiDropdown = () => {
           <IconSvg name="arrows/south-mini" boxSize={ 4 } ml={ 1 }/>
         </Flex>
       </MenuButton>
-      <MenuList minWidth="150px" zIndex="popover" overflow="hidden">
+      <MenuList minWidth="160px" zIndex="popover" overflow="hidden" py={ 4 }>
         { items.map((item, index) => (
           <MenuItem
             key={ index }
@@ -92,10 +92,12 @@ const DeFiDropdown = () => {
             href={ item.href }
             target={ item.target }
             onClick={ item.onClick }
+            height="48px"
             px={ 4 }
-            py={ 2 }
+            fontSize="sm"
+            fontWeight="500"
           >
-            <IconSvg name={ item.icon } boxSize={ 4 } mr={ 2 }/>
+            <IconSvg name={ item.icon } boxSize={ 5 } mr={ 3 }/>
             <span>{ item.text }</span>
           </MenuItem>
         )) }
