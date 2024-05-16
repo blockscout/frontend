@@ -43,8 +43,8 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, register, errors, onAddCl
     <>
       <GridItem colSpan={{ base: 1, lg: 2 }} p="10px" borderRadius="base" bgColor={ errors ? bgColorError : bgColorDefault }>
         <Grid
-          rowGap={ 2 }
-          columnGap={ 2 }
+          rowGap={ 3 }
+          columnGap={ 3 }
           templateColumns={{ base: '1fr', lg: 'repeat(4, 1fr)' }}
         >
           <GridItem colSpan={{ base: 1, lg: 2 }}>
@@ -75,7 +75,7 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, register, errors, onAddCl
           <PublicTagsSubmitFieldTagColor
             fieldType="bgColor"
             fieldName={ `tags.${ index }.bgColor` }
-            placeholder="Background color"
+            placeholder="Background (Hex)"
             index={ index }
             register={ register }
             error={ errors?.bgColor }
@@ -84,7 +84,7 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, register, errors, onAddCl
           <PublicTagsSubmitFieldTagColor
             fieldType="textColor"
             fieldName={ `tags.${ index }.textColor` }
-            placeholder="Text color"
+            placeholder="Text (Hex)"
             index={ index }
             register={ register }
             error={ errors?.textColor }
@@ -100,7 +100,7 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, register, errors, onAddCl
                 maxH="160px"
               />
               <InputPlaceholder
-                text="Label description - any text to be shown on label hover (max 80 characters)"
+                text="Description on label hover (max 80 characters)"
                 error={ errors?.tooltipDescription }
               />
             </FormControl>
@@ -138,7 +138,7 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, register, errors, onAddCl
           ) }
         </Flex>
         { !isMobile && (
-          <Flex flexDir="column" alignItems="flex-start" mt="10px" rowGap={ 2 }>
+          <Flex flexDir="column" alignItems="flex-start" mt={ 10 } rowGap={ 2 }>
             <EntityTag data={{
               name: field.name || 'Tag name',
               tagType: field.type.value,

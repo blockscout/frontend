@@ -84,8 +84,8 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
         onSubmit={ formApi.handleSubmit(onFormSubmit) }
       >
         <Grid
-          columnGap={ 5 }
-          rowGap={{ base: 5, lg: 4 }}
+          columnGap={ 3 }
+          rowGap={ 3 }
           templateColumns={{ base: '1fr', lg: '1fr 1fr minmax(0, 200px)', xl: '1fr 1fr minmax(0, 250px)' }}
         >
           <GridItem colSpan={{ base: 1, lg: 3 }} as="h2" textStyle="h4">
@@ -98,7 +98,7 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
           <PublicTagsSubmitFieldCompanyWebsite/>
           { !isMobile && <div/> }
 
-          <GridItem colSpan={{ base: 1, lg: 3 }} as="h2" textStyle="h4" mt={ 3 }>
+          <GridItem colSpan={{ base: 1, lg: 3 }} as="h2" textStyle="h4" mt={{ base: 3, lg: 5 }}>
             Public tags/labels
             <Hint label="Submit a public tag proposal for our moderation team to review" ml={ 1 } color="link"/>
           </GridItem>

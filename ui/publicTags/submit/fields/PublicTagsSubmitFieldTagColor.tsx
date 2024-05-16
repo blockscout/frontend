@@ -42,7 +42,7 @@ const PublicTagsSubmitFieldTagColor = <Type extends ColorFieldTypes>({ isDisable
           maxLength={ 6 }
         />
         <InputPlaceholder text={ placeholder } error={ error }/>
-        <InputRightElement w="30px" right={ 4 } zIndex={ 10 }>
+        <InputRightElement w="30px" h="auto" right={ 4 } top="50%" transform="translateY(-50%)" zIndex={ 10 }>
           <Circle
             size="30px"
             bgColor={ value && colorValidator(value) === true ? `#${ value }` : circleBgColorDefault[fieldType] }
