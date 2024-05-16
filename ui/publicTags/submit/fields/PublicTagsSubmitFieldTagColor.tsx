@@ -28,7 +28,7 @@ const PublicTagsSubmitFieldTagColor = <Type extends ColorFieldTypes>({ isDisable
     textColor: useColorModeValue('blackAlpha.800', 'whiteAlpha.800'),
   };
   const isMobile = useIsMobile();
-  const field = register(fieldName, { validate: colorValidator, maxLength: 6 });
+  const field = register(fieldName, { validate: colorValidator, maxLength: 7 });
   const [ value, setValue ] = React.useState('');
 
   const handleChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
