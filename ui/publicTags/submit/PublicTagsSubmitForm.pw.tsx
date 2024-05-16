@@ -23,8 +23,8 @@ test('base view +@mobile', async({ render }) => {
 
   await component.getByLabel('Tag (max 35 characters)*').fill(mocks.tag1.name);
   await component.getByLabel(/label url/i).fill(mocks.tag1.meta.tagUrl);
-  await component.getByLabel(/background color/i).fill(mocks.tag1.meta.bgColor.replace('#', ''));
-  await component.getByLabel(/text color/i).fill(mocks.tag1.meta.textColor.replace('#', ''));
+  await component.getByLabel(/background \(hex\)/i).fill(mocks.tag1.meta.bgColor);
+  await component.getByLabel(/text \(hex\)/i).fill(mocks.tag1.meta.textColor);
 
   await component.getByLabel(/add/i).nth(3).click();
   await component.getByLabel(/comment/i).focus();
