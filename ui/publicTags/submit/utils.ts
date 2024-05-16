@@ -23,8 +23,8 @@ export function convertFormDataToRequestsBody(data: FormFields): Array<SubmitReq
         tagType: tag.type.value,
         description: data.description,
         meta: _pickBy({
-          bgColor: tag.bgColor ? `#${ tag.bgColor }` : undefined,
-          textColor: tag.textColor ? `#${ tag.textColor }` : undefined,
+          bgColor: tag.bgColor,
+          textColor: tag.textColor,
           tagUrl: tag.url,
           tooltipDescription: tag.tooltipDescription,
         }, Boolean),

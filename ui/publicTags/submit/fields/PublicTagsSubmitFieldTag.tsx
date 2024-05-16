@@ -144,8 +144,8 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, register, errors, onAddCl
               tagType: field.type.value,
               meta: {
                 tagUrl: field.url,
-                bgColor: field.bgColor && colorValidator(field.bgColor) === true ? `#${ field.bgColor }` : undefined,
-                textColor: field.textColor && colorValidator(field.textColor) === true ? `#${ field.textColor }` : undefined,
+                bgColor: field.bgColor && colorValidator(field.bgColor) === true ? field.bgColor : undefined,
+                textColor: field.textColor && colorValidator(field.textColor) === true ? field.textColor : undefined,
                 tooltipDescription: field.tooltipDescription,
               },
               slug: 'new',

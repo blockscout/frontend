@@ -1,11 +1,11 @@
-export const COLOR_HEX_REGEXP = /^[A-Fa-f\d]{3,6}$/;
+export const COLOR_HEX_REGEXP = /^#[A-Fa-f\d]{3,6}$/;
 
 export const validator = (value: string | undefined) => {
   if (!value || value.length === 0) {
     return true;
   }
 
-  if (value.length !== 3 && value.length !== 6) {
+  if (value.length !== 4 && value.length !== 7) {
     return 'Invalid length';
   }
 

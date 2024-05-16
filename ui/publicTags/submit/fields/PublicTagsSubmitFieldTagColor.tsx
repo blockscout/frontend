@@ -21,7 +21,7 @@ interface Props<Type extends ColorFieldTypes> {
 }
 
 const PublicTagsSubmitFieldTagColor = <Type extends ColorFieldTypes>({ isDisabled, error, fieldName, placeholder, fieldType }: Props<Type>) => {
-  const { getValues, register } = useFormContext<FormFields>();
+  const { register } = useFormContext<FormFields>();
 
   const circleBgColorDefault = {
     bgColor: useColorModeValue('gray.100', 'gray.700'),
@@ -29,23 +29,39 @@ const PublicTagsSubmitFieldTagColor = <Type extends ColorFieldTypes>({ isDisable
   };
   const isMobile = useIsMobile();
   const field = register(fieldName, { validate: colorValidator, maxLength: 6 });
-  const value = getValues(fieldName);
+  const [ value, setValue ] = React.useState('');
+
+  const handleChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const nextValue = (() => {
+      const value = event.target.value;
+      if (value) {
+        if (value.length === 1 && value[0] !== '#') {
+          return `#${ value }`;
+        }
+      }
+      return value;
+    })();
+    setValue(nextValue);
+    field.onChange(event);
+  }, [ field ]);
 
   return (
     <FormControl variant="floating" size={{ base: 'md', lg: 'lg' }}>
       <InputGroup size={ isMobile ? 'md' : 'lg' }>
         <Input
           { ...field }
+          onChange={ handleChange }
+          value={ value }
           isInvalid={ Boolean(error) }
           isDisabled={ isDisabled }
           autoComplete="off"
-          maxLength={ 6 }
+          maxLength={ 7 }
         />
         <InputPlaceholder text={ placeholder } error={ error }/>
         <InputRightElement w="30px" h="auto" right={ 4 } top="50%" transform="translateY(-50%)" zIndex={ 10 }>
           <Circle
             size="30px"
-            bgColor={ value && colorValidator(value) === true ? `#${ value }` : circleBgColorDefault[fieldType] }
+            bgColor={ value && colorValidator(value) === true ? value : circleBgColorDefault[fieldType] }
             borderColor="gray.300"
             borderWidth="1px"
           />
