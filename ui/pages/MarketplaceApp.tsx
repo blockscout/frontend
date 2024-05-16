@@ -140,14 +140,35 @@ const MarketplaceApp = () => {
     }
 
     try {
+      // get the custom url from the query
       const customUrl = getQueryParamString(router.query.url);
-      const customOrigin = new URL(customUrl).origin;
-      const appOrigin = new URL(data.url).origin;
 
-      if (customOrigin === appOrigin) {
-        return customUrl;
-      } else {
-        removeQueryParam(router, 'url');
+      if (customUrl) {
+        const customOrigin = new URL(customUrl).origin;
+        const appOrigin = new URL(data.url).origin;
+        if (customOrigin === appOrigin) {
+          return customUrl;
+        } else {
+          removeQueryParam(router, 'url');
+        }
+      }
+    } catch (err) {}
+
+    try {
+      // get anchor and custom params from search and remove reserved ones
+      const customHash = window.location.hash;
+      const customParams = new URLSearchParams(window.location.search);
+      [ 'url', 'action' ].forEach((param) => customParams.delete(param));
+
+      if (customParams.toString() || customHash) {
+        const targetUrl = new URL(data.url);
+        const targetParams = new URLSearchParams(targetUrl.search);
+        customParams.forEach((value, key) => {
+          targetParams.append(key, value);
+        });
+        targetUrl.search = targetParams.toString();
+        targetUrl.hash = customHash;
+        return targetUrl.toString();
       }
     } catch (err) {}
 
