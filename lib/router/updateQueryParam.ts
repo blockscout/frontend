@@ -1,8 +1,12 @@
 import type { NextRouter } from 'next/router';
 
 export default function updateQueryParam(router: NextRouter, param: string, newValue: string) {
-  const { pathname, query } = router;
+  const { pathname, query, asPath } = router;
   const newQuery = { ...query };
   newQuery[param] = newValue;
-  router.replace({ pathname, query: newQuery }, undefined, { shallow: true });
+
+  const hashIndex = asPath.indexOf('#');
+  const hash = hashIndex !== -1 ? asPath.substring(hashIndex) : '';
+
+  router.replace({ pathname, query: newQuery, hash }, undefined, { shallow: true });
 }
