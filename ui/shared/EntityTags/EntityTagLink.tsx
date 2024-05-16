@@ -4,7 +4,7 @@ import React from 'react';
 import type { EntityTag } from './types';
 
 import * as mixpanel from 'lib/mixpanel/index';
-import LinkExternal from 'ui/shared/LinkExternal';
+import LinkExternal from 'ui/shared/links/LinkExternal';
 
 // import { route } from 'nextjs-routes';
 // import LinkInternal from 'ui/shared/LinkInternal';

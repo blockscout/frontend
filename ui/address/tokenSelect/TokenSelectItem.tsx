@@ -6,7 +6,7 @@ import { route } from 'nextjs-routes';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
 import type { TokenEnhancedData } from '../utils/tokenUtils';

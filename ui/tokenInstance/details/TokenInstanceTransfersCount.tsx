@@ -5,7 +5,7 @@ import { route } from 'nextjs-routes';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 
 interface Props {
   hash: string;

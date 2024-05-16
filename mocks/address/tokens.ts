@@ -125,6 +125,7 @@ export const erc20List = {
     erc20b,
     erc20c,
   ],
+  next_page_params: null,
 };
 
 export const erc721List = {
@@ -133,6 +134,7 @@ export const erc721List = {
     erc721b,
     erc721c,
   ],
+  next_page_params: null,
 };
 
 export const erc1155List = {
@@ -141,6 +143,7 @@ export const erc1155List = {
     erc1155a,
     erc1155b,
   ],
+  next_page_params: null,
 };
 
 export const erc404List = {
@@ -148,6 +151,7 @@ export const erc404List = {
     erc404a,
     erc404b,
   ],
+  next_page_params: null,
 };
 
 export const nfts: AddressNFTsResponse = {

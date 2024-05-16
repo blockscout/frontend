@@ -1,44 +1,29 @@
-import type { ChakraProps, LinkProps } from '@chakra-ui/react';
-import { Link, chakra, Box, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import type { LinkProps } from '@chakra-ui/react';
+import { Link, chakra, Box, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import IconSvg from 'ui/shared/IconSvg';
+
+import type { Variants } from './useLinkStyles';
+import { useLinkStyles } from './useLinkStyles';
 
 interface Props {
   href: string;
   className?: string;
   children: React.ReactNode;
   isLoading?: boolean;
-  variant?: 'subtle';
+  variant?: Variants;
   iconColor?: LinkProps['color'];
   onClick?: LinkProps['onClick'];
 }
 
 const LinkExternal = ({ href, children, className, isLoading, variant, iconColor, onClick }: Props) => {
-  const subtleLinkBg = useColorModeValue('gray.100', 'gray.700');
+  const commonProps = {
+    display: 'inline-block',
+    alignItems: 'center',
+  };
 
-  const styleProps: ChakraProps = (() => {
-    const commonProps = {
-      display: 'inline-block',
-      alignItems: 'center',
-    };
-
-    switch (variant) {
-      case 'subtle': {
-        return {
-          ...commonProps,
-          px: '10px',
-          py: '6px',
-          bgColor: subtleLinkBg,
-          borderRadius: 'base',
-        };
-      }
-
-      default:{
-        return commonProps;
-      }
-    }
-  })();
+  const styleProps = useLinkStyles(commonProps, variant);
 
   if (isLoading) {
     if (variant === 'subtle') {

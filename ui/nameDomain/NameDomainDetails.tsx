@@ -12,7 +12,7 @@ import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 import TextSeparator from 'ui/shared/TextSeparator';
 
 import NameDomainExpiryStatus from './NameDomainExpiryStatus';

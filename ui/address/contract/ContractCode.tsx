@@ -19,8 +19,8 @@ import useSocketMessage from 'lib/socket/useSocketMessage';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import Hint from 'ui/shared/Hint';
-import LinkExternal from 'ui/shared/LinkExternal';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkExternal from 'ui/shared/links/LinkExternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
 import ContractSecurityAudits from './ContractSecurityAudits';
