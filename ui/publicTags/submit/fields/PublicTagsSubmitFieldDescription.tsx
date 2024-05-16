@@ -29,7 +29,7 @@ const PublicTagsSubmitFieldDescription = () => {
         maxLength={ MAX_LENGTH }
       />
       <InputPlaceholder
-        text="Comment - for moderation purposes. Please provide a way to confirm the connection between address and tags."
+        text="Provide a comment to confirm the connection between addresses and tags."
         error={ fieldState.error }
       />
     </FormControl>
