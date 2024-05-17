@@ -31,6 +31,7 @@ const AppLink = ({ app, isLoading, onAppClick, isLarge = false }: Props) => {
         alignItems="center"
         justifyContent="center"
         mr={ isLarge ? 3 : 4 }
+        flexShrink={ 0 }
       >
         <Image
           src={ isLoading ? undefined : logoUrl }

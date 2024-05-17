@@ -12,16 +12,17 @@ const TAG_MAX_LENGTH = 35;
 type Props<TInputs extends FieldValues, TInputName extends Path<TInputs>> = {
   field: ControllerRenderProps<TInputs, TInputName>;
   error?: FieldError;
-  backgroundColor?: string;
+  bgColor?: string;
 }
 
-function TagInput<Inputs extends FieldValues, Name extends Path<Inputs>>({ field, error, backgroundColor }: Props<Inputs, Name>) {
+function TagInput<Inputs extends FieldValues, Name extends Path<Inputs>>({ field, error, bgColor }: Props<Inputs, Name>) {
   return (
-    <FormControl variant="floating" id="tag" isRequired backgroundColor={ backgroundColor }>
+    <FormControl variant="floating" id="tag" isRequired bgColor={ bgColor }>
       <Input
         { ...field }
         isInvalid={ Boolean(error) }
         maxLength={ TAG_MAX_LENGTH }
+        bgColor={ bgColor }
       />
       <InputPlaceholder text="Private tag (max 35 characters)" error={ error }/>
     </FormControl>

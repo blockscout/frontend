@@ -11,13 +11,29 @@ interface Props {
   rightSlot?: React.ReactNode;
   beforeSlot?: React.ReactNode;
   textareaMaxHeight?: string;
+  textareaMinHeight?: string;
   showCopy?: boolean;
   isLoading?: boolean;
   contentProps?: ChakraProps;
 }
 
-const RawDataSnippet = ({ data, className, title, rightSlot, beforeSlot, textareaMaxHeight, showCopy = true, isLoading, contentProps }: Props) => {
-  // see issue in theme/components/Textarea.ts
+const RawDataSnippet = ({
+  data,
+  className,
+  title,
+  rightSlot,
+  beforeSlot,
+  textareaMaxHeight,
+  textareaMinHeight,
+  showCopy = true,
+  isLoading,
+  contentProps,
+}: Props) => {
+  // https://bugs.chromium.org/p/chromium/issues/detail?id=1362573
+  // there is a problem with scrollbar color in chromium
+  // so blackAlpha.50 here is replaced with #f5f5f6
+  // and whiteAlpha.50 is replaced with #1a1b1b
+  // const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
   const bgColor = useColorModeValue('#f5f5f6', '#1a1b1b');
   return (
     <Box className={ className } as="section" title={ title }>
@@ -33,7 +49,7 @@ const RawDataSnippet = ({ data, className, title, rightSlot, beforeSlot, textare
         p={ 4 }
         bgColor={ isLoading ? 'inherit' : bgColor }
         maxH={ textareaMaxHeight || '400px' }
-        minH={ isLoading ? '200px' : undefined }
+        minH={ textareaMinHeight || (isLoading ? '200px' : undefined) }
         fontSize="sm"
         borderRadius="md"
         wordBreak="break-all"

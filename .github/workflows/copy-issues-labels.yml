@@ -11,6 +11,16 @@ on:
                 description: JSON encoded list of issue ids
                 required: true
                 type: string
+    workflow_call:
+        inputs:
+            pr_number:
+                description: Pull request number
+                required: true
+                type: string
+            issues:
+                description: JSON encoded list of issue ids
+                required: true
+                type: string
 
 jobs:
     run:

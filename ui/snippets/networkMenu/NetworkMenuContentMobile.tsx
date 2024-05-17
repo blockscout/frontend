@@ -46,7 +46,7 @@ const NetworkMenuContentMobile = ({ items, tabs }: Props) => {
   ) : (
     <>
       { tabs.length > 1 && (
-        <Select size="xs" borderRadius="base" value={ selectedTab } onChange={ handleSelectChange } focusBorderColor="none" mb={ 6 }>
+        <Select size="xs" borderRadius="base" value={ selectedTab } onChange={ handleSelectChange } mb={ 6 }>
           { tabs.map((tab) => <option key={ tab } value={ tab }>{ capitalize(tab) }</option>) }
         </Select>
       ) }

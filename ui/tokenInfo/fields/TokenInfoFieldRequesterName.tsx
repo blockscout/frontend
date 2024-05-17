@@ -20,7 +20,8 @@ const TokenInfoFieldRequesterName = ({ control, isReadOnly }: Props) => {
           { ...field }
           required
           isInvalid={ Boolean(fieldState.error) }
-          isDisabled={ formState.isSubmitting || isReadOnly }
+          isDisabled={ formState.isSubmitting }
+          isReadOnly={ isReadOnly }
           autoComplete="off"
         />
         <InputPlaceholder text="Requester name" error={ fieldState.error }/>
