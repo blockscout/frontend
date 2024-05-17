@@ -76,8 +76,8 @@ const NavigationMobile = ({ onNavLinkClick, isMarketplaceAppPage }: Props) => {
         { hasAccount && (
           <Box
             as="nav"
-            mt={ 6 }
-            pt={ 6 }
+            mt={ 3 }
+            pt={ 3 }
             borderTopWidth="1px"
             borderColor="divider"
           >
