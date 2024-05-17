@@ -38,7 +38,6 @@ window.__envs = {
     NEXT_PUBLIC_APP_HOST: "explorer.satschain.xyz",
     // NEXT_PUBLIC_APP_PORT: "",
     // http://135.181.137.214:3001
-    NEXT_PUBLIC_API_PROTOCOL: "http",
-    NEXT_PUBLIC_API_HOST: "135.181.137.214",
-    NEXT_PUBLIC_API_PORT: "3001",
+    NEXT_PUBLIC_API_PROTOCOL: "https",
+    NEXT_PUBLIC_API_HOST: "explorer-be.satschain.xyz"
     }
