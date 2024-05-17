@@ -29,6 +29,12 @@ const size = {
     h: '40px',
     borderRadius: 'base',
   }),
+  // TEMPORARY INPUT SIZE!!!
+  // soon we will migrate to the new size and get rid off this one
+  // lg -> 60
+  // md -> 48
+  // sm -> 40
+  // xs ->32
   sm_md: defineStyle({
     fontSize: 'md',
     lineHeight: '24px',
