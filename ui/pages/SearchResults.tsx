@@ -16,7 +16,7 @@ import * as Layout from 'ui/shared/layout/components';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import Thead from 'ui/shared/TheadSticky';
-import HeaderAlert from 'ui/snippets/header/HeaderAlert';
+// import HeaderAlert from 'ui/snippets/header/HeaderAlert';
 import HeaderDesktop from 'ui/snippets/header/HeaderDesktop';
 import HeaderMobile from 'ui/snippets/header/HeaderMobile';
 import useSearchQuery from 'ui/snippets/searchBar/useSearchQuery';
@@ -205,7 +205,7 @@ const SearchResultsPageContent = () => {
       <Layout.MainArea>
         <Layout.SideBar/>
         <Layout.MainColumn>
-          <HeaderAlert/>
+          { /* <HeaderAlert/> */ }
           <HeaderDesktop renderSearchBar={ renderSearchBar }/>
           <AppErrorBoundary>
             <Layout.Content>

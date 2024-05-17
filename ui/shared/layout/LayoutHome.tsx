@@ -3,7 +3,7 @@ import React from 'react';
 import type { Props } from './types';
 
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
-import HeaderAlert from 'ui/snippets/header/HeaderAlert';
+// import HeaderAlert from 'ui/snippets/header/HeaderAlert';
 
 import * as Layout from './components';
 
@@ -18,7 +18,7 @@ const LayoutHome = ({ children }: Props) => {
         { /*<Layout.MainColumn*/ }
         { /*  paddingTop={{ base: 3, lg: 6 }}*/ }
         { /*>*/ }
-        <HeaderAlert/>
+        { /* <HeaderAlert/> */ }
         <AppErrorBoundary>
           { children }
         </AppErrorBoundary>
