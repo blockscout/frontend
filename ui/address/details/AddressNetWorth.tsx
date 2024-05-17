@@ -4,10 +4,11 @@ import React from 'react';
 
 import type { Address } from 'types/api/address';
 
+import { route } from 'nextjs-routes';
+
 import config from 'configs/app';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import * as mixpanel from 'lib/mixpanel/index';
-import * as regexp from 'lib/regexp';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import TextSeparator from 'ui/shared/TextSeparator';
@@ -65,31 +66,31 @@ const AddressNetWorth = ({ addressData, isLoading, addressHash }: Props) => {
       onClick: onMultichainClick,
     };
 
-    const urlString = multichainFeature.url_template.replace(TEMPLATE_ADDRESS, addressHash);
-    const isExternal = regexp.URL_PREFIX.test(urlString);
-    const url = isExternal ? new URL(urlString) : new URL(urlString, config.app.baseUrl);
+    const portfolioUrlString = multichainFeature.url_template.replace(TEMPLATE_ADDRESS, addressHash);
+    const portfolioUrl = new URL(portfolioUrlString);
+    portfolioUrl.searchParams.append('utm_source', 'blockscout');
+    portfolioUrl.searchParams.append('utm_medium', 'address');
 
-    url.searchParams.append('utm_source', 'blockscout');
-    url.searchParams.append('utm_medium', 'address');
+    const dappId = multichainFeature.dapp_id;
 
     multichainItem = (
       <>
         <TextSeparator mx={ 3 } color="gray.500"/>
         <Text mr={ 2 }>Multichain</Text>
-        { isExternal ? (
-          <LinkExternal
-            href={ url.toString() }
-            { ...linkProps }
-          >
-            { buttonContent }
-          </LinkExternal>
-        ) : (
+        { typeof dappId === 'string' ? (
           <LinkInternal
-            href={ url.toString() }
+            href={ route({ pathname: '/apps/[id]', query: { id: dappId, url: portfolioUrl.toString() } }) }
             { ...linkProps }
           >
             { buttonContent }
           </LinkInternal>
+        ) : (
+          <LinkExternal
+            href={ portfolioUrl.toString() }
+            { ...linkProps }
+          >
+            { buttonContent }
+          </LinkExternal>
         ) }
       </>
     );

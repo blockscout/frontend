@@ -623,12 +623,13 @@ const schema = yup
     NEXT_PUBLIC_SWAP_BUTTON_URL: yup.string(),
     NEXT_PUBLIC_MULTICHAIN_PROVIDER_CONFIG: yup
       .mixed()
-      .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_MULTICHAIN_PROVIDER_CONFIG, it should have name and url props', (data) => {
+      .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_MULTICHAIN_PROVIDER_CONFIG, it should have name and url url_template', (data) => {
         const isUndefined = data === undefined;
         const valueSchema = yup.object<MultichainProviderConfig>().transform(replaceQuotes).json().shape({
           name: yup.string().required(),
           url_template: yup.string().required(),
           logo: yup.string(),
+          dapp_id: yup.string(),
         });
 
         return isUndefined || valueSchema.isValidSync(data);

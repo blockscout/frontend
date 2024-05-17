@@ -29,7 +29,7 @@ test('base view', async({ mount }) => {
 
 test('with multichain button internal +@dark-mode', async({ mount, mockEnvs, mockAssetResponse }) => {
   await mockEnvs([
-    [ 'NEXT_PUBLIC_MULTICHAIN_PROVIDER_CONFIG', `{"name": "zerion", "url_template": "/apps/zerion/{address}/overview", "logo": "${ ICON_URL }"}` ],
+    [ 'NEXT_PUBLIC_MULTICHAIN_PROVIDER_CONFIG', `{"name": "duck", "dapp_id": "duck", "url_template": "https://duck.url/{address}", "logo": "${ ICON_URL }"}` ],
   ]);
   await mockAssetResponse(ICON_URL, './playwright/mocks/image_svg.svg');
 
@@ -44,7 +44,7 @@ test('with multichain button internal +@dark-mode', async({ mount, mockEnvs, moc
 
 test('with multichain button external', async({ mount, mockEnvs, mockAssetResponse }) => {
   await mockEnvs([
-    [ 'NEXT_PUBLIC_MULTICHAIN_PROVIDER_CONFIG', `{"name": "zerion", "url_template": "https://duck.url/{address}", "logo": "${ ICON_URL }"}` ],
+    [ 'NEXT_PUBLIC_MULTICHAIN_PROVIDER_CONFIG', `{"name": "duck", "url_template": "https://duck.url/{address}", "logo": "${ ICON_URL }"}` ],
   ]);
   await mockAssetResponse(ICON_URL, './playwright/mocks/image_svg.svg');
 

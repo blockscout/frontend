@@ -686,7 +686,7 @@ If the feature is enabled, a Multichain balance button will be displayed on the 
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_MULTICHAIN_PROVIDER_CONFIG | `{ name: string; url_template: string; logo?: string }` | Multichain portfolio application config See [below](#multichain-button-configuration-properties) | - | - | `{ name: 'zerion', url_template: '/apps/zerion/{address}/overview', logo: 'https://example.com/icon.svg'` |
+| NEXT_PUBLIC_MULTICHAIN_PROVIDER_CONFIG | `{ name: string; url_template: string; dapp_id?: string; logo?: string }` | Multichain portfolio application config See [below](#multichain-button-configuration-properties) | - | - | `{ name: 'zerion', url_template: 'https://app.zerion.io/{address}/overview', logo: 'https://example.com/icon.svg'` |
 
 &nbsp;
 
@@ -695,7 +695,8 @@ If the feature is enabled, a Multichain balance button will be displayed on the 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | name | `string` | Multichain portfolio application name | Required | - | `zerion` |
-| url_template | `string` | Absolute (for external links) or relative (for internal links) path template to the portfolio. Should be a template with `{address}` variable | Required | - | `/apps/zerion/{address}/overview` |
+| url_template | `string` | Url template to the portfolio. Should be a template with `{address}` variable | Required | - | `https://app.zerion.io/{address}/overview` |
+| dapp_id | `string` | Set for open a Blockscout dapp page with the portfolio instead of opening external app page | - | - | `zerion` |
 | logo | `string` | Multichain portfolio application logo (.svg) url | - | - | `https://example.com/icon.svg` |
 
 &nbsp;
