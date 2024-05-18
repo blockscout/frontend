@@ -12,6 +12,7 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import FancySelect from 'ui/shared/FancySelect/FancySelect';
 import IconSvg from 'ui/shared/IconSvg';
 
+import { solidityVersions } from '../../../configs/app/solidityVersion';
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
 const OPTIONS_LIMIT = 50;
@@ -35,16 +36,18 @@ const ContractVerificationFieldCompiler = ({ isVyper }: Props) => {
     setIsNightly(prev => !prev);
   }, [ getValues, isNightly, resetField ]);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const options = React.useMemo(() => (
     (isVyper ? config?.vyper_compiler_versions : config?.solidity_compiler_versions)?.map((option) => ({ label: option, value: option })) || []
   ), [ config?.solidity_compiler_versions, config?.vyper_compiler_versions, isVyper ]);
 
   const loadOptions = React.useCallback(async(inputValue: string) => {
-    return options
+    return solidityVersions
+      ?.map((option) => ({ label: option, value: option }))
       .filter(({ label }) => !inputValue || label.toLowerCase().includes(inputValue.toLowerCase()))
       .filter(({ label }) => isNightly ? true : !label.includes('nightly'))
       .slice(0, OPTIONS_LIMIT);
-  }, [ isNightly, options ]);
+  }, [ isNightly ]);
 
   const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'compiler'>}) => {
     const error = 'compiler' in formState.errors ? formState.errors.compiler : undefined;
