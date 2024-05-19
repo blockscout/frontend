@@ -29,7 +29,7 @@ interface Props<T extends SmartContractMethod> {
   onSubmit: any;
   resultComponent: (props: ResultComponentProps<T>) => JSX.Element | null;
   methodType: 'read' | 'write';
-  setOpen?: (value: string) => void;
+  setOpen?: (value: boolean) => void;
 }
 
 const ContractMethodForm = <T extends SmartContractMethod>({

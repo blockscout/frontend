@@ -17,8 +17,8 @@ export function stringToBase64(stringToEncode: string) {
 }
 const InscribeModal = ({ open, setOpen, encodedData }: Props) => {
   const toast = useToast();
-  const [ outputValue, setOutputValue ] = useState<number>(564);
-  const [ feeRate, setFeeRate ] = useState<number>(0);
+  const [ outputValue, setOutputValue ] = useState<any>(564);
+  const [ feeRate, setFeeRate ] = useState<any>(0);
 
   const handleClose = () => {
     setOpen(false);

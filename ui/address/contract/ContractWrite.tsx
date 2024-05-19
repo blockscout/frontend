@@ -81,7 +81,7 @@ const ContractWrite = () => {
       const hash = contract?.methods?.[methodName](
         ...inputList,
       ).encodeABI();
-      const newEncodedString: string = await hashEncodingHandler({ byteCode: hash });
+      const newEncodedString: any = await hashEncodingHandler({ byteCode: hash });
       setEncodedData(newEncodedString);
 
       return hash;
