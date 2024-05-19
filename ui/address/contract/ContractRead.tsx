@@ -10,6 +10,7 @@ import type {
 import useApiFetch from 'lib/api/useApiFetch';
 import useApiQuery from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import useUnisatWallet from 'lib/useUnisatWallet';
 import ContractMethodsAccordion from 'ui/address/contract/ContractMethodsAccordion';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
@@ -20,11 +21,12 @@ import ContractImplementationAddress from './ContractImplementationAddress';
 import ContractMethodConstant from './ContractMethodConstant';
 import ContractReadResult from './ContractReadResult';
 import ContractMethodForm from './methodForm/ContractMethodForm';
-import useWatchAccount from './useWatchAccount';
+// import useWatchAccount from './useWatchAccount';
 
 const ContractRead = () => {
   const apiFetch = useApiFetch();
-  const account = useWatchAccount();
+  const { address } = useUnisatWallet();
+  // const account = useWatchAccount();
   const router = useRouter();
 
   const tab = getQueryParamString(router.query.tab);
@@ -38,7 +40,7 @@ const ContractRead = () => {
       pathParams: { hash: addressHash },
       queryParams: {
         is_custom_abi: isCustomAbi ? 'true' : 'false',
-        from: account?.address,
+        from: address,
       },
       queryOptions: {
         enabled: Boolean(addressHash),
@@ -61,13 +63,13 @@ const ContractRead = () => {
               args,
               method_id: item.method_id,
               contract_type: isProxy ? 'proxy' : 'regular',
-              from: account?.address,
+              from: address,
             },
           },
         },
       );
     },
-    [ account?.address, addressHash, apiFetch, isCustomAbi, isProxy ],
+    [ address, addressHash, apiFetch, isCustomAbi, isProxy ],
   );
 
   const renderItemContent = React.useCallback(
@@ -120,7 +122,7 @@ const ContractRead = () => {
   return (
     <>
       { isCustomAbi && <ContractCustomAbiAlert/> }
-      { account && <ContractConnectWallet/> }
+      { address && <ContractConnectWallet/> }
       { isProxy && <ContractImplementationAddress hash={ addressHash }/> }
       <ContractMethodsAccordion
         data={ data }

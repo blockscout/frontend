@@ -2,15 +2,16 @@ import { Alert, Button, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import useUnisatWallet from 'lib/useUnisatWallet';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import useWallet from 'ui/snippets/walletMenu/useWallet';
 
 const ContractConnectWallet = () => {
-  const { isModalOpening, isModalOpen, connect, disconnect, address, isWalletConnected } = useWallet({ source: 'Smart contracts' });
+  const { address, connect } = useUnisatWallet();
+  // const { isModalOpening, isModalOpen, connect, disconnect, address, isWalletConnected } = useWallet({ source: 'Smart contracts' });
   const isMobile = useIsMobile();
 
   const content = (() => {
-    if (!isWalletConnected) {
+    if (!address) {
       return (
         <>
           <span>Disconnected</span>
@@ -19,17 +20,22 @@ const ContractConnectWallet = () => {
             onClick={ connect }
             size="sm"
             variant="outline"
-            isLoading={ isModalOpening || isModalOpen }
+            // isLoading={isModalOpening || isModalOpen}
             loadingText="Connect wallet"
           >
-              Connect wallet
+            Connect wallet
           </Button>
         </>
       );
     }
 
     return (
-      <Flex columnGap={ 3 } rowGap={ 3 } alignItems={{ base: 'flex-start', lg: 'center' }} flexDir={{ base: 'column', lg: 'row' }}>
+      <Flex
+        columnGap={ 3 }
+        rowGap={ 3 }
+        alignItems={{ base: 'flex-start', lg: 'center' }}
+        flexDir={{ base: 'column', lg: 'row' }}
+      >
         <Flex alignItems="center">
           <span>Connected to </span>
           <AddressEntity
@@ -39,12 +45,18 @@ const ContractConnectWallet = () => {
             ml={ 2 }
           />
         </Flex>
-        <Button onClick={ disconnect } size="sm" variant="outline">Disconnect</Button>
+        { /* <Button onClick={disconnect} size='sm' variant='outline'>
+          Disconnect
+        </Button> */ }
       </Flex>
     );
   })();
 
-  return <Alert mb={ 6 } status={ address ? 'success' : 'warning' }>{ content }</Alert>;
+  return (
+    <Alert mb={ 6 } status={ address ? 'success' : 'warning' }>
+      { content }
+    </Alert>
+  );
 };
 
 export default ContractConnectWallet;
