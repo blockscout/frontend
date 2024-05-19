@@ -88,7 +88,7 @@ const NuiContractRead = ({ currentTab }: PropTypes) => {
       if (!response.ok) {
         return false;
       }
-      const data = await response.json();
+      const data: any = await response.json();
       setByteCode(data?.bytecode);
       return data;
     } catch (error: any) {

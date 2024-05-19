@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type FetchInscriptionRequest = {
-  inscriptionId: string;
+  addressHash: string;
 };
 type ContractRequest = {
   contractHash: string;
@@ -31,12 +31,12 @@ export async function fetchInscriptionService(req: FetchInscriptionRequest) {
   const isOnTestnet = localStorage.getItem('satschainOnTestnet');
   if (isOnTestnet === 'true') {
     return fetch(
-      `https://static-testnet.unisat.io/content/${ req?.inscriptionId }`,
+      `https://static-testnet.unisat.io/content/${ req?.addressHash }`,
       requestOptions,
     );
   }
   return fetch(
-    `https://api.hiro.so/ordinals/v1/inscriptions/${ req?.inscriptionId }/content`,
+    `https://api.hiro.so/ordinals/v1/inscriptions/${ req?.addressHash }/content`,
     requestOptions,
   );
 }
