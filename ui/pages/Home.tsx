@@ -29,7 +29,7 @@ type ModalStateType = {
 const Home = () => {
   const [isBlockSelected, setIsBlockSelected] = useState(true);
   const [ isModalOpen, setIsModalOpen ] = useState<ModalStateType>({
-    show: true,
+    show: false,
     data: {
       contractAddress: ''
     },
