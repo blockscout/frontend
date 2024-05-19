@@ -1,15 +1,17 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useState } from 'react';
+import Web3 from 'web3';
 // import { useAccount, useWalletClient, useSwitchChain } from 'wagmi';
 
 import type { SmartContractWriteMethod } from 'types/api/contract';
 
 // import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
+import hashEncodingHandler from 'lib/compile';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import useUnisatWallet from 'lib/useUnisatWallet';
 import ContractMethodsAccordion from 'ui/address/contract/ContractMethodsAccordion';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
@@ -17,21 +19,24 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import ContractCustomAbiAlert from './ContractCustomAbiAlert';
 import ContractImplementationAddress from './ContractImplementationAddress';
 import ContractWriteResult from './ContractWriteResult';
+import InscribeModal from './InscribeModal';
 import ContractMethodForm from './methodForm/ContractMethodForm';
 import useContractAbi from './useContractAbi';
 // import { getNativeCoinValue, prepareAbi } from './utils';
 
+const infuraUrl = 'https://mainnet.infura.io/v3/18b346ece35742b2948e73332f85ad86';
+
 const ContractWrite = () => {
   // const { data: walletClient } = useWalletClient();
   // const { isConnected, chainId } = useAccount();
-  const { address } = useUnisatWallet();
-
-  // const { switchChainAsync } = useSwitchChain();
-
+  const web3 = new Web3(infuraUrl);
+  const address = localStorage.getItem('address');
   const router = useRouter();
-
-  const tab = getQueryParamString(router.query.tab);
   const addressHash = getQueryParamString(router.query.hash);
+  const tab = getQueryParamString(router.query.tab);
+  const [ open, setOpen ] = useState(false);
+  const [ encodedData, setEncodedData ] = useState<string>('');
+
   const isProxy = tab === 'write_proxy';
   const isCustomAbi = tab === 'write_custom_methods';
 
@@ -56,43 +61,30 @@ const ContractWrite = () => {
       if (!address) {
         throw new Error('Wallet is not connected');
       }
-
-      // if (chainId && String(chainId) !== config.chain.id) {
-      //   await switchChainAsync?.({ chainId: Number(config.chain.id) });
-      // }
-
       if (!contractAbi) {
         throw new Error('Something went wrong. Try again later.');
       }
-
-      // if (item.type === 'receive' || item.type === 'fallback') {
-      //   const value = getNativeCoinValue(args[0]);
-      //   const hash = await walletClient?.sendTransaction({
-      //     to: addressHash as `0x${string}` | undefined,
-      //     value,
-      //   });
-      //   return { hash };
-      // }
-
       const methodName = item?.name;
 
       if (!methodName) {
         throw new Error('Method name is not defined');
       }
+      const inputList = item?.inputs?.map((ele: any, key: number) => {
 
-      // const _args = args.slice(0, item.inputs.length);
-      // const value = getNativeCoinValue(args[item.inputs.length]);
-      // const abi = prepareAbi(contractAbi, item);
+        if (ele?.type === 'uint256') {
+          return Number(args?.[key]);
+        }
+        return args?.[key];
+      }) ?? [];
 
-      // const hash = await walletClient?.writeContract({
-      //   args: _args,
-      //   abi,
-      //   functionName: methodName,
-      //   address: addressHash as `0x${string}`,
-      //   value,
-      // });
+      const contract = new web3.eth.Contract(contractAbi as any);
+      const hash = contract?.methods?.[methodName](
+        ...inputList,
+      ).encodeABI();
+      const newEncodedString: string = await hashEncodingHandler({ byteCode: hash });
+      setEncodedData(newEncodedString);
 
-      // return { hash };
+      return hash;
     },
     [ address, contractAbi ],
   );
@@ -106,6 +98,7 @@ const ContractWrite = () => {
           onSubmit={ handleMethodFormSubmit }
           resultComponent={ ContractWriteResult }
           methodType="write"
+          setOpen={ setOpen }
         />
       );
     },
@@ -135,6 +128,13 @@ const ContractWrite = () => {
         renderItemContent={ renderItemContent }
         tab={ tab }
       />
+      { open && (
+        <InscribeModal
+          open={ open }
+          setOpen={ setOpen }
+          encodedData={ encodedData }
+        />
+      ) }
     </>
   );
 };

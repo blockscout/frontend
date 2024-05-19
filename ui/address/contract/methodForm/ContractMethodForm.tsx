@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box, Button, Flex, chakra } from '@chakra-ui/react';
 import _mapValues from 'lodash/mapValues';
@@ -28,17 +29,18 @@ interface Props<T extends SmartContractMethod> {
   onSubmit: any;
   resultComponent: (props: ResultComponentProps<T>) => JSX.Element | null;
   methodType: 'read' | 'write';
+  setOpen?: (value: string) => void;
 }
 
 const ContractMethodForm = <T extends SmartContractMethod>({
   data,
   onSubmit,
-  resultComponent: ResultComponent,
+  resultComponent: any,
   methodType,
+  setOpen,
 }: Props<T>) => {
   const [ result, setResult ] = React.useState<ContractMethodCallResult<T>>();
   const [ isLoading, setLoading ] = React.useState(false);
-
   const formApi = useForm<ContractMethodFormFields>({
     mode: 'all',
     shouldUnregister: true,
@@ -60,8 +62,11 @@ const ContractMethodForm = <T extends SmartContractMethod>({
         setLoading(true);
 
         onSubmit(data, args)
-          .then((result: any) => {
+          .then(async(result: any) => {
             setResult(result);
+            if (setOpen) {
+              setOpen(true);
+            }
           })
           .catch((error: any) => {
             setResult(
@@ -77,9 +82,11 @@ const ContractMethodForm = <T extends SmartContractMethod>({
               'Method type': methodType === 'write' ? 'Write' : 'Read',
               'Method name': 'name' in data ? data.name : 'Fallback',
             });
+            setLoading(false);
+
           });
       },
-      [ data, methodType, onSubmit ],
+      [ data, methodType, onSubmit, setOpen ],
     );
 
   const handleTxSettle = React.useCallback(() => {
@@ -169,13 +176,13 @@ const ContractMethodForm = <T extends SmartContractMethod>({
         </chakra.form>
       </FormProvider>
       { methodType === 'read' && <ContractMethodFormOutputs data={ outputs }/> }
-      { result && (
+      { /* { result && (
         <ResultComponent
           item={ data }
           result={ result }
           onSettle={ handleTxSettle }
         />
-      ) }
+      ) } */ }
     </Box>
   );
 };

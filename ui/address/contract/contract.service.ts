@@ -40,3 +40,46 @@ export async function fetchInscriptionService(req: FetchInscriptionRequest) {
     requestOptions,
   );
 }
+
+export async function fetchRecommendedFeeRate() {
+  return fetch('https://mempool.space/api/v1/fees/recommended');
+}
+export type CreateOrderFile = {
+  filename: string;
+  dataURL: string;
+};
+export type CreateOrderRequest = {
+  receiveAddress: string;
+  feeRate: number;
+  outputValue: number;
+  files: Array<CreateOrderFile>;
+  devAddress: string;
+  devFee: number;
+};
+
+export async function createOrder(req: CreateOrderRequest) {
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(req),
+  };
+  return fetch(
+    `/api/createInscribeOrder?isTestnet=true`,
+    requestOptions,
+  );
+}
+
+export async function fetchOrder(orderId: string) {
+  const requestOptions = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+  return fetch(
+    `/api/getOrderStatus?orderId=${ orderId }&isTestnet=true`,
+    requestOptions,
+  );
+}
