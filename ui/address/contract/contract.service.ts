@@ -4,7 +4,7 @@ type FetchInscriptionRequest = {
 };
 type ContractRequest = {
   contractHash: string;
-  inscriptionId?: string;
+  addressHash?: string;
   raw_code?: Record<string, any>;
 };
 
@@ -17,7 +17,7 @@ export async function checkContract(req: ContractRequest) {
   };
 
   return fetch(
-    `https://api.satschain.xyz/bapi/sats/contract/check?contract_hash=${ req?.contractHash }&inscription_id=${ req?.inscriptionId }`,
+    `https://api.satschain.xyz/bapi/sats/contract/check?contract_hash=${ req?.contractHash }&inscription_id=${ req?.addressHash }`,
     requestOptions,
   );
 }
