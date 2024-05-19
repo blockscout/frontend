@@ -80,7 +80,7 @@ const SearchBarInput = (
       left="0"
       zIndex={{
         base: isHomepage ? 'auto' : '-1',
-        lg: isSuggestOpen ? 'popover' : 'auto',
+        lg: isSuggestOpen ? 'modal' : 'auto',
       }}
       paddingX={{ base: isHomepage ? 0 : 4, lg: 0 }}
       paddingTop={{ base: isHomepage ? 0 : 1, lg: 0 }}

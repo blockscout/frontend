@@ -50,7 +50,7 @@ const Home = () => {
       if (response.ok) {
         const data = await response.json();
         setIsModalOpen({
-          show: false,
+          show: true,
           data: {
             contractAddress: (data as any)?.contractAddress,
           }
@@ -165,7 +165,7 @@ const Home = () => {
             gap={'.5rem'}>
               <Box>Below is the Address associated with the given inscription</Box>
               <Box onClick={copyAddress} border={'1px'} borderColor={'lightgray'} borderRadius={4} paddingX={'6px'} paddingY={'4px'} cursor={'pointer'}>
-                {isCopied ? 'Copied' : `${isModalOpen?.data?.contractAddresss}`} 
+                {isCopied ? 'Copied' : `${isModalOpen?.data?.contractAddress}`} 
               </Box>
             </Flex>
           </ModalBody>
