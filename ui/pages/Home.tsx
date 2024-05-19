@@ -1,6 +1,13 @@
 /* eslint-disable */
 
-import { Box, Heading, Flex, useColorModeValue } from "@chakra-ui/react";
+import { Box, Heading, Flex, useColorModeValue, Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  Button, } from "@chakra-ui/react";
 import React, { useState } from "react";
 
 import config from "configs/app";
@@ -14,9 +21,62 @@ import BWButton from "../shared/BWbutton";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const rollupFeature = config.features.rollup;
 
+type ModalStateType = {
+  show: boolean;
+  data: Record<string, any>;
+}
+
 const Home = () => {
   const [isBlockSelected, setIsBlockSelected] = useState(true);
+  const [ isModalOpen, setIsModalOpen ] = useState<ModalStateType>({
+    show: true,
+    data: {
+      contractAddress: ''
+    },
+  });
+  const [isCopied, setIsCopied] = useState(false);
+
   const listBgColor = useColorModeValue('white', 'blue.1000');
+
+  const fetchInscriptionData = async(inscriptionId: string) => {
+    if (inscriptionId?.length !== 66) return;
+    try {
+      const response = await fetch(`https://explorer-api.satschain.xyz/get-contract-addresses-from-inscription-id?inscription_id=${ inscriptionId }`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setIsModalOpen({
+          show: false,
+          data: {
+            contractAddress: (data as any)?.contractAddress,
+          }
+        })
+      }
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log('error', error);
+    }
+  };
+
+  const onModalClose = () => {
+    setIsModalOpen({
+      show: false,
+      data: {},
+    });
+  }
+
+  const copyAddress = () => {
+    navigator.clipboard.writeText(isModalOpen?.data?.contractAddress).then(() => {
+      setIsCopied(true);
+      setInterval(() => {
+        setIsCopied(false);
+      }, 1000);
+    })
+  }
 
   return (
     <Box as="main" w="100%">
@@ -58,7 +118,7 @@ const Home = () => {
             )}
           </Box>
         </Flex>
-        <SearchBar isHomepage />
+        <SearchBar isHomepage onSubmit={fetchInscriptionData} />
       </Box>
       <Box
         backgroundColor={listBgColor}
@@ -95,6 +155,28 @@ const Home = () => {
       {/*    <Transactions/>*/}
       {/*  </Box>*/}
       {/*</Flex>*/}
+      <Modal isOpen={ isModalOpen.show } onClose={ onModalClose }>
+        <ModalOverlay/>
+        <ModalContent>
+          <ModalHeader>Contract Address</ModalHeader>
+          <ModalCloseButton/>
+          <ModalBody>
+            <Flex direction={'column'} 
+            gap={'.5rem'}>
+              <Box>Below is the Address associated with the given inscription</Box>
+              <Box onClick={copyAddress} border={'1px'} borderColor={'lightgray'} borderRadius={4} paddingX={'6px'} paddingY={'4px'} cursor={'pointer'}>
+                {isCopied ? 'Copied' : `${isModalOpen?.data?.contractAddresss}`} 
+              </Box>
+            </Flex>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button mr={ 3 } onClick={ onModalClose }>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };

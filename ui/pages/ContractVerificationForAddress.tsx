@@ -1,3 +1,4 @@
+import { Flex, useColorModeValue } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -17,6 +18,7 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 const ContractVerificationForAddress = () => {
   const appProps = useAppContext();
   const router = useRouter();
+  const listBgColor = useColorModeValue('white', 'blue.1000');
 
   const hash = getQueryParamString(router.query.hash);
   const method = getQueryParamString(router.query.method) as SmartContractVerificationMethod;
@@ -81,19 +83,33 @@ const ContractVerificationForAddress = () => {
 
   return (
     <>
-      <PageTitle
-        title="New smart contract verification"
-        backLink={ backLink }
-      />
-      <AddressEntity
-        address={{ hash, is_contract: true, implementation_name: null }}
-        noLink
-        fontFamily="heading"
-        fontSize="lg"
-        fontWeight={ 500 }
-        mb={ 12 }
-      />
-      { content }
+      <Flex direction="column" paddingX={{ base: 4, lg: 8 }}>
+        <PageTitle
+          title="New smart contract verification"
+          backLink={ backLink }
+        />
+        <AddressEntity
+          address={{ hash, is_contract: true, implementation_name: null }}
+          noLink
+          fontFamily="heading"
+          fontSize="lg"
+          fontWeight={ 500 }
+          mb={ 12 }
+        />
+      </Flex>
+      <Flex
+        minH="75vh"
+        bg={ listBgColor }
+        borderTopRadius="2.5em"
+        paddingY={{
+          base: '1em',
+          md: '2em',
+        }}
+        paddingX="1em"
+        width="100%"
+      >
+        { content }
+      </Flex>
     </>
   );
 };

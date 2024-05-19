@@ -91,6 +91,8 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
 
   const handleNewSocketMessage: SocketMessage.ContractVerification['handler'] = React.useCallback(async(payload) => {
     if (payload.status === 'error') {
+      // eslint-disable-next-line no-console
+      console.log('payload', payload);
       const errors = formatSocketErrors(payload.errors);
       errors.filter(Boolean).forEach(([ field, error ]) => setError(field, error));
       await delay(100); // have to wait a little bit, otherwise isSubmitting status will not be updated
@@ -149,6 +151,9 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
     event: 'verification_result',
     handler: handleNewSocketMessage,
   });
+
+  // eslint-disable-next-line no-console
+  console.log('channel', channel);
 
   const methods = React.useMemo(() => {
     return {

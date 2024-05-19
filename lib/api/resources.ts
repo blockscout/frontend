@@ -125,6 +125,9 @@ export const RESOURCES = {
   user_info: {
     path: '/api/account/v2/user/info',
   },
+  inscription_info: {
+    path: '/get-contract-addresses-from-inscription-id',
+  },
   email_resend: {
     path: '/api/account/v2/email/resend',
   },
@@ -936,6 +939,7 @@ Q extends 'user_ops_account' ? UserOpsAccount :
 Q extends 'user_op_interpretation'? TxInterpretationResponse :
 Q extends 'noves_transaction' ? NovesResponseData :
 Q extends 'noves_address_history' ? NovesAccountHistoryResponse :
+Q extends 'inscriptionId' ? string :
 Q extends 'noves_describe_txs' ? NovesDescribeTxsResponse :
 never;
 /* eslint-enable @typescript-eslint/indent */

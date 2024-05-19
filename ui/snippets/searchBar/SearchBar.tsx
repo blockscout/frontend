@@ -9,6 +9,7 @@ import {
   useDisclosure,
   useOutsideClick,
 } from '@chakra-ui/react';
+// import { useQuery } from '@tanstack/react-query';
 import _debounce from 'lodash/debounce';
 import { useRouter } from 'next/router';
 import type { FormEvent } from 'react';
@@ -17,6 +18,8 @@ import { Element } from 'react-scroll';
 
 import { route } from 'nextjs-routes';
 
+// import useApiFetch from 'lib/api/useApiFetch';
+// import useApiQuery from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';
 import { getRecentSearchKeywords, saveToRecentKeywords } from 'lib/recentSearchKeywords';
@@ -30,11 +33,13 @@ import useQuickSearchQuery from './useQuickSearchQuery';
 
 type Props = {
   isHomepage?: boolean;
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  onSubmit?: Function;
 }
 
 const SCROLL_CONTAINER_ID = 'search_bar_popover_content';
 
-const SearchBar = ({ isHomepage }: Props) => {
+const SearchBar = ({ isHomepage, onSubmit }: Props) => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const inputRef = React.useRef<HTMLFormElement>(null);
   const menuRef = React.useRef<HTMLDivElement>(null);
@@ -42,13 +47,32 @@ const SearchBar = ({ isHomepage }: Props) => {
   const menuWidth = React.useRef<number>(0);
   const isMobile = useIsMobile();
   const router = useRouter();
+  // const apiFetch = useApiFetch();
 
   const recentSearchKeywords = getRecentSearchKeywords();
 
   const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query, pathname } = useQuickSearchQuery();
 
+  // const inscriptionQuery = useQuery({
+  //   queryKey: [ 'inscriptionId', searchTerm ],
+  //   queryFn: async() => {
+  //     return apiFetch('inscription_info', {
+  //       queryParams: {
+  //         searchTerm,
+  //       },
+  //     });
+  //   },
+  //   enabled: true,
+  // });
+
+  // console.log('inscriptionQuery', inscriptionQuery);
+
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (onSubmit) {
+      onSubmit(searchTerm);
+      return;
+    }
     if (searchTerm) {
       const url = route({ pathname: '/search-results', query: { q: searchTerm } });
       mixpanel.logEvent(mixpanel.EventTypes.SEARCH_QUERY, {
@@ -59,7 +83,7 @@ const SearchBar = ({ isHomepage }: Props) => {
       saveToRecentKeywords(searchTerm);
       router.push({ pathname: '/search-results', query: { q: searchTerm } }, undefined, { shallow: true });
     }
-  }, [ searchTerm, pathname, router ]);
+  }, [ onSubmit, pathname, router, searchTerm ]);
 
   const handleFocus = React.useCallback(() => {
     onOpen();
@@ -119,7 +143,7 @@ const SearchBar = ({ isHomepage }: Props) => {
   return (
     <>
       <Popover
-        isOpen={ isOpen && (searchTerm.trim().length > 0 || recentSearchKeywords.length > 0) }
+        isOpen={ false }
         autoFocus={ false }
         onClose={ onClose }
         placement="bottom-start"

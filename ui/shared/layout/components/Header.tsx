@@ -33,12 +33,14 @@ const Header = () => {
         p="1.5em"
       >
         <Box>
-          <Image
-            src={ useColorModeValue('/stats-logo.png', '/logo.png') }
-            alt="Example"
-            width={ 200 }
-            height={ 300 }
-          />
+          <Link href="/">
+            <Image
+              src={ useColorModeValue('/stats-logo.png', '/logo.png') }
+              alt="Example"
+              width={ 200 }
+              height={ 300 }
+            />
+          </Link>
         </Box>
         <Box
           display={{ base: 'none', md: 'flex' }}
