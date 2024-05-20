@@ -6,7 +6,7 @@ dotenv \
   -e .env.local \
   -e .env.development \
   -e .env \
-  -- bash -c './deploy/scripts/download_assets.sh ./public/assets'
+  -- bash -c './deploy/scripts/download_assets.sh ./public/assets/configs'
 
 yarn svg:build-sprite
 echo ""
