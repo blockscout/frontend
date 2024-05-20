@@ -70,9 +70,11 @@ const GasTracker = () => {
     return (
       <>
         { data?.gas_prices && <GasTrackerPrices prices={ data.gas_prices } isLoading={ isLoading }/> }
-        <Box mt={ 12 }>
-          <GasTrackerChart/>
-        </Box>
+        { config.features.stats.isEnabled && (
+          <Box mt={ 12 }>
+            <GasTrackerChart/>
+          </Box>
+        ) }
       </>
     );
   })();
