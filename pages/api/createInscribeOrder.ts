@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import type { CreateOrderRequest } from 'ui/address/contract/contract.service';
@@ -29,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   try {
     const response = await fetch(endpoint, requestOptions);
     if (response?.ok) {
-      const data = await response?.json();
+      const data: any = await response?.json();
       res.status(200).json({ data: data?.data });
     }
     res.status(500).json({
