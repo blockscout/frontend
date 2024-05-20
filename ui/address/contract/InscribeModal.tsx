@@ -83,6 +83,10 @@ const InscribeModal = ({ open, setOpen, encodedData, setOpenSuccessModal, setIns
         if (data?.data?.files?.[0]?.status !== 'pending') {
           setInscriptionId(data?.data?.files?.[0]?.inscriptionId ?? '');
           setOpenSuccessModal(true);
+        } else {
+          setTimeout(() => {
+            fetchOrderDetails(orderId);
+          }, 1000);
         }
       }
     } catch (error) {
