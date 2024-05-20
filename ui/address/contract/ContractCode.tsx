@@ -425,7 +425,7 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
             isLoading={ isPlaceholderData }
           />
         ) }
-        { data?.source_code && (
+        { data?.source_code && data?.is_verified && (
           <ContractSourceCode
             address={ addressHash }
             implementationAddress={
@@ -441,7 +441,7 @@ const ContractCode = ({ addressHash, noSocket }: Props) => {
             isLoading={ isPlaceholderData }
           />
         ) : null }
-        { data?.abi && (
+        { data?.abi && data?.is_verified && (
           <RawDataSnippet
             data={ JSON.stringify(data.abi, undefined, 4) }
             title="Contract ABI"
