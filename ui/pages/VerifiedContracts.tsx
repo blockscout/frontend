@@ -1,4 +1,4 @@
-import { Box, Hide, HStack, Show } from '@chakra-ui/react';
+import { Box, Flex, Hide, HStack, Show, useColorModeValue } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -32,7 +32,7 @@ const VerifiedContracts = () => {
   const [ type, setType ] = React.useState(getQueryParamString(router.query.filter) as VerifiedContractsFilters['filter'] || undefined);
   const [ sort, setSort ] =
     React.useState<VerifiedContractsSortingValue | undefined>(getSortValueFromQuery<VerifiedContractsSortingValue>(router.query, SORT_OPTIONS));
-
+  const listBgColor = useColorModeValue('white', 'blue.1000');
   const debouncedSearchTerm = useDebounce(searchTerm || '', 300);
 
   const isMobile = useIsMobile();
@@ -128,19 +128,34 @@ const VerifiedContracts = () => {
 
   return (
     <Box>
-      <PageTitle title="Verified contracts" withTextAd/>
-      <VerifiedContractsCounters/>
-      <DataListDisplay
-        isError={ isError }
-        items={ data?.items }
-        emptyText="There are no verified contracts."
-        filterProps={{
-          emptyFilteredText: `Couldn${ apos }t find any contract that matches your query.`,
-          hasActiveFilters: Boolean(searchTerm || type),
+      <Flex direction="column" paddingX={{ base: 4, lg: 8 }}>
+        <PageTitle title="Verified contracts" withTextAd/>
+      </Flex>
+      <Flex
+        minH="80vh"
+        bg={ listBgColor }
+        borderTopRadius="2.5em"
+        paddingY={{
+          base: '1em',
+          md: '2em',
         }}
-        content={ content }
-        actionBar={ actionBar }
-      />
+        paddingX="1em"
+        width="100%"
+        direction="column"
+      >
+        <VerifiedContractsCounters/>
+        <DataListDisplay
+          isError={ isError }
+          items={ data?.items }
+          emptyText="There are no verified contracts."
+          filterProps={{
+            emptyFilteredText: `Couldn${ apos }t find any contract that matches your query.`,
+            hasActiveFilters: Boolean(searchTerm || type),
+          }}
+          content={ content }
+          actionBar={ actionBar }
+        />
+      </Flex>
     </Box>
   );
 };
