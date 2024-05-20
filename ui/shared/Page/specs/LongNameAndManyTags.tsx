@@ -28,7 +28,7 @@ const LongNameAndManyTags = () => {
 
   const contentAfter = (
     <>
-      <IconSvg name="verified_token" color="green.500" boxSize={ 6 } cursor="pointer" flexShrink={ 0 }/>
+      <IconSvg name="certified" color="green.500" boxSize={ 6 } cursor="pointer" flexShrink={ 0 }/>
       <EntityTags
         tags={ [
           { slug: 'example', name: 'Example with long name', tagType: 'custom' },

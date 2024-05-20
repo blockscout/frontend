@@ -69,7 +69,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
                     dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}
                   />
                 </LinkInternal>
-                { data.is_verified_via_admin_panel && <IconSvg name="verified_token" boxSize={ 4 } ml={ 1 } color="green.500"/> }
+                { data.is_verified_via_admin_panel && <IconSvg name="certified" boxSize={ 4 } ml={ 1 } color="green.500"/> }
               </Flex>
             </Td>
             <Td fontSize="sm" verticalAlign="middle">

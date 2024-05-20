@@ -109,6 +109,13 @@ test('with proxy address alert +@mobile', async({ render, mockApiResponse }) => 
   await expect(component.getByRole('alert')).toHaveScreenshot();
 });
 
+test('with certified icon +@mobile', async({ render, mockApiResponse, page }) => {
+  await mockApiResponse('contract', contractMock.certified, { pathParams: { hash: addressMock.contract.hash } });
+  await render(<ContractCode/>, { hooksConfig });
+
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 120 } });
+});
+
 test('non verified', async({ render, mockApiResponse }) => {
   await mockApiResponse('contract', contractMock.nonVerified, { pathParams: { hash: addressMock.contract.hash } });
   const component = await render(<ContractCode/>, { hooksConfig }, { withSocket: true });
