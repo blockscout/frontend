@@ -52,7 +52,7 @@ const TokenHoldersContent = ({ holdersQuery, token, shouldRender = true }: Props
         <TokenHoldersTable
           data={ items }
           token={ token }
-          top={ holdersQuery.pagination.isVisible ? 80 : 0 }
+          top={ holdersQuery.pagination.isVisible ? 76 : 0 }
           isLoading={ holdersQuery.isPlaceholderData }
         />
       </Box>

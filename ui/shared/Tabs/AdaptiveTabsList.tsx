@@ -39,20 +39,22 @@ const AdaptiveTabsList = (props: Props) => {
 
   const { tabsCut, tabsRefs, listRef, rightSlotRef } = useAdaptiveTabs(tabsList, isMobile);
   const isSticky = useIsSticky(listRef, 5, props.stickyEnabled);
-  useScrollToActiveTab({ activeTabIndex: props.activeTabIndex, listRef, tabsRefs, isMobile });
+  useScrollToActiveTab({ activeTabIndex: props.activeTabIndex, listRef, tabsRefs, isMobile, isLoading: props.isLoading });
 
   return (
     <TabList
-      marginBottom={{ base: 6, lg: 8 }}
-      mx={{ base: '-16px', lg: 'unset' }}
-      px={{ base: '16px', lg: 'unset' }}
+      marginBottom={ 6 }
+      mx={{ base: '-12px', lg: 'unset' }}
+      px={{ base: '12px', lg: 'unset' }}
       flexWrap="nowrap"
+      alignItems="center"
       whiteSpace="nowrap"
       ref={ listRef }
       overflowX={{ base: 'auto', lg: 'initial' }}
       overscrollBehaviorX="contain"
       css={{
         'scroll-snap-type': 'x mandatory',
+        'scroll-padding-inline': '12px', // mobile page padding
         // hide scrollbar
         '&::-webkit-scrollbar': { /* Chromiums */
           display: 'none',

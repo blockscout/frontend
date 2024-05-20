@@ -1,7 +1,7 @@
 import { Hide, Show } from '@chakra-ui/react';
 import React from 'react';
 
-import ActionBar from 'ui/shared/ActionBar';
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -26,7 +26,7 @@ const UserOpsContent = ({ query, showTx = true, showSender = true }: Props) => {
       <Hide below="lg" ssr={ false }>
         <UserOpsTable
           items={ query.data.items }
-          top={ query.pagination.isVisible ? 80 : 0 }
+          top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
           isLoading={ query.isPlaceholderData }
           showTx={ showTx }
           showSender={ showSender }

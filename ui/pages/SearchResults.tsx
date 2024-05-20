@@ -8,7 +8,7 @@ import useMarketplaceApps from 'ui/marketplace/useMarketplaceApps';
 import SearchResultListItem from 'ui/searchResults/SearchResultListItem';
 import SearchResultsInput from 'ui/searchResults/SearchResultsInput';
 import SearchResultTableItem from 'ui/searchResults/SearchResultTableItem';
-import ActionBar from 'ui/shared/ActionBar';
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
@@ -113,7 +113,7 @@ const SearchResultsPageContent = () => {
         </Show>
         <Hide below="lg" ssr={ false }>
           <Table variant="simple" size="md" fontWeight={ 500 }>
-            <Thead top={ pagination.isVisible ? 80 : 0 }>
+            <Thead top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }>
               <Tr>
                 <Th width="30%">Search result</Th>
                 <Th width="35%"/>

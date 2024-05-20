@@ -61,7 +61,7 @@ const LatestZkEvmL2Batches = () => {
 
     content = (
       <>
-        <VStack spacing={ 3 } mb={ 4 } overflow="hidden" alignItems="stretch">
+        <VStack spacing={ 2 } mb={ 3 } overflow="hidden" alignItems="stretch">
           <AnimatePresence initial={ false } >
             { dataToShow.map(((batch, index) => (
               <LatestZkevmL2BatchItem
@@ -81,7 +81,7 @@ const LatestZkEvmL2Batches = () => {
 
   return (
     <Box width={{ base: '100%', lg: '280px' }} flexShrink={ 0 }>
-      <Heading as="h4" size="sm" mb={ 4 }>Latest batches</Heading>
+      <Heading as="h4" size="sm" mb={ 3 }>Latest batches</Heading>
       { content }
     </Box>
   );

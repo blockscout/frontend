@@ -79,7 +79,7 @@ const SearchBarInput = (
       top={{ base: isHomepage ? 0 : 55, lg: 0 }}
       left="0"
       zIndex={{ base: isHomepage ? 'auto' : '-1', lg: isSuggestOpen ? 'popover' : 'auto' }}
-      paddingX={{ base: isHomepage ? 0 : 4, lg: 0 }}
+      paddingX={{ base: isHomepage ? 0 : 3, lg: 0 }}
       paddingTop={{ base: isHomepage ? 0 : 1, lg: 0 }}
       paddingBottom={{ base: isHomepage ? 0 : 2, lg: 0 }}
       boxShadow={ scrollDirection !== 'down' && isSticky ? 'md' : 'none' }
@@ -88,7 +88,7 @@ const SearchBarInput = (
       transitionDuration="normal"
       transitionTimingFunction="ease"
     >
-      <InputGroup size={{ base: isHomepage ? 'md' : 'sm', lg: 'md' }}>
+      <InputGroup size={{ base: 'sm', lg: isHomepage ? 'sm_md' : 'sm' }}>
         <InputLeftElement w={{ base: isHomepage ? 6 : 4, lg: 6 }} ml={{ base: isHomepage ? 4 : 3, lg: 4 }} h="100%">
           <IconSvg name="search" boxSize={{ base: isHomepage ? 6 : 4, lg: 6 }} color={ useColorModeValue('blackAlpha.600', 'whiteAlpha.600') }/>
         </InputLeftElement>
@@ -112,7 +112,7 @@ const SearchBarInput = (
           value={ value }
         />
         { value && (
-          <InputRightElement top={{ base: isHomepage ? '18px' : 2, lg: '18px' }} right={ 2 }>
+          <InputRightElement top={{ base: 2, lg: isHomepage ? 3 : 2 }} right={ 2 }>
             <ClearButton onClick={ onClear }/>
           </InputRightElement>
         ) }
