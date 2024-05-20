@@ -8,6 +8,7 @@ import TruncatedValue from 'ui/shared/TruncatedValue';
 
 import EntityTagLink from './EntityTagLink';
 import EntityTagPopover from './EntityTagPopover';
+import { getTagLinkParams } from './utils';
 
 interface Props {
   data: TEntityTag;
@@ -21,9 +22,7 @@ const EntityTag = ({ data, isLoading, truncate }: Props) => {
     return <Skeleton borderRadius="sm" w="100px" h="24px"/>;
   }
 
-  // const hasLink = Boolean(data.meta?.tagUrl || data.tagType === 'generic' || data.tagType === 'protocol');
-  // Change the condition when "Tag search" page is ready - issue #1869
-  const hasLink = Boolean(data.meta?.tagUrl);
+  const hasLink = Boolean(getTagLinkParams(data));
   const iconColor = data.meta?.textColor ?? 'gray.400';
 
   const name = (() => {
