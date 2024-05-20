@@ -47,7 +47,7 @@ export default function useUnisatWallet() {
     if ((window as any).unisat) {
       try {
         const res = await (window as any).unisat.getNetwork();
-        if (res === "testnet") {
+        if (res === "livenet") {
           await unisatHandler();
         } else {
           await switchUnisatNetwork();

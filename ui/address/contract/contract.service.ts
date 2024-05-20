@@ -66,7 +66,7 @@ export async function createOrder(req: CreateOrderRequest) {
     body: JSON.stringify(req),
   };
   return fetch(
-    `/api/createInscribeOrder?isTestnet=true`,
+    `/api/createInscribeOrder?isTestnet=false`,
     requestOptions,
   );
 }
@@ -79,7 +79,7 @@ export async function fetchOrder(orderId: string) {
     },
   };
   return fetch(
-    `/api/getOrderStatus?orderId=${ orderId }&isTestnet=true`,
+    `/api/getOrderStatus?orderId=${ orderId }&isTestnet=false`,
     requestOptions,
   );
 }
