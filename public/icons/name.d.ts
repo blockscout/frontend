@@ -29,6 +29,7 @@
 	| "clock"
 	| "coins/bitcoin"
 	| "collection"
+	| "contract_proxy"
 	| "contract_verified"
 	| "contract"
 	| "contracts_verified"

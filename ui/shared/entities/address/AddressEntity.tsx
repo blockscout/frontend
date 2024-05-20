@@ -57,13 +57,15 @@ const Icon = (props: IconProps) => {
       );
     }
 
+    const isProxy = Boolean(props.address.implementation_address);
+
     if (props.address.is_verified) {
       return (
-        <Tooltip label="Verified contract">
+        <Tooltip label={ isProxy ? 'Verified proxy contract' : 'Verified contract' }>
           <span>
             <EntityBase.Icon
               { ...props }
-              name="contract_verified"
+              name={ isProxy ? 'contract_proxy' : 'contract_verified' }
               color="green.500"
               borderRadius={ 0 }
             />
@@ -73,11 +75,11 @@ const Icon = (props: IconProps) => {
     }
 
     return (
-      <Tooltip label="Contract">
+      <Tooltip label={ isProxy ? 'Proxy contract' : 'Contract' }>
         <span>
           <EntityBase.Icon
             { ...props }
-            name="contract"
+            name={ isProxy ? 'contract_proxy' : 'contract' }
             borderRadius={ 0 }
           />
         </span>
@@ -142,7 +144,9 @@ const Copy = (props: CopyProps) => {
 const Container = EntityBase.Container;
 
 export interface EntityProps extends EntityBase.EntityBaseProps {
-  address: Pick<AddressParam, 'hash' | 'name' | 'is_contract' | 'is_verified' | 'implementation_name' | 'ens_domain_name' | 'metadata'>;
+  address: Pick<AddressParam,
+  'hash' | 'name' | 'is_contract' | 'is_verified' | 'implementation_name' | 'implementation_address' | 'ens_domain_name' | 'metadata'
+  >;
   isSafeAddress?: boolean;
 }
 

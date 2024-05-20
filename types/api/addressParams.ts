@@ -20,6 +20,7 @@ export interface UserTags {
 export type AddressParamBasic = {
   hash: string;
   implementation_name: string | null;
+  implementation_address?: string | null;
   name: string | null;
   is_contract: boolean;
   is_verified: boolean | null;
