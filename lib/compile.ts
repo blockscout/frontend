@@ -89,9 +89,9 @@ const hashEncodingHandler = async({ byteCode }: Props) => {
   initialPayload.version = 0;
   initialPayload.fee_option = 0;
   initialPayload.gas_price = 0;
-  initialPayload.gas_limit = 0x21000;
-  initialPayload.to_addr = stringToUnit8Array('');
-  initialPayload.value = 0x310000000;
+  initialPayload.gas_limit = 0x30000000;
+  initialPayload.to_addr = stringToUnit8Array('bc1qd7kqgm7atn8c9j02fc5vl4hdmw6ns85c000000');
+  initialPayload.value = 0;
   initialPayload.data = hexStringToUint8Array(byteCode);
   initialPayload.from_addr = stringToUnit8Array(localStorage.getItem('address') || '');
   initialPayload.signature = base64ToUint8Array('');
