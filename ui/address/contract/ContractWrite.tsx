@@ -1,103 +1,121 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useToast } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import React from 'react';
-import { useAccount, useWalletClient, useSwitchChain } from 'wagmi';
+import React, { useState } from 'react';
+import Web3 from 'web3';
+// import { useAccount, useWalletClient, useSwitchChain } from 'wagmi';
 
 import type { SmartContractWriteMethod } from 'types/api/contract';
 
-import config from 'configs/app';
+// import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
+import hashEncodingHandler from 'lib/compile';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import ContractMethodsAccordion from 'ui/address/contract/ContractMethodsAccordion';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
-import ContractConnectWallet from './ContractConnectWallet';
 import ContractCustomAbiAlert from './ContractCustomAbiAlert';
 import ContractImplementationAddress from './ContractImplementationAddress';
 import ContractWriteResult from './ContractWriteResult';
+import InscribeModal from './InscribeModal';
 import ContractMethodForm from './methodForm/ContractMethodForm';
+import SuccessModal from './SuccessModal';
 import useContractAbi from './useContractAbi';
-import { getNativeCoinValue, prepareAbi } from './utils';
+// import { getNativeCoinValue, prepareAbi } from './utils';
+
+const infuraUrl = 'https://mainnet.infura.io/v3/18b346ece35742b2948e73332f85ad86';
 
 const ContractWrite = () => {
-  const { data: walletClient } = useWalletClient();
-  const { isConnected, chainId } = useAccount();
-  const { switchChainAsync } = useSwitchChain();
-
+  // const { data: walletClient } = useWalletClient();
+  // const { isConnected, chainId } = useAccount();
+  const web3 = new Web3(infuraUrl);
+  const toast = useToast();
+  const address = localStorage.getItem('address');
   const router = useRouter();
-
-  const tab = getQueryParamString(router.query.tab);
+  const [ openSuccessModal, setOpenSuccessModal ] = useState<boolean>(false);
   const addressHash = getQueryParamString(router.query.hash);
+  const tab = getQueryParamString(router.query.tab);
+  const [ open, setOpen ] = useState(false);
+  const [ encodedData, setEncodedData ] = useState<string>('');
+  const [ inscriptionId, setInscriptionId ] = useState<string>('');
+
   const isProxy = tab === 'write_proxy';
   const isCustomAbi = tab === 'write_custom_methods';
 
-  const { data, isPending, isError } = useApiQuery(isProxy ? 'contract_methods_write_proxy' : 'contract_methods_write', {
-    pathParams: { hash: addressHash },
-    queryParams: {
-      is_custom_abi: isCustomAbi ? 'true' : 'false',
+  const { data, isPending, isError } = useApiQuery(
+    isProxy ? 'contract_methods_write_proxy' : 'contract_methods_write',
+    {
+      pathParams: { hash: addressHash },
+      queryParams: {
+        is_custom_abi: isCustomAbi ? 'true' : 'false',
+      },
+      queryOptions: {
+        enabled: Boolean(addressHash),
+        refetchOnMount: false,
+      },
     },
-    queryOptions: {
-      enabled: Boolean(addressHash),
-      refetchOnMount: false,
-    },
-  });
+  );
 
   const contractAbi = useContractAbi({ addressHash, isProxy, isCustomAbi });
 
-  const handleMethodFormSubmit = React.useCallback(async(item: SmartContractWriteMethod, args: Array<unknown>) => {
-    if (!isConnected) {
-      throw new Error('Wallet is not connected');
-    }
+  const handleMethodFormSubmit = React.useCallback(
+    async(item: any, args: Array<unknown>) => {
+      if (!address) {
+        throw new Error('Wallet is not connected');
+      }
+      if (!contractAbi) {
+        throw new Error('Something went wrong. Try again later.');
+      }
+      const methodName = item?.name;
 
-    if (chainId && String(chainId) !== config.chain.id) {
-      await switchChainAsync?.({ chainId: Number(config.chain.id) });
-    }
+      if (!methodName) {
+        throw new Error('Method name is not defined');
+      }
+      const inputList = item?.inputs?.map((ele: any, key: number) => {
 
-    if (!contractAbi) {
-      throw new Error('Something went wrong. Try again later.');
-    }
+        if (ele?.type === 'uint256') {
+          return Number(args?.[key]);
+        }
+        return args?.[key];
+      }) ?? [];
 
-    if (item.type === 'receive' || item.type === 'fallback') {
-      const value = getNativeCoinValue(args[0]);
-      const hash = await walletClient?.sendTransaction({
-        to: addressHash as `0x${ string }` | undefined,
-        value,
+      const contract = new web3.eth.Contract(contractAbi as any);
+      const hash = contract?.methods?.[methodName](
+        ...inputList,
+      ).encodeABI();
+      const newEncodedString: any = await hashEncodingHandler({ byteCode: hash });
+      if (typeof newEncodedString === 'string') {
+        setEncodedData(newEncodedString);
+        setOpen(true);
+        return newEncodedString;
+      }
+      toast({
+        description: newEncodedString?.message || 'Error',
+        status: 'error',
       });
-      return { hash };
-    }
+      setOpen(false);
+      return '';
+    },
+    [ address, contractAbi ],
+  );
 
-    const methodName = item.name;
-
-    if (!methodName) {
-      throw new Error('Method name is not defined');
-    }
-
-    const _args = args.slice(0, item.inputs.length);
-    const value = getNativeCoinValue(args[item.inputs.length]);
-    const abi = prepareAbi(contractAbi, item);
-
-    const hash = await walletClient?.writeContract({
-      args: _args,
-      abi,
-      functionName: methodName,
-      address: addressHash as `0x${ string }`,
-      value,
-    });
-
-    return { hash };
-  }, [ isConnected, chainId, contractAbi, walletClient, addressHash, switchChainAsync ]);
-
-  const renderItemContent = React.useCallback((item: SmartContractWriteMethod, index: number, id: number) => {
-    return (
-      <ContractMethodForm
-        key={ id + '_' + index }
-        data={ item }
-        onSubmit={ handleMethodFormSubmit }
-        resultComponent={ ContractWriteResult }
-        methodType="write"
-      />
-    );
-  }, [ handleMethodFormSubmit ]);
+  const renderItemContent = React.useCallback(
+    (item: SmartContractWriteMethod, index: number, id: number) => {
+      return (
+        <ContractMethodForm
+          key={ id + '_' + index }
+          data={ item }
+          onSubmit={ handleMethodFormSubmit }
+          resultComponent={ ContractWriteResult }
+          methodType="write"
+        />
+      );
+    },
+    [ handleMethodFormSubmit ],
+  );
 
   if (isError) {
     return <DataFetchAlert/>;
@@ -114,9 +132,24 @@ const ContractWrite = () => {
   return (
     <>
       { isCustomAbi && <ContractCustomAbiAlert/> }
-      <ContractConnectWallet/>
+      { /* <ContractConnectWallet /> */ }
       { isProxy && <ContractImplementationAddress hash={ addressHash }/> }
-      <ContractMethodsAccordion data={ data } addressHash={ addressHash } renderItemContent={ renderItemContent } tab={ tab }/>
+      <ContractMethodsAccordion
+        data={ data }
+        addressHash={ addressHash }
+        renderItemContent={ renderItemContent }
+        tab={ tab }
+      />
+      { open && (
+        <InscribeModal
+          open={ open }
+          setOpen={ setOpen }
+          encodedData={ encodedData }
+          setOpenSuccessModal={ setOpenSuccessModal }
+          setInscriptionId={ setInscriptionId }
+        />
+      ) }
+      { openSuccessModal && <SuccessModal open={ openSuccessModal } inscriptionId={ inscriptionId } setOpen={ setOpenSuccessModal }/> }
     </>
   );
 };

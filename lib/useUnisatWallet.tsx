@@ -17,7 +17,8 @@ export default function useUnisatWallet() {
   const unisatHandler = async() => {
     try {
       const accounts = await (window as any).unisat.requestAccounts();
-      if (accounts[0].substring(0, 3) === "bc1") {
+      if (accounts[0].substring(0, 3) === "tb1") {
+        localStorage.setItem('address', accounts[0]);
         setAddress(accounts[0]);
       } else {
         toast({
@@ -46,7 +47,7 @@ export default function useUnisatWallet() {
     if ((window as any).unisat) {
       try {
         const res = await (window as any).unisat.getNetwork();
-        if (res === "livenet") {
+        if (res === "testnet") {
           await unisatHandler();
         } else {
           await switchUnisatNetwork();

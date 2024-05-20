@@ -1,9 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box, useToast } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 import Web3 from 'web3';
 
+import getQueryParamString from 'lib/router/getQueryParamString';
 import ContentLoader from 'ui/shared/ContentLoader';
 
 import { checkContract, fetchInscriptionService } from './contract.service';
@@ -16,57 +18,48 @@ type PropTypes = {
 
 const NuiContractRead = ({ currentTab }: PropTypes) => {
   const toast = useToast();
-  const inscriptionId =
-    '719531b285391ce5fb68d54176387bcfce381e9c6ddd993d260515556383f38ei0';
-  // const [inscriptionId, setInscriptionId] = useState<string>(
-  //   "719531b285391ce5fb68d54176387bcfce381e9c6ddd993d260515556383f38ei0"
-  // );
+  const [ byteCode, setByteCode ] = useState<string>('');
+  const router = useRouter();
+  const addressHash = getQueryParamString(router.query.hash);
+
   const [ data, setData ] = useState<any>();
-  // const [inscriptionData, setInscriptionData] = useState<Record<string, any>>(
-  //   {}
-  // );
 
   const convertByteCodeToSHA256 = async(byteCode: string) => {
     try {
       const web3ForSha = new Web3();
       const sha256Hash = web3ForSha.utils.sha3(byteCode);
       return sha256Hash;
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
-  const compileCode = useCallback(
-    (sc: string, bytecode: string) => {
-      const worker = new Worker('/bundle.js');
-      worker.addEventListener(
-        'message',
-        (e: MessageEvent) => {
-          const output = e?.data?.output;
-          if (output?.errors?.length > 0) {
-            return;
-          }
-          const tempContractsList =
-            output?.contracts?.[`contracts/contract.sol`];
-          const mostMatched = findMostMatchedString(
-            bytecode?.substring(2),
-            tempContractsList,
-          );
-          setData(mostMatched);
-        },
-        false,
-      );
-      worker.postMessage({
-        contractCode: decodeURIComponent(atob(sc)),
-      });
-    },
-    [],
-  );
+  const compileCode = useCallback((sc: string, bytecode: string) => {
+    const worker = new Worker('/bundle.js');
+    worker.addEventListener(
+      'message',
+      (e: MessageEvent) => {
+        const output = e?.data?.output;
+        if (output?.errors?.length > 0) {
+          return;
+        }
+        const tempContractsList = output?.contracts?.[`contracts/contract.sol`];
+        const mostMatched = findMostMatchedString(
+          bytecode?.substring(2),
+          tempContractsList,
+        );
+        setData(mostMatched);
+      },
+      false,
+    );
+    worker.postMessage({
+      contractCode: decodeURIComponent(atob(sc)),
+    });
+  }, []);
   const checkAndGetSourceCode = async(byteCode: string) => {
     const contractHash = (await convertByteCodeToSHA256(byteCode)) ?? '';
     try {
       const response = await checkContract({
         contractHash: contractHash ?? '',
-        inscriptionId,
+        addressHash,
       });
       if (!response.ok) {
         toast({
@@ -87,20 +80,16 @@ const NuiContractRead = ({ currentTab }: PropTypes) => {
     }
   };
   const fetchInscriptionData = async(): Promise<any> => {
-    if (!inscriptionId) {
-      // console.log({ inscriptionId });
+    if (!addressHash) {
       return false;
     }
     try {
-      const response = await fetchInscriptionService({
-        inscriptionId,
-      });
+      const response = await fetchInscriptionService({ addressHash });
       if (!response.ok) {
-        // console.error("Invalid Inscription ID");
         return false;
       }
-      const data = await response.json();
-      // setInscriptionData(data);
+      const data: any = await response.json();
+      setByteCode(data?.bytecode);
       return data;
     } catch (error: any) {
       // console.error(error);
@@ -116,7 +105,6 @@ const NuiContractRead = ({ currentTab }: PropTypes) => {
     if (!sc) {
       await checkAndGetSourceCode(inscriptionResponse?.bytecode);
       // toast.error('Inscription is not a valid contract');
-      // setIsLoading(false);
       return;
     }
     compileCode(sc, inscriptionResponse?.bytecode);
@@ -134,7 +122,13 @@ const NuiContractRead = ({ currentTab }: PropTypes) => {
     );
   }
 
-  return <NuiContractMethodsAccordion data={ data } currentTab={ currentTab }/>;
+  return (
+    <NuiContractMethodsAccordion
+      data={ data }
+      currentTab={ currentTab }
+      byteCode={ byteCode }
+    />
+  );
 };
 
 export default React.memo(NuiContractRead);

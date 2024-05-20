@@ -93,43 +93,44 @@ const NuiContractMethodsAccordionItem = ({
         borderBottomRadius="12px"
       >
         <Flex direction="column" gap={ 2 }>
-          { data?.inputs && data?.inputs?.map((ele: any) => {
-            let eleName = ele?.name;
-            if (!eleName && ele?.type === 'string') {
-              eleName = '<input>';
-            }
-            return (
-              <Flex key={ ele?.name } direction="column" gap={ 1 }>
-                <Text
-                  color="rgba(30, 30, 30, 0.4)"
-                  fontSize="12px"
-                  fontWeight="500"
-                >
-                  { eleName }({ ele?.type })
-                </Text>
-                <Input
-                  value={ state?.[data?.name as string]?.[ele?.name as string] }
-                  backgroundColor="white"
-                  height={ 10 }
-                  px={ 2 }
-                  borderRadius="6px"
-                  fontSize="12px"
-                  onChange={ (e) => {
-                    setState((prev) => {
-                      return {
-                        ...prev,
-                        [data?.name as string]: {
-                          ...prev?.[data?.name as string],
-                          [ele?.name as string]: e?.target?.value,
-                        },
-                      };
-                    });
-                  } }
-                  placeholder={ `${ eleName } (${ ele?.type })` }
-                />
-              </Flex>
-            );
-          }) }
+          { data?.inputs &&
+            data?.inputs?.map((ele: any) => {
+              let eleName = ele?.name;
+              if (!eleName && ele?.type === 'string') {
+                eleName = '<input>';
+              }
+              return (
+                <Flex key={ ele?.name } direction="column" gap={ 1 }>
+                  <Text
+                    color="rgba(30, 30, 30, 0.4)"
+                    fontSize="12px"
+                    fontWeight="500"
+                  >
+                    { eleName }({ ele?.type })
+                  </Text>
+                  <Input
+                    value={ state?.[data?.name as string]?.[ele?.name as string] }
+                    backgroundColor="white"
+                    height={ 10 }
+                    px={ 2 }
+                    borderRadius="6px"
+                    fontSize="12px"
+                    onChange={ (e) => {
+                      setState((prev) => {
+                        return {
+                          ...prev,
+                          [data?.name as string]: {
+                            ...prev?.[data?.name as string],
+                            [ele?.name as string]: e?.target?.value,
+                          },
+                        };
+                      });
+                    } }
+                    placeholder={ `${ eleName } (${ ele?.type })` }
+                  />
+                </Flex>
+              );
+            }) }
         </Flex>
         { currentTab === 'write' && (
           <Button
