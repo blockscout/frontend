@@ -29,7 +29,6 @@ interface Props<T extends SmartContractMethod> {
   onSubmit: any;
   resultComponent: (props: ResultComponentProps<T>) => JSX.Element | null;
   methodType: 'read' | 'write';
-  setOpen?: (value: boolean) => void;
 }
 
 const ContractMethodForm = <T extends SmartContractMethod>({
@@ -37,7 +36,6 @@ const ContractMethodForm = <T extends SmartContractMethod>({
   onSubmit,
   resultComponent: any,
   methodType,
-  setOpen,
 }: Props<T>) => {
   const [ result, setResult ] = React.useState<ContractMethodCallResult<T>>();
   const [ isLoading, setLoading ] = React.useState(false);
@@ -64,9 +62,6 @@ const ContractMethodForm = <T extends SmartContractMethod>({
         onSubmit(data, args)
           .then(async(result: any) => {
             setResult(result);
-            if (setOpen) {
-              setOpen(true);
-            }
           })
           .catch((error: any) => {
             setResult(
@@ -86,7 +81,7 @@ const ContractMethodForm = <T extends SmartContractMethod>({
 
           });
       },
-      [ data, methodType, onSubmit, setOpen ],
+      [ data, methodType, onSubmit ],
     );
 
   const handleTxSettle = React.useCallback(() => {

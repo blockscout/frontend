@@ -112,7 +112,6 @@ const hashEncodingHandler = async({ byteCode }: Props) => {
     const rlpEncodedDataWithSignature = compilePayload.RLPSERIALIZE();
     const newEncodedDataString =
       'sach0x' + unit8ArrayToHexStringWithout0x(rlpEncodedDataWithSignature);
-
     return newEncodedDataString;
     //   setCompileEncodedData(newEncodedDataString);
     //   setFileList([
@@ -124,7 +123,9 @@ const hashEncodingHandler = async({ byteCode }: Props) => {
     //       size: getStringByteCount(newEncodedDataString),
     //     },
     //   ]);
-  } catch (error: any) {}
+  } catch (error: any) {
+    return error;
+  }
 };
 
 export default hashEncodingHandler;

@@ -10,12 +10,14 @@ type Props = {
   open: boolean;
   setOpen: (val: boolean) => void;
   encodedData: string;
+  setOpenSuccessModal: (val: boolean) => void;
+  setInscriptionId: (val: string) => void;
 };
 export function stringToBase64(stringToEncode: string) {
   // btoa only support ascii, use js-base64 instead
   return btoa(stringToEncode);
 }
-const InscribeModal = ({ open, setOpen, encodedData }: Props) => {
+const InscribeModal = ({ open, setOpen, encodedData, setOpenSuccessModal, setInscriptionId }: Props) => {
   const toast = useToast();
   const [ outputValue, setOutputValue ] = useState<any>(564);
   const [ feeRate, setFeeRate ] = useState<any>(0);
@@ -63,11 +65,12 @@ const InscribeModal = ({ open, setOpen, encodedData }: Props) => {
         data?.data?.amount,
         data?.data?.feeRate,
       );
-    } catch (error) {
+    } catch (error: any) {
       toast({
-        description: 'Error',
+        description: error?.message || 'Error',
         status: 'error',
       });
+      setOpen(false);
 
     }
 
@@ -75,14 +78,16 @@ const InscribeModal = ({ open, setOpen, encodedData }: Props) => {
   const fetchOrderDetails = async(orderId: string) => {
     try {
       const response = await fetchOrder(orderId);
-
       if (response.ok) {
         const data: any = await response.json();
-        toast({ description: 'Inscribed Successfully', status: 'success' });
-        handleClose();
+        if (data?.data?.files?.[0]?.status !== 'pending') {
+          setInscriptionId(data?.data?.files?.[0]?.inscriptionId ?? '');
+          setOpenSuccessModal(true);
+        }
       }
     } catch (error) {
       toast({ description: 'Some error occurred. Please try again!', status: 'error' });
+    } finally {
       handleClose();
     }
   };

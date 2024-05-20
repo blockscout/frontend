@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { useToast } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import Web3 from 'web3';
@@ -21,6 +22,7 @@ import ContractImplementationAddress from './ContractImplementationAddress';
 import ContractWriteResult from './ContractWriteResult';
 import InscribeModal from './InscribeModal';
 import ContractMethodForm from './methodForm/ContractMethodForm';
+import SuccessModal from './SuccessModal';
 import useContractAbi from './useContractAbi';
 // import { getNativeCoinValue, prepareAbi } from './utils';
 
@@ -30,12 +32,15 @@ const ContractWrite = () => {
   // const { data: walletClient } = useWalletClient();
   // const { isConnected, chainId } = useAccount();
   const web3 = new Web3(infuraUrl);
+  const toast = useToast();
   const address = localStorage.getItem('address');
   const router = useRouter();
+  const [ openSuccessModal, setOpenSuccessModal ] = useState<boolean>(false);
   const addressHash = getQueryParamString(router.query.hash);
   const tab = getQueryParamString(router.query.tab);
   const [ open, setOpen ] = useState(false);
   const [ encodedData, setEncodedData ] = useState<string>('');
+  const [ inscriptionId, setInscriptionId ] = useState<string>('');
 
   const isProxy = tab === 'write_proxy';
   const isCustomAbi = tab === 'write_custom_methods';
@@ -82,9 +87,17 @@ const ContractWrite = () => {
         ...inputList,
       ).encodeABI();
       const newEncodedString: any = await hashEncodingHandler({ byteCode: hash });
-      setEncodedData(newEncodedString);
-
-      return hash;
+      if (typeof newEncodedString === 'string') {
+        setEncodedData(newEncodedString);
+        setOpen(true);
+        return newEncodedString;
+      }
+      toast({
+        description: newEncodedString?.message || 'Error',
+        status: 'error',
+      });
+      setOpen(false);
+      return '';
     },
     [ address, contractAbi ],
   );
@@ -98,7 +111,6 @@ const ContractWrite = () => {
           onSubmit={ handleMethodFormSubmit }
           resultComponent={ ContractWriteResult }
           methodType="write"
-          setOpen={ setOpen }
         />
       );
     },
@@ -133,8 +145,11 @@ const ContractWrite = () => {
           open={ open }
           setOpen={ setOpen }
           encodedData={ encodedData }
+          setOpenSuccessModal={ setOpenSuccessModal }
+          setInscriptionId={ setInscriptionId }
         />
       ) }
+      { openSuccessModal && <SuccessModal open={ openSuccessModal } inscriptionId={ inscriptionId } setOpen={ setOpenSuccessModal }/> }
     </>
   );
 };
