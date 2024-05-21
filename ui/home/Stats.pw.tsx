@@ -28,7 +28,7 @@ test.describe('all items', () => {
   });
 });
 
-test('4 items', async({ render, mockApiResponse, mockEnvs }) => {
+test('4 items default view +@mobile -@default', async({ render, mockApiResponse, mockEnvs }) => {
   await mockEnvs([
     [ 'NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME', 'false' ],
   ]);
@@ -37,7 +37,7 @@ test('4 items', async({ render, mockApiResponse, mockEnvs }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('3 items', async({ render, mockApiResponse, mockEnvs }) => {
+test('3 items default view +@mobile -@default', async({ render, mockApiResponse, mockEnvs }) => {
   await mockEnvs([
     [ 'NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME', 'false' ],
     [ 'NEXT_PUBLIC_GAS_TRACKER_ENABLED', 'false' ],
