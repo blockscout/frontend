@@ -61,7 +61,7 @@ const Label = chakra(({ hint, children, isLoading, id, className }: LabelProps) 
       _notFirst={{ mt: { base: 3, lg: 0 } }}
     >
       <Flex columnGap={ 2 } alignItems="flex-start">
-        { hint && <Hint label={ hint } isLoading={ isLoading }/> }
+        { hint && <Hint label={ hint } isLoading={ isLoading } my="2px"/> }
         <Skeleton isLoaded={ !isLoading } fontWeight={{ base: 700, lg: 500 }}>
           { children }
         </Skeleton>
