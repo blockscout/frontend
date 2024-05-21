@@ -2,7 +2,6 @@ import { Button, Box, Flex, Popover, PopoverTrigger, PopoverContent, PopoverBody
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { Route } from 'nextjs-routes';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
@@ -13,14 +12,7 @@ import IconSvg from 'ui/shared/IconSvg';
 
 import DeFiDropdownItem from './DeFiDropdownItem';
 
-const feature = config.features.deFi;
-
-function getUrl(feature: { url: string } | { dappId: string }): { url?: string; nextRoute?: Route } {
-  return {
-    url: 'url' in feature ? feature.url : undefined,
-    nextRoute: 'dappId' in feature ? { pathname: '/apps/[id]', query: { id: feature.dappId, action: 'connect' } } : undefined,
-  };
-}
+const feature = config.features.deFiDropdown;
 
 const DeFiDropdown = () => {
   const router = useRouter();
@@ -28,39 +20,11 @@ const DeFiDropdown = () => {
   const isMobile = useIsMobile();
   const { isOpen, onToggle, onClose } = useDisclosure();
 
-  const handleClick = React.useCallback((content: 'Swap button' | 'Payment link') => {
+  const handleClick = React.useCallback((content: string) => {
     mixpanel.logEvent(mixpanel.EventTypes.BUTTON_CLICK, { Content: content, Source: source });
   }, [ source ]);
 
-  const items = React.useMemo(() => {
-    if (!feature.isEnabled) {
-      return [];
-    }
-
-    const items = [];
-
-    if (feature.swapButton) {
-      items.push({
-        icon: 'swap' as const,
-        text: 'Swap',
-        onClick: () => handleClick('Swap button'),
-        ...getUrl(feature.swapButton),
-      });
-    }
-
-    if (feature.paymentLink) {
-      items.push({
-        icon: 'payment_link' as const,
-        text: 'Payment link',
-        onClick: () => handleClick('Payment link'),
-        ...getUrl(feature.paymentLink),
-      });
-    }
-
-    return items;
-  }, [ handleClick ]);
-
-  if (items.length === 0) {
+  if (!feature.isEnabled) {
     return null;
   }
 
@@ -72,6 +36,11 @@ const DeFiDropdown = () => {
     px: 1.5,
     fontWeight: '500',
   };
+
+  const items = feature.items.map((item) => ({
+    ...item,
+    onClick: () => handleClick(item.text),
+  }));
 
   return items.length > 1 ? (
     <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
@@ -99,8 +68,8 @@ const DeFiDropdown = () => {
   ) : (
     <Button
       as="a"
-      href={ items[0].nextRoute ? route(items[0].nextRoute) : items[0].url }
-      target={ items[0].nextRoute ? '_self' : '_blank' }
+      href={ items[0].dappId ? route({ pathname: '/apps/[id]', query: { id: items[0].dappId, action: 'connect' } }) : items[0].url }
+      target={ items[0].dappId ? '_self' : '_blank' }
       onClick={ items[0].onClick }
       { ...buttonStyles }
     >

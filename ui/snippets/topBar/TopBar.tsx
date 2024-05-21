@@ -7,7 +7,7 @@ import DeFiDropdown from './DeFiDropdown';
 import Settings from './settings/Settings';
 import TopBarStats from './TopBarStats';
 
-const feature = config.features.deFi;
+const feature = config.features.deFiDropdown;
 
 const TopBar = () => {
   const bgColor = useColorModeValue('gray.50', 'whiteAlpha.100');
