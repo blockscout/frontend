@@ -24,7 +24,6 @@ interface Props {
 
 const TokenSelectMenu = ({ erc20sort, erc1155sort, erc404sort, filteredData, onInputChange, onSortClick, searchTerm }: Props) => {
   const searchIconColor = useColorModeValue('blackAlpha.600', 'whiteAlpha.600');
-  const inputBorderColor = useColorModeValue('blackAlpha.100', 'whiteAlpha.200');
 
   const hasFilteredResult = _sumBy(Object.values(filteredData), ({ items }) => items.length) > 0;
 
@@ -39,7 +38,7 @@ const TokenSelectMenu = ({ erc20sort, erc1155sort, erc404sort, filteredData, onI
           placeholder="Search by token name"
           ml="1px"
           onChange={ onInputChange }
-          borderColor={ inputBorderColor }
+          bgColor="dialog_bg"
         />
       </InputGroup>
       <Flex flexDir="column" rowGap={ 6 }>

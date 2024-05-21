@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { EnsDomainLookupResponse } from 'types/api/ens';
 
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import IconSvg from 'ui/shared/IconSvg';
 import { default as Thead } from 'ui/shared/TheadSticky';
 
@@ -21,7 +22,7 @@ const NameDomainsTable = ({ data, isLoading, sort, onSortToggle }: Props) => {
 
   return (
     <Table variant="simple" size="sm">
-      <Thead top={ 80 }>
+      <Thead top={ ACTION_BAR_HEIGHT_DESKTOP }>
         <Tr>
           <Th width="25%">Domain</Th>
           <Th width="25%">Address</Th>

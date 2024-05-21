@@ -1,7 +1,6 @@
 import { defineStyle, defineStyleConfig } from '@chakra-ui/styled-system';
-import { getColor } from '@chakra-ui/theme-tools';
 
-import getDefaultFormColors from '../utils/getDefaultFormColors';
+import getFormStyles from '../utils/getFormStyles';
 
 const baseStyle = defineStyle({
   display: 'flex',
@@ -13,14 +12,12 @@ const baseStyle = defineStyle({
   transitionDuration: 'normal',
   opacity: 1,
   _disabled: {
-    opacity: 0.4,
+    opacity: 0.2,
   },
 });
 
 const variantFloating = defineStyle((props) => {
-  const { theme, backgroundColor } = props;
-  const { focusPlaceholderColor } = getDefaultFormColors(props);
-  const bc = backgroundColor || 'transparent';
+  const formStyles = getFormStyles(props);
 
   return {
     left: '2px',
@@ -29,8 +26,8 @@ const variantFloating = defineStyle((props) => {
     position: 'absolute',
     borderRadius: 'base',
     boxSizing: 'border-box',
-    color: 'gray.500',
-    backgroundColor: 'transparent',
+    color: formStyles.placeholder.default.color,
+    backgroundColor: props.bgColor || props.backgroundColor || 'transparent',
     pointerEvents: 'none',
     margin: 0,
     transformOrigin: 'top left',
@@ -39,8 +36,8 @@ const variantFloating = defineStyle((props) => {
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
     _focusWithin: {
-      backgroundColor: bc,
-      color: getColor(theme, focusPlaceholderColor),
+      backgroundColor: props.bgColor || props.backgroundColor || 'transparent',
+      color: formStyles.placeholder.default.color,
       fontSize: 'xs',
       lineHeight: '16px',
       borderTopRightRadius: 'none',
@@ -70,7 +67,7 @@ const sizes = {
       return {
         fontSize: 'md',
         lineHeight: '24px',
-        padding: '28px 4px 28px 24px',
+        padding: '26px 4px 26px 24px',
         right: '22px',
         _focusWithin: {
           padding: '16px 0 2px 24px',

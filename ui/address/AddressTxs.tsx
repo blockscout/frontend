@@ -16,7 +16,7 @@ import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
-import ActionBar from 'ui/shared/ActionBar';
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
@@ -199,7 +199,7 @@ const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT, shouldRender = 
         showSocketInfo={ addressTxsQuery.pagination.page === 1 }
         socketInfoAlert={ socketAlert }
         socketInfoNum={ newItemsCount }
-        top={ 80 }
+        top={ ACTION_BAR_HEIGHT_DESKTOP }
         sorting={ sort }
         setSort={ setSort }
       />

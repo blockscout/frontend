@@ -82,7 +82,7 @@ const NavigationDesktop = () => {
         <NetworkLogo isCollapsed={ isCollapsed }/>
         { Boolean(config.UI.sidebar.featuredNetworks) && <NetworkMenu isCollapsed={ isCollapsed }/> }
       </Box>
-      <Box as="nav" mt={ 8 } w="100%">
+      <Box as="nav" mt={ 6 } w="100%">
         <VStack as="ul" spacing="1" alignItems="flex-start">
           { mainNavItems.map((item) => {
             if (isGroupItem(item)) {
@@ -94,7 +94,7 @@ const NavigationDesktop = () => {
         </VStack>
       </Box>
       { hasAccount && (
-        <Box as="nav" borderTopWidth="1px" borderColor="divider" w="100%" mt={ 6 } pt={ 6 }>
+        <Box as="nav" borderTopWidth="1px" borderColor="divider" w="100%" mt={ 3 } pt={ 3 }>
           <VStack as="ul" spacing="1" alignItems="flex-start">
             { accountNavItems.map((item) => <NavLink key={ item.text } item={ item } isCollapsed={ isCollapsed }/>) }
           </VStack>

@@ -128,7 +128,6 @@ const ContractSourceCode = ({ address, implementationAddress }: Props) => {
       size="xs"
       value={ sourceType }
       onChange={ handleSelectChange }
-      focusBorderColor="none"
       w="auto"
       fontWeight={ 600 }
       borderRadius="base"

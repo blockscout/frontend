@@ -36,7 +36,7 @@ export_envs_from_preset() {
 export_envs_from_preset
 
 # Download external assets
-./download_assets.sh ./public/assets
+./download_assets.sh ./public/assets/configs
 
 # Check run-time ENVs values
 ./validate_envs.sh

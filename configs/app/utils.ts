@@ -41,7 +41,7 @@ export const buildExternalAssetFilePath = (name: string, value: string) => {
     const fileName = name.replace(/^NEXT_PUBLIC_/, '').replace(/_URL$/, '').toLowerCase();
     const url = new URL(value);
     const fileExtension = url.pathname.match(regexp.FILE_EXTENSION)?.[1];
-    return `/assets/${ fileName }.${ fileExtension }`;
+    return `/assets/configs/${ fileName }.${ fileExtension }`;
   } catch (error) {
     return;
   }

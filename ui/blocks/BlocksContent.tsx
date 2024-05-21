@@ -95,7 +95,7 @@ const BlocksContent = ({ type, query }: Props) => {
       <Box display={{ base: 'none', lg: 'block' }}>
         <BlocksTable
           data={ query.data.items }
-          top={ query.pagination.isVisible ? 80 : 0 }
+          top={ query.pagination.isVisible ? 76 : 0 }
           page={ query.pagination.page }
           isLoading={ query.isPlaceholderData }
           showSocketInfo={ query.pagination.page === 1 }
