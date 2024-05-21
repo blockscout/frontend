@@ -18,7 +18,7 @@ import { TOKEN_COUNTERS } from 'stubs/token';
 import type { TokenTabs } from 'ui/pages/Token';
 import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';
 import useAppActionData from 'ui/shared/AppActionButton/useAppActionData';
-import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
@@ -102,77 +102,96 @@ const TokenDetails = ({ tokenQuery }: Props) => {
     <Grid
       columnGap={ 8 }
       rowGap={{ base: 1, lg: 3 }}
-      templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} overflow="hidden"
+      templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(728px, auto)' }} overflow="hidden"
     >
       { exchangeRate && (
-        <DetailsInfoItem
-          title="Price"
-          hint="Price per token on the exchanges"
-          alignSelf="center"
-          isLoading={ tokenQuery.isPlaceholderData }
-        >
-          <Skeleton isLoaded={ !tokenQuery.isPlaceholderData } display="inline-block">
-            <span>{ `$${ Number(exchangeRate).toLocaleString(undefined, { minimumSignificantDigits: 4 }) }` }</span>
-          </Skeleton>
-        </DetailsInfoItem>
+        <>
+          <DetailsInfoItem.Label
+            hint="Price per token on the exchanges"
+            isLoading={ tokenQuery.isPlaceholderData }
+          >
+            Price
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            <Skeleton isLoaded={ !tokenQuery.isPlaceholderData } display="inline-block">
+              <span>{ `$${ Number(exchangeRate).toLocaleString(undefined, { minimumSignificantDigits: 4 }) }` }</span>
+            </Skeleton>
+          </DetailsInfoItem.Value>
+        </>
       ) }
+
       { marketCap && (
-        <DetailsInfoItem
-          title="Fully diluted market cap"
-          hint="Total supply * Price"
-          alignSelf="center"
-          isLoading={ tokenQuery.isPlaceholderData }
-        >
-          <Skeleton isLoaded={ !tokenQuery.isPlaceholderData } display="inline-block">
-            <span>{ `$${ BigNumber(marketCap).toFormat() }` }</span>
-          </Skeleton>
-        </DetailsInfoItem>
+        <>
+          <DetailsInfoItem.Label
+            hint="Total supply * Price"
+            isLoading={ tokenQuery.isPlaceholderData }
+          >
+            Fully diluted market cap
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            <Skeleton isLoaded={ !tokenQuery.isPlaceholderData } display="inline-block">
+              <span>{ `$${ BigNumber(marketCap).toFormat() }` }</span>
+            </Skeleton>
+          </DetailsInfoItem.Value>
+        </>
       ) }
-      <DetailsInfoItem
-        title="Max total supply"
+
+      <DetailsInfoItem.Label
         hint="The total amount of tokens issued"
+        isLoading={ tokenQuery.isPlaceholderData }
+      >
+        Max total supply
+      </DetailsInfoItem.Label>
+      <DetailsInfoItem.Value
         alignSelf="center"
         wordBreak="break-word"
         whiteSpace="pre-wrap"
-        isLoading={ tokenQuery.isPlaceholderData }
       >
         <Skeleton isLoaded={ !tokenQuery.isPlaceholderData } w="100%" display="flex">
           <TruncatedValue value={ totalSupplyValue || '0' } maxW="80%" flexShrink={ 0 }/>
           <Box flexShrink={ 0 }> </Box>
           <TruncatedValue value={ symbol || '' }/>
         </Skeleton>
-      </DetailsInfoItem>
-      <DetailsInfoItem
-        title="Holders"
+      </DetailsInfoItem.Value>
+
+      <DetailsInfoItem.Label
         hint="Number of accounts holding the token"
-        alignSelf="center"
         isLoading={ tokenQuery.isPlaceholderData }
       >
+        Holders
+      </DetailsInfoItem.Label>
+      <DetailsInfoItem.Value>
         <Skeleton isLoaded={ !tokenCountersQuery.isPlaceholderData }>
           { countersItem('token_holders_count') }
         </Skeleton>
-      </DetailsInfoItem>
-      <DetailsInfoItem
-        title="Transfers"
+      </DetailsInfoItem.Value>
+
+      <DetailsInfoItem.Label
         hint="Number of transfer for the token"
-        alignSelf="center"
         isLoading={ tokenQuery.isPlaceholderData }
       >
+        Transfers
+      </DetailsInfoItem.Label>
+      <DetailsInfoItem.Value>
         <Skeleton isLoaded={ !tokenCountersQuery.isPlaceholderData }>
           { countersItem('transfers_count') }
         </Skeleton>
-      </DetailsInfoItem>
+      </DetailsInfoItem.Value>
+
       { decimals && (
-        <DetailsInfoItem
-          title="Decimals"
-          hint="Number of digits that come after the decimal place when displaying token value"
-          alignSelf="center"
-          isLoading={ tokenQuery.isPlaceholderData }
-        >
-          <Skeleton isLoaded={ !tokenQuery.isPlaceholderData } minW={ 6 }>
-            { decimals }
-          </Skeleton>
-        </DetailsInfoItem>
+        <>
+          <DetailsInfoItem.Label
+            hint="Number of digits that come after the decimal place when displaying token value"
+            isLoading={ tokenQuery.isPlaceholderData }
+          >
+            Decimals
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            <Skeleton isLoaded={ !tokenQuery.isPlaceholderData } minW={ 6 }>
+              { decimals }
+            </Skeleton>
+          </DetailsInfoItem.Value>
+        </>
       ) }
 
       { type !== 'ERC-20' && (
@@ -186,14 +205,18 @@ const TokenDetails = ({ tokenQuery }: Props) => {
       ) }
 
       { (type !== 'ERC-20' && config.UI.views.nft.marketplaces.length === 0 && appActionData && isActionButtonExperiment) && (
-        <DetailsInfoItem
-          title="Dapp"
-          hint="Link to the dapp"
-          alignSelf="center"
-          py={ 1 }
-        >
-          <AppActionButton data={ appActionData } height="30px" source="NFT collection"/>
-        </DetailsInfoItem>
+        <>
+          <DetailsInfoItem.Label
+            hint="Link to the dapp"
+          >
+            Dapp
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value
+            py="1px"
+          >
+            <AppActionButton data={ appActionData } height="30px" source="NFT collection"/>
+          </DetailsInfoItem.Value>
+        </>
       ) }
 
       <DetailsSponsoredItem isLoading={ tokenQuery.isPlaceholderData }/>
