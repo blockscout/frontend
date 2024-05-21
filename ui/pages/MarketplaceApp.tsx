@@ -155,17 +155,30 @@ const MarketplaceApp = () => {
     } catch (err) {}
 
     try {
-      // get anchor and custom params from search and remove reserved ones
-      const customHash = window.location.hash;
-      const customParams = new URLSearchParams(window.location.search);
+      // get hash and params (using asPath to avoid conflicts with dynamic route params)
+      const [ , queryAndHash ] = router.asPath.split('?');
+      const [ queryString, hash ] = queryAndHash ? queryAndHash.split('#') : [ '', '' ];
+      const customHash = hash ? `#${ hash }` : '';
+      const customParams = new URLSearchParams(queryString);
+
+      // remove reserved params
       [ 'url', 'action' ].forEach((param) => customParams.delete(param));
 
       if (customParams.toString() || customHash) {
         const targetUrl = new URL(data.url);
         const targetParams = new URLSearchParams(targetUrl.search);
+
+        let customPath = customParams.get('path');
+        if (customPath) {
+          customPath = customPath.startsWith('/') ? customPath : `/${ customPath }`;
+          targetUrl.pathname = customPath;
+          customParams.delete('path');
+        }
+
         customParams.forEach((value, key) => {
           targetParams.append(key, value);
         });
+
         targetUrl.search = targetParams.toString();
         targetUrl.hash = customHash;
         return targetUrl.toString();
