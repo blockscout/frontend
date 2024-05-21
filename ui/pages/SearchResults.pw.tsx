@@ -42,7 +42,7 @@ test('search by address hash +@mobile', async({ render, mockApiResponse }) => {
     },
   };
   const data = {
-    items: [ searchMock.address1 ],
+    items: [ searchMock.address1, searchMock.contract2 ],
     next_page_params: null,
   };
   await mockApiResponse('search', data, { queryParams: { q: searchMock.address1.address } });
