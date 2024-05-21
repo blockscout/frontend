@@ -21,7 +21,7 @@ interface Props<Pathname extends Route['pathname']> {
 initSentry();
 
 const PageNextJs = <Pathname extends Route['pathname']>(props: Props<Pathname>) => {
-  const { title, description, opengraph } = metadata.generate(props, props.apiData);
+  const { title, description, opengraph, canonical } = metadata.generate(props, props.apiData);
 
   useGetCsrfToken();
   useAdblockDetect();
@@ -34,6 +34,7 @@ const PageNextJs = <Pathname extends Route['pathname']>(props: Props<Pathname>) 
       <Head>
         <title>{ title }</title>
         <meta name="description" content={ description }/>
+        { canonical && <link rel="canonical" href={ canonical }/> }
 
         { /* OG TAGS */ }
         <meta property="og:title" content={ opengraph.title }/>
