@@ -10,7 +10,7 @@ import TopBar from './TopBar';
 
 const test = base.extend({
   context: contextWithEnvs([
-    { name: 'NEXT_PUBLIC_SWAP_BUTTON_URL', value: 'uniswap' },
+    { name: 'NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS', value: '[{"text":"Swap","icon":"swap","dappId":"uniswap"}]' },
     { name: 'NEXT_PUBLIC_NETWORK_SECONDARY_COIN_SYMBOL', value: 'DUCK' },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ]) as any,
@@ -53,8 +53,10 @@ test('with secondary coin price +@mobile', async({ mount, page }) => {
 
 const testWithDropdown = base.extend({
   context: contextWithEnvs([
-    { name: 'NEXT_PUBLIC_SWAP_BUTTON_URL', value: 'uniswap' },
-    { name: 'NEXT_PUBLIC_PAYMENT_LINK_URL', value: 'peanut-protocol' },
+    {
+      name: 'NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS',
+      value: '[{"text":"Swap","icon":"swap","dappId":"uniswap"},{"text":"Payment link","icon":"payment_link","url":"https://example.com"}]',
+    },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ]) as any,
 });
