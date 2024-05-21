@@ -8,7 +8,7 @@ import { TX_INTERPRETATION } from 'stubs/txInterpretation';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import { TX_ACTIONS_BLOCK_ID } from 'ui/shared/DetailsActionsWrapper';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
-import NetworkExplorers from 'ui/shared/NetworkExplorers';
+// import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import TxInterpretation from 'ui/shared/tx/interpretation/TxInterpretation';
 
 import { createNovesSummaryObject } from './assetFlows/utils/createNovesSummaryObject';
@@ -110,7 +110,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
       { content }
       <Flex alignItems="center" justifyContent={{ base: 'start', lg: 'space-between' }} flexGrow={ 1 }>
         { !hasTag && <AccountActionsMenu mr={ 3 } mt={{ base: 3, lg: 0 }}/> }
-        <NetworkExplorers type="tx" pathParam={ hash } ml={{ base: 0, lg: 'auto' }} mt={{ base: 3, lg: 0 }}/>
+        { /* <NetworkExplorers type="tx" pathParam={ hash } ml={{ base: 0, lg: 'auto' }} mt={{ base: 3, lg: 0 }}/> */ }
       </Flex>
     </Box>
   );
