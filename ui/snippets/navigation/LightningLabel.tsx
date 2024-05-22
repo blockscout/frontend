@@ -21,7 +21,7 @@ const LightningLabel = ({ bgColor, isCollapsed }: { bgColor?: string; isCollapse
   return (
     <IconSvg
       className="lightning-label"
-      name="lightning_sidebar"
+      name="lightning_navbar"
       boxSize={ 4 }
       ml={{ base: 1, lg: isExpanded ? 1 : 0, xl: isCollapsed ? 0 : 1 }}
       position={{ lg: isExpanded ? 'relative' : 'absolute', xl: isCollapsed ? 'absolute' : 'relative' }}

@@ -219,11 +219,11 @@ test.describe('hover xl screen', () => {
   });
 });
 
-test.describe('with lightning labels', () => {
+test.describe('with highlighted routes', () => {
   let component: Locator;
 
   test.beforeEach(async({ render, mockEnvs }) => {
-    await mockEnvs(ENVS_MAP.menuLightningLabels);
+    await mockEnvs(ENVS_MAP.navigationHighlightedRoutes);
 
     component = await render(
       <Flex w="100%" minH="100vh" alignItems="stretch">

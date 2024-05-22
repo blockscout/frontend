@@ -13,7 +13,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import LightningLabel from './LightningLabel';
 import NavLinkIcon from './NavLinkIcon';
 import useColors from './useColors';
-import useLightningLabel from './useLightningLabel';
+import useHighlightedRoute from './useHighlightedRoute';
 import useNavLinkStyleProps from './useNavLinkStyleProps';
 
 type Props = {
@@ -36,7 +36,7 @@ const NavLink = ({ item, isCollapsed, px, className, onClick, disableActiveState
   const isXLScreen = useBreakpointValue({ base: false, xl: true });
   const href = isInternalLink ? route(item.nextRoute) : item.url;
 
-  const hasLightningLabel = useLightningLabel(item);
+  const isHighlighted = useHighlightedRoute(item);
 
   const content = (
     <Link
@@ -71,7 +71,7 @@ const NavLink = ({ item, isCollapsed, px, className, onClick, disableActiveState
             <span>{ item.text }</span>
             { !isInternalLink && <IconSvg name="arrows/north-east" boxSize={ 4 } color="text_secondary" verticalAlign="middle"/> }
           </Text>
-          { hasLightningLabel && (
+          { isHighlighted && (
             <LightningLabel bgColor={ styleProps.itemProps.bgColor } isCollapsed={ isCollapsed }/>
           ) }
         </HStack>

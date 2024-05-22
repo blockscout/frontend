@@ -24,8 +24,8 @@ const hiddenLinks = (() => {
   return result;
 })();
 
-const lightningLabels = (() => {
-  const parsedValue = parseEnvJson<Array<NavigationLinkId>>(getEnvValue('NEXT_PUBLIC_MENU_LIGHTNING_LABELS'));
+const highlightedRoutes = (() => {
+  const parsedValue = parseEnvJson<Array<NavigationLinkId>>(getEnvValue('NEXT_PUBLIC_NAVIGATION_HIGHLIGHTED_ROUTES'));
   return Array.isArray(parsedValue) ? parsedValue : [];
 })();
 
@@ -48,7 +48,7 @@ const UI = Object.freeze({
       dark: getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_ICON_DARK'),
     },
     hiddenLinks,
-    lightningLabels,
+    highlightedRoutes,
     otherLinks: parseEnvJson<Array<NavItemExternal>>(getEnvValue('NEXT_PUBLIC_OTHER_LINKS')) || [],
     featuredNetworks: getExternalAssetFilePath('NEXT_PUBLIC_FEATURED_NETWORKS'),
   },

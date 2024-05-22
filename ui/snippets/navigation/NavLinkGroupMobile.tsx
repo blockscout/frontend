@@ -12,7 +12,7 @@ import IconSvg from 'ui/shared/IconSvg';
 
 import LightningLabel from './LightningLabel';
 import NavLinkIcon from './NavLinkIcon';
-import useLightningLabel from './useLightningLabel';
+import useHighlightedRoute from './useHighlightedRoute';
 import useNavLinkStyleProps from './useNavLinkStyleProps';
 
 type Props = {
@@ -24,7 +24,7 @@ type Props = {
 const NavLinkGroup = ({ item, onClick, isExpanded }: Props) => {
   const styleProps = useNavLinkStyleProps({ isActive: item.isActive, isExpanded });
 
-  const hasLightningLabel = useLightningLabel(item.subItems);
+  const isHighlighted = useHighlightedRoute(item.subItems);
 
   return (
     <Box as="li" listStyleType="none" w="100%" onClick={ onClick }>
@@ -43,7 +43,7 @@ const NavLinkGroup = ({ item, onClick, isExpanded }: Props) => {
             >
               { item.text }
             </Text>
-            { hasLightningLabel && (<LightningLabel bgColor={ styleProps.itemProps.bgColor }/>) }
+            { isHighlighted && (<LightningLabel bgColor={ styleProps.itemProps.bgColor }/>) }
           </HStack>
           <IconSvg name="arrows/east-mini" transform="rotate(180deg)" boxSize={ 6 }/>
         </Flex>

@@ -18,7 +18,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import LightningLabel from './LightningLabel';
 import NavLink from './NavLink';
 import NavLinkIcon from './NavLinkIcon';
-import useLightningLabel from './useLightningLabel';
+import useHighlightedRoute from './useHighlightedRoute';
 import useNavLinkStyleProps from './useNavLinkStyleProps';
 
 type Props = {
@@ -31,7 +31,7 @@ const NavLinkGroupDesktop = ({ item, isCollapsed }: Props) => {
 
   const styleProps = useNavLinkStyleProps({ isCollapsed, isExpanded, isActive: item.isActive });
 
-  const hasLightningLabel = useLightningLabel(item.subItems);
+  const isHighlighted = useHighlightedRoute(item.subItems);
 
   return (
     <Box as="li" listStyleType="none" w="100%">
@@ -57,7 +57,7 @@ const NavLinkGroupDesktop = ({ item, isCollapsed }: Props) => {
               >
                 { item.text }
               </Text>
-              { hasLightningLabel && (
+              { isHighlighted && (
                 <LightningLabel bgColor={ styleProps.itemProps.bgColor } isCollapsed={ isCollapsed }/>
               ) }
               <IconSvg
