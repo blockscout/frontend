@@ -661,11 +661,11 @@ The feature enables the Validators page which provides detailed information abou
 
 ### OpenTelemetry
 
-OpenTelemetry SDK for Node.js app could be enabled by passing `OTEL_SDK_ENABLED=true` variable. Configure the OpenTelemetry Protocol Exporter by using the generic environment variables described in the [OT docs](https://opentelemetry.io/docs/specs/otel/protocol/exporter/#configuration-options).
+OpenTelemetry SDK for Node.js app could be enabled by passing `OTEL_SDK_ENABLED=true` variable. Configure the OpenTelemetry Protocol Exporter by using the generic environment variables described in the [OT docs](https://opentelemetry.io/docs/specs/otel/protocol/exporter/#configuration-options). Note that this Next.js feature is currently experimental. The Docker image should be built with the `NEXT_OPEN_TELEMETRY_ENABLED=true` argument to enable it.
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
-| OTEL_SDK_ENABLED | `boolean` | Flag to enable the feature | Required | `false` | `true` |
+| OTEL_SDK_ENABLED | `boolean` | Run-time flag to enable the feature | Required | `false` | `true` |
 
 &nbsp;
 

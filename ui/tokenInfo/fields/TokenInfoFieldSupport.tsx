@@ -22,7 +22,8 @@ const TokenInfoFieldSupport = ({ control, isReadOnly }: Props) => {
         <Input
           { ...field }
           isInvalid={ Boolean(fieldState.error) }
-          isDisabled={ formState.isSubmitting || isReadOnly }
+          isDisabled={ formState.isSubmitting }
+          isReadOnly={ isReadOnly }
           autoComplete="off"
         />
         <InputPlaceholder text="Support URL or email" error={ fieldState.error }/>

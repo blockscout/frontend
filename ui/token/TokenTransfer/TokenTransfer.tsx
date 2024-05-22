@@ -67,7 +67,7 @@ const TokenTransfer = ({ transfersQuery, tokenId, token, shouldRender = true }: 
       <Box display={{ base: 'none', lg: 'block' }}>
         <TokenTransferTable
           data={ data?.items }
-          top={ pagination.isVisible ? 80 : 0 }
+          top={ pagination.isVisible ? 76 : 0 }
           showSocketInfo={ pagination.page === 1 }
           socketInfoAlert={ socketAlert }
           socketInfoNum={ newItemsCount }

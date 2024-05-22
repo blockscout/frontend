@@ -164,8 +164,8 @@ const Stats = () => {
     <Grid
       gridTemplateColumns={{ lg: `repeat(${ itemsCount }, 1fr)`, base: '1fr 1fr' }}
       gridTemplateRows={{ lg: 'none', base: undefined }}
-      gridGap="10px"
-      marginTop="24px"
+      gridGap={{ base: 1, lg: 2 }}
+      marginTop={ 3 }
     >
       { content }
     </Grid>

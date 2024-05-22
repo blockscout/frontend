@@ -6,6 +6,7 @@ import { L2_OUTPUT_ROOTS_ITEM } from 'stubs/L2';
 import { generateListStub } from 'stubs/utils';
 import OptimisticL2OutputRootsListItem from 'ui/outputRoots/optimisticL2/OptimisticL2OutputRootsListItem';
 import OptimisticL2OutputRootsTable from 'ui/outputRoots/optimisticL2/OptimisticL2OutputRootsTable';
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -46,7 +47,7 @@ const OptimisticL2OutputRoots = () => {
         ))) }
       </Show>
       <Hide below="lg" ssr={ false }>
-        <OptimisticL2OutputRootsTable items={ data.items } top={ pagination.isVisible ? 80 : 0 } isLoading={ isPlaceholderData }/>
+        <OptimisticL2OutputRootsTable items={ data.items } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 } isLoading={ isPlaceholderData }/>
       </Hide>
     </>
   ) : null;

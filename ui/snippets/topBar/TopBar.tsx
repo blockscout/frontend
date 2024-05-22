@@ -15,7 +15,7 @@ const TopBar = () => {
   return (
     <Flex
       py={ 2 }
-      px={ 6 }
+      px={{ base: 3, lg: 6 }}
       bgColor={ bgColor }
       justifyContent="space-between"
       alignItems="center"

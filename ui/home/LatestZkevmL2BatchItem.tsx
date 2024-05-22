@@ -32,7 +32,7 @@ const LatestZkevmL2BatchItem = ({ batch, isLoading }: Props) => {
       borderRadius="md"
       border="1px solid"
       borderColor="divider"
-      p={ 6 }
+      p={ 3 }
     >
       <Flex alignItems="center" overflow="hidden" w="100%" mb={ 3 }>
         <BatchEntityL2

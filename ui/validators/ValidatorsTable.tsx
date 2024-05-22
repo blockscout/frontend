@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { Validator, ValidatorsSorting, ValidatorsSortingField, ValidatorsSortingValue } from 'types/api/validators';
 
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import IconSvg from 'ui/shared/IconSvg';
 import getNextSortValue from 'ui/shared/sort/getNextSortValue';
 import { default as Thead } from 'ui/shared/TheadSticky';
@@ -27,7 +28,7 @@ const ValidatorsTable = ({ data, sort, setSorting, isLoading }: Props) => {
 
   return (
     <Table variant="simple" size="sm">
-      <Thead top={ 80 }>
+      <Thead top={ ACTION_BAR_HEIGHT_DESKTOP }>
         <Tr>
           <Th width="50%">Validator’s address</Th>
           <Th width="25%">

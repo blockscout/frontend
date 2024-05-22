@@ -5,6 +5,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { rightLineArrow, nbsp } from 'lib/html-entities';
 import { generateListStub } from 'stubs/utils';
 import { ZKEVM_WITHDRAWALS_ITEM } from 'stubs/zkEvmL2';
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -42,7 +43,7 @@ const ZkEvmL2Withdrawals = () => {
         ))) }
       </Show>
       <Hide below="lg" ssr={ false }>
-        <ZkEvmL2WithdrawalsTable items={ data.items } top={ pagination.isVisible ? 80 : 0 } isLoading={ isPlaceholderData }/>
+        <ZkEvmL2WithdrawalsTable items={ data.items } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 } isLoading={ isPlaceholderData }/>
       </Hide>
     </>
   ) : null;

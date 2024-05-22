@@ -92,5 +92,20 @@ const defaultProps = {
 
       await expect(component).toHaveScreenshot();
     });
+
+    test('read-only', async({ mount }) => {
+      const component = await mount(
+        <TestApp>
+          <FancySelect
+            { ...defaultProps }
+            size={ size }
+            value={ OPTIONS[0] }
+            isReadOnly
+          />
+        </TestApp>,
+      );
+
+      await expect(component).toHaveScreenshot();
+    });
   });
 });
