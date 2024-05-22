@@ -19,8 +19,7 @@ export default function generate<Pathname extends Route['pathname']>(route: Rout
     network_title: getNetworkTitle(),
   };
 
-  const compiledTitle = compileValue(templates.title.make(route.pathname, Boolean(apiData)), params);
-  const title = compiledTitle ? compiledTitle + (config.meta.promoteBlockscoutInTitle ? ' | Blockscout' : '') : '';
+  const title = compileValue(templates.title.make(route.pathname, Boolean(apiData)), params);
   const description = compileValue(templates.description.make(route.pathname), params);
 
   const pageOgType = getPageOgType(route.pathname);
