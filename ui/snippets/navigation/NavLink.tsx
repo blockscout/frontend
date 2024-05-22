@@ -10,7 +10,7 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import { isInternalItem } from 'lib/hooks/useNavItems';
 import IconSvg from 'ui/shared/IconSvg';
 
-import LightningLabel from './LightningLabel';
+import LightningLabel, { LIGHTNING_LABEL_CLASS_NAME } from './LightningLabel';
 import NavLinkIcon from './NavLinkIcon';
 import useColors from './useColors';
 import useHighlightedRoute from './useHighlightedRoute';
@@ -51,7 +51,7 @@ const NavLink = ({ item, isCollapsed, px, className, onClick, disableActiveState
       whiteSpace="nowrap"
       onClick={ onClick }
       _hover={{
-        '& *:not(.lightning-label, .lightning-label *)': {
+        [`& *:not(.${ LIGHTNING_LABEL_CLASS_NAME }, .${ LIGHTNING_LABEL_CLASS_NAME } *)`]: {
           color: 'link_hovered',
         },
       }}

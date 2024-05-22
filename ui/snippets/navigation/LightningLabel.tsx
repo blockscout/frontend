@@ -4,6 +4,8 @@ import React from 'react';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 import IconSvg from 'ui/shared/IconSvg';
 
+export const LIGHTNING_LABEL_CLASS_NAME = 'lightning-label';
+
 const LightningLabel = ({ bgColor, isCollapsed }: { bgColor?: string; isCollapsed?: boolean }) => {
   const isLgScreen = useBreakpointValue({ base: false, lg: true, xl: false });
   const themeBgColor = useColorModeValue('white', 'black');
@@ -20,7 +22,7 @@ const LightningLabel = ({ bgColor, isCollapsed }: { bgColor?: string; isCollapse
 
   return (
     <IconSvg
-      className="lightning-label"
+      className={ LIGHTNING_LABEL_CLASS_NAME }
       name="lightning_navbar"
       boxSize={ 4 }
       ml={{ base: 1, lg: isExpanded ? 1 : 0, xl: isCollapsed ? 0 : 1 }}
