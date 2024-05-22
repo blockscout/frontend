@@ -9,14 +9,13 @@ import useScoreLevelAndColor from './useScoreLevelAndColor';
 interface Props {
   score: number;
   isLoading?: boolean;
-  height?: string;
   onlyIcon?: boolean;
   onClick?: () => void;
   label?: string;
 }
 
 const SolidityscanReportButton = (
-  { score, height = '32px', isLoading, onlyIcon, onClick, label = 'Security score' }: Props,
+  { score, isLoading, onlyIcon, onClick, label = 'Security score' }: Props,
   ref: React.ForwardedRef<HTMLButtonElement>,
 ) => {
   const { scoreColor } = useScoreLevelAndColor(score);
@@ -35,7 +34,6 @@ const SolidityscanReportButton = (
         aria-label="SolidityScan score"
         fontWeight={ 500 }
         px="6px"
-        h={ height }
         flexShrink={ 0 }
         columnGap={ 1 }
         isDisabled={ isLoading }
