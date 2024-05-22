@@ -1,13 +1,12 @@
-import { Button } from '@chakra-ui/react';
+import { Button, Spinner, Tooltip, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
+import useIsMobile from 'lib/hooks/useIsMobile';
 import IconSvg from 'ui/shared/IconSvg';
 
-import PopoverTriggerTooltip from '../PopoverTriggerTooltip';
 import useScoreLevelAndColor from './useScoreLevelAndColor';
 
 interface Props {
-  className?: string;
   score: number;
   isLoading?: boolean;
   height?: string;
@@ -17,16 +16,18 @@ interface Props {
 }
 
 const SolidityscanReportButton = (
-  { className, score, isLoading, height = '32px', onlyIcon, onClick, label = 'Security score' }: Props,
+  { score, height = '32px', isLoading, onlyIcon, onClick, label = 'Security score' }: Props,
   ref: React.ForwardedRef<HTMLButtonElement>,
 ) => {
   const { scoreColor } = useScoreLevelAndColor(score);
+  const colorLoading = useColorModeValue('gray.300', 'gray.600');
+  const isMobile = useIsMobile();
 
   return (
-    <PopoverTriggerTooltip label={ label } isLoading={ isLoading } className={ className }>
+    <Tooltip label={ label } isDisabled={ isMobile } openDelay={ 100 }>
       <Button
         ref={ ref }
-        color={ scoreColor }
+        color={ isLoading ? colorLoading : scoreColor }
         size="sm"
         variant="outline"
         colorScheme="gray"
@@ -36,11 +37,20 @@ const SolidityscanReportButton = (
         px="6px"
         h={ height }
         flexShrink={ 0 }
+        columnGap={ 1 }
+        isDisabled={ isLoading }
+        _disabled={{
+          opacity: 1,
+          _hover: {
+            color: colorLoading,
+          },
+        }}
       >
-        <IconSvg name={ score < 80 ? 'score/score-not-ok' : 'score/score-ok' } boxSize={ 5 } mr={ onlyIcon ? 0 : 1 }/>
-        { onlyIcon ? null : score }
+        <IconSvg name={ score < 80 ? 'score/score-not-ok' : 'score/score-ok' } boxSize={ 5 }/>
+        { isLoading && <Spinner size="sm"/> }
+        { !isLoading && (onlyIcon ? null : score) }
       </Button>
-    </PopoverTriggerTooltip>
+    </Tooltip>
   );
 };
 
