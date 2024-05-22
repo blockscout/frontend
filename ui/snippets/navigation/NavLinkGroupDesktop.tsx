@@ -18,8 +18,8 @@ import IconSvg from 'ui/shared/IconSvg';
 import LightningLabel from './LightningLabel';
 import NavLink from './NavLink';
 import NavLinkIcon from './NavLinkIcon';
-import useHighlightedRoute from './useHighlightedRoute';
 import useNavLinkStyleProps from './useNavLinkStyleProps';
+import { checkRouteHighlight } from './utils';
 
 type Props = {
   item: NavGroupItem;
@@ -31,7 +31,7 @@ const NavLinkGroupDesktop = ({ item, isCollapsed }: Props) => {
 
   const styleProps = useNavLinkStyleProps({ isCollapsed, isExpanded, isActive: item.isActive });
 
-  const isHighlighted = useHighlightedRoute(item.subItems);
+  const isHighlighted = checkRouteHighlight(item.subItems);
 
   return (
     <Box as="li" listStyleType="none" w="100%">
