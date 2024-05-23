@@ -137,7 +137,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
             >
               Tokens
             </DetailsInfoItem.Label>
-            <DetailsInfoItem.Value py={ 0 }>
+            <DetailsInfoItem.Value py={ addressQuery.data ? 0 : undefined }>
               { addressQuery.data ? <TokenSelect onClick={ handleCounterItemClick }/> : <Box>0</Box> }
             </DetailsInfoItem.Value>
           </>
