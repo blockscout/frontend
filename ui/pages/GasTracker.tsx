@@ -1,4 +1,4 @@
-import { Box, Flex, Skeleton, chakra } from '@chakra-ui/react';
+import { Alert, Box, Flex, Skeleton, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
@@ -62,6 +62,23 @@ const GasTracker = () => {
     </Flex>
   );
 
+  const content = (() => {
+    if (!isPlaceholderData && data?.gas_prices?.slow === null && data?.gas_prices.average === null && data.gas_prices.fast === null) {
+      return <Alert status="warning">No data available yet</Alert>;
+    }
+
+    return (
+      <>
+        { data?.gas_prices && <GasTrackerPrices prices={ data.gas_prices } isLoading={ isLoading }/> }
+        { config.features.stats.isEnabled && (
+          <Box mt={ 12 }>
+            <GasTrackerChart/>
+          </Box>
+        ) }
+      </>
+    );
+  })();
+
   return (
     <>
       <PageTitle
@@ -69,10 +86,7 @@ const GasTracker = () => {
         secondRow={ titleSecondRow }
         withTextAd
       />
-      { data?.gas_prices && <GasTrackerPrices prices={ data.gas_prices } isLoading={ isLoading }/> }
-      <Box mt={ 12 }>
-        <GasTrackerChart/>
-      </Box>
+      { content }
     </>
   );
 };

@@ -65,3 +65,22 @@ test('with zero values', async({ render, page }) => {
   );
   await expect(page).toHaveScreenshot({ clip });
 });
+
+test('with small values', async({ render, page }) => {
+  const data = {
+    fiat_price: '0.0042',
+    price: 0.042,
+    time: 0,
+    base_fee: 0,
+    priority_fee: 0,
+  };
+
+  await render(
+    <GasTrackerPriceSnippet
+      data={ data }
+      type="slow"
+      isLoading={ false }
+    />,
+  );
+  await expect(page).toHaveScreenshot({ clip });
+});
