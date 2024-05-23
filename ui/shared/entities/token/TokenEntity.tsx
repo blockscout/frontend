@@ -7,7 +7,6 @@ import type { TokenInfo } from 'types/api/token';
 
 import { route } from 'nextjs-routes';
 
-import config from 'configs/app';
 import * as EntityBase from 'ui/shared/entities/base/components';
 import TokenLogoPlaceholder from 'ui/shared/TokenLogoPlaceholder';
 import TruncatedTextTooltip from 'ui/shared/TruncatedTextTooltip';
@@ -167,17 +166,4 @@ export {
   Icon,
   Content,
   Copy,
-};
-
-type NativeIconProps = Omit<IconProps, 'token'> & { src?: string | null };
-
-const NATIVE_TOKEN_DATA = {
-  name: config.chain.currency.name || '',
-  symbol: '',
-  address: '',
-  type: 'ERC-20' as const,
-};
-
-export const NativeIcon = (props: NativeIconProps) => {
-  return <Icon token={{ ...NATIVE_TOKEN_DATA, icon_url: props.src || null }} { ...props }/>;
 };

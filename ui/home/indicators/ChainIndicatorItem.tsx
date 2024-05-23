@@ -14,7 +14,7 @@ interface Props {
   title: string;
   value: (stats: HomeStats) => string;
   valueDiff?: (stats?: HomeStats) => number | null | undefined;
-  icon: (stats?: { data?: HomeStats; isLoading: boolean }) => React.ReactNode;
+  icon: React.ReactNode;
   isSelected: boolean;
   onClick: (id: ChainIndicatorId) => void;
   stats: UseQueryResult<HomeStats, ResourceError<unknown>>;
@@ -92,7 +92,7 @@ const ChainIndicatorItem = ({ id, title, value, valueDiff, icon, isSelected, onC
         zIndex: 1,
       }}
     >
-      { icon({ data: stats.data, isLoading: stats.isPlaceholderData }) }
+      { icon }
       <Box>
         <Text fontFamily="heading" fontWeight={ 500 }>{ title }</Text>
         <Flex alignItems="center">
