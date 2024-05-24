@@ -3,6 +3,7 @@ export type HomeStats = {
   total_addresses: string;
   total_transactions: string;
   average_block_time: number;
+  coin_image?: string | null;
   coin_price: string | null;
   coin_price_change_percentage: number | null; // e.g -6.22
   total_gas_used: string;
