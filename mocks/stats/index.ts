@@ -4,6 +4,7 @@ export const base = {
   average_block_time: 6212.0,
   coin_price: '0.00199678',
   coin_price_change_percentage: -7.42,
+  coin_image: 'http://localhost:3100/utia.jpg',
   gas_prices: {
     average: {
       fiat_price: '1.39',
