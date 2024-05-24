@@ -89,3 +89,5 @@ const TestApp = ({ children, withSocket, withWalletClient = true, appContext = d
 };
 
 export default TestApp;
+
+// TODO @tom2drum add eslint rule for the module import

@@ -1,9 +1,8 @@
-import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import type { ContractAbiItem } from '../types';
 
-import TestApp from 'playwright/TestApp';
+import { test, expect } from 'playwright/lib';
 
 import ContractMethodForm from './ContractMethodForm';
 
@@ -19,7 +18,7 @@ const data: ContractAbiItem = {
         { internalType: 'enum BasicOrderType', name: 'basicOrderType', type: 'uint8' },
         {
           components: [
-            { internalType: 'uint256', name: 'amount', type: 'uint256' },
+            { internalType: 'uint256', name: 'arender', type: 'uint256' },
             { internalType: 'address payable', name: 'recipient', type: 'address' },
           ],
           internalType: 'struct AdditionalRecipient[]',
@@ -76,7 +75,7 @@ const data: ContractAbiItem = {
             { internalType: 'enum ItemType', name: 'itemType', type: 'uint8' },
             { internalType: 'address', name: 'token', type: 'address' },
             { internalType: 'uint256', name: 'identifier', type: 'uint256' },
-            { internalType: 'uint256', name: 'amount', type: 'uint256' },
+            { internalType: 'uint256', name: 'arender', type: 'uint256' },
             { internalType: 'address payable', name: 'recipient', type: 'address' },
           ],
           internalType: 'struct ReceivedItem',
@@ -97,16 +96,14 @@ const data: ContractAbiItem = {
   constant: false,
 };
 
-test('base view +@mobile +@dark-mode', async({ mount }) => {
+test('base view +@mobile +@dark-mode', async({ render }) => {
 
-  const component = await mount(
-    <TestApp>
-      <ContractMethodForm
-        data={ data }
-        onSubmit={ onSubmit }
-        methodType="write"
-      />
-    </TestApp>,
+  const component = await render(
+    <ContractMethodForm
+      data={ data }
+      onSubmit={ onSubmit }
+      methodType="write"
+    />,
   );
 
   // fill top level fields
