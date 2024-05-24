@@ -22,7 +22,7 @@ test('base view +@dark-mode', async({ mount, page }) => {
 
 // was not able to reproduce in tests issue when Icon is used as trigger for tooltip
 // https://github.com/chakra-ui/chakra-ui/issues/7107
-test.skip('with icon', async({ mount, page }) => {
+test.fixme('with icon', async({ mount, page }) => {
   const component = await mount(
     <TestApp>
       <Box m={ 10 }>
