@@ -6,16 +6,15 @@ import * as dailyTxsMock from 'mocks/stats/daily_txs';
 import * as statsMock from 'mocks/stats/index';
 import * as txMock from 'mocks/txs/tx';
 import { test, expect, devices } from 'playwright/lib';
-import TestApp from 'playwright/TestApp';
-import * as configs from 'playwright/utils/configs';
+import * as pwConfig from 'playwright/utils/config';
 
 import Home from './Home';
 
 test.describe('default view', () => {
   let component: Locator;
 
-  test.beforeEach(async({ mount, mockApiResponse, mockAssetResponse }) => {
-    await mockAssetResponse(statsMock.base.coin_image, './playwright/mocks/image_s.jpg');
+  test.beforeEach(async({ render, mockApiResponse, mockAssetResponse }) => {
+    await mockAssetResponse(statsMock.base.coin_image as string, './playwright/mocks/image_s.jpg');
     await mockApiResponse('stats', statsMock.base);
     await mockApiResponse('homepage_blocks', [
       blockMock.base,
@@ -28,27 +27,23 @@ test.describe('default view', () => {
     ]);
     await mockApiResponse('stats_charts_txs', dailyTxsMock.base);
 
-    component = await mount(
-      <TestApp>
-        <Home/>
-      </TestApp>,
-    );
+    component = await render(<Home/>);
   });
 
   test('-@default +@dark-mode', async({ page }) => {
     await expect(component).toHaveScreenshot({
-      mask: [ page.locator(configs.adsBannerSelector) ],
-      maskColor: configs.maskColor,
+      mask: [ page.locator(pwConfig.adsBannerSelector) ],
+      maskColor: pwConfig.maskColor,
     });
   });
 
   test.describe('screen xl', () => {
-    test.use({ viewport: configs.viewport.xl });
+    test.use({ viewport: pwConfig.viewport.xl });
 
     test('', async({ page }) => {
       await expect(component).toHaveScreenshot({
-        mask: [ page.locator(configs.adsBannerSelector) ],
-        maskColor: configs.maskColor,
+        mask: [ page.locator(pwConfig.adsBannerSelector) ],
+        maskColor: pwConfig.maskColor,
       });
     });
   });
@@ -62,7 +57,7 @@ test.describe('custom hero plate background', () => {
     ]);
   });
 
-  test('default view', async({ mount, page }) => {
+  test('default view', async({ render, page }) => {
     await page.route(IMAGE_URL, (route) => {
       return route.fulfill({
         status: 200,
@@ -70,17 +65,13 @@ test.describe('custom hero plate background', () => {
       });
     });
 
-    const component = await mount(
-      <TestApp>
-        <Home/>
-      </TestApp>,
-    );
+    const component = await render(<Home/>);
 
     const heroPlate = component.locator('div[data-label="hero plate"]');
 
     await expect(heroPlate).toHaveScreenshot({
-      mask: [ page.locator(configs.adsBannerSelector) ],
-      maskColor: configs.maskColor,
+      mask: [ page.locator(pwConfig.adsBannerSelector) ],
+      maskColor: pwConfig.maskColor,
     });
   });
 });
@@ -89,8 +80,8 @@ test.describe('custom hero plate background', () => {
 test.describe('mobile', () => {
   test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 
-  test('base view', async({ mount, page, mockAssetResponse, mockApiResponse }) => {
-    await mockAssetResponse(statsMock.base.coin_image, './playwright/mocks/image_s.jpg');
+  test('base view', async({ render, page, mockAssetResponse, mockApiResponse }) => {
+    await mockAssetResponse(statsMock.base.coin_image as string, './playwright/mocks/image_s.jpg');
     await mockApiResponse('stats', statsMock.base);
     await mockApiResponse('homepage_blocks', [
       blockMock.base,
@@ -103,15 +94,11 @@ test.describe('mobile', () => {
     ]);
     await mockApiResponse('stats_charts_txs', dailyTxsMock.base);
 
-    const component = await mount(
-      <TestApp>
-        <Home/>
-      </TestApp>,
-    );
+    const component = await render(<Home/>);
 
     await expect(component).toHaveScreenshot({
-      mask: [ page.locator(configs.adsBannerSelector) ],
-      maskColor: configs.maskColor,
+      mask: [ page.locator(pwConfig.adsBannerSelector) ],
+      maskColor: pwConfig.maskColor,
     });
   });
 });

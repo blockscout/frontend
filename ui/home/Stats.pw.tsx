@@ -3,7 +3,7 @@ import React from 'react';
 
 import * as statsMock from 'mocks/stats/index';
 import { test, expect } from 'playwright/lib';
-import * as configs from 'playwright/utils/configs';
+import * as pwConfig from 'playwright/utils/config';
 
 import Stats from './Stats';
 
@@ -20,7 +20,7 @@ test.describe('all items', () => {
   });
 
   test.describe('screen xl', () => {
-    test.use({ viewport: configs.viewport.xl });
+    test.use({ viewport: pwConfig.viewport.xl });
 
     test('', async() => {
       await expect(component).toHaveScreenshot();
