@@ -1,6 +1,5 @@
 import React from 'react';
 
-import config from 'configs/app';
 import { test, expect } from 'playwright/lib';
 
 import DefaultView from './specs/DefaultView';
@@ -9,7 +8,7 @@ import WithTextAd from './specs/WithTextAd';
 
 test.beforeEach(async({ mockTextAd, mockAssetResponse }) => {
   await mockTextAd();
-  await mockAssetResponse(config.UI.sidebar.logo.default as string, './playwright/mocks/image_s.jpg');
+  await mockAssetResponse('https://example.com/logo.png', './playwright/mocks/image_s.jpg');
 });
 
 test('default view +@mobile', async({ render }) => {

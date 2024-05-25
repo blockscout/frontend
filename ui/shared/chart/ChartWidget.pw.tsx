@@ -22,7 +22,7 @@ const props: Props = {
     { date: new Date('2023-02-23'), value: 25136740.887217894 },
   ],
   title: 'Native coin circulating supply',
-  description: 'Arender of token circulating supply for the period',
+  description: 'Amount of token circulating supply for the period',
   units: 'ETH',
   isLoading: false,
   isError: false,

@@ -9,7 +9,7 @@ import TokenInventory from './TokenInventory';
 
 test('base view +@mobile', async({ render }) => {
   const component = await render(
-    <Box pt={{ base: '134px', lg: 6 }}>
+    <Box pt={{ base: '134px', lg: 0 }}>
       <TokenInventory
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore:
