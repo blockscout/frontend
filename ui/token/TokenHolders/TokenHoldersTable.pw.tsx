@@ -9,10 +9,9 @@ import TokenHoldersTable from './TokenHoldersTable';
 
 test('base view without IDs', async({ render }) => {
   const component = await render(
-    <>
-      <Box h="128px"/>
+    <Box pt="128px">
       <TokenHoldersTable data={ tokenHoldersERC20.items } token={ tokenInfo } top={ 76 }/>
-    </>,
+    </Box>,
   );
 
   await expect(component).toHaveScreenshot();
@@ -20,10 +19,9 @@ test('base view without IDs', async({ render }) => {
 
 test('base view with IDs', async({ render }) => {
   const component = await render(
-    <>
-      <Box h="128px"/>
+    <Box pt="128px">
       <TokenHoldersTable data={ tokenHoldersERC1155.items } token={ tokenInfoERC1155a } top={ 76 }/>
-    </>,
+    </Box>,
   );
 
   await expect(component).toHaveScreenshot();

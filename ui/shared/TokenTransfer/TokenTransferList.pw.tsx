@@ -25,13 +25,12 @@ const data = [
 
 test('without tx info', async({ render }) => {
   const component = await render(
-    <>
-      <Box h={{ base: '134px', lg: 6 }}/>
+    <Box pt={{ base: '134px', lg: 6 }}>
       <TokenTransferList
         data={ data }
         showTxInfo={ false }
       />
-    </>,
+    </Box>,
   );
 
   await expect(component).toHaveScreenshot();
@@ -39,13 +38,12 @@ test('without tx info', async({ render }) => {
 
 test('with tx info', async({ render }) => {
   const component = await render(
-    <>
-      <Box h={{ base: '134px', lg: 6 }}/>
+    <Box pt={{ base: '134px', lg: 6 }}>
       <TokenTransferList
         data={ data }
         showTxInfo={ true }
       />
-    </>,
+    </Box>,
   );
 
   await expect(component).toHaveScreenshot();

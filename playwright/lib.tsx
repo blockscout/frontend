@@ -65,5 +65,3 @@ test.beforeEach(async({ page, mockTextAd }) => {
 
 export * from '@playwright/experimental-ct-react';
 export { test };
-
-// TODO @tom2drum check usage of mount() function

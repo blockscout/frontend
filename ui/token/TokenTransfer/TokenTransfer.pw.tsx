@@ -8,8 +8,7 @@ import TokenTransfer from './TokenTransfer';
 
 test('erc20 +@mobile', async({ render }) => {
   const component = await render(
-    <>
-      <Box h={{ base: '134px', lg: '100px' }}/>
+    <Box pt={{ base: '134px', lg: '100px' }}>
       <TokenTransfer
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore:
@@ -23,7 +22,7 @@ test('erc20 +@mobile', async({ render }) => {
           pagination: { page: 1, isVisible: true },
         }}
       />
-    </>,
+    </Box>,
   );
 
   await expect(component).toHaveScreenshot();
@@ -31,8 +30,7 @@ test('erc20 +@mobile', async({ render }) => {
 
 test('erc721 +@mobile', async({ render }) => {
   const component = await render(
-    <>
-      <Box h={{ base: '134px', lg: '100px' }}/>
+    <Box pt={{ base: '134px', lg: '100px' }}>
       <TokenTransfer
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore:
@@ -46,7 +44,7 @@ test('erc721 +@mobile', async({ render }) => {
           pagination: { page: 1, isVisible: true },
         }}
       />
-    </>,
+    </Box>,
   );
 
   await expect(component).toHaveScreenshot();
@@ -54,8 +52,7 @@ test('erc721 +@mobile', async({ render }) => {
 
 test('erc1155 +@mobile', async({ render }) => {
   const component = await render(
-    <>
-      <Box h={{ base: '134px', lg: '100px' }}/>
+    <Box pt={{ base: '134px', lg: '100px' }}>
       <TokenTransfer
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore:
@@ -74,7 +71,7 @@ test('erc1155 +@mobile', async({ render }) => {
           pagination: { page: 1, isVisible: true },
         }}
       />
-    </>,
+    </Box>,
   );
 
   await expect(component).toHaveScreenshot();

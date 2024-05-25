@@ -8,14 +8,13 @@ import TokenTransferTable from './TokenTransferTable';
 
 test('without tx info', async({ render }) => {
   const component = await render(
-    <>
-      <Box h={{ base: '134px', lg: 6 }}/>
+    <Box pt={{ base: '134px', lg: 6 }}>
       <TokenTransferTable
         data={ tokenTransferMock.mixTokens.items }
         top={ 0 }
         showTxInfo={ false }
       />
-    </>,
+    </Box>,
   );
 
   await expect(component).toHaveScreenshot();
@@ -23,14 +22,13 @@ test('without tx info', async({ render }) => {
 
 test('with tx info', async({ render }) => {
   const component = await render(
-    <>
-      <Box h={{ base: '134px', lg: 6 }}/>
+    <Box pt={{ base: '134px', lg: 6 }}>
       <TokenTransferTable
         data={ tokenTransferMock.mixTokens.items }
         top={ 0 }
         showTxInfo={ true }
       />
-    </>,
+    </Box>,
   );
 
   await expect(component).toHaveScreenshot();

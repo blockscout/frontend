@@ -16,10 +16,9 @@ const hooksConfig = {
 test('base view +@mobile', async({ render, mockApiResponse }) => {
   await mockApiResponse('address_internal_txs', internalTxsMock.baseResponse, { pathParams: { hash: ADDRESS_HASH } });
   const component = await render(
-    <>
-      <Box h={{ base: '134px', lg: 6 }}/>
+    <Box pt={{ base: '134px', lg: 6 }}>
       <AddressInternalTxs/>
-    </>,
+    </Box>,
     { hooksConfig },
   );
   await expect(component).toHaveScreenshot();

@@ -9,8 +9,7 @@ import TokenInventory from './TokenInventory';
 
 test('base view +@mobile', async({ render }) => {
   const component = await render(
-    <>
-      <Box h={{ base: '134px', lg: 0 }}/>
+    <Box pt={{ base: '134px', lg: 6 }}>
       <TokenInventory
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore:
@@ -29,7 +28,7 @@ test('base view +@mobile', async({ render }) => {
           data: tokenInfoERC721a,
         }}
       />
-    </>,
+    </Box>,
   );
 
   await expect(component).toHaveScreenshot();
