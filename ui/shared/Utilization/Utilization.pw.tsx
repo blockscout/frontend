@@ -11,7 +11,7 @@ test('green color scheme +@dark-mode', async({ render }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('gray color scheme +@dark-mode', async({ mount }) => {
-  const component = await mount(<Utilization value={ 0.423 } colorScheme="gray"/>);
+test('gray color scheme +@dark-mode', async({ render }) => {
+  const component = await render(<Utilization value={ 0.423 } colorScheme="gray"/>);
   await expect(component).toHaveScreenshot();
 });
