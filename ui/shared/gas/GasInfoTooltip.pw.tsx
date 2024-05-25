@@ -1,5 +1,7 @@
 import React from 'react';
 
+import type { GasPriceInfo } from 'types/api/stats';
+
 import { SECOND } from 'lib/consts';
 import * as statsMock from 'mocks/stats/index';
 import { test, expect } from 'playwright/lib';
@@ -14,7 +16,7 @@ test.use({ viewport: { width: 300, height: 300 } });
 test('all data', async({ render, page }) => {
   await render(
     <GasInfoTooltip data={ statsMock.base } dataUpdatedAt={ dataUpdatedAt } isOpen>
-      <span>Gas <GasPrice data={ statsMock.base.gas_prices.average }/></span>
+      <span>Gas <GasPrice data={ statsMock.base.gas_prices?.average as GasPriceInfo }/></span>
     </GasInfoTooltip>,
   );
 
@@ -26,7 +28,7 @@ test('all data', async({ render, page }) => {
 test('without primary unit price', async({ render, page }) => {
   await render(
     <GasInfoTooltip data={ statsMock.withoutFiatPrices } dataUpdatedAt={ dataUpdatedAt } isOpen>
-      <span>Gas: <GasPrice data={ statsMock.withoutFiatPrices.gas_prices.average }/></span>
+      <span>Gas: <GasPrice data={ statsMock.withoutFiatPrices.gas_prices?.average as GasPriceInfo }/></span>
     </GasInfoTooltip>,
   );
 
@@ -38,7 +40,7 @@ test('without primary unit price', async({ render, page }) => {
 test('without secondary unit price', async({ render, page }) => {
   await render(
     <GasInfoTooltip data={ statsMock.withoutGweiPrices } dataUpdatedAt={ dataUpdatedAt } isOpen>
-      <span>Gas: <GasPrice data={ statsMock.withoutGweiPrices.gas_prices.average }/></span>
+      <span>Gas: <GasPrice data={ statsMock.withoutGweiPrices.gas_prices?.average as GasPriceInfo }/></span>
     </GasInfoTooltip>,
   );
 
@@ -50,7 +52,7 @@ test('without secondary unit price', async({ render, page }) => {
 test('no data', async({ render, page }) => {
   await render(
     <GasInfoTooltip data={ statsMock.withoutBothPrices } dataUpdatedAt={ dataUpdatedAt } isOpen>
-      <span>Gas: <GasPrice data={ statsMock.withoutBothPrices.gas_prices.average }/></span>
+      <span>Gas: <GasPrice data={ statsMock.withoutBothPrices.gas_prices?.average as GasPriceInfo }/></span>
     </GasInfoTooltip>,
   );
 
@@ -69,7 +71,7 @@ test.describe('one unit', () => {
   test('with data', async({ render, page }) => {
     await render(
       <GasInfoTooltip data={ statsMock.withoutFiatPrices } dataUpdatedAt={ dataUpdatedAt } isOpen>
-        <span>Gas: <GasPrice data={ statsMock.withoutFiatPrices.gas_prices.average }/></span>
+        <span>Gas: <GasPrice data={ statsMock.withoutFiatPrices.gas_prices?.average as GasPriceInfo }/></span>
       </GasInfoTooltip>,
     );
 
@@ -81,7 +83,7 @@ test.describe('one unit', () => {
   test('without data', async({ render, page }) => {
     await render(
       <GasInfoTooltip data={ statsMock.withoutGweiPrices } dataUpdatedAt={ dataUpdatedAt } isOpen>
-        <span>Gas: <GasPrice data={ statsMock.withoutGweiPrices.gas_prices.average }/></span>
+        <span>Gas: <GasPrice data={ statsMock.withoutGweiPrices.gas_prices?.average as GasPriceInfo }/></span>
       </GasInfoTooltip>,
     );
 

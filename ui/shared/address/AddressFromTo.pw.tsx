@@ -2,11 +2,11 @@ import React from 'react';
 
 import * as addressMock from 'mocks/address/address';
 import { test, expect } from 'playwright/lib';
-import * as configs from 'playwright/utils/configs';
+import * as pwConfig from 'playwright/utils/config';
 
 import AddressFromTo from './AddressFromTo';
 
-test.use({ viewport: configs.viewport.mobile });
+test.use({ viewport: pwConfig.viewport.mobile });
 
 test('outgoing txn', async({ render }) => {
   const component = await render(

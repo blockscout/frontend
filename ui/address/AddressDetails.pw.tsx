@@ -4,7 +4,7 @@ import * as addressMock from 'mocks/address/address';
 import * as countersMock from 'mocks/address/counters';
 import * as tokensMock from 'mocks/address/tokens';
 import { test, expect, devices } from 'playwright/lib';
-import * as configs from 'playwright/utils/configs';
+import * as pwConfig from 'playwright/utils/config';
 
 import AddressDetails from './AddressDetails';
 import MockAddressPage from './testUtils/MockAddressPage';
@@ -27,8 +27,8 @@ test.describe('mobile', () => {
     const component = await render(<AddressDetails addressQuery={{ data: addressMock.contract } as AddressQuery}/>, { hooksConfig });
 
     await expect(component).toHaveScreenshot({
-      mask: [ page.locator(configs.adsBannerSelector) ],
-      maskColor: configs.maskColor,
+      mask: [ page.locator(pwConfig.adsBannerSelector) ],
+      maskColor: pwConfig.maskColor,
     });
   });
 
@@ -39,8 +39,8 @@ test.describe('mobile', () => {
     const component = await render(<AddressDetails addressQuery={{ data: addressMock.validator } as AddressQuery}/>, { hooksConfig });
 
     await expect(component).toHaveScreenshot({
-      mask: [ page.locator(configs.adsBannerSelector) ],
-      maskColor: configs.maskColor,
+      mask: [ page.locator(pwConfig.adsBannerSelector) ],
+      maskColor: pwConfig.maskColor,
     });
   });
 
@@ -53,8 +53,8 @@ test('contract', async({ render, page, mockApiResponse }) => {
   const component = await render(<AddressDetails addressQuery={{ data: addressMock.contract } as AddressQuery}/>, { hooksConfig });
 
   await expect(component).toHaveScreenshot({
-    mask: [ page.locator(configs.adsBannerSelector) ],
-    maskColor: configs.maskColor,
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
   });
 });
 
@@ -76,8 +76,8 @@ test.fixme('token', async({ render, mockApiResponse, injectMetaMaskProvider, pag
   );
 
   await expect(component).toHaveScreenshot({
-    mask: [ page.locator(configs.adsBannerSelector) ],
-    maskColor: configs.maskColor,
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
   });
 });
 
@@ -88,7 +88,7 @@ test('validator', async({ render, mockApiResponse, page }) => {
   const component = await render(<AddressDetails addressQuery={{ data: addressMock.validator } as AddressQuery}/>, { hooksConfig });
 
   await expect(component).toHaveScreenshot({
-    mask: [ page.locator(configs.adsBannerSelector) ],
-    maskColor: configs.maskColor,
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
   });
 });

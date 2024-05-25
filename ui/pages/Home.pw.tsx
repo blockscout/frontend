@@ -6,7 +6,7 @@ import * as dailyTxsMock from 'mocks/stats/daily_txs';
 import * as statsMock from 'mocks/stats/index';
 import * as txMock from 'mocks/txs/tx';
 import { test, expect, devices } from 'playwright/lib';
-import * as configs from 'playwright/utils/configs';
+import * as pwConfig from 'playwright/utils/config';
 
 import Home from './Home';
 
@@ -32,18 +32,18 @@ test.describe('default view', () => {
 
   test('-@default +@dark-mode', async({ page }) => {
     await expect(component).toHaveScreenshot({
-      mask: [ page.locator(configs.adsBannerSelector) ],
-      maskColor: configs.maskColor,
+      mask: [ page.locator(pwConfig.adsBannerSelector) ],
+      maskColor: pwConfig.maskColor,
     });
   });
 
   test.describe('screen xl', () => {
-    test.use({ viewport: configs.viewport.xl });
+    test.use({ viewport: pwConfig.viewport.xl });
 
     test('', async({ page }) => {
       await expect(component).toHaveScreenshot({
-        mask: [ page.locator(configs.adsBannerSelector) ],
-        maskColor: configs.maskColor,
+        mask: [ page.locator(pwConfig.adsBannerSelector) ],
+        maskColor: pwConfig.maskColor,
       });
     });
   });
@@ -70,8 +70,8 @@ test.describe('custom hero plate background', () => {
     const heroPlate = component.locator('div[data-label="hero plate"]');
 
     await expect(heroPlate).toHaveScreenshot({
-      mask: [ page.locator(configs.adsBannerSelector) ],
-      maskColor: configs.maskColor,
+      mask: [ page.locator(pwConfig.adsBannerSelector) ],
+      maskColor: pwConfig.maskColor,
     });
   });
 });
@@ -97,8 +97,8 @@ test.describe('mobile', () => {
     const component = await render(<Home/>);
 
     await expect(component).toHaveScreenshot({
-      mask: [ page.locator(configs.adsBannerSelector) ],
-      maskColor: configs.maskColor,
+      mask: [ page.locator(pwConfig.adsBannerSelector) ],
+      maskColor: pwConfig.maskColor,
     });
   });
 });

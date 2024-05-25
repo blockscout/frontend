@@ -1,4 +1,3 @@
-// TODO @tom2drum check where it is used
 export const duck = {
   ad: {
     name: 'Hello utia!',

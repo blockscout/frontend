@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { devices } from '@playwright/test';
 
 export const viewport = {
@@ -10,3 +9,5 @@ export const viewport = {
 export const maskColor = '#4299E1'; // blue.400
 
 export const adsBannerSelector = '.adsbyslise';
+
+export const socketPort = 3200;

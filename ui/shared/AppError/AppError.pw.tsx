@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { test, expect } from 'playwright/lib';
-import * as configs from 'playwright/utils/configs';
+import * as pwConfig from 'playwright/utils/config';
 
 import AppError from './AppError';
 
@@ -47,6 +47,6 @@ test('too many requests +@mobile', async({ render, page }) => {
   await page.waitForResponse('https://www.google.com/recaptcha/api2/**');
   await expect(component).toHaveScreenshot({
     mask: [ page.locator('.recaptcha') ],
-    maskColor: configs.maskColor,
+    maskColor: pwConfig.maskColor,
   });
 });
