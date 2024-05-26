@@ -4,19 +4,19 @@ import type { MultichainProviderConfig } from 'types/client/multichainProviderCo
 import { getEnvValue, parseEnvJson } from '../utils';
 import marketplace from './marketplace';
 
-const value = parseEnvJson<MultichainProviderConfig>(getEnvValue('NEXT_PUBLIC_MULTICHAIN_PROVIDER_CONFIG'));
+const value = parseEnvJson<MultichainProviderConfig>(getEnvValue('NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG'));
 
-const title = 'Multichain button';
+const title = 'Multichain balance';
 
-const config: Feature<{name: string; logoUrl?: string; url_template: string; dapp_id?: string }> = (() => {
+const config: Feature<{name: string; logoUrl?: string; urlTemplate: string; dappId?: string }> = (() => {
   if (value) {
     return Object.freeze({
       title,
-      isEnabled: true as const,
+      isEnabled: true,
       name: value.name,
       logoUrl: value.logo,
-      url_template: value.url_template,
-      dapp_id: marketplace.isEnabled ? value.dapp_id : undefined,
+      urlTemplate: value.url_template,
+      dappId: marketplace.isEnabled ? value.dapp_id : undefined,
     });
   }
 

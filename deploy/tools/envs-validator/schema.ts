@@ -621,9 +621,9 @@ const schema = yup
     NEXT_PUBLIC_HAS_USER_OPS: yup.boolean(),
     NEXT_PUBLIC_METASUITES_ENABLED: yup.boolean(),
     NEXT_PUBLIC_SWAP_BUTTON_URL: yup.string(),
-    NEXT_PUBLIC_MULTICHAIN_PROVIDER_CONFIG: yup
+    NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG: yup
       .mixed()
-      .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_MULTICHAIN_PROVIDER_CONFIG, it should have name and url url_template', (data) => {
+      .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG, it should have name and url template', (data) => {
         const isUndefined = data === undefined;
         const valueSchema = yup.object<MultichainProviderConfig>().transform(replaceQuotes).json().shape({
           name: yup.string().required(),

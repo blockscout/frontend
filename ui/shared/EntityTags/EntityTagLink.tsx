@@ -1,4 +1,3 @@
-import type { LinkProps } from '@chakra-ui/react';
 import React from 'react';
 
 import type { EntityTag } from './types';
@@ -30,7 +29,7 @@ const EntityTagLink = ({ data, children }: Props) => {
     });
   }, [ linkParams?.href, data.slug ]);
 
-  const linkProps: LinkProps = {
+  const linkProps = {
     color: 'inherit',
     display: 'inline-flex',
     overflow: 'hidden',

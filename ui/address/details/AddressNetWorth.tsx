@@ -66,34 +66,35 @@ const AddressNetWorth = ({ addressData, isLoading, addressHash }: Props) => {
       onClick: onMultichainClick,
     };
 
-    const portfolioUrlString = multichainFeature.url_template.replace(TEMPLATE_ADDRESS, addressHash);
-    const portfolioUrl = new URL(portfolioUrlString);
-    portfolioUrl.searchParams.append('utm_source', 'blockscout');
-    portfolioUrl.searchParams.append('utm_medium', 'address');
+    try {
+      const portfolioUrlString = multichainFeature.urlTemplate.replace(TEMPLATE_ADDRESS, addressHash);
+      const portfolioUrl = new URL(portfolioUrlString);
+      portfolioUrl.searchParams.append('utm_source', 'blockscout');
+      portfolioUrl.searchParams.append('utm_medium', 'address');
+      const dappId = multichainFeature.dappId;
+      multichainItem = (
+        <>
+          <TextSeparator mx={ 3 } color="gray.500"/>
+          <Text mr={ 2 }>Multichain</Text>
+          { typeof dappId === 'string' ? (
+            <LinkInternal
+              href={ route({ pathname: '/apps/[id]', query: { id: dappId, url: portfolioUrl.toString() } }) }
+              { ...linkProps }
+            >
+              { buttonContent }
+            </LinkInternal>
+          ) : (
+            <LinkExternal
+              href={ portfolioUrl.toString() }
+              { ...linkProps }
+            >
+              { buttonContent }
+            </LinkExternal>
+          ) }
+        </>
+      );
+    } catch (error) {}
 
-    const dappId = multichainFeature.dapp_id;
-
-    multichainItem = (
-      <>
-        <TextSeparator mx={ 3 } color="gray.500"/>
-        <Text mr={ 2 }>Multichain</Text>
-        { typeof dappId === 'string' ? (
-          <LinkInternal
-            href={ route({ pathname: '/apps/[id]', query: { id: dappId, url: portfolioUrl.toString() } }) }
-            { ...linkProps }
-          >
-            { buttonContent }
-          </LinkInternal>
-        ) : (
-          <LinkExternal
-            href={ portfolioUrl.toString() }
-            { ...linkProps }
-          >
-            { buttonContent }
-          </LinkExternal>
-        ) }
-      </>
-    );
   }
 
   return (
