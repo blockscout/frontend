@@ -129,7 +129,7 @@ const InscribeModal = ({ open, setOpen, encodedData, setOpenSuccessModal, setIns
             />
           </FormControl>
           <FormControl mt={ 4 }>
-            <FormLabel>Fee Rate</FormLabel>
+            <FormLabel>Fee Rate (sat/vbytes)</FormLabel>
             <Input
               type="number"
               value={ feeRate }

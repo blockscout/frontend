@@ -26,7 +26,6 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
-import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
 import { currencyUnits } from 'lib/units';
 import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
@@ -274,14 +273,6 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           ) : (
             <BlockEntity isLoading={ isLoading } number={ data.block } noIcon/>
           ) }
-          { Boolean(data.confirmations) && (
-            <>
-              <TextSeparator color="gray.500"/>
-              <Skeleton isLoaded={ !isLoading } color="text_secondary">
-                <span>{ data.confirmations } Block confirmations</span>
-              </Skeleton>
-            </>
-          ) }
         </DetailsInfoItem>
         { data.zkevm_batch_number && (
           <DetailsInfoItem
@@ -321,16 +312,6 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
               timestamp={ data.timestamp }
               isLoading={ isLoading }
             />
-            { data.confirmation_duration && (
-              <>
-                <TextSeparator color="gray.500"/>
-                <Skeleton isLoaded={ !isLoading } color="text_secondary">
-                  <span>
-                    { getConfirmationDuration(data.confirmation_duration) }
-                  </span>
-                </Skeleton>
-              </>
-            ) }
           </DetailsInfoItem>
         ) }
         { data.execution_node && (

@@ -20,7 +20,7 @@ import {
 import AddressQrCode from 'ui/address/details/AddressQrCode';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import TextAd from 'ui/shared/ad/TextAd';
-import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
+// import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import Tag from 'ui/shared/chakra/Tag';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import LinkExternal from 'ui/shared/LinkExternal';
@@ -188,7 +188,7 @@ const TokenInstanceContent = () => {
         w="auto"
         maxW="700px"
       />
-      { !isLoading && tokenInstanceQuery.data && <AddressAddToWallet token={ tokenQuery.data } variant="button"/> }
+      { /* { !isLoading && tokenInstanceQuery.data && <AddressAddToWallet token={ tokenQuery.data } variant="button"/> } */ }
       <AddressQrCode address={ address } isLoading={ isLoading }/>
       <AccountActionsMenu isLoading={ isLoading }/>
       { appLink }

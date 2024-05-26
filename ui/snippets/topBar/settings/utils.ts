@@ -35,11 +35,11 @@ export const IDENTICONS: Array<{ label: string; id: IdenticonType; sampleBg: str
     id: 'github',
     sampleBg: 'url("/static/identicon_logos/github.png") center / contain no-repeat',
   },
-  {
-    label: 'Metamask jazzicon',
-    id: 'jazzicon',
-    sampleBg: 'url("/static/identicon_logos/jazzicon.png") center / contain no-repeat',
-  },
+  // {
+  //   label: 'Metamask jazzicon',
+  //   id: 'jazzicon',
+  //   sampleBg: 'url("/static/identicon_logos/jazzicon.png") center / contain no-repeat',
+  // },
   {
     label: 'Ethereum blockies',
     id: 'blockie',

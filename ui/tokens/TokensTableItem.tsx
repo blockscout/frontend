@@ -5,7 +5,7 @@ import React from 'react';
 import type { TokenInfo } from 'types/api/token';
 
 import config from 'configs/app';
-import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
+// import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import Tag from 'ui/shared/chakra/Tag';
 import type { EntityProps as AddressEntityProps } from 'ui/shared/entities/address/AddressEntity';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -88,12 +88,12 @@ const TokensTableItem = ({
                 fontSize="sm"
                 fontWeight={ 500 }
               />
-              <AddressAddToWallet
+              { /* <AddressAddToWallet
                 token={ token }
                 isLoading={ isLoading }
                 iconSize={ 5 }
                 opacity={ 0 }
-              />
+              /> */ }
             </Flex>
             <Flex columnGap={ 1 }>
               <Tag isLoading={ isLoading }>{ type }</Tag>
