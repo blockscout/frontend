@@ -62,6 +62,7 @@ export interface SmartContract {
   minimal_proxy_address_hash: string | null;
   language: string | null;
   license_type: SmartContractLicenseType | null;
+  certified?: boolean;
 }
 
 export type SmartContractDecodedConstructorArg = [

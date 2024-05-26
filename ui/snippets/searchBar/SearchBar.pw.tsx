@@ -30,6 +30,7 @@ test('search by token name  +@mobile +@dark-mode', async({ render, page, mockApi
 test('search by contract name  +@mobile +@dark-mode', async({ render, page, mockApiResponse }) => {
   const apiUrl = await mockApiResponse('quick_search', [
     searchMock.contract1,
+    searchMock.contract2,
     searchMock.address2,
   ], { queryParams: { q: 'o' } });
 

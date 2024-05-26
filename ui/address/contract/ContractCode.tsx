@@ -16,6 +16,7 @@ import { getResourceKey } from 'lib/api/useApiQuery';
 import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
 import dayjs from 'lib/date/dayjs';
 import useSocketMessage from 'lib/socket/useSocketMessage';
+import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import Hint from 'ui/shared/Hint';
@@ -195,6 +196,13 @@ const ContractCode = ({ addressHash, contractQuery, channel }: Props) => {
     return null;
   })();
 
+  const contractNameWithCertifiedIcon = data?.is_verified ? (
+    <Flex alignItems="center">
+      { data.name }
+      { data.certified && <ContractCertifiedLabel iconSize={ 5 } boxSize={ 5 } ml={ 2 }/> }
+    </Flex>
+  ) : null;
+
   return (
     <>
       <Flex flexDir="column" rowGap={ 2 } mb={ 6 } _empty={{ display: 'none' }}>
@@ -248,7 +256,7 @@ const ContractCode = ({ addressHash, contractQuery, channel }: Props) => {
       </Flex>
       { data?.is_verified && (
         <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} rowGap={ 4 } columnGap={ 6 } mb={ 8 }>
-          { data.name && <InfoItem label="Contract name" content={ data.name } isLoading={ isPlaceholderData }/> }
+          { data.name && <InfoItem label="Contract name" content={ contractNameWithCertifiedIcon } isLoading={ isPlaceholderData }/> }
           { data.compiler_version && <InfoItem label="Compiler version" content={ data.compiler_version } isLoading={ isPlaceholderData }/> }
           { data.evm_version && <InfoItem label="EVM version" content={ data.evm_version } textTransform="capitalize" isLoading={ isPlaceholderData }/> }
           { licenseLink && (

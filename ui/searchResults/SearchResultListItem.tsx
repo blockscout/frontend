@@ -11,6 +11,7 @@ import highlightText from 'lib/highlightText';
 import * as mixpanel from 'lib/mixpanel/index';
 import { saveToRecentKeywords } from 'lib/recentSearchKeywords';
 import { ADDRESS_REGEXP } from 'lib/validations/address';
+import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as BlobEntity from 'ui/shared/entities/blob/BlobEntity';
 import * as BlockEntity from 'ui/shared/entities/block/BlockEntity';
@@ -69,7 +70,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
                 textOverflow="ellipsis"
               />
             </LinkInternal>
-            { data.is_verified_via_admin_panel && <IconSvg name="verified_token" boxSize={ 4 } ml={ 1 } color="green.500"/> }
+            { data.is_verified_via_admin_panel && <IconSvg name="certified" boxSize={ 4 } ml={ 1 } color="green.500"/> }
           </Flex>
         );
       }
@@ -346,16 +347,21 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
         const expiresText = data.ens_info?.expiry_date ? ` (expires ${ dayjs(data.ens_info.expiry_date).fromNow() })` : '';
 
         return addressName ? (
-          <>
-            <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? xss(addressName) : highlightText(addressName, searchTerm) }}/>
-            { data.ens_info &&
-              (
+          <Flex alignItems="center">
+            <Text
+              overflow="hidden"
+              whiteSpace="nowrap"
+              textOverflow="ellipsis"
+            >
+              <span dangerouslySetInnerHTML={{ __html: shouldHighlightHash ? xss(addressName) : highlightText(addressName, searchTerm) }}/>
+              { data.ens_info && (
                 data.ens_info.names_count > 1 ?
                   <chakra.span color="text_secondary"> ({ data.ens_info.names_count > 39 ? '40+' : `+${ data.ens_info.names_count - 1 }` })</chakra.span> :
                   <chakra.span color="text_secondary">{ expiresText }</chakra.span>
-              )
-            }
-          </>
+              ) }
+            </Text>
+            { data.certified && <ContractCertifiedLabel iconSize={ 5 } boxSize={ 5 } ml={ 1 }/> }
+          </Flex>
         ) :
           null;
       }
