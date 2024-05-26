@@ -1,4 +1,4 @@
-import { Box, Flex, HStack, useColorModeValue } from '@chakra-ui/react';
+import { Alert, Box, Flex, HStack, useColorModeValue } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -14,7 +14,7 @@ import { ADDRESS_TABS_COUNTERS } from 'stubs/address';
 import { USER_OPS_ACCOUNT } from 'stubs/userOps';
 import AddressAccountHistory from 'ui/address/AddressAccountHistory';
 import AddressBlocksValidated from 'ui/address/AddressBlocksValidated';
-import AddressCoinBalance from 'ui/address/AddressCoinBalance';
+// import AddressCoinBalance from 'ui/address/AddressCoinBalance';
 import AddressContract from 'ui/address/AddressContract';
 import AddressDetails from 'ui/address/AddressDetails';
 import AddressInternalTxs from 'ui/address/AddressInternalTxs';
@@ -30,7 +30,7 @@ import AddressEnsDomains from 'ui/address/ensDomains/AddressEnsDomains';
 import SolidityscanReport from 'ui/address/SolidityscanReport';
 import useAddressQuery from 'ui/address/utils/useAddressQuery';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
-import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
+// import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import EntityTags from 'ui/shared/EntityTags';
@@ -77,6 +77,30 @@ const AddressPageContent = () => {
 
   const tabs: Array<RoutedTab> = React.useMemo(() => {
     return [
+      addressQuery.data?.is_contract ?
+        {
+          id: 'contract',
+          title: () => {
+            if (addressQuery.data.is_verified) {
+              return (
+                <>
+                  <span>Contract</span>
+                  <IconSvg
+                    name="status/success"
+                    boxSize="14px"
+                    color="green.500"
+                    ml={ 1 }
+                  />
+                </>
+              );
+            }
+
+            return 'Contract';
+          },
+          component: <AddressContract tabs={ contractTabs }/>,
+          subTabs: contractTabs.map((tab) => tab.id),
+        } :
+        undefined,
       {
         id: 'txs',
         title: 'Transactions',
@@ -90,7 +114,8 @@ const AddressPageContent = () => {
           component: <AddressAccountHistory scrollRef={ tabsScrollRef }/>,
         } :
         undefined,
-      config.features.userOps.isEnabled && Boolean(userOpsAccountQuery.data?.total_ops) ?
+      config.features.userOps.isEnabled &&
+      Boolean(userOpsAccountQuery.data?.total_ops) ?
         {
           id: 'user_ops',
           title: 'User operations',
@@ -98,7 +123,8 @@ const AddressPageContent = () => {
           component: <AddressUserOps/>,
         } :
         undefined,
-      config.features.beaconChain.isEnabled && addressTabsCountersQuery.data?.withdrawals_count ?
+      config.features.beaconChain.isEnabled &&
+      addressTabsCountersQuery.data?.withdrawals_count ?
         {
           id: 'withdrawals',
           title: 'Withdrawals',
@@ -125,12 +151,13 @@ const AddressPageContent = () => {
         count: addressTabsCountersQuery.data?.internal_txs_count,
         component: <AddressInternalTxs scrollRef={ tabsScrollRef }/>,
       },
-      {
-        id: 'coin_balance_history',
-        title: 'Coin balance history',
-        component: <AddressCoinBalance/>,
-      },
-      config.chain.verificationType === 'validation' && addressTabsCountersQuery.data?.validations_count ?
+      // {
+      //   id: 'coin_balance_history',
+      //   title: 'Coin balance history',
+      //   component: <AddressCoinBalance/>,
+      // },
+      config.chain.verificationType === 'validation' &&
+      addressTabsCountersQuery.data?.validations_count ?
         {
           id: 'blocks_validated',
           title: 'Blocks validated',
@@ -146,23 +173,6 @@ const AddressPageContent = () => {
           component: <AddressLogs scrollRef={ tabsScrollRef }/>,
         } :
         undefined,
-      addressQuery.data?.is_contract ? {
-        id: 'contract',
-        title: () => {
-          if (addressQuery.data.is_verified) {
-            return (
-              <>
-                <span>Contract</span>
-                <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 }/>
-              </>
-            );
-          }
-
-          return 'Contract';
-        },
-        component: <AddressContract tabs={ contractTabs }/>,
-        subTabs: contractTabs.map(tab => tab.id),
-      } : undefined,
     ].filter(Boolean);
   }, [ addressQuery.data, contractTabs, addressTabsCountersQuery.data, userOpsAccountQuery.data ]);
 
@@ -221,8 +231,8 @@ const AddressPageContent = () => {
         iconColor={ isSafeAddress ? safeIconColor : undefined }
         mr={ 4 }
       />
-      { !isLoading && addressQuery.data?.is_contract && addressQuery.data.token &&
-        <AddressAddToWallet token={ addressQuery.data.token } variant="button"/> }
+      { /* { !isLoading && addressQuery.data?.is_contract && addressQuery.data.token &&
+        <AddressAddToWallet token={ addressQuery.data.token } variant="button"/> } */ }
       { !isLoading && !addressQuery.data?.is_contract && config.features.account.isEnabled && (
         <AddressFavoriteButton hash={ hash } watchListId={ addressQuery.data?.watchlist_address_id }/>
       ) }
@@ -239,8 +249,16 @@ const AddressPageContent = () => {
   return (
     <>
       <Flex direction="column" paddingX={{ base: 4, lg: 8 }}>
+        { addressQuery?.status === 'error' && (
+          <Alert status="warning" marginBottom={ 4 }>
+          If you have deployed your contract recently, please wait for a bitcoin
+          block confirmation to see your deployed contract
+          </Alert>
+        ) }
         <PageTitle
-          title={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }
+          title={ `${
+            addressQuery.data?.is_contract ? 'Contract' : 'Address'
+          } details` }
           backLink={ backLink }
           contentAfter={ tags }
           secondRow={ titleSecondRow }
@@ -258,14 +276,13 @@ const AddressPageContent = () => {
         paddingX="1em"
         width="100%"
       >
-
         <AddressDetails addressQuery={ addressQuery } scrollRef={ tabsScrollRef }/>
-        { (isLoading || addressTabsCountersQuery.isPlaceholderData) ?
-          <TabsSkeleton tabs={ tabs }/> :
+        { isLoading || addressTabsCountersQuery.isPlaceholderData ? (
+          <TabsSkeleton tabs={ tabs }/>
+        ) : (
           content
-        }
+        ) }
       </Box>
-
     </>
   );
 };

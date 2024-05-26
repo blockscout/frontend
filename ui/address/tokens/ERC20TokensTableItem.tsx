@@ -4,7 +4,7 @@ import React from 'react';
 import type { AddressTokenBalance } from 'types/api/address';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
-import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
+// import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
@@ -46,7 +46,7 @@ const ERC20TokensTableItem = ({
             truncation="constant"
             noIcon
           />
-          <AddressAddToWallet token={ token } ml={ 4 } isLoading={ isLoading } opacity="0"/>
+          { /* <AddressAddToWallet token={ token } ml={ 4 } isLoading={ isLoading } opacity="0"/> */ }
         </Flex>
       </Td>
       <Td isNumeric verticalAlign="middle">
