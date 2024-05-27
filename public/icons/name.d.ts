@@ -12,7 +12,6 @@
 	| "arrows/east"
 	| "arrows/north-east"
 	| "arrows/south-east"
-	| "arrows/south-mini"
 	| "arrows/up-down"
 	| "beta_xs"
 	| "beta"

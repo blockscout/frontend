@@ -52,7 +52,7 @@ const DeFiDropdown = () => {
           _active={{ bgColor: 'blue.400' }}
         >
           { !isMobile && 'Blockscout' } DeFi
-          <IconSvg name="arrows/south-mini" boxSize={ 4 } ml={ 1 }/>
+          <IconSvg name="arrows/east-mini" boxSize={ 4 } ml={ 1 } transform="rotate(-90deg)"/>
         </Button>
       </PopoverTrigger>
       <PopoverContent w="auto">
