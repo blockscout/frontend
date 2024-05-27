@@ -251,3 +251,13 @@ export const publicTagsSubmit: GetServerSideProps<Props> = async(context) => {
 
   return base(context);
 };
+
+export const disputeGames: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.faultProofSystem.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};

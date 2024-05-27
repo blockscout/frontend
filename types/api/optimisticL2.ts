@@ -61,15 +61,15 @@ export type OptimisticL2WithdrawalsItem = {
   'status': string;
 }
 
-export const WITHDRAWAL_STATUSES = [
-  'Waiting for state root',
-  'Ready to prove',
-  'In challenge period',
-  'Ready for relay',
-  'Relayed',
-] as const;
-
-export type OptimisticL2WithdrawalStatus = typeof WITHDRAWAL_STATUSES[number];
+export type OptimisticL2WithdrawalStatus =
+  'Waiting for state root' |
+  'Ready to prove' |
+  'In challenge period' |
+  'Waiting a game to resolve' |
+  'Ready to prove' |
+  'Proven' |
+  'Ready for relay' |
+  'Relayed';
 
 export type OptimisticL2WithdrawalsResponse = {
   items: Array<OptimisticL2WithdrawalsItem>;
@@ -77,4 +77,22 @@ export type OptimisticL2WithdrawalsResponse = {
     'items_count': number;
     'nonce': string;
   };
+}
+
+export type OptimisticL2DisputeGamesResponse = {
+  items: Array<OptimisticL2DisputeGamesItem>;
+  'next_page_params': {
+    'items_count': number;
+    'index': number;
+  };
+}
+
+export type OptimisticL2DisputeGamesItem = {
+  contract_address: string;
+  created_at: string;
+  game_type: number;
+  index: number;
+  l2_block_number: number;
+  resolved_at: string | null;
+  status: string;
 }

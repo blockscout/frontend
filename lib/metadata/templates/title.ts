@@ -33,6 +33,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/csv-export': 'export data to CSV',
   '/deposits': 'deposits (L1 > L2)',
   '/output-roots': 'output roots',
+  '/dispute-games': 'dispute games',
   '/batches': 'tx batches (L2 blocks)',
   '/batches/[number]': 'L2 tx batch %number%',
   '/blobs/[hash]': 'blob %hash% details',

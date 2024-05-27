@@ -96,6 +96,12 @@ export default function useNavItems(): ReturnType {
       icon: 'output_roots',
       isActive: pathname === '/output-roots',
     };
+    const rollupDisputeGames = config.features.faultProofSystem.isEnabled ? {
+      text: 'Dispute games',
+      nextRoute: { pathname: '/dispute-games' as const },
+      icon: 'games',
+      isActive: pathname === '/dispute-games',
+    } : null;
 
     const rollupFeature = config.features.rollup;
 
@@ -109,6 +115,7 @@ export default function useNavItems(): ReturnType {
         [
           blocks,
           rollupTxnBatches,
+          rollupDisputeGames,
           rollupFeature.type === 'optimistic' ? rollupOutputRoots : undefined,
         ].filter(Boolean),
         [

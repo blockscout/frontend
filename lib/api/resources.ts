@@ -64,6 +64,7 @@ import type {
   OptimisticL2OutputRootsResponse,
   OptimisticL2TxnBatchesResponse,
   OptimisticL2WithdrawalsResponse,
+  OptimisticL2DisputeGamesResponse,
 } from 'types/api/optimisticL2';
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import type { SearchRedirectResult, SearchResult, SearchResultFilters, SearchResultItem } from 'types/api/search';
@@ -650,6 +651,15 @@ export const RESOURCES = {
     path: '/api/v2/optimism/txn-batches/count',
   },
 
+  optimistic_l2_dispute_games: {
+    path: '/api/v2/optimism/games',
+    filterFields: [],
+  },
+
+  optimistic_l2_dispute_games_count: {
+    path: '/api/v2/optimism/games/count',
+  },
+
   // zkEvm L2
   zkevm_l2_deposits: {
     path: '/api/v2/zkevm/deposits',
@@ -853,6 +863,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'token_instance_transfers' | 'token_instance_holders' |
 'verified_contracts' |
 'optimistic_l2_output_roots' | 'optimistic_l2_withdrawals' | 'optimistic_l2_txn_batches' | 'optimistic_l2_deposits' |
+'optimistic_l2_dispute_games' |
 'shibarium_deposits' | 'shibarium_withdrawals' |
 'zkevm_l2_deposits' | 'zkevm_l2_withdrawals' | 'zkevm_l2_txn_batches' | 'zkevm_l2_txn_batch_txs' |
 'zksync_l2_txn_batches' | 'zksync_l2_txn_batch_txs' |
@@ -955,13 +966,12 @@ Q extends 'optimistic_l2_output_roots' ? OptimisticL2OutputRootsResponse :
 Q extends 'optimistic_l2_withdrawals' ? OptimisticL2WithdrawalsResponse :
 Q extends 'optimistic_l2_deposits' ? OptimisticL2DepositsResponse :
 Q extends 'optimistic_l2_txn_batches' ? OptimisticL2TxnBatchesResponse :
+Q extends 'optimistic_l2_dispute_games' ? OptimisticL2DisputeGamesResponse :
 Q extends 'optimistic_l2_output_roots_count' ? number :
 Q extends 'optimistic_l2_withdrawals_count' ? number :
 Q extends 'optimistic_l2_deposits_count' ? number :
 Q extends 'optimistic_l2_txn_batches_count' ? number :
-Q extends 'config_backend_version' ? BackendVersionConfig :
-Q extends 'address_metadata_info' ? AddressMetadataInfo :
-Q extends 'address_metadata_tag_types' ? PublicTagTypesResponse :
+Q extends 'optimistic_l2_dispute_games_count' ? number :
 never;
 // !!! IMPORTANT !!!
 // See comment above
@@ -969,6 +979,9 @@ never;
 
 /* eslint-disable @typescript-eslint/indent */
 export type ResourcePayloadB<Q extends ResourceName> =
+Q extends 'config_backend_version' ? BackendVersionConfig :
+Q extends 'address_metadata_info' ? AddressMetadataInfo :
+Q extends 'address_metadata_tag_types' ? PublicTagTypesResponse :
 Q extends 'blob' ? Blob :
 Q extends 'marketplace_dapps' ? Array<MarketplaceAppOverview> :
 Q extends 'marketplace_dapp' ? MarketplaceAppOverview :
