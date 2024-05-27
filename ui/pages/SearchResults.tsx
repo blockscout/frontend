@@ -61,8 +61,11 @@ const SearchResultsPageContent = () => {
           break;
         }
         case 'blob': {
-          router.replace({ pathname: '/blobs/[hash]', query: { hash: redirectCheckQuery.data.parameter } });
-          return;
+          if (config.features.dataAvailability.isEnabled) {
+            router.replace({ pathname: '/blobs/[hash]', query: { hash: redirectCheckQuery.data.parameter } });
+            return;
+          }
+          break;
         }
       }
     }
@@ -76,6 +79,12 @@ const SearchResultsPageContent = () => {
 
   const displayedItems = (data?.items || []).filter((item) => {
     if (!config.features.userOps.isEnabled && item.type === 'user_operation') {
+      return false;
+    }
+    if (!config.features.dataAvailability.isEnabled && item.type === 'blob') {
+      return false;
+    }
+    if (!config.features.nameService.isEnabled && item.type === 'ens_domain') {
       return false;
     }
     return true;

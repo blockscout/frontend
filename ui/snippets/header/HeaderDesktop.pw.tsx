@@ -1,16 +1,10 @@
-import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
-import TestApp from 'playwright/TestApp';
+import { test, expect } from 'playwright/lib';
 
 import HeaderDesktop from './HeaderDesktop';
 
-test('default view +@dark-mode', async({ mount }) => {
-  const component = await mount(
-    <TestApp>
-      <HeaderDesktop/>
-    </TestApp>,
-  );
-
+test('default view +@dark-mode', async({ render }) => {
+  const component = await render(<HeaderDesktop/>);
   await expect(component).toHaveScreenshot();
 });

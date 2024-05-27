@@ -11,6 +11,7 @@ import useSocketMessage from 'lib/socket/useSocketMessage';
 import { currencyUnits } from 'lib/units';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import NativeTokenIcon from 'ui/shared/NativeTokenIcon';
 
 interface Props {
   data: Pick<Address, 'block_number_balance_updated_at' | 'coin_balance' | 'hash' | 'exchange_rate'>;
@@ -69,9 +70,10 @@ const AddressBalance = ({ data, isLoading }: Props) => {
       title="Balance"
       hint={ `Address balance in ${ currencyUnits.ether }. Doesn't include ERC20, ERC721 and ERC1155 tokens` }
       flexWrap="nowrap"
-      alignItems="flex-start"
+      alignSelf="center"
       isLoading={ isLoading }
     >
+      <NativeTokenIcon boxSize={ 6 } mr={ 2 } isLoading={ isLoading }/>
       <CurrencyValue
         value={ data.coin_balance || '0' }
         exchangeRate={ data.exchange_rate }

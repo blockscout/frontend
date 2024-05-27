@@ -12,8 +12,9 @@ import type { Props as PageProps } from 'nextjs/getServerSideProps';
 import config from 'configs/app';
 import { AppContextProvider } from 'lib/contexts/app';
 import { SocketProvider } from 'lib/socket/context';
-import * as app from 'playwright/utils/app';
 import theme from 'theme';
+
+import { port as socketPort } from './utils/socket';
 
 export type Props = {
   children: React.ReactNode;
@@ -74,7 +75,7 @@ const TestApp = ({ children, withSocket, withWalletClient = true, appContext = d
   return (
     <ChakraProvider theme={ theme }>
       <QueryClientProvider client={ queryClient }>
-        <SocketProvider url={ withSocket ? `ws://${ config.app.host }:${ app.socketPort }` : undefined }>
+        <SocketProvider url={ withSocket ? `ws://${ config.app.host }:${ socketPort }` : undefined }>
           <AppContextProvider { ...appContext }>
             <GrowthBookProvider>
               <WalletClientProvider withWalletClient={ withWalletClient }>

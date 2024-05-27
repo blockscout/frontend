@@ -3,16 +3,17 @@ export type HomeStats = {
   total_addresses: string;
   total_transactions: string;
   average_block_time: number;
+  coin_image?: string | null;
   coin_price: string | null;
   coin_price_change_percentage: number | null; // e.g -6.22
   total_gas_used: string;
-  transactions_today: string;
+  transactions_today: string | null;
   gas_used_today: string;
   gas_prices: GasPrices | null;
   gas_price_updated_at: string | null;
   gas_prices_update_in: number;
   static_gas_price: string | null;
-  market_cap: string;
+  market_cap: string | null;
   network_utilization_percentage: number;
   tvl: string | null;
   rootstock_locked_btc?: string | null;
