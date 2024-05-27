@@ -9,7 +9,7 @@ import { route } from 'nextjs-routes';
 import useApiQuery from 'lib/api/useApiQuery';
 import * as stubs from 'stubs/contract';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 import CodeEditor from 'ui/shared/monaco/CodeEditor';
 import formatFilePath from 'ui/shared/monaco/utils/formatFilePath';
 

@@ -16,7 +16,7 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 import AdminSupportText from 'ui/shared/texts/AdminSupportText';
 
 import AddressVerificationFieldAddress from '../fields/AddressVerificationFieldAddress';

@@ -1,11 +1,10 @@
-import type { LinkProps } from '@chakra-ui/react';
 import React from 'react';
 
 import type { EntityTag } from './types';
 
 import * as mixpanel from 'lib/mixpanel/index';
-import LinkExternal from 'ui/shared/LinkExternal';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkExternal from 'ui/shared/links/LinkExternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 
 import { getTagLinkParams } from './utils';
 
@@ -30,7 +29,7 @@ const EntityTagLink = ({ data, children }: Props) => {
     });
   }, [ linkParams?.href, data.slug ]);
 
-  const linkProps: LinkProps = {
+  const linkProps = {
     color: 'inherit',
     display: 'inline-flex',
     overflow: 'hidden',

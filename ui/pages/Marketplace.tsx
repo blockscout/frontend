@@ -17,7 +17,7 @@ import MarketplaceListWithScores from 'ui/marketplace/MarketplaceListWithScores'
 import FilterInput from 'ui/shared/filters/FilterInput';
 import IconSvg from 'ui/shared/IconSvg';
 import type { IconName } from 'ui/shared/IconSvg';
-import LinkExternal from 'ui/shared/LinkExternal';
+import LinkExternal from 'ui/shared/links/LinkExternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RadioButtonGroup from 'ui/shared/radioButtonGroup/RadioButtonGroup';
 import TabsWithScroll from 'ui/shared/Tabs/TabsWithScroll';
