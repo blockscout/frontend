@@ -1,11 +1,10 @@
-import { Button, Box, Flex, Popover, PopoverTrigger, PopoverContent, PopoverBody, useDisclosure } from '@chakra-ui/react';
+import { Button, Box, Flex, Popover, PopoverTrigger, PopoverContent, PopoverBody, useDisclosure, chakra } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import getPageType from 'lib/mixpanel/getPageType';
 import * as mixpanel from 'lib/mixpanel/index';
 import IconSvg from 'ui/shared/IconSvg';
@@ -17,7 +16,6 @@ const feature = config.features.deFiDropdown;
 const DeFiDropdown = () => {
   const router = useRouter();
   const source = getPageType(router.pathname);
-  const isMobile = useIsMobile();
   const { isOpen, onToggle, onClose } = useDisclosure();
 
   const handleClick = React.useCallback((content: string) => {
@@ -51,7 +49,10 @@ const DeFiDropdown = () => {
           bgColor={ isOpen ? 'blue.400' : undefined }
           _active={{ bgColor: 'blue.400' }}
         >
-          { !isMobile && 'Blockscout' } DeFi
+          <chakra.span display={{ base: 'none', lg: 'inline' }} mr={ 1 }>
+            Blockscout
+          </chakra.span>
+          DeFi
           <IconSvg name="arrows/east-mini" boxSize={ 4 } ml={ 1 } transform="rotate(-90deg)"/>
         </Button>
       </PopoverTrigger>
@@ -81,4 +82,4 @@ const DeFiDropdown = () => {
   );
 };
 
-export default React.memo(DeFiDropdown);
+export default chakra(React.memo(DeFiDropdown));
