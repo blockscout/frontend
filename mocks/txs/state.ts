@@ -1,4 +1,4 @@
-import type { TxStateChange } from 'types/api/txStateChanges';
+import type { TxStateChange, TxStateChanges } from 'types/api/txStateChanges';
 
 export const mintToken: TxStateChange = {
   address: {
@@ -35,7 +35,7 @@ export const mintToken: TxStateChange = {
     type: 'ERC-721',
     icon_url: null,
   },
-  type: 'token',
+  type: 'token' as const,
 };
 
 export const receiveMintedToken: TxStateChange = {
@@ -73,7 +73,7 @@ export const receiveMintedToken: TxStateChange = {
     type: 'ERC-721',
     icon_url: null,
   },
-  type: 'token',
+  type: 'token' as const,
 };
 
 export const transfer1155Token: TxStateChange = {
@@ -105,7 +105,7 @@ export const transfer1155Token: TxStateChange = {
     type: 'ERC-1155',
   },
   token_id: '1',
-  type: 'token',
+  type: 'token' as const,
 };
 
 export const receiveCoin: TxStateChange = {
@@ -125,7 +125,7 @@ export const receiveCoin: TxStateChange = {
   change: '29726406604060',
   is_miner: true,
   token: null,
-  type: 'coin',
+  type: 'coin' as const,
 };
 
 export const sendCoin: TxStateChange = {
@@ -145,12 +145,13 @@ export const sendCoin: TxStateChange = {
   change: '-3844844822720562',
   is_miner: false,
   token: null,
-  type: 'coin',
+  type: 'coin' as const,
 };
 
 export const sendERC20Token = {
   address: {
     hash: '0x7f6479df95Aa3036a3BE02DB6300ea201ABd9981',
+    ens_domain_name: null,
     implementation_name: null,
     is_contract: false,
     is_verified: false,
@@ -173,13 +174,13 @@ export const sendERC20Token = {
     name: 'Tether USD',
     symbol: 'USDT',
     total_supply: '39030615894320966',
-    type: 'ERC-20',
+    type: 'ERC-20' as const,
     token_id: null,
   },
-  type: 'token',
+  type: 'token' as const,
 };
 
-export const baseResponse = {
+export const baseResponse: TxStateChanges = {
   items: [
     mintToken,
     receiveMintedToken,

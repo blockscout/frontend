@@ -7,7 +7,7 @@ import { tokenInfo, tokenCounters, bridgedTokenA } from 'mocks/tokens/tokenInfo'
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import * as socketServer from 'playwright/fixtures/socketServer';
 import { test, expect, devices } from 'playwright/lib';
-import * as configs from 'playwright/utils/configs';
+import * as pwConfig from 'playwright/utils/config';
 
 import Token from './Token';
 
@@ -41,8 +41,8 @@ test('base view', async({ render, page, createSocket }) => {
   socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
 
   await expect(component).toHaveScreenshot({
-    mask: [ page.locator(configs.adsBannerSelector) ],
-    maskColor: configs.maskColor,
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
   });
 });
 
@@ -59,8 +59,8 @@ test('with verified info', async({ render, page, createSocket, mockApiResponse, 
   await page.getByRole('button', { name: /project info/i }).click();
 
   await expect(component).toHaveScreenshot({
-    mask: [ page.locator(configs.adsBannerSelector) ],
-    maskColor: configs.maskColor,
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
   });
 });
 
@@ -86,8 +86,8 @@ test('bridged token', async({ render, page, createSocket, mockApiResponse, mockA
   socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
 
   await expect(component).toHaveScreenshot({
-    mask: [ page.locator(configs.adsBannerSelector) ],
-    maskColor: configs.maskColor,
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
   });
 });
 
@@ -101,8 +101,8 @@ test.describe('mobile', () => {
     socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
 
     await expect(component).toHaveScreenshot({
-      mask: [ page.locator(configs.adsBannerSelector) ],
-      maskColor: configs.maskColor,
+      mask: [ page.locator(pwConfig.adsBannerSelector) ],
+      maskColor: pwConfig.maskColor,
     });
   });
 
@@ -116,8 +116,8 @@ test.describe('mobile', () => {
     socketServer.sendMessage(socket, channel, 'total_supply', { total_supply: 10 ** 20 });
 
     await expect(component).toHaveScreenshot({
-      mask: [ page.locator(configs.adsBannerSelector) ],
-      maskColor: configs.maskColor,
+      mask: [ page.locator(pwConfig.adsBannerSelector) ],
+      maskColor: pwConfig.maskColor,
     });
   });
 });

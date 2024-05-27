@@ -35,6 +35,7 @@ export const contract2: VerifiedContract = {
     watchlist_names: [],
     ens_domain_name: null,
   },
+  certified: true,
   coin_balance: '9078234570352343999',
   compiler_version: 'v0.3.1+commit.0463ea4c',
   has_constructor_args: true,

@@ -1,10 +1,9 @@
 import { Box } from '@chakra-ui/react';
-import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import * as addressMock from 'mocks/address/address';
-import TestApp from 'playwright/TestApp';
+import { test, expect } from 'playwright/lib';
 
 import AddressEntity from './AddressEntity';
 
@@ -14,14 +13,12 @@ test.use({ viewport: { width: 180, height: 140 } });
 
 test.describe('icon size', () => {
   iconSizes.forEach((size) => {
-    test(size, async({ mount }) => {
-      const component = await mount(
-        <TestApp>
-          <AddressEntity
-            address={ addressMock.withoutName }
-            iconSize={ size }
-          />
-        </TestApp>,
+    test(size, async({ render }) => {
+      const component = await render(
+        <AddressEntity
+          address={ addressMock.withoutName }
+          iconSize={ size }
+        />,
       );
 
       await expect(component).toHaveScreenshot();
@@ -30,26 +27,22 @@ test.describe('icon size', () => {
 });
 
 test.describe('contract', () => {
-  test('unverified', async({ mount, page }) => {
-    const component = await mount(
-      <TestApp>
-        <AddressEntity
-          address={{ ...addressMock.contract, is_verified: false }}
-        />
-      </TestApp>,
+  test('unverified', async({ render, page }) => {
+    const component = await render(
+      <AddressEntity
+        address={{ ...addressMock.contract, is_verified: false }}
+      />,
     );
 
     await component.getByText(/eternal/i).hover();
     await expect(page).toHaveScreenshot();
   });
 
-  test('verified', async({ mount }) => {
-    const component = await mount(
-      <TestApp>
-        <AddressEntity
-          address={{ ...addressMock.contract, is_verified: true }}
-        />
-      </TestApp>,
+  test('verified', async({ render }) => {
+    const component = await render(
+      <AddressEntity
+        address={{ ...addressMock.contract, is_verified: true }}
+      />,
     );
 
     await expect(component).toHaveScreenshot();
@@ -57,111 +50,95 @@ test.describe('contract', () => {
 });
 
 test.describe('loading', () => {
-  test('without alias', async({ mount }) => {
-    const component = await mount(
-      <TestApp>
+  test('without alias', async({ render }) => {
+    const component = await render(
+      <AddressEntity
+        address={ addressMock.withoutName }
+        isLoading
+      />,
+    );
+
+    await expect(component).toHaveScreenshot();
+  });
+
+  test('with alias', async({ render }) => {
+    const component = await render(
+      <AddressEntity
+        address={ addressMock.withName }
+        isLoading
+      />,
+    );
+
+    await expect(component).toHaveScreenshot();
+  });
+
+});
+
+test('with ENS', async({ render }) => {
+  const component = await render(
+    <AddressEntity
+      address={ addressMock.withEns }
+    />,
+  );
+
+  await expect(component).toHaveScreenshot();
+});
+
+test('with name tag', async({ render }) => {
+  const component = await render(
+    <AddressEntity
+      address={ addressMock.withNameTag }
+    />,
+  );
+
+  await expect(component).toHaveScreenshot();
+});
+
+test('external link', async({ render }) => {
+  const component = await render(
+    <AddressEntity
+      address={ addressMock.withoutName }
+      isExternal
+    />,
+  );
+
+  await expect(component).toHaveScreenshot();
+});
+
+test('no link', async({ render }) => {
+  const component = await render(
+    <AddressEntity
+      address={ addressMock.withoutName }
+      noLink
+    />,
+  );
+
+  await expect(component).toHaveScreenshot();
+});
+
+test('customization', async({ render }) => {
+  const component = await render(
+    <AddressEntity
+      address={ addressMock.withoutName }
+      truncation="constant"
+      p={ 3 }
+      borderWidth="1px"
+      borderColor="blue.700"
+    />,
+  );
+
+  await expect(component).toHaveScreenshot();
+});
+
+test('hover', async({ page, render }) => {
+  const component = await render(
+    <AddressHighlightProvider>
+      <Box p={ 3 }>
         <AddressEntity
           address={ addressMock.withoutName }
-          isLoading
         />
-      </TestApp>,
-    );
-
-    await expect(component).toHaveScreenshot();
-  });
-
-  test('with alias', async({ mount }) => {
-    const component = await mount(
-      <TestApp>
-        <AddressEntity
-          address={ addressMock.withName }
-          isLoading
-        />
-      </TestApp>,
-    );
-
-    await expect(component).toHaveScreenshot();
-  });
-
-});
-
-test('with ENS', async({ mount }) => {
-  const component = await mount(
-    <TestApp>
-      <AddressEntity
-        address={ addressMock.withEns }
-      />
-    </TestApp>,
-  );
-
-  await expect(component).toHaveScreenshot();
-});
-
-test('with name tag', async({ mount }) => {
-  const component = await mount(
-    <TestApp>
-      <AddressEntity
-        address={ addressMock.withNameTag }
-      />
-    </TestApp>,
-  );
-
-  await expect(component).toHaveScreenshot();
-});
-
-test('external link', async({ mount }) => {
-  const component = await mount(
-    <TestApp>
-      <AddressEntity
-        address={ addressMock.withoutName }
-        isExternal
-      />
-    </TestApp>,
-  );
-
-  await expect(component).toHaveScreenshot();
-});
-
-test('no link', async({ mount }) => {
-  const component = await mount(
-    <TestApp>
-      <AddressEntity
-        address={ addressMock.withoutName }
-        noLink
-      />
-    </TestApp>,
-  );
-
-  await expect(component).toHaveScreenshot();
-});
-
-test('customization', async({ mount }) => {
-  const component = await mount(
-    <TestApp>
-      <AddressEntity
-        address={ addressMock.withoutName }
-        truncation="constant"
-        p={ 3 }
-        borderWidth="1px"
-        borderColor="blue.700"
-      />
-    </TestApp>,
-  );
-
-  await expect(component).toHaveScreenshot();
-});
-
-test('hover', async({ page, mount }) => {
-  const component = await mount(
-    <TestApp>
-      <AddressHighlightProvider>
-        <Box p={ 3 }>
-          <AddressEntity
-            address={ addressMock.withoutName }
-          />
-        </Box>
-      </AddressHighlightProvider>
-    </TestApp>,
+      </Box>
+    </AddressHighlightProvider>,
   );
 
   await component.getByText(addressMock.hash.slice(0, 4)).hover();
