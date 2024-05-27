@@ -514,6 +514,11 @@ const schema = yup
       .transform(replaceQuotes)
       .json()
       .of(yup.string<NavigationLinkId>().oneOf(NAVIGATION_LINK_IDS)),
+    NEXT_PUBLIC_NAVIGATION_HIGHLIGHTED_ROUTES: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(yup.string()),
     NEXT_PUBLIC_NETWORK_LOGO: yup.string().test(urlTest),
     NEXT_PUBLIC_NETWORK_LOGO_DARK: yup.string().test(urlTest),
     NEXT_PUBLIC_NETWORK_ICON: yup.string().test(urlTest),
