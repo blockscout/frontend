@@ -244,7 +244,7 @@ test.describe('with highlighted routes', () => {
   });
 
   test.describe('xl screen', () => {
-    test.use({ viewport: configs.viewport.xl });
+    test.use({ viewport: pwConfig.viewport.xl });
 
     test('+@dark-mode', async() => {
       await expect(component).toHaveScreenshot();
