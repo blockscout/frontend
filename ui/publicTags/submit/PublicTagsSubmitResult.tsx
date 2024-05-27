@@ -7,7 +7,7 @@ import type { FormSubmitResult } from './types';
 import { route } from 'nextjs-routes';
 
 import makePrettyLink from 'lib/makePrettyLink';
-import LinkExternal from 'ui/shared/LinkExternal';
+import LinkExternal from 'ui/shared/links/LinkExternal';
 
 import PublicTagsSubmitResultSuccess from './result/PublicTagsSubmitResultSuccess';
 import PublicTagsSubmitResultWithErrors from './result/PublicTagsSubmitResultWithErrors';
