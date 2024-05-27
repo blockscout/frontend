@@ -100,7 +100,7 @@ const PublicTagsSubmitFieldTag = ({ index, isDisabled, register, errors, onAddCl
                 maxH="160px"
               />
               <InputPlaceholder
-                text="Description on label hover (max 80 characters)"
+                text="Label description (max 80 characters)"
                 error={ errors?.tooltipDescription }
               />
             </FormControl>

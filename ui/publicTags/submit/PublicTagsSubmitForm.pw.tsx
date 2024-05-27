@@ -27,8 +27,8 @@ test('base view +@mobile', async({ render }) => {
   await component.getByLabel(/text \(hex\)/i).fill(mocks.tag1.meta.textColor);
 
   await component.getByLabel(/add/i).nth(3).click();
-  await component.getByLabel(/comment/i).focus();
-  await component.getByLabel(/comment/i).blur();
+  await component.getByLabel(/connection/i).focus();
+  await component.getByLabel(/connection/i).blur();
 
   await expect(component).toHaveScreenshot({
     mask: [ component.locator('.recaptcha') ],
