@@ -1,4 +1,4 @@
-import { Link, Text, HStack, chakra, shouldForwardProp, useColorModeValue } from '@chakra-ui/react';
+import { Link, Text, useColorModeValue } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React from 'react';
 
@@ -24,6 +24,8 @@ const DeFiDropdownItem = ({ item }: Props) => {
       w="100%"
       h="34px"
       display="flex"
+      alignItems="center"
+      gap={ 2 }
       aria-label={ `${ item.text } link` }
       whiteSpace="nowrap"
       color={ useColorModeValue('blackAlpha.800', 'gray.400') }
@@ -34,13 +36,11 @@ const DeFiDropdownItem = ({ item }: Props) => {
         },
       }}
     >
-      <HStack spacing={ 2 } overflow="hidden">
-        <IconSvg name={ item.icon } boxSize={ 5 }/>
-        <Text as="span" fontSize="sm">
-          <span>{ item.text }</span>
-          { !item.dappId && <IconSvg name="arrows/north-east" boxSize={ 4 } color="text_secondary" verticalAlign="middle"/> }
-        </Text>
-      </HStack>
+      <IconSvg name={ item.icon } boxSize={ 5 }/>
+      <Text as="span" fontSize="sm">
+        <span>{ item.text }</span>
+        { !item.dappId && <IconSvg name="arrows/north-east" boxSize={ 4 } color="text_secondary" verticalAlign="middle"/> }
+      </Text>
     </Link>
   );
 
@@ -51,16 +51,4 @@ const DeFiDropdownItem = ({ item }: Props) => {
   ) : content;
 };
 
-const DeFiDropdownItemChakra = chakra(DeFiDropdownItem, {
-  shouldForwardProp: (prop) => {
-    const isChakraProp = !shouldForwardProp(prop);
-
-    if (isChakraProp && prop !== 'px') {
-      return false;
-    }
-
-    return true;
-  },
-});
-
-export default React.memo(DeFiDropdownItemChakra);
+export default React.memo(DeFiDropdownItem);
