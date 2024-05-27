@@ -1,17 +1,12 @@
-import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import * as tokenInstanceMock from 'mocks/tokens/tokenInstance';
-import TestApp from 'playwright/TestApp';
+import { test, expect } from 'playwright/lib';
 
 import TokenInstanceMetadata from './TokenInstanceMetadata';
 
-test('base view +@mobile', async({ mount }) => {
-  const component = await mount(
-    <TestApp>
-      <TokenInstanceMetadata data={ tokenInstanceMock.withRichMetadata.metadata }/>
-    </TestApp>,
-  );
+test('base view +@mobile', async({ render }) => {
+  const component = await render(<TokenInstanceMetadata data={ tokenInstanceMock.withRichMetadata.metadata }/>);
 
   await component.getByRole('button', { name: /png/i }).click();
   await component.getByRole('button', { name: /primary/i }).click();
@@ -26,14 +21,8 @@ test('base view +@mobile', async({ mount }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('raw view', async({ mount }) => {
-  const component = await mount(
-    <TestApp>
-      <TokenInstanceMetadata data={ tokenInstanceMock.withRichMetadata.metadata }/>
-    </TestApp>,
-  );
-
+test('raw view', async({ render }) => {
+  const component = await render(<TokenInstanceMetadata data={ tokenInstanceMock.withRichMetadata.metadata }/>);
   await component.locator('select').selectOption('JSON');
-
   await expect(component).toHaveScreenshot();
 });

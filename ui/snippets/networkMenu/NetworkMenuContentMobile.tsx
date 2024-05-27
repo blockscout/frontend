@@ -26,27 +26,24 @@ const NetworkMenuContentMobile = ({ items, tabs }: Props) => {
   }, []);
 
   const content = !items || items.length === 0 ? (
-    <>
-      <Skeleton h="32px" w="100%"/>
-      <Flex mt={ 6 } flexDir="column" rowGap={ 2 }>
-        <Flex mx={ 3 } my={ 2 } alignItems="center">
-          <Skeleton h="30px" w="30px" borderRadius="full"/>
-          <Skeleton h="20px" w="60px" ml={ 3 }/>
-        </Flex>
-        <Flex mx={ 3 } my={ 2 } alignItems="center">
-          <Skeleton h="30px" w="30px" borderRadius="full"/>
-          <Skeleton h="20px" w="120px" ml={ 3 }/>
-        </Flex>
-        <Flex mx={ 3 } my={ 2 } alignItems="center">
-          <Skeleton h="30px" w="30px" borderRadius="full"/>
-          <Skeleton h="20px" w="80px" ml={ 3 }/>
-        </Flex>
+    <Flex mt={ 6 } flexDir="column" rowGap={ 2 }>
+      <Flex mx={ 3 } my={ 2 } alignItems="center">
+        <Skeleton h="30px" w="30px" borderRadius="full"/>
+        <Skeleton h="20px" w="60px" ml={ 3 }/>
       </Flex>
-    </>
+      <Flex mx={ 3 } my={ 2 } alignItems="center">
+        <Skeleton h="30px" w="30px" borderRadius="full"/>
+        <Skeleton h="20px" w="120px" ml={ 3 }/>
+      </Flex>
+      <Flex mx={ 3 } my={ 2 } alignItems="center">
+        <Skeleton h="30px" w="30px" borderRadius="full"/>
+        <Skeleton h="20px" w="80px" ml={ 3 }/>
+      </Flex>
+    </Flex>
   ) : (
     <>
       { tabs.length > 1 && (
-        <Select size="xs" borderRadius="base" value={ selectedTab } onChange={ handleSelectChange } focusBorderColor="none" mb={ 6 }>
+        <Select size="xs" borderRadius="base" value={ selectedTab } onChange={ handleSelectChange } mb={ 3 }>
           { tabs.map((tab) => <option key={ tab } value={ tab }>{ capitalize(tab) }</option>) }
         </Select>
       ) }

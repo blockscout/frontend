@@ -11,16 +11,17 @@ import InputPlaceholder from 'ui/shared/InputPlaceholder';
 type Props<Field> = {
   field: Field;
   error?: FieldError;
-  backgroundColor?: string;
+  bgColor?: string;
 }
 
-function TransactionInput<Field extends Partial<ControllerRenderProps<FieldValues, 'transaction'>>>({ field, error, backgroundColor }: Props<Field>) {
+function TransactionInput<Field extends Partial<ControllerRenderProps<FieldValues, 'transaction'>>>({ field, error, bgColor }: Props<Field>) {
   return (
-    <FormControl variant="floating" id="transaction" isRequired backgroundColor={ backgroundColor }>
+    <FormControl variant="floating" id="transaction" isRequired bgColor={ bgColor }>
       <Input
         { ...field }
         isInvalid={ Boolean(error) }
         maxLength={ TRANSACTION_HASH_LENGTH }
+        bgColor={ bgColor }
       />
       <InputPlaceholder text="Transaction hash (0x...)" error={ error }/>
     </FormControl>

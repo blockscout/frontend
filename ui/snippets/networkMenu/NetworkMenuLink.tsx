@@ -32,8 +32,8 @@ const NetworkMenuLink = ({ title, icon, isActive, isMobile, url, invertIconInDar
       <Flex
         as="a"
         href={ url }
-        px={ isMobile ? 3 : 4 }
-        py={ 2 }
+        px={ 3 }
+        py="9px"
         alignItems="center"
         cursor="pointer"
         pointerEvents={ isActive ? 'none' : 'initial' }

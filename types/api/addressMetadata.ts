@@ -21,6 +21,7 @@ export interface AddressMetadataTagApi extends Omit<AddressMetadataTag, 'meta'> 
   meta: {
     textColor?: string;
     bgColor?: string;
+    tagIcon?: string;
     tagUrl?: string;
     tooltipIcon?: string;
     tooltipTitle?: string;
@@ -30,5 +31,6 @@ export interface AddressMetadataTagApi extends Omit<AddressMetadataTag, 'meta'> 
     appMarketplaceURL?: string;
     appLogoURL?: string;
     appActionButtonText?: string;
+    warpcastHandle?: string;
   } | null;
 }

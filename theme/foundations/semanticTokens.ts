@@ -23,6 +23,10 @@ const semanticTokens = {
       'default': 'red.400',
       _dark: 'red.300',
     },
+    dialog_bg: {
+      'default': 'white',
+      _dark: 'gray.900',
+    },
   },
   shadows: {
     action_bar: '0 4px 4px -4px rgb(0 0 0 / 10%), 0 2px 4px -4px rgb(0 0 0 / 6%)',

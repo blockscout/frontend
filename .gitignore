@@ -12,8 +12,8 @@
 # next.js
 /.next/
 /out/
-/public/assets/
-/public/envs.js
+/public/assets/envs.js
+/public/assets/configs
 /public/icons/sprite.svg
 /public/icons/README.md
 /analyze

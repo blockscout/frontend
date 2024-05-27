@@ -2,7 +2,7 @@ import { Accordion, Hide, Show, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import { TX_STATE_CHANGES } from 'stubs/txStateChanges';
-import ActionBar from 'ui/shared/ActionBar';
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -40,7 +40,7 @@ const TxState = ({ txQuery }: Props) => {
   const content = data ? (
     <Accordion allowMultiple defaultIndex={ [] }>
       <Hide below="lg" ssr={ false }>
-        <TxStateTable data={ data.items } isLoading={ isPlaceholderData } top={ pagination.isVisible ? 80 : 0 }/>
+        <TxStateTable data={ data.items } isLoading={ isPlaceholderData } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }/>
       </Hide>
       <Show below="lg" ssr={ false }>
         <TxStateList data={ data.items } isLoading={ isPlaceholderData }/>

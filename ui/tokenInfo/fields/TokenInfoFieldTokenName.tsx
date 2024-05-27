@@ -18,7 +18,7 @@ const TokenInfoFieldTokenName = ({ control }: Props) => {
         <Input
           { ...field }
           required
-          isDisabled
+          isReadOnly
         />
         <InputPlaceholder text="Token name"/>
       </FormControl>

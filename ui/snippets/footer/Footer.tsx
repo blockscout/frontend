@@ -141,7 +141,7 @@ const Footer = () => {
   const containerProps: GridProps = {
     as: 'footer',
     px: { base: 4, lg: 12 },
-    py: { base: 4, lg: 9 },
+    py: { base: 4, lg: 8 },
     borderTop: '1px solid',
     borderColor: 'divider',
     gridTemplateColumns: { base: '1fr', lg: 'minmax(auto, 470px) 1fr' },

@@ -1,4 +1,4 @@
-import { Box, Flex, Skeleton, Text, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Skeleton, Text, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
@@ -76,7 +76,7 @@ const ChainIndicators = () => {
     const diffColor = diff >= 0 ? 'green.500' : 'red.500';
 
     return (
-      <Skeleton isLoaded={ !statsQueryResult.isPlaceholderData } display="flex" alignItems="center" color={ diffColor } mt={ 2 }>
+      <Skeleton isLoaded={ !statsQueryResult.isPlaceholderData } display="flex" alignItems="center" color={ diffColor } ml={ 2 }>
         <IconSvg name="up" boxSize={ 5 } mr={ 1 } transform={ diff < 0 ? 'rotate(180deg)' : 'rotate(0)' }/>
         <Text color={ diffColor } fontWeight={ 600 }>{ diff }%</Text>
       </Skeleton>
@@ -94,17 +94,17 @@ const ChainIndicators = () => {
       flexDir={{ base: 'column', lg: 'row' }}
       w="100%"
       alignItems="stretch"
-      mt={ 8 }
+      mt={{ base: 1, lg: 3 }}
     >
       <Flex flexGrow={ 1 } flexDir="column" order={{ base: 2, lg: 1 }} p={{ base: 6, lg: 0 }}>
         <Flex alignItems="center">
           <Text fontWeight={ 500 } fontFamily="heading" fontSize="lg">{ indicator?.title }</Text>
           { indicator?.hint && <Hint label={ indicator.hint } ml={ 1 }/> }
         </Flex>
-        <Box mb={ 4 }>
+        <Flex mb={ 4 } alignItems="end">
           { valueTitle }
           { valueDiff }
-        </Box>
+        </Flex>
         <ChainIndicatorChartContainer { ...queryResult }/>
       </Flex>
       { indicators.length > 1 && (

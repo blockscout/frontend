@@ -22,11 +22,12 @@ import AddressStringOrParam from 'ui/shared/entities/address/AddressStringOrPara
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import UserOpEntity from 'ui/shared/entities/userOp/UserOpEntity';
-import RawInputData from 'ui/shared/RawInputData';
 import UserOpSponsorType from 'ui/shared/userOps/UserOpSponsorType';
 import UserOpStatus from 'ui/shared/userOps/UserOpStatus';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
+import UserOpCallData from './UserOpCallData';
+import UserOpDecodedCallData from './UserOpDecodedCallData';
 import UserOpDetailsActions from './UserOpDetailsActions';
 
 interface Props {
@@ -300,12 +301,10 @@ const UserOpDetails = ({ query }: Props) => {
           >
             { data.nonce }
           </DetailsInfoItem>
-          <DetailsInfoItem
-            title="Call data"
-            hint="Data that’s passed to the sender for execution"
-          >
-            <RawInputData hex={ data.call_data }/>
-          </DetailsInfoItem>
+
+          <UserOpCallData data={ data }/>
+
+          <UserOpDecodedCallData data={ data }/>
         </>
       ) }
     </Grid>

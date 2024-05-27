@@ -1,9 +1,8 @@
-import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import type { ContractAbiItem } from '../types';
 
-import TestApp from 'playwright/TestApp';
+import { test, expect } from 'playwright/lib';
 
 import ContractMethodForm from './ContractMethodForm';
 
@@ -97,16 +96,14 @@ const data: ContractAbiItem = {
   constant: false,
 };
 
-test('base view +@mobile +@dark-mode', async({ mount }) => {
+test('base view +@mobile +@dark-mode', async({ render }) => {
 
-  const component = await mount(
-    <TestApp>
-      <ContractMethodForm
-        data={ data }
-        onSubmit={ onSubmit }
-        methodType="write"
-      />
-    </TestApp>,
+  const component = await render(
+    <ContractMethodForm
+      data={ data }
+      onSubmit={ onSubmit }
+      methodType="write"
+    />,
   );
 
   // fill top level fields

@@ -218,7 +218,7 @@ const AddressPageContent = () => {
 
   const content = (addressQuery.isError || addressQuery.isDegradedData) ?
     null :
-    <RoutedTabs tabs={ tabs } tabListProps={{ mt: 8 }} isLoading={ isTabsLoading }/>;
+    <RoutedTabs tabs={ tabs } tabListProps={{ mt: 6 }} isLoading={ isTabsLoading }/>;
 
   const backLink = React.useMemo(() => {
     const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/accounts');
@@ -264,7 +264,8 @@ const AddressPageContent = () => {
       <AddressQrCode address={{ hash }} isLoading={ isLoading }/>
       <AccountActionsMenu isLoading={ isLoading }/>
       <HStack ml="auto" gap={ 2 }/>
-      { addressQuery.data?.is_contract && addressQuery.data?.is_verified && config.UI.views.address.solidityscanEnabled && <SolidityscanReport hash={ hash }/> }
+      { !isLoading && addressQuery.data?.is_contract && addressQuery.data?.is_verified && config.UI.views.address.solidityscanEnabled &&
+        <SolidityscanReport hash={ hash }/> }
       { !isLoading && addressQuery.data && config.features.nameService.isEnabled &&
         <AddressEnsDomains addressHash={ hash } mainDomainName={ addressQuery.data.ens_domain_name }/> }
       <NetworkExplorers type="address" pathParam={ hash }/>

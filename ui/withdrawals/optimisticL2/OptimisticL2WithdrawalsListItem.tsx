@@ -8,7 +8,7 @@ import dayjs from 'lib/date/dayjs';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
-import LinkExternal from 'ui/shared/LinkExternal';
+import LinkExternal from 'ui/shared/links/LinkExternal';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
 
 const rollupFeature = config.features.rollup;

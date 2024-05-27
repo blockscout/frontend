@@ -7,6 +7,7 @@ import { L2_DEPOSIT_ITEM } from 'stubs/L2';
 import { generateListStub } from 'stubs/utils';
 import OptimisticDepositsListItem from 'ui/deposits/optimisticL2/OptimisticDepositsListItem';
 import OptimisticDepositsTable from 'ui/deposits/optimisticL2/OptimisticDepositsTable';
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -48,7 +49,7 @@ const OptimisticL2Deposits = () => {
         ))) }
       </Show>
       <Hide below="lg" ssr={ false }>
-        <OptimisticDepositsTable items={ data.items } top={ pagination.isVisible ? 80 : 0 } isLoading={ isPlaceholderData }/>
+        <OptimisticDepositsTable items={ data.items } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 } isLoading={ isPlaceholderData }/>
       </Hide>
     </>
   ) : null;

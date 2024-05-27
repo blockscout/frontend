@@ -1,0 +1,116 @@
+name: Copy issues labels to pull request
+
+on:
+    workflow_dispatch:
+        inputs:
+            pr_number:
+                description: Pull request number
+                required: true
+                type: string
+            issues:
+                description: JSON encoded list of issue ids
+                required: true
+                type: string
+    workflow_call:
+        inputs:
+            pr_number:
+                description: Pull request number
+                required: true
+                type: string
+            issues:
+                description: JSON encoded list of issue ids
+                required: true
+                type: string
+
+jobs:
+    run:
+        name: Run
+        runs-on: ubuntu-latest
+        steps:
+        -   name: Find unique labels
+            id: find_unique_labels
+            uses: actions/github-script@v7
+            env:
+                ISSUES: ${{ inputs.issues }}
+            with:
+                script: |
+                    const issues = JSON.parse(process.env.ISSUES);
+
+                    const WHITE_LISTED_LABELS = [
+                        'client feature',
+                        'feature',
+
+                        'bug',
+
+                        'dependencies',
+                        'performance',
+
+                        'chore',
+                        'enhancement',
+                        'refactoring',
+                        'tech',
+                        'ENVs',
+                    ]
+
+                    const labels = await Promise.all(issues.map(getIssueLabels));
+                    const uniqueLabels = uniqueStringArray(labels.flat().filter((label) => WHITE_LISTED_LABELS.includes(label)));
+
+                    if (uniqueLabels.length === 0) {
+                        core.info('No labels found.\n');
+                        return [];
+                    }
+
+                    core.info(`Found following labels: ${ uniqueLabels.join(', ') }.\n`);
+                    return uniqueLabels;
+
+                    async function getIssueLabels(issue) {
+                        core.info(`Obtaining labels list for the issue #${ issue }...`);
+                    
+                        try {
+                            const response = await github.request('GET /repos/{owner}/{repo}/issues/{issue_number}/labels', {
+                                owner: 'blockscout',
+                                repo: 'frontend',
+                                issue_number: issue,
+                            });
+                            return response.data.map(({ name }) => name);
+                        } catch (error) {
+                            core.error(`Failed to obtain labels for the issue #${ issue }: ${ error.message }`);
+                            return [];
+                        }
+                    }
+
+                    function uniqueStringArray(array) {
+                        return Array.from(new Set(array));
+                    }
+
+        -   name: Update pull request labels
+            id: update_pr_labels
+            uses: actions/github-script@v7
+            env:
+                LABELS: ${{ steps.find_unique_labels.outputs.result }}
+                PR_NUMBER: ${{ inputs.pr_number }}
+            with:
+                script: |
+                    const labels = JSON.parse(process.env.LABELS);
+                    const prNumber = Number(process.env.PR_NUMBER);
+
+                    if (labels.length === 0) {
+                        core.info('Nothing to update.\n');
+                        return;
+                    }
+
+                    for (const label of labels) {
+                        await addLabelToPr(prNumber, label);
+                    }
+                    core.info('Done.\n');
+
+                    async function addLabelToPr(prNumber, label) {
+                        console.log(`Adding label to the pull request #${ prNumber }...`);
+                    
+                        return await github.request('POST /repos/{owner}/{repo}/issues/{issue_number}/labels', {
+                            owner: 'blockscout',
+                            repo: 'frontend',
+                            issue_number: prNumber,
+                            labels: [ label ],
+                        });
+                    }

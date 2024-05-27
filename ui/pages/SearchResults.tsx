@@ -8,7 +8,7 @@ import useMarketplaceApps from 'ui/marketplace/useMarketplaceApps';
 import SearchResultListItem from 'ui/searchResults/SearchResultListItem';
 import SearchResultsInput from 'ui/searchResults/SearchResultsInput';
 import SearchResultTableItem from 'ui/searchResults/SearchResultTableItem';
-import ActionBar from 'ui/shared/ActionBar';
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
@@ -61,8 +61,11 @@ const SearchResultsPageContent = () => {
           break;
         }
         case 'blob': {
-          router.replace({ pathname: '/blobs/[hash]', query: { hash: redirectCheckQuery.data.parameter } });
-          return;
+          if (config.features.dataAvailability.isEnabled) {
+            router.replace({ pathname: '/blobs/[hash]', query: { hash: redirectCheckQuery.data.parameter } });
+            return;
+          }
+          break;
         }
       }
     }
@@ -76,6 +79,12 @@ const SearchResultsPageContent = () => {
 
   const displayedItems = (data?.items || []).filter((item) => {
     if (!config.features.userOps.isEnabled && item.type === 'user_operation') {
+      return false;
+    }
+    if (!config.features.dataAvailability.isEnabled && item.type === 'blob') {
+      return false;
+    }
+    if (!config.features.nameService.isEnabled && item.type === 'ens_domain') {
       return false;
     }
     return true;
@@ -113,7 +122,7 @@ const SearchResultsPageContent = () => {
         </Show>
         <Hide below="lg" ssr={ false }>
           <Table variant="simple" size="md" fontWeight={ 500 }>
-            <Thead top={ pagination.isVisible ? 80 : 0 }>
+            <Thead top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }>
               <Tr>
                 <Th width="30%">Search result</Th>
                 <Th width="35%"/>

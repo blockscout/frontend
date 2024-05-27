@@ -20,7 +20,8 @@ import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
 
 const TAB_LIST_PROPS = {
   marginBottom: 0,
-  py: 5,
+  pt: 6,
+  pb: 3,
   marginTop: -5,
 };
 
@@ -96,6 +97,7 @@ const Transactions = () => {
           showSocketInfo={ txsValidatedQuery.pagination.page === 1 }
           socketInfoNum={ num }
           socketInfoAlert={ socketAlert }
+          top={ 76 }
         /> },
     {
       id: 'pending',
@@ -107,6 +109,7 @@ const Transactions = () => {
           showSocketInfo={ txsPendingQuery.pagination.page === 1 }
           socketInfoNum={ num }
           socketInfoAlert={ socketAlert }
+          top={ 76 }
         />
       ),
     },
@@ -119,6 +122,7 @@ const Transactions = () => {
           showSocketInfo={ txsWithBlobsQuery.pagination.page === 1 }
           socketInfoNum={ num }
           socketInfoAlert={ socketAlert }
+          top={ 76 }
         />
       ),
     },

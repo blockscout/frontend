@@ -20,7 +20,7 @@ import { route } from 'nextjs-routes';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';
 import { getRecentSearchKeywords, saveToRecentKeywords } from 'lib/recentSearchKeywords';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 
 import SearchBarBackdrop from './SearchBarBackdrop';
 import SearchBarInput from './SearchBarInput';
@@ -95,7 +95,7 @@ const SearchBar = ({ isHomepage }: Props) => {
     onClose();
   }, [ pathname, searchTerm, onClose ]);
 
-  const menuPaddingX = isMobile && !isHomepage ? 32 : 0;
+  const menuPaddingX = isMobile && !isHomepage ? 24 : 0;
   const calculateMenuWidth = React.useCallback(() => {
     menuWidth.current = (inputRef.current?.getBoundingClientRect().width || 0) - menuPaddingX;
   }, [ menuPaddingX ]);
@@ -123,7 +123,7 @@ const SearchBar = ({ isHomepage }: Props) => {
         autoFocus={ false }
         onClose={ onClose }
         placement="bottom-start"
-        offset={ isMobile && !isHomepage ? [ 16, -4 ] : undefined }
+        offset={ isMobile && !isHomepage ? [ 12, -4 ] : undefined }
         isLazy
       >
         <PopoverTrigger>

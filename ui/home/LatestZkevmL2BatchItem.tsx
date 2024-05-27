@@ -12,7 +12,7 @@ import { route } from 'nextjs-routes';
 
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 import ZkEvmL2TxnBatchStatus from 'ui/shared/statusTag/ZkEvmL2TxnBatchStatus';
 
 type Props = {
@@ -32,7 +32,7 @@ const LatestZkevmL2BatchItem = ({ batch, isLoading }: Props) => {
       borderRadius="md"
       border="1px solid"
       borderColor="divider"
-      p={ 6 }
+      p={ 3 }
     >
       <Flex alignItems="center" overflow="hidden" w="100%" mb={ 3 }>
         <BatchEntityL2

@@ -25,7 +25,7 @@ import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 import PrevNext from 'ui/shared/PrevNext';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 import TextSeparator from 'ui/shared/TextSeparator';
