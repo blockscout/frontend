@@ -3,7 +3,7 @@
 echo "🌀 Creating client script with ENV values..."
 
 # Define the output file name
-output_file="${1:-./public/envs.js}"
+output_file="${1:-./public/assets/envs.js}"
 
 touch $output_file;
 truncate -s 0 $output_file;

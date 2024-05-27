@@ -22,6 +22,7 @@ export interface SearchResultAddressOrContract {
   name: string | null;
   address: string;
   is_smart_contract_verified: boolean;
+  certified?: true;
   url?: string; // not used by the frontend, we build the url ourselves
   ens_info?: {
     address_hash: string;

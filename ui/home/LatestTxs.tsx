@@ -8,7 +8,7 @@ import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useNewTxsSocket from 'lib/hooks/useNewTxsSocket';
 import { TX } from 'stubs/tx';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
 import LatestTxsItem from './LatestTxsItem';
@@ -44,7 +44,7 @@ const LatestTransactions = () => {
           ))) }
         </Box>
         <AddressHighlightProvider>
-          <Box mb={ 4 } display={{ base: 'none', lg: 'block' }}>
+          <Box mb={ 3 } display={{ base: 'none', lg: 'block' }}>
             { data.slice(0, txsCount).map(((tx, index) => (
               <LatestTxsItem
                 key={ tx.hash + (isPlaceholderData ? index : '') }

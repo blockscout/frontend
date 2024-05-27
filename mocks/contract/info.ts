@@ -51,6 +51,11 @@ export const verified: SmartContract = {
   minimal_proxy_address_hash: null,
 };
 
+export const certified: SmartContract = {
+  ...verified,
+  certified: true,
+};
+
 export const withMultiplePaths: SmartContract = {
   ...verified,
   file_path: './simple_storage.sol',

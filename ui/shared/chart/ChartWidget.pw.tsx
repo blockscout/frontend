@@ -1,7 +1,6 @@
-import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
-import TestApp from 'playwright/TestApp';
+import { test, expect } from 'playwright/lib';
 
 import type { Props } from './ChartWidget';
 import ChartWidget from './ChartWidget';
@@ -29,12 +28,9 @@ const props: Props = {
   isError: false,
 };
 
-test('base view +@dark-mode', async({ mount, page }) => {
-  const component = await mount(
-    <TestApp>
-      <ChartWidget { ...props }/>
-    </TestApp>,
-  );
+test('base view +@dark-mode', async({ render, page }) => {
+  const component = await render(<ChartWidget { ...props }/>);
+
   await page.waitForFunction(() => {
     return document.querySelector('path[data-name="chart-Nativecoincirculatingsupply-small"]')?.getAttribute('opacity') === '1';
   });
@@ -54,27 +50,17 @@ test('base view +@dark-mode', async({ mount, page }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('loading', async({ mount }) => {
-  const component = await mount(
-    <TestApp>
-      <ChartWidget { ...props } isLoading minH="250px"/>
-    </TestApp>,
-  );
-
+test('loading', async({ render }) => {
+  const component = await render(<ChartWidget { ...props } isLoading minH="250px"/>);
   await expect(component).toHaveScreenshot();
 });
 
-test('error', async({ mount }) => {
-  const component = await mount(
-    <TestApp>
-      <ChartWidget { ...props } isError/>
-    </TestApp>,
-  );
-
+test('error', async({ render }) => {
+  const component = await render(<ChartWidget { ...props } isError/>);
   await expect(component).toHaveScreenshot();
 });
 
-test('small values', async({ mount, page }) => {
+test('small values', async({ render, page }) => {
   const modifiedProps = {
     ...props,
     items: [
@@ -92,18 +78,14 @@ test('small values', async({ mount, page }) => {
     ],
   };
 
-  const component = await mount(
-    <TestApp>
-      <ChartWidget { ...modifiedProps }/>
-    </TestApp>,
-  );
+  const component = await render(<ChartWidget { ...modifiedProps }/>);
   await page.waitForFunction(() => {
     return document.querySelector('path[data-name="chart-Nativecoincirculatingsupply-small"]')?.getAttribute('opacity') === '1';
   });
   await expect(component).toHaveScreenshot();
 });
 
-test('small variations in big values', async({ mount, page }) => {
+test('small variations in big values', async({ render, page }) => {
   const modifiedProps = {
     ...props,
     items: [
@@ -121,11 +103,7 @@ test('small variations in big values', async({ mount, page }) => {
     ],
   };
 
-  const component = await mount(
-    <TestApp>
-      <ChartWidget { ...modifiedProps }/>
-    </TestApp>,
-  );
+  const component = await render(<ChartWidget { ...modifiedProps }/>);
   await page.waitForFunction(() => {
     return document.querySelector('path[data-name="chart-Nativecoincirculatingsupply-small"]')?.getAttribute('opacity') === '1';
   });

@@ -1,29 +1,18 @@
-import { test, expect, devices } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import * as txMock from 'mocks/txs/tx';
-import TestApp from 'playwright/TestApp';
+import { test, expect, devices } from 'playwright/lib';
 
 import TxsListItem from './TxsListItem';
 
 test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 
-test('base view +@dark-mode', async({ mount }) => {
-  const component = await mount(
-    <TestApp>
-      <TxsListItem tx={ txMock.withWatchListNames } showBlockInfo/>
-    </TestApp>,
-  );
-
+test('base view +@dark-mode', async({ render }) => {
+  const component = await render(<TxsListItem tx={ txMock.withWatchListNames } showBlockInfo/>);
   await expect(component).toHaveScreenshot();
 });
 
-test('with base address', async({ mount }) => {
-  const component = await mount(
-    <TestApp>
-      <TxsListItem tx={ txMock.withWatchListNames } showBlockInfo currentAddress={ txMock.base.from.hash }/>
-    </TestApp>,
-  );
-
+test('with base address', async({ render }) => {
+  const component = await render(<TxsListItem tx={ txMock.withWatchListNames } showBlockInfo currentAddress={ txMock.base.from.hash }/>);
   await expect(component).toHaveScreenshot();
 });

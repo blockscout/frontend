@@ -1,7 +1,6 @@
-import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
-import TestApp from 'playwright/TestApp';
+import { test, expect } from 'playwright/lib';
 
 import NftEntity from './NftEntity';
 
@@ -12,15 +11,13 @@ test.use({ viewport: { width: 180, height: 30 } });
 
 test.describe('icon sizes', () => {
   iconSizes.forEach((size) => {
-    test(size, async({ mount }) => {
-      const component = await mount(
-        <TestApp>
-          <NftEntity
-            hash={ hash }
-            id={ 1042 }
-            iconSize={ size }
-          />
-        </TestApp>,
+    test(size, async({ render }) => {
+      const component = await render(
+        <NftEntity
+          hash={ hash }
+          id={ 1042 }
+          iconSize={ size }
+        />,
       );
 
       await expect(component).toHaveScreenshot();
@@ -28,44 +25,38 @@ test.describe('icon sizes', () => {
   });
 });
 
-test('loading', async({ mount }) => {
-  const component = await mount(
-    <TestApp>
-      <NftEntity
-        hash={ hash }
-        id={ 1042 }
-        isLoading
-      />
-    </TestApp>,
+test('loading', async({ render }) => {
+  const component = await render(
+    <NftEntity
+      hash={ hash }
+      id={ 1042 }
+      isLoading
+    />,
   );
 
   await expect(component).toHaveScreenshot();
 });
 
-test('long id', async({ mount }) => {
-  const component = await mount(
-    <TestApp>
-      <NftEntity
-        hash={ hash }
-        id={ 1794350723452223 }
-      />
-    </TestApp>,
+test('long id', async({ render }) => {
+  const component = await render(
+    <NftEntity
+      hash={ hash }
+      id={ 1794350723452223 }
+    />,
   );
 
   await expect(component).toHaveScreenshot();
 });
 
-test('customization', async({ mount }) => {
-  const component = await mount(
-    <TestApp>
-      <NftEntity
-        hash={ hash }
-        id={ 1042 }
-        p={ 3 }
-        borderWidth="1px"
-        borderColor="blue.700"
-      />
-    </TestApp>,
+test('customization', async({ render }) => {
+  const component = await render(
+    <NftEntity
+      hash={ hash }
+      id={ 1042 }
+      p={ 3 }
+      borderWidth="1px"
+      borderColor="blue.700"
+    />,
   );
 
   await expect(component).toHaveScreenshot();

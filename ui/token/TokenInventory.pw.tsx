@@ -1,17 +1,15 @@
 import { Box } from '@chakra-ui/react';
-import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import { tokenInfoERC721a } from 'mocks/tokens/tokenInfo';
 import { base as tokenInstanse } from 'mocks/tokens/tokenInstance';
-import TestApp from 'playwright/TestApp';
+import { test, expect } from 'playwright/lib';
 
 import TokenInventory from './TokenInventory';
 
-test('base view +@mobile', async({ mount }) => {
-  const component = await mount(
-    <TestApp>
-      <Box h={{ base: '134px', lg: 0 }}/>
+test('base view +@mobile', async({ render }) => {
+  const component = await render(
+    <Box pt={{ base: '134px', lg: 0 }}>
       <TokenInventory
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore:
@@ -30,7 +28,7 @@ test('base view +@mobile', async({ mount }) => {
           data: tokenInfoERC721a,
         }}
       />
-    </TestApp>,
+    </Box>,
   );
 
   await expect(component).toHaveScreenshot();

@@ -7,7 +7,7 @@ import type { FormSubmitResultWalletClient } from '../types';
 
 import { route } from 'nextjs-routes';
 
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 
 interface Props {
   result: FormSubmitResultWalletClient['result'];

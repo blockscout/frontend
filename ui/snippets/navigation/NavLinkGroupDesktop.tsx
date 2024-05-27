@@ -68,7 +68,7 @@ const NavLinkGroupDesktop = ({ item, isCollapsed }: Props) => {
         </PopoverTrigger>
         <PopoverContent width="252px" top={{ lg: isExpanded ? '-16px' : 0, xl: isCollapsed ? 0 : '-16px' }}>
           <PopoverBody p={ 4 }>
-            <Text variant="secondary" fontSize="sm" mb={ 2 } display={{ lg: isExpanded ? 'none' : 'block', xl: isCollapsed ? 'block' : 'none' }}>
+            <Text variant="secondary" fontSize="sm" mb={ 1 } display={{ lg: isExpanded ? 'none' : 'block', xl: isCollapsed ? 'block' : 'none' }}>
               { item.text }
             </Text>
             <VStack spacing={ 1 } alignItems="start">

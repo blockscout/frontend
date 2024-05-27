@@ -3,7 +3,7 @@ import React from 'react';
 
 import { TX_BLOB } from 'stubs/blobs';
 import { generateListStub } from 'stubs/utils';
-import ActionBar from 'ui/shared/ActionBar';
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -35,7 +35,7 @@ const TxBlobs = ({ txQuery }: Props) => {
   const content = data ? (
     <>
       <Hide below="lg" ssr={ false }>
-        <TxBlobsTable data={ data.items } isLoading={ isPlaceholderData } top={ pagination.isVisible ? 80 : 0 }/>
+        <TxBlobsTable data={ data.items } isLoading={ isPlaceholderData } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }/>
       </Hide>
       <Show below="lg" ssr={ false }>
         <TxBlobsList data={ data.items } isLoading={ isPlaceholderData }/>

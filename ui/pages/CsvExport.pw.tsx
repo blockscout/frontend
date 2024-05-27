@@ -4,7 +4,7 @@ import React from 'react';
 import * as addressMock from 'mocks/address/address';
 import * as tokenMock from 'mocks/tokens/tokenInfo';
 import { test, expect } from 'playwright/lib';
-import * as configs from 'playwright/utils/configs';
+import * as pwConfig from 'playwright/utils/config';
 
 import CsvExport from './CsvExport';
 
@@ -20,7 +20,7 @@ test('base view +@mobile +@dark-mode', async({ render, page, mockApiResponse }) 
 
   await expect(component).toHaveScreenshot({
     mask: [ page.locator('.recaptcha') ],
-    maskColor: configs.maskColor,
+    maskColor: pwConfig.maskColor,
   });
 });
 
@@ -37,6 +37,6 @@ test('token holders', async({ render, page, mockApiResponse }) => {
 
   await expect(component).toHaveScreenshot({
     mask: [ page.locator('.recaptcha') ],
-    maskColor: configs.maskColor,
+    maskColor: pwConfig.maskColor,
   });
 });

@@ -10,7 +10,7 @@ if [ $? -ne 0 ]; then
     exit 1
 else
     cd ../../../
-    favicon_folder="./public/favicon/"
+    favicon_folder="./public/assets/favicon/"
 
     echo "⏳ Replacing default favicons with freshly generated pack..."
     if [ -d "$favicon_folder" ]; then

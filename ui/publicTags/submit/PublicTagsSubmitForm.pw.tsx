@@ -4,7 +4,7 @@ import React from 'react';
 import { publicTagTypes as configMock } from 'mocks/metadata/publicTagTypes';
 import { base as useInfoMock } from 'mocks/user/profile';
 import { expect, test } from 'playwright/lib';
-import * as configs from 'playwright/utils/configs';
+import * as pwConfig from 'playwright/utils/config';
 
 import * as mocks from './mocks';
 import PublicTagsSubmitForm from './PublicTagsSubmitForm';
@@ -32,6 +32,6 @@ test('base view +@mobile', async({ render }) => {
 
   await expect(component).toHaveScreenshot({
     mask: [ component.locator('.recaptcha') ],
-    maskColor: configs.maskColor,
+    maskColor: pwConfig.maskColor,
   });
 });

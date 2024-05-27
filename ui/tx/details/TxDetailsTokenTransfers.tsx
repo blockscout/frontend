@@ -7,7 +7,7 @@ import { route } from 'nextjs-routes';
 
 import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 
 import TxDetailsTokenTransfer from './TxDetailsTokenTransfer';
 

@@ -1,10 +1,9 @@
-import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import type { SmartContractVerificationConfig } from 'types/api/contract';
 
 import * as socketServer from 'playwright/fixtures/socketServer';
-import TestApp from 'playwright/TestApp';
+import { test, expect } from 'playwright/lib';
 
 import ContractVerificationForm from './ContractVerificationForm';
 
@@ -72,13 +71,8 @@ const formConfig: SmartContractVerificationConfig = {
   },
 };
 
-test('flatten source code method +@dark-mode +@mobile', async({ mount, page }) => {
-  const component = await mount(
-    <TestApp>
-      <ContractVerificationForm config={ formConfig } hash={ hash }/>
-    </TestApp>,
-    { hooksConfig },
-  );
+test('flatten source code method +@dark-mode +@mobile', async({ render, page }) => {
+  const component = await render(<ContractVerificationForm config={ formConfig } hash={ hash }/>, { hooksConfig });
 
   // select license
   await component.getByLabel(/contract license/i).focus();
@@ -96,13 +90,8 @@ test('flatten source code method +@dark-mode +@mobile', async({ mount, page }) =
   await expect(component).toHaveScreenshot();
 });
 
-test('standard input json method', async({ mount, page }) => {
-  const component = await mount(
-    <TestApp>
-      <ContractVerificationForm config={ formConfig } hash={ hash }/>
-    </TestApp>,
-    { hooksConfig },
-  );
+test('standard input json method', async({ render, page }) => {
+  const component = await render(<ContractVerificationForm config={ formConfig } hash={ hash }/>, { hooksConfig });
 
   // select method
   await component.getByLabel(/verification method/i).focus();
@@ -113,17 +102,13 @@ test('standard input json method', async({ mount, page }) => {
 });
 
 test.describe('sourcify', () => {
-  const testWithSocket = test.extend<socketServer.SocketServerFixture>({
-    createSocket: socketServer.createSocket,
-  });
-  testWithSocket.describe.configure({ mode: 'serial', timeout: 20_000 });
+  test.describe.configure({ mode: 'serial', timeout: 20_000 });
 
-  testWithSocket('with multiple contracts', async({ mount, page, createSocket }) => {
-    const component = await mount(
-      <TestApp withSocket>
-        <ContractVerificationForm config={ formConfig } hash={ hash }/>
-      </TestApp>,
+  test('with multiple contracts', async({ render, page, createSocket }) => {
+    const component = await render(
+      <ContractVerificationForm config={ formConfig } hash={ hash }/>,
       { hooksConfig },
+      { withSocket: true },
     );
 
     // select method
@@ -163,13 +148,8 @@ test.describe('sourcify', () => {
   });
 });
 
-test('multi-part files method', async({ mount, page }) => {
-  const component = await mount(
-    <TestApp>
-      <ContractVerificationForm config={ formConfig } hash={ hash }/>
-    </TestApp>,
-    { hooksConfig },
-  );
+test('multi-part files method', async({ render, page }) => {
+  const component = await render(<ContractVerificationForm config={ formConfig } hash={ hash }/>, { hooksConfig });
 
   // select method
   await component.getByLabel(/verification method/i).focus();
@@ -179,13 +159,8 @@ test('multi-part files method', async({ mount, page }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('vyper contract method', async({ mount, page }) => {
-  const component = await mount(
-    <TestApp>
-      <ContractVerificationForm config={ formConfig } hash={ hash }/>
-    </TestApp>,
-    { hooksConfig },
-  );
+test('vyper contract method', async({ render, page }) => {
+  const component = await render(<ContractVerificationForm config={ formConfig } hash={ hash }/>, { hooksConfig });
 
   // select method
   await component.getByLabel(/verification method/i).focus();
@@ -195,13 +170,8 @@ test('vyper contract method', async({ mount, page }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('vyper multi-part method', async({ mount, page }) => {
-  const component = await mount(
-    <TestApp>
-      <ContractVerificationForm config={ formConfig } hash={ hash }/>
-    </TestApp>,
-    { hooksConfig },
-  );
+test('vyper multi-part method', async({ render, page }) => {
+  const component = await render(<ContractVerificationForm config={ formConfig } hash={ hash }/>, { hooksConfig });
 
   // select method
   await component.getByLabel(/verification method/i).focus();
@@ -211,13 +181,8 @@ test('vyper multi-part method', async({ mount, page }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('vyper vyper-standard-input method', async({ mount, page }) => {
-  const component = await mount(
-    <TestApp>
-      <ContractVerificationForm config={ formConfig } hash={ hash }/>
-    </TestApp>,
-    { hooksConfig },
-  );
+test('vyper vyper-standard-input method', async({ render, page }) => {
+  const component = await render(<ContractVerificationForm config={ formConfig } hash={ hash }/>, { hooksConfig });
 
   // select method
   await component.getByLabel(/verification method/i).focus();
