@@ -669,9 +669,9 @@ OpenTelemetry SDK for Node.js app could be enabled by passing `OTEL_SDK_ENABLED=
 
 &nbsp;
 
-### Blockscout DeFi dropdown
+### DeFi dropdown
 
-If the feature is enabled, a single button or a dropdown (if more than 1 item is provided) will be displayed at the top of the explorer page, which will take you to the specified application in the marketplace or to an external site.
+If the feature is enabled, a single button or a dropdown (if more than 1 item is provided) will be displayed at the top of the explorer page, which will take a user to the specified application in the marketplace or to an external site.
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
