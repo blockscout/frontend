@@ -472,7 +472,10 @@ const deFiDropdownItemSchema: yup.ObjectSchema<DeFiDropdownItem> = yup
     icon: yup.string<IconName>().required(),
     dappId: yup.string(),
     url: yup.string().test(urlTest),
-  });
+  })
+  .test('oneOfRequired', 'NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS: Either dappId or url is required', function(value) {
+    return Boolean(value.dappId) || Boolean(value.url);
+  }) as yup.ObjectSchema<DeFiDropdownItem>;
 
 const schema = yup
   .object()
