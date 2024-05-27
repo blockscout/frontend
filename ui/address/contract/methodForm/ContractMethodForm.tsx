@@ -25,7 +25,7 @@ import type { ContractMethodFormFields } from './utils';
 
 interface Props<T extends SmartContractMethod> {
   data: T;
-  onSubmit: (data: T, args: Array<unknown>) => Promise<ContractMethodCallResult<T>>;
+  onSubmit: (data: T, args: Array<unknown>) => Promise<string> | Promise<ContractMethodCallResult<T>>;
   resultComponent: (props: ResultComponentProps<T>) => JSX.Element | null;
   methodType: 'read' | 'write';
 }

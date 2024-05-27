@@ -52,7 +52,7 @@ function getNextPageParams<R extends PaginatedResources>(
   }
 
   if (isResourcePayloadA<R>(data)) {
-    return data.next_page_params;
+    return data?.next_page_params;
   }
 
   // Handle ResourcePayloadB<R> if needed
