@@ -353,21 +353,6 @@ const accountSchema = yup
       }),
   });
 
-const adminServiceSchema = yup
-  .object()
-  .shape({
-    NEXT_PUBLIC_ADMIN_SERVICE_API_HOST: yup
-      .string()
-      .when([ 'NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED', 'NEXT_PUBLIC_MARKETPLACE_ENABLED' ], {
-        is: (value1: boolean, value2: boolean) => value1 || value2,
-        then: (schema) => schema.test(urlTest),
-        otherwise: (schema) => schema.max(
-          -1,
-          'NEXT_PUBLIC_ADMIN_SERVICE_API_HOST cannot not be used if NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED or NEXT_PUBLIC_MARKETPLACE_ENABLED is not set to "true"',
-        ),
-      }),
-  });
-
 const featuredNetworkSchema: yup.ObjectSchema<FeaturedNetwork> = yup
   .object()
   .shape({
@@ -600,6 +585,7 @@ const schema = yup
     NEXT_PUBLIC_CONTRACT_INFO_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_NAME_SERVICE_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_METADATA_SERVICE_API_HOST: yup.string().test(urlTest),
+    NEXT_PUBLIC_ADMIN_SERVICE_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_GRAPHIQL_TRANSACTION: yup.string().matches(regexp.HEX_REGEXP),
     NEXT_PUBLIC_WEB3_WALLETS: yup
       .mixed()
@@ -660,7 +646,6 @@ const schema = yup
   .concat(rollupSchema)
   .concat(beaconChainSchema)
   .concat(bridgedTokensSchema)
-  .concat(sentrySchema)
-  .concat(adminServiceSchema);
+  .concat(sentrySchema);
 
 export default schema;

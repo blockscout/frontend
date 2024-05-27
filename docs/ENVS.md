@@ -569,6 +569,17 @@ This feature allows name tags and other public tags for addresses.
 
 &nbsp;
 
+### Public tag submission
+
+This feature allows you to submit an application with a public address tag.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_METADATA_SERVICE_API_HOST | `string` | Metadata Service API endpoint url | Required | - | `https://metadata.services.blockscout.com` |
+| NEXT_PUBLIC_ADMIN_SERVICE_API_HOST | `string` | Admin Service API endpoint url | Required | - | `https://admin-rs.services.blockscout.com` |
+
+&nbsp;
+
 ### Data Availability
 
 This feature enables views related to blob transactions (EIP-4844), such as the Blob Txns tab on the Transactions page and the Blob details page.

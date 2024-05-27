@@ -51,7 +51,7 @@ const AccountActionsMenu = ({ isLoading, className }: Props) => {
     },
     {
       render: (props: ItemProps) => <PublicTagMenuItem { ...props }/>,
-      enabled: !isTxPage,
+      enabled: !isTxPage && config.features.publicTagsSubmission.isEnabled,
     },
   ].filter(({ enabled }) => enabled);
 
