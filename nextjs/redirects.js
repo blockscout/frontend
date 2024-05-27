@@ -48,6 +48,10 @@ const oldUrls = [
     source: '/account/custom_abi/new',
     destination: '/account/custom-abi',
   },
+  {
+    source: '/account/public-tags-request',
+    destination: '/public-tags/submit',
+  },
 
   // TRANSACTIONS
   {

@@ -52,7 +52,7 @@ const PublicTagsSubmitFieldAddresses = () => {
               </FormControl>
             </GridItem>
             <GridItem display="flex" alignItems="center" columnGap={ 5 } justifyContent={{ base: 'flex-end', lg: 'flex-start' }}>
-              { fields.length < LIMIT && !(fields.length > 1 && index === 0) && (
+              { fields.length < LIMIT && index === fields.length - 1 && (
                 <IconButton
                   aria-label="add"
                   data-index={ index }

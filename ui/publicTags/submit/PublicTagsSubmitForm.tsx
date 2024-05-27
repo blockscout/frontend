@@ -51,7 +51,7 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
     ) {
       router.replace({ pathname: '/public-tags/submit' }, undefined, { shallow: true });
     }
-  }, [ router.query.addresses, router ]);
+  }, [ router ]);
 
   const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(data) => {
     const requestsBody = convertFormDataToRequestsBody(data);

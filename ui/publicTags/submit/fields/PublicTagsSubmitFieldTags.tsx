@@ -50,7 +50,7 @@ const PublicTagsSubmitFieldTags = ({ tagTypes }: Props) => {
             register={ register }
             errors={ errors }
             isDisabled={ isDisabled }
-            onAddClick={ fields.length < LIMIT && !(fields.length > 1 && index === 0) ? handleAddFieldClick : undefined }
+            onAddClick={ fields.length < LIMIT && index === fields.length - 1 ? handleAddFieldClick : undefined }
             onRemoveClick={ fields.length > 1 ? handleRemoveFieldClick : undefined }
           />
         );
