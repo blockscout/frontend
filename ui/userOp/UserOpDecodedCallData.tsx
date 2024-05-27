@@ -28,6 +28,7 @@ const UserOpDecodedCallData = ({ data }: Props) => {
       onChange={ handleSwitchChange }
       initialValue={ !data.decoded_call_data }
       isDisabled={ !data.decoded_call_data }
+      ml={{ base: 0, lg: 'auto' }}
     />
   ) : null;
 
@@ -35,6 +36,8 @@ const UserOpDecodedCallData = ({ data }: Props) => {
     <DetailsInfoItem
       title="Decoded call data"
       hint="Decoded call data"
+      flexDir={{ base: 'column', lg: 'row' }}
+      alignItems={{ base: 'flex-start', lg: 'center' }}
     >
       <LogDecodedInputData data={ callData } rightSlot={ toggler }/>
     </DetailsInfoItem>
