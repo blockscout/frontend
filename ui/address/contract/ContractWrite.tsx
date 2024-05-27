@@ -149,7 +149,9 @@ const ContractWrite = () => {
           setInscriptionId={ setInscriptionId }
         />
       ) }
-      { openSuccessModal && <SuccessModal open={ openSuccessModal } inscriptionId={ inscriptionId } setOpen={ setOpenSuccessModal }/> }
+      { openSuccessModal &&
+      <SuccessModal open={ openSuccessModal } inscriptionId={ inscriptionId } setOpen={ setOpenSuccessModal } rlp={ encodedData }/>
+      }
     </>
   );
 };

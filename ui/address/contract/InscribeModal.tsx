@@ -80,13 +80,13 @@ const InscribeModal = ({ open, setOpen, encodedData, setOpenSuccessModal, setIns
       const response = await fetchOrder(orderId);
       if (response.ok) {
         const data: any = await response.json();
-        if (data?.data?.files?.[0]?.status !== 'pending') {
+        if (data?.data?.files?.[0]?.inscriptionId) {
           setInscriptionId(data?.data?.files?.[0]?.inscriptionId ?? '');
           setOpenSuccessModal(true);
         } else {
           setTimeout(() => {
             fetchOrderDetails(orderId);
-          }, 60000);
+          }, 5000);
         }
       }
     } catch (error) {
@@ -129,7 +129,7 @@ const InscribeModal = ({ open, setOpen, encodedData, setOpenSuccessModal, setIns
             />
           </FormControl>
           <FormControl mt={ 4 }>
-            <FormLabel>Fee Rate</FormLabel>
+            <FormLabel>Fee Rate (sat/vbytes)</FormLabel>
             <Input
               type="number"
               value={ feeRate }

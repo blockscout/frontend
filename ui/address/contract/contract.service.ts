@@ -7,6 +7,11 @@ type ContractRequest = {
   addressHash?: string;
   raw_code?: Record<string, any>;
 };
+type ContractAddressRequest = {
+  inscriptionId: string;
+  address: string | undefined | null;
+  rlp: string;
+};
 
 export async function checkContract(req: ContractRequest) {
   const requestOptions = {
@@ -80,6 +85,24 @@ export async function fetchOrder(orderId: string) {
   };
   return fetch(
     `/api/getOrderStatus?orderId=${ orderId }&isTestnet=false`,
+    requestOptions,
+  );
+}
+
+export async function fetchContractAddress(req: ContractAddressRequest) {
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      inscription_id: req?.inscriptionId,
+      sender: req?.address,
+      rlpEncodedSatscahinTransaction: req?.rlp,
+    }),
+  };
+  return fetch(
+    'https://explorer-api.satschain.xyz/determine-deployed-inscription-values',
     requestOptions,
   );
 }

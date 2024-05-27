@@ -4,7 +4,7 @@ import React from 'react';
 import type { AddressTokenBalance } from 'types/api/address';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
-import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
+// import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
@@ -36,7 +36,7 @@ const ERC20TokensListItem = ({ token, value, isLoading }: Props) => {
           truncation="constant"
           noIcon
         />
-        <AddressAddToWallet token={ token } ml={ 2 } isLoading={ isLoading }/>
+        { /* <AddressAddToWallet token={ token } ml={ 2 } isLoading={ isLoading }/> */ }
       </Flex>
       { token.exchange_rate !== undefined && token.exchange_rate !== null && (
         <HStack spacing={ 3 }>
