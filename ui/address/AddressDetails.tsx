@@ -2,6 +2,7 @@ import { Box, Text, Grid } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import config from 'configs/app';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMounted from 'lib/hooks/useIsMounted';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -17,6 +18,7 @@ import TxEntity from 'ui/shared/entities/tx/TxEntity';
 
 import AddressBalance from './details/AddressBalance';
 import AddressNameInfo from './details/AddressNameInfo';
+import AddressNetWorth from './details/AddressNetWorth';
 import TokenSelect from './tokenSelect/TokenSelect';
 import useAddressCountersQuery from './utils/useAddressCountersQuery';
 import type { AddressQuery } from './utils/useAddressQuery';
@@ -142,6 +144,20 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
             </DetailsInfoItem.Value>
           </>
         ) }
+        { (config.features.multichainButton.isEnabled || (data.exchange_rate && data.has_tokens)) && (
+          <>
+            <DetailsInfoItem.Label
+              hint="Total net worth in USD of all tokens for the address"
+              isLoading={ addressQuery.isPlaceholderData }
+            >
+              Net worth
+            </DetailsInfoItem.Label>
+            <DetailsInfoItem.Value alignSelf="center">
+              <AddressNetWorth addressData={ addressQuery.data } addressHash={ addressHash } isLoading={ addressQuery.isPlaceholderData }/>
+            </DetailsInfoItem.Value>
+          </>
+        )
+        }
 
         <DetailsInfoItem.Label
           hint="Number of transactions related to this address"

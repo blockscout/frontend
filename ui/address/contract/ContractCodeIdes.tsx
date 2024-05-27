@@ -3,7 +3,7 @@ import React from 'react';
 
 import config from 'configs/app';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkExternal from 'ui/shared/LinkExternal';
+import LinkExternal from 'ui/shared/links/LinkExternal';
 
 interface Props {
   className?: string;

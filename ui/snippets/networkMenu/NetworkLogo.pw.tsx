@@ -2,7 +2,7 @@ import type { Locator } from '@playwright/test';
 import React from 'react';
 
 import { test, expect } from 'playwright/lib';
-import * as configs from 'playwright/utils/configs';
+import * as pwConfig from 'playwright/utils/config';
 
 import NetworkLogo from './NetworkLogo';
 
@@ -24,7 +24,7 @@ test.describe('placeholder logo', () => {
   });
 
   test.describe('screen xl', () => {
-    test.use({ viewport: configs.viewport.xl });
+    test.use({ viewport: pwConfig.viewport.xl });
 
     test('+@dark-mode', async({ render }) => {
       const component = await render(<NetworkLogo/>);
@@ -52,7 +52,7 @@ test.describe('custom logo', () => {
   });
 
   test.describe('screen xl', () => {
-    test.use({ viewport: configs.viewport.xl });
+    test.use({ viewport: pwConfig.viewport.xl });
 
     test('+@dark-mode', async() => {
       await expect(component.locator('a')).toHaveScreenshot();
@@ -83,7 +83,7 @@ test.describe('custom logo with dark option -@default +@dark-mode', () => {
   });
 
   test.describe('screen xl', () => {
-    test.use({ viewport: configs.viewport.xl });
+    test.use({ viewport: pwConfig.viewport.xl });
 
     test('', async() => {
       await expect(component.locator('a')).toHaveScreenshot();

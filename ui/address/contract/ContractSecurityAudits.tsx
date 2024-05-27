@@ -7,7 +7,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import dayjs from 'lib/date/dayjs';
 import ContainerWithScrollY from 'ui/shared/ContainerWithScrollY';
 import FormModal from 'ui/shared/FormModal';
-import LinkExternal from 'ui/shared/LinkExternal';
+import LinkExternal from 'ui/shared/links/LinkExternal';
 
 import ContractSubmitAuditForm from './contractSubmitAuditForm/ContractSubmitAuditForm';
 

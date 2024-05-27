@@ -29,7 +29,7 @@ const VerifiedContractsTable = ({ data, sort, setSorting, isLoading }: Props) =>
   }, [ sort, setSorting ]);
 
   return (
-    <Table variant="simple" size="sm">
+    <Table variant="simple" size="sm" minW="915px">
       <Thead top={ ACTION_BAR_HEIGHT_DESKTOP }>
         <Tr>
           <Th width="50%">Contract</Th>

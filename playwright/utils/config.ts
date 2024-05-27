@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import { devices } from '@playwright/test';
 
 export const viewport = {

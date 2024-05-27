@@ -96,6 +96,15 @@ export const contract1: SearchResultAddressOrContract = {
   url: '/address/0xb64a30399f7F6b0C154c2E7Af0a3ec7B0A5b131a',
 };
 
+export const contract2: SearchResultAddressOrContract = {
+  address: '0xb64a30399f7F6b0C154c2E7Af0a3ec7B0A5b131a',
+  name: 'Super utko',
+  type: 'contract' as const,
+  is_smart_contract_verified: true,
+  certified: true,
+  url: '/address/0xb64a30399f7F6b0C154c2E7Af0a3ec7B0A5b131a',
+};
+
 export const label1: SearchResultLabel = {
   address: '0xb64a30399f7F6b0C154c2E7Af0a3ec7B0A5b131a',
   name: 'utko',

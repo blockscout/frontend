@@ -63,4 +63,10 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   noNftMarketplaces: [
     [ 'NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES', '' ],
   ],
+  dataAvailability: [
+    [ 'NEXT_PUBLIC_DATA_AVAILABILITY_ENABLED', 'true' ],
+  ],
+  nameService: [
+    [ 'NEXT_PUBLIC_NAME_SERVICE_API_HOST', 'https://localhost:3101' ],
+  ],
 };

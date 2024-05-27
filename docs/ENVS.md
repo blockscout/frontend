@@ -57,6 +57,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
   - [Sentry error monitoring](ENVS.md#sentry-error-monitoring)
   - [OpenTelemetry](ENVS.md#opentelemetry)
   - [Swap button](ENVS.md#swap-button)
+  - [Multichain balance button](ENVS.md#multichain-button)
 - [3rd party services configuration](ENVS.md#external-services-configuration)
 
 &nbsp;
@@ -676,6 +677,27 @@ If the feature is enabled, a Swap button will be displayed at the top of the exp
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_SWAP_BUTTON_URL | `string` | Application ID in the marketplace or website URL | - | - | `uniswap` |
+
+&nbsp;
+
+### Multichain balance button
+
+If the feature is enabled, a Multichain balance button will be displayed on the address page, which will take you to the portfolio application in the marketplace or to an external site.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG | `{ name: string; url_template: string; dapp_id?: string; logo?: string }` | Multichain portfolio application config See [below](#multichain-button-configuration-properties) | - | - | `{ name: 'zerion', url_template: 'https://app.zerion.io/{address}/overview', logo: 'https://example.com/icon.svg'` |
+
+&nbsp;
+
+#### Multichain button configuration properties
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| name | `string` | Multichain portfolio application name | Required | - | `zerion` |
+| url_template | `string` | Url template to the portfolio. Should be a template with `{address}` variable | Required | - | `https://app.zerion.io/{address}/overview` |
+| dapp_id | `string` | Set for open a Blockscout dapp page with the portfolio instead of opening external app page | - | - | `zerion` |
+| logo | `string` | Multichain portfolio application logo (.svg) url | - | - | `https://example.com/icon.svg` |
 
 &nbsp;
 

@@ -7,7 +7,7 @@ import * as cookies from 'lib/cookies';
 import { FEATURED_NETWORKS_MOCK } from 'mocks/config/network';
 import { contextWithAuth } from 'playwright/fixtures/auth';
 import { test, expect } from 'playwright/lib';
-import * as configs from 'playwright/utils/configs';
+import * as pwConfig from 'playwright/utils/config';
 
 import NavigationDesktop from './NavigationDesktop';
 
@@ -46,7 +46,7 @@ test.describe('no auth', () => {
   });
 
   test.describe('xl screen', () => {
-    test.use({ viewport: configs.viewport.xl });
+    test.use({ viewport: pwConfig.viewport.xl });
 
     test('+@dark-mode', async() => {
       await expect(component).toHaveScreenshot();
@@ -76,7 +76,7 @@ authTest.describe('auth', () => {
   });
 
   authTest.describe('xl screen', () => {
-    authTest.use({ viewport: configs.viewport.xl });
+    authTest.use({ viewport: pwConfig.viewport.xl });
 
     authTest('+@dark-mode', async() => {
       await expect(component).toHaveScreenshot();
@@ -85,7 +85,7 @@ authTest.describe('auth', () => {
 });
 
 test.describe('with tooltips', () => {
-  test.use({ viewport: configs.viewport.xl });
+  test.use({ viewport: pwConfig.viewport.xl });
 
   test('', async({ render, page }) => {
     const component = await render(
@@ -123,7 +123,7 @@ test.describe('with submenu', () => {
   });
 
   test.describe('xl screen', () => {
-    test.use({ viewport: configs.viewport.xl });
+    test.use({ viewport: pwConfig.viewport.xl });
 
     test('', async() => {
       await expect(component).toHaveScreenshot();
@@ -157,7 +157,7 @@ noSideBarCookieTest.describe('cookie set to false', () => {
   });
 
   noSideBarCookieTest.describe('xl screen', () => {
-    noSideBarCookieTest.use({ viewport: configs.viewport.xl });
+    noSideBarCookieTest.use({ viewport: pwConfig.viewport.xl });
 
     noSideBarCookieTest('', async() => {
       const networkMenu = component.locator('button[aria-label="Network menu"]');
@@ -202,7 +202,7 @@ test('hover +@dark-mode', async({ render }) => {
 });
 
 test.describe('hover xl screen', () => {
-  test.use({ viewport: configs.viewport.xl });
+  test.use({ viewport: pwConfig.viewport.xl });
 
   test('+@dark-mode', async({ render }) => {
     const component = await render(
