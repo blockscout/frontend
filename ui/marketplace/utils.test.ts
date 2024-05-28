@@ -1,23 +1,16 @@
 import type { NextRouter } from 'next/router';
 
-import getQueryParamString from 'lib/router/getQueryParamString';
-import removeQueryParam from 'lib/router/removeQueryParam';
-
 import { getAppUrl } from './utils';
-
-// Mocking the dependencies
-jest.mock('lib/router/getQueryParamString');
-jest.mock('lib/router/removeQueryParam');
 
 describe('getAppUrl', () => {
   let router: NextRouter;
 
   beforeEach(() => {
     router = {
+      pathname: '/current/path',
       asPath: '/current/path?someParam=value',
-      query: {
-        url: 'https://example.com/custom-path?query=value',
-      },
+      query: {},
+      replace: jest.fn(),
     } as unknown as NextRouter;
   });
 
@@ -27,16 +20,16 @@ describe('getAppUrl', () => {
   });
 
   it('should return the custom url if origins match', () => {
-    (getQueryParamString as jest.Mock).mockReturnValue('https://example.com/custom-path?query=value');
+    router.query.url = 'https://example.com/custom-path?query=value';
     const result = getAppUrl('https://example.com/app', router);
     expect(result).toBe('https://example.com/custom-path?query=value');
   });
 
   it('should remove the query param and return original url if origins do not match', () => {
-    (getQueryParamString as jest.Mock).mockReturnValue('https://different.com/custom-path?query=value');
+    router.query.url = 'https://different.com/custom-path?query=value';
     const result = getAppUrl('https://example.com/app', router);
     expect(result).toBe('https://example.com/app?someParam=value');
-    expect(removeQueryParam).toHaveBeenCalledWith(router, 'url');
+    expect(router.replace).toHaveBeenCalledWith({ pathname: '/current/path', query: {}, hash: '' }, undefined, { shallow: true });
   });
 
   it('should construct the new url with custom params and hash', () => {
@@ -52,9 +45,7 @@ describe('getAppUrl', () => {
   });
 
   it('should handle error in custom url parsing', () => {
-    (getQueryParamString as jest.Mock).mockImplementation(() => {
-      throw new Error('Invalid URL');
-    });
+    router.query.url = 'invalid-url';
     const result = getAppUrl('https://example.com/app', router);
     expect(result).toBe('https://example.com/app?someParam=value');
   });
