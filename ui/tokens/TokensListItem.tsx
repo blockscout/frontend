@@ -5,6 +5,7 @@ import React from 'react';
 import type { TokenInfo } from 'types/api/token';
 
 import config from 'configs/app';
+import { getTokenTypeName } from 'lib/token/tokenTypes';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import Tag from 'ui/shared/chakra/Tag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -59,7 +60,7 @@ const TokensTableItem = ({
             fontWeight="700"
           />
           <Flex ml={ 3 } flexShrink={ 0 } columnGap={ 1 }>
-            <Tag isLoading={ isLoading }>{ type }</Tag>
+            <Tag isLoading={ isLoading }>{ getTokenTypeName(type) }</Tag>
             { bridgedChainTag && <Tag isLoading={ isLoading }>{ bridgedChainTag }</Tag> }
           </Flex>
           <Skeleton isLoaded={ !isLoading } fontSize="sm" ml="auto" color="text_secondary" minW="24px" textAlign="right" lineHeight={ 6 }>
