@@ -9,8 +9,7 @@ import { tokenInfoERC721a } from 'mocks/tokens/tokenInfo';
 import * as tokenInstanceMock from 'mocks/tokens/tokenInstance';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
-import TestApp from 'playwright/TestApp';
-import * as configs from 'playwright/utils/configs';
+import * as pwConfig from 'playwright/utils/config';
 
 import TokenInstanceDetails from './TokenInstanceDetails';
 
@@ -42,15 +41,10 @@ test.beforeEach(async({ mockApiResponse, mockAssetResponse }) => {
 });
 
 test('base view +@dark-mode +@mobile', async({ render, page }) => {
-  const component = await render(
-    <TestApp>
-      <TokenInstanceDetails data={ tokenInstanceMock.unique } token={ tokenInfoERC721a }/>
-    </TestApp>,
-  );
-
+  const component = await render(<TokenInstanceDetails data={ tokenInstanceMock.unique } token={ tokenInfoERC721a }/>);
   await expect(component).toHaveScreenshot({
-    mask: [ page.locator(configs.adsBannerSelector) ],
-    maskColor: configs.maskColor,
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
   });
 });
 
@@ -63,30 +57,19 @@ test.describe('action button', () => {
   });
 
   test('base view +@dark-mode +@mobile', async({ render, page }) => {
-    const component = await render(
-      <TestApp>
-        <TokenInstanceDetails data={ tokenInstanceMock.unique } token={ tokenInfoERC721a }/>
-      </TestApp>,
-    );
-
+    const component = await render(<TokenInstanceDetails data={ tokenInstanceMock.unique } token={ tokenInfoERC721a }/>);
     await expect(component).toHaveScreenshot({
-      mask: [ page.locator(configs.adsBannerSelector) ],
-      maskColor: configs.maskColor,
+      mask: [ page.locator(pwConfig.adsBannerSelector) ],
+      maskColor: pwConfig.maskColor,
     });
   });
 
   test('without marketplaces +@dark-mode +@mobile', async({ render, page, mockEnvs }) => {
     mockEnvs(ENVS_MAP.noNftMarketplaces);
-
-    const component = await render(
-      <TestApp>
-        <TokenInstanceDetails data={ tokenInstanceMock.unique } token={ tokenInfoERC721a }/>
-      </TestApp>,
-    );
-
+    const component = await render(<TokenInstanceDetails data={ tokenInstanceMock.unique } token={ tokenInfoERC721a }/>);
     await expect(component).toHaveScreenshot({
-      mask: [ page.locator(configs.adsBannerSelector) ],
-      maskColor: configs.maskColor,
+      mask: [ page.locator(pwConfig.adsBannerSelector) ],
+      maskColor: pwConfig.maskColor,
     });
   });
 });

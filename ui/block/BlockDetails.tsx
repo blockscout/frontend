@@ -17,7 +17,7 @@ import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { currencyUnits } from 'lib/units';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import DetailsTimestamp from 'ui/shared/DetailsTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -25,7 +25,7 @@ import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 import PrevNext from 'ui/shared/PrevNext';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 import TextSeparator from 'ui/shared/TextSeparator';
@@ -163,11 +163,13 @@ const BlockDetails = ({ query }: Props) => {
       templateColumns={{ base: 'minmax(0, 1fr)', lg: 'minmax(min-content, 200px) minmax(0, 1fr)' }}
       overflow="hidden"
     >
-      <DetailsInfoItem
-        title={ `${ blockTypeLabel } height` }
+      <DetailsInfoItem.Label
         hint="The block height of a particular block is defined as the number of blocks preceding it in the blockchain"
         isLoading={ isPlaceholderData }
       >
+        { blockTypeLabel } height
+      </DetailsInfoItem.Label>
+      <DetailsInfoItem.Value>
         <Skeleton isLoaded={ !isPlaceholderData }>
           { data.height }
         </Skeleton>
@@ -180,122 +182,151 @@ const BlockDetails = ({ query }: Props) => {
           isPrevDisabled={ data.height === 0 }
           isLoading={ isPlaceholderData }
         />
-      </DetailsInfoItem>
-      <DetailsInfoItem
-        title="Size"
+      </DetailsInfoItem.Value>
+
+      <DetailsInfoItem.Label
         hint="Size of the block in bytes"
         isLoading={ isPlaceholderData }
       >
+        Size
+      </DetailsInfoItem.Label>
+      <DetailsInfoItem.Value>
         <Skeleton isLoaded={ !isPlaceholderData }>
           { data.size.toLocaleString() }
         </Skeleton>
-      </DetailsInfoItem>
-      <DetailsInfoItem
-        title="Timestamp"
+      </DetailsInfoItem.Value>
+
+      <DetailsInfoItem.Label
         hint="Date & time at which block was produced."
         isLoading={ isPlaceholderData }
       >
+        Timestamp
+      </DetailsInfoItem.Label>
+      <DetailsInfoItem.Value>
         <DetailsTimestamp timestamp={ data.timestamp } isLoading={ isPlaceholderData }/>
-      </DetailsInfoItem>
-      <DetailsInfoItem
-        title="Transactions"
+      </DetailsInfoItem.Value>
+
+      <DetailsInfoItem.Label
         hint="The number of transactions in the block"
         isLoading={ isPlaceholderData }
       >
+        Transactions
+      </DetailsInfoItem.Label>
+      <DetailsInfoItem.Value>
         <Skeleton isLoaded={ !isPlaceholderData }>
           { txsNum }
         </Skeleton>
-      </DetailsInfoItem>
+      </DetailsInfoItem.Value>
+
       { config.features.beaconChain.isEnabled && Boolean(data.withdrawals_count) && (
-        <DetailsInfoItem
-          title="Withdrawals"
-          hint="The number of beacon withdrawals in the block"
-          isLoading={ isPlaceholderData }
-        >
-          <Skeleton isLoaded={ !isPlaceholderData }>
-            <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash, tab: 'withdrawals' } }) }>
-              { data.withdrawals_count } withdrawal{ data.withdrawals_count === 1 ? '' : 's' }
-            </LinkInternal>
-          </Skeleton>
-        </DetailsInfoItem>
+        <>
+          <DetailsInfoItem.Label
+            hint="The number of beacon withdrawals in the block"
+            isLoading={ isPlaceholderData }
+          >
+            Withdrawals
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            <Skeleton isLoaded={ !isPlaceholderData }>
+              <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash, tab: 'withdrawals' } }) }>
+                { data.withdrawals_count } withdrawal{ data.withdrawals_count === 1 ? '' : 's' }
+              </LinkInternal>
+            </Skeleton>
+          </DetailsInfoItem.Value>
+        </>
       ) }
 
       { rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && data.zksync && !config.UI.views.block.hiddenFields?.batch && (
-        <DetailsInfoItem
-          title="Batch"
-          hint="Batch number"
-          isLoading={ isPlaceholderData }
-        >
-          { data.zksync.batch_number ? (
-            <BatchEntityL2
-              isLoading={ isPlaceholderData }
-              number={ data.zksync.batch_number }
-            />
-          ) : <Skeleton isLoaded={ !isPlaceholderData }>Pending</Skeleton> }
-        </DetailsInfoItem>
+        <>
+          <DetailsInfoItem.Label
+            hint="Batch number"
+            isLoading={ isPlaceholderData }
+          >
+            Batch
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            { data.zksync.batch_number ?
+              <BatchEntityL2 isLoading={ isPlaceholderData } number={ data.zksync.batch_number }/> :
+              <Skeleton isLoaded={ !isPlaceholderData }>Pending</Skeleton> }
+          </DetailsInfoItem.Value>
+        </>
       ) }
       { rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && data.zksync && !config.UI.views.block.hiddenFields?.L1_status && (
-        <DetailsInfoItem
-          title="Status"
-          hint="Status is the short interpretation of the batch lifecycle"
-          isLoading={ isPlaceholderData }
-        >
-          <VerificationSteps steps={ ZKSYNC_L2_TX_BATCH_STATUSES } currentStep={ data.zksync.status } isLoading={ isPlaceholderData }/>
-        </DetailsInfoItem>
+        <>
+          <DetailsInfoItem.Label
+            hint="Status is the short interpretation of the batch lifecycle"
+            isLoading={ isPlaceholderData }
+          >
+            Status
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            <VerificationSteps steps={ ZKSYNC_L2_TX_BATCH_STATUSES } currentStep={ data.zksync.status } isLoading={ isPlaceholderData }/>
+          </DetailsInfoItem.Value>
+        </>
       ) }
 
       { !config.UI.views.block.hiddenFields?.miner && (
-        <DetailsInfoItem
-          title={ verificationTitle }
-          hint="A block producer who successfully included the block onto the blockchain"
-          columnGap={ 1 }
-          isLoading={ isPlaceholderData }
-        >
-          <AddressEntity
-            address={ data.miner }
+        <>
+          <DetailsInfoItem.Label
+            hint="A block producer who successfully included the block onto the blockchain"
             isLoading={ isPlaceholderData }
-          />
-          { /* api doesn't return the block processing time yet */ }
-          { /* <Text>{ dayjs.duration(block.minedIn, 'second').humanize(true) }</Text> */ }
-        </DetailsInfoItem>
+          >
+            { verificationTitle }
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            <AddressEntity
+              address={ data.miner }
+              isLoading={ isPlaceholderData }
+            />
+          </DetailsInfoItem.Value>
+        </>
       ) }
+
       { !rollupFeature.isEnabled && !totalReward.isEqualTo(ZERO) && !config.UI.views.block.hiddenFields?.total_reward && (
-        <DetailsInfoItem
-          title="Block reward"
-          hint={
-            `For each block, the ${ validatorTitle } is rewarded with a finite amount of ${ config.chain.currency.symbol || 'native token' } 
+        <>
+          <DetailsInfoItem.Label
+            hint={
+              `For each block, the ${ validatorTitle } is rewarded with a finite amount of ${ config.chain.currency.symbol || 'native token' } 
           on top of the fees paid for all transactions in the block`
-          }
-          columnGap={ 1 }
-          isLoading={ isPlaceholderData }
-        >
-          <Skeleton isLoaded={ !isPlaceholderData }>
-            { totalReward.dividedBy(WEI).toFixed() } { currencyUnits.ether }
-          </Skeleton>
-          { rewardBreakDown }
-        </DetailsInfoItem>
+            }
+            isLoading={ isPlaceholderData }
+          >
+          Block reward
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value columnGap={ 1 }>
+            <Skeleton isLoaded={ !isPlaceholderData }>
+              { totalReward.dividedBy(WEI).toFixed() } { currencyUnits.ether }
+            </Skeleton>
+            { rewardBreakDown }
+          </DetailsInfoItem.Value>
+        </>
       ) }
+
       { data.rewards
         ?.filter(({ type }) => type !== 'Validator Reward' && type !== 'Miner Reward')
         .map(({ type, reward }) => (
-          <DetailsInfoItem
-            key={ type }
-            title={ type }
-            // is this text correct for validators?
-            hint={ `Amount of distributed reward. ${ capitalize(validatorTitle) }s receive a static block reward + Tx fees + uncle fees` }
-          >
-            { BigNumber(reward).dividedBy(WEI).toFixed() } { currencyUnits.ether }
-          </DetailsInfoItem>
+          <React.Fragment key={ type }>
+            <DetailsInfoItem.Label
+              hint={ `Amount of distributed reward. ${ capitalize(validatorTitle) }s receive a static block reward + Tx fees + uncle fees` }
+            >
+              { type }
+            </DetailsInfoItem.Label>
+            <DetailsInfoItem.Value>
+              { BigNumber(reward).dividedBy(WEI).toFixed() } { currencyUnits.ether }
+            </DetailsInfoItem.Value>
+          </React.Fragment>
         ))
       }
 
       <DetailsInfoItemDivider/>
 
-      <DetailsInfoItem
-        title="Gas used"
+      <DetailsInfoItem.Label
         hint="The total gas amount used in the block and its percentage of gas filled in the block"
         isLoading={ isPlaceholderData }
       >
+        Gas used
+      </DetailsInfoItem.Label>
+      <DetailsInfoItem.Value>
         <Skeleton isLoaded={ !isPlaceholderData }>
           { BigNumber(data.gas_used || 0).toFormat() }
         </Skeleton>
@@ -311,91 +342,105 @@ const BlockDetails = ({ query }: Props) => {
             <GasUsedToTargetRatio value={ data.gas_target_percentage } isLoading={ isPlaceholderData }/>
           </>
         ) }
-      </DetailsInfoItem>
-      <DetailsInfoItem
-        title="Gas limit"
+      </DetailsInfoItem.Value>
+
+      <DetailsInfoItem.Label
         hint="Total gas limit provided by all transactions in the block"
         isLoading={ isPlaceholderData }
       >
+        Gas limit
+      </DetailsInfoItem.Label>
+      <DetailsInfoItem.Value>
         <Skeleton isLoaded={ !isPlaceholderData }>
           { BigNumber(data.gas_limit).toFormat() }
         </Skeleton>
-      </DetailsInfoItem>
-      { data.minimum_gas_price && (
-        <DetailsInfoItem
-          title="Minimum gas price"
-          hint="The minimum gas price a transaction should have in order to be included in this block"
-          isLoading={ isPlaceholderData }
-        >
-          <Skeleton isLoaded={ !isPlaceholderData }>
-            { BigNumber(data.minimum_gas_price).dividedBy(GWEI).toFormat() } { currencyUnits.gwei }
-          </Skeleton>
-        </DetailsInfoItem>
-      ) }
-      { data.base_fee_per_gas && (
-        <DetailsInfoItem
-          title="Base fee per gas"
-          hint="Minimum fee required per unit of gas. Fee adjusts based on network congestion"
-          isLoading={ isPlaceholderData }
-        >
-          { isPlaceholderData ? (
-            <Skeleton isLoaded={ !isPlaceholderData } h="20px" maxW="380px" w="100%"/>
-          ) : (
-            <>
-              <Text>{ BigNumber(data.base_fee_per_gas).dividedBy(WEI).toFixed() } { currencyUnits.ether } </Text>
-              <Text variant="secondary" whiteSpace="pre">
-                { space }({ BigNumber(data.base_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })
-              </Text>
-            </>
-          ) }
-        </DetailsInfoItem>
-      ) }
-      { !config.UI.views.block.hiddenFields?.burnt_fees && !burntFees.isEqualTo(ZERO) && (
-        <DetailsInfoItem
-          title="Burnt fees"
-          hint={
-            `Amount of ${ config.chain.currency.symbol || 'native token' } burned from transactions included in the block.
+      </DetailsInfoItem.Value>
 
-          Equals Block Base Fee per Gas * Gas Used`
-          }
-          isLoading={ isPlaceholderData }
-        >
-          <IconSvg name="flame" boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
-          <Skeleton isLoaded={ !isPlaceholderData } ml={ 2 }>
-            { burntFees.dividedBy(WEI).toFixed() } { currencyUnits.ether }
-          </Skeleton>
-          { !txFees.isEqualTo(ZERO) && (
-            <Tooltip label="Burnt fees / Txn fees * 100%">
-              <Box>
-                <Utilization
-                  ml={ 4 }
-                  value={ burntFees.dividedBy(txFees).toNumber() }
-                  isLoading={ isPlaceholderData }
-                />
-              </Box>
-            </Tooltip>
-          ) }
-        </DetailsInfoItem>
+      { data.minimum_gas_price && (
+        <>
+          <DetailsInfoItem.Label
+            hint="The minimum gas price a transaction should have in order to be included in this block"
+            isLoading={ isPlaceholderData }
+          >
+        Minimum gas price
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            <Skeleton isLoaded={ !isPlaceholderData }>
+              { BigNumber(data.minimum_gas_price).dividedBy(GWEI).toFormat() } { currencyUnits.gwei }
+            </Skeleton>
+          </DetailsInfoItem.Value>
+        </>
       ) }
+
+      { data.base_fee_per_gas && (
+        <>
+          <DetailsInfoItem.Label
+            hint="Minimum fee required per unit of gas. Fee adjusts based on network congestion"
+            isLoading={ isPlaceholderData }
+          >
+            Base fee per gas
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            { isPlaceholderData ? (
+              <Skeleton isLoaded={ !isPlaceholderData } h="20px" maxW="380px" w="100%"/>
+            ) : (
+              <>
+                <Text>{ BigNumber(data.base_fee_per_gas).dividedBy(WEI).toFixed() } { currencyUnits.ether } </Text>
+                <Text variant="secondary" whiteSpace="pre">
+                  { space }({ BigNumber(data.base_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() } { currencyUnits.gwei })
+                </Text>
+              </>
+            ) }
+          </DetailsInfoItem.Value>
+        </>
+      ) }
+
+      { !config.UI.views.block.hiddenFields?.burnt_fees && !burntFees.isEqualTo(ZERO) && (
+        <>
+          <DetailsInfoItem.Label
+            hint={
+              `Amount of ${ config.chain.currency.symbol || 'native token' } burned from transactions included in the block. 
+              Equals Block Base Fee per Gas * Gas Used`
+            }
+            isLoading={ isPlaceholderData }
+          >
+            Burnt fees
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            <IconSvg name="flame" boxSize={ 5 } color="gray.500" isLoading={ isPlaceholderData }/>
+            <Skeleton isLoaded={ !isPlaceholderData } ml={ 2 }>
+              { burntFees.dividedBy(WEI).toFixed() } { currencyUnits.ether }
+            </Skeleton>
+            { !txFees.isEqualTo(ZERO) && (
+              <Tooltip label="Burnt fees / Txn fees * 100%">
+                <Box>
+                  <Utilization
+                    ml={ 4 }
+                    value={ burntFees.dividedBy(txFees).toNumber() }
+                    isLoading={ isPlaceholderData }
+                  />
+                </Box>
+              </Tooltip>
+            ) }
+          </DetailsInfoItem.Value>
+        </>
+      ) }
+
       { data.priority_fee !== null && BigNumber(data.priority_fee).gt(ZERO) && (
-        <DetailsInfoItem
-          title="Priority fee / Tip"
-          hint="User-defined tips sent to validator for transaction priority/inclusion"
-          isLoading={ isPlaceholderData }
-        >
-          <Skeleton isLoaded={ !isPlaceholderData }>
-            { BigNumber(data.priority_fee).dividedBy(WEI).toFixed() } { currencyUnits.ether }
-          </Skeleton>
-        </DetailsInfoItem>
+        <>
+          <DetailsInfoItem.Label
+            hint="User-defined tips sent to validator for transaction priority/inclusion"
+            isLoading={ isPlaceholderData }
+          >
+            Priority fee / Tip
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            <Skeleton isLoaded={ !isPlaceholderData }>
+              { BigNumber(data.priority_fee).dividedBy(WEI).toFixed() } { currencyUnits.ether }
+            </Skeleton>
+          </DetailsInfoItem.Value>
+        </>
       ) }
-      { /* api doesn't support extra data yet */ }
-      { /* <DetailsInfoItem
-        title="Extra data"
-        hint={ `Any data that can be included by the ${ validatorTitle } in the block` }
-      >
-        <Text whiteSpace="pre">{ data.extra_data } </Text>
-        <Text variant="secondary">(Hex: { data.extra_data })</Text>
-      </DetailsInfoItem> */ }
 
       { /* CUT */ }
       <GridItem colSpan={{ base: undefined, lg: 2 }}>
@@ -424,121 +469,148 @@ const BlockDetails = ({ query }: Props) => {
           { !isPlaceholderData && <BlockDetailsBlobInfo data={ data }/> }
 
           { data.bitcoin_merged_mining_header && (
-            <DetailsInfoItem
-              title="Bitcoin merged mining header"
-              hint="Merged-mining field: Bitcoin header"
-              flexWrap="nowrap"
-              alignSelf="flex-start"
-            >
-              <Box whiteSpace="nowrap" overflow="hidden">
-                <HashStringShortenDynamic hash={ data.bitcoin_merged_mining_header }/>
-              </Box>
-              <CopyToClipboard text={ data.bitcoin_merged_mining_header }/>
-            </DetailsInfoItem>
-          ) }
-          { data.bitcoin_merged_mining_coinbase_transaction && (
-            <DetailsInfoItem
-              title="Bitcoin merged mining coinbase transaction"
-              hint="Merged-mining field: Coinbase transaction"
-            >
-              <RawDataSnippet
-                data={ data.bitcoin_merged_mining_coinbase_transaction }
-                isLoading={ isPlaceholderData }
-                showCopy={ false }
-                textareaMaxHeight="100px"
-              />
-            </DetailsInfoItem>
-          ) }
-          { data.bitcoin_merged_mining_merkle_proof && (
-            <DetailsInfoItem
-              title="Bitcoin merged mining Merkle proof"
-              hint="Merged-mining field: Merkle proof"
-            >
-              <RawDataSnippet
-                data={ data.bitcoin_merged_mining_merkle_proof }
-                isLoading={ isPlaceholderData }
-                showCopy={ false }
-                textareaMaxHeight="100px"
-              />
-            </DetailsInfoItem>
-          ) }
-          { data.hash_for_merged_mining && (
-            <DetailsInfoItem
-              title="Hash for merged mining"
-              hint="Merged-mining field: Rootstock block header hash"
-              flexWrap="nowrap"
-              alignSelf="flex-start"
-            >
-              <Box whiteSpace="nowrap" overflow="hidden">
-                <HashStringShortenDynamic hash={ data.hash_for_merged_mining }/>
-              </Box>
-              <CopyToClipboard text={ data.hash_for_merged_mining }/>
-            </DetailsInfoItem>
+            <>
+              <DetailsInfoItem.Label
+                hint="Merged-mining field: Bitcoin header"
+              >
+                Bitcoin merged mining header
+              </DetailsInfoItem.Label>
+              <DetailsInfoItem.Value
+                flexWrap="nowrap"
+                alignSelf="flex-start"
+              >
+                <Box whiteSpace="nowrap" overflow="hidden">
+                  <HashStringShortenDynamic hash={ data.bitcoin_merged_mining_header }/>
+                </Box>
+                <CopyToClipboard text={ data.bitcoin_merged_mining_header }/>
+              </DetailsInfoItem.Value>
+            </>
           ) }
 
-          <DetailsInfoItem
-            title="Difficulty"
+          { data.bitcoin_merged_mining_coinbase_transaction && (
+            <>
+              <DetailsInfoItem.Label
+                hint="Merged-mining field: Coinbase transaction"
+              >
+                Bitcoin merged mining coinbase transaction
+              </DetailsInfoItem.Label>
+              <DetailsInfoItem.Value>
+                <RawDataSnippet
+                  data={ data.bitcoin_merged_mining_coinbase_transaction }
+                  isLoading={ isPlaceholderData }
+                  showCopy={ false }
+                  textareaMaxHeight="100px"
+                />
+              </DetailsInfoItem.Value>
+            </>
+          ) }
+
+          { data.bitcoin_merged_mining_merkle_proof && (
+            <>
+              <DetailsInfoItem.Label
+                hint="Merged-mining field: Merkle proof"
+              >
+                Bitcoin merged mining Merkle proof
+              </DetailsInfoItem.Label>
+              <DetailsInfoItem.Value>
+                <RawDataSnippet
+                  data={ data.bitcoin_merged_mining_merkle_proof }
+                  isLoading={ isPlaceholderData }
+                  showCopy={ false }
+                  textareaMaxHeight="100px"
+                />
+              </DetailsInfoItem.Value>
+            </>
+          ) }
+
+          { data.hash_for_merged_mining && (
+            <>
+              <DetailsInfoItem.Label
+                hint="Merged-mining field: Rootstock block header hash"
+              >
+                Hash for merged mining
+              </DetailsInfoItem.Label>
+              <DetailsInfoItem.Value
+                flexWrap="nowrap"
+                alignSelf="flex-start"
+              >
+                <Box whiteSpace="nowrap" overflow="hidden">
+                  <HashStringShortenDynamic hash={ data.hash_for_merged_mining }/>
+                </Box>
+                <CopyToClipboard text={ data.hash_for_merged_mining }/>
+              </DetailsInfoItem.Value>
+            </>
+          ) }
+
+          <DetailsInfoItem.Label
             hint={ `Block difficulty for ${ validatorTitle }, used to calibrate block generation time` }
           >
-            <Box whiteSpace="nowrap" overflow="hidden">
-              <HashStringShortenDynamic hash={ BigNumber(data.difficulty).toFormat() }/>
-            </Box>
-          </DetailsInfoItem>
+            Difficulty
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value overflow="hidden">
+            <HashStringShortenDynamic hash={ BigNumber(data.difficulty).toFormat() }/>
+          </DetailsInfoItem.Value>
+
           { data.total_difficulty && (
-            <DetailsInfoItem
-              title="Total difficulty"
-              hint="Total difficulty of the chain until this block"
-            >
-              <Box whiteSpace="nowrap" overflow="hidden">
+            <>
+              <DetailsInfoItem.Label
+                hint="Total difficulty of the chain until this block"
+              >
+                Total difficulty
+              </DetailsInfoItem.Label>
+              <DetailsInfoItem.Value overflow="hidden">
                 <HashStringShortenDynamic hash={ BigNumber(data.total_difficulty).toFormat() }/>
-              </Box>
-            </DetailsInfoItem>
+              </DetailsInfoItem.Value>
+            </>
           ) }
 
           <DetailsInfoItemDivider/>
 
-          <DetailsInfoItem
-            title="Hash"
+          <DetailsInfoItem.Label
             hint="The SHA256 hash of the block"
-            flexWrap="nowrap"
           >
-            <Box overflow="hidden">
+            Hash
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value flexWrap="nowrap">
+            <Box overflow="hidden" >
               <HashStringShortenDynamic hash={ data.hash }/>
             </Box>
             <CopyToClipboard text={ data.hash }/>
-          </DetailsInfoItem>
+          </DetailsInfoItem.Value>
+
           { data.height > 0 && (
-            <DetailsInfoItem
-              title="Parent hash"
-              hint="The hash of the block from which this block was generated"
-              flexWrap="nowrap"
-            >
-              <LinkInternal
-                href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.height - 1) } }) }
-                overflow="hidden"
-                whiteSpace="nowrap"
+            <>
+              <DetailsInfoItem.Label
+                hint="The hash of the block from which this block was generated"
               >
-                <HashStringShortenDynamic
-                  hash={ data.parent_hash }
-                />
-              </LinkInternal>
-              <CopyToClipboard text={ data.parent_hash }/>
-            </DetailsInfoItem>
+                Parent hash
+              </DetailsInfoItem.Label>
+              <DetailsInfoItem.Value flexWrap="nowrap">
+                <LinkInternal
+                  href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.height - 1) } }) }
+                  overflow="hidden"
+                  whiteSpace="nowrap"
+                >
+                  <HashStringShortenDynamic
+                    hash={ data.parent_hash }
+                  />
+                </LinkInternal>
+                <CopyToClipboard text={ data.parent_hash }/>
+              </DetailsInfoItem.Value>
+            </>
           ) }
-          { /* api doesn't support state root yet */ }
-          { /* <DetailsInfoItem
-            title="State root"
-            hint="The root of the state trie"
-          >
-            <Text wordBreak="break-all" whiteSpace="break-spaces">{ data.state_root }</Text>
-          </DetailsInfoItem> */ }
+
           { !config.UI.views.block.hiddenFields?.nonce && (
-            <DetailsInfoItem
-              title="Nonce"
-              hint="Block nonce is a value used during mining to demonstrate proof of work for a block"
-            >
-              { data.nonce }
-            </DetailsInfoItem>
+            <>
+              <DetailsInfoItem.Label
+                hint="Block nonce is a value used during mining to demonstrate proof of work for a block"
+              >
+                Nonce
+              </DetailsInfoItem.Label>
+              <DetailsInfoItem.Value>
+                { data.nonce }
+              </DetailsInfoItem.Value>
+            </>
           ) }
         </>
       ) }

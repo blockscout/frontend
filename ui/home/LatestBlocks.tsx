@@ -16,7 +16,7 @@ import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { BLOCK } from 'stubs/block';
 import { HOMEPAGE_STATS } from 'stubs/stats';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 
 import LatestBlocksItem from './LatestBlocksItem';
 

@@ -7,7 +7,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { STATS_CHARTS } from 'stubs/stats';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 import ChartWidgetContainer from 'ui/stats/ChartWidgetContainer';
 
 const GAS_PRICE_CHART_ID = 'averageGasPrice';

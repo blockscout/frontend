@@ -2,7 +2,7 @@ import React from 'react';
 
 import { FOOTER_LINKS } from 'mocks/config/footerLinks';
 import { test, expect } from 'playwright/lib';
-import * as configs from 'playwright/utils/configs';
+import * as pwConfig from 'playwright/utils/config';
 
 import Footer from './Footer';
 
@@ -30,7 +30,7 @@ test.describe('with custom links, max cols', () => {
   });
 
   test.describe('screen xl', () => {
-    test.use({ viewport: configs.viewport.xl });
+    test.use({ viewport: pwConfig.viewport.xl });
 
     test('', async({ page }) => {
       await expect(page).toHaveScreenshot();

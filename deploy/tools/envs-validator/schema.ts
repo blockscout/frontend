@@ -16,6 +16,7 @@ import type { DeFiDropdownItem } from '../../../types/client/deFiDropdown';
 import { GAS_UNITS } from '../../../types/client/gasTracker';
 import type { GasUnit } from '../../../types/client/gasTracker';
 import type { MarketplaceAppOverview, MarketplaceAppSecurityReportRaw, MarketplaceAppSecurityReport } from '../../../types/client/marketplace';
+import type { MultichainProviderConfig } from '../../../types/client/multichainProviderConfig';
 import { NAVIGATION_LINK_IDS } from '../../../types/client/navigation-items';
 import type { NavItemExternal, NavigationLinkId } from '../../../types/client/navigation-items';
 import { ROLLUP_TYPES } from '../../../types/client/rollup';
@@ -354,21 +355,6 @@ const accountSchema = yup
       }),
   });
 
-const adminServiceSchema = yup
-  .object()
-  .shape({
-    NEXT_PUBLIC_ADMIN_SERVICE_API_HOST: yup
-      .string()
-      .when([ 'NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED', 'NEXT_PUBLIC_MARKETPLACE_ENABLED' ], {
-        is: (value1: boolean, value2: boolean) => value1 || value2,
-        then: (schema) => schema.test(urlTest),
-        otherwise: (schema) => schema.max(
-          -1,
-          'NEXT_PUBLIC_ADMIN_SERVICE_API_HOST cannot not be used if NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED or NEXT_PUBLIC_MARKETPLACE_ENABLED is not set to "true"',
-        ),
-      }),
-  });
-
 const featuredNetworkSchema: yup.ObjectSchema<FeaturedNetwork> = yup
   .object()
   .shape({
@@ -541,6 +527,11 @@ const schema = yup
       .transform(replaceQuotes)
       .json()
       .of(yup.string<NavigationLinkId>().oneOf(NAVIGATION_LINK_IDS)),
+    NEXT_PUBLIC_NAVIGATION_HIGHLIGHTED_ROUTES: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(yup.string()),
     NEXT_PUBLIC_NETWORK_LOGO: yup.string().test(urlTest),
     NEXT_PUBLIC_NETWORK_LOGO_DARK: yup.string().test(urlTest),
     NEXT_PUBLIC_NETWORK_ICON: yup.string().test(urlTest),
@@ -607,6 +598,7 @@ const schema = yup
     NEXT_PUBLIC_CONTRACT_INFO_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_NAME_SERVICE_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_METADATA_SERVICE_API_HOST: yup.string().test(urlTest),
+    NEXT_PUBLIC_ADMIN_SERVICE_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_GRAPHIQL_TRANSACTION: yup.string().matches(regexp.HEX_REGEXP),
     NEXT_PUBLIC_WEB3_WALLETS: yup
       .mixed()
@@ -632,6 +624,19 @@ const schema = yup
     NEXT_PUBLIC_IS_SUAVE_CHAIN: yup.boolean(),
     NEXT_PUBLIC_HAS_USER_OPS: yup.boolean(),
     NEXT_PUBLIC_METASUITES_ENABLED: yup.boolean(),
+    NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG: yup
+      .mixed()
+      .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG, it should have name and url template', (data) => {
+        const isUndefined = data === undefined;
+        const valueSchema = yup.object<MultichainProviderConfig>().transform(replaceQuotes).json().shape({
+          name: yup.string().required(),
+          url_template: yup.string().required(),
+          logo: yup.string(),
+          dapp_id: yup.string(),
+        });
+
+        return isUndefined || valueSchema.isValidSync(data);
+      }),
     NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE: yup.string<ValidatorsChainType>().oneOf(VALIDATORS_CHAIN_TYPE),
     NEXT_PUBLIC_GAS_TRACKER_ENABLED: yup.boolean(),
     NEXT_PUBLIC_GAS_TRACKER_UNITS: yup.array().transform(replaceQuotes).json().of(yup.string<GasUnit>().oneOf(GAS_UNITS)),
@@ -658,7 +663,6 @@ const schema = yup
   .concat(rollupSchema)
   .concat(beaconChainSchema)
   .concat(bridgedTokensSchema)
-  .concat(sentrySchema)
-  .concat(adminServiceSchema);
+  .concat(sentrySchema);
 
 export default schema;

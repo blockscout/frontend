@@ -1,4 +1,4 @@
-import { Button, chakra, Flex } from '@chakra-ui/react';
+import { Alert, Button, chakra, Flex } from '@chakra-ui/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -11,9 +11,9 @@ import type { ResourceName } from 'lib/api/resources';
 import dayjs from 'lib/date/dayjs';
 import downloadBlob from 'lib/downloadBlob';
 import useToast from 'lib/hooks/useToast';
+import FormFieldReCaptcha from 'ui/shared/forms/fields/FormFieldReCaptcha';
 
 import CsvExportFormField from './CsvExportFormField';
-import CsvExportFormReCaptcha from './CsvExportFormReCaptcha';
 
 interface Props {
   hash: string;
@@ -76,6 +76,13 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
 
   }, [ resource, hash, exportType, filterType, filterValue, fileNameTemplate, toast ]);
 
+  const disabledFeatureMessage = (
+    <Alert status="error">
+      CSV export is not available at the moment since reCaptcha is not configured for this application.
+      Please contact the service maintainer to make necessary changes in the service configuration.
+    </Alert>
+  );
+
   return (
     <FormProvider { ...formApi }>
       <chakra.form
@@ -85,7 +92,7 @@ const CsvExportForm = ({ hash, resource, filterType, filterValue, fileNameTempla
         <Flex columnGap={ 5 } rowGap={ 3 } flexDir={{ base: 'column', lg: 'row' }} alignItems={{ base: 'flex-start', lg: 'center' }} flexWrap="wrap">
           { exportType !== 'holders' && <CsvExportFormField name="from" formApi={ formApi }/> }
           { exportType !== 'holders' && <CsvExportFormField name="to" formApi={ formApi }/> }
-          <CsvExportFormReCaptcha formApi={ formApi }/>
+          <FormFieldReCaptcha disabledFeatureMessage={ disabledFeatureMessage }/>
         </Flex>
         <Button
           variant="solid"

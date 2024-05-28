@@ -9,7 +9,7 @@ import config from 'configs/app';
 import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 
 interface Props {
   address: string;

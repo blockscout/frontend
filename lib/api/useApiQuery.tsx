@@ -5,8 +5,8 @@ import type { ResourceError, ResourceName, ResourcePayload } from './resources';
 import type { Params as ApiFetchParams } from './useApiFetch';
 import useApiFetch from './useApiFetch';
 
-export interface Params<R extends ResourceName, E = unknown> extends ApiFetchParams<R> {
-  queryOptions?: Omit<UseQueryOptions<ResourcePayload<R>, ResourceError<E>, ResourcePayload<R>>, 'queryKey' | 'queryFn'>;
+export interface Params<R extends ResourceName, E = unknown, D = ResourcePayload<R>> extends ApiFetchParams<R> {
+  queryOptions?: Omit<UseQueryOptions<ResourcePayload<R>, ResourceError<E>, D>, 'queryKey' | 'queryFn'>;
 }
 
 export function getResourceKey<R extends ResourceName>(resource: R, { pathParams, queryParams }: Params<R> = {}) {
@@ -17,13 +17,13 @@ export function getResourceKey<R extends ResourceName>(resource: R, { pathParams
   return [ resource ];
 }
 
-export default function useApiQuery<R extends ResourceName, E = unknown>(
+export default function useApiQuery<R extends ResourceName, E = unknown, D = ResourcePayload<R>>(
   resource: R,
-  { queryOptions, pathParams, queryParams, fetchParams }: Params<R, E> = {},
+  { queryOptions, pathParams, queryParams, fetchParams }: Params<R, E, D> = {},
 ) {
   const apiFetch = useApiFetch();
 
-  return useQuery<ResourcePayload<R>, ResourceError<E>, ResourcePayload<R>>({
+  return useQuery<ResourcePayload<R>, ResourceError<E>, D>({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
     queryKey: getResourceKey(resource, { pathParams, queryParams }),
     queryFn: async() => {

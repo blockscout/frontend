@@ -57,6 +57,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
   - [Sentry error monitoring](ENVS.md#sentry-error-monitoring)
   - [OpenTelemetry](ENVS.md#opentelemetry)
   - [Swap button](ENVS.md#swap-button)
+  - [Multichain balance button](ENVS.md#multichain-button)
 - [3rd party services configuration](ENVS.md#external-services-configuration)
 
 &nbsp;
@@ -128,6 +129,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
 | NEXT_PUBLIC_FEATURED_NETWORKS | `string` | URL of configuration file (`.json` format only) which contains list of featured networks that will be shown in the network menu. See [below](#featured-network-configuration-properties) list of available properties for particular network | - | - | `https://example.com/featured_networks_config.json` |
 | NEXT_PUBLIC_OTHER_LINKS | `Array<{url: string; text: string}>` | List of links for the "Other" navigation menu | - | - | `[{'url':'https://blockscout.com','text':'Blockscout'}]` |
 | NEXT_PUBLIC_NAVIGATION_HIDDEN_LINKS | `Array<LinkId>` | List of external links hidden in the navigation. Supported ids are `eth_rpc_api`, `rpc_api` | - | - | `['eth_rpc_api']` |
+| NEXT_PUBLIC_NAVIGATION_HIGHLIGHTED_ROUTES | `Array<string>` | List of menu item routes that should have a lightning label | - | - | `['/accounts']` |
 
 #### Featured network configuration properties
 
@@ -567,6 +569,17 @@ This feature allows name tags and other public tags for addresses.
 
 &nbsp;
 
+### Public tag submission
+
+This feature allows you to submit an application with a public address tag.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_METADATA_SERVICE_API_HOST | `string` | Metadata Service API endpoint url | Required | - | `https://metadata.services.blockscout.com` |
+| NEXT_PUBLIC_ADMIN_SERVICE_API_HOST | `string` | Admin Service API endpoint url | Required | - | `https://admin-rs.services.blockscout.com` |
+
+&nbsp;
+
 ### Data Availability
 
 This feature enables views related to blob transactions (EIP-4844), such as the Blob Txns tab on the Transactions page and the Blob details page.
@@ -676,6 +689,27 @@ If the feature is enabled, a single button or a dropdown (if more than 1 item is
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS | `[{ text: string; icon: string; dappId?: string, url?: string }]` | An array of dropdown items containing the button text, icon name and dappId in DAppscout or an external url | - | - | `[{'text':'Swap','icon':'swap','dappId':'uniswap'},{'text':'Payment link','icon':'payment_link','dappId':'peanut-protocol'}]` |
+
+&nbsp;
+
+### Multichain balance button
+
+If the feature is enabled, a Multichain balance button will be displayed on the address page, which will take you to the portfolio application in the marketplace or to an external site.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG | `{ name: string; url_template: string; dapp_id?: string; logo?: string }` | Multichain portfolio application config See [below](#multichain-button-configuration-properties) | - | - | `{ name: 'zerion', url_template: 'https://app.zerion.io/{address}/overview', logo: 'https://example.com/icon.svg'` |
+
+&nbsp;
+
+#### Multichain button configuration properties
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| name | `string` | Multichain portfolio application name | Required | - | `zerion` |
+| url_template | `string` | Url template to the portfolio. Should be a template with `{address}` variable | Required | - | `https://app.zerion.io/{address}/overview` |
+| dapp_id | `string` | Set for open a Blockscout dapp page with the portfolio instead of opening external app page | - | - | `zerion` |
+| logo | `string` | Multichain portfolio application logo (.svg) url | - | - | `https://example.com/icon.svg` |
 
 &nbsp;
 

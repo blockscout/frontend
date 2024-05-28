@@ -7,7 +7,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import { TX } from 'stubs/tx';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 
 import LatestTxsItem from './LatestTxsItem';
 import LatestTxsItemMobile from './LatestTxsItemMobile';
