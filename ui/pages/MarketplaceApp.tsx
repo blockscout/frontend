@@ -16,13 +16,13 @@ import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useFetch from 'lib/hooks/useFetch';
 import * as metadata from 'lib/metadata';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import removeQueryParam from 'lib/router/removeQueryParam';
 import ContentLoader from 'ui/shared/ContentLoader';
 
 import MarketplaceAppTopBar from '../marketplace/MarketplaceAppTopBar';
 import useAutoConnectWallet from '../marketplace/useAutoConnectWallet';
 import useMarketplaceWallet from '../marketplace/useMarketplaceWallet';
 import useSecurityReports from '../marketplace/useSecurityReports';
+import { getAppUrl } from '../marketplace/utils';
 
 const feature = config.features.marketplace;
 
@@ -134,59 +134,7 @@ const MarketplaceApp = () => {
   const { data, isPending } = query;
   const { setIsAutoConnectDisabled } = useMarketplaceContext();
 
-  const appUrl = useMemo(() => {
-    if (!data?.url) {
-      return;
-    }
-
-    try {
-      // get the custom url from the query
-      const customUrl = getQueryParamString(router.query.url);
-
-      if (customUrl) {
-        const customOrigin = new URL(customUrl).origin;
-        const appOrigin = new URL(data.url).origin;
-        if (customOrigin === appOrigin) {
-          return customUrl;
-        } else {
-          removeQueryParam(router, 'url');
-        }
-      }
-    } catch (err) {}
-
-    try {
-      // get hash and params (using asPath to avoid conflicts with dynamic route params)
-      const [ , queryAndHash ] = router.asPath.split('?');
-      const [ queryString, hash ] = queryAndHash ? queryAndHash.split('#') : [ '', '' ];
-      const customHash = hash ? `#${ hash }` : '';
-      const customParams = new URLSearchParams(queryString);
-
-      // remove reserved params
-      [ 'url', 'action' ].forEach((param) => customParams.delete(param));
-
-      if (customParams.toString() || customHash) {
-        const targetUrl = new URL(data.url);
-        const targetParams = new URLSearchParams(targetUrl.search);
-
-        let customPath = customParams.get('path');
-        if (customPath) {
-          customPath = customPath.startsWith('/') ? customPath : `/${ customPath }`;
-          targetUrl.pathname = customPath;
-          customParams.delete('path');
-        }
-
-        customParams.forEach((value, key) => {
-          targetParams.append(key, value);
-        });
-
-        targetUrl.search = targetParams.toString();
-        targetUrl.hash = customHash;
-        return targetUrl.toString();
-      }
-    } catch (err) {}
-
-    return data.url;
-  }, [ data?.url, router ]);
+  const appUrl = useMemo(() => getAppUrl(data?.url, router), [ data?.url, router ]);
 
   useEffect(() => {
     if (data) {
