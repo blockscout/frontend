@@ -9,7 +9,6 @@ export type ApiData<Pathname extends Route['pathname']> =
     Pathname extends '/token/[hash]' ? TokenInfo :
     Pathname extends '/token/[hash]/instance/[id]' ? { symbol: string } :
     Pathname extends '/apps/[id]' ? { app_name: string } :
-    Pathname extends '/apps' ? { seo_category: string; seo_details: string } :
     never
 ) | null;
 
