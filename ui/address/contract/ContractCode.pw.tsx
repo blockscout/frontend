@@ -27,7 +27,7 @@ test.beforeEach(async({ mockApiResponse }) => {
 
 test('full view +@mobile +@dark-mode', async({ render, mockApiResponse, createSocket }) => {
   await mockApiResponse('contract', contractMock.withChangedByteCode, { pathParams: { hash: addressMock.contract.hash } });
-  await mockApiResponse('contract', contractMock.withChangedByteCode, { pathParams: { hash: addressMock.contract.implementation_address as string } });
+  await mockApiResponse('contract', contractMock.withChangedByteCode, { pathParams: { hash: addressMock.contract.implementations?.[0].address as string } });
 
   const component = await render(<ContractCode/>, { hooksConfig }, { withSocket: true });
   await createSocket();

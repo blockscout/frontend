@@ -17,14 +17,25 @@ const ContractImplementationAddress = ({ hash }: Props) => {
     pathParams: { hash },
   }));
 
-  if (!data?.implementation_address) {
+  if (!data?.implementations || data.implementations.length === 0) {
     return null;
   }
 
+  const label = data.implementations.length > 1 ? 'Implementation addresses:' : 'Implementation address:';
+
   return (
-    <Flex mb={ 6 } flexWrap="wrap" columnGap={ 2 }>
-      <span>Implementation address:</span>
-      <AddressEntity address={{ hash: data.implementation_address, is_contract: true }} noIcon noCopy/>
+    <Flex mb={ 6 } flexWrap="wrap" columnGap={ 2 } rowGap={ 2 }>
+      <span>{ label }</span>
+      <Flex flexDir="column" rowGap={ 2 } maxW="100%">
+        { data.implementations.map((item) => (
+          <AddressEntity
+            key={ item.address }
+            address={{ hash: item.address, is_contract: true }}
+            noIcon
+            noCopy
+          />
+        )) }
+      </Flex>
     </Flex>
   );
 };

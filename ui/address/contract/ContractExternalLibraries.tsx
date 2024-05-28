@@ -34,7 +34,7 @@ const Item = (data: SmartContractExternalLibrary) => {
     <Flex flexDir="column" py={ 2 } w="100%" rowGap={ 1 }>
       <Box>{ data.name }</Box>
       <AddressEntity
-        address={{ hash: data.address_hash, is_contract: true, implementation_name: null }}
+        address={{ hash: data.address_hash, is_contract: true }}
         query={{ tab: 'contract' }}
         fontSize="sm"
         fontWeight="500"
@@ -80,6 +80,8 @@ const ContractExternalLibraries = ({ className, data }: Props) => {
         divider={ <StackDivider borderColor="divider"/> }
         spacing={ 2 }
         mt={ 4 }
+        maxH={{ lg: '50vh' }}
+        overflowY="scroll"
       >
         { data.map((item) => <Item key={ item.address_hash } { ...item }/>) }
       </VStack>

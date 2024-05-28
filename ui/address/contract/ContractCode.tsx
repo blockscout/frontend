@@ -224,7 +224,7 @@ const ContractCode = ({ addressHash, contractQuery, channel }: Props) => {
           <Alert status="warning" whiteSpace="pre-wrap" flexWrap="wrap">
             <span>Contract is not verified. However, we found a verified contract with the same bytecode in Blockscout DB </span>
             <AddressEntity
-              address={{ hash: data.verified_twin_address_hash, is_contract: true, implementation_name: null }}
+              address={{ hash: data.verified_twin_address_hash, is_contract: true }}
               truncation="constant"
               fontSize="sm"
               fontWeight="500"
@@ -240,7 +240,7 @@ const ContractCode = ({ addressHash, contractQuery, channel }: Props) => {
           <Alert status="warning" flexWrap="wrap" whiteSpace="pre-wrap">
             <span>Minimal Proxy Contract for </span>
             <AddressEntity
-              address={{ hash: data.minimal_proxy_address_hash, is_contract: true, implementation_name: null }}
+              address={{ hash: data.minimal_proxy_address_hash, is_contract: true }}
               truncation="constant"
               fontSize="sm"
               fontWeight="500"
@@ -294,7 +294,7 @@ const ContractCode = ({ addressHash, contractQuery, channel }: Props) => {
         { data?.source_code && (
           <ContractSourceCode
             address={ addressHash }
-            implementationAddress={ addressInfo?.implementation_address ?? undefined }
+            implementationAddress={ addressInfo?.implementations?.find(({ address, name }) => name && address !== addressHash)?.address ?? undefined }
           />
         ) }
         { data?.compiler_settings ? (

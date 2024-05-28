@@ -26,7 +26,6 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
         is_contract: data.type === 'contract',
         name: '',
         is_verified: data.is_smart_contract_verified,
-        implementation_name: null,
         ens_domain_name: null,
       }}
     />
