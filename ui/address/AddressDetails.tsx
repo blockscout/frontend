@@ -17,7 +17,7 @@ import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 
 import AddressBalance from './details/AddressBalance';
-import AddressImplementation from './details/AddressImplementation';
+import AddressImplementations from './details/AddressImplementations';
 import AddressNameInfo from './details/AddressNameInfo';
 import AddressNetWorth from './details/AddressNetWorth';
 import TokenSelect from './tokenSelect/TokenSelect';
@@ -113,7 +113,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
           </>
         ) }
         { data.is_contract && data.implementations && data.implementations?.length > 0 && (
-          <AddressImplementation
+          <AddressImplementations
             data={ data.implementations }
             isLoading={ addressQuery.isPlaceholderData }
           />

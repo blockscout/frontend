@@ -1,7 +1,14 @@
-import { chakra, GridItem, Flex, Skeleton } from '@chakra-ui/react';
+import { chakra, GridItem, Flex, Text, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
+import * as ContainerWithScrollY from 'ui/shared/ContainerWithScrollY';
 import Hint from 'ui/shared/Hint';
+
+const LabelScrollText = () => (
+  <Text fontWeight={ 500 } variant="secondary" fontSize="xs" className="note" align="right">
+    Scroll to see more
+  </Text>
+);
 
 interface LabelProps {
   hint?: string;
@@ -9,9 +16,10 @@ interface LabelProps {
   isLoading?: boolean;
   className?: string;
   id?: string;
+  hasScroll?: boolean;
 }
 
-const Label = chakra(({ hint, children, isLoading, id, className }: LabelProps) => {
+const Label = chakra(({ hint, children, isLoading, id, className, hasScroll }: LabelProps) => {
   return (
     <GridItem
       id={ id }
@@ -24,6 +32,7 @@ const Label = chakra(({ hint, children, isLoading, id, className }: LabelProps) 
         { hint && <Hint label={ hint } isLoading={ isLoading } my={{ lg: '2px' }}/> }
         <Skeleton isLoaded={ !isLoading } fontWeight={{ base: 700, lg: 500 }}>
           { children }
+          { hasScroll && <LabelScrollText/> }
         </Skeleton>
       </Flex>
     </GridItem>
@@ -53,7 +62,22 @@ const Value = chakra(({ children, className }: ValueProps) => {
   );
 });
 
+const ValueWithScroll = chakra(({ children, gradientHeight, onScrollVisibilityChange, className }: ContainerWithScrollY.Props) => {
+  return (
+    <Value position="relative">
+      <ContainerWithScrollY.default
+        className={ className }
+        gradientHeight={ gradientHeight }
+        onScrollVisibilityChange={ onScrollVisibilityChange }
+      >
+        { children }
+      </ContainerWithScrollY.default>
+    </Value>
+  );
+});
+
 export {
   Label,
   Value,
+  ValueWithScroll,
 };
