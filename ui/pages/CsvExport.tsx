@@ -159,7 +159,7 @@ const CsvExport = () => {
             noSymbol
           />
           <span> to CSV file. </span>
-          <span>Exports are limited to the last 10K { exportType.text }.</span>
+          <span>Exports are limited to the top 10K holders by amount held.</span>
         </Flex>
       );
     }
