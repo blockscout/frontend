@@ -36,7 +36,6 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
   - [Beacon chain](ENVS.md#beacon-chain)
   - [User operations](ENVS.md#user-operations-feature-erc-4337)
   - [Rollup chain](ENVS.md#rollup-chain)
-  - [Fault proof system](ENVS.md#fault-proof-system)
   - [Export data to CSV file](ENVS.md#export-data-to-csv-file)
   - [Google analytics](ENVS.md#google-analytics)
   - [Mixpanel analytics](ENVS.md#mixpanel-analytics)
@@ -399,13 +398,6 @@ This feature is **enabled by default** with the `coinzilla` ads provider. To swi
 | NEXT_PUBLIC_ROLLUP_TYPE | `'optimistic' \| 'shibarium' \| 'zkEvm' \| 'zkSync' ` | Rollup chain type | Required | - | `'optimistic'` |
 | NEXT_PUBLIC_ROLLUP_L1_BASE_URL | `string` | Blockscout base URL for L1 network | Required | - | `'http://eth-goerli.blockscout.com'` |
 | NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL | `string` | URL for L2 -> L1 withdrawals | Required only for `optimistic` rollups | - | `https://app.optimism.io/bridge/withdraw` |
-
-&nbsp;
-
-### Fault proof system
-
-| Variable | Type| Description | Compulsoriness  | Default value | Example value |
-| --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_FAULT_PROOF_ENABLED | `boolean` | Set to `true` for chains with fault proof system enabled (OP stack only) | - | - | `true` |
 
 &nbsp;
