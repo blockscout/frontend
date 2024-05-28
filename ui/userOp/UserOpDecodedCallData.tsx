@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { UserOp } from 'types/api/userOps';
 
-import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 
 import UserOpCallDataSwitch from './UserOpCallDataSwitch';
@@ -33,14 +33,19 @@ const UserOpDecodedCallData = ({ data }: Props) => {
   ) : null;
 
   return (
-    <DetailsInfoItem
-      title="Decoded call data"
-      hint="Decoded call data"
-      flexDir={{ base: 'column', lg: 'row' }}
-      alignItems={{ base: 'flex-start', lg: 'center' }}
-    >
-      <LogDecodedInputData data={ callData } rightSlot={ toggler }/>
-    </DetailsInfoItem>
+    <>
+      <DetailsInfoItem.Label
+        hint="Decoded call data"
+      >
+        Decoded call data
+      </DetailsInfoItem.Label>
+      <DetailsInfoItem.Value
+        flexDir={{ base: 'column', lg: 'row' }}
+        alignItems={{ base: 'flex-start', lg: 'center' }}
+      >
+        <LogDecodedInputData data={ callData } rightSlot={ toggler }/>
+      </DetailsInfoItem.Value>
+    </>
   );
 };
 

@@ -10,7 +10,7 @@ import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { currencyUnits } from 'lib/units';
 import CurrencyValue from 'ui/shared/CurrencyValue';
-import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import NativeTokenIcon from 'ui/shared/NativeTokenIcon';
 
 interface Props {
@@ -66,25 +66,27 @@ const AddressBalance = ({ data, isLoading }: Props) => {
   });
 
   return (
-    <DetailsInfoItem
-      title={ `${ currencyUnits.ether } balance` }
-      hint={ `Address balance in ${ currencyUnits.ether }. Doesn't include ERC20, ERC721 and ERC1155 tokens` }
-      flexWrap="nowrap"
-      alignSelf="center"
-      isLoading={ isLoading }
-    >
-      <NativeTokenIcon boxSize={ 6 } mr={ 2 } isLoading={ isLoading }/>
-      <CurrencyValue
-        value={ data.coin_balance || '0' }
-        exchangeRate={ data.exchange_rate }
-        decimals={ String(config.chain.currency.decimals) }
-        currency={ currencyUnits.ether }
-        accuracyUsd={ 2 }
-        accuracy={ 8 }
-        flexWrap="wrap"
+    <>
+      <DetailsInfoItem.Label
+        hint={ `${ currencyUnits.ether } balance` }
         isLoading={ isLoading }
-      />
-    </DetailsInfoItem>
+      >
+        Balance
+      </DetailsInfoItem.Label>
+      <DetailsInfoItem.Value alignSelf="center" flexWrap="nowrap">
+        <NativeTokenIcon boxSize={ 6 } mr={ 2 } isLoading={ isLoading }/>
+        <CurrencyValue
+          value={ data.coin_balance || '0' }
+          exchangeRate={ data.exchange_rate }
+          decimals={ String(config.chain.currency.decimals) }
+          currency={ currencyUnits.ether }
+          accuracyUsd={ 2 }
+          accuracy={ 8 }
+          flexWrap="wrap"
+          isLoading={ isLoading }
+        />
+      </DetailsInfoItem.Value>
+    </>
   );
 };
 

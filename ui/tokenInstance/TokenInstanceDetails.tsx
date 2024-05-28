@@ -8,7 +8,7 @@ import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';
 import useAppActionData from 'ui/shared/AppActionButton/useAppActionData';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -53,31 +53,41 @@ const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
           overflow="hidden"
         >
           { data.is_unique && data.owner && (
-            <DetailsInfoItem
-              title="Owner"
-              hint="Current owner of this token instance"
-              isLoading={ isLoading }
-            >
-              <AddressEntity
-                address={ data.owner }
+            <>
+              <DetailsInfoItem.Label
+                hint="Current owner of this token instance"
                 isLoading={ isLoading }
-              />
-            </DetailsInfoItem>
+              >
+                Owner
+              </DetailsInfoItem.Label>
+              <DetailsInfoItem.Value>
+                <AddressEntity
+                  address={ data.owner }
+                  isLoading={ isLoading }
+                />
+              </DetailsInfoItem.Value>
+            </>
           ) }
+
           <TokenInstanceCreatorAddress hash={ isLoading ? '' : token.address }/>
-          <DetailsInfoItem
-            title="Token ID"
+
+          <DetailsInfoItem.Label
             hint="This token instance unique token ID"
             isLoading={ isLoading }
           >
+            Token ID
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
             <Flex alignItems="center" overflow="hidden">
               <Skeleton isLoaded={ !isLoading } overflow="hidden" display="inline-block" w="100%">
                 <HashStringShortenDynamic hash={ data.id }/>
               </Skeleton>
               <CopyToClipboard text={ data.id } isLoading={ isLoading }/>
             </Flex>
-          </DetailsInfoItem>
+          </DetailsInfoItem.Value>
+
           <TokenInstanceTransfersCount hash={ isLoading ? '' : token.address } id={ isLoading ? '' : data.id } onClick={ handleCounterItemClick }/>
+
           <TokenNftMarketplaces
             isLoading={ isLoading }
             hash={ token.address }
@@ -86,15 +96,18 @@ const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
             source="NFT item"
             isActionButtonExperiment={ isActionButtonExperiment }
           />
+
           { (config.UI.views.nft.marketplaces.length === 0 && appActionData && isActionButtonExperiment) && (
-            <DetailsInfoItem
-              title="Dapp"
-              hint="Link to the dapp"
-              alignSelf="center"
-              py={ 1 }
-            >
-              <AppActionButton data={ appActionData } height="30px" source="NFT item"/>
-            </DetailsInfoItem>
+            <>
+              <DetailsInfoItem.Label
+                hint="Link to the dapp"
+              >
+                Dapp
+              </DetailsInfoItem.Label>
+              <DetailsInfoItem.Value py="1px">
+                <AppActionButton data={ appActionData } height="30px" source="NFT item"/>
+              </DetailsInfoItem.Value>
+            </>
           ) }
         </Grid>
         <NftMedia
