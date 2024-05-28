@@ -3,7 +3,7 @@ import React from 'react';
 import type { Primitive } from 'react-hook-form';
 
 import urlParser from 'lib/token/metadata/urlParser';
-import LinkExternal from 'ui/shared/LinkExternal';
+import LinkExternal from 'ui/shared/links/LinkExternal';
 
 import MetadataAccordionItem from './MetadataAccordionItem';
 import MetadataAccordionItemTitle from './MetadataAccordionItemTitle';

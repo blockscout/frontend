@@ -6,7 +6,7 @@ import config from 'configs/app';
 import { apos } from 'lib/html-entities';
 import EmptySearchResultDefault from 'ui/shared/EmptySearchResult';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkExternal from 'ui/shared/LinkExternal';
+import LinkExternal from 'ui/shared/links/LinkExternal';
 
 const feature = config.features.marketplace;
 

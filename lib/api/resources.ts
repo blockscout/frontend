@@ -2,7 +2,6 @@ import { getFeaturePayload } from 'configs/app/features/types';
 import type {
   UserInfo,
   CustomAbis,
-  PublicTags,
   ApiKeys,
   VerifiedAddressResponse,
   TokenInfoApplicationConfig,
@@ -32,7 +31,7 @@ import type {
   AddressCoinBalanceHistoryChartOld,
 } from 'types/api/address';
 import type { AddressesResponse } from 'types/api/addresses';
-import type { AddressMetadataInfo } from 'types/api/addressMetadata';
+import type { AddressMetadataInfo, PublicTagTypesResponse } from 'types/api/addressMetadata';
 import type { TxBlobs, Blob } from 'types/api/blobs';
 import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters, BlockWithdrawalsResponse } from 'types/api/block';
 import type { ChartMarketResponse, ChartSecondaryCoinPriceResponse, ChartTransactionResponse } from 'types/api/charts';
@@ -147,10 +146,6 @@ export const RESOURCES = {
     pathParams: [ 'id' as const ],
     filterFields: [ ],
   },
-  public_tags: {
-    path: '/api/account/v2/user/public_tags/:id?',
-    pathParams: [ 'id' as const ],
-  },
   private_tags_address: {
     path: '/api/account/v2/user/tags/address/:id?',
     pathParams: [ 'id' as const ],
@@ -245,7 +240,7 @@ export const RESOURCES = {
     filterFields: [ 'name' as const, 'only_active' as const ],
   },
 
-  // METADATA SERVICE
+  // METADATA SERVICE & PUBLIC TAGS
   address_metadata_info: {
     path: '/api/v1/metadata',
     endpoint: getFeaturePayload(config.features.addressMetadata)?.api.endpoint,
@@ -255,6 +250,17 @@ export const RESOURCES = {
     path: '/api/v1/tags:search',
     endpoint: getFeaturePayload(config.features.addressMetadata)?.api.endpoint,
     basePath: getFeaturePayload(config.features.addressMetadata)?.api.basePath,
+  },
+  address_metadata_tag_types: {
+    path: '/api/v1/public-tag-types',
+    endpoint: getFeaturePayload(config.features.addressMetadata)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.addressMetadata)?.api.basePath,
+  },
+  public_tag_application: {
+    path: '/api/v1/chains/:chainId/metadata-submissions/tag',
+    pathParams: [ 'chainId' as const ],
+    endpoint: getFeaturePayload(config.features.publicTagsSubmission)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.publicTagsSubmission)?.api.basePath,
   },
 
   // VISUALIZATION
@@ -863,7 +869,6 @@ export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>
 export type ResourcePayloadA<Q extends ResourceName> =
 Q extends 'user_info' ? UserInfo :
 Q extends 'custom_abi' ? CustomAbis :
-Q extends 'public_tags' ? PublicTags :
 Q extends 'private_tags_address' ? AddressTagsResponse :
 Q extends 'private_tags_tx' ? TransactionTagsResponse :
 Q extends 'api_keys' ? ApiKeys :
@@ -956,6 +961,7 @@ Q extends 'optimistic_l2_deposits_count' ? number :
 Q extends 'optimistic_l2_txn_batches_count' ? number :
 Q extends 'config_backend_version' ? BackendVersionConfig :
 Q extends 'address_metadata_info' ? AddressMetadataInfo :
+Q extends 'address_metadata_tag_types' ? PublicTagTypesResponse :
 never;
 // !!! IMPORTANT !!!
 // See comment above

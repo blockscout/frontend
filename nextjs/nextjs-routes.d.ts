@@ -9,7 +9,6 @@ declare module "nextjs-routes" {
     | StaticRoute<"/404">
     | StaticRoute<"/account/api-key">
     | StaticRoute<"/account/custom-abi">
-    | StaticRoute<"/account/public-tags-request">
     | StaticRoute<"/account/tag-address">
     | StaticRoute<"/account/verified-addresses">
     | StaticRoute<"/account/watchlist">
@@ -45,6 +44,7 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/op/[hash]", { "hash": string }>
     | StaticRoute<"/ops">
     | StaticRoute<"/output-roots">
+    | StaticRoute<"/public-tags/submit">
     | StaticRoute<"/search-results">
     | StaticRoute<"/stats">
     | DynamicRoute<"/token/[hash]", { "hash": string }>
