@@ -6,8 +6,8 @@ import type { DeFiDropdownItem as TDeFiDropdownItem } from 'types/client/deFiDro
 import { route } from 'nextjs-routes';
 
 import IconSvg from 'ui/shared/IconSvg';
-import LinkExternal from 'ui/shared/LinkExternal';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkExternal from 'ui/shared/links/LinkExternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 
 type Props = {
   item: TDeFiDropdownItem & { onClick: () => void };
