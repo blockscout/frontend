@@ -11,6 +11,7 @@ import {
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
+  Skeleton,
   StackDivider,
   useDisclosure,
   VStack,
@@ -27,6 +28,7 @@ import IconSvg from 'ui/shared/IconSvg';
 interface Props {
   className?: string;
   data: Array<SmartContractExternalLibrary>;
+  isLoading?: boolean;
 }
 
 const Item = (data: SmartContractExternalLibrary) => {
@@ -44,9 +46,13 @@ const Item = (data: SmartContractExternalLibrary) => {
   );
 };
 
-const ContractExternalLibraries = ({ className, data }: Props) => {
+const ContractExternalLibraries = ({ className, data, isLoading }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
   const isMobile = useIsMobile();
+
+  if (isLoading) {
+    return <Skeleton h={ 8 } w="150px" borderRadius="base"/>;
+  }
 
   if (data.length === 0) {
     return null;

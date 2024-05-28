@@ -291,10 +291,10 @@ const ContractCode = ({ addressHash, contractQuery, channel }: Props) => {
             isLoading={ isPlaceholderData }
           />
         ) }
-        { data?.source_code && (
+        { data?.source_code && addressHash && (
           <ContractSourceCode
             address={ addressHash }
-            implementationAddress={ addressInfo?.implementations?.find(({ address, name }) => name && address !== addressHash)?.address ?? undefined }
+            implementations={ addressInfo?.implementations || undefined }
           />
         ) }
         { data?.compiler_settings ? (
