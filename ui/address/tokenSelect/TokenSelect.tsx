@@ -55,7 +55,7 @@ const TokenSelect = ({ onClick }: Props) => {
   }
 
   return (
-    <Flex columnGap={ 3 } mt={{ base: '6px', lg: 0 }}>
+    <Flex columnGap={ 3 } mt={{ base: 1, lg: 0 }}>
       { isMobile ?
         <TokenSelectMobile data={ data } isLoading={ tokensIsFetching === 1 }/> :
         <TokenSelectDesktop data={ data } isLoading={ tokensIsFetching === 1 }/>

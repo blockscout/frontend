@@ -63,6 +63,9 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   noNftMarketplaces: [
     [ 'NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES', '' ],
   ],
+  navigationHighlightedRoutes: [
+    [ 'NEXT_PUBLIC_NAVIGATION_HIGHLIGHTED_ROUTES', '["/blocks", "/apps"]' ],
+  ],
   dataAvailability: [
     [ 'NEXT_PUBLIC_DATA_AVAILABILITY_ENABLED', 'true' ],
   ],

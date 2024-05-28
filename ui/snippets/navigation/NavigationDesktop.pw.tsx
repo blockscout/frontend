@@ -6,6 +6,7 @@ import config from 'configs/app';
 import * as cookies from 'lib/cookies';
 import { FEATURED_NETWORKS_MOCK } from 'mocks/config/network';
 import { contextWithAuth } from 'playwright/fixtures/auth';
+import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
 
@@ -215,5 +216,38 @@ test.describe('hover xl screen', () => {
 
     await component.locator('header').hover();
     await expect(component).toHaveScreenshot();
+  });
+});
+
+test.describe('with highlighted routes', () => {
+  let component: Locator;
+
+  test.beforeEach(async({ render, mockEnvs }) => {
+    await mockEnvs(ENVS_MAP.navigationHighlightedRoutes);
+
+    component = await render(
+      <Flex w="100%" minH="100vh" alignItems="stretch">
+        <NavigationDesktop/>
+        <Box bgColor="lightpink" w="100%"/>
+      </Flex>,
+      { hooksConfig },
+    );
+  });
+
+  test('+@dark-mode', async() => {
+    await expect(component).toHaveScreenshot();
+  });
+
+  test('with submenu', async({ page }) => {
+    await page.locator('a[aria-label="Blockchain link group"]').hover();
+    await expect(component).toHaveScreenshot();
+  });
+
+  test.describe('xl screen', () => {
+    test.use({ viewport: pwConfig.viewport.xl });
+
+    test('+@dark-mode', async() => {
+      await expect(component).toHaveScreenshot();
+    });
   });
 });

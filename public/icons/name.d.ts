@@ -72,6 +72,7 @@
 	| "integration/full"
 	| "integration/partial"
 	| "key"
+	| "lightning_navbar"
 	| "lightning"
 	| "link"
 	| "lock"

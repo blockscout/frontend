@@ -1,7 +1,8 @@
+import { Text } from '@chakra-ui/react';
 import React from 'react';
 
 import ContainerWithScrollY from 'ui/shared/ContainerWithScrollY';
-import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 
 export const TX_ACTIONS_BLOCK_ID = 'tx-actions';
 const SCROLL_GRADIENT_HEIGHT = 48;
@@ -25,26 +26,32 @@ const DetailsActionsWrapper = ({ children, isLoading, type }: Props) => {
   }, []);
 
   return (
-    <DetailsInfoItem
-      title={ `${ type === 'tx' ? 'Transaction' : 'User operation' } action` }
-      hint={ `Highlighted events of the ${ type === 'tx' ? 'transaction' : 'user operation' }` }
-      note={ hasScroll ? 'Scroll to see more' : undefined }
-      position="relative"
-      isLoading={ isLoading }
-    >
-      <ContainerWithScrollY
-        containerId={ TX_ACTIONS_BLOCK_ID }
-        gradientHeight={ SCROLL_GRADIENT_HEIGHT }
-        hasScroll={ hasScroll }
-        alignItems="stretch"
-        rowGap={ 5 }
-        w="100%"
-        maxH="200px"
-        ref={ containerRef }
+    <>
+      <DetailsInfoItem.Label
+        hint={ `Highlighted events of the ${ type === 'tx' ? 'transaction' : 'user operation' }` }
+        isLoading={ isLoading }
       >
-        { children }
-      </ContainerWithScrollY>
-    </DetailsInfoItem>
+        <span>{ `${ type === 'tx' ? 'Transaction' : 'User operation' } action` }</span>
+        { hasScroll && <Text fontWeight={ 500 } variant="secondary" fontSize="xs" className="note" align="right">Scroll to see more</Text> }
+      </DetailsInfoItem.Label>
+      <DetailsInfoItem.Value
+        position="relative"
+      >
+        <ContainerWithScrollY
+          containerId={ TX_ACTIONS_BLOCK_ID }
+          gradientHeight={ SCROLL_GRADIENT_HEIGHT }
+          hasScroll={ hasScroll }
+          alignItems="stretch"
+          rowGap={ 5 }
+          w="100%"
+          maxH="200px"
+          ref={ containerRef }
+        >
+          { children }
+        </ContainerWithScrollY>
+      </DetailsInfoItem.Value>
+
+    </>
   );
 };
 

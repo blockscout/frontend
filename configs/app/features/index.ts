@@ -17,6 +17,7 @@ export { default as metasuites } from './metasuites';
 export { default as mixpanel } from './mixpanel';
 export { default as multichainButton } from './multichainButton';
 export { default as nameService } from './nameService';
+export { default as publicTagsSubmission } from './publicTagsSubmission';
 export { default as restApiDocs } from './restApiDocs';
 export { default as rollup } from './rollup';
 export { default as safe } from './safe';

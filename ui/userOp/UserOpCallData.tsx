@@ -2,7 +2,7 @@ import React from 'react';
 
 import type { UserOp } from 'types/api/userOps';
 
-import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import RawInputData from 'ui/shared/RawInputData';
 
 import UserOpCallDataSwitch from './UserOpCallDataSwitch';
@@ -33,12 +33,16 @@ const UserOpDecodedCallData = ({ data }: Props) => {
   ) : null;
 
   return (
-    <DetailsInfoItem
-      title="Call data"
-      hint="Data that’s passed to the sender for execution"
-    >
-      <RawInputData hex={ callData } rightSlot={ toggler }/>
-    </DetailsInfoItem>
+    <>
+      <DetailsInfoItem.Label
+        hint="Data that’s passed to the sender for execution"
+      >
+        Call data
+      </DetailsInfoItem.Label>
+      <DetailsInfoItem.Value>
+        <RawInputData hex={ callData } rightSlot={ toggler }/>
+      </DetailsInfoItem.Value>
+    </>
   );
 };
 
