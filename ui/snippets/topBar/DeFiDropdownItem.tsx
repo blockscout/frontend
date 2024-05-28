@@ -20,8 +20,8 @@ const DeFiDropdownItem = ({ item }: Props) => {
     display: 'inline-flex',
     alignItems: 'center',
     color: useColorModeValue('blackAlpha.800', 'gray.400'),
-    textDecoration: 'none !important',
     _hover: {
+      textDecoration: 'none',
       '& *': {
         color: 'link_hovered',
       },
