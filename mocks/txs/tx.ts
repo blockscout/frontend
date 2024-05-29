@@ -22,7 +22,7 @@ export const base: Transaction = {
   },
   from: {
     hash: '0x047A81aFB05D9B1f8844bf60fcA05DCCFbC584B9',
-    implementation_name: null,
+    implementations: null,
     is_contract: false,
     name: null,
     is_verified: null,
@@ -48,7 +48,7 @@ export const base: Transaction = {
   timestamp: '2022-10-10T14:34:30.000000Z',
   to: {
     hash: '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859',
-    implementation_name: null,
+    implementations: null,
     is_contract: false,
     is_verified: true,
     name: null,
@@ -92,7 +92,7 @@ export const withContractCreation: Transaction = {
   to: null,
   created_contract: {
     hash: '0xdda21946FF3FAa027104b15BE6970CA756439F5a',
-    implementation_name: null,
+    implementations: null,
     is_contract: true,
     is_verified: null,
     name: 'Shavuha token',
@@ -111,7 +111,7 @@ export const withTokenTransfer: Transaction = {
   hash: '0x62d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3196',
   to: {
     hash: '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859',
-    implementation_name: null,
+    implementations: null,
     is_contract: true,
     is_verified: true,
     name: 'ArianeeStore',
@@ -167,7 +167,7 @@ export const withRawRevertReason: Transaction = {
   },
   to: {
     hash: '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859',
-    implementation_name: null,
+    implementations: null,
     is_verified: true,
     is_contract: true,
     name: 'Bad guy',
@@ -283,7 +283,7 @@ export const stabilityTx: Transaction = {
   stability_fee: {
     dapp_address: {
       hash: '0xDc2B93f3291030F3F7a6D9363ac37757f7AD5C43',
-      implementation_name: null,
+      implementations: null,
       is_contract: false,
       is_verified: null,
       name: null,
@@ -308,7 +308,7 @@ export const stabilityTx: Transaction = {
     total_fee: '68762500000000',
     validator_address: {
       hash: '0x1432997a4058acbBe562F3c1E79738c142039044',
-      implementation_name: null,
+      implementations: null,
       is_contract: false,
       is_verified: null,
       name: null,

@@ -103,7 +103,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
           is_contract: data.type === 'contract',
           is_verified: data.is_smart_contract_verified,
           name: null,
-          implementation_name: null,
+          implementations: null,
           ens_domain_name: null,
         };
         const expiresText = data.ens_info?.expiry_date ? ` (expires ${ dayjs(data.ens_info.expiry_date).fromNow() })` : '';

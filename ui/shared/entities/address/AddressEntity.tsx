@@ -86,14 +86,12 @@ const Icon = (props: IconProps) => {
   }
 
   return (
-    <Tooltip label={ props.address.implementation_name }>
-      <Flex marginRight={ styles.marginRight }>
-        <AddressIdenticon
-          size={ props.iconSize === 'lg' ? 30 : 20 }
-          hash={ props.address.hash }
-        />
-      </Flex>
-    </Tooltip>
+    <Flex marginRight={ styles.marginRight }>
+      <AddressIdenticon
+        size={ props.iconSize === 'lg' ? 30 : 20 }
+        hash={ props.address.hash }
+      />
+    </Flex>
   );
 };
 
@@ -142,7 +140,7 @@ const Copy = (props: CopyProps) => {
 const Container = EntityBase.Container;
 
 export interface EntityProps extends EntityBase.EntityBaseProps {
-  address: Pick<AddressParam, 'hash' | 'name' | 'is_contract' | 'is_verified' | 'implementation_name' | 'ens_domain_name' | 'metadata'>;
+  address: Pick<AddressParam, 'hash' | 'name' | 'is_contract' | 'is_verified' | 'ens_domain_name' | 'metadata'>;
   isSafeAddress?: boolean;
 }
 

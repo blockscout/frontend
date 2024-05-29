@@ -35,7 +35,7 @@ const Sol2Uml = () => {
       <Flex mb={ 10 } flexWrap="wrap" columnGap={ 3 }>
         <span>For contract</span>
         <AddressEntity
-          address={{ hash: addressHash, is_contract: true, implementation_name: null }}
+          address={{ hash: addressHash, is_contract: true }}
         />
       </Flex>
       <Sol2UmlDiagram addressHash={ addressHash }/>

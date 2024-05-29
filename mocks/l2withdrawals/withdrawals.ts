@@ -6,7 +6,7 @@ export const data: OptimisticL2WithdrawalsResponse = {
       challenge_period_end: null,
       from: {
         hash: '0x67aab90c548b284be30b05c376001b4db90b87ba',
-        implementation_name: null,
+        implementations: null,
         is_contract: false,
         is_verified: false,
         name: null,

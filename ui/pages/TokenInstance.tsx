@@ -136,7 +136,7 @@ const TokenInstanceContent = () => {
   const address = {
     hash: hash || '',
     is_contract: true,
-    implementation_name: null,
+    implementations: null,
     watchlist_names: [],
     watchlist_address_id: null,
   };

@@ -25,7 +25,7 @@ export const userOpData: UserOp = {
   sender: {
     ens_domain_name: null,
     hash: '0xF0C14FF4404b188fAA39a3507B388998c10FE284',
-    implementation_name: null,
+    implementations: null,
     is_contract: true,
     is_verified: null,
     name: null,
@@ -34,7 +34,7 @@ export const userOpData: UserOp = {
   entry_point: {
     ens_domain_name: null,
     hash: '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789',
-    implementation_name: null,
+    implementations: null,
     is_contract: true,
     is_verified: null,
     name: null,
@@ -59,7 +59,7 @@ export const userOpData: UserOp = {
   bundler: {
     ens_domain_name: null,
     hash: '0xd53Eb5203e367BbDD4f72338938224881Fc501Ab',
-    implementation_name: null,
+    implementations: null,
     is_contract: false,
     is_verified: null,
     name: null,
@@ -95,7 +95,7 @@ export const userOpData: UserOp = {
   paymaster: {
     ens_domain_name: null,
     hash: '0x7ceA357B5AC0639F89F9e378a1f03Aa5005C0a25',
-    implementation_name: null,
+    implementations: null,
     is_contract: true,
     is_verified: null,
     name: null,
