@@ -90,6 +90,7 @@
 	| "networks/logo-placeholder"
 	| "nft_shield"
 	| "output_roots"
+	| "payment_link"
 	| "plus"
 	| "privattags"
 	| "profile"

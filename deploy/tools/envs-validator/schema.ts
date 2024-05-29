@@ -12,6 +12,7 @@ import type { AdButlerConfig } from '../../../types/client/adButlerConfig';
 import { SUPPORTED_AD_TEXT_PROVIDERS, SUPPORTED_AD_BANNER_PROVIDERS, SUPPORTED_AD_BANNER_ADDITIONAL_PROVIDERS } from '../../../types/client/adProviders';
 import type { AdTextProviders, AdBannerProviders, AdBannerAdditionalProviders } from '../../../types/client/adProviders';
 import type { ContractCodeIde } from '../../../types/client/contract';
+import type { DeFiDropdownItem } from '../../../types/client/deFiDropdown';
 import { GAS_UNITS } from '../../../types/client/gasTracker';
 import type { GasUnit } from '../../../types/client/gasTracker';
 import type { MarketplaceAppOverview, MarketplaceAppSecurityReportRaw, MarketplaceAppSecurityReport } from '../../../types/client/marketplace';
@@ -40,6 +41,7 @@ import { TX_ADDITIONAL_FIELDS_IDS, TX_FIELDS_IDS } from '../../../types/views/tx
 
 import { replaceQuotes } from '../../../configs/app/utils';
 import * as regexp from '../../../lib/regexp';
+import type { IconName } from '../../../ui/shared/IconSvg';
 
 const protocols = [ 'http', 'https' ];
 
@@ -450,6 +452,17 @@ const bridgedTokensSchema = yup
       }),
   });
 
+const deFiDropdownItemSchema: yup.ObjectSchema<DeFiDropdownItem> = yup
+  .object({
+    text: yup.string().required(),
+    icon: yup.string<IconName>().required(),
+    dappId: yup.string(),
+    url: yup.string().test(urlTest),
+  })
+  .test('oneOfRequired', 'NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS: Either dappId or url is required', function(value) {
+    return Boolean(value.dappId) || Boolean(value.url);
+  }) as yup.ObjectSchema<DeFiDropdownItem>;
+
 const schema = yup
   .object()
   .noUnknown(true, (params) => {
@@ -611,7 +624,6 @@ const schema = yup
     NEXT_PUBLIC_IS_SUAVE_CHAIN: yup.boolean(),
     NEXT_PUBLIC_HAS_USER_OPS: yup.boolean(),
     NEXT_PUBLIC_METASUITES_ENABLED: yup.boolean(),
-    NEXT_PUBLIC_SWAP_BUTTON_URL: yup.string(),
     NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG: yup
       .mixed()
       .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG, it should have name and url template', (data) => {
@@ -629,6 +641,11 @@ const schema = yup
     NEXT_PUBLIC_GAS_TRACKER_ENABLED: yup.boolean(),
     NEXT_PUBLIC_GAS_TRACKER_UNITS: yup.array().transform(replaceQuotes).json().of(yup.string<GasUnit>().oneOf(GAS_UNITS)),
     NEXT_PUBLIC_DATA_AVAILABILITY_ENABLED: yup.boolean(),
+    NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(deFiDropdownItemSchema),
     NEXT_PUBLIC_FAULT_PROOF_ENABLED: yup.boolean()
       .when('NEXT_PUBLIC_ROLLUP_TYPE', {
         is: 'optimistic',
