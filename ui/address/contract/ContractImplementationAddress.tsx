@@ -1,10 +1,11 @@
-import { Flex } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
 import type { Address as TAddress } from 'types/api/address';
 
 import { getResourceKey } from 'lib/api/useApiQuery';
+import ContainerWithScrollY from 'ui/shared/ContainerWithScrollY';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 interface Props {
@@ -26,16 +27,22 @@ const ContractImplementationAddress = ({ hash }: Props) => {
   return (
     <Flex mb={ 6 } flexWrap="wrap" columnGap={ 2 } rowGap={ 2 }>
       <span>{ label }</span>
-      <Flex flexDir="column" rowGap={ 2 } maxW="100%">
-        { data.implementations.map((item) => (
-          <AddressEntity
-            key={ item.address }
-            address={{ hash: item.address, is_contract: true }}
-            noIcon
-            noCopy
-          />
-        )) }
-      </Flex>
+      <Box position="relative" maxW="100%">
+        <ContainerWithScrollY
+          gradientHeight={ 24 }
+          rowGap={ 2 }
+          maxH="150px"
+        >
+          { data.implementations.map((item) => (
+            <AddressEntity
+              key={ item.address }
+              address={{ hash: item.address, is_contract: true }}
+              noIcon
+              noCopy
+            />
+          )) }
+        </ContainerWithScrollY>
+      </Box>
     </Flex>
   );
 };
