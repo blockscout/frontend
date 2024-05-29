@@ -11,6 +11,7 @@ import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as metadata from 'lib/metadata';
 import * as regexp from 'lib/regexp';
+import { getTokenTypeName } from 'lib/token/tokenTypes';
 import {
   TOKEN_INSTANCE,
   TOKEN_INFO_ERC_1155,
@@ -130,7 +131,7 @@ const TokenInstanceContent = () => {
 
   throwOnResourceLoadError(tokenInstanceQuery);
 
-  const tokenTag = <Tag isLoading={ tokenInstanceQuery.isPlaceholderData }>{ tokenQuery.data?.type }</Tag>;
+  const tokenTag = tokenQuery.data?.type ? <Tag isLoading={ tokenInstanceQuery.isPlaceholderData }>{ getTokenTypeName(tokenQuery.data?.type) }</Tag> : null;
 
   const address = {
     hash: hash || '',
