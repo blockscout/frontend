@@ -14,13 +14,13 @@ import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
 import FilterButton from 'ui/shared/filters/FilterButton';
 
 interface Props {
-  isActive: boolean;
+  hasActiveFilter: boolean;
   defaultFilter: NovesHistoryFilterValue;
   onFilterChange: (nextValue: string | Array<string>) => void;
   isLoading?: boolean;
 }
 
-const AccountHistoryFilter = ({ onFilterChange, defaultFilter, isActive, isLoading }: Props) => {
+const AccountHistoryFilter = ({ onFilterChange, defaultFilter, hasActiveFilter, isLoading }: Props) => {
   const { isOpen, onToggle } = useDisclosure();
   const isInitialLoading = useIsInitialLoading(isLoading);
 
@@ -34,10 +34,10 @@ const AccountHistoryFilter = ({ onFilterChange, defaultFilter, isActive, isLoadi
     <Menu isOpen={ isOpen } onClose={ onCloseMenu }>
       <MenuButton onClick={ onToggle }>
         <FilterButton
-          isActive={ isOpen || isActive }
+          isActive={ isOpen }
           isLoading={ isInitialLoading }
           onClick={ onToggle }
-          appliedFiltersNum={ isActive ? 1 : 0 }
+          appliedFiltersNum={ hasActiveFilter ? 1 : 0 }
           as="div"
         />
       </MenuButton>

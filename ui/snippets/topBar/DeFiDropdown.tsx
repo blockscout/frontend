@@ -45,7 +45,7 @@ const DeFiDropdown = () => {
       <PopoverTrigger>
         <Button
           onClick={ onToggle }
-          bgColor={ isOpen ? 'blue.400' : undefined }
+          isActive={ isOpen }
           { ...buttonStyles }
         >
           <chakra.span display={{ base: 'none', lg: 'inline' }} mr={ 1 }>

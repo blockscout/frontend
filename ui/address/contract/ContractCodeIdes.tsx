@@ -61,6 +61,7 @@ const ContractCodeIde = ({ className, hash, isLoading }: Props) => {
           variant="outline"
           colorScheme="gray"
           onClick={ onToggle }
+          isActive={ isOpen }
           aria-label="Open source code in IDE"
           fontWeight={ 500 }
           px={ 2 }

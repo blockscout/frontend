@@ -44,6 +44,7 @@ const SolidityscanReport = ({ hash }: Props) => {
           score={ score }
           isLoading={ isPlaceholderData }
           onClick={ onToggle }
+          isActive={ isOpen }
         />
       </PopoverTrigger>
       <PopoverContent w={{ base: '100vw', lg: '328px' }}>

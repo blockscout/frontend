@@ -13,20 +13,20 @@ import type { ValidatorsFilters } from 'types/api/validators';
 import FilterButton from 'ui/shared/filters/FilterButton';
 
 interface Props {
-  isActive: boolean;
+  hasActiveFilter: boolean;
   defaultValue: ValidatorsFilters['state_filter'] | undefined;
   onChange: (nextValue: string | Array<string>) => void;
 }
 
-const ValidatorsFilter = ({ onChange, defaultValue, isActive }: Props) => {
+const ValidatorsFilter = ({ onChange, defaultValue, hasActiveFilter }: Props) => {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
     <Menu>
       <MenuButton>
         <FilterButton
-          isActive={ isOpen || isActive }
-          appliedFiltersNum={ isActive ? 1 : 0 }
+          isActive={ isOpen }
+          appliedFiltersNum={ hasActiveFilter ? 1 : 0 }
           onClick={ onToggle }
           as="div"
         />

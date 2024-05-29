@@ -13,20 +13,20 @@ import type { VerifiedContractsFilters } from 'types/api/contracts';
 import FilterButton from 'ui/shared/filters/FilterButton';
 
 interface Props {
-  isActive: boolean;
+  hasActiveFilter: boolean;
   defaultValue: VerifiedContractsFilters['filter'] | undefined;
   onChange: (nextValue: string | Array<string>) => void;
 }
 
-const VerifiedContractsFilter = ({ onChange, defaultValue, isActive }: Props) => {
+const VerifiedContractsFilter = ({ onChange, defaultValue, hasActiveFilter }: Props) => {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
     <Menu>
       <MenuButton>
         <FilterButton
-          isActive={ isOpen || isActive }
-          appliedFiltersNum={ isActive ? 1 : 0 }
+          isActive={ isOpen }
+          appliedFiltersNum={ hasActiveFilter ? 1 : 0 }
           onClick={ onToggle }
           as="div"
         />
