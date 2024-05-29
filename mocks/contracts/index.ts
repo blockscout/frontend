@@ -3,7 +3,7 @@ import type { VerifiedContract, VerifiedContractsResponse } from 'types/api/cont
 export const contract1: VerifiedContract = {
   address: {
     hash: '0xef490030ac0d53B70E304b6Bc5bF657dc6780bEB',
-    implementation_name: null,
+    implementations: null,
     is_contract: true,
     is_verified: null,
     name: 'MockERC20',
@@ -26,7 +26,7 @@ export const contract1: VerifiedContract = {
 export const contract2: VerifiedContract = {
   address: {
     hash: '0xB2218bdEbe8e90f80D04286772B0968ead666942',
-    implementation_name: null,
+    implementations: null,
     is_contract: true,
     is_verified: null,
     name: 'EternalStorageProxyWithSomeExternalLibrariesAndEvenMore',

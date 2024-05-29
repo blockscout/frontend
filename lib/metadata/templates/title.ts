@@ -35,6 +35,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/csv-export': '%network_name% export data to CSV',
   '/deposits': '%network_name% deposits (L1 > L2)',
   '/output-roots': '%network_name% output roots',
+  '/dispute-games': '%network_name% dispute games',
   '/batches': '%network_name% tx batches (L2 blocks)',
   '/batches/[number]': '%network_name% L2 tx batch %number%',
   '/blobs/[hash]': '%network_name% blob %hash% details',

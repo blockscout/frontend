@@ -11,8 +11,6 @@ import LinkExternal from 'ui/shared/links/LinkExternal';
 
 import ContractSubmitAuditForm from './contractSubmitAuditForm/ContractSubmitAuditForm';
 
-const SCROLL_GRADIENT_HEIGHT = 24;
-
 type Props = {
   addressHash?: string;
 }
@@ -26,17 +24,6 @@ const ContractSecurityAudits = ({ addressHash }: Props) => {
       enabled: Boolean(addressHash),
     },
   });
-
-  const containerRef = React.useRef<HTMLDivElement>(null);
-  const [ hasScroll, setHasScroll ] = React.useState(false);
-
-  React.useEffect(() => {
-    if (!containerRef.current) {
-      return;
-    }
-
-    setHasScroll(containerRef.current.scrollHeight >= containerRef.current.clientHeight + SCROLL_GRADIENT_HEIGHT / 2);
-  }, []);
 
   const formTitle = 'Submit audit';
 
@@ -52,12 +39,10 @@ const ContractSecurityAudits = ({ addressHash }: Props) => {
       { data?.items && data.items.length > 0 && (
         <Box position="relative">
           <ContainerWithScrollY
-            gradientHeight={ SCROLL_GRADIENT_HEIGHT }
-            hasScroll={ hasScroll }
+            gradientHeight={ 24 }
             rowGap={ 1 }
             w="100%"
             maxH="80px"
-            ref={ containerRef }
             mt={ 2 }
           >
             { data.items.map(item => (

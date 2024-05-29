@@ -29,7 +29,7 @@ const TokenInstanceCreatorAddress = ({ hash }: Props) => {
   const creatorAddress = {
     hash: addressQuery.data.creator_address_hash,
     is_contract: false,
-    implementation_name: null,
+    implementations: null,
   };
 
   return (

@@ -17,6 +17,7 @@ import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 
 import AddressBalance from './details/AddressBalance';
+import AddressImplementations from './details/AddressImplementations';
 import AddressNameInfo from './details/AddressNameInfo';
 import AddressNetWorth from './details/AddressNetWorth';
 import TokenSelect from './tokenSelect/TokenSelect';
@@ -48,8 +49,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
   const error404Data = React.useMemo(() => ({
     hash: addressHash || '',
     is_contract: false,
-    implementation_name: null,
-    implementation_address: null,
+    implementations: null,
     token: null,
     watchlist_address_id: null,
     watchlist_names: null,
@@ -112,22 +112,11 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
             </DetailsInfoItem.Value>
           </>
         ) }
-
-        { data.is_contract && data.implementation_address && (
-          <>
-            <DetailsInfoItem.Label
-              hint="Implementation address of the proxy contract"
-            >
-              Implementation
-            </DetailsInfoItem.Label>
-            <DetailsInfoItem.Value>
-              <AddressEntity
-                address={{ hash: data.implementation_address, name: data.implementation_name, is_contract: true }}
-                isLoading={ addressQuery.isPlaceholderData }
-                noIcon
-              />
-            </DetailsInfoItem.Value>
-          </>
+        { data.is_contract && data.implementations && data.implementations?.length > 0 && (
+          <AddressImplementations
+            data={ data.implementations }
+            isLoading={ addressQuery.isPlaceholderData }
+          />
         ) }
 
         <AddressBalance data={ data } isLoading={ addressQuery.isPlaceholderData }/>
@@ -152,7 +141,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
             >
               Net worth
             </DetailsInfoItem.Label>
-            <DetailsInfoItem.Value alignSelf="center">
+            <DetailsInfoItem.Value alignSelf="center" py={ 0 }>
               <AddressNetWorth addressData={ addressQuery.data } addressHash={ addressHash } isLoading={ addressQuery.isPlaceholderData }/>
             </DetailsInfoItem.Value>
           </>

@@ -39,6 +39,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/csv-export': DEFAULT_TEMPLATE,
   '/deposits': DEFAULT_TEMPLATE,
   '/output-roots': DEFAULT_TEMPLATE,
+  '/dispute-games': DEFAULT_TEMPLATE,
   '/batches': DEFAULT_TEMPLATE,
   '/batches/[number]': DEFAULT_TEMPLATE,
   '/blobs/[hash]': DEFAULT_TEMPLATE,

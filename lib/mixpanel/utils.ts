@@ -128,7 +128,7 @@ Type extends EventTypes.FILTERS ? {
   'Filter name': string;
 } :
 Type extends EventTypes.BUTTON_CLICK ? {
-  'Content': 'Swap button' | 'Multichain';
+  'Content': string;
   'Source': string;
 } :
 Type extends EventTypes.PROMO_BANNER ? {

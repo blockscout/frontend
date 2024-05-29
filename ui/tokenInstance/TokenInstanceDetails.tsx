@@ -5,6 +5,7 @@ import type { TokenInfo, TokenInstance } from 'types/api/token';
 
 import config from 'configs/app';
 import useFeatureValue from 'lib/growthbook/useFeatureValue';
+import useIsMounted from 'lib/hooks/useIsMounted';
 import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';
 import useAppActionData from 'ui/shared/AppActionButton/useAppActionData';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
@@ -30,6 +31,7 @@ interface Props {
 const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
   const { value: isActionButtonExperiment } = useFeatureValue('action_button_exp', false);
   const appActionData = useAppActionData(token?.address, isActionButtonExperiment && !isLoading);
+  const isMounted = useIsMounted();
 
   const handleCounterItemClick = React.useCallback(() => {
     window.setTimeout(() => {
@@ -38,7 +40,7 @@ const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
     }, 500);
   }, [ scrollRef ]);
 
-  if (!data || !token) {
+  if (!data || !token || !isMounted) {
     return null;
   }
 

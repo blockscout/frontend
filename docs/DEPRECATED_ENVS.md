@@ -8,3 +8,4 @@
 | NEXT_PUBLIC_L1_BASE_URL | `string` | Blockscout base URL for L1 network | Required | - | `'http://eth-goerli.blockscout.com'` | v1.24.0 | Renamed to NEXT_PUBLIC_ROLLUP_L1_BASE_URL |
 | NEXT_PUBLIC_HOMEPAGE_SHOW_GAS_TRACKER | `boolean` | Set to false if network doesn't have gas tracker | - | `true` | `false` | v1.25.0 | Replaced by NEXT_PUBLIC_GAS_TRACKER_ENABLED |
 | NEXT_PUBLIC_NETWORK_GOVERNANCE_TOKEN_SYMBOL | `string` | Network governance token symbol | - | - | `GNO` | v1.29.0 | Replaced by NEXT_PUBLIC_NETWORK_SECONDARY_COIN_SYMBOL |
+| NEXT_PUBLIC_SWAP_BUTTON_URL | `string` | Application ID in the marketplace or website URL | - | - | `uniswap` | v1.31.0 | Replaced by NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS |

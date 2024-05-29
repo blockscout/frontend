@@ -3,7 +3,7 @@ import type { TxStateChange, TxStateChanges } from 'types/api/txStateChanges';
 export const mintToken: TxStateChange = {
   address: {
     hash: '0x0000000000000000000000000000000000000000',
-    implementation_name: null,
+    implementations: null,
     is_contract: false,
     is_verified: false,
     name: null,
@@ -41,7 +41,7 @@ export const mintToken: TxStateChange = {
 export const receiveMintedToken: TxStateChange = {
   address: {
     hash: '0xC8F71D0ae51AfBdB009E2eC1Ea8CC9Ee204A42B5',
-    implementation_name: null,
+    implementations: null,
     is_contract: false,
     is_verified: false,
     name: null,
@@ -79,7 +79,7 @@ export const receiveMintedToken: TxStateChange = {
 export const transfer1155Token: TxStateChange = {
   address: {
     hash: '0x51243E83Db20F8FC2761D894067A2A9eb7B158DE',
-    implementation_name: null,
+    implementations: null,
     is_contract: false,
     is_verified: false,
     name: null,
@@ -111,7 +111,7 @@ export const transfer1155Token: TxStateChange = {
 export const receiveCoin: TxStateChange = {
   address: {
     hash: '0x8dC847Af872947Ac18d5d63fA646EB65d4D99560',
-    implementation_name: null,
+    implementations: null,
     is_contract: false,
     is_verified: null,
     name: null,
@@ -131,7 +131,7 @@ export const receiveCoin: TxStateChange = {
 export const sendCoin: TxStateChange = {
   address: {
     hash: '0xC8F71D0ae51AfBdB009E2eC1Ea8CC9Ee204A42B5',
-    implementation_name: null,
+    implementations: null,
     is_contract: false,
     is_verified: null,
     name: null,
@@ -148,11 +148,11 @@ export const sendCoin: TxStateChange = {
   type: 'coin' as const,
 };
 
-export const sendERC20Token = {
+export const sendERC20Token: TxStateChange = {
   address: {
     hash: '0x7f6479df95Aa3036a3BE02DB6300ea201ABd9981',
     ens_domain_name: null,
-    implementation_name: null,
+    implementations: null,
     is_contract: false,
     is_verified: false,
     name: null,
@@ -175,7 +175,6 @@ export const sendERC20Token = {
     symbol: 'USDT',
     total_supply: '39030615894320966',
     type: 'ERC-20' as const,
-    token_id: null,
   },
   type: 'token' as const,
 };
