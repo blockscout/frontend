@@ -45,9 +45,8 @@ const DeFiDropdown = () => {
       <PopoverTrigger>
         <Button
           onClick={ onToggle }
-          { ...buttonStyles }
           bgColor={ isOpen ? 'blue.400' : undefined }
-          _active={{ bgColor: 'blue.400' }}
+          { ...buttonStyles }
         >
           <chakra.span display={{ base: 'none', lg: 'inline' }} mr={ 1 }>
             Blockscout
