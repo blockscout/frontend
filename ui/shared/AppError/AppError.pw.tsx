@@ -5,10 +5,13 @@ import * as pwConfig from 'playwright/utils/config';
 
 import AppError from './AppError';
 
-test('status code 404', async({ render }) => {
+test('status code 404', async({ render, page }) => {
   const error = { message: 'Not found', cause: { status: 404 } } as Error;
   const component = await render(<AppError error={ error }/>);
-  await expect(component).toHaveScreenshot();
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
+  });
 });
 
 test('status code 422', async({ render }) => {
@@ -44,7 +47,6 @@ test('too many requests +@mobile', async({ render, page }) => {
     cause: { status: 429 },
   } as Error;
   const component = await render(<AppError error={ error }/>);
-  await page.waitForResponse('https://www.google.com/recaptcha/api2/**');
   await expect(component).toHaveScreenshot({
     mask: [ page.locator('.recaptcha') ],
     maskColor: pwConfig.maskColor,
