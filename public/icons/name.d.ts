@@ -61,6 +61,7 @@
 	| "filter"
 	| "finalized"
 	| "flame"
+	| "games"
 	| "gas_xl"
 	| "gas"
 	| "gear_slim"

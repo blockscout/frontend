@@ -35,6 +35,7 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/csv-export': 'Regular page',
   '/deposits': 'Root page',
   '/output-roots': 'Root page',
+  '/dispute-games': 'Root page',
   '/batches': 'Root page',
   '/batches/[number]': 'Regular page',
   '/blobs/[hash]': 'Regular page',
