@@ -84,7 +84,7 @@ const GasTracker = () => {
   return (
     <>
       <PageTitle
-        title="Gas tracker"
+        title={ config.meta.seo.enhancedDataEnabled ? `${ config.chain.name } gas tracker` : 'Gas tracker' }
         secondRow={ titleSecondRow }
         withTextAd
       />

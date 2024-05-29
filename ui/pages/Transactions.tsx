@@ -144,7 +144,10 @@ const Transactions = () => {
 
   return (
     <>
-      <PageTitle title="Transactions" withTextAd/>
+      <PageTitle
+        title={ config.meta.seo.enhancedDataEnabled ? `${ config.chain.name } transactions` : 'Transactions' }
+        withTextAd
+      />
       <TxsStats/>
       <RoutedTabs
         tabs={ tabs }

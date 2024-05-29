@@ -34,7 +34,11 @@ const Home = () => {
             fontWeight={ 600 }
             color={ config.UI.homepage.plate.textColor }
           >
-            { config.chain.name } explorer
+            {
+              config.meta.seo.enhancedDataEnabled ?
+                `${ config.chain.name } blockchain explorer` :
+                `${ config.chain.name } explorer`
+            }
           </Box>
           <Box display={{ base: 'none', lg: 'flex' }}>
             { config.features.account.isEnabled && <ProfileMenuDesktop isHomePage/> }
