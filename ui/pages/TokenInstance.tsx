@@ -29,7 +29,6 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
-import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 import TokenHolders from 'ui/token/TokenHolders/TokenHolders';
 import TokenTransfer from 'ui/token/TokenTransfer/TokenTransfer';
 import TokenInstanceDetails from 'ui/tokenInstance/TokenInstanceDetails';
@@ -69,7 +68,7 @@ const TokenInstanceContent = () => {
     pathParams: { hash, id },
     scrollRef,
     options: {
-      enabled: Boolean(hash && id && (!tab || tab === 'token_transfers') && !tokenInstanceQuery.isPlaceholderData && tokenInstanceQuery.data),
+      enabled: Boolean(hash && id && (!tab || tab === 'token_transfers')),
       placeholderData: getTokenInstanceTransfersStub(tokenQuery.data?.type, null),
     },
   });
@@ -89,6 +88,8 @@ const TokenInstanceContent = () => {
       placeholderData: getTokenInstanceHoldersStub(tokenQuery.data?.type, null),
     },
   });
+
+  const isLoading = tokenInstanceQuery.isPlaceholderData || tokenQuery.isPlaceholderData;
 
   React.useEffect(() => {
     if (tokenInstanceQuery.data && !tokenInstanceQuery.isPlaceholderData && tokenQuery.data && !tokenQuery.isPlaceholderData) {
@@ -116,15 +117,15 @@ const TokenInstanceContent = () => {
     {
       id: 'token_transfers',
       title: 'Token transfers',
-      component: <TokenTransfer transfersQuery={ transfersQuery } tokenId={ id } token={ tokenQuery.data }/>,
+      component: <TokenTransfer transfersQuery={ transfersQuery } tokenId={ id } token={ tokenQuery.data } shouldRender={ !isLoading }/>,
     },
     shouldFetchHolders ?
-      { id: 'holders', title: 'Holders', component: <TokenHolders holdersQuery={ holdersQuery } token={ tokenQuery.data }/> } :
+      { id: 'holders', title: 'Holders', component: <TokenHolders holdersQuery={ holdersQuery } token={ tokenQuery.data } shouldRender={ !isLoading }/> } :
       undefined,
     { id: 'metadata', title: 'Metadata', component: (
       <TokenInstanceMetadata
         data={ tokenInstanceQuery.data?.metadata }
-        isPlaceholderData={ tokenInstanceQuery.isPlaceholderData }
+        isPlaceholderData={ isLoading }
       />
     ) },
   ].filter(Boolean);
@@ -140,8 +141,6 @@ const TokenInstanceContent = () => {
     watchlist_names: [],
     watchlist_address_id: null,
   };
-
-  const isLoading = tokenInstanceQuery.isPlaceholderData || tokenQuery.isPlaceholderData;
 
   const appLink = (() => {
     if (!tokenInstanceQuery.data?.external_app_url) {
@@ -226,14 +225,13 @@ const TokenInstanceContent = () => {
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ scrollRef }></Box>
 
-      { isLoading ? <TabsSkeleton tabs={ tabs }/> : (
-        <RoutedTabs
-          tabs={ tabs }
-          tabListProps={ isMobile ? { mt: 8 } : { mt: 3, py: 5, marginBottom: 0 } }
-          rightSlot={ !isMobile && pagination?.isVisible ? <Pagination { ...pagination }/> : null }
-          stickyEnabled={ !isMobile }
-        />
-      ) }
+      <RoutedTabs
+        tabs={ tabs }
+        tabListProps={ isMobile ? { mt: 8 } : { mt: 3, py: 5, marginBottom: 0 } }
+        isLoading={ isLoading }
+        rightSlot={ !isMobile && pagination?.isVisible ? <Pagination { ...pagination }/> : null }
+        stickyEnabled={ !isMobile }
+      />
     </>
   );
 };
