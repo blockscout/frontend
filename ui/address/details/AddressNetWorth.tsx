@@ -62,6 +62,7 @@ const AddressNetWorth = ({ addressData, isLoading, addressHash }: Props) => {
       display: 'flex',
       alignItems: 'center',
       fontSize: 'sm',
+      lineHeight: 5,
       fontWeight: 500,
       onClick: onMultichainClick,
     };

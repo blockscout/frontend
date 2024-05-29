@@ -141,7 +141,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
             >
               Net worth
             </DetailsInfoItem.Label>
-            <DetailsInfoItem.Value alignSelf="center">
+            <DetailsInfoItem.Value alignSelf="center" py={ 0 }>
               <AddressNetWorth addressData={ addressQuery.data } addressHash={ addressHash } isLoading={ addressQuery.isPlaceholderData }/>
             </DetailsInfoItem.Value>
           </>
