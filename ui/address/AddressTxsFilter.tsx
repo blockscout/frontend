@@ -1,17 +1,15 @@
-import {
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuOptionGroup,
-  MenuItemOption,
-  useDisclosure,
-} from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressFromToFilter } from 'types/api/address';
 
 import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
-import FilterButton from 'ui/shared/filters/FilterButton';
+import PopoverFilterRadio from 'ui/shared/filters/PopoverFilterRadio';
+
+const OPTIONS = [
+  { value: 'all', label: 'All' },
+  { value: 'from', label: 'Outgoing transactions' },
+  { value: 'to', label: 'Incoming transactions' },
+];
 
 interface Props {
   hasActiveFilter: boolean;
@@ -21,28 +19,17 @@ interface Props {
 }
 
 const AddressTxsFilter = ({ onFilterChange, defaultFilter, hasActiveFilter, isLoading }: Props) => {
-  const { isOpen, onToggle } = useDisclosure();
   const isInitialLoading = useIsInitialLoading(isLoading);
 
   return (
-    <Menu>
-      <MenuButton>
-        <FilterButton
-          isActive={ isOpen }
-          isLoading={ isInitialLoading }
-          onClick={ onToggle }
-          appliedFiltersNum={ hasActiveFilter ? 1 : 0 }
-          as="div"
-        />
-      </MenuButton>
-      <MenuList zIndex={ 2 }>
-        <MenuOptionGroup defaultValue={ defaultFilter || 'all' } type="radio" onChange={ onFilterChange }>
-          <MenuItemOption value="all">All</MenuItemOption>
-          <MenuItemOption value="from">Outgoing transactions</MenuItemOption>
-          <MenuItemOption value="to">Incoming transactions</MenuItemOption>
-        </MenuOptionGroup>
-      </MenuList>
-    </Menu>
+    <PopoverFilterRadio
+      name="txs_filter"
+      options={ OPTIONS }
+      onChange={ onFilterChange }
+      hasActiveFilter={ hasActiveFilter }
+      isLoading={ isInitialLoading }
+      defaultValue={ defaultFilter || OPTIONS[0].value }
+    />
   );
 };
 
