@@ -29,7 +29,7 @@ export default function useNavItems(): ReturnType {
     let blockchainNavItems: Array<NavItem> | Array<Array<NavItem>> = [];
 
     const topAccounts: NavItem | null = !config.UI.views.address.hiddenViews?.top_accounts ? {
-      text: 'Top accounts',
+      text: 'Top USERS',
       nextRoute: { pathname: '/accounts' as const },
       icon: 'top-accounts',
       isActive: pathname === '/accounts',
