@@ -22,6 +22,8 @@ const variantSolid = defineStyle((props) => {
     _disabled: {
       opacity: 0.2,
     },
+    // According to design there is no "active" or "pressed" state
+    // It is simply should be the same as the "hover" state
     _active: { bg: activeBg },
     fontWeight: 600,
   };
@@ -62,6 +64,8 @@ const variantOutline = defineStyle((props) => {
     _disabled: {
       opacity: 0.2,
     },
+    // According to design there is no "active" or "pressed" state
+    // It is simply should be the same as the "hover" state
     _active: {
       color: 'link_hovered',
       borderColor: 'link_hovered',
@@ -74,7 +78,7 @@ const variantOutline = defineStyle((props) => {
         borderColor: 'link_hovered',
       },
     },
-    // We have a special state for a button that serves as a popover trigger.
+    // We have a special state for this button variant that serves as a popover trigger.
     // When any items (filters) are selected in the popover, the button should change its background and text color.
     // The last CSS selector is for redefining styles for the TabList component.
     [`
