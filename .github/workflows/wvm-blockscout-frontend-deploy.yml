@@ -1,4 +1,4 @@
-name: Remote update execution
+name: WVM Blockscout frontend deploy
 on:
   push:
     branches: [ "main" ]
