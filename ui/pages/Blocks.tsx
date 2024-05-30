@@ -16,7 +16,7 @@ import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 const TAB_LIST_PROPS = {
   marginBottom: 0,
   pt: 6,
-  pb: 3,
+  pb: 6,
   marginTop: -5,
 };
 
