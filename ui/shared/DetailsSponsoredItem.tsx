@@ -17,7 +17,7 @@ const DetailsSponsoredItem = ({ isLoading }: Props) => {
   const isMobile = useIsMobile();
   const hasAdblockCookie = cookies.get(cookies.NAMES.ADBLOCK_DETECTED);
 
-  if (!feature.isEnabled || hasAdblockCookie) {
+  if (!feature.isEnabled || hasAdblockCookie === 'true') {
     return null;
   }
 
