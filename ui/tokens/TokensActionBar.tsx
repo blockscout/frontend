@@ -53,7 +53,7 @@ const TokensActionBar = ({
       </HStack>
       <ActionBar
         mt={ inTabsSlot ? 0 : -6 }
-        py={ inTabsSlot ? 0 : undefined }
+        py={{ lg: inTabsSlot ? 0 : undefined }}
         justifyContent={ inTabsSlot ? 'space-between' : undefined }
         display={{ base: pagination.isVisible ? 'flex' : 'none', lg: 'flex' }}
       >

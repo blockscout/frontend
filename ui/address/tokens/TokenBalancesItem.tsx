@@ -14,7 +14,7 @@ const TokenBalancesItem = ({ name, icon, value, valueSecondary, isLoading }: Pro
   const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
   return (
-    <Box px="12px" py="10px" bgColor={ bgColor } borderRadius="16px">
+    <Box px="12px" py="10px" bgColor={ bgColor } borderRadius="base">
       <Text variant="secondary" fontSize="xs">{ name }</Text>
       <Flex alignItems="center">
         { icon }

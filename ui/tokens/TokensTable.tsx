@@ -25,9 +25,10 @@ type Props = {
   sorting?: TokensSortingValue;
   setSorting: (val?: TokensSortingValue) => void;
   isLoading?: boolean;
+  top?: number;
 }
 
-const TokensTable = ({ items, page, isLoading, sorting, setSorting }: Props) => {
+const TokensTable = ({ items, page, isLoading, sorting, setSorting, top }: Props) => {
   const sortIconTransform = sorting?.includes('asc') ? 'rotate(-90deg)' : 'rotate(90deg)';
 
   const sort = React.useCallback((field: TokensSortingField) => () => {
@@ -37,7 +38,7 @@ const TokensTable = ({ items, page, isLoading, sorting, setSorting }: Props) => 
 
   return (
     <Table>
-      <Thead top={ ACTION_BAR_HEIGHT_DESKTOP }>
+      <Thead top={ top ?? ACTION_BAR_HEIGHT_DESKTOP }>
         <Tr>
           <Th w="50%">Token</Th>
           <Th isNumeric w="15%">
