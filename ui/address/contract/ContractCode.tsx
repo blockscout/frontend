@@ -269,7 +269,8 @@ const ContractCode = ({ addressHash, contractQuery, channel }: Props) => {
           ) }
           { typeof data.optimization_enabled === 'boolean' &&
             <InfoItem label="Optimization enabled" content={ data.optimization_enabled ? 'true' : 'false' } isLoading={ isPlaceholderData }/> }
-          { data.optimization_runs && <InfoItem label="Optimization runs" content={ String(data.optimization_runs) } isLoading={ isPlaceholderData }/> }
+          { data.optimization_runs !== null &&
+            <InfoItem label="Optimization runs" content={ String(data.optimization_runs) } isLoading={ isPlaceholderData }/> }
           { data.verified_at &&
             <InfoItem label="Verified at" content={ dayjs(data.verified_at).format('llll') } wordBreak="break-word" isLoading={ isPlaceholderData }/> }
           { data.file_path && <InfoItem label="Contract file path" content={ data.file_path } wordBreak="break-word" isLoading={ isPlaceholderData }/> }
