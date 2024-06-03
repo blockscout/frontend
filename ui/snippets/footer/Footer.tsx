@@ -34,7 +34,7 @@ const Footer = () => {
     {
       icon: 'edit' as const,
       iconSize: '16px',
-      text: 'Submit an issue',
+      text: 'Submit an issue!',
       url: issueUrl,
     },
     {
