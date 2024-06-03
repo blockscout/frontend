@@ -22,8 +22,7 @@ const ContainerWithScrollY = ({ className, gradientHeight, children, onScrollVis
     onScrollVisibilityChange?.(hasScroll);
   }, [ gradientHeight, onScrollVisibilityChange ]);
 
-  const gradientStartColor = useColorModeValue('whiteAlpha.600', 'blackAlpha.600');
-  const gradientEndColor = useColorModeValue('whiteAlpha.900', 'blackAlpha.900');
+  const gradientEndColor = useColorModeValue('white', 'black');
 
   return (
     <Flex
@@ -38,7 +37,7 @@ const ContainerWithScrollY = ({ className, gradientHeight, children, onScrollVis
         left: 0,
         right: '20px',
         height: `${ gradientHeight }px`,
-        bgGradient: `linear(to-b, ${ gradientStartColor } 37.5%, ${ gradientEndColor } 77.5%)`,
+        bgGradient: `linear(to-b, transparent, ${ gradientEndColor })`,
       } : undefined }
       pr={ hasScroll ? 5 : 0 }
       pb={ hasScroll ? `${ gradientHeight }px` : 0 }

@@ -65,6 +65,8 @@ test('pending', async({ render, page }) => {
   });
 });
 
+// NOTE: On the screenshot from the test for the mobile device, the scroll overlay is not quite right.
+// I checked it manually in the real device, there was not any issue with it
 test('with actions uniswap +@mobile +@dark-mode', async({ render, page }) => {
   const component = await render(<TxInfo data={ txMock.withActionsUniswap } isLoading={ false }/>);
 

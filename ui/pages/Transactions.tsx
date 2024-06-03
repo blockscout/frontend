@@ -21,9 +21,10 @@ import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
 const TAB_LIST_PROPS = {
   marginBottom: 0,
   pt: 6,
-  pb: 3,
+  pb: 6,
   marginTop: -5,
 };
+const TABS_HEIGHT = 88;
 
 const Transactions = () => {
   const verifiedTitle = config.chain.verificationType === 'validation' ? 'Validated' : 'Mined';
@@ -97,7 +98,7 @@ const Transactions = () => {
           showSocketInfo={ txsValidatedQuery.pagination.page === 1 }
           socketInfoNum={ num }
           socketInfoAlert={ socketAlert }
-          top={ 76 }
+          top={ TABS_HEIGHT }
         /> },
     {
       id: 'pending',
@@ -109,7 +110,7 @@ const Transactions = () => {
           showSocketInfo={ txsPendingQuery.pagination.page === 1 }
           socketInfoNum={ num }
           socketInfoAlert={ socketAlert }
-          top={ 76 }
+          top={ TABS_HEIGHT }
         />
       ),
     },
@@ -122,7 +123,7 @@ const Transactions = () => {
           showSocketInfo={ txsWithBlobsQuery.pagination.page === 1 }
           socketInfoNum={ num }
           socketInfoAlert={ socketAlert }
-          top={ 76 }
+          top={ TABS_HEIGHT }
         />
       ),
     },

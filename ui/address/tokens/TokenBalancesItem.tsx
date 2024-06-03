@@ -14,8 +14,8 @@ const TokenBalancesItem = ({ name, icon, value, valueSecondary, isLoading }: Pro
   const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
   return (
-    <Box px="12px" py="10px" bgColor={ bgColor } borderRadius="16px">
-      <Text variant="secondary" fontSize="xs">{ name }</Text>
+    <Box px="12px" py="10px" bgColor={ bgColor } borderRadius="base">
+      <Text variant="secondary" fontSize="xs" fontWeight={ 500 } mb={ 1 }>{ name }</Text>
       <Flex alignItems="center">
         { icon }
         <Skeleton isLoaded={ !isLoading } fontWeight="500" whiteSpace="pre-wrap" wordBreak="break-word" display="flex" ml={ 2 }>

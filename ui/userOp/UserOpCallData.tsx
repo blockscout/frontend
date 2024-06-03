@@ -13,21 +13,21 @@ interface Props {
 
 const UserOpDecodedCallData = ({ data }: Props) => {
 
-  const [ callData, setCallData ] = React.useState(data.call_data || data.execute_call_data);
+  const [ callData, setCallData ] = React.useState<string | null>(data.execute_call_data || data.call_data);
 
   const handleSwitchChange = React.useCallback((isChecked: boolean) => {
-    setCallData(isChecked ? data.execute_call_data : data.call_data);
+    setCallData(isChecked ? data.call_data : data.execute_call_data);
   }, [ data ]);
 
   if (!callData) {
     return null;
   }
 
-  const toggler = data.execute_call_data ? (
+  const toggler = data.call_data ? (
     <UserOpCallDataSwitch
       onChange={ handleSwitchChange }
-      initialValue={ !data.call_data }
-      isDisabled={ !data.call_data }
+      initialValue={ !data.execute_call_data }
+      isDisabled={ !data.execute_call_data }
       ml={{ base: 3, lg: 'auto' }}
     />
   ) : null;

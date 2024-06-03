@@ -6,7 +6,7 @@ import MaintenanceAlert from './alerts/MaintenanceAlert';
 
 const HeaderAlert = () => {
   return (
-    <Flex flexDir="column" rowGap={ 3 } mb={ 6 } _empty={{ display: 'none' }}>
+    <Flex flexDir="column" rowGap={ 3 } mb={ 3 } _empty={{ display: 'none' }}>
       <MaintenanceAlert/>
       <IndexingBlocksAlert/>
     </Flex>

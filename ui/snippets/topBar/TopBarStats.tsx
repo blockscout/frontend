@@ -78,7 +78,7 @@ const TopBarStats = () => {
       { data?.gas_prices && data.gas_prices.average !== null && config.features.gasTracker.isEnabled && (
         <Skeleton isLoaded={ !isPlaceholderData }>
           <chakra.span color="text_secondary">Gas </chakra.span>
-          <GasInfoTooltip data={ data } dataUpdatedAt={ dataUpdatedAt } >
+          <GasInfoTooltip data={ data } dataUpdatedAt={ dataUpdatedAt } placement={ !data?.coin_price ? 'bottom-start' : undefined }>
             <Link>
               <GasPrice data={ data.gas_prices.average }/>
             </Link>
