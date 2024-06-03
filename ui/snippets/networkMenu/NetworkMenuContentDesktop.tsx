@@ -12,8 +12,15 @@ interface Props {
 
 const NetworkMenuPopup = ({ items, tabs }: Props) => {
   const selectedNetwork = items?.find(({ isActive }) => isActive);
-  const selectedTab = tabs.findIndex((tab) => selectedNetwork?.group === tab);
+  const defaultTab = tabs.findIndex((tab) => selectedNetwork?.group === tab);
+
+  const [ tabIndex, setTabIndex ] = React.useState(defaultTab > -1 ? defaultTab : 0);
+
   const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
+
+  const handleTabChange = React.useCallback((index: number) => {
+    setTabIndex(index);
+  }, []);
 
   const content = !items || items.length === 0 ? (
     <>
@@ -45,11 +52,16 @@ const NetworkMenuPopup = ({ items, tabs }: Props) => {
       colorScheme="gray"
       size="sm"
       isLazy
-      defaultIndex={ selectedTab !== -1 ? selectedTab : undefined }
+      index={ tabIndex }
+      onChange={ handleTabChange }
     >
       { tabs.length > 1 && (
         <TabList columnGap={ 2 }>
-          { tabs.map((tab) => <Tab key={ tab } textTransform="capitalize">{ tab }</Tab>) }
+          { tabs.map((tab, index) => (
+            <Tab key={ tab } textTransform="capitalize" { ...(tabIndex === index ? { 'data-selected': 'true' } : {}) }>
+              { tab }
+            </Tab>
+          )) }
         </TabList>
       ) }
       <TabPanels mt={ 3 }>
