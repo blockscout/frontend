@@ -17,9 +17,10 @@ test.beforeEach(async({ mockEnvs }) => {
 test.describe('daily txs chart', () => {
   let component: Locator;
 
-  test.beforeEach(async({ page, mockApiResponse, render }) => {
+  test.beforeEach(async({ page, mockApiResponse, mockAssetResponse, render }) => {
     await mockApiResponse('stats', statsMock.withSecondaryCoin);
     await mockApiResponse('stats_charts_txs', dailyTxsMock.base);
+    await mockAssetResponse(statsMock.withSecondaryCoin.coin_image as string, './playwright/mocks/image_svg.svg');
     component = await render(<ChainIndicators/>);
     await page.hover('.ChartOverlay', { position: { x: 100, y: 100 } });
   });
