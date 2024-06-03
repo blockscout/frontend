@@ -16,7 +16,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
 - [API configuration](ENVS.md#api-configuration)
 - [UI configuration](ENVS.md#ui-configuration)
   - [Homepage](ENVS.md#homepage)
-  - [Sidebar](ENVS.md#sidebar)
+  - [Navigation](ENVS.md#navigation)
   - [Footer](ENVS.md#footer)
   - [Favicon](ENVS.md#favicon)
   - [Meta](ENVS.md#meta)
@@ -119,7 +119,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
 
 &nbsp;
 
-### Sidebar
+### Navigation
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
@@ -131,6 +131,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
 | NEXT_PUBLIC_OTHER_LINKS | `Array<{url: string; text: string}>` | List of links for the "Other" navigation menu | - | - | `[{'url':'https://blockscout.com','text':'Blockscout'}]` |
 | NEXT_PUBLIC_NAVIGATION_HIDDEN_LINKS | `Array<LinkId>` | List of external links hidden in the navigation. Supported ids are `eth_rpc_api`, `rpc_api` | - | - | `['eth_rpc_api']` |
 | NEXT_PUBLIC_NAVIGATION_HIGHLIGHTED_ROUTES | `Array<string>` | List of menu item routes that should have a lightning label | - | - | `['/accounts']` |
+| NEXT_PUBLIC_NAVIGATION_LAYOUT | `vertical \| horizontal` | Navigation menu layout type | - | `vertical` | `horizontal` |
 
 #### Featured network configuration properties
 

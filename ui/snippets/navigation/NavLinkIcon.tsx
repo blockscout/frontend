@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { NavItem, NavGroupItem } from 'types/client/navigation-items';
+import type { NavItem, NavGroupItem } from 'types/client/navigation';
 
 import IconSvg from 'ui/shared/IconSvg';
 

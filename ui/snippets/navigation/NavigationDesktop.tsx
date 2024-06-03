@@ -87,7 +87,7 @@ const NavigationDesktop = () => {
         transitionTimingFunction="ease"
       >
         <NetworkLogo isCollapsed={ isCollapsed }/>
-        { Boolean(config.UI.sidebar.featuredNetworks) && <NetworkMenu isCollapsed={ isCollapsed }/> }
+        { Boolean(config.UI.navigation.featuredNetworks) && <NetworkMenu isCollapsed={ isCollapsed }/> }
       </Box>
       <Box as="nav" mt={ 6 } w="100%">
         <VStack as="ul" spacing="1" alignItems="flex-start">

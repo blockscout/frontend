@@ -1,5 +1,5 @@
 import type { ContractCodeIde } from 'types/client/contract';
-import { NAVIGATION_LINK_IDS, type NavItemExternal, type NavigationLinkId } from 'types/client/navigation-items';
+import { NAVIGATION_LINK_IDS, type NavItemExternal, type NavigationLinkId, type NavigationLayout } from 'types/client/navigation';
 import type { ChainIndicatorId } from 'types/homepage';
 import type { NetworkExplorer } from 'types/networks';
 import type { ColorThemeId } from 'types/settings';
@@ -38,7 +38,7 @@ const defaultColorTheme = (() => {
 const HOMEPAGE_PLATE_BACKGROUND_DEFAULT = 'radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%), var(--chakra-colors-blue-400)';
 
 const UI = Object.freeze({
-  sidebar: {
+  navigation: {
     logo: {
       'default': getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_LOGO'),
       dark: getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_LOGO_DARK'),
@@ -51,6 +51,7 @@ const UI = Object.freeze({
     highlightedRoutes,
     otherLinks: parseEnvJson<Array<NavItemExternal>>(getEnvValue('NEXT_PUBLIC_OTHER_LINKS')) || [],
     featuredNetworks: getExternalAssetFilePath('NEXT_PUBLIC_FEATURED_NETWORKS'),
+    layout: (getEnvValue('NEXT_PUBLIC_NAVIGATION_LAYOUT') || 'vertical') as NavigationLayout,
   },
   footer: {
     links: getExternalAssetFilePath('NEXT_PUBLIC_FOOTER_LINKS'),

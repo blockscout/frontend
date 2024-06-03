@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import type { NavGroupItem } from 'types/client/navigation-items';
+import type { NavGroupItem } from 'types/client/navigation';
 
 import IconSvg from 'ui/shared/IconSvg';
 

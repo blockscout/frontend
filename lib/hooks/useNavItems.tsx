@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { NavItemInternal, NavItem, NavGroupItem } from 'types/client/navigation-items';
+import type { NavItemInternal, NavItem, NavGroupItem } from 'types/client/navigation';
 
 import config from 'configs/app';
 import { rightLineArrow } from 'lib/html-entities';
@@ -187,12 +187,12 @@ export default function useNavItems(): ReturnType {
         icon: 'graphQL',
         isActive: pathname === '/graphiql',
       } : null,
-      !config.UI.sidebar.hiddenLinks?.rpc_api && {
+      !config.UI.navigation.hiddenLinks?.rpc_api && {
         text: 'RPC API',
         icon: 'RPC',
         url: 'https://docs.blockscout.com/for-users/api/rpc-endpoints',
       },
-      !config.UI.sidebar.hiddenLinks?.eth_rpc_api && {
+      !config.UI.navigation.hiddenLinks?.eth_rpc_api && {
         text: 'Eth RPC API',
         icon: 'RPC',
         url: ' https://docs.blockscout.com/for-users/api/eth-rpc',
@@ -249,7 +249,7 @@ export default function useNavItems(): ReturnType {
             nextRoute: { pathname: '/public-tags/submit' as const },
             isActive: pathname.startsWith('/public-tags/submit'),
           },
-          ...config.UI.sidebar.otherLinks,
+          ...config.UI.navigation.otherLinks,
         ].filter(Boolean),
       },
     ].filter(Boolean);

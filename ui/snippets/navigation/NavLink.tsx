@@ -2,7 +2,7 @@ import { Link, Text, HStack, Tooltip, Box, useBreakpointValue, chakra, shouldFor
 import NextLink from 'next/link';
 import React from 'react';
 
-import type { NavItem } from 'types/client/navigation-items';
+import type { NavItem } from 'types/client/navigation';
 
 import { route } from 'nextjs-routes';
 
