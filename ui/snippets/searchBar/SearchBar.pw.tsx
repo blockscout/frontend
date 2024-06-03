@@ -186,12 +186,12 @@ test('scroll suggest to category', async({ render, page, mockApiResponse }) => {
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
 });
 
-test('recent keywords suggest +@mobile', async({ render, page }) => {
+test('recent keywords suggest +@mobile', async({ render, page }, { project }) => {
   await render(<SearchBar/>);
   // eslint-disable-next-line max-len
   await page.evaluate(() => window.localStorage.setItem('recent_search_keywords', '["10x2d311959270e0bbdc1fc7bc6dbd8ad645c4dd8d6aa32f5f89d54629a924f112b","0x1d311959270e0bbdc1fc7bc6dbd8ad645c4dd8d6aa32f5f89d54629a924f112b","usd","bob"]'));
   await page.getByPlaceholder(/search/i).click();
-  await page.getByText('0x1d311959270e0bbdc1fc7bc6db').isVisible();
+  await page.getByText(project.name === 'mobile' ? '0x1d311959270e0bbdc1fc7bc6dbd...112b' : '0x1d311959270e0bbdc1fc7bc6dbd').isVisible();
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
 });
 
