@@ -14,7 +14,7 @@ import NetworkMenu from 'ui/snippets/networkMenu/NetworkMenu';
 import NavLink from './NavLink';
 import NavLinkGroupDesktop from './NavLinkGroupDesktop';
 
-const NavigationDesktop = () => {
+const NavigationDesktopVertical = () => {
   const appProps = useAppContext();
   const cookiesString = appProps.cookies;
 
@@ -131,4 +131,4 @@ const NavigationDesktop = () => {
   );
 };
 
-export default NavigationDesktop;
+export default NavigationDesktopVertical;

@@ -140,7 +140,7 @@ const Footer = () => {
 
   const containerProps: GridProps = {
     as: 'footer',
-    px: { base: 4, lg: 12 },
+    px: { base: 4, lg: config.UI.navigation.layout === 'horizontal' ? 6 : 12 },
     py: { base: 4, lg: 8 },
     borderTop: '1px solid',
     borderColor: 'divider',
