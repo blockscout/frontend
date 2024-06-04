@@ -1,4 +1,4 @@
-import { Popover, PopoverBody, PopoverContent, PopoverTrigger, chakra } from '@chakra-ui/react';
+import { HStack, Popover, PopoverBody, PopoverContent, PopoverTrigger, chakra, StackDivider } from '@chakra-ui/react';
 import React from 'react';
 
 import type { NavGroupItem } from 'types/client/navigation';
@@ -20,6 +20,7 @@ const NavLinkGroup = ({ item }: Props) => {
   const color = item.isActive ? colors.text.active : colors.text.default;
 
   const isHighlighted = checkRouteHighlight(item.subItems);
+  const hasGroups = item.subItems.some((subItem) => Array.isArray(subItem));
 
   return (
     <Popover
@@ -53,15 +54,31 @@ const NavLinkGroup = ({ item }: Props) => {
             </chakra.li>
           </PopoverTrigger>
           <PopoverContent w="fit-content">
-            <PopoverBody p={ 4 } w="252px">
-              <chakra.ul display="flex" flexDir="column" rowGap={ 1 }>
-                { item.subItems.map((subItem) => {
-                  if (Array.isArray(subItem)) {
-                    return null;
-                  }
-                  return <NavLink key={ subItem.text } item={ subItem }/>;
-                }) }
-              </chakra.ul>
+            <PopoverBody p={ 4 }>
+              { hasGroups ? (
+                <HStack divider={ <StackDivider borderColor="divider"/> }>
+                  { item.subItems.map((subItem, index) => {
+                    if (!Array.isArray(subItem)) {
+                      return <NavLink key={ subItem.text } item={ subItem }/>;
+                    }
+
+                    return (
+                      <chakra.ul key={ index } display="flex" flexDir="column" rowGap={ 1 }>
+                        { subItem.map((navItem) => <NavLink key={ navItem.text } item={ navItem }/>) }
+                      </chakra.ul>
+                    );
+                  }) }
+                </HStack>
+              ) : (
+                <chakra.ul display="flex" flexDir="column" rowGap={ 1 }>
+                  { item.subItems.map((subItem) => {
+                    if (Array.isArray(subItem)) {
+                      return null;
+                    }
+                    return <NavLink key={ subItem.text } item={ subItem }/>;
+                  }) }
+                </chakra.ul>
+              ) }
             </PopoverBody>
           </PopoverContent>
         </>

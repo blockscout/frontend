@@ -44,6 +44,7 @@ const NavLink = ({ className, item, noIcon }: Props) => {
         color={ color }
         bgColor={ bgColor }
         _hover={{ textDecoration: 'none', color: colors.text.hover }}
+        w="220px"
         px={ 3 }
         py="9px"
         fontSize="sm"

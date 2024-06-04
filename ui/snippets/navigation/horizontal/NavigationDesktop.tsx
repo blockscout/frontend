@@ -1,4 +1,4 @@
-import { chakra, Flex, useColorModeValue } from '@chakra-ui/react';
+import { chakra, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
@@ -12,7 +12,6 @@ import NavLink from './NavLink';
 import NavLinkGroup from './NavLinkGroup';
 
 const NavigationDesktop = () => {
-  const bottomBorderColor = useColorModeValue('blackAlpha.100', 'whiteAlpha.100');
   const { mainNavItems } = useNavItems();
 
   return (
@@ -22,7 +21,7 @@ const NavigationDesktop = () => {
       px={ 6 }
       py={ 2 }
       borderBottomWidth="1px"
-      borderColor={ bottomBorderColor }
+      borderColor="divider"
     >
       <NetworkLogo isCollapsed={ false }/>
       <TestnetBadge ml={ 3 }/>
@@ -32,7 +31,7 @@ const NavigationDesktop = () => {
             if (isGroupItem(item)) {
               return <NavLinkGroup key={ item.text } item={ item }/>;
             } else {
-              return <NavLink key={ item.text } item={ item } noIcon px={ 2 } py={ 1.5 }/>;
+              return <NavLink key={ item.text } item={ item } noIcon px={ 2 } py={ 1.5 } w="fit-content"/>;
             }
           }) }
         </Flex>
