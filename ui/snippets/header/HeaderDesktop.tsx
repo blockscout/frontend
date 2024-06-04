@@ -36,10 +36,12 @@ const HeaderDesktop = ({ renderSearchBar, isMarketplaceAppPage }: Props) => {
       <Box width="100%">
         { searchBar }
       </Box>
-      <Box display="flex">
-        { config.features.account.isEnabled && <ProfileMenuDesktop/> }
-        { config.features.blockchainInteraction.isEnabled && <WalletMenuDesktop/> }
-      </Box>
+      { config.UI.navigation.layout === 'vertical' && (
+        <Box display="flex">
+          { config.features.account.isEnabled && <ProfileMenuDesktop/> }
+          { config.features.blockchainInteraction.isEnabled && <WalletMenuDesktop/> }
+        </Box>
+      ) }
     </HStack>
   );
 };

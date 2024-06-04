@@ -13,6 +13,7 @@ import NetworkMenu from 'ui/snippets/networkMenu/NetworkMenu';
 
 import NavLink from './NavLink';
 import NavLinkGroupDesktop from './NavLinkGroupDesktop';
+import TestnetBadge from './TestnetBadge';
 
 const NavigationDesktopVertical = () => {
   const appProps = useAppContext();
@@ -71,7 +72,7 @@ const NavigationDesktopVertical = () => {
       }}
       onClick={ handleContainerClick }
     >
-      { config.chain.isTestnet && <IconSvg name="testnet" h="14px" w="49px" color="red.400" position="absolute" pl={ 3 } top="34px"/> }
+      <TestnetBadge position="absolute" pl={ 3 } w="49px" top="34px"/>
       <Box
         as="header"
         display="flex"
