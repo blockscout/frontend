@@ -10,11 +10,11 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import { isInternalItem } from 'lib/hooks/useNavItems';
 import IconSvg from 'ui/shared/IconSvg';
 
-import LightningLabel, { LIGHTNING_LABEL_CLASS_NAME } from './LightningLabel';
-import NavLinkIcon from './NavLinkIcon';
-import useColors from './useColors';
-import useNavLinkStyleProps from './useNavLinkStyleProps';
-import { checkRouteHighlight } from './utils';
+import LightningLabel, { LIGHTNING_LABEL_CLASS_NAME } from '../LightningLabel';
+import NavLinkIcon from '../NavLinkIcon';
+import useColors from '../useColors';
+import useNavLinkStyleProps from '../useNavLinkStyleProps';
+import { checkRouteHighlight } from '../utils';
 
 type Props = {
   item: NavItem;

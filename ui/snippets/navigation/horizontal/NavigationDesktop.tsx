@@ -6,9 +6,9 @@ import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
 import WalletMenuDesktop from 'ui/snippets/walletMenu/WalletMenuDesktop';
 
-import TestnetBadge from './TestnetBadge';
+import TestnetBadge from '../TestnetBadge';
 
-const NavigationDesktopHorizontal = () => {
+const NavigationDesktop = () => {
   const bottomBorderColor = useColorModeValue('blackAlpha.100', 'whiteAlpha.100');
 
   return (
@@ -29,4 +29,4 @@ const NavigationDesktopHorizontal = () => {
   );
 };
 
-export default React.memo(NavigationDesktopHorizontal);
+export default React.memo(NavigationDesktop);

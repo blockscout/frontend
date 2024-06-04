@@ -3,7 +3,7 @@ import React from 'react';
 
 import config from 'configs/app';
 import IconSvg from 'ui/shared/IconSvg';
-import NavigationMobile from 'ui/snippets/navigation/NavigationMobile';
+import NavigationMobile from 'ui/snippets/navigation/mobile/NavigationMobile';
 import TestnetBadge from 'ui/snippets/navigation/TestnetBadge';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import NetworkMenuButton from 'ui/snippets/networkMenu/NetworkMenuButton';

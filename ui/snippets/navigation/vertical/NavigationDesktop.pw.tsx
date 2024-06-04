@@ -10,7 +10,7 @@ import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
 
-import NavigationDesktopVertical from './NavigationDesktopVertical';
+import NavigationDesktop from './NavigationDesktop';
 
 const hooksConfig = {
   router: {
@@ -35,7 +35,7 @@ test.describe('no auth', () => {
   test.beforeEach(async({ render }) => {
     component = await render(
       <Flex w="100%" minH="100vh" alignItems="stretch">
-        <NavigationDesktopVertical/>
+        <NavigationDesktop/>
         <Box bgColor="lightpink" w="100%"/>
       </Flex>,
       { hooksConfig },
@@ -65,7 +65,7 @@ authTest.describe('auth', () => {
   authTest.beforeEach(async({ render }) => {
     component = await render(
       <Flex w="100%" minH="100vh" alignItems="stretch">
-        <NavigationDesktopVertical/>
+        <NavigationDesktop/>
         <Box bgColor="lightpink" w="100%"/>
       </Flex>,
       { hooksConfig },
@@ -91,7 +91,7 @@ test.describe('with tooltips', () => {
   test('', async({ render, page }) => {
     const component = await render(
       <Flex w="100%" minH="100vh" alignItems="stretch">
-        <NavigationDesktopVertical/>
+        <NavigationDesktop/>
         <Box bgColor="lightpink" w="100%"/>
       </Flex>,
       { hooksConfig },
@@ -111,7 +111,7 @@ test.describe('with submenu', () => {
   test.beforeEach(async({ render, page }) => {
     component = await render(
       <Flex w="100%" minH="100vh" alignItems="stretch">
-        <NavigationDesktopVertical/>
+        <NavigationDesktop/>
         <Box bgColor="lightpink" w="100%"/>
       </Flex>,
       { hooksConfig },
@@ -145,7 +145,7 @@ noSideBarCookieTest.describe('cookie set to false', () => {
   noSideBarCookieTest.beforeEach(async({ render }) => {
     component = await render(
       <Flex w="100%" minH="100vh" alignItems="stretch">
-        <NavigationDesktopVertical/>
+        <NavigationDesktop/>
         <Box bgColor="lightpink" w="100%"/>
       </Flex>,
       { hooksConfig },
@@ -178,7 +178,7 @@ sideBarCookieTest.describe('cookie set to true', () => {
   sideBarCookieTest('navbar is collapsed', async({ render }) => {
     const component = await render(
       <Flex w="100%" minH="100vh" alignItems="stretch">
-        <NavigationDesktopVertical/>
+        <NavigationDesktop/>
         <Box bgColor="lightpink" w="100%"/>
       </Flex>,
       { hooksConfig },
@@ -192,7 +192,7 @@ sideBarCookieTest.describe('cookie set to true', () => {
 test('hover +@dark-mode', async({ render }) => {
   const component = await render(
     <Flex w="100%" minH="100vh" alignItems="stretch">
-      <NavigationDesktopVertical/>
+      <NavigationDesktop/>
       <Box bgColor="lightpink" w="100%"/>
     </Flex>,
     { hooksConfig },
@@ -208,7 +208,7 @@ test.describe('hover xl screen', () => {
   test('+@dark-mode', async({ render }) => {
     const component = await render(
       <Flex w="100%" minH="100vh" alignItems="stretch">
-        <NavigationDesktopVertical/>
+        <NavigationDesktop/>
         <Box bgColor="lightpink" w="100%"/>
       </Flex>,
       { hooksConfig },
@@ -227,7 +227,7 @@ test.describe('with highlighted routes', () => {
 
     component = await render(
       <Flex w="100%" minH="100vh" alignItems="stretch">
-        <NavigationDesktopVertical/>
+        <NavigationDesktop/>
         <Box bgColor="lightpink" w="100%"/>
       </Flex>,
       { hooksConfig },

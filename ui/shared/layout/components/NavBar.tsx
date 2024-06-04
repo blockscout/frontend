@@ -1,6 +1,6 @@
 import config from 'configs/app';
-import NavigationDesktopHorizontal from 'ui/snippets/navigation/NavigationDesktopHorizontal';
+import NavigationDesktop from 'ui/snippets/navigation/horizontal/NavigationDesktop';
 
 const EmptyComponent = () => null;
 
-export default config.UI.navigation.layout === 'horizontal' ? NavigationDesktopHorizontal : EmptyComponent;
+export default config.UI.navigation.layout === 'horizontal' ? NavigationDesktop : EmptyComponent;

@@ -11,11 +11,11 @@ import IconSvg from 'ui/shared/IconSvg';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import NetworkMenu from 'ui/snippets/networkMenu/NetworkMenu';
 
+import TestnetBadge from '../TestnetBadge';
 import NavLink from './NavLink';
-import NavLinkGroupDesktop from './NavLinkGroupDesktop';
-import TestnetBadge from './TestnetBadge';
+import NavLinkGroup from './NavLinkGroup';
 
-const NavigationDesktopVertical = () => {
+const NavigationDesktop = () => {
   const appProps = useAppContext();
   const cookiesString = appProps.cookies;
 
@@ -94,7 +94,7 @@ const NavigationDesktopVertical = () => {
         <VStack as="ul" spacing="1" alignItems="flex-start">
           { mainNavItems.map((item) => {
             if (isGroupItem(item)) {
-              return <NavLinkGroupDesktop key={ item.text } item={ item } isCollapsed={ isCollapsed }/>;
+              return <NavLinkGroup key={ item.text } item={ item } isCollapsed={ isCollapsed }/>;
             } else {
               return <NavLink key={ item.text } item={ item } isCollapsed={ isCollapsed }/>;
             }
@@ -132,4 +132,4 @@ const NavigationDesktopVertical = () => {
   );
 };
 
-export default NavigationDesktopVertical;
+export default NavigationDesktop;

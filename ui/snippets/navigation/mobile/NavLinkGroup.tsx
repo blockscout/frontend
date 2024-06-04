@@ -10,10 +10,10 @@ import type { NavGroupItem } from 'types/client/navigation';
 
 import IconSvg from 'ui/shared/IconSvg';
 
-import LightningLabel from './LightningLabel';
-import NavLinkIcon from './NavLinkIcon';
-import useNavLinkStyleProps from './useNavLinkStyleProps';
-import { checkRouteHighlight } from './utils';
+import LightningLabel from '../LightningLabel';
+import NavLinkIcon from '../NavLinkIcon';
+import useNavLinkStyleProps from '../useNavLinkStyleProps';
+import { checkRouteHighlight } from '../utils';
 
 type Props = {
   item: NavGroupItem;
