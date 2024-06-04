@@ -7,7 +7,7 @@ import type { IconName } from 'ui/shared/IconSvg';
 type NavIconOrComponent = {
   icon?: IconName;
 } | {
-  iconComponent?: React.FC<{size?: number}>;
+  iconComponent?: React.FC<{ size?: number; className?: string }>;
 };
 
 type NavItemCommon = {

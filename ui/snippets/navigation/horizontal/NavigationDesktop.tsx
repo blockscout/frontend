@@ -32,7 +32,7 @@ const NavigationDesktop = () => {
             if (isGroupItem(item)) {
               return <NavLinkGroup key={ item.text } item={ item }/>;
             } else {
-              return <NavLink key={ item.text } item={ item } noIcon/>;
+              return <NavLink key={ item.text } item={ item } noIcon px={ 2 } py={ 1.5 }/>;
             }
           }) }
         </Flex>
