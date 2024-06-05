@@ -1,4 +1,4 @@
-import type { EnsDomainDetailed } from 'types/api/ens';
+import type { EnsDomainDetailed, EnsDomainProtocol } from 'types/api/ens';
 
 const domainTokenA = {
   id: '97352314626701792030827861137068748433918254309635329404916858191911576754327',
@@ -9,6 +9,18 @@ const domainTokenB = {
   id: '423546333',
   contract_hash: '0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea86',
   type: 'WRAPPED_DOMAIN_TOKEN' as const,
+};
+
+export const protocolA: EnsDomainProtocol = {
+  id: 'ens',
+  short_name: 'ENS',
+  title: 'Ethereum Name Service',
+  description: 'The Ethereum Name Service (ENS) is a distributed, open, and extensible naming system based on the Ethereum blockchain.',
+  tld_list: [
+    'eth',
+  ],
+  icon_url: 'https://i.imgur.com/GOfUwCb.jpeg',
+  docs_url: 'https://docs.ens.domains/',
 };
 
 export const ensDomainA: EnsDomainDetailed = {
@@ -35,7 +47,7 @@ export const ensDomainA: EnsDomainDetailed = {
     GNO: 'DDAfbb505ad214D7b80b1f830fcCc89B60fb7A83',
     NEAR: 'a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.factory.bridge.near',
   },
-  protocol: null,
+  protocol: protocolA,
 };
 
 export const ensDomainB: EnsDomainDetailed = {
