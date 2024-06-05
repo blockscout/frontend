@@ -123,7 +123,11 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
           <Box position="sticky" top="0" width="100%" background={ bgColor } py={ 5 } my={ -5 } ref={ tabsRef }>
             <Tabs variant="outline" colorScheme="gray" size="sm" index={ tabIndex }>
               <TabList columnGap={ 3 } rowGap={ 2 } flexWrap="wrap">
-                { resultCategories.map((cat, index) => <Tab key={ cat.id } onClick={ scrollToCategory(index) }>{ cat.title }</Tab>) }
+                { resultCategories.map((cat, index) => (
+                  <Tab key={ cat.id } onClick={ scrollToCategory(index) } { ...(tabIndex === index ? { 'data-selected': 'true' } : {}) }>
+                    { cat.title }
+                  </Tab>
+                )) }
               </TabList>
             </Tabs>
           </Box>

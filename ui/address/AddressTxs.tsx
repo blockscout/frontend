@@ -167,7 +167,7 @@ const AddressTxs = ({ scrollRef, overloadCount = OVERLOAD_COUNT, shouldRender = 
     <AddressTxsFilter
       defaultFilter={ filterValue }
       onFilterChange={ handleFilterChange }
-      isActive={ Boolean(filterValue) }
+      hasActiveFilter={ Boolean(filterValue) }
       isLoading={ addressTxsQuery.pagination.isLoading }
     />
   );

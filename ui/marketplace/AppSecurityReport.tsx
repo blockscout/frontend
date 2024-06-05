@@ -51,6 +51,7 @@ const AppSecurityReport = ({ id, securityReport, showContractList, isLoading, on
           score={ securityScore }
           isLoading={ isLoading }
           onClick={ handleButtonClick }
+          isActive={ isOpen }
           onlyIcon={ onlyIcon }
           label="The security score is based on analysis of a DApp's smart contracts."
         />

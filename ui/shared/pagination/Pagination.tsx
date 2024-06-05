@@ -48,7 +48,7 @@ const Pagination = ({ page, onNextPageClick, onPrevPageClick, resetPage, hasPage
         <Button
           variant="outline"
           size="sm"
-          isActive
+          data-selected={ true }
           borderWidth="1px"
           fontWeight={ 400 }
           h={ 8 }

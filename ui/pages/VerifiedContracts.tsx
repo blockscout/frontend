@@ -77,7 +77,13 @@ const VerifiedContracts = () => {
     onSortingChange(getSortParamsFromValue(value));
   }, [ onSortingChange ]);
 
-  const typeFilter = <VerifiedContractsFilter onChange={ handleTypeChange } defaultValue={ type } isActive={ Boolean(type) }/>;
+  const typeFilter = (
+    <VerifiedContractsFilter
+      onChange={ handleTypeChange }
+      defaultValue={ type }
+      hasActiveFilter={ Boolean(type) }
+    />
+  );
 
   const filterInput = (
     <FilterInput

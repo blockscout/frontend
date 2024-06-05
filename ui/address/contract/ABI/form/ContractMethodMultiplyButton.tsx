@@ -76,6 +76,7 @@ const ContractMethodMultiplyButton = ({ onClick, isDisabled }: Props) => {
             ml={ 1 }
             p={ 0 }
             onClick={ onToggle }
+            isActive={ isOpen }
             isDisabled={ isDisabled }
           >
             <IconSvg

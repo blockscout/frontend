@@ -40,6 +40,7 @@ const ContractSecurityReport = ({ securityReport }: Props) => {
         <SolidityscanReportButton
           score={ parseFloat(securityScore) }
           onClick={ handleClick }
+          isActive={ isOpen }
         />
       </PopoverTrigger>
       <PopoverContent w={{ base: '100vw', lg: '328px' }}>

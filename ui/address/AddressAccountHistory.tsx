@@ -61,7 +61,7 @@ const AddressAccountHistory = ({ scrollRef, shouldRender = true }: Props) => {
       <AccountHistoryFilter
         defaultFilter={ filterValue }
         onFilterChange={ handleFilterChange }
-        isActive={ Boolean(filterValue) }
+        hasActiveFilter={ Boolean(filterValue) }
         isLoading={ pagination.isLoading }
       />
 

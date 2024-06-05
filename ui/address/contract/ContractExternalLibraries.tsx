@@ -65,6 +65,7 @@ const ContractExternalLibraries = ({ className, data, isLoading }: Props) => {
       variant="outline"
       colorScheme="gray"
       onClick={ onToggle }
+      isActive={ isOpen }
       fontWeight={ 600 }
       px={ 2 }
       aria-label="View external libraries"

@@ -5,25 +5,10 @@ import { runIfFn } from '@chakra-ui/utils';
 const variantSolid = defineStyle((props) => {
   const { colorScheme: c } = props;
 
-  if (c === 'gray') {
-    const bg = mode(`gray.100`, `whiteAlpha.200`)(props);
-
-    return {
-      bg,
-      _hover: {
-        bg: mode(`gray.200`, `whiteAlpha.300`)(props),
-        _disabled: {
-          bg,
-        },
-      },
-      _active: { bg: mode(`gray.300`, `whiteAlpha.400`)(props) },
-    };
-  }
-
   const bg = `${ c }.600`;
   const color = 'white';
   const hoverBg = `${ c }.400`;
-  const activeBg = `${ c }.700`;
+  const activeBg = hoverBg;
 
   return {
     bg,
@@ -37,6 +22,8 @@ const variantSolid = defineStyle((props) => {
     _disabled: {
       opacity: 0.2,
     },
+    // According to design there is no "active" or "pressed" state
+    // It is simply should be the same as the "hover" state
     _active: { bg: activeBg },
     fontWeight: 600,
   };
@@ -45,22 +32,15 @@ const variantSolid = defineStyle((props) => {
 const variantOutline = defineStyle((props) => {
   const { colorScheme: c } = props;
 
-  const isGrayTheme = c === 'gray' || c === 'gray-dark';
+  const isGrayTheme = c === 'gray';
+
+  const bg = 'transparent';
+
   const color = isGrayTheme ? mode('blackAlpha.800', 'whiteAlpha.800')(props) : mode(`${ c }.600`, `${ c }.300`)(props);
   const borderColor = isGrayTheme ? mode('gray.200', 'gray.600')(props) : mode(`${ c }.600`, `${ c }.300`)(props);
-  const activeBg = isGrayTheme ? mode('blue.50', 'gray.600')(props) : mode(`${ c }.50`, 'gray.600')(props);
-  const activeColor = (() => {
-    if (c === 'gray') {
-      return mode('blue.600', 'gray.50')(props);
-    }
-    if (c === 'gray-dark') {
-      return mode('blue.600', 'gray.50')(props);
-    }
-    if (c === 'blue') {
-      return mode('blue.600', 'gray.50')(props);
-    }
-    return 'blue.600';
-  })();
+
+  const selectedBg = isGrayTheme ? mode('blue.50', 'gray.600')(props) : mode(`${ c }.50`, 'gray.600')(props);
+  const selectedColor = mode('blue.600', 'gray.50')(props);
 
   return {
     color,
@@ -68,41 +48,46 @@ const variantOutline = defineStyle((props) => {
     borderWidth: props.borderWidth || '2px',
     borderStyle: 'solid',
     borderColor,
-    bg: 'transparent',
+    bg,
     _hover: {
       color: 'link_hovered',
       borderColor: 'link_hovered',
-      bg: 'transparent',
-      _active: {
-        bg: props.isActive ? activeBg : 'transparent',
-        borderColor: props.isActive ? activeBg : 'link_hovered',
-        color: props.isActive ? activeColor : 'link_hovered',
-        p: {
-          color: 'link_hovered',
-        },
+      bg,
+      span: {
+        color: 'link_hovered',
       },
       _disabled: {
         color,
         borderColor,
-      },
-      p: {
-        color: 'link_hovered',
       },
     },
     _disabled: {
       opacity: 0.2,
     },
+    // According to design there is no "active" or "pressed" state
+    // It is simply should be the same as the "hover" state
     _active: {
-      bg: activeBg,
-      borderColor: activeBg,
-      color: activeColor,
+      color: 'link_hovered',
+      borderColor: 'link_hovered',
+      bg,
+      span: {
+        color: 'link_hovered',
+      },
       _disabled: {
-        color,
-        borderColor,
+        color: 'link_hovered',
+        borderColor: 'link_hovered',
       },
-      p: {
-        color: activeColor,
-      },
+    },
+    // We have a special state for this button variant that serves as a popover trigger.
+    // When any items (filters) are selected in the popover, the button should change its background and text color.
+    // The last CSS selector is for redefining styles for the TabList component.
+    [`
+      &[data-selected=true],
+      &[data-selected=true][aria-selected=true]
+    `]: {
+      bg: selectedBg,
+      color: selectedColor,
+      borderColor: selectedBg,
     },
   };
 });
