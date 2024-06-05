@@ -35,6 +35,7 @@ export const ensDomainA: EnsDomainDetailed = {
     GNO: 'DDAfbb505ad214D7b80b1f830fcCc89B60fb7A83',
     NEAR: 'a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.factory.bridge.near',
   },
+  protocol: null,
 };
 
 export const ensDomainB: EnsDomainDetailed = {
@@ -52,6 +53,7 @@ export const ensDomainB: EnsDomainDetailed = {
   registration_date: '2023-08-13T13:01:12.000Z',
   expiry_date: null,
   other_addresses: {},
+  protocol: null,
 };
 
 export const ensDomainC: EnsDomainDetailed = {
@@ -71,6 +73,7 @@ export const ensDomainC: EnsDomainDetailed = {
   registration_date: '2022-04-24T07:34:44.000Z',
   expiry_date: '2022-11-01T13:10:36.000Z',
   other_addresses: {},
+  protocol: null,
 };
 
 export const ensDomainD: EnsDomainDetailed = {
@@ -88,4 +91,5 @@ export const ensDomainD: EnsDomainDetailed = {
   registration_date: '2022-04-24T07:34:44.000Z',
   expiry_date: '2027-09-23T13:10:36.000Z',
   other_addresses: {},
+  protocol: null,
 };

@@ -58,6 +58,7 @@ const NameDomain = () => {
     >
       <EnsEntity
         name={ domainName }
+        protocol={ infoQuery.data?.protocol }
         isLoading={ isLoading }
         noLink
         maxW={{ lg: infoQuery.data?.resolved_address ? '300px' : 'min-content' }}

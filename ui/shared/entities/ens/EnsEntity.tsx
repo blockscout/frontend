@@ -1,11 +1,17 @@
-import { chakra } from '@chakra-ui/react';
+import { chakra, Flex, Image, Popover, PopoverBody, PopoverContent, PopoverTrigger, Portal, Text } from '@chakra-ui/react';
 import _omit from 'lodash/omit';
 import React from 'react';
+
+import type { EnsDomainProtocol } from 'types/api/ens';
 
 import { route } from 'nextjs-routes';
 
 import * as EntityBase from 'ui/shared/entities/base/components';
+import IconSvg from 'ui/shared/IconSvg';
+import LinkExternal from 'ui/shared/links/LinkExternal';
 import TruncatedValue from 'ui/shared/TruncatedValue';
+
+import { getIconProps } from '../base/utils';
 
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'name'>;
 
@@ -22,11 +28,54 @@ const Link = chakra((props: LinkProps) => {
   );
 });
 
-type IconProps = Omit<EntityBase.IconBaseProps, 'name'> & {
+type IconProps = Omit<EntityBase.IconBaseProps, 'name'> & Pick<EntityProps, 'protocol'> & {
   iconName?: EntityBase.IconBaseProps['name'];
 };
 
 const Icon = (props: IconProps) => {
+  if (props.protocol?.icon_url) {
+    const styles = getIconProps(props.iconSize);
+
+    return (
+      <Popover trigger="hover" isLazy placement="bottom-start">
+        <PopoverTrigger>
+          <Image
+            src={ props.protocol.icon_url }
+            boxSize={ styles.boxSize }
+            borderRadius="sm"
+            mr={ 2 }
+            alt={ `${ props.protocol.title } protocol icon` }
+          />
+        </PopoverTrigger>
+        <Portal>
+          <PopoverContent maxW={{ base: '100vw', lg: '440px' }} minW="250px" w="fit-content">
+            <PopoverBody display="flex" flexDir="column" rowGap={ 3 }>
+              <Flex columnGap={ 2 } alignItems="center">
+                <Image
+                  src={ props.protocol.icon_url }
+                  boxSize={ 5 }
+                  borderRadius="sm"
+                  alt={ `${ props.protocol.title } protocol icon` }
+                />
+                <span>{ props.protocol.short_name }</span>
+              </Flex>
+              <Text fontSize="sm">{ props.protocol.description }</Text>
+              <LinkExternal
+                href={ props.protocol.docs_url }
+                display="inline-flex"
+                alignItems="center"
+                fontSize="sm"
+              >
+                <IconSvg name="docs" boxSize={ 5 } color="text_secondary" mr={ 2 }/>
+                <span>Documentation</span>
+              </LinkExternal>
+            </PopoverBody>
+          </PopoverContent>
+        </Portal>
+      </Popover>
+    );
+  }
+
   return (
     <EntityBase.Icon
       { ...props }
@@ -61,6 +110,7 @@ const Container = EntityBase.Container;
 
 export interface EntityProps extends EntityBase.EntityBaseProps {
   name: string;
+  protocol?: EnsDomainProtocol | null;
 }
 
 const EnsEntity = (props: EntityProps) => {

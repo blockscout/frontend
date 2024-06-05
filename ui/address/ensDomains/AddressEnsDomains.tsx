@@ -41,7 +41,7 @@ const DomainsGrid = ({ data }: { data: Array<EnsDomain> }) => {
       rowGap={ 4 }
       mt={ 2 }
     >
-      { data.slice(0, 9).map((domain) => <EnsEntity key={ domain.id } name={ domain.name } noCopy/>) }
+      { data.slice(0, 9).map((domain) => <EnsEntity key={ domain.id } name={ domain.name } protocol={ domain.protocol } noCopy/>) }
     </Grid>
   );
 };
@@ -134,7 +134,7 @@ const AddressEnsDomains = ({ addressHash, mainDomainName }: Props) => {
             <Box w="100%">
               <chakra.span color="text_secondary" fontSize="xs">Primary*</chakra.span>
               <Flex alignItems="center" fontSize="md" mt={ 2 }>
-                <EnsEntity name={ mainDomain.name } fontWeight={ 600 } noCopy/>
+                <EnsEntity name={ mainDomain.name } protocol={ mainDomain.protocol } fontWeight={ 600 } noCopy/>
                 { mainDomain.expiry_date &&
                     <chakra.span color="text_secondary" whiteSpace="pre"> (expires { dayjs(mainDomain.expiry_date).fromNow() })</chakra.span> }
               </Flex>

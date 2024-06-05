@@ -12,6 +12,17 @@ export interface EnsDomain {
   } | null;
   registration_date?: string;
   expiry_date: string | null;
+  protocol: EnsDomainProtocol | null;
+}
+
+export interface EnsDomainProtocol {
+  title: string;
+  description: string;
+  docs_url: string;
+  icon_url: string;
+  id: string;
+  short_name: string;
+  tld_list: Array<string>;
 }
 
 export interface EnsDomainDetailed extends EnsDomain {
