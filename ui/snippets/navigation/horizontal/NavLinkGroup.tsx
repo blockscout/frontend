@@ -56,7 +56,7 @@ const NavLinkGroup = ({ item }: Props) => {
           <PopoverContent w="fit-content">
             <PopoverBody p={ 4 }>
               { hasGroups ? (
-                <HStack divider={ <StackDivider borderColor="divider"/> }>
+                <HStack divider={ <StackDivider borderColor="divider"/> } alignItems="flex-start">
                   { item.subItems.map((subItem, index) => {
                     if (!Array.isArray(subItem)) {
                       return <NavLink key={ subItem.text } item={ subItem }/>;

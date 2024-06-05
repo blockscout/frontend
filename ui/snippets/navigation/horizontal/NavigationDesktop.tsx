@@ -23,7 +23,7 @@ const NavigationDesktop = () => {
       borderBottomWidth="1px"
       borderColor="divider"
     >
-      <NetworkLogo isCollapsed={ false }/>
+      <NetworkLogo isCollapsed={ false } w={{ lg: 'auto' }} maxW="120px"/>
       <TestnetBadge ml={ 3 }/>
       <chakra.nav ml="auto" mr={ config.features.account.isEnabled || config.features.blockchainInteraction.isEnabled ? 8 : 0 }>
         <Flex as="ul" columnGap={ 3 }>
