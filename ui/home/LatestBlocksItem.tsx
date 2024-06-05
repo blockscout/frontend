@@ -67,7 +67,14 @@ const LatestBlocksItem = ({ block, isLoading }: Props) => {
             <span style={{ fontWeight: '500' }}>{ block.tx_count }</span>
           </Skeleton>
         </Flex>
-
+        <Flex gap="10px">
+          <Skeleton isLoaded={ !isLoading } color="text_secondary">
+            BLOCK
+          </Skeleton>
+          <Skeleton isLoaded={ !isLoading }>
+            <span style={{ fontWeight: '500' }}>{ block.height }</span>
+          </Skeleton>
+        </Flex>
         { !config.features.rollup.isEnabled &&
           !config.UI.views.block.hiddenFields?.total_reward && (
           <Flex gap="10px">
