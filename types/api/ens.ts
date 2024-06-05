@@ -18,8 +18,8 @@ export interface EnsDomain {
 export interface EnsDomainProtocol {
   title: string;
   description: string;
-  docs_url: string;
-  icon_url: string;
+  docs_url?: string;
+  icon_url?: string;
   id: string;
   short_name: string;
   tld_list: Array<string>;

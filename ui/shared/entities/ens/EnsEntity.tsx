@@ -1,4 +1,4 @@
-import { chakra, Flex, Image, Popover, PopoverBody, PopoverContent, PopoverTrigger, Portal, Text } from '@chakra-ui/react';
+import { chakra, Flex, Image, Popover, PopoverBody, PopoverContent, PopoverTrigger, Portal, Skeleton, Text } from '@chakra-ui/react';
 import _omit from 'lodash/omit';
 import React from 'react';
 
@@ -33,42 +33,60 @@ type IconProps = Omit<EntityBase.IconBaseProps, 'name'> & Pick<EntityProps, 'pro
 };
 
 const Icon = (props: IconProps) => {
-  if (props.protocol?.icon_url) {
+  const icon = <EntityBase.Icon { ...props } name={ props.iconName ?? 'ENS_slim' }/>;
+
+  if (props.protocol) {
     const styles = getIconProps(props.iconSize);
+
+    if (props.isLoading) {
+      return <Skeleton boxSize={ styles.boxSize } borderRadius="sm" mr={ 2 }/>;
+    }
 
     return (
       <Popover trigger="hover" isLazy placement="bottom-start">
         <PopoverTrigger>
-          <Image
-            src={ props.protocol.icon_url }
-            boxSize={ styles.boxSize }
-            borderRadius="sm"
-            mr={ 2 }
-            alt={ `${ props.protocol.title } protocol icon` }
-          />
+          <div>
+            <Image
+              src={ props.protocol.icon_url }
+              boxSize={ styles.boxSize }
+              borderRadius="sm"
+              mr={ 2 }
+              alt={ `${ props.protocol.title } protocol icon` }
+              fallback={ icon }
+              fallbackStrategy={ props.protocol.icon_url ? 'onError' : 'beforeLoadOrError' }
+            />
+          </div>
         </PopoverTrigger>
         <Portal>
           <PopoverContent maxW={{ base: '100vw', lg: '440px' }} minW="250px" w="fit-content">
             <PopoverBody display="flex" flexDir="column" rowGap={ 3 }>
-              <Flex columnGap={ 2 } alignItems="center">
+              <Flex alignItems="center">
                 <Image
                   src={ props.protocol.icon_url }
                   boxSize={ 5 }
                   borderRadius="sm"
+                  mr={ 2 }
                   alt={ `${ props.protocol.title } protocol icon` }
+                  fallback={ icon }
+                  fallbackStrategy={ props.protocol.icon_url ? 'onError' : 'beforeLoadOrError' }
                 />
-                <span>{ props.protocol.short_name }</span>
+                <div>
+                  <span>{ props.protocol.short_name }</span>
+                  <chakra.span color="text_secondary">{ props.protocol.tld_list.map((tld) => `.${ tld }`).join((', ')) }</chakra.span>
+                </div>
               </Flex>
               <Text fontSize="sm">{ props.protocol.description }</Text>
-              <LinkExternal
-                href={ props.protocol.docs_url }
-                display="inline-flex"
-                alignItems="center"
-                fontSize="sm"
-              >
-                <IconSvg name="docs" boxSize={ 5 } color="text_secondary" mr={ 2 }/>
-                <span>Documentation</span>
-              </LinkExternal>
+              { props.protocol.docs_url && (
+                <LinkExternal
+                  href={ props.protocol.docs_url }
+                  display="inline-flex"
+                  alignItems="center"
+                  fontSize="sm"
+                >
+                  <IconSvg name="docs" boxSize={ 5 } color="text_secondary" mr={ 2 }/>
+                  <span>Documentation</span>
+                </LinkExternal>
+              ) }
             </PopoverBody>
           </PopoverContent>
         </Portal>
@@ -76,12 +94,7 @@ const Icon = (props: IconProps) => {
     );
   }
 
-  return (
-    <EntityBase.Icon
-      { ...props }
-      name={ props.iconName ?? 'ENS_slim' }
-    />
-  );
+  return icon;
 };
 
 type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'name'>;
