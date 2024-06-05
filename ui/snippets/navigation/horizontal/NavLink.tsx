@@ -54,7 +54,7 @@ const NavLink = ({ className, item, noIcon }: Props) => {
       >
         { !noIcon && <NavLinkIcon item={ item } mr={ 3 }/> }
         <chakra.span>{ item.text }</chakra.span>
-        { isHighlighted && <LightningLabel bgColor={ bgColor } position={{ lg: 'static' }} ml={{ lg: 1 }}/> }
+        { isHighlighted && <LightningLabel iconColor={ bgColor } position={{ lg: 'static' }} ml={{ lg: 1 }}/> }
       </Link>
     </chakra.li>
   );

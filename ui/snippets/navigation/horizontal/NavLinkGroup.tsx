@@ -49,7 +49,7 @@ const NavLinkGroup = ({ item }: Props) => {
               { ...getDefaultTransitionProps() }
             >
               { item.text }
-              { isHighlighted && <LightningLabel bgColor={ bgColor } position={{ lg: 'static' }}/> }
+              { isHighlighted && <LightningLabel iconColor={ bgColor } position={{ lg: 'static' }}/> }
               <IconSvg name="arrows/east-mini" boxSize={ 5 } transform="rotate(-90deg)"/>
             </chakra.li>
           </PopoverTrigger>

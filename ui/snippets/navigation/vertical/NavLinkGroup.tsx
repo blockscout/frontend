@@ -58,7 +58,7 @@ const NavLinkGroup = ({ item, isCollapsed }: Props) => {
                 { item.text }
               </Text>
               { isHighlighted && (
-                <LightningLabel bgColor={ styleProps.itemProps.bgColor } isCollapsed={ isCollapsed }/>
+                <LightningLabel iconColor={ styleProps.itemProps.bgColor } isCollapsed={ isCollapsed }/>
               ) }
               <IconSvg
                 name="arrows/east-mini"

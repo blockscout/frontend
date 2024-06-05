@@ -43,7 +43,7 @@ const NavLinkGroup = ({ item, onClick, isExpanded }: Props) => {
             >
               { item.text }
             </Text>
-            { isHighlighted && (<LightningLabel bgColor={ styleProps.itemProps.bgColor }/>) }
+            { isHighlighted && (<LightningLabel iconColor={ styleProps.itemProps.bgColor }/>) }
           </HStack>
           <IconSvg name="arrows/east-mini" transform="rotate(180deg)" boxSize={ 6 }/>
         </Flex>

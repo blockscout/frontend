@@ -72,7 +72,7 @@ const NavLink = ({ item, isCollapsed, px, className, onClick, disableActiveState
             { !isInternalLink && <IconSvg name="arrows/north-east" boxSize={ 4 } color="text_secondary" verticalAlign="middle"/> }
           </Text>
           { isHighlighted && (
-            <LightningLabel bgColor={ styleProps.itemProps.bgColor } isCollapsed={ isCollapsed }/>
+            <LightningLabel iconColor={ styleProps.itemProps.bgColor } isCollapsed={ isCollapsed }/>
           ) }
         </HStack>
       </Tooltip>
