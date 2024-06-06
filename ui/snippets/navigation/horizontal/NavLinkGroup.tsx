@@ -35,7 +35,6 @@ const NavLinkGroup = ({ item }: Props) => {
               listStyleType="none"
               display="flex"
               alignItems="center"
-              columnGap={ 1 }
               px={ 2 }
               py={ 1.5 }
               fontSize="sm"
@@ -49,8 +48,8 @@ const NavLinkGroup = ({ item }: Props) => {
               { ...getDefaultTransitionProps() }
             >
               { item.text }
-              { isHighlighted && <LightningLabel iconColor={ bgColor } position={{ lg: 'static' }}/> }
-              <IconSvg name="arrows/east-mini" boxSize={ 5 } transform="rotate(-90deg)"/>
+              { isHighlighted && <LightningLabel iconColor={ bgColor } position={{ lg: 'static' }} ml={{ lg: '2px' }}/> }
+              <IconSvg name="arrows/east-mini" boxSize={ 5 } transform="rotate(-90deg)" ml={ 1 }/>
             </chakra.li>
           </PopoverTrigger>
           <PopoverContent w="fit-content">
