@@ -8,6 +8,7 @@ import LatestZkEvmL2Batches from 'ui/home/LatestZkEvmL2Batches';
 import Stats from 'ui/home/Stats';
 import Transactions from 'ui/home/Transactions';
 import AdBanner from 'ui/shared/ad/AdBanner';
+import TagGroupSelect from 'ui/shared/tagGroupSelect/TagGroupSelect';
 import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
 import SearchBar from 'ui/snippets/searchBar/SearchBar';
 import WalletMenuDesktop from 'ui/snippets/walletMenu/WalletMenuDesktop';
@@ -15,6 +16,7 @@ import WalletMenuDesktop from 'ui/snippets/walletMenu/WalletMenuDesktop';
 const rollupFeature = config.features.rollup;
 
 const Home = () => {
+  const onSelect = React.useCallback(() => {}, []);
   return (
     <Box as="main">
       <Box
@@ -47,6 +49,7 @@ const Home = () => {
         </Flex>
         <SearchBar isHomepage/>
       </Box>
+      <TagGroupSelect items={ [ '11', '22', '33' ] } defaultValue="1" onChange={ onSelect } my={ 2 }/>
       <Stats/>
       <ChainIndicators/>
       <AdBanner mt={ 6 } mx="auto" display="flex" justifyContent="center"/>
