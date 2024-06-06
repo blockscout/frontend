@@ -72,7 +72,7 @@ const Icon = (props: IconProps) => {
                 />
                 <div>
                   <span>{ props.protocol.short_name }</span>
-                  <chakra.span color="text_secondary">{ props.protocol.tld_list.map((tld) => `.${ tld }`).join((', ')) }</chakra.span>
+                  <chakra.span color="text_secondary" whiteSpace="pre"> { props.protocol.tld_list.map((tld) => `.${ tld }`).join((' ')) }</chakra.span>
                 </div>
               </Flex>
               <Text fontSize="sm">{ props.protocol.description }</Text>

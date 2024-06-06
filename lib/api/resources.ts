@@ -219,7 +219,7 @@ export const RESOURCES = {
     pathParams: [ 'chainId' as const ],
     endpoint: getFeaturePayload(config.features.nameService)?.api.endpoint,
     basePath: getFeaturePayload(config.features.nameService)?.api.basePath,
-    filterFields: [ 'address' as const, 'resolved_to' as const, 'owned_by' as const, 'only_active' as const ],
+    filterFields: [ 'address' as const, 'resolved_to' as const, 'owned_by' as const, 'only_active' as const, 'protocols' as const ],
   },
   domain_info: {
     path: '/api/v1/:chainId/domains/:name',
@@ -238,7 +238,7 @@ export const RESOURCES = {
     pathParams: [ 'chainId' as const ],
     endpoint: getFeaturePayload(config.features.nameService)?.api.endpoint,
     basePath: getFeaturePayload(config.features.nameService)?.api.basePath,
-    filterFields: [ 'name' as const, 'only_active' as const ],
+    filterFields: [ 'name' as const, 'only_active' as const, 'protocols' as const ],
   },
 
   // METADATA SERVICE & PUBLIC TAGS

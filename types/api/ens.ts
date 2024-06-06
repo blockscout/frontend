@@ -67,11 +67,13 @@ export interface EnsAddressLookupFilters {
   resolved_to: boolean;
   owned_by: boolean;
   only_active: boolean;
+  protocols: Array<string> | undefined;
 }
 
 export interface EnsDomainLookupFilters {
   name: string | null;
   only_active: boolean;
+  protocols: Array<string> | undefined;
 }
 
 export interface EnsLookupSorting {

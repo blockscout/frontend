@@ -1,4 +1,4 @@
-import { Checkbox, CheckboxGroup, HStack, Text } from '@chakra-ui/react';
+import { Box, Checkbox, CheckboxGroup, Flex, HStack, Image, Text, VStack, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { EnsDomainLookupFiltersOptions } from 'types/api/ens';
@@ -8,11 +8,37 @@ import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
 import ActionBar from 'ui/shared/ActionBar';
 import FilterInput from 'ui/shared/filters/FilterInput';
 import PopoverFilter from 'ui/shared/filters/PopoverFilter';
+import IconSvg from 'ui/shared/IconSvg';
 import Pagination from 'ui/shared/pagination/Pagination';
 import Sort from 'ui/shared/sort/Sort';
 
 import type { Sort as TSort } from './utils';
 import { SORT_OPTIONS } from './utils';
+
+const PROTOCOLS = [
+  {
+    id: 'ens',
+    short_name: 'ENS',
+    title: 'Ethereum Name Service',
+    description: 'The Ethereum Name Service (ENS) is a distributed, open, and extensible naming system based on the Ethereum blockchain.',
+    tld_list: [
+      'eth',
+    ],
+    icon_url: 'https://i.imgur.com/GOfUwCb.jpeg',
+    docs_url: 'https://docs.ens.domains/',
+  },
+  {
+    id: 'gno',
+    short_name: 'Genome',
+    title: 'Ethereum Name Service',
+    description: 'The Ethereum Name Service (ENS) is a distributed, open, and extensible naming system based on the Ethereum blockchain.',
+    tld_list: [
+      'gno',
+    ],
+    // icon_url: 'https://i.imgur.com/GOfUwCb.jpeg',
+    docs_url: 'https://docs.ens.domains/',
+  },
+];
 
 interface Props {
   pagination: PaginationParams;
@@ -20,6 +46,8 @@ interface Props {
   onSearchChange: (value: string) => void;
   filterValue: EnsDomainLookupFiltersOptions;
   onFilterValueChange: (nextValue: EnsDomainLookupFiltersOptions) => void;
+  protocolsFilterValue: Array<string>;
+  onProtocolsFilterChange: (nextValue: Array<string>) => void;
   sort: TSort | undefined;
   onSortChange: (nextValue: TSort | undefined) => void;
   isLoading: boolean;
@@ -36,6 +64,8 @@ const NameDomainsActionBar = ({
   isLoading,
   isAddressSearch,
   pagination,
+  protocolsFilterValue,
+  onProtocolsFilterChange,
 }: Props) => {
   const isInitialLoading = useIsInitialLoading(isLoading);
 
@@ -51,28 +81,53 @@ const NameDomainsActionBar = ({
     />
   );
 
+  const filterGroupDivider = <Box w="100%" borderBottomWidth="1px" borderBottomColor="divider" my={ 4 }/>;
+
   const filter = (
-    <PopoverFilter appliedFiltersNum={ filterValue.length } contentProps={{ w: '220px' }} isLoading={ isInitialLoading }>
+    <PopoverFilter appliedFiltersNum={ filterValue.length + protocolsFilterValue.length } contentProps={{ w: '220px' }} isLoading={ isInitialLoading }>
       <div>
+        <Text variant="secondary" fontWeight={ 600 } mb={ 3 } fontSize="sm">Protocol</Text>
+        <CheckboxGroup size="lg" value={ protocolsFilterValue } defaultValue={ protocolsFilterValue } onChange={ onProtocolsFilterChange }>
+          <VStack gap={ 5 } alignItems="flex-start">
+            { PROTOCOLS.map((protocol) => {
+              const topLevelDomains = protocol.tld_list.map((domain) => `.${ domain }`).join(' ');
+
+              return (
+                <Checkbox key={ protocol.id } value={ protocol.id }>
+                  <Flex alignItems="center">
+                    <Image
+                      src={ protocol.icon_url }
+                      boxSize={ 5 }
+                      borderRadius="sm"
+                      mr={ 2 }
+                      alt={ `${ protocol.title } protocol icon` }
+                      fallback={ <IconSvg name="ENS_slim" boxSize={ 5 } mr={ 2 }/> }
+                      fallbackStrategy={ protocol.icon_url ? 'onError' : 'beforeLoadOrError' }
+                    />
+                    <span>{ protocol.short_name }</span>
+                    <chakra.span color="text_secondary" whiteSpace="pre"> { topLevelDomains }</chakra.span>
+                  </Flex>
+                </Checkbox>
+              );
+            }) }
+          </VStack>
+        </CheckboxGroup>
+        { filterGroupDivider }
         <CheckboxGroup size="lg" onChange={ onFilterValueChange } value={ filterValue } defaultValue={ filterValue }>
           <Text variant="secondary" fontWeight={ 600 } mb={ 3 } fontSize="sm">Address</Text>
-          <Checkbox value="owned_by" display="block" isDisabled={ !isAddressSearch }>
+          <Checkbox value="owned_by" isDisabled={ !isAddressSearch }>
             Owned by
           </Checkbox>
           <Checkbox
             value="resolved_to"
-            display="block"
             mt={ 5 }
-            mb={ 4 }
-            pb={ 4 }
-            borderBottom="1px solid"
-            borderColor="divider"
             isDisabled={ !isAddressSearch }
           >
             Resolved to address
           </Checkbox>
+          { filterGroupDivider }
           <Text variant="secondary" fontWeight={ 600 } mb={ 3 } fontSize="sm">Status</Text>
-          <Checkbox value="with_inactive" display="block">
+          <Checkbox value="with_inactive">
             Include expired
           </Checkbox>
         </CheckboxGroup>

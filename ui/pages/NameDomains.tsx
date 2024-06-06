@@ -40,6 +40,7 @@ const NameDomains = () => {
   const [ searchTerm, setSearchTerm ] = React.useState<string>(q || '');
   const [ filterValue, setFilterValue ] = React.useState<EnsDomainLookupFiltersOptions>(initialFilters);
   const [ sort, setSort ] = React.useState<Sort | undefined>(initialSort);
+  const [ protocolsFilter, setProtocolsFilter ] = React.useState<Array<string>>([]);
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const isAddressSearch = React.useMemo(() => ADDRESS_REGEXP.test(debouncedSearchTerm), [ debouncedSearchTerm ]);
@@ -53,6 +54,7 @@ const NameDomains = () => {
       resolved_to: filterValue.includes('resolved_to'),
       owned_by: filterValue.includes('owned_by'),
       only_active: !filterValue.includes('with_inactive'),
+      protocols: protocolsFilter.length > 0 ? protocolsFilter : undefined,
     },
     sorting: sortParams,
     options: {
@@ -67,6 +69,7 @@ const NameDomains = () => {
     filters: {
       name: debouncedSearchTerm,
       only_active: !filterValue.includes('with_inactive'),
+      protocols: protocolsFilter.length > 0 ? protocolsFilter : undefined,
     },
     sorting: sortParams,
     options: {
@@ -87,12 +90,14 @@ const NameDomains = () => {
         resolved_to: true,
         owned_by: true,
         only_active: !hasInactiveFilter,
+        protocols: protocolsFilter,
       });
     } else {
       setFilterValue([ hasInactiveFilter ? 'with_inactive' as const : undefined ].filter(Boolean));
       onFilterChange<'domains_lookup'>({
         name: debouncedSearchTerm,
         only_active: !hasInactiveFilter,
+        protocols: protocolsFilter,
       });
     }
   // should run only the type of search changes
@@ -123,14 +128,16 @@ const NameDomains = () => {
         resolved_to: filterValue.includes('resolved_to'),
         owned_by: filterValue.includes('owned_by'),
         only_active: !filterValue.includes('with_inactive'),
+        protocols: protocolsFilter,
       });
     } else {
       onFilterChange<'domains_lookup'>({
         name: value,
         only_active: !filterValue.includes('with_inactive'),
+        protocols: protocolsFilter,
       });
     }
-  }, [ onFilterChange, filterValue ]);
+  }, [ onFilterChange, filterValue, protocolsFilter ]);
 
   const handleFilterValueChange = React.useCallback((value: EnsDomainLookupFiltersOptions) => {
     setFilterValue(value);
@@ -142,16 +149,39 @@ const NameDomains = () => {
         resolved_to: value.includes('resolved_to'),
         owned_by: value.includes('owned_by'),
         only_active: !value.includes('with_inactive'),
+        protocols: protocolsFilter,
       });
     } else {
       onFilterChange<'domains_lookup'>({
         name: debouncedSearchTerm,
         only_active: !value.includes('with_inactive'),
+        protocols: protocolsFilter,
       });
     }
-  }, [ debouncedSearchTerm, onFilterChange ]);
+  }, [ debouncedSearchTerm, onFilterChange, protocolsFilter ]);
 
-  const hasActiveFilters = Boolean(debouncedSearchTerm) || filterValue.length > 0;
+  const handleProtocolsFilterChange = React.useCallback((nextValue: Array<string>) => {
+    setProtocolsFilter(nextValue);
+
+    const isAddressSearch = ADDRESS_REGEXP.test(debouncedSearchTerm);
+    if (isAddressSearch) {
+      onFilterChange<'addresses_lookup'>({
+        address: debouncedSearchTerm,
+        resolved_to: filterValue.includes('resolved_to'),
+        owned_by: filterValue.includes('owned_by'),
+        only_active: !filterValue.includes('with_inactive'),
+        protocols: nextValue,
+      });
+    } else {
+      onFilterChange<'domains_lookup'>({
+        name: debouncedSearchTerm,
+        only_active: !filterValue.includes('with_inactive'),
+        protocols: nextValue,
+      });
+    }
+  }, [ debouncedSearchTerm, filterValue, onFilterChange ]);
+
+  const hasActiveFilters = Boolean(debouncedSearchTerm) || filterValue.length > 0 || protocolsFilter.length > 0;
 
   const content = (
     <>
@@ -184,6 +214,8 @@ const NameDomains = () => {
       onSearchChange={ handleSearchTermChange }
       filterValue={ filterValue }
       onFilterValueChange={ handleFilterValueChange }
+      protocolsFilterValue={ protocolsFilter }
+      onProtocolsFilterChange={ handleProtocolsFilterChange }
       sort={ sort }
       onSortChange={ setSort }
       isAddressSearch={ isAddressSearch }
