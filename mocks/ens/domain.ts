@@ -18,6 +18,7 @@ export const protocolA: EnsDomainProtocol = {
   description: 'The Ethereum Name Service (ENS) is a distributed, open, and extensible naming system based on the Ethereum blockchain.',
   tld_list: [
     'eth',
+    'xyz',
   ],
   icon_url: 'https://i.imgur.com/GOfUwCb.jpeg',
   docs_url: 'https://docs.ens.domains/',
