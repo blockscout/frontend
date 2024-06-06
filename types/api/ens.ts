@@ -54,6 +54,10 @@ export interface EnsDomainEventsResponse {
   items: Array<EnsDomainEvent>;
 }
 
+export interface EnsDomainProtocolsResponse {
+  items: Array<EnsDomainProtocol>;
+}
+
 export interface EnsDomainLookupResponse {
   items: Array<EnsDomain>;
   next_page_params: {

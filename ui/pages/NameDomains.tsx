@@ -5,6 +5,7 @@ import React from 'react';
 import type { EnsDomainLookupFiltersOptions, EnsLookupSorting } from 'types/api/ens';
 
 import config from 'configs/app';
+import useApiQuery from 'lib/api/useApiQuery';
 import useDebounce from 'lib/hooks/useDebounce';
 import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -29,6 +30,7 @@ const NameDomains = () => {
   const ownedBy = getQueryParamString(router.query.owned_by);
   const resolvedTo = getQueryParamString(router.query.resolved_to);
   const onlyActive = getQueryParamString(router.query.only_active);
+  const protocols = Array.isArray(router.query.protocols) ? router.query.protocols : [ router.query.protocols ].filter(Boolean);
 
   const initialFilters: EnsDomainLookupFiltersOptions = [
     ownedBy === 'true' ? 'owned_by' as const : undefined,
@@ -40,7 +42,7 @@ const NameDomains = () => {
   const [ searchTerm, setSearchTerm ] = React.useState<string>(q || '');
   const [ filterValue, setFilterValue ] = React.useState<EnsDomainLookupFiltersOptions>(initialFilters);
   const [ sort, setSort ] = React.useState<Sort | undefined>(initialSort);
-  const [ protocolsFilter, setProtocolsFilter ] = React.useState<Array<string>>([]);
+  const [ protocolsFilter, setProtocolsFilter ] = React.useState<Array<string>>(protocols);
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const isAddressSearch = React.useMemo(() => ADDRESS_REGEXP.test(debouncedSearchTerm), [ debouncedSearchTerm ]);
@@ -76,6 +78,10 @@ const NameDomains = () => {
       enabled: !isAddressSearch,
       placeholderData: generateListStub<'domains_lookup'>(ENS_DOMAIN, 50, { next_page_params: null }),
     },
+  });
+
+  const protocolsQuery = useApiQuery('domain_protocols', {
+    pathParams: { chainId: config.chain.id },
   });
 
   const query = isAddressSearch ? addressesLookupQuery : domainsLookupQuery;
@@ -181,7 +187,8 @@ const NameDomains = () => {
     }
   }, [ debouncedSearchTerm, filterValue, onFilterChange ]);
 
-  const hasActiveFilters = Boolean(debouncedSearchTerm) || filterValue.length > 0 || protocolsFilter.length > 0;
+  const hasActiveFilters = Boolean(debouncedSearchTerm) || filterValue.length > 0 ||
+    (protocolsQuery.data && protocolsQuery.data.items.length > 1 ? protocolsFilter.length > 0 : false);
 
   const content = (
     <>
@@ -214,6 +221,7 @@ const NameDomains = () => {
       onSearchChange={ handleSearchTermChange }
       filterValue={ filterValue }
       onFilterValueChange={ handleFilterValueChange }
+      protocolsData={ protocolsQuery.data?.items }
       protocolsFilterValue={ protocolsFilter }
       onProtocolsFilterChange={ handleProtocolsFilterChange }
       sort={ sort }

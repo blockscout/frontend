@@ -24,6 +24,19 @@ export const protocolA: EnsDomainProtocol = {
   docs_url: 'https://docs.ens.domains/',
 };
 
+export const protocolB: EnsDomainProtocol = {
+  id: 'duck',
+  short_name: 'DUCK',
+  title: 'Duck Name Service',
+  description: '"Duck Name Service" is a cutting-edge blockchain naming service, providing seamless naming for crypto and decentralized applications. 🦆',
+  tld_list: [
+    'duck',
+    'quack',
+  ],
+  icon_url: 'https://localhost:3000/duck.jpg',
+  docs_url: 'https://docs.duck.domains/',
+};
+
 export const ensDomainA: EnsDomainDetailed = {
   id: '0xb140bf9645e54f02ed3c1bcc225566b515a98d1688f10494a5c3bc5b447936a7',
   tokens: [
