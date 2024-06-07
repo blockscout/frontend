@@ -16,11 +16,12 @@ import { getResourceKey } from 'lib/api/useApiQuery';
 import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
 import dayjs from 'lib/date/dayjs';
 import useSocketMessage from 'lib/socket/useSocketMessage';
+import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import Hint from 'ui/shared/Hint';
-import LinkExternal from 'ui/shared/LinkExternal';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkExternal from 'ui/shared/links/LinkExternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
 import ContractSecurityAudits from './ContractSecurityAudits';
@@ -195,6 +196,13 @@ const ContractCode = ({ addressHash, contractQuery, channel }: Props) => {
     return null;
   })();
 
+  const contractNameWithCertifiedIcon = data?.is_verified ? (
+    <Flex alignItems="center">
+      { data.name }
+      { data.certified && <ContractCertifiedLabel iconSize={ 5 } boxSize={ 5 } ml={ 2 }/> }
+    </Flex>
+  ) : null;
+
   return (
     <>
       <Flex flexDir="column" rowGap={ 2 } mb={ 6 } _empty={{ display: 'none' }}>
@@ -216,7 +224,7 @@ const ContractCode = ({ addressHash, contractQuery, channel }: Props) => {
           <Alert status="warning" whiteSpace="pre-wrap" flexWrap="wrap">
             <span>Contract is not verified. However, we found a verified contract with the same bytecode in Blockscout DB </span>
             <AddressEntity
-              address={{ hash: data.verified_twin_address_hash, is_contract: true, implementation_name: null }}
+              address={{ hash: data.verified_twin_address_hash, is_contract: true }}
               truncation="constant"
               fontSize="sm"
               fontWeight="500"
@@ -232,7 +240,7 @@ const ContractCode = ({ addressHash, contractQuery, channel }: Props) => {
           <Alert status="warning" flexWrap="wrap" whiteSpace="pre-wrap">
             <span>Minimal Proxy Contract for </span>
             <AddressEntity
-              address={{ hash: data.minimal_proxy_address_hash, is_contract: true, implementation_name: null }}
+              address={{ hash: data.minimal_proxy_address_hash, is_contract: true }}
               truncation="constant"
               fontSize="sm"
               fontWeight="500"
@@ -248,7 +256,7 @@ const ContractCode = ({ addressHash, contractQuery, channel }: Props) => {
       </Flex>
       { data?.is_verified && (
         <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} rowGap={ 4 } columnGap={ 6 } mb={ 8 }>
-          { data.name && <InfoItem label="Contract name" content={ data.name } isLoading={ isPlaceholderData }/> }
+          { data.name && <InfoItem label="Contract name" content={ contractNameWithCertifiedIcon } isLoading={ isPlaceholderData }/> }
           { data.compiler_version && <InfoItem label="Compiler version" content={ data.compiler_version } isLoading={ isPlaceholderData }/> }
           { data.evm_version && <InfoItem label="EVM version" content={ data.evm_version } textTransform="capitalize" isLoading={ isPlaceholderData }/> }
           { licenseLink && (
@@ -261,7 +269,8 @@ const ContractCode = ({ addressHash, contractQuery, channel }: Props) => {
           ) }
           { typeof data.optimization_enabled === 'boolean' &&
             <InfoItem label="Optimization enabled" content={ data.optimization_enabled ? 'true' : 'false' } isLoading={ isPlaceholderData }/> }
-          { data.optimization_runs && <InfoItem label="Optimization runs" content={ String(data.optimization_runs) } isLoading={ isPlaceholderData }/> }
+          { data.optimization_runs !== null &&
+            <InfoItem label="Optimization runs" content={ String(data.optimization_runs) } isLoading={ isPlaceholderData }/> }
           { data.verified_at &&
             <InfoItem label="Verified at" content={ dayjs(data.verified_at).format('llll') } wordBreak="break-word" isLoading={ isPlaceholderData }/> }
           { data.file_path && <InfoItem label="Contract file path" content={ data.file_path } wordBreak="break-word" isLoading={ isPlaceholderData }/> }
@@ -283,10 +292,10 @@ const ContractCode = ({ addressHash, contractQuery, channel }: Props) => {
             isLoading={ isPlaceholderData }
           />
         ) }
-        { data?.source_code && (
+        { data?.source_code && addressHash && (
           <ContractSourceCode
             address={ addressHash }
-            implementationAddress={ addressInfo?.implementation_address ?? undefined }
+            implementations={ addressInfo?.implementations || undefined }
           />
         ) }
         { data?.compiler_settings ? (

@@ -198,7 +198,7 @@ const AddressPageContent = () => {
       config.features.validators.isEnabled && addressQuery.data?.has_validated_blocks ?
         { slug: 'validator', name: 'Validator', tagType: 'custom' as const, ordinal: 10 } :
         undefined,
-      addressQuery.data?.implementation_address ? { slug: 'proxy', name: 'Proxy', tagType: 'custom' as const, ordinal: -1 } : undefined,
+      addressQuery.data?.implementations?.length ? { slug: 'proxy', name: 'Proxy', tagType: 'custom' as const, ordinal: -1 } : undefined,
       addressQuery.data?.token ? { slug: 'token', name: 'Token', tagType: 'custom' as const, ordinal: -1 } : undefined,
       isSafeAddress ? { slug: 'safe', name: 'Multisig: Safe', tagType: 'custom' as const, ordinal: -10 } : undefined,
       config.features.userOps.isEnabled && userOpsAccountQuery.data ?
@@ -264,7 +264,8 @@ const AddressPageContent = () => {
       <AddressQrCode address={{ hash }} isLoading={ isLoading }/>
       <AccountActionsMenu isLoading={ isLoading }/>
       <HStack ml="auto" gap={ 2 }/>
-      { addressQuery.data?.is_contract && addressQuery.data?.is_verified && config.UI.views.address.solidityscanEnabled && <SolidityscanReport hash={ hash }/> }
+      { !isLoading && addressQuery.data?.is_contract && addressQuery.data?.is_verified && config.UI.views.address.solidityscanEnabled &&
+        <SolidityscanReport hash={ hash }/> }
       { !isLoading && addressQuery.data && config.features.nameService.isEnabled &&
         <AddressEnsDomains addressHash={ hash } mainDomainName={ addressQuery.data.ens_domain_name }/> }
       <NetworkExplorers type="address" pathParam={ hash }/>

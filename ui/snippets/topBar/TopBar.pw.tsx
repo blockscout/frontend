@@ -1,32 +1,20 @@
-import { test as base, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import * as statsMock from 'mocks/stats/index';
-import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
-import TestApp from 'playwright/TestApp';
-import buildApiUrl from 'playwright/utils/buildApiUrl';
+import { test, expect } from 'playwright/lib';
 
 import TopBar from './TopBar';
 
-const test = base.extend({
-  context: contextWithEnvs([
-    { name: 'NEXT_PUBLIC_SWAP_BUTTON_URL', value: 'uniswap' },
-    { name: 'NEXT_PUBLIC_NETWORK_SECONDARY_COIN_SYMBOL', value: 'DUCK' },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ]) as any,
+test.beforeEach(async({ mockEnvs }) => {
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS', '[{"text":"Swap","icon":"swap","dappId":"uniswap"}]' ],
+    [ 'NEXT_PUBLIC_NETWORK_SECONDARY_COIN_SYMBOL', 'DUCK' ],
+  ]);
 });
 
-test('default view +@dark-mode +@mobile', async({ mount, page }) => {
-  await page.route(buildApiUrl('stats'), (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(statsMock.base),
-  }));
-
-  const component = await mount(
-    <TestApp>
-      <TopBar/>
-    </TestApp>,
-  );
+test('default view +@dark-mode +@mobile', async({ render, mockApiResponse, page }) => {
+  await mockApiResponse('stats', statsMock.base);
+  const component = await render(<TopBar/>);
 
   await component.getByText(/\$1\.39/).click();
   await expect(page.getByText(/last update/i)).toBeVisible();
@@ -36,17 +24,23 @@ test('default view +@dark-mode +@mobile', async({ mount, page }) => {
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 400 } });
 });
 
-test('with secondary coin price +@mobile', async({ mount, page }) => {
-  await page.route(buildApiUrl('stats'), (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(statsMock.withSecondaryCoin),
-  }));
-
-  const component = await mount(
-    <TestApp>
-      <TopBar/>
-    </TestApp>,
-  );
-
+test('with secondary coin price +@mobile', async({ render, mockApiResponse }) => {
+  await mockApiResponse('stats', statsMock.withSecondaryCoin);
+  const component = await render(<TopBar/>);
   await expect(component).toHaveScreenshot();
+});
+
+test('with DeFi dropdown +@dark-mode +@mobile', async({ render, page, mockApiResponse, mockEnvs }) => {
+  await mockEnvs([
+    [
+      'NEXT_PUBLIC_DEFI_DROPDOWN_ITEMS',
+      '[{"text":"Swap","icon":"swap","dappId":"uniswap"},{"text":"Payment link","icon":"payment_link","url":"https://example.com"}]',
+    ],
+  ]);
+  await mockApiResponse('stats', statsMock.base);
+
+  const component = await render(<TopBar/>);
+
+  await component.getByText(/DeFi/i).click();
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 220 } });
 });

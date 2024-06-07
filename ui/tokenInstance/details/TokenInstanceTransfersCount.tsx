@@ -4,8 +4,8 @@ import React from 'react';
 import { route } from 'nextjs-routes';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import LinkInternal from 'ui/shared/LinkInternal';
+import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 
 interface Props {
   hash: string;
@@ -37,20 +37,24 @@ const TokenInstanceTransfersCount = ({ hash, id, onClick }: Props) => {
     undefined;
 
   return (
-    <DetailsInfoItem
-      title="Transfers"
-      hint="Number of transfer for the token instance"
-      isLoading={ transfersCountQuery.isPlaceholderData }
-    >
-      <Skeleton isLoaded={ !transfersCountQuery.isPlaceholderData } display="inline-block">
-        <LinkInternal
-          href={ url }
-          onClick={ transfersCountQuery.data.transfers_count > 0 ? onClick : undefined }
-        >
-          { transfersCountQuery.data.transfers_count.toLocaleString() }
-        </LinkInternal>
-      </Skeleton>
-    </DetailsInfoItem>
+    <>
+      <DetailsInfoItem.Label
+        hint="Number of transfer for the token instance"
+        isLoading={ transfersCountQuery.isPlaceholderData }
+      >
+        Transfers
+      </DetailsInfoItem.Label>
+      <DetailsInfoItem.Value>
+        <Skeleton isLoaded={ !transfersCountQuery.isPlaceholderData } display="inline-block">
+          <LinkInternal
+            href={ url }
+            onClick={ transfersCountQuery.data.transfers_count > 0 ? onClick : undefined }
+          >
+            { transfersCountQuery.data.transfers_count.toLocaleString() }
+          </LinkInternal>
+        </Skeleton>
+      </DetailsInfoItem.Value>
+    </>
   );
 };
 

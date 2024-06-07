@@ -82,7 +82,7 @@ const AddressInternalTxs = ({ scrollRef, shouldRender = true }: Props) => {
       <AddressTxsFilter
         defaultFilter={ filterValue }
         onFilterChange={ handleFilterChange }
-        isActive={ Boolean(filterValue) }
+        hasActiveFilter={ Boolean(filterValue) }
         isLoading={ pagination.isLoading }
       />
       <AddressCsvExportLink

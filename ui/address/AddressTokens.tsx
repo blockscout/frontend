@@ -5,6 +5,7 @@ import React from 'react';
 import type { NFTTokenType } from 'types/api/token';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
+import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
 import * as cookies from 'lib/cookies';
 import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
@@ -110,7 +111,7 @@ const AddressTokens = ({ shouldRender = true }: Props) => {
   }
 
   const nftTypeFilter = (
-    <PopoverFilter isActive={ tokenTypes && tokenTypes.length > 0 } contentProps={{ w: '200px' }} appliedFiltersNum={ tokenTypes?.length }>
+    <PopoverFilter contentProps={{ w: '200px' }} appliedFiltersNum={ tokenTypes?.length }>
       <TokenTypeFilter<NFTTokenType> nftOnly onChange={ handleTokenTypesChange } defaultValue={ tokenTypes }/>
     </PopoverFilter>
   );
@@ -118,7 +119,7 @@ const AddressTokens = ({ shouldRender = true }: Props) => {
   const hasActiveFilters = Boolean(tokenTypes?.length);
 
   const tabs = [
-    { id: 'tokens_erc20', title: 'ERC-20', component: <ERC20Tokens tokensQuery={ erc20Query }/> },
+    { id: 'tokens_erc20', title: `${ config.chain.tokenStandard }-20`, component: <ERC20Tokens tokensQuery={ erc20Query }/> },
     {
       id: 'tokens_nfts',
       title: 'NFTs',

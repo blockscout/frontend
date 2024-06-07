@@ -18,7 +18,7 @@ const AdBanner = ({ className, isLoading }: { className?: string; isLoading?: bo
 
   const hasAdblockCookie = cookies.get(cookies.NAMES.ADBLOCK_DETECTED, useAppContext().cookies);
 
-  if (!feature.isEnabled || hasAdblockCookie || !provider) {
+  if (!feature.isEnabled || hasAdblockCookie === 'true' || !provider) {
     return null;
   }
 

@@ -34,9 +34,13 @@ export default function useAdblockDetect() {
         method: 'HEAD',
         mode: 'no-cors',
         cache: 'no-store',
-      }).catch(() => {
-        cookies.set(cookies.NAMES.ADBLOCK_DETECTED, 'true', { expires: 1 });
-      });
+      })
+        .then(() => {
+          cookies.set(cookies.NAMES.ADBLOCK_DETECTED, 'false', { expires: 1 });
+        })
+        .catch(() => {
+          cookies.set(cookies.NAMES.ADBLOCK_DETECTED, 'true', { expires: 1 });
+        });
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

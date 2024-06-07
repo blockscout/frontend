@@ -5,6 +5,7 @@ import React from 'react';
 import type { TokenInfo } from 'types/api/token';
 
 import config from 'configs/app';
+import { getTokenTypeName } from 'lib/token/tokenTypes';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
 import Tag from 'ui/shared/chakra/Tag';
 import type { EntityProps as AddressEntityProps } from 'ui/shared/entities/address/AddressEntity';
@@ -45,7 +46,6 @@ const TokensTableItem = ({
   const tokenAddress: AddressEntityProps['address'] = {
     hash: address,
     name: '',
-    implementation_name: null,
     is_contract: true,
     is_verified: false,
     ens_domain_name: null,
@@ -96,7 +96,7 @@ const TokensTableItem = ({
               />
             </Flex>
             <Flex columnGap={ 1 }>
-              <Tag isLoading={ isLoading }>{ type }</Tag>
+              <Tag isLoading={ isLoading }>{ getTokenTypeName(type) }</Tag>
               { bridgedChainTag && <Tag isLoading={ isLoading }>{ bridgedChainTag }</Tag> }
             </Flex>
           </Flex>

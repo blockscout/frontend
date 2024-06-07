@@ -9,7 +9,7 @@ export const data: WithdrawalsResponse = {
       index: 11688,
       receiver: {
         hash: '0xf97e180c050e5Ab072211Ad2C213Eb5AEE4DF134',
-        implementation_name: null,
+        implementations: null,
         is_contract: false,
         is_verified: null,
         name: null,
@@ -23,7 +23,7 @@ export const data: WithdrawalsResponse = {
       index: 11687,
       receiver: {
         hash: '0xf97e987c050e5Ab072211Ad2C213Eb5AEE4DF134',
-        implementation_name: null,
+        implementations: null,
         is_contract: false,
         is_verified: null,
         name: null,
@@ -37,7 +37,7 @@ export const data: WithdrawalsResponse = {
       index: 11686,
       receiver: {
         hash: '0xf97e123c050e5Ab072211Ad2C213Eb5AEE4DF134',
-        implementation_name: null,
+        implementations: null,
         is_contract: false,
         is_verified: null,
         name: null,

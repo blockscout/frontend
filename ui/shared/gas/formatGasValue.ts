@@ -9,6 +9,11 @@ export default function formatGasValue(data: GasPriceInfo, unit: GasUnit) {
       if (!data.price) {
         return `N/A ${ currencyUnits.gwei }`;
       }
+
+      if (Number(data.price) < 0.1) {
+        return `< 0.1 ${ currencyUnits.gwei }`;
+      }
+
       return `${ Number(data.price).toLocaleString(undefined, { maximumFractionDigits: 1 }) } ${ currencyUnits.gwei }`;
     }
 

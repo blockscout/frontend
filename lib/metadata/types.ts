@@ -20,4 +20,5 @@ export interface Metadata {
         description?: string;
         imageUrl?: string;
     };
+    canonical: string | undefined;
 }

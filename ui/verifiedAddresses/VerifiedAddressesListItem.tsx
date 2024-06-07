@@ -82,7 +82,7 @@ const VerifiedAddressesListItem = ({ item, application, onAdd, onEdit, isLoading
       <ListItemMobileGrid.Label isLoading={ isLoading }>Address</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <AddressEntity
-          address={{ hash: item.contractAddress, is_contract: true, implementation_name: null }}
+          address={{ hash: item.contractAddress, is_contract: true }}
           isLoading={ isLoading }
           w="100%"
         />

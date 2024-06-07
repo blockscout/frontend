@@ -108,6 +108,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
           }}
           isLoading={ txQuery.isPlaceholderData }
           fontSize="lg"
+          mr={{ base: 0, lg: 6 }}
         />
       );
     } else {

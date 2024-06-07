@@ -8,6 +8,7 @@ import config from 'configs/app';
 import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
 import dayjs from 'lib/date/dayjs';
 import { currencyUnits } from 'lib/units';
+import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import HashStringShorten from 'ui/shared/HashStringShorten';
@@ -36,12 +37,15 @@ const VerifiedContractsListItem = ({ data, isLoading }: Props) => {
   return (
     <ListItemMobile rowGap={ 3 }>
       <Flex w="100%">
-        <AddressEntity
-          isLoading={ isLoading }
-          address={ data.address }
-          query={{ tab: 'contract' }}
-          noCopy
-        />
+        <Flex alignItems="center" overflow="hidden">
+          <AddressEntity
+            isLoading={ isLoading }
+            address={ data.address }
+            query={{ tab: 'contract' }}
+            noCopy
+          />
+          { data.certified && <ContractCertifiedLabel iconSize={ 5 } boxSize={ 5 } mx={ 2 }/> }
+        </Flex>
         <Skeleton isLoaded={ !isLoading } color="text_secondary" ml="auto">
           <HashStringShorten hash={ data.address.hash } isTooltipDisabled/>
         </Skeleton>

@@ -25,7 +25,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import dayjs from 'lib/date/dayjs';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 import PopoverTriggerTooltip from 'ui/shared/PopoverTriggerTooltip';
 
 interface Props {
@@ -111,6 +111,7 @@ const AddressEnsDomains = ({ addressHash, mainDomainName }: Props) => {
             variant="outline"
             colorScheme="gray"
             onClick={ onToggle }
+            isActive={ isOpen }
             aria-label="Address domains"
             fontWeight={ 500 }
             px={ 2 }

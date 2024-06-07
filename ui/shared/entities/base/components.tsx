@@ -8,8 +8,8 @@ import HashStringShorten from 'ui/shared/HashStringShorten';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkExternal from 'ui/shared/LinkExternal';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkExternal from 'ui/shared/links/LinkExternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 
 import { getIconProps, type IconSize } from './utils';
 

@@ -1,4 +1,4 @@
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex, Heading } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
@@ -27,15 +27,19 @@ const Home = () => {
         data-label="hero plate"
       >
         <Flex mb={{ base: 2, lg: 6 }} justifyContent="space-between" alignItems="center">
-          <Box
+          <Heading
             as="h1"
             fontSize={{ base: '18px', lg: '40px' }}
             lineHeight={{ base: '24px', lg: '48px' }}
             fontWeight={ 600 }
             color={ config.UI.homepage.plate.textColor }
           >
-            { config.chain.name } explorer
-          </Box>
+            {
+              config.meta.seo.enhancedDataEnabled ?
+                `${ config.chain.name } blockchain explorer` :
+                `${ config.chain.name } explorer`
+            }
+          </Heading>
           <Box display={{ base: 'none', lg: 'flex' }}>
             { config.features.account.isEnabled && <ProfileMenuDesktop isHomePage/> }
             { config.features.blockchainInteraction.isEnabled && <WalletMenuDesktop isHomePage/> }

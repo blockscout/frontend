@@ -1,44 +1,27 @@
-import { test as base, expect } from '@playwright/experimental-ct-react';
 import type { Locator } from '@playwright/test';
 import React from 'react';
 
 import * as dailyTxsMock from 'mocks/stats/daily_txs';
 import * as statsMock from 'mocks/stats/index';
-import contextWithEnvs from 'playwright/fixtures/contextWithEnvs';
-import TestApp from 'playwright/TestApp';
-import buildApiUrl from 'playwright/utils/buildApiUrl';
+import { test, expect } from 'playwright/lib';
 
 import ChainIndicators from './ChainIndicators';
 
-const STATS_API_URL = buildApiUrl('stats');
-const TX_CHART_API_URL = buildApiUrl('stats_charts_txs');
-
-const test = base.extend({
-  context: contextWithEnvs([
-    { name: 'NEXT_PUBLIC_HOMEPAGE_CHARTS', value: '["daily_txs","coin_price","secondary_coin_price","market_cap","tvl"]' },
-    { name: 'NEXT_PUBLIC_NETWORK_SECONDARY_COIN_SYMBOL', value: 'DUCK' },
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ]) as any,
+test.beforeEach(async({ mockEnvs }) => {
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_HOMEPAGE_CHARTS', '["daily_txs","coin_price","secondary_coin_price","market_cap","tvl"]' ],
+    [ 'NEXT_PUBLIC_NETWORK_SECONDARY_COIN_SYMBOL', 'DUCK' ],
+  ]);
 });
 
 test.describe('daily txs chart', () => {
   let component: Locator;
 
-  test.beforeEach(async({ page, mount }) => {
-    await page.route(STATS_API_URL, (route) => route.fulfill({
-      status: 200,
-      body: JSON.stringify(statsMock.withSecondaryCoin),
-    }));
-    await page.route(TX_CHART_API_URL, (route) => route.fulfill({
-      status: 200,
-      body: JSON.stringify(dailyTxsMock.base),
-    }));
-
-    component = await mount(
-      <TestApp>
-        <ChainIndicators/>
-      </TestApp>,
-    );
+  test.beforeEach(async({ page, mockApiResponse, mockAssetResponse, render }) => {
+    await mockApiResponse('stats', statsMock.withSecondaryCoin);
+    await mockApiResponse('stats_charts_txs', dailyTxsMock.base);
+    await mockAssetResponse(statsMock.withSecondaryCoin.coin_image as string, './playwright/mocks/image_svg.svg');
+    component = await render(<ChainIndicators/>);
     await page.hover('.ChartOverlay', { position: { x: 100, y: 100 } });
   });
 
@@ -55,43 +38,19 @@ test.describe('daily txs chart', () => {
   });
 });
 
-test('partial data', async({ page, mount }) => {
-  await page.route(STATS_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(statsMock.base),
-  }));
-  await page.route(TX_CHART_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(dailyTxsMock.partialData),
-  }));
-
-  const component = await mount(
-    <TestApp>
-      <ChainIndicators/>
-    </TestApp>,
-  );
+test('partial data', async({ page, mockApiResponse, render }) => {
+  await mockApiResponse('stats', statsMock.base);
+  await mockApiResponse('stats_charts_txs', dailyTxsMock.partialData);
+  const component = await render(<ChainIndicators/>);
   await page.waitForFunction(() => {
     return document.querySelector('path[data-name="gradient-chart-area"]')?.getAttribute('opacity') === '1';
   });
-
   await expect(component).toHaveScreenshot();
 });
 
-test('no data', async({ page, mount }) => {
-  await page.route(STATS_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(statsMock.noChartData),
-  }));
-  await page.route(TX_CHART_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(dailyTxsMock.noData),
-  }));
-
-  const component = await mount(
-    <TestApp>
-      <ChainIndicators/>
-    </TestApp>,
-  );
-
+test('no data', async({ mockApiResponse, render }) => {
+  await mockApiResponse('stats', statsMock.noChartData);
+  await mockApiResponse('stats_charts_txs', dailyTxsMock.noData);
+  const component = await render(<ChainIndicators/>);
   await expect(component).toHaveScreenshot();
 });

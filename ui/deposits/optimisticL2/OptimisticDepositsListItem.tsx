@@ -67,7 +67,7 @@ const OptimisticDepositsListItem = ({ item, isLoading }: Props) => {
       <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn origin</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <AddressEntityL1
-          address={{ hash: item.l1_tx_origin, name: '', is_contract: false, is_verified: false, implementation_name: '', ens_domain_name: null }}
+          address={{ hash: item.l1_tx_origin, name: '', is_contract: false, is_verified: false, ens_domain_name: null }}
           isLoading={ isLoading }
           noCopy
           truncation="constant"

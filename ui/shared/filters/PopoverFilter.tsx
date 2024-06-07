@@ -12,20 +12,19 @@ import FilterButton from 'ui/shared/filters/FilterButton';
 
 interface Props {
   appliedFiltersNum?: number;
-  isActive?: boolean;
   children: React.ReactNode;
   contentProps?: PopoverContentProps;
   isLoading?: boolean;
 }
 
-const PopoverFilter = ({ appliedFiltersNum, children, contentProps, isActive, isLoading }: Props) => {
+const PopoverFilter = ({ appliedFiltersNum, children, contentProps, isLoading }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
 
   return (
     <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
       <PopoverTrigger>
         <FilterButton
-          isActive={ isOpen || isActive || Number(appliedFiltersNum) > 0 }
+          isActive={ isOpen }
           onClick={ onToggle }
           appliedFiltersNum={ appliedFiltersNum }
           isLoading={ isLoading }
