@@ -199,6 +199,25 @@ export default function useNavItems(): ReturnType {
       },
     ].filter(Boolean);
 
+    const otherNavItems: Array<NavItem> | Array<Array<NavItem>> = [
+      {
+        text: 'Verify contract',
+        nextRoute: { pathname: '/contract-verification' as const },
+        isActive: pathname.startsWith('/contract-verification'),
+      },
+      config.features.gasTracker.isEnabled && {
+        text: 'Gas tracker',
+        nextRoute: { pathname: '/gas-tracker' as const },
+        isActive: pathname.startsWith('/gas-tracker'),
+      },
+      config.features.publicTagsSubmission.isEnabled && {
+        text: 'Submit public tag',
+        nextRoute: { pathname: '/public-tags/submit' as const },
+        isActive: pathname.startsWith('/public-tags/submit'),
+      },
+      ...config.UI.navigation.otherLinks,
+    ].filter(Boolean);
+
     const mainNavItems: ReturnType['mainNavItems'] = [
       {
         text: 'Blockchain',
@@ -233,24 +252,8 @@ export default function useNavItems(): ReturnType {
       {
         text: 'Other',
         icon: 'gear',
-        subItems: [
-          {
-            text: 'Verify contract',
-            nextRoute: { pathname: '/contract-verification' as const },
-            isActive: pathname.startsWith('/contract-verification'),
-          },
-          config.features.gasTracker.isEnabled && {
-            text: 'Gas tracker',
-            nextRoute: { pathname: '/gas-tracker' as const },
-            isActive: pathname.startsWith('/gas-tracker'),
-          },
-          config.features.publicTagsSubmission.isEnabled && {
-            text: 'Submit public tag',
-            nextRoute: { pathname: '/public-tags/submit' as const },
-            isActive: pathname.startsWith('/public-tags/submit'),
-          },
-          ...config.UI.navigation.otherLinks,
-        ].filter(Boolean),
+        isActive: otherNavItems.flat().some(item => isInternalItem(item) && item.isActive),
+        subItems: otherNavItems,
       },
     ].filter(Boolean);
 
