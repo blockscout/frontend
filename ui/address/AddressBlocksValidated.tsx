@@ -27,9 +27,10 @@ import AddressBlocksValidatedTableItem from './blocksValidated/AddressBlocksVali
 interface Props {
   scrollRef?: React.RefObject<HTMLDivElement>;
   shouldRender?: boolean;
+  isQueryEnabled?: boolean;
 }
 
-const AddressBlocksValidated = ({ scrollRef, shouldRender = true }: Props) => {
+const AddressBlocksValidated = ({ scrollRef, shouldRender = true, isQueryEnabled = true }: Props) => {
   const [ socketAlert, setSocketAlert ] = React.useState(false);
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -41,6 +42,7 @@ const AddressBlocksValidated = ({ scrollRef, shouldRender = true }: Props) => {
     pathParams: { hash: addressHash },
     scrollRef,
     options: {
+      enabled: isQueryEnabled,
       placeholderData: generateListStub<'address_blocks_validated'>(
         BLOCK,
         50,
