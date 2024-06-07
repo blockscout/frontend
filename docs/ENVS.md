@@ -34,7 +34,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
   - [Banner ads](ENVS.md#banner-ads)
   - [Text ads](ENVS.md#text-ads)
   - [Beacon chain](ENVS.md#beacon-chain)
-  - [User operations](ENVS.md#user-operations-feature-erc-4337)
+  - [User operations](ENVS.md#user-operations-erc-4337)
   - [Rollup chain](ENVS.md#rollup-chain)
   - [Export data to CSV file](ENVS.md#export-data-to-csv-file)
   - [Google analytics](ENVS.md#google-analytics)
@@ -50,14 +50,17 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
   - [Verified tokens info](ENVS.md#verified-tokens-info)
   - [Name service integration](ENVS.md#name-service-integration)
   - [Metadata service integration](ENVS.md#metadata-service-integration)
+  - [Public tag submission](ENVS.md#public-tag-submission)
+  - [Data availability](ENVS.md#data-availability)
   - [Bridged tokens](ENVS.md#bridged-tokens)
   - [Safe{Core} address tags](ENVS.md#safecore-address-tags)
   - [SUAVE chain](ENVS.md#suave-chain)
   - [MetaSuites extension](ENVS.md#metasuites-extension)
+  - [Validators list](ENVS.md#validators-list)
   - [Sentry error monitoring](ENVS.md#sentry-error-monitoring)
   - [OpenTelemetry](ENVS.md#opentelemetry)
-  - [Swap button](ENVS.md#swap-button)
-  - [Multichain balance button](ENVS.md#multichain-button)
+  - [Swap button](ENVS.md#defi-dropdown)
+  - [Multichain balance button](ENVS.md#multichain-balance-button)
 - [3rd party services configuration](ENVS.md#external-services-configuration)
 
 &nbsp;
@@ -384,7 +387,7 @@ This feature is **enabled by default** with the `coinzilla` ads provider. To swi
 
 &nbsp;
 
-### User operations feature (ERC-4337)
+### User operations (ERC-4337)
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
