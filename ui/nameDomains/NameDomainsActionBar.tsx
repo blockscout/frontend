@@ -1,4 +1,4 @@
-import { Box, Checkbox, CheckboxGroup, Flex, HStack, Image, Text, VStack, chakra } from '@chakra-ui/react';
+import { Box, Checkbox, CheckboxGroup, Flex, HStack, Image, Link, Text, VStack, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { EnsDomainLookupFiltersOptions, EnsDomainProtocol } from 'types/api/ens';
@@ -58,6 +58,10 @@ const NameDomainsActionBar = ({
     />
   );
 
+  const handleProtocolReset = React.useCallback(() => {
+    onProtocolsFilterChange([]);
+  }, [ onProtocolsFilterChange ]);
+
   const filterGroupDivider = <Box w="100%" borderBottomWidth="1px" borderBottomColor="divider" my={ 4 }/>;
 
   const appliedFiltersNum = filterValue.length + (protocolsData && protocolsData.length > 1 ? protocolsFilterValue.length : 0);
@@ -67,12 +71,22 @@ const NameDomainsActionBar = ({
       <div>
         { protocolsData && protocolsData.length > 1 && (
           <>
-            <Text variant="secondary" fontWeight={ 600 } mb={ 3 } fontSize="sm">Protocol</Text>
+            <Flex justifyContent="space-between" fontSize="sm" mb={ 3 }>
+              <Text fontWeight={ 600 } variant="secondary">Protocol</Text>
+              <Link
+                onClick={ handleProtocolReset }
+                color={ protocolsData.length > 0 ? 'link' : 'text_secondary' }
+                _hover={{
+                  color: protocolsData.length > 0 ? 'link_hovered' : 'text_secondary',
+                }}
+              >
+                Reset
+              </Link>
+            </Flex>
             <CheckboxGroup size="lg" value={ protocolsFilterValue } defaultValue={ protocolsFilterValue } onChange={ onProtocolsFilterChange }>
               <VStack gap={ 5 } alignItems="flex-start">
                 { protocolsData.map((protocol) => {
                   const topLevelDomains = protocol.tld_list.map((domain) => `.${ domain }`).join(' ');
-
                   return (
                     <Checkbox key={ protocol.id } value={ protocol.id }>
                       <Flex alignItems="center">

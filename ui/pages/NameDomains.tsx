@@ -30,7 +30,7 @@ const NameDomains = () => {
   const ownedBy = getQueryParamString(router.query.owned_by);
   const resolvedTo = getQueryParamString(router.query.resolved_to);
   const onlyActive = getQueryParamString(router.query.only_active);
-  const protocols = Array.isArray(router.query.protocols) ? router.query.protocols : [ router.query.protocols ].filter(Boolean);
+  const protocols = Array.isArray(router.query.protocols) ? router.query.protocols : (router.query.protocols ?? '').split(',').filter(Boolean);
 
   const initialFilters: EnsDomainLookupFiltersOptions = [
     ownedBy === 'true' ? 'owned_by' as const : undefined,
