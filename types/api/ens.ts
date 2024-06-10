@@ -18,6 +18,7 @@ export interface EnsDomain {
 export interface EnsDomainProtocol {
   title: string;
   description: string;
+  deployment_blockscout_base_url: string;
   docs_url?: string;
   icon_url?: string;
   id: string;

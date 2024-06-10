@@ -22,6 +22,7 @@ export const protocolA: EnsDomainProtocol = {
   ],
   icon_url: 'https://i.imgur.com/GOfUwCb.jpeg',
   docs_url: 'https://docs.ens.domains/',
+  deployment_blockscout_base_url: 'http://localhost:3200/',
 };
 
 export const protocolB: EnsDomainProtocol = {
@@ -35,6 +36,7 @@ export const protocolB: EnsDomainProtocol = {
   ],
   icon_url: 'https://localhost:3000/duck.jpg',
   docs_url: 'https://docs.duck.domains/',
+  deployment_blockscout_base_url: '',
 };
 
 export const ensDomainA: EnsDomainDetailed = {

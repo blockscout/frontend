@@ -36,7 +36,7 @@ const NameDomain = () => {
 
   const tabs: Array<RoutedTab> = [
     { id: 'details', title: 'Details', component: <NameDomainDetails query={ infoQuery }/> },
-    { id: 'history', title: 'History', component: <NameDomainHistory/> },
+    { id: 'history', title: 'History', component: <NameDomainHistory domain={ infoQuery.data }/> },
   ];
 
   const tabIndex = useTabIndexFromQuery(tabs);
