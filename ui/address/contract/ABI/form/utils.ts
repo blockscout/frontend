@@ -78,22 +78,20 @@ export function transformFormDataToMethodArgs(formData: ContractMethodFormFields
 
   for (const field in formData) {
     const value = formData[field];
-    if (value !== undefined) {
-      _set(result, field.replaceAll(':', '.'), value);
-    }
+    _set(result, field.replaceAll(':', '.'), value);
   }
 
-  return filterOurEmptyItems(result);
+  return filterOutEmptyItems(result);
 }
 
-function filterOurEmptyItems(array: Array<unknown>): Array<unknown> {
+function filterOutEmptyItems(array: Array<unknown>): Array<unknown> {
   // The undefined value may occur in two cases:
   //    1. When an optional form field is left blank by the user.
   //        The only optional field is the native coin value, which is safely handled in the form submit handler.
   //    2. When the user adds and removes items from a field array.
   //        In this scenario, empty items need to be filtered out to maintain the correct sequence of arguments.
   return array
-    .map((item) => Array.isArray(item) ? filterOurEmptyItems(item) : item)
+    .map((item) => Array.isArray(item) ? filterOutEmptyItems(item) : item)
     .filter((item) => item !== undefined);
 }
 
