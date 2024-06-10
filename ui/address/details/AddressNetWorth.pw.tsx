@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import * as addressMock from 'mocks/address/address';
@@ -42,6 +43,21 @@ test('with multichain button external', async({ render, mockEnvs, mockAssetRespo
   await mockAssetResponse(ICON_URL, './playwright/mocks/image_svg.svg');
 
   const component = await render(<AddressNetWorth addressData={ addressMock.token } addressHash={ ADDRESS_HASH }/>);
+
+  await expect(component).toHaveScreenshot();
+});
+
+test('with multichain button internal small screen', async({ render, mockEnvs, mockAssetResponse }) => {
+  await mockEnvs([
+    [
+      'NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG',
+      `{"name": "duck", "dapp_id": "duck", "url_template": "https://duck.url/{address}", "logo": "${ ICON_URL }"}` ],
+  ]);
+  await mockAssetResponse(ICON_URL, './playwright/mocks/image_svg.svg');
+
+  const component = await render(
+    <Box w="300px"><AddressNetWorth addressData={ addressMock.token } addressHash={ ADDRESS_HASH }/></Box>,
+  );
 
   await expect(component).toHaveScreenshot();
 });
