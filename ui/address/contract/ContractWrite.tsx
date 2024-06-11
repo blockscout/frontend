@@ -52,7 +52,7 @@ const ContractWrite = ({ isLoading }: Props) => {
       { isCustomAbi && <ContractCustomAbiAlert/> }
       { config.features.blockchainInteraction.isEnabled && <ContractConnectWallet/> }
       { isProxy && <ContractImplementationAddress hash={ addressHash }/> }
-      <ContractAbi data={ data } addressHash={ addressHash } tab={ tab } methodType="write"/>
+      <ContractAbi data={ data } addressHash={ addressHash } tab={ tab }/>
     </>
   );
 };

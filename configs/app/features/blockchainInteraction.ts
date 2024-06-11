@@ -7,6 +7,7 @@ const walletConnectProjectId = getEnvValue('NEXT_PUBLIC_WALLET_CONNECT_PROJECT_I
 
 const title = 'Blockchain interaction (writing to contract, etc.)';
 
+// TODO @tom2drum adjust feature config
 const config: Feature<{ walletConnect: { projectId: string } }> = (() => {
 
   if (

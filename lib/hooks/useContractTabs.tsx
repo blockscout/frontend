@@ -11,7 +11,7 @@ import ContractCode from 'ui/address/contract/ContractCode';
 import ContractRead from 'ui/address/contract/ContractRead';
 import ContractRead_ from 'ui/address/contract/ContractRead_';
 import ContractWrite from 'ui/address/contract/ContractWrite';
-import divideAbiIntoMethodTypes from 'ui/address/contract/divideAbiIntoMethodTypes';
+import { divideAbiIntoMethodTypes } from 'ui/address/contract/utils';
 
 const CONTRACT_TAB_IDS = [
   'contract_code',
@@ -64,7 +64,7 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
     onSocketError: enableQuery,
   });
 
-  const methods = divideAbiIntoMethodTypes(contractQuery.data?.abi ?? []);
+  const methods = React.useMemo(() => divideAbiIntoMethodTypes(contractQuery.data?.abi ?? []), [ contractQuery.data?.abi ]);
 
   return React.useMemo(() => {
     return {
@@ -105,5 +105,5 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
       ].filter(Boolean),
       isLoading: contractQuery.isPlaceholderData,
     };
-  }, [ contractQuery, channel, data?.hash, methods.read ]);
+  }, [ contractQuery, channel, data?.hash, methods ]);
 }

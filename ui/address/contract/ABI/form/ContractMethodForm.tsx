@@ -1,16 +1,16 @@
 import { Box, Button, Flex, Tooltip, chakra } from '@chakra-ui/react';
-import _mapValues from 'lodash/mapValues';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
 import type { AbiFunction } from 'viem';
 
 import type { SmartContractMethod } from '../../types';
-import type { FormSubmitHandler, FormSubmitResult, MethodCallStrategy, MethodType } from '../types';
+import type { FormSubmitHandler, FormSubmitResult, MethodCallStrategy } from '../types';
 
 import config from 'configs/app';
 import * as mixpanel from 'lib/mixpanel/index';
 
+import { isReadMethod } from '../../utils';
 import ContractMethodFieldAccordion from './ContractMethodFieldAccordion';
 import ContractMethodFieldInput from './ContractMethodFieldInput';
 import ContractMethodFieldInputArray from './ContractMethodFieldInputArray';
@@ -23,10 +23,9 @@ import type { ContractMethodFormFields } from './utils';
 interface Props {
   data: SmartContractMethod;
   onSubmit: FormSubmitHandler;
-  methodType: MethodType;
 }
 
-const ContractMethodForm = ({ data, onSubmit, methodType }: Props) => {
+const ContractMethodForm = ({ data, onSubmit }: Props) => {
 
   const [ result, setResult ] = React.useState<FormSubmitResult>();
   const [ isLoading, setLoading ] = React.useState(false);
@@ -44,12 +43,10 @@ const ContractMethodForm = ({ data, onSubmit, methodType }: Props) => {
     callStrategyRef.current = callStrategy as MethodCallStrategy;
   }, []);
 
+  const methodType = isReadMethod(data) ? 'read' : 'write';
+
   const onFormSubmit: SubmitHandler<ContractMethodFormFields> = React.useCallback(async(formData) => {
-    // The API used for reading from contracts expects all values to be strings.
-    const formattedData = callStrategyRef.current === 'api' ?
-      _mapValues(formData, (value) => value !== undefined ? String(value) : undefined) :
-      formData;
-    const args = transformFormDataToMethodArgs(formattedData);
+    const args = transformFormDataToMethodArgs(formData);
 
     setResult(undefined);
     setLoading(true);
@@ -98,13 +95,13 @@ const ContractMethodForm = ({ data, onSubmit, methodType }: Props) => {
   const callStrategies = (() => {
     switch (methodType) {
       case 'read': {
-        return { primary: 'api', secondary: undefined };
+        return { primary: 'public_client', secondary: undefined };
       }
 
       case 'write': {
         return {
           primary: config.features.blockchainInteraction.isEnabled ? 'wallet_client' : undefined,
-          secondary: 'outputs' in data && Boolean(data.outputs?.length) ? 'api' : undefined,
+          secondary: 'outputs' in data && Boolean(data.outputs?.length) ? 'public_client' : undefined,
         };
       }
 

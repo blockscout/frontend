@@ -16,7 +16,7 @@ interface Params {
 
 export default function useCallMethodWalletClient(): (params: Params) => Promise<FormSubmitResult> {
   const { data: walletClient } = useWalletClient();
-  const { isConnected, chainId } = useAccount();
+  const { isConnected, chainId, address: account } = useAccount();
   const { switchChainAsync } = useSwitchChain();
 
   return React.useCallback(async({ args, item, addressHash }) => {
@@ -63,8 +63,9 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
       functionName: methodName,
       address: addressHash as `0x${ string }`,
       value,
+      account,
     });
 
     return { source: 'wallet_client', result: { hash } };
-  }, [ chainId, isConnected, switchChainAsync, walletClient ]);
+  }, [ chainId, isConnected, switchChainAsync, walletClient, account ]);
 }

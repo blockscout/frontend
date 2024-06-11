@@ -14,7 +14,7 @@ interface Props {
 const ContractMethodResult = ({ result, abiItem, onSettle }: Props) => {
 
   switch (result.source) {
-    case 'api':
+    case 'public_client':
       return <ContractMethodResultApi item={ abiItem } result={ result.result } onSettle={ onSettle }/>;
 
     case 'wallet_client':

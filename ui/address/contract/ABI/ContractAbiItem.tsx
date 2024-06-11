@@ -3,7 +3,7 @@ import React from 'react';
 import { Element } from 'react-scroll';
 
 import type { SmartContractMethod } from '../types';
-import type { FormSubmitHandler, MethodType } from './types';
+import type { FormSubmitHandler } from './types';
 
 import { route } from 'nextjs-routes';
 
@@ -24,10 +24,9 @@ interface Props {
   addressHash: string;
   tab: string;
   onSubmit: FormSubmitHandler;
-  methodType: MethodType;
 }
 
-const ContractAbiItem = ({ data, index, id, addressHash, tab, onSubmit, methodType }: Props) => {
+const ContractAbiItem = ({ data, index, id, addressHash, tab, onSubmit }: Props) => {
   const url = React.useMemo(() => {
     if (!('method_id' in data)) {
       return '';
@@ -75,7 +74,6 @@ const ContractAbiItem = ({ data, index, id, addressHash, tab, onSubmit, methodTy
         key={ id + '_' + index }
         data={ data }
         onSubmit={ onSubmit }
-        methodType={ methodType }
       />
     );
   })();

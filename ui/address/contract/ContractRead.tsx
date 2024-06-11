@@ -54,7 +54,7 @@ const ContractRead = ({ isLoading }: Props) => {
       { isCustomAbi && <ContractCustomAbiAlert/> }
       { config.features.blockchainInteraction.isEnabled && <ContractConnectWallet/> }
       { isProxy && <ContractImplementationAddress hash={ addressHash }/> }
-      <ContractAbi data={ data } addressHash={ addressHash } tab={ tab } methodType="read"/>
+      <ContractAbi data={ data } addressHash={ addressHash } tab={ tab }/>
     </>
   );
 };

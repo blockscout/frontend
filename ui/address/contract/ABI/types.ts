@@ -12,10 +12,10 @@ export type ContractAbiItem = SmartContractMethod;
 export type ContractAbi = Array<ContractAbiItem>;
 
 export type MethodType = 'read' | 'write';
-export type MethodCallStrategy = 'api' | 'wallet_client';
+export type MethodCallStrategy = 'wallet_client' | 'public_client';
 
 export interface FormSubmitResultApi {
-  source: 'api';
+  source: 'public_client';
   result: SmartContractQueryMethod | ResourceError | Error;
 }
 export interface FormSubmitResultWalletClient {

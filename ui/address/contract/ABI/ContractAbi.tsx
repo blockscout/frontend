@@ -3,7 +3,6 @@ import _range from 'lodash/range';
 import React from 'react';
 
 import type { SmartContractMethod } from '../types';
-import type { MethodType } from './types';
 
 import ContractAbiItem from './ContractAbiItem';
 import useFormSubmit from './useFormSubmit';
@@ -13,16 +12,15 @@ interface Props {
   data: Array<SmartContractMethod>;
   addressHash: string;
   tab: string;
-  methodType: MethodType;
 }
 
-const ContractAbi = ({ data, addressHash, tab, methodType }: Props) => {
+const ContractAbi = ({ data, addressHash, tab }: Props) => {
   const [ expandedSections, setExpandedSections ] = React.useState<Array<number>>(data.length === 1 ? [ 0 ] : []);
   const [ id, setId ] = React.useState(0);
 
   useScrollToMethod(data, setExpandedSections);
 
-  const handleFormSubmit = useFormSubmit({ addressHash, tab });
+  const handleFormSubmit = useFormSubmit({ addressHash });
 
   const handleAccordionStateChange = React.useCallback((newValue: Array<number>) => {
     setExpandedSections(newValue);
@@ -69,7 +67,6 @@ const ContractAbi = ({ data, addressHash, tab, methodType }: Props) => {
             addressHash={ addressHash }
             tab={ tab }
             onSubmit={ handleFormSubmit }
-            methodType={ methodType }
           />
         )) }
       </Accordion>

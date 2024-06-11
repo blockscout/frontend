@@ -4,31 +4,21 @@ import type { FormSubmitHandler } from './types';
 
 import config from 'configs/app';
 
-import useCallMethodApi from './useCallMethodApi';
+import useCallMethodPublicClient from './useCallMethodPublicClient';
 import useCallMethodWalletClient from './useCallMethodWalletClient';
 
 interface Params {
-  tab: string;
   addressHash: string;
 }
 
-function useFormSubmit({ tab, addressHash }: Params): FormSubmitHandler {
-  const callMethodApi = useCallMethodApi();
+function useFormSubmit({ addressHash }: Params): FormSubmitHandler {
   const callMethodWalletClient = useCallMethodWalletClient();
+  const callMethodPublicClient = useCallMethodPublicClient();
 
   return React.useCallback(async(item, args, strategy) => {
     switch (strategy) {
-      case 'api': {
-        if (!('method_id' in item)) {
-          throw new Error('Method ID is not defined');
-        }
-        return callMethodApi({
-          args,
-          methodId: item.method_id,
-          addressHash,
-          isCustomAbi: tab === 'read_custom_methods' || tab === 'write_custom_methods',
-          isProxy: tab === 'read_proxy' || tab === 'write_proxy',
-        });
+      case 'public_client': {
+        return callMethodPublicClient({ args, item, addressHash });
       }
       case 'wallet_client': {
         return callMethodWalletClient({ args, item, addressHash });
@@ -38,25 +28,16 @@ function useFormSubmit({ tab, addressHash }: Params): FormSubmitHandler {
         throw new Error(`Unknown call strategy "${ strategy }"`);
       }
     }
-  }, [ addressHash, callMethodApi, callMethodWalletClient, tab ]);
+  }, [ addressHash, callMethodWalletClient, callMethodPublicClient ]);
 }
 
-function useFormSubmitFallback({ tab, addressHash }: Params): FormSubmitHandler {
-  const callMethodApi = useCallMethodApi();
+function useFormSubmitFallback({ addressHash }: Params): FormSubmitHandler {
+  const callMethodPublicClient = useCallMethodPublicClient();
 
   return React.useCallback(async(item, args, strategy) => {
     switch (strategy) {
-      case 'api': {
-        if (!('method_id' in item)) {
-          throw new Error('Method ID is not defined');
-        }
-        return callMethodApi({
-          args,
-          methodId: item.method_id,
-          addressHash,
-          isCustomAbi: tab === 'read_custom_methods' || tab === 'write_custom_methods',
-          isProxy: tab === 'read_proxy' || tab === 'write_proxy',
-        });
+      case 'public_client': {
+        return callMethodPublicClient({ args, item, addressHash });
       }
 
       default: {
@@ -64,7 +45,7 @@ function useFormSubmitFallback({ tab, addressHash }: Params): FormSubmitHandler 
       }
     }
 
-  }, [ addressHash, callMethodApi, tab ]);
+  }, [ callMethodPublicClient, addressHash ]);
 }
 
 const hook = config.features.blockchainInteraction.isEnabled ? useFormSubmit : useFormSubmitFallback;
