@@ -79,6 +79,7 @@ export interface SmartContractExternalLibrary {
   name: string;
 }
 
+// TODO @tom2drum remove or replace these types
 export type SmartContractMethodOutputValue = string | boolean | object;
 export type SmartContractMethodOutput = AbiFunction['outputs'][number] & { value?: SmartContractMethodOutputValue };
 export type SmartContractMethodBase = Omit<AbiFunction, 'outputs'> & {

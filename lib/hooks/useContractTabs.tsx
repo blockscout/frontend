@@ -9,14 +9,18 @@ import useSocketChannel from 'lib/socket/useSocketChannel';
 import * as stubs from 'stubs/contract';
 import ContractCode from 'ui/address/contract/ContractCode';
 import ContractRead from 'ui/address/contract/ContractRead';
+import ContractRead_ from 'ui/address/contract/ContractRead_';
 import ContractWrite from 'ui/address/contract/ContractWrite';
+import divideAbiIntoMethodTypes from 'ui/address/contract/divideAbiIntoMethodTypes';
 
 const CONTRACT_TAB_IDS = [
   'contract_code',
   'read_contract',
+  'read_contract_rpc',
   'read_proxy',
   'read_custom_methods',
   'write_contract',
+  'write_contract_rpc',
   'write_proxy',
   'write_custom_methods',
 ] as const;
@@ -60,6 +64,8 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
     onSocketError: enableQuery,
   });
 
+  const methods = divideAbiIntoMethodTypes(contractQuery.data?.abi ?? []);
+
   return React.useMemo(() => {
     return {
       tabs: [
@@ -67,6 +73,16 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
           id: 'contract_code' as const,
           title: 'Code',
           component: <ContractCode contractQuery={ contractQuery } channel={ channel } addressHash={ data?.hash }/>,
+        },
+        methods.read.length > 0 && {
+          id: 'read_contract_rpc' as const,
+          title: 'Read contract RPC',
+          component: <ContractRead_ data={ methods.read } isLoading={ contractQuery.isPlaceholderData } type="read"/>,
+        },
+        methods.write.length > 0 && {
+          id: 'write_contract_rpc' as const,
+          title: 'Write contract RPC',
+          component: <ContractRead_ data={ methods.write } isLoading={ contractQuery.isPlaceholderData } type="write"/>,
         },
         contractQuery.data?.has_methods_read ?
           { id: 'read_contract' as const, title: 'Read contract', component: <ContractRead isLoading={ contractQuery.isPlaceholderData }/> } :
@@ -89,5 +105,5 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
       ].filter(Boolean),
       isLoading: contractQuery.isPlaceholderData,
     };
-  }, [ contractQuery, channel, data?.hash ]);
+  }, [ contractQuery, channel, data?.hash, methods.read ]);
 }
