@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { SmartContractMethodRead } from './types';
+import type { SmartContractMethod } from './types';
 
 import config from 'configs/app';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -11,7 +11,7 @@ import ContractAbi from './ABI/ContractAbi';
 import ContractConnectWallet from './ContractConnectWallet';
 
 interface Props {
-  data: Array<SmartContractMethodRead>;
+  data: Array<SmartContractMethod>;
   isLoading?: boolean;
   type: 'read' | 'write';
 }

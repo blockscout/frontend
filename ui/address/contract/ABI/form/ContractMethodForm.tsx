@@ -5,7 +5,8 @@ import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
 import type { AbiFunction } from 'viem';
 
-import type { FormSubmitHandler, FormSubmitResult, MethodCallStrategy, MethodType, ContractAbiItem } from '../types';
+import type { SmartContractMethod } from '../../types';
+import type { FormSubmitHandler, FormSubmitResult, MethodCallStrategy, MethodType } from '../types';
 
 import config from 'configs/app';
 import * as mixpanel from 'lib/mixpanel/index';
@@ -20,7 +21,7 @@ import { getFieldLabel, matchArray, transformFormDataToMethodArgs } from './util
 import type { ContractMethodFormFields } from './utils';
 
 interface Props {
-  data: ContractAbiItem;
+  data: SmartContractMethod;
   onSubmit: FormSubmitHandler;
   methodType: MethodType;
 }

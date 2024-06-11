@@ -2,14 +2,15 @@ import { Accordion, Box, Flex, Link } from '@chakra-ui/react';
 import _range from 'lodash/range';
 import React from 'react';
 
-import type { MethodType, ContractAbi as TContractAbi } from './types';
+import type { SmartContractMethod } from '../types';
+import type { MethodType } from './types';
 
 import ContractAbiItem from './ContractAbiItem';
 import useFormSubmit from './useFormSubmit';
 import useScrollToMethod from './useScrollToMethod';
 
 interface Props {
-  data: TContractAbi;
+  data: Array<SmartContractMethod>;
   addressHash: string;
   tab: string;
   methodType: MethodType;

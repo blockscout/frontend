@@ -2,7 +2,8 @@ import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Alert, B
 import React from 'react';
 import { Element } from 'react-scroll';
 
-import type { FormSubmitHandler, MethodType, ContractAbiItem as TContractAbiItem } from './types';
+import type { SmartContractMethod } from '../types';
+import type { FormSubmitHandler, MethodType } from './types';
 
 import { route } from 'nextjs-routes';
 
@@ -17,7 +18,7 @@ import ContractMethodForm from './form/ContractMethodForm';
 import { getElementName } from './useScrollToMethod';
 
 interface Props {
-  data: TContractAbiItem;
+  data: SmartContractMethod;
   index: number;
   id: number;
   addressHash: string;

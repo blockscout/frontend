@@ -1,9 +1,11 @@
 import type { AbiFunction } from 'abitype';
 
-import type { SmartContractMethod, SmartContractMethodOutput, SmartContractQueryMethod } from 'types/api/contract';
+import type { SmartContractMethod } from '../types';
+import type { SmartContractMethodOutput, SmartContractQueryMethod } from 'types/api/contract';
 
 import type { ResourceError } from 'lib/api/resources';
 
+// TODO @tom2drum remove these types
 export type ContractAbiItemInput = AbiFunction['inputs'][number] & { fieldType?: 'native_coin' };
 export type ContractAbiItemOutput = SmartContractMethodOutput;
 export type ContractAbiItem = SmartContractMethod;
@@ -22,4 +24,4 @@ export interface FormSubmitResultWalletClient {
 }
 export type FormSubmitResult = FormSubmitResultApi | FormSubmitResultWalletClient;
 
-export type FormSubmitHandler = (item: ContractAbiItem, args: Array<unknown>, submitType: MethodCallStrategy | undefined) => Promise<FormSubmitResult>;
+export type FormSubmitHandler = (item: SmartContractMethod, args: Array<unknown>, submitType: MethodCallStrategy | undefined) => Promise<FormSubmitResult>;
