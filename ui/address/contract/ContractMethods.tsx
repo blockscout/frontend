@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { MethodType } from './ABI/types';
 import type { SmartContractMethod } from './types';
 
 import config from 'configs/app';
@@ -14,10 +15,10 @@ import ContractCustomAbiAlert from './ContractCustomAbiAlert';
 interface Props {
   data: Array<SmartContractMethod>;
   isLoading?: boolean;
-  type: 'read' | 'write';
+  type: MethodType;
 }
 
-const ContractRead = ({ data, isLoading, type }: Props) => {
+const ContractMethods = ({ data, isLoading, type }: Props) => {
   const router = useRouter();
 
   const tab = getQueryParamString(router.query.tab);
@@ -36,10 +37,9 @@ const ContractRead = ({ data, isLoading, type }: Props) => {
     <>
       { isCustomAbi && <ContractCustomAbiAlert/> }
       { config.features.blockchainInteraction.isEnabled && <ContractConnectWallet/> }
-      { /* { isProxy && <ContractImplementationAddress hash={ addressHash }/> } */ }
       <ContractAbi data={ data } addressHash={ addressHash } tab={ tab }/>
     </>
   );
 };
 
-export default React.memo(ContractRead);
+export default React.memo(ContractMethods);

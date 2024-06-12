@@ -11,6 +11,7 @@ export type ContractAbiItemOutput = SmartContractMethodOutput;
 export type ContractAbiItem = SmartContractMethod;
 export type ContractAbi = Array<ContractAbiItem>;
 
+// TODO @tom2drum move this type up to the tree
 export type MethodType = 'read' | 'write';
 export type MethodCallStrategy = 'wallet_client' | 'public_client';
 
