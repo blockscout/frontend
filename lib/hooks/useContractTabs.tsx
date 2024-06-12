@@ -4,6 +4,7 @@ import React from 'react';
 import type { Address } from 'types/api/address';
 
 import useApiQuery from 'lib/api/useApiQuery';
+import * as cookies from 'lib/cookies';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import * as stubs from 'stubs/contract';
@@ -57,6 +58,13 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
     },
   });
 
+  const customAbiQuery = useApiQuery('custom_abi', {
+    queryOptions: {
+      enabled: isEnabled && isQueryEnabled && Boolean(cookies.get(cookies.NAMES.API_TOKEN)),
+      refetchOnMount: false,
+    },
+  });
+
   const channel = useSocketChannel({
     topic: `addresses:${ data?.hash?.toLowerCase() }`,
     isDisabled: !isEnabled,
@@ -65,6 +73,14 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
   });
 
   const methods = React.useMemo(() => divideAbiIntoMethodTypes(contractQuery.data?.abi ?? []), [ contractQuery.data?.abi ]);
+  const methodsCustomAbi = React.useMemo(() => {
+    return divideAbiIntoMethodTypes(
+      customAbiQuery.data
+        ?.find((item) => data && item.contract_address_hash.toLowerCase() === data.hash.toLowerCase())
+        ?.abi ??
+        [],
+    );
+  }, [ customAbiQuery.data, data ]);
 
   return React.useMemo(() => {
     return {
@@ -79,10 +95,20 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
           title: 'Read contract RPC',
           component: <ContractRead_ data={ methods.read } isLoading={ contractQuery.isPlaceholderData } type="read"/>,
         },
+        methodsCustomAbi.read.length > 0 && {
+          id: 'read_custom_methods' as const,
+          title: 'Read custom',
+          component: <ContractRead_ data={ methodsCustomAbi.read } isLoading={ contractQuery.isPlaceholderData } type="read"/>,
+        },
         methods.write.length > 0 && {
           id: 'write_contract_rpc' as const,
           title: 'Write contract RPC',
           component: <ContractRead_ data={ methods.write } isLoading={ contractQuery.isPlaceholderData } type="write"/>,
+        },
+        methodsCustomAbi.write.length > 0 && {
+          id: 'write_custom_methods' as const,
+          title: 'Write custom',
+          component: <ContractRead_ data={ methodsCustomAbi.write } isLoading={ contractQuery.isPlaceholderData } type="write"/>,
         },
         contractQuery.data?.has_methods_read ?
           { id: 'read_contract' as const, title: 'Read contract', component: <ContractRead isLoading={ contractQuery.isPlaceholderData }/> } :
@@ -90,20 +116,14 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
         contractQuery.data?.has_methods_read_proxy ?
           { id: 'read_proxy' as const, title: 'Read proxy', component: <ContractRead isLoading={ contractQuery.isPlaceholderData }/> } :
           undefined,
-        contractQuery.data?.has_custom_methods_read ?
-          { id: 'read_custom_methods' as const, title: 'Read custom', component: <ContractRead isLoading={ contractQuery.isPlaceholderData }/> } :
-          undefined,
         contractQuery.data?.has_methods_write ?
           { id: 'write_contract' as const, title: 'Write contract', component: <ContractWrite isLoading={ contractQuery.isPlaceholderData }/> } :
           undefined,
         contractQuery.data?.has_methods_write_proxy ?
           { id: 'write_proxy' as const, title: 'Write proxy', component: <ContractWrite isLoading={ contractQuery.isPlaceholderData }/> } :
           undefined,
-        contractQuery.data?.has_custom_methods_write ?
-          { id: 'write_custom_methods' as const, title: 'Write custom', component: <ContractWrite isLoading={ contractQuery.isPlaceholderData }/> } :
-          undefined,
       ].filter(Boolean),
       isLoading: contractQuery.isPlaceholderData,
     };
-  }, [ contractQuery, channel, data?.hash, methods ]);
+  }, [ contractQuery, channel, data?.hash, methods.read, methods.write, methodsCustomAbi.read, methodsCustomAbi.write ]);
 }

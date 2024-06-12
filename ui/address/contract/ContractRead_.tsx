@@ -9,6 +9,7 @@ import ContentLoader from 'ui/shared/ContentLoader';
 
 import ContractAbi from './ABI/ContractAbi';
 import ContractConnectWallet from './ContractConnectWallet';
+import ContractCustomAbiAlert from './ContractCustomAbiAlert';
 
 interface Props {
   data: Array<SmartContractMethod>;
@@ -21,6 +22,7 @@ const ContractRead = ({ data, isLoading, type }: Props) => {
 
   const tab = getQueryParamString(router.query.tab);
   const addressHash = getQueryParamString(router.query.hash);
+  const isCustomAbi = tab === 'read_custom_methods' || tab === 'write_custom_methods';
 
   if (isLoading) {
     return <ContentLoader/>;
@@ -32,7 +34,7 @@ const ContractRead = ({ data, isLoading, type }: Props) => {
 
   return (
     <>
-      { /* { isCustomAbi && <ContractCustomAbiAlert/> } */ }
+      { isCustomAbi && <ContractCustomAbiAlert/> }
       { config.features.blockchainInteraction.isEnabled && <ContractConnectWallet/> }
       { /* { isProxy && <ContractImplementationAddress hash={ addressHash }/> } */ }
       <ContractAbi data={ data } addressHash={ addressHash } tab={ tab }/>
