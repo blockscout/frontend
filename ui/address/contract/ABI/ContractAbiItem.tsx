@@ -13,6 +13,7 @@ import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import Hint from 'ui/shared/Hint';
 import IconSvg from 'ui/shared/IconSvg';
 
+import { isReadMethod } from '../utils';
 import ContractAbiItemConstant from './ContractAbiItemConstant';
 import ContractMethodForm from './form/ContractMethodForm';
 import { getElementName } from './useScrollToMethod';
@@ -24,9 +25,10 @@ interface Props {
   addressHash: string;
   tab: string;
   onSubmit: FormSubmitHandler;
+  isOpen: boolean;
 }
 
-const ContractAbiItem = ({ data, index, id, addressHash, tab, onSubmit }: Props) => {
+const ContractAbiItem = ({ data, index, id, addressHash, tab, onSubmit, isOpen }: Props) => {
   const url = React.useMemo(() => {
     if (!('method_id' in data)) {
       return '';
@@ -43,7 +45,7 @@ const ContractAbiItem = ({ data, index, id, addressHash, tab, onSubmit }: Props)
   }, [ addressHash, data, tab ]);
 
   const { hasCopied, onCopy } = useClipboard(url, 1000);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const methodIdTooltip = useDisclosure();
 
   const handleCopyLinkClick = React.useCallback((event: React.MouseEvent) => {
     event.stopPropagation();
@@ -59,13 +61,16 @@ const ContractAbiItem = ({ data, index, id, addressHash, tab, onSubmit }: Props)
       return <Alert status="error" fontSize="sm" wordBreak="break-word">{ data.error }</Alert>;
     }
 
-    const hasConstantOutputs = 'outputs' in data && data.outputs.some(({ value }) => value !== undefined && value !== null);
+    const hasConstantOutputs = isReadMethod(data) && data.inputs.length === 0;
 
     if (hasConstantOutputs) {
       return (
-        <Flex flexDir="column" rowGap={ 1 }>
-          { data.outputs.map((output, index) => <ContractAbiItemConstant key={ index } data={ output }/>) }
-        </Flex>
+        <ContractAbiItemConstant
+          key={ index }
+          data={ data }
+          addressHash={ addressHash }
+          isOpen={ isOpen }
+        />
       );
     }
 
@@ -85,15 +90,15 @@ const ContractAbiItem = ({ data, index, id, addressHash, tab, onSubmit }: Props)
           <Element as="h2" name={ 'method_id' in data ? getElementName(data.method_id) : '' }>
             <AccordionButton px={ 0 } py={ 3 } _hover={{ bgColor: 'inherit' }} wordBreak="break-all" textAlign="left" as="div" cursor="pointer">
               { 'method_id' in data && (
-                <Tooltip label={ hasCopied ? 'Copied!' : 'Copy link' } isOpen={ isOpen || hasCopied } onClose={ onClose }>
+                <Tooltip label={ hasCopied ? 'Copied!' : 'Copy link' } isOpen={ methodIdTooltip.isOpen || hasCopied } onClose={ methodIdTooltip.onClose }>
                   <Box
                     boxSize={ 5 }
                     color="text_secondary"
                     _hover={{ color: 'link_hovered' }}
                     mr={ 2 }
                     onClick={ handleCopyLinkClick }
-                    onMouseEnter={ onOpen }
-                    onMouseLeave={ onClose }
+                    onMouseEnter={ methodIdTooltip.onOpen }
+                    onMouseLeave={ methodIdTooltip.onClose }
                   >
                     <IconSvg name="link" boxSize={ 5 }/>
                   </Box>
