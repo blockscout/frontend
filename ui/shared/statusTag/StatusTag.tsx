@@ -1,4 +1,4 @@
-import { TagLabel, Tooltip } from '@chakra-ui/react';
+import { TagLabel, Tooltip, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import Tag from 'ui/shared/chakra/Tag';
@@ -12,9 +12,10 @@ export interface Props {
   text: string;
   errorText?: string | null;
   isLoading?: boolean;
+  className?: string;
 }
 
-const StatusTag = ({ type, text, errorText, isLoading }: Props) => {
+const StatusTag = ({ type, text, errorText, isLoading, className }: Props) => {
   let icon: IconName;
   let colorScheme;
 
@@ -35,7 +36,7 @@ const StatusTag = ({ type, text, errorText, isLoading }: Props) => {
 
   return (
     <Tooltip label={ errorText }>
-      <Tag colorScheme={ colorScheme } display="flex" isLoading={ isLoading } >
+      <Tag colorScheme={ colorScheme } display="flex" isLoading={ isLoading } className={ className }>
         <IconSvg boxSize={ 2.5 } name={ icon } mr={ 1 } flexShrink={ 0 }/>
         <TagLabel display="block">{ text }</TagLabel>
       </Tag>
@@ -43,4 +44,4 @@ const StatusTag = ({ type, text, errorText, isLoading }: Props) => {
   );
 };
 
-export default StatusTag;
+export default chakra(StatusTag);

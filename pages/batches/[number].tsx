@@ -15,6 +15,8 @@ const Batch = dynamic(() => {
   }
 
   switch (rollupFeature.type) {
+    case 'arbitrum':
+      return import('ui/pages/ArbitrumL2TxnBatch');
     case 'zkEvm':
       return import('ui/pages/ZkEvmL2TxnBatch');
     case 'zkSync':

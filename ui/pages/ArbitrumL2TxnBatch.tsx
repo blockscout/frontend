@@ -9,16 +9,18 @@ import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import { ARBITRUM_L2_TXN_BATCH } from 'stubs/arbitrumL2';
+import { BLOCK } from 'stubs/block';
 import { TX } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
-import { ZKSYNC_L2_TXN_BATCH } from 'stubs/zkSyncL2';
+import BlocksContent from 'ui/blocks/BlocksContent';
 import TextAd from 'ui/shared/ad/TextAd';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
-import ZkSyncL2TxnBatchDetails from 'ui/txnBatches/zkSyncL2/ZkSyncL2TxnBatchDetails';
+import ArbitrumL2TxnBatchDetails from 'ui/txnBatches/arbitrumL2/ArbitrumL2TxnBatchDetails';
 import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
 
 const TAB_LIST_PROPS = {
@@ -29,27 +31,27 @@ const TAB_LIST_PROPS = {
 
 const TABS_HEIGHT = 80;
 
-const ZkSyncL2TxnBatch = () => {
+const ArbitrumL2TxnBatch = () => {
   const router = useRouter();
   const appProps = useAppContext();
   const number = getQueryParamString(router.query.number);
   const tab = getQueryParamString(router.query.tab);
   const isMobile = useIsMobile();
 
-  const batchQuery = useApiQuery('zksync_l2_txn_batch', {
+  const batchQuery = useApiQuery('arbitrum_l2_txn_batch', {
     pathParams: { number },
     queryOptions: {
       enabled: Boolean(number),
-      placeholderData: ZKSYNC_L2_TXN_BATCH,
+      placeholderData: ARBITRUM_L2_TXN_BATCH,
     },
   });
 
   const batchTxsQuery = useQueryWithPages({
-    resourceName: 'zksync_l2_txn_batch_txs',
+    resourceName: 'arbitrum_l2_txn_batch_txs',
     pathParams: { number },
     options: {
       enabled: Boolean(!batchQuery.isPlaceholderData && batchQuery.data?.number && tab === 'txs'),
-      placeholderData: generateListStub<'zksync_l2_txn_batch_txs'>(TX, 50, { next_page_params: {
+      placeholderData: generateListStub<'arbitrum_l2_txn_batch_txs'>(TX, 50, { next_page_params: {
         batch_number: '8122',
         block_number: 1338932,
         index: 0,
@@ -58,19 +60,45 @@ const ZkSyncL2TxnBatch = () => {
     },
   });
 
+  const batchBlocksQuery = useQueryWithPages({
+    resourceName: 'arbitrum_l2_txn_batch_blocks',
+    pathParams: { number },
+    options: {
+      enabled: Boolean(!batchQuery.isPlaceholderData && batchQuery.data?.number && tab === 'blocks'),
+      placeholderData: generateListStub<'arbitrum_l2_txn_batch_blocks'>(BLOCK, 50, { next_page_params: {
+        batch_number: '8122',
+        block_number: 1338932,
+        items_count: 50,
+      } }),
+    },
+  });
+
   throwOnAbsentParamError(number);
   throwOnResourceLoadError(batchQuery);
 
-  const hasPagination = !isMobile && batchTxsQuery.pagination.isVisible && tab === 'txs';
+  let pagination;
+  if (tab === 'txs') {
+    pagination = batchTxsQuery.pagination;
+  }
+  if (tab === 'blocks') {
+    pagination = batchBlocksQuery.pagination;
+  }
+
+  const hasPagination = !isMobile && pagination?.isVisible;
 
   const tabs: Array<RoutedTab> = React.useMemo(() => ([
-    { id: 'index', title: 'Details', component: <ZkSyncL2TxnBatchDetails query={ batchQuery }/> },
+    { id: 'index', title: 'Details', component: <ArbitrumL2TxnBatchDetails query={ batchQuery }/> },
     {
       id: 'txs',
       title: 'Transactions',
       component: <TxsWithFrontendSorting query={ batchTxsQuery } showSocketInfo={ false } top={ hasPagination ? TABS_HEIGHT : 0 }/>,
     },
-  ].filter(Boolean)), [ batchQuery, batchTxsQuery, hasPagination ]);
+    {
+      id: 'blocks',
+      title: 'Blocks',
+      component: <BlocksContent type="block" query={ batchBlocksQuery } showSocketInfo={ false } top={ hasPagination ? TABS_HEIGHT : 0 }/>,
+    },
+  ].filter(Boolean)), [ batchQuery, batchTxsQuery, batchBlocksQuery, hasPagination ]);
 
   const backLink = React.useMemo(() => {
     const hasGoBackLink = appProps.referrer && appProps.referrer.endsWith('/batches');
@@ -97,7 +125,7 @@ const ZkSyncL2TxnBatch = () => {
           <RoutedTabs
             tabs={ tabs }
             tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
-            rightSlot={ hasPagination ? <Pagination { ...(batchTxsQuery.pagination) }/> : null }
+            rightSlot={ hasPagination && pagination ? <Pagination { ...(pagination) }/> : null }
             stickyEnabled={ hasPagination }
           />
         ) }
@@ -105,4 +133,4 @@ const ZkSyncL2TxnBatch = () => {
   );
 };
 
-export default ZkSyncL2TxnBatch;
+export default ArbitrumL2TxnBatch;

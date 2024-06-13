@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
+import { ARBITRUM_L2_TX_BATCH_STATUSES } from 'types/api/arbitrumL2';
 import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'types/api/zkSyncL2';
 
 import { route } from 'nextjs-routes';
@@ -12,6 +13,7 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import getBlockReward from 'lib/block/getBlockReward';
 import { GWEI, WEI, WEI_IN_GWEI, ZERO } from 'lib/consts';
+import getArbitrumVerificationStepStatus from 'lib/getArbitrumVerificationStepStatus';
 import { space } from 'lib/html-entities';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -22,12 +24,14 @@ import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import DetailsTimestamp from 'ui/shared/DetailsTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
+import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import PrevNext from 'ui/shared/PrevNext';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
+import StatusTag from 'ui/shared/statusTag/StatusTag';
 import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
@@ -184,6 +188,22 @@ const BlockDetails = ({ query }: Props) => {
         />
       </DetailsInfoItem.Value>
 
+      { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && data.arbitrum && !config.UI.views.block.hiddenFields?.batch && (
+        <>
+          <DetailsInfoItem.Label
+            hint="Batch number"
+            isLoading={ isPlaceholderData }
+          >
+          Batch
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            { data.arbitrum.batch_number ?
+              <BatchEntityL2 isLoading={ isPlaceholderData } number={ data.arbitrum.batch_number }/> :
+              <Skeleton isLoaded={ !isPlaceholderData }>Pending</Skeleton> }
+          </DetailsInfoItem.Value>
+        </>
+      ) }
+
       <DetailsInfoItem.Label
         hint="Size of the block in bytes"
         isLoading={ isPlaceholderData }
@@ -251,7 +271,9 @@ const BlockDetails = ({ query }: Props) => {
           </DetailsInfoItem.Value>
         </>
       ) }
-      { rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && data.zksync && !config.UI.views.block.hiddenFields?.L1_status && (
+      { !config.UI.views.block.hiddenFields?.L1_status && rollupFeature.isEnabled &&
+        ((rollupFeature.type === 'zkSync' && data.zksync) || (rollupFeature.type === 'arbitrum' && data.arbitrum)) &&
+      (
         <>
           <DetailsInfoItem.Label
             hint="Status is the short interpretation of the batch lifecycle"
@@ -260,7 +282,16 @@ const BlockDetails = ({ query }: Props) => {
             Status
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
-            <VerificationSteps steps={ ZKSYNC_L2_TX_BATCH_STATUSES } currentStep={ data.zksync.status } isLoading={ isPlaceholderData }/>
+            { rollupFeature.type === 'zkSync' && data.zksync &&
+              <VerificationSteps steps={ ZKSYNC_L2_TX_BATCH_STATUSES } currentStep={ data.zksync.status } isLoading={ isPlaceholderData }/> }
+            { rollupFeature.type === 'arbitrum' && data.arbitrum && (
+              <VerificationSteps
+                steps={ ARBITRUM_L2_TX_BATCH_STATUSES }
+                currentStep={ data.arbitrum.status }
+                currentStepPending={ getArbitrumVerificationStepStatus(data.arbitrum) === 'pending' }
+                isLoading={ isPlaceholderData }
+              />
+            ) }
           </DetailsInfoItem.Value>
         </>
       ) }
@@ -279,6 +310,42 @@ const BlockDetails = ({ query }: Props) => {
               isLoading={ isPlaceholderData }
             />
           </DetailsInfoItem.Value>
+        </>
+      ) }
+
+      { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' &&
+        (data.arbitrum?.commitment_transaction.hash || data.arbitrum?.confirmation_transaction.hash) &&
+      (
+        <>
+          <DetailsInfoItemDivider/>
+          { data.arbitrum?.commitment_transaction.hash && (
+            <>
+              <DetailsInfoItem.Label
+                hint="L1 transaction containing this batch commitment"
+                isLoading={ isPlaceholderData }
+              >
+                Commitment tx
+              </DetailsInfoItem.Label>
+              <DetailsInfoItem.Value>
+                <TxEntityL1 hash={ data.arbitrum?.commitment_transaction.hash } isLoading={ isPlaceholderData }/>
+                { data.arbitrum?.commitment_transaction.status === 'finalized' && <StatusTag type="ok" text="Finalized" ml={ 2 }/> }
+              </DetailsInfoItem.Value>
+            </>
+          ) }
+          { data.arbitrum?.confirmation_transaction.hash && (
+            <>
+              <DetailsInfoItem.Label
+                hint="L1 transaction containing confirmation of this batch"
+                isLoading={ isPlaceholderData }
+              >
+                Confirmation tx
+              </DetailsInfoItem.Label>
+              <DetailsInfoItem.Value>
+                <TxEntityL1 hash={ data.arbitrum?.confirmation_transaction.hash } isLoading={ isPlaceholderData }/>
+                { data.arbitrum?.commitment_transaction.status === 'finalized' && <StatusTag type="ok" text="Finalized" ml={ 2 }/> }
+              </DetailsInfoItem.Value>
+            </>
+          ) }
         </>
       ) }
 
