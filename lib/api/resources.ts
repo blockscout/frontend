@@ -1,3 +1,4 @@
+import type * as bens from '@blockscout/bens-types';
 import { getFeaturePayload } from 'configs/app/features/types';
 import type {
   UserInfo,
@@ -47,12 +48,7 @@ import type {
 import type { VerifiedContractsResponse, VerifiedContractsFilters, VerifiedContractsCounters } from 'types/api/contracts';
 import type {
   EnsAddressLookupFilters,
-  EnsAddressLookupResponse,
-  EnsDomainDetailed,
-  EnsDomainEventsResponse,
   EnsDomainLookupFilters,
-  EnsDomainLookupResponse,
-  EnsDomainProtocolsResponse,
   EnsLookupSorting,
 } from 'types/api/ens';
 import type { IndexingStatus } from 'types/api/indexingStatus';
@@ -1011,11 +1007,11 @@ Q extends 'zksync_l2_txn_batches_count' ? number :
 Q extends 'zksync_l2_txn_batch' ? ZkSyncBatch :
 Q extends 'zksync_l2_txn_batch_txs' ? ZkSyncBatchTxs :
 Q extends 'contract_security_audits' ? SmartContractSecurityAudits :
-Q extends 'addresses_lookup' ? EnsAddressLookupResponse :
-Q extends 'domain_info' ? EnsDomainDetailed :
-Q extends 'domain_events' ? EnsDomainEventsResponse :
-Q extends 'domains_lookup' ? EnsDomainLookupResponse :
-Q extends 'domain_protocols' ? EnsDomainProtocolsResponse :
+Q extends 'addresses_lookup' ? bens.LookupAddressResponse :
+Q extends 'domain_info' ? bens.DetailedDomain :
+Q extends 'domain_events' ? bens.ListDomainEventsResponse :
+Q extends 'domains_lookup' ? bens.LookupDomainNameResponse :
+Q extends 'domain_protocols' ? bens.GetProtocolsResponse :
 Q extends 'user_ops' ? UserOpsResponse :
 Q extends 'user_op' ? UserOp :
 Q extends 'user_ops_account' ? UserOpsAccount :

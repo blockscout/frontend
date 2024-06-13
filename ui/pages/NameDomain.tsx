@@ -61,7 +61,7 @@ const NameDomain = () => {
         protocol={ infoQuery.data?.protocol }
         isLoading={ isLoading }
         noLink
-        maxW={{ lg: infoQuery.data?.resolved_address ? '300px' : 'min-content' }}
+        maxW={{ lg: infoQuery.data?.resolved_address ? '300px' : 'max-content' }}
       />
       { infoQuery.data?.resolved_address && (
         <Flex alignItems="center" maxW="100%" columnGap={ 3 }>

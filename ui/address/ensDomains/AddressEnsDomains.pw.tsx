@@ -1,7 +1,7 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
-import type { EnsAddressLookupResponse } from 'types/api/ens';
+import type * as bens from '@blockscout/bens-types';
 
 import type { ResourceError } from 'lib/api/resources';
 import * as ensDomainMock from 'mocks/ens/domain';
@@ -24,7 +24,7 @@ test('base view', async({ render, page, mockAssetResponse }) => {
     },
     isPending: false,
     isError: false,
-  } as unknown as UseQueryResult<EnsAddressLookupResponse, ResourceError<unknown>>;
+  } as unknown as UseQueryResult<bens.LookupAddressResponse, ResourceError<unknown>>;
   await mockAssetResponse(ensDomainMock.ensDomainA.protocol?.icon_url as string, './playwright/mocks/image_s.jpg');
 
   const component = await render(

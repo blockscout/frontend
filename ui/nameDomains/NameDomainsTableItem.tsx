@@ -1,14 +1,14 @@
 import { chakra, Tr, Td, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
-import type { EnsDomain } from 'types/api/ens';
+import type * as bens from '@blockscout/bens-types';
 
 import dayjs from 'lib/date/dayjs';
 import NameDomainExpiryStatus from 'ui/nameDomain/NameDomainExpiryStatus';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 
-type Props = EnsDomain & {
+type Props = bens.Domain & {
   isLoading?: boolean;
 }
 

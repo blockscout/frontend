@@ -2,7 +2,7 @@ import { Grid, Skeleton, Tooltip, Flex } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
-import type { EnsDomainDetailed } from 'types/api/ens';
+import * as bens from '@blockscout/bens-types';
 
 import { route } from 'nextjs-routes';
 
@@ -20,7 +20,7 @@ import TextSeparator from 'ui/shared/TextSeparator';
 import NameDomainExpiryStatus from './NameDomainExpiryStatus';
 
 interface Props {
-  query: UseQueryResult<EnsDomainDetailed, ResourceError<unknown>>;
+  query: UseQueryResult<bens.DetailedDomain, ResourceError<unknown>>;
 }
 
 const NameDomainDetails = ({ query }: Props) => {
@@ -178,10 +178,10 @@ const NameDomainDetails = ({ query }: Props) => {
         return (
           <React.Fragment key={ token.type }>
             <DetailsInfoItem.Label
-              hint={ `The ${ token.type === 'WRAPPED_DOMAIN_TOKEN' ? 'wrapped ' : '' }token ID of this domain name NFT` }
+              hint={ `The ${ token.type === bens.TokenType.WRAPPED_DOMAIN_TOKEN ? 'wrapped ' : '' }token ID of this domain name NFT` }
               isLoading={ isLoading }
             >
-              { token.type === 'WRAPPED_DOMAIN_TOKEN' ? 'Wrapped token ID' : 'Token ID' }
+              { token.type === bens.TokenType.WRAPPED_DOMAIN_TOKEN ? 'Wrapped token ID' : 'Token ID' }
             </DetailsInfoItem.Label>
             <DetailsInfoItem.Value
               wordBreak="break-all"

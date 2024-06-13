@@ -2,7 +2,7 @@ import { Box, Hide, Show } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { EnsDomainDetailed } from 'types/api/ens';
+import type * as bens from '@blockscout/bens-types';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
@@ -15,7 +15,7 @@ import NameDomainHistoryTable from './history/NameDomainHistoryTable';
 import { getNextSortValue, type Sort, type SortField } from './history/utils';
 
 interface Props {
-  domain: EnsDomainDetailed | undefined;
+  domain: bens.DetailedDomain | undefined;
 }
 
 const NameDomainHistory = ({ domain }: Props) => {

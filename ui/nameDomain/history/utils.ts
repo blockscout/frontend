@@ -1,4 +1,4 @@
-import type { EnsDomainEvent } from 'types/api/ens';
+import type * as bens from '@blockscout/bens-types';
 
 import getNextSortValueShared from 'ui/shared/sort/getNextSortValue';
 
@@ -11,7 +11,7 @@ const SORT_SEQUENCE: Record<SortField, Array<Sort | undefined>> = {
 
 export const getNextSortValue = (getNextSortValueShared<SortField, Sort>).bind(undefined, SORT_SEQUENCE);
 
-export const sortFn = (sort: Sort | undefined) => (a: EnsDomainEvent, b: EnsDomainEvent) => {
+export const sortFn = (sort: Sort | undefined) => (a: bens.DomainEvent, b: bens.DomainEvent) => {
   switch (sort) {
     case 'timestamp-asc': {
       return b.timestamp.localeCompare(a.timestamp);
