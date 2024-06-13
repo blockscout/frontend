@@ -13,7 +13,7 @@ export type ContractAbi = Array<ContractAbiItem>;
 
 // TODO @tom2drum move this type up to the tree
 export type MethodType = 'read' | 'write';
-export type MethodCallStrategy = 'wallet_client' | 'public_client';
+export type MethodCallStrategy = 'read' | 'write' | 'simulate';
 
 export interface FormSubmitResultApi {
   source: 'public_client';

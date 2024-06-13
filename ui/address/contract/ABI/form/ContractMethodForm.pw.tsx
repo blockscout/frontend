@@ -1,12 +1,12 @@
 import React from 'react';
 
-import type { ContractAbiItem } from '../types';
+import type { ContractAbiItem, FormSubmitHandler } from '../types';
 
 import { test, expect } from 'playwright/lib';
 
 import ContractMethodForm from './ContractMethodForm';
 
-const onSubmit = () => Promise.resolve({ source: 'wallet_client' as const, result: { hash: '0x0000' as `0x${ string }` } });
+const onSubmit: FormSubmitHandler = () => Promise.resolve({ source: 'wallet_client' as const, result: { hash: '0x0000' as `0x${ string }` } });
 
 const data: ContractAbiItem = {
   inputs: [
@@ -102,7 +102,6 @@ test('base view +@mobile +@dark-mode', async({ render }) => {
     <ContractMethodForm
       data={ data }
       onSubmit={ onSubmit }
-      methodType="write"
     />,
   );
 

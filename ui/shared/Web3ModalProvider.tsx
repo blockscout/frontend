@@ -13,7 +13,7 @@ const feature = config.features.blockchainInteraction;
 
 const init = () => {
   try {
-    if (!wagmiConfig || !feature.isEnabled) {
+    if (!feature.isEnabled) {
       return;
     }
 
@@ -36,25 +36,24 @@ init();
 
 interface Props {
   children: React.ReactNode;
-  fallback?: JSX.Element | (() => JSX.Element);
+  fallback?: JSX.Element;
 }
 
 const Fallback = ({ children, fallback }: Props) => {
-  return typeof fallback === 'function' ? fallback() : (fallback || <>{ children }</>); // eslint-disable-line react/jsx-no-useless-fragment
+  return (
+    <WagmiProvider config={ wagmiConfig }>
+      { fallback || children }
+    </WagmiProvider>
+  );
 };
 
-const Provider = ({ children, fallback }: Props) => {
+const Provider = ({ children }: Props) => {
   const { colorMode } = useColorMode();
   const { setThemeMode } = useWeb3ModalTheme();
 
   React.useEffect(() => {
     setThemeMode(colorMode);
   }, [ colorMode, setThemeMode ]);
-
-  // not really necessary, but we have to make typescript happy
-  if (!wagmiConfig || !feature.isEnabled) {
-    return <Fallback fallback={ fallback }>{ children }</Fallback>;
-  }
 
   return (
     <WagmiProvider config={ wagmiConfig }>
@@ -63,6 +62,6 @@ const Provider = ({ children, fallback }: Props) => {
   );
 };
 
-const Web3ModalProvider = wagmiConfig && feature.isEnabled ? Provider : Fallback;
+const Web3ModalProvider = feature.isEnabled ? Provider : Fallback;
 
 export default Web3ModalProvider;

@@ -1,4 +1,4 @@
-import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Alert, Box, Flex, Tooltip, useClipboard, useDisclosure } from '@chakra-ui/react';
+import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Alert, Box, Tooltip, useClipboard, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 import { Element } from 'react-scroll';
 
@@ -58,7 +58,7 @@ const ContractAbiItem = ({ data, index, id, addressHash, tab, onSubmit, isOpen }
 
   const content = (() => {
     if ('error' in data && data.error) {
-      return <Alert status="error" fontSize="sm" wordBreak="break-word">{ data.error }</Alert>;
+      return <Alert status="error" fontSize="sm" wordBreak="break-word">data.error</Alert>;
     }
 
     const hasConstantOutputs = isReadMethod(data) && data.inputs.length === 0;

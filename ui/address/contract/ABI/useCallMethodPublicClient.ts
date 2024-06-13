@@ -1,25 +1,24 @@
 import React from 'react';
-import type { Abi } from 'viem';
 import { usePublicClient } from 'wagmi';
 
 import type { SmartContractMethod } from '../types';
-import type { FormSubmitResult } from './types';
+import type { FormSubmitResult, MethodCallStrategy } from './types';
 
+import config from 'configs/app';
 import useAccount from 'lib/web3/useAccount';
-
-import { isReadMethod } from '../utils';
 
 interface Params {
   item: SmartContractMethod;
   args: Array<unknown>;
   addressHash: string;
+  strategy: Exclude<MethodCallStrategy, 'write'>;
 }
 
 export default function useCallMethodPublicClient(): (params: Params) => Promise<FormSubmitResult> {
-  const publicClient = usePublicClient();
+  const publicClient = usePublicClient({ chainId: Number(config.chain.id) });
   const { address } = useAccount();
 
-  return React.useCallback(async({ args, item, addressHash }) => {
+  return React.useCallback(async({ args, item, addressHash, strategy }) => {
     if (!('name' in item)) {
       throw new Error('Unknown contract method');
     }
@@ -29,14 +28,14 @@ export default function useCallMethodPublicClient(): (params: Params) => Promise
     }
 
     const params = {
-      abi: [ item ] as Abi,
+      abi: [ item ],
       functionName: item.name,
       args: args,
       address: addressHash as `0x${ string }`,
       account: address,
     };
 
-    const result = isReadMethod(item) ? await publicClient.readContract(params) : await publicClient.simulateContract(params);
+    const result = strategy === 'read' ? await publicClient.readContract(params) : await publicClient.simulateContract(params);
     return {
       source: 'public_client' as const,
       result: {
@@ -45,7 +44,7 @@ export default function useCallMethodPublicClient(): (params: Params) => Promise
           names: [],
           output: [ {
             type: 'string',
-            value: result as string,
+            value: String(result),
           } ],
         },
       },

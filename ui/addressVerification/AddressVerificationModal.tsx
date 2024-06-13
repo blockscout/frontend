@@ -69,6 +69,7 @@ const AddressVerificationModal = ({ defaultAddress, isOpen, onClose, onSubmit, o
     handleClose();
   }, [ handleClose, data.address, onAddTokenInfoClick ]);
 
+  // TODO @tom2drum think about re-writing this
   const steps = [
     {
       title: 'Verify new address ownership',

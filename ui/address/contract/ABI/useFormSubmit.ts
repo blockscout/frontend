@@ -17,10 +17,11 @@ function useFormSubmit({ addressHash }: Params): FormSubmitHandler {
 
   return React.useCallback(async(item, args, strategy) => {
     switch (strategy) {
-      case 'public_client': {
-        return callMethodPublicClient({ args, item, addressHash });
+      case 'read':
+      case 'simulate': {
+        return callMethodPublicClient({ args, item, addressHash, strategy });
       }
-      case 'wallet_client': {
+      case 'write': {
         return callMethodWalletClient({ args, item, addressHash });
       }
 
@@ -36,8 +37,9 @@ function useFormSubmitFallback({ addressHash }: Params): FormSubmitHandler {
 
   return React.useCallback(async(item, args, strategy) => {
     switch (strategy) {
-      case 'public_client': {
-        return callMethodPublicClient({ args, item, addressHash });
+      case 'read':
+      case 'simulate': {
+        return callMethodPublicClient({ args, item, addressHash, strategy });
       }
 
       default: {

@@ -57,7 +57,7 @@ const ContractMethodForm = ({ data, onSubmit }: Props) => {
       })
       .catch((error) => {
         setResult({
-          source: callStrategyRef.current ?? 'wallet_client',
+          source: callStrategyRef.current === 'write' ? 'wallet_client' : 'public_client',
           result: error?.error || error?.data || (error?.reason && { message: error.reason }) || error,
         });
         setLoading(false);
@@ -95,13 +95,13 @@ const ContractMethodForm = ({ data, onSubmit }: Props) => {
   const callStrategies = (() => {
     switch (methodType) {
       case 'read': {
-        return { primary: 'public_client', secondary: undefined };
+        return { primary: 'read', secondary: undefined };
       }
 
       case 'write': {
         return {
-          primary: config.features.blockchainInteraction.isEnabled ? 'wallet_client' : undefined,
-          secondary: 'outputs' in data && Boolean(data.outputs?.length) ? 'public_client' : undefined,
+          primary: config.features.blockchainInteraction.isEnabled ? 'write' : undefined,
+          secondary: 'outputs' in data && Boolean(data.outputs?.length) ? 'simulate' : undefined,
         };
       }
 
