@@ -17,7 +17,7 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import _clamp from 'lodash/clamp';
 import React from 'react';
 
-import type { EnsAddressLookupResponse, EnsDomain } from 'types/api/ens';
+import type * as bens from '@blockscout/bens-types';
 
 import { route } from 'nextjs-routes';
 
@@ -29,12 +29,12 @@ import LinkInternal from 'ui/shared/links/LinkInternal';
 import PopoverTriggerTooltip from 'ui/shared/PopoverTriggerTooltip';
 
 interface Props {
-  query: UseQueryResult<EnsAddressLookupResponse, ResourceError<unknown>>;
+  query: UseQueryResult<bens.LookupAddressResponse, ResourceError<unknown>>;
   addressHash: string;
   mainDomainName: string | null;
 }
 
-const DomainsGrid = ({ data }: { data: Array<EnsDomain> }) => {
+const DomainsGrid = ({ data }: { data: Array<bens.Domain> }) => {
   return (
     <Grid
       templateColumns={{ base: `repeat(${ _clamp(data.length, 1, 2) }, 1fr)`, lg: `repeat(${ _clamp(data.length, 1, 3) }, 1fr)` }}

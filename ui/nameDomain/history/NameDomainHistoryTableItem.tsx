@@ -1,7 +1,7 @@
 import { Tr, Td, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
-import type { EnsDomainDetailed, EnsDomainEvent } from 'types/api/ens';
+import type * as bens from '@blockscout/bens-types';
 
 import { route } from 'nextjs-routes';
 
@@ -13,8 +13,8 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 
 interface Props {
-  event: EnsDomainEvent;
-  domain: EnsDomainDetailed | undefined;
+  event: bens.DomainEvent;
+  domain: bens.DetailedDomain | undefined;
   isLoading?: boolean;
 }
 

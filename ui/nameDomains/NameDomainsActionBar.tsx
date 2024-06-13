@@ -1,7 +1,8 @@
 import { Box, Checkbox, CheckboxGroup, Flex, HStack, Image, Link, Text, VStack, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { EnsDomainLookupFiltersOptions, EnsDomainProtocol } from 'types/api/ens';
+import type * as bens from '@blockscout/bens-types';
+import type { EnsDomainLookupFiltersOptions } from 'types/api/ens';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
 import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
@@ -21,7 +22,7 @@ interface Props {
   onSearchChange: (value: string) => void;
   filterValue: EnsDomainLookupFiltersOptions;
   onFilterValueChange: (nextValue: EnsDomainLookupFiltersOptions) => void;
-  protocolsData: Array<EnsDomainProtocol> | undefined;
+  protocolsData: Array<bens.ProtocolInfo> | undefined;
   protocolsFilterValue: Array<string>;
   onProtocolsFilterChange: (nextValue: Array<string>) => void;
   sort: TSort | undefined;

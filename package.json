@@ -35,6 +35,7 @@
     "monitoring:grafana:local": "docker run -d -p 4000:3000 --name=blockscout_grafana --user $(id -u) --volume $(pwd)/grafana:/var/lib/grafana grafana/grafana-enterprise"
   },
   "dependencies": {
+    "@blockscout/bens-types": "v1.3.0-beta",
     "@chakra-ui/react": "2.7.1",
     "@chakra-ui/theme-tools": "^2.0.18",
     "@emotion/react": "^11.10.4",

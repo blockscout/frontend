@@ -1,8 +1,8 @@
-import { chakra, Flex, Image, Popover, PopoverBody, PopoverContent, PopoverTrigger, Portal, Skeleton, Text } from '@chakra-ui/react';
+import { Box, chakra, Flex, Image, Popover, PopoverBody, PopoverContent, PopoverTrigger, Portal, Skeleton, Text } from '@chakra-ui/react';
 import _omit from 'lodash/omit';
 import React from 'react';
 
-import type { EnsDomainProtocol } from 'types/api/ens';
+import type * as bens from '@blockscout/bens-types';
 
 import { route } from 'nextjs-routes';
 
@@ -45,7 +45,7 @@ const Icon = (props: IconProps) => {
     return (
       <Popover trigger="hover" isLazy placement="bottom-start">
         <PopoverTrigger>
-          <div>
+          <Box flexShrink={ 0 }>
             <Image
               src={ props.protocol.icon_url }
               boxSize={ styles.boxSize }
@@ -55,7 +55,7 @@ const Icon = (props: IconProps) => {
               fallback={ icon }
               fallbackStrategy={ props.protocol.icon_url ? 'onError' : 'beforeLoadOrError' }
             />
-          </div>
+          </Box>
         </PopoverTrigger>
         <Portal>
           <PopoverContent maxW={{ base: '100vw', lg: '440px' }} minW="250px" w="fit-content">
@@ -123,7 +123,7 @@ const Container = EntityBase.Container;
 
 export interface EntityProps extends EntityBase.EntityBaseProps {
   name: string;
-  protocol?: EnsDomainProtocol | null;
+  protocol?: bens.ProtocolInfo | null;
 }
 
 const EnsEntity = (props: EntityProps) => {

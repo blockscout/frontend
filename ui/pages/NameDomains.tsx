@@ -61,7 +61,7 @@ const NameDomains = () => {
     sorting: sortParams,
     options: {
       enabled: isAddressSearch,
-      placeholderData: generateListStub<'addresses_lookup'>(ENS_DOMAIN, 50, { next_page_params: null }),
+      placeholderData: generateListStub<'addresses_lookup'>(ENS_DOMAIN, 50, { next_page_params: undefined }),
     },
   });
 
@@ -76,7 +76,7 @@ const NameDomains = () => {
     sorting: sortParams,
     options: {
       enabled: !isAddressSearch,
-      placeholderData: generateListStub<'domains_lookup'>(ENS_DOMAIN, 50, { next_page_params: null }),
+      placeholderData: generateListStub<'domains_lookup'>(ENS_DOMAIN, 50, { next_page_params: undefined }),
     },
   });
 
