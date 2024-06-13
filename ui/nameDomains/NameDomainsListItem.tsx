@@ -13,12 +13,19 @@ interface Props extends EnsDomain {
   isLoading: boolean;
 }
 
-const NameDomainsListItem = ({ name, isLoading, resolved_address: resolvedAddress, registration_date: registrationDate, expiry_date: expiryDate }: Props) => {
+const NameDomainsListItem = ({
+  name,
+  isLoading,
+  resolved_address: resolvedAddress,
+  registration_date: registrationDate,
+  expiry_date: expiryDate,
+  protocol,
+}: Props) => {
   return (
     <ListItemMobileGrid.Container>
       <ListItemMobileGrid.Label isLoading={ isLoading }>Domain</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <EnsEntity name={ name } isLoading={ isLoading } fontWeight={ 500 }/>
+        <EnsEntity name={ name } protocol={ protocol } isLoading={ isLoading } fontWeight={ 500 }/>
       </ListItemMobileGrid.Value>
 
       { resolvedAddress && (

@@ -36,7 +36,7 @@ const NameDomain = () => {
 
   const tabs: Array<RoutedTab> = [
     { id: 'details', title: 'Details', component: <NameDomainDetails query={ infoQuery }/> },
-    { id: 'history', title: 'History', component: <NameDomainHistory/> },
+    { id: 'history', title: 'History', component: <NameDomainHistory domain={ infoQuery.data }/> },
   ];
 
   const tabIndex = useTabIndexFromQuery(tabs);
@@ -58,6 +58,7 @@ const NameDomain = () => {
     >
       <EnsEntity
         name={ domainName }
+        protocol={ infoQuery.data?.protocol }
         isLoading={ isLoading }
         noLink
         maxW={{ lg: infoQuery.data?.resolved_address ? '300px' : 'min-content' }}

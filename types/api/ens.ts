@@ -12,6 +12,18 @@ export interface EnsDomain {
   } | null;
   registration_date?: string;
   expiry_date: string | null;
+  protocol: EnsDomainProtocol | null;
+}
+
+export interface EnsDomainProtocol {
+  title: string;
+  description: string;
+  deployment_blockscout_base_url: string;
+  docs_url?: string;
+  icon_url?: string;
+  id: string;
+  short_name: string;
+  tld_list: Array<string>;
 }
 
 export interface EnsDomainDetailed extends EnsDomain {
@@ -43,6 +55,10 @@ export interface EnsDomainEventsResponse {
   items: Array<EnsDomainEvent>;
 }
 
+export interface EnsDomainProtocolsResponse {
+  items: Array<EnsDomainProtocol>;
+}
+
 export interface EnsDomainLookupResponse {
   items: Array<EnsDomain>;
   next_page_params: {
@@ -56,11 +72,13 @@ export interface EnsAddressLookupFilters {
   resolved_to: boolean;
   owned_by: boolean;
   only_active: boolean;
+  protocols: Array<string> | undefined;
 }
 
 export interface EnsDomainLookupFilters {
   name: string | null;
   only_active: boolean;
+  protocols: Array<string> | undefined;
 }
 
 export interface EnsLookupSorting {

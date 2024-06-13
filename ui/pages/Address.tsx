@@ -78,6 +78,23 @@ const AddressPageContent = () => {
   const addressesForMetadataQuery = React.useMemo(() => ([ hash ].filter(Boolean)), [ hash ]);
   const addressMetadataQuery = useAddressMetadataInfoQuery(addressesForMetadataQuery);
 
+  const addressEnsDomainsQuery = useApiQuery('addresses_lookup', {
+    pathParams: { chainId: config.chain.id },
+    queryParams: {
+      address: hash,
+      resolved_to: true,
+      owned_by: true,
+      only_active: true,
+      order: 'ASC',
+    },
+    queryOptions: {
+      enabled: Boolean(hash) && config.features.nameService.isEnabled,
+    },
+  });
+  const addressMainDomain = !addressQuery.isPlaceholderData ?
+    addressEnsDomainsQuery.data?.items.find((domain) => domain.name === addressQuery.data?.ens_domain_name) :
+    undefined;
+
   const isLoading = addressQuery.isPlaceholderData || (config.features.userOps.isEnabled && userOpsAccountQuery.isPlaceholderData);
   const isTabsLoading = isLoading || addressTabsCountersQuery.isPlaceholderData;
 
@@ -238,6 +255,7 @@ const AddressPageContent = () => {
       { addressQuery.data?.ens_domain_name && (
         <EnsEntity
           name={ addressQuery.data?.ens_domain_name }
+          protocol={ !addressEnsDomainsQuery.isPending ? addressMainDomain?.protocol : null }
           fontFamily="heading"
           fontSize="lg"
           fontWeight={ 500 }
@@ -267,7 +285,7 @@ const AddressPageContent = () => {
       { !isLoading && addressQuery.data?.is_contract && addressQuery.data?.is_verified && config.UI.views.address.solidityscanEnabled &&
         <SolidityscanReport hash={ hash }/> }
       { !isLoading && addressQuery.data && config.features.nameService.isEnabled &&
-        <AddressEnsDomains addressHash={ hash } mainDomainName={ addressQuery.data.ens_domain_name }/> }
+        <AddressEnsDomains query={ addressEnsDomainsQuery } addressHash={ hash } mainDomainName={ addressQuery.data.ens_domain_name }/> }
       <NetworkExplorers type="address" pathParam={ hash }/>
     </Flex>
   );

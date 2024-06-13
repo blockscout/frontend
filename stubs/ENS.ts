@@ -22,6 +22,7 @@ export const ENS_DOMAIN: EnsDomainDetailed = {
   other_addresses: {
     ETH: ADDRESS_HASH,
   },
+  protocol: null,
 };
 
 export const ENS_DOMAIN_EVENT: EnsDomainEvent = {

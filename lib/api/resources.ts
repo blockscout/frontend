@@ -52,6 +52,7 @@ import type {
   EnsDomainEventsResponse,
   EnsDomainLookupFilters,
   EnsDomainLookupResponse,
+  EnsDomainProtocolsResponse,
   EnsLookupSorting,
 } from 'types/api/ens';
 import type { IndexingStatus } from 'types/api/indexingStatus';
@@ -219,7 +220,7 @@ export const RESOURCES = {
     pathParams: [ 'chainId' as const ],
     endpoint: getFeaturePayload(config.features.nameService)?.api.endpoint,
     basePath: getFeaturePayload(config.features.nameService)?.api.basePath,
-    filterFields: [ 'address' as const, 'resolved_to' as const, 'owned_by' as const, 'only_active' as const ],
+    filterFields: [ 'address' as const, 'resolved_to' as const, 'owned_by' as const, 'only_active' as const, 'protocols' as const ],
   },
   domain_info: {
     path: '/api/v1/:chainId/domains/:name',
@@ -238,7 +239,13 @@ export const RESOURCES = {
     pathParams: [ 'chainId' as const ],
     endpoint: getFeaturePayload(config.features.nameService)?.api.endpoint,
     basePath: getFeaturePayload(config.features.nameService)?.api.basePath,
-    filterFields: [ 'name' as const, 'only_active' as const ],
+    filterFields: [ 'name' as const, 'only_active' as const, 'protocols' as const ],
+  },
+  domain_protocols: {
+    path: '/api/v1/:chainId/protocols',
+    pathParams: [ 'chainId' as const ],
+    endpoint: getFeaturePayload(config.features.nameService)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.nameService)?.api.basePath,
   },
 
   // METADATA SERVICE & PUBLIC TAGS
@@ -1008,6 +1015,7 @@ Q extends 'addresses_lookup' ? EnsAddressLookupResponse :
 Q extends 'domain_info' ? EnsDomainDetailed :
 Q extends 'domain_events' ? EnsDomainEventsResponse :
 Q extends 'domains_lookup' ? EnsDomainLookupResponse :
+Q extends 'domain_protocols' ? EnsDomainProtocolsResponse :
 Q extends 'user_ops' ? UserOpsResponse :
 Q extends 'user_op' ? UserOp :
 Q extends 'user_ops_account' ? UserOpsAccount :

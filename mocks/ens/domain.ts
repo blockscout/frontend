@@ -1,4 +1,4 @@
-import type { EnsDomainDetailed } from 'types/api/ens';
+import type { EnsDomainDetailed, EnsDomainProtocol } from 'types/api/ens';
 
 const domainTokenA = {
   id: '97352314626701792030827861137068748433918254309635329404916858191911576754327',
@@ -9,6 +9,34 @@ const domainTokenB = {
   id: '423546333',
   contract_hash: '0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea86',
   type: 'WRAPPED_DOMAIN_TOKEN' as const,
+};
+
+export const protocolA: EnsDomainProtocol = {
+  id: 'ens',
+  short_name: 'ENS',
+  title: 'Ethereum Name Service',
+  description: 'The Ethereum Name Service (ENS) is a distributed, open, and extensible naming system based on the Ethereum blockchain.',
+  tld_list: [
+    'eth',
+    'xyz',
+  ],
+  icon_url: 'https://i.imgur.com/GOfUwCb.jpeg',
+  docs_url: 'https://docs.ens.domains/',
+  deployment_blockscout_base_url: 'http://localhost:3200/',
+};
+
+export const protocolB: EnsDomainProtocol = {
+  id: 'duck',
+  short_name: 'DUCK',
+  title: 'Duck Name Service',
+  description: '"Duck Name Service" is a cutting-edge blockchain naming service, providing seamless naming for crypto and decentralized applications. 🦆',
+  tld_list: [
+    'duck',
+    'quack',
+  ],
+  icon_url: 'https://localhost:3000/duck.jpg',
+  docs_url: 'https://docs.duck.domains/',
+  deployment_blockscout_base_url: '',
 };
 
 export const ensDomainA: EnsDomainDetailed = {
@@ -35,6 +63,7 @@ export const ensDomainA: EnsDomainDetailed = {
     GNO: 'DDAfbb505ad214D7b80b1f830fcCc89B60fb7A83',
     NEAR: 'a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.factory.bridge.near',
   },
+  protocol: protocolA,
 };
 
 export const ensDomainB: EnsDomainDetailed = {
@@ -52,6 +81,7 @@ export const ensDomainB: EnsDomainDetailed = {
   registration_date: '2023-08-13T13:01:12.000Z',
   expiry_date: null,
   other_addresses: {},
+  protocol: null,
 };
 
 export const ensDomainC: EnsDomainDetailed = {
@@ -71,6 +101,7 @@ export const ensDomainC: EnsDomainDetailed = {
   registration_date: '2022-04-24T07:34:44.000Z',
   expiry_date: '2022-11-01T13:10:36.000Z',
   other_addresses: {},
+  protocol: null,
 };
 
 export const ensDomainD: EnsDomainDetailed = {
@@ -88,4 +119,5 @@ export const ensDomainD: EnsDomainDetailed = {
   registration_date: '2022-04-24T07:34:44.000Z',
   expiry_date: '2027-09-23T13:10:36.000Z',
   other_addresses: {},
+  protocol: null,
 };

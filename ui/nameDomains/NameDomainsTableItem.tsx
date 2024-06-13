@@ -12,12 +12,19 @@ type Props = EnsDomain & {
   isLoading?: boolean;
 }
 
-const NameDomainsTableItem = ({ isLoading, name, resolved_address: resolvedAddress, registration_date: registrationDate, expiry_date: expiryDate }: Props) => {
+const NameDomainsTableItem = ({
+  isLoading,
+  name,
+  resolved_address: resolvedAddress,
+  registration_date: registrationDate,
+  expiry_date: expiryDate,
+  protocol,
+}: Props) => {
 
   return (
     <Tr>
       <Td verticalAlign="middle">
-        <EnsEntity name={ name } isLoading={ isLoading } fontWeight={ 600 }/>
+        <EnsEntity name={ name } protocol={ protocol } isLoading={ isLoading } fontWeight={ 600 }/>
       </Td>
       <Td verticalAlign="middle">
         { resolvedAddress && <AddressEntity address={ resolvedAddress } isLoading={ isLoading } fontWeight={ 500 }/> }

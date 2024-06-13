@@ -6,8 +6,10 @@ import { test, expect } from 'playwright/lib';
 
 import NameDomains from './NameDomains';
 
-test('default view +@mobile', async({ render, mockApiResponse, mockTextAd }) => {
+test.beforeEach(async({ mockApiResponse, mockAssetResponse, mockTextAd }) => {
   await mockTextAd();
+  await mockAssetResponse(ensDomainMock.protocolA.icon_url as string, './playwright/mocks/image_s.jpg');
+  await mockAssetResponse(ensDomainMock.protocolB.icon_url as string, './playwright/mocks/image_md.jpg');
   await mockApiResponse('domains_lookup', {
     items: [
       ensDomainMock.ensDomainA,
@@ -23,7 +25,21 @@ test('default view +@mobile', async({ render, mockApiResponse, mockTextAd }) => 
     pathParams: { chainId: config.chain.id },
     queryParams: { only_active: true },
   });
+  await mockApiResponse('domain_protocols', {
+    items: [ ensDomainMock.protocolA, ensDomainMock.protocolB ],
+  }, {
+    pathParams: { chainId: config.chain.id },
+  });
+});
 
+test('default view +@mobile', async({ render }) => {
   const component = await render(<NameDomains/>);
   await expect(component).toHaveScreenshot();
+});
+
+test('filters', async({ render, page }) => {
+  const component = await render(<NameDomains/>);
+
+  await component.getByRole('button', { name: 'Filter' }).click();
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 250, height: 500 } });
 });
