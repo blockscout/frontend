@@ -16,9 +16,10 @@ import AddressCsvExportLink from './AddressCsvExportLink';
 type Props ={
   scrollRef?: React.RefObject<HTMLDivElement>;
   shouldRender?: boolean;
+  isQueryEnabled?: boolean;
 }
 
-const AddressLogs = ({ scrollRef, shouldRender = true }: Props) => {
+const AddressLogs = ({ scrollRef, shouldRender = true, isQueryEnabled = true }: Props) => {
   const router = useRouter();
   const isMounted = useIsMounted();
 
@@ -28,6 +29,7 @@ const AddressLogs = ({ scrollRef, shouldRender = true }: Props) => {
     pathParams: { hash },
     scrollRef,
     options: {
+      enabled: isQueryEnabled,
       placeholderData: generateListStub<'address_logs'>(LOG, 3, { next_page_params: {
         block_number: 9005750,
         index: 42,

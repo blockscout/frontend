@@ -16,8 +16,9 @@ import BeaconChainWithdrawalsTable from 'ui/withdrawals/beaconChain/BeaconChainW
 type Props = {
   scrollRef?: React.RefObject<HTMLDivElement>;
   shouldRender?: boolean;
+  isQueryEnabled?: boolean;
 }
-const AddressWithdrawals = ({ scrollRef, shouldRender = true }: Props) => {
+const AddressWithdrawals = ({ scrollRef, shouldRender = true, isQueryEnabled = true }: Props) => {
   const router = useRouter();
   const isMounted = useIsMounted();
 
@@ -28,6 +29,7 @@ const AddressWithdrawals = ({ scrollRef, shouldRender = true }: Props) => {
     pathParams: { hash },
     scrollRef,
     options: {
+      enabled: isQueryEnabled,
       placeholderData: generateListStub<'address_withdrawals'>(WITHDRAWAL, 50, { next_page_params: {
         index: 5,
         items_count: 50,
