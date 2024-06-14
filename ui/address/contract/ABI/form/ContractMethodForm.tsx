@@ -20,12 +20,16 @@ import ContractMethodResult from './ContractMethodResult';
 import { getFieldLabel, matchArray, transformFormDataToMethodArgs } from './utils';
 import type { ContractMethodFormFields } from './utils';
 
+// eslint-disable-next-line max-len
+const NO_WALLET_CLIENT_TEXT = 'Blockchain interaction is not available at the moment since WalletConnect is not configured for this application. Please contact the service maintainer to make necessary changes in the service configuration.';
+
 interface Props {
   data: SmartContractMethod;
   onSubmit: FormSubmitHandler;
+  isOpen: boolean;
 }
 
-const ContractMethodForm = ({ data, onSubmit }: Props) => {
+const ContractMethodForm = ({ data, onSubmit, isOpen }: Props) => {
 
   const [ result, setResult ] = React.useState<FormSubmitResult>();
   const [ isLoading, setLoading ] = React.useState(false);
@@ -70,6 +74,17 @@ const ContractMethodForm = ({ data, onSubmit }: Props) => {
       });
   }, [ data, methodType, onSubmit ]);
 
+  React.useEffect(() => {
+    if (isOpen && !callStrategyRef.current) {
+      const hasConstantOutputs = isReadMethod(data) && data.inputs.length === 0;
+      if (hasConstantOutputs) {
+        setCallStrategy('read');
+        callStrategyRef.current = 'read';
+        onFormSubmit({});
+      }
+    }
+  }, [ data, isOpen, onFormSubmit ]);
+
   const handleTxSettle = React.useCallback(() => {
     setLoading(false);
   }, []);
@@ -92,27 +107,64 @@ const ContractMethodForm = ({ data, onSubmit }: Props) => {
 
   const outputs = 'outputs' in data && data.outputs ? data.outputs : [];
 
-  const callStrategies = (() => {
-    switch (methodType) {
-      case 'read': {
-        return { primary: 'read', secondary: undefined };
-      }
+  const primaryButton = (() => {
+    const isDisabled = !config.features.blockchainInteraction.isEnabled && methodType === 'write';
+    const text = methodType === 'write' ? 'Write' : 'Read';
+    const buttonCallStrategy = methodType === 'write' ? 'write' : 'read';
 
-      case 'write': {
-        return {
-          primary: config.features.blockchainInteraction.isEnabled ? 'write' : undefined,
-          secondary: 'outputs' in data && Boolean(data.outputs?.length) ? 'simulate' : undefined,
-        };
-      }
-
-      default: {
-        return { primary: undefined, secondary: undefined };
-      }
-    }
+    return (
+      <Tooltip label={ isDisabled ? NO_WALLET_CLIENT_TEXT : undefined } maxW="300px">
+        <Button
+          isLoading={ callStrategy === buttonCallStrategy && isLoading }
+          isDisabled={ isLoading || isDisabled }
+          onClick={ handleButtonClick }
+          loadingText={ text }
+          variant="outline"
+          size="sm"
+          flexShrink={ 0 }
+          width="min-content"
+          px={ 4 }
+          type="submit"
+          data-call-strategy={ buttonCallStrategy }
+        >
+          { text }
+        </Button>
+      </Tooltip>
+    );
   })();
 
-  // eslint-disable-next-line max-len
-  const noWalletClientText = 'Blockchain interaction is not available at the moment since WalletConnect is not configured for this application. Please contact the service maintainer to make necessary changes in the service configuration.';
+  const secondaryButton = (() => {
+    if (methodType === 'read') {
+      return null;
+    }
+
+    const hasOutputs = 'outputs' in data && data.outputs.length > 0;
+    if (!hasOutputs) {
+      return null;
+    }
+
+    const text = 'Simulate';
+    const buttonCallStrategy = 'simulate';
+
+    return (
+      <Button
+        isLoading={ callStrategy === buttonCallStrategy && isLoading }
+        isDisabled={ isLoading }
+        onClick={ handleButtonClick }
+        loadingText={ text }
+        variant="outline"
+        size="sm"
+        flexShrink={ 0 }
+        width="min-content"
+        px={ 4 }
+        mr={ 3 }
+        type="submit"
+        data-call-strategy={ buttonCallStrategy }
+      >
+        { text }
+      </Button>
+    );
+  })();
 
   return (
     <Box>
@@ -160,41 +212,8 @@ const ContractMethodForm = ({ data, onSubmit }: Props) => {
               return <ContractMethodFieldInput key={ index } { ...props } path={ `${ index }` }/>;
             }) }
           </Flex>
-          { callStrategies.secondary && (
-            <Button
-              isLoading={ callStrategy === callStrategies.secondary && isLoading }
-              isDisabled={ isLoading }
-              onClick={ handleButtonClick }
-              loadingText="Simulate"
-              variant="outline"
-              size="sm"
-              flexShrink={ 0 }
-              width="min-content"
-              px={ 4 }
-              mr={ 3 }
-              type="submit"
-              data-call-strategy={ callStrategies.secondary }
-            >
-              Simulate
-            </Button>
-          ) }
-          <Tooltip label={ !callStrategies.primary ? noWalletClientText : undefined } maxW="300px">
-            <Button
-              isLoading={ callStrategy === callStrategies.primary && isLoading }
-              isDisabled={ isLoading || !callStrategies.primary }
-              onClick={ handleButtonClick }
-              loadingText={ methodType === 'write' ? 'Write' : 'Read' }
-              variant="outline"
-              size="sm"
-              flexShrink={ 0 }
-              width="min-content"
-              px={ 4 }
-              type="submit"
-              data-call-strategy={ callStrategies.primary }
-            >
-              { methodType === 'write' ? 'Write' : 'Read' }
-            </Button>
-          </Tooltip>
+          { secondaryButton }
+          { primaryButton }
         </chakra.form>
       </FormProvider>
       { 'outputs' in data && Boolean(data.outputs?.length) && <ContractMethodOutputs data={ outputs }/> }

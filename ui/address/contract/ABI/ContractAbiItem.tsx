@@ -1,4 +1,4 @@
-import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Alert, Box, Tooltip, useClipboard, useDisclosure } from '@chakra-ui/react';
+import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Tooltip, useClipboard, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 import { Element } from 'react-scroll';
 
@@ -13,8 +13,6 @@ import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import Hint from 'ui/shared/Hint';
 import IconSvg from 'ui/shared/IconSvg';
 
-import { isReadMethod } from '../utils';
-import ContractAbiItemConstant from './ContractAbiItemConstant';
 import ContractMethodForm from './form/ContractMethodForm';
 import { getElementName } from './useScrollToMethod';
 
@@ -25,10 +23,9 @@ interface Props {
   addressHash: string;
   tab: string;
   onSubmit: FormSubmitHandler;
-  isOpen: boolean;
 }
 
-const ContractAbiItem = ({ data, index, id, addressHash, tab, onSubmit, isOpen }: Props) => {
+const ContractAbiItem = ({ data, index, id, addressHash, tab, onSubmit }: Props) => {
   const url = React.useMemo(() => {
     if (!('method_id' in data)) {
       return '';
@@ -55,33 +52,6 @@ const ContractAbiItem = ({ data, index, id, addressHash, tab, onSubmit, isOpen }
   const handleCopyMethodIdClick = React.useCallback((event: React.MouseEvent) => {
     event.stopPropagation();
   }, []);
-
-  const content = (() => {
-    if ('error' in data && data.error) {
-      return <Alert status="error" fontSize="sm" wordBreak="break-word">data.error</Alert>;
-    }
-
-    const hasConstantOutputs = isReadMethod(data) && data.inputs.length === 0;
-
-    if (hasConstantOutputs) {
-      return (
-        <ContractAbiItemConstant
-          key={ index }
-          data={ data }
-          addressHash={ addressHash }
-          isOpen={ isOpen }
-        />
-      );
-    }
-
-    return (
-      <ContractMethodForm
-        key={ id + '_' + index }
-        data={ data }
-        onSubmit={ onSubmit }
-      />
-    );
-  })();
 
   return (
     <AccordionItem as="section" _first={{ borderTopWidth: 0 }} _last={{ borderBottomWidth: 0 }}>
@@ -135,7 +105,12 @@ const ContractAbiItem = ({ data, index, id, addressHash, tab, onSubmit, isOpen }
             </AccordionButton>
           </Element>
           <AccordionPanel pb={ 4 } pr={ 0 } pl="28px" w="calc(100% - 6px)">
-            { content }
+            <ContractMethodForm
+              key={ id + '_' + index }
+              data={ data }
+              onSubmit={ onSubmit }
+              isOpen={ isExpanded }
+            />
           </AccordionPanel>
         </>
       ) }

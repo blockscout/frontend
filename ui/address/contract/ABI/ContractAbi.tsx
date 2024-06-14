@@ -67,7 +67,6 @@ const ContractAbi = ({ data, addressHash, tab }: Props) => {
             addressHash={ addressHash }
             tab={ tab }
             onSubmit={ handleFormSubmit }
-            isOpen={ expandedSections.includes(index) }
           />
         )) }
       </Accordion>
