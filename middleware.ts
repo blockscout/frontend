@@ -1,10 +1,10 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
-import generateCspPolicy from 'nextjs/csp/generateCspPolicy';
+// import generateCspPolicy from 'nextjs/csp/generateCspPolicy';
 import * as middlewares from 'nextjs/middlewares/index';
 
-const cspPolicy = generateCspPolicy();
+// const cspPolicy = generateCspPolicy();
 
 export function middleware(req: NextRequest) {
   const isPageRequest = req.headers.get('accept')?.includes('text/html');
@@ -25,7 +25,7 @@ export function middleware(req: NextRequest) {
 
   const end = Date.now();
 
-  res.headers.append('Content-Security-Policy', cspPolicy);
+  // res.headers.append('Content-Security-Policy', cspPolicy);
   res.headers.append('Server-Timing', `middleware;dur=${ end - start }`);
   res.headers.append('Docker-ID', process.env.HOSTNAME || '');
 

@@ -18,6 +18,7 @@ import { growthBook } from 'lib/growthbook/init';
 import useLoadFeatures from 'lib/growthbook/useLoadFeatures';
 import useNotifyOnNavigation from 'lib/hooks/useNotifyOnNavigation';
 import { SocketProvider } from 'lib/socket/context';
+import { ViewOnBuildBear } from 'ui/buildbear/viewOnBuildBear';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
 import GoogleAnalytics from 'ui/shared/GoogleAnalytics';
 import Layout from 'ui/shared/layout/Layout';
@@ -79,6 +80,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
           </AppContextProvider>
         </Web3ModalProvider>
       </AppErrorBoundary>
+      <ViewOnBuildBear/>
     </ChakraProvider>
   );
 }
