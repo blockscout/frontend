@@ -10,27 +10,27 @@ import { route } from 'nextjs-routes';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 
 interface Props {
-  result: FormSubmitResultWalletClient['result'];
+  data: FormSubmitResultWalletClient['data'];
   onSettle: () => void;
 }
 
-const ContractMethodResultWalletClient = ({ result, onSettle }: Props) => {
-  const txHash = result && 'hash' in result ? result.hash as `0x${ string }` : undefined;
+const ContractMethodResultWalletClient = ({ data, onSettle }: Props) => {
+  const txHash = data && 'hash' in data ? data.hash as `0x${ string }` : undefined;
   const txInfo = useWaitForTransactionReceipt({
     hash: txHash,
   });
 
-  return <ContractMethodResultWalletClientDumb result={ result } onSettle={ onSettle } txInfo={ txInfo }/>;
+  return <ContractMethodResultWalletClientDumb data={ data } onSettle={ onSettle } txInfo={ txInfo }/>;
 };
 
 export interface PropsDumb {
-  result: FormSubmitResultWalletClient['result'];
+  data: FormSubmitResultWalletClient['data'];
   onSettle: () => void;
   txInfo: UseWaitForTransactionReceiptReturnType;
 }
 
-export const ContractMethodResultWalletClientDumb = ({ result, onSettle, txInfo }: PropsDumb) => {
-  const txHash = result && 'hash' in result ? result.hash : undefined;
+export const ContractMethodResultWalletClientDumb = ({ data, onSettle, txInfo }: PropsDumb) => {
+  const txHash = data && 'hash' in data ? data.hash : undefined;
 
   React.useEffect(() => {
     if (txInfo.status !== 'pending') {
@@ -38,11 +38,11 @@ export const ContractMethodResultWalletClientDumb = ({ result, onSettle, txInfo 
     }
   }, [ onSettle, txInfo.status ]);
 
-  if (!result) {
+  if (!data) {
     return null;
   }
 
-  const isErrorResult = 'message' in result;
+  const isErrorResult = 'message' in data;
 
   const txLink = txHash ? (
     <LinkInternal href={ route({ pathname: '/tx/[hash]', query: { hash: txHash } }) }>View transaction details</LinkInternal>
@@ -53,7 +53,7 @@ export const ContractMethodResultWalletClientDumb = ({ result, onSettle, txInfo 
       return (
         <>
           <span>Error: </span>
-          <span>{ result.message }</span>
+          <span>{ data.message }</span>
         </>
       );
     }

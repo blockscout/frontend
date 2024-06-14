@@ -16,7 +16,8 @@ import ContractMethodFieldInput from './ContractMethodFieldInput';
 import ContractMethodFieldInputArray from './ContractMethodFieldInputArray';
 import ContractMethodFieldInputTuple from './ContractMethodFieldInputTuple';
 import ContractMethodOutputs from './ContractMethodOutputs';
-import ContractMethodResult from './ContractMethodResult';
+import ContractMethodResultPublicClient from './ContractMethodResultPublicClient';
+import ContractMethodResultWalletClient from './ContractMethodResultWalletClient';
 import { getFieldLabel, matchArray, transformFormDataToMethodArgs } from './utils';
 import type { ContractMethodFormFields } from './utils';
 
@@ -59,10 +60,10 @@ const ContractMethodForm = ({ data, onSubmit, isOpen }: Props) => {
       .then((result) => {
         setResult(result);
       })
-      .catch((error) => {
+      .catch((error: Error) => {
         setResult({
           source: callStrategyRef.current === 'write' ? 'wallet_client' : 'public_client',
-          result: error?.error || error?.data || (error?.reason && { message: error.reason }) || error,
+          data: error,
         });
         setLoading(false);
       })
@@ -85,7 +86,7 @@ const ContractMethodForm = ({ data, onSubmit, isOpen }: Props) => {
     }
   }, [ data, isOpen, onFormSubmit ]);
 
-  const handleTxSettle = React.useCallback(() => {
+  const handleResultSettle = React.useCallback(() => {
     setLoading(false);
   }, []);
 
@@ -217,7 +218,19 @@ const ContractMethodForm = ({ data, onSubmit, isOpen }: Props) => {
         </chakra.form>
       </FormProvider>
       { 'outputs' in data && Boolean(data.outputs?.length) && <ContractMethodOutputs data={ outputs }/> }
-      { result && <ContractMethodResult abiItem={ data } result={ result } onSettle={ handleTxSettle }/> }
+      { result && result.source === 'wallet_client' && (
+        <ContractMethodResultWalletClient
+          data={ result.data }
+          onSettle={ handleResultSettle }
+        />
+      ) }
+      { result && result.source === 'public_client' && 'outputs' in data && (
+        <ContractMethodResultPublicClient
+          data={ result.data }
+          onSettle={ handleResultSettle }
+          item={ data }
+        />
+      ) }
     </Box>
   );
 };

@@ -38,7 +38,7 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
         to: addressHash as `0x${ string }` | undefined,
         value,
       });
-      return { source: 'wallet_client', result: { hash } };
+      return { source: 'wallet_client', data: { hash } };
     }
 
     const methodName = item.name;
@@ -66,6 +66,6 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
       account,
     });
 
-    return { source: 'wallet_client', result: { hash } };
+    return { source: 'wallet_client', data: { hash } };
   }, [ chainId, isConnected, switchChainAsync, walletClient, account ]);
 }

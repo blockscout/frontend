@@ -6,7 +6,7 @@ import { test, expect } from 'playwright/lib';
 
 import ContractMethodForm from './ContractMethodForm';
 
-const onSubmit: FormSubmitHandler = () => Promise.resolve({ source: 'wallet_client' as const, result: { hash: '0x0000' as `0x${ string }` } });
+const onSubmit: FormSubmitHandler = () => Promise.resolve({ source: 'wallet_client' as const, data: { hash: '0x0000' as `0x${ string }` } });
 
 const data: ContractAbiItem = {
   inputs: [
@@ -102,6 +102,7 @@ test('base view +@mobile +@dark-mode', async({ render }) => {
     <ContractMethodForm
       data={ data }
       onSubmit={ onSubmit }
+      isOpen
     />,
   );
 

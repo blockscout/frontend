@@ -11,7 +11,7 @@ test('loading', async({ render }) => {
       status: 'pending' as const,
       error: null,
     } as PropsDumb['txInfo'],
-    result: {
+    data: {
       hash: '0x363574E6C5C71c343d7348093D84320c76d5Dd29' as `0x${ string }`,
     },
     onSettle: () => {},
@@ -27,7 +27,7 @@ test('success', async({ render }) => {
       status: 'success' as const,
       error: null,
     } as PropsDumb['txInfo'],
-    result: {
+    data: {
       hash: '0x363574E6C5C71c343d7348093D84320c76d5Dd29' as `0x${ string }`,
     },
     onSettle: () => {},
@@ -46,7 +46,7 @@ test('error +@mobile', async({ render }) => {
         message: 'missing revert data in call exception; Transaction reverted without a reason string [ See: https://links.ethers.org/v5-errors-CALL_EXCEPTION ]',
       } as Error,
     } as PropsDumb['txInfo'],
-    result: {
+    data: {
       hash: '0x363574E6C5C71c343d7348093D84320c76d5Dd29' as `0x${ string }`,
     },
     onSettle: () => {},
@@ -62,7 +62,7 @@ test('error in result', async({ render }) => {
       status: 'idle' as const,
       error: null,
     } as unknown as PropsDumb['txInfo'],
-    result: {
+    data: {
       message: 'wallet is not connected',
     } as Error,
     onSettle: () => {},
