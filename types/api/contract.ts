@@ -30,6 +30,7 @@ export interface SmartContract {
   optimization_runs: number | null;
   name: string | null;
   verified_at: string | null;
+  is_blueprint: boolean | null;
   is_verified: boolean | null;
   is_verified_via_eth_bytecode_db: boolean | null;
   is_changed_bytecode: boolean | null;

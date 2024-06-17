@@ -16,6 +16,7 @@ export const verified: SmartContract = {
   },
   evm_version: 'default',
   is_verified: true,
+  is_blueprint: false,
   name: 'WPOA',
   optimization_enabled: true,
   optimization_runs: 1500,
@@ -101,10 +102,12 @@ export const selfDestructed: SmartContract = {
 export const withChangedByteCode: SmartContract = {
   ...verified,
   is_changed_bytecode: true,
+  is_blueprint: true,
 };
 
 export const nonVerified: SmartContract = {
   is_verified: false,
+  is_blueprint: false,
   creation_bytecode: 'creation_bytecode',
   deployed_bytecode: 'deployed_bytecode',
   is_self_destructed: false,

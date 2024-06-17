@@ -21,7 +21,7 @@ const SortButton = ({ onClick, isActive, className, isLoading }: Props) => {
       aria-label="sort"
       size="sm"
       variant="outline"
-      colorScheme="gray-dark"
+      colorScheme="gray"
       minWidth="36px"
       onClick={ onClick }
       isActive={ isActive }

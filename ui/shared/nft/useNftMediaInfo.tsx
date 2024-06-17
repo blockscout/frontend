@@ -24,7 +24,7 @@ interface ReturnType {
 export default function useNftMediaInfo({ imageUrl, animationUrl, isEnabled }: Params): ReturnType | null {
 
   const primaryQuery = useNftMediaTypeQuery(animationUrl, isEnabled);
-  const secondaryQuery = useNftMediaTypeQuery(imageUrl, !primaryQuery.isPending && !primaryQuery.data);
+  const secondaryQuery = useNftMediaTypeQuery(imageUrl, isEnabled && !primaryQuery.isPending && !primaryQuery.data);
 
   return React.useMemo(() => {
     if (primaryQuery.isPending) {

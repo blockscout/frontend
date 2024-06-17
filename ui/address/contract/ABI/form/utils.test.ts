@@ -46,4 +46,32 @@ describe('transformFormDataToMethodArgs', () => {
       '2',
     ]);
   });
+
+  it('should leave the arg if it is an empty array', () => {
+    const formData = {
+      // simple array
+      '0:0': undefined,
+
+      // nested array
+      '1:0:0': undefined,
+      '1:1:0': '1',
+      '1:1:1': '2',
+
+      // array in a tuple
+      '2:0': 'duck',
+      '2:1:0': undefined,
+    };
+    const result = transformFormDataToMethodArgs(formData);
+    expect(result).toEqual([
+      [],
+      [
+        [],
+        [ '1', '2' ],
+      ],
+      [
+        'duck',
+        [],
+      ],
+    ]);
+  });
 });

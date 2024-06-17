@@ -1,4 +1,4 @@
-import { Image, Skeleton, Text } from '@chakra-ui/react';
+import { Image, Skeleton, Text, Flex } from '@chakra-ui/react';
 import _capitalize from 'lodash/capitalize';
 import React from 'react';
 
@@ -75,23 +75,25 @@ const AddressNetWorth = ({ addressData, isLoading, addressHash }: Props) => {
       const dappId = multichainFeature.dappId;
       multichainItem = (
         <>
-          <TextSeparator mx={ 3 } color="gray.500"/>
-          <Text mr={ 2 }>Multichain</Text>
-          { typeof dappId === 'string' ? (
-            <LinkInternal
-              href={ route({ pathname: '/apps/[id]', query: { id: dappId, url: portfolioUrl.toString() } }) }
-              { ...linkProps }
-            >
-              { buttonContent }
-            </LinkInternal>
-          ) : (
-            <LinkExternal
-              href={ portfolioUrl.toString() }
-              { ...linkProps }
-            >
-              { buttonContent }
-            </LinkExternal>
-          ) }
+          <TextSeparator mx={ 0 } color="gray.500"/>
+          <Flex alignItems="center" gap={ 2 }>
+            <Text>Multichain</Text>
+            { typeof dappId === 'string' ? (
+              <LinkInternal
+                href={ route({ pathname: '/apps/[id]', query: { id: dappId, url: portfolioUrl.toString() } }) }
+                { ...linkProps }
+              >
+                { buttonContent }
+              </LinkInternal>
+            ) : (
+              <LinkExternal
+                href={ portfolioUrl.toString() }
+                { ...linkProps }
+              >
+                { buttonContent }
+              </LinkExternal>
+            ) }
+          </Flex>
         </>
       );
     } catch (error) {}
@@ -99,7 +101,7 @@ const AddressNetWorth = ({ addressData, isLoading, addressHash }: Props) => {
   }
 
   return (
-    <Skeleton display="flex" alignItems="center" isLoaded={ !isLoading && !(addressData?.has_tokens && isPending) }>
+    <Skeleton display="flex" alignItems="center" flexWrap="wrap" isLoaded={ !isLoading && !(addressData?.has_tokens && isPending) } gap={ 2 }>
       <Text>
         { (isError || !addressData?.exchange_rate) ? 'N/A' : `${ prefix }$${ totalUsd.toFormat(2) }` }
       </Text>

@@ -5,7 +5,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 
 import parseMetaPayload from './parseMetaPayload';
 
-export default function useAddressMetadataInfoQuery(addresses: Array<string>) {
+export default function useAddressMetadataInfoQuery(addresses: Array<string>, isEnabled = true) {
 
   const resource = 'address_metadata_info';
 
@@ -16,7 +16,7 @@ export default function useAddressMetadataInfoQuery(addresses: Array<string>) {
       tagsLimit: '20',
     },
     queryOptions: {
-      enabled: addresses.length > 0 && config.features.addressMetadata.isEnabled,
+      enabled: isEnabled && addresses.length > 0 && config.features.addressMetadata.isEnabled,
       select: (data) => {
         const addresses = Object.entries(data.addresses)
           .map(([ address, { tags, reputation } ]) => {

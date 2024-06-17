@@ -1,4 +1,4 @@
-import { Box, Button, Menu, MenuButton, MenuItemOption, MenuList, MenuOptionGroup, Text } from '@chakra-ui/react';
+import { Box, Button, Menu, MenuButton, MenuItemOption, MenuList, MenuOptionGroup, chakra } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
 import IconSvg from 'ui/shared/IconSvg';
@@ -32,13 +32,13 @@ export function StatsDropdownMenu<T extends string>({ items, selectedId, onSelec
           display="flex"
           alignItems="center"
         >
-          <Text
+          <chakra.span
             whiteSpace="nowrap"
             overflow="hidden"
             textOverflow="ellipsis"
           >
             { selectedCategory?.title }
-          </Text>
+          </chakra.span>
           <IconSvg transform="rotate(-90deg)" ml="auto" name="arrows/east-mini" w={ 5 } h={ 5 }/>
         </Box>
       </MenuButton>

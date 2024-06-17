@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Abi } from 'viem';
+import { getAddress, type Abi } from 'viem';
 import { useAccount, useWalletClient, useSwitchChain } from 'wagmi';
 
 import type { ContractAbiItem, FormSubmitResult } from './types';
@@ -32,10 +32,12 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
       await switchChainAsync?.({ chainId: Number(config.chain.id) });
     }
 
+    const address = getAddress(addressHash);
+
     if (item.type === 'receive' || item.type === 'fallback') {
       const value = getNativeCoinValue(args[0]);
       const hash = await walletClient.sendTransaction({
-        to: addressHash as `0x${ string }` | undefined,
+        to: address,
         value,
       });
       return { source: 'wallet_client', result: { hash } };
@@ -61,7 +63,7 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
       //    - https://github.com/blockscout/frontend/issues/1327
       abi: [ item ] as Abi,
       functionName: methodName,
-      address: addressHash as `0x${ string }`,
+      address,
       value,
     });
 

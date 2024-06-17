@@ -62,6 +62,7 @@ const NetworkExplorers = ({ className, type, pathParam }: Props) => {
             variant="outline"
             colorScheme="gray"
             onClick={ onToggle }
+            isActive={ isOpen }
             aria-label="Verify in other explorers"
             fontWeight={ 500 }
             px={ 2 }

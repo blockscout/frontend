@@ -12,10 +12,11 @@ interface Props {
   onlyIcon?: boolean;
   onClick?: () => void;
   label?: string;
+  isActive: boolean;
 }
 
 const SolidityscanReportButton = (
-  { score, isLoading, onlyIcon, onClick, label = 'Security score' }: Props,
+  { score, isLoading, onlyIcon, onClick, label = 'Security score', isActive }: Props,
   ref: React.ForwardedRef<HTMLButtonElement>,
 ) => {
   const { scoreColor } = useScoreLevelAndColor(score);
@@ -31,6 +32,7 @@ const SolidityscanReportButton = (
         variant="outline"
         colorScheme="gray"
         onClick={ onClick }
+        isActive={ isActive }
         aria-label="SolidityScan score"
         fontWeight={ 500 }
         px="6px"
