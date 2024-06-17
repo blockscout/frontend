@@ -12,6 +12,7 @@ const hooksConfig = {
   },
 };
 
+// TODO @tom2drum rewrite tests
 test('base view +@mobile', async({ render, mockApiResponse }) => {
   await mockApiResponse(
     'contract_methods_write',

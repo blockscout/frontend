@@ -11,9 +11,6 @@ import * as stubs from 'stubs/contract';
 import ContractCode from 'ui/address/contract/ContractCode';
 import ContractMethods from 'ui/address/contract/ContractMethods';
 import ContractMethodsProxy from 'ui/address/contract/ContractMethodsProxy';
-// TODO @tom2drum remove these components
-// import ContractRead from 'ui/address/contract/ContractRead';
-// import ContractWrite from 'ui/address/contract/ContractWrite';
 import { divideAbiIntoMethodTypes } from 'ui/address/contract/utils';
 
 const CONTRACT_TAB_IDS = [

@@ -1,6 +1,7 @@
 import React from 'react';
 
-import type { ContractAbiItem, FormSubmitHandler } from '../types';
+import type { SmartContractMethod } from '../../types';
+import type { FormSubmitHandler } from '../types';
 
 import { test, expect } from 'playwright/lib';
 
@@ -8,7 +9,7 @@ import ContractMethodForm from './ContractMethodForm';
 
 const onSubmit: FormSubmitHandler = () => Promise.resolve({ source: 'wallet_client' as const, data: { hash: '0x0000' as `0x${ string }` } });
 
-const data: ContractAbiItem = {
+const data: SmartContractMethod = {
   inputs: [
     // TUPLE
     {

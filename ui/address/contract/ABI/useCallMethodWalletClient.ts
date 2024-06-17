@@ -2,14 +2,15 @@ import React from 'react';
 import type { Abi } from 'viem';
 import { useAccount, useWalletClient, useSwitchChain } from 'wagmi';
 
-import type { ContractAbiItem, FormSubmitResult } from './types';
+import type { SmartContractMethod } from '../types';
+import type { FormSubmitResult } from './types';
 
 import config from 'configs/app';
 
 import { getNativeCoinValue } from './utils';
 
 interface Params {
-  item: ContractAbiItem;
+  item: SmartContractMethod;
   args: Array<unknown>;
   addressHash: string;
 }

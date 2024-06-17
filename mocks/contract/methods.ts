@@ -1,11 +1,6 @@
-import type {
-  SmartContractQueryMethodError,
-  SmartContractQueryMethodSuccess,
-  SmartContractReadMethod,
-  SmartContractWriteMethod,
-} from 'types/api/contract';
+import type { SmartContractMethodRead, SmartContractMethodWrite } from 'ui/address/contract/types';
 
-export const read: Array<SmartContractReadMethod> = [
+export const read: Array<SmartContractMethodRead> = [
   {
     constant: true,
     inputs: [
@@ -94,26 +89,7 @@ export const read: Array<SmartContractReadMethod> = [
   },
 ];
 
-export const readResultSuccess: SmartContractQueryMethodSuccess = {
-  is_error: false,
-  result: {
-    names: [ 'amount' ],
-    output: [
-      { type: 'uint256', value: '42' },
-    ],
-  },
-};
-
-export const readResultError: SmartContractQueryMethodError = {
-  is_error: true,
-  result: {
-    message: 'Some shit happened',
-    code: -32017,
-    raw: '49276d20616c7761797320726576657274696e67207769746820616e206572726f72',
-  },
-};
-
-export const write: Array<SmartContractWriteMethod> = [
+export const write: Array<SmartContractMethodWrite> = [
   {
     payable: true,
     stateMutability: 'payable',

@@ -13,6 +13,7 @@ const hooksConfig = {
   },
 };
 
+// TODO @tom2drum rewrite tests
 test('base view +@mobile +@dark-mode', async({ render, mockApiResponse, page }) => {
   await mockApiResponse(
     'contract_methods_read',
