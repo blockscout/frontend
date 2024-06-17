@@ -42,7 +42,7 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
   const router = useRouter();
   const tab = getQueryParamString(router.query.tab);
 
-  const isEnabled = Boolean(data?.hash) && !isPlaceholderData && CONTRACT_TAB_IDS.concat('contract' as never).includes(tab);
+  const isEnabled = Boolean(data?.hash) && data?.is_contract && !isPlaceholderData && CONTRACT_TAB_IDS.concat('contract' as never).includes(tab);
 
   const enableQuery = React.useCallback(() => {
     setIsQueryEnabled(true);
