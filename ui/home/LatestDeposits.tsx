@@ -11,7 +11,7 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { L2_DEPOSIT_ITEM } from 'stubs/L2';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
 import LatestDepositsItem from './LatestDepositsItem';

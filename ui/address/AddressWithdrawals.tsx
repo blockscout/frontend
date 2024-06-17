@@ -6,7 +6,7 @@ import useIsMounted from 'lib/hooks/useIsMounted';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { generateListStub } from 'stubs/utils';
 import { WITHDRAWAL } from 'stubs/withdrawals';
-import ActionBar from 'ui/shared/ActionBar';
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -16,8 +16,9 @@ import BeaconChainWithdrawalsTable from 'ui/withdrawals/beaconChain/BeaconChainW
 type Props = {
   scrollRef?: React.RefObject<HTMLDivElement>;
   shouldRender?: boolean;
+  isQueryEnabled?: boolean;
 }
-const AddressWithdrawals = ({ scrollRef, shouldRender = true }: Props) => {
+const AddressWithdrawals = ({ scrollRef, shouldRender = true, isQueryEnabled = true }: Props) => {
   const router = useRouter();
   const isMounted = useIsMounted();
 
@@ -28,6 +29,7 @@ const AddressWithdrawals = ({ scrollRef, shouldRender = true }: Props) => {
     pathParams: { hash },
     scrollRef,
     options: {
+      enabled: isQueryEnabled,
       placeholderData: generateListStub<'address_withdrawals'>(WITHDRAWAL, 50, { next_page_params: {
         index: 5,
         items_count: 50,
@@ -52,7 +54,12 @@ const AddressWithdrawals = ({ scrollRef, shouldRender = true }: Props) => {
         )) }
       </Show>
       <Hide below="lg" ssr={ false }>
-        <BeaconChainWithdrawalsTable items={ data.items } view="address" top={ pagination.isVisible ? 80 : 0 } isLoading={ isPlaceholderData }/>
+        <BeaconChainWithdrawalsTable
+          items={ data.items }
+          view="address"
+          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+          isLoading={ isPlaceholderData }
+        />
       </Hide>
     </>
   ) : null ;

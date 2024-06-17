@@ -26,7 +26,7 @@ const WalletTooltip = ({ children, isDisabled, isMobile, isWalletConnected, isAu
       if (isAutoConnectDisabled) {
         return <span>Your wallet is not<br/>connected to this app.<br/>Connect your wallet<br/>in the app directly</span>;
       }
-      return <span>Your wallet is connected<br/>with Blockscout</span>;
+      return null;
     }
     return <span>Connect your wallet<br/>to Blockscout for<br/>full-featured access</span>;
   }, [ isWalletConnected, isAutoConnectDisabled ]);
@@ -45,7 +45,7 @@ const WalletTooltip = ({ children, isDisabled, isMobile, isWalletConnected, isAu
     if (!isDisabled && needToShow) {
       timer1 = setTimeout(() => {
         setIsTooltipShown.on();
-        timer2 = setTimeout(() => setIsTooltipShown.off(), 5 * SECOND);
+        timer2 = setTimeout(() => setIsTooltipShown.off(), 3 * SECOND);
         if (!wasShown && isMarketplacePage) {
           window.localStorage.setItem(LOCAL_STORAGE_KEY, 'true');
         }
@@ -67,7 +67,7 @@ const WalletTooltip = ({ children, isDisabled, isMobile, isWalletConnected, isAu
         label={ label }
         textAlign="center"
         padding={ 2 }
-        isDisabled={ isDisabled || (isWalletConnected && !isAppPage) }
+        isDisabled={ isDisabled || !label || (isWalletConnected && !isAppPage) }
         openDelay={ 500 }
         isOpen={ isTooltipShown || (isMobile ? false : undefined) }
         onClose={ setIsTooltipShown.off }

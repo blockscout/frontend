@@ -10,9 +10,11 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import { isInternalItem } from 'lib/hooks/useNavItems';
 import IconSvg from 'ui/shared/IconSvg';
 
+import LightningLabel, { LIGHTNING_LABEL_CLASS_NAME } from './LightningLabel';
 import NavLinkIcon from './NavLinkIcon';
 import useColors from './useColors';
 import useNavLinkStyleProps from './useNavLinkStyleProps';
+import { checkRouteHighlight } from './utils';
 
 type Props = {
   item: NavItem;
@@ -34,6 +36,8 @@ const NavLink = ({ item, isCollapsed, px, className, onClick, disableActiveState
   const isXLScreen = useBreakpointValue({ base: false, xl: true });
   const href = isInternalLink ? route(item.nextRoute) : item.url;
 
+  const isHighlighted = checkRouteHighlight(item);
+
   const content = (
     <Link
       href={ href }
@@ -41,12 +45,13 @@ const NavLink = ({ item, isCollapsed, px, className, onClick, disableActiveState
       { ...styleProps.itemProps }
       w={{ base: '100%', lg: isExpanded ? '100%' : '60px', xl: isCollapsed ? '60px' : '100%' }}
       display="flex"
+      position="relative"
       px={ px || { base: 3, lg: isExpanded ? 3 : '15px', xl: isCollapsed ? '15px' : 3 } }
       aria-label={ `${ item.text } link` }
       whiteSpace="nowrap"
       onClick={ onClick }
       _hover={{
-        '& *': {
+        [`& *:not(.${ LIGHTNING_LABEL_CLASS_NAME }, .${ LIGHTNING_LABEL_CLASS_NAME } *)`]: {
           color: 'link_hovered',
         },
       }}
@@ -60,12 +65,15 @@ const NavLink = ({ item, isCollapsed, px, className, onClick, disableActiveState
         gutter={ 20 }
         color={ isInternalLink && item.isActive ? colors.text.active : colors.text.hover }
       >
-        <HStack spacing={ 3 } overflow="hidden">
+        <HStack spacing={ 0 } overflow="hidden">
           <NavLinkIcon item={ item }/>
-          <Text { ...styleProps.textProps } as="span">
+          <Text { ...styleProps.textProps } as="span" ml={ 3 }>
             <span>{ item.text }</span>
             { !isInternalLink && <IconSvg name="arrows/north-east" boxSize={ 4 } color="text_secondary" verticalAlign="middle"/> }
           </Text>
+          { isHighlighted && (
+            <LightningLabel bgColor={ styleProps.itemProps.bgColor } isCollapsed={ isCollapsed }/>
+          ) }
         </HStack>
       </Tooltip>
     </Link>

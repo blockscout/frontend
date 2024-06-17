@@ -14,9 +14,10 @@ interface Props extends Pick<AccordionProps, 'onAddClick' | 'onRemoveClick' | 'i
   basePath: string;
   level: number;
   isDisabled: boolean;
+  isOptional?: boolean;
 }
 
-const ContractMethodFieldInputTuple = ({ data, basePath, level, isDisabled, ...accordionProps }: Props) => {
+const ContractMethodFieldInputTuple = ({ data, basePath, level, isDisabled, isOptional, ...accordionProps }: Props) => {
   const { formState: { errors } } = useFormContext();
   const fieldsWithErrors = Object.keys(errors);
   const isInvalid = fieldsWithErrors.some((field) => field.startsWith(basePath));
@@ -64,6 +65,7 @@ const ContractMethodFieldInputTuple = ({ data, basePath, level, isDisabled, ...a
             data={ component }
             path={ `${ basePath }:${ index }` }
             isDisabled={ isDisabled }
+            isOptional={ isOptional }
             level={ level }
           />
         );

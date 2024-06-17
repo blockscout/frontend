@@ -62,7 +62,7 @@ const LogTopic = ({ hex, index, isLoading }: Props) => {
   return (
     <Flex alignItems="center" px={{ base: 0, lg: 3 }} _notFirst={{ mt: 3 }} overflow="hidden" maxW="100%">
       <Skeleton isLoaded={ !isLoading } mr={ 3 } borderRadius="base">
-        <Button variant="outline" colorScheme="gray" isActive size="xs" fontWeight={ 400 } w={ 6 }>
+        <Button variant="outline" colorScheme="gray" data-selected size="xs" fontWeight={ 400 } w={ 6 }>
           { index }
         </Button>
       </Skeleton>

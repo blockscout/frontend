@@ -19,14 +19,15 @@ interface Props {
   path: string;
   className?: string;
   isDisabled: boolean;
+  isOptional?: boolean;
   level: number;
 }
 
-const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDisabled, level }: Props) => {
+const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDisabled, isOptional: isOptionalProp, level }: Props) => {
   const ref = React.useRef<HTMLInputElement>(null);
 
   const isNativeCoin = data.fieldType === 'native_coin';
-  const isOptional = isNativeCoin;
+  const isOptional = isOptionalProp || isNativeCoin;
 
   const argTypeMatchInt = React.useMemo(() => matchInt(data.type), [ data.type ]);
   const validate = useValidateField({ isOptional, argType: data.type, argTypeMatchInt });

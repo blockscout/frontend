@@ -5,9 +5,9 @@ import type { TokenInstance } from 'types/api/token';
 import type { MetadataAttributes } from 'types/client/token';
 
 import parseMetadata from 'lib/token/parseMetadata';
-import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
-import LinkExternal from 'ui/shared/LinkExternal';
+import LinkExternal from 'ui/shared/links/LinkExternal';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
 interface Props {
@@ -74,42 +74,55 @@ const TokenInstanceMetadataInfo = ({ data, isLoading }: Props) => {
     <>
       <DetailsInfoItemDivider/>
       { metadata?.name && (
-        <DetailsInfoItem
-          title="Name"
-          hint="NFT name"
-          whiteSpace="normal"
-          wordBreak="break-word"
-          isLoading={ isLoading }
-        >
-          <Skeleton isLoaded={ !isLoading }>
-            { metadata.name }
-          </Skeleton>
-        </DetailsInfoItem>
+        <>
+          <DetailsInfoItem.Label
+            hint="NFT name"
+            isLoading={ isLoading }
+          >
+            Name
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value
+            whiteSpace="normal"
+            wordBreak="break-word"
+          >
+            <Skeleton isLoaded={ !isLoading }>
+              { metadata.name }
+            </Skeleton>
+          </DetailsInfoItem.Value>
+        </>
       ) }
       { metadata?.description && (
-        <DetailsInfoItem
-          title="Description"
-          hint="NFT description"
-          whiteSpace="normal"
-          wordBreak="break-word"
-          isLoading={ isLoading }
-        >
-          <Skeleton isLoaded={ !isLoading }>
-            { metadata.description }
-          </Skeleton>
-        </DetailsInfoItem>
+        <>
+          <DetailsInfoItem.Label
+            hint="NFT description"
+            isLoading={ isLoading }
+          >
+            Description
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value
+            whiteSpace="normal"
+            wordBreak="break-word"
+          >
+            <Skeleton isLoaded={ !isLoading }>
+              { metadata.description }
+            </Skeleton>
+          </DetailsInfoItem.Value>
+        </>
       ) }
       { metadata?.attributes && (
-        <DetailsInfoItem
-          title="Attributes"
-          hint="NFT attributes"
-          whiteSpace="normal"
-          isLoading={ isLoading }
-        >
-          <Grid gap={ 2 } templateColumns="repeat(auto-fill,minmax(160px, 1fr))" w="100%">
-            { metadata.attributes.map((attribute, index) => <Item key={ index } data={ attribute } isLoading={ isLoading }/>) }
-          </Grid>
-        </DetailsInfoItem>
+        <>
+          <DetailsInfoItem.Label
+            hint="NFT attributes"
+            isLoading={ isLoading }
+          >
+            Attributes
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            <Grid gap={ 2 } templateColumns="repeat(auto-fill,minmax(160px, 1fr))" w="100%" whiteSpace="normal">
+              { metadata.attributes.map((attribute, index) => <Item key={ index } data={ attribute } isLoading={ isLoading }/>) }
+            </Grid>
+          </DetailsInfoItem.Value>
+        </>
       ) }
     </>
   );

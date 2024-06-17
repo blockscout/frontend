@@ -15,7 +15,7 @@ export const base: Block = {
   height: 30146364,
   miner: {
     hash: '0xdAd49e6CbDE849353ab27DeC6319E687BFc91A41',
-    implementation_name: null,
+    implementations: null,
     is_contract: false,
     is_verified: null,
     name: 'Alex Emelyanov',
@@ -65,7 +65,7 @@ export const genesis: Block = {
   height: 0,
   miner: {
     hash: '0x0000000000000000000000000000000000000000',
-    implementation_name: null,
+    implementations: null,
     is_contract: false,
     is_verified: null,
     name: null,
@@ -94,7 +94,7 @@ export const base2: Block = {
   size: 592,
   miner: {
     hash: '0xDfE10D55d9248B2ED66f1647df0b0A46dEb25165',
-    implementation_name: null,
+    implementations: null,
     is_contract: false,
     is_verified: null,
     name: 'Kiryl Ihnatsyeu',

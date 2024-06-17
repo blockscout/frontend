@@ -5,6 +5,7 @@ import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
+import { getTokenTypeName } from 'lib/token/tokenTypes';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import Tag from 'ui/shared/chakra/Tag';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
@@ -54,7 +55,7 @@ const TokenTransferListItem = ({
             noCopy
             w="auto"
           />
-          <Tag flexShrink={ 0 } isLoading={ isLoading }>{ token.type }</Tag>
+          <Tag flexShrink={ 0 } isLoading={ isLoading }>{ getTokenTypeName(token.type) }</Tag>
           <Tag colorScheme="orange" isLoading={ isLoading }>{ getTokenTransferTypeText(type) }</Tag>
         </Flex>
         { showTxInfo && txHash && (

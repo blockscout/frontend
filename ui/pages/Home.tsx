@@ -1,4 +1,4 @@
-import { Box, Heading, Flex } from '@chakra-ui/react';
+import { Box, Flex, Heading } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
@@ -20,20 +20,25 @@ const Home = () => {
       <Box
         w="100%"
         background={ config.UI.homepage.plate.background }
-        borderRadius="24px"
-        padding={{ base: '24px', lg: '48px' }}
+        borderRadius={{ base: 'md', lg: 'xl' }}
+        px={{ base: 4, lg: 10 }}
+        py={{ base: 3, lg: 8 }}
         minW={{ base: 'unset', lg: '900px' }}
         data-label="hero plate"
       >
-        <Flex mb={{ base: 6, lg: 8 }} justifyContent="space-between" alignItems="center">
+        <Flex mb={{ base: 2, lg: 6 }} justifyContent="space-between" alignItems="center">
           <Heading
             as="h1"
-            size={{ base: 'md', lg: 'xl' }}
-            lineHeight={{ base: '32px', lg: '50px' }}
+            fontSize={{ base: '18px', lg: '40px' }}
+            lineHeight={{ base: '24px', lg: '48px' }}
             fontWeight={ 600 }
             color={ config.UI.homepage.plate.textColor }
           >
-            { config.chain.name } explorer
+            {
+              config.meta.seo.enhancedDataEnabled ?
+                `${ config.chain.name } blockchain explorer` :
+                `${ config.chain.name } explorer`
+            }
           </Heading>
           <Box display={{ base: 'none', lg: 'flex' }}>
             { config.features.account.isEnabled && <ProfileMenuDesktop isHomePage/> }
@@ -44,8 +49,8 @@ const Home = () => {
       </Box>
       <Stats/>
       <ChainIndicators/>
-      <AdBanner mt={{ base: 6, lg: 8 }} mx="auto" display="flex" justifyContent="center"/>
-      <Flex mt={ 8 } direction={{ base: 'column', lg: 'row' }} columnGap={ 12 } rowGap={ 8 }>
+      <AdBanner mt={ 6 } mx="auto" display="flex" justifyContent="center"/>
+      <Flex mt={ 6 } direction={{ base: 'column', lg: 'row' }} columnGap={ 12 } rowGap={ 6 }>
         { rollupFeature.isEnabled && rollupFeature.type === 'zkEvm' ? <LatestZkEvmL2Batches/> : <LatestBlocks/> }
         <Box flexGrow={ 1 }>
           <Transactions/>

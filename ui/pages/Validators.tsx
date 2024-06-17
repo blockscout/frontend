@@ -83,7 +83,7 @@ const Validators = () => {
     onSortingChange(getSortParamsFromValue(value));
   }, [ onSortingChange ]);
 
-  const filterMenu = <ValidatorsFilter onChange={ handleStateFilterChange } defaultValue={ statusFilter } isActive={ Boolean(statusFilter) }/>;
+  const filterMenu = <ValidatorsFilter onChange={ handleStateFilterChange } defaultValue={ statusFilter } hasActiveFilter={ Boolean(statusFilter) }/>;
 
   // const filterInput = (
   //   <FilterInput

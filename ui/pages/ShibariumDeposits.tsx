@@ -7,6 +7,7 @@ import { SHIBARIUM_DEPOSIT_ITEM } from 'stubs/shibarium';
 import { generateListStub } from 'stubs/utils';
 import DepositsListItem from 'ui/deposits/shibarium/DepositsListItem';
 import DepositsTable from 'ui/deposits/shibarium/DepositsTable';
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -47,7 +48,7 @@ const L2Deposits = () => {
         ))) }
       </Show>
       <Hide below="lg" ssr={ false }>
-        <DepositsTable items={ data.items } top={ pagination.isVisible ? 80 : 0 } isLoading={ isPlaceholderData }/>
+        <DepositsTable items={ data.items } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 } isLoading={ isPlaceholderData }/>
       </Hide>
     </>
   ) : null;

@@ -1,5 +1,6 @@
 import React from 'react';
 
+import config from 'configs/app';
 import { USER_OPS_ITEM } from 'stubs/userOps';
 import { generateListStub } from 'stubs/utils';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -19,7 +20,10 @@ const UserOps = () => {
 
   return (
     <>
-      <PageTitle title="User operations" withTextAd/>
+      <PageTitle
+        title={ config.meta.seo.enhancedDataEnabled ? `${ config.chain.name } user operations` : 'User operations' }
+        withTextAd
+      />
       <UserOpsContent query={ query }/>
     </>
   );

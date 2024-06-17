@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import type { Route } from 'nextjs-routes';
 
 // equal og:description
@@ -30,14 +31,15 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/account/watchlist': DEFAULT_TEMPLATE,
   '/account/api-key': DEFAULT_TEMPLATE,
   '/account/custom-abi': DEFAULT_TEMPLATE,
-  '/account/public-tags-request': DEFAULT_TEMPLATE,
   '/account/tag-address': DEFAULT_TEMPLATE,
   '/account/verified-addresses': DEFAULT_TEMPLATE,
+  '/public-tags/submit': 'Propose a new public tag for your address, contract or set of contracts for your dApp. Our team will review and approve your submission. Public tags are incredible tool which helps users identify contracts and addresses.',
   '/withdrawals': DEFAULT_TEMPLATE,
   '/visualize/sol2uml': DEFAULT_TEMPLATE,
   '/csv-export': DEFAULT_TEMPLATE,
   '/deposits': DEFAULT_TEMPLATE,
   '/output-roots': DEFAULT_TEMPLATE,
+  '/dispute-games': DEFAULT_TEMPLATE,
   '/batches': DEFAULT_TEMPLATE,
   '/batches/[number]': DEFAULT_TEMPLATE,
   '/blobs/[hash]': DEFAULT_TEMPLATE,

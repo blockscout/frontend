@@ -6,6 +6,7 @@ import type { Transaction, TransactionsSortingField, TransactionsSortingValue } 
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
 import getNextSortValue from 'ui/shared/sort/getNextSortValue';
@@ -88,7 +89,7 @@ const TxsContent = ({
           showSocketInfo={ showSocketInfo }
           socketInfoAlert={ socketInfoAlert }
           socketInfoNum={ socketInfoNum }
-          top={ top || query.pagination.isVisible ? 80 : 0 }
+          top={ top || (query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0) }
           currentAddress={ currentAddress }
           enableTimeIncrement={ enableTimeIncrement }
           isLoading={ isPlaceholderData }

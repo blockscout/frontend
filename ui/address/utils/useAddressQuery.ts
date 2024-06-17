@@ -22,15 +22,16 @@ export type AddressQuery = UseQueryResult<Address, ResourceError<{ status: numbe
 
 interface Params {
   hash: string;
+  isEnabled?: boolean;
 }
 
-export default function useAddressQuery({ hash }: Params): AddressQuery {
+export default function useAddressQuery({ hash, isEnabled = true }: Params): AddressQuery {
   const [ isRefetchEnabled, setRefetchEnabled ] = React.useState(false);
 
   const apiQuery = useApiQuery<'address', { status: number }>('address', {
     pathParams: { hash },
     queryOptions: {
-      enabled: Boolean(hash),
+      enabled: isEnabled && Boolean(hash),
       placeholderData: ADDRESS_INFO,
       refetchOnMount: false,
       retry: (failureCount, error) => {
@@ -79,8 +80,7 @@ export default function useAddressQuery({ hash }: Params): AddressQuery {
         has_token_transfers: false,
         has_tokens: false,
         has_validated_blocks: false,
-        implementation_address: null,
-        implementation_name: null,
+        implementations: null,
         is_contract: false,
         is_verified: false,
         name: null,

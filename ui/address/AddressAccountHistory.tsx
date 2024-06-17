@@ -27,9 +27,10 @@ const getFilterValue = (getFilterValueFromQuery<NovesHistoryFilterValue>).bind(n
 type Props = {
   scrollRef?: React.RefObject<HTMLDivElement>;
   shouldRender?: boolean;
+  isQueryEnabled?: boolean;
 }
 
-const AddressAccountHistory = ({ scrollRef, shouldRender = true }: Props) => {
+const AddressAccountHistory = ({ scrollRef, shouldRender = true, isQueryEnabled = true }: Props) => {
   const router = useRouter();
   const isMounted = useIsMounted();
 
@@ -42,6 +43,7 @@ const AddressAccountHistory = ({ scrollRef, shouldRender = true }: Props) => {
     pathParams: { address: currentAddress },
     scrollRef,
     options: {
+      enabled: isQueryEnabled,
       placeholderData: generateListStub<'noves_address_history'>(NOVES_TRANSLATE, 10, { hasNextPage: false, pageNumber: 1, pageSize: 10 }),
     },
   });
@@ -61,7 +63,7 @@ const AddressAccountHistory = ({ scrollRef, shouldRender = true }: Props) => {
       <AccountHistoryFilter
         defaultFilter={ filterValue }
         onFilterChange={ handleFilterChange }
-        isActive={ Boolean(filterValue) }
+        hasActiveFilter={ Boolean(filterValue) }
         isLoading={ pagination.isLoading }
       />
 

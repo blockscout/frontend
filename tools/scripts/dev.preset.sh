@@ -17,7 +17,7 @@ fi
 # download assets for the running instance
 dotenv \
   -e $config_file \
-  -- bash -c './deploy/scripts/download_assets.sh ./public/assets'
+  -- bash -c './deploy/scripts/download_assets.sh ./public/assets/configs'
 
 yarn svg:build-sprite
 echo ""

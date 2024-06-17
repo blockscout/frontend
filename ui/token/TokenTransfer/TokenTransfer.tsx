@@ -18,6 +18,8 @@ import * as SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import TokenTransferList from 'ui/token/TokenTransfer/TokenTransferList';
 import TokenTransferTable from 'ui/token/TokenTransfer/TokenTransferTable';
 
+const TABS_HEIGHT = 88;
+
 type Props = {
   transfersQuery: QueryWithPagesResult<'token_transfers'> | QueryWithPagesResult<'token_instance_transfers'>;
   tokenId?: string;
@@ -67,7 +69,7 @@ const TokenTransfer = ({ transfersQuery, tokenId, token, shouldRender = true }: 
       <Box display={{ base: 'none', lg: 'block' }}>
         <TokenTransferTable
           data={ data?.items }
-          top={ pagination.isVisible ? 80 : 0 }
+          top={ pagination.isVisible ? TABS_HEIGHT : 0 }
           showSocketInfo={ pagination.page === 1 }
           socketInfoAlert={ socketAlert }
           socketInfoNum={ newItemsCount }

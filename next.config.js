@@ -46,7 +46,7 @@ const moduleExports = {
   output: 'standalone',
   productionBrowserSourceMaps: true,
   experimental: {
-    instrumentationHook: true,
+    instrumentationHook: process.env.NEXT_OPEN_TELEMETRY_ENABLED === 'true',
     turbo: {
       rules: {
         '*.svg': {

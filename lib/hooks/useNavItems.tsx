@@ -96,6 +96,12 @@ export default function useNavItems(): ReturnType {
       icon: 'output_roots',
       isActive: pathname === '/output-roots',
     };
+    const rollupDisputeGames = config.features.faultProofSystem.isEnabled ? {
+      text: 'Dispute games',
+      nextRoute: { pathname: '/dispute-games' as const },
+      icon: 'games',
+      isActive: pathname === '/dispute-games',
+    } : null;
 
     const rollupFeature = config.features.rollup;
 
@@ -109,6 +115,7 @@ export default function useNavItems(): ReturnType {
         [
           blocks,
           rollupTxnBatches,
+          rollupDisputeGames,
           rollupFeature.type === 'optimistic' ? rollupOutputRoots : undefined,
         ].filter(Boolean),
         [
@@ -237,6 +244,11 @@ export default function useNavItems(): ReturnType {
             nextRoute: { pathname: '/gas-tracker' as const },
             isActive: pathname.startsWith('/gas-tracker'),
           },
+          config.features.publicTagsSubmission.isEnabled && {
+            text: 'Submit public tag',
+            nextRoute: { pathname: '/public-tags/submit' as const },
+            isActive: pathname.startsWith('/public-tags/submit'),
+          },
           ...config.UI.sidebar.otherLinks,
         ].filter(Boolean),
       },
@@ -254,12 +266,6 @@ export default function useNavItems(): ReturnType {
         nextRoute: { pathname: '/account/tag-address' as const },
         icon: 'privattags',
         isActive: pathname === '/account/tag-address',
-      },
-      {
-        text: 'Public tags',
-        nextRoute: { pathname: '/account/public-tags-request' as const },
-        icon: 'publictags',
-        isActive: pathname === '/account/public-tags-request',
       },
       {
         text: 'API keys',

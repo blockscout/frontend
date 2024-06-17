@@ -21,10 +21,28 @@ export interface AddressMetadataTagApi extends Omit<AddressMetadataTag, 'meta'> 
   meta: {
     textColor?: string;
     bgColor?: string;
+    tagIcon?: string;
     tagUrl?: string;
     tooltipIcon?: string;
     tooltipTitle?: string;
     tooltipDescription?: string;
     tooltipUrl?: string;
+    appID?: string;
+    appMarketplaceURL?: string;
+    appLogoURL?: string;
+    appActionButtonText?: string;
+    warpcastHandle?: string;
   } | null;
+}
+
+// TAG SUBMISSION
+
+export interface PublicTagType {
+  id: string;
+  type: AddressMetadataTagType;
+  description: string;
+}
+
+export interface PublicTagTypesResponse {
+  tagTypes: Array<PublicTagType>;
 }

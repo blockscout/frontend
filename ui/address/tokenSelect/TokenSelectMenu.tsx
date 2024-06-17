@@ -6,6 +6,7 @@ import React from 'react';
 import type { FormattedData } from './types';
 import type { TokenType } from 'types/api/token';
 
+import { getTokenTypeName } from 'lib/token/tokenTypes';
 import IconSvg from 'ui/shared/IconSvg';
 
 import type { Sort } from '../utils/tokenUtils';
@@ -24,7 +25,6 @@ interface Props {
 
 const TokenSelectMenu = ({ erc20sort, erc1155sort, erc404sort, filteredData, onInputChange, onSortClick, searchTerm }: Props) => {
   const searchIconColor = useColorModeValue('blackAlpha.600', 'whiteAlpha.600');
-  const inputBorderColor = useColorModeValue('blackAlpha.100', 'whiteAlpha.200');
 
   const hasFilteredResult = _sumBy(Object.values(filteredData), ({ items }) => items.length) > 0;
 
@@ -39,7 +39,7 @@ const TokenSelectMenu = ({ erc20sort, erc1155sort, erc404sort, filteredData, onI
           placeholder="Search by token name"
           ml="1px"
           onChange={ onInputChange }
-          borderColor={ inputBorderColor }
+          bgColor="dialog_bg"
         />
       </InputGroup>
       <Flex flexDir="column" rowGap={ 6 }>
@@ -74,9 +74,11 @@ const TokenSelectMenu = ({ erc20sort, erc1155sort, erc404sort, filteredData, onI
           return (
             <Box key={ type }>
               <Flex justifyContent="space-between">
-                <Text mb={ 3 } color="gray.500" fontWeight={ 600 } fontSize="sm">{ type } tokens ({ numPrefix }{ tokenInfo.items.length })</Text>
+                <Text mb={ 3 } color="gray.500" fontWeight={ 600 } fontSize="sm">
+                  { getTokenTypeName(type) } tokens ({ numPrefix }{ tokenInfo.items.length })
+                </Text>
                 { hasSort && (
-                  <Link data-type={ type } onClick={ onSortClick } aria-label={ `Sort ${ type } tokens` }>
+                  <Link data-type={ type } onClick={ onSortClick } aria-label={ `Sort ${ getTokenTypeName(type) } tokens` }>
                     <IconSvg name="arrows/east" boxSize={ 5 } transform={ arrowTransform } transitionDuration="faster"/>
                   </Link>
                 ) }

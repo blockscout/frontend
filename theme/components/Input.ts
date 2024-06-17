@@ -29,6 +29,20 @@ const size = {
     h: '40px',
     borderRadius: 'base',
   }),
+  // TEMPORARY INPUT SIZE!!!
+  // soon we will migrate to the new size and get rid off this one
+  // lg -> 60
+  // md -> 48
+  // sm -> 40
+  // xs ->32
+  sm_md: defineStyle({
+    fontSize: 'md',
+    lineHeight: '24px',
+    px: '8px',
+    py: '12px',
+    h: '48px',
+    borderRadius: 'base',
+  }),
   md: defineStyle({
     fontSize: 'md',
     lineHeight: '20px',
@@ -70,6 +84,10 @@ const sizes = {
   sm: definePartsStyle({
     field: size.sm,
     addon: size.sm,
+  }),
+  sm_md: definePartsStyle({
+    field: size.sm_md,
+    addon: size.sm_md,
   }),
   md: definePartsStyle({
     field: size.md,

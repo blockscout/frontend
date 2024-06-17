@@ -4,6 +4,7 @@ import React from 'react';
 import useApiQuery from 'lib/api/useApiQuery';
 import { generateListStub } from 'stubs/utils';
 import { ZKEVM_L2_TXN_BATCHES_ITEM } from 'stubs/zkEvmL2';
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -45,7 +46,9 @@ const ZkEvmL2TxnBatches = () => {
           />
         ))) }
       </Show>
-      <Hide below="lg" ssr={ false }><ZkEvmTxnBatchesTable items={ data.items } top={ pagination.isVisible ? 80 : 0 } isLoading={ isPlaceholderData }/></Hide>
+      <Hide below="lg" ssr={ false }>
+        <ZkEvmTxnBatchesTable items={ data.items } top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 } isLoading={ isPlaceholderData }/>
+      </Hide>
     </>
   ) : null;
 

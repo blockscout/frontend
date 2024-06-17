@@ -11,9 +11,10 @@ import UserOpsContent from 'ui/userOps/UserOpsContent';
 type Props = {
   scrollRef?: React.RefObject<HTMLDivElement>;
   shouldRender?: boolean;
+  isQueryEnabled?: boolean;
 }
 
-const AddressUserOps = ({ scrollRef, shouldRender = true }: Props) => {
+const AddressUserOps = ({ scrollRef, shouldRender = true, isQueryEnabled = true }: Props) => {
   const router = useRouter();
   const isMounted = useIsMounted();
 
@@ -23,7 +24,7 @@ const AddressUserOps = ({ scrollRef, shouldRender = true }: Props) => {
     resourceName: 'user_ops',
     scrollRef,
     options: {
-      enabled: Boolean(hash),
+      enabled: isQueryEnabled && Boolean(hash),
       placeholderData: generateListStub<'user_ops'>(USER_OPS_ITEM, 50, { next_page_params: {
         page_token: '10355938,0x5956a847d8089e254e02e5111cad6992b99ceb9e5c2dc4343fd53002834c4dc6',
         page_size: 50,

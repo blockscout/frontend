@@ -18,7 +18,7 @@ const TokenInfoFieldAddress = ({ control }: Props) => {
         <Input
           { ...field }
           required
-          isDisabled
+          isReadOnly
         />
         <InputPlaceholder text="Token contract address"/>
       </FormControl>

@@ -1,8 +1,8 @@
+import type * as bens from '@blockscout/bens-types';
 import { getFeaturePayload } from 'configs/app/features/types';
 import type {
   UserInfo,
   CustomAbis,
-  PublicTags,
   ApiKeys,
   VerifiedAddressResponse,
   TokenInfoApplicationConfig,
@@ -32,7 +32,7 @@ import type {
   AddressCoinBalanceHistoryChartOld,
 } from 'types/api/address';
 import type { AddressesResponse } from 'types/api/addresses';
-import type { AddressMetadataInfo } from 'types/api/addressMetadata';
+import type { AddressMetadataInfo, PublicTagTypesResponse } from 'types/api/addressMetadata';
 import type { TxBlobs, Blob } from 'types/api/blobs';
 import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters, BlockWithdrawalsResponse } from 'types/api/block';
 import type { ChartMarketResponse, ChartSecondaryCoinPriceResponse, ChartTransactionResponse } from 'types/api/charts';
@@ -48,11 +48,7 @@ import type {
 import type { VerifiedContractsResponse, VerifiedContractsFilters, VerifiedContractsCounters } from 'types/api/contracts';
 import type {
   EnsAddressLookupFilters,
-  EnsAddressLookupResponse,
-  EnsDomainDetailed,
-  EnsDomainEventsResponse,
   EnsDomainLookupFilters,
-  EnsDomainLookupResponse,
   EnsLookupSorting,
 } from 'types/api/ens';
 import type { IndexingStatus } from 'types/api/indexingStatus';
@@ -65,6 +61,7 @@ import type {
   OptimisticL2OutputRootsResponse,
   OptimisticL2TxnBatchesResponse,
   OptimisticL2WithdrawalsResponse,
+  OptimisticL2DisputeGamesResponse,
 } from 'types/api/optimisticL2';
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import type { SearchRedirectResult, SearchResult, SearchResultFilters, SearchResultItem } from 'types/api/search';
@@ -147,10 +144,6 @@ export const RESOURCES = {
     pathParams: [ 'id' as const ],
     filterFields: [ ],
   },
-  public_tags: {
-    path: '/api/account/v2/user/public_tags/:id?',
-    pathParams: [ 'id' as const ],
-  },
   private_tags_address: {
     path: '/api/account/v2/user/tags/address/:id?',
     pathParams: [ 'id' as const ],
@@ -223,7 +216,7 @@ export const RESOURCES = {
     pathParams: [ 'chainId' as const ],
     endpoint: getFeaturePayload(config.features.nameService)?.api.endpoint,
     basePath: getFeaturePayload(config.features.nameService)?.api.basePath,
-    filterFields: [ 'address' as const, 'resolved_to' as const, 'owned_by' as const, 'only_active' as const ],
+    filterFields: [ 'address' as const, 'resolved_to' as const, 'owned_by' as const, 'only_active' as const, 'protocols' as const ],
   },
   domain_info: {
     path: '/api/v1/:chainId/domains/:name',
@@ -242,10 +235,16 @@ export const RESOURCES = {
     pathParams: [ 'chainId' as const ],
     endpoint: getFeaturePayload(config.features.nameService)?.api.endpoint,
     basePath: getFeaturePayload(config.features.nameService)?.api.basePath,
-    filterFields: [ 'name' as const, 'only_active' as const ],
+    filterFields: [ 'name' as const, 'only_active' as const, 'protocols' as const ],
+  },
+  domain_protocols: {
+    path: '/api/v1/:chainId/protocols',
+    pathParams: [ 'chainId' as const ],
+    endpoint: getFeaturePayload(config.features.nameService)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.nameService)?.api.basePath,
   },
 
-  // METADATA SERVICE
+  // METADATA SERVICE & PUBLIC TAGS
   address_metadata_info: {
     path: '/api/v1/metadata',
     endpoint: getFeaturePayload(config.features.addressMetadata)?.api.endpoint,
@@ -255,6 +254,17 @@ export const RESOURCES = {
     path: '/api/v1/tags:search',
     endpoint: getFeaturePayload(config.features.addressMetadata)?.api.endpoint,
     basePath: getFeaturePayload(config.features.addressMetadata)?.api.basePath,
+  },
+  address_metadata_tag_types: {
+    path: '/api/v1/public-tag-types',
+    endpoint: getFeaturePayload(config.features.addressMetadata)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.addressMetadata)?.api.basePath,
+  },
+  public_tag_application: {
+    path: '/api/v1/chains/:chainId/metadata-submissions/tag',
+    pathParams: [ 'chainId' as const ],
+    endpoint: getFeaturePayload(config.features.publicTagsSubmission)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.publicTagsSubmission)?.api.basePath,
   },
 
   // VISUALIZATION
@@ -644,6 +654,15 @@ export const RESOURCES = {
     path: '/api/v2/optimism/txn-batches/count',
   },
 
+  optimistic_l2_dispute_games: {
+    path: '/api/v2/optimism/games',
+    filterFields: [],
+  },
+
+  optimistic_l2_dispute_games_count: {
+    path: '/api/v2/optimism/games/count',
+  },
+
   // zkEvm L2
   zkevm_l2_deposits: {
     path: '/api/v2/zkevm/deposits',
@@ -847,6 +866,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'token_instance_transfers' | 'token_instance_holders' |
 'verified_contracts' |
 'optimistic_l2_output_roots' | 'optimistic_l2_withdrawals' | 'optimistic_l2_txn_batches' | 'optimistic_l2_deposits' |
+'optimistic_l2_dispute_games' |
 'shibarium_deposits' | 'shibarium_withdrawals' |
 'zkevm_l2_deposits' | 'zkevm_l2_withdrawals' | 'zkevm_l2_txn_batches' | 'zkevm_l2_txn_batch_txs' |
 'zksync_l2_txn_batches' | 'zksync_l2_txn_batch_txs' |
@@ -863,7 +883,6 @@ export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>
 export type ResourcePayloadA<Q extends ResourceName> =
 Q extends 'user_info' ? UserInfo :
 Q extends 'custom_abi' ? CustomAbis :
-Q extends 'public_tags' ? PublicTags :
 Q extends 'private_tags_address' ? AddressTagsResponse :
 Q extends 'private_tags_tx' ? TransactionTagsResponse :
 Q extends 'api_keys' ? ApiKeys :
@@ -950,12 +969,12 @@ Q extends 'optimistic_l2_output_roots' ? OptimisticL2OutputRootsResponse :
 Q extends 'optimistic_l2_withdrawals' ? OptimisticL2WithdrawalsResponse :
 Q extends 'optimistic_l2_deposits' ? OptimisticL2DepositsResponse :
 Q extends 'optimistic_l2_txn_batches' ? OptimisticL2TxnBatchesResponse :
+Q extends 'optimistic_l2_dispute_games' ? OptimisticL2DisputeGamesResponse :
 Q extends 'optimistic_l2_output_roots_count' ? number :
 Q extends 'optimistic_l2_withdrawals_count' ? number :
 Q extends 'optimistic_l2_deposits_count' ? number :
 Q extends 'optimistic_l2_txn_batches_count' ? number :
-Q extends 'config_backend_version' ? BackendVersionConfig :
-Q extends 'address_metadata_info' ? AddressMetadataInfo :
+Q extends 'optimistic_l2_dispute_games_count' ? number :
 never;
 // !!! IMPORTANT !!!
 // See comment above
@@ -963,6 +982,9 @@ never;
 
 /* eslint-disable @typescript-eslint/indent */
 export type ResourcePayloadB<Q extends ResourceName> =
+Q extends 'config_backend_version' ? BackendVersionConfig :
+Q extends 'address_metadata_info' ? AddressMetadataInfo :
+Q extends 'address_metadata_tag_types' ? PublicTagTypesResponse :
 Q extends 'blob' ? Blob :
 Q extends 'marketplace_dapps' ? Array<MarketplaceAppOverview> :
 Q extends 'marketplace_dapp' ? MarketplaceAppOverview :
@@ -985,10 +1007,11 @@ Q extends 'zksync_l2_txn_batches_count' ? number :
 Q extends 'zksync_l2_txn_batch' ? ZkSyncBatch :
 Q extends 'zksync_l2_txn_batch_txs' ? ZkSyncBatchTxs :
 Q extends 'contract_security_audits' ? SmartContractSecurityAudits :
-Q extends 'addresses_lookup' ? EnsAddressLookupResponse :
-Q extends 'domain_info' ? EnsDomainDetailed :
-Q extends 'domain_events' ? EnsDomainEventsResponse :
-Q extends 'domains_lookup' ? EnsDomainLookupResponse :
+Q extends 'addresses_lookup' ? bens.LookupAddressResponse :
+Q extends 'domain_info' ? bens.DetailedDomain :
+Q extends 'domain_events' ? bens.ListDomainEventsResponse :
+Q extends 'domains_lookup' ? bens.LookupDomainNameResponse :
+Q extends 'domain_protocols' ? bens.GetProtocolsResponse :
 Q extends 'user_ops' ? UserOpsResponse :
 Q extends 'user_op' ? UserOp :
 Q extends 'user_ops_account' ? UserOpsAccount :
