@@ -1,15 +1,15 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { MethodType } from './ABI/types';
+import type { MethodType } from './methods/types';
 import type { AddressImplementation } from 'types/api/addressParams';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
-import ContractImplementationAddress from './ContractImplementationAddress';
 import ContractMethods from './ContractMethods';
+import ContractImplementationAddress from './methods/ContractImplementationAddress';
 import { isReadMethod, isWriteMethod } from './utils';
 
 interface Props {

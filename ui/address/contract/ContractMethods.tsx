@@ -1,16 +1,16 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { MethodType } from './ABI/types';
+import type { MethodType } from './methods/types';
 import type { SmartContractMethod } from './types';
 
 import config from 'configs/app';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import ContentLoader from 'ui/shared/ContentLoader';
 
-import ContractAbi from './ABI/ContractAbi';
-import ContractConnectWallet from './ContractConnectWallet';
-import ContractCustomAbiAlert from './ContractCustomAbiAlert';
+import ContractAbi from './methods/ContractAbi';
+import ContractConnectWallet from './methods/ContractConnectWallet';
+import ContractCustomAbiAlert from './methods/ContractCustomAbiAlert';
 
 interface Props {
   abi: Array<SmartContractMethod>;
