@@ -36,18 +36,17 @@ init();
 
 interface Props {
   children: React.ReactNode;
-  fallback?: JSX.Element;
 }
 
-const Fallback = ({ children, fallback }: Props) => {
+const DefaultProvider = ({ children }: Props) => {
   return (
     <WagmiProvider config={ wagmiConfig }>
-      { fallback || children }
+      { children }
     </WagmiProvider>
   );
 };
 
-const Provider = ({ children }: Props) => {
+const Web3ModalProvider = ({ children }: Props) => {
   const { colorMode } = useColorMode();
   const { setThemeMode } = useWeb3ModalTheme();
 
@@ -56,12 +55,12 @@ const Provider = ({ children }: Props) => {
   }, [ colorMode, setThemeMode ]);
 
   return (
-    <WagmiProvider config={ wagmiConfig }>
+    <DefaultProvider>
       { children }
-    </WagmiProvider>
+    </DefaultProvider>
   );
 };
 
-const Web3ModalProvider = feature.isEnabled ? Provider : Fallback;
+const Provider = feature.isEnabled ? Web3ModalProvider : DefaultProvider;
 
-export default Web3ModalProvider;
+export default Provider;
