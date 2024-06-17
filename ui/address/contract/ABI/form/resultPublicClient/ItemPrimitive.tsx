@@ -3,7 +3,9 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 import type { AbiParameter } from 'viem';
 
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import { route } from 'nextjs-routes';
+
+import LinkInternal from 'ui/shared/links/LinkInternal';
 
 import { matchInt } from '../utils';
 import ItemLabel from './ItemLabel';
@@ -38,7 +40,7 @@ const ItemPrimitive = ({ abiParameter, data, level }: Props) => {
 
   const value = (() => {
     if (abiParameter.type === 'address' && typeof data === 'string') {
-      return <AddressEntity address={{ hash: data }} noCopy noIcon display="inline-flex" maxW="100%"/>;
+      return <LinkInternal href={ route({ pathname: '/address/[hash]', query: { hash: data } }) }>{ data }</LinkInternal>;
     }
 
     const intMatch = matchInt(abiParameter.type);
