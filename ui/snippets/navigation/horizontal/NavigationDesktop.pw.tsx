@@ -25,7 +25,7 @@ testWithAuth('base view +@dark-mode', async({ render, mockApiResponse, mockAsset
   await mockEnvs([
     ...ENVS_MAP.userOps,
     ...ENVS_MAP.nameService,
-    [ 'NEXT_PUBLIC_NAVIGATION_HIGHLIGHTED_ROUTES', '["/blocks","/apps","/name-domains"]' ],
+    [ 'NEXT_PUBLIC_NAVIGATION_HIGHLIGHTED_ROUTES', '["/blocks","/apps"]' ],
   ]);
 
   const component = await render(<NavigationDesktop/>, { hooksConfig });
