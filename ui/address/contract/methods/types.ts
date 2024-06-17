@@ -4,7 +4,6 @@ import type { SmartContractMethod } from '../types';
 
 export type ContractAbiItemInput = AbiFunction['inputs'][number] & { fieldType?: 'native_coin' };
 
-// TODO @tom2drum move this type up to the tree
 export type MethodType = 'read' | 'write';
 export type MethodCallStrategy = 'read' | 'write' | 'simulate';
 

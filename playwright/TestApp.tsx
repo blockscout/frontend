@@ -49,20 +49,7 @@ const wagmiConfig = createConfig({
   },
 });
 
-const WalletClientProvider = ({ children, withWalletClient }: { children: React.ReactNode; withWalletClient?: boolean }) => {
-  if (withWalletClient) {
-    return (
-      <WagmiProvider config={ wagmiConfig }>
-        { children }
-      </WagmiProvider>
-    );
-  }
-
-  // eslint-disable-next-line react/jsx-no-useless-fragment
-  return <>{ children }</>;
-};
-
-const TestApp = ({ children, withSocket, withWalletClient = true, appContext = defaultAppContext }: Props) => {
+const TestApp = ({ children, withSocket, appContext = defaultAppContext }: Props) => {
   const [ queryClient ] = React.useState(() => new QueryClient({
     defaultOptions: {
       queries: {
@@ -78,9 +65,9 @@ const TestApp = ({ children, withSocket, withWalletClient = true, appContext = d
         <SocketProvider url={ withSocket ? `ws://${ config.app.host }:${ socketPort }` : undefined }>
           <AppContextProvider { ...appContext }>
             <GrowthBookProvider>
-              <WalletClientProvider withWalletClient={ withWalletClient }>
+              <WagmiProvider config={ wagmiConfig }>
                 { children }
-              </WalletClientProvider>
+              </WagmiProvider>
             </GrowthBookProvider>
           </AppContextProvider>
         </SocketProvider>
