@@ -13,6 +13,7 @@ const hooksConfig = {
 };
 
 // TODO @tom2drum rewrite tests
+// add case for nested array read result
 test('base view +@mobile', async({ render, mockApiResponse }) => {
   await mockApiResponse(
     'contract_methods_write',

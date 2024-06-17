@@ -1,4 +1,4 @@
-import { Tooltip, chakra } from '@chakra-ui/react';
+import { Tooltip } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 import type { AbiParameter } from 'viem';
@@ -6,6 +6,7 @@ import type { AbiParameter } from 'viem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 import { matchInt } from '../utils';
+import ItemLabel from './ItemLabel';
 import { printRowOffset } from './utils';
 
 function castValueToString(value: unknown): string {
@@ -56,8 +57,7 @@ const ItemPrimitive = ({ abiParameter, data, level }: Props) => {
   return (
     <p>
       <span>{ printRowOffset(level) }</span>
-      { abiParameter.name && <chakra.span fontWeight={ 500 }>{ abiParameter.name } </chakra.span> }
-      <span>({ abiParameter.type }) : </span>
+      <ItemLabel abiParameter={ abiParameter }/>
       { value }
     </p>
   );
