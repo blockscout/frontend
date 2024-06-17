@@ -228,7 +228,7 @@ const ContractMethodForm = ({ data, onSubmit, isOpen }: Props) => {
         <ContractMethodResultPublicClient
           data={ result.data }
           onSettle={ handleResultSettle }
-          item={ data }
+          abiItem={ data }
         />
       ) }
     </Box>

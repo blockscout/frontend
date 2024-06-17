@@ -13,12 +13,12 @@ import ContractConnectWallet from './ContractConnectWallet';
 import ContractCustomAbiAlert from './ContractCustomAbiAlert';
 
 interface Props {
-  data: Array<SmartContractMethod>;
+  abi: Array<SmartContractMethod>;
   isLoading?: boolean;
   type: MethodType;
 }
 
-const ContractMethods = ({ data, isLoading, type }: Props) => {
+const ContractMethods = ({ abi, isLoading, type }: Props) => {
   const router = useRouter();
 
   const tab = getQueryParamString(router.query.tab);
@@ -29,7 +29,7 @@ const ContractMethods = ({ data, isLoading, type }: Props) => {
     return <ContentLoader/>;
   }
 
-  if (data.length === 0) {
+  if (abi.length === 0) {
     return <span>No public { type } functions were found for this contract.</span>;
   }
 
@@ -37,7 +37,7 @@ const ContractMethods = ({ data, isLoading, type }: Props) => {
     <>
       { isCustomAbi && <ContractCustomAbiAlert/> }
       { config.features.blockchainInteraction.isEnabled && <ContractConnectWallet/> }
-      <ContractAbi data={ data } addressHash={ addressHash } tab={ tab }/>
+      <ContractAbi data={ abi } addressHash={ addressHash } tab={ tab }/>
     </>
   );
 };

@@ -8,11 +8,11 @@ import ResultItem from './resultPublicClient/Item';
 
 interface Props {
   data: FormSubmitResultPublicClient['data'];
-  item: AbiFunction;
+  abiItem: AbiFunction;
   onSettle: () => void;
 }
 
-const ContractMethodResultPublicClient = ({ data, item, onSettle }: Props) => {
+const ContractMethodResultPublicClient = ({ data, abiItem, onSettle }: Props) => {
   const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
   React.useEffect(() => {
@@ -28,7 +28,7 @@ const ContractMethodResultPublicClient = ({ data, item, onSettle }: Props) => {
   }
 
   const formattedData = (() => {
-    if (item.outputs.length === 1) {
+    if (abiItem.outputs.length === 1) {
       return Array.isArray(data) && data.length === 1 ? data : [ data ];
     }
     return Array.isArray(data) ? data : [ data ];
@@ -37,7 +37,7 @@ const ContractMethodResultPublicClient = ({ data, item, onSettle }: Props) => {
   return (
     <Box mt={ 3 } p={ 4 } borderRadius="md" bgColor={ bgColor } fontSize="sm" whiteSpace="break-spaces" wordBreak="break-all">
       <p>[</p>
-      { item.outputs.map((output, index) => <ResultItem key={ index } abiParameter={ output } data={ formattedData[index] }/>) }
+      { abiItem.outputs.map((output, index) => <ResultItem key={ index } abiParameter={ output } data={ formattedData[index] }/>) }
       <p>]</p>
     </Box>
   );

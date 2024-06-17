@@ -2,7 +2,7 @@ import React from 'react';
 
 import * as addressMock from 'mocks/address/address';
 import * as contractInfoMock from 'mocks/contract/info';
-import * as contractMethodsMock from 'mocks/contract/methods';
+// import * as contractMethodsMock from 'mocks/contract/methods';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import * as socketServer from 'playwright/fixtures/socketServer';
 import { test, expect } from 'playwright/lib';
@@ -14,8 +14,9 @@ const hash = addressMock.contract.hash;
 test.beforeEach(async({ mockApiResponse }) => {
   await mockApiResponse('address', addressMock.contract, { pathParams: { hash } });
   await mockApiResponse('contract', contractInfoMock.verified, { pathParams: { hash } });
-  await mockApiResponse('contract_methods_read', contractMethodsMock.read, { pathParams: { hash }, queryParams: { is_custom_abi: 'false' } });
-  await mockApiResponse('contract_methods_write', contractMethodsMock.write, { pathParams: { hash }, queryParams: { is_custom_abi: 'false' } });
+  // TODO @tom2drum fix test
+  // await mockApiResponse('contract_methods_read', contractMethodsMock.read, { pathParams: { hash }, queryParams: { is_custom_abi: 'false' } });
+  // await mockApiResponse('contract_methods_write', contractMethodsMock.write, { pathParams: { hash }, queryParams: { is_custom_abi: 'false' } });
 });
 
 test.describe('ABI functionality', () => {

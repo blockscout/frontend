@@ -41,7 +41,7 @@ const ContractMethodsProxy = ({ type, addressHash, implementations }: Props) => 
 
     const data = contractQuery.data.abi?.filter(type === 'read' ? isReadMethod : isWriteMethod) || [];
 
-    return <ContractMethods data={ data } type={ type }/>;
+    return <ContractMethods abi={ data } type={ type }/>;
   })();
 
   return (

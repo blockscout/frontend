@@ -96,12 +96,12 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
         methods.read.length > 0 && {
           id: 'read_contract' as const,
           title: 'Read contract',
-          component: <ContractMethods data={ methods.read } isLoading={ contractQuery.isPlaceholderData } type="read"/>,
+          component: <ContractMethods abi={ methods.read } isLoading={ contractQuery.isPlaceholderData } type="read"/>,
         },
         methodsCustomAbi.read.length > 0 && {
           id: 'read_custom_methods' as const,
           title: 'Read custom',
-          component: <ContractMethods data={ methodsCustomAbi.read } isLoading={ contractQuery.isPlaceholderData } type="read"/>,
+          component: <ContractMethods abi={ methodsCustomAbi.read } isLoading={ contractQuery.isPlaceholderData } type="read"/>,
         },
         verifiedImplementations.length > 0 && {
           id: 'read_proxy' as const,
@@ -111,12 +111,12 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
         methods.write.length > 0 && {
           id: 'write_contract' as const,
           title: 'Write contract',
-          component: <ContractMethods data={ methods.write } isLoading={ contractQuery.isPlaceholderData } type="write"/>,
+          component: <ContractMethods abi={ methods.write } isLoading={ contractQuery.isPlaceholderData } type="write"/>,
         },
         methodsCustomAbi.write.length > 0 && {
           id: 'write_custom_methods' as const,
           title: 'Write custom',
-          component: <ContractMethods data={ methodsCustomAbi.write } isLoading={ contractQuery.isPlaceholderData } type="write"/>,
+          component: <ContractMethods abi={ methodsCustomAbi.write } isLoading={ contractQuery.isPlaceholderData } type="write"/>,
         },
         verifiedImplementations.length > 0 && {
           id: 'write_proxy' as const,
