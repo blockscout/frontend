@@ -27,7 +27,8 @@ type Props = {
 }
 
 const MarketplaceAppTopBar = ({ data, isLoading, securityReport }: Props) => {
-  const [ showContractList, setShowContractList ] = useBoolean(false);
+  const [ isContractListShown, setIsContractListShown ] = useBoolean(false);
+  const [ contractListType, setContractListType ] = React.useState(ContractListTypes.ALL);
   const appProps = useAppContext();
   const isMobile = useIsMobile();
 
@@ -43,6 +44,11 @@ const MarketplaceAppTopBar = ({ data, isLoading, securityReport }: Props) => {
       return new URL(url || '').hostname;
     } catch (err) {}
   }
+
+  const showContractList = React.useCallback((id: string, type: ContractListTypes) => {
+    setIsContractListShown.on();
+    setContractListType(type);
+  }, [ setIsContractListShown ]);
 
   return (
     <>
@@ -74,7 +80,7 @@ const MarketplaceAppTopBar = ({ data, isLoading, securityReport }: Props) => {
           <AppSecurityReport
             id={ data?.id || '' }
             securityReport={ securityReport }
-            showContractList={ setShowContractList.on }
+            showContractList={ showContractList }
             isLoading={ isLoading }
             onlyIcon={ isMobile }
             source="App page"
@@ -87,11 +93,11 @@ const MarketplaceAppTopBar = ({ data, isLoading, securityReport }: Props) => {
           </Flex>
         ) }
       </Flex>
-      { showContractList && (
+      { isContractListShown && (
         <ContractListModal
-          type={ ContractListTypes.ANALYZED }
+          type={ contractListType }
           contracts={ securityReport?.contractsData }
-          onClose={ setShowContractList.off }
+          onClose={ setIsContractListShown.off }
         />
       ) }
     </>

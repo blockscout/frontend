@@ -2,7 +2,7 @@ import { Grid } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 import type { MouseEvent } from 'react';
 
-import type { MarketplaceAppPreview } from 'types/client/marketplace';
+import type { MarketplaceAppWithSecurityReport, ContractListTypes } from 'types/client/marketplace';
 
 import * as mixpanel from 'lib/mixpanel/index';
 
@@ -10,16 +10,17 @@ import EmptySearchResult from './EmptySearchResult';
 import MarketplaceAppCard from './MarketplaceAppCard';
 
 type Props = {
-  apps: Array<MarketplaceAppPreview>;
+  apps: Array<MarketplaceAppWithSecurityReport>;
   showAppInfo: (id: string) => void;
   favoriteApps: Array<string>;
   onFavoriteClick: (id: string, isFavorite: boolean, source: 'Discovery view') => void;
   isLoading: boolean;
   selectedCategoryId?: string;
   onAppClick: (event: MouseEvent, id: string) => void;
+  showContractList: (id: string, type: ContractListTypes) => void;
 }
 
-const MarketplaceList = ({ apps, showAppInfo, favoriteApps, onFavoriteClick, isLoading, selectedCategoryId, onAppClick }: Props) => {
+const MarketplaceList = ({ apps, showAppInfo, favoriteApps, onFavoriteClick, isLoading, selectedCategoryId, onAppClick, showContractList }: Props) => {
   const handleInfoClick = useCallback((id: string) => {
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'More button', Info: id, Source: 'Discovery view' });
     showAppInfo(id);
@@ -55,6 +56,8 @@ const MarketplaceList = ({ apps, showAppInfo, favoriteApps, onFavoriteClick, isL
           isLoading={ isLoading }
           internalWallet={ app.internalWallet }
           onAppClick={ onAppClick }
+          securityReport={ app.securityReport }
+          showContractList={ showContractList }
         />
       )) }
     </Grid>

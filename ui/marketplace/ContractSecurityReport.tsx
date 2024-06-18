@@ -1,9 +1,13 @@
-import { Box, Text, Popover, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure } from '@chakra-ui/react';
+import { Box, Text, Popover, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure, Icon } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SolidityscanReport } from 'types/api/contract';
 
 import config from 'configs/app';
+// This icon doesn't work properly when it is in the sprite
+// Probably because of the gradient
+// eslint-disable-next-line no-restricted-imports
+import solidityScanIcon from 'icons/brands/solidity_scan.svg';
 import * as mixpanel from 'lib/mixpanel/index';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import SolidityscanReportButton from 'ui/shared/solidityscanReport/SolidityscanReportButton';
@@ -46,7 +50,11 @@ const ContractSecurityReport = ({ securityReport }: Props) => {
       <PopoverContent w={{ base: '100vw', lg: '328px' }}>
         <PopoverBody px="26px" py="20px" fontSize="sm">
           <Box mb={ 5 }>
-            The security score was derived from evaluating the smart contracts of a protocol on the { config.chain.name } network.
+            The security score was derived from evaluating the smart contracts of a protocol on the { config.chain.name } network  by { ' ' }
+            <Box>
+              <Icon as={ solidityScanIcon } mr={ 1 } w="23px" h="20px" display="inline-block" verticalAlign="middle"/>
+              <Text fontWeight={ 600 } display="inline-block">SolidityScan</Text>
+            </Box>
           </Box>
           <SolidityscanReportScore score={ parseFloat(securityScore) } mb={ 5 }/>
           { issueSeverityDistribution && totalIssues > 0 && (

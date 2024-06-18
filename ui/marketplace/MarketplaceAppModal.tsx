@@ -1,5 +1,5 @@
 import {
-  Box, Flex, Heading, IconButton, Image, Link, List, Modal, ModalBody,
+  Box, Flex, Heading, IconButton, Image, Link, Modal, ModalBody,
   ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, Tag, Text, useColorModeValue,
 } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
@@ -14,7 +14,6 @@ import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
 import AppSecurityReport from './AppSecurityReport';
-import ContractListButton, { ContractListButtonVariants } from './ContractListButton';
 import MarketplaceAppModalLink from './MarketplaceAppModalLink';
 
 type Props = {
@@ -79,24 +78,15 @@ const MarketplaceAppModal = ({
     onFavoriteClick(id, isFavorite, 'App modal');
   }, [ onFavoriteClick, id, isFavorite ]);
 
-  const showContractList = useCallback((type: ContractListTypes) => {
+  const showContractList = useCallback((id: string, type: ContractListTypes) => {
     onClose();
     showContractListProp(id, type, true);
-  }, [ onClose, showContractListProp, id ]);
+  }, [ onClose, showContractListProp ]);
 
   const showAllContracts = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Total contracts', Info: id, Source: 'App modal' });
-    showContractList(ContractListTypes.ALL);
+    showContractList(id, ContractListTypes.ALL);
   }, [ showContractList, id ]);
-
-  const showVerifiedContracts = React.useCallback(() => {
-    mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Verified contracts', Info: id, Source: 'App modal' });
-    showContractList(ContractListTypes.VERIFIED);
-  }, [ showContractList, id ]);
-
-  const showAnalyzedContracts = React.useCallback(() => {
-    showContractList(ContractListTypes.ANALYZED);
-  }, [ showContractList ]);
 
   const isMobile = useIsMobile();
   const logoUrl = useColorModeValue(logo, logoDarkMode || logo);
@@ -185,126 +175,114 @@ const MarketplaceAppModal = ({
                     <IconSvg name="star_outline" w={ 5 } h={ 5 } color={ starOutlineIconColor }/> }
                 />
               </Flex>
-
-              { securityReport && (
-                <Flex alignItems="center" gap={ 3 }>
-                  <AppSecurityReport
-                    id={ id }
-                    securityReport={ securityReport }
-                    showContractList={ showAnalyzedContracts }
-                    source="App modal"
-                  />
-                  <ContractListButton
-                    onClick={ showAllContracts }
-                    variant={ ContractListButtonVariants.ALL_CONTRACTS }
-                  >
-                    { securityReport.overallInfo.totalContractsNumber }
-                  </ContractListButton>
-                  <ContractListButton
-                    onClick={ showVerifiedContracts }
-                    variant={ ContractListButtonVariants.VERIFIED_CONTRACTS }
-                  >
-                    { securityReport.overallInfo.verifiedNumber }
-                  </ContractListButton>
-                </Flex>
-              ) }
             </Flex>
           </Box>
         </Box>
 
         <ModalCloseButton/>
 
-        <ModalBody>
-          <Heading
-            as="h3"
-            fontSize="2xl"
-            marginBottom={ 4 }
-          >
-            Overview
-          </Heading>
-
-          <Box marginBottom={ 2 }>
-            { categories.map((category) => (
-              <Tag
-                colorScheme="blue"
-                marginRight={ 2 }
-                marginBottom={ 2 }
-                key={ category }
-              >
-                { category }
-              </Tag>
-            )) }
-          </Box>
-
+        <ModalBody mb={ 6 }>
+          { securityReport && (
+            <Flex
+              direction={{ base: 'column', sm: 'row' }}
+              justifyContent={{ base: 'flex-start', sm: 'space-between' }}
+              gap={ 3 }
+              fontSize="sm"
+              mb={ 6 }
+            >
+              <Flex alignItems="center" gap={ 2 } flexWrap="wrap">
+                <IconSvg name="contracts_verified" boxSize={ 5 } color="green.500"/>
+                <Text>Verified contracts</Text>
+                <Text fontWeight="500">
+                  { securityReport?.overallInfo.verifiedNumber ?? 0 } of { securityReport?.overallInfo.totalContractsNumber ?? 0 }
+                </Text>
+                <Link onClick={ showAllContracts } ml={ 1 }>
+                  View all contracts
+                </Link>
+              </Flex>
+              <Flex alignItems="center" gap={ 2 }>
+                <Text>Security level</Text>
+                <AppSecurityReport
+                  id={ id }
+                  securityReport={ securityReport }
+                  showContractList={ showContractList }
+                  source="App modal"
+                />
+              </Flex>
+            </Flex>
+          ) }
           <Text>{ description }</Text>
         </ModalBody>
 
         <ModalFooter
           display="flex"
           flexDirection={{ base: 'column', sm: 'row' }}
+          justifyContent={{ base: 'flex-start', sm: 'space-between' }}
           alignItems={{ base: 'flex-start', sm: 'center' }}
+          gap={ 3 }
         >
-          { site && (
-            <Link
-              isExternal
-              href={ site }
-              display="flex"
-              alignItems="center"
-              paddingRight={{ sm: 2 }}
-              marginBottom={{ base: 3, sm: 0 }}
-              maxW="100%"
-              overflow="hidden"
-            >
-              <IconSvg
-                name="link"
-                display="inline"
-                verticalAlign="baseline"
-                boxSize="18px"
-                marginRight={ 2 }
-              />
-
-              <Text
-                color="inherit"
-                whiteSpace="nowrap"
-                overflow="hidden"
-                textOverflow="ellipsis"
+          <Flex gap={ 2 }>
+            { categories.map((category) => (
+              <Tag
+                colorScheme="blue"
+                key={ category }
               >
-                { getHostname(site) }
-              </Text>
-            </Link>
-          ) }
+                { category }
+              </Tag>
+            )) }
+          </Flex>
 
-          { socialLinks.length > 0 && (
-            <List
-              marginLeft={{ sm: 'auto' }}
-              display="grid"
-              gridAutoFlow="column"
-              columnGap={ 2 }
-            >
-              { socialLinks.map(({ icon, url }) => (
-                <Link
-                  aria-label={ `Link to ${ url }` }
-                  title={ url }
-                  key={ url }
-                  href={ url }
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  isExternal
-                  w={ 10 }
-                  h={ 10 }
+          <Flex alignItems="center" gap={ 3 }>
+            { site && (
+              <Link
+                isExternal
+                href={ site }
+                display="flex"
+                alignItems="center"
+                fontSize="sm"
+              >
+                <IconSvg
+                  name="link"
+                  display="inline"
+                  verticalAlign="baseline"
+                  boxSize="18px"
+                  marginRight={ 2 }
+                />
+
+                <Text
+                  color="inherit"
+                  whiteSpace="nowrap"
+                  overflow="hidden"
+                  textOverflow="ellipsis"
                 >
-                  <IconSvg
-                    name={ icon }
-                    w="20px"
-                    h="20px"
-                    display="block"
-                    color="text_secondary"
-                  />
-                </Link>
-              )) }
-            </List>
-          ) }
+                  { getHostname(site) }
+                </Text>
+              </Link>
+            ) }
+
+            { socialLinks.map(({ icon, url }) => (
+              <Link
+                aria-label={ `Link to ${ url }` }
+                title={ url }
+                key={ url }
+                href={ url }
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                isExternal
+                w={ 5 }
+                h={ 5 }
+              >
+                <IconSvg
+                  name={ icon }
+                  w="20px"
+                  h="20px"
+                  display="block"
+                  color="text_secondary"
+                />
+              </Link>
+            )) }
+          </Flex>
         </ModalFooter>
       </ModalContent>
     </Modal>

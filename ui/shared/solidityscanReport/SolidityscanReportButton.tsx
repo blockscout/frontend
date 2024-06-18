@@ -1,4 +1,4 @@
-import { Button, Spinner, Tooltip, useColorModeValue } from '@chakra-ui/react';
+import { Button, Spinner, Tooltip, useColorModeValue, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -13,10 +13,11 @@ interface Props {
   onClick?: () => void;
   label?: string;
   isActive: boolean;
+  className?: string;
 }
 
 const SolidityscanReportButton = (
-  { score, isLoading, onlyIcon, onClick, label = 'Security score', isActive }: Props,
+  { score, isLoading, onlyIcon, onClick, label = 'Security score', isActive, className }: Props,
   ref: React.ForwardedRef<HTMLButtonElement>,
 ) => {
   const { scoreColor } = useScoreLevelAndColor(score);
@@ -26,6 +27,7 @@ const SolidityscanReportButton = (
   return (
     <Tooltip label={ label } isDisabled={ isMobile } openDelay={ 100 }>
       <Button
+        className={ className }
         ref={ ref }
         color={ isLoading ? colorLoading : scoreColor }
         size="sm"
@@ -54,4 +56,4 @@ const SolidityscanReportButton = (
   );
 };
 
-export default React.forwardRef(SolidityscanReportButton);
+export default chakra(React.forwardRef(SolidityscanReportButton));
