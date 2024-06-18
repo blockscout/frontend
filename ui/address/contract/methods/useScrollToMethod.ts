@@ -1,7 +1,7 @@
 import React from 'react';
 import { scroller } from 'react-scroll';
 
-import type { SmartContractMethod } from '../types';
+import type { SmartContractMethod } from './types';
 
 export const getElementName = (id: string) => `method_${ id }`;
 

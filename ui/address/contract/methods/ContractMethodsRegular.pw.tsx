@@ -4,7 +4,7 @@ import * as addressMock from 'mocks/address/address';
 import * as methodsMock from 'mocks/contract/methods';
 import { test, expect } from 'playwright/lib';
 
-import ContractMethods from './ContractMethods';
+import ContractMethodsRegular from './ContractMethodsRegular';
 
 const addressHash = addressMock.hash;
 
@@ -13,7 +13,7 @@ test('read methods', async({ render, mockContractReadResponse }) => {
 
   const hooksConfig = {
     router: {
-      query: { hash: addressHash, tab: 'read_custom_methods' },
+      query: { hash: addressHash, tab: 'read_contract' },
     },
   };
 
@@ -23,7 +23,7 @@ test('read methods', async({ render, mockContractReadResponse }) => {
     result: [ 'USDC' ],
   });
 
-  const component = await render(<ContractMethods abi={ methodsMock.read } type="read"/>, { hooksConfig });
+  const component = await render(<ContractMethodsRegular abi={ methodsMock.read } type="read"/>, { hooksConfig });
   await component.getByText(/expand all/i).click();
 
   await expect(component.getByText('USDC')).toBeVisible({ timeout: 20_000 });
@@ -37,7 +37,7 @@ test('write methods +@dark-mode +@mobile', async({ render }) => {
     },
   };
 
-  const component = await render(<ContractMethods abi={ methodsMock.write } type="write"/>, { hooksConfig });
+  const component = await render(<ContractMethodsRegular abi={ methodsMock.write } type="write"/>, { hooksConfig });
   await component.getByText(/expand all/i).click();
 
   await expect(component).toHaveScreenshot();

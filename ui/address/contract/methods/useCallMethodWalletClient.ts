@@ -2,8 +2,7 @@ import React from 'react';
 import type { Abi } from 'viem';
 import { useAccount, useWalletClient, useSwitchChain } from 'wagmi';
 
-import type { SmartContractMethod } from '../types';
-import type { FormSubmitResult } from './types';
+import type { FormSubmitResult, SmartContractMethod } from './types';
 
 import config from 'configs/app';
 

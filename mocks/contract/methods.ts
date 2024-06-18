@@ -1,4 +1,4 @@
-import type { SmartContractMethodRead, SmartContractMethodWrite } from 'ui/address/contract/types';
+import type { SmartContractMethodRead, SmartContractMethodWrite } from 'ui/address/contract/methods/types';
 
 export const read: Array<SmartContractMethodRead> = [
   {

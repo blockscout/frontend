@@ -1,7 +1,6 @@
 import React from 'react';
 
-import type { SmartContractMethod } from '../../types';
-import type { FormSubmitHandler } from '../types';
+import type { FormSubmitHandler, SmartContractMethod } from '../types';
 
 import { test, expect } from 'playwright/lib';
 

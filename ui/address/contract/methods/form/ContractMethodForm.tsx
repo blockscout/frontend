@@ -4,13 +4,12 @@ import type { SubmitHandler } from 'react-hook-form';
 import { useForm, FormProvider } from 'react-hook-form';
 import type { AbiFunction } from 'viem';
 
-import type { SmartContractMethod } from '../../types';
-import type { FormSubmitHandler, FormSubmitResult, MethodCallStrategy } from '../types';
+import type { FormSubmitHandler, FormSubmitResult, MethodCallStrategy, SmartContractMethod } from '../types';
 
 import config from 'configs/app';
 import * as mixpanel from 'lib/mixpanel/index';
 
-import { isReadMethod } from '../../utils';
+import { isReadMethod } from '../utils';
 import ContractMethodFieldAccordion from './ContractMethodFieldAccordion';
 import ContractMethodFieldInput from './ContractMethodFieldInput';
 import ContractMethodFieldInputArray from './ContractMethodFieldInputArray';

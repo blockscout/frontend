@@ -2,23 +2,23 @@ import { Accordion, Box, Flex, Link } from '@chakra-ui/react';
 import _range from 'lodash/range';
 import React from 'react';
 
-import type { SmartContractMethod } from '../types';
+import type { SmartContractMethod } from './types';
 
 import ContractAbiItem from './ContractAbiItem';
 import useFormSubmit from './useFormSubmit';
 import useScrollToMethod from './useScrollToMethod';
 
 interface Props {
-  data: Array<SmartContractMethod>;
+  abi: Array<SmartContractMethod>;
   addressHash: string;
   tab: string;
 }
 
-const ContractAbi = ({ data, addressHash, tab }: Props) => {
-  const [ expandedSections, setExpandedSections ] = React.useState<Array<number>>(data.length === 1 ? [ 0 ] : []);
+const ContractAbi = ({ abi, addressHash, tab }: Props) => {
+  const [ expandedSections, setExpandedSections ] = React.useState<Array<number>>(abi.length === 1 ? [ 0 ] : []);
   const [ id, setId ] = React.useState(0);
 
-  useScrollToMethod(data, setExpandedSections);
+  useScrollToMethod(abi, setExpandedSections);
 
   const handleFormSubmit = useFormSubmit({ addressHash });
 
@@ -27,38 +27,34 @@ const ContractAbi = ({ data, addressHash, tab }: Props) => {
   }, []);
 
   const handleExpandAll = React.useCallback(() => {
-    if (!data) {
+    if (!abi) {
       return;
     }
 
-    if (expandedSections.length < data.length) {
-      setExpandedSections(_range(0, data.length));
+    if (expandedSections.length < abi.length) {
+      setExpandedSections(_range(0, abi.length));
     } else {
       setExpandedSections([]);
     }
-  }, [ data, expandedSections.length ]);
+  }, [ abi, expandedSections.length ]);
 
   const handleReset = React.useCallback(() => {
     setId((id) => id + 1);
   }, []);
 
-  if (data.length === 0) {
-    return null;
-  }
-
   return (
     <>
       <Flex mb={ 3 }>
         <Box fontWeight={ 500 } mr="auto">Contract information</Box>
-        { data.length > 1 && (
+        { abi.length > 1 && (
           <Link onClick={ handleExpandAll }>
-            { expandedSections.length === data.length ? 'Collapse' : 'Expand' } all
+            { expandedSections.length === abi.length ? 'Collapse' : 'Expand' } all
           </Link>
         ) }
         <Link onClick={ handleReset } ml={ 3 }>Reset</Link>
       </Flex>
       <Accordion allowMultiple position="relative" onChange={ handleAccordionStateChange } index={ expandedSections }>
-        { data.map((item, index) => (
+        { abi.map((item, index) => (
           <ContractAbiItem
             key={ index }
             data={ item }

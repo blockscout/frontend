@@ -1,11 +1,16 @@
-import { Alert, Button, Flex } from '@chakra-ui/react';
+import { Alert, Button, Flex, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
+import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import useWallet from 'ui/snippets/walletMenu/useWallet';
 
-const ContractConnectWallet = () => {
+interface Props {
+  isLoading?: boolean;
+}
+
+const ContractConnectWallet = ({ isLoading }: Props) => {
   const { isModalOpening, isModalOpen, connect, disconnect, address, isWalletConnected } = useWallet({ source: 'Smart contracts' });
   const isMobile = useIsMobile();
 
@@ -44,7 +49,15 @@ const ContractConnectWallet = () => {
     );
   })();
 
-  return <Alert mb={ 6 } status={ address ? 'success' : 'warning' }>{ content }</Alert>;
+  return (
+    <Skeleton isLoaded={ !isLoading } mb={ 6 }>
+      <Alert status={ address ? 'success' : 'warning' }>
+        { content }
+      </Alert>
+    </Skeleton>
+  );
 };
 
-export default ContractConnectWallet;
+const Fallback = () => null;
+
+export default config.features.blockchainInteraction.isEnabled ? ContractConnectWallet : Fallback;

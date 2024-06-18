@@ -9,9 +9,10 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import * as stubs from 'stubs/contract';
 import ContractCode from 'ui/address/contract/ContractCode';
-import ContractMethods from 'ui/address/contract/ContractMethods';
-import ContractMethodsProxy from 'ui/address/contract/ContractMethodsProxy';
-import { divideAbiIntoMethodTypes } from 'ui/address/contract/utils';
+import ContractMethodsCustom from 'ui/address/contract/methods/ContractMethodsCustom';
+import ContractMethodsProxy from 'ui/address/contract/methods/ContractMethodsProxy';
+import ContractMethodsRegular from 'ui/address/contract/methods/ContractMethodsRegular';
+import { divideAbiIntoMethodTypes } from 'ui/address/contract/methods/utils';
 
 const CONTRACT_TAB_IDS = [
   'contract_code',
@@ -82,8 +83,8 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
   }, [ customAbiQuery.data, data ]);
 
   const verifiedImplementations = React.useMemo(() => {
-    return data?.implementations?.filter(({ name }) => name) || [];
-  }, [ data?.implementations ]);
+    return data?.implementations?.filter(({ name, address }) => name && address && address !== data?.hash) || [];
+  }, [ data?.hash, data?.implementations ]);
 
   return React.useMemo(() => {
     return {
@@ -96,32 +97,46 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
         methods.read.length > 0 && {
           id: 'read_contract' as const,
           title: 'Read contract',
-          component: <ContractMethods abi={ methods.read } isLoading={ contractQuery.isPlaceholderData } type="read"/>,
+          component: <ContractMethodsRegular type="read" abi={ methods.read } isLoading={ contractQuery.isPlaceholderData }/>,
         },
         methodsCustomAbi.read.length > 0 && {
           id: 'read_custom_methods' as const,
           title: 'Read custom',
-          component: <ContractMethods abi={ methodsCustomAbi.read } isLoading={ contractQuery.isPlaceholderData } type="read"/>,
+          component: <ContractMethodsCustom type="read" abi={ methodsCustomAbi.read } isLoading={ contractQuery.isPlaceholderData }/>,
         },
         verifiedImplementations.length > 0 && {
           id: 'read_proxy' as const,
           title: 'Read proxy',
-          component: <ContractMethodsProxy type="read" implementations={ verifiedImplementations } addressHash={ data?.hash }/>,
+          component: (
+            <ContractMethodsProxy
+              type="read"
+              implementations={ verifiedImplementations }
+              addressHash={ data?.hash }
+              isLoading={ contractQuery.isPlaceholderData }
+            />
+          ),
         },
         methods.write.length > 0 && {
           id: 'write_contract' as const,
           title: 'Write contract',
-          component: <ContractMethods abi={ methods.write } isLoading={ contractQuery.isPlaceholderData } type="write"/>,
+          component: <ContractMethodsRegular type="write" abi={ methods.write } isLoading={ contractQuery.isPlaceholderData }/>,
         },
         methodsCustomAbi.write.length > 0 && {
           id: 'write_custom_methods' as const,
           title: 'Write custom',
-          component: <ContractMethods abi={ methodsCustomAbi.write } isLoading={ contractQuery.isPlaceholderData } type="write"/>,
+          component: <ContractMethodsCustom type="write" abi={ methodsCustomAbi.write } isLoading={ contractQuery.isPlaceholderData }/>,
         },
         verifiedImplementations.length > 0 && {
           id: 'write_proxy' as const,
           title: 'Write proxy',
-          component: <ContractMethodsProxy type="write" implementations={ verifiedImplementations } addressHash={ data?.hash }/>,
+          component: (
+            <ContractMethodsProxy
+              type="write"
+              implementations={ verifiedImplementations }
+              addressHash={ data?.hash }
+              isLoading={ contractQuery.isPlaceholderData }
+            />
+          ),
         },
       ].filter(Boolean),
       isLoading: contractQuery.isPlaceholderData,

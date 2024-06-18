@@ -1,8 +1,7 @@
 import React from 'react';
 import { usePublicClient } from 'wagmi';
 
-import type { SmartContractMethod } from '../types';
-import type { FormSubmitResult, MethodCallStrategy } from './types';
+import type { FormSubmitResult, MethodCallStrategy, SmartContractMethod } from './types';
 
 import config from 'configs/app';
 import useAccount from 'lib/web3/useAccount';

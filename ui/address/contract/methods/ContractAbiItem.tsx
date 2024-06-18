@@ -2,8 +2,7 @@ import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Too
 import React from 'react';
 import { Element } from 'react-scroll';
 
-import type { SmartContractMethod } from '../types';
-import type { FormSubmitHandler } from './types';
+import type { FormSubmitHandler, SmartContractMethod } from './types';
 
 import { route } from 'nextjs-routes';
 

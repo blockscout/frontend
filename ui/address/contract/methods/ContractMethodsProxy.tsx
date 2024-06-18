@@ -1,24 +1,24 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { MethodType } from './methods/types';
+import type { MethodType } from './types';
 import type { AddressImplementation } from 'types/api/addressParams';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import ContentLoader from 'ui/shared/ContentLoader';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
+import ContractConnectWallet from './ContractConnectWallet';
+import ContractImplementationAddress from './ContractImplementationAddress';
 import ContractMethods from './ContractMethods';
-import ContractImplementationAddress from './methods/ContractImplementationAddress';
 import { isReadMethod, isWriteMethod } from './utils';
 
 interface Props {
   type: MethodType;
   addressHash: string | undefined;
   implementations: Array<AddressImplementation>;
+  isLoading?: boolean;
 }
 
-const ContractMethodsProxy = ({ type, addressHash, implementations }: Props) => {
+const ContractMethodsProxy = ({ type, addressHash, implementations, isLoading: isInitialLoading }: Props) => {
 
   const [ selectedImplementation ] = React.useState(implementations[0].address);
 
@@ -30,24 +30,13 @@ const ContractMethodsProxy = ({ type, addressHash, implementations }: Props) => 
     },
   });
 
-  const content = (() => {
-    if (contractQuery.isPending) {
-      return <ContentLoader/>;
-    }
-
-    if (contractQuery.isError) {
-      return <DataFetchAlert/>;
-    }
-
-    const data = contractQuery.data.abi?.filter(type === 'read' ? isReadMethod : isWriteMethod) || [];
-
-    return <ContractMethods abi={ data } type={ type }/>;
-  })();
+  const abi = contractQuery.data?.abi?.filter(type === 'read' ? isReadMethod : isWriteMethod) || [];
 
   return (
     <Box>
+      <ContractConnectWallet isLoading={ isInitialLoading }/>
       <ContractImplementationAddress hash={ addressHash }/>
-      { content }
+      <ContractMethods abi={ abi } isLoading={ contractQuery.isPending } isError={ contractQuery.isError } type={ type }/>
     </Box>
   );
 };
