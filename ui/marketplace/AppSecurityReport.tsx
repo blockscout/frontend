@@ -67,7 +67,7 @@ const AppSecurityReport = ({
           onClick={ handleButtonClick }
           isActive={ isOpen }
           onlyIcon={ onlyIcon }
-          label="The security score is based on analysis of a DApp's smart contracts."
+          label={ <>The security score is based on analysis<br/>of a DApp{ apos }s smart contracts.</> }
           className={ className }
         />
       </PopoverTrigger>

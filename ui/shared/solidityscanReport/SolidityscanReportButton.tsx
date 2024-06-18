@@ -11,7 +11,7 @@ interface Props {
   isLoading?: boolean;
   onlyIcon?: boolean;
   onClick?: () => void;
-  label?: string;
+  label?: string | React.ReactElement;
   isActive: boolean;
   className?: string;
 }
@@ -25,7 +25,7 @@ const SolidityscanReportButton = (
   const isMobile = useIsMobile();
 
   return (
-    <Tooltip label={ label } isDisabled={ isMobile } openDelay={ 100 }>
+    <Tooltip label={ label } isDisabled={ isMobile } openDelay={ 100 } textAlign="center">
       <Button
         className={ className }
         ref={ ref }
