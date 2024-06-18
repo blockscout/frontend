@@ -45,9 +45,10 @@ const getTokenFilterValue = (getFilterValuesFromQuery<NFTTokenType>).bind(null, 
 
 type Props = {
   shouldRender?: boolean;
+  isQueryEnabled?: boolean;
 }
 
-const AddressTokens = ({ shouldRender = true }: Props) => {
+const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
   const router = useRouter();
   const isMobile = useIsMobile();
   const isMounted = useIsMounted();
@@ -67,7 +68,7 @@ const AddressTokens = ({ shouldRender = true }: Props) => {
     filters: { type: 'ERC-20' },
     scrollRef,
     options: {
-      enabled: !tab || tab === 'tokens_erc20',
+      enabled: isQueryEnabled && (!tab || tab === 'tokens_erc20'),
       refetchOnMount: false,
       placeholderData: generateListStub<'address_tokens'>(ADDRESS_TOKEN_BALANCE_ERC_20, 10, { next_page_params: null }),
     },
@@ -78,7 +79,7 @@ const AddressTokens = ({ shouldRender = true }: Props) => {
     pathParams: { hash },
     scrollRef,
     options: {
-      enabled: tab === 'tokens_nfts' && nftDisplayType === 'collection',
+      enabled: isQueryEnabled && tab === 'tokens_nfts' && nftDisplayType === 'collection',
       placeholderData: generateListStub<'address_collections'>(ADDRESS_COLLECTION, 10, { next_page_params: null }),
     },
     filters: { type: tokenTypes },
@@ -89,7 +90,7 @@ const AddressTokens = ({ shouldRender = true }: Props) => {
     pathParams: { hash },
     scrollRef,
     options: {
-      enabled: tab === 'tokens_nfts' && nftDisplayType === 'list',
+      enabled: isQueryEnabled && tab === 'tokens_nfts' && nftDisplayType === 'list',
       placeholderData: generateListStub<'address_nfts'>(ADDRESS_NFT_1155, 10, { next_page_params: null }),
     },
     filters: { type: tokenTypes },

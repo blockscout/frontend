@@ -11,7 +11,7 @@ const ServiceDegradationWarning = ({ isLoading, className }: Props) => {
     <Skeleton className={ className } isLoaded={ !isLoading }>
       <Alert status="warning" colorScheme="gray" alignItems={{ base: 'flex-start', lg: 'center' }}>
         <Spinner size="sm" mr={ 2 } my={{ base: '3px', lg: 0 }} flexShrink={ 0 }/>
-        Data sync in progress... page will refresh automatically once transaction data is available
+          Data sync in progress... page will refresh automatically once data is available
       </Alert>
     </Skeleton>
   );

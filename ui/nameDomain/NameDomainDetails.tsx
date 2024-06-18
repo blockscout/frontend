@@ -2,12 +2,14 @@ import { Grid, Skeleton, Tooltip, Flex } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
-import type { EnsDomainDetailed } from 'types/api/ens';
+import * as bens from '@blockscout/bens-types';
 
 import { route } from 'nextjs-routes';
 
+import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import dayjs from 'lib/date/dayjs';
+import stripTrailingSlash from 'lib/stripTrailingSlash';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
@@ -18,7 +20,7 @@ import TextSeparator from 'ui/shared/TextSeparator';
 import NameDomainExpiryStatus from './NameDomainExpiryStatus';
 
 interface Props {
-  query: UseQueryResult<EnsDomainDetailed, ResourceError<unknown>>;
+  query: UseQueryResult<bens.DetailedDomain, ResourceError<unknown>>;
 }
 
 const NameDomainDetails = ({ query }: Props) => {
@@ -163,22 +165,33 @@ const NameDomainDetails = ({ query }: Props) => {
         </>
       ) }
 
-      { query.data?.tokens.map((token) => (
-        <React.Fragment key={ token.type }>
-          <DetailsInfoItem.Label
-            hint={ `The ${ token.type === 'WRAPPED_DOMAIN_TOKEN' ? 'wrapped ' : '' }token ID of this domain name NFT` }
-            isLoading={ isLoading }
-          >
-            { token.type === 'WRAPPED_DOMAIN_TOKEN' ? 'Wrapped token ID' : 'Token ID' }
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value
-            wordBreak="break-all"
-            whiteSpace="pre-wrap"
-          >
-            <NftEntity hash={ token.contract_hash } id={ token.id } isLoading={ isLoading } noIcon/>
-          </DetailsInfoItem.Value>
-        </React.Fragment>
-      )) }
+      { query.data?.tokens.map((token) => {
+        const isProtocolBaseChain = stripTrailingSlash(query.data.protocol?.deployment_blockscout_base_url ?? '') === config.app.baseUrl;
+        const entityProps = {
+          isExternal: !isProtocolBaseChain ? true : false,
+          href: !isProtocolBaseChain ? (
+            stripTrailingSlash(query.data.protocol?.deployment_blockscout_base_url ?? '') +
+            route({ pathname: '/token/[hash]/instance/[id]', query: { hash: token.contract_hash, id: token.id } })
+          ) : undefined,
+        };
+
+        return (
+          <React.Fragment key={ token.type }>
+            <DetailsInfoItem.Label
+              hint={ `The ${ token.type === bens.TokenType.WRAPPED_DOMAIN_TOKEN ? 'wrapped ' : '' }token ID of this domain name NFT` }
+              isLoading={ isLoading }
+            >
+              { token.type === bens.TokenType.WRAPPED_DOMAIN_TOKEN ? 'Wrapped token ID' : 'Token ID' }
+            </DetailsInfoItem.Label>
+            <DetailsInfoItem.Value
+              wordBreak="break-all"
+              whiteSpace="pre-wrap"
+            >
+              <NftEntity { ...entityProps } hash={ token.contract_hash } id={ token.id } isLoading={ isLoading } noIcon/>
+            </DetailsInfoItem.Value>
+          </React.Fragment>
+        );
+      }) }
 
       { otherAddresses.length > 0 && (
         <>

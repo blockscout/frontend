@@ -206,6 +206,14 @@ const ContractCode = ({ addressHash, contractQuery, channel }: Props) => {
   return (
     <>
       <Flex flexDir="column" rowGap={ 2 } mb={ 6 } _empty={{ display: 'none' }}>
+        { data?.is_blueprint && (
+          <Box>
+            <span>This is an </span>
+            <LinkExternal href="https://eips.ethereum.org/EIPS/eip-5202">
+              ERC-5202 Blueprint contract
+            </LinkExternal>
+          </Box>
+        ) }
         { data?.is_verified && (
           <Skeleton isLoaded={ !isPlaceholderData }>
             <Alert status="success" flexWrap="wrap" rowGap={ 3 } columnGap={ 5 }>
