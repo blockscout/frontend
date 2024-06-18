@@ -15,7 +15,7 @@ import { printRowOffset } from './utils';
 function castValueToString(value: unknown): string {
   switch (typeof value) {
     case 'string':
-      return value;
+      return value === '' ? `""` : value;
     case 'boolean':
       return String(value);
     case 'undefined':

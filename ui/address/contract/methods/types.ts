@@ -4,6 +4,7 @@ export type ContractAbiItemInput = AbiFunction['inputs'][number] & { fieldType?:
 
 export type MethodType = 'read' | 'write';
 export type MethodCallStrategy = 'read' | 'write' | 'simulate';
+export type ResultViewMode = 'preview' | 'result';
 
 export type SmartContractMethodRead = AbiFunction & { method_id: string };
 export type SmartContractMethodWrite = AbiFunction & { method_id: string } | AbiFallback | AbiReceive;

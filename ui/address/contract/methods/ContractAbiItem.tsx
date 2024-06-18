@@ -25,6 +25,8 @@ interface Props {
 }
 
 const ContractAbiItem = ({ data, index, id, addressHash, tab, onSubmit }: Props) => {
+  const [ attempt, setAttempt ] = React.useState(0);
+
   const url = React.useMemo(() => {
     if (!('method_id' in data)) {
       return '';
@@ -50,6 +52,10 @@ const ContractAbiItem = ({ data, index, id, addressHash, tab, onSubmit }: Props)
 
   const handleCopyMethodIdClick = React.useCallback((event: React.MouseEvent) => {
     event.stopPropagation();
+  }, []);
+
+  const handleReset = React.useCallback(() => {
+    setAttempt((prev) => prev + 1);
   }, []);
 
   return (
@@ -105,9 +111,11 @@ const ContractAbiItem = ({ data, index, id, addressHash, tab, onSubmit }: Props)
           </Element>
           <AccordionPanel pb={ 4 } pr={ 0 } pl="28px" w="calc(100% - 6px)">
             <ContractMethodForm
-              key={ id + '_' + index }
+              key={ id + '_' + index + '_' + attempt }
               data={ data }
+              attempt={ attempt }
               onSubmit={ onSubmit }
+              onReset={ handleReset }
               isOpen={ isExpanded }
             />
           </AccordionPanel>

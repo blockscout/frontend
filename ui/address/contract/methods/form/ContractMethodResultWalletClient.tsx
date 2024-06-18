@@ -1,4 +1,4 @@
-import { chakra, Spinner, Box } from '@chakra-ui/react';
+import { chakra, Spinner, Box, Alert } from '@chakra-ui/react';
 import React from 'react';
 import type { UseWaitForTransactionReceiptReturnType } from 'wagmi';
 import { useWaitForTransactionReceipt } from 'wagmi';
@@ -51,10 +51,9 @@ export const ContractMethodResultWalletClientDumb = ({ data, onSettle, txInfo }:
   const content = (() => {
     if (isErrorResult) {
       return (
-        <>
-          <span>Error: </span>
-          <span>{ data.message }</span>
-        </>
+        <Alert status="error">
+          { data.message }
+        </Alert>
       );
     }
 
@@ -82,11 +81,9 @@ export const ContractMethodResultWalletClientDumb = ({ data, onSettle, txInfo }:
 
       case 'error': {
         return (
-          <>
-            <span>Error: </span>
-            <span>{ txInfo.error ? txInfo.error.message : 'Something went wrong' } </span>
-            { txLink }
-          </>
+          <Alert status="error">
+            Error: { txInfo.error ? txInfo.error.message : 'Something went wrong' } { txLink }
+          </Alert>
         );
       }
     }

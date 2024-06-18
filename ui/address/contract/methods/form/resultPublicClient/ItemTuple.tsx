@@ -2,6 +2,8 @@ import { chakra } from '@chakra-ui/react';
 import React from 'react';
 import type { AbiParameter } from 'viem';
 
+import type { ResultViewMode } from '../../types';
+
 import Item from './Item';
 import { printRowOffset } from './utils';
 
@@ -9,9 +11,10 @@ interface Props {
   abiParameter: AbiParameter;
   data: unknown;
   level: number;
+  mode: ResultViewMode;
 }
 
-const ItemTuple = ({ abiParameter, data, level }: Props) => {
+const ItemTuple = ({ abiParameter, data, mode, level }: Props) => {
   return (
     <p>
       <p>
@@ -27,6 +30,7 @@ const ItemTuple = ({ abiParameter, data, level }: Props) => {
             key={ index }
             abiParameter={ component }
             data={ itemData }
+            mode={ mode }
             level={ level + 1 }
           />
         );

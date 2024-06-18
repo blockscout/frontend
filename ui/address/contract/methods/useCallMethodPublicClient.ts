@@ -37,7 +37,7 @@ export default function useCallMethodPublicClient(): (params: Params) => Promise
     const result = strategy === 'read' ? await publicClient.readContract(params) : await publicClient.simulateContract(params);
     return {
       source: 'public_client' as const,
-      data: result,
+      data: strategy === 'read' ? result : result.result,
     };
 
   }, [ address, publicClient ]);

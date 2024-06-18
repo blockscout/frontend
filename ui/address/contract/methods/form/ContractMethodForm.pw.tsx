@@ -7,6 +7,7 @@ import { test, expect } from 'playwright/lib';
 import ContractMethodForm from './ContractMethodForm';
 
 const onSubmit: FormSubmitHandler = () => Promise.resolve({ source: 'wallet_client' as const, data: { hash: '0x0000' as `0x${ string }` } });
+const onReset = () => {};
 
 const data: SmartContractMethod = {
   inputs: [
@@ -102,7 +103,9 @@ test('base view +@mobile +@dark-mode', async({ render }) => {
     <ContractMethodForm
       data={ data }
       onSubmit={ onSubmit }
+      onReset={ onReset }
       isOpen
+      attempt={ 0 }
     />,
   );
 

@@ -8,13 +8,13 @@ import type { FormSubmitHandler, FormSubmitResult, MethodCallStrategy, SmartCont
 
 import config from 'configs/app';
 import * as mixpanel from 'lib/mixpanel/index';
+import IconSvg from 'ui/shared/IconSvg';
 
 import { isReadMethod } from '../utils';
 import ContractMethodFieldAccordion from './ContractMethodFieldAccordion';
 import ContractMethodFieldInput from './ContractMethodFieldInput';
 import ContractMethodFieldInputArray from './ContractMethodFieldInputArray';
 import ContractMethodFieldInputTuple from './ContractMethodFieldInputTuple';
-import ContractMethodOutputs from './ContractMethodOutputs';
 import ContractMethodResultPublicClient from './ContractMethodResultPublicClient';
 import ContractMethodResultWalletClient from './ContractMethodResultWalletClient';
 import { getFieldLabel, matchArray, transformFormDataToMethodArgs } from './utils';
@@ -25,11 +25,13 @@ const NO_WALLET_CLIENT_TEXT = 'Blockchain interaction is not available at the mo
 
 interface Props {
   data: SmartContractMethod;
+  attempt: number;
   onSubmit: FormSubmitHandler;
   isOpen: boolean;
+  onReset: () => void;
 }
 
-const ContractMethodForm = ({ data, onSubmit, isOpen }: Props) => {
+const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props) => {
 
   const [ result, setResult ] = React.useState<FormSubmitResult>();
   const [ isLoading, setLoading ] = React.useState(false);
@@ -75,7 +77,7 @@ const ContractMethodForm = ({ data, onSubmit, isOpen }: Props) => {
   }, [ data, methodType, onSubmit ]);
 
   React.useEffect(() => {
-    if (isOpen && !callStrategyRef.current) {
+    if (isOpen && !callStrategyRef.current && attempt === 0) {
       const hasConstantOutputs = isReadMethod(data) && data.inputs.length === 0;
       if (hasConstantOutputs) {
         setCallStrategy('read');
@@ -83,7 +85,7 @@ const ContractMethodForm = ({ data, onSubmit, isOpen }: Props) => {
         onFormSubmit({});
       }
     }
-  }, [ data, isOpen, onFormSubmit ]);
+  }, [ data, isOpen, onFormSubmit, attempt ]);
 
   const handleResultSettle = React.useCallback(() => {
     setLoading(false);
@@ -104,8 +106,6 @@ const ContractMethodForm = ({ data, onSubmit, isOpen }: Props) => {
       } ] : []),
     ];
   }, [ data ]);
-
-  const outputs = 'outputs' in data && data.outputs ? data.outputs : [];
 
   const primaryButton = (() => {
     const isDisabled = !config.features.blockchainInteraction.isEnabled && methodType === 'write';
@@ -214,20 +214,32 @@ const ContractMethodForm = ({ data, onSubmit, isOpen }: Props) => {
           </Flex>
           { secondaryButton }
           { primaryButton }
+          { result && !isLoading && (
+            <Button
+              variant="simple"
+              colorScheme="blue"
+              size="sm"
+              onClick={ onReset }
+              ml={ 1 }
+            >
+              <IconSvg name="repeat_arrow" boxSize={ 5 } mr={ 1 }/>
+            Reset
+            </Button>
+          ) }
         </chakra.form>
       </FormProvider>
-      { 'outputs' in data && Boolean(data.outputs?.length) && <ContractMethodOutputs data={ outputs }/> }
       { result && result.source === 'wallet_client' && (
         <ContractMethodResultWalletClient
           data={ result.data }
           onSettle={ handleResultSettle }
         />
       ) }
-      { result && result.source === 'public_client' && 'outputs' in data && (
+      { 'outputs' in data && data.outputs.length > 0 && (
         <ContractMethodResultPublicClient
-          data={ result.data }
+          data={ result && result.source === 'public_client' ? result.data : undefined }
           onSettle={ handleResultSettle }
           abiItem={ data }
+          mode={ result && result.source === 'public_client' ? 'result' : 'preview' }
         />
       ) }
     </Box>
