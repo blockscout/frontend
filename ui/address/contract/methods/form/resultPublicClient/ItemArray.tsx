@@ -56,6 +56,7 @@ const ItemArray = ({ abiParameter, data, level, arrayMatch }: Props) => {
         abiParameter={ childAbiParameter }
         data={ item }
         level={ level + 1 }
+        hideLabel
       />
     ));
   })();

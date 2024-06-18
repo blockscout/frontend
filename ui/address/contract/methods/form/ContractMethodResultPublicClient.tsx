@@ -1,4 +1,4 @@
-import { Alert, Box, useColorModeValue } from '@chakra-ui/react';
+import { Alert, Flex, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 import type { AbiFunction } from 'viem';
 
@@ -28,18 +28,24 @@ const ContractMethodResultPublicClient = ({ data, abiItem, onSettle }: Props) =>
   }
 
   const formattedData = (() => {
-    if (abiItem.outputs.length === 1) {
-      return Array.isArray(data) && data.length === 1 ? data : [ data ];
-    }
-    return Array.isArray(data) ? data : [ data ];
+    return abiItem.outputs.length > 1 && Array.isArray(data) ? data : [ data ];
   })();
 
   return (
-    <Box mt={ 3 } p={ 4 } borderRadius="md" bgColor={ bgColor } fontSize="sm" whiteSpace="break-spaces" wordBreak="break-all">
-      <p>[</p>
+    <Flex
+      flexDir="column"
+      rowGap={ 2 }
+      mt={ 3 }
+      p={ 4 }
+      borderRadius="md"
+      bgColor={ bgColor }
+      fontSize="sm"
+      lineHeight="20px"
+      whiteSpace="break-spaces"
+      wordBreak="break-all"
+    >
       { abiItem.outputs.map((output, index) => <ResultItem key={ index } abiParameter={ output } data={ formattedData[index] }/>) }
-      <p>]</p>
-    </Box>
+    </Flex>
   );
 };
 
