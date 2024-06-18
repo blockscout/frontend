@@ -13,30 +13,47 @@ import { isReadMethod, isWriteMethod } from './utils';
 
 interface Props {
   type: MethodType;
-  addressHash: string | undefined;
   implementations: Array<AddressImplementation>;
   isLoading?: boolean;
 }
 
-const ContractMethodsProxy = ({ type, addressHash, implementations, isLoading: isInitialLoading }: Props) => {
+const ContractMethodsProxy = ({ type, implementations, isLoading: isInitialLoading }: Props) => {
 
-  const [ selectedImplementation ] = React.useState(implementations[0].address);
+  const [ selectedItem, setSelectedItem ] = React.useState(implementations[0]);
 
   const contractQuery = useApiQuery('contract', {
-    pathParams: { hash: selectedImplementation },
+    pathParams: { hash: selectedItem.address },
     queryOptions: {
-      enabled: Boolean(selectedImplementation),
+      enabled: Boolean(selectedItem.address),
       refetchOnMount: false,
     },
   });
+
+  const handleItemSelect = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
+    const nextOption = implementations.find(({ address }) => address === event.target.value);
+    if (nextOption) {
+      setSelectedItem(nextOption);
+    }
+  }, [ implementations ]);
 
   const abi = contractQuery.data?.abi?.filter(type === 'read' ? isReadMethod : isWriteMethod) || [];
 
   return (
     <Box>
       <ContractConnectWallet isLoading={ isInitialLoading }/>
-      <ContractImplementationAddress hash={ addressHash }/>
-      <ContractMethods abi={ abi } isLoading={ contractQuery.isPending } isError={ contractQuery.isError } type={ type }/>
+      <ContractImplementationAddress
+        implementations={ implementations }
+        selectedItem={ selectedItem }
+        onItemSelect={ handleItemSelect }
+        isLoading={ isInitialLoading }
+      />
+      <ContractMethods
+        key={ selectedItem.address }
+        abi={ abi }
+        isLoading={ isInitialLoading || contractQuery.isPending }
+        isError={ contractQuery.isError }
+        type={ type }
+      />
     </Box>
   );
 };

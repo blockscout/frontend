@@ -111,7 +111,6 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
             <ContractMethodsProxy
               type="read"
               implementations={ verifiedImplementations }
-              addressHash={ data?.hash }
               isLoading={ contractQuery.isPlaceholderData }
             />
           ),
@@ -133,7 +132,6 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
             <ContractMethodsProxy
               type="write"
               implementations={ verifiedImplementations }
-              addressHash={ data?.hash }
               isLoading={ contractQuery.isPlaceholderData }
             />
           ),

@@ -1,48 +1,64 @@
-import { Box, Flex } from '@chakra-ui/react';
-import { useQueryClient } from '@tanstack/react-query';
+import { Flex, Select, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
-import type { Address as TAddress } from 'types/api/address';
+import type { AddressImplementation } from 'types/api/addressParams';
 
-import { getResourceKey } from 'lib/api/useApiQuery';
-import ContainerWithScrollY from 'ui/shared/ContainerWithScrollY';
+import { route } from 'nextjs-routes';
+
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import LinkNewTab from 'ui/shared/links/LinkNewTab';
 
 interface Props {
-  hash: string | undefined;
+  selectedItem: AddressImplementation;
+  onItemSelect: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  implementations: Array<AddressImplementation>;
+  isLoading?: boolean;
 }
 
-const ContractImplementationAddress = ({ hash }: Props) => {
-  const queryClient = useQueryClient();
-  const data = queryClient.getQueryData<TAddress>(getResourceKey('address', {
-    pathParams: { hash },
-  }));
+const ContractImplementationAddress = ({ selectedItem, onItemSelect, implementations, isLoading }: Props) => {
 
-  if (!data?.implementations || data.implementations.length === 0) {
+  if (isLoading) {
+    return <Skeleton mb={ 6 } h={ 6 } w={{ base: '300px', lg: '500px' }}/>;
+  }
+
+  if (implementations.length === 0) {
     return null;
   }
 
-  const label = data.implementations.length > 1 ? 'Implementation addresses:' : 'Implementation address:';
+  if (implementations.length === 1) {
+    return (
+      <Flex mb={ 6 } flexWrap="wrap" columnGap={ 2 } rowGap={ 2 }>
+        <span>Implementation address:</span>
+        <AddressEntity
+          address={{ hash: implementations[0].address, is_contract: true, is_verified: true }}
+        />
+      </Flex>
+    );
+  }
 
   return (
-    <Flex mb={ 6 } flexWrap="wrap" columnGap={ 2 } rowGap={ 2 }>
-      <span>{ label }</span>
-      <Box position="relative" maxW="100%">
-        <ContainerWithScrollY
-          gradientHeight={ 24 }
-          rowGap={ 2 }
-          maxH="150px"
-        >
-          { data.implementations.map((item) => (
-            <AddressEntity
-              key={ item.address }
-              address={{ hash: item.address, is_contract: true }}
-              noIcon
-              noCopy
-            />
-          )) }
-        </ContainerWithScrollY>
-      </Box>
+    <Flex mb={ 6 } flexWrap="wrap" columnGap={ 2 } rowGap={ 2 } alignItems="center">
+      <span>Implementation address:</span>
+      <Select
+        size="xs"
+        value={ selectedItem.address }
+        onChange={ onItemSelect }
+        w="auto"
+        fontWeight={ 600 }
+        borderRadius="base"
+      >
+        { implementations.map((implementation) => (
+          <option key={ implementation.address } value={ implementation.address }>
+            { implementation.name }
+          </option>
+        )) }
+      </Select>
+      <CopyToClipboard text={ selectedItem.address } ml={ 1 }/>
+      <LinkNewTab
+        label="Open contract details page in new tab"
+        href={ route({ pathname: '/address/[hash]', query: { hash: selectedItem.address, tab: 'contract' } }) }
+      />
     </Flex>
   );
 };

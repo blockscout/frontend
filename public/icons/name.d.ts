@@ -89,6 +89,7 @@
 	| "networks/icon-placeholder"
 	| "networks/logo-placeholder"
 	| "nft_shield"
+	| "open-link"
 	| "output_roots"
 	| "payment_link"
 	| "plus"
