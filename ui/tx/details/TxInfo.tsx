@@ -142,7 +142,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         Transaction hash
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value flexWrap="nowrap">
-        { data.status === null && <Spinner mr={ 2 } size="sm" flexShrink={ 0 }/> }
+        { (data.status === null && !data.error) && <Spinner mr={ 2 } size="sm" flexShrink={ 0 }/> }
         <Skeleton isLoaded={ !isLoading } overflow="hidden">
           <HashStringShortenDynamic hash={ data.hash }/>
         </Skeleton>
