@@ -19,7 +19,7 @@ interface Props {
 
 const ItemArray = ({ abiParameter, data, level, arrayMatch, mode }: Props) => {
 
-  const childAbiParameter = React.useMemo(() => {
+  const itemAbiParameter = React.useMemo(() => {
     const type = arrayMatch.itemType;
     const internalType = matchArray(abiParameter.internalType || '')?.itemType;
     return { ...abiParameter, type, internalType };
@@ -33,7 +33,7 @@ const ItemArray = ({ abiParameter, data, level, arrayMatch, mode }: Props) => {
         return data.map((item, index) => (
           <ItemArray
             key={ index }
-            abiParameter={ childAbiParameter }
+            abiParameter={ itemAbiParameter }
             data={ item }
             mode={ mode }
             arrayMatch={ itemArrayMatch }
@@ -47,7 +47,7 @@ const ItemArray = ({ abiParameter, data, level, arrayMatch, mode }: Props) => {
       return data.map((item, index) => (
         <ItemTuple
           key={ index }
-          abiParameter={ childAbiParameter }
+          abiParameter={ itemAbiParameter }
           data={ item }
           mode={ mode }
           level={ level + 1 }
@@ -58,7 +58,7 @@ const ItemArray = ({ abiParameter, data, level, arrayMatch, mode }: Props) => {
     return data.map((item, index) => (
       <ItemPrimitive
         key={ index }
-        abiParameter={ childAbiParameter }
+        abiParameter={ itemAbiParameter }
         data={ item }
         level={ level + 1 }
         hideLabel

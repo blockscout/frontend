@@ -6,29 +6,32 @@ import type { FormSubmitResultPublicClient, ResultViewMode } from '../types';
 
 import ResultItem from './resultPublicClient/Item';
 
-interface Props {
+export interface Props {
   data: FormSubmitResultPublicClient['data'];
   abiItem: AbiFunction;
   onSettle: () => void;
   mode: ResultViewMode;
 }
 
-const ContractMethodResultPublicClient = ({ data, abiItem, onSettle, mode }: Props) => {
+const ContractMethodResultPublicClient = ({ data, abiItem, onSettle, mode: modeProps }: Props) => {
   const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
   React.useEffect(() => {
-    if (mode === 'result') {
+    if (modeProps === 'result') {
       onSettle();
     }
-  }, [ onSettle, mode ]);
+  }, [ onSettle, modeProps ]);
 
   const formattedData = (() => {
     return abiItem.outputs.length > 1 && Array.isArray(data) ? data : [ data ];
   })();
 
+  const isError = data instanceof Error;
+  const mode = isError ? 'preview' : modeProps;
+
   return (
     <>
-      { data instanceof Error && (
+      { isError && (
         <Alert status="error" mt={ 3 } p={ 4 } borderRadius="md" fontSize="sm" wordBreak="break-word" whiteSpace="pre-wrap">
           { 'shortMessage' in data && typeof data.shortMessage === 'string' ? data.shortMessage : data.message }
         </Alert>
@@ -50,7 +53,7 @@ const ContractMethodResultPublicClient = ({ data, abiItem, onSettle, mode }: Pro
           <ResultItem
             key={ index }
             abiParameter={ output }
-            data={ data instanceof Error ? undefined : formattedData[index] }
+            data={ isError ? undefined : formattedData[index] }
             mode={ mode }
           />
         )) }

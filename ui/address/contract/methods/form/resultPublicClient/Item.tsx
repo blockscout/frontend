@@ -24,7 +24,7 @@ const Item = ({ abiParameter, data, mode, level = 0 }: Props) => {
         const previewData = Object.fromEntries(abiParameter.components.map(({ name }) => ([ name ?? '', undefined ])));
         return <ItemArray abiParameter={ abiParameter } data={ [ previewData ] } mode={ mode } level={ level } arrayMatch={ arrayMatch }/>;
       }
-      return <ItemPrimitive abiParameter={ abiParameter } data={ data || '[ ]' } level={ level }/>;
+      return <ItemPrimitive abiParameter={ abiParameter } data={ data || (mode === 'preview' ? undefined : '[ ]') } level={ level }/>;
     }
     return <ItemArray abiParameter={ abiParameter } data={ data } level={ level } mode={ mode } arrayMatch={ arrayMatch }/>;
   }
