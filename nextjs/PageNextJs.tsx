@@ -21,7 +21,6 @@ const PageNextJs = (props: Props) => {
 
   const isMixpanelInited = mixpanel.useInit();
   mixpanel.useLogPageView(isMixpanelInited);
-
   return (
     <>
       <Head>

@@ -5,16 +5,10 @@ import React from 'react';
 import type { CustomLinksGroup } from 'types/footerLinks';
 
 import config from 'configs/app';
-import discussionsIcon from 'icons/discussions.svg';
-import editIcon from 'icons/edit.svg';
-import cannyIcon from 'icons/social/canny.svg';
 import discordIcon from 'icons/social/discord.svg';
-import gitIcon from 'icons/social/git.svg';
 import twitterIcon from 'icons/social/tweet.svg';
 import type { ResourceError } from 'lib/api/resources';
-import useApiQuery from 'lib/api/useApiQuery';
 import useFetch from 'lib/hooks/useFetch';
-import useIssueUrl from 'lib/hooks/useIssueUrl';
 import IndexingAlertIntTxs from 'ui/home/IndexingAlertIntTxs';
 import NetworkAddToWallet from 'ui/shared/NetworkAddToWallet';
 
@@ -28,49 +22,18 @@ const MAX_LINKS_COLUMNS = 3;
 
 const Footer = () => {
 
-  const { data: backendVersionData } = useApiQuery('config_backend_version', {
-    queryOptions: {
-      staleTime: Infinity,
-    },
-  });
-  // const apiVersionUrl = getApiVersionUrl(backendVersionData?.backend_version);
-  const issueUrl = useIssueUrl(backendVersionData?.backend_version);
   const BLOCKSCOUT_LINKS = [
-    {
-      icon: editIcon,
-      iconSize: '16px',
-      text: 'Submit an issue',
-      url: issueUrl,
-    },
-    {
-      icon: cannyIcon,
-      iconSize: '20px',
-      text: 'Feature request',
-      url: 'https://blockscout.canny.io/feature-requests',
-    },
-    {
-      icon: gitIcon,
-      iconSize: '18px',
-      text: 'Contribute',
-      url: 'https://github.com/blockscout/blockscout',
-    },
     {
       icon: twitterIcon,
       iconSize: '18px',
       text: 'Twitter',
-      url: 'https://www.twitter.com/blockscoutcom',
+      url: 'https://x.com/artela_network',
     },
     {
       icon: discordIcon,
       iconSize: '18px',
       text: 'Discord',
-      url: 'https://discord.gg/blockscout',
-    },
-    {
-      icon: discussionsIcon,
-      iconSize: '20px',
-      text: 'Discussions',
-      url: 'https://github.com/orgs/blockscout/discussions',
+      url: 'https://discord.com/invite/artela',
     },
   ];
 
@@ -130,7 +93,7 @@ const Footer = () => {
           <Grid
             gap={ 1 }
             gridTemplateColumns={ config.UI.footer.links ? '160px' : { base: 'repeat(auto-fill, 160px)', lg: 'repeat(3, 160px)' } }
-            gridTemplateRows={{ base: 'auto', lg: config.UI.footer.links ? 'auto' : 'repeat(2, auto)' }}
+            gridTemplateRows={{ base: 'auto', lg: config.UI.footer.links ? 'auto' : 'repeat(1, auto)' }}
             gridAutoFlow={{ base: 'row', lg: config.UI.footer.links ? 'row' : 'column' }}
             mt={{ base: 0, lg: config.UI.footer.links ? 0 : '100px' }}
           >
