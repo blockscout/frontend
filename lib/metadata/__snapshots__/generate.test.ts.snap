@@ -16,7 +16,7 @@ exports[`generates correct metadata for: dynamic route with API data 1`] = `
 
 exports[`generates correct metadata for: static route 1`] = `
 {
-  "description": "Blockscout is the #1 open-source blockchain explorer available today. 100+ chains and counting rely on Blockscout data availability, APIs, and ecosystem tools to support their networks.",
+  "description": "Explore the first extensible Layer1 blockchain with parallel execution and modular VMs.",
   "title": "Blockscout network blocks",
 }
 `;
