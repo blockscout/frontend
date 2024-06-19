@@ -26,7 +26,8 @@
     "test:pw:docker": "docker run --rm --network host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.35.1-focal ./playwright/run-tests.sh",
     "test:pw:ci": "yarn test:pw --project=$PW_PROJECT",
     "test:jest": "jest",
-    "test:jest:watch": "jest --watch"
+    "test:jest:watch": "jest --watch",
+    "update-snapshots:pw": "yarn test:pw --update-snapshots"
   },
   "dependencies": {
     "@chakra-ui/react": "2.7.1",

@@ -34,7 +34,7 @@ const LogoFallback = ({ isCollapsed, isSmall }: { isCollapsed?: boolean; isSmall
     <Icon
       as={ isSmall ? iconPlaceholder : logoPlaceholder }
       width="auto"
-      height="100%"
+      height={ isSmall ? '80%' : '100%' }
       color={ logoColor }
       display={ display }
     />

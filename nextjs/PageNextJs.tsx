@@ -15,7 +15,6 @@ type Props = Route & {
 
 const PageNextJs = (props: Props) => {
   const { title, description } = metadata.generate(props);
-
   useGetCsrfToken();
   useAdblockDetect();
   useConfigSentry();
