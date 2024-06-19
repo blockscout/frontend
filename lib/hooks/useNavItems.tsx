@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { NavItemInternal, NavItem, NavGroupItem } from 'types/client/navigation-items';
+import type { NavItemInternal, NavItem, NavGroupItem } from 'types/client/navigation';
 
 import config from 'configs/app';
 import { rightLineArrow } from 'lib/html-entities';
@@ -187,16 +187,35 @@ export default function useNavItems(): ReturnType {
         icon: 'graphQL',
         isActive: pathname === '/graphiql',
       } : null,
-      !config.UI.sidebar.hiddenLinks?.rpc_api && {
+      !config.UI.navigation.hiddenLinks?.rpc_api && {
         text: 'RPC API',
         icon: 'RPC',
         url: 'https://docs.blockscout.com/for-users/api/rpc-endpoints',
       },
-      !config.UI.sidebar.hiddenLinks?.eth_rpc_api && {
+      !config.UI.navigation.hiddenLinks?.eth_rpc_api && {
         text: 'Eth RPC API',
         icon: 'RPC',
         url: ' https://docs.blockscout.com/for-users/api/eth-rpc',
       },
+    ].filter(Boolean);
+
+    const otherNavItems: Array<NavItem> | Array<Array<NavItem>> = [
+      {
+        text: 'Verify contract',
+        nextRoute: { pathname: '/contract-verification' as const },
+        isActive: pathname.startsWith('/contract-verification'),
+      },
+      config.features.gasTracker.isEnabled && {
+        text: 'Gas tracker',
+        nextRoute: { pathname: '/gas-tracker' as const },
+        isActive: pathname.startsWith('/gas-tracker'),
+      },
+      config.features.publicTagsSubmission.isEnabled && {
+        text: 'Submit public tag',
+        nextRoute: { pathname: '/public-tags/submit' as const },
+        isActive: pathname.startsWith('/public-tags/submit'),
+      },
+      ...config.UI.navigation.otherLinks,
     ].filter(Boolean);
 
     const mainNavItems: ReturnType['mainNavItems'] = [
@@ -233,24 +252,8 @@ export default function useNavItems(): ReturnType {
       {
         text: 'Other',
         icon: 'gear',
-        subItems: [
-          {
-            text: 'Verify contract',
-            nextRoute: { pathname: '/contract-verification' as const },
-            isActive: pathname.startsWith('/contract-verification'),
-          },
-          config.features.gasTracker.isEnabled && {
-            text: 'Gas tracker',
-            nextRoute: { pathname: '/gas-tracker' as const },
-            isActive: pathname.startsWith('/gas-tracker'),
-          },
-          config.features.publicTagsSubmission.isEnabled && {
-            text: 'Submit public tag',
-            nextRoute: { pathname: '/public-tags/submit' as const },
-            isActive: pathname.startsWith('/public-tags/submit'),
-          },
-          ...config.UI.sidebar.otherLinks,
-        ].filter(Boolean),
+        isActive: otherNavItems.flat().some(item => isInternalItem(item) && item.isActive),
+        subItems: otherNavItems,
       },
     ].filter(Boolean);
 

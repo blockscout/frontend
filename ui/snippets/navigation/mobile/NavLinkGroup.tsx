@@ -6,14 +6,14 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import type { NavGroupItem } from 'types/client/navigation-items';
+import type { NavGroupItem } from 'types/client/navigation';
 
 import IconSvg from 'ui/shared/IconSvg';
 
-import LightningLabel from './LightningLabel';
-import NavLinkIcon from './NavLinkIcon';
-import useNavLinkStyleProps from './useNavLinkStyleProps';
-import { checkRouteHighlight } from './utils';
+import LightningLabel from '../LightningLabel';
+import NavLinkIcon from '../NavLinkIcon';
+import useNavLinkStyleProps from '../useNavLinkStyleProps';
+import { checkRouteHighlight } from '../utils';
 
 type Props = {
   item: NavGroupItem;
@@ -43,7 +43,7 @@ const NavLinkGroup = ({ item, onClick, isExpanded }: Props) => {
             >
               { item.text }
             </Text>
-            { isHighlighted && (<LightningLabel bgColor={ styleProps.itemProps.bgColor }/>) }
+            { isHighlighted && (<LightningLabel iconColor={ styleProps.itemProps.bgColor }/>) }
           </HStack>
           <IconSvg name="arrows/east-mini" transform="rotate(180deg)" boxSize={ 6 }/>
         </Flex>

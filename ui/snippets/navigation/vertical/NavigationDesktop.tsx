@@ -11,8 +11,9 @@ import IconSvg from 'ui/shared/IconSvg';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import NetworkMenu from 'ui/snippets/networkMenu/NetworkMenu';
 
+import TestnetBadge from '../TestnetBadge';
 import NavLink from './NavLink';
-import NavLinkGroupDesktop from './NavLinkGroupDesktop';
+import NavLinkGroup from './NavLinkGroup';
 
 const NavigationDesktop = () => {
   const appProps = useAppContext();
@@ -71,7 +72,7 @@ const NavigationDesktop = () => {
       }}
       onClick={ handleContainerClick }
     >
-      { config.chain.isTestnet && <IconSvg name="testnet" h="14px" w="49px" color="red.400" position="absolute" pl={ 3 } top="34px"/> }
+      <TestnetBadge position="absolute" pl={ 3 } w="49px" top="34px"/>
       <Box
         as="header"
         display="flex"
@@ -87,13 +88,13 @@ const NavigationDesktop = () => {
         transitionTimingFunction="ease"
       >
         <NetworkLogo isCollapsed={ isCollapsed }/>
-        { Boolean(config.UI.sidebar.featuredNetworks) && <NetworkMenu isCollapsed={ isCollapsed }/> }
+        { Boolean(config.UI.navigation.featuredNetworks) && <NetworkMenu isCollapsed={ isCollapsed }/> }
       </Box>
       <Box as="nav" mt={ 6 } w="100%">
         <VStack as="ul" spacing="1" alignItems="flex-start">
           { mainNavItems.map((item) => {
             if (isGroupItem(item)) {
-              return <NavLinkGroupDesktop key={ item.text } item={ item } isCollapsed={ isCollapsed }/>;
+              return <NavLinkGroup key={ item.text } item={ item } isCollapsed={ isCollapsed }/>;
             } else {
               return <NavLink key={ item.text } item={ item } isCollapsed={ isCollapsed }/>;
             }

@@ -40,10 +40,12 @@ const Home = () => {
                 `${ config.chain.name } explorer`
             }
           </Heading>
-          <Box display={{ base: 'none', lg: 'flex' }}>
-            { config.features.account.isEnabled && <ProfileMenuDesktop isHomePage/> }
-            { config.features.blockchainInteraction.isEnabled && <WalletMenuDesktop isHomePage/> }
-          </Box>
+          { config.UI.navigation.layout === 'vertical' && (
+            <Box display={{ base: 'none', lg: 'flex' }}>
+              { config.features.account.isEnabled && <ProfileMenuDesktop isHomePage/> }
+              { config.features.blockchainInteraction.isEnabled && <WalletMenuDesktop isHomePage/> }
+            </Box>
+          ) }
         </Flex>
         <SearchBar isHomepage/>
       </Box>

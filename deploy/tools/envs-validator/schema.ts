@@ -17,8 +17,8 @@ import { GAS_UNITS } from '../../../types/client/gasTracker';
 import type { GasUnit } from '../../../types/client/gasTracker';
 import type { MarketplaceAppOverview, MarketplaceAppSecurityReportRaw, MarketplaceAppSecurityReport } from '../../../types/client/marketplace';
 import type { MultichainProviderConfig } from '../../../types/client/multichainProviderConfig';
-import { NAVIGATION_LINK_IDS } from '../../../types/client/navigation-items';
-import type { NavItemExternal, NavigationLinkId } from '../../../types/client/navigation-items';
+import { NAVIGATION_LINK_IDS } from '../../../types/client/navigation';
+import type { NavItemExternal, NavigationLinkId, NavigationLayout } from '../../../types/client/navigation';
 import { ROLLUP_TYPES } from '../../../types/client/rollup';
 import type { BridgedTokenChain, TokenBridge } from '../../../types/client/token';
 import { PROVIDERS as TX_INTERPRETATION_PROVIDERS } from '../../../types/client/txInterpretation';
@@ -533,6 +533,7 @@ const schema = yup
       .transform(replaceQuotes)
       .json()
       .of(yup.string()),
+    NEXT_PUBLIC_NAVIGATION_LAYOUT: yup.string<NavigationLayout>().oneOf([ 'horizontal', 'vertical' ]),
     NEXT_PUBLIC_NETWORK_LOGO: yup.string().test(urlTest),
     NEXT_PUBLIC_NETWORK_LOGO_DARK: yup.string().test(urlTest),
     NEXT_PUBLIC_NETWORK_ICON: yup.string().test(urlTest),

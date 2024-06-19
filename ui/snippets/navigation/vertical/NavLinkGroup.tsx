@@ -11,22 +11,22 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import type { NavGroupItem } from 'types/client/navigation-items';
+import type { NavGroupItem } from 'types/client/navigation';
 
 import IconSvg from 'ui/shared/IconSvg';
 
-import LightningLabel from './LightningLabel';
+import LightningLabel from '../LightningLabel';
+import NavLinkIcon from '../NavLinkIcon';
+import useNavLinkStyleProps from '../useNavLinkStyleProps';
+import { checkRouteHighlight } from '../utils';
 import NavLink from './NavLink';
-import NavLinkIcon from './NavLinkIcon';
-import useNavLinkStyleProps from './useNavLinkStyleProps';
-import { checkRouteHighlight } from './utils';
 
 type Props = {
   item: NavGroupItem;
   isCollapsed?: boolean;
 }
 
-const NavLinkGroupDesktop = ({ item, isCollapsed }: Props) => {
+const NavLinkGroup = ({ item, isCollapsed }: Props) => {
   const isExpanded = isCollapsed === false;
 
   const styleProps = useNavLinkStyleProps({ isCollapsed, isExpanded, isActive: item.isActive });
@@ -58,7 +58,7 @@ const NavLinkGroupDesktop = ({ item, isCollapsed }: Props) => {
                 { item.text }
               </Text>
               { isHighlighted && (
-                <LightningLabel bgColor={ styleProps.itemProps.bgColor } isCollapsed={ isCollapsed }/>
+                <LightningLabel iconColor={ styleProps.itemProps.bgColor } isCollapsed={ isCollapsed }/>
               ) }
               <IconSvg
                 name="arrows/east-mini"
@@ -105,4 +105,4 @@ const NavLinkGroupDesktop = ({ item, isCollapsed }: Props) => {
   );
 };
 
-export default NavLinkGroupDesktop;
+export default NavLinkGroup;

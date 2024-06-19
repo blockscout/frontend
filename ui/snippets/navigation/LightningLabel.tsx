@@ -1,4 +1,4 @@
-import { useColorModeValue, useBreakpointValue } from '@chakra-ui/react';
+import { useColorModeValue, useBreakpointValue, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
@@ -6,7 +6,13 @@ import IconSvg from 'ui/shared/IconSvg';
 
 export const LIGHTNING_LABEL_CLASS_NAME = 'lightning-label';
 
-const LightningLabel = ({ bgColor, isCollapsed }: { bgColor?: string; isCollapsed?: boolean }) => {
+interface Props {
+  className?: string;
+  iconColor?: string;
+  isCollapsed?: boolean;
+}
+
+const LightningLabel = ({ className, iconColor, isCollapsed }: Props) => {
   const isLgScreen = useBreakpointValue({ base: false, lg: true, xl: false });
   const themeBgColor = useColorModeValue('white', 'black');
   const defaultTransitionProps = getDefaultTransitionProps({ transitionProperty: 'color' });
@@ -15,14 +21,14 @@ const LightningLabel = ({ bgColor, isCollapsed }: { bgColor?: string; isCollapse
 
   const color = React.useMemo(() => {
     if (isCollapsed || (!isExpanded && isLgScreen)) {
-      return (bgColor && bgColor !== 'transparent') ? bgColor : themeBgColor;
+      return (iconColor && iconColor !== 'transparent') ? iconColor : themeBgColor;
     }
     return 'transparent';
-  }, [ bgColor, themeBgColor, isCollapsed, isExpanded, isLgScreen ]);
+  }, [ iconColor, themeBgColor, isCollapsed, isExpanded, isLgScreen ]);
 
   return (
     <IconSvg
-      className={ LIGHTNING_LABEL_CLASS_NAME }
+      className={ LIGHTNING_LABEL_CLASS_NAME + (className ? ` ${ className }` : '') }
       name="lightning_navbar"
       boxSize={ 4 }
       ml={{ base: 1, lg: isExpanded ? 1 : 0, xl: isCollapsed ? 0 : 1 }}
@@ -35,4 +41,4 @@ const LightningLabel = ({ bgColor, isCollapsed }: { bgColor?: string; isCollapse
   );
 };
 
-export default LightningLabel;
+export default chakra(LightningLabel);

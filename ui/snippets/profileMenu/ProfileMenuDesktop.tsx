@@ -14,9 +14,10 @@ type Props = {
   isHomePage?: boolean;
   className?: string;
   fallbackIconSize?: number;
+  buttonBoxSize?: string;
 };
 
-const ProfileMenuDesktop = ({ isHomePage, className, fallbackIconSize }: Props) => {
+const ProfileMenuDesktop = ({ isHomePage, className, fallbackIconSize, buttonBoxSize }: Props) => {
   const { data, error, isPending } = useFetchProfileInfo();
   const loginUrl = useLoginUrl();
   const { themedBackground, themedBorderColor, themedColor } = useMenuButtonColors();
@@ -88,7 +89,7 @@ const ProfileMenuDesktop = ({ isHomePage, className, fallbackIconSize }: Props) 
               icon={ <UserAvatar size={ 20 } fallbackIconSize={ fallbackIconSize }/> }
               variant={ variant }
               colorScheme="blue"
-              boxSize="40px"
+              boxSize={ buttonBoxSize ?? '40px' }
               flexShrink={ 0 }
               { ...iconButtonProps }
               { ...iconButtonStyles }
