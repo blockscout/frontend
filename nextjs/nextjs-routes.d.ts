@@ -21,8 +21,8 @@ declare module "nextjs-routes" {
     | StaticRoute<"/api/media-type">
     | StaticRoute<"/api/proxy">
     | StaticRoute<"/api-docs">
-    | StaticRoute<"/apps">
     | DynamicRoute<"/apps/[id]", { "id": string }>
+    | StaticRoute<"/apps">
     | StaticRoute<"/auth/auth0">
     | StaticRoute<"/auth/profile">
     | StaticRoute<"/auth/unverified-email">
