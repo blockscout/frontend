@@ -81,7 +81,7 @@ export const ContractMethodResultWalletClientDumb = ({ data, onSettle, txInfo }:
 
       case 'error': {
         return (
-          <Alert status="error">
+          <Alert status="error" flexDir="column" alignItems="flex-start" rowGap={ 1 }>
             Error: { txInfo.error ? txInfo.error.message : 'Something went wrong' } { txLink }
           </Alert>
         );

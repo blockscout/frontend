@@ -9,6 +9,8 @@ import ContractMethodsRegular from './ContractMethodsRegular';
 const addressHash = addressMock.hash;
 
 test('read methods', async({ render, mockContractReadResponse }) => {
+  // for some reason it takes a long time for "wagmi" library to parse response result in the test environment
+  // so I had to increase the test timeout
   test.slow();
 
   const hooksConfig = {
