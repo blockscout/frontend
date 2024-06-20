@@ -10,13 +10,14 @@ type Props = {
   isLoading?: boolean;
 }
 
-const SortButton = ({ onClick, isActive, className, isLoading }: Props) => {
+const SortButton = ({ onClick, isActive, className, isLoading }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
   if (isLoading) {
     return <Skeleton className={ className } w="36px" h="32px" borderRadius="base"/>;
   }
 
   return (
     <IconButton
+      ref={ ref }
       icon={ <IconSvg name="arrows/up-down" boxSize={ 5 }/> }
       aria-label="sort"
       size="sm"
@@ -31,4 +32,4 @@ const SortButton = ({ onClick, isActive, className, isLoading }: Props) => {
   );
 };
 
-export default chakra(SortButton);
+export default chakra(React.forwardRef(SortButton));

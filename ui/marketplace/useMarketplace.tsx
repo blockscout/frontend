@@ -86,7 +86,7 @@ export default function useMarketplace() {
   }, []);
 
   const {
-    isPlaceholderData, isError, error, data, displayedApps,
+    isPlaceholderData, isError, error, data, displayedApps, setSorting,
   } = useMarketplaceApps(debouncedFilterQuery, selectedCategoryId, favoriteApps, isFavoriteAppsLoaded);
   const {
     isPlaceholderData: isCategoriesPlaceholderData, data: categories,
@@ -150,6 +150,7 @@ export default function useMarketplace() {
     showContractList,
     contractListModalType,
     hasPreviousStep,
+    setSorting,
   }), [
     selectedCategoryId,
     categories,
@@ -172,5 +173,6 @@ export default function useMarketplace() {
     showContractList,
     contractListModalType,
     hasPreviousStep,
+    setSorting,
   ]);
 }
