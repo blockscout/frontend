@@ -169,7 +169,7 @@ export const TOKEN_INSTANCE: TokenInstance = {
     description: '**GENESIS #188882**, **8a77ca1bcaa4036f** :: *844th* generation of *#57806 and #57809* :: **eGenetic Hash Code (eDNA)** = *2822355e953a462d*',
     external_url: 'https://vipsland.com/nft/collections/genesis/188882',
     image: 'https://ipfs.vipsland.com/nft/collections/genesis/188882.gif',
-    name: 'GENESIS #188882, 8a77ca1bcaa4036f. Blockchain pixel PFP NFT + "on music video" trait inspired by God',
+    name: 'GENESIS #188882, 8a77ca1bcaa4036f',
   },
   owner: ADDRESS_PARAMS,
   holder_address_hash: ADDRESS_HASH,

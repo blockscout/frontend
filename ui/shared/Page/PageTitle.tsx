@@ -29,10 +29,21 @@ const BackLink = (props: BackLinkProp & { isLoading?: boolean }) => {
   }
 
   if (props.isLoading) {
-    return <Skeleton boxSize={ 6 } display="inline-block" borderRadius="base" mr={ 3 } my={ 2 } verticalAlign="text-bottom" isLoaded={ !props.isLoading }/>;
+    return (
+      <Skeleton
+        boxSize={ 6 }
+        display="inline-block"
+        flexShrink={ 0 }
+        borderRadius="base"
+        mr={ 3 }
+        my={ 2 }
+        verticalAlign="text-bottom"
+        isLoaded={ !props.isLoading }
+      />
+    );
   }
 
-  const icon = <IconSvg name="arrows/east" boxSize={ 6 } transform="rotate(180deg)" margin="auto" color="gray.400"/>;
+  const icon = <IconSvg name="arrows/east" boxSize={ 6 } transform="rotate(180deg)" margin="auto" color="gray.400" flexShrink={ 0 }/>;
 
   if ('url' in props) {
     return (

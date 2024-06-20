@@ -21,8 +21,10 @@ import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TokenHolders from 'ui/token/TokenHolders/TokenHolders';
 import TokenTransfer from 'ui/token/TokenTransfer/TokenTransfer';
+import { MetadataUpdateProvider } from 'ui/tokenInstance/contexts/metadataUpdate';
 import TokenInstanceDetails from 'ui/tokenInstance/TokenInstanceDetails';
 import TokenInstanceMetadata from 'ui/tokenInstance/TokenInstanceMetadata';
+import TokenInstanceMetadataFetcher from 'ui/tokenInstance/TokenInstanceMetadataFetcher';
 import TokenInstancePageTitle from 'ui/tokenInstance/TokenInstancePageTitle';
 
 export type TokenTabs = 'token_transfers' | 'holders'
@@ -118,7 +120,7 @@ const TokenInstanceContent = () => {
   }
 
   return (
-    <>
+    <MetadataUpdateProvider>
       <TextAd mb={ 6 }/>
 
       <TokenInstancePageTitle
@@ -140,7 +142,9 @@ const TokenInstanceContent = () => {
         rightSlot={ !isMobile && pagination?.isVisible ? <Pagination { ...pagination }/> : null }
         stickyEnabled={ !isMobile }
       />
-    </>
+
+      <TokenInstanceMetadataFetcher/>
+    </MetadataUpdateProvider>
   );
 };
 
