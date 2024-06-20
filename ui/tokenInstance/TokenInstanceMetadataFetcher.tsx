@@ -9,6 +9,7 @@ import type { TokenInstance } from 'types/api/token';
 import config from 'configs/app';
 import useApiFetch from 'lib/api/useApiFetch';
 import { getResourceKey } from 'lib/api/useApiQuery';
+import { MINUTE } from 'lib/consts';
 import useToast from 'lib/hooks/useToast';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
@@ -21,12 +22,22 @@ interface Props {
 }
 
 const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
-  const ref = React.useRef<ReCaptcha>(null);
+  const timeoutId = React.useRef<number>();
 
   const { status, setStatus } = useMetadataUpdateContext() || {};
   const apiFetch = useApiFetch();
   const toast = useToast();
   const queryClient = useQueryClient();
+
+  const handleRefreshError = React.useCallback(() => {
+    setStatus?.('ERROR');
+    toast({
+      title: 'Error',
+      description: 'The refreshing process has failed. Please try again.',
+      status: 'warning',
+      variant: 'subtle',
+    });
+  }, [ setStatus, toast ]);
 
   const initializeUpdate = React.useCallback((reCaptchaToken: string) => {
     apiFetch<'token_instance_refresh_metadata', unknown, unknown>('token_instance_refresh_metadata', {
@@ -38,6 +49,7 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
     })
       .then(() => {
         setStatus?.('UPDATING');
+        timeoutId.current = window.setTimeout(handleRefreshError, 2 * MINUTE);
       })
       .catch(() => {
         toast({
@@ -48,7 +60,7 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
         });
         setStatus?.('INITIAL');
       });
-  }, [ apiFetch, hash, id, setStatus, toast ]);
+  }, [ apiFetch, handleRefreshError, hash, id, setStatus, toast ]);
 
   const handleModalClose = React.useCallback(() => {
     setStatus?.('INITIAL');
@@ -79,16 +91,16 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
       status: 'success',
       variant: 'subtle',
     });
-  }, [ hash, id, queryClient, toast ]);
 
-  const handleSocketError = React.useCallback(() => {
-    setStatus?.('ERROR');
-  }, [ setStatus ]);
+    setStatus?.('SUCCESS');
+
+    window.clearTimeout(timeoutId.current);
+  }, [ hash, id, queryClient, setStatus, toast ]);
 
   const channel = useSocketChannel({
     topic: `token_instances:${ hash.toLowerCase() }`,
-    onSocketClose: handleSocketError,
-    onSocketError: handleSocketError,
+    onSocketClose: handleRefreshError,
+    onSocketError: handleRefreshError,
     isDisabled: status !== 'UPDATING',
   });
 
@@ -108,7 +120,6 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
           { config.services.reCaptcha.siteKey ? (
             <ReCaptcha
               className="recaptcha"
-              ref={ ref }
               sitekey={ config.services.reCaptcha.siteKey }
               onChange={ handleReCaptchaChange }
             />

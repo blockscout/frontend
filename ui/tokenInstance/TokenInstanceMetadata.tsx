@@ -1,4 +1,4 @@
-import { Box, Flex, Select, chakra } from '@chakra-ui/react';
+import { Alert, Box, Flex, Select, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TokenInstance } from 'types/api/token';
@@ -40,15 +40,24 @@ const TokenInstanceMetadata = ({ data, isPlaceholderData }: Props) => {
 
   return (
     <Box>
-      <Flex alignItems="center" mb={ 6 }>
-        <chakra.span fontWeight={ 500 }>Metadata</chakra.span>
-        <Select size="xs" borderRadius="base" value={ format } onChange={ handleSelectChange } w="auto" ml={ 5 }>
-          <option value="Table">Table</option>
-          <option value="JSON">JSON</option>
-        </Select>
-        { format === 'JSON' && <CopyToClipboard text={ JSON.stringify(data) } ml="auto"/> }
-      </Flex>
-      { content }
+      { refetchStatus === 'ERROR' ? (
+        <Alert status="warning" display="flow">
+          <chakra.span fontWeight={ 600 }>Ooops! </chakra.span>
+          <span>We { `couldn't` } refresh metadata. Please try again now or later.</span>
+        </Alert>
+      ) : (
+        <>
+          <Flex alignItems="center" mb={ 6 }>
+            <chakra.span fontWeight={ 500 }>Metadata</chakra.span>
+            <Select size="xs" borderRadius="base" value={ format } onChange={ handleSelectChange } w="auto" ml={ 5 }>
+              <option value="Table">Table</option>
+              <option value="JSON">JSON</option>
+            </Select>
+            { format === 'JSON' && <CopyToClipboard text={ JSON.stringify(data) } ml="auto"/> }
+          </Flex>
+          { content }
+        </>
+      ) }
     </Box>
   );
 };
