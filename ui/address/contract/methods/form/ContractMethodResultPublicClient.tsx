@@ -43,7 +43,7 @@ const ContractMethodResultPublicClient = ({ data, abiItem, onSettle, mode: modeP
         p={ 4 }
         borderRadius="md"
         bgColor={ bgColor }
-        opacity={ mode === 'preview' ? 0.8 : 1 }
+        color={ mode === 'preview' ? 'gray.500' : undefined }
         fontSize="sm"
         lineHeight="20px"
         whiteSpace="break-spaces"
