@@ -110,16 +110,16 @@ const MarketplaceAppModal = ({
         <Box
           display="grid"
           gridTemplateColumns={{ base: 'auto 1fr' }}
-          paddingRight={{ sm: 12 }}
-          marginBottom={{ base: 6, sm: 8 }}
+          paddingRight={{ md: 12 }}
+          marginBottom={{ base: 6, md: 8 }}
         >
           <Flex
             alignItems="center"
             justifyContent="center"
-            w={{ base: '72px', sm: '144px' }}
-            h={{ base: '72px', sm: '144px' }}
-            marginRight={{ base: 6, sm: 8 }}
-            gridRow={{ base: '1 / 3', sm: '1 / 4' }}
+            w={{ base: '72px', md: '144px' }}
+            h={{ base: '72px', md: '144px' }}
+            marginRight={{ base: 6, md: 8 }}
+            gridRow={{ base: '1 / 3', md: '1 / 4' }}
           >
             <Image
               src={ logoUrl }
@@ -131,7 +131,7 @@ const MarketplaceAppModal = ({
           <Heading
             as="h2"
             gridColumn={ 2 }
-            fontSize={{ base: '2xl', sm: '3xl' }}
+            fontSize={{ base: '2xl', md: '3xl' }}
             fontWeight="medium"
             lineHeight={ 1 }
             color="blue.600"
@@ -150,11 +150,11 @@ const MarketplaceAppModal = ({
           </Text>
 
           <Box
-            gridColumn={{ base: '1 / 3', sm: 2 }}
-            marginTop={{ base: 6, sm: 0 }}
+            gridColumn={{ base: '1 / 3', md: 2 }}
+            marginTop={{ base: 6, md: 0 }}
           >
             <Flex flexWrap="wrap" gap={ 6 }>
-              <Flex width={{ base: '100%', sm: 'auto' }}>
+              <Flex width={{ base: '100%', md: 'auto' }}>
                 <MarketplaceAppModalLink
                   id={ data.id }
                   url={ url }
@@ -184,8 +184,8 @@ const MarketplaceAppModal = ({
         <ModalBody mb={ 6 }>
           { securityReport && (
             <Flex
-              direction={{ base: 'column', sm: 'row' }}
-              justifyContent={{ base: 'flex-start', sm: 'space-between' }}
+              direction={{ base: 'column', md: 'row' }}
+              justifyContent={{ base: 'flex-start', md: 'space-between' }}
               gap={ 3 }
               fontSize="sm"
               mb={ 6 }
@@ -217,9 +217,9 @@ const MarketplaceAppModal = ({
 
         <ModalFooter
           display="flex"
-          flexDirection={{ base: 'column', sm: 'row' }}
-          justifyContent={{ base: 'flex-start', sm: 'space-between' }}
-          alignItems={{ base: 'flex-start', sm: 'center' }}
+          flexDirection={{ base: 'column', md: 'row' }}
+          justifyContent={{ base: 'flex-start', md: 'space-between' }}
+          alignItems={{ base: 'flex-start', md: 'center' }}
           gap={ 3 }
         >
           <Flex gap={ 2 }>
