@@ -84,6 +84,30 @@ export const token: Address = {
   ens_domain_name: null,
 };
 
+export const eoa: Address = {
+  block_number_balance_updated_at: 30811263,
+  coin_balance: '2782650189688719421432220500',
+  creation_tx_hash: '0xf2aff6501b632604c39978b47d309813d8a1bcca721864bbe86abf59704f195e',
+  creator_address_hash: '0x803ad3F50b9e1fF68615e8B053A186e1be288943',
+  exchange_rate: '0.04311',
+  has_decompiled_code: false,
+  has_logs: true,
+  has_token_transfers: false,
+  has_tokens: true,
+  has_validated_blocks: false,
+  hash: hash,
+  implementations: [],
+  is_contract: false,
+  is_verified: false,
+  name: null,
+  private_tags: [ publicTag ],
+  public_tags: [ privateTag ],
+  token: null,
+  watchlist_names: [ watchlistName ],
+  watchlist_address_id: 42,
+  ens_domain_name: null,
+};
+
 export const contract: Address = {
   block_number_balance_updated_at: 30811263,
   coin_balance: '27826501896887194214322205',
