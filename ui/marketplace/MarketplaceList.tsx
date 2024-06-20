@@ -33,11 +33,11 @@ const MarketplaceList = ({ apps, showAppInfo, favoriteApps, onFavoriteClick, isL
   return apps.length > 0 ? (
     <Grid
       templateColumns={{
-        sm: 'repeat(auto-fill, minmax(178px, 1fr))',
+        md: 'repeat(auto-fill, minmax(230px, 1fr))',
         lg: 'repeat(auto-fill, minmax(260px, 1fr))',
       }}
       autoRows="1fr"
-      gap={{ base: '16px', sm: '24px' }}
+      gap={{ base: '16px', md: '24px' }}
     >
       { apps.map((app, index) => (
         <MarketplaceAppCard

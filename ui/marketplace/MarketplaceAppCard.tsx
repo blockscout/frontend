@@ -64,7 +64,7 @@ const MarketplaceAppCard = ({
         boxShadow: isLoading ? 'none' : 'md',
       }}
       borderRadius="md"
-      padding={{ base: 3, sm: '20px' }}
+      padding={{ base: 3, md: '20px' }}
       border="1px"
       borderColor={ useColorModeValue('gray.200', 'gray.600') }
       role="group"
@@ -76,17 +76,17 @@ const MarketplaceAppCard = ({
         gap={ 2 }
       >
         <Flex
-          display={{ base: 'flex', sm: 'contents' }}
+          display={{ base: 'flex', md: 'contents' }}
           gap={ 4 }
         >
           <Skeleton
             isLoaded={ !isLoading }
-            w={{ base: '64px', sm: '96px' }}
-            h={{ base: '64px', sm: '96px' }}
+            w={{ base: '64px', md: '96px' }}
+            h={{ base: '64px', md: '96px' }}
             display="flex"
             alignItems="center"
             justifyContent="center"
-            mb={{ base: 0, sm: 2 }}
+            mb={{ base: 0, md: 2 }}
           >
             <Image
               src={ isLoading ? undefined : logoUrl }
@@ -96,16 +96,16 @@ const MarketplaceAppCard = ({
           </Skeleton>
 
           <Flex
-            display={{ base: 'flex', sm: 'contents' }}
+            display={{ base: 'flex', md: 'contents' }}
             flexDirection="column"
             gap={ 2 }
             pt={ 1 }
           >
             <Skeleton
               isLoaded={ !isLoading }
-              fontSize={{ base: 'sm', sm: 'lg' }}
-              lineHeight={{ base: '20px', sm: '28px' }}
-              paddingRight={{ base: '40px', sm: 0 }}
+              fontSize={{ base: 'sm', md: 'lg' }}
+              lineHeight={{ base: '20px', md: '28px' }}
+              paddingRight={{ base: '40px', md: 0 }}
               fontWeight="semibold"
               fontFamily="heading"
               display="inline-block"
@@ -135,7 +135,7 @@ const MarketplaceAppCard = ({
           isLoaded={ !isLoading }
           fontSize="sm"
           lineHeight="20px"
-          noOfLines={{ base: 2, sm: 3 }}
+          noOfLines={{ base: 2, md: 3 }}
         >
           { shortDescription }
         </Skeleton>
@@ -150,7 +150,7 @@ const MarketplaceAppCard = ({
             <Link
               fontSize="sm"
               fontWeight="500"
-              paddingRight={{ sm: 2 }}
+              paddingRight={{ md: 2 }}
               href="#"
               onClick={ handleInfoClick }
             >
@@ -161,8 +161,8 @@ const MarketplaceAppCard = ({
               title="Mark as favorite"
               variant="ghost"
               colorScheme="gray"
-              w={{ base: 6, sm: '30px' }}
-              h={{ base: 6, sm: '30px' }}
+              w={{ base: 6, md: '30px' }}
+              h={{ base: 6, md: '30px' }}
               onClick={ handleFavoriteClick }
               icon={ isFavorite ?
                 <IconSvg name="star_filled" w={ 5 } h={ 5 } color="yellow.400"/> :
@@ -181,8 +181,8 @@ const MarketplaceAppCard = ({
             source="Discovery view"
             popoverPlacement={ isMobile ? 'bottom-end' : 'bottom-start' }
             position="absolute"
-            right={{ base: 3, sm: 5 }}
-            top={{ base: '10px', sm: 5 }}
+            right={{ base: 3, md: 5 }}
+            top={{ base: '10px', md: 5 }}
             border={ 0 }
             padding={ 0 }
           />
