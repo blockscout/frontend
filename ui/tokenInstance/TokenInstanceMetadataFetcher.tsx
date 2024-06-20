@@ -48,7 +48,13 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
       },
     })
       .then(() => {
-        setStatus?.('UPDATING');
+        toast({
+          title: 'Please wait',
+          description: 'Refetching metadata request sent',
+          status: 'warning',
+          variant: 'subtle',
+        });
+        setStatus?.('WAITING_FOR_RESPONSE');
         timeoutId.current = window.setTimeout(handleRefreshError, 2 * MINUTE);
       })
       .catch(() => {
@@ -101,7 +107,7 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
     topic: `token_instances:${ hash.toLowerCase() }`,
     onSocketClose: handleRefreshError,
     onSocketError: handleRefreshError,
-    isDisabled: status !== 'UPDATING',
+    isDisabled: status !== 'WAITING_FOR_RESPONSE',
   });
 
   useSocketMessage({

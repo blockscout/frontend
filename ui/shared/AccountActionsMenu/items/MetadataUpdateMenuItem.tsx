@@ -25,13 +25,13 @@ const MetadataUpdateMenuItem = ({ type, className }: ItemProps) => {
             icon="refresh"
             onClick={ handleClick }
             className={ className }
-            isDisabled={ status === 'UPDATING' }
+            isDisabled={ status === 'WAITING_FOR_RESPONSE' }
           />
         );
       }
       case 'menu_item': {
         return (
-          <MenuItem className={ className } onClick={ handleClick } isDisabled={ status === 'UPDATING' }>
+          <MenuItem className={ className } onClick={ handleClick } isDisabled={ status === 'WAITING_FOR_RESPONSE' }>
             <IconSvg name="refresh" boxSize={ 5 } mr={ 2 }/>
             <span>Refresh metadata</span>
           </MenuItem>

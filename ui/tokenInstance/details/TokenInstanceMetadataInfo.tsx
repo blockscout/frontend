@@ -74,11 +74,7 @@ const TokenInstanceMetadataInfo = ({ data, isLoading: isLoadingProp }: Props) =>
     return null;
   }
 
-  if (refetchStatus === 'ERROR') {
-    return null;
-  }
-
-  const isLoading = isLoadingProp || refetchStatus === 'UPDATING';
+  const isLoading = isLoadingProp || refetchStatus === 'WAITING_FOR_RESPONSE';
 
   return (
     <>

@@ -11,14 +11,11 @@ interface TMetadataUpdateContext {
 
 export const MetadataUpdateContext = React.createContext<TMetadataUpdateContext | null>(null);
 
-type Status = 'INITIAL' | 'MODAL_OPENED' | 'UPDATING' | 'SUCCESS' | 'ERROR';
+type Status = 'INITIAL' | 'MODAL_OPENED' | 'WAITING_FOR_RESPONSE' | 'SUCCESS' | 'ERROR';
 
 export function MetadataUpdateProvider({ children }: MetadataUpdateProviderProps) {
 
   const [ status, setStatus ] = React.useState<Status>('INITIAL');
-
-  // eslint-disable-next-line no-console
-  console.log('__>__ status:', status);
 
   const value = React.useMemo(() => {
     return {
