@@ -80,7 +80,7 @@ const ArbitrumL2MessagesListItem = ({ item, isLoading, direction }: Props) => {
             truncation="constant_long"
           />
         ) : (
-          <chakra.span color="text_secondary">
+          <chakra.span>
             N/A
           </chakra.span>
         ) }
@@ -107,7 +107,7 @@ const ArbitrumL2MessagesListItem = ({ item, isLoading, direction }: Props) => {
             truncation="constant_long"
           />
         ) : (
-          <chakra.span color="text_secondary">
+          <chakra.span>
             N/A
           </chakra.span>
         ) }

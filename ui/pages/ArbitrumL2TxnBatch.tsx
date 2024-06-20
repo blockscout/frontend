@@ -96,7 +96,7 @@ const ArbitrumL2TxnBatch = () => {
     {
       id: 'blocks',
       title: 'Blocks',
-      component: <BlocksContent type="block" query={ batchBlocksQuery } showSocketInfo={ false } top={ hasPagination ? TABS_HEIGHT : 0 }/>,
+      component: <BlocksContent type="block" query={ batchBlocksQuery } enableSocket={ false } top={ hasPagination ? TABS_HEIGHT : 0 }/>,
     },
   ].filter(Boolean)), [ batchQuery, batchTxsQuery, batchBlocksQuery, hasPagination ]);
 

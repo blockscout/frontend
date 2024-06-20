@@ -8,7 +8,7 @@ export type ArbitrumL2MessagesItem = {
   origination_timestamp: string | null;
   origination_transaction_block_number: number;
   origination_transaction_hash: string;
-  status: string;
+  status: 'initiated' | 'sent' | 'confirmed' | 'relayed';
 }
 
 export type ArbitrumL2MessagesResponse = {

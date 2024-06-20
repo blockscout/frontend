@@ -19,6 +19,8 @@ const StatusTag = ({ type, text, errorText, isLoading, className }: Props) => {
   let icon: IconName;
   let colorScheme;
 
+  const capitalizedText = text.charAt(0).toUpperCase() + text.slice(1);
+
   switch (type) {
     case 'ok':
       icon = 'status/success';
@@ -38,7 +40,7 @@ const StatusTag = ({ type, text, errorText, isLoading, className }: Props) => {
     <Tooltip label={ errorText }>
       <Tag colorScheme={ colorScheme } display="flex" isLoading={ isLoading } className={ className }>
         <IconSvg boxSize={ 2.5 } name={ icon } mr={ 1 } flexShrink={ 0 }/>
-        <TagLabel display="block">{ text }</TagLabel>
+        <TagLabel display="block">{ capitalizedText }</TagLabel>
       </Tag>
     </Tooltip>
   );
