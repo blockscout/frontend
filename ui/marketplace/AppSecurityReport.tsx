@@ -24,7 +24,7 @@ type Props = {
   onlyIcon?: boolean;
   source: 'Discovery view' | 'App modal' | 'App page';
   className?: string;
-  popoverPlacement?: 'bottom-start' | 'bottom-end';
+  popoverPlacement?: 'bottom-start' | 'bottom-end' | 'left';
 }
 
 const AppSecurityReport = ({

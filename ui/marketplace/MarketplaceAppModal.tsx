@@ -207,6 +207,7 @@ const MarketplaceAppModal = ({
                   securityReport={ securityReport }
                   showContractList={ showContractList }
                   source="App modal"
+                  popoverPlacement={ isMobile ? 'bottom-start' : 'left' }
                 />
               </Flex>
             </Flex>
