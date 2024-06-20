@@ -10,6 +10,8 @@ import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
+import { useMetadataUpdateContext } from '../contexts/metadataUpdate';
+
 interface Props {
   data?: TokenInstance;
   isLoading?: boolean;
@@ -62,13 +64,17 @@ const Item = ({ data, isLoading }: ItemProps) => {
   );
 };
 
-const TokenInstanceMetadataInfo = ({ data, isLoading }: Props) => {
-  const metadata = React.useMemo(() => parseMetadata(data?.metadata), [ data ]);
-  const hasMetadata = metadata && Boolean((metadata.name || metadata.description || metadata.attributes));
+const TokenInstanceMetadataInfo = ({ data, isLoading: isLoadingProp }: Props) => {
+  const { status: refetchStatus } = useMetadataUpdateContext() || {};
 
+  const metadata = React.useMemo(() => parseMetadata(data?.metadata), [ data ]);
+
+  const hasMetadata = metadata && Boolean((metadata.name || metadata.description || metadata.attributes));
   if (!hasMetadata) {
     return null;
   }
+
+  const isLoading = isLoadingProp || refetchStatus === 'UPDATING';
 
   return (
     <>

@@ -9,6 +9,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as metadata from 'lib/metadata';
+import getQueryParamString from 'lib/router/getQueryParamString';
 import {
   TOKEN_INSTANCE,
   TOKEN_INFO_ERC_1155,
@@ -33,9 +34,9 @@ const TokenInstanceContent = () => {
   const router = useRouter();
   const isMobile = useIsMobile();
 
-  const hash = router.query.hash?.toString();
-  const id = router.query.id?.toString();
-  const tab = router.query.tab?.toString();
+  const hash = getQueryParamString(router.query.hash);
+  const id = getQueryParamString(router.query.id);
+  const tab = getQueryParamString(router.query.tab);
 
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
@@ -143,7 +144,7 @@ const TokenInstanceContent = () => {
         stickyEnabled={ !isMobile }
       />
 
-      <TokenInstanceMetadataFetcher/>
+      <TokenInstanceMetadataFetcher hash={ hash } id={ id }/>
     </MetadataUpdateProvider>
   );
 };

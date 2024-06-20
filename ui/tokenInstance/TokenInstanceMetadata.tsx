@@ -7,6 +7,7 @@ import ContentLoader from 'ui/shared/ContentLoader';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
+import { useMetadataUpdateContext } from './contexts/metadataUpdate';
 import MetadataAccordion from './metadata/MetadataAccordion';
 
 type Format = 'JSON' | 'Table'
@@ -19,11 +20,13 @@ interface Props {
 const TokenInstanceMetadata = ({ data, isPlaceholderData }: Props) => {
   const [ format, setFormat ] = React.useState<Format>('Table');
 
+  const { status: refetchStatus } = useMetadataUpdateContext() || {};
+
   const handleSelectChange = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
     setFormat(event.target.value as Format);
   }, []);
 
-  if (isPlaceholderData) {
+  if (isPlaceholderData || refetchStatus === 'UPDATING') {
     return <ContentLoader/>;
   }
 

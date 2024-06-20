@@ -10,20 +10,28 @@ import MenuItem from '../parts/MenuItem';
 
 const MetadataUpdateMenuItem = ({ type, className }: ItemProps) => {
 
-  const metadataUpdateContext = useMetadataUpdateContext();
+  const { status, setStatus } = useMetadataUpdateContext() || {};
 
   const handleClick = React.useCallback(() => {
-    metadataUpdateContext?.setStatus('MODAL_OPENED');
-  }, [ metadataUpdateContext ]);
+    setStatus?.('MODAL_OPENED');
+  }, [ setStatus ]);
 
   const element = (() => {
     switch (type) {
       case 'button': {
-        return <ButtonItem label="Refresh metadata" icon="refresh" onClick={ handleClick } className={ className }/>;
+        return (
+          <ButtonItem
+            label="Refresh metadata"
+            icon="refresh"
+            onClick={ handleClick }
+            className={ className }
+            isDisabled={ status === 'UPDATING' }
+          />
+        );
       }
       case 'menu_item': {
         return (
-          <MenuItem className={ className } onClick={ handleClick }>
+          <MenuItem className={ className } onClick={ handleClick } isDisabled={ status === 'UPDATING' }>
             <IconSvg name="refresh" boxSize={ 5 } mr={ 2 }/>
             <span>Refresh metadata</span>
           </MenuItem>
