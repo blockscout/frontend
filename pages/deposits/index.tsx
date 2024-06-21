@@ -12,6 +12,10 @@ const Deposits = dynamic(() => {
     return import('ui/pages/OptimisticL2Deposits');
   }
 
+  if (rollupFeature.isEnabled && rollupFeature.type === 'arbitrum') {
+    return import('ui/pages/ArbitrumL2Deposits');
+  }
+
   if (rollupFeature.isEnabled && rollupFeature.type === 'shibarium') {
     return import('ui/pages/ShibariumDeposits');
   }

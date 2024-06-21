@@ -23,9 +23,11 @@ const TABS_HEIGHT = 88;
 interface Props {
   type?: BlockType;
   query: QueryWithPagesResult<'blocks'>;
+  enableSocket?: boolean;
+  top?: number;
 }
 
-const BlocksContent = ({ type, query }: Props) => {
+const BlocksContent = ({ type, query, enableSocket = true, top }: Props) => {
   const queryClient = useQueryClient();
   const isMobile = useIsMobile();
   const [ socketAlert, setSocketAlert ] = React.useState('');
@@ -71,7 +73,7 @@ const BlocksContent = ({ type, query }: Props) => {
     topic: 'blocks:new_block',
     onSocketClose: handleSocketClose,
     onSocketError: handleSocketError,
-    isDisabled: query.isPlaceholderData || query.isError || query.pagination.page !== 1,
+    isDisabled: query.isPlaceholderData || query.isError || query.pagination.page !== 1 || !enableSocket,
   });
   useSocketMessage({
     channel,
@@ -82,7 +84,7 @@ const BlocksContent = ({ type, query }: Props) => {
   const content = query.data?.items ? (
     <>
       <Box display={{ base: 'block', lg: 'none' }}>
-        { query.pagination.page === 1 && (
+        { query.pagination.page === 1 && enableSocket && (
           <SocketNewItemsNotice.Mobile
             url={ window.location.href }
             num={ newItemsCount }
@@ -96,10 +98,10 @@ const BlocksContent = ({ type, query }: Props) => {
       <Box display={{ base: 'none', lg: 'block' }}>
         <BlocksTable
           data={ query.data.items }
-          top={ query.pagination.isVisible ? TABS_HEIGHT : 0 }
+          top={ top || (query.pagination.isVisible ? TABS_HEIGHT : 0) }
           page={ query.pagination.page }
           isLoading={ query.isPlaceholderData }
-          showSocketInfo={ query.pagination.page === 1 }
+          showSocketInfo={ query.pagination.page === 1 && enableSocket }
           socketInfoNum={ newItemsCount }
           socketInfoAlert={ socketAlert }
         />

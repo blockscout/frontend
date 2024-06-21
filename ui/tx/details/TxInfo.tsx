@@ -15,6 +15,7 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
+import { ARBITRUM_L2_TX_BATCH_STATUSES } from 'types/api/arbitrumL2';
 import type { Transaction } from 'types/api/transaction';
 import { ZKEVM_L2_TX_STATUSES } from 'types/api/transaction';
 import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'types/api/zkSyncL2';
@@ -23,6 +24,7 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
+import getArbitrumVerificationStepStatus from 'lib/getArbitrumVerificationStepStatus';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
 import { currencyUnits } from 'lib/units';
@@ -36,10 +38,12 @@ import DetailsTimestamp from 'ui/shared/DetailsTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
+import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
+import StatusTag from 'ui/shared/statusTag/StatusTag';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TextSeparator from 'ui/shared/TextSeparator';
 import TxFeeStability from 'ui/shared/tx/TxFeeStability';
@@ -152,7 +156,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         isLoading={ isLoading }
       >
         {
-          rollupFeature.isEnabled && (rollupFeature.type === 'zkEvm' || rollupFeature.type === 'zkSync') ?
+          rollupFeature.isEnabled && (rollupFeature.type === 'zkEvm' || rollupFeature.type === 'zkSync' || rollupFeature.type === 'arbitrum') ?
             'L2 status and method' :
             'Status and method'
         }
@@ -164,6 +168,11 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             { data.method }
           </Tag>
         ) }
+        { data.arbitrum?.contains_message && (
+          <Tag isLoading={ isLoading } isTruncated ml={ 3 }>
+            { data.arbitrum?.contains_message === 'incoming' ? 'Incoming message' : 'Outgoing message' }
+          </Tag>
+        ) }
       </DetailsInfoItem.Value>
 
       { rollupFeature.isEnabled && rollupFeature.type === 'optimistic' && data.op_withdrawals && data.op_withdrawals.length > 0 &&
@@ -172,7 +181,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           <DetailsInfoItem.Label
             hint="Detailed status progress of the transaction"
           >
-        Withdrawal status
+            Withdrawal status
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
             <Flex flexDir="column" rowGap={ 2 }>
@@ -207,6 +216,25 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         </>
       ) }
 
+      { data.arbitrum?.status && !config.UI.views.tx.hiddenFields?.L1_status && (
+        <>
+          <DetailsInfoItem.Label
+            hint="Status of the transaction confirmation path to L1"
+            isLoading={ isLoading }
+          >
+            L1 status
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            <VerificationSteps
+              currentStep={ data.arbitrum.status }
+              currentStepPending={ getArbitrumVerificationStepStatus(data.arbitrum) === 'pending' }
+              steps={ ARBITRUM_L2_TX_BATCH_STATUSES }
+              isLoading={ isLoading }
+            />
+          </DetailsInfoItem.Value>
+        </>
+      ) }
+
       { data.revert_reason && (
         <>
           <DetailsInfoItem.Label
@@ -226,7 +254,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             hint="Status is the short interpretation of the batch lifecycle"
             isLoading={ isLoading }
           >
-        L1 status
+            L1 status
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
             <VerificationSteps steps={ ZKSYNC_L2_TX_BATCH_STATUSES } currentStep={ data.zksync.status } isLoading={ isLoading }/>
@@ -291,6 +319,22 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
                 number={ data.zksync.batch_number }
               />
             ) : <Skeleton isLoaded={ !isLoading }>Pending</Skeleton> }
+          </DetailsInfoItem.Value>
+        </>
+      ) }
+
+      { data.arbitrum && !config.UI.views.tx.hiddenFields?.batch && (
+        <>
+          <DetailsInfoItem.Label
+            hint="Index of the batch containing this transaction"
+            isLoading={ isLoading }
+          >
+          Batch
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            { data.arbitrum.batch_number ?
+              <BatchEntityL2 isLoading={ isLoading } number={ data.arbitrum.batch_number }/> :
+              <Skeleton isLoaded={ !isLoading }>Pending</Skeleton> }
           </DetailsInfoItem.Value>
         </>
       ) }
@@ -411,6 +455,41 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       { data.token_transfers && <TxDetailsTokenTransfers data={ data.token_transfers } txHash={ data.hash } isOverflow={ data.token_transfers_overflow }/> }
 
       <DetailsInfoItemDivider/>
+
+      { (data.arbitrum?.commitment_transaction.hash || data.arbitrum?.confirmation_transaction.hash) &&
+      (
+        <>
+          { data.arbitrum?.commitment_transaction.hash && (
+            <>
+              <DetailsInfoItem.Label
+                hint="L1 transaction containing this batch commitment"
+                isLoading={ isLoading }
+              >
+                Commitment tx
+              </DetailsInfoItem.Label>
+              <DetailsInfoItem.Value>
+                <TxEntityL1 hash={ data.arbitrum?.commitment_transaction.hash } isLoading={ isLoading }/>
+                { data.arbitrum?.commitment_transaction.status === 'finalized' && <StatusTag type="ok" text="Finalized" ml={ 2 }/> }
+              </DetailsInfoItem.Value>
+            </>
+          ) }
+          { data.arbitrum?.confirmation_transaction.hash && (
+            <>
+              <DetailsInfoItem.Label
+                hint="L1 transaction containing confirmation of this batch"
+                isLoading={ isLoading }
+              >
+                Confirmation tx
+              </DetailsInfoItem.Label>
+              <DetailsInfoItem.Value>
+                <TxEntityL1 hash={ data.arbitrum?.confirmation_transaction.hash } isLoading={ isLoading }/>
+                { data.arbitrum?.commitment_transaction.status === 'finalized' && <StatusTag type="ok" text="Finalized" ml={ 2 }/> }
+              </DetailsInfoItem.Value>
+            </>
+          ) }
+          <DetailsInfoItemDivider/>
+        </>
+      ) }
 
       { data.zkevm_sequence_hash && (
         <>

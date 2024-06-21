@@ -1,6 +1,7 @@
 import type { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 
 import type { AdBannerProviders } from 'types/client/adProviders';
+import type { RollupType } from 'types/client/rollup';
 
 import type { Route } from 'nextjs-routes';
 
@@ -66,8 +67,9 @@ export const verifiedAddresses: GetServerSideProps<Props> = async(context) => {
   return account(context);
 };
 
+const DEPOSITS_ROLLUP_TYPES: Array<RollupType> = [ 'optimistic', 'shibarium', 'zkEvm', 'arbitrum' ];
 export const deposits: GetServerSideProps<Props> = async(context) => {
-  if (!(rollupFeature.isEnabled && (rollupFeature.type === 'optimistic' || rollupFeature.type === 'shibarium' || rollupFeature.type === 'zkEvm'))) {
+  if (!(rollupFeature.isEnabled && DEPOSITS_ROLLUP_TYPES.includes(rollupFeature.type))) {
     return {
       notFound: true,
     };
@@ -76,10 +78,11 @@ export const deposits: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
+const WITHDRAWALS_ROLLUP_TYPES: Array<RollupType> = [ 'optimistic', 'shibarium', 'zkEvm', 'arbitrum' ];
 export const withdrawals: GetServerSideProps<Props> = async(context) => {
   if (
     !config.features.beaconChain.isEnabled &&
-    !(rollupFeature.isEnabled && (rollupFeature.type === 'optimistic' || rollupFeature.type === 'shibarium' || rollupFeature.type === 'zkEvm'))
+    !(rollupFeature.isEnabled && WITHDRAWALS_ROLLUP_TYPES.includes(rollupFeature.type))
   ) {
     return {
       notFound: true,
@@ -109,8 +112,9 @@ export const optimisticRollup: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
+const BATCH_ROLLUP_TYPES: Array<RollupType> = [ 'zkEvm', 'zkSync', 'arbitrum' ];
 export const batch: GetServerSideProps<Props> = async(context) => {
-  if (!(rollupFeature.isEnabled && (rollupFeature.type === 'zkEvm' || rollupFeature.type === 'zkSync'))) {
+  if (!(rollupFeature.isEnabled && BATCH_ROLLUP_TYPES.includes(rollupFeature.type))) {
     return {
       notFound: true,
     };
