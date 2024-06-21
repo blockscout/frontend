@@ -55,6 +55,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/api/proxy': '%network_name% node API proxy',
   '/api/csrf': '%network_name% node API CSRF token',
   '/api/healthz': '%network_name% node API health check',
+  '/api/config': '%network_name% node API health check',
   '/auth/auth0': '%network_name% authentication',
   '/auth/unverified-email': '%network_name% unverified email',
 };
