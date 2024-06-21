@@ -47,16 +47,16 @@ const AppSecurityReport = ({
     showContractList(id, ContractListTypes.ALL);
   }, [ showContractList, id ]);
 
-  if (!securityReport && !isLoading) {
-    return null;
-  }
-
   const {
     securityScore = 0,
     solidityScanContractsNumber = 0,
     issueSeverityDistribution = {} as MarketplaceAppSecurityReport['overallInfo']['issueSeverityDistribution'],
     totalIssues = 0,
   } = securityReport?.overallInfo || {};
+
+  if ((!securityReport || !securityScore) && !isLoading) {
+    return null;
+  }
 
   return (
     <Popover isOpen={ isOpen } onClose={ onClose } placement={ popoverPlacement } isLazy>
