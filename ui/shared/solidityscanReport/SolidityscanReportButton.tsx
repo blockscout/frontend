@@ -2,6 +2,7 @@ import { Button, Spinner, Tooltip, useColorModeValue, chakra } from '@chakra-ui/
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
 import IconSvg from 'ui/shared/IconSvg';
 
 import useScoreLevelAndColor from './useScoreLevelAndColor';
@@ -23,6 +24,7 @@ const SolidityscanReportButton = (
   const { scoreColor } = useScoreLevelAndColor(score);
   const colorLoading = useColorModeValue('gray.300', 'gray.600');
   const isMobile = useIsMobile();
+  const onFocusCapture = usePreventFocusAfterModalClosing();
 
   return (
     <Tooltip label={ label } isDisabled={ isMobile } openDelay={ 100 } textAlign="center">
@@ -47,6 +49,7 @@ const SolidityscanReportButton = (
             color: colorLoading,
           },
         }}
+        onFocusCapture={ onFocusCapture }
       >
         <IconSvg name={ score < 80 ? 'score/score-not-ok' : 'score/score-ok' } boxSize={ 5 }/>
         { isLoading && <Spinner size="sm"/> }
