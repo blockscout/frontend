@@ -28,9 +28,14 @@ export default function useWallet({ source }: Params) {
     isConnectionStarted.current = true;
   }, [ open, source ]);
 
-  const handleAccountConnected = React.useCallback(({ isReconnected }: { isReconnected: boolean }) => {
-    !isReconnected && isConnectionStarted.current &&
+  const handleAccountConnected = React.useCallback(({ isReconnected, address }: { isReconnected: boolean; address: string }) => {
+    if (!isReconnected && isConnectionStarted.current) {
       mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Source: source, Status: 'Connected' });
+      mixpanel.userProfile.set({
+        'With Connected Wallet': true,
+        'Wallet Address': address,
+      });
+    }
     isConnectionStarted.current = false;
   }, [ source ]);
 
