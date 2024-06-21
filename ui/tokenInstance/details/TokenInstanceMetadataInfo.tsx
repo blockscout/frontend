@@ -37,8 +37,9 @@ const Item = ({ data, isLoading }: ItemProps) => {
           href={ data.value }
           fontSize="sm"
           lineHeight={ 5 }
+          isLoading={ isLoading }
         >
-          <TruncatedValue value={ data.value } w="calc(100% - 16px)"/>
+          <TruncatedValue value={ data.value } w="calc(100% - 16px)" isLoading={ isLoading }/>
         </LinkExternal>
       );
     }

@@ -1,4 +1,4 @@
-import { Alert, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/react';
+import { chakra, Alert, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 import ReCaptcha from 'react-google-recaptcha';
@@ -31,6 +31,7 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
 
   const handleRefreshError = React.useCallback(() => {
     setStatus?.('ERROR');
+    toast.closeAll();
     toast({
       title: 'Error',
       description: 'The refreshing process has failed. Please try again.',
@@ -64,7 +65,7 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
           status: 'warning',
           variant: 'subtle',
         });
-        setStatus?.('INITIAL');
+        setStatus?.('ERROR');
       });
   }, [ apiFetch, handleRefreshError, hash, id, setStatus, toast ]);
 
@@ -78,6 +79,13 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
     }
   }, [ initializeUpdate ]);
 
+  const handleFormSubmit: React.FormEventHandler<HTMLFormElement> = React.useCallback((event) => {
+    event.preventDefault();
+    const data = new FormData(event.target as HTMLFormElement);
+    const token = data.get('recaptcha_token');
+    typeof token === 'string' && initializeUpdate(token);
+  }, [ initializeUpdate ]);
+
   const handleSocketMessage: SocketMessage.TokenInstanceMetadataFetched['handler'] = React.useCallback((payload) => {
     if (String(payload.token_id) !== id) {
       return;
@@ -88,9 +96,23 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
       if (!prevData) {
         return;
       }
-      return { ...prevData, metadata: payload.fetched_metadata };
+
+      const castToString = (value: unknown) => typeof value === 'string' ? value : undefined;
+
+      return {
+        ...prevData,
+        external_app_url: castToString(payload.fetched_metadata?.external_url) ?? null,
+        animation_url: castToString(payload.fetched_metadata?.animation_url) ?? null,
+        image_url: castToString(
+          payload.fetched_metadata?.image ||
+            payload.fetched_metadata?.image_url ||
+            payload.fetched_metadata?.animation_url,
+        ) ?? null,
+        metadata: payload.fetched_metadata,
+      };
     });
 
+    toast.closeAll();
     toast({
       title: 'Success!',
       description: 'Metadata has been refreshed',
@@ -135,6 +157,14 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
                 Please contact the service maintainer to make necessary changes in the service configuration.
             </Alert>
           ) }
+          { /* ONLY FOR TEST PURPOSES */ }
+          <chakra.form noValidate onSubmit={ handleFormSubmit } display="none">
+            <chakra.input
+              name="recaptcha_token"
+              placeholder="reCaptcha token"
+            />
+            <chakra.button type="submit">Submit</chakra.button>
+          </chakra.form>
         </ModalBody>
       </ModalContent>
     </Modal>

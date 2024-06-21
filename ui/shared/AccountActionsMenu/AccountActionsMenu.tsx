@@ -89,6 +89,7 @@ const AccountActionsMenu = ({ isLoading, className, showUpdateMetadataItem }: Pr
         px="7px"
         onClick={ handleButtonClick }
         icon={ <IconSvg name="dots" boxSize="18px"/> }
+        aria-label="Show address menu"
       />
       <MenuList minWidth="180px" zIndex="popover">
         { items.map(({ render }, index) => (
