@@ -25,12 +25,13 @@ const variants = {
         color: 'blue.400',
         opacity: 0.76,
       },
-    },
-  })),
-  selectActive: definePartsStyle((props) => ({
-    container: {
-      bg: mode('blue.500', 'blue.900')(props),
-      color: 'whiteAlpha.800',
+      [`
+        &[data-selected=true],
+        &[data-selected=true][aria-selected=true]
+      `]: {
+        bg: mode('blue.500', 'blue.900')(props),
+        color: 'whiteAlpha.800',
+      },
     },
   })),
 };

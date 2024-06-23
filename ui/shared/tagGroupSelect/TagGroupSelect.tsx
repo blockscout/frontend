@@ -34,12 +34,13 @@ const TagGroupSelect = <T extends string>({ items, value, isMulti, onChange }: P
   return (
     <HStack>
       { items.map(item => {
-        const isActive = isMulti ? value.includes(item.id) : value === item.id;
+        const isSelected = isMulti ? value.includes(item.id) : value === item.id;
         return (
           <Tag
+            variant="select"
             key={ item.id }
             data-id={ item.id }
-            variant={ isActive ? 'selectActive' : 'select' }
+            data-selected={ isSelected }
             fontWeight={ 500 }
             cursor="pointer"
             onClick={ onItemClick }
