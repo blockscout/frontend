@@ -6,6 +6,7 @@ import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';
 import HashStringShorten from 'ui/shared/HashStringShorten';
+import IconSvg from 'ui/shared/IconSvg';
 import useWallet from 'ui/snippets/walletMenu/useWallet';
 import WalletMenuContent from 'ui/snippets/walletMenu/WalletMenuContent';
 
@@ -87,6 +88,7 @@ const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
               onClick={ isWalletConnected ? openPopover : connect }
               fontSize="sm"
               size={ size }
+              px={{ lg: isHomePage ? 2 : 4, xl: 4 }}
               { ...buttonStyles }
             >
               { isWalletConnected ? (
@@ -94,7 +96,12 @@ const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
                   <WalletIdenticon address={ address } isAutoConnectDisabled={ isAutoConnectDisabled } mr={ 2 }/>
                   <HashStringShorten hash={ address } isTooltipDisabled/>
                 </>
-              ) : 'Connect wallet' }
+              ) : (
+                <>
+                  <IconSvg display={{ base: isHomePage ? 'inline' : 'none', xl: 'none' }} name="wallet" boxSize={ 6 }/>
+                  <chakra.span display={{ base: isHomePage ? 'none' : 'inline', xl: 'inline' }}>Connect wallet</chakra.span>
+                </>
+              ) }
             </Button>
           </WalletTooltip>
         </PopoverTrigger>
