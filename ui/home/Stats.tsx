@@ -167,6 +167,7 @@ const Stats = () => {
       gridTemplateColumns="1fr 1fr"
       gridGap={{ base: 1, lg: 2 }}
       flexBasis="50%"
+      flexGrow={ 1 }
     >
       { content }
     </Grid>

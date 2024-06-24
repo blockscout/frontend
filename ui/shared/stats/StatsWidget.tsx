@@ -61,9 +61,8 @@ const StatsWidget = ({
         className={ className }
         alignItems="center"
         bgColor={ isLoading ? skeletonBgColor : bgColor }
-        px={ 3 }
-        py={{ base: 2, lg: 3 }}
-        borderRadius="md"
+        p={ 3 }
+        borderRadius="base"
         justifyContent="space-between"
         columnGap={ 2 }
         { ...(href && !isLoading ? {
@@ -86,6 +85,7 @@ const StatsWidget = ({
             isLoaded={ !isLoading }
             color="text_secondary"
             fontSize="xs"
+            lineHeight="16px"
             w="fit-content"
           >
             <span>{ label }</span>
@@ -94,24 +94,26 @@ const StatsWidget = ({
             isLoaded={ !isLoading }
             display="flex"
             alignItems="baseline"
-            mt={ 1 }
+            fontWeight={ 500 }
+            fontSize="lg"
+            lineHeight={ 6 }
           >
-            { valuePrefix && <chakra.span fontWeight={ 500 } fontSize="lg" lineHeight={ 6 } whiteSpace="pre">{ valuePrefix }</chakra.span> }
+            { valuePrefix && <chakra.span whiteSpace="pre">{ valuePrefix }</chakra.span> }
             { typeof value === 'string' ? (
-              <TruncatedValue isLoading={ isLoading } fontWeight={ 500 } fontSize="lg" lineHeight={ 6 } value={ value }/>
+              <TruncatedValue isLoading={ isLoading } value={ value }/>
             ) : (
               value
             ) }
-            { valuePostfix && <chakra.span fontWeight={ 500 } fontSize="lg" lineHeight={ 6 } whiteSpace="pre">{ valuePostfix }</chakra.span> }
+            { valuePostfix && <chakra.span whiteSpace="pre">{ valuePostfix }</chakra.span> }
             { diff && Number(diff) > 0 && (
               <>
-                <Text fontWeight={ 500 } ml={ 2 } mr={ 1 } fontSize="lg" lineHeight={ 6 } color="green.500">
+                <Text ml={ 2 } mr={ 1 } color="green.500">
                   +{ diffFormatted || Number(diff).toLocaleString() }
                 </Text>
                 <Text variant="secondary" fontSize="sm">({ diffPeriod })</Text>
               </>
             ) }
-            { period && <Text variant="secondary" fontSize="xs" ml={ 1 }>({ period })</Text> }
+            { period && <Text variant="secondary" fontSize="xs" fontWeight={ 400 } ml={ 1 }>({ period })</Text> }
           </Skeleton>
         </Box>
         { typeof hint === 'string' ? (

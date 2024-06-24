@@ -23,9 +23,7 @@ interface Props {
 const ChainIndicatorItem = ({ id, title, value, valueDiff, icon, isSelected, onClick, stats }: Props) => {
   const isMobile = useIsMobile();
 
-  const activeBgColorDesktop = useColorModeValue('white', 'gray.900');
-  const activeBgColorMobile = useColorModeValue('white', 'black');
-  const activeBgColor = isMobile ? activeBgColorMobile : activeBgColorDesktop;
+  const activeBgColor = useColorModeValue('white', 'black');
 
   const handleClick = React.useCallback(() => {
     onClick(id);
@@ -77,24 +75,24 @@ const ChainIndicatorItem = ({ id, title, value, valueDiff, icon, isSelected, onC
   return (
     <Flex
       alignItems="center"
-      columnGap={ 3 }
-      px={ 4 }
-      py={ 2 }
+      columnGap={ 2 }
+      px={{ base: '6px', lg: 2 }}
+      py="6px"
       as="li"
-      borderRadius="md"
+      borderRadius="base"
       cursor="pointer"
+      bgColor={ isSelected ? activeBgColor : undefined }
       onClick={ handleClick }
-      bgColor={ isSelected ? activeBgColor : 'inherit' }
-      boxShadow={ isSelected ? 'lg' : 'none' }
-      zIndex={ isSelected ? 1 : 'initial' }
+      fontSize="xs"
+      fontWeight={ 500 }
       _hover={{
         activeBgColor,
         zIndex: 1,
       }}
     >
       { icon }
-      <Box>
-        <Text fontFamily="heading" fontWeight={ 500 }>{ title }</Text>
+      <Box display={{ base: 'none', lg: 'block' }}>
+        <Text>{ title }</Text>
         <Flex alignItems="center">
           { valueContent }
           { valueDiffContent }
