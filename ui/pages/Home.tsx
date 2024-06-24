@@ -24,6 +24,7 @@ const Home = () => {
         p={{ base: 4, lg: 8 }}
         minW={{ base: 'unset', lg: '900px' }}
         columnGap={ 8 }
+        alignItems="center"
         data-label="hero plate"
       >
         <Box flexGrow={ 1 }>
@@ -50,11 +51,11 @@ const Home = () => {
           </Flex>
           <SearchBar isHomepage/>
         </Box>
-        <Box w="320px" h="100px" bgColor="lightcoral" borderRadius="base" display={{ base: 'none', lg: 'block' }}/>
+        <AdBanner platform="mobile" w="fit-content" flexShrink={ 0 } display={{ base: 'none', lg: 'block' }} borderRadius="md" overflow="hidden"/>
       </Flex>
       <Stats/>
       <ChainIndicators/>
-      <AdBanner mt={ 6 } mx="auto" display="flex" justifyContent="center"/>
+      <AdBanner mt={ 6 } mx="auto" display={{ base: 'flex', lg: 'none' }} justifyContent="center"/>
       <Flex mt={ 6 } direction={{ base: 'column', lg: 'row' }} columnGap={ 12 } rowGap={ 6 }>
         { rollupFeature.isEnabled && rollupFeature.type === 'zkEvm' ? <LatestZkEvmL2Batches/> : <LatestBlocks/> }
         <Box flexGrow={ 1 }>

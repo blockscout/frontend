@@ -1,6 +1,7 @@
 import { chakra, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
+import type { BannerPlatform } from './types';
 import type { AdBannerProviders } from 'types/client/adProviders';
 
 import config from 'configs/app';
@@ -13,19 +14,26 @@ import SliseBanner from './SliseBanner';
 
 const feature = config.features.adsBanner;
 
-const AdBannerContent = ({ className, isLoading, provider }: { className?: string; isLoading?: boolean; provider: AdBannerProviders }) => {
+interface Props {
+  className?: string;
+  isLoading?: boolean;
+  platform?: BannerPlatform;
+  provider: AdBannerProviders;
+}
+
+const AdBannerContent = ({ className, isLoading, provider, platform }: Props) => {
   const content = (() => {
     switch (provider) {
       case 'adbutler':
-        return <AdbutlerBanner/>;
+        return <AdbutlerBanner platform={ platform }/>;
       case 'coinzilla':
-        return <CoinzillaBanner/>;
+        return <CoinzillaBanner platform={ platform }/>;
       case 'getit':
-        return <GetitBanner/>;
+        return <GetitBanner platform={ platform }/>;
       case 'hype':
-        return <HypeBanner/>;
+        return <HypeBanner platform={ platform }/>;
       case 'slise':
-        return <SliseBanner/>;
+        return <SliseBanner platform={ platform }/>;
     }
   })();
 

@@ -3,6 +3,8 @@ import { useRouter } from 'next/navigation';
 import Script from 'next/script';
 import React from 'react';
 
+import type { BannerProps } from './types';
+
 import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import isBrowser from 'lib/isBrowser';
@@ -10,9 +12,21 @@ import { connectAdbutler, placeAd, ADBUTLER_ACCOUNT } from 'ui/shared/ad/adbutle
 
 const feature = config.features.adsBanner;
 
-const AdbutlerBanner = ({ className }: { className?: string }) => {
+const AdbutlerBanner = ({ className, platform }: BannerProps) => {
   const router = useRouter();
-  const isMobile = useIsMobile();
+  const isMobileViewport = useIsMobile();
+  const isMobile = platform === 'mobile' || isMobileViewport;
+
+  const height = (() => {
+    switch (platform) {
+      case 'desktop':
+        return '90px';
+      case 'mobile':
+        return '100px';
+      default:
+        return { base: '100px', lg: '90px' };
+    }
+  })();
 
   React.useEffect(() => {
     if (!('adButler' in feature)) {
@@ -47,9 +61,9 @@ const AdbutlerBanner = ({ className }: { className?: string }) => {
   }, [ router, isMobile ]);
 
   return (
-    <Flex className={ className } id="adBanner" h={{ base: '100px', lg: '90px' }}>
+    <Flex className={ className } id="adBanner" h={ height }>
       <Script strategy="lazyOnload" id="ad-butler-1">{ connectAdbutler }</Script>
-      <Script strategy="lazyOnload" id="ad-butler-2">{ placeAd }</Script>
+      <Script strategy="lazyOnload" id="ad-butler-2">{ placeAd(platform) }</Script>
       <div id="ad-banner"></div>
     </Flex>
   );
