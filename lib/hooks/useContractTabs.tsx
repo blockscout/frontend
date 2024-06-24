@@ -4,19 +4,24 @@ import React from 'react';
 import type { Address } from 'types/api/address';
 
 import useApiQuery from 'lib/api/useApiQuery';
+import * as cookies from 'lib/cookies';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import * as stubs from 'stubs/contract';
 import ContractCode from 'ui/address/contract/ContractCode';
-import ContractRead from 'ui/address/contract/ContractRead';
-import ContractWrite from 'ui/address/contract/ContractWrite';
+import ContractMethodsCustom from 'ui/address/contract/methods/ContractMethodsCustom';
+import ContractMethodsProxy from 'ui/address/contract/methods/ContractMethodsProxy';
+import ContractMethodsRegular from 'ui/address/contract/methods/ContractMethodsRegular';
+import { divideAbiIntoMethodTypes } from 'ui/address/contract/methods/utils';
 
 const CONTRACT_TAB_IDS = [
   'contract_code',
   'read_contract',
+  'read_contract_rpc',
   'read_proxy',
   'read_custom_methods',
   'write_contract',
+  'write_contract_rpc',
   'write_proxy',
   'write_custom_methods',
 ] as const;
@@ -38,7 +43,7 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
   const router = useRouter();
   const tab = getQueryParamString(router.query.tab);
 
-  const isEnabled = Boolean(data?.hash) && !isPlaceholderData && CONTRACT_TAB_IDS.concat('contract' as never).includes(tab);
+  const isEnabled = Boolean(data?.hash) && data?.is_contract && !isPlaceholderData && CONTRACT_TAB_IDS.concat('contract' as never).includes(tab);
 
   const enableQuery = React.useCallback(() => {
     setIsQueryEnabled(true);
@@ -53,12 +58,33 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
     },
   });
 
+  const customAbiQuery = useApiQuery('custom_abi', {
+    queryOptions: {
+      enabled: isEnabled && isQueryEnabled && Boolean(cookies.get(cookies.NAMES.API_TOKEN)),
+      refetchOnMount: false,
+    },
+  });
+
   const channel = useSocketChannel({
     topic: `addresses:${ data?.hash?.toLowerCase() }`,
     isDisabled: !isEnabled,
     onJoin: enableQuery,
     onSocketError: enableQuery,
   });
+
+  const methods = React.useMemo(() => divideAbiIntoMethodTypes(contractQuery.data?.abi ?? []), [ contractQuery.data?.abi ]);
+  const methodsCustomAbi = React.useMemo(() => {
+    return divideAbiIntoMethodTypes(
+      customAbiQuery.data
+        ?.find((item) => data && item.contract_address_hash.toLowerCase() === data.hash.toLowerCase())
+        ?.abi ??
+        [],
+    );
+  }, [ customAbiQuery.data, data ]);
+
+  const verifiedImplementations = React.useMemo(() => {
+    return data?.implementations?.filter(({ name, address }) => name && address && address !== data?.hash) || [];
+  }, [ data?.hash, data?.implementations ]);
 
   return React.useMemo(() => {
     return {
@@ -68,26 +94,50 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
           title: 'Code',
           component: <ContractCode contractQuery={ contractQuery } channel={ channel } addressHash={ data?.hash }/>,
         },
-        contractQuery.data?.has_methods_read ?
-          { id: 'read_contract' as const, title: 'Read contract', component: <ContractRead isLoading={ contractQuery.isPlaceholderData }/> } :
-          undefined,
-        contractQuery.data?.has_methods_read_proxy ?
-          { id: 'read_proxy' as const, title: 'Read proxy', component: <ContractRead isLoading={ contractQuery.isPlaceholderData }/> } :
-          undefined,
-        contractQuery.data?.has_custom_methods_read ?
-          { id: 'read_custom_methods' as const, title: 'Read custom', component: <ContractRead isLoading={ contractQuery.isPlaceholderData }/> } :
-          undefined,
-        contractQuery.data?.has_methods_write ?
-          { id: 'write_contract' as const, title: 'Write contract', component: <ContractWrite isLoading={ contractQuery.isPlaceholderData }/> } :
-          undefined,
-        contractQuery.data?.has_methods_write_proxy ?
-          { id: 'write_proxy' as const, title: 'Write proxy', component: <ContractWrite isLoading={ contractQuery.isPlaceholderData }/> } :
-          undefined,
-        contractQuery.data?.has_custom_methods_write ?
-          { id: 'write_custom_methods' as const, title: 'Write custom', component: <ContractWrite isLoading={ contractQuery.isPlaceholderData }/> } :
-          undefined,
+        methods.read.length > 0 && {
+          id: 'read_contract' as const,
+          title: 'Read contract',
+          component: <ContractMethodsRegular type="read" abi={ methods.read } isLoading={ contractQuery.isPlaceholderData }/>,
+        },
+        methodsCustomAbi.read.length > 0 && {
+          id: 'read_custom_methods' as const,
+          title: 'Read custom',
+          component: <ContractMethodsCustom type="read" abi={ methodsCustomAbi.read } isLoading={ contractQuery.isPlaceholderData }/>,
+        },
+        verifiedImplementations.length > 0 && {
+          id: 'read_proxy' as const,
+          title: 'Read proxy',
+          component: (
+            <ContractMethodsProxy
+              type="read"
+              implementations={ verifiedImplementations }
+              isLoading={ contractQuery.isPlaceholderData }
+            />
+          ),
+        },
+        methods.write.length > 0 && {
+          id: 'write_contract' as const,
+          title: 'Write contract',
+          component: <ContractMethodsRegular type="write" abi={ methods.write } isLoading={ contractQuery.isPlaceholderData }/>,
+        },
+        methodsCustomAbi.write.length > 0 && {
+          id: 'write_custom_methods' as const,
+          title: 'Write custom',
+          component: <ContractMethodsCustom type="write" abi={ methodsCustomAbi.write } isLoading={ contractQuery.isPlaceholderData }/>,
+        },
+        verifiedImplementations.length > 0 && {
+          id: 'write_proxy' as const,
+          title: 'Write proxy',
+          component: (
+            <ContractMethodsProxy
+              type="write"
+              implementations={ verifiedImplementations }
+              isLoading={ contractQuery.isPlaceholderData }
+            />
+          ),
+        },
       ].filter(Boolean),
       isLoading: contractQuery.isPlaceholderData,
     };
-  }, [ contractQuery, channel, data?.hash ]);
+  }, [ contractQuery, channel, data?.hash, verifiedImplementations, methods.read, methods.write, methodsCustomAbi.read, methodsCustomAbi.write ]);
 }
