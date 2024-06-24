@@ -45,9 +45,10 @@ const TokensActionBar = ({
       <HStack spacing={ 3 } mb={ 6 } display={{ base: 'flex', lg: 'none' }}>
         { filter }
         <Sort
+          name="tokens_sorting"
+          defaultValue={ sort }
           options={ SORT_OPTIONS }
-          setSort={ onSortChange }
-          sort={ sort }
+          onChange={ onSortChange }
         />
         { searchInput }
       </HStack>

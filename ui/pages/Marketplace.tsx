@@ -13,12 +13,13 @@ import ContractListModal from 'ui/marketplace/ContractListModal';
 import MarketplaceAppModal from 'ui/marketplace/MarketplaceAppModal';
 import MarketplaceDisclaimerModal from 'ui/marketplace/MarketplaceDisclaimerModal';
 import MarketplaceList from 'ui/marketplace/MarketplaceList';
-import SortMenu from 'ui/marketplace/SortMenu/Menu';
+import { SORT_OPTIONS } from 'ui/marketplace/utils';
 import FilterInput from 'ui/shared/filters/FilterInput';
 import IconSvg from 'ui/shared/IconSvg';
 import type { IconName } from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
+import Sort from 'ui/shared/sort/Sort';
 import TabsWithScroll from 'ui/shared/Tabs/TabsWithScroll';
 
 import useMarketplace from '../marketplace/useMarketplace';
@@ -186,13 +187,9 @@ const Marketplace = () => {
 
       <Flex mb={{ base: 4, lg: 6 }} gap={{ base: 2, lg: 3 }}>
         { feature.securityReportsUrl && (
-          <SortMenu
+          <Sort
             name="dapps_sorting"
-            defaultValue="default"
-            options={ [
-              { value: 'default', label: 'Default' },
-              { value: 'security_score', label: 'Security score' },
-            ] }
+            options={ SORT_OPTIONS }
             onChange={ setSorting }
             isLoading={ isPlaceholderData }
           />

@@ -135,9 +135,10 @@ const NameDomainsActionBar = ({
 
   const sortButton = (
     <Sort
+      name="name_domains_sorting"
+      defaultValue={ sort }
       options={ SORT_OPTIONS }
-      sort={ sort }
-      setSort={ onSortChange }
+      onChange={ onSortChange }
       isLoading={ isInitialLoading }
     />
   );

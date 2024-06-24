@@ -4,9 +4,9 @@ import type { TokensSortingValue } from 'types/api/tokens';
 import config from 'configs/app';
 import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
 import { TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
-import type { Option } from 'ui/shared/sort/Sort';
+import type { TOption } from 'ui/shared/sort/Option';
 
-export const SORT_OPTIONS: Array<Option<TokensSortingValue>> = [
+export const SORT_OPTIONS: Array<TOption<TokensSortingValue>> = [
   { title: 'Default', id: undefined },
   { title: 'Price ascending', id: 'fiat_value-asc' },
   { title: 'Price descending', id: 'fiat_value-desc' },

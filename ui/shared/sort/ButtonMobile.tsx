@@ -10,7 +10,7 @@ type Props = {
   isLoading?: boolean;
 }
 
-const SortButton = ({ onClick, isActive, className, isLoading }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
+const ButtonMobile = ({ onClick, isActive, className, isLoading }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
   if (isLoading) {
     return <Skeleton className={ className } w="36px" h="32px" borderRadius="base"/>;
   }
@@ -32,4 +32,4 @@ const SortButton = ({ onClick, isActive, className, isLoading }: Props, ref: Rea
   );
 };
 
-export default chakra(React.forwardRef(SortButton));
+export default chakra(React.forwardRef(ButtonMobile));

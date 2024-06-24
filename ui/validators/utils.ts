@@ -1,8 +1,8 @@
 import type { ValidatorsSortingValue, ValidatorsSortingField } from 'types/api/validators';
 
-import type { Option } from 'ui/shared/sort/Sort';
+import type { TOption } from 'ui/shared/sort/Option';
 
-export const SORT_OPTIONS: Array<Option<ValidatorsSortingValue>> = [
+export const SORT_OPTIONS: Array<TOption<ValidatorsSortingValue>> = [
   { title: 'Default', id: undefined },
   { title: 'Status descending', id: 'state-desc' },
   { title: 'Status ascending', id: 'state-asc' },

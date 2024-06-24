@@ -11,6 +11,7 @@ import useFetch from 'lib/hooks/useFetch';
 import { MARKETPLACE_APP } from 'stubs/marketplace';
 
 import useSecurityReports from './useSecurityReports';
+import type { SortValue } from './utils';
 
 const feature = config.features.marketplace;
 
@@ -88,7 +89,7 @@ export default function useMarketplaceApps(
     enabled: feature.isEnabled && Boolean(snapshotFavoriteApps),
   });
 
-  const [ sorting, setSorting ] = React.useState<'default' | 'security_score'>('default');
+  const [ sorting, setSorting ] = React.useState<SortValue>();
 
   const appsWithSecurityReports = React.useMemo(() =>
     data?.map((app) => ({ ...app, securityReport: securityReports?.[app.id] })),

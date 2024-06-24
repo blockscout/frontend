@@ -8,9 +8,9 @@ import React from 'react';
 
 import IconSvg from 'ui/shared/IconSvg';
 
-export interface TOption {
-  value: string;
-  label: string;
+export interface TOption<Sort extends string> {
+  id: Sort | undefined;
+  title: string;
 }
 
 type OptionProps = ReturnType<ReturnType<typeof useRadioGroup>['getRadioProps']>;
