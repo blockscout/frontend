@@ -16,14 +16,13 @@ function castValueToString(value: unknown): string {
   switch (typeof value) {
     case 'string':
       return value === '' ? `""` : value;
-    case 'boolean':
-      return String(value);
     case 'undefined':
       return '';
     case 'number':
       return value.toLocaleString(undefined, { useGrouping: false });
     case 'bigint':
       return value.toString();
+    case 'boolean':
     default:
       return String(value);
   }
