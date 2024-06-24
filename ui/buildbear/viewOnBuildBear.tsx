@@ -23,9 +23,9 @@ export const ViewOnBuildBear = () => {
       <a
         href={
           sandboxId ?
-            `https://explorer.${ appConfig?.app?.host }/${ sandboxId }${
+            `https://explorer.${ appConfig?.app?.buildbearBase }/${ sandboxId }${
               router?.asPath ? router?.asPath : ''
-            }` : `https://explorer.${ appConfig?.app?.host }`
+            }` : `https://explorer.${ appConfig?.app?.buildbearBase }`
         }
         target="_blank"
         rel="noopener noreferrer"

@@ -18,6 +18,7 @@ const app = Object.freeze({
   port: appPort,
   baseUrl,
   useProxy: getEnvValue('NEXT_PUBLIC_USE_NEXT_JS_PROXY') === 'true',
+  buildbearBase: getEnvValue('NEXT_PUBLIC_BUILDBEAR_BASE'),
 });
 
 export default app;

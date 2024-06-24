@@ -218,12 +218,12 @@ export default function useNavItems(): ReturnType {
         icon: 'apps',
         isActive: pathname.startsWith('/app'),
       } : null,
-      config.features.stats.isEnabled ? {
-        text: 'Charts & stats',
-        nextRoute: { pathname: '/stats' as const },
-        icon: 'stats',
-        isActive: pathname === '/stats',
-      } : null,
+      // config.features.stats.isEnabled ? {
+      //   text: 'Charts & stats',
+      //   nextRoute: { pathname: '/stats' as const },
+      //   icon: 'stats',
+      //   isActive: pathname === '/stats',
+      // } : null,
       apiNavItems.length > 0 && {
         text: 'API',
         icon: 'restAPI',
@@ -234,11 +234,11 @@ export default function useNavItems(): ReturnType {
         text: 'Other',
         icon: 'gear',
         subItems: [
-          {
-            text: 'Verify contract',
-            nextRoute: { pathname: '/contract-verification' as const },
-            isActive: pathname.startsWith('/contract-verification'),
-          },
+          // {
+          //   text: 'Verify contract',
+          //   nextRoute: { pathname: '/contract-verification' as const },
+          //   isActive: pathname.startsWith('/contract-verification'),
+          // },
           config.features.gasTracker.isEnabled && {
             text: 'Gas tracker',
             nextRoute: { pathname: '/gas-tracker' as const },
