@@ -17,38 +17,41 @@ const rollupFeature = config.features.rollup;
 const Home = () => {
   return (
     <Box as="main">
-      <Box
+      <Flex
         w="100%"
         background={ config.UI.homepage.plate.background }
-        borderRadius={{ base: 'md', lg: 'xl' }}
-        px={{ base: 4, lg: 10 }}
-        py={{ base: 3, lg: 8 }}
+        borderRadius="md"
+        p={{ base: 4, lg: 8 }}
         minW={{ base: 'unset', lg: '900px' }}
+        columnGap={ 8 }
         data-label="hero plate"
       >
-        <Flex mb={{ base: 2, lg: 6 }} justifyContent="space-between" alignItems="center">
-          <Heading
-            as="h1"
-            fontSize={{ base: '18px', lg: '40px' }}
-            lineHeight={{ base: '24px', lg: '48px' }}
-            fontWeight={ 600 }
-            color={ config.UI.homepage.plate.textColor }
-          >
-            {
-              config.meta.seo.enhancedDataEnabled ?
-                `${ config.chain.name } blockchain explorer` :
-                `${ config.chain.name } explorer`
-            }
-          </Heading>
-          { config.UI.navigation.layout === 'vertical' && (
-            <Box display={{ base: 'none', lg: 'flex' }}>
-              { config.features.account.isEnabled && <ProfileMenuDesktop isHomePage/> }
-              { config.features.blockchainInteraction.isEnabled && <WalletMenuDesktop isHomePage/> }
-            </Box>
-          ) }
-        </Flex>
-        <SearchBar isHomepage/>
-      </Box>
+        <Box flexGrow={ 1 }>
+          <Flex mb={{ base: 2, lg: 3 }} justifyContent="space-between" alignItems="center">
+            <Heading
+              as="h1"
+              fontSize={{ base: '18px', lg: '30px' }}
+              lineHeight={{ base: '24px', lg: '36px' }}
+              fontWeight={{ base: 500, lg: 700 }}
+              color={ config.UI.homepage.plate.textColor }
+            >
+              {
+                config.meta.seo.enhancedDataEnabled ?
+                  `${ config.chain.name } blockchain explorer` :
+                  `${ config.chain.name } explorer`
+              }
+            </Heading>
+            { config.UI.navigation.layout === 'vertical' && (
+              <Box display={{ base: 'none', lg: 'flex' }}>
+                { config.features.account.isEnabled && <ProfileMenuDesktop isHomePage/> }
+                { config.features.blockchainInteraction.isEnabled && <WalletMenuDesktop isHomePage/> }
+              </Box>
+            ) }
+          </Flex>
+          <SearchBar isHomepage/>
+        </Box>
+        <Box w="320px" h="100px" bgColor="lightcoral" borderRadius="base" display={{ base: 'none', lg: 'block' }}/>
+      </Flex>
       <Stats/>
       <ChainIndicators/>
       <AdBanner mt={ 6 } mx="auto" display="flex" justifyContent="center"/>
