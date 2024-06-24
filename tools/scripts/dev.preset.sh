@@ -28,5 +28,5 @@ dotenv \
   -v NEXT_PUBLIC_GIT_TAG=$(git describe --tags --abbrev=0) \
   -e $config_file \
   -e $secrets_file \
-  -- bash -c './deploy/scripts/make_envs_script.sh && next dev -p $NEXT_PUBLIC_APP_PORT --turbo' |
+  -- bash -c './deploy/scripts/make_envs_script.sh && next dev -p $NEXT_PUBLIC_APP_PORT' |
 pino-pretty

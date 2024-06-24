@@ -9,10 +9,16 @@ type Props = {
   step: Step;
   isLast: boolean;
   isPassed: boolean;
+  isPending?: boolean;
 }
 
-const VerificationStep = ({ step, isLast, isPassed }: Props) => {
-  const stepColor = isPassed ? 'green.500' : 'text_secondary';
+const VerificationStep = ({ step, isLast, isPassed, isPending }: Props) => {
+  let stepColor = 'text_secondary';
+  if (isPending) {
+    stepColor = 'yellow.500';
+  } else if (isPassed) {
+    stepColor = 'green.500';
+  }
 
   return (
     <HStack gap={ 2 } color={ stepColor }>

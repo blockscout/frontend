@@ -2,6 +2,7 @@ import type { AddressParam } from 'types/api/addressParams';
 import type { Reward } from 'types/api/reward';
 import type { Transaction } from 'types/api/transaction';
 
+import type { ArbitrumBatchStatus, ArbitrumL2TxData } from './arbitrumL2';
 import type { ZkSyncBatchesItem } from './zkSyncL2';
 
 export type BlockType = 'block' | 'reorg' | 'uncle';
@@ -48,6 +49,18 @@ export interface Block {
   zksync?: Omit<ZkSyncBatchesItem, 'number' | 'tx_count' | 'timestamp'> & {
     'batch_number': number | null;
   };
+  arbitrum?: ArbitrumBlockData;
+}
+
+type ArbitrumBlockData = {
+  'batch_number': number;
+  'commitment_transaction': ArbitrumL2TxData;
+  'confirmation_transaction': ArbitrumL2TxData;
+  'delayed_messages': number;
+  'l1_block_height': number;
+  'send_count': number;
+  'send_root': string;
+  'status': ArbitrumBatchStatus;
 }
 
 export interface BlocksResponse {

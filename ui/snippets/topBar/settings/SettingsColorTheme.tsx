@@ -6,7 +6,11 @@ import { COLOR_THEMES } from 'lib/settings/colorTheme';
 
 import SettingsSample from './SettingsSample';
 
-const SettingsColorTheme = () => {
+interface Props {
+  onSelect?: () => void;
+}
+
+const SettingsColorTheme = ({ onSelect }: Props) => {
   const { setColorMode } = useColorMode();
 
   const [ activeHex, setActiveHex ] = React.useState<string>();
@@ -58,7 +62,8 @@ const SettingsColorTheme = () => {
 
     setTheme(hex);
     setActiveHex(hex);
-  }, [ setTheme ]);
+    onSelect?.();
+  }, [ setTheme, onSelect ]);
 
   const activeTheme = COLOR_THEMES.find((theme) => theme.hex === activeHex);
 

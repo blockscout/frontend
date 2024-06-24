@@ -156,7 +156,7 @@
     "typescript": "5.4.2",
     "vite-plugin-svgr": "^2.2.2",
     "vite-tsconfig-paths": "^3.5.2",
-    "ws": "^8.11.0"
+    "ws": "^8.17.1"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint --cache --fix"

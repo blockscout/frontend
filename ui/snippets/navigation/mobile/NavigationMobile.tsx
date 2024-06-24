@@ -5,9 +5,9 @@ import React, { useCallback } from 'react';
 import useHasAccount from 'lib/hooks/useHasAccount';
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
 import IconSvg from 'ui/shared/IconSvg';
-import NavLink from 'ui/snippets/navigation/NavLink';
 
-import NavLinkGroupMobile from './NavLinkGroupMobile';
+import NavLink from '../vertical/NavLink';
+import NavLinkGroup from './NavLinkGroup';
 
 const DRAWER_WIDTH = 330;
 
@@ -66,7 +66,7 @@ const NavigationMobile = ({ onNavLinkClick, isMarketplaceAppPage }: Props) => {
           >
             { mainNavItems.map((item, index) => {
               if (isGroupItem(item)) {
-                return <NavLinkGroupMobile key={ item.text } item={ item } onClick={ onGroupItemOpen(index) } isExpanded={ isMarketplaceAppPage }/>;
+                return <NavLinkGroup key={ item.text } item={ item } onClick={ onGroupItemOpen(index) } isExpanded={ isMarketplaceAppPage }/>;
               } else {
                 return <NavLink key={ item.text } item={ item } onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>;
               }

@@ -22,6 +22,10 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
     [ 'NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL', 'https://localhost:3102' ],
     [ 'NEXT_PUBLIC_FAULT_PROOF_ENABLED', 'true' ],
   ],
+  arbitrumRollup: [
+    [ 'NEXT_PUBLIC_ROLLUP_TYPE', 'arbitrum' ],
+    [ 'NEXT_PUBLIC_ROLLUP_L1_BASE_URL', 'https://localhost:3101' ],
+  ],
   shibariumRollup: [
     [ 'NEXT_PUBLIC_ROLLUP_TYPE', 'shibarium' ],
     [ 'NEXT_PUBLIC_ROLLUP_L1_BASE_URL', 'https://localhost:3101' ],
@@ -60,6 +64,9 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   ],
   noWalletClient: [
     [ 'NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID', '' ],
+  ],
+  noAccount: [
+    [ 'NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED', 'false' ],
   ],
   noNftMarketplaces: [
     [ 'NEXT_PUBLIC_VIEWS_NFT_MARKETPLACES', '' ],

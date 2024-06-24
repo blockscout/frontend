@@ -225,7 +225,7 @@ const Marketplace = () => {
           placeholder="Find app by name or keyword..."
           isLoading={ isPlaceholderData }
           size={ feature.securityReportsUrl ? 'xs' : 'sm' }
-          flex="1"
+          w={{ base: '100%', lg: '350px' }}
         />
       </Flex>
 

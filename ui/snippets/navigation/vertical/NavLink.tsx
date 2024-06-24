@@ -2,7 +2,7 @@ import { Link, Text, HStack, Tooltip, Box, useBreakpointValue, chakra, shouldFor
 import NextLink from 'next/link';
 import React from 'react';
 
-import type { NavItem } from 'types/client/navigation-items';
+import type { NavItem } from 'types/client/navigation';
 
 import { route } from 'nextjs-routes';
 
@@ -10,11 +10,11 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import { isInternalItem } from 'lib/hooks/useNavItems';
 import IconSvg from 'ui/shared/IconSvg';
 
-import LightningLabel, { LIGHTNING_LABEL_CLASS_NAME } from './LightningLabel';
-import NavLinkIcon from './NavLinkIcon';
-import useColors from './useColors';
-import useNavLinkStyleProps from './useNavLinkStyleProps';
-import { checkRouteHighlight } from './utils';
+import LightningLabel, { LIGHTNING_LABEL_CLASS_NAME } from '../LightningLabel';
+import NavLinkIcon from '../NavLinkIcon';
+import useColors from '../useColors';
+import useNavLinkStyleProps from '../useNavLinkStyleProps';
+import { checkRouteHighlight } from '../utils';
 
 type Props = {
   item: NavItem;
@@ -72,7 +72,7 @@ const NavLink = ({ item, isCollapsed, px, className, onClick, disableActiveState
             { !isInternalLink && <IconSvg name="arrows/north-east" boxSize={ 4 } color="text_secondary" verticalAlign="middle"/> }
           </Text>
           { isHighlighted && (
-            <LightningLabel bgColor={ styleProps.itemProps.bgColor } isCollapsed={ isCollapsed }/>
+            <LightningLabel iconColor={ styleProps.itemProps.bgColor } isCollapsed={ isCollapsed }/>
           ) }
         </HStack>
       </Tooltip>

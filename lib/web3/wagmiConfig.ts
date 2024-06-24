@@ -33,7 +33,7 @@ const wagmiConfig = (() => {
       name: `${ config.chain.name } explorer`,
       description: `${ config.chain.name } explorer`,
       url: config.app.baseUrl,
-      icons: [ config.UI.sidebar.icon.default ].filter(Boolean),
+      icons: [ config.UI.navigation.icon.default ].filter(Boolean),
     },
     enableEmail: true,
     ssr: true,
