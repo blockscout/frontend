@@ -5,9 +5,6 @@ import type { PickByType } from 'types/utils';
 interface UserProfileProperties {
   'With Account': boolean;
   'With Connected Wallet': boolean;
-  'Wallet Address': string;
-  'Marketplace Operations Count': number;
-  'Country': string;
   'Device Type': string;
   'First Time Join': string;
 }
