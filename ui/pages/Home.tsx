@@ -52,8 +52,10 @@ const Home = () => {
         </Box>
         <AdBanner platform="mobile" w="fit-content" flexShrink={ 0 } display={{ base: 'none', lg: 'block' }} borderRadius="md" overflow="hidden"/>
       </Flex>
-      <Stats/>
-      <ChainIndicators/>
+      <Flex flexDir={{ base: 'column', lg: 'row' }} columnGap={ 2 } rowGap={ 1 } mt={ 3 }>
+        <Stats/>
+        <ChainIndicators/>
+      </Flex>
       <AdBanner mt={ 6 } mx="auto" display={{ base: 'flex', lg: 'none' }} justifyContent="center"/>
       <Flex mt={ 6 } direction={{ base: 'column', lg: 'row' }} columnGap={ 12 } rowGap={ 6 }>
         { rollupFeature.isEnabled && rollupFeature.type === 'zkEvm' ? <LatestZkEvmL2Batches/> : <LatestBlocks/> }

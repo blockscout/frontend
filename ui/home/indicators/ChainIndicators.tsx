@@ -92,7 +92,7 @@ const ChainIndicators = () => {
       columnGap={ 6 }
       rowGap={ 0 }
       flexDir={{ base: 'column', lg: 'row' }}
-      w="100%"
+      flexBasis="50%"
       alignItems="stretch"
       mt={{ base: 1, lg: 3 }}
     >
