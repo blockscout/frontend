@@ -24,6 +24,7 @@ import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import DetailsTimestamp from 'ui/shared/DetailsTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
+import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
@@ -187,6 +188,20 @@ const BlockDetails = ({ query }: Props) => {
           isLoading={ isPlaceholderData }
         />
       </DetailsInfoItem.Value>
+
+      { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && data.arbitrum && (
+        <>
+          <DetailsInfoItem.Label
+            hint="The most recent L1 block height as of this L2 block"
+            isLoading={ isPlaceholderData }
+          >
+            L1 block height
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            <BlockEntityL1 isLoading={ isPlaceholderData } number={ data.arbitrum.l1_block_height }/>
+          </DetailsInfoItem.Value>
+        </>
+      ) }
 
       { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && data.arbitrum && !config.UI.views.block.hiddenFields?.batch && (
         <>
@@ -663,6 +678,40 @@ const BlockDetails = ({ query }: Props) => {
                   />
                 </LinkInternal>
                 <CopyToClipboard text={ data.parent_hash }/>
+              </DetailsInfoItem.Value>
+            </>
+          ) }
+
+          { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && data.arbitrum && (
+            <>
+              <DetailsInfoItem.Label
+                hint="The cumulative number of L2 to L1 transactions as of this block"
+                isLoading={ isPlaceholderData }
+              >
+                Send count
+              </DetailsInfoItem.Label>
+              <DetailsInfoItem.Value>
+                { data.arbitrum.send_count.toLocaleString() }
+              </DetailsInfoItem.Value>
+
+              <DetailsInfoItem.Label
+                hint="The root of the Merkle accumulator representing all L2 to L1 transactions as of this block"
+                isLoading={ isPlaceholderData }
+              >
+                Send root
+              </DetailsInfoItem.Label>
+              <DetailsInfoItem.Value>
+                { data.arbitrum.send_root }
+              </DetailsInfoItem.Value>
+
+              <DetailsInfoItem.Label
+                hint="The number of delayed L1 to L2 messages read as of this block"
+                isLoading={ isPlaceholderData }
+              >
+                Delayed messages
+              </DetailsInfoItem.Label>
+              <DetailsInfoItem.Value>
+                { data.arbitrum.delayed_messages.toLocaleString() }
               </DetailsInfoItem.Value>
             </>
           ) }
