@@ -3,7 +3,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { ItemType } from '../types';
+import type { ItemProps } from '../types';
 import type { Address } from 'types/api/address';
 import type { Transaction } from 'types/api/transaction';
 
@@ -16,12 +16,8 @@ import IconSvg from 'ui/shared/IconSvg';
 import ButtonItem from '../parts/ButtonItem';
 import MenuItem from '../parts/MenuItem';
 
-interface Props {
-  className?: string;
-  hash: string;
-  onBeforeClick: () => boolean;
+interface Props extends ItemProps {
   entityType?: 'address' | 'tx';
-  type: ItemType;
 }
 
 const PrivateTagMenuItem = ({ className, hash, onBeforeClick, entityType = 'address', type }: Props) => {

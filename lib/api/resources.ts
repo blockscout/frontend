@@ -545,6 +545,11 @@ export const RESOURCES = {
     pathParams: [ 'hash' as const, 'id' as const ],
     filterFields: [],
   },
+  token_instance_refresh_metadata: {
+    path: '/api/v2/tokens/:hash/instances/:id/refetch-metadata',
+    pathParams: [ 'hash' as const, 'id' as const ],
+    filterFields: [],
+  },
 
   // APP STATS
   stats: {

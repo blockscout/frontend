@@ -10,6 +10,8 @@ import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
+import { useMetadataUpdateContext } from '../contexts/metadataUpdate';
+
 interface Props {
   data?: TokenInstance;
   isLoading?: boolean;
@@ -35,8 +37,9 @@ const Item = ({ data, isLoading }: ItemProps) => {
           href={ data.value }
           fontSize="sm"
           lineHeight={ 5 }
+          isLoading={ isLoading }
         >
-          <TruncatedValue value={ data.value } w="calc(100% - 16px)"/>
+          <TruncatedValue value={ data.value } w="calc(100% - 16px)" isLoading={ isLoading }/>
         </LinkExternal>
       );
     }
@@ -62,13 +65,17 @@ const Item = ({ data, isLoading }: ItemProps) => {
   );
 };
 
-const TokenInstanceMetadataInfo = ({ data, isLoading }: Props) => {
-  const metadata = React.useMemo(() => parseMetadata(data?.metadata), [ data ]);
-  const hasMetadata = metadata && Boolean((metadata.name || metadata.description || metadata.attributes));
+const TokenInstanceMetadataInfo = ({ data, isLoading: isLoadingProp }: Props) => {
+  const { status: refetchStatus } = useMetadataUpdateContext() || {};
 
+  const metadata = React.useMemo(() => parseMetadata(data?.metadata), [ data ]);
+
+  const hasMetadata = metadata && Boolean((metadata.name || metadata.description || metadata.attributes));
   if (!hasMetadata) {
     return null;
   }
+
+  const isLoading = isLoadingProp || refetchStatus === 'WAITING_FOR_RESPONSE';
 
   return (
     <>

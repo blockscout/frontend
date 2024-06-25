@@ -98,6 +98,7 @@
 	| "publictags_slim"
 	| "publictags"
 	| "qr_code"
+	| "refresh"
 	| "repeat_arrow"
 	| "restAPI"
 	| "rocket_xl"

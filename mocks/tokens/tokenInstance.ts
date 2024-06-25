@@ -5,9 +5,9 @@ import * as addressMock from '../address/address';
 
 export const base: TokenInstance = {
   animation_url: null,
-  external_app_url: null,
+  external_app_url: 'https://duck.nft/get-your-duck-today',
   id: '32925298983216553915666621415831103694597106215670571463977478984525997408266',
-  image_url: null,
+  image_url: 'https://example.com/image.jpg',
   is_unique: false,
   holder_address_hash: null,
   metadata: {
