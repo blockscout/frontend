@@ -1,58 +1,70 @@
 import {
-  chakra,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuOptionGroup,
-  MenuItemOption,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverBody,
   useDisclosure,
+  useRadioGroup,
+  chakra,
 } from '@chakra-ui/react';
 import React from 'react';
 
-import SortButton from './SortButton';
+import useIsMobile from 'lib/hooks/useIsMobile';
 
-export interface Option<Sort extends string> {
-  title: string;
-  id: Sort | undefined;
-}
+import SortButtonDesktop from './ButtonDesktop';
+import SortButtonMobile from './ButtonMobile';
+import Option from './Option';
+import type { TOption } from './Option';
 
 interface Props<Sort extends string> {
-  options: Array<Option<Sort>>;
-  sort: Sort | undefined;
-  setSort: (value: Sort | undefined) => void;
+  name: string;
+  options: Array<TOption<Sort>>;
+  defaultValue?: Sort;
   isLoading?: boolean;
+  onChange: (value: Sort | undefined) => void;
 }
 
-const Sort = <Sort extends string>({ sort, setSort, options, isLoading }: Props<Sort>) => {
-  const { isOpen, onToggle } = useDisclosure();
+const Sort = <Sort extends string>({ name, options, isLoading, onChange, defaultValue }: Props<Sort>) => {
+  const isMobile = useIsMobile(false);
+  const { isOpen, onToggle, onClose } = useDisclosure();
 
-  const setSortingFromMenu = React.useCallback((val: string | Array<string>) => {
-    const value = val as Sort | Array<Sort>;
-    setSort(Array.isArray(value) ? value[0] : value);
-  }, [ setSort ]);
+  const handleChange = (value: Sort) => {
+    onChange(value);
+    onClose();
+  };
+
+  const { value, getRootProps, getRadioProps } = useRadioGroup({
+    name,
+    defaultValue,
+    onChange: handleChange,
+  });
+
+  const root = getRootProps();
 
   return (
-    <Menu>
-      <MenuButton as="div">
-        <SortButton
-          isActive={ isOpen || Boolean(sort) }
-          onClick={ onToggle }
-          isLoading={ isLoading }
-        />
-      </MenuButton>
-      <MenuList minWidth="240px" zIndex="popover">
-        <MenuOptionGroup value={ sort } title="Sort by" type="radio" onChange={ setSortingFromMenu }>
-          { options.map((option) => (
-            <MenuItemOption
-              key={ option.id || 'default' }
-              value={ option.id }
-            >
-              { option.title }
-            </MenuItemOption>
-          )) }
-        </MenuOptionGroup>
-      </MenuList>
-    </Menu>
+    <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy>
+      <PopoverTrigger>
+        { isMobile ? (
+          <SortButtonMobile isActive={ isOpen || Boolean(value) } onClick={ onToggle } isLoading={ isLoading }/>
+        ) : (
+          <SortButtonDesktop isActive={ isOpen } isLoading={ isLoading } onClick={ onToggle }>
+            { options.find((option: TOption<Sort>) => option.id === value || (!option.id && !value))?.title }
+          </SortButtonDesktop>
+        ) }
+      </PopoverTrigger>
+      <PopoverContent w="fit-content" minW="165px">
+        <PopoverBody { ...root } py={ 2 } px={ 0 } display="flex" flexDir="column">
+          { options.map((option, index) => {
+            const radio = getRadioProps({ value: option.id });
+            return (
+              <Option key={ index } { ...radio } isChecked={ radio.isChecked || (!option.id && !value) }>
+                { option.title }
+              </Option>
+            );
+          }) }
+        </PopoverBody>
+      </PopoverContent>
+    </Popover>
   );
 };
 

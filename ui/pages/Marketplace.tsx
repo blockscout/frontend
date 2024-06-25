@@ -1,8 +1,8 @@
-import { Box, Menu, MenuButton, MenuItem, MenuList, Flex, IconButton, Skeleton } from '@chakra-ui/react';
+import { Box, Menu, MenuButton, MenuItem, MenuList, Flex, IconButton } from '@chakra-ui/react';
 import React from 'react';
 import type { MouseEvent } from 'react';
 
-import { MarketplaceCategory, MarketplaceDisplayType } from 'types/client/marketplace';
+import { MarketplaceCategory } from 'types/client/marketplace';
 import type { TabItem } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
@@ -13,13 +13,13 @@ import ContractListModal from 'ui/marketplace/ContractListModal';
 import MarketplaceAppModal from 'ui/marketplace/MarketplaceAppModal';
 import MarketplaceDisclaimerModal from 'ui/marketplace/MarketplaceDisclaimerModal';
 import MarketplaceList from 'ui/marketplace/MarketplaceList';
-import MarketplaceListWithScores from 'ui/marketplace/MarketplaceListWithScores';
+import { SORT_OPTIONS } from 'ui/marketplace/utils';
 import FilterInput from 'ui/shared/filters/FilterInput';
 import IconSvg from 'ui/shared/IconSvg';
 import type { IconName } from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import RadioButtonGroup from 'ui/shared/radioButtonGroup/RadioButtonGroup';
+import Sort from 'ui/shared/sort/Sort';
 import TabsWithScroll from 'ui/shared/Tabs/TabsWithScroll';
 
 import useMarketplace from '../marketplace/useMarketplace';
@@ -67,9 +67,8 @@ const Marketplace = () => {
     isCategoriesPlaceholderData,
     showContractList,
     contractListModalType,
-    selectedDisplayType,
-    onDisplayTypeChange,
     hasPreviousStep,
+    setSorting,
   } = useMarketplace();
 
   const isMobile = useIsMobile();
@@ -186,38 +185,14 @@ const Marketplace = () => {
         />
       </Box>
 
-      <Flex direction={{ base: 'column', lg: 'row' }} mb={{ base: 4, lg: 6 }} gap={{ base: 4, lg: 3 }}>
+      <Flex mb={{ base: 4, lg: 6 }} gap={{ base: 2, lg: 3 }}>
         { feature.securityReportsUrl && (
-          <Skeleton isLoaded={ !isPlaceholderData }>
-            <RadioButtonGroup<MarketplaceDisplayType>
-              onChange={ onDisplayTypeChange }
-              defaultValue={ selectedDisplayType }
-              name="type"
-              options={ [
-                {
-                  title: 'Discovery',
-                  value: MarketplaceDisplayType.DEFAULT,
-                  icon: 'apps_xs',
-                  onlyIcon: false,
-                },
-                {
-                  title: 'Apps scores',
-                  value: MarketplaceDisplayType.SCORES,
-                  icon: 'apps_list',
-                  onlyIcon: false,
-                  contentAfter: (
-                    <IconSvg
-                      name={ isMobile ? 'beta_xs' : 'beta' }
-                      h={ 3 }
-                      w={ isMobile ? 3 : 7 }
-                      ml={ 1 }
-                    />
-                  ),
-                },
-              ] }
-              autoWidth
-            />
-          </Skeleton>
+          <Sort
+            name="dapps_sorting"
+            options={ SORT_OPTIONS }
+            onChange={ setSorting }
+            isLoading={ isPlaceholderData }
+          />
         ) }
         <FilterInput
           initialValue={ filterQuery }
@@ -229,28 +204,16 @@ const Marketplace = () => {
         />
       </Flex>
 
-      { (selectedDisplayType === MarketplaceDisplayType.SCORES && feature.securityReportsUrl) ? (
-        <MarketplaceListWithScores
-          apps={ displayedApps }
-          showAppInfo={ showAppInfo }
-          favoriteApps={ favoriteApps }
-          onFavoriteClick={ onFavoriteClick }
-          isLoading={ isPlaceholderData }
-          selectedCategoryId={ selectedCategoryId }
-          onAppClick={ handleAppClick }
-          showContractList={ showContractList }
-        />
-      ) : (
-        <MarketplaceList
-          apps={ displayedApps }
-          showAppInfo={ showAppInfo }
-          favoriteApps={ favoriteApps }
-          onFavoriteClick={ onFavoriteClick }
-          isLoading={ isPlaceholderData }
-          selectedCategoryId={ selectedCategoryId }
-          onAppClick={ handleAppClick }
-        />
-      ) }
+      <MarketplaceList
+        apps={ displayedApps }
+        showAppInfo={ showAppInfo }
+        favoriteApps={ favoriteApps }
+        onFavoriteClick={ onFavoriteClick }
+        isLoading={ isPlaceholderData }
+        selectedCategoryId={ selectedCategoryId }
+        onAppClick={ handleAppClick }
+        showContractList={ showContractList }
+      />
 
       { (selectedApp && isAppInfoModalOpen) && (
         <MarketplaceAppModal

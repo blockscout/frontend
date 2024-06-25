@@ -3,6 +3,7 @@ import React from 'react';
 import type { MarketplaceAppWithSecurityReport } from 'types/client/marketplace';
 
 import { apps as appsMock } from 'mocks/apps/apps';
+import { securityReports as securityReportsMock } from 'mocks/apps/securityReports';
 import { test, expect, devices } from 'playwright/lib';
 
 import MarketplaceAppModal from './MarketplaceAppModal';
@@ -11,7 +12,10 @@ const props = {
   onClose: () => {},
   onFavoriteClick: () => {},
   showContractList: () => {},
-  data: appsMock[0] as MarketplaceAppWithSecurityReport,
+  data: {
+    ...appsMock[0],
+    securityReport: securityReportsMock[0].chainsData['1'],
+  } as MarketplaceAppWithSecurityReport,
   isFavorite: false,
 };
 
