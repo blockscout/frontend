@@ -32,9 +32,12 @@ const LogoFallback = ({
   const iconPath =
     colorMode === 'light' ?
       'networks/wvm-icon-dark' :
-      'networks/wvm-icon-light';
+      'networks/wvm-icon-light-2';
+
   const logoPath =
-    colorMode === 'dark' ? 'networks/wvm-logo-light' : 'networks/wvm-logo-dark';
+    colorMode === 'light' ?
+      'networks/wvm-logo-dark' :
+      'networks/wvm-logo-light';
 
   const display = isSmall ?
     {
