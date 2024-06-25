@@ -7,6 +7,7 @@ import type { SearchResultItem } from 'types/api/search';
 import { route } from 'nextjs-routes';
 
 import SearchBarSuggestAddress from './SearchBarSuggestAddress';
+import SearchBarSuggestAspect from './SearchBarSuggestAspect';
 import SearchBarSuggestBlock from './SearchBarSuggestBlock';
 import SearchBarSuggestItemLink from './SearchBarSuggestItemLink';
 import SearchBarSuggestLabel from './SearchBarSuggestLabel';
@@ -64,7 +65,7 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) =>
         return <SearchBarSuggestTx data={ data } searchTerm={ searchTerm } isMobile={ isMobile }/>;
       }
       case 'aspect': {
-        return <div>111</div>;
+        return <SearchBarSuggestAspect data={ data } searchTerm={ searchTerm } isMobile={ isMobile }/>;
       }
     }
   })();
