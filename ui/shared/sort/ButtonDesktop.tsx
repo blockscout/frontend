@@ -10,14 +10,14 @@ import React from 'react';
 import IconSvg from 'ui/shared/IconSvg';
 
 type ButtonProps = {
-  isMenuOpen: boolean;
+  isActive: boolean;
   onClick: () => void;
   isLoading?: boolean;
   children: React.ReactNode;
   className?: string;
 };
 
-const ButtonDesktop = ({ children, isMenuOpen, onClick, isLoading, className }: ButtonProps, ref: React.ForwardedRef<HTMLButtonElement>) => {
+const ButtonDesktop = ({ children, isActive, onClick, isLoading, className }: ButtonProps, ref: React.ForwardedRef<HTMLButtonElement>) => {
   const primaryColor = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
   const secondaryColor = useColorModeValue('blackAlpha.600', 'whiteAlpha.600');
 
@@ -33,21 +33,21 @@ const ButtonDesktop = ({ children, isMenuOpen, onClick, isLoading, className }: 
         fontWeight="600"
         borderColor="transparent"
         px={ 2 }
-        data-selected={ isMenuOpen }
+        data-selected={ isActive }
       >
         <Box
-          as={ isMenuOpen ? 'div' : 'span' }
-          color={ isMenuOpen ? 'inherit' : secondaryColor }
+          as={ isActive ? 'div' : 'span' }
+          color={ isActive ? 'inherit' : secondaryColor }
           fontWeight="400"
           mr={ 1 }
-          transition={ isMenuOpen ? 'none' : 'inherit' }
+          transition={ isActive ? 'none' : 'inherit' }
         >Sort by</Box>
         { children }
         <IconSvg
           name="arrows/east-mini"
           boxSize={ 5 }
           ml={ 1 }
-          transform={ isMenuOpen ? 'rotate(90deg)' : 'rotate(-90deg)' }
+          transform={ isActive ? 'rotate(90deg)' : 'rotate(-90deg)' }
         />
       </Button>
     </Skeleton>

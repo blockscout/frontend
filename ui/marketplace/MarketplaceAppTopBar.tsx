@@ -1,8 +1,7 @@
-import { chakra, Flex, Tooltip, Skeleton, useBoolean } from '@chakra-ui/react';
+import { chakra, Flex, Tooltip, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
-import type { MarketplaceAppOverview, MarketplaceAppSecurityReport } from 'types/client/marketplace';
-import { ContractListTypes } from 'types/client/marketplace';
+import type { MarketplaceAppOverview, MarketplaceAppSecurityReport, ContractListTypes } from 'types/client/marketplace';
 
 import { route } from 'nextjs-routes';
 
@@ -27,8 +26,7 @@ type Props = {
 }
 
 const MarketplaceAppTopBar = ({ data, isLoading, securityReport }: Props) => {
-  const [ isContractListShown, setIsContractListShown ] = useBoolean(false);
-  const [ contractListType, setContractListType ] = React.useState(ContractListTypes.ALL);
+  const [ contractListType, setContractListType ] = React.useState<ContractListTypes>();
   const appProps = useAppContext();
   const isMobile = useIsMobile();
 
@@ -45,10 +43,8 @@ const MarketplaceAppTopBar = ({ data, isLoading, securityReport }: Props) => {
     } catch (err) {}
   }
 
-  const showContractList = React.useCallback((id: string, type: ContractListTypes) => {
-    setIsContractListShown.on();
-    setContractListType(type);
-  }, [ setIsContractListShown ]);
+  const showContractList = React.useCallback((id: string, type: ContractListTypes) => setContractListType(type), []);
+  const hideContractList = React.useCallback(() => setContractListType(undefined), []);
 
   return (
     <>
@@ -93,11 +89,11 @@ const MarketplaceAppTopBar = ({ data, isLoading, securityReport }: Props) => {
           </Flex>
         ) }
       </Flex>
-      { isContractListShown && (
+      { contractListType && (
         <ContractListModal
           type={ contractListType }
           contracts={ securityReport?.contractsData }
-          onClose={ setIsContractListShown.off }
+          onClose={ hideContractList }
         />
       ) }
     </>

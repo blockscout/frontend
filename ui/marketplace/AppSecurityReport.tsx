@@ -74,7 +74,7 @@ const AppSecurityReport = ({
       <PopoverContent w={{ base: '100vw', lg: '328px' }}>
         <PopoverBody px="26px" py="20px" fontSize="sm">
           <Text fontWeight="500" fontSize="xs" mb={ 2 } variant="secondary">Smart contracts info</Text>
-          <Flex alignItems="center" justifyContent="space-between" h="32px">
+          <Flex alignItems="center" justifyContent="space-between" py={ 1.5 }>
             <Flex alignItems="center">
               <IconSvg name="contracts_verified" boxSize={ 5 } color="green.500" mr={ 1 }/>
               <Text>Verified contracts</Text>

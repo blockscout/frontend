@@ -47,7 +47,7 @@ const Sort = <Sort extends string>({ name, options, isLoading, onChange, default
         { isMobile ? (
           <SortButtonMobile isActive={ isOpen || Boolean(value) } onClick={ onToggle } isLoading={ isLoading }/>
         ) : (
-          <SortButtonDesktop isMenuOpen={ isOpen } isLoading={ isLoading } onClick={ onToggle }>
+          <SortButtonDesktop isActive={ isOpen } isLoading={ isLoading } onClick={ onToggle }>
             { options.find((option: TOption<Sort>) => option.id === value || (!option.id && !value))?.title }
           </SortButtonDesktop>
         ) }
