@@ -15,7 +15,7 @@ export const ARBITRUM_MESSAGES_ITEM: ArbitrumL2MessagesItem = {
 
 export const ARBITRUM_L2_TXN_BATCHES_ITEM: ArbitrumL2TxnBatchesItem = {
   number: 12345,
-  block_count: 12345,
+  blocks_count: 12345,
   transactions_count: 10000,
   commitment_transaction: {
     block_number: 12345,
