@@ -38,6 +38,9 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) =>
       case 'block': {
         return route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.block_hash) } });
       }
+      case 'aspect': {
+        return route({ pathname: '/address/[hash]', query: { hash: data.aspect_hash } });
+      }
     }
   })();
 
@@ -59,6 +62,9 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) =>
       }
       case 'transaction': {
         return <SearchBarSuggestTx data={ data } searchTerm={ searchTerm } isMobile={ isMobile }/>;
+      }
+      case 'aspect': {
+        return <div>111</div>;
       }
     }
   })();

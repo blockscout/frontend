@@ -47,7 +47,14 @@ export interface SearchResultTx {
   url?: string; // not used by the frontend, we build the url ourselves
 }
 
-export type SearchResultItem = SearchResultToken | SearchResultAddressOrContract | SearchResultBlock | SearchResultTx | SearchResultLabel;
+export interface SearchResultAspect {
+  type: 'aspect';
+  aspect_hash: string;
+  timestamp: string;
+  url?: string; // not used by the frontend, we build the url ourselves
+}
+
+export type SearchResultItem = SearchResultToken | SearchResultAddressOrContract | SearchResultBlock | SearchResultTx | SearchResultLabel | SearchResultAspect;
 
 export interface SearchResult {
   items: Array<SearchResultItem>;
