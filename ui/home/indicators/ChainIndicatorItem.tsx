@@ -6,7 +6,6 @@ import type { HomeStats } from 'types/api/stats';
 import type { ChainIndicatorId } from 'types/homepage';
 
 import type { ResourceError } from 'lib/api/resources';
-import useIsMobile from 'lib/hooks/useIsMobile';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
@@ -21,8 +20,6 @@ interface Props {
 }
 
 const ChainIndicatorItem = ({ id, title, value, valueDiff, icon, isSelected, onClick, stats }: Props) => {
-  const isMobile = useIsMobile();
-
   const activeBgColor = useColorModeValue('white', 'black');
 
   const handleClick = React.useCallback(() => {
@@ -30,31 +27,19 @@ const ChainIndicatorItem = ({ id, title, value, valueDiff, icon, isSelected, onC
   }, [ id, onClick ]);
 
   const valueContent = (() => {
-    if (isMobile) {
-      return null;
-    }
-
-    if (stats.isPlaceholderData) {
-      return (
-        <Skeleton
-          h={ 3 }
-          w="70px"
-          my={ 1.5 }
-          // ssr: isMobile = undefined, isLoading = true
-          display={{ base: 'none', lg: 'block' }}
-        />
-      );
-    }
-
     if (!stats.data) {
       return <Text variant="secondary" fontWeight={ 400 }>no data</Text>;
     }
 
-    return <Text variant="secondary" fontWeight={ 600 }>{ value(stats.data) }</Text>;
+    return (
+      <Skeleton isLoaded={ !stats.isPlaceholderData } variant="secondary" fontWeight={ 600 } minW="30px">
+        { value(stats.data) }
+      </Skeleton>
+    );
   })();
 
   const valueDiffContent = (() => {
-    if (isMobile || !valueDiff) {
+    if (!valueDiff) {
       return null;
     }
     const diff = valueDiff(stats.data);
