@@ -3,6 +3,18 @@ export const light = {
   inherit: true,
   rules: [],
   colors: {
+    // wvm color palette
+    'primary.50': '#edfff8',
+    'primary.100': '#d5fff0',
+    'primary.200': '#aeffe2',
+    'primary.300': '#70ffcd',
+    'primary.400': '#2bfdb1',
+    'primary.500': '#00e492',
+    'primary.600': '#00c076',
+    'primary.700': '#009660',
+    'primary.800': '#06754e',
+    'primary.900': '#076042',
+    'primary.950': '#003724',
     'editor.background': '#f5f5f6',
     'editorWidget.background': '#f5f5f6',
 
@@ -47,6 +59,19 @@ export const dark = {
   inherit: true,
   rules: [],
   colors: {
+    // wvm color palette
+    'primary.50': '#edfff8',
+    'primary.100': '#d5fff0',
+    'primary.200': '#aeffe2',
+    'primary.300': '#70ffcd',
+    'primary.400': '#2bfdb1',
+    'primary.500': '#00e492',
+    'primary.600': '#00c076',
+    'primary.700': '#009660',
+    'primary.800': '#06754e',
+    'primary.900': '#076042',
+    'primary.950': '#003724',
+
     'editor.background': '#1a1b1b',
     'editorWidget.background': '#1a1b1b',
 
