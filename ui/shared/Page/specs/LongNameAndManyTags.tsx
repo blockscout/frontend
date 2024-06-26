@@ -8,7 +8,6 @@ import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EntityTags from 'ui/shared/EntityTags/EntityTags';
 import formatUserTags from 'ui/shared/EntityTags/formatUserTags';
 import IconSvg from 'ui/shared/IconSvg';
-import NetworkExplorers from 'ui/shared/NetworkExplorers';
 
 import PageTitle from '../PageTitle';
 
@@ -42,7 +41,6 @@ const LongNameAndManyTags = () => {
         ] }
         flexGrow={ 1 }
       />
-      <NetworkExplorers type="token" pathParam="token-hash" ml="auto"/>
     </>
   );
 
