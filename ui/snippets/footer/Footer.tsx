@@ -45,12 +45,6 @@ const Footer = () => {
       url: issueUrl,
     },
     {
-      icon: 'social/canny' as const,
-      iconSize: '20px',
-      text: 'Feature request',
-      url: 'https://blockscout.canny.io/feature-requests',
-    },
-    {
       icon: 'globe' as const,
       iconSize: '24px',
       text: 'WeaveVM Website',
