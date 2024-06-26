@@ -570,6 +570,42 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         </>
       ) }
 
+      { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && data.arbitrum && (
+        <>
+          <DetailsInfoItem.Label
+            hint="Fee paid to the poster for L1 resources"
+            isLoading={ isLoading }
+          >
+            Poster fee
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            <CurrencyValue
+              value={ data.arbitrum.poster_fee }
+              currency={ currencyUnits.ether }
+              exchangeRate={ data.exchange_rate }
+              flexWrap="wrap"
+              isLoading={ isLoading }
+            />
+          </DetailsInfoItem.Value>
+
+          <DetailsInfoItem.Label
+            hint="Fee paid to the network for L2 resources"
+            isLoading={ isLoading }
+          >
+            Network fee
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            <CurrencyValue
+              value={ data.arbitrum.network_fee }
+              currency={ currencyUnits.ether }
+              exchangeRate={ data.exchange_rate }
+              flexWrap="wrap"
+              isLoading={ isLoading }
+            />
+          </DetailsInfoItem.Value>
+        </>
+      ) }
+
       <TxDetailsGasPrice gasPrice={ data.gas_price } isLoading={ isLoading }/>
 
       <TxDetailsFeePerGas txFee={ data.fee.value } gasUsed={ data.gas_used } isLoading={ isLoading }/>
@@ -586,6 +622,42 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         <Skeleton isLoaded={ !isLoading }>{ BigNumber(data.gas_limit).toFormat() }</Skeleton>
         <Utilization ml={ 4 } value={ BigNumber(data.gas_used || 0).dividedBy(BigNumber(data.gas_limit)).toNumber() } isLoading={ isLoading }/>
       </DetailsInfoItem.Value>
+
+      { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && data.arbitrum && data.gas_used && (
+        <>
+          <DetailsInfoItem.Label
+            hint="L2 gas set aside for L1 data charges"
+            isLoading={ isLoading }
+          >
+            Gas used for L1
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            <Skeleton isLoaded={ !isLoading }>{ BigNumber(data.arbitrum.gas_used_for_l1 || 0).toFormat() }</Skeleton>
+            <TextSeparator/>
+            <Utilization
+              ml={ 4 }
+              value={ BigNumber(data.arbitrum.gas_used_for_l1 || 0).dividedBy(BigNumber(data.gas_used)).toNumber() }
+              isLoading={ isLoading }
+            />
+          </DetailsInfoItem.Value>
+
+          <DetailsInfoItem.Label
+            hint="L2 gas spent on L2 resources"
+            isLoading={ isLoading }
+          >
+            Gas used for L2
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            <Skeleton isLoaded={ !isLoading }>{ BigNumber(data.arbitrum.gas_used_for_l2 || 0).toFormat() }</Skeleton>
+            <TextSeparator/>
+            <Utilization
+              ml={ 4 }
+              value={ BigNumber(data.arbitrum.gas_used_for_l2 || 0).dividedBy(BigNumber(data.gas_used)).toNumber() }
+              isLoading={ isLoading }
+            />
+          </DetailsInfoItem.Value>
+        </>
+      ) }
 
       { !config.UI.views.tx.hiddenFields?.gas_fees &&
             (data.base_fee_per_gas || data.max_fee_per_gas || data.max_priority_fee_per_gas) && (

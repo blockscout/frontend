@@ -103,7 +103,7 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
       <DetailsInfoItem.Value>
         <Skeleton isLoaded={ !isPlaceholderData }>
           <LinkInternal href={ route({ pathname: '/batches/[number]', query: { number: data.number.toString(), tab: 'txs' } }) }>
-            { data.transactions_count } transaction{ data.transactions_count === 1 ? '' : 's' }
+            { data.transactions_count.toLocaleString() } transaction{ data.transactions_count === 1 ? '' : 's' }
           </LinkInternal>
         </Skeleton>
       </DetailsInfoItem.Value>
@@ -117,7 +117,7 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
       <DetailsInfoItem.Value>
         <Skeleton isLoaded={ !isPlaceholderData }>
           <LinkInternal href={ route({ pathname: '/batches/[number]', query: { number: data.number.toString(), tab: 'blocks' } }) }>
-            { blocksCount } block{ blocksCount === 1 ? '' : 's' }
+            { blocksCount.toLocaleString() } block{ blocksCount === 1 ? '' : 's' }
           </LinkInternal>
         </Skeleton>
       </DetailsInfoItem.Value>
