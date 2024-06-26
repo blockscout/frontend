@@ -23,6 +23,8 @@ declare module "nextjs-routes" {
     | StaticRoute<"/api-docs">
     | DynamicRoute<"/apps/[id]", { "id": string }>
     | StaticRoute<"/apps">
+    | DynamicRoute<"/aspect/[hash]/contract-verification", { "hash": string }>
+    | DynamicRoute<"/aspect/[hash]", { "hash": string }>
     | StaticRoute<"/auth/auth0">
     | StaticRoute<"/auth/profile">
     | StaticRoute<"/auth/unverified-email">

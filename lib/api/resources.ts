@@ -491,6 +491,12 @@ export const RESOURCES = {
   graphql: {
     path: '/api/v1/graphql',
   },
+
+  // Aspect
+  aspects: {
+    path: 'api/v2/aspects/:hash',
+    pathParams: [ 'hash' as const ],
+  },
 };
 
 export type ResourceName = keyof typeof RESOURCES;
