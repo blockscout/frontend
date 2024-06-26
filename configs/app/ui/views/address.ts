@@ -6,7 +6,7 @@ import { getEnvValue, parseEnvJson } from 'configs/app/utils';
 const identiconType: IdenticonType = (() => {
   const value = getEnvValue('NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE');
 
-  return IDENTICON_TYPES.find((type) => value === type) || 'jazzicon';
+  return IDENTICON_TYPES.find((type) => value === type) || 'blockie';
 })();
 
 const hiddenViews = (() => {
