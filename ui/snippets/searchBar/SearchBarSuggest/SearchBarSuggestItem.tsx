@@ -40,7 +40,7 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) =>
         return route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.block_hash) } });
       }
       case 'aspect': {
-        return route({ pathname: '/address/[hash]', query: { hash: data.aspect_hash } });
+        return route({ pathname: '/aspect/[hash]', query: { hash: data.aspect_hash } });
       }
     }
   })();
