@@ -25,14 +25,14 @@ const HypeBanner = ({ className, platform }: BannerProps) => {
     switch (platform) {
       case 'desktop': {
         return (
-          <Flex className={ className } h="90px">
+          <Flex className={ className } w="728px" h="90px">
             <Banner placement={ DESKTOP_BANNER_SLUG }/>
           </Flex>
         );
       }
       case 'mobile': {
         return (
-          <Flex className={ className } h="50px">
+          <Flex className={ className } w="320px" h="50px">
             <Banner placement={ MOBILE_BANNER_SLUG }/>
           </Flex>
         );
@@ -40,10 +40,10 @@ const HypeBanner = ({ className, platform }: BannerProps) => {
       default: {
         return (
           <>
-            <Flex className={ className } h="90px" display={{ base: 'none', lg: 'flex' }}>
+            <Flex className={ className } w="728px" h="90px" display={{ base: 'none', lg: 'flex' }}>
               <Banner placement={ DESKTOP_BANNER_SLUG }/>
             </Flex>
-            <Flex className={ className } h="50px" display={{ base: 'flex', lg: 'none' }}>
+            <Flex className={ className } w="320px" h="50px" display={{ base: 'flex', lg: 'none' }}>
               <Banner placement={ MOBILE_BANNER_SLUG }/>
             </Flex>
           </>
