@@ -1,21 +1,15 @@
-import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
-
-import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import AddressDetails from 'ui/address/AddressDetails';
-import AddressTxs from 'ui/address/AddressTxs';
+import AspectDetails from 'ui/aspect/AspectDetails';
 import TextAd from 'ui/shared/ad/TextAd';
 import EntityTags from 'ui/shared/EntityTags';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
-import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
 
 const AddressPageContent = () => {
   const router = useRouter();
@@ -33,11 +27,11 @@ const AddressPageContent = () => {
     },
   });
 
-  const tabs: Array<RoutedTab> = React.useMemo(() => {
-    return [
-      { id: 'txs', title: 'Transactions', component: <AddressTxs scrollRef={ tabsScrollRef }/> },
-    ].filter(Boolean);
-  }, []);
+  // const tabs: Array<RoutedTab> = React.useMemo(() => {
+  //   return [
+  //     { id: 'txs', title: 'Transactions', component: <AddressTxs scrollRef={ tabsScrollRef }/> },
+  //   ].filter(Boolean);
+  // }, []);
 
   const tags = (
     <EntityTags
@@ -52,7 +46,7 @@ const AddressPageContent = () => {
     />
   );
 
-  const content = addressQuery.isError ? null : <RoutedTabs tabs={ tabs } tabListProps={{ mt: 8 }}/>;
+  // const content = addressQuery.isError ? null : <RoutedTabs tabs={ tabs } tabListProps={{ mt: 8 }}/>;
 
   const backLink = React.useMemo(() => {
     const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/accounts');
@@ -78,10 +72,10 @@ const AddressPageContent = () => {
         contentAfter={ tags }
         isLoading={ addressQuery.isPlaceholderData }
       />
-      <AddressDetails addressQuery={ addressQuery } scrollRef={ tabsScrollRef }/>
+      <AspectDetails aspectQuery={ addressQuery } scrollRef={ tabsScrollRef }/>
       { /* should stay before tabs to scroll up with pagination */ }
-      <Box ref={ tabsScrollRef }></Box>
-      { addressQuery.isPlaceholderData ? <TabsSkeleton tabs={ tabs }/> : content }
+      { /*<Box ref={ tabsScrollRef }></Box>*/ }
+      { /*{ addressQuery.isPlaceholderData ? <TabsSkeleton tabs={ tabs }/> : content }*/ }
     </>
   );
 };
