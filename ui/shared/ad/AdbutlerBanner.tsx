@@ -17,17 +17,6 @@ const AdbutlerBanner = ({ className, platform }: BannerProps) => {
   const isMobileViewport = useIsMobile();
   const isMobile = platform === 'mobile' || isMobileViewport;
 
-  const height = (() => {
-    switch (platform) {
-      case 'desktop':
-        return '90px';
-      case 'mobile':
-        return '100px';
-      default:
-        return { base: '100px', lg: '90px' };
-    }
-  })();
-
   React.useEffect(() => {
     if (!('adButler' in feature)) {
       return;
@@ -38,10 +27,10 @@ const AdbutlerBanner = ({ className, platform }: BannerProps) => {
       if (!window.AdButler.ads) {
         window.AdButler.ads = [];
       }
+      const adButlerConfig = isMobile ? feature.adButler.config.mobile : feature.adButler.config.desktop;
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore:
-      let plc = window[`plc${ feature.adButler.config.mobile.id }`] || 0;
-      const adButlerConfig = isMobile ? feature.adButler.config.mobile : feature.adButler.config.desktop;
+      let plc = window[`plc${ adButlerConfig.id }`] || 0;
       const banner = document.getElementById('ad-banner');
       if (banner) {
         banner.innerHTML = '<' + 'div id="placement_' + adButlerConfig?.id + '_' + plc + '"></' + 'div>';
@@ -60,8 +49,32 @@ const AdbutlerBanner = ({ className, platform }: BannerProps) => {
     }
   }, [ router, isMobile ]);
 
+  if (!('adButler' in feature)) {
+    return null;
+  }
+
+  const { width, height } = (() => {
+    switch (platform) {
+      case 'desktop':
+        return { width: `${ feature.adButler.config.desktop.width }px`, height: `${ feature.adButler.config.desktop.height }px` };
+      case 'mobile':
+        return { width: `${ feature.adButler.config.mobile.width }px`, height: `${ feature.adButler.config.mobile.height }px` };
+      default:
+        return {
+          width: {
+            base: `${ feature.adButler.config.mobile.width }px`,
+            lg: `${ feature.adButler.config.desktop.width }px`,
+          },
+          height: {
+            base: `${ feature.adButler.config.mobile.height }px`,
+            lg: `${ feature.adButler.config.desktop.height }px`,
+          },
+        };
+    }
+  })() ?? { width: '0', height: '0' };
+
   return (
-    <Flex className={ className } id="adBanner" h={ height }>
+    <Flex className={ className } id="adBanner" h={ height } w={ width }>
       <Script strategy="lazyOnload" id="ad-butler-1">{ connectAdbutler }</Script>
       <Script strategy="lazyOnload" id="ad-butler-2">{ placeAd(platform) }</Script>
       <div id="ad-banner"></div>
