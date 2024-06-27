@@ -66,10 +66,10 @@ const Footer = () => {
       url: 'https://discord.gg/blockscout',
     },
     {
-      icon: 'discussions' as const,
-      iconSize: '20px',
-      text: 'Discussions',
-      url: 'https://github.com/orgs/blockscout/discussions',
+      icon: 'brands/blockscout' as const,
+      iconSize: '18px',
+      text: 'All chains',
+      url: 'https://www.blockscout.com/chains-and-projects',
     },
     {
       icon: 'donate' as const,
