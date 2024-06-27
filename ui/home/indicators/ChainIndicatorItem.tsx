@@ -6,7 +6,6 @@ import type { HomeStats } from 'types/api/stats';
 import type { ChainIndicatorId } from 'types/homepage';
 
 import type { ResourceError } from 'lib/api/resources';
-import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   id: ChainIndicatorId;
@@ -20,6 +19,7 @@ interface Props {
 }
 
 const ChainIndicatorItem = ({ id, title, value, valueDiff, icon, isSelected, onClick, stats }: Props) => {
+  const activeColor = useColorModeValue('gray.500', 'gray.400');
   const activeBgColor = useColorModeValue('white', 'black');
 
   const handleClick = React.useCallback(() => {
@@ -50,8 +50,8 @@ const ChainIndicatorItem = ({ id, title, value, valueDiff, icon, isSelected, onC
     const diffColor = diff >= 0 ? 'green.500' : 'red.500';
 
     return (
-      <Skeleton isLoaded={ !stats.isPlaceholderData } ml={ 3 } display="flex" alignItems="center" color={ diffColor }>
-        <IconSvg name="up" boxSize={ 5 } mr={ 1 } transform={ diff < 0 ? 'rotate(180deg)' : 'rotate(0)' }/>
+      <Skeleton isLoaded={ !stats.isPlaceholderData } ml={ 1 } display="flex" alignItems="center" color={ diffColor }>
+        { diff >= 0 ? '+' : '-' }
         <Text color={ diffColor } fontWeight={ 600 }>{ diff }%</Text>
       </Skeleton>
     );
@@ -61,24 +61,27 @@ const ChainIndicatorItem = ({ id, title, value, valueDiff, icon, isSelected, onC
     <Flex
       alignItems="center"
       columnGap={ 2 }
+      flexGrow={{ base: 0, lg: 1 }}
       px={{ base: '6px', lg: 2 }}
       py="6px"
       as="li"
       borderRadius="base"
       cursor="pointer"
+      color={ isSelected ? activeColor : 'link' }
       bgColor={ isSelected ? activeBgColor : undefined }
       onClick={ handleClick }
       fontSize="xs"
       fontWeight={ 500 }
       _hover={{
-        activeBgColor,
+        bgColor: activeBgColor,
+        color: isSelected ? activeColor : 'link_hovered',
         zIndex: 1,
       }}
     >
       { icon }
       <Box display={{ base: 'none', lg: 'block' }}>
-        <Text>{ title }</Text>
-        <Flex alignItems="center">
+        <span>{ title }</span>
+        <Flex alignItems="center" color="text">
           { valueContent }
           { valueDiffContent }
         </Flex>
