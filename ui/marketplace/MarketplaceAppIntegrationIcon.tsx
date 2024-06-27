@@ -10,21 +10,24 @@ type Props = {
 }
 
 const MarketplaceAppIntegrationIcon = ({ external, internalWallet }: Props) => {
-  const [ icon, iconColor, text ] = React.useMemo(() => {
+  const [ icon, iconColor, text, boxSize ] = React.useMemo(() => {
     let icon: IconName = 'integration/partial';
     let color = 'gray.400';
     let text = 'This app opens in Blockscout without Blockscout wallet functionality. Use your external web3 wallet to connect directly to this application';
+    let boxSize = 5;
 
     if (external) {
-      icon = 'arrows/north-east';
+      icon = 'link_external';
+      color = 'icon_link_external';
       text = 'This app opens in a separate tab';
+      boxSize = 4;
     } else if (internalWallet) {
       icon = 'integration/full';
       color = 'green.500';
       text = 'This app opens in Blockscout and your Blockscout wallet connects automatically';
     }
 
-    return [ icon, color, text ];
+    return [ icon, color, text, boxSize ];
   }, [ external, internalWallet ]);
 
   return (
@@ -37,7 +40,7 @@ const MarketplaceAppIntegrationIcon = ({ external, internalWallet }: Props) => {
     >
       <IconSvg
         name={ icon }
-        boxSize={ 5 }
+        boxSize={ boxSize }
         color={ iconColor }
         position="relative"
         cursor="pointer"
