@@ -4,7 +4,6 @@ import {
   chakra,
   Flex,
   IconButton, Link,
-  Menu,
   MenuButton,
   MenuItem,
   MenuList,
@@ -22,6 +21,7 @@ import type { TimeChartItem } from './types';
 import dayjs from 'lib/date/dayjs';
 import { apos } from 'lib/html-entities';
 import saveAsCSV from 'lib/saveAsCSV';
+import Menu from 'ui/shared/chakra/Menu';
 import IconSvg from 'ui/shared/IconSvg';
 
 import ChartWidgetGraph from './ChartWidgetGraph';

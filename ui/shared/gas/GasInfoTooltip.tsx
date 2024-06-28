@@ -33,7 +33,6 @@ interface Props {
   placement?: PlacementWithLogical;
 }
 
-const POPOVER_OFFSET: [ number, number ] = [ 0, 10 ];
 const feature = config.features.gasTracker;
 
 const GasInfoTooltip = ({ children, data, dataUpdatedAt, isOpen, placement }: Props) => {
@@ -50,7 +49,7 @@ const GasInfoTooltip = ({ children, data, dataUpdatedAt, isOpen, placement }: Pr
       3 : 2;
 
   return (
-    <Popover trigger="hover" isLazy offset={ POPOVER_OFFSET } isOpen={ isOpen } placement={ placement }>
+    <Popover trigger="hover" isLazy isOpen={ isOpen } placement={ placement }>
       <PopoverTrigger>
         { children }
       </PopoverTrigger>
