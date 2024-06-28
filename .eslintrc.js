@@ -10,9 +10,14 @@ const RESTRICTED_MODULES = {
       importNames: [ 'Popover', 'useToast' ],
       message: 'Please use corresponding component or hook from ui/shared/chakra component instead',
     },
+    {
+      name: 'lodash',
+      message: 'Please use `import [package] from \'lodash/[package]\'` instead.',
+    },
   ],
   patterns: [
     'icons/*',
+    '!lodash/*',
   ],
 };
 
