@@ -1,4 +1,4 @@
-import { Flex, Tooltip, useClipboard, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Box, Tooltip, useClipboard, useColorModeValue } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
@@ -14,8 +14,15 @@ import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
-const Item = ({ icon, bgColor }: { icon: string; bgColor: string }) => {
-  const { hasCopied, onCopy } = useClipboard(icon, 1000);
+const formatFileSize = (fileSizeInBytes: number) => `${ (fileSizeInBytes / 1_024).toFixed(2) } Kb`;
+
+interface IconInfo {
+  name: string;
+  fileSize: number;
+}
+
+const Item = ({ name, fileSize, bgColor }: IconInfo & { bgColor: string }) => {
+  const { hasCopied, onCopy } = useClipboard(name, 1000);
   const [ copied, setCopied ] = React.useState(false);
 
   React.useEffect(() => {
@@ -30,7 +37,6 @@ const Item = ({ icon, bgColor }: { icon: string; bgColor: string }) => {
     <Flex
       flexDir="column"
       alignItems="center"
-      rowGap={ 2 }
       whiteSpace="pre-wrap"
       wordBreak="break-word"
       maxW="100px"
@@ -38,10 +44,11 @@ const Item = ({ icon, bgColor }: { icon: string; bgColor: string }) => {
       onClick={ onCopy }
       cursor="pointer"
     >
-      <IconSvg name={ icon as IconName } boxSize="100px" bgColor={ bgColor } borderRadius="base"/>
+      <IconSvg name={ name as IconName } boxSize="100px" bgColor={ bgColor } borderRadius="base"/>
       <Tooltip label={ copied ? 'Copied' : 'Copy to clipboard' } isOpen={ copied }>
-        <span>{ icon }</span>
+        <Box fontWeight={ 500 } mt={ 2 }>{ name }</Box>
       </Tooltip>
+      <Box color="text_secondary">{ formatFileSize(fileSize) }</Box>
     </Flex>
   );
 };
@@ -55,7 +62,7 @@ const Sprite = () => {
     queryKey: [ 'sprite' ],
     queryFn: () => {
       const url = route({ pathname: '/node-api/sprite' as StaticRoute<'/api/sprite'>['pathname'] });
-      return fetch<{ icons: Array<string> }, unknown>(url);
+      return fetch<{ icons: Array<IconInfo> }, unknown>(url);
     },
   });
 
@@ -68,7 +75,7 @@ const Sprite = () => {
       return <DataFetchAlert/>;
     }
 
-    const items = data.icons.filter((icon) => icon.includes(searchTerm));
+    const items = data.icons.filter((icon) => icon.name.includes(searchTerm));
 
     if (items.length === 0) {
       return <EmptySearchResult text="No icons found"/>;
@@ -76,16 +83,35 @@ const Sprite = () => {
 
     return (
       <Flex flexWrap="wrap" fontSize="sm" columnGap={ 5 } rowGap={ 5 } justifyContent="flex-start">
-        { items.map((icon) => <Item key={ icon } icon={ icon } bgColor={ bgColor }/>) }
+        { items.map((item) => <Item key={ item.name } { ...item } bgColor={ bgColor }/>) }
       </Flex>
     );
   })();
 
-  const searchInput = <FilterInput placeholder="Search by name..." onChange={ setSearchTerm } ml="auto" minW={{ base: '100%', lg: '500px' }}/>;
+  const total = React.useMemo(() => {
+    if (!data || !('icons' in data)) {
+      return;
+    }
+    return data?.icons.reduce((result, item) => {
+      result.num++;
+      result.fileSize += item.fileSize;
+      return result;
+    }, { num: 0, fileSize: 0 });
+  }, [ data ]);
+
+  const searchInput = <FilterInput placeholder="Search by name..." onChange={ setSearchTerm } isLoading={ isFetching } minW={{ base: '100%', lg: '300px' }}/>;
+  const totalEl = total ? <Box ml="auto">Items: { total.num } / Size: { formatFileSize(total.fileSize) }</Box> : null;
+
+  const contentAfter = (
+    <>
+      { totalEl }
+      { searchInput }
+    </>
+  );
 
   return (
     <div>
-      <PageTitle title="SVG sprite 🥤" contentAfter={ searchInput }/>
+      <PageTitle title="SVG sprite 🥤" contentAfter={ contentAfter }/>
       { content }
     </div>
   );

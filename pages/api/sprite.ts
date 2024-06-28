@@ -7,15 +7,25 @@ import config from 'configs/app';
 const ROOT_DIR = './icons';
 const NAME_PREFIX = ROOT_DIR.replace('./', '') + '/';
 
+interface IconInfo {
+  name: string;
+  fileSize: number;
+}
+
 const getIconName = (filePath: string) => filePath.replace(NAME_PREFIX, '').replace('.svg', '');
 
 function collectIconNames(dir: string) {
   const files = fs.readdirSync(dir, { withFileTypes: true });
-  let icons: Array<string> = [];
+  let icons: Array<IconInfo> = [];
 
   files.forEach((file) => {
     const filePath = path.join(dir, file.name);
-    file.name.endsWith('.svg') && icons.push(getIconName(filePath));
+    const stats = fs.statSync(filePath);
+
+    file.name.endsWith('.svg') && icons.push({
+      name: getIconName(filePath),
+      fileSize: stats.size,
+    });
 
     if (file.isDirectory()) {
       icons = [ ...icons, ...collectIconNames(filePath) ];
