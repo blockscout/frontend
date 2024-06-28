@@ -90,7 +90,7 @@ const ChainIndicators = () => {
       rowGap={ 0 }
       flexBasis="50%"
       flexGrow={ 1 }
-      alignItems={{ base: 'center', lg: 'stretch' }}
+      alignItems="stretch"
     >
       <Flex flexGrow={ 1 } flexDir="column">
         <Flex alignItems="center">
@@ -110,6 +110,7 @@ const ChainIndicators = () => {
           as="ul"
           borderRadius="lg"
           rowGap="6px"
+          m={{ base: 'auto 0', lg: 0 }}
         >
           { indicators.map((indicator) => (
             <ChainIndicatorItem
