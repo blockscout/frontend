@@ -83,7 +83,7 @@ const Stats = () => {
       <>
         { rollupFeature.isEnabled && rollupFeature.type === 'zkEvm' && (
           <StatsWidget
-            icon="txn_batches"
+            icon="txn_batches_slim"
             label="Latest batch"
             value={ (zkEvmLatestBatchQuery.data || 0).toLocaleString() }
             href={{ pathname: '/batches' }}
@@ -92,7 +92,7 @@ const Stats = () => {
         ) }
         { rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && (
           <StatsWidget
-            icon="txn_batches"
+            icon="txn_batches_slim"
             label="Latest batch"
             value={ (zkSyncLatestBatchQuery.data || 0).toLocaleString() }
             href={{ pathname: '/batches' }}
@@ -101,7 +101,7 @@ const Stats = () => {
         ) }
         { !(rollupFeature.isEnabled && (rollupFeature.type === 'zkEvm' || rollupFeature.type === 'zkSync')) && (
           <StatsWidget
-            icon="block"
+            icon="block_slim"
             label="Total blocks"
             value={ Number(data.total_blocks).toLocaleString() }
             href={{ pathname: '/blocks' }}
@@ -110,14 +110,14 @@ const Stats = () => {
         ) }
         { hasAvgBlockTime && (
           <StatsWidget
-            icon="clock-light"
+            icon="clock"
             label="Average block time"
             value={ `${ (data.average_block_time / 1000).toFixed(1) }s` }
             isLoading={ isLoading }
           />
         ) }
         <StatsWidget
-          icon="transactions"
+          icon="transactions_slim"
           label="Total transactions"
           value={ Number(data.total_transactions).toLocaleString() }
           href={{ pathname: '/txs' }}
@@ -125,7 +125,7 @@ const Stats = () => {
         />
         { rollupFeature.isEnabled && data.last_output_root_size && (
           <StatsWidget
-            icon="txn_batches"
+            icon="txn_batches_slim"
             label="Latest L1 state batch"
             value={ data.last_output_root_size }
             href={{ pathname: '/batches' }}

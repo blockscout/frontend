@@ -73,7 +73,8 @@ const StatsWidget = ({
         { icon && (
           <IconSvg
             name={ icon }
-            boxSize="30px"
+            p={ 2 }
+            boxSize="40px"
             isLoading={ isLoading }
             borderRadius="base"
             display={{ base: 'none', lg: 'block' }}

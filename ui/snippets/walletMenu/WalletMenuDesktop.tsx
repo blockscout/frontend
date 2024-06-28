@@ -98,7 +98,7 @@ const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
                 </>
               ) : (
                 <>
-                  <IconSvg display={{ base: isHomePage ? 'inline' : 'none', xl: 'none' }} name="wallet" boxSize={ 6 }/>
+                  <IconSvg display={{ base: isHomePage ? 'inline' : 'none', xl: 'none' }} name="wallet" boxSize={ 6 } p={ 0.5 }/>
                   <chakra.span display={{ base: isHomePage ? 'none' : 'inline', xl: 'inline' }}>Connect wallet</chakra.span>
                 </>
               ) }
