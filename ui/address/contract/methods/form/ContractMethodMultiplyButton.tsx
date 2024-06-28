@@ -1,6 +1,5 @@
 import {
   chakra,
-  Popover,
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
@@ -14,6 +13,7 @@ import {
 import React from 'react';
 
 import { times } from 'lib/html-entities';
+import Popover from 'ui/shared/chakra/Popover';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {

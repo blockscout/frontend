@@ -1,4 +1,4 @@
-import { Box, Text, Icon, Popover, PopoverTrigger, PopoverContent, PopoverBody, useDisclosure } from '@chakra-ui/react';
+import { Box, Text, Icon, PopoverTrigger, PopoverContent, PopoverBody, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
 // This icon doesn't work properly when it is in the sprite
@@ -7,6 +7,7 @@ import React from 'react';
 import solidityScanIcon from 'icons/brands/solidity_scan.svg';
 import useApiQuery from 'lib/api/useApiQuery';
 import { SOLIDITYSCAN_REPORT } from 'stubs/contract';
+import Popover from 'ui/shared/chakra/Popover';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import SolidityscanReportButton from 'ui/shared/solidityscanReport/SolidityscanReportButton';
 import SolidityscanReportDetails from 'ui/shared/solidityscanReport/SolidityscanReportDetails';

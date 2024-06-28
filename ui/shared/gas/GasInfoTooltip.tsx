@@ -5,7 +5,6 @@ import {
   DarkMode,
   Flex,
   Grid,
-  Popover,
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
@@ -20,6 +19,7 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
+import Popover from 'ui/shared/chakra/Popover';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 
 import GasInfoTooltipRow from './GasInfoTooltipRow';

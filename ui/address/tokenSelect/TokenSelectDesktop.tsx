@@ -1,7 +1,9 @@
-import { Popover, PopoverTrigger, PopoverContent, PopoverBody, useDisclosure } from '@chakra-ui/react';
+import { PopoverTrigger, PopoverContent, PopoverBody, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
 import type { FormattedData } from './types';
+
+import Popover from 'ui/shared/chakra/Popover';
 
 import TokenSelectButton from './TokenSelectButton';
 import TokenSelectMenu from './TokenSelectMenu';

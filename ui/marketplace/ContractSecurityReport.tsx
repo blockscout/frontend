@@ -1,4 +1,4 @@
-import { Box, Text, Popover, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure, Icon } from '@chakra-ui/react';
+import { Box, Text, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure, Icon } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SolidityscanReport } from 'types/api/contract';
@@ -9,6 +9,7 @@ import config from 'configs/app';
 // eslint-disable-next-line no-restricted-imports
 import solidityScanIcon from 'icons/brands/solidity_scan.svg';
 import * as mixpanel from 'lib/mixpanel/index';
+import Popover from 'ui/shared/chakra/Popover';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import SolidityscanReportButton from 'ui/shared/solidityscanReport/SolidityscanReportButton';
 import SolidityscanReportDetails from 'ui/shared/solidityscanReport/SolidityscanReportDetails';
