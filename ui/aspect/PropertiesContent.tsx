@@ -1,4 +1,4 @@
-import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import { Table, Tbody, Td, Th, Tr } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
@@ -6,6 +6,7 @@ import type { AspectDetail as TAspectDetail } from '../../types/api/aspect';
 
 import type { ResourceError } from '../../lib/api/resources';
 import DataListDisplay from '../shared/DataListDisplay';
+import TheadSticky from '../shared/TheadSticky';
 
 interface IProps {
   aspectQuery: UseQueryResult<TAspectDetail, ResourceError>;
@@ -17,12 +18,12 @@ export default function PropertiesContent({ aspectQuery }: IProps) {
 
   const content = aspectQuery.data ? (
     <Table variant="simple" size="sm">
-      <Thead>
+      <TheadSticky top={ 0 }>
         <Tr>
           <Th width="30%">Key</Th>
           <Th width="30%">Value</Th>
         </Tr>
-      </Thead>
+      </TheadSticky>
       <Tbody>
         { properties.map((property, index) => (
           <Tr key={ index }>
