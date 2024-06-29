@@ -15,6 +15,7 @@ import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 import AddressTxs from '../address/AddressTxs';
+import AspectProperties from '../aspect/AspectProperties';
 import RoutedTabs from '../shared/Tabs/RoutedTabs';
 
 const AddressPageContent = () => {
@@ -25,26 +26,25 @@ const AddressPageContent = () => {
   const tabsScrollRef = React.useRef<HTMLDivElement>(null);
   const hash = getQueryParamString(router.query.hash);
 
-  const addressQuery = useApiQuery('aspects', {
+  const aspectQuery = useApiQuery('aspects', {
     pathParams: { hash },
     queryOptions: {
       enabled: Boolean(hash),
-      // placeholderData: ADDRESS_INFO,
     },
   });
 
   const tabs: Array<RoutedTab> = React.useMemo(() => {
     return [
       { id: 'txs', title: 'Processed Transactions', component: <AddressTxs scrollRef={ tabsScrollRef }/> },
-      { id: 'properties', title: 'Properties', component: <AddressTxs scrollRef={ tabsScrollRef }/> },
+      { id: 'properties', title: 'Properties', component: <AspectProperties aspectQuery={ aspectQuery }/> },
       { id: 'bind', title: 'Bindings', component: <AddressTxs scrollRef={ tabsScrollRef }/> },
-    ].filter(Boolean);
-  }, []);
+    ];
+  }, [ aspectQuery ]);
 
   const tags = (
     <EntityTags
-      data={ addressQuery.data }
-      isLoading={ addressQuery.isPlaceholderData }
+      data={ aspectQuery.data }
+      isLoading={ aspectQuery.isPlaceholderData }
       tagsBefore={ [
         { label: 'aspect', display_name: 'ASPECT' },
       ] }
@@ -54,7 +54,7 @@ const AddressPageContent = () => {
     />
   );
 
-  const content = addressQuery.isError ? null : <RoutedTabs tabs={ tabs } tabListProps={{ mt: 8 }}/>;
+  const content = aspectQuery.isError ? null : <RoutedTabs tabs={ tabs } tabListProps={{ mt: 8 }}/>;
 
   const backLink = React.useMemo(() => {
     const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/accounts');
@@ -69,8 +69,6 @@ const AddressPageContent = () => {
     };
   }, [ appProps.referrer ]);
 
-  console.log(addressQuery.data);
-
   return (
     <>
       <TextAd mb={ 6 }/>
@@ -78,9 +76,9 @@ const AddressPageContent = () => {
         title="Address details"
         backLink={ backLink }
         contentAfter={ tags }
-        isLoading={ addressQuery.isPlaceholderData }
+        isLoading={ aspectQuery.isPlaceholderData }
       />
-      <AspectDetails aspectQuery={ addressQuery } scrollRef={ tabsScrollRef }/>
+      <AspectDetails aspectQuery={ aspectQuery } scrollRef={ tabsScrollRef }/>
       { /* should stay before tabs to scroll up with pagination */ }
       <Box ref={ tabsScrollRef }></Box>
       { content }
