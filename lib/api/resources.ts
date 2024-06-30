@@ -1,3 +1,4 @@
+import type { AspectBindingResponse } from '../../types/api/aspect';
 import { getFeaturePayload } from 'configs/app/features/types';
 import type {
   UserInfo,
@@ -497,6 +498,10 @@ export const RESOURCES = {
     path: 'api/v2/aspects/:hash',
     pathParams: [ 'hash' as const ],
   },
+  bound_addresses: {
+    path: 'api/v2/aspects/:hash/bound_addresses',
+    pathParams: [ 'hash' as const ],
+  },
 };
 
 export type ResourceName = keyof typeof RESOURCES;
@@ -540,7 +545,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'token_instance_transfers' | 'token_instance_holders' |
 'verified_contracts' |
 'l2_output_roots' | 'l2_withdrawals' | 'l2_txn_batches' | 'l2_deposits' |
-'withdrawals' | 'address_withdrawals' | 'block_withdrawals';
+'withdrawals' | 'address_withdrawals' | 'block_withdrawals' | 'bound_addresses';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
@@ -625,6 +630,7 @@ Q extends 'l2_withdrawals_count' ? number :
 Q extends 'l2_deposits_count' ? number :
 Q extends 'l2_txn_batches_count' ? number :
 Q extends 'config_backend_version' ? BackendVersionConfig :
+    Q extends 'bound_addresses' ? AspectBindingResponse :
 never;
 /* eslint-enable @typescript-eslint/indent */
 

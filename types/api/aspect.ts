@@ -15,3 +15,25 @@ export interface AspectDetail {
   properties: Record<string, string>;
   versions: Array<AspectVersion>;
 }
+
+export interface AspectBinding {
+  bind_aspect_transaction_hash: string;
+  bind_aspect_transaction_index: number;
+  bind_block_number: number;
+  bound_address_hash: string;
+  contract_code: number;
+  is_smart_contract: boolean;
+  priority: number;
+  version: number;
+}
+
+export interface AspectBindingResponse {
+  items: Array<AspectBinding>;
+  next_page_params: AspectBindingPagination | null;
+}
+
+export type AspectBindingPagination = {
+  block_number: number;
+  index: number;
+  items_count: number;
+}

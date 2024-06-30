@@ -11,11 +11,11 @@ type Props = {
   aspectQuery: UseQueryResult<TAspectDetail, ResourceError>;
 }
 
-const AddressTxs = ({ aspectQuery }: Props) => {
+const AspectProperties = ({ aspectQuery }: Props) => {
 
   return (
     <PropertiesContent aspectQuery={ aspectQuery }/>
   );
 };
 
-export default AddressTxs;
+export default AspectProperties;

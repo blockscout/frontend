@@ -15,6 +15,7 @@ import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 import AddressTxs from '../address/AddressTxs';
+import AspectBindings from '../aspect/AspectBindings';
 import AspectProperties from '../aspect/AspectProperties';
 import RoutedTabs from '../shared/Tabs/RoutedTabs';
 
@@ -37,7 +38,7 @@ const AddressPageContent = () => {
     return [
       { id: 'txs', title: 'Processed Transactions', component: <AddressTxs scrollRef={ tabsScrollRef }/> },
       { id: 'properties', title: 'Properties', component: <AspectProperties aspectQuery={ aspectQuery }/> },
-      { id: 'bind', title: 'Bindings', component: <AddressTxs scrollRef={ tabsScrollRef }/> },
+      { id: 'bind', title: 'Bindings', component: <AspectBindings scrollRef={ tabsScrollRef } aspectQuery={ aspectQuery }/> },
     ];
   }, [ aspectQuery ]);
 
