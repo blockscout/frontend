@@ -18,7 +18,7 @@ const CHART_MARGIN = { bottom: 5, left: 10, right: 10, top: 0 };
 
 const ChainIndicatorChart = ({ data }: Props) => {
   const overlayRef = React.useRef<SVGRectElement>(null);
-  const lineColor = useToken('colors', 'blue.500');
+  const lineColor = useToken('colors', 'brand.600');
 
   const axesConfig = React.useMemo(() => {
     return {
