@@ -14,9 +14,9 @@ import EntityTags from 'ui/shared/EntityTags';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
-import AddressTxs from '../address/AddressTxs';
 import AspectBindings from '../aspect/AspectBindings';
 import AspectProperties from '../aspect/AspectProperties';
+import AspectTxs from '../aspect/AspectTxs';
 import RoutedTabs from '../shared/Tabs/RoutedTabs';
 
 const AddressPageContent = () => {
@@ -36,7 +36,7 @@ const AddressPageContent = () => {
 
   const tabs: Array<RoutedTab> = React.useMemo(() => {
     return [
-      { id: 'txs', title: 'Processed Transactions', component: <AddressTxs scrollRef={ tabsScrollRef }/> },
+      { id: 'txs', title: 'Processed Transactions', component: <AspectTxs scrollRef={ tabsScrollRef }/> },
       { id: 'properties', title: 'Properties', component: <AspectProperties aspectQuery={ aspectQuery }/> },
       { id: 'bind', title: 'Bindings', component: <AspectBindings scrollRef={ tabsScrollRef } aspectQuery={ aspectQuery }/> },
     ];

@@ -1,3 +1,5 @@
+import type { Fee } from './fee';
+
 export interface AspectVersion {
   aspect_transaction_hash: string;
   aspect_transaction_index: number;
@@ -33,6 +35,34 @@ export interface AspectBindingResponse {
 }
 
 export type AspectBindingPagination = {
+  block_number: number;
+  index: number;
+  items_count: number;
+}
+
+export interface AspectTxs {
+  block_hash: string;
+  block_number: number;
+  error: string | null;
+  fee: Fee;
+  from_address_hash: string;
+  gas_price: string;
+  gas_used: string;
+  hash: string;
+  index: number;
+  result: string;
+  status: 'ok' | 'error' | null;
+  to_address_hash: string;
+  type: string;
+  value: string;
+}
+
+export interface AspectTxsResponse {
+  items: Array<AspectTxs>;
+  next_page_params: AspectTxsPagination | null;
+}
+
+export type AspectTxsPagination = {
   block_number: number;
   index: number;
   items_count: number;

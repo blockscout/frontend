@@ -11,14 +11,31 @@ export interface Props {
   isLoading?: boolean;
 }
 
-const TYPES_ORDER = [ 'rootstock_remasc', 'rootstock_bridge', 'token_creation', 'contract_creation', 'token_transfer', 'contract_call', 'coin_transfer' ];
+const TYPES_ORDER = [
+  'rootstock_remasc',
+  'rootstock_bridge',
+  'token_creation',
+  'contract_creation',
+  'token_transfer',
+  'contract_call',
+  'coin_transfer',
+  'bind',
+  'operation',
+];
 
 const TxType = ({ rawInput, types, isLoading }: Props) => {
-  const typeToShow = types.sort((t1, t2) => TYPES_ORDER.indexOf(t1) - TYPES_ORDER.indexOf(t2))[0];
+  const typeToShow = types.sort(
+    (t1, t2) => TYPES_ORDER.indexOf(t1) - TYPES_ORDER.indexOf(t2),
+  )[0];
   let label;
   let colorScheme;
-  const findMethodBySignature = (signature: string, list: Array<AspectMethod>) => {
-    const item = list.find((element: AspectMethod) => element.Signature === signature);
+  const findMethodBySignature = (
+    signature: string,
+    list: Array<AspectMethod>,
+  ) => {
+    const item = list.find(
+      (element: AspectMethod) => element.Signature === signature,
+    );
     return item ? item.Method : null;
   };
   switch (typeToShow) {
@@ -50,10 +67,18 @@ const TxType = ({ rawInput, types, isLoading }: Props) => {
       label = 'Bridge';
       colorScheme = 'blue';
       break;
+    case 'operation':
+      label = 'Operation';
+      colorScheme = 'orange';
+      break;
+    case 'bind':
+      label = 'Bind';
+      colorScheme = 'blue';
+      break;
+
     default:
       label = 'Transaction';
       colorScheme = 'purple';
-
   }
   if (findMethodBySignature(rawInput.substring(0, 10), tagList)) {
     label = findMethodBySignature(rawInput.substring(0, 10), tagList);

@@ -15,22 +15,19 @@ interface IProps {
   data: Array<AspectBinding>;
 }
 
-const BindingsList = ({
-  data,
-}: IProps) => {
-
-  const addressWidth = `calc((100% - ${ '50px - 24px' }) / 2)`;
+const BindingsList = ({ data }: IProps) => {
   return (
     <>
-      { data.map(item => (
+      { data.map((item) => (
         <ListItemMobile rowGap={ 3 } isAnimated key={ item.bind_block_number }>
-          <Flex justifyContent="space-between" alignItems="center" lineHeight="24px" width="100%">
+          <Flex
+            justifyContent="space-between"
+            alignItems="center"
+            lineHeight="24px"
+            width="100%"
+          >
             <Flex>
-              <Icon
-                as={ transactionIcon }
-                boxSize="30px"
-                color="link"
-              />
+              <Icon as={ transactionIcon } boxSize="30px" color="link"/>
               <Address width="100%" ml={ 2 }>
                 <AddressLink
                   hash={ item.bind_aspect_transaction_hash }
@@ -49,19 +46,24 @@ const BindingsList = ({
           </Flex>
           <Flex columnGap={ 2 } w="100%">
             <Text as="span">Value</Text>
-            <Text as="span" variant="secondary"><span>{ item.version }</span></Text>
+            <Text as="span" variant="secondary">
+              <span>{ item.version }</span>
+            </Text>
           </Flex>
           <Flex w="100%" columnGap={ 3 }>
-            <Address width={ addressWidth } flexShrink={ 0 }>
-              <AddressIcon address={{
-                hash: item.bound_address_hash,
-                is_contract: item.is_smart_contract,
-                implementation_name: '',
-              }}/>
+            <Address width="100%" flexShrink={ 0 }>
+              <AddressIcon
+                address={{
+                  hash: item.bound_address_hash,
+                  is_contract: item.is_smart_contract,
+                  implementation_name: '',
+                }}
+              />
               <AddressLink
                 type="address"
                 hash={ item.bound_address_hash }
-                fontWeight="500" ml={ 2 }
+                fontWeight="500"
+                ml={ 2 }
                 truncation="constant"
               />
               <CopyToClipboard text={ item.bound_address_hash }/>

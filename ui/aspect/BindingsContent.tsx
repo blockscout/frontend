@@ -12,12 +12,11 @@ interface IProps {
 }
 
 export default function BindingsContent({ bindingsQuery }: IProps) {
-
   const content = bindingsQuery.data ? (
     <>
       <Hide below="lg" ssr={ false }>
         <Table variant="simple" size="sm">
-          <TheadSticky top={ 48 }>
+          <TheadSticky top={ 80 }>
             <Tr>
               <Th width="25%">Tx hash</Th>
               <Th width="25%">Type</Th>
@@ -32,7 +31,9 @@ export default function BindingsContent({ bindingsQuery }: IProps) {
           </Tbody>
         </Table>
       </Hide>
-      <Show below="lg" ssr={ false }><BindingsList data={ bindingsQuery.data.items }/></Show>
+      <Show below="lg" ssr={ false }>
+        <BindingsList data={ bindingsQuery.data.items }/>
+      </Show>
     </>
   ) : null;
 
