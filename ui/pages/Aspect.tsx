@@ -14,6 +14,7 @@ import EntityTags from 'ui/shared/EntityTags';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
+import { ASPECTDETAIL } from '../../stubs/aspect';
 import AspectBindings from '../aspect/AspectBindings';
 import AspectProperties from '../aspect/AspectProperties';
 import AspectTxs from '../aspect/AspectTxs';
@@ -31,6 +32,7 @@ const AddressPageContent = () => {
     pathParams: { hash },
     queryOptions: {
       enabled: Boolean(hash),
+      placeholderData: ASPECTDETAIL,
     },
   });
 

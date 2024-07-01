@@ -80,6 +80,24 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
     if (marketplaceApps.displayedApps.length) {
       map.app = marketplaceApps.displayedApps;
     }
+    Object.keys(map).forEach(key => {
+      if (key === 'aspect') {
+        const aspectValue = map[key];
+        const addressValue = map.address;
+        map.address = addressValue?.filter(item => {
+          const index = aspectValue?.findIndex(v => {
+            if (item.type === 'address' && v.type === 'aspect') {
+              return item.address.toLowerCase() === v.aspect_hash.toLowerCase();
+            }
+            return false;
+          }) || -1;
+          return index > -1;
+        });
+        if (map.address?.length === 0) {
+          delete map.address;
+        }
+      }
+    });
     return map;
   }, [ query.data?.items, marketplaceApps.displayedApps ]);
 
