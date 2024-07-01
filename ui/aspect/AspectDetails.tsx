@@ -66,14 +66,14 @@ const AspectDetails = ({ aspectQuery }: Props) => {
       >
         <DetailsInfoItem
           title="Version"
-          hint="The number of bound Aspect"
+          hint="Latest version of this Aspect"
           isLoading={ aspectQuery.isPlaceholderData }
         >
           { lastVersion }
         </DetailsInfoItem>
         <DetailsInfoItem
           title="Deployed"
-          hint="The number of bound Aspect"
+          hint="Deployment transaction hash of this Aspect"
           isLoading={ aspectQuery.isPlaceholderData }
         >
           <AddressLink
@@ -84,14 +84,14 @@ const AspectDetails = ({ aspectQuery }: Props) => {
         </DetailsInfoItem>
         <DetailsInfoItem
           title="Join Points"
-          hint="The number of bound Aspect"
+          hint="Enabled join points of this Aspect, containing verify tx, pre tx execution, post tx execution, pre contract call and post contract call"
           isLoading={ aspectQuery.isPlaceholderData }
         >
           { aspectQuery.data?.join_points.join(' ') }
         </DetailsInfoItem>
         <DetailsInfoItem
           title="Bound Addresses"
-          hint="The number of bound Aspect"
+          hint="Number of accounts those are bound with this Aspect"
           isLoading={ aspectQuery.isPlaceholderData }
         >
           { aspectQuery.data?.bound_address_count }
