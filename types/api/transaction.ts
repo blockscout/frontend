@@ -77,6 +77,10 @@ export type Transaction = {
     validator_address: AddressParam;
     validator_fee: string;
   };
+  // Celo fields
+  celo?: {
+    gas_token: TokenInfo<'ERC-20'> | null;
+  };
   // zkEvm fields
   zkevm_verify_hash?: string;
   zkevm_batch_number?: number;

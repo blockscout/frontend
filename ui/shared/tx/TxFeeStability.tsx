@@ -15,6 +15,7 @@ interface Props {
   className?: string;
 }
 
+// TODO @tom2drum remove this component
 const TxFeeStability = ({ data, isLoading, hideUsd, accuracy, className }: Props) => {
 
   const { valueStr, usd } = getCurrencyValue({
