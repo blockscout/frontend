@@ -1,4 +1,4 @@
-import { Box, Grid, Skeleton } from '@chakra-ui/react';
+import { Box, Grid, Skeleton, Tag } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -71,7 +71,6 @@ const AspectDetails = ({ aspectQuery }: Props) => {
           isLoading={ loading }
         >
           <Skeleton isLoaded={ !loading }>{ lastVersion }</Skeleton>
-
         </DetailsInfoItem>
         <DetailsInfoItem
           title="Deployed"
@@ -90,7 +89,7 @@ const AspectDetails = ({ aspectQuery }: Props) => {
           hint="Enabled join points of this Aspect, containing verify tx, pre tx execution, post tx execution, pre contract call and post contract call"
           isLoading={ loading }
         >
-          <Skeleton isLoaded={ !loading }>{ aspectQuery.data?.join_points.join(' ') }</Skeleton>
+          { aspectQuery.data?.join_points.map(item => <Skeleton key={ item } isLoaded={ !loading }><Tag colorScheme="green">{ item }</Tag></Skeleton>) }
         </DetailsInfoItem>
         <DetailsInfoItem
           title="Bound Addresses"
