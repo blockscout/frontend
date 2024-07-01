@@ -13,6 +13,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/block/[height_or_hash]': 'View the transactions, token transfers, and uncles for block %height_or_hash%',
   '/accounts': DEFAULT_TEMPLATE,
   '/address/[hash]': 'View the account balance, transactions, and other data for %hash% on the %network_title%',
+  '/aspect/[hash]': 'View the aspect detail, transactions, and other data for %hash% on the %network_title%',
   '/verified-contracts': DEFAULT_TEMPLATE,
   '/address/[hash]/contract-verification': 'View the account balance, transactions, and other data for %hash% on the %network_title%',
   '/tokens': DEFAULT_TEMPLATE,

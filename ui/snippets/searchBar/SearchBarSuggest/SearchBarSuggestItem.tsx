@@ -7,6 +7,7 @@ import type { SearchResultItem } from 'types/api/search';
 import { route } from 'nextjs-routes';
 
 import SearchBarSuggestAddress from './SearchBarSuggestAddress';
+import SearchBarSuggestAspect from './SearchBarSuggestAspect';
 import SearchBarSuggestBlock from './SearchBarSuggestBlock';
 import SearchBarSuggestItemLink from './SearchBarSuggestItemLink';
 import SearchBarSuggestLabel from './SearchBarSuggestLabel';
@@ -38,6 +39,9 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) =>
       case 'block': {
         return route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.block_hash) } });
       }
+      case 'aspect': {
+        return route({ pathname: '/aspect/[hash]', query: { hash: data.aspect_hash } });
+      }
     }
   })();
 
@@ -59,6 +63,9 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) =>
       }
       case 'transaction': {
         return <SearchBarSuggestTx data={ data } searchTerm={ searchTerm } isMobile={ isMobile }/>;
+      }
+      case 'aspect': {
+        return <SearchBarSuggestAspect data={ data } searchTerm={ searchTerm } isMobile={ isMobile }/>;
       }
     }
   })();

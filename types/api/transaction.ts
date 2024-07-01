@@ -5,9 +5,11 @@ import type { Fee } from './fee';
 import type { TokenTransfer } from './tokenTransfer';
 import type { TxAction } from './txAction';
 
-export type TransactionRevertReason = {
-  raw: string;
-} | DecodedInput;
+export type TransactionRevertReason =
+  | {
+    raw: string;
+  }
+  | DecodedInput;
 
 export type Transaction = {
   to: AddressParam | null;
@@ -48,9 +50,11 @@ export type Transaction = {
   l1_gas_price?: string;
   l1_gas_used?: string;
   has_error_in_internal_txs: boolean | null;
-}
+};
 
-export type TransactionsResponse = TransactionsResponseValidated | TransactionsResponsePending;
+export type TransactionsResponse =
+  | TransactionsResponseValidated
+  | TransactionsResponsePending;
 
 export interface TransactionsResponseValidated {
   items: Array<Transaction>;
@@ -80,12 +84,18 @@ export interface TransactionsResponseWatchlist {
   } | null;
 }
 
-export type TransactionType = 'rootstock_remasc' |
-'rootstock_bridge' |
-'token_transfer' |
-'contract_creation' |
-'contract_call' |
-'token_creation' |
-'coin_transfer'
+export type TransactionType =
+  | 'rootstock_remasc'
+  | 'rootstock_bridge'
+  | 'token_transfer'
+  | 'contract_creation'
+  | 'contract_call'
+  | 'token_creation'
+  | 'coin_transfer'
+  | 'bind'
+  | 'operation';
 
-export type TxsResponse = TransactionsResponseValidated | TransactionsResponsePending | BlockTransactionsResponse;
+export type TxsResponse =
+  | TransactionsResponseValidated
+  | TransactionsResponsePending
+  | BlockTransactionsResponse;

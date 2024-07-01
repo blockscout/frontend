@@ -1,0 +1,104 @@
+import { Box, Grid } from '@chakra-ui/react';
+import type { UseQueryResult } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
+import React from 'react';
+
+import type { AspectDetail as TAspectDetail } from 'types/api/aspect';
+
+import type { ResourceError } from 'lib/api/resources';
+import getQueryParamString from 'lib/router/getQueryParamString';
+import AddressHeadingInfo from 'ui/shared/AddressHeadingInfo';
+import DataFetchAlert from 'ui/shared/DataFetchAlert';
+
+import AddressLink from '../shared/address/AddressLink';
+import DetailsInfoItem from '../shared/DetailsInfoItem';
+
+interface Props {
+  aspectQuery: UseQueryResult<TAspectDetail, ResourceError>;
+  scrollRef?: React.RefObject<HTMLDivElement>;
+}
+
+const AspectDetails = ({ aspectQuery }: Props) => {
+  const router = useRouter();
+
+  const addressHash = getQueryParamString(router.query.hash);
+
+  const errorData = React.useMemo(() => ({
+    hash: addressHash || '',
+    bound_address_count: 0,
+    deployed_tx: '',
+    join_points: [],
+    properties: {},
+    versions: [],
+  }), [ addressHash ]);
+
+  const lastVersion = React.useMemo(() => {
+    if (aspectQuery.data?.versions.length) {
+      return aspectQuery.data.versions[aspectQuery.data.versions.length - 1].version;
+    }
+  }, [ aspectQuery.data?.versions ]);
+
+  const is404Error = aspectQuery.isError && 'status' in aspectQuery.error && aspectQuery.error.status === 404;
+  const is422Error = aspectQuery.isError && 'status' in aspectQuery.error && aspectQuery.error.status === 422;
+
+  if (aspectQuery.isError && is422Error) {
+    throw Error('Address fetch error', { cause: aspectQuery.error as unknown as Error });
+  }
+
+  if (aspectQuery.isError && !is404Error) {
+    return <DataFetchAlert/>;
+  }
+
+  const data = aspectQuery.isError ? errorData : aspectQuery.data;
+
+  if (!data) {
+    return null;
+  }
+
+  return (
+    <Box>
+      <AddressHeadingInfo aspect={ data } isLoading={ aspectQuery.isPlaceholderData } isLinkDisabled/>
+      <Grid
+        mt={ 8 }
+        columnGap={ 8 }
+        rowGap={{ base: 1, lg: 3 }}
+        templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} overflow="hidden"
+      >
+        <DetailsInfoItem
+          title="Version"
+          hint="The number of bound Aspect"
+          isLoading={ aspectQuery.isPlaceholderData }
+        >
+          { lastVersion }
+        </DetailsInfoItem>
+        <DetailsInfoItem
+          title="Deployed"
+          hint="The number of bound Aspect"
+          isLoading={ aspectQuery.isPlaceholderData }
+        >
+          <AddressLink
+            hash={ aspectQuery.data?.deployed_tx }
+            type="transaction"
+            fontWeight="700"
+          />
+        </DetailsInfoItem>
+        <DetailsInfoItem
+          title="Join Points"
+          hint="The number of bound Aspect"
+          isLoading={ aspectQuery.isPlaceholderData }
+        >
+          { aspectQuery.data?.join_points.join(' ') }
+        </DetailsInfoItem>
+        <DetailsInfoItem
+          title="Bound Addresses"
+          hint="The number of bound Aspect"
+          isLoading={ aspectQuery.isPlaceholderData }
+        >
+          { aspectQuery.data?.bound_address_count }
+        </DetailsInfoItem>
+      </Grid>
+    </Box>
+  );
+};
+
+export default React.memo(AspectDetails);
