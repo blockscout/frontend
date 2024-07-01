@@ -87,7 +87,9 @@ const ProfileMenuDesktop = ({ isHomePage, className, fallbackIconSize }: Props) 
               aria-label="profile menu"
               icon={ <UserAvatar size={ 20 } fallbackIconSize={ fallbackIconSize }/> }
               variant={ variant }
-              colorScheme="blue"
+              bg="brand.900"
+              _hover={{ bg: 'brand.800' }}
+              _active={{ bg: 'brand.800' }}
               boxSize="40px"
               flexShrink={ 0 }
               { ...iconButtonProps }

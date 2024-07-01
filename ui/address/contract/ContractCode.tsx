@@ -114,6 +114,7 @@ const ContractCode = ({ addressHash, contractQuery, channel }: Props) => {
       ml={ data?.is_partially_verified ? 0 : 'auto' }
       flexShrink={ 0 }
       as="a"
+      colorScheme="brand"
       href={ route({ pathname: '/address/[hash]/contract-verification', query: { hash: addressHash || '' } }) }
     >
         Verify & publish

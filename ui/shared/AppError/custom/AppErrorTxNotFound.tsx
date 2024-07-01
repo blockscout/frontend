@@ -59,6 +59,7 @@ const AppErrorTxNotFound = () => {
         variant="outline"
         as="a"
         href={ route({ pathname: '/' }) }
+        colorScheme="brand"
       >
         Back to home
       </Button>

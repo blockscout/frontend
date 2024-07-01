@@ -5,7 +5,6 @@ import React from 'react';
 import breakpoints from 'theme/foundations/breakpoints';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
-import useThemeColors from 'ui/shared/monaco/utils/useThemeColors';
 
 type Props = {
   icon: IconName;
@@ -20,7 +19,6 @@ type Props = {
 const LARGEST_BREAKPOINT = '1240px';
 
 const StatsItem = ({ icon, title, value, className, tooltip, url, isLoading }: Props) => {
-  const themeColors = useThemeColors();
 
   const sxContainer: SystemStyleObject = {
     [`@media screen and (min-width: ${ breakpoints.lg }) and (max-width: ${ LARGEST_BREAKPOINT })`]: { flexDirection: 'column' },
@@ -30,7 +28,7 @@ const StatsItem = ({ icon, title, value, className, tooltip, url, isLoading }: P
     [`@media screen and (min-width: ${ breakpoints.lg }) and (max-width: ${ LARGEST_BREAKPOINT })`]: { alignItems: 'center' },
   };
 
-  const bgColor = useColorModeValue(themeColors['primary.50'], 'whiteAlpha.100');
+  const bgColor = useColorModeValue('brand.50', 'whiteAlpha.100');
   const loadingBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
   return (

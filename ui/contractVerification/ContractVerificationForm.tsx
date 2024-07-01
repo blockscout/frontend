@@ -201,6 +201,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
             mt={ 12 }
             isLoading={ formState.isSubmitting }
             loadingText="Verify & publish"
+            colorScheme="brand"
           >
             Verify & publish
           </Button>
