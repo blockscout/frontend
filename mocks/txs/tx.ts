@@ -321,6 +321,24 @@ export const stabilityTx: Transaction = {
   },
 };
 
+export const celoTxn: Transaction = {
+  ...base,
+  celo: {
+    gas_token: {
+      address: '0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1',
+      circulating_market_cap: null,
+      decimals: '18',
+      exchange_rate: '0.42',
+      holders: '205738',
+      icon_url: 'https://example.com/icon.png',
+      name: 'Celo Dollar',
+      symbol: 'cUSD',
+      total_supply: '7145754483836626799435133',
+      type: 'ERC-20',
+    },
+  },
+};
+
 export const base2 = {
   ...base,
   hash: '0x02d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3193',

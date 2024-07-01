@@ -43,6 +43,8 @@ const TxsTable = ({
 }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList(txs, !isLoading);
 
+  const feeCurrency = config.UI.views.tx.hiddenFields?.fee_currency || txs.some(({ celo }) => celo) ? '' : currencyUnits.ether;
+
   return (
     <AddressHighlightProvider>
       <Table variant="simple" minWidth="950px" size="xs">
@@ -68,7 +70,7 @@ const TxsTable = ({
                 <Link onClick={ sort('fee') } display="flex" justifyContent="end">
                   { sorting === 'fee-asc' && <IconSvg boxSize={ 5 } name="arrows/east" transform="rotate(-90deg)"/> }
                   { sorting === 'fee-desc' && <IconSvg boxSize={ 5 } name="arrows/east" transform="rotate(90deg)"/> }
-                  { `Fee${ config.UI.views.tx.hiddenFields?.fee_currency ? '' : ` ${ currencyUnits.ether }` }` }
+                  { `Fee${ feeCurrency }` }
                 </Link>
               </Th>
             ) }

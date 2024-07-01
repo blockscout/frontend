@@ -109,7 +109,13 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
       ) }
       { !config.UI.views.tx.hiddenFields?.tx_fee && (
         <Td isNumeric>
-          <TxFee tx={ tx } accuracy={ 8 } isLoading={ isLoading } withCurrency={ false } justifyContent="end"/>
+          <TxFee
+            tx={ tx }
+            accuracy={ 8 }
+            isLoading={ isLoading }
+            withCurrency={ Boolean(tx.celo) }
+            justifyContent="end"
+          />
         </Td>
       ) }
     </Tr>
