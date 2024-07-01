@@ -245,6 +245,16 @@ export const login: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
+export const dev: GetServerSideProps<Props> = async(context) => {
+  if (!config.app.isDev) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
 export const publicTagsSubmit: GetServerSideProps<Props> = async(context) => {
 
   if (!config.features.publicTagsSubmission.isEnabled) {
