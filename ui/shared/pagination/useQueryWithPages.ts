@@ -50,7 +50,7 @@ export default function useQueryWithPages<Resource extends PaginatedResources>({
   pathParams,
   scrollRef,
 }: Params<Resource>): QueryWithPagesResult<Resource> {
-  const resource = RESOURCES[resourceName];
+  const resource = RESOURCES[resourceName] as any;
   const queryClient = useQueryClient();
   const router = useRouter();
 
