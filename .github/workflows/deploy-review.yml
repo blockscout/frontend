@@ -12,6 +12,7 @@ on:
             - none
             - arbitrum
             - base
+            - celo_alfajores
             - gnosis
             - eth
             - eth_sepolia
