@@ -1,4 +1,4 @@
-import { Box, Grid } from '@chakra-ui/react';
+import { Box, Grid, Skeleton } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -55,9 +55,10 @@ const AspectDetails = ({ aspectQuery }: Props) => {
     return null;
   }
 
+  const loading = aspectQuery.isPlaceholderData;
   return (
     <Box>
-      <AddressHeadingInfo aspect={ data } isLoading={ aspectQuery.isPlaceholderData } isLinkDisabled/>
+      <AddressHeadingInfo aspect={ data } isLoading={ loading } isLinkDisabled/>
       <Grid
         mt={ 8 }
         columnGap={ 8 }
@@ -67,34 +68,36 @@ const AspectDetails = ({ aspectQuery }: Props) => {
         <DetailsInfoItem
           title="Version"
           hint="Latest version of this Aspect"
-          isLoading={ aspectQuery.isPlaceholderData }
+          isLoading={ loading }
         >
-          { lastVersion }
+          <Skeleton isLoaded={ !loading }>{ lastVersion }</Skeleton>
+
         </DetailsInfoItem>
         <DetailsInfoItem
           title="Deployed"
           hint="Deployment transaction hash of this Aspect"
-          isLoading={ aspectQuery.isPlaceholderData }
+          isLoading={ loading }
         >
           <AddressLink
             hash={ aspectQuery.data?.deployed_tx }
             type="transaction"
             fontWeight="700"
+            isLoading={ loading }
           />
         </DetailsInfoItem>
         <DetailsInfoItem
           title="Join Points"
           hint="Enabled join points of this Aspect, containing verify tx, pre tx execution, post tx execution, pre contract call and post contract call"
-          isLoading={ aspectQuery.isPlaceholderData }
+          isLoading={ loading }
         >
-          { aspectQuery.data?.join_points.join(' ') }
+          <Skeleton isLoaded={ !loading }>{ aspectQuery.data?.join_points.join(' ') }</Skeleton>
         </DetailsInfoItem>
         <DetailsInfoItem
           title="Bound Addresses"
           hint="Number of accounts those are bound with this Aspect"
-          isLoading={ aspectQuery.isPlaceholderData }
+          isLoading={ loading }
         >
-          { aspectQuery.data?.bound_address_count }
+          <Skeleton isLoaded={ !loading }>{ aspectQuery.data?.bound_address_count }</Skeleton>
         </DetailsInfoItem>
       </Grid>
     </Box>

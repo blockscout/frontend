@@ -1,4 +1,7 @@
-import type { AspectBindingResponse, AspectTxsResponse } from '../../types/api/aspect';
+import type {
+  AspectBindingResponse, AspectDetail,
+  AspectTxsResponse,
+} from '../../types/api/aspect';
 import { getFeaturePayload } from 'configs/app/features/types';
 import type {
   UserInfo,
@@ -793,6 +796,8 @@ export type ResourcePayload<Q extends ResourceName> = Q extends 'user_info'
   ? AspectBindingResponse
   : Q extends 'aspect_transactions'
   ? AspectTxsResponse
+  : Q extends 'aspects'
+  ? AspectDetail
   : never;
 /* eslint-enable @typescript-eslint/indent */
 
