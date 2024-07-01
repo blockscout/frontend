@@ -43,7 +43,9 @@ const TxsTable = ({
 }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList(txs, !isLoading);
 
-  const feeCurrency = config.UI.views.tx.hiddenFields?.fee_currency || txs.some(({ celo }) => celo) ? '' : currencyUnits.ether;
+  const feeCurrency = config.UI.views.tx.hiddenFields?.fee_currency || txs.some((tx) => tx.celo) || txs.some((tx) => tx.stability_fee) ?
+    '' :
+    ' ' + currencyUnits.ether;
 
   return (
     <AddressHighlightProvider>

@@ -21,25 +21,27 @@ interface Props {
 
 const TxFee = ({ className, tx, accuracy, accuracyUsd, isLoading, withCurrency = true, withUsd }: Props) => {
 
-  const showCurrency = withCurrency && !config.UI.views.tx.hiddenFields?.fee_currency;
+  const gasToken = tx.celo?.gas_token || tx.stability_fee?.token;
 
-  if (tx.celo?.gas_token) {
-    const token = tx.celo.gas_token;
+  if (gasToken) {
+    const feeValue = (tx.stability_fee?.total_fee ?? tx.fee.value) || '0';
     const { valueStr, usd } = getCurrencyValue({
-      value: tx.fee.value || '0',
-      exchangeRate: token.exchange_rate,
-      decimals: token.decimals,
+      value: feeValue,
+      exchangeRate: gasToken.exchange_rate,
+      decimals: gasToken.decimals,
       accuracy,
       accuracyUsd,
     });
     return (
       <Skeleton whiteSpace="pre-wrap" wordBreak="break-word" isLoaded={ !isLoading } display="flex" flexWrap="wrap" className={ className }>
         <span>{ valueStr } </span>
-        { valueStr !== '0' && showCurrency && <TokenEntity token={ token } noCopy onlySymbol w="auto" ml={ 1 }/> }
+        { valueStr !== '0' && withCurrency && <TokenEntity token={ gasToken } noCopy onlySymbol w="auto" ml={ 1 }/> }
         { usd && withUsd && <chakra.span color="text_secondary"> (${ usd })</chakra.span> }
       </Skeleton>
     );
   }
+
+  const showCurrency = withCurrency && !config.UI.views.tx.hiddenFields?.fee_currency;
 
   return (
     <CurrencyValue

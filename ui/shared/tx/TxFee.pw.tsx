@@ -22,3 +22,9 @@ test('celo gas token', async({ render, mockAssetResponse }) => {
   const component = await render(<TxFee tx={ txMock.celoTxn } withUsd accuracyUsd={ 3 }/>);
   await expect(component).toHaveScreenshot();
 });
+
+test('stability token', async({ render, mockAssetResponse }) => {
+  await mockAssetResponse(txMock.stabilityTx.stability_fee?.token.icon_url as string, './playwright/mocks/image_svg.svg');
+  const component = await render(<TxFee tx={ txMock.stabilityTx } withUsd accuracyUsd={ 3 }/>);
+  await expect(component).toHaveScreenshot();
+});

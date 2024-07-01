@@ -299,7 +299,7 @@ export const stabilityTx: Transaction = {
       decimals: '18',
       exchange_rate: '123.567',
       holders: '92',
-      icon_url: null,
+      icon_url: 'https://example.com/icon.png',
       name: 'Stability Gas',
       symbol: 'GAS',
       total_supply: '10000000000000000000000000',

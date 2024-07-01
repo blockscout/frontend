@@ -113,7 +113,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
             tx={ tx }
             accuracy={ 8 }
             isLoading={ isLoading }
-            withCurrency={ Boolean(tx.celo) }
+            withCurrency={ Boolean(tx.celo || tx.stability_fee) }
             justifyContent="end"
           />
         </Td>
