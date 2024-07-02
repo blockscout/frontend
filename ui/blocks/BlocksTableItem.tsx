@@ -86,33 +86,33 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           </Skeleton>
         ) : data.tx_count }
       </Td>
+      <Td fontSize="sm">
+        <Skeleton isLoaded={ !isLoading } display="inline-block">{ BigNumber(data.gas_used || 0).toFormat() }</Skeleton>
+        <Flex mt={ 2 }>
+          <Tooltip label={ isLoading ? undefined : 'Gas Used %' }>
+            <Box>
+              <Utilization
+                colorScheme="gray"
+                value={ BigNumber(data.gas_used || 0).dividedBy(BigNumber(data.gas_limit)).toNumber() }
+                isLoading={ isLoading }
+              />
+            </Box>
+          </Tooltip>
+          { data.gas_target_percentage && (
+            <>
+              <TextSeparator color={ separatorColor } mx={ 1 }/>
+              <GasUsedToTargetRatio value={ data.gas_target_percentage } isLoading={ isLoading }/>
+            </>
+          ) }
+        </Flex>
+      </Td>
       { !isRollup && !config.UI.views.block.hiddenFields?.total_reward && (
         <Td fontSize="sm">
-          <Skeleton isLoaded={ !isLoading } display="inline-block">{ BigNumber(data.gas_used || 0).toFormat() }</Skeleton>
-          <Flex mt={ 2 }>
-            <Tooltip label={ isLoading ? undefined : 'Gas Used %' }>
-              <Box>
-                <Utilization
-                  colorScheme="gray"
-                  value={ BigNumber(data.gas_used || 0).dividedBy(BigNumber(data.gas_limit)).toNumber() }
-                  isLoading={ isLoading }
-                />
-              </Box>
-            </Tooltip>
-            { data.gas_target_percentage && (
-              <>
-                <TextSeparator color={ separatorColor } mx={ 1 }/>
-                <GasUsedToTargetRatio value={ data.gas_target_percentage } isLoading={ isLoading }/>
-              </>
-            ) }
-          </Flex>
+          <Skeleton isLoaded={ !isLoading } display="inline-block">
+            { totalReward.toFixed(8) }
+          </Skeleton>
         </Td>
       ) }
-      <Td fontSize="sm">
-        <Skeleton isLoaded={ !isLoading } display="inline-block">
-          { totalReward.toFixed(8) }
-        </Skeleton>
-      </Td>
       { !isRollup && !config.UI.views.block.hiddenFields?.burnt_fees && (
         <Td fontSize="sm">
           <Flex alignItems="center" columnGap={ 2 }>
