@@ -1,7 +1,7 @@
 import { Grid, GridItem, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
-import type { StatsChartsSection } from 'types/api/stats';
+import type * as stats from '@blockscout/stats-types';
 import type { StatsInterval, StatsIntervalIds } from 'types/client/stats';
 
 import FilterInput from 'ui/shared/filters/FilterInput';
@@ -15,7 +15,7 @@ const intervalList = Object.keys(STATS_INTERVALS).map((id: string) => ({
 })) as Array<StatsInterval>;
 
 type Props = {
-  sections?: Array<StatsChartsSection>;
+  sections?: Array<stats.LineChartSection>;
   currentSection: string;
   onSectionChange: (newSection: string) => void;
   interval: StatsIntervalIds;

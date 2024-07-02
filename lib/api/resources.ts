@@ -1,4 +1,5 @@
 import type * as bens from '@blockscout/bens-types';
+import type * as stats from '@blockscout/stats-types';
 import { getFeaturePayload } from 'configs/app/features/types';
 import type {
   UserInfo,
@@ -71,7 +72,7 @@ import type {
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import type { SearchRedirectResult, SearchResult, SearchResultFilters, SearchResultItem } from 'types/api/search';
 import type { ShibariumWithdrawalsResponse, ShibariumDepositsResponse } from 'types/api/shibarium';
-import type { Counters, StatsCharts, StatsChart, HomeStats } from 'types/api/stats';
+import type { HomeStats } from 'types/api/stats';
 import type {
   TokenCounters,
   TokenInfo,
@@ -931,9 +932,9 @@ Q extends 'homepage_zkevm_l2_batches' ? { items: Array<ZkEvmL2TxnBatchesItem> } 
 Q extends 'homepage_indexing_status' ? IndexingStatus :
 Q extends 'homepage_zkevm_latest_batch' ? number :
 Q extends 'homepage_zksync_latest_batch' ? number :
-Q extends 'stats_counters' ? Counters :
-Q extends 'stats_lines' ? StatsCharts :
-Q extends 'stats_line' ? StatsChart :
+Q extends 'stats_counters' ? stats.Counters :
+Q extends 'stats_lines' ? stats.LineCharts :
+Q extends 'stats_line' ? stats.LineChart :
 Q extends 'blocks' ? BlocksResponse :
 Q extends 'block' ? Block :
 Q extends 'block_txs' ? BlockTransactionsResponse :

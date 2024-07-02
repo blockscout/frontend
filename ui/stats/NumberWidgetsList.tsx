@@ -29,7 +29,7 @@ const NumberWidgetsList = () => {
         data?.counters?.map(({ id, title, value, units, description }, index) => {
 
           let unitsStr = '';
-          if (UNITS_WITHOUT_SPACE.includes(units)) {
+          if (units && UNITS_WITHOUT_SPACE.includes(units)) {
             unitsStr = units;
           } else if (units) {
             unitsStr = ' ' + units;
