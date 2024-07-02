@@ -74,7 +74,7 @@ test('customization', async({ render }) => {
         p={ 2 }
         maxW="200px"
         borderWidth="1px"
-        borderColor="blue.700"
+        borderColor="brand.700"
       />
     </Box>,
   );

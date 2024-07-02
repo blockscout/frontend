@@ -18,7 +18,7 @@ type Props = {
 }
 
 const AppActionButton = ({ data, className, txHash, source }: Props) => {
-  const defaultTextColor = useColorModeValue('blue.600', 'blue.300');
+  const defaultTextColor = useColorModeValue('brand.600', 'brand.300');
   const defaultBg = useColorModeValue('gray.100', 'gray.700');
 
   const { appID, textColor, bgColor, appActionButtonText, appLogoURL, appMarketplaceURL } = data;

@@ -12,11 +12,11 @@ export default function useColors() {
     },
     bg: {
       'default': 'transparent',
-      active: useColorModeValue('blue.50', 'whiteAlpha.100'),
+      active: useColorModeValue('brand.50', 'whiteAlpha.100'),
     },
     border: {
       'default': 'divider',
-      active: useColorModeValue('blue.50', 'whiteAlpha.100'),
+      active: useColorModeValue('brand.50', 'whiteAlpha.100'),
     },
   };
 }

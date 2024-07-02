@@ -49,7 +49,7 @@ const NetworkMenuPopup = ({ items, tabs }: Props) => {
     >
       { tabs.length > 1 && (
         <TabList columnGap={ 2 }>
-          { tabs.map((tab) => <Tab key={ tab } textTransform="capitalize">{ tab }</Tab>) }
+          { tabs.map((tab) => <Tab key={ tab } textTransform="capitalize" >{ tab }</Tab>) }
         </TabList>
       ) }
       <TabPanels mt={ 3 }>

@@ -5,7 +5,7 @@ const baseStyle = defineStyle((props) => {
   const { emptyColor, color } = props;
 
   return {
-    borderColor: color || 'blue.500',
+    borderColor: color || 'brand.500',
     borderBottomColor: emptyColor || mode('blackAlpha.200', 'whiteAlpha.200')(props),
     borderLeftColor: emptyColor || mode('blackAlpha.200', 'whiteAlpha.200')(props),
   };

@@ -80,9 +80,9 @@ const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
             <Button
               className={ className }
               variant={ variant }
-              bg="brand.900"
-              _hover={{ bg: 'brand.800' }}
-              _active={{ bg: 'brand.800' }}
+              bg="brand.600"
+              _hover={{ bg: 'brand.700' }}
+              _active={{ bg: 'brand.700' }}
               flexShrink={ 0 }
               isLoading={ (isModalOpening || isModalOpen) && !isWalletConnected }
               loadingText="Connect wallet"

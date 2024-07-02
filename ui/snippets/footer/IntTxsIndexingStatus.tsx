@@ -67,7 +67,7 @@ const IntTxsIndexingStatus = () => {
       alignItems="center"
       justifyContent="center"
       color="green.400"
-      _hover={{ color: 'blue.400' }}
+      _hover={{ color: 'brand.400' }}
     >
       <IconButton
         colorScheme="none"

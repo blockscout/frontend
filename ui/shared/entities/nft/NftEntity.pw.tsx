@@ -55,7 +55,7 @@ test('customization', async({ render }) => {
       id={ 1042 }
       p={ 3 }
       borderWidth="1px"
-      borderColor="blue.700"
+      borderColor="brand.700"
     />,
   );
 

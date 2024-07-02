@@ -18,7 +18,7 @@ const TOOLTIP_OFFSET: [ number, number ] = [ 0, 10 ];
 
 const SettingsSample = ({ label, value, bg, onClick, isActive }: Props) => {
   const bgColor = useColorModeValue('white', 'gray.900');
-  const activeBgColor = useColorModeValue('blue.50', 'whiteAlpha.100');
+  const activeBgColor = useColorModeValue('brand.50', 'whiteAlpha.100');
 
   const activeBorderColor = useToken('colors', useColorModeValue('blackAlpha.800', 'gray.50'));
   const hoverBorderColor = useToken('colors', 'link_hovered');
