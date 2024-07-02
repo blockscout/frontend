@@ -9,14 +9,20 @@ type Props = {
   step: Step;
   isLast: boolean;
   isPassed: boolean;
+  isPending?: boolean;
 }
 
-const VerificationStep = ({ step, isLast, isPassed }: Props) => {
-  const stepColor = isPassed ? 'green.500' : 'text_secondary';
+const VerificationStep = ({ step, isLast, isPassed, isPending }: Props) => {
+  let stepColor = 'text_secondary';
+  if (isPending) {
+    stepColor = 'yellow.500';
+  } else if (isPassed) {
+    stepColor = 'green.500';
+  }
 
   return (
     <HStack gap={ 2 } color={ stepColor }>
-      <IconSvg name={ isPassed ? 'finalized' : 'unfinalized' } boxSize={ 5 }/>
+      <IconSvg name={ isPassed ? 'verification-steps/finalized' : 'verification-steps/unfinalized' } boxSize={ 5 }/>
       <Box color={ stepColor }>{ typeof step === 'string' ? step : step.content }</Box>
       { !isLast && <IconSvg name="arrows/east" boxSize={ 5 }/> }
     </HStack>

@@ -48,7 +48,7 @@ const AddressNetWorth = ({ addressData, isLoading, addressHash }: Props) => {
 
   let multichainItem = null;
 
-  if (multichainFeature.isEnabled) {
+  if (multichainFeature.isEnabled && !addressData?.is_contract) {
     const buttonContent = (
       <>
         { multichainFeature.logoUrl &&

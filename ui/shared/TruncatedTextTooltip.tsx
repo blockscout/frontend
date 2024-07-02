@@ -1,5 +1,5 @@
 import type { PlacementWithLogical } from '@chakra-ui/react';
-import { Tooltip } from '@chakra-ui/react';
+import { Tooltip, useDisclosure } from '@chakra-ui/react';
 import debounce from 'lodash/debounce';
 import React from 'react';
 import useFontFaceObserver from 'use-font-face-observer';
@@ -15,6 +15,7 @@ interface Props {
 const TruncatedTextTooltip = ({ children, label, placement }: Props) => {
   const childRef = React.useRef<HTMLElement>(null);
   const [ isTruncated, setTruncated ] = React.useState(false);
+  const { isOpen, onToggle, onOpen, onClose } = useDisclosure();
 
   const isFontFaceLoaded = useFontFaceObserver([
     { family: BODY_TYPEFACE },
@@ -55,14 +56,36 @@ const TruncatedTextTooltip = ({ children, label, placement }: Props) => {
   // and it is not cleared how to manage case with two or more children
   const child = React.Children.only(children) as React.ReactElement & {
     ref?: React.Ref<React.ReactNode>;
+    onClick?: () => void;
+    onMouseEnter?: () => void;
+    onMouseLeave?: () => void;
   };
+  const handleClick = React.useCallback((event: React.MouseEvent) => {
+    event.stopPropagation();
+    onToggle();
+  }, [ onToggle ]);
+
   const modifiedChildren = React.cloneElement(
     child,
-    { ref: childRef },
+    {
+      ref: childRef,
+      onClick: handleClick,
+      onMouseEnter: onOpen,
+      onMouseLeave: onClose,
+    },
   );
 
   if (isTruncated) {
-    return <Tooltip label={ label } maxW={{ base: '100vw', lg: '400px' }} placement={ placement }>{ modifiedChildren }</Tooltip>;
+    return (
+      <Tooltip
+        label={ label }
+        maxW={{ base: '100vw', lg: '400px' }}
+        placement={ placement }
+        isOpen={ isOpen }
+      >
+        { modifiedChildren }
+      </Tooltip>
+    );
   }
 
   return modifiedChildren;

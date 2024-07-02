@@ -28,10 +28,15 @@ const EntityTags = ({ tags, className, isLoading }: Props) => {
   }
 
   const content = (() => {
+    const tagMaxW = {
+      base: tags.length === 1 ? '100%' : '60%',
+      lg: '300px',
+    };
+
     if (tags.length > visibleNum) {
       return (
         <>
-          { tags.slice(0, visibleNum).map((tag) => <EntityTag key={ tag.slug } data={ tag } isLoading={ isLoading } truncate/>) }
+          { tags.slice(0, visibleNum).map((tag) => <EntityTag key={ tag.slug } data={ tag } isLoading={ isLoading } maxW={ tagMaxW }/>) }
           { metaSuitesPlaceholder }
           <Popover trigger="click" placement="bottom-start" isLazy>
             <PopoverTrigger>
@@ -53,14 +58,14 @@ const EntityTags = ({ tags, className, isLoading }: Props) => {
 
     return (
       <>
-        { tags.map((tag) => <EntityTag key={ tag.slug } data={ tag } isLoading={ isLoading } truncate/>) }
+        { tags.map((tag) => <EntityTag key={ tag.slug } data={ tag } isLoading={ isLoading } maxW={ tagMaxW }/>) }
         { metaSuitesPlaceholder }
       </>
     );
   })();
 
   return (
-    <Flex className={ className } columnGap={ 2 } rowGap={ 2 } flexWrap="wrap" alignItems="center" flexGrow={ 1 }>
+    <Flex className={ className } columnGap={ 2 } rowGap={ 2 } flexWrap="nowrap" alignItems="center" flexGrow={ 1 } maxW="100%">
       { content }
     </Flex>
   );

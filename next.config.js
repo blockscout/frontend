@@ -47,14 +47,15 @@ const moduleExports = {
   productionBrowserSourceMaps: true,
   experimental: {
     instrumentationHook: process.env.NEXT_OPEN_TELEMETRY_ENABLED === 'true',
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: [ '@svgr/webpack' ],
-          as: '*.js',
-        },
-      },
-    },
+    // disabled as it is not stable yet
+    // turbo: {
+    //   rules: {
+    //     '*.svg': {
+    //       loaders: [ '@svgr/webpack' ],
+    //       as: '*.js',
+    //     },
+    //   },
+    // },
   },
 };
 

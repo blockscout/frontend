@@ -25,7 +25,7 @@ export const ADDRESS_INFO: Address = {
   has_tokens: false,
   has_validated_blocks: false,
   hash: ADDRESS_HASH,
-  implementations: null,
+  implementations: [ { address: ADDRESS_HASH, name: 'Proxy' } ],
   is_contract: true,
   is_verified: true,
   name: 'ChainLink Token (goerli)',

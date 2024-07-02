@@ -16,7 +16,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
 - [API configuration](ENVS.md#api-configuration)
 - [UI configuration](ENVS.md#ui-configuration)
   - [Homepage](ENVS.md#homepage)
-  - [Sidebar](ENVS.md#sidebar)
+  - [Navigation](ENVS.md#navigation)
   - [Footer](ENVS.md#footer)
   - [Favicon](ENVS.md#favicon)
   - [Meta](ENVS.md#meta)
@@ -123,7 +123,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
 
 &nbsp;
 
-### Sidebar
+### Navigation
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -135,6 +135,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
 | NEXT_PUBLIC_OTHER_LINKS | `Array<{url: string; text: string}>` | List of links for the "Other" navigation menu | - | - | `[{'url':'https://blockscout.com','text':'Blockscout'}]` | v1.0.x+ |
 | NEXT_PUBLIC_NAVIGATION_HIDDEN_LINKS | `Array<LinkId>` | List of external links hidden in the navigation. Supported ids are `eth_rpc_api`, `rpc_api` | - | - | `['eth_rpc_api']` | v1.16.0+ |
 | NEXT_PUBLIC_NAVIGATION_HIGHLIGHTED_ROUTES | `Array<string>` | List of menu item routes that should have a lightning label | - | - | `['/accounts']` | v1.31.0+ |
+| NEXT_PUBLIC_NAVIGATION_LAYOUT | `vertical \| horizontal` | Navigation menu layout type | - | `vertical` | `horizontal` | v1.32.0+ |
 
 #### Featured network configuration properties
 
@@ -400,7 +401,7 @@ This feature is **enabled by default** with the `coinzilla` ads provider. To swi
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_ROLLUP_TYPE | `'optimistic' \| 'shibarium' \| 'zkEvm' \| 'zkSync' ` | Rollup chain type | Required | - | `'optimistic'` | v1.24.0+ |
+| NEXT_PUBLIC_ROLLUP_TYPE | `'optimistic' \| 'arbitrum' \| 'shibarium' \| 'zkEvm' \| 'zkSync' ` | Rollup chain type | Required | - | `'optimistic'` | v1.24.0+ |
 | NEXT_PUBLIC_ROLLUP_L1_BASE_URL | `string` | Blockscout base URL for L1 network | Required | - | `'http://eth-goerli.blockscout.com'` | v1.24.0+ |
 | NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL | `string` | URL for L2 -> L1 withdrawals | Required only for `optimistic` rollups | - | `https://app.optimism.io/bridge/withdraw` | v1.24.0+ |
 | NEXT_PUBLIC_FAULT_PROOF_ENABLED | `boolean` | Set to `true` for chains with fault proof system enabled (OP stack only) | - | - | `true` | v1.31.0+ |

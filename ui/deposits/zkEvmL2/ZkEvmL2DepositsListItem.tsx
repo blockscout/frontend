@@ -70,7 +70,7 @@ const ZkEvmL2DepositsListItem = ({ item, isLoading }: Props) => {
             truncation="constant_long"
           />
         ) : (
-          <chakra.span color="text_secondary">
+          <chakra.span>
           Pending Claim
           </chakra.span>
         ) }

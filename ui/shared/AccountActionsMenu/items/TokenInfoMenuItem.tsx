@@ -2,9 +2,7 @@ import { chakra, useDisclosure } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { ItemType } from '../types';
-
-import type { Route } from 'nextjs-routes';
+import type { ItemProps } from '../types';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
@@ -16,14 +14,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import ButtonItem from '../parts/ButtonItem';
 import MenuItem from '../parts/MenuItem';
 
-interface Props {
-  className?: string;
-  hash: string;
-  onBeforeClick: (route: Route) => boolean;
-  type: ItemType;
-}
-
-const TokenInfoMenuItem = ({ className, hash, onBeforeClick, type }: Props) => {
+const TokenInfoMenuItem = ({ className, hash, onBeforeClick, type }: ItemProps) => {
   const router = useRouter();
   const modal = useDisclosure();
   const isAuth = useHasAccount();

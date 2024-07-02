@@ -33,14 +33,19 @@ import type {
 } from 'types/api/address';
 import type { AddressesResponse } from 'types/api/addresses';
 import type { AddressMetadataInfo, PublicTagTypesResponse } from 'types/api/addressMetadata';
+import type {
+  ArbitrumL2MessagesResponse,
+  ArbitrumL2TxnBatch,
+  ArbitrumL2TxnBatchesResponse,
+  ArbitrumL2BatchTxs,
+  ArbitrumL2BatchBlocks,
+} from 'types/api/arbitrumL2';
 import type { TxBlobs, Blob } from 'types/api/blobs';
 import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters, BlockWithdrawalsResponse } from 'types/api/block';
 import type { ChartMarketResponse, ChartSecondaryCoinPriceResponse, ChartTransactionResponse } from 'types/api/charts';
 import type { BackendVersionConfig } from 'types/api/configs';
 import type {
   SmartContract,
-  SmartContractReadMethod,
-  SmartContractWriteMethod,
   SmartContractVerificationConfig,
   SolidityscanReport,
   SmartContractSecurityAudits,
@@ -458,26 +463,6 @@ export const RESOURCES = {
     path: '/api/v2/smart-contracts/:hash',
     pathParams: [ 'hash' as const ],
   },
-  contract_methods_read: {
-    path: '/api/v2/smart-contracts/:hash/methods-read',
-    pathParams: [ 'hash' as const ],
-  },
-  contract_methods_read_proxy: {
-    path: '/api/v2/smart-contracts/:hash/methods-read-proxy',
-    pathParams: [ 'hash' as const ],
-  },
-  contract_method_query: {
-    path: '/api/v2/smart-contracts/:hash/query-read-method',
-    pathParams: [ 'hash' as const ],
-  },
-  contract_methods_write: {
-    path: '/api/v2/smart-contracts/:hash/methods-write',
-    pathParams: [ 'hash' as const ],
-  },
-  contract_methods_write_proxy: {
-    path: '/api/v2/smart-contracts/:hash/methods-write-proxy',
-    pathParams: [ 'hash' as const ],
-  },
   contract_verification_config: {
     path: '/api/v2/smart-contracts/verification/config',
   },
@@ -557,6 +542,11 @@ export const RESOURCES = {
   },
   token_instance_holders: {
     path: '/api/v2/tokens/:hash/instances/:id/holders',
+    pathParams: [ 'hash' as const, 'id' as const ],
+    filterFields: [],
+  },
+  token_instance_refresh_metadata: {
+    path: '/api/v2/tokens/:hash/instances/:id/refetch-metadata',
     pathParams: [ 'hash' as const, 'id' as const ],
     filterFields: [],
   },
@@ -661,6 +651,44 @@ export const RESOURCES = {
 
   optimistic_l2_dispute_games_count: {
     path: '/api/v2/optimism/games/count',
+  },
+
+  // arbitrum L2
+  arbitrum_l2_messages: {
+    path: '/api/v2/arbitrum/messages/:direction',
+    pathParams: [ 'direction' as const ],
+    filterFields: [],
+  },
+
+  arbitrum_l2_messages_count: {
+    path: '/api/v2/arbitrum/messages/:direction/count',
+    pathParams: [ 'direction' as const ],
+  },
+
+  arbitrum_l2_txn_batches: {
+    path: '/api/v2/arbitrum/batches',
+    filterFields: [],
+  },
+
+  arbitrum_l2_txn_batches_count: {
+    path: '/api/v2/arbitrum/batches/count',
+  },
+
+  arbitrum_l2_txn_batch: {
+    path: '/api/v2/arbitrum/batches/:number',
+    pathParams: [ 'number' as const ],
+  },
+
+  arbitrum_l2_txn_batch_txs: {
+    path: '/api/v2/transactions/arbitrum-batch/:number',
+    pathParams: [ 'number' as const ],
+    filterFields: [],
+  },
+
+  arbitrum_l2_txn_batch_blocks: {
+    path: '/api/v2/blocks/arbitrum-batch/:number',
+    pathParams: [ 'number' as const ],
+    filterFields: [],
   },
 
   // zkEvm L2
@@ -868,6 +896,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'optimistic_l2_output_roots' | 'optimistic_l2_withdrawals' | 'optimistic_l2_txn_batches' | 'optimistic_l2_deposits' |
 'optimistic_l2_dispute_games' |
 'shibarium_deposits' | 'shibarium_withdrawals' |
+'arbitrum_l2_messages' | 'arbitrum_l2_txn_batches' | 'arbitrum_l2_txn_batch_txs' | 'arbitrum_l2_txn_batch_blocks' |
 'zkevm_l2_deposits' | 'zkevm_l2_withdrawals' | 'zkevm_l2_txn_batches' | 'zkevm_l2_txn_batch_txs' |
 'zksync_l2_txn_batches' | 'zksync_l2_txn_batch_txs' |
 'withdrawals' | 'address_withdrawals' | 'block_withdrawals' |
@@ -954,10 +983,6 @@ Q extends 'quick_search' ? Array<SearchResultItem> :
 Q extends 'search' ? SearchResult :
 Q extends 'search_check_redirect' ? SearchRedirectResult :
 Q extends 'contract' ? SmartContract :
-Q extends 'contract_methods_read' ? Array<SmartContractReadMethod> :
-Q extends 'contract_methods_read_proxy' ? Array<SmartContractReadMethod> :
-Q extends 'contract_methods_write' ? Array<SmartContractWriteMethod> :
-Q extends 'contract_methods_write_proxy' ? Array<SmartContractWriteMethod> :
 Q extends 'contract_solidityscan_report' ? SolidityscanReport :
 Q extends 'verified_contracts' ? VerifiedContractsResponse :
 Q extends 'verified_contracts_counters' ? VerifiedContractsCounters :
@@ -994,6 +1019,13 @@ Q extends 'shibarium_withdrawals' ? ShibariumWithdrawalsResponse :
 Q extends 'shibarium_deposits' ? ShibariumDepositsResponse :
 Q extends 'shibarium_withdrawals_count' ? number :
 Q extends 'shibarium_deposits_count' ? number :
+Q extends 'arbitrum_l2_messages' ? ArbitrumL2MessagesResponse :
+Q extends 'arbitrum_l2_messages_count' ? number :
+Q extends 'arbitrum_l2_txn_batches' ? ArbitrumL2TxnBatchesResponse :
+Q extends 'arbitrum_l2_txn_batches_count' ? number :
+Q extends 'arbitrum_l2_txn_batch' ? ArbitrumL2TxnBatch :
+Q extends 'arbitrum_l2_txn_batch_txs' ? ArbitrumL2BatchTxs :
+Q extends 'arbitrum_l2_txn_batch_blocks' ? ArbitrumL2BatchBlocks :
 Q extends 'zkevm_l2_deposits' ? ZkEvmL2DepositsResponse :
 Q extends 'zkevm_l2_deposits_count' ? number :
 Q extends 'zkevm_l2_withdrawals' ? ZkEvmL2WithdrawalsResponse :

@@ -18,7 +18,7 @@ test.beforeEach(async({ mockApiResponse }) => {
 });
 
 test('base view', async({ render }) => {
-  const component = await render(<AddressNetWorth addressData={ addressMock.token } addressHash={ ADDRESS_HASH }/>);
+  const component = await render(<AddressNetWorth addressData={ addressMock.eoa } addressHash={ ADDRESS_HASH }/>);
 
   await expect(component).toHaveScreenshot();
 });
@@ -31,7 +31,7 @@ test('with multichain button internal +@dark-mode', async({ render, mockEnvs, mo
   ]);
   await mockAssetResponse(ICON_URL, './playwright/mocks/image_svg.svg');
 
-  const component = await render(<AddressNetWorth addressData={ addressMock.token } addressHash={ ADDRESS_HASH }/>);
+  const component = await render(<AddressNetWorth addressData={ addressMock.eoa } addressHash={ ADDRESS_HASH }/>);
 
   await expect(component).toHaveScreenshot();
 });
@@ -42,7 +42,7 @@ test('with multichain button external', async({ render, mockEnvs, mockAssetRespo
   ]);
   await mockAssetResponse(ICON_URL, './playwright/mocks/image_svg.svg');
 
-  const component = await render(<AddressNetWorth addressData={ addressMock.token } addressHash={ ADDRESS_HASH }/>);
+  const component = await render(<AddressNetWorth addressData={ addressMock.eoa } addressHash={ ADDRESS_HASH }/>);
 
   await expect(component).toHaveScreenshot();
 });
@@ -56,7 +56,7 @@ test('with multichain button internal small screen', async({ render, mockEnvs, m
   await mockAssetResponse(ICON_URL, './playwright/mocks/image_svg.svg');
 
   const component = await render(
-    <Box w="300px"><AddressNetWorth addressData={ addressMock.token } addressHash={ ADDRESS_HASH }/></Box>,
+    <Box w="300px"><AddressNetWorth addressData={ addressMock.eoa } addressHash={ ADDRESS_HASH }/></Box>,
   );
 
   await expect(component).toHaveScreenshot();

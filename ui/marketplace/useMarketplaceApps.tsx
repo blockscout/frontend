@@ -11,6 +11,7 @@ import useFetch from 'lib/hooks/useFetch';
 import { MARKETPLACE_APP } from 'stubs/marketplace';
 
 import useSecurityReports from './useSecurityReports';
+import type { SortValue } from './utils';
 
 const feature = config.features.marketplace;
 
@@ -88,13 +89,22 @@ export default function useMarketplaceApps(
     enabled: feature.isEnabled && Boolean(snapshotFavoriteApps),
   });
 
+  const [ sorting, setSorting ] = React.useState<SortValue>();
+
   const appsWithSecurityReports = React.useMemo(() =>
     data?.map((app) => ({ ...app, securityReport: securityReports?.[app.id] })),
   [ data, securityReports ]);
 
   const displayedApps = React.useMemo(() => {
-    return appsWithSecurityReports?.filter(app => isAppNameMatches(filter, app) && isAppCategoryMatches(selectedCategoryId, app, favoriteApps)) || [];
-  }, [ selectedCategoryId, appsWithSecurityReports, filter, favoriteApps ]);
+    return appsWithSecurityReports
+      ?.filter(app => isAppNameMatches(filter, app) && isAppCategoryMatches(selectedCategoryId, app, favoriteApps))
+      .sort((a, b) => {
+        if (sorting === 'security_score') {
+          return (b.securityReport?.overallInfo.securityScore || 0) - (a.securityReport?.overallInfo.securityScore || 0);
+        }
+        return 0;
+      }) || [];
+  }, [ selectedCategoryId, appsWithSecurityReports, filter, favoriteApps, sorting ]);
 
   return React.useMemo(() => ({
     data,
@@ -102,6 +112,7 @@ export default function useMarketplaceApps(
     error,
     isError,
     isPlaceholderData: isPlaceholderData || isSecurityReportsPlaceholderData,
+    setSorting,
   }), [
     data,
     displayedApps,
@@ -109,5 +120,6 @@ export default function useMarketplaceApps(
     isError,
     isPlaceholderData,
     isSecurityReportsPlaceholderData,
+    setSorting,
   ]);
 }

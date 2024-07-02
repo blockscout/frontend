@@ -63,7 +63,7 @@ const Icon = (props: IconProps) => {
           <span>
             <EntityBase.Icon
               { ...props }
-              name="contract_verified"
+              name="contracts/verified"
               color="green.500"
               borderRadius={ 0 }
             />
@@ -77,7 +77,7 @@ const Icon = (props: IconProps) => {
         <span>
           <EntityBase.Icon
             { ...props }
-            name="contract"
+            name="contracts/regular"
             borderRadius={ 0 }
           />
         </span>

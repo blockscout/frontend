@@ -1,21 +1,14 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { ItemType } from '../types';
+import type { ItemProps } from '../types';
 
 import IconSvg from 'ui/shared/IconSvg';
 
 import ButtonItem from '../parts/ButtonItem';
 import MenuItem from '../parts/MenuItem';
 
-interface Props {
-  className?: string;
-  hash: string;
-  onBeforeClick: () => boolean;
-  type: ItemType;
-}
-
-const PublicTagMenuItem = ({ className, hash, onBeforeClick, type }: Props) => {
+const PublicTagMenuItem = ({ className, hash, onBeforeClick, type }: ItemProps) => {
   const router = useRouter();
 
   const handleClick = React.useCallback(() => {

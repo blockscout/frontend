@@ -47,6 +47,11 @@ const BlockPageContent = () => {
   const blockWithdrawalsQuery = useBlockWithdrawalsQuery({ heightOrHash, blockQuery, tab });
   const blockBlobTxsQuery = useBlockBlobTxsQuery({ heightOrHash, blockQuery, tab });
 
+  const hasPagination = !isMobile && (
+    (tab === 'txs' && blockTxsQuery.pagination.isVisible) ||
+    (tab === 'withdrawals' && blockWithdrawalsQuery.pagination.isVisible)
+  );
+
   const tabs: Array<RoutedTab> = React.useMemo(() => ([
     {
       id: 'index',
@@ -64,7 +69,7 @@ const BlockPageContent = () => {
       component: (
         <>
           { blockTxsQuery.isDegradedData && <ServiceDegradationWarning isLoading={ blockTxsQuery.isPlaceholderData } mb={ 6 }/> }
-          <TxsWithFrontendSorting query={ blockTxsQuery } showBlockInfo={ false } showSocketInfo={ false } top={ TABS_HEIGHT }/>
+          <TxsWithFrontendSorting query={ blockTxsQuery } showBlockInfo={ false } showSocketInfo={ false } top={ hasPagination ? TABS_HEIGHT : 0 }/>
         </>
       ),
     },
@@ -87,12 +92,7 @@ const BlockPageContent = () => {
           </>
         ),
       } : null,
-  ].filter(Boolean)), [ blockBlobTxsQuery, blockQuery, blockTxsQuery, blockWithdrawalsQuery ]);
-
-  const hasPagination = !isMobile && (
-    (tab === 'txs' && blockTxsQuery.pagination.isVisible) ||
-    (tab === 'withdrawals' && blockWithdrawalsQuery.pagination.isVisible)
-  );
+  ].filter(Boolean)), [ blockBlobTxsQuery, blockQuery, blockTxsQuery, blockWithdrawalsQuery, hasPagination ]);
 
   let pagination;
   if (tab === 'txs') {
