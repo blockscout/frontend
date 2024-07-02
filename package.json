@@ -37,6 +37,7 @@
   "dependencies": {
     "@blockscout/bens-types": "v1.3.0-beta",
     "@blockscout/stats-types": "../blockscout-rs/stats/types",
+    "@blockscout/visualizer-types": "../blockscout-rs/visualizer/types",
     "@chakra-ui/react": "2.7.1",
     "@chakra-ui/theme-tools": "^2.0.18",
     "@emotion/react": "^11.10.4",

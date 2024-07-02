@@ -1335,6 +1335,9 @@
 "@blockscout/stats-types@../blockscout-rs/stats/types":
   version "0.0.1"
 
+"@blockscout/visualizer-types@../blockscout-rs/visualizer/types":
+  version "0.0.1"
+
 "@braintree/sanitize-url@=6.0.4":
   version "6.0.4"
   resolved "https://registry.yarnpkg.com/@braintree/sanitize-url/-/sanitize-url-6.0.4.tgz#923ca57e173c6b232bbbb07347b1be982f03e783"
