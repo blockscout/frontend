@@ -18,6 +18,16 @@ interface Props {
   scrollRef?: React.RefObject<HTMLDivElement>;
 }
 
+function convertTagString(input: string) {
+  const parts = input.split('_');
+
+  for (let i = 0; i < parts.length; i++) {
+    parts[i] = parts[i].charAt(0).toUpperCase() + parts[i].slice(1).toLowerCase();
+  }
+
+  return parts.join(' ');
+}
+
 const AspectDetails = ({ aspectQuery }: Props) => {
   const router = useRouter();
 
@@ -89,7 +99,13 @@ const AspectDetails = ({ aspectQuery }: Props) => {
           hint="Enabled join points of this Aspect, containing verify tx, pre tx execution, post tx execution, pre contract call and post contract call"
           isLoading={ loading }
         >
-          { aspectQuery.data?.join_points.map(item => <Skeleton key={ item } isLoaded={ !loading }><Tag colorScheme="green">{ item }</Tag></Skeleton>) }
+          { aspectQuery.data?.join_points.map(item => (
+            <Skeleton
+              key={ item }
+              isLoaded={ !loading }>
+              <Tag colorScheme="green">{ convertTagString(item) }</Tag>
+            </Skeleton>
+          )) }
         </DetailsInfoItem>
         <DetailsInfoItem
           title="Bound Addresses"
