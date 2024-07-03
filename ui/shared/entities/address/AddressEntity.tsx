@@ -65,7 +65,7 @@ const Icon = (props: IconProps) => {
           <span>
             <EntityBase.Icon
               { ...props }
-              name={ isProxy ? 'contract_proxy' : 'contract_verified' }
+              name={ isProxy ? 'contracts/proxy' : 'contracts/verified' }
               color="green.500"
               borderRadius={ 0 }
             />
@@ -79,7 +79,7 @@ const Icon = (props: IconProps) => {
         <span>
           <EntityBase.Icon
             { ...props }
-            name={ isProxy ? 'contract_proxy' : 'contract' }
+            name={ isProxy ? 'contracts/proxy' : 'contracts/regular' }
             borderRadius={ 0 }
           />
         </span>
@@ -88,14 +88,12 @@ const Icon = (props: IconProps) => {
   }
 
   return (
-    <Tooltip label={ props.address.implementation_name }>
-      <Flex marginRight={ styles.marginRight }>
-        <AddressIdenticon
-          size={ props.iconSize === 'lg' ? 30 : 20 }
-          hash={ props.address.hash }
-        />
-      </Flex>
-    </Tooltip>
+    <Flex marginRight={ styles.marginRight }>
+      <AddressIdenticon
+        size={ props.iconSize === 'lg' ? 30 : 20 }
+        hash={ props.address.hash }
+      />
+    </Flex>
   );
 };
 
@@ -145,7 +143,7 @@ const Container = EntityBase.Container;
 
 export interface EntityProps extends EntityBase.EntityBaseProps {
   address: Pick<AddressParam,
-  'hash' | 'name' | 'is_contract' | 'is_verified' | 'implementation_name' | 'implementation_address' | 'ens_domain_name' | 'metadata'
+  'hash' | 'name' | 'is_contract' | 'is_verified' | 'implementations' | 'ens_domain_name' | 'metadata'
   >;
   isSafeAddress?: boolean;
 }

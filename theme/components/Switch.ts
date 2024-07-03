@@ -15,6 +15,9 @@ const baseStyleTrack = defineStyle((props) => {
         bg: mode(`${ c }.600`, `${ c }.400`)(props),
       },
     },
+    _focusVisible: {
+      boxShadow: 'none',
+    },
   };
 });
 

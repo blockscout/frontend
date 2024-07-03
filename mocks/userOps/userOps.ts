@@ -6,7 +6,7 @@ export const userOpsData: UserOpsResponse = {
       address: {
         ens_domain_name: null,
         hash: '0xF0C14FF4404b188fAA39a3507B388998c10FE284',
-        implementation_name: null,
+        implementations: null,
         is_contract: true,
         is_verified: null,
         name: null,
@@ -22,7 +22,7 @@ export const userOpsData: UserOpsResponse = {
       address:
         { ens_domain_name: null,
           hash: '0x2c298CcaFFD1549e1C21F46966A6c236fCC66dB2',
-          implementation_name: null,
+          implementations: null,
           is_contract: true,
           is_verified: null,
           name: null,
@@ -38,7 +38,7 @@ export const userOpsData: UserOpsResponse = {
       address: {
         ens_domain_name: null,
         hash: '0x2c298CcaFFD1549e1C21F46966A6c236fCC66dB2',
-        implementation_name: null,
+        implementations: null,
         is_contract: true,
         is_verified: null,
         name: null,

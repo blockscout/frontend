@@ -1,4 +1,5 @@
-import { chakra, Skeleton, Tag } from '@chakra-ui/react';
+import type { ResponsiveValue } from '@chakra-ui/react';
+import { chakra, Image, Skeleton, Tag } from '@chakra-ui/react';
 import React from 'react';
 
 import type { EntityTag as TEntityTag } from './types';
@@ -8,23 +9,46 @@ import TruncatedValue from 'ui/shared/TruncatedValue';
 
 import EntityTagLink from './EntityTagLink';
 import EntityTagPopover from './EntityTagPopover';
+import { getTagLinkParams } from './utils';
 
 interface Props {
   data: TEntityTag;
   isLoading?: boolean;
-  truncate?: boolean;
+  maxW?: ResponsiveValue<string>;
 }
 
-const EntityTag = ({ data, isLoading, truncate }: Props) => {
+const EntityTag = ({ data, isLoading, maxW }: Props) => {
 
   if (isLoading) {
     return <Skeleton borderRadius="sm" w="100px" h="24px"/>;
   }
 
-  // const hasLink = Boolean(data.meta?.tagUrl || data.tagType === 'generic' || data.tagType === 'protocol');
-  // Change the condition when "Tag search" page is ready - issue #1869
-  const hasLink = Boolean(data.meta?.tagUrl);
+  const hasLink = Boolean(getTagLinkParams(data));
   const iconColor = data.meta?.textColor ?? 'gray.400';
+
+  const name = (() => {
+    if (data.meta?.warpcastHandle) {
+      return `@${ data.meta.warpcastHandle }`;
+    }
+
+    return data.name;
+  })();
+
+  const icon = (() => {
+    if (data.meta?.tagIcon) {
+      return <Image boxSize={ 3 } mr={ 1 } flexShrink={ 0 } src={ data.meta.tagIcon } alt={ `${ data.name } icon` }/>;
+    }
+
+    if (data.tagType === 'name') {
+      return <IconSvg name="publictags_slim" boxSize={ 3 } mr={ 1 } flexShrink={ 0 } color={ iconColor }/>;
+    }
+
+    if (data.tagType === 'protocol' || data.tagType === 'generic') {
+      return <chakra.span color={ iconColor } whiteSpace="pre"># </chakra.span>;
+    }
+
+    return null;
+  })();
 
   return (
     <EntityTagPopover data={ data }>
@@ -32,16 +56,16 @@ const EntityTag = ({ data, isLoading, truncate }: Props) => {
         display="flex"
         alignItems="center"
         minW={ 0 }
-        maxW={ truncate ? { base: '125px', lg: '300px' } : undefined }
+        w="fit-content"
+        maxW={ maxW }
         bg={ data.meta?.bgColor }
         color={ data.meta?.textColor }
         colorScheme={ hasLink ? 'gray-blue' : 'gray' }
         _hover={ hasLink ? { opacity: 0.76 } : undefined }
       >
         <EntityTagLink data={ data }>
-          { data.tagType === 'name' && <IconSvg name="publictags_slim" boxSize={ 3 } mr={ 1 } flexShrink={ 0 } color={ iconColor }/> }
-          { (data.tagType === 'protocol' || data.tagType === 'generic') && <chakra.span color={ iconColor } whiteSpace="pre"># </chakra.span> }
-          <TruncatedValue value={ data.name } tooltipPlacement="top"/>
+          { icon }
+          <TruncatedValue value={ name } tooltipPlacement="top"/>
         </EntityTagLink>
       </Tag>
     </EntityTagPopover>

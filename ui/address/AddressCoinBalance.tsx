@@ -20,9 +20,10 @@ import AddressCoinBalanceHistory from './coinBalance/AddressCoinBalanceHistory';
 
 type Props = {
   shouldRender?: boolean;
+  isQueryEnabled?: boolean;
 }
 
-const AddressCoinBalance = ({ shouldRender = true }: Props) => {
+const AddressCoinBalance = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
   const [ socketAlert, setSocketAlert ] = React.useState(false);
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -36,6 +37,7 @@ const AddressCoinBalance = ({ shouldRender = true }: Props) => {
     pathParams: { hash: addressHash },
     scrollRef,
     options: {
+      enabled: isQueryEnabled,
       placeholderData: generateListStub<'address_coin_balance'>(
         ADDRESS_COIN_BALANCE,
         50,

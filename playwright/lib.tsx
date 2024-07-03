@@ -5,6 +5,7 @@ import * as injectMetaMaskProvider from './fixtures/injectMetaMaskProvider';
 import * as mockApiResponse from './fixtures/mockApiResponse';
 import * as mockAssetResponse from './fixtures/mockAssetResponse';
 import * as mockConfigResponse from './fixtures/mockConfigResponse';
+import * as mockContractReadResponse from './fixtures/mockContractReadResponse';
 import * as mockEnvs from './fixtures/mockEnvs';
 import * as mockFeatures from './fixtures/mockFeatures';
 import * as mockTextAd from './fixtures/mockTextAd';
@@ -16,6 +17,7 @@ interface Fixtures {
   mockApiResponse: mockApiResponse.MockApiResponseFixture;
   mockAssetResponse: mockAssetResponse.MockAssetResponseFixture;
   mockConfigResponse: mockConfigResponse.MockConfigResponseFixture;
+  mockContractReadResponse: mockContractReadResponse.MockContractReadResponseFixture;
   mockEnvs: mockEnvs.MockEnvsFixture;
   mockFeatures: mockFeatures.MockFeaturesFixture;
   createSocket: socketServer.CreateSocketFixture;
@@ -28,6 +30,7 @@ const test = base.extend<Fixtures>({
   mockApiResponse: mockApiResponse.default,
   mockAssetResponse: mockAssetResponse.default,
   mockConfigResponse: mockConfigResponse.default,
+  mockContractReadResponse: mockContractReadResponse.default,
   mockEnvs: mockEnvs.default,
   mockFeatures: mockFeatures.default,
   // FIXME: for some reason Playwright does not intercept requests to text ad provider when running multiple tests in parallel

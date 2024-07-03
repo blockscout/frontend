@@ -1,4 +1,4 @@
-import type { PublicTag, AddressTag, TransactionTag, ApiKey, CustomAbi, VerifiedAddress, TokenInfoApplication, WatchlistAddress } from 'types/api/account';
+import type { AddressTag, TransactionTag, ApiKey, CustomAbi, VerifiedAddress, TokenInfoApplication, WatchlistAddress } from 'types/api/account';
 
 import { ADDRESS_PARAMS, ADDRESS_HASH } from './addressParams';
 import { TX_HASH } from './tx';
@@ -14,19 +14,6 @@ export const PRIVATE_TAG_TX: TransactionTag = {
   id: '1',
   name: 'placeholder',
   transaction_hash: TX_HASH,
-};
-
-export const PUBLIC_TAG: PublicTag = {
-  additional_comment: 'my comment',
-  addresses: [ ADDRESS_HASH ],
-  addresses_with_info: [ ADDRESS_PARAMS ],
-  company: 'Blockscout',
-  email: 'john.doe@example.com',
-  full_name: 'name',
-  id: 1,
-  is_owner: true,
-  tags: 'placeholder',
-  website: 'example.com',
 };
 
 export const WATCH_LIST_ITEM_WITH_TOKEN_INFO: WatchlistAddress = {

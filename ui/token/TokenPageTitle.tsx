@@ -11,6 +11,7 @@ import useAddressMetadataInfoQuery from 'lib/address/useAddressMetadataInfoQuery
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
+import { getTokenTypeName } from 'lib/token/tokenTypes';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
@@ -67,7 +68,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
 
   const tags: Array<EntityTag> = React.useMemo(() => {
     return [
-      tokenQuery.data ? { slug: tokenQuery.data?.type, name: tokenQuery.data?.type, tagType: 'custom' as const, ordinal: -20 } : undefined,
+      tokenQuery.data ? { slug: tokenQuery.data?.type, name: getTokenTypeName(tokenQuery.data.type), tagType: 'custom' as const, ordinal: -20 } : undefined,
       config.features.bridgedTokens.isEnabled && tokenQuery.data?.is_bridged ?
         {
           slug: 'bridged',
@@ -98,7 +99,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
       { verifiedInfoQuery.data?.tokenAddress && (
         <Tooltip label={ `Information on this token has been verified by ${ config.chain.name }` }>
           <Box boxSize={ 6 }>
-            <IconSvg name="verified_token" color="green.500" boxSize={ 6 } cursor="pointer"/>
+            <IconSvg name="certified" color="green.500" boxSize={ 6 } cursor="pointer"/>
           </Box>
         </Tooltip>
       ) }

@@ -1,4 +1,4 @@
-import type { Abi, AbiType, AbiFallback, AbiFunction, AbiReceive } from 'abitype';
+import type { Abi, AbiType } from 'abitype';
 
 export type SmartContractMethodArgType = AbiType;
 export type SmartContractMethodStateMutability = 'view' | 'nonpayable' | 'payable';
@@ -30,16 +30,10 @@ export interface SmartContract {
   optimization_runs: number | null;
   name: string | null;
   verified_at: string | null;
+  is_blueprint: boolean | null;
   is_verified: boolean | null;
   is_verified_via_eth_bytecode_db: boolean | null;
   is_changed_bytecode: boolean | null;
-
-  has_methods_read: boolean;
-  has_methods_read_proxy: boolean;
-  has_methods_write: boolean;
-  has_methods_write_proxy: boolean;
-  has_custom_methods_read: boolean;
-  has_custom_methods_write: boolean;
 
   // sourcify info >>>
   is_verified_via_sourcify: boolean | null;
@@ -62,6 +56,7 @@ export interface SmartContract {
   minimal_proxy_address_hash: string | null;
   language: string | null;
   license_type: SmartContractLicenseType | null;
+  certified?: boolean;
 }
 
 export type SmartContractDecodedConstructorArg = [
@@ -77,47 +72,6 @@ export interface SmartContractExternalLibrary {
   address_hash: string;
   name: string;
 }
-
-export type SmartContractMethodOutputValue = string | boolean | object;
-export type SmartContractMethodOutput = AbiFunction['outputs'][number] & { value?: SmartContractMethodOutputValue };
-export type SmartContractMethodBase = Omit<AbiFunction, 'outputs'> & {
-  method_id: string;
-  outputs: Array<SmartContractMethodOutput>;
-  constant?: boolean;
-  error?: string;
-};
-export type SmartContractReadMethod = SmartContractMethodBase;
-export type SmartContractWriteMethod = SmartContractMethodBase | AbiFallback | AbiReceive;
-export type SmartContractMethod = SmartContractReadMethod | SmartContractWriteMethod;
-
-export interface SmartContractQueryMethodSuccess {
-  is_error: false;
-  result: {
-    names: Array<string | [ string, Array<string> ]>;
-    output: Array<{
-      type: string;
-      value: string | Array<unknown>;
-    }>;
-  };
-}
-
-export interface SmartContractQueryMethodError {
-  is_error: true;
-  result: {
-    code: number;
-    message: string;
-  } | {
-    error: string;
-  } | {
-    raw: string;
-  } | {
-    method_call: string;
-    method_id: string;
-    parameters: Array<{ 'name': string; 'type': string; 'value': string }>;
-  };
-}
-
-export type SmartContractQueryMethod = SmartContractQueryMethodSuccess | SmartContractQueryMethodError;
 
 // VERIFICATION
 

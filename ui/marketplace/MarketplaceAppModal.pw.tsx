@@ -1,10 +1,10 @@
-import { test, expect, devices } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import type { MarketplaceAppWithSecurityReport } from 'types/client/marketplace';
 
 import { apps as appsMock } from 'mocks/apps/apps';
-import TestApp from 'playwright/TestApp';
+import { securityReports as securityReportsMock } from 'mocks/apps/securityReports';
+import { test, expect, devices } from 'playwright/lib';
 
 import MarketplaceAppModal from './MarketplaceAppModal';
 
@@ -12,24 +12,16 @@ const props = {
   onClose: () => {},
   onFavoriteClick: () => {},
   showContractList: () => {},
-  data: appsMock[0] as MarketplaceAppWithSecurityReport,
+  data: {
+    ...appsMock[0],
+    securityReport: securityReportsMock[0].chainsData['1'],
+  } as MarketplaceAppWithSecurityReport,
   isFavorite: false,
 };
 
-const testFn: Parameters<typeof test>[1] = async({ mount, page }) => {
-  await page.route(appsMock[0].logo, (route) =>
-    route.fulfill({
-      status: 200,
-      path: './playwright/mocks/image_s.jpg',
-    }),
-  );
-
-  await mount(
-    <TestApp>
-      <MarketplaceAppModal { ...props }/>
-    </TestApp>,
-  );
-
+const testFn: Parameters<typeof test>[1] = async({ render, page, mockAssetResponse }) => {
+  await mockAssetResponse(appsMock[0].logo, './playwright/mocks/image_s.jpg');
+  await render(<MarketplaceAppModal { ...props }/>);
   await expect(page).toHaveScreenshot();
 };
 

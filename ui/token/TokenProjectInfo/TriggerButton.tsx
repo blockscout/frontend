@@ -5,9 +5,10 @@ import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   onClick: () => void;
+  isActive: boolean;
 }
 
-const TriggerButton = ({ onClick }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
+const TriggerButton = ({ onClick, isActive }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
   return (
     <Button
       ref={ ref }
@@ -15,6 +16,7 @@ const TriggerButton = ({ onClick }: Props, ref: React.ForwardedRef<HTMLButtonEle
       variant="outline"
       colorScheme="gray"
       onClick={ onClick }
+      isActive={ isActive }
       aria-label="Show project info"
       fontWeight={ 500 }
       lineHeight={ 6 }

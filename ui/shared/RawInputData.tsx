@@ -9,25 +9,29 @@ const OPTIONS: Array<DataType> = [ 'Hex', 'UTF-8' ];
 
 interface Props {
   hex: string;
+  rightSlot?: React.ReactNode;
 }
 
-const RawInputData = ({ hex }: Props) => {
+const RawInputData = ({ hex, rightSlot: rightSlotProp }: Props) => {
   const [ selectedDataType, setSelectedDataType ] = React.useState<DataType>('Hex');
 
   const handleSelectChange = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedDataType(event.target.value as DataType);
   }, []);
 
-  const select = (
-    <Select size="xs" borderRadius="base" value={ selectedDataType } onChange={ handleSelectChange } w="auto" mr="auto">
-      { OPTIONS.map((option) => <option key={ option } value={ option }>{ option }</option>) }
-    </Select>
+  const rightSlot = (
+    <>
+      <Select size="xs" borderRadius="base" value={ selectedDataType } onChange={ handleSelectChange } w="auto" mr="auto">
+        { OPTIONS.map((option) => <option key={ option } value={ option }>{ option }</option>) }
+      </Select>
+      { rightSlotProp }
+    </>
   );
 
   return (
     <RawDataSnippet
       data={ selectedDataType === 'Hex' ? hex : hexToUtf8(hex) }
-      rightSlot={ select }
+      rightSlot={ rightSlot }
       textareaMaxHeight="220px"
       textareaMinHeight="160px"
       w="100%"

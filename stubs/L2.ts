@@ -1,5 +1,6 @@
 import type {
   OptimisticL2DepositsItem,
+  OptimisticL2DisputeGamesItem,
   OptimisticL2OutputRootsItem,
   OptimisticL2TxnBatchesItem,
   OptimisticL2WithdrawalsItem,
@@ -44,4 +45,14 @@ export const L2_OUTPUT_ROOTS_ITEM: OptimisticL2OutputRootsItem = {
   l2_block_number: 10102468,
   l2_output_index: 50655,
   output_root: TX_HASH,
+};
+
+export const L2_DISPUTE_GAMES_ITEM: OptimisticL2DisputeGamesItem = {
+  contract_address: ADDRESS_HASH,
+  created_at: '2023-06-01T15:26:12.000000Z',
+  game_type: 0,
+  index: 6594,
+  l2_block_number: 50655,
+  resolved_at: null,
+  status: 'In progress',
 };

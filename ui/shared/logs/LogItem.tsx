@@ -74,7 +74,7 @@ const LogItem = ({ address, index, topics, data, decoded, type, tx_hash: txHash,
         </Tooltip> */ }
         <Skeleton isLoaded={ !isLoading } ml="auto" borderRadius="base">
           <Tooltip label="Log index">
-            <Button variant="outline" colorScheme="gray" isActive size="sm" fontWeight={ 400 }>
+            <Button variant="outline" colorScheme="gray" data-selected="true" size="sm" fontWeight={ 400 }>
               { index }
             </Button>
           </Tooltip>

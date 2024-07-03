@@ -8,7 +8,7 @@ import type { AddressCounters } from 'types/api/address';
 import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'lib/api/resources';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 
 interface Props {
   prop: keyof AddressCounters;

@@ -1,15 +1,23 @@
 import type { NFTTokenType, TokenType } from 'types/api/token';
 
-export const NFT_TOKEN_TYPES: Array<{ title: string; id: NFTTokenType }> = [
-  { title: 'ERC-721', id: 'ERC-721' },
-  { title: 'ERC-1155', id: 'ERC-1155' },
-  { title: 'ERC-404', id: 'ERC-404' },
-];
+import config from 'configs/app';
 
-export const TOKEN_TYPES: Array<{ title: string; id: TokenType }> = [
-  { title: 'ERC-20', id: 'ERC-20' },
+const tokenStandardName = config.chain.tokenStandard;
+
+export const NFT_TOKEN_TYPES: Record<NFTTokenType, string > = {
+  'ERC-721': `${ tokenStandardName }-721`,
+  'ERC-1155': `${ tokenStandardName }-1155`,
+  'ERC-404': `${ tokenStandardName }-404`,
+};
+
+export const TOKEN_TYPES: Record<TokenType, string > = {
+  'ERC-20': `${ tokenStandardName }-20`,
   ...NFT_TOKEN_TYPES,
-];
+};
 
-export const NFT_TOKEN_TYPE_IDS = NFT_TOKEN_TYPES.map(i => i.id);
-export const TOKEN_TYPE_IDS = TOKEN_TYPES.map(i => i.id);
+export const NFT_TOKEN_TYPE_IDS: Array<NFTTokenType> = [ 'ERC-721', 'ERC-1155', 'ERC-404' ];
+export const TOKEN_TYPE_IDS: Array<TokenType> = [ 'ERC-20', ...NFT_TOKEN_TYPE_IDS ];
+
+export function getTokenTypeName(typeId: TokenType) {
+  return TOKEN_TYPES[typeId];
+}

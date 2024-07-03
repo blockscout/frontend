@@ -8,7 +8,7 @@ export const hash = '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859';
 
 export const withName: AddressParam = {
   hash: hash,
-  implementation_name: null,
+  implementations: null,
   is_contract: false,
   is_verified: null,
   name: 'ArianeeStore',
@@ -20,7 +20,7 @@ export const withName: AddressParam = {
 
 export const withEns: AddressParam = {
   hash: hash,
-  implementation_name: null,
+  implementations: null,
   is_contract: false,
   is_verified: null,
   name: 'ArianeeStore',
@@ -32,7 +32,7 @@ export const withEns: AddressParam = {
 
 export const withNameTag: AddressParam = {
   hash: hash,
-  implementation_name: null,
+  implementations: null,
   is_contract: false,
   is_verified: null,
   name: 'ArianeeStore',
@@ -50,7 +50,7 @@ export const withNameTag: AddressParam = {
 
 export const withoutName: AddressParam = {
   hash: hash,
-  implementation_name: null,
+  implementations: null,
   is_contract: false,
   is_verified: null,
   name: null,
@@ -62,7 +62,7 @@ export const withoutName: AddressParam = {
 
 export const token: Address = {
   hash: hash,
-  implementation_name: null,
+  implementations: null,
   is_contract: true,
   is_verified: false,
   name: null,
@@ -75,13 +75,36 @@ export const token: Address = {
   coin_balance: '1',
   creation_tx_hash: '0xc38cf7377bf72d6436f63c37b01b24d032101f20ec1849286dc703c712f10c98',
   creator_address_hash: '0x34A9c688512ebdB575e82C50c9803F6ba2916E72',
-  exchange_rate: null,
-  implementation_address: null,
+  exchange_rate: '0.04311',
   has_decompiled_code: false,
   has_logs: false,
   has_token_transfers: true,
   has_tokens: true,
   has_validated_blocks: false,
+  ens_domain_name: null,
+};
+
+export const eoa: Address = {
+  block_number_balance_updated_at: 30811263,
+  coin_balance: '2782650189688719421432220500',
+  creation_tx_hash: '0xf2aff6501b632604c39978b47d309813d8a1bcca721864bbe86abf59704f195e',
+  creator_address_hash: '0x803ad3F50b9e1fF68615e8B053A186e1be288943',
+  exchange_rate: '0.04311',
+  has_decompiled_code: false,
+  has_logs: true,
+  has_token_transfers: false,
+  has_tokens: true,
+  has_validated_blocks: false,
+  hash: hash,
+  implementations: [],
+  is_contract: false,
+  is_verified: false,
+  name: null,
+  private_tags: [ publicTag ],
+  public_tags: [ privateTag ],
+  token: null,
+  watchlist_names: [ watchlistName ],
+  watchlist_address_id: 42,
   ens_domain_name: null,
 };
 
@@ -97,8 +120,9 @@ export const contract: Address = {
   has_tokens: false,
   has_validated_blocks: false,
   hash: hash,
-  implementation_address: '0x2F4F4A52295940C576417d29F22EEb92B440eC89',
-  implementation_name: 'HomeBridge',
+  implementations: [
+    { address: '0x2F4F4A52295940C576417d29F22EEb92B440eC89', name: 'HomeBridge' },
+  ],
   is_contract: true,
   is_verified: true,
   name: 'EternalStorageProxy',
@@ -122,8 +146,7 @@ export const validator: Address = {
   has_tokens: false,
   has_validated_blocks: true,
   hash: hash,
-  implementation_address: null,
-  implementation_name: null,
+  implementations: [],
   is_contract: false,
   is_verified: false,
   name: 'Kiryl Ihnatsyeu',

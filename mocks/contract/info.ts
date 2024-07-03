@@ -16,6 +16,7 @@ export const verified: SmartContract = {
   },
   evm_version: 'default',
   is_verified: true,
+  is_blueprint: false,
   name: 'WPOA',
   optimization_enabled: true,
   optimization_runs: 1500,
@@ -32,12 +33,6 @@ export const verified: SmartContract = {
   ],
   language: 'solidity',
   license_type: 'gnu_gpl_v3',
-  has_methods_read: true,
-  has_methods_read_proxy: false,
-  has_methods_write: true,
-  has_methods_write_proxy: false,
-  has_custom_methods_read: false,
-  has_custom_methods_write: false,
   is_self_destructed: false,
   is_verified_via_eth_bytecode_db: null,
   is_changed_bytecode: null,
@@ -49,6 +44,11 @@ export const verified: SmartContract = {
   additional_sources: [],
   verified_twin_address_hash: null,
   minimal_proxy_address_hash: null,
+};
+
+export const certified: SmartContract = {
+  ...verified,
+  certified: true,
 };
 
 export const withMultiplePaths: SmartContract = {
@@ -96,10 +96,12 @@ export const selfDestructed: SmartContract = {
 export const withChangedByteCode: SmartContract = {
   ...verified,
   is_changed_bytecode: true,
+  is_blueprint: true,
 };
 
 export const nonVerified: SmartContract = {
   is_verified: false,
+  is_blueprint: false,
   creation_bytecode: 'creation_bytecode',
   deployed_bytecode: 'deployed_bytecode',
   is_self_destructed: false,
@@ -112,12 +114,6 @@ export const nonVerified: SmartContract = {
   verified_at: null,
   is_verified_via_eth_bytecode_db: null,
   is_changed_bytecode: null,
-  has_methods_read: false,
-  has_methods_read_proxy: false,
-  has_methods_write: false,
-  has_methods_write_proxy: false,
-  has_custom_methods_read: false,
-  has_custom_methods_write: false,
   is_verified_via_sourcify: null,
   is_fully_verified: null,
   is_partially_verified: null,

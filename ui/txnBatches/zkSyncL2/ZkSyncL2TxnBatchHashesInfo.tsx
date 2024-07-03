@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { ZkSyncBatch } from 'types/api/zkSyncL2';
 
-import DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsTimestamp from 'ui/shared/DetailsTimestamp';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 
@@ -23,10 +23,13 @@ interface Props {
 const ZkSyncL2TxnBatchHashesInfo = ({ isLoading, data }: Props) => {
   return (
     <>
-      <DetailsInfoItem
-        title="Commit tx hash"
+      <DetailsInfoItem.Label
         hint="Hash of L1 tx on which the batch was committed"
         isLoading={ isLoading }
+      >
+        Commit tx hash
+      </DetailsInfoItem.Label>
+      <DetailsInfoItem.Value
         flexDir="column"
         alignItems="flex-start"
       >
@@ -45,12 +48,15 @@ const ZkSyncL2TxnBatchHashesInfo = ({ isLoading, data }: Props) => {
             ) }
           </>
         ) : <Skeleton isLoaded={ !isLoading }>Pending</Skeleton> }
-      </DetailsInfoItem>
+      </DetailsInfoItem.Value>
 
-      <DetailsInfoItem
-        title="Prove tx hash"
+      <DetailsInfoItem.Label
         hint="Hash of L1 tx on which the batch was proven"
         isLoading={ isLoading }
+      >
+        Prove tx hash
+      </DetailsInfoItem.Label>
+      <DetailsInfoItem.Value
         flexDir="column"
         alignItems="flex-start"
       >
@@ -69,12 +75,15 @@ const ZkSyncL2TxnBatchHashesInfo = ({ isLoading, data }: Props) => {
             ) }
           </>
         ) : <Skeleton isLoaded={ !isLoading }>Pending</Skeleton> }
-      </DetailsInfoItem>
+      </DetailsInfoItem.Value>
 
-      <DetailsInfoItem
-        title="Execute tx hash"
+      <DetailsInfoItem.Label
         hint="Hash of L1 tx on which the batch was executed and finalized"
         isLoading={ isLoading }
+      >
+        Execute tx hash
+      </DetailsInfoItem.Label>
+      <DetailsInfoItem.Value
         flexDir="column"
         alignItems="flex-start"
       >
@@ -93,7 +102,7 @@ const ZkSyncL2TxnBatchHashesInfo = ({ isLoading, data }: Props) => {
             ) }
           </>
         ) : <Skeleton isLoaded={ !isLoading }>Pending</Skeleton> }
-      </DetailsInfoItem>
+      </DetailsInfoItem.Value>
     </>
   );
 };

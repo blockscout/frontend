@@ -1,6 +1,6 @@
 import type { Transaction } from 'types/api/transaction';
 
-import type { UserTags } from './addressParams';
+import type { UserTags, AddressImplementation } from './addressParams';
 import type { Block } from './block';
 import type { InternalTransaction } from './internalTransaction';
 import type { NFTTokenType, TokenInfo, TokenInstance, TokenType } from './token';
@@ -21,8 +21,7 @@ export interface Address extends UserTags {
   has_tokens: boolean;
   has_validated_blocks: boolean;
   hash: string;
-  implementation_address: string | null;
-  implementation_name: string | null;
+  implementations: Array<AddressImplementation> | null;
   is_contract: boolean;
   is_verified: boolean;
   name: string | null;

@@ -1,5 +1,10 @@
 import type { AddressMetadataTagApi } from './addressMetadata';
 
+export interface AddressImplementation {
+  address: string;
+  name: string | null;
+}
+
 export interface AddressTag {
   label: string;
   display_name: string;
@@ -19,8 +24,7 @@ export interface UserTags {
 
 export type AddressParamBasic = {
   hash: string;
-  implementation_name: string | null;
-  implementation_address?: string | null;
+  implementations: Array<AddressImplementation> | null;
   name: string | null;
   is_contract: boolean;
   is_verified: boolean | null;

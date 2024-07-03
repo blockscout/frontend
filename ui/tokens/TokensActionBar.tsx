@@ -45,15 +45,16 @@ const TokensActionBar = ({
       <HStack spacing={ 3 } mb={ 6 } display={{ base: 'flex', lg: 'none' }}>
         { filter }
         <Sort
+          name="tokens_sorting"
+          defaultValue={ sort }
           options={ SORT_OPTIONS }
-          setSort={ onSortChange }
-          sort={ sort }
+          onChange={ onSortChange }
         />
         { searchInput }
       </HStack>
       <ActionBar
         mt={ inTabsSlot ? 0 : -6 }
-        py={ inTabsSlot ? 0 : undefined }
+        py={{ lg: inTabsSlot ? 0 : undefined }}
         justifyContent={ inTabsSlot ? 'space-between' : undefined }
         display={{ base: pagination.isVisible ? 'flex' : 'none', lg: 'flex' }}
       >

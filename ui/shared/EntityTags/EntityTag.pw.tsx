@@ -13,6 +13,11 @@ test('custom name tag +@dark-mode', async({ render }) => {
   await expect(component).toHaveScreenshot();
 });
 
+test('warpcast tag', async({ render }) => {
+  const component = await render(<Box w="200px"><EntityTag data={ addressMetadataMock.warpcastTag }/></Box>);
+  await expect(component).toHaveScreenshot();
+});
+
 test('generic tag +@dark-mode', async({ render }) => {
   const component = await render(<Box w="200px"><EntityTag data={ addressMetadataMock.genericTag }/></Box>);
   await expect(component).toHaveScreenshot();
@@ -24,7 +29,7 @@ test('protocol tag +@dark-mode', async({ render }) => {
 });
 
 test('tag with link and long name +@dark-mode', async({ render }) => {
-  const component = await render(<EntityTag data={ addressMetadataMock.infoTagWithLink } truncate/>);
+  const component = await render(<EntityTag data={ addressMetadataMock.infoTagWithLink } maxW="300px"/>);
   await expect(component).toHaveScreenshot();
 });
 

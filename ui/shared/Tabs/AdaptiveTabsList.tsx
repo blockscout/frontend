@@ -119,6 +119,7 @@ const AdaptiveTabsList = (props: Props) => {
                 color: 'inherit',
               },
             }}
+            { ...(index === props.activeTabIndex ? { 'data-selected': true } : {}) }
           >
             <Skeleton isLoaded={ !props.isLoading }>
               { typeof tab.title === 'function' ? tab.title() : tab.title }

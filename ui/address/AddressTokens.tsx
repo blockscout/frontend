@@ -5,6 +5,7 @@ import React from 'react';
 import type { NFTTokenType } from 'types/api/token';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
+import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
 import * as cookies from 'lib/cookies';
 import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
@@ -44,9 +45,10 @@ const getTokenFilterValue = (getFilterValuesFromQuery<NFTTokenType>).bind(null, 
 
 type Props = {
   shouldRender?: boolean;
+  isQueryEnabled?: boolean;
 }
 
-const AddressTokens = ({ shouldRender = true }: Props) => {
+const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
   const router = useRouter();
   const isMobile = useIsMobile();
   const isMounted = useIsMounted();
@@ -66,7 +68,7 @@ const AddressTokens = ({ shouldRender = true }: Props) => {
     filters: { type: 'ERC-20' },
     scrollRef,
     options: {
-      enabled: !tab || tab === 'tokens_erc20',
+      enabled: isQueryEnabled && (!tab || tab === 'tokens_erc20'),
       refetchOnMount: false,
       placeholderData: generateListStub<'address_tokens'>(ADDRESS_TOKEN_BALANCE_ERC_20, 10, { next_page_params: null }),
     },
@@ -77,7 +79,7 @@ const AddressTokens = ({ shouldRender = true }: Props) => {
     pathParams: { hash },
     scrollRef,
     options: {
-      enabled: tab === 'tokens_nfts' && nftDisplayType === 'collection',
+      enabled: isQueryEnabled && tab === 'tokens_nfts' && nftDisplayType === 'collection',
       placeholderData: generateListStub<'address_collections'>(ADDRESS_COLLECTION, 10, { next_page_params: null }),
     },
     filters: { type: tokenTypes },
@@ -88,7 +90,7 @@ const AddressTokens = ({ shouldRender = true }: Props) => {
     pathParams: { hash },
     scrollRef,
     options: {
-      enabled: tab === 'tokens_nfts' && nftDisplayType === 'list',
+      enabled: isQueryEnabled && tab === 'tokens_nfts' && nftDisplayType === 'list',
       placeholderData: generateListStub<'address_nfts'>(ADDRESS_NFT_1155, 10, { next_page_params: null }),
     },
     filters: { type: tokenTypes },
@@ -110,7 +112,7 @@ const AddressTokens = ({ shouldRender = true }: Props) => {
   }
 
   const nftTypeFilter = (
-    <PopoverFilter isActive={ tokenTypes && tokenTypes.length > 0 } contentProps={{ w: '200px' }} appliedFiltersNum={ tokenTypes?.length }>
+    <PopoverFilter contentProps={{ w: '200px' }} appliedFiltersNum={ tokenTypes?.length }>
       <TokenTypeFilter<NFTTokenType> nftOnly onChange={ handleTokenTypesChange } defaultValue={ tokenTypes }/>
     </PopoverFilter>
   );
@@ -118,7 +120,7 @@ const AddressTokens = ({ shouldRender = true }: Props) => {
   const hasActiveFilters = Boolean(tokenTypes?.length);
 
   const tabs = [
-    { id: 'tokens_erc20', title: 'ERC-20', component: <ERC20Tokens tokensQuery={ erc20Query }/> },
+    { id: 'tokens_erc20', title: `${ config.chain.tokenStandard }-20`, component: <ERC20Tokens tokensQuery={ erc20Query }/> },
     {
       id: 'tokens_nfts',
       title: 'NFTs',

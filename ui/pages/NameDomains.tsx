@@ -5,6 +5,7 @@ import React from 'react';
 import type { EnsDomainLookupFiltersOptions, EnsLookupSorting } from 'types/api/ens';
 
 import config from 'configs/app';
+import useApiQuery from 'lib/api/useApiQuery';
 import useDebounce from 'lib/hooks/useDebounce';
 import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -29,6 +30,7 @@ const NameDomains = () => {
   const ownedBy = getQueryParamString(router.query.owned_by);
   const resolvedTo = getQueryParamString(router.query.resolved_to);
   const onlyActive = getQueryParamString(router.query.only_active);
+  const protocols = Array.isArray(router.query.protocols) ? router.query.protocols : (router.query.protocols ?? '').split(',').filter(Boolean);
 
   const initialFilters: EnsDomainLookupFiltersOptions = [
     ownedBy === 'true' ? 'owned_by' as const : undefined,
@@ -40,6 +42,7 @@ const NameDomains = () => {
   const [ searchTerm, setSearchTerm ] = React.useState<string>(q || '');
   const [ filterValue, setFilterValue ] = React.useState<EnsDomainLookupFiltersOptions>(initialFilters);
   const [ sort, setSort ] = React.useState<Sort | undefined>(initialSort);
+  const [ protocolsFilter, setProtocolsFilter ] = React.useState<Array<string>>(protocols);
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const isAddressSearch = React.useMemo(() => ADDRESS_REGEXP.test(debouncedSearchTerm), [ debouncedSearchTerm ]);
@@ -53,11 +56,12 @@ const NameDomains = () => {
       resolved_to: filterValue.includes('resolved_to'),
       owned_by: filterValue.includes('owned_by'),
       only_active: !filterValue.includes('with_inactive'),
+      protocols: protocolsFilter.length > 0 ? protocolsFilter : undefined,
     },
     sorting: sortParams,
     options: {
       enabled: isAddressSearch,
-      placeholderData: generateListStub<'addresses_lookup'>(ENS_DOMAIN, 50, { next_page_params: null }),
+      placeholderData: generateListStub<'addresses_lookup'>(ENS_DOMAIN, 50, { next_page_params: undefined }),
     },
   });
 
@@ -67,12 +71,17 @@ const NameDomains = () => {
     filters: {
       name: debouncedSearchTerm,
       only_active: !filterValue.includes('with_inactive'),
+      protocols: protocolsFilter.length > 0 ? protocolsFilter : undefined,
     },
     sorting: sortParams,
     options: {
       enabled: !isAddressSearch,
-      placeholderData: generateListStub<'domains_lookup'>(ENS_DOMAIN, 50, { next_page_params: null }),
+      placeholderData: generateListStub<'domains_lookup'>(ENS_DOMAIN, 50, { next_page_params: undefined }),
     },
+  });
+
+  const protocolsQuery = useApiQuery('domain_protocols', {
+    pathParams: { chainId: config.chain.id },
   });
 
   const query = isAddressSearch ? addressesLookupQuery : domainsLookupQuery;
@@ -87,12 +96,14 @@ const NameDomains = () => {
         resolved_to: true,
         owned_by: true,
         only_active: !hasInactiveFilter,
+        protocols: protocolsFilter,
       });
     } else {
       setFilterValue([ hasInactiveFilter ? 'with_inactive' as const : undefined ].filter(Boolean));
       onFilterChange<'domains_lookup'>({
         name: debouncedSearchTerm,
         only_active: !hasInactiveFilter,
+        protocols: protocolsFilter,
       });
     }
   // should run only the type of search changes
@@ -123,14 +134,16 @@ const NameDomains = () => {
         resolved_to: filterValue.includes('resolved_to'),
         owned_by: filterValue.includes('owned_by'),
         only_active: !filterValue.includes('with_inactive'),
+        protocols: protocolsFilter,
       });
     } else {
       onFilterChange<'domains_lookup'>({
         name: value,
         only_active: !filterValue.includes('with_inactive'),
+        protocols: protocolsFilter,
       });
     }
-  }, [ onFilterChange, filterValue ]);
+  }, [ onFilterChange, filterValue, protocolsFilter ]);
 
   const handleFilterValueChange = React.useCallback((value: EnsDomainLookupFiltersOptions) => {
     setFilterValue(value);
@@ -142,16 +155,40 @@ const NameDomains = () => {
         resolved_to: value.includes('resolved_to'),
         owned_by: value.includes('owned_by'),
         only_active: !value.includes('with_inactive'),
+        protocols: protocolsFilter,
       });
     } else {
       onFilterChange<'domains_lookup'>({
         name: debouncedSearchTerm,
         only_active: !value.includes('with_inactive'),
+        protocols: protocolsFilter,
       });
     }
-  }, [ debouncedSearchTerm, onFilterChange ]);
+  }, [ debouncedSearchTerm, onFilterChange, protocolsFilter ]);
 
-  const hasActiveFilters = Boolean(debouncedSearchTerm) || filterValue.length > 0;
+  const handleProtocolsFilterChange = React.useCallback((nextValue: Array<string>) => {
+    setProtocolsFilter(nextValue);
+
+    const isAddressSearch = ADDRESS_REGEXP.test(debouncedSearchTerm);
+    if (isAddressSearch) {
+      onFilterChange<'addresses_lookup'>({
+        address: debouncedSearchTerm,
+        resolved_to: filterValue.includes('resolved_to'),
+        owned_by: filterValue.includes('owned_by'),
+        only_active: !filterValue.includes('with_inactive'),
+        protocols: nextValue,
+      });
+    } else {
+      onFilterChange<'domains_lookup'>({
+        name: debouncedSearchTerm,
+        only_active: !filterValue.includes('with_inactive'),
+        protocols: nextValue,
+      });
+    }
+  }, [ debouncedSearchTerm, filterValue, onFilterChange ]);
+
+  const hasActiveFilters = Boolean(debouncedSearchTerm) || filterValue.length > 0 ||
+    (protocolsQuery.data && protocolsQuery.data.items.length > 1 ? protocolsFilter.length > 0 : false);
 
   const content = (
     <>
@@ -184,6 +221,9 @@ const NameDomains = () => {
       onSearchChange={ handleSearchTermChange }
       filterValue={ filterValue }
       onFilterValueChange={ handleFilterValueChange }
+      protocolsData={ protocolsQuery.data?.items }
+      protocolsFilterValue={ protocolsFilter }
+      onProtocolsFilterChange={ handleProtocolsFilterChange }
       sort={ sort }
       onSortChange={ setSort }
       isAddressSearch={ isAddressSearch }
@@ -193,7 +233,10 @@ const NameDomains = () => {
 
   return (
     <>
-      <PageTitle title="Name services lookup" withTextAd/>
+      <PageTitle
+        title={ config.meta.seo.enhancedDataEnabled ? `${ config.chain.name } name domains` : 'Name services lookup' }
+        withTextAd
+      />
       <DataListDisplay
         isError={ isError }
         items={ data?.items }

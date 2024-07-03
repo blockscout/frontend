@@ -7,7 +7,7 @@ import config from 'configs/app';
 import useNavItems from 'lib/hooks/useNavItems';
 import * as mixpanel from 'lib/mixpanel/index';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
-import NavLink from 'ui/snippets/navigation/NavLink';
+import NavLink from 'ui/snippets/navigation/vertical/NavLink';
 
 const feature = config.features.account;
 

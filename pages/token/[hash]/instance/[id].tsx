@@ -1,5 +1,4 @@
 import type { GetServerSideProps, NextPage } from 'next';
-import dynamic from 'next/dynamic';
 import React from 'react';
 
 import type { Route } from 'nextjs-routes';
@@ -11,8 +10,7 @@ import fetchApi from 'nextjs/utils/fetchApi';
 
 import config from 'configs/app';
 import getQueryParamString from 'lib/router/getQueryParamString';
-
-const TokenInstance = dynamic(() => import('ui/pages/TokenInstance'), { ssr: false });
+import TokenInstance from 'ui/pages/TokenInstance';
 
 const pathname: Route['pathname'] = '/token/[hash]/instance/[id]';
 
