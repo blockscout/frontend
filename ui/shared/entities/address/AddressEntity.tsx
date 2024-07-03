@@ -142,13 +142,14 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
   'hash' | 'name' | 'is_contract' | 'is_verified' | 'implementations' | 'ens_domain_name' | 'metadata'
   >;
   isSafeAddress?: boolean;
+  noHighlight?: boolean;
 }
 
 const AddressEntry = (props: EntityProps) => {
   const linkProps = _omit(props, [ 'className' ]);
   const partsProps = _omit(props, [ 'className', 'onClick' ]);
 
-  const context = useAddressHighlightContext();
+  const context = useAddressHighlightContext(props.noHighlight);
 
   return (
     <Container
