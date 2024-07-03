@@ -8605,10 +8605,10 @@ damerau-levenshtein@^1.0.8:
   resolved "https://registry.yarnpkg.com/damerau-levenshtein/-/damerau-levenshtein-1.0.8.tgz#b43d286ccbd36bc5b2f7ed41caf2d0aba1f8a6e7"
   integrity sha512-sdQSFB7+llfUcQHUQO3+B8ERRj0Oa4w9POWMI/puGtuf7gFywGmkaLCElnudfTiKZV+NvHqL0ifzdrI8Ro7ESA==
 
-dappscout-iframe@0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/dappscout-iframe/-/dappscout-iframe-0.2.1.tgz#b4718515ee4f00022af3912fac6ca1a321c156f9"
-  integrity sha512-EsiAAEk2I6hN+/E8o45WUn4BFd7aN8UvBwsIcOH79WOly0GOOHkPEO/puPkBCV0EcdxBsZIfssx3X0fSWVz5Bw==
+dappscout-iframe@0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/dappscout-iframe/-/dappscout-iframe-0.2.2.tgz#de3df6abccad68a27c9304300b92d86ec0ab1c59"
+  integrity sha512-ASOimgBRG61pSYQLdYGWePdiO3IsfTEgWZ6CHpZ4XQjJRmj1+WiWF56vFTeLIo5aucp+2+6oRCJ8KgKHGVDj0A==
   dependencies:
     react "^18.2.0"
     react-dom "^18.2.0"
