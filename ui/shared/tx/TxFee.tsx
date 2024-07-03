@@ -21,21 +21,38 @@ interface Props {
 
 const TxFee = ({ className, tx, accuracy, accuracyUsd, isLoading, withCurrency = true, withUsd }: Props) => {
 
-  const gasToken = tx.celo?.gas_token || tx.stability_fee?.token;
-
-  if (gasToken) {
-    const feeValue = (tx.stability_fee?.total_fee ?? tx.fee.value) || '0';
+  if (tx.celo?.gas_token) {
+    const token = tx.celo.gas_token;
     const { valueStr, usd } = getCurrencyValue({
-      value: feeValue,
-      exchangeRate: gasToken.exchange_rate,
-      decimals: gasToken.decimals,
+      value: tx.fee.value || '0',
+      exchangeRate: token.exchange_rate,
+      decimals: token.decimals,
       accuracy,
       accuracyUsd,
     });
     return (
       <Skeleton whiteSpace="pre-wrap" wordBreak="break-word" isLoaded={ !isLoading } display="flex" flexWrap="wrap" className={ className }>
         <span>{ valueStr } </span>
-        { valueStr !== '0' && withCurrency && <TokenEntity token={ gasToken } noCopy onlySymbol w="auto" ml={ 1 }/> }
+        <TokenEntity token={ token } noCopy onlySymbol w="auto" ml={ 1 }/>
+        { usd && withUsd && <chakra.span color="text_secondary"> (${ usd })</chakra.span> }
+      </Skeleton>
+    );
+  }
+
+  if (tx.stability_fee) {
+    const token = tx.stability_fee.token;
+    const { valueStr, usd } = getCurrencyValue({
+      value: tx.stability_fee.total_fee,
+      exchangeRate: token.exchange_rate,
+      decimals: token.decimals,
+      accuracy,
+      accuracyUsd,
+    });
+
+    return (
+      <Skeleton whiteSpace="pre" isLoaded={ !isLoading } display="flex" className={ className }>
+        <span>{ valueStr } </span>
+        { valueStr !== '0' && <TokenEntity token={ token } noCopy onlySymbol w="auto" ml={ 1 }/> }
         { usd && withUsd && <chakra.span color="text_secondary"> (${ usd })</chakra.span> }
       </Skeleton>
     );
