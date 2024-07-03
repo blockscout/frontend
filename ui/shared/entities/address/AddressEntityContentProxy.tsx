@@ -42,7 +42,7 @@ const AddressEntityContentProxy = (props: ContentProps) => {
                 Proxy contract
                 { props.address.name ? ` (${ props.address.name })` : '' }
               </Box>
-              <AddressEntity address={{ hash: props.address.hash }} noLink noIcon noHighlight/>
+              <AddressEntity address={{ hash: props.address.hash }} noLink noIcon noHighlight justifyContent="center"/>
               <Box fontWeight={ 600 } mt={ 2 }>
                 Implementation{ implementations.length > 1 ? 's' : '' }
                 { implementationName ? ` (${ implementationName })` : '' }
@@ -57,6 +57,7 @@ const AddressEntityContentProxy = (props: ContentProps) => {
                     noHighlight
                     minW={ `calc((100% - ${ colNum - 1 } * 12px) / ${ colNum })` }
                     flex={ 1 }
+                    justifyContent={ colNum === 1 ? 'center' : undefined }
                   />
                 )) }
               </Flex>
