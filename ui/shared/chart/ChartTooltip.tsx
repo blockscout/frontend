@@ -1,4 +1,3 @@
-import { useToken, useColorModeValue } from '@chakra-ui/react';
 import * as d3 from 'd3';
 import React from 'react';
 
@@ -7,6 +6,12 @@ import type { TimeChartItem, TimeChartData } from 'ui/shared/chart/types';
 import computeTooltipPosition from 'ui/shared/chart/utils/computeTooltipPosition';
 import type { Pointer } from 'ui/shared/chart/utils/pointerTracker';
 import { trackPointer } from 'ui/shared/chart/utils/pointerTracker';
+
+import ChartTooltipBackdrop from './tooltip/ChartTooltipBackdrop';
+import ChartTooltipLine from './tooltip/ChartTooltipLine';
+import ChartTooltipPoint from './tooltip/ChartTooltipPoint';
+import ChartTooltipRow from './tooltip/ChartTooltipRow';
+import ChartTooltipTitle from './tooltip/ChartTooltipTitle';
 
 interface Props {
   width?: number;
@@ -40,14 +45,6 @@ const calculateRowTransformValue = (rowNum: number) => {
 };
 
 const ChartTooltip = ({ xScale, yScale, width, tooltipWidth = 200, height, data, anchorEl, ...props }: Props) => {
-  const lineColor = useToken('colors', 'gray.400');
-  const titleColor = useToken('colors', 'yellow.300');
-  const labelColor = useToken('colors', 'blue.100');
-  const textColor = useToken('colors', 'white');
-  const markerBgColor = useToken('colors', useColorModeValue('black', 'white'));
-  const markerBorderColor = useToken('colors', useColorModeValue('white', 'black'));
-  const bgColor = useToken('colors', 'blackAlpha.900');
-
   const ref = React.useRef(null);
   const trackerId = React.useRef<number>();
   const isVisible = React.useRef(false);
@@ -70,7 +67,8 @@ const ChartTooltip = ({ xScale, yScale, width, tooltipWidth = 200, height, data,
     // TODO @tom2drum move to "updateContent" function
     const valueNodes = d3.select(ref.current)
       .selectAll<Element, TimeChartData>('.ChartTooltip__value')
-      .filter((td, tIndex) => tIndex === i)
+      // here we assume that the first value is date
+      .filter((td, tIndex) => tIndex === i + 1)
       .text(
         (data[i].valueFormatter?.(d.value) || d.value.toLocaleString(undefined, { minimumSignificantDigits: 1 })) +
         (data[i].units ? ` ${ data[i].units }` : ''),
@@ -81,7 +79,7 @@ const ChartTooltip = ({ xScale, yScale, width, tooltipWidth = 200, height, data,
     const width = valueNodes.map((node) => node?.getBoundingClientRect?.().width);
     const maxNodeWidth = Math.max(...width);
     d3.select(ref.current)
-      .select('.ChartTooltip__contentBg')
+      .select('.ChartTooltip__backdrop')
       .transition()
       .duration(100)
       .ease(d3.easeLinear)
@@ -124,8 +122,9 @@ const ChartTooltip = ({ xScale, yScale, width, tooltipWidth = 200, height, data,
       const date = xScale.invert(x);
       const dateLabel = data[0].items.find((item) => item.date.getTime() === date.getTime())?.dateLabel;
 
+      // here we assume that the first value is date
       tooltipContent
-        .select('.ChartTooltip__date')
+        .select('.ChartTooltip__value')
         .text(dateLabel || d3.timeFormat('%e %b %Y')(xScale.invert(x)));
 
       currentItems.forEach(({ point, index }) => {
@@ -264,86 +263,21 @@ const ChartTooltip = ({ xScale, yScale, width, tooltipWidth = 200, height, data,
   }, [ anchorEl, createPointerTracker, draw, hideContent, showContent ]);
 
   return (
-    <g ref={ ref } opacity={ 0 } { ...props }>
-      <line className="ChartTooltip__line" stroke={ lineColor } strokeDasharray="3"/>
-      { data.map(({ name }) => (
-        <circle
-          key={ name }
-          className="ChartTooltip__point"
-          r={ POINT_SIZE / 2 }
-          opacity={ 0 }
-          fill={ markerBgColor }
-          stroke={ markerBorderColor }
-          strokeWidth={ 4 }
-        />
-      )) }
+    <g
+      ref={ ref }
+      opacity={ 0 }
+      fontSize="12px"
+      fontWeight="500"
+      dominantBaseline="hanging"
+      { ...props }
+    >
+      <ChartTooltipLine/>
+      { data.map(({ name }) => <ChartTooltipPoint key={ name }/>) }
       <g className="ChartTooltip__content">
-        <rect
-          className="ChartTooltip__contentBg"
-          rx={ 12 }
-          ry={ 12 }
-          fill={ bgColor }
-          width={ tooltipWidth }
-          height={ calculateHeight(data.length) }
-        />
-        <g className="ChartTooltip__row" transform={ calculateRowTransformValue(0) }>
-          <text
-            className="ChartTooltip__title"
-            transform="translate(0,0)"
-            fontSize="12px"
-            fontWeight="500"
-            fill={ titleColor }
-            dominantBaseline="hanging"
-            opacity={ 0 }
-          >
-            Incomplete day
-          </text>
-        </g>
-        <g className="ChartTooltip__row" transform={ calculateRowTransformValue(1) }>
-          <text
-            className="ChartTooltip__label"
-            transform="translate(0,0)"
-            fontSize="12px"
-            fontWeight="500"
-            fill={ labelColor }
-            dominantBaseline="hanging"
-          >
-            Date
-          </text>
-          <text
-            className="ChartTooltip__date"
-            transform={ `translate(${ LABEL_WIDTH },0)` }
-            fontSize="12px"
-            fontWeight="500"
-            fill={ textColor }
-            dominantBaseline="hanging"
-          />
-        </g>
-        { data.map(({ name }, index) => (
-          <g
-            key={ name }
-            className="ChartTooltip__row"
-            transform={ calculateRowTransformValue(index + 1) }
-          >
-            <text
-              className="ChartTooltip__label"
-              transform="translate(0,0)"
-              fontSize="12px"
-              fontWeight="500"
-              fill={ labelColor }
-              dominantBaseline="hanging"
-            >
-              { name }
-            </text>
-            <text
-              transform={ `translate(${ LABEL_WIDTH },0)` }
-              className="ChartTooltip__value"
-              fontSize="12px"
-              fill={ textColor }
-              dominantBaseline="hanging"
-            />
-          </g>
-        )) }
+        <ChartTooltipBackdrop width={ tooltipWidth } seriesNum={ data.length }/>
+        <ChartTooltipTitle/>
+        <ChartTooltipRow label="Date" lineNum={ 1 }/>
+        { data.map(({ name }, index) => <ChartTooltipRow key={ name } label={ name } lineNum={ index + 1 }/>) }
       </g>
     </g>
   );
