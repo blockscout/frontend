@@ -3,15 +3,14 @@ import React from 'react';
 
 import type { TimeChartItem, TimeChartData } from 'ui/shared/chart/types';
 
-import computeTooltipPosition from 'ui/shared/chart/utils/computeTooltipPosition';
-import type { Pointer } from 'ui/shared/chart/utils/pointerTracker';
-import { trackPointer } from 'ui/shared/chart/utils/pointerTracker';
-
 import ChartTooltipBackdrop from './tooltip/ChartTooltipBackdrop';
 import ChartTooltipLine from './tooltip/ChartTooltipLine';
 import ChartTooltipPoint from './tooltip/ChartTooltipPoint';
 import ChartTooltipRow from './tooltip/ChartTooltipRow';
 import ChartTooltipTitle from './tooltip/ChartTooltipTitle';
+import computeTooltipPosition from './tooltip/computeTooltipPosition';
+import { trackPointer } from './tooltip/pointerTracker';
+import type { Pointer } from './tooltip/pointerTracker';
 
 interface Props {
   width?: number;
