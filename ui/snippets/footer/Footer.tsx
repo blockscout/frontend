@@ -1,5 +1,13 @@
 import type { GridProps } from '@chakra-ui/react';
-import { Box, Grid, Flex, Text, Link, VStack, Skeleton } from '@chakra-ui/react';
+import {
+  Box,
+  Grid,
+  Flex,
+  Text,
+  Link,
+  VStack,
+  Skeleton,
+} from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
@@ -22,7 +30,6 @@ const FRONT_VERSION_URL = `https://github.com/blockscout/frontend/tree/${ config
 const FRONT_COMMIT_URL = `https://github.com/blockscout/frontend/commit/${ config.UI.footer.frontendCommit }`;
 
 const Footer = () => {
-
   const { data: backendVersionData } = useApiQuery('config_backend_version', {
     queryOptions: {
       staleTime: Infinity,
@@ -30,6 +37,7 @@ const Footer = () => {
   });
   const apiVersionUrl = getApiVersionUrl(backendVersionData?.backend_version);
   const issueUrl = useIssueUrl(backendVersionData?.backend_version);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const BLOCKSCOUT_LINKS = [
     {
       icon: 'edit' as const,
@@ -76,12 +84,21 @@ const Footer = () => {
   ];
 
   const frontendLink = (() => {
+    return null;
     if (config.UI.footer.frontendVersion) {
-      return <Link href={ FRONT_VERSION_URL } target="_blank">{ config.UI.footer.frontendVersion }</Link>;
+      return (
+        <Link href={ FRONT_VERSION_URL } target="_blank">
+          { config.UI.footer.frontendVersion }
+        </Link>
+      );
     }
 
     if (config.UI.footer.frontendCommit) {
-      return <Link href={ FRONT_COMMIT_URL } target="_blank">{ config.UI.footer.frontendCommit }</Link>;
+      return (
+        <Link href={ FRONT_COMMIT_URL } target="_blank">
+          { config.UI.footer.frontendCommit }
+        </Link>
+      );
     }
 
     return null;
@@ -89,54 +106,74 @@ const Footer = () => {
 
   const fetch = useFetch();
 
-  const { isPlaceholderData, data: linksData } = useQuery<unknown, ResourceError<unknown>, Array<CustomLinksGroup>>({
+  const { isPlaceholderData, data: linksData } = useQuery<
+  unknown,
+  ResourceError<unknown>,
+  Array<CustomLinksGroup>
+  >({
     queryKey: [ 'footer-links' ],
-    queryFn: async() => fetch(config.UI.footer.links || '', undefined, { resource: 'footer-links' }),
+    queryFn: async() =>
+      fetch(config.UI.footer.links || '', undefined, {
+        resource: 'footer-links',
+      }),
     enabled: Boolean(config.UI.footer.links),
     staleTime: Infinity,
     placeholderData: [],
   });
 
-  const colNum = isPlaceholderData ? 1 : Math.min(linksData?.length || Infinity, MAX_LINKS_COLUMNS) + 1;
+  const colNum = isPlaceholderData ?
+    1 :
+    Math.min(linksData?.length || Infinity, MAX_LINKS_COLUMNS) + 1;
 
-  const renderNetworkInfo = React.useCallback((gridArea?: GridProps['gridArea']) => {
-    return (
-      <Flex
-        gridArea={ gridArea }
-        flexWrap="wrap"
-        columnGap={ 8 }
-        rowGap={ 6 }
-        mb={{ base: 5, lg: 10 }}
-        _empty={{ display: 'none' }}
-      >
-        { !config.UI.indexingAlert.intTxs.isHidden && <IntTxsIndexingStatus/> }
-        <NetworkAddToWallet/>
-      </Flex>
-    );
-  }, []);
+  const renderNetworkInfo = React.useCallback(
+    (gridArea?: GridProps['gridArea']) => {
+      return (
+        <Flex
+          gridArea={ gridArea }
+          flexWrap="wrap"
+          columnGap={ 8 }
+          rowGap={ 6 }
+          mb={{ base: 5, lg: 10 }}
+          _empty={{ display: 'none' }}
+        >
+          { !config.UI.indexingAlert.intTxs.isHidden && <IntTxsIndexingStatus/> }
+          <NetworkAddToWallet/>
+        </Flex>
+      );
+    },
+    [],
+  );
 
-  const renderProjectInfo = React.useCallback((gridArea?: GridProps['gridArea']) => {
-    return (
-      <Box gridArea={ gridArea }>
-        <Link fontSize="xs" href="https://www.blockscout.com">blockscout.com</Link>
-        <Text mt={ 3 } fontSize="xs">
-          Blockscout is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for Ethereum Networks.
-        </Text>
-        <VStack spacing={ 1 } mt={ 6 } alignItems="start">
-          { apiVersionUrl && (
-            <Text fontSize="xs">
-              Backend: <Link href={ apiVersionUrl } target="_blank">{ backendVersionData?.backend_version }</Link>
-            </Text>
-          ) }
-          { frontendLink && (
-            <Text fontSize="xs">
-              Frontend: { frontendLink }
-            </Text>
-          ) }
-        </VStack>
-      </Box>
-    );
-  }, [ apiVersionUrl, backendVersionData?.backend_version, frontendLink ]);
+  const renderProjectInfo = React.useCallback(
+    (gridArea?: GridProps['gridArea']) => {
+      return (
+        <Box gridArea={ gridArea }>
+          <Link fontSize="xs" href="https://rbascan.com">
+            rbascan.com
+          </Link>
+          <Text mt={ 3 } fontSize="xs">
+            Rbascan allows you to explore and search the Roburna blockchain for
+            transactions, addresses, tokens, prices and other activities taking
+            place on Roburna (RBA)
+          </Text>
+          <VStack spacing={ 1 } mt={ 6 } alignItems="start">
+            { apiVersionUrl && (
+              <Text fontSize="xs">
+                Backend:{ ' ' }
+                <Link href={ apiVersionUrl } target="_blank">
+                  { backendVersionData?.backend_version }
+                </Link>
+              </Text>
+            ) }
+            { frontendLink && (
+              <Text fontSize="xs">Frontend: { frontendLink }</Text>
+            ) }
+          </VStack>
+        </Box>
+      );
+    },
+    [ apiVersionUrl, backendVersionData?.backend_version, frontendLink ],
+  );
 
   const containerProps: GridProps = {
     as: 'footer',
@@ -157,7 +194,11 @@ const Footer = () => {
         </div>
 
         <Grid
-          gap={{ base: 6, lg: colNum === MAX_LINKS_COLUMNS + 1 ? 2 : 8, xl: 12 }}
+          gap={{
+            base: 6,
+            lg: colNum === MAX_LINKS_COLUMNS + 1 ? 2 : 8,
+            xl: 12,
+          }}
           gridTemplateColumns={{
             base: 'repeat(auto-fill, 160px)',
             lg: `repeat(${ colNum }, 135px)`,
@@ -166,21 +207,32 @@ const Footer = () => {
           justifyContent={{ lg: 'flex-end' }}
           mt={{ base: 8, lg: 0 }}
         >
-          {
-            ([
-              { title: 'Blockscout', links: BLOCKSCOUT_LINKS },
-              ...(linksData || []),
-            ])
-              .slice(0, colNum)
-              .map(linkGroup => (
-                <Box key={ linkGroup.title }>
-                  <Skeleton fontWeight={ 500 } mb={ 3 } display="inline-block" isLoaded={ !isPlaceholderData }>{ linkGroup.title }</Skeleton>
-                  <VStack spacing={ 1 } alignItems="start">
-                    { linkGroup.links.map(link => <FooterLinkItem { ...link } key={ link.text } isLoading={ isPlaceholderData }/>) }
-                  </VStack>
-                </Box>
-              ))
-          }
+          { [
+            // { title: "Blockscout", links: BLOCKSCOUT_LINKS },
+            ...(linksData || []),
+          ]
+            .slice(0, colNum)
+            .map((linkGroup) => (
+              <Box key={ linkGroup.title }>
+                <Skeleton
+                  fontWeight={ 500 }
+                  mb={ 3 }
+                  display="inline-block"
+                  isLoaded={ !isPlaceholderData }
+                >
+                  { linkGroup.title }
+                </Skeleton>
+                <VStack spacing={ 1 } alignItems="start">
+                  { linkGroup.links.map((link) => (
+                    <FooterLinkItem
+                      { ...link }
+                      key={ link.text }
+                      isLoading={ isPlaceholderData }
+                    />
+                  )) }
+                </VStack>
+              </Box>
+            )) }
         </Grid>
       </Grid>
     );
@@ -196,7 +248,6 @@ const Footer = () => {
         `,
       }}
     >
-
       { renderNetworkInfo({ lg: 'network' }) }
       { renderProjectInfo({ lg: 'info' }) }
 
@@ -218,7 +269,9 @@ const Footer = () => {
         justifyContent={{ lg: 'flex-end' }}
         mt={{ base: 8, lg: 0 }}
       >
-        { BLOCKSCOUT_LINKS.map(link => <FooterLinkItem { ...link } key={ link.text }/>) }
+        { /* {BLOCKSCOUT_LINKS.map((link) => (
+          <FooterLinkItem {...link} key={link.text} />
+        ))} */ }
       </Grid>
     </Grid>
   );

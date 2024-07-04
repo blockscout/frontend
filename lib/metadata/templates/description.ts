@@ -2,7 +2,9 @@ import type { Route } from 'nextjs-routes';
 
 // equal og:description
 // eslint-disable-next-line max-len
-const DEFAULT_TEMPLATE = 'Blockscout is the #1 open-source blockchain explorer available today. 100+ chains and counting rely on Blockscout data availability, APIs, and ecosystem tools to support their networks.';
+const DEFAULT_TEMPLATE =
+  // eslint-disable-next-line max-len
+  'Rbascan allows you to explore and search the Roburna blockchain for transactions, addresses, tokens, prices and other activities taking place on Roburna';
 
 // FIXME all page descriptions will be updated later
 const TEMPLATE_MAP: Record<Route['pathname'], string> = {
@@ -11,15 +13,19 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/txs/kettle/[hash]': DEFAULT_TEMPLATE,
   '/tx/[hash]': 'View transaction %hash% on %network_title%',
   '/blocks': DEFAULT_TEMPLATE,
-  '/block/[height_or_hash]': 'View the transactions, token transfers, and uncles for block %height_or_hash%',
+  '/block/[height_or_hash]':
+    'View the transactions, token transfers, and uncles for block %height_or_hash%',
   '/accounts': DEFAULT_TEMPLATE,
-  '/address/[hash]': 'View the account balance, transactions, and other data for %hash% on the %network_title%',
+  '/address/[hash]':
+    'View the account balance, transactions, and other data for %hash% on the %network_title%',
   '/verified-contracts': DEFAULT_TEMPLATE,
   '/contract-verification': DEFAULT_TEMPLATE,
-  '/address/[hash]/contract-verification': 'View the account balance, transactions, and other data for %hash% on the %network_title%',
+  '/address/[hash]/contract-verification':
+    'View the account balance, transactions, and other data for %hash% on the %network_title%',
   '/tokens': DEFAULT_TEMPLATE,
   '/token/[hash]': '%hash%, balances and analytics on the %network_title%',
-  '/token/[hash]/instance/[id]': '%hash%, balances and analytics on the %network_title%',
+  '/token/[hash]/instance/[id]':
+    '%hash%, balances and analytics on the %network_title%',
   '/apps': DEFAULT_TEMPLATE,
   '/apps/[id]': DEFAULT_TEMPLATE,
   '/stats': DEFAULT_TEMPLATE,
