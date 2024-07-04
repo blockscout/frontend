@@ -18,15 +18,31 @@ interface Props {
   anchorEl: SVGRectElement | null;
 }
 
+interface CurrentItem {
+  point: TimeChartItem;
+  index: number;
+}
+
 const TEXT_LINE_HEIGHT = 12;
 const PADDING = 16;
 const LINE_SPACE = 10;
 const POINT_SIZE = 16;
 const LABEL_WIDTH = 80;
 
+const calculateHeight = (seriesNum: number, isIncomplete?: boolean) => {
+  const linesNum = isIncomplete ? seriesNum + 2 : seriesNum + 1;
+
+  return 2 * PADDING + linesNum * TEXT_LINE_HEIGHT + (linesNum - 1) * LINE_SPACE;
+};
+
+const calculateRowTransformValue = (rowNum: number) => {
+  return `translate(${ PADDING },${ PADDING + rowNum * (LINE_SPACE + TEXT_LINE_HEIGHT) })`;
+};
+
 const ChartTooltip = ({ xScale, yScale, width, tooltipWidth = 200, height, data, anchorEl, ...props }: Props) => {
   const lineColor = useToken('colors', 'gray.400');
-  const titleColor = useToken('colors', 'blue.100');
+  const titleColor = useToken('colors', 'yellow.300');
+  const labelColor = useToken('colors', 'blue.100');
   const textColor = useToken('colors', 'white');
   const markerBgColor = useToken('colors', useColorModeValue('black', 'white'));
   const markerBorderColor = useToken('colors', useColorModeValue('white', 'black'));
@@ -48,8 +64,46 @@ const ChartTooltip = ({ xScale, yScale, width, tooltipWidth = 200, height, data,
     [ ref, height ],
   );
 
+  const updateDisplayedValue = React.useCallback((d: TimeChartItem, i: number) => {
+
+    // UPDATE TOOLTIP DIMENSIONS
+    // TODO @tom2drum move to "updateContent" function
+    const valueNodes = d3.select(ref.current)
+      .selectAll<Element, TimeChartData>('.ChartTooltip__value')
+      .filter((td, tIndex) => tIndex === i)
+      .text(
+        (data[i].valueFormatter?.(d.value) || d.value.toLocaleString(undefined, { minimumSignificantDigits: 1 })) +
+        (data[i].units ? ` ${ data[i].units }` : ''),
+      )
+      .nodes();
+
+    const widthLimit = tooltipWidth - 2 * PADDING - LABEL_WIDTH;
+    const width = valueNodes.map((node) => node?.getBoundingClientRect?.().width);
+    const maxNodeWidth = Math.max(...width);
+    d3.select(ref.current)
+      .select('.ChartTooltip__contentBg')
+      .transition()
+      .duration(100)
+      .ease(d3.easeLinear)
+      .attr('width', tooltipWidth + Math.max(0, (maxNodeWidth - widthLimit)))
+      .attr('height', calculateHeight(data.length, d.isApproximate));
+
+    // UPDATE "TRANSFORM" PROPs OF LABELS AND VALUES
+    d3.select(ref.current)
+      .selectAll<Element, TimeChartData>('.ChartTooltip__row')
+      .attr('transform', (datum, index) => {
+        return calculateRowTransformValue(index - (d.isApproximate ? 0 : 1));
+      });
+
+    // UPDATE VISIBILITY OF TITLE
+    d3.select(ref.current)
+      .select('.ChartTooltip__title')
+      .attr('opacity', d.isApproximate ? 1 : 0);
+
+  }, [ data, tooltipWidth ]);
+
   const drawContent = React.useCallback(
-    (x: number, y: number) => {
+    (x: number, y: number, currentItems: Array<CurrentItem>) => {
       const tooltipContent = d3.select(ref.current).select('.ChartTooltip__content');
 
       tooltipContent.attr('transform', (cur, i, nodes) => {
@@ -71,36 +125,22 @@ const ChartTooltip = ({ xScale, yScale, width, tooltipWidth = 200, height, data,
       const dateLabel = data[0].items.find((item) => item.date.getTime() === date.getTime())?.dateLabel;
 
       tooltipContent
-        .select('.ChartTooltip__contentDate')
+        .select('.ChartTooltip__date')
         .text(dateLabel || d3.timeFormat('%e %b %Y')(xScale.invert(x)));
+
+      currentItems.forEach(({ point, index }) => {
+        updateDisplayedValue(point, index);
+      });
     },
-    [ xScale, data, width, height ],
+    [ xScale, data, updateDisplayedValue, width, height ],
   );
 
-  const updateDisplayedValue = React.useCallback((d: TimeChartItem, i: number) => {
-    const nodes = d3.select(ref.current)
-      .selectAll<Element, TimeChartData>('.ChartTooltip__value')
-      .filter((td, tIndex) => tIndex === i)
-      .text(
-        (data[i].valueFormatter?.(d.value) || d.value.toLocaleString(undefined, { minimumSignificantDigits: 1 })) +
-        (data[i].units ? ` ${ data[i].units }` : ''),
-      )
-      .nodes();
-
-    const widthLimit = tooltipWidth - 2 * PADDING - LABEL_WIDTH;
-    const width = nodes.map((node) => node?.getBoundingClientRect?.().width);
-    const maxNodeWidth = Math.max(...width);
-    d3.select(ref.current)
-      .select('.ChartTooltip__contentBg')
-      .attr('width', tooltipWidth + Math.max(0, (maxNodeWidth - widthLimit)));
-
-  }, [ data, tooltipWidth ]);
-
-  const drawPoints = React.useCallback((x: number) => {
+  const drawPoints: (x: number) => [number, number, Array<CurrentItem>] = React.useCallback((x: number) => {
     const xDate = xScale.invert(x);
     const bisectDate = d3.bisector<TimeChartItem, unknown>((d) => d.date).left;
     let baseXPos = 0;
     let baseYPos = 0;
+    const currentItems: Array<CurrentItem> = [];
 
     d3.select(ref.current)
       .selectAll('.ChartTooltip__point')
@@ -131,19 +171,19 @@ const ChartTooltip = ({ xScale, yScale, width, tooltipWidth = 200, height, data,
           baseYPos = yPos;
         }
 
-        updateDisplayedValue(d, i);
+        currentItems.push({ point: d, index: i });
 
         return `translate(${ xPos }, ${ yPos })`;
       });
 
-    return [ baseXPos, baseYPos ];
-  }, [ data, updateDisplayedValue, xScale, yScale ]);
+    return [ baseXPos, baseYPos, currentItems ];
+  }, [ data, xScale, yScale ]);
 
   const draw = React.useCallback((pointer: Pointer) => {
     if (pointer.point) {
-      const [ baseXPos, baseYPos ] = drawPoints(pointer.point[0]);
+      const [ baseXPos, baseYPos, currentItems ] = drawPoints(pointer.point[0]);
       drawLine(baseXPos);
-      drawContent(baseXPos, baseYPos);
+      drawContent(baseXPos, baseYPos, currentItems);
     }
   }, [ drawPoints, drawLine, drawContent ]);
 
@@ -244,21 +284,34 @@ const ChartTooltip = ({ xScale, yScale, width, tooltipWidth = 200, height, data,
           ry={ 12 }
           fill={ bgColor }
           width={ tooltipWidth }
-          height={ 2 * PADDING + (data.length + 1) * TEXT_LINE_HEIGHT + data.length * LINE_SPACE }
+          height={ calculateHeight(data.length) }
         />
-        <g transform={ `translate(${ PADDING },${ PADDING })` }>
+        <g className="ChartTooltip__row" transform={ calculateRowTransformValue(0) }>
           <text
-            className="ChartTooltip__contentTitle"
+            className="ChartTooltip__title"
             transform="translate(0,0)"
             fontSize="12px"
             fontWeight="500"
             fill={ titleColor }
             dominantBaseline="hanging"
+            opacity={ 0 }
+          >
+            Incomplete day
+          </text>
+        </g>
+        <g className="ChartTooltip__row" transform={ calculateRowTransformValue(1) }>
+          <text
+            className="ChartTooltip__label"
+            transform="translate(0,0)"
+            fontSize="12px"
+            fontWeight="500"
+            fill={ labelColor }
+            dominantBaseline="hanging"
           >
             Date
           </text>
           <text
-            className="ChartTooltip__contentDate"
+            className="ChartTooltip__date"
             transform={ `translate(${ LABEL_WIDTH },0)` }
             fontSize="12px"
             fontWeight="500"
@@ -269,14 +322,15 @@ const ChartTooltip = ({ xScale, yScale, width, tooltipWidth = 200, height, data,
         { data.map(({ name }, index) => (
           <g
             key={ name }
-            transform={ `translate(${ PADDING },${ PADDING + (index + 1) * (LINE_SPACE + TEXT_LINE_HEIGHT) })` }
+            className="ChartTooltip__row"
+            transform={ calculateRowTransformValue(index + 1) }
           >
             <text
-              className="ChartTooltip__contentTitle"
+              className="ChartTooltip__label"
               transform="translate(0,0)"
               fontSize="12px"
               fontWeight="500"
-              fill={ titleColor }
+              fill={ labelColor }
               dominantBaseline="hanging"
             >
               { name }
