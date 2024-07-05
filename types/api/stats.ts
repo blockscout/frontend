@@ -34,39 +34,3 @@ export interface GasPriceInfo {
   base_fee: number | null;
   priority_fee: number | null;
 }
-
-export type Counters = {
-  counters: Array<Counter>;
-}
-
-export type Counter = {
-  id: string;
-  value: string;
-  title: string;
-  description?: string;
-  units: string;
-}
-
-export type StatsCharts = {
-  sections: Array<StatsChartsSection>;
-}
-
-export type StatsChartsSection = {
-  id: string;
-  title: string;
-  charts: Array<StatsChartInfo>;
-}
-
-export type StatsChartInfo = {
-  id: string;
-  title: string;
-  description: string;
-  units: string | null;
-}
-
-export type StatsChart = { chart: Array<StatsChartItem> };
-
-export type StatsChartItem = {
-  date: string;
-  value: string;
-}

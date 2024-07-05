@@ -77,7 +77,7 @@ const ChainIndicators = () => {
 
     return (
       <Skeleton isLoaded={ !statsQueryResult.isPlaceholderData } display="flex" alignItems="center" color={ diffColor } ml={ 2 }>
-        <IconSvg name="up" boxSize={ 5 } mr={ 1 } transform={ diff < 0 ? 'rotate(180deg)' : 'rotate(0)' }/>
+        <IconSvg name="arrows/up-head" boxSize={ 5 } mr={ 1 } transform={ diff < 0 ? 'rotate(180deg)' : 'rotate(0)' }/>
         <Text color={ diffColor } fontWeight={ 600 }>{ diff }%</Text>
       </Skeleton>
     );

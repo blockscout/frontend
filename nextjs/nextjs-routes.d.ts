@@ -22,6 +22,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/api/media-type">
     | StaticRoute<"/api/metrics">
     | StaticRoute<"/api/proxy">
+    | StaticRoute<"/api/sprite">
     | StaticRoute<"/api-docs">
     | DynamicRoute<"/apps/[id]", { "id": string }>
     | StaticRoute<"/apps">
@@ -48,6 +49,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/output-roots">
     | StaticRoute<"/public-tags/submit">
     | StaticRoute<"/search-results">
+    | StaticRoute<"/sprite">
     | StaticRoute<"/stats">
     | DynamicRoute<"/token/[hash]", { "hash": string }>
     | DynamicRoute<"/token/[hash]/instance/[id]", { "hash": string; "id": string }>

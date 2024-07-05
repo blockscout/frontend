@@ -191,7 +191,7 @@ const MarketplaceAppModal = ({
               mb={ 6 }
             >
               <Flex alignItems="center" gap={ 2 } flexWrap="wrap">
-                <IconSvg name="contracts_verified" boxSize={ 5 } color="green.500"/>
+                <IconSvg name="contracts/verified_many" boxSize={ 5 } color="green.500"/>
                 <Text>Verified contracts</Text>
                 <Text fontWeight="500">
                   { securityReport?.overallInfo.verifiedNumber ?? 0 } of { securityReport?.overallInfo.totalContractsNumber ?? 0 }

@@ -68,7 +68,7 @@ const ChainIndicatorItem = ({ id, title, value, valueDiff, icon, isSelected, onC
 
     return (
       <Skeleton isLoaded={ !stats.isPlaceholderData } ml={ 3 } display="flex" alignItems="center" color={ diffColor }>
-        <IconSvg name="up" boxSize={ 5 } mr={ 1 } transform={ diff < 0 ? 'rotate(180deg)' : 'rotate(0)' }/>
+        <IconSvg name="arrows/up-head" boxSize={ 5 } mr={ 1 } transform={ diff < 0 ? 'rotate(180deg)' : 'rotate(0)' }/>
         <Text color={ diffColor } fontWeight={ 600 }>{ diff }%</Text>
       </Skeleton>
     );

@@ -14,6 +14,7 @@ const defaultOptions: UseToastOptions & { toastComponent?: React.FC<ToastProps> 
   containerStyle: {
     margin: 8,
   },
+  variant: 'subtle',
 };
 
 export default function useToastModified() {

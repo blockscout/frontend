@@ -198,7 +198,7 @@ const ChartWidget = ({ items, title, description, isLoading, className, isError,
                 size="sm"
                 variant="outline"
                 onClick={ handleZoomResetClick }
-                icon={ <IconSvg name="repeat_arrow" w={ 4 } h={ 4 }/> }
+                icon={ <IconSvg name="repeat" w={ 4 } h={ 4 }/> }
               />
             </Tooltip>
 

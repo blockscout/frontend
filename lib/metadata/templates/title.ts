@@ -49,13 +49,15 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
 
   // service routes, added only to make typescript happy
   '/login': '%network_name% login',
+  '/sprite': '%network_name% SVG sprite',
   '/api/metrics': '%network_name% node API prometheus metrics',
   '/api/log': '%network_name% node API request log',
   '/api/media-type': '%network_name% node API media type',
   '/api/proxy': '%network_name% node API proxy',
   '/api/csrf': '%network_name% node API CSRF token',
   '/api/healthz': '%network_name% node API health check',
-  '/api/config': '%network_name% node API health check',
+  '/api/config': '%network_name% node API app config',
+  '/api/sprite': '%network_name% node API SVG sprite content',
   '/auth/auth0': '%network_name% authentication',
   '/auth/unverified-email': '%network_name% unverified email',
 };
