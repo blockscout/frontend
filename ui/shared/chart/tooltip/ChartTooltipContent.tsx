@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
+import _clamp from 'lodash/clamp';
 import React from 'react';
 
-import computeTooltipPosition from './computeTooltipPosition';
 import { POINT_SIZE } from './utils';
 
 interface Props {
@@ -28,7 +28,7 @@ export function useRenderContent(ref: React.RefObject<SVGGElement>, { chart }: U
     tooltipContent.attr('transform', (cur, i, nodes) => {
       const node = nodes[i] as SVGGElement | null;
       const { width: nodeWidth, height: nodeHeight } = node?.getBoundingClientRect() || { width: 0, height: 0 };
-      const [ translateX, translateY ] = computeTooltipPosition({
+      const [ translateX, translateY ] = calculatePosition({
         canvasWidth: chart.width || 0,
         canvasHeight: chart.height || 0,
         nodeWidth,
@@ -40,4 +40,49 @@ export function useRenderContent(ref: React.RefObject<SVGGElement>, { chart }: U
       return `translate(${ translateX }, ${ translateY })`;
     });
   }, [ chart.height, chart.width, ref ]);
+}
+
+interface CalculatePositionParams {
+  pointX: number;
+  pointY: number;
+  offset: number;
+  nodeWidth: number;
+  nodeHeight: number;
+  canvasWidth: number;
+  canvasHeight: number;
+}
+
+function calculatePosition({ pointX, pointY, canvasWidth, canvasHeight, nodeWidth, nodeHeight, offset }: CalculatePositionParams): [ number, number ] {
+  // right
+  if (pointX + offset + nodeWidth <= canvasWidth) {
+    const x = pointX + offset;
+    const y = _clamp(pointY - nodeHeight / 2, 0, canvasHeight - nodeHeight);
+    return [ x, y ];
+  }
+
+  // left
+  if (nodeWidth + offset <= pointX) {
+    const x = pointX - offset - nodeWidth;
+    const y = _clamp(pointY - nodeHeight / 2, 0, canvasHeight - nodeHeight);
+    return [ x, y ];
+  }
+
+  // top
+  if (nodeHeight + offset <= pointY) {
+    const x = _clamp(pointX - nodeWidth / 2, 0, canvasWidth - nodeWidth);
+    const y = pointY - offset - nodeHeight;
+    return [ x, y ];
+  }
+
+  // bottom
+  if (pointY + offset + nodeHeight <= canvasHeight) {
+    const x = _clamp(pointX - nodeWidth / 2, 0, canvasWidth - nodeWidth);
+    const y = pointY + offset;
+    return [ x, y ];
+  }
+
+  const x = _clamp(pointX / 2, 0, canvasWidth - nodeWidth);
+  const y = _clamp(pointY / 2, 0, canvasHeight - nodeHeight);
+
+  return [ x, y ];
 }
