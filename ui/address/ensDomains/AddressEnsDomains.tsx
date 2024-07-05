@@ -4,7 +4,6 @@ import {
   Flex,
   Grid,
   Hide,
-  Popover,
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
@@ -23,6 +22,7 @@ import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'lib/api/resources';
 import dayjs from 'lib/date/dayjs';
+import Popover from 'ui/shared/chakra/Popover';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/links/LinkInternal';

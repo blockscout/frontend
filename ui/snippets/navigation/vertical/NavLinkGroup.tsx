@@ -3,7 +3,6 @@ import {
   HStack,
   Box,
   Link,
-  Popover,
   PopoverTrigger,
   PopoverContent,
   PopoverBody,
@@ -13,6 +12,7 @@ import React from 'react';
 
 import type { NavGroupItem } from 'types/client/navigation';
 
+import Popover from 'ui/shared/chakra/Popover';
 import IconSvg from 'ui/shared/IconSvg';
 
 import LightningLabel from '../LightningLabel';
@@ -39,6 +39,7 @@ const NavLinkGroup = ({ item, isCollapsed }: Props) => {
         trigger="hover"
         placement="right-start"
         isLazy
+        gutter={ 8 }
       >
         <PopoverTrigger>
           <Link

@@ -1,4 +1,4 @@
-import { Box, Text, Link, Popover, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure, chakra, Flex, Divider, Icon } from '@chakra-ui/react';
+import { Box, Text, Link, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure, chakra, Flex, Divider, Icon } from '@chakra-ui/react';
 import React from 'react';
 
 import type { MarketplaceAppSecurityReport } from 'types/client/marketplace';
@@ -11,6 +11,7 @@ import config from 'configs/app';
 import solidityScanIcon from 'icons/brands/solidity_scan.svg';
 import { apos } from 'lib/html-entities';
 import * as mixpanel from 'lib/mixpanel/index';
+import Popover from 'ui/shared/chakra/Popover';
 import IconSvg from 'ui/shared/IconSvg';
 import SolidityscanReportButton from 'ui/shared/solidityscanReport/SolidityscanReportButton';
 import SolidityscanReportDetails from 'ui/shared/solidityscanReport/SolidityscanReportDetails';

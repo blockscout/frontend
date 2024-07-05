@@ -1,10 +1,11 @@
 import type { ButtonProps } from '@chakra-ui/react';
-import { Popover, PopoverContent, PopoverBody, PopoverTrigger, Button, Box, useBoolean, chakra, useColorModeValue } from '@chakra-ui/react';
+import { PopoverContent, PopoverBody, PopoverTrigger, Button, Box, useBoolean, chakra, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';
+import Popover from 'ui/shared/chakra/Popover';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import useWallet from 'ui/snippets/walletMenu/useWallet';
 import WalletMenuContent from 'ui/snippets/walletMenu/WalletMenuContent';
@@ -65,7 +66,6 @@ const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
     <Popover
       openDelay={ 300 }
       placement="bottom-end"
-      gutter={ 10 }
       isLazy
       isOpen={ isPopoverOpen }
       onClose={ setIsPopoverOpen.off }

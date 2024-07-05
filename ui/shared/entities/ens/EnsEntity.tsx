@@ -1,4 +1,4 @@
-import { Box, chakra, Flex, Image, Popover, PopoverBody, PopoverContent, PopoverTrigger, Portal, Skeleton, Text } from '@chakra-ui/react';
+import { Box, chakra, Flex, Image, PopoverBody, PopoverContent, PopoverTrigger, Portal, Skeleton, Text } from '@chakra-ui/react';
 import _omit from 'lodash/omit';
 import React from 'react';
 
@@ -6,6 +6,7 @@ import type * as bens from '@blockscout/bens-types';
 
 import { route } from 'nextjs-routes';
 
+import Popover from 'ui/shared/chakra/Popover';
 import * as EntityBase from 'ui/shared/entities/base/components';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/links/LinkExternal';
