@@ -1,8 +1,8 @@
 import type { VerifiedContractsSortingValue, VerifiedContractsSortingField } from 'types/api/verifiedContracts';
 
-import type { Option } from 'ui/shared/sort/Sort';
+import type { TOption } from 'ui/shared/sort/Option';
 
-export const SORT_OPTIONS: Array<Option<VerifiedContractsSortingValue>> = [
+export const SORT_OPTIONS: Array<TOption<VerifiedContractsSortingValue>> = [
   { title: 'Default', id: undefined },
   { title: 'Balance descending', id: 'balance-desc' },
   { title: 'Balance ascending', id: 'balance-asc' },

@@ -1,4 +1,4 @@
-import { uniq } from 'lodash';
+import _uniq from 'lodash/uniq';
 
 import isBrowser from './isBrowser';
 
@@ -27,7 +27,7 @@ export function saveToRecentKeywords(value: string) {
   }
 
   const keywordsArr = getRecentSearchKeywords();
-  const result = uniq([ value, ...keywordsArr ]).slice(0, MAX_KEYWORDS_NUMBER - 1);
+  const result = _uniq([ value, ...keywordsArr ]).slice(0, MAX_KEYWORDS_NUMBER - 1);
   window.localStorage.setItem(RECENT_KEYWORDS_LS_KEY, JSON.stringify(result));
 }
 

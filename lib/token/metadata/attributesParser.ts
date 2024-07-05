@@ -48,11 +48,25 @@ export default function attributesParser(attributes: Array<unknown>): Metadata['
         return;
       }
 
-      const value = 'value' in item && (typeof item.value === 'string' || typeof item.value === 'number') ? item.value : undefined;
+      const value = (() => {
+        if (!('value' in item)) {
+          return;
+        }
+        switch (typeof item.value) {
+          case 'string':
+          case 'number':
+            return item.value;
+          case 'boolean':
+            return String(item.value);
+          case 'object':
+            return JSON.stringify(item.value);
+        }
+      })();
+
       const trait = 'trait_type' in item && typeof item.trait_type === 'string' ? item.trait_type : undefined;
       const display = 'display_type' in item && typeof item.display_type === 'string' ? item.display_type : undefined;
 
-      if (!value) {
+      if (value === undefined) {
         return;
       }
 

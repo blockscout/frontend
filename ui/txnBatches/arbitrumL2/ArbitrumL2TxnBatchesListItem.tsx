@@ -54,11 +54,11 @@ const ArbitrumL2TxnBatchesListItem = ({ item, isLoading }: Props) => {
         />
       </ListItemMobileGrid.Value>
 
-      { item.block_count && (
+      { item.blocks_count && (
         <>
-          <ListItemMobileGrid.Label isLoading={ isLoading }>L2 block txn count</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>Block count</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <Skeleton isLoaded={ !isLoading } display="inline-block">{ item.block_count }</Skeleton>
+            <Skeleton isLoaded={ !isLoading } display="inline-block">{ item.blocks_count.toLocaleString() }</Skeleton>
           </ListItemMobileGrid.Value>
         </>
       ) }
@@ -87,7 +87,7 @@ const ArbitrumL2TxnBatchesListItem = ({ item, isLoading }: Props) => {
           fontWeight={ 600 }
         >
           <Skeleton isLoaded={ !isLoading } minW="40px">
-            { item.transactions_count }
+            { item.transactions_count.toLocaleString() }
           </Skeleton>
         </LinkInternal>
       </ListItemMobileGrid.Value>

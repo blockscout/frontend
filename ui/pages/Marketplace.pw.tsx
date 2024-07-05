@@ -7,13 +7,16 @@ import { test, expect, devices } from 'playwright/lib';
 import Marketplace from './Marketplace';
 
 const MARKETPLACE_CONFIG_URL = 'http://localhost/marketplace-config.json';
+const MARKETPLACE_SECURITY_REPORTS_URL = 'https://marketplace-security-reports.json';
 
 test.beforeEach(async({ mockConfigResponse, mockEnvs, mockAssetResponse }) => {
   await mockEnvs([
     [ 'NEXT_PUBLIC_MARKETPLACE_ENABLED', 'true' ],
     [ 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', MARKETPLACE_CONFIG_URL ],
+    [ 'NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL', MARKETPLACE_SECURITY_REPORTS_URL ],
   ]);
   await mockConfigResponse('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', MARKETPLACE_CONFIG_URL, JSON.stringify(appsMock));
+  await mockConfigResponse('NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL', MARKETPLACE_SECURITY_REPORTS_URL, JSON.stringify(securityReportsMock));
   await Promise.all(appsMock.map(app => mockAssetResponse(app.logo, './playwright/mocks/image_s.jpg')));
 });
 
@@ -42,18 +45,6 @@ test('with banner +@dark-mode', async({ render, mockEnvs, mockConfigResponse }) 
   ]);
   await mockConfigResponse('MARKETPLACE_BANNER_CONTENT_URL', MARKETPLACE_BANNER_CONTENT_URL, './playwright/mocks/page.html', true);
   const component = await render(<Marketplace/>);
-
-  await expect(component).toHaveScreenshot();
-});
-
-test('with scores +@dark-mode', async({ render, mockConfigResponse, mockEnvs }) => {
-  const MARKETPLACE_SECURITY_REPORTS_URL = 'https://marketplace-security-reports.json';
-  await mockEnvs([
-    [ 'NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL', MARKETPLACE_SECURITY_REPORTS_URL ],
-  ]);
-  await mockConfigResponse('NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL', MARKETPLACE_SECURITY_REPORTS_URL, JSON.stringify(securityReportsMock));
-  const component = await render(<Marketplace/>);
-  await component.getByText('Apps scores').click();
 
   await expect(component).toHaveScreenshot();
 });
@@ -88,18 +79,6 @@ test.describe('mobile', () => {
     ]);
     await mockConfigResponse('MARKETPLACE_BANNER_CONTENT_URL', MARKETPLACE_BANNER_CONTENT_URL, './playwright/mocks/page.html', true);
     const component = await render(<Marketplace/>);
-
-    await expect(component).toHaveScreenshot();
-  });
-
-  test('with scores', async({ render, mockConfigResponse, mockEnvs }) => {
-    const MARKETPLACE_SECURITY_REPORTS_URL = 'https://marketplace-security-reports.json';
-    await mockEnvs([
-      [ 'NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL', MARKETPLACE_SECURITY_REPORTS_URL ],
-    ]);
-    await mockConfigResponse('NEXT_PUBLIC_MARKETPLACE_SECURITY_REPORTS_URL', MARKETPLACE_SECURITY_REPORTS_URL, JSON.stringify(securityReportsMock));
-    const component = await render(<Marketplace/>);
-    await component.getByText('Apps scores').click();
 
     await expect(component).toHaveScreenshot();
   });

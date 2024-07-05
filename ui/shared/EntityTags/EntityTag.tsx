@@ -1,3 +1,4 @@
+import type { ResponsiveValue } from '@chakra-ui/react';
 import { chakra, Image, Skeleton, Tag } from '@chakra-ui/react';
 import React from 'react';
 
@@ -13,10 +14,10 @@ import { getTagLinkParams } from './utils';
 interface Props {
   data: TEntityTag;
   isLoading?: boolean;
-  truncate?: boolean;
+  maxW?: ResponsiveValue<string>;
 }
 
-const EntityTag = ({ data, isLoading, truncate }: Props) => {
+const EntityTag = ({ data, isLoading, maxW }: Props) => {
 
   if (isLoading) {
     return <Skeleton borderRadius="sm" w="100px" h="24px"/>;
@@ -55,7 +56,8 @@ const EntityTag = ({ data, isLoading, truncate }: Props) => {
         display="flex"
         alignItems="center"
         minW={ 0 }
-        maxW={ truncate ? { base: '125px', lg: '300px' } : undefined }
+        w="fit-content"
+        maxW={ maxW }
         bg={ data.meta?.bgColor }
         color={ data.meta?.textColor }
         colorScheme={ hasLink ? 'gray-blue' : 'gray' }

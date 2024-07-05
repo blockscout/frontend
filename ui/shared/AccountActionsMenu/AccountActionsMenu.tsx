@@ -1,4 +1,4 @@
-import { Box, IconButton, Menu, MenuButton, MenuList, Skeleton, chakra } from '@chakra-ui/react';
+import { Box, IconButton, MenuButton, MenuList, Skeleton, chakra } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -9,8 +9,10 @@ import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import useIsAccountActionAllowed from 'lib/hooks/useIsAccountActionAllowed';
 import * as mixpanel from 'lib/mixpanel/index';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import Menu from 'ui/shared/chakra/Menu';
 import IconSvg from 'ui/shared/IconSvg';
 
+import MetadataUpdateMenuItem from './items/MetadataUpdateMenuItem';
 import PrivateTagMenuItem from './items/PrivateTagMenuItem';
 import PublicTagMenuItem from './items/PublicTagMenuItem';
 import TokenInfoMenuItem from './items/TokenInfoMenuItem';
@@ -18,13 +20,15 @@ import TokenInfoMenuItem from './items/TokenInfoMenuItem';
 interface Props {
   isLoading?: boolean;
   className?: string;
+  showUpdateMetadataItem?: boolean;
 }
 
-const AccountActionsMenu = ({ isLoading, className }: Props) => {
+const AccountActionsMenu = ({ isLoading, className, showUpdateMetadataItem }: Props) => {
   const router = useRouter();
 
   const hash = getQueryParamString(router.query.hash);
   const isTokenPage = router.pathname === '/token/[hash]';
+  const isTokenInstancePage = router.pathname === '/token/[hash]/instance/[id]';
   const isTxPage = router.pathname === '/tx/[hash]';
   const isAccountActionAllowed = useIsAccountActionAllowed();
 
@@ -41,6 +45,10 @@ const AccountActionsMenu = ({ isLoading, className }: Props) => {
   const userWithoutEmail = userInfoQuery.data && !userInfoQuery.data.email;
 
   const items = [
+    {
+      render: (props: ItemProps) => <MetadataUpdateMenuItem { ...props }/>,
+      enabled: isTokenInstancePage && showUpdateMetadataItem,
+    },
     {
       render: (props: ItemProps) => <TokenInfoMenuItem { ...props }/>,
       enabled: isTokenPage && config.features.addressVerification.isEnabled && !userWithoutEmail,
@@ -82,6 +90,7 @@ const AccountActionsMenu = ({ isLoading, className }: Props) => {
         px="7px"
         onClick={ handleButtonClick }
         icon={ <IconSvg name="dots" boxSize="18px"/> }
+        aria-label="Show address menu"
       />
       <MenuList minWidth="180px" zIndex="popover">
         { items.map(({ render }, index) => (

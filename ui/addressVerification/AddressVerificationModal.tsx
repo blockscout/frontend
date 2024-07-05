@@ -4,6 +4,7 @@ import React from 'react';
 import type { AddressVerificationFormFirstStepFields, AddressCheckStatusSuccess } from './types';
 import type { VerifiedAddress } from 'types/api/account';
 
+import config from 'configs/app';
 import * as mixpanel from 'lib/mixpanel/index';
 import IconSvg from 'ui/shared/IconSvg';
 import Web3ModalProvider from 'ui/shared/Web3ModalProvider';
@@ -76,8 +77,13 @@ const AddressVerificationModal = ({ defaultAddress, isOpen, onClose, onSubmit, o
     },
     {
       title: 'Copy and sign message',
-      content: <AddressVerificationStepSignature { ...data } onContinue={ handleGoToThirdStep }/>,
-      fallback: <AddressVerificationStepSignature { ...data } onContinue={ handleGoToThirdStep } noWeb3Provider/>,
+      content: (
+        <AddressVerificationStepSignature
+          { ...data }
+          onContinue={ handleGoToThirdStep }
+          noWeb3Provider={ !config.features.blockchainInteraction.isEnabled }
+        />
+      ),
     },
     {
       title: 'Congrats! Address is verified.',
@@ -107,7 +113,7 @@ const AddressVerificationModal = ({ defaultAddress, isOpen, onClose, onSubmit, o
         </ModalHeader>
         <ModalCloseButton/>
         <ModalBody mb={ 0 }>
-          <Web3ModalProvider fallback={ step?.fallback || step.content }>
+          <Web3ModalProvider>
             { step.content }
           </Web3ModalProvider>
         </ModalBody>

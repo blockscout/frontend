@@ -5,11 +5,11 @@ import type { TransactionsSortingValue, TxsResponse } from 'types/api/transactio
 
 import type { ResourceError } from 'lib/api/resources';
 import * as cookies from 'lib/cookies';
-import type { Option } from 'ui/shared/sort/Sort';
+import type { TOption } from 'ui/shared/sort/Option';
 
 import sortTxs from './sortTxs';
 
-export const SORT_OPTIONS: Array<Option<TransactionsSortingValue>> = [
+export const SORT_OPTIONS: Array<TOption<TransactionsSortingValue>> = [
   { title: 'Default', id: undefined },
   { title: 'Value ascending', id: 'value-asc' },
   { title: 'Value descending', id: 'value-desc' },

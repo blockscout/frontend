@@ -2,7 +2,7 @@ import type { ArbitrumL2TxnBatchesItem, ArbitrumL2TxnBatchesResponse } from 'typ
 
 export const finalized: ArbitrumL2TxnBatchesItem = {
   number: 12345,
-  block_count: 12345,
+  blocks_count: 12345,
   transactions_count: 10000,
   commitment_transaction: {
     block_number: 12345,
@@ -14,7 +14,7 @@ export const finalized: ArbitrumL2TxnBatchesItem = {
 
 export const unfinalized: ArbitrumL2TxnBatchesItem = {
   number: 12344,
-  block_count: 10000,
+  blocks_count: 10000,
   transactions_count: 103020,
   commitment_transaction: {
     block_number: 12340,

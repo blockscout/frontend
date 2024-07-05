@@ -97,9 +97,10 @@ const Validators = () => {
 
   const sortButton = (
     <Sort
+      name="validators_sorting"
+      defaultValue={ sort }
       options={ SORT_OPTIONS }
-      sort={ sort }
-      setSort={ handleSortChange }
+      onChange={ handleSortChange }
     />
   );
 

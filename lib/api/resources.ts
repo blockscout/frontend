@@ -1,4 +1,6 @@
 import type * as bens from '@blockscout/bens-types';
+import type * as stats from '@blockscout/stats-types';
+import type * as visualizer from '@blockscout/visualizer-types';
 import { getFeaturePayload } from 'configs/app/features/types';
 import type {
   UserInfo,
@@ -46,8 +48,6 @@ import type { ChartMarketResponse, ChartSecondaryCoinPriceResponse, ChartTransac
 import type { BackendVersionConfig } from 'types/api/configs';
 import type {
   SmartContract,
-  SmartContractReadMethod,
-  SmartContractWriteMethod,
   SmartContractVerificationConfig,
   SolidityscanReport,
   SmartContractSecurityAudits,
@@ -73,7 +73,7 @@ import type {
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import type { SearchRedirectResult, SearchResult, SearchResultFilters, SearchResultItem } from 'types/api/search';
 import type { ShibariumWithdrawalsResponse, ShibariumDepositsResponse } from 'types/api/shibarium';
-import type { Counters, StatsCharts, StatsChart, HomeStats } from 'types/api/stats';
+import type { HomeStats } from 'types/api/stats';
 import type {
   TokenCounters,
   TokenInfo,
@@ -101,7 +101,6 @@ import type { TxStateChanges } from 'types/api/txStateChanges';
 import type { UserOpsResponse, UserOp, UserOpsFilters, UserOpsAccount } from 'types/api/userOps';
 import type { ValidatorsCountersResponse, ValidatorsFilters, ValidatorsResponse, ValidatorsSorting } from 'types/api/validators';
 import type { VerifiedContractsSorting } from 'types/api/verifiedContracts';
-import type { VisualizedContract } from 'types/api/visualization';
 import type { WithdrawalsResponse, WithdrawalsCounters } from 'types/api/withdrawals';
 import type {
   ZkEvmL2DepositsResponse,
@@ -465,26 +464,6 @@ export const RESOURCES = {
     path: '/api/v2/smart-contracts/:hash',
     pathParams: [ 'hash' as const ],
   },
-  contract_methods_read: {
-    path: '/api/v2/smart-contracts/:hash/methods-read',
-    pathParams: [ 'hash' as const ],
-  },
-  contract_methods_read_proxy: {
-    path: '/api/v2/smart-contracts/:hash/methods-read-proxy',
-    pathParams: [ 'hash' as const ],
-  },
-  contract_method_query: {
-    path: '/api/v2/smart-contracts/:hash/query-read-method',
-    pathParams: [ 'hash' as const ],
-  },
-  contract_methods_write: {
-    path: '/api/v2/smart-contracts/:hash/methods-write',
-    pathParams: [ 'hash' as const ],
-  },
-  contract_methods_write_proxy: {
-    path: '/api/v2/smart-contracts/:hash/methods-write-proxy',
-    pathParams: [ 'hash' as const ],
-  },
   contract_verification_config: {
     path: '/api/v2/smart-contracts/verification/config',
   },
@@ -564,6 +543,11 @@ export const RESOURCES = {
   },
   token_instance_holders: {
     path: '/api/v2/tokens/:hash/instances/:id/holders',
+    pathParams: [ 'hash' as const, 'id' as const ],
+    filterFields: [],
+  },
+  token_instance_refresh_metadata: {
+    path: '/api/v2/tokens/:hash/instances/:id/refetch-metadata',
     pathParams: [ 'hash' as const, 'id' as const ],
     filterFields: [],
   },
@@ -948,9 +932,9 @@ Q extends 'homepage_zkevm_l2_batches' ? { items: Array<ZkEvmL2TxnBatchesItem> } 
 Q extends 'homepage_indexing_status' ? IndexingStatus :
 Q extends 'homepage_zkevm_latest_batch' ? number :
 Q extends 'homepage_zksync_latest_batch' ? number :
-Q extends 'stats_counters' ? Counters :
-Q extends 'stats_lines' ? StatsCharts :
-Q extends 'stats_line' ? StatsChart :
+Q extends 'stats_counters' ? stats.Counters :
+Q extends 'stats_lines' ? stats.LineCharts :
+Q extends 'stats_line' ? stats.LineChart :
 Q extends 'blocks' ? BlocksResponse :
 Q extends 'block' ? Block :
 Q extends 'block_txs' ? BlockTransactionsResponse :
@@ -1000,14 +984,10 @@ Q extends 'quick_search' ? Array<SearchResultItem> :
 Q extends 'search' ? SearchResult :
 Q extends 'search_check_redirect' ? SearchRedirectResult :
 Q extends 'contract' ? SmartContract :
-Q extends 'contract_methods_read' ? Array<SmartContractReadMethod> :
-Q extends 'contract_methods_read_proxy' ? Array<SmartContractReadMethod> :
-Q extends 'contract_methods_write' ? Array<SmartContractWriteMethod> :
-Q extends 'contract_methods_write_proxy' ? Array<SmartContractWriteMethod> :
 Q extends 'contract_solidityscan_report' ? SolidityscanReport :
 Q extends 'verified_contracts' ? VerifiedContractsResponse :
 Q extends 'verified_contracts_counters' ? VerifiedContractsCounters :
-Q extends 'visualize_sol2uml' ? VisualizedContract :
+Q extends 'visualize_sol2uml' ? visualizer.VisualizeResponse :
 Q extends 'contract_verification_config' ? SmartContractVerificationConfig :
 Q extends 'withdrawals' ? WithdrawalsResponse :
 Q extends 'withdrawals_counters' ? WithdrawalsCounters :

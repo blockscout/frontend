@@ -41,11 +41,6 @@ export enum ContractListTypes {
   VERIFIED = 'Verified',
 }
 
-export enum MarketplaceDisplayType {
-  DEFAULT = 'default',
-  SCORES = 'scores',
-}
-
 export type MarketplaceAppSecurityReport = {
   overallInfo: {
     verifiedNumber: number;

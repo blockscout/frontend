@@ -5,11 +5,12 @@ interface Props {
   className?: string;
   children: React.ReactNode;
   onClick: () => void;
+  isDisabled?: boolean;
 }
 
-const MenuItem = ({ className, children, onClick }: Props) => {
+const MenuItem = ({ className, children, onClick, isDisabled }: Props) => {
   return (
-    <MenuItemChakra className={ className } onClick={ onClick } py={ 2 } px={ 4 }>
+    <MenuItemChakra className={ className } onClick={ onClick } py={ 2 } px={ 4 } isDisabled={ isDisabled }>
       { children }
     </MenuItemChakra>
   );

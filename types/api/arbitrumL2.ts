@@ -34,7 +34,7 @@ type ArbitrumL2BatchCommitmentTx = {
 }
 
 export type ArbitrumL2TxnBatchesItem = {
-  block_count: number;
+  blocks_count: number;
   commitment_transaction: ArbitrumL2BatchCommitmentTx;
   number: number;
   transactions_count: number;

@@ -34,7 +34,7 @@ if (config.features.dataAvailability.isEnabled) {
 }
 
 if (config.features.nameService.isEnabled) {
-  searchCategories.push({ id: 'domain', title: 'Names' });
+  searchCategories.unshift({ id: 'domain', title: 'Names' });
 }
 
 export const searchItemTitles: Record<Category, { itemTitle: string; itemTitleShort: string }> = {

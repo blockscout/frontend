@@ -37,7 +37,7 @@ const ContractListModal = ({ onClose, onBack, type, contracts }: Props) => {
     switch (type) {
       default:
       case ContractListTypes.ALL:
-        return contracts;
+        return contracts.sort((a) => a.isVerified ? -1 : 1);
       case ContractListTypes.ANALYZED:
         return contracts
           .filter((contract) => Boolean(contract.solidityScanReport))

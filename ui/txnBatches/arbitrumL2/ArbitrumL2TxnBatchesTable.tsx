@@ -21,7 +21,7 @@ const ArbitrumL2TxnBatchesTable = ({ items, top, isLoading }: Props) => {
           <Th>Batch #</Th>
           <Th>L1 status</Th>
           <Th>L1 block</Th>
-          <Th>L2 block txn count</Th>
+          <Th>Block count</Th>
           <Th>L1 transaction</Th>
           <Th>Age</Th>
           <Th>Txn count</Th>

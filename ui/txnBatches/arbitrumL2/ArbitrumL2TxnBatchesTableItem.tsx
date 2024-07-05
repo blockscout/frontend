@@ -48,7 +48,7 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
         />
       </Td>
       <Td verticalAlign="middle">
-        <Skeleton isLoaded={ !isLoading } display="inline-block">{ item.block_count || 'N/A' }</Skeleton>
+        <Skeleton isLoaded={ !isLoading } display="inline-block">{ item.blocks_count ? item.blocks_count.toLocaleString() : 'N/A' }</Skeleton>
       </Td>
       <Td pr={ 12 } verticalAlign="middle">
         <TxEntityL1
@@ -70,7 +70,7 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
           isLoading={ isLoading }
         >
           <Skeleton isLoaded={ !isLoading } minW="40px">
-            { item.transactions_count }
+            { item.transactions_count.toLocaleString() }
           </Skeleton>
         </LinkInternal>
       </Td>

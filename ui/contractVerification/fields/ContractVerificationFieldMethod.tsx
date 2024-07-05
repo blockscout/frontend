@@ -1,7 +1,6 @@
 import {
   Link,
   chakra,
-  Popover,
   PopoverTrigger,
   Portal,
   PopoverContent,
@@ -21,6 +20,7 @@ import type { FormFields } from '../types';
 import type { SmartContractVerificationConfig, SmartContractVerificationMethod } from 'types/api/contract';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import Popover from 'ui/shared/chakra/Popover';
 import FancySelect from 'ui/shared/FancySelect/FancySelect';
 import IconSvg from 'ui/shared/IconSvg';
 
