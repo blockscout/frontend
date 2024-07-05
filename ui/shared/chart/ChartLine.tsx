@@ -45,22 +45,18 @@ const ChartLine = ({ xScale, yScale, data, animation, ...props }: Props) => {
     .y((d) => yScale(d.value))
     .curve(d3.curveMonotoneX);
 
-  const hasIncompleteData = data.some(({ isApproximate }) => isApproximate);
-
   return (
     <>
-      { hasIncompleteData && (
-        <path
-          ref={ incompleteDataPathRef }
-          d={ line(data) || undefined }
-          strokeWidth={ 1 }
-          strokeLinecap="round"
-          fill="none"
-          strokeDasharray="6 6"
-          opacity={ 0 }
-          { ...props }
-        />
-      ) }
+      <path
+        ref={ incompleteDataPathRef }
+        d={ line(data) || undefined }
+        strokeWidth={ 1 }
+        strokeLinecap="round"
+        fill="none"
+        strokeDasharray="6 6"
+        opacity={ 0 }
+        { ...props }
+      />
       <path
         ref={ dataPathRef }
         d={ line(data.filter(({ isApproximate }) => !isApproximate)) || undefined }

@@ -48,7 +48,10 @@ const ChartTooltip = ({ xScale, yScale, width, tooltipWidth = 200, height, data,
 
   const showContent = React.useCallback(() => {
     if (!isVisible.current) {
-      d3.select(ref.current).attr('opacity', 1);
+      d3.select(ref.current)
+        .transition()
+        .delay(100)
+        .attr('opacity', 1);
       isVisible.current = true;
     }
   }, []);
