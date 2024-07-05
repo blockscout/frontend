@@ -13,27 +13,28 @@ import {
   useDisclosure,
   chakra,
 } from '@chakra-ui/react';
+import type { UseQueryResult } from '@tanstack/react-query';
 import _clamp from 'lodash/clamp';
 import React from 'react';
 
-import type { EnsDomain } from 'types/api/ens';
+import type * as bens from '@blockscout/bens-types';
 
 import { route } from 'nextjs-routes';
 
-import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
+import type { ResourceError } from 'lib/api/resources';
 import dayjs from 'lib/date/dayjs';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 import PopoverTriggerTooltip from 'ui/shared/PopoverTriggerTooltip';
 
 interface Props {
+  query: UseQueryResult<bens.LookupAddressResponse, ResourceError<unknown>>;
   addressHash: string;
   mainDomainName: string | null;
 }
 
-const DomainsGrid = ({ data }: { data: Array<EnsDomain> }) => {
+const DomainsGrid = ({ data }: { data: Array<bens.Domain> }) => {
   return (
     <Grid
       templateColumns={{ base: `repeat(${ _clamp(data.length, 1, 2) }, 1fr)`, lg: `repeat(${ _clamp(data.length, 1, 3) }, 1fr)` }}
@@ -41,24 +42,15 @@ const DomainsGrid = ({ data }: { data: Array<EnsDomain> }) => {
       rowGap={ 4 }
       mt={ 2 }
     >
-      { data.slice(0, 9).map((domain) => <EnsEntity key={ domain.id } name={ domain.name } noCopy/>) }
+      { data.slice(0, 9).map((domain) => <EnsEntity key={ domain.id } name={ domain.name } protocol={ domain.protocol } noCopy/>) }
     </Grid>
   );
 };
 
-const AddressEnsDomains = ({ addressHash, mainDomainName }: Props) => {
+const AddressEnsDomains = ({ query, addressHash, mainDomainName }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
 
-  const { data, isPending, isError } = useApiQuery('addresses_lookup', {
-    pathParams: { chainId: config.chain.id },
-    queryParams: {
-      address: addressHash,
-      resolved_to: true,
-      owned_by: true,
-      only_active: true,
-      order: 'ASC',
-    },
-  });
+  const { data, isPending, isError } = query;
 
   if (isError) {
     return null;
@@ -111,6 +103,7 @@ const AddressEnsDomains = ({ addressHash, mainDomainName }: Props) => {
             variant="outline"
             colorScheme="gray"
             onClick={ onToggle }
+            isActive={ isOpen }
             aria-label="Address domains"
             fontWeight={ 500 }
             px={ 2 }
@@ -133,7 +126,7 @@ const AddressEnsDomains = ({ addressHash, mainDomainName }: Props) => {
             <Box w="100%">
               <chakra.span color="text_secondary" fontSize="xs">Primary*</chakra.span>
               <Flex alignItems="center" fontSize="md" mt={ 2 }>
-                <EnsEntity name={ mainDomain.name } fontWeight={ 600 } noCopy/>
+                <EnsEntity name={ mainDomain.name } protocol={ mainDomain.protocol } fontWeight={ 600 } noCopy/>
                 { mainDomain.expiry_date &&
                     <chakra.span color="text_secondary" whiteSpace="pre"> (expires { dayjs(mainDomain.expiry_date).fromNow() })</chakra.span> }
               </Flex>

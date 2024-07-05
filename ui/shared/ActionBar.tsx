@@ -12,6 +12,8 @@ type Props = {
 
 const TOP_UP = 106;
 const TOP_DOWN = 0;
+export const ACTION_BAR_HEIGHT_DESKTOP = 24 + 32 + 12;
+export const ACTION_BAR_HEIGHT_MOBILE = 24 + 32 + 24;
 
 const ActionBar = ({ children, className, showShadow }: Props) => {
   const ref = React.useRef<HTMLDivElement>(null);
@@ -27,9 +29,10 @@ const ActionBar = ({ children, className, showShadow }: Props) => {
     <Flex
       className={ className }
       backgroundColor={ bgColor }
-      py={ 6 }
-      mx={{ base: -4, lg: 0 }}
-      px={{ base: 4, lg: 0 }}
+      pt={ 6 }
+      pb={{ base: 6, lg: 3 }}
+      mx={{ base: -3, lg: 0 }}
+      px={{ base: 3, lg: 0 }}
       justifyContent="space-between"
       width={{ base: '100vw', lg: 'unset' }}
       position="sticky"

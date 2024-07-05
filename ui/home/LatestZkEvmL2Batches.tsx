@@ -13,7 +13,7 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { ZKEVM_L2_TXN_BATCHES_ITEM } from 'stubs/zkEvmL2';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 
 import LatestZkevmL2BatchItem from './LatestZkevmL2BatchItem';
 
@@ -61,7 +61,7 @@ const LatestZkEvmL2Batches = () => {
 
     content = (
       <>
-        <VStack spacing={ 3 } mb={ 4 } overflow="hidden" alignItems="stretch">
+        <VStack spacing={ 2 } mb={ 3 } overflow="hidden" alignItems="stretch">
           <AnimatePresence initial={ false } >
             { dataToShow.map(((batch, index) => (
               <LatestZkevmL2BatchItem
@@ -81,7 +81,7 @@ const LatestZkEvmL2Batches = () => {
 
   return (
     <Box width={{ base: '100%', lg: '280px' }} flexShrink={ 0 }>
-      <Heading as="h4" size="sm" mb={ 4 }>Latest batches</Heading>
+      <Heading as="h4" size="sm" mb={ 3 }>Latest batches</Heading>
       { content }
     </Box>
   );

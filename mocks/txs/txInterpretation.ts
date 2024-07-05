@@ -26,7 +26,7 @@ export const txInterpretation: TxInterpretationResponse = {
           type: 'address',
           value: {
             hash: '0x48c04ed5691981C42154C6167398f95e8f38a7fF',
-            implementation_name: null,
+            implementations: null,
             is_contract: false,
             is_verified: false,
             name: null,

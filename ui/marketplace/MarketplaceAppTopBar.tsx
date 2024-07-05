@@ -1,8 +1,7 @@
-import { chakra, Flex, Tooltip, Skeleton, useBoolean } from '@chakra-ui/react';
+import { chakra, Flex, Tooltip, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
-import type { MarketplaceAppOverview, MarketplaceAppSecurityReport } from 'types/client/marketplace';
-import { ContractListTypes } from 'types/client/marketplace';
+import type { MarketplaceAppOverview, MarketplaceAppSecurityReport, ContractListTypes } from 'types/client/marketplace';
 
 import { route } from 'nextjs-routes';
 
@@ -10,8 +9,8 @@ import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkExternal from 'ui/shared/LinkExternal';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkExternal from 'ui/shared/links/LinkExternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
 import WalletMenuDesktop from 'ui/snippets/walletMenu/WalletMenuDesktop';
@@ -27,7 +26,7 @@ type Props = {
 }
 
 const MarketplaceAppTopBar = ({ data, isLoading, securityReport }: Props) => {
-  const [ showContractList, setShowContractList ] = useBoolean(false);
+  const [ contractListType, setContractListType ] = React.useState<ContractListTypes>();
   const appProps = useAppContext();
   const isMobile = useIsMobile();
 
@@ -43,6 +42,9 @@ const MarketplaceAppTopBar = ({ data, isLoading, securityReport }: Props) => {
       return new URL(url || '').hostname;
     } catch (err) {}
   }
+
+  const showContractList = React.useCallback((id: string, type: ContractListTypes) => setContractListType(type), []);
+  const hideContractList = React.useCallback(() => setContractListType(undefined), []);
 
   return (
     <>
@@ -74,7 +76,7 @@ const MarketplaceAppTopBar = ({ data, isLoading, securityReport }: Props) => {
           <AppSecurityReport
             id={ data?.id || '' }
             securityReport={ securityReport }
-            showContractList={ setShowContractList.on }
+            showContractList={ showContractList }
             isLoading={ isLoading }
             onlyIcon={ isMobile }
             source="App page"
@@ -87,11 +89,11 @@ const MarketplaceAppTopBar = ({ data, isLoading, securityReport }: Props) => {
           </Flex>
         ) }
       </Flex>
-      { showContractList && (
+      { contractListType && (
         <ContractListModal
-          type={ ContractListTypes.ANALYZED }
+          type={ contractListType }
           contracts={ securityReport?.contractsData }
-          onClose={ setShowContractList.off }
+          onClose={ hideContractList }
         />
       ) }
     </>

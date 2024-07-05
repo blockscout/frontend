@@ -5,10 +5,11 @@ import { WebSocketServer } from 'ws';
 import type { AddressCoinBalanceHistoryItem, AddressTokensBalancesSocketMessage } from 'types/api/address';
 import type { NewBlockSocketResponse } from 'types/api/block';
 import type { SmartContractVerificationResponse } from 'types/api/contract';
+import type { TokenInstanceMetadataSocketMessage } from 'types/api/token';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 import type { Transaction } from 'types/api/transaction';
 
-import * as app from 'playwright/utils/app';
+import { port as socketPort } from '../utils/socket';
 
 export type CreateSocketFixture = () => Promise<WebSocket>;
 
@@ -20,7 +21,7 @@ export interface SocketServerFixture {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const createSocket: TestFixture<CreateSocketFixture, { page: Page}> = async({ page }, use) => {
-  const socketServer = new WebSocketServer({ port: app.socketPort });
+  const socketServer = new WebSocketServer({ port: socketPort });
 
   const connectionPromise = new Promise<WebSocket>((resolve) => {
     socketServer.on('connection', (socket: WebSocket) => {
@@ -74,6 +75,7 @@ export function sendMessage(socket: WebSocket, channel: Channel, msg: 'changed_b
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'fetched_bytecode', payload: { fetched_bytecode: string }): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'smart_contract_was_verified', payload: Record<string, never>): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: 'token_transfer', payload: { token_transfers: Array<TokenTransfer> }): void;
+export function sendMessage(socket: WebSocket, channel: Channel, msg: 'fetched_token_instance_metadata', payload: TokenInstanceMetadataSocketMessage): void;
 export function sendMessage(socket: WebSocket, channel: Channel, msg: string, payload: unknown): void {
   socket.send(JSON.stringify([
     ...channel,

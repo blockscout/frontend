@@ -1,4 +1,5 @@
 import type { AddressParam } from './addressParams';
+import type { ArbitrumBatchStatus, ArbitrumL2TxData } from './arbitrumL2';
 import type { BlockTransactionsResponse } from './block';
 import type { DecodedInput } from './decodedInput';
 import type { Fee } from './fee';
@@ -96,6 +97,19 @@ export type Transaction = {
   near_receipt_hash?: string;
   near_transaction_hash?: string;
   error?: string;
+  arbitrum?: ArbitrumTransactionData;
+}
+
+type ArbitrumTransactionData = {
+  batch_number: number;
+  commitment_transaction: ArbitrumL2TxData;
+  confirmation_transaction: ArbitrumL2TxData;
+  contains_message: 'incoming' | 'outcoming' | null;
+  gas_used_for_l1: string;
+  gas_used_for_l2: string;
+  network_fee: string;
+  poster_fee: string;
+  status: ArbitrumBatchStatus;
 }
 
 export const ZKEVM_L2_TX_STATUSES = [ 'Confirmed by Sequencer', 'L1 Confirmed' ];

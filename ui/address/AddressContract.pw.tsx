@@ -13,9 +13,11 @@ const hash = addressMock.contract.hash;
 
 test.beforeEach(async({ mockApiResponse }) => {
   await mockApiResponse('address', addressMock.contract, { pathParams: { hash } });
-  await mockApiResponse('contract', contractInfoMock.verified, { pathParams: { hash } });
-  await mockApiResponse('contract_methods_read', contractMethodsMock.read, { pathParams: { hash }, queryParams: { is_custom_abi: 'false' } });
-  await mockApiResponse('contract_methods_write', contractMethodsMock.write, { pathParams: { hash }, queryParams: { is_custom_abi: 'false' } });
+  await mockApiResponse(
+    'contract',
+    { ...contractInfoMock.verified, abi: [ ...contractMethodsMock.read, ...contractMethodsMock.write ] },
+    { pathParams: { hash } },
+  );
 });
 
 test.describe('ABI functionality', () => {
@@ -41,7 +43,7 @@ test.describe('ABI functionality', () => {
       },
     };
     await mockEnvs(ENVS_MAP.noWalletClient);
-    const component = await render(<AddressContract/>, { hooksConfig }, { withSocket: true, withWalletClient: false });
+    const component = await render(<AddressContract/>, { hooksConfig }, { withSocket: true });
     const socket = await createSocket();
     await socketServer.joinChannel(socket, 'addresses:' + addressMock.contract.hash.toLowerCase());
 
@@ -78,7 +80,7 @@ test.describe('ABI functionality', () => {
     };
     await mockEnvs(ENVS_MAP.noWalletClient);
 
-    const component = await render(<AddressContract/>, { hooksConfig }, { withSocket: true, withWalletClient: false });
+    const component = await render(<AddressContract/>, { hooksConfig }, { withSocket: true });
     const socket = await createSocket();
     await socketServer.joinChannel(socket, 'addresses:' + addressMock.contract.hash.toLowerCase());
 

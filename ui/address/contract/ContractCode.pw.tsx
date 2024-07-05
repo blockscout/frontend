@@ -27,7 +27,7 @@ test.beforeEach(async({ mockApiResponse }) => {
 
 test('full view +@mobile +@dark-mode', async({ render, mockApiResponse, createSocket }) => {
   await mockApiResponse('contract', contractMock.withChangedByteCode, { pathParams: { hash: addressMock.contract.hash } });
-  await mockApiResponse('contract', contractMock.withChangedByteCode, { pathParams: { hash: addressMock.contract.implementation_address as string } });
+  await mockApiResponse('contract', contractMock.withChangedByteCode, { pathParams: { hash: addressMock.contract.implementations?.[0].address as string } });
 
   const component = await render(<ContractCode/>, { hooksConfig }, { withSocket: true });
   await createSocket();
@@ -107,6 +107,13 @@ test('with proxy address alert +@mobile', async({ render, mockApiResponse }) => 
   const component = await render(<ContractCode/>, { hooksConfig }, { withSocket: true });
 
   await expect(component.getByRole('alert')).toHaveScreenshot();
+});
+
+test('with certified icon +@mobile', async({ render, mockApiResponse, page }) => {
+  await mockApiResponse('contract', contractMock.certified, { pathParams: { hash: addressMock.contract.hash } });
+  await render(<ContractCode/>, { hooksConfig });
+
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 120 } });
 });
 
 test('non verified', async({ render, mockApiResponse }) => {

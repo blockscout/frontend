@@ -1,6 +1,7 @@
 import type { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
 
 import type { AdBannerProviders } from 'types/client/adProviders';
+import type { RollupType } from 'types/client/rollup';
 
 import type { Route } from 'nextjs-routes';
 
@@ -14,7 +15,7 @@ export interface Props<Pathname extends Route['pathname'] = never> {
   query: Route['query'];
   cookies: string;
   referrer: string;
-  adBannerProvider: AdBannerProviders | undefined;
+  adBannerProvider: AdBannerProviders | null;
   // if apiData is undefined, Next.js will complain that it is not serializable
   // so we force it to be always present in the props but it can be null
   apiData: metadata.ApiData<Pathname> | null;
@@ -32,7 +33,7 @@ Promise<GetServerSidePropsResult<Props<Pathname>>> => {
         return adBannerFeature.provider;
       }
     }
-    return;
+    return null;
   })();
 
   return {
@@ -40,7 +41,7 @@ Promise<GetServerSidePropsResult<Props<Pathname>>> => {
       query,
       cookies: req.headers.cookie || '',
       referrer: req.headers.referer || '',
-      adBannerProvider,
+      adBannerProvider: adBannerProvider,
       apiData: null,
     },
   };
@@ -66,8 +67,9 @@ export const verifiedAddresses: GetServerSideProps<Props> = async(context) => {
   return account(context);
 };
 
+const DEPOSITS_ROLLUP_TYPES: Array<RollupType> = [ 'optimistic', 'shibarium', 'zkEvm', 'arbitrum' ];
 export const deposits: GetServerSideProps<Props> = async(context) => {
-  if (!(rollupFeature.isEnabled && (rollupFeature.type === 'optimistic' || rollupFeature.type === 'shibarium' || rollupFeature.type === 'zkEvm'))) {
+  if (!(rollupFeature.isEnabled && DEPOSITS_ROLLUP_TYPES.includes(rollupFeature.type))) {
     return {
       notFound: true,
     };
@@ -76,10 +78,11 @@ export const deposits: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
+const WITHDRAWALS_ROLLUP_TYPES: Array<RollupType> = [ 'optimistic', 'shibarium', 'zkEvm', 'arbitrum' ];
 export const withdrawals: GetServerSideProps<Props> = async(context) => {
   if (
     !config.features.beaconChain.isEnabled &&
-    !(rollupFeature.isEnabled && (rollupFeature.type === 'optimistic' || rollupFeature.type === 'shibarium' || rollupFeature.type === 'zkEvm'))
+    !(rollupFeature.isEnabled && WITHDRAWALS_ROLLUP_TYPES.includes(rollupFeature.type))
   ) {
     return {
       notFound: true,
@@ -109,8 +112,9 @@ export const optimisticRollup: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
+const BATCH_ROLLUP_TYPES: Array<RollupType> = [ 'zkEvm', 'zkSync', 'arbitrum' ];
 export const batch: GetServerSideProps<Props> = async(context) => {
-  if (!(rollupFeature.isEnabled && (rollupFeature.type === 'zkEvm' || rollupFeature.type === 'zkSync'))) {
+  if (!(rollupFeature.isEnabled && BATCH_ROLLUP_TYPES.includes(rollupFeature.type))) {
     return {
       notFound: true,
     };
@@ -233,6 +237,37 @@ export const dataAvailability: GetServerSideProps<Props> = async(context) => {
 export const login: GetServerSideProps<Props> = async(context) => {
 
   if (!isNeedProxy()) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
+export const dev: GetServerSideProps<Props> = async(context) => {
+  if (!config.app.isDev) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
+export const publicTagsSubmit: GetServerSideProps<Props> = async(context) => {
+
+  if (!config.features.publicTagsSubmission.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
+export const disputeGames: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.faultProofSystem.isEnabled) {
     return {
       notFound: true,
     };

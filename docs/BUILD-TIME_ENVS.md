@@ -6,3 +6,4 @@ These variables are passed to the app during the image build process. They canno
 | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_GIT_COMMIT_SHA | `string` | SHA of the latest commit in the branch from which image is built | false | `29d0613e` |
 | NEXT_PUBLIC_GIT_TAG | `string` | Git tag on the latest commit in the branch from which image is built | true | `v1.0.0` |
+| NEXT_OPEN_TELEMETRY_ENABLED | `boolean` | Enables OpenTelemetry SDK | true | `true` |

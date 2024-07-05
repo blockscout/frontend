@@ -56,6 +56,7 @@ export function app(): CspDev.DirectiveDescriptor {
       getFeaturePayload(config.features.verifiedTokens)?.api.endpoint,
       getFeaturePayload(config.features.addressVerification)?.api.endpoint,
       getFeaturePayload(config.features.nameService)?.api.endpoint,
+      getFeaturePayload(config.features.addressMetadata)?.api.endpoint,
       marketplaceFeaturePayload && 'api' in marketplaceFeaturePayload ? marketplaceFeaturePayload.api.endpoint : '',
 
       // chain RPC server
@@ -130,6 +131,10 @@ export function app(): CspDev.DirectiveDescriptor {
     'frame-src': [
       // could be a marketplace app or NFT media (html-page)
       '*',
+    ],
+
+    'frame-ancestors': [
+      KEY_WORDS.SELF,
     ],
 
     ...((() => {

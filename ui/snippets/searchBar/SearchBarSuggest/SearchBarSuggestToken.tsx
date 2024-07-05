@@ -16,7 +16,7 @@ interface Props {
 
 const SearchBarSuggestToken = ({ data, isMobile, searchTerm }: Props) => {
   const icon = <TokenEntity.Icon token={{ ...data, type: data.token_type }}/>;
-  const verifiedIcon = <IconSvg name="verified_token" boxSize={ 4 } color="green.500" ml={ 1 }/>;
+  const verifiedIcon = <IconSvg name="certified" boxSize={ 4 } color="green.500" ml={ 1 }/>;
   const name = (
     <Text
       fontWeight={ 700 }

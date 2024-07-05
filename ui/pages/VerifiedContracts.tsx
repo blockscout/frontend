@@ -5,6 +5,7 @@ import React from 'react';
 import type { VerifiedContractsFilters } from 'types/api/contracts';
 import type { VerifiedContractsSorting, VerifiedContractsSortingField, VerifiedContractsSortingValue } from 'types/api/verifiedContracts';
 
+import config from 'configs/app';
 import useDebounce from 'lib/hooks/useDebounce';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { apos } from 'lib/html-entities';
@@ -76,7 +77,13 @@ const VerifiedContracts = () => {
     onSortingChange(getSortParamsFromValue(value));
   }, [ onSortingChange ]);
 
-  const typeFilter = <VerifiedContractsFilter onChange={ handleTypeChange } defaultValue={ type } isActive={ Boolean(type) }/>;
+  const typeFilter = (
+    <VerifiedContractsFilter
+      onChange={ handleTypeChange }
+      defaultValue={ type }
+      hasActiveFilter={ Boolean(type) }
+    />
+  );
 
   const filterInput = (
     <FilterInput
@@ -90,9 +97,11 @@ const VerifiedContracts = () => {
 
   const sortButton = (
     <Sort
+      name="verified_contracts_sorting"
+      defaultValue={ sort }
       options={ SORT_OPTIONS }
-      sort={ sort }
-      setSort={ handleSortChange }
+      onChange={ handleSortChange }
+      isLoading={ isPlaceholderData }
     />
   );
 
@@ -128,7 +137,10 @@ const VerifiedContracts = () => {
 
   return (
     <Box>
-      <PageTitle title="Verified contracts" withTextAd/>
+      <PageTitle
+        title={ config.meta.seo.enhancedDataEnabled ? `Verified ${ config.chain.name } contracts` : 'Verified contracts' }
+        withTextAd
+      />
       <VerifiedContractsCounters/>
       <DataListDisplay
         isError={ isError }

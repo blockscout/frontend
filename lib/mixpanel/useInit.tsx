@@ -7,9 +7,11 @@ import { deviceType } from 'react-device-detect';
 
 import config from 'configs/app';
 import * as cookies from 'lib/cookies';
+import dayjs from 'lib/date/dayjs';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
 import getUuid from './getUuid';
+import * as userProfile from './userProfile';
 
 export default function useMixpanelInit() {
   const [ isInited, setIsInited ] = React.useState(false);
@@ -28,6 +30,7 @@ export default function useMixpanelInit() {
       debug: Boolean(debugFlagQuery.current || debugFlagCookie),
     };
     const isAuth = Boolean(cookies.get(cookies.NAMES.API_TOKEN));
+    const userId = getUuid();
 
     mixpanel.init(feature.projectToken, mixpanelConfig);
     mixpanel.register({
@@ -38,7 +41,15 @@ export default function useMixpanelInit() {
       'Viewport height': window.innerHeight,
       Language: window.navigator.language,
       'Device type': _capitalize(deviceType),
-      'User id': getUuid(),
+      'User id': userId,
+    });
+    mixpanel.identify(userId);
+    userProfile.set({
+      'Device Type': _capitalize(deviceType),
+      ...(isAuth ? { 'With Account': true } : {}),
+    });
+    userProfile.setOnce({
+      'First Time Join': dayjs().toISOString(),
     });
 
     setIsInited(true);

@@ -5,7 +5,7 @@ import type { NovesResponseData } from 'types/api/noves';
 
 import dayjs from 'lib/date/dayjs';
 import IconSvg from 'ui/shared/IconSvg';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 import NovesFromTo from 'ui/shared/Noves/NovesFromTo';
 
 type Props = {

@@ -10,7 +10,7 @@ type Props = {
 
 const TxsWatchlist = ({ query }: Props) => {
   useRedirectForInvalidAuthToken();
-  return <TxsWithFrontendSorting query={ query } showSocketInfo={ false }/>;
+  return <TxsWithFrontendSorting query={ query } showSocketInfo={ false } top={ 88 }/>;
 };
 
 export default TxsWatchlist;

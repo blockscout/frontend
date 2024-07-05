@@ -46,15 +46,16 @@ const moduleExports = {
   output: 'standalone',
   productionBrowserSourceMaps: true,
   experimental: {
-    instrumentationHook: true,
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: [ '@svgr/webpack' ],
-          as: '*.js',
-        },
-      },
-    },
+    instrumentationHook: process.env.NEXT_OPEN_TELEMETRY_ENABLED === 'true',
+    // disabled as it is not stable yet
+    // turbo: {
+    //   rules: {
+    //     '*.svg': {
+    //       loaders: [ '@svgr/webpack' ],
+    //       as: '*.js',
+    //     },
+    //   },
+    // },
   },
 };
 

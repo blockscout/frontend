@@ -4,7 +4,6 @@ import {
   FormControl,
   Input,
   Textarea,
-  useColorModeValue,
 } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useCallback } from 'react';
@@ -61,8 +60,6 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
     });
   };
 
-  const formBackgroundColor = useColorModeValue('white', 'gray.900');
-
   const mutation = useMutation({
     mutationFn: customAbiKey,
     onSuccess: (data) => {
@@ -109,38 +106,40 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
       <AddressInput<Inputs, 'contract_address_hash'>
         field={ field }
         error={ errors.contract_address_hash }
-        backgroundColor={ formBackgroundColor }
+        bgColor="dialog_bg"
         placeholder="Smart contract address (0x...)"
       />
     );
-  }, [ errors, formBackgroundColor ]);
+  }, [ errors ]);
 
   const renderNameInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'name'>}) => {
     return (
-      <FormControl variant="floating" id="name" isRequired backgroundColor={ formBackgroundColor }>
+      <FormControl variant="floating" id="name" isRequired bgColor="dialog_bg">
         <Input
           { ...field }
           isInvalid={ Boolean(errors.name) }
           maxLength={ NAME_MAX_LENGTH }
+          bgColor="dialog_bg"
         />
         <InputPlaceholder text="Project name" error={ errors.name }/>
       </FormControl>
     );
-  }, [ errors, formBackgroundColor ]);
+  }, [ errors ]);
 
   const renderAbiInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'abi'>}) => {
     return (
-      <FormControl variant="floating" id="abi" isRequired backgroundColor={ formBackgroundColor }>
+      <FormControl variant="floating" id="abi" isRequired bgColor="dialog_bg">
         <Textarea
           { ...field }
           size="lg"
           minH="300px"
           isInvalid={ Boolean(errors.abi) }
+          bgColor="dialog_bg"
         />
         <InputPlaceholder text="Custom ABI [{...}] (JSON format)" error={ errors.abi }/>
       </FormControl>
     );
-  }, [ errors, formBackgroundColor ]);
+  }, [ errors ]);
 
   return (
     <form noValidate onSubmit={ handleSubmit(onSubmit) }>

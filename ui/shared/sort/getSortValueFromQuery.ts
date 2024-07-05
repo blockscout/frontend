@@ -1,8 +1,8 @@
 import type { Query } from 'nextjs-routes';
 
-import type { Option } from 'ui/shared/sort/Sort';
+import type { TOption } from 'ui/shared/sort/Option';
 
-export default function getSortValueFromQuery<SortValue extends string>(query: Query, sortOptions: Array<Option<SortValue>>) {
+export default function getSortValueFromQuery<SortValue extends string>(query: Query, sortOptions: Array<TOption<SortValue>>) {
   if (!query.sort || !query.order) {
     return undefined;
   }

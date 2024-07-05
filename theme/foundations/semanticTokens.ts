@@ -20,8 +20,12 @@ const semanticTokens = {
       'default': 'blue.400',
     },
     error: {
-      'default': 'red.400',
-      _dark: 'red.300',
+      'default': 'red.500',
+      _dark: 'red.500',
+    },
+    dialog_bg: {
+      'default': 'white',
+      _dark: 'gray.900',
     },
   },
   shadows: {

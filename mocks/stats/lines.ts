@@ -1,4 +1,6 @@
-export const base = {
+import type * as stats from '@blockscout/stats-types';
+
+export const base: stats.LineCharts = {
   sections: [
     {
       id: 'accounts',
@@ -8,19 +10,19 @@ export const base = {
           id: 'accountsGrowth',
           title: 'Accounts growth',
           description: 'Cumulative accounts number per period',
-          units: null,
+          units: undefined,
         },
         {
           id: 'activeAccounts',
           title: 'Active accounts',
           description: 'Active accounts number per period',
-          units: null,
+          units: undefined,
         },
         {
           id: 'newAccounts',
           title: 'New accounts',
           description: 'New accounts number per day',
-          units: null,
+          units: undefined,
         },
       ],
     },
@@ -38,7 +40,7 @@ export const base = {
           id: 'newTxns',
           title: 'New transactions',
           description: 'New transactions number',
-          units: null,
+          units: undefined,
         },
         {
           id: 'txnsFee',
@@ -50,13 +52,13 @@ export const base = {
           id: 'txnsGrowth',
           title: 'Transactions growth',
           description: 'Cumulative transactions number',
-          units: null,
+          units: undefined,
         },
         {
           id: 'txnsSuccessRate',
           title: 'Transactions success rate',
           description: 'Successful transactions rate per day',
-          units: null,
+          units: undefined,
         },
       ],
     },
@@ -80,7 +82,7 @@ export const base = {
           id: 'newBlocks',
           title: 'New blocks',
           description: 'New blocks number',
-          units: null,
+          units: undefined,
         },
       ],
     },
@@ -92,7 +94,7 @@ export const base = {
           id: 'newNativeCoinTransfers',
           title: 'New ETH transfers',
           description: 'New token transfers number for the period',
-          units: null,
+          units: undefined,
         },
       ],
     },
@@ -104,7 +106,7 @@ export const base = {
           id: 'averageGasLimit',
           title: 'Average gas limit',
           description: 'Average gas limit per block for the period',
-          units: null,
+          units: undefined,
         },
         {
           id: 'averageGasPrice',
@@ -116,7 +118,7 @@ export const base = {
           id: 'gasUsedGrowth',
           title: 'Gas used growth',
           description: 'Cumulative gas used for the period',
-          units: null,
+          units: undefined,
         },
       ],
     },
@@ -128,13 +130,13 @@ export const base = {
           id: 'newVerifiedContracts',
           title: 'New verified contracts',
           description: 'New verified contracts number for the period',
-          units: null,
+          units: undefined,
         },
         {
           id: 'verifiedContractsGrowth',
           title: 'Verified contracts growth',
           description: 'Cumulative number verified contracts for the period',
-          units: null,
+          units: undefined,
         },
       ],
     },

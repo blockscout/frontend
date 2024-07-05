@@ -26,8 +26,9 @@ const getFilterValue = (getFilterValueFromQuery<AddressFromToFilter>).bind(null,
 type Props = {
   scrollRef?: React.RefObject<HTMLDivElement>;
   shouldRender?: boolean;
+  isQueryEnabled?: boolean;
 }
-const AddressInternalTxs = ({ scrollRef, shouldRender = true }: Props) => {
+const AddressInternalTxs = ({ scrollRef, shouldRender = true, isQueryEnabled = true }: Props) => {
   const router = useRouter();
   const isMounted = useIsMounted();
 
@@ -41,6 +42,7 @@ const AddressInternalTxs = ({ scrollRef, shouldRender = true }: Props) => {
     filters: { filter: filterValue },
     scrollRef,
     options: {
+      enabled: isQueryEnabled,
       placeholderData: generateListStub<'address_internal_txs'>(
         INTERNAL_TX,
         50,
@@ -82,7 +84,7 @@ const AddressInternalTxs = ({ scrollRef, shouldRender = true }: Props) => {
       <AddressTxsFilter
         defaultFilter={ filterValue }
         onFilterChange={ handleFilterChange }
-        isActive={ Boolean(filterValue) }
+        hasActiveFilter={ Boolean(filterValue) }
         isLoading={ pagination.isLoading }
       />
       <AddressCsvExportLink

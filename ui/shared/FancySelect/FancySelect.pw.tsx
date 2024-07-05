@@ -1,8 +1,7 @@
-import { test, expect } from '@playwright/experimental-ct-react';
 import _noop from 'lodash/noop';
 import React from 'react';
 
-import TestApp from 'playwright/TestApp';
+import { test, expect } from 'playwright/lib';
 
 import FancySelect from './FancySelect';
 
@@ -24,15 +23,13 @@ const defaultProps = {
 
 [ 'md' as const, 'lg' as const ].forEach((size) => {
   test.describe(`size ${ size } +@dark-mode`, () => {
-    test('empty', async({ mount, page }) => {
-      const component = await mount(
-        <TestApp>
-          <FancySelect
-            { ...defaultProps }
-            size={ size }
-            value={ null }
-          />
-        </TestApp>,
+    test('empty', async({ render, page }) => {
+      const component = await render(
+        <FancySelect
+          { ...defaultProps }
+          size={ size }
+          value={ null }
+        />,
       );
 
       await expect(component).toHaveScreenshot();
@@ -42,33 +39,29 @@ const defaultProps = {
       await expect(page).toHaveScreenshot();
     });
 
-    test('filled', async({ mount }) => {
-      const component = await mount(
-        <TestApp>
-          <FancySelect
-            { ...defaultProps }
-            size={ size }
-            value={ OPTIONS[0] }
-          />
-        </TestApp>,
+    test('filled', async({ render }) => {
+      const component = await render(
+        <FancySelect
+          { ...defaultProps }
+          size={ size }
+          value={ OPTIONS[0] }
+        />,
       );
 
       await expect(component).toHaveScreenshot();
     });
 
-    test('error', async({ mount }) => {
-      const component = await mount(
-        <TestApp>
-          <FancySelect
-            { ...defaultProps }
-            size={ size }
-            value={ null }
-            error={{
-              type: 'unknown',
-              message: 'cannot be empty',
-            }}
-          />
-        </TestApp>,
+    test('error', async({ render }) => {
+      const component = await render(
+        <FancySelect
+          { ...defaultProps }
+          size={ size }
+          value={ null }
+          error={{
+            type: 'unknown',
+            message: 'cannot be empty',
+          }}
+        />,
       );
 
       await expect(component).toHaveScreenshot();
@@ -78,16 +71,27 @@ const defaultProps = {
       await expect(component).toHaveScreenshot();
     });
 
-    test('disabled', async({ mount }) => {
-      const component = await mount(
-        <TestApp>
-          <FancySelect
-            { ...defaultProps }
-            size={ size }
-            value={ OPTIONS[0] }
-            isDisabled
-          />
-        </TestApp>,
+    test('disabled', async({ render }) => {
+      const component = await render(
+        <FancySelect
+          { ...defaultProps }
+          size={ size }
+          value={ OPTIONS[0] }
+          isDisabled
+        />,
+      );
+
+      await expect(component).toHaveScreenshot();
+    });
+
+    test('read-only', async({ render }) => {
+      const component = await render(
+        <FancySelect
+          { ...defaultProps }
+          size={ size }
+          value={ OPTIONS[0] }
+          isReadOnly
+        />,
       );
 
       await expect(component).toHaveScreenshot();

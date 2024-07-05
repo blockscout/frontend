@@ -21,6 +21,12 @@ const typography = {
       lineHeight: '32px',
       fontFamily: 'heading',
     },
+    h4: {
+      fontSize: 'md',
+      fontWeight: '500',
+      lineHeight: '24px',
+      fontFamily: 'heading',
+    },
   },
 };
 

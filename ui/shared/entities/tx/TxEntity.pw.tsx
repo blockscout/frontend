@@ -1,7 +1,6 @@
-import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
-import TestApp from 'playwright/TestApp';
+import { test, expect } from 'playwright/lib';
 
 import TxEntity from './TxEntity';
 
@@ -12,14 +11,12 @@ test.use({ viewport: { width: 180, height: 30 } });
 
 test.describe('icon size', () => {
   iconSizes.forEach((size) => {
-    test(size, async({ mount }) => {
-      const component = await mount(
-        <TestApp>
-          <TxEntity
-            hash={ hash }
-            iconSize={ size }
-          />
-        </TestApp>,
+    test(size, async({ render }) => {
+      const component = await render(
+        <TxEntity
+          hash={ hash }
+          iconSize={ size }
+        />,
       );
 
       await expect(component).toHaveScreenshot();
@@ -27,40 +24,34 @@ test.describe('icon size', () => {
   });
 });
 
-test('loading', async({ mount }) => {
-  const component = await mount(
-    <TestApp>
-      <TxEntity
-        hash={ hash }
-        isLoading
-      />
-    </TestApp>,
+test('loading', async({ render }) => {
+  const component = await render(
+    <TxEntity
+      hash={ hash }
+      isLoading
+    />,
   );
 
   await expect(component).toHaveScreenshot();
 });
 
-test('external link', async({ mount }) => {
-  const component = await mount(
-    <TestApp>
-      <TxEntity
-        hash={ hash }
-        isExternal
-      />
-    </TestApp>,
+test('external link', async({ render }) => {
+  const component = await render(
+    <TxEntity
+      hash={ hash }
+      isExternal
+    />,
   );
 
   await expect(component).toHaveScreenshot();
 });
 
-test('with copy +@dark-mode', async({ mount }) => {
-  const component = await mount(
-    <TestApp>
-      <TxEntity
-        hash={ hash }
-        noCopy={ false }
-      />
-    </TestApp>,
+test('with copy +@dark-mode', async({ render }) => {
+  const component = await render(
+    <TxEntity
+      hash={ hash }
+      noCopy={ false }
+    />,
   );
 
   await component.getByText(hash.slice(0, 4)).hover();
@@ -68,17 +59,15 @@ test('with copy +@dark-mode', async({ mount }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('customization', async({ mount }) => {
-  const component = await mount(
-    <TestApp>
-      <TxEntity
-        hash={ hash }
-        truncation="constant"
-        p={ 3 }
-        borderWidth="1px"
-        borderColor="blue.700"
-      />
-    </TestApp>,
+test('customization', async({ render }) => {
+  const component = await render(
+    <TxEntity
+      hash={ hash }
+      truncation="constant"
+      p={ 3 }
+      borderWidth="1px"
+      borderColor="blue.700"
+    />,
   );
 
   await expect(component).toHaveScreenshot();

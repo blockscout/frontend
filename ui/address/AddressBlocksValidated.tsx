@@ -14,7 +14,7 @@ import useSocketMessage from 'lib/socket/useSocketMessage';
 import { currencyUnits } from 'lib/units';
 import { BLOCK } from 'stubs/block';
 import { generateListStub } from 'stubs/utils';
-import ActionBar from 'ui/shared/ActionBar';
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
@@ -27,9 +27,10 @@ import AddressBlocksValidatedTableItem from './blocksValidated/AddressBlocksVali
 interface Props {
   scrollRef?: React.RefObject<HTMLDivElement>;
   shouldRender?: boolean;
+  isQueryEnabled?: boolean;
 }
 
-const AddressBlocksValidated = ({ scrollRef, shouldRender = true }: Props) => {
+const AddressBlocksValidated = ({ scrollRef, shouldRender = true, isQueryEnabled = true }: Props) => {
   const [ socketAlert, setSocketAlert ] = React.useState(false);
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -41,6 +42,7 @@ const AddressBlocksValidated = ({ scrollRef, shouldRender = true }: Props) => {
     pathParams: { hash: addressHash },
     scrollRef,
     options: {
+      enabled: isQueryEnabled,
       placeholderData: generateListStub<'address_blocks_validated'>(
         BLOCK,
         50,
@@ -96,7 +98,7 @@ const AddressBlocksValidated = ({ scrollRef, shouldRender = true }: Props) => {
       { socketAlert && <SocketAlert mb={ 6 }/> }
       <Hide below="lg" ssr={ false }>
         <Table variant="simple" size="sm">
-          <Thead top={ query.pagination.isVisible ? 80 : 0 }>
+          <Thead top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }>
             <Tr>
               <Th width="17%">Block</Th>
               <Th width="17%">Age</Th>

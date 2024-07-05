@@ -2,6 +2,8 @@ import { Box, Hide, Show } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type * as bens from '@blockscout/bens-types';
+
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -12,7 +14,11 @@ import NameDomainHistoryListItem from './history/NameDomainHistoryListItem';
 import NameDomainHistoryTable from './history/NameDomainHistoryTable';
 import { getNextSortValue, type Sort, type SortField } from './history/utils';
 
-const NameDomainHistory = () => {
+interface Props {
+  domain: bens.DetailedDomain | undefined;
+}
+
+const NameDomainHistory = ({ domain }: Props) => {
   const router = useRouter();
   const domainName = getQueryParamString(router.query.name);
 
@@ -40,12 +46,20 @@ const NameDomainHistory = () => {
     <>
       <Show below="lg" ssr={ false }>
         <Box>
-          { data?.items.map((item, index) => <NameDomainHistoryListItem key={ index } { ...item } isLoading={ isPlaceholderData }/>) }
+          { data?.items.map((item, index) => (
+            <NameDomainHistoryListItem
+              key={ index }
+              event={ item }
+              domain={ domain }
+              isLoading={ isPlaceholderData }
+            />
+          )) }
         </Box>
       </Show>
       <Hide below="lg" ssr={ false }>
         <NameDomainHistoryTable
-          data={ data }
+          history={ data }
+          domain={ domain }
           isLoading={ isPlaceholderData }
           sort={ sort }
           onSortToggle={ handleSortToggle }

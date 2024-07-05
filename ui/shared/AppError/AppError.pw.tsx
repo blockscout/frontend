@@ -1,79 +1,54 @@
-import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
-import TestApp from 'playwright/TestApp';
-import * as configs from 'playwright/utils/configs';
+import { test, expect } from 'playwright/lib';
+import * as pwConfig from 'playwright/utils/config';
 
 import AppError from './AppError';
 
-test('status code 404', async({ mount }) => {
+test('status code 404', async({ render, page }) => {
   const error = { message: 'Not found', cause: { status: 404 } } as Error;
-  const component = await mount(
-    <TestApp>
-      <AppError error={ error }/>
-    </TestApp>,
-  );
-  await expect(component).toHaveScreenshot();
+  const component = await render(<AppError error={ error }/>);
+  await expect(component).toHaveScreenshot({
+    mask: [ page.locator(pwConfig.adsBannerSelector) ],
+    maskColor: pwConfig.maskColor,
+  });
 });
 
-test('status code 422', async({ mount }) => {
+test('status code 422', async({ render }) => {
   const error = { message: 'Unprocessable entry', cause: { status: 422 } } as Error;
-  const component = await mount(
-    <TestApp>
-      <AppError error={ error }/>
-    </TestApp>,
-  );
+  const component = await render(<AppError error={ error }/>);
   await expect(component).toHaveScreenshot();
 });
 
-test('status code 500', async({ mount }) => {
+test('status code 500', async({ render }) => {
   const error = { message: 'Unknown error', cause: { status: 500 } } as Error;
-  const component = await mount(
-    <TestApp>
-      <AppError error={ error }/>
-    </TestApp>,
-  );
+  const component = await render(<AppError error={ error }/>);
   await expect(component).toHaveScreenshot();
 });
 
-test('tx not found', async({ mount }) => {
+test('tx not found', async({ render }) => {
   const error = { message: 'Not found', cause: { status: 404, resource: 'tx' } } as Error;
-  const component = await mount(
-    <TestApp>
-      <AppError error={ error }/>
-    </TestApp>,
-  );
+  const component = await render(<AppError error={ error }/>);
   await expect(component).toHaveScreenshot();
 });
 
-test('block lost consensus', async({ mount }) => {
+test('block lost consensus', async({ render }) => {
   const error = {
     message: 'Not found',
     cause: { payload: { message: 'Block lost consensus', hash: 'hash' } },
   } as Error;
-  const component = await mount(
-    <TestApp>
-      <AppError error={ error }/>
-    </TestApp>,
-  );
+  const component = await render(<AppError error={ error }/>);
   await expect(component).toHaveScreenshot();
 });
 
-test('too many requests +@mobile', async({ mount, page }) => {
+test('too many requests +@mobile', async({ render, page }) => {
   const error = {
     message: 'Too many requests',
     cause: { status: 429 },
   } as Error;
-
-  const component = await mount(
-    <TestApp>
-      <AppError error={ error }/>
-    </TestApp>,
-  );
-  await page.waitForResponse('https://www.google.com/recaptcha/api2/**');
-
+  const component = await render(<AppError error={ error }/>);
   await expect(component).toHaveScreenshot({
     mask: [ page.locator('.recaptcha') ],
-    maskColor: configs.maskColor,
+    maskColor: pwConfig.maskColor,
   });
 });

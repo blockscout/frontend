@@ -7,7 +7,7 @@ import compareBns from 'lib/bigint/compareBns';
 // import { apos } from 'lib/html-entities';
 import { INTERNAL_TX } from 'stubs/internalTx';
 import { generateListStub } from 'stubs/utils';
-import ActionBar from 'ui/shared/ActionBar';
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 // import FilterInput from 'ui/shared/filters/FilterInput';
 // import TxInternalsFilter from 'ui/tx/internals/TxInternalsFilter';
@@ -109,7 +109,7 @@ const TxInternals = ({ txQuery }: Props) => {
           data={ filteredData }
           sort={ sort }
           onSortToggle={ handleSortToggle }
-          top={ pagination.isVisible ? 80 : 0 }
+          top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
           isLoading={ isPlaceholderData }
         />
       </Hide>

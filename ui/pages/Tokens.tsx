@@ -26,10 +26,12 @@ import { SORT_OPTIONS, getTokenFilterValue, getBridgedChainsFilterValue } from '
 
 const TAB_LIST_PROPS = {
   marginBottom: 0,
-  py: 5,
+  pt: 6,
+  pb: 6,
   marginTop: -5,
   alignItems: 'center',
 };
+const TABS_HEIGHT = 88;
 
 const TABS_RIGHT_SLOT_PROPS = {
   ml: 8,
@@ -101,12 +103,14 @@ const Tokens = () => {
     setBridgeChains(undefined);
   }, []);
 
+  const hasMultipleTabs = bridgedTokensFeature.isEnabled;
+
   const filter = tab === 'bridged' ? (
-    <PopoverFilter isActive={ bridgeChains && bridgeChains.length > 0 } contentProps={{ maxW: '350px' }} appliedFiltersNum={ bridgeChains?.length }>
+    <PopoverFilter contentProps={{ maxW: '350px' }} appliedFiltersNum={ bridgeChains?.length }>
       <TokensBridgedChainsFilter onChange={ handleBridgeChainsChange } defaultValue={ bridgeChains }/>
     </PopoverFilter>
   ) : (
-    <PopoverFilter isActive={ tokenTypes && tokenTypes.length > 0 } contentProps={{ w: '200px' }} appliedFiltersNum={ tokenTypes?.length }>
+    <PopoverFilter contentProps={{ w: '200px' }} appliedFiltersNum={ tokenTypes?.length }>
       <TokenTypeFilter<TokenType> onChange={ handleTokenTypesChange } defaultValue={ tokenTypes } nftOnly={ false }/>
     </PopoverFilter>
   );
@@ -120,7 +124,7 @@ const Tokens = () => {
       onSearchChange={ handleSearchTermChange }
       sort={ sort }
       onSortChange={ handleSortChange }
-      inTabsSlot={ !isMobile && bridgedTokensFeature.isEnabled }
+      inTabsSlot={ !isMobile && hasMultipleTabs }
     />
   );
 
@@ -151,6 +155,7 @@ const Tokens = () => {
           onSortChange={ handleSortChange }
           actionBar={ isMobile ? actionBar : null }
           hasActiveFilters={ Boolean(searchTerm || tokenTypes) }
+          tableTop={ hasMultipleTabs ? TABS_HEIGHT : undefined }
         />
       ),
     },
@@ -165,6 +170,7 @@ const Tokens = () => {
           actionBar={ isMobile ? actionBar : null }
           hasActiveFilters={ Boolean(searchTerm || bridgeChains) }
           description={ description }
+          tableTop={ hasMultipleTabs ? TABS_HEIGHT : undefined }
         />
       ),
     } : undefined,
@@ -172,12 +178,15 @@ const Tokens = () => {
 
   return (
     <>
-      <PageTitle title="Tokens" withTextAd/>
-      { tabs.length === 1 && !isMobile && actionBar }
+      <PageTitle
+        title={ config.meta.seo.enhancedDataEnabled ? `Tokens on ${ config.chain.name }` : 'Tokens' }
+        withTextAd
+      />
+      { !hasMultipleTabs && !isMobile && actionBar }
       <RoutedTabs
         tabs={ tabs }
         tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }
-        rightSlot={ !isMobile ? actionBar : null }
+        rightSlot={ hasMultipleTabs && !isMobile ? actionBar : null }
         rightSlotProps={ !isMobile ? TABS_RIGHT_SLOT_PROPS : undefined }
         stickyEnabled={ !isMobile }
         onTabChange={ handleTabChange }

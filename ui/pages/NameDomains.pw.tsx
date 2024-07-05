@@ -1,50 +1,45 @@
-import { test, expect } from '@playwright/experimental-ct-react';
 import React from 'react';
 
 import config from 'configs/app';
-import * as textAdMock from 'mocks/ad/textAd';
 import * as ensDomainMock from 'mocks/ens/domain';
-import TestApp from 'playwright/TestApp';
-import buildApiUrl from 'playwright/utils/buildApiUrl';
+import { test, expect } from 'playwright/lib';
 
 import NameDomains from './NameDomains';
 
-const DOMAINS_LOOKUP_API_URL = buildApiUrl('domains_lookup', { chainId: config.chain.id }) + '?only_active=true';
-
-test.beforeEach(async({ page }) => {
-  await page.route('https://request-global.czilladx.com/serve/native.php?z=19260bf627546ab7242', (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify(textAdMock.duck),
-  }));
-  await page.route(textAdMock.duck.ad.thumbnail, (route) => {
-    return route.fulfill({
-      status: 200,
-      path: './playwright/mocks/image_s.jpg',
-    });
+test.beforeEach(async({ mockApiResponse, mockAssetResponse, mockTextAd }) => {
+  await mockTextAd();
+  await mockAssetResponse(ensDomainMock.protocolA.icon_url as string, './playwright/mocks/image_s.jpg');
+  await mockAssetResponse(ensDomainMock.protocolB.icon_url as string, './playwright/mocks/image_md.jpg');
+  await mockApiResponse('domains_lookup', {
+    items: [
+      ensDomainMock.ensDomainA,
+      ensDomainMock.ensDomainB,
+      ensDomainMock.ensDomainC,
+      ensDomainMock.ensDomainD,
+    ],
+    next_page_params: {
+      page_token: '<token>',
+      page_size: 50,
+    },
+  }, {
+    pathParams: { chainId: config.chain.id },
+    queryParams: { only_active: true },
+  });
+  await mockApiResponse('domain_protocols', {
+    items: [ ensDomainMock.protocolA, ensDomainMock.protocolB ],
+  }, {
+    pathParams: { chainId: config.chain.id },
   });
 });
 
-test('default view +@mobile', async({ mount, page }) => {
-  await page.route(DOMAINS_LOOKUP_API_URL, (route) => route.fulfill({
-    status: 200,
-    body: JSON.stringify({
-      items: [
-        ensDomainMock.ensDomainA,
-        ensDomainMock.ensDomainB,
-        ensDomainMock.ensDomainC,
-        ensDomainMock.ensDomainD,
-      ],
-      next_page_params: {
-        token_id: '<token-id>',
-      },
-    }),
-  }));
-
-  const component = await mount(
-    <TestApp>
-      <NameDomains/>
-    </TestApp>,
-  );
-
+test('default view +@mobile', async({ render }) => {
+  const component = await render(<NameDomains/>);
   await expect(component).toHaveScreenshot();
+});
+
+test('filters', async({ render, page }) => {
+  const component = await render(<NameDomains/>);
+
+  await component.getByRole('button', { name: 'Filter' }).click();
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 250, height: 500 } });
 });

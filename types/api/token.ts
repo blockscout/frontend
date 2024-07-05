@@ -61,6 +61,11 @@ export interface TokenInstance {
   owner: AddressParam | null;
 }
 
+export interface TokenInstanceMetadataSocketMessage {
+  token_id: number;
+  fetched_metadata: TokenInstance['metadata'];
+}
+
 export interface TokenInstanceTransfersCount {
   transfers_count: number;
 }

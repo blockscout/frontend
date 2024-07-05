@@ -1,23 +1,30 @@
 import { chakra, Tr, Td, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
-import type { EnsDomain } from 'types/api/ens';
+import type * as bens from '@blockscout/bens-types';
 
 import dayjs from 'lib/date/dayjs';
 import NameDomainExpiryStatus from 'ui/nameDomain/NameDomainExpiryStatus';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 
-type Props = EnsDomain & {
+type Props = bens.Domain & {
   isLoading?: boolean;
 }
 
-const NameDomainsTableItem = ({ isLoading, name, resolved_address: resolvedAddress, registration_date: registrationDate, expiry_date: expiryDate }: Props) => {
+const NameDomainsTableItem = ({
+  isLoading,
+  name,
+  resolved_address: resolvedAddress,
+  registration_date: registrationDate,
+  expiry_date: expiryDate,
+  protocol,
+}: Props) => {
 
   return (
     <Tr>
       <Td verticalAlign="middle">
-        <EnsEntity name={ name } isLoading={ isLoading } fontWeight={ 600 }/>
+        <EnsEntity name={ name } protocol={ protocol } isLoading={ isLoading } fontWeight={ 600 }/>
       </Td>
       <Td verticalAlign="middle">
         { resolvedAddress && <AddressEntity address={ resolvedAddress } isLoading={ isLoading } fontWeight={ 500 }/> }

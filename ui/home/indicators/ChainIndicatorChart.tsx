@@ -14,7 +14,7 @@ interface Props {
   caption?: string;
 }
 
-const CHART_MARGIN = { bottom: 5, left: 10, right: 10, top: 0 };
+const CHART_MARGIN = { bottom: 5, left: 10, right: 10, top: 5 };
 
 const ChainIndicatorChart = ({ data }: Props) => {
   const overlayRef = React.useRef<SVGRectElement>(null);

@@ -12,6 +12,7 @@ const LayoutHome = ({ children }: Props) => {
   return (
     <Layout.Container>
       <Layout.TopRow/>
+      <Layout.NavBar/>
       <HeaderMobile hideSearchBar/>
       <Layout.MainArea>
         <Layout.SideBar/>

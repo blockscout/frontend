@@ -1,6 +1,7 @@
 import { chakra, Tooltip, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
+import type * as visualizer from '@blockscout/visualizer-types';
 import type { SmartContract } from 'types/api/contract';
 
 import type { ResourceError } from 'lib/api/resources';
@@ -13,7 +14,7 @@ interface Props {
   addressHash: string;
 }
 
-function composeSources(contract: SmartContract | undefined) {
+function composeSources(contract: SmartContract | undefined): visualizer.VisualizeStorageRequest['sources'] {
   if (!contract) {
     return {};
   }
@@ -23,7 +24,7 @@ function composeSources(contract: SmartContract | undefined) {
   }, {});
 
   return {
-    [contract.file_path || 'index.sol']: contract.source_code,
+    [contract.file_path || 'index.sol']: contract.source_code || '',
     ...additionalSources,
   };
 }
@@ -76,7 +77,7 @@ const Sol2UmlDiagram = ({ addressHash }: Props) => {
   return (
     <Tooltip label="Click on image to zoom" placement="top">
       <chakra.img
-        src={ `data:image/svg+xml;base64,${ umlQuery.data.svg }` }
+        src={ imgUrl }
         alt={ `Contract ${ contractQuery.data.name } UML diagram` }
         onClick={ handleClick }
         cursor="pointer"

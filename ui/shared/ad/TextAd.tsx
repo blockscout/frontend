@@ -10,7 +10,7 @@ import CoinzillaTextAd from './CoinzillaTextAd';
 const TextAd = ({ className }: {className?: string}) => {
   const hasAdblockCookie = cookies.get(cookies.NAMES.ADBLOCK_DETECTED, useAppContext().cookies);
 
-  if (!config.features.adsText.isEnabled || hasAdblockCookie) {
+  if (!config.features.adsText.isEnabled || hasAdblockCookie === 'true') {
     return null;
   }
 

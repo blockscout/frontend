@@ -17,7 +17,7 @@ fi
 # download assets for the running instance
 dotenv \
   -e $config_file \
-  -- bash -c './deploy/scripts/download_assets.sh ./public/assets'
+  -- bash -c './deploy/scripts/download_assets.sh ./public/assets/configs'
 
 yarn svg:build-sprite
 echo ""
@@ -28,5 +28,5 @@ dotenv \
   -v NEXT_PUBLIC_GIT_TAG=$(git describe --tags --abbrev=0) \
   -e $config_file \
   -e $secrets_file \
-  -- bash -c './deploy/scripts/make_envs_script.sh && next dev -p $NEXT_PUBLIC_APP_PORT --turbo' |
+  -- bash -c './deploy/scripts/make_envs_script.sh && next dev -p $NEXT_PUBLIC_APP_PORT' |
 pino-pretty

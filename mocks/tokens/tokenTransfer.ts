@@ -3,7 +3,7 @@ import type { TokenTransfer, TokenTransferResponse } from 'types/api/tokenTransf
 export const erc20: TokenTransfer = {
   from: {
     hash: '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859',
-    implementation_name: null,
+    implementations: null,
     is_contract: true,
     is_verified: true,
     name: 'ArianeeStore',
@@ -14,7 +14,7 @@ export const erc20: TokenTransfer = {
   },
   to: {
     hash: '0x7d20a8D54F955b4483A66aB335635ab66e151c51',
-    implementation_name: null,
+    implementations: null,
     is_contract: true,
     is_verified: false,
     name: null,
@@ -50,7 +50,7 @@ export const erc20: TokenTransfer = {
 export const erc721: TokenTransfer = {
   from: {
     hash: '0x621C2a125ec4A6D8A7C7A655A18a2868d35eb43C',
-    implementation_name: null,
+    implementations: null,
     is_contract: false,
     is_verified: false,
     name: null,
@@ -61,7 +61,7 @@ export const erc721: TokenTransfer = {
   },
   to: {
     hash: '0x47eE48AEBc4ab9Ed908b805b8c8dAAa71B31Db1A',
-    implementation_name: null,
+    implementations: null,
     is_contract: false,
     is_verified: false,
     name: null,
@@ -96,7 +96,7 @@ export const erc721: TokenTransfer = {
 export const erc1155A: TokenTransfer = {
   from: {
     hash: '0x0000000000000000000000000000000000000000',
-    implementation_name: null,
+    implementations: null,
     is_contract: false,
     is_verified: false,
     name: null,
@@ -107,7 +107,7 @@ export const erc1155A: TokenTransfer = {
   },
   to: {
     hash: '0xBb36c792B9B45Aaf8b848A1392B0d6559202729E',
-    implementation_name: null,
+    implementations: null,
     is_contract: false,
     is_verified: false,
     name: null,
@@ -173,7 +173,7 @@ export const erc1155D: TokenTransfer = {
 export const erc404A: TokenTransfer = {
   from: {
     hash: '0x0000000000000000000000000000000000000000',
-    implementation_name: null,
+    implementations: null,
     is_contract: false,
     is_verified: false,
     name: null,
@@ -184,7 +184,7 @@ export const erc404A: TokenTransfer = {
   },
   to: {
     hash: '0xBb36c792B9B45Aaf8b848A1392B0d6559202729E',
-    implementation_name: null,
+    implementations: null,
     is_contract: false,
     is_verified: false,
     name: null,

@@ -16,7 +16,7 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
-import LinkInternal from 'ui/shared/LinkInternal';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 import AdminSupportText from 'ui/shared/texts/AdminSupportText';
 
 import AddressVerificationFieldAddress from '../fields/AddressVerificationFieldAddress';
@@ -105,7 +105,7 @@ const AddressVerificationStepAddress = ({ defaultAddress, onContinue }: Props) =
       { rootError && <Alert status="warning" mt={ 3 }>{ rootError }</Alert> }
       <AddressVerificationFieldAddress formState={ formState } control={ control }/>
       <Flex alignItems={{ base: 'flex-start', lg: 'center' }} mt={ 8 } columnGap={ 5 } rowGap={ 2 } flexDir={{ base: 'column', lg: 'row' }}>
-        <Button size="lg" type="submit" isDisabled={ formState.isSubmitting } flexShrink={ 0 }>
+        <Button size="lg" type="submit" isLoading={ formState.isSubmitting } loadingText="Continue" flexShrink={ 0 }>
             Continue
         </Button>
         <AdminSupportText/>
