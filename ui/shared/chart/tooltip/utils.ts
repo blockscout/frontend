@@ -11,5 +11,6 @@ export const calculateContainerHeight = (seriesNum: number, isIncomplete?: boole
 };
 
 export const calculateRowTransformValue = (rowNum: number) => {
-  return `translate(${ PADDING },${ PADDING + rowNum * (LINE_SPACE + TEXT_LINE_HEIGHT) })`;
+  const top = Math.max(0, PADDING + rowNum * (LINE_SPACE + TEXT_LINE_HEIGHT));
+  return `translate(${ PADDING },${ top })`;
 };

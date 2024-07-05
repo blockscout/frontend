@@ -14,6 +14,7 @@ const ChartTooltipTitle = () => {
         transform="translate(0,0)"
         fill={ titleColor }
         opacity={ 0 }
+        dominantBaseline="hanging"
       >
         Incomplete day
       </text>

@@ -125,7 +125,6 @@ const ChartTooltip = ({ xScale, yScale, width, tooltipWidth = 200, height, data,
       opacity={ 0 }
       fontSize="12px"
       fontWeight="500"
-      dominantBaseline="hanging"
       { ...props }
     >
       <ChartTooltipLine/>
