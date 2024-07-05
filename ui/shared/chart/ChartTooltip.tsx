@@ -1,14 +1,14 @@
 import * as d3 from 'd3';
 import React from 'react';
 
-import type { TimeChartItem, TimeChartData } from 'ui/shared/chart/types';
+import type { TimeChartData } from 'ui/shared/chart/types';
 
-import ChartTooltipBackdrop from './tooltip/ChartTooltipBackdrop';
-import ChartTooltipLine from './tooltip/ChartTooltipLine';
-import ChartTooltipPoint from './tooltip/ChartTooltipPoint';
-import ChartTooltipRow from './tooltip/ChartTooltipRow';
-import ChartTooltipTitle from './tooltip/ChartTooltipTitle';
-import computeTooltipPosition from './tooltip/computeTooltipPosition';
+import ChartTooltipBackdrop, { useRenderBackdrop } from './tooltip/ChartTooltipBackdrop';
+import ChartTooltipContent, { useRenderContent } from './tooltip/ChartTooltipContent';
+import ChartTooltipLine, { useRenderLine } from './tooltip/ChartTooltipLine';
+import ChartTooltipPoint, { useRenderPoints } from './tooltip/ChartTooltipPoint';
+import ChartTooltipRow, { useRenderRows } from './tooltip/ChartTooltipRow';
+import ChartTooltipTitle, { useRenderTitle } from './tooltip/ChartTooltipTitle';
 import { trackPointer } from './tooltip/pointerTracker';
 import type { Pointer } from './tooltip/pointerTracker';
 
@@ -22,175 +22,33 @@ interface Props {
   anchorEl: SVGRectElement | null;
 }
 
-interface CurrentItem {
-  point: TimeChartItem;
-  index: number;
-}
-
-const TEXT_LINE_HEIGHT = 12;
-const PADDING = 16;
-const LINE_SPACE = 10;
-const POINT_SIZE = 16;
-const LABEL_WIDTH = 80;
-
-const calculateHeight = (seriesNum: number, isIncomplete?: boolean) => {
-  const linesNum = isIncomplete ? seriesNum + 2 : seriesNum + 1;
-
-  return 2 * PADDING + linesNum * TEXT_LINE_HEIGHT + (linesNum - 1) * LINE_SPACE;
-};
-
-const calculateRowTransformValue = (rowNum: number) => {
-  return `translate(${ PADDING },${ PADDING + rowNum * (LINE_SPACE + TEXT_LINE_HEIGHT) })`;
-};
-
 const ChartTooltip = ({ xScale, yScale, width, tooltipWidth = 200, height, data, anchorEl, ...props }: Props) => {
-  const ref = React.useRef(null);
+  const ref = React.useRef<SVGGElement>(null);
   const trackerId = React.useRef<number>();
   const isVisible = React.useRef(false);
 
-  const drawLine = React.useCallback(
-    (x: number) => {
-      d3.select(ref.current)
-        .select('.ChartTooltip__line')
-        .attr('x1', x)
-        .attr('x2', x)
-        .attr('y1', 0)
-        .attr('y2', height || 0);
-    },
-    [ ref, height ],
-  );
-
-  const updateDisplayedValue = React.useCallback((d: TimeChartItem, i: number) => {
-
-    // UPDATE TOOLTIP DIMENSIONS
-    // TODO @tom2drum move to "updateContent" function
-    const valueNodes = d3.select(ref.current)
-      .selectAll<Element, TimeChartData>('.ChartTooltip__value')
-      // here we assume that the first value is date
-      .filter((td, tIndex) => tIndex === i + 1)
-      .text(
-        (data[i].valueFormatter?.(d.value) || d.value.toLocaleString(undefined, { minimumSignificantDigits: 1 })) +
-        (data[i].units ? ` ${ data[i].units }` : ''),
-      )
-      .nodes();
-
-    const widthLimit = tooltipWidth - 2 * PADDING - LABEL_WIDTH;
-    const width = valueNodes.map((node) => node?.getBoundingClientRect?.().width);
-    const maxNodeWidth = Math.max(...width);
-    d3.select(ref.current)
-      .select('.ChartTooltip__backdrop')
-      .transition()
-      .duration(100)
-      .ease(d3.easeLinear)
-      .attr('width', tooltipWidth + Math.max(0, (maxNodeWidth - widthLimit)))
-      .attr('height', calculateHeight(data.length, d.isApproximate));
-
-    // UPDATE "TRANSFORM" PROPs OF LABELS AND VALUES
-    d3.select(ref.current)
-      .selectAll<Element, TimeChartData>('.ChartTooltip__row')
-      .attr('transform', (datum, index) => {
-        return calculateRowTransformValue(index - (d.isApproximate ? 0 : 1));
-      });
-
-    // UPDATE VISIBILITY OF TITLE
-    d3.select(ref.current)
-      .select('.ChartTooltip__title')
-      .attr('opacity', d.isApproximate ? 1 : 0);
-
-  }, [ data, tooltipWidth ]);
-
-  const drawContent = React.useCallback(
-    (x: number, y: number, currentItems: Array<CurrentItem>) => {
-      const tooltipContent = d3.select(ref.current).select('.ChartTooltip__content');
-
-      tooltipContent.attr('transform', (cur, i, nodes) => {
-        const node = nodes[i] as SVGGElement | null;
-        const { width: nodeWidth, height: nodeHeight } = node?.getBoundingClientRect() || { width: 0, height: 0 };
-        const [ translateX, translateY ] = computeTooltipPosition({
-          canvasWidth: width || 0,
-          canvasHeight: height || 0,
-          nodeWidth,
-          nodeHeight,
-          pointX: x,
-          pointY: y,
-          offset: POINT_SIZE,
-        });
-        return `translate(${ translateX }, ${ translateY })`;
-      });
-
-      const date = xScale.invert(x);
-      const dateLabel = data[0].items.find((item) => item.date.getTime() === date.getTime())?.dateLabel;
-
-      // here we assume that the first value is date
-      tooltipContent
-        .select('.ChartTooltip__value')
-        .text(dateLabel || d3.timeFormat('%e %b %Y')(xScale.invert(x)));
-
-      currentItems.forEach(({ point, index }) => {
-        updateDisplayedValue(point, index);
-      });
-    },
-    [ xScale, data, updateDisplayedValue, width, height ],
-  );
-
-  const drawPoints: (x: number) => [number, number, Array<CurrentItem>] = React.useCallback((x: number) => {
-    const xDate = xScale.invert(x);
-    const bisectDate = d3.bisector<TimeChartItem, unknown>((d) => d.date).left;
-    let baseXPos = 0;
-    let baseYPos = 0;
-    const currentItems: Array<CurrentItem> = [];
-
-    d3.select(ref.current)
-      .selectAll('.ChartTooltip__point')
-      .attr('transform', (cur, i) => {
-        const index = bisectDate(data[i].items, xDate, 1);
-        const d0 = data[i].items[index - 1] as TimeChartItem | undefined;
-        const d1 = data[i].items[index] as TimeChartItem | undefined;
-        const d = (() => {
-          if (!d0) {
-            return d1;
-          }
-          if (!d1) {
-            return d0;
-          }
-          return xDate.getTime() - d0.date.getTime() > d1.date.getTime() - xDate.getTime() ? d1 : d0;
-        })();
-
-        if (d?.date === undefined && d?.value === undefined) {
-          // move point out of container
-          return 'translate(-100,-100)';
-        }
-
-        const xPos = xScale(d.date);
-        const yPos = yScale(d.value);
-
-        if (i === 0) {
-          baseXPos = xPos;
-          baseYPos = yPos;
-        }
-
-        currentItems.push({ point: d, index: i });
-
-        return `translate(${ xPos }, ${ yPos })`;
-      });
-
-    return [ baseXPos, baseYPos, currentItems ];
-  }, [ data, xScale, yScale ]);
+  const renderLine = useRenderLine(ref, height);
+  const renderContent = useRenderContent(ref, { chart: { width, height } });
+  const renderPoints = useRenderPoints(ref, { data, xScale, yScale });
+  const renderTitle = useRenderTitle(ref);
+  const renderRows = useRenderRows(ref, { data, xScale, minWidth: tooltipWidth });
+  const renderBackdrop = useRenderBackdrop(ref, { seriesNum: data.length });
 
   const draw = React.useCallback((pointer: Pointer) => {
     if (pointer.point) {
-      const [ baseXPos, baseYPos, currentItems ] = drawPoints(pointer.point[0]);
-      drawLine(baseXPos);
-      drawContent(baseXPos, baseYPos, currentItems);
+      const { x, y, currentPoints } = renderPoints(pointer.point[0]);
+      const isIncompleteData = currentPoints.some(({ item }) => item.isApproximate);
+      renderLine(x);
+      renderContent(x, y);
+      renderTitle(isIncompleteData);
+      const { width } = renderRows(x, currentPoints);
+      renderBackdrop(width, isIncompleteData);
     }
-  }, [ drawPoints, drawLine, drawContent ]);
+  }, [ renderPoints, renderLine, renderContent, renderTitle, renderRows, renderBackdrop ]);
 
   const showContent = React.useCallback(() => {
     if (!isVisible.current) {
       d3.select(ref.current).attr('opacity', 1);
-      d3.select(ref.current)
-        .selectAll('.ChartTooltip__point')
-        .attr('opacity', 1);
       isVisible.current = true;
     }
   }, []);
@@ -272,12 +130,12 @@ const ChartTooltip = ({ xScale, yScale, width, tooltipWidth = 200, height, data,
     >
       <ChartTooltipLine/>
       { data.map(({ name }) => <ChartTooltipPoint key={ name }/>) }
-      <g className="ChartTooltip__content">
-        <ChartTooltipBackdrop width={ tooltipWidth } seriesNum={ data.length }/>
+      <ChartTooltipContent>
+        <ChartTooltipBackdrop/>
         <ChartTooltipTitle/>
         <ChartTooltipRow label="Date" lineNum={ 1 }/>
         { data.map(({ name }, index) => <ChartTooltipRow key={ name } label={ name } lineNum={ index + 1 }/>) }
-      </g>
+      </ChartTooltipContent>
     </g>
   );
 };

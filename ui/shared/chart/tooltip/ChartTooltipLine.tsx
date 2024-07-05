@@ -1,4 +1,5 @@
 import { useToken } from '@chakra-ui/react';
+import * as d3 from 'd3';
 import React from 'react';
 
 const ChartTooltipLine = () => {
@@ -7,3 +8,14 @@ const ChartTooltipLine = () => {
 };
 
 export default React.memo(ChartTooltipLine);
+
+export function useRenderLine(ref: React.RefObject<SVGGElement>, chartHeight: number | undefined) {
+  return React.useCallback((x: number) => {
+    d3.select(ref.current)
+      .select('.ChartTooltip__line')
+      .attr('x1', x)
+      .attr('x2', x)
+      .attr('y1', 0)
+      .attr('y2', chartHeight || 0);
+  }, [ ref, chartHeight ]);
+}
