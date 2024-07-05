@@ -10449,10 +10449,9 @@ graceful-fs@^4.2.4, graceful-fs@^4.2.9:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.10.tgz#147d3a006da4ca3ce14728c7aefc287c367d7a6c"
   integrity sha512-9ByhssR2fPVsNZj478qUUbKfmL0+t5BDVyjShtyZZLiK7ZDAArFFfopyOTj0M05wE2tJPisA4iTnnXl2YoPvOA==
 
-gradient-avatar@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/gradient-avatar/-/gradient-avatar-1.0.2.tgz#42bb408e402b1f21aafba3878858721055515224"
-  integrity sha512-Od9KI2YImV60wnsvU/u6GEyBm2fiHUUHgiLySE243GYl/T/tiJMJ5QYey8o7tepugmlnUGQRaCItHv19UnUjUg==
+"gradient-avatar@git+https://github.com/blockscout/gradient-avatar.git":
+  version "1.0.3"
+  resolved "git+https://github.com/blockscout/gradient-avatar.git#86810368c2581d2dc3aca089dc648336c8e17045"
   dependencies:
     hsl-rgb "^1.0.0"
     hsl-triad "^1.0.0"
