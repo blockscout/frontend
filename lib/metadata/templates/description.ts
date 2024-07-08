@@ -53,6 +53,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
 
   // service routes, added only to make typescript happy
   '/login': DEFAULT_TEMPLATE,
+  '/sprite': DEFAULT_TEMPLATE,
   '/api/metrics': DEFAULT_TEMPLATE,
   '/api/log': DEFAULT_TEMPLATE,
   '/api/media-type': DEFAULT_TEMPLATE,
@@ -60,6 +61,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/api/csrf': DEFAULT_TEMPLATE,
   '/api/healthz': DEFAULT_TEMPLATE,
   '/api/config': DEFAULT_TEMPLATE,
+  '/api/sprite': DEFAULT_TEMPLATE,
   '/auth/auth0': DEFAULT_TEMPLATE,
   '/auth/unverified-email': DEFAULT_TEMPLATE,
 };

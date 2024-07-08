@@ -20,7 +20,7 @@ function getBgColor(status?: AlertStatus) {
   }
 }
 
-const Toast = ({ onClose, title, description, id, isClosable, status }: ToastProps) => {
+const Toast = ({ onClose, title, description, id, isClosable, status, icon }: ToastProps) => {
 
   const ids = id ?
     {
@@ -48,7 +48,7 @@ const Toast = ({ onClose, title, description, id, isClosable, status }: ToastPro
       maxWidth="400px"
     >
       <chakra.div flex="1" maxWidth="100%">
-        { title && <AlertTitle id={ ids?.title }>{ title }</AlertTitle> }
+        { title && <AlertTitle id={ ids?.title } display="flex" alignItems="center">{ icon }{ title }</AlertTitle> }
         { description && (
           <AlertDescription id={ ids?.description } display="block">
             { description }

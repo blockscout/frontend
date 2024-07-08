@@ -1,7 +1,7 @@
 import { Box, Grid, Heading, List, ListItem, Skeleton } from '@chakra-ui/react';
 import React, { useCallback, useState } from 'react';
 
-import type { StatsChartsSection } from 'types/api/stats';
+import type * as stats from '@blockscout/stats-types';
 import type { StatsIntervalIds } from 'types/client/stats';
 
 import useApiQuery from 'lib/api/useApiQuery';
@@ -18,7 +18,7 @@ type Props = {
   initialFilterQuery: string;
   isError: boolean;
   isPlaceholderData: boolean;
-  charts?: Array<StatsChartsSection>;
+  charts?: Array<stats.LineChartSection>;
   interval: StatsIntervalIds;
 }
 

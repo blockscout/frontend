@@ -49,6 +49,7 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
 
   // service routes, added only to make typescript happy
   '/login': 'Regular page',
+  '/sprite': 'Regular page',
   '/api/metrics': 'Regular page',
   '/api/log': 'Regular page',
   '/api/media-type': 'Regular page',
@@ -56,6 +57,7 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/api/csrf': 'Regular page',
   '/api/healthz': 'Regular page',
   '/api/config': 'Regular page',
+  '/api/sprite': 'Regular page',
   '/auth/auth0': 'Regular page',
   '/auth/unverified-email': 'Regular page',
 };

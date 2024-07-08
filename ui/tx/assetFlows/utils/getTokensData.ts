@@ -1,4 +1,6 @@
-import _ from 'lodash';
+import _groupBy from 'lodash/groupBy';
+import _keysIn from 'lodash/keysIn';
+import _mapValues from 'lodash/mapValues';
 
 import type { NovesResponseData } from 'types/api/noves';
 import type { TokenInfo } from 'types/api/token';
@@ -47,28 +49,28 @@ export function getTokensData(data: NovesResponseData): TokensData {
   });
 
   // Group tokens by property into arrays
-  const tokensGroupByname = _.groupBy(tokens, 'name');
-  const tokensGroupBySymbol = _.groupBy(tokens, 'symbol');
-  const tokensGroupById = _.groupBy(tokens, 'id');
+  const tokensGroupByname = _groupBy(tokens, 'name');
+  const tokensGroupBySymbol = _groupBy(tokens, 'symbol');
+  const tokensGroupById = _groupBy(tokens, 'id');
 
   // Map properties to an object and remove duplicates
-  const mappedNames = _.mapValues(tokensGroupByname, (i) => {
+  const mappedNames = _mapValues(tokensGroupByname, (i) => {
     return i[0];
   });
 
-  const mappedSymbols = _.mapValues(tokensGroupBySymbol, (i) => {
+  const mappedSymbols = _mapValues(tokensGroupBySymbol, (i) => {
     return i[0];
   });
 
-  const mappedIds = _.mapValues(tokensGroupById, (i) => {
+  const mappedIds = _mapValues(tokensGroupById, (i) => {
     return i[0];
   });
 
   const filters = [ 'undefined', 'null' ];
   // Array of keys to match in string
-  const nameList = _.keysIn(mappedNames).filter(i => !filters.includes(i));
-  const symbolList = _.keysIn(mappedSymbols).filter(i => !filters.includes(i));
-  const idList = _.keysIn(mappedIds).filter(i => !filters.includes(i));
+  const nameList = _keysIn(mappedNames).filter(i => !filters.includes(i));
+  const symbolList = _keysIn(mappedSymbols).filter(i => !filters.includes(i));
+  const idList = _keysIn(mappedIds).filter(i => !filters.includes(i));
 
   return {
     nameList,

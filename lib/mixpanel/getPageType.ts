@@ -47,13 +47,15 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
 
   // service routes, added only to make typescript happy
   '/login': 'Login',
+  '/sprite': 'Sprite',
   '/api/metrics': 'Node API: Prometheus metrics',
   '/api/log': 'Node API: Request log',
   '/api/media-type': 'Node API: Media type',
   '/api/proxy': 'Node API: Proxy',
   '/api/csrf': 'Node API: CSRF token',
   '/api/healthz': 'Node API: Health check',
-  '/api/config': 'Node API: Health check',
+  '/api/config': 'Node API: App config',
+  '/api/sprite': 'Node API: SVG sprite content',
   '/auth/auth0': 'Auth',
   '/auth/unverified-email': 'Unverified email',
 };

@@ -222,7 +222,7 @@ const ContractMethodForm = ({ data, attempt, onSubmit, onReset, isOpen }: Props)
               onClick={ onReset }
               ml={ 1 }
             >
-              <IconSvg name="repeat_arrow" boxSize={ 5 } mr={ 1 }/>
+              <IconSvg name="repeat" boxSize={ 5 } mr={ 1 }/>
             Reset
             </Button>
           ) }
