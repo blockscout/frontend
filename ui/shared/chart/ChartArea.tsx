@@ -38,6 +38,7 @@ const ChartArea = ({ id, xScale, yScale, color, data, disableAnimation, ...props
 
   const d = React.useMemo(() => {
     const area = d3.area<TimeChartItem>()
+      .defined(({ isApproximate }) => !isApproximate)
       .x(({ date }) => xScale(date))
       .y1(({ value }) => yScale(value))
       .y0(() => yScale(yScale.domain()[0]))

@@ -5,6 +5,7 @@ import type { TimeChartItem } from 'ui/shared/chart/types';
 
 import type { AnimationType } from './utils/animations';
 import { ANIMATIONS } from './utils/animations';
+import { getIncompleteDataLineSource } from './utils/formatters';
 
 interface Props extends React.SVGProps<SVGPathElement> {
   xScale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>;
@@ -49,7 +50,7 @@ const ChartLine = ({ xScale, yScale, data, animation, ...props }: Props) => {
     <>
       <path
         ref={ incompleteDataPathRef }
-        d={ line(data) || undefined }
+        d={ line(getIncompleteDataLineSource(data)) || undefined }
         strokeWidth={ 1 }
         strokeLinecap="round"
         fill="none"
