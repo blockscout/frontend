@@ -17,7 +17,7 @@ import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
-import TxFeeStability from 'ui/shared/tx/TxFeeStability';
+import TxFee from 'ui/shared/tx/TxFee';
 import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 import TxType from 'ui/txs/TxType';
@@ -111,14 +111,7 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
           { (tx.stability_fee !== undefined || tx.fee.value !== null) && (
             <>
               <Skeleton isLoaded={ !isLoading } display="inline-block" whiteSpace="pre">Fee</Skeleton>
-              { tx.stability_fee ? (
-                <TxFeeStability data={ tx.stability_fee } isLoading={ isLoading } hideUsd/>
-              ) : (
-                <Skeleton isLoaded={ !isLoading } display="inline-block" variant="text_secondary" whiteSpace="pre">
-                  { getValueWithUnit(tx.fee.value || 0).toFormat() }
-                  { config.UI.views.tx.hiddenFields?.fee_currency ? '' : ` ${ currencyUnits.ether }` }
-                </Skeleton>
-              ) }
+              <TxFee tx={ tx } isLoading={ isLoading }/>
             </>
           ) }
         </Flex>

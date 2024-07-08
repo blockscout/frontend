@@ -46,7 +46,7 @@ import RawInputData from 'ui/shared/RawInputData';
 import StatusTag from 'ui/shared/statusTag/StatusTag';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
 import TextSeparator from 'ui/shared/TextSeparator';
-import TxFeeStability from 'ui/shared/tx/TxFeeStability';
+import TxFee from 'ui/shared/tx/TxFee';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 import TxDetailsActions from 'ui/tx/details/txDetailsActions/TxDetailsActions';
@@ -555,17 +555,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             Transaction fee
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
-            { data.stability_fee ? (
-              <TxFeeStability data={ data.stability_fee } isLoading={ isLoading }/>
-            ) : (
-              <CurrencyValue
-                value={ data.fee.value }
-                currency={ config.UI.views.tx.hiddenFields?.fee_currency ? '' : currencyUnits.ether }
-                exchangeRate={ data.exchange_rate }
-                flexWrap="wrap"
-                isLoading={ isLoading }
-              />
-            ) }
+            <TxFee tx={ data } isLoading={ isLoading } withUsd/>
           </DetailsInfoItem.Value>
         </>
       ) }
@@ -606,7 +596,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         </>
       ) }
 
-      <TxDetailsGasPrice gasPrice={ data.gas_price } isLoading={ isLoading }/>
+      <TxDetailsGasPrice gasPrice={ data.gas_price } gasToken={ data.celo?.gas_token } isLoading={ isLoading }/>
 
       <TxDetailsFeePerGas txFee={ data.fee.value } gasUsed={ data.gas_used } isLoading={ isLoading }/>
 

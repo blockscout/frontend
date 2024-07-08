@@ -17,7 +17,7 @@ import CurrencyValue from 'ui/shared/CurrencyValue';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
-import TxFeeStability from 'ui/shared/tx/TxFeeStability';
+import TxFee from 'ui/shared/tx/TxFee';
 import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 
@@ -109,12 +109,13 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
       ) }
       { !config.UI.views.tx.hiddenFields?.tx_fee && (
         <Td isNumeric>
-          { /* eslint-disable-next-line no-nested-ternary */ }
-          { tx.stability_fee ? (
-            <TxFeeStability data={ tx.stability_fee } isLoading={ isLoading } accuracy={ 8 } justifyContent="end" hideUsd/>
-          ) : (
-            tx.fee.value ? <CurrencyValue value={ tx.fee.value } accuracy={ 8 } isLoading={ isLoading }/> : '-'
-          ) }
+          <TxFee
+            tx={ tx }
+            accuracy={ 8 }
+            isLoading={ isLoading }
+            withCurrency={ Boolean(tx.celo || tx.stability_fee) }
+            justifyContent="end"
+          />
         </Td>
       ) }
     </Tr>
