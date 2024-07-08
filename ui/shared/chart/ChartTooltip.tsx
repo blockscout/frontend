@@ -57,7 +57,10 @@ const ChartTooltip = ({ xScale, yScale, width, tooltipWidth = 200, height, data,
   }, []);
 
   const hideContent = React.useCallback(() => {
-    d3.select(ref.current).attr('opacity', 0);
+    d3.select(ref.current)
+      .transition()
+      .delay(100)
+      .attr('opacity', 0);
     isVisible.current = false;
   }, []);
 
