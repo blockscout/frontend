@@ -38,10 +38,7 @@ const ChainIndicators = () => {
     },
   });
 
-  const bgColorDesktop = useColorModeValue('white', 'gray.900');
-  const bgColorMobile = useColorModeValue('white', 'black');
-  const listBgColorDesktop = useColorModeValue('gray.50', 'black');
-  const listBgColorMobile = useColorModeValue('gray.50', 'gray.900');
+  const bgColor = useColorModeValue('gray.50', 'whiteAlpha.100');
 
   if (indicators.length === 0) {
     return null;
@@ -49,15 +46,15 @@ const ChainIndicators = () => {
 
   const valueTitle = (() => {
     if (statsQueryResult.isPlaceholderData) {
-      return <Skeleton h="48px" w="215px" mt={ 3 } mb={ 4 }/>;
+      return <Skeleton h="36px" w="215px"/>;
     }
 
     if (!statsQueryResult.data) {
-      return <Text mt={ 3 } mb={ 4 }>There is no data</Text>;
+      return <Text fontSize="xs">There is no data</Text>;
     }
 
     return (
-      <Text fontWeight={ 600 } fontFamily="heading" fontSize="48px" lineHeight="48px" mt={ 3 }>
+      <Text fontWeight={ 700 } fontSize="30px" lineHeight="36px">
         { indicator?.value(statsQueryResult.data) }
       </Text>
     );
@@ -85,23 +82,22 @@ const ChainIndicators = () => {
 
   return (
     <Flex
-      p={{ base: 0, lg: 8 }}
-      borderRadius={{ base: 'none', lg: 'lg' }}
-      boxShadow={{ base: 'none', lg: 'xl' }}
-      bgColor={{ base: bgColorMobile, lg: bgColorDesktop }}
-      columnGap={ 6 }
+      px={{ base: 3, lg: 4 }}
+      py={ 3 }
+      borderRadius="base"
+      bgColor={ bgColor }
+      columnGap={{ base: 3, lg: 4 }}
       rowGap={ 0 }
-      flexDir={{ base: 'column', lg: 'row' }}
-      w="100%"
+      flexBasis="50%"
+      flexGrow={ 1 }
       alignItems="stretch"
-      mt={{ base: 1, lg: 3 }}
     >
-      <Flex flexGrow={ 1 } flexDir="column" order={{ base: 2, lg: 1 }} p={{ base: 6, lg: 0 }}>
+      <Flex flexGrow={ 1 } flexDir="column">
         <Flex alignItems="center">
-          <Text fontWeight={ 500 } fontFamily="heading" fontSize="lg">{ indicator?.title }</Text>
+          <Text fontWeight={ 500 }>{ indicator?.title }</Text>
           { indicator?.hint && <Hint label={ indicator.hint } ml={ 1 }/> }
         </Flex>
-        <Flex mb={ 4 } alignItems="end">
+        <Flex mb={{ base: 0, lg: 2 }} mt={ 1 } alignItems="end">
           { valueTitle }
           { valueDiff }
         </Flex>
@@ -112,11 +108,9 @@ const ChainIndicators = () => {
           flexShrink={ 0 }
           flexDir="column"
           as="ul"
-          p={ 3 }
           borderRadius="lg"
-          bgColor={{ base: listBgColorMobile, lg: listBgColorDesktop }}
-          rowGap={ 3 }
-          order={{ base: 1, lg: 2 }}
+          rowGap="6px"
+          m={{ base: 'auto 0', lg: 0 }}
         >
           { indicators.map((indicator) => (
             <ChainIndicatorItem
