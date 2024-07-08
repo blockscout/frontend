@@ -19,31 +19,40 @@ interface UseRenderContentParams {
     width?: number;
     height?: number;
   };
+  transitionDuration: number | null;
 }
 
-export function useRenderContent(ref: React.RefObject<SVGGElement>, { chart }: UseRenderContentParams) {
+export function useRenderContent(ref: React.RefObject<SVGGElement>, { chart, transitionDuration }: UseRenderContentParams) {
   return React.useCallback((x: number, y: number) => {
     const tooltipContent = d3.select(ref.current).select('.ChartTooltip__content');
 
-    tooltipContent
-      .transition()
-      .duration(100)
-      .ease(d3.easeLinear)
-      .attr('transform', (cur, i, nodes) => {
-        const node = nodes[i] as SVGGElement | null;
-        const { width: nodeWidth, height: nodeHeight } = node?.getBoundingClientRect() || { width: 0, height: 0 };
-        const [ translateX, translateY ] = calculatePosition({
-          canvasWidth: chart.width || 0,
-          canvasHeight: chart.height || 0,
-          nodeWidth,
-          nodeHeight,
-          pointX: x,
-          pointY: y,
-          offset: POINT_SIZE,
-        });
-        return `translate(${ translateX }, ${ translateY })`;
+    const transformAttributeFn: d3.ValueFn<d3.BaseType, unknown, string> = (cur, i, nodes) => {
+      const node = nodes[i] as SVGGElement | null;
+      const { width: nodeWidth, height: nodeHeight } = node?.getBoundingClientRect() || { width: 0, height: 0 };
+      const [ translateX, translateY ] = calculatePosition({
+        canvasWidth: chart.width || 0,
+        canvasHeight: chart.height || 0,
+        nodeWidth,
+        nodeHeight,
+        pointX: x,
+        pointY: y,
+        offset: POINT_SIZE,
       });
-  }, [ chart.height, chart.width, ref ]);
+      return `translate(${ translateX }, ${ translateY })`;
+    };
+
+    if (transitionDuration) {
+      tooltipContent
+        .transition()
+        .duration(transitionDuration)
+        .ease(d3.easeLinear)
+        .attr('transform', transformAttributeFn);
+    } else {
+      tooltipContent
+        .attr('transform', transformAttributeFn);
+    }
+
+  }, [ chart.height, chart.width, ref, transitionDuration ]);
 }
 
 interface CalculatePositionParams {

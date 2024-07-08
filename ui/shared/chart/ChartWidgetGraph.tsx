@@ -23,13 +23,14 @@ interface Props {
   onZoom: () => void;
   isZoomResetInitial: boolean;
   margin?: ChartMargin;
+  noAnimation?: boolean;
 }
 
 // temporarily turn off the data aggregation, we need a better algorithm for that
 const MAX_SHOW_ITEMS = 100_000_000_000;
 const DEFAULT_CHART_MARGIN = { bottom: 20, left: 10, right: 20, top: 10 };
 
-const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title, margin: marginProps, units }: Props) => {
+const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title, margin: marginProps, units, noAnimation }: Props) => {
   const isMobile = useIsMobile();
   const color = useToken('colors', 'blue.200');
   const chartId = `chart-${ title.split(' ').join('') }-${ isEnlarged ? 'fullscreen' : 'small' }`;
@@ -99,7 +100,7 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
           scale={ axes.y.scale }
           ticks={ axesConfig.y.ticks }
           size={ innerWidth }
-          disableAnimation
+          noAnimation
         />
 
         <ChartArea
@@ -108,6 +109,7 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
           color={ color }
           xScale={ axes.x.scale }
           yScale={ axes.y.scale }
+          noAnimation={ noAnimation }
         />
 
         <ChartLine
@@ -124,7 +126,7 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
           scale={ axes.y.scale }
           ticks={ axesConfig.y.ticks }
           tickFormatGenerator={ axes.y.tickFormatter }
-          disableAnimation
+          noAnimation
         />
 
         <ChartAxis
@@ -134,7 +136,7 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
           ticks={ axesConfig.x.ticks }
           anchorEl={ overlayRef.current }
           tickFormatGenerator={ axes.x.tickFormatter }
-          disableAnimation
+          noAnimation
         />
 
         <ChartOverlay ref={ overlayRef } width={ innerWidth } height={ innerHeight }>
@@ -146,6 +148,7 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
             xScale={ axes.x.scale }
             yScale={ axes.y.scale }
             data={ chartData }
+            noAnimation={ noAnimation }
           />
 
           <ChartSelectionX

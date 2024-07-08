@@ -28,6 +28,7 @@ const props: Props = {
   units: 'ETH',
   isLoading: false,
   isError: false,
+  noAnimation: true,
 };
 
 test('base view +@dark-mode', async({ render, page }) => {

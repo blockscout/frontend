@@ -20,19 +20,22 @@ interface Props {
   xScale: d3.ScaleTime<number, number>;
   yScale: d3.ScaleLinear<number, number>;
   anchorEl: SVGRectElement | null;
+  noAnimation?: boolean;
 }
 
-const ChartTooltip = ({ xScale, yScale, width, tooltipWidth = 200, height, data, anchorEl, ...props }: Props) => {
+const ChartTooltip = ({ xScale, yScale, width, tooltipWidth = 200, height, data, anchorEl, noAnimation, ...props }: Props) => {
   const ref = React.useRef<SVGGElement>(null);
   const trackerId = React.useRef<number>();
   const isVisible = React.useRef(false);
 
+  const transitionDuration = !noAnimation ? 100 : null;
+
   const renderLine = useRenderLine(ref, height);
-  const renderContent = useRenderContent(ref, { chart: { width, height } });
+  const renderContent = useRenderContent(ref, { chart: { width, height }, transitionDuration });
   const renderPoints = useRenderPoints(ref, { data, xScale, yScale });
   const renderTitle = useRenderTitle(ref);
   const renderRows = useRenderRows(ref, { data, xScale, minWidth: tooltipWidth });
-  const renderBackdrop = useRenderBackdrop(ref, { seriesNum: data.length });
+  const renderBackdrop = useRenderBackdrop(ref, { seriesNum: data.length, transitionDuration });
 
   const draw = React.useCallback((pointer: Pointer) => {
     if (pointer.point) {
@@ -48,21 +51,31 @@ const ChartTooltip = ({ xScale, yScale, width, tooltipWidth = 200, height, data,
 
   const showContent = React.useCallback(() => {
     if (!isVisible.current) {
-      d3.select(ref.current)
-        .transition()
-        .delay(100)
-        .attr('opacity', 1);
+      if (transitionDuration) {
+        d3.select(ref.current)
+          .transition()
+          .delay(transitionDuration)
+          .attr('opacity', 1);
+      } else {
+        d3.select(ref.current)
+          .attr('opacity', 1);
+      }
       isVisible.current = true;
     }
-  }, []);
+  }, [ transitionDuration ]);
 
   const hideContent = React.useCallback(() => {
-    d3.select(ref.current)
-      .transition()
-      .delay(100)
-      .attr('opacity', 0);
+    if (transitionDuration) {
+      d3.select(ref.current)
+        .transition()
+        .delay(transitionDuration)
+        .attr('opacity', 0);
+    } else {
+      d3.select(ref.current)
+        .attr('opacity', 0);
+    }
     isVisible.current = false;
-  }, []);
+  }, [ transitionDuration ]);
 
   const createPointerTracker = React.useCallback((event: PointerEvent, isSubsequentCall?: boolean) => {
     let isPressed = event.pointerType === 'mouse' && event.type === 'pointerdown' && !isSubsequentCall;

@@ -21,16 +21,26 @@ export default React.memo(ChartTooltipBackdrop);
 
 interface UseRenderBackdropParams {
   seriesNum: number;
+  transitionDuration: number | null;
 }
 
-export function useRenderBackdrop(ref: React.RefObject<SVGGElement>, { seriesNum }: UseRenderBackdropParams) {
+export function useRenderBackdrop(ref: React.RefObject<SVGGElement>, { seriesNum, transitionDuration }: UseRenderBackdropParams) {
   return React.useCallback((width: number, isIncompleteData: boolean) => {
-    d3.select(ref.current)
-      .select('.ChartTooltip__backdrop')
-      .transition()
-      .duration(100)
-      .ease(d3.easeLinear)
-      .attr('width', width)
-      .attr('height', calculateContainerHeight(seriesNum, isIncompleteData));
-  }, [ ref, seriesNum ]);
+    const height = calculateContainerHeight(seriesNum, isIncompleteData);
+
+    if (transitionDuration) {
+      d3.select(ref.current)
+        .select('.ChartTooltip__backdrop')
+        .transition()
+        .duration(transitionDuration)
+        .ease(d3.easeLinear)
+        .attr('width', width)
+        .attr('height', height);
+    } else {
+      d3.select(ref.current)
+        .select('.ChartTooltip__backdrop')
+        .attr('width', width)
+        .attr('height', height);
+    }
+  }, [ ref, seriesNum, transitionDuration ]);
 }
