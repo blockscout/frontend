@@ -1,4 +1,6 @@
 import type * as bens from '@blockscout/bens-types';
+import type * as stats from '@blockscout/stats-types';
+import type * as visualizer from '@blockscout/visualizer-types';
 import { getFeaturePayload } from 'configs/app/features/types';
 import type {
   UserInfo,
@@ -71,7 +73,7 @@ import type {
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import type { SearchRedirectResult, SearchResult, SearchResultFilters, SearchResultItem } from 'types/api/search';
 import type { ShibariumWithdrawalsResponse, ShibariumDepositsResponse } from 'types/api/shibarium';
-import type { Counters, StatsCharts, StatsChart, HomeStats } from 'types/api/stats';
+import type { HomeStats } from 'types/api/stats';
 import type {
   TokenCounters,
   TokenInfo,
@@ -99,7 +101,6 @@ import type { TxStateChanges } from 'types/api/txStateChanges';
 import type { UserOpsResponse, UserOp, UserOpsFilters, UserOpsAccount } from 'types/api/userOps';
 import type { ValidatorsCountersResponse, ValidatorsFilters, ValidatorsResponse, ValidatorsSorting } from 'types/api/validators';
 import type { VerifiedContractsSorting } from 'types/api/verifiedContracts';
-import type { VisualizedContract } from 'types/api/visualization';
 import type { WithdrawalsResponse, WithdrawalsCounters } from 'types/api/withdrawals';
 import type {
   ZkEvmL2DepositsResponse,
@@ -931,9 +932,9 @@ Q extends 'homepage_zkevm_l2_batches' ? { items: Array<ZkEvmL2TxnBatchesItem> } 
 Q extends 'homepage_indexing_status' ? IndexingStatus :
 Q extends 'homepage_zkevm_latest_batch' ? number :
 Q extends 'homepage_zksync_latest_batch' ? number :
-Q extends 'stats_counters' ? Counters :
-Q extends 'stats_lines' ? StatsCharts :
-Q extends 'stats_line' ? StatsChart :
+Q extends 'stats_counters' ? stats.Counters :
+Q extends 'stats_lines' ? stats.LineCharts :
+Q extends 'stats_line' ? stats.LineChart :
 Q extends 'blocks' ? BlocksResponse :
 Q extends 'block' ? Block :
 Q extends 'block_txs' ? BlockTransactionsResponse :
@@ -986,7 +987,7 @@ Q extends 'contract' ? SmartContract :
 Q extends 'contract_solidityscan_report' ? SolidityscanReport :
 Q extends 'verified_contracts' ? VerifiedContractsResponse :
 Q extends 'verified_contracts_counters' ? VerifiedContractsCounters :
-Q extends 'visualize_sol2uml' ? VisualizedContract :
+Q extends 'visualize_sol2uml' ? visualizer.VisualizeResponse :
 Q extends 'contract_verification_config' ? SmartContractVerificationConfig :
 Q extends 'withdrawals' ? WithdrawalsResponse :
 Q extends 'withdrawals_counters' ? WithdrawalsCounters :

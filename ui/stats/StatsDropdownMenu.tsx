@@ -1,6 +1,7 @@
-import { Box, Button, Menu, MenuButton, MenuItemOption, MenuList, MenuOptionGroup, chakra } from '@chakra-ui/react';
+import { Box, Button, MenuButton, MenuItemOption, MenuList, MenuOptionGroup, chakra } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
+import Menu from 'ui/shared/chakra/Menu';
 import IconSvg from 'ui/shared/IconSvg';
 
 type Props<T extends string> = {

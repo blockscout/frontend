@@ -142,6 +142,7 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
             tailLength={ tailLength }
           />
         );
+      case 'tail':
       case 'none':
         return <chakra.span as={ asProp }>{ text }</chakra.span>;
     }
@@ -153,6 +154,7 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
       isLoaded={ !isLoading }
       overflow="hidden"
       whiteSpace="nowrap"
+      textOverflow={ truncation === 'tail' ? 'ellipsis' : undefined }
     >
       { children }
     </Skeleton>

@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import _findIndex from 'lodash/findIndex';
 
 import type { NovesNft, NovesResponseData, NovesSentReceived, NovesToken } from 'types/api/noves';
 
@@ -27,7 +27,7 @@ export function generateFlowViewData(data: NovesResponseData): Array<NovesFlowVi
 
   const txItems = [ ...sent, ...received ];
 
-  const paidGasIndex = _.findIndex(txItems, (item) => item.action === 'paidGas');
+  const paidGasIndex = _findIndex(txItems, (item) => item.action === 'paidGas');
   if (paidGasIndex >= 0) {
     const element = txItems.splice(paidGasIndex, 1)[0];
     element.to.name = 'Validators';
