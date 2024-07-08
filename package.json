@@ -75,7 +75,7 @@
     "focus-visible": "^5.2.0",
     "framer-motion": "^6.5.1",
     "getit-sdk": "^1.0.4",
-    "gradient-avatar": "^1.0.2",
+    "gradient-avatar": "git+https://github.com/blockscout/gradient-avatar.git",
     "graphiql": "^2.2.0",
     "graphql": "^16.8.1",
     "graphql-ws": "^5.11.3",

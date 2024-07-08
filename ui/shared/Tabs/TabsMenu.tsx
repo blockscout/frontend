@@ -1,6 +1,6 @@
 import type {
   ButtonProps } from '@chakra-ui/react';
-import { Popover,
+import {
   PopoverTrigger,
   PopoverContent,
   PopoverBody,
@@ -11,6 +11,8 @@ import type { StyleProps } from '@chakra-ui/styled-system';
 import React from 'react';
 
 import type { MenuButton, TabItem } from './types';
+
+import Popover from 'ui/shared/chakra/Popover';
 
 import TabCounter from './TabCounter';
 import { menuButton } from './utils';

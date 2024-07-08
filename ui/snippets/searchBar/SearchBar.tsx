@@ -1,7 +1,6 @@
 import {
   Box,
   Portal,
-  Popover,
   PopoverTrigger,
   PopoverContent,
   PopoverBody,
@@ -20,6 +19,7 @@ import { route } from 'nextjs-routes';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';
 import { getRecentSearchKeywords, saveToRecentKeywords } from 'lib/recentSearchKeywords';
+import Popover from 'ui/shared/chakra/Popover';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 
 import SearchBarBackdrop from './SearchBarBackdrop';
@@ -123,7 +123,7 @@ const SearchBar = ({ isHomepage }: Props) => {
         autoFocus={ false }
         onClose={ onClose }
         placement="bottom-start"
-        offset={ isMobile && !isHomepage ? [ 12, -4 ] : undefined }
+        offset={ isMobile && !isHomepage ? [ 12, -4 ] : [ 0, 8 ] }
         isLazy
       >
         <PopoverTrigger>

@@ -1,6 +1,5 @@
 import type { PopoverContentProps } from '@chakra-ui/react';
 import {
-  Popover,
   PopoverTrigger,
   PopoverContent,
   PopoverBody,
@@ -8,6 +7,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
+import Popover from 'ui/shared/chakra/Popover';
 import FilterButton from 'ui/shared/filters/FilterButton';
 
 interface Props {

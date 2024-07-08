@@ -272,7 +272,7 @@ const AddressPageContent = () => {
         />
       ) }
       <AddressEntity
-        address={{ ...addressQuery.data, hash, name: '', ens_domain_name: '' }}
+        address={{ ...addressQuery.data, hash, name: '', ens_domain_name: '', implementations: null }}
         isLoading={ isLoading }
         fontFamily="heading"
         fontSize="lg"
