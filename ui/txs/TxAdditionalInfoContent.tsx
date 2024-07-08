@@ -9,11 +9,10 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import { currencyUnits } from 'lib/units';
-import CurrencyValue from 'ui/shared/CurrencyValue';
 import BlobEntity from 'ui/shared/entities/blob/BlobEntity';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import TextSeparator from 'ui/shared/TextSeparator';
-import TxFeeStability from 'ui/shared/tx/TxFeeStability';
+import TxFee from 'ui/shared/tx/TxFee';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
 const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
@@ -60,20 +59,7 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
           { (tx.stability_fee !== undefined || tx.fee.value !== null) && (
             <>
               <Text { ...sectionTitleProps }>Transaction fee</Text>
-              { tx.stability_fee ? (
-                <TxFeeStability data={ tx.stability_fee }/>
-              ) : (
-                <Flex>
-                  <CurrencyValue
-                    value={ tx.fee.value }
-                    currency={ config.UI.views.tx.hiddenFields?.fee_currency ? '' : currencyUnits.ether }
-                    exchangeRate={ tx.exchange_rate }
-                    accuracyUsd={ 2 }
-                    flexWrap="wrap"
-                    rowGap={ 0 }
-                  />
-                </Flex>
-              ) }
+              <TxFee tx={ tx } withUsd accuracyUsd={ 2 } rowGap={ 0 }/>
             </>
           ) }
         </Box>

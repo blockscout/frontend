@@ -1,6 +1,7 @@
-import { Box, DarkMode, Popover, PopoverBody, PopoverContent, PopoverTrigger, Portal, useColorModeValue, Flex, PopoverArrow } from '@chakra-ui/react';
+import { Box, DarkMode, PopoverBody, PopoverContent, PopoverTrigger, Portal, useColorModeValue, Flex, PopoverArrow } from '@chakra-ui/react';
 import React from 'react';
 
+import Popover from 'ui/shared/chakra/Popover';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
 import type { ContentProps } from './AddressEntity';
@@ -23,7 +24,7 @@ const AddressEntityContentProxy = (props: ContentProps) => {
   const implementationName = implementations.length === 1 && implementations[0].name ? implementations[0].name : undefined;
 
   return (
-    <Popover trigger="hover" isLazy>
+    <Popover trigger="hover" isLazy gutter={ 8 }>
       <PopoverTrigger>
         <Box display="inline-flex" w="100%">
           <EntityBase.Content
