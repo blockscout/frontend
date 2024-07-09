@@ -18,17 +18,22 @@ import WalletMenuDesktop from 'ui/snippets/walletMenu/WalletMenuDesktop';
 import AppSecurityReport from './AppSecurityReport';
 import ContractListModal from './ContractListModal';
 import MarketplaceAppInfo from './MarketplaceAppInfo';
+import Rating from './Rating/Rating';
+import useRatings from './Rating/useRatings';
 
 type Props = {
+  appId: string;
   data: MarketplaceAppOverview | undefined;
   isLoading: boolean;
   securityReport?: MarketplaceAppSecurityReport;
 }
 
-const MarketplaceAppTopBar = ({ data, isLoading, securityReport }: Props) => {
+const MarketplaceAppTopBar = ({ appId, data, isLoading, securityReport }: Props) => {
   const [ contractListType, setContractListType ] = React.useState<ContractListTypes>();
   const appProps = useAppContext();
   const isMobile = useIsMobile();
+
+  const { ratings, userRatings, rateApp, isSendingRating, isRatingLoading, canRate } = useRatings();
 
   const goBackUrl = React.useMemo(() => {
     if (appProps.referrer && appProps.referrer.includes('/apps') && !appProps.referrer.includes('/apps/')) {
@@ -82,6 +87,16 @@ const MarketplaceAppTopBar = ({ data, isLoading, securityReport }: Props) => {
             source="App page"
           />
         ) }
+        <Rating
+          appId={ appId }
+          rating={ ratings?.[appId]?.rating }
+          recordId={ ratings?.[appId]?.recordId }
+          isRatedByUser={ Boolean(userRatings[appId]) }
+          rate={ rateApp }
+          isSending={ isSendingRating }
+          isLoading={ isRatingLoading }
+          canRate={ canRate }
+        />
         { !isMobile && (
           <Flex flex="1" justifyContent="flex-end">
             { config.features.account.isEnabled && <ProfileMenuDesktop boxSize="32px" fallbackIconSize={ 16 }/> }
