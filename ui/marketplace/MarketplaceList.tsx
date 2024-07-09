@@ -22,11 +22,12 @@ type Props = {
   rateApp: (appId: string, recordId: string, rating: number) => void;
   isSendingRating: boolean;
   isRatingLoading: boolean;
+  canRate: boolean | undefined;
 }
 
 const MarketplaceList = ({
   apps, showAppInfo, favoriteApps, onFavoriteClick, isLoading, selectedCategoryId,
-  onAppClick, showContractList, userRatings, rateApp, isSendingRating, isRatingLoading,
+  onAppClick, showContractList, userRatings, rateApp, isSendingRating, isRatingLoading, canRate,
 }: Props) => {
   const handleInfoClick = useCallback((id: string) => {
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'More button', Info: id, Source: 'Discovery view' });
@@ -71,6 +72,7 @@ const MarketplaceList = ({
           rateApp={ rateApp }
           isSendingRating={ isSendingRating }
           isRatingLoading={ isRatingLoading }
+          canRate={ canRate }
         />
       )) }
     </Grid>

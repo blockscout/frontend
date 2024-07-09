@@ -61,7 +61,7 @@ export default function useMarketplaceApps(
   const apiFetch = useApiFetch();
 
   const { data: securityReports, isPlaceholderData: isSecurityReportsPlaceholderData } = useSecurityReports();
-  const { ratings, userRatings, rateApp, isSendingRating, isRatingLoading } = useRatings();
+  const { ratings, userRatings, rateApp, isSendingRating, isRatingLoading, canRate } = useRatings();
 
   // Set the value only 1 time to avoid unnecessary useQuery calls and re-rendering of all applications
   const [ snapshotFavoriteApps, setSnapshotFavoriteApps ] = React.useState<Array<string> | undefined>();
@@ -124,6 +124,7 @@ export default function useMarketplaceApps(
     rateApp,
     isSendingRating,
     isRatingLoading,
+    canRate,
   }), [
     data,
     displayedApps,
@@ -136,5 +137,6 @@ export default function useMarketplaceApps(
     rateApp,
     isSendingRating,
     isRatingLoading,
+    canRate,
   ]);
 }

@@ -5,6 +5,8 @@ import { useAccount } from 'wagmi';
 import type { UserRatings, AppRatings } from 'types/client/marketplace';
 
 import config from 'configs/app';
+import useApiQuery from 'lib/api/useApiQuery';
+import { ADDRESS_COUNTERS } from 'stubs/address';
 
 const feature = config.features.marketplace;
 const base = (feature.isEnabled && feature.rating) ?
@@ -14,10 +16,21 @@ const base = (feature.isEnabled && feature.rating) ?
 export default function useRatings() {
   const { address } = useAccount();
 
+  const addressCountersQuery = useApiQuery<'address_counters', { status: number }>('address_counters', {
+    pathParams: { hash: address },
+    queryOptions: {
+      enabled: Boolean(address),
+      placeholderData: ADDRESS_COUNTERS,
+      refetchOnMount: false,
+    },
+  });
+
   const [ ratings, setRatings ] = useState<AppRatings>({});
   const [ userRatings, setUserRatings ] = useState<UserRatings>({});
-  const [ isLoading, setIsLoading ] = useState<boolean>(false);
+  const [ isRatingLoading, setIsRatingLoading ] = useState<boolean>(false);
+  const [ isUserRatingLoading, setIsUserRatingLoading ] = useState<boolean>(false);
   const [ isSending, setIsSending ] = useState<boolean>(false);
+  const [ canRate, setCanRate ] = useState<boolean | undefined>(undefined);
 
   const fetchRatings = useCallback(async() => {
     if (!base) {
@@ -37,15 +50,16 @@ export default function useRatings() {
 
   useEffect(() => {
     async function fetch() {
-      setIsLoading(true);
+      setIsRatingLoading(true);
       await fetchRatings();
-      setIsLoading(false);
+      setIsRatingLoading(false);
     }
     fetch();
   }, [ fetchRatings ]);
 
   useEffect(() => {
     async function fetchUserRatings() {
+      setIsUserRatingLoading(true);
       let userRatings = {} as UserRatings;
       if (address && base) {
         const data = await base('users_ratings').select({
@@ -62,9 +76,16 @@ export default function useRatings() {
         }, {});
       }
       setUserRatings(userRatings);
+      setIsUserRatingLoading(false);
     }
     fetchUserRatings();
   }, [ address ]);
+
+  useEffect(() => {
+    const { isPlaceholderData, data } = addressCountersQuery;
+    const canRate = address && !isPlaceholderData && Number(data?.transactions_count) >= 10;
+    setCanRate(canRate);
+  }, [ address, addressCountersQuery ]);
 
   const rateApp = useCallback(async(appId: string, recordId: string | undefined, rating: number) => {
     if (!address || !base || !recordId) {
@@ -92,6 +113,8 @@ export default function useRatings() {
     userRatings,
     rateApp,
     isSendingRating: isSending,
-    isRatingLoading: isLoading,
+    isRatingLoading,
+    isUserRatingLoading,
+    canRate,
   };
 }

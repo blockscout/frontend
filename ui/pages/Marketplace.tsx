@@ -73,6 +73,7 @@ const Marketplace = () => {
     rateApp,
     isSendingRating,
     isRatingLoading,
+    canRate,
   } = useMarketplace();
 
   const isMobile = useIsMobile();
@@ -221,6 +222,7 @@ const Marketplace = () => {
         rateApp={ rateApp }
         isSendingRating={ isSendingRating }
         isRatingLoading={ isRatingLoading }
+        canRate={ canRate }
       />
 
       { (selectedApp && isAppInfoModalOpen) && (
@@ -234,6 +236,7 @@ const Marketplace = () => {
           rateApp={ rateApp }
           isSendingRating={ isSendingRating }
           isRatingLoading={ isRatingLoading }
+          canRate={ canRate }
         />
       ) }
 

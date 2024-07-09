@@ -27,6 +27,7 @@ type Props = {
   rateApp: (appId: string, recordId: string | undefined, rating: number) => void;
   isSendingRating: boolean;
   isRatingLoading: boolean;
+  canRate: boolean | undefined;
 }
 
 const MarketplaceAppModal = ({
@@ -39,6 +40,7 @@ const MarketplaceAppModal = ({
   rateApp,
   isSendingRating,
   isRatingLoading,
+  canRate,
 }: Props) => {
   const {
     id,
@@ -172,7 +174,7 @@ const MarketplaceAppModal = ({
               isSending={ isSendingRating }
               isLoading={ isRatingLoading }
               fullView
-              canRate={ Math.random() > 0.5 }
+              canRate={ canRate }
             />
           </Box>
 

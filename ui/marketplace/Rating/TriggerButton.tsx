@@ -1,6 +1,5 @@
 import { Button, chakra, useColorModeValue, Tooltip } from '@chakra-ui/react';
 import React from 'react';
-import { useAccount } from 'wagmi';
 
 import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
 import IconSvg from 'ui/shared/IconSvg';
@@ -10,11 +9,11 @@ type Props = {
   fullView?: boolean;
   isActive: boolean;
   onClick: () => void;
-  canRate: boolean;
+  canRate: boolean | undefined;
 };
 
-const getTooltipText = (isWalletConnected: boolean, canRate: boolean) => {
-  if (!isWalletConnected) {
+const getTooltipText = (canRate: boolean | undefined) => {
+  if (canRate === undefined) {
     return <>You need a connected wallet to leave your rating.<br/>Link your wallet to Blockscout first</>;
   }
   if (!canRate) {
@@ -29,11 +28,10 @@ const TriggerButton = (
 ) => {
   const textColor = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
   const onFocusCapture = usePreventFocusAfterModalClosing();
-  const { address } = useAccount();
 
   return (
     <Tooltip
-      label={ getTooltipText(Boolean(address), canRate) }
+      label={ getTooltipText(canRate) }
       openDelay={ 100 }
       textAlign="center"
     >
@@ -43,7 +41,7 @@ const TriggerButton = (
         variant="outline"
         border={ 0 }
         p={ 0 }
-        onClick={ canRate && Boolean(address) ? onClick : undefined }
+        onClick={ canRate ? onClick : undefined }
         fontSize={ fullView ? 'md' : 'sm' }
         fontWeight={ fullView ? '400' : '500' }
         lineHeight="21px"

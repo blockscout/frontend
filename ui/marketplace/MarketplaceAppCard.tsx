@@ -24,6 +24,7 @@ interface Props extends MarketplaceAppWithSecurityReport {
   rateApp: (appId: string, recordId: string | undefined, rating: number) => void;
   isSendingRating: boolean;
   isRatingLoading: boolean;
+  canRate: boolean | undefined;
 }
 
 const MarketplaceAppCard = ({
@@ -50,6 +51,7 @@ const MarketplaceAppCard = ({
   rateApp,
   isSendingRating,
   isRatingLoading,
+  canRate,
 }: Props) => {
   const isMobile = useIsMobile();
   const categoriesLabel = categories.join(', ');
@@ -177,7 +179,7 @@ const MarketplaceAppCard = ({
                 rate={ rateApp }
                 isSending={ isSendingRating }
                 isLoading={ isRatingLoading }
-                canRate={ Math.random() > 0.5 }
+                canRate={ canRate }
               />
               <IconButton
                 aria-label="Mark as favorite"

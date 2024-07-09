@@ -14,7 +14,7 @@ type Props = {
   isSending?: boolean;
   isLoading?: boolean;
   fullView?: boolean;
-  canRate: boolean;
+  canRate: boolean | undefined;
 };
 
 const Rating = ({
