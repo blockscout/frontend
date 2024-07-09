@@ -10,7 +10,7 @@ import useApiFetch from 'lib/api/useApiFetch';
 import useFetch from 'lib/hooks/useFetch';
 import { MARKETPLACE_APP } from 'stubs/marketplace';
 
-import useRatings from './useRatings';
+import useRatings from './Rating/useRatings';
 import useSecurityReports from './useSecurityReports';
 import type { SortValue } from './utils';
 

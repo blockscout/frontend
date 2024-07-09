@@ -10,7 +10,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import AppSecurityReport from './AppSecurityReport';
 import MarketplaceAppCardLink from './MarketplaceAppCardLink';
 import MarketplaceAppIntegrationIcon from './MarketplaceAppIntegrationIcon';
-import Rating from './Rating';
+import Rating from './Rating/Rating';
 
 interface Props extends MarketplaceAppWithSecurityReport {
   onInfoClick: (id: string) => void;

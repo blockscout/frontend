@@ -15,7 +15,7 @@ import IconSvg from 'ui/shared/IconSvg';
 
 import AppSecurityReport from './AppSecurityReport';
 import MarketplaceAppModalLink from './MarketplaceAppModalLink';
-import Rating from './Rating';
+import Rating from './Rating/Rating';
 
 type Props = {
   onClose: () => void;
