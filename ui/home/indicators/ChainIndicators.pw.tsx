@@ -22,6 +22,9 @@ test.describe('daily txs chart', () => {
     await mockApiResponse('stats_charts_txs', dailyTxsMock.base);
     await mockAssetResponse(statsMock.withSecondaryCoin.coin_image as string, './playwright/mocks/image_svg.svg');
     component = await render(<ChainIndicators/>);
+    await page.waitForFunction(() => {
+      return document.querySelector('path[data-name="gradient-chart-area"]')?.getAttribute('opacity') === '1';
+    });
     await page.hover('.ChartOverlay', { position: { x: 50, y: 50 } });
   });
 

@@ -52,7 +52,7 @@ const ChainIndicatorItem = ({ id, title, value, valueDiff, icon, isSelected, onC
     return (
       <Skeleton isLoaded={ !stats.isPlaceholderData } ml={ 1 } display="flex" alignItems="center" color={ diffColor }>
         <span>{ diff >= 0 ? '+' : '-' }</span>
-        <Text color={ diffColor } fontWeight={ 600 }>{ diff }%</Text>
+        <Text color={ diffColor } fontWeight={ 600 }>{ Math.abs(diff) }%</Text>
       </Skeleton>
     );
   })();
