@@ -16,7 +16,7 @@ interface Props {
 
 const ItemTuple = ({ abiParameter, data, mode, level }: Props) => {
   return (
-    <p>
+    <div>
       <p>
         <span>{ printRowOffset(level) }</span>
         <chakra.span fontWeight={ 500 }>{ abiParameter.name || abiParameter.internalType }</chakra.span>
@@ -36,7 +36,7 @@ const ItemTuple = ({ abiParameter, data, mode, level }: Props) => {
         );
       }) }
       <p>{ printRowOffset(level) }{ '}' }</p>
-    </p>
+    </div>
   );
 };
 
