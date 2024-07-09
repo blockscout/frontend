@@ -164,6 +164,7 @@ const MarketplaceAppModal = ({
             gridColumn={{ base: '1 / 3', md: 2 }}
             marginTop={{ base: 6, md: 3 }}
             py={{ base: 0, md: 1.5 }}
+            width="fit-content"
           >
             <Rating
               appId={ id }

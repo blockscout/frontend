@@ -24,7 +24,12 @@ const Rating = ({
   const { isOpen, onToggle, onClose } = useDisclosure();
 
   return (
-    <Skeleton display="flex" alignItems="center" isLoaded={ !isLoading } minW={ isLoading ? '40px' : 'auto' }>
+    <Skeleton
+      display="flex"
+      alignItems="center"
+      isLoaded={ !isLoading }
+      w={ (isLoading && !fullView) ? '40px' : 'auto' }
+    >
       { fullView && (
         <>
           <Stars filledIndex={ (rating || 0) - 1 }/>

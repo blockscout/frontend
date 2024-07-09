@@ -58,7 +58,9 @@ const TriggerButton = (
           />
         ) }
         { (rating && !fullView) ? (
-          <chakra.span color={ textColor } transition="inherit">{ rating }</chakra.span>
+          <chakra.span color={ textColor } transition="inherit">
+            { rating }
+          </chakra.span>
         ) : (
           'Rate it!'
         ) }
