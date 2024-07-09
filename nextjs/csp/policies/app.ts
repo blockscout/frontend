@@ -65,6 +65,9 @@ export function app(): CspDev.DirectiveDescriptor {
 
       // github (spec for api-docs page)
       'raw.githubusercontent.com',
+
+      // airtable (for dapps ratings)
+      'api.airtable.com',
     ].filter(Boolean),
 
     'script-src': [

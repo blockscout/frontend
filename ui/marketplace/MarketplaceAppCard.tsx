@@ -1,4 +1,4 @@
-import { Box, IconButton, Image, Link, LinkBox, Skeleton, useColorModeValue, chakra, Flex } from '@chakra-ui/react';
+import { IconButton, Image, Link, LinkBox, Skeleton, useColorModeValue, chakra, Flex } from '@chakra-ui/react';
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 
@@ -10,6 +10,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import AppSecurityReport from './AppSecurityReport';
 import MarketplaceAppCardLink from './MarketplaceAppCardLink';
 import MarketplaceAppIntegrationIcon from './MarketplaceAppIntegrationIcon';
+import Rating from './Rating';
 
 interface Props extends MarketplaceAppWithSecurityReport {
   onInfoClick: (id: string) => void;
@@ -19,6 +20,10 @@ interface Props extends MarketplaceAppWithSecurityReport {
   onAppClick: (event: MouseEvent, id: string) => void;
   className?: string;
   showContractList: (id: string, type: ContractListTypes) => void;
+  isRatedByUser: boolean;
+  rateApp: (appId: string, recordId: string | undefined, rating: number) => void;
+  isSendingRating: boolean;
+  isRatingLoading: boolean;
 }
 
 const MarketplaceAppCard = ({
@@ -39,9 +44,17 @@ const MarketplaceAppCard = ({
   securityReport,
   className,
   showContractList,
+  rating,
+  ratingRecordId,
+  isRatedByUser,
+  rateApp,
+  isSendingRating,
+  isRatingLoading,
 }: Props) => {
   const isMobile = useIsMobile();
   const categoriesLabel = categories.join(', ');
+
+  const heartFilledColor = useColorModeValue('blue.700', 'gray.400');
 
   const handleInfoClick = useCallback((event: MouseEvent) => {
     event.preventDefault();
@@ -141,8 +154,7 @@ const MarketplaceAppCard = ({
         </Skeleton>
 
         { !isLoading && (
-          <Box
-            display="flex"
+          <Flex
             alignItems="center"
             justifyContent="space-between"
             marginTop="auto"
@@ -156,20 +168,34 @@ const MarketplaceAppCard = ({
             >
               More info
             </Link>
-            <IconButton
-              aria-label="Mark as favorite"
-              title="Mark as favorite"
-              variant="ghost"
-              colorScheme="gray"
-              w={{ base: 6, md: '30px' }}
-              h={{ base: 6, md: '30px' }}
-              onClick={ handleFavoriteClick }
-              icon={ isFavorite ?
-                <IconSvg name="star_filled" w={ 5 } h={ 5 } color="yellow.400"/> :
-                <IconSvg name="star_outline" w={ 5 } h={ 5 } color="gray.400"/>
-              }
-            />
-          </Box>
+            <Flex alignItems="center" gap={ 3 }>
+              <Rating
+                appId={ id }
+                rating={ rating }
+                recordId={ ratingRecordId }
+                isRatedByUser={ isRatedByUser }
+                rate={ rateApp }
+                isSending={ isSendingRating }
+                isLoading={ isRatingLoading }
+              />
+              <IconButton
+                aria-label="Mark as favorite"
+                title="Mark as favorite"
+                variant="ghost"
+                colorScheme="gray"
+                w={{ base: 6, md: '30px' }}
+                h={{ base: 6, md: '30px' }}
+                onClick={ handleFavoriteClick }
+                icon={ (
+                  <IconSvg
+                    name={ isFavorite ? 'heart_filled' : 'heart_outline' }
+                    color={ isFavorite ? heartFilledColor : 'gray.400' }
+                    boxSize={ 5 }
+                  />
+                ) }
+              />
+            </Flex>
+          </Flex>
         ) }
 
         { securityReport && (

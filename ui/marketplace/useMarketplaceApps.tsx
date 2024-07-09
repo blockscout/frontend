@@ -10,6 +10,7 @@ import useApiFetch from 'lib/api/useApiFetch';
 import useFetch from 'lib/hooks/useFetch';
 import { MARKETPLACE_APP } from 'stubs/marketplace';
 
+import useRatings from './useRatings';
 import useSecurityReports from './useSecurityReports';
 import type { SortValue } from './utils';
 
@@ -60,6 +61,7 @@ export default function useMarketplaceApps(
   const apiFetch = useApiFetch();
 
   const { data: securityReports, isPlaceholderData: isSecurityReportsPlaceholderData } = useSecurityReports();
+  const { ratings, userRatings, rateApp, isSendingRating, isRatingLoading } = useRatings();
 
   // Set the value only 1 time to avoid unnecessary useQuery calls and re-rendering of all applications
   const [ snapshotFavoriteApps, setSnapshotFavoriteApps ] = React.useState<Array<string> | undefined>();
@@ -91,12 +93,17 @@ export default function useMarketplaceApps(
 
   const [ sorting, setSorting ] = React.useState<SortValue>();
 
-  const appsWithSecurityReports = React.useMemo(() =>
-    data?.map((app) => ({ ...app, securityReport: securityReports?.[app.id] })),
-  [ data, securityReports ]);
+  const appsWithSecurityReportsAndRating = React.useMemo(() =>
+    data?.map((app) => ({
+      ...app,
+      securityReport: securityReports?.[app.id],
+      rating: ratings?.[app.id]?.rating,
+      ratingRecordId: ratings?.[app.id]?.recordId,
+    })),
+  [ data, securityReports, ratings ]);
 
   const displayedApps = React.useMemo(() => {
-    return appsWithSecurityReports
+    return appsWithSecurityReportsAndRating
       ?.filter(app => isAppNameMatches(filter, app) && isAppCategoryMatches(selectedCategoryId, app, favoriteApps))
       .sort((a, b) => {
         if (sorting === 'security_score') {
@@ -104,7 +111,7 @@ export default function useMarketplaceApps(
         }
         return 0;
       }) || [];
-  }, [ selectedCategoryId, appsWithSecurityReports, filter, favoriteApps, sorting ]);
+  }, [ selectedCategoryId, appsWithSecurityReportsAndRating, filter, favoriteApps, sorting ]);
 
   return React.useMemo(() => ({
     data,
@@ -113,6 +120,10 @@ export default function useMarketplaceApps(
     isError,
     isPlaceholderData: isPlaceholderData || isSecurityReportsPlaceholderData,
     setSorting,
+    userRatings,
+    rateApp,
+    isSendingRating,
+    isRatingLoading,
   }), [
     data,
     displayedApps,
@@ -121,5 +132,9 @@ export default function useMarketplaceApps(
     isPlaceholderData,
     isSecurityReportsPlaceholderData,
     setSorting,
+    userRatings,
+    rateApp,
+    isSendingRating,
+    isRatingLoading,
   ]);
 }

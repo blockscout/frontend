@@ -15,6 +15,7 @@ import IconSvg from 'ui/shared/IconSvg';
 
 import AppSecurityReport from './AppSecurityReport';
 import MarketplaceAppModalLink from './MarketplaceAppModalLink';
+import Rating from './Rating';
 
 type Props = {
   onClose: () => void;
@@ -22,6 +23,10 @@ type Props = {
   onFavoriteClick: (id: string, isFavorite: boolean, source: 'App modal') => void;
   data: MarketplaceAppWithSecurityReport;
   showContractList: (id: string, type: ContractListTypes, hasPreviousStep: boolean) => void;
+  isRatedByUser: boolean;
+  rateApp: (appId: string, recordId: string | undefined, rating: number) => void;
+  isSendingRating: boolean;
+  isRatingLoading: boolean;
 }
 
 const MarketplaceAppModal = ({
@@ -30,9 +35,11 @@ const MarketplaceAppModal = ({
   onFavoriteClick,
   data,
   showContractList: showContractListProp,
+  isRatedByUser,
+  rateApp,
+  isSendingRating,
+  isRatingLoading,
 }: Props) => {
-  const starOutlineIconColor = useColorModeValue('gray.600', 'gray.300');
-
   const {
     id,
     title,
@@ -49,6 +56,8 @@ const MarketplaceAppModal = ({
     logoDarkMode,
     categories,
     securityReport,
+    rating,
+    ratingRecordId,
   } = data;
 
   const socialLinks = [
@@ -119,7 +128,7 @@ const MarketplaceAppModal = ({
             w={{ base: '72px', md: '144px' }}
             h={{ base: '72px', md: '144px' }}
             marginRight={{ base: 6, md: 8 }}
-            gridRow={{ base: '1 / 3', md: '1 / 4' }}
+            gridRow={{ base: '1 / 3', md: '1 / 5' }}
           >
             <Image
               src={ logoUrl }
@@ -131,10 +140,10 @@ const MarketplaceAppModal = ({
           <Heading
             as="h2"
             gridColumn={ 2 }
-            fontSize={{ base: '2xl', md: '3xl' }}
+            fontSize={{ base: '2xl', md: '32px' }}
             fontWeight="medium"
-            lineHeight={ 1 }
-            color="blue.600"
+            lineHeight={{ base: 1, md: 10 }}
+            mb={{ md: 2 }}
           >
             { title }
           </Heading>
@@ -142,16 +151,33 @@ const MarketplaceAppModal = ({
           <Text
             variant="secondary"
             gridColumn={ 2 }
-            fontSize="sm"
+            fontSize={{ base: 'sm', md: 'md' }}
             fontWeight="normal"
-            lineHeight={ 1 }
+            lineHeight={{ base: 1, md: 6 }}
           >
             By{ nbsp }{ author }
           </Text>
 
           <Box
             gridColumn={{ base: '1 / 3', md: 2 }}
-            marginTop={{ base: 6, md: 0 }}
+            marginTop={{ base: 6, md: 3 }}
+            py={{ base: 0, md: 1.5 }}
+          >
+            <Rating
+              appId={ id }
+              rating={ rating }
+              recordId={ ratingRecordId }
+              isRatedByUser={ isRatedByUser }
+              rate={ rateApp }
+              isSending={ isSendingRating }
+              isLoading={ isRatingLoading }
+              fullView
+            />
+          </Box>
+
+          <Box
+            gridColumn={{ base: '1 / 3', md: 2 }}
+            marginTop={{ base: 6, md: 3 }}
           >
             <Flex flexWrap="wrap" gap={ 6 }>
               <Flex width={{ base: '100%', md: 'auto' }}>
@@ -170,9 +196,13 @@ const MarketplaceAppModal = ({
                   w={ 9 }
                   h={ 8 }
                   onClick={ handleFavoriteClick }
-                  icon={ isFavorite ?
-                    <IconSvg name="star_filled" w={ 5 } h={ 5 } color="yellow.400"/> :
-                    <IconSvg name="star_outline" w={ 5 } h={ 5 } color={ starOutlineIconColor }/> }
+                  icon={ (
+                    <IconSvg
+                      name={ isFavorite ? 'heart_filled' : 'heart_outline' }
+                      color={ useColorModeValue('blue.700', 'gray.400') }
+                      boxSize={ 5 }
+                    />
+                  ) }
                 />
               </Flex>
             </Flex>

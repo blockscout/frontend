@@ -2,7 +2,7 @@ import { Grid } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 import type { MouseEvent } from 'react';
 
-import type { MarketplaceAppWithSecurityReport, ContractListTypes } from 'types/client/marketplace';
+import type { MarketplaceAppWithSecurityReport, ContractListTypes, UserRatings } from 'types/client/marketplace';
 
 import * as mixpanel from 'lib/mixpanel/index';
 
@@ -18,9 +18,16 @@ type Props = {
   selectedCategoryId?: string;
   onAppClick: (event: MouseEvent, id: string) => void;
   showContractList: (id: string, type: ContractListTypes) => void;
+  userRatings: UserRatings;
+  rateApp: (appId: string, recordId: string, rating: number) => void;
+  isSendingRating: boolean;
+  isRatingLoading: boolean;
 }
 
-const MarketplaceList = ({ apps, showAppInfo, favoriteApps, onFavoriteClick, isLoading, selectedCategoryId, onAppClick, showContractList }: Props) => {
+const MarketplaceList = ({
+  apps, showAppInfo, favoriteApps, onFavoriteClick, isLoading, selectedCategoryId,
+  onAppClick, showContractList, userRatings, rateApp, isSendingRating, isRatingLoading,
+}: Props) => {
   const handleInfoClick = useCallback((id: string) => {
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'More button', Info: id, Source: 'Discovery view' });
     showAppInfo(id);
@@ -58,6 +65,12 @@ const MarketplaceList = ({ apps, showAppInfo, favoriteApps, onFavoriteClick, isL
           onAppClick={ onAppClick }
           securityReport={ app.securityReport }
           showContractList={ showContractList }
+          rating={ app.rating }
+          ratingRecordId={ app.ratingRecordId }
+          isRatedByUser={ Boolean(userRatings[app.id]) }
+          rateApp={ rateApp }
+          isSendingRating={ isSendingRating }
+          isRatingLoading={ isRatingLoading }
         />
       )) }
     </Grid>

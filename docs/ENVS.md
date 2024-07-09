@@ -472,6 +472,8 @@ This feature is **always enabled**, but you can configure its behavior by passin
 | NEXT_PUBLIC_MARKETPLACE_FEATURED_APP | `string` | ID of the featured application to be displayed on the banner on the Marketplace page | - | - | `uniswap` | v1.29.0+ |
 | NEXT_PUBLIC_MARKETPLACE_BANNER_CONTENT_URL | `string` | URL of the banner HTML content | - | - | `https://example.com/banner` | v1.29.0+ |
 | NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL | `string` | URL of the page the banner leads to | - | - | `https://example.com` | v1.29.0+ |
+| NEXT_PUBLIC_MARKETPLACE_RATING_AIRTABLE_API_KEY | `string` | Airtable API key | - | - | - | v1.33.0+ |
+| NEXT_PUBLIC_MARKETPLACE_RATING_AIRTABLE_BASE_ID | `string` | Airtable base ID with dapp ratings | - | - | - | v1.33.0+ |
 
 #### Marketplace app configuration properties
 
