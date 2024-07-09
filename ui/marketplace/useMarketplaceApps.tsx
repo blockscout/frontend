@@ -109,6 +109,9 @@ export default function useMarketplaceApps(
         if (sorting === 'security_score') {
           return (b.securityReport?.overallInfo.securityScore || 0) - (a.securityReport?.overallInfo.securityScore || 0);
         }
+        if (sorting === 'rating') {
+          return (b.rating || 0) - (a.rating || 0);
+        }
         return 0;
       }) || [];
   }, [ selectedCategoryId, appsWithSecurityReportsAndRating, filter, favoriteApps, sorting ]);
