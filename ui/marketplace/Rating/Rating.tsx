@@ -14,9 +14,13 @@ type Props = {
   isSending?: boolean;
   isLoading?: boolean;
   fullView?: boolean;
+  canRate: boolean;
 };
 
-const Rating = ({ appId, rating, recordId, isRatedByUser, rate, isSending, isLoading, fullView }: Props) => {
+const Rating = ({
+  appId, rating, recordId, isRatedByUser, rate,
+  isSending, isLoading, fullView, canRate,
+}: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
 
   return (
@@ -34,6 +38,7 @@ const Rating = ({ appId, rating, recordId, isRatedByUser, rate, isSending, isLoa
             fullView={ fullView }
             isActive={ isOpen }
             onClick={ onToggle }
+            canRate={ canRate }
           />
         </PopoverTrigger>
         <PopoverContent w="274px">

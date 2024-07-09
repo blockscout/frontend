@@ -177,6 +177,7 @@ const MarketplaceAppCard = ({
                 rate={ rateApp }
                 isSending={ isSendingRating }
                 isLoading={ isRatingLoading }
+                canRate={ Math.random() > 0.5 }
               />
               <IconButton
                 aria-label="Mark as favorite"

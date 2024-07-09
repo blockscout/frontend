@@ -172,6 +172,7 @@ const MarketplaceAppModal = ({
               isSending={ isSendingRating }
               isLoading={ isRatingLoading }
               fullView
+              canRate={ Math.random() > 0.5 }
             />
           </Box>
 
