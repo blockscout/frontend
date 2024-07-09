@@ -35,7 +35,7 @@ const Hint = ({ label, className, tooltipProps, isLoading }: Props) => {
       <IconButton
         colorScheme="none"
         aria-label="hint"
-        icon={ <IconSvg name="info" w="100%" h="100%"/> }
+        icon={ <IconSvg name="info" w="100%" h="100%" color="icon_info" _hover={{ color: 'link_hovered' }}/> }
         boxSize={ 5 }
         variant="simple"
         display="inline-block"
