@@ -6,6 +6,7 @@ import type { UserRatings, AppRatings } from 'types/client/marketplace';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
+import useToast from 'lib/hooks/useToast';
 import { ADDRESS_COUNTERS } from 'stubs/address';
 
 const feature = config.features.marketplace;
@@ -15,6 +16,7 @@ const base = (feature.isEnabled && feature.rating) ?
 
 export default function useRatings() {
   const { address } = useAccount();
+  const toast = useToast();
 
   const addressCountersQuery = useApiQuery<'address_counters', { status: number }>('address_counters', {
     pathParams: { hash: address },
@@ -103,10 +105,15 @@ export default function useRatings() {
         },
       ]);
       setUserRatings({ ...userRatings, [appId]: rating });
+      toast({
+        status: 'success',
+        title: 'Awesome! Thank you 💜',
+        description: 'Your rating improves the service',
+      });
       fetchRatings();
     } catch (error) {}
     setIsSending(false);
-  }, [ address, userRatings, fetchRatings ]);
+  }, [ address, userRatings, fetchRatings, toast ]);
 
   return {
     ratings,
