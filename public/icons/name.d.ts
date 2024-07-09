@@ -5,7 +5,7 @@
 	| "ABI"
 	| "API"
 	| "apps_list"
-	| "apps_xs"
+	| "apps_slim"
 	| "apps"
 	| "arrows/down-right"
 	| "arrows/east-mini"
