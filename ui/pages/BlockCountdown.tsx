@@ -2,6 +2,8 @@ import { Box, Center, Flex, Heading, Image, useColorModeValue, Grid, Button } fr
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import { route } from 'nextjs-routes';
+
 import useApiQuery from 'lib/api/useApiQuery';
 import dayjs from 'lib/date/dayjs';
 import downloadBlob from 'lib/downloadBlob';
@@ -39,8 +41,8 @@ const BlockCountdown = () => {
   }, [ data?.result?.EstimateTimeInSec, height ]);
 
   const handleTimerFinish = React.useCallback(() => {
-    router.push({ pathname: '/block/[height_or_hash]', query: { height_or_hash: height } }, undefined, { shallow: true });
-  }, [ height, router ]);
+    window.location.assign(route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: height } }));
+  }, [ height ]);
 
   React.useEffect(() => {
     if (!isError && !isPending && !data.result) {
