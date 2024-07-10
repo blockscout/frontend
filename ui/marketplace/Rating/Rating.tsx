@@ -56,6 +56,7 @@ const Rating = ({
               isRatedByUser={ isRatedByUser }
               rate={ rate }
               isSending={ isSending }
+              canRate={ canRate }
             />
           </PopoverBody>
         </PopoverContent>
