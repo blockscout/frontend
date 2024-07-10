@@ -110,5 +110,5 @@ export interface BlockCountdownResponse {
     CurrentBlock: string;
     EstimateTimeInSec: string;
     RemainingBlock: string;
-  };
+  } | null;
 }

@@ -7,6 +7,7 @@ import dayjs from 'lib/date/dayjs';
 import downloadBlob from 'lib/downloadBlob';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import BlockCountdownTimeLeft from 'ui/blockCountdown/BlockCountdownTimeLeft';
 import createGoogleCalendarLink from 'ui/blockCountdown/createGoogleCalendarLink';
 import createIcsFileBlob from 'ui/blockCountdown/createIcsFileBlob';
 import ContentLoader from 'ui/shared/ContentLoader';
@@ -30,34 +31,36 @@ const BlockCountdown = () => {
   });
 
   const handleAddToAppleCalClick = React.useCallback(() => {
-    const fileBlob = createIcsFileBlob({ blockHeight: height, date: dayjs().add(Number(data?.result.EstimateTimeInSec), 's') });
+    if (!data?.result?.EstimateTimeInSec) {
+      return;
+    }
+    const fileBlob = createIcsFileBlob({ blockHeight: height, date: dayjs().add(Number(data.result.EstimateTimeInSec), 's') });
     downloadBlob(fileBlob, `Block #${ height } creation event.ics`);
-  }, [ data?.result.EstimateTimeInSec, height ]);
-
-  if (isFetching) {
-    return <Center h="100%"><ContentLoader/></Center>;
-  }
+  }, [ data?.result?.EstimateTimeInSec, height ]);
 
   if (isError) {
     throwOnResourceLoadError({ isError, error, resource: 'block_countdown' });
   }
 
+  if (isFetching || !data?.result) {
+    return <Center h="100%"><ContentLoader/></Center>;
+  }
+
   return (
     <Center h="100%" alignItems={{ base: 'flex-start', lg: 'center' }}>
-      <Flex flexDir="column">
-        <Flex columnGap={ 8 } alignItems="flex-start" justifyContent={{ base: 'space-between', lg: undefined }}>
-          <div>
+      <Flex flexDir="column" w="fit-content" maxW={{ base: '100%', lg: '700px', xl: '1000px' }}>
+        <Flex columnGap={ 8 } alignItems="flex-start" justifyContent={{ base: 'space-between', lg: undefined }} w="100%">
+          <Box maxW={{ base: 'calc(100% - 65px - 32px)', lg: 'calc(100% - 125px - 32px)' }}>
             <Heading
               fontSize={{ base: '18px', lg: '32px' }}
               lineHeight={{ base: '24px', lg: '40px' }}
-              h="40px"
-              maxW={{ base: '100%', lg: '500px' }}
+              h={{ base: '24px', lg: '40px' }}
             >
               <TruncatedValue value={ `Block #${ height }` } w="100%"/>
             </Heading>
             <Box mt={ 2 } color="text_secondary">
               <Box fontWeight={ 600 }>Estimated target date</Box>
-              <Box>{ dayjs().add(Number(data?.result.EstimateTimeInSec), 's').format('llll') }</Box>
+              <Box>{ dayjs().add(Number(data.result.EstimateTimeInSec), 's').format('llll') }</Box>
             </Box>
             <Flex columnGap={ 2 } mt={ 3 }>
               <LinkExternal
@@ -66,7 +69,7 @@ const BlockCountdown = () => {
                 lineHeight="20px"
                 px={ 2 }
                 display="inline-flex"
-                href={ createGoogleCalendarLink({ blockHeight: height, timeFromNow: Number(data?.result.EstimateTimeInSec) }) }
+                href={ createGoogleCalendarLink({ blockHeight: height, timeFromNow: Number(data.result.EstimateTimeInSec) }) }
               >
                 <Image src="/static/google_calendar.svg" alt="Google calendar logo" boxSize={ 5 } mr={ 2 }/>
                 <span>Google</span>
@@ -84,12 +87,13 @@ const BlockCountdown = () => {
                 <span>Apple</span>
               </Button>
             </Flex>
-          </div>
-          <IconSvg name="block_slim" w={{ base: '65px', lg: '125px' }} h={{ base: '75px', lg: '140px' }} color={ iconColor }/>
+          </Box>
+          <IconSvg name="block_slim" w={{ base: '65px', lg: '125px' }} h={{ base: '75px', lg: '140px' }} color={ iconColor } flexShrink={ 0 }/>
         </Flex>
+        { data.result.EstimateTimeInSec && <BlockCountdownTimeLeft value={ Math.ceil(Number(data.result.EstimateTimeInSec)) }/> }
         <Grid gridTemplateColumns="repeat(2, calc(50% - 4px))" columnGap={ 2 } mt={ 2 }>
-          <StatsWidget label="Remaining blocks" value={ data?.result.RemainingBlock } icon="apps_slim"/>
-          <StatsWidget label="Current block" value={ data?.result.CurrentBlock } icon="block_slim"/>
+          <StatsWidget label="Remaining blocks" value={ data.result.RemainingBlock } icon="apps_slim"/>
+          <StatsWidget label="Current block" value={ data.result.CurrentBlock } icon="block_slim"/>
         </Grid>
       </Flex>
     </Center>
