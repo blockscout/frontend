@@ -8,7 +8,7 @@ interface Props {
   value: string;
 }
 
-const BlockCountdownTimeLeftItem = ({ label, value }: Props) => {
+const BlockCountdownTimerItem = ({ label, value }: Props) => {
   return (
     <Box
       minW={{ base: '70px', lg: '100px' }}
@@ -29,4 +29,4 @@ const BlockCountdownTimeLeftItem = ({ label, value }: Props) => {
   );
 };
 
-export default React.memo(BlockCountdownTimeLeftItem);
+export default React.memo(BlockCountdownTimerItem);

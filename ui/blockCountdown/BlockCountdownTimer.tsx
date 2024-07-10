@@ -3,14 +3,15 @@ import React from 'react';
 
 import { SECOND } from 'lib/consts';
 
-import BlockCountdownTimeLeftItem from './BlockCountdownTimeLeftItem';
+import BlockCountdownTimerItem from './BlockCountdownTimerItem';
 import splitSecondsInPeriods from './splitSecondsInPeriods';
 
 interface Props {
   value: number;
+  onFinish: () => void;
 }
 
-const BlockCountdownTimeLeft = ({ value: initialValue }: Props) => {
+const BlockCountdownTimer = ({ value: initialValue, onFinish }: Props) => {
 
   const [ value, setValue ] = React.useState(initialValue);
 
@@ -23,6 +24,7 @@ const BlockCountdownTimeLeft = ({ value: initialValue }: Props) => {
           return prev - 1;
         }
 
+        onFinish();
         return 0;
       });
     }, SECOND);
@@ -30,7 +32,7 @@ const BlockCountdownTimeLeft = ({ value: initialValue }: Props) => {
     return () => {
       window.clearInterval(intervalId);
     };
-  }, [ initialValue ]);
+  }, [ initialValue, onFinish ]);
 
   const periods = splitSecondsInPeriods(value);
 
@@ -42,12 +44,12 @@ const BlockCountdownTimeLeft = ({ value: initialValue }: Props) => {
       borderRadius="base"
       divider={ <StackDivider borderColor="divider"/> }
     >
-      <BlockCountdownTimeLeftItem label="Days" value={ periods.days }/>
-      <BlockCountdownTimeLeftItem label="Hours" value={ periods.hours }/>
-      <BlockCountdownTimeLeftItem label="Minutes" value={ periods.minutes }/>
-      <BlockCountdownTimeLeftItem label="Seconds" value={ periods.seconds }/>
+      <BlockCountdownTimerItem label="Days" value={ periods.days }/>
+      <BlockCountdownTimerItem label="Hours" value={ periods.hours }/>
+      <BlockCountdownTimerItem label="Minutes" value={ periods.minutes }/>
+      <BlockCountdownTimerItem label="Seconds" value={ periods.seconds }/>
     </HStack>
   );
 };
 
-export default React.memo(BlockCountdownTimeLeft);
+export default React.memo(BlockCountdownTimer);
