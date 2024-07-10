@@ -1,11 +1,8 @@
 import { Button, chakra, useColorModeValue, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
 import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
 import IconSvg from 'ui/shared/IconSvg';
-
-import { getTooltipText } from './utils';
 
 type Props = {
   rating?: number;
@@ -15,13 +12,22 @@ type Props = {
   canRate: boolean | undefined;
 };
 
+const getTooltipText = (canRate: boolean | undefined) => {
+  if (canRate === undefined) {
+    return <>You need a connected wallet to leave your rating.<br/>Link your wallet to Blockscout first</>;
+  }
+  if (!canRate) {
+    return <>New wallet users are not eligible to leave ratings.<br/>Please connect a different wallet</>;
+  }
+  return <>Ratings are derived from reviews by trusted users.<br/>Click here to rate!</>;
+};
+
 const TriggerButton = (
   { rating, fullView, isActive, onClick, canRate }: Props,
   ref: React.ForwardedRef<HTMLButtonElement>,
 ) => {
   const textColor = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
   const onFocusCapture = usePreventFocusAfterModalClosing();
-  const isMobile = useIsMobile();
 
   return (
     <Tooltip
@@ -36,7 +42,7 @@ const TriggerButton = (
         variant="outline"
         border={ 0 }
         p={ 0 }
-        onClick={ (canRate || isMobile) ? onClick : undefined }
+        onClick={ canRate ? onClick : undefined }
         fontSize={ fullView ? 'md' : 'sm' }
         fontWeight={ fullView ? '400' : '500' }
         lineHeight="21px"

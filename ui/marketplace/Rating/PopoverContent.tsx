@@ -1,11 +1,9 @@
 import { Text, Flex, Spinner } from '@chakra-ui/react';
 import React from 'react';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
 import IconSvg from 'ui/shared/IconSvg';
 
 import Stars from './Stars';
-import { getTooltipText } from './utils';
 
 const ratingDescriptions = [ 'Terrible', 'Poor', 'Average', 'Very good', 'Outstanding' ];
 
@@ -15,12 +13,9 @@ type Props = {
   isRatedByUser?: boolean;
   rate: (appId: string, recordId: string | undefined, rating: number) => void;
   isSending?: boolean;
-  canRate: boolean | undefined;
 };
 
-const PopoverContent = ({ appId, recordId, isRatedByUser, rate, isSending, canRate }: Props) => {
-  const isMobile = useIsMobile();
-
+const PopoverContent = ({ appId, recordId, isRatedByUser, rate, isSending }: Props) => {
   const [ hovered, setHovered ] = React.useState(-1);
 
   const handleMouseOverFactory = React.useCallback((index: number) => () => {
@@ -34,14 +29,6 @@ const PopoverContent = ({ appId, recordId, isRatedByUser, rate, isSending, canRa
   const handleRateFactory = React.useCallback((index: number) => () => {
     rate(appId, recordId, index + 1);
   }, [ appId, recordId, rate ]);
-
-  if (isMobile && !canRate) {
-    return (
-      <Text fontSize="md" textAlign="center">
-        { getTooltipText(canRate) }
-      </Text>
-    );
-  }
 
   if (isRatedByUser) {
     return (
