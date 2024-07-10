@@ -72,7 +72,7 @@ const AppSecurityReport = ({
           className={ className }
         />
       </PopoverTrigger>
-      <PopoverContent w={{ base: '100vw', lg: '328px' }}>
+      <PopoverContent w={{ base: 'calc(100vw - 24px)', lg: '328px' }} mx={{ base: 3, lg: 0 }}>
         <PopoverBody px="26px" py="20px" fontSize="sm">
           <Text fontWeight="500" fontSize="xs" mb={ 2 } variant="secondary">Smart contracts info</Text>
           <Flex alignItems="center" justifyContent="space-between" py={ 1.5 }>
