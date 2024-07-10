@@ -20,6 +20,7 @@
 	| "blobs/image"
 	| "blobs/raw"
 	| "blobs/text"
+	| "block_countdown"
 	| "block_slim"
 	| "block"
 	| "brands/safe"

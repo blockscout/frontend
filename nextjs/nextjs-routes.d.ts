@@ -34,6 +34,7 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/blobs/[hash]", { "hash": string }>
     | DynamicRoute<"/block/[height_or_hash]", { "height_or_hash": string }>
     | DynamicRoute<"/block/countdown/[height]", { "height": string }>
+    | StaticRoute<"/block/countdown">
     | StaticRoute<"/blocks">
     | StaticRoute<"/contract-verification">
     | StaticRoute<"/csv-export">
