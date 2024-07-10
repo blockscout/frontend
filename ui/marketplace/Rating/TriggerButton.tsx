@@ -1,6 +1,7 @@
-import { Button, chakra, useColorModeValue, Tooltip } from '@chakra-ui/react';
+import { Button, chakra, useColorModeValue, Tooltip, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
+import useIsMobile from 'lib/hooks/useIsMobile';
 import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -29,12 +30,25 @@ const TriggerButton = (
   const textColor = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
   const onFocusCapture = usePreventFocusAfterModalClosing();
 
+  // have to implement controlled tooltip on mobile because of the issue - https://github.com/chakra-ui/chakra-ui/issues/7107
+  const { isOpen, onToggle, onClose } = useDisclosure();
+  const isMobile = useIsMobile();
+
+  const handleClick = React.useCallback(() => {
+    if (canRate) {
+      onClick();
+    } else if (isMobile) {
+      onToggle();
+    }
+  }, [ canRate, isMobile, onToggle, onClick ]);
+
   return (
     <Tooltip
       label={ getTooltipText(canRate) }
       openDelay={ 100 }
       textAlign="center"
-      closeOnClick={ Boolean(canRate) }
+      closeOnClick={ Boolean(canRate) || isMobile }
+      isOpen={ isMobile ? isOpen : undefined }
     >
       <Button
         ref={ ref }
@@ -42,7 +56,7 @@ const TriggerButton = (
         variant="outline"
         border={ 0 }
         p={ 0 }
-        onClick={ canRate ? onClick : undefined }
+        onClick={ handleClick }
         fontSize={ fullView ? 'md' : 'sm' }
         fontWeight={ fullView ? '400' : '500' }
         lineHeight="21px"
@@ -50,6 +64,7 @@ const TriggerButton = (
         isActive={ isActive }
         onFocusCapture={ onFocusCapture }
         cursor={ canRate ? 'pointer' : 'default' }
+        onMouseLeave={ isMobile ? onClose : undefined }
       >
         { !fullView && (
           <IconSvg
