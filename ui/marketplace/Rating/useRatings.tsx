@@ -90,16 +90,24 @@ export default function useRatings() {
   }, [ address, addressCountersQuery ]);
 
   const rateApp = useCallback(async(appId: string, recordId: string | undefined, rating: number) => {
-    if (!address || !base || !recordId) {
-      return;
-    }
     setIsSending(true);
     try {
+      if (!address || !base) {
+        throw new Error('Address is missing');
+      }
+      let appRecordId = recordId;
+      if (!appRecordId) {
+        const records = await base('apps_ratings').create([ { fields: { appId } } ]);
+        appRecordId = records[0].id;
+        if (!appRecordId) {
+          throw new Error('Record ID is missing');
+        }
+      }
       await base('users_ratings').create([
         {
           fields: {
             address,
-            appRecordId: [ recordId ],
+            appRecordId: [ appRecordId ],
             rating,
           },
         },
@@ -111,7 +119,13 @@ export default function useRatings() {
         description: 'Your rating improves the service',
       });
       fetchRatings();
-    } catch (error) {}
+    } catch (error) {
+      toast({
+        status: 'error',
+        title: 'Ooops! Something went wrong',
+        description: 'Please try again later',
+      });
+    }
     setIsSending(false);
   }, [ address, userRatings, fetchRatings, toast ]);
 
