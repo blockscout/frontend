@@ -34,6 +34,7 @@ const TriggerButton = (
       label={ getTooltipText(canRate) }
       openDelay={ 100 }
       textAlign="center"
+      closeOnClick={ Boolean(canRate) }
     >
       <Button
         ref={ ref }
@@ -48,6 +49,7 @@ const TriggerButton = (
         ml={ fullView ? 3 : 0 }
         isActive={ isActive }
         onFocusCapture={ onFocusCapture }
+        cursor={ canRate ? 'pointer' : 'default' }
       >
         { !fullView && (
           <IconSvg
