@@ -1,5 +1,7 @@
-import { Text, Popover, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure, Skeleton } from '@chakra-ui/react';
+import { Text, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure, Skeleton } from '@chakra-ui/react';
 import React from 'react';
+
+import Popover from 'ui/shared/chakra/Popover';
 
 import Content from './PopoverContent';
 import Stars from './Stars';
