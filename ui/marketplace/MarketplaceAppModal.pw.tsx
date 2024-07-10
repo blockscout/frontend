@@ -17,6 +17,11 @@ const props = {
     securityReport: securityReportsMock[0].chainsData['1'],
   } as MarketplaceAppWithSecurityReport,
   isFavorite: false,
+  isRatedByUser: false,
+  rateApp: () => {},
+  isSendingRating: false,
+  isRatingLoading: false,
+  canRate: undefined,
 };
 
 const testFn: Parameters<typeof test>[1] = async({ render, page, mockAssetResponse }) => {
