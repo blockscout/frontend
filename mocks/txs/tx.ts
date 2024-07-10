@@ -299,7 +299,7 @@ export const stabilityTx: Transaction = {
       decimals: '18',
       exchange_rate: '123.567',
       holders: '92',
-      icon_url: null,
+      icon_url: 'https://example.com/icon.png',
       name: 'Stability Gas',
       symbol: 'GAS',
       total_supply: '10000000000000000000000000',
@@ -318,6 +318,24 @@ export const stabilityTx: Transaction = {
       ens_domain_name: null,
     },
     validator_fee: '34381250000000',
+  },
+};
+
+export const celoTxn: Transaction = {
+  ...base,
+  celo: {
+    gas_token: {
+      address: '0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1',
+      circulating_market_cap: null,
+      decimals: '18',
+      exchange_rate: '0.42',
+      holders: '205738',
+      icon_url: 'https://example.com/icon.png',
+      name: 'Celo Dollar',
+      symbol: 'cUSD',
+      total_supply: '7145754483836626799435133',
+      type: 'ERC-20',
+    },
   },
 };
 

@@ -1,5 +1,4 @@
 import {
-  Popover,
   PopoverTrigger,
   PopoverContent,
   PopoverBody,
@@ -10,6 +9,7 @@ import {
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import Popover from 'ui/shared/chakra/Popover';
 
 import SortButtonDesktop from './ButtonDesktop';
 import SortButtonMobile from './ButtonMobile';

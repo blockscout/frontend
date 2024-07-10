@@ -17,7 +17,6 @@ const sizes = {
   xl: defineStyle({
     fontSize: '40px',
     lineHeight: '48px',
-    letterSpacing: '-1px',
   }),
   lg: defineStyle({
     fontSize: '32px',

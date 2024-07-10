@@ -53,7 +53,7 @@ const NameDomainsActionBar = ({
       minW={{ base: 'auto', lg: '250px' }}
       size="xs"
       onChange={ onSearchChange }
-      placeholder="Search by name"
+      placeholder="Search by name or address"
       initialValue={ searchTerm }
       isLoading={ isInitialLoading }
     />

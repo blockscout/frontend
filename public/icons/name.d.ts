@@ -32,6 +32,7 @@
 	| "clock"
 	| "coins/bitcoin"
 	| "collection"
+	| "contracts/proxy"
 	| "contracts/regular_many"
 	| "contracts/regular"
 	| "contracts/verified_many"
