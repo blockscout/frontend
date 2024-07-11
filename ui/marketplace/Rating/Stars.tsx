@@ -1,3 +1,4 @@
+import { useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 import type { MouseEventHandler } from 'react';
 
@@ -11,7 +12,8 @@ type Props = {
 };
 
 const Stars = ({ filledIndex, onMouseOverFactory, onMouseOut, onClickFactory }: Props) => {
-  const outlineStartColor = onMouseOverFactory ? 'gray.400' : 'gray.200';
+  const disabledStarColor = useColorModeValue('gray.200', 'gray.700');
+  const outlineStartColor = onMouseOverFactory ? 'gray.400' : disabledStarColor;
   return (
     <>
       { Array(5).fill(null).map((_, index) => (
