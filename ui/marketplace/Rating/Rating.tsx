@@ -1,4 +1,4 @@
-import { Text, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure, Skeleton } from '@chakra-ui/react';
+import { Text, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure, Skeleton, useOutsideClick, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import Popover from 'ui/shared/chakra/Popover';
@@ -24,6 +24,9 @@ const Rating = ({
   isSending, isLoading, fullView, canRate,
 }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
+  // have to implement this solution because popover loses focus on button click inside it (issue: https://github.com/chakra-ui/chakra-ui/issues/7359)
+  const popoverRef = React.useRef(null);
+  useOutsideClick({ ref: popoverRef, handler: onClose });
 
   return (
     <Skeleton
@@ -38,28 +41,30 @@ const Rating = ({
           <Text fontSize="md" ml={ 1 }>{ rating }</Text>
         </>
       ) }
-      <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom" isLazy>
-        <PopoverTrigger>
-          <TriggerButton
-            rating={ rating }
-            fullView={ fullView }
-            isActive={ isOpen }
-            onClick={ onToggle }
-            canRate={ canRate }
-          />
-        </PopoverTrigger>
-        <PopoverContent w="274px" mx={ 3 }>
-          <PopoverBody p={ 4 }>
-            <Content
-              appId={ appId }
-              recordId={ recordId }
-              userRating={ userRating }
-              rate={ rate }
-              isSending={ isSending }
+      <Box ref={ popoverRef }>
+        <Popover isOpen={ isOpen } placement="bottom" isLazy>
+          <PopoverTrigger>
+            <TriggerButton
+              rating={ rating }
+              fullView={ fullView }
+              isActive={ isOpen }
+              onClick={ onToggle }
+              canRate={ canRate }
             />
-          </PopoverBody>
-        </PopoverContent>
-      </Popover>
+          </PopoverTrigger>
+          <PopoverContent w="274px" mx={ 3 }>
+            <PopoverBody p={ 4 }>
+              <Content
+                appId={ appId }
+                recordId={ recordId }
+                userRating={ userRating }
+                rate={ rate }
+                isSending={ isSending }
+              />
+            </PopoverBody>
+          </PopoverContent>
+        </Popover>
+      </Box>
     </Skeleton>
   );
 };
