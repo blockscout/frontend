@@ -23,7 +23,7 @@ type Props = {
   onFavoriteClick: (id: string, isFavorite: boolean, source: 'App modal') => void;
   data: MarketplaceAppWithSecurityReport;
   showContractList: (id: string, type: ContractListTypes, hasPreviousStep: boolean) => void;
-  isRatedByUser: boolean;
+  userRating: number | undefined;
   rateApp: (appId: string, recordId: string | undefined, rating: number) => void;
   isSendingRating: boolean;
   isRatingLoading: boolean;
@@ -36,7 +36,7 @@ const MarketplaceAppModal = ({
   onFavoriteClick,
   data,
   showContractList: showContractListProp,
-  isRatedByUser,
+  userRating,
   rateApp,
   isSendingRating,
   isRatingLoading,
@@ -170,7 +170,7 @@ const MarketplaceAppModal = ({
               appId={ id }
               rating={ rating }
               recordId={ ratingRecordId }
-              isRatedByUser={ isRatedByUser }
+              userRating={ userRating }
               rate={ rateApp }
               isSending={ isSendingRating }
               isLoading={ isRatingLoading }

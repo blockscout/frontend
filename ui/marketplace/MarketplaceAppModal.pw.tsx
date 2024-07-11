@@ -17,7 +17,7 @@ const props = {
     securityReport: securityReportsMock[0].chainsData['1'],
   } as MarketplaceAppWithSecurityReport,
   isFavorite: false,
-  isRatedByUser: false,
+  userRating: undefined,
   rateApp: () => {},
   isSendingRating: false,
   isRatingLoading: false,

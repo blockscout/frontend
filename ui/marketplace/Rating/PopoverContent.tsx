@@ -1,7 +1,5 @@
-import { Text, Flex, Spinner } from '@chakra-ui/react';
+import { Text, Flex, Spinner, Button } from '@chakra-ui/react';
 import React from 'react';
-
-import IconSvg from 'ui/shared/IconSvg';
 
 import Stars from './Stars';
 
@@ -10,32 +8,47 @@ const ratingDescriptions = [ 'Terrible', 'Poor', 'Average', 'Very good', 'Outsta
 type Props = {
   appId: string;
   recordId?: string;
-  isRatedByUser?: boolean;
+  userRating: number | undefined;
   rate: (appId: string, recordId: string | undefined, rating: number) => void;
   isSending?: boolean;
 };
 
-const PopoverContent = ({ appId, recordId, isRatedByUser, rate, isSending }: Props) => {
+const PopoverContent = ({ appId, recordId, userRating, rate, isSending }: Props) => {
   const [ hovered, setHovered ] = React.useState(-1);
+  const [ selected, setSelected ] = React.useState(-1);
 
   const handleMouseOverFactory = React.useCallback((index: number) => () => {
     setHovered(index);
+  }, []);
+
+  const handleSelectFactory = React.useCallback((index: number) => () => {
+    setSelected(index);
   }, []);
 
   const handleMouseOut = React.useCallback(() => {
     setHovered(-1);
   }, []);
 
-  const handleRateFactory = React.useCallback((index: number) => () => {
-    rate(appId, recordId, index + 1);
-  }, [ appId, recordId, rate ]);
+  const handleRate = React.useCallback(() => {
+    if (selected < 0) {
+      return;
+    }
+    rate(appId, recordId, selected + 1);
+  }, [ appId, recordId, selected, rate ]);
 
-  if (isRatedByUser) {
+  if (userRating) {
     return (
-      <Flex alignItems="center">
-        <IconSvg name="check_circle" color="green.500" boxSize={ 8 }/>
-        <Text fontSize="md" ml={ 3 }>App is already rated</Text>
-      </Flex>
+      <>
+        <Text fontWeight="500" fontSize="xs" lineHeight="30px" variant="secondary">
+          App is already rated by you
+        </Text>
+        <Flex alignItems="center" h="32px">
+          <Stars filledIndex={ userRating - 1 }/>
+          <Text fontSize="md" ml={ 2 }>
+            { ratingDescriptions[ userRating - 1 ] }
+          </Text>
+        </Flex>
+      </>
     );
   }
 
@@ -55,17 +68,20 @@ const PopoverContent = ({ appId, recordId, isRatedByUser, rate, isSending }: Pro
       </Text>
       <Flex alignItems="center" h="32px">
         <Stars
-          filledIndex={ hovered }
+          filledIndex={ hovered >= 0 ? hovered : selected }
           onMouseOverFactory={ handleMouseOverFactory }
           onMouseOut={ handleMouseOut }
-          onClickFactory={ handleRateFactory }
+          onClickFactory={ handleSelectFactory }
         />
-        { hovered >= 0 && (
+        { (hovered >= 0 || selected >= 0) && (
           <Text fontSize="md" ml={ 2 }>
-            { ratingDescriptions[ hovered ] }
+            { ratingDescriptions[ hovered >= 0 ? hovered : selected ] }
           </Text>
         ) }
       </Flex>
+      <Button size="sm" px={ 4 } mt={ 3 } onClick={ handleRate } isDisabled={ selected < 0 }>
+        Rate it
+      </Button>
     </>
   );
 };

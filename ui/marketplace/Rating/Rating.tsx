@@ -11,7 +11,7 @@ type Props = {
   appId: string;
   rating?: number;
   recordId?: string;
-  isRatedByUser?: boolean;
+  userRating: number | undefined;
   rate: (appId: string, recordId: string | undefined, rating: number) => void;
   isSending?: boolean;
   isLoading?: boolean;
@@ -20,7 +20,7 @@ type Props = {
 };
 
 const Rating = ({
-  appId, rating, recordId, isRatedByUser, rate,
+  appId, rating, recordId, userRating, rate,
   isSending, isLoading, fullView, canRate,
 }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
@@ -53,7 +53,7 @@ const Rating = ({
             <Content
               appId={ appId }
               recordId={ recordId }
-              isRatedByUser={ isRatedByUser }
+              userRating={ userRating }
               rate={ rate }
               isSending={ isSending }
             />

@@ -26,7 +26,6 @@
 	| "brands/solidity_scan"
 	| "burger"
 	| "certified"
-	| "check_circle"
 	| "check"
 	| "clock-light"
 	| "clock"

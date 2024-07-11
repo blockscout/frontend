@@ -20,7 +20,7 @@ interface Props extends MarketplaceAppWithSecurityReport {
   onAppClick: (event: MouseEvent, id: string) => void;
   className?: string;
   showContractList: (id: string, type: ContractListTypes) => void;
-  isRatedByUser: boolean;
+  userRating: number | undefined;
   rateApp: (appId: string, recordId: string | undefined, rating: number) => void;
   isSendingRating: boolean;
   isRatingLoading: boolean;
@@ -47,7 +47,7 @@ const MarketplaceAppCard = ({
   showContractList,
   rating,
   ratingRecordId,
-  isRatedByUser,
+  userRating,
   rateApp,
   isSendingRating,
   isRatingLoading,
@@ -175,7 +175,7 @@ const MarketplaceAppCard = ({
                 appId={ id }
                 rating={ rating }
                 recordId={ ratingRecordId }
-                isRatedByUser={ isRatedByUser }
+                userRating={ userRating }
                 rate={ rateApp }
                 isSending={ isSendingRating }
                 isLoading={ isRatingLoading }

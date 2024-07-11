@@ -233,7 +233,7 @@ const Marketplace = () => {
           onFavoriteClick={ onFavoriteClick }
           data={ selectedApp }
           showContractList={ showContractList }
-          isRatedByUser={ Boolean(userRatings[selectedApp.id]) }
+          userRating={ userRatings[selectedApp.id] }
           rateApp={ rateApp }
           isSendingRating={ isSendingRating }
           isRatingLoading={ isRatingLoading }
