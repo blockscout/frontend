@@ -71,6 +71,7 @@
 	| "globe-b"
 	| "globe"
 	| "graphQL"
+	| "hourglass"
 	| "info"
 	| "integration/full"
 	| "integration/partial"
