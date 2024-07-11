@@ -32,6 +32,7 @@ const FeaturedApp = ({
   const categoriesLabel = categories.join(', ');
 
   const backgroundColor = useColorModeValue('purple.50', 'whiteAlpha.100');
+  const heartFilledColor = useColorModeValue('blue.700', 'gray.400');
 
   const handleInfoClick = useCallback((event: MouseEvent) => {
     event.preventDefault();
@@ -135,10 +136,13 @@ const FeaturedApp = ({
                 w={ 9 }
                 h={ 8 }
                 onClick={ handleFavoriteClick }
-                icon={ isFavorite ?
-                  <IconSvg name="star_filled" w={ 5 } h={ 5 } color="yellow.400"/> :
-                  <IconSvg name="star_outline" w={ 5 } h={ 5 } color="gray.400"/>
-                }
+                icon={ (
+                  <IconSvg
+                    name={ isFavorite ? 'heart_filled' : 'heart_outline' }
+                    color={ isFavorite ? heartFilledColor : 'gray.400' }
+                    boxSize={ 5 }
+                  />
+                ) }
               />
             ) }
           </Flex>
