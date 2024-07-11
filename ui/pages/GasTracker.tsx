@@ -64,21 +64,12 @@ const GasTracker = () => {
     </Flex>
   );
 
-  const content = (() => {
+  const snippets = (() => {
     if (!isPlaceholderData && data?.gas_prices?.slow === null && data?.gas_prices.average === null && data.gas_prices.fast === null) {
-      return <Alert status="warning">No data available yet</Alert>;
+      return <Alert status="warning">No recent data available</Alert>;
     }
 
-    return (
-      <>
-        { data?.gas_prices && <GasTrackerPrices prices={ data.gas_prices } isLoading={ isLoading }/> }
-        { config.features.stats.isEnabled && (
-          <Box mt={ 12 }>
-            <GasTrackerChart/>
-          </Box>
-        ) }
-      </>
-    );
+    return data?.gas_prices ? <GasTrackerPrices prices={ data.gas_prices } isLoading={ isLoading }/> : null;
   })();
 
   return (
@@ -88,7 +79,12 @@ const GasTracker = () => {
         secondRow={ titleSecondRow }
         withTextAd
       />
-      { content }
+      { snippets }
+      { config.features.stats.isEnabled && (
+        <Box mt={ 12 }>
+          <GasTrackerChart/>
+        </Box>
+      ) }
     </>
   );
 };
