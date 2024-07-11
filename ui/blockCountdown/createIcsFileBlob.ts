@@ -1,3 +1,5 @@
+import { route } from 'nextjs-routes';
+
 import config from 'configs/app';
 import type dayjs from 'lib/date/dayjs';
 
@@ -14,6 +16,7 @@ export default function createIcsFileBlob({ date, blockHeight }: Params): Blob {
   const startTime = date.format(DATE_FORMAT);
   const endTime = date.add(15, 'minutes').format(DATE_FORMAT);
   const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const blockUrl = config.app.baseUrl + route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: blockHeight } });
 
   const icsContent = `BEGIN:VCALENDAR
 VERSION:2.0
@@ -22,6 +25,7 @@ SUMMARY:${ name }
 DESCRIPTION:${ description }
 DTSTART;TZID=${ timeZone }:${ startTime }
 DTEND;TZID=${ timeZone }:${ endTime }
+URL:${ blockUrl }
 END:VEVENT
 END:VCALENDAR`;
 
