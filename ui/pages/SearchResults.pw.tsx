@@ -185,3 +185,16 @@ test.describe('with apps', () => {
     await expect(component.locator('main')).toHaveScreenshot();
   });
 });
+
+test('block countdown', async({ render, mockApiResponse }) => {
+  const blockHeight = '1234567890';
+  const hooksConfig = {
+    router: {
+      query: { q: blockHeight },
+    },
+  };
+  await mockApiResponse('search', { items: [], next_page_params: null }, { queryParams: { q: blockHeight } });
+  const component = await render(<SearchResults/>, { hooksConfig });
+
+  await expect(component.locator('main')).toHaveScreenshot();
+});

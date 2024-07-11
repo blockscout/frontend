@@ -117,7 +117,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
 
     if (resultCategories.length === 0) {
       if (regexp.BLOCK_HEIGHT.test(searchTerm)) {
-        return <SearchBarSuggestBlockCountdown height={ searchTerm } onClick={ onItemClick }/>;
+        return <SearchBarSuggestBlockCountdown blockHeight={ searchTerm } onClick={ onItemClick }/>;
       }
 
       return <Text>No results found.</Text>;

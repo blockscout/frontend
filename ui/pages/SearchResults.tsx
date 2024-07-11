@@ -4,6 +4,7 @@ import type { FormEvent } from 'react';
 import React from 'react';
 
 import config from 'configs/app';
+import * as regexp from 'lib/regexp';
 import useMarketplaceApps from 'ui/marketplace/useMarketplaceApps';
 import SearchResultListItem from 'ui/searchResults/SearchResultListItem';
 import SearchResultsInput from 'ui/searchResults/SearchResultsInput';
@@ -19,6 +20,7 @@ import Thead from 'ui/shared/TheadSticky';
 import HeaderAlert from 'ui/snippets/header/HeaderAlert';
 import HeaderDesktop from 'ui/snippets/header/HeaderDesktop';
 import HeaderMobile from 'ui/snippets/header/HeaderMobile';
+import SearchBarSuggestBlockCountdown from 'ui/snippets/searchBar/SearchBarSuggest/SearchBarSuggestBlockCountdown';
 import useSearchQuery from 'ui/snippets/searchBar/useSearchQuery';
 
 const SearchResultsPageContent = () => {
@@ -164,14 +166,18 @@ const SearchResultsPageContent = () => {
       <Skeleton h={ 6 } w="280px" borderRadius="full" mb={ pagination.isVisible ? 0 : 6 }/>
     ) : (
       (
-        <Box mb={ pagination.isVisible ? 0 : 6 } lineHeight="32px">
-          <span>Found </span>
-          <chakra.span fontWeight={ 700 }>
-            { resultsCount }
-          </chakra.span>
-          <span> matching result{ (((displayedItems.length || 0) + marketplaceApps.displayedApps.length) > 1) || pagination.page > 1 ? 's' : '' } for </span>
-          “<chakra.span fontWeight={ 700 }>{ debouncedSearchTerm }</chakra.span>”
-        </Box>
+        <>
+          <Box mb={ pagination.isVisible ? 0 : 6 } lineHeight="32px">
+            <span>Found </span>
+            <chakra.span fontWeight={ 700 }>
+              { resultsCount }
+            </chakra.span>
+            <span> matching result{ (((displayedItems.length || 0) + marketplaceApps.displayedApps.length) > 1) || pagination.page > 1 ? 's' : '' } for </span>
+            “<chakra.span fontWeight={ 700 }>{ debouncedSearchTerm }</chakra.span>”
+          </Box>
+          { resultsCount === 0 && regexp.BLOCK_HEIGHT.test(debouncedSearchTerm) &&
+            <SearchBarSuggestBlockCountdown blockHeight={ debouncedSearchTerm } mt={ -4 }/> }
+        </>
       )
     );
 
@@ -217,7 +223,7 @@ const SearchResultsPageContent = () => {
           <HeaderAlert/>
           <HeaderDesktop renderSearchBar={ renderSearchBar }/>
           <AppErrorBoundary>
-            <Layout.Content>
+            <Layout.Content flexGrow={ 0 }>
               { pageContent }
             </Layout.Content>
           </AppErrorBoundary>
