@@ -40,7 +40,7 @@ const BlockCountdownIndex = () => {
         mt={{ base: 3, lg: 6 }}
       >
         <FilterInput
-          placeholder="Search by block number ..."
+          placeholder="Search by block number"
           size="xs"
           type="number"
           name="search_term"
