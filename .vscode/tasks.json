@@ -25,6 +25,27 @@
                 "instanceLimit": 1
             }
         },
+        {
+            "type": "shell",
+            "command": "yarn dev:preset:sync --name=${input:dev_config_preset}",
+            "problemMatcher": [],
+            "label": "dev preset sync",
+            "detail": "syncronize dev preset",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "focus": true,
+                "close": false,
+                "revealProblems": "onProblem",
+            },
+            "icon": {
+                "color": "terminal.ansiMagenta",
+                "id": "repo-sync"
+            },
+            "runOptions": {
+                "instanceLimit": 1
+            }
+        },
 
         // CODE CHECKS
         {
@@ -337,7 +358,6 @@
             "description": "Choose dev server config preset:",
             "options": [
               "main",
-              "main.L2",
               "localhost",
               "arbitrum",
               "base",
@@ -349,8 +369,8 @@
               "optimism",
               "optimism_sepolia",
               "polygon",
-              "rootstock",
-              "stability",
+              "rootstock_testnet",
+              "stability_testnet",
               "zkevm",
               "zksync",
             ],

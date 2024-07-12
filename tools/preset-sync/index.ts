@@ -7,6 +7,18 @@ const PRESETS = {
   base: 'https://base.blockscout.com',
   celo_alfajores: 'https://celo-alfajores.blockscout.com',
   eth: 'https://eth.blockscout.com',
+  eth_goerli: 'https://eth-goerli.blockscout.com',
+  eth_sepolia: 'https://eth-sepolia.blockscout.com',
+  gnosis: 'https://gnosis.blockscout.com',
+  optimism: 'https://optimism.blockscout.com',
+  optimism_sepolia: 'https://optimism-sepolia.blockscout.com',
+  polygon: 'https://polygon.blockscout.com',
+  rootstock_testnet: 'https://rootstock-testnet.blockscout.com',
+  stability_testnet: 'https://stability-testnet.blockscout.com',
+  zkevm: 'https://zkevm.blockscout.com',
+  zksync: 'https://zksync.blockscout.com',
+  // main === staging
+  main: 'https://eth-sepolia.k8s-dev.blockscout.com',
 };
 
 const LOCAL_ENVS = {
@@ -42,10 +54,14 @@ function getSecretEnvsList() {
   return result;
 }
 
-function makePresetFile(envsEntries: Array<[ string, string ]>, chainName: string, explorerUrl: string, presetName: string) {
+function updateFileContent(envsEntries: Array<[ string, string ]>, presetId: keyof typeof PRESETS) {
   const presetEnvsContent = envsEntries
     .map(([ key, value ]) => `${ key }=${ value }`)
     .join('\n');
+
+  const chainName = envsEntries.find(([ key ]) => key === 'NEXT_PUBLIC_NETWORK_NAME')?.[1] ?? 'Unknown';
+
+  const explorerUrl = PRESETS[presetId];
 
   const localEnvsContent = Object.entries(LOCAL_ENVS)
     .map(([ key, value ]) => `${ key }=${ value }`)
@@ -54,7 +70,7 @@ function makePresetFile(envsEntries: Array<[ string, string ]>, chainName: strin
   const content =
     `# Set of ENVs for ${ chainName } network explorer\n` +
     '# ' + explorerUrl + '\n' +
-    `# This is an auto-generated file. To update all values, run "yarn preset:sync --name=${ presetName }"\n` +
+    `# This is an auto-generated file. To update all values, run "yarn preset:sync --name=${ presetId }"\n` +
     '\n' +
     '# Local ENVs\n' +
     localEnvsContent + '\n' +
@@ -62,26 +78,13 @@ function makePresetFile(envsEntries: Array<[ string, string ]>, chainName: strin
     '# Instance ENVs\n' +
     presetEnvsContent;
 
-  fs.writeFileSync(path.resolve(__dirname, `../../configs/envs/.env.${ presetName }`), content);
+  fs.writeFileSync(path.resolve(__dirname, `../../configs/envs/.env.${ presetId }`), content);
 }
 
-async function run() {
-  console.log(`🌀 Syncing preset configuration file...`);
-
-  const args = parseScriptArgs();
-  if (!args.name) {
-    console.log('🚨 No "--name" argument is provided. Exiting...');
-    return;
-  }
-
-  const instanceUrl = PRESETS[args.name as keyof typeof PRESETS];
-  if (!instanceUrl) {
-    console.log(`🚨 No preset with name "${ args.name }" found. Exiting...`);
-    return;
-  }
-
+async function updatePresetFile(presetId: keyof typeof PRESETS) {
   const secretEnvs = getSecretEnvsList();
 
+  const instanceUrl = PRESETS[presetId];
   const response = await fetch(`${ instanceUrl }/node-api/config`);
   const instanceConfig = await response.json() as Record<'envs', Record<string, string>>;
 
@@ -94,7 +97,28 @@ async function run() {
   const presetEnvsEntries = Object.entries(instanceConfig.envs)
     .filter(([ key ]) => !ignoredEnvs.includes(key));
 
-  makePresetFile(presetEnvsEntries, instanceConfig.envs.NEXT_PUBLIC_NETWORK_NAME, instanceUrl, args.name);
+  updateFileContent(presetEnvsEntries, presetId);
+}
+
+async function run() {
+  console.log(`🌀 Syncing preset configuration file...`);
+
+  const args = parseScriptArgs();
+  if (!args.name) {
+    console.log('🚨 No "--name" argument is provided. Exiting...');
+    return;
+  }
+
+  const presetId = args.name as keyof typeof PRESETS;
+  const instanceUrl = PRESETS[presetId];
+  if (!instanceUrl) {
+    console.log(`🚨 No preset with name "${ presetId }" found. Exiting...`);
+    return;
+  }
+
+  await updatePresetFile(presetId);
+
+  console.log(`✅ Done!`);
 }
 
 run();
