@@ -7,6 +7,7 @@ import React, { useCallback } from 'react';
 import type { MarketplaceAppWithSecurityReport } from 'types/client/marketplace';
 import { ContractListTypes } from 'types/client/marketplace';
 
+import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
 import * as mixpanel from 'lib/mixpanel/index';
@@ -16,6 +17,9 @@ import IconSvg from 'ui/shared/IconSvg';
 import AppSecurityReport from './AppSecurityReport';
 import MarketplaceAppModalLink from './MarketplaceAppModalLink';
 import Rating from './Rating/Rating';
+
+const feature = config.features.marketplace;
+const isRatingEnabled = feature.isEnabled && feature.rating;
 
 type Props = {
   onClose: () => void;
@@ -160,24 +164,26 @@ const MarketplaceAppModal = ({
             By{ nbsp }{ author }
           </Text>
 
-          <Box
-            gridColumn={{ base: '1 / 3', md: 2 }}
-            marginTop={{ base: 6, md: 3 }}
-            py={{ base: 0, md: 1.5 }}
-            width="fit-content"
-          >
-            <Rating
-              appId={ id }
-              rating={ rating }
-              recordId={ ratingRecordId }
-              userRating={ userRating }
-              rate={ rateApp }
-              isSending={ isSendingRating }
-              isLoading={ isRatingLoading }
-              fullView
-              canRate={ canRate }
-            />
-          </Box>
+          { isRatingEnabled && (
+            <Box
+              gridColumn={{ base: '1 / 3', md: 2 }}
+              marginTop={{ base: 6, md: 3 }}
+              py={{ base: 0, md: 1.5 }}
+              width="fit-content"
+            >
+              <Rating
+                appId={ id }
+                rating={ rating }
+                recordId={ ratingRecordId }
+                userRating={ userRating }
+                rate={ rateApp }
+                isSending={ isSendingRating }
+                isLoading={ isRatingLoading }
+                fullView
+                canRate={ canRate }
+              />
+            </Box>
+          ) }
 
           <Box
             gridColumn={{ base: '1 / 3', md: 2 }}

@@ -1,11 +1,15 @@
 import { Text, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure, Skeleton, useOutsideClick, Box } from '@chakra-ui/react';
 import React from 'react';
 
+import config from 'configs/app';
 import Popover from 'ui/shared/chakra/Popover';
 
 import Content from './PopoverContent';
 import Stars from './Stars';
 import TriggerButton from './TriggerButton';
+
+const feature = config.features.marketplace;
+const isEnabled = feature.isEnabled && feature.rating;
 
 type Props = {
   appId: string;
@@ -27,6 +31,10 @@ const Rating = ({
   // have to implement this solution because popover loses focus on button click inside it (issue: https://github.com/chakra-ui/chakra-ui/issues/7359)
   const popoverRef = React.useRef(null);
   useOutsideClick({ ref: popoverRef, handler: onClose });
+
+  if (!isEnabled) {
+    return null;
+  }
 
   return (
     <Skeleton
