@@ -10,7 +10,7 @@
 
 import type { As } from '@chakra-ui/react';
 import { Tooltip, chakra } from '@chakra-ui/react';
-import _debounce from 'lodash/debounce';
+import { debounce } from 'es-toolkit';
 import React, { useCallback, useEffect, useRef } from 'react';
 import type { FontFace } from 'use-font-face-observer';
 import useFontFaceObserver from 'use-font-face-observer';
@@ -81,7 +81,7 @@ const HashStringShortenDynamic = ({ hash, fontWeight = '400', isTooltipDisabled,
   }, [ calculateString, isFontFaceLoaded ]);
 
   useEffect(() => {
-    const resizeHandler = _debounce(calculateString, 100);
+    const resizeHandler = debounce(calculateString, 100);
     const resizeObserver = new ResizeObserver(resizeHandler);
 
     resizeObserver.observe(document.body);

@@ -1,5 +1,5 @@
 import { Box, Flex, chakra, useColorModeValue, Skeleton } from '@chakra-ui/react';
-import clamp from 'lodash/clamp';
+import { clamp } from 'es-toolkit';
 import React from 'react';
 
 interface Props {

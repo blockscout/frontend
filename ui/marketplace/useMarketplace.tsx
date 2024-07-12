@@ -1,4 +1,4 @@
-import _pickBy from 'lodash/pickBy';
+import { pickBy } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -107,7 +107,7 @@ export default function useMarketplace() {
   }, [ isPlaceholderData ]);
 
   React.useEffect(() => {
-    const query = _pickBy({
+    const query = pickBy({
       category: selectedCategoryId === MarketplaceCategory.ALL ? undefined : selectedCategoryId,
       filter: debouncedFilterQuery,
     }, Boolean);

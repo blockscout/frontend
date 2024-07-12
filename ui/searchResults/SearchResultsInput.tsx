@@ -1,5 +1,5 @@
 import { PopoverTrigger, PopoverContent, PopoverBody, useDisclosure } from '@chakra-ui/react';
-import _debounce from 'lodash/debounce';
+import { debounce } from 'es-toolkit';
 import type { FormEvent, FocusEvent } from 'react';
 import React from 'react';
 
@@ -59,7 +59,7 @@ const SearchResultsInput = ({ searchTerm, handleSubmit, handleSearchTermChange }
     }
     calculateMenuWidth();
 
-    const resizeHandler = _debounce(calculateMenuWidth, 200);
+    const resizeHandler = debounce(calculateMenuWidth, 200);
     const resizeObserver = new ResizeObserver(resizeHandler);
     resizeObserver.observe(inputRef.current);
 

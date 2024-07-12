@@ -1,5 +1,5 @@
+import { pickBy } from 'es-toolkit';
 import _isEqual from 'lodash/isEqual';
-import _pickBy from 'lodash/pickBy';
 
 import type { FormFieldTag, FormFields, FormSubmitResult, FormSubmitResultGrouped, FormSubmitResultItemGrouped, SubmitRequestBody } from './types';
 import type { UserInfo } from 'types/api/account';
@@ -22,7 +22,7 @@ export function convertFormDataToRequestsBody(data: FormFields): Array<SubmitReq
         name: tag.name,
         tagType: tag.type.value,
         description: data.description,
-        meta: _pickBy({
+        meta: pickBy({
           bgColor: tag.bgColor,
           textColor: tag.textColor,
           tagUrl: tag.url,

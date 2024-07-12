@@ -1,5 +1,5 @@
 import { chakra } from '@chakra-ui/react';
-import _omit from 'lodash/omit';
+import { omit } from 'es-toolkit';
 import React from 'react';
 
 import config from 'configs/app';
@@ -9,8 +9,8 @@ import * as BlockEntity from './BlockEntity';
 const rollupFeature = config.features.rollup;
 
 const BlockEntityL2 = (props: BlockEntity.EntityProps) => {
-  const linkProps = _omit(props, [ 'className' ]);
-  const partsProps = _omit(props, [ 'className', 'onClick' ]);
+  const linkProps = omit(props, [ 'className' ]);
+  const partsProps = omit(props, [ 'className', 'onClick' ]);
 
   if (!rollupFeature.isEnabled) {
     return null;

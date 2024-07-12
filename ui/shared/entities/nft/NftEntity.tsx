@@ -1,5 +1,5 @@
 import { chakra } from '@chakra-ui/react';
-import _omit from 'lodash/omit';
+import { omit } from 'es-toolkit';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
@@ -59,8 +59,8 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
 }
 
 const NftEntity = (props: EntityProps) => {
-  const linkProps = _omit(props, [ 'className' ]);
-  const partsProps = _omit(props, [ 'className', 'onClick' ]);
+  const linkProps = omit(props, [ 'className' ]);
+  const partsProps = omit(props, [ 'className', 'onClick' ]);
 
   return (
     <Container className={ props.className } w="100%">

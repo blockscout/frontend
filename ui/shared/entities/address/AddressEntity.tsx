@@ -1,6 +1,6 @@
 import type { As } from '@chakra-ui/react';
 import { Box, Flex, Skeleton, Tooltip, chakra, VStack } from '@chakra-ui/react';
-import _omit from 'lodash/omit';
+import { omit } from 'es-toolkit';
 import React from 'react';
 
 import type { AddressParam } from 'types/api/addressParams';
@@ -146,8 +146,8 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
 }
 
 const AddressEntry = (props: EntityProps) => {
-  const linkProps = _omit(props, [ 'className' ]);
-  const partsProps = _omit(props, [ 'className', 'onClick' ]);
+  const linkProps = omit(props, [ 'className' ]);
+  const partsProps = omit(props, [ 'className', 'onClick' ]);
 
   const context = useAddressHighlightContext(props.noHighlight);
 

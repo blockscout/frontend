@@ -1,5 +1,5 @@
 import { chakra } from '@chakra-ui/react';
-import _omit from 'lodash/omit';
+import { omit } from 'es-toolkit';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
@@ -11,8 +11,8 @@ import * as TxEntity from './TxEntity';
 const rollupFeature = config.features.rollup;
 
 const TxEntityL1 = (props: TxEntity.EntityProps) => {
-  const partsProps = _omit(props, [ 'className', 'onClick' ]);
-  const linkProps = _omit(props, [ 'className' ]);
+  const partsProps = omit(props, [ 'className', 'onClick' ]);
+  const linkProps = omit(props, [ 'className' ]);
 
   if (!rollupFeature.isEnabled) {
     return null;

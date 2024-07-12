@@ -1,5 +1,4 @@
-import _pick from 'lodash/pick';
-import _pickBy from 'lodash/pickBy';
+import { pick, pickBy } from 'es-toolkit';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 import fetchFactory from 'nextjs/utils/fetchProxy';
@@ -18,7 +17,7 @@ const handler = async(nextReq: NextApiRequest, nextRes: NextApiResponse) => {
   );
   const apiRes = await fetchFactory(nextReq)(
     url.toString(),
-    _pickBy(_pick(nextReq, [ 'body', 'method' ]), Boolean),
+    pickBy(pick(nextReq, [ 'body', 'method' ]), Boolean),
   );
 
   // proxy some headers from API
