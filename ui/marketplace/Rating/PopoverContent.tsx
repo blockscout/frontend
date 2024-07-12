@@ -1,6 +1,9 @@
 import { Text, Flex, Spinner, Button } from '@chakra-ui/react';
 import React from 'react';
 
+import { mdash } from 'lib/html-entities';
+import IconSvg from 'ui/shared/IconSvg';
+
 import Stars from './Stars';
 
 const ratingDescriptions = [ 'Terrible', 'Poor', 'Average', 'Very good', 'Outstanding' ];
@@ -39,13 +42,30 @@ const PopoverContent = ({ appId, recordId, userRating, rate, isSending }: Props)
   if (userRating) {
     return (
       <>
-        <Text fontWeight="500" fontSize="xs" lineHeight="30px" variant="secondary">
-          App is already rated by you
-        </Text>
+        <Flex alignItems="center">
+          <IconSvg
+            name="verified"
+            color="green.400"
+            boxSize="30px"
+            mr={ 1 }
+            ml="-5px"
+          />
+          <Text fontWeight="500" fontSize="xs" lineHeight="30px" variant="secondary">
+            App is already rated by you
+          </Text>
+        </Flex>
         <Flex alignItems="center" h="32px">
-          <Stars filledIndex={ userRating - 1 }/>
-          <Text fontSize="md" ml={ 2 }>
-            { ratingDescriptions[ userRating - 1 ] }
+          <IconSvg
+            name="star_filled"
+            color="yellow.400"
+            boxSize={ 5 }
+            mr={ 1 }
+          />
+          <Text fontSize="md" fontWeight="500" mr={ 3 }>
+            { userRating.toFixed(1) }
+          </Text>
+          <Text fontSize="md">
+            { mdash } { ratingDescriptions[ userRating - 1 ] }
           </Text>
         </Flex>
       </>
