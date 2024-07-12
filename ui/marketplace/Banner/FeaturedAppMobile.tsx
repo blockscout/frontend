@@ -36,6 +36,7 @@ const FeaturedAppMobile = ({
   const categoriesLabel = categories.join(', ');
 
   const logoUrl = useColorModeValue(logo, logoDarkMode || logo);
+  const heartFilledColor = useColorModeValue('blue.700', 'gray.400');
 
   return (
     <LinkBox
@@ -144,10 +145,13 @@ const FeaturedAppMobile = ({
             w={ 9 }
             h={ 8 }
             onClick={ onFavoriteClick }
-            icon={ isFavorite ?
-              <IconSvg name="star_filled" w={ 5 } h={ 5 } color="yellow.400"/> :
-              <IconSvg name="star_outline" w={ 5 } h={ 5 } color="gray.400"/>
-            }
+            icon={ (
+              <IconSvg
+                name={ isFavorite ? 'heart_filled' : 'heart_outline' }
+                color={ isFavorite ? heartFilledColor : 'gray.400' }
+                boxSize={ 5 }
+              />
+            ) }
           />
         ) }
       </Flex>
