@@ -39,8 +39,8 @@ const BlockCountdownTimer = ({ value: initialValue, onFinish }: Props) => {
   return (
     <HStack
       bgColor={ bgColor }
-      mt={ 2 }
-      p={ 4 }
+      mt={{ base: 6, lg: 8 }}
+      p={{ base: 3, lg: 4 }}
       borderRadius="base"
       divider={ <StackDivider borderColor="divider"/> }
     >
