@@ -31,7 +31,7 @@ const NavLinkGroup = ({ item, onClick, isExpanded }: Props) => {
       <Box
         { ...styleProps.itemProps }
         w="100%"
-        px={ 3 }
+        px={ 2 }
         aria-label={ `${ item.text } link group` }
       >
         <Flex justifyContent="space-between" width="100%" alignItems="center" pr={ 1 }>
