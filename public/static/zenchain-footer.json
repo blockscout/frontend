@@ -1,0 +1,45 @@
+[
+  {
+    "title": "Zenchain",
+    "links": [
+      {
+        "text": "Home",
+        "url": ""
+      },
+      {
+        "text": "Whitepaper",
+        "url": ""
+      }
+    ]
+  },
+  {
+    "title": "Community",
+    "links": [
+      {
+        "text": "Telegram",
+        "url": ""
+      },
+      {
+        "text": "Twitter",
+        "url": ""
+      },
+      {
+        "text": "Blog",
+        "url": ""
+      },
+      {
+        "text": "Linkedin",
+        "url": ""
+      }
+    ]
+  },
+  {
+    "title": "Developer",
+    "links": [
+      {
+        "text": "GitHub",
+        "url": "https://github.com/zenchain-protocol"
+      }
+    ]
+  }
+]
