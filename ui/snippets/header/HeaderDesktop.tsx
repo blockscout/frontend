@@ -15,7 +15,6 @@ type Props = {
 }
 
 const HeaderDesktop = ({ renderSearchBar, isMarketplaceAppPage }: Props) => {
-
   const searchBar = renderSearchBar ? renderSearchBar() : <SearchBar/>;
 
   return (

@@ -28,6 +28,7 @@ const variantSolid = defineStyle((props) => {
   return {
     bg,
     color,
+    borderColor: mode('rgba(208, 208, 209, 1)', 'rgba(107, 108, 111, 1)')(props),
     _hover: {
       bg: hoverBg,
       _disabled: {
@@ -47,7 +48,7 @@ const variantOutline = defineStyle((props) => {
 
   const isGrayTheme = c === 'gray' || c === 'gray-dark';
   const color = isGrayTheme ? mode('blackAlpha.800', 'whiteAlpha.800')(props) : mode(`${ c }.600`, `${ c }.300`)(props);
-  const borderColor = isGrayTheme ? mode('gray.200', 'gray.600')(props) : mode(`${ c }.600`, `${ c }.300`)(props);
+  const borderColor = mode('rgba(208, 208, 209, 1)', 'rgba(107, 108, 111, 1)')(props);
   const activeBg = isGrayTheme ? mode('blue.50', 'gray.600')(props) : mode(`${ c }.50`, 'gray.600')(props);
   const activeColor = (() => {
     if (c === 'gray') {
@@ -75,7 +76,6 @@ const variantOutline = defineStyle((props) => {
       bg: 'transparent',
       _active: {
         bg: props.isActive ? activeBg : 'transparent',
-        borderColor: props.isActive ? activeBg : 'link_hovered',
         color: props.isActive ? activeColor : 'link_hovered',
         p: {
           color: 'link_hovered',
@@ -94,7 +94,7 @@ const variantOutline = defineStyle((props) => {
     },
     _active: {
       bg: activeBg,
-      borderColor: activeBg,
+      borderColor: borderColor,
       color: activeColor,
       _disabled: {
         color,
@@ -112,6 +112,7 @@ const variantSimple = defineStyle((props) => {
 
   return {
     color: outline.color,
+    borderColor: mode('rgba(208, 208, 209, 1)', 'rgba(107, 108, 111, 1)')(props),
     _hover: {
       color: outline._hover.color,
     },
@@ -146,6 +147,7 @@ const variantSubtle = defineStyle((props) => {
     return {
       bg: mode('blackAlpha.200', 'whiteAlpha.200')(props),
       color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
+      borderColor: mode('rgba(208, 208, 209, 1)', 'rgba(107, 108, 111, 1)')(props),
       _hover: {
         color: 'link_hovered',
         _disabled: {
@@ -216,7 +218,6 @@ const Button = defineStyleConfig({
   defaultProps: {
     variant: 'solid',
     size: 'md',
-    colorScheme: 'blue',
   },
 });
 

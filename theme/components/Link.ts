@@ -20,7 +20,7 @@ const variantSecondary = defineStyle((props) => {
   return {
     color: mode('gray.600', 'gray.500')(props),
     _hover: {
-      color: mode('gray.600', 'gray.400')(props),
+      color: 'link_hovered',
     },
   };
 });
@@ -31,7 +31,7 @@ const variants: Record<string, SystemStyleInterpolation> = {
 };
 
 const defaultProps = {
-  variant: 'primary',
+  variant: 'secondary',
 };
 
 const Link = defineStyleConfig({

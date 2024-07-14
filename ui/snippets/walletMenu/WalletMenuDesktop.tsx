@@ -68,7 +68,6 @@ const WalletMenuDesktop = ({ isHomePage }: Props) => {
           <PopoverTrigger>
             <Button
               variant={ variant }
-              colorScheme="blue"
               flexShrink={ 0 }
               isLoading={ isModalOpening || isModalOpen }
               loadingText="Connect wallet"
