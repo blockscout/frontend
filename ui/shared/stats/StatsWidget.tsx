@@ -89,7 +89,7 @@ const StatsWidget = ({
             lineHeight="16px"
             w="fit-content"
           >
-            <span>{ label }</span>
+            <h2>{ label }</h2>
           </Skeleton>
           <Skeleton
             isLoaded={ !isLoading }
