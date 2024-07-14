@@ -74,7 +74,7 @@ const SearchBarInput = (
       onFocus={ onFocus }
       w="100%"
       backgroundColor={ bgColor }
-      borderRadius={{ base: isHomepage ? 'base' : 'none', lg: 'base' }}
+      borderRadius={{ base: isHomepage ? '100px' : 'none', lg: '100px' }}
       position={{ base: isHomepage ? 'static' : 'absolute', lg: 'relative' }}
       top={{ base: isHomepage ? 0 : 55, lg: 0 }}
       left="0"
@@ -112,7 +112,7 @@ const SearchBarInput = (
           value={ value }
         />
         { value && (
-          <InputRightElement top={{ base: isHomepage ? '18px' : 2, lg: '18px' }} right={ 2 }>
+          <InputRightElement top={{ base: isHomepage ? '9px' : 2, lg: '9px' }} right={ 2 }>
             <ClearButton onClick={ onClear }/>
           </InputRightElement>
         ) }

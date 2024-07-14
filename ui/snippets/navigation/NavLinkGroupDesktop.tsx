@@ -48,6 +48,7 @@ const NavLinkGroupDesktop = ({ item, isCollapsed }: Props) => {
             <HStack spacing={ 3 } overflow="hidden">
               <NavLinkIcon item={ item }/>
               <Text
+                fontWeight={ item.isActive ? '600' : '400' }
                 { ...styleProps.textProps }
               >
                 { item.text }

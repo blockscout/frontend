@@ -9,11 +9,11 @@ export default function useColors() {
     },
     bg: {
       'default': 'transparent',
-      active: useColorModeValue('blue.50', 'gray.800'),
+      active: useColorModeValue('rgba(245, 245, 246, 1)', 'rgba(66, 66, 68, 1)'),
     },
     border: {
       'default': 'divider',
-      active: useColorModeValue('blue.50', 'gray.800'),
+      active: useColorModeValue('rgba(245, 245, 246, 1)', 'rgba(66, 66, 68, 1)'),
     },
   };
 }
