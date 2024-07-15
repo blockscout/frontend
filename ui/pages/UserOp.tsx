@@ -1,4 +1,4 @@
-import { inRange } from 'lodash';
+import _inRange from 'lodash/inRange';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -43,7 +43,11 @@ const UserOp = () => {
     if (!userOpQuery.data) {
       return true;
     } else {
-      if (inRange(Number(tt.log_index), userOpQuery.data?.user_logs_start_index, userOpQuery.data?.user_logs_start_index + userOpQuery.data?.user_logs_count)) {
+      if (_inRange(
+        Number(tt.log_index),
+        userOpQuery.data?.user_logs_start_index,
+        userOpQuery.data?.user_logs_start_index + userOpQuery.data?.user_logs_count,
+      )) {
         return true;
       }
       return false;
@@ -54,7 +58,7 @@ const UserOp = () => {
     if (!userOpQuery.data) {
       return true;
     } else {
-      if (inRange(log.index, userOpQuery.data?.user_logs_start_index, userOpQuery.data?.user_logs_start_index + userOpQuery.data?.user_logs_count)) {
+      if (_inRange(log.index, userOpQuery.data?.user_logs_start_index, userOpQuery.data?.user_logs_start_index + userOpQuery.data?.user_logs_count)) {
         return true;
       }
       return false;

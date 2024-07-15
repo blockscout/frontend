@@ -1,5 +1,5 @@
 import type { GridProps } from '@chakra-ui/react';
-import { Box, Grid, Flex, Text, Link, VStack, Skeleton } from '@chakra-ui/react';
+import { Box, Grid, Flex, Text, Link, VStack, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
@@ -9,6 +9,8 @@ import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import useFetch from 'lib/hooks/useFetch';
+import { copy } from 'lib/html-entities';
+import IconSvg from 'ui/shared/IconSvg';
 import NetworkAddToWallet from 'ui/shared/NetworkAddToWallet';
 
 import FooterLinkItem from './FooterLinkItem';
@@ -28,6 +30,8 @@ const Footer = () => {
     },
   });
   const apiVersionUrl = getApiVersionUrl(backendVersionData?.backend_version);
+  const logoColor = useColorModeValue('blue.600', 'white');
+
   const BLOCKSCOUT_LINKS = [
     {
       icon: 'social/git' as const,
@@ -98,25 +102,37 @@ const Footer = () => {
   const renderProjectInfo = React.useCallback((gridArea?: GridProps['gridArea']) => {
     return (
       <Box gridArea={ gridArea }>
-        <Link fontSize="xs" href="https://www.blockscout.com">blockscout.com</Link>
+        <Flex columnGap={ 2 } fontSize="xs" lineHeight={ 5 } alignItems="center" color="text">
+          <span>Made with</span>
+          <Link href="https://www.blockscout.com" isExternal display="inline-flex" color={ logoColor } _hover={{ color: logoColor }}>
+            <IconSvg
+              name="networks/logo-placeholder"
+              width="80px"
+              height={ 4 }
+            />
+          </Link>
+        </Flex>
         <Text mt={ 3 } fontSize="xs">
           Blockscout is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for Ethereum Networks.
         </Text>
-        <VStack spacing={ 1 } mt={ 6 } alignItems="start">
+        <Box mt={ 6 } alignItems="start" fontSize="xs" lineHeight={ 5 }>
           { apiVersionUrl && (
-            <Text fontSize="xs">
+            <Text>
               Backend: <Link href={ apiVersionUrl } target="_blank">{ backendVersionData?.backend_version }</Link>
             </Text>
           ) }
           { frontendLink && (
-            <Text fontSize="xs">
+            <Text>
               Frontend: { frontendLink }
             </Text>
           ) }
-        </VStack>
+          <Text>
+            Copyright { copy } Blockscout Limited 2023-{ (new Date()).getFullYear() }
+          </Text>
+        </Box>
       </Box>
     );
-  }, [ apiVersionUrl, backendVersionData?.backend_version, frontendLink ]);
+  }, [ apiVersionUrl, backendVersionData?.backend_version, frontendLink, logoColor ]);
 
   const containerProps: GridProps = {
     as: 'footer',

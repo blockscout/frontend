@@ -76,7 +76,7 @@ const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, in
                 </Heading>
                 { section.id === 'gas' && homeStatsQuery.data && homeStatsQuery.data.gas_prices && (
                   <GasInfoTooltip data={ homeStatsQuery.data } dataUpdatedAt={ homeStatsQuery.dataUpdatedAt }>
-                    <IconSvg name="info" boxSize={ 5 } display="block" cursor="pointer" _hover={{ color: 'link_hovered' }}/>
+                    <IconSvg name="info" boxSize={ 5 } display="block" cursor="pointer" color="icon_info" _hover={{ color: 'link_hovered' }}/>
                   </GasInfoTooltip>
                 ) }
               </Skeleton>

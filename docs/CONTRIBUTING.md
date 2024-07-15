@@ -88,9 +88,7 @@ These are the steps that you have to follow to make everything work:
 4. For local development purposes add the variable with its appropriate values to pre-defined ENV configs `configs/envs` where it is needed
 5. Add the variable to CI configs where it is needed
     - `deploy/values/review/values.yaml.gotmpl` - review development environment
-    - `deploy/values/main/values.yaml` - main development environment
     - `deploy/values/review-l2/values.yaml.gotmpl` - review development environment for L2 networks
-    - `deploy/values/l2-optimism-goerli/values.yaml` - main development environment
 6. If your variable is meant to receive a link to some external resource (image or JSON-config file), extend the array `ASSETS_ENVS` in `deploy/scripts/download_assets.sh` with your variable name
 7. Add validation schema for the new variable into the file `deploy/tools/envs-validator/schema.ts`
 8. Check if modified validation schema is valid by doing the following steps:

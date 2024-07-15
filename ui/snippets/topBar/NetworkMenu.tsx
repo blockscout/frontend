@@ -1,6 +1,7 @@
-import { IconButton, Popover, PopoverTrigger } from '@chakra-ui/react';
+import { IconButton, PopoverTrigger } from '@chakra-ui/react';
 import React from 'react';
 
+import Popover from 'ui/shared/chakra/Popover';
 import IconSvg from 'ui/shared/IconSvg';
 import NetworkMenuContentDesktop from 'ui/snippets/networkMenu/NetworkMenuContentDesktop';
 import useNetworkMenu from 'ui/snippets/networkMenu/useNetworkMenu';
