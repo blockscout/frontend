@@ -6,11 +6,11 @@ import type { Block } from 'types/api/block';
 
 import config from 'configs/app';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
-import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import { currencyUnits } from 'lib/units';
 import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 type Props = Block & {
   page: number;
@@ -18,7 +18,6 @@ type Props = Block & {
 };
 
 const AddressBlocksValidatedListItem = (props: Props) => {
-  const timeAgo = useTimeAgoIncrement(props.timestamp, props.page === 1);
   const totalReward = getBlockTotalReward(props);
 
   return (
@@ -30,9 +29,13 @@ const AddressBlocksValidatedListItem = (props: Props) => {
           noIcon
           fontWeight={ 700 }
         />
-        <Skeleton isLoaded={ !props.isLoading } color="text_secondary" display="inline-block">
-          <span>{ timeAgo }</span>
-        </Skeleton>
+        <TimeAgoWithTooltip
+          timestamp={ props.timestamp }
+          enableIncrement={ props.page === 1 }
+          isLoading={ props.isLoading }
+          color="text_secondary"
+          display="inline-block"
+        />
       </Flex>
       <Flex columnGap={ 2 } w="100%">
         <Skeleton isLoaded={ !props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Txn</Skeleton>

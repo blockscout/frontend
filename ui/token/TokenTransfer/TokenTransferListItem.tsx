@@ -4,13 +4,13 @@ import React from 'react';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
-import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import Tag from 'ui/shared/chakra/Tag';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
 type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean };
@@ -26,7 +26,6 @@ const TokenTransferListItem = ({
   tokenId,
   isLoading,
 }: Props) => {
-  const timeAgo = useTimeAgoIncrement(timestamp, true);
   const { usd, valueStr } = 'value' in total && total.value !== null ? getCurrencyValue({
     value: total.value,
     exchangeRate: token.exchange_rate,
@@ -44,13 +43,15 @@ const TokenTransferListItem = ({
           truncation="constant_long"
           fontWeight="700"
         />
-        { timestamp && (
-          <Skeleton isLoaded={ !isLoading } display="inline-block" fontWeight="400" fontSize="sm" color="text_secondary">
-            <span>
-              { timeAgo }
-            </span>
-          </Skeleton>
-        ) }
+        <TimeAgoWithTooltip
+          timestamp={ timestamp }
+          enableIncrement
+          isLoading={ isLoading }
+          color="text_secondary"
+          fontWeight="400"
+          fontSize="sm"
+          display="inline-block"
+        />
       </Flex>
       { method && <Tag isLoading={ isLoading }>{ method }</Tag> }
       <AddressFromTo

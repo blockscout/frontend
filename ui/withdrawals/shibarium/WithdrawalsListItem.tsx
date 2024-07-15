@@ -1,23 +1,20 @@
-import { Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ShibariumWithdrawalsItem } from 'types/api/shibarium';
 
 import config from 'configs/app';
-import dayjs from 'lib/date/dayjs';
 import AddressStringOrParam from 'ui/shared/entities/address/AddressStringOrParam';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 const feature = config.features.rollup;
 
 type Props = { item: ShibariumWithdrawalsItem; isLoading?: boolean };
 
 const WithdrawalsListItem = ({ item, isLoading }: Props) => {
-  const timeAgo = item.timestamp ? dayjs(item.timestamp).fromNow() : null;
-
   if (!(feature.isEnabled && feature.type === 'shibarium')) {
     return null;
   }
@@ -69,7 +66,11 @@ const WithdrawalsListItem = ({ item, isLoading }: Props) => {
       </ListItemMobileGrid.Value>
       <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">{ timeAgo }</Skeleton>
+        <TimeAgoWithTooltip
+          timestamp={ item.timestamp }
+          isLoading={ isLoading }
+          display="inline-block"
+        />
       </ListItemMobileGrid.Value>
 
     </ListItemMobileGrid.Container>

@@ -10,10 +10,10 @@ import type { ZkEvmL2TxnBatchesItem } from 'types/api/zkEvmL2';
 
 import { route } from 'nextjs-routes';
 
-import BlockTimestamp from 'ui/blocks/BlockTimestamp';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import ZkEvmL2TxnBatchStatus from 'ui/shared/statusTag/ZkEvmL2TxnBatchStatus';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 type Props = {
   batch: ZkEvmL2TxnBatchesItem;
@@ -44,10 +44,13 @@ const LatestZkevmL2BatchItem = ({ batch, isLoading }: Props) => {
           fontWeight={ 500 }
           mr="auto"
         />
-        <BlockTimestamp
-          ts={ batch.timestamp }
-          isEnabled={ !isLoading }
+        <TimeAgoWithTooltip
+          timestamp={ batch.timestamp }
+          enableIncrement={ !isLoading }
           isLoading={ isLoading }
+          color="text_secondary"
+          fontWeight={ 400 }
+          display="inline-block"
           fontSize="sm"
           flexShrink={ 0 }
           ml={ 2 }

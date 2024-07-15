@@ -12,11 +12,11 @@ import type { Transaction } from 'types/api/transaction';
 
 import config from 'configs/app';
 import getValueWithUnit from 'lib/getValueWithUnit';
-import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import { currencyUnits } from 'lib/units';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 import TxFee from 'ui/shared/tx/TxFee';
 import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
@@ -29,7 +29,6 @@ type Props = {
 
 const LatestTxsItem = ({ tx, isLoading }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
-  const timeAgo = useTimeAgoIncrement(tx.timestamp || '0', true);
   const columnNum = config.UI.views.tx.hiddenFields?.value && config.UI.views.tx.hiddenFields?.tx_fee ? 2 : 3;
 
   return (
@@ -65,18 +64,16 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
               hash={ tx.hash }
               fontWeight="700"
             />
-            { tx.timestamp && (
-              <Skeleton
-                isLoaded={ !isLoading }
-                color="text_secondary"
-                fontWeight="400"
-                fontSize="sm"
-                flexShrink={ 0 }
-                ml={ 2 }
-              >
-                <span>{ timeAgo }</span>
-              </Skeleton>
-            ) }
+            <TimeAgoWithTooltip
+              timestamp={ tx.timestamp }
+              enableIncrement
+              isLoading={ isLoading }
+              color="text_secondary"
+              fontWeight="400"
+              fontSize="sm"
+              flexShrink={ 0 }
+              ml={ 2 }
+            />
           </Flex>
         </Box>
       </Flex>
