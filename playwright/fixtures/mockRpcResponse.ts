@@ -8,9 +8,8 @@ type Params = PublicRpcSchema[number];
 
 export type MockRpcResponseFixture = (params: Params) => Promise<void>;
 
-// WIP
 const fixture: TestFixture<MockRpcResponseFixture, { page: Page }> = async({ page }, use) => {
-  await use(async({ Method, ReturnType }) => {
+  await use(async({ Method, ReturnType, Parameters }) => {
     const rpcUrl = getEnvValue('NEXT_PUBLIC_NETWORK_RPC_URL');
 
     if (!rpcUrl) {
@@ -32,17 +31,17 @@ const fixture: TestFixture<MockRpcResponseFixture, { page: Page }> = async({ pag
         id,
         jsonrpc: '2.0',
         method: Method,
-        // TODO: add params to match actual payload
+        params: Parameters,
       };
 
       if (_isEqual(json, payload) && id !== undefined) {
         return route.fulfill({
           status: 200,
-          body: JSON.stringify({
+          json: {
             id,
             jsonrpc: '2.0',
             result: ReturnType,
-          }),
+          },
         });
       }
     });

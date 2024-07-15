@@ -1,4 +1,6 @@
 /* eslint-disable max-len */
+import type { RpcBlock } from 'viem';
+
 import type { Block, BlocksResponse } from 'types/api/block';
 
 export const base: Block = {
@@ -150,4 +152,31 @@ export const baseListResponse: BlocksResponse = {
     base2,
   ],
   next_page_params: null,
+};
+
+export const baseRpcBlock: RpcBlock = {
+  difficulty: '0x37fcc04bef8',
+  extraData: '0x476574682f76312e302e312d38326566323666362f6c696e75782f676f312e34',
+  gasLimit: '0x2fefd8',
+  gasUsed: '0x0',
+  hash: '0xfbafb4b7b6f6789338d15ff046f40dc608a42b1a33b093e109c6d7a36cd76f61',
+  logsBloom: '0x0',
+  miner: '0xe6a7a1d47ff21b6321162aea7c6cb457d5476bca',
+  mixHash: '0x038956b9df89d0c1f980fd656d045e912beafa515cff7d7fd3c5f34ffdcb9e4b',
+  nonce: '0xd8d3392f340bbb22',
+  number: '0x1869f',
+  parentHash: '0x576fd45e598c9f86835f50fe2c6e6d11df2d4c4b01f19e4241b7e793d852f9e4',
+  receiptsRoot: '0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421',
+  sha3Uncles: '0x1dcc4de8dec75d7aab85b567b6ccd41ad312451b948a7413f0a142fd40d49347',
+  size: '0x225',
+  stateRoot: '0x32356228651d64cc5e6e7be87a556ecdbf40e876251dc867ba9e4bb82a0124a3',
+  timestamp: '0x55d19741',
+  totalDifficulty: '0x259e89748daae17',
+  transactions: [],
+  transactionsRoot: '0x56e81f171bcc55a6ff8345e692c0f86e5b48e01b996cadc001622fb5e363b421',
+  uncles: [],
+  baseFeePerGas: null,
+  blobGasUsed: `0x0`,
+  excessBlobGas: `0x0`,
+  sealFields: [],
 };
