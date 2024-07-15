@@ -1,6 +1,6 @@
 import { Flex, Skeleton, Text, Box, useColorModeValue } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import capitalize from 'lodash/capitalize';
+import { capitalize } from 'es-toolkit';
 import React from 'react';
 
 import type { Block } from 'types/api/block';

@@ -1,5 +1,5 @@
 import { Accordion, Box, Flex, Link } from '@chakra-ui/react';
-import _range from 'lodash/range';
+import { range } from 'es-toolkit';
 import React from 'react';
 
 import type { SmartContractMethod } from './types';
@@ -32,7 +32,7 @@ const ContractAbi = ({ abi, addressHash, tab }: Props) => {
     }
 
     if (expandedSections.length < abi.length) {
-      setExpandedSections(_range(0, abi.length));
+      setExpandedSections(range(0, abi.length));
     } else {
       setExpandedSections([]);
     }

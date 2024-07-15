@@ -1,5 +1,5 @@
 import { FormControl, Input } from '@chakra-ui/react';
-import _capitalize from 'lodash/capitalize';
+import { capitalize } from 'es-toolkit';
 import React from 'react';
 import type { ControllerRenderProps, UseFormReturn } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
@@ -31,7 +31,7 @@ const CsvExportFormField = ({ formApi, name }: Props) => {
           autoComplete="off"
           max={ dayjs().format('YYYY-MM-DD') }
         />
-        <InputPlaceholder text={ _capitalize(field.name) } error={ error }/>
+        <InputPlaceholder text={ capitalize(field.name) } error={ error }/>
       </FormControl>
     );
   }, [ formState.errors, formState.isSubmitting ]);

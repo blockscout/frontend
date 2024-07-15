@@ -1,5 +1,4 @@
 import BigNumber from 'bignumber.js';
-import fpAdd from 'lodash/fp/add';
 
 import type { AddressTokenBalance } from 'types/api/address';
 import type { TokenType } from 'types/api/token';
@@ -100,7 +99,7 @@ export const getTokensTotalInfo = (data: TokenSelectData) => {
 
   const num = Object.values(data)
     .map(({ items }) => items.length)
-    .reduce(fpAdd, 0);
+    .reduce((result, item) => result + item, 0);
 
   const isOverflow = Object.values(data).some(({ isOverflow }) => isOverflow);
 

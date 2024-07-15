@@ -1,6 +1,6 @@
 import { Table, Tbody, Tr, Th } from '@chakra-ui/react';
+import { capitalize } from 'es-toolkit';
 import { AnimatePresence } from 'framer-motion';
-import capitalize from 'lodash/capitalize';
 import React from 'react';
 
 import type { Block } from 'types/api/block';

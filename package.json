@@ -72,7 +72,7 @@
     "dappscout-iframe": "0.2.2",
     "dayjs": "^1.11.5",
     "dom-to-image": "^2.6.0",
-    "es-toolkit": "1.9.0",
+    "es-toolkit": "1.10.1",
     "focus-visible": "^5.2.0",
     "framer-motion": "^6.5.1",
     "getit-sdk": "^1.0.4",

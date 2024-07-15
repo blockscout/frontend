@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { uniq } from 'es-toolkit';
-import _chunk from 'lodash/chunk';
+import { uniq, chunk } from 'es-toolkit';
 import React from 'react';
 
 import type { NovesDescribeTxsResponse } from 'types/api/noves';
@@ -17,7 +16,7 @@ export default function useDescribeTxs(items: Array<Transaction> | undefined, vi
   const apiFetch = useApiFetch();
 
   const txsHash = items ? uniq(items.map(i => i.hash)) : [];
-  const txChunks = _chunk(txsHash, 10);
+  const txChunks = chunk(txsHash, 10);
 
   const queryKey = {
     viewAsAccountAddress,

@@ -1,5 +1,5 @@
 import { Image, Skeleton, Text, Flex } from '@chakra-ui/react';
-import _capitalize from 'lodash/capitalize';
+import { capitalize } from 'es-toolkit';
 import React from 'react';
 
 import type { Address } from 'types/api/address';
@@ -54,7 +54,7 @@ const AddressNetWorth = ({ addressData, isLoading, addressHash }: Props) => {
         { multichainFeature.logoUrl &&
           <Image src={ multichainFeature.logoUrl } alt={ multichainFeature.name } boxSize={ 5 } mr={ 2 } borderRadius="4px" overflow="hidden"/>
         }
-        { _capitalize(multichainFeature.name) }</>
+        { capitalize(multichainFeature.name) }</>
     );
 
     const linkProps = {
