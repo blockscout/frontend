@@ -28,8 +28,7 @@ import type {
   AddressTokenTransferFilters,
   AddressTokensFilter,
   AddressTokensResponse,
-  AddressWithdrawalsResponse,
-} from 'types/api/address';
+  AddressWithdrawalsResponse, AddressAspectResponse } from 'types/api/address';
 import type { AddressesResponse } from 'types/api/addresses';
 import type {
   BlocksResponse,
@@ -556,6 +555,10 @@ export const RESOURCES = {
     path: 'api/v2/aspects/:hash/transactions',
     pathParams: [ 'hash' as const ],
   },
+  address_aspects: {
+    path: 'api/v2/addresses/:address/aspects',
+    pathParams: [ 'address' as const ],
+  },
 };
 
 export type ResourceName = keyof typeof RESOURCES;
@@ -609,6 +612,7 @@ export type PaginatedResources =
   | 'address_token_transfers'
   | 'address_blocks_validated'
   | 'address_coin_balance'
+  | 'address_aspects'
   | 'search'
   | 'address_logs'
   | 'address_tokens'
@@ -797,7 +801,7 @@ export type ResourcePayload<Q extends ResourceName> = Q extends 'user_info'
   : Q extends 'aspect_transactions'
   ? AspectTxsResponse
   : Q extends 'aspects'
-  ? AspectDetail
+  ? AspectDetail : Q extends 'address_aspects' ? AddressAspectResponse
   : never;
 /* eslint-enable @typescript-eslint/indent */
 

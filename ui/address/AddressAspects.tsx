@@ -1,65 +1,31 @@
-import AspectABI from 'aspect/abi/aspect.json';
-import { ethers } from 'ethers';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import chain from 'configs/app/chain';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import { ADDRESS_COIN_BALANCE } from 'stubs/address';
+import { ADDRESS_ASPECTS } from 'stubs/address';
 import { generateListStub } from 'stubs/utils';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
+import ActionBar from '../shared/ActionBar';
+import Pagination from '../shared/pagination/Pagination';
 import AddressAspectsHistory from './aspects/AddressAspectsHistory';
 
-export type AspectType = {
-  aspectId?: string;
-  version?: number;
-  priority?: number;
-  joinPoints?: number;
-};
-const AddressAspects = () => {
+type Props = {
+  scrollRef?: React.RefObject<HTMLDivElement>;
+}
+
+const AddressAspects = ({ scrollRef }: Props) => {
   const router = useRouter();
-  const scrollRef = React.useRef<HTMLDivElement>(null);
-  const [ aspectList, setAspectList ] = React.useState<Array<Array<AspectType>>>([]);
-  const addressHash = getQueryParamString(router.query.hash);
-  const provider = React.useMemo(() => {
-    return new ethers.JsonRpcProvider(chain.rpcUrl);
-  }, []);
-  const contract = React.useMemo(() => {
-    return new ethers.Contract(chain.aspectAddress, AspectABI, provider);
-  }, [ provider ]);
-  const chunkArray = (arr: Array<AspectType>, chunkSize: number) => {
-    const result = [];
 
-    for (let i = 0; i < arr.length; i += chunkSize) {
-      result.push(arr.slice(i, i + chunkSize));
-    }
+  const currentAddress = getQueryParamString(router.query.hash);
 
-    return result;
-  };
-  const getAspectsList = React.useCallback(async(addressHash: string) => {
-    const res = await contract.aspectsOf(addressHash);
-    const data = chunkArray(res.map((item: AspectType) => {
-      return {
-        aspectId: item.aspectId,
-        version: item.version,
-        priority: item.priority,
-      };
-    }), 10);
-
-    setAspectList(data);
-  }, [ contract ]);
-
-  React.useEffect(() => {
-    getAspectsList(addressHash);
-  }, [ addressHash, getAspectsList ]);
-  const coinBalanceQuery = useQueryWithPages({
-    resourceName: 'address_coin_balance',
-    pathParams: { hash: addressHash },
+  const addressAspectQuery = useQueryWithPages({
+    resourceName: 'address_aspects',
+    pathParams: { address: currentAddress },
     scrollRef,
     options: {
-      placeholderData: generateListStub<'address_coin_balance'>(
-        ADDRESS_COIN_BALANCE,
+      placeholderData: generateListStub<'address_aspects'>(
+        ADDRESS_ASPECTS,
         50,
         {
           next_page_params: {
@@ -72,7 +38,13 @@ const AddressAspects = () => {
   });
 
   return (
-    <AddressAspectsHistory query={ coinBalanceQuery } aspectList={ aspectList }/>
+    <>
+      <ActionBar mt={ -6 } justifyContent="flex-end">
+        <Pagination { ...addressAspectQuery.pagination } isVisible ml={ 8 }/>
+      </ActionBar>
+      <AddressAspectsHistory query={ addressAspectQuery }/>
+    </>
+
   );
 };
 

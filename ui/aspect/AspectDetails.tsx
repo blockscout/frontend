@@ -10,22 +10,13 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import AddressHeadingInfo from 'ui/shared/AddressHeadingInfo';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
+import { convertString } from '../../configs/app/utils';
 import AddressLink from '../shared/address/AddressLink';
 import DetailsInfoItem from '../shared/DetailsInfoItem';
 
 interface Props {
   aspectQuery: UseQueryResult<TAspectDetail, ResourceError>;
   scrollRef?: React.RefObject<HTMLDivElement>;
-}
-
-function convertTagString(input: string) {
-  const parts = input.split('_');
-
-  for (let i = 0; i < parts.length; i++) {
-    parts[i] = parts[i].charAt(0).toUpperCase() + parts[i].slice(1).toLowerCase();
-  }
-
-  return parts.join(' ');
 }
 
 const AspectDetails = ({ aspectQuery }: Props) => {
@@ -103,7 +94,7 @@ const AspectDetails = ({ aspectQuery }: Props) => {
             <Skeleton
               key={ item }
               isLoaded={ !loading }>
-              <Tag colorScheme="green">{ convertTagString(item) }</Tag>
+              <Tag colorScheme="green">{ convertString(item) }</Tag>
             </Skeleton>
           )) }
         </DetailsInfoItem>
