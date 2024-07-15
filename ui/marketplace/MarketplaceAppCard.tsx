@@ -2,16 +2,16 @@ import { IconButton, Image, Link, LinkBox, Skeleton, useColorModeValue, chakra, 
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 
-import type { MarketplaceAppWithSecurityReport, ContractListTypes } from 'types/client/marketplace';
+import type { MarketplaceAppWithSecurityReport, ContractListTypes, AppRating } from 'types/client/marketplace';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import type { EventTypes, EventPayload } from 'lib/mixpanel/index';
 import IconSvg from 'ui/shared/IconSvg';
 
 import AppSecurityReport from './AppSecurityReport';
 import MarketplaceAppCardLink from './MarketplaceAppCardLink';
 import MarketplaceAppIntegrationIcon from './MarketplaceAppIntegrationIcon';
 import Rating from './Rating/Rating';
+import type { RateFunction } from './Rating/useRatings';
 
 interface Props extends MarketplaceAppWithSecurityReport {
   onInfoClick: (id: string) => void;
@@ -21,8 +21,8 @@ interface Props extends MarketplaceAppWithSecurityReport {
   onAppClick: (event: MouseEvent, id: string) => void;
   className?: string;
   showContractList: (id: string, type: ContractListTypes) => void;
-  userRating: number | undefined;
-  rateApp: (appId: string, recordId: string | undefined, rating: number, source: EventPayload<EventTypes.APP_FEEDBACK>['Source']) => void;
+  userRating?: AppRating;
+  rateApp: RateFunction;
   isSendingRating: boolean;
   isRatingLoading: boolean;
   canRate: boolean | undefined;
@@ -47,7 +47,6 @@ const MarketplaceAppCard = ({
   className,
   showContractList,
   rating,
-  ratingRecordId,
   userRating,
   rateApp,
   isSendingRating,
@@ -175,7 +174,6 @@ const MarketplaceAppCard = ({
               <Rating
                 appId={ id }
                 rating={ rating }
-                recordId={ ratingRecordId }
                 userRating={ userRating }
                 rate={ rateApp }
                 isSending={ isSendingRating }

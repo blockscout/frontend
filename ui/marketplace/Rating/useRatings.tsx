@@ -2,7 +2,7 @@ import Airtable from 'airtable';
 import { useEffect, useState, useCallback } from 'react';
 import { useAccount } from 'wagmi';
 
-import type { UserRatings, AppRatings } from 'types/client/marketplace';
+import type { AppRating } from 'types/client/marketplace';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
@@ -15,6 +15,28 @@ const feature = config.features.marketplace;
 const base = (feature.isEnabled && feature.rating) ?
   new Airtable({ apiKey: feature.rating.airtableApiKey }).base(feature.rating.airtableBaseId) :
   undefined;
+
+export type RateFunction = (
+  appId: string,
+  appRecordId: string | undefined,
+  userRecordId: string | undefined,
+  rating: number,
+  source: EventPayload<EventTypes.APP_FEEDBACK>['Source'],
+) => void;
+
+function formatRatings(data: Airtable.Records<Airtable.FieldSet>) {
+  return data.reduce((acc: Record<string, AppRating>, record) => {
+    const fields = record.fields as { appId: string; rating: number };
+    if (!fields.appId || typeof fields.rating !== 'number') {
+      return acc;
+    }
+    acc[fields.appId] = {
+      recordId: record.id,
+      value: fields.rating,
+    };
+    return acc;
+  }, {});
+}
 
 export default function useRatings() {
   const { address } = useAccount();
@@ -29,8 +51,8 @@ export default function useRatings() {
     },
   });
 
-  const [ ratings, setRatings ] = useState<AppRatings>({});
-  const [ userRatings, setUserRatings ] = useState<UserRatings>({});
+  const [ ratings, setRatings ] = useState<Record<string, AppRating>>({});
+  const [ userRatings, setUserRatings ] = useState<Record<string, AppRating>>({});
   const [ isRatingLoading, setIsRatingLoading ] = useState<boolean>(false);
   const [ isUserRatingLoading, setIsUserRatingLoading ] = useState<boolean>(false);
   const [ isSending, setIsSending ] = useState<boolean>(false);
@@ -41,14 +63,7 @@ export default function useRatings() {
       return;
     }
     const data = await base('apps_ratings').select({ fields: [ 'appId', 'rating' ] }).all();
-    const ratings = data.reduce((acc: AppRatings, record) => {
-      const fields = record.fields as { appId: string; rating: number };
-      acc[fields.appId] = {
-        recordId: record.id,
-        rating: fields.rating,
-      };
-      return acc;
-    }, {});
+    const ratings = formatRatings(data);
     setRatings(ratings);
   }, []);
 
@@ -64,20 +79,13 @@ export default function useRatings() {
   useEffect(() => {
     async function fetchUserRatings() {
       setIsUserRatingLoading(true);
-      let userRatings = {} as UserRatings;
+      let userRatings = {} as Record<string, AppRating>;
       if (address && base) {
         const data = await base('users_ratings').select({
           filterByFormula: `address = "${ address }"`,
           fields: [ 'appId', 'rating' ],
         }).all();
-        userRatings = data.reduce((acc: UserRatings, record) => {
-          const fields = record.fields as { appId: string; rating: number };
-          if (!fields.appId || typeof fields.rating !== 'number') {
-            return acc;
-          }
-          acc[fields.appId] = fields.rating;
-          return acc;
-        }, {});
+        userRatings = formatRatings(data);
       }
       setUserRatings(userRatings);
       setIsUserRatingLoading(false);
@@ -93,16 +101,18 @@ export default function useRatings() {
 
   const rateApp = useCallback(async(
     appId: string,
-    recordId: string | undefined,
+    appRecordId: string | undefined,
+    userRecordId: string | undefined,
     rating: number,
     source: EventPayload<EventTypes.APP_FEEDBACK>['Source'],
   ) => {
     setIsSending(true);
+
     try {
       if (!address || !base) {
         throw new Error('Address is missing');
       }
-      let appRecordId = recordId;
+
       if (!appRecordId) {
         const records = await base('apps_ratings').create([ { fields: { appId } } ]);
         appRecordId = records[0].id;
@@ -110,22 +120,36 @@ export default function useRatings() {
           throw new Error('Record ID is missing');
         }
       }
-      await base('users_ratings').create([
-        {
-          fields: {
-            address,
-            appRecordId: [ appRecordId ],
-            rating,
+
+      if (!userRecordId) {
+        const userRecords = await base('users_ratings').create([
+          {
+            fields: {
+              address,
+              appRecordId: [ appRecordId ],
+              rating,
+            },
           },
+        ]);
+        userRecordId = userRecords[0].id;
+      } else {
+        await base('users_ratings').update(userRecordId, { rating });
+      }
+
+      setUserRatings({
+        ...userRatings,
+        [appId]: {
+          recordId: userRecordId,
+          value: rating,
         },
-      ]);
-      setUserRatings({ ...userRatings, [appId]: rating });
+      });
+      fetchRatings();
+
       toast({
         status: 'success',
         title: 'Awesome! Thank you 💜',
         description: 'Your rating improves the service',
       });
-      fetchRatings();
       mixpanel.logEvent(
         mixpanel.EventTypes.APP_FEEDBACK,
         { Action: 'Rating', Source: source, AppId: appId, Score: rating },
@@ -137,6 +161,7 @@ export default function useRatings() {
         description: 'Please try again later',
       });
     }
+
     setIsSending(false);
   }, [ address, userRatings, fetchRatings, toast ]);
 

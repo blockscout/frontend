@@ -15,7 +15,10 @@ const props = {
   data: {
     ...appsMock[0],
     securityReport: securityReportsMock[0].chainsData['1'],
-    rating: 4.3,
+    rating: {
+      recordId: 'test',
+      value: 4.3,
+    },
   } as MarketplaceAppWithSecurityReport,
   isFavorite: false,
   userRating: undefined,

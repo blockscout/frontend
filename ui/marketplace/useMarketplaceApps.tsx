@@ -97,8 +97,7 @@ export default function useMarketplaceApps(
     data?.map((app) => ({
       ...app,
       securityReport: securityReports?.[app.id],
-      rating: ratings?.[app.id]?.rating,
-      ratingRecordId: ratings?.[app.id]?.recordId,
+      rating: ratings?.[app.id],
     })),
   [ data, securityReports, ratings ]);
 
@@ -110,7 +109,7 @@ export default function useMarketplaceApps(
           return (b.securityReport?.overallInfo.securityScore || 0) - (a.securityReport?.overallInfo.securityScore || 0);
         }
         if (sorting === 'rating') {
-          return (b.rating || 0) - (a.rating || 0);
+          return (b.rating?.value || 0) - (a.rating?.value || 0);
         }
         return 0;
       }) || [];

@@ -4,13 +4,12 @@ import {
 } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
-import type { MarketplaceAppWithSecurityReport } from 'types/client/marketplace';
+import type { MarketplaceAppWithSecurityReport, AppRating } from 'types/client/marketplace';
 import { ContractListTypes } from 'types/client/marketplace';
 
 import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
-import type { EventTypes, EventPayload } from 'lib/mixpanel/index';
 import * as mixpanel from 'lib/mixpanel/index';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
@@ -18,6 +17,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import AppSecurityReport from './AppSecurityReport';
 import MarketplaceAppModalLink from './MarketplaceAppModalLink';
 import Rating from './Rating/Rating';
+import type { RateFunction } from './Rating/useRatings';
 
 const feature = config.features.marketplace;
 const isRatingEnabled = feature.isEnabled && feature.rating;
@@ -28,8 +28,8 @@ type Props = {
   onFavoriteClick: (id: string, isFavorite: boolean, source: 'App modal') => void;
   data: MarketplaceAppWithSecurityReport;
   showContractList: (id: string, type: ContractListTypes, hasPreviousStep: boolean) => void;
-  userRating: number | undefined;
-  rateApp: (appId: string, recordId: string | undefined, rating: number, source: EventPayload<EventTypes.APP_FEEDBACK>['Source']) => void;
+  userRating?: AppRating;
+  rateApp: RateFunction;
   isSendingRating: boolean;
   isRatingLoading: boolean;
   canRate: boolean | undefined;
@@ -64,7 +64,6 @@ const MarketplaceAppModal = ({
     categories,
     securityReport,
     rating,
-    ratingRecordId,
   } = data;
 
   const socialLinks = [
@@ -175,7 +174,6 @@ const MarketplaceAppModal = ({
               <Rating
                 appId={ id }
                 rating={ rating }
-                recordId={ ratingRecordId }
                 userRating={ userRating }
                 rate={ rateApp }
                 isSending={ isSendingRating }

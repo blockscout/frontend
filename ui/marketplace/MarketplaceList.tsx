@@ -2,13 +2,13 @@ import { Grid } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 import type { MouseEvent } from 'react';
 
-import type { MarketplaceAppWithSecurityReport, ContractListTypes, UserRatings } from 'types/client/marketplace';
+import type { MarketplaceAppWithSecurityReport, ContractListTypes, AppRating } from 'types/client/marketplace';
 
-import type { EventTypes, EventPayload } from 'lib/mixpanel/index';
 import * as mixpanel from 'lib/mixpanel/index';
 
 import EmptySearchResult from './EmptySearchResult';
 import MarketplaceAppCard from './MarketplaceAppCard';
+import type { RateFunction } from './Rating/useRatings';
 
 type Props = {
   apps: Array<MarketplaceAppWithSecurityReport>;
@@ -19,8 +19,8 @@ type Props = {
   selectedCategoryId?: string;
   onAppClick: (event: MouseEvent, id: string) => void;
   showContractList: (id: string, type: ContractListTypes) => void;
-  userRatings: UserRatings;
-  rateApp: (appId: string, recordId: string, rating: number, source: EventPayload<EventTypes.APP_FEEDBACK>['Source']) => void;
+  userRatings: Record<string, AppRating>;
+  rateApp: RateFunction;
   isSendingRating: boolean;
   isRatingLoading: boolean;
   canRate: boolean | undefined;
@@ -68,7 +68,6 @@ const MarketplaceList = ({
           securityReport={ app.securityReport }
           showContractList={ showContractList }
           rating={ app.rating }
-          ratingRecordId={ app.ratingRecordId }
           userRating={ userRatings[app.id] }
           rateApp={ rateApp }
           isSendingRating={ isSendingRating }

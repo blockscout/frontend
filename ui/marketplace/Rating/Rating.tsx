@@ -1,6 +1,8 @@
 import { Text, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure, Skeleton, useOutsideClick, Box } from '@chakra-ui/react';
 import React from 'react';
 
+import type { AppRating } from 'types/client/marketplace';
+
 import config from 'configs/app';
 import type { EventTypes, EventPayload } from 'lib/mixpanel/index';
 import Popover from 'ui/shared/chakra/Popover';
@@ -8,16 +10,16 @@ import Popover from 'ui/shared/chakra/Popover';
 import Content from './PopoverContent';
 import Stars from './Stars';
 import TriggerButton from './TriggerButton';
+import type { RateFunction } from './useRatings';
 
 const feature = config.features.marketplace;
 const isEnabled = feature.isEnabled && feature.rating;
 
 type Props = {
   appId: string;
-  rating?: number;
-  recordId?: string;
-  userRating: number | undefined;
-  rate: (appId: string, recordId: string | undefined, rating: number, source: EventPayload<EventTypes.APP_FEEDBACK>['Source']) => void;
+  rating?: AppRating;
+  userRating?: AppRating;
+  rate: RateFunction;
   isSending?: boolean;
   isLoading?: boolean;
   fullView?: boolean;
@@ -26,7 +28,7 @@ type Props = {
 };
 
 const Rating = ({
-  appId, rating, recordId, userRating, rate,
+  appId, rating, userRating, rate,
   isSending, isLoading, fullView, canRate, source,
 }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
@@ -47,8 +49,8 @@ const Rating = ({
     >
       { fullView && (
         <>
-          <Stars filledIndex={ (rating || 0) - 1 }/>
-          <Text fontSize="md" ml={ 1 }>{ rating }</Text>
+          <Stars filledIndex={ (rating?.value || 0) - 1 }/>
+          <Text fontSize="md" ml={ 1 }>{ rating?.value }</Text>
         </>
       ) }
       <Box ref={ popoverRef }>
@@ -66,7 +68,7 @@ const Rating = ({
             <PopoverBody p={ 4 }>
               <Content
                 appId={ appId }
-                recordId={ recordId }
+                rating={ rating }
                 userRating={ userRating }
                 rate={ rate }
                 isSending={ isSending }

@@ -1,12 +1,14 @@
 import { Button, chakra, useColorModeValue, Tooltip, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
+import type { AppRating } from 'types/client/marketplace';
+
 import useIsMobile from 'lib/hooks/useIsMobile';
 import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
 import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {
-  rating?: number;
+  rating?: AppRating;
   fullView?: boolean;
   isActive: boolean;
   onClick: () => void;
@@ -76,7 +78,7 @@ const TriggerButton = (
         ) }
         { (rating && !fullView) ? (
           <chakra.span color={ textColor } transition="inherit">
-            { rating }
+            { rating.value }
           </chakra.span>
         ) : (
           'Rate it!'

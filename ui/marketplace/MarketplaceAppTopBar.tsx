@@ -89,8 +89,7 @@ const MarketplaceAppTopBar = ({ appId, data, isLoading, securityReport }: Props)
         ) }
         <Rating
           appId={ appId }
-          rating={ ratings?.[appId]?.rating }
-          recordId={ ratings?.[appId]?.recordId }
+          rating={ ratings[appId] }
           userRating={ userRatings[appId] }
           rate={ rateApp }
           isSending={ isSendingRating }
