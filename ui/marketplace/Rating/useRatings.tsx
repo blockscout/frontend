@@ -7,6 +7,8 @@ import type { UserRatings, AppRatings } from 'types/client/marketplace';
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import useToast from 'lib/hooks/useToast';
+import type { EventTypes, EventPayload } from 'lib/mixpanel/index';
+import * as mixpanel from 'lib/mixpanel/index';
 import { ADDRESS_COUNTERS } from 'stubs/address';
 
 const feature = config.features.marketplace;
@@ -89,7 +91,12 @@ export default function useRatings() {
     setCanRate(canRate);
   }, [ address, addressCountersQuery ]);
 
-  const rateApp = useCallback(async(appId: string, recordId: string | undefined, rating: number) => {
+  const rateApp = useCallback(async(
+    appId: string,
+    recordId: string | undefined,
+    rating: number,
+    source: EventPayload<EventTypes.APP_FEEDBACK>['Source'],
+  ) => {
     setIsSending(true);
     try {
       if (!address || !base) {
@@ -119,6 +126,10 @@ export default function useRatings() {
         description: 'Your rating improves the service',
       });
       fetchRatings();
+      mixpanel.logEvent(
+        mixpanel.EventTypes.APP_FEEDBACK,
+        { Action: 'Rating', Source: source, AppId: appId, Score: rating },
+      );
     } catch (error) {
       toast({
         status: 'error',

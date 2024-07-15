@@ -5,6 +5,7 @@ import React, { useCallback } from 'react';
 import type { MarketplaceAppWithSecurityReport, ContractListTypes } from 'types/client/marketplace';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import type { EventTypes, EventPayload } from 'lib/mixpanel/index';
 import IconSvg from 'ui/shared/IconSvg';
 
 import AppSecurityReport from './AppSecurityReport';
@@ -21,7 +22,7 @@ interface Props extends MarketplaceAppWithSecurityReport {
   className?: string;
   showContractList: (id: string, type: ContractListTypes) => void;
   userRating: number | undefined;
-  rateApp: (appId: string, recordId: string | undefined, rating: number) => void;
+  rateApp: (appId: string, recordId: string | undefined, rating: number, source: EventPayload<EventTypes.APP_FEEDBACK>['Source']) => void;
   isSendingRating: boolean;
   isRatingLoading: boolean;
   canRate: boolean | undefined;
@@ -180,6 +181,7 @@ const MarketplaceAppCard = ({
                 isSending={ isSendingRating }
                 isLoading={ isRatingLoading }
                 canRate={ canRate }
+                source="Discovery"
               />
               <IconButton
                 aria-label="Mark as favorite"

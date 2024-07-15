@@ -2,6 +2,7 @@ import { Text, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure, Skele
 import React from 'react';
 
 import config from 'configs/app';
+import type { EventTypes, EventPayload } from 'lib/mixpanel/index';
 import Popover from 'ui/shared/chakra/Popover';
 
 import Content from './PopoverContent';
@@ -16,16 +17,17 @@ type Props = {
   rating?: number;
   recordId?: string;
   userRating: number | undefined;
-  rate: (appId: string, recordId: string | undefined, rating: number) => void;
+  rate: (appId: string, recordId: string | undefined, rating: number, source: EventPayload<EventTypes.APP_FEEDBACK>['Source']) => void;
   isSending?: boolean;
   isLoading?: boolean;
   fullView?: boolean;
   canRate: boolean | undefined;
+  source: EventPayload<EventTypes.APP_FEEDBACK>['Source'];
 };
 
 const Rating = ({
   appId, rating, recordId, userRating, rate,
-  isSending, isLoading, fullView, canRate,
+  isSending, isLoading, fullView, canRate, source,
 }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
   // have to implement this solution because popover loses focus on button click inside it (issue: https://github.com/chakra-ui/chakra-ui/issues/7359)
@@ -68,6 +70,7 @@ const Rating = ({
                 userRating={ userRating }
                 rate={ rate }
                 isSending={ isSending }
+                source={ source }
               />
             </PopoverBody>
           </PopoverContent>

@@ -2,6 +2,7 @@ import { Text, Flex, Spinner, Button } from '@chakra-ui/react';
 import React from 'react';
 
 import { mdash } from 'lib/html-entities';
+import type { EventTypes, EventPayload } from 'lib/mixpanel/index';
 import IconSvg from 'ui/shared/IconSvg';
 
 import Stars from './Stars';
@@ -12,11 +13,12 @@ type Props = {
   appId: string;
   recordId?: string;
   userRating: number | undefined;
-  rate: (appId: string, recordId: string | undefined, rating: number) => void;
+  rate: (appId: string, recordId: string | undefined, rating: number, source: EventPayload<EventTypes.APP_FEEDBACK>['Source']) => void;
   isSending?: boolean;
+  source: EventPayload<EventTypes.APP_FEEDBACK>['Source'];
 };
 
-const PopoverContent = ({ appId, recordId, userRating, rate, isSending }: Props) => {
+const PopoverContent = ({ appId, recordId, userRating, rate, isSending, source }: Props) => {
   const [ hovered, setHovered ] = React.useState(-1);
   const [ selected, setSelected ] = React.useState(-1);
 
@@ -36,8 +38,8 @@ const PopoverContent = ({ appId, recordId, userRating, rate, isSending }: Props)
     if (selected < 0) {
       return;
     }
-    rate(appId, recordId, selected + 1);
-  }, [ appId, recordId, selected, rate ]);
+    rate(appId, recordId, selected + 1, source);
+  }, [ appId, recordId, selected, rate, source ]);
 
   if (userRating) {
     return (

@@ -4,6 +4,7 @@ import type { MouseEvent } from 'react';
 
 import type { MarketplaceAppWithSecurityReport, ContractListTypes, UserRatings } from 'types/client/marketplace';
 
+import type { EventTypes, EventPayload } from 'lib/mixpanel/index';
 import * as mixpanel from 'lib/mixpanel/index';
 
 import EmptySearchResult from './EmptySearchResult';
@@ -19,7 +20,7 @@ type Props = {
   onAppClick: (event: MouseEvent, id: string) => void;
   showContractList: (id: string, type: ContractListTypes) => void;
   userRatings: UserRatings;
-  rateApp: (appId: string, recordId: string, rating: number) => void;
+  rateApp: (appId: string, recordId: string, rating: number, source: EventPayload<EventTypes.APP_FEEDBACK>['Source']) => void;
   isSendingRating: boolean;
   isRatingLoading: boolean;
   canRate: boolean | undefined;

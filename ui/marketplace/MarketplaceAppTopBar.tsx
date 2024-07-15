@@ -96,6 +96,7 @@ const MarketplaceAppTopBar = ({ appId, data, isLoading, securityReport }: Props)
           isSending={ isSendingRating }
           isLoading={ isRatingLoading }
           canRate={ canRate }
+          source="App page"
         />
         { !isMobile && (
           <Flex flex="1" justifyContent="flex-end">

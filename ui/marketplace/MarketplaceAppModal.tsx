@@ -10,6 +10,7 @@ import { ContractListTypes } from 'types/client/marketplace';
 import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
+import type { EventTypes, EventPayload } from 'lib/mixpanel/index';
 import * as mixpanel from 'lib/mixpanel/index';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
@@ -28,7 +29,7 @@ type Props = {
   data: MarketplaceAppWithSecurityReport;
   showContractList: (id: string, type: ContractListTypes, hasPreviousStep: boolean) => void;
   userRating: number | undefined;
-  rateApp: (appId: string, recordId: string | undefined, rating: number) => void;
+  rateApp: (appId: string, recordId: string | undefined, rating: number, source: EventPayload<EventTypes.APP_FEEDBACK>['Source']) => void;
   isSendingRating: boolean;
   isRatingLoading: boolean;
   canRate: boolean | undefined;
@@ -181,6 +182,7 @@ const MarketplaceAppModal = ({
                 isLoading={ isRatingLoading }
                 fullView
                 canRate={ canRate }
+                source="App modal"
               />
             </Box>
           ) }
