@@ -84,8 +84,8 @@ export default function useRatings() {
   }, [ address ]);
 
   useEffect(() => {
-    const { isPlaceholderData/**, data**/ } = addressCountersQuery;
-    const canRate = address && !isPlaceholderData /**&& Number(data?.transactions_count) >= 10**/;
+    const { isPlaceholderData, data } = addressCountersQuery;
+    const canRate = address && !isPlaceholderData && Number(data?.transactions_count) >= 10;
     setCanRate(canRate);
   }, [ address, addressCountersQuery ]);
 
