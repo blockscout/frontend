@@ -164,3 +164,18 @@ export type AddressWithdrawalsItem = {
   timestamp: string;
   validator_index: number;
 }
+
+export interface AddressAspectResponse {
+  items: Array<AddressAspect>;
+  next_page_params: {
+    block_number: number;
+    items_count: number;
+  } | null;
+}
+
+export type AddressAspect = {
+  aspect_hash: string;
+  join_points: Array<string>;
+  priority: number;
+  version: number;
+}

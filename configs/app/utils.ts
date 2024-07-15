@@ -7,3 +7,13 @@ export const parseEnvJson = <DataType>(env: string | undefined): DataType | null
     return null;
   }
 };
+
+export function convertString(str: string) {
+  const parts = str.split('_');
+
+  for (let i = 0; i < parts.length; i++) {
+    parts[i] = parts[i].charAt(0).toUpperCase() + parts[i].slice(1);
+  }
+
+  return parts.join(' ');
+}

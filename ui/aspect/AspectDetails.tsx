@@ -10,6 +10,7 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import AddressHeadingInfo from 'ui/shared/AddressHeadingInfo';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
+import { convertString } from '../../configs/app/utils';
 import AddressLink from '../shared/address/AddressLink';
 import DetailsInfoItem from '../shared/DetailsInfoItem';
 
@@ -89,7 +90,13 @@ const AspectDetails = ({ aspectQuery }: Props) => {
           hint="Enabled join points of this Aspect, containing verify tx, pre tx execution, post tx execution, pre contract call and post contract call"
           isLoading={ loading }
         >
-          { aspectQuery.data?.join_points.map(item => <Skeleton key={ item } isLoaded={ !loading }><Tag colorScheme="green">{ item }</Tag></Skeleton>) }
+          { aspectQuery.data?.join_points.map(item => (
+            <Skeleton
+              key={ item }
+              isLoaded={ !loading }>
+              <Tag colorScheme="green">{ convertString(item) }</Tag>
+            </Skeleton>
+          )) }
         </DetailsInfoItem>
         <DetailsInfoItem
           title="Bound Addresses"

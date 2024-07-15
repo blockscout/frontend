@@ -1,4 +1,4 @@
-import type { Address, AddressCoinBalanceHistoryItem, AddressCounters, AddressTokenBalance } from 'types/api/address';
+import type { Address, AddressAspect, AddressCoinBalanceHistoryItem, AddressCounters, AddressTokenBalance } from 'types/api/address';
 import type { AddressesItem } from 'types/api/addresses';
 
 import { ADDRESS_HASH } from './addressParams';
@@ -82,4 +82,13 @@ export const ADDRESS_TOKEN_BALANCE_ERC_1155: AddressTokenBalance = {
   token_id: '188882',
   token_instance: TOKEN_INSTANCE,
   value: '176',
+};
+
+export const ADDRESS_ASPECTS: AddressAspect = {
+  aspect_hash: '0x9639aea2f55e44a5b352a62c80976fae574b7d97',
+  join_points: [
+    'verify_tx',
+  ],
+  priority: 1,
+  version: 1,
 };
