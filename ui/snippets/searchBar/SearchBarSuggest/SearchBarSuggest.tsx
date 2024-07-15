@@ -71,7 +71,9 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
     if (!query.data && !marketplaceApps.displayedApps) {
       return {};
     }
+
     const map: Partial<ItemsCategoriesMap> = {};
+
     query.data?.forEach(item => {
       const cat = getItemCategory(item) as ApiCategory;
       if (cat) {
@@ -82,11 +84,23 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
         }
       }
     });
+
     if (marketplaceApps.displayedApps.length) {
       map.app = marketplaceApps.displayedApps;
     }
+
+    if (Object.keys(map).length > 0 && !map.block && regexp.BLOCK_HEIGHT.test(searchTerm)) {
+      map['block'] = [ {
+        type: 'block',
+        block_type: 'block',
+        block_number: searchTerm,
+        block_hash: '',
+        timestamp: undefined,
+      } ];
+    }
+
     return map;
-  }, [ query.data, marketplaceApps.displayedApps ]);
+  }, [ query.data, marketplaceApps.displayedApps, searchTerm ]);
 
   React.useEffect(() => {
     categoriesRefs.current = Array(Object.keys(itemsGroups).length).fill('').map((_, i) => categoriesRefs.current[i] || React.createRef());

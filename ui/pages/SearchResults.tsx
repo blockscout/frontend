@@ -3,6 +3,8 @@ import { useRouter } from 'next/router';
 import type { FormEvent } from 'react';
 import React from 'react';
 
+import type { SearchResultItem } from 'types/client/search';
+
 import config from 'configs/app';
 import * as regexp from 'lib/regexp';
 import useMarketplaceApps from 'ui/marketplace/useMarketplaceApps';
@@ -16,6 +18,7 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as Layout from 'ui/shared/layout/components';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
+import type { SearchResultAppItem } from 'ui/shared/search/utils';
 import Thead from 'ui/shared/TheadSticky';
 import HeaderAlert from 'ui/snippets/header/HeaderAlert';
 import HeaderDesktop from 'ui/snippets/header/HeaderDesktop';
@@ -79,40 +82,54 @@ const SearchResultsPageContent = () => {
     event.preventDefault();
   }, [ ]);
 
-  const displayedItems = (data?.items || []).filter((item) => {
-    if (!config.features.userOps.isEnabled && item.type === 'user_operation') {
-      return false;
-    }
-    if (!config.features.dataAvailability.isEnabled && item.type === 'blob') {
-      return false;
-    }
-    if (!config.features.nameService.isEnabled && item.type === 'ens_domain') {
-      return false;
-    }
-    return true;
-  });
+  const displayedItems: Array<SearchResultItem | SearchResultAppItem> = React.useMemo(() => {
+    const apiData = (data?.items || []).filter((item) => {
+      if (!config.features.userOps.isEnabled && item.type === 'user_operation') {
+        return false;
+      }
+      if (!config.features.dataAvailability.isEnabled && item.type === 'blob') {
+        return false;
+      }
+      if (!config.features.nameService.isEnabled && item.type === 'ens_domain') {
+        return false;
+      }
+      return true;
+    });
+
+    const futureBlockItem = !isPlaceholderData &&
+      pagination.page === 1 &&
+      !data?.next_page_params &&
+      apiData.length > 0 &&
+      !apiData.some(({ type }) => type === 'block') &&
+      regexp.BLOCK_HEIGHT.test(debouncedSearchTerm) ?
+      {
+        type: 'block' as const,
+        block_type: 'block' as const,
+        block_number: debouncedSearchTerm,
+        block_hash: '',
+        timestamp: undefined,
+      } : undefined;
+
+    return [
+      ...(pagination.page === 1 && !isPlaceholderData ? marketplaceApps.displayedApps.map((item) => ({ type: 'app' as const, app: item })) : []),
+      futureBlockItem,
+      ...apiData,
+    ].filter(Boolean);
+
+  }, [ data?.items, data?.next_page_params, isPlaceholderData, pagination.page, debouncedSearchTerm, marketplaceApps.displayedApps ]);
 
   const content = (() => {
     if (isError) {
       return <DataFetchAlert/>;
     }
 
-    const hasData = displayedItems.length || (pagination.page === 1 && marketplaceApps.displayedApps.length);
-
-    if (!hasData) {
+    if (!displayedItems.length) {
       return null;
     }
 
     return (
       <>
         <Show below="lg" ssr={ false }>
-          { pagination.page === 1 && marketplaceApps.displayedApps.map((item, index) => (
-            <SearchResultListItem
-              key={ 'actual_' + index }
-              data={{ type: 'app', app: item }}
-              searchTerm={ debouncedSearchTerm }
-            />
-          )) }
           { displayedItems.map((item, index) => (
             <SearchResultListItem
               key={ (isPlaceholderData ? 'placeholder_' : 'actual_') + index }
@@ -133,13 +150,6 @@ const SearchResultsPageContent = () => {
               </Tr>
             </Thead>
             <Tbody>
-              { pagination.page === 1 && marketplaceApps.displayedApps.map((item, index) => (
-                <SearchResultTableItem
-                  key={ 'actual_' + index }
-                  data={{ type: 'app', app: item }}
-                  searchTerm={ debouncedSearchTerm }
-                />
-              )) }
               { displayedItems.map((item, index) => (
                 <SearchResultTableItem
                   key={ (isPlaceholderData ? 'placeholder_' : 'actual_') + index }
@@ -160,7 +170,7 @@ const SearchResultsPageContent = () => {
       return null;
     }
 
-    const resultsCount = pagination.page === 1 && !data?.next_page_params ? (displayedItems.length || 0) + marketplaceApps.displayedApps.length : '50+';
+    const resultsCount = pagination.page === 1 && !data?.next_page_params ? displayedItems.length : '50+';
 
     const text = isPlaceholderData && pagination.page === 1 ? (
       <Skeleton h={ 6 } w="280px" borderRadius="full" mb={ pagination.isVisible ? 0 : 6 }/>
