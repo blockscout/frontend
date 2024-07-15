@@ -10,6 +10,7 @@
   "scripts": {
     "dev": "./tools/scripts/dev.sh",
     "dev:preset": "./tools/scripts/dev.preset.sh",
+    "dev:preset:sync": "tsc -p ./tools/preset-sync/tsconfig.json && node ./tools/preset-sync/index.js",
     "build": "next build",
     "build:docker": "docker build --build-arg GIT_COMMIT_SHA=$(git rev-parse --short HEAD) --build-arg GIT_TAG=$(git describe --tags --abbrev=0) -t blockscout-frontend:local ./",
     "start": "next start",
