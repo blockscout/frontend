@@ -15,6 +15,7 @@ const props = {
   data: {
     ...appsMock[0],
     securityReport: securityReportsMock[0].chainsData['1'],
+    rating: 4.3,
   } as MarketplaceAppWithSecurityReport,
   isFavorite: false,
   userRating: undefined,
@@ -24,9 +25,14 @@ const props = {
   canRate: undefined,
 };
 
-const testFn: Parameters<typeof test>[1] = async({ render, page, mockAssetResponse }) => {
+const testFn: Parameters<typeof test>[1] = async({ render, page, mockAssetResponse, mockEnvs }) => {
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_MARKETPLACE_RATING_AIRTABLE_API_KEY', 'test' ],
+    [ 'NEXT_PUBLIC_MARKETPLACE_RATING_AIRTABLE_BASE_ID', 'test' ],
+  ]);
   await mockAssetResponse(appsMock[0].logo, './playwright/mocks/image_s.jpg');
   await render(<MarketplaceAppModal { ...props }/>);
+  await page.getByText('Launch app').focus();
   await expect(page).toHaveScreenshot();
 };
 
