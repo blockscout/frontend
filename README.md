@@ -2,18 +2,18 @@
 
 <p align="center">
     <span>Frontend application for </span>
-    <a href="https://github.com/luxdefi/explorer-app/blob/master/README.md">Lux Explorer</a>
+    <a href="https://github.com/luxfi/explorer-app/blob/master/README.md">Lux Explorer</a>
     <span> blockchain explorer</span>
 </p>
 
 ## Running and configuring the app
 
-App is distributed as a docker image. Here you can find information about the [package](https://github.com/luxdefi/explore/pkgs/container/frontend) and its recent [releases](https://github.com/luxdefi/explore/releases).
+App is distributed as a docker image. Here you can find information about the [package](https://github.com/luxfi/explore/pkgs/container/frontend) and its recent [releases](https://github.com/luxfi/explore/releases).
 
 You can configure your app by passing necessary environment variables when starting the container. See full list of ENVs and their description [here](./docs/ENVS.md).
 
 ```sh
-docker run -p 3000:3000 --env-file <path-to-your-env-file> ghcr.io/luxdefi/:latest
+docker run -p 3000:3000 --env-file <path-to-your-env-file> ghcr.io/luxfi/:latest
 ```
 
 Alternatively, you can build your own docker image and run your app from that. Please follow this [guide](./docs/CUSTOM_BUILD.md).

@@ -25,8 +25,8 @@ import getApiVersionUrl from './utils/getApiVersionUrl';
 
 const MAX_LINKS_COLUMNS = 4;
 
-const FRONT_VERSION_URL = `https://github.com/luxdefi/explorer-app/tree/${ config.UI.footer.frontendVersion }`;
-const FRONT_COMMIT_URL = `https://github.com/luxdefi/explorer-app/commit/${ config.UI.footer.frontendCommit }`;
+const FRONT_VERSION_URL = `https://github.com/luxfi/explorer-app/tree/${ config.UI.footer.frontendVersion }`;
+const FRONT_COMMIT_URL = `https://github.com/luxfi/explorer-app/commit/${ config.UI.footer.frontendCommit }`;
 
 const Footer = () => {
 
@@ -48,37 +48,37 @@ const Footer = () => {
       icon: cannyIcon,
       iconSize: '20px',
       text: 'Feature request',
-      url: 'https://luxdefi.canny.io/feature-requests',
+      url: 'https://luxfi.canny.io/feature-requests',
     },
     {
       icon: gitIcon,
       iconSize: '18px',
       text: 'Contribute',
-      url: 'https://github.com/luxdefi/',
+      url: 'https://github.com/luxfi/',
     },
     {
       icon: twitterIcon,
       iconSize: '18px',
       text: 'Twitter',
-      url: 'https://www.twitter.com/luxdefi',
+      url: 'https://www.twitter.com/luxfi',
     },
     {
       icon: discordIcon,
       iconSize: '24px',
       text: 'Discord',
-      url: 'https://discord.gg/luxdefi',
+      url: 'https://discord.gg/luxfi',
     },
     {
       icon: discussionsIcon,
       iconSize: '20px',
       text: 'Discussions',
-      url: 'https://github.com/orgs/luxdefi/discussions',
+      url: 'https://github.com/orgs/luxfi/discussions',
     },
     {
       icon: donateIcon,
       iconSize: '20px',
       text: 'Donate',
-      url: 'https://github.com/sponsors/luxdefi',
+      url: 'https://github.com/sponsors/luxfi',
     },
   ];
 
