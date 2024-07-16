@@ -36,7 +36,7 @@ const StatsItem = ({ icon, title, value, className, tooltip, url, isLoading }: P
       borderColor={ useColorModeValue('rgba(230, 230, 231, 1)', 'rgba(66, 66, 68, 1)') }
       padding={ 3 }
       borderRadius="md"
-      borderWidth="1"
+      borderWidth="1px"
       borderStyle="solid"
       flexDirection="row"
       sx={ sxContainer }
@@ -46,6 +46,7 @@ const StatsItem = ({ icon, title, value, className, tooltip, url, isLoading }: P
       className={ className }
       color={ useColorModeValue('black', 'white') }
       position="relative"
+      boxShadow="0px 4px 6px -2px rgba(17, 17, 17, 0.06)"
       { ...(url && !isLoading ? {
         as: 'a',
         href: url,

@@ -21,7 +21,7 @@ const Home = () => {
         w="100%"
         background={ useColorModeValue('rgba(255, 255, 255, 1)', 'rgba(47, 47, 47, 1)') }
         borderColor="linear-gradient(298.38deg, #3DF62B 0%, #C2F147 50%)"
-        boxShadow="0px 4px 6px -2px rgba(17, 17, 17, 0.06), 0px 12px 16px -4px rgba(17, 17, 17, 0.15)"
+        boxShadow="0px 4px 6px -2px rgba(17, 17, 17, 0.06)"
         borderWidth="1"
         borderStyle="solid"
         borderRadius="24px"
