@@ -1,9 +1,10 @@
-import { Grid } from '@chakra-ui/react';
+import { Grid, Box } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 import type { MouseEvent } from 'react';
 
 import type { MarketplaceAppWithSecurityReport, ContractListTypes, AppRating } from 'types/client/marketplace';
 
+import useLazyRenderedList from 'lib/hooks/useLazyRenderedList';
 import * as mixpanel from 'lib/mixpanel/index';
 
 import EmptySearchResult from './EmptySearchResult';
@@ -30,6 +31,8 @@ const MarketplaceList = ({
   apps, showAppInfo, favoriteApps, onFavoriteClick, isLoading, selectedCategoryId,
   onAppClick, showContractList, userRatings, rateApp, isSendingRating, isRatingLoading, canRate,
 }: Props) => {
+  const { cutRef, renderedItemsNum } = useLazyRenderedList(apps, !isLoading, 16);
+
   const handleInfoClick = useCallback((id: string) => {
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'More button', Info: id, Source: 'Discovery view' });
     showAppInfo(id);
@@ -40,42 +43,45 @@ const MarketplaceList = ({
   }, [ onFavoriteClick ]);
 
   return apps.length > 0 ? (
-    <Grid
-      templateColumns={{
-        md: 'repeat(auto-fill, minmax(230px, 1fr))',
-        lg: 'repeat(auto-fill, minmax(260px, 1fr))',
-      }}
-      autoRows="1fr"
-      gap={{ base: '16px', md: '24px' }}
-    >
-      { apps.map((app, index) => (
-        <MarketplaceAppCard
-          key={ app.id + (isLoading ? index : '') }
-          onInfoClick={ handleInfoClick }
-          id={ app.id }
-          external={ app.external }
-          url={ app.url }
-          title={ app.title }
-          logo={ app.logo }
-          logoDarkMode={ app.logoDarkMode }
-          shortDescription={ app.shortDescription }
-          categories={ app.categories }
-          isFavorite={ favoriteApps.includes(app.id) }
-          onFavoriteClick={ handleFavoriteClick }
-          isLoading={ isLoading }
-          internalWallet={ app.internalWallet }
-          onAppClick={ onAppClick }
-          securityReport={ app.securityReport }
-          showContractList={ showContractList }
-          rating={ app.rating }
-          userRating={ userRatings[app.id] }
-          rateApp={ rateApp }
-          isSendingRating={ isSendingRating }
-          isRatingLoading={ isRatingLoading }
-          canRate={ canRate }
-        />
-      )) }
-    </Grid>
+    <>
+      <Grid
+        templateColumns={{
+          md: 'repeat(auto-fill, minmax(230px, 1fr))',
+          lg: 'repeat(auto-fill, minmax(260px, 1fr))',
+        }}
+        autoRows="1fr"
+        gap={{ base: '16px', md: '24px' }}
+      >
+        { apps.slice(0, renderedItemsNum).map((app, index) => (
+          <MarketplaceAppCard
+            key={ app.id + (isLoading ? index : '') }
+            onInfoClick={ handleInfoClick }
+            id={ app.id }
+            external={ app.external }
+            url={ app.url }
+            title={ app.title }
+            logo={ app.logo }
+            logoDarkMode={ app.logoDarkMode }
+            shortDescription={ app.shortDescription }
+            categories={ app.categories }
+            isFavorite={ favoriteApps.includes(app.id) }
+            onFavoriteClick={ handleFavoriteClick }
+            isLoading={ isLoading }
+            internalWallet={ app.internalWallet }
+            onAppClick={ onAppClick }
+            securityReport={ app.securityReport }
+            showContractList={ showContractList }
+            rating={ app.rating }
+            userRating={ userRatings[app.id] }
+            rateApp={ rateApp }
+            isSendingRating={ isSendingRating }
+            isRatingLoading={ isRatingLoading }
+            canRate={ canRate }
+          />
+        )) }
+      </Grid>
+      <Box ref={ cutRef } h={ 0 }/>
+    </>
   ) : (
     <EmptySearchResult selectedCategoryId={ selectedCategoryId } favoriteApps={ favoriteApps }/>
   );
