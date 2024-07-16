@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import type { MarketplaceAppWithSecurityReport } from 'types/client/marketplace';
+import type { MarketplaceAppWithSecurityReport, AppRating } from 'types/client/marketplace';
 import { MarketplaceCategory } from 'types/client/marketplace';
 
 import config from 'configs/app';
@@ -10,7 +10,6 @@ import useApiFetch from 'lib/api/useApiFetch';
 import useFetch from 'lib/hooks/useFetch';
 import { MARKETPLACE_APP } from 'stubs/marketplace';
 
-import useRatings from './Rating/useRatings';
 import useSecurityReports from './useSecurityReports';
 import type { SortValue } from './utils';
 
@@ -56,12 +55,12 @@ export default function useMarketplaceApps(
   selectedCategoryId: string = MarketplaceCategory.ALL,
   favoriteApps: Array<string> | undefined = undefined,
   isFavoriteAppsLoaded: boolean = false, // eslint-disable-line @typescript-eslint/no-inferrable-types
+  ratings: Record<string, AppRating> | undefined = undefined,
 ) {
   const fetch = useFetch();
   const apiFetch = useApiFetch();
 
   const { data: securityReports, isPlaceholderData: isSecurityReportsPlaceholderData } = useSecurityReports();
-  const { ratings, userRatings, rateApp, isSendingRating, isRatingLoading, canRate } = useRatings();
 
   // Set the value only 1 time to avoid unnecessary useQuery calls and re-rendering of all applications
   const [ snapshotFavoriteApps, setSnapshotFavoriteApps ] = React.useState<Array<string> | undefined>();
@@ -122,11 +121,6 @@ export default function useMarketplaceApps(
     isError,
     isPlaceholderData: isPlaceholderData || isSecurityReportsPlaceholderData,
     setSorting,
-    userRatings,
-    rateApp,
-    isSendingRating,
-    isRatingLoading,
-    canRate,
   }), [
     data,
     displayedApps,
@@ -135,10 +129,5 @@ export default function useMarketplaceApps(
     isPlaceholderData,
     isSecurityReportsPlaceholderData,
     setSorting,
-    userRatings,
-    rateApp,
-    isSendingRating,
-    isRatingLoading,
-    canRate,
   ]);
 }

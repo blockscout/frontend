@@ -9,6 +9,7 @@ import useDebounce from 'lib/hooks/useDebounce';
 import * as mixpanel from 'lib/mixpanel/index';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
+import useRatings from './Rating/useRatings';
 import useMarketplaceApps from './useMarketplaceApps';
 import useMarketplaceCategories from './useMarketplaceCategories';
 
@@ -85,10 +86,10 @@ export default function useMarketplace() {
     setSelectedCategoryId(newCategory);
   }, []);
 
+  const { ratings, userRatings, rateApp, isSendingRating, isRatingLoading, canRate } = useRatings();
   const {
     isPlaceholderData, isError, error, data, displayedApps, setSorting,
-    userRatings, rateApp, isSendingRating, isRatingLoading, canRate,
-  } = useMarketplaceApps(debouncedFilterQuery, selectedCategoryId, favoriteApps, isFavoriteAppsLoaded);
+  } = useMarketplaceApps(debouncedFilterQuery, selectedCategoryId, favoriteApps, isFavoriteAppsLoaded, ratings);
   const {
     isPlaceholderData: isCategoriesPlaceholderData, data: categories,
   } = useMarketplaceCategories(data, isPlaceholderData);
