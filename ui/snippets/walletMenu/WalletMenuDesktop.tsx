@@ -1,5 +1,5 @@
 import type { ButtonProps } from '@chakra-ui/react';
-import { Popover, PopoverContent, PopoverBody, PopoverTrigger, Button, Box, useBoolean } from '@chakra-ui/react';
+import { Popover, PopoverContent, PopoverBody, PopoverTrigger, Button, Box, useBoolean, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -21,6 +21,8 @@ const WalletMenuDesktop = ({ isHomePage }: Props) => {
   const { themedBackground, themedBorderColor, themedColor } = useMenuButtonColors();
   const [ isPopoverOpen, setIsPopoverOpen ] = useBoolean(false);
   const isMobile = useIsMobile();
+  const defaultColor = useColorModeValue('black', 'white');
+  const defaultBackground = useColorModeValue('var(--chakra-colors-gray-200)', 'var(--chakra-colors-whiteAlpha-200)');
 
   const variant = React.useMemo(() => {
     if (isWalletConnected) {
@@ -40,7 +42,8 @@ const WalletMenuDesktop = ({ isHomePage }: Props) => {
     };
   } else if (isHomePage) {
     buttonStyles = {
-      color: 'white',
+      color: defaultColor,
+      background: defaultBackground,
     };
   } else {
     buttonStyles = {

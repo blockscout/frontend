@@ -6,7 +6,7 @@ const variantSolid = defineStyle((props) => {
   const { colorScheme: c } = props;
 
   if (c === 'gray') {
-    const bg = mode(`gray.100`, `whiteAlpha.200`)(props);
+    const bg = mode(`gray.200`, `whiteAlpha.200`)(props);
 
     return {
       bg,
@@ -21,7 +21,7 @@ const variantSolid = defineStyle((props) => {
   }
 
   const bg = `${ c }.600`;
-  const color = 'white';
+  const color = mode('black', 'white')(props);
   const hoverBg = `${ c }.400`;
   const activeBg = `${ c }.700`;
 
