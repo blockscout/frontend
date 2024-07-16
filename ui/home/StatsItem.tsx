@@ -27,14 +27,17 @@ const StatsItem = ({ icon, title, value, className, tooltip, url, isLoading }: P
     [`@media screen and (min-width: ${ breakpoints.lg }) and (max-width: ${ LARGEST_BREAKPOINT })`]: { alignItems: 'center' },
   };
 
-  const bgColor = useColorModeValue('blue.50', 'whiteAlpha.100');
+  const bgColor = useColorModeValue('rgba(255, 255, 255, 1)', 'rgba(47, 47, 47, 1)');
   const loadingBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
   return (
     <Flex
       backgroundColor={ isLoading ? loadingBgColor : bgColor }
+      borderColor={ useColorModeValue('rgba(230, 230, 231, 1)', 'rgba(66, 66, 68, 1)') }
       padding={ 3 }
       borderRadius="md"
+      borderWidth="1"
+      borderStyle="solid"
       flexDirection="row"
       sx={ sxContainer }
       alignItems="center"

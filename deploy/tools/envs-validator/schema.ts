@@ -348,6 +348,7 @@ const navItemExternalSchema: yup.ObjectSchema<NavItemExternal> = yup
   .object({
     text: yup.string().required(),
     url: yup.string().test(urlTest).required(),
+    isActive: yup.boolean(),
   });
 
 const footerLinkSchema: yup.ObjectSchema<CustomLink> = yup

@@ -31,7 +31,7 @@ const variants: Record<string, SystemStyleInterpolation> = {
 };
 
 const defaultProps = {
-  variant: 'secondary',
+  variant: 'primary',
 };
 
 const Link = defineStyleConfig({
