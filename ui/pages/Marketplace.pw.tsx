@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { apps as appsMock } from 'mocks/apps/apps';
+import { ratings as ratingsMock } from 'mocks/apps/ratings';
 import { securityReports as securityReportsMock } from 'mocks/apps/securityReports';
 import { test, expect, devices } from 'playwright/lib';
 
@@ -22,14 +23,7 @@ test.beforeEach(async({ mockConfigResponse, mockEnvs, mockAssetResponse, page })
   await Promise.all(appsMock.map(app => mockAssetResponse(app.logo, './playwright/mocks/image_s.jpg')));
   await page.route('https://api.airtable.com/v0/test/apps_ratings?fields%5B%5D=appId&fields%5B%5D=rating', (route) => route.fulfill({
     status: 200,
-    body: JSON.stringify({
-      records: [ {
-        fields: {
-          appId: appsMock[0].id,
-          rating: 4.3,
-        },
-      } ],
-    }),
+    body: JSON.stringify(ratingsMock),
   }));
 });
 
