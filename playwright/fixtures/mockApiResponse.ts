@@ -7,6 +7,7 @@ interface Options<R extends ResourceName> {
   pathParams?: Parameters<typeof buildUrl<R>>[1];
   queryParams?: Parameters<typeof buildUrl<R>>[2];
   times?: number;
+  status?: number;
 }
 
 export type MockApiResponseFixture = <R extends ResourceName>(resourceName: R, responseMock: ResourcePayload<R>, options?: Options<R>) => Promise<string>;
@@ -16,8 +17,8 @@ const fixture: TestFixture<MockApiResponseFixture, { page: Page }> = async({ pag
     const apiUrl = buildUrl(resourceName, options?.pathParams, options?.queryParams);
 
     await page.route(apiUrl, (route) => route.fulfill({
-      status: 200,
-      body: JSON.stringify(responseMock),
+      status: options?.status ?? 200,
+      json: responseMock,
     }), { times: options?.times });
 
     return apiUrl;
