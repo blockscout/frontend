@@ -1,8 +1,8 @@
 {
-  "name": "blockscout-frontend",
+  "name": "@luxfi/explorer-app",
   "version": "1.0.0",
   "private": false,
-  "homepage": "https://github.com/blockscout/frontend#readme",
+  "homepage": "https://github.com/luxfi/explorer-app#readme",
   "engines": {
     "node": "18",
     "npm": "8"
@@ -38,10 +38,12 @@
     "@metamask/providers": "^10.2.1",
     "@monaco-editor/react": "^4.4.6",
     "@next/bundle-analyzer": "^14.0.1",
+    "@opentelemetry/api": "^1.9.0",
     "@opentelemetry/auto-instrumentations-node": "^0.39.4",
     "@opentelemetry/exporter-metrics-otlp-proto": "^0.45.1",
     "@opentelemetry/exporter-trace-otlp-http": "^0.45.0",
     "@opentelemetry/resources": "^1.18.0",
+    "@opentelemetry/sdk-metrics": "^1.25.1",
     "@opentelemetry/sdk-node": "^0.45.0",
     "@opentelemetry/sdk-trace-node": "^1.18.0",
     "@opentelemetry/semantic-conventions": "^1.18.0",
