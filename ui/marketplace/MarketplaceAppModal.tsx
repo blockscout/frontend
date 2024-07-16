@@ -148,7 +148,7 @@ const MarketplaceAppModal = ({
             gridColumn={ 2 }
             fontSize={{ base: '2xl', md: '32px' }}
             fontWeight="medium"
-            lineHeight={{ base: 1, md: 10 }}
+            lineHeight={{ md: 10 }}
             mb={{ md: 2 }}
           >
             { title }
@@ -159,7 +159,7 @@ const MarketplaceAppModal = ({
             gridColumn={ 2 }
             fontSize={{ base: 'sm', md: 'md' }}
             fontWeight="normal"
-            lineHeight={{ base: 1, md: 6 }}
+            lineHeight={{ md: 6 }}
           >
             By{ nbsp }{ author }
           </Text>
