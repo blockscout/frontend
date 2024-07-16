@@ -7,8 +7,8 @@ import type { Block } from 'types/api/block';
 import config from 'configs/app';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
+import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
-import Utilization from 'ui/shared/Utilization/Utilization';
 
 type Props = Block & {
   page: number;
@@ -46,13 +46,11 @@ const AddressBlocksValidatedTableItem = (props: Props) => {
           <Skeleton isLoaded={ !props.isLoading } flexBasis="80px">
             { BigNumber(props.gas_used || 0).toFormat() }
           </Skeleton>
-          { props.gas_used && props.gas_used !== '0' && (
-            <Utilization
-              colorScheme="gray"
-              value={ BigNumber(props.gas_used).dividedBy(BigNumber(props.gas_limit)).toNumber() }
-              isLoading={ props.isLoading }
-            />
-          ) }
+          <BlockGasUsed
+            gasUsed={ props.gas_used }
+            gasLimit={ props.gas_limit }
+            isLoading={ props.isLoading }
+          />
         </Flex>
       </Td>
       { !config.UI.views.block.hiddenFields?.total_reward && (
