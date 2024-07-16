@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import { SolidityscanReport } from 'types/api/contract';
+import type { SolidityscanReport as SolidityscanReportType } from 'types/api/contract';
 
 import scoreNotOkIcon from 'icons/score/score-not-ok.svg';
 import scoreOkIcon from 'icons/score/score-ok.svg';
@@ -25,8 +25,10 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { SOLIDITYSCAN_REPORT } from 'stubs/contract';
 import LinkExternal from 'ui/shared/LinkExternal';
 
+// Import type-only to avoid conflicts
+
 type DistributionItem = {
-  id: keyof SolidityscanReport['scan_report']['scan_summary']['issue_severity_distribution'];
+  id: keyof SolidityscanReportType['scan_report']['scan_summary']['issue_severity_distribution'];
   name: string;
   color: string;
 }
