@@ -15,6 +15,7 @@ import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
 import AppSecurityReport from './AppSecurityReport';
+import FavoriteIcon from './FavoriteIcon';
 import MarketplaceAppModalLink from './MarketplaceAppModalLink';
 import Rating from './Rating/Rating';
 import type { RateFunction } from './Rating/useRatings';
@@ -206,13 +207,7 @@ const MarketplaceAppModal = ({
                   w={ 9 }
                   h={ 8 }
                   onClick={ handleFavoriteClick }
-                  icon={ (
-                    <IconSvg
-                      name={ isFavorite ? 'heart_filled' : 'heart_outline' }
-                      color={ useColorModeValue('blue.700', 'gray.400') }
-                      boxSize={ 5 }
-                    />
-                  ) }
+                  icon={ <FavoriteIcon isFavorite={ isFavorite } color={ useColorModeValue('blue.700', 'gray.400') }/> }
                 />
               </Flex>
             </Flex>

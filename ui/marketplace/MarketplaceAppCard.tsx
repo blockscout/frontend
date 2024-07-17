@@ -5,9 +5,9 @@ import React, { useCallback } from 'react';
 import type { MarketplaceAppWithSecurityReport, ContractListTypes, AppRating } from 'types/client/marketplace';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import IconSvg from 'ui/shared/IconSvg';
 
 import AppSecurityReport from './AppSecurityReport';
+import FavoriteIcon from './FavoriteIcon';
 import MarketplaceAppCardLink from './MarketplaceAppCardLink';
 import MarketplaceAppIntegrationIcon from './MarketplaceAppIntegrationIcon';
 import Rating from './Rating/Rating';
@@ -55,8 +55,6 @@ const MarketplaceAppCard = ({
 }: Props) => {
   const isMobile = useIsMobile();
   const categoriesLabel = categories.join(', ');
-
-  const heartFilledColor = useColorModeValue('blue.700', 'gray.400');
 
   const handleInfoClick = useCallback((event: MouseEvent) => {
     event.preventDefault();
@@ -189,13 +187,7 @@ const MarketplaceAppCard = ({
                 w={{ base: 6, md: '30px' }}
                 h={{ base: 6, md: '30px' }}
                 onClick={ handleFavoriteClick }
-                icon={ (
-                  <IconSvg
-                    name={ isFavorite ? 'heart_filled' : 'heart_outline' }
-                    color={ isFavorite ? heartFilledColor : 'gray.400' }
-                    boxSize={ 5 }
-                  />
-                ) }
+                icon={ <FavoriteIcon isFavorite={ isFavorite }/> }
               />
             </Flex>
           </Flex>

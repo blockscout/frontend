@@ -4,8 +4,7 @@ import React from 'react';
 
 import type { MarketplaceAppPreview } from 'types/client/marketplace';
 
-import IconSvg from 'ui/shared/IconSvg';
-
+import FavoriteIcon from '../FavoriteIcon';
 import MarketplaceAppCardLink from '../MarketplaceAppCardLink';
 import MarketplaceAppIntegrationIcon from '../MarketplaceAppIntegrationIcon';
 
@@ -36,7 +35,6 @@ const FeaturedAppMobile = ({
   const categoriesLabel = categories.join(', ');
 
   const logoUrl = useColorModeValue(logo, logoDarkMode || logo);
-  const heartFilledColor = useColorModeValue('blue.700', 'gray.400');
 
   return (
     <LinkBox
@@ -145,13 +143,7 @@ const FeaturedAppMobile = ({
             w={ 9 }
             h={ 8 }
             onClick={ onFavoriteClick }
-            icon={ (
-              <IconSvg
-                name={ isFavorite ? 'heart_filled' : 'heart_outline' }
-                color={ isFavorite ? heartFilledColor : 'gray.400' }
-                boxSize={ 5 }
-              />
-            ) }
+            icon={ <FavoriteIcon isFavorite={ isFavorite }/> }
           />
         ) }
       </Flex>

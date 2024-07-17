@@ -7,8 +7,8 @@ import type { MarketplaceAppPreview } from 'types/client/marketplace';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';
-import IconSvg from 'ui/shared/IconSvg';
 
+import FavoriteIcon from '../FavoriteIcon';
 import MarketplaceAppIntegrationIcon from '../MarketplaceAppIntegrationIcon';
 import FeaturedAppMobile from './FeaturedAppMobile';
 
@@ -32,7 +32,6 @@ const FeaturedApp = ({
   const categoriesLabel = categories.join(', ');
 
   const backgroundColor = useColorModeValue('purple.50', 'whiteAlpha.100');
-  const heartFilledColor = useColorModeValue('blue.700', 'gray.400');
 
   const handleInfoClick = useCallback((event: MouseEvent) => {
     event.preventDefault();
@@ -136,13 +135,7 @@ const FeaturedApp = ({
                 w={ 9 }
                 h={ 8 }
                 onClick={ handleFavoriteClick }
-                icon={ (
-                  <IconSvg
-                    name={ isFavorite ? 'heart_filled' : 'heart_outline' }
-                    color={ isFavorite ? heartFilledColor : 'gray.400' }
-                    boxSize={ 5 }
-                  />
-                ) }
+                icon={ <FavoriteIcon isFavorite={ isFavorite }/> }
               />
             ) }
           </Flex>
