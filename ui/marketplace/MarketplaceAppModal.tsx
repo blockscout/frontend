@@ -30,7 +30,7 @@ type Props = {
   showContractList: (id: string, type: ContractListTypes, hasPreviousStep: boolean) => void;
   userRating?: AppRating;
   rateApp: RateFunction;
-  isSendingRating: boolean;
+  isRatingSending: boolean;
   isRatingLoading: boolean;
   canRate: boolean | undefined;
 }
@@ -43,7 +43,7 @@ const MarketplaceAppModal = ({
   showContractList: showContractListProp,
   userRating,
   rateApp,
-  isSendingRating,
+  isRatingSending,
   isRatingLoading,
   canRate,
 }: Props) => {
@@ -176,7 +176,7 @@ const MarketplaceAppModal = ({
                 rating={ rating }
                 userRating={ userRating }
                 rate={ rateApp }
-                isSending={ isSendingRating }
+                isSending={ isRatingSending }
                 isLoading={ isRatingLoading }
                 fullView
                 canRate={ canRate }

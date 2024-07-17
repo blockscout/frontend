@@ -22,14 +22,14 @@ type Props = {
   showContractList: (id: string, type: ContractListTypes) => void;
   userRatings: Record<string, AppRating>;
   rateApp: RateFunction;
-  isSendingRating: boolean;
+  isRatingSending: boolean;
   isRatingLoading: boolean;
   canRate: boolean | undefined;
 }
 
 const MarketplaceList = ({
   apps, showAppInfo, favoriteApps, onFavoriteClick, isLoading, selectedCategoryId,
-  onAppClick, showContractList, userRatings, rateApp, isSendingRating, isRatingLoading, canRate,
+  onAppClick, showContractList, userRatings, rateApp, isRatingSending, isRatingLoading, canRate,
 }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList(apps, !isLoading, 16);
 
@@ -74,7 +74,7 @@ const MarketplaceList = ({
             rating={ app.rating }
             userRating={ userRatings[app.id] }
             rateApp={ rateApp }
-            isSendingRating={ isSendingRating }
+            isRatingSending={ isRatingSending }
             isRatingLoading={ isRatingLoading }
             canRate={ canRate }
           />

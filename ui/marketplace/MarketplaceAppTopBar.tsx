@@ -33,7 +33,7 @@ const MarketplaceAppTopBar = ({ appId, data, isLoading, securityReport }: Props)
   const appProps = useAppContext();
   const isMobile = useIsMobile();
 
-  const { ratings, userRatings, rateApp, isSendingRating, isRatingLoading, canRate } = useRatings();
+  const { ratings, userRatings, rateApp, isRatingSending, isRatingLoading, canRate } = useRatings();
 
   const goBackUrl = React.useMemo(() => {
     if (appProps.referrer && appProps.referrer.includes('/apps') && !appProps.referrer.includes('/apps/')) {
@@ -92,7 +92,7 @@ const MarketplaceAppTopBar = ({ appId, data, isLoading, securityReport }: Props)
           rating={ ratings[appId] }
           userRating={ userRatings[appId] }
           rate={ rateApp }
-          isSending={ isSendingRating }
+          isSending={ isRatingSending }
           isLoading={ isRatingLoading }
           canRate={ canRate }
           source="App page"

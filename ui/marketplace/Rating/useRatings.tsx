@@ -170,7 +170,7 @@ export default function useRatings() {
     ratings,
     userRatings,
     rateApp,
-    isSendingRating: isSending,
+    isRatingSending: isSending,
     isRatingLoading,
     isUserRatingLoading,
     canRate,

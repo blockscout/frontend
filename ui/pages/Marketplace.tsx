@@ -72,7 +72,7 @@ const Marketplace = () => {
     setSorting,
     userRatings,
     rateApp,
-    isSendingRating,
+    isRatingSending,
     isRatingLoading,
     canRate,
   } = useMarketplace();
@@ -221,7 +221,7 @@ const Marketplace = () => {
         showContractList={ showContractList }
         userRatings={ userRatings }
         rateApp={ rateApp }
-        isSendingRating={ isSendingRating }
+        isRatingSending={ isRatingSending }
         isRatingLoading={ isRatingLoading }
         canRate={ canRate }
       />
@@ -235,7 +235,7 @@ const Marketplace = () => {
           showContractList={ showContractList }
           userRating={ userRatings[selectedApp.id] }
           rateApp={ rateApp }
-          isSendingRating={ isSendingRating }
+          isRatingSending={ isRatingSending }
           isRatingLoading={ isRatingLoading }
           canRate={ canRate }
         />

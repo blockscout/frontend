@@ -23,7 +23,7 @@ const props = {
   isFavorite: false,
   userRating: undefined,
   rateApp: () => {},
-  isSendingRating: false,
+  isRatingSending: false,
   isRatingLoading: false,
   canRate: undefined,
 };
