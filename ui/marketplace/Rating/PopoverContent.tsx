@@ -69,7 +69,7 @@ const PopoverContent = ({ appId, rating, userRating, rate, isSending, source }: 
           onClickFactory={ handleRateFactory }
         />
         { (filledIndex >= 0) && (
-          <Text fontSize="md" ml={ 2 }>
+          <Text fontSize="md" ml={ 3 }>
             { ratingDescriptions[filledIndex] }
           </Text>
         ) }

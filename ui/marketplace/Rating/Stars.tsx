@@ -1,4 +1,4 @@
-import { useColorModeValue } from '@chakra-ui/react';
+import { Flex, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 import type { MouseEventHandler } from 'react';
 
@@ -15,7 +15,7 @@ const Stars = ({ filledIndex, onMouseOverFactory, onMouseOut, onClickFactory }: 
   const disabledStarColor = useColorModeValue('gray.200', 'gray.700');
   const outlineStartColor = onMouseOverFactory ? 'gray.400' : disabledStarColor;
   return (
-    <>
+    <Flex>
       { Array(5).fill(null).map((_, index) => (
         <IconSvg
           key={ index }
@@ -24,13 +24,14 @@ const Stars = ({ filledIndex, onMouseOverFactory, onMouseOut, onClickFactory }: 
           w={ 6 } // 5 + 1 padding
           h={ 5 }
           pr={ 1 } // use padding intead of margin so that there are no empty spaces between stars without hover effect
+          _last={{ w: 5, pr: 0 }}
           cursor={ onMouseOverFactory ? 'pointer' : 'default' }
           onMouseOver={ onMouseOverFactory?.(index) }
           onMouseOut={ onMouseOut }
           onClick={ onClickFactory?.(index) }
         />
       )) }
-    </>
+    </Flex>
   );
 };
 

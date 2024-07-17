@@ -50,7 +50,7 @@ const Rating = ({
       { fullView && (
         <>
           <Stars filledIndex={ (rating?.value || 0) - 1 }/>
-          <Text fontSize="md" ml={ 1 }>{ rating?.value }</Text>
+          <Text fontSize="md" ml={ 2 }>{ rating?.value }</Text>
         </>
       ) }
       <Box ref={ popoverRef }>
