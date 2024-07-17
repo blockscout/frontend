@@ -57,7 +57,7 @@ const Rating = ({
         <Popover isOpen={ isOpen } placement="bottom" isLazy>
           <PopoverTrigger>
             <TriggerButton
-              rating={ rating }
+              rating={ rating?.value }
               fullView={ fullView }
               isActive={ isOpen }
               onClick={ onToggle }

@@ -26,11 +26,9 @@ export type RateFunction = (
 
 function formatRatings(data: Airtable.Records<Airtable.FieldSet>) {
   return data.reduce((acc: Record<string, AppRating>, record) => {
-    const fields = record.fields as { appId: string; rating: number };
-    if (!fields.appId || typeof fields.rating !== 'number') {
-      return acc;
-    }
-    acc[fields.appId] = {
+    const fields = record.fields as { appId: string | Array<string>; rating: number | undefined };
+    const appId = Array.isArray(fields.appId) ? fields.appId[0] : fields.appId;
+    acc[appId] = {
       recordId: record.id,
       value: fields.rating,
     };
