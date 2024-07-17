@@ -10,9 +10,10 @@ import IconSvg from 'ui/shared/IconSvg';
 type Props = {
   item: AddressMudTableItem;
   isLoading: boolean;
+  scrollRef?: React.RefObject<HTMLDivElement>;
 };
 
-const AddressMudTablesTableItem = ({ item, isLoading }: Props) => {
+const AddressMudTablesTableItem = ({ item, isLoading, scrollRef }: Props) => {
   const [ isOpened, setIsOpened ] = useBoolean(false);
 
   const router = useRouter();
@@ -23,7 +24,11 @@ const AddressMudTablesTableItem = ({ item, isLoading }: Props) => {
       table_id: e.currentTarget.getAttribute('data-id') as string,
     };
     router.push({ pathname: router.pathname, query: newQuery }, undefined, { shallow: true });
-  }, [ router ]);
+    window.setTimeout(() => {
+      // cannot do scroll instantly, have to wait a little
+      scrollRef?.current?.scrollIntoView({ behavior: 'smooth' });
+    }, 500);
+  }, [ router, scrollRef ]);
 
   return (
     <>
@@ -62,13 +67,13 @@ const AddressMudTablesTableItem = ({ item, isLoading }: Props) => {
       </Tr>
       { isOpened && (
         <Tr>
-          <Td></Td>
-          <Td colSpan={ 3 }>
+          <Td pt={ 0 }></Td>
+          <Td colSpan={ 3 } pt={ 0 }>
             <Table>
               { Boolean(item.schema.key_names.length) && (
                 <Tr>
-                  <Td width="80px" fontSize="sm" fontWeight={ 600 }>Key</Td>
-                  <Td>
+                  <Td width="80px" fontSize="sm" fontWeight={ 600 } py={ 2 }>Key</Td>
+                  <Td py={ 2 }>
                     <VStack gap={ 1 } alignItems="start">
                       { item.schema.key_names.map((name, index) => (
                         <Tag key={ name }>
@@ -80,8 +85,8 @@ const AddressMudTablesTableItem = ({ item, isLoading }: Props) => {
                 </Tr>
               ) }
               <Tr borderBottomStyle="hidden">
-                <Td width="80px" fontSize="sm" fontWeight={ 600 }>Value</Td>
-                <Td fontSize="sm">
+                <Td width="80px" fontSize="sm" fontWeight={ 600 } py={ 2 }>Value</Td>
+                <Td fontSize="sm" py={ 2 }>
                   <VStack gap={ 1 } alignItems="start">
                     { item.schema.value_names.map((name, index) => (
                       <Text key={ name }>

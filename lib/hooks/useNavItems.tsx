@@ -105,7 +105,7 @@ export default function useNavItems(): ReturnType {
     const mudWorlds = config.features.mudFramework.isEnabled ? {
       text: 'MUD worlds',
       nextRoute: { pathname: '/mud-worlds' as const },
-      icon: 'MUD',
+      icon: 'MUD_menu',
       isActive: pathname === '/mud-worlds',
     } : null;
 

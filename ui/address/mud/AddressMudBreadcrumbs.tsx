@@ -1,4 +1,4 @@
-import { HStack, useColorModeValue, chakra } from '@chakra-ui/react';
+import { Grid, Box, useColorModeValue, chakra, HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
@@ -39,25 +39,39 @@ const BreadcrumbItem = ({ text, href, isLast, scrollRef }: BreadcrumbItemProps) 
 
   if (isLast) {
     return (
-      <>
-        { text }
+      <HStack gap={ 2 } overflow="hidden">
+        <Box
+          overflow="hidden"
+          whiteSpace="nowrap"
+          textOverflow="ellipsis"
+        >
+          { text }
+        </Box>
         <CopyToClipboard text={ href } type="link" mx={ 0 } color="text_secondary"/>
-      </>
+      </HStack>
     );
   }
 
   return (
-    <>
-      <LinkInternal href={ href } onClick={ onLinkClick }>{ text }</LinkInternal>
+    <HStack gap={ 2 } overflow="hidden">
+      <LinkInternal
+        href={ href }
+        onClick={ onLinkClick }
+        overflow="hidden"
+        textOverflow="ellipsis"
+        whiteSpace="nowrap"
+      >
+        { text }
+      </LinkInternal>
       { !isLast && <IconSvg name="arrows/east" boxSize={ 6 } color={ iconColor }/> }
-    </>
+    </HStack>
   );
 };
 
 const AddressMudBreadcrumbs = (props: TableViewProps | RecordViewProps) => {
   const queryParams = { tab: 'mud', hash: props.hash };
   return (
-    <HStack gap={ 2 } className={ props.className }>
+    <Grid templateColumns="20px auto auto auto" gap={ 2 } alignItems="center" className={ props.className }>
       <IconSvg name="MUD" boxSize={ 5 } color="green.500"/>
       <BreadcrumbItem
         text="MUD World"
@@ -72,14 +86,14 @@ const AddressMudBreadcrumbs = (props: TableViewProps | RecordViewProps) => {
       />
       { ('recordId' in props) && (
         <BreadcrumbItem
-          text={ props.tableName }
+          text={ props.recordName }
           href={ route({ pathname: '/address/[hash]', query: { ...queryParams, table_id: props.tableId, record_id: props.recordId } }) }
           isLast
           scrollRef={ props.scrollRef }
 
         />
       ) }
-    </HStack>
+    </Grid>
   );
 };
 

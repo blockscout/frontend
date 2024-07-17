@@ -91,6 +91,7 @@
 	| "monaco/vyper"
 	| "moon-with-star"
 	| "moon"
+	| "MUD_menu"
 	| "MUD"
 	| "networks"
 	| "networks/icon-placeholder"

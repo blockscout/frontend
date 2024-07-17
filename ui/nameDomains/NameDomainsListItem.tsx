@@ -42,7 +42,7 @@ const NameDomainsListItem = ({
           <ListItemMobileGrid.Label isLoading={ isLoading }>Registered on</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
             <Skeleton isLoaded={ !isLoading }>
-              <div>{ dayjs(registrationDate).format('MMM DD YYYY HH:mm:ss A') }</div>
+              <div>{ dayjs(registrationDate).format('lll') }</div>
               <div> { dayjs(registrationDate).fromNow() }</div>
             </Skeleton>
           </ListItemMobileGrid.Value>
@@ -54,7 +54,7 @@ const NameDomainsListItem = ({
           <ListItemMobileGrid.Label isLoading={ isLoading }>Expiration date</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
             <Skeleton isLoaded={ !isLoading } whiteSpace="pre-wrap">
-              <div>{ dayjs(expiryDate).format('MMM DD YYYY HH:mm:ss A') } </div>
+              <div>{ dayjs(expiryDate).format('lll') } </div>
               <NameDomainExpiryStatus date={ expiryDate }/>
             </Skeleton>
           </ListItemMobileGrid.Value>

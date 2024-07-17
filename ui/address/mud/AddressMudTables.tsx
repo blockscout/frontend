@@ -69,6 +69,7 @@ const AddressMudTables = ({ scrollRef, isQueryEnabled = true }: Props) => {
           items={ data.items }
           isLoading={ isPlaceholderData }
           top={ ACTION_BAR_HEIGHT_DESKTOP }
+          scrollRef={ scrollRef }
         />
       </Hide>
       <Show below="lg" ssr={ false }>

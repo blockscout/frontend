@@ -1,4 +1,4 @@
-import { Box, HStack, Hide, Show, Tag, TagCloseButton, chakra } from '@chakra-ui/react';
+import { Box, HStack, Hide, Show, Tag, TagCloseButton, chakra, useBoolean } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -6,7 +6,7 @@ import type { AddressMudRecordsFilter, AddressMudRecordsSorting } from 'types/ap
 
 import { apos, nbsp } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
-import ActionBar from 'ui/shared/ActionBar';
+import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -31,6 +31,7 @@ const AddressMudTable = ({ scrollRef, tableId, isQueryEnabled = true }: Props) =
   const [ sorting, setSorting ] =
     React.useState<AddressMudRecordsSorting | undefined>(getSortParamsFromQuery<AddressMudRecordsSorting>(router.query, SORT_SEQUENCE));
   const [ filters, setFilters ] = React.useState<AddressMudRecordsFilter>({});
+  const [ tableHasHorisontalScroll, setTableHasHorisontalScroll ] = useBoolean(false);
 
   const hash = getQueryParamString(router.query.hash);
 
@@ -60,14 +61,20 @@ const AddressMudTable = ({ scrollRef, tableId, isQueryEnabled = true }: Props) =
     });
   }, []);
 
+  const hasActiveFilters = Object.values(filters).some(Boolean);
+
+  const actionBatHeight = React.useMemo(() => {
+    const heightWithoutFilters = pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 60;
+
+    return hasActiveFilters ? heightWithoutFilters + 44 : heightWithoutFilters;
+  }, [ pagination.isVisible, hasActiveFilters ]);
+
   if (isLoading) {
     return <ContentLoader/>;
   }
 
-  const hasActiveFilters = Object.values(filters).some(Boolean);
-
   const filtersTags = hasActiveFilters ? (
-    <HStack gap={ 3 }>
+    <HStack gap={ 3 } mb={ 1 }>
       { Object.entries(filters).map(([ key, value ]) => {
         const index = key as FilterKeys === 'filter_key0' ? 0 : 1;
         return (
@@ -87,7 +94,7 @@ const AddressMudTable = ({ scrollRef, tableId, isQueryEnabled = true }: Props) =
   ) : null;
 
   const actionBar = (
-    <ActionBar mt={ -6 } showShadow justifyContent="space-between">
+    <ActionBar mt={ -6 } showShadow={ tableHasHorisontalScroll } justifyContent="space-between" alignItems={ hasActiveFilters ? 'start' : 'center' }>
       <Box>
         { data && (
           <AddressMudBreadcrumbs
@@ -95,7 +102,7 @@ const AddressMudTable = ({ scrollRef, tableId, isQueryEnabled = true }: Props) =
             tableId={ tableId }
             tableName={ data?.table.table_full_name }
             scrollRef={ scrollRef }
-            mb={ 3 }
+            mb={ hasActiveFilters ? 4 : 0 }
           />
         ) }
         { filtersTags }
@@ -109,13 +116,13 @@ const AddressMudTable = ({ scrollRef, tableId, isQueryEnabled = true }: Props) =
       <Hide below="lg" ssr={ false }>
         <AddressMudRecordsTable
           data={ data }
-          // can't implement both horisontal table scroll and sticky header
-          // top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 60 }
-          top={ 0 }
+          top={ actionBatHeight }
           sorting={ sorting }
           toggleSorting={ toggleSorting }
           setFilters={ setFilters }
           filters={ filters }
+          toggleTableHasHorisontalScroll={ setTableHasHorisontalScroll.toggle }
+          scrollRef={ scrollRef }
         />
       </Hide>
       <Show below="lg" ssr={ false }>
@@ -142,6 +149,7 @@ const AddressMudTable = ({ scrollRef, tableId, isQueryEnabled = true }: Props) =
       }}
       content={ content }
       actionBar={ actionBar }
+      showActionBarIfEmpty
     />
   );
 };

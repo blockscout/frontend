@@ -23,9 +23,20 @@ type Props = {
   toggleSorting: (key: AddressMudRecordsSorting['sort']) => void;
   setFilters: React.Dispatch<React.SetStateAction<AddressMudRecordsFilter>>;
   filters: AddressMudRecordsFilter;
+  toggleTableHasHorisontalScroll: () => void;
+  scrollRef?: React.RefObject<HTMLDivElement>;
 }
 
-const AddressMudRecordsTable = ({ data, top, sorting, toggleSorting, filters, setFilters }: Props) => {
+const AddressMudRecordsTable = ({
+  data,
+  top,
+  sorting,
+  toggleSorting,
+  filters,
+  setFilters,
+  toggleTableHasHorisontalScroll,
+  scrollRef,
+}: Props) => {
   const [ colsCutCount, setColsCutCount ] = React.useState<number>(0);
   const [ isOpened, setIsOpened ] = useBoolean(false);
   const [ hasCut, setHasCut ] = useBoolean(true);
@@ -33,13 +44,23 @@ const AddressMudRecordsTable = ({ data, top, sorting, toggleSorting, filters, se
   const tableRef = React.useRef<HTMLTableElement>(null);
 
   const router = useRouter();
+
+  const toggleIsOpen = React.useCallback(() => {
+    setIsOpened.toggle();
+    toggleTableHasHorisontalScroll();
+  }, [ setIsOpened, toggleTableHasHorisontalScroll ]);
+
   const onRecordClick = React.useCallback((e: React.MouseEvent) => {
     const newQuery = {
       ...router.query,
       record_id: e.currentTarget.getAttribute('data-id') as string,
     };
     router.push({ pathname: router.pathname, query: newQuery }, undefined, { shallow: true });
-  }, [ router ]);
+    window.setTimeout(() => {
+      // cannot do scroll instantly, have to wait a little
+      scrollRef?.current?.scrollIntoView({ behavior: 'smooth' });
+    }, 500);
+  }, [ router, scrollRef ]);
 
   const handleFilterChange = React.useCallback((field: keyof AddressMudRecordsFilter) => (val: string) => {
     setFilters(prev => {
@@ -88,9 +109,10 @@ const AddressMudRecordsTable = ({ data, top, sorting, toggleSorting, filters, se
   const values = (isOpened || !hasCut) ? data.schema.value_names : data.schema.value_names.slice(0, colsCutCount - data.schema.key_names.length);
 
   return (
-    <Box maxW="100%" overflowX="scroll" whiteSpace="nowrap">
+    // can't implement both horisontal table scroll and sticky header
+    <Box maxW="100%" overflowX={ isOpened ? 'scroll' : 'unset' } whiteSpace="nowrap">
       <Table variant="simple" size="sm" style={{ tableLayout: 'fixed' }} ref={ tableRef }>
-        <Thead top={ top } display="table" w="100%">
+        <Thead top={ isOpened ? 0 : top } display={ isOpened ? 'table' : 'table-header-group' } w="100%">
           <Tr >
             { keys.map((keyName, index) => {
               const text = getNameTypeText(keyName, data.schema.key_types[index]);
@@ -120,18 +142,18 @@ const AddressMudRecordsTable = ({ data, top, sorting, toggleSorting, filters, se
                 { capitalizeFirstLetter(valName) } ({ data.schema.value_types[index] })
               </Th>
             )) }
-            { hasCut && !isOpened && <Th width={ cutWidth }><Link onClick={ setIsOpened.on }>...</Link></Th> }
+            { hasCut && !isOpened && <Th width={ cutWidth }><Link onClick={ toggleIsOpen }>...</Link></Th> }
             <Th { ...thStyles }>Modified</Th>
-            { hasCut && isOpened && <Th width={ cutWidth }><Link onClick={ setIsOpened.off }>...</Link></Th> }
+            { hasCut && isOpened && <Th width={ cutWidth }><Link onClick={ toggleIsOpen }>...</Link></Th> }
           </Tr>
         </Thead>
-        <Tbody display="table" w="100%">
+        <Tbody display={ isOpened ? 'table' : 'table-row-group' } w="100%">
           { data.items.map((item) => (
             <Tr key={ item.id }>
               { keys.map((keyName, index) => (
                 <Td key={ keyName } backgroundColor={ keyBgColor } { ...tdStyles }>
                   { index === 0 ?
-                    <Link onClick={ onRecordClick } data-id={ item.id }>{ item.decoded[keyName].toString() }</Link> :
+                    <Link onClick={ onRecordClick } data-id={ item.id } fontWeight={ 700 }>{ item.decoded[keyName].toString() }</Link> :
                     item.decoded[keyName].toString()
                   }
                 </Td>
@@ -139,7 +161,7 @@ const AddressMudRecordsTable = ({ data, top, sorting, toggleSorting, filters, se
               { values.map((valName) =>
                 <Td key={ valName } { ...tdStyles }>{ item.decoded[valName].toString() }</Td>) }
               { hasCut && !isOpened && <Td width={ cutWidth }></Td> }
-              <Td { ...tdStyles }>{ dayjs(item.timestamp).format('llll') }</Td>
+              <Td { ...tdStyles } color="text_secondary">{ dayjs(item.timestamp).format('lll') }</Td>
               { hasCut && isOpened && <Td width={ cutWidth }></Td> }
             </Tr>
           )) }
