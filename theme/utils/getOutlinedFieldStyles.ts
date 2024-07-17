@@ -10,7 +10,7 @@ export default function getOutlinedFieldStyles(props: StyleFunctionProps) {
   const transitionProps = getDefaultTransitionProps();
 
   return {
-    border: '2px solid',
+    border: '1px solid',
     // filled input
     backgroundColor: 'transparent',
     borderColor: mode('gray.300', 'gray.600')(props),
@@ -48,11 +48,13 @@ export default function getOutlinedFieldStyles(props: StyleFunctionProps) {
       color: mode('blackAlpha.600', 'whiteAlpha.600')(props),
     },
     // not filled input
-    ':placeholder-shown:not(:focus-visible):not(:hover):not([aria-invalid=true])': { borderColor: borderColor || mode('gray.100', 'gray.700')(props) },
+    ':placeholder-shown:not(:focus-visible):not(:hover):not([aria-invalid=true])': {
+      borderColor: borderColor || mode('rgba(230, 230, 231, 1)', 'rgba(66, 66, 68, 1)')(props),
+    },
 
     // not filled input with type="date"
     ':not(:placeholder-shown)[value=""]:not(:focus-visible):not(:hover):not([aria-invalid=true])': {
-      borderColor: borderColor || mode('gray.100', 'gray.700')(props),
+      borderColor: borderColor || mode('rgba(230, 230, 231, 1)', 'rgba(66, 66, 68, 1)')(props),
       color: 'gray.500',
     },
 

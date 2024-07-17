@@ -3,11 +3,11 @@ import { defineStyle, defineStyleConfig } from '@chakra-ui/styled-system';
 import { mode } from '@chakra-ui/theme-tools';
 
 const variantPrimary = defineStyle((props) => ({
-  color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
+  color: mode('rgba(17, 17, 17, 1)', 'rgba(255, 255, 255, 1)')(props),
 }));
 
 const variantSecondary = defineStyle((props) => ({
-  color: mode('gray.500', 'gray.400')(props),
+  color: mode('rgba(47, 47, 47, 1)', 'rgba(208, 208, 209, 1)')(props),
 }));
 
 const variantInherit = {

@@ -44,7 +44,7 @@ const SettingsSample = ({ label, value, bg, onClick, isActive }: Props) => {
             height: 'calc(100% + 2px)',
             borderStyle: 'solid',
             borderRadius: 'full',
-            borderWidth: '2px',
+            borderWidth: '1px',
             borderColor: isActive ? activeBorderColor : 'transparent',
           }}
           _hover={{

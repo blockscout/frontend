@@ -53,7 +53,7 @@ const variantOutline = definePartsStyle((props) => {
   return {
     field: getOutlinedFieldStyles(props),
     addon: {
-      border: '2px solid',
+      border: '1px solid',
       borderColor: 'transparent',
       bg: mode('blackAlpha.100', 'whiteAlpha.200')(props),
       color: mode('blackAlpha.800', 'whiteAlpha.800')(props),

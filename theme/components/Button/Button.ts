@@ -66,7 +66,7 @@ const variantOutline = defineStyle((props) => {
   return {
     color,
     fontWeight: props.fontWeight || 600,
-    borderWidth: props.borderWidth || '2px',
+    borderWidth: props.borderWidth || '1px',
     borderStyle: 'solid',
     borderColor,
     bg: 'transparent',

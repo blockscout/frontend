@@ -105,7 +105,7 @@ const SearchBarInput = (
           }}
           placeholder={ isMobile ? 'Search by address / ... ' : 'Search by address / txn hash / block / token... ' }
           onChange={ handleChange }
-          border={ isHomepage ? 'none' : '2px solid' }
+          border={ isHomepage ? 'none' : '1px solid' }
           borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
           _focusWithin={{ _placeholder: { color: 'gray.300' } }}
           color={ useColorModeValue('black', 'white') }

@@ -177,7 +177,7 @@ const ChartWidget = ({ items, title, description, isLoading, className, isError,
             { description && (
               <Skeleton
                 isLoaded={ !isLoading }
-                color="text_secondary"
+                color="text"
                 fontSize="xs"
                 mt={ 1 }
               >
