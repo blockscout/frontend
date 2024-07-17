@@ -1,5 +1,5 @@
 import type { ButtonProps } from '@chakra-ui/react';
-import { Popover, PopoverContent, PopoverBody, PopoverTrigger, Button, Box, useBoolean, useColorModeValue } from '@chakra-ui/react';
+import { Popover, PopoverContent, PopoverBody, PopoverTrigger, Button, Box, useBoolean, useColorModeValue, Portal } from '@chakra-ui/react';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -21,8 +21,13 @@ const WalletMenuDesktop = ({ isHomePage }: Props) => {
   const { themedBackground, themedBorderColor, themedColor } = useMenuButtonColors();
   const [ isPopoverOpen, setIsPopoverOpen ] = useBoolean(false);
   const isMobile = useIsMobile();
+
   const defaultColor = useColorModeValue('black', 'white');
   const defaultBackground = useColorModeValue('var(--chakra-colors-gray-200)', 'var(--chakra-colors-whiteAlpha-200)');
+
+  const walletConnectedBackground = useColorModeValue('rgba(255, 255, 255, 1)', 'rgba(35, 35, 35, 1)');
+  const walletConnectedBorderColor = useColorModeValue('rgba(230, 230, 231, 1)', 'rgba(66, 66, 68, 1)');
+  const walletConnectedColor = useColorModeValue('rgba(17, 17, 17, 1)', 'rgba(255, 255, 255, 1)');
 
   const variant = React.useMemo(() => {
     if (isWalletConnected) {
@@ -34,11 +39,14 @@ const WalletMenuDesktop = ({ isHomePage }: Props) => {
   let buttonStyles: Partial<ButtonProps> = {};
   if (isWalletConnected) {
     buttonStyles = {
-      bg: isHomePage ? 'blue.50' : themedBackground,
-      color: isHomePage ? 'blackAlpha.800' : themedColor,
+      bg: isHomePage ? walletConnectedBackground : themedBackground,
+      color: isHomePage ? walletConnectedColor : themedColor,
       _hover: {
-        color: isHomePage ? 'blackAlpha.800' : themedColor,
+        color: isHomePage ? walletConnectedColor : themedColor,
       },
+      borderWidth: '1px',
+      borderStyle: 'solid',
+      borderColor: walletConnectedBorderColor,
     };
   } else if (isHomePage) {
     buttonStyles = {
@@ -91,11 +99,13 @@ const WalletMenuDesktop = ({ isHomePage }: Props) => {
         </Box>
       </WalletTooltip>
       { isWalletConnected && (
-        <PopoverContent w="235px">
-          <PopoverBody padding="24px 16px 16px 16px">
-            <WalletMenuContent address={ address } disconnect={ disconnect }/>
-          </PopoverBody>
-        </PopoverContent>
+        <Portal>
+          <PopoverContent w="235px">
+            <PopoverBody padding="24px 16px 16px 16px">
+              <WalletMenuContent address={ address } disconnect={ disconnect }/>
+            </PopoverBody>
+          </PopoverContent>
+        </Portal>
       ) }
     </Popover>
   );
