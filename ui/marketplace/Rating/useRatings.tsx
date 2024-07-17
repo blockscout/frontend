@@ -12,7 +12,7 @@ import * as mixpanel from 'lib/mixpanel/index';
 import { ADDRESS_COUNTERS } from 'stubs/address';
 
 const feature = config.features.marketplace;
-const base = (feature.isEnabled && feature.rating) ?
+const airtable = (feature.isEnabled && feature.rating) ?
   new Airtable({ apiKey: feature.rating.airtableApiKey }).base(feature.rating.airtableBaseId) :
   undefined;
 
@@ -57,13 +57,21 @@ export default function useRatings() {
   const [ canRate, setCanRate ] = useState<boolean | undefined>(undefined);
 
   const fetchRatings = useCallback(async() => {
-    if (!base) {
+    if (!airtable) {
       return;
     }
-    const data = await base('apps_ratings').select({ fields: [ 'appId', 'rating' ] }).all();
-    const ratings = formatRatings(data);
-    setRatings(ratings);
-  }, []);
+    try {
+      const data = await airtable('apps_ratings').select({ fields: [ 'appId', 'rating' ] }).all();
+      const ratings = formatRatings(data);
+      setRatings(ratings);
+    } catch (error) {
+      toast({
+        status: 'error',
+        title: 'Error loading ratings',
+        description: 'Please try again later',
+      });
+    }
+  }, [ toast ]);
 
   useEffect(() => {
     async function fetch() {
@@ -78,18 +86,26 @@ export default function useRatings() {
     async function fetchUserRatings() {
       setIsUserRatingLoading(true);
       let userRatings = {} as Record<string, AppRating>;
-      if (address && base) {
-        const data = await base('users_ratings').select({
-          filterByFormula: `address = "${ address }"`,
-          fields: [ 'appId', 'rating' ],
-        }).all();
-        userRatings = formatRatings(data);
+      if (address && airtable) {
+        try {
+          const data = await airtable('users_ratings').select({
+            filterByFormula: `address = "${ address }"`,
+            fields: [ 'appId', 'rating' ],
+          }).all();
+          userRatings = formatRatings(data);
+        } catch (error) {
+          toast({
+            status: 'error',
+            title: 'Error loading user ratings',
+            description: 'Please try again later',
+          });
+        }
       }
       setUserRatings(userRatings);
       setIsUserRatingLoading(false);
     }
     fetchUserRatings();
-  }, [ address ]);
+  }, [ address, toast ]);
 
   useEffect(() => {
     // TODO: uncomment validation after testing
@@ -108,12 +124,12 @@ export default function useRatings() {
     setIsSending(true);
 
     try {
-      if (!address || !base) {
+      if (!address || !airtable) {
         throw new Error('Address is missing');
       }
 
       if (!appRecordId) {
-        const records = await base('apps_ratings').create([ { fields: { appId } } ]);
+        const records = await airtable('apps_ratings').create([ { fields: { appId } } ]);
         appRecordId = records[0].id;
         if (!appRecordId) {
           throw new Error('Record ID is missing');
@@ -121,7 +137,7 @@ export default function useRatings() {
       }
 
       if (!userRecordId) {
-        const userRecords = await base('users_ratings').create([
+        const userRecords = await airtable('users_ratings').create([
           {
             fields: {
               address,
@@ -132,7 +148,7 @@ export default function useRatings() {
         ]);
         userRecordId = userRecords[0].id;
       } else {
-        await base('users_ratings').update(userRecordId, { rating });
+        await airtable('users_ratings').update(userRecordId, { rating });
       }
 
       setUserRatings({
