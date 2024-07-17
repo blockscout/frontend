@@ -177,7 +177,7 @@ const variants = {
 
 const baseStyle = defineStyle({
   fontWeight: 600,
-  borderRadius: '100px',
+  borderRadius: 'base',
   overflow: 'hidden',
   _focusVisible: {
     boxShadow: { base: 'none', lg: 'outline' },

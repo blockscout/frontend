@@ -19,7 +19,7 @@ const size = {
     px: '8px',
     py: '4px',
     h: '32px',
-    borderRadius: '100px',
+    borderRadius: 'base',
   }),
   sm: defineStyle({
     fontSize: 'md',
@@ -27,7 +27,7 @@ const size = {
     px: '8px',
     py: '12px',
     h: '40px',
-    borderRadius: '100px',
+    borderRadius: 'base',
   }),
   md: defineStyle({
     fontSize: 'md',
@@ -35,7 +35,7 @@ const size = {
     px: '20px',
     py: '20px',
     h: '40px',
-    borderRadius: '100px',
+    borderRadius: 'base',
   }),
   lg: defineStyle({
     fontSize: 'md',
@@ -43,7 +43,7 @@ const size = {
     px: '24px',
     py: '28px',
     h: '40px',
-    borderRadius: '100px',
+    borderRadius: 'base',
   }),
 };
 

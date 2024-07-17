@@ -107,6 +107,7 @@ const SearchBarInput = (
           onChange={ handleChange }
           border={ isHomepage ? 'none' : '1px solid' }
           borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
+          borderRadius="100px!important"
           _focusWithin={{ _placeholder: { color: 'gray.300' } }}
           color={ useColorModeValue('black', 'white') }
           value={ value }

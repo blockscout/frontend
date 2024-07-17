@@ -84,6 +84,7 @@ const WalletMenuDesktop = ({ isHomePage }: Props) => {
               loadingText="Connect wallet"
               onClick={ isWalletConnected ? openPopover : connect }
               fontSize="sm"
+              borderRadius="100px"
               { ...buttonStyles }
             >
               { isWalletConnected ? (
