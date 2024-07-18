@@ -43,7 +43,7 @@ import type {
   ArbitrumL2BatchBlocks,
 } from 'types/api/arbitrumL2';
 import type { TxBlobs, Blob } from 'types/api/blobs';
-import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters, BlockWithdrawalsResponse } from 'types/api/block';
+import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters, BlockWithdrawalsResponse, BlockCountdownResponse } from 'types/api/block';
 import type { ChartMarketResponse, ChartSecondaryCoinPriceResponse, ChartTransactionResponse } from 'types/api/charts';
 import type { BackendVersionConfig } from 'types/api/configs';
 import type {
@@ -852,6 +852,9 @@ export const RESOURCES = {
   graphql: {
     path: '/api/v1/graphql',
   },
+  block_countdown: {
+    path: '/api',
+  },
 };
 
 export type ResourceName = keyof typeof RESOURCES;
@@ -937,6 +940,7 @@ Q extends 'stats_lines' ? stats.LineCharts :
 Q extends 'stats_line' ? stats.LineChart :
 Q extends 'blocks' ? BlocksResponse :
 Q extends 'block' ? Block :
+Q extends 'block_countdown' ? BlockCountdownResponse :
 Q extends 'block_txs' ? BlockTransactionsResponse :
 Q extends 'block_withdrawals' ? BlockWithdrawalsResponse :
 Q extends 'txs_stats' ? TransactionsStats :

@@ -217,3 +217,25 @@ test.describe('with apps', () => {
     await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
   });
 });
+
+test.describe('block countdown', () => {
+  test('no results +@mobile', async({ render, page, mockApiResponse }) => {
+    const apiUrl = await mockApiResponse('quick_search', [], { queryParams: { q: '1234567890' } });
+    await render(<SearchBar/>);
+    await page.getByPlaceholder(/search/i).fill('1234567890');
+    await page.waitForResponse(apiUrl);
+
+    await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
+  });
+
+  test('with results +@mobile', async({ render, page, mockApiResponse }) => {
+    const apiUrl = await mockApiResponse('quick_search', [
+      { ...searchMock.token1, name: '1234567890123456789' },
+    ], { queryParams: { q: '1234567890' } });
+    await render(<SearchBar/>);
+    await page.getByPlaceholder(/search/i).fill('1234567890');
+    await page.waitForResponse(apiUrl);
+
+    await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 500 } });
+  });
+});

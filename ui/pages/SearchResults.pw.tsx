@@ -185,3 +185,30 @@ test.describe('with apps', () => {
     await expect(component.locator('main')).toHaveScreenshot();
   });
 });
+
+test.describe('block countdown', () => {
+  const blockHeight = '1234567890';
+  const hooksConfig = {
+    router: {
+      query: { q: blockHeight },
+    },
+  };
+
+  test('no results', async({ render, mockApiResponse }) => {
+    await mockApiResponse('search', { items: [], next_page_params: null }, { queryParams: { q: blockHeight } });
+    const component = await render(<SearchResults/>, { hooksConfig });
+
+    await expect(component.locator('main')).toHaveScreenshot();
+  });
+
+  test('with results +@mobile', async({ render, mockApiResponse }) => {
+    await mockApiResponse(
+      'search',
+      { items: [ { ...searchMock.token1, name: '1234567890123456789' } ], next_page_params: null },
+      { queryParams: { q: blockHeight } },
+    );
+    const component = await render(<SearchResults/>, { hooksConfig });
+
+    await expect(component.locator('main')).toHaveScreenshot();
+  });
+});

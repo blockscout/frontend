@@ -3,9 +3,13 @@ import React from 'react';
 
 import type { PaginationParams } from 'ui/shared/pagination/types';
 
+import { route } from 'nextjs-routes';
+
 import useApiQuery from 'lib/api/useApiQuery';
 import { nbsp } from 'lib/html-entities';
 import { HOMEPAGE_STATS } from 'stubs/stats';
+import IconSvg from 'ui/shared/IconSvg';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 import Pagination from 'ui/shared/pagination/Pagination';
 
 interface Props {
@@ -31,6 +35,10 @@ const BlocksTabSlot = ({ pagination }: Props) => {
           </Skeleton>
         </Box>
       ) }
+      <LinkInternal display="inline-flex" alignItems="center" href={ route({ pathname: '/block/countdown' }) }>
+        <IconSvg name="hourglass" boxSize={ 5 } mr={ 2 }/>
+        <span>Block countdown</span>
+      </LinkInternal>
       <Pagination my={ 1 } { ...pagination }/>
     </Flex>
   );
