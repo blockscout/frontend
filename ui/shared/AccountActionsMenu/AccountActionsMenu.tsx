@@ -92,7 +92,7 @@ const AccountActionsMenu = ({ isLoading, className, showUpdateMetadataItem }: Pr
         icon={ <IconSvg name="dots" boxSize="18px"/> }
         aria-label="Show address menu"
       />
-      <MenuList minWidth="180px" zIndex="popover">
+      <MenuList minWidth="200px" zIndex="popover">
         { items.map(({ render }, index) => (
           <React.Fragment key={ index }>
             { render({ type: 'menu_item', hash, onBeforeClick: isAccountActionAllowed }) }

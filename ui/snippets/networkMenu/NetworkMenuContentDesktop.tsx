@@ -38,7 +38,7 @@ const NetworkMenuPopup = ({ items, tabs }: Props) => {
         </Flex>
         <Flex mx={ 3 } my={ 2 } alignItems="center">
           <Skeleton h="30px" w="30px" borderRadius="full"/>
-          <Skeleton h="16px" w="180px" ml={ 3 }/>
+          <Skeleton h="16px" w="200px" ml={ 3 }/>
         </Flex>
         <Flex mx={ 3 } my={ 2 } alignItems="center">
           <Skeleton h="30px" w="30px" borderRadius="full"/>

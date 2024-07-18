@@ -5,6 +5,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { AppProps } from 'next/app';
 import React from 'react';
+import { I18nextProvider } from 'react-i18next';
 
 import type { NextPageWithLayout } from 'nextjs/types';
 
@@ -23,7 +24,10 @@ import GoogleAnalytics from 'ui/shared/GoogleAnalytics';
 import Layout from 'ui/shared/layout/Layout';
 import Web3ModalProvider from 'ui/shared/Web3ModalProvider';
 
+import i18n from '../i18n';
+
 import 'lib/setLocale';
+
 // import 'focus-visible/dist/focus-visible';
 
 type AppPropsWithLayout = AppProps & {
@@ -61,23 +65,25 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         { ...ERROR_SCREEN_STYLES }
         onError={ handleError }
       >
-        <Web3ModalProvider>
-          <AppContextProvider pageProps={ pageProps }>
-            <QueryClientProvider client={ queryClient }>
-              <GrowthBookProvider growthbook={ growthBook }>
-                <ScrollDirectionProvider>
-                  <SocketProvider url={ `${ config.api.socket }${ config.api.basePath }/socket/v2` }>
-                    <MarketplaceContextProvider>
-                      { getLayout(<Component { ...pageProps }/>) }
-                    </MarketplaceContextProvider>
-                  </SocketProvider>
-                </ScrollDirectionProvider>
-              </GrowthBookProvider>
-              <ReactQueryDevtools buttonPosition="bottom-left" position="left"/>
-              <GoogleAnalytics/>
-            </QueryClientProvider>
-          </AppContextProvider>
-        </Web3ModalProvider>
+        <I18nextProvider i18n={ i18n }>
+          <Web3ModalProvider>
+            <AppContextProvider pageProps={ pageProps }>
+              <QueryClientProvider client={ queryClient }>
+                <GrowthBookProvider growthbook={ growthBook }>
+                  <ScrollDirectionProvider>
+                    <SocketProvider url={ `${ config.api.socket }${ config.api.basePath }/socket/v2` }>
+                      <MarketplaceContextProvider>
+                        { getLayout(<Component { ...pageProps }/>) }
+                      </MarketplaceContextProvider>
+                    </SocketProvider>
+                  </ScrollDirectionProvider>
+                </GrowthBookProvider>
+                <ReactQueryDevtools buttonPosition="bottom-left" position="left"/>
+                <GoogleAnalytics/>
+              </QueryClientProvider>
+            </AppContextProvider>
+          </Web3ModalProvider>
+        </I18nextProvider>
       </AppErrorBoundary>
     </ChakraProvider>
   );
