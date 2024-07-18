@@ -15,6 +15,7 @@ const chain = Object.freeze({
   secondaryCoin: {
     symbol: getEnvValue('NEXT_PUBLIC_NETWORK_SECONDARY_COIN_SYMBOL'),
   },
+  hasMultipleGasCurrencies: getEnvValue('NEXT_PUBLIC_NETWORK_MULTIPLE_GAS_CURRENCIES') === 'true',
   tokenStandard: getEnvValue('NEXT_PUBLIC_NETWORK_TOKEN_STANDARD_NAME') || 'ERC',
   rpcUrl: getEnvValue('NEXT_PUBLIC_NETWORK_RPC_URL'),
   isTestnet: getEnvValue('NEXT_PUBLIC_IS_TESTNET') === 'true',

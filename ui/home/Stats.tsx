@@ -2,8 +2,6 @@ import { Grid } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
-import { route } from 'nextjs-routes';
-
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { WEI } from 'lib/consts';
@@ -11,8 +9,7 @@ import { HOMEPAGE_STATS } from 'stubs/stats';
 import GasInfoTooltip from 'ui/shared/gas/GasInfoTooltip';
 import GasPrice from 'ui/shared/gas/GasPrice';
 import IconSvg from 'ui/shared/IconSvg';
-
-import StatsItem from './StatsItem';
+import StatsWidget from 'ui/shared/stats/StatsWidget';
 
 const hasAvgBlockTime = config.UI.homepage.showAvgBlockTime;
 const rollupFeature = config.features.rollup;
@@ -58,7 +55,7 @@ const Stats = () => {
 
   let content;
 
-  const lastItemTouchStyle = { gridColumn: { base: 'span 2', lg: 'unset' } };
+  const lastItemStyle = { gridColumn: 'span 2' };
 
   let itemsCount = 5;
   !hasGasTracker && itemsCount--;
@@ -75,12 +72,10 @@ const Stats = () => {
           isLoading={ isLoading }
           name="info"
           boxSize={ 5 }
-          display="block"
+          flexShrink={ 0 }
           cursor="pointer"
+          color="icon_info"
           _hover={{ color: 'link_hovered' }}
-          position="absolute"
-          top={{ base: 'calc(50% - 12px)', lg: '10px', xl: 'calc(50% - 12px)' }}
-          right="10px"
         />
       </GasInfoTooltip>
     ) : null;
@@ -88,80 +83,80 @@ const Stats = () => {
     content = (
       <>
         { rollupFeature.isEnabled && rollupFeature.type === 'zkEvm' && (
-          <StatsItem
-            icon="txn_batches"
-            title="Latest batch"
+          <StatsWidget
+            icon="txn_batches_slim"
+            label="Latest batch"
             value={ (zkEvmLatestBatchQuery.data || 0).toLocaleString() }
-            url={ route({ pathname: '/batches' }) }
+            href={{ pathname: '/batches' }}
             isLoading={ isLoading }
           />
         ) }
         { rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && (
-          <StatsItem
-            icon="txn_batches"
-            title="Latest batch"
+          <StatsWidget
+            icon="txn_batches_slim"
+            label="Latest batch"
             value={ (zkSyncLatestBatchQuery.data || 0).toLocaleString() }
-            url={ route({ pathname: '/batches' }) }
+            href={{ pathname: '/batches' }}
             isLoading={ isLoading }
           />
         ) }
         { !(rollupFeature.isEnabled && (rollupFeature.type === 'zkEvm' || rollupFeature.type === 'zkSync')) && (
-          <StatsItem
-            icon="block"
-            title="Total blocks"
+          <StatsWidget
+            icon="block_slim"
+            label="Total blocks"
             value={ Number(data.total_blocks).toLocaleString() }
-            url={ route({ pathname: '/blocks' }) }
+            href={{ pathname: '/blocks' }}
             isLoading={ isLoading }
           />
         ) }
         { hasAvgBlockTime && (
-          <StatsItem
-            icon="clock-light"
-            title="Average block time"
+          <StatsWidget
+            icon="clock"
+            label="Average block time"
             value={ `${ (data.average_block_time / 1000).toFixed(1) }s` }
             isLoading={ isLoading }
           />
         ) }
-        <StatsItem
-          icon="transactions"
-          title="Total transactions"
+        <StatsWidget
+          icon="transactions_slim"
+          label="Total transactions"
           value={ Number(data.total_transactions).toLocaleString() }
-          url={ route({ pathname: '/txs' }) }
+          href={{ pathname: '/txs' }}
           isLoading={ isLoading }
         />
         { rollupFeature.isEnabled && data.last_output_root_size && (
-          <StatsItem
-            icon="txn_batches"
-            title="Latest L1 state batch"
+          <StatsWidget
+            icon="txn_batches_slim"
+            label="Latest L1 state batch"
             value={ data.last_output_root_size }
-            url={ route({ pathname: '/batches' }) }
+            href={{ pathname: '/batches' }}
             isLoading={ isLoading }
           />
         ) }
-        <StatsItem
+        <StatsWidget
           icon="wallet"
-          title="Wallet addresses"
+          label="Wallet addresses"
           value={ Number(data.total_addresses).toLocaleString() }
-          _last={ isOdd ? lastItemTouchStyle : undefined }
           isLoading={ isLoading }
+          _last={ isOdd ? lastItemStyle : undefined }
         />
         { hasGasTracker && data.gas_prices && (
-          <StatsItem
+          <StatsWidget
             icon="gas"
-            title="Gas tracker"
+            label="Gas tracker"
             value={ data.gas_prices.average ? <GasPrice data={ data.gas_prices.average }/> : 'N/A' }
-            _last={ isOdd ? lastItemTouchStyle : undefined }
-            tooltip={ gasInfoTooltip }
+            hint={ gasInfoTooltip }
             isLoading={ isLoading }
+            _last={ isOdd ? lastItemStyle : undefined }
           />
         ) }
         { data.rootstock_locked_btc && (
-          <StatsItem
+          <StatsWidget
             icon="coins/bitcoin"
-            title="BTC Locked in 2WP"
+            label="BTC Locked in 2WP"
             value={ `${ BigNumber(data.rootstock_locked_btc).div(WEI).dp(0).toFormat() } RBTC` }
-            _last={ isOdd ? lastItemTouchStyle : undefined }
             isLoading={ isLoading }
+            _last={ isOdd ? lastItemStyle : undefined }
           />
         ) }
       </>
@@ -170,10 +165,10 @@ const Stats = () => {
 
   return (
     <Grid
-      gridTemplateColumns={{ lg: `repeat(${ itemsCount }, 1fr)`, base: '1fr 1fr' }}
-      gridTemplateRows={{ lg: 'none', base: undefined }}
+      gridTemplateColumns="1fr 1fr"
       gridGap={{ base: 1, lg: 2 }}
-      marginTop={ 3 }
+      flexBasis="50%"
+      flexGrow={ 1 }
     >
       { content }
     </Grid>

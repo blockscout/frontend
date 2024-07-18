@@ -1,6 +1,8 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
+import { numberToHex } from 'viem';
 
+import config from 'configs/app';
 import { apps as appsMock } from 'mocks/apps/apps';
 import { test, expect, devices } from 'playwright/lib';
 
@@ -15,13 +17,17 @@ const hooksConfig = {
 
 const MARKETPLACE_CONFIG_URL = 'https://marketplace-config.json';
 
-const testFn: Parameters<typeof test>[1] = async({ render, mockConfigResponse, mockAssetResponse, mockEnvs }) => {
+const testFn: Parameters<typeof test>[1] = async({ render, mockConfigResponse, mockAssetResponse, mockEnvs, mockRpcResponse }) => {
   await mockEnvs([
     [ 'NEXT_PUBLIC_MARKETPLACE_ENABLED', 'true' ],
     [ 'NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', MARKETPLACE_CONFIG_URL ],
   ]);
   await mockConfigResponse('NEXT_PUBLIC_MARKETPLACE_CONFIG_URL', MARKETPLACE_CONFIG_URL, JSON.stringify(appsMock));
   await mockAssetResponse(appsMock[0].url, './mocks/apps/app.html');
+  await mockRpcResponse({
+    Method: 'eth_chainId',
+    ReturnType: numberToHex(Number(config.chain.id)),
+  });
 
   const component = await render(
     <Flex flexDirection="column" mx={{ base: 4, lg: 6 }} h="100vh">
@@ -33,9 +39,9 @@ const testFn: Parameters<typeof test>[1] = async({ render, mockConfigResponse, m
   await expect(component).toHaveScreenshot();
 };
 
-test.fixme('base view +@dark-mode', testFn);
+test('base view +@dark-mode', testFn);
 
 test.describe('mobile', () => {
   test.use({ viewport: devices['iPhone 13 Pro'].viewport });
-  test.fixme('base view', testFn);
+  test('base view', testFn);
 });
