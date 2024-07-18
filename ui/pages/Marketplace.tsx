@@ -156,7 +156,7 @@ const Marketplace = () => {
                 <MenuItem key={ label } as="a" href={ href } target="_blank" py={ 2 } px={ 4 }>
                   <IconSvg name={ icon } boxSize={ 4 } mr={ 2.5 }/>
                   { label }
-                  <IconSvg name="arrows/north-east" boxSize={ 4 } color="gray.400" ml={ 2 }/>
+                  <IconSvg name="link_external" boxSize={ 3 } color="icon_link_external" ml={ 2 }/>
                 </MenuItem>
               )) }
             </MenuList>

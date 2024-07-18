@@ -80,6 +80,7 @@
 	| "key"
 	| "lightning_navbar"
 	| "lightning"
+	| "link_external"
 	| "link"
 	| "lock"
 	| "minus"

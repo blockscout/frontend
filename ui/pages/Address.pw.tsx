@@ -17,6 +17,10 @@ const hooksConfig = {
   },
 };
 
+test.beforeEach(async({ mockTextAd }) => {
+  await mockTextAd();
+});
+
 test.describe('fetched bytecode', () => {
   test('should refetch address query', async({ render, mockApiResponse, createSocket, page }) => {
     const addressApiUrl = await mockApiResponse('address', addressMock.validator, { pathParams: { hash: addressMock.hash } });
