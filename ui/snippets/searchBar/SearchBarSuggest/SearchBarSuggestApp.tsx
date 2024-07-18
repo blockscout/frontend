@@ -42,7 +42,7 @@ const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick }: Props) => 
             >
               <span dangerouslySetInnerHTML={{ __html: highlightText(data.title, searchTerm) }}/>
             </Text>
-            { data.external && <IconSvg name="arrows/north-east" boxSize={ 4 } verticalAlign="middle" flexShrink={ 0 }/> }
+            { data.external && <IconSvg name="link_external" color="icon_link_external" boxSize={ 3 } verticalAlign="middle" flexShrink={ 0 }/> }
           </Flex>
           <Text
             variant="secondary"
@@ -81,7 +81,15 @@ const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick }: Props) => 
         >
           { data.description }
         </Text>
-        { data.external && <IconSvg name="arrows/north-east" boxSize={ 4 } verticalAlign="middle" color="text_secondary" flexShrink={ 0 }/> }
+        { data.external && (
+          <IconSvg
+            name="link_external"
+            color="icon_link_external"
+            boxSize={ 3 }
+            verticalAlign="middle"
+            flexShrink={ 0 }
+          />
+        ) }
       </Flex>
     );
   })();
