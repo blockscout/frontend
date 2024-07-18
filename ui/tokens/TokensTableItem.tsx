@@ -49,6 +49,7 @@ const TokensTableItem = ({
     is_contract: true,
     is_verified: false,
     ens_domain_name: null,
+    implementations: null,
   };
 
   return (

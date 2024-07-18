@@ -9,6 +9,8 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/tx/[hash]': '%network_name% transaction %hash%',
   '/blocks': '%network_name% blocks',
   '/block/[height_or_hash]': '%network_name% block %height_or_hash%',
+  '/block/countdown': '%network_name% block countdown index',
+  '/block/countdown/[height]': '%network_name% block %height% countdown',
   '/accounts': '%network_name% top accounts',
   '/address/[hash]': '%network_name% address details for %hash%',
   '/verified-contracts': 'Verified %network_name% contracts lookup - %network_name% explorer',

@@ -14,6 +14,7 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
+import TxFee from 'ui/shared/tx/TxFee';
 import TxDetailsGasPrice from 'ui/tx/details/TxDetailsGasPrice';
 import TxDetailsOther from 'ui/tx/details/TxDetailsOther';
 
@@ -80,11 +81,7 @@ const TxDetailsWrapped = ({ data }: Props) => {
             Transaction fee
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
-            <CurrencyValue
-              value={ data.fee.value }
-              currency={ currencyUnits.ether }
-              flexWrap="wrap"
-            />
+            <TxFee tx={ data } withUsd/>
           </DetailsInfoItem.Value>
         </>
       ) }

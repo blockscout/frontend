@@ -105,7 +105,7 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
         <Popover trigger="hover" isLazy placement={ isMobile ? 'bottom-end' : 'right-start' } offset={ [ -8, 8 ] }>
           <PopoverTrigger>
             <chakra.span display="inline-block" ml={ 1 } cursor="pointer" verticalAlign="middle" h="22px">
-              <IconSvg name="info" boxSize={ 5 } color="link" _hover={{ color: 'link_hovered' }}/>
+              <IconSvg name="info" boxSize={ 5 } color="icon_info" _hover={{ color: 'link_hovered' }}/>
             </chakra.span>
           </PopoverTrigger>
           <Portal>

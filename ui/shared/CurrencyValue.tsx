@@ -1,4 +1,4 @@
-import { Box, Text, chakra, Skeleton } from '@chakra-ui/react';
+import { chakra, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
@@ -23,20 +23,20 @@ const CurrencyValue = ({ value, currency = '', decimals, exchangeRate, className
 
   if (value === undefined || value === null) {
     return (
-      <Box as="span" className={ className }>
-        <Text>N/A</Text>
-      </Box>
+      <chakra.span className={ className }>
+        -
+      </chakra.span>
     );
   }
   const { valueStr: valueResult, usd: usdResult } = getCurrencyValue({ value, accuracy, accuracyUsd, exchangeRate, decimals });
 
   return (
-    <Box as="span" className={ className } display="inline-flex" rowGap={ 3 } columnGap={ 1 }>
-      <Text display="inline-block">
+    <chakra.span className={ className } display="inline-flex" rowGap={ 3 } columnGap={ 1 }>
+      <chakra.span display="inline-block">
         { valueResult }{ currency ? ` ${ currency }` : '' }
-      </Text>
-      { usdResult && <Text as="span" variant="secondary" fontWeight={ 400 }>(${ usdResult })</Text> }
-    </Box>
+      </chakra.span>
+      { usdResult && <chakra.span color="text_secondary" fontWeight={ 400 }>(${ usdResult })</chakra.span> }
+    </chakra.span>
   );
 };
 
