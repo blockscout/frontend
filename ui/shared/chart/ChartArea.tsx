@@ -19,10 +19,10 @@ const ChartArea = ({ id, xScale, yScale, color, data, disableAnimation, ...props
   const theme = useTheme();
 
   const gradientColorId = `${ id || 'gradient' }-${ color }-color`;
-  const gradientStopColor = useToken('colors', useColorModeValue('whiteAlpha.200', 'blackAlpha.100'));
+  const gradientStopColor = useToken('colors', useColorModeValue('rgba(163, 255, 149, 0)', 'rgba(163, 255, 149, 0)'));
   const defaultGradient = {
-    startColor: useToken('colors', useColorModeValue('blue.100', 'blue.400')),
-    stopColor: useToken('colors', transparentize(useColorModeValue('blue.100', 'blue.400'), 0)(theme)),
+    startColor: useToken('colors', useColorModeValue('rgba(61, 246, 43, 1)', 'rgba(61, 246, 43, 1)')),
+    stopColor: useToken('colors', transparentize(useColorModeValue('rgba(61, 246, 43, 1)', 'rgba(61, 246, 43, 1)'), 0)(theme)),
   };
 
   React.useEffect(() => {
