@@ -1,4 +1,5 @@
 import React from 'react';
+import { getAddress } from 'viem';
 import { usePublicClient } from 'wagmi';
 
 import type { FormSubmitResult, MethodCallStrategy, SmartContractMethod } from './types';
@@ -15,7 +16,7 @@ interface Params {
 
 export default function useCallMethodPublicClient(): (params: Params) => Promise<FormSubmitResult> {
   const publicClient = usePublicClient({ chainId: Number(config.chain.id) });
-  const { address } = useAccount();
+  const { address: account } = useAccount();
 
   return React.useCallback(async({ args, item, addressHash, strategy }) => {
     if (!('name' in item)) {
@@ -26,12 +27,14 @@ export default function useCallMethodPublicClient(): (params: Params) => Promise
       throw new Error('Public Client is not defined');
     }
 
+    const address = getAddress(addressHash);
+
     const params = {
       abi: [ item ],
       functionName: item.name,
       args: args,
-      address: addressHash as `0x${ string }`,
-      account: address,
+      address,
+      account,
     };
 
     const result = strategy === 'read' ? await publicClient.readContract(params) : await publicClient.simulateContract(params);
@@ -40,5 +43,5 @@ export default function useCallMethodPublicClient(): (params: Params) => Promise
       data: strategy === 'read' ? result : result.result,
     };
 
-  }, [ address, publicClient ]);
+  }, [ account, publicClient ]);
 }

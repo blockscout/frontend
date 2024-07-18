@@ -1,4 +1,4 @@
-import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Tooltip, useClipboard, useDisclosure } from '@chakra-ui/react';
+import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Alert, Box, Tooltip, useClipboard, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 import { Element } from 'react-scroll';
 
@@ -110,14 +110,18 @@ const ContractAbiItem = ({ data, index, id, addressHash, tab, onSubmit }: Props)
             </AccordionButton>
           </Element>
           <AccordionPanel pb={ 4 } pr={ 0 } pl="28px" w="calc(100% - 6px)">
-            <ContractMethodForm
-              key={ id + '_' + index + '_' + attempt }
-              data={ data }
-              attempt={ attempt }
-              onSubmit={ onSubmit }
-              onReset={ handleReset }
-              isOpen={ isExpanded }
-            />
+            { 'is_invalid' in data && data.is_invalid ? (
+              <Alert status="warning">An error occurred while parsing the method signature.</Alert>
+            ) : (
+              <ContractMethodForm
+                key={ id + '_' + index + '_' + attempt }
+                data={ data }
+                attempt={ attempt }
+                onSubmit={ onSubmit }
+                onReset={ handleReset }
+                isOpen={ isExpanded }
+              />
+            ) }
           </AccordionPanel>
         </>
       ) }
