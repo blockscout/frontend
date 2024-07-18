@@ -8,7 +8,7 @@ interface Props {
 
 const Container = ({ children, className }: Props) => {
   return (
-    <Box className={ className } minWidth={{ base: '100vw', lg: 'fit-content' }}>
+    <Box className={ className } minWidth={{ base: '100vw', lg: 'auto' }}>
       { children }
     </Box>
   );

@@ -17,6 +17,7 @@ export { default as growthBook } from './growthBook';
 export { default as marketplace } from './marketplace';
 export { default as metasuites } from './metasuites';
 export { default as mixpanel } from './mixpanel';
+export { default as mudFramework } from './mudFramework';
 export { default as multichainButton } from './multichainButton';
 export { default as nameService } from './nameService';
 export { default as publicTagsSubmission } from './publicTagsSubmission';

@@ -675,6 +675,16 @@ const schema = yup
           value => value === undefined,
         ),
       }),
+    NEXT_PUBLIC_HAS_MUD_FRAMEWORK: yup.boolean()
+      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
+        is: 'optimistic',
+        then: (schema) => schema,
+        otherwise: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_HAS_MUD_FRAMEWORK can only be used with NEXT_PUBLIC_ROLLUP_TYPE=optimistic',
+          value => value === undefined,
+        ),
+      }),
 
     // 6. External services envs
     NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: yup.string(),

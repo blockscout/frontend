@@ -9,9 +9,10 @@ export interface Props {
   isLoading?: boolean;
   onClick?: (event: React.MouseEvent) => void;
   size?: number;
+  type?: 'link';
 }
 
-const CopyToClipboard = ({ text, className, isLoading, onClick, size = 5 }: Props) => {
+const CopyToClipboard = ({ text, className, isLoading, onClick, size = 5, type }: Props) => {
   const { hasCopied, onCopy } = useClipboard(text, 1000);
   const [ copied, setCopied ] = useState(false);
   // have to implement controlled tooltip because of the issue - https://github.com/chakra-ui/chakra-ui/issues/7107
@@ -36,10 +37,10 @@ const CopyToClipboard = ({ text, className, isLoading, onClick, size = 5 }: Prop
   }
 
   return (
-    <Tooltip label={ copied ? 'Copied' : 'Copy to clipboard' } isOpen={ isOpen || copied }>
+    <Tooltip label={ copied ? 'Copied' : `Copy${ type === 'link' ? ' link ' : ' ' }to clipboard` } isOpen={ isOpen || copied }>
       <IconButton
         aria-label="copy"
-        icon={ <IconSvg name="copy" boxSize={ size }/> }
+        icon={ <IconSvg name={ type === 'link' ? 'link' : 'copy' } boxSize={ size }/> }
         boxSize={ size }
         color={ iconColor }
         variant="simple"

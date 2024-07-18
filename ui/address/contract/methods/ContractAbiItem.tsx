@@ -1,4 +1,4 @@
-import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Alert, Box, Tooltip, useClipboard, useDisclosure } from '@chakra-ui/react';
+import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Alert, Box } from '@chakra-ui/react';
 import React from 'react';
 import { Element } from 'react-scroll';
 
@@ -10,7 +10,6 @@ import config from 'configs/app';
 import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import Hint from 'ui/shared/Hint';
-import IconSvg from 'ui/shared/IconSvg';
 
 import ContractMethodForm from './form/ContractMethodForm';
 import { getElementName } from './useScrollToMethod';
@@ -42,13 +41,9 @@ const ContractAbiItem = ({ data, index, id, addressHash, tab, onSubmit }: Props)
     });
   }, [ addressHash, data, tab ]);
 
-  const { hasCopied, onCopy } = useClipboard(url, 1000);
-  const methodIdTooltip = useDisclosure();
-
   const handleCopyLinkClick = React.useCallback((event: React.MouseEvent) => {
     event.stopPropagation();
-    onCopy();
-  }, [ onCopy ]);
+  }, []);
 
   const handleCopyMethodIdClick = React.useCallback((event: React.MouseEvent) => {
     event.stopPropagation();
@@ -64,21 +59,7 @@ const ContractAbiItem = ({ data, index, id, addressHash, tab, onSubmit }: Props)
         <>
           <Element as="h2" name={ 'method_id' in data ? getElementName(data.method_id) : '' }>
             <AccordionButton px={ 0 } py={ 3 } _hover={{ bgColor: 'inherit' }} wordBreak="break-all" textAlign="left" as="div" cursor="pointer">
-              { 'method_id' in data && (
-                <Tooltip label={ hasCopied ? 'Copied!' : 'Copy link' } isOpen={ methodIdTooltip.isOpen || hasCopied } onClose={ methodIdTooltip.onClose }>
-                  <Box
-                    boxSize={ 5 }
-                    color="text_secondary"
-                    _hover={{ color: 'link_hovered' }}
-                    mr={ 2 }
-                    onClick={ handleCopyLinkClick }
-                    onMouseEnter={ methodIdTooltip.onOpen }
-                    onMouseLeave={ methodIdTooltip.onClose }
-                  >
-                    <IconSvg name="link" boxSize={ 5 }/>
-                  </Box>
-                </Tooltip>
-              ) }
+              { 'method_id' in data && <CopyToClipboard text={ url } onClick={ handleCopyLinkClick } type="link" mr={ 2 } color="text_secondary"/> }
               <Box as="span" fontWeight={ 500 } mr={ 1 }>
                 { index + 1 }. { data.type === 'fallback' || data.type === 'receive' ? data.type : data.name }
               </Box>

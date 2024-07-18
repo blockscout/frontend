@@ -48,6 +48,7 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/name-domains/[name]': 'Regular page',
   '/validators': 'Root page',
   '/gas-tracker': 'Root page',
+  '/mud-worlds': 'Root page',
 
   // service routes, added only to make typescript happy
   '/login': 'Regular page',
