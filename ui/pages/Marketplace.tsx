@@ -1,4 +1,4 @@
-import { Box, MenuButton, MenuItem, MenuList, Flex, IconButton } from '@chakra-ui/react';
+import { MenuButton, MenuItem, MenuList, Flex, IconButton } from '@chakra-ui/react';
 import React from 'react';
 import type { MouseEvent } from 'react';
 
@@ -14,6 +14,7 @@ import MarketplaceAppModal from 'ui/marketplace/MarketplaceAppModal';
 import MarketplaceDisclaimerModal from 'ui/marketplace/MarketplaceDisclaimerModal';
 import MarketplaceList from 'ui/marketplace/MarketplaceList';
 import { SORT_OPTIONS } from 'ui/marketplace/utils';
+import ActionBar from 'ui/shared/ActionBar';
 import Menu from 'ui/shared/chakra/Menu';
 import FilterInput from 'ui/shared/filters/FilterInput';
 import IconSvg from 'ui/shared/IconSvg';
@@ -176,7 +177,16 @@ const Marketplace = () => {
         onAppClick={ handleAppClick }
       />
 
-      <Box marginTop={{ base: 0, lg: 8 }}>
+      <ActionBar
+        showShadow
+        isLargeShadow
+        display="flex"
+        flexDirection="column"
+        mx={{ base: -3, lg: -12 }}
+        px={{ base: 3, lg: 12 }}
+        pt={{ base: 4, lg: 6 }}
+        pb={{ base: 4, lg: 3 }}
+      >
         <TabsWithScroll
           tabs={ categoryTabs }
           onTabChange={ handleCategoryChange }
@@ -184,26 +194,26 @@ const Marketplace = () => {
           marginBottom={ -2 }
           isLoading={ isCategoriesPlaceholderData }
         />
-      </Box>
 
-      <Flex mb={{ base: 4, lg: 6 }} gap={{ base: 2, lg: 3 }}>
-        { feature.securityReportsUrl && (
-          <Sort
-            name="dapps_sorting"
-            options={ SORT_OPTIONS }
-            onChange={ setSorting }
+        <Flex gap={{ base: 2, lg: 3 }}>
+          { feature.securityReportsUrl && (
+            <Sort
+              name="dapps_sorting"
+              options={ SORT_OPTIONS }
+              onChange={ setSorting }
+              isLoading={ isPlaceholderData }
+            />
+          ) }
+          <FilterInput
+            initialValue={ filterQuery }
+            onChange={ onSearchInputChange }
+            placeholder="Find app by name or keyword..."
             isLoading={ isPlaceholderData }
+            size={ feature.securityReportsUrl ? 'xs' : 'sm' }
+            w={{ base: '100%', lg: '350px' }}
           />
-        ) }
-        <FilterInput
-          initialValue={ filterQuery }
-          onChange={ onSearchInputChange }
-          placeholder="Find app by name or keyword..."
-          isLoading={ isPlaceholderData }
-          size={ feature.securityReportsUrl ? 'xs' : 'sm' }
-          w={{ base: '100%', lg: '350px' }}
-        />
-      </Flex>
+        </Flex>
+      </ActionBar>
 
       <MarketplaceList
         apps={ displayedApps }

@@ -38,6 +38,7 @@ const MarketplaceList = ({ apps, showAppInfo, favoriteApps, onFavoriteClick, isL
       }}
       autoRows="1fr"
       gap={{ base: '16px', md: '24px' }}
+      marginTop={{ base: 0, lg: 3 }}
     >
       { apps.map((app, index) => (
         <MarketplaceAppCard
