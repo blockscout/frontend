@@ -2,7 +2,7 @@ import { chakra, Flex, Grid, Image, Box, Text, Skeleton, useColorMode, Tag } fro
 import React from 'react';
 import xss from 'xss';
 
-import type { SearchResultItem } from 'types/api/search';
+import type { SearchResultItem } from 'types/client/search';
 
 import { route } from 'nextjs-routes';
 
@@ -162,23 +162,29 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
 
       case 'block': {
         const shouldHighlightHash = data.block_hash.toLowerCase() === searchTerm.toLowerCase();
+        const isFutureBlock = data.timestamp === undefined;
+        const href = isFutureBlock ?
+          route({ pathname: '/block/countdown/[height]', query: { height: String(data.block_number) } }) :
+          route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: data.block_hash ?? String(data.block_number) } });
+
         return (
           <BlockEntity.Container>
-            <BlockEntity.Icon/>
+            <BlockEntity.Icon isLoading={ isLoading }/>
             <BlockEntity.Link
-              hash={ data.block_hash }
-              number={ Number(data.block_number) }
+              href={ href }
               onClick={ handleLinkClick }
+              isLoading={ isLoading }
             >
               <BlockEntity.Content
                 asProp={ shouldHighlightHash ? 'span' : 'mark' }
                 number={ Number(data.block_number) }
                 fontSize="sm"
                 fontWeight={ 700 }
+                isLoading={ isLoading }
               />
             </BlockEntity.Link>
-            { data.block_type === 'reorg' && <Tag ml={ 2 }>Reorg</Tag> }
-            { data.block_type === 'uncle' && <Tag ml={ 2 }>Uncle</Tag> }
+            { data.block_type === 'reorg' && !isLoading && <Tag ml={ 2 }>Reorg</Tag> }
+            { data.block_type === 'uncle' && !isLoading && <Tag ml={ 2 }>Uncle</Tag> }
           </BlockEntity.Container>
         );
       }
@@ -295,12 +301,20 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
       }
       case 'block': {
         const shouldHighlightHash = data.block_hash.toLowerCase() === searchTerm.toLowerCase();
+        const isFutureBlock = data.timestamp === undefined;
+
+        if (isFutureBlock) {
+          return <Skeleton isLoaded={ !isLoading }>Learn estimated time for this block to be created.</Skeleton>;
+        }
+
         return (
           <>
-            <Box as={ shouldHighlightHash ? 'mark' : 'span' } display="block" whiteSpace="nowrap" overflow="hidden" mb={ 1 }>
+            <Skeleton isLoaded={ !isLoading } as={ shouldHighlightHash ? 'mark' : 'span' } display="block" whiteSpace="nowrap" overflow="hidden" mb={ 1 }>
               <HashStringShortenDynamic hash={ data.block_hash }/>
-            </Box>
-            <Text variant="secondary" mr={ 2 }>{ dayjs(data.timestamp).format('llll') }</Text>
+            </Skeleton>
+            <Skeleton isLoaded={ !isLoading } color="text_secondary" mr={ 2 }>
+              <span>{ dayjs(data.timestamp).format('llll') }</span>
+            </Skeleton>
           </>
         );
       }

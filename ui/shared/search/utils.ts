@@ -1,5 +1,5 @@
-import type { SearchResultItem } from 'types/api/search';
 import type { MarketplaceAppOverview } from 'types/client/marketplace';
+import type { SearchResultItem } from 'types/client/search';
 
 import config from 'configs/app';
 

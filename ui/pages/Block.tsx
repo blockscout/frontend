@@ -115,7 +115,15 @@ const BlockPageContent = () => {
   }, [ appProps.referrer ]);
 
   throwOnAbsentParamError(heightOrHash);
-  throwOnResourceLoadError(blockQuery);
+
+  if (blockQuery.isError) {
+    if (!blockQuery.isDegradedData && blockQuery.error.status === 404 && !heightOrHash.startsWith('0x')) {
+      router.push({ pathname: '/block/countdown/[height]', query: { height: heightOrHash } });
+      return null;
+    } else {
+      throwOnResourceLoadError(blockQuery);
+    }
+  }
 
   const title = (() => {
     switch (blockQuery.data?.type) {
