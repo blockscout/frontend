@@ -24,10 +24,7 @@ const AddressMudTablesTableItem = ({ item, isLoading, scrollRef }: Props) => {
       table_id: e.currentTarget.getAttribute('data-id') as string,
     };
     router.push({ pathname: router.pathname, query: newQuery }, undefined, { shallow: true });
-    window.setTimeout(() => {
-      // cannot do scroll instantly, have to wait a little
-      scrollRef?.current?.scrollIntoView({ behavior: 'smooth' });
-    }, 500);
+    scrollRef?.current?.scrollIntoView();
   }, [ router, scrollRef ]);
 
   return (

@@ -13,6 +13,7 @@ import FilterInput from 'ui/shared/filters/FilterInput';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
+import AddressMudTablesListItem from './AddressMudTablesListItem';
 import AddressMudTablesTable from './AddressMudTablesTable';
 
 type Props ={
@@ -73,14 +74,13 @@ const AddressMudTables = ({ scrollRef, isQueryEnabled = true }: Props) => {
         />
       </Hide>
       <Show below="lg" ssr={ false }>
-        waiting for mobile mockup
-        { /* { data.items.map((item, index) => (
-          <AddressMudListItem
+        { data.items.map((item, index) => (
+          <AddressMudTablesListItem
             key={ item.table.table_id + (isPlaceholderData ? String(index) : '') }
             item={ item }
             isLoading={ isPlaceholderData }
           />
-        )) } */ }
+        )) }
       </Show>
     </>
   ) : null;

@@ -1,8 +1,9 @@
-import { Grid, Box, useColorModeValue, chakra, HStack } from '@chakra-ui/react';
+import { Box, useColorModeValue, chakra, HStack } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import useIsMobile from 'lib/hooks/useIsMobile';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/links/LinkInternal';
@@ -70,8 +71,18 @@ const BreadcrumbItem = ({ text, href, isLast, scrollRef }: BreadcrumbItemProps) 
 
 const AddressMudBreadcrumbs = (props: TableViewProps | RecordViewProps) => {
   const queryParams = { tab: 'mud', hash: props.hash };
+  const isMobile = useIsMobile();
+
   return (
-    <Grid templateColumns="20px auto auto auto" gap={ 2 } alignItems="center" className={ props.className }>
+    <Box
+      display={ isMobile ? 'flex' : 'grid' }
+      flexWrap="wrap"
+      gridTemplateColumns="20px auto auto auto"
+      gap={ 2 }
+      alignItems="center"
+      className={ props.className }
+      width="fit-content"
+    >
       <IconSvg name="MUD" boxSize={ 5 } color="green.500"/>
       <BreadcrumbItem
         text="MUD World"
@@ -93,7 +104,7 @@ const AddressMudBreadcrumbs = (props: TableViewProps | RecordViewProps) => {
 
         />
       ) }
-    </Grid>
+    </Box>
   );
 };
 

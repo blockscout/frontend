@@ -1,9 +1,10 @@
-import { Box, HStack, Hide, Show, Tag, TagCloseButton, chakra, useBoolean } from '@chakra-ui/react';
+import { Box, HStack, Tag, TagCloseButton, chakra, useBoolean } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { AddressMudRecordsFilter, AddressMudRecordsSorting } from 'types/api/address';
 
+import useIsMobile from 'lib/hooks/useIsMobile';
 import { apos, nbsp } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
@@ -31,7 +32,8 @@ const AddressMudTable = ({ scrollRef, tableId, isQueryEnabled = true }: Props) =
   const [ sorting, setSorting ] =
     React.useState<AddressMudRecordsSorting | undefined>(getSortParamsFromQuery<AddressMudRecordsSorting>(router.query, SORT_SEQUENCE));
   const [ filters, setFilters ] = React.useState<AddressMudRecordsFilter>({});
-  const [ tableHasHorisontalScroll, setTableHasHorisontalScroll ] = useBoolean(false);
+  const isMobile = useIsMobile();
+  const [ tableHasHorisontalScroll, setTableHasHorisontalScroll ] = useBoolean(isMobile);
 
   const hash = getQueryParamString(router.query.hash);
 
@@ -93,18 +95,20 @@ const AddressMudTable = ({ scrollRef, tableId, isQueryEnabled = true }: Props) =
     </HStack>
   ) : null;
 
-  const actionBar = (
+  const breadcrumbs = data ? (
+    <AddressMudBreadcrumbs
+      hash={ hash }
+      tableId={ tableId }
+      tableName={ data?.table.table_full_name }
+      scrollRef={ scrollRef }
+      mb={ hasActiveFilters ? 4 : 0 }
+    />
+  ) : null;
+
+  const actionBar = (!isMobile || hasActiveFilters || pagination.isVisible) && (
     <ActionBar mt={ -6 } showShadow={ tableHasHorisontalScroll } justifyContent="space-between" alignItems={ hasActiveFilters ? 'start' : 'center' }>
       <Box>
-        { data && (
-          <AddressMudBreadcrumbs
-            hash={ hash }
-            tableId={ tableId }
-            tableName={ data?.table.table_full_name }
-            scrollRef={ scrollRef }
-            mb={ hasActiveFilters ? 4 : 0 }
-          />
-        ) }
+        { !isMobile && breadcrumbs }
         { filtersTags }
       </Box>
       <Pagination ml={{ base: 0, lg: 8 }} { ...pagination }/>
@@ -112,45 +116,36 @@ const AddressMudTable = ({ scrollRef, tableId, isQueryEnabled = true }: Props) =
   );
 
   const content = data?.items ? (
-    <>
-      <Hide below="lg" ssr={ false }>
-        <AddressMudRecordsTable
-          data={ data }
-          top={ actionBatHeight }
-          sorting={ sorting }
-          toggleSorting={ toggleSorting }
-          setFilters={ setFilters }
-          filters={ filters }
-          toggleTableHasHorisontalScroll={ setTableHasHorisontalScroll.toggle }
-          scrollRef={ scrollRef }
-        />
-      </Hide>
-      <Show below="lg" ssr={ false }>
-          waiting for mobile mockup
-        { /* { data.items.map((item, index) => (
-            <AddressMudListItem
-              key={ item.table.table_id + (isPlaceholderData ? String(index) : '') }
-              item={ item }
-              isLoading={ isPlaceholderData }
-            />
-          )) } */ }
-      </Show>
-    </>
+    <AddressMudRecordsTable
+      data={ data }
+      top={ actionBatHeight }
+      sorting={ sorting }
+      toggleSorting={ toggleSorting }
+      setFilters={ setFilters }
+      filters={ filters }
+      toggleTableHasHorisontalScroll={ setTableHasHorisontalScroll.toggle }
+      scrollRef={ scrollRef }
+    />
   ) : null;
 
   return (
-    <DataListDisplay
-      isError={ isError }
-      items={ data?.items }
-      emptyText="There are no records for this table."
-      filterProps={{
-        emptyFilteredText: `Couldn${ apos }t find records that match your filter query.`,
-        hasActiveFilters: Object.values(filters).some(Boolean),
-      }}
-      content={ content }
-      actionBar={ actionBar }
-      showActionBarIfEmpty
-    />
+    <>
+      { isMobile && (
+        <Box mb={ 6 }>{ breadcrumbs }</Box>
+      ) }
+      <DataListDisplay
+        isError={ isError }
+        items={ data?.items }
+        emptyText="There are no records for this table."
+        filterProps={{
+          emptyFilteredText: `Couldn${ apos }t find records that match your filter query.`,
+          hasActiveFilters: Object.values(filters).some(Boolean),
+        }}
+        content={ content }
+        actionBar={ actionBar }
+        showActionBarIfEmpty={ !isMobile }
+      />
+    </>
   );
 };
 

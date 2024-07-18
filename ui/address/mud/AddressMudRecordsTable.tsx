@@ -7,6 +7,7 @@ import type { AddressMudRecords, AddressMudRecordsFilter, AddressMudRecordsSorti
 
 import capitalizeFirstLetter from 'lib/capitalizeFirstLetter';
 import dayjs from 'lib/date/dayjs';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import IconSvg from 'ui/shared/IconSvg';
 import { default as Thead } from 'ui/shared/TheadSticky';
 
@@ -14,7 +15,9 @@ import AddressMudRecordsKeyFilter from './AddressMudRecordsKeyFilter';
 import { getNameTypeText } from './utils';
 
 const COL_MIN_WIDTH = 180;
+const COL_MIN_WIDTH_MOBILE = 140;
 const CUT_COL_WIDTH = 36;
+const MIN_CUT_COUNT = 2;
 
 type Props = {
   data: AddressMudRecords;
@@ -37,9 +40,11 @@ const AddressMudRecordsTable = ({
   toggleTableHasHorisontalScroll,
   scrollRef,
 }: Props) => {
-  const [ colsCutCount, setColsCutCount ] = React.useState<number>(0);
+  const totalColsCut = data.schema.key_names.length + data.schema.value_names.length;
+  const isMobile = useIsMobile(false);
+  const [ colsCutCount, setColsCutCount ] = React.useState<number>(isMobile ? 2 : 0);
   const [ isOpened, setIsOpened ] = useBoolean(false);
-  const [ hasCut, setHasCut ] = useBoolean(true);
+  const [ hasCut, setHasCut ] = useBoolean(isMobile ? totalColsCut > MIN_CUT_COUNT : true);
 
   const tableRef = React.useRef<HTMLTableElement>(null);
 
@@ -56,10 +61,7 @@ const AddressMudRecordsTable = ({
       record_id: e.currentTarget.getAttribute('data-id') as string,
     };
     router.push({ pathname: router.pathname, query: newQuery }, undefined, { shallow: true });
-    window.setTimeout(() => {
-      // cannot do scroll instantly, have to wait a little
-      scrollRef?.current?.scrollIntoView({ behavior: 'smooth' });
-    }, 500);
+    scrollRef?.current?.scrollIntoView();
   }, [ router, scrollRef ]);
 
   const handleFilterChange = React.useCallback((field: keyof AddressMudRecordsFilter) => (val: string) => {
@@ -80,39 +82,42 @@ const AddressMudRecordsTable = ({
   React.useEffect(() => {
     if (hasCut && !colsCutCount && tableRef.current) {
       const count = Math.floor((tableRef.current.getBoundingClientRect().width - CUT_COL_WIDTH) / COL_MIN_WIDTH);
-      const total = data.schema.key_names.length + data.schema.value_names.length;
-      if (total > 2 && count - 1 < total) {
+      if (totalColsCut > 2 && count - 1 < totalColsCut) {
         setColsCutCount(count - 1);
       } else {
         setHasCut.off();
       }
     }
-  }, [ colsCutCount, data.schema, hasCut, setHasCut ]);
+  }, [ colsCutCount, data.schema, hasCut, setHasCut, totalColsCut ]);
 
   const cutWidth = `${ CUT_COL_WIDTH }px `;
+
+  const colW = isMobile ? COL_MIN_WIDTH_MOBILE : COL_MIN_WIDTH;
 
   const tdStyles: StyleProps = {
     wordBreak: 'break-all',
     whiteSpace: 'normal',
-    minW: `${ COL_MIN_WIDTH }px`,
-    w: `${ COL_MIN_WIDTH }px`,
+    minW: `${ colW }px`,
+    w: `${ colW }px`,
   };
 
   const thStyles: StyleProps = {
     wordBreak: 'break-word',
     whiteSpace: 'normal',
-    minW: `${ COL_MIN_WIDTH }px`,
-    w: `${ COL_MIN_WIDTH }px`,
+    minW: `${ colW }px`,
+    w: `${ colW }px`,
   };
 
   const keys = (isOpened || !hasCut) ? data.schema.key_names : data.schema.key_names.slice(0, colsCutCount);
   const values = (isOpened || !hasCut) ? data.schema.value_names : data.schema.value_names.slice(0, colsCutCount - data.schema.key_names.length);
 
+  const hasHorizontalScroll = isMobile || isOpened;
+
   return (
     // can't implement both horisontal table scroll and sticky header
-    <Box maxW="100%" overflowX={ isOpened ? 'scroll' : 'unset' } whiteSpace="nowrap">
+    <Box maxW="100%" overflowX={ hasHorizontalScroll ? 'scroll' : 'unset' } whiteSpace="nowrap">
       <Table variant="simple" size="sm" style={{ tableLayout: 'fixed' }} ref={ tableRef }>
-        <Thead top={ isOpened ? 0 : top } display={ isOpened ? 'table' : 'table-header-group' } w="100%">
+        <Thead top={ hasHorizontalScroll ? 0 : top } display={ hasHorizontalScroll ? 'table' : 'table-header-group' } w="100%">
           <Tr >
             { keys.map((keyName, index) => {
               const text = getNameTypeText(keyName, data.schema.key_types[index]);
@@ -147,7 +152,7 @@ const AddressMudRecordsTable = ({
             { hasCut && isOpened && <Th width={ cutWidth }><Link onClick={ toggleIsOpen }>...</Link></Th> }
           </Tr>
         </Thead>
-        <Tbody display={ isOpened ? 'table' : 'table-row-group' } w="100%">
+        <Tbody display={ hasHorizontalScroll ? 'table' : 'table-row-group' } w="100%">
           { data.items.map((item) => (
             <Tr key={ item.id }>
               { keys.map((keyName, index) => (

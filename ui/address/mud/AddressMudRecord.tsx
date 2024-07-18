@@ -1,4 +1,4 @@
-import { Box, Td, Tr, Flex, useColorModeValue, Table } from '@chakra-ui/react';
+import { Box, Td, Tr, Flex, Text, Table, Show, Hide, Divider, VStack } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -9,6 +9,7 @@ import ContentLoader from 'ui/shared/ContentLoader';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
 import AddressMudBreadcrumbs from './AddressMudBreadcrumbs';
+import AddressMudRecordValues from './AddressMudRecordValues';
 
 type Props ={
   scrollRef?: React.RefObject<HTMLDivElement>;
@@ -21,8 +22,6 @@ const AddressMudRecord = ({ tableId, recordId, isQueryEnabled = true, scrollRef 
   const router = useRouter();
 
   const hash = getQueryParamString(router.query.hash);
-
-  const valuesBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
   const { data, isLoading, isError } = useApiQuery('address_mud_record', {
     pathParams: { hash, table_id: tableId, record_id: recordId },
@@ -52,42 +51,41 @@ const AddressMudRecord = ({ tableId, recordId, isQueryEnabled = true, scrollRef 
           scrollRef={ scrollRef }
         />
       ) }
-
-      <Table borderRadius="8px" style={{ tableLayout: 'auto' }} width="100%">
-        { data?.schema.key_names.length && data?.schema.key_names.map((keyName, index) => (
-          <Tr key={ keyName } borderBottomStyle={ index === data.schema.key_names.length - 1 ? 'hidden' : 'solid' }>
-            <Td fontWeight={ 600 } whiteSpace="nowrap">
-              { keyName } ({ data.schema.key_types[index] })
-            </Td>
-            <Td colSpan={ 2 }>
-              <Flex justifyContent="space-between">
-                <TruncatedValue value={ data.record.decoded[keyName] } mr={ 2 }/>
-                { index === 0 && <Box color="text_secondary">{ dayjs(data.record.timestamp).format('lll') }</Box> }
-              </Flex>
-            </Td>
-          </Tr>
-        )) }
-        { data?.schema.value_names.length && (
-          <>
-            <Tr backgroundColor={ valuesBgColor } borderBottomStyle="hidden">
-              <Td fontWeight={ 600 }>Field</Td>
-              <Td fontWeight={ 600 }>Type</Td>
-              <Td fontWeight={ 600 } w="100%" wordBreak="break-all">Value</Td>
+      <Show above="lg" ssr={ false }>
+        <Table borderRadius="8px" style={{ tableLayout: 'auto' }} width="100%" overflow="hidden">
+          { data?.schema.key_names.length && data?.schema.key_names.map((keyName, index) => (
+            <Tr key={ keyName } borderBottomStyle={ index === data.schema.key_names.length - 1 ? 'hidden' : 'solid' }>
+              <Td fontWeight={ 600 } whiteSpace="nowrap">
+                { keyName } ({ data.schema.key_types[index] })
+              </Td>
+              <Td colSpan={ 2 }>
+                <Flex justifyContent="space-between">
+                  <TruncatedValue value={ data.record.decoded[keyName] } mr={ 2 }/>
+                  { index === 0 && <Box color="text_secondary">{ dayjs(data.record.timestamp).format('lll') }</Box> }
+                </Flex>
+              </Td>
             </Tr>
-            { data?.schema.value_names.map((valName, index) => (
-              <Tr key={ valName } backgroundColor={ valuesBgColor } borderBottomStyle="hidden">
-                <Td whiteSpace="nowrap">{ valName }</Td>
-                <Td>{ data.schema.value_types[index] }</Td>
-                <Td w="100%" wordBreak="break-all">
-                  <Box>
-                    { data.record.decoded[valName] }
-                  </Box>
-                </Td>
-              </Tr>
-            )) }
-          </>
-        ) }
-      </Table>
+          )) }
+          <AddressMudRecordValues data={ data }/>
+        </Table>
+      </Show>
+      <Hide above="lg" ssr={ false }>
+        <>
+          { data?.schema.key_names.length && data?.schema.key_names.map((keyName, index) => (
+            <VStack gap={ 1 } key={ keyName } alignItems="start">
+              <Divider/>
+              <Text fontWeight={ 600 } whiteSpace="nowrap">
+                { keyName } ({ data.schema.key_types[index] })
+              </Text>
+              <Text wordBreak="break-all">{ data.record.decoded[keyName] }</Text>
+              { index === 0 && <Box color="text_secondary">{ dayjs(data.record.timestamp).format('lll') }</Box> }
+            </VStack>
+          )) }
+          <Table borderRadius="8px" style={{ tableLayout: 'auto' }} width="100%" mt={ 2 } overflow="hidden">
+            <AddressMudRecordValues data={ data }/>
+          </Table>
+        </>
+      </Hide>
     </>
   );
 };
