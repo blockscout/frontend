@@ -213,9 +213,6 @@ jobs:
           name: playwright-affected-tests
           path: ./playwright
 
-      - name: Update Playwright snapshots
-        run: yarn playwright test --update-snapshots
-
       - name: Run PlayWright
         run: yarn test:pw:ci --affected=${{ github.event_name == 'pull_request' }} --pass-with-no-tests
         env:
