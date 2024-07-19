@@ -47,6 +47,7 @@ const NavLinkGroup = ({ item }: Props) => {
               _hover={{ color: colors.text.hover }}
               bgColor={ bgColor }
               borderRadius="base"
+              whiteSpace="nowrap"
               { ...getDefaultTransitionProps() }
             >
               { item.text }

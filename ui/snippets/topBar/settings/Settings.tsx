@@ -6,6 +6,7 @@ import IconSvg from 'ui/shared/IconSvg';
 
 import SettingsColorTheme from './SettingsColorTheme';
 import SettingsIdentIcon from './SettingsIdentIcon';
+import SettingsLangChange from './SettingsLangChange';
 
 const Settings = () => {
   const { isOpen, onToggle, onClose } = useDisclosure();
@@ -26,6 +27,8 @@ const Settings = () => {
       <PopoverContent overflowY="hidden" w="auto" fontSize="sm">
         <PopoverBody boxShadow="2xl" p={ 4 }>
           <SettingsColorTheme onSelect={ onClose }/>
+          <Box borderColor="divider" borderWidth="1px" my={ 3 }/>
+          <SettingsLangChange onSelect={ onClose }/>
           <Box borderColor="divider" borderWidth="1px" my={ 3 }/>
           <SettingsIdentIcon/>
         </PopoverBody>

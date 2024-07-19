@@ -61,7 +61,7 @@ const NavigationDesktop = () => {
       alignItems="stretch"
       borderRight="1px solid"
       borderColor="divider"
-      px={{ lg: isExpanded ? 6 : 4, xl: isCollapsed ? 4 : 6 }}
+      px={{ lg: isExpanded ? 5.3 : 4.7, xl: isCollapsed ? 5.3 : 4.7 }}
       py={ 12 }
       width={{ lg: isExpanded ? '249px' : '92px', xl: isCollapsed ? '92px' : '249px' }}
       { ...getDefaultTransitionProps({ transitionProperty: 'width, padding' }) }
