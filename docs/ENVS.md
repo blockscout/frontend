@@ -702,7 +702,29 @@ If the feature is enabled, a Multichain balance button will be displayed on the 
 | name | `string` | Multichain portfolio application name | Required | - | `zerion` |
 | url_template | `string` | Url template to the portfolio. Should be a template with `{address}` variable | Required | - | `https://app.zerion.io/{address}/overview` |
 | dapp_id | `string` | Set for open a Blockscout dapp page with the portfolio instead of opening external app page | - | - | `zerion` |
-| logo | `string` | Multichain portfolio application logo (.svg) url | - | - | `https://example.com/icon.svg` |
+| logo | `string` | Multichain portfolio application logo url | - | - | `https://example.com/icon.svg` |
+
+&nbsp;
+
+### Get gas button
+
+If the feature is enabled, a Get gas button will be displayed on the address page, which will take you to the gas refuel application in the marketplace or to an external site.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_GAS_REFUEL_PROVIDER_CONFIG | `{ name: string; url_template: string; dapp_id?: string; logo?: string, usd_threshold: number }` | Get gas button config. See [below](#get-gas-button-configuration-properties) | - | - | `{ name: 'Get gas', dapp_id: 'smol-refuel', url_template: 'https://smolrefuel.com/?outboundChain={chainId}&partner=blockscout&utm_source=blockscout&utm_medium=address&disableBridges=true', logo: 'https://blockscout-content.s3.amazonaws.com/smolrefuel-logo-action-button.png', usd_threshold: 10 }` | v1.33.0+ |
+
+&nbsp;
+
+#### Get gas button configuration properties
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| name | `string` | Gas refuel application name | Required | - | `zerion` |
+| url_template | `string` | Url template to the portfolio. Should be a template with `{address}` variable | Required | - | `https://app.zerion.io/{address}/overview` |
+| dapp_id | `string` | Set for open a Blockscout dapp page with the portfolio instead of opening external app page | - | - | `zerion` |
+| logo | `string` | Gas refuel application logo (.svg) url | - | - | `https://example.com/icon.png` |
+| usd_threshold | `number` | Value in USD, at balance less than which the button will be displayed | - | `1` | `10` |
 
 &nbsp;
 

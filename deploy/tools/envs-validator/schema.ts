@@ -13,6 +13,7 @@ import { SUPPORTED_AD_TEXT_PROVIDERS, SUPPORTED_AD_BANNER_PROVIDERS, SUPPORTED_A
 import type { AdTextProviders, AdBannerProviders, AdBannerAdditionalProviders } from '../../../types/client/adProviders';
 import type { ContractCodeIde } from '../../../types/client/contract';
 import type { DeFiDropdownItem } from '../../../types/client/deFiDropdown';
+import type { GasRefuelProviderConfig } from '../../../types/client/gasRefuelProviderConfig';
 import { GAS_UNITS } from '../../../types/client/gasTracker';
 import type { GasUnit } from '../../../types/client/gasTracker';
 import type { MarketplaceAppOverview, MarketplaceAppSecurityReportRaw, MarketplaceAppSecurityReport } from '../../../types/client/marketplace';
@@ -636,6 +637,20 @@ const schema = yup
           url_template: yup.string().required(),
           logo: yup.string(),
           dapp_id: yup.string(),
+        });
+
+        return isUndefined || valueSchema.isValidSync(data);
+      }),
+    NEXT_PUBLIC_GAS_REFUEL_PROVIDER_CONFIG: yup
+      .mixed()
+      .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_GAS_REFUEL_PROVIDER_CONFIG, it should have name and url template', (data) => {
+        const isUndefined = data === undefined;
+        const valueSchema = yup.object<GasRefuelProviderConfig>().transform(replaceQuotes).json().shape({
+          name: yup.string().required(),
+          url_template: yup.string().required(),
+          logo: yup.string(),
+          dapp_id: yup.string(),
+          usd_threshold: yup.number(),
         });
 
         return isUndefined || valueSchema.isValidSync(data);
