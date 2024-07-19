@@ -63,7 +63,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
     };
   }, [ appProps.referrer ]);
 
-  const bridgedTokenTagBgColor = useToken('colors', 'blue.500');
+  const bridgedTokenTagBgColor = useToken('colors', 'brand.500');
   const bridgedTokenTagTextColor = useToken('colors', 'white');
 
   const tags: Array<EntityTag> = React.useMemo(() => {

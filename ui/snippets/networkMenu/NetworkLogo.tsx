@@ -32,7 +32,7 @@ const LogoFallback = ({
   const iconPath =
     colorMode === 'light' ?
       'networks/wvm-icon-dark' :
-      'networks/wvm-icon-light-2';
+      'networks/wvm-icon-light';
 
   const logoPath =
     colorMode === 'light' ?

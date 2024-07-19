@@ -14,7 +14,7 @@ const Settings = () => {
       <PopoverTrigger>
         <IconButton
           variant="simple"
-          colorScheme="blue"
+          colorScheme="green"
           aria-label="User settings"
           icon={ <IconSvg name="gear_slim" boxSize={ 5 }/> }
           p="1px"

@@ -109,6 +109,7 @@ const SearchBarInput = (
           borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
           _focusWithin={{ _placeholder: { color: 'gray.300' } }}
           color={ useColorModeValue('black', 'white') }
+          focusBorderColor={ useColorModeValue('brand.700', 'brand.700') }
           value={ value }
         />
         { value && (

@@ -14,7 +14,7 @@ type Props = {
 
 const SearchBarSuggest = ({ onClick, onClear }: Props) => {
   const isMobile = useIsMobile();
-  const bgHoverColor = useColorModeValue('blue.50', 'gray.800');
+  const bgHoverColor = useColorModeValue('brand.50', 'gray.800');
 
   const [ keywords, setKeywords ] = React.useState<Array<string>>(getRecentSearchKeywords());
 

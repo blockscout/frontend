@@ -48,14 +48,14 @@ export const STATS_CHARTS_SECTION: StatsChartsSection = {
     {
       id: 'chart_0',
       title: 'Average transaction fee',
-      description: 'The average amount in ETH spent per transaction',
-      units: 'ETH',
+      description: 'The average amount in tWVM spent per transaction',
+      units: 'tWVM',
     },
     {
       id: 'chart_1',
       title: 'Transactions fees',
       description: 'Amount of tokens paid as fees',
-      units: 'ETH',
+      units: 'tWVM',
     },
     {
       id: 'chart_2',

@@ -90,6 +90,7 @@
 	| "networks/logo-placeholder"
 	| "networks/wvm-icon-dark"
 	| "networks/wvm-icon-light-2"
+	| "networks/wvm-icon-light"
 	| "networks/wvm-logo-dark-2"
 	| "networks/wvm-logo-dark"
 	| "networks/wvm-logo-light"

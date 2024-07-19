@@ -22,7 +22,7 @@ const SearchBarSuggestItemLink = ({ onClick, href, target, children }: Props) =>
         borderBottomWidth: '0',
       }}
       _hover={{
-        bgColor: useColorModeValue('blue.50', 'gray.800'),
+        bgColor: useColorModeValue('brand.50', 'gray.800'),
       }}
       fontSize="sm"
       _first={{

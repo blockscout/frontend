@@ -63,7 +63,7 @@ test('customization', async({ render }) => {
       number={ 17943507 }
       p={ 3 }
       borderWidth="1px"
-      borderColor="blue.700"
+      borderColor="brand.700"
     />,
   );
 
