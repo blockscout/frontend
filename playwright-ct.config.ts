@@ -88,6 +88,7 @@ const config: PlaywrightTestConfig = defineConfig({
         'process.env': '__envs', // Port process.env over window.__envs
       },
     },
+    locale: 'en-US', // Default locale
   },
 
   // configured projects
