@@ -3,6 +3,17 @@
   "network_utilization_last_50_blocks": "Network utilization (last 50 blocks)",
   "load": "load",
   "no_data_please_reload_page": "No data. Please reload page.",
+  "transactions": "Transactions",
+  "scanning_new": "scanning new",
+  "transaction": "transaction",
+  "block": "block",
+  "deposit": "deposit",
+  "token_transfer": "token transfer",
+  "have": "have",
+  "has": "has",
+  "come_in": "come in",
+  "search_by_address_": "Search by address / ...",
+  "search_by_address_txn_hash_block_token_": "Search by address / txn hash / block / token...",
   "home": {
     "view_all_blocks": "View all blocks",
     "latest_blocks": "Latest blocks",
@@ -10,7 +21,22 @@
     "view_all_watch_list_transactions": "View all watch list transactions",
     "view_all_batches": "View all batches",
     "latest_batches": "Latest batches",
-    "view_all_deposits": "View all deposits"
+    "view_all_deposits": "View all deposits",
+    "latest_transactions": "Latest transactions"
+  },
+  "tx_type": {
+    "contract_call": "Contract call",
+    "blob_txn": "Blob txn",
+    "contract_creation": "Contract creation",
+    "token_transfer": "Token transfer",
+    "token_creation": "Token creation",
+    "coin_transfer": "Coin transfer",
+    "bridge": "Bridge",
+    "transaction": "Transaction"
+  },
+  "tx_status": {
+    "success": "Success",
+    "failed": "Failed",
+    "pending": "Pending"
   }
-
 }
