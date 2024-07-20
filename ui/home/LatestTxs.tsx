@@ -1,4 +1,5 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
@@ -15,6 +16,8 @@ import LatestTxsItem from './LatestTxsItem';
 import LatestTxsItemMobile from './LatestTxsItemMobile';
 
 const LatestTransactions = () => {
+  const { t } = useTranslation('common');
+
   const isMobile = useIsMobile();
   const txsCount = isMobile ? 2 : 6;
   const { data, isPlaceholderData, isError } = useApiQuery('homepage_txs', {
@@ -26,7 +29,7 @@ const LatestTransactions = () => {
   const { num, socketAlert } = useNewTxsSocket();
 
   if (isError) {
-    return <Text mt={ 4 }>No data. Please reload page.</Text>;
+    return <Text mt={ 4 }>{ t('no_data_please_reload_page') }</Text>;
   }
 
   if (data) {
@@ -55,7 +58,7 @@ const LatestTransactions = () => {
           </Box>
         </AddressHighlightProvider>
         <Flex justifyContent="center">
-          <LinkInternal fontSize="sm" href={ txsUrl }>View all transactions</LinkInternal>
+          <LinkInternal fontSize="sm" href={ txsUrl }>{ t('home.view_all_transactions') }</LinkInternal>
         </Flex>
       </>
     );

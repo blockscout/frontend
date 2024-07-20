@@ -1,3 +1,4 @@
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import React from 'react';
 
 import type { NextPageWithLayout } from 'nextjs/types';
@@ -25,4 +26,14 @@ Page.getLayout = function getLayout(page: React.ReactElement) {
 
 export default Page;
 
-export { base as getServerSideProps } from 'nextjs/getServerSideProps';
+//export { base as getServerSideProps } from 'nextjs/getServerSideProps';
+
+export async function getStaticProps({ locale }: { locale: string }) {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, [
+        'common',
+      ])),
+    },
+  };
+}

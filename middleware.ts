@@ -8,7 +8,6 @@ const cspPolicy = generateCspPolicy();
 
 export function middleware(req: NextRequest) {
   const isPageRequest = req.headers.get('accept')?.includes('text/html');
-  const start = Date.now();
 
   if (!isPageRequest) {
     return;
@@ -18,6 +17,8 @@ export function middleware(req: NextRequest) {
   if (accountResponse) {
     return accountResponse;
   }
+
+  const start = Date.now();
 
   const end = Date.now();
   const res = NextResponse.next();
@@ -32,7 +33,7 @@ export function middleware(req: NextRequest) {
  * Configure which routes should pass through the Middleware.
  */
 export const config = {
-  matcher: [ '/', '/:notunderscore((?!_next).+)' ],
+  matcher: [ '/(en|cn)/:path*', '/:notunderscore((?!_next).+)' ],
   // matcher: [
   //   '/((?!.*\\.|api\\/|node-api\\/).*)', // exclude all static + api + node-api routes
   // ],

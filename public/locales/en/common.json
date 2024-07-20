@@ -1,0 +1,16 @@
+{
+  "network_utilization": "Network utilization",
+  "network_utilization_last_50_blocks": "Network utilization (last 50 blocks)",
+  "load": "load",
+  "no_data_please_reload_page": "No data. Please reload page.",
+  "home": {
+    "view_all_blocks": "View all blocks",
+    "latest_blocks": "Latest blocks",
+    "view_all_transactions": "View all transactions",
+    "view_all_watch_list_transactions": "View all watch list transactions",
+    "view_all_batches": "View all batches",
+    "latest_batches": "Latest batches",
+    "view_all_deposits": "View all deposits"
+  }
+
+}

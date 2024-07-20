@@ -1,0 +1,15 @@
+{
+  "network_utilization": "网络利用率",
+  "network_utilization_last_50_blocks": "网络利用率（最近50个区块）",
+  "load": "加载",
+  "no_data_please_reload_page": "没有数据。请重新加载页面。",
+  "home": {
+    "view_all_blocks": "查看所有区块",
+    "latest_blocks": "最新区块",
+    "view_all_transactions": "查看所有交易",
+    "view_all_watch_list_transactions": "查看所有监控列表交易",
+    "view_all_batches": "查看所有批次",
+    "latest_batches": "最新批次",
+    "view_all_deposits": "查看所有存款"
+  }
+}

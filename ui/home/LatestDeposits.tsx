@@ -1,4 +1,5 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
@@ -17,6 +18,8 @@ import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import LatestDepositsItem from './LatestDepositsItem';
 
 const LatestDeposits = () => {
+  const { t } = useTranslation('common');
+
   const isMobile = useIsMobile();
   const itemsCount = isMobile ? 2 : 6;
   const { data, isPlaceholderData, isError } = useApiQuery('homepage_deposits', {
@@ -54,7 +57,7 @@ const LatestDeposits = () => {
   });
 
   if (isError) {
-    return <Text mt={ 4 }>No data. Please reload page.</Text>;
+    return <Text mt={ 4 }>{ t('no_data_please_reload_page') }</Text>;
   }
 
   if (data) {
@@ -72,7 +75,7 @@ const LatestDeposits = () => {
           ))) }
         </Box>
         <Flex justifyContent="center">
-          <LinkInternal fontSize="sm" href={ depositsUrl }>View all deposits</LinkInternal>
+          <LinkInternal fontSize="sm" href={ depositsUrl }>{ t('home.view_all_deposits') }</LinkInternal>
         </Flex>
       </>
     );

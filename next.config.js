@@ -6,11 +6,13 @@ const withRoutes = require('nextjs-routes/config')({
   outDir: 'nextjs',
 });
 
+const { i18n } = require('./next-i18next.config');
 const headers = require('./nextjs/headers');
 const redirects = require('./nextjs/redirects');
 const rewrites = require('./nextjs/rewrites');
 
 const moduleExports = {
+  i18n,
   transpilePackages: [
     'react-syntax-highlighter',
     'swagger-client',
