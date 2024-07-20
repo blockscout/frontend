@@ -32,8 +32,8 @@ const LatestDeposits = () => {
   const [ socketAlert, setSocketAlert ] = React.useState('');
 
   const handleSocketClose = React.useCallback(() => {
-    setSocketAlert('Connection is lost. Please reload page.');
-  }, []);
+    setSocketAlert(t('connection_is_lost_please_reload_page'));
+  }, [ t ]);
 
   const handleSocketError = React.useCallback(() => {
     setSocketAlert('An error has occurred while fetching new transactions. Please reload page.');

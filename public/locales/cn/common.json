@@ -14,6 +14,9 @@
   "come_in": "进入",
   "search_by_address_": "按地址搜索 / ...",
   "search_by_address_txn_hash_block_token_": "按地址 / 交易哈希 / 区块 / 代币搜索...",
+  "connect_wallet": "连接钱包",
+  "disconnect": "断开连接",
+  "connection_is_lost_please_reload_page": "连接已丢失。请重新加载页面。",
   "home": {
     "view_all_blocks": "查看所有区块",
     "latest_blocks": "最新区块",
@@ -22,7 +25,13 @@
     "view_all_batches": "查看所有批次",
     "latest_batches": "最新批次",
     "view_all_deposits": "查看所有存款",
-    "latest_transactions": "最新交易"
+    "latest_transactions": "最新交易",
+    "latest_batch": "最新批次",
+    "total_blocks": "总区块数",
+    "average_block_time": "平均区块时间",
+    "total_transactions": "总交易数",
+    "wallet_addresses": "钱包地址",
+    "gas_tracker": "Gas追踪器"
   },
   "tx_type": {
     "contract_call": "合约调用",

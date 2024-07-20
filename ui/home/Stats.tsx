@@ -1,5 +1,6 @@
 import { Grid } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
@@ -19,6 +20,8 @@ const hasAvgBlockTime = config.UI.homepage.showAvgBlockTime;
 const rollupFeature = config.features.rollup;
 
 const Stats = () => {
+  const { t } = useTranslation('common');
+
   const { data, isPlaceholderData, isError, dataUpdatedAt } = useApiQuery('stats', {
     queryOptions: {
       refetchOnMount: false,
@@ -81,7 +84,7 @@ const Stats = () => {
         { rollupFeature.isEnabled && rollupFeature.type === 'zkEvm' && (
           <StatsItem
             icon="txn_batches"
-            title="Latest batch"
+            title={ t('home.latest_batch') }
             value={ (zkEvmLatestBatchQuery.data || 0).toLocaleString() }
             url={ route({ pathname: '/batches' }) }
             isLoading={ isLoading }
@@ -90,7 +93,7 @@ const Stats = () => {
         { rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && (
           <StatsItem
             icon="txn_batches"
-            title="Latest batch"
+            title={ t('home.latest_batch') }
             value={ (zkSyncLatestBatchQuery.data || 0).toLocaleString() }
             url={ route({ pathname: '/batches' }) }
             isLoading={ isLoading }
@@ -99,7 +102,7 @@ const Stats = () => {
         { !(rollupFeature.isEnabled && (rollupFeature.type === 'zkEvm' || rollupFeature.type === 'zkSync')) && (
           <StatsItem
             icon="block"
-            title="Total blocks"
+            title={ t('home.total_blocks') }
             value={ Number(data.total_blocks).toLocaleString() }
             url={ route({ pathname: '/blocks' }) }
             isLoading={ isLoading }
@@ -108,21 +111,21 @@ const Stats = () => {
         { hasAvgBlockTime && (
           <StatsItem
             icon="clock-light"
-            title="Average block time"
+            title={ t('home.average_block_time') }
             value={ `${ (data.average_block_time / 1000).toFixed(1) }s` }
             isLoading={ isLoading }
           />
         ) }
         <StatsItem
           icon="transactions"
-          title="Total transactions"
+          title={ t('home.total_transactions') }
           value={ Number(data.total_transactions).toLocaleString() }
           url={ route({ pathname: '/txs' }) }
           isLoading={ isLoading }
         />
         <StatsItem
           icon="wallet"
-          title="Wallet addresses"
+          title={ t('home.wallet_addresses') }
           value={ Number(data.total_addresses).toLocaleString() }
           _last={ isOdd ? lastItemTouchStyle : undefined }
           isLoading={ isLoading }
@@ -130,7 +133,7 @@ const Stats = () => {
         { hasGasTracker && data.gas_prices && (
           <StatsItem
             icon="gas"
-            title="Gas tracker"
+            title={ t('home.gas_tracker') }
             value={ <GasPrice data={ data.gas_prices.average }/> }
             _last={ isOdd ? lastItemTouchStyle : undefined }
             tooltip={ gasInfoTooltip }

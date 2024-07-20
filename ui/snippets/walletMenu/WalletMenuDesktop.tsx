@@ -1,5 +1,6 @@
 import type { ButtonProps } from '@chakra-ui/react';
 import { Popover, PopoverContent, PopoverBody, PopoverTrigger, Button, Box, useBoolean, useColorModeValue, Portal } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -17,6 +18,8 @@ type Props = {
 };
 
 const WalletMenuDesktop = ({ isHomePage }: Props) => {
+  const { t } = useTranslation('common');
+
   const { isWalletConnected, address, connect, disconnect, isModalOpening, isModalOpen } = useWallet({ source: 'Header' });
   const { themedBackground, themedBorderColor, themedColor } = useMenuButtonColors();
   const [ isPopoverOpen, setIsPopoverOpen ] = useBoolean(false);
@@ -81,7 +84,7 @@ const WalletMenuDesktop = ({ isHomePage }: Props) => {
               variant={ variant }
               flexShrink={ 0 }
               isLoading={ isModalOpening || isModalOpen }
-              loadingText="Connect wallet"
+              loadingText={ t('connect_wallet') }
               onClick={ isWalletConnected ? openPopover : connect }
               fontSize="sm"
               borderRadius="100px"
@@ -94,7 +97,7 @@ const WalletMenuDesktop = ({ isHomePage }: Props) => {
                   </Box>
                   <HashStringShorten hash={ address } isTooltipDisabled/>
                 </>
-              ) : 'Connect wallet' }
+              ) : t('connect_wallet') }
             </Button>
           </PopoverTrigger>
         </Box>

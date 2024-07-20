@@ -1,4 +1,5 @@
 import { Alert, Button, Flex } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -6,6 +7,8 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import useWallet from 'ui/snippets/walletMenu/useWallet';
 
 const ContractConnectWallet = () => {
+  const { t } = useTranslation('common');
+
   const { isModalOpening, isModalOpen, connect, disconnect, address, isWalletConnected } = useWallet({ source: 'Smart contracts' });
   const isMobile = useIsMobile();
 
@@ -20,9 +23,9 @@ const ContractConnectWallet = () => {
             size="sm"
             variant="outline"
             isLoading={ isModalOpening || isModalOpen }
-            loadingText="Connect wallet"
+            loadingText={ t('connect_wallet') }
           >
-              Connect wallet
+            { t('connect_wallet') }
           </Button>
         </>
       );
@@ -39,7 +42,7 @@ const ContractConnectWallet = () => {
             ml={ 2 }
           />
         </Flex>
-        <Button onClick={ disconnect } size="sm" variant="outline">Disconnect</Button>
+        <Button onClick={ disconnect } size="sm" variant="outline">{ t('disconnect') }</Button>
       </Flex>
     );
   })();

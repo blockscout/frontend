@@ -14,6 +14,9 @@
   "come_in": "come in",
   "search_by_address_": "Search by address / ...",
   "search_by_address_txn_hash_block_token_": "Search by address / txn hash / block / token...",
+  "connect_wallet": "Connect wallet",
+  "disconnect": "Disconnect",
+  "connection_is_lost_please_reload_page": "Connection is lost. Please reload page.",
   "home": {
     "view_all_blocks": "View all blocks",
     "latest_blocks": "Latest blocks",
@@ -22,7 +25,13 @@
     "view_all_batches": "View all batches",
     "latest_batches": "Latest batches",
     "view_all_deposits": "View all deposits",
-    "latest_transactions": "Latest transactions"
+    "latest_transactions": "Latest transactions",
+    "latest_batch": "Latest batch",
+    "total_blocks": "Total blocks",
+    "average_block_time": "Average block time",
+    "total_transactions": "Total transactions",
+    "wallet_addresses": "Wallet addresses",
+    "gas_tracker": "Gas tracker"
   },
   "tx_type": {
     "contract_call": "Contract call",

@@ -1,3 +1,4 @@
+import { i18n } from 'next-i18next';
 import type { NextRouter } from 'next/router';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -5,6 +6,8 @@ import React from 'react';
 import useGradualIncrement from 'lib/hooks/useGradualIncrement';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
+
+i18n?.init();
 
 function getSocketParams(router: NextRouter) {
 
@@ -57,7 +60,7 @@ export default function useNewTxsSocket() {
   }, [ setNum ]);
 
   const handleSocketClose = React.useCallback(() => {
-    setSocketAlert('Connection is lost. Please reload page.');
+    setSocketAlert(i18n?.t('connection_is_lost_please_reload_page') as string);
   }, []);
 
   const handleSocketError = React.useCallback(() => {
