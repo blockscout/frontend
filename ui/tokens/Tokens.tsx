@@ -1,9 +1,9 @@
 import { Hide, Show } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import type { TokensSortingValue } from 'types/api/tokens';
 
-import { apos } from 'lib/html-entities';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
@@ -21,6 +21,7 @@ interface Props {
 }
 
 const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFilters }: Props) => {
+  const { t } = useTranslation('common');
 
   const { isError, isPlaceholderData, data, pagination } = query;
 
@@ -59,9 +60,9 @@ const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFi
     <DataListDisplay
       isError={ isError }
       items={ data?.items }
-      emptyText="There are no tokens."
+      emptyText={ t('there_are_no_tokens') }
       filterProps={{
-        emptyFilteredText: `Couldn${ apos }t find token that matches your filter query.`,
+        emptyFilteredText: t('couldnt_find_token_that_matches_your_filter_query'),
         hasActiveFilters,
       }}
       content={ content }

@@ -64,7 +64,7 @@ export default function useNewTxsSocket() {
   }, []);
 
   const handleSocketError = React.useCallback(() => {
-    setSocketAlert('An error has occurred while fetching new transactions. Please reload page.');
+    setSocketAlert(i18n?.t('an_error_has_occurred_while_fetching_new_transactions_please_reload_page') as string);
   }, []);
 
   const channel = useSocketChannel({

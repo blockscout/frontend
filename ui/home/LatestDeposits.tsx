@@ -36,8 +36,8 @@ const LatestDeposits = () => {
   }, [ t ]);
 
   const handleSocketError = React.useCallback(() => {
-    setSocketAlert('An error has occurred while fetching new transactions. Please reload page.');
-  }, []);
+    setSocketAlert(t('an_error_has_occurred_while_fetching_new_transactions_please_reload_page'));
+  }, [ t ]);
 
   const handleNewDepositMessage: SocketMessage.NewDeposits['handler'] = React.useCallback((payload) => {
     setNum(payload.deposits);
