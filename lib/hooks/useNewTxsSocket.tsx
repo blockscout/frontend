@@ -60,11 +60,11 @@ export default function useNewTxsSocket() {
   }, [ setNum ]);
 
   const handleSocketClose = React.useCallback(() => {
-    setSocketAlert(i18n?.t('connection_is_lost_please_reload_page') as string);
+    setSocketAlert(i18n?.t('Connection_is_lost_Please_reload_page') as string);
   }, []);
 
   const handleSocketError = React.useCallback(() => {
-    setSocketAlert(i18n?.t('an_error_has_occurred_while_fetching_new_transactions_please_reload_page') as string);
+    setSocketAlert(i18n?.t('An_error_has_occurred_while_fetching_new_transactions_Please_reload_page') as string);
   }, []);
 
   const channel = useSocketChannel({

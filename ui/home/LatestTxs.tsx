@@ -29,7 +29,7 @@ const LatestTransactions = () => {
   const { num, socketAlert } = useNewTxsSocket();
 
   if (isError) {
-    return <Text mt={ 4 }>{ t('no_data_please_reload_page') }</Text>;
+    return <Text mt={ 4 }>{ t('No_data_Please_reload_page') }</Text>;
   }
 
   if (data) {
@@ -58,7 +58,7 @@ const LatestTransactions = () => {
           </Box>
         </AddressHighlightProvider>
         <Flex justifyContent="center">
-          <LinkInternal fontSize="sm" href={ txsUrl }>{ t('home.view_all_transactions') }</LinkInternal>
+          <LinkInternal fontSize="sm" href={ txsUrl }>{ t('home.View_all_transactions') }</LinkInternal>
         </Flex>
       </>
     );

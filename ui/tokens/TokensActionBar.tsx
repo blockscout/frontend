@@ -37,7 +37,7 @@ const TokensActionBar = ({
       w={{ base: '100%', lg: '360px' }}
       size="xs"
       onChange={ onSearchChange }
-      placeholder={ t('token_name_or_symbol') }
+      placeholder={ t('Token_name_or_symbol') }
       initialValue={ searchTerm }
     />
   );

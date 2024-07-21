@@ -24,7 +24,7 @@ const TransactionsHome = () => {
     ].filter(Boolean);
     return (
       <>
-        <Heading as="h4" size="sm" mb={ 4 } color={ color }>{ t('transactions') }</Heading>
+        <Heading as="h4" size="sm" mb={ 4 } color={ color }>{ t('Transactions') }</Heading>
         <TabsWithScroll tabs={ tabs } lazyBehavior="keepMounted"/>
       </>
     );
@@ -32,7 +32,7 @@ const TransactionsHome = () => {
 
   return (
     <>
-      <Heading as="h4" size="sm" mb={ 4 } color={ color }>{ t('home.latest_transactions') }</Heading>
+      <Heading as="h4" size="sm" mb={ 4 } color={ color }>{ t('home.Latest_transactions') }</Heading>
       <LatestTxs/>
     </>
   );

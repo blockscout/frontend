@@ -31,27 +31,27 @@ const TxType = ({ types, isLoading }: Props) => {
 
   switch (typeToShow) {
     case 'contract_call':
-      label = t('tx_type.contract_call');
+      label = t('tx_type.Contract_call');
       colorScheme = 'blue';
       break;
     case 'blob_transaction':
-      label = t('tx_type.blob_txn');
+      label = t('tx_type.Blob_txn');
       colorScheme = 'yellow';
       break;
     case 'contract_creation':
-      label = t('tx_type.contract_creation');
+      label = t('tx_type.Contract_creation');
       colorScheme = 'blue';
       break;
     case 'token_transfer':
-      label = t('tx_type.token_transfer');
+      label = t('tx_type.Token_transfer');
       colorScheme = 'orange';
       break;
     case 'token_creation':
-      label = t('tx_type.token_creation');
+      label = t('tx_type.Token_creation');
       colorScheme = 'orange';
       break;
     case 'coin_transfer':
-      label = t('tx_type.coin_transfer');
+      label = t('tx_type.Coin_transfer');
       colorScheme = 'orange';
       break;
     case 'rootstock_remasc':
@@ -59,11 +59,11 @@ const TxType = ({ types, isLoading }: Props) => {
       colorScheme = 'blue';
       break;
     case 'rootstock_bridge':
-      label = t('tx_type.bridge');
+      label = t('tx_type.Bridge');
       colorScheme = 'blue';
       break;
     default:
-      label = t('tx_type.transaction');
+      label = t('tx_type.Transaction');
       colorScheme = 'purple';
   }
 

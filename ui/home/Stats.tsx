@@ -84,7 +84,7 @@ const Stats = () => {
         { rollupFeature.isEnabled && rollupFeature.type === 'zkEvm' && (
           <StatsItem
             icon="txn_batches"
-            title={ t('home.latest_batch') }
+            title={ t('home.Latest_batch') }
             value={ (zkEvmLatestBatchQuery.data || 0).toLocaleString() }
             url={ route({ pathname: '/batches' }) }
             isLoading={ isLoading }
@@ -93,7 +93,7 @@ const Stats = () => {
         { rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && (
           <StatsItem
             icon="txn_batches"
-            title={ t('home.latest_batch') }
+            title={ t('home.Latest_batch') }
             value={ (zkSyncLatestBatchQuery.data || 0).toLocaleString() }
             url={ route({ pathname: '/batches' }) }
             isLoading={ isLoading }
@@ -102,7 +102,7 @@ const Stats = () => {
         { !(rollupFeature.isEnabled && (rollupFeature.type === 'zkEvm' || rollupFeature.type === 'zkSync')) && (
           <StatsItem
             icon="block"
-            title={ t('home.total_blocks') }
+            title={ t('home.Total_blocks') }
             value={ Number(data.total_blocks).toLocaleString() }
             url={ route({ pathname: '/blocks' }) }
             isLoading={ isLoading }
@@ -111,21 +111,21 @@ const Stats = () => {
         { hasAvgBlockTime && (
           <StatsItem
             icon="clock-light"
-            title={ t('home.average_block_time') }
+            title={ t('home.Average_block_time') }
             value={ `${ (data.average_block_time / 1000).toFixed(1) }s` }
             isLoading={ isLoading }
           />
         ) }
         <StatsItem
           icon="transactions"
-          title={ t('home.total_transactions') }
+          title={ t('home.Total_transactions') }
           value={ Number(data.total_transactions).toLocaleString() }
           url={ route({ pathname: '/txs' }) }
           isLoading={ isLoading }
         />
         <StatsItem
           icon="wallet"
-          title={ t('home.wallet_addresses') }
+          title={ t('home.Wallet_addresses') }
           value={ Number(data.total_addresses).toLocaleString() }
           _last={ isOdd ? lastItemTouchStyle : undefined }
           isLoading={ isLoading }
@@ -133,7 +133,7 @@ const Stats = () => {
         { hasGasTracker && data.gas_prices && (
           <StatsItem
             icon="gas"
-            title={ t('home.gas_tracker') }
+            title={ t('home.Gas_tracker') }
             value={ <GasPrice data={ data.gas_prices.average }/> }
             _last={ isOdd ? lastItemTouchStyle : undefined }
             tooltip={ gasInfoTooltip }

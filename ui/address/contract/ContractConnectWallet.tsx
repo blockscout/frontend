@@ -23,9 +23,9 @@ const ContractConnectWallet = () => {
             size="sm"
             variant="outline"
             isLoading={ isModalOpening || isModalOpen }
-            loadingText={ t('connect_wallet') }
+            loadingText={ t('Connect_wallet') }
           >
-            { t('connect_wallet') }
+            { t('Connect_wallet') }
           </Button>
         </>
       );
@@ -42,7 +42,7 @@ const ContractConnectWallet = () => {
             ml={ 2 }
           />
         </Flex>
-        <Button onClick={ disconnect } size="sm" variant="outline">{ t('disconnect') }</Button>
+        <Button onClick={ disconnect } size="sm" variant="outline">{ t('Disconnect') }</Button>
       </Flex>
     );
   })();

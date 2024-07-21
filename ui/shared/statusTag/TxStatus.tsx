@@ -24,15 +24,15 @@ const TxStatus = ({ status, errorText, isLoading }: Props) => {
 
   switch (status) {
     case 'ok':
-      text = t('tx_status.success');
+      text = t('tx_status.Success');
       type = 'ok';
       break;
     case 'error':
-      text = t('tx_status.failed');
+      text = t('tx_status.Failed');
       type = 'error';
       break;
     case null:
-      text = t('tx_status.pending');
+      text = t('tx_status.Pending');
       type = 'pending';
       break;
   }

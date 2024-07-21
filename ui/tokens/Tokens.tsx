@@ -60,9 +60,9 @@ const Tokens = ({ query, onSortChange, sort, actionBar, description, hasActiveFi
     <DataListDisplay
       isError={ isError }
       items={ data?.items }
-      emptyText={ t('there_are_no_tokens') }
+      emptyText={ t('There_are_no_tokens') }
       filterProps={{
-        emptyFilteredText: t('couldnt_find_token_that_matches_your_filter_query'),
+        emptyFilteredText: t('Couldnt_find_token_that_matches_your_filter_query'),
         hasActiveFilters,
       }}
       content={ content }

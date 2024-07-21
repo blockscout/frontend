@@ -106,7 +106,7 @@ const SearchBarInput = (
               paddingRight: '36px',
             },
           }}
-          placeholder={ isMobile ? t('search_by_address_') : t('search_by_address_txn_hash_block_token_') }
+          placeholder={ isMobile ? t('Search_by_address_') : t('Search_by_address_txn_hash_block_token_') }
           onChange={ handleChange }
           border={ isHomepage ? 'none' : '1px solid' }
           borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }

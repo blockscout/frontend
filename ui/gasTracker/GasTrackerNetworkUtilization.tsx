@@ -33,7 +33,7 @@ const GasTrackerNetworkUtilization = ({ percentage, isLoading }: Props) => {
 
   return (
     <Skeleton isLoaded={ !isLoading } whiteSpace="pre-wrap">
-      <span>{ t('network_utilization') } </span>
+      <span>{ t('Network_utilization') } </span>
       <chakra.span color={ color }>{ percentage.toFixed(2) }% { mdash } { load } { t('load') }</chakra.span>
     </Skeleton>
   );

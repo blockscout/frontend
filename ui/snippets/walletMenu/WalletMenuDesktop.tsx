@@ -84,7 +84,7 @@ const WalletMenuDesktop = ({ isHomePage }: Props) => {
               variant={ variant }
               flexShrink={ 0 }
               isLoading={ isModalOpening || isModalOpen }
-              loadingText={ t('connect_wallet') }
+              loadingText={ t('Connect_wallet') }
               onClick={ isWalletConnected ? openPopover : connect }
               fontSize="sm"
               borderRadius="100px"
@@ -97,7 +97,7 @@ const WalletMenuDesktop = ({ isHomePage }: Props) => {
                   </Box>
                   <HashStringShorten hash={ address } isTooltipDisabled/>
                 </>
-              ) : t('connect_wallet') }
+              ) : t('Connect_wallet') }
             </Button>
           </PopoverTrigger>
         </Box>

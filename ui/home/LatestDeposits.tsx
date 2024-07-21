@@ -32,11 +32,11 @@ const LatestDeposits = () => {
   const [ socketAlert, setSocketAlert ] = React.useState('');
 
   const handleSocketClose = React.useCallback(() => {
-    setSocketAlert(t('connection_is_lost_please_reload_page'));
+    setSocketAlert(t('Connection_is_lost_Please_reload_page'));
   }, [ t ]);
 
   const handleSocketError = React.useCallback(() => {
-    setSocketAlert(t('an_error_has_occurred_while_fetching_new_transactions_please_reload_page'));
+    setSocketAlert(t('An_error_has_occurred_while_fetching_new_transactions_Please_reload_page'));
   }, [ t ]);
 
   const handleNewDepositMessage: SocketMessage.NewDeposits['handler'] = React.useCallback((payload) => {
@@ -57,7 +57,7 @@ const LatestDeposits = () => {
   });
 
   if (isError) {
-    return <Text mt={ 4 }>{ t('no_data_please_reload_page') }</Text>;
+    return <Text mt={ 4 }>{ t('No_data_Please_reload_page') }</Text>;
   }
 
   if (data) {
@@ -75,7 +75,7 @@ const LatestDeposits = () => {
           ))) }
         </Box>
         <Flex justifyContent="center">
-          <LinkInternal fontSize="sm" href={ depositsUrl }>{ t('home.view_all_deposits') }</LinkInternal>
+          <LinkInternal fontSize="sm" href={ depositsUrl }>{ t('home.View_all_deposits') }</LinkInternal>
         </Flex>
       </>
     );

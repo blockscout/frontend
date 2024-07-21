@@ -41,7 +41,7 @@ const TokenInventory = ({ inventoryQuery, tokenQuery, ownerFilter }: Props) => {
       mb={{ base: isActionBarHidden ? 3 : 6, lg: 3 }}
       mr={ 4 }
     >
-      <Text whiteSpace="nowrap" mr={ 2 } py={ 1 }>{ t('filtered_by_owner') }</Text>
+      <Text whiteSpace="nowrap" mr={ 2 } py={ 1 }>{ t('Filtered_by_owner') }</Text>
       <Flex alignItems="center" py={ 1 }>
         <AddressEntity address={{ hash: ownerFilter }} truncation={ isMobile ? 'constant' : 'none' }/>
         <ResetIconButton onClick={ resetOwnerFilter }/>
@@ -85,10 +85,10 @@ const TokenInventory = ({ inventoryQuery, tokenQuery, ownerFilter }: Props) => {
     <DataListDisplay
       isError={ inventoryQuery.isError }
       items={ items }
-      emptyText={ t('there_are_no_tokens') }
+      emptyText={ t('There_are_no_tokens') }
       filterProps={{
         hasActiveFilters: Boolean(ownerFilter),
-        emptyFilteredText: t('no_tokens_found_for_the_selected_owner'),
+        emptyFilteredText: t('No_tokens_found_for_the_selected_owner'),
       }}
       content={ content }
       actionBar={ actionBar }

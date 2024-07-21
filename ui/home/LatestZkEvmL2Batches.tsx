@@ -56,7 +56,7 @@ const LatestZkEvmL2Batches = () => {
   let content;
 
   if (isError) {
-    content = <Text>{ t('no_data_please_reload_page') }</Text>;
+    content = <Text>{ t('No_data_Please_reload_page') }</Text>;
   }
 
   if (data) {
@@ -76,7 +76,7 @@ const LatestZkEvmL2Batches = () => {
           </AnimatePresence>
         </VStack>
         <Flex justifyContent="center">
-          <LinkInternal fontSize="sm" href={ route({ pathname: '/batches' }) }>{ t('home.view_all_batches') }</LinkInternal>
+          <LinkInternal fontSize="sm" href={ route({ pathname: '/batches' }) }>{ t('home.View_all_batches') }</LinkInternal>
         </Flex>
       </>
     );
@@ -84,7 +84,7 @@ const LatestZkEvmL2Batches = () => {
 
   return (
     <Box width={{ base: '100%', lg: '280px' }} flexShrink={ 0 }>
-      <Heading as="h4" size="sm" mb={ 4 }>{ t('home.latest_batches') }</Heading>
+      <Heading as="h4" size="sm" mb={ 4 }>{ t('home.Latest_batches') }</Heading>
       { content }
     </Box>
   );
