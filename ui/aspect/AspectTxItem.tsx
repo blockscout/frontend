@@ -1,4 +1,4 @@
-import { Td, Tr, VStack } from '@chakra-ui/react';
+import { Skeleton, Td, Tr, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AspectTxs } from '../../types/api/aspect';
@@ -20,9 +20,10 @@ import TxType from '../txs/TxType';
 
 interface IProps {
   data: AspectTxs;
+  isLoading?: boolean;
 }
 
-export default function AspectTxItem({ data }: IProps) {
+export default function AspectTxItem({ data, isLoading }: IProps) {
   const addressFrom = (
     <Address w="100%">
       <AddressIcon
@@ -31,6 +32,7 @@ export default function AspectTxItem({ data }: IProps) {
           is_contract: false,
           implementation_name: '',
         }}
+        isLoading={ isLoading }
       />
       <AddressLink
         type="address"
@@ -38,8 +40,9 @@ export default function AspectTxItem({ data }: IProps) {
         fontWeight="500"
         ml={ 2 }
         truncation="constant"
+        isLoading={ isLoading }
       />
-      <CopyToClipboard text={ data.from_address_hash }/>
+      <CopyToClipboard text={ data.from_address_hash } isLoading={ isLoading }/>
     </Address>
   );
 
@@ -51,6 +54,7 @@ export default function AspectTxItem({ data }: IProps) {
           is_contract: false,
           implementation_name: '',
         }}
+        isLoading={ isLoading }
       />
       <AddressLink
         type="address"
@@ -58,29 +62,31 @@ export default function AspectTxItem({ data }: IProps) {
         fontWeight="500"
         ml={ 2 }
         truncation="constant"
+        isLoading={ isLoading }
       />
-      <CopyToClipboard text={ data.to_address_hash }/>
+      <CopyToClipboard text={ data.to_address_hash } isLoading={ isLoading }/>
     </Address>
   );
 
   return (
     <Tr>
       <Td pl={ 4 }>
-        <TxAdditionalInfo hash={ data.hash }/>
+        <TxAdditionalInfo hash={ data.hash } isLoading={ isLoading }/>
       </Td>
       <Td pr={ 4 }>
         <VStack alignItems="start" lineHeight="24px">
           <Address width="100%">
-            <AddressLink hash={ data.hash } type="transaction" fontWeight="700"/>
+            <AddressLink hash={ data.hash } type="transaction" fontWeight="700" isLoading={ isLoading }/>
           </Address>
         </VStack>
       </Td>
       <Td>
         <VStack alignItems="start">
-          <TxType rawInput="" types={ [ data.type ] as Array<TransactionType> }/>
+          <TxType rawInput="" types={ [ data.type ] as Array<TransactionType> } isLoading={ isLoading }/>
           <TxStatus
             status={ data.status }
             errorText={ data.status === 'error' ? data.result : undefined }
+            isLoading={ isLoading }
           />
         </VStack>
       </Td>
@@ -91,19 +97,19 @@ export default function AspectTxItem({ data }: IProps) {
             query: { height_or_hash: data.block_number.toString() },
           }) }
         >
-          { data.block_number }
+          <Skeleton isLoaded={ !isLoading }>{ data.block_number }</Skeleton>
         </LinkInternal>
       </Td>
-      <Td>{ addressFrom }</Td>
+      <Td><Skeleton isLoaded={ !isLoading }>{ addressFrom }</Skeleton></Td>
       <Td px={ 0 }>
-        <Icon as={ rightArrowIcon } boxSize={ 6 } color="gray.500"/>
+        <Icon as={ rightArrowIcon } boxSize={ 6 } color="gray.500" isLoading={ isLoading }/>
       </Td>
-      <Td>{ addressTo }</Td>
+      <Td><Skeleton isLoaded={ !isLoading }>{ addressTo }</Skeleton></Td>
       <Td isNumeric>
-        <CurrencyValue value={ data.value } accuracy={ 8 }/>
+        <CurrencyValue value={ data.value } accuracy={ 8 } isLoading={ isLoading }/>
       </Td>
       <Td isNumeric>
-        <CurrencyValue value={ data.fee.value } accuracy={ 8 }/>
+        <CurrencyValue value={ data.fee.value } accuracy={ 8 } isLoading={ isLoading }/>
       </Td>
     </Tr>
   );
