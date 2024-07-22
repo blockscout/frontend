@@ -8,7 +8,6 @@ type Props = {
   children: React.ReactNode;
   className?: string;
   showShadow?: boolean;
-  isLargeShadow?: boolean;
 }
 
 const TOP_UP = 106;
@@ -16,13 +15,11 @@ const TOP_DOWN = 0;
 export const ACTION_BAR_HEIGHT_DESKTOP = 24 + 32 + 12;
 export const ACTION_BAR_HEIGHT_MOBILE = 24 + 32 + 24;
 
-const ActionBar = ({ children, className, showShadow, isLargeShadow }: Props) => {
+const ActionBar = ({ children, className, showShadow }: Props) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const scrollDirection = useScrollDirection();
   const isSticky = useIsSticky(ref, TOP_UP + 5);
   const bgColor = useColorModeValue('white', 'black');
-
-  const shadow = isLargeShadow ? 'action_bar_large' : 'action_bar';
 
   if (!React.Children.toArray(children).filter(Boolean).length) {
     return null;
@@ -45,7 +42,7 @@ const ActionBar = ({ children, className, showShadow, isLargeShadow }: Props) =>
       zIndex={{ base: 'sticky2', lg: 'docked' }}
       boxShadow={{
         base: isSticky ? 'md' : 'none',
-        lg: isSticky && showShadow ? shadow : 'none',
+        lg: isSticky && showShadow ? 'action_bar' : 'none',
       }}
       ref={ ref }
     >

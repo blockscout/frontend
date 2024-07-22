@@ -179,7 +179,6 @@ const Marketplace = () => {
 
       <ActionBar
         showShadow
-        isLargeShadow
         display="flex"
         flexDirection="column"
         mx={{ base: -3, lg: -12 }}

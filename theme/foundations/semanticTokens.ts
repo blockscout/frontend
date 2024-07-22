@@ -38,7 +38,6 @@ const semanticTokens = {
   },
   shadows: {
     action_bar: '0 4px 4px -4px rgb(0 0 0 / 10%), 0 2px 4px -4px rgb(0 0 0 / 6%)',
-    action_bar_large: '0 30px 25px -25px rgb(0 0 0 / 10%), 0 15px 10px -25px rgb(0 0 0 / 4%)',
   },
 };
 
