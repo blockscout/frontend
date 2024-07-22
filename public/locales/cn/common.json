@@ -38,6 +38,9 @@
   "miner": "矿工",
   "Add": "添加",
   "height": "高度",
+  "View_details": "查看详情",
+  "Hide_details": "隐藏详情",
+  "Details": "详情",
   "home": {
     "View_all_blocks": "查看所有区块",
     "Latest_blocks": "最新区块",

@@ -1,4 +1,5 @@
 import { chakra, Skeleton } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -34,6 +35,8 @@ const TAB_LIST_PROPS = {
 };
 
 const BlockPageContent = () => {
+  const { t } = useTranslation('common');
+
   const router = useRouter();
   const isMobile = useIsMobile();
   const appProps = useAppContext();
@@ -48,7 +51,7 @@ const BlockPageContent = () => {
   const tabs: Array<RoutedTab> = React.useMemo(() => ([
     {
       id: 'index',
-      title: 'Details',
+      title: t('Details'),
       component: (
         <>
           { blockQuery.isDegradedData && <ServiceDegradationWarning isLoading={ blockQuery.isPlaceholderData } mb={ 6 }/> }
@@ -58,7 +61,7 @@ const BlockPageContent = () => {
     },
     {
       id: 'txs',
-      title: 'Transactions',
+      title: t('Transactions'),
       component: (
         <>
           { blockTxsQuery.isDegradedData && <ServiceDegradationWarning isLoading={ blockTxsQuery.isPlaceholderData } mb={ 6 }/> }
@@ -85,7 +88,7 @@ const BlockPageContent = () => {
           </>
         ),
       } : null,
-  ].filter(Boolean)), [ blockBlobTxsQuery, blockQuery, blockTxsQuery, blockWithdrawalsQuery ]);
+  ].filter(Boolean)), [ blockBlobTxsQuery, blockQuery, blockTxsQuery, blockWithdrawalsQuery, t ]);
 
   const hasPagination = !isMobile && (
     (tab === 'txs' && blockTxsQuery.pagination.isVisible) ||
@@ -124,7 +127,7 @@ const BlockPageContent = () => {
         return `Uncle block #${ blockQuery.data?.height }`;
 
       default:
-        return `Block #${ blockQuery.data?.height }`;
+        return `${ t('Block') } #${ blockQuery.data?.height }`;
     }
   })();
   const titleSecondRow = (
@@ -139,7 +142,7 @@ const BlockPageContent = () => {
           fontWeight={ 500 }
         >
           <chakra.span flexShrink={ 0 }>
-            { config.chain.verificationType === 'validation' ? 'Validated by' : 'Mined by' }
+            { config.chain.verificationType === 'validation' ? t('block_related.Validated_by') : t('block_related.Mined_by') }
           </chakra.span>
           <AddressEntity address={ blockQuery.data?.miner }/>
         </Skeleton>

@@ -395,7 +395,7 @@ const BlockDetails = ({ query }: Props) => {
               textDecorationStyle="dashed"
               onClick={ handleCutClick }
             >
-              { isExpanded ? 'Hide details' : 'View details' }
+              { isExpanded ? t('Hide_details') : t('View_details') }
             </Link>
           </Skeleton>
         </Element>

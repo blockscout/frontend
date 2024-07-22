@@ -38,6 +38,9 @@
   "miner": "miner",
   "Add": "Add",
   "height": "height",
+  "View_details": "View details",
+  "Hide_details": "Hide details",
+  "Details": "Details",
   "home": {
     "View_all_blocks": "View all blocks",
     "Latest_blocks": "Latest blocks",
