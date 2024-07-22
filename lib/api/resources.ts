@@ -21,14 +21,14 @@ import type {
   AddressTransactionsResponse,
   AddressTokenTransferResponse,
   AddressCoinBalanceHistoryResponse,
-  AddressCoinBalanceHistoryChart,
   AddressBlocksValidatedResponse,
   AddressInternalTxsResponse,
   AddressTxsFilters,
   AddressTokenTransferFilters,
   AddressTokensFilter,
   AddressTokensResponse,
-  AddressWithdrawalsResponse, AddressAspectResponse } from 'types/api/address';
+  AddressWithdrawalsResponse, AddressAspectResponse, AddressCoinBalanceHistoryChartResponse,
+} from 'types/api/address';
 import type { AddressesResponse } from 'types/api/addresses';
 import type {
   BlocksResponse,
@@ -723,7 +723,7 @@ export type ResourcePayload<Q extends ResourceName> = Q extends 'user_info'
   : Q extends 'address_coin_balance'
   ? AddressCoinBalanceHistoryResponse
   : Q extends 'address_coin_balance_chart'
-  ? AddressCoinBalanceHistoryChart
+  ? AddressCoinBalanceHistoryChartResponse
   : Q extends 'address_logs'
   ? LogsResponseAddress
   : Q extends 'address_tokens'

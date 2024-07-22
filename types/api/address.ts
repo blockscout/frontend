@@ -132,6 +132,11 @@ export type AddressCoinBalanceHistoryChart = Array<{
   value: string;
 }>
 
+export interface AddressCoinBalanceHistoryChartResponse {
+  items: AddressCoinBalanceHistoryChart;
+  days: number;
+}
+
 export interface AddressBlocksValidatedResponse {
   items: Array<Block>;
   next_page_params: {
