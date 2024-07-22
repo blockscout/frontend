@@ -31,12 +31,13 @@ const AddressAspectsHistory = ({ query }: Props) => {
             </Tr>
           </TheadSticky>
           <Tbody>
-            { query.data.items.map(item => <AddressAspectsItem data={ item } key={ item.aspect_hash }/>) }
+            { query.data.items.map((item, index) =>
+              <AddressAspectsItem data={ item } key={ query.isPlaceholderData ? index : item.aspect_hash } isLoading={ query.isPlaceholderData }/>) }
           </Tbody>
         </Table>
       </Hide>
       <Show below="lg" ssr={ false }>
-        <AddressAspectsList data={ query.data.items }/>
+        <AddressAspectsList query={ query }/>
       </Show>
     </>
   ) : null;

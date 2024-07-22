@@ -34,14 +34,18 @@ export default function AspectTxsContent({ txsQuery }: IProps) {
             </Tr>
           </TheadSticky>
           <Tbody>
-            { txsQuery.data.items.map((data) => (
-              <AspectTxItem data={ data } key={ data.block_number }/>
+            { txsQuery.data.items.map((data, index) => (
+              <AspectTxItem
+                data={ data }
+                key={ txsQuery.isPlaceholderData ? index : data.block_number }
+                isLoading={ txsQuery.isPlaceholderData }
+              />
             )) }
           </Tbody>
         </Table>
       </Hide>
       <Show below="lg" ssr={ false }>
-        <AspectTxsList data={ txsQuery.data.items }/>
+        <AspectTxsList query={ txsQuery }/>
       </Show>
     </>
   ) : null;

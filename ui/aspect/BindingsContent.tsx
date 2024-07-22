@@ -12,7 +12,7 @@ interface IProps {
 }
 
 export default function BindingsContent({ bindingsQuery }: IProps) {
-  const content = bindingsQuery.data ? (
+  const content = bindingsQuery.data?.items.length ? (
     <>
       <Hide below="lg" ssr={ false }>
         <Table variant="simple" size="sm">
@@ -25,14 +25,22 @@ export default function BindingsContent({ bindingsQuery }: IProps) {
             </Tr>
           </TheadSticky>
           <Tbody>
-            { bindingsQuery.data.items.map((item) => (
-              <BindingsTableItem data={ item } key={ item.bind_block_number }/>
+            { bindingsQuery.data.items.map((item, index) => (
+              <BindingsTableItem
+                data={ item }
+                key={ bindingsQuery.isPlaceholderData ? index : item.bind_block_number }
+                isLoading={ bindingsQuery.isPlaceholderData }
+              />
             )) }
           </Tbody>
         </Table>
       </Hide>
       <Show below="lg" ssr={ false }>
-        <BindingsList data={ bindingsQuery.data.items }/>
+        <BindingsList
+          data={ bindingsQuery.data.items }
+          isLoading={ bindingsQuery.isPlaceholderData }
+          isPlaceholderData={ bindingsQuery.isPlaceholderData }
+        />
       </Show>
     </>
   ) : null;
@@ -41,7 +49,7 @@ export default function BindingsContent({ bindingsQuery }: IProps) {
     <DataListDisplay
       isError={ false }
       items={ bindingsQuery.data?.items }
-      emptyText="There are no properties."
+      emptyText="There are no bindings."
       content={ content }
     />
   );
