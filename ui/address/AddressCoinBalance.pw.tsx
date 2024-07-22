@@ -19,6 +19,7 @@ test('base view +@dark-mode +@mobile', async({ render, page, mockApiResponse }) 
   await page.waitForFunction(() => {
     return document.querySelector('path[data-name="chart-Balances-small"]')?.getAttribute('opacity') === '1';
   });
+  await page.mouse.move(100, 100);
   await page.mouse.move(240, 100);
   await expect(component).toHaveScreenshot();
 });

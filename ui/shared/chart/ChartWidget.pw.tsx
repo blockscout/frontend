@@ -1,5 +1,7 @@
 import React from 'react';
 
+import type { TimeChartItem } from './types';
+
 import { test, expect } from 'playwright/lib';
 
 import type { Props } from './ChartWidget';
@@ -26,6 +28,7 @@ const props: Props = {
   units: 'ETH',
   isLoading: false,
   isError: false,
+  noAnimation: true,
 };
 
 test('base view +@dark-mode', async({ render, page }) => {
@@ -41,6 +44,7 @@ test('base view +@dark-mode', async({ render, page }) => {
 
   await page.mouse.move(0, 0);
   await page.mouse.click(0, 0);
+  await page.mouse.move(80, 150);
   await page.mouse.move(100, 150);
   await expect(component).toHaveScreenshot();
 
@@ -107,5 +111,26 @@ test('small variations in big values', async({ render, page }) => {
   await page.waitForFunction(() => {
     return document.querySelector('path[data-name="chart-Nativecoincirculatingsupply-small"]')?.getAttribute('opacity') === '1';
   });
+  await expect(component).toHaveScreenshot();
+});
+
+test('incomplete day', async({ render, page }) => {
+  const modifiedProps = {
+    ...props,
+    items: [
+      ...props.items as Array<TimeChartItem>,
+      { date: new Date('2023-02-24'), value: 25136740.887217894 / 4, isApproximate: true },
+    ],
+  };
+
+  const component = await render(<ChartWidget { ...modifiedProps }/>);
+  await page.waitForFunction(() => {
+    return document.querySelector('path[data-name="chart-Nativecoincirculatingsupply-small"]')?.getAttribute('opacity') === '1';
+  });
+  await expect(component).toHaveScreenshot();
+
+  await page.hover('.ChartOverlay', { position: { x: 120, y: 120 } });
+  await page.hover('.ChartOverlay', { position: { x: 320, y: 120 } });
+  await expect(page.getByText('Incomplete day')).toBeVisible();
   await expect(component).toHaveScreenshot();
 });
