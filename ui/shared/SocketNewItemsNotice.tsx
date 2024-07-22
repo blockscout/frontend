@@ -1,5 +1,4 @@
-import { Alert, Link, Text, chakra, useTheme, useColorModeValue, Skeleton, Tr, Td } from '@chakra-ui/react';
-import { transparentize } from '@chakra-ui/theme-tools';
+import { Alert, Link, Text, chakra, useColorModeValue, Skeleton, Tr, Td } from '@chakra-ui/react';
 import React from 'react';
 
 interface InjectedProps {
@@ -17,8 +16,6 @@ interface Props {
 }
 
 const SocketNewItemsNotice = chakra(({ children, className, url, num, alert, type = 'transaction', isLoading }: Props) => {
-  const theme = useTheme();
-
   const alertContent = (() => {
     if (alert) {
       return alert;
@@ -48,13 +45,13 @@ const SocketNewItemsNotice = chakra(({ children, className, url, num, alert, typ
     return (
       <>
         <Link href={ url }>{ num.toLocaleString() } more { name }{ num > 1 ? 's' : '' }</Link>
-        <Text whiteSpace="pre"> ha{ num > 1 ? 've' : 's' } come in</Text>
+        <Text whiteSpace="pre" color={ useColorModeValue('rgba(17, 17, 17, 1)', 'rgba(255, 255, 255, 1)') }> ha{ num > 1 ? 've' : 's' } come in</Text>
       </>
     );
   })();
 
   const color = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
-  const bgColor = useColorModeValue('orange.50', transparentize('orange.200', 0.16)(theme));
+  const bgColor = useColorModeValue('rgba(249, 241, 40, 0.2)', 'rgba(249, 241, 40, 0.2)');
 
   const content = !isLoading ? (
     <Alert

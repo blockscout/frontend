@@ -22,6 +22,7 @@ export type NavItemInternal = NavItemCommon & {
 export type NavItemExternal = {
   text: string;
   url: string;
+  isActive?: boolean;
 }
 
 export type NavItem = NavItemInternal | NavItemExternal

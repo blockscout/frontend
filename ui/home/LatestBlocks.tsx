@@ -1,4 +1,4 @@
-import { Box, Heading, Flex, Text, VStack, Skeleton } from '@chakra-ui/react';
+import { Box, Heading, Flex, Text, VStack, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { AnimatePresence } from 'framer-motion';
 import React from 'react';
@@ -82,7 +82,7 @@ const LatestBlocks = () => {
             <Text as="span" fontSize="sm">
               Network utilization:{ nbsp }
             </Text>
-            <Text as="span" fontSize="sm" color="blue.400" fontWeight={ 700 }>
+            <Text as="span" fontSize="sm" color="rgba(61, 246, 43, 1)" fontWeight={ 700 }>
               { statsQueryResult.data?.network_utilization_percentage.toFixed(2) }%
             </Text>
           </Skeleton>
@@ -107,7 +107,7 @@ const LatestBlocks = () => {
 
   return (
     <Box width={{ base: '100%', lg: '280px' }} flexShrink={ 0 }>
-      <Heading as="h4" size="sm" mb={ 4 }>Latest blocks</Heading>
+      <Heading as="h4" size="sm" mb={ 4 } color={ useColorModeValue('rgba(17, 17, 17, 1)', 'rgba(255, 255, 255, 1)') }>Latest blocks</Heading>
       { content }
     </Box>
   );

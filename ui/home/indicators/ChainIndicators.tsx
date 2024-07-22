@@ -30,6 +30,8 @@ const ChainIndicators = () => {
   const [ selectedIndicator, selectIndicator ] = React.useState(indicators[0]?.id);
   const indicator = indicators.find(({ id }) => id === selectedIndicator);
 
+  const defaultBorderColor = useColorModeValue('rgba(230, 230, 231, 1)', 'rgba(66, 66, 68, 1)');
+
   const queryResult = useFetchChartData(indicator);
   const statsQueryResult = useApiQuery('stats', {
     queryOptions: {
@@ -38,10 +40,10 @@ const ChainIndicators = () => {
     },
   });
 
-  const bgColorDesktop = useColorModeValue('white', 'gray.900');
-  const bgColorMobile = useColorModeValue('white', 'black');
-  const listBgColorDesktop = useColorModeValue('gray.50', 'black');
-  const listBgColorMobile = useColorModeValue('gray.50', 'gray.900');
+  const bgColorDesktop = useColorModeValue('rgba(255, 255, 255, 1)', 'rgba(47, 47, 47, 1)');
+  const bgColorMobile = useColorModeValue('rgba(255, 255, 255, 1)', 'rgba(47, 47, 47, 1)');
+  const listBgColorDesktop = useColorModeValue('gray.50', 'rgba(47, 47, 47, 1)');
+  const listBgColorMobile = useColorModeValue('gray.50', 'rgba(47, 47, 47, 1)');
 
   if (indicators.length === 0) {
     return null;
@@ -95,6 +97,9 @@ const ChainIndicators = () => {
       w="100%"
       alignItems="stretch"
       mt={ 8 }
+      borderWidth="1px"
+      borderStyle="solid"
+      borderColor={ defaultBorderColor }
     >
       <Flex flexGrow={ 1 } flexDir="column" order={{ base: 2, lg: 1 }} p={{ base: 6, lg: 0 }}>
         <Flex alignItems="center">

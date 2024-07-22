@@ -14,9 +14,13 @@ type Props = {
 }
 
 const StatsWidget = ({ label, value, isLoading, hint, diff, diffPeriod = '24h', diffFormatted }: Props) => {
-  const bgColor = useColorModeValue('blue.50', 'whiteAlpha.100');
+  const bgColor = useColorModeValue('rgba(255, 255, 255, 1)', 'rgba(47, 47, 47, 1)');
   const skeletonBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
   const hintColor = useColorModeValue('gray.600', 'gray.400');
+
+  const defaultBorderColor = useColorModeValue('rgba(230, 230, 231, 1)', 'rgba(66, 66, 68, 1)');
+
+  const defaultLabelColor = useColorModeValue('rgba(47, 47, 47, 1)', 'rgba(208, 208, 209, 1)');
 
   return (
     <Flex
@@ -27,6 +31,9 @@ const StatsWidget = ({ label, value, isLoading, hint, diff, diffPeriod = '24h', 
       borderRadius="md"
       justifyContent="space-between"
       columnGap={ 3 }
+      borderWidth="1px"
+      borderStyle="solid"
+      borderColor={ defaultBorderColor }
     >
       <Box>
         <Skeleton
@@ -35,7 +42,7 @@ const StatsWidget = ({ label, value, isLoading, hint, diff, diffPeriod = '24h', 
           fontSize="xs"
           w="fit-content"
         >
-          <span>{ label }</span>
+          <span color={ defaultLabelColor }>{ label }</span>
         </Skeleton>
         <Skeleton
           isLoaded={ !isLoading }

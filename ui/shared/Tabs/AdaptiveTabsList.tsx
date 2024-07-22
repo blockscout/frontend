@@ -29,7 +29,7 @@ interface Props extends TabsProps {
 const AdaptiveTabsList = (props: Props) => {
 
   const scrollDirection = useScrollDirection();
-  const listBgColor = useColorModeValue('white', 'black');
+  const listBgColor = useColorModeValue('rgba(255, 255, 255, 1)', 'rgba(35, 35, 35, 1)');
   const isMobile = useIsMobile();
 
   const tabsList = React.useMemo(() => {

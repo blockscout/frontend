@@ -18,7 +18,7 @@ export default function generate<R extends Route>(route: R, apiData?: ApiData<R>
   };
 
   const compiledTitle = compileValue(templates.title.make(route.pathname), params);
-  const title = compiledTitle ? compiledTitle + (config.meta.promoteBlockscoutInTitle ? ' | Blockscout' : '') : '';
+  const title = compiledTitle ? compiledTitle : '';
   const description = compileValue(templates.description.make(route.pathname), params);
 
   const pageOgType = getPageOgType(route.pathname);

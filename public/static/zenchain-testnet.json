@@ -1,0 +1,9 @@
+[
+  {
+    "title": "Zenchain Testnet",
+    "url": "https://.../",
+    "group": "Testnets",
+    "icon": "https://raw.githubusercontent.com/zenchain-protocol/zenchain-explorer-frontend/main/public/static/zenchain_icon.svg",
+    "isActive": true
+  }
+]

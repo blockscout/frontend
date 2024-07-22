@@ -10,7 +10,7 @@ type TabSize = 'sm' | 'md';
 const SkeletonTabText = ({ size, title }: { size: TabSize; title: RoutedTab['title'] }) => (
   <Skeleton
     borderRadius="base"
-    borderWidth={ size === 'sm' ? '2px' : 0 }
+    borderWidth={ size === 'sm' ? '1px' : 0 }
     fontWeight={ 600 }
     mx={ size === 'sm' ? 3 : 4 }
     flexShrink={ 0 }

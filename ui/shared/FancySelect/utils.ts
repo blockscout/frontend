@@ -42,7 +42,7 @@ function getSingleValueStyles(size?: Size) {
 }
 
 const getChakraStyles: (colorMode: ColorMode) => ChakraStylesConfig<Option> = (colorMode) => {
-  const emptyInputBorderColor = colorMode === 'dark' ? 'gray.700' : 'gray.100';
+  const emptyInputBorderColor = colorMode === 'dark' ? 'rgba(230, 230, 231, 1)' : 'rgba(66, 66, 68, 1)';
   const filledInputBorderColor = colorMode === 'dark' ? 'gray.600' : 'gray.300';
 
   return {

@@ -34,7 +34,7 @@ const size = {
     lineHeight: '20px',
     px: '20px',
     py: '20px',
-    h: '60px',
+    h: '40px',
     borderRadius: 'base',
   }),
   lg: defineStyle({
@@ -42,7 +42,7 @@ const size = {
     lineHeight: '20px',
     px: '24px',
     py: '28px',
-    h: '80px',
+    h: '40px',
     borderRadius: 'base',
   }),
 };
@@ -53,7 +53,7 @@ const variantOutline = definePartsStyle((props) => {
   return {
     field: getOutlinedFieldStyles(props),
     addon: {
-      border: '2px solid',
+      border: '1px solid',
       borderColor: 'transparent',
       bg: mode('blackAlpha.100', 'whiteAlpha.200')(props),
       color: mode('blackAlpha.800', 'whiteAlpha.800')(props),

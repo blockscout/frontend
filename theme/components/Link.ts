@@ -20,7 +20,7 @@ const variantSecondary = defineStyle((props) => {
   return {
     color: mode('gray.600', 'gray.500')(props),
     _hover: {
-      color: mode('gray.600', 'gray.400')(props),
+      color: 'link_hovered',
     },
   };
 });

@@ -1,4 +1,4 @@
-import { Box, Heading, Flex } from '@chakra-ui/react';
+import { Box, Heading, Flex, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
@@ -19,19 +19,49 @@ const Home = () => {
     <Box as="main">
       <Box
         w="100%"
-        background={ config.UI.homepage.plate.background }
+        background={ useColorModeValue('rgba(255, 255, 255, 1)', 'rgba(47, 47, 47, 1)') }
+        borderColor="#A4EC39"
+        boxShadow="0px 4px 6px -2px rgba(17, 17, 17, 0.06)"
+        borderWidth="1px"
+        borderStyle="solid"
         borderRadius="24px"
         padding={{ base: '24px', lg: '48px' }}
         minW={{ base: 'unset', lg: '900px' }}
         data-label="hero plate"
+        overflow="hidden"
+        position="relative"
       >
+        <Box
+          background="#2ceaa3"
+          borderRadius="50%"
+          opacity="0.2"
+          flexShrink="0"
+          width="450.24px"
+          height="450.24px"
+          left="80px"
+          top="-311.38px"
+          position="absolute"
+          filter="blur(73.46px)"
+        />
+        <Box
+          background="#c2f147"
+          borderRadius="50%"
+          opacity="0.2"
+          flexShrink="0"
+          width="386.41px"
+          height="386.41px"
+          right="-36.24px"
+          top="calc(50% - 73.21px)"
+          position="absolute"
+          filter="blur(73.46px)"
+        />
         <Flex mb={{ base: 6, lg: 8 }} justifyContent="space-between" alignItems="center">
           <Heading
             as="h1"
             size={{ base: 'md', lg: 'xl' }}
             lineHeight={{ base: '32px', lg: '50px' }}
             fontWeight={ 600 }
-            color={ config.UI.homepage.plate.textColor }
+            color={ useColorModeValue('rgba(17, 17, 17, 1)', 'rgba(255, 255, 255, 1)') }
           >
             { config.chain.name } explorer
           </Heading>

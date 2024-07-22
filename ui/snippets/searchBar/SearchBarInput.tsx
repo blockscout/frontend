@@ -62,7 +62,7 @@ const SearchBarInput = (
     };
   }, [ isMobile, handleScroll ]);
 
-  const bgColor = useColorModeValue('white', 'black');
+  const bgColor = useColorModeValue('rgba(245, 245, 246, 1)', 'black');
   const transformMobile = scrollDirection !== 'down' ? 'translateY(0)' : 'translateY(-100%)';
 
   return (
@@ -74,7 +74,7 @@ const SearchBarInput = (
       onFocus={ onFocus }
       w="100%"
       backgroundColor={ bgColor }
-      borderRadius={{ base: isHomepage ? 'base' : 'none', lg: 'base' }}
+      borderRadius={{ base: isHomepage ? '100px' : 'none', lg: '100px' }}
       position={{ base: isHomepage ? 'static' : 'absolute', lg: 'relative' }}
       top={{ base: isHomepage ? 0 : 55, lg: 0 }}
       left="0"
@@ -90,7 +90,7 @@ const SearchBarInput = (
     >
       <InputGroup size={{ base: isHomepage ? 'md' : 'sm', lg: 'md' }}>
         <InputLeftElement w={{ base: isHomepage ? 6 : 4, lg: 6 }} ml={{ base: isHomepage ? 4 : 3, lg: 4 }} h="100%">
-          <IconSvg name="search" boxSize={{ base: isHomepage ? 6 : 4, lg: 6 }} color={ useColorModeValue('blackAlpha.600', 'whiteAlpha.600') }/>
+          <IconSvg name="search" boxSize={{ base: isHomepage ? 6 : 4, lg: 6 }} color={ useColorModeValue('rgba(134, 135, 138, 1)', 'whiteAlpha.600') }/>
         </InputLeftElement>
         <Input
           pl={{ base: isHomepage ? '50px' : '38px', lg: '50px' }}
@@ -105,14 +105,15 @@ const SearchBarInput = (
           }}
           placeholder={ isMobile ? 'Search by address / ... ' : 'Search by address / txn hash / block / token... ' }
           onChange={ handleChange }
-          border={ isHomepage ? 'none' : '2px solid' }
+          border={ isHomepage ? 'none' : '1px solid' }
           borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
+          borderRadius="100px!important"
           _focusWithin={{ _placeholder: { color: 'gray.300' } }}
-          color={ useColorModeValue('black', 'white') }
+          color={ useColorModeValue('rgba(134, 135, 138, 1)', 'white') }
           value={ value }
         />
         { value && (
-          <InputRightElement top={{ base: isHomepage ? '18px' : 2, lg: '18px' }} right={ 2 }>
+          <InputRightElement top={{ base: isHomepage ? '9px' : 2, lg: '9px' }} right={ 2 }>
             <ClearButton onClick={ onClear }/>
           </InputRightElement>
         ) }

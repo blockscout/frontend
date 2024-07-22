@@ -203,7 +203,7 @@ export default function useNavItems(): ReturnType {
       {
         text: 'Blockchain',
         icon: 'globe-b',
-        isActive: blockchainNavItems.flat().some(item => isInternalItem(item) && item.isActive),
+        isActive: blockchainNavItems.flat().some(item => isInternalItem(item) && item.isActive) || pathname === '/',
         subItems: blockchainNavItems,
       },
       {

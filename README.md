@@ -133,4 +133,5 @@ then starts listening using the port `3000` (NEXT_PUBLIC_APP_PORT).
 # Deployment
 
 When you're ready for deployment, we recommend using the Zenchain Explorer Backend <https://github.com/zenchain-protocol/zenchain-explorer-backend> through Docker containers. The provided Docker Compose file will automatically download and compile this repository.
+
 Please ensure that you configure the frontend-related environment variables located at <https://github.com/zenchain-protocol/zenchain-explorer-backend/blob/master/docker-compose/envs/common-frontend.env> before proceeding with deployment.
