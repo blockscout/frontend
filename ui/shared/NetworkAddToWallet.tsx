@@ -1,4 +1,5 @@
 import { Button } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import config from 'configs/app';
@@ -12,6 +13,8 @@ import IconSvg from 'ui/shared/IconSvg';
 const feature = config.features.web3Wallet;
 
 const NetworkAddToWallet = () => {
+  const { t } = useTranslation('common');
+
   const toast = useToast();
   const { provider, wallet } = useProvider();
   const addOrSwitchChain = useAddOrSwitchChain();
@@ -57,7 +60,7 @@ const NetworkAddToWallet = () => {
   return (
     <Button variant="outline" size="sm" onClick={ handleClick }>
       <IconSvg name={ WALLETS_INFO[wallet].icon } boxSize={ 5 } mr={ 2 }/>
-        Add { config.chain.name }
+      { t('Add') } { config.chain.name }
     </Button>
   );
 };

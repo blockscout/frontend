@@ -1,6 +1,5 @@
 import { Grid, GridItem, Text, Link, Box, Tooltip, useColorModeValue, Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
-import capitalize from 'lodash/capitalize';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -78,8 +77,6 @@ const BlockDetails = ({ query }: Props) => {
 
   const { totalReward, staticReward, burntFees, txFees } = getBlockReward(data);
 
-  const validatorTitle = t('validator');
-
   const rewardBreakDown = (() => {
     if (rollupFeature.isEnabled || totalReward.isEqualTo(ZERO) || txFees.isEqualTo(ZERO) || burntFees.isEqualTo(ZERO)) {
       return null;
@@ -119,7 +116,7 @@ const BlockDetails = ({ query }: Props) => {
       return 'Sequenced by';
     }
 
-    return config.chain.verificationType === 'validation' ? 'Validated by' : 'Mined by';
+    return config.chain.verificationType === 'validation' ? t('block_related.Validated_by') : t('block_related.Mined_by');
   })();
 
   const txsNum = (() => {
@@ -142,7 +139,7 @@ const BlockDetails = ({ query }: Props) => {
       <>
         { blockTxsNum }
         { blockBlobTxsNum }
-        <span> in this block</span>
+        <span> { t('block_related.in_this_block') }</span>
       </>
     );
   })();
@@ -150,11 +147,11 @@ const BlockDetails = ({ query }: Props) => {
   const blockTypeLabel = (() => {
     switch (data.type) {
       case 'reorg':
-        return 'Reorg';
+        return t('block_related.Reorg');
       case 'uncle':
-        return 'Uncle';
+        return t('block_related.Uncle');
       default:
-        return 'Block';
+        return t('Block');
     }
   })();
 
@@ -166,8 +163,8 @@ const BlockDetails = ({ query }: Props) => {
       overflow="hidden"
     >
       <DetailsInfoItem
-        title={ `${ blockTypeLabel } height` }
-        hint="The block height of a particular block is defined as the number of blocks preceding it in the blockchain"
+        title={ `${ blockTypeLabel } ${ t('height') }` }
+        hint={ t('block_related.The_block_height_of_a_particular_block_is_defined_as_the_number_of_blocks_preceding_it_in_the_blockchain') }
         isLoading={ isPlaceholderData }
       >
         <Skeleton isLoaded={ !isPlaceholderData }>
@@ -184,8 +181,8 @@ const BlockDetails = ({ query }: Props) => {
         />
       </DetailsInfoItem>
       <DetailsInfoItem
-        title="Size"
-        hint="Size of the block in bytes"
+        title={ t('block_related.Size') }
+        hint={ t('block_related.Size_of_the_block_in_bytes') }
         isLoading={ isPlaceholderData }
       >
         <Skeleton isLoaded={ !isPlaceholderData }>
@@ -193,15 +190,15 @@ const BlockDetails = ({ query }: Props) => {
         </Skeleton>
       </DetailsInfoItem>
       <DetailsInfoItem
-        title="Timestamp"
-        hint="Date & time at which block was produced."
+        title={ t('block_related.Timestamp') }
+        hint={ t('block_related.Date_time_at_which_block_was_produced') }
         isLoading={ isPlaceholderData }
       >
         <DetailsTimestamp timestamp={ data.timestamp } isLoading={ isPlaceholderData }/>
       </DetailsInfoItem>
       <DetailsInfoItem
-        title="Transactions"
-        hint="The number of transactions in the block"
+        title={ t('block_related.Transactions') }
+        hint={ t('block_related.The_number_of_transactions_in_the_block') }
         isLoading={ isPlaceholderData }
       >
         <Skeleton isLoaded={ !isPlaceholderData }>
@@ -249,7 +246,7 @@ const BlockDetails = ({ query }: Props) => {
       { !config.UI.views.block.hiddenFields?.miner && (
         <DetailsInfoItem
           title={ verificationTitle }
-          hint="A block producer who successfully included the block onto the blockchain"
+          hint={ t('block_related.A_block_producer_who_successfully_included_the_block_onto_the_blockchain') }
           columnGap={ 1 }
           isLoading={ isPlaceholderData }
         >
@@ -263,10 +260,9 @@ const BlockDetails = ({ query }: Props) => {
       ) }
       { !rollupFeature.isEnabled && !totalReward.isEqualTo(ZERO) && !config.UI.views.block.hiddenFields?.total_reward && (
         <DetailsInfoItem
-          title="Block reward"
+          title={ t('block_related.Block_reward') }
           hint={
-            `For each block, the ${ validatorTitle } is rewarded with a finite amount of ${ config.chain.currency.symbol || 'native token' } 
-          on top of the fees paid for all transactions in the block`
+            t('block_related.For_each_block_the_validator_is_rewarded_with_a_finite_amount_of_ZCX_on_top_of_the_fees_paid_for_all_transactions_in_the_block')
           }
           columnGap={ 1 }
           isLoading={ isPlaceholderData }
@@ -282,9 +278,9 @@ const BlockDetails = ({ query }: Props) => {
         .map(({ type, reward }) => (
           <DetailsInfoItem
             key={ type }
-            title={ type }
+            title={ t('block_related.Validator_Reward') }
             // is this text correct for validators?
-            hint={ `Amount of distributed reward. ${ capitalize(validatorTitle) }s receive a static block reward + Tx fees + uncle fees` }
+            hint={ t('block_related.Amount_of_distributed_reward_validators_receive_a_static_block_reward_Tx_fees_uncle_fees') }
           >
             { BigNumber(reward).dividedBy(WEI).toFixed() } { currencyUnits.ether }
           </DetailsInfoItem>
@@ -294,8 +290,8 @@ const BlockDetails = ({ query }: Props) => {
       <DetailsInfoItemDivider/>
 
       <DetailsInfoItem
-        title="Gas used"
-        hint="The total gas amount used in the block and its percentage of gas filled in the block"
+        title={ t('block_related.Gas_used') }
+        hint={ t('block_related.The_total_gas_amount_used_in_the_block_and_its_percentage_of_gas_filled_in_the_block') }
         isLoading={ isPlaceholderData }
       >
         <Skeleton isLoaded={ !isPlaceholderData }>
@@ -315,8 +311,8 @@ const BlockDetails = ({ query }: Props) => {
         ) }
       </DetailsInfoItem>
       <DetailsInfoItem
-        title="Gas limit"
-        hint="Total gas limit provided by all transactions in the block"
+        title={ t('block_related.Gas_limit') }
+        hint={ t('block_related.Total_gas_limit_provided_by_all_transactions_in_the_block') }
         isLoading={ isPlaceholderData }
       >
         <Skeleton isLoaded={ !isPlaceholderData }>
@@ -325,8 +321,8 @@ const BlockDetails = ({ query }: Props) => {
       </DetailsInfoItem>
       { data.minimum_gas_price && (
         <DetailsInfoItem
-          title="Minimum gas price"
-          hint="The minimum gas price a transaction should have in order to be included in this block"
+          title={ t('block_related.Minimum_gas_price') }
+          hint={ t('block_related.The_minimum_gas_price_a_transaction_should_have_in_order_to_be_included_in_this_block') }
           isLoading={ isPlaceholderData }
         >
           <Skeleton isLoaded={ !isPlaceholderData }>
@@ -336,8 +332,8 @@ const BlockDetails = ({ query }: Props) => {
       ) }
       { data.base_fee_per_gas && (
         <DetailsInfoItem
-          title="Base fee per gas"
-          hint="Minimum fee required per unit of gas. Fee adjusts based on network congestion"
+          title={ t('block_related.Base_fee_per_gas') }
+          hint={ t('block_related.Minimum_fee_required_per_unit_of_gas_Fee_adjusts_based_on_network_congestion') }
           isLoading={ isPlaceholderData }
         >
           { isPlaceholderData ? (
@@ -381,8 +377,8 @@ const BlockDetails = ({ query }: Props) => {
       ) }
       { data.priority_fee !== null && BigNumber(data.priority_fee).gt(ZERO) && (
         <DetailsInfoItem
-          title="Priority fee / Tip"
-          hint="User-defined tips sent to validator for transaction priority/inclusion"
+          title={ t('block_related.Priority_fee_Tip') }
+          hint={ t('block_related.User_defined_tips_sent_to_validator_for_transaction_priority_inclusion') }
           isLoading={ isPlaceholderData }
         >
           <Skeleton isLoaded={ !isPlaceholderData }>
@@ -390,16 +386,6 @@ const BlockDetails = ({ query }: Props) => {
           </Skeleton>
         </DetailsInfoItem>
       ) }
-      { /* api doesn't support extra data yet */ }
-      { /* <DetailsInfoItem
-        title="Extra data"
-        hint={ `Any data that can be included by the ${ validatorTitle } in the block` }
-      >
-        <Text whiteSpace="pre">{ data.extra_data } </Text>
-        <Text variant="secondary">(Hex: { data.extra_data })</Text>
-      </DetailsInfoItem> */ }
-
-      { /* CUT */ }
       <GridItem colSpan={{ base: undefined, lg: 2 }}>
         <Element name="BlockDetails__cutLink">
           <Skeleton isLoaded={ !isPlaceholderData } mt={ 6 } display="inline-block">
@@ -479,8 +465,8 @@ const BlockDetails = ({ query }: Props) => {
           ) }
 
           <DetailsInfoItem
-            title="Difficulty"
-            hint={ `Block difficulty for ${ validatorTitle }, used to calibrate block generation time` }
+            title={ t('block_related.Difficulty') }
+            hint={ t('block_related.Block_difficulty_for_validator_used_to_calibrate_block_generation_time') }
           >
             <Box whiteSpace="nowrap" overflow="hidden">
               <HashStringShortenDynamic hash={ BigNumber(data.difficulty).toFormat() }/>
@@ -488,8 +474,8 @@ const BlockDetails = ({ query }: Props) => {
           </DetailsInfoItem>
           { data.total_difficulty && (
             <DetailsInfoItem
-              title="Total difficulty"
-              hint="Total difficulty of the chain until this block"
+              title={ t('block_related.Total_difficulty') }
+              hint={ t('block_related.Total_difficulty_of_the_chain_until_this_block') }
             >
               <Box whiteSpace="nowrap" overflow="hidden">
                 <HashStringShortenDynamic hash={ BigNumber(data.total_difficulty).toFormat() }/>
@@ -500,8 +486,8 @@ const BlockDetails = ({ query }: Props) => {
           <DetailsInfoItemDivider/>
 
           <DetailsInfoItem
-            title="Hash"
-            hint="The SHA256 hash of the block"
+            title={ t('block_related.Hash') }
+            hint={ t('block_related.The_SHA256_hash_of_the_block') }
             flexWrap="nowrap"
           >
             <Box overflow="hidden">
@@ -511,8 +497,8 @@ const BlockDetails = ({ query }: Props) => {
           </DetailsInfoItem>
           { data.height > 0 && (
             <DetailsInfoItem
-              title="Parent hash"
-              hint="The hash of the block from which this block was generated"
+              title={ t('block_related.Parent_hash') }
+              hint={ t('block_related.The_hash_of_the_block_from_which_this_block_was_generated') }
               flexWrap="nowrap"
             >
               <LinkInternal
@@ -536,8 +522,8 @@ const BlockDetails = ({ query }: Props) => {
           </DetailsInfoItem> */ }
           { !config.UI.views.block.hiddenFields?.nonce && (
             <DetailsInfoItem
-              title="Nonce"
-              hint="Block nonce is a value used during mining to demonstrate proof of work for a block"
+              title={ t('block_related.Nonce') }
+              hint={ t('block_related.Block_nonce_is_a_value_used_during_mining_to_demonstrate_proof_of_work_for_a_block') }
             >
               { data.nonce }
             </DetailsInfoItem>

@@ -6,6 +6,7 @@ import {
   Grid,
   Skeleton,
 } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import type { Transaction } from 'types/api/transaction';
@@ -28,6 +29,8 @@ type Props = {
 }
 
 const LatestTxsItem = ({ tx, isLoading }: Props) => {
+  const { t } = useTranslation('common');
+
   const dataTo = tx.to ? tx.to : tx.created_contract;
   const timeAgo = useTimeAgoIncrement(tx.timestamp || '0', true);
   const columnNum = config.UI.views.tx.hiddenFields?.value && config.UI.views.tx.hiddenFields?.tx_fee ? 2 : 3;
@@ -95,7 +98,7 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
         ) }
         { !config.UI.views.tx.hiddenFields?.tx_fee && (
           <Skeleton isLoaded={ !isLoading } display="flex" whiteSpace="pre" my="3px">
-            <Text as="span">Fee </Text>
+            <Text as="span">{ t('Fee') } </Text>
             { tx.stability_fee ? (
               <TxFeeStability data={ tx.stability_fee } accuracy={ 5 } color="text_secondary" hideUsd/>
             ) : (
