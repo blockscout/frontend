@@ -11,6 +11,8 @@ import type { EventTypes, EventPayload } from 'lib/mixpanel/index';
 import * as mixpanel from 'lib/mixpanel/index';
 import { ADDRESS_COUNTERS } from 'stubs/address';
 
+const MIN_TRANSACTION_COUNT = 5;
+
 const feature = config.features.marketplace;
 const airtable = (feature.isEnabled && feature.rating) ?
   new Airtable({ apiKey: feature.rating.airtableApiKey }).base(feature.rating.airtableBaseId) :
@@ -109,7 +111,7 @@ export default function useRatings() {
 
   useEffect(() => {
     const { isPlaceholderData, data } = addressCountersQuery;
-    const canRate = address && !isPlaceholderData && Number(data?.transactions_count) >= 10;
+    const canRate = address && !isPlaceholderData && Number(data?.transactions_count) >= MIN_TRANSACTION_COUNT;
     setCanRate(canRate);
   }, [ address, addressCountersQuery ]);
 

@@ -13,11 +13,11 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-it('should set canRate to true if address is defined and transactions_count is 10 or more', async() => {
+it('should set canRate to true if address is defined and transactions_count is 5 or more', async() => {
   useAccount.mockReturnValue({ address: '0x123' });
   useApiQuery.mockReturnValue({
     isPlaceholderData: false,
-    data: { transactions_count: 10 },
+    data: { transactions_count: 5 },
   });
   const { result } = renderHook(() => useRatings(), { wrapper });
   expect(result.current.canRate).toBe(true);
@@ -27,17 +27,17 @@ it('should set canRate to undefined if address is undefined', async() => {
   useAccount.mockReturnValue({ address: undefined });
   useApiQuery.mockReturnValue({
     isPlaceholderData: false,
-    data: { transactions_count: 10 },
+    data: { transactions_count: 5 },
   });
   const { result } = renderHook(() => useRatings(), { wrapper });
   expect(result.current.canRate).toBe(undefined);
 });
 
-it('should set canRate to false if transactions_count is less than 10', async() => {
+it('should set canRate to false if transactions_count is less than 5', async() => {
   useAccount.mockReturnValue({ address: '0x123' });
   useApiQuery.mockReturnValue({
     isPlaceholderData: false,
-    data: { transactions_count: 5 },
+    data: { transactions_count: 4 },
   });
   const { result } = renderHook(() => useRatings(), { wrapper });
   expect(result.current.canRate).toBe(false);
@@ -47,7 +47,7 @@ it('should set canRate to false if isPlaceholderData is true', async() => {
   useAccount.mockReturnValue({ address: '0x123' });
   useApiQuery.mockReturnValue({
     isPlaceholderData: true,
-    data: { transactions_count: 10 },
+    data: { transactions_count: 5 },
   });
   const { result } = renderHook(() => useRatings(), { wrapper });
   expect(result.current.canRate).toBe(false);
