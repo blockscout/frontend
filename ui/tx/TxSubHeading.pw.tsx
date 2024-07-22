@@ -55,8 +55,7 @@ test.describe('blockscout provider', () => {
     await expect(component).toHaveScreenshot();
   });
 
-  test('with interpretation and action button +@mobile +@dark-mode', async({ render, mockApiResponse, mockAssetResponse, mockFeatures }) => {
-    await mockFeatures([ [ 'action_button_exp', true ] ]);
+  test('with interpretation and action button +@mobile +@dark-mode', async({ render, mockApiResponse, mockAssetResponse }) => {
     const metadataResponse = generateAddressMetadataResponse(protocolTagWithMeta);
     await mockApiResponse('address_metadata_info', metadataResponse, { queryParams: addressMetadataQueryParams });
     await mockAssetResponse(protocolTagWithMeta?.meta?.appLogoURL as string, './playwright/mocks/image_s.jpg');
@@ -76,9 +75,8 @@ test.describe('blockscout provider', () => {
   });
 
   test('with interpretation and view all link, and action button (external link) +@mobile', async({
-    render, mockApiResponse, mockAssetResponse, mockFeatures,
+    render, mockApiResponse, mockAssetResponse,
   }) => {
-    await mockFeatures([ [ 'action_button_exp', true ] ]);
     delete protocolTagWithMeta?.meta?.appID;
     const metadataResponse = generateAddressMetadataResponse(protocolTagWithMeta);
     await mockApiResponse('address_metadata_info', metadataResponse, { queryParams: addressMetadataQueryParams });
@@ -92,9 +90,8 @@ test.describe('blockscout provider', () => {
     await expect(component).toHaveScreenshot();
   });
 
-  test('no interpretation, has method called', async({ render, mockApiResponse, mockFeatures }) => {
+  test('no interpretation, has method called', async({ render, mockApiResponse }) => {
     // the action button should not render if there is no interpretation
-    await mockFeatures([ [ 'action_button_exp', true ] ]);
     const metadataResponse = generateAddressMetadataResponse(protocolTagWithMeta);
     await mockApiResponse('address_metadata_info', metadataResponse, { queryParams: addressMetadataQueryParams });
 
@@ -103,9 +100,8 @@ test.describe('blockscout provider', () => {
     await expect(component).toHaveScreenshot();
   });
 
-  test('no interpretation', async({ render, mockApiResponse, mockFeatures }) => {
+  test('no interpretation', async({ render, mockApiResponse }) => {
     // the action button should not render if there is no interpretation
-    await mockFeatures([ [ 'action_button_exp', true ] ]);
     const metadataResponse = generateAddressMetadataResponse(protocolTagWithMeta);
     await mockApiResponse('address_metadata_info', metadataResponse, { queryParams: addressMetadataQueryParams });
 

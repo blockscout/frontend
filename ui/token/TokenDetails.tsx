@@ -12,7 +12,6 @@ import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getCurrencyValue from 'lib/getCurrencyValue';
-import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import useIsMounted from 'lib/hooks/useIsMounted';
 import { TOKEN_COUNTERS } from 'stubs/token';
 import type { TokenTabs } from 'ui/pages/Token';
@@ -31,7 +30,6 @@ interface Props {
 const TokenDetails = ({ tokenQuery }: Props) => {
   const router = useRouter();
   const isMounted = useIsMounted();
-  const { value: isActionButtonExperiment } = useFeatureValue('action_button_exp', false);
 
   const hash = router.query.hash?.toString();
 
@@ -40,7 +38,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
     queryOptions: { enabled: Boolean(router.query.hash), placeholderData: TOKEN_COUNTERS },
   });
 
-  const appActionData = useAppActionData(hash, isActionButtonExperiment);
+  const appActionData = useAppActionData(hash);
 
   const changeUrlAndScroll = useCallback((tab: TokenTabs) => () => {
     router.push(
@@ -200,11 +198,10 @@ const TokenDetails = ({ tokenQuery }: Props) => {
           isLoading={ tokenQuery.isPlaceholderData }
           appActionData={ appActionData }
           source="NFT collection"
-          isActionButtonExperiment={ isActionButtonExperiment }
         />
       ) }
 
-      { (type !== 'ERC-20' && config.UI.views.nft.marketplaces.length === 0 && appActionData && isActionButtonExperiment) && (
+      { (type !== 'ERC-20' && config.UI.views.nft.marketplaces.length === 0 && appActionData) && (
         <>
           <DetailsInfoItem.Label
             hint="Link to the dapp"

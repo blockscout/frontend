@@ -55,8 +55,7 @@ test('base view +@dark-mode +@mobile', async({ render, page }) => {
 });
 
 test.describe('action button', () => {
-  test.beforeEach(async({ mockFeatures, mockApiResponse, mockAssetResponse }) => {
-    await mockFeatures([ [ 'action_button_exp', true ] ]);
+  test.beforeEach(async({ mockApiResponse, mockAssetResponse }) => {
     const metadataResponse = generateAddressMetadataResponse(protocolTagWithMeta);
     await mockApiResponse('address_metadata_info', metadataResponse, { queryParams: addressMetadataQueryParams });
     await mockAssetResponse(protocolTagWithMeta?.meta?.appLogoURL as string, './playwright/mocks/image_s.jpg');
