@@ -41,9 +41,9 @@ const ChainIndicators = () => {
   });
 
   const bgColorDesktop = useColorModeValue('rgba(255, 255, 255, 1)', 'rgba(47, 47, 47, 1)');
-  const bgColorMobile = useColorModeValue('white', 'black');
-  const listBgColorDesktop = useColorModeValue('gray.50', 'black');
-  const listBgColorMobile = useColorModeValue('gray.50', 'gray.900');
+  const bgColorMobile = useColorModeValue('rgba(255, 255, 255, 1)', 'rgba(47, 47, 47, 1)');
+  const listBgColorDesktop = useColorModeValue('gray.50', 'rgba(47, 47, 47, 1)');
+  const listBgColorMobile = useColorModeValue('gray.50', 'rgba(47, 47, 47, 1)');
 
   if (indicators.length === 0) {
     return null;
