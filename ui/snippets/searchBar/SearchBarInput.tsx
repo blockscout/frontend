@@ -62,7 +62,7 @@ const SearchBarInput = (
     };
   }, [ isMobile, handleScroll ]);
 
-  const bgColor = useColorModeValue('white', 'black');
+  const bgColor = useColorModeValue('rgba(245, 245, 246, 1)', 'black');
   const transformMobile = scrollDirection !== 'down' ? 'translateY(0)' : 'translateY(-100%)';
 
   return (
@@ -90,7 +90,7 @@ const SearchBarInput = (
     >
       <InputGroup size={{ base: isHomepage ? 'md' : 'sm', lg: 'md' }}>
         <InputLeftElement w={{ base: isHomepage ? 6 : 4, lg: 6 }} ml={{ base: isHomepage ? 4 : 3, lg: 4 }} h="100%">
-          <IconSvg name="search" boxSize={{ base: isHomepage ? 6 : 4, lg: 6 }} color={ useColorModeValue('blackAlpha.600', 'whiteAlpha.600') }/>
+          <IconSvg name="search" boxSize={{ base: isHomepage ? 6 : 4, lg: 6 }} color={ useColorModeValue('rgba(134, 135, 138, 1)', 'whiteAlpha.600') }/>
         </InputLeftElement>
         <Input
           pl={{ base: isHomepage ? '50px' : '38px', lg: '50px' }}
@@ -109,7 +109,7 @@ const SearchBarInput = (
           borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
           borderRadius="100px!important"
           _focusWithin={{ _placeholder: { color: 'gray.300' } }}
-          color={ useColorModeValue('black', 'white') }
+          color={ useColorModeValue('rgba(134, 135, 138, 1)', 'white') }
           value={ value }
         />
         { value && (

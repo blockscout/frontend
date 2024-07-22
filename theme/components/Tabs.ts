@@ -11,14 +11,14 @@ import Button from './Button/Button';
 const variantSoftRounded = definePartsStyle((props) => {
   return {
     tab: {
-      borderRadius: 'base',
+      borderRadius: '16px',
       fontWeight: '600',
-      color: mode('blue.700', 'gray.400')(props),
+      color: mode('rgba(134, 135, 138, 1)', 'rgba(174, 174, 178, 1)')(props),
       _selected: {
-        color: mode('blue.700', 'gray.50')(props),
-        bg: mode('blue.50', 'gray.800')(props),
+        color: mode('rgba(17, 17, 17, 1)', 'rgba(255, 255, 255, 1)')(props),
+        bg: mode('rgba(255, 255, 255, 1)', 'rgba(47, 47, 47, 1)')(props),
         _hover: {
-          color: mode('blue.700', 'gray.50')(props),
+          color: mode('gray.700', 'gray.50')(props),
         },
       },
       _hover: {
