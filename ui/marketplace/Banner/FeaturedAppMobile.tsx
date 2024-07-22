@@ -43,6 +43,7 @@ const FeaturedAppMobile = ({
       padding={{ base: 3, sm: '20px' }}
       role="group"
       background={ useColorModeValue('purple.50', 'whiteAlpha.100') }
+      mt={ 6 }
     >
       <Flex
         flexDirection="row"

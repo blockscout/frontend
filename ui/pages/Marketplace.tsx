@@ -136,6 +136,7 @@ const Marketplace = () => {
     <>
       <PageTitle
         title="DAppscout"
+        mb={ 2 }
         contentAfter={ (isMobile && links.length > 1) ? (
           <Menu>
             <MenuButton

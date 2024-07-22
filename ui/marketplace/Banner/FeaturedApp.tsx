@@ -65,6 +65,7 @@ const FeaturedApp = ({
         padding={ 5 }
         background={ backgroundColor }
         mb={ 2 }
+        mt={ 6 }
       >
         <Skeleton
           isLoaded={ !isLoading }
