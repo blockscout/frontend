@@ -712,7 +712,7 @@ If the feature is enabled, a Get gas button will be displayed on the address pag
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_GAS_REFUEL_PROVIDER_CONFIG | `{ name: string; url_template: string; dapp_id?: string; logo?: string, usd_threshold: number }` | Get gas button config. See [below](#get-gas-button-configuration-properties) | - | - | `{ name: 'Get gas', dapp_id: 'smol-refuel', url_template: 'https://smolrefuel.com/?outboundChain={chainId}&partner=blockscout&utm_source=blockscout&utm_medium=address&disableBridges=true', logo: 'https://blockscout-content.s3.amazonaws.com/smolrefuel-logo-action-button.png', usd_threshold: 10 }` | v1.33.0+ |
+| NEXT_PUBLIC_GAS_REFUEL_PROVIDER_CONFIG | `{ name: string; url_template: string; dapp_id?: string; logo?: string, usd_threshold: number }` | Get gas button config. See [below](#get-gas-button-configuration-properties) | - | - | `{ name: 'Get gas', dapp_id: 'smol-refuel', url_template: 'https://smolrefuel.com/?outboundChain={chainId}', logo: 'https://example.com/icon.png', usd_threshold: 10 }` | v1.33.0+ |
 
 &nbsp;
 
@@ -720,11 +720,11 @@ If the feature is enabled, a Get gas button will be displayed on the address pag
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
-| name | `string` | Gas refuel application name | Required | - | `zerion` |
-| url_template | `string` | Url template to the portfolio. Should be a template with `{address}` variable | Required | - | `https://app.zerion.io/{address}/overview` |
-| dapp_id | `string` | Set for open a Blockscout dapp page with the portfolio instead of opening external app page | - | - | `zerion` |
-| logo | `string` | Gas refuel application logo (.svg) url | - | - | `https://example.com/icon.png` |
-| usd_threshold | `number` | Value in USD, at balance less than which the button will be displayed | - | `1` | `10` |
+| name | `string` | Text on the button | Required | - | `Get gas` |
+| url_template | `string` | Url template, may contain `{chainId}` variable | Required | - | `https://smolrefuel.com/?outboundChain={chainId}` |
+| dapp_id | `string` | Set for open a Blockscout dapp page instead of opening external app page | - | - | `smol-refuel` |
+| logo | `string` | Gas refuel application logo url | - | - | `https://example.com/icon.png` |
+| usd_threshold | `number` | Native token balance value in USD below which the button will be displayed | - | `1` | `10` |
 
 &nbsp;
 
