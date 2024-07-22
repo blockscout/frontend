@@ -61,9 +61,9 @@ const NavigationDesktop = () => {
       alignItems="stretch"
       borderRight="1px solid"
       borderColor="divider"
-      px={{ lg: isExpanded ? 5.3 : 4.7, xl: isCollapsed ? 5.3 : 4.7 }}
+      px={{ lg: isExpanded ? 6 : 4, xl: isCollapsed ? 6 : 4 }}
       py={ 12 }
-      width={{ lg: isExpanded ? '249px' : '92px', xl: isCollapsed ? '92px' : '249px' }}
+      width={{ lg: isExpanded ? '229px' : '92px', xl: isCollapsed ? '92px' : '229px' }}
       { ...getDefaultTransitionProps({ transitionProperty: 'width, padding' }) }
       sx={{
         '&:hover #expand-icon': {

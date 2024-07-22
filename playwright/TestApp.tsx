@@ -68,7 +68,7 @@ const TestApp = ({ children, withSocket, appContext = defaultAppContext }: Props
           <AppContextProvider { ...appContext }>
             <GrowthBookProvider>
               <WagmiProvider config={ wagmiConfig }>
-                <I18nextProvider i18n={ i18n }> { /* 追加 */ }
+                <I18nextProvider i18n={ i18n }>
                   { children }
                 </I18nextProvider>
               </WagmiProvider>
