@@ -1,6 +1,7 @@
 import { Grid, GridItem, Text, Link, Box, Tooltip, useColorModeValue, Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import capitalize from 'lodash/capitalize';
+import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
@@ -13,7 +14,6 @@ import config from 'configs/app';
 import getBlockReward from 'lib/block/getBlockReward';
 import { GWEI, WEI, WEI_IN_GWEI, ZERO } from 'lib/consts';
 import { space } from 'lib/html-entities';
-import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { currencyUnits } from 'lib/units';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
@@ -43,6 +43,8 @@ interface Props {
 const rollupFeature = config.features.rollup;
 
 const BlockDetails = ({ query }: Props) => {
+  const { t } = useTranslation('common');
+
   const [ isExpanded, setIsExpanded ] = React.useState(false);
   const router = useRouter();
   const heightOrHash = getQueryParamString(router.query.height_or_hash);
@@ -76,7 +78,7 @@ const BlockDetails = ({ query }: Props) => {
 
   const { totalReward, staticReward, burntFees, txFees } = getBlockReward(data);
 
-  const validatorTitle = getNetworkValidatorTitle();
+  const validatorTitle = t('validator');
 
   const rewardBreakDown = (() => {
     if (rollupFeature.isEnabled || totalReward.isEqualTo(ZERO) || txFees.isEqualTo(ZERO) || burntFees.isEqualTo(ZERO)) {

@@ -148,7 +148,7 @@ const Transactions = () => {
 
   return (
     <>
-      <PageTitle title={ t('areas.transactions') } withTextAd/>
+      <PageTitle title={ t('area.Transactions') } withTextAd/>
       <RoutedTabs
         tabs={ tabs }
         tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }

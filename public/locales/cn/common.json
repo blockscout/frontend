@@ -31,6 +31,11 @@
   "From_To": "从/到",
   "Value": "数值",
   "Fee": "费用",
+  "ago": "之前",
+  "Txn": "交易",
+  "Reward": "奖励",
+  "validator": "验证者",
+  "miner": "矿工",
   "home": {
     "View_all_blocks": "查看所有区块",
     "Latest_blocks": "最新区块",
@@ -97,5 +102,8 @@
     "Pending": "待处理",
     "Blob_txns": "Blob交易",
     "Watch_list": "监控列表"
+  },
+  "footer": {
+    "content": "Zenchain Explorer 是一个用于检查和分析 Zenchain 区块链的工具。"
   }
 }

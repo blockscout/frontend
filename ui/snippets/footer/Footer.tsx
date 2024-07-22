@@ -1,6 +1,7 @@
 import type { GridProps } from '@chakra-ui/react';
 import { Box, Grid, Flex, Text, Link, VStack, Skeleton } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import type { CustomLinksGroup } from 'types/footerLinks';
@@ -16,6 +17,8 @@ import IntTxsIndexingStatus from './IntTxsIndexingStatus';
 const MAX_LINKS_COLUMNS = 4;
 
 const Footer = () => {
+  const { t } = useTranslation('common');
+
   const fetch = useFetch();
 
   const { isPlaceholderData, data: linksData } = useQuery<unknown, ResourceError<unknown>, Array<CustomLinksGroup>>({
@@ -47,13 +50,13 @@ const Footer = () => {
   const renderProjectInfo = React.useCallback((gridArea?: GridProps['gridArea']) => {
     return (
       <Box gridArea={ gridArea }>
-        <Link fontSize="xs" href="https://www.zenchain.com/">zenchain.com</Link>
+        <Link fontSize="xs" href="https://www.zenchain.io/">zenchain.io</Link>
         <Text mt={ 3 } fontSize="xs">
-          Zenchain explorer is a tool for inspecting and analyzing the Zenchain blockchain.
+          { t('footer.content') }
         </Text>
       </Box>
     );
-  }, []);
+  }, [ t ]);
 
   const containerProps: GridProps = {
     as: 'footer',

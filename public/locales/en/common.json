@@ -31,6 +31,11 @@
   "From_To": "From/To",
   "Value": "Value",
   "Fee": "Fee",
+  "ago": "ago",
+  "Txn": "Txn",
+  "Reward": "Reward",
+  "validator": "validator",
+  "miner": "miner",
   "home": {
     "View_all_blocks": "View all blocks",
     "Latest_blocks": "Latest blocks",
@@ -97,5 +102,8 @@
     "Pending": "Pending",
     "Blob_txns": "Blob txns",
     "Watch_list": "Watch list"
+  },
+  "footer": {
+    "content": "Zenchain explorer is a tool for inspecting and analyzing the Zenchain blockchain."
   }
 }

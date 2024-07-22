@@ -12,6 +12,7 @@ import {
   Skeleton,
 } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
@@ -23,7 +24,6 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
-import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
 import { currencyUnits } from 'lib/units';
 import Tag from 'ui/shared/chakra/Tag';
@@ -66,6 +66,8 @@ interface Props {
 }
 
 const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
+  const { t } = useTranslation('common');
+
   const [ isExpanded, setIsExpanded ] = React.useState(false);
 
   const handleCutClick = React.useCallback(() => {
@@ -442,7 +444,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           hint={ `
                 Base Fee refers to the network Base Fee at the time of the block, 
                 while Max Fee & Max Priority Fee refer to the max amount a user is willing to pay 
-                for their tx & to give to the ${ getNetworkValidatorTitle() } respectively
+                for their tx & to give to the ${ t('validator') } respectively
               ` }
           isLoading={ isLoading }
         >

@@ -1,6 +1,7 @@
 import { Flex, Skeleton, Text, Box, useColorModeValue } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import capitalize from 'lodash/capitalize';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import type { Block } from 'types/api/block';
@@ -10,7 +11,6 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import { WEI } from 'lib/consts';
-import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import { currencyUnits } from 'lib/units';
 import BlockTimestamp from 'ui/blocks/BlockTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -31,6 +31,8 @@ interface Props {
 const isRollup = config.features.rollup.isEnabled;
 
 const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
+  const { t } = useTranslation('common');
+
   const totalReward = getBlockTotalReward(data);
   const burntFees = BigNumber(data.burnt_fees || 0);
   const txFees = BigNumber(data.tx_fees || 0);
@@ -59,7 +61,7 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
       </Flex>
       { !config.UI.views.block.hiddenFields?.miner && (
         <Flex columnGap={ 2 } w="100%">
-          <Text fontWeight={ 500 }>{ capitalize(getNetworkValidatorTitle()) }</Text>
+          <Text fontWeight={ 500 }>{ capitalize(t('validator')) }</Text>
           <AddressEntity
             address={ data.miner }
             isLoading={ isLoading }

@@ -1,7 +1,9 @@
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import { DAY, HOUR, MINUTE, SECOND } from 'lib/consts';
 import dayjs from 'lib/date/dayjs';
+import { nbsp } from 'lib/html-entities';
 
 function getUnits(diff: number) {
   if (diff < MINUTE) {
@@ -42,6 +44,34 @@ function getUpdateParams(ts: string) {
 }
 
 export default function useTimeAgoIncrement(ts: string | null, isEnabled?: boolean) {
+  const { t } = useTranslation('common');
+
+  dayjs.updateLocale('en', {
+    formats: {
+      llll: `MMM DD YYYY HH:mm:ss A (Z${ nbsp }UTC)`,
+    },
+    relativeTime: {
+      s: '1s',
+      ss: '%ds',
+      future: 'in %s',
+      past: `%s ${ t('ago') }`,
+      m: '1m',
+      mm: '%dm',
+      h: '1h',
+      hh: '%dh',
+      d: '1d',
+      dd: '%dd',
+      w: '1w',
+      ww: '%dw',
+      M: '1mo',
+      MM: '%dmo',
+      y: '1y',
+      yy: '%dy',
+    },
+  });
+
+  dayjs.locale('en');
+
   const [ value, setValue ] = React.useState(ts ? dayjs(ts).fromNow() : null);
 
   React.useEffect(() => {

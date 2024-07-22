@@ -7,7 +7,6 @@ import type { TxStateChange } from 'types/api/txStateChanges';
 import config from 'configs/app';
 import { ZERO_ADDRESS } from 'lib/consts';
 import { nbsp, space } from 'lib/html-entities';
-import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import { currencyUnits } from 'lib/units';
 import Tag from 'ui/shared/chakra/Tag';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
@@ -15,13 +14,13 @@ import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 
 import TxStateTokenIdList from './TxStateTokenIdList';
 
-export function getStateElements(data: TxStateChange, isLoading?: boolean) {
+export function getStateElements(validatorTitle: string, data: TxStateChange, isLoading?: boolean) {
   const tag = (() => {
     if (data.is_miner) {
       return (
         <Tooltip label="A block producer who successfully included the block into the blockchain">
           <Tag textTransform="capitalize" colorScheme="yellow" isLoading={ isLoading }>
-            { getNetworkValidatorTitle() }
+            { validatorTitle }
           </Tag>
         </Tooltip>
       );
