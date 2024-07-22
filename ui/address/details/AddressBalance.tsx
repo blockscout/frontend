@@ -21,8 +21,6 @@ import LinkInternal from 'ui/shared/links/LinkInternal';
 import NativeTokenIcon from 'ui/shared/NativeTokenIcon';
 import TextSeparator from 'ui/shared/TextSeparator';
 
-const TEMPLATE_CHAIN_ID = '{chainId}';
-
 const getGasFeature = config.features.getGasButton;
 
 interface Props {
@@ -109,8 +107,7 @@ const AddressBalance = ({ data, isLoading }: Props) => {
     };
 
     try {
-      const getGasUrlString = getGasFeature.urlTemplate.replace(TEMPLATE_CHAIN_ID, config.chain.id || '');
-      const getGasUrl = new URL(getGasUrlString);
+      const getGasUrl = new URL(getGasFeature.url);
       getGasUrl.searchParams.append('utm_source', 'blockscout');
       getGasUrl.searchParams.append('utm_medium', 'address');
       const dappId = getGasFeature.dappId;

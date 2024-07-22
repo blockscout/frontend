@@ -1,6 +1,7 @@
 import type { Feature } from './types';
 import type { GasRefuelProviderConfig } from 'types/client/gasRefuelProviderConfig';
 
+import chain from '../chain';
 import { getEnvValue, parseEnvJson } from '../utils';
 import marketplace from './marketplace';
 
@@ -11,7 +12,7 @@ const title = 'Get gas button';
 const config: Feature<{
   name: string;
   logoUrl?: string;
-  urlTemplate: string;
+  url: string;
   dappId?: string;
   usdThreshold: number;
 }> = (() => {
@@ -21,7 +22,7 @@ const config: Feature<{
       isEnabled: true,
       name: value.name,
       logoUrl: value.logo,
-      urlTemplate: value.url_template,
+      url: value.url_template.replace('{chainId}', chain.id || ''),
       dappId: marketplace.isEnabled ? value.dapp_id : undefined,
       usdThreshold: value.usd_threshold || 1,
     });
