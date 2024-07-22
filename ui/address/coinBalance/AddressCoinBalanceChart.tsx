@@ -14,7 +14,7 @@ const AddressCoinBalanceChart = ({ addressHash }: Props) => {
     pathParams: { hash: addressHash },
   });
 
-  const items = React.useMemo(() => data?.map(({ date, value }) => ({
+  const items = React.useMemo(() => data?.items.map(({ date, value }) => ({
     date: new Date(date),
     value: BigNumber(value).div(10 ** config.chain.currency.decimals).toNumber(),
   })), [ data ]);
