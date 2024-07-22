@@ -5,18 +5,17 @@ import React from 'react';
 import type { OptimisticL2DepositsItem } from 'types/api/optimisticL2';
 
 import config from 'configs/app';
-import dayjs from 'lib/date/dayjs';
 import AddressEntityL1 from 'ui/shared/entities/address/AddressEntityL1';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 const rollupFeature = config.features.rollup;
 
  type Props = { item: OptimisticL2DepositsItem; isLoading?: boolean };
 
 const OptimisticDepositsTableItem = ({ item, isLoading }: Props) => {
-  const timeAgo = dayjs(item.l1_block_timestamp).fromNow();
 
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'optimistic') {
     return null;
@@ -45,7 +44,12 @@ const OptimisticDepositsTableItem = ({ item, isLoading }: Props) => {
         />
       </Td>
       <Td verticalAlign="middle" pr={ 12 }>
-        <Skeleton isLoaded={ !isLoading } color="text_secondary" display="inline-block"><span>{ timeAgo }</span></Skeleton>
+        <TimeAgoWithTooltip
+          timestamp={ item.l1_block_timestamp }
+          isLoading={ isLoading }
+          color="text_secondary"
+          display="inline-block"
+        />
       </Td>
       <Td verticalAlign="middle">
         <TxEntityL1

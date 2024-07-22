@@ -3,11 +3,11 @@ import React, { useMemo } from 'react';
 
 import type { NovesResponseData } from 'types/api/noves';
 
-import dayjs from 'lib/date/dayjs';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import NovesFromTo from 'ui/shared/Noves/NovesFromTo';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 type Props = {
   isPlaceholderData: boolean;
@@ -40,9 +40,12 @@ const AddressAccountHistoryListItem = (props: Props) => {
                 Action
             </Text>
           </Flex>
-          <Text color="text_secondary" fontSize="sm" fontWeight={ 500 }>
-            { dayjs(props.tx.rawTransactionData.timestamp * 1000).fromNow() }
-          </Text>
+          <TimeAgoWithTooltip
+            timestamp={ (props.tx.rawTransactionData.timestamp * 1000).toString() }
+            color="text_secondary"
+            borderRadius="sm"
+            fontWeight={ 500 }
+          />
         </Flex>
       </Skeleton>
       <Skeleton borderRadius="sm" isLoaded={ !props.isPlaceholderData }>

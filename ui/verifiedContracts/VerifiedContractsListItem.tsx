@@ -6,7 +6,6 @@ import type { VerifiedContract } from 'types/api/contracts';
 
 import config from 'configs/app';
 import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
-import dayjs from 'lib/date/dayjs';
 import { currencyUnits } from 'lib/units';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
@@ -14,6 +13,7 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import IconSvg from 'ui/shared/IconSvg';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 interface Props {
   data: VerifiedContract;
@@ -86,9 +86,11 @@ const VerifiedContractsListItem = ({ data, isLoading }: Props) => {
         <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Verified</Skeleton>
         <Flex alignItems="center" columnGap={ 2 }>
           <IconSvg name="status/success" boxSize={ 4 } color="green.500" isLoading={ isLoading }/>
-          <Skeleton isLoaded={ !isLoading } color="text_secondary">
-            <span>{ dayjs(data.verified_at).fromNow() }</span>
-          </Skeleton>
+          <TimeAgoWithTooltip
+            timestamp={ data.verified_at }
+            isLoading={ isLoading }
+            color="text_secondary"
+          />
         </Flex>
       </Flex>
       <Flex columnGap={ 3 }>

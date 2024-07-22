@@ -12,9 +12,9 @@ import type { Block } from 'types/api/block';
 import config from 'configs/app';
 import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
-import BlockTimestamp from 'ui/blocks/BlockTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 type Props = {
   block: Block;
@@ -46,10 +46,13 @@ const LatestBlocksItem = ({ block, isLoading }: Props) => {
           fontWeight={ 500 }
           mr="auto"
         />
-        <BlockTimestamp
-          ts={ block.timestamp }
-          isEnabled={ !isLoading }
+        <TimeAgoWithTooltip
+          timestamp={ block.timestamp }
+          enableIncrement={ !isLoading }
           isLoading={ isLoading }
+          color="text_secondary"
+          fontWeight={ 400 }
+          display="inline-block"
           fontSize="sm"
           flexShrink={ 0 }
           ml={ 2 }

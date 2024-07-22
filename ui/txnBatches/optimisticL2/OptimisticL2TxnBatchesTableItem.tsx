@@ -6,18 +6,16 @@ import type { OptimisticL2TxnBatchesItem } from 'types/api/optimisticL2';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import dayjs from 'lib/date/dayjs';
 import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import LinkInternal from 'ui/shared/links/LinkInternal';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 const rollupFeature = config.features.rollup;
 
 type Props = { item: OptimisticL2TxnBatchesItem; isLoading?: boolean };
 
 const OptimisticL2TxnBatchesTableItem = ({ item, isLoading }: Props) => {
-  const timeAgo = dayjs(item.l1_timestamp).fromNow();
-
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'optimistic') {
     return null;
   }
@@ -60,9 +58,13 @@ const OptimisticL2TxnBatchesTableItem = ({ item, isLoading }: Props) => {
         </VStack>
       </Td>
       <Td>
-        <Skeleton isLoaded={ !isLoading } color="text_secondary" my={ 1 } display="inline-block">
-          <span>{ timeAgo }</span>
-        </Skeleton>
+        <TimeAgoWithTooltip
+          timestamp={ item.l1_timestamp }
+          isLoading={ isLoading }
+          display="inline-block"
+          color="text_secondary"
+          my={ 1 }
+        />
       </Td>
     </Tr>
   );

@@ -9,11 +9,11 @@ import React from 'react';
 import type { OptimisticL2DepositsItem } from 'types/api/optimisticL2';
 
 import config from 'configs/app';
-import dayjs from 'lib/date/dayjs';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 const feature = config.features.rollup;
 
@@ -23,7 +23,6 @@ type Props = {
 }
 
 const LatestDepositsItem = ({ item, isLoading }: Props) => {
-  const timeAgo = dayjs(item.l1_block_timestamp).fromNow();
   const isMobile = useIsMobile();
 
   if (!feature.isEnabled || feature.type !== 'optimistic') {
@@ -66,9 +65,11 @@ const LatestDepositsItem = ({ item, isLoading }: Props) => {
         <>
           <Flex justifyContent="space-between" alignItems="center" mb={ 1 }>
             { l1BlockLink }
-            <Skeleton isLoaded={ !isLoading } color="text_secondary">
-              <span>{ timeAgo }</span>
-            </Skeleton>
+            <TimeAgoWithTooltip
+              timestamp={ item.l1_block_timestamp }
+              isLoading={ isLoading }
+              color="text_secondary"
+            />
           </Flex>
           <Grid gridTemplateColumns="56px auto">
             <Skeleton isLoaded={ !isLoading } my="5px" w="fit-content">
@@ -91,9 +92,14 @@ const LatestDepositsItem = ({ item, isLoading }: Props) => {
           L1 txn
         </Skeleton>
         { l1TxLink }
-        <Skeleton isLoaded={ !isLoading } color="text_secondary" w="fit-content" h="fit-content" my="2px">
-          <span>{ timeAgo }</span>
-        </Skeleton>
+        <TimeAgoWithTooltip
+          timestamp={ item.l1_block_timestamp }
+          isLoading={ isLoading }
+          color="text_secondary"
+          w="fit-content"
+          h="fit-content"
+          my="2px"
+        />
         <Skeleton isLoaded={ !isLoading } w="fit-content" h="fit-content" my="2px">
           L2 txn
         </Skeleton>

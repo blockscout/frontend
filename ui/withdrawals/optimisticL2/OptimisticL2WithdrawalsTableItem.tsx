@@ -9,13 +9,13 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import LinkExternal from 'ui/shared/links/LinkExternal';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 const rollupFeature = config.features.rollup;
 
  type Props = { item: OptimisticL2WithdrawalsItem; isLoading?: boolean };
 
 const OptimisticL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
-  const timeAgo = item.l2_timestamp ? dayjs(item.l2_timestamp).fromNow() : 'N/A';
   const timeToEnd = item.challenge_period_end ? dayjs(item.challenge_period_end).fromNow(true) + ' left' : '';
 
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'optimistic') {
@@ -47,9 +47,13 @@ const OptimisticL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
         />
       </Td>
       <Td verticalAlign="middle" pr={ 12 }>
-        <Skeleton isLoaded={ !isLoading } color="text_secondary" display="inline-block">
-          <span> { timeAgo }</span>
-        </Skeleton>
+        <TimeAgoWithTooltip
+          timestamp={ item.l2_timestamp }
+          fallbackText="N/A"
+          isLoading={ isLoading }
+          display="inline-block"
+          color="text_secondary"
+        />
       </Td>
       <Td verticalAlign="middle">
         { item.status === 'Ready for relay' && rollupFeature.L2WithdrawalUrl ?
