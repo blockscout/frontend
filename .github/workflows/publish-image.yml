@@ -55,7 +55,7 @@ jobs:
                 with:
                     registry: ghcr.io
                     username: ${{ github.actor }}
-                    password: ${{ secrets.GITHUB_TOKEN }}
+                    password: ${{ secrets.GHCR_PAT }}
 
             -   name: Add SHORT_SHA env property with commit short sha
                 run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
