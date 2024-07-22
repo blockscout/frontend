@@ -45,7 +45,7 @@ const ContractVerificationFieldCode = ({ isVyper }: Props) => {
       { isVyper ? null : (
         <>
           <span>We recommend using flattened code. This is necessary if your code utilizes a library or inherits dependencies. Use the </span>
-          <Link href="https://github.com/poanetwork/solidity-flattener" target="_blank">POA solidity flattener</Link>
+          <Link href="https://hardhat.org/hardhat-runner/docs/advanced/flattening" target="_blank">Hardhat flattener</Link>
           <span> or the </span>
           <Link href="https://www.npmjs.com/package/truffle-flattener" target="_blank">Truffle flattener</Link>
         </>

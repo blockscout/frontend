@@ -103,3 +103,12 @@ export type BlockWithdrawalsItem = {
   receiver: AddressParam;
   validator_index: number;
 }
+
+export interface BlockCountdownResponse {
+  result: {
+    CountdownBlock: string;
+    CurrentBlock: string;
+    EstimateTimeInSec: string;
+    RemainingBlock: string;
+  } | null;
+}
