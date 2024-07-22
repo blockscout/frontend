@@ -1,5 +1,6 @@
 import { Table, Tbody, Tr, Th } from '@chakra-ui/react';
 import type BigNumber from 'bignumber.js';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import type { AddressesItem } from 'types/api/addresses';
@@ -19,17 +20,19 @@ interface Props {
 }
 
 const AddressesTable = ({ items, totalSupply, pageStartIndex, top, isLoading }: Props) => {
+  const { t } = useTranslation('common');
+
   const hasPercentage = !totalSupply.eq(ZERO);
   return (
     <Table variant="simple" size="sm">
       <Thead top={ top }>
         <Tr>
-          <Th width="64px">Rank</Th>
-          <Th width={ hasPercentage ? '30%' : '40%' }>Address</Th>
-          <Th width="20%" pl={ 10 }>Public tag</Th>
-          <Th width={ hasPercentage ? '20%' : '25%' } isNumeric>{ `Balance ${ currencyUnits.ether }` }</Th>
+          <Th width="64px">{ t('account_related.Rank') }</Th>
+          <Th width={ hasPercentage ? '30%' : '40%' }>{ t('Address') }</Th>
+          <Th width="20%" pl={ 10 }>{ t('account_related.Public_tag') }</Th>
+          <Th width={ hasPercentage ? '20%' : '25%' } isNumeric>{ `${ t('Balance') } ${ currencyUnits.ether }` }</Th>
           { hasPercentage && <Th width="15%" isNumeric>Percentage</Th> }
-          <Th width="15%" isNumeric>Txn count</Th>
+          <Th width="15%" isNumeric>{ t('account_related.Txn_count') }</Th>
         </Tr>
       </Thead>
       <Tbody>

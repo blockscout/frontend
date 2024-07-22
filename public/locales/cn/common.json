@@ -41,6 +41,10 @@
   "View_details": "查看详情",
   "Hide_details": "隐藏详情",
   "Details": "详情",
+  "All": "全部",
+  "Burnt_fees": "销毁费用",
+  "Address": "地址",
+  "Balance": "余额",
   "home": {
     "View_all_blocks": "查看所有区块",
     "Latest_blocks": "最新区块",
@@ -148,6 +152,27 @@
     "Parent_hash": "父哈希",
     "The_hash_of_the_block_from_which_this_block_was_generated": "生成此区块的区块哈希值",
     "Nonce": "随机数",
-    "Block_nonce_is_a_value_used_during_mining_to_demonstrate_proof_of_work_for_a_block": "区块随机数是在挖矿过程中用于证明区块工作量的一个值。"
+    "Block_nonce_is_a_value_used_during_mining_to_demonstrate_proof_of_work_for_a_block": "区块随机数是在挖矿过程中用于证明区块工作量的一个值。",
+    "Forked": "分叉",
+    "Uncles": "叔块",
+    "Size_bytes": "大小，字节",
+    "There_are_no_blocks": "没有区块。"
+  },
+  "account_related": {
+    "There_are_no_accounts": "没有账户。",
+    "Rank": "排名",
+    "Public_tag": "公共标签",
+    "Txn_count": "交易数"
+  },
+  "verified_contracts_area": {
+    "There_are_no_verified_contracts": "没有已验证的合约。",
+    "Couldnt_find_any_contract_that_matches_your_query": "未找到与您的查询匹配的任何合约。",
+    "Total_contracts": "合约总数",
+    "Verified_contracts": "已验证合约"
+  },
+  "theme_settings": {
+    "Color_theme": "配色主题",
+    "Light": "浅色",
+    "Dark": "深色"
   }
 }

@@ -41,6 +41,10 @@
   "View_details": "View details",
   "Hide_details": "Hide details",
   "Details": "Details",
+  "All": "All",
+  "Burnt_fees": "Burnt fees",
+  "Address": "Address",
+  "Balance": "Balance",
   "home": {
     "View_all_blocks": "View all blocks",
     "Latest_blocks": "Latest blocks",
@@ -148,6 +152,27 @@
     "Parent_hash": "Parent hash",
     "The_hash_of_the_block_from_which_this_block_was_generated": "The hash of the block from which this block was generated",
     "Nonce": "Nonce",
-    "Block_nonce_is_a_value_used_during_mining_to_demonstrate_proof_of_work_for_a_block": "Block nonce is a value used during mining to demonstrate proof of work for a block"
+    "Block_nonce_is_a_value_used_during_mining_to_demonstrate_proof_of_work_for_a_block": "Block nonce is a value used during mining to demonstrate proof of work for a block",
+    "Forked": "Forked",
+    "Uncles": "Uncles",
+    "Size_bytes": "Size, bytes",
+    "There_are_no_blocks": "There are no blocks."
+  },
+  "account_related": {
+    "There_are_no_accounts": "There are no accounts.",
+    "Rank": "Rank",
+    "Public_tag": "Public tag",
+    "Txn_count": "Txn count"
+  },
+  "verified_contracts_area": {
+    "There_are_no_verified_contracts": "There are no verified contracts.",
+    "Couldnt_find_any_contract_that_matches_your_query": "Couldn't find any contract that matches your query.",
+    "Total_contracts": "Total contracts",
+    "Verified_contracts": "Verified contracts"
+  },
+  "theme_settings": {
+    "Color_theme": "Color theme",
+    "Light": "Light",
+    "Dark": "Dark"
   }
 }

@@ -1,4 +1,5 @@
 import { Box, Hide, HStack, Show } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -7,7 +8,6 @@ import type { VerifiedContractsSorting, VerifiedContractsSortingField, VerifiedC
 
 import useDebounce from 'lib/hooks/useDebounce';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { VERIFIED_CONTRACT_INFO } from 'stubs/contract';
 import { generateListStub } from 'stubs/utils';
@@ -27,6 +27,10 @@ import VerifiedContractsList from 'ui/verifiedContracts/VerifiedContractsList';
 import VerifiedContractsTable from 'ui/verifiedContracts/VerifiedContractsTable';
 
 const VerifiedContracts = () => {
+  const { t } = useTranslation('common');
+
+  const emptyFilteredText = t('verified_contracts_area.Couldnt_find_any_contract_that_matches_your_query');
+
   const router = useRouter();
   const [ searchTerm, setSearchTerm ] = React.useState(getQueryParamString(router.query.q) || undefined);
   const [ type, setType ] = React.useState(getQueryParamString(router.query.filter) as VerifiedContractsFilters['filter'] || undefined);
@@ -128,14 +132,14 @@ const VerifiedContracts = () => {
 
   return (
     <Box>
-      <PageTitle title="Verified contracts" withTextAd/>
+      <PageTitle title={ t('area.Verified_contracts') } withTextAd/>
       <VerifiedContractsCounters/>
       <DataListDisplay
         isError={ isError }
         items={ data?.items }
-        emptyText="There are no verified contracts."
+        emptyText={ t('verified_contracts_area.There_are_no_verified_contracts') }
         filterProps={{
-          emptyFilteredText: `Couldn${ apos }t find any contract that matches your query.`,
+          emptyFilteredText: emptyFilteredText,
           hasActiveFilters: Boolean(searchTerm || type),
         }}
         content={ content }

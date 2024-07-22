@@ -1,3 +1,4 @@
+import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -20,6 +21,8 @@ const TAB_LIST_PROPS = {
 };
 
 const BlocksPageContent = () => {
+  const { t } = useTranslation('common');
+
   const router = useRouter();
   const isMobile = useIsMobile();
   const tab = getQueryParamString(router.query.tab);
@@ -69,14 +72,14 @@ const BlocksPageContent = () => {
   })();
 
   const tabs: Array<RoutedTab> = [
-    { id: 'blocks', title: 'All', component: <BlocksContent type="block" query={ blocksQuery }/> },
-    { id: 'reorgs', title: 'Forked', component: <BlocksContent type="reorg" query={ reorgsQuery }/> },
-    { id: 'uncles', title: 'Uncles', component: <BlocksContent type="uncle" query={ unclesQuery }/> },
+    { id: 'blocks', title: t('All'), component: <BlocksContent type="block" query={ blocksQuery }/> },
+    { id: 'reorgs', title: t('block_related.Forked'), component: <BlocksContent type="reorg" query={ reorgsQuery }/> },
+    { id: 'uncles', title: t('block_related.Uncles'), component: <BlocksContent type="uncle" query={ unclesQuery }/> },
   ];
 
   return (
     <>
-      <PageTitle title="Blocks" withTextAd/>
+      <PageTitle title={ t('area.Blocks') } withTextAd/>
       <RoutedTabs
         tabs={ tabs }
         tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }

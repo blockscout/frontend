@@ -1,5 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
@@ -25,6 +26,8 @@ interface Props {
 }
 
 const BlocksContent = ({ type, query }: Props) => {
+  const { t } = useTranslation('common');
+
   const queryClient = useQueryClient();
   const isMobile = useIsMobile();
   const [ socketAlert, setSocketAlert ] = React.useState('');
@@ -116,7 +119,7 @@ const BlocksContent = ({ type, query }: Props) => {
     <DataListDisplay
       isError={ query.isError }
       items={ query.data?.items }
-      emptyText="There are no blocks."
+      emptyText={ t('block_related.There_are_no_blocks') }
       content={ content }
       actionBar={ actionBar }
     />

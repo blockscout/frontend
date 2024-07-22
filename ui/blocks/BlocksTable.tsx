@@ -44,16 +44,16 @@ const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum
       <Table variant="simple" minWidth="1040px" size="md" fontWeight={ 500 }>
         <Thead top={ top }>
           <Tr>
-            <Th width="125px">Block</Th>
-            <Th width="120px">Size, bytes</Th>
+            <Th width="125px">{ t('Block') }</Th>
+            <Th width="120px">{ t('block_related.Size_bytes') }</Th>
             { !config.UI.views.block.hiddenFields?.miner &&
             <Th width={ `${ VALIDATOR_COL_WEIGHT / widthBase * 100 }%` } minW="160px">{ capitalize(t('validator')) }</Th> }
-            <Th width="64px" isNumeric>Txn</Th>
-            <Th width={ `${ GAS_COL_WEIGHT / widthBase * 100 }%` }>Gas used</Th>
+            <Th width="64px" isNumeric>{ t('Txn') }</Th>
+            <Th width={ `${ GAS_COL_WEIGHT / widthBase * 100 }%` }>{ t('block_related.Gas_used') }</Th>
             { !isRollup && !config.UI.views.block.hiddenFields?.total_reward &&
-              <Th width={ `${ REWARD_COL_WEIGHT / widthBase * 100 }%` }>Reward { currencyUnits.ether }</Th> }
+              <Th width={ `${ REWARD_COL_WEIGHT / widthBase * 100 }%` }>{ t('Reward') } { currencyUnits.ether }</Th> }
             { !isRollup && !config.UI.views.block.hiddenFields?.burnt_fees &&
-              <Th width={ `${ FEES_COL_WEIGHT / widthBase * 100 }%` }>Burnt fees { currencyUnits.ether }</Th> }
+              <Th width={ `${ FEES_COL_WEIGHT / widthBase * 100 }%` }>{ t('Burnt_fees') } { currencyUnits.ether }</Th> }
           </Tr>
         </Thead>
         <Tbody>
