@@ -24,7 +24,7 @@ const config: Feature<{
       logoUrl: value.logo,
       url: value.url_template.replace('{chainId}', chain.id || ''),
       dappId: marketplace.isEnabled ? value.dapp_id : undefined,
-      usdThreshold: value.usd_threshold || 1,
+      usdThreshold: value.usd_threshold,
     });
   }
 
