@@ -39,6 +39,10 @@ const StatsFilters = ({
     title: 'All',
   }, ... (sections || []) ];
 
+  sectionsList.forEach((section) => {
+    section.title = t(`stats_chart_group.${ section.id }_title`);
+  });
+
   return (
     <Grid
       gap={ 2 }

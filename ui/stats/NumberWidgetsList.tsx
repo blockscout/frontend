@@ -1,4 +1,5 @@
 import { Grid } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
@@ -10,6 +11,8 @@ import DataFetchAlert from '../shared/DataFetchAlert';
 const UNITS_WITHOUT_SPACE = [ 's' ];
 
 const NumberWidgetsList = () => {
+  const { t } = useTranslation('common');
+
   const { data, isPlaceholderData, isError } = useApiQuery('stats_counters', {
     queryOptions: {
       placeholderData: { counters: Array(10).fill(STATS_COUNTER) },
@@ -19,6 +22,11 @@ const NumberWidgetsList = () => {
   if (isError) {
     return <DataFetchAlert/>;
   }
+
+  data?.counters.forEach((counter) => {
+    counter.title = t(`stats_counter.${ counter.id }_title`);
+    counter.description = t(`stats_counter.${ counter.id }_description`);
+  });
 
   return (
     <Grid

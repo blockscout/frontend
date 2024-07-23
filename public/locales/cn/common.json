@@ -189,6 +189,7 @@
     "oneYear": "1年"
   },
   "stats_chart_group": {
+    "all_title": "全部",
     "accounts_title": "账户",
     "transactions_title": "交易",
     "blocks_title": "区块",

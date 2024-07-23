@@ -189,6 +189,7 @@
     "oneYear": "1 year"
   },
   "stats_chart_group": {
+    "all_title": "All",
     "accounts_title": "Accounts",
     "transactions_title": "Transactions",
     "blocks_title": "Blocks",
