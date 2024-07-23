@@ -9,7 +9,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import Stars from './Stars';
 import type { RateFunction } from './useRatings';
 
-const ratingDescriptions = [ 'Terrible', 'Poor', 'Average', 'Very good', 'Outstanding' ];
+const ratingDescriptions = [ 'Very bad', 'Bad', 'Average', 'Good', 'Excellent' ];
 
 type Props = {
   appId: string;

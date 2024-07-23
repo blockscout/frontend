@@ -64,7 +64,7 @@ const Rating = ({
               canRate={ canRate }
             />
           </PopoverTrigger>
-          <PopoverContent w="274px" mx={ 3 }>
+          <PopoverContent w="250px" mx={ 3 }>
             <PopoverBody p={ 4 }>
               <Content
                 appId={ appId }
