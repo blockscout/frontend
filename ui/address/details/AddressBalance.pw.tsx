@@ -28,7 +28,7 @@ test('with get gas button internal +@dark-mode', async({ render, mockEnvs, mockA
   await mockEnvs([
     [
       'NEXT_PUBLIC_GAS_REFUEL_PROVIDER_CONFIG',
-      `{"name": "Get gas", "dapp_id": "duck", "url_template": "https://duck.url/{chainId}", "logo": "${ ICON_URL }", "usd_threshold": 1}`,
+      `{"name": "Need gas?", "dapp_id": "duck", "url_template": "https://duck.url/{chainId}", "logo": "${ ICON_URL }", "usd_threshold": 1}`,
     ],
   ]);
   await mockAssetResponse(ICON_URL, './playwright/mocks/image_svg.svg');
@@ -46,7 +46,7 @@ test('with get gas button external', async({ render, mockEnvs, mockAssetResponse
   await mockEnvs([
     [
       'NEXT_PUBLIC_GAS_REFUEL_PROVIDER_CONFIG',
-      `{"name": "Get gas", "url_template": "https://duck.url/{chainId}", "logo": "${ ICON_URL }", "usd_threshold": 1}`,
+      `{"name": "Need gas?", "url_template": "https://duck.url/{chainId}", "logo": "${ ICON_URL }", "usd_threshold": 1}`,
     ],
   ]);
   await mockAssetResponse(ICON_URL, './playwright/mocks/image_svg.svg');
@@ -67,7 +67,7 @@ test.describe('mobile', () => {
     await mockEnvs([
       [
         'NEXT_PUBLIC_GAS_REFUEL_PROVIDER_CONFIG',
-        `{"name": "Get gas", "dapp_id": "duck", "url_template": "https://duck.url/{chainId}", "logo": "${ ICON_URL }", "usd_threshold": 1}`,
+        `{"name": "Need gas?", "dapp_id": "duck", "url_template": "https://duck.url/{chainId}", "logo": "${ ICON_URL }", "usd_threshold": 1}`,
       ],
     ]);
     await mockAssetResponse(ICON_URL, './playwright/mocks/image_svg.svg');
