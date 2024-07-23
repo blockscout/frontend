@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useState } from 'react';
 
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
@@ -34,6 +34,7 @@ const txInterpretation = config.features.txInterpretation;
 const TransactionPageContent = () => {
   const router = useRouter();
   const appProps = useAppContext();
+  const [hasConfirmed, setHasConfirmed] = useState(false);
 
   const hash = getQueryParamString(router.query.hash);
   const txQuery = useTxQuery();
@@ -117,14 +118,23 @@ const TransactionPageContent = () => {
 
   return (
     <>
-      <TextAd mb={ 6 }/>
-      <PageTitle
-        title="Transaction details"
-        backLink={ backLink }
-        contentAfter={ tags }
-        secondRow={ titleSecondRow }
-      />
-      { content }
+      {!hasConfirmed ? (
+        <div className="popup">
+          <p>Click "2" to proceed</p>
+          <button onClick={() => setHasConfirmed(true)}>2</button>
+        </div>
+      ) : (
+        <>
+          <TextAd mb={ 6 }/>
+          <PageTitle
+            title="Transaction details"
+            backLink={ backLink }
+            contentAfter={ tags }
+            secondRow={ titleSecondRow }
+          />
+          { content }
+        </>
+      )}
     </>
   );
 };

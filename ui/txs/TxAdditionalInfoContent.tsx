@@ -33,7 +33,7 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
       <Heading as="h4" size="sm" mb={ 6 }>Additional info </Heading>
       { tx.blob_versioned_hashes && tx.blob_versioned_hashes.length > 0 && (
         <Box { ...sectionProps } mb={ 4 }>
-          <Flex alignItems="center" justifyContent="space-between">
+          <Flex alignItems="cernter" justifyContent="space-between">
             <Text { ...sectionTitleProps }>Blobs: { tx.blob_versioned_hashes.length }</Text>
             { tx.blob_versioned_hashes.length > 3 && (
               <LinkInternal
