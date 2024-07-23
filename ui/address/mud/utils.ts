@@ -8,3 +8,11 @@ export const SORT_SEQUENCE: Record<'key0' | 'key1', Array<'desc' | 'asc' | undef
 export const getNameTypeText = (name: string, type: string) => {
   return capitalizeFirstLetter(name) + ' (' + type + ')';
 };
+
+export const getValueString = (value: string | Array<string>) => {
+  if (Array.isArray(value)) {
+    return value.join(', ');
+  }
+
+  return value;
+};

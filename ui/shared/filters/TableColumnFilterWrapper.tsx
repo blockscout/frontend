@@ -40,7 +40,7 @@ const TableColumnFilterWrapper = ({ columnName, isActive, className, children, i
           variant="ghost"
           w="20px"
           h="20px"
-          icon={ <IconSvg name="filter" w="20px" h="20px"/> }
+          icon={ <IconSvg name="filter" w="19px" h="19px"/> }
           isActive={ isActive }
           isDisabled={ isLoading }
           borderRadius="4px"

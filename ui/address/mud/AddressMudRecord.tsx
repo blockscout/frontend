@@ -10,6 +10,7 @@ import TruncatedValue from 'ui/shared/TruncatedValue';
 
 import AddressMudBreadcrumbs from './AddressMudBreadcrumbs';
 import AddressMudRecordValues from './AddressMudRecordValues';
+import { getValueString } from './utils';
 
 type Props ={
   scrollRef?: React.RefObject<HTMLDivElement>;
@@ -55,12 +56,12 @@ const AddressMudRecord = ({ tableId, recordId, isQueryEnabled = true, scrollRef 
         <Table borderRadius="8px" style={{ tableLayout: 'auto' }} width="100%" overflow="hidden">
           { data?.schema.key_names.length && data?.schema.key_names.map((keyName, index) => (
             <Tr key={ keyName } borderBottomStyle={ index === data.schema.key_names.length - 1 ? 'hidden' : 'solid' }>
-              <Td fontWeight={ 600 } whiteSpace="nowrap">
+              <Td fontWeight={ 600 } whiteSpace="nowrap" fontSize="sm">
                 { keyName } ({ data.schema.key_types[index] })
               </Td>
-              <Td colSpan={ 2 }>
+              <Td colSpan={ 2 } fontSize="sm">
                 <Flex justifyContent="space-between">
-                  <TruncatedValue value={ data.record.decoded[keyName] } mr={ 2 }/>
+                  <TruncatedValue value={ getValueString(data.record.decoded[keyName]) } mr={ 2 }/>
                   { index === 0 && <Box color="text_secondary">{ dayjs(data.record.timestamp).format('lll') }</Box> }
                 </Flex>
               </Td>
@@ -72,12 +73,12 @@ const AddressMudRecord = ({ tableId, recordId, isQueryEnabled = true, scrollRef 
       <Hide above="lg" ssr={ false }>
         <>
           { data?.schema.key_names.length && data?.schema.key_names.map((keyName, index) => (
-            <VStack gap={ 1 } key={ keyName } alignItems="start">
+            <VStack gap={ 1 } key={ keyName } alignItems="start" fontSize="sm">
               <Divider/>
               <Text fontWeight={ 600 } whiteSpace="nowrap">
                 { keyName } ({ data.schema.key_types[index] })
               </Text>
-              <Text wordBreak="break-all">{ data.record.decoded[keyName] }</Text>
+              <Text wordBreak="break-word">{ getValueString(data.record.decoded[keyName]) }</Text>
               { index === 0 && <Box color="text_secondary">{ dayjs(data.record.timestamp).format('lll') }</Box> }
             </VStack>
           )) }

@@ -1,18 +1,21 @@
 import type { StyleProps } from '@chakra-ui/react';
-import { Box, Link, Table, Tbody, Td, Th, Tr, Flex, useColorModeValue, useBoolean } from '@chakra-ui/react';
+import { Box, Link, Table, Tbody, Td, Th, Tr, Flex, useColorModeValue, useBoolean, Tooltip } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { AddressMudRecords, AddressMudRecordsFilter, AddressMudRecordsSorting } from 'types/api/address';
 
+import { route } from 'nextjs-routes';
+
 import capitalizeFirstLetter from 'lib/capitalizeFirstLetter';
 import dayjs from 'lib/date/dayjs';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import IconSvg from 'ui/shared/IconSvg';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 import { default as Thead } from 'ui/shared/TheadSticky';
 
 import AddressMudRecordsKeyFilter from './AddressMudRecordsKeyFilter';
-import { getNameTypeText } from './utils';
+import { getNameTypeText, getValueString } from './utils';
 
 const COL_MIN_WIDTH = 180;
 const COL_MIN_WIDTH_MOBILE = 140;
@@ -28,6 +31,7 @@ type Props = {
   filters: AddressMudRecordsFilter;
   toggleTableHasHorisontalScroll: () => void;
   scrollRef?: React.RefObject<HTMLDivElement>;
+  hash: string;
 }
 
 const AddressMudRecordsTable = ({
@@ -39,6 +43,7 @@ const AddressMudRecordsTable = ({
   setFilters,
   toggleTableHasHorisontalScroll,
   scrollRef,
+  hash,
 }: Props) => {
   const totalColsCut = data.schema.key_names.length + data.schema.value_names.length;
   const isMobile = useIsMobile(false);
@@ -46,23 +51,32 @@ const AddressMudRecordsTable = ({
   const [ isOpened, setIsOpened ] = useBoolean(false);
   const [ hasCut, setHasCut ] = useBoolean(isMobile ? totalColsCut > MIN_CUT_COUNT : true);
 
+  const containerRef = React.useRef<HTMLTableElement>(null);
   const tableRef = React.useRef<HTMLTableElement>(null);
 
   const router = useRouter();
 
   const toggleIsOpen = React.useCallback(() => {
+    isOpened && tableRef.current?.scroll({ left: 0 });
     setIsOpened.toggle();
     toggleTableHasHorisontalScroll();
-  }, [ setIsOpened, toggleTableHasHorisontalScroll ]);
+  }, [ setIsOpened, toggleTableHasHorisontalScroll, isOpened ]);
 
   const onRecordClick = React.useCallback((e: React.MouseEvent) => {
-    const newQuery = {
-      ...router.query,
-      record_id: e.currentTarget.getAttribute('data-id') as string,
-    };
-    router.push({ pathname: router.pathname, query: newQuery }, undefined, { shallow: true });
+    if (e.metaKey || e.ctrlKey) {
+      // Allow opening in a new tab/window with right-click or ctrl/cmd+click
+      return;
+    }
+
+    e.preventDefault();
+
+    router.push(
+      { pathname: '/address/[hash]', query: { hash, tab: 'mud', table_id: data.table.table_id, record_id: e.currentTarget.getAttribute('data-id') as string } },
+      undefined,
+      { shallow: true },
+    );
     scrollRef?.current?.scrollIntoView();
-  }, [ router, scrollRef ]);
+  }, [ router, scrollRef, hash, data.table.table_id ]);
 
   const handleFilterChange = React.useCallback((field: keyof AddressMudRecordsFilter) => (val: string) => {
     setFilters(prev => {
@@ -80,8 +94,8 @@ const AddressMudRecordsTable = ({
   const keyBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
   React.useEffect(() => {
-    if (hasCut && !colsCutCount && tableRef.current) {
-      const count = Math.floor((tableRef.current.getBoundingClientRect().width - CUT_COL_WIDTH) / COL_MIN_WIDTH);
+    if (hasCut && !colsCutCount && containerRef.current) {
+      const count = Math.floor((containerRef.current.getBoundingClientRect().width - CUT_COL_WIDTH) / COL_MIN_WIDTH);
       if (totalColsCut > 2 && count - 1 < totalColsCut) {
         setColsCutCount(count - 1);
       } else {
@@ -90,22 +104,15 @@ const AddressMudRecordsTable = ({
     }
   }, [ colsCutCount, data.schema, hasCut, setHasCut, totalColsCut ]);
 
-  const cutWidth = `${ CUT_COL_WIDTH }px `;
-
   const colW = isMobile ? COL_MIN_WIDTH_MOBILE : COL_MIN_WIDTH;
 
   const tdStyles: StyleProps = {
-    wordBreak: 'break-all',
-    whiteSpace: 'normal',
-    minW: `${ colW }px`,
-    w: `${ colW }px`,
-  };
-
-  const thStyles: StyleProps = {
     wordBreak: 'break-word',
     whiteSpace: 'normal',
     minW: `${ colW }px`,
     w: `${ colW }px`,
+    verticalAlign: 'baseline',
+    lineHeight: '20px',
   };
 
   const keys = (isOpened || !hasCut) ? data.schema.key_names : data.schema.key_names.slice(0, colsCutCount);
@@ -113,16 +120,28 @@ const AddressMudRecordsTable = ({
 
   const hasHorizontalScroll = isMobile || isOpened;
 
+  if (hasCut && !colsCutCount) {
+    return <Box w="100%" ref={ containerRef }></Box>;
+  }
+
+  const cutButton = (
+    <Th width={ `${ CUT_COL_WIDTH }px ` } verticalAlign="baseline">
+      <Tooltip label={ isOpened ? 'Hide columns' : 'Show all columns' }>
+        <Link onClick={ toggleIsOpen } aria-label="show/hide columns">...</Link>
+      </Tooltip>
+    </Th>
+  );
+
   return (
     // can't implement both horisontal table scroll and sticky header
-    <Box maxW="100%" overflowX={ hasHorizontalScroll ? 'scroll' : 'unset' } whiteSpace="nowrap">
-      <Table variant="simple" size="sm" style={{ tableLayout: 'fixed' }} ref={ tableRef }>
+    <Box maxW="100%" overflowX={ hasHorizontalScroll ? 'scroll' : 'unset' } whiteSpace="nowrap" ref={ tableRef }>
+      <Table variant="simple" size="sm" style={{ tableLayout: 'fixed' }}>
         <Thead top={ hasHorizontalScroll ? 0 : top } display={ hasHorizontalScroll ? 'table' : 'table-header-group' } w="100%">
           <Tr >
             { keys.map((keyName, index) => {
               const text = getNameTypeText(keyName, data.schema.key_types[index]);
               return (
-                <Th key={ keyName } { ...thStyles }>
+                <Th key={ keyName } { ...tdStyles }>
                   { index < 2 ? (
                     <Flex>
                       <Link onClick={ onKeySortClick } data-id={ index } display="flex" alignItems="start" lineHeight="20px" mr={ 2 }>
@@ -143,13 +162,13 @@ const AddressMudRecordsTable = ({
               );
             }) }
             { values.map((valName, index) => (
-              <Th key={ valName } { ...thStyles }>
+              <Th key={ valName } { ...tdStyles }>
                 { capitalizeFirstLetter(valName) } ({ data.schema.value_types[index] })
               </Th>
             )) }
-            { hasCut && !isOpened && <Th width={ cutWidth }><Link onClick={ toggleIsOpen }>...</Link></Th> }
-            <Th { ...thStyles }>Modified</Th>
-            { hasCut && isOpened && <Th width={ cutWidth }><Link onClick={ toggleIsOpen }>...</Link></Th> }
+            { hasCut && !isOpened && cutButton }
+            <Th { ...tdStyles }>Modified</Th>
+            { hasCut && isOpened && cutButton }
           </Tr>
         </Thead>
         <Tbody display={ hasHorizontalScroll ? 'table' : 'table-row-group' } w="100%">
@@ -157,17 +176,23 @@ const AddressMudRecordsTable = ({
             <Tr key={ item.id }>
               { keys.map((keyName, index) => (
                 <Td key={ keyName } backgroundColor={ keyBgColor } { ...tdStyles }>
-                  { index === 0 ?
-                    <Link onClick={ onRecordClick } data-id={ item.id } fontWeight={ 700 }>{ item.decoded[keyName].toString() }</Link> :
-                    item.decoded[keyName].toString()
-                  }
+                  { index === 0 ? (
+                    <LinkInternal
+                      onClick={ onRecordClick }
+                      data-id={ item.id }
+                      fontWeight={ 700 }
+                      href={ route({ pathname: '/address/[hash]', query: { hash, tab: 'mud', table_id: data.table.table_id, record_id: item.id } }) }
+                    >
+                      { getValueString(item.decoded[keyName]) }
+                    </LinkInternal>
+                  ) : getValueString(item.decoded[keyName]) }
                 </Td>
               )) }
               { values.map((valName) =>
-                <Td key={ valName } { ...tdStyles }>{ item.decoded[valName].toString() }</Td>) }
-              { hasCut && !isOpened && <Td width={ cutWidth }></Td> }
+                <Td key={ valName } { ...tdStyles }>{ getValueString(item.decoded[valName]) }</Td>) }
+              { hasCut && !isOpened && <Td width={ `${ CUT_COL_WIDTH }px ` }></Td> }
               <Td { ...tdStyles } color="text_secondary">{ dayjs(item.timestamp).format('lll') }</Td>
-              { hasCut && isOpened && <Td width={ cutWidth }></Td> }
+              { hasCut && isOpened && <Td width={ `${ CUT_COL_WIDTH }px ` }></Td> }
             </Tr>
           )) }
         </Tbody>

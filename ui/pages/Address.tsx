@@ -272,16 +272,21 @@ const AddressPageContent = () => {
     <RoutedTabs tabs={ tabs } tabListProps={{ mt: 6 }} isLoading={ isTabsLoading }/>;
 
   const backLink = React.useMemo(() => {
-    const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/accounts');
-
-    if (!hasGoBackLink) {
-      return;
+    if (appProps.referrer && appProps.referrer.includes('/accounts')) {
+      return {
+        label: 'Back to top accounts list',
+        url: appProps.referrer,
+      };
     }
 
-    return {
-      label: 'Back to top accounts list',
-      url: appProps.referrer,
-    };
+    if (appProps.referrer && appProps.referrer.includes('/mud-worlds')) {
+      return {
+        label: 'Back to MUD worlds list',
+        url: appProps.referrer,
+      };
+    }
+
+    return;
   }, [ appProps.referrer ]);
 
   const titleSecondRow = (

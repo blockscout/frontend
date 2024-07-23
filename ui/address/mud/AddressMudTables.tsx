@@ -2,6 +2,7 @@ import { Hide, Show } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import useDebounce from 'lib/hooks/useDebounce';
 import useIsInitialLoading from 'lib/hooks/useIsInitialLoading';
 import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -27,11 +28,12 @@ const AddressMudTables = ({ scrollRef, isQueryEnabled = true }: Props) => {
   const hash = getQueryParamString(router.query.hash);
   const q = getQueryParamString(router.query.q);
   const [ searchTerm, setSearchTerm ] = React.useState<string>(q || '');
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const { data, isPlaceholderData, isError, pagination } = useQueryWithPages({
     resourceName: 'address_mud_tables',
     pathParams: { hash },
-    filters: { q: searchTerm },
+    filters: { q: debouncedSearchTerm },
     scrollRef,
     options: {
       enabled: isQueryEnabled,
@@ -71,6 +73,7 @@ const AddressMudTables = ({ scrollRef, isQueryEnabled = true }: Props) => {
           isLoading={ isPlaceholderData }
           top={ ACTION_BAR_HEIGHT_DESKTOP }
           scrollRef={ scrollRef }
+          hash={ hash }
         />
       </Hide>
       <Show below="lg" ssr={ false }>
@@ -79,6 +82,7 @@ const AddressMudTables = ({ scrollRef, isQueryEnabled = true }: Props) => {
             key={ item.table.table_id + (isPlaceholderData ? String(index) : '') }
             item={ item }
             isLoading={ isPlaceholderData }
+            hash={ hash }
           />
         )) }
       </Show>

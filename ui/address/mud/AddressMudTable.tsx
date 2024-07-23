@@ -125,6 +125,7 @@ const AddressMudTable = ({ scrollRef, tableId, isQueryEnabled = true }: Props) =
       filters={ filters }
       toggleTableHasHorisontalScroll={ setTableHasHorisontalScroll.toggle }
       scrollRef={ scrollRef }
+      hash={ hash }
     />
   ) : null;
 

@@ -3,6 +3,8 @@ import React from 'react';
 
 import type { AddressMudRecord } from 'types/api/address';
 
+import { getValueString } from './utils';
+
 type Props ={
   data?: AddressMudRecord;
 }
@@ -16,19 +18,19 @@ const AddressMudRecordValues = ({ data }: Props) => {
 
   return (
     <>
-      <Tr backgroundColor={ valuesBgColor } borderBottomStyle="hidden">
-        <Td fontWeight={ 600 }>Field</Td>
-        <Td fontWeight={ 600 }>Type</Td>
-        <Td fontWeight={ 600 } w="100%" wordBreak="break-all">Value</Td>
+      <Tr backgroundColor={ valuesBgColor } borderBottomStyle="hidden" >
+        <Td fontWeight={ 600 } w="100px" fontSize="sm">Field</Td>
+        <Td fontWeight={ 600 } w="90px" fontSize="sm">Type</Td>
+        <Td fontWeight={ 600 } fontSize="sm">Value</Td>
       </Tr>
       {
         data?.schema.value_names.map((valName, index) => (
           <Tr key={ valName } backgroundColor={ valuesBgColor } borderBottomStyle="hidden">
-            <Td whiteSpace="nowrap" py={ 0 } pb={ 4 }>{ valName }</Td>
-            <Td py={ 0 } pb={ 4 }>{ data.schema.value_types[index] }</Td>
-            <Td w="100%" wordBreak="break-all" py={ 0 } pb={ 4 }>
+            <Td fontSize="sm" w="100px" py={ 0 } pb={ 4 } pr={ 0 }wordBreak="break-all">{ valName }</Td>
+            <Td fontSize="sm" w="90px" py={ 0 } pb={ 4 } wordBreak="break-all">{ data.schema.value_types[index] }</Td>
+            <Td fontSize="sm" wordBreak="break-word" py={ 0 } pb={ 4 }>
               <Box>
-                { data.record.decoded[valName] }
+                { getValueString(data.record.decoded[valName]) }
               </Box>
             </Td>
           </Tr>

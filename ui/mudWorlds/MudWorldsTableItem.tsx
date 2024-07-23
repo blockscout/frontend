@@ -7,15 +7,9 @@ import type { MudWorldItem } from 'types/api/mudWorlds';
 import config from 'configs/app';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
-const mudFrameworkFeature = config.features.mudFramework;
-
 type Props = { item: MudWorldItem; isLoading?: boolean };
 
 const MudWorldsTableItem = ({ item, isLoading }: Props) => {
-  if (!mudFrameworkFeature.isEnabled) {
-    return null;
-  }
-
   const addressBalance = BigNumber(item.coin_balance).div(BigNumber(10 ** config.chain.currency.decimals));
   const addressBalanceChunks = addressBalance.dp(8).toFormat().split('.');
 

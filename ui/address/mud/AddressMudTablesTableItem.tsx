@@ -4,28 +4,39 @@ import React from 'react';
 
 import type { AddressMudTableItem } from 'types/api/address';
 
+import { route } from 'nextjs-routes';
+
 import Tag from 'ui/shared/chakra/Tag';
 import IconSvg from 'ui/shared/IconSvg';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 
 type Props = {
   item: AddressMudTableItem;
   isLoading: boolean;
   scrollRef?: React.RefObject<HTMLDivElement>;
+  hash: string;
 };
 
-const AddressMudTablesTableItem = ({ item, isLoading, scrollRef }: Props) => {
+const AddressMudTablesTableItem = ({ item, isLoading, scrollRef, hash }: Props) => {
   const [ isOpened, setIsOpened ] = useBoolean(false);
 
   const router = useRouter();
 
   const onTableClick = React.useCallback((e: React.MouseEvent) => {
-    const newQuery = {
-      ...router.query,
-      table_id: e.currentTarget.getAttribute('data-id') as string,
-    };
-    router.push({ pathname: router.pathname, query: newQuery }, undefined, { shallow: true });
+    if (e.metaKey || e.ctrlKey) {
+      // Allow opening in a new tab/window with right-click or ctrl/cmd+click
+      return;
+    }
+
+    e.preventDefault();
+
+    router.push(
+      { pathname: '/address/[hash]', query: { hash, tab: 'mud', table_id: e.currentTarget.getAttribute('data-id') as string } },
+      undefined,
+      { shallow: true },
+    );
     scrollRef?.current?.scrollIntoView();
-  }, [ router, scrollRef ]);
+  }, [ router, scrollRef, hash ]);
 
   return (
     <>
@@ -40,15 +51,21 @@ const AddressMudTablesTableItem = ({ item, isLoading, scrollRef }: Props) => {
                 cursor="pointer"
                 onClick={ setIsOpened.toggle }
                 transitionDuration="faster"
+                aria-label="View schema"
               />
             </Link>
           </Skeleton>
         </Td>
         <Td verticalAlign="middle">
           <Skeleton isLoaded={ !isLoading }>
-            <Link onClick={ onTableClick } data-id={ item.table.table_id }>
+            <LinkInternal
+              href={ route({ pathname: '/address/[hash]', query: { hash, tab: 'mud', table_id: item.table.table_id } }) }
+              data-id={ item.table.table_id }
+              onClick={ onTableClick }
+              fontWeight={ 700 }
+            >
               { item.table.table_full_name }
-            </Link>
+            </LinkInternal>
           </Skeleton>
         </Td>
         <Td verticalAlign="middle">
@@ -69,7 +86,7 @@ const AddressMudTablesTableItem = ({ item, isLoading, scrollRef }: Props) => {
             <Table>
               { Boolean(item.schema.key_names.length) && (
                 <Tr>
-                  <Td width="80px" fontSize="sm" fontWeight={ 600 } py={ 2 }>Key</Td>
+                  <Td width="80px" fontSize="sm" fontWeight={ 600 } py={ 2 } verticalAlign="middle">Key</Td>
                   <Td py={ 2 }>
                     <VStack gap={ 1 } alignItems="start">
                       { item.schema.key_names.map((name, index) => (

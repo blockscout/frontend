@@ -1,4 +1,4 @@
-import { Box, useColorModeValue, chakra, HStack } from '@chakra-ui/react';
+import { Box, useColorModeValue, chakra, Grid } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
@@ -7,6 +7,8 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/links/LinkInternal';
+
+import useAddressQuery from '../utils/useAddressQuery';
 
 type TableViewProps = {
   scrollRef?: React.RefObject<HTMLDivElement>;
@@ -40,7 +42,7 @@ const BreadcrumbItem = ({ text, href, isLast, scrollRef }: BreadcrumbItemProps) 
 
   if (isLast) {
     return (
-      <HStack gap={ 2 } overflow="hidden">
+      <Grid gap={ 2 } overflow="hidden" templateColumns="auto 24px">
         <Box
           overflow="hidden"
           whiteSpace="nowrap"
@@ -49,12 +51,12 @@ const BreadcrumbItem = ({ text, href, isLast, scrollRef }: BreadcrumbItemProps) 
           { text }
         </Box>
         <CopyToClipboard text={ href } type="link" mx={ 0 } color="text_secondary"/>
-      </HStack>
+      </Grid>
     );
   }
 
   return (
-    <HStack gap={ 2 } overflow="hidden">
+    <Grid gap={ 2 } overflow="hidden" templateColumns="auto 24px">
       <LinkInternal
         href={ href }
         onClick={ onLinkClick }
@@ -65,13 +67,15 @@ const BreadcrumbItem = ({ text, href, isLast, scrollRef }: BreadcrumbItemProps) 
         { text }
       </LinkInternal>
       { !isLast && <IconSvg name="arrows/east" boxSize={ 6 } color={ iconColor }/> }
-    </HStack>
+    </Grid>
   );
 };
 
 const AddressMudBreadcrumbs = (props: TableViewProps | RecordViewProps) => {
   const queryParams = { tab: 'mud', hash: props.hash };
   const isMobile = useIsMobile();
+
+  const addressQuery = useAddressQuery({ hash: props.hash });
 
   return (
     <Box
@@ -82,8 +86,9 @@ const AddressMudBreadcrumbs = (props: TableViewProps | RecordViewProps) => {
       alignItems="center"
       className={ props.className }
       width="fit-content"
+      fontSize="sm"
     >
-      <IconSvg name="MUD" boxSize={ 5 } color="green.500"/>
+      <IconSvg name="MUD" boxSize={ 5 } color={ addressQuery.data?.is_verified ? 'green.500' : 'text_secondary' }/>
       <BreadcrumbItem
         text="MUD World"
         href={ route({ pathname: '/address/[hash]', query: queryParams }) }

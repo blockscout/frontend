@@ -230,7 +230,7 @@ export type AddressMudRecords = {
 }
 
 export type AddressMudRecordsItem = {
-  decoded: Record<string, string>;
+  decoded: Record<string, string | Array<string>>;
   id: string;
   is_deleted: boolean;
   timestamp: string;
