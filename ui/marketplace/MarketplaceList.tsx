@@ -51,6 +51,7 @@ const MarketplaceList = ({
         }}
         autoRows="1fr"
         gap={{ base: '16px', md: '24px' }}
+        marginTop={{ base: 0, lg: 3 }}
       >
         { apps.slice(0, renderedItemsNum).map((app, index) => (
           <MarketplaceAppCard

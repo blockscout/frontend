@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import { apps as appsMock } from 'mocks/apps/apps';
@@ -62,7 +63,15 @@ test.describe('mobile', () => {
   test.use({ viewport: devices['iPhone 13 Pro'].viewport });
 
   test('base view', async({ render }) => {
-    const component = await render(<Marketplace/>);
+    const component = await render(
+      <Box>
+        { /* Added a fake header because without the ActionBar works incorrectly without it */ }
+        <Box h="100px" backgroundColor="#dbdbdb" p={ 1 }>
+          Header
+        </Box>
+        <Marketplace/>
+      </Box>,
+    );
 
     await expect(component).toHaveScreenshot();
   });
