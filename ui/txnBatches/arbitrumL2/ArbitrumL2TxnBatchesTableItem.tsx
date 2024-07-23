@@ -6,20 +6,18 @@ import type { ArbitrumL2TxnBatchesItem } from 'types/api/arbitrumL2';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import dayjs from 'lib/date/dayjs';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import ArbitrumL2TxnBatchStatus from 'ui/shared/statusTag/ArbitrumL2TxnBatchStatus';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 const rollupFeature = config.features.rollup;
 
 type Props = { item: ArbitrumL2TxnBatchesItem; isLoading?: boolean };
 
 const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
-  const timeAgo = item.commitment_transaction.timestamp ? dayjs(item.commitment_transaction.timestamp).fromNow() : 'Undefined';
-
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'arbitrum') {
     return null;
   }
@@ -60,9 +58,12 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
         />
       </Td>
       <Td verticalAlign="middle">
-        <Skeleton isLoaded={ !isLoading } color="text_secondary">
-          <span>{ timeAgo }</span>
-        </Skeleton>
+        <TimeAgoWithTooltip
+          timestamp={ item.commitment_transaction.timestamp }
+          fallbackText="Undefined"
+          isLoading={ isLoading }
+          color="text_secondary"
+        />
       </Td>
       <Td verticalAlign="middle">
         <LinkInternal

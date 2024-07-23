@@ -76,7 +76,7 @@ const FileSnippet = ({ file, className, index, onRemove, isDisabled, error }: Pr
             <Tooltip
               label={ error }
               placement="top"
-              maxW="320px"
+              maxW={{ base: 'calc(100vw - 8px)', lg: '320px' }}
             >
               <Box cursor="pointer" display="inherit" onClick={ handleErrorHintIconClick } ml={ 1 }>
                 <IconSvg name="info" boxSize={ 5 } color="error"/>

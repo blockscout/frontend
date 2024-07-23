@@ -1,4 +1,4 @@
-import { Flex, Skeleton, Text, Box, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Skeleton, Text, Box } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import capitalize from 'lodash/capitalize';
 import React from 'react';
@@ -12,14 +12,13 @@ import getBlockTotalReward from 'lib/block/getBlockTotalReward';
 import { WEI } from 'lib/consts';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import { currencyUnits } from 'lib/units';
-import BlockTimestamp from 'ui/blocks/BlockTimestamp';
+import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
-import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
-import TextSeparator from 'ui/shared/TextSeparator';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
 interface Props {
@@ -35,8 +34,6 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
   const burntFees = BigNumber(data.burnt_fees || 0);
   const txFees = BigNumber(data.tx_fees || 0);
 
-  const separatorColor = useColorModeValue('gray.200', 'gray.700');
-
   return (
     <ListItemMobile rowGap={ 3 } key={ String(data.height) } isAnimated>
       <Flex justifyContent="space-between" w="100%">
@@ -49,7 +46,14 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
             fontWeight={ 600 }
           />
         </Flex>
-        <BlockTimestamp ts={ data.timestamp } isEnabled={ enableTimeIncrement } isLoading={ isLoading }/>
+        <TimeAgoWithTooltip
+          timestamp={ data.timestamp }
+          enableIncrement={ enableTimeIncrement }
+          isLoading={ isLoading }
+          color="text_secondary"
+          fontWeight={ 400 }
+          display="inline-block"
+        />
       </Flex>
       <Flex columnGap={ 2 }>
         <Text fontWeight={ 500 }>Size</Text>
@@ -85,13 +89,12 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
           <Skeleton isLoaded={ !isLoading } display="inline-block" color="text_secondary" mr={ 4 }>
             <span>{ BigNumber(data.gas_used || 0).toFormat() }</span>
           </Skeleton>
-          <Utilization colorScheme="gray" value={ BigNumber(data.gas_used || 0).div(BigNumber(data.gas_limit)).toNumber() } isLoading={ isLoading }/>
-          { data.gas_target_percentage && (
-            <>
-              <TextSeparator color={ separatorColor } mx={ 1 }/>
-              <GasUsedToTargetRatio value={ data.gas_target_percentage } isLoading={ isLoading }/>
-            </>
-          ) }
+          <BlockGasUsed
+            gasUsed={ data.gas_used }
+            gasLimit={ data.gas_limit }
+            isLoading={ isLoading }
+            gasTarget={ data.gas_target_percentage }
+          />
         </Flex>
       </Box>
       { !isRollup && !config.UI.views.block.hiddenFields?.total_reward && (

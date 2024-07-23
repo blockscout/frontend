@@ -3,7 +3,6 @@ import React from 'react';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
-import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import { NOVES_TRANSLATE } from 'stubs/noves/NovesTranslate';
 import { TX_INTERPRETATION } from 'stubs/txInterpretation';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
@@ -29,8 +28,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
   const hasInterpretationFeature = feature.isEnabled;
   const isNovesInterpretation = hasInterpretationFeature && feature.provider === 'noves';
 
-  const { value: isActionButtonExperiment } = useFeatureValue('action_button_exp', false);
-  const appActionData = useAppActionData(txQuery.data?.to?.hash, isActionButtonExperiment && !txQuery.isPlaceholderData);
+  const appActionData = useAppActionData(txQuery.data?.to?.hash, !txQuery.isPlaceholderData);
 
   const txInterpretationQuery = useApiQuery('tx_interpretation', {
     pathParams: { hash },
@@ -127,7 +125,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
         mt={{ base: 3, lg: 0 }}
       >
         { !hasTag && <AccountActionsMenu/> }
-        { (appActionData && isActionButtonExperiment && hasAnyInterpretation) && (
+        { (appActionData && hasAnyInterpretation) && (
           <AppActionButton data={ appActionData } txHash={ hash } source="Txn"/>
         ) }
         <NetworkExplorers type="tx" pathParam={ hash } ml={{ base: 0, lg: 'auto' }}/>

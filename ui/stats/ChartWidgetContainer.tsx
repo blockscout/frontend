@@ -42,7 +42,7 @@ const ChartWidgetContainer = ({ id, title, description, interval, onLoadingError
   });
 
   const items = useMemo(() => data?.chart?.map((item) => {
-    return { date: new Date(item.date), value: Number(item.value) };
+    return { date: new Date(item.date), value: Number(item.value), isApproximate: item.is_approximate };
   }), [ data ]);
 
   useEffect(() => {

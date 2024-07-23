@@ -6,12 +6,12 @@ import type { VerifiedContract } from 'types/api/contracts';
 
 import config from 'configs/app';
 import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
-import dayjs from 'lib/date/dayjs';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import IconSvg from 'ui/shared/IconSvg';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 interface Props {
   data: VerifiedContract;
@@ -90,9 +90,11 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
       <Td>
         <Flex alignItems="center" columnGap={ 2 } my={ 1 }>
           <IconSvg name="status/success" boxSize={ 4 } color="green.500" isLoading={ isLoading }/>
-          <Skeleton isLoaded={ !isLoading } color="text_secondary">
-            <span>{ dayjs(data.verified_at).fromNow() }</span>
-          </Skeleton>
+          <TimeAgoWithTooltip
+            timestamp={ data.verified_at }
+            isLoading={ isLoading }
+            color="text_secondary"
+          />
         </Flex>
       </Td>
       <Td>

@@ -8,6 +8,7 @@ export interface TimeChartItem {
   date: Date;
   dateLabel?: string;
   value: number;
+  isApproximate?: boolean;
 }
 
 export interface ChartMargin {

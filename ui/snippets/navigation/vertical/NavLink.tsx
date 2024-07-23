@@ -64,6 +64,7 @@ const NavLink = ({ item, isCollapsed, px, className, onClick, disableActiveState
         variant="nav"
         gutter={ 20 }
         color={ isInternalLink && item.isActive ? colors.text.active : colors.text.hover }
+        margin={ 0 }
       >
         <HStack spacing={ 0 } overflow="hidden">
           <NavLinkIcon item={ item }/>

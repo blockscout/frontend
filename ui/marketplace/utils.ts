@@ -4,10 +4,11 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import removeQueryParam from 'lib/router/removeQueryParam';
 import type { TOption } from 'ui/shared/sort/Option';
 
-export type SortValue = 'security_score';
+export type SortValue = 'rating' | 'security_score';
 
 export const SORT_OPTIONS: Array<TOption<SortValue>> = [
   { title: 'Default', id: undefined },
+  { title: 'Rating', id: 'rating' },
   { title: 'Security score', id: 'security_score' },
 ];
 

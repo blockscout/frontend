@@ -1,4 +1,4 @@
-import { Grid, GridItem, Text, Link, Box, Tooltip, useColorModeValue, Skeleton } from '@chakra-ui/react';
+import { Grid, GridItem, Text, Link, Box, Tooltip, Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import capitalize from 'lodash/capitalize';
 import { useRouter } from 'next/router';
@@ -18,6 +18,7 @@ import { space } from 'lib/html-entities';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { currencyUnits } from 'lib/units';
+import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
@@ -26,14 +27,12 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
-import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import PrevNext from 'ui/shared/PrevNext';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 import StatusTag from 'ui/shared/statusTag/StatusTag';
-import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 import ZkSyncL2TxnBatchHashesInfo from 'ui/txnBatches/zkSyncL2/ZkSyncL2TxnBatchHashesInfo';
@@ -51,8 +50,6 @@ const BlockDetails = ({ query }: Props) => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
   const router = useRouter();
   const heightOrHash = getQueryParamString(router.query.height_or_hash);
-
-  const separatorColor = useColorModeValue('gray.200', 'gray.700');
 
   const { data, isPlaceholderData } = query;
 
@@ -412,18 +409,13 @@ const BlockDetails = ({ query }: Props) => {
         <Skeleton isLoaded={ !isPlaceholderData }>
           { BigNumber(data.gas_used || 0).toFormat() }
         </Skeleton>
-        <Utilization
-          ml={ 4 }
-          colorScheme="gray"
-          value={ BigNumber(data.gas_used || 0).dividedBy(BigNumber(data.gas_limit)).toNumber() }
+        <BlockGasUsed
+          gasUsed={ data.gas_used }
+          gasLimit={ data.gas_limit }
           isLoading={ isPlaceholderData }
+          ml={ 4 }
+          gasTarget={ data.gas_target_percentage }
         />
-        { data.gas_target_percentage && (
-          <>
-            <TextSeparator color={ separatorColor } mx={ 1 }/>
-            <GasUsedToTargetRatio value={ data.gas_target_percentage } isLoading={ isPlaceholderData }/>
-          </>
-        ) }
       </DetailsInfoItem.Value>
 
       <DetailsInfoItem.Label

@@ -1,12 +1,12 @@
-import { Td, Tr, Skeleton, Text, Box } from '@chakra-ui/react';
+import { Td, Tr, Skeleton, Box } from '@chakra-ui/react';
 import React, { useMemo } from 'react';
 
 import type { NovesResponseData } from 'types/api/noves';
 
-import dayjs from 'lib/date/dayjs';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import NovesFromTo from 'ui/shared/Noves/NovesFromTo';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 type Props = {
   isPlaceholderData: boolean;
@@ -25,11 +25,13 @@ const AddressAccountHistoryTableItem = (props: Props) => {
   return (
     <Tr>
       <Td px={ 3 } py="18px" fontSize="sm" >
-        <Skeleton borderRadius="sm" flexShrink={ 0 } isLoaded={ !props.isPlaceholderData }>
-          <Text as="span" color="text_secondary">
-            { dayjs(props.tx.rawTransactionData.timestamp * 1000).fromNow() }
-          </Text>
-        </Skeleton>
+        <TimeAgoWithTooltip
+          timestamp={ (props.tx.rawTransactionData.timestamp * 1000).toString() }
+          isLoading={ props.isPlaceholderData }
+          color="text_secondary"
+          borderRadius="sm"
+          flexShrink={ 0 }
+        />
       </Td>
       <Td px={ 3 } py="18px" fontSize="sm" >
         <Skeleton borderRadius="sm" isLoaded={ !props.isPlaceholderData }>

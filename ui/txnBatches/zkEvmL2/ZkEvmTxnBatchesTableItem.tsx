@@ -6,19 +6,17 @@ import type { ZkEvmL2TxnBatchesItem } from 'types/api/zkEvmL2';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import dayjs from 'lib/date/dayjs';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import ZkEvmL2TxnBatchStatus from 'ui/shared/statusTag/ZkEvmL2TxnBatchStatus';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 const rollupFeature = config.features.rollup;
 
 type Props = { item: ZkEvmL2TxnBatchesItem; isLoading?: boolean };
 
 const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
-  const timeAgo = item.timestamp ? dayjs(item.timestamp).fromNow() : 'Undefined';
-
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'zkEvm') {
     return null;
   }
@@ -39,9 +37,12 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
         <ZkEvmL2TxnBatchStatus status={ item.status } isLoading={ isLoading }/>
       </Td>
       <Td verticalAlign="middle">
-        <Skeleton isLoaded={ !isLoading } color="text_secondary">
-          <span>{ timeAgo }</span>
-        </Skeleton>
+        <TimeAgoWithTooltip
+          timestamp={ item.timestamp }
+          fallbackText="Undefined"
+          isLoading={ isLoading }
+          color="text_secondary"
+        />
       </Td>
       <Td verticalAlign="middle">
         <LinkInternal

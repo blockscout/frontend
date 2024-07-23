@@ -5,10 +5,10 @@ import React from 'react';
 import type { ZkEvmL2WithdrawalsItem } from 'types/api/zkEvmL2';
 
 import config from 'configs/app';
-import dayjs from 'lib/date/dayjs';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 const rollupFeature = config.features.rollup;
 
@@ -18,8 +18,6 @@ const ZkEvmL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'zkEvm') {
     return null;
   }
-
-  const timeAgo = dayjs(item.timestamp).fromNow();
 
   return (
     <Tr>
@@ -49,9 +47,11 @@ const ZkEvmL2WithdrawalsTableItem = ({ item, isLoading }: Props) => {
         />
       </Td>
       <Td verticalAlign="middle" pr={ 12 }>
-        <Skeleton isLoaded={ !isLoading } color="text_secondary">
-          <span>{ timeAgo }</span>
-        </Skeleton>
+        <TimeAgoWithTooltip
+          timestamp={ item.timestamp }
+          isLoading={ isLoading }
+          color="text_secondary"
+        />
       </Td>
       <Td verticalAlign="middle">
         { item.l1_transaction_hash ? (

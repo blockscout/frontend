@@ -7,8 +7,8 @@ import type { MarketplaceAppPreview } from 'types/client/marketplace';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';
-import IconSvg from 'ui/shared/IconSvg';
 
+import FavoriteIcon from '../FavoriteIcon';
 import MarketplaceAppIntegrationIcon from '../MarketplaceAppIntegrationIcon';
 import FeaturedAppMobile from './FeaturedAppMobile';
 
@@ -136,10 +136,7 @@ const FeaturedApp = ({
                 w={ 9 }
                 h={ 8 }
                 onClick={ handleFavoriteClick }
-                icon={ isFavorite ?
-                  <IconSvg name="star_filled" w={ 5 } h={ 5 } color="yellow.400"/> :
-                  <IconSvg name="star_outline" w={ 5 } h={ 5 } color="gray.400"/>
-                }
+                icon={ <FavoriteIcon isFavorite={ isFavorite }/> }
               />
             ) }
           </Flex>

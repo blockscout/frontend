@@ -5,11 +5,11 @@ import React from 'react';
 import type { ZkEvmL2DepositsItem } from 'types/api/zkEvmL2';
 
 import config from 'configs/app';
-import dayjs from 'lib/date/dayjs';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 const rollupFeature = config.features.rollup;
 
@@ -19,8 +19,6 @@ const ZkEvmL2DepositsListItem = ({ item, isLoading }: Props) => {
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'zkEvm') {
     return null;
   }
-
-  const timeAgo = dayjs(item.timestamp).fromNow();
 
   return (
     <ListItemMobileGrid.Container>
@@ -56,7 +54,11 @@ const ZkEvmL2DepositsListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">{ timeAgo }</Skeleton>
+        <TimeAgoWithTooltip
+          timestamp={ item.timestamp }
+          isLoading={ isLoading }
+          display="inline-block"
+        />
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>L2 txn hash</ListItemMobileGrid.Label>

@@ -5,20 +5,18 @@ import React from 'react';
 import type { OptimisticL2DepositsItem } from 'types/api/optimisticL2';
 
 import config from 'configs/app';
-import dayjs from 'lib/date/dayjs';
 import AddressEntityL1 from 'ui/shared/entities/address/AddressEntityL1';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 const rollupFeature = config.features.rollup;
 
 type Props = { item: OptimisticL2DepositsItem; isLoading?: boolean };
 
 const OptimisticDepositsListItem = ({ item, isLoading }: Props) => {
-  const timeAgo = dayjs(item.l1_block_timestamp).fromNow();
-
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'optimistic') {
     return null;
   }
@@ -50,7 +48,11 @@ const OptimisticDepositsListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">{ timeAgo }</Skeleton>
+        <TimeAgoWithTooltip
+          timestamp={ item.l1_block_timestamp }
+          isLoading={ isLoading }
+          display="inline-block"
+        />
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn hash</ListItemMobileGrid.Label>
