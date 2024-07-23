@@ -26,8 +26,14 @@ export type MarketplaceAppOverview = MarketplaceAppPreview & MarketplaceAppSocia
   site?: string;
 }
 
+export type AppRating = {
+  recordId: string;
+  value: number | undefined;
+}
+
 export type MarketplaceAppWithSecurityReport = MarketplaceAppOverview & {
   securityReport?: MarketplaceAppSecurityReport;
+  rating?: AppRating;
 }
 
 export enum MarketplaceCategory {

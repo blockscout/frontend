@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import type { MarketplaceAppWithSecurityReport } from 'types/client/marketplace';
+import type { MarketplaceAppWithSecurityReport, AppRating } from 'types/client/marketplace';
 import { MarketplaceCategory } from 'types/client/marketplace';
 
 import config from 'configs/app';
@@ -55,6 +55,7 @@ export default function useMarketplaceApps(
   selectedCategoryId: string = MarketplaceCategory.ALL,
   favoriteApps: Array<string> | undefined = undefined,
   isFavoriteAppsLoaded: boolean = false, // eslint-disable-line @typescript-eslint/no-inferrable-types
+  ratings: Record<string, AppRating> | undefined = undefined,
 ) {
   const fetch = useFetch();
   const apiFetch = useApiFetch();
@@ -91,20 +92,27 @@ export default function useMarketplaceApps(
 
   const [ sorting, setSorting ] = React.useState<SortValue>();
 
-  const appsWithSecurityReports = React.useMemo(() =>
-    data?.map((app) => ({ ...app, securityReport: securityReports?.[app.id] })),
-  [ data, securityReports ]);
+  const appsWithSecurityReportsAndRating = React.useMemo(() =>
+    data?.map((app) => ({
+      ...app,
+      securityReport: securityReports?.[app.id],
+      rating: ratings?.[app.id],
+    })),
+  [ data, securityReports, ratings ]);
 
   const displayedApps = React.useMemo(() => {
-    return appsWithSecurityReports
+    return appsWithSecurityReportsAndRating
       ?.filter(app => isAppNameMatches(filter, app) && isAppCategoryMatches(selectedCategoryId, app, favoriteApps))
       .sort((a, b) => {
         if (sorting === 'security_score') {
           return (b.securityReport?.overallInfo.securityScore || 0) - (a.securityReport?.overallInfo.securityScore || 0);
         }
+        if (sorting === 'rating') {
+          return (b.rating?.value || 0) - (a.rating?.value || 0);
+        }
         return 0;
       }) || [];
-  }, [ selectedCategoryId, appsWithSecurityReports, filter, favoriteApps, sorting ]);
+  }, [ selectedCategoryId, appsWithSecurityReportsAndRating, filter, favoriteApps, sorting ]);
 
   return React.useMemo(() => ({
     data,

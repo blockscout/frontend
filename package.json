@@ -65,6 +65,7 @@
     "@types/papaparse": "^5.3.5",
     "@types/react-scroll": "^1.8.4",
     "@web3modal/wagmi": "4.2.1",
+    "airtable": "^0.12.2",
     "bignumber.js": "^9.1.0",
     "blo": "^1.1.1",
     "chakra-react-select": "^4.4.3",

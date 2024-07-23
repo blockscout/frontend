@@ -14,6 +14,8 @@ const securityReportsUrl = getExternalAssetFilePath('NEXT_PUBLIC_MARKETPLACE_SEC
 const featuredApp = getEnvValue('NEXT_PUBLIC_MARKETPLACE_FEATURED_APP');
 const bannerContentUrl = getExternalAssetFilePath('NEXT_PUBLIC_MARKETPLACE_BANNER_CONTENT_URL');
 const bannerLinkUrl = getEnvValue('NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL');
+const ratingAirtableApiKey = getEnvValue('NEXT_PUBLIC_MARKETPLACE_RATING_AIRTABLE_API_KEY');
+const ratingAirtableBaseId = getEnvValue('NEXT_PUBLIC_MARKETPLACE_RATING_AIRTABLE_BASE_ID');
 
 const title = 'Marketplace';
 
@@ -27,6 +29,7 @@ const config: Feature<(
   securityReportsUrl: string | undefined;
   featuredApp: string | undefined;
   banner: { contentUrl: string; linkUrl: string } | undefined;
+  rating: { airtableApiKey: string; airtableBaseId: string } | undefined;
 }> = (() => {
   if (enabled === 'true' && chain.rpcUrl && submitFormUrl) {
     const props = {
@@ -38,6 +41,10 @@ const config: Feature<(
       banner: bannerContentUrl && bannerLinkUrl ? {
         contentUrl: bannerContentUrl,
         linkUrl: bannerLinkUrl,
+      } : undefined,
+      rating: ratingAirtableApiKey && ratingAirtableBaseId ? {
+        airtableApiKey: ratingAirtableApiKey,
+        airtableBaseId: ratingAirtableBaseId,
       } : undefined,
     };
 

@@ -36,7 +36,7 @@ const MarketplaceAppIntegrationIcon = ({ external, internalWallet }: Props) => {
       textAlign="center"
       padding={ 2 }
       openDelay={ 300 }
-      maxW={ 400 }
+      maxW={{ base: 'calc(100vw - 8px)', lg: '400px' }}
     >
       <IconSvg
         name={ icon }

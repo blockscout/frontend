@@ -20,6 +20,7 @@ export enum EventTypes {
   FILTERS = 'Filters',
   BUTTON_CLICK = 'Button click',
   PROMO_BANNER = 'Promo banner',
+  APP_FEEDBACK = 'App feedback',
 }
 
 /* eslint-disable @typescript-eslint/indent */
@@ -134,6 +135,12 @@ Type extends EventTypes.BUTTON_CLICK ? {
 Type extends EventTypes.PROMO_BANNER ? {
   'Source': 'Marketplace';
   'Link': string;
+} :
+Type extends EventTypes.APP_FEEDBACK ? {
+  'Action': 'Rating';
+  'Source': 'Discovery' | 'App modal' | 'App page';
+  'AppId': string;
+  'Score': number;
 } :
 undefined;
 /* eslint-enable @typescript-eslint/indent */

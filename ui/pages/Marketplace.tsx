@@ -70,6 +70,11 @@ const Marketplace = () => {
     contractListModalType,
     hasPreviousStep,
     setSorting,
+    userRatings,
+    rateApp,
+    isRatingSending,
+    isRatingLoading,
+    canRate,
   } = useMarketplace();
 
   const isMobile = useIsMobile();
@@ -91,13 +96,13 @@ const Marketplace = () => {
 
     tabs.unshift({
       id: MarketplaceCategory.FAVORITES,
-      title: () => <IconSvg name="star_outline" w={ 5 } h={ 5 } display="flex"/>,
-      count: null,
+      title: () => <IconSvg name="heart_filled" boxSize={ 5 } verticalAlign="middle" mt={ -1 }/>,
+      count: favoriteApps.length,
       component: null,
     });
 
     return tabs;
-  }, [ categories, appsTotal ]);
+  }, [ categories, appsTotal, favoriteApps.length ]);
 
   const selectedCategoryIndex = React.useMemo(() => {
     const index = categoryTabs.findIndex(c => c.id === selectedCategoryId);
@@ -214,6 +219,11 @@ const Marketplace = () => {
         selectedCategoryId={ selectedCategoryId }
         onAppClick={ handleAppClick }
         showContractList={ showContractList }
+        userRatings={ userRatings }
+        rateApp={ rateApp }
+        isRatingSending={ isRatingSending }
+        isRatingLoading={ isRatingLoading }
+        canRate={ canRate }
       />
 
       { (selectedApp && isAppInfoModalOpen) && (
@@ -223,6 +233,11 @@ const Marketplace = () => {
           onFavoriteClick={ onFavoriteClick }
           data={ selectedApp }
           showContractList={ showContractList }
+          userRating={ userRatings[selectedApp.id] }
+          rateApp={ rateApp }
+          isRatingSending={ isRatingSending }
+          isRatingLoading={ isRatingLoading }
+          canRate={ canRate }
         />
       ) }
 
