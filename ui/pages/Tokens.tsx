@@ -1,4 +1,5 @@
 import { Box } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -39,6 +40,8 @@ const TABS_RIGHT_SLOT_PROPS = {
 const bridgedTokensFeature = config.features.bridgedTokens;
 
 const Tokens = () => {
+  const { t } = useTranslation('common');
+
   const router = useRouter();
   const isMobile = useIsMobile();
 
@@ -172,7 +175,7 @@ const Tokens = () => {
 
   return (
     <>
-      <PageTitle title="Tokens" withTextAd/>
+      <PageTitle title={ t('area.Tokens') } withTextAd/>
       { tabs.length === 1 && !isMobile && actionBar }
       <RoutedTabs
         tabs={ tabs }

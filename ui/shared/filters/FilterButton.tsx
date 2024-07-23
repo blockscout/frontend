@@ -1,5 +1,6 @@
 import type { As } from '@chakra-ui/react';
 import { Skeleton, Box, Button, Circle, useColorModeValue } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import IconSvg from 'ui/shared/IconSvg';
@@ -15,6 +16,8 @@ interface Props {
 }
 
 const FilterButton = ({ isActive, isLoading, appliedFiltersNum, onClick, as }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
+  const { t } = useTranslation('common');
+
   const badgeColor = useColorModeValue('white', 'black');
   const badgeBgColor = useColorModeValue('blue.700', 'gray.50');
 
@@ -37,7 +40,7 @@ const FilterButton = ({ isActive, isLoading, appliedFiltersNum, onClick, as }: P
       as={ as }
     >
       { FilterIcon }
-      <Box display={{ base: 'none', lg: 'block' }}>Filter</Box>
+      <Box display={{ base: 'none', lg: 'block' }}>{ t('Filter') }</Box>
     </Button>
   );
 };

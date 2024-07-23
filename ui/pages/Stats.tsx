@@ -1,4 +1,5 @@
 import { Box } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import config from 'configs/app';
@@ -10,6 +11,8 @@ import StatsFilters from '../stats/StatsFilters';
 import useStats from '../stats/useStats';
 
 const Stats = () => {
+  const { t } = useTranslation('common');
+
   const {
     isPlaceholderData,
     isError,
@@ -23,9 +26,18 @@ const Stats = () => {
     filterQuery,
   } = useStats();
 
+  displayedCharts?.forEach((displayedChart) => {
+    displayedChart.title = t(`stats_chart_group.${ displayedChart.id }_title`);
+
+    displayedChart.charts.forEach((chart) => {
+      chart.title = t(`stats_chart.${ chart.id }_title`);
+      chart.description = t(`stats_chart.${ chart.id }_description`);
+    });
+  });
+
   return (
     <>
-      <PageTitle title={ `${ config.chain.name } stats` }/>
+      <PageTitle title={ `${ config.chain.name } ${ t('stats') }` }/>
 
       <Box mb={{ base: 6, sm: 8 }}>
         <NumberWidgetsList/>
