@@ -4,6 +4,7 @@ import React from 'react';
 import { route } from 'nextjs-routes';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import isBrowser from 'lib/isBrowser';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/links/LinkInternal';
@@ -33,6 +34,8 @@ type BreadcrumbItemProps = {
 const BreadcrumbItem = ({ text, href, isLast, scrollRef }: BreadcrumbItemProps) => {
   const iconColor = useColorModeValue('gray.300', 'gray.600');
 
+  const currentUrl = isBrowser() ? window.location.href : '';
+
   const onLinkClick = React.useCallback(() => {
     window.setTimeout(() => {
       // cannot do scroll instantly, have to wait a little
@@ -50,7 +53,7 @@ const BreadcrumbItem = ({ text, href, isLast, scrollRef }: BreadcrumbItemProps) 
         >
           { text }
         </Box>
-        <CopyToClipboard text={ href } type="link" mx={ 0 } color="text_secondary"/>
+        <CopyToClipboard text={ currentUrl } type="link" mx={ 0 } color="text_secondary"/>
       </Grid>
     );
   }

@@ -14,5 +14,5 @@ export const getValueString = (value: string | Array<string>) => {
     return value.join(', ');
   }
 
-  return value;
+  return value.toString();
 };

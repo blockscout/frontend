@@ -111,7 +111,7 @@ const AddressMudRecordsTable = ({
     whiteSpace: 'normal',
     minW: `${ colW }px`,
     w: `${ colW }px`,
-    verticalAlign: 'baseline',
+    verticalAlign: 'top',
     lineHeight: '20px',
   };
 
@@ -143,19 +143,34 @@ const AddressMudRecordsTable = ({
               return (
                 <Th key={ keyName } { ...tdStyles }>
                   { index < 2 ? (
-                    <Flex>
-                      <Link onClick={ onKeySortClick } data-id={ index } display="flex" alignItems="start" lineHeight="20px" mr={ 2 }>
-                        { sorting?.sort === `key${ index }` && sorting.order &&
-                        <IconSvg name="arrows/east" boxSize={ 5 } mr={ 2 } transform={ sorting.order === 'asc' ? 'rotate(-90deg)' : 'rotate(90deg)' }/>
-                        }
+                    <Flex alignItems="center">
+                      <Link
+                        onClick={ onKeySortClick }
+                        data-id={ index }
+                        display="flex"
+                        alignItems="start"
+                        lineHeight="20px"
+                        mr={ 2 }
+                      >
+                        { sorting?.sort === `key${ index }` && sorting.order && (
+                          <Box minW="24px" w="24px" mr={ 2 }>
+                            <IconSvg
+                              name="arrows/east"
+                              boxSize={ 5 }
+                              transform={ sorting.order === 'asc' ? 'rotate(-90deg)' : 'rotate(90deg)' }
+                            />
+                          </Box>
+                        ) }
                         { text }
                       </Link>
-                      <AddressMudRecordsKeyFilter
-                        value={ filters[index === 0 ? 'filter_key0' : 'filter_key1'] }
-                        title={ text }
-                        columnName={ keyName }
-                        handleFilterChange={ handleFilterChange(index === 0 ? 'filter_key0' : 'filter_key1') }
-                      />
+                      <Box minW="20px" w="20px">
+                        <AddressMudRecordsKeyFilter
+                          value={ filters[index === 0 ? 'filter_key0' : 'filter_key1'] }
+                          title={ text }
+                          columnName={ keyName }
+                          handleFilterChange={ handleFilterChange(index === 0 ? 'filter_key0' : 'filter_key1') }
+                        />
+                      </Box>
                     </Flex>
                   ) : text }
                 </Th>

@@ -59,7 +59,7 @@ const ContractAbiItem = ({ data, index, id, addressHash, tab, onSubmit }: Props)
         <>
           <Element as="h2" name={ 'method_id' in data ? getElementName(data.method_id) : '' }>
             <AccordionButton px={ 0 } py={ 3 } _hover={{ bgColor: 'inherit' }} wordBreak="break-all" textAlign="left" as="div" cursor="pointer">
-              { 'method_id' in data && <CopyToClipboard text={ url } onClick={ handleCopyLinkClick } type="link" mr={ 2 } color="text_secondary"/> }
+              { 'method_id' in data && <CopyToClipboard text={ url } onClick={ handleCopyLinkClick } type="link" mr={ 2 } ml={ 0 } color="text_secondary"/> }
               <Box as="span" fontWeight={ 500 } mr={ 1 }>
                 { index + 1 }. { data.type === 'fallback' || data.type === 'receive' ? data.type : data.name }
               </Box>

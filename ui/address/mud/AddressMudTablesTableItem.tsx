@@ -86,7 +86,7 @@ const AddressMudTablesTableItem = ({ item, isLoading, scrollRef, hash }: Props) 
             <Table>
               { Boolean(item.schema.key_names.length) && (
                 <Tr>
-                  <Td width="80px" fontSize="sm" fontWeight={ 600 } py={ 2 } verticalAlign="middle">Key</Td>
+                  <Td width="80px" fontSize="sm" fontWeight={ 600 } py={ 2 } pl={ 0 } verticalAlign="middle">Key</Td>
                   <Td py={ 2 }>
                     <VStack gap={ 1 } alignItems="start">
                       { item.schema.key_names.map((name, index) => (
@@ -99,7 +99,7 @@ const AddressMudTablesTableItem = ({ item, isLoading, scrollRef, hash }: Props) 
                 </Tr>
               ) }
               <Tr borderBottomStyle="hidden">
-                <Td width="80px" fontSize="sm" fontWeight={ 600 } py={ 2 }>Value</Td>
+                <Td width="80px" fontSize="sm" fontWeight={ 600 } py={ 2 } pl={ 0 } >Value</Td>
                 <Td fontSize="sm" py={ 2 }>
                   <VStack gap={ 1 } alignItems="start">
                     { item.schema.value_names.map((name, index) => (

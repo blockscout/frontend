@@ -107,7 +107,10 @@ const AddressPageContent = () => {
     undefined;
 
   const isLoading = addressQuery.isPlaceholderData || (config.features.userOps.isEnabled && userOpsAccountQuery.isPlaceholderData);
-  const isTabsLoading = isLoading || addressTabsCountersQuery.isPlaceholderData || mudTablesCountQuery.isPlaceholderData;
+  const isTabsLoading =
+    isLoading ||
+    addressTabsCountersQuery.isPlaceholderData ||
+    (config.features.mudFramework.isEnabled && mudTablesCountQuery.isPlaceholderData);
 
   const handleFetchedBytecodeMessage = React.useCallback(() => {
     addressQuery.refetch();
