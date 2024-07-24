@@ -1,5 +1,6 @@
 import { Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import config from 'configs/app';
@@ -13,14 +14,16 @@ interface Props {
 }
 
 const TxDetailsFeePerGas = ({ txFee, gasUsed, isLoading }: Props) => {
+  const { t } = useTranslation('common');
+
   if (!config.UI.views.tx.additionalFields?.fee_per_gas || !gasUsed || txFee === null) {
     return null;
   }
 
   return (
     <DetailsInfoItem
-      title="Fee per gas"
-      hint="Fee per gas"
+      title={ t('tx_area.Fee_per_gas') }
+      hint={ t('tx_area.Fee_per_gas') }
       isLoading={ isLoading }
     >
       <Skeleton isLoaded={ !isLoading } mr={ 1 }>

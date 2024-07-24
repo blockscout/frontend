@@ -24,7 +24,6 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
-import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
 import { currencyUnits } from 'lib/units';
 import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
@@ -70,6 +69,24 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
 
   const [ isExpanded, setIsExpanded ] = React.useState(false);
 
+  const getConfirmationDuration = ((durations: Array<number>) => {
+    if (durations.length === 0) {
+      return '';
+    }
+
+    const [ lower, upper ] = durations.map((time) => time / 1_000);
+
+    if (!upper) {
+      return `${ t('tx_area.Confirmed_within') } ${ lower.toLocaleString() } ${ t('secs') }`;
+    }
+
+    if (lower === 0) {
+      return `${ t('tx_area.Confirmed_within') } <= ${ upper.toLocaleString() } ${ t('secs') }`;
+    }
+
+    return `${ t('tx_area.Confirmed_within') } ${ lower.toLocaleString() } - ${ upper.toLocaleString() } ${ t('secs') }`;
+  });
+
   const handleCutClick = React.useCallback(() => {
     setIsExpanded((flag) => !flag);
     scroller.scrollTo('TxInfo__cutLink', {
@@ -97,14 +114,14 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
   ].map((tag) => <Tag key={ tag.label }>{ tag.display_name }</Tag>);
 
   const executionSuccessBadge = toAddress?.is_contract && data.result === 'success' ? (
-    <Tooltip label="Contract execution completed">
+    <Tooltip label={ t('tx_area.Contract_execution_completed') }>
       <chakra.span display="inline-flex" ml={ 2 } mr={ 1 }>
         <IconSvg name="status/success" boxSize={ 4 } color={ executionSuccessIconColor } cursor="pointer"/>
       </chakra.span>
     </Tooltip>
   ) : null;
   const executionFailedBadge = toAddress?.is_contract && Boolean(data.status) && data.result !== 'success' ? (
-    <Tooltip label="Error occurred during contract execution">
+    <Tooltip label={ t('tx_area.Error_occurred_during_contract_execution') }>
       <chakra.span display="inline-flex" ml={ 2 } mr={ 1 }>
         <IconSvg name="status/error" boxSize={ 4 } color="error" cursor="pointer"/>
       </chakra.span>
@@ -128,8 +145,8 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         </GridItem>
       ) }
       <DetailsInfoItem
-        title="Transaction hash"
-        hint="Unique character string (TxID) assigned to every verified transaction"
+        title={ t('tx_area.Transaction_hash') }
+        hint={ t('tx_area.Unique_character_string_TxID_assigned_to_every_verified_transaction') }
         flexWrap="nowrap"
         isLoading={ isLoading }
       >
@@ -150,9 +167,9 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         title={
           rollupFeature.isEnabled && (rollupFeature.type === 'zkEvm' || rollupFeature.type === 'zkSync') ?
             'L2 status and method' :
-            'Status and method'
+            t('tx_area.Status_and_method')
         }
-        hint="Current transaction state: Success, Failed (Error), or Pending (In Process)"
+        hint={ t('tx_area.Current_transaction_state_Success_Failed_Error_or_Pending_In_Process') }
         isLoading={ isLoading }
       >
         <TxStatus status={ data.status } errorText={ data.status === 'error' ? data.result : undefined } isLoading={ isLoading }/>
@@ -194,8 +211,8 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       ) }
       { data.revert_reason && (
         <DetailsInfoItem
-          title="Revert reason"
-          hint="The revert reason of the transaction"
+          title={ t('tx_area.Revert_reason') }
+          hint={ t('tx_area.The_revert_reason_of_the_transaction') }
         >
           <TxRevertReason { ...data.revert_reason }/>
         </DetailsInfoItem>
@@ -210,8 +227,8 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         </DetailsInfoItem>
       ) }
       <DetailsInfoItem
-        title="Block"
-        hint="Block number containing the transaction"
+        title={ t('tx_area.Block') }
+        hint={ t('tx_area.Block_number_containing_the_transaction') }
         isLoading={ isLoading }
       >
         { data.block === null ?
@@ -226,7 +243,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           <>
             <TextSeparator color="gray.500"/>
             <Skeleton isLoaded={ !isLoading } color="text_secondary">
-              <span>{ data.confirmations } Block confirmations</span>
+              <span>{ data.confirmations } { t('tx_area.Block_confirmations') }</span>
             </Skeleton>
           </>
         ) }
@@ -259,8 +276,8 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       ) }
       { data.timestamp && (
         <DetailsInfoItem
-          title="Timestamp"
-          hint="Date & time of transaction inclusion, including length of time for confirmation"
+          title={ t('tx_area.Timestamp') }
+          hint={ t('tx_area.Date_time_of_transaction_inclusion_including_length_of_time_for_confirmation') }
           isLoading={ isLoading }
         >
           <DetailsTimestamp timestamp={ data.timestamp } isLoading={ isLoading }/>
@@ -296,8 +313,8 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       <TxDetailsActions hash={ data.hash } actions={ data.actions } isTxDataLoading={ isLoading }/>
 
       <DetailsInfoItem
-        title="From"
-        hint="Address (external or contract) sending the transaction"
+        title={ t('tx_area.From') }
+        hint={ t('tx_area.Address_external_or_contract_sending_the_transaction') }
         isLoading={ isLoading }
         columnGap={ 3 }
       >
@@ -313,8 +330,8 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         ) }
       </DetailsInfoItem>
       <DetailsInfoItem
-        title={ data.to?.is_contract ? 'Interacted with contract' : 'To' }
-        hint="Address (external or contract) receiving the transaction"
+        title={ data.to?.is_contract ? t('tx_area.Interacted_with_contract') : t('tx_area.To') }
+        hint={ t('tx_area.Address_external_or_contract_receiving_the_transaction') }
         isLoading={ isLoading }
         flexWrap={{ base: 'wrap', lg: 'nowrap' }}
         columnGap={ 3 }
@@ -350,7 +367,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             ) }
           </>
         ) : (
-          <span>[ Contract creation ]</span>
+          <span>{ t('tx_area.Contract_creation') }</span>
         ) }
       </DetailsInfoItem>
       { data.token_transfers && <TxDetailsTokenTransfers data={ data.token_transfers } txHash={ data.hash } isOverflow={ data.token_transfers_overflow }/> }
@@ -389,8 +406,8 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
 
       { !config.UI.views.tx.hiddenFields?.value && (
         <DetailsInfoItem
-          title="Value"
-          hint="Value sent in the native token (and USD) if applicable"
+          title={ t('tx_area.Value') }
+          hint={ t('tx_area.Value_sent_in_the_native_token_and_USD_if_applicable') }
           isLoading={ isLoading }
         >
           <CurrencyValue
@@ -404,8 +421,8 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       ) }
       { !config.UI.views.tx.hiddenFields?.tx_fee && (
         <DetailsInfoItem
-          title="Transaction fee"
-          hint={ data.blob_gas_used ? 'Transaction fee without blob fee' : 'Total transaction fee' }
+          title={ t('tx_area.Transaction_fee') }
+          hint={ data.blob_gas_used ? 'Transaction fee without blob fee' : t('tx_area.Total_transaction_fee') }
           isLoading={ isLoading }
         >
           { data.stability_fee ? (
@@ -427,8 +444,8 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       <TxDetailsFeePerGas txFee={ data.fee.value } gasUsed={ data.gas_used } isLoading={ isLoading }/>
 
       <DetailsInfoItem
-        title="Gas usage & limit by txn"
-        hint="Actual gas amount used by the transaction"
+        title={ t('tx_area.Gas_usage_limit_by_txn') }
+        hint={ t('tx_area.Actual_gas_amount_used_by_the_transaction') }
         isLoading={ isLoading }
       >
         <Skeleton isLoaded={ !isLoading }>{ BigNumber(data.gas_used || 0).toFormat() }</Skeleton>
@@ -439,32 +456,28 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       { !config.UI.views.tx.hiddenFields?.gas_fees &&
             (data.base_fee_per_gas || data.max_fee_per_gas || data.max_priority_fee_per_gas) && (
         <DetailsInfoItem
-          title={ `Gas fees (${ currencyUnits.gwei })` }
+          title={ `${ t('tx_area.Gas_fees') } (${ currencyUnits.gwei })` }
           // eslint-disable-next-line max-len
-          hint={ `
-                Base Fee refers to the network Base Fee at the time of the block, 
-                while Max Fee & Max Priority Fee refer to the max amount a user is willing to pay 
-                for their tx & to give to the ${ t('validator') } respectively
-              ` }
+          hint={ t('tx_area.Base_Fee_refers_to_the_network_Base_Fee_at_the_time_of_the_block_while_') }
           isLoading={ isLoading }
         >
           { data.base_fee_per_gas && (
             <Skeleton isLoaded={ !isLoading }>
-              <Text as="span" fontWeight="500">Base: </Text>
+              <Text as="span" fontWeight="500">{ t('Base') }: </Text>
               <Text fontWeight="600" as="span">{ BigNumber(data.base_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
               { (data.max_fee_per_gas || data.max_priority_fee_per_gas) && <TextSeparator/> }
             </Skeleton>
           ) }
           { data.max_fee_per_gas && (
             <Skeleton isLoaded={ !isLoading }>
-              <Text as="span" fontWeight="500">Max: </Text>
+              <Text as="span" fontWeight="500">{ t('Max') }: </Text>
               <Text fontWeight="600" as="span">{ BigNumber(data.max_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
               { data.max_priority_fee_per_gas && <TextSeparator/> }
             </Skeleton>
           ) }
           { data.max_priority_fee_per_gas && (
             <Skeleton isLoaded={ !isLoading }>
-              <Text as="span" fontWeight="500">Max priority: </Text>
+              <Text as="span" fontWeight="500">{ t('Max_priority') }: </Text>
               <Text fontWeight="600" as="span">{ BigNumber(data.max_priority_fee_per_gas).dividedBy(WEI_IN_GWEI).toFixed() }</Text>
             </Skeleton>
           ) }
@@ -528,7 +541,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
               textDecorationStyle="dashed"
               onClick={ handleCutClick }
             >
-              { isExpanded ? 'Hide details' : 'View details' }
+              { isExpanded ? t('tx_area.Hide_details') : t('tx_area.View_details') }
             </Link>
           </Skeleton>
         </Element>
@@ -582,15 +595,15 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           ) }
           <TxDetailsOther nonce={ data.nonce } type={ data.type } position={ data.position }/>
           <DetailsInfoItem
-            title="Raw input"
-            hint="Binary data included with the transaction. See logs tab for additional info"
+            title={ t('tx_area.Raw_input') }
+            hint={ t('tx_area.Binary_data_included_with_the_transaction_See_logs_tab_for_additional_info') }
           >
             <RawInputData hex={ data.raw_input }/>
           </DetailsInfoItem>
           { data.decoded_input && (
             <DetailsInfoItem
-              title="Decoded input data"
-              hint="Decoded input data"
+              title={ t('tx_area.Decoded_input_data') }
+              hint={ t('tx_area.Decoded_input_data') }
             >
               <LogDecodedInputData data={ data.decoded_input }/>
             </DetailsInfoItem>

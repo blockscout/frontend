@@ -1,4 +1,5 @@
 import { Table, Tbody, Tr, Th, Link } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
@@ -19,6 +20,8 @@ interface Props {
 }
 
 const TxInternalsTable = ({ data, sort, onSortToggle, top, isLoading }: Props) => {
+  const { t } = useTranslation('common');
+
   const sortIconTransform = sort?.includes('asc') ? 'rotate(-90deg)' : 'rotate(90deg)';
 
   return (
@@ -26,18 +29,18 @@ const TxInternalsTable = ({ data, sort, onSortToggle, top, isLoading }: Props) =
       <Table variant="simple" size="sm">
         <Thead top={ top }>
           <Tr>
-            <Th width="28%">Type</Th>
-            <Th width="40%">From/To</Th>
+            <Th width="28%">{ t('Type') }</Th>
+            <Th width="40%">{ t('From_To') }</Th>
             <Th width="16%" isNumeric>
               <Link display="flex" alignItems="center" justifyContent="flex-end" onClick={ onSortToggle('value') } columnGap={ 1 }>
                 { sort?.includes('value') && <IconSvg name="arrows/east" boxSize={ 4 } transform={ sortIconTransform }/> }
-                Value { currencyUnits.ether }
+                { t('Value') } { currencyUnits.ether }
               </Link>
             </Th>
             <Th width="16%" isNumeric>
               <Link display="flex" alignItems="center" justifyContent="flex-end" onClick={ onSortToggle('gas-limit') } columnGap={ 1 }>
                 { sort?.includes('gas-limit') && <IconSvg name="arrows/east" boxSize={ 4 } transform={ sortIconTransform }/> }
-                Gas limit { currencyUnits.ether }
+                { t('Gas limit') } { currencyUnits.ether }
               </Link>
             </Th>
           </Tr>

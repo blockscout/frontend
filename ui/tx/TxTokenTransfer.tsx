@@ -1,4 +1,5 @@
 import { Hide, Show } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -6,7 +7,6 @@ import type { TokenType } from 'types/api/token';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
-import { apos } from 'lib/html-entities';
 import { TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import { getTokenTransfersStub } from 'stubs/token';
 import ActionBar from 'ui/shared/ActionBar';
@@ -30,6 +30,8 @@ interface Props {
 }
 
 const TxTokenTransfer = ({ txQuery, tokenTransferFilter }: Props) => {
+  const { t } = useTranslation('common');
+
   const router = useRouter();
 
   const [ typeFilter, setTypeFilter ] = React.useState<Array<TokenType>>(getTokenFilterValue(router.query.type) || []);
@@ -97,9 +99,9 @@ const TxTokenTransfer = ({ txQuery, tokenTransferFilter }: Props) => {
     <DataListDisplay
       isError={ txQuery.isError || tokenTransferQuery.isError }
       items={ items }
-      emptyText="There are no token transfers."
+      emptyText={ t('tx_area.There_are_no_token_transfers') }
       filterProps={{
-        emptyFilteredText: `Couldn${ apos }t find any token transfer that matches your query.`,
+        emptyFilteredText: t('tx_area.Couldnt_find_any_token_transfer_that_matches_your_query'),
         hasActiveFilters: Boolean(numActiveFilters),
       }}
       content={ content }

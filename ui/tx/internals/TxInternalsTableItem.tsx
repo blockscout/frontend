@@ -1,5 +1,6 @@
 import { Tr, Td, Box, Flex, Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import type { InternalTransaction } from 'types/api/internalTransaction';
@@ -15,6 +16,7 @@ type Props = InternalTransaction & {
 }
 
 const TxInternalTableItem = ({ type, from, to, value, success, error, gas_limit: gasLimit, created_contract: createdContract, isLoading }: Props) => {
+  const { t } = useTranslation('common');
   const typeTitle = TX_INTERNALS_ITEMS.find(({ id }) => id === type)?.title;
   const toData = to ? to : createdContract;
 
@@ -27,7 +29,7 @@ const TxInternalTableItem = ({ type, from, to, value, success, error, gas_limit:
               <Tag colorScheme="cyan" mr={ 5 } isLoading={ isLoading }>{ typeTitle }</Tag>
             </Box>
           ) }
-          <TxStatus status={ success ? 'ok' : 'error' } errorText={ error } isLoading={ isLoading }/>
+          <TxStatus status={ success ? t('ok') : t('error') } errorText={ error } isLoading={ isLoading }/>
         </Flex>
       </Td>
       <Td verticalAlign="middle">
