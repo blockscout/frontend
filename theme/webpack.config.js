@@ -3,7 +3,7 @@ const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 const config = {
   mode: 'production',
-  entry: path.resolve(__dirname) + '/index.ts',
+  entry: path.resolve(__dirname) + '/theme.ts',
   module: {
     rules: [
       {

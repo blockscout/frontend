@@ -13,7 +13,7 @@
 		"../types/**/*.ts", 
 		"../configs/app/**/*.ts", 
 		"../global.d.ts", 
-		"./index.ts"
+		"./theme.ts"
 	],
 	"tsc-alias": {
 	  "verbose": true,

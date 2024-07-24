@@ -6,7 +6,7 @@ import React from 'react';
 import logRequestFromBot from 'nextjs/utils/logRequestFromBot';
 import * as serverTiming from 'nextjs/utils/serverTiming';
 
-import theme from 'theme';
+import theme from 'theme/theme';
 import * as svgSprite from 'ui/shared/IconSvg';
 
 class MyDocument extends Document {
