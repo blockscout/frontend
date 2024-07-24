@@ -13,6 +13,7 @@ import {
   OrderedList,
   Box,
 } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 import type { ControllerRenderProps, Control } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
@@ -33,6 +34,8 @@ interface Props {
 }
 
 const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props) => {
+  const { t } = useTranslation('common');
+
   const tooltipBg = useColorModeValue('gray.700', 'gray.900');
   const isMobile = useIsMobile();
 
@@ -100,7 +103,7 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
     <>
       <Box mt={{ base: 10, lg: 6 }} gridColumn={{ lg: '1 / 3' }}>
         <chakra.span fontWeight={ 500 } fontSize="lg" fontFamily="heading">
-          Currently, Blockscout supports { methods.length } contract verification methods
+          { t('contract_verification_area.Currently_Blockscout_supports_contract_verification_methods').replace('%var1', methods.length.toString()) }
         </chakra.span>
         <Popover trigger="hover" isLazy placement={ isMobile ? 'bottom-end' : 'right-start' } offset={ [ -8, 8 ] }>
           <PopoverTrigger>
@@ -113,7 +116,7 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
               <PopoverArrow bgColor={ tooltipBg }/>
               <PopoverBody color="white">
                 <DarkMode>
-                  <span>Currently, Blockscout supports { methods.length } methods:</span>
+                  <span>{ t('contract_verification_area.Currently_Blockscout_supports_methods').replace('%var1', methods.length.toString()) }</span>
                   <OrderedList>
                     { methods.map(renderPopoverListItem) }
                   </OrderedList>

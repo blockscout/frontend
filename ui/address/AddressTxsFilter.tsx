@@ -6,6 +6,7 @@ import {
   MenuItemOption,
   useDisclosure,
 } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import type { AddressFromToFilter } from 'types/api/address';
@@ -21,6 +22,8 @@ interface Props {
 }
 
 const AddressTxsFilter = ({ onFilterChange, defaultFilter, isActive, isLoading }: Props) => {
+  const { t } = useTranslation('common');
+
   const { isOpen, onToggle } = useDisclosure();
   const isInitialLoading = useIsInitialLoading(isLoading);
 
@@ -37,9 +40,9 @@ const AddressTxsFilter = ({ onFilterChange, defaultFilter, isActive, isLoading }
       </MenuButton>
       <MenuList zIndex={ 2 }>
         <MenuOptionGroup defaultValue={ defaultFilter || 'all' } type="radio" onChange={ onFilterChange }>
-          <MenuItemOption value="all">All</MenuItemOption>
-          <MenuItemOption value="from">Outgoing transactions</MenuItemOption>
-          <MenuItemOption value="to">Incoming transactions</MenuItemOption>
+          <MenuItemOption value="all">{ t('All') }</MenuItemOption>
+          <MenuItemOption value="from">{ t('Outgoing_transactions') }</MenuItemOption>
+          <MenuItemOption value="to">{ t('Incoming_transactions') }</MenuItemOption>
         </MenuOptionGroup>
       </MenuList>
     </Menu>

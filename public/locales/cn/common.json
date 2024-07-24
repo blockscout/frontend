@@ -41,6 +41,7 @@
   "View_details": "查看详情",
   "Hide_details": "隐藏详情",
   "Details": "详情",
+  "details": "详情",
   "All": "全部",
   "Burnt_fees": "销毁费用",
   "Address": "地址",
@@ -58,6 +59,8 @@
   "Base": "基础",
   "Max": "最大",
   "Max_priority": "最大优先级",
+  "Loading_data_please_wait_": "正在加载数据，请稍候……",
+  "Contract": "Contract",
   "home": {
     "View_all_blocks": "查看所有区块",
     "Latest_blocks": "最新区块",
@@ -117,7 +120,8 @@
     "Custom_ABI": "自定义ABI",
     "Verified_addrs": "已验证地址",
     "My_profile": "我的资料",
-    "Transaction_details": "交易详情"
+    "Transaction_details": "交易详情",
+    "Verify_publish_contract": "验证并发布合约"
   },
   "transactions_area": {
     "Validated": "已验证",
@@ -322,6 +326,45 @@
     "Confirmed_within": "确认时间",
     "Burnt_fees_hint1": "数量",
     "Burnt_fees_hint2": "为此交易销毁的数量。等于每单位Gas的区块基础费用 * 已用Gas量。",
-    "Burnt_fees_hint3": "+ Blob Gas价格 * 已用Blob Gas量"
+    "Burnt_fees_hint3": "+ Blob Gas价格 * 已用Blob Gas量",
+    "Tokens": "代币",
+    "tokens": "代币",
+    "token": "代币"
+  },
+  "contract_verification_area": {
+    "Contract_address_to_verify": "要验证的合约地址",
+    "Smart_contract_Address_0x": "智能合约/地址 (0x...)",
+    "Contract_license": "合约许可证",
+    "For_best_practices_all_contract_source_code_holders_publishers_": "为遵循最佳实践，鼓励所有合约源代码持有者、发布者和作者同时为他们提供的已验证合约源代码指定附带的许可证。",
+    "Currently_Blockscout_supports_contract_verification_methods": "目前，Blockscout 支持 %var1 合约验证方法",
+    "Currently_Blockscout_supports_methods:": "目前，Blockscout 支持 %var1 方法："
+  },
+  "address_area": {
+    "Coin_balance_history": "币余额历史记录",
+    "Outgoing_transactions": "发送交易",
+    "Incoming_transactions": "接收交易",
+    "There_are_no_token_transfers": "没有代币转移。",
+    "There_are_no_tokens_of_selected_type": "没有所选类型的代币。",
+    "Couldnt_find_any_token_that_matches_your_query": "未找到与您的查询匹配的代币。",
+    "Net_Worth": "净资产",
+    "There_are_no_internal_transactions_for_this_address": "此地址没有内部交易。",
+    "Couldnt_find_any_transaction_that_matches_your_query": "未找到与您的查询匹配的交易。",
+    "Address_balance_in_ZCX_Doesnt_include_ERC20_ERC721_and_ERC1155_tokens": "地址余额（以 ZCX 计）。不包括 ERC20、ERC721 和 ERC1155 代币。",
+    "Creator": "创建者",
+    "Transaction_and_address_of_creation": "创建的交易和地址",
+    "Implementation": "实现",
+    "Implementation_address_of_the_proxy_contract": "代理合约的实现地址",
+    "Tokens": "代币",
+    "All_tokens_in_the_account_and_total_value": "账户中的所有代币及其总价值",
+    "Transactions": "交易",
+    "Number_of_transactions_related_to_this_address": "与此地址相关的交易数量",
+    "Transfers": "转账",
+    "Number_of_transfers_to_from_this_address": "此地址的转账数量（包括收款和付款）",
+    "Gas_used": "已用Gas",
+    "Gas_used_by_the_address": "地址使用的Gas量",
+    "Blocks_validated": "已验证的区块",
+    "Number_of_blocks_validated_by_this_validator": "该验证者已验证的区块数量",
+    "Last_balance_update": "最后余额更新",
+    "Block_number_in_which_the_address_was_updated": "地址最后更新的区块编号"
   }
 }

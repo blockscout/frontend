@@ -29,3 +29,14 @@ export async function getStaticProps({ locale }: { locale: string }) {
     },
   };
 }
+
+export const getStaticPaths = async() => {
+  const paths = [
+    { params: { hash: '0x3Cd0A705a2DC65e5b1E1205896BaA2be8A07c6e0' } },
+  ];
+
+  return {
+    paths,
+    fallback: 'blocking',
+  };
+};

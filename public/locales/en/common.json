@@ -41,6 +41,7 @@
   "View_details": "View details",
   "Hide_details": "Hide details",
   "Details": "Details",
+  "details": "details",
   "All": "All",
   "Burnt_fees": "Burnt fees",
   "Address": "Address",
@@ -58,6 +59,8 @@
   "Base": "Base",
   "Max": "Max",
   "Max_priority": "Max priority",
+  "Loading_data_please_wait_": "Loading data, please wait...",
+  "Contract": "Contract",
   "home": {
     "View_all_blocks": "View all blocks",
     "Latest_blocks": "Latest blocks",
@@ -117,7 +120,8 @@
     "Custom_ABI": "Custom ABI",
     "Verified_addrs": "Verified addrs",
     "My_profile": "My profile",
-    "Transaction_details": "Transaction details"
+    "Transaction_details": "Transaction details",
+    "Verify_publish_contract": "Verify & publish contract"
   },
   "transactions_area": {
     "Validated": "Validated",
@@ -322,6 +326,45 @@
     "Confirmed_within": "Confirmed within",
     "Burnt_fees_hint1": "Amount of",
     "Burnt_fees_hint2": "burned for this transaction. Equals Block Base Fee per Gas * Gas Used",
-    "Burnt_fees_hint3": "+ Blob Gas Price * Blob Gas Used"
+    "Burnt_fees_hint3": "+ Blob Gas Price * Blob Gas Used",
+    "Tokens": "Tokens",
+    "tokens": "tokens",
+    "token": "token"
+  },
+  "contract_verification_area": {
+    "Contract_address_to_verify": "Contract address to verify",
+    "Smart_contract_Address_0x": "Smart contract / Address (0x...)",
+    "Contract_license": "Contract license",
+    "For_best_practices_all_contract_source_code_holders_publishers_": "For best practices, all contract source code holders, publishers and authors are encouraged to also specify the accompanying license for their verified contract source code provided.",
+    "Currently_Blockscout_supports_contract_verification_methods": "Currently, Blockscout supports %var1 contract verification methods",
+    "Currently_Blockscout_supports_methods:": "Currently, Blockscout supports %var1 methods:"
+  },
+  "address_area": {
+    "Coin_balance_history": "Coin balance history",
+    "Outgoing_transactions": "Outgoing transactions",
+    "Incoming_transactions": "Incoming transactions",
+    "There_are_no_token_transfers": "There are no token transfers.",
+    "There_are_no_tokens_of_selected_type": "There are no tokens of selected type.",
+    "Couldnt_find_any_token_that_matches_your_query": "Couldn't find any token that matches your query.",
+    "Net_Worth": "Net Worth",
+    "There_are_no_internal_transactions_for_this_address": "There are no internal transactions for this address.",
+    "Couldnt_find_any_transaction_that_matches_your_query": "Couldn't find any transaction that matches your query.",
+    "Address_balance_in_ZCX_Doesnt_include_ERC20_ERC721_and_ERC1155_tokens": "Address balance in ZCX. Doesn't include ERC20, ERC721 and ERC1155 tokens",
+    "Creator": "Creator",
+    "Transaction_and_address_of_creation": "Transaction and address of creation",
+    "Implementation": "Implementation",
+    "Implementation_address_of_the_proxy_contract": "Implementation address of the proxy contract",
+    "Tokens": "Tokens",
+    "All_tokens_in_the_account_and_total_value": "All tokens in the account and total value",
+    "Transactions": "Transactions",
+    "Number_of_transactions_related_to_this_address": "Number of transactions related to this address",
+    "Transfers": "Transfers",
+    "Number_of_transfers_to_from_this_address": "Number of transfers to/from this address",
+    "Gas_used": "Gas used",
+    "Gas_used_by_the_address": "Gas used by the address",
+    "Blocks_validated": "Blocks validated",
+    "Number_of_blocks_validated_by_this_validator": "Number of blocks validated by this validator",
+    "Last_balance_update": "Last balance update",
+    "Block_number_in_which_the_address_was_updated": "Block number in which the address was updated"
   }
 }
