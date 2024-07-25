@@ -144,7 +144,7 @@ const AddressPageContent = () => {
       addressTabsCountersQuery.data?.logs_count ?
         {
           id: 'logs',
-          title: 'Logs',
+          title: t('tx_area.Logs'),
           count: addressTabsCountersQuery.data?.logs_count,
           component: <AddressLogs scrollRef={ tabsScrollRef }/>,
         } :

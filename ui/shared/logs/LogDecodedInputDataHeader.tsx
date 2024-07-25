@@ -1,4 +1,5 @@
 import { Divider, Flex, Skeleton, VStack } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 interface Props {
@@ -25,6 +26,8 @@ const Item = ({ label, text, isLoading }: { label: string; text: string; isLoadi
 };
 
 const LogDecodedInputDataHeader = ({ methodId, methodCall, isLoading }: Props) => {
+  const { t } = useTranslation('common');
+
   return (
     <VStack
       align="flex-start"
@@ -32,8 +35,8 @@ const LogDecodedInputDataHeader = ({ methodId, methodCall, isLoading }: Props) =
       fontSize="sm"
       lineHeight={ 5 }
     >
-      <Item label="Method id" text={ methodId } isLoading={ isLoading }/>
-      <Item label="Call" text={ methodCall } isLoading={ isLoading }/>
+      <Item label={ t('log_item.Method_id') } text={ methodId } isLoading={ isLoading }/>
+      <Item label={ t('log_item.Call') } text={ methodCall } isLoading={ isLoading }/>
     </VStack>
   );
 };

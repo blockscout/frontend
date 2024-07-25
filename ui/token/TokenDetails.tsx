@@ -1,6 +1,7 @@
 import { Box, Grid, Link, Skeleton } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import BigNumber from 'bignumber.js';
+import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 import { scroller } from 'react-scroll';
@@ -24,6 +25,8 @@ interface Props {
 }
 
 const TokenDetails = ({ tokenQuery }: Props) => {
+  const { t } = useTranslation('common');
+
   const router = useRouter();
   const hash = router.query.hash?.toString();
 
@@ -115,8 +118,8 @@ const TokenDetails = ({ tokenQuery }: Props) => {
         </DetailsInfoItem>
       ) }
       <DetailsInfoItem
-        title="Max total supply"
-        hint="The total amount of tokens issued"
+        title={ t('token_area.Max_total_supply') }
+        hint={ t('token_area.The_total_amount_of_tokens_issued') }
         alignSelf="center"
         wordBreak="break-word"
         whiteSpace="pre-wrap"
@@ -129,8 +132,8 @@ const TokenDetails = ({ tokenQuery }: Props) => {
         </Skeleton>
       </DetailsInfoItem>
       <DetailsInfoItem
-        title="Holders"
-        hint="Number of accounts holding the token"
+        title={ t('token_area.Holders') }
+        hint={ t('token_area.Number_of_accounts_holding_the_token') }
         alignSelf="center"
         isLoading={ tokenQuery.isPlaceholderData }
       >
@@ -139,8 +142,8 @@ const TokenDetails = ({ tokenQuery }: Props) => {
         </Skeleton>
       </DetailsInfoItem>
       <DetailsInfoItem
-        title="Transfers"
-        hint="Number of transfer for the token"
+        title={ t('token_area.Transfers') }
+        hint={ t('token_area.Number_of_transfer_for_the_token') }
         alignSelf="center"
         isLoading={ tokenQuery.isPlaceholderData }
       >
@@ -150,8 +153,8 @@ const TokenDetails = ({ tokenQuery }: Props) => {
       </DetailsInfoItem>
       { decimals && (
         <DetailsInfoItem
-          title="Decimals"
-          hint="Number of digits that come after the decimal place when displaying token value"
+          title={ t('token_area.Decimals') }
+          hint={ t('token_area.Number_of_digits_that_come_after_the_decimal_place_when_displaying_token_value') }
           alignSelf="center"
           isLoading={ tokenQuery.isPlaceholderData }
         >

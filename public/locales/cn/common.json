@@ -420,5 +420,26 @@
     "Balance": "余额",
     "Delta": "增量",
     "There_is_no_coin_balance_history_for_this_address": "此地址没有币余额历史记录。"
+  },
+  "log_item": {
+    "Decode_input_data": "解码输入数据",
+    "Topics": "主题",
+    "Data": "数据",
+    "Method_id": "方法ID",
+    "Call": "调用"
+  },
+  "token_area": {
+    "Max_total_supply": "最大总供应量",
+    "The_total_amount_of_tokens_issued": "已发行代币的总量",
+    "Holders": "持有者",
+    "Number_of_accounts_holding_the_token": "持有该代币的账户数量",
+    "Transfers": "转账",
+    "Number_of_transfer_for_the_token": "该代币的转账次数",
+    "Decimals": "小数位数",
+    "Number_of_digits_that_come_after_the_decimal_place_when_displaying_token_value": "显示代币价值时小数点后的位数",
+    "Token_transfers": "代币转账",
+    "Holder": "持有者",
+    "Percentage": "百分比",
+    "Quantity": "数量"
   }
 }

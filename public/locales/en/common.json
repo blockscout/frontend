@@ -420,5 +420,26 @@
     "Balance": "Balance",
     "Delta": "Delta",
     "There_is_no_coin_balance_history_for_this_address": "There is no coin balance history for this address."
+  },
+  "log_item": {
+    "Decode_input_data": "Decode input data",
+    "Topics": "Topics",
+    "Data": "Data",
+    "Method_id": "Method id",
+    "Call": "Call"
+  },
+  "token_area": {
+    "Max_total_supply": "Max total supply",
+    "The_total_amount_of_tokens_issued": "The total amount of tokens issued",
+    "Holders": "Holders",
+    "Number_of_accounts_holding_the_token": "Number of accounts holding the token",
+    "Transfers": "Transfers",
+    "Number_of_transfer_for_the_token": "Number of transfer for the token",
+    "Decimals": "Decimals",
+    "Number_of_digits_that_come_after_the_decimal_place_when_displaying_token_value": "Number of digits that come after the decimal place when displaying token value",
+    "Token_transfers": "Token transfers",
+    "Holder": "Holder",
+    "Percentage": "Percentage",
+    "Quantity": "Quantity"
   }
 }
