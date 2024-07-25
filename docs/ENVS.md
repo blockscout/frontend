@@ -702,7 +702,7 @@ If the feature is enabled, a Multichain balance button will be displayed on the 
 | name | `string` | Multichain portfolio application name | Required | - | `zerion` |
 | url_template | `string` | Url template to the portfolio. Should be a template with `{address}` variable | Required | - | `https://app.zerion.io/{address}/overview` |
 | dapp_id | `string` | Set for open a Blockscout dapp page with the portfolio instead of opening external app page | - | - | `zerion` |
-| logo | `string` | Multichain portfolio application logo url | - | - | `https://example.com/icon.svg` |
+| logo | `string` | Multichain portfolio application logo (.svg) url | - | - | `https://example.com/icon.svg` |
 
 &nbsp;
 
