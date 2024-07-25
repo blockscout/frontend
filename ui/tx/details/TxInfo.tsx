@@ -349,13 +349,13 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
               </Flex>
             ) : (
               <Flex width="100%" whiteSpace="pre" alignItems="center" flexShrink={ 0 }>
-                <span>[Contract </span>
+                <span>[{ t('Contract') } </span>
                 <AddressEntity
                   address={ toAddress }
                   isLoading={ isLoading }
                   noIcon
                 />
-                <span>created]</span>
+                <span>{ t('created') }]</span>
                 { executionSuccessBadge }
                 { executionFailedBadge }
               </Flex>

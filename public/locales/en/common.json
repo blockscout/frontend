@@ -69,6 +69,8 @@
   "Balances": "Balances",
   "Recent": "Recent",
   "Clear_all": "Clear all",
+  "created": "created",
+  "Parent_txn_hash": "Parent txn hash",
   "home": {
     "View_all_blocks": "View all blocks",
     "Latest_blocks": "Latest blocks",

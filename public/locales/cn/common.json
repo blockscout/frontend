@@ -69,6 +69,8 @@
   "Balances": "余额",
   "Recent": "最近",
   "Clear_all": "清除所有",
+  "created": "创建时间",
+  "Parent_txn_hash": "父交易哈希",
   "home": {
     "View_all_blocks": "查看所有区块",
     "Latest_blocks": "最新区块",
