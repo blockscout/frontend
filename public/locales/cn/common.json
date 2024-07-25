@@ -60,7 +60,8 @@
   "Max": "最大",
   "Max_priority": "最大优先级",
   "Loading_data_please_wait_": "正在加载数据，请稍候……",
-  "Contract": "Contract",
+  "Contract": "合约",
+  "Language": "语言",
   "home": {
     "View_all_blocks": "查看所有区块",
     "Latest_blocks": "最新区块",
@@ -366,5 +367,9 @@
     "Number_of_blocks_validated_by_this_validator": "该验证者已验证的区块数量",
     "Last_balance_update": "最后余额更新",
     "Block_number_in_which_the_address_was_updated": "地址最后更新的区块编号"
+  },
+  "locales": {
+    "English": "English",
+    "Mandarin": "中文"
   }
 }

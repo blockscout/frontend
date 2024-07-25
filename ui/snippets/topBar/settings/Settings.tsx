@@ -1,4 +1,7 @@
-import { IconButton, Popover, PopoverBody, PopoverContent, PopoverTrigger, useDisclosure } from '@chakra-ui/react';
+/* eslint-disable react/jsx-no-bind */
+import { IconButton, Popover, PopoverBody, PopoverContent, PopoverTrigger, useDisclosure, Box, Image } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import IconSvg from 'ui/shared/IconSvg';
@@ -6,7 +9,15 @@ import IconSvg from 'ui/shared/IconSvg';
 import SettingsColorTheme from './SettingsColorTheme';
 
 const Settings = () => {
+  const { t } = useTranslation('common');
+
+  const router = useRouter();
+
   const { isOpen, onToggle, onClose } = useDisclosure();
+
+  const changeLocaleTo = (newLocale: string) => {
+    router.push(router.asPath, router.asPath, { locale: newLocale });
+  };
 
   return (
     <Popover placement="bottom-start" trigger="click" isOpen={ isOpen } onClose={ onClose }>
@@ -23,8 +34,29 @@ const Settings = () => {
       <PopoverContent overflowY="hidden" w="auto" fontSize="sm">
         <PopoverBody boxShadow="2xl" p={ 4 }>
           <SettingsColorTheme/>
-          { /*<Box borderColor="divider" borderWidth="1px" my={ 3 }/>
-          <SettingsIdentIcon/> */ }
+          <Box borderColor="divider" borderWidth="1px" my={ 3 }/>
+
+          <Box fontWeight={ 600 } mb={ 2 }>{ t('Language') }</Box>
+          <Box display="flex" flexDirection="row">
+            <Image
+              src="/static/flags/en.svg"
+              width="16px"
+              height="16px"
+              alt={ t('locales.English') }
+              cursor="pointer"
+              onClick={ () => changeLocaleTo('en') }
+            />
+
+            <Image
+              src="/static/flags/cn.svg"
+              width="16px"
+              height="16px"
+              alt={ t('locales.Mandarin') }
+              cursor="pointer"
+              onClick={ () => changeLocaleTo('cn') }
+              marginLeft="4px"
+            />
+          </Box>
         </PopoverBody>
       </PopoverContent>
     </Popover>

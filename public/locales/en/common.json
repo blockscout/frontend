@@ -61,6 +61,7 @@
   "Max_priority": "Max priority",
   "Loading_data_please_wait_": "Loading data, please wait...",
   "Contract": "Contract",
+  "Language": "Language",
   "home": {
     "View_all_blocks": "View all blocks",
     "Latest_blocks": "Latest blocks",
@@ -366,5 +367,9 @@
     "Number_of_blocks_validated_by_this_validator": "Number of blocks validated by this validator",
     "Last_balance_update": "Last balance update",
     "Block_number_in_which_the_address_was_updated": "Block number in which the address was updated"
+  },
+  "locales": {
+    "English": "English",
+    "Mandarin": "中文"
   }
 }
