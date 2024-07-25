@@ -81,7 +81,7 @@
     "magic-bytes.js": "1.8.0",
     "mixpanel-browser": "^2.47.0",
     "monaco-editor": "^0.34.1",
-    "next": "13.5.4",
+    "next": "13.5.3",
     "next-i18next": "^15.3.0",
     "nextjs-routes": "^1.0.8",
     "node-fetch": "^3.2.9",
