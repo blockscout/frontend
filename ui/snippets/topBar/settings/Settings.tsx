@@ -38,23 +38,27 @@ const Settings = () => {
           <Box borderColor="divider" borderWidth="1px" my={ 3 }/>
 
           <Box fontWeight={ 600 } mb={ 2 }>{ t('Language') }</Box>
-          <Box display="flex" flexDirection="row">
+          <Box display="flex" flexDirection="row" justifyContent="center">
             <Image
               src="/static/flags/en.svg"
-              width="16px"
-              height="16px"
+              width="22px"
+              height="22px"
               alt={ t('locales.English') }
               cursor="pointer"
               onClick={ () => changeLocaleTo('en') }
+              borderRadius="sm"
+              margin="9px"
             />
 
             <Image
               src="/static/flags/cn.svg"
-              width="16px"
-              height="16px"
+              width="22px"
+              height="22px"
               alt={ t('locales.Mandarin') }
               cursor="pointer"
               onClick={ () => changeLocaleTo('cn') }
+              borderRadius="base"
+              margin="9px"
               marginLeft="4px"
             />
           </Box>
