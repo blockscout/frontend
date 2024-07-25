@@ -1,5 +1,4 @@
 import type { NextPage } from 'next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
@@ -17,14 +16,4 @@ const Page: NextPage = () => {
 
 export default Page;
 
-//export { accounts as getServerSideProps } from 'nextjs/getServerSideProps';
-
-export async function getStaticProps({ locale }: { locale: string }) {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, [
-        'common',
-      ])),
-    },
-  };
-}
+export { accounts as getServerSideProps } from 'nextjs/getServerSideProps';
