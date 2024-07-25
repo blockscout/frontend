@@ -16,7 +16,8 @@ const Settings = () => {
   const { isOpen, onToggle, onClose } = useDisclosure();
 
   const changeLocaleTo = (newLocale: string) => {
-    router.push(router.asPath, router.asPath, { locale: newLocale });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    router.push(router.asPath as any, router.asPath as any, { locale: newLocale as any });
   };
 
   return (
