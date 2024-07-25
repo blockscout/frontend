@@ -11,6 +11,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import useContractTabs from 'lib/hooks/useContractTabs';
 import useIsSafeAddress from 'lib/hooks/useIsSafeAddress';
+import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
@@ -174,10 +175,10 @@ const AddressPageContent = () => {
         title: 'Coin balance history',
         component: <AddressCoinBalance shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
       },
-      config.chain.verificationType === 'validation' && addressTabsCountersQuery.data?.validations_count ?
+      addressTabsCountersQuery.data?.validations_count ?
         {
           id: 'blocks_validated',
-          title: 'Blocks validated',
+          title: `Blocks ${ getNetworkValidationActionText() }`,
           count: addressTabsCountersQuery.data?.validations_count,
           component: <AddressBlocksValidated scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
         } :

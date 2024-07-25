@@ -1,18 +1,18 @@
 import config from 'configs/app';
 
-export default function getNetworkValidatorTitle() {
+export default function getNetworkValidationActionText() {
   switch (config.chain.verificationType) {
     case 'validation': {
-      return 'validator';
+      return 'validated';
     }
     case 'mining': {
-      return 'miner';
+      return 'mined';
     }
     case 'posting': {
-      return 'poster';
+      return 'posted';
     }
     case 'sequencing': {
-      return 'sequencer';
+      return 'sequenced';
     }
     default: {
       return 'miner';
