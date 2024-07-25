@@ -1,22 +1,24 @@
-import { Image } from '@chakra-ui/react';
+import { Image, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import LinkInternal from 'ui/shared/links/LinkInternal';
-import TextSeparator from 'ui/shared/TextSeparator';
 
 const getGasFeature = config.features.getGasButton;
 
 const GetGasButton = () => {
+  const isMobile = useIsMobile(false);
+
   const onGetGasClick = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.BUTTON_CLICK, { Content: 'Get gas', Source: 'address' });
   }, []);
 
-  if (getGasFeature.isEnabled) {
+  if (getGasFeature.isEnabled && !isMobile) {
     try {
       const dappId = getGasFeature.dappId;
       const urlObj = new URL(getGasFeature.url);
@@ -32,12 +34,12 @@ const GetGasButton = () => {
 
       return (
         <>
-          <TextSeparator mx={ 2 } color="gray.500"/>
+          <Box h="1px" w="8px" bg="divider" mx={ 1 }/>
           <Link
             href={ href }
             display="flex"
             alignItems="center"
-            fontSize="sm"
+            fontSize="xs"
             lineHeight={ 5 }
             onClick={ onGetGasClick }
           >
@@ -45,10 +47,8 @@ const GetGasButton = () => {
               <Image
                 src={ getGasFeature.logoUrl }
                 alt={ getGasFeature.name }
-                boxSize={ 5 }
-                mr={ 2 }
-                borderRadius="4px"
-                overflow="hidden"
+                boxSize="14px"
+                mr={ 1 }
               />
             ) }
             { getGasFeature.name }

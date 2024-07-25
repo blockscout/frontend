@@ -10,6 +10,8 @@ import GasInfoTooltip from 'ui/shared/gas/GasInfoTooltip';
 import GasPrice from 'ui/shared/gas/GasPrice';
 import TextSeparator from 'ui/shared/TextSeparator';
 
+import GetGasButton from './GetGasButton';
+
 const TopBarStats = () => {
   const isMobile = useIsMobile();
 
@@ -76,14 +78,17 @@ const TopBarStats = () => {
       ) }
       { data?.coin_price && config.features.gasTracker.isEnabled && <TextSeparator color="divider"/> }
       { data?.gas_prices && data.gas_prices.average !== null && config.features.gasTracker.isEnabled && (
-        <Skeleton isLoaded={ !isPlaceholderData }>
-          <chakra.span color="text_secondary">Gas </chakra.span>
-          <GasInfoTooltip data={ data } dataUpdatedAt={ dataUpdatedAt } placement={ !data?.coin_price ? 'bottom-start' : undefined }>
-            <Link>
-              <GasPrice data={ data.gas_prices.average }/>
-            </Link>
-          </GasInfoTooltip>
-        </Skeleton>
+        <>
+          <Skeleton isLoaded={ !isPlaceholderData }>
+            <chakra.span color="text_secondary">Gas </chakra.span>
+            <GasInfoTooltip data={ data } dataUpdatedAt={ dataUpdatedAt } placement={ !data?.coin_price ? 'bottom-start' : undefined }>
+              <Link>
+                <GasPrice data={ data.gas_prices.average }/>
+              </Link>
+            </GasInfoTooltip>
+          </Skeleton>
+          { !isPlaceholderData && <GetGasButton/> }
+        </>
       ) }
     </Flex>
   );
