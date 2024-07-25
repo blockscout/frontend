@@ -50,13 +50,13 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
         { ...field }
         options={ options }
         size={ isMobile ? 'md' : 'lg' }
-        placeholder="Verification method (compiler type)"
+        placeholder={ t('contract_verification_area.Verification_method_compiler_type') }
         isDisabled={ isDisabled }
         isRequired
         isAsync={ false }
       />
     );
-  }, [ isDisabled, isMobile, options ]);
+  }, [ isDisabled, isMobile, options, t ]);
 
   const renderPopoverListItem = React.useCallback((method: SmartContractVerificationMethod) => {
     switch (method) {

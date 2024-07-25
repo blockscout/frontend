@@ -62,6 +62,13 @@
   "Loading_data_please_wait_": "正在加载数据，请稍候……",
   "Contract": "合约",
   "Language": "语言",
+  "We_are_searching_please_wait": "我们正在搜索，请稍候……",
+  "No_results_found": "未找到结果。",
+  "Reorged_block": "已重组的区块",
+  "Uncle_block": "叔块",
+  "Balances": "余额",
+  "Recent": "最近",
+  "Clear_all": "清除所有",
   "home": {
     "View_all_blocks": "查看所有区块",
     "Latest_blocks": "最新区块",
@@ -122,7 +129,9 @@
     "Verified_addrs": "已验证地址",
     "My_profile": "我的资料",
     "Transaction_details": "交易详情",
-    "Verify_publish_contract": "验证并发布合约"
+    "Verify_publish_contract": "验证并发布合约",
+    "API_Documentation": "API文档",
+    "GraphQL_playground": "GraphQL 操作界面"
   },
   "transactions_area": {
     "Validated": "已验证",
@@ -338,7 +347,8 @@
     "Contract_license": "合约许可证",
     "For_best_practices_all_contract_source_code_holders_publishers_": "为遵循最佳实践，鼓励所有合约源代码持有者、发布者和作者同时为他们提供的已验证合约源代码指定附带的许可证。",
     "Currently_Blockscout_supports_contract_verification_methods": "目前，Blockscout 支持 %var1 合约验证方法",
-    "Currently_Blockscout_supports_methods:": "目前，Blockscout 支持 %var1 方法："
+    "Currently_Blockscout_supports_methods": "目前，Blockscout 支持 %var1 方法：",
+    "Verification_method_compiler_type": "验证方法（编译器类型）"
   },
   "address_area": {
     "Coin_balance_history": "币余额历史记录",
@@ -390,5 +400,23 @@
     "Gas_price_history": "Gas价格历史记录",
     "average_chart_title": "平均Gas价格",
     "average_chart_description": "该期间的平均Gas价格（Gwei）"
+  },
+  "search_categories": {
+    "app_title": "去中心化应用",
+    "token_title": "代币（ERC-20）",
+    "nft_title": "NFTs（ERC-721 和 ERC-1155）",
+    "address_title": "地址",
+    "public_tag_title": "公共标签",
+    "transaction_title": "交易",
+    "block_title": "区块",
+    "blob_title": "Blob"
+  },
+  "coin_balance_history": {
+    "Block": "区块",
+    "Txn": "交易",
+    "Age": "年龄",
+    "Balance": "余额",
+    "Delta": "增量",
+    "There_is_no_coin_balance_history_for_this_address": "此地址没有币余额历史记录。"
   }
 }

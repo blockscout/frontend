@@ -62,6 +62,13 @@
   "Loading_data_please_wait_": "Loading data, please wait...",
   "Contract": "Contract",
   "Language": "Language",
+  "We_are_searching_please_wait": "We are searching, please wait...",
+  "No_results_found": "No results found.",
+  "Reorged_block": "Reorged block",
+  "Uncle_block": "Uncle block",
+  "Balances": "Balances",
+  "Recent": "Recent",
+  "Clear_all": "Clear all",
   "home": {
     "View_all_blocks": "View all blocks",
     "Latest_blocks": "Latest blocks",
@@ -122,7 +129,9 @@
     "Verified_addrs": "Verified addrs",
     "My_profile": "My profile",
     "Transaction_details": "Transaction details",
-    "Verify_publish_contract": "Verify & publish contract"
+    "Verify_publish_contract": "Verify & publish contract",
+    "API_Documentation": "API Documentation",
+    "GraphQL_playground": "GraphQL playground"
   },
   "transactions_area": {
     "Validated": "Validated",
@@ -338,7 +347,8 @@
     "Contract_license": "Contract license",
     "For_best_practices_all_contract_source_code_holders_publishers_": "For best practices, all contract source code holders, publishers and authors are encouraged to also specify the accompanying license for their verified contract source code provided.",
     "Currently_Blockscout_supports_contract_verification_methods": "Currently, Blockscout supports %var1 contract verification methods",
-    "Currently_Blockscout_supports_methods:": "Currently, Blockscout supports %var1 methods:"
+    "Currently_Blockscout_supports_methods": "Currently, Blockscout supports %var1 methods:",
+    "Verification_method_compiler_type": "Verification method (compiler type)"
   },
   "address_area": {
     "Coin_balance_history": "Coin balance history",
@@ -390,5 +400,23 @@
     "Gas_price_history": "Gas price history",
     "average_chart_title": "Average gas price",
     "average_chart_description": "Average gas price for the period (Gwei)"
+  },
+  "search_categories": {
+    "app_title": "DApps",
+    "token_title": "Tokens (ERC-20)",
+    "nft_title": "NFTs (ERC-721 & 1155)",
+    "address_title": "Addresses",
+    "public_tag_title": "Public tags",
+    "transaction_title": "Transactions",
+    "block_title": "Blocks",
+    "blob_title": "Blobs"
+  },
+  "coin_balance_history": {
+    "Block": "Block",
+    "Txn": "Txn",
+    "Age": "Age",
+    "Balance": "Balance",
+    "Delta": "Delta",
+    "There_is_no_coin_balance_history_for_this_address": "There is no coin balance history for this address."
   }
 }

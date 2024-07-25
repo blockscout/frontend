@@ -1,5 +1,6 @@
 import { Hide, Show, Table, Tbody, Th, Tr } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import type { AddressCoinBalanceHistoryResponse } from 'types/api/address';
@@ -22,6 +23,7 @@ interface Props {
 }
 
 const AddressCoinBalanceHistory = ({ query }: Props) => {
+  const { t } = useTranslation('common');
 
   const content = query.data?.items ? (
     <>
@@ -29,11 +31,11 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
         <Table variant="simple" size="sm">
           <Thead top={ query.pagination.isVisible ? 80 : 0 }>
             <Tr>
-              <Th width="20%">Block</Th>
-              <Th width="20%">Txn</Th>
-              <Th width="20%">Age</Th>
-              <Th width="20%" isNumeric pr={ 1 }>Balance { currencyUnits.ether }</Th>
-              <Th width="20%" isNumeric>Delta</Th>
+              <Th width="20%">{ t('coin_balance_history.Block') }</Th>
+              <Th width="20%">{ t('coin_balance_history.Txn') }</Th>
+              <Th width="20%">{ t('coin_balance_history.Age') }</Th>
+              <Th width="20%" isNumeric pr={ 1 }>{ t('coin_balance_history.Balance') } { currencyUnits.ether }</Th>
+              <Th width="20%" isNumeric>{ t('coin_balance_history.Delta') }</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -72,7 +74,7 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
       mt={ 8 }
       isError={ query.isError }
       items={ query.data?.items }
-      emptyText="There is no coin balance history for this address."
+      emptyText={ t('coin_balance_history.There_is_no_coin_balance_history_for_this_address') }
       content={ content }
       actionBar={ actionBar }
     />

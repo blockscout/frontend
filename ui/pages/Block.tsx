@@ -121,10 +121,10 @@ const BlockPageContent = () => {
   const title = (() => {
     switch (blockQuery.data?.type) {
       case 'reorg':
-        return `Reorged block #${ blockQuery.data?.height }`;
+        return `${ t('Reorged_block') } #${ blockQuery.data?.height }`;
 
       case 'uncle':
-        return `Uncle block #${ blockQuery.data?.height }`;
+        return ` ${ t('Uncle_block') } #${ blockQuery.data?.height }`;
 
       default:
         return `${ t('Block') } #${ blockQuery.data?.height }`;
