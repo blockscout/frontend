@@ -371,5 +371,24 @@
   "locales": {
     "English": "English",
     "Mandarin": "中文"
+  },
+  "indicators": {
+    "daily_txs_title": "Daily transactions",
+    "coin_price_title": "ZCX price",
+    "market_cap_title": "Market cap"
+  },
+  "gas_related": {
+    "Last_update": "Last update",
+    "Fast": "Fast",
+    "Normal": "Normal",
+    "Slow": "Slow",
+    "Gas_tracker_overview": "Gas tracker overview",
+    "Last_updated": "Last updated",
+    "per_transaction": "per transaction",
+    "Base": "Base",
+    "Priority": "Priority",
+    "Gas_price_history": "Gas price history",
+    "average_chart_title": "Average gas price",
+    "average_chart_description": "Average gas price for the period (Gwei)"
   }
 }

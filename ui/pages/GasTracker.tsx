@@ -1,4 +1,5 @@
 import { Box, Flex, Skeleton, chakra } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import config from 'configs/app';
@@ -12,6 +13,8 @@ import GasInfoUpdateTimer from 'ui/shared/gas/GasInfoUpdateTimer';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const GasTracker = () => {
+  const { t } = useTranslation('common');
+
   const { data, isPlaceholderData, isError, error, dataUpdatedAt } = useApiQuery('stats', {
     queryOptions: {
       placeholderData: HOMEPAGE_STATS,
@@ -39,7 +42,7 @@ const GasTracker = () => {
       { data?.network_utilization_percentage && <GasTrackerNetworkUtilization percentage={ data.network_utilization_percentage } isLoading={ isLoading }/> }
       { data?.gas_price_updated_at && (
         <Skeleton isLoaded={ !isLoading } whiteSpace="pre" display="flex" alignItems="center">
-          <span>Last updated </span>
+          <span>{ t('gas_related.Last_updated') } </span>
           <chakra.span color="text_secondary">{ dayjs(data.gas_price_updated_at).format('DD MMM, HH:mm:ss') }</chakra.span>
           { data.gas_prices_update_in !== 0 && (
             <GasInfoUpdateTimer
@@ -64,7 +67,7 @@ const GasTracker = () => {
   return (
     <>
       <PageTitle
-        title="Gas tracker"
+        title={ t('area.Gas_tracker') }
         secondRow={ titleSecondRow }
         withTextAd
       />

@@ -371,5 +371,24 @@
   "locales": {
     "English": "English",
     "Mandarin": "中文"
+  },
+  "indicators": {
+    "daily_txs_title": "每日交易数量",
+    "coin_price_title": "ZCX价格",
+    "market_cap_title": "市值"
+  },
+  "gas_related": {
+    "Last_update": "最后更新",
+    "Fast": "快速",
+    "Normal": "正常",
+    "Slow": "慢速",
+    "Gas_tracker_overview": "Gas追踪器概览",
+    "Last_updated": "最后更新",
+    "per_transaction": "每笔交易",
+    "Base": "基础",
+    "Priority": "优先级",
+    "Gas_price_history": "Gas价格历史记录",
+    "average_chart_title": "平均Gas价格",
+    "average_chart_description": "该期间的平均Gas价格（Gwei）"
   }
 }

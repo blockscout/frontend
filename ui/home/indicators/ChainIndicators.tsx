@@ -1,4 +1,5 @@
 import { Box, Flex, Skeleton, Text, useColorModeValue } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import config from 'configs/app';
@@ -27,6 +28,8 @@ const indicators = INDICATORS
   });
 
 const ChainIndicators = () => {
+  const { t } = useTranslation('common');
+
   const [ selectedIndicator, selectIndicator ] = React.useState(indicators[0]?.id);
   const indicator = indicators.find(({ id }) => id === selectedIndicator);
 
@@ -127,6 +130,7 @@ const ChainIndicators = () => {
             <ChainIndicatorItem
               key={ indicator.id }
               { ...indicator }
+              title={ t(`indicators.${ indicator.id }_title`) }
               isSelected={ selectedIndicator === indicator.id }
               onClick={ selectIndicator }
               stats={ statsQueryResult }
