@@ -6,7 +6,6 @@ import type { Address } from 'types/api/address';
 
 import config from 'configs/app';
 import { getResourceKey } from 'lib/api/useApiQuery';
-import getCurrencyValue from 'lib/getCurrencyValue';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { currencyUnits } from 'lib/units';
@@ -14,10 +13,8 @@ import CurrencyValue from 'ui/shared/CurrencyValue';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import NativeTokenIcon from 'ui/shared/NativeTokenIcon';
 
-import GetGasButton from './GetGasButton';
-
 interface Props {
-  data: Pick<Address, 'block_number_balance_updated_at' | 'coin_balance' | 'hash' | 'exchange_rate' | 'is_contract'>;
+  data: Pick<Address, 'block_number_balance_updated_at' | 'coin_balance' | 'hash' | 'exchange_rate'>;
   isLoading: boolean;
 }
 
@@ -68,14 +65,6 @@ const AddressBalance = ({ data, isLoading }: Props) => {
     handler: handleNewCoinBalanceMessage,
   });
 
-  const value = data.coin_balance || '0';
-  const exchangeRate = data.exchange_rate;
-  const decimals = String(config.chain.currency.decimals);
-  const accuracyUsd = 2;
-  const accuracy = 8;
-
-  const { usd: usdResult } = getCurrencyValue({ value, accuracy, accuracyUsd, exchangeRate, decimals });
-
   return (
     <>
       <DetailsInfoItem.Label
@@ -87,18 +76,15 @@ const AddressBalance = ({ data, isLoading }: Props) => {
       <DetailsInfoItem.Value alignSelf="center" flexWrap="nowrap">
         <NativeTokenIcon boxSize={ 6 } mr={ 2 } isLoading={ isLoading }/>
         <CurrencyValue
-          value={ value }
-          exchangeRate={ exchangeRate }
-          decimals={ decimals }
+          value={ data.coin_balance || '0' }
+          exchangeRate={ data.exchange_rate }
+          decimals={ String(config.chain.currency.decimals) }
           currency={ currencyUnits.ether }
-          accuracyUsd={ accuracyUsd }
-          accuracy={ accuracy }
+          accuracyUsd={ 2 }
+          accuracy={ 8 }
           flexWrap="wrap"
           isLoading={ isLoading }
         />
-        { !isLoading && (
-          <GetGasButton usdValue={ usdResult } isContract={ data?.is_contract }/>
-        ) }
       </DetailsInfoItem.Value>
     </>
   );
