@@ -14,7 +14,6 @@ const config: Feature<{
   logoUrl?: string;
   url: string;
   dappId?: string;
-  usdThreshold: number;
 }> = (() => {
   if (value) {
     return Object.freeze({
@@ -24,7 +23,6 @@ const config: Feature<{
       logoUrl: value.logo,
       url: value.url_template.replace('{chainId}', chain.id || ''),
       dappId: marketplace.isEnabled ? value.dapp_id : undefined,
-      usdThreshold: value.usd_threshold,
     });
   }
 

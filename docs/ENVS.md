@@ -708,11 +708,11 @@ If the feature is enabled, a Multichain balance button will be displayed on the 
 
 ### Get gas button
 
-If the feature is enabled, a Get gas button will be displayed on the address page, which will take you to the gas refuel application in the marketplace or to an external site.
+If the feature is enabled, a Get gas button will be displayed in the top bar, which will take you to the gas refuel application in the marketplace or to an external site.
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_GAS_REFUEL_PROVIDER_CONFIG | `{ name: string; url_template: string; dapp_id?: string; logo?: string, usd_threshold: number }` | Get gas button config. See [below](#get-gas-button-configuration-properties) | - | - | `{ name: 'Need gas?', dapp_id: 'smol-refuel', url_template: 'https://smolrefuel.com/?outboundChain={chainId}', logo: 'https://example.com/icon.png', usd_threshold: 10 }` | v1.33.0+ |
+| NEXT_PUBLIC_GAS_REFUEL_PROVIDER_CONFIG | `{ name: string; url_template: string; dapp_id?: string; logo?: string }` | Get gas button config. See [below](#get-gas-button-configuration-properties) | - | - | `{ name: 'Need gas?', dapp_id: 'smol-refuel', url_template: 'https://smolrefuel.com/?outboundChain={chainId}', logo: 'https://example.com/icon.png' }` | v1.33.0+ |
 
 &nbsp;
 
@@ -724,7 +724,6 @@ If the feature is enabled, a Get gas button will be displayed on the address pag
 | url_template | `string` | Url template, may contain `{chainId}` variable | Required | - | `https://smolrefuel.com/?outboundChain={chainId}` |
 | dapp_id | `string` | Set for open a Blockscout dapp page instead of opening external app page | - | - | `smol-refuel` |
 | logo | `string` | Gas refuel application logo url | - | - | `https://example.com/icon.png` |
-| usd_threshold | `number` | Native token balance value in USD below which the button will be displayed | - | `1` | `10` |
 
 &nbsp;
 

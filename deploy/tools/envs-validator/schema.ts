@@ -650,7 +650,6 @@ const schema = yup
           url_template: yup.string().required(),
           logo: yup.string(),
           dapp_id: yup.string(),
-          usd_threshold: yup.number().required(),
         });
 
         return isUndefined || valueSchema.isValidSync(data);

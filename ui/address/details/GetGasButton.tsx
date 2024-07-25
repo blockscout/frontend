@@ -11,17 +11,12 @@ import TextSeparator from 'ui/shared/TextSeparator';
 
 const getGasFeature = config.features.getGasButton;
 
-interface Props {
-  usdValue?: string;
-  isContract?: boolean;
-}
-
-const GetGasButton = ({ usdValue, isContract }: Props) => {
+const GetGasButton = () => {
   const onGetGasClick = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.BUTTON_CLICK, { Content: 'Get gas', Source: 'address' });
   }, []);
 
-  if (getGasFeature.isEnabled && !isContract && usdValue && Number(usdValue) < getGasFeature.usdThreshold) {
+  if (getGasFeature.isEnabled) {
     try {
       const dappId = getGasFeature.dappId;
       const urlObj = new URL(getGasFeature.url);
