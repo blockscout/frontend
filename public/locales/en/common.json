@@ -409,8 +409,11 @@
   },
   "indicators": {
     "daily_txs_title": "Daily transactions",
+    "daily_txs_description": "Number of transactions yesterday (0:00 - 23:59 UTC). The chart displays daily transactions for the past 30 days.",
     "coin_price_title": "ZCX price",
-    "market_cap_title": "Market cap"
+    "coin_price_description": "ZCX token daily price in USD.",
+    "market_cap_title": "Market cap",
+    "market_cap_description": "The total market value of a cryptocurrency's circulating supply. It is analogous to the free-float capitalization in the stock market. Market Cap = Current Price x Circulating Supply."
   },
   "gas_related": {
     "Last_update": "Last update",
@@ -465,5 +468,10 @@
     "Holder": "Holder",
     "Percentage": "Percentage",
     "Quantity": "Quantity"
+  },
+  "wallet_related": {
+    "My_wallet": "My wallet",
+    "Your_wallet_is_used_to_interact_with_apps_and_contracts_in_the_explorer": "Your wallet is used to interact with apps and contracts in the explorer.",
+    "Disconnect": "Disconnect"
   }
 }

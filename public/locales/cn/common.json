@@ -409,8 +409,11 @@
   },
   "indicators": {
     "daily_txs_title": "每日交易数量",
+    "daily_txs_description": "昨天的交易数量（00:00 - 23:59 UTC）。图表显示过去30天的每日交易量。",
     "coin_price_title": "ZCX价格",
-    "market_cap_title": "市值"
+    "coin_price_description": "ZCX代币每日美元价格。",
+    "market_cap_title": "市值",
+    "market_cap_description": "一种加密货币流通供应的总市值。它类似于股票市场中的自由流通市值。市值 = 当前价格 x 流通供应量。"
   },
   "gas_related": {
     "Last_update": "最后更新",
@@ -465,5 +468,10 @@
     "Holder": "持有者",
     "Percentage": "百分比",
     "Quantity": "数量"
+  },
+  "wallet_related": {
+    "My_wallet": "我的钱包",
+    "Your_wallet_is_used_to_interact_with_apps_and_contracts_in_the_explorer": "您的钱包用于与区块链浏览器中的应用程序和合约进行交互。",
+    "Disconnect": "断开连接"
   }
 }

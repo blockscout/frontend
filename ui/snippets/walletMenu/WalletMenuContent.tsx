@@ -1,4 +1,5 @@
 import { Box, Button, Text } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import * as mixpanel from 'lib/mixpanel/index';
@@ -11,6 +12,8 @@ type Props = {
 };
 
 const WalletMenuContent = ({ address, disconnect }: Props) => {
+  const { t } = useTranslation('common');
+
   const onAddressClick = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.WALLET_ACTION, { Action: 'Address click' });
   }, []);
@@ -23,7 +26,7 @@ const WalletMenuContent = ({ address, disconnect }: Props) => {
         mb={ 1 }
         { ...getDefaultTransitionProps() }
       >
-        My wallet
+        { t('wallet_related.My_wallet') }
       </Text>
       <Text
         fontSize="sm"
@@ -32,7 +35,7 @@ const WalletMenuContent = ({ address, disconnect }: Props) => {
         color="text_secondary"
         { ...getDefaultTransitionProps() }
       >
-        Your wallet is used to interact with apps and contracts in the explorer.
+        { t('wallet_related.Your_wallet_is_used_to_interact_with_apps_and_contracts_in_the_explorer') }
       </Text>
       <AddressEntity
         address={{ hash: address }}
@@ -45,7 +48,7 @@ const WalletMenuContent = ({ address, disconnect }: Props) => {
         onClick={ onAddressClick }
       />
       <Button size="sm" width="full" variant="outline" onClick={ disconnect }>
-        Disconnect
+        { t('wallet_related.Disconnect') }
       </Button>
     </Box>
   );
