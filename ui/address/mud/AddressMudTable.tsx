@@ -129,6 +129,13 @@ const AddressMudTable = ({ scrollRef, tableId, isQueryEnabled = true }: Props) =
     />
   ) : null;
 
+  const emptyText = (
+    <>
+      <chakra.span>There are no records for </chakra.span>
+      { data?.table.table_full_name ? <chakra.span fontWeight={ 600 }>{ data?.table.table_full_name }</chakra.span> : 'this table' }
+    </>
+  );
+
   return (
     <>
       { isMobile && (
@@ -137,7 +144,7 @@ const AddressMudTable = ({ scrollRef, tableId, isQueryEnabled = true }: Props) =
       <DataListDisplay
         isError={ isError }
         items={ data?.items }
-        emptyText="There are no records for this table."
+        emptyText={ emptyText }
         filterProps={{
           emptyFilteredText: `Couldn${ apos }t find records that match your filter query.`,
           hasActiveFilters: Object.values(filters).some(Boolean),
@@ -145,6 +152,7 @@ const AddressMudTable = ({ scrollRef, tableId, isQueryEnabled = true }: Props) =
         content={ content }
         actionBar={ actionBar }
         showActionBarIfEmpty={ !isMobile }
+        mt={ data?.items.length ? 0 : 2 }
       />
     </>
   );

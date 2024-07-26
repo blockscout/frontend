@@ -45,7 +45,7 @@ const BreadcrumbItem = ({ text, href, isLast, scrollRef }: BreadcrumbItemProps) 
 
   if (isLast) {
     return (
-      <Grid gap={ 2 } overflow="hidden" templateColumns="auto 24px">
+      <Grid gap={ 2 } overflow="hidden" templateColumns="auto 24px" alignItems="center">
         <Box
           overflow="hidden"
           whiteSpace="nowrap"
@@ -59,7 +59,7 @@ const BreadcrumbItem = ({ text, href, isLast, scrollRef }: BreadcrumbItemProps) 
   }
 
   return (
-    <Grid gap={ 2 } overflow="hidden" templateColumns="auto 24px">
+    <Grid gap={ 2 } overflow="hidden" templateColumns="auto 24px" alignItems="center">
       <LinkInternal
         href={ href }
         onClick={ onLinkClick }

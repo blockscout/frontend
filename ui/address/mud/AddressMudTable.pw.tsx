@@ -41,3 +41,19 @@ test('expanded view +@mobile', async({ render, mockApiResponse }) => {
 
   await expect(component).toHaveScreenshot();
 });
+
+test('empty +@mobile', async({ render, mockApiResponse }) => {
+  await mockApiResponse(
+    'address_mud_records',
+    { ...mudRecords, items: [] },
+    { pathParams: { hash: ADDRESS_HASH, table_id: TABLE_ID } });
+
+  const component = await render(
+    <Box pt={{ base: '134px', lg: 6 }}>
+      <AddressMudTable tableId={ TABLE_ID }/>
+    </Box>,
+    { hooksConfig },
+  );
+
+  await expect(component).toHaveScreenshot();
+});

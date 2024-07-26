@@ -13,7 +13,7 @@ type FilterProps = {
 type Props = {
   isError: boolean;
   items?: Array<unknown>;
-  emptyText: string;
+  emptyText: string | React.ReactNode;
   actionBar?: React.ReactNode;
   showActionBarIfEmpty?: boolean;
   content: React.ReactNode;
