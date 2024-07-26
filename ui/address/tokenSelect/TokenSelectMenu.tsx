@@ -1,5 +1,6 @@
 import { Text, Box, Input, InputGroup, InputLeftElement, useColorModeValue, Flex, Link } from '@chakra-ui/react';
 import _sumBy from 'lodash/sumBy';
+import { useTranslation } from 'next-i18next';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
@@ -23,6 +24,8 @@ interface Props {
 }
 
 const TokenSelectMenu = ({ erc20sort, erc1155sort, erc404sort, filteredData, onInputChange, onSortClick, searchTerm }: Props) => {
+  const { t } = useTranslation('common');
+
   const searchIconColor = useColorModeValue('blackAlpha.600', 'whiteAlpha.600');
   const inputBorderColor = useColorModeValue('blackAlpha.100', 'whiteAlpha.200');
 
@@ -36,7 +39,7 @@ const TokenSelectMenu = ({ erc20sort, erc1155sort, erc404sort, filteredData, onI
         </InputLeftElement>
         <Input
           paddingInlineStart="38px"
-          placeholder="Search by token name"
+          placeholder={ t('address_area.Search_by_token_name') }
           ml="1px"
           onChange={ onInputChange }
           borderColor={ inputBorderColor }
@@ -74,7 +77,8 @@ const TokenSelectMenu = ({ erc20sort, erc1155sort, erc404sort, filteredData, onI
           return (
             <Box key={ type }>
               <Flex justifyContent="space-between">
-                <Text mb={ 3 } color="gray.500" fontWeight={ 600 } fontSize="sm">{ type } tokens ({ numPrefix }{ tokenInfo.items.length })</Text>
+                <Text mb={ 3 } color="gray.500" fontWeight={ 600 } fontSize="sm">{ type } { t('address_area.tokens') }
+                   ({ numPrefix }{ tokenInfo.items.length })</Text>
                 { hasSort && (
                   <Link data-type={ type } onClick={ onSortClick } aria-label={ `Sort ${ type } tokens` }>
                     <IconSvg name="arrows/east" boxSize={ 5 } transform={ arrowTransform } transitionDuration="faster"/>
@@ -87,7 +91,7 @@ const TokenSelectMenu = ({ erc20sort, erc1155sort, erc404sort, filteredData, onI
           );
         }) }
       </Flex>
-      { Boolean(searchTerm) && !hasFilteredResult && <Text fontSize="sm">Could not find any matches.</Text> }
+      { Boolean(searchTerm) && !hasFilteredResult && <Text fontSize="sm">{ t('address_area.Could_not_find_any_matches') }</Text> }
     </>
   );
 };

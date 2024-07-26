@@ -71,6 +71,8 @@
   "Clear_all": "Clear all",
   "created": "created",
   "Parent_txn_hash": "Parent txn hash",
+  "Copy_to_clipboard": "Copy to clipboard",
+  "Copied": "Copied",
   "home": {
     "View_all_blocks": "View all blocks",
     "Latest_blocks": "Latest blocks",
@@ -378,7 +380,12 @@
     "Blocks_validated": "Blocks validated",
     "Number_of_blocks_validated_by_this_validator": "Number of blocks validated by this validator",
     "Last_balance_update": "Last balance update",
-    "Block_number_in_which_the_address_was_updated": "Block number in which the address was updated"
+    "Block_number_in_which_the_address_was_updated": "Block number in which the address was updated",
+    "Click_to_view_QR_code": "Click to view QR code",
+    "Show_all_tokens": "Show all tokens",
+    "Search_by_token_name": "Search by token name",
+    "Could_not_find_any_matches": "Could not find any matches.",
+    "tokens": "tokens"
   },
   "locales": {
     "English": "English",

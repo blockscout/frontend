@@ -15,6 +15,7 @@ import {
   Skeleton,
 } from '@chakra-ui/react';
 import * as Sentry from '@sentry/react';
+import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import QRCode from 'qrcode';
 import React from 'react';
@@ -37,6 +38,8 @@ interface Props {
 }
 
 const AddressQrCode = ({ address, className, isLoading }: Props) => {
+  const { t } = useTranslation('common');
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const router = useRouter();
@@ -68,7 +71,7 @@ const AddressQrCode = ({ address, className, isLoading }: Props) => {
 
   return (
     <>
-      <Tooltip label="Click to view QR code">
+      <Tooltip label={ t('address_area.Click_to_view_QR_code') }>
         <IconButton
           className={ className }
           aria-label="Show QR code"
