@@ -74,6 +74,7 @@
   "Copy_to_clipboard": "Copy to clipboard",
   "Copied": "Copied",
   "Add_token_to": "Add token to",
+  "Transaction": "Transaction",
   "home": {
     "View_all_blocks": "View all blocks",
     "Latest_blocks": "Latest blocks",
@@ -390,7 +391,17 @@
     "Success": "Success",
     "Successfully_added_token_to_your_wallet": "Successfully added token to your wallet",
     "Error": "Error",
-    "Something_went_wrong": "Something went wrong"
+    "Something_went_wrong": "Something went wrong",
+    "There_are_no_validated_blocks_for_this_address": "There are no validated blocks for this address.",
+    "Age": "Age",
+    "Txn": "Txn",
+    "Reward": "Reward",
+    "Token_name": "Token name",
+    "Token_name_and_symbol": "Token name and symbol",
+    "Contract_name": "Contract name",
+    "The_name_found_in_the_source_code_of_the_Contract": "The name found in the source code of the Contract",
+    "Validator_name": "Validator name",
+    "The_name_of_the_validator": "The name of the validator"
   },
   "locales": {
     "English": "English",
@@ -438,7 +449,8 @@
     "Topics": "Topics",
     "Data": "Data",
     "Method_id": "Method id",
-    "Call": "Call"
+    "Call": "Call",
+    "Log_index": "Log index"
   },
   "token_area": {
     "Max_total_supply": "Max total supply",

@@ -53,7 +53,7 @@ const LogItem = ({ address, index, topics, data, decoded, type, tx_hash: txHash,
           </Alert>
         </GridItem>
       ) }
-      { hasTxInfo ? <RowHeader isLoading={ isLoading }>Transaction</RowHeader> : <RowHeader isLoading={ isLoading }>{ t('Address') }</RowHeader> }
+      { hasTxInfo ? <RowHeader isLoading={ isLoading }>{ t('Transaction') }</RowHeader> : <RowHeader isLoading={ isLoading }>{ t('Address') }</RowHeader> }
       <GridItem display="flex" alignItems="center">
         { type === 'address' ? (
           <TxEntity
@@ -75,7 +75,7 @@ const LogItem = ({ address, index, topics, data, decoded, type, tx_hash: txHash,
           </Link>
         </Tooltip> */ }
         <Skeleton isLoaded={ !isLoading } ml="auto" borderRadius="base">
-          <Tooltip label="Log index">
+          <Tooltip label={ t('log_item.Log_index') }>
             <Button variant="outline" colorScheme="gray" isActive size="sm" fontWeight={ 400 }>
               { index }
             </Button>

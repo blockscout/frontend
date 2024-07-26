@@ -74,6 +74,7 @@
   "Copy_to_clipboard": "复制到剪贴板",
   "Copied": "已复制",
   "Add_token_to": "将代币添加到",
+  "Transaction": "交易",
   "home": {
     "View_all_blocks": "查看所有区块",
     "Latest_blocks": "最新区块",
@@ -385,12 +386,22 @@
     "Click_to_view_QR_code": "点击查看二维码",
     "Show_all_tokens": "显示所有代币",
     "Search_by_token_name": "按代币名称搜索",
-    "Could_not_find_any_matches": "未找到任何匹配项。",
+    "Could_not_find_any_matches": "未找v到任何匹配项。",
     "tokens": "代币",
     "Success": "成功",
     "Successfully_added_token_to_your_wallet": "已成功将代币添加到您的钱包",
     "Error": "错误",
-    "Something_went_wrong": "出现问题了"
+    "Something_went_wrong": "出现问题了",
+    "There_are_no_validated_blocks_for_this_address": "该地址没有已验证的区块。",
+    "Age": "年龄",
+    "Txn": "交易",
+    "Reward": "奖励",
+    "Token_name": "代币名称",
+    "Token_name_and_symbol": "代币名称和符号",
+    "Contract_name": "合约名称",
+    "The_name_found_in_the_source_code_of_the_Contract": "在合约源代码中找到的名称",
+    "Validator_name": "验证者名称",
+    "The_name_of_the_validator": "验证者的名称"
   },
   "locales": {
     "English": "English",
@@ -438,7 +449,8 @@
     "Topics": "主题",
     "Data": "数据",
     "Method_id": "方法ID",
-    "Call": "调用"
+    "Call": "调用",
+    "Log_index": "日志索引"
   },
   "token_area": {
     "Max_total_supply": "最大总供应量",

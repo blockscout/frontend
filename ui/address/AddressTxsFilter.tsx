@@ -41,8 +41,8 @@ const AddressTxsFilter = ({ onFilterChange, defaultFilter, isActive, isLoading }
       <MenuList zIndex={ 2 }>
         <MenuOptionGroup defaultValue={ defaultFilter || 'all' } type="radio" onChange={ onFilterChange }>
           <MenuItemOption value="all">{ t('All') }</MenuItemOption>
-          <MenuItemOption value="from">{ t('Outgoing_transactions') }</MenuItemOption>
-          <MenuItemOption value="to">{ t('Incoming_transactions') }</MenuItemOption>
+          <MenuItemOption value="from">{ t('address_area.Outgoing_transactions') }</MenuItemOption>
+          <MenuItemOption value="to">{ t('address_area.Incoming_transactions') }</MenuItemOption>
         </MenuOptionGroup>
       </MenuList>
     </Menu>

@@ -136,7 +136,7 @@ const AddressPageContent = () => {
       config.chain.verificationType === 'validation' && addressTabsCountersQuery.data?.validations_count ?
         {
           id: 'blocks_validated',
-          title: 'Blocks validated',
+          title: t('address_area.Blocks_validated'),
           count: addressTabsCountersQuery.data?.validations_count,
           component: <AddressBlocksValidated scrollRef={ tabsScrollRef }/>,
         } :
