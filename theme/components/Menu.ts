@@ -15,7 +15,7 @@ const baseStyleList = defineStyle({
   [$bg.variable]: '#fff',
   [$shadow.variable]: 'shadows.2xl',
   _dark: {
-    [$bg.variable]: 'colors.gray.900',
+    [$bg.variable]: 'rgba(47, 47, 47, 1)',
     [$shadow.variable]: 'shadows.dark-lg',
   },
   borderWidth: '0',

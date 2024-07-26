@@ -23,7 +23,7 @@ interface Props {
 const ChainIndicatorItem = ({ id, title, value, valueDiff, icon, isSelected, onClick, stats }: Props) => {
   const isMobile = useIsMobile();
 
-  const activeBgColorDesktop = useColorModeValue('white', 'gray.900');
+  const activeBgColorDesktop = useColorModeValue('white', 'gray.800');
   const activeBgColorMobile = useColorModeValue('white', 'black');
   const activeBgColor = isMobile ? activeBgColorMobile : activeBgColorDesktop;
 
