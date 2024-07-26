@@ -1,5 +1,6 @@
 import { Box, Flex, Tooltip } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
@@ -46,6 +47,8 @@ import TokenVerifiedInfo from 'ui/token/TokenVerifiedInfo';
 export type TokenTabs = 'token_transfers' | 'holders' | 'inventory';
 
 const TokenPageContent = () => {
+  const { t } = useTranslation('common');
+
   const [ isQueryEnabled, setIsQueryEnabled ] = React.useState(false);
   const [ totalSupplySocket, setTotalSupplySocket ] = React.useState<number>();
   const router = useRouter();
@@ -180,15 +183,15 @@ const TokenPageContent = () => {
       title: 'Inventory',
       component: <TokenInventory inventoryQuery={ inventoryQuery } tokenQuery={ tokenQuery } ownerFilter={ ownerFilter }/>,
     } : undefined,
-    { id: 'token_transfers', title: 'Token transfers', component: <TokenTransfer transfersQuery={ transfersQuery } token={ tokenQuery.data }/> },
-    { id: 'holders', title: 'Holders', component: <TokenHolders token={ tokenQuery.data } holdersQuery={ holdersQuery }/> },
+    { id: 'token_transfers', title: t('token_area.Token_transfers'), component: <TokenTransfer transfersQuery={ transfersQuery } token={ tokenQuery.data }/> },
+    { id: 'holders', title: t('token_area.Holders'), component: <TokenHolders token={ tokenQuery.data } holdersQuery={ holdersQuery }/> },
     contractQuery.data?.is_contract ? {
       id: 'contract',
       title: () => {
         if (contractQuery.data?.is_verified) {
           return (
             <>
-              <span>Contract</span>
+              <span>{ t('Contract') }</span>
               <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 }/>
             </>
           );

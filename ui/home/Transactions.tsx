@@ -1,4 +1,5 @@
 import { Heading, useColorModeValue } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import config from 'configs/app';
@@ -10,6 +11,8 @@ import TabsWithScroll from 'ui/shared/Tabs/TabsWithScroll';
 const rollupFeature = config.features.rollup;
 
 const TransactionsHome = () => {
+  const { t } = useTranslation('common');
+
   const color = useColorModeValue('rgba(17, 17, 17, 1)', 'rgba(255, 255, 255, 1)');
 
   const hasAccount = useHasAccount();
@@ -21,7 +24,7 @@ const TransactionsHome = () => {
     ].filter(Boolean);
     return (
       <>
-        <Heading as="h4" size="sm" mb={ 4 } color={ color }>Transactions</Heading>
+        <Heading as="h4" size="sm" mb={ 4 } color={ color }>{ t('Transactions') }</Heading>
         <TabsWithScroll tabs={ tabs } lazyBehavior="keepMounted"/>
       </>
     );
@@ -29,7 +32,7 @@ const TransactionsHome = () => {
 
   return (
     <>
-      <Heading as="h4" size="sm" mb={ 4 } color={ color }>Latest transactions</Heading>
+      <Heading as="h4" size="sm" mb={ 4 } color={ color }>{ t('home.Latest_transactions') }</Heading>
       <LatestTxs/>
     </>
   );

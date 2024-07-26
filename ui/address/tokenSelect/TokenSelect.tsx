@@ -1,6 +1,7 @@
 import { Box, Flex, IconButton, Skeleton, Tooltip } from '@chakra-ui/react';
 import { useQueryClient, useIsFetching } from '@tanstack/react-query';
 import _sumBy from 'lodash/sumBy';
+import { useTranslation } from 'next-i18next';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -22,6 +23,8 @@ interface Props {
 }
 
 const TokenSelect = ({ onClick }: Props) => {
+  const { t } = useTranslation('common');
+
   const router = useRouter();
   const isMobile = useIsMobile();
   const queryClient = useQueryClient();
@@ -60,7 +63,7 @@ const TokenSelect = ({ onClick }: Props) => {
         <TokenSelectMobile data={ data } isLoading={ tokensIsFetching === 1 }/> :
         <TokenSelectDesktop data={ data } isLoading={ tokensIsFetching === 1 }/>
       }
-      <Tooltip label="Show all tokens">
+      <Tooltip label={ t('address_area.Show_all_tokens') }>
         <Box>
           <NextLink href={{ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'tokens' } }} passHref legacyBehavior>
             <IconButton

@@ -1,5 +1,6 @@
 import { Flex, Hide, Show, Text } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -13,7 +14,6 @@ import { getResourceKey } from 'lib/api/useApiQuery';
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
@@ -68,6 +68,8 @@ type Props = {
 }
 
 const AddressTokenTransfers = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Props) => {
+  const { t } = useTranslation('common');
+
   const router = useRouter();
   const queryClient = useQueryClient();
   const isMobile = useIsMobile();
@@ -272,9 +274,9 @@ const AddressTokenTransfers = ({ scrollRef, overloadCount = OVERLOAD_COUNT }: Pr
     <DataListDisplay
       isError={ isError }
       items={ data?.items }
-      emptyText="There are no token transfers."
+      emptyText={ t('address_area.There_are_no_token_transfers') }
       filterProps={{
-        emptyFilteredText: `Couldn${ apos }t find any token transfer that matches your query.`,
+        emptyFilteredText: t('tx_area.Couldnt_find_any_token_transfer_that_matches_your_query'),
         hasActiveFilters: Boolean(numActiveFilters),
       }}
       content={ content }

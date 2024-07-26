@@ -1,4 +1,5 @@
 import { Table, Tbody, Tr, Th } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import type { TokenInfo } from 'types/api/token';
@@ -23,6 +24,8 @@ interface Props {
 }
 
 const TokenTransferTable = ({ data, top, showSocketInfo, socketInfoAlert, socketInfoNum, tokenId, isLoading, token }: Props) => {
+  const { t } = useTranslation('common');
+
   const tokenType = data[0].token.type;
 
   return (
@@ -30,15 +33,15 @@ const TokenTransferTable = ({ data, top, showSocketInfo, socketInfoAlert, socket
       <Table variant="simple" size="sm" minW="950px">
         <Thead top={ top }>
           <Tr>
-            <Th width="280px">Txn hash</Th>
-            <Th width="200px">Method</Th>
-            <Th width={{ lg: '224px', xl: '380px' }}>From/To</Th>
+            <Th width="280px">{ t('Txn_hash') }</Th>
+            <Th width="200px">{ t('Method') }</Th>
+            <Th width={{ lg: '224px', xl: '380px' }}>{ t('From_To') }</Th>
             { (NFT_TOKEN_TYPE_IDS.includes(tokenType)) &&
-              <Th width={ tokenType === 'ERC-1155' || tokenType === 'ERC-404' ? '50%' : '100%' }>Token ID</Th>
+              <Th width={ tokenType === 'ERC-1155' || tokenType === 'ERC-404' ? '50%' : '100%' }>{ t('tx_area.Token_ID') }</Th>
             }
             { (tokenType === 'ERC-20' || tokenType === 'ERC-1155' || tokenType === 'ERC-404') && (
               <Th width={ tokenType === 'ERC-20' ? '100%' : '50%' } isNumeric>
-                <TruncatedValue value={ `Value ${ token?.symbol || '' }` } w="100%" verticalAlign="middle"/>
+                <TruncatedValue value={ `${ t('Value') } ${ token?.symbol || '' }` } w="100%" verticalAlign="middle"/>
               </Th>
             ) }
           </Tr>

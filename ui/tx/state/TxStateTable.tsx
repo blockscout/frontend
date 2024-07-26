@@ -4,6 +4,7 @@ import {
   Tr,
   Th,
 } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import type { TxStateChange } from 'types/api/txStateChanges';
@@ -19,17 +20,19 @@ interface Props {
 }
 
 const TxStateTable = ({ data, isLoading, top }: Props) => {
+  const { t } = useTranslation('common');
+
   return (
     <AddressHighlightProvider>
       <Table variant="simple" minWidth="1000px" size="sm" w="100%">
         <Thead top={ top }>
           <Tr>
-            <Th width="140px">Type</Th>
-            <Th width="160px">Address</Th>
-            <Th width="33%" isNumeric>Before</Th>
-            <Th width="33%" isNumeric>After</Th>
-            <Th width="33%" isNumeric>Change</Th>
-            <Th width="150px" minW="80px" maxW="150px">Token ID</Th>
+            <Th width="140px">{ t('Type') }</Th>
+            <Th width="160px">{ t('Address') }</Th>
+            <Th width="33%" isNumeric>{ t('Before') }</Th>
+            <Th width="33%" isNumeric>{ t('After') }</Th>
+            <Th width="33%" isNumeric>{ t('Change') }</Th>
+            <Th width="150px" minW="80px" maxW="150px">{ t('tx_area.Token_ID') }</Th>
           </Tr>
         </Thead>
         <Tbody>

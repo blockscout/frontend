@@ -1,4 +1,6 @@
+/* eslint-disable eqeqeq */
 import { Box, Flex, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import type { GasPriceInfo, GasPrices } from 'types/api/stats';
@@ -15,11 +17,6 @@ interface Props {
   isLoading: boolean;
 }
 
-const TITLES: Record<keyof GasPrices, string> = {
-  fast: 'Fast',
-  average: 'Normal',
-  slow: 'Slow',
-};
 const ICONS: Record<keyof GasPrices, IconName> = {
   fast: 'rocket_xl',
   average: 'gas_xl',
@@ -27,11 +24,23 @@ const ICONS: Record<keyof GasPrices, IconName> = {
 };
 
 const GasTrackerPriceSnippet = ({ data, type, isLoading }: Props) => {
+  const { t } = useTranslation('common');
+
   const bgColors = {
     fast: 'transparent',
     average: useColorModeValue('gray.50', 'whiteAlpha.200'),
     slow: useColorModeValue('gray.50', 'whiteAlpha.200'),
   };
+
+  let processedTitle = '';
+
+  if (type == 'fast') {
+    processedTitle = t(`gas_related.Fast`);
+  } else if (type == 'average') {
+    processedTitle = t(`gas_related.Normal`);
+  } else {
+    processedTitle = t(`gas_related.Slow`);
+  }
 
   return (
     <Box
@@ -42,7 +51,7 @@ const GasTrackerPriceSnippet = ({ data, type, isLoading }: Props) => {
       w={{ lg: 'calc(100% / 3)' }}
       bgColor={ bgColors[type] }
     >
-      <Skeleton textStyle="h3" isLoaded={ !isLoading } w="fit-content">{ TITLES[type] }</Skeleton>
+      <Skeleton textStyle="h3" isLoaded={ !isLoading } w="fit-content">{ processedTitle }</Skeleton>
       <Flex columnGap={ 3 } alignItems="center" mt={ 3 }>
         <IconSvg name={ ICONS[type] } boxSize={{ base: '30px', xl: 10 }} isLoading={ isLoading } flexShrink={ 0 }/>
         <Skeleton isLoaded={ !isLoading }>
@@ -51,13 +60,13 @@ const GasTrackerPriceSnippet = ({ data, type, isLoading }: Props) => {
       </Flex>
       <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary" mt={ 3 } w="fit-content">
         { data.price && data.fiat_price && <GasPrice data={ data } prefix={ `${ asymp } ` } unitMode="secondary"/> }
-        <span> per transaction</span>
+        <span> { t('gas_related.per_transaction') }</span>
         { data.time && <span> / { (data.time / SECOND).toLocaleString(undefined, { maximumFractionDigits: 1 }) }s</span> }
       </Skeleton>
       <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary" mt={ 2 } w="fit-content" whiteSpace="pre">
-        { data.base_fee && <span>Base { data.base_fee.toLocaleString(undefined, { maximumFractionDigits: 0 }) }</span> }
+        { data.base_fee && <span>{ t('gas_related.Base') } { data.base_fee.toLocaleString(undefined, { maximumFractionDigits: 0 }) }</span> }
         { data.base_fee && data.priority_fee && <span> / </span> }
-        { data.priority_fee && <span>Priority { data.priority_fee.toLocaleString(undefined, { maximumFractionDigits: 0 }) }</span> }
+        { data.priority_fee && <span>{ t('gas_related.Priority') } { data.priority_fee.toLocaleString(undefined, { maximumFractionDigits: 0 }) }</span> }
       </Skeleton>
     </Box>
   );

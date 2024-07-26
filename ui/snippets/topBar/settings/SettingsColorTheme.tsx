@@ -1,4 +1,5 @@
 import { Box, Flex, useColorMode } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import * as cookies from 'lib/cookies';
@@ -7,6 +8,18 @@ import SettingsSample from './SettingsSample';
 import { COLOR_THEMES } from './utils';
 
 const SettingsColorTheme = () => {
+  const { t } = useTranslation('common');
+
+  COLOR_THEMES.forEach((theme) => {
+    if (theme.colorMode === 'light') {
+      theme.label = t('theme_settings.Light');
+    }
+
+    if (theme.colorMode === 'dark') {
+      theme.label = t('theme_settings.Dark');
+    }
+  });
+
   const { setColorMode } = useColorMode();
 
   const [ activeHex, setActiveHex ] = React.useState<string>();
@@ -64,7 +77,7 @@ const SettingsColorTheme = () => {
 
   return (
     <div>
-      <Box fontWeight={ 600 }>Color theme</Box>
+      <Box fontWeight={ 600 }>{ t('theme_settings.Color_theme') }</Box>
       <Box color="text_secondary" mt={ 1 } mb={ 2 }>{ activeTheme?.label }</Box>
       <Flex>
         { COLOR_THEMES.map((theme) => (

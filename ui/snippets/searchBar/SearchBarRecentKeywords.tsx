@@ -1,4 +1,5 @@
 import { Box, Flex, Link, Text, useColorModeValue } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -13,6 +14,8 @@ type Props = {
 }
 
 const SearchBarSuggest = ({ onClick, onClear }: Props) => {
+  const { t } = useTranslation('common');
+
   const isMobile = useIsMobile();
   const bgHoverColor = useColorModeValue('blue.50', 'gray.800');
 
@@ -49,8 +52,8 @@ const SearchBarSuggest = ({ onClick, onClear }: Props) => {
         </Box>
       ) }
       <Flex mb={ 3 } justifyContent="space-between" fontSize="sm">
-        <Text fontWeight={ 600 } variant="secondary">Recent</Text>
-        <Link onClick={ clearKeywords }>Clear all</Link>
+        <Text fontWeight={ 600 } variant="secondary">{ t('Recent') }</Text>
+        <Link onClick={ clearKeywords }>{ t('Clear_all') }</Link>
       </Flex>
       { keywords.map(kw => (
         <Flex

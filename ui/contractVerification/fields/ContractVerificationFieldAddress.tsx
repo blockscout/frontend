@@ -1,4 +1,5 @@
 import { FormControl, Input, chakra } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 import type { ControllerRenderProps } from 'react-hook-form';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -15,6 +16,8 @@ interface Props {
 }
 
 const ContractVerificationFieldAddress = ({ isReadOnly }: Props) => {
+  const { t } = useTranslation('common');
+
   const { formState, control } = useFormContext<FormFields>();
 
   const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'address'>}) => {
@@ -31,16 +34,16 @@ const ContractVerificationFieldAddress = ({ isReadOnly }: Props) => {
           autoComplete="off"
           height="80px!important"
         />
-        <InputPlaceholder text="Smart contract / Address (0x...)" error={ error }/>
+        <InputPlaceholder text={ t('contract_verification_area.Smart_contract_Address_0x') } error={ error }/>
       </FormControl>
     );
-  }, [ formState.errors, formState.isSubmitting, isReadOnly ]);
+  }, [ formState.errors, formState.isSubmitting, isReadOnly, t ]);
 
   return (
     <>
       <ContractVerificationFormRow>
         <chakra.span fontWeight={ 500 } fontSize="lg" fontFamily="heading">
-          Contract address to verify
+          { t('contract_verification_area.Contract_address_to_verify') }
         </chakra.span>
       </ContractVerificationFormRow>
       <ContractVerificationFormRow>

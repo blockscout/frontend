@@ -1,3 +1,4 @@
+import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -32,6 +33,8 @@ import useTxQuery from 'ui/tx/useTxQuery';
 const txInterpretation = config.features.txInterpretation;
 
 const TransactionPageContent = () => {
+  const { t } = useTranslation('common');
+
   const router = useRouter();
   const appProps = useAppContext();
 
@@ -49,7 +52,7 @@ const TransactionPageContent = () => {
     return [
       {
         id: 'index',
-        title: config.features.suave.isEnabled && data?.wrapped ? 'Confidential compute tx details' : 'Details',
+        title: config.features.suave.isEnabled && data?.wrapped ? 'Confidential compute tx details' : t('tx_area.Details'),
         component: detailsComponent,
       },
       txInterpretation.isEnabled && txInterpretation.provider === 'noves' ?
@@ -58,17 +61,17 @@ const TransactionPageContent = () => {
       config.features.suave.isEnabled && data?.wrapped ?
         { id: 'wrapped', title: 'Regular tx details', component: <TxDetailsWrapped data={ data.wrapped }/> } :
         undefined,
-      { id: 'token_transfers', title: 'Token transfers', component: <TxTokenTransfer txQuery={ txQuery }/> },
+      { id: 'token_transfers', title: t('tx_area.Token_transfers'), component: <TxTokenTransfer txQuery={ txQuery }/> },
       config.features.userOps.isEnabled ?
         { id: 'user_ops', title: 'User operations', component: <TxUserOps txQuery={ txQuery }/> } :
         undefined,
-      { id: 'internal', title: 'Internal txns', component: <TxInternals txQuery={ txQuery }/> },
+      { id: 'internal', title: t('tx_area.Internal_txns'), component: <TxInternals txQuery={ txQuery }/> },
       txQuery.data?.blob_versioned_hashes?.length ?
         { id: 'blobs', title: 'Blobs', component: <TxBlobs txQuery={ txQuery }/> } :
         undefined,
-      { id: 'logs', title: 'Logs', component: <TxLogs txQuery={ txQuery }/> },
-      { id: 'state', title: 'State', component: <TxState txQuery={ txQuery }/> },
-      { id: 'raw_trace', title: 'Raw trace', component: <TxRawTrace txQuery={ txQuery }/> },
+      { id: 'logs', title: t('tx_area.Logs'), component: <TxLogs txQuery={ txQuery }/> },
+      { id: 'state', title: t('tx_area.State'), component: <TxState txQuery={ txQuery }/> },
+      { id: 'raw_trace', title: t('tx_area.Raw_trace'), component: <TxRawTrace txQuery={ txQuery }/> },
     ].filter(Boolean);
   })();
 
@@ -119,7 +122,7 @@ const TransactionPageContent = () => {
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        title="Transaction details"
+        title={ t('area.Transaction_details') }
         backLink={ backLink }
         contentAfter={ tags }
         secondRow={ titleSecondRow }

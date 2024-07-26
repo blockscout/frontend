@@ -1,4 +1,5 @@
 import { Flex, Box, Text, Skeleton } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import type { PaginationParams } from 'ui/shared/pagination/types';
@@ -13,6 +14,8 @@ interface Props {
 }
 
 const BlocksTabSlot = ({ pagination }: Props) => {
+  const { t } = useTranslation('common');
+
   const statsQuery = useApiQuery('stats', {
     queryOptions: {
       placeholderData: HOMEPAGE_STATS,
@@ -24,7 +27,7 @@ const BlocksTabSlot = ({ pagination }: Props) => {
       { statsQuery.data?.network_utilization_percentage !== undefined && (
         <Box>
           <Text as="span" fontSize="sm">
-              Network utilization (last 50 blocks):{ nbsp }
+            { t('Network_utilization_last_50_blocks') }:{ nbsp }
           </Text>
           <Skeleton display="inline-block" fontSize="sm" color="rgba(61, 246, 43, 1)" fontWeight={ 600 } isLoaded={ !statsQuery.isPlaceholderData }>
             <span>{ statsQuery.data.network_utilization_percentage.toFixed(2) }%</span>

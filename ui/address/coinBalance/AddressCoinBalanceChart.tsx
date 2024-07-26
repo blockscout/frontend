@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import config from 'configs/app';
@@ -11,6 +12,8 @@ interface Props {
 }
 
 const AddressCoinBalanceChart = ({ addressHash }: Props) => {
+  const { t } = useTranslation('common');
+
   const { data, isPending, isError } = useApiQuery('address_coin_balance_chart', {
     pathParams: { hash: addressHash },
   });
@@ -23,7 +26,7 @@ const AddressCoinBalanceChart = ({ addressHash }: Props) => {
   return (
     <ChartWidget
       isError={ isError }
-      title="Balances"
+      title={ t('Balances') }
       items={ items }
       isLoading={ isPending }
       h="300px"

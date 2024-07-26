@@ -1,3 +1,4 @@
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 import type { ControllerRenderProps } from 'react-hook-form';
 import { useFormContext, Controller } from 'react-hook-form';
@@ -13,6 +14,8 @@ const options = CONTRACT_LICENSES.map(({ label, title, type }) => ({ label: `${ 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
 const ContractVerificationFieldLicenseType = () => {
+  const { t } = useTranslation('common');
+
   const { formState, control } = useFormContext<FormFields>();
   const isMobile = useIsMobile();
 
@@ -24,12 +27,12 @@ const ContractVerificationFieldLicenseType = () => {
         { ...field }
         options={ options }
         size={ isMobile ? 'md' : 'lg' }
-        placeholder="Contract license"
+        placeholder={ t('contract_verification_area.Contract_license') }
         isDisabled={ formState.isSubmitting }
         error={ error }
       />
     );
-  }, [ formState.errors, formState.isSubmitting, isMobile ]);
+  }, [ formState.errors, formState.isSubmitting, isMobile, t ]);
 
   return (
     <ContractVerificationFormRow>
@@ -39,8 +42,7 @@ const ContractVerificationFieldLicenseType = () => {
         render={ renderControl }
       />
       <span>
-          For best practices, all contract source code holders, publishers and authors are encouraged to also
-          specify the accompanying license for their verified contract source code provided.
+        { t('contract_verification_area.For_best_practices_all_contract_source_code_holders_publishers_') }
       </span>
     </ContractVerificationFormRow>
   );

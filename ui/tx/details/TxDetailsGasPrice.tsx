@@ -1,5 +1,6 @@
 import { Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import config from 'configs/app';
@@ -13,14 +14,16 @@ interface Props {
 }
 
 const TxDetailsGasPrice = ({ gasPrice, isLoading }: Props) => {
+  const { t } = useTranslation('common');
+
   if (config.UI.views.tx.hiddenFields?.gas_price || !gasPrice) {
     return null;
   }
 
   return (
     <DetailsInfoItem
-      title="Gas price"
-      hint="Price per unit of gas specified by the sender. Higher gas prices can prioritize transaction inclusion during times of high usage"
+      title={ t('tx_area.Gas_price') }
+      hint={ t('tx_area.Price_per_unit_of_gas_specified_by_the_sender_Higher_gas_prices_can_prioritize_transaction_inclusion_during_times_of_high_usage') }
       isLoading={ isLoading }
     >
       <Skeleton isLoaded={ !isLoading } mr={ 1 }>

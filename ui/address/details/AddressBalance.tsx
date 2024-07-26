@@ -1,4 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
@@ -18,6 +19,8 @@ interface Props {
 }
 
 const AddressBalance = ({ data, isLoading }: Props) => {
+  const { t } = useTranslation('common');
+
   const [ lastBlockNumber, setLastBlockNumber ] = React.useState<number>(data.block_number_balance_updated_at || 0);
   const queryClient = useQueryClient();
 
@@ -66,8 +69,8 @@ const AddressBalance = ({ data, isLoading }: Props) => {
 
   return (
     <DetailsInfoItem
-      title="Balance"
-      hint={ `Address balance in ${ currencyUnits.ether }. Doesn't include ERC20, ERC721 and ERC1155 tokens` }
+      title={ t('Balance') }
+      hint={ t('address_area.Address_balance_in_ZCX_Doesnt_include_ERC20_ERC721_and_ERC1155_tokens') }
       flexWrap="nowrap"
       alignItems="flex-start"
       isLoading={ isLoading }

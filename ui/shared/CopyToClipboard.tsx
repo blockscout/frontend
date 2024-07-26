@@ -1,4 +1,5 @@
 import { IconButton, Tooltip, useClipboard, chakra, useDisclosure, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React, { useEffect, useState } from 'react';
 
 import IconSvg from 'ui/shared/IconSvg';
@@ -10,6 +11,8 @@ export interface Props {
 }
 
 const CopyToClipboard = ({ text, className, isLoading }: Props) => {
+  const { t } = useTranslation('common');
+
   const { hasCopied, onCopy } = useClipboard(text, 1000);
   const [ copied, setCopied ] = useState(false);
   // have to implement controlled tooltip because of the issue - https://github.com/chakra-ui/chakra-ui/issues/7107
@@ -29,7 +32,7 @@ const CopyToClipboard = ({ text, className, isLoading }: Props) => {
   }
 
   return (
-    <Tooltip label={ copied ? 'Copied' : 'Copy to clipboard' } isOpen={ isOpen || copied }>
+    <Tooltip label={ copied ? t('Copied') : t('Copy_to_clipboard') } isOpen={ isOpen || copied }>
       <IconButton
         aria-label="copy"
         icon={ <IconSvg name="copy" boxSize={ 5 }/> }

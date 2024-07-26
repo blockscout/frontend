@@ -1,5 +1,6 @@
 import { Link, Table, Tbody, Tr, Th } from '@chakra-ui/react';
 import { AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import type { Transaction, TransactionsSortingField, TransactionsSortingValue } from 'types/api/transaction';
@@ -41,6 +42,8 @@ const TxsTable = ({
   enableTimeIncrement,
   isLoading,
 }: Props) => {
+  const { t } = useTranslation('common');
+
   const { cutRef, renderedItemsNum } = useLazyRenderedList(txs, !isLoading);
 
   return (
@@ -49,17 +52,17 @@ const TxsTable = ({
         <TheadSticky top={ top }>
           <Tr>
             <Th width="54px"></Th>
-            <Th width="180px">Txn hash</Th>
-            <Th width="160px">Type</Th>
-            <Th width="20%">Method</Th>
-            { showBlockInfo && <Th width="18%">Block</Th> }
-            <Th width="224px">From/To</Th>
+            <Th width="180px">{ t('Txn_hash') }</Th>
+            <Th width="160px">{ t('Type') }</Th>
+            <Th width="20%">{ t('Method') }</Th>
+            { showBlockInfo && <Th width="18%">{ t('Block') }</Th> }
+            <Th width="224px">{ t('From_To') }</Th>
             { !config.UI.views.tx.hiddenFields?.value && (
               <Th width="20%" isNumeric>
                 <Link onClick={ sort('value') } display="flex" justifyContent="end">
                   { sorting === 'value-asc' && <IconSvg boxSize={ 5 } name="arrows/east" transform="rotate(-90deg)"/> }
                   { sorting === 'value-desc' && <IconSvg boxSize={ 5 } name="arrows/east" transform="rotate(90deg)"/> }
-                  { `Value ${ currencyUnits.ether }` }
+                  { `${ t('Value') } ${ currencyUnits.ether }` }
                 </Link>
               </Th>
             ) }
@@ -68,7 +71,7 @@ const TxsTable = ({
                 <Link onClick={ sort('fee') } display="flex" justifyContent="end">
                   { sorting === 'fee-asc' && <IconSvg boxSize={ 5 } name="arrows/east" transform="rotate(-90deg)"/> }
                   { sorting === 'fee-desc' && <IconSvg boxSize={ 5 } name="arrows/east" transform="rotate(90deg)"/> }
-                  { `Fee${ config.UI.views.tx.hiddenFields?.fee_currency ? '' : ` ${ currencyUnits.ether }` }` }
+                  { `${ t('Fee') }${ config.UI.views.tx.hiddenFields?.fee_currency ? '' : ` ${ currencyUnits.ether }` }` }
                 </Link>
               </Th>
             ) }

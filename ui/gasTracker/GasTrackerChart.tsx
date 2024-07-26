@@ -1,4 +1,5 @@
 import { Box, Flex, chakra, useBoolean } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
@@ -13,6 +14,8 @@ import ChartWidgetContainer from 'ui/stats/ChartWidgetContainer';
 const GAS_PRICE_CHART_ID = 'averageGasPrice';
 
 const GasTrackerChart = () => {
+  const { t } = useTranslation('common');
+
   const [ isChartLoadingError, setChartLoadingError ] = useBoolean(false);
   const { data, isPlaceholderData, isError } = useApiQuery('stats_lines', {
     queryOptions: {
@@ -38,8 +41,8 @@ const GasTrackerChart = () => {
     return (
       <ChartWidgetContainer
         id={ GAS_PRICE_CHART_ID }
-        title={ chart.title }
-        description={ chart.description }
+        title={ t('gas_related.average_chart_title') }
+        description={ t('gas_related.average_chart_description') }
         interval="oneMonth"
         units={ chart.units || undefined }
         isPlaceholderData={ isPlaceholderData }
@@ -52,8 +55,8 @@ const GasTrackerChart = () => {
   return (
     <Box>
       <Flex justifyContent="space-between" alignItems="center" mb={ 6 }>
-        <chakra.h3 textStyle="h3">Gas price history</chakra.h3>
-        <LinkInternal href={ route({ pathname: '/stats', hash: 'gas' }) }>Charts & stats</LinkInternal>
+        <chakra.h3 textStyle="h3">{ t('gas_related.Gas_price_history') }</chakra.h3>
+        <LinkInternal href={ route({ pathname: '/stats', hash: 'gas' }) }>{ t('area.Charts_stats') }</LinkInternal>
       </Flex>
       { content }
     </Box>

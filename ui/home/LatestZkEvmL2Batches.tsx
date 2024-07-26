@@ -1,6 +1,7 @@
 import { Box, Heading, Flex, Text, VStack } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
@@ -18,6 +19,8 @@ import LinkInternal from 'ui/shared/LinkInternal';
 import LatestZkevmL2BatchItem from './LatestZkevmL2BatchItem';
 
 const LatestZkEvmL2Batches = () => {
+  const { t } = useTranslation('common');
+
   const isMobile = useIsMobile();
   const batchesMaxCount = isMobile ? 2 : 5;
   const queryClient = useQueryClient();
@@ -53,7 +56,7 @@ const LatestZkEvmL2Batches = () => {
   let content;
 
   if (isError) {
-    content = <Text>No data. Please reload page.</Text>;
+    content = <Text>{ t('No_data_Please_reload_page') }</Text>;
   }
 
   if (data) {
@@ -73,7 +76,7 @@ const LatestZkEvmL2Batches = () => {
           </AnimatePresence>
         </VStack>
         <Flex justifyContent="center">
-          <LinkInternal fontSize="sm" href={ route({ pathname: '/batches' }) }>View all batches</LinkInternal>
+          <LinkInternal fontSize="sm" href={ route({ pathname: '/batches' }) }>{ t('home.View_all_batches') }</LinkInternal>
         </Flex>
       </>
     );
@@ -81,7 +84,7 @@ const LatestZkEvmL2Batches = () => {
 
   return (
     <Box width={{ base: '100%', lg: '280px' }} flexShrink={ 0 }>
-      <Heading as="h4" size="sm" mb={ 4 }>Latest batches</Heading>
+      <Heading as="h4" size="sm" mb={ 4 }>{ t('home.Latest_batches') }</Heading>
       { content }
     </Box>
   );

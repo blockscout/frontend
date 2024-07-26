@@ -1,5 +1,6 @@
 import { InputGroup, Input, InputLeftElement, chakra, useColorModeValue, forwardRef, InputRightElement } from '@chakra-ui/react';
 import throttle from 'lodash/throttle';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 import type { ChangeEvent, FormEvent, FocusEvent } from 'react';
 
@@ -24,6 +25,8 @@ const SearchBarInput = (
   { onChange, onSubmit, isHomepage, isSuggestOpen, onFocus, onBlur, onHide, onClear, value }: Props,
   ref: React.ForwardedRef<HTMLFormElement>,
 ) => {
+  const { t } = useTranslation('common');
+
   const innerRef = React.useRef<HTMLFormElement>(null);
   React.useImperativeHandle(ref, () => innerRef.current as HTMLFormElement, []);
   const [ isSticky, setIsSticky ] = React.useState(false);
@@ -103,7 +106,7 @@ const SearchBarInput = (
               paddingRight: '36px',
             },
           }}
-          placeholder={ isMobile ? 'Search by address / ... ' : 'Search by address / txn hash / block / token... ' }
+          placeholder={ isMobile ? t('Search_by_address_') : t('Search_by_address_txn_hash_block_token_') }
           onChange={ handleChange }
           border={ isHomepage ? 'none' : '1px solid' }
           borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }

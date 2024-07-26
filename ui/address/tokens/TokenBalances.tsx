@@ -1,4 +1,5 @@
 import { Flex } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -14,6 +15,8 @@ import useFetchTokens from '../utils/useFetchTokens';
 import TokenBalancesItem from './TokenBalancesItem';
 
 const TokenBalances = () => {
+  const { t } = useTranslation('common');
+
   const router = useRouter();
 
   const hash = router.query.hash?.toString();
@@ -42,23 +45,23 @@ const TokenBalances = () => {
   const prefix = tokensInfo.isOverflow ? '>' : '';
   const totalUsd = nativeUsd.plus(tokensInfo.usd);
   const tokensNumText = tokensInfo.num > 0 ?
-    ` | ${ prefix }${ tokensInfo.num } ${ tokensInfo.num > 1 ? 'tokens' : 'token' }` :
+    ` | ${ prefix }${ tokensInfo.num } ${ tokensInfo.num > 1 ? t('tx_area.tokens') : t('tx_area.token') }` :
     '';
 
   return (
     <Flex columnGap={ 3 } rowGap={ 3 } mt={{ base: '6px', lg: 0 }} flexDirection={{ base: 'column', lg: 'row' }}>
       <TokenBalancesItem
-        name="Net Worth"
+        name={ t('address_area.Net_Worth') }
         value={ addressData?.exchange_rate ? `${ prefix }$${ totalUsd.toFormat(2) } USD` : 'N/A' }
         isLoading={ addressQuery.isPending || tokenQuery.isPending }
       />
       <TokenBalancesItem
-        name={ `${ currencyUnits.ether } Balance` }
+        name={ `${ currencyUnits.ether } ${ t('Balance') }` }
         value={ (!nativeUsd.eq(ZERO) ? `$${ nativeUsd.toFormat(2) } USD | ` : '') + `${ nativeValue } ${ currencyUnits.ether }` }
         isLoading={ addressQuery.isPending || tokenQuery.isPending }
       />
       <TokenBalancesItem
-        name="Tokens"
+        name={ t('tx_area.Tokens') }
         value={
           `${ prefix }$${ tokensInfo.usd.toFormat(2) } USD ` +
           tokensNumText

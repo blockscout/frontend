@@ -1,4 +1,5 @@
 import { Skeleton } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import type { Address } from 'types/api/address';
@@ -12,11 +13,13 @@ interface Props {
 }
 
 const AddressNameInfo = ({ data, isLoading }: Props) => {
+  const { t } = useTranslation('common');
+
   if (data.token) {
     return (
       <DetailsInfoItem
-        title="Token name"
-        hint="Token name and symbol"
+        title={ t('address_area.Token_name') }
+        hint={ t('address_area.Token_name_and_symbol') }
         isLoading={ isLoading }
       >
         <TokenEntity
@@ -32,8 +35,8 @@ const AddressNameInfo = ({ data, isLoading }: Props) => {
   if (data.is_contract && data.name) {
     return (
       <DetailsInfoItem
-        title="Contract name"
-        hint="The name found in the source code of the Contract"
+        title={ t('address_area.Contract_name') }
+        hint={ t('address_area.The_name_found_in_the_source_code_of_the_Contract') }
         isLoading={ isLoading }
       >
         <Skeleton isLoaded={ !isLoading }>
@@ -46,8 +49,8 @@ const AddressNameInfo = ({ data, isLoading }: Props) => {
   if (data.name) {
     return (
       <DetailsInfoItem
-        title="Validator name"
-        hint="The name of the validator"
+        title={ t('address_area.Validator_name') }
+        hint={ t('address_area.The_name_of_the_validator') }
         isLoading={ isLoading }
       >
         <Skeleton isLoaded={ !isLoading }>

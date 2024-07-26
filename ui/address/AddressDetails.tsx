@@ -1,4 +1,5 @@
 import { Box, Text, Grid } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -26,6 +27,8 @@ interface Props {
 }
 
 const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
+  const { t } = useTranslation('common');
+
   const router = useRouter();
 
   const addressHash = getQueryParamString(router.query.hash);
@@ -89,8 +92,8 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
         <AddressNameInfo data={ data } isLoading={ addressQuery.isPlaceholderData }/>
         { data.is_contract && data.creation_tx_hash && data.creator_address_hash && (
           <DetailsInfoItem
-            title="Creator"
-            hint="Transaction and address of creation"
+            title={ t('address_area.Creator') }
+            hint={ t('address_area.Transaction_and_address_of_creation') }
             isLoading={ addressQuery.isPlaceholderData }
           >
             <AddressEntity
@@ -104,8 +107,8 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
         ) }
         { data.is_contract && data.implementation_address && (
           <DetailsInfoItem
-            title="Implementation"
-            hint="Implementation address of the proxy contract"
+            title={ t('address_area.Implementation') }
+            hint={ t('address_area.Implementation_address_of_the_proxy_contract') }
             columnGap={ 1 }
           >
             <AddressEntity
@@ -118,8 +121,8 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
         <AddressBalance data={ data } isLoading={ addressQuery.isPlaceholderData }/>
         { data.has_tokens && (
           <DetailsInfoItem
-            title="Tokens"
-            hint="All tokens in the account and total value"
+            title={ t('address_area.Tokens') }
+            hint={ t('address_area.All_tokens_in_the_account_and_total_value') }
             alignSelf="center"
             py={ 0 }
           >
@@ -127,8 +130,8 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
           </DetailsInfoItem>
         ) }
         <DetailsInfoItem
-          title="Transactions"
-          hint="Number of transactions related to this address"
+          title={ t('address_area.Transactions') }
+          hint={ t('address_area.Number_of_transactions_related_to_this_address') }
           isLoading={ addressQuery.isPlaceholderData || countersQuery.isPlaceholderData }
         >
           { addressQuery.data ? (
@@ -145,8 +148,8 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
         </DetailsInfoItem>
         { data.has_token_transfers && (
           <DetailsInfoItem
-            title="Transfers"
-            hint="Number of transfers to/from this address"
+            title={ t('address_area.Transfers') }
+            hint={ t('address_area.Number_of_transfers_to_from_this_address') }
             isLoading={ addressQuery.isPlaceholderData || countersQuery.isPlaceholderData }
           >
             { addressQuery.data ? (
@@ -164,8 +167,8 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
         ) }
         { countersQuery.data?.gas_usage_count && (
           <DetailsInfoItem
-            title="Gas used"
-            hint="Gas used by the address"
+            title={ t('address_area.Gas_used') }
+            hint={ t('address_area.Gas_used_by_the_address') }
             isLoading={ addressQuery.isPlaceholderData || countersQuery.isPlaceholderData }
           >
             { addressQuery.data ? (
@@ -183,8 +186,8 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
         ) }
         { data.has_validated_blocks && (
           <DetailsInfoItem
-            title="Blocks validated"
-            hint="Number of blocks validated by this validator"
+            title={ t('address_area.Blocks_validated') }
+            hint={ t('address_area.Number_of_blocks_validated_by_this_validator') }
             isLoading={ addressQuery.isPlaceholderData || countersQuery.isPlaceholderData }
           >
             { addressQuery.data ? (
@@ -202,8 +205,8 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
         ) }
         { data.block_number_balance_updated_at && (
           <DetailsInfoItem
-            title="Last balance update"
-            hint="Block number in which the address was updated"
+            title={ t('address_area.Last_balance_update') }
+            hint={ t('address_area.Block_number_in_which_the_address_was_updated') }
             alignSelf="center"
             py={{ base: '2px', lg: 1 }}
             isLoading={ addressQuery.isPlaceholderData }

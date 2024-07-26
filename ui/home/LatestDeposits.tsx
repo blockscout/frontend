@@ -1,4 +1,5 @@
 import { Box, Flex, Text } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
@@ -17,6 +18,8 @@ import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import LatestDepositsItem from './LatestDepositsItem';
 
 const LatestDeposits = () => {
+  const { t } = useTranslation('common');
+
   const isMobile = useIsMobile();
   const itemsCount = isMobile ? 2 : 6;
   const { data, isPlaceholderData, isError } = useApiQuery('homepage_deposits', {
@@ -29,12 +32,12 @@ const LatestDeposits = () => {
   const [ socketAlert, setSocketAlert ] = React.useState('');
 
   const handleSocketClose = React.useCallback(() => {
-    setSocketAlert('Connection is lost. Please reload page.');
-  }, []);
+    setSocketAlert(t('Connection_is_lost_Please_reload_page'));
+  }, [ t ]);
 
   const handleSocketError = React.useCallback(() => {
-    setSocketAlert('An error has occurred while fetching new transactions. Please reload page.');
-  }, []);
+    setSocketAlert(t('An_error_has_occurred_while_fetching_new_transactions_Please_reload_page'));
+  }, [ t ]);
 
   const handleNewDepositMessage: SocketMessage.NewDeposits['handler'] = React.useCallback((payload) => {
     setNum(payload.deposits);
@@ -54,7 +57,7 @@ const LatestDeposits = () => {
   });
 
   if (isError) {
-    return <Text mt={ 4 }>No data. Please reload page.</Text>;
+    return <Text mt={ 4 }>{ t('No_data_Please_reload_page') }</Text>;
   }
 
   if (data) {
@@ -72,7 +75,7 @@ const LatestDeposits = () => {
           ))) }
         </Box>
         <Flex justifyContent="center">
-          <LinkInternal fontSize="sm" href={ depositsUrl }>View all deposits</LinkInternal>
+          <LinkInternal fontSize="sm" href={ depositsUrl }>{ t('home.View_all_deposits') }</LinkInternal>
         </Flex>
       </>
     );

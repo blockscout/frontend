@@ -1,4 +1,5 @@
 import type { GetServerSideProps } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import config from 'configs/app';
 import isNeedProxy from 'lib/api/isNeedProxy';
@@ -17,7 +18,7 @@ export type Props = {
   adBannerProvider: string;
 }
 
-export const base: GetServerSideProps<Props> = async({ req, query }) => {
+export const base: GetServerSideProps<Props> = async({ req, query, locale }) => {
   const adBannerProvider = (() => {
     if (adBannerFeature.isEnabled) {
       if ('additionalProvider' in adBannerFeature && adBannerFeature.additionalProvider) {
@@ -33,6 +34,9 @@ export const base: GetServerSideProps<Props> = async({ req, query }) => {
 
   return {
     props: {
+      ...(await serverSideTranslations(locale as string, [
+        'common',
+      ])),
       cookies: req.headers.cookie || '',
       referrer: req.headers.referer || '',
       id: query.id?.toString() || '',

@@ -1,3 +1,4 @@
+import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -24,7 +25,9 @@ const TAB_LIST_PROPS = {
 };
 
 const Transactions = () => {
-  const verifiedTitle = config.chain.verificationType === 'validation' ? 'Validated' : 'Mined';
+  const { t } = useTranslation('common');
+
+  const verifiedTitle = config.chain.verificationType === 'validation' ? t('transactions_area.Validated') : t('transactions_area.Mined');
   const router = useRouter();
   const isMobile = useIsMobile();
   const tab = getQueryParamString(router.query.tab);
@@ -104,7 +107,7 @@ const Transactions = () => {
         /> },
     {
       id: 'pending',
-      title: 'Pending',
+      title: t('transactions_area.Pending'),
       component: (
         <TxsWithFrontendSorting
           query={ txsPendingQuery }
@@ -117,7 +120,7 @@ const Transactions = () => {
     },
     config.features.dataAvailability.isEnabled && {
       id: 'blob_txs',
-      title: 'Blob txns',
+      title: t('transactions_area.Blob_txns'),
       component: (
         <TxsWithFrontendSorting
           query={ txsWithBlobsQuery }
@@ -129,7 +132,7 @@ const Transactions = () => {
     },
     hasAccount ? {
       id: 'watchlist',
-      title: 'Watch list',
+      title: t('transactions_area.Watch_list'),
       component: <TxsWatchlist query={ txsWatchlistQuery }/>,
     } : undefined,
   ].filter(Boolean);
@@ -145,7 +148,7 @@ const Transactions = () => {
 
   return (
     <>
-      <PageTitle title="Transactions" withTextAd/>
+      <PageTitle title={ t('area.Transactions') } withTextAd/>
       <RoutedTabs
         tabs={ tabs }
         tabListProps={ isMobile ? undefined : TAB_LIST_PROPS }

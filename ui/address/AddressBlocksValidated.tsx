@@ -1,5 +1,6 @@
 import { Hide, Show, Table, Tbody, Th, Tr } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -28,6 +29,8 @@ interface Props {
 }
 
 const AddressBlocksValidated = ({ scrollRef }: Props) => {
+  const { t } = useTranslation('common');
+
   const [ socketAlert, setSocketAlert ] = React.useState(false);
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -91,12 +94,12 @@ const AddressBlocksValidated = ({ scrollRef }: Props) => {
         <Table variant="simple" size="sm">
           <Thead top={ query.pagination.isVisible ? 80 : 0 }>
             <Tr>
-              <Th width="17%">Block</Th>
-              <Th width="17%">Age</Th>
-              <Th width="16%">Txn</Th>
-              <Th width="25%">Gas used</Th>
+              <Th width="17%">{ t('Block') }</Th>
+              <Th width="17%">{ t('address_area.Age') }</Th>
+              <Th width="16%">{ t('address_area.Txn') }</Th>
+              <Th width="25%">{ t('address_area.Gas_used') }</Th>
               { !config.UI.views.block.hiddenFields?.total_reward &&
-              <Th width="25%" isNumeric>Reward { currencyUnits.ether }</Th> }
+              <Th width="25%" isNumeric>{ t('address_area.Reward') } { currencyUnits.ether }</Th> }
             </Tr>
           </Thead>
           <Tbody>
@@ -134,7 +137,7 @@ const AddressBlocksValidated = ({ scrollRef }: Props) => {
     <DataListDisplay
       isError={ query.isError }
       items={ query.data?.items }
-      emptyText="There are no validated blocks for this address."
+      emptyText={ t('address_area.There_are_no_validated_blocks_for_this_address') }
       content={ content }
       actionBar={ actionBar }
     />

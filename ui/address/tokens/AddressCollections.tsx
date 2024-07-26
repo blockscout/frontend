@@ -1,10 +1,10 @@
 import { Box, Flex, Text, Grid, HStack, Skeleton } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { apos } from 'lib/html-entities';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
@@ -23,6 +23,8 @@ type Props = {
 }
 
 const AddressCollections = ({ collectionsQuery, address, hasActiveFilters }: Props) => {
+  const { t } = useTranslation('common');
+
   const isMobile = useIsMobile();
 
   const { isError, isPlaceholderData, data, pagination } = collectionsQuery;
@@ -102,11 +104,11 @@ const AddressCollections = ({ collectionsQuery, address, hasActiveFilters }: Pro
     <DataListDisplay
       isError={ isError }
       items={ data?.items }
-      emptyText="There are no tokens of selected type."
+      emptyText={ t('address_area.There_are_no_tokens_of_selected_type') }
       content={ content }
       actionBar={ actionBar }
       filterProps={{
-        emptyFilteredText: `Couldn${ apos }t find any token that matches your query.`,
+        emptyFilteredText: t('address_area.Couldnt_find_any_token_that_matches_your_query'),
         hasActiveFilters,
       }}
     />

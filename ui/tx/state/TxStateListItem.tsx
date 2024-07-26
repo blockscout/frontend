@@ -1,3 +1,4 @@
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import type { TxStateChange } from 'types/api/txStateChanges';
@@ -13,8 +14,9 @@ interface Props {
 }
 
 const TxStateListItem = ({ data, isLoading }: Props) => {
+  const { t } = useTranslation('common');
 
-  const { before, after, change, tag, tokenId } = getStateElements(data, isLoading);
+  const { before, after, change, tag, tokenId } = getStateElements(t('validator'), data, isLoading);
 
   return (
     <ListItemMobileGrid.Container>

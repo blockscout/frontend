@@ -1,4 +1,5 @@
 import type { NextPage } from 'next';
+import { useTranslation } from 'next-i18next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
@@ -13,10 +14,11 @@ const GraphQL = dynamic(() => import('ui/graphQL/GraphQL'), {
 });
 
 const Page: NextPage = () => {
+  const { t } = useTranslation('common');
 
   return (
     <PageNextJs pathname="/graphiql">
-      <PageTitle title="GraphQL playground"/>
+      <PageTitle title={ t('area.GraphQL_playground') }/>
       <GraphQL/>
     </PageNextJs>
   );

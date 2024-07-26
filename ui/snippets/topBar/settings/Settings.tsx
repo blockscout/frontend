@@ -1,13 +1,24 @@
-import { Box, IconButton, Popover, PopoverBody, PopoverContent, PopoverTrigger, useDisclosure } from '@chakra-ui/react';
+/* eslint-disable react/jsx-no-bind */
+import { IconButton, Popover, PopoverBody, PopoverContent, PopoverTrigger, useDisclosure, Box, Image } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import IconSvg from 'ui/shared/IconSvg';
 
 import SettingsColorTheme from './SettingsColorTheme';
-import SettingsIdentIcon from './SettingsIdentIcon';
 
 const Settings = () => {
+  const { t } = useTranslation('common');
+
+  const router = useRouter();
+
   const { isOpen, onToggle, onClose } = useDisclosure();
+
+  const changeLocaleTo = (newLocale: string) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    router.push(router.asPath as any, router.asPath as any, { locale: newLocale as any });
+  };
 
   return (
     <Popover placement="bottom-start" trigger="click" isOpen={ isOpen } onClose={ onClose }>
@@ -25,7 +36,32 @@ const Settings = () => {
         <PopoverBody boxShadow="2xl" p={ 4 }>
           <SettingsColorTheme/>
           <Box borderColor="divider" borderWidth="1px" my={ 3 }/>
-          <SettingsIdentIcon/>
+
+          <Box fontWeight={ 600 } mb={ 2 }>{ t('Language') }</Box>
+          <Box display="flex" flexDirection="row" justifyContent="center">
+            <Image
+              src="/static/flags/en.svg"
+              width="22px"
+              height="22px"
+              alt={ t('locales.English') }
+              cursor="pointer"
+              onClick={ () => changeLocaleTo('en') }
+              borderRadius="sm"
+              margin="9px"
+            />
+
+            <Image
+              src="/static/flags/cn.svg"
+              width="22px"
+              height="22px"
+              alt={ t('locales.Mandarin') }
+              cursor="pointer"
+              onClick={ () => changeLocaleTo('cn') }
+              borderRadius="base"
+              margin="9px"
+              marginLeft="4px"
+            />
+          </Box>
         </PopoverBody>
       </PopoverContent>
     </Popover>

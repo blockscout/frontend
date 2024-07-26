@@ -1,5 +1,6 @@
 import { Hide, Show } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import { TOP_ADDRESS } from 'stubs/address';
@@ -15,6 +16,8 @@ import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 const PAGE_SIZE = 50;
 
 const Accounts = () => {
+  const { t } = useTranslation('common');
+
   const { isError, isPlaceholderData, data, pagination } = useQueryWithPages({
     resourceName: 'addresses',
     options: {
@@ -73,11 +76,11 @@ const Accounts = () => {
 
   return (
     <>
-      <PageTitle title="Top accounts" withTextAd/>
+      <PageTitle title={ t('area.Top_accounts') } withTextAd/>
       <DataListDisplay
         isError={ isError }
         items={ data?.items }
-        emptyText="There are no accounts."
+        emptyText={ t('account_related.There_are_no_accounts') }
         content={ content }
         actionBar={ actionBar }
       />

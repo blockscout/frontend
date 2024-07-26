@@ -1,4 +1,5 @@
 import { Alert, Link, Text, chakra, useColorModeValue, Skeleton, Tr, Td } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 interface InjectedProps {
@@ -16,6 +17,8 @@ interface Props {
 }
 
 const SocketNewItemsNotice = chakra(({ children, className, url, num, alert, type = 'transaction', isLoading }: Props) => {
+  const { t } = useTranslation('common');
+
   const alertContent = (() => {
     if (alert) {
       return alert;
@@ -25,27 +28,29 @@ const SocketNewItemsNotice = chakra(({ children, className, url, num, alert, typ
 
     switch (type) {
       case 'token_transfer':
-        name = 'token transfer';
+        name = t('token_transfer');
         break;
       case 'deposit':
-        name = 'deposit';
+        name = t('deposit');
         break;
       case 'block':
-        name = 'block';
+        name = t('block');
         break;
       default:
-        name = 'transaction';
+        name = t('transaction');
         break;
     }
 
     if (!num) {
-      return `scanning new ${ name }s...`;
+      return `${ t('scanning_new') } ${ name }s...`;
     }
 
     return (
       <>
         <Link href={ url }>{ num.toLocaleString() } more { name }{ num > 1 ? 's' : '' }</Link>
-        <Text whiteSpace="pre" color={ useColorModeValue('rgba(17, 17, 17, 1)', 'rgba(255, 255, 255, 1)') }> ha{ num > 1 ? 've' : 's' } come in</Text>
+        <Text whiteSpace="pre" color={ useColorModeValue('rgba(17, 17, 17, 1)', 'rgba(255, 255, 255, 1)') }>
+          { num > 1 ? t('have') : t('has') } { t('come_in') }
+        </Text>
       </>
     );
   })();

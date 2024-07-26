@@ -1,3 +1,4 @@
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import type { TransactionType } from 'types/api/transaction';
@@ -21,6 +22,8 @@ const TYPES_ORDER: Array<TransactionType> = [
 ];
 
 const TxType = ({ types, isLoading }: Props) => {
+  const { t } = useTranslation('common');
+
   const typeToShow = types.sort((t1, t2) => TYPES_ORDER.indexOf(t1) - TYPES_ORDER.indexOf(t2))[0];
 
   let label;
@@ -28,27 +31,27 @@ const TxType = ({ types, isLoading }: Props) => {
 
   switch (typeToShow) {
     case 'contract_call':
-      label = 'Contract call';
+      label = t('tx_type.Contract_call');
       colorScheme = 'blue';
       break;
     case 'blob_transaction':
-      label = 'Blob txn';
+      label = t('tx_type.Blob_txn');
       colorScheme = 'yellow';
       break;
     case 'contract_creation':
-      label = 'Contract creation';
+      label = t('tx_type.Contract_creation');
       colorScheme = 'blue';
       break;
     case 'token_transfer':
-      label = 'Token transfer';
+      label = t('tx_type.Token_transfer');
       colorScheme = 'orange';
       break;
     case 'token_creation':
-      label = 'Token creation';
+      label = t('tx_type.Token_creation');
       colorScheme = 'orange';
       break;
     case 'coin_transfer':
-      label = 'Coin transfer';
+      label = t('tx_type.Coin_transfer');
       colorScheme = 'orange';
       break;
     case 'rootstock_remasc':
@@ -56,13 +59,12 @@ const TxType = ({ types, isLoading }: Props) => {
       colorScheme = 'blue';
       break;
     case 'rootstock_bridge':
-      label = 'Bridge';
+      label = t('tx_type.Bridge');
       colorScheme = 'blue';
       break;
     default:
-      label = 'Transaction';
+      label = t('tx_type.Transaction');
       colorScheme = 'purple';
-
   }
 
   return (

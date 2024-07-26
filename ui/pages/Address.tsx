@@ -1,4 +1,5 @@
 import { Box, Flex, HStack, useColorModeValue } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -46,6 +47,8 @@ const TOKEN_TABS = [ 'tokens_erc20', 'tokens_nfts', 'tokens_nfts_collection', 't
 const txInterpretation = config.features.txInterpretation;
 
 const AddressPageContent = () => {
+  const { t } = useTranslation('common');
+
   const router = useRouter();
   const appProps = useAppContext();
 
@@ -79,7 +82,7 @@ const AddressPageContent = () => {
     return [
       {
         id: 'txs',
-        title: 'Transactions',
+        title: t('Transactions'),
         count: addressTabsCountersQuery.data?.transactions_count,
         component: <AddressTxs scrollRef={ tabsScrollRef }/>,
       },
@@ -108,32 +111,32 @@ const AddressPageContent = () => {
         undefined,
       {
         id: 'token_transfers',
-        title: 'Token transfers',
+        title: t('tx_area.Token_transfers'),
         count: addressTabsCountersQuery.data?.token_transfers_count,
         component: <AddressTokenTransfers scrollRef={ tabsScrollRef }/>,
       },
       {
         id: 'tokens',
-        title: 'Tokens',
+        title: t('tx_area.Tokens'),
         count: addressTabsCountersQuery.data?.token_balances_count,
         component: <AddressTokens/>,
         subTabs: TOKEN_TABS,
       },
       {
         id: 'internal_txns',
-        title: 'Internal txns',
+        title: t('tx_area.Internal_txns'),
         count: addressTabsCountersQuery.data?.internal_txs_count,
         component: <AddressInternalTxs scrollRef={ tabsScrollRef }/>,
       },
       {
         id: 'coin_balance_history',
-        title: 'Coin balance history',
+        title: t('address_area.Coin_balance_history'),
         component: <AddressCoinBalance/>,
       },
       config.chain.verificationType === 'validation' && addressTabsCountersQuery.data?.validations_count ?
         {
           id: 'blocks_validated',
-          title: 'Blocks validated',
+          title: t('address_area.Blocks_validated'),
           count: addressTabsCountersQuery.data?.validations_count,
           component: <AddressBlocksValidated scrollRef={ tabsScrollRef }/>,
         } :
@@ -141,7 +144,7 @@ const AddressPageContent = () => {
       addressTabsCountersQuery.data?.logs_count ?
         {
           id: 'logs',
-          title: 'Logs',
+          title: t('tx_area.Logs'),
           count: addressTabsCountersQuery.data?.logs_count,
           component: <AddressLogs scrollRef={ tabsScrollRef }/>,
         } :
@@ -152,19 +155,19 @@ const AddressPageContent = () => {
           if (addressQuery.data.is_verified) {
             return (
               <>
-                <span>Contract</span>
+                <span>{ t('Contract') }</span>
                 <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 }/>
               </>
             );
           }
 
-          return 'Contract';
+          return t('Contract');
         },
         component: <AddressContract tabs={ contractTabs }/>,
         subTabs: contractTabs.map(tab => tab.id),
       } : undefined,
     ].filter(Boolean);
-  }, [ addressQuery.data, contractTabs, addressTabsCountersQuery.data, userOpsAccountQuery.data ]);
+  }, [ addressQuery.data, contractTabs, addressTabsCountersQuery.data, userOpsAccountQuery.data, t ]);
 
   const isLoading = addressQuery.isPlaceholderData || (config.features.userOps.isEnabled && userOpsAccountQuery.isPlaceholderData);
 
@@ -240,7 +243,7 @@ const AddressPageContent = () => {
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        title={ `${ addressQuery.data?.is_contract ? 'Contract' : 'Address' } details` }
+        title={ `${ addressQuery.data?.is_contract ? t('Contract') : t('Address') } ${ t('details') }` }
         backLink={ backLink }
         contentAfter={ tags }
         secondRow={ titleSecondRow }

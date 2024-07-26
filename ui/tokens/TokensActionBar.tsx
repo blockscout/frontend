@@ -1,4 +1,5 @@
 import { HStack } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import type { TokensSortingValue } from 'types/api/tokens';
@@ -29,13 +30,14 @@ const TokensActionBar = ({
   filter,
   inTabsSlot,
 }: Props) => {
+  const { t } = useTranslation('common');
 
   const searchInput = (
     <FilterInput
       w={{ base: '100%', lg: '360px' }}
       size="xs"
       onChange={ onSearchChange }
-      placeholder="Token name or symbol"
+      placeholder={ t('Token_name_or_symbol') }
       initialValue={ searchTerm }
     />
   );

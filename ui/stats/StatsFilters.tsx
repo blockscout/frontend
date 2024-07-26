@@ -1,4 +1,5 @@
 import { Grid, GridItem } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 
 import type { StatsChartsSection } from 'types/api/stats';
@@ -8,11 +9,6 @@ import FilterInput from 'ui/shared/filters/FilterInput';
 
 import { STATS_INTERVALS } from './constants';
 import StatsDropdownMenu from './StatsDropdownMenu';
-
-const intervalList = Object.keys(STATS_INTERVALS).map((id: string) => ({
-  id: id,
-  title: STATS_INTERVALS[id as StatsIntervalIds].title,
-})) as Array<StatsInterval>;
 
 type Props = {
   sections?: Array<StatsChartsSection>;
@@ -31,11 +27,21 @@ const StatsFilters = ({
   onIntervalChange,
   onFilterInputChange,
 }: Props) => {
+  const { t } = useTranslation('common');
+
+  const intervalList = Object.keys(STATS_INTERVALS).map((id: string) => ({
+    id: id,
+    title: t(`stats_interval.${ id }`),
+  })) as Array<StatsInterval>;
 
   const sectionsList = [ {
     id: 'all',
     title: 'All',
   }, ... (sections || []) ];
+
+  sectionsList.forEach((section) => {
+    section.title = t(`stats_chart_group.${ section.id }_title`);
+  });
 
   return (
     <Grid
@@ -75,7 +81,7 @@ const StatsFilters = ({
       >
         <FilterInput
           onChange={ onFilterInputChange }
-          placeholder="Find chart, metric..."/>
+          placeholder={ t('stats_area.Find_chart_metric') }/>
       </GridItem>
     </Grid>
   );

@@ -1,4 +1,5 @@
 import { Show, Hide } from '@chakra-ui/react';
+import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -6,7 +7,6 @@ import type { AddressFromToFilter } from 'types/api/address';
 import { AddressFromToFilterValues } from 'types/api/address';
 
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
-import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { INTERNAL_TX } from 'stubs/internalTx';
 import { generateListStub } from 'stubs/utils';
@@ -23,6 +23,8 @@ import AddressIntTxsList from './internals/AddressIntTxsList';
 const getFilterValue = (getFilterValueFromQuery<AddressFromToFilter>).bind(null, AddressFromToFilterValues);
 
 const AddressInternalTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivElement>}) => {
+  const { t } = useTranslation('common');
+
   const router = useRouter();
   const [ filterValue, setFilterValue ] = React.useState<AddressFromToFilter>(getFilterValue(router.query.filter));
 
@@ -88,8 +90,8 @@ const AddressInternalTxs = ({ scrollRef }: {scrollRef?: React.RefObject<HTMLDivE
     <DataListDisplay
       isError={ isError }
       items={ data?.items }
-      filterProps={{ emptyFilteredText: `Couldn${ apos }t find any transaction that matches your query.`, hasActiveFilters: Boolean(filterValue) }}
-      emptyText="There are no internal transactions for this address."
+      filterProps={{ emptyFilteredText: t('address_area.Couldnt_find_any_transaction_that_matches_your_query'), hasActiveFilters: Boolean(filterValue) }}
+      emptyText={ t('address_area.There_are_no_internal_transactions_for_this_address') }
       content={ content }
       actionBar={ actionBar }
     />

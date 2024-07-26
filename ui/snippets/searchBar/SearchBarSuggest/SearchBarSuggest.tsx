@@ -1,6 +1,7 @@
 import { Box, Tab, TabList, Tabs, Text, useColorModeValue } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import throttle from 'lodash/throttle';
+import { useTranslation } from 'next-i18next';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
@@ -25,6 +26,8 @@ interface Props {
 }
 
 const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props) => {
+  const { t } = useTranslation('common');
+
   const isMobile = useIsMobile();
 
   const marketplaceApps = useMarketplaceApps(searchTerm);
@@ -104,7 +107,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
 
   const content = (() => {
     if (query.isPending || marketplaceApps.isPlaceholderData) {
-      return <ContentLoader text="We are searching, please wait... " fontSize="sm"/>;
+      return <ContentLoader text={ t('We_are_searching_please_wait') } fontSize="sm"/>;
     }
 
     if (query.isError) {
@@ -114,7 +117,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
     const resultCategories = searchCategories.filter(cat => itemsGroups[cat.id]);
 
     if (resultCategories.length === 0) {
-      return <Text>No results found.</Text>;
+      return <Text>{ t('No_results_found') }</Text>;
     }
 
     return (
@@ -139,7 +142,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
                 mb={ 3 }
                 ref={ (el: HTMLParagraphElement) => categoriesRefs.current[indx] = el }
               >
-                { cat.title }
+                { t(`search_categories.${ cat.id }_title`) }
               </Text>
               { cat.id !== 'app' && itemsGroups[cat.id]?.map((item, index) =>
                 <SearchBarSuggestItem key={ index } data={ item } isMobile={ isMobile } searchTerm={ searchTerm } onClick={ onItemClick }/>,
