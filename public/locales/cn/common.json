@@ -73,6 +73,7 @@
   "Parent_txn_hash": "父交易哈希",
   "Copy_to_clipboard": "复制到剪贴板",
   "Copied": "已复制",
+  "Add_token_to": "将代币添加到",
   "home": {
     "View_all_blocks": "查看所有区块",
     "Latest_blocks": "最新区块",
@@ -385,7 +386,11 @@
     "Show_all_tokens": "显示所有代币",
     "Search_by_token_name": "按代币名称搜索",
     "Could_not_find_any_matches": "未找到任何匹配项。",
-    "tokens": "代币"
+    "tokens": "代币",
+    "Success": "成功",
+    "Successfully_added_token_to_your_wallet": "已成功将代币添加到您的钱包",
+    "Error": "错误",
+    "Something_went_wrong": "出现问题了"
   },
   "locales": {
     "English": "English",

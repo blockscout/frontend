@@ -73,6 +73,7 @@
   "Parent_txn_hash": "Parent txn hash",
   "Copy_to_clipboard": "Copy to clipboard",
   "Copied": "Copied",
+  "Add_token_to": "Add token to",
   "home": {
     "View_all_blocks": "View all blocks",
     "Latest_blocks": "Latest blocks",
@@ -385,7 +386,11 @@
     "Show_all_tokens": "Show all tokens",
     "Search_by_token_name": "Search by token name",
     "Could_not_find_any_matches": "Could not find any matches.",
-    "tokens": "tokens"
+    "tokens": "tokens",
+    "Success": "Success",
+    "Successfully_added_token_to_your_wallet": "Successfully added token to your wallet",
+    "Error": "Error",
+    "Something_went_wrong": "Something went wrong"
   },
   "locales": {
     "English": "English",
