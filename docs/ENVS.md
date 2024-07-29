@@ -61,6 +61,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
   - [OpenTelemetry](ENVS.md#opentelemetry)
   - [Swap button](ENVS.md#defi-dropdown)
   - [Multichain balance button](ENVS.md#multichain-balance-button)
+  - [Get gas button](ENVS.md#get-gas-button)
 - [3rd party services configuration](ENVS.md#external-services-configuration)
 
 &nbsp;
