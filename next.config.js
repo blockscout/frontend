@@ -19,6 +19,12 @@ const moduleExports = {
   ],
   reactStrictMode: true,
   webpack(config, { webpack }) {
+    if (process.env.NODE_ENV === 'development') {
+      Object.defineProperty(config, 'devtool', {
+        get: () => 'cheap-module-source-map',
+        set: () => {},
+      });
+    }
     config.plugins.push(
       new webpack.DefinePlugin({
         __SENTRY_DEBUG__: false,
