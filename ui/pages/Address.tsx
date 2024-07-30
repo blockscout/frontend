@@ -23,6 +23,7 @@ import AddressContract from 'ui/address/AddressContract';
 import AddressDetails from 'ui/address/AddressDetails';
 import AddressInternalTxs from 'ui/address/AddressInternalTxs';
 import AddressLogs from 'ui/address/AddressLogs';
+import AddressMud from 'ui/address/AddressMud';
 import AddressTokens from 'ui/address/AddressTokens';
 import AddressTokenTransfers from 'ui/address/AddressTokenTransfers';
 import AddressTxs from 'ui/address/AddressTxs';
@@ -77,6 +78,14 @@ const AddressPageContent = () => {
     },
   });
 
+  const mudTablesCountQuery = useApiQuery('address_mud_tables_count', {
+    pathParams: { hash },
+    queryOptions: {
+      enabled: config.features.mudFramework.isEnabled && areQueriesEnabled && Boolean(hash),
+      placeholderData: 10,
+    },
+  });
+
   const addressesForMetadataQuery = React.useMemo(() => ([ hash ].filter(Boolean)), [ hash ]);
   const addressMetadataQuery = useAddressMetadataInfoQuery(addressesForMetadataQuery, areQueriesEnabled);
 
@@ -98,7 +107,10 @@ const AddressPageContent = () => {
     undefined;
 
   const isLoading = addressQuery.isPlaceholderData || (config.features.userOps.isEnabled && userOpsAccountQuery.isPlaceholderData);
-  const isTabsLoading = isLoading || addressTabsCountersQuery.isPlaceholderData;
+  const isTabsLoading =
+    isLoading ||
+    addressTabsCountersQuery.isPlaceholderData ||
+    (config.features.mudFramework.isEnabled && mudTablesCountQuery.isPlaceholderData);
 
   const handleFetchedBytecodeMessage = React.useCallback(() => {
     addressQuery.refetch();
@@ -121,6 +133,12 @@ const AddressPageContent = () => {
 
   const tabs: Array<RoutedTab> = React.useMemo(() => {
     return [
+      config.features.mudFramework.isEnabled && mudTablesCountQuery.data && mudTablesCountQuery.data > 0 && {
+        id: 'mud',
+        title: 'MUD',
+        count: mudTablesCountQuery.data,
+        component: <AddressMud scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
+      },
       {
         id: 'txs',
         title: 'Transactions',
@@ -215,7 +233,15 @@ const AddressPageContent = () => {
         subTabs: contractTabs.tabs.map(tab => tab.id),
       } : undefined,
     ].filter(Boolean);
-  }, [ addressQuery.data, contractTabs, addressTabsCountersQuery.data, userOpsAccountQuery.data, isTabsLoading, areQueriesEnabled ]);
+  }, [
+    addressQuery.data,
+    contractTabs,
+    addressTabsCountersQuery.data,
+    userOpsAccountQuery.data,
+    isTabsLoading,
+    areQueriesEnabled,
+    mudTablesCountQuery.data,
+  ]);
 
   const tags: Array<EntityTag> = React.useMemo(() => {
     return [
@@ -229,10 +255,13 @@ const AddressPageContent = () => {
       config.features.userOps.isEnabled && userOpsAccountQuery.data ?
         { slug: 'user_ops_acc', name: 'Smart contract wallet', tagType: 'custom' as const, ordinal: -10 } :
         undefined,
+      config.features.mudFramework.isEnabled && mudTablesCountQuery.data ?
+        { slug: 'mud', name: 'MUD World', tagType: 'custom' as const, ordinal: -10 } :
+        undefined,
       ...formatUserTags(addressQuery.data),
       ...(addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags || []),
     ].filter(Boolean).sort(sortEntityTags);
-  }, [ addressMetadataQuery.data, addressQuery.data, hash, isSafeAddress, userOpsAccountQuery.data ]);
+  }, [ addressMetadataQuery.data, addressQuery.data, hash, isSafeAddress, userOpsAccountQuery.data, mudTablesCountQuery.data ]);
 
   const titleContentAfter = (
     <EntityTags
@@ -246,16 +275,21 @@ const AddressPageContent = () => {
     <RoutedTabs tabs={ tabs } tabListProps={{ mt: 6 }} isLoading={ isTabsLoading }/>;
 
   const backLink = React.useMemo(() => {
-    const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/accounts');
-
-    if (!hasGoBackLink) {
-      return;
+    if (appProps.referrer && appProps.referrer.includes('/accounts')) {
+      return {
+        label: 'Back to top accounts list',
+        url: appProps.referrer,
+      };
     }
 
-    return {
-      label: 'Back to top accounts list',
-      url: appProps.referrer,
-    };
+    if (appProps.referrer && appProps.referrer.includes('/mud-worlds')) {
+      return {
+        label: 'Back to MUD worlds list',
+        url: appProps.referrer,
+      };
+    }
+
+    return;
   }, [ appProps.referrer ]);
 
   const titleSecondRow = (

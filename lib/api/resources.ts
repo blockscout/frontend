@@ -32,6 +32,12 @@ import type {
   AddressCollectionsResponse,
   AddressNFTTokensFilter,
   AddressCoinBalanceHistoryChartOld,
+  AddressMudTables,
+  AddressMudTablesFilter,
+  AddressMudRecords,
+  AddressMudRecordsFilter,
+  AddressMudRecordsSorting,
+  AddressMudRecord,
 } from 'types/api/address';
 import type { AddressesResponse } from 'types/api/addresses';
 import type { AddressMetadataInfo, PublicTagTypesResponse } from 'types/api/addressMetadata';
@@ -61,6 +67,7 @@ import type {
 import type { IndexingStatus } from 'types/api/indexingStatus';
 import type { InternalTransactionsResponse } from 'types/api/internalTransaction';
 import type { LogsResponseTx, LogsResponseAddress } from 'types/api/log';
+import type { MudWorldsResponse } from 'types/api/mudWorlds';
 import type { NovesAccountHistoryResponse, NovesDescribeTxsResponse, NovesResponseData } from 'types/api/noves';
 import type {
   OptimisticL2DepositsResponse,
@@ -654,6 +661,34 @@ export const RESOURCES = {
     path: '/api/v2/optimism/games/count',
   },
 
+  // MUD worlds on optimism
+  mud_worlds: {
+    path: '/api/v2/mud/worlds',
+    filterFields: [],
+  },
+
+  address_mud_tables: {
+    path: '/api/v2/mud/worlds/:hash/tables',
+    pathParams: [ 'hash' as const ],
+    filterFields: [ 'q' as const ],
+  },
+
+  address_mud_tables_count: {
+    path: '/api/v2/mud/worlds/:hash/tables/count',
+    pathParams: [ 'hash' as const ],
+  },
+
+  address_mud_records: {
+    path: '/api/v2/mud/worlds/:hash/tables/:table_id/records',
+    pathParams: [ 'hash' as const, 'table_id' as const ],
+    filterFields: [ 'filter_key0' as const, 'filter_key1' as const ],
+  },
+
+  address_mud_record: {
+    path: '/api/v2/mud/worlds/:hash/tables/:table_id/records/:record_id',
+    pathParams: [ 'hash' as const, 'table_id' as const, 'record_id' as const ],
+  },
+
   // arbitrum L2
   arbitrum_l2_messages: {
     path: '/api/v2/arbitrum/messages/:direction',
@@ -899,6 +934,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' |
 'verified_contracts' |
 'optimistic_l2_output_roots' | 'optimistic_l2_withdrawals' | 'optimistic_l2_txn_batches' | 'optimistic_l2_deposits' |
 'optimistic_l2_dispute_games' |
+'mud_worlds'| 'address_mud_tables' | 'address_mud_records' |
 'shibarium_deposits' | 'shibarium_withdrawals' |
 'arbitrum_l2_messages' | 'arbitrum_l2_txn_batches' | 'arbitrum_l2_txn_batch_txs' | 'arbitrum_l2_txn_batch_blocks' |
 'zkevm_l2_deposits' | 'zkevm_l2_withdrawals' | 'zkevm_l2_txn_batches' | 'zkevm_l2_txn_batch_txs' |
@@ -1056,6 +1092,11 @@ Q extends 'user_op_interpretation'? TxInterpretationResponse :
 Q extends 'noves_transaction' ? NovesResponseData :
 Q extends 'noves_address_history' ? NovesAccountHistoryResponse :
 Q extends 'noves_describe_txs' ? NovesDescribeTxsResponse :
+Q extends 'mud_worlds' ? MudWorldsResponse :
+Q extends 'address_mud_tables' ? AddressMudTables :
+Q extends 'address_mud_tables_count' ? number :
+Q extends 'address_mud_records' ? AddressMudRecords :
+Q extends 'address_mud_record' ? AddressMudRecord :
 never;
 /* eslint-enable @typescript-eslint/indent */
 
@@ -1087,6 +1128,8 @@ Q extends 'addresses_lookup' ? EnsAddressLookupFilters :
 Q extends 'domains_lookup' ? EnsDomainLookupFilters :
 Q extends 'user_ops' ? UserOpsFilters :
 Q extends 'validators' ? ValidatorsFilters :
+Q extends 'address_mud_tables' ? AddressMudTablesFilter :
+Q extends 'address_mud_records' ? AddressMudRecordsFilter :
 never;
 /* eslint-enable @typescript-eslint/indent */
 
@@ -1099,5 +1142,6 @@ Q extends 'address_txs' ? TransactionsSorting :
 Q extends 'addresses_lookup' ? EnsLookupSorting :
 Q extends 'domains_lookup' ? EnsLookupSorting :
 Q extends 'validators' ? ValidatorsSorting :
+Q extends 'address_mud_records' ? AddressMudRecordsSorting :
 never;
 /* eslint-enable @typescript-eslint/indent */

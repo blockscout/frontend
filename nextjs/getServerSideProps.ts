@@ -275,3 +275,13 @@ export const disputeGames: GetServerSideProps<Props> = async(context) => {
 
   return base(context);
 };
+
+export const mud: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.mudFramework.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};

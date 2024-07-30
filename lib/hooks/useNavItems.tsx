@@ -102,6 +102,12 @@ export default function useNavItems(): ReturnType {
       icon: 'games',
       isActive: pathname === '/dispute-games',
     } : null;
+    const mudWorlds = config.features.mudFramework.isEnabled ? {
+      text: 'MUD worlds',
+      nextRoute: { pathname: '/mud-worlds' as const },
+      icon: 'MUD_menu',
+      isActive: pathname === '/mud-worlds',
+    } : null;
 
     const rollupFeature = config.features.rollup;
 
@@ -121,6 +127,7 @@ export default function useNavItems(): ReturnType {
         [
           userOps,
           topAccounts,
+          mudWorlds,
           validators,
           verifiedContracts,
           ensLookup,

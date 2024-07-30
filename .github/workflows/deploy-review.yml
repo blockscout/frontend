@@ -13,6 +13,7 @@ on:
             - arbitrum
             - base
             - celo_alfajores
+            - garnet
             - gnosis
             - eth
             - eth_sepolia
