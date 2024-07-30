@@ -610,7 +610,14 @@ const schema = yup
     NEXT_PUBLIC_COLOR_THEME_DEFAULT: yup.string().oneOf(COLOR_THEME_IDS),
 
     // 5. Features configuration
-    NEXT_PUBLIC_API_SPEC_URL: yup.string().test(urlTest),
+    NEXT_PUBLIC_API_SPEC_URL: yup
+      .mixed()
+      .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_API_SPEC_URL, it should be either URL-string or "none" string literal', (data) => {
+        const isNoneSchema = yup.string().oneOf([ 'none' ]);
+        const isUrlStringSchema = yup.string().test(urlTest);
+
+        return isNoneSchema.isValidSync(data) || isUrlStringSchema.isValidSync(data);
+      }),
     NEXT_PUBLIC_STATS_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_STATS_API_BASE_PATH: yup.string(),
     NEXT_PUBLIC_VISUALIZE_API_HOST: yup.string().test(urlTest),
@@ -619,7 +626,14 @@ const schema = yup
     NEXT_PUBLIC_NAME_SERVICE_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_METADATA_SERVICE_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_ADMIN_SERVICE_API_HOST: yup.string().test(urlTest),
-    NEXT_PUBLIC_GRAPHIQL_TRANSACTION: yup.string().matches(regexp.HEX_REGEXP),
+    NEXT_PUBLIC_GRAPHIQL_TRANSACTION: yup
+      .mixed()
+      .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_GRAPHIQL_TRANSACTION, it should be either Hex-string or "none" string literal', (data) => {
+        const isNoneSchema = yup.string().oneOf([ 'none' ]);
+        const isHashStringSchema = yup.string().matches(regexp.HEX_REGEXP);
+
+        return isNoneSchema.isValidSync(data) || isHashStringSchema.isValidSync(data);
+      }),
     NEXT_PUBLIC_WEB3_WALLETS: yup
       .mixed()
       .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_WEB3_WALLETS, it should be either array or "none" string literal', (data) => {

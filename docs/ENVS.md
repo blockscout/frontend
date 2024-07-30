@@ -444,19 +444,21 @@ This feature is **enabled by default** with the `coinzilla` ads provider. To swi
 
 ### GraphQL API documentation
 
-This feature is **always enabled**, but you can configure its behavior by passing the following variables.
+This feature is **always enabled**, but you can disable it by passing `none` value to `NEXT_PUBLIC_GRAPHIQL_TRANSACTION` variable.
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_GRAPHIQL_TRANSACTION | `string` | Txn hash for default query at GraphQl playground page | - | - | `0x4a0ed8ddf751a7cb5297f827699117b0f6d21a0b2907594d300dc9fed75c7e62` | v1.0.x+ |
+| NEXT_PUBLIC_GRAPHIQL_TRANSACTION | `string` | Txn hash for default query at GraphQl playground page. Pass `none` to disable the feature. | - | - | `0x4a0ed8ddf751a7cb5297f827699117b0f6d21a0b2907594d300dc9fed75c7e62` | v1.0.x+ |
 
 &nbsp;
 
 ### REST API documentation
 
+This feature is **always enabled**, but you can disable it by passing `none` value to `NEXT_PUBLIC_API_SPEC_URL` variable.
+
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_API_SPEC_URL | `string` | Spec to be displayed on `/api-docs` page | Required | `https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml` | `https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml` | v1.0.x+ |
+| NEXT_PUBLIC_API_SPEC_URL | `string` | Spec to be displayed on `/api-docs` page. Pass `none` to disable the feature. | - | `https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml` | `https://raw.githubusercontent.com/blockscout/blockscout-api-v2-swagger/main/swagger.yaml` | v1.0.x+ |
 
 &nbsp;
 
@@ -464,7 +466,7 @@ This feature is **always enabled**, but you can configure its behavior by passin
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_MARKETPLACE_ENABLED | `boolean` | `true` means that the marketplace page will be enabled | - | - | `true` | v1.24.1+ |
+| NEXT_PUBLIC_MARKETPLACE_ENABLED | `boolean` | `true` means that the marketplace page will be enabled | Required | - | `true` | v1.24.1+ |
 | NEXT_PUBLIC_MARKETPLACE_CONFIG_URL | `string` | URL of configuration file (`.json` format only) which contains list of apps that will be shown on the marketplace page. See [below](#marketplace-app-configuration-properties) list of available properties for an app. Can be replaced with NEXT_PUBLIC_ADMIN_SERVICE_API_HOST | Required | - | `https://example.com/marketplace_config.json` | v1.0.x+ |
 | NEXT_PUBLIC_ADMIN_SERVICE_API_HOST | `string` | Admin Service API endpoint url. Can be used instead of NEXT_PUBLIC_MARKETPLACE_CONFIG_URL | - | - | `https://admin-rs.services.blockscout.com` | v1.1.0+ |
 | NEXT_PUBLIC_MARKETPLACE_SUBMIT_FORM | `string` | Link to form where authors can submit their dapps to the marketplace | Required | - | `https://airtable.com/shrqUAcjgGJ4jU88C` | v1.0.x+ |
