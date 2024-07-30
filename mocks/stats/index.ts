@@ -64,6 +64,11 @@ export const withoutBothPrices: HomeStats = {
   gas_prices: _mapValues(base.gas_prices, (price) => price ? ({ ...price, price: null, fiat_price: null }) : null),
 };
 
+export const withoutGasInfo: HomeStats = {
+  ...base,
+  gas_prices: null,
+};
+
 export const withSecondaryCoin: HomeStats = {
   ...base,
   secondary_coin_price: '3.398',
