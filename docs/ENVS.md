@@ -61,6 +61,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
   - [OpenTelemetry](ENVS.md#opentelemetry)
   - [Swap button](ENVS.md#defi-dropdown)
   - [Multichain balance button](ENVS.md#multichain-balance-button)
+  - [Get gas button](ENVS.md#get-gas-button)
 - [3rd party services configuration](ENVS.md#external-services-configuration)
 
 &nbsp;
@@ -707,6 +708,27 @@ If the feature is enabled, a Multichain balance button will be displayed on the 
 | url_template | `string` | Url template to the portfolio. Should be a template with `{address}` variable | Required | - | `https://app.zerion.io/{address}/overview` |
 | dapp_id | `string` | Set for open a Blockscout dapp page with the portfolio instead of opening external app page | - | - | `zerion` |
 | logo | `string` | Multichain portfolio application logo (.svg) url | - | - | `https://example.com/icon.svg` |
+
+&nbsp;
+
+### Get gas button
+
+If the feature is enabled, a Get gas button will be displayed in the top bar, which will take you to the gas refuel application in the marketplace or to an external site.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_GAS_REFUEL_PROVIDER_CONFIG | `{ name: string; url_template: string; dapp_id?: string; logo?: string }` | Get gas button config. See [below](#get-gas-button-configuration-properties) | - | - | `{ name: 'Need gas?', dapp_id: 'smol-refuel', url_template: 'https://smolrefuel.com/?outboundChain={chainId}', logo: 'https://example.com/icon.png' }` | v1.33.0+ |
+
+&nbsp;
+
+#### Get gas button configuration properties
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| name | `string` | Text on the button | Required | - | `Need gas?` |
+| url_template | `string` | Url template, may contain `{chainId}` variable | Required | - | `https://smolrefuel.com/?outboundChain={chainId}` |
+| dapp_id | `string` | Set for open a Blockscout dapp page instead of opening external app page | - | - | `smol-refuel` |
+| logo | `string` | Gas refuel application logo url | - | - | `https://example.com/icon.png` |
 
 &nbsp;
 
