@@ -30,7 +30,7 @@ const EmptySearchResult = ({ text }: Props) => {
         No results
       </Heading>
 
-      <Text fontSize={{ base: 'sm', sm: 'md' }} align="center">
+      <Text as="div" fontSize={{ base: 'sm', sm: 'md' }} align="center">
         { text }
       </Text>
     </Box>
