@@ -109,6 +109,10 @@ export default function useMarketplace() {
   }, [ isPlaceholderData ]);
 
   React.useEffect(() => {
+    if (isPlaceholderData) {
+      return;
+    }
+
     const query = _pickBy({
       category: selectedCategoryId === MarketplaceCategory.ALL ? undefined : selectedCategoryId,
       filter: debouncedFilterQuery,
@@ -126,7 +130,7 @@ export default function useMarketplace() {
   // omit router in the deps because router.push() somehow modifies it
   // and we get infinite re-renders then
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ debouncedFilterQuery, selectedCategoryId ]);
+  }, [ debouncedFilterQuery, selectedCategoryId, isPlaceholderData ]);
 
   return React.useMemo(() => ({
     selectedCategoryId,
