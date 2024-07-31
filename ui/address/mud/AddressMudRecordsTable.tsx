@@ -47,7 +47,7 @@ const AddressMudRecordsTable = ({
 }: Props) => {
   const totalColsCut = data.schema.key_names.length + data.schema.value_names.length;
   const isMobile = useIsMobile(false);
-  const [ colsCutCount, setColsCutCount ] = React.useState<number>(isMobile ? 2 : 0);
+  const [ colsCutCount, setColsCutCount ] = React.useState<number>(isMobile ? MIN_CUT_COUNT : 0);
   const [ isOpened, setIsOpened ] = useBoolean(false);
   const [ hasCut, setHasCut ] = useBoolean(isMobile ? totalColsCut > MIN_CUT_COUNT : true);
 
@@ -70,11 +70,14 @@ const AddressMudRecordsTable = ({
 
     e.preventDefault();
 
-    router.push(
-      { pathname: '/address/[hash]', query: { hash, tab: 'mud', table_id: data.table.table_id, record_id: e.currentTarget.getAttribute('data-id') as string } },
-      undefined,
-      { shallow: true },
-    );
+    const recordId = e.currentTarget.getAttribute('data-id');
+    if (recordId) {
+      router.push(
+        { pathname: '/address/[hash]', query: { hash, tab: 'mud', table_id: data.table.table_id, record_id: recordId } },
+        undefined,
+        { shallow: true },
+      );
+    }
     scrollRef?.current?.scrollIntoView();
   }, [ router, scrollRef, hash, data.table.table_id ]);
 
@@ -96,7 +99,7 @@ const AddressMudRecordsTable = ({
   React.useEffect(() => {
     if (hasCut && !colsCutCount && containerRef.current) {
       const count = Math.floor((containerRef.current.getBoundingClientRect().width - CUT_COL_WIDTH) / COL_MIN_WIDTH);
-      if (totalColsCut > 2 && count - 1 < totalColsCut) {
+      if (totalColsCut > MIN_CUT_COUNT && count - 1 < totalColsCut) {
         setColsCutCount(count - 1);
       } else {
         setHasCut.off();

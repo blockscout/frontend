@@ -49,8 +49,7 @@ const AddressesTableItem = ({
       </Td>
       <Td isNumeric>
         <Skeleton isLoaded={ !isLoading } display="inline-block" maxW="100%">
-          <Text lineHeight="24px" as="span">{ addressBalanceChunks[0] }</Text>
-          { addressBalanceChunks[1] && <Text lineHeight="24px" as="span">.</Text> }
+          <Text lineHeight="24px" as="span">{ addressBalanceChunks[0] + (addressBalanceChunks[1] ? '.' : '') }</Text>
           <Text lineHeight="24px" variant="secondary" as="span">{ addressBalanceChunks[1] }</Text>
         </Skeleton>
       </Td>

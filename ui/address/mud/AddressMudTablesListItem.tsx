@@ -32,11 +32,15 @@ const AddressMudTablesListItem = ({ item, isLoading, scrollRef, hash }: Props) =
 
     e.preventDefault();
 
-    router.push(
-      { pathname: '/address/[hash]', query: { hash, tab: 'mud', table_id: e.currentTarget.getAttribute('data-id') as string } },
-      undefined,
-      { shallow: true },
-    );
+    const tableId = e.currentTarget.getAttribute('data-id');
+    if (tableId) {
+      router.push(
+        { pathname: '/address/[hash]', query: { hash, tab: 'mud', table_id: tableId } },
+        undefined,
+        { shallow: true },
+      );
+    }
+
     scrollRef?.current?.scrollIntoView();
   }, [ router, scrollRef, hash ]);
 

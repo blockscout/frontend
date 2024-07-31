@@ -19,6 +19,9 @@ import AddressMudBreadcrumbs from './AddressMudBreadcrumbs';
 import AddressMudRecordsTable from './AddressMudRecordsTable';
 import { getNameTypeText, SORT_SEQUENCE } from './utils';
 
+const BREADCRUMBS_HEIGHT = 60;
+const FILTERS_HEIGHT = 44;
+
 type Props ={
   scrollRef?: React.RefObject<HTMLDivElement>;
   isQueryEnabled?: boolean;
@@ -65,10 +68,10 @@ const AddressMudTable = ({ scrollRef, tableId, isQueryEnabled = true }: Props) =
 
   const hasActiveFilters = Object.values(filters).some(Boolean);
 
-  const actionBatHeight = React.useMemo(() => {
-    const heightWithoutFilters = pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 60;
+  const actionBarHeight = React.useMemo(() => {
+    const heightWithoutFilters = pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : BREADCRUMBS_HEIGHT;
 
-    return hasActiveFilters ? heightWithoutFilters + 44 : heightWithoutFilters;
+    return hasActiveFilters ? heightWithoutFilters + FILTERS_HEIGHT : heightWithoutFilters;
   }, [ pagination.isVisible, hasActiveFilters ]);
 
   if (isLoading) {
@@ -118,7 +121,7 @@ const AddressMudTable = ({ scrollRef, tableId, isQueryEnabled = true }: Props) =
   const content = data?.items ? (
     <AddressMudRecordsTable
       data={ data }
-      top={ actionBatHeight }
+      top={ actionBarHeight }
       sorting={ sorting }
       toggleSorting={ toggleSorting }
       setFilters={ setFilters }
