@@ -16,10 +16,10 @@ const ContractVerificationSolidityFoundry = () => {
 
   const codeSnippet = `forge verify-contract \\
   --rpc-url ${ config.chain.rpcUrl || `${ config.api.endpoint }/api/eth-rpc` } \\
-  ${ address || '<address>' } \\
-  [contractFile]:[contractName] \\
   --verifier blockscout \\
-  --verifier-url '${ config.api.endpoint }/api/'`;
+  --verifier-url '${ config.api.endpoint }/api/' \\
+  ${ address || '<address>' } \\
+  [contractFile]:[contractName]`;
 
   return (
     <ContractVerificationMethod title="Contract verification via Foundry">
