@@ -78,6 +78,8 @@ export default function useTimeAgoIncrement(ts: string | null, isEnabled?: boole
 
       isEnabled && startIncrement();
 
+      !isEnabled && setValue(dayjs(ts).fromNow());
+
       return () => {
         timeouts.forEach(window.clearTimeout);
         intervals.forEach(window.clearInterval);
