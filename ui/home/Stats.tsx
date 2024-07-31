@@ -95,7 +95,7 @@ const Stats = () => {
         isLoading,
       },
       hasAvgBlockTime && {
-        icon: 'clock' as const,
+        icon: 'clock-light' as const,
         label: 'Average block time',
         value: `${ (data.average_block_time / 1000).toFixed(1) }s`,
         isLoading,
