@@ -76,7 +76,7 @@ const AddressMudTable = ({ scrollRef, tableId, isQueryEnabled = true }: Props) =
   }
 
   const filtersTags = hasActiveFilters ? (
-    <HStack gap={ 3 } mb={ 1 }>
+    <HStack gap={ 3 } mb={ 1 } flexWrap="wrap">
       { Object.entries(filters).map(([ key, value ]) => {
         const index = key as FilterKeys === 'filter_key0' ? 0 : 1;
         return (
