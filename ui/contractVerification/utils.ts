@@ -12,11 +12,10 @@ import type {
   FormFieldsVyperStandardInput,
 } from './types';
 import type {
-  SmartContractVerificationMethod,
   SmartContractVerificationError,
-  SmartContractVerificationConfig,
   SmartContractLicenseType,
 } from 'types/api/contract';
+import type { SmartContractVerificationConfig, SmartContractVerificationMethod } from 'types/client/contract';
 
 import type { Params as FetchParams } from 'lib/hooks/useFetch';
 
@@ -25,19 +24,23 @@ export const SUPPORTED_VERIFICATION_METHODS: Array<SmartContractVerificationMeth
   'standard-input',
   'sourcify',
   'multi-part',
+  'solidity-hardhat',
+  'solidity-foundry',
   'vyper-code',
   'vyper-multi-part',
   'vyper-standard-input',
 ];
 
 export const METHOD_LABELS: Record<SmartContractVerificationMethod, string> = {
-  'flattened-code': 'Solidity (Flattened source code)',
+  'flattened-code': 'Solidity (Single file)',
   'standard-input': 'Solidity (Standard JSON input)',
   sourcify: 'Solidity (Sourcify)',
   'multi-part': 'Solidity (Multi-part files)',
   'vyper-code': 'Vyper (Contract)',
   'vyper-multi-part': 'Vyper (Multi-part files)',
   'vyper-standard-input': 'Vyper (Standard JSON input)',
+  'solidity-hardhat': 'Solidity (Hardhat)',
+  'solidity-foundry': 'Solidity (Foundry)',
 };
 
 export const DEFAULT_VALUES: Record<SmartContractVerificationMethod, FormFields> = {
@@ -124,6 +127,26 @@ export const DEFAULT_VALUES: Record<SmartContractVerificationMethod, FormFields>
     method: {
       value: 'vyper-standard-input' as const,
       label: METHOD_LABELS['vyper-standard-input'],
+    },
+    compiler: null,
+    sources: [],
+    license_type: null,
+  },
+  'solidity-hardhat': {
+    address: '',
+    method: {
+      value: 'solidity-hardhat' as const,
+      label: METHOD_LABELS['solidity-hardhat'],
+    },
+    compiler: null,
+    sources: [],
+    license_type: null,
+  },
+  'solidity-foundry': {
+    address: '',
+    method: {
+      value: 'solidity-foundry' as const,
+      label: METHOD_LABELS['solidity-foundry'],
     },
     compiler: null,
     sources: [],

@@ -75,7 +75,7 @@ export interface SmartContractExternalLibrary {
 
 // VERIFICATION
 
-export type SmartContractVerificationMethod = 'flattened-code' | 'standard-input' | 'sourcify' | 'multi-part'
+export type SmartContractVerificationMethodApi = 'flattened-code' | 'standard-input' | 'sourcify' | 'multi-part'
 | 'vyper-code' | 'vyper-multi-part' | 'vyper-standard-input';
 
 export interface SmartContractVerificationConfigRaw {
@@ -86,10 +86,6 @@ export interface SmartContractVerificationConfigRaw {
   vyper_evm_versions: Array<string>;
   is_rust_verifier_microservice_enabled: boolean;
   license_types: Record<SmartContractLicenseType, number>;
-}
-
-export interface SmartContractVerificationConfig extends SmartContractVerificationConfigRaw {
-  verification_options: Array<SmartContractVerificationMethod>;
 }
 
 export type SmartContractVerificationResponse = {

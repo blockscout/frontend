@@ -17,7 +17,7 @@ import type { ControllerRenderProps, Control } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
 import type { FormFields } from '../types';
-import type { SmartContractVerificationConfig, SmartContractVerificationMethod } from 'types/api/contract';
+import type { SmartContractVerificationMethod, SmartContractVerificationConfig } from 'types/client/contract';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import Popover from 'ui/shared/chakra/Popover';
@@ -58,7 +58,7 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
   const renderPopoverListItem = React.useCallback((method: SmartContractVerificationMethod) => {
     switch (method) {
       case 'flattened-code':
-        return <ListItem key={ method }>Verification through flattened source code.</ListItem>;
+        return <ListItem key={ method }>Verification through a single file.</ListItem>;
       case 'multi-part':
         return <ListItem key={ method }>Verification of multi-part Solidity files.</ListItem>;
       case 'sourcify':
@@ -93,6 +93,10 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
             <span> file.</span>
           </ListItem>
         );
+      case 'solidity-hardhat':
+        return <ListItem key={ method }>Verification through Hardhat plugin.</ListItem>;
+      case 'solidity-foundry':
+        return <ListItem key={ method }>Verification through Foundry.</ListItem>;
     }
   }, []);
 

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 declare module 'yup' {
   interface StringSchema {
     // Yup's URL validator is not perfect so we made our own
@@ -11,7 +12,7 @@ import * as yup from 'yup';
 import type { AdButlerConfig } from '../../../types/client/adButlerConfig';
 import { SUPPORTED_AD_TEXT_PROVIDERS, SUPPORTED_AD_BANNER_PROVIDERS, SUPPORTED_AD_BANNER_ADDITIONAL_PROVIDERS } from '../../../types/client/adProviders';
 import type { AdTextProviders, AdBannerProviders, AdBannerAdditionalProviders } from '../../../types/client/adProviders';
-import type { ContractCodeIde } from '../../../types/client/contract';
+import { SMART_CONTRACT_EXTRA_VERIFICATION_METHODS, type ContractCodeIde, type SmartContractVerificationMethodExtra } from '../../../types/client/contract';
 import type { DeFiDropdownItem } from '../../../types/client/deFiDropdown';
 import type { GasRefuelProviderConfig } from '../../../types/client/gasRefuelProviderConfig';
 import { GAS_UNITS } from '../../../types/client/gasTracker';
@@ -576,6 +577,21 @@ const schema = yup
       .json()
       .of(yup.string<AddressViewId>().oneOf(ADDRESS_VIEWS_IDS)),
     NEXT_PUBLIC_VIEWS_CONTRACT_SOLIDITYSCAN_ENABLED: yup.boolean(),
+    NEXT_PUBLIC_VIEWS_CONTRACT_EXTRA_VERIFICATION_METHODS: yup
+      .mixed()
+      .test(
+        'shape',
+        'Invalid schema were provided for NEXT_PUBLIC_VIEWS_CONTRACT_EXTRA_VERIFICATION_METHODS, it should be either array of method ids or "none" string literal',
+        (data) => {
+          const isNoneSchema = yup.string().oneOf([ 'none' ]);
+          const isArrayOfMethodsSchema = yup
+            .array()
+            .transform(replaceQuotes)
+            .json()
+            .of(yup.string<SmartContractVerificationMethodExtra>().oneOf(SMART_CONTRACT_EXTRA_VERIFICATION_METHODS));
+
+          return isNoneSchema.isValidSync(data) || isArrayOfMethodsSchema.isValidSync(data);
+        }),
     NEXT_PUBLIC_VIEWS_TX_HIDDEN_FIELDS: yup
       .array()
       .transform(replaceQuotes)

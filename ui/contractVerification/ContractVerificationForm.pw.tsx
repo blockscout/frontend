@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { SmartContractVerificationConfig } from 'types/api/contract';
+import type { SmartContractVerificationConfig } from 'types/client/contract';
 
 import * as socketServer from 'playwright/fixtures/socketServer';
 import { test, expect } from 'playwright/lib';
@@ -37,6 +37,8 @@ const formConfig: SmartContractVerificationConfig = {
     'vyper-code',
     'vyper-multi-part',
     'vyper-standard-input',
+    'solidity-hardhat',
+    'solidity-foundry',
   ],
   vyper_compiler_versions: [
     'v0.3.7+commit.6020b8bb',
@@ -82,7 +84,7 @@ test('flatten source code method +@dark-mode +@mobile', async({ render, page }) 
   // select method
   await component.getByLabel(/verification method/i).focus();
   await component.getByLabel(/verification method/i).fill('solidity');
-  await page.getByRole('button', { name: /flattened source code/i }).click();
+  await page.getByRole('button', { name: /single file/i }).click();
 
   await page.getByText(/add contract libraries/i).click();
   await page.locator('button[aria-label="add"]').click();
@@ -188,6 +190,28 @@ test('vyper vyper-standard-input method', async({ render, page }) => {
   await component.getByLabel(/verification method/i).focus();
   await component.getByLabel(/verification method/i).fill('vyper');
   await page.getByRole('button', { name: /standard json input/i }).click();
+
+  await expect(component).toHaveScreenshot();
+});
+
+test('solidity-hardhat method', async({ render, page }) => {
+  const component = await render(<ContractVerificationForm config={ formConfig } hash={ hash }/>, { hooksConfig });
+
+  // select method
+  await component.getByLabel(/verification method/i).focus();
+  await component.getByLabel(/verification method/i).fill('hardhat');
+  await page.getByRole('button', { name: /hardhat/i }).click();
+
+  await expect(component).toHaveScreenshot();
+});
+
+test('solidity-foundry method', async({ render, page }) => {
+  const component = await render(<ContractVerificationForm config={ formConfig } hash={ hash }/>, { hooksConfig });
+
+  // select method
+  await component.getByLabel(/verification method/i).focus();
+  await component.getByLabel(/verification method/i).fill('foundry');
+  await page.getByRole('button', { name: /foundry/i }).click();
 
   await expect(component).toHaveScreenshot();
 });
