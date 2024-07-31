@@ -1,4 +1,3 @@
-import _pickBy from 'lodash/pickBy';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -113,17 +112,27 @@ export default function useMarketplace() {
       return;
     }
 
-    const query = _pickBy({
-      category: selectedCategoryId === MarketplaceCategory.ALL ? undefined : selectedCategoryId,
-      filter: debouncedFilterQuery,
-    }, Boolean);
+    const { query } = router;
+    const newQuery = { ...query };
+
+    if (selectedCategoryId !== MarketplaceCategory.ALL) {
+      newQuery.category = selectedCategoryId;
+    } else {
+      delete newQuery.category;
+    }
+
+    if (debouncedFilterQuery) {
+      newQuery.filter = debouncedFilterQuery;
+    } else {
+      delete newQuery.filter;
+    }
 
     if (debouncedFilterQuery.length > 0) {
       mixpanel.logEvent(mixpanel.EventTypes.LOCAL_SEARCH, { Source: 'Marketplace', 'Search query': debouncedFilterQuery });
     }
 
     router.replace(
-      { pathname: '/apps', query },
+      { pathname: '/apps', query: newQuery },
       undefined,
       { shallow: true },
     );
