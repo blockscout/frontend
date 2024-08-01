@@ -59,14 +59,21 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
     (hasNovesInterpretation && novesInterpretationQuery.data && !novesInterpretationQuery.isPlaceholderData) ||
     (hasInternalInterpretation && !txInterpretationQuery.isPlaceholderData);
 
+  const ensDomainNames: Record<string, string> = {};
+  [ txQuery.data?.from, txQuery.data?.to ].forEach(data => {
+    if (data?.hash && data?.ens_domain_name) {
+      ensDomainNames[data.hash] = data.ens_domain_name;
+    }
+  });
+
   const content = (() => {
     if (hasNovesInterpretation && novesInterpretationQuery.data) {
       const novesSummary = createNovesSummaryObject(novesInterpretationQuery.data);
-
       return (
         <TxInterpretation
           summary={ novesSummary }
           isLoading={ novesInterpretationQuery.isPlaceholderData }
+          ensDomainNames={ ensDomainNames }
           fontSize="lg"
           mr={{ base: 0, lg: 6 }}
         />
@@ -77,6 +84,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
           <TxInterpretation
             summary={ txInterpretationQuery.data?.data.summaries[0] }
             isLoading={ txInterpretationQuery.isPlaceholderData }
+            ensDomainNames={ ensDomainNames }
             fontSize="lg"
             mr={ hasViewAllInterpretationsLink ? 3 : 0 }
           />
