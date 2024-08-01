@@ -14,8 +14,9 @@ import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { ZKEVM_L2_TXN_BATCHES_ITEM } from 'stubs/zkEvmL2';
 import LinkInternal from 'ui/shared/links/LinkInternal';
+import ZkEvmL2TxnBatchStatus from 'ui/shared/statusTag/ZkEvmL2TxnBatchStatus';
 
-import LatestZkevmL2BatchItem from './LatestZkevmL2BatchItem';
+import LatestBatchItem from './LatestBatchItem';
 
 const LatestZkEvmL2Batches = () => {
   const isMobile = useIsMobile();
@@ -63,13 +64,19 @@ const LatestZkEvmL2Batches = () => {
       <>
         <VStack spacing={ 2 } mb={ 3 } overflow="hidden" alignItems="stretch">
           <AnimatePresence initial={ false } >
-            { dataToShow.map(((batch, index) => (
-              <LatestZkevmL2BatchItem
-                key={ batch.number + (isPlaceholderData ? String(index) : '') }
-                batch={ batch }
-                isLoading={ isPlaceholderData }
-              />
-            ))) }
+            { dataToShow.map(((batch, index) => {
+              const status = <ZkEvmL2TxnBatchStatus status={ batch.status } isLoading={ isPlaceholderData }/>;
+              return (
+                <LatestBatchItem
+                  key={ batch.number + (isPlaceholderData ? String(index) : '') }
+                  number={ batch.number }
+                  txCount={ batch.tx_count }
+                  timestamp={ batch.timestamp }
+                  status={ status }
+                  isLoading={ isPlaceholderData }
+                />
+              );
+            })) }
           </AnimatePresence>
         </VStack>
         <Flex justifyContent="center">
