@@ -47,6 +47,8 @@ const BlockDetails = ({ query }: Props) => {
   const router = useRouter();
   const heightOrHash = getQueryParamString(router.query.height_or_hash);
 
+  const testArweaveTxid = 'OcUj9mLGX3F41vCnjFnqKRnmYC8vpzqF1Ibr9psREGI';
+
   const separatorColor = useColorModeValue('gray.200', 'gray.700');
 
   const { data, isPlaceholderData } = query;
@@ -317,6 +319,31 @@ const BlockDetails = ({ query }: Props) => {
           </React.Fragment>
         ))
       }
+
+      { /* ARWEAVE TXID */ }
+      <DetailsInfoItem.Label
+        hint="The Arweave TXID of the WeaveVM block’s data"
+        isLoading={ isPlaceholderData }
+      >
+        Block Arweave archive
+      </DetailsInfoItem.Label>
+      <DetailsInfoItem.Value
+        display="flex"
+        flexWrap="nowrap"
+        alignSelf="flex-start"
+      >
+        <Skeleton isLoaded={ !isPlaceholderData }>
+          <Link
+            href={ `https://viewblock.io/arweave/tx/${ testArweaveTxid }` }
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            { testArweaveTxid }
+          </Link>
+
+          <CopyToClipboard text={ data.bitcoin_merged_mining_header }/>
+        </Skeleton>
+      </DetailsInfoItem.Value>
 
       <DetailsInfoItemDivider/>
 
