@@ -144,6 +144,16 @@ export const apiDocs: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
+export const graphIQl: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.graphqlApiDocs.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
 export const csvExport: GetServerSideProps<Props> = async(context) => {
   if (!config.features.csvExport.isEnabled) {
     return {

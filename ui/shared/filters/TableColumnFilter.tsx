@@ -9,19 +9,6 @@ import React from 'react';
 
 import TableColumnFilterWrapper from './TableColumnFilterWrapper';
 
-type Props = {
-  columnName: string;
-  title: string;
-  isActive?: boolean;
-  isFilled?: boolean;
-  onFilter: () => void;
-  onReset?: () => void;
-  onClose?: () => void;
-  isLoading?: boolean;
-  className?: string;
-  children: React.ReactNode;
-}
-
 type ContentProps = {
   title: string;
   isFilled?: boolean;
@@ -30,6 +17,13 @@ type ContentProps = {
   onReset?: () => void;
   onClose?: () => void;
   children: React.ReactNode;
+}
+
+type Props = ContentProps & {
+  columnName: string;
+  isActive?: boolean;
+  isLoading?: boolean;
+  className?: string;
 }
 
 const TableColumnFilterContent = ({ title, isFilled, hasReset, onFilter, onReset, onClose, children }: ContentProps) => {

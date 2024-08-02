@@ -8,7 +8,7 @@ import Hint from 'ui/shared/Hint';
 import IconSvg, { type IconName } from 'ui/shared/IconSvg';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
-type Props = {
+export type Props = {
   className?: string;
   label: string;
   value: string | React.ReactNode;

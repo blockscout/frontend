@@ -6,6 +6,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import dayjs from 'lib/date/dayjs';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import ContentLoader from 'ui/shared/ContentLoader';
+import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
 import AddressMudBreadcrumbs from './AddressMudBreadcrumbs';
@@ -36,7 +37,7 @@ const AddressMudRecord = ({ tableId, recordId, isQueryEnabled = true, scrollRef 
   }
 
   if (isError) {
-    return <Box>error message</Box>;
+    return <DataFetchAlert/>;
   }
 
   return (

@@ -26,7 +26,7 @@ const NavLinkGroup = ({ item }: Props) => {
   return (
     <Popover
       trigger="hover"
-      placement="bottom-start"
+      placement="bottom"
       isLazy
       gutter={ 8 }
     >

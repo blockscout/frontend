@@ -5,6 +5,7 @@ import {
   useDisclosure,
   IconButton,
   chakra,
+  Portal,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -32,7 +33,7 @@ const TableColumnFilterWrapper = ({ columnName, isActive, className, children, i
   );
 
   return (
-    <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy lazyBehavior="unmount" strategy="fixed">
+    <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy lazyBehavior="unmount">
       <PopoverTrigger>
         <IconButton
           onClick={ onToggle }
@@ -47,11 +48,13 @@ const TableColumnFilterWrapper = ({ columnName, isActive, className, children, i
           color="text_secondary"
         />
       </PopoverTrigger>
-      <PopoverContent className={ className }>
-        <PopoverBody px={ 4 } py={ 6 } display="flex" flexDir="column" rowGap={ 3 }>
-          { modifiedChildren }
-        </PopoverBody>
-      </PopoverContent>
+      <Portal>
+        <PopoverContent className={ className }>
+          <PopoverBody px={ 4 } py={ 6 } display="flex" flexDir="column" rowGap={ 3 }>
+            { modifiedChildren }
+          </PopoverBody>
+        </PopoverContent>
+      </Portal>
     </Popover>
   );
 };

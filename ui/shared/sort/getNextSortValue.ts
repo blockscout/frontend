@@ -3,10 +3,7 @@ export default function getNextSortValue<SortField extends string, Sort extends 
 ) {
   return (prevValue: Sort | undefined) => {
     const sequence = sortSequence[field];
-    getNextValueFromSequence(sequence, prevValue);
-    const curIndex = sequence.findIndex((sort) => sort === prevValue);
-    const nextIndex = curIndex + 1 > sequence.length - 1 ? 0 : curIndex + 1;
-    return sequence[nextIndex];
+    return getNextValueFromSequence(sequence, prevValue);
   };
 }
 

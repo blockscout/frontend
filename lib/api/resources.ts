@@ -54,7 +54,7 @@ import type { ChartMarketResponse, ChartSecondaryCoinPriceResponse, ChartTransac
 import type { BackendVersionConfig } from 'types/api/configs';
 import type {
   SmartContract,
-  SmartContractVerificationConfig,
+  SmartContractVerificationConfigRaw,
   SolidityscanReport,
   SmartContractSecurityAudits,
 } from 'types/api/contract';
@@ -1028,7 +1028,7 @@ Q extends 'contract_solidityscan_report' ? SolidityscanReport :
 Q extends 'verified_contracts' ? VerifiedContractsResponse :
 Q extends 'verified_contracts_counters' ? VerifiedContractsCounters :
 Q extends 'visualize_sol2uml' ? visualizer.VisualizeResponse :
-Q extends 'contract_verification_config' ? SmartContractVerificationConfig :
+Q extends 'contract_verification_config' ? SmartContractVerificationConfigRaw :
 Q extends 'withdrawals' ? WithdrawalsResponse :
 Q extends 'withdrawals_counters' ? WithdrawalsCounters :
 Q extends 'optimistic_l2_output_roots' ? OptimisticL2OutputRootsResponse :

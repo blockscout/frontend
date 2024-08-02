@@ -19,6 +19,13 @@ test.describe('all items', () => {
   });
 });
 
+test('no gas info', async({ render, mockApiResponse }) => {
+  await mockApiResponse('stats', statsMock.withoutGasInfo);
+  const component = await render(<Stats/>);
+
+  await expect(component).toHaveScreenshot();
+});
+
 test('4 items default view +@mobile -@default', async({ render, mockApiResponse, mockEnvs }) => {
   await mockEnvs([
     [ 'NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME', 'false' ],
