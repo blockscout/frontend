@@ -94,12 +94,12 @@ export default function useNavItems(): ReturnType {
       icon: 'arrows/south-east',
       isActive: pathname === '/deposits',
     };
-    const rollupWithdrawals = {
-      text: `Withdrawals (L2${ rightLineArrow }L1)`,
-      nextRoute: { pathname: '/withdrawals' as const },
-      icon: 'arrows/north-east',
-      isActive: pathname === '/withdrawals',
-    };
+    // const rollupWithdrawals = {
+    //   text: `Withdrawals (L2${ rightLineArrow }L1)`,
+    //   nextRoute: { pathname: '/withdrawals' as const },
+    //   icon: 'arrows/north-east',
+    //   isActive: pathname === '/withdrawals',
+    // };
     const rollupTxnBatches = {
       text: 'Txn batches',
       nextRoute: { pathname: '/batches' as const },
@@ -130,7 +130,7 @@ export default function useNavItems(): ReturnType {
         rollupFeature.type === 'zkEvm')
     ) {
       blockchainNavItems = [
-        [ txs, rollupDeposits, rollupWithdrawals ],
+        [ txs, rollupDeposits ],
         [
           blocks,
           rollupTxnBatches,
@@ -143,7 +143,7 @@ export default function useNavItems(): ReturnType {
       ];
     } else if (rollupFeature.isEnabled && rollupFeature.type === 'shibarium') {
       blockchainNavItems = [
-        [ txs, rollupDeposits, rollupWithdrawals ],
+        [ txs, rollupDeposits ],
         [ blocks, userOps, topAccounts, verifiedContracts, ensLookup ].filter(
           Boolean,
         ),
