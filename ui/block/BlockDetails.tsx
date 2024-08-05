@@ -341,7 +341,7 @@ const BlockDetails = ({ query }: Props) => {
             { testArweaveTxid }
           </Link>
 
-          <CopyToClipboard text={ data.bitcoin_merged_mining_header }/>
+          <CopyToClipboard text={ testArweaveTxid }/>
         </Skeleton>
       </DetailsInfoItem.Value>
 
