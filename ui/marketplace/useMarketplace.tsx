@@ -1,4 +1,3 @@
-import _pickBy from 'lodash/pickBy';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -109,24 +108,38 @@ export default function useMarketplace() {
   }, [ isPlaceholderData ]);
 
   React.useEffect(() => {
-    const query = _pickBy({
-      category: selectedCategoryId === MarketplaceCategory.ALL ? undefined : selectedCategoryId,
-      filter: debouncedFilterQuery,
-    }, Boolean);
+    if (isPlaceholderData) {
+      return;
+    }
+
+    const { query } = router;
+    const newQuery = { ...query };
+
+    if (selectedCategoryId !== MarketplaceCategory.ALL) {
+      newQuery.category = selectedCategoryId;
+    } else {
+      delete newQuery.category;
+    }
+
+    if (debouncedFilterQuery) {
+      newQuery.filter = debouncedFilterQuery;
+    } else {
+      delete newQuery.filter;
+    }
 
     if (debouncedFilterQuery.length > 0) {
       mixpanel.logEvent(mixpanel.EventTypes.LOCAL_SEARCH, { Source: 'Marketplace', 'Search query': debouncedFilterQuery });
     }
 
     router.replace(
-      { pathname: '/apps', query },
+      { pathname: '/apps', query: newQuery },
       undefined,
       { shallow: true },
     );
   // omit router in the deps because router.push() somehow modifies it
   // and we get infinite re-renders then
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ debouncedFilterQuery, selectedCategoryId ]);
+  }, [ debouncedFilterQuery, selectedCategoryId, isPlaceholderData ]);
 
   return React.useMemo(() => ({
     selectedCategoryId,

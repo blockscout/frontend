@@ -62,6 +62,7 @@ export default function useMarketplaceApps(
 
   const { data: securityReports, isPlaceholderData: isSecurityReportsPlaceholderData } = useSecurityReports();
 
+  const [ sorting, setSorting ] = React.useState<SortValue>();
   // Set the value only 1 time to avoid unnecessary useQuery calls and re-rendering of all applications
   const [ snapshotFavoriteApps, setSnapshotFavoriteApps ] = React.useState<Array<string> | undefined>();
   const isInitialSetup = React.useRef(true);
@@ -73,7 +74,9 @@ export default function useMarketplaceApps(
     }
   }, [ isFavoriteAppsLoaded, favoriteApps ]);
 
-  const { isPlaceholderData, isError, error, data } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppWithSecurityReport>>({
+  const {
+    isPlaceholderData: isAppsPlaceholderData, isError, error, data,
+  } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppWithSecurityReport>>({
     queryKey: [ 'marketplace-dapps', snapshotFavoriteApps ],
     queryFn: async() => {
       if (!feature.isEnabled) {
@@ -90,7 +93,7 @@ export default function useMarketplaceApps(
     enabled: feature.isEnabled && Boolean(snapshotFavoriteApps),
   });
 
-  const [ sorting, setSorting ] = React.useState<SortValue>();
+  const isPlaceholderData = isAppsPlaceholderData || isSecurityReportsPlaceholderData;
 
   const appsWithSecurityReportsAndRating = React.useMemo(() =>
     data?.map((app) => ({
@@ -101,6 +104,10 @@ export default function useMarketplaceApps(
   [ data, securityReports, ratings ]);
 
   const displayedApps = React.useMemo(() => {
+    if (isPlaceholderData) {
+      return appsWithSecurityReportsAndRating || [];
+    }
+
     return appsWithSecurityReportsAndRating
       ?.filter(app => isAppNameMatches(filter, app) && isAppCategoryMatches(selectedCategoryId, app, favoriteApps))
       .sort((a, b) => {
@@ -112,14 +119,14 @@ export default function useMarketplaceApps(
         }
         return 0;
       }) || [];
-  }, [ selectedCategoryId, appsWithSecurityReportsAndRating, filter, favoriteApps, sorting ]);
+  }, [ selectedCategoryId, appsWithSecurityReportsAndRating, filter, favoriteApps, sorting, isPlaceholderData ]);
 
   return React.useMemo(() => ({
     data,
     displayedApps,
     error,
     isError,
-    isPlaceholderData: isPlaceholderData || isSecurityReportsPlaceholderData,
+    isPlaceholderData,
     setSorting,
   }), [
     data,
@@ -127,7 +134,6 @@ export default function useMarketplaceApps(
     error,
     isError,
     isPlaceholderData,
-    isSecurityReportsPlaceholderData,
     setSorting,
   ]);
 }
