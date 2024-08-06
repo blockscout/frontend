@@ -137,6 +137,8 @@ const Marketplace = () => {
     return null;
   }
 
+  const showSort = SORT_OPTIONS.length > 1;
+
   return (
     <>
       <PageTitle
@@ -201,7 +203,7 @@ const Marketplace = () => {
         />
 
         <Flex gap={{ base: 2, lg: 3 }}>
-          { feature.securityReportsUrl && (
+          { showSort && (
             <Sort
               name="dapps_sorting"
               options={ SORT_OPTIONS }
@@ -214,7 +216,7 @@ const Marketplace = () => {
             onChange={ onSearchInputChange }
             placeholder="Find app by name or keyword..."
             isLoading={ isPlaceholderData }
-            size={ feature.securityReportsUrl ? 'xs' : 'sm' }
+            size={ showSort ? 'xs' : 'sm' }
             w={{ base: '100%', lg: '350px' }}
           />
         </Flex>
