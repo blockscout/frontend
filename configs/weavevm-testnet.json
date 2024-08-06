@@ -1,0 +1,8 @@
+[   
+	{
+		"title": "Testnet WeaveVM",
+		"url": "https://explorer.wvm.dev/",
+		"group": "Testnets",
+		"icon": "https://raw.githubusercontent.com/weaveVM/wvm-blockscout-frontend/main/icons/networks/wvm-icon-dark.svg"
+	}
+]
