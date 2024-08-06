@@ -23,12 +23,15 @@ import { extractVariables, getStringChunks, fillStringVariables, checkSummary, N
 type Props = {
   summary?: TxInterpretationSummary;
   isLoading?: boolean;
+  ensDomainNames?: Record<string, string>;
   className?: string;
 }
 
 type NonStringTxInterpretationVariable = Exclude<TxInterpretationVariable, TxInterpretationVariableString>
 
-const TxInterpretationElementByType = ({ variable }: { variable?: NonStringTxInterpretationVariable }) => {
+const TxInterpretationElementByType = (
+  { variable, ensDomainNames }: { variable?: NonStringTxInterpretationVariable; ensDomainNames?: Record<string, string> },
+) => {
   const onAddressClick = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.TX_INTERPRETATION_INTERACTION, { Type: 'Address click' });
   }, []);
@@ -48,10 +51,14 @@ const TxInterpretationElementByType = ({ variable }: { variable?: NonStringTxInt
   const { type, value } = variable;
   switch (type) {
     case 'address': {
+      let address = value;
+      if (!address.ens_domain_name && ensDomainNames?.[address.hash]) {
+        address = { ...address, ens_domain_name: ensDomainNames[address.hash] };
+      }
       return (
         <chakra.span display="inline-block" verticalAlign="top" _notFirst={{ marginLeft: 1 }}>
           <AddressEntity
-            address={ value }
+            address={ address }
             truncation="constant"
             onClick={ onAddressClick }
             whiteSpace="initial"
@@ -122,7 +129,7 @@ const TxInterpretationElementByType = ({ variable }: { variable?: NonStringTxInt
   }
 };
 
-const TxInterpretation = ({ summary, isLoading, className }: Props) => {
+const TxInterpretation = ({ summary, isLoading, ensDomainNames, className }: Props) => {
   if (!summary) {
     return null;
   }
@@ -151,7 +158,12 @@ const TxInterpretation = ({ summary, isLoading, className }: Props) => {
             { index < variablesNames.length && (
               variablesNames[index] === NATIVE_COIN_SYMBOL_VAR_NAME ?
                 <chakra.span>{ currencyUnits.ether + ' ' }</chakra.span> :
-                <TxInterpretationElementByType variable={ variables[variablesNames[index]] as NonStringTxInterpretationVariable }/>
+                (
+                  <TxInterpretationElementByType
+                    variable={ variables[variablesNames[index]] as NonStringTxInterpretationVariable }
+                    ensDomainNames={ ensDomainNames }
+                  />
+                )
             ) }
           </chakra.span>
         );
