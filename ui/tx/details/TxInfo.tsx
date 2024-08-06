@@ -31,7 +31,7 @@ import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
-import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
+// import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import DetailsTimestamp from 'ui/shared/DetailsTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
@@ -53,7 +53,7 @@ import TxDetailsOther from 'ui/tx/details/TxDetailsOther';
 import TxDetailsTokenTransfers from 'ui/tx/details/TxDetailsTokenTransfers';
 import TxDetailsWithdrawalStatus from 'ui/tx/details/TxDetailsWithdrawalStatus';
 import TxRevertReason from 'ui/tx/details/TxRevertReason';
-import TxAllowedPeekers from 'ui/tx/TxAllowedPeekers';
+// import TxAllowedPeekers from 'ui/tx/TxAllowedPeekers';
 import TxSocketAlert from 'ui/tx/TxSocketAlert';
 import ZkSyncL2TxnBatchHashesInfo from 'ui/txnBatches/zkSyncL2/ZkSyncL2TxnBatchHashesInfo';
 
@@ -67,6 +67,9 @@ interface Props {
 
 const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
+
+  const isArweaveTxid = true;
+  const testArweaveTxid = 'OcUj9mLGX3F41vCnjFnqKRnmYC8vpzqF1Ibr9psREGI';
 
   const handleCutClick = React.useCallback(() => {
     setIsExpanded((flag) => !flag);
@@ -334,11 +337,31 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         </>
       ) }
 
-      { data.allowed_peekers && data.allowed_peekers.length > 0 && (
-        <TxAllowedPeekers items={ data.allowed_peekers }/>
-      ) }
+      { /* ARWEAVE TXID */ }
+      { isArweaveTxid && (
+        <>
+          <DetailsInfoItem.Label
+            hint="The Arweave TXID of the WeaveVM transaction"
+            isLoading={ isLoading }
+          >
+            Arweave storage proof
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            <Skeleton>
+              <Link
+                isExternal
+                href={ `https://viewblock.io/arweave/tx/${ testArweaveTxid }` }
+                rel="noopener noreferrer"
+                color="green.600"
+              >
+                { testArweaveTxid }
+              </Link>
 
-      <DetailsSponsoredItem isLoading={ isLoading }/>
+              <CopyToClipboard text={ testArweaveTxid }/>
+            </Skeleton>
+          </DetailsInfoItem.Value>
+        </>
+      ) }
 
       <DetailsInfoItemDivider/>
 
