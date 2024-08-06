@@ -46,13 +46,21 @@ const Stats = () => {
     },
   });
 
-  if (isError || zkEvmLatestBatchQuery.isError || zkSyncLatestBatchQuery.isError) {
+  const arbitrumLatestBatchQuery = useApiQuery('homepage_arbitrum_latest_batch', {
+    queryOptions: {
+      placeholderData: 12345,
+      enabled: rollupFeature.isEnabled && rollupFeature.type === 'arbitrum',
+    },
+  });
+
+  if (isError || zkEvmLatestBatchQuery.isError || zkSyncLatestBatchQuery.isError || arbitrumLatestBatchQuery.isError) {
     return null;
   }
 
   const isLoading = isPlaceholderData ||
     (rollupFeature.isEnabled && rollupFeature.type === 'zkEvm' && zkEvmLatestBatchQuery.isPlaceholderData) ||
-    (rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && zkSyncLatestBatchQuery.isPlaceholderData);
+    (rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && zkSyncLatestBatchQuery.isPlaceholderData) ||
+    (rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && arbitrumLatestBatchQuery.isPlaceholderData);
 
   const content = (() => {
     if (!data) {
@@ -72,22 +80,21 @@ const Stats = () => {
       </GasInfoTooltip>
     ) : null;
 
+    const hasBatches = rollupFeature.isEnabled && (rollupFeature.type === 'zkEvm' || rollupFeature.type === 'zkSync' || rollupFeature.type === 'arbitrum');
+    const latestBatch =
+      (hasBatches && rollupFeature.type === 'zkEvm' ? zkEvmLatestBatchQuery.data : null) ||
+      (hasBatches && rollupFeature.type === 'zkSync' ? zkSyncLatestBatchQuery.data : null) ||
+      (hasBatches && rollupFeature.type === 'arbitrum' ? arbitrumLatestBatchQuery.data : null) || 0;
+
     const items: Array<StatsWidgetProps> = [
-      rollupFeature.isEnabled && rollupFeature.type === 'zkEvm' && {
+      hasBatches && {
         icon: 'txn_batches_slim' as const,
         label: 'Latest batch',
-        value: (zkEvmLatestBatchQuery.data || 0).toLocaleString(),
+        value: latestBatch.toLocaleString(),
         href: { pathname: '/batches' as const },
         isLoading,
       },
-      rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && {
-        icon: 'txn_batches_slim' as const,
-        label: 'Latest batch',
-        value: (zkSyncLatestBatchQuery.data || 0).toLocaleString(),
-        href: { pathname: '/batches' as const },
-        isLoading,
-      },
-      !(rollupFeature.isEnabled && (rollupFeature.type === 'zkEvm' || rollupFeature.type === 'zkSync')) && {
+      !hasBatches && {
         icon: 'block_slim' as const,
         label: 'Total blocks',
         value: Number(data.total_blocks).toLocaleString(),

@@ -6,32 +6,41 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-import type { OptimisticL2DepositsItem } from 'types/api/optimisticL2';
+import { route } from 'nextjs-routes';
 
-import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
+import LinkInternal from 'ui/shared/links/LinkInternal';
+import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
-const feature = config.features.rollup;
+type DepositsItem = {
+  l1BlockNumber: number;
+  l1TxHash: string;
+  l2TxHash: string | null;
+  timestamp: string | null;
+}
 
 type Props = {
-  item: OptimisticL2DepositsItem;
+  isLoading?: boolean;
+  items: Array<DepositsItem>;
+  socketItemsNum: number;
+  socketAlert?: string;
+}
+
+type ItemProps = {
+  item: DepositsItem;
   isLoading?: boolean;
 }
 
-const LatestDepositsItem = ({ item, isLoading }: Props) => {
+const LatestDepositsItem = ({ item, isLoading }: ItemProps) => {
   const isMobile = useIsMobile();
-
-  if (!feature.isEnabled || feature.type !== 'optimistic') {
-    return null;
-  }
 
   const l1BlockLink = (
     <BlockEntityL1
-      number={ item.l1_block_number }
+      number={ item.l1BlockNumber }
       isLoading={ isLoading }
       fontSize="sm"
       lineHeight={ 5 }
@@ -42,22 +51,22 @@ const LatestDepositsItem = ({ item, isLoading }: Props) => {
   const l1TxLink = (
     <TxEntityL1
       isLoading={ isLoading }
-      hash={ item.l1_tx_hash }
+      hash={ item.l1TxHash }
       fontSize="sm"
       lineHeight={ 5 }
       truncation={ isMobile ? 'constant_long' : 'dynamic' }
     />
   );
 
-  const l2TxLink = (
+  const l2TxLink = item.l2TxHash ? (
     <TxEntity
       isLoading={ isLoading }
-      hash={ item.l2_tx_hash }
+      hash={ item.l2TxHash }
       fontSize="sm"
       lineHeight={ 5 }
       truncation={ isMobile ? 'constant_long' : 'dynamic' }
     />
-  );
+  ) : null;
 
   const content = (() => {
     if (isMobile) {
@@ -66,7 +75,7 @@ const LatestDepositsItem = ({ item, isLoading }: Props) => {
           <Flex justifyContent="space-between" alignItems="center" mb={ 1 }>
             { l1BlockLink }
             <TimeAgoWithTooltip
-              timestamp={ item.l1_block_timestamp }
+              timestamp={ item.timestamp }
               isLoading={ isLoading }
               color="text_secondary"
             />
@@ -93,7 +102,7 @@ const LatestDepositsItem = ({ item, isLoading }: Props) => {
         </Skeleton>
         { l1TxLink }
         <TimeAgoWithTooltip
-          timestamp={ item.l1_block_timestamp }
+          timestamp={ item.timestamp }
           isLoading={ isLoading }
           color="text_secondary"
           w="fit-content"
@@ -124,4 +133,25 @@ const LatestDepositsItem = ({ item, isLoading }: Props) => {
   );
 };
 
-export default React.memo(LatestDepositsItem);
+const LatestDeposits = ({ isLoading, items, socketAlert, socketItemsNum }: Props) => {
+  const depositsUrl = route({ pathname: '/deposits' });
+  return (
+    <>
+      <SocketNewItemsNotice borderBottomRadius={ 0 } url={ depositsUrl } num={ socketItemsNum } alert={ socketAlert } type="deposit" isLoading={ isLoading }/>
+      <Box mb={{ base: 3, lg: 4 }}>
+        { items.map(((item, index) => (
+          <LatestDepositsItem
+            key={ item.l1TxHash + item.l2TxHash + (isLoading ? index : '') }
+            item={ item }
+            isLoading={ isLoading }
+          />
+        ))) }
+      </Box>
+      <Flex justifyContent="center">
+        <LinkInternal fontSize="sm" href={ depositsUrl }>View all deposits</LinkInternal>
+      </Flex>
+    </>
+  );
+};
+
+export default LatestDeposits;
