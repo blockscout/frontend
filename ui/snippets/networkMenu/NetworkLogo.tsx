@@ -14,7 +14,7 @@ interface Props {
 
 const LogoFallback = ({ isCollapsed, isSmall }: { isCollapsed?: boolean; isSmall?: boolean }) => {
   const field = isSmall ? 'icon' : 'logo';
-  const logoColor = useColorModeValue('blue.600', 'white');
+  //const logoColor = useColorModeValue('blue.600', 'white');
 
   const display = isSmall ? {
     base: 'none',
@@ -35,7 +35,7 @@ const LogoFallback = ({ isCollapsed, isSmall }: { isCollapsed?: boolean; isSmall
       name={ isSmall ? 'networks/icon-placeholder' : 'networks/logo-placeholder' }
       width="auto"
       height="100%"
-      color={ logoColor }
+      //color={ logoColor }
       display={ display }
     />
   );
@@ -54,8 +54,8 @@ const NetworkLogo = ({ isCollapsed, onClick, className }: Props) => {
       className={ className }
       as="a"
       href={ route({ pathname: '/' }) }
-      width={{ base: '120px', lg: isCollapsed === false ? '120px' : '30px', xl: isCollapsed ? '30px' : '120px' }}
-      height={{ base: '24px', lg: isCollapsed === false ? '24px' : '30px', xl: isCollapsed ? '30px' : '24px' }}
+      width={{ base: '142px', lg: isCollapsed === false ? '142px' : '30px', xl: isCollapsed ? '30px' : '142px' }}
+      height={{ base: '32px', lg: isCollapsed === false ? '32px' : '30px', xl: isCollapsed ? '30px' : '32px' }}
       display="inline-flex"
       overflow="hidden"
       onClick={ onClick }

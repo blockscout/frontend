@@ -2,6 +2,7 @@ import { Flex, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import * as blobUtils from 'lib/blob';
+import colors from 'theme/foundations/colors';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -17,7 +18,7 @@ const TYPES: Record<string, { iconName: IconName; label: string}> = {
 };
 
 const BlobDataType = ({ data, isLoading }: Props) => {
-  const iconColor = useColorModeValue('gray.500', 'gray.400');
+  const iconColor = useColorModeValue('gray.500', colors.grayTrue[200]);
 
   const guessedType = React.useMemo(() => {
     if (isLoading) {

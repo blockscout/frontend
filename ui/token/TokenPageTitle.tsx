@@ -12,6 +12,7 @@ import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
+import colors from 'theme/foundations/colors';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
@@ -63,7 +64,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
     };
   }, [ appProps.referrer ]);
 
-  const bridgedTokenTagBgColor = useToken('colors', 'blue.500');
+  const bridgedTokenTagBgColor = useToken('colors', colors.blueLight[500]);
   const bridgedTokenTagTextColor = useToken('colors', 'white');
 
   const tags: Array<EntityTag> = React.useMemo(() => {
@@ -99,7 +100,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
       { verifiedInfoQuery.data?.tokenAddress && (
         <Tooltip label={ `Information on this token has been verified by ${ config.chain.name }` }>
           <Box boxSize={ 6 }>
-            <IconSvg name="certified" color="green.500" boxSize={ 6 } cursor="pointer"/>
+            <IconSvg name="certified" color={ colors.success[500] } boxSize={ 6 } cursor="pointer"/>
           </Box>
         </Tooltip>
       ) }

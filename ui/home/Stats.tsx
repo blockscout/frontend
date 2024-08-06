@@ -77,7 +77,7 @@ const Stats = () => {
           boxSize={ 5 }
           display="block"
           cursor="pointer"
-          _hover={{ color: 'link_hovered' }}
+          _hover={{ color: 'white' }} //link_hovered
           position="absolute"
           top={{ base: 'calc(50% - 12px)', lg: '10px', xl: 'calc(50% - 12px)' }}
           right="10px"
@@ -172,8 +172,8 @@ const Stats = () => {
     <Grid
       gridTemplateColumns={{ lg: `repeat(${ itemsCount }, 1fr)`, base: '1fr 1fr' }}
       gridTemplateRows={{ lg: 'none', base: undefined }}
-      gridGap={{ base: 1, lg: 2 }}
-      marginTop={ 3 }
+      gridGap={{ base: 1, lg: 4 }}
+      marginTop={ 6 }
     >
       { content }
     </Grid>

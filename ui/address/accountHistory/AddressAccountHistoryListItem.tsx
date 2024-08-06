@@ -4,6 +4,7 @@ import React, { useMemo } from 'react';
 import type { NovesResponseData } from 'types/api/noves';
 
 import dayjs from 'lib/date/dayjs';
+import colors from 'theme/foundations/colors';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
@@ -33,7 +34,7 @@ const AddressAccountHistoryListItem = (props: Props) => {
               height="5"
               width="5"
               color="gray.500"
-              _dark={{ color: 'gray.400' }}
+              _dark={{ color: colors.grayTrue[200] }}
             />
 
             <Text fontSize="sm" fontWeight={ 500 }>

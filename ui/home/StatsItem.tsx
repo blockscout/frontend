@@ -3,6 +3,7 @@ import { Skeleton, Flex, useColorModeValue, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import breakpoints from 'theme/foundations/breakpoints';
+import colors from 'theme/foundations/colors';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -33,22 +34,22 @@ const StatsItem = ({ icon, title, value, className, tooltip, url, isLoading }: P
   return (
     <Flex
       backgroundColor={ isLoading ? loadingBgColor : bgColor }
-      padding={ 3 }
-      borderRadius="md"
+      padding={ 4 }
+      borderRadius="lg"
       flexDirection="row"
       sx={ sxContainer }
       alignItems="center"
-      columnGap={ 3 }
+      columnGap={ 4 }
       rowGap={ 2 }
       className={ className }
-      color={ useColorModeValue('black', 'white') }
+      color={ useColorModeValue('black', colors.grayTrue[200]) }
       position="relative"
       { ...(url && !isLoading ? {
         as: 'a',
         href: url,
       } : {}) }
     >
-      <IconSvg name={ icon } boxSize={ 7 } isLoading={ isLoading } borderRadius="base"/>
+      <IconSvg name={ icon } boxSize={ 6 } isLoading={ isLoading } borderRadius="base"/>
       <Flex
         flexDirection="column"
         alignItems="start"
@@ -57,7 +58,7 @@ const StatsItem = ({ icon, title, value, className, tooltip, url, isLoading }: P
         <Skeleton isLoaded={ !isLoading } color="text_secondary" fontSize="xs" lineHeight="16px" borderRadius="base">
           <span>{ title }</span>
         </Skeleton>
-        <Skeleton isLoaded={ !isLoading } fontWeight={ 500 } fontSize="md" color={ useColorModeValue('black', 'white') } borderRadius="base">
+        <Skeleton isLoaded={ !isLoading } fontWeight={ 600 } fontSize="md" color={ useColorModeValue('black', 'white') } borderRadius="base">
           { typeof value === 'string' ? <span>{ value }</span> : value }
         </Skeleton>
       </Flex>

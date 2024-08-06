@@ -2,6 +2,8 @@ import { formAnatomy as parts } from '@chakra-ui/anatomy';
 import { createMultiStyleConfigHelpers } from '@chakra-ui/styled-system';
 import type { StyleFunctionProps } from '@chakra-ui/theme-tools';
 
+import colors from 'theme/foundations/colors';
+
 import getFormStyles from '../utils/getFormStyles';
 import FancySelect from './FancySelect';
 import FormLabel from './FormLabel';
@@ -121,7 +123,7 @@ const baseStyle = definePartsStyle(() => {
   return {
     requiredIndicator: {
       marginStart: 0,
-      color: 'gray.500',
+      color: colors.grayTrue[500], //'gray.500',
     },
   };
 });

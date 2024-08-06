@@ -1,6 +1,8 @@
 import { chakra, IconButton, Tooltip, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
+import colors from 'theme/foundations/colors';
+
 import IconSvg from '../IconSvg';
 
 interface Props {
@@ -10,7 +12,7 @@ interface Props {
 }
 
 const LinkNewTab = ({ className, label, href }: Props) => {
-  const iconColor = useColorModeValue('gray.400', 'gray.500');
+  const iconColor = useColorModeValue('gray.400', colors.grayTrue[300]);
 
   return (
     <Tooltip label={ label }>

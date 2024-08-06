@@ -21,6 +21,7 @@ import type { FormFields } from '../types';
 import type { SmartContractVerificationConfig, SmartContractVerificationMethod } from 'types/api/contract';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import colors from 'theme/foundations/colors';
 import FancySelect from 'ui/shared/FancySelect/FancySelect';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -33,7 +34,7 @@ interface Props {
 }
 
 const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props) => {
-  const tooltipBg = useColorModeValue('gray.700', 'gray.900');
+  const tooltipBg = useColorModeValue('gray.700', colors.grayTrue[700]);
   const isMobile = useIsMobile();
 
   const options = React.useMemo(() => methods.map((method) => ({
@@ -105,7 +106,7 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
         <Popover trigger="hover" isLazy placement={ isMobile ? 'bottom-end' : 'right-start' } offset={ [ -8, 8 ] }>
           <PopoverTrigger>
             <chakra.span display="inline-block" ml={ 1 } cursor="pointer" verticalAlign="middle" h="22px">
-              <IconSvg name="info" boxSize={ 5 } color="link" _hover={{ color: 'link_hovered' }}/>
+              <IconSvg name="info" boxSize={ 5 } color={ colors.grayTrue[200] } _hover={{ color: 'white' }}/>
             </chakra.span>
           </PopoverTrigger>
           <Portal>

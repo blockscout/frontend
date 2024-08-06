@@ -1,6 +1,7 @@
 import { Tooltip, Flex, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
+import colors from 'theme/foundations/colors';
 import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {
@@ -8,8 +9,8 @@ type Props = {
 }
 
 const ResetIconButton = ({ onClick }: Props) => {
-  const resetTokenIconColor = useColorModeValue('blue.600', 'blue.300');
-  const resetTokenIconHoverColor = useColorModeValue('blue.400', 'blue.200');
+  const resetTokenIconColor = useColorModeValue('blue.600', colors.grayTrue[200]);
+  const resetTokenIconHoverColor = useColorModeValue('blue.400', colors.grayTrue[300]);
 
   return (
     <Tooltip label="Reset filter">

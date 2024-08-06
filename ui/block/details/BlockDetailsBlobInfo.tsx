@@ -7,6 +7,7 @@ import type { Block } from 'types/api/block';
 import { WEI, WEI_IN_GWEI, ZERO } from 'lib/consts';
 import { space } from 'lib/html-entities';
 import { currencyUnits } from 'lib/units';
+import colors from 'theme/foundations/colors';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import IconSvg from 'ui/shared/IconSvg';
@@ -68,7 +69,7 @@ const BlockDetailsBlobInfo = ({ data }: Props) => {
             Blob burnt fees
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
-            <IconSvg name="flame" boxSize={ 5 } color="gray.500" mr={ 2 }/>
+            <IconSvg name="flame" boxSize={ 5 } color={ colors.grayTrue[200] } mr={ 2 }/>
             { burntBlobFees.dividedBy(WEI).toFixed() } { currencyUnits.ether }
             { !blobFees.isEqualTo(ZERO) && (
               <Tooltip label="Blob burnt fees / Txn fees * 100%">

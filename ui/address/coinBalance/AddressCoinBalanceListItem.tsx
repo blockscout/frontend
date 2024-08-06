@@ -7,6 +7,7 @@ import type { AddressCoinBalanceHistoryItem } from 'types/api/address';
 import { WEI, ZERO } from 'lib/consts';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import { currencyUnits } from 'lib/units';
+import colors from 'theme/foundations/colors';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
@@ -31,7 +32,7 @@ const AddressCoinBalanceListItem = (props: Props) => {
           <Stat flexGrow="0">
             <StatHelpText display="flex" mb={ 0 } alignItems="center">
               <StatArrow type={ isPositiveDelta ? 'increase' : 'decrease' } mr={ 2 }/>
-              <Text as="span" color={ isPositiveDelta ? 'green.500' : 'red.500' } fontWeight={ 600 }>
+              <Text as="span" color={ isPositiveDelta ? colors.success[500] : colors.error[500] } fontWeight={ 600 }>
                 { deltaBn.dp(8).toFormat() }
               </Text>
             </StatHelpText>

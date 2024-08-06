@@ -16,6 +16,7 @@ import { getResourceKey } from 'lib/api/useApiQuery';
 import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
 import dayjs from 'lib/date/dayjs';
 import useSocketMessage from 'lib/socket/useSocketMessage';
+import colors from 'theme/foundations/colors';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -50,7 +51,7 @@ const InfoItem = chakra(({ label, content, hint, className, isLoading }: InfoIte
           <Hint
             label={ hint }
             ml={ 2 }
-            color={ useColorModeValue('gray.600', 'gray.400') }
+            color={ useColorModeValue('gray.600', colors.grayTrue[200]) }
             tooltipProps={{ placement: 'bottom' }}
           />
         ) }

@@ -5,6 +5,7 @@ import React from 'react';
 import { useScrollDirection } from 'lib/contexts/scrollDirection';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useIsSticky from 'lib/hooks/useIsSticky';
+import colors from 'theme/foundations/colors';
 
 import TabCounter from './TabCounter';
 import TabsMenu from './TabsMenu';
@@ -30,7 +31,7 @@ interface Props extends TabsProps {
 const AdaptiveTabsList = (props: Props) => {
 
   const scrollDirection = useScrollDirection();
-  const listBgColor = useColorModeValue('white', 'black');
+  const listBgColor = useColorModeValue('white', colors.grayTrue[900]);
   const isMobile = useIsMobile();
 
   const tabsList = React.useMemo(() => {

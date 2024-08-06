@@ -5,6 +5,8 @@ import {
 } from '@chakra-ui/styled-system';
 import { mode } from '@chakra-ui/theme-tools';
 
+import colors from 'theme/foundations/colors';
+
 import Input from './Input';
 
 const { defineMultiStyleConfig, definePartsStyle } =
@@ -14,12 +16,12 @@ const variantOutline = definePartsStyle((props) => {
   return {
     field: {
       ...Input.variants?.outline(props).field,
-      borderColor: mode('gray.200', 'gray.600')(props),
+      borderColor: mode('gray.200', colors.grayTrue[600])(props), //'gray.600'
       _hover: {
-        borderColor: mode('gray.300', 'gray.500')(props),
+        borderColor: mode('gray.300', colors.grayTrue[500])(props), //'gray.500'
       },
       _focusVisible: {
-        borderColor: mode('gray.200', 'gray.600')(props),
+        borderColor: mode('gray.200', colors.grayTrue[600])(props), //'gray.600'
         boxShadow: 'none',
       },
       cursor: 'pointer',

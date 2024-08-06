@@ -4,6 +4,8 @@ import type { AbiFunction } from 'viem';
 
 import type { FormSubmitResultPublicClient, ResultViewMode } from '../types';
 
+import colors from 'theme/foundations/colors';
+
 import ResultItem from './resultPublicClient/Item';
 
 export interface Props {
@@ -43,7 +45,7 @@ const ContractMethodResultPublicClient = ({ data, abiItem, onSettle, mode: modeP
         p={ 4 }
         borderRadius="md"
         bgColor={ bgColor }
-        color={ mode === 'preview' ? 'gray.500' : undefined }
+        color={ mode === 'preview' ? colors.grayTrue[200] : undefined } //'gray.500'
         fontSize="sm"
         lineHeight="20px"
         whiteSpace="break-spaces"

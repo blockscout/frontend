@@ -2,6 +2,8 @@ import { Alert, Link, Text, chakra, useTheme, useColorModeValue, Skeleton, Tr, T
 import { transparentize } from '@chakra-ui/theme-tools';
 import React from 'react';
 
+import colors from 'theme/foundations/colors';
+
 interface InjectedProps {
   content: React.ReactNode;
 }
@@ -54,7 +56,7 @@ const SocketNewItemsNotice = chakra(({ children, className, url, num, alert, typ
   })();
 
   const color = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
-  const bgColor = useColorModeValue('orange.50', transparentize('orange.200', 0.16)(theme));
+  const bgColor = useColorModeValue('orange.50', transparentize(colors.warning[300], 0.2)(theme));//transparentize('orange.200', 0.16)(theme));
 
   const content = !isLoading ? (
     <Alert

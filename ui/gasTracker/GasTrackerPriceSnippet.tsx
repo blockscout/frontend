@@ -5,6 +5,7 @@ import type { GasPriceInfo, GasPrices } from 'types/api/stats';
 
 import { SECOND } from 'lib/consts';
 import { asymp } from 'lib/html-entities';
+import colors from 'theme/foundations/colors';
 import GasPrice from 'ui/shared/gas/GasPrice';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
@@ -29,8 +30,8 @@ const ICONS: Record<keyof GasPrices, IconName> = {
 const GasTrackerPriceSnippet = ({ data, type, isLoading }: Props) => {
   const bgColors = {
     fast: 'transparent',
-    average: useColorModeValue('gray.50', 'whiteAlpha.200'),
-    slow: useColorModeValue('gray.50', 'whiteAlpha.200'),
+    average: useColorModeValue('gray.50', colors.grayTrue[800]),
+    slow: useColorModeValue('gray.50', colors.grayTrue[800]),
   };
 
   return (
@@ -44,9 +45,9 @@ const GasTrackerPriceSnippet = ({ data, type, isLoading }: Props) => {
     >
       <Skeleton textStyle="h3" isLoaded={ !isLoading } w="fit-content">{ TITLES[type] }</Skeleton>
       <Flex columnGap={ 3 } alignItems="center" mt={ 3 }>
-        <IconSvg name={ ICONS[type] } boxSize={{ base: '30px', xl: 10 }} isLoading={ isLoading } flexShrink={ 0 }/>
+        <IconSvg name={ ICONS[type] } boxSize={{ base: 10, xl: 14 }} isLoading={ isLoading } flexShrink={ 0 }/>
         <Skeleton isLoaded={ !isLoading }>
-          <GasPrice data={ data } fontSize={{ base: '36px', xl: '48px' }} lineHeight="48px" fontWeight={ 600 } letterSpacing="-1px" fontFamily="heading"/>
+          <GasPrice data={ data } fontSize={{ base: '36px', xl: '48px' }} lineHeight="48px" fontWeight={ 700 } letterSpacing="-1px" fontFamily="heading"/>
         </Skeleton>
       </Flex>
       <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary" mt={ 3 } w="fit-content">

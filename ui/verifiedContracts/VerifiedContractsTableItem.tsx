@@ -7,6 +7,7 @@ import type { VerifiedContract } from 'types/api/contracts';
 import config from 'configs/app';
 import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
 import dayjs from 'lib/date/dayjs';
+import colors from 'theme/foundations/colors';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -75,21 +76,21 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
         <Tooltip label={ isLoading ? undefined : 'Optimization' }>
           <chakra.span display="inline-block">
             { data.optimization_enabled ?
-              <IconSvg name="check" boxSize={ 6 } color="green.500" cursor="pointer" isLoading={ isLoading }/> :
-              <IconSvg name="cross" boxSize={ 6 } color="red.600" cursor="pointer" isLoading={ isLoading }/> }
+              <IconSvg name="check" boxSize={ 6 } color={ colors.success[500] } cursor="pointer" isLoading={ isLoading }/> :
+              <IconSvg name="cross" boxSize={ 6 } color={ colors.error[500] } cursor="pointer" isLoading={ isLoading }/> }
           </chakra.span>
         </Tooltip>
         <Tooltip label={ isLoading ? undefined : 'Constructor args' }>
           <chakra.span display="inline-block" ml={ 2 }>
             { data.has_constructor_args ?
-              <IconSvg name="check" boxSize={ 6 } color="green.500" cursor="pointer" isLoading={ isLoading }/> :
-              <IconSvg name="cross" boxSize={ 6 } color="red.600" cursor="pointer" isLoading={ isLoading }/> }
+              <IconSvg name="check" boxSize={ 6 } color={ colors.success[500] } cursor="pointer" isLoading={ isLoading }/> :
+              <IconSvg name="cross" boxSize={ 6 } color={ colors.error[500] } cursor="pointer" isLoading={ isLoading }/> }
           </chakra.span>
         </Tooltip>
       </Td>
       <Td>
         <Flex alignItems="center" columnGap={ 2 } my={ 1 }>
-          <IconSvg name="status/success" boxSize={ 4 } color="green.500" isLoading={ isLoading }/>
+          <IconSvg name="status/success" boxSize={ 4 } color={ colors.success[500] } isLoading={ isLoading }/>
           <Skeleton isLoaded={ !isLoading } color="text_secondary">
             <span>{ dayjs(data.verified_at).fromNow() }</span>
           </Skeleton>

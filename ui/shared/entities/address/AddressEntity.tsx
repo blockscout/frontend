@@ -8,6 +8,7 @@ import type { AddressParam } from 'types/api/addressParams';
 import { route } from 'nextjs-routes';
 
 import { useAddressHighlightContext } from 'lib/contexts/addressHighlight';
+import colors from 'theme/foundations/colors';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
 import { getIconProps } from '../base/utils';
@@ -64,7 +65,7 @@ const Icon = (props: IconProps) => {
             <EntityBase.Icon
               { ...props }
               name="contracts/verified"
-              color="green.500"
+              color={ colors.success[500] }
               borderRadius={ 0 }
             />
           </span>

@@ -2,6 +2,8 @@ import { Box, Text, chakra } from '@chakra-ui/react';
 import { keyframes } from '@chakra-ui/system';
 import React from 'react';
 
+import colors from 'theme/foundations/colors';
+
 const runnerAnimation = keyframes`
     0% { left: 0%; transform: translateX(-1%); }
     100% { left: '100%'; transform: translateX(-99%); }
@@ -27,7 +29,7 @@ const ContentLoader = ({ className, text }: Props) => {
           animation: `${ runnerAnimation } 700ms ease-in-out infinite alternate`,
           left: '100%',
           top: 0,
-          backgroundColor: 'blue.300',
+          backgroundColor: colors.warning[300], //'blue.300',
           borderRadius: 'full',
         }}
       />

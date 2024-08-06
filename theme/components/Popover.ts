@@ -5,6 +5,8 @@ import {
 } from '@chakra-ui/styled-system';
 import { cssVar, mode } from '@chakra-ui/theme-tools';
 
+import colors from 'theme/foundations/colors';
+
 const { defineMultiStyleConfig, definePartsStyle } =
   createMultiStyleConfigHelpers(parts.keys);
 
@@ -18,7 +20,7 @@ const baseStylePopper = defineStyle({
 });
 
 const baseStyleContent = defineStyle((props) => {
-  const bg = mode('white', 'gray.900')(props);
+  const bg = mode('white', colors.grayTrue[800])(props); //'gray.900'
   const shadowColor = mode('blackAlpha.200', 'whiteAlpha.300')(props);
 
   return {
@@ -27,7 +29,7 @@ const baseStyleContent = defineStyle((props) => {
     [$arrowBg.variable]: $popperBg.reference,
     [$arrowShadowColor.variable]: `colors.${ shadowColor }`,
     _dark: {
-      [$popperBg.variable]: `colors.gray.900`,
+      [$popperBg.variable]: colors.grayTrue[700], //`colors.gray.900`,
       [$arrowShadowColor.variable]: `colors.whiteAlpha.300`,
       boxShadow: 'dark-lg',
     },
@@ -53,6 +55,7 @@ const baseStyleHeader = defineStyle({
 const baseStyleBody = defineStyle({
   px: 4,
   py: 4,
+
 });
 
 const baseStyleFooter = defineStyle({

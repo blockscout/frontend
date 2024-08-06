@@ -11,6 +11,7 @@ import config from 'configs/app';
 import solidityScanIcon from 'icons/brands/solidity_scan.svg';
 import { apos } from 'lib/html-entities';
 import * as mixpanel from 'lib/mixpanel/index';
+import colors from 'theme/foundations/colors';
 import IconSvg from 'ui/shared/IconSvg';
 import SolidityscanReportButton from 'ui/shared/solidityscanReport/SolidityscanReportButton';
 import SolidityscanReportDetails from 'ui/shared/solidityscanReport/SolidityscanReportDetails';
@@ -76,7 +77,7 @@ const AppSecurityReport = ({
           <Text fontWeight="500" fontSize="xs" mb={ 2 } variant="secondary">Smart contracts info</Text>
           <Flex alignItems="center" justifyContent="space-between" py={ 1.5 }>
             <Flex alignItems="center">
-              <IconSvg name="contracts/verified_many" boxSize={ 5 } color="green.500" mr={ 1 }/>
+              <IconSvg name="contracts/verified_many" boxSize={ 5 } color={ colors.success[500] } mr={ 1 }/>
               <Text>Verified contracts</Text>
             </Flex>
             <Link fontSize="sm" fontWeight="500" onClick={ showAllContracts }>

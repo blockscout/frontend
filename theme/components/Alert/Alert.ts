@@ -11,7 +11,7 @@ const $bg = cssVar('alert-bg');
 
 function getBg(props: StyleFunctionProps) {
   const { theme, colorScheme: c } = props;
-  const darkBg = transparentize(`${ c }.200`, 0.16)(theme);
+  const darkBg = transparentize(`${ c }.800`, 0.16)(theme);
   return {
     light: `colors.${ c }.${ c === 'red' ? '50' : '100' }`,
     dark: darkBg,

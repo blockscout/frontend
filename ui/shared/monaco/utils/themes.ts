@@ -1,3 +1,5 @@
+import colors from 'theme/foundations/colors';
+
 export const light = {
   base: 'vs' as const,
   inherit: true,
@@ -6,9 +8,9 @@ export const light = {
     'editor.background': '#f5f5f6',
     'editorWidget.background': '#f5f5f6',
 
-    'tab.activeBackground': '#f5f5f6',
+    'tab.activeBackground': '#0B0B0B', //'#f5f5f6',
     'tab.inactiveBackground': 'rgb(236, 236, 236)',
-    'tab.activeForeground': '#101112', // black
+    'tab.activeForeground': '#0B0B0B', // '#101112', black
     'tab.inactiveForeground': '#4a5568', // gray.600
     'tab.border': 'rgb(243, 243, 243)',
 
@@ -47,10 +49,10 @@ export const dark = {
   inherit: true,
   rules: [],
   colors: {
-    'editor.background': '#1a1b1b',
-    'editorWidget.background': '#1a1b1b',
+    'editor.background': colors.grayTrue[800], //'#1a1b1b',
+    'editorWidget.background': colors.grayTrue[800], //'#1a1b1b',
 
-    'tab.activeBackground': '#1a1b1b', // black
+    'tab.activeBackground': colors.grayTrue[800], //'#1a1b1b', black
     'tab.inactiveBackground': 'rgb(45, 45, 45)',
     'tab.activeForeground': '#fff', // white
     'tab.inactiveForeground': '#a0aec0', // gray.400

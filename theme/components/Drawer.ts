@@ -6,6 +6,8 @@ import {
 import { mode } from '@chakra-ui/theme-tools';
 import { runIfFn } from '@chakra-ui/utils';
 
+import colors from 'theme/foundations/colors';
+
 const { definePartsStyle, defineMultiStyleConfig } =
   createMultiStyleConfigHelpers(parts.keys);
 
@@ -27,7 +29,7 @@ const baseStyleDialog = defineStyle((props) => {
     ...transitionProps,
     zIndex: 'modal',
     maxH: '100vh',
-    bg: mode('white', 'gray.900')(props),
+    bg: mode('white', colors.grayTrue[900])(props),
     color: 'inherit',
     boxShadow: mode('lg', 'dark-lg')(props),
   };

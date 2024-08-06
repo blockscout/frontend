@@ -6,6 +6,7 @@ import type { TokenInfo, TokenInstance } from 'types/api/token';
 import { route } from 'nextjs-routes';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import colors from 'theme/foundations/colors';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import NftMedia from 'ui/shared/nft/NftMedia';
@@ -33,7 +34,7 @@ const TokenInventoryItem = ({ item, token, isLoading }: Props) => {
     <Box
       w={{ base: '100%', lg: '210px' }}
       border="1px solid"
-      borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
+      borderColor={ useColorModeValue('blackAlpha.100', colors.grayTrue[700]) } //'whiteAlpha.200'
       borderRadius="12px"
       p="10px"
       fontSize="sm"

@@ -2,14 +2,30 @@ import { defineStyle, defineStyleConfig } from '@chakra-ui/styled-system';
 import { mode } from '@chakra-ui/theme-tools';
 import { runIfFn } from '@chakra-ui/utils';
 
+import colors from 'theme/foundations/colors';
+
 const variantSolid = defineStyle((props) => {
   const { colorScheme: c } = props;
 
-  const bg = `${ c }.600`;
+  const bg = `${ c }.500`;
   const color = 'white';
-  const hoverBg = `${ c }.400`;
+  const hoverBg = `${ c }.600`;
   const activeBg = hoverBg;
 
+  if (c === 'red' || c === 'blue' || c === 'gray') { //for the Verify&Publsih button on the Verify contract page
+    return {
+      bg: mode('blackAlpha.200', colors.error[500])(props),
+      color: mode('blackAlpha.800', 'white')(props),
+      _hover: {
+        bg: colors.error[600],
+        color: color,
+        _disabled: {
+          bg,
+        },
+        _active: { bg: colors.error[600] },
+      },
+    };
+  }
   return {
     bg,
     color,
@@ -36,46 +52,47 @@ const variantOutline = defineStyle((props) => {
 
   const bg = 'transparent';
 
-  const color = isGrayTheme ? mode('blackAlpha.800', 'whiteAlpha.800')(props) : mode(`${ c }.600`, `${ c }.300`)(props);
-  const borderColor = isGrayTheme ? mode('gray.200', 'gray.600')(props) : mode(`${ c }.600`, `${ c }.300`)(props);
+  const color = isGrayTheme ? mode('blackAlpha.800', colors.grayTrue[200])(props) : mode(`${ c }.600`, colors.grayTrue[200])(props);
+  const borderColor = isGrayTheme ? mode('gray.200', colors.grayTrue[700])(props) : mode(`${ c }.600`, colors.grayTrue[700])(props);
 
-  const selectedBg = isGrayTheme ? mode('blue.50', 'gray.600')(props) : mode(`${ c }.50`, 'gray.600')(props);
-  const selectedColor = mode('blue.600', 'gray.50')(props);
+  const selectedBg = isGrayTheme ? mode('blue.50', colors.grayTrue[700])(props) : mode(`${ c }.50`, colors.grayTrue[700])(props);
+  const selectedColor = mode('blue.600', colors.grayTrue[50])(props);
 
   return {
     color,
     fontWeight: props.fontWeight || 600,
-    borderWidth: props.borderWidth || '2px',
+    borderWidth: props.borderWidth || '1px',
     borderStyle: 'solid',
     borderColor,
     bg,
     _hover: {
-      color: 'link_hovered',
-      borderColor: 'link_hovered',
+      color: 'white', //'link_hovered',
+      borderColor: 'white', //'link_hovered',
       bg,
       span: {
-        color: 'link_hovered',
+        color: 'white', //'link_hovered',
       },
       _disabled: {
-        color,
+        color: colors.grayTrue[500],
         borderColor,
       },
     },
     _disabled: {
-      opacity: 0.2,
+      color: colors.grayTrue[500],
+      opacity: 1,
     },
     // According to design there is no "active" or "pressed" state
     // It is simply should be the same as the "hover" state
     _active: {
-      color: 'link_hovered',
-      borderColor: 'link_hovered',
+      color: 'white', //'link_hovered',
+      borderColor: 'white', //'link_hovered',
       bg,
       span: {
-        color: 'link_hovered',
+        color: 'white', //'link_hovered',
       },
       _disabled: {
-        color: 'link_hovered',
-        borderColor: 'link_hovered',
+        color: 'white', //'link_hovered',
+        borderColor: 'white', //'link_hovered',
       },
     },
     // We have a special state for this button variant that serves as a popover trigger.
@@ -109,16 +126,16 @@ const variantGhost = defineStyle((props) => {
 
   return {
     bg: 'transparent',
-    color: mode(`${ c }.700`, 'gray.400')(props),
+    color: mode(`${ c }.700`, colors.grayTrue[200])(props),
     _active: {
-      color: mode(`${ c }.700`, 'gray.50')(props),
-      bg: mode(`${ c }.50`, 'gray.800')(props),
+      color: mode(`${ c }.700`, colors.grayTrue[50])(props),
+      bg: mode(`${ c }.50`, colors.grayTrue[800])(props),
     },
     _hover: {
       color: `${ c }.400`,
       _active: {
         bg: props.isActive ? activeBg : 'transparent',
-        color: mode(`${ c }.700`, 'gray.50')(props),
+        color: mode(`${ c }.700`, colors.grayTrue[50])(props),
       },
     },
   };

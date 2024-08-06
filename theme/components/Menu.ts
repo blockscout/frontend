@@ -5,6 +5,8 @@ import {
   defineStyle,
 } from '@chakra-ui/styled-system';
 
+import colors from 'theme/foundations/colors';
+
 const { defineMultiStyleConfig, definePartsStyle } =
   createMultiStyleConfigHelpers(parts.keys);
 
@@ -15,7 +17,7 @@ const baseStyleList = defineStyle({
   [$bg.variable]: '#fff',
   [$shadow.variable]: 'shadows.2xl',
   _dark: {
-    [$bg.variable]: 'colors.gray.900',
+    [$bg.variable]: colors.grayTrue[800], //'colors.gray.900',
     [$shadow.variable]: 'shadows.dark-lg',
   },
   borderWidth: '0',
@@ -33,7 +35,7 @@ const baseStyleItem = defineStyle({
   _hover: {
     [$bg.variable]: 'colors.blue.50',
     _dark: {
-      [$bg.variable]: 'colors.whiteAlpha.100',
+      [$bg.variable]: colors.grayTrue[900],
     },
   },
   bg: $bg.reference,

@@ -3,6 +3,7 @@ import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { clearRecentSearchKeywords, getRecentSearchKeywords, removeRecentSearchKeyword } from 'lib/recentSearchKeywords';
+import colors from 'theme/foundations/colors';
 import TextAd from 'ui/shared/ad/TextAd';
 import ClearButton from 'ui/shared/ClearButton';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
@@ -14,7 +15,7 @@ type Props = {
 
 const SearchBarSuggest = ({ onClick, onClear }: Props) => {
   const isMobile = useIsMobile();
-  const bgHoverColor = useColorModeValue('blue.50', 'gray.800');
+  const bgHoverColor = useColorModeValue('blue.50', colors.grayTrue[800]);
 
   const [ keywords, setKeywords ] = React.useState<Array<string>>(getRecentSearchKeywords());
 

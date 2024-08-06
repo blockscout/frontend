@@ -198,6 +198,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
             variant="solid"
             size="lg"
             type="submit"
+            colorScheme="red"
             mt={ 12 }
             isLoading={ formState.isSubmitting }
             loadingText="Verify & publish"

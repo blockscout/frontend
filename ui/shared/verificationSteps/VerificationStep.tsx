@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { Step } from './types';
 
+import colors from 'theme/foundations/colors';
 import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {
@@ -15,9 +16,9 @@ type Props = {
 const VerificationStep = ({ step, isLast, isPassed, isPending }: Props) => {
   let stepColor = 'text_secondary';
   if (isPending) {
-    stepColor = 'yellow.500';
+    stepColor = colors.yellow[500];
   } else if (isPassed) {
-    stepColor = 'green.500';
+    stepColor = colors.success[500];
   }
 
   return (

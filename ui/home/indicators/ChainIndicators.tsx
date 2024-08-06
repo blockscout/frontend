@@ -4,6 +4,7 @@ import React from 'react';
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { HOMEPAGE_STATS } from 'stubs/stats';
+import colors from 'theme/foundations/colors';
 import Hint from 'ui/shared/Hint';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -38,7 +39,7 @@ const ChainIndicators = () => {
     },
   });
 
-  const bgColorDesktop = useColorModeValue('white', 'gray.900');
+  const bgColorDesktop = useColorModeValue('white', colors.grayTrue[800]);
   const bgColorMobile = useColorModeValue('white', 'black');
   const listBgColorDesktop = useColorModeValue('gray.50', 'black');
   const listBgColorMobile = useColorModeValue('gray.50', 'gray.900');
@@ -57,7 +58,7 @@ const ChainIndicators = () => {
     }
 
     return (
-      <Text fontWeight={ 600 } fontFamily="heading" fontSize="48px" lineHeight="48px" mt={ 3 }>
+      <Text fontWeight={ 700 } fontFamily="heading" fontSize="36px" lineHeight="44px" mt={ 0 }>
         { indicator?.value(statsQueryResult.data) }
       </Text>
     );
@@ -73,7 +74,7 @@ const ChainIndicators = () => {
       return null;
     }
 
-    const diffColor = diff >= 0 ? 'green.500' : 'red.500';
+    const diffColor = diff >= 0 ? colors.success[500] : colors.error[500];
 
     return (
       <Skeleton isLoaded={ !statsQueryResult.isPlaceholderData } display="flex" alignItems="center" color={ diffColor } ml={ 2 }>
@@ -86,7 +87,7 @@ const ChainIndicators = () => {
   return (
     <Flex
       p={{ base: 0, lg: 8 }}
-      borderRadius={{ base: 'none', lg: 'lg' }}
+      borderRadius={{ base: 'none', lg: 'xl' }}
       boxShadow={{ base: 'none', lg: 'xl' }}
       bgColor={{ base: bgColorMobile, lg: bgColorDesktop }}
       columnGap={ 6 }
@@ -94,11 +95,11 @@ const ChainIndicators = () => {
       flexDir={{ base: 'column', lg: 'row' }}
       w="100%"
       alignItems="stretch"
-      mt={{ base: 1, lg: 3 }}
+      mt={{ base: 1, lg: 6 }}
     >
       <Flex flexGrow={ 1 } flexDir="column" order={{ base: 2, lg: 1 }} p={{ base: 6, lg: 0 }}>
         <Flex alignItems="center">
-          <Text fontWeight={ 500 } fontFamily="heading" fontSize="lg">{ indicator?.title }</Text>
+          <Text fontWeight={ 400 } color={ colors.grayTrue[200] } fontFamily="heading" fontSize="md">{ indicator?.title }</Text>
           { indicator?.hint && <Hint label={ indicator.hint } ml={ 1 }/> }
         </Flex>
         <Flex mb={ 4 } alignItems="end">

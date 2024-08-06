@@ -11,6 +11,7 @@ import type { PublicTagType } from 'types/api/addressMetadata';
 import type { Option } from 'ui/shared/FancySelect/types';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import colors from 'theme/foundations/colors';
 import FancySelect from 'ui/shared/FancySelect/FancySelect';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -39,7 +40,7 @@ const PublicTagsSubmitFieldTagType = ({ index, tagTypes, isDisabled }: Props) =>
           return (
             <chakraComponents.SingleValue { ...props }>
               <Flex alignItems="center" columnGap={ 1 }>
-                <IconSvg name="publictags_slim" boxSize={ 4 } flexShrink={ 0 } color="gray.400"/>
+                <IconSvg name="publictags_slim" boxSize={ 4 } flexShrink={ 0 } color={ colors.grayTrue[200] }/>
                 { children }
               </Flex>
             </chakraComponents.SingleValue>
@@ -49,7 +50,7 @@ const PublicTagsSubmitFieldTagType = ({ index, tagTypes, isDisabled }: Props) =>
         case 'generic': {
           return (
             <chakraComponents.SingleValue { ...props }>
-              <chakra.span color="gray.400">#</chakra.span> { children }
+              <chakra.span color={ colors.grayTrue[200] }>#</chakra.span> { children }
             </chakraComponents.SingleValue>
           );
         }

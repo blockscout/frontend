@@ -6,6 +6,7 @@ import type { Transaction } from 'types/api/transaction';
 import config from 'configs/app';
 import { ZERO } from 'lib/consts';
 import { currencyUnits } from 'lib/units';
+import colors from 'theme/foundations/colors';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import IconSvg from 'ui/shared/IconSvg';
@@ -41,7 +42,7 @@ const TxDetailsBurntFees = ({ data, isLoading }: Props) => {
         Burnt fees
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value>
-        <IconSvg name="flame" boxSize={ 5 } color="gray.500" isLoading={ isLoading }/>
+        <IconSvg name="flame" boxSize={ 5 } color={ colors.grayTrue[200] } isLoading={ isLoading }/>
         <CurrencyValue
           value={ value.toString() }
           currency={ currencyUnits.ether }

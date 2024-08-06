@@ -43,16 +43,16 @@ const NavLink = ({ item, isCollapsed, px, className, onClick, disableActiveState
       href={ href }
       target={ isInternalLink ? '_self' : '_blank' }
       { ...styleProps.itemProps }
-      w={{ base: '100%', lg: isExpanded ? '100%' : '60px', xl: isCollapsed ? '60px' : '100%' }}
+      w={{ base: '100%', lg: isExpanded ? '100%' : '48px', xl: isCollapsed ? '48px' : '100%' }}
       display="flex"
       position="relative"
-      px={ px || { base: 3, lg: isExpanded ? 3 : '15px', xl: isCollapsed ? '15px' : 3 } }
+      px={ px || { base: 3, lg: isExpanded ? 3 : '12px', xl: isCollapsed ? '12px' : 3 } }
       aria-label={ `${ item.text } link` }
       whiteSpace="nowrap"
       onClick={ onClick }
       _hover={{
         [`& *:not(.${ LIGHTNING_LABEL_CLASS_NAME }, .${ LIGHTNING_LABEL_CLASS_NAME } *)`]: {
-          color: 'link_hovered',
+          color: 'white',
         },
       }}
     >

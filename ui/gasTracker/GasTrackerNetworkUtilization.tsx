@@ -2,6 +2,7 @@ import { Skeleton, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import { mdash } from 'lib/html-entities';
+import colors from 'theme/foundations/colors';
 
 interface Props {
   percentage: number;
@@ -21,12 +22,12 @@ const GasTrackerNetworkUtilization = ({ percentage, isLoading }: Props) => {
     return 'low';
   })();
 
-  const colors = {
-    high: 'red.600',
-    medium: 'orange.600',
-    low: 'green.600',
+  const colorsDef = {
+    high: colors.error[500],
+    medium: colors.warning[500],
+    low: colors.success[500],
   };
-  const color = colors[load];
+  const color = colorsDef[load];
 
   return (
     <Skeleton isLoaded={ !isLoading } whiteSpace="pre-wrap">

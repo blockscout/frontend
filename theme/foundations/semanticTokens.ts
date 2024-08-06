@@ -1,31 +1,33 @@
+import colors from './colors';
+
 const semanticTokens = {
   colors: {
     divider: {
       'default': 'blackAlpha.200',
-      _dark: 'whiteAlpha.200',
+      _dark: colors.grayTrue[700], //'whiteAlpha.200',
     },
     text: {
-      'default': 'blackAlpha.800',
-      _dark: 'whiteAlpha.800',
+      'default': colors.error[500], //'blackAlpha.800',
+      _dark: colors.grayTrue[50], //'whiteAlpha.800',
     },
     text_secondary: {
       'default': 'gray.500',
-      _dark: 'gray.400',
+      _dark: colors.grayTrue[200], //'gray.400',
     },
     link: {
       'default': 'blue.600',
-      _dark: 'blue.300',
+      _dark: colors.warning[300], //'blue.300',
     },
     link_hovered: {
-      'default': 'blue.400',
+      'default': colors.warning[400], //'blue.400',
     },
     error: {
       'default': 'red.500',
-      _dark: 'red.500',
+      _dark: colors.error[500], //'red.500',
     },
     dialog_bg: {
       'default': 'white',
-      _dark: 'gray.900',
+      _dark: colors.grayTrue[900], //'gray.900',
     },
   },
   shadows: {

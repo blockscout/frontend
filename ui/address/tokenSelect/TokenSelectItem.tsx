@@ -5,6 +5,7 @@ import React from 'react';
 import { route } from 'nextjs-routes';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
+import colors from 'theme/foundations/colors';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import TruncatedValue from 'ui/shared/TruncatedValue';
@@ -80,7 +81,7 @@ const TokenSelectItem = ({ data }: Props) => {
       borderColor="divider"
       borderBottomWidth="1px"
       _hover={{
-        bgColor: useColorModeValue('blue.50', 'gray.800'),
+        bgColor: useColorModeValue('blue.50', colors.grayTrue[800]),
       }}
       color="unset"
       fontSize="sm"

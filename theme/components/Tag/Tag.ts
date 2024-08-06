@@ -5,6 +5,8 @@ import {
 } from '@chakra-ui/styled-system';
 import { mode } from '@chakra-ui/theme-tools';
 
+import colors from 'theme/foundations/colors';
+
 import getDefaultTransitionProps from '../../utils/getDefaultTransitionProps';
 import Badge from '../Badge';
 
@@ -19,18 +21,18 @@ const variants = {
   })),
   select: definePartsStyle((props) => ({
     container: {
-      bg: mode('gray.100', 'gray.800')(props),
-      color: mode('gray.500', 'whiteAlpha.800')(props),
+      bg: mode('gray.100', colors.grayTrue[800])(props),
+      color: mode('gray.500', colors.grayTrue[50])(props),
       _hover: {
-        color: 'blue.400',
+        color: colors.grayTrue[50], // 'blue.400',
         opacity: 0.76,
       },
       [`
         &[data-selected=true],
         &[data-selected=true][aria-selected=true]
       `]: {
-        bg: mode('blue.500', 'blue.900')(props),
-        color: 'whiteAlpha.800',
+        bg: mode('blue.500', colors.grayTrue[700])(props),
+        color: colors.grayTrue[50], //'whiteAlpha.800',
       },
     },
   })),

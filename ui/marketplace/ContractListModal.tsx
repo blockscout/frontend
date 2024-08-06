@@ -9,6 +9,7 @@ import { ContractListTypes } from 'types/client/marketplace';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { apos } from 'lib/html-entities';
+import colors from 'theme/foundations/colors';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -70,7 +71,7 @@ const ContractListModal = ({ onClose, onBack, type, contracts }: Props) => {
               h={ 10 }
               transform="rotate(180deg)"
               verticalAlign="middle"
-              color="gray.400"
+              color={ colors.grayTrue[200] }
               mr={ 3 }
               cursor="pointer"
               onClick={ onBack }

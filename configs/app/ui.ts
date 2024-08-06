@@ -30,12 +30,15 @@ const highlightedRoutes = (() => {
 })();
 
 const defaultColorTheme = (() => {
-  const envValue = getEnvValue('NEXT_PUBLIC_COLOR_THEME_DEFAULT') as ColorThemeId | undefined;
+  //const envValue = getEnvValue('NEXT_PUBLIC_COLOR_THEME_DEFAULT') as ColorThemeId | undefined;
+  const envValue: ColorThemeId = 'dark'; // since we have a single theme for now
   return COLOR_THEMES.find((theme) => theme.id === envValue);
 })();
 
 // eslint-disable-next-line max-len
-const HOMEPAGE_PLATE_BACKGROUND_DEFAULT = 'radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%), var(--chakra-colors-blue-400)';
+const HOMEPAGE_PLATE_BACKGROUND_DEFAULT = 'linear-gradient(180deg, #FE2C2E 0%, #CCA43B 100%)';
+//'networks/background';
+//'url(/assets/ui/home/backgrounds/test-homeplate-background.png)';//'linear-gradient(180deg, #FE2C2E 0%, #CCA43B 100%)';
 
 const UI = Object.freeze({
   navigation: {

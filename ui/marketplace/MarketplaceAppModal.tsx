@@ -10,6 +10,7 @@ import { ContractListTypes } from 'types/client/marketplace';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
 import * as mixpanel from 'lib/mixpanel/index';
+import colors from 'theme/foundations/colors';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -31,7 +32,7 @@ const MarketplaceAppModal = ({
   data,
   showContractList: showContractListProp,
 }: Props) => {
-  const starOutlineIconColor = useColorModeValue('gray.600', 'gray.300');
+  const starOutlineIconColor = useColorModeValue('gray.600', colors.grayTrue[200]); //'gray.300'
 
   const {
     id,
@@ -191,7 +192,7 @@ const MarketplaceAppModal = ({
               mb={ 6 }
             >
               <Flex alignItems="center" gap={ 2 } flexWrap="wrap">
-                <IconSvg name="contracts/verified_many" boxSize={ 5 } color="green.500"/>
+                <IconSvg name="contracts/verified_many" boxSize={ 5 } color={ colors.success[500] }/>
                 <Text>Verified contracts</Text>
                 <Text fontWeight="500">
                   { securityReport?.overallInfo.verifiedNumber ?? 0 } of { securityReport?.overallInfo.totalContractsNumber ?? 0 }

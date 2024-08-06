@@ -9,6 +9,7 @@ import { ZERO_ADDRESS } from 'lib/consts';
 import { nbsp, space } from 'lib/html-entities';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import { currencyUnits } from 'lib/units';
+import colors from 'theme/foundations/colors';
 import Tag from 'ui/shared/chakra/Tag';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
@@ -54,7 +55,7 @@ export function getStateElements(data: TxStateChange, isLoading?: boolean) {
       const beforeBn = BigNumber(data.balance_before || '0').div(10 ** config.chain.currency.decimals);
       const afterBn = BigNumber(data.balance_after || '0').div(10 ** config.chain.currency.decimals);
       const differenceBn = afterBn.minus(beforeBn);
-      const changeColor = beforeBn.lte(afterBn) ? 'green.500' : 'red.500';
+      const changeColor = beforeBn.lte(afterBn) ? colors.success[500] : colors.error[500];
       const changeSign = beforeBn.lte(afterBn) ? '+' : '-';
 
       return {
@@ -101,7 +102,7 @@ export function getStateElements(data: TxStateChange, isLoading?: boolean) {
           return null;
         }
 
-        const changeColor = differenceBn.isGreaterThanOrEqualTo(0) ? 'green.500' : 'red.500';
+        const changeColor = differenceBn.isGreaterThanOrEqualTo(0) ? colors.success[500] : colors.error[500];
         const changeSign = differenceBn.isGreaterThanOrEqualTo(0) ? '+' : '-';
 
         return (

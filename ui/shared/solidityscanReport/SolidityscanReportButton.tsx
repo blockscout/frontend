@@ -3,6 +3,7 @@ import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
+import colors from 'theme/foundations/colors';
 import IconSvg from 'ui/shared/IconSvg';
 
 import useScoreLevelAndColor from './useScoreLevelAndColor';
@@ -22,7 +23,7 @@ const SolidityscanReportButton = (
   ref: React.ForwardedRef<HTMLButtonElement>,
 ) => {
   const { scoreColor } = useScoreLevelAndColor(score);
-  const colorLoading = useColorModeValue('gray.300', 'gray.600');
+  const colorLoading = useColorModeValue('gray.300', colors.grayTrue[200]); //'gray.600'
   const isMobile = useIsMobile();
   const onFocusCapture = usePreventFocusAfterModalClosing();
 

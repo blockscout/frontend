@@ -4,6 +4,7 @@ import React from 'react';
 
 import type { Route } from 'nextjs-routes';
 
+import colors from 'theme/foundations/colors';
 import Hint from 'ui/shared/Hint';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
@@ -34,9 +35,9 @@ const Container = ({ href, children }: { href?: Route; children: JSX.Element }) 
 };
 
 const StatsWidget = ({ label, value, valuePrefix, valuePostfix, isLoading, hint, diff, diffPeriod = '24h', diffFormatted, period, href }: Props) => {
-  const bgColor = useColorModeValue('blue.50', 'whiteAlpha.100');
+  const bgColor = useColorModeValue('blue.50', colors.grayTrue[800]);
   const skeletonBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
-  const hintColor = useColorModeValue('gray.600', 'gray.400');
+  const hintColor = useColorModeValue('gray.600', colors.grayTrue[200]);
 
   return (
     <Container href={ !isLoading ? href : undefined }>
@@ -73,7 +74,7 @@ const StatsWidget = ({ label, value, valuePrefix, valuePostfix, isLoading, hint,
             { valuePostfix && <chakra.span fontWeight={ 500 } fontSize="lg" lineHeight={ 6 } whiteSpace="pre">{ valuePostfix }</chakra.span> }
             { diff && Number(diff) > 0 && (
               <>
-                <Text fontWeight={ 500 } ml={ 2 } mr={ 1 } fontSize="lg" lineHeight={ 6 } color="green.500">
+                <Text fontWeight={ 500 } ml={ 2 } mr={ 1 } fontSize="lg" lineHeight={ 6 } color={ colors.success[500] }>
                   +{ diffFormatted || Number(diff).toLocaleString() }
                 </Text>
                 <Text variant="secondary" fontSize="sm">({ diffPeriod })</Text>

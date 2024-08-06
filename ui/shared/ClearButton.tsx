@@ -1,6 +1,7 @@
 import { chakra, IconButton, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
+import colors from 'theme/foundations/colors';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
@@ -10,8 +11,8 @@ interface Props {
 }
 
 const ClearButton = ({ onClick, isDisabled, className }: Props) => {
-  const iconColor = useColorModeValue('gray.300', 'gray.600');
-  const iconColorHover = useColorModeValue('gray.200', 'gray.500');
+  const iconColor = useColorModeValue('gray.300', colors.grayTrue[200]);
+  const iconColorHover = useColorModeValue('gray.200', colors.grayTrue[300]);
 
   return (
     <IconButton

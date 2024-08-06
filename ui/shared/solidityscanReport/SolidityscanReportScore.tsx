@@ -1,6 +1,7 @@
 import { Box, Flex, Text, chakra, Center, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
+import colors from 'theme/foundations/colors';
 import IconSvg from 'ui/shared/IconSvg';
 
 import useScoreLevelAndColor from './useScoreLevelAndColor';
@@ -13,9 +14,9 @@ interface Props {
 const SolidityscanReportScore = ({ className, score }: Props) => {
   const { scoreLevel, scoreColor } = useScoreLevelAndColor(score);
 
-  const chartGrayColor = useColorModeValue('gray.100', 'gray.700');
-  const yetAnotherGrayColor = useColorModeValue('gray.400', 'gray.500');
-  const popoverBgColor = useColorModeValue('white', 'gray.900');
+  const chartGrayColor = useColorModeValue('gray.100', colors.grayTrue[700]); //'gray.700'
+  const yetAnotherGrayColor = useColorModeValue('gray.400', colors.grayTrue[300]); //'gray.500'
+  const popoverBgColor = useColorModeValue('white', colors.grayTrue[700]); //'gray.900'
 
   return (
     <Flex className={ className } alignItems="center">

@@ -4,6 +4,7 @@ import React, { useMemo } from 'react';
 import type { NovesResponseData } from 'types/api/noves';
 
 import dayjs from 'lib/date/dayjs';
+import colors from 'theme/foundations/colors';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import NovesFromTo from 'ui/shared/Noves/NovesFromTo';
@@ -40,7 +41,7 @@ const AddressAccountHistoryTableItem = (props: Props) => {
               width="5"
               color="gray.500"
               mr="8px"
-              _dark={{ color: 'gray.400' }}
+              _dark={{ color: colors.grayTrue[200] }}
             />
 
             <LinkInternal

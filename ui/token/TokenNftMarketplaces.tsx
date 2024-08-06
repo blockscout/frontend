@@ -54,7 +54,7 @@ const TokenNftMarketplaces = ({ hash, id, isLoading, appActionData, source, isAc
           }) }
           { (appActionData && isActionButtonExperiment) && (
             <>
-              <TextSeparator color="gray.500" margin={ 0 }/>
+              <TextSeparator margin={ 0 }/>
               <AppActionButton data={ appActionData } height="30px" source={ source }/>
             </>
           ) }

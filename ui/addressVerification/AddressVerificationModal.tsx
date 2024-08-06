@@ -6,6 +6,7 @@ import type { VerifiedAddress } from 'types/api/account';
 
 import config from 'configs/app';
 import * as mixpanel from 'lib/mixpanel/index';
+import colors from 'theme/foundations/colors';
 import IconSvg from 'ui/shared/IconSvg';
 import Web3ModalProvider from 'ui/shared/Web3ModalProvider';
 
@@ -106,7 +107,7 @@ const AddressVerificationModal = ({ defaultAddress, isOpen, onClose, onSubmit, o
         <ModalHeader fontWeight="500" textStyle="h3" mb={ 6 }>
           { stepIndex !== 0 && (
             <Link mr={ 3 } onClick={ handleGoToPrevStep }>
-              <IconSvg name="arrows/east" boxSize={ 6 } transform="rotate(180deg)" verticalAlign="middle" color="gray.400"/>
+              <IconSvg name="arrows/east" boxSize={ 6 } transform="rotate(180deg)" verticalAlign="middle" color={ colors.grayTrue[200] }/>
             </Link>
           ) }
           <span>{ step.title }</span>

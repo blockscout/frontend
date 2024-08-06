@@ -8,6 +8,7 @@ import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useNewTxsSocket from 'lib/hooks/useNewTxsSocket';
 import { TX } from 'stubs/tx';
+import colors from 'theme/foundations/colors';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
@@ -55,7 +56,8 @@ const LatestTransactions = () => {
           </Box>
         </AddressHighlightProvider>
         <Flex justifyContent="center">
-          <LinkInternal fontSize="sm" href={ txsUrl }>View all transactions</LinkInternal>
+          <LinkInternal textDecoration="underline" color={ colors.grayTrue[200] } _hover={{ color: 'white' }}
+            fontSize="sm" href={ txsUrl }>View all transactions</LinkInternal>
         </Flex>
       </>
     );

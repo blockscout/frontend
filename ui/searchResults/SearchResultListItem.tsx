@@ -11,6 +11,7 @@ import highlightText from 'lib/highlightText';
 import * as mixpanel from 'lib/mixpanel/index';
 import { saveToRecentKeywords } from 'lib/recentSearchKeywords';
 import { ADDRESS_REGEXP } from 'lib/validations/address';
+import colors from 'theme/foundations/colors';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as BlobEntity from 'ui/shared/entities/blob/BlobEntity';
@@ -70,7 +71,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
                 textOverflow="ellipsis"
               />
             </LinkInternal>
-            { data.is_verified_via_admin_panel && <IconSvg name="certified" boxSize={ 4 } ml={ 1 } color="green.500"/> }
+            { data.is_verified_via_admin_panel && <IconSvg name="certified" boxSize={ 4 } ml={ 1 } color={ colors.success[500] }/> }
           </Flex>
         );
       }
@@ -110,7 +111,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
       case 'label': {
         return (
           <Flex alignItems="center">
-            <IconSvg name="publictags_slim" boxSize={ 6 } mr={ 2 } color="gray.500"/>
+            <IconSvg name="publictags_slim" boxSize={ 6 } mr={ 2 } color={ colors.grayTrue[200] }/>
             <LinkInternal
               href={ route({ pathname: '/address/[hash]', query: { hash: data.address } }) }
               fontWeight={ 700 }
@@ -284,7 +285,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
               <Text whiteSpace="nowrap" overflow="hidden">
                 <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
               </Text>
-              { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
+              { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color={ colors.success[500] } ml={ 1 } flexShrink={ 0 }/> }
             </Skeleton>
             <Skeleton isLoaded={ !isLoading } overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis" fontWeight={ 700 }>
               { data.token_type === 'ERC-20' && data.exchange_rate && `$${ Number(data.exchange_rate).toLocaleString() }` }
@@ -321,7 +322,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
             <Box overflow="hidden">
               <HashStringShortenDynamic hash={ data.address }/>
             </Box>
-            { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
+            { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color={ colors.success[500] } ml={ 1 } flexShrink={ 0 }/> }
           </Flex>
         );
       }

@@ -13,6 +13,7 @@ import React from 'react';
 
 import type { NavGroupItem } from 'types/client/navigation';
 
+import colors from 'theme/foundations/colors';
 import IconSvg from 'ui/shared/IconSvg';
 
 import LightningLabel from '../LightningLabel';
@@ -43,9 +44,9 @@ const NavLinkGroup = ({ item, isCollapsed }: Props) => {
         <PopoverTrigger>
           <Link
             { ...styleProps.itemProps }
-            w={{ lg: isExpanded ? '180px' : '60px', xl: isCollapsed ? '60px' : '180px' }}
-            pl={{ lg: isExpanded ? 3 : '15px', xl: isCollapsed ? '15px' : 3 }}
-            pr={{ lg: isExpanded ? 0 : '15px', xl: isCollapsed ? '15px' : 0 }}
+            w={{ lg: isExpanded ? '180px' : '48px', xl: isCollapsed ? '48px' : '180px' }}
+            pl={{ lg: isExpanded ? 3 : '12px', xl: isCollapsed ? '12px' : 3 }}
+            pr={{ lg: isExpanded ? 0 : '12px', xl: isCollapsed ? '12px' : 0 }}
             aria-label={ `${ item.text } link group` }
             position="relative"
           >
@@ -89,7 +90,7 @@ const NavLinkGroup = ({ item, isCollapsed }: Props) => {
                     mb: 2,
                     pb: 2,
                     borderBottomWidth: '1px',
-                    borderColor: 'divider',
+                    borderColor: colors.grayTrue[600], //'divider',
                   }}
                 >
                   { subItem.map(subSubItem => <NavLink key={ subSubItem.text } item={ subSubItem } isCollapsed={ false }/>) }

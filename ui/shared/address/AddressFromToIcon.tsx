@@ -1,6 +1,7 @@
 import { Tooltip, chakra, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
+import colors from 'theme/foundations/colors';
 import IconSvg from 'ui/shared/IconSvg';
 
 import type { TxCourseType } from './utils';
@@ -14,19 +15,19 @@ interface Props {
 const AddressFromToIcon = ({ isLoading, type, className }: Props) => {
   const styles = {
     'in': {
-      color: useColorModeValue('green.500', 'green.200'),
-      bgColor: useColorModeValue('green.50', 'green.800'),
+      color: useColorModeValue('green.500', colors.success[200]), //'green.200'
+      bgColor: useColorModeValue('green.50', colors.success[600]), //'green.800'
     },
     out: {
-      color: useColorModeValue('yellow.600', 'yellow.500'),
-      bgColor: useColorModeValue('orange.50', 'yellow.900'),
+      color: useColorModeValue('yellow.600', colors.yellow[200]), //'yellow.500'
+      bgColor: useColorModeValue('orange.50', colors.yellow[600]), //'yellow.900'
     },
     self: {
-      color: useColorModeValue('blackAlpha.400', 'whiteAlpha.400'),
-      bgColor: useColorModeValue('blackAlpha.50', 'whiteAlpha.50'),
+      color: useColorModeValue('blackAlpha.400', colors.grayTrue[200]), //'whiteAlpha.400'
+      bgColor: useColorModeValue('blackAlpha.50', colors.grayTrue[600]), //'whiteAlpha.50'
     },
     unspecified: {
-      color: useColorModeValue('gray.500', 'gray.300'),
+      color: useColorModeValue('gray.500', colors.grayTrue[200]), //'gray.300'
       bgColor: 'transparent',
     },
   };

@@ -6,10 +6,12 @@ const SwaggerUIReact = dynamic(() => import('swagger-ui-react'), {
 
 import type { SystemStyleObject } from '@chakra-ui/react';
 import { Box, useColorModeValue, useToken } from '@chakra-ui/react';
+import { transparentize } from '@chakra-ui/theme-tools';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
 import config from 'configs/app';
+import colors from 'theme/foundations/colors';
 import ContentLoader from 'ui/shared/ContentLoader';
 
 import 'swagger-ui-react/swagger-ui.css';
@@ -29,9 +31,9 @@ const NeverShowInfoPlugin = () => {
 };
 
 const SwaggerUI = () => {
-  const mainColor = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
-  const borderColor = useToken('colors', 'divider');
-  const mainBgColor = useColorModeValue('blackAlpha.100', 'whiteAlpha.200');
+  const mainColor = useColorModeValue('blackAlpha.800', 'white');
+  const borderColor = useToken('colors', colors.grayTrue[700]);
+  const mainBgColor = useColorModeValue('blackAlpha.100', colors.grayTrue[700]);
 
   const swaggerStyle: SystemStyleObject = {
     '.swagger-ui .scheme-container, .opblock-tag': {
@@ -39,6 +41,9 @@ const SwaggerUI = () => {
     },
     '.swagger-ui': {
       color: mainColor,
+    },
+    '.swagger-ui .opblock-summary-control': {
+      bgColor: 'transparent',
     },
     '.swagger-ui .opblock-summary-control:focus': {
       outline: 'none',
@@ -60,25 +65,25 @@ const SwaggerUI = () => {
       padding: 0,
     },
     '.swagger-ui .prop-type': {
-      color: useColorModeValue('blue.600', 'blue.400'),
+      color: useColorModeValue('blue.600', colors.blueLight[400]),
     },
     '.swagger-ui .btn.try-out__btn': {
-      borderColor: useToken('colors', 'link'),
-      color: useToken('colors', 'link'),
+      borderColor: useToken('colors', colors.grayTrue[200]), //'link'
+      color: useToken('colors', colors.grayTrue[200]), //'link'
       borderRadius: 'sm',
     },
     '.swagger-ui .btn.try-out__btn:hover': {
       boxShadow: 'none',
-      borderColor: useToken('colors', 'link_hovered'),
-      color: useToken('colors', 'link_hovered'),
+      borderColor: useToken('colors', 'white'),
+      color: useToken('colors', 'white'),
     },
     '.swagger-ui .btn.try-out__btn.cancel': {
-      borderColor: useToken('colors', 'error'),
-      color: useToken('colors', 'error'),
+      borderColor: useToken('colors', colors.error[500]),
+      color: useToken('colors', colors.error[500]),
     },
     '.swagger-ui .btn.try-out__btn.cancel:hover': {
-      borderColor: useColorModeValue('red.600', 'red.500'),
-      color: useColorModeValue('red.500', 'red.400'),
+      borderColor: useColorModeValue('red.600', colors.error[400]),
+      color: useColorModeValue('red.500', colors.error[400]),
     },
 
     // MODELS
@@ -108,6 +113,43 @@ const SwaggerUI = () => {
     '.swagger-ui .model .property.primitive': {
       color: useToken('colors', 'text_secondary'),
       wordBreak: 'break-all',
+    },
+    'button.opblock-control-arrow > svg': {
+      fill: useColorModeValue(colors.grayTrue[300], colors.grayTrue[200]),
+    },
+    '.opblock.opblock-get': { //use opblock-summary.opblock-summary-get tooo modify only the collapsed design
+      bgColor: useColorModeValue('transparent', transparentize(colors.blueLight[500], 0.2)),
+      borderColor: useColorModeValue(colors.blueLight[300], colors.blueLight[500]),
+      borderRadius: '8px',
+    },
+    '.opblock-summary.opblock-summary-get': {
+      padding: '8px',
+      paddingRight: '12px',
+    },
+    '.opblock.opblock-post, .opblock.opblock-patch': {
+      bgColor: useColorModeValue('transparent', transparentize(colors.success[500], 0.2)),
+      borderColor: useColorModeValue(colors.success[300], colors.success[500]),
+      borderRadius: '8px',
+    },
+    '.opblock-summary.opblock-summary-post, .opblock-summary.opblock-summary-patch': {
+      padding: '8px',
+      paddingRight: '12px',
+    },
+    //Method names
+    '.opblock.opblock-get .opblock-summary-method': {
+      background: useColorModeValue('transparent', colors.blueLight[500]),
+      borderRadius: '8px',
+    },
+    '.opblock.opblock-post .opblock-summary-method, .opblock.opblock-patch .opblock-summary-method': {
+      background: useColorModeValue('transparent', colors.success[500]),
+      borderRadius: '8px',
+    },
+    '.swagger-ui .parameter__name.required:after': {
+      color: useColorModeValue('transparent', colors.error[500]),
+    },
+    '.swagger-ui .copy-to-clipboard': {
+      background: useColorModeValue('transparent', colors.grayTrue[500]),
+      _active: { background: useColorModeValue('transparent', colors.grayTrue[600]) },
     },
   };
 

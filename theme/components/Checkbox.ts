@@ -7,6 +7,8 @@ import {
 import { mode } from '@chakra-ui/theme-tools';
 import { runIfFn } from '@chakra-ui/utils';
 
+import colors from 'theme/foundations/colors';
+
 const { definePartsStyle, defineMultiStyleConfig } =
   createMultiStyleConfigHelpers(parts.keys);
 
@@ -15,6 +17,22 @@ const $size = cssVar('checkbox-size');
 const baseStyleControl = defineStyle((props) => {
   const { colorScheme: c } = props;
 
+  if (c === 'blue') { //override the blue color for now
+    return {
+      _checked: {
+        bg: mode(`${ c }.500`, colors.white)(props),
+        borderColor: mode(`${ c }.500`, colors.white)(props),
+        _hover: {
+          bg: mode(`${ c }.600`, colors.grayTrue[50])(props),
+          borderColor: mode(`${ c }.600`, colors.grayTrue[50])(props),
+        },
+      },
+      _indeterminate: {
+        bg: mode(`${ c }.500`, colors.white)(props),
+        borderColor: mode(`${ c }.500`, colors.white)(props),
+      },
+    };
+  }
   return {
     _checked: {
       bg: mode(`${ c }.500`, `${ c }.300`)(props),

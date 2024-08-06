@@ -11,6 +11,7 @@ import highlightText from 'lib/highlightText';
 import * as mixpanel from 'lib/mixpanel/index';
 import { saveToRecentKeywords } from 'lib/recentSearchKeywords';
 import { ADDRESS_REGEXP } from 'lib/validations/address';
+import colors from 'theme/foundations/colors';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as BlobEntity from 'ui/shared/entities/blob/BlobEntity';
@@ -71,7 +72,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
                     dangerouslySetInnerHTML={{ __html: highlightText(name, searchTerm) }}
                   />
                 </LinkInternal>
-                { data.is_verified_via_admin_panel && <IconSvg name="certified" boxSize={ 4 } ml={ 1 } color="green.500"/> }
+                { data.is_verified_via_admin_panel && <IconSvg name="certified" boxSize={ 4 } ml={ 1 } color={ colors.success[500] }/> }
               </Flex>
             </Td>
             <Td fontSize="sm" verticalAlign="middle">
@@ -79,7 +80,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
                 <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-28px)' : 'unset' }>
                   <HashStringShortenDynamic hash={ data.address }/>
                 </Box>
-                { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
+                { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color={ colors.success[500] } ml={ 1 } flexShrink={ 0 }/> }
               </Skeleton>
             </Td>
             <Td fontSize="sm" verticalAlign="middle" isNumeric>
@@ -159,7 +160,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
           <>
             <Td fontSize="sm">
               <Flex alignItems="center">
-                <IconSvg name="publictags_slim" boxSize={ 6 } mr={ 2 } color="gray.500"/>
+                <IconSvg name="publictags_slim" boxSize={ 6 } mr={ 2 } color={ colors.grayTrue[200] }/>
                 <LinkInternal
                   href={ route({ pathname: '/address/[hash]', query: { hash: data.address } }) }
                   fontWeight={ 700 }
@@ -176,7 +177,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
                 <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-28px)' : 'unset' }>
                   <HashStringShortenDynamic hash={ data.address }/>
                 </Box>
-                { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
+                { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color={ colors.success[500] } ml={ 1 } flexShrink={ 0 }/> }
               </Flex>
             </Td>
             <Td></Td>
@@ -381,7 +382,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
                 <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-28px)' : 'unset' }>
                   <HashStringShortenDynamic hash={ data.address }/>
                 </Box>
-                { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
+                { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color={ colors.success[500] } ml={ 1 } flexShrink={ 0 }/> }
               </Flex>
             </Td>
             <Td>

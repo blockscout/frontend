@@ -14,6 +14,7 @@ import {
 import React from 'react';
 
 import config from 'configs/app';
+import colors from 'theme/foundations/colors';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 
@@ -25,7 +26,7 @@ interface Props {
 
 const ContractCodeIde = ({ className, hash, isLoading }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
-  const defaultIconColor = useColorModeValue('gray.600', 'gray.500');
+  const defaultIconColor = useColorModeValue('gray.600', colors.grayTrue[200]); //'gray.500'
 
   const ideLinks = React.useMemo(() => {
     return config.UI.ides.items

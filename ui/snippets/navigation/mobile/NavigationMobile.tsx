@@ -4,6 +4,7 @@ import React, { useCallback } from 'react';
 
 import useHasAccount from 'lib/hooks/useHasAccount';
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
+import colors from 'theme/foundations/colors';
 import IconSvg from 'ui/shared/IconSvg';
 
 import NavLink from '../vertical/NavLink';
@@ -37,7 +38,7 @@ const NavigationMobile = ({ onNavLinkClick, isMarketplaceAppPage }: Props) => {
 
   const hasAccount = useHasAccount();
 
-  const iconColor = useColorModeValue('blue.600', 'blue.300');
+  const iconColor = useColorModeValue('blue.600', colors.grayTrue[200]);
 
   const openedItem = mainNavItems[openedGroupIndex];
 

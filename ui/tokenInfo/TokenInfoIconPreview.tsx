@@ -1,6 +1,7 @@
 import { Center, Image, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
+import colors from 'theme/foundations/colors';
 import TokenLogoPlaceholder from 'ui/shared/TokenLogoPlaceholder';
 
 interface Props {
@@ -11,9 +12,9 @@ interface Props {
 }
 
 const TokenInfoIconPreview = ({ url, onError, onLoad, isInvalid }: Props) => {
-  const borderColor = useColorModeValue('gray.100', 'gray.700');
-  const borderColorFilled = useColorModeValue('gray.300', 'gray.600');
-  const borderColorError = useColorModeValue('red.400', 'red.300');
+  const borderColor = useColorModeValue('gray.100', colors.grayTrue[300]); //'gray.700'
+  const borderColorFilled = useColorModeValue('gray.300', colors.grayTrue[200]); //'gray.600'
+  const borderColorError = useColorModeValue('red.400', colors.error[300]); //'red.300'
   const borderColorActive = isInvalid ? borderColorError : borderColorFilled;
 
   return (

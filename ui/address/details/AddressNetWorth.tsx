@@ -9,6 +9,7 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import * as mixpanel from 'lib/mixpanel/index';
+import colors from 'theme/foundations/colors';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import TextSeparator from 'ui/shared/TextSeparator';
@@ -75,7 +76,7 @@ const AddressNetWorth = ({ addressData, isLoading, addressHash }: Props) => {
       const dappId = multichainFeature.dappId;
       multichainItem = (
         <>
-          <TextSeparator mx={ 0 } color="gray.500"/>
+          <TextSeparator mx={ 0 } color={ colors.grayTrue[700] }/>
           <Flex alignItems="center" gap={ 2 }>
             <Text>Multichain</Text>
             { typeof dappId === 'string' ? (

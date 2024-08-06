@@ -5,6 +5,7 @@ import type { DeFiDropdownItem as TDeFiDropdownItem } from 'types/client/deFiDro
 
 import { route } from 'nextjs-routes';
 
+import colors from 'theme/foundations/colors';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import LinkInternal from 'ui/shared/links/LinkInternal';
@@ -19,7 +20,7 @@ const DeFiDropdownItem = ({ item }: Props) => {
     height: '34px',
     display: 'inline-flex',
     alignItems: 'center',
-    color: useColorModeValue('blackAlpha.800', 'gray.400'),
+    color: useColorModeValue('blackAlpha.800', colors.grayTrue[200]),
     _hover: {
       textDecoration: 'none',
       '& *': {

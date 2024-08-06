@@ -4,6 +4,7 @@ import React from 'react';
 
 import type { TimeChartItem, TimeChartData } from 'ui/shared/chart/types';
 
+import colors from 'theme/foundations/colors';
 import computeTooltipPosition from 'ui/shared/chart/utils/computeTooltipPosition';
 import type { Pointer } from 'ui/shared/chart/utils/pointerTracker';
 import { trackPointer } from 'ui/shared/chart/utils/pointerTracker';
@@ -25,12 +26,12 @@ const POINT_SIZE = 16;
 const LABEL_WIDTH = 80;
 
 const ChartTooltip = ({ xScale, yScale, width, tooltipWidth = 200, height, data, anchorEl, ...props }: Props) => {
-  const lineColor = useToken('colors', 'gray.400');
-  const titleColor = useToken('colors', 'blue.100');
+  const lineColor = useToken('colors', colors.grayTrue[200]);
+  const titleColor = useToken('colors', colors.grayTrue[200]);
   const textColor = useToken('colors', 'white');
   const markerBgColor = useToken('colors', useColorModeValue('black', 'white'));
   const markerBorderColor = useToken('colors', useColorModeValue('white', 'black'));
-  const bgColor = useToken('colors', 'blackAlpha.900');
+  const bgColor = useToken('colors', colors.grayTrue[900]); //'blackAlpha.900'
 
   const ref = React.useRef(null);
   const trackerId = React.useRef<number>();

@@ -21,6 +21,7 @@ import * as addressStubs from 'stubs/address';
 import * as tokenStubs from 'stubs/token';
 import { getTokenHoldersStub } from 'stubs/token';
 import { generateListStub } from 'stubs/utils';
+import colors from 'theme/foundations/colors';
 import AddressContract from 'ui/address/AddressContract';
 import AddressCsvExportLink from 'ui/address/AddressCsvExportLink';
 import TextAd from 'ui/shared/ad/TextAd';
@@ -183,7 +184,7 @@ const TokenPageContent = () => {
           return (
             <>
               <span>Contract</span>
-              <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 }/>
+              <IconSvg name="status/success" boxSize="14px" color={ colors.success[500] } ml={ 1 }/>
             </>
           );
         }

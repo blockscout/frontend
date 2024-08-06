@@ -18,6 +18,7 @@ import type { NetworkExplorer as TNetworkExplorer } from 'types/networks';
 
 import config from 'configs/app';
 import stripTrailingSlash from 'lib/stripTrailingSlash';
+import colors from 'theme/foundations/colors';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import PopoverTriggerTooltip from 'ui/shared/PopoverTriggerTooltip';
@@ -30,7 +31,7 @@ interface Props {
 
 const NetworkExplorers = ({ className, type, pathParam }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
-  const defaultIconColor = useColorModeValue('gray.400', 'gray.500');
+  const defaultIconColor = useColorModeValue('gray.400', colors.grayTrue[300]); //'gray.500'
 
   const explorersLinks = React.useMemo(() => {
     return config.UI.explorers.items

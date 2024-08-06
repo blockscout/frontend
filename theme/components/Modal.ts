@@ -7,6 +7,8 @@ import {
 import { mode } from '@chakra-ui/theme-tools';
 import { runIfFn } from '@chakra-ui/utils';
 
+import colors from 'theme/foundations/colors';
+
 const { defineMultiStyleConfig, definePartsStyle } =
   createMultiStyleConfigHelpers(parts.keys);
 
@@ -50,14 +52,14 @@ const baseStyleCloseButton = defineStyle((props) => {
     right: 8,
     height: 10,
     width: 10,
-    color: mode('gray.700', 'gray.500')(props),
+    color: mode('gray.700', colors.grayTrue[500])(props), //'gray.500'
     _hover: { color: 'link_hovered' },
     _active: { bg: 'none' },
   };
 });
 
 const baseStyleOverlay = defineStyle({
-  bg: 'blackAlpha.800',
+  bg: colors.grayTrue[700], //'blackAlpha.800'
 });
 
 const baseStyle = definePartsStyle((props) => ({

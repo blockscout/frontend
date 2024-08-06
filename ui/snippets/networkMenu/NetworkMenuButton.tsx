@@ -1,6 +1,7 @@
 import { useColorModeValue, Button, forwardRef, chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import colors from 'theme/foundations/colors';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -12,9 +13,9 @@ interface Props {
 }
 
 const NetworkMenuButton = ({ isMobile, isActive, onClick, className }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
-  const defaultIconColor = useColorModeValue('gray.600', 'gray.400');
-  const bgColorMobile = useColorModeValue('blue.50', 'gray.800');
-  const iconColorMobile = useColorModeValue('blue.700', 'blue.50');
+  const defaultIconColor = useColorModeValue('gray.600', colors.grayTrue[200]);
+  const bgColorMobile = useColorModeValue('blue.50', colors.grayTrue[900]);
+  const iconColorMobile = useColorModeValue('blue.700', colors.grayTrue[200]);
 
   return (
     <Button

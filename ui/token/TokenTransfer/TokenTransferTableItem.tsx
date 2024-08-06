@@ -6,6 +6,7 @@ import type { TokenTransfer } from 'types/api/tokenTransfer';
 import getCurrencyValue from 'lib/getCurrencyValue';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
+import colors from 'theme/foundations/colors';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import Tag from 'ui/shared/chakra/Tag';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
@@ -45,7 +46,7 @@ const TokenTransferTableItem = ({
             truncation="constant_long"
           />
           { timestamp && (
-            <Skeleton isLoaded={ !isLoading } display="inline-block" color="gray.500" fontWeight="400" ml="10px">
+            <Skeleton isLoaded={ !isLoading } display="inline-block" color={ colors.grayTrue[200] } fontWeight="400" ml="10px">
               <span>
                 { timeAgo }
               </span>

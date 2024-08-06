@@ -2,6 +2,7 @@ import type { TooltipProps } from '@chakra-ui/react';
 import { chakra, IconButton, Tooltip, useDisclosure, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
+import colors from 'theme/foundations/colors';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
@@ -31,6 +32,8 @@ const Hint = ({ label, className, tooltipProps, isLoading }: Props) => {
       maxW="320px"
       isOpen={ isOpen }
       { ...tooltipProps }
+      background={ colors.grayTrue[600] }
+      color={ colors.grayTrue[50] }
     >
       <IconButton
         colorScheme="none"

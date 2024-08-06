@@ -2,6 +2,8 @@ import type { ChakraProps } from '@chakra-ui/react';
 import { Box, Flex, chakra, useColorModeValue, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
+import colors from 'theme/foundations/colors';
+
 import CopyToClipboard from './CopyToClipboard';
 
 interface Props {
@@ -34,7 +36,7 @@ const RawDataSnippet = ({
   // so blackAlpha.50 here is replaced with #f5f5f6
   // and whiteAlpha.50 is replaced with #1a1b1b
   // const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
-  const bgColor = useColorModeValue('#f5f5f6', '#1a1b1b');
+  const bgColor = useColorModeValue('#f5f5f6', colors.grayTrue[800]);
   return (
     <Box className={ className } as="section" title={ title }>
       { (title || rightSlot || showCopy) && (

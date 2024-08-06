@@ -4,6 +4,7 @@ import React from 'react';
 import type { TokenInfo } from 'types/api/token';
 
 import { publicTag, privateTag, watchlistName } from 'mocks/address/tag';
+import colors from 'theme/foundations/colors';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EntityTags from 'ui/shared/EntityTags/EntityTags';
 import formatUserTags from 'ui/shared/EntityTags/formatUserTags';
@@ -27,7 +28,7 @@ const LongNameAndManyTags = () => {
 
   const contentAfter = (
     <>
-      <IconSvg name="certified" color="green.500" boxSize={ 6 } cursor="pointer" flexShrink={ 0 }/>
+      <IconSvg name="certified" color={ colors.success[500] } boxSize={ 6 } cursor="pointer" flexShrink={ 0 }/>
       <EntityTags
         tags={ [
           { slug: 'example', name: 'Example with long name', tagType: 'custom' },

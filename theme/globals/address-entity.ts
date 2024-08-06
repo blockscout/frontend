@@ -1,6 +1,8 @@
 import { mode } from '@chakra-ui/theme-tools';
 import type { StyleFunctionProps } from '@chakra-ui/theme-tools';
 
+import colors from 'theme/foundations/colors';
+
 const styles = (props: StyleFunctionProps) => {
   return {
     '.address-entity': {
@@ -16,10 +18,10 @@ const styles = (props: StyleFunctionProps) => {
           width: `100%`,
           height: '100%',
           borderRadius: 'base',
-          borderColor: mode('blue.200', 'blue.600')(props),
+          borderColor: mode('blue.200', colors.grayTrue[200])(props), //'blue.600'
           borderWidth: '1px',
           borderStyle: 'dashed',
-          bgColor: mode('blue.50', 'blue.900')(props),
+          bgColor: mode('blue.50', colors.grayTrue[700])(props), //'blue.900'
           zIndex: -1,
         },
       },

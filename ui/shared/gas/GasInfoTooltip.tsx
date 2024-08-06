@@ -20,6 +20,7 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
+import colors from 'theme/foundations/colors';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 
 import GasInfoTooltipRow from './GasInfoTooltipRow';
@@ -37,7 +38,7 @@ const POPOVER_OFFSET: [ number, number ] = [ 0, 10 ];
 const feature = config.features.gasTracker;
 
 const GasInfoTooltip = ({ children, data, dataUpdatedAt, isOpen, placement }: Props) => {
-  const tooltipBg = useColorModeValue('gray.700', 'gray.900');
+  const tooltipBg = useColorModeValue('gray.700', colors.grayTrue[700]);
 
   if (!data.gas_prices) {
     return null;

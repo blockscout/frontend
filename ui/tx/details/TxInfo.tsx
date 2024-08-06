@@ -28,6 +28,7 @@ import getArbitrumVerificationStepStatus from 'lib/getArbitrumVerificationStepSt
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
 import { currencyUnits } from 'lib/units';
+import colors from 'theme/foundations/colors';
 import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import CurrencyValue from 'ui/shared/CurrencyValue';
@@ -79,7 +80,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       smooth: true,
     });
   }, []);
-  const executionSuccessIconColor = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
+  const executionSuccessIconColor = useColorModeValue('blackAlpha.800', colors.white); //'whiteAlpha.800'
 
   if (!data) {
     return null;
@@ -99,16 +100,16 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
   ].map((tag) => <Tag key={ tag.label }>{ tag.display_name }</Tag>);
 
   const executionSuccessBadge = toAddress?.is_contract && data.result === 'success' ? (
-    <Tooltip label="Contract execution completed">
+    <Tooltip label="Contract execution completed" background={ colors.grayTrue[600] } color={ colors.grayTrue[50] }>
       <chakra.span display="inline-flex" ml={ 2 } mr={ 1 }>
         <IconSvg name="status/success" boxSize={ 4 } color={ executionSuccessIconColor } cursor="pointer"/>
       </chakra.span>
     </Tooltip>
   ) : null;
   const executionFailedBadge = toAddress?.is_contract && Boolean(data.status) && data.result !== 'success' ? (
-    <Tooltip label="Error occurred during contract execution">
+    <Tooltip label="Error occurred during contract execution" background={ colors.grayTrue[600] } color={ colors.grayTrue[50] }>
       <chakra.span display="inline-flex" ml={ 2 } mr={ 1 }>
-        <IconSvg name="status/error" boxSize={ 4 } color="error" cursor="pointer"/>
+        <IconSvg name="status/error" boxSize={ 4 } color={ colors.error[500] } cursor="pointer"/>
       </chakra.span>
     </Tooltip>
   ) : null;
@@ -145,7 +146,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
 
         { config.features.metasuites.isEnabled && (
           <>
-            <TextSeparator color="gray.500" flexShrink={ 0 } display="none" id="meta-suites__tx-explorer-separator"/>
+            <TextSeparator flexShrink={ 0 } display="none" id="meta-suites__tx-explorer-separator"/>
             <Box display="none" flexShrink={ 0 } id="meta-suites__tx-explorer-link"/>
           </>
         ) }
@@ -279,7 +280,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           ) }
         { Boolean(data.confirmations) && (
           <>
-            <TextSeparator color="gray.500"/>
+            <TextSeparator/>
             <Skeleton isLoaded={ !isLoading } color="text_secondary">
               <span>{ data.confirmations } Block confirmations</span>
             </Skeleton>
@@ -351,7 +352,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             <DetailsTimestamp timestamp={ data.timestamp } isLoading={ isLoading }/>
             { data.confirmation_duration && (
               <>
-                <TextSeparator color="gray.500"/>
+                <TextSeparator/>
                 <Skeleton isLoaded={ !isLoading } color="text_secondary">
                   <span>{ getConfirmationDuration(data.confirmation_duration) }</span>
                 </Skeleton>

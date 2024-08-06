@@ -5,6 +5,7 @@ import React, { useCallback } from 'react';
 import type { MarketplaceAppWithSecurityReport, ContractListTypes } from 'types/client/marketplace';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import colors from 'theme/foundations/colors';
 import IconSvg from 'ui/shared/IconSvg';
 
 import AppSecurityReport from './AppSecurityReport';
@@ -66,7 +67,7 @@ const MarketplaceAppCard = ({
       borderRadius="md"
       padding={{ base: 3, md: '20px' }}
       border="1px"
-      borderColor={ useColorModeValue('gray.200', 'gray.600') }
+      borderColor={ useColorModeValue('gray.200', colors.grayTrue[700]) }
       role="group"
     >
       <Flex

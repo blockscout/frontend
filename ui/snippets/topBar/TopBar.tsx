@@ -2,6 +2,7 @@ import { Flex, Divider, useColorModeValue, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
+import colors from 'theme/foundations/colors';
 
 import DeFiDropdown from './DeFiDropdown';
 import NetworkMenu from './NetworkMenu';
@@ -9,7 +10,7 @@ import Settings from './settings/Settings';
 import TopBarStats from './TopBarStats';
 
 const TopBar = () => {
-  const bgColor = useColorModeValue('gray.50', 'whiteAlpha.100');
+  const bgColor = useColorModeValue('gray.50', colors.grayTrue[800]);
 
   return (
     <Flex

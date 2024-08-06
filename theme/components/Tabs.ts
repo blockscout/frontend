@@ -3,6 +3,9 @@ import {
   createMultiStyleConfigHelpers,
 } from '@chakra-ui/styled-system';
 import { mode } from '@chakra-ui/theme-tools';
+
+import colors from 'theme/foundations/colors';
+
 const { defineMultiStyleConfig, definePartsStyle } =
   createMultiStyleConfigHelpers(parts.keys);
 
@@ -13,16 +16,17 @@ const variantSoftRounded = definePartsStyle((props) => {
     tab: {
       borderRadius: 'base',
       fontWeight: '600',
-      color: mode('blue.700', 'gray.400')(props),
+      color: mode('blue.700', colors.grayTrue[300])(props),
       _selected: {
-        color: mode('blue.700', 'gray.50')(props),
-        bg: mode('blue.50', 'gray.800')(props),
+        fontWeight: '900',
+        color: mode('blue.700', colors.error[500])(props),
+        bg: mode('blue.50', colors.error[50])(props),
         _hover: {
-          color: mode('blue.700', 'gray.50')(props),
+          color: mode('blue.700', colors.error[600])(props),
         },
       },
       _hover: {
-        color: 'link_hovered',
+        color: colors.grayTrue[400], //'link_hovered',
       },
       _focusVisible: {
         boxShadow: { base: 'none', lg: 'outline' },

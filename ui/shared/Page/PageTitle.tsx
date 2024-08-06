@@ -3,6 +3,7 @@ import _debounce from 'lodash/debounce';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import colors from 'theme/foundations/colors';
 import TextAd from 'ui/shared/ad/TextAd';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/links/LinkInternal';
@@ -43,7 +44,7 @@ const BackLink = (props: BackLinkProp & { isLoading?: boolean }) => {
     );
   }
 
-  const icon = <IconSvg name="arrows/east" boxSize={ 6 } transform="rotate(180deg)" margin="auto" color="gray.400" flexShrink={ 0 }/>;
+  const icon = <IconSvg name="arrows/east" boxSize={ 6 } transform="rotate(180deg)" margin="auto" color={ colors.grayTrue[200] } flexShrink={ 0 }/>;
 
   if ('url' in props) {
     return (

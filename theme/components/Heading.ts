@@ -2,10 +2,12 @@ import { defineStyle, defineStyleConfig } from '@chakra-ui/styled-system';
 import type { SystemStyleInterpolation } from '@chakra-ui/theme-tools';
 import { mode } from '@chakra-ui/theme-tools';
 
+import colors from 'theme/foundations/colors';
+
 const baseStyle: SystemStyleInterpolation = (props) => {
   return {
-    fontWeight: '500',
-    color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
+    fontWeight: '900',
+    color: mode('blackAlpha.800', colors.grayTrue[50])(props),
   };
 };
 

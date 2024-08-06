@@ -4,6 +4,8 @@ import {
 } from '@chakra-ui/styled-system';
 import { mode } from '@chakra-ui/theme-tools';
 
+import colors from 'theme/foundations/colors';
+
 import getDefaultTransitionProps from '../utils/getDefaultTransitionProps';
 
 const { defineMultiStyleConfig, definePartsStyle } =
@@ -15,8 +17,8 @@ const variantSimple = definePartsStyle((props) => {
   return {
     th: {
       border: 0,
-      color: mode('blackAlpha.700', 'whiteAlpha.700')(props),
-      backgroundColor: mode('blackAlpha.100', 'whiteAlpha.200')(props),
+      color: mode('blackAlpha.700', colors.grayTrue[200])(props),
+      backgroundColor: mode('blackAlpha.100', colors.grayTrue[700])(props),
       ...transitionProps,
     },
     thead: {
@@ -77,7 +79,7 @@ const baseStyle = definePartsStyle({
     fontFamily: 'body',
     fontWeight: '500',
     overflow: 'hidden',
-    color: 'gray.500',
+    color: colors.grayTrue[200], //'gray.500',
     letterSpacing: 'none',
     _first: {
       borderTopLeftRadius: '8px',

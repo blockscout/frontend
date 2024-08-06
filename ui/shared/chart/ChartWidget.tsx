@@ -22,6 +22,7 @@ import type { TimeChartItem } from './types';
 import dayjs from 'lib/date/dayjs';
 import { apos } from 'lib/html-entities';
 import saveAsCSV from 'lib/saveAsCSV';
+import colors from 'theme/foundations/colors';
 import IconSvg from 'ui/shared/IconSvg';
 
 import ChartWidgetGraph from './ChartWidgetGraph';
@@ -45,8 +46,8 @@ const ChartWidget = ({ items, title, description, isLoading, className, isError,
   const [ isFullscreen, setIsFullscreen ] = useState(false);
   const [ isZoomResetInitial, setIsZoomResetInitial ] = React.useState(true);
 
-  const pngBackgroundColor = useColorModeValue('white', 'black');
-  const borderColor = useColorModeValue('gray.200', 'gray.600');
+  const pngBackgroundColor = useColorModeValue('white', colors.grayTrue[900]); //'black'
+  const borderColor = useColorModeValue('gray.200', colors.grayTrue[200]); //'gray.600'
 
   const handleZoom = useCallback(() => {
     setIsZoomResetInitial(false);

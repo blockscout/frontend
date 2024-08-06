@@ -6,6 +6,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import dayjs from 'lib/date/dayjs';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { HOMEPAGE_STATS } from 'stubs/stats';
+import colors from 'theme/foundations/colors';
 import GasInfoTooltip from 'ui/shared/gas/GasInfoTooltip';
 import GasPrice from 'ui/shared/gas/GasPrice';
 import TextSeparator from 'ui/shared/TextSeparator';
@@ -59,7 +60,7 @@ const TopBarStats = () => {
           </Skeleton>
           { data.coin_price_change_percentage && (
             <Skeleton isLoaded={ !isPlaceholderData }>
-              <chakra.span color={ Number(data.coin_price_change_percentage) >= 0 ? 'green.500' : 'red.500' }>
+              <chakra.span color={ Number(data.coin_price_change_percentage) >= 0 ? colors.success[500] : colors.error[500] }>
                 { Number(data.coin_price_change_percentage).toFixed(2) }%
               </chakra.span>
             </Skeleton>

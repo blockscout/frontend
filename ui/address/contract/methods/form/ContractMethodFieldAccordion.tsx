@@ -1,6 +1,8 @@
 import { Accordion, AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
+import colors from 'theme/foundations/colors';
+
 import ContractMethodArrayButton from './ContractMethodArrayButton';
 
 export interface Props {
@@ -31,7 +33,7 @@ const ContractMethodFieldAccordion = ({ label, level, children, onAddClick, onRe
               textAlign="left"
               _hover={{ bgColor: 'inherit' }}
             >
-              <AccordionIcon transform={ isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' } color="gray.500"/>
+              <AccordionIcon transform={ isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' } color={ colors.grayTrue[200] }/>
               <Box fontSize="sm" lineHeight={ 5 } fontWeight={ 700 } mr="auto" ml={ 1 } color={ isInvalid ? 'error' : undefined }>
                 { label }
               </Box>

@@ -3,6 +3,7 @@ import React from 'react';
 import type { TokenInfo } from 'types/api/token';
 
 import * as addressMock from 'mocks/address/address';
+import colors from 'theme/foundations/colors';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import EntityTags from 'ui/shared/EntityTags/EntityTags';
@@ -32,7 +33,7 @@ const DefaultView = () => {
 
   const contentAfter = (
     <>
-      <IconSvg name="certified" color="green.500" boxSize={ 6 } cursor="pointer"/>
+      <IconSvg name="certified" color={ colors.success[500] } boxSize={ 6 } cursor="pointer"/>
       <EntityTags
         tags={ [
           { slug: 'example', name: 'Example label', tagType: 'custom' },

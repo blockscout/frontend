@@ -7,6 +7,7 @@ import type { FormSubmitHandler, SmartContractMethod } from './types';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
+import colors from 'theme/foundations/colors';
 import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import Hint from 'ui/shared/Hint';
@@ -106,7 +107,7 @@ const ContractAbiItem = ({ data, index, id, addressHash, tab, onSubmit }: Props)
                   <CopyToClipboard text={ `${ data.name } (${ data.method_id })` } onClick={ handleCopyMethodIdClick }/>
                 </>
               ) }
-              <AccordionIcon transform={ isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' } color="gray.500"/>
+              <AccordionIcon transform={ isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' } color={ colors.grayTrue[200] }/>
             </AccordionButton>
           </Element>
           <AccordionPanel pb={ 4 } pr={ 0 } pl="28px" w="calc(100% - 6px)">

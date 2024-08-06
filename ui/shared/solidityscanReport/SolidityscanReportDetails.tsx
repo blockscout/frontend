@@ -3,6 +3,8 @@ import React from 'react';
 
 import type { SolidityscanReport } from 'types/api/contract';
 
+import colors from 'theme/foundations/colors';
+
 type DistributionItem = {
   id: keyof SolidityscanReport['scan_report']['scan_summary']['issue_severity_distribution'];
   name: string;
@@ -31,7 +33,7 @@ type ItemProps = {
 
 const SolidityScanReportItem = ({ item, vulnerabilities, vulnerabilitiesCount }: ItemProps) => {
   const bgBar = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
-  const yetAnotherGrayColor = useColorModeValue('gray.400', 'gray.500');
+  const yetAnotherGrayColor = useColorModeValue('gray.400', colors.grayTrue[300]);//'gray.500');
 
   return (
     <>

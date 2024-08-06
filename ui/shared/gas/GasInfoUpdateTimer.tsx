@@ -2,6 +2,7 @@ import { CircularProgress, chakra, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import dayjs from 'lib/date/dayjs';
+import colors from 'theme/foundations/colors';
 
 interface Props {
   startTime: number;
@@ -25,6 +26,7 @@ const getValue = (startDate: dayjs.Dayjs, duration: number) => {
 const GasInfoUpdateTimer = ({ startTime, duration, className, size = 4 }: Props) => {
   const [ value, setValue ] = React.useState(getValue(dayjs(startTime), duration));
   const trackColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.100');
+  const progressColor = useColorModeValue('blackAlpha.300', colors.white);
 
   React.useEffect(() => {
     const startDate = dayjs(startTime);
@@ -42,7 +44,7 @@ const GasInfoUpdateTimer = ({ startTime, duration, className, size = 4 }: Props)
     };
   }, [ startTime, duration ]);
 
-  return <CircularProgress className={ className } value={ value } trackColor={ trackColor } size={ size }/>;
+  return <CircularProgress className={ className } value={ value } color={ progressColor } trackColor={ trackColor } size={ size }/>;
 };
 
 export default React.memo(chakra(GasInfoUpdateTimer));

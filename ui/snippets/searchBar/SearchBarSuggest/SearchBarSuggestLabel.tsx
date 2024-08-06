@@ -4,6 +4,7 @@ import React from 'react';
 import type { SearchResultLabel } from 'types/api/search';
 
 import highlightText from 'lib/highlightText';
+import colors from 'theme/foundations/colors';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -14,7 +15,7 @@ interface Props {
 }
 
 const SearchBarSuggestLabel = ({ data, isMobile, searchTerm }: Props) => {
-  const icon = <IconSvg name="publictags_slim" boxSize={ 5 } color="gray.500"/>;
+  const icon = <IconSvg name="publictags_slim" boxSize={ 5 } color={ colors.grayTrue[200] }/>;
 
   const name = (
     <Text
@@ -37,7 +38,7 @@ const SearchBarSuggestLabel = ({ data, isMobile, searchTerm }: Props) => {
     </Text>
   );
 
-  const isContractVerified = data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" flexShrink={ 0 }/>;
+  const isContractVerified = data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color={ colors.success[500] } flexShrink={ 0 }/>;
 
   if (isMobile) {
     return (

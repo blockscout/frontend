@@ -9,6 +9,7 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import getValueWithUnit from 'lib/getValueWithUnit';
 import { currencyUnits } from 'lib/units';
+import colors from 'theme/foundations/colors';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import BlobEntity from 'ui/shared/entities/blob/BlobEntity';
 import LinkInternal from 'ui/shared/links/LinkInternal';
@@ -24,7 +25,7 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
   };
 
   const sectionTitleProps = {
-    color: 'gray.500',
+    color: colors.grayTrue[200], // gray.500
     fontWeight: 600,
     marginBottom: 3,
   };
@@ -119,7 +120,7 @@ const TxAdditionalInfoContent = ({ tx }: { tx: Transaction }) => {
           <Box>
             <Text as="span" fontWeight="500">Txn type: </Text>
             <Text fontWeight="600" as="span">{ tx.type }</Text>
-            { tx.type === 2 && <Text fontWeight="400" as="span" ml={ 1 } color="gray.500">(EIP-1559)</Text> }
+            { tx.type === 2 && <Text fontWeight="400" as="span" ml={ 1 } color={ colors.grayTrue[200] }>(EIP-1559)</Text> }
           </Box>
           <Box mt={ 1 }>
             <Text as="span" fontWeight="500">Nonce: </Text>

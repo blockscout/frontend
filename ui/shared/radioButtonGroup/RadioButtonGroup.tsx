@@ -2,6 +2,7 @@ import { ButtonGroup, Button, Flex, useRadio, useRadioGroup, useColorModeValue }
 import type { UseRadioProps } from '@chakra-ui/react';
 import React from 'react';
 
+import colors from 'theme/foundations/colors';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -20,7 +21,7 @@ type RadioButtonProps = UseRadioProps & RadioItemProps;
 
 const RadioButton = (props: RadioButtonProps) => {
   const { getInputProps, getRadioProps } = useRadio(props);
-  const buttonColor = useColorModeValue('blue.50', 'gray.800');
+  const buttonColor = useColorModeValue('blue.50', colors.grayTrue[800]);
   const checkedTextColor = useColorModeValue('blue.700', 'gray.50');
 
   const input = getInputProps();

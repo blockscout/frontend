@@ -7,6 +7,7 @@ import type { FormattedData } from './types';
 import type { TokenType } from 'types/api/token';
 
 import { getTokenTypeName } from 'lib/token/tokenTypes';
+import colors from 'theme/foundations/colors';
 import IconSvg from 'ui/shared/IconSvg';
 
 import type { Sort } from '../utils/tokenUtils';
@@ -74,7 +75,7 @@ const TokenSelectMenu = ({ erc20sort, erc1155sort, erc404sort, filteredData, onI
           return (
             <Box key={ type }>
               <Flex justifyContent="space-between">
-                <Text mb={ 3 } color="gray.500" fontWeight={ 600 } fontSize="sm">
+                <Text mb={ 3 } color={ colors.grayTrue[200] } fontWeight={ 600 } fontSize="sm">
                   { getTokenTypeName(type) } tokens ({ numPrefix }{ tokenInfo.items.length })
                 </Text>
                 { hasSort && (

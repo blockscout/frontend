@@ -16,6 +16,7 @@ import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { BLOCK } from 'stubs/block';
 import { HOMEPAGE_STATS } from 'stubs/stats';
+import colors from 'theme/foundations/colors';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 
 import LatestBlocksItem from './LatestBlocksItem';
@@ -89,7 +90,8 @@ const LatestBlocks = () => {
           </AnimatePresence>
         </VStack>
         <Flex justifyContent="center">
-          <LinkInternal fontSize="sm" href={ route({ pathname: '/blocks' }) }>View all blocks</LinkInternal>
+          <LinkInternal textDecoration="underline" color={ colors.grayTrue[200] } _hover={{ color: 'white' }}
+            fontSize="sm" href={ route({ pathname: '/blocks' }) }>View all blocks</LinkInternal>
         </Flex>
       </>
     );
@@ -103,7 +105,7 @@ const LatestBlocks = () => {
           <Text as="span" fontSize="sm">
               Network utilization:{ nbsp }
           </Text>
-          <Text as="span" fontSize="sm" color="blue.400" fontWeight={ 700 }>
+          <Text as="span" fontSize="sm" color={ colors.warning[300] } fontWeight={ 700 }>
             { statsQueryResult.data?.network_utilization_percentage.toFixed(2) }%
           </Text>
         </Skeleton>

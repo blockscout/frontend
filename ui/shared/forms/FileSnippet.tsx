@@ -1,6 +1,7 @@
 import { Box, Flex, Text, useColorModeValue, IconButton, chakra, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 
+import colors from 'theme/foundations/colors';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -41,7 +42,7 @@ const FileSnippet = ({ file, className, index, onRemove, isDisabled, error }: Pr
 
   const fileExtension = getFileExtension(file.name);
   const fileIcon = FILE_ICONS[fileExtension] || 'files/placeholder';
-  const iconColor = useColorModeValue('gray.600', 'gray.400');
+  const iconColor = useColorModeValue('gray.600', colors.grayTrue[200]);
 
   return (
     <Flex

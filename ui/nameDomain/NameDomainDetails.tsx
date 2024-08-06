@@ -10,6 +10,7 @@ import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import dayjs from 'lib/date/dayjs';
 import stripTrailingSlash from 'lib/stripTrailingSlash';
+import colors from 'theme/foundations/colors';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
@@ -40,7 +41,7 @@ const NameDomainDetails = ({ query }: Props) => {
             Registration date
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
-            <IconSvg name="clock" boxSize={ 5 } color="gray.500" verticalAlign="middle" isLoading={ isLoading } mr={ 2 }/>
+            <IconSvg name="clock" boxSize={ 5 } color={ colors.grayTrue[200] } verticalAlign="middle" isLoading={ isLoading } mr={ 2 }/>
             <Skeleton isLoaded={ !isLoading } display="inline" whiteSpace="pre-wrap" lineHeight="20px">
               { dayjs(query.data.registration_date).format('llll') }
             </Skeleton>
@@ -58,19 +59,19 @@ const NameDomainDetails = ({ query }: Props) => {
             Expiration date
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
-            <IconSvg name="clock" boxSize={ 5 } color="gray.500" verticalAlign="middle" isLoading={ isLoading } mr={ 2 } mt="-2px"/>
+            <IconSvg name="clock" boxSize={ 5 } color={ colors.grayTrue[200] } verticalAlign="middle" isLoading={ isLoading } mr={ 2 } mt="-2px"/>
             { hasExpired && (
               <>
                 <Skeleton isLoaded={ !isLoading } display="inline" whiteSpace="pre-wrap" lineHeight="24px">
                   { dayjs(query.data.expiry_date).fromNow() }
                 </Skeleton>
-                <TextSeparator color="gray.500"/>
+                <TextSeparator/>
               </>
             ) }
             <Skeleton isLoaded={ !isLoading } display="inline" whiteSpace="pre-wrap" lineHeight="24px">
               { dayjs(query.data.expiry_date).format('llll') }
             </Skeleton>
-            <TextSeparator color="gray.500"/>
+            <TextSeparator/>
             <Skeleton isLoaded={ !isLoading } color="text_secondary" display="inline">
               <NameDomainExpiryStatus date={ query.data?.expiry_date }/>
             </Skeleton>
