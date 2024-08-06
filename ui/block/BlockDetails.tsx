@@ -334,9 +334,10 @@ const BlockDetails = ({ query }: Props) => {
       >
         <Skeleton isLoaded={ !isPlaceholderData }>
           <Link
+            isExternal
             href={ `https://viewblock.io/arweave/tx/${ testArweaveTxid }` }
-            target="_blank"
             rel="noopener noreferrer"
+            color="green.600"
           >
             { testArweaveTxid }
           </Link>

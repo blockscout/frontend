@@ -349,9 +349,10 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           <DetailsInfoItem.Value>
             <Skeleton>
               <Link
+                isExternal
                 href={ `https://viewblock.io/arweave/tx/${ testArweaveTxid }` }
-                target="_blank"
                 rel="noopener noreferrer"
+                color="green.600"
               >
                 { testArweaveTxid }
               </Link>
