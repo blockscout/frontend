@@ -1,4 +1,4 @@
-import { Button, Box, Flex, Popover, PopoverTrigger, PopoverContent, PopoverBody, useDisclosure, chakra } from '@chakra-ui/react';
+import { Button, Box, Flex, PopoverTrigger, PopoverContent, PopoverBody, useDisclosure, chakra } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -7,6 +7,7 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import getPageType from 'lib/mixpanel/getPageType';
 import * as mixpanel from 'lib/mixpanel/index';
+import Popover from 'ui/shared/chakra/Popover';
 import IconSvg from 'ui/shared/IconSvg';
 
 import DeFiDropdownItem from './DeFiDropdownItem';

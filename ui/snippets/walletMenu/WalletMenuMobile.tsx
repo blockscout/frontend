@@ -38,7 +38,7 @@ const WalletMenuMobile = () => {
           aria-label="wallet menu"
           icon={ isWalletConnected ?
             <WalletIdenticon address={ address } isAutoConnectDisabled={ isAutoConnectDisabled }/> :
-            <IconSvg name="wallet" boxSize={ 6 }/>
+            <IconSvg name="wallet" boxSize={ 6 } p={ 0.5 }/>
           }
           variant={ isWalletConnected ? 'subtle' : 'outline' }
           colorScheme="gray"

@@ -54,7 +54,7 @@ const Icon = dynamic(
 
         // eslint-disable-next-line react/display-name
         return (props: IconProps) => {
-          const svg = GradientAvatar(props.hash, props.size);
+          const svg = GradientAvatar(props.hash, props.size, 'circle');
           return <div dangerouslySetInnerHTML={{ __html: svg }}/>;
         };
       }
