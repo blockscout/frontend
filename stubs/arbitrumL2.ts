@@ -23,6 +23,7 @@ export const ARBITRUM_L2_TXN_BATCHES_ITEM: ArbitrumL2TxnBatchesItem = {
     hash: TX_HASH,
     status: 'finalized',
   },
+  batch_data_container: 'in_blob4844',
 };
 
 export const ARBITRUM_L2_TXN_BATCH: ArbitrumL2TxnBatch = {

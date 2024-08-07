@@ -11,6 +11,7 @@ on:
           options:
             - none
             - arbitrum
+            - arbitrum_nova
             - base
             - celo_alfajores
             - gnosis

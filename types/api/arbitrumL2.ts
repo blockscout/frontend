@@ -33,11 +33,14 @@ type ArbitrumL2BatchCommitmentTx = {
   timestamp: string;
 }
 
+type BatchDataContainer = 'in_blob4844' | 'in_calldata' | 'in_anytrust' | 'in_celestia' | null;
+
 export type ArbitrumL2TxnBatchesItem = {
   blocks_count: number;
   commitment_transaction: ArbitrumL2BatchCommitmentTx;
   number: number;
   transactions_count: number;
+  batch_data_container: BatchDataContainer;
 }
 
 export type ArbitrumL2TxnBatchesResponse = {
@@ -48,6 +51,20 @@ export type ArbitrumL2TxnBatchesResponse = {
   } | null;
 }
 
+type BatchDataAvailability = {
+  batch_data_container: 'in_anytrust';
+  bls_signature: string;
+  data_hash: string;
+  timeout: string;
+  signers: Array<{
+    key: string;
+    trusted: boolean;
+    proof?: string;
+  }>;
+} | {
+  batch_data_container: Exclude<BatchDataContainer, 'in_anytrust'>;
+}
+
 export type ArbitrumL2TxnBatch = {
   after_acc: string;
   before_acc: string;
@@ -56,6 +73,7 @@ export type ArbitrumL2TxnBatch = {
   start_block: number;
   number: number;
   transactions_count: number;
+  data_availability: BatchDataAvailability;
 }
 
 export type ArbitrumL2BatchTxs = {
