@@ -1,8 +1,6 @@
 import { BigQuery } from '@google-cloud/bigquery';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-import config from 'configs/app';
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -10,8 +8,8 @@ export default async function handler(
   const { blockNumber } = req.body;
 
   const bigquery = new BigQuery({
-    projectId: config.googleCloud.projectId,
-    location: config.googleCloud.location,
+    projectId: 'promising-rock-414216',
+    location: 'US',
   });
 
   const query = `SELECT * 
