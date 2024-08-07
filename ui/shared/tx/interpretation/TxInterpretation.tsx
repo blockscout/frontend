@@ -2,6 +2,7 @@ import { Skeleton, Tooltip, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
+import type { AddressParam } from 'types/api/addressParams';
 import type {
   TxInterpretationSummary,
   TxInterpretationVariable,
@@ -23,14 +24,14 @@ import { extractVariables, getStringChunks, fillStringVariables, checkSummary, N
 type Props = {
   summary?: TxInterpretationSummary;
   isLoading?: boolean;
-  ensDomainNames?: Record<string, string>;
+  addressDataMap?: Record<string, AddressParam>;
   className?: string;
 }
 
 type NonStringTxInterpretationVariable = Exclude<TxInterpretationVariable, TxInterpretationVariableString>
 
 const TxInterpretationElementByType = (
-  { variable, ensDomainNames }: { variable?: NonStringTxInterpretationVariable; ensDomainNames?: Record<string, string> },
+  { variable, addressDataMap }: { variable?: NonStringTxInterpretationVariable; addressDataMap?: Record<string, AddressParam> },
 ) => {
   const onAddressClick = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.TX_INTERPRETATION_INTERACTION, { Type: 'Address click' });
@@ -51,14 +52,10 @@ const TxInterpretationElementByType = (
   const { type, value } = variable;
   switch (type) {
     case 'address': {
-      let address = value;
-      if (!address.ens_domain_name && ensDomainNames?.[address.hash]) {
-        address = { ...address, ens_domain_name: ensDomainNames[address.hash] };
-      }
       return (
         <chakra.span display="inline-block" verticalAlign="top" _notFirst={{ marginLeft: 1 }}>
           <AddressEntity
-            address={ address }
+            address={ addressDataMap?.[value.hash] || value }
             truncation="constant"
             onClick={ onAddressClick }
             whiteSpace="initial"
@@ -129,7 +126,7 @@ const TxInterpretationElementByType = (
   }
 };
 
-const TxInterpretation = ({ summary, isLoading, ensDomainNames, className }: Props) => {
+const TxInterpretation = ({ summary, isLoading, addressDataMap, className }: Props) => {
   if (!summary) {
     return null;
   }
@@ -161,7 +158,7 @@ const TxInterpretation = ({ summary, isLoading, ensDomainNames, className }: Pro
                 (
                   <TxInterpretationElementByType
                     variable={ variables[variablesNames[index]] as NonStringTxInterpretationVariable }
-                    ensDomainNames={ ensDomainNames }
+                    addressDataMap={ addressDataMap }
                   />
                 )
             ) }
