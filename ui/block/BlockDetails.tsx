@@ -12,6 +12,7 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import getBlockReward from 'lib/block/getBlockReward';
 import { GWEI, WEI, WEI_IN_GWEI, ZERO } from 'lib/consts';
+import useArweaveId from 'lib/hooks/useArweaveId';
 import { space } from 'lib/html-entities';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -47,11 +48,13 @@ const BlockDetails = ({ query }: Props) => {
   const router = useRouter();
   const heightOrHash = getQueryParamString(router.query.height_or_hash);
 
-  const testArweaveTxid = 'OcUj9mLGX3F41vCnjFnqKRnmYC8vpzqF1Ibr9psREGI';
-
   const separatorColor = useColorModeValue('gray.200', 'gray.700');
 
   const { data, isPlaceholderData } = query;
+
+  const { data: arweaveId, isLoading: isLoadingArweaveId } = useArweaveId({
+    block: data?.height,
+  });
 
   const handleCutClick = React.useCallback(() => {
     setIsExpanded((flag) => !flag);
@@ -332,17 +335,17 @@ const BlockDetails = ({ query }: Props) => {
         flexWrap="nowrap"
         alignSelf="flex-start"
       >
-        <Skeleton isLoaded={ !isPlaceholderData }>
+        <Skeleton isLoaded={ !isLoadingArweaveId }>
           <Link
             isExternal
-            href={ `https://viewblock.io/arweave/tx/${ testArweaveTxid }` }
+            href={ `https://viewblock.io/arweave/tx/${ arweaveId }` }
             rel="noopener noreferrer"
-            color="green.600"
+            color="green.500"
           >
-            { testArweaveTxid }
+            { arweaveId }
           </Link>
 
-          <CopyToClipboard text={ testArweaveTxid }/>
+          <CopyToClipboard text={ arweaveId }/>
         </Skeleton>
       </DetailsInfoItem.Value>
 

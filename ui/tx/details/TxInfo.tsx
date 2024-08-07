@@ -23,6 +23,7 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
+import useArweaveId from 'lib/hooks/useArweaveId';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
 import { currencyUnits } from 'lib/units';
@@ -68,8 +69,9 @@ interface Props {
 const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
 
-  const isArweaveTxid = true;
-  const testArweaveTxid = 'OcUj9mLGX3F41vCnjFnqKRnmYC8vpzqF1Ibr9psREGI';
+  const { data: arweaveId } = useArweaveId({
+    block: data?.block,
+  });
 
   const handleCutClick = React.useCallback(() => {
     setIsExpanded((flag) => !flag);
@@ -338,7 +340,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       ) }
 
       { /* ARWEAVE TXID */ }
-      { isArweaveTxid && (
+      { arweaveId && (
         <>
           <DetailsInfoItem.Label
             hint="The Arweave TXID of the WeaveVM transaction"
@@ -347,18 +349,16 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             Arweave storage proof
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
-            <Skeleton>
-              <Link
-                isExternal
-                href={ `https://viewblock.io/arweave/tx/${ testArweaveTxid }` }
-                rel="noopener noreferrer"
-                color="green.600"
-              >
-                { testArweaveTxid }
-              </Link>
+            <Link
+              isExternal
+              href={ `https://viewblock.io/arweave/tx/${ arweaveId }` }
+              rel="noopener noreferrer"
+              color="green.500"
+            >
+              { arweaveId }
+            </Link>
 
-              <CopyToClipboard text={ testArweaveTxid }/>
-            </Skeleton>
+            <CopyToClipboard text={ arweaveId }/>
           </DetailsInfoItem.Value>
         </>
       ) }
