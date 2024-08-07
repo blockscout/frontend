@@ -39,6 +39,7 @@
     "@chakra-ui/theme-tools": "^2.0.18",
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
+    "@google-cloud/bigquery": "^7.9.0",
     "@growthbook/growthbook-react": "0.21.0",
     "@hypelab/sdk-react": "^1.0.0",
     "@metamask/post-message-stream": "^7.0.0",
