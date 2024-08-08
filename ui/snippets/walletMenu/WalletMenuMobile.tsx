@@ -13,9 +13,20 @@ import useMenuButtonColors from '../useMenuButtonColors';
 import WalletIdenticon from './WalletIdenticon';
 import WalletTooltip from './WalletTooltip';
 
-const WalletMenuMobile = () => {
+type ComponentProps = {
+  isWalletConnected: boolean;
+  address: string;
+  connect: () => void;
+  disconnect: () => void;
+  isModalOpening: boolean;
+  isModalOpen: boolean;
+  openModal: () => void;
+};
+
+export const WalletMenuMobileComponent = (
+  { isWalletConnected, address, connect, disconnect, isModalOpening, isModalOpen, openModal }: ComponentProps,
+) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { isWalletConnected, address, connect, disconnect, isModalOpening, isModalOpen, openModal } = useWallet({ source: 'Header' });
   const { themedBackground, themedBackgroundOrange, themedBorderColor, themedColor } = useMenuButtonColors();
   const isMobile = useIsMobile();
   const { isAutoConnectDisabled } = useMarketplaceContext();
@@ -79,6 +90,25 @@ const WalletMenuMobile = () => {
         </Drawer>
       ) }
     </>
+  );
+};
+
+const WalletMenuMobile = () => {
+  const {
+    isWalletConnected, address, connect, disconnect,
+    isModalOpening, isModalOpen, openModal,
+  } = useWallet({ source: 'Header' });
+
+  return (
+    <WalletMenuMobileComponent
+      isWalletConnected={ isWalletConnected }
+      address={ address }
+      connect={ connect }
+      disconnect={ disconnect }
+      isModalOpening={ isModalOpening }
+      isModalOpen={ isModalOpen }
+      openModal={ openModal }
+    />
   );
 };
 

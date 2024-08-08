@@ -22,8 +22,20 @@ type Props = {
   size?: 'sm' | 'md';
 };
 
-const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
-  const { isWalletConnected, address, connect, disconnect, isModalOpening, isModalOpen, openModal } = useWallet({ source: 'Header' });
+type ComponentProps = Props & {
+  isWalletConnected: boolean;
+  address: string;
+  connect: () => void;
+  disconnect: () => void;
+  isModalOpening: boolean;
+  isModalOpen: boolean;
+  openModal: () => void;
+};
+
+export const WalletMenuDesktopComponent = ({
+  isHomePage, className, size = 'md', isWalletConnected, address, connect,
+  disconnect, isModalOpening, isModalOpen, openModal,
+}: ComponentProps) => {
   const { themedBackground, themedBackgroundOrange, themedBorderColor, themedColor } = useMenuButtonColors();
   const [ isPopoverOpen, setIsPopoverOpen ] = useBoolean(false);
   const isMobile = useIsMobile();
@@ -130,6 +142,29 @@ const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
         </PopoverContent>
       ) }
     </Popover>
+  );
+};
+
+// separated the useWallet hook from the main component because it's hard to mock it in tests
+const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
+  const {
+    isWalletConnected, address, connect, disconnect,
+    isModalOpening, isModalOpen, openModal,
+  } = useWallet({ source: 'Header' });
+
+  return (
+    <WalletMenuDesktopComponent
+      isHomePage={ isHomePage }
+      className={ className }
+      size={ size }
+      isWalletConnected={ isWalletConnected }
+      address={ address }
+      connect={ connect }
+      disconnect={ disconnect }
+      isModalOpening={ isModalOpening }
+      isModalOpen={ isModalOpen }
+      openModal={ openModal }
+    />
   );
 };
 
