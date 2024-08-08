@@ -43,7 +43,7 @@ const AddressMudTablesTableItem = ({ item, isLoading, scrollRef, hash }: Props) 
 
   return (
     <>
-      <Tr borderStyle={ isOpened ? 'hidden' : 'unset' }>
+      <Tr borderBottomStyle={ isOpened ? 'hidden' : 'unset' }>
         <Td verticalAlign="middle">
           <Skeleton isLoaded={ !isLoading }>
             <Link display="block">
