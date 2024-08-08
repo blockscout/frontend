@@ -1,4 +1,4 @@
-import { Grid, GridItem, Link, Text, Flex, Box, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { Grid, GridItem, Link, Skeleton } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -9,7 +9,6 @@ import type { ArbitrumL2TxnBatch } from 'types/api/arbitrumL2';
 import { route } from 'nextjs-routes';
 
 import type { ResourceError } from 'lib/api/resources';
-import dayjs from 'lib/date/dayjs';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
 import ArbitrumL2TxnBatchDA from 'ui/shared/batch/ArbitrumL2TxnBatchDA';
@@ -19,12 +18,11 @@ import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsTimestamp from 'ui/shared/DetailsTimestamp';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
-import HashStringShorten from 'ui/shared/HashStringShorten';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import PrevNext from 'ui/shared/PrevNext';
-import TextSeparator from 'ui/shared/TextSeparator';
+
+import ArbitrumL2TxnBatchDetailsDA from './ArbitrumL2TxnBatchDetailsDA';
 interface Props {
   query: UseQueryResult<ArbitrumL2TxnBatch, ResourceError>;
 }
@@ -53,8 +51,6 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
 
     router.push({ pathname: '/batches/[number]', query: { number: nextId } }, undefined);
   }, [ data, router ]);
-
-  const signersBg = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
   if (isError) {
     if (isCustomAppError(error)) {
@@ -227,83 +223,7 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
             <>
               <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
 
-              <DetailsInfoItem.Label
-                isLoading={ isPlaceholderData }
-                hint="Aggregated BLS signature of AnyTrust committee members"
-              >
-                Signature
-              </DetailsInfoItem.Label>
-              <DetailsInfoItem.Value wordBreak="break-all" whiteSpace="break-spaces">
-                { data.data_availability.bls_signature }
-              </DetailsInfoItem.Value>
-
-              <DetailsInfoItem.Label
-                isLoading={ isPlaceholderData }
-                hint="The hash of the data blob stored by the AnyTrust committee"
-              >
-                Data hash
-              </DetailsInfoItem.Label>
-              <DetailsInfoItem.Value>
-                { data.data_availability.data_hash }
-                <CopyToClipboard text={ data.data_availability.data_hash } ml={ 2 }/>
-              </DetailsInfoItem.Value>
-
-              <DetailsInfoItem.Label
-                isLoading={ isPlaceholderData }
-                hint="Expiration timeout for the data blob"
-              >
-                Timeout
-              </DetailsInfoItem.Label>
-              <DetailsInfoItem.Value>
-                { dayjs(data.data_availability.timeout) < dayjs() ?
-                  <DetailsTimestamp timestamp={ data.data_availability.timeout }/> :
-                  (
-                    <>
-                      <Text>{ dayjs(data.data_availability.timeout).format('llll') }</Text>
-                      <TextSeparator color="gray.500"/>
-                      <Text color="red.500">{ dayjs(data.data_availability.timeout).diff(dayjs(), 'day') } days left</Text>
-                    </>
-                  )
-                }
-              </DetailsInfoItem.Value>
-
-              <DetailsInfoItem.Label
-                isLoading={ isPlaceholderData }
-                hint="Members of AnyTrust committee"
-              >
-                Signers
-              </DetailsInfoItem.Label>
-              <DetailsInfoItem.Value overflowX="scroll">
-                <Grid
-                  templateColumns="1fr auto auto"
-                  gap={ 5 }
-                  backgroundColor={ signersBg }
-                  padding={ 4 }
-                  borderRadius="md"
-                  minW="600px"
-                >
-                  <Text fontWeight={ 600 }>Key</Text>
-                  <Text fontWeight={ 600 }>Trusted</Text>
-                  <Text fontWeight={ 600 }>Proof</Text>
-                  { data.data_availability.signers.map(signer => (
-                    <>
-                      <Flex justifyContent="space-between">
-                        <Text wordBreak="break-all" whiteSpace="break-spaces">{ signer.key }</Text>
-                        <CopyToClipboard text={ signer.key } ml={ 2 }/>
-                      </Flex>
-                      <Box justifySelf="center">
-                        { signer.trusted ? <IconSvg name="check" boxSize={ 6 }/> : <IconSvg name="cross" boxSize={ 6 }/> }
-                      </Box>
-                      { signer.proof ? (
-                        <Flex>
-                          <HashStringShorten hash={ signer.proof }/>
-                          <CopyToClipboard text={ signer.proof } ml={ 2 }/>
-                        </Flex>
-                      ) : '-' }
-                    </>
-                  )) }
-                </Grid>
-              </DetailsInfoItem.Value>
+              <ArbitrumL2TxnBatchDetailsDA dataAvailability={ data.data_availability }/>
             </>
           ) }
         </>

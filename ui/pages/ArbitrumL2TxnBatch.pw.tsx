@@ -24,6 +24,13 @@ test('base view', async({ render, mockApiResponse }) => {
   await expect(component).toHaveScreenshot();
 });
 
+test('with anytrust DA', async({ render, mockApiResponse }) => {
+  await mockApiResponse('arbitrum_l2_txn_batch', batchDataAnytrust, { pathParams: { number: batchNumber } });
+  const component = await render(<ArbitrumL2TxnBatch/>, { hooksConfig });
+  await component.getByText('Show data availability info').click();
+  await expect(component).toHaveScreenshot();
+});
+
 test.describe('mobile', () => {
   test.use({ viewport: devices['iPhone 13 Pro'].viewport });
   test('base view', async({ render, mockApiResponse }) => {
@@ -31,11 +38,11 @@ test.describe('mobile', () => {
     const component = await render(<ArbitrumL2TxnBatch/>, { hooksConfig });
     await expect(component).toHaveScreenshot();
   });
-});
 
-test('with anytrust DA', async({ render, mockApiResponse }) => {
-  await mockApiResponse('arbitrum_l2_txn_batch', batchDataAnytrust, { pathParams: { number: batchNumber } });
-  const component = await render(<ArbitrumL2TxnBatch/>, { hooksConfig });
-  await component.getByText('Show data availability info').click();
-  await expect(component).toHaveScreenshot();
+  test('with anytrust DA', async({ render, mockApiResponse }) => {
+    await mockApiResponse('arbitrum_l2_txn_batch', batchDataAnytrust, { pathParams: { number: batchNumber } });
+    const component = await render(<ArbitrumL2TxnBatch/>, { hooksConfig });
+    await component.getByText('Show data availability info').click();
+    await expect(component).toHaveScreenshot();
+  });
 });

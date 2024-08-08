@@ -51,7 +51,7 @@ export type ArbitrumL2TxnBatchesResponse = {
   } | null;
 }
 
-type BatchDataAvailability = {
+export type ArbitrumL2TxnBatchDAAnytrust = {
   batch_data_container: 'in_anytrust';
   bls_signature: string;
   data_hash: string;
@@ -61,7 +61,9 @@ type BatchDataAvailability = {
     trusted: boolean;
     proof?: string;
   }>;
-} | {
+}
+
+export type ArbitrumL2TxnBatchDataAvailability = ArbitrumL2TxnBatchDAAnytrust | {
   batch_data_container: Exclude<BatchDataContainer, 'in_anytrust'>;
 }
 
@@ -73,7 +75,7 @@ export type ArbitrumL2TxnBatch = {
   start_block: number;
   number: number;
   transactions_count: number;
-  data_availability: BatchDataAvailability;
+  data_availability: ArbitrumL2TxnBatchDataAvailability;
 }
 
 export type ArbitrumL2BatchTxs = {
