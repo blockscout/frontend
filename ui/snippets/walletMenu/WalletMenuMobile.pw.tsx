@@ -24,6 +24,11 @@ test('wallet is not connected +@dark-mode', async({ page, render }) => {
   await expect(page).toHaveScreenshot();
 });
 
+test('wallet is loading', async({ page, render }) => {
+  await render(<WalletMenuMobileComponent { ...props } isModalOpen/>);
+  await expect(page).toHaveScreenshot();
+});
+
 test('wallet connected +@dark-mode', async({ page, render, mockApiResponse }) => {
   await mockApiResponse('address', addressMock.eoa, { pathParams: { hash: addressMock.hash } });
 
