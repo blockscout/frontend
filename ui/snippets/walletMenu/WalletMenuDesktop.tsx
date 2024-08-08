@@ -5,6 +5,7 @@ import React from 'react';
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';
+import useAddressQuery from 'ui/address/utils/useAddressQuery';
 import Popover from 'ui/shared/chakra/Popover';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import IconSvg from 'ui/shared/IconSvg';
@@ -27,6 +28,7 @@ const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
   const [ isPopoverOpen, setIsPopoverOpen ] = useBoolean(false);
   const isMobile = useIsMobile();
   const { isAutoConnectDisabled } = useMarketplaceContext();
+  const addressQuery = useAddressQuery({ hash: address });
 
   const variant = React.useMemo(() => {
     if (isWalletConnected) {
@@ -83,7 +85,10 @@ const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
               variant={ variant }
               colorScheme="blue"
               flexShrink={ 0 }
-              isLoading={ (isModalOpening || isModalOpen) && !isWalletConnected }
+              isLoading={
+                ((isModalOpening || isModalOpen) && !isWalletConnected) ||
+                (addressQuery.isPlaceholderData && isWalletConnected)
+              }
               loadingText="Connect wallet"
               onClick={ isWalletConnected ? openPopover : connect }
               fontSize="sm"
@@ -94,7 +99,11 @@ const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
               { isWalletConnected ? (
                 <>
                   <WalletIdenticon address={ address } isAutoConnectDisabled={ isAutoConnectDisabled } mr={ 2 }/>
-                  <HashStringShorten hash={ address } isTooltipDisabled/>
+                  { addressQuery.data?.ens_domain_name ? (
+                    <chakra.span>{ addressQuery.data.ens_domain_name }</chakra.span>
+                  ) : (
+                    <HashStringShorten hash={ address } isTooltipDisabled/>
+                  ) }
                 </>
               ) : (
                 <>
@@ -111,6 +120,7 @@ const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
           <PopoverBody padding="24px 16px 16px 16px">
             <WalletMenuContent
               address={ address }
+              ensDomainName={ addressQuery.data?.ens_domain_name }
               disconnect={ disconnect }
               isAutoConnectDisabled={ isAutoConnectDisabled }
               openWeb3Modal={ openModal }

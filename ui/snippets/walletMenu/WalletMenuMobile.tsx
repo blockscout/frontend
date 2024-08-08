@@ -4,6 +4,7 @@ import React from 'react';
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';
+import useAddressQuery from 'ui/address/utils/useAddressQuery';
 import IconSvg from 'ui/shared/IconSvg';
 import useWallet from 'ui/snippets/walletMenu/useWallet';
 import WalletMenuContent from 'ui/snippets/walletMenu/WalletMenuContent';
@@ -18,6 +19,7 @@ const WalletMenuMobile = () => {
   const { themedBackground, themedBackgroundOrange, themedBorderColor, themedColor } = useMenuButtonColors();
   const isMobile = useIsMobile();
   const { isAutoConnectDisabled } = useMarketplaceContext();
+  const addressQuery = useAddressQuery({ hash: address });
 
   const openPopover = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.WALLET_ACTION, { Action: 'Open' });
@@ -48,7 +50,10 @@ const WalletMenuMobile = () => {
           color={ themedColor }
           borderColor={ !isWalletConnected ? themedBorderColor : undefined }
           onClick={ isWalletConnected ? openPopover : connect }
-          isLoading={ (isModalOpening || isModalOpen) && !isWalletConnected }
+          isLoading={
+            ((isModalOpening || isModalOpen) && !isWalletConnected) ||
+            (addressQuery.isPlaceholderData && isWalletConnected)
+          }
         />
       </WalletTooltip>
       { isWalletConnected && (
@@ -63,6 +68,7 @@ const WalletMenuMobile = () => {
             <DrawerBody p={ 6 }>
               <WalletMenuContent
                 address={ address }
+                ensDomainName={ addressQuery.data?.ens_domain_name }
                 disconnect={ disconnect }
                 isAutoConnectDisabled={ isAutoConnectDisabled }
                 openWeb3Modal={ openModal }

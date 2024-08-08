@@ -10,13 +10,14 @@ import useMenuButtonColors from '../useMenuButtonColors';
 
 type Props = {
   address?: string;
+  ensDomainName?: string | null;
   disconnect?: () => void;
   isAutoConnectDisabled?: boolean;
   openWeb3Modal: () => void;
   closeWalletMenu: () => void;
 };
 
-const WalletMenuContent = ({ address, disconnect, isAutoConnectDisabled, openWeb3Modal, closeWalletMenu }: Props) => {
+const WalletMenuContent = ({ address, ensDomainName, disconnect, isAutoConnectDisabled, openWeb3Modal, closeWalletMenu }: Props) => {
   const { themedBackgroundOrange } = useMenuButtonColors();
   const [ isModalOpening, setIsModalOpening ] = React.useState(false);
 
@@ -71,7 +72,7 @@ const WalletMenuContent = ({ address, disconnect, isAutoConnectDisabled, openWeb
       </Text>
       <Flex alignItems="center" mb={ 6 }>
         <AddressEntity
-          address={{ hash: address }}
+          address={{ hash: address, ens_domain_name: ensDomainName }}
           noTooltip
           truncation="dynamic"
           fontSize="sm"
