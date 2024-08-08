@@ -6,6 +6,7 @@ import type { ArbitrumL2TxnBatchesItem } from 'types/api/arbitrumL2';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
+import ArbitrumL2TxnBatchDA from 'ui/shared/batch/ArbitrumL2TxnBatchDA';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
@@ -93,6 +94,11 @@ const ArbitrumL2TxnBatchesListItem = ({ item, isLoading }: Props) => {
             { item.transactions_count.toLocaleString() }
           </Skeleton>
         </LinkInternal>
+      </ListItemMobileGrid.Value>
+
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Data container</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Value>
+        <ArbitrumL2TxnBatchDA dataContainer={ item.batch_data_container } isLoading={ isLoading }/>
       </ListItemMobileGrid.Value>
 
     </ListItemMobileGrid.Container>

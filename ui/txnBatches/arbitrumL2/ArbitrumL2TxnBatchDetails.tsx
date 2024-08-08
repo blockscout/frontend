@@ -1,7 +1,8 @@
-import { Grid, Skeleton } from '@chakra-ui/react';
+import { Grid, GridItem, Link, Skeleton } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { scroller, Element } from 'react-scroll';
 
 import type { ArbitrumL2TxnBatch } from 'types/api/arbitrumL2';
 
@@ -10,6 +11,7 @@ import { route } from 'nextjs-routes';
 import type { ResourceError } from 'lib/api/resources';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
+import ArbitrumL2TxnBatchDA from 'ui/shared/batch/ArbitrumL2TxnBatchDA';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
@@ -20,12 +22,22 @@ import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import PrevNext from 'ui/shared/PrevNext';
 
+import ArbitrumL2TxnBatchDetailsDA from './ArbitrumL2TxnBatchDetailsDA';
 interface Props {
   query: UseQueryResult<ArbitrumL2TxnBatch, ResourceError>;
 }
 
 const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
   const router = useRouter();
+  const [ isExpanded, setIsExpanded ] = React.useState(false);
+
+  const handleCutClick = React.useCallback(() => {
+    setIsExpanded((flag) => !flag);
+    scroller.scrollTo('BatchDetails__cutLink', {
+      duration: 500,
+      smooth: true,
+    });
+  }, []);
 
   const { data, isPlaceholderData, isError, error } = query;
 
@@ -149,6 +161,19 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
         />
       </DetailsInfoItem.Value>
 
+      { data.data_availability.batch_data_container && (
+        <>
+          <DetailsInfoItem.Label
+            isLoading={ isPlaceholderData }
+            hint="Where the batch data is stored"
+          >
+            Batch data container
+          </DetailsInfoItem.Label><DetailsInfoItem.Value>
+            <ArbitrumL2TxnBatchDA dataContainer={ data.data_availability.batch_data_container } isLoading={ isPlaceholderData }/>
+          </DetailsInfoItem.Value>
+        </>
+      ) }
+
       <DetailsInfoItem.Label
         isLoading={ isPlaceholderData }
         hint="The hash of the state before the batch"
@@ -174,6 +199,35 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
           <CopyToClipboard text={ data.after_acc }/>
         </Skeleton>
       </DetailsInfoItem.Value>
+
+      { data.data_availability.batch_data_container === 'in_anytrust' && (
+        <>
+          { /* CUT */ }
+          <GridItem colSpan={{ base: undefined, lg: 2 }}>
+            <Element name="BatchDetails__cutLink">
+              <Skeleton isLoaded={ !isPlaceholderData } mt={ 6 } display="inline-block">
+                <Link
+                  fontSize="sm"
+                  textDecorationLine="underline"
+                  textDecorationStyle="dashed"
+                  onClick={ handleCutClick }
+                >
+                  { isExpanded ? 'Hide data availability info' : 'Show data availability info' }
+                </Link>
+              </Skeleton>
+            </Element>
+          </GridItem>
+
+          { /* ADDITIONAL INFO */ }
+          { isExpanded && !isPlaceholderData && (
+            <>
+              <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
+
+              <ArbitrumL2TxnBatchDetailsDA dataAvailability={ data.data_availability }/>
+            </>
+          ) }
+        </>
+      ) }
     </Grid>
   );
 };
