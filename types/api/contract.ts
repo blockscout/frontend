@@ -104,28 +104,31 @@ export interface SmartContractVerificationError {
   name?: Array<string>;
 }
 
+// it's an external API proxy, we can't guarantee the responce types
 export type SolidityscanReport = {
-  scan_report: {
-    contractname: string;
-    scan_status: string;
-    scan_summary: {
-      issue_severity_distribution: {
-        critical: number;
-        gas: number;
-        high: number;
-        informational: number;
-        low: number;
-        medium: number;
-      };
-      lines_analyzed_count: number;
-      scan_time_taken: number;
-      score: string;
-      score_v2: string;
-      threat_score: string;
+  scan_report?: {
+    contractname?: string;
+    scan_status?: string;
+    scan_summary?: {
+      issue_severity_distribution?: SolidityscanReportSeverityDistribution;
+      lines_analyzed_count?: number;
+      scan_time_taken?: number;
+      score?: string;
+      score_v2?: string;
+      threat_score?: string;
     };
-    scanner_reference_url: string;
+    scanner_reference_url?: string;
   };
 }
+
+export type SolidityscanReportSeverityDistribution = {
+  critical?: number;
+  gas?: number;
+  high?: number;
+  informational?: number;
+  low?: number;
+  medium?: number;
+};
 
 type SmartContractSecurityAudit = {
   audit_company_name: string;
