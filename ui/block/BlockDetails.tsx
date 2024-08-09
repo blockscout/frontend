@@ -22,6 +22,7 @@ import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import DetailsTimestamp from 'ui/shared/DetailsTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import * as EntityBase from 'ui/shared/entities/base/components';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
@@ -44,6 +45,7 @@ interface Props {
 const rollupFeature = config.features.rollup;
 
 const BlockDetails = ({ query }: Props) => {
+  const wvmIconPath = 'networks/wvm-icon-dark';
   const [ isExpanded, setIsExpanded ] = React.useState(false);
   const router = useRouter();
   const heightOrHash = getQueryParamString(router.query.height_or_hash);
@@ -52,7 +54,7 @@ const BlockDetails = ({ query }: Props) => {
 
   const { data, isPlaceholderData } = query;
 
-  const { data: arweaveId, isLoading: isLoadingArweaveId } = useArweaveId({
+  const { data: arweaveId } = useArweaveId({
     block: data?.height,
   });
 
@@ -287,16 +289,280 @@ const BlockDetails = ({ query }: Props) => {
         </>
       ) }
 
-      { !rollupFeature.isEnabled && !totalReward.isEqualTo(ZERO) && !config.UI.views.block.hiddenFields?.total_reward && (
+      { !rollupFeature.isEnabled &&
+        !totalReward.isEqualTo(ZERO) &&
+        !config.UI.views.block.hiddenFields?.total_reward && (
         <>
           <DetailsInfoItem.Label
-            hint={
-              `For each block, the ${ validatorTitle } is rewarded with a finite amount of ${ config.chain.currency.symbol || 'native token' } 
-          on top of the fees paid for all transactions in the block`
+            hint={ `For each block, the ${ validatorTitle } is rewarded with a finite amount of ${
+              config.chain.currency.symbol || 'native token'
+            } 
             }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+            }
+              } 
+          on top of the fees paid for all transactions in the block` }
             isLoading={ isPlaceholderData }
           >
-          Block reward
+              Block reward
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value columnGap={ 1 }>
             <Skeleton isLoaded={ !isPlaceholderData }>
@@ -324,30 +590,33 @@ const BlockDetails = ({ query }: Props) => {
       }
 
       { /* ARWEAVE TXID */ }
-      <DetailsInfoItem.Label
-        hint="The Arweave TXID of the WeaveVM block’s data"
-        isLoading={ isPlaceholderData }
-      >
-        Block Arweave archive
-      </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value
-        display="flex"
-        flexWrap="nowrap"
-        alignSelf="flex-start"
-      >
-        <Skeleton isLoaded={ !isLoadingArweaveId }>
-          <Link
-            isExternal
-            href={ `https://viewblock.io/arweave/tx/${ arweaveId }` }
-            rel="noopener noreferrer"
-            color="green.500"
+      { arweaveId && (
+        <>
+          <DetailsInfoItem.Label
+            hint="The Arweave TXID of the WeaveVM block&apos;s data"
+            isLoading={ isPlaceholderData }
           >
-            { arweaveId }
-          </Link>
-
-          <CopyToClipboard text={ arweaveId }/>
-        </Skeleton>
-      </DetailsInfoItem.Value>
+            Block&apos;s permanent archive
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value
+            display="flex"
+            flexWrap="nowrap"
+            alignSelf="flex-start"
+            gap={ 2 }
+          >
+            <IconSvg name={ wvmIconPath } display="block" height="8" width="8" borderRadius="full"/>
+            <Link
+              isExternal
+              href={ `https://viewblock.io/arweave/tx/${ arweaveId }` }
+              rel="noopener noreferrer"
+              color="green.500"
+            >
+              <EntityBase.Content text={ arweaveId as string }/>
+            </Link>
+            <CopyToClipboard text={ arweaveId }/>
+          </DetailsInfoItem.Value>
+        </>
+      ) }
 
       <DetailsInfoItemDivider/>
 

@@ -35,6 +35,7 @@ import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 // import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import DetailsTimestamp from 'ui/shared/DetailsTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import * as EntityBase from 'ui/shared/entities/base/components';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
@@ -67,6 +68,7 @@ interface Props {
 }
 
 const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
+  const wvmIconPath = 'networks/wvm-icon-dark';
   const [ isExpanded, setIsExpanded ] = React.useState(false);
 
   const { data: arweaveId } = useArweaveId({
@@ -343,19 +345,20 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       { arweaveId && (
         <>
           <DetailsInfoItem.Label
-            hint="The Arweave TXID of the WeaveVM transaction"
+            hint="The Arweave TXID of the WeaveVM block"
             isLoading={ isLoading }
           >
             Arweave storage proof
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
+            <IconSvg name={ wvmIconPath } display="block" height="8" width="8" borderRadius="full"/>
             <Link
               isExternal
               href={ `https://viewblock.io/arweave/tx/${ arweaveId }` }
               rel="noopener noreferrer"
               color="green.500"
             >
-              { arweaveId }
+              <EntityBase.Content text={ arweaveId as string }/>
             </Link>
 
             <CopyToClipboard text={ arweaveId }/>
