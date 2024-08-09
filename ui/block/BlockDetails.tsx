@@ -15,6 +15,7 @@ import getBlockReward from 'lib/block/getBlockReward';
 import { GWEI, WEI, WEI_IN_GWEI, ZERO } from 'lib/consts';
 import getArbitrumVerificationStepStatus from 'lib/getArbitrumVerificationStepStatus';
 import { space } from 'lib/html-entities';
+import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { currencyUnits } from 'lib/units';
@@ -114,13 +115,7 @@ const BlockDetails = ({ query }: Props) => {
     );
   })();
 
-  const verificationTitle = (() => {
-    if (rollupFeature.isEnabled && rollupFeature.type === 'zkEvm') {
-      return 'Sequenced by';
-    }
-
-    return config.chain.verificationType === 'validation' ? 'Validated by' : 'Mined by';
-  })();
+  const verificationTitle = `${ capitalize(getNetworkValidationActionText()) } by`;
 
   const txsNum = (() => {
     const blockTxsNum = (

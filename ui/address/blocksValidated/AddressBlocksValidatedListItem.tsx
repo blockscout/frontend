@@ -52,7 +52,7 @@ const AddressBlocksValidatedListItem = (props: Props) => {
           isLoading={ props.isLoading }
         />
       </Flex>
-      { !config.UI.views.block.hiddenFields?.total_reward && (
+      { !config.UI.views.block.hiddenFields?.total_reward && !config.features.rollup.isEnabled && (
         <Flex columnGap={ 2 } w="100%">
           <Skeleton isLoaded={ !props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Reward { currencyUnits.ether }</Skeleton>
           <Skeleton isLoaded={ !props.isLoading } color="text_secondary">{ totalReward.toFixed() }</Skeleton>

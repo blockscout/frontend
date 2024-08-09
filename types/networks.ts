@@ -24,4 +24,6 @@ export interface NetworkExplorer {
   };
 }
 
-export type NetworkVerificationType = 'mining' | 'validation';
+export type NetworkVerificationTypeL1 = 'mining' | 'validation';
+export type NetworkVerificationTypeL2 = 'posting' | 'sequencing';
+export type NetworkVerificationType = NetworkVerificationTypeL1 | NetworkVerificationTypeL2;
