@@ -31,7 +31,7 @@ import PopoverTriggerTooltip from 'ui/shared/PopoverTriggerTooltip';
 interface Props {
   query: UseQueryResult<bens.LookupAddressResponse, ResourceError<unknown>>;
   addressHash: string;
-  mainDomainName: string | null;
+  mainDomainName: string | null | undefined;
 }
 
 const DomainsGrid = ({ data }: { data: Array<bens.Domain> }) => {
@@ -64,9 +64,9 @@ const AddressEnsDomains = ({ query, addressHash, mainDomainName }: Props) => {
     return null;
   }
 
-  const mainDomain = data.items.find((domain) => domain.name === mainDomainName);
+  const mainDomain = data.items.find((domain) => mainDomainName && domain.name === mainDomainName);
   const ownedDomains = data.items.filter((domain) => {
-    if (domain.name === mainDomainName) {
+    if (mainDomainName && domain.name === mainDomainName) {
       return false;
     }
 

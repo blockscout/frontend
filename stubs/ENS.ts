@@ -22,6 +22,8 @@ export const ENS_DOMAIN: bens.DetailedDomain = {
     ETH: ADDRESS_HASH,
   },
   protocol: undefined,
+  resolved_with_wildcard: false,
+  stored_offchain: false,
 };
 
 export const ENS_DOMAIN_EVENT: bens.DomainEvent = {

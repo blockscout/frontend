@@ -327,8 +327,8 @@ const AddressPageContent = () => {
       <HStack ml="auto" gap={ 2 }/>
       { !isLoading && addressQuery.data?.is_contract && addressQuery.data?.is_verified && config.UI.views.address.solidityscanEnabled &&
         <SolidityscanReport hash={ hash }/> }
-      { !isLoading && addressQuery.data && config.features.nameService.isEnabled &&
-        <AddressEnsDomains query={ addressEnsDomainsQuery } addressHash={ hash } mainDomainName={ addressQuery.data.ens_domain_name }/> }
+      { !isLoading && addressEnsDomainsQuery.data && config.features.nameService.isEnabled &&
+        <AddressEnsDomains query={ addressEnsDomainsQuery } addressHash={ hash } mainDomainName={ addressQuery.data?.ens_domain_name }/> }
       <NetworkExplorers type="address" pathParam={ hash }/>
     </Flex>
   );
