@@ -12,7 +12,7 @@ import config from 'configs/app';
 import { AppContextProvider } from 'lib/contexts/app';
 import { SocketProvider } from 'lib/socket/context';
 import currentChain from 'lib/web3/currentChain';
-import theme from 'theme';
+import theme from 'theme/theme';
 
 import { port as socketPort } from './utils/socket';
 
