@@ -45,7 +45,7 @@ interface Props {
 const rollupFeature = config.features.rollup;
 
 const BlockDetails = ({ query }: Props) => {
-  const wvmIconPath = 'networks/wvm-icon-dark';
+  const wvmIconPath = 'networks/arweave';
   const [ isExpanded, setIsExpanded ] = React.useState(false);
   const router = useRouter();
   const heightOrHash = getQueryParamString(router.query.height_or_hash);

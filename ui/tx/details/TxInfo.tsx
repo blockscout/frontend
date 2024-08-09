@@ -68,7 +68,7 @@ interface Props {
 }
 
 const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
-  const wvmIconPath = 'networks/wvm-icon-dark';
+  const wvmIconPath = 'networks/arweave';
   const [ isExpanded, setIsExpanded ] = React.useState(false);
 
   const { data: arweaveId } = useArweaveId({

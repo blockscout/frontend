@@ -30,9 +30,7 @@ const LogoFallback = ({
   const { colorMode } = useColorMode();
 
   const iconPath =
-    colorMode === 'light' ?
-      'networks/wvm-icon-dark' :
-      'networks/wvm-icon-light';
+    colorMode === 'light' ? 'networks/wvm-icon-dark' : 'networks/wvm-icon-dark';
 
   const logoPath =
     colorMode === 'light' ?
