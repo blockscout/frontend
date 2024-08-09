@@ -23,21 +23,22 @@ const UserOpDecodedCallData = ({ data }: Props) => {
     return null;
   }
 
-  const toggler = data.call_data ? (
+  const toggler = data.call_data && data.execute_call_data ? (
     <UserOpCallDataSwitch
       onChange={ handleSwitchChange }
-      initialValue={ !data.execute_call_data }
-      isDisabled={ !data.execute_call_data }
+      initialValue={ false }
       ml={{ base: 3, lg: 'auto' }}
     />
   ) : null;
+
+  const labelText = data.call_data && !data.execute_call_data ? 'External call data' : 'Call data';
 
   return (
     <>
       <DetailsInfoItem.Label
         hint="Data that’s passed to the sender for execution"
       >
-        Call data
+        { labelText }
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value>
         <RawInputData hex={ callData } rightSlot={ toggler }/>
