@@ -45,6 +45,7 @@ const Sol2UmlDiagram = ({ addressHash }: Props) => {
         sources: composeSources(contractQuery.data),
       },
     },
+    queryKey: [ 'visualize_sol2uml', addressHash ],
     queryOptions: {
       enabled: Boolean(contractQuery.data),
       refetchOnMount: false,
