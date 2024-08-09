@@ -14,6 +14,7 @@ import type { FormEvent } from 'react';
 import React from 'react';
 import { Element } from 'react-scroll';
 
+import type { Route } from 'nextjs-routes';
 import { route } from 'nextjs-routes';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -50,14 +51,15 @@ const SearchBar = ({ isHomepage }: Props) => {
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (searchTerm) {
-      const url = route({ pathname: '/search-results', query: { q: searchTerm } });
+      const resultRoute: Route = { pathname: '/search-results', query: { q: searchTerm, redirect: 'true' } };
+      const url = route(resultRoute);
       mixpanel.logEvent(mixpanel.EventTypes.SEARCH_QUERY, {
         'Search query': searchTerm,
         'Source page type': mixpanel.getPageType(pathname),
         'Result URL': url,
       });
       saveToRecentKeywords(searchTerm);
-      router.push({ pathname: '/search-results', query: { q: searchTerm } }, undefined, { shallow: true });
+      router.push(resultRoute, undefined, { shallow: true });
     }
   }, [ searchTerm, pathname, router ]);
 

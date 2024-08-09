@@ -9,7 +9,7 @@ import { SEARCH_RESULT_ITEM, SEARCH_RESULT_NEXT_PAGE_PARAMS } from 'stubs/search
 import { generateListStub } from 'stubs/utils';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 
-export default function useSearchQuery() {
+export default function useSearchQuery(withRedirectCheck?: boolean) {
   const router = useRouter();
   const q = React.useRef(getQueryParamString(router.query.q));
   const initialValue = q.current;
@@ -31,7 +31,7 @@ export default function useSearchQuery() {
   const redirectCheckQuery = useApiQuery('search_check_redirect', {
     // on search result page we check redirect only once on mount
     queryParams: { q: q.current },
-    queryOptions: { enabled: Boolean(q.current) },
+    queryOptions: { enabled: Boolean(q.current) && withRedirectCheck },
   });
 
   useUpdateValueEffect(() => {
