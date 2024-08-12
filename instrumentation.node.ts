@@ -64,8 +64,8 @@ if (process.env.OTEL_SDK_ENABLED) {
   process.on('SIGTERM', () => {
     sdk
       .shutdown()
-      .then(() => console.log('Tracing terminated'))
-      .catch((error) => console.log('Error terminating tracing', error))
+      // .then(() => console.log('Tracing terminated'))
+      // .catch((error) => console.log('Error terminating tracing', error))
       .finally(() => process.exit(0));
   });
 }

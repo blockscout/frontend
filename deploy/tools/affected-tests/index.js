@@ -48,7 +48,7 @@ async function getChangedFiles() {
     `git diff --name-only origin/${ process.env.GITHUB_BASE_REF } ${ process.env.GITHUB_SHA } -- ${ ROOT_DIR }` :
     `git diff --name-only main $(git branch --show-current) -- ${ ROOT_DIR }`;
 
-  console.log('Executing command: ', command);
+  // console.log('Executing command: ', command);
   const files = execSync(command)
     .toString()
     .trim()
@@ -94,7 +94,7 @@ function getPackageJsonUpdatedProps(packageJsonFile) {
     `git diff --unified=0 origin/${ process.env.GITHUB_BASE_REF } ${ process.env.GITHUB_SHA } -- ${ packageJsonFile }` :
     `git diff --unified=0 main $(git branch --show-current) -- ${ packageJsonFile }`;
 
-  console.log('Executing command: ', command);
+  // console.log('Executing command: ', command);
   const changedLines = execSync(command)
     .toString()
     .trim()
@@ -135,7 +135,7 @@ async function run() {
   // - The absence of TARGET_FILE implies that all tests should be run.
   // - The empty TARGET_FILE implies that no tests should be run.
 
-  const start = Date.now();
+  // const start = Date.now();
 
   fs.unlink(TARGET_FILE, () => {});
 
@@ -143,30 +143,29 @@ async function run() {
 
   if (!changedFiles.length) {
     createTargetFile('');
-    console.log('No changed files found. Exiting...');
+    // console.log('No changed files found. Exiting...');
     return;
   }
 
-  console.log('Changed files in the branch: ', changedFiles);
+  // console.log('Changed files in the branch: ', changedFiles);
 
   if (checkChangesInChakraTheme(changedFiles)) {
-    console.log('Changes in Chakra theme detected. It is advisable to run all test suites. Exiting...');
+    // console.log('Changes in Chakra theme detected. It is advisable to run all test suites. Exiting...');
     return;
   }
 
   if (checkChangesInSvgSprite(changedFiles)) {
-    console.log('There are some changes in the SVG sprite that cannot be linked to a specific component. It is advisable to run all test suites. Exiting...');
     return;
   }
 
   let changedNpmModules = getUpdatedNpmModules(changedFiles);
 
   if (!changedNpmModules) {
-    console.log('Some error occurred while detecting changed NPM modules. It is advisable to run all test suites. Exiting...');
+    // console.log('Some error occurred while detecting changed NPM modules. It is advisable to run all test suites. Exiting...');
     return;
   }
 
-  console.log('Changed NPM modules in the branch: ', changedNpmModules);
+  // console.log('Changed NPM modules in the branch: ', changedNpmModules);
 
   changedNpmModules = [
     ...changedNpmModules,
@@ -186,23 +185,23 @@ async function run() {
 
   if (!testFileNamesToRun.length) {
     createTargetFile('');
-    console.log('No tests to run. Exiting...');
+    // console.log('No tests to run. Exiting...');
     return;
   }
 
   createTargetFile(testFileNamesToRun.join('\n'));
 
-  const end = Date.now();
+  // const end = Date.now();
 
-  const testFilesToRunWithFilteredDeps = testFilesToRun.map(({ file, deps }) => ({
-    file,
-    deps: deps.filter(isDepChanged),
-  }));
+  // const testFilesToRunWithFilteredDeps = testFilesToRun.map(({ file, deps }) => ({
+  //   file,
+  //   deps: deps.filter(isDepChanged),
+  // }));
 
-  console.log('Total time: ', ((end - start) / 1_000).toLocaleString());
-  console.log('Total test to run: ', testFileNamesToRun.length);
-  console.log('Tests to run with changed deps: ', testFilesToRunWithFilteredDeps);
-  console.log('Non existent deps: ', NON_EXISTENT_DEPS);
+  // console.log('Total time: ', ((end - start) / 1_000).toLocaleString());
+  // console.log('Total test to run: ', testFileNamesToRun.length);
+  // console.log('Tests to run with changed deps: ', testFilesToRunWithFilteredDeps);
+  // console.log('Non existent deps: ', NON_EXISTENT_DEPS);
 }
 
 run();

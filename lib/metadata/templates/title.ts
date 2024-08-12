@@ -58,6 +58,10 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/api/config': '%network_name% node API health check',
   '/auth/auth0': '%network_name% authentication',
   '/auth/unverified-email': '%network_name% unverified email',
+  '/bucket-details': '%network_name% unverified bucket-details',
+  '/group-details': '%network_name% unverified group-details',
+  '/object-details': '%network_name% unverified object-details',
+  '/faucet': '',
 };
 
 const TEMPLATE_MAP_ENHANCED: Partial<Record<Route['pathname'], string>> = {

@@ -102,8 +102,45 @@ export default function useNavItems(): ReturnType {
       icon: 'games',
       isActive: pathname === '/dispute-games',
     } : null;
+    const objects = {
+      text: 'Objects',
+      nextRoute: { pathname: '/object' as const },
+      icon: 'output_roots',
+      isActive: pathname === '/object',
+    };
+    const bucket = {
+      text: 'Bucket',
+      nextRoute: { pathname: '/bucket' as const },
+      icon: 'output_roots',
+      isActive: pathname === '/bucket',
+    };
+    const group = {
+      text: 'Group',
+      nextRoute: { pathname: '/group' as const },
+      icon: 'output_roots',
+      isActive: pathname === '/group',
+    };
+    // const buckets = {
+    //   text: 'Buckets',
+    //   nextRoute: { pathname: '/buckets' as const },
+    //   icon: 'output_roots',
+    //   isActive: pathname === '/buckets',
+    // };
+    // const groups = {
+    //   text: 'Groups',
+    //   nextRoute: { pathname: '/groups' as const },
+    //   icon: 'output_roots',
+    //   isActive: pathname === '/groups',
+    // };
 
     const rollupFeature = config.features.rollup;
+    const strongchainNavItems: Array<NavItem> | Array<Array<NavItem>> = [
+      [
+        objects,
+        bucket,
+        group,
+      ],
+    ];
 
     if (rollupFeature.isEnabled && (rollupFeature.type === 'optimistic' || rollupFeature.type === 'arbitrum' || rollupFeature.type === 'zkEvm')) {
       blockchainNavItems = [
@@ -230,6 +267,18 @@ export default function useNavItems(): ReturnType {
         nextRoute: { pathname: '/tokens' as const },
         icon: 'token',
         isActive: pathname.startsWith('/token'),
+      },
+      {
+        text: 'Storage',
+        icon: 'strong',
+        isActive: strongchainNavItems.flat().some(item => isInternalItem(item) && item.isActive),
+        subItems: strongchainNavItems,
+      },
+      {
+        text: 'Faucet',
+        icon: 'faucet',
+        nextRoute: { pathname: '/faucet' as const },
+        isActive: pathname.startsWith('/faucet'),
       },
       config.features.marketplace.isEnabled ? {
         text: 'DApps',

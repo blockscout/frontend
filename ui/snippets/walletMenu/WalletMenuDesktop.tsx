@@ -1,5 +1,5 @@
-import type { ButtonProps } from '@chakra-ui/react';
-import { Popover, PopoverContent, PopoverBody, PopoverTrigger, Button, Box, useBoolean, chakra, useColorModeValue } from '@chakra-ui/react';
+// import type { ButtonProps } from '@chakra-ui/react';
+import { Popover, PopoverContent, PopoverBody, PopoverTrigger, Button, Box, useBoolean, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
@@ -9,7 +9,7 @@ import HashStringShorten from 'ui/shared/HashStringShorten';
 import useWallet from 'ui/snippets/walletMenu/useWallet';
 import WalletMenuContent from 'ui/snippets/walletMenu/WalletMenuContent';
 
-import useMenuButtonColors from '../useMenuButtonColors';
+// import useMenuButtonColors from '../useMenuButtonColors';
 import WalletIdenticon from './WalletIdenticon';
 import WalletTooltip from './WalletTooltip';
 
@@ -21,7 +21,7 @@ type Props = {
 
 const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
   const { isWalletConnected, address, connect, disconnect, isModalOpening, isModalOpen, openModal } = useWallet({ source: 'Header' });
-  const { themedBackground, themedBackgroundOrange, themedBorderColor, themedColor } = useMenuButtonColors();
+  // const { themedBackground, themedBackgroundOrange, themedBorderColor, themedColor } = useMenuButtonColors();
   const [ isPopoverOpen, setIsPopoverOpen ] = useBoolean(false);
   const isMobile = useIsMobile();
   const { isAutoConnectDisabled } = useMarketplaceContext();
@@ -33,28 +33,28 @@ const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
     return isHomePage ? 'solid' : 'outline';
   }, [ isWalletConnected, isHomePage ]);
 
-  const themedColorForOrangeBg = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
-  let buttonStyles: Partial<ButtonProps> = {};
-  if (isWalletConnected) {
-    const backgroundColor = isAutoConnectDisabled ? themedBackgroundOrange : themedBackground;
-    const color = isAutoConnectDisabled ? themedColorForOrangeBg : themedColor;
-    buttonStyles = {
-      bg: isHomePage ? 'blue.50' : backgroundColor,
-      color: isHomePage ? 'blackAlpha.800' : color,
-      _hover: {
-        color: isHomePage ? 'blackAlpha.800' : color,
-      },
-    };
-  } else if (isHomePage) {
-    buttonStyles = {
-      color: 'white',
-    };
-  } else {
-    buttonStyles = {
-      borderColor: themedBorderColor,
-      color: themedColor,
-    };
-  }
+  // const themedColorForOrangeBg = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
+  // let buttonStyles: Partial<ButtonProps> = {};
+  // if (isWalletConnected) {
+  //   const backgroundColor = isAutoConnectDisabled ? themedBackgroundOrange : themedBackground;
+  //   const color = isAutoConnectDisabled ? themedColorForOrangeBg : themedColor;
+  //   buttonStyles = {
+  //     bg: isHomePage ? 'blue.50' : backgroundColor,
+  //     color: isHomePage ? 'blackAlpha.800' : color,
+  //     _hover: {
+  //       color: isHomePage ? 'blackAlpha.800' : color,
+  //     },
+  //   };
+  // } else if (isHomePage) {
+  //   buttonStyles = {
+  //     color: 'white',
+  //   };
+  // } else {
+  //   buttonStyles = {
+  //     borderColor: themedBorderColor,
+  //     color: themedColor,
+  //   };
+  // }
 
   const openPopover = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.WALLET_ACTION, { Action: 'Open' });
@@ -87,7 +87,13 @@ const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
               onClick={ isWalletConnected ? openPopover : connect }
               fontSize="sm"
               size={ size }
-              { ...buttonStyles }
+              bg="#A07EFF"
+              color="#FFFFFF"
+              border="none"
+              borderRadius="28px"
+              _hover="none"
+              _active="none"
+              // { ...buttonStyles }
             >
               { isWalletConnected ? (
                 <>
