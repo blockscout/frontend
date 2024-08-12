@@ -21,6 +21,12 @@ interface TalbeListType {
   Visibility?: string;
   lastTime?: string;
   Creator?: string;
+  'Object Name'?: string;
+  'Group Name'?: string;
+  'Group ID'?: string;
+  'Last Updated'?: string;
+  'Active Group Member Count'?: string;
+  Owner?: string;
 }
 
 type Props<T extends string> = {
@@ -73,6 +79,7 @@ function tableList<T extends string>(props: Props<T>) {
                     <Td
                       key={ index }
                       fontWeight="500" fontSize="14px"
+                      overflow="hidden"
                       color={ value === 'txnHash' ? '#8A55FD' : '#000000' } padding="12px 0">
                       {
                         // eslint-disable-next-line no-nested-ternary

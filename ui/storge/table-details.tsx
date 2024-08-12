@@ -2,17 +2,16 @@
 import {
   Table,
   Thead,
-  Tbody,
+  // Tbody,
   Tr,
   Th,
-  Td,
+  // Td,
   TableContainer,
-  Tooltip,
+  // Tooltip,
 } from '@chakra-ui/react';
-import NextLink from 'next/link';
+// import NextLink from 'next/link';
 import React, { useState } from 'react';
 interface TalbeListType {
-  txnHash: string;
   Block: string;
   Age?: string;
   Type?: string;
@@ -20,6 +19,7 @@ interface TalbeListType {
   Visibility?: string;
   lastTime?: string;
   Creator?: string;
+  'Txn Hash'?: string;
 }
 
 type Props<T extends string> = {
@@ -27,18 +27,24 @@ type Props<T extends string> = {
   talbeList?: Array<TalbeListType> | undefined;
   tabThead?: Array<T> | undefined;
 }
-function formatPubKey(pubKey: string, _length = 4, _preLength = 4) {
-  if (!pubKey) {
-    return;
-  }
-  if (!pubKey || typeof pubKey !== 'string' || pubKey.length < (_length * 2 + 1)) {
-    return pubKey;
-  }
-  return pubKey.substr(0, _preLength || _length) + '...' + pubKey.substr(_length * -1, _length);
-}
+// function formatPubKey(pubKey: string, _length = 4, _preLength = 4) {
+//   if (!pubKey) {
+//     return;
+//   }
+//   if (!pubKey || typeof pubKey !== 'string' || pubKey.length < (_length * 2 + 1)) {
+//     return pubKey;
+//   }
+//   return pubKey.substr(0, _preLength || _length) + '...' + pubKey.substr(_length * -1, _length);
+// }
 
 function Page<T extends string>(props: Props<T>) {
   const [ tapSelect, setTapSelect ] = useState<string>(props.tapList![0]);
+  // const handleChange = (event) => {
+  //   setInputValue(event.target.value);
+  //   const customEvent = new CustomEvent('dataChange', { detail: event.target.value });
+  //   document.dispatchEvent(customEvent); // 触发事件
+  // };
+
   const changeTap = (value: string) => {
     setTapSelect(value);
     return undefined;
@@ -69,7 +75,7 @@ function Page<T extends string>(props: Props<T>) {
               </Th>
             )) }
           </Tr>
-          <Tr>
+          { /* <Tr>
             { props.tabThead?.map((value, index) => (
               <Th
                 key={ index }
@@ -77,9 +83,9 @@ function Page<T extends string>(props: Props<T>) {
                 bg="#FFFF"
                 borderTop="1px" borderBottom="1px" borderColor="rgba(0, 0, 0, 0.06)">{ value }</Th>
             )) }
-          </Tr>
+          </Tr> */ }
         </Thead>
-        <Tbody>
+        { /* <Tbody>
           {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             props.talbeList?.map((title: any, key) => (
@@ -112,7 +118,7 @@ function Page<T extends string>(props: Props<T>) {
                 }
               </Tr>
             )) }
-        </Tbody>
+        </Tbody> */ }
       </Table>
     </TableContainer>
   );

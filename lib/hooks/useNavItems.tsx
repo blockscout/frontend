@@ -104,21 +104,21 @@ export default function useNavItems(): ReturnType {
     } : null;
     const objects = {
       text: 'Objects',
-      nextRoute: { pathname: '/object-details' as const },
+      nextRoute: { pathname: '/object' as const },
       icon: 'output_roots',
-      isActive: pathname === '/object-details',
+      isActive: pathname === '/object',
     };
     const bucket = {
       text: 'Bucket',
-      nextRoute: { pathname: '/bucket-details' as const },
+      nextRoute: { pathname: '/bucket' as const },
       icon: 'output_roots',
-      isActive: pathname === '/bucket-details',
+      isActive: pathname === '/bucket',
     };
     const group = {
       text: 'Group',
-      nextRoute: { pathname: '/group-details' as const },
+      nextRoute: { pathname: '/group' as const },
       icon: 'output_roots',
-      isActive: pathname === '/group-details',
+      isActive: pathname === '/group',
     };
     // const buckets = {
     //   text: 'Buckets',

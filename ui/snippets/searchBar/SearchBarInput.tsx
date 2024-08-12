@@ -88,9 +88,9 @@ const SearchBarInput = (
       transitionDuration="normal"
       transitionTimingFunction="ease"
     >
-      <InputGroup size={{ base: 'sm', lg: isHomepage ? 'sm_md' : 'sm' }}>
+      <InputGroup size={{ base: 'sm', lg: isHomepage ? 'sm_md' : 'sm' }} >
         <InputLeftElement w={{ base: isHomepage ? 6 : 4, lg: 6 }} ml={{ base: isHomepage ? 4 : 3, lg: 4 }} h="100%">
-          <IconSvg name="search" boxSize={{ base: isHomepage ? 6 : 4, lg: 6 }} color={ useColorModeValue('blackAlpha.600', 'whiteAlpha.600') }/>
+          <IconSvg name="search" boxSize={{ base: isHomepage ? 6 : 4, lg: 6 }} color="#A07EFF" fontSize="16px"/>
         </InputLeftElement>
         <Input
           pl={{ base: isHomepage ? '50px' : '38px', lg: '50px' }}
@@ -100,13 +100,18 @@ const SearchBarInput = (
               paddingRight: '36px',
             },
             '@media screen and (min-width: 1001px)': {
+              borderRadius: '29px',
+              height: '42px',
+              borderColor: '#A07EFF !important',
               paddingRight: '36px',
             },
           }}
           placeholder={ isMobile ? 'Search by address / ... ' : 'Search by address / txn hash / block / token... ' }
           onChange={ handleChange }
-          border={ isHomepage ? 'none' : '2px solid' }
-          borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
+          border={ isHomepage ? 'none' : '1px solid' }
+          borderRadius="29px"
+          height="42px"
+          // borderColor={ useColorModeValue('blackAlpha.100', 'whiteAlpha.200') }
           _focusWithin={{ _placeholder: { color: 'gray.300' } }}
           color={ useColorModeValue('black', 'white') }
           value={ value }

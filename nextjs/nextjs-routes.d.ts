@@ -34,6 +34,7 @@ declare module "nextjs-routes" {
     | DynamicRoute<"/block/[height_or_hash]", { "height_or_hash": string }>
     | StaticRoute<"/blocks">
     | StaticRoute<"/bucket-details">
+    | StaticRoute<"/bucket">
     | StaticRoute<"/contract-verification">
     | StaticRoute<"/csv-export">
     | StaticRoute<"/deposits">
@@ -42,11 +43,13 @@ declare module "nextjs-routes" {
     | StaticRoute<"/gas-tracker">
     | StaticRoute<"/graphiql">
     | StaticRoute<"/group-details">
+    | StaticRoute<"/group">
     | StaticRoute<"/">
     | StaticRoute<"/login">
     | StaticRoute<"/name-domains">
     | DynamicRoute<"/name-domains/[name]", { "name": string }>
     | StaticRoute<"/object-details">
+    | StaticRoute<"/object">
     | DynamicRoute<"/op/[hash]", { "hash": string }>
     | StaticRoute<"/ops">
     | StaticRoute<"/output-roots">
