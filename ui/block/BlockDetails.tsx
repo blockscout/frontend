@@ -609,7 +609,7 @@ const BlockDetails = ({ query }: Props) => {
               isExternal
               href={ `https://viewblock.io/arweave/tx/${ arweaveId }` }
               rel="noopener noreferrer"
-              color="green.500"
+              color="#1AFFB1"
             >
               <EntityBase.Content text={ arweaveId as string }/>
             </Link>

@@ -11,9 +11,11 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/block/[height_or_hash]': '%network_name% block %height_or_hash%',
   '/accounts': '%network_name% top accounts',
   '/address/[hash]': '%network_name% address details for %hash%',
-  '/verified-contracts': 'Verified %network_name% contracts lookup - %network_name% explorer',
+  '/verified-contracts':
+    'Verified %network_name% contracts lookup - %network_name% explorer',
   '/contract-verification': '%network_name% verify contract',
-  '/address/[hash]/contract-verification': '%network_name% contract verification for %hash%',
+  '/address/[hash]/contract-verification':
+    '%network_name% contract verification for %hash%',
   '/tokens': 'Tokens list - %network_name% explorer',
   '/token/[hash]': '%network_name% token details',
   '/token/[hash]/instance/[id]': '%network_name% NFT instance',
@@ -30,7 +32,8 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/account/tag-address': '%network_name% - private tags',
   '/account/verified-addresses': '%network_name% - my verified addresses',
   '/public-tags/submit': '%network_name% - public tag requests',
-  '/withdrawals': '%network_name% withdrawals - track on %network_name% explorer',
+  '/withdrawals':
+    '%network_name% withdrawals - track on %network_name% explorer',
   '/visualize/sol2uml': '%network_name% Solidity UML diagram',
   '/csv-export': '%network_name% export data to CSV',
   '/deposits': '%network_name% deposits (L1 > L2)',
@@ -55,6 +58,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/api/proxy': '%network_name% node API proxy',
   '/api/csrf': '%network_name% node API CSRF token',
   '/api/healthz': '%network_name% node API health check',
+  '/api/arweave-id': '%network_name% BGQ API',
   '/auth/auth0': '%network_name% authentication',
   '/auth/unverified-email': '%network_name% unverified email',
 };

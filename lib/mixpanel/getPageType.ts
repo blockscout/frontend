@@ -53,6 +53,7 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/api/proxy': 'Node API: Proxy',
   '/api/csrf': 'Node API: CSRF token',
   '/api/healthz': 'Node API: Health check',
+  '/api/arweave-id': 'Node API: BGQ',
   '/auth/auth0': 'Auth',
   '/auth/unverified-email': 'Unverified email',
 };
