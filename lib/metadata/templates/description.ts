@@ -12,15 +12,19 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/txs/kettle/[hash]': DEFAULT_TEMPLATE,
   '/tx/[hash]': 'View transaction %hash% on %network_title%',
   '/blocks': DEFAULT_TEMPLATE,
-  '/block/[height_or_hash]': 'View the transactions, token transfers, and uncles for block %height_or_hash%',
+  '/block/[height_or_hash]':
+    'View the transactions, token transfers, and uncles for block %height_or_hash%',
   '/accounts': DEFAULT_TEMPLATE,
-  '/address/[hash]': 'View the account balance, transactions, and other data for %hash% on the %network_title%',
+  '/address/[hash]':
+    'View the account balance, transactions, and other data for %hash% on the %network_title%',
   '/verified-contracts': DEFAULT_TEMPLATE,
   '/contract-verification': DEFAULT_TEMPLATE,
-  '/address/[hash]/contract-verification': 'View the account balance, transactions, and other data for %hash% on the %network_title%',
+  '/address/[hash]/contract-verification':
+    'View the account balance, transactions, and other data for %hash% on the %network_title%',
   '/tokens': DEFAULT_TEMPLATE,
   '/token/[hash]': '%hash%, balances and analytics on the %network_title%',
-  '/token/[hash]/instance/[id]': '%hash%, balances and analytics on the %network_title%',
+  '/token/[hash]/instance/[id]':
+    '%hash%, balances and analytics on the %network_title%',
   '/apps': DEFAULT_TEMPLATE,
   '/apps/[id]': DEFAULT_TEMPLATE,
   '/stats': DEFAULT_TEMPLATE,
@@ -33,7 +37,8 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/account/custom-abi': DEFAULT_TEMPLATE,
   '/account/tag-address': DEFAULT_TEMPLATE,
   '/account/verified-addresses': DEFAULT_TEMPLATE,
-  '/public-tags/submit': 'Propose a new public tag for your address, contract or set of contracts for your dApp. Our team will review and approve your submission. Public tags are incredible tool which helps users identify contracts and addresses.',
+  '/public-tags/submit':
+    'Propose a new public tag for your address, contract or set of contracts for your dApp. Our team will review and approve your submission. Public tags are incredible tool which helps users identify contracts and addresses.',
   '/withdrawals': DEFAULT_TEMPLATE,
   '/visualize/sol2uml': DEFAULT_TEMPLATE,
   '/csv-export': DEFAULT_TEMPLATE,
@@ -59,6 +64,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/api/proxy': DEFAULT_TEMPLATE,
   '/api/csrf': DEFAULT_TEMPLATE,
   '/api/healthz': DEFAULT_TEMPLATE,
+  '/api/arweave-id': DEFAULT_TEMPLATE,
   '/auth/auth0': DEFAULT_TEMPLATE,
   '/auth/unverified-email': DEFAULT_TEMPLATE,
 };
