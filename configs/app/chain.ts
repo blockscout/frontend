@@ -1,5 +1,5 @@
 import type { RollupType } from 'types/client/rollup';
-import type { NetworkVerificationType, NetworkVerificationTypeL1 } from 'types/networks';
+import type { NetworkVerificationType, NetworkVerificationTypeEnvs } from 'types/networks';
 
 import { getEnvValue } from './utils';
 
@@ -14,7 +14,7 @@ const verificationType: NetworkVerificationType = (() => {
   if (rollupType === 'zkEvm') {
     return 'sequencing';
   }
-  return getEnvValue('NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE') as NetworkVerificationTypeL1 || 'mining';
+  return getEnvValue('NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE') as NetworkVerificationTypeEnvs || 'mining';
 })();
 
 const chain = Object.freeze({
