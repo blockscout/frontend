@@ -58,6 +58,10 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/api/config': 'Regular page',
   '/auth/auth0': 'Regular page',
   '/auth/unverified-email': 'Regular page',
+  '/bucket-details': 'Root page',
+  '/group-details': 'Root page',
+  '/object-details': 'Root page',
+  '/faucet': 'Root page',
 };
 
 export default function getPageOgType(pathname: Route['pathname']) {
