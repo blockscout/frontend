@@ -42,7 +42,7 @@ const ContractListModal = ({ onClose, onBack, type, contracts }: Props) => {
         return contracts
           .filter((contract) => Boolean(contract.solidityScanReport))
           .sort((a, b) =>
-            (parseFloat(b.solidityScanReport?.scan_summary.score_v2 ?? '0')) - (parseFloat(a.solidityScanReport?.scan_summary.score_v2 ?? '0')),
+            (parseFloat(b.solidityScanReport?.scan_summary?.score_v2 ?? '0')) - (parseFloat(a.solidityScanReport?.scan_summary?.score_v2 ?? '0')),
           );
       case ContractListTypes.VERIFIED:
         return contracts.filter((contract) => contract.isVerified);
