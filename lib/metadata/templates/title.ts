@@ -60,8 +60,11 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/auth/unverified-email': '%network_name% unverified email',
   '/bucket-details': '%network_name% unverified bucket-details',
   '/group-details': '%network_name% unverified group-details',
-  '/object-details': '%network_name% unverified object-details',
+  '/object-details/[address]': '%network_name% unverified object-details',
   '/faucet': '',
+  '/bucket': '',
+  '/group': '',
+  '/object': '',
 };
 
 const TEMPLATE_MAP_ENHANCED: Partial<Record<Route['pathname'], string>> = {
