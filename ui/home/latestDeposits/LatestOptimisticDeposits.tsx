@@ -1,9 +1,7 @@
-import { Box, Flex, Text } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SocketMessage } from 'lib/socket/types';
-
-import { route } from 'nextjs-routes';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import useGradualIncrement from 'lib/hooks/useGradualIncrement';
@@ -11,15 +9,13 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { L2_DEPOSIT_ITEM } from 'stubs/L2';
-import LinkInternal from 'ui/shared/links/LinkInternal';
-import SocketNewItemsNotice from 'ui/shared/SocketNewItemsNotice';
 
-import LatestDepositsItem from './LatestDepositsItem';
+import LatestDeposits from './LatestDeposits';
 
-const LatestDeposits = () => {
+const LatestOptimisticDeposits = () => {
   const isMobile = useIsMobile();
   const itemsCount = isMobile ? 2 : 6;
-  const { data, isPlaceholderData, isError } = useApiQuery('homepage_deposits', {
+  const { data, isPlaceholderData, isError } = useApiQuery('homepage_optimistic_deposits', {
     queryOptions: {
       placeholderData: Array(itemsCount).fill(L2_DEPOSIT_ITEM),
     },
@@ -36,7 +32,7 @@ const LatestDeposits = () => {
     setSocketAlert('An error has occurred while fetching new transactions. Please reload page.');
   }, []);
 
-  const handleNewDepositMessage: SocketMessage.NewDeposits['handler'] = React.useCallback((payload) => {
+  const handleNewDepositMessage: SocketMessage.NewOptimisticDeposits['handler'] = React.useCallback((payload) => {
     setNum(payload.deposits);
   }, [ setNum ]);
 
@@ -58,27 +54,19 @@ const LatestDeposits = () => {
   }
 
   if (data) {
-    const depositsUrl = route({ pathname: '/deposits' });
     return (
-      <>
-        <SocketNewItemsNotice borderBottomRadius={ 0 } url={ depositsUrl } num={ num } alert={ socketAlert } type="deposit" isLoading={ isPlaceholderData }/>
-        <Box mb={{ base: 3, lg: 4 }}>
-          { data.slice(0, itemsCount).map(((item, index) => (
-            <LatestDepositsItem
-              key={ item.l2_tx_hash + (isPlaceholderData ? index : '') }
-              item={ item }
-              isLoading={ isPlaceholderData }
-            />
-          ))) }
-        </Box>
-        <Flex justifyContent="center">
-          <LinkInternal fontSize="sm" href={ depositsUrl }>View all deposits</LinkInternal>
-        </Flex>
-      </>
+      <LatestDeposits
+        items={ data.slice(0, itemsCount).map((item) => (
+          { l1BlockNumber: item.l1_block_number, l1TxHash: item.l1_tx_hash, l2TxHash: item.l2_tx_hash, timestamp: item.l1_block_timestamp }
+        )) }
+        isLoading={ isPlaceholderData }
+        socketItemsNum={ num }
+        socketAlert={ socketAlert }
+      />
     );
   }
 
   return null;
 };
 
-export default LatestDeposits;
+export default LatestOptimisticDeposits;

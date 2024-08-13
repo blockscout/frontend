@@ -104,3 +104,5 @@ export const ARBITRUM_L2_TX_BATCH_STATUSES = [
 ];
 
 export type ArbitrumBatchStatus = typeof ARBITRUM_L2_TX_BATCH_STATUSES[number];
+
+export type NewArbitrumBatchSocketResponse = { batch: ArbitrumL2TxnBatchesItem }

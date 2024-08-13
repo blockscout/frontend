@@ -43,10 +43,12 @@ import type { AddressesResponse } from 'types/api/addresses';
 import type { AddressMetadataInfo, PublicTagTypesResponse } from 'types/api/addressMetadata';
 import type {
   ArbitrumL2MessagesResponse,
+  ArbitrumL2MessagesItem,
   ArbitrumL2TxnBatch,
   ArbitrumL2TxnBatchesResponse,
   ArbitrumL2BatchTxs,
   ArbitrumL2BatchBlocks,
+  ArbitrumL2TxnBatchesItem,
 } from 'types/api/arbitrumL2';
 import type { TxBlobs, Blob } from 'types/api/blobs';
 import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters, BlockWithdrawalsResponse, BlockCountdownResponse } from 'types/api/block';
@@ -580,14 +582,20 @@ export const RESOURCES = {
   homepage_blocks: {
     path: '/api/v2/main-page/blocks',
   },
-  homepage_deposits: {
+  homepage_optimistic_deposits: {
     path: '/api/v2/main-page/optimism-deposits',
+  },
+  homepage_arbitrum_deposits: {
+    path: '/api/v2/main-page/arbitrum/messages/to-rollup',
   },
   homepage_txs: {
     path: '/api/v2/main-page/transactions',
   },
   homepage_zkevm_l2_batches: {
     path: '/api/v2/main-page/zkevm/batches/confirmed',
+  },
+  homepage_arbitrum_l2_batches: {
+    path: '/api/v2/main-page/arbitrum/batches/committed',
   },
   homepage_txs_watchlist: {
     path: '/api/v2/main-page/transactions/watchlist',
@@ -600,6 +608,9 @@ export const RESOURCES = {
   },
   homepage_zksync_latest_batch: {
     path: '/api/v2/main-page/zksync/batches/latest-number',
+  },
+  homepage_arbitrum_latest_batch: {
+    path: '/api/v2/main-page/arbitrum/batches/latest-number',
   },
 
   // SEARCH
@@ -966,11 +977,14 @@ Q extends 'stats_charts_secondary_coin_price' ? ChartSecondaryCoinPriceResponse 
 Q extends 'homepage_blocks' ? Array<Block> :
 Q extends 'homepage_txs' ? Array<Transaction> :
 Q extends 'homepage_txs_watchlist' ? Array<Transaction> :
-Q extends 'homepage_deposits' ? Array<OptimisticL2DepositsItem> :
+Q extends 'homepage_optimistic_deposits' ? Array<OptimisticL2DepositsItem> :
+Q extends 'homepage_arbitrum_deposits' ? { items: Array<ArbitrumL2MessagesItem> } :
 Q extends 'homepage_zkevm_l2_batches' ? { items: Array<ZkEvmL2TxnBatchesItem> } :
+Q extends 'homepage_arbitrum_l2_batches' ? { items: Array<ArbitrumL2TxnBatchesItem>} :
 Q extends 'homepage_indexing_status' ? IndexingStatus :
 Q extends 'homepage_zkevm_latest_batch' ? number :
 Q extends 'homepage_zksync_latest_batch' ? number :
+Q extends 'homepage_arbitrum_latest_batch' ? number :
 Q extends 'stats_counters' ? stats.Counters :
 Q extends 'stats_lines' ? stats.LineCharts :
 Q extends 'stats_line' ? stats.LineChart :
@@ -1029,8 +1043,6 @@ Q extends 'verified_contracts' ? VerifiedContractsResponse :
 Q extends 'verified_contracts_counters' ? VerifiedContractsCounters :
 Q extends 'visualize_sol2uml' ? visualizer.VisualizeResponse :
 Q extends 'contract_verification_config' ? SmartContractVerificationConfigRaw :
-Q extends 'withdrawals' ? WithdrawalsResponse :
-Q extends 'withdrawals_counters' ? WithdrawalsCounters :
 Q extends 'optimistic_l2_output_roots' ? OptimisticL2OutputRootsResponse :
 Q extends 'optimistic_l2_withdrawals' ? OptimisticL2WithdrawalsResponse :
 Q extends 'optimistic_l2_deposits' ? OptimisticL2DepositsResponse :
@@ -1097,6 +1109,8 @@ Q extends 'address_mud_tables' ? AddressMudTables :
 Q extends 'address_mud_tables_count' ? number :
 Q extends 'address_mud_records' ? AddressMudRecords :
 Q extends 'address_mud_record' ? AddressMudRecord :
+Q extends 'withdrawals' ? WithdrawalsResponse :
+Q extends 'withdrawals_counters' ? WithdrawalsCounters :
 never;
 /* eslint-enable @typescript-eslint/indent */
 
