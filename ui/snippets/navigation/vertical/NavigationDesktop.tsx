@@ -80,7 +80,10 @@ const NavigationDesktop = () => {
         alignItems="center"
         flexDirection="row"
         w="100%"
-        pl={{ lg: isExpanded ? 3 : '15px', xl: isCollapsed ? '15px' : 3 }}
+        py="12px"
+        boxSizing="initial"
+        borderBottom="1px solid rgba(0, 0, 0, 0.12)"
+        // pl={{ lg: isExpanded ? 3 : '15px', xl: isCollapsed ? '15px' : 3 }}
         pr={{ lg: isExpanded ? 0 : '15px', xl: isCollapsed ? '15px' : 0 }}
         h={ 10 }
         transitionProperty="padding"

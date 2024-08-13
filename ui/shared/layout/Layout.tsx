@@ -11,11 +11,11 @@ import * as Layout from './components';
 
 const LayoutDefault = ({ children }: Props) => {
   return (
-    <Layout.Container>
-      <Layout.TopRow/>
+    <Layout.Container h="97vh">
+      { /* <Layout.TopRow/> */ }
       <Layout.NavBar/>
       <HeaderMobile/>
-      <Layout.MainArea>
+      <Layout.MainArea background="linear-gradient(108deg, #FFF 0%, #F4F2FF 50.26%, #F2EFFF 100.3%)">
         <Layout.SideBar/>
         <Layout.MainColumn>
           <HeaderAlert/>
@@ -27,7 +27,7 @@ const LayoutDefault = ({ children }: Props) => {
           </AppErrorBoundary>
         </Layout.MainColumn>
       </Layout.MainArea>
-      <Layout.Footer/>
+      { /* <Layout.Footer/> */ }
     </Layout.Container>
   );
 };

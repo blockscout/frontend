@@ -23,9 +23,10 @@ type Props = {
   className?: string;
   onClick?: () => void;
   disableActiveState?: boolean;
+  hideIcon?: boolean;
 }
 
-const NavLink = ({ item, isCollapsed, px, className, onClick, disableActiveState }: Props) => {
+const NavLink = ({ item, isCollapsed, px, className, onClick, disableActiveState, hideIcon }: Props) => {
   const isMobile = useIsMobile();
   const colors = useColors();
 
@@ -66,7 +67,10 @@ const NavLink = ({ item, isCollapsed, px, className, onClick, disableActiveState
         color={ isInternalLink && item.isActive ? colors.text.active : colors.text.hover }
       >
         <HStack spacing={ 0 } overflow="hidden">
-          <NavLinkIcon item={ item }/>
+          { !hideIcon ?
+            <NavLinkIcon item={ item }/> :
+            null
+          }
           <Text { ...styleProps.textProps } as="span" ml={ 3 }>
             <span>{ item.text }</span>
             { !isInternalLink && <IconSvg name="arrows/north-east" boxSize={ 4 } color="text_secondary" verticalAlign="middle"/> }

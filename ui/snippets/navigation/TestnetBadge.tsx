@@ -13,7 +13,7 @@ const TestnetBadge = ({ className }: Props) => {
     return null;
   }
 
-  return <IconSvg className={ className } name="testnet" h="14px" w="37px" color="red.400"/>;
+  return <IconSvg className={ className } name="testnet" h="15px" w="37px" color="red.400"/>;
 };
 
 export default React.memo(chakra(TestnetBadge));

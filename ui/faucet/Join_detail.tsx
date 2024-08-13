@@ -9,9 +9,21 @@ import {
   Heading,
   Highlight,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useAccount } from 'wagmi';
+
+import IconSvg from 'ui/shared/IconSvg';
 
 const JoinDetail = () => {
+  const { address } = useAccount();
+
+  useEffect(() => {
+    if (address) {
+      setTimeout(() => {
+
+      }, 1000);
+    }
+  }, [ address ]);
 
   return (
     <>
@@ -32,9 +44,10 @@ const JoinDetail = () => {
             borderRadius="50%" width="32px"
             height="32px" color="#FFFFFF"
             textAlign="center" lineHeight="32px" >1</Box>
-          <Flex margin="24px 0 48px 0" fontWeight="700" fontSize="24px" color="#000000">
+          <Flex margin="24px 0 48px 0" alignItems="center" fontWeight="700" fontSize="24px" color="#000000">
             <Text>Join our Discord</Text>
-            <Text>community</Text>
+            <IconSvg name="social/discord_colored" w="38px" h="25px" margin="0px 8px"/>
+            <Text>Community</Text>
           </Flex>
           <Button
             bg="#707CFF" height="48px"
@@ -47,7 +60,7 @@ const JoinDetail = () => {
             border="1px solid #3846DE" bg="#707CFF"
             borderRadius="50%" width="32px"
             height="32px" color="#FFFFFF" textAlign="center" lineHeight="32px" >2</Box>
-          <Flex margin="24px 0 48px 0" fontWeight="700" fontSize="24px">
+          <Flex margin="24px 0 48px 0" alignItems="center" fontWeight="700" fontSize="24px">
             <Heading fontWeight="700" fontSize="24px" color="#000000" lineHeight="28px">
               <Highlight
                 query="$ZKME"
@@ -56,6 +69,7 @@ const JoinDetail = () => {
                 Request $ZKME on MeChain
               </Highlight>
             </Heading>
+            <IconSvg name="mechain_square" w="37px" h="25px"/>
             <Text fontWeight="700" color="#000000">Testnet</Text>
           </Flex>
           <Flex>
