@@ -1,11 +1,12 @@
 import React from 'react';
-import { getAddress, type Abi } from 'viem';
-import { useAccount, useWalletClient, useSwitchChain } from 'wagmi';
+import { encodeFunctionData, getAddress, type Abi } from 'viem';
+import { useAccount, useWalletClient, useSwitchChain, usePublicClient } from 'wagmi';
 
 import type { FormSubmitResult, SmartContractMethod } from './types';
 
 import config from 'configs/app';
 
+import useFacet from './useFacet';
 import { getNativeCoinValue } from './utils';
 
 interface Params {
@@ -14,10 +15,20 @@ interface Params {
   addressHash: string;
 }
 
+interface FacetTransactionParams {
+  to: `0x${ string }`;
+  value?: bigint;
+  maxFeePerGas: bigint;
+  gasLimit: bigint;
+  data?: `0x${ string }`;
+}
+
 export default function useCallMethodWalletClient(): (params: Params) => Promise<FormSubmitResult> {
+  const publicClient = usePublicClient({ chainId: Number(config.chain.id) });
   const { data: walletClient } = useWalletClient();
-  const { isConnected, chainId, address: account } = useAccount();
+  const { isConnected, chainId } = useAccount();
   const { switchChainAsync } = useSwitchChain();
+  const sendFacetTransaction = useFacet();
 
   return React.useCallback(async({ args, item, addressHash }) => {
     if (!isConnected) {
@@ -34,40 +45,51 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
 
     const address = getAddress(addressHash);
 
+    const estimateFeesPerGas = await publicClient?.estimateFeesPerGas({ type: 'eip1559' });
+
+    const facetTransactionParams: FacetTransactionParams = {
+      to: address,
+      maxFeePerGas: estimateFeesPerGas?.maxFeePerGas || BigInt(0),
+      gasLimit: BigInt(0),
+    };
+
     if (item.type === 'receive' || item.type === 'fallback') {
-      const value = getNativeCoinValue(args[0]);
-      const hash = await walletClient.sendTransaction({
-        to: address,
-        value,
+      facetTransactionParams.value = getNativeCoinValue(args[0]);
+    } else {
+      const _args = args.slice(0, item.inputs.length);
+      facetTransactionParams.value = getNativeCoinValue(args[item.inputs.length]);
+
+      const methodName = item.name;
+
+      if (!methodName) {
+        throw new Error('Method name is not defined');
+      }
+
+      const encodedFunctionData = encodeFunctionData({
+        abi: [ item ] as Abi,
+        functionName: methodName,
+        args: _args,
       });
-      return { source: 'wallet_client', data: { hash } };
+
+      if (encodedFunctionData) {
+        facetTransactionParams.data = encodedFunctionData;
+      }
     }
 
-    const methodName = item.name;
-
-    if (!methodName) {
-      throw new Error('Method name is not defined');
-    }
-
-    const _args = args.slice(0, item.inputs.length);
-    const value = getNativeCoinValue(args[item.inputs.length]);
-
-    const hash = await walletClient.writeContract({
-      args: _args,
-      // Here we provide the ABI as an array containing only one item from the submitted form.
-      // This is a workaround for the issue with the "viem" library.
-      // It lacks a "method_id" field to uniquely identify the correct method and instead attempts to find a method based on its name.
-      // But the name is not unique in the contract ABI and this behavior in the "viem" could result in calling the wrong method.
-      // See related issues:
-      //    - https://github.com/blockscout/frontend/issues/1032,
-      //    - https://github.com/blockscout/frontend/issues/1327
-      abi: [ item ] as Abi,
-      functionName: methodName,
-      address,
-      value,
-      account,
+    const estimateGas = await publicClient?.estimateGas({
+      to: facetTransactionParams.to,
+      value: facetTransactionParams.value,
+      data: facetTransactionParams.data,
     });
 
+    if (!estimateGas) {
+      throw 'Could not estimate gas';
+    }
+
+    facetTransactionParams.gasLimit = estimateGas;
+
+    const hash = await sendFacetTransaction(facetTransactionParams);
+
     return { source: 'wallet_client', data: { hash } };
-  }, [ chainId, isConnected, switchChainAsync, walletClient, account ]);
+  }, [ chainId, isConnected, publicClient, sendFacetTransaction, switchChainAsync, walletClient ]);
 }
