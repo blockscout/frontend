@@ -1,4 +1,5 @@
-<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M5.375 16v-5.006H.676L7.697 0h7.9v6l.027 10H5.374Z" fill="currentColor"/>
-  <path fill-rule="evenodd" clip-rule="evenodd" d="M8.72 6.01V0L2.63 10.15h4.02V16l6.66-9.99H8.72Z" fill="#ED8936"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+  <path d="M3 7.8c0-1.68 0-2.52.327-3.162a3 3 0 0 1 1.311-1.311C5.28 3 6.12 3 7.8 3h8.4c1.68 0 2.52 0 3.162.327a3 3 0 0 1 1.311 1.311C21 5.28 21 6.12 21 7.8v8.4c0 1.68 0 2.52-.327 3.162a3 3 0 0 1-1.311 1.311C18.72 21 17.88 21 16.2 21H7.8c-1.68 0-2.52 0-3.162-.327a3 3 0 0 1-1.311-1.311C3 18.72 3 17.88 3 16.2V7.8Z" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="m12 6-4.566 6.227c-.301.41-.452.616-.447.787a.5.5 0 0 0 .193.38c.135.106.39.106.899.106H12V18l4.566-6.227c.302-.41.452-.616.447-.787a.5.5 0 0 0-.193-.38c-.135-.106-.39-.106-.899-.106H12V6Z" fill="#EAAA08"/>
+  <path d="m12 6-4.566 6.227c-.301.41-.452.616-.447.787a.5.5 0 0 0 .193.38c.135.106.39.106.899.106H12V18l4.566-6.227c.302-.41.452-.616.447-.787a.5.5 0 0 0-.193-.38c-.135-.106-.39-.106-.899-.106H12V6Z" stroke="#EAAA08" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

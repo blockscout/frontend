@@ -1,11 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-  <g fill="currentColor" clip-path="url(#explorer_svg__a)">
-    <path d="M14.192 5.808a.624.624 0 0 0-.64-.15L7.927 7.531a.625.625 0 0 0-.395.395l-1.875 5.625a.625.625 0 0 0 .79.791l5.626-1.875a.626.626 0 0 0 .395-.395l1.875-5.625a.625.625 0 0 0-.151-.64Zm-6.954 6.954L8.62 8.619l2.762 2.762-4.143 1.38Z"/>
-    <path d="M10 18.75A8.75 8.75 0 1 1 18.75 10 8.76 8.76 0 0 1 10 18.75ZM10 2.5a7.5 7.5 0 1 0 7.5 7.5A7.509 7.509 0 0 0 10 2.5Z"/>
-  </g>
-  <defs>
-    <clipPath id="explorer_svg__a">
-      <path fill="currentColor" d="M0 0h20v20H0z"/>
-    </clipPath>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none">
+  <path d="M10 18.333a8.333 8.333 0 1 0 0-16.667 8.333 8.333 0 0 0 0 16.667Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M12.268 6.888c.407-.136.611-.204.746-.156a.42.42 0 0 1 .253.253c.048.135-.02.339-.155.746l-1.24 3.719c-.039.116-.058.174-.09.222a.417.417 0 0 1-.11.108c-.048.034-.106.053-.222.091l-3.718 1.24c-.408.136-.611.204-.747.155a.417.417 0 0 1-.252-.252c-.048-.135.02-.34.155-.746l1.24-3.72a.907.907 0 0 1 .09-.221.417.417 0 0 1 .11-.109.907.907 0 0 1 .222-.09l3.718-1.24Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

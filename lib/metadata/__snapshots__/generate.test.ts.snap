@@ -3,38 +3,38 @@
 exports[`generates correct metadata for: dynamic route 1`] = `
 {
   "canonical": undefined,
-  "description": "View transaction 0x12345 on Blockscout (Blockscout) Explorer",
+  "description": "View transaction 0x12345 on Game7 Explorer",
   "opengraph": {
     "description": "",
     "imageUrl": "",
-    "title": "Blockscout transaction 0x12345 | Blockscout",
+    "title": "Game7 transaction 0x12345",
   },
-  "title": "Blockscout transaction 0x12345 | Blockscout",
+  "title": "Game7 transaction 0x12345",
 }
 `;
 
 exports[`generates correct metadata for: dynamic route with API data 1`] = `
 {
   "canonical": undefined,
-  "description": "0x12345, balances and analytics on the Blockscout (Blockscout) Explorer",
+  "description": "0x12345, balances and analytics on the Game7 Explorer",
   "opengraph": {
     "description": "",
     "imageUrl": "",
-    "title": "Blockscout USDT token details | Blockscout",
+    "title": "Game7 USDT token details",
   },
-  "title": "Blockscout USDT token details | Blockscout",
+  "title": "Game7 USDT token details",
 }
 `;
 
 exports[`generates correct metadata for: static route 1`] = `
 {
   "canonical": "http://localhost:3000/txs",
-  "description": "Blockscout is the #1 open-source blockchain explorer available today. 100+ chains and counting rely on Blockscout data availability, APIs, and ecosystem tools to support their networks.",
+  "description": "Discover the Game7 Chain with our blockchain explorer. Access real-time data on transactions, blocks, and smart contracts to stay informed on the Game7 ecosystem.",
   "opengraph": {
     "description": "",
     "imageUrl": "http://localhost:3000/static/og_placeholder.png",
-    "title": "Blockscout transactions - Blockscout explorer | Blockscout",
+    "title": "Game7 explorer",
   },
-  "title": "Blockscout transactions - Blockscout explorer | Blockscout",
+  "title": "Game7 explorer",
 }
 `;

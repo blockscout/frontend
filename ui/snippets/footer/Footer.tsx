@@ -34,7 +34,7 @@ const Footer = () => {
   const BLOCKSCOUT_LINKS = [
     {
       icon: 'edit' as const,
-      iconSize: '16px',
+      iconSize: '20px',
       text: 'Submit an issue',
       url: issueUrl,
     },
@@ -46,19 +46,19 @@ const Footer = () => {
     },
     {
       icon: 'social/git' as const,
-      iconSize: '18px',
+      iconSize: '20px',
       text: 'Contribute',
       url: 'https://github.com/blockscout/blockscout',
     },
     {
       icon: 'social/twitter' as const,
-      iconSize: '18px',
+      iconSize: '20px',
       text: 'X (ex-Twitter)',
       url: 'https://www.twitter.com/blockscoutcom',
     },
     {
       icon: 'social/discord' as const,
-      iconSize: '24px',
+      iconSize: '20px',
       text: 'Discord',
       url: 'https://discord.gg/blockscout',
     },

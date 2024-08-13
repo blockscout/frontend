@@ -39,7 +39,7 @@ const StatusTag = ({ type, text, errorText, isLoading, className }: Props) => {
   return (
     <Tooltip label={ errorText }>
       <Tag colorScheme={ colorScheme } display="flex" isLoading={ isLoading } className={ className }>
-        <IconSvg boxSize={ 2.5 } name={ icon } mr={ 1 } flexShrink={ 0 }/>
+        <IconSvg boxSize={ 3 } name={ icon } mr={ 1 } flexShrink={ 0 }/>
         <TagLabel display="block">{ capitalizedText }</TagLabel>
       </Tag>
     </Tooltip>
