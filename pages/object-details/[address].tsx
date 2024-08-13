@@ -1,8 +1,10 @@
-/* eslint-disable react/jsx-no-bind */
+/* eslint-disable no-console */
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { Props } from 'nextjs/getServerSideProps';
 import PageNextJs from 'nextjs/PageNextJs';
 
 const HandDetails = dynamic(() => import('ui/storge/hand-details'), { ssr: false });
@@ -17,10 +19,10 @@ function formatPubKey(pubKey: string, _length = 4, _preLength = 4) {
   }
   return pubKey.substr(0, _preLength || _length) + '...' + pubKey.substr(_length * -1, _length);
 }
-const ObjectDetails: NextPage = () => {
-  // const DataContext = React.createContext('');
-  // const [ data ] = useState<string>('123123');
-  // setData('66666');
+
+const ObjectDetails: NextPage<Props> = (props: Props) => {
+  const router = useRouter();
+  console.log(router);
 
   const overview = {
     'Object Name': '0xdlz',
@@ -63,7 +65,7 @@ const ObjectDetails: NextPage = () => {
     },
   };
   const tapList = [ 'Transactions', 'Versions' ];
-  const tabThead = [ 'Object Name', 'Type', 'Object Size', 'Status', 'Visibility', 'Last Updated Time', 'Bucket', 'Creator' ];
+  const tabThead = [ 'Txn Hash', 'Block', 'Age', 'Type' ];
   const talbeList = [
     {
       'Txn Hash': '4c83feb331594408sdjhfsdk98238293',
@@ -72,10 +74,17 @@ const ObjectDetails: NextPage = () => {
       Type: 'Created',
     },
   ];
+
+  const [ data, setData ] = React.useState<string>('');
+  React.useEffect(() => {
+  }, [ data ]);
+  const changeTable = React.useCallback((value: string) => {
+    setData(value);
+  }, []);
   return (
-    <PageNextJs pathname="/object-details">
+    <PageNextJs pathname="/object-details/[address]" query={ props.query }>
       <HandDetails overview={ overview } more={ more }/>
-      <TableDetails tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead }/>
+      <TableDetails tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead } changeTable={ changeTable }/>
     </PageNextJs>
   );
 };

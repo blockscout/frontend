@@ -60,6 +60,9 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/group-details': 'Group Details',
   '/object-details': 'Object Details',
   '/faucet': 'faucet Details',
+  '/bucket': '',
+  '/group': '',
+  '/object': '',
 };
 
 export default function getPageType(pathname: Route['pathname']) {
