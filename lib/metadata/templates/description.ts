@@ -64,8 +64,11 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/auth/unverified-email': DEFAULT_TEMPLATE,
   '/bucket-details': DEFAULT_TEMPLATE,
   '/group-details': DEFAULT_TEMPLATE,
-  '/object-details': DEFAULT_TEMPLATE,
+  '/object-details/[address]': DEFAULT_TEMPLATE,
   '/faucet': DEFAULT_TEMPLATE,
+  '/bucket': DEFAULT_TEMPLATE,
+  '/group': DEFAULT_TEMPLATE,
+  '/object': DEFAULT_TEMPLATE,
 };
 
 export function make(pathname: Route['pathname']) {

@@ -34,6 +34,7 @@
 	| "contract"
 	| "contracts_verified"
 	| "contracts"
+	| "copy-toast"
 	| "copy"
 	| "copyAddress"
 	| "cross"

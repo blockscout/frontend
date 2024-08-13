@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import {
   Table,
   Thead,
@@ -9,6 +10,7 @@ import {
   Tooltip,
   Flex,
   Input,
+  Box,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React from 'react';
@@ -68,37 +70,47 @@ function tableList<T extends string>(props: Props<T>) {
               )) }
             </Tr>
           </Thead>
-          <Tbody>
+          <Tbody margin="0 10px">
             {
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               props.talbeList?.map((title: any, key) => (
-                <Tr padding="0 6px" _hover={{ bg: 'rgba(220, 212, 255, 0.24)' }} key={ key }>
+                <Tr margin="0 10px" _hover={{ bg: 'rgba(220, 212, 255, 0.24)' }} key={ key }>
                   {
-                    title &&
-                  Object.keys(title)?.map((value: string, index) => (
-                    <Td
-                      key={ index }
-                      fontWeight="500" fontSize="14px"
-                      overflow="hidden"
-                      color={ value === 'txnHash' ? '#8A55FD' : '#000000' } padding="12px 0">
-                      {
-                        // eslint-disable-next-line no-nested-ternary
-                        value === 'txnHash' ? (
-                          <Tooltip label={ title[value] } placement="top" bg="#FFFFFF" color="#000000">
-                            <NextLink href={{ pathname: '/tx/[hash]', query: { hash: title[value] || '' } }}>
-                              { formatPubKey(title[value]) }
-                            </NextLink>
-                          </Tooltip >
-                        ) :
-                          value === 'Block' ? (
-                            <NextLink href={{ pathname: '/block/[height_or_hash]', query: { height_or_hash: title[value] || '' } }}>
-                              { title[value] }
-                            </NextLink>
+                    Object.keys(title)?.map((value: string, index) => (
+                      <Td
+                        _last={{ borderRightRadius: '12px' }}
+                        _first={{ borderLeftRadius: '12px' }}
+                        key={ index }
+                        fontWeight="500" fontSize="14px"
+                        overflow="hidden"
+                        color={ value === 'txnHash' ? '#8A55FD' : '#000000' } padding="12px 0">
+                        {
+                          value === 'txnHash' ? (
+                            <Tooltip label={ title[value] } placement="top" bg="#FFFFFF" color="#000000">
+                              <NextLink href={{ pathname: '/tx/[hash]', query: { hash: title[value] || '' } }}>
+                                { formatPubKey(title[value]) }
+                              </NextLink>
+                            </Tooltip >
                           ) :
-                            <div>{ title[value] }</div>
-                      }
-                    </Td>
-                  ))
+                            value === 'Block' ? (
+                              <NextLink href={{ pathname: '/block/[height_or_hash]', query: { height_or_hash: title[value] || '' } }}>
+                                { title[value] }
+                              </NextLink>
+                            ) :
+                              value === 'Object Name' ? (
+                                <NextLink href={{ pathname: '/object-details/[address]', query: { address: title[value] || '' } }}>
+                                  <Box color="red">{ title[value] }</Box>
+                                </NextLink>
+                              ) :
+                                value === 'Bucket Name' ? (
+                                  <NextLink href={{ pathname: '/object-details/[address]', query: { address: title[value] || '' } }}>
+                                    <Box color="red">{ title[value] }</Box>
+                                  </NextLink>
+                                ) :
+                                  <div>{ title[value] }</div>
+                        }
+                      </Td>
+                    ))
                   }
                 </Tr>
               )) }
