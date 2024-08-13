@@ -13,15 +13,22 @@ const addresses: AddressesResponse = {
       ...addressMocks.withName,
       tx_count: '1',
       coin_balance: '12345678901234567890000',
-    }, {
+    },
+    {
       ...addressMocks.token,
       tx_count: '109123890123',
       coin_balance: '22222345678901234567890000',
       ens_domain_name: null,
-    }, {
+    },
+    {
       ...addressMocks.withoutName,
       tx_count: '11',
       coin_balance: '1000000000000000000',
+    },
+    {
+      ...addressMocks.eoa,
+      tx_count: '420',
+      coin_balance: '123456',
     },
   ],
   total_supply: '25222000',
