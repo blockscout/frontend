@@ -25,11 +25,11 @@ const LatestArbitrumDeposits = () => {
   const [ socketAlert, setSocketAlert ] = React.useState('');
 
   const handleSocketClose = React.useCallback(() => {
-    setSocketAlert('Connection is lost. Please reload page.');
+    setSocketAlert('Connection is lost. Please reload the page.');
   }, []);
 
   const handleSocketError = React.useCallback(() => {
-    setSocketAlert('An error has occurred while fetching new transactions. Please reload page.');
+    setSocketAlert('An error has occurred while fetching new transactions. Please reload the page.');
   }, []);
 
   const handleNewDepositMessage: SocketMessage.NewArbitrumDeposits['handler'] = React.useCallback((payload) => {
@@ -50,7 +50,7 @@ const LatestArbitrumDeposits = () => {
   });
 
   if (isError) {
-    return <Text mt={ 4 }>No data. Please reload page.</Text>;
+    return <Text mt={ 4 }>No data. Please reload the page.</Text>;
   }
 
   if (data) {
