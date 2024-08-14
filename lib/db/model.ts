@@ -11,4 +11,4 @@ const faucetRequestRecordSchema = new mongoose.Schema({
   request_wallet: [ String ],
 });
 
-export const FaucetRequestRecord = mongoose.model('faucet_request_record', faucetRequestRecordSchema);
+export const FaucetRequestRecord = mongoose.models.faucet_request_record || mongoose.model('faucet_request_record', faucetRequestRecordSchema);
