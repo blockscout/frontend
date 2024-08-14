@@ -9,7 +9,7 @@ import { findEditThenSave } from 'lib/db';
 
 const provider = new JsonRpcProvider(
   getEnvValue('NEXT_PUBLIC_NETWORK_RPC_URL'),
-  getEnvValue('NEXT_PUBLIC_NETWORK_ID'),
+  Number(getEnvValue('NEXT_PUBLIC_NETWORK_ID')),
   {
     staticNetwork: true,
   },
