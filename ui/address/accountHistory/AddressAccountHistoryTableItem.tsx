@@ -26,7 +26,7 @@ const AddressAccountHistoryTableItem = (props: Props) => {
     <Tr>
       <Td px={ 3 } py="18px" fontSize="sm" >
         <TimeAgoWithTooltip
-          timestamp={ (props.tx.rawTransactionData.timestamp * 1000).toString() }
+          timestamp={ props.tx.rawTransactionData.timestamp * 1000 }
           isLoading={ props.isPlaceholderData }
           color="text_secondary"
           borderRadius="sm"
