@@ -34,7 +34,8 @@ const Container = ({ href, children }: { href?: Route; children: JSX.Element }) 
 };
 
 const StatsWidget = ({ label, value, valuePrefix, valuePostfix, isLoading, hint, diff, diffPeriod = '24h', diffFormatted, period, href }: Props) => {
-  const bgColor = useColorModeValue('blue.50', 'whiteAlpha.100');
+  // const bgColor = useColorModeValue('blue.50', 'whiteAlpha.100');
+  const bgColor = 'rgba(220, 212, 255, 0.24)';
   const skeletonBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
   const hintColor = useColorModeValue('gray.600', 'gray.400');
 

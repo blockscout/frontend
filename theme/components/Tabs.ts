@@ -16,7 +16,8 @@ const variantSoftRounded = definePartsStyle((props) => {
       color: mode('blue.700', 'gray.400')(props),
       _selected: {
         color: mode('blue.700', 'gray.50')(props),
-        bg: mode('blue.50', 'gray.800')(props),
+        // bg: mode('blue.50', 'gray.800')(props),
+        bg: 'rgba(220, 212, 255, 0.24)', // tabs bgcolor
         _hover: {
           color: mode('blue.700', 'gray.50')(props),
         },
