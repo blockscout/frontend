@@ -5,7 +5,7 @@ import dayjs from 'lib/date/dayjs';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 
 type Props = {
-  timestamp?: string | null;
+  timestamp?: string | number | null;
   fallbackText?: string;
   isLoading?: boolean;
   enableIncrement?: boolean;
