@@ -78,7 +78,7 @@ const Page = (props: Props) => {
         },
         render: () => (
           <Box
-            padding="10px 48px"
+            p="10px 48px"
             bg="#FFFF"
             border="1px solid rgba(0, 0, 0, 0.06)"
             borderRadius="32px"
@@ -103,11 +103,11 @@ const Page = (props: Props) => {
 
   return (
     <Flex>
-      <TableContainer flex="1" border="1px" borderRadius="12px" borderColor="rgba(0, 0, 0, 0.06);" padding="16px 24px 0px 16px">
+      <TableContainer flex="1" border="1px" borderRadius="12px" borderColor="rgba(0, 0, 0, 0.06);" p="16px 24px 0px 16px">
         <Table variant="simple">
           <Thead>
             <Tr>
-              <Th paddingLeft="0" bg="none" color="#000000" fontWeight="700" fontSize="16px" marginBottom="8px">Overview</Th>
+              <Th pl="0" bg="none" color="#000000" fontWeight="700" fontSize="16px" mb="8px">Overview</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -115,8 +115,8 @@ const Page = (props: Props) => {
               <Tr borderBottom="1px solid rgba(0, 46, 51, 0.1)" key={ key } _last={{
                 borderColor: '#FFFFFF',
               }}>
-                <Td border="none" fontWeight="400" fontSize="14px" color="rgba(0, 0, 0, 0.4)" padding="12px 0">{ key }</Td>
-                <Td border="none" fontWeight="500" fontSize="12px" color="#000000" padding="12px 0" textAlign="right">{ value }</Td>
+                <Td border="none" fontWeight="400" fontSize="14px" color="rgba(0, 0, 0, 0.4)" p="12px 0">{ key }</Td>
+                <Td border="none" fontWeight="500" fontSize="12px" color="#000000" p="12px 0" textAlign="right">{ value }</Td>
               </Tr>
             )) }
           </Tbody>
@@ -125,47 +125,52 @@ const Page = (props: Props) => {
 
       <Square size="20px"></Square>
 
-      <TableContainer flex="1" border="1px" borderRadius="12px" borderColor="rgba(0, 0, 0, 0.06);" padding="16px 24px">
+      <TableContainer flex="1" border="1px" borderRadius="12px" borderColor="rgba(0, 0, 0, 0.06);" p="16px 24px">
         <Table variant="simple">
           <Thead>
             <Tr>
-              <Th paddingLeft="0" bg="none" color="#000000" fontWeight="700" fontSize="16px" marginBottom="8px">More</Th>
+              <Th pl="0" bg="none" color="#000000" fontWeight="700" fontSize="16px" marginBottom="8px">More</Th>
             </Tr>
           </Thead>
           <Tbody>
             { Object.entries(props.more || {}).map(([ key, values ]) => (
               <Tr key={ key }>
-                <Td fontWeight="400" fontSize="14px" color="rgba(0, 0, 0, 0.4)" padding="12px 0">{ key }</Td>
+                <Td fontWeight="400" fontSize="14px" color="rgba(0, 0, 0, 0.4)" p="12px 0">{ key }</Td>
                 <Td
-                  padding="12px 0"
+                  p="12px 0"
                   fontWeight="500"
                   fontSize="12px" color={ values.status === 'none' || values.status === 'time' ? '#000000' : '#8A55FD' } textAlign="right">
                   {
                     values.status === 'copyLink' ? (
-                      // <NextLink href={{ pathname: '/address/[hash]', query: { hash: values.value || '' } }}>
                       <Flex alignItems="center" flex="right" justifyContent="right">
-                        { values.value }
+                        <NextLink href={{ pathname: '/address/[hash]', query: { hash: values.value || '' } }}>
+                          { values.value }
+                        </NextLink>
                         <IconSvg
+                          cursor="pointer"
+                          ml="4px"
                           onClick={ copyAddress(values.value) }
                           name="copyAddress"
                           color="rgba(0, 0, 0, .4)"
                           _hover={{ color: '#A07EFF' }}
-                          width="14px"
-                          height="14px">
+                          w="14px"
+                          h="14px">
                         </IconSvg>
                         <Wrap>
                           <WrapItem></WrapItem>
                         </Wrap>
                       </Flex>
-                      // </NextLink>
                     ) :
                       values.status === 'link' ?
-                        <NextLink href={{ pathname: '/address/[hash]', query: { hash: values.value || '' } }}>{ values.value }</NextLink> : (
-                          <Text
-                            fontWeight="500"
-                            fontSize="12px"
-                            color={ values.status === 'none' || values.status === 'time' ? '#000000' : '#8A55FD' } textAlign="right">{ values.value }</Text>
-                        ) }
+                        <NextLink href={{ pathname: '/address/[hash]', query: { hash: values.value || '' } }}>{ values.value }</NextLink> :
+                        values.status === 'bucketPage' ?
+                          <NextLink href={{ pathname: '/bucket-details/[address]', query: { address: values.value || '' } }}>{ values.value }</NextLink> :
+                          (
+                            <Text
+                              fontWeight="500"
+                              fontSize="12px"
+                              color={ values.status === 'none' || values.status === 'time' ? '#000000' : '#8A55FD' } textAlign="right">{ values.value }</Text>
+                          ) }
                 </Td>
               </Tr>
             )) }

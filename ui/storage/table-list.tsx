@@ -57,7 +57,7 @@ function tableList<T extends string>(props: Props<T>) {
           borderRadius="29px" width="344px" height="42px" placeholder="Search by Object Name or ID">
         </Input>
       </Flex>
-      <TableContainer marginTop="16px" border="1px" borderRadius="12px" borderColor="rgba(0, 0, 0, 0.06);" padding="24px">
+      <TableContainer marginTop="16px" border="1px" borderRadius="12px" borderColor="rgba(0, 0, 0, 0.06);" p="24px">
         <Table variant="bubble">
           <Thead>
             <Tr>
@@ -65,7 +65,7 @@ function tableList<T extends string>(props: Props<T>) {
                 <Th
                   key={ index }
                   color="rgba(0, 0, 0, 0.4)"
-                  padding="0 0 10px 0" bg="#FFFF"
+                  p="0 0 10px 0" bg="#FFFF"
                   borderBottom="1px" borderColor="rgba(0, 0, 0, 0.1)">{ value }</Th>
               )) }
             </Tr>
@@ -83,7 +83,7 @@ function tableList<T extends string>(props: Props<T>) {
                         key={ index }
                         fontWeight="500" fontSize="14px"
                         overflow="hidden"
-                        color={ value === 'txnHash' ? '#8A55FD' : '#000000' } padding="12px 0">
+                        color={ value === 'txnHash' ? '#8A55FD' : '#000000' } p="12px 0">
                         {
                           value === 'txnHash' ? (
                             <Tooltip label={ title[value] } placement="top" bg="#FFFFFF" color="#000000">
@@ -103,7 +103,7 @@ function tableList<T extends string>(props: Props<T>) {
                                 </NextLink>
                               ) :
                                 value === 'Bucket Name' ? (
-                                  <NextLink href={{ pathname: '/object-details/[address]', query: { address: title[value] || '' } }}>
+                                  <NextLink href={{ pathname: '/bucket-details/[address]', query: { address: title[value] || '' } }}>
                                     <Box color="red">{ title[value] }</Box>
                                   </NextLink>
                                 ) :

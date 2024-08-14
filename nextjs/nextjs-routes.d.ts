@@ -23,17 +23,17 @@ declare module "nextjs-routes" {
     | StaticRoute<"/api/metrics">
     | StaticRoute<"/api/proxy">
     | StaticRoute<"/api-docs">
-    | DynamicRoute<"/apps/[id]", { "id": string }>
     | StaticRoute<"/apps">
+    | DynamicRoute<"/apps/[id]", { "id": string }>
     | StaticRoute<"/auth/auth0">
     | StaticRoute<"/auth/profile">
     | StaticRoute<"/auth/unverified-email">
-    | DynamicRoute<"/batches/[number]", { "number": string }>
     | StaticRoute<"/batches">
+    | DynamicRoute<"/batches/[number]", { "number": string }>
     | DynamicRoute<"/blobs/[hash]", { "hash": string }>
     | DynamicRoute<"/block/[height_or_hash]", { "height_or_hash": string }>
     | StaticRoute<"/blocks">
-    | StaticRoute<"/bucket-details">
+    | DynamicRoute<"/bucket-details/[address]", { "address": string }>
     | StaticRoute<"/bucket">
     | StaticRoute<"/contract-verification">
     | StaticRoute<"/csv-export">
@@ -42,12 +42,12 @@ declare module "nextjs-routes" {
     | StaticRoute<"/faucet">
     | StaticRoute<"/gas-tracker">
     | StaticRoute<"/graphiql">
-    | StaticRoute<"/group-details">
+    | DynamicRoute<"/group-details/[address]", { "address": string }>
     | StaticRoute<"/group">
     | StaticRoute<"/">
     | StaticRoute<"/login">
-    | DynamicRoute<"/name-domains/[name]", { "name": string }>
     | StaticRoute<"/name-domains">
+    | DynamicRoute<"/name-domains/[name]", { "name": string }>
     | DynamicRoute<"/object-details/[address]", { "address": string }>
     | StaticRoute<"/object">
     | DynamicRoute<"/op/[hash]", { "hash": string }>
