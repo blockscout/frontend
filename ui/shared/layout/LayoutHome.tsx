@@ -11,7 +11,7 @@ import * as Layout from './components';
 const LayoutHome = ({ children }: Props) => {
   return (
     <Layout.Container>
-      <Layout.TopRow/>
+      { /* <Layout.TopRow/> */ }
       <Layout.NavBar/>
       <HeaderMobile hideSearchBar/>
       <Layout.MainArea>

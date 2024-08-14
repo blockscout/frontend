@@ -32,7 +32,8 @@ const Home = () => {
             fontSize={{ base: '18px', lg: '40px' }}
             lineHeight={{ base: '24px', lg: '48px' }}
             fontWeight={ 600 }
-            color={ config.UI.homepage.plate.textColor }
+            // color={ config.UI.homepage.plate.textColor }
+            color="#8A55FD"
           >
             {
               config.meta.seo.enhancedDataEnabled ?

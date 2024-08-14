@@ -32,20 +32,21 @@ const SettingsColorTheme = ({ onSelect }: Props) => {
   }, [ setColorMode ]);
 
   React.useEffect(() => {
-    const cookieColorMode = cookies.get(cookies.NAMES.COLOR_MODE);
+    // const cookieColorMode = cookies.get(cookies.NAMES.COLOR_MODE);
 
-    const nextColorMode = (() => {
-      if (!cookieColorMode) {
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      }
+    // const nextColorMode = (() => {
+    //   if (!cookieColorMode) {
+    //     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    //   }
 
-      return cookieColorMode;
-    })();
+    //   return cookieColorMode;
+    // })();
 
-    const colorModeThemes = COLOR_THEMES.filter(theme => theme.colorMode === nextColorMode);
-    const fallbackHex = colorModeThemes[colorModeThemes.length - 1].hex;
-    const cookieHex = cookies.get(cookies.NAMES.COLOR_MODE_HEX) ?? fallbackHex;
-    setTheme(cookieHex);
+    // const colorModeThemes = COLOR_THEMES.filter(theme => theme.colorMode === nextColorMode);
+    // const fallbackHex = colorModeThemes[colorModeThemes.length - 1].hex;
+    // const cookieHex = cookies.get(cookies.NAMES.COLOR_MODE_HEX) ?? fallbackHex;
+    const cookieHex = '#FFFFFF';
+    setTheme(cookieHex); // always light mode
     setActiveHex(cookieHex);
   // should run only on mount
   // eslint-disable-next-line react-hooks/exhaustive-deps
