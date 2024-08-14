@@ -1,10 +1,9 @@
 /* eslint-disable no-console */
 import { HStack, Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import React, { useContext } from 'react';
+import React from 'react';
 
 import config from 'configs/app';
-import { PageContext } from 'lib/contexts/page';
 import useNavItems from 'lib/hooks/useNavItems';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
@@ -19,10 +18,16 @@ type Props = {
 }
 
 const HeaderDesktop = ({ renderSearchBar, isMarketplaceAppPage }: Props) => {
-
-  const searchBar = renderSearchBar ? renderSearchBar() : <SearchBar/>;
   const router = useRouter();
-  const { title } = useContext(PageContext);
+  const storageSearchbar = React.useCallback(() => {
+    const pathname = router.pathname;
+    if (pathname.includes('object') || pathname.includes('bucket') || pathname.includes('group')) {
+      return true;
+    }
+    return false;
+  }, [ router.pathname ]);
+  const specifiedSearchBar = storageSearchbar() ? null : <SearchBar/>;
+  const searchBar = renderSearchBar ? renderSearchBar() : specifiedSearchBar;
   const useNavItemss = useNavItems();
   console.log(router);
   console.log(useNavItemss);
@@ -57,9 +62,6 @@ const HeaderDesktop = ({ renderSearchBar, isMarketplaceAppPage }: Props) => {
           <NetworkLogo isCollapsed/>
         </Box>
       ) }
-      <Box fontWeight="700" fontSize="28px" color="#000000" whiteSpace="nowrap">
-        { title }
-      </Box>
       <Box width="100%">
         { searchBar }
       </Box>
