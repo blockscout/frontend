@@ -134,7 +134,7 @@ export default function useNavItems(): ReturnType {
     // };
 
     const rollupFeature = config.features.rollup;
-    const strongchainNavItems: Array<NavItem> | Array<Array<NavItem>> = [
+    const storageNavItems: Array<NavItem> | Array<Array<NavItem>> = [
       [
         objects,
         bucket,
@@ -258,25 +258,25 @@ export default function useNavItems(): ReturnType {
     const mainNavItems: ReturnType['mainNavItems'] = [
       {
         text: 'Blockchain',
-        icon: 'globe-b',
+        icon: 'navitems/globe-b',
         isActive: blockchainNavItems.flat().some(item => isInternalItem(item) && item.isActive),
         subItems: blockchainNavItems,
       },
       {
         text: 'Tokens',
         nextRoute: { pathname: '/tokens' as const },
-        icon: 'token',
+        icon: 'navitems/token',
         isActive: pathname.startsWith('/token'),
       },
       {
         text: 'Storage',
-        icon: 'strong',
-        isActive: strongchainNavItems.flat().some(item => isInternalItem(item) && item.isActive),
-        subItems: strongchainNavItems,
+        icon: 'navitems/storage',
+        isActive: storageNavItems.flat().some(item => isInternalItem(item) && item.isActive),
+        subItems: storageNavItems,
       },
       {
         text: 'Faucet',
-        icon: 'faucet',
+        icon: 'navitems/faucet',
         nextRoute: { pathname: '/faucet' as const },
         isActive: pathname.startsWith('/faucet'),
       },
@@ -289,18 +289,18 @@ export default function useNavItems(): ReturnType {
       config.features.stats.isEnabled ? {
         text: 'Charts & stats',
         nextRoute: { pathname: '/stats' as const },
-        icon: 'stats',
+        icon: 'navitems/stats',
         isActive: pathname === '/stats',
       } : null,
       apiNavItems.length > 0 && {
         text: 'API',
-        icon: 'restAPI',
+        icon: 'navitems/restAPI',
         isActive: apiNavItems.some(item => isInternalItem(item) && item.isActive),
         subItems: apiNavItems,
       },
       {
         text: 'Other',
-        icon: 'gear',
+        icon: 'navitems/gear',
         isActive: otherNavItems.flat().some(item => isInternalItem(item) && item.isActive),
         subItems: otherNavItems,
       },

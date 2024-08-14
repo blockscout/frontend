@@ -13,6 +13,7 @@ import useQueryClientConfig from 'lib/api/useQueryClientConfig';
 import { AppContextProvider } from 'lib/contexts/app';
 import { ChakraProvider } from 'lib/contexts/chakra';
 import { MarketplaceContextProvider } from 'lib/contexts/marketplace';
+import { PageProvider } from 'lib/contexts/page';
 import { ScrollDirectionProvider } from 'lib/contexts/scrollDirection';
 import { growthBook } from 'lib/growthbook/init';
 import useLoadFeatures from 'lib/growthbook/useLoadFeatures';
@@ -24,6 +25,7 @@ import Layout from 'ui/shared/layout/Layout';
 import Web3ModalProvider from 'ui/shared/Web3ModalProvider';
 
 import 'lib/setLocale';
+
 // import 'focus-visible/dist/focus-visible';
 
 type AppPropsWithLayout = AppProps & {
@@ -68,7 +70,9 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
                 <ScrollDirectionProvider>
                   <SocketProvider url={ `${ config.api.socket }${ config.api.basePath }/socket/v2` }>
                     <MarketplaceContextProvider>
-                      { getLayout(<Component { ...pageProps }/>) }
+                      <PageProvider>
+                        { getLayout(<Component { ...pageProps }/>) }
+                      </PageProvider>
                     </MarketplaceContextProvider>
                   </SocketProvider>
                 </ScrollDirectionProvider>

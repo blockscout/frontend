@@ -48,6 +48,7 @@ const NavLinkGroup = ({ item, isCollapsed }: Props) => {
             pr={{ lg: isExpanded ? 0 : '15px', xl: isCollapsed ? '15px' : 0 }}
             aria-label={ `${ item.text } link group` }
             position="relative"
+            border={ item.isActive ? '0.5px solid rgba(160, 126, 255, 0.24)' : 'none' }
           >
             <HStack spacing={ 0 } overflow="hidden">
               <NavLinkIcon item={ item }/>
@@ -92,10 +93,10 @@ const NavLinkGroup = ({ item, isCollapsed }: Props) => {
                     borderColor: 'divider',
                   }}
                 >
-                  { subItem.map(subSubItem => <NavLink key={ subSubItem.text } item={ subSubItem } isCollapsed={ false }/>) }
+                  { subItem.map(subSubItem => <NavLink hideIcon={ true } key={ subSubItem.text } item={ subSubItem } isCollapsed={ false }/>) }
                 </Box>
               ) :
-                <NavLink key={ subItem.text } item={ subItem } isCollapsed={ false }/>,
+                <NavLink hideIcon={ true } key={ subItem.text } item={ subItem } isCollapsed={ false }/>,
               ) }
             </VStack>
           </PopoverBody>

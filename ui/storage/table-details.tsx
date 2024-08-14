@@ -64,9 +64,9 @@ function Page<T extends string>(props: Props<T>) {
                 color={ tapSelect === value ? '#8A55FD' : 'rgba(0, 0, 0, 0.4)' }
                 fontWeight={ tapSelect === value ? '700' : '400' }
                 fontSize="16px"
-                padding="0 0 10px 0"
-                margin="0 24px"
-                marginLeft={ !key ? '24px' : '0px' }
+                p="0 0 10px 0"
+                m="0 24px"
+                ml={ !key ? '24px' : '0px' }
                 bg="none"
               >
                 { value }
@@ -77,7 +77,7 @@ function Page<T extends string>(props: Props<T>) {
             { props.tabThead?.map((value, index) => (
               <Th
                 key={ index }
-                padding="24px"
+                p="24px"
                 bg="#FFFF"
                 borderTop="1px" borderBottom="1px" borderColor="rgba(0, 0, 0, 0.06)">{ value }</Th>
             )) }

@@ -5,11 +5,13 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
+import PageTitle from 'ui/shared/Page/PageTitle';
+
 // import { getEnvValue } from 'configs/app/utils';
 // const asd = getEnvValue('NEXT_PUBLIC_MARKETPLACE_ENABLED');
 // import useFetch from 'lib/hooks/useFetch';
 
-const TableList = dynamic(() => import('ui/storge/table-list'), { ssr: false });
+const TableList = dynamic(() => import('ui/storage/table-list'), { ssr: false });
 const ObjectDetails: NextPage = () => {
   // const fetch = useFetch();
 
@@ -34,6 +36,7 @@ const ObjectDetails: NextPage = () => {
   ];
   return (
     <PageNextJs pathname="/object">
+      <PageTitle title="Objects" withTextAd/>
       <TableList tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead }/>
     </PageNextJs>
   );

@@ -15,7 +15,7 @@ const LayoutDefault = ({ children }: Props) => {
       display="flex"
       flexDirection="column"
     >
-      <Layout.TopRow/>
+      { /* <Layout.TopRow/> */ }
       <HeaderMobile hideSearchBar/>
       <Layout.MainArea minH="auto" flex={ 1 }>
         <Layout.MainColumn

@@ -84,10 +84,16 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
   const changeTable = React.useCallback((value: string) => {
     setData(value);
   }, []);
+
+  const backPage = () => () => {
+  };
   return (
-    <PageNextJs pathname="/object-details/[address]" query={ props.query }>
+    <PageNextJs pathname="/group-details/[address]" query={ props.query }>
       <Flex>
-        <PageTitle title="Object Details" withTextAd/>
+        <Box ml="6px" onClick={ backPage() }>
+          Back
+        </Box>
+        <PageTitle title="Group Details" withTextAd/>
         <Box ml="6px">{ formatPubKey(router.query.address?.toString()) }</Box>
       </Flex>
       <HandDetails overview={ overview } more={ more }/>
