@@ -37,9 +37,9 @@ export default async function faucetHandler(
     }
 
     const timestamp: number = new Date(user?.lastRequestTime || 0).getTime();
-    const requetPer = Number(getEnvValue('FAUCET_REQUEST_PER'));
-    if (Date.now() - timestamp <= requetPer) {
-      return res.status(429).json({ error: `Only one request can be made within ${ requetPer / 1000 / 60 / 60 } hours` });
+    const requestPer = Number(getEnvValue('FAUCET_REQUEST_PER'));
+    if (Date.now() - timestamp <= requestPer) {
+      return res.status(429).json({ error: `Only one request can be made within ${ requestPer / 1000 / 60 / 60 } hours` });
     }
 
     const userWallet: string = req.body.userWallet;
