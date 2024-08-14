@@ -30,7 +30,7 @@ type Props = {
   toggleSorting: (key: AddressMudRecordsSorting['sort']) => void;
   setFilters: React.Dispatch<React.SetStateAction<AddressMudRecordsFilter>>;
   filters: AddressMudRecordsFilter;
-  toggleTableHasHorisontalScroll: () => void;
+  toggleTableHasHorizontalScroll: () => void;
   scrollRef?: React.RefObject<HTMLDivElement>;
   hash: string;
 }
@@ -42,7 +42,7 @@ const AddressMudRecordsTable = ({
   toggleSorting,
   filters,
   setFilters,
-  toggleTableHasHorisontalScroll,
+  toggleTableHasHorizontalScroll,
   scrollRef,
   hash,
 }: Props) => {
@@ -60,8 +60,8 @@ const AddressMudRecordsTable = ({
   const toggleIsOpen = React.useCallback(() => {
     isOpened && tableRef.current?.scroll({ left: 0 });
     setIsOpened.toggle();
-    toggleTableHasHorisontalScroll();
-  }, [ setIsOpened, toggleTableHasHorisontalScroll, isOpened ]);
+    toggleTableHasHorizontalScroll();
+  }, [ setIsOpened, toggleTableHasHorizontalScroll, isOpened ]);
 
   const onRecordClick = React.useCallback((e: React.MouseEvent) => {
     if (e.metaKey || e.ctrlKey) {
@@ -138,7 +138,7 @@ const AddressMudRecordsTable = ({
   );
 
   return (
-    // can't implement both horisontal table scroll and sticky header
+    // can't implement both horizontal table scroll and sticky header
     <Box maxW="100%" overflowX={ hasHorizontalScroll ? 'scroll' : 'unset' } whiteSpace="nowrap" ref={ tableRef }>
       <Table variant="simple" size="sm" style={{ tableLayout: 'fixed' }}>
         <Thead top={ hasHorizontalScroll ? 0 : top } display={ hasHorizontalScroll ? 'table' : 'table-header-group' } w="100%">
