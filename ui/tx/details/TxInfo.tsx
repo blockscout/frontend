@@ -23,7 +23,7 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
-import useArweaveId from 'lib/hooks/useArweaveId';
+import { useArweaveId } from 'lib/hooks/useArweaveId';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
 import { currencyUnits } from 'lib/units';
@@ -71,9 +71,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
   const wvmIconPath = 'networks/arweave';
   const [ isExpanded, setIsExpanded ] = React.useState(false);
 
-  const { data: arweaveId } = useArweaveId({
-    block: data?.block,
-  });
+  const { data: arweaveId } = useArweaveId();
 
   const handleCutClick = React.useCallback(() => {
     setIsExpanded((flag) => !flag);
