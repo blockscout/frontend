@@ -33,18 +33,20 @@ export default async function faucetHandler(
     });
     const user = session.user;
     if (!user) {
-      return res.status(401).json({ error: 'Unauthorized' });
+      return res.status(401).json({ error: 'Failed: please verify your Discord first.' });
     }
 
     const timestamp: number = new Date(user?.lastRequestTime || 0).getTime();
     const requestPer = Number(getEnvValue('FAUCET_REQUEST_PER'));
     if (Date.now() - timestamp <= requestPer) {
-      return res.status(429).json({ error: `Only one request can be made within ${ requestPer / 1000 / 60 / 60 } hours` });
+      return res.status(429).json({
+        error: `Failed: the Discord account has already request for $ME within the last ${ requestPer / 1000 / 60 / 60 } hours. Please try again later.`,
+      });
     }
 
     const userWallet: string = req.body.userWallet;
     if (!isAddress(userWallet)) {
-      return res.status(400).json({ error: 'Invalid wallet address' });
+      return res.status(400).json({ error: 'Failed: please enter the right address.' });
     }
 
     const txRp = await signer.sendTransaction({
@@ -54,7 +56,7 @@ export default async function faucetHandler(
     });
     const txReceipt = await txRp.wait();
     if (txReceipt?.status !== 1) {
-      return res.status(500).json({ error: 'Transaction Failure' });
+      return res.status(500).json({ error: `Transaction Failure ${ txReceipt?.hash }` });
     }
 
     const now = new Date().toISOString();
