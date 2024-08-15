@@ -82,6 +82,16 @@ async function joinGuild(accessToken: string, userId: string) {
 
 export default async function discordCallbackHandler(req: NextApiRequest, res: NextApiResponse) {
   const code = req.query.code as string;
+  const isDenied = req.query.error as string;
+
+  // User rejected
+  if (isDenied === 'access_denied') {
+    return res.redirect('/faucet');
+  }
+
+  if (!code) {
+    return res.status(400).json({ error: 'Missing code parameter' });
+  }
 
   const session = await getIronSession<{ user: any }>(req, res, {
     cookieName: 'mechian-session-token',
@@ -91,10 +101,6 @@ export default async function discordCallbackHandler(req: NextApiRequest, res: N
       secure: getEnvValue('NEXT_PUBLIC_APP_ENV') === 'production',
     },
   });
-
-  if (!code) {
-    return res.status(400).json({ error: 'Missing code parameter' });
-  }
 
   try {
     const tokenResults = await getAccessToken(code);
