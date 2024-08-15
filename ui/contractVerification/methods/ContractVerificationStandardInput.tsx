@@ -17,7 +17,7 @@ const rollupFeature = config.features.rollup;
 
 const ContractVerificationStandardInput = ({ config }: { config: SmartContractVerificationConfig }) => {
   return (
-    <ContractVerificationMethod title="Contract verification via Solidity (standard JSON input) ">
+    <ContractVerificationMethod title="Contract verification via Solidity (standard JSON input) " disableScroll={ config.verification_options.length === 1 }>
       { !config?.is_rust_verifier_microservice_enabled && <ContractVerificationFieldName/> }
       <ContractVerificationFieldCompiler/>
       { rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && <ContractVerificationFieldZkCompiler/> }
@@ -27,7 +27,7 @@ const ContractVerificationStandardInput = ({ config }: { config: SmartContractVe
         hint="Upload the standard input JSON file created during contract compilation."
         required
       />
-      { rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && <ContractVerificationFieldZkOptimization/> }
+      { rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && <ContractVerificationFieldZkOptimization config={ config }/> }
       { !config?.is_rust_verifier_microservice_enabled && <ContractVerificationFieldAutodetectArgs/> }
     </ContractVerificationMethod>
   );

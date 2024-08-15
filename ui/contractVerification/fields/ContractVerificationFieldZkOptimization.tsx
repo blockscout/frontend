@@ -4,12 +4,17 @@ import type { ControllerRenderProps } from 'react-hook-form';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
+import type { SmartContractVerificationConfig } from 'types/client/contract';
 
 import CheckboxInput from 'ui/shared/CheckboxInput';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 
-const ContractVerificationFieldZkOptimization = () => {
+interface Props {
+  config: SmartContractVerificationConfig;
+}
+
+const ContractVerificationFieldZkOptimization = ({ config }: Props) => {
   const [ isEnabled, setIsEnabled ] = React.useState(false);
   const { formState, control } = useFormContext<FormFields>();
 
@@ -41,14 +46,14 @@ const ContractVerificationFieldZkOptimization = () => {
         placeholder="Optimization mode"
         isInvalid={ Boolean(error) }
       >
-        { [ '0', '1', '2', '3', 'z', 's' ].map((value) => (
+        { config.zk_optimization_modes?.map((value) => (
           <option key={ value } value={ value }>
             { value }
           </option>
         )) }
       </Select>
     );
-  }, [ error, formState.isSubmitting ]);
+  }, [ config.zk_optimization_modes, error, formState.isSubmitting ]);
 
   return (
     <ContractVerificationFormRow>
@@ -63,7 +68,6 @@ const ContractVerificationFieldZkOptimization = () => {
             name="optimization_mode"
             control={ control }
             render={ renderInputControl }
-            rules={{ required: true }}
           />
         ) }
       </Flex>

@@ -87,6 +87,7 @@ export interface SmartContractVerificationConfigRaw {
   is_rust_verifier_microservice_enabled: boolean;
   license_types: Record<SmartContractLicenseType, number>;
   zk_compiler_versions?: Array<string>;
+  zk_optimization_modes?: Array<string>;
 }
 
 export type SmartContractVerificationResponse = {

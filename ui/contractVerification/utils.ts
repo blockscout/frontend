@@ -156,11 +156,18 @@ export const DEFAULT_VALUES: Record<SmartContractVerificationMethod, FormFields>
 };
 
 export function getDefaultValues(
-  method: SmartContractVerificationMethod,
+  methodParam: SmartContractVerificationMethod | undefined,
   config: SmartContractVerificationConfig,
   hash: string | undefined,
   licenseType: FormFields['license_type'],
 ) {
+  const singleMethod = config.verification_options.length === 1 ? config.verification_options[0] : undefined;
+  const method = singleMethod || methodParam;
+
+  if (!method) {
+    return;
+  }
+
   const defaultValues: FormFields = { ...DEFAULT_VALUES[method], address: hash || '', license_type: licenseType };
 
   if ('evm_version' in defaultValues) {
@@ -178,6 +185,13 @@ export function getDefaultValues(
       'name' in defaultValues && (defaultValues.name = undefined);
       'autodetect_constructor_args' in defaultValues && (defaultValues.autodetect_constructor_args = false);
     }
+  }
+
+  if (singleMethod) {
+    defaultValues.method = {
+      label: METHOD_LABELS[config.verification_options[0]],
+      value: config.verification_options[0],
+    };
   }
 
   return defaultValues;
