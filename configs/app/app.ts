@@ -10,8 +10,10 @@ const baseUrl = [
   appPort && ':' + appPort,
 ].filter(Boolean).join('');
 const isDev = getEnvValue('NEXT_PUBLIC_APP_ENV') === 'development';
+const isProduction = getEnvValue('NEXT_PUBLIC_APP_ENV') === 'production';
 
 const app = Object.freeze({
+  isProduction,
   isDev,
   protocol: appSchema,
   host: appHost,

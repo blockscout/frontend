@@ -46,3 +46,11 @@ export const buildExternalAssetFilePath = (name: string, value: string) => {
     return;
   }
 };
+
+export const sleep = (time: number): Promise<boolean> => {
+  return new Promise((resolve) => {
+    window.setTimeout(() => {
+      resolve(true);
+    }, time);
+  });
+};

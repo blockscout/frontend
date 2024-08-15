@@ -72,11 +72,11 @@ const NavigationDesktop = () => {
       }}
       onClick={ handleContainerClick }
     >
-      <TestnetBadge position="absolute" pl={ 3 } w="49px" top="34px"/>
+      <TestnetBadge position="absolute" w="49px" top="34px"/>
       <Box
         as="header"
         display="flex"
-        justifyContent="flex-start"
+        justifyContent="center"
         alignItems="center"
         flexDirection="row"
         w="100%"
@@ -84,7 +84,7 @@ const NavigationDesktop = () => {
         boxSizing="initial"
         borderBottom="1px solid rgba(0, 0, 0, 0.12)"
         // pl={{ lg: isExpanded ? 3 : '15px', xl: isCollapsed ? '15px' : 3 }}
-        pr={{ lg: isExpanded ? 0 : '15px', xl: isCollapsed ? '15px' : 0 }}
+        // pr={{ lg: isExpanded ? 0 : '15px', xl: isCollapsed ? '15px' : 0 }}
         h={ 10 }
         transitionProperty="padding"
         transitionDuration="normal"
