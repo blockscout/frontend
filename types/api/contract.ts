@@ -27,7 +27,7 @@ export interface SmartContract {
   compiler_version: string | null;
   evm_version: string | null;
   optimization_enabled: boolean | null;
-  optimization_runs: number | null;
+  optimization_runs: number | string | null;
   name: string | null;
   verified_at: string | null;
   is_blueprint: boolean | null;
@@ -57,6 +57,7 @@ export interface SmartContract {
   language: string | null;
   license_type: SmartContractLicenseType | null;
   certified?: boolean;
+  zk_compiler_version?: string;
 }
 
 export type SmartContractDecodedConstructorArg = [
