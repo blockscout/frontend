@@ -25,7 +25,6 @@ function formatPubKey(pubKey: string | undefined, _length = 4, _preLength = 4) {
 
 const ObjectDetails: NextPage<Props> = (props: Props) => {
   const router = useRouter();
-  console.log(router);
 
   const overview = {
     'Object Name': '0xdlz',

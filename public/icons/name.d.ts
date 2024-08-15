@@ -42,6 +42,7 @@
 	| "delete"
 	| "discussions"
 	| "docs"
+	| "document"
 	| "donate"
 	| "dots"
 	| "edit"

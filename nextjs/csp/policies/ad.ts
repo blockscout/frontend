@@ -27,6 +27,7 @@ export function ad(): CspDev.DirectiveDescriptor {
       //getit
       'v1.getittech.io',
       'ipapi.co',
+      'http://154.48.244.46:9090/v1/graphql',
     ],
     'frame-src': [
       // coinzilla

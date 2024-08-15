@@ -16,9 +16,17 @@ import {
   WrapItem,
   useToast,
   Box,
+  Popover,
+  PopoverBody,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTrigger,
+  Button,
+  Divider,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -62,13 +70,21 @@ type Props = {
     'Active Objects Count'?: PropsMoreValueType;
     'Bucket Status'?: PropsMoreValueType;
   } | undefined;
+  secondaryAddresses?: Array<string>;
 }
 
 const Page = (props: Props) => {
   const toast = useToast();
+  const [ creatorFlag, setCreatorFlag ] = useState<boolean>(false);
+  const [ ownerFlag, setOwnerFlag ] = useState<boolean>(false);
 
-  const copyAddress = (value: string | undefined) => () => {
+  const copyAddress = (value: string | undefined, index?: string) => () => {
     if (value) {
+      if (index === 'Creator') {
+        setCreatorFlag(true);
+      } else if (index === 'Owner') {
+        setOwnerFlag(true);
+      }
       toast({
         position: 'top',
         isClosable: false,
@@ -147,11 +163,11 @@ const Page = (props: Props) => {
                           { values.value }
                         </NextLink>
                         <IconSvg
+                          color={ (creatorFlag && key === 'Creator') || (ownerFlag && key === 'Owner') ? '#A07EFF' : 'rgba(0, 0, 0, .4)' }
                           cursor="pointer"
                           ml="4px"
-                          onClick={ copyAddress(values.value) }
+                          onClick={ copyAddress(values.value, key) }
                           name="copyAddress"
-                          color="rgba(0, 0, 0, .4)"
                           _hover={{ color: '#A07EFF' }}
                           w="14px"
                           h="14px">
@@ -165,12 +181,53 @@ const Page = (props: Props) => {
                         <NextLink href={{ pathname: '/address/[hash]', query: { hash: values.value || '' } }}>{ values.value }</NextLink> :
                         values.status === 'bucketPage' ?
                           <NextLink href={{ pathname: '/bucket-details/[address]', query: { address: values.value || '' } }}>{ values.value }</NextLink> :
-                          (
-                            <Text
-                              fontWeight="500"
-                              fontSize="12px"
-                              color={ values.status === 'none' || values.status === 'time' ? '#000000' : '#8A55FD' } textAlign="right">{ values.value }</Text>
-                          ) }
+                          values.status === 'clickViewAll' ? (
+                            <Popover closeOnBlur={ false }>
+                              <PopoverTrigger>
+                                <Button fontWeight="500" fontSize="12px" padding="0px" variant="text">{ values.value }</Button>
+                              </PopoverTrigger>
+                              <PopoverContent right="94px" w="auto">
+                                <PopoverHeader
+                                  textAlign="left"
+                                  border="none"
+                                  color="#000000"
+                                  p="24px"
+                                  fontWeight="500"
+                                  fontSize="12px"
+                                >
+                                  All Secondary SP Addresses!
+                                </PopoverHeader>
+                                <PopoverCloseButton w="16px" h="16px" top="24px" right="24px"/>
+                                { props.secondaryAddresses?.map((value, index) => (
+                                  <PopoverBody
+                                    _last={{ paddingBottom: '24px' }}
+                                    padding="0 24px"
+                                    textAlign="left"
+                                    key={ index }>
+                                    <Flex align="center" color="#8A55FD" fontWeight="500" fontSize="12px">
+                                      <NextLink href={{ pathname: '/address/[hash]', query: { hash: value || '' } }}>{ value }</NextLink>
+                                      <IconSvg
+                                        cursor="pointer"
+                                        onClick={ copyAddress(values.value) }
+                                        marginLeft="48px"
+                                        w="14px"
+                                        h="14px"
+                                        name="copyAddress">
+                                      </IconSvg>
+                                    </Flex>
+                                    <Divider margin="10px 0" bg="rgba(0, 46, 51, 0.1)"/>
+                                  </PopoverBody>
+                                ),
+                                ) }
+                              </PopoverContent>
+                            </Popover>
+                          ) :
+                            (
+                              <Text
+                                fontWeight="500"
+                                fontSize="12px"
+                                color={ values.status === 'none' || values.status === 'time' ? '#000000' : '#8A55FD' } textAlign="right">{ values.value }</Text>
+                            ) }
                 </Td>
               </Tr>
             )) }
