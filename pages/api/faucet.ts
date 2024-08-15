@@ -6,6 +6,7 @@ import { formatErrorMessage, httpLogger } from 'nextjs/utils/logger';
 
 import { getEnvValue } from 'configs/app/utils';
 import { findEditThenSave } from 'lib/db';
+import { sessionOptions } from 'lib/session/config';
 
 const provider = new JsonRpcProvider(
   getEnvValue('NEXT_PUBLIC_NETWORK_RPC_URL'),
@@ -27,14 +28,7 @@ export default async function faucetHandler(
   let user = null;
 
   try {
-    const session = await getIronSession<{ user: any }>(req, res, {
-      cookieName: 'mechian-session-token',
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      password: getEnvValue('SESSION_PASSWORD')!,
-      cookieOptions: {
-        secure: getEnvValue('NEXT_PUBLIC_APP_ENV') === 'production',
-      },
-    });
+    const session = await getIronSession<{ user: any }>(req, res, sessionOptions);
     user = session.user;
     if (!user) {
       return res.status(401).json({ error: 'Failed: please verify your Discord first.' });

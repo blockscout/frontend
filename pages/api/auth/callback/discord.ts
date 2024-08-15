@@ -5,6 +5,7 @@ import { formatErrorMessage, httpLogger } from 'nextjs/utils/logger';
 
 import { getEnvValue } from 'configs/app/utils';
 import { createAndSaveRecord, findOneByDiscordId } from 'lib/db';
+import { sessionOptions } from 'lib/session/config';
 
 async function getResponseJson(rp: Response) {
   try {
@@ -93,14 +94,7 @@ export default async function discordCallbackHandler(req: NextApiRequest, res: N
     return res.status(400).json({ error: 'Missing code parameter' });
   }
 
-  const session = await getIronSession<{ user: any }>(req, res, {
-    cookieName: 'mechian-session-token',
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    password: getEnvValue('SESSION_PASSWORD')!,
-    cookieOptions: {
-      secure: getEnvValue('NEXT_PUBLIC_APP_ENV') === 'production',
-    },
-  });
+  const session = await getIronSession<{ user: any }>(req, res, sessionOptions);
 
   try {
     const tokenResults = await getAccessToken(code);
