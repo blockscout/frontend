@@ -25,7 +25,6 @@ function formatPubKey(pubKey: string | undefined, _length = 4, _preLength = 4) {
 
 const ObjectDetails: NextPage<Props> = (props: Props) => {
   const router = useRouter();
-  console.log(router);
 
   const overview = {
     'Object Name': '0xdlz',
@@ -67,6 +66,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       status: 'clickViewAll',
     },
   };
+  const secondaryAddresses = [ '0x4c1a93cd42b6e4960db845bcf9d540b081b1a63a', '0x4c1a93cd42b6e4960db845bcf9d540b081b1a63a' ];
   const tapList = [ 'Transactions', 'Versions' ];
   const tabThead = [ 'Txn Hash', 'Block', 'Age', 'Type' ];
   const talbeList = [
@@ -90,7 +90,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
         <PageTitle title="Object Details" withTextAd/>
         <Box ml="6px">{ formatPubKey(router.query.address?.toString()) }</Box>
       </Flex>
-      <HandDetails overview={ overview } more={ more }/>
+      <HandDetails overview={ overview } more={ more } secondaryAddresses={ secondaryAddresses }/>
       <TableDetails tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead } changeTable={ changeTable }/>
     </PageNextJs>
   );
