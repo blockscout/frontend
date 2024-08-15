@@ -12,7 +12,7 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import getBlockReward from 'lib/block/getBlockReward';
 import { GWEI, WEI, WEI_IN_GWEI, ZERO } from 'lib/consts';
-import useArweaveId from 'lib/hooks/useArweaveId';
+import { useArweaveId } from 'lib/hooks/useArweaveId';
 import { space } from 'lib/html-entities';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -54,9 +54,7 @@ const BlockDetails = ({ query }: Props) => {
 
   const { data, isPlaceholderData } = query;
 
-  const { data: arweaveId } = useArweaveId({
-    block: data?.height,
-  });
+  const { data: arweaveId } = useArweaveId();
 
   const handleCutClick = React.useCallback(() => {
     setIsExpanded((flag) => !flag);

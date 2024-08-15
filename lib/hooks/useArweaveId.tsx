@@ -1,16 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 
-import config from 'configs/app';
-
 interface ArweaveIdProps {
   arweaveId: string;
 }
 
-interface Props {
-  block: number | undefined | null;
-}
+// interface Props {
+//   block: number | undefined | null;
+// }
 
-export default function useArweaveId({ block }: Props) {
+export function useArweaveId() {
   // const fetchArweaveId = async() => {
   //   const response = await fetch(config.googleCloud.nextAPI, {
   //     method: 'POST',
@@ -29,9 +27,9 @@ export default function useArweaveId({ block }: Props) {
   // };
 
   const fetchArweaveId = async() => {
-    const response = await fetch(config.googleCloud.nextAPI, {
-      method: 'GET',
-    });
+    const response = await fetch(
+      'https://arweaveid-api.vercel.app/api/arweave-id',
+    );
 
     if (response.ok && response.status === 200) {
       const data = (await response.json()) as ArweaveIdProps;
@@ -40,9 +38,8 @@ export default function useArweaveId({ block }: Props) {
   };
 
   const { data, error, isLoading } = useQuery({
-    queryKey: [ 'getArweaveId', block ],
+    queryKey: [ 'getArweaveId' ],
     queryFn: () => fetchArweaveId(),
-    enabled: !block,
   });
 
   return { data, error, isLoading };
