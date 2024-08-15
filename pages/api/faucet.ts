@@ -18,10 +18,14 @@ const provider = new JsonRpcProvider(
 const _signer = new Wallet(getEnvValue('FAUCET_KEY')!, provider);
 const signer = new NonceManager(_signer);
 
+const requestLock = new Set<string>();
+
 export default async function faucetHandler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
+  let user = null;
+
   try {
     const session = await getIronSession<{ user: any }>(req, res, {
       cookieName: 'mechian-session-token',
@@ -31,16 +35,21 @@ export default async function faucetHandler(
         secure: getEnvValue('NEXT_PUBLIC_APP_ENV') === 'production',
       },
     });
-    const user = session.user;
+    user = session.user;
     if (!user) {
       return res.status(401).json({ error: 'Failed: please verify your Discord first.' });
     }
 
+    if (requestLock.has(user.id)) {
+      return res.status(429).json({ error: 'Failed: Too many requests.' });
+    }
+
     const timestamp: number = new Date(user?.lastRequestTime || 0).getTime();
     const requestPer = Number(getEnvValue('FAUCET_REQUEST_PER'));
+    const requestPerAsHours = requestPer / 1000 / 60 / 60;
     if (Date.now() - timestamp <= requestPer) {
       return res.status(429).json({
-        error: `Failed: the Discord account has already request for $ME within the last ${ requestPer / 1000 / 60 / 60 } hours. Please try again later.`,
+        error: `Failed: the Discord account has already request for $ME within the last ${ requestPerAsHours } hours. Please try again later.`,
       });
     }
 
@@ -49,6 +58,8 @@ export default async function faucetHandler(
       return res.status(400).json({ error: 'Failed: please enter the right address.' });
     }
 
+    requestLock.add(user.id);
+
     const txRp = await signer.sendTransaction({
       to: userWallet,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -56,6 +67,7 @@ export default async function faucetHandler(
     });
     const txReceipt = await txRp.wait();
     if (txReceipt?.status !== 1) {
+      requestLock.delete(user.id);
       return res.status(500).json({ error: `Transaction Failure ${ txReceipt?.hash }` });
     }
 
@@ -64,8 +76,13 @@ export default async function faucetHandler(
     await session.save();
     await findEditThenSave(user.id, userWallet, now);
 
+    requestLock.delete(user.id);
+
     res.status(200).json({ hash: txReceipt.hash });
+    //
   } catch (error: any) {
+    requestLock.delete(user?.id);
+
     const msg = formatErrorMessage(error);
     httpLogger.logger.error({ message: msg });
     res.status(500).json({ error: msg });
