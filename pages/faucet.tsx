@@ -1,16 +1,49 @@
-import type { NextPage } from 'next';
+import { getIronSession } from 'iron-session';
+import type { NextPage, GetServerSideProps } from 'next';
 import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-import Join_detail from 'ui/faucet/Join_detail';
+import config from 'configs/app';
+import Faucet from 'ui/faucet/Faucet';
 
-const faucet: NextPage = () => {
+interface Props {
+  verified: boolean;
+}
+
+const Page: NextPage<Props> = (props: Props) => {
   return (
     <PageNextJs pathname="/faucet">
-      <Join_detail></Join_detail>
+      <Faucet verified={ props.verified }/>
     </PageNextJs>
   );
 };
 
-export default React.memo(faucet);
+export const getServerSideProps: GetServerSideProps<Props> = async(context) => {
+  const { req, res } = context;
+
+  const session = await getIronSession<{ user: any }>(req, res, {
+    cookieName: 'mechian-session-token',
+    password: 'WjxkHE1fWFJnOE454A5uJwZvqeUEE6fp',
+    cookieOptions: {
+      secure: config.app.isProduction,
+    },
+  });
+  const user = session.user;
+
+  if (!user) {
+    return {
+      props: {
+        verified: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      verified: true,
+    },
+  };
+};
+
+export default Page;

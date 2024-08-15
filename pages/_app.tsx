@@ -13,7 +13,6 @@ import useQueryClientConfig from 'lib/api/useQueryClientConfig';
 import { AppContextProvider } from 'lib/contexts/app';
 import { ChakraProvider } from 'lib/contexts/chakra';
 import { MarketplaceContextProvider } from 'lib/contexts/marketplace';
-import { PageProvider } from 'lib/contexts/page';
 import { ScrollDirectionProvider } from 'lib/contexts/scrollDirection';
 import { growthBook } from 'lib/growthbook/init';
 import useLoadFeatures from 'lib/growthbook/useLoadFeatures';
@@ -70,9 +69,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
                 <ScrollDirectionProvider>
                   <SocketProvider url={ `${ config.api.socket }${ config.api.basePath }/socket/v2` }>
                     <MarketplaceContextProvider>
-                      <PageProvider>
-                        { getLayout(<Component { ...pageProps }/>) }
-                      </PageProvider>
+                      { getLayout(<Component { ...pageProps }/>) }
                     </MarketplaceContextProvider>
                   </SocketProvider>
                 </ScrollDirectionProvider>

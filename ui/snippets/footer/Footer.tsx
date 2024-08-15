@@ -120,7 +120,7 @@ const Footer = () => {
       <Box gridArea={ gridArea }>
         <Link fontSize="xs" href="https://www.blockscout.com">blockscout.com</Link>
         <Text mt={ 3 } fontSize="xs">
-          Blockscout is a tool for inspecting and analyzing EVM based blockchains. Blockchain explorer for Ethereum Networks.
+          MeChain Explorer is a tool for inspecting and analyzing MeChain network.
         </Text>
         <VStack spacing={ 1 } mt={ 6 } alignItems="start">
           { apiVersionUrl && (

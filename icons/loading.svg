@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <circle fill="none" stroke="currentColor" stroke-width="15" stroke-linecap="round" stroke-dasharray="110 330" cx="100" cy="100" r="70"/>
+  <circle fill="none" stroke="currentColor" stroke-width="15" stroke-linecap="round" opacity=".4" cx="100" cy="100" r="70"/>
+</svg>
