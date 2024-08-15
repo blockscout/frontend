@@ -1,5 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
+import config from 'configs/app';
+
 interface ArweaveIdProps {
   arweaveId: string;
 }
@@ -10,7 +12,7 @@ interface Props {
 
 export default function useArweaveId({ block }: Props) {
   const fetchArweaveId = async() => {
-    const response = await fetch('/api/arweave-id', {
+    const response = await fetch(config.googleCloud.nextAPI, {
       method: 'POST',
       body: JSON.stringify({
         blockNumber: block,
