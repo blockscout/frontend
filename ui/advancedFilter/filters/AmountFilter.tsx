@@ -5,8 +5,7 @@ import React from 'react';
 import type { AdvancedFilterParams } from 'types/api/advancedFilter';
 
 import { ndash } from 'lib/html-entities';
-
-import ColumnFilter from '../ColumnFilter';
+import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
 
 const FILTER_PARAM_FROM = 'amount_from';
 const FILTER_PARAM_TO = 'amount_to';
@@ -44,11 +43,10 @@ type AmountValue = { from?: string; to?: string }
 type Props = {
   value?: AmountValue;
   handleFilterChange: (filed: keyof AdvancedFilterParams, value?: string) => void;
-  columnName: string;
-  isLoading?: boolean;
+  onClose?: () => void;
 }
 
-const AmountFilter = ({ value = {}, handleFilterChange, columnName, isLoading }: Props) => {
+const AmountFilter = ({ value = {}, handleFilterChange, onClose }: Props) => {
   const [ currentValue, setCurrentValue ] = React.useState<AmountValue>(value || defaultValue);
 
   const handleFromChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
@@ -72,15 +70,13 @@ const AmountFilter = ({ value = {}, handleFilterChange, columnName, isLoading }:
   }, []);
 
   return (
-    <ColumnFilter
-      columnName={ columnName }
+    <TableColumnFilter
       title="Amount"
       isFilled={ Boolean(currentValue.from || currentValue.to) }
-      isActive={ Boolean(value.from || value.to) }
       onFilter={ onFilter }
       onReset={ onReset }
-      isLoading={ isLoading }
-      w="382px"
+      onClose={ onClose }
+      hasReset
     >
       <Flex gap={ 3 }>
         { PRESETS.map(preset => (
@@ -104,7 +100,7 @@ const AmountFilter = ({ value = {}, handleFilterChange, columnName, isLoading }:
         <Text mx={ 3 }>{ ndash }</Text>
         <Input value={ currentValue.to } onChange={ handleToChange } placeholder="To" type="number" size="xs"/>
       </Flex>
-    </ColumnFilter>
+    </TableColumnFilter>
   );
 };
 

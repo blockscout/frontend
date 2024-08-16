@@ -4,6 +4,7 @@ import type { TokenInfo } from './token';
 export type AdvancedFilterParams = {
   tx_types?: Array<AdvancedFilterType>;
   methods?: Array<string>;
+  methods_names?: Array<string>; /* frontend only */
   age_from?: string;
   age_to?: string;
   age?: AdvancedFilterAge; /* frontend only */
@@ -16,6 +17,8 @@ export type AdvancedFilterParams = {
   amount_to?: string;
   token_contract_address_hashes_to_include?: Array<string>;
   token_contract_address_hashes_to_exclude?: Array<string>;
+  token_contract_symbols_to_include?: Array<string>;
+  token_contract_symbols_to_exclude?: Array<string>;
 };
 
 export const ADVANCED_FILTER_TYPES = [ 'coin_transfer', 'ERC-20', 'ERC-404', 'ERC-721', 'ERC-1155' ] as const;
@@ -42,7 +45,7 @@ export type AdvancedFilterResponseItem = {
 }
 
 export type AdvancedFiltersSearchParams = {
-  methods: Record<string, AdvancedFilterMethodInfo>;
+  methods: Record<string, string>;
   tokens: Record<string, TokenInfo>;
 }
 

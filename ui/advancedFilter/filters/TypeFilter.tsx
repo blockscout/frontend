@@ -5,7 +5,8 @@ import React from 'react';
 
 import type { AdvancedFilterParams, AdvancedFilterType } from 'types/api/advancedFilter';
 
-import ColumnFilter from '../ColumnFilter';
+import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
+
 import { ADVANCED_FILTER_TYPES_WITH_ALL } from '../constants';
 
 const RESET_VALUE = 'all';
@@ -15,11 +16,10 @@ const FILTER_PARAM = 'tx_types';
 type Props = {
   value?: Array<AdvancedFilterType>;
   handleFilterChange: (filed: keyof AdvancedFilterParams, value: Array<AdvancedFilterType>) => void;
-  columnName: string;
-  isLoading?: boolean;
+  onClose?: () => void;
 }
 
-const TypeFilter = ({ value = [], handleFilterChange, columnName, isLoading }: Props) => {
+const TypeFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
   const [ currentValue, setCurrentValue ] = React.useState<Array<AdvancedFilterType>>(value);
 
   const handleChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
@@ -39,14 +39,13 @@ const TypeFilter = ({ value = [], handleFilterChange, columnName, isLoading }: P
   }, [ handleFilterChange, currentValue ]);
 
   return (
-    <ColumnFilter
-      columnName={ columnName }
+    <TableColumnFilter
       title="Type of transfer"
-      isActive={ Boolean(value.length) }
       isFilled={ true }
       onFilter={ onFilter }
       onReset={ onReset }
-      isLoading={ isLoading }
+      onClose={ onClose }
+      hasReset
     >
       <Flex display="flex" flexDir="column" rowGap={ 3 }>
         <CheckboxGroup value={ currentValue.length ? currentValue : [ 'all' ] }>
@@ -62,7 +61,7 @@ const TypeFilter = ({ value = [], handleFilterChange, columnName, isLoading }: P
           )) }
         </CheckboxGroup>
       </Flex>
-    </ColumnFilter>
+    </TableColumnFilter>
   );
 };
 

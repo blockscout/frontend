@@ -5,9 +5,8 @@ import React from 'react';
 import type { AdvancedFilterParams } from 'types/api/advancedFilter';
 
 import ClearButton from 'ui/shared/ClearButton';
+import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
 import IconSvg from 'ui/shared/IconSvg';
-
-import ColumnFilter from '../ColumnFilter';
 
 const FILTER_PARAM_TO_INCLUDE = 'to_address_hashes_to_include';
 const FILTER_PARAM_FROM_INCLUDE = 'from_address_hashes_to_include';
@@ -24,6 +23,7 @@ type Props = {
   columnName: string;
   type: 'from' | 'to';
   isLoading?: boolean;
+  onClose?: () => void;
 }
 
 type InputProps = {
@@ -31,12 +31,12 @@ type InputProps = {
   mode?: AddressFilterMode;
   isLast: boolean;
   onModeChange: (event: ChangeEvent<HTMLSelectElement>) => void;
-  onRemove: () => void;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onClear: () => void;
   onAddFieldClick: () => void;
 }
 
-const AddressFilterInput = ({ address, mode, onModeChange, onRemove, onChange, isLast, onAddFieldClick }: InputProps) => {
+const AddressFilterInput = ({ address, mode, onModeChange, onChange, onClear, isLast, onAddFieldClick }: InputProps) => {
   return (
     <Flex alignItems="center" w="100%">
       <Select
@@ -54,7 +54,7 @@ const AddressFilterInput = ({ address, mode, onModeChange, onRemove, onChange, i
       <InputGroup size="xs" flexGrow={ 1 }>
         <Input value={ address } onChange={ onChange } placeholder="Smart contract / Address (0x...)*" size="xs" autoComplete="off"/>
         <InputRightElement>
-          <ClearButton onClick={ onRemove }/>
+          <ClearButton onClick={ onClear } isDisabled={ !address }/>
         </InputRightElement>
       </InputGroup>
       { isLast && (
@@ -75,7 +75,7 @@ const AddressFilterInput = ({ address, mode, onModeChange, onRemove, onChange, i
 
 const emptyItem = { address: '', mode: 'include' as AddressFilterMode };
 
-const AddressFilter = ({ type, value, handleFilterChange, columnName, isLoading }: Props) => {
+const AddressFilter = ({ type, value, handleFilterChange, onClose }: Props) => {
   const [ currentValue, setCurrentValue ] =
     React.useState<Array<{ address: string; mode: AddressFilterMode }>>([ ...value, emptyItem ] || [ emptyItem ]);
 
@@ -87,6 +87,14 @@ const AddressFilter = ({ type, value, handleFilterChange, columnName, isLoading 
     });
   }, []);
 
+  const handleAddressClear = React.useCallback((index: number) => () => {
+    setCurrentValue(prev => {
+      const newVal = [ ...prev ];
+      newVal[index] = { ...newVal[index], address: '' };
+      return newVal;
+    });
+  }, []);
+
   const handleAddressChange = React.useCallback((index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
 
@@ -94,13 +102,6 @@ const AddressFilter = ({ type, value, handleFilterChange, columnName, isLoading 
       const newVal = [ ...prev ];
       newVal[index] = { ...newVal[index], address: value };
       return newVal;
-    });
-  }, []);
-
-  const handleRemove = React.useCallback((index: number) => () => {
-    setCurrentValue(prev => {
-      prev.splice(index, 1);
-      return [ ...prev ];
     });
   }, []);
 
@@ -121,15 +122,13 @@ const AddressFilter = ({ type, value, handleFilterChange, columnName, isLoading 
   }, [ handleFilterChange, currentValue, type ]);
 
   return (
-    <ColumnFilter
-      columnName={ columnName }
+    <TableColumnFilter
       title={ type === 'from' ? 'From address' : 'To address' }
       isFilled={ Boolean(currentValue[0].address) }
-      isActive={ Boolean(value.length) }
       onFilter={ onFilter }
       onReset={ onReset }
-      isLoading={ isLoading }
-      w="382px"
+      onClose={ onClose }
+      hasReset
     >
       <VStack gap={ 2 }>
         { currentValue.map((item, index) => (
@@ -139,13 +138,13 @@ const AddressFilter = ({ type, value, handleFilterChange, columnName, isLoading 
             mode={ item.mode }
             isLast={ index === currentValue.length - 1 }
             onModeChange={ handleModeSelectChange(index) }
-            onRemove={ handleRemove(index) }
             onChange={ handleAddressChange(index) }
+            onClear={ handleAddressClear(index) }
             onAddFieldClick={ onAddFieldClick }
           />
         )) }
       </VStack>
-    </ColumnFilter>
+    </TableColumnFilter>
   );
 };
 
