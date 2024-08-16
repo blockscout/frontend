@@ -26,9 +26,10 @@ const useGraphqlQuery = (aliasName: string, queries: Array<QueryConfig>): QueryR
   const formatObjectToGraphQL = (obj: Record<string, any>): string => {
     return Object.entries(obj)
       .map(([ key, value ]) => {
-        if (typeof value === 'string' && value.includes('%')) {
-          // Handle _ilike operation if value contains %
-          return `${ key }: { _ilike: ${ JSON.stringify(value) } }`;
+        if (typeof value === 'object' && value !== null) {
+          const operator = Object.keys(value)[0];
+          const operand = JSON.stringify(Object.values(value)[0]);
+          return `${ key }: { ${ operator }: ${ operand } }`;
         }
         return `${ key }: ${ JSON.stringify(value) }`;
       })
@@ -36,19 +37,21 @@ const useGraphqlQuery = (aliasName: string, queries: Array<QueryConfig>): QueryR
   };
 
   const formatWhereCondition = (
-    where: Record<string, any> | Array<Record<string, any>> | undefined,
+    where: Record<string, any> | undefined,
   ): string => {
-    if (Array.isArray(where)) {
-      return `_or: [${ where.map((cond) => {
-        if (typeof cond === 'object' && cond !== null) {
-          return `{ ${ formatObjectToGraphQL(cond) } }`;
-        }
-        throw new Error('Invalid condition type');
-      }).join(', ') }]`;
-    } else if (typeof where === 'object' && where !== null) {
-      return formatObjectToGraphQL(where);
+    if (typeof where === 'object' && where !== null) {
+      return Object.entries(where)
+        .map(([ key, value ]) => {
+          if (key === '_or' || key === '_and' || key === '_not') {
+            const conditions = Array.isArray(value) ? value : [ value ];
+            return `${ key }: [${ conditions.map(cond => `{ ${ formatObjectToGraphQL(cond) } }`).join(', ') }]`;
+          } else {
+            return `${ key }: ${ formatObjectToGraphQL({ [key]: value }) }`;
+          }
+        })
+        .join(', ');
     }
-    return ''; // Return an empty string or some default if `where` is undefined
+    return '';
   };
 
   // Dynamically build the GraphQL query string

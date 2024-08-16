@@ -40,7 +40,7 @@ export default function useQuickSearchQueryStorage() {
       ],
       limit: 5,
       offset: 0,
-      where: { object_name: `%${ debouncedSearchTerm }%` },
+      where: { object_name: { _ilike: `%${ debouncedSearchTerm }%` } },
     },
   ];
   const query = useGraphqlQuery('graphql_search', graphqlQuerires);
