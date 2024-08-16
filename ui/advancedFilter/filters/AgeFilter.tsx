@@ -6,8 +6,8 @@ import { ADVANCED_FILTER_AGES, type AdvancedFilterAge, type AdvancedFilterParams
 
 import dayjs from 'lib/date/dayjs';
 import { ndash } from 'lib/html-entities';
+import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
 
-import ColumnFilter from '../ColumnFilter';
 import { getDurationFromAge } from '../lib';
 
 const FILTER_PARAM_FROM = 'age_from';
@@ -22,9 +22,10 @@ type Props = {
   handleFilterChange: (filed: keyof AdvancedFilterParams, value?: string) => void;
   columnName: string;
   isLoading?: boolean;
+  onClose?: () => void;
 }
 
-const AgeFilter = ({ value = {}, handleFilterChange, columnName, isLoading }: Props) => {
+const AgeFilter = ({ value = {}, handleFilterChange, onClose }: Props) => {
   const [ currentValue, setCurrentValue ] = React.useState<AgeFromToValue>(value || defaultValue);
 
   const handleFromChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
@@ -53,15 +54,13 @@ const AgeFilter = ({ value = {}, handleFilterChange, columnName, isLoading }: Pr
   }, [ handleFilterChange, currentValue ]);
 
   return (
-    <ColumnFilter
-      columnName={ columnName }
+    <TableColumnFilter
       title="Set last duration"
       isFilled={ Boolean(currentValue.from || currentValue.to || currentValue.age) }
-      isActive={ Boolean(value.from || value.to || value.age) }
       onFilter={ onFilter }
       onReset={ onReset }
-      isLoading={ isLoading }
-      w="382px"
+      onClose={ onClose }
+      hasReset
     >
       <Flex gap={ 3 }>
         { ADVANCED_FILTER_AGES.map(val => (
@@ -82,7 +81,7 @@ const AgeFilter = ({ value = {}, handleFilterChange, columnName, isLoading }: Pr
         <Text mx={ 3 }>{ ndash }</Text>
         <Input value={ currentValue.to } onChange={ handleToChange } placeholder="To" type="date" size="xs"/>
       </Flex>
-    </ColumnFilter>
+    </TableColumnFilter>
   );
 };
 

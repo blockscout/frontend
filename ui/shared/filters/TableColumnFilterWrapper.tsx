@@ -23,12 +23,12 @@ interface Props {
 const TableColumnFilterWrapper = ({ columnName, isActive, className, children, isLoading }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
 
-  const child = React.Children.only(children) as React.ReactElement & {
+  const content = React.Children.only(children) as React.ReactElement & {
     ref?: React.Ref<React.ReactNode>;
   };
 
-  const modifiedChildren = React.cloneElement(
-    child,
+  const modifiedContent = React.cloneElement(
+    content,
     { onClose },
   );
 
@@ -51,7 +51,7 @@ const TableColumnFilterWrapper = ({ columnName, isActive, className, children, i
       <Portal>
         <PopoverContent className={ className }>
           <PopoverBody px={ 4 } py={ 6 } display="flex" flexDir="column" rowGap={ 3 }>
-            { modifiedChildren }
+            { modifiedContent }
           </PopoverBody>
         </PopoverContent>
       </Portal>

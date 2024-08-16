@@ -9,21 +9,20 @@ import type { AdvancedFilterMethodInfo, AdvancedFilterParams } from 'types/api/a
 import useApiQuery from 'lib/api/useApiQuery';
 import Tag from 'ui/shared/chakra/Tag';
 import FilterInput from 'ui/shared/filters/FilterInput';
-
-import ColumnFilter from '../ColumnFilter';
+import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
 
 const RESET_VALUE = 'all';
 
 const FILTER_PARAM = 'methods';
+const NAMES_PARAM = 'methods_names';
 
 type Props = {
   value?: Array<AdvancedFilterMethodInfo>;
   handleFilterChange: (filed: keyof AdvancedFilterParams, val: Array<string>) => void;
-  columnName: string;
-  isLoading?: boolean;
+  onClose?: () => void;
 }
 
-const MethodFilter = ({ value = [], handleFilterChange, columnName, isLoading }: Props) => {
+const MethodFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
   const [ currentValue, setCurrentValue ] = React.useState<Array<AdvancedFilterMethodInfo>>(value);
   const [ searchTerm, setSearchTerm ] = React.useState<string>('');
   const [ methodsList, setMethodsList ] = React.useState<Array<AdvancedFilterMethodInfo>>([]);
@@ -32,8 +31,10 @@ const MethodFilter = ({ value = [], handleFilterChange, columnName, isLoading }:
     setSearchTerm(value);
   }, []);
 
-  // q should work whem Max replace method /search with common one
-  const methodsQuery = useApiQuery('advanced_filter_methods', { queryParams: { q: searchTerm } });
+  const methodsQuery = useApiQuery('advanced_filter_methods', {
+    queryParams: { q: searchTerm },
+    queryOptions: { refetchOnMount: false },
+  });
   React.useEffect(() => {
     if (!methodsList.length && methodsQuery.data) {
       setMethodsList([ ...differenceBy(value, methodsQuery.data, i => i.method_id), ...methodsQuery.data ]);
@@ -61,18 +62,17 @@ const MethodFilter = ({ value = [], handleFilterChange, columnName, isLoading }:
 
   const onFilter = React.useCallback(() => {
     handleFilterChange(FILTER_PARAM, currentValue.map(item => item.method_id));
+    handleFilterChange(NAMES_PARAM, currentValue.map(item => item.name || ''));
   }, [ handleFilterChange, currentValue ]);
 
   return (
-    <ColumnFilter
-      columnName={ columnName }
+    <TableColumnFilter
       title="Method"
-      isActive={ Boolean(value.length) }
       isFilled={ Boolean(currentValue.length) }
       onFilter={ onFilter }
       onReset={ onReset }
-      isLoading={ isLoading }
-      w="350px"
+      onClose={ onClose }
+      hasReset
     >
       <FilterInput
         size="xs"
@@ -81,8 +81,8 @@ const MethodFilter = ({ value = [], handleFilterChange, columnName, isLoading }:
         mb={ 3 }
       />
       { methodsQuery.isLoading && <Spinner/> }
-      { /* fixme */ }
-      { methodsQuery.isError && <span>error</span> }
+      { methodsQuery.isError && <span>Something went wrong. Please try again.</span> }
+      { Boolean(searchTerm) && methodsQuery.data?.length === 0 && <span>No results found.</span> }
       { methodsQuery.data && (
         <Flex display="flex" flexDir="column" rowGap={ 3 } maxH="250px" overflowY="scroll">
           <CheckboxGroup value={ currentValue.length ? currentValue.map(i => i.method_id) : [ 'all' ] }>
@@ -111,7 +111,7 @@ const MethodFilter = ({ value = [], handleFilterChange, columnName, isLoading }:
           </CheckboxGroup>
         </Flex>
       ) }
-    </ColumnFilter>
+    </TableColumnFilter>
   );
 };
 

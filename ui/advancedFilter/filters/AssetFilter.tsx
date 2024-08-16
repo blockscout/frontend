@@ -9,11 +9,14 @@ import Tag from 'ui/shared/chakra/Tag';
 import ClearButton from 'ui/shared/ClearButton';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import FilterInput from 'ui/shared/filters/FilterInput';
+import TableColumnFilter from 'ui/shared/filters/TableColumnFilter';
 
-import ColumnFilter from '../ColumnFilter';
+import { NATIVE_TOKEN } from '../constants';
 
 const FILTER_PARAM_INCLUDE = 'token_contract_address_hashes_to_include';
 const FILTER_PARAM_EXCLUDE = 'token_contract_address_hashes_to_exclude';
+const NAME_PARAM_INCLUDE = 'token_contract_symbols_to_include';
+const NAME_PARAM_EXCLUDE = 'token_contract_symbols_to_exclude';
 
 export type AssetFilterMode = 'include' | 'exclude';
 
@@ -25,17 +28,12 @@ type Props = {
   handleFilterChange: (filed: keyof AdvancedFilterParams, val: Array<string>) => void;
   columnName: string;
   isLoading?: boolean;
+  onClose?: () => void;
 }
 
-const AssetFilter = ({ value, handleFilterChange, columnName, isLoading }: Props) => {
+const AssetFilter = ({ value, handleFilterChange, onClose }: Props) => {
   const [ currentValue, setCurrentValue ] = React.useState<Value>(value || []);
   const [ searchTerm, setSearchTerm ] = React.useState<string>('');
-
-  React.useEffect(() => {
-    if (!currentValue.length && value.length) {
-      setCurrentValue(value);
-    }
-  }, [ value, currentValue.length ]);
 
   const onSearchChange = React.useCallback((value: string) => {
     setSearchTerm(value);
@@ -56,7 +54,12 @@ const AssetFilter = ({ value, handleFilterChange, columnName, isLoading }: Props
     });
   }, []);
 
-  const tokensQuery = useApiQuery('tokens', { queryParams: { limit: '7', q: searchTerm } });
+  const tokensQuery = useApiQuery('tokens', {
+    queryParams: { limit: '7', q: searchTerm },
+    queryOptions: {
+      refetchOnMount: false,
+    },
+  });
 
   const onTokenClick = React.useCallback((token: TokenInfo) => () => {
     setCurrentValue(prev => prev.findIndex(i => i.token.address === token.address) > -1 ? prev : [ { token, mode: 'include' }, ...prev ]);
@@ -67,20 +70,20 @@ const AssetFilter = ({ value, handleFilterChange, columnName, isLoading }: Props
   const onFilter = React.useCallback(() => {
     setSearchTerm('');
     handleFilterChange(FILTER_PARAM_INCLUDE, currentValue.filter(i => i.mode === 'include').map(i => i.token.address));
+    handleFilterChange(NAME_PARAM_INCLUDE, currentValue.filter(i => i.mode === 'include').map(i => i.token.symbol || ''));
     handleFilterChange(FILTER_PARAM_EXCLUDE, currentValue.filter(i => i.mode === 'exclude').map(i => i.token.address));
+    handleFilterChange(NAME_PARAM_EXCLUDE, currentValue.filter(i => i.mode === 'exclude').map(i => i.token.symbol || ''));
     return;
   }, [ handleFilterChange, currentValue ]);
 
   return (
-    <ColumnFilter
-      columnName={ columnName }
+    <TableColumnFilter
       title="Asset"
       isFilled={ Boolean(currentValue.length) }
-      isActive={ Boolean(value.length) }
       onFilter={ onFilter }
       onReset={ onReset }
-      isLoading={ isLoading }
-      w="382px"
+      onClose={ onClose }
+      hasReset
     >
       <FilterInput
         size="xs"
@@ -111,14 +114,12 @@ const AssetFilter = ({ value, handleFilterChange, columnName, isLoading }: Props
         <>
           <Text color="text_secondary" fontWeight="600" mt={ 3 }>Popular</Text>
           <Flex rowGap={ 3 } flexWrap="wrap" gap={ 3 } mt={ 3 }>
-            { tokensQuery.data.items.map(token => (
+            { [ NATIVE_TOKEN, ...tokensQuery.data.items ].map(token => (
               <Tag
                 key={ token.address }
                 data-id={ token.address }
                 onClick={ onTokenClick(token) }
-                // color="link"
                 colorScheme="gray-blue"
-                // isActive={ (!currentValue.from || currentValue.from === '0') && currentValue.to === preset.value }
                 _hover={{ opacity: 0.76 }}
                 cursor="pointer"
               >
@@ -128,7 +129,8 @@ const AssetFilter = ({ value, handleFilterChange, columnName, isLoading }: Props
           </Flex>
         </>
       ) }
-      { searchTerm && tokensQuery.data && (
+      { searchTerm && tokensQuery.data && !tokensQuery.data?.items.length && <Text>No tokens found</Text> }
+      { searchTerm && tokensQuery.data && Boolean(tokensQuery.data?.items.length) && (
         <Flex display="flex" flexDir="column" rowGap={ 3 } maxH="250px" overflowY="scroll" mt={ 3 }>
           <CheckboxGroup value={ currentValue.map(i => i.token.address) }>
             { tokensQuery.data.items.map(token => (
@@ -138,11 +140,13 @@ const AssetFilter = ({ value, handleFilterChange, columnName, isLoading }: Props
                   id={ token.address }
                   onChange={ onTokenClick(token) }
                   overflow="hidden"
+                  w="100%"
                   sx={{
                     '.chakra-checkbox__label': {
                       overflow: 'hidden',
                       whiteSpace: 'nowrap',
                       textOverflow: 'ellipsis',
+                      flexGrow: 1,
                     },
                   }}
                 >
@@ -153,7 +157,7 @@ const AssetFilter = ({ value, handleFilterChange, columnName, isLoading }: Props
           </CheckboxGroup>
         </Flex>
       ) }
-    </ColumnFilter>
+    </TableColumnFilter>
   );
 };
 

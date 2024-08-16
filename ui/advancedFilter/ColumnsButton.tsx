@@ -1,7 +1,6 @@
 import {
   Button,
   Grid,
-  Popover,
   PopoverTrigger,
   PopoverContent,
   PopoverBody,
@@ -13,6 +12,8 @@ import type { ChangeEvent } from 'react';
 
 import type { ColumnsIds } from 'ui/pages/AdvancedFilter';
 import { TABLE_COLUMNS } from 'ui/pages/AdvancedFilter';
+import Popover from 'ui/shared/chakra/Popover';
+import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   columns: Record<ColumnsIds, boolean>;
@@ -36,8 +37,11 @@ const ColumnsButton = ({ columns, onChange }: Props) => {
           onClick={ onToggle }
           variant="outline"
           colorScheme="gray"
+          size="sm"
+          leftIcon={ <IconSvg name="columns" boxSize={ 5 } color="inherit"/> }
           // isLoading={ isLoading }
         >
+          { /* <IconSvg name='columns' boxSize={ 5 }/> */ }
           Columns
         </Button>
       </PopoverTrigger>

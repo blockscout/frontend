@@ -1,3 +1,7 @@
+import type { TokenInfo } from 'types/api/token';
+
+import config from 'configs/app';
+
 export const ADVANCED_FILTER_TYPES = [
   {
     id: 'coin_transfer',
@@ -21,7 +25,6 @@ export const ADVANCED_FILTER_TYPES = [
   },
 ] as const;
 
-//???
 export const ADVANCED_FILTER_TYPES_WITH_ALL = [
   {
     id: 'all',
@@ -29,3 +32,11 @@ export const ADVANCED_FILTER_TYPES_WITH_ALL = [
   },
   ...ADVANCED_FILTER_TYPES,
 ];
+
+export const NATIVE_TOKEN = {
+  name: config.chain.currency.name || '',
+  icon_url: '',
+  symbol: config.chain.currency.symbol || '',
+  address: 'native',
+  type: 'ERC-20' as const,
+} as TokenInfo;
