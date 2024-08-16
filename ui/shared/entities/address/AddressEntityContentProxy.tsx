@@ -29,7 +29,7 @@ const AddressEntityContentProxy = (props: ContentProps) => {
         <Box display="inline-flex" w="100%">
           <EntityBase.Content
             { ...props }
-            truncation={ implementationName || props.address.name ? 'tail' : 'dynamic' }
+            truncation={ implementationName || props.address.name ? 'tail' : props.truncation }
             text={ implementationName || props.address.name || props.address.hash }
           />
         </Box>
