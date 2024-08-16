@@ -75,7 +75,8 @@ async function joinGuild(accessToken: string, userId: string) {
   const results: any = await getResponseJson(rp);
 
   if (!rp.ok) {
-    const message = `${ rp.status } ${ rp.statusText } Failed to join guild: ${ JSON.stringify(results) }`;
+    const guildName = getEnvValue('DISCORD_GUILD_NAME');
+    const message = `${ rp.status } ${ rp.statusText } Failed to join ${ guildName }'s community, please try again. ${ JSON.stringify(results) }`;
     throw new Error(message);
   }
   return results;
