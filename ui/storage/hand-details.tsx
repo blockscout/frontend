@@ -155,7 +155,10 @@ const Page = (props: Props) => {
                 <Td
                   p="12px 0"
                   fontWeight="500"
-                  fontSize="12px" color={ values.status === 'none' || values.status === 'time' ? '#000000' : '#8A55FD' } textAlign="right">
+                  fontSize="12px"
+                  color={ values.status === 'none' || values.status === 'time' ? '#000000' : '#8A55FD' }
+                  textAlign="right"
+                >
                   {
                     values.status === 'copyLink' ? (
                       <Flex alignItems="center" flex="right" justifyContent="right">
@@ -177,14 +180,19 @@ const Page = (props: Props) => {
                         </Wrap>
                       </Flex>
                     ) :
-                      values.status === 'link' ?
-                        <NextLink href={{ pathname: '/address/[hash]', query: { hash: values.value || '' } }}>{ values.value }</NextLink> :
+                      values.status === 'link' || values.status === 'nodereal' ? (
+                        <NextLink
+                          href={{ pathname: '/address/[hash]',
+                            query: { hash: values.value || '' } }}>
+                          { values.status === 'nodereal' ? values.value : '' }
+                        </NextLink>
+                      ) :
                         values.status === 'bucketPage' ?
                           <NextLink href={{ pathname: '/bucket-details/[address]', query: { address: values.value || '' } }}>{ values.value }</NextLink> :
                           values.status === 'clickViewAll' ? (
                             <Popover closeOnBlur={ false }>
                               <PopoverTrigger>
-                                <Button fontWeight="500" fontSize="12px" padding="0px" variant="text">{ values.value }</Button>
+                                <Button height="auto" fontWeight="500" fontSize="12px" padding="0px" variant="text">{ values.value }</Button>
                               </PopoverTrigger>
                               <PopoverContent right="94px" w="auto">
                                 <PopoverHeader

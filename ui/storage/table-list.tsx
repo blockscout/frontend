@@ -15,22 +15,7 @@ import {
 import NextLink from 'next/link';
 import React from 'react';
 
-interface TalbeListType {
-  txnHash?: string;
-  Block?: string;
-  Age?: string;
-  Type?: string;
-  objectSize?: string;
-  Visibility?: string;
-  lastTime?: string;
-  Creator?: string;
-  'Object Name'?: string;
-  'Group Name'?: string;
-  'Group ID'?: string;
-  'Last Updated'?: string;
-  'Active Group Member Count'?: string;
-  Owner?: string;
-}
+import type { TalbeListType } from 'types/storage';
 
 type Props<T extends string> = {
   tapList?: Array<T> | undefined;
@@ -47,7 +32,7 @@ function formatPubKey(pubKey: string | undefined, _length = 4, _preLength = 4) {
   return pubKey.substr(0, _preLength || _length) + '...' + pubKey.substr(_length * -1, _length);
 }
 
-function tableList<T extends string>(props: Props<T>) {
+function tableList(props: Props<string>) {
   return (
     <>
       <Flex justifyContent="right">
@@ -76,56 +61,60 @@ function tableList<T extends string>(props: Props<T>) {
           </Thead>
           <Tbody>
             {
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              props.talbeList?.map((title: any, key) => (
+              props.talbeList?.map((title: TalbeListType | any, key) => (
                 <Tr _hover={{ bg: 'rgba(220, 212, 255, 0.24)' }} key={ key }>
                   {
                     Object.keys(title)?.map((value: string, index) => (
-                      <Td
-                        _last={{ borderRightRadius: '12px' }}
-                        _first={{ borderLeftRadius: '12px' }}
-                        key={ index }
-                        fontWeight="500" fontSize="14px"
-                        overflow="hidden"
-                        color={ value === 'txnHash' ? '#8A55FD' : '#000000' }
-                        p="12px 24px"
-                      >
-                        {
-                          value === 'txnHash' ? (
-                            <Tooltip label={ title[value] } placement="top" bg="#FFFFFF" color="#000000" >
-                              <NextLink href={{ pathname: '/tx/[hash]', query: { hash: title[value] || '' } }}>
-                                { formatPubKey(title[value]) }
-                              </NextLink>
-                            </Tooltip >
-                          ) :
-                            value === 'Owner' || value === 'Creator' || value === 'Creator' ? (
-                              <NextLink href={{ pathname: '/address/[hash]', query: { hash: title[value] || '' } }}>
-                                <Box overflow="hidden">{ title[value] }</Box>
-                              </NextLink>
+                      value !== 'id' && (
+                        <Td
+                          _last={{ borderRightRadius: '12px' }}
+                          _first={{ borderLeftRadius: '12px' }}
+                          key={ index }
+                          fontWeight="500" fontSize="14px"
+                          overflow="hidden"
+                          color="#8A55FD"
+                          p="12px 24px"
+                        >
+                          {
+                            value === 'txnHash' ? (
+                              <Tooltip label={ title[value] } placement="top" bg="#FFFFFF" >
+                                <NextLink href={{ pathname: '/tx/[hash]', query: { hash: title[value] || '' } }}>
+                                  { formatPubKey(title[value]) }
+                                </NextLink>
+                              </Tooltip >
                             ) :
-                              value === 'Last Updated' ? (
-                                <NextLink href={{ pathname: '/block/[height_or_hash]', query: { height_or_hash: title[value] || '' } }}>
-                                  { title[value] }
+                              value === 'Owner' || value === 'Creator' ? (
+                                <NextLink href={{ pathname: '/address/[hash]', query: { hash: title[value] || '' } }}>
+                                  <Box overflow="hidden">{ formatPubKey(title[value], 6, 6) }</Box>
                                 </NextLink>
                               ) :
-                                value === 'Object Name' ? (
-                                  <NextLink href={{ pathname: '/object-details/[address]', query: { address: title[value] || '' } }}>
-                                    <Box overflow="hidden" color="#8A55FD">{ title[value] }</Box>
-                                  </NextLink>
+                                value === 'Last Updated' ? (
+                                  <Flex>
+                                    <Box color="#000000" marginRight="4px">Block</Box>
+                                    <NextLink href={{ pathname: '/block/[height_or_hash]', query: { height_or_hash: title[value] || '' } }}>
+                                      { title[value] }
+                                    </NextLink>
+                                  </Flex>
                                 ) :
-                                  value === 'Bucket Name' || value === 'Bucket' ? (
-                                    <NextLink href={{ pathname: '/bucket-details/[address]', query: { address: title[value] || '' } }}>
-                                      <Box color="#8A55FD">{ title[value] }</Box>
+                                  value === 'Object Name' ? (
+                                    <NextLink href={{ pathname: '/object-details/[address]', query: { address: title.id || '' } }}>
+                                      <Box overflow="hidden">{ title[value] }</Box>
                                     </NextLink>
                                   ) :
-                                    value === 'Group Name' ? (
-                                      <NextLink href={{ pathname: '/group-details/[address]', query: { address: title[value] || '' } }}>
-                                        <Box color="#8A55FD">{ title[value] }</Box>
+                                    value === 'Bucket Name' || value === 'Bucket' ? (
+                                      <NextLink href={{ pathname: '/bucket-details/[address]', query: { address: title[value] || '' } }}>
+                                        <Box>{ title[value] }</Box>
                                       </NextLink>
                                     ) :
-                                      <Box overflow="hidden">{ title[value] }</Box>
-                        }
-                      </Td>
+                                      value === 'Group Name' ? (
+                                        <NextLink href={{ pathname: '/group-details/[address]', query: { address: title['Group ID'] || '' } }}>
+                                          <Box>{ title[value] }</Box>
+                                        </NextLink>
+                                      ) :
+                                        <Box color="#000000" overflow="hidden">{ title[value] }</Box>
+                          }
+                        </Td>
+                      )
                     ))
                   }
                 </Tr>

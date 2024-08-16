@@ -5,9 +5,12 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { ObjectDetailsOverviewType } from 'types/storage';
+
 import type { Props } from 'nextjs/getServerSideProps';
 import PageNextJs from 'nextjs/PageNextJs';
 
+import useGraphqlQuery from 'lib/api/useGraphqlQuery';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const HandDetails = dynamic(() => import('ui/storage/hand-details'), { ssr: false });
@@ -26,40 +29,94 @@ function formatPubKey(pubKey: string | undefined, _length = 4, _preLength = 4) {
 const ObjectDetails: NextPage<Props> = (props: Props) => {
   const router = useRouter();
 
-  const overview = {
-    'Object Name': '0xdlz',
-    'Object Tags': '0',
-    'Object ID': '1',
-    'Object No.': '24521',
-    Type: '001',
-    'Object Size': 'Created',
-    'Object Status': 'Sealed',
-    Deleted: 'NO',
+  const [ objectAddress, setobjectAddress ] = React.useState<string>('');
+  React.useEffect(() => {
+  }, [ objectAddress ]);
+  const changeTable = React.useCallback((value: string) => {
+    setobjectAddress(value);
+  }, []);
+
+  const queries = [
+    {
+      tableName: 'object',
+      fields: [
+        'bucket_name',
+        'checksums',
+        'content_type',
+        'create_at',
+        'creator',
+        'height',
+        'id',
+        'is_updating',
+        'local_virtual_group_id',
+        'object_name',
+        'object_status',
+        'owner',
+        'payload_size',
+        'redundancy_type',
+        'source_type',
+        'tags',
+        'updated_at',
+        'updated_by',
+        'version',
+        'visibility',
+      ],
+      limit: 10, // Example: set limit to 10
+      offset: 0, // Example: set offset to 0
+      // If you need to add where or order conditions, you can do so here
+      where: { id: { _eq: Number(router.query.address) } }, // Example filter condition
+      // order: { create_at: "DESC" } // Example order condition
+    },
+    {
+      tableName: 'transaction',
+      fields: [
+        'gas_used',
+        'gas_wanted',
+        'logs',
+        'memo',
+        'raw_log',
+        'messages',
+        'hash',
+      ],
+    },
+  ];
+  const { data } = useGraphqlQuery('Objects', queries);
+  const details = data?.object && data?.object[0];
+
+  const overview: ObjectDetailsOverviewType = {
+    'Object Name': details?.object_name,
+    'Object Tags': details?.tags,
+    'Object ID': details?.id,
+    'Object No.': parseInt(details?.id, 8).toString(),
+    Type: details?.id,
+    'Object Size': details?.size || '',
+    'Object Status': details?.object_status,
+    Deleted: details?.deleted || 'NO',
   };
   const more = {
     Visibility: {
-      value: 'Public',
+      value: details?.version,
       status: 'none',
     },
     'Bucket Name': {
-      value: 'mainnet-bsc-blocks',
+      value: details?.bucket_name,
       status: 'bucketPage',
     },
     'Last Updated Time': {
-      value: formatPubKey('0x23c845626A460012EAa27842dd5d24b465B356E7'),
+      value: details?.updated_at,
       status: 'time',
     },
     Creator: {
-      value: '0x4c1a93cd42b6e4960db845bcf9d540b081b1a63a',
+      value: details?.creator,
       status: 'copyLink',
     },
     Owner: {
-      value: '0x4c1a93cd42b6e4960db845bcf9d540b081b1a63a',
+      value: details?.owner,
       status: 'copyLink',
     },
     'Primary SP': {
       value: 'nodereal',
-      status: 'link',
+      status: 'nodereal',
     },
     'Secondary SP Addresses': {
       value: 'Click to view all',
@@ -78,17 +135,11 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
     },
   ];
 
-  const [ data, setData ] = React.useState<string>('');
-  React.useEffect(() => {
-  }, [ data ]);
-  const changeTable = React.useCallback((value: string) => {
-    setData(value);
-  }, []);
   return (
     <PageNextJs pathname="/object-details/[address]" query={ props.query }>
-      <Flex>
-        <PageTitle title="Object Details" withTextAd/>
-        <Box ml="6px">{ formatPubKey(router.query.address?.toString()) }</Box>
+      <Flex align="center" marginBottom="24px">
+        <PageTitle marginBottom="0" title="Object Details" withTextAd/>
+        <Box ml="6px">{ formatPubKey(details?.object_name) }</Box>
       </Flex>
       <HandDetails overview={ overview } more={ more } secondaryAddresses={ secondaryAddresses }/>
       <TableDetails tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead } changeTable={ changeTable }/>
