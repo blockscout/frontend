@@ -1,4 +1,4 @@
-import { Grid, GridItem, Text, Link, Box, Tooltip, useColorModeValue, Skeleton } from '@chakra-ui/react';
+import { Grid, GridItem, Text, Link, Box, Tooltip, useColorModeValue, Skeleton, useColorMode } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import capitalize from 'lodash/capitalize';
 import { useRouter } from 'next/router';
@@ -45,7 +45,8 @@ interface Props {
 const rollupFeature = config.features.rollup;
 
 const BlockDetails = ({ query }: Props) => {
-  const wvmIconPath = 'networks/arweave';
+  const { colorMode } = useColorMode();
+  const wvmIconPath = colorMode === 'light' ? 'networks/arweave-light' : 'networks/arweave-dark';
   const [ isExpanded, setIsExpanded ] = React.useState(false);
   const router = useRouter();
   const heightOrHash = getQueryParamString(router.query.height_or_hash);
@@ -54,7 +55,15 @@ const BlockDetails = ({ query }: Props) => {
 
   const { data, isPlaceholderData } = query;
 
-  const { data: arweaveId } = useArweaveId();
+  const { data: arweaveId } = useArweaveId({
+    block: data?.height,
+  });
+
+  const truncateArweaveId = (address: string) => {
+    const start = address.slice(0, 30);
+    const end = address.slice(-4);
+    return `${ start }...${ end }`;
+  };
 
   const handleCutClick = React.useCallback(() => {
     setIsExpanded((flag) => !flag);
@@ -602,14 +611,14 @@ const BlockDetails = ({ query }: Props) => {
             alignSelf="flex-start"
             gap={ 2 }
           >
-            <IconSvg name={ wvmIconPath } display="block" height="8" width="8" borderRadius="full"/>
+            <IconSvg name={ wvmIconPath } display="block" height="4" width="4" marginRight="4px" borderRadius="full"/>
             <Link
               isExternal
               href={ `https://viewblock.io/arweave/tx/${ arweaveId }` }
               rel="noopener noreferrer"
               color="#1AFFB1"
             >
-              <EntityBase.Content text={ arweaveId as string }/>
+              <EntityBase.Content text={ truncateArweaveId(arweaveId) as string }/>
             </Link>
             <CopyToClipboard text={ arweaveId }/>
           </DetailsInfoItem.Value>
