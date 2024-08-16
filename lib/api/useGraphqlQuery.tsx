@@ -1,4 +1,3 @@
-import type { DocumentNode } from '@apollo/client';
 import { useQuery, gql } from '@apollo/client';
 
 interface QueryConfig {
@@ -26,23 +25,52 @@ const useGraphqlQuery = (aliasName: string, queries: Array<QueryConfig>): QueryR
   // Helper function to convert an object to a GraphQL filter string
   const formatObjectToGraphQL = (obj: Record<string, any>): string => {
     return Object.entries(obj)
-      .map(([ key, value ]) => `${ key }: ${ JSON.stringify(value) }`)
+      .map(([ key, value ]) => {
+        if (typeof value === 'object' && value !== null) {
+          const operator = Object.keys(value)[0];
+          const operand = JSON.stringify(Object.values(value)[0]);
+          return `${ key }: { ${ operator }: ${ operand } }`;
+        }
+        return `${ key }: ${ JSON.stringify(value) }`;
+      })
       .join(', ');
   };
 
+  const formatWhereCondition = (
+    where: Record<string, any> | undefined,
+  ): string => {
+    if (typeof where === 'object' && where !== null) {
+      return Object.entries(where)
+        .map(([ key, value ]) => {
+          if (key === '_or' || key === '_and' || key === '_not') {
+            const conditions = Array.isArray(value) ? value : [ value ];
+            return `${ key }: [${ conditions.map(cond => `{ ${ formatObjectToGraphQL(cond) } }`).join(', ') }]`;
+          } else {
+            return `${ key }: ${ formatObjectToGraphQL({ [key]: value }) }`;
+          }
+        })
+        .join(', ');
+    }
+    return '';
+  };
+
   // Dynamically build the GraphQL query string
-  const query: DocumentNode = gql`
+  const query = gql`
     query ${ aliasName }($limit: Int, $offset: Int) {
-      ${ queries.map(({ tableName, fields, limit, offset, where, order }) => `
+      ${ queries
+    .map(
+      ({ tableName, fields, limit, offset, where, order }) => `
         ${ tableName } (
-          ${ where ? `where: { ${ formatObjectToGraphQL(where) } },` : '' }
+          where: { ${ formatWhereCondition(where) } },
           ${ order ? `order_by: { ${ formatObjectToGraphQL(order) } },` : '' }
           ${ limit !== undefined ? `limit: $limit,` : '' }
           ${ offset !== undefined ? `offset: $offset` : '' }
         ) {
           ${ fields.join(' ') }  
         }
-      `).join('\n') }
+      `,
+    )
+    .join('\n') }
     }
   `;
 

@@ -6,6 +6,7 @@ import PageNextJs from 'nextjs/PageNextJs';
 
 import { sessionOptions } from 'lib/session/config';
 import Faucet from 'ui/faucet/Faucet';
+import PageTitle from 'ui/shared/Page/PageTitle';
 
 interface Props {
   verified: boolean;
@@ -14,6 +15,7 @@ interface Props {
 const Page: NextPage<Props> = (props: Props) => {
   return (
     <PageNextJs pathname="/faucet">
+      <PageTitle title="Faucet" withTextAd/>
       <Faucet verified={ props.verified }/>
     </PageNextJs>
   );
