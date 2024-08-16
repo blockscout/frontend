@@ -26,35 +26,38 @@ const useGraphqlQuery = (aliasName: string, queries: Array<QueryConfig>): QueryR
   const formatObjectToGraphQL = (obj: Record<string, any>): string => {
     return Object.entries(obj)
       .map(([ key, value ]) => {
-        if (typeof value === 'object' && value !== null) {
-          const operator = Object.keys(value)[0];
-          const operand = JSON.stringify(Object.values(value)[0]);
-          return `${ key }: { ${ operator }: ${ operand } }`;
+        if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+          return `${ key }: { ${ formatObjectToGraphQL(value) } }`;
+        } else if (Array.isArray(value)) {
+          return `${ key }: [${ value.map(v => {
+            if (typeof v === 'object' && v !== null) {
+              return `{ ${ formatObjectToGraphQL(v as Record<string, any>) } }`;
+            }
+            throw new Error('Array elements must be objects');
+          }).join(', ') }]`;
         }
         return `${ key }: ${ JSON.stringify(value) }`;
       })
       .join(', ');
   };
 
-  const formatWhereCondition = (
-    where: Record<string, any> | undefined,
-  ): string => {
+  const formatWhereCondition = (where: Record<string, any> | undefined): string => {
     if (typeof where === 'object' && where !== null) {
       return Object.entries(where)
         .map(([ key, value ]) => {
           if (key === '_or' || key === '_and' || key === '_not') {
             const conditions = Array.isArray(value) ? value : [ value ];
-            return `${ key }: [${ conditions.map(cond => `{ ${ formatObjectToGraphQL(cond) } }`).join(', ') }]`;
-          } else {
-            return `${ key }: ${ formatObjectToGraphQL({ [key]: value }) }`;
+            return `${ key }: [${ conditions.map(cond => `${ formatObjectToGraphQL(cond) }`).join(', ') }]`;
+          } else if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+            return `${ key }: { ${ formatObjectToGraphQL(value) } }`;
           }
+          return `${ key }: ${ JSON.stringify(value) }`;
         })
         .join(', ');
     }
     return '';
   };
 
-  // Dynamically build the GraphQL query string
   const query = gql`
     query ${ aliasName }($limit: Int, $offset: Int) {
       ${ queries
@@ -66,7 +69,7 @@ const useGraphqlQuery = (aliasName: string, queries: Array<QueryConfig>): QueryR
           ${ limit !== undefined ? `limit: $limit,` : '' }
           ${ offset !== undefined ? `offset: $offset` : '' }
         ) {
-          ${ fields.join(' ') }  
+          ${ fields.join(' ') }
         }
       `,
     )
