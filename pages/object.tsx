@@ -5,38 +5,48 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-import apolloClient from 'lib/hooks/apolloClient';
+import useGraphqlQuery from 'lib/api/useGraphqlQuery';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const TableList = dynamic(() => import('ui/storage/table-list'), { ssr: false });
 const ObjectDetails: NextPage = () => {
-  const queryDate = `
-    object: object(limit: $limit, offset: $offset, order_by: { create_at: desc }) {
-    id       
-    object_name            
-    bucket_name       
-    owner             
-    creator           
-    payload_size      
-    visibility        
-    content_type      
-    object_status     
-    redundancy_type   
-    source_type       
-    checksums         
-    create_at         
-    local_virtual_group_id 
-    height                 
-    tags                   
-    is_updating            
-    updated_at             
-    updated_by             
-    version                
-    }`;
-  (async() => {
-    const buckets = await apolloClient(queryDate, 10, 0);
-    console.log(buckets);
-  })();
+
+  const queries = [
+    {
+      tableName: 'object',
+      fields: [
+        'bucket_name',
+        'checksums',
+        'content_type',
+        'create_at',
+        'creator',
+        'height',
+        'id',
+        'is_updating',
+        'local_virtual_group_id',
+        'object_name',
+        'object_status',
+        'owner',
+        'payload_size',
+        'redundancy_type',
+        'source_type',
+        'tags',
+        'updated_at',
+        'updated_by',
+        'version',
+        'visibility',
+      ],
+      limit: 10, // Example: set limit to 10
+      offset: 0, // Example: set offset to 0
+      // If you need to add where or order conditions, you can do so here
+      // where: { object_status: "active" },  // Example filter condition
+      // order: { create_at: "DESC" }  // Example order condition
+    },
+  ];
+
+  const { data } = useGraphqlQuery('Objects', queries);
+  console.log(data);
+
   const talbeList = [
     {
       'Object Name': '4c83feb331594408sdjhfsdk98238293',

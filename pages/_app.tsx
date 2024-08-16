@@ -1,3 +1,4 @@
+import { ApolloProvider } from '@apollo/client';
 import type { ChakraProps } from '@chakra-ui/react';
 import { GrowthBookProvider } from '@growthbook/growthbook-react';
 import * as Sentry from '@sentry/react';
@@ -9,6 +10,7 @@ import React from 'react';
 import type { NextPageWithLayout } from 'nextjs/types';
 
 import config from 'configs/app';
+import client from 'lib/api/apolloClient';
 import useQueryClientConfig from 'lib/api/useQueryClientConfig';
 import { AppContextProvider } from 'lib/contexts/app';
 import { ChakraProvider } from 'lib/contexts/chakra';
@@ -63,21 +65,23 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         onError={ handleError }
       >
         <Web3ModalProvider>
-          <AppContextProvider pageProps={ pageProps }>
-            <QueryClientProvider client={ queryClient }>
-              <GrowthBookProvider growthbook={ growthBook }>
-                <ScrollDirectionProvider>
-                  <SocketProvider url={ `${ config.api.socket }${ config.api.basePath }/socket/v2` }>
-                    <MarketplaceContextProvider>
-                      { getLayout(<Component { ...pageProps }/>) }
-                    </MarketplaceContextProvider>
-                  </SocketProvider>
-                </ScrollDirectionProvider>
-              </GrowthBookProvider>
-              <ReactQueryDevtools buttonPosition="bottom-left" position="left"/>
-              <GoogleAnalytics/>
-            </QueryClientProvider>
-          </AppContextProvider>
+          <ApolloProvider client={ client }>
+            <AppContextProvider pageProps={ pageProps }>
+              <QueryClientProvider client={ queryClient }>
+                <GrowthBookProvider growthbook={ growthBook }>
+                  <ScrollDirectionProvider>
+                    <SocketProvider url={ `${ config.api.socket }${ config.api.basePath }/socket/v2` }>
+                      <MarketplaceContextProvider>
+                        { getLayout(<Component { ...pageProps }/>) }
+                      </MarketplaceContextProvider>
+                    </SocketProvider>
+                  </ScrollDirectionProvider>
+                </GrowthBookProvider>
+                <ReactQueryDevtools buttonPosition="bottom-left" position="left"/>
+                <GoogleAnalytics/>
+              </QueryClientProvider>
+            </AppContextProvider>
+          </ApolloProvider>
         </Web3ModalProvider>
       </AppErrorBoundary>
     </ChakraProvider>
