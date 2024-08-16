@@ -4,7 +4,7 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-import config from 'configs/app';
+import { sessionOptions } from 'lib/session/config';
 import Faucet from 'ui/faucet/Faucet';
 
 interface Props {
@@ -22,13 +22,7 @@ const Page: NextPage<Props> = (props: Props) => {
 export const getServerSideProps: GetServerSideProps<Props> = async(context) => {
   const { req, res } = context;
 
-  const session = await getIronSession<{ user: any }>(req, res, {
-    cookieName: 'mechian-session-token',
-    password: 'WjxkHE1fWFJnOE454A5uJwZvqeUEE6fp',
-    cookieOptions: {
-      secure: config.app.isProduction,
-    },
-  });
+  const session = await getIronSession<{ user: any }>(req, res, sessionOptions);
   const user = session.user;
 
   if (!user) {
