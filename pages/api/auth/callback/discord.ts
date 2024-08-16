@@ -61,7 +61,8 @@ async function getUserProfile(accessToken: string) {
 
 async function joinGuild(accessToken: string, userId: string) {
   const botToken = getEnvValue('DISCORD_BOT_TOKEN');
-  const rp = await fetch(`https://discord.com/api/v10/guilds/1271357790916575272/members/${ userId }`, {
+  const guildId = getEnvValue('DISCORD_GUILD_ID');
+  const rp = await fetch(`https://discord.com/api/v10/guilds/${ guildId }/members/${ userId }`, {
     method: 'PUT',
     headers: {
       Accept: 'application/json',
