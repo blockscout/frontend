@@ -4,12 +4,12 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import config from 'configs/app';
-import useNavItems from 'lib/hooks/useNavItems';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
 import SearchBar from 'ui/snippets/searchBar/SearchBar';
 import WalletMenuDesktop from 'ui/snippets/walletMenu/WalletMenuDesktop';
 
+import SearchBarStorage from '../searchBar/SearchBarStorage';
 import Burger from './Burger';
 
 type Props = {
@@ -26,13 +26,8 @@ const HeaderDesktop = ({ renderSearchBar, isMarketplaceAppPage }: Props) => {
     }
     return false;
   }, [ router.pathname ]);
-  const specifiedSearchBar = storageSearchbar() ? null : <SearchBar/>;
+  const specifiedSearchBar = storageSearchbar() ? <SearchBarStorage/> : <SearchBar/>;
   const searchBar = renderSearchBar ? renderSearchBar() : specifiedSearchBar;
-  const useNavItemss = useNavItems();
-  console.log(router);
-  console.log(useNavItemss);
-  // let titleName = router.pathname.replace('/', '');
-  // titleName = titleName.charAt(0).toUpperCase() + titleName.slice(1);
 
   return (
     <HStack
