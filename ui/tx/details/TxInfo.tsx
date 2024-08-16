@@ -71,7 +71,15 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
   const wvmIconPath = 'networks/arweave';
   const [ isExpanded, setIsExpanded ] = React.useState(false);
 
-  const { data: arweaveId } = useArweaveId();
+  const { data: arweaveId } = useArweaveId({
+    block: data?.block,
+  });
+
+  const truncateArweaveId = (address: string) => {
+    const start = address.slice(0, 30);
+    const end = address.slice(-4);
+    return `${ start }...${ end }`;
+  };
 
   const handleCutClick = React.useCallback(() => {
     setIsExpanded((flag) => !flag);
@@ -349,14 +357,14 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             Arweave storage proof
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
-            <IconSvg name={ wvmIconPath } display="block" height="8" width="8" borderRadius="full"/>
+            <IconSvg name={ wvmIconPath } display="block" height="4" width="4" borderRadius="full" marginRight="4px"/>
             <Link
               isExternal
               href={ `https://viewblock.io/arweave/tx/${ arweaveId }` }
               rel="noopener noreferrer"
               color="#1AFFB1"
             >
-              <EntityBase.Content text={ arweaveId as string }/>
+              <EntityBase.Content text={ truncateArweaveId(arweaveId) as string }/>
             </Link>
 
             <CopyToClipboard text={ arweaveId }/>

@@ -57,7 +57,7 @@
     "@sentry/react": "7.24.0",
     "@sentry/tracing": "7.24.0",
     "@slise/embed-react": "^2.2.0",
-    "@tanstack/react-query": "^5.4.3",
+    "@tanstack/react-query": "^5.51.23",
     "@tanstack/react-query-devtools": "^5.4.3",
     "@types/papaparse": "^5.3.5",
     "@types/react-scroll": "^1.8.4",
