@@ -24,8 +24,8 @@ import LinkInternal from 'ui/shared/links/LinkInternal';
 import SearchBarBackdrop from './SearchBarBackdrop';
 import SearchBarInputStorage from './SearchBarInputStorage';
 import SearchBarRecentKeywords from './SearchBarRecentKeywords';
-import SearchBarSuggest from './SearchBarSuggest/SearchBarSuggest';
-import useQuickSearchQuery from './useQuickSearchQuery';
+import SearchBarSuggestStorage from './SearchBarSuggest/SearchBarSuggestStorage';
+import useQuickSearchQueryStorage from './useQuickSearchQueryStorage';
 
 const SCROLL_CONTAINER_ID = 'search_bar_popover_content';
 const SearchBarStorage = () => {
@@ -38,7 +38,7 @@ const SearchBarStorage = () => {
 
   const recentSearchKeywords = getRecentSearchKeywords();
 
-  const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query, pathname } = useQuickSearchQuery();
+  const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query, pathname } = useQuickSearchQueryStorage();
 
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -151,7 +151,7 @@ const SearchBarStorage = () => {
                   <SearchBarRecentKeywords onClick={ handleSearchTermChange } onClear={ onClose }/>
                 ) }
                 { searchTerm.trim().length > 0 && (
-                  <SearchBarSuggest
+                  <SearchBarSuggestStorage
                     query={ query }
                     searchTerm={ debouncedSearchTerm }
                     onItemClick={ handleItemClick }

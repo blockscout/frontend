@@ -2,7 +2,7 @@ import type { ContractCodeIde } from 'types/client/contract';
 import { NAVIGATION_LINK_IDS, type NavItemExternal, type NavigationLinkId, type NavigationLayout } from 'types/client/navigation';
 import type { ChainIndicatorId } from 'types/homepage';
 import type { NetworkExplorer } from 'types/networks';
-import type { ColorThemeId } from 'types/settings';
+// import type { ColorThemeId } from 'types/settings';
 
 import { COLOR_THEMES } from 'lib/settings/colorTheme';
 
@@ -30,7 +30,8 @@ const highlightedRoutes = (() => {
 })();
 
 const defaultColorTheme = (() => {
-  const envValue = getEnvValue('NEXT_PUBLIC_COLOR_THEME_DEFAULT') as ColorThemeId | undefined;
+  // const envValue = getEnvValue('NEXT_PUBLIC_COLOR_THEME_DEFAULT') as ColorThemeId | undefined;
+  const envValue = 'light'; // always light mode
   return COLOR_THEMES.find((theme) => theme.id === envValue);
 })();
 

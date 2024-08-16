@@ -46,7 +46,6 @@ const SearchBar = ({ isHomepage }: Props) => {
   const recentSearchKeywords = getRecentSearchKeywords();
 
   const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query, pathname } = useQuickSearchQuery();
-
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (searchTerm) {
