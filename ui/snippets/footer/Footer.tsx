@@ -212,27 +212,6 @@ const Footer = () => {
 
       { renderNetworkInfo({ lg: 'network' }) }
       { renderProjectInfo({ lg: 'info' }) }
-
-      <Grid
-        gridArea={{ lg: 'links-bottom' }}
-        gap={ 1 }
-        gridTemplateColumns={{
-          base: 'repeat(auto-fill, 160px)',
-          lg: 'repeat(3, 160px)',
-          xl: 'repeat(4, 160px)',
-        }}
-        gridTemplateRows={{
-          base: 'auto',
-          lg: 'repeat(3, auto)',
-          xl: 'repeat(2, auto)',
-        }}
-        gridAutoFlow={{ base: 'row', lg: 'column' }}
-        alignContent="start"
-        justifyContent={{ lg: 'flex-end' }}
-        mt={{ base: 8, lg: 0 }}
-      >
-        { BLOCKSCOUT_LINKS.map(link => <FooterLinkItem { ...link } key={ link.text }/>) }
-      </Grid>
     </Grid>
   );
 };
