@@ -1,6 +1,6 @@
 import React from 'react';
 import { encodeFunctionData, getAddress, type Abi } from 'viem';
-import { useAccount, useWalletClient, useSwitchChain, usePublicClient } from 'wagmi';
+import { useAccount, useWalletClient, usePublicClient } from 'wagmi';
 
 import type { FormSubmitResult, SmartContractMethod } from './types';
 
@@ -26,8 +26,7 @@ interface FacetTransactionParams {
 export default function useCallMethodWalletClient(): (params: Params) => Promise<FormSubmitResult> {
   const publicClient = usePublicClient({ chainId: Number(config.chain.id) });
   const { data: walletClient } = useWalletClient();
-  const { isConnected, chainId } = useAccount();
-  const { switchChainAsync } = useSwitchChain();
+  const { isConnected } = useAccount();
   const sendFacetTransaction = useFacet();
 
   return React.useCallback(async({ args, item, addressHash }) => {
@@ -37,10 +36,6 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
 
     if (!walletClient) {
       throw new Error('Wallet Client is not defined');
-    }
-
-    if (chainId && String(chainId) !== config.chain.id) {
-      await switchChainAsync?.({ chainId: Number(config.chain.id) });
     }
 
     const address = getAddress(addressHash);
@@ -91,5 +86,5 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
     const hash = await sendFacetTransaction(facetTransactionParams);
 
     return { source: 'wallet_client', data: { hash } };
-  }, [ chainId, isConnected, publicClient, sendFacetTransaction, switchChainAsync, walletClient ]);
+  }, [ isConnected, publicClient, sendFacetTransaction, walletClient ]);
 }
