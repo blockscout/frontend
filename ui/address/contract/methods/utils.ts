@@ -1,6 +1,6 @@
 import type { Abi } from 'abitype';
 import type { AbiFunction } from 'viem';
-import { getAddress, toBytes, toFunctionSelector, toHex, toRlp } from 'viem';
+import { toFunctionSelector } from 'viem';
 
 import type { SmartContractMethodCustomFields, SmartContractMethodRead, SmartContractMethodWrite } from './types';
 
@@ -61,32 +61,3 @@ export function divideAbiIntoMethodTypes(abi: Abi): DividedAbi {
       }),
   };
 }
-
-export const buildFacetTransaction = ({
-  chainId,
-  to,
-  value,
-  maxFeePerGas,
-  gasLimit,
-  data = '0x',
-}: {
-  chainId: number;
-  to: `0x${ string }`;
-  value: bigint;
-  maxFeePerGas: bigint;
-  gasLimit: bigint;
-  data?: `0x${ string }`;
-}) => {
-  const facetTxType = toBytes(70);
-
-  const rlpEncoded = toRlp([
-    toHex(chainId),
-    getAddress(to),
-    toHex(value),
-    toHex(maxFeePerGas),
-    toHex(gasLimit),
-    data,
-  ], 'bytes');
-
-  return new Uint8Array([ ...facetTxType, ...rlpEncoded ]);
-};

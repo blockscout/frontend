@@ -26,11 +26,11 @@ interface FacetTransactionParams {
 export default function useCallMethodWalletClient(): (params: Params) => Promise<FormSubmitResult> {
   const publicClient = usePublicClient({ chainId: Number(config.chain.id) });
   const { data: walletClient } = useWalletClient();
-  const { isConnected } = useAccount();
+  const { isConnected, address: from } = useAccount();
   const sendFacetTransaction = useFacet();
 
   return React.useCallback(async({ args, item, addressHash }) => {
-    if (!isConnected) {
+    if (!isConnected || !from) {
       throw new Error('Wallet is not connected');
     }
 
@@ -72,6 +72,7 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
     }
 
     const estimateGas = await publicClient?.estimateGas({
+      account: from,
       to: facetTransactionParams.to,
       value: facetTransactionParams.value,
       data: facetTransactionParams.data,
@@ -86,5 +87,5 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
     const hash = await sendFacetTransaction(facetTransactionParams);
 
     return { source: 'wallet_client', data: { hash } };
-  }, [ isConnected, publicClient, sendFacetTransaction, walletClient ]);
+  }, [ from, isConnected, publicClient, sendFacetTransaction, walletClient ]);
 }

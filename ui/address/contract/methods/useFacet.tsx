@@ -1,12 +1,10 @@
 import React from 'react';
 import type { SendTransactionReturnType } from 'viem';
-import { toHex } from 'viem';
+import { getAddress, toBytes, toHex, toRlp } from 'viem';
 import * as chains from 'viem/chains';
 import { useAccount, useSwitchChain, useWalletClient } from 'wagmi';
 
 import config from 'configs/app';
-
-import { buildFacetTransaction } from './utils';
 
 const facetInboxAddress = '0x00000000000000000000000000000000000FacE7' as `0x${ string }`;
 
@@ -62,3 +60,32 @@ export default function useFacet(): (params: Params) => Promise<SendTransactionR
     });
   }, [ account, walletClient, switchChainAsync ]);
 }
+
+export const buildFacetTransaction = ({
+  chainId,
+  to,
+  value,
+  maxFeePerGas,
+  gasLimit,
+  data = '0x',
+}: {
+  chainId: number;
+  to: `0x${ string }`;
+  value: bigint;
+  maxFeePerGas: bigint;
+  gasLimit: bigint;
+  data?: `0x${ string }`;
+}) => {
+  const facetTxType = toBytes(70);
+
+  const rlpEncoded = toRlp([
+    toHex(chainId),
+    getAddress(to),
+    toHex(value),
+    toHex(maxFeePerGas),
+    toHex(gasLimit),
+    data,
+  ], 'bytes');
+
+  return new Uint8Array([ ...facetTxType, ...rlpEncoded ]);
+};
