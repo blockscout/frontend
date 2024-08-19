@@ -85,9 +85,9 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
   }, []);
   return (
     <PageNextJs pathname="/bucket-details/[address]" query={ props.query }>
-      <Flex>
-        <PageTitle title="Bucket Details" withTextAd/>
-        <Box ml="6px">{ formatPubKey(router.query.address?.toString()) }</Box>
+      <Flex align="center" marginBottom="24px">
+        <PageTitle marginBottom="0" title="Bucket Details" withTextAd/>
+        <Box ml="6px">{ router.query.address }</Box>
       </Flex>
       <HandDetails overview={ overview } more={ more }/>
       <TableDetails tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead } changeTable={ changeTable }/>
