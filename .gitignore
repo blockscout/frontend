@@ -58,3 +58,15 @@ yarn-error.log*
 
 # build outputs
 /tools/preset-sync/index.js
+
+# vercel
+.vercel
+/.idea
+!/.idea/codeStyles/**/*
+/package-lock.json
+
+# ide
+/.vscode/**
+test-results
+test/**/*-snapshots
+/local.server.config.ts
