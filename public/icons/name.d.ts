@@ -23,6 +23,7 @@
 	| "block"
 	| "brands/safe"
 	| "brands/solidity_scan"
+	| "bucket"
 	| "burger"
 	| "certified"
 	| "check-circle"

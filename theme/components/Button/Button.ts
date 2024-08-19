@@ -30,9 +30,9 @@ const variantSolid = defineStyle((props) => {
 });
 
 const variantOutline = defineStyle((props) => {
-  const { colorScheme: c } = props;
+  // const { colorScheme: c } = props;
 
-  const isGrayTheme = c === 'gray';
+  // const isGrayTheme = c === 'gray';
 
   const bg = 'transparent';
 
@@ -41,8 +41,10 @@ const variantOutline = defineStyle((props) => {
   // const borderColor = isGrayTheme ? mode('gray.200', 'gray.600')(props) : mode(`${ c }.600`, `${ c }.300`)(props);
   const borderColor = '#8A55FD';
 
-  const selectedBg = isGrayTheme ? mode('blue.50', 'gray.600')(props) : mode(`${ c }.50`, 'gray.600')(props);
-  const selectedColor = mode('blue.600', 'gray.50')(props);
+  // const selectedBg = isGrayTheme ? mode('blue.50', 'gray.600')(props) : mode(`${ c }.50`, 'gray.600')(props);
+  const selectedBg = '#A07EFF';
+  // const selectedColor = mode('blue.600', 'gray.50')(props);
+  const selectedColor = '#FFFFFF';
 
   return {
     color,

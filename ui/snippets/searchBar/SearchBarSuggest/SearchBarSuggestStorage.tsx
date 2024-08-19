@@ -3,12 +3,14 @@ import throttle from 'lodash/throttle';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
+import type { SearchResultItem } from 'types/api/search';
+
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useMarketplaceApps from 'ui/marketplace/useMarketplaceApps';
 import TextAd from 'ui/shared/ad/TextAd';
 import ContentLoader from 'ui/shared/ContentLoader';
-import type { ItemsCategoriesMap } from 'ui/shared/search/utils';
-import { searchCategories } from 'ui/shared/search/utils';
+import type { ApiCategory, ItemsCategoriesMap } from 'ui/shared/search/utils';
+import { getItemCategoryForGraphql, searchCategories } from 'ui/shared/search/utils';
 
 import SearchBarSuggestApp from './SearchBarSuggestApp';
 import SearchBarSuggestItem from './SearchBarSuggestItem';
@@ -66,17 +68,23 @@ const SearchBarSuggestStorage = ({ query, searchTerm, onItemClick, containerId }
       return {};
     }
     const map: Partial<ItemsCategoriesMap> = {};
-    // console.log('query data:', query.data);
-    // query.data?.forEach(item => {
-    //   const cat = getItemCategory(item) as ApiCategory;
-    //   if (cat) {
-    //     if (cat in map) {
-    //       map[cat]?.push(item);
-    //     } else {
-    //       map[cat] = [ item ];
-    //     }
-    //   }
-    // });
+
+    Object.entries(query.data).forEach(([ key, value ]) => {
+      if (Array.isArray(value)) {
+        value.forEach((item) => {
+          const cat = getItemCategoryForGraphql(key) as ApiCategory;
+          if (cat) {
+            (item as any).type = cat;
+            if (cat in map) {
+              map[cat]?.push(item as SearchResultItem);
+            } else {
+              map[cat] = [ item as SearchResultItem ];
+            }
+          }
+        });
+      }
+    });
+
     if (marketplaceApps.displayedApps.length) {
       map.app = marketplaceApps.displayedApps;
     }
@@ -108,7 +116,7 @@ const SearchBarSuggestStorage = ({ query, searchTerm, onItemClick, containerId }
       return <Text>Something went wrong. Try refreshing the page or come back later.</Text>;
     }
 
-    const resultCategories = searchCategories.filter(cat => itemsGroups[cat.id]);
+    const resultCategories = searchCategories.filter(cat => itemsGroups[cat.id as keyof ItemsCategoriesMap]);
 
     if (resultCategories.length === 0) {
       return <Text>No results found.</Text>;

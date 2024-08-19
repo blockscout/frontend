@@ -84,7 +84,7 @@ export interface SearchResultUserOp {
 }
 
 export type SearchResultItem = SearchResultToken | SearchResultAddressOrContract | SearchResultBlock | SearchResultTx | SearchResultLabel | SearchResultUserOp |
-SearchResultBlob | SearchResultDomain;
+SearchResultBlob | SearchResultDomain | SearchResultBucket | SearchResultObject;
 
 export interface SearchResult {
   items: Array<SearchResultItem>;
@@ -109,4 +109,19 @@ export interface SearchRedirectResult {
   parameter: string | null;
   redirect: boolean;
   type: 'address' | 'block' | 'transaction' | 'user_operation' | 'blob' | null;
+}
+
+// For Stroage
+export interface SearchResultBucket {
+  type: 'bucket';
+  id: number;
+  bucket_name: string;
+  owner: string;
+}
+
+export interface SearchResultObject {
+  type: 'object';
+  id: number;
+  object_name: string;
+  owner: string;
 }

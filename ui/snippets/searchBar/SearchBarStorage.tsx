@@ -34,11 +34,12 @@ const SearchBarStorage = () => {
   const menuRef = React.useRef<HTMLDivElement>(null);
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const menuWidth = React.useRef<number>(0);
+  const type = React.useRef<string>('default');
   const router = useRouter();
 
   const recentSearchKeywords = getRecentSearchKeywords();
 
-  const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query, pathname } = useQuickSearchQueryStorage();
+  const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query, pathname } = useQuickSearchQueryStorage(type.current);
 
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();

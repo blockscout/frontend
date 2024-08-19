@@ -50,6 +50,7 @@ const NavLink = ({ item, isCollapsed, px, className, onClick, disableActiveState
       px={ px || { base: 3, lg: isExpanded ? 3 : '15px', xl: isCollapsed ? '15px' : 3 } }
       aria-label={ `${ item.text } link` }
       whiteSpace="nowrap"
+      border={ isInternalLink && item.isActive && !disableActiveState ? '0.5px solid rgba(160, 126, 255, 0.24)' : 'none' }
       onClick={ onClick }
       _hover={{
         [`& *:not(.${ LIGHTNING_LABEL_CLASS_NAME }, .${ LIGHTNING_LABEL_CLASS_NAME } *)`]: {

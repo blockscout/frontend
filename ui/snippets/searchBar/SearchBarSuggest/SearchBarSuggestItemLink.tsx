@@ -1,4 +1,4 @@
-import { chakra, useColorModeValue } from '@chakra-ui/react';
+import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
 type Props = {
@@ -22,7 +22,7 @@ const SearchBarSuggestItemLink = ({ onClick, href, target, children }: Props) =>
         borderBottomWidth: '0',
       }}
       _hover={{
-        bgColor: useColorModeValue('blue.50', 'gray.800'),
+        bgColor: 'rgba(160, 126, 255, 0.10)',
       }}
       fontSize="sm"
       _first={{
