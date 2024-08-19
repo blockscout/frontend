@@ -71,7 +71,6 @@ module.exports = {
     } ],
     "@typescript-eslint/brace-style": [ "error", "1tbs" ],
     "@typescript-eslint/consistent-type-imports": [ "error" ],
-    "@typescript-eslint/indent": [ "error", 2 ],
     "@typescript-eslint/member-delimiter-style": [ "error" ],
     "@typescript-eslint/naming-convention": [ "error",
       {

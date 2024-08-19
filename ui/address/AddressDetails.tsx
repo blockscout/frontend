@@ -1,28 +1,27 @@
-import { Box, Text, Grid } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
-import React from 'react';
+import { Box, Text, Grid } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import React from "react";
 
-import config from 'configs/app';
-import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
-import useIsMounted from 'lib/hooks/useIsMounted';
-import getQueryParamString from 'lib/router/getQueryParamString';
-import AddressCounterItem from 'ui/address/details/AddressCounterItem';
-import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
-import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
-import DataFetchAlert from 'ui/shared/DataFetchAlert';
-import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
-import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import BlockEntity from 'ui/shared/entities/block/BlockEntity';
-import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import config from "configs/app";
+import throwOnResourceLoadError from "lib/errors/throwOnResourceLoadError";
+import useIsMounted from "lib/hooks/useIsMounted";
+import getQueryParamString from "lib/router/getQueryParamString";
+import AddressCounterItem from "ui/address/details/AddressCounterItem";
+import ServiceDegradationWarning from "ui/shared/alerts/ServiceDegradationWarning";
+import isCustomAppError from "ui/shared/AppError/isCustomAppError";
+import DataFetchAlert from "ui/shared/DataFetchAlert";
+import * as DetailsInfoItem from "ui/shared/DetailsInfoItem";
+import AddressEntity from "ui/shared/entities/address/AddressEntity";
+import BlockEntity from "ui/shared/entities/block/BlockEntity";
+import TxEntity from "ui/shared/entities/tx/TxEntity";
 
-import AddressBalance from './details/AddressBalance';
-import AddressImplementations from './details/AddressImplementations';
-import AddressNameInfo from './details/AddressNameInfo';
-import AddressNetWorth from './details/AddressNetWorth';
-import TokenSelect from './tokenSelect/TokenSelect';
-import useAddressCountersQuery from './utils/useAddressCountersQuery';
-import type { AddressQuery } from './utils/useAddressQuery';
+import AddressBalance from "./details/AddressBalance";
+import AddressImplementations from "./details/AddressImplementations";
+import AddressNameInfo from "./details/AddressNameInfo";
+import AddressNetWorth from "./details/AddressNetWorth";
+import TokenSelect from "./tokenSelect/TokenSelect";
+import useAddressCountersQuery from "./utils/useAddressCountersQuery";
+import type { AddressQuery } from "./utils/useAddressQuery";
 
 interface Props {
   addressQuery: AddressQuery;
@@ -42,38 +41,41 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
   const handleCounterItemClick = React.useCallback(() => {
     window.setTimeout(() => {
       // cannot do scroll instantly, have to wait a little
-      scrollRef?.current?.scrollIntoView({ behavior: 'smooth' });
+      scrollRef?.current?.scrollIntoView({ behavior: "smooth" });
     }, 500);
-  }, [ scrollRef ]);
+  }, [scrollRef]);
 
-  const error404Data = React.useMemo(() => ({
-    hash: addressHash || '',
-    is_contract: false,
-    implementations: null,
-    token: null,
-    watchlist_address_id: null,
-    watchlist_names: null,
-    creation_tx_hash: null,
-    block_number_balance_updated_at: null,
-    name: null,
-    exchange_rate: null,
-    coin_balance: null,
-    has_tokens: true,
-    has_token_transfers: true,
-    has_validated_blocks: false,
-  }), [ addressHash ]);
+  const error404Data = React.useMemo(
+    () => ({
+      hash: addressHash || "",
+      is_contract: false,
+      implementations: null,
+      token: null,
+      watchlist_address_id: null,
+      watchlist_names: null,
+      creation_tx_hash: null,
+      block_number_balance_updated_at: null,
+      name: null,
+      exchange_rate: null,
+      coin_balance: null,
+      has_tokens: true,
+      has_token_transfers: true,
+      has_validated_blocks: false,
+    }),
+    [addressHash]
+  );
 
   const isMounted = useIsMounted();
 
   // error handling (except 404 codes)
   if (addressQuery.isError) {
     if (isCustomAppError(addressQuery.error)) {
-      const is404Error = addressQuery.isError && 'status' in addressQuery.error && addressQuery.error.status === 404;
+      const is404Error = addressQuery.isError && "status" in addressQuery.error && addressQuery.error.status === 404;
       if (!is404Error) {
         throwOnResourceLoadError(addressQuery);
       }
     } else {
-      return <DataFetchAlert/>;
+      return <DataFetchAlert />;
     }
   }
 
@@ -85,179 +87,171 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
 
   return (
     <>
-      { addressQuery.isDegradedData && <ServiceDegradationWarning isLoading={ addressQuery.isPlaceholderData } mb={ 6 }/> }
+      {addressQuery.isDegradedData && <ServiceDegradationWarning isLoading={addressQuery.isPlaceholderData} mb={6} />}
       <Grid
-        columnGap={ 8 }
+        columnGap={8}
         rowGap={{ base: 1, lg: 3 }}
-        templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} overflow="hidden"
+        templateColumns={{ base: "minmax(0, 1fr)", lg: "auto minmax(0, 1fr)" }}
+        overflow="hidden"
       >
-        <AddressNameInfo data={ data } isLoading={ addressQuery.isPlaceholderData }/>
+        <AddressNameInfo data={data} isLoading={addressQuery.isPlaceholderData} />
 
-        { data.is_contract && data.creation_tx_hash && data.creator_address_hash && (
+        {data.is_contract && data.creation_tx_hash && data.creator_address_hash && (
           <>
             <DetailsInfoItem.Label
               hint="Transaction and address of creation"
-              isLoading={ addressQuery.isPlaceholderData }
+              isLoading={addressQuery.isPlaceholderData}
             >
               Creator
             </DetailsInfoItem.Label>
             <DetailsInfoItem.Value>
-              <AddressEntity
-                address={{ hash: data.creator_address_hash }}
-                truncation="constant"
-                noIcon
-              />
+              <AddressEntity address={{ hash: data.creator_address_hash }} truncation="constant" noIcon />
               <Text whiteSpace="pre"> at txn </Text>
-              <TxEntity hash={ data.creation_tx_hash } truncation="constant" noIcon noCopy={ false }/>
+              <TxEntity hash={data.creation_tx_hash} truncation="constant" noIcon noCopy={false} />
             </DetailsInfoItem.Value>
           </>
-        ) }
-        { data.is_contract && data.implementations && data.implementations?.length > 0 && (
-          <AddressImplementations
-            data={ data.implementations }
-            isLoading={ addressQuery.isPlaceholderData }
-          />
-        ) }
+        )}
+        {data.is_contract && data.implementations && data.implementations?.length > 0 && (
+          <AddressImplementations data={data.implementations} isLoading={addressQuery.isPlaceholderData} />
+        )}
 
-        <AddressBalance data={ data } isLoading={ addressQuery.isPlaceholderData }/>
+        <AddressBalance data={data} isLoading={addressQuery.isPlaceholderData} />
 
-        { data.has_tokens && (
+        {data.has_tokens && (
           <>
-            <DetailsInfoItem.Label
-              hint="All tokens in the account and total value"
-            >
-              Tokens
-            </DetailsInfoItem.Label>
-            <DetailsInfoItem.Value py={ addressQuery.data ? 0 : undefined }>
-              { addressQuery.data ? <TokenSelect onClick={ handleCounterItemClick }/> : <Box>0</Box> }
+            <DetailsInfoItem.Label hint="All tokens in the account and total value">Tokens</DetailsInfoItem.Label>
+            <DetailsInfoItem.Value py={addressQuery.data ? 0 : undefined}>
+              {addressQuery.data ? <TokenSelect onClick={handleCounterItemClick} /> : <Box>0</Box>}
             </DetailsInfoItem.Value>
           </>
-        ) }
-        { (config.features.multichainButton.isEnabled || (data.exchange_rate && data.has_tokens)) && (
+        )}
+        {(config.features.multichainButton.isEnabled || (data.exchange_rate && data.has_tokens)) && (
           <>
             <DetailsInfoItem.Label
               hint="Total net worth in USD of all tokens for the address"
-              isLoading={ addressQuery.isPlaceholderData }
+              isLoading={addressQuery.isPlaceholderData}
             >
               Net worth
             </DetailsInfoItem.Label>
-            <DetailsInfoItem.Value alignSelf="center" py={ 0 }>
-              <AddressNetWorth addressData={ addressQuery.data } addressHash={ addressHash } isLoading={ addressQuery.isPlaceholderData }/>
+            <DetailsInfoItem.Value alignSelf="center" py={0}>
+              <AddressNetWorth
+                addressData={addressQuery.data}
+                addressHash={addressHash}
+                isLoading={addressQuery.isPlaceholderData}
+              />
             </DetailsInfoItem.Value>
           </>
-        )
-        }
+        )}
 
         <DetailsInfoItem.Label
           hint="Number of transactions related to this address"
-          isLoading={ addressQuery.isPlaceholderData || countersQuery.isPlaceholderData }
+          isLoading={addressQuery.isPlaceholderData || countersQuery.isPlaceholderData}
         >
           Transactions
         </DetailsInfoItem.Label>
         <DetailsInfoItem.Value>
-          { addressQuery.data ? (
+          {addressQuery.data ? (
             <AddressCounterItem
               prop="transactions_count"
-              query={ countersQuery }
-              address={ data.hash }
-              onClick={ handleCounterItemClick }
-              isAddressQueryLoading={ addressQuery.isPlaceholderData }
-              isDegradedData={ addressQuery.isDegradedData }
+              query={countersQuery}
+              address={data.hash}
+              onClick={handleCounterItemClick}
+              isAddressQueryLoading={addressQuery.isPlaceholderData}
+              isDegradedData={addressQuery.isDegradedData}
             />
-          ) :
-            0 }
+          ) : (
+            0
+          )}
         </DetailsInfoItem.Value>
 
-        { data.has_token_transfers && (
+        {data.has_token_transfers && (
           <>
             <DetailsInfoItem.Label
               hint="Number of transfers to/from this address"
-              isLoading={ addressQuery.isPlaceholderData || countersQuery.isPlaceholderData }
+              isLoading={addressQuery.isPlaceholderData || countersQuery.isPlaceholderData}
             >
               Transfers
             </DetailsInfoItem.Label>
             <DetailsInfoItem.Value>
-              { addressQuery.data ? (
+              {addressQuery.data ? (
                 <AddressCounterItem
                   prop="token_transfers_count"
-                  query={ countersQuery }
-                  address={ data.hash }
-                  onClick={ handleCounterItemClick }
-                  isAddressQueryLoading={ addressQuery.isPlaceholderData }
-                  isDegradedData={ addressQuery.isDegradedData }
+                  query={countersQuery}
+                  address={data.hash}
+                  onClick={handleCounterItemClick}
+                  isAddressQueryLoading={addressQuery.isPlaceholderData}
+                  isDegradedData={addressQuery.isDegradedData}
                 />
-              ) :
-                0 }
+              ) : (
+                0
+              )}
             </DetailsInfoItem.Value>
           </>
-        ) }
+        )}
 
-        { countersQuery.data?.gas_usage_count && (
+        {countersQuery.data?.gas_usage_count && (
           <>
             <DetailsInfoItem.Label
               hint="Gas used by the address"
-              isLoading={ addressQuery.isPlaceholderData || countersQuery.isPlaceholderData }
+              isLoading={addressQuery.isPlaceholderData || countersQuery.isPlaceholderData}
             >
               Gas used
             </DetailsInfoItem.Label>
             <DetailsInfoItem.Value>
-              { addressQuery.data ? (
+              {addressQuery.data ? (
                 <AddressCounterItem
                   prop="gas_usage_count"
-                  query={ countersQuery }
-                  address={ data.hash }
-                  onClick={ handleCounterItemClick }
-                  isAddressQueryLoading={ addressQuery.isPlaceholderData }
-                  isDegradedData={ addressQuery.isDegradedData }
+                  query={countersQuery}
+                  address={data.hash}
+                  onClick={handleCounterItemClick}
+                  isAddressQueryLoading={addressQuery.isPlaceholderData}
+                  isDegradedData={addressQuery.isDegradedData}
                 />
-              ) :
-                0 }
+              ) : (
+                0
+              )}
             </DetailsInfoItem.Value>
           </>
-        ) }
+        )}
 
-        { data.has_validated_blocks && (
+        {data.has_validated_blocks && (
           <>
             <DetailsInfoItem.Label
               hint="Number of blocks validated by this validator"
-              isLoading={ addressQuery.isPlaceholderData || countersQuery.isPlaceholderData }
+              isLoading={addressQuery.isPlaceholderData || countersQuery.isPlaceholderData}
             >
               Blocks validated
             </DetailsInfoItem.Label>
             <DetailsInfoItem.Value>
-              { addressQuery.data ? (
+              {addressQuery.data ? (
                 <AddressCounterItem
                   prop="validations_count"
-                  query={ countersQuery }
-                  address={ data.hash }
-                  onClick={ handleCounterItemClick }
-                  isAddressQueryLoading={ addressQuery.isPlaceholderData }
-                  isDegradedData={ addressQuery.isDegradedData }
+                  query={countersQuery}
+                  address={data.hash}
+                  onClick={handleCounterItemClick}
+                  isAddressQueryLoading={addressQuery.isPlaceholderData}
+                  isDegradedData={addressQuery.isDegradedData}
                 />
-              ) :
-                0 }
+              ) : (
+                0
+              )}
             </DetailsInfoItem.Value>
           </>
-        ) }
+        )}
 
-        { data.block_number_balance_updated_at && (
+        {data.block_number_balance_updated_at && (
           <>
             <DetailsInfoItem.Label
               hint="Block number in which the address was updated"
-              isLoading={ addressQuery.isPlaceholderData }
+              isLoading={addressQuery.isPlaceholderData}
             >
               Last balance update
             </DetailsInfoItem.Label>
             <DetailsInfoItem.Value>
-              <BlockEntity
-                number={ data.block_number_balance_updated_at }
-                isLoading={ addressQuery.isPlaceholderData }
-              />
+              <BlockEntity number={data.block_number_balance_updated_at} isLoading={addressQuery.isPlaceholderData} />
             </DetailsInfoItem.Value>
           </>
-        ) }
-
-        <DetailsSponsoredItem isLoading={ addressQuery.isPlaceholderData }/>
+        )}
       </Grid>
     </>
   );
