@@ -31,6 +31,7 @@ const AddressEntityContentProxy = (props: ContentProps) => {
             { ...props }
             truncation={ implementationName || props.address.name ? 'tail' : props.truncation }
             text={ implementationName || props.address.name || props.address.hash }
+            isTooltipDisabled
           />
         </Box>
       </PopoverTrigger>

@@ -7,6 +7,12 @@ import type { ZkSyncBatchesItem } from './zkSyncL2';
 
 export type BlockType = 'block' | 'reorg' | 'uncle';
 
+export interface BlockBaseFeeCelo {
+  amount: string;
+  breakdown: Array<{ amount: string; percentage: number; address: AddressParam }>;
+  recipient: AddressParam;
+}
+
 export interface Block {
   height: number;
   timestamp: string;
@@ -54,6 +60,7 @@ export interface Block {
   celo?: {
     epoch_number: number;
     is_epoch_block: boolean;
+    base_fee?: BlockBaseFeeCelo;
   };
 }
 

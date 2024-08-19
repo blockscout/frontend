@@ -1,4 +1,4 @@
-import { chakra, Skeleton } from '@chakra-ui/react';
+import { chakra, Skeleton, Tooltip } from '@chakra-ui/react';
 import capitalize from 'lodash/capitalize';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -21,6 +21,7 @@ import useBlockTxsQuery from 'ui/block/useBlockTxsQuery';
 import useBlockWithdrawalsQuery from 'ui/block/useBlockWithdrawalsQuery';
 import TextAd from 'ui/shared/ad/TextAd';
 import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
+import Tag from 'ui/shared/chakra/Tag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -139,6 +140,21 @@ const BlockPageContent = () => {
         return `Block #${ blockQuery.data?.height }`;
     }
   })();
+  const contentAfter = (() => {
+    if (!blockQuery.data?.celo) {
+      return null;
+    }
+
+    if (!blockQuery.data.celo.is_epoch_block) {
+      return (
+        <Tooltip label="Displays the epoch this block belongs to before the epoch is finalized" maxW="280px" textAlign="center">
+          <Tag>Epoch #{ blockQuery.data.celo.epoch_number }</Tag>
+        </Tooltip>
+      );
+    }
+
+    return <Tag bgColor="celo" color="blackAlpha.800">Finalized epoch #{ blockQuery.data.celo.epoch_number }</Tag>;
+  })();
   const titleSecondRow = (
     <>
       { !config.UI.views.block.hiddenFields?.miner && (
@@ -166,6 +182,7 @@ const BlockPageContent = () => {
       <PageTitle
         title={ title }
         backLink={ backLink }
+        contentAfter={ contentAfter }
         secondRow={ titleSecondRow }
         isLoading={ blockQuery.isPlaceholderData }
       />
