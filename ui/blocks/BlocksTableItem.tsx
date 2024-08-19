@@ -44,6 +44,11 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
     >
       <Td fontSize="sm">
         <Flex columnGap={ 2 } alignItems="center" mb={ 2 }>
+          { data.celo?.is_epoch_block && (
+            <Tooltip label={ `Finalized epoch #${ data.celo.epoch_number }` }>
+              <IconSvg name="checkered_flag" boxSize={ 5 } p="1px" isLoading={ isLoading } flexShrink={ 0 }/>
+            </Tooltip>
+          ) }
           <Tooltip isDisabled={ data.type !== 'reorg' } label="Chain reorganizations">
             <BlockEntity
               isLoading={ isLoading }

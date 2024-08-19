@@ -50,6 +50,11 @@ export interface Block {
     'batch_number': number | null;
   };
   arbitrum?: ArbitrumBlockData;
+  // CELO FIELDS
+  celo?: {
+    epoch_number: number;
+    is_epoch_block: boolean;
+  };
 }
 
 type ArbitrumBlockData = {

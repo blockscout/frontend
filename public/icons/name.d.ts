@@ -29,6 +29,7 @@
 	| "burger"
 	| "certified"
 	| "check"
+	| "checkered_flag"
 	| "clock-light"
 	| "clock"
 	| "coins/bitcoin"
