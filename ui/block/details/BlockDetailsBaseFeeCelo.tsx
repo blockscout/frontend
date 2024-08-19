@@ -1,4 +1,4 @@
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex, Link } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -42,6 +42,14 @@ interface Props {
 const BlockDetailsBaseFeeCelo = ({ data }: Props) => {
   const totalBaseFee = BigNumber(data.amount).dividedBy(WEI).toFixed();
 
+  const totalFeeLabel = (
+    <Box whiteSpace="pre-wrap">
+      <span>The FeeHandler regularly burns 80% of its tokens. Non-CELO tokens are swapped to CELO beforehand. The remaining 20% are sent to the </span>
+      <Link isExternal href="https://www.ultragreen.money">Green Fund</Link>
+      <span>.</span>
+    </Box>
+  );
+
   return (
     <>
       <DetailsInfoItem.Label
@@ -53,7 +61,8 @@ const BlockDetailsBaseFeeCelo = ({ data }: Props) => {
         <AddressEntity address={ data.recipient }/>
       </DetailsInfoItem.Value>
       <DetailsInfoItem.Label
-        hint="The FeeHandler regularly burns 80% of its tokens. Non-CELO tokens are swapped to CELO beforehand. The remaining 20% are sent to the Green Fund."
+        hint={ totalFeeLabel }
+        type="popover"
       >
         Base fee total
       </DetailsInfoItem.Label>
