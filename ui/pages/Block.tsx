@@ -14,6 +14,7 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import BlockDetails from 'ui/block/BlockDetails';
+import BlockEpochRewards from 'ui/block/BlockEpochRewards';
 import BlockWithdrawals from 'ui/block/BlockWithdrawals';
 import useBlockBlobTxsQuery from 'ui/block/useBlockBlobTxsQuery';
 import useBlockQuery from 'ui/block/useBlockQuery';
@@ -95,7 +96,12 @@ const BlockPageContent = () => {
           </>
         ),
       } : null,
-  ].filter(Boolean)), [ blockBlobTxsQuery, blockQuery, blockTxsQuery, blockWithdrawalsQuery, hasPagination ]);
+    blockQuery.data?.celo?.is_epoch_block ? {
+      id: 'epoch_rewards',
+      title: 'Epoch rewards',
+      component: <BlockEpochRewards heightOrHash={ heightOrHash }/>,
+    } : null,
+  ].filter(Boolean)), [ blockBlobTxsQuery, blockQuery, blockTxsQuery, blockWithdrawalsQuery, hasPagination, heightOrHash ]);
 
   let pagination;
   if (tab === 'txs') {

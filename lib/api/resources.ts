@@ -51,7 +51,15 @@ import type {
   ArbitrumL2TxnBatchesItem,
 } from 'types/api/arbitrumL2';
 import type { TxBlobs, Blob } from 'types/api/blobs';
-import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters, BlockWithdrawalsResponse, BlockCountdownResponse } from 'types/api/block';
+import type {
+  BlocksResponse,
+  BlockTransactionsResponse,
+  Block,
+  BlockFilters,
+  BlockWithdrawalsResponse,
+  BlockCountdownResponse,
+  BlockEpoch,
+} from 'types/api/block';
 import type { ChartMarketResponse, ChartSecondaryCoinPriceResponse, ChartTransactionResponse } from 'types/api/charts';
 import type { BackendVersionConfig } from 'types/api/configs';
 import type {
@@ -319,6 +327,11 @@ export const RESOURCES = {
   },
   block_withdrawals: {
     path: '/api/v2/blocks/:height_or_hash/withdrawals',
+    pathParams: [ 'height_or_hash' as const ],
+    filterFields: [],
+  },
+  block_epoch: {
+    path: '/api/v2/blocks/:height_or_hash/epoch',
     pathParams: [ 'height_or_hash' as const ],
     filterFields: [],
   },
@@ -993,6 +1006,7 @@ Q extends 'block' ? Block :
 Q extends 'block_countdown' ? BlockCountdownResponse :
 Q extends 'block_txs' ? BlockTransactionsResponse :
 Q extends 'block_withdrawals' ? BlockWithdrawalsResponse :
+Q extends 'block_epoch' ? BlockEpoch :
 Q extends 'txs_stats' ? TransactionsStats :
 Q extends 'txs_validated' ? TransactionsResponseValidated :
 Q extends 'txs_pending' ? TransactionsResponsePending :
