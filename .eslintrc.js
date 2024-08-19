@@ -139,7 +139,6 @@ module.exports = {
     // disabled in favor of @typescript-eslint
     "brace-style": "off",
     camelcase: "off",
-    indent: "off",
     "no-unused-vars": "off",
     "no-use-before-define": "off",
     "no-useless-constructor": "off",
@@ -152,7 +151,7 @@ module.exports = {
     eqeqeq: [ "error", "allow-null" ],
     "id-match": [ "error", "^[\\w$]+$" ],
     "jsx-quotes": [ "error", "prefer-double" ],
-    "linebreak-style": [ "error", "windows" ],
+    "linebreak-style": 0,
     "lines-around-comment": [ "error", {
       beforeBlockComment: true,
       allowBlockStart: true,
@@ -174,7 +173,6 @@ module.exports = {
     "no-with": "error",
     "object-shorthand": "off",
     "one-var": [ "error", "never" ],
-    "operator-linebreak": [ "error", "after" ],
     "prefer-const": "error",
     "quote-props": [ "error", "as-needed", {
       keywords: true,
