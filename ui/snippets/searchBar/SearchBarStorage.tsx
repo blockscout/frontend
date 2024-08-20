@@ -44,16 +44,16 @@ const SearchBarStorage = () => {
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (searchTerm) {
-      const url = route({ pathname: '/search-results', query: { q: searchTerm, type: 'storage' } });
-      mixpanel.logEvent(mixpanel.EventTypes.SEARCH_QUERY, {
-        'Search query': searchTerm,
-        'Source page type': mixpanel.getPageType(pathname),
-        'Result URL': url,
-      });
       saveToRecentKeywords(searchTerm);
-      router.push({ pathname: '/search-results', query: { q: searchTerm, type: 'storage' } }, undefined, { shallow: true });
+      if (query.data && query.data.bucket.length) {
+        onClose();
+        router.push({ pathname: '/bucket-details/[address]', query: { address: query.data.bucket[0].bucket_name } }, undefined, { shallow: true });
+      } else if (query.data && query.data.object.length) {
+        onClose();
+        router.push({ pathname: '/object-details/[address]', query: { address: query.data.object[0].object_name } }, undefined, { shallow: true });
+      }
     }
-  }, [ searchTerm, pathname, router ]);
+  }, [ searchTerm, query.data, onClose, router ]);
 
   const handleFocus = React.useCallback(() => {
     onOpen();

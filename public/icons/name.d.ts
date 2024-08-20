@@ -143,7 +143,6 @@
 	| "social/telegram_filled"
 	| "social/twitter_filled"
 	| "social/twitter"
-	| "social/youtube_filled"
 	| "star_filled"
 	| "star_outline"
 	| "stats"

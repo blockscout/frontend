@@ -9,7 +9,6 @@ import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import useFetch from 'lib/hooks/useFetch';
-// import useIssueUrl from 'lib/hooks/useIssueUrl';
 import NetworkAddToWallet from 'ui/shared/NetworkAddToWallet';
 
 import FooterLinkItem from './FooterLinkItem';
@@ -29,20 +28,7 @@ const Footer = () => {
     },
   });
   const apiVersionUrl = getApiVersionUrl(backendVersionData?.backend_version);
-  // const issueUrl = useIssueUrl(backendVersionData?.backend_version);
   const BLOCKSCOUT_LINKS = [
-    // {
-    //   icon: 'edit' as const,
-    //   iconSize: '16px',
-    //   text: 'Submit an issue',
-    //   url: issueUrl,
-    // },
-    // {
-    //   icon: 'social/canny' as const,
-    //   iconSize: '20px',
-    //   text: 'Feature request',
-    //   url: 'https://blockscout.canny.io/feature-requests',
-    // },
     {
       icon: 'social/git' as const,
       iconSize: '18px',
