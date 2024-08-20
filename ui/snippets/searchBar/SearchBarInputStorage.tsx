@@ -106,7 +106,7 @@ const SearchBarInputStorage = (
               paddingRight: '36px',
             },
           }}
-          placeholder={ isMobile ? 'Search by bucket / ... ' : 'Search by bucket / object / group ... ' }
+          placeholder={ isMobile ? 'Search by Bucket / ... ' : 'Search by Bucket / Object ... ' }
           onChange={ handleChange }
           border={ isHomepage ? 'none' : '1px solid' }
           borderRadius="29px"

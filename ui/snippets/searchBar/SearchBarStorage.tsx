@@ -28,30 +28,30 @@ import SearchBarSuggestStorage from './SearchBarSuggest/SearchBarSuggestStorage'
 import useQuickSearchQueryStorage from './useQuickSearchQueryStorage';
 
 const SCROLL_CONTAINER_ID = 'search_bar_popover_content';
+
 const SearchBarStorage = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const inputRef = React.useRef<HTMLFormElement>(null);
   const menuRef = React.useRef<HTMLDivElement>(null);
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const menuWidth = React.useRef<number>(0);
-  const type = React.useRef<string>('default');
   const router = useRouter();
 
   const recentSearchKeywords = getRecentSearchKeywords();
 
-  const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query, pathname } = useQuickSearchQueryStorage(type.current);
+  const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query, pathname, type, setType } = useQuickSearchQueryStorage();
 
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (searchTerm) {
-      const url = route({ pathname: '/search-results', query: { q: searchTerm } });
+      const url = route({ pathname: '/search-results', query: { q: searchTerm, type: 'storage' } });
       mixpanel.logEvent(mixpanel.EventTypes.SEARCH_QUERY, {
         'Search query': searchTerm,
         'Source page type': mixpanel.getPageType(pathname),
         'Result URL': url,
       });
       saveToRecentKeywords(searchTerm);
-      router.push({ pathname: '/search-results', query: { q: searchTerm } }, undefined, { shallow: true });
+      router.push({ pathname: '/search-results', query: { q: searchTerm, type: 'storage' } }, undefined, { shallow: true });
     }
   }, [ searchTerm, pathname, router ]);
 
@@ -66,7 +66,6 @@ const SearchBarStorage = () => {
 
   const handleOutsideClick = React.useCallback((event: Event) => {
     const isFocusInInput = inputRef.current?.contains(event.target as Node);
-
     if (!isFocusInInput) {
       handelHide();
     }
@@ -110,12 +109,20 @@ const SearchBarStorage = () => {
     };
   }, [ calculateMenuWidth ]);
 
+  const showMoreClicked = React.useCallback(() => {
+    if (type === 'default') {
+      return false;
+    } else {
+      return true;
+    }
+  }, [ type ]);
+
   return (
     <>
       <Popover
         isOpen={ isOpen && (searchTerm.trim().length > 0 || recentSearchKeywords.length > 0) }
         autoFocus={ false }
-        onClose={ onClose }
+        // onClose={ onClose }
         placement="bottom-start"
         isLazy
       >
@@ -157,6 +164,8 @@ const SearchBarStorage = () => {
                     searchTerm={ debouncedSearchTerm }
                     onItemClick={ handleItemClick }
                     containerId={ SCROLL_CONTAINER_ID }
+                    setType={ setType }
+                    showMoreClicked={ showMoreClicked() }
                   />
                 ) }
               </Box>
@@ -164,7 +173,7 @@ const SearchBarStorage = () => {
             { searchTerm.trim().length > 0 && query.data && query.data.length >= 50 && (
               <PopoverFooter>
                 <LinkInternal
-                  href={ route({ pathname: '/search-results', query: { q: searchTerm } }) }
+                  href={ route({ pathname: '/search-results', query: { q: searchTerm, type: 'storage' } }) }
                   fontSize="sm"
                 >
                 View all results
