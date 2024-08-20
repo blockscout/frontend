@@ -14,22 +14,22 @@ const Page: NextPage = () => {
     {
       tableName: 'bucket',
       fields: [
-        `objects_aggregate(where: {}) {
+        'bucket_name',
+        'bucket_id',
+        'update_time',
+        'status',
+        `active_object_count: objects_aggregate {
           aggregate {
             count
           }
         }`,
+        'owner_address',
       ],
-      limit: 10, // Example: set limit to 10
-      offset: 0, // Example: set offset to 0
-      // If you need to add where or order conditions, you can do so here
-      // where: { id: { _eq: 8 } }, // Example filter condition
-      // order: { create_at: "DESC" }  // Example order condition
     },
   ];
   const talbeList: Array<BucketTalbeListType> = [];
 
-  const { loading, data } = useGraphqlQuery('Bucket', queries);
+  const { loading, data } = useGraphqlQuery('Buckets', queries);
   data?.bucket?.forEach((v: BucketRequestType) => {
     talbeList.push({
       'Bucket Name': v.bucket_name,

@@ -41,18 +41,24 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       tableName: 'bucket',
       fields: [
         'bucket_name',
-        'bucket_status',
-        'charged_read_quota',
-        'create_at',
-        'global_virtual_group_family_id',
-        'height',
-        'id',
-        'owner',
-        'payment_address',
-        'source_type',
-        'sp_as_delegated_agent_disabled',
         'tags',
-        'visibility',
+        'bucket_id',
+        `objects {
+          object_name
+          content_type
+          status
+          visibility
+          update_time
+          creator_address
+        }`,
+        'status',
+        'delete_at',
+        'update_time',
+        'storage_size',
+        'charge_size',
+        'creator: owner_address',
+        'payment_address',
+        'global_virtual_group_family_id',
       ],
       limit: 10, // Example: set limit to 10
       offset: 0, // Example: set offset to 0
@@ -78,9 +84,9 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
 
   const overview = {
     'Bucket Name': details?.bucket_name,
-    'Bucket Tags': details?.tags,
-    'Bucket ID': details?.id,
-    'Bucket No.': details?.id,
+    'Bucket Tags': Object.entries(details?.tags).length.toString(),
+    'Bucket ID': details?.bucket_id,
+    'Bucket No.': details?.bucket_id,
     'Active Objects Count': details?.global_virtual_group_family_id,
     'Bucket Status': details?.bucket_status,
     Deleted: details?.sp_as_delegated_agent_disabled ? 'Yes' : 'No',

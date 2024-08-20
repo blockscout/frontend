@@ -25,13 +25,9 @@ const ObjectDetails: NextPage = () => {
         'update_time',
         'bucket_name',
         'creator_address',
-        'id',
       ],
-      limit: 10, // Example: set limit to 10
-      offset: 0, // Example: set offset to 0
-      // If you need to add where or order conditions, you can do so here
-      // where: { id: { _eq: 8 } }, // Example filter condition
-      // order: { create_at: "DESC" }  // Example order condition
+      limit: 10,
+      offset: 0,
     },
   ];
   const [ talbeList, setTalbeList ] = React.useState<Array<ObjetTalbeListType>>([]);

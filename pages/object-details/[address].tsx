@@ -44,32 +44,29 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
     {
       tableName: 'object',
       fields: [
-        'bucket_name',
-        'checksums',
-        'content_type',
-        'create_at',
-        'creator',
-        'height',
-        'id',
-        'is_updating',
-        'local_virtual_group_id',
         'object_name',
-        'object_status',
-        'owner',
-        'payload_size',
-        'redundancy_type',
-        'source_type',
         'tags',
-        'updated_at',
-        'updated_by',
-        'version',
+        'object_id',
+        'content_type',
+        'payload_size',
+        'status',
+        'delete_at',
         'visibility',
+        'bucket_name',
+        'update_time',
+        'removed',
+        'creator: owner_address',
+        'owner: owner_address',
+        `primary_sp: bucket {
+          global_virtual_group_family {
+            primary_sp {
+              moniker
+            }
+            global_virtual_group_ids
+          }
+        }`,
       ],
-      limit: 10, // Example: set limit to 10
-      offset: 0, // Example: set offset to 0
-      // If you need to add where or order conditions, you can do so here
-      where: { id: { _eq: Number(router.query.address) } }, // Example filter condition
-      // order: { create_at: "DESC" } // Example order condition
+      where: { object_id: { _eq: router.query.address } },
     },
     {
       tableName: 'transaction',
@@ -85,21 +82,22 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
     },
   ];
   const { data } = useGraphqlQuery('Objects', queries);
+
   const details = data?.object && data?.object[0];
 
   const overview: ObjectDetailsOverviewType = {
     'Object Name': details?.object_name,
-    'Object Tags': details?.tags,
-    'Object ID': details?.id,
-    'Object No.': parseInt(details?.id, 8).toString(),
-    Type: details?.id,
-    'Object Size': details?.size || '',
-    'Object Status': details?.object_status,
-    Deleted: details?.deleted || 'NO',
+    'Object Tags': Object.entries(details?.tags).length.toString(),
+    'Object ID': details?.object_id,
+    'Object No.': details?.object_id,
+    Type: details?.content_type,
+    'Object Size': details?.content_type || '',
+    'Object Status': details?.status,
+    Deleted: details?.removed || 'NO',
   };
   const more = {
     Visibility: {
-      value: details?.version,
+      value: details?.visibility,
       status: 'none',
     },
     'Bucket Name': {
@@ -108,7 +106,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       status: 'bucketPage',
     },
     'Last Updated Time': {
-      value: details?.updated_at,
+      value: details?.update_time,
       status: 'time',
     },
     Creator: {

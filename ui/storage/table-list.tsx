@@ -117,7 +117,7 @@ function TableList(props: Props<string>) {
                                       </NextLink>
                                     ) :
                                       value === 'Group Name' ? (
-                                        <NextLink href={{ pathname: '/group-details/[address]', query: { address: title['Group ID'] || '' } }}>
+                                        <NextLink href={{ pathname: '/group-details/[address]', query: { address: title[value] || '' } }}>
                                           <Box><Skeleton isLoaded={ !props.loading }>{ title[value] }</Skeleton></Box>
                                         </NextLink>
                                       ) :

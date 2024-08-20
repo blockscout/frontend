@@ -17,17 +17,18 @@ const Page: NextPage = () => {
     {
       tableName: 'storage_group',
       fields: [
-        'id',
         'group_name',
-        'owner',
-        'source_type',
-        'height',
+        'group_id',
+        'update_at',
+        `active_member_count: group_members_aggregate {
+          aggregate {
+            count
+          }
+        }`,
+        'owner_address',
       ],
-      limit: 10, // Example: set limit to 10
-      offset: 0, // Example: set offset to 0
-      // If you need to add where or order conditions, you can do so here
-      // where: { id: 8 }, // Example filter condition
-      // order: { create_at: "DESC" }  // Example order condition
+      limit: 10,
+      offset: 0,
     },
   ];
   const talbeList: Array<GroupTalbeListType> = [];

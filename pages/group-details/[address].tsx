@@ -40,19 +40,21 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
     {
       tableName: 'storage_group',
       fields: [
-        'extra',
         'group_name',
-        'height',
-        'id',
-        'owner',
-        'source_type',
         'tags',
+        'group_id',
+        'extra',
+        'source_type',
+        'update_at',
+        'create_at',
+        `members: group_members {
+          id
+          member
+          expiration_time
+        }`,
+        'owner_address',
       ],
-      limit: 10, // Example: set limit to 10
-      offset: 0, // Example: set offset to 0
-      // If you need to add where or order conditions, you can do so here
-      where: { id: { _eq: router.query.address } }, // Example filter condition
-      // order: { create_at: "DESC" } // Example order condition
+      where: { group_name: { _eq: router.query.address } },
     },
     {
       tableName: 'transaction',
@@ -72,8 +74,8 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
 
   const overview = {
     'Group Name': details?.group_name,
-    'Group Tags': details?.tags,
-    'Group ID': details?.id,
+    'Group Tags': Object.entries(details?.tags).length.toString(),
+    'Group ID': details?.group_id,
     Extra: details?.extra,
     'Source Type': details?.source_type,
   };
