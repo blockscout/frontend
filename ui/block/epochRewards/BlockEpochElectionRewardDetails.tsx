@@ -44,7 +44,7 @@ const BlockEpochElectionRewardDetails = ({ type, token }: Props) => {
   }
 
   return (
-    <Flex flexDir="column" rowGap={ 3 } p={ 4 } bgColor={ bgColor } borderRadius="base">
+    <Flex flexDir="column" rowGap={ 3 } p={ 4 } bgColor={ bgColor } borderRadius="base" maxH="360px" overflowY="scroll">
       { query.data.items.map((item, index) => {
 
         const amount = getCurrencyValue({
@@ -53,11 +53,13 @@ const BlockEpochElectionRewardDetails = ({ type, token }: Props) => {
         });
 
         return (
-          <Flex key={ index } alignItems="center" columnGap={ 2 } fontWeight={ 400 }>
+          <Flex key={ index } alignItems="center" columnGap={ 2 } fontWeight={ 400 } flexWrap="wrap">
             <AddressEntity address={ item.account } noIcon truncation="constant"/>
             <Box flexShrink={ 0 } color="text_secondary">got</Box>
-            <Box flexShrink={ 0 } mr={ -1 }>{ amount.valueStr }</Box>
-            <TokenEntity token={ token } noIcon onlySymbol w="auto"/>
+            <Flex flexShrink={ 0 } columnGap={ 1 } alignItems="center">
+              <Box>{ amount.valueStr }</Box>
+              <TokenEntity token={ token } noIcon onlySymbol w="auto"/>
+            </Flex>
             <Box flexShrink={ 0 } color="text_secondary">on behalf of</Box>
             <AddressEntity address={ item.associated_account } noIcon truncation="constant"/>
           </Flex>

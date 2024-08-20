@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { BlockEpoch } from 'types/api/block';
 
+import BlockEpochElectionRewardsListItem from './BlockEpochElectionRewardsListItem';
 import BlockEpochElectionRewardsTableItem from './BlockEpochElectionRewardsTableItem';
 
 interface Props {
@@ -46,7 +47,23 @@ const BlockEpochElectionRewards = ({ data, isLoading }: Props) => {
         </Table>
       </Hide>
       <Show below="lg" ssr={ false }>
-        MOBILE
+        { Object.entries(data.aggregated_election_rewards).map((entry) => {
+          const key = entry[0] as keyof BlockEpoch['aggregated_election_rewards'];
+          const value = entry[1];
+
+          if (!value) {
+            return null;
+          }
+
+          return (
+            <BlockEpochElectionRewardsListItem
+              key={ key }
+              type={ key }
+              isLoading={ isLoading }
+              data={ value }
+            />
+          );
+        }) }
       </Show>
     </Box>
   );
