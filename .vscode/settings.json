@@ -1,4 +1,6 @@
 {
     "typescript.tsdk": "node_modules/typescript/lib",
-    "nuxt.isNuxtApp": false
+    "nuxt.isNuxtApp": false,
+    "GitCommitPlugin.ShowEmoji": false,
+    "GitCommitPlugin.MaxSubjectCharacters": 50
 }

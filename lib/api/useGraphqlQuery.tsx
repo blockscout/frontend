@@ -84,7 +84,17 @@ const useGraphqlQuery = (aliasName: string, queries: Array<QueryConfig>): QueryR
 
   // Structure the returned data to make it more usable
   const result = queries.reduce<Record<string, any>>((acc, { tableName }) => {
-    acc[tableName] = data ? data[tableName] : null;
+    if (data && data[tableName]) {
+      acc[tableName] = data[tableName].map((item: Record<string, any>) => {
+        return {
+          ...item,
+          type: item.__typename,
+          __typename: undefined, // Optionally remove __typename
+        };
+      });
+    } else {
+      acc[tableName] = null;
+    }
     return acc;
   }, {});
 

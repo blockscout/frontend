@@ -26,13 +26,13 @@ declare module "nextjs-routes" {
     | StaticRoute<"/api/metrics">
     | StaticRoute<"/api/proxy">
     | StaticRoute<"/api-docs">
-    | StaticRoute<"/apps">
     | DynamicRoute<"/apps/[id]", { "id": string }>
+    | StaticRoute<"/apps">
     | StaticRoute<"/auth/auth0">
     | StaticRoute<"/auth/profile">
     | StaticRoute<"/auth/unverified-email">
-    | StaticRoute<"/batches">
     | DynamicRoute<"/batches/[number]", { "number": string }>
+    | StaticRoute<"/batches">
     | DynamicRoute<"/blobs/[hash]", { "hash": string }>
     | DynamicRoute<"/block/[height_or_hash]", { "height_or_hash": string }>
     | StaticRoute<"/blocks">
@@ -49,8 +49,8 @@ declare module "nextjs-routes" {
     | StaticRoute<"/group">
     | StaticRoute<"/">
     | StaticRoute<"/login">
-    | StaticRoute<"/name-domains">
     | DynamicRoute<"/name-domains/[name]", { "name": string }>
+    | StaticRoute<"/name-domains">
     | DynamicRoute<"/object-details/[address]", { "address": string }>
     | StaticRoute<"/object">
     | DynamicRoute<"/op/[hash]", { "hash": string }>

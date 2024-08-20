@@ -9,9 +9,11 @@ import { route } from 'nextjs-routes';
 import SearchBarSuggestAddress from './SearchBarSuggestAddress';
 import SearchBarSuggestBlob from './SearchBarSuggestBlob';
 import SearchBarSuggestBlock from './SearchBarSuggestBlock';
+import SearchBarSuggestBucket from './SearchBarSuggestBucket';
 import SearchBarSuggestDomain from './SearchBarSuggestDomain';
 import SearchBarSuggestItemLink from './SearchBarSuggestItemLink';
 import SearchBarSuggestLabel from './SearchBarSuggestLabel';
+import SearchBarSuggestObject from './SearchBarSuggestObject';
 import SearchBarSuggestToken from './SearchBarSuggestToken';
 import SearchBarSuggestTx from './SearchBarSuggestTx';
 import SearchBarSuggestUserOp from './SearchBarSuggestUserOp';
@@ -24,7 +26,6 @@ interface Props {
 }
 
 const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) => {
-
   const url = (() => {
     switch (data.type) {
       case 'token': {
@@ -49,6 +50,12 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) =>
       }
       case 'ens_domain': {
         return route({ pathname: '/address/[hash]', query: { hash: data.address } });
+      }
+      case 'bucket': {
+        return route({ pathname: '/bucket-details/[address]', query: { address: data.bucket_name } });
+      }
+      case 'object': {
+        return route({ pathname: '/object-details/[address]', query: { address: data.object_name } });
       }
     }
   })();
@@ -80,6 +87,12 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) =>
       }
       case 'ens_domain': {
         return <SearchBarSuggestDomain data={ data } searchTerm={ searchTerm } isMobile={ isMobile }/>;
+      }
+      case 'bucket': {
+        return <SearchBarSuggestBucket data={ data } searchTerm={ searchTerm } ></SearchBarSuggestBucket>;
+      }
+      case 'object': {
+        return <SearchBarSuggestObject data={ data } searchTerm={ searchTerm } ></SearchBarSuggestObject>;
       }
     }
   })();
