@@ -4,6 +4,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { BLOCK_EPOCH } from 'stubs/block';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 
+import BlockEpochElectionRewards from './epochRewards/BlockEpochElectionRewards';
 import BlockEpochRewardsDistribution from './epochRewards/BlockEpochRewardsDistribution';
 
 interface Props {
@@ -28,7 +29,12 @@ const BlockEpochRewards = ({ heightOrHash }: Props) => {
     return <span>No block epoch rewards data</span>;
   }
 
-  return <BlockEpochRewardsDistribution data={ query.data } isLoading={ query.isPlaceholderData }/>;
+  return (
+    <>
+      <BlockEpochRewardsDistribution data={ query.data } isLoading={ query.isPlaceholderData }/>
+      <BlockEpochElectionRewards data={ query.data } isLoading={ query.isPlaceholderData }/>
+    </>
+  );
 };
 
 export default React.memo(BlockEpochRewards);
