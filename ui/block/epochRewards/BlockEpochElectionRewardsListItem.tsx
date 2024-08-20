@@ -34,7 +34,7 @@ const BlockEpochElectionRewardsListItem = ({ data, isLoading, type }: Props) => 
       onClick={ isLoading || !data.count ? undefined : section.onToggle }
       cursor={ isLoading || !data.count ? undefined : 'pointer' }
     >
-      <Flex my="3px" columnGap={ 3 } alignItems="center">
+      <Flex my="3px" columnGap={ 3 } alignItems="center" flexWrap="wrap" rowGap={ 1 }>
         { data.count ? (
           <Skeleton isLoaded={ !isLoading } display="flex" borderRadius="sm">
             <IconButton
