@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { Flex, Box } from '@chakra-ui/react';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
@@ -8,9 +7,11 @@ import React from 'react';
 import type { Props } from 'nextjs/getServerSideProps';
 import PageNextJs from 'nextjs/PageNextJs';
 
+import useGraphqlQuery from 'lib/api/useGraphqlQuery';
+import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
-const HandDetails = dynamic(() => import('ui/storage/hand-details'), { ssr: false });
+const HandDetails = dynamic(() => import('ui/storage/head-details'), { ssr: false });
 const TableDetails = dynamic(() => import('ui/storage/table-details'), { ssr: false });
 
 function formatPubKey(pubKey: string | undefined, _length = 4, _preLength = 4) {
@@ -25,45 +26,77 @@ function formatPubKey(pubKey: string | undefined, _length = 4, _preLength = 4) {
 
 const ObjectDetails: NextPage<Props> = (props: Props) => {
   const router = useRouter();
+  const [ objectAddress, setobjectAddress ] = React.useState<string>('');
+  React.useEffect(() => {
+  }, [ objectAddress ]);
+  const changeTable = React.useCallback((value: string) => {
+    setobjectAddress(value);
+  }, []);
+  const routerFallback = () => () => {
+    router.back();
+  };
+
+  const queries = [
+    {
+      tableName: 'storage_group',
+      fields: [
+        'extra',
+        'group_name',
+        'height',
+        'id',
+        'owner',
+        'source_type',
+        'tags',
+      ],
+      limit: 10, // Example: set limit to 10
+      offset: 0, // Example: set offset to 0
+      // If you need to add where or order conditions, you can do so here
+      where: { id: { _eq: router.query.address } }, // Example filter condition
+      // order: { create_at: "DESC" } // Example order condition
+    },
+    {
+      tableName: 'transaction',
+      fields: [
+        'gas_used',
+        'gas_wanted',
+        'logs',
+        'memo',
+        'raw_log',
+        'messages',
+        'hash',
+      ],
+    },
+  ];
+  const { data } = useGraphqlQuery('Objects', queries);
+  const details = data?.storage_group && data?.storage_group[0];
 
   const overview = {
-    'Object Name': '0xdlz',
-    'Object Tags': '0',
-    'Object ID': '1',
-    'Object No.': '24521',
-    Type: '001',
-    'Object Size': 'Created',
-    'Object Status': 'Sealed',
-    Deleted: 'NO',
+    'Group Name': details?.group_name,
+    'Group Tags': details?.tags,
+    'Group ID': details?.id,
+    Extra: details?.extra,
+    'Source Type': details?.source_type,
   };
   const more = {
-    Visibility: {
+    'Last Updated': {
       value: 'Public',
       status: 'none',
     },
-    'Bucket Name': {
+    'Created Block': {
       value: 'mainnet-bsc-blocks',
       status: 'bucketPage',
     },
-    'Last Updated Time': {
+    'Resources Count': {
       value: formatPubKey('0x23c845626A460012EAa27842dd5d24b465B356E7'),
       status: 'time',
     },
-    Creator: {
+    'Active Group Member Count': {
       value: '0x4c1a93cd42b6e4960db845bcf9d540b081b1a63a',
       status: 'copyLink',
     },
     Owner: {
       value: '0x4c1a93cd42b6e4960db845bcf9d540b081b1a63a',
       status: 'copyLink',
-    },
-    'Primary SP': {
-      value: 'nodereal',
-      status: 'link',
-    },
-    'Secondary SP Addresses': {
-      value: 'Click to view all',
-      status: 'clickViewAll',
     },
   };
   const tapList = [ 'Transactions', 'Versions' ];
@@ -77,23 +110,12 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
     },
   ];
 
-  const [ data, setData ] = React.useState<string>('');
-  React.useEffect(() => {
-  }, [ data ]);
-  const changeTable = React.useCallback((value: string) => {
-    setData(value);
-  }, []);
-
-  const backPage = () => () => {
-  };
   return (
     <PageNextJs pathname="/group-details/[address]" query={ props.query }>
-      <Flex>
-        <Box ml="6px" onClick={ backPage() }>
-          Back
-        </Box>
-        <PageTitle title="Group Details" withTextAd/>
-        <Box ml="6px">{ formatPubKey(router.query.address?.toString()) }</Box>
+      <Flex align="center" marginBottom="24px">
+        <IconSvg onClick={ routerFallback() } cursor="pointer" w="24px" h="24px" marginRight="4px" name="Fallback"></IconSvg>
+        <PageTitle marginBottom="0" title="Group Details" withTextAd/>
+        <Box ml="6px">{ router.query.address }</Box>
       </Flex>
       <HandDetails overview={ overview } more={ more }/>
       <TableDetails tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead } changeTable={ changeTable }/>

@@ -132,7 +132,18 @@ const Page = (props: Props) => {
                 borderColor: '#FFFFFF',
               }}>
                 <Td border="none" fontWeight="400" fontSize="14px" color="rgba(0, 0, 0, 0.4)" p="12px 0">{ key }</Td>
-                <Td border="none" fontWeight="500" fontSize="12px" color="#000000" p="12px 0" textAlign="right">{ value }</Td>
+                <Td border="none" fontWeight="500" fontSize="12px" color="#000000" p="12px 0" textAlign="right">
+                  {
+                    key === 'Bucket Status' || key === 'Deleted' || key === 'Object Status' || key === 'Source Type' ? (
+                      <Box bg="#30D3BF" display="inline-block" padding="4px 12px" color="#FFFFFF" borderRadius="23px">
+                        { value }
+                      </Box>
+                    ) : (
+                      <Text>
+                        { value }
+                      </Text>
+                    ) }
+                </Td>
               </Tr>
             )) }
           </Tbody>
@@ -192,7 +203,13 @@ const Page = (props: Props) => {
                           values.status === 'clickViewAll' ? (
                             <Popover closeOnBlur={ false }>
                               <PopoverTrigger>
-                                <Button height="auto" fontWeight="500" fontSize="12px" padding="0px" variant="text">{ values.value }</Button>
+                                <Button
+                                  borderRadius="none"
+                                  height="auto"
+                                  fontWeight="500"
+                                  fontSize="12px"
+                                  padding="0px"
+                                  variant="text">{ values.value }</Button>
                               </PopoverTrigger>
                               <PopoverContent right="94px" w="auto">
                                 <PopoverHeader

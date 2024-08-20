@@ -14,12 +14,11 @@ const Page: NextPage = () => {
     {
       tableName: 'bucket',
       fields: [
-        'bucket_name',
-        'id',
-        'create_at',
-        'bucket_status',
-        'tags',
-        'owner',
+        `objects_aggregate(where: {}) {
+          aggregate {
+            count
+          }
+        }`,
       ],
       limit: 10, // Example: set limit to 10
       offset: 0, // Example: set offset to 0
@@ -30,13 +29,13 @@ const Page: NextPage = () => {
   ];
   const talbeList: Array<BucketTalbeListType> = [];
 
-  const { data } = useGraphqlQuery('Bucket', queries);
+  const { loading, data } = useGraphqlQuery('Bucket', queries);
   data?.bucket?.forEach((v: BucketRequestType) => {
     talbeList.push({
       'Bucket Name': v.bucket_name,
       'Bucket ID': v.id,
       'Last Updated Time': v.create_at,
-      Status: v.tags,
+      Status: v.tags || 'Create',
       'Active Objects Count': v.owner,
       Creator: v.owner,
     });
@@ -46,7 +45,7 @@ const Page: NextPage = () => {
   return (
     <PageNextJs pathname="/bucket">
       <PageTitle title="Buckets" withTextAd/>
-      <TableList tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead }/>
+      <TableList loading={ loading } tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead }/>
     </PageNextJs>
   );
 };

@@ -56,6 +56,7 @@
 	| "error-pages\\429"
 	| "error-pages\\500"
 	| "explorer"
+	| "Fallback"
 	| "files\\csv"
 	| "files\\image"
 	| "files\\json"

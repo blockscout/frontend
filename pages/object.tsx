@@ -17,26 +17,15 @@ const ObjectDetails: NextPage = () => {
     {
       tableName: 'object',
       fields: [
-        'bucket_name',
-        'checksums',
-        'content_type',
-        'create_at',
-        'creator',
-        'height',
-        'id',
-        'is_updating',
-        'local_virtual_group_id',
         'object_name',
-        'object_status',
-        'owner',
+        'content_type',
         'payload_size',
-        'redundancy_type',
-        'source_type',
-        'tags',
-        'updated_at',
-        'updated_by',
-        'version',
+        'status',
         'visibility',
+        'update_time',
+        'bucket_name',
+        'creator_address',
+        'id',
       ],
       limit: 10, // Example: set limit to 10
       offset: 0, // Example: set offset to 0
@@ -45,22 +34,43 @@ const ObjectDetails: NextPage = () => {
       // order: { create_at: "DESC" }  // Example order condition
     },
   ];
-  const talbeList: Array<ObjetTalbeListType> = [];
+  const [ talbeList, setTalbeList ] = React.useState<Array<ObjetTalbeListType>>([]);
 
-  const { data } = useGraphqlQuery('Objects', queries);
-  data?.object?.forEach((v: ObjetRequestType) => {
-    talbeList.push({
-      'Object Name': v.object_name,
-      Type: v.content_type,
-      'Object Size': v.payload_size + 'KB',
-      Status: v.object_status,
-      Visibility: v.visibility,
-      'Last Updated Time': v.updated_at,
-      Bucket: v.bucket_name,
-      Creator: v.creator,
-      id: v.id,
-    });
-  });
+  // for (let index = 0; index < 1; index++) {
+  //   talbeList.push({
+  //     'Object Name': 'asdasd',
+  //     Creator: 'asdasd',
+  //     Type: 'asdasd',
+  //     'Object Size': 'asdasd',
+  //     Status: 'v.object_status',
+  //     Visibility: 'v.visibility',
+  //     'Last Updated Time': 'v.updated_at',
+  //     Bucket: 'v.bucket_name',
+  //     id: 'v.id',
+  //   });
+  // }
+
+  const { loading, data } = useGraphqlQuery('Objects', queries);
+  const [ skeLoading, setSkeLoading ] = React.useState<boolean>(true);
+  setTimeout(() => {
+    setTalbeList([]);
+    if (!loading) {
+      setSkeLoading(false);
+      data?.object?.forEach((v: ObjetRequestType) => {
+        talbeList.push({
+          'Object Name': v.object_name,
+          Type: v.content_type,
+          'Object Size': v.payload_size + 'KB',
+          Status: v.object_status,
+          Visibility: v.visibility,
+          'Last Updated Time': v.updated_at,
+          Bucket: v.bucket_name,
+          Creator: v.creator,
+          id: v.id,
+        });
+      });
+    }
+  }, 3000);
 
   const tapList = [ 'Transactions', 'Versions' ];
 
@@ -68,7 +78,7 @@ const ObjectDetails: NextPage = () => {
   return (
     <PageNextJs pathname="/object">
       <PageTitle title="Objects" withTextAd/>
-      <TableList tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead }/>
+      <TableList loading={ skeLoading } tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead }/>
     </PageNextJs>
   );
 };

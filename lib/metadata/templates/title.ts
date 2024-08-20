@@ -46,6 +46,13 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/name-domains/[name]': '%network_name% %name% domain details',
   '/validators': '%network_name% validators list',
   '/gas-tracker': '%network_name% gas tracker - Current gas fees',
+  '/bucket-details/[address]': '%network_name% bucket details',
+  '/group-details/[address]': '%network_name% group details',
+  '/object-details/[address]': '%network_name% object details',
+  '/faucet': '%network_name% faucet',
+  '/bucket': '%network_name% bucket',
+  '/group': '%network_name% group',
+  '/object': '%network_name% object',
 
   // service routes, added only to make typescript happy
   '/login': '%network_name% login',
@@ -61,13 +68,6 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/api/faucet': '%network_name% node API faucet',
   '/auth/auth0': '%network_name% authentication',
   '/auth/unverified-email': '%network_name% unverified email',
-  '/bucket-details/[address]': '%network_name% unverified bucket-details',
-  '/group-details/[address]': '%network_name% unverified group-details',
-  '/object-details/[address]': '%network_name% unverified object-details',
-  '/faucet': '',
-  '/bucket': '',
-  '/group': '',
-  '/object': '',
 };
 
 const TEMPLATE_MAP_ENHANCED: Partial<Record<Route['pathname'], string>> = {

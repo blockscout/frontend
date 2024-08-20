@@ -32,7 +32,7 @@ const Page: NextPage = () => {
   ];
   const talbeList: Array<GroupTalbeListType> = [];
 
-  const { data } = useGraphqlQuery('storage_group', queries);
+  const { loading, data } = useGraphqlQuery('storage_group', queries);
   data?.storage_group?.forEach((v: GroupRequestType) => {
     talbeList.push({
       'Group Name': v.group_name,
@@ -47,7 +47,7 @@ const Page: NextPage = () => {
   return (
     <PageNextJs pathname="/group">
       <PageTitle title="Groups" withTextAd/>
-      <TableList tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead }/>
+      <TableList loading={ loading } tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead }/>
     </PageNextJs>
   );
 };

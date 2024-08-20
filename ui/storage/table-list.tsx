@@ -11,16 +11,20 @@ import {
   Flex,
   Input,
   Box,
+  Skeleton,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React from 'react';
 
 import type { TalbeListType } from 'types/storage';
 
+import Pagination from './Pagination';
+
 type Props<T extends string> = {
   tapList?: Array<T> | undefined;
   talbeList?: Array<TalbeListType> | undefined;
   tabThead?: Array<T> | undefined;
+  loading: boolean;
 }
 function formatPubKey(pubKey: string | undefined, _length = 4, _preLength = 4) {
   if (!pubKey) {
@@ -32,7 +36,7 @@ function formatPubKey(pubKey: string | undefined, _length = 4, _preLength = 4) {
   return pubKey.substr(0, _preLength || _length) + '...' + pubKey.substr(_length * -1, _length);
 }
 
-function tableList(props: Props<string>) {
+function TableList(props: Props<string>) {
   return (
     <>
       <Flex justifyContent="right">
@@ -43,8 +47,8 @@ function tableList(props: Props<string>) {
           borderRadius="29px" width="344px" height="42px" placeholder="Search by Object Name or ID">
         </Input>
       </Flex>
-      <TableContainer marginTop="16px" border="1px" borderRadius="12px" borderColor="rgba(0, 0, 0, 0.06);" padding="0 4px">
-        <Table variant="bubble">
+      <TableContainer marginTop="16px" border="1px" borderRadius="12px" borderColor="rgba(0, 0, 0, 0.06);" padding="0 4px 78px 4px">
+        <Table variant="bubble" position="relative">
           <Thead>
             <Tr>
               { props.tabThead?.map((value, index) => (
@@ -55,7 +59,9 @@ function tableList(props: Props<string>) {
                   p="24px 24px 10px 24px"
                   bg="#FFFF"
                   borderBottom="1px"
-                  borderColor="rgba(0, 0, 0, 0.1)">{ value }</Th>
+                  borderColor="rgba(0, 0, 0, 0.1)">
+                  { value }
+                </Th>
               )) }
             </Tr>
           </Thead>
@@ -79,40 +85,59 @@ function tableList(props: Props<string>) {
                             value === 'txnHash' ? (
                               <Tooltip label={ title[value] } placement="top" bg="#FFFFFF" >
                                 <NextLink href={{ pathname: '/tx/[hash]', query: { hash: title[value] || '' } }}>
-                                  { formatPubKey(title[value]) }
+                                  <Box overflow="hidden">
+                                    <Skeleton isLoaded={ !props.loading }>{ formatPubKey(title[value]) }</Skeleton>
+                                  </Box>
                                 </NextLink>
                               </Tooltip >
                             ) :
                               value === 'Owner' || value === 'Creator' ? (
                                 <NextLink href={{ pathname: '/address/[hash]', query: { hash: title[value] || '' } }}>
-                                  <Box overflow="hidden">{ formatPubKey(title[value], 6, 6) }</Box>
+                                  <Box overflow="hidden">
+                                    <Skeleton isLoaded={ !props.loading }>{ formatPubKey(title[value], 6, 6) }</Skeleton>
+                                  </Box>
                                 </NextLink>
                               ) :
                                 value === 'Last Updated' ? (
                                   <Flex>
                                     <Box color="#000000" marginRight="4px">Block</Box>
                                     <NextLink href={{ pathname: '/block/[height_or_hash]', query: { height_or_hash: title[value] || '' } }}>
-                                      { title[value] }
+                                      <Box><Skeleton isLoaded={ !props.loading }>{ title[value] }</Skeleton></Box>
                                     </NextLink>
                                   </Flex>
                                 ) :
                                   value === 'Object Name' ? (
                                     <NextLink href={{ pathname: '/object-details/[address]', query: { address: title.id || '' } }}>
-                                      <Box overflow="hidden">{ title[value] }</Box>
+                                      <Box overflow="hidden"><Skeleton isLoaded={ !props.loading }>{ title[value] }</Skeleton></Box>
                                     </NextLink>
                                   ) :
                                     value === 'Bucket Name' || value === 'Bucket' ? (
                                       <NextLink href={{ pathname: '/bucket-details/[address]', query: { address: title[value] || '' } }}>
-                                        <Box>{ title[value] }</Box>
+                                        <Box><Skeleton isLoaded={ !props.loading }>{ title[value] }</Skeleton></Box>
                                       </NextLink>
                                     ) :
                                       value === 'Group Name' ? (
                                         <NextLink href={{ pathname: '/group-details/[address]', query: { address: title['Group ID'] || '' } }}>
-                                          <Box>{ title[value] }</Box>
+                                          <Box><Skeleton isLoaded={ !props.loading }>{ title[value] }</Skeleton></Box>
                                         </NextLink>
                                       ) :
-                                        <Box color="#000000" overflow="hidden">{ title[value] }</Box>
-                          }
+                                        value === 'Status' ? (
+                                          <Box
+                                            bg="#30D3BF"
+                                            color="#FFFFFF"
+                                            fontWeight="500"
+                                            fontSize="12px"
+                                            display="inline-block"
+                                            padding="4px 8px"
+                                            borderRadius="24px"
+                                          >
+                                            <Box><Skeleton isLoaded={ !props.loading }>{ title[value] }</Skeleton></Box>
+                                          </Box>
+                                        ) : (
+                                          <Box color="#000000" overflow="hidden">
+                                            <Skeleton isLoaded={ !props.loading }>{ title[value] }</Skeleton>
+                                          </Box>
+                                        ) }
                         </Td>
                       )
                     ))
@@ -120,6 +145,9 @@ function tableList(props: Props<string>) {
                 </Tr>
               )) }
           </Tbody>
+          <Box position="absolute" right="24px" bottom="-54px">
+            <Pagination itemsPerPage={ 1 }></Pagination>
+          </Box>
         </Table>
 
       </TableContainer>
@@ -127,4 +155,4 @@ function tableList(props: Props<string>) {
   );
 }
 
-export default React.memo(tableList);
+export default React.memo(TableList);
