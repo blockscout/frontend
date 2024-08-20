@@ -59,6 +59,7 @@ import type {
   BlockWithdrawalsResponse,
   BlockCountdownResponse,
   BlockEpoch,
+  BlockEpochElectionRewardDetailsResponse,
 } from 'types/api/block';
 import type { ChartMarketResponse, ChartSecondaryCoinPriceResponse, ChartTransactionResponse } from 'types/api/charts';
 import type { BackendVersionConfig } from 'types/api/configs';
@@ -333,6 +334,11 @@ export const RESOURCES = {
   block_epoch: {
     path: '/api/v2/blocks/:height_or_hash/epoch',
     pathParams: [ 'height_or_hash' as const ],
+    filterFields: [],
+  },
+  block_election_rewards: {
+    path: '/api/v2/blocks/:height_or_hash/election-rewards/:reward_type',
+    pathParams: [ 'height_or_hash' as const, 'reward_type' as const ],
     filterFields: [],
   },
   txs_stats: {
@@ -1007,6 +1013,7 @@ Q extends 'block_countdown' ? BlockCountdownResponse :
 Q extends 'block_txs' ? BlockTransactionsResponse :
 Q extends 'block_withdrawals' ? BlockWithdrawalsResponse :
 Q extends 'block_epoch' ? BlockEpoch :
+Q extends 'block_election_rewards' ? BlockEpochElectionRewardDetailsResponse :
 Q extends 'txs_stats' ? TransactionsStats :
 Q extends 'txs_validated' ? TransactionsResponseValidated :
 Q extends 'txs_pending' ? TransactionsResponsePending :

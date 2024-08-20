@@ -1,4 +1,4 @@
-import { Box, Flex, IconButton, Skeleton, Td, Tr, useDisclosure } from '@chakra-ui/react';
+import { Flex, IconButton, Skeleton, Td, Tr, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 
 import type { BlockEpoch, BlockEpochElectionReward } from 'types/api/block';
@@ -7,7 +7,9 @@ import getCurrencyValue from 'lib/getCurrencyValue';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
-import BlockEpochElectionRewardsType from './BlockEpochElectionRewardsType';
+import BlockEpochElectionRewardDetails from './BlockEpochElectionRewardDetails';
+import BlockEpochElectionRewardType from './BlockEpochElectionRewardType';
+import { getRewardNumText } from './utils';
 
 interface Props {
   data: BlockEpochElectionReward;
@@ -20,8 +22,6 @@ const BlockEpochElectionRewardsTableItem = ({ isLoading, data, type }: Props) =>
 
   const { valueStr } = getCurrencyValue({
     value: data.total,
-    exchangeRate: data.token.exchange_rate,
-    accuracyUsd: 2,
     decimals: data.token.decimals,
   });
 
@@ -29,39 +29,47 @@ const BlockEpochElectionRewardsTableItem = ({ isLoading, data, type }: Props) =>
 
   return (
     <>
-      <Tr onClick={ section.onToggle } cursor="pointer">
+      <Tr
+        onClick={ isLoading || !data.count ? undefined : section.onToggle }
+        cursor={ isLoading || !data.count ? undefined : 'pointer' }
+      >
         <Td borderColor={ mainRowBorderColor }>
-          <Skeleton isLoaded={ !isLoading } display="flex" borderRadius="sm">
-            <IconButton
-              aria-label={ section.isOpen ? 'Collapse section' : 'Expand section' }
-              variant="link"
-              boxSize={ 6 }
-              flexShrink={ 0 }
-              icon={ (
-                <IconSvg
-                  name="arrows/east-mini"
-                  boxSize={ 6 }
-                  transform={ section.isOpen ? 'rotate(270deg)' : 'rotate(180deg)' }
-                  transitionDuration="faster"
-                />
-              ) }
-            />
+          { Boolean(data.count) && (
+            <Skeleton isLoaded={ !isLoading } display="flex" borderRadius="sm">
+              <IconButton
+                aria-label={ section.isOpen ? 'Collapse section' : 'Expand section' }
+                variant="link"
+                boxSize={ 6 }
+                flexShrink={ 0 }
+                icon={ (
+                  <IconSvg
+                    name="arrows/east-mini"
+                    boxSize={ 6 }
+                    transform={ section.isOpen ? 'rotate(270deg)' : 'rotate(180deg)' }
+                    transitionDuration="faster"
+                  />
+                ) }
+              />
+            </Skeleton>
+          ) }
+        </Td>
+        <Td borderColor={ mainRowBorderColor }>
+          <BlockEpochElectionRewardType type={ type } isLoading={ isLoading }/>
+        </Td>
+        <Td borderColor={ mainRowBorderColor }>
+          <Skeleton isLoaded={ !isLoading } fontWeight={ 400 } my={ 1 }>
+            { getRewardNumText(type, data.count) }
           </Skeleton>
         </Td>
         <Td borderColor={ mainRowBorderColor }>
-          <BlockEpochElectionRewardsType type={ type }/>
-        </Td>
-        <Td borderColor={ mainRowBorderColor }>
-          <Box fontWeight={ 400 } lineHeight={ 6 }>{ data.count } group reward{ data.count > 1 ? 's' : '' }</Box>
-        </Td>
-        <Td borderColor={ mainRowBorderColor }>
-          <Flex columnGap={ 2 } alignItems="center" justifyContent="flex-end">
-            <span>{ valueStr }</span>
+          <Flex columnGap={ 2 } alignItems="center" justifyContent="flex-end" my="2px">
+            <Skeleton isLoaded={ !isLoading }>{ valueStr }</Skeleton>
             <TokenEntity
               token={ data.token }
               noCopy
               onlySymbol
               w="auto"
+              isLoading={ isLoading }
             />
           </Flex>
         </Td>
@@ -69,7 +77,9 @@ const BlockEpochElectionRewardsTableItem = ({ isLoading, data, type }: Props) =>
       { section.isOpen && (
         <Tr>
           <Td/>
-          <Td colSpan={ 3 }>FOO BAR</Td>
+          <Td colSpan={ 3 } pr={ 0 } pt={ 0 }>
+            <BlockEpochElectionRewardDetails type={ type } token={ data.token }/>
+          </Td>
         </Tr>
       ) }
     </>

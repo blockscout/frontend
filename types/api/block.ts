@@ -147,3 +147,14 @@ export interface BlockEpoch {
     voter: BlockEpochElectionReward | null;
   };
 }
+
+export interface BlockEpochElectionRewardDetails {
+  account: AddressParam;
+  amount: string;
+  associated_account: AddressParam;
+}
+
+export interface BlockEpochElectionRewardDetailsResponse {
+  items: Array<BlockEpochElectionRewardDetails>;
+  next_page_params: null;
+}
