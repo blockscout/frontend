@@ -4,26 +4,31 @@ import React from 'react';
 
 import type { AddressParam } from 'types/api/addressParams';
 import type { BlockBaseFeeCelo } from 'types/api/block';
+import type { TokenInfo } from 'types/api/token';
 
 import { WEI, ZERO_ADDRESS } from 'lib/consts';
-import { currencyUnits } from 'lib/units';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
 type ItemProps = BlockBaseFeeCelo['breakdown'][number] & {
   addressFrom: AddressParam;
+  token: TokenInfo;
 }
 
-const BreakDownItem = ({ amount, percentage, address, addressFrom }: ItemProps) => {
+const BreakDownItem = ({ amount, percentage, address, addressFrom, token }: ItemProps) => {
   const isBurning = address.hash === ZERO_ADDRESS;
 
   return (
     <Flex alignItems="center" columnGap={ 2 } rowGap={ 1 } flexWrap="wrap">
       <Box color="text_secondary">{ percentage }% of amount</Box>
-      <Box>{ BigNumber(amount).dividedBy(WEI).toFixed() } { currencyUnits.ether }</Box>
+      <Flex columnGap={ 2 }>
+        { BigNumber(amount).dividedBy(WEI).toFixed() }
+        <TokenEntity token={ token } noCopy onlySymbol/>
+      </Flex>
       { isBurning ? (
         <>
           <AddressEntity address={ addressFrom } truncation="constant"/>
@@ -67,10 +72,20 @@ const BlockDetailsBaseFeeCelo = ({ data }: Props) => {
         Base fee total
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value display="block">
-        <Box>{ totalBaseFee } { currencyUnits.ether }</Box>
+        <Flex columnGap={ 2 }>
+          { totalBaseFee }
+          <TokenEntity token={ data.token } noCopy onlySymbol/>
+        </Flex>
         { data.breakdown.length > 0 && (
           <Flex flexDir="column" rowGap={ 2 } mt={ 2 }>
-            { data.breakdown.map((item, index) => <BreakDownItem key={ index } { ...item } addressFrom={ data.recipient }/>) }
+            { data.breakdown.map((item, index) => (
+              <BreakDownItem
+                key={ index }
+                { ...item }
+                addressFrom={ data.recipient }
+                token={ data.token }
+              />
+            )) }
           </Flex>
         ) }
       </DetailsInfoItem.Value>

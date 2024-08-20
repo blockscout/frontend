@@ -13,6 +13,7 @@ export interface BlockBaseFeeCelo {
   amount: string;
   breakdown: Array<{ amount: string; percentage: number; address: AddressParam }>;
   recipient: AddressParam;
+  token: TokenInfo;
 }
 
 export interface Block {
