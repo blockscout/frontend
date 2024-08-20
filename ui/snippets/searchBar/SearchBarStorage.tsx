@@ -41,20 +41,6 @@ const SearchBarStorage = () => {
 
   const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query, pathname, type, setType } = useQuickSearchQueryStorage();
 
-  const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (searchTerm) {
-      saveToRecentKeywords(searchTerm);
-      if (query.data && query.data.bucket.length) {
-        onClose();
-        router.push({ pathname: '/bucket-details/[address]', query: { address: query.data.bucket[0].bucket_name } }, undefined, { shallow: true });
-      } else if (query.data && query.data.object.length) {
-        onClose();
-        router.push({ pathname: '/object-details/[address]', query: { address: query.data.object[0].object_name } }, undefined, { shallow: true });
-      }
-    }
-  }, [ searchTerm, query.data, onClose, router ]);
-
   const handleFocus = React.useCallback(() => {
     onOpen();
   }, [ onOpen ]);
@@ -63,6 +49,20 @@ const SearchBarStorage = () => {
     onClose();
     inputRef.current?.querySelector('input')?.blur();
   }, [ onClose ]);
+
+  const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (searchTerm) {
+      saveToRecentKeywords(searchTerm);
+      if (query.data && query.data.bucket.length) {
+        handelHide();
+        router.push({ pathname: '/bucket-details/[address]', query: { address: query.data.bucket[0].bucket_name } }, undefined, { shallow: true });
+      } else if (query.data && query.data.object.length) {
+        handelHide();
+        router.push({ pathname: '/object-details/[address]', query: { address: query.data.object[0].object_name } }, undefined, { shallow: true });
+      }
+    }
+  }, [ searchTerm, query.data, handelHide, router ]);
 
   const handleOutsideClick = React.useCallback((event: Event) => {
     const isFocusInInput = inputRef.current?.contains(event.target as Node);

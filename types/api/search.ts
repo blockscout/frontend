@@ -116,12 +116,12 @@ export interface SearchResultBucket {
   type: 'bucket';
   id: number;
   bucket_name: string;
-  owner: string;
+  owner_address: string;
 }
 
 export interface SearchResultObject {
   type: 'object';
   id: number;
   object_name: string;
-  owner: string;
+  owner_address: string;
 }

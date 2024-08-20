@@ -46,7 +46,8 @@ const ChartWidget = ({ items, title, description, isLoading, className, isError,
   const [ isZoomResetInitial, setIsZoomResetInitial ] = React.useState(true);
 
   const pngBackgroundColor = useColorModeValue('white', 'black');
-  const borderColor = useColorModeValue('gray.200', 'gray.600');
+  // const borderColor = useColorModeValue('gray.200', 'gray.600');
+  const borderColor = '#A07EFF';
 
   const handleZoom = useCallback(() => {
     setIsZoomResetInitial(false);

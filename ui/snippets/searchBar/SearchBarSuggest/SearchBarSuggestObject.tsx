@@ -19,7 +19,7 @@ const SearchBarSuggestObject = ({ data }: Props) => {
       </Flex>
       <Flex columnGap={ 3 } minW={ 0 } alignItems="center">
         <Tag flexShrink={ 0 }>Owner</Tag>
-        { data.owner }
+        { data.owner_address }
       </Flex>
     </Grid>
   );

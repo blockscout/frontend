@@ -19,61 +19,114 @@ export default function useQuickSearchQueryStorage() {
   }, [ debouncedSearchTerm ]);
 
   const graphqlQuerires = React.useCallback(() => {
-    switch (type) {
-      case 'default':
-      default:
-        return [
-          {
-            tableName: 'object',
-            fields: [
-              'id',
-              'object_name',
-              'owner',
-            ],
-            limit: 6,
-            offset: 0,
-            where: { object_name: { _ilike: `%${ debouncedSearchTerm }%` } },
-          },
-          {
-            tableName: 'bucket',
-            fields: [
-              'id',
-              'bucket_name',
-              'owner',
-            ],
-            limit: 6,
-            offset: 0,
-            where: { bucket_name: { _ilike: `%${ debouncedSearchTerm }%` } },
-          },
-        ];
-      case 'object':
-        return [
-          {
-            tableName: 'object',
-            fields: [
-              'id',
-              'object_name',
-              'owner',
-            ],
-            limit: 50,
-            offset: 0,
-            where: { object_name: { _ilike: `%${ debouncedSearchTerm }%` } },
-          },
-        ];
-      case 'bucket':
-        return [
-          {
-            tableName: 'bucket',
-            fields: [
-              'id',
-              'bucket_name',
-              'owner',
-            ],
-            limit: 50,
-            offset: 0,
-            where: { bucket_name: { _ilike: `%${ debouncedSearchTerm }%` } },
-          },
-        ];
+    const numRegex = /^\d*$/;
+    const isNumber = numRegex.test(debouncedSearchTerm);
+    if (isNumber) {
+      switch (type) {
+        case 'default':
+        default:
+          return [
+            {
+              tableName: 'object',
+              fields: [
+                'object_id',
+                'object_name',
+                'owner_address',
+              ],
+              where: { object_id: { _eq: debouncedSearchTerm } },
+            },
+            {
+              tableName: 'bucket',
+              fields: [
+                'bucket_id',
+                'bucket_name',
+                'owner_address',
+              ],
+              where: { bucket_id: { _eq: debouncedSearchTerm } },
+            },
+          ];
+        case 'object':
+          return [
+            {
+              tableName: 'object',
+              fields: [
+                'object_id',
+                'object_name',
+                'owner_address',
+              ],
+              where: { object_id: { _eq: debouncedSearchTerm } },
+            },
+          ];
+        case 'bucket':
+          return [
+            {
+              tableName: 'bucket',
+              fields: [
+                'bucket_id',
+                'bucket_name',
+                'owner_address',
+              ],
+              where: { bucket_id: { _eq: debouncedSearchTerm } },
+            },
+          ];
+      }
+    } else {
+      switch (type) {
+        case 'default':
+        default:
+          return [
+            {
+              tableName: 'object',
+              fields: [
+                'object_id',
+                'object_name',
+                'owner_address',
+              ],
+              limit: 6,
+              offset: 0,
+              where: { object_name: { _ilike: `${ debouncedSearchTerm }%` } },
+            },
+            {
+              tableName: 'bucket',
+              fields: [
+                'bucket_id',
+                'bucket_name',
+                'owner_address',
+              ],
+              limit: 6,
+              offset: 0,
+              where: { bucket_name: { _ilike: `${ debouncedSearchTerm }%` } },
+            },
+          ];
+        case 'object':
+          return [
+            {
+              tableName: 'object',
+              fields: [
+                'object_id',
+                'object_name',
+                'owner_address',
+              ],
+              limit: 50,
+              offset: 0,
+              where: { object_name: { _ilike: `${ debouncedSearchTerm }%` } },
+            },
+          ];
+        case 'bucket':
+          return [
+            {
+              tableName: 'bucket',
+              fields: [
+                'bucket_id',
+                'bucket_name',
+                'owner_address',
+              ],
+              limit: 50,
+              offset: 0,
+              where: { bucket_name: { _ilike: `${ debouncedSearchTerm }%` } },
+            },
+          ];
+      }
     }
   }, [ debouncedSearchTerm, type ]);
   const query = useGraphqlQuery('graphql_search', graphqlQuerires());
