@@ -12,6 +12,7 @@ import {
   Skeleton,
   useColorMode,
 } from '@chakra-ui/react';
+import { useWindowSize } from '@uidotdev/usehooks';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
@@ -69,7 +70,9 @@ interface Props {
 }
 
 const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
+  const size = useWindowSize();
   const { colorMode } = useColorMode();
+  const isSmallDevice = size.width && size.width < 768;
   const wvmIconPath =
     colorMode === 'light' ? 'networks/arweave-dark' : 'networks/arweave-light';
   const [ isExpanded, setIsExpanded ] = React.useState(false);
@@ -77,6 +80,12 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
   const { data: arweaveId } = useArweaveId({
     block: data?.block,
   });
+
+  const truncateArweaveId = (address: string) => {
+    const start = address.slice(0, 28);
+    const end = address.slice(-4);
+    return `${ start }...${ end }`;
+  };
 
   const handleCutClick = React.useCallback(() => {
     setIsExpanded((flag) => !flag);
@@ -406,38 +415,39 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       ) }
 
       { /* ARWEAVE TXID */ }
-      { arweaveId && (
-        <>
-          <DetailsInfoItem.Label
-            hint="The Arweave TXID of the WeaveVM block"
-            isLoading={ isLoading }
-          >
-            Block archive proof
-          </DetailsInfoItem.Label>
-          <DetailsInfoItem.Value>
-            <IconSvg
-              name={ wvmIconPath }
-              display="block"
-              height="8"
-              width="8"
-              borderRadius="full"
-              marginRight="4px"
-            />
-            <Link
-              isExternal
-              href={ `https://arweave.net/${ arweaveId }` }
-              rel="noopener noreferrer"
-              color="#1AFFB1"
+      <Skeleton isLoaded={ !isLoading }>
+        { arweaveId && (
+          <>
+            <DetailsInfoItem.Label
+              hint="The Arweave TXID of the WeaveVM block"
+              isLoading={ isLoading }
             >
-              <EntityBase.Content
-                text={ arweaveId }
+              Block archive proof
+            </DetailsInfoItem.Label>
+            <DetailsInfoItem.Value>
+              <IconSvg
+                name={ wvmIconPath }
+                width="5"
+                height="5"
+                display="block"
+                marginLeft="5px"
+                marginRight="5px"
+                borderRadius="full"
               />
-            </Link>
+              <Link
+                isExternal
+                href={ `https://arweave.net/${ arweaveId }` }
+                rel="noopener noreferrer"
+                color="#1AFFB1"
+              >
+                <EntityBase.Content text={ isSmallDevice ? truncateArweaveId(arweaveId) : arweaveId }/>
+              </Link>
 
-            <CopyToClipboard text={ arweaveId }/>
-          </DetailsInfoItem.Value>
-        </>
-      ) }
+              <CopyToClipboard text={ arweaveId }/>
+            </DetailsInfoItem.Value>
+          </>
+        ) }
+      </Skeleton>
 
       <DetailsInfoItemDivider/>
 
