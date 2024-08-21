@@ -44,6 +44,20 @@ export interface FormFieldsStandardInput {
   license_type: LicenseOption | null;
 }
 
+export interface FormFieldsStandardInputZk {
+  address: string;
+  method: MethodOption;
+  name: string;
+  compiler: Option | null;
+  zk_compiler: Option | null;
+  sources: Array<File>;
+  autodetect_constructor_args: boolean;
+  constructor_args: string;
+  license_type: LicenseOption | null;
+  is_optimization_enabled: boolean;
+  optimization_mode: string | undefined;
+}
+
 export interface FormFieldsSourcify {
   address: string;
   method: MethodOption;
@@ -93,5 +107,5 @@ export interface FormFieldsVyperStandardInput {
   license_type: LicenseOption | null;
 }
 
-export type FormFields = FormFieldsFlattenSourceCode | FormFieldsStandardInput | FormFieldsSourcify |
+export type FormFields = FormFieldsFlattenSourceCode | FormFieldsStandardInput | FormFieldsStandardInputZk | FormFieldsSourcify |
 FormFieldsMultiPartFile | FormFieldsVyperContract | FormFieldsVyperMultiPartFile | FormFieldsVyperStandardInput;

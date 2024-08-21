@@ -7,6 +7,7 @@ import type {
   FormFieldsMultiPartFile,
   FormFieldsSourcify,
   FormFieldsStandardInput,
+  FormFieldsStandardInputZk,
   FormFieldsVyperContract,
   FormFieldsVyperMultiPartFile,
   FormFieldsVyperStandardInput,
@@ -155,11 +156,18 @@ export const DEFAULT_VALUES: Record<SmartContractVerificationMethod, FormFields>
 };
 
 export function getDefaultValues(
-  method: SmartContractVerificationMethod,
+  methodParam: SmartContractVerificationMethod | undefined,
   config: SmartContractVerificationConfig,
   hash: string | undefined,
   licenseType: FormFields['license_type'],
 ) {
+  const singleMethod = config.verification_options.length === 1 ? config.verification_options[0] : undefined;
+  const method = singleMethod || methodParam;
+
+  if (!method) {
+    return;
+  }
+
   const defaultValues: FormFields = { ...DEFAULT_VALUES[method], address: hash || '', license_type: licenseType };
 
   if ('evm_version' in defaultValues) {
@@ -177,6 +185,13 @@ export function getDefaultValues(
       'name' in defaultValues && (defaultValues.name = undefined);
       'autodetect_constructor_args' in defaultValues && (defaultValues.autodetect_constructor_args = false);
     }
+  }
+
+  if (singleMethod) {
+    defaultValues.method = {
+      label: METHOD_LABELS[config.verification_options[0]],
+      value: config.verification_options[0],
+    };
   }
 
   return defaultValues;
@@ -223,7 +238,7 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
     }
 
     case 'standard-input': {
-      const _data = data as FormFieldsStandardInput;
+      const _data = data as (FormFieldsStandardInput | FormFieldsStandardInputZk);
 
       const body = new FormData();
       _data.compiler && body.set('compiler_version', _data.compiler.value);
@@ -232,6 +247,15 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
       body.set('autodetect_constructor_args', String(Boolean(_data.autodetect_constructor_args)));
       body.set('constructor_args', _data.constructor_args);
       addFilesToFormData(body, _data.sources, 'files');
+
+      // zkSync fields
+      'zk_compiler' in _data && _data.zk_compiler && body.set('zk_compiler_version', _data.zk_compiler.value);
+      if ('is_optimization_enabled' in _data) {
+        body.set('is_optimization_enabled', String(Boolean(_data.is_optimization_enabled)));
+        if (_data.is_optimization_enabled && 'optimization_mode' in _data && _data.optimization_mode) {
+          body.set('optimization_runs', _data.optimization_mode);
+        }
+      }
 
       return body;
     }

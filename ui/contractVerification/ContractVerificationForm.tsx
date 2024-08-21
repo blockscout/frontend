@@ -41,7 +41,7 @@ interface Props {
 const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Props) => {
   const formApi = useForm<FormFields>({
     mode: 'onBlur',
-    defaultValues: methodFromQuery ? getDefaultValues(methodFromQuery, config, hash, null) : undefined,
+    defaultValues: getDefaultValues(methodFromQuery, config, hash, null),
   });
   const { control, handleSubmit, watch, formState, setError, reset, getFieldState } = formApi;
   const submitPromiseResolver = React.useRef<(value: unknown) => void>();
