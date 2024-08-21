@@ -414,40 +414,37 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         </>
       ) }
 
-      { /* ARWEAVE TXID */ }
-      <Skeleton isLoaded={ !isLoading }>
-        { arweaveId && (
-          <>
-            <DetailsInfoItem.Label
-              hint="The Arweave TXID of the WeaveVM block"
-              isLoading={ isLoading }
-            >
+      { arweaveId ? (
+        <>
+          <DetailsInfoItem.Label
+            hint="The Arweave TXID of the WeaveVM block"
+            isLoading={ isLoading }
+          >
               Block archive proof
-            </DetailsInfoItem.Label>
-            <DetailsInfoItem.Value>
-              <IconSvg
-                name={ wvmIconPath }
-                width="5"
-                height="5"
-                display="block"
-                marginLeft="5px"
-                marginRight="5px"
-                borderRadius="full"
-              />
-              <Link
-                isExternal
-                href={ `https://arweave.net/${ arweaveId }` }
-                rel="noopener noreferrer"
-                color="#1AFFB1"
-              >
-                <EntityBase.Content text={ isSmallDevice ? truncateArweaveId(arweaveId) : arweaveId }/>
-              </Link>
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            <IconSvg
+              name={ wvmIconPath }
+              width="5"
+              height="5"
+              display="block"
+              marginLeft="5px"
+              marginRight="5px"
+              borderRadius="full"
+            />
+            <Link
+              isExternal
+              href={ `https://arweave.net/${ arweaveId }` }
+              rel="noopener noreferrer"
+              color="#1AFFB1"
+            >
+              <EntityBase.Content text={ isSmallDevice ? truncateArweaveId(arweaveId) : arweaveId }/>
+            </Link>
 
-              <CopyToClipboard text={ arweaveId }/>
-            </DetailsInfoItem.Value>
-          </>
-        ) }
-      </Skeleton>
+            <CopyToClipboard text={ arweaveId }/>
+          </DetailsInfoItem.Value>
+        </>
+      ) : <Skeleton isLoaded={ !isLoading }/> }
 
       <DetailsInfoItemDivider/>
 

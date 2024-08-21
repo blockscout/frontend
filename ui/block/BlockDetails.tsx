@@ -802,7 +802,7 @@ const BlockDetails = ({ query }: Props) => {
         )) }
 
       { /* ARWEAVE TXID */ }
-      { arweaveId && (
+      { arweaveId ? (
         <>
           <DetailsInfoItem.Label
             hint="The Arweave TXID of the WeaveVM block's data"
@@ -834,7 +834,7 @@ const BlockDetails = ({ query }: Props) => {
             <CopyToClipboard text={ arweaveId }/>
           </DetailsInfoItem.Value>
         </>
-      ) }
+      ) : <Skeleton isLoaded={ !isLoading }/> }
 
       <DetailsInfoItemDivider/>
 
