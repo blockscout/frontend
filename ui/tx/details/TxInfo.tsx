@@ -78,12 +78,6 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
     block: data?.block,
   });
 
-  const truncateArweaveId = (address: string) => {
-    const start = address.slice(0, 30);
-    const end = address.slice(-4);
-    return `${ start }...${ end }`;
-  };
-
   const handleCutClick = React.useCallback(() => {
     setIsExpanded((flag) => !flag);
     scroller.scrollTo('TxInfo__cutLink', {
@@ -418,25 +412,25 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             hint="The Arweave TXID of the WeaveVM block"
             isLoading={ isLoading }
           >
-            Arweave storage proof
+            Block archive proof
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
             <IconSvg
               name={ wvmIconPath }
               display="block"
-              height="4"
-              width="4"
+              height="8"
+              width="8"
               borderRadius="full"
               marginRight="4px"
             />
             <Link
               isExternal
-              href={ `https://viewblock.io/arweave/tx/${ arweaveId }` }
+              href={ `https://arweave.net/${ arweaveId }` }
               rel="noopener noreferrer"
               color="#1AFFB1"
             >
               <EntityBase.Content
-                text={ truncateArweaveId(arweaveId) as string }
+                text={ arweaveId }
               />
             </Link>
 
