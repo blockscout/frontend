@@ -357,6 +357,146 @@ const BlockDetails = ({ query }: Props) => {
             hint={ `For each block, the ${ validatorTitle } is rewarded with a finite amount of ${
               config.chain.currency.symbol || 'native token'
             } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
+            } 
+              } 
             }
               } 
             }
@@ -653,42 +793,37 @@ const BlockDetails = ({ query }: Props) => {
         )) }
 
       { /* ARWEAVE TXID */ }
-      <Skeleton isLoaded={ !isLoading }>
-        { arweaveId && (
-          <>
-            <DetailsInfoItem.Label
-              hint="The Arweave TXID of the WeaveVM block's data"
-              isLoading={ isLoading }
+      { arweaveId && (
+        <>
+          <DetailsInfoItem.Label
+            hint="The Arweave TXID of the WeaveVM block's data"
+            isLoading={ isLoading }
+          >
+            Block archive proof
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            <IconSvg
+              name={ wvmIconPath }
+              width="5"
+              height="5"
+              display="block"
+              marginLeft="5px"
+              marginRight="5px"
+              borderRadius="full"
+            />
+            <Link
+              isExternal
+              href={ `https://arweave.net/${ arweaveId }` }
+              rel="noopener noreferrer"
+              color="#1AFFB1"
             >
-              Block archive proof
-            </DetailsInfoItem.Label>
-            <DetailsInfoItem.Value
-              display="flex"
-              flexWrap="nowrap"
-              alignSelf="flex-start"
-              gap={ 2 }
-            >
-              <IconSvg
-                name={ wvmIconPath }
-                display="block"
-                height="4"
-                width="4"
-                marginRight="4px"
-                borderRadius="full"
-              />
-              <Link
-                isExternal
-                href={ `https://arweave.net/${ arweaveId }` }
-                rel="noopener noreferrer"
-                color="#1AFFB1"
-              >
-                <EntityBase.Content text={ arweaveId }/>
-              </Link>
-              <CopyToClipboard text={ arweaveId }/>
-            </DetailsInfoItem.Value>
-          </>
-        ) }
-      </Skeleton>
+              <EntityBase.Content text={ arweaveId }/>
+            </Link>
+
+            <CopyToClipboard text={ arweaveId }/>
+          </DetailsInfoItem.Value>
+        </>
+      ) }
 
       <DetailsInfoItemDivider/>
 
@@ -792,6 +927,114 @@ const BlockDetails = ({ query }: Props) => {
             hint={ `Amount of ${
               config.chain.currency.symbol || 'native token'
             } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
+            } burned from transactions included in the block. 
+              } burned from transactions included in the block. 
               Equals Block Base Fee per Gas * Gas Used` }
             isLoading={ isPlaceholderData }
           >
