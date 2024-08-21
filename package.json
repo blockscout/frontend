@@ -61,6 +61,7 @@
     "@tanstack/react-query-devtools": "^5.4.3",
     "@types/papaparse": "^5.3.5",
     "@types/react-scroll": "^1.8.4",
+    "@uidotdev/usehooks": "^2.4.1",
     "@web3modal/wagmi": "4.2.1",
     "bignumber.js": "^9.1.0",
     "blo": "^1.1.1",

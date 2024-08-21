@@ -12,6 +12,7 @@ import {
   Skeleton,
   useColorMode,
 } from '@chakra-ui/react';
+import { useWindowSize } from '@uidotdev/usehooks';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
@@ -69,7 +70,9 @@ interface Props {
 }
 
 const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
+  const size = useWindowSize();
   const { colorMode } = useColorMode();
+  const isSmallDevice = size.width && size.width < 768;
   const wvmIconPath =
     colorMode === 'light' ? 'networks/arweave-dark' : 'networks/arweave-light';
   const [ isExpanded, setIsExpanded ] = React.useState(false);
@@ -77,6 +80,12 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
   const { data: arweaveId } = useArweaveId({
     block: data?.block,
   });
+
+  const truncateArweaveId = (address: string) => {
+    const start = address.slice(0, 28);
+    const end = address.slice(-4);
+    return `${ start }...${ end }`;
+  };
 
   const handleCutClick = React.useCallback(() => {
     setIsExpanded((flag) => !flag);
@@ -431,7 +440,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
                 rel="noopener noreferrer"
                 color="#1AFFB1"
               >
-                <EntityBase.Content text={ arweaveId }/>
+                <EntityBase.Content text={ isSmallDevice ? truncateArweaveId(arweaveId) : arweaveId }/>
               </Link>
 
               <CopyToClipboard text={ arweaveId }/>
