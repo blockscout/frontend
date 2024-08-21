@@ -25,8 +25,7 @@ const AddressesTable = ({ items, totalSupply, pageStartIndex, top, isLoading }: 
       <Thead top={ top }>
         <Tr>
           <Th width="64px">Rank</Th>
-          <Th width={ hasPercentage ? '30%' : '40%' }>Address</Th>
-          <Th width="20%" pl={ 10 }>Public tag</Th>
+          <Th width={ hasPercentage ? '50%' : '60%' }>Address</Th>
           <Th width={ hasPercentage ? '20%' : '25%' } isNumeric>{ `Balance ${ currencyUnits.ether }` }</Th>
           { hasPercentage && <Th width="15%" isNumeric>Percentage</Th> }
           <Th width="15%" isNumeric>Txn count</Th>

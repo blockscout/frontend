@@ -4,6 +4,7 @@ import React from 'react';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import * as addressMock from 'mocks/address/address';
 import * as implementationsMock from 'mocks/address/implementations';
+import * as metadataMock from 'mocks/metadata/address';
 import { test, expect } from 'playwright/lib';
 
 import AddressEntity from './AddressEntity';
@@ -97,6 +98,18 @@ test.describe('proxy contract', () => {
     );
 
     await component.getByText(/eternal/i).hover();
+    await expect(page.getByText('Proxy contract')).toBeVisible();
+    await expect(page).toHaveScreenshot();
+  });
+
+  test('with name tag', async({ render, page }) => {
+    const component = await render(
+      <AddressEntity
+        address={{ ...addressMock.contract, metadata: { reputation: 1, tags: [ metadataMock.nameTag ] } }}
+      />,
+    );
+
+    await component.getByText(/quack/i).hover();
     await expect(page.getByText('Proxy contract')).toBeVisible();
     await expect(page).toHaveScreenshot();
   });
