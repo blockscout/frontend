@@ -952,7 +952,7 @@ export interface ResourceError<T = unknown> {
 
 export type ResourceErrorAccount<T> = ResourceError<{ errors: T }>
 
-export type PaginatedResources = 'blocks' | 'block_txs' |
+export type PaginatedResources = 'blocks' | 'block_txs' | 'block_election_rewards' |
 'txs_validated' | 'txs_pending' | 'txs_with_blobs' | 'txs_watchlist' | 'txs_execution_node' |
 'tx_internal_txs' | 'tx_logs' | 'tx_token_transfers' | 'tx_state_changes' | 'tx_blobs' |
 'addresses' |
