@@ -70,6 +70,14 @@ const VerifiedContractsListItem = ({ data, isLoading }: Props) => {
           <Box color="text_secondary" wordBreak="break-all" whiteSpace="pre-wrap"> ({ data.compiler_version })</Box>
         </Skeleton>
       </Flex>
+      { data.zk_compiler_version && (
+        <Flex columnGap={ 3 }>
+          <Skeleton isLoaded={ !isLoading } fontWeight={ 500 } flexShrink="0">ZK compiler</Skeleton>
+          <Skeleton isLoaded={ !isLoading } color="text_secondary" wordBreak="break-all" whiteSpace="pre-wrap">
+            { data.zk_compiler_version }
+          </Skeleton>
+        </Flex>
+      ) }
       <Flex columnGap={ 3 }>
         <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Optimization</Skeleton>
         { data.optimization_enabled ?

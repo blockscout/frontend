@@ -6,21 +6,21 @@ import {
 import { motion } from 'framer-motion';
 import React from 'react';
 
-import type { ZkEvmL2TxnBatchesItem } from 'types/api/zkEvmL2';
-
 import { route } from 'nextjs-routes';
 
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import LinkInternal from 'ui/shared/links/LinkInternal';
-import ZkEvmL2TxnBatchStatus from 'ui/shared/statusTag/ZkEvmL2TxnBatchStatus';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 type Props = {
-  batch: ZkEvmL2TxnBatchesItem;
-  isLoading?: boolean;
+  number: number;
+  timestamp: string | null;
+  txCount: number;
+  status?: React.ReactNode;
+  isLoading: boolean;
 }
 
-const LatestZkevmL2BatchItem = ({ batch, isLoading }: Props) => {
+const LatestBatchItem = ({ number, timestamp, txCount, status, isLoading }: Props) => {
   return (
     <Box
       as={ motion.div }
@@ -37,7 +37,7 @@ const LatestZkevmL2BatchItem = ({ batch, isLoading }: Props) => {
       <Flex alignItems="center" overflow="hidden" w="100%" mb={ 3 }>
         <BatchEntityL2
           isLoading={ isLoading }
-          number={ batch.number }
+          number={ number }
           tailLength={ 2 }
           fontSize="xl"
           lineHeight={ 7 }
@@ -45,7 +45,7 @@ const LatestZkevmL2BatchItem = ({ batch, isLoading }: Props) => {
           mr="auto"
         />
         <TimeAgoWithTooltip
-          timestamp={ batch.timestamp }
+          timestamp={ timestamp }
           enableIncrement={ !isLoading }
           isLoading={ isLoading }
           color="text_secondary"
@@ -60,18 +60,18 @@ const LatestZkevmL2BatchItem = ({ batch, isLoading }: Props) => {
         <Flex alignItems="center">
           <Skeleton isLoaded={ !isLoading } mr={ 2 }>Txn</Skeleton>
           <LinkInternal
-            href={ route({ pathname: '/batches/[number]', query: { number: batch.number.toString(), tab: 'txs' } }) }
+            href={ route({ pathname: '/batches/[number]', query: { number: number.toString(), tab: 'txs' } }) }
             isLoading={ isLoading }
           >
             <Skeleton isLoaded={ !isLoading }>
-              { batch.tx_count }
+              { txCount }
             </Skeleton>
           </LinkInternal>
         </Flex>
-        <ZkEvmL2TxnBatchStatus status={ batch.status } isLoading={ isLoading }/>
+        { status }
       </Flex>
     </Box>
   );
 };
 
-export default LatestZkevmL2BatchItem;
+export default LatestBatchItem;
