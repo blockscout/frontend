@@ -1,4 +1,4 @@
-import type { QueryKey, UseQueryOptions } from '@tanstack/react-query';
+import type { UseQueryOptions } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 
 import type { ResourceError, ResourceName, ResourcePayload } from './resources';
@@ -6,8 +6,7 @@ import type { Params as ApiFetchParams } from './useApiFetch';
 import useApiFetch from './useApiFetch';
 
 export interface Params<R extends ResourceName, E = unknown, D = ResourcePayload<R>> extends ApiFetchParams<R> {
-  queryOptions?: Omit<UseQueryOptions<ResourcePayload<R>, ResourceError<E>, D>, 'queryKey' | 'queryFn'>;
-  queryKey?: QueryKey;
+  queryOptions?: Partial<Omit<UseQueryOptions<ResourcePayload<R>, ResourceError<E>, D>, 'queryFn'>>;
 }
 
 export function getResourceKey<R extends ResourceName>(resource: R, { pathParams, queryParams }: Params<R> = {}) {
@@ -20,13 +19,13 @@ export function getResourceKey<R extends ResourceName>(resource: R, { pathParams
 
 export default function useApiQuery<R extends ResourceName, E = unknown, D = ResourcePayload<R>>(
   resource: R,
-  { queryOptions, pathParams, queryParams, queryKey, fetchParams }: Params<R, E, D> = {},
+  { queryOptions, pathParams, queryParams, fetchParams }: Params<R, E, D> = {},
 ) {
   const apiFetch = useApiFetch();
 
   return useQuery<ResourcePayload<R>, ResourceError<E>, D>({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
-    queryKey: queryKey || getResourceKey(resource, { pathParams, queryParams }),
+    queryKey: queryOptions?.queryKey || getResourceKey(resource, { pathParams, queryParams }),
     queryFn: async() => {
       // all errors and error typing is handled by react-query
       // so error response will never go to the data
