@@ -444,7 +444,9 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             <CopyToClipboard text={ arweaveId }/>
           </DetailsInfoItem.Value>
         </>
-      ) : <Skeleton isLoaded={ !isLoading }/> }
+      ) : (
+        <Skeleton>loading...</Skeleton>
+      ) }
 
       <DetailsInfoItemDivider/>
 
