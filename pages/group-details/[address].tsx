@@ -10,19 +10,10 @@ import PageNextJs from 'nextjs/PageNextJs';
 import useGraphqlQuery from 'lib/api/useGraphqlQuery';
 import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
+import { formatPubKey } from 'ui/storage/utils';
 
-const HandDetails = dynamic(() => import('ui/storage/head-details'), { ssr: false });
+const HeadDetails = dynamic(() => import('ui/storage/head-details'), { ssr: false });
 const TableDetails = dynamic(() => import('ui/storage/table-details'), { ssr: false });
-
-function formatPubKey(pubKey: string | undefined, _length = 4, _preLength = 4) {
-  if (!pubKey) {
-    return;
-  }
-  if (!pubKey || typeof pubKey !== 'string' || pubKey.length < (_length * 2 + 1)) {
-    return pubKey;
-  }
-  return pubKey.substr(0, _preLength || _length) + '...' + pubKey.substr(_length * -1, _length);
-}
 
 const ObjectDetails: NextPage<Props> = (props: Props) => {
   const router = useRouter();
@@ -74,30 +65,30 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
 
   const overview = {
     'Group Name': details?.group_name,
-    'Group Tags': Object.entries(details?.tags).length.toString(),
-    'Group ID': details?.group_id,
+    'Group Tags': details?.tags && Object.entries(details?.tags).length.toString(),
+    'Group ID': formatPubKey(details?.group_id),
     Extra: details?.extra,
     'Source Type': details?.source_type,
   };
   const more = {
     'Last Updated': {
-      value: 'Public',
+      value: '',
       status: 'none',
     },
     'Created Block': {
-      value: 'mainnet-bsc-blocks',
+      value: '',
       status: 'bucketPage',
     },
     'Resources Count': {
-      value: formatPubKey('0x23c845626A460012EAa27842dd5d24b465B356E7'),
+      value: '',
       status: 'time',
     },
     'Active Group Member Count': {
-      value: '0x4c1a93cd42b6e4960db845bcf9d540b081b1a63a',
-      status: 'copyLink',
+      value: details?.tags && Object.entries(details?.members).length.toString(),
+      status: 'none',
     },
     Owner: {
-      value: '0x4c1a93cd42b6e4960db845bcf9d540b081b1a63a',
+      value: details?.owner_address,
       status: 'copyLink',
     },
   };
@@ -119,7 +110,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
         <PageTitle marginBottom="0" title="Group Details" withTextAd/>
         <Box ml="6px">{ router.query.address }</Box>
       </Flex>
-      <HandDetails overview={ overview } more={ more }/>
+      <HeadDetails overview={ overview } more={ more }/>
       <TableDetails tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead } changeTable={ changeTable }/>
     </PageNextJs>
   );

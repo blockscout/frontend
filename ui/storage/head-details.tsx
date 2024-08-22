@@ -12,8 +12,8 @@ import {
   Thead,
   Text,
   Square,
-  Wrap,
-  WrapItem,
+  // Wrap,
+  // WrapItem,
   useToast,
   Box,
   Popover,
@@ -24,56 +24,17 @@ import {
   PopoverTrigger,
   Button,
   Divider,
+  Skeleton,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React, { useState } from 'react';
 
+import type { HeadProps } from 'types/storage';
+
 import IconSvg from 'ui/shared/IconSvg';
 
-interface PropsMoreValueType {
-  value: string | undefined;
-  status: string;
-}
-
-type Props = {
-  overview?: {
-    'Object Name'?: string;
-    'Object Tags'?: string;
-    'Object ID'?: string;
-    'Object No.'?: string;
-    'Type'?: string;
-    'Object Size'?: string;
-    'Object Status'?: string;
-    'Bucket Name'?: string;
-    'Bucket Tags'?: string;
-    'Bucket ID'?: string;
-    'Bucket No.'?: string;
-    'Active Objects Count'?: string;
-    'Bucket Status'?: string;
-    'Deleted'?: string;
-    'Group Name'?: string;
-    'Group Tags'?: string;
-    'Group ID'?: string;
-    'Extra'?: string;
-    'Source Type'?: string;
-  } | undefined;
-  more?: {
-    'Visibility'?: PropsMoreValueType;
-    'Bucket Name'?: PropsMoreValueType;
-    'Last Updated Time'?: PropsMoreValueType;
-    'Creator'?: PropsMoreValueType;
-    'Owner'?: PropsMoreValueType;
-    'Primary SP'?: PropsMoreValueType;
-    'Secondary SP Addresses'?: PropsMoreValueType;
-    'Storage Size'?: PropsMoreValueType;
-    'Charge Size'?: PropsMoreValueType;
-    'Active Objects Count'?: PropsMoreValueType;
-    'Bucket Status'?: PropsMoreValueType;
-  } | undefined;
-  secondaryAddresses?: Array<string>;
-}
-
-const Page = (props: Props) => {
+const Page = (props: HeadProps) => {
+  console.log(props.loading);
   const toast = useToast();
   const [ creatorFlag, setCreatorFlag ] = useState<boolean>(false);
   const [ ownerFlag, setOwnerFlag ] = useState<boolean>(false);
@@ -131,17 +92,25 @@ const Page = (props: Props) => {
               <Tr borderBottom="1px solid rgba(0, 46, 51, 0.1)" key={ key } _last={{
                 borderColor: '#FFFFFF',
               }}>
-                <Td border="none" fontWeight="400" fontSize="14px" color="rgba(0, 0, 0, 0.4)" p="12px 0">{ key }</Td>
+                <Td border="none" fontWeight="400" fontSize="14px" color="rgba(0, 0, 0, 0.4)" p="12px 0">
+                  <Skeleton w="100px" isLoaded={ !props.loading }>
+                    { key }
+                  </Skeleton>
+                </Td>
                 <Td border="none" fontWeight="500" fontSize="12px" color="#000000" p="12px 0" textAlign="right">
                   {
                     key === 'Bucket Status' || key === 'Deleted' || key === 'Object Status' || key === 'Source Type' ? (
-                      <Box bg="#30D3BF" display="inline-block" padding="4px 12px" color="#FFFFFF" borderRadius="23px">
-                        { value }
-                      </Box>
+                      <Skeleton w="100px" float="right" isLoaded={ !props.loading }>
+                        <Box bg="#30D3BF" display="inline-block" padding="4px 12px" color="#FFFFFF" borderRadius="23px">
+                          { value }
+                        </Box>
+                      </Skeleton>
                     ) : (
-                      <Text>
-                        { value }
-                      </Text>
+                      <Skeleton w="100px" float="right" isLoaded={ !props.loading }>
+                        <Text >
+                          { value }
+                        </Text>
+                      </Skeleton>
                     ) }
                 </Td>
               </Tr>
@@ -186,9 +155,6 @@ const Page = (props: Props) => {
                           w="14px"
                           h="14px">
                         </IconSvg>
-                        <Wrap>
-                          <WrapItem></WrapItem>
-                        </Wrap>
                       </Flex>
                     ) :
                       values.status === 'link' || values.status === 'nodereal' ? (
@@ -198,8 +164,9 @@ const Page = (props: Props) => {
                           { values.status === 'nodereal' ? values.value : '' }
                         </NextLink>
                       ) :
-                        values.status === 'bucketPage' ?
-                          <NextLink href={{ pathname: '/bucket-details/[address]', query: { address: values.value || '' } }}>{ values.value }</NextLink> :
+                        values.status === 'bucketPage' ? (
+                          <NextLink href={{ pathname: '/bucket-details/[address]', query: { address: values.value || '' } }}>{ values.value }</NextLink>
+                        ) :
                           values.status === 'clickViewAll' ? (
                             <Popover closeOnBlur={ false }>
                               <PopoverTrigger>
@@ -219,8 +186,9 @@ const Page = (props: Props) => {
                                   p="24px"
                                   fontWeight="500"
                                   fontSize="12px"
+                                  width="230px"
                                 >
-                                  All Secondary SP Addresses!
+                                  { values.titleNmae }
                                 </PopoverHeader>
                                 <PopoverCloseButton w="16px" h="16px" top="24px" right="24px"/>
                                 { props.secondaryAddresses?.map((value, index) => (
@@ -230,10 +198,11 @@ const Page = (props: Props) => {
                                     textAlign="left"
                                     key={ index }>
                                     <Flex align="center" color="#8A55FD" fontWeight="500" fontSize="12px">
-                                      <NextLink href={{ pathname: '/address/[hash]', query: { hash: value || '' } }}>{ value }</NextLink>
+                                      { /* <NextLink href={{ pathname: '/address/[hash]', query: { hash: value || '' } }}>{ value }</NextLink> */ }
+                                      global_virtual_group_id { value }
                                       <IconSvg
                                         cursor="pointer"
-                                        onClick={ copyAddress(values.value) }
+                                        onClick={ copyAddress(value) }
                                         marginLeft="48px"
                                         w="14px"
                                         h="14px"

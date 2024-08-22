@@ -30,43 +30,22 @@ const ObjectDetails: NextPage = () => {
       offset: 0,
     },
   ];
-  const [ talbeList, setTalbeList ] = React.useState<Array<ObjetTalbeListType>>([]);
+  // const [ talbeList ] = React.useState<Array<ObjetTalbeListType>>([]);
+  const talbeList: Array<ObjetTalbeListType> = [];
 
-  // for (let index = 0; index < 1; index++) {
-  //   talbeList.push({
-  //     'Object Name': 'asdasd',
-  //     Creator: 'asdasd',
-  //     Type: 'asdasd',
-  //     'Object Size': 'asdasd',
-  //     Status: 'v.object_status',
-  //     Visibility: 'v.visibility',
-  //     'Last Updated Time': 'v.updated_at',
-  //     Bucket: 'v.bucket_name',
-  //     id: 'v.id',
-  //   });
-  // }
-
-  const { loading, data } = useGraphqlQuery('Objects', queries);
-  const [ skeLoading, setSkeLoading ] = React.useState<boolean>(true);
-  setTimeout(() => {
-    setTalbeList([]);
-    if (!loading) {
-      setSkeLoading(false);
-      data?.object?.forEach((v: ObjetRequestType) => {
-        talbeList.push({
-          'Object Name': v.object_name,
-          Type: v.content_type,
-          'Object Size': v.payload_size + 'KB',
-          Status: v.object_status,
-          Visibility: v.visibility,
-          'Last Updated Time': v.updated_at,
-          Bucket: v.bucket_name,
-          Creator: v.creator,
-          id: v.id,
-        });
-      });
-    }
-  }, 3000);
+  const { loading, data, error } = useGraphqlQuery('Objects', queries);
+  data?.object?.forEach((v: ObjetRequestType) => {
+    talbeList.push({
+      'Object Name': v.object_name,
+      Type: v.content_type,
+      'Object Size': v.payload_size + 'KB',
+      Status: v.status,
+      Visibility: v.visibility,
+      'Last Updated Time': v.update_time,
+      Bucket: v.bucket_name,
+      Creator: v.creator_address,
+    });
+  });
 
   const tapList = [ 'Transactions', 'Versions' ];
 
@@ -74,7 +53,7 @@ const ObjectDetails: NextPage = () => {
   return (
     <PageNextJs pathname="/object">
       <PageTitle title="Objects" withTextAd/>
-      <TableList loading={ skeLoading } tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead }/>
+      <TableList error={ error } loading={ loading } tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead }/>
     </PageNextJs>
   );
 };

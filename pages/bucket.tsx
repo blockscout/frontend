@@ -8,6 +8,7 @@ import PageNextJs from 'nextjs/PageNextJs';
 
 import useGraphqlQuery from 'lib/api/useGraphqlQuery';
 import PageTitle from 'ui/shared/Page/PageTitle';
+import { timeTool } from 'ui/storage/utils';
 const TableList = dynamic(() => import('ui/storage/table-list'), { ssr: false });
 const Page: NextPage = () => {
   const queries = [
@@ -29,15 +30,15 @@ const Page: NextPage = () => {
   ];
   const talbeList: Array<BucketTalbeListType> = [];
 
-  const { loading, data } = useGraphqlQuery('Buckets', queries);
+  const { loading, data, error } = useGraphqlQuery('Buckets', queries);
   data?.bucket?.forEach((v: BucketRequestType) => {
     talbeList.push({
       'Bucket Name': v.bucket_name,
-      'Bucket ID': v.id,
-      'Last Updated Time': v.create_at,
-      Status: v.tags || 'Create',
-      'Active Objects Count': v.owner,
-      Creator: v.owner,
+      'Bucket ID': v.bucket_id,
+      'Last Updated Time': timeTool(v.update_time),
+      Status: v.status,
+      'Active Objects Count': v.active_object_count.aggregate.count,
+      Creator: v.owner_address,
     });
   });
   const tapList = [ 'Transactions', 'Versions' ];
@@ -45,7 +46,7 @@ const Page: NextPage = () => {
   return (
     <PageNextJs pathname="/bucket">
       <PageTitle title="Buckets" withTextAd/>
-      <TableList loading={ loading } tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead }/>
+      <TableList error={ error } loading={ loading } tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead }/>
     </PageNextJs>
   );
 };

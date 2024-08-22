@@ -33,14 +33,14 @@ const Page: NextPage = () => {
   ];
   const talbeList: Array<GroupTalbeListType> = [];
 
-  const { loading, data } = useGraphqlQuery('storage_group', queries);
+  const { loading, data, error } = useGraphqlQuery('storage_group', queries);
   data?.storage_group?.forEach((v: GroupRequestType) => {
     talbeList.push({
       'Group Name': v.group_name,
-      'Group ID': v.id,
-      'Last Updated': v.height,
-      'Active Group Member Count': v.source_type,
-      Owner: v.owner,
+      'Group ID': v.group_id,
+      'Last Updated': v.update_at,
+      'Active Group Member Count': v.active_member_count.aggregate.count,
+      Owner: v.owner_address,
     });
   });
   const tapList = [ 'objects', 'Transactions', 'Permissions' ];
@@ -48,7 +48,7 @@ const Page: NextPage = () => {
   return (
     <PageNextJs pathname="/group">
       <PageTitle title="Groups" withTextAd/>
-      <TableList loading={ loading } tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead }/>
+      <TableList error={ error } loading={ loading } tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead }/>
     </PageNextJs>
   );
 };

@@ -15,9 +15,11 @@ export interface TalbeListType {
   'Bucket Name'?: string;
   'Active Group Member Count'?: string;
   Owner?: string;
+  Status?: string;
+  'Object Size'?: string;
+  'Last Updated Time'?: string;
 }
 export interface ObjetTalbeListType {
-  id: string;
   'Object Name': string;
   Type: string;
   'Object Size': string;
@@ -59,6 +61,9 @@ export interface ObjetRequestType {
   updated_at: string;
   updated_by: string;
   version: number;
+  update_time: string;
+  status: string;
+  creator_address: string;
 }
 
 export interface GroupTalbeListType {
@@ -70,11 +75,15 @@ export interface GroupTalbeListType {
 }
 
 export interface GroupRequestType {
-  id: string;
+  group_id: string;
   group_name: string;
-  source_type: string;
-  owner: string;
-  height: string;
+  update_at: string;
+  active_member_count: {
+    aggregate: {
+      count: string;
+    };
+  };
+  owner_address: string;
 }
 export interface BucketTalbeListType {
   'Bucket Name': string;
@@ -87,9 +96,58 @@ export interface BucketTalbeListType {
 
 export interface BucketRequestType {
   'bucket_name': string;
-  'id': string;
-  'create_at': string;
-  'bucket_status': string;
-  'tags': string;
-  'owner': string;
+  'bucket_id': string;
+  'update_time': string;
+  'status': string;
+  'active_object_count': {
+    aggregate: {
+      count: string;
+    };
+  };
+  'owner_address': string;
+}
+
+interface PropsMoreValueType {
+  titleNmae?: string;
+  value: string | undefined;
+  status: string;
+}
+
+export interface HeadProps {
+  overview?: {
+    'Object Name'?: string;
+    'Object Tags'?: string;
+    'Object ID'?: string;
+    'Object No.'?: string;
+    'Type'?: string;
+    'Object Size'?: string;
+    'Object Status'?: string;
+    'Bucket Name'?: string;
+    'Bucket Tags'?: string;
+    'Bucket ID'?: string;
+    'Bucket No.'?: string;
+    'Active Objects Count'?: string;
+    'Bucket Status'?: string;
+    'Deleted'?: string;
+    'Group Name'?: string;
+    'Group Tags'?: string;
+    'Group ID'?: string;
+    'Extra'?: string;
+    'Source Type'?: string;
+  } | undefined;
+  more?: {
+    'Visibility'?: PropsMoreValueType;
+    'Bucket Name'?: PropsMoreValueType;
+    'Last Updated Time'?: PropsMoreValueType;
+    'Creator'?: PropsMoreValueType;
+    'Owner'?: PropsMoreValueType;
+    'Primary SP'?: PropsMoreValueType;
+    'Secondary SP Addresses'?: PropsMoreValueType;
+    'Storage Size'?: PropsMoreValueType;
+    'Charge Size'?: PropsMoreValueType;
+    'Active Objects Count'?: PropsMoreValueType;
+    'Bucket Status'?: PropsMoreValueType;
+  } | undefined;
+  secondaryAddresses?: Array<string>;
+  loading?: boolean;
 }

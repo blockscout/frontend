@@ -12,19 +12,10 @@ import PageNextJs from 'nextjs/PageNextJs';
 import useGraphqlQuery from 'lib/api/useGraphqlQuery';
 import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
+import { formatPubKey, timeTool } from 'ui/storage/utils';
 
-const HandDetails = dynamic(() => import('ui/storage/head-details'), { ssr: false });
+const HeadDetails = dynamic(() => import('ui/storage/head-details'), { ssr: false });
 const TableDetails = dynamic(() => import('ui/storage/table-details'), { ssr: false });
-
-function formatPubKey(pubKey: string | undefined, _length = 4, _preLength = 4) {
-  if (!pubKey) {
-    return;
-  }
-  if (!pubKey || typeof pubKey !== 'string' || pubKey.length < (_length * 2 + 1)) {
-    return pubKey;
-  }
-  return pubKey.substr(0, _preLength || _length) + '...' + pubKey.substr(_length * -1, _length);
-}
 
 const ObjectDetails: NextPage<Props> = (props: Props) => {
   const router = useRouter();
@@ -66,7 +57,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
           }
         }`,
       ],
-      where: { object_id: { _eq: router.query.address } },
+      where: { object_name: { _ilike: router.query.address } },
     },
     {
       tableName: 'transaction',
@@ -81,19 +72,19 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       ],
     },
   ];
-  const { data } = useGraphqlQuery('Objects', queries);
+  const { loading, data } = useGraphqlQuery('Objects', queries);
 
   const details = data?.object && data?.object[0];
 
   const overview: ObjectDetailsOverviewType = {
     'Object Name': details?.object_name,
-    'Object Tags': Object.entries(details?.tags).length.toString(),
-    'Object ID': details?.object_id,
-    'Object No.': details?.object_id,
+    'Object Tags': details?.tags && Object.entries(details?.tags).length.toString(),
+    'Object ID': details?.object_id && formatPubKey(details?.object_id, 6, 6),
+    'Object No.': details?.object_id && formatPubKey(details?.object_id, 6, 6),
     Type: details?.content_type,
-    'Object Size': details?.content_type || '',
+    'Object Size': details?.payload_size,
     'Object Status': details?.status,
-    Deleted: details?.removed || 'NO',
+    Deleted: details?.removed ? 'Yes' : 'No',
   };
   const more = {
     Visibility: {
@@ -101,12 +92,11 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       status: 'none',
     },
     'Bucket Name': {
-      id: details?.bucket_name,
       value: details?.bucket_name,
       status: 'bucketPage',
     },
     'Last Updated Time': {
-      value: details?.update_time,
+      value: timeTool(details?.update_time),
       status: 'time',
     },
     Creator: {
@@ -137,7 +127,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
         <PageTitle marginBottom="0" title="Object Details" withTextAd/>
         <Box ml="6px">{ formatPubKey(details?.object_name) }</Box>
       </Flex>
-      <HandDetails overview={ overview } more={ more } secondaryAddresses={ secondaryAddresses }/>
+      <HeadDetails loading={ loading } overview={ overview } more={ more } secondaryAddresses={ secondaryAddresses }/>
       <TableDetails tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead } changeTable={ changeTable }/>
     </PageNextJs>
   );

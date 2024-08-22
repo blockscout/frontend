@@ -14,29 +14,28 @@ import {
   Skeleton,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { TalbeListType } from 'types/storage';
 
 import Pagination from './Pagination';
+import { formatPubKey, skeletonList } from './utils';
 
 type Props<T extends string> = {
   tapList?: Array<T> | undefined;
-  talbeList?: Array<TalbeListType> | undefined;
+  talbeList: Array<TalbeListType>;
   tabThead?: Array<T> | undefined;
   loading: boolean;
-}
-function formatPubKey(pubKey: string | undefined, _length = 4, _preLength = 4) {
-  if (!pubKey) {
-    return;
-  }
-  if (!pubKey || typeof pubKey !== 'string' || pubKey.length < (_length * 2 + 1)) {
-    return pubKey;
-  }
-  return pubKey.substr(0, _preLength || _length) + '...' + pubKey.substr(_length * -1, _length);
+  error: Error | undefined;
 }
 
 function TableList(props: Props<string>) {
+  let talbeList: Array<TalbeListType> = props.talbeList;
+  const router = useRouter();
+  if (!talbeList?.length && !props.error) {
+    talbeList = skeletonList(router.pathname);
+  }
   return (
     <>
       <Flex justifyContent="right">
@@ -67,7 +66,7 @@ function TableList(props: Props<string>) {
           </Thead>
           <Tbody>
             {
-              props.talbeList?.map((title: TalbeListType | any, key) => (
+              talbeList?.map((title: TalbeListType | any, key) => (
                 <Tr _hover={{ bg: 'rgba(220, 212, 255, 0.24)' }} key={ key }>
                   {
                     Object.keys(title)?.map((value: string, index) => (
@@ -99,15 +98,17 @@ function TableList(props: Props<string>) {
                                 </NextLink>
                               ) :
                                 value === 'Last Updated' ? (
-                                  <Flex>
-                                    <Box color="#000000" marginRight="4px">Block</Box>
-                                    <NextLink href={{ pathname: '/block/[height_or_hash]', query: { height_or_hash: title[value] || '' } }}>
-                                      <Box><Skeleton isLoaded={ !props.loading }>{ title[value] }</Skeleton></Box>
-                                    </NextLink>
-                                  </Flex>
+                                  <Skeleton isLoaded={ !props.loading }>
+                                    <Flex>
+                                      <Box color="#000000" marginRight="4px">Block</Box>
+                                      <NextLink href={{ pathname: '/block/[height_or_hash]', query: { height_or_hash: title[value] || '' } }}>
+                                        <Box>{ title[value] }</Box>
+                                      </NextLink>
+                                    </Flex>
+                                  </Skeleton>
                                 ) :
                                   value === 'Object Name' ? (
-                                    <NextLink href={{ pathname: '/object-details/[address]', query: { address: title.id || '' } }}>
+                                    <NextLink href={{ pathname: '/object-details/[address]', query: { address: title[value] || '' } }}>
                                       <Box overflow="hidden"><Skeleton isLoaded={ !props.loading }>{ title[value] }</Skeleton></Box>
                                     </NextLink>
                                   ) :
