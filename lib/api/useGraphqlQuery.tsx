@@ -58,30 +58,36 @@ const useGraphqlQuery = (aliasName: string, queries: Array<QueryConfig>): QueryR
     return '';
   };
 
-  const query = gql`
-    query ${ aliasName }($limit: Int, $offset: Int) {
-      ${ queries
+  const EMPTY_QUERY = gql`
+  query {
+    __typename
+  }
+`;
+
+  const query = queries.length ? gql`
+  query ${ aliasName }($limit: Int, $offset: Int) {
+    ${ queries
     .map(
       ({ tableName, fields, limit, offset, where, order }) => `
-        ${ tableName } (
-          where: { ${ formatWhereCondition(where) } },
-          ${ order ? `order_by: { ${ formatObjectToGraphQL(order) } },` : '' }
-          ${ limit !== undefined ? `limit: $limit,` : '' }
-          ${ offset !== undefined ? `offset: $offset` : '' }
-        ) {
-          ${ fields.join(' ') }
-        }
-      `,
+      ${ tableName } (
+        where: { ${ formatWhereCondition(where) } },
+        ${ order ? `order_by: { ${ formatObjectToGraphQL(order) } },` : '' }
+        ${ limit !== undefined ? `limit: $limit,` : '' }
+        ${ offset !== undefined ? `offset: $offset` : '' }
+      ) {
+        ${ fields.join(' ') }
+      }
+    `,
     )
     .join('\n') }
-    }
-  `;
+  }
+` : EMPTY_QUERY;
 
   // Execute the query using Apollo's useQuery Hook
   const { loading, error, data } = useQuery(query, {
-    variables: { limit: queries[0].limit, offset: queries[0].offset },
+    skip: query === EMPTY_QUERY,
+    variables: query !== EMPTY_QUERY ? { limit: queries[0].limit, offset: queries[0].offset } : {},
   });
-
   // Structure the returned data to make it more usable
   const result = queries.reduce<Record<string, any>>((acc, { tableName }) => {
     if (data && data[tableName]) {

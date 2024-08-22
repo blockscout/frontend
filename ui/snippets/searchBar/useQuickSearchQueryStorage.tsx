@@ -7,7 +7,6 @@ import useDebounce from 'lib/hooks/useDebounce';
 
 export default function useQuickSearchQueryStorage() {
   const router = useRouter();
-
   const [ searchTerm, setSearchTerm ] = React.useState('');
   const [ type, setType ] = React.useState('default');
 
@@ -21,6 +20,10 @@ export default function useQuickSearchQueryStorage() {
   const graphqlQuerires = React.useCallback(() => {
     const numRegex = /^\d*$/;
     const isNumber = numRegex.test(debouncedSearchTerm);
+    if (!debouncedSearchTerm) {
+      return [];
+    }
+
     if (isNumber) {
       switch (type) {
         case 'default':
