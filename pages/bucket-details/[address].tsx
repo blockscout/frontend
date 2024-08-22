@@ -10,19 +10,10 @@ import PageNextJs from 'nextjs/PageNextJs';
 import useGraphqlQuery from 'lib/api/useGraphqlQuery';
 import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
+import { timeTool, sizeTool } from 'ui/storage/utils';
 
 const HeadDetails = dynamic(() => import('ui/storage/head-details'), { ssr: false });
 const TableDetails = dynamic(() => import('ui/storage/table-details'), { ssr: false });
-
-function formatPubKey(pubKey: string | undefined, _length = 4, _preLength = 4) {
-  if (!pubKey) {
-    return;
-  }
-  if (!pubKey || typeof pubKey !== 'string' || pubKey.length < (_length * 2 + 1)) {
-    return pubKey;
-  }
-  return pubKey.substr(0, _preLength || _length) + '...' + pubKey.substr(_length * -1, _length);
-}
 
 const ObjectDetails: NextPage<Props> = (props: Props) => {
   const router = useRouter();
@@ -59,6 +50,10 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
         'creator: owner_address',
         'payment_address',
         'global_virtual_group_family_id',
+        `global_virtual_group_family {
+          global_virtual_group_ids
+        }`,
+        'removed',
       ],
       limit: 10, // Example: set limit to 10
       offset: 0, // Example: set offset to 0
@@ -84,28 +79,28 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
 
   const overview = {
     'Bucket Name': details?.bucket_name,
-    'Bucket Tags': Object.entries(details?.tags).length.toString(),
+    'Bucket Tags': details?.tags && Object.entries(details?.tags).length.toString(),
     'Bucket ID': details?.bucket_id,
     'Bucket No.': details?.bucket_id,
     'Active Objects Count': details?.global_virtual_group_family_id,
-    'Bucket Status': details?.bucket_status,
-    Deleted: details?.sp_as_delegated_agent_disabled ? 'Yes' : 'No',
+    'Bucket Status': details?.status,
+    Deleted: details?.removed ? 'Yes' : 'No',
   };
   const more = {
     'Last Updated Time': {
-      value: formatPubKey('0x23c845626A460012EAa27842dd5d24b465B356E7'),
+      value: timeTool(details?.update_time),
       status: 'time',
     },
     'Storage Size': {
-      value: '128KB',
+      value: sizeTool(details?.storage_size),
       status: 'none',
     },
     'Charge Size': {
-      value: '128KB',
+      value: sizeTool(details?.charge_size),
       status: 'none',
     },
     Creator: {
-      value: '0x5a8819edbc43fb1f51394e3fef35cb28977abd06',
+      value: details?.creator,
       status: 'copyLink',
     },
     'Payment Address': {
@@ -113,10 +108,12 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       status: 'copyLink',
     },
     'Virtual Group Family ID': {
-      value: 'Click to view all',
+      titleNmae: 'All GVGs',
+      value: 'Click to view all GVGs',
       status: 'clickViewAll',
     },
   };
+  const secondaryAddresses = details?.global_virtual_group_family.global_virtual_group_ids.split(',') || [];
   const tapList = [ 'Transactions', 'Versions' ];
   const tabThead = [ 'objects name', 'Type', 'Object Size', 'Status', 'Visibility', 'Last Updated Time', 'Creator' ];
   const talbeList = [
@@ -171,7 +168,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
           ))
         }
       </Flex>
-      <HeadDetails overview={ overview } more={ more }/>
+      <HeadDetails secondaryAddresses={ secondaryAddresses } overview={ overview } more={ more }/>
       <TableDetails tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead } changeTable={ changeTable }/>
     </PageNextJs>
   );

@@ -14,6 +14,8 @@ import {
 import NextLink from 'next/link';
 import React, { useState } from 'react';
 
+import { formatPubKey } from './utils';
+
 interface TalbeListType {
   Block?: string;
   Age?: string;
@@ -34,15 +36,6 @@ type Props<T extends string> = {
   talbeList?: Array<TalbeListType> | undefined;
   tabThead?: Array<T> | undefined;
   changeTable: (value: string) => void;
-}
-function formatPubKey(pubKey: string, _length = 4, _preLength = 4) {
-  if (!pubKey) {
-    return;
-  }
-  if (!pubKey || typeof pubKey !== 'string' || pubKey.length < (_length * 2 + 1)) {
-    return pubKey;
-  }
-  return pubKey.substr(0, _preLength || _length) + '...' + pubKey.substr(_length * -1, _length);
 }
 
 function Page<T extends string>(props: Props<T>) {
@@ -151,4 +144,4 @@ function Page<T extends string>(props: Props<T>) {
   );
 }
 
-export default Page;
+export default React.memo(Page);
