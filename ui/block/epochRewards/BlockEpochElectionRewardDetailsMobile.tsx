@@ -12,16 +12,14 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import useLazyLoadedList from 'ui/shared/pagination/useLazyLoadedList';
 
-function formatRewardType(type: keyof BlockEpoch['aggregated_election_rewards']) {
-  return type.replaceAll('_', '-');
-}
+import { formatRewardType } from './utils';
 
 interface Props {
   type: keyof BlockEpoch['aggregated_election_rewards'];
   token: TokenInfo;
 }
 
-const BlockEpochElectionRewardDetails = ({ type, token }: Props) => {
+const BlockEpochElectionRewardDetailsMobile = ({ type, token }: Props) => {
   const rootRef = React.useRef<HTMLDivElement>(null);
 
   const router = useRouter();
@@ -52,15 +50,17 @@ const BlockEpochElectionRewardDetails = ({ type, token }: Props) => {
           });
 
           return (
-            <Flex key={ index } alignItems="center" columnGap={ 2 } fontWeight={ 400 } flexWrap="wrap">
-              <AddressEntity address={ item.account } noIcon truncation="constant"/>
-              <Box flexShrink={ 0 } color="text_secondary">got</Box>
-              <Flex flexShrink={ 0 } columnGap={ 1 } alignItems="center">
+            <Flex key={ index } flexDir="column" alignItems="flex-start" rowGap={ 1 } fontWeight={ 400 }>
+              <AddressEntity address={ item.account } noIcon w="100%"/>
+              <Flex columnGap={ 1 } alignItems="center">
+                <Box flexShrink={ 0 } color="text_secondary">got</Box>
                 <Box>{ amount.valueStr }</Box>
                 <TokenEntity token={ token } noIcon onlySymbol w="auto"/>
               </Flex>
-              <Box flexShrink={ 0 } color="text_secondary">on behalf of</Box>
-              <AddressEntity address={ item.associated_account } noIcon truncation="constant"/>
+              <Flex columnGap={ 1 } alignItems="center" w="100%">
+                <Box flexShrink={ 0 } color="text_secondary">on behalf of</Box>
+                <AddressEntity address={ item.associated_account } noIcon/>
+              </Flex>
             </Flex>
           );
         }) }
@@ -74,4 +74,4 @@ const BlockEpochElectionRewardDetails = ({ type, token }: Props) => {
   );
 };
 
-export default React.memo(BlockEpochElectionRewardDetails);
+export default React.memo(BlockEpochElectionRewardDetailsMobile);

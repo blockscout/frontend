@@ -159,7 +159,11 @@ const BlockPageContent = () => {
       );
     }
 
-    return <Tag bgColor="celo" color="blackAlpha.800">Finalized epoch #{ blockQuery.data.celo.epoch_number }</Tag>;
+    return (
+      <Tooltip label="Displays the epoch finalized by this block" maxW="280px" textAlign="center">
+        <Tag bgColor="celo" color="blackAlpha.800">Finalized epoch #{ blockQuery.data.celo.epoch_number }</Tag>
+      </Tooltip>
+    );
   })();
   const titleSecondRow = (
     <>

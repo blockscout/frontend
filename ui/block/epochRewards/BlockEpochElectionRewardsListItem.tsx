@@ -7,7 +7,7 @@ import getCurrencyValue from 'lib/getCurrencyValue';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
-import BlockEpochElectionRewardDetails from './BlockEpochElectionRewardDetails';
+import BlockEpochElectionRewardDetailsMobile from './BlockEpochElectionRewardDetailsMobile';
 import BlockEpochElectionRewardType from './BlockEpochElectionRewardType';
 
 interface Props {
@@ -68,7 +68,7 @@ const BlockEpochElectionRewardsListItem = ({ data, isLoading, type }: Props) => 
       </Flex>
       { section.isOpen && (
         <Box mt={ 2 }>
-          <BlockEpochElectionRewardDetails type={ type } token={ data.token }/>
+          <BlockEpochElectionRewardDetailsMobile type={ type } token={ data.token }/>
         </Box>
       ) }
     </Box>

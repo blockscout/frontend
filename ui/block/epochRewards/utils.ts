@@ -25,3 +25,20 @@ export function getRewardNumText(type: keyof BlockEpoch['aggregated_election_rew
 
   return `${ num } ${ text }`;
 }
+
+export function getRewardDetailsTableTitles(type: keyof BlockEpoch['aggregated_election_rewards']): [string, string] {
+  switch (type) {
+    case 'delegated_payment':
+      return [ 'Beneficiary', 'Validator' ];
+    case 'group':
+      return [ 'Validator group', 'Associated validator' ];
+    case 'validator':
+      return [ 'Validator', 'Validator group' ];
+    case 'voter':
+      return [ 'Voter', 'Validator group' ];
+  }
+}
+
+export function formatRewardType(type: keyof BlockEpoch['aggregated_election_rewards']) {
+  return type.replaceAll('_', '-');
+}

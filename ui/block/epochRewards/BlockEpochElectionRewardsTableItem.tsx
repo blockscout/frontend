@@ -7,7 +7,7 @@ import getCurrencyValue from 'lib/getCurrencyValue';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
-import BlockEpochElectionRewardDetails from './BlockEpochElectionRewardDetails';
+import BlockEpochElectionRewardDetailsDesktop from './BlockEpochElectionRewardDetailsDesktop';
 import BlockEpochElectionRewardType from './BlockEpochElectionRewardType';
 import { getRewardNumText } from './utils';
 
@@ -78,7 +78,7 @@ const BlockEpochElectionRewardsTableItem = ({ isLoading, data, type }: Props) =>
         <Tr>
           <Td/>
           <Td colSpan={ 3 } pr={ 0 } pt={ 0 }>
-            <BlockEpochElectionRewardDetails type={ type } token={ data.token }/>
+            <BlockEpochElectionRewardDetailsDesktop type={ type } token={ data.token }/>
           </Td>
         </Tr>
       ) }
