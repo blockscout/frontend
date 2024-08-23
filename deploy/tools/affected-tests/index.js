@@ -48,7 +48,6 @@ async function getChangedFiles() {
     `git diff --name-only origin/${ process.env.GITHUB_BASE_REF } ${ process.env.GITHUB_SHA } -- ${ ROOT_DIR }` :
     `git diff --name-only main $(git branch --show-current) -- ${ ROOT_DIR }`;
 
-  // console.log('Executing command: ', command);
   const files = execSync(command)
     .toString()
     .trim()
