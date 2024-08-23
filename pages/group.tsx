@@ -7,11 +7,15 @@ import type { GroupTalbeListType, GroupRequestType } from 'types/storage';
 import PageNextJs from 'nextjs/PageNextJs';
 
 import useGraphqlQuery from 'lib/api/useGraphqlQuery';
+import useDebounce from 'lib/hooks/useDebounce';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const TableList = dynamic(() => import('ui/storage/table-list'), { ssr: false });
 
 const Page: NextPage = () => {
+  const [ searchTerm, setSearchTerm ] = React.useState('');
+
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const queries = [
     {
@@ -29,6 +33,12 @@ const Page: NextPage = () => {
       ],
       limit: 10,
       offset: 0,
+      where: debouncedSearchTerm ? {
+        _or: [
+          { group_name: { _ilike: `${ debouncedSearchTerm }%` } },
+          { group_id: { _eq: debouncedSearchTerm } },
+        ],
+      } : undefined,
     },
   ];
   const talbeList: Array<GroupTalbeListType> = [];
@@ -45,10 +55,22 @@ const Page: NextPage = () => {
   });
   const tapList = [ 'objects', 'Transactions', 'Permissions' ];
   const tabThead = [ 'Group Name', 'Group ID', 'Last Updated', 'Active Group Member Count', 'Owner' ];
+
+  const handleSearchChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  }, []);
+
   return (
     <PageNextJs pathname="/group">
       <PageTitle title="Groups" withTextAd/>
-      <TableList error={ error } loading={ loading } tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead }/>
+      <TableList
+        error={ error }
+        loading={ loading }
+        tapList={ tapList }
+        talbeList={ talbeList }
+        tabThead={ tabThead }
+        page="group"
+        handleSearchChange={ handleSearchChange }/>
     </PageNextJs>
   );
 };

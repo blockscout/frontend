@@ -84,7 +84,7 @@ export interface SearchResultUserOp {
 }
 
 export type SearchResultItem = SearchResultToken | SearchResultAddressOrContract | SearchResultBlock | SearchResultTx | SearchResultLabel | SearchResultUserOp |
-SearchResultBlob | SearchResultDomain | SearchResultBucket | SearchResultObject;
+SearchResultBlob | SearchResultDomain | SearchResultBucket | SearchResultObject | SearchResultGroup;
 
 export interface SearchResult {
   items: Array<SearchResultItem>;
@@ -113,15 +113,22 @@ export interface SearchRedirectResult {
 
 // For Stroage
 export interface SearchResultBucket {
-  type: 'bucket';
+  type: 'buckets';
   id: number;
   bucket_name: string;
   owner_address: string;
 }
 
 export interface SearchResultObject {
-  type: 'object';
+  type: 'objects';
   id: number;
   object_name: string;
+  owner_address: string;
+}
+
+export interface SearchResultGroup {
+  type: 'groups';
+  id: number;
+  group_name: string;
   owner_address: string;
 }

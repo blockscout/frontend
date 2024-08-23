@@ -11,6 +11,7 @@ import SearchBarSuggestBlob from './SearchBarSuggestBlob';
 import SearchBarSuggestBlock from './SearchBarSuggestBlock';
 import SearchBarSuggestBucket from './SearchBarSuggestBucket';
 import SearchBarSuggestDomain from './SearchBarSuggestDomain';
+import SearchBarSuggestGroup from './SearchBarSuggestGroup';
 import SearchBarSuggestItemLink from './SearchBarSuggestItemLink';
 import SearchBarSuggestLabel from './SearchBarSuggestLabel';
 import SearchBarSuggestObject from './SearchBarSuggestObject';
@@ -23,9 +24,10 @@ interface Props {
   isMobile: boolean | undefined;
   searchTerm: string;
   onClick: (event: React.MouseEvent<HTMLAnchorElement>) => void;
+  isFirst?: boolean;
 }
 
-const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) => {
+const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, isFirst }: Props) => {
   const url = (() => {
     switch (data.type) {
       case 'token': {
@@ -51,11 +53,14 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) =>
       case 'ens_domain': {
         return route({ pathname: '/address/[hash]', query: { hash: data.address } });
       }
-      case 'bucket': {
+      case 'buckets': {
         return route({ pathname: '/bucket-details/[address]', query: { address: data.bucket_name } });
       }
-      case 'object': {
+      case 'objects': {
         return route({ pathname: '/object-details/[address]', query: { address: data.object_name } });
+      }
+      case 'groups': {
+        return route({ pathname: '/group-details/[address]', query: { address: data.group_name } });
       }
     }
   })();
@@ -88,11 +93,14 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) =>
       case 'ens_domain': {
         return <SearchBarSuggestDomain data={ data } searchTerm={ searchTerm } isMobile={ isMobile }/>;
       }
-      case 'bucket': {
-        return <SearchBarSuggestBucket data={ data } searchTerm={ searchTerm } ></SearchBarSuggestBucket>;
+      case 'buckets': {
+        return <SearchBarSuggestBucket data={ data } searchTerm={ searchTerm } isFirst={ isFirst }></SearchBarSuggestBucket>;
       }
-      case 'object': {
-        return <SearchBarSuggestObject data={ data } searchTerm={ searchTerm } ></SearchBarSuggestObject>;
+      case 'objects': {
+        return <SearchBarSuggestObject data={ data } searchTerm={ searchTerm } isFirst={ isFirst }></SearchBarSuggestObject>;
+      }
+      case 'groups': {
+        return <SearchBarSuggestGroup data={ data } searchTerm={ searchTerm } isFirst={ isFirst }></SearchBarSuggestGroup>;
       }
     }
   })();

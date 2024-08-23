@@ -7,10 +7,15 @@ import type { BucketTalbeListType, BucketRequestType } from 'types/storage';
 import PageNextJs from 'nextjs/PageNextJs';
 
 import useGraphqlQuery from 'lib/api/useGraphqlQuery';
+import useDebounce from 'lib/hooks/useDebounce';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import { timeTool } from 'ui/storage/utils';
 const TableList = dynamic(() => import('ui/storage/table-list'), { ssr: false });
 const Page: NextPage = () => {
+  const [ searchTerm, setSearchTerm ] = React.useState('');
+
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+
   const queries = [
     {
       tableName: 'buckets',
@@ -26,6 +31,14 @@ const Page: NextPage = () => {
         }`,
         'owner_address',
       ],
+      limit: 10,
+      offset: 0,
+      where: debouncedSearchTerm ? {
+        _or: [
+          { bucket_name: { _ilike: `${ debouncedSearchTerm }%` } },
+          // { bucket_id: { _eq: debouncedSearchTerm } },
+        ],
+      } : undefined,
     },
   ];
   const talbeList: Array<BucketTalbeListType> = [];
@@ -43,10 +56,21 @@ const Page: NextPage = () => {
   });
   const tapList = [ 'Transactions', 'Versions' ];
   const tabThead = [ 'Bucket Name', 'Bucket ID', 'Last Updated Time', 'Status', 'Active Objects Count', 'Creator' ];
+
+  const handleSearchChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  }, []);
+
   return (
     <PageNextJs pathname="/bucket">
       <PageTitle title="Buckets" withTextAd/>
-      <TableList error={ error } loading={ loading } tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead }/>
+      <TableList
+        error={ error }
+        loading={ loading }
+        tapList={ tapList }
+        talbeList={ talbeList }
+        tabThead={ tabThead } page="bucket"
+        handleSearchChange={ handleSearchChange }/>
     </PageNextJs>
   );
 };

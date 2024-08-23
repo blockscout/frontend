@@ -42,12 +42,16 @@ const useGraphqlQuery = (aliasName: string, queries: Array<QueryConfig>): QueryR
   };
 
   const formatWhereCondition = (where: Record<string, any> | undefined): string => {
+    if (!where) {
+      return '';
+    }
+
     if (typeof where === 'object' && where !== null) {
       return Object.entries(where)
         .map(([ key, value ]) => {
           if (key === '_or' || key === '_and' || key === '_not') {
             const conditions = Array.isArray(value) ? value : [ value ];
-            return `${ key }: [${ conditions.map(cond => `${ formatObjectToGraphQL(cond) }`).join(', ') }]`;
+            return `${ key }: [${ conditions.map(cond => `{${ formatObjectToGraphQL(cond) }}`).join(', ') }]`;
           } else if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
             return `${ key }: { ${ formatObjectToGraphQL(value) } }`;
           }

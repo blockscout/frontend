@@ -28,6 +28,8 @@ type Props<T extends string> = {
   tabThead?: Array<T> | undefined;
   loading: boolean;
   error: Error | undefined;
+  page: string;
+  handleSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 function TableList(props: Props<string>) {
@@ -43,6 +45,7 @@ function TableList(props: Props<string>) {
           _placeholder={{ color: 'rgba(0, 0, 0, 0.3)' }}
           fontWeight="400" fontSize="12px"
           borderColor="rgba(0, 46, 51, 0.1)"
+          onChange={ props.handleSearchChange }
           borderRadius="29px" width="344px" height="42px" placeholder="Search by Object Name or ID">
         </Input>
       </Flex>

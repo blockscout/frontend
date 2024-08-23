@@ -159,8 +159,15 @@ const SearchBarSuggestStorage = ({ query, searchTerm, onItemClick, containerId, 
               { cat.id !== 'app' && (showMoreClicked ?
                 itemsGroups[cat.id] :
                 itemsGroups[cat.id]?.slice(0, 5)
-              )?.map((item, index) =>
-                <SearchBarSuggestItem key={ index } data={ item } isMobile={ isMobile } searchTerm={ searchTerm } onClick={ onItemClick }/>,
+              )?.map((item, index) => (
+                <SearchBarSuggestItem
+                  key={ index }
+                  isFirst={ index === 0 }
+                  data={ item }
+                  isMobile={ isMobile }
+                  searchTerm={ searchTerm }
+                  onClick={ onItemClick }/>
+              ),
               ) }
               { cat.id === 'app' && itemsGroups[cat.id]?.map((item, index) =>
                 <SearchBarSuggestApp key={ index } data={ item } isMobile={ isMobile } searchTerm={ searchTerm } onClick={ onItemClick }/>,

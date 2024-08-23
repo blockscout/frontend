@@ -8,10 +8,14 @@ import type { ObjetTalbeListType, ObjetRequestType } from 'types/storage';
 import PageNextJs from 'nextjs/PageNextJs';
 
 import useGraphqlQuery from 'lib/api/useGraphqlQuery';
+import useDebounce from 'lib/hooks/useDebounce';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const TableList = dynamic(() => import('ui/storage/table-list'), { ssr: false });
 const ObjectDetails: NextPage = () => {
+  const [ searchTerm, setSearchTerm ] = React.useState('');
+
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const queries = [
     {
@@ -26,6 +30,12 @@ const ObjectDetails: NextPage = () => {
         'bucket_name',
         'creator_address',
       ],
+      where: debouncedSearchTerm ? {
+        _or: [
+          { object_name: { _ilike: `${ debouncedSearchTerm }%` } },
+          { object_id: { _eq: debouncedSearchTerm } },
+        ],
+      } : undefined,
       limit: 10,
       offset: 0,
     },
@@ -50,10 +60,23 @@ const ObjectDetails: NextPage = () => {
   const tapList = [ 'Transactions', 'Versions' ];
 
   const tabThead = [ 'Object Name', 'Type', 'Object Size', 'Status', 'Visibility', 'Last Updated Time', 'Bucket', 'Creator' ];
+
+  const handleSearchChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  }, []);
+
   return (
     <PageNextJs pathname="/object">
       <PageTitle title="Objects" withTextAd/>
-      <TableList error={ error } loading={ loading } tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead }/>
+      <TableList
+        error={ error }
+        loading={ loading }
+        tapList={ tapList }
+        talbeList={ talbeList }
+        tabThead={ tabThead }
+        page="object"
+        handleSearchChange={ handleSearchChange }
+      />
     </PageNextJs>
   );
 };

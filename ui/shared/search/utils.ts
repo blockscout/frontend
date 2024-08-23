@@ -4,7 +4,7 @@ import type { MarketplaceAppOverview } from 'types/client/marketplace';
 import config from 'configs/app';
 
 export type ApiCategory = 'token' | 'nft' | 'address' | 'public_tag' | 'transaction' | 'block' | 'user_operation' | 'blob' | 'domain';
-export type GraphQLCategory = 'bucket' | 'object' | 'group';
+export type GraphQLCategory = 'buckets' | 'objects' | 'groups';
 export type Category = ApiCategory | GraphQLCategory | 'app';
 
 export type ItemsCategoriesMap =
@@ -24,9 +24,9 @@ export const searchCategories: Array<{id: Category; title: string }> = [
   { id: 'public_tag', title: 'Public tags' },
   { id: 'transaction', title: 'Transactions' },
   { id: 'block', title: 'Blocks' },
-  { id: 'bucket', title: 'Buckets' },
-  { id: 'object', title: 'Objects' },
-  { id: 'group', title: 'Groups' },
+  { id: 'buckets', title: 'Buckets' },
+  { id: 'objects', title: 'Objects' },
+  { id: 'groups', title: 'Groups' },
 ];
 
 if (config.features.userOps.isEnabled) {
@@ -52,9 +52,9 @@ export const searchItemTitles: Record<Category, { itemTitle: string; itemTitleSh
   block: { itemTitle: 'Block', itemTitleShort: 'Block' },
   user_operation: { itemTitle: 'User operation', itemTitleShort: 'User op' },
   blob: { itemTitle: 'Blob', itemTitleShort: 'Blob' },
-  bucket: { itemTitle: 'Bucket', itemTitleShort: 'Bucket' },
-  object: { itemTitle: 'Object', itemTitleShort: 'Object' },
-  group: { itemTitle: 'Group', itemTitleShort: 'Group' },
+  buckets: { itemTitle: 'Bucket', itemTitleShort: 'Bucket' },
+  objects: { itemTitle: 'Object', itemTitleShort: 'Object' },
+  groups: { itemTitle: 'Group', itemTitleShort: 'Group' },
 };
 
 export function getItemCategory(item: SearchResultItem | SearchResultAppItem): Category | undefined {
@@ -90,22 +90,25 @@ export function getItemCategory(item: SearchResultItem | SearchResultAppItem): C
     case 'ens_domain': {
       return 'domain';
     }
-    case 'bucket': {
-      return 'bucket';
+    case 'buckets': {
+      return 'buckets';
     }
-    case 'object': {
-      return 'object';
+    case 'objects': {
+      return 'objects';
     }
   }
 }
 
 export function getItemCategoryForGraphql(type: string): Category | undefined {
   switch (type) {
-    case 'bucket': {
-      return 'bucket';
+    case 'buckets': {
+      return 'buckets';
     }
-    case 'object': {
-      return 'object';
+    case 'objects': {
+      return 'objects';
+    }
+    case 'groups': {
+      return 'groups';
     }
   }
 }

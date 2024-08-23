@@ -54,15 +54,19 @@ const SearchBarStorage = () => {
     event.preventDefault();
     if (searchTerm) {
       saveToRecentKeywords(searchTerm);
-      if (query.data && query.data.bucket.length) {
+      if (query.data && query.data.buckets.length) {
         handelHide();
-        router.push({ pathname: '/bucket-details/[address]', query: { address: query.data.bucket[0].bucket_name } }, undefined, { shallow: true });
-      } else if (query.data && query.data.object.length) {
+        router.push({ pathname: '/bucket-details/[address]', query: { address: query.data.buckets[0].bucket_name } }, undefined, { shallow: true });
+      } else if (query.data && query.data.objects.length) {
         handelHide();
-        router.push({ pathname: '/object-details/[address]', query: { address: query.data.object[0].object_name } }, undefined, { shallow: true });
+        router.push({ pathname: '/object-details/[address]', query: { address: query.data.objects[0].object_name } }, undefined, { shallow: true });
+      } else if (query.data && query.data.groups.length) {
+        handelHide();
+        router.push({ pathname: '/group-details/[address]', query: { address: query.data.groups[0].group_name } }, undefined, { shallow: true });
       }
+      handleSearchTermChange('');
     }
-  }, [ searchTerm, query.data, handelHide, router ]);
+  }, [ searchTerm, query.data, handelHide, router, handleSearchTermChange ]);
 
   const handleOutsideClick = React.useCallback((event: Event) => {
     const isFocusInInput = inputRef.current?.contains(event.target as Node);
