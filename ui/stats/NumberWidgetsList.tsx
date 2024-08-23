@@ -20,6 +20,14 @@ const NumberWidgetsList = () => {
     return <DataFetchAlert/>;
   }
 
+  function replaceETH(inputString: string) {
+    // Use a regular expression to match "ETH" or "eth" (case-insensitive)
+    const regex = /eth/gi;
+
+    // Replace all occurrences of "ETH" or "eth" with the replacement string
+    return inputString.replace(regex, 'WVM');
+  }
+
   return (
     <Grid
       gridTemplateColumns={{ base: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)' }}
@@ -38,7 +46,7 @@ const NumberWidgetsList = () => {
           return (
             <StatsWidget
               key={ id + (isPlaceholderData ? index : '') }
-              label={ title }
+              label={ replaceETH(title) }
               value={ `${ Number(value).toLocaleString(undefined, { maximumFractionDigits: 3, notation: 'compact' }) }${ unitsStr }` }
               isLoading={ isPlaceholderData }
               hint={ description }
