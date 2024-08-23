@@ -17,7 +17,7 @@ async function getResponseJson(rp: Response) {
 }
 
 async function getAccessToken(code: string) {
-  const clientId = getEnvValue('DISCORD_CLIENT_ID');
+  const clientId = getEnvValue('NEXT_PUBLIC_DISCORD_CLIENT_ID');
   const clientSecret = getEnvValue('DISCORD_CLIENT_SECRET');
   const encodedCredentials = btoa(`${ clientId }:${ clientSecret }`);
   const redirectUri = `${ getEnvValue('NEXT_PUBLIC_API_PROTOCOL') }://${ getEnvValue('NEXT_PUBLIC_API_HOST') }/api/auth/callback/discord`;
@@ -61,7 +61,7 @@ async function getUserProfile(accessToken: string) {
 
 async function joinGuild(accessToken: string, userId: string) {
   const botToken = getEnvValue('DISCORD_BOT_TOKEN');
-  const guildId = getEnvValue('DISCORD_GUILD_ID');
+  const guildId = getEnvValue('NEXT_PUBLIC_DISCORD_GUILD_ID');
   const rp = await fetch(`https://discord.com/api/v10/guilds/${ guildId }/members/${ userId }`, {
     method: 'PUT',
     headers: {
@@ -76,7 +76,7 @@ async function joinGuild(accessToken: string, userId: string) {
   const results: any = await getResponseJson(rp);
 
   if (!rp.ok) {
-    const guildName = getEnvValue('DISCORD_GUILD_NAME');
+    const guildName = getEnvValue('NEXT_PUBLIC_DISCORD_GUILD_NAME');
     const message = `${ rp.status } ${ rp.statusText } Failed to join ${ guildName }'s community, please try again. ${ JSON.stringify(results) }`;
     throw new Error(message);
   }

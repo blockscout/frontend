@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
   Flex,
   Box,
@@ -20,7 +21,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { isAddress } from 'viem';
 
-import { sleep } from 'configs/app/utils';
+import { getEnvValue, sleep } from 'configs/app/utils';
 import IconSvg from 'ui/shared/IconSvg';
 
 const enum FAUCET_REQUEST_TYPE {
@@ -39,10 +40,16 @@ const Faucet = (props: { verified: boolean }) => {
     if (props.verified) {
       return;
     } else {
-      location.href =
-        `https://discord.com/oauth2/authorize?client_id
-=1270924159391760487&response_type=code&redirect_uri
-=http%3A%2F%2Flocalhost%3A3000%2Fapi%2Fauth%2Fcallback%2Fdiscord&scope=identify+guilds.join`;
+      const redirectUri = `${ getEnvValue('NEXT_PUBLIC_API_PROTOCOL') }://${ getEnvValue('NEXT_PUBLIC_API_HOST') }/api/auth/callback/discord`;
+      const authUrl = new URL('https://discord.com/oauth2/authorize');
+      const searchParams = new URLSearchParams({
+        client_id: getEnvValue('NEXT_PUBLIC_DISCORD_CLIENT_ID')!,
+        response_type: 'code',
+        redirect_uri: redirectUri,
+        scope: 'identify guilds.join',
+      });
+      authUrl.search = searchParams.toString();
+      location.href = authUrl.href;
     }
   }, [ props.verified ]);
 
