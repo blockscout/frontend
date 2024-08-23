@@ -54,7 +54,7 @@ export default function useQuickSearchQueryStorage() {
             where: {
               _or: [
                 { bucket_name: { _ilike: `${ debouncedSearchTerm }%` } },
-                // { bucket_id: { _eq: debouncedSearchTerm } },
+                { bucket_id: { _eq: debouncedSearchTerm } },
               ],
             },
           },
@@ -108,7 +108,7 @@ export default function useQuickSearchQueryStorage() {
             where: {
               _or: [
                 { bucket_name: { _ilike: `${ debouncedSearchTerm }%` } },
-                // { bucket_id: { _eq: debouncedSearchTerm } },
+                { bucket_id: { _eq: debouncedSearchTerm } },
               ],
             },
           },

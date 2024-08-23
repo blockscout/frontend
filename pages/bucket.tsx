@@ -36,7 +36,7 @@ const Page: NextPage = () => {
       where: debouncedSearchTerm ? {
         _or: [
           { bucket_name: { _ilike: `${ debouncedSearchTerm }%` } },
-          // { bucket_id: { _eq: debouncedSearchTerm } },
+          { bucket_id: { _eq: debouncedSearchTerm } },
         ],
       } : undefined,
     },
