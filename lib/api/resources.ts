@@ -57,7 +57,6 @@ import type { BackendVersionConfig } from 'types/api/configs';
 import type {
   SmartContract,
   SmartContractVerificationConfigRaw,
-  SolidityscanReport,
   SmartContractSecurityAudits,
 } from 'types/api/contract';
 import type { VerifiedContractsResponse, VerifiedContractsFilters, VerifiedContractsCounters } from 'types/api/contracts';
@@ -480,7 +479,7 @@ export const RESOURCES = {
     path: '/api/v2/smart-contracts/:hash/verification/via/:method',
     pathParams: [ 'hash' as const, 'method' as const ],
   },
-  contract_solidityscan_report: {
+  contract_solidity_scan_report: {
     path: '/api/v2/smart-contracts/:hash/solidityscan-report',
     pathParams: [ 'hash' as const ],
   },
@@ -1038,7 +1037,7 @@ Q extends 'quick_search' ? Array<SearchResultItem> :
 Q extends 'search' ? SearchResult :
 Q extends 'search_check_redirect' ? SearchRedirectResult :
 Q extends 'contract' ? SmartContract :
-Q extends 'contract_solidityscan_report' ? SolidityscanReport :
+Q extends 'contract_solidity_scan_report' ? unknown :
 Q extends 'verified_contracts' ? VerifiedContractsResponse :
 Q extends 'verified_contracts_counters' ? VerifiedContractsCounters :
 Q extends 'visualize_sol2uml' ? visualizer.VisualizeResponse :

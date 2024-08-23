@@ -1,14 +1,13 @@
 import { Box, Text, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure, Icon } from '@chakra-ui/react';
 import React from 'react';
 
-import type { SolidityscanReport } from 'types/api/contract';
-
 import config from 'configs/app';
 // This icon doesn't work properly when it is in the sprite
 // Probably because of the gradient
 // eslint-disable-next-line no-restricted-imports
 import solidityScanIcon from 'icons/brands/solidity_scan.svg';
 import * as mixpanel from 'lib/mixpanel/index';
+import type { SolidityScanReport } from 'lib/solidityScan/schema';
 import Popover from 'ui/shared/chakra/Popover';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import SolidityscanReportButton from 'ui/shared/solidityscanReport/SolidityscanReportButton';
@@ -16,7 +15,7 @@ import SolidityscanReportDetails from 'ui/shared/solidityscanReport/Solidityscan
 import SolidityscanReportScore from 'ui/shared/solidityscanReport/SolidityscanReportScore';
 
 type Props = {
-  securityReport?: SolidityscanReport['scan_report'] | null;
+  securityReport?: SolidityScanReport['scan_report'] | null;
 }
 
 const ContractSecurityReport = ({ securityReport }: Props) => {
@@ -27,11 +26,11 @@ const ContractSecurityReport = ({ securityReport }: Props) => {
     onToggle();
   }, [ onToggle ]);
 
-  if (!securityReport?.scan_summary?.score_v2) {
+  if (!securityReport) {
     return null;
   }
 
-  const url = securityReport?.scanner_reference_url;
+  const url = securityReport.scanner_reference_url;
   const {
     score_v2: securityScore,
     issue_severity_distribution: issueSeverityDistribution,

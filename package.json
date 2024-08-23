@@ -108,6 +108,7 @@
     "react-scroll": "^1.8.7",
     "swagger-ui-react": "^5.9.0",
     "use-font-face-observer": "^1.2.1",
+    "valibot": "0.38.0",
     "viem": "2.10.9",
     "wagmi": "2.9.2",
     "xss": "^1.0.14"
