@@ -77,6 +77,7 @@ frontend:
     NEXT_PUBLIC_AD_BANNER_PROVIDER: slise
     NEXT_PUBLIC_DATA_AVAILABILITY_ENABLED: true
     NEXT_PUBLIC_NAVIGATION_HIGHLIGHTED_ROUTES: "['/apps']"
+    PROMETHEUS_METRICS_ENABLED: true
   envFromSecret:
     NEXT_PUBLIC_SENTRY_DSN: ref+vault://deployment-values/blockscout/dev/review?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_SENTRY_DSN
     SENTRY_CSP_REPORT_URI: ref+vault://deployment-values/blockscout/dev/review?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/SENTRY_CSP_REPORT_URI

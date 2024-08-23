@@ -54,6 +54,7 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/login': 'Regular page',
   '/sprite': 'Regular page',
   '/api/metrics': 'Regular page',
+  '/api/monitoring/invalid-api-schema': 'Regular page',
   '/api/log': 'Regular page',
   '/api/media-type': 'Regular page',
   '/api/proxy': 'Regular page',
