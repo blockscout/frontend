@@ -247,6 +247,7 @@ const AddressPageContent = () => {
 
   const tags: Array<EntityTag> = React.useMemo(() => {
     return [
+      ...(addressQuery.data?.public_tags?.map((tag) => ({ slug: tag.label, name: tag.display_name, tagType: 'custom' as const, ordinal: -1 })) || []),
       !addressQuery.data?.is_contract ? { slug: 'eoa', name: 'EOA', tagType: 'custom' as const, ordinal: -1 } : undefined,
       config.features.validators.isEnabled && addressQuery.data?.has_validated_blocks ?
         { slug: 'validator', name: 'Validator', tagType: 'custom' as const, ordinal: 10 } :

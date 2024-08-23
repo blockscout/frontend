@@ -11,7 +11,7 @@ interface Props {
 
 const NameDomainDetailsAlert = ({ data }: Props) => {
 
-  if (!data?.stored_offchain || !data?.resolved_with_wildcard) {
+  if (!data?.stored_offchain && !data?.resolved_with_wildcard) {
     return null;
   }
 
