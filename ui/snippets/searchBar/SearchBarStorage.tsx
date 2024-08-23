@@ -28,6 +28,7 @@ import SearchBarSuggestStorage from './SearchBarSuggest/SearchBarSuggestStorage'
 import useQuickSearchQueryStorage from './useQuickSearchQueryStorage';
 
 const SCROLL_CONTAINER_ID = 'search_bar_popover_content';
+
 const SearchBarStorage = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const inputRef = React.useRef<HTMLFormElement>(null);
@@ -38,21 +39,7 @@ const SearchBarStorage = () => {
 
   const recentSearchKeywords = getRecentSearchKeywords();
 
-  const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query, pathname } = useQuickSearchQueryStorage();
-
-  const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (searchTerm) {
-      const url = route({ pathname: '/search-results', query: { q: searchTerm } });
-      mixpanel.logEvent(mixpanel.EventTypes.SEARCH_QUERY, {
-        'Search query': searchTerm,
-        'Source page type': mixpanel.getPageType(pathname),
-        'Result URL': url,
-      });
-      saveToRecentKeywords(searchTerm);
-      router.push({ pathname: '/search-results', query: { q: searchTerm } }, undefined, { shallow: true });
-    }
-  }, [ searchTerm, pathname, router ]);
+  const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query, pathname, type, setType } = useQuickSearchQueryStorage();
 
   const handleFocus = React.useCallback(() => {
     onOpen();
@@ -63,9 +50,22 @@ const SearchBarStorage = () => {
     inputRef.current?.querySelector('input')?.blur();
   }, [ onClose ]);
 
+  const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (searchTerm) {
+      saveToRecentKeywords(searchTerm);
+      if (query.data && query.data.bucket.length) {
+        handelHide();
+        router.push({ pathname: '/bucket-details/[address]', query: { address: query.data.bucket[0].bucket_name } }, undefined, { shallow: true });
+      } else if (query.data && query.data.object.length) {
+        handelHide();
+        router.push({ pathname: '/object-details/[address]', query: { address: query.data.object[0].object_name } }, undefined, { shallow: true });
+      }
+    }
+  }, [ searchTerm, query.data, handelHide, router ]);
+
   const handleOutsideClick = React.useCallback((event: Event) => {
     const isFocusInInput = inputRef.current?.contains(event.target as Node);
-
     if (!isFocusInInput) {
       handelHide();
     }
@@ -109,12 +109,20 @@ const SearchBarStorage = () => {
     };
   }, [ calculateMenuWidth ]);
 
+  const showMoreClicked = React.useCallback(() => {
+    if (type === 'default') {
+      return false;
+    } else {
+      return true;
+    }
+  }, [ type ]);
+
   return (
     <>
       <Popover
         isOpen={ isOpen && (searchTerm.trim().length > 0 || recentSearchKeywords.length > 0) }
         autoFocus={ false }
-        onClose={ onClose }
+        // onClose={ onClose }
         placement="bottom-start"
         isLazy
       >
@@ -156,6 +164,8 @@ const SearchBarStorage = () => {
                     searchTerm={ debouncedSearchTerm }
                     onItemClick={ handleItemClick }
                     containerId={ SCROLL_CONTAINER_ID }
+                    setType={ setType }
+                    showMoreClicked={ showMoreClicked() }
                   />
                 ) }
               </Box>
@@ -163,7 +173,7 @@ const SearchBarStorage = () => {
             { searchTerm.trim().length > 0 && query.data && query.data.length >= 50 && (
               <PopoverFooter>
                 <LinkInternal
-                  href={ route({ pathname: '/search-results', query: { q: searchTerm } }) }
+                  href={ route({ pathname: '/search-results', query: { q: searchTerm, type: 'storage' } }) }
                   fontSize="sm"
                 >
                 View all results

@@ -11,43 +11,31 @@ import {
   Flex,
   Input,
   Box,
+  Skeleton,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
 
-interface TalbeListType {
-  txnHash?: string;
-  Block?: string;
-  Age?: string;
-  Type?: string;
-  objectSize?: string;
-  Visibility?: string;
-  lastTime?: string;
-  Creator?: string;
-  'Object Name'?: string;
-  'Group Name'?: string;
-  'Group ID'?: string;
-  'Last Updated'?: string;
-  'Active Group Member Count'?: string;
-  Owner?: string;
-}
+import type { TalbeListType } from 'types/storage';
+
+import Pagination from './Pagination';
+import { formatPubKey, skeletonList } from './utils';
 
 type Props<T extends string> = {
   tapList?: Array<T> | undefined;
-  talbeList?: Array<TalbeListType> | undefined;
+  talbeList: Array<TalbeListType>;
   tabThead?: Array<T> | undefined;
-}
-function formatPubKey(pubKey: string | undefined, _length = 4, _preLength = 4) {
-  if (!pubKey) {
-    return;
-  }
-  if (!pubKey || typeof pubKey !== 'string' || pubKey.length < (_length * 2 + 1)) {
-    return pubKey;
-  }
-  return pubKey.substr(0, _preLength || _length) + '...' + pubKey.substr(_length * -1, _length);
+  loading: boolean;
+  error: Error | undefined;
 }
 
-function tableList<T extends string>(props: Props<T>) {
+function TableList(props: Props<string>) {
+  let talbeList: Array<TalbeListType> = props.talbeList;
+  const router = useRouter();
+  if (!talbeList?.length && !props.error) {
+    talbeList = skeletonList(router.pathname);
+  }
   return (
     <>
       <Flex justifyContent="right">
@@ -58,8 +46,8 @@ function tableList<T extends string>(props: Props<T>) {
           borderRadius="29px" width="344px" height="42px" placeholder="Search by Object Name or ID">
         </Input>
       </Flex>
-      <TableContainer marginTop="16px" border="1px" borderRadius="12px" borderColor="rgba(0, 0, 0, 0.06);" padding="0 4px">
-        <Table variant="bubble">
+      <TableContainer marginTop="16px" border="1px" borderRadius="12px" borderColor="rgba(0, 0, 0, 0.06);" padding="0 4px 78px 4px">
+        <Table variant="bubble" position="relative">
           <Thead>
             <Tr>
               { props.tabThead?.map((value, index) => (
@@ -70,67 +58,97 @@ function tableList<T extends string>(props: Props<T>) {
                   p="24px 24px 10px 24px"
                   bg="#FFFF"
                   borderBottom="1px"
-                  borderColor="rgba(0, 0, 0, 0.1)">{ value }</Th>
+                  borderColor="rgba(0, 0, 0, 0.1)">
+                  { value }
+                </Th>
               )) }
             </Tr>
           </Thead>
           <Tbody>
             {
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              props.talbeList?.map((title: any, key) => (
+              talbeList?.map((title: TalbeListType | any, key) => (
                 <Tr _hover={{ bg: 'rgba(220, 212, 255, 0.24)' }} key={ key }>
                   {
                     Object.keys(title)?.map((value: string, index) => (
-                      <Td
-                        _last={{ borderRightRadius: '12px' }}
-                        _first={{ borderLeftRadius: '12px' }}
-                        key={ index }
-                        fontWeight="500" fontSize="14px"
-                        overflow="hidden"
-                        color={ value === 'txnHash' ? '#8A55FD' : '#000000' }
-                        p="12px 24px"
-                      >
-                        {
-                          value === 'txnHash' ? (
-                            <Tooltip label={ title[value] } placement="top" bg="#FFFFFF" color="#000000" >
-                              <NextLink href={{ pathname: '/tx/[hash]', query: { hash: title[value] || '' } }}>
-                                { formatPubKey(title[value]) }
-                              </NextLink>
-                            </Tooltip >
-                          ) :
-                            value === 'Owner' || value === 'Creator' || value === 'Creator' ? (
-                              <NextLink href={{ pathname: '/address/[hash]', query: { hash: title[value] || '' } }}>
-                                <Box overflow="hidden">{ title[value] }</Box>
-                              </NextLink>
+                      value !== 'id' && (
+                        <Td
+                          _last={{ borderRightRadius: '12px' }}
+                          _first={{ borderLeftRadius: '12px' }}
+                          key={ index }
+                          fontWeight="500" fontSize="14px"
+                          overflow="hidden"
+                          color="#8A55FD"
+                          p="12px 24px"
+                        >
+                          {
+                            value === 'txnHash' ? (
+                              <Tooltip label={ title[value] } placement="top" bg="#FFFFFF" >
+                                <NextLink href={{ pathname: '/tx/[hash]', query: { hash: title[value] || '' } }}>
+                                  <Box overflow="hidden">
+                                    <Skeleton isLoaded={ !props.loading }>{ formatPubKey(title[value]) }</Skeleton>
+                                  </Box>
+                                </NextLink>
+                              </Tooltip >
                             ) :
-                              value === 'Last Updated' ? (
-                                <NextLink href={{ pathname: '/block/[height_or_hash]', query: { height_or_hash: title[value] || '' } }}>
-                                  { title[value] }
+                              value === 'Owner' || value === 'Creator' ? (
+                                <NextLink href={{ pathname: '/address/[hash]', query: { hash: title[value] || '' } }}>
+                                  <Box overflow="hidden">
+                                    <Skeleton isLoaded={ !props.loading }>{ formatPubKey(title[value], 6, 6) }</Skeleton>
+                                  </Box>
                                 </NextLink>
                               ) :
-                                value === 'Object Name' ? (
-                                  <NextLink href={{ pathname: '/object-details/[address]', query: { address: title[value] || '' } }}>
-                                    <Box overflow="hidden" color="#8A55FD">{ title[value] }</Box>
-                                  </NextLink>
+                                value === 'Last Updated' ? (
+                                  <Skeleton isLoaded={ !props.loading }>
+                                    <Flex>
+                                      <Box color="#000000" marginRight="4px">Block</Box>
+                                      <NextLink href={{ pathname: '/block/[height_or_hash]', query: { height_or_hash: title[value] || '' } }}>
+                                        <Box>{ title[value] }</Box>
+                                      </NextLink>
+                                    </Flex>
+                                  </Skeleton>
                                 ) :
-                                  value === 'Bucket Name' || value === 'Bucket' ? (
-                                    <NextLink href={{ pathname: '/bucket-details/[address]', query: { address: title[value] || '' } }}>
-                                      <Box color="#8A55FD">{ title[value] }</Box>
+                                  value === 'Object Name' ? (
+                                    <NextLink href={{ pathname: '/object-details/[address]', query: { address: title[value] || '' } }}>
+                                      <Box overflow="hidden"><Skeleton isLoaded={ !props.loading }>{ title[value] }</Skeleton></Box>
                                     </NextLink>
                                   ) :
-                                    value === 'Group Name' ? (
-                                      <NextLink href={{ pathname: '/group-details/[address]', query: { address: title[value] || '' } }}>
-                                        <Box color="#8A55FD">{ title[value] }</Box>
+                                    value === 'Bucket Name' || value === 'Bucket' ? (
+                                      <NextLink href={{ pathname: '/bucket-details/[address]', query: { address: title[value] || '' } }}>
+                                        <Box><Skeleton isLoaded={ !props.loading }>{ title[value] }</Skeleton></Box>
                                       </NextLink>
                                     ) :
-                                      <Box overflow="hidden">{ title[value] }</Box>
-                        }
-                      </Td>
+                                      value === 'Group Name' ? (
+                                        <NextLink href={{ pathname: '/group-details/[address]', query: { address: title[value] || '' } }}>
+                                          <Box><Skeleton isLoaded={ !props.loading }>{ title[value] }</Skeleton></Box>
+                                        </NextLink>
+                                      ) :
+                                        value === 'Status' ? (
+                                          <Box
+                                            bg="#30D3BF"
+                                            color="#FFFFFF"
+                                            fontWeight="500"
+                                            fontSize="12px"
+                                            display="inline-block"
+                                            padding="4px 8px"
+                                            borderRadius="24px"
+                                          >
+                                            <Box><Skeleton isLoaded={ !props.loading }>{ title[value] }</Skeleton></Box>
+                                          </Box>
+                                        ) : (
+                                          <Box color="#000000" overflow="hidden">
+                                            <Skeleton isLoaded={ !props.loading }>{ title[value] }</Skeleton>
+                                          </Box>
+                                        ) }
+                        </Td>
+                      )
                     ))
                   }
                 </Tr>
               )) }
           </Tbody>
+          <Box position="absolute" right="24px" bottom="-54px">
+            <Pagination itemsPerPage={ 1 }></Pagination>
+          </Box>
         </Table>
 
       </TableContainer>
@@ -138,4 +156,4 @@ function tableList<T extends string>(props: Props<T>) {
   );
 }
 
-export default React.memo(tableList);
+export default React.memo(TableList);

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-console */
 /* eslint-disable no-nested-ternary */
 import {
@@ -10,19 +9,26 @@ import {
   Td,
   TableContainer,
   Tooltip,
+  Box,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React, { useState } from 'react';
 
+import { formatPubKey } from './utils';
+
 interface TalbeListType {
-  Block: string;
+  Block?: string;
   Age?: string;
   Type?: string;
   objectSize?: string;
   Visibility?: string;
   lastTime?: string;
   Creator?: string;
+  'objects name'?: string;
   'Txn Hash'?: string;
+  'Object Size'?: string;
+  Status?: string;
+  'Last Updated Time'?: string;
 }
 
 type Props<T extends string> = {
@@ -30,15 +36,6 @@ type Props<T extends string> = {
   talbeList?: Array<TalbeListType> | undefined;
   tabThead?: Array<T> | undefined;
   changeTable: (value: string) => void;
-}
-function formatPubKey(pubKey: string, _length = 4, _preLength = 4) {
-  if (!pubKey) {
-    return;
-  }
-  if (!pubKey || typeof pubKey !== 'string' || pubKey.length < (_length * 2 + 1)) {
-    return pubKey;
-  }
-  return pubKey.substr(0, _preLength || _length) + '...' + pubKey.substr(_length * -1, _length);
 }
 
 function Page<T extends string>(props: Props<T>) {
@@ -89,33 +86,54 @@ function Page<T extends string>(props: Props<T>) {
               <Tr key={ key } >
                 {
                   Object.keys(title)?.map((value: string, index) => (
-                    <Td
-                      key={ index }
-                      fontWeight="500" fontSize="14px"
-                      overflow="hidden"
-                      color={ value === 'txnHash' ? '#8A55FD' : '#000000' } padding="24px"
-                    >
-                      {
-                        value === 'Txn Hash' ? (
-                          <Tooltip label={ title[value] } placement="top" bg="#FFFF" color="#000000">
-                            <NextLink href={{ pathname: '/tx/[hash]', query: { hash: title[value] || '' } }}>
-                              { formatPubKey(title[value]) }
-                            </NextLink>
-                          </Tooltip >
-                        ) :
-                          value === 'Block' ? (
-                            <NextLink href={{ pathname: '/block/[height_or_hash]', query: { height_or_hash: title[value] || '' } }}>
-                              { title[value] }
-                            </NextLink>
+                    value !== 'id' && (
+                      <Td
+                        key={ index }
+                        fontWeight="500" fontSize="14px"
+                        overflow="hidden"
+                        color={ value === 'txnHash' ? '#8A55FD' : '#000000' } padding="24px"
+                      >
+                        {
+                          value === 'Txn Hash' ? (
+                            <Tooltip label={ title[value] } placement="top" bg="#FFFF" color="#000000">
+                              <NextLink href={{ pathname: '/tx/[hash]', query: { hash: title[value] || '' } }}>
+                                <Box color="#8A55FD">
+                                  { formatPubKey(title[value], 6, 6) }
+                                </Box>
+                              </NextLink>
+                            </Tooltip >
                           ) :
                             value === 'Block' ? (
                               <NextLink href={{ pathname: '/block/[height_or_hash]', query: { height_or_hash: title[value] || '' } }}>
-                                { title[value] }
+                                <Box color="#8A55FD">
+                                  { title[value] }
+                                </Box>
                               </NextLink>
                             ) :
-                              <div>{ title[value] }</div>
-                      }
-                    </Td>
+                              value === 'Creator' ? (
+                                <NextLink href={{ pathname: '/address/[hash]', query: { hash: title[value] || '' } }}>
+                                  <Box color="#8A55FD" overflow="hidden">{ formatPubKey(title[value], 6, 6) }</Box>
+                                </NextLink>
+                              ) :
+                                value === 'objects name' ? (
+                                  <NextLink href={{ pathname: '/object-details/[address]', query: { address: title.id || '' } }}>
+                                    <Box color="#8A55FD" overflow="hidden">{ title[value] }</Box>
+                                  </NextLink>
+                                ) :
+                                  value === 'Block' ? (
+                                    <NextLink href={{ pathname: '/block/[height_or_hash]', query: { height_or_hash: title[value] || '' } }}>
+                                      { title[value] }
+                                    </NextLink>
+                                  ) :
+                                    value === 'Type' ? (
+                                      <Box color="#FFFFFF" display="inline-block" padding="4px 12px" bg="#30D3BF" borderRadius="23px">
+                                        { title[value] }
+                                      </Box>
+                                    ) :
+                                      <div>{ title[value] }</div>
+                        }
+                      </Td>
+                    )
                   ))
                 }
               </Tr>
@@ -126,4 +144,4 @@ function Page<T extends string>(props: Props<T>) {
   );
 }
 
-export default Page;
+export default React.memo(Page);

@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { HStack, Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';

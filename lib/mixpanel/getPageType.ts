@@ -44,6 +44,13 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/name-domains/[name]': 'Domain details',
   '/validators': 'Validators list',
   '/gas-tracker': 'Gas tracker',
+  '/bucket-details/[address]': 'Bucket Details',
+  '/group-details/[address]': 'Group Details',
+  '/object-details/[address]': 'Object Details',
+  '/faucet': 'Faucet',
+  '/bucket': 'Bucket',
+  '/group': 'Group',
+  '/object': 'Object',
 
   // service routes, added only to make typescript happy
   '/login': 'Login',
@@ -59,13 +66,6 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/api/faucet': 'Node API: Faucet',
   '/auth/auth0': 'Auth',
   '/auth/unverified-email': 'Unverified email',
-  '/bucket-details/[address]': 'Bucket Details',
-  '/group-details/[address]': 'Group Details',
-  '/object-details/[address]': 'Object Details',
-  '/faucet': 'faucet Details',
-  '/bucket': '',
-  '/group': '',
-  '/object': '',
 };
 
 export default function getPageType(pathname: Route['pathname']) {

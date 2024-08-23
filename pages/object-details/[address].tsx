@@ -1,97 +1,134 @@
-/* eslint-disable no-console */
 import { Flex, Box } from '@chakra-ui/react';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { ObjectDetailsOverviewType } from 'types/storage';
+
 import type { Props } from 'nextjs/getServerSideProps';
 import PageNextJs from 'nextjs/PageNextJs';
 
+import useGraphqlQuery from 'lib/api/useGraphqlQuery';
+import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
+import { formatPubKey, timeTool } from 'ui/storage/utils';
 
-const HandDetails = dynamic(() => import('ui/storage/hand-details'), { ssr: false });
-const TableDetails = dynamic(() => import('ui/storage/table-details'), { ssr: false });
-
-function formatPubKey(pubKey: string | undefined, _length = 4, _preLength = 4) {
-  if (!pubKey) {
-    return;
-  }
-  if (!pubKey || typeof pubKey !== 'string' || pubKey.length < (_length * 2 + 1)) {
-    return pubKey;
-  }
-  return pubKey.substr(0, _preLength || _length) + '...' + pubKey.substr(_length * -1, _length);
-}
+const HeadDetails = dynamic(() => import('ui/storage/head-details'), { ssr: false });
+// const TableDetails = dynamic(() => import('ui/storage/table-details'), { ssr: false });
 
 const ObjectDetails: NextPage<Props> = (props: Props) => {
   const router = useRouter();
 
-  const overview = {
-    'Object Name': '0xdlz',
-    'Object Tags': '0',
-    'Object ID': '1',
-    'Object No.': '24521',
-    Type: '001',
-    'Object Size': 'Created',
-    'Object Status': 'Sealed',
-    Deleted: 'NO',
+  const routerFallback = () => () => {
+    router.back();
+  };
+
+  // const [ objectAddress, setobjectAddress ] = React.useState<string>('');
+  // React.useEffect(() => {
+  // }, [ objectAddress ]);
+  // const changeTable = React.useCallback((value: string) => {
+  //   setobjectAddress(value);
+  // }, []);
+
+  const queries = [
+    {
+      tableName: 'objects',
+      fields: [
+        'object_name',
+        'tags',
+        'object_id',
+        'content_type',
+        'payload_size',
+        'status',
+        'delete_at',
+        'visibility',
+        'bucket_name',
+        'update_time',
+        'removed',
+        'creator: owner_address',
+        'owner: owner_address',
+        `primary_sp: bucket {
+          global_virtual_group_family {
+            primary_sp {
+              moniker
+            }
+            global_virtual_group_ids
+          }
+        }`,
+      ],
+      where: { object_name: { _ilike: router.query.address } },
+    },
+    {
+      tableName: 'transaction',
+      fields: [
+        'gas_used',
+        'gas_wanted',
+        'logs',
+        'memo',
+        'raw_log',
+        'messages',
+        'hash',
+      ],
+    },
+  ];
+  const { loading, data } = useGraphqlQuery('Objects', router.query.address ? queries : []);
+
+  const details = data?.objects && data?.objects[0];
+
+  const overview: ObjectDetailsOverviewType = {
+    'Object Name': details?.object_name,
+    'Object Tags': details?.tags && Object.entries(details?.tags).length.toString(),
+    'Object ID': details?.object_id && formatPubKey(details?.object_id, 6, 6),
+    'Object No.': details?.object_id && formatPubKey(details?.object_id, 6, 6),
+    Type: details?.content_type,
+    'Object Size': details?.payload_size,
+    'Object Status': details?.status,
+    Deleted: details?.removed ? 'Yes' : 'No',
   };
   const more = {
     Visibility: {
-      value: 'Public',
+      value: details?.visibility,
       status: 'none',
     },
     'Bucket Name': {
-      value: 'mainnet-bsc-blocks',
+      value: details?.bucket_name,
       status: 'bucketPage',
     },
     'Last Updated Time': {
-      value: formatPubKey('0x23c845626A460012EAa27842dd5d24b465B356E7'),
+      value: timeTool(details?.update_time),
       status: 'time',
     },
     Creator: {
-      value: '0x4c1a93cd42b6e4960db845bcf9d540b081b1a63a',
+      value: details?.creator,
       status: 'copyLink',
     },
     Owner: {
-      value: '0x4c1a93cd42b6e4960db845bcf9d540b081b1a63a',
+      value: details?.owner,
       status: 'copyLink',
-    },
-    'Primary SP': {
-      value: 'nodereal',
-      status: 'link',
-    },
-    'Secondary SP Addresses': {
-      value: 'Click to view all',
-      status: 'clickViewAll',
     },
   };
   const secondaryAddresses = [ '0x4c1a93cd42b6e4960db845bcf9d540b081b1a63a', '0x4c1a93cd42b6e4960db845bcf9d540b081b1a63a' ];
-  const tapList = [ 'Transactions', 'Versions' ];
-  const tabThead = [ 'Txn Hash', 'Block', 'Age', 'Type' ];
-  const talbeList = [
-    {
-      'Txn Hash': '4c83feb331594408sdjhfsdk98238293',
-      Block: 'Seal Object',
-      Age: '40 B',
-      Type: 'Created',
-    },
-  ];
+  // const tapList = [ 'Transactions', 'Versions' ];
+  // const tabThead = [ 'Txn Hash', 'Block', 'Age', 'Type' ];
+  // const talbeList = [
+  //   {
+  //     'Txn Hash': 'object1.txt',
+  //     Block: 'Seal Object',
+  //     Age: '40 B',
+  //     Type: 'Created',
+  //   },
+  // ];
 
-  const [ data, setData ] = React.useState<string>('');
-  React.useEffect(() => {
-  }, [ data ]);
-  const changeTable = React.useCallback((value: string) => {
-    setData(value);
-  }, []);
   return (
     <PageNextJs pathname="/object-details/[address]" query={ props.query }>
-      <Flex>
-        <PageTitle title="Object Details" withTextAd/>
-        <Box ml="6px">{ formatPubKey(router.query.address?.toString()) }</Box>
+      <Flex align="center" marginBottom="24px">
+        <IconSvg onClick={ routerFallback() } cursor="pointer" w="24px" h="24px" marginRight="4px" name="Fallback"></IconSvg>
+        <PageTitle marginBottom="0" title="Object Details" withTextAd/>
+        <Box ml="6px" color="rgba(0, 0, 0, 0.4)" fontWeight="400" fontSize="14px">{ formatPubKey(details?.object_name) }</Box>
       </Flex>
-      <HandDetails overview={ overview } more={ more } secondaryAddresses={ secondaryAddresses }/>
-      <TableDetails tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead } changeTable={ changeTable }/>
+      <HeadDetails loading={ loading } overview={ overview } more={ more } secondaryAddresses={ secondaryAddresses }/>
+      { /* <TableDetails tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead } changeTable={ changeTable }/> */ }
     </PageNextJs>
   );
 };

@@ -13,8 +13,9 @@ const global = (props: StyleFunctionProps) => ({
     'font-variant-ligatures': 'no-contextual',
   },
   mark: {
-    bgColor: mode('green.100', 'green.800')(props),
-    color: 'inherit',
+    // bgColor: mode('green.100', 'green.800')(props),
+    bgColor: '#8A55FD',
+    color: '#FFF',
   },
   'svg *::selection': {
     color: 'none',

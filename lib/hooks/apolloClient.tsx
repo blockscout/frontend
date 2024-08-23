@@ -1,6 +1,4 @@
-/* eslint-disable no-console */
 import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
-// import React from 'react';
 
 import { getEnvValue } from 'configs/app/utils';
 
@@ -11,7 +9,6 @@ export default async function apolloClient(query: string, limit: number, offset:
     cache: new InMemoryCache(),
   });
   const queryGql = gql`query Storage($limit: Int = ${ limit }, $offset: Int = ${ offset }) {${ query }}`;
-  console.log(query);
   try {
     const result = await client.query({
       query: queryGql,

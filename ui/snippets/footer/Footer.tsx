@@ -9,7 +9,6 @@ import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import useFetch from 'lib/hooks/useFetch';
-import useIssueUrl from 'lib/hooks/useIssueUrl';
 import NetworkAddToWallet from 'ui/shared/NetworkAddToWallet';
 
 import FooterLinkItem from './FooterLinkItem';
@@ -29,50 +28,49 @@ const Footer = () => {
     },
   });
   const apiVersionUrl = getApiVersionUrl(backendVersionData?.backend_version);
-  const issueUrl = useIssueUrl(backendVersionData?.backend_version);
   const BLOCKSCOUT_LINKS = [
-    {
-      icon: 'edit' as const,
-      iconSize: '16px',
-      text: 'Submit an issue',
-      url: issueUrl,
-    },
-    {
-      icon: 'social/canny' as const,
-      iconSize: '20px',
-      text: 'Feature request',
-      url: 'https://blockscout.canny.io/feature-requests',
-    },
     {
       icon: 'social/git' as const,
       iconSize: '18px',
       text: 'Contribute',
-      url: 'https://github.com/blockscout/blockscout',
+      url: 'https://github.com/zkMeLabs',
+    },
+    {
+      icon: 'social/medium_filled' as const,
+      iconSize: '18px',
+      text: 'Mediumn',
+      url: 'https://medium.com/@zkMe',
     },
     {
       icon: 'social/twitter' as const,
       iconSize: '18px',
       text: 'X (ex-Twitter)',
-      url: 'https://www.twitter.com/blockscoutcom',
+      url: 'https://x.com/zkme_',
+    },
+    {
+      icon: 'social/linkedin_filled' as const,
+      iconSize: '18px',
+      text: 'LinkedIn',
+      url: 'https://www.linkedin.cn/incareer/company/zkme',
     },
     {
       icon: 'social/discord' as const,
       iconSize: '24px',
       text: 'Discord',
-      url: 'https://discord.gg/blockscout',
+      url: 'https://discord.com/invite/SJ2RDs9NGM',
     },
-    {
-      icon: 'discussions' as const,
-      iconSize: '20px',
-      text: 'Discussions',
-      url: 'https://github.com/orgs/blockscout/discussions',
-    },
-    {
-      icon: 'donate' as const,
-      iconSize: '20px',
-      text: 'Donate',
-      url: 'https://github.com/sponsors/blockscout',
-    },
+    // {
+    //   icon: 'discussions' as const,
+    //   iconSize: '20px',
+    //   text: 'Discussions',
+    //   url: 'https://github.com/orgs/blockscout/discussions',
+    // },
+    // {
+    //   icon: 'donate' as const,
+    //   iconSize: '20px',
+    //   text: 'Donate',
+    //   url: 'https://github.com/sponsors/blockscout',
+    // },
   ];
 
   const frontendLink = (() => {
@@ -118,7 +116,7 @@ const Footer = () => {
   const renderProjectInfo = React.useCallback((gridArea?: GridProps['gridArea']) => {
     return (
       <Box gridArea={ gridArea }>
-        <Link fontSize="xs" href="https://www.blockscout.com">blockscout.com</Link>
+        <Link fontSize="xs" href="https://zk.me">mechain.com</Link>
         <Text mt={ 3 } fontSize="xs">
           MeChain Explorer is a tool for inspecting and analyzing MeChain network.
         </Text>

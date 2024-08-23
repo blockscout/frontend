@@ -1,14 +1,17 @@
-import { Box, Tab, TabList, Tabs, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex, Tab, TabList, Tabs, Text, useColorModeValue } from '@chakra-ui/react';
 import throttle from 'lodash/throttle';
 import React from 'react';
-import { scroller, Element } from 'react-scroll';
+import { Element } from 'react-scroll';
+
+import type { SearchResultItem } from 'types/api/search';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useMarketplaceApps from 'ui/marketplace/useMarketplaceApps';
 import TextAd from 'ui/shared/ad/TextAd';
 import ContentLoader from 'ui/shared/ContentLoader';
-import type { ItemsCategoriesMap } from 'ui/shared/search/utils';
-import { searchCategories } from 'ui/shared/search/utils';
+import IconSvg from 'ui/shared/IconSvg';
+import type { ApiCategory, ItemsCategoriesMap } from 'ui/shared/search/utils';
+import { getItemCategoryForGraphql, searchCategories } from 'ui/shared/search/utils';
 
 import SearchBarSuggestApp from './SearchBarSuggestApp';
 import SearchBarSuggestItem from './SearchBarSuggestItem';
@@ -18,9 +21,11 @@ interface Props {
   searchTerm: string;
   onItemClick: (event: React.MouseEvent<HTMLAnchorElement>) => void;
   containerId: string;
+  setType: (type: string) => void;
+  showMoreClicked: boolean;
 }
 
-const SearchBarSuggestStorage = ({ query, searchTerm, onItemClick, containerId }: Props) => {
+const SearchBarSuggestStorage = ({ query, searchTerm, onItemClick, containerId, setType, showMoreClicked }: Props) => {
   const isMobile = useIsMobile();
 
   const marketplaceApps = useMarketplaceApps(searchTerm);
@@ -66,17 +71,23 @@ const SearchBarSuggestStorage = ({ query, searchTerm, onItemClick, containerId }
       return {};
     }
     const map: Partial<ItemsCategoriesMap> = {};
-    // console.log('query data:', query.data);
-    // query.data?.forEach(item => {
-    //   const cat = getItemCategory(item) as ApiCategory;
-    //   if (cat) {
-    //     if (cat in map) {
-    //       map[cat]?.push(item);
-    //     } else {
-    //       map[cat] = [ item ];
-    //     }
-    //   }
-    // });
+
+    Object.entries(query.data).forEach(([ key, value ]) => {
+      if (Array.isArray(value)) {
+        value.forEach((item) => {
+          const cat = getItemCategoryForGraphql(key) as ApiCategory;
+          if (cat) {
+            (item as any).type = cat;
+            if (cat in map) {
+              map[cat]?.push(item as SearchResultItem);
+            } else {
+              map[cat] = [ item as SearchResultItem ];
+            }
+          }
+        });
+      }
+    });
+
     if (marketplaceApps.displayedApps.length) {
       map.app = marketplaceApps.displayedApps;
     }
@@ -87,17 +98,21 @@ const SearchBarSuggestStorage = ({ query, searchTerm, onItemClick, containerId }
     categoriesRefs.current = Array(Object.keys(itemsGroups).length).fill('').map((_, i) => categoriesRefs.current[i] || React.createRef());
   }, [ itemsGroups ]);
 
-  const scrollToCategory = React.useCallback((index: number) => () => {
-    setTabIndex(index);
-    scroller.scrollTo(`cat_${ index }`, {
-      duration: 250,
-      smooth: true,
-      offset: -(tabsRef.current?.clientHeight || 0),
-      containerId: containerId,
-    });
-  }, [ containerId ]);
+  // const scrollToCategory = React.useCallback((index: number) => () => {
+  //   setTabIndex(index);
+  //   scroller.scrollTo(`cat_${ index }`, {
+  //     duration: 250,
+  //     smooth: true,
+  //     offset: -(tabsRef.current?.clientHeight || 0),
+  //     containerId: containerId,
+  //   });
+  // }, [ containerId ]);
 
   const bgColor = useColorModeValue('white', 'gray.900');
+
+  const handleShowMoreClk = React.useCallback((type: string) => () => {
+    setType(type);
+  }, [ setType ]);
 
   const content = (() => {
     if (query.loading || marketplaceApps.isPlaceholderData) {
@@ -108,8 +123,7 @@ const SearchBarSuggestStorage = ({ query, searchTerm, onItemClick, containerId }
       return <Text>Something went wrong. Try refreshing the page or come back later.</Text>;
     }
 
-    const resultCategories = searchCategories.filter(cat => itemsGroups[cat.id]);
-
+    const resultCategories = searchCategories.filter(cat => itemsGroups[cat.id as keyof ItemsCategoriesMap]);
     if (resultCategories.length === 0) {
       return <Text>No results found.</Text>;
     }
@@ -121,7 +135,7 @@ const SearchBarSuggestStorage = ({ query, searchTerm, onItemClick, containerId }
             <Tabs variant="outline" colorScheme="gray" size="sm" index={ tabIndex }>
               <TabList columnGap={ 3 } rowGap={ 2 } flexWrap="wrap">
                 { resultCategories.map((cat, index) => (
-                  <Tab key={ cat.id } onClick={ scrollToCategory(index) } { ...(tabIndex === index ? { 'data-selected': 'true' } : {}) }>
+                  <Tab key={ cat.id } onClick={ handleShowMoreClk(cat.id) } { ...(tabIndex === index ? { 'data-selected': 'true' } : {}) }>
                     { cat.title }
                   </Tab>
                 )) }
@@ -142,12 +156,35 @@ const SearchBarSuggestStorage = ({ query, searchTerm, onItemClick, containerId }
               >
                 { cat.title }
               </Text>
-              { cat.id !== 'app' && itemsGroups[cat.id]?.map((item, index) =>
+              { cat.id !== 'app' && (showMoreClicked ?
+                itemsGroups[cat.id] :
+                itemsGroups[cat.id]?.slice(0, 5)
+              )?.map((item, index) =>
                 <SearchBarSuggestItem key={ index } data={ item } isMobile={ isMobile } searchTerm={ searchTerm } onClick={ onItemClick }/>,
               ) }
               { cat.id === 'app' && itemsGroups[cat.id]?.map((item, index) =>
                 <SearchBarSuggestApp key={ index } data={ item } isMobile={ isMobile } searchTerm={ searchTerm } onClick={ onItemClick }/>,
               ) }
+              {
+                cat.id && !showMoreClicked && (itemsGroups[cat.id] as Array<any>).length >= 6 ? (
+                  <Flex
+                    mt="12px"
+                    cursor="pointer"
+                    flexDirection="row"
+                    alignContent="center"
+                    justifyContent="center"
+                    onClick={ handleShowMoreClk(cat.id) }
+                  >
+                    <Text
+                      fontSize="12px"
+                      fontWeight="500"
+                      lineHeight="16px"
+                      color="rgba(0, 0, 0, 0.40)"
+                    >Show More</Text>
+                    <IconSvg name="arrows/east" w="16px" h="16px" ml="4px" color="rgba(0, 0, 0, 0.40)"/>
+                  </Flex>
+                ) : null
+              }
             </Element>
           );
         }) }

@@ -2,27 +2,53 @@ import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
+import type { GroupTalbeListType, GroupRequestType } from 'types/storage';
+
 import PageNextJs from 'nextjs/PageNextJs';
 
+import useGraphqlQuery from 'lib/api/useGraphqlQuery';
 import PageTitle from 'ui/shared/Page/PageTitle';
+
 const TableList = dynamic(() => import('ui/storage/table-list'), { ssr: false });
 
 const Page: NextPage = () => {
-  const tapList = [ 'objects', 'Transactions', 'Permissions' ];
-  const tabThead = [ 'Group Name', 'Group ID', 'Last Updated', 'Active Group Member Count', 'Owner' ];
-  const talbeList = [
+
+  const queries = [
     {
-      'Group Name': '0xa317...d45455',
-      'Group ID': '10269120',
-      'Last Updated': 'Seal Object',
-      'Active Group Member Count': '1.41 KB',
-      Owner: 'Private',
+      tableName: 'groups',
+      fields: [
+        'group_name',
+        'group_id',
+        'update_at',
+        `active_member_count: group_members_aggregate {
+          aggregate {
+            count
+          }
+        }`,
+        'owner_address',
+      ],
+      limit: 10,
+      offset: 0,
     },
   ];
+  const talbeList: Array<GroupTalbeListType> = [];
+
+  const { loading, data, error } = useGraphqlQuery('storage_group', queries);
+  data?.groups?.forEach((v: GroupRequestType) => {
+    talbeList.push({
+      'Group Name': v.group_name,
+      'Group ID': v.group_id,
+      'Last Updated': v.update_at,
+      'Active Group Member Count': v.active_member_count.aggregate.count,
+      Owner: v.owner_address,
+    });
+  });
+  const tapList = [ 'objects', 'Transactions', 'Permissions' ];
+  const tabThead = [ 'Group Name', 'Group ID', 'Last Updated', 'Active Group Member Count', 'Owner' ];
   return (
     <PageNextJs pathname="/group">
       <PageTitle title="Groups" withTextAd/>
-      <TableList tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead }/>
+      <TableList error={ error } loading={ loading } tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead }/>
     </PageNextJs>
   );
 };

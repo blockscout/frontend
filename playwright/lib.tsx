@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { test as base } from '@playwright/experimental-ct-react';
 
 import * as injectMetaMaskProvider from './fixtures/injectMetaMaskProvider';

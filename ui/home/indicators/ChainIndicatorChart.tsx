@@ -1,4 +1,4 @@
-import { useToken } from '@chakra-ui/react';
+// import { useToken } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TimeChartData } from 'ui/shared/chart/types';
@@ -18,7 +18,8 @@ const CHART_MARGIN = { bottom: 5, left: 10, right: 10, top: 5 };
 
 const ChainIndicatorChart = ({ data }: Props) => {
   const overlayRef = React.useRef<SVGRectElement>(null);
-  const lineColor = useToken('colors', 'blue.500');
+  // const lineColor = useToken('colors', 'blue.500');
+  const lineColor = '#A07EFF';
 
   const axesConfig = React.useMemo(() => {
     return {
