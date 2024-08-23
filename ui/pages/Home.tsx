@@ -39,11 +39,7 @@ const Home = () => {
                 color={ config.UI.homepage.plate.textColor }
                 paddingLeft={ 2 }
               >
-                {
-                  config.meta.seo.enhancedDataEnabled ?
-                    `${ config.chain.name } Blessnet scan` :
-                    `${ config.chain.name?.charAt(0).toUpperCase() + config.chain.name.slice(1) } scan`
-                }
+                  Blessnet scan
               </Heading>
             </Flex>
 
