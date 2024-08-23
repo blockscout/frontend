@@ -36,7 +36,7 @@ const AddressMudTable = ({ scrollRef, tableId, isQueryEnabled = true }: Props) =
     React.useState<AddressMudRecordsSorting | undefined>(getSortParamsFromQuery<AddressMudRecordsSorting>(router.query, SORT_SEQUENCE));
   const [ filters, setFilters ] = React.useState<AddressMudRecordsFilter>({});
   const isMobile = useIsMobile();
-  const [ tableHasHorisontalScroll, setTableHasHorisontalScroll ] = useBoolean(isMobile);
+  const [ tableHasHorizontalScroll, setTableHasHorizontalScroll ] = useBoolean(isMobile);
 
   const hash = getQueryParamString(router.query.hash);
 
@@ -109,7 +109,7 @@ const AddressMudTable = ({ scrollRef, tableId, isQueryEnabled = true }: Props) =
   ) : null;
 
   const actionBar = (!isMobile || hasActiveFilters || pagination.isVisible) && (
-    <ActionBar mt={ -6 } showShadow={ tableHasHorisontalScroll } justifyContent="space-between" alignItems={ hasActiveFilters ? 'start' : 'center' }>
+    <ActionBar mt={ -6 } showShadow={ tableHasHorizontalScroll } justifyContent="space-between" alignItems={ hasActiveFilters ? 'start' : 'center' }>
       <Box>
         { !isMobile && breadcrumbs }
         { filtersTags }
@@ -126,7 +126,7 @@ const AddressMudTable = ({ scrollRef, tableId, isQueryEnabled = true }: Props) =
       toggleSorting={ toggleSorting }
       setFilters={ setFilters }
       filters={ filters }
-      toggleTableHasHorisontalScroll={ setTableHasHorisontalScroll.toggle }
+      toggleTableHasHorizontalScroll={ setTableHasHorizontalScroll.toggle }
       scrollRef={ scrollRef }
       hash={ hash }
     />

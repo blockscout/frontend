@@ -31,7 +31,7 @@ import { SUPPORTED_WALLETS } from '../../../types/client/wallets';
 import type { CustomLink, CustomLinksGroup } from '../../../types/footerLinks';
 import { CHAIN_INDICATOR_IDS } from '../../../types/homepage';
 import type { ChainIndicatorId } from '../../../types/homepage';
-import { type NetworkVerificationType, type NetworkExplorer, type FeaturedNetwork, NETWORK_GROUPS } from '../../../types/networks';
+import { type NetworkVerificationTypeEnvs, type NetworkExplorer, type FeaturedNetwork, NETWORK_GROUPS } from '../../../types/networks';
 import { COLOR_THEME_IDS } from '../../../types/settings';
 import type { AddressViewId } from '../../../types/views/address';
 import { ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from '../../../types/views/address';
@@ -510,7 +510,17 @@ const schema = yup
     NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS: yup.number().integer().positive(),
     NEXT_PUBLIC_NETWORK_SECONDARY_COIN_SYMBOL: yup.string(),
     NEXT_PUBLIC_NETWORK_MULTIPLE_GAS_CURRENCIES: yup.boolean(),
-    NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE: yup.string<NetworkVerificationType>().oneOf([ 'validation', 'mining' ]),
+    NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE: yup
+      .string<NetworkVerificationTypeEnvs>().oneOf([ 'validation', 'mining' ])
+      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
+        is: (value: string) => value === 'arbitrum' || value === 'zkEvm',
+        then: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE can not be set for Arbitrum and ZkEVM rollups',
+          value => value === undefined,
+        ),
+        otherwise: (schema) => schema,
+      }),
     NEXT_PUBLIC_NETWORK_TOKEN_STANDARD_NAME: yup.string(),
     NEXT_PUBLIC_IS_TESTNET: yup.boolean(),
 

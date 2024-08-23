@@ -70,6 +70,14 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
             </Tooltip>
           </Skeleton>
         </Flex>
+        { data.zk_compiler_version && (
+          <Flex flexWrap="wrap" columnGap={ 2 } my={ 1 }>
+            <Skeleton isLoaded={ !isLoading } >ZK compiler</Skeleton>
+            <Skeleton isLoaded={ !isLoading } color="text_secondary" wordBreak="break-all">
+              <span>{ data.zk_compiler_version }</span>
+            </Skeleton>
+          </Flex>
+        ) }
       </Td>
       <Td>
         <Tooltip label={ isLoading ? undefined : 'Optimization' }>

@@ -99,6 +99,13 @@ export const withChangedByteCode: SmartContract = {
   is_blueprint: true,
 };
 
+export const zkSync: SmartContract = {
+  ...verified,
+  zk_compiler_version: 'v1.2.5',
+  optimization_enabled: true,
+  optimization_runs: 's',
+};
+
 export const nonVerified: SmartContract = {
   is_verified: false,
   is_blueprint: false,

@@ -29,13 +29,17 @@ const SolidityscanReport = ({ hash }: Props) => {
     },
   });
 
-  const score = Number(data?.scan_report.scan_summary.score_v2);
-
-  if (isError || !score) {
+  if (isError || !data?.scan_report?.scan_summary) {
     return null;
   }
 
-  const vulnerabilities = data?.scan_report.scan_summary.issue_severity_distribution;
+  const score = Number(data.scan_report.scan_summary.score_v2);
+
+  if (!score) {
+    return null;
+  }
+
+  const vulnerabilities = data.scan_report.scan_summary.issue_severity_distribution;
   const vulnerabilitiesCounts = vulnerabilities ? Object.values(vulnerabilities) : [];
   const vulnerabilitiesCount = vulnerabilitiesCounts.reduce((acc, val) => acc + val, 0);
 

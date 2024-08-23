@@ -7,6 +7,8 @@ import type { SearchResultItem } from 'types/client/search';
 
 import config from 'configs/app';
 import * as regexp from 'lib/regexp';
+import getQueryParamString from 'lib/router/getQueryParamString';
+import removeQueryParam from 'lib/router/removeQueryParam';
 import useMarketplaceApps from 'ui/marketplace/useMarketplaceApps';
 import SearchResultListItem from 'ui/searchResults/SearchResultListItem';
 import SearchResultsInput from 'ui/searchResults/SearchResultsInput';
@@ -28,9 +30,10 @@ import useSearchQuery from 'ui/snippets/searchBar/useSearchQuery';
 
 const SearchResultsPageContent = () => {
   const router = useRouter();
-  const { query, redirectCheckQuery, searchTerm, debouncedSearchTerm, handleSearchTermChange } = useSearchQuery();
+  const withRedirectCheck = getQueryParamString(router.query.redirect) === 'true';
+  const { query, redirectCheckQuery, searchTerm, debouncedSearchTerm, handleSearchTermChange } = useSearchQuery(withRedirectCheck);
   const { data, isError, isPlaceholderData, pagination } = query;
-  const [ showContent, setShowContent ] = React.useState(false);
+  const [ showContent, setShowContent ] = React.useState(!withRedirectCheck);
 
   const marketplaceApps = useMarketplaceApps(debouncedSearchTerm);
 
@@ -75,12 +78,17 @@ const SearchResultsPageContent = () => {
       }
     }
 
-    !redirectCheckQuery.isPending && setShowContent(true);
+    if (!redirectCheckQuery.isPending) {
+      setShowContent(true);
+      removeQueryParam(router, 'redirect');
+    }
   }, [ redirectCheckQuery, router, debouncedSearchTerm, showContent ]);
 
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
   }, [ ]);
+
+  const isLoading = marketplaceApps.isPlaceholderData || isPlaceholderData;
 
   const displayedItems: Array<SearchResultItem | SearchResultAppItem> = React.useMemo(() => {
     const apiData = (data?.items || []).filter((item) => {
@@ -111,12 +119,12 @@ const SearchResultsPageContent = () => {
       } : undefined;
 
     return [
-      ...(pagination.page === 1 && !isPlaceholderData ? marketplaceApps.displayedApps.map((item) => ({ type: 'app' as const, app: item })) : []),
+      ...(pagination.page === 1 && !isLoading ? marketplaceApps.displayedApps.map((item) => ({ type: 'app' as const, app: item })) : []),
       futureBlockItem,
       ...apiData,
     ].filter(Boolean);
 
-  }, [ data?.items, data?.next_page_params, isPlaceholderData, pagination.page, debouncedSearchTerm, marketplaceApps.displayedApps ]);
+  }, [ data?.items, data?.next_page_params, isPlaceholderData, pagination.page, debouncedSearchTerm, marketplaceApps.displayedApps, isLoading ]);
 
   const content = (() => {
     if (isError) {
@@ -132,10 +140,10 @@ const SearchResultsPageContent = () => {
         <Show below="lg" ssr={ false }>
           { displayedItems.map((item, index) => (
             <SearchResultListItem
-              key={ (isPlaceholderData ? 'placeholder_' : 'actual_') + index }
+              key={ (isLoading ? 'placeholder_' : 'actual_') + index }
               data={ item }
               searchTerm={ debouncedSearchTerm }
-              isLoading={ isPlaceholderData }
+              isLoading={ isLoading }
             />
           )) }
         </Show>
@@ -152,10 +160,10 @@ const SearchResultsPageContent = () => {
             <Tbody>
               { displayedItems.map((item, index) => (
                 <SearchResultTableItem
-                  key={ (isPlaceholderData ? 'placeholder_' : 'actual_') + index }
+                  key={ (isLoading ? 'placeholder_' : 'actual_') + index }
                   data={ item }
                   searchTerm={ debouncedSearchTerm }
-                  isLoading={ isPlaceholderData }
+                  isLoading={ isLoading }
                 />
               )) }
             </Tbody>
@@ -172,7 +180,7 @@ const SearchResultsPageContent = () => {
 
     const resultsCount = pagination.page === 1 && !data?.next_page_params ? displayedItems.length : '50+';
 
-    const text = isPlaceholderData && pagination.page === 1 ? (
+    const text = isLoading && pagination.page === 1 ? (
       <Skeleton h={ 6 } w="280px" borderRadius="full" mb={ pagination.isVisible ? 0 : 6 }/>
     ) : (
       (

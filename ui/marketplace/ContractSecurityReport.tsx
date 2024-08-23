@@ -27,7 +27,7 @@ const ContractSecurityReport = ({ securityReport }: Props) => {
     onToggle();
   }, [ onToggle ]);
 
-  if (!securityReport) {
+  if (!securityReport?.scan_summary?.score_v2) {
     return null;
   }
 

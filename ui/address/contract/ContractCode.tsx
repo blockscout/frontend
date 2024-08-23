@@ -60,6 +60,8 @@ const InfoItem = chakra(({ label, content, hint, className, isLoading }: InfoIte
   </GridItem>
 ));
 
+const rollupFeature = config.features.rollup;
+
 const ContractCode = ({ addressHash, contractQuery, channel }: Props) => {
   const [ isChangedBytecodeSocket, setIsChangedBytecodeSocket ] = React.useState<boolean>();
 
@@ -266,6 +268,7 @@ const ContractCode = ({ addressHash, contractQuery, channel }: Props) => {
         <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} rowGap={ 4 } columnGap={ 6 } mb={ 8 }>
           { data.name && <InfoItem label="Contract name" content={ contractNameWithCertifiedIcon } isLoading={ isPlaceholderData }/> }
           { data.compiler_version && <InfoItem label="Compiler version" content={ data.compiler_version } isLoading={ isPlaceholderData }/> }
+          { data.zk_compiler_version && <InfoItem label="ZK compiler version" content={ data.zk_compiler_version } isLoading={ isPlaceholderData }/> }
           { data.evm_version && <InfoItem label="EVM version" content={ data.evm_version } textTransform="capitalize" isLoading={ isPlaceholderData }/> }
           { licenseLink && (
             <InfoItem
@@ -277,8 +280,13 @@ const ContractCode = ({ addressHash, contractQuery, channel }: Props) => {
           ) }
           { typeof data.optimization_enabled === 'boolean' &&
             <InfoItem label="Optimization enabled" content={ data.optimization_enabled ? 'true' : 'false' } isLoading={ isPlaceholderData }/> }
-          { data.optimization_runs !== null &&
-            <InfoItem label="Optimization runs" content={ String(data.optimization_runs) } isLoading={ isPlaceholderData }/> }
+          { data.optimization_runs !== null && (
+            <InfoItem
+              label={ rollupFeature.isEnabled && rollupFeature.type === 'zkSync' ? 'Optimization mode' : 'Optimization runs' }
+              content={ String(data.optimization_runs) }
+              isLoading={ isPlaceholderData }
+            />
+          ) }
           { data.verified_at &&
             <InfoItem label="Verified at" content={ dayjs(data.verified_at).format('llll') } wordBreak="break-word" isLoading={ isPlaceholderData }/> }
           { data.file_path && <InfoItem label="Contract file path" content={ data.file_path } wordBreak="break-word" isLoading={ isPlaceholderData }/> }

@@ -51,6 +51,7 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
         isDisabled={ isDisabled }
         isRequired
         isAsync={ false }
+        isReadOnly={ options.length === 1 }
       />
     );
   }, [ isDisabled, isMobile, options ]);

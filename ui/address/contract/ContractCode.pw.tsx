@@ -126,6 +126,14 @@ test('non verified', async({ render, mockApiResponse }) => {
   await expect(component).toHaveScreenshot();
 });
 
+test('zkSync contract', async({ render, mockApiResponse, page, mockEnvs }) => {
+  await mockEnvs(ENVS_MAP.zkSyncRollup);
+  await mockApiResponse('contract', contractMock.zkSync, { pathParams: { hash: addressMock.contract.hash } });
+  await render(<ContractCode/>, { hooksConfig }, { withSocket: true });
+
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
+});
+
 test.describe('with audits feature', () => {
 
   test.beforeEach(async({ mockEnvs }) => {
