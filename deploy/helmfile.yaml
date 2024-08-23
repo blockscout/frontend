@@ -33,7 +33,7 @@ releases:
           type: kubernetes.io/dockerconfigjson
   - name: bs-stack
     chart: blockscout/blockscout-stack
-    version: 1.2.*
+    version: 1.*.*
     namespace: review-l2-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
     labels:
       app: review-l2-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
@@ -58,7 +58,7 @@ releases:
           type: kubernetes.io/dockerconfigjson
   - name: bs-stack
     chart: blockscout/blockscout-stack
-    version: 1.2.*
+    version: 1.*.*
     namespace: review-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
     labels:
       app: review-{{ requiredEnv "GITHUB_REF_NAME_SLUG" }}
