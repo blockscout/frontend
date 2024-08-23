@@ -15,7 +15,7 @@ const Page: NextPage = () => {
 
   const queries = [
     {
-      tableName: 'storage_group',
+      tableName: 'groups',
       fields: [
         'group_name',
         'group_id',
@@ -34,7 +34,7 @@ const Page: NextPage = () => {
   const talbeList: Array<GroupTalbeListType> = [];
 
   const { loading, data, error } = useGraphqlQuery('storage_group', queries);
-  data?.storage_group?.forEach((v: GroupRequestType) => {
+  data?.groups?.forEach((v: GroupRequestType) => {
     talbeList.push({
       'Group Name': v.group_name,
       'Group ID': v.group_id,

@@ -13,23 +13,23 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import { formatPubKey } from 'ui/storage/utils';
 
 const HeadDetails = dynamic(() => import('ui/storage/head-details'), { ssr: false });
-const TableDetails = dynamic(() => import('ui/storage/table-details'), { ssr: false });
+// const TableDetails = dynamic(() => import('ui/storage/table-details'), { ssr: false });
 
 const ObjectDetails: NextPage<Props> = (props: Props) => {
   const router = useRouter();
-  const [ objectAddress, setobjectAddress ] = React.useState<string>('');
-  React.useEffect(() => {
-  }, [ objectAddress ]);
-  const changeTable = React.useCallback((value: string) => {
-    setobjectAddress(value);
-  }, []);
+  // const [ objectAddress, setobjectAddress ] = React.useState<string>('');
+  // React.useEffect(() => {
+  // }, [ objectAddress ]);
+  // const changeTable = React.useCallback((value: string) => {
+  //   setobjectAddress(value);
+  // }, []);
   const routerFallback = () => () => {
     router.back();
   };
 
   const queries = [
     {
-      tableName: 'storage_group',
+      tableName: 'groups',
       fields: [
         'group_name',
         'tags',
@@ -60,8 +60,8 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       ],
     },
   ];
-  const { data } = useGraphqlQuery('Objects', queries);
-  const details = data?.storage_group && data?.storage_group[0];
+  const { data } = useGraphqlQuery('Group', router.query.address ? queries : []);
+  const details = data?.groups && data?.groups[0];
 
   const overview = {
     'Group Name': details?.group_name,
@@ -72,16 +72,16 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
   };
   const more = {
     'Last Updated': {
-      value: '',
-      status: 'none',
+      value: details?.update_at,
+      status: 'block',
     },
     'Created Block': {
-      value: '',
-      status: 'bucketPage',
+      value: details?.create_at,
+      status: 'block',
     },
     'Resources Count': {
       value: '',
-      status: 'time',
+      status: 'none',
     },
     'Active Group Member Count': {
       value: details?.tags && Object.entries(details?.members).length.toString(),
@@ -92,16 +92,16 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       status: 'copyLink',
     },
   };
-  const tapList = [ 'Transactions', 'Versions' ];
-  const tabThead = [ 'Txn Hash', 'Block', 'Age', 'Type' ];
-  const talbeList = [
-    {
-      'Txn Hash': '4c83feb331594408sdjhfsdk98238293',
-      Block: 'Seal Object',
-      Age: '40 B',
-      Type: 'Created',
-    },
-  ];
+  // const tapList = [ 'Transactions', 'Versions' ];
+  // const tabThead = [ 'Txn Hash', 'Block', 'Age', 'Type' ];
+  // const talbeList = [
+  //   {
+  //     'Txn Hash': '4c83feb331594408sdjhfsdk98238293',
+  //     Block: 'Seal Object',
+  //     Age: '40 B',
+  //     Type: 'Created',
+  //   },
+  // ];
 
   return (
     <PageNextJs pathname="/group-details/[address]" query={ props.query }>
@@ -111,7 +111,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
         <Box ml="6px">{ router.query.address }</Box>
       </Flex>
       <HeadDetails overview={ overview } more={ more }/>
-      <TableDetails tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead } changeTable={ changeTable }/>
+      { /* <TableDetails tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead } changeTable={ changeTable }/> */ }
     </PageNextJs>
   );
 };

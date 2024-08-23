@@ -18,7 +18,7 @@ export const timeTool = (time: string) => {
   const oldhours = new Date(time).getHours();
   const oldminutes = new Date(time).getMinutes();
   const oldseconds = new Date(time).getSeconds();
-  const oldTimeText = `${ oldyear }-${ oldmonth }-${ oldday } ${ oldhours }:${ oldminutes }:${ oldseconds } (+UTC+8)`;
+  const oldTimeText = `${ oldyear }-${ oldmonth }-${ oldday } ${ oldhours }:${ oldminutes }:${ oldseconds } (UTC+8)`;
 
   const seconds = Math.floor(diff / 1000);
   const minutes = Math.floor(seconds / 60);

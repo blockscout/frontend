@@ -13,7 +13,7 @@ const TableList = dynamic(() => import('ui/storage/table-list'), { ssr: false })
 const Page: NextPage = () => {
   const queries = [
     {
-      tableName: 'bucket',
+      tableName: 'buckets',
       fields: [
         'bucket_name',
         'bucket_id',
@@ -31,7 +31,7 @@ const Page: NextPage = () => {
   const talbeList: Array<BucketTalbeListType> = [];
 
   const { loading, data, error } = useGraphqlQuery('Buckets', queries);
-  data?.bucket?.forEach((v: BucketRequestType) => {
+  data?.buckets?.forEach((v: BucketRequestType) => {
     talbeList.push({
       'Bucket Name': v.bucket_name,
       'Bucket ID': v.bucket_id,

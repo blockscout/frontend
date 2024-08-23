@@ -34,7 +34,6 @@ import type { HeadProps } from 'types/storage';
 import IconSvg from 'ui/shared/IconSvg';
 
 const Page = (props: HeadProps) => {
-  console.log(props.loading);
   const toast = useToast();
   const [ creatorFlag, setCreatorFlag ] = useState<boolean>(false);
   const [ ownerFlag, setOwnerFlag ] = useState<boolean>(false);
@@ -167,61 +166,73 @@ const Page = (props: HeadProps) => {
                         values.status === 'bucketPage' ? (
                           <NextLink href={{ pathname: '/bucket-details/[address]', query: { address: values.value || '' } }}>{ values.value }</NextLink>
                         ) :
-                          values.status === 'clickViewAll' ? (
-                            <Popover closeOnBlur={ false }>
-                              <PopoverTrigger>
-                                <Button
-                                  borderRadius="none"
-                                  height="auto"
-                                  fontWeight="500"
-                                  fontSize="12px"
-                                  padding="0px"
-                                  variant="text">{ values.value }</Button>
-                              </PopoverTrigger>
-                              <PopoverContent right="94px" w="auto">
-                                <PopoverHeader
-                                  textAlign="left"
-                                  border="none"
-                                  color="#000000"
-                                  p="24px"
-                                  fontWeight="500"
-                                  fontSize="12px"
-                                  width="230px"
-                                >
-                                  { values.titleNmae }
-                                </PopoverHeader>
-                                <PopoverCloseButton w="16px" h="16px" top="24px" right="24px"/>
-                                { props.secondaryAddresses?.map((value, index) => (
-                                  <PopoverBody
-                                    _last={{ paddingBottom: '24px' }}
-                                    padding="0 24px"
-                                    textAlign="left"
-                                    key={ index }>
-                                    <Flex align="center" color="#8A55FD" fontWeight="500" fontSize="12px">
-                                      { /* <NextLink href={{ pathname: '/address/[hash]', query: { hash: value || '' } }}>{ value }</NextLink> */ }
-                                      global_virtual_group_id { value }
-                                      <IconSvg
-                                        cursor="pointer"
-                                        onClick={ copyAddress(value) }
-                                        marginLeft="48px"
-                                        w="14px"
-                                        h="14px"
-                                        name="copyAddress">
-                                      </IconSvg>
-                                    </Flex>
-                                    <Divider margin="10px 0" bg="rgba(0, 46, 51, 0.1)"/>
-                                  </PopoverBody>
-                                ),
-                                ) }
-                              </PopoverContent>
-                            </Popover>
+                          values.status === 'block' ? (
+                            <Flex justifyContent="right">
+                              <Text>Block</Text>&nbsp;
+                              <NextLink href={{ pathname: '/block/[height_or_hash]', query: { height_or_hash: values.value || '' } }}>
+                                { values.value }
+                              </NextLink>
+                            </Flex>
                           ) :
-                            (
-                              <Text
-                                fontWeight="500"
-                                fontSize="12px"
-                                color={ values.status === 'none' || values.status === 'time' ? '#000000' : '#8A55FD' } textAlign="right">{ values.value }</Text>
-                            ) }
+                            values.status === 'clickViewAll' ? (
+                              <Popover closeOnBlur={ false }>
+                                <PopoverTrigger>
+                                  <Button
+                                    borderRadius="none"
+                                    height="auto"
+                                    fontWeight="500"
+                                    fontSize="12px"
+                                    padding="0px"
+                                    variant="text">{ values.value }</Button>
+                                </PopoverTrigger>
+                                <PopoverContent right="94px" w="auto">
+                                  <PopoverHeader
+                                    textAlign="left"
+                                    border="none"
+                                    color="#000000"
+                                    p="24px"
+                                    fontWeight="500"
+                                    fontSize="12px"
+                                    width="230px"
+                                  >
+                                    { values.titleNmae }
+                                  </PopoverHeader>
+                                  <PopoverCloseButton w="16px" h="16px" top="24px" right="24px"/>
+                                  { props.secondaryAddresses?.map((value, index) => (
+                                    <PopoverBody
+                                      _last={{ paddingBottom: '24px' }}
+                                      padding="0 24px"
+                                      textAlign="left"
+                                      key={ index }>
+                                      <Flex align="center" color="#8A55FD" fontWeight="500" fontSize="12px">
+                                        { /* <NextLink href={{ pathname: '/address/[hash]', query: { hash: value || '' } }}>{ value }</NextLink> */ }
+                                      global_virtual_group_id { value }
+                                        <IconSvg
+                                          cursor="pointer"
+                                          onClick={ copyAddress(value) }
+                                          marginLeft="48px"
+                                          w="14px"
+                                          h="14px"
+                                          name="copyAddress">
+                                        </IconSvg>
+                                      </Flex>
+                                      <Divider margin="10px 0" bg="rgba(0, 46, 51, 0.1)"/>
+                                    </PopoverBody>
+                                  ),
+                                  ) }
+                                </PopoverContent>
+                              </Popover>
+                            ) :
+                              (
+                                <Text
+                                  fontWeight="500"
+                                  fontSize="12px"
+                                  color={ values.status === 'none' || values.status === 'time' ? '#000000' : '#8A55FD' }
+                                  textAlign="right"
+                                >
+                                  { values.value }
+                                </Text>
+                              ) }
                 </Td>
               </Tr>
             )) }

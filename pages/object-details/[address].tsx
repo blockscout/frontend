@@ -15,7 +15,7 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import { formatPubKey, timeTool } from 'ui/storage/utils';
 
 const HeadDetails = dynamic(() => import('ui/storage/head-details'), { ssr: false });
-const TableDetails = dynamic(() => import('ui/storage/table-details'), { ssr: false });
+// const TableDetails = dynamic(() => import('ui/storage/table-details'), { ssr: false });
 
 const ObjectDetails: NextPage<Props> = (props: Props) => {
   const router = useRouter();
@@ -24,16 +24,16 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
     router.back();
   };
 
-  const [ objectAddress, setobjectAddress ] = React.useState<string>('');
-  React.useEffect(() => {
-  }, [ objectAddress ]);
-  const changeTable = React.useCallback((value: string) => {
-    setobjectAddress(value);
-  }, []);
+  // const [ objectAddress, setobjectAddress ] = React.useState<string>('');
+  // React.useEffect(() => {
+  // }, [ objectAddress ]);
+  // const changeTable = React.useCallback((value: string) => {
+  //   setobjectAddress(value);
+  // }, []);
 
   const queries = [
     {
-      tableName: 'object',
+      tableName: 'objects',
       fields: [
         'object_name',
         'tags',
@@ -72,9 +72,9 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       ],
     },
   ];
-  const { loading, data } = useGraphqlQuery('Objects', queries);
+  const { loading, data } = useGraphqlQuery('Objects', router.query.address ? queries : []);
 
-  const details = data?.object && data?.object[0];
+  const details = data?.objects && data?.objects[0];
 
   const overview: ObjectDetailsOverviewType = {
     'Object Name': details?.object_name,
@@ -109,26 +109,26 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
     },
   };
   const secondaryAddresses = [ '0x4c1a93cd42b6e4960db845bcf9d540b081b1a63a', '0x4c1a93cd42b6e4960db845bcf9d540b081b1a63a' ];
-  const tapList = [ 'Transactions', 'Versions' ];
-  const tabThead = [ 'Txn Hash', 'Block', 'Age', 'Type' ];
-  const talbeList = [
-    {
-      'Txn Hash': '4c83feb331594408sdjhfsdk98238293',
-      Block: 'Seal Object',
-      Age: '40 B',
-      Type: 'Created',
-    },
-  ];
+  // const tapList = [ 'Transactions', 'Versions' ];
+  // const tabThead = [ 'Txn Hash', 'Block', 'Age', 'Type' ];
+  // const talbeList = [
+  //   {
+  //     'Txn Hash': 'object1.txt',
+  //     Block: 'Seal Object',
+  //     Age: '40 B',
+  //     Type: 'Created',
+  //   },
+  // ];
 
   return (
     <PageNextJs pathname="/object-details/[address]" query={ props.query }>
       <Flex align="center" marginBottom="24px">
         <IconSvg onClick={ routerFallback() } cursor="pointer" w="24px" h="24px" marginRight="4px" name="Fallback"></IconSvg>
         <PageTitle marginBottom="0" title="Object Details" withTextAd/>
-        <Box ml="6px">{ formatPubKey(details?.object_name) }</Box>
+        <Box ml="6px" color="rgba(0, 0, 0, 0.4)" fontWeight="400" fontSize="14px">{ formatPubKey(details?.object_name) }</Box>
       </Flex>
       <HeadDetails loading={ loading } overview={ overview } more={ more } secondaryAddresses={ secondaryAddresses }/>
-      <TableDetails tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead } changeTable={ changeTable }/>
+      { /* <TableDetails tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead } changeTable={ changeTable }/> */ }
     </PageNextJs>
   );
 };

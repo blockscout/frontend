@@ -13,23 +13,23 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import { timeTool, sizeTool } from 'ui/storage/utils';
 
 const HeadDetails = dynamic(() => import('ui/storage/head-details'), { ssr: false });
-const TableDetails = dynamic(() => import('ui/storage/table-details'), { ssr: false });
+// const TableDetails = dynamic(() => import('ui/storage/table-details'), { ssr: false });
 
 const ObjectDetails: NextPage<Props> = (props: Props) => {
   const router = useRouter();
-  const [ objectAddress, setobjectAddress ] = React.useState<string>('');
-  React.useEffect(() => {
-  }, [ objectAddress ]);
-  const changeTable = React.useCallback((value: string) => {
-    setobjectAddress(value);
-  }, []);
+  // const [ objectAddress, setobjectAddress ] = React.useState<string>('');
+  // React.useEffect(() => {
+  // }, [ objectAddress ]);
+  // const changeTable = React.useCallback((value: string) => {
+  //   setobjectAddress(value);
+  // }, []);
   const routerFallback = () => () => {
     router.back();
   };
 
   const queries = [
     {
-      tableName: 'bucket',
+      tableName: 'buckets',
       fields: [
         'bucket_name',
         'tags',
@@ -74,8 +74,8 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       ],
     },
   ];
-  const { data } = useGraphqlQuery('Bucket', queries);
-  const details = data?.bucket && data?.bucket[0];
+  const { data } = useGraphqlQuery('Bucket', router.query.address ? queries : []);
+  const details = data?.buckets && data?.buckets[0];
 
   const overview = {
     'Bucket Name': details?.bucket_name,
@@ -114,34 +114,34 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
     },
   };
   const secondaryAddresses = details?.global_virtual_group_family.global_virtual_group_ids.split(',') || [];
-  const tapList = [ 'Transactions', 'Versions' ];
-  const tabThead = [ 'objects name', 'Type', 'Object Size', 'Status', 'Visibility', 'Last Updated Time', 'Creator' ];
-  const talbeList = [
-    {
-      'objects name': '4c83feb331594408sdjhfsdk98238293',
-      Type: 'Created',
-      'Object Size': '1.41 KB',
-      Status: 'Sealed',
-      Visibility: 'Private',
-      'Last Updated Time': '17h 51m ago',
-      Creator: '0x5a8819edbc43fb1f51394e3fef35cb28977abd06',
-      id: '2',
-    },
-  ];
-  const storageDetails = [
-    {
-      name: 'Free Quota (one-time)',
-      data: '1 GB/1 GB (100%)',
-    },
-    {
-      name: 'Monthly Free Quota (31 Jul, 2024)',
-      data: '1 GB/1 GB (100%)',
-    },
-    {
-      name: 'Monthly Charged Quota (31 Jul, 2024)',
-      data: '1 GB/1 GB (100%)',
-    },
-  ];
+  // const tapList = [ 'Transactions', 'Versions' ];
+  // const tabThead = [ 'objects name', 'Type', 'Object Size', 'Status', 'Visibility', 'Last Updated Time', 'Creator' ];
+  // const talbeList = [
+  //   {
+  //     'objects name': '4c83feb331594408sdjhfsdk98238293',
+  //     Type: 'Created',
+  //     'Object Size': '1.41 KB',
+  //     Status: 'Sealed',
+  //     Visibility: 'Private',
+  //     'Last Updated Time': '17h 51m ago',
+  //     Creator: '0x5a8819edbc43fb1f51394e3fef35cb28977abd06',
+  //     id: '2',
+  //   },
+  // ];
+  // const storageDetails = [
+  //   {
+  //     name: 'Free Quota (one-time)',
+  //     data: '1 GB/1 GB (100%)',
+  //   },
+  //   {
+  //     name: 'Monthly Free Quota (31 Jul, 2024)',
+  //     data: '1 GB/1 GB (100%)',
+  //   },
+  //   {
+  //     name: 'Monthly Charged Quota (31 Jul, 2024)',
+  //     data: '1 GB/1 GB (100%)',
+  //   },
+  // ];
   return (
     <PageNextJs pathname="/bucket-details/[address]" query={ props.query }>
       <Flex align="center" marginBottom="24px">
@@ -149,7 +149,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
         <PageTitle marginBottom="0" title="Bucket Details" withTextAd/>
         <Box ml="6px">{ router.query.address }</Box>
       </Flex>
-      <Flex justifyContent="space-between">
+      { /* <Flex justifyContent="space-between">
         {
           storageDetails.map((value, index) => (
             <Box
@@ -167,9 +167,9 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
             </Box>
           ))
         }
-      </Flex>
+      </Flex> */ }
       <HeadDetails secondaryAddresses={ secondaryAddresses } overview={ overview } more={ more }/>
-      <TableDetails tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead } changeTable={ changeTable }/>
+      { /* <TableDetails tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead } changeTable={ changeTable }/> */ }
     </PageNextJs>
   );
 };

@@ -5,7 +5,7 @@ import ReactPaginate from 'react-paginate';
 import styles from './pagination.module.css';
 
 // Example items, to simulate fetching from another resources.
-const items = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 ];
+const items = [ 1 ];
 
 function PaginatedItems({ itemsPerPage }: { itemsPerPage: number }) {
   // We start with an empty list of items.
@@ -26,6 +26,7 @@ function PaginatedItems({ itemsPerPage }: { itemsPerPage: number }) {
 
   // Invoke when user click to request another page.
   const handlePageClick = (page: number) => () => {
+    console.log(page);
     const newOffset = page * itemsPerPage % items.length;
     setItemOffset(newOffset);
   };
@@ -34,7 +35,7 @@ function PaginatedItems({ itemsPerPage }: { itemsPerPage: number }) {
     <ReactPaginate
       nextLabel=">"
       previousLabel="<"
-      onPageChange={ handlePageClick(1) }
+      onPageChange={ handlePageClick(0) }
       pageRangeDisplayed={ 2 }
       marginPagesDisplayed={ 2 }
       pageCount={ pageCount }

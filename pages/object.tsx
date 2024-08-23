@@ -15,7 +15,7 @@ const ObjectDetails: NextPage = () => {
 
   const queries = [
     {
-      tableName: 'object',
+      tableName: 'objects',
       fields: [
         'object_name',
         'content_type',
@@ -34,7 +34,7 @@ const ObjectDetails: NextPage = () => {
   const talbeList: Array<ObjetTalbeListType> = [];
 
   const { loading, data, error } = useGraphqlQuery('Objects', queries);
-  data?.object?.forEach((v: ObjetRequestType) => {
+  data?.objects?.forEach((v: ObjetRequestType) => {
     talbeList.push({
       'Object Name': v.object_name,
       Type: v.content_type,
