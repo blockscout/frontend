@@ -15,6 +15,19 @@ const Page: NextPage = () => {
   const [ searchTerm, setSearchTerm ] = React.useState('');
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const [ page, setPage ] = React.useState<number>(1);
+  const [ offset, setOffset ] = React.useState<number>(0);
+  const [ toNext, setToNext ] = React.useState<boolean>(true);
+  React.useEffect(() => {
+    if (page > 1) {
+      setOffset((page - 1) * 10);
+    } else {
+      setOffset(0);
+    }
+  }, [ page, offset ]);
+  const propsPage = React.useCallback((value: number) => {
+    setPage(value);
+  }, [ setPage ]);
 
   const queries = [
     {
@@ -31,8 +44,8 @@ const Page: NextPage = () => {
         }`,
         'owner_address',
       ],
-      limit: 10,
-      offset: 0,
+      limit: 11,
+      offset: offset,
       where: debouncedSearchTerm ? {
         _or: [
           { bucket_name: { _ilike: `${ debouncedSearchTerm }%` } },
@@ -44,6 +57,7 @@ const Page: NextPage = () => {
   const talbeList: Array<BucketTalbeListType> = [];
 
   const { loading, data, error } = useGraphqlQuery('Buckets', queries);
+  const tableLength = data?.buckets?.length || 0;
   data?.buckets?.forEach((v: BucketRequestType) => {
     talbeList.push({
       'Bucket Name': v.bucket_name,
@@ -54,6 +68,14 @@ const Page: NextPage = () => {
       Creator: v.owner_address,
     });
   });
+  React.useEffect(() => {
+    if (typeof tableLength === 'number' && tableLength !== 11) {
+      setToNext(false);
+    } else {
+      setToNext(true);
+    }
+  }, [ tableLength ]);
+
   const tapList = [ 'Transactions', 'Versions' ];
   const tabThead = [ 'Bucket Name', 'Bucket ID', 'Last Updated Time', 'Status', 'Active Objects Count', 'Creator' ];
 
@@ -65,11 +87,15 @@ const Page: NextPage = () => {
     <PageNextJs pathname="/bucket">
       <PageTitle title="Buckets" withTextAd/>
       <TableList
+        toNext={ toNext }
+        currPage={ page }
+        propsPage={ propsPage }
         error={ error }
         loading={ loading }
         tapList={ tapList }
         talbeList={ talbeList }
-        tabThead={ tabThead } page="bucket"
+        tabThead={ tabThead }
+        page="bucket"
         handleSearchChange={ handleSearchChange }/>
     </PageNextJs>
   );

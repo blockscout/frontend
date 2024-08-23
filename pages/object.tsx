@@ -16,6 +16,19 @@ const ObjectDetails: NextPage = () => {
   const [ searchTerm, setSearchTerm ] = React.useState('');
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const [ page, setPage ] = React.useState<number>(1);
+  const [ offset, setOffset ] = React.useState<number>(0);
+  const [ toNext, setToNext ] = React.useState<boolean>(true);
+  React.useEffect(() => {
+    if (page > 1) {
+      setOffset((page - 1) * 10);
+    } else {
+      setOffset(0);
+    }
+  }, [ page, offset ]);
+  const propsPage = React.useCallback((value: number) => {
+    setPage(value);
+  }, [ setPage ]);
 
   const queries = [
     {
@@ -36,26 +49,36 @@ const ObjectDetails: NextPage = () => {
           { object_id: { _eq: debouncedSearchTerm } },
         ],
       } : undefined,
-      limit: 10,
-      offset: 0,
+      limit: 11,
+      offset: offset,
     },
   ];
   // const [ talbeList ] = React.useState<Array<ObjetTalbeListType>>([]);
   const talbeList: Array<ObjetTalbeListType> = [];
 
   const { loading, data, error } = useGraphqlQuery('Objects', queries);
-  data?.objects?.forEach((v: ObjetRequestType) => {
-    talbeList.push({
-      'Object Name': v.object_name,
-      Type: v.content_type,
-      'Object Size': v.payload_size + 'KB',
-      Status: v.status,
-      Visibility: v.visibility,
-      'Last Updated Time': v.update_time,
-      Bucket: v.bucket_name,
-      Creator: v.creator_address,
-    });
+  const tableLength = data?.objects?.length || 0;
+  data?.objects?.forEach((v: ObjetRequestType, i: number) => {
+    if (i < 10) {
+      talbeList.push({
+        'Object Name': v.object_name,
+        Type: v.content_type,
+        'Object Size': v.payload_size + 'KB',
+        Status: v.status,
+        Visibility: v.visibility,
+        'Last Updated Time': v.update_time,
+        Bucket: v.bucket_name,
+        Creator: v.creator_address,
+      });
+    }
   });
+  React.useEffect(() => {
+    if (typeof tableLength === 'number' && tableLength !== 11) {
+      setToNext(false);
+    } else {
+      setToNext(true);
+    }
+  }, [ tableLength ]);
 
   const tapList = [ 'Transactions', 'Versions' ];
 
@@ -69,6 +92,9 @@ const ObjectDetails: NextPage = () => {
     <PageNextJs pathname="/object">
       <PageTitle title="Objects" withTextAd/>
       <TableList
+        toNext={ toNext }
+        currPage={ page }
+        propsPage={ propsPage }
         error={ error }
         loading={ loading }
         tapList={ tapList }

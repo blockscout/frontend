@@ -16,6 +16,19 @@ const Page: NextPage = () => {
   const [ searchTerm, setSearchTerm ] = React.useState('');
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const [ page, setPage ] = React.useState<number>(1);
+  const [ offset, setOffset ] = React.useState<number>(0);
+  const [ toNext, setToNext ] = React.useState<boolean>(true);
+  React.useEffect(() => {
+    if (page > 1) {
+      setOffset((page - 1) * 10);
+    } else {
+      setOffset(0);
+    }
+  }, [ page, offset ]);
+  const propsPage = React.useCallback((value: number) => {
+    setPage(value);
+  }, [ setPage ]);
 
   const queries = [
     {
@@ -31,8 +44,8 @@ const Page: NextPage = () => {
         }`,
         'owner_address',
       ],
-      limit: 10,
-      offset: 0,
+      limit: 11,
+      offset: offset,
       where: debouncedSearchTerm ? {
         _or: [
           { group_name: { _ilike: `${ debouncedSearchTerm }%` } },
@@ -44,6 +57,7 @@ const Page: NextPage = () => {
   const talbeList: Array<GroupTalbeListType> = [];
 
   const { loading, data, error } = useGraphqlQuery('storage_group', queries);
+  const tableLength = data?.buckets?.length || 0;
   data?.groups?.forEach((v: GroupRequestType) => {
     talbeList.push({
       'Group Name': v.group_name,
@@ -53,6 +67,14 @@ const Page: NextPage = () => {
       Owner: v.owner_address,
     });
   });
+
+  React.useEffect(() => {
+    if (typeof tableLength === 'number' && tableLength !== 11) {
+      setToNext(false);
+    } else {
+      setToNext(true);
+    }
+  }, [ tableLength ]);
   const tapList = [ 'objects', 'Transactions', 'Permissions' ];
   const tabThead = [ 'Group Name', 'Group ID', 'Last Updated', 'Active Group Member Count', 'Owner' ];
 
@@ -64,6 +86,9 @@ const Page: NextPage = () => {
     <PageNextJs pathname="/group">
       <PageTitle title="Groups" withTextAd/>
       <TableList
+        toNext={ toNext }
+        currPage={ page }
+        propsPage={ propsPage }
         error={ error }
         loading={ loading }
         tapList={ tapList }

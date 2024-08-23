@@ -30,12 +30,15 @@ type Props<T extends string> = {
   error: Error | undefined;
   page: string;
   handleSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  propsPage: (value: number) => void;
+  currPage: number;
+  toNext: boolean;
 }
 
 function TableList(props: Props<string>) {
   let talbeList: Array<TalbeListType> = props.talbeList;
   const router = useRouter();
-  if (!talbeList?.length && !props.error) {
+  if (!talbeList?.length && !props.error && props.loading) {
     talbeList = skeletonList(router.pathname);
   }
   return (
@@ -150,7 +153,7 @@ function TableList(props: Props<string>) {
               )) }
           </Tbody>
           <Box position="absolute" right="24px" bottom="-54px">
-            <Pagination itemsPerPage={ 1 }></Pagination>
+            <Pagination page={ props.currPage } propsPage={ props.propsPage } toNext={ props.toNext }></Pagination>
           </Box>
         </Table>
 
