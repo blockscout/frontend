@@ -27,7 +27,7 @@ const BlockEpochRewardsDistribution = ({ data, isLoading }: Props) => {
       { data.distribution.community_transfer && (
         <>
           <DetailsInfoItem.Label
-            hint="Community fund"
+            hint="Funds allocation to support Celo projects and community initiatives"
             isLoading={ isLoading }
           >
             Community fund
@@ -40,7 +40,7 @@ const BlockEpochRewardsDistribution = ({ data, isLoading }: Props) => {
       { data.distribution.carbon_offsetting_transfer && (
         <>
           <DetailsInfoItem.Label
-            hint="Carbon offset fund"
+            hint="Funds allocation to support projects that make Celo carbon-negative"
             isLoading={ isLoading }
           >
             Carbon offset fund
@@ -53,7 +53,7 @@ const BlockEpochRewardsDistribution = ({ data, isLoading }: Props) => {
       { data.distribution.reserve_bolster_transfer && (
         <>
           <DetailsInfoItem.Label
-            hint="Reserve bolster"
+            hint="Funds allocation to strengthen Celo’s reserve for network stability and security"
             isLoading={ isLoading }
           >
             Reserve bolster
