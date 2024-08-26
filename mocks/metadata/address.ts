@@ -90,3 +90,15 @@ export const warpcastTag: AddressMetadataTagApi = {
     warpcastHandle: 'duckYduck',
   },
 };
+
+export const noteTag: AddressMetadataTagApi = {
+  slug: 'scam-tag',
+  name: 'Phish 🐟',
+  tagType: 'note',
+  ordinal: 100,
+  meta: {
+    alertBgColor: 'deeppink',
+    alertTextColor: 'white',
+    data: '<b>Warning!</b> This is scam! See the <a href="https://example.com" target="_blank">report</a>',
+  },
+};
