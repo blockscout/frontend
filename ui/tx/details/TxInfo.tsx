@@ -10,6 +10,7 @@ import {
   chakra,
   useColorModeValue,
   Skeleton,
+  HStack,
 } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
@@ -26,6 +27,7 @@ import config from 'configs/app';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import getArbitrumVerificationStepStatus from 'lib/getArbitrumVerificationStepStatus';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
+import { MESSAGE_DESCRIPTIONS } from 'lib/tx/arbitrumMessageStatusDescription';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
 import { currencyUnits } from 'lib/units';
 import Tag from 'ui/shared/chakra/Tag';
@@ -40,6 +42,7 @@ import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import Hint from 'ui/shared/Hint';
 import IconSvg from 'ui/shared/IconSvg';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
@@ -80,6 +83,14 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
     });
   }, []);
   const executionSuccessIconColor = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
+
+  const showAssociatedL1Tx = React.useCallback(() => {
+    setIsExpanded(true);
+    scroller.scrollTo('TxInfo__cutLink', {
+      duration: 500,
+      smooth: true,
+    });
+  }, []);
 
   if (!data) {
     return null;
@@ -169,9 +180,11 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           </Tag>
         ) }
         { data.arbitrum?.contains_message && (
-          <Tag isLoading={ isLoading } isTruncated ml={ 3 }>
-            { data.arbitrum?.contains_message === 'incoming' ? 'Incoming message' : 'Outgoing message' }
-          </Tag>
+          <Skeleton isLoaded={ !isLoading } onClick={ showAssociatedL1Tx }>
+            <Link isTruncated ml={ 3 }>
+              { data.arbitrum?.contains_message === 'incoming' ? 'Incoming message' : 'Outgoing message' }
+            </Link>
+          </Skeleton>
         ) }
       </DetailsInfoItem.Value>
 
@@ -776,6 +789,30 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       { isExpanded && (
         <>
           <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
+
+          { data.arbitrum?.message_related_info && (
+            <>
+              <DetailsInfoItem.Label
+                hint={ data.arbitrum.contains_message === 'incoming' ?
+                  'The hash of the transaction that originated the message from the base layer' :
+                  'The hash of the transaction that completed the message on the base layer'
+                }
+              >
+                { data.arbitrum.contains_message === 'incoming' ? 'Originating L1 txn hash' : 'Completion L1 txn hash' }
+              </DetailsInfoItem.Label>
+              <DetailsInfoItem.Value>
+                { data.arbitrum.message_related_info.associated_l1_transaction ?
+                  <TxEntityL1 hash={ data.arbitrum.message_related_info.associated_l1_transaction }/> : (
+                    <HStack gap={ 2 }>
+                      <Text color="text_secondary">{ data.arbitrum.message_related_info.message_status }</Text>
+                      <Hint label={ MESSAGE_DESCRIPTIONS[data.arbitrum.message_related_info.message_status] }/>
+                    </HStack>
+                  )
+                }
+              </DetailsInfoItem.Value>
+            </>
+          ) }
+
           { (data.blob_gas_used || data.max_fee_per_blob_gas || data.blob_gas_price) && (
             <>
               { data.blob_gas_used && data.blob_gas_price && (
