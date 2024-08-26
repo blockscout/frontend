@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Flex, Box } from '@chakra-ui/react';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
@@ -12,7 +13,7 @@ import PageNextJs from 'nextjs/PageNextJs';
 import useGraphqlQuery from 'lib/api/useGraphqlQuery';
 import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import { formatPubKey, timeTool } from 'ui/storage/utils';
+import { formatPubKey, sizeTool, timeTool } from 'ui/storage/utils';
 
 const HeadDetails = dynamic(() => import('ui/storage/head-details'), { ssr: false });
 // const TableDetails = dynamic(() => import('ui/storage/table-details'), { ssr: false });
@@ -73,6 +74,12 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
     },
   ];
   const { loading, data } = useGraphqlQuery('Objects', router.query.address ? queries : []);
+  const [ loadsing, setLoadsing ] = React.useState(true);
+  React.useEffect(() => {
+    if (!loading && Object.keys(data?.objects || {}).length) {
+      setLoadsing(false);
+    }
+  }, [ data, loading ]);
 
   const details = data?.objects && data?.objects[0];
 
@@ -82,7 +89,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
     'Object ID': details?.object_id && formatPubKey(details?.object_id, 6, 6),
     'Object No.': details?.object_id && formatPubKey(details?.object_id, 6, 6),
     Type: details?.content_type,
-    'Object Size': details?.payload_size,
+    'Object Size': sizeTool(details?.payload_size),
     'Object Status': details?.status,
     Deleted: details?.removed ? 'Yes' : 'No',
   };
@@ -127,7 +134,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
         <PageTitle marginBottom="0" title="Object Details" withTextAd/>
         <Box ml="6px" color="rgba(0, 0, 0, 0.4)" fontWeight="400" fontSize="14px">{ formatPubKey(details?.object_name) }</Box>
       </Flex>
-      <HeadDetails loading={ loading } overview={ overview } more={ more } secondaryAddresses={ secondaryAddresses }/>
+      <HeadDetails loading={ loadsing } overview={ overview } more={ more } secondaryAddresses={ secondaryAddresses }/>
       { /* <TableDetails tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead } changeTable={ changeTable }/> */ }
     </PageNextJs>
   );

@@ -60,8 +60,14 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       ],
     },
   ];
-  const { data } = useGraphqlQuery('Group', router.query.address ? queries : []);
+  const { loading, data } = useGraphqlQuery('Group', router.query.address ? queries : []);
   const details = data?.groups && data?.groups[0];
+  const [ loadsing, setLoadsing ] = React.useState(true);
+  React.useEffect(() => {
+    if (!loading && Object.keys(data?.groups || {}).length) {
+      setLoadsing(false);
+    }
+  }, [ data, loading ]);
 
   const overview = {
     'Group Name': details?.group_name,
@@ -110,7 +116,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
         <PageTitle marginBottom="0" title="Group Details" withTextAd/>
         <Box ml="6px">{ router.query.address }</Box>
       </Flex>
-      <HeadDetails overview={ overview } more={ more }/>
+      <HeadDetails loading={ loadsing } overview={ overview } more={ more }/>
       { /* <TableDetails tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead } changeTable={ changeTable }/> */ }
     </PageNextJs>
   );

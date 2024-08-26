@@ -74,8 +74,14 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       ],
     },
   ];
-  const { data } = useGraphqlQuery('Bucket', router.query.address ? queries : []);
+  const { loading, data } = useGraphqlQuery('Bucket', router.query.address ? queries : []);
   const details = data?.buckets && data?.buckets[0];
+  const [ loadsing, setLoadsing ] = React.useState(true);
+  React.useEffect(() => {
+    if (!loading && Object.keys(data?.buckets || {}).length) {
+      setLoadsing(false);
+    }
+  }, [ data, loading ]);
 
   const overview = {
     'Bucket Name': details?.bucket_name,
@@ -168,7 +174,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
           ))
         }
       </Flex> */ }
-      <HeadDetails secondaryAddresses={ secondaryAddresses } overview={ overview } more={ more }/>
+      <HeadDetails loading={ loadsing } secondaryAddresses={ secondaryAddresses } overview={ overview } more={ more }/>
       { /* <TableDetails tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead } changeTable={ changeTable }/> */ }
     </PageNextJs>
   );

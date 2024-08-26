@@ -10,6 +10,7 @@ import PageNextJs from 'nextjs/PageNextJs';
 import useGraphqlQuery from 'lib/api/useGraphqlQuery';
 import useDebounce from 'lib/hooks/useDebounce';
 import PageTitle from 'ui/shared/Page/PageTitle';
+import { sizeTool } from 'ui/storage/utils';
 
 const TableList = dynamic(() => import('ui/storage/table-list'), { ssr: false });
 const ObjectDetails: NextPage = () => {
@@ -63,7 +64,7 @@ const ObjectDetails: NextPage = () => {
       talbeList.push({
         'Object Name': v.object_name,
         Type: v.content_type,
-        'Object Size': v.payload_size + 'KB',
+        'Object Size': sizeTool(v.payload_size),
         Status: v.status,
         Visibility: v.visibility,
         'Last Updated Time': v.update_time,

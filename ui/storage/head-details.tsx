@@ -92,22 +92,22 @@ const Page = (props: HeadProps) => {
                 borderColor: '#FFFFFF',
               }}>
                 <Td border="none" fontWeight="400" fontSize="14px" color="rgba(0, 0, 0, 0.4)" p="12px 0">
-                  <Skeleton w="100px" isLoaded={ !props.loading }>
+                  <Skeleton w={ !props.loading ? '100%' : '100px' } isLoaded={ !props.loading }>
                     { key }
                   </Skeleton>
                 </Td>
                 <Td border="none" fontWeight="500" fontSize="12px" color="#000000" p="12px 0" textAlign="right">
                   {
                     key === 'Bucket Status' || key === 'Deleted' || key === 'Object Status' || key === 'Source Type' ? (
-                      <Skeleton w="100px" float="right" isLoaded={ !props.loading }>
+                      <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
                         <Box bg="#30D3BF" display="inline-block" padding="4px 12px" color="#FFFFFF" borderRadius="23px">
-                          { value }
+                          { value || '-' }
                         </Box>
                       </Skeleton>
                     ) : (
-                      <Skeleton w="100px" float="right" isLoaded={ !props.loading }>
+                      <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
                         <Text >
-                          { value }
+                          { value || '-' }
                         </Text>
                       </Skeleton>
                     ) }
@@ -140,98 +140,117 @@ const Page = (props: HeadProps) => {
                 >
                   {
                     values.status === 'copyLink' ? (
-                      <Flex alignItems="center" flex="right" justifyContent="right">
-                        <NextLink href={{ pathname: '/address/[hash]', query: { hash: values.value || '' } }}>
-                          { values.value }
-                        </NextLink>
-                        <IconSvg
-                          color={ (creatorFlag && key === 'Creator') || (ownerFlag && key === 'Owner') ? '#A07EFF' : 'rgba(0, 0, 0, .4)' }
-                          cursor="pointer"
-                          ml="4px"
-                          onClick={ copyAddress(values.value, key) }
-                          name="copyAddress"
-                          _hover={{ color: '#A07EFF' }}
-                          w="14px"
-                          h="14px">
-                        </IconSvg>
-                      </Flex>
+                      <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
+                        <Flex alignItems="center" flex="right" justifyContent="right">
+                          <NextLink href={{ pathname: '/address/[hash]', query: { hash: values.value || '' } }}>
+                            { values.value }
+                          </NextLink>
+                          <IconSvg
+                            color={ (creatorFlag && key === 'Creator') || (ownerFlag && key === 'Owner') ? '#A07EFF' : 'rgba(0, 0, 0, .4)' }
+                            cursor="pointer"
+                            ml="4px"
+                            onClick={ copyAddress(values.value, key) }
+                            name="copyAddress"
+                            _hover={{ color: '#A07EFF' }}
+                            w="14px"
+                            h="14px">
+                          </IconSvg>
+                        </Flex>
+                      </Skeleton>
+
                     ) :
                       values.status === 'link' || values.status === 'nodereal' ? (
-                        <NextLink
-                          href={{ pathname: '/address/[hash]',
-                            query: { hash: values.value || '' } }}>
-                          { values.status === 'nodereal' ? values.value : '' }
-                        </NextLink>
+                        <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
+                          <NextLink
+                            href={{ pathname: '/address/[hash]',
+                              query: { hash: values.value || '' } }}>
+                            { values.status === 'nodereal' ? values.value : '' }
+                          </NextLink>
+                        </Skeleton>
                       ) :
                         values.status === 'bucketPage' ? (
-                          <NextLink href={{ pathname: '/bucket-details/[address]', query: { address: values.value || '' } }}>{ values.value }</NextLink>
+                          <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
+                            <NextLink href={{ pathname: '/bucket-details/[address]', query: { address: values.value || '' } }}>
+                              <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
+                                { values.value || '' }
+                              </Skeleton>
+                            </NextLink>
+                          </Skeleton>
                         ) :
                           values.status === 'block' ? (
-                            <Flex justifyContent="right">
-                              <Text>Block</Text>&nbsp;
-                              <NextLink href={{ pathname: '/block/[height_or_hash]', query: { height_or_hash: values.value || '' } }}>
-                                { values.value }
-                              </NextLink>
-                            </Flex>
+                            <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
+                              <Flex justifyContent="right">
+                                <Text>Block</Text>&nbsp;
+                                <NextLink href={{ pathname: '/block/[height_or_hash]', query: { height_or_hash: values.value || '' } }}>
+                                  { values.value || '' }
+                                </NextLink>
+                              </Flex>
+                            </Skeleton>
                           ) :
                             values.status === 'clickViewAll' ? (
-                              <Popover closeOnBlur={ false }>
-                                <PopoverTrigger>
-                                  <Button
-                                    borderRadius="none"
-                                    height="auto"
-                                    fontWeight="500"
-                                    fontSize="12px"
-                                    padding="0px"
-                                    variant="text">{ values.value }</Button>
-                                </PopoverTrigger>
-                                <PopoverContent right="94px" w="auto">
-                                  <PopoverHeader
-                                    textAlign="left"
-                                    border="none"
-                                    color="#000000"
-                                    p="24px"
-                                    fontWeight="500"
-                                    fontSize="12px"
-                                    width="230px"
-                                  >
-                                    { values.titleNmae }
-                                  </PopoverHeader>
-                                  <PopoverCloseButton w="16px" h="16px" top="24px" right="24px"/>
-                                  { props.secondaryAddresses?.map((value, index) => (
-                                    <PopoverBody
-                                      _last={{ paddingBottom: '24px' }}
-                                      padding="0 24px"
+                              <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
+                                <Popover closeOnBlur={ false }>
+                                  <PopoverTrigger>
+                                    <Button
+                                      borderRadius="none"
+                                      height="auto"
+                                      fontWeight="500"
+                                      fontSize="12px"
+                                      padding="0px"
+                                      variant="text">{ values.value }</Button>
+                                  </PopoverTrigger>
+                                  <PopoverContent right="94px" w="auto">
+                                    <PopoverHeader
                                       textAlign="left"
-                                      key={ index }>
-                                      <Flex align="center" color="#8A55FD" fontWeight="500" fontSize="12px">
-                                        { /* <NextLink href={{ pathname: '/address/[hash]', query: { hash: value || '' } }}>{ value }</NextLink> */ }
+                                      border="none"
+                                      color="#000000"
+                                      p="24px"
+                                      fontWeight="500"
+                                      fontSize="12px"
+                                      width="230px"
+                                    >
+                                      { values.titleNmae }
+                                    </PopoverHeader>
+                                    <PopoverCloseButton w="16px" h="16px" top="24px" right="24px"/>
+                                    { props.secondaryAddresses?.map((value, index) => (
+                                      <PopoverBody
+                                        _last={{ paddingBottom: '24px' }}
+                                        padding="0 24px"
+                                        textAlign="left"
+                                        key={ index }>
+                                        <Flex align="center" color="#8A55FD" fontWeight="500" fontSize="12px">
+                                          { /* <NextLink href={{ pathname: '/address/[hash]', query: { hash: value || '' } }}>{ value }</NextLink> */ }
                                       global_virtual_group_id { value }
-                                        <IconSvg
-                                          cursor="pointer"
-                                          onClick={ copyAddress(value) }
-                                          marginLeft="48px"
-                                          w="14px"
-                                          h="14px"
-                                          name="copyAddress">
-                                        </IconSvg>
-                                      </Flex>
-                                      <Divider margin="10px 0" bg="rgba(0, 46, 51, 0.1)"/>
-                                    </PopoverBody>
-                                  ),
-                                  ) }
-                                </PopoverContent>
-                              </Popover>
+                                          <IconSvg
+                                            cursor="pointer"
+                                            onClick={ copyAddress(value) }
+                                            marginLeft="48px"
+                                            w="14px"
+                                            h="14px"
+                                            name="copyAddress">
+                                          </IconSvg>
+                                        </Flex>
+                                        <Divider margin="10px 0" bg="rgba(0, 46, 51, 0.1)"/>
+                                      </PopoverBody>
+                                    ),
+                                    ) }
+                                  </PopoverContent>
+                                </Popover>
+                              </Skeleton>
                             ) :
                               (
-                                <Text
-                                  fontWeight="500"
-                                  fontSize="12px"
-                                  color={ values.status === 'none' || values.status === 'time' ? '#000000' : '#8A55FD' }
-                                  textAlign="right"
-                                >
-                                  { values.value }
-                                </Text>
+                                <Skeleton w={ !props.loading ? '' : '100px' } float="right" isLoaded={ !props.loading }>
+                                  <Box
+                                    fontWeight="500"
+                                    fontSize="12px"
+                                    color={ values.status === 'none' || values.status === 'time' ? '#000000' : '#8A55FD' }
+                                    textAlign="right"
+                                    justifyItems="right"
+                                    display="flex"
+                                  >
+                                    { values.value || '-' }
+                                  </Box>
+                                </Skeleton>
                               ) }
                 </Td>
               </Tr>

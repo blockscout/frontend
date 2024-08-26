@@ -20,6 +20,7 @@ import React from 'react';
 import type { TalbeListType } from 'types/storage';
 
 import Pagination from './Pagination';
+import styles from './pagination.module.css';
 import { formatPubKey, skeletonList } from './utils';
 
 type Props<T extends string> = {
@@ -53,7 +54,7 @@ function TableList(props: Props<string>) {
         </Input>
       </Flex>
       <TableContainer marginTop="16px" border="1px" borderRadius="12px" borderColor="rgba(0, 0, 0, 0.06);" padding="0 4px 78px 4px">
-        <Table variant="bubble" position="relative">
+        <Table variant="bubble" position="relative" className={ styles.table }>
           <Thead>
             <Tr>
               { props.tabThead?.map((value, index) => (
