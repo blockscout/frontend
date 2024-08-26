@@ -1,10 +1,10 @@
 import { Box, Flex, Text, Grid, useColorModeValue, chakra } from '@chakra-ui/react';
 import React from 'react';
 
-import type { SolidityscanReportSeverityDistribution } from 'types/api/contract';
+import type { SolidityScanReportSeverityDistribution } from 'lib/solidityScan/schema';
 
 type DistributionItem = {
-  id: keyof SolidityscanReportSeverityDistribution;
+  id: keyof SolidityScanReportSeverityDistribution;
   name: string;
   color: string;
 }
@@ -19,13 +19,13 @@ const DISTRIBUTION_ITEMS: Array<DistributionItem> = [
 ];
 
 interface Props {
-  vulnerabilities: SolidityscanReportSeverityDistribution;
+  vulnerabilities: SolidityScanReportSeverityDistribution;
   vulnerabilitiesCount: number;
 }
 
 type ItemProps = {
   item: DistributionItem;
-  vulnerabilities: SolidityscanReportSeverityDistribution;
+  vulnerabilities: SolidityScanReportSeverityDistribution;
   vulnerabilitiesCount: number;
 }
 

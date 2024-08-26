@@ -54,6 +54,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/login': '%network_name% login',
   '/sprite': '%network_name% SVG sprite',
   '/api/metrics': '%network_name% node API prometheus metrics',
+  '/api/monitoring/invalid-api-schema': '%network_name% node API prometheus metrics',
   '/api/log': '%network_name% node API request log',
   '/api/media-type': '%network_name% node API media type',
   '/api/proxy': '%network_name% node API proxy',
