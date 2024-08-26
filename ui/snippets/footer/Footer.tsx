@@ -1,4 +1,4 @@
-import type { GridProps } from '@chakra-ui/react';
+import type { GridProps, HTMLChakraProps } from '@chakra-ui/react';
 import { Box, Grid, Flex, Text, Link, VStack, Skeleton, useColorModeValue } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
@@ -12,6 +12,7 @@ import useFetch from 'lib/hooks/useFetch';
 import useIssueUrl from 'lib/hooks/useIssueUrl';
 import { copy } from 'lib/html-entities';
 import IconSvg from 'ui/shared/IconSvg';
+import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
 import NetworkAddToWallet from 'ui/shared/NetworkAddToWallet';
 
 import FooterLinkItem from './FooterLinkItem';
@@ -154,89 +155,98 @@ const Footer = () => {
     );
   }, [ apiVersionUrl, backendVersionData?.backend_version, frontendLink, logoColor ]);
 
-  const containerProps: GridProps = {
+  const containerProps: HTMLChakraProps<'div'> = {
     as: 'footer',
+    borderTopWidth: '1px',
+    borderTopColor: 'solid',
+  };
+
+  const contentProps: GridProps = {
     px: { base: 4, lg: config.UI.navigation.layout === 'horizontal' ? 6 : 12 },
     py: { base: 4, lg: 8 },
-    borderTop: '1px solid',
-    borderColor: 'divider',
     gridTemplateColumns: { base: '1fr', lg: 'minmax(auto, 470px) 1fr' },
     columnGap: { lg: '32px', xl: '100px' },
+    maxW: `${ CONTENT_MAX_WIDTH }px`,
+    m: '0 auto',
   };
 
   if (config.UI.footer.links) {
     return (
-      <Grid { ...containerProps }>
-        <div>
-          { renderNetworkInfo() }
-          { renderProjectInfo() }
-        </div>
+      <Box { ...containerProps }>
+        <Grid { ...contentProps }>
+          <div>
+            { renderNetworkInfo() }
+            { renderProjectInfo() }
+          </div>
 
-        <Grid
-          gap={{ base: 6, lg: colNum === MAX_LINKS_COLUMNS + 1 ? 2 : 8, xl: 12 }}
-          gridTemplateColumns={{
-            base: 'repeat(auto-fill, 160px)',
-            lg: `repeat(${ colNum }, 135px)`,
-            xl: `repeat(${ colNum }, 160px)`,
-          }}
-          justifyContent={{ lg: 'flex-end' }}
-          mt={{ base: 8, lg: 0 }}
-        >
-          {
-            ([
-              { title: 'Blockscout', links: BLOCKSCOUT_LINKS },
-              ...(linksData || []),
-            ])
-              .slice(0, colNum)
-              .map(linkGroup => (
-                <Box key={ linkGroup.title }>
-                  <Skeleton fontWeight={ 500 } mb={ 3 } display="inline-block" isLoaded={ !isPlaceholderData }>{ linkGroup.title }</Skeleton>
-                  <VStack spacing={ 1 } alignItems="start">
-                    { linkGroup.links.map(link => <FooterLinkItem { ...link } key={ link.text } isLoading={ isPlaceholderData }/>) }
-                  </VStack>
-                </Box>
-              ))
-          }
+          <Grid
+            gap={{ base: 6, lg: colNum === MAX_LINKS_COLUMNS + 1 ? 2 : 8, xl: 12 }}
+            gridTemplateColumns={{
+              base: 'repeat(auto-fill, 160px)',
+              lg: `repeat(${ colNum }, 135px)`,
+              xl: `repeat(${ colNum }, 160px)`,
+            }}
+            justifyContent={{ lg: 'flex-end' }}
+            mt={{ base: 8, lg: 0 }}
+          >
+            {
+              ([
+                { title: 'Blockscout', links: BLOCKSCOUT_LINKS },
+                ...(linksData || []),
+              ])
+                .slice(0, colNum)
+                .map(linkGroup => (
+                  <Box key={ linkGroup.title }>
+                    <Skeleton fontWeight={ 500 } mb={ 3 } display="inline-block" isLoaded={ !isPlaceholderData }>{ linkGroup.title }</Skeleton>
+                    <VStack spacing={ 1 } alignItems="start">
+                      { linkGroup.links.map(link => <FooterLinkItem { ...link } key={ link.text } isLoading={ isPlaceholderData }/>) }
+                    </VStack>
+                  </Box>
+                ))
+            }
+          </Grid>
         </Grid>
-      </Grid>
+      </Box>
     );
   }
 
   return (
-    <Grid
-      { ...containerProps }
-      gridTemplateAreas={{
-        lg: `
+    <Box { ...containerProps }>
+      <Grid
+        { ...contentProps }
+        gridTemplateAreas={{
+          lg: `
           "network links-top"
           "info links-bottom"
         `,
-      }}
-    >
-
-      { renderNetworkInfo({ lg: 'network' }) }
-      { renderProjectInfo({ lg: 'info' }) }
-
-      <Grid
-        gridArea={{ lg: 'links-bottom' }}
-        gap={ 1 }
-        gridTemplateColumns={{
-          base: 'repeat(auto-fill, 160px)',
-          lg: 'repeat(3, 160px)',
-          xl: 'repeat(4, 160px)',
         }}
-        gridTemplateRows={{
-          base: 'auto',
-          lg: 'repeat(3, auto)',
-          xl: 'repeat(2, auto)',
-        }}
-        gridAutoFlow={{ base: 'row', lg: 'column' }}
-        alignContent="start"
-        justifyContent={{ lg: 'flex-end' }}
-        mt={{ base: 8, lg: 0 }}
       >
-        { BLOCKSCOUT_LINKS.map(link => <FooterLinkItem { ...link } key={ link.text }/>) }
+
+        { renderNetworkInfo({ lg: 'network' }) }
+        { renderProjectInfo({ lg: 'info' }) }
+
+        <Grid
+          gridArea={{ lg: 'links-bottom' }}
+          gap={ 1 }
+          gridTemplateColumns={{
+            base: 'repeat(auto-fill, 160px)',
+            lg: 'repeat(3, 160px)',
+            xl: 'repeat(4, 160px)',
+          }}
+          gridTemplateRows={{
+            base: 'auto',
+            lg: 'repeat(3, auto)',
+            xl: 'repeat(2, auto)',
+          }}
+          gridAutoFlow={{ base: 'row', lg: 'column' }}
+          alignContent="start"
+          justifyContent={{ lg: 'flex-end' }}
+          mt={{ base: 8, lg: 0 }}
+        >
+          { BLOCKSCOUT_LINKS.map(link => <FooterLinkItem { ...link } key={ link.text }/>) }
+        </Grid>
       </Grid>
-    </Grid>
+    </Box>
   );
 };
 
