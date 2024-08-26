@@ -34,6 +34,7 @@ const Footer = () => {
   const apiVersionUrl = getApiVersionUrl(backendVersionData?.backend_version);
   const issueUrl = useIssueUrl(backendVersionData?.backend_version);
   const logoColor = useColorModeValue('blue.600', 'white');
+  const bgColor = useColorModeValue('white', 'black');
 
   const BLOCKSCOUT_LINKS = [
     {
@@ -159,6 +160,7 @@ const Footer = () => {
     as: 'footer',
     borderTopWidth: '1px',
     borderTopColor: 'solid',
+    bgColor,
   };
 
   const contentProps: GridProps = {

@@ -1,4 +1,4 @@
-import { Flex, chakra } from '@chakra-ui/react';
+import { Flex, chakra, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
@@ -14,6 +14,8 @@ const TOP_BAR_HEIGHT = 36;
 const HORIZONTAL_NAV_BAR_HEIGHT = config.UI.navigation.layout === 'horizontal' ? 49 : 0;
 
 const MainArea = ({ children, className }: Props) => {
+  const bgColor = useColorModeValue('white', 'black');
+
   return (
     <Flex
       className={ className }
@@ -25,6 +27,7 @@ const MainArea = ({ children, className }: Props) => {
         lg: `calc(100vh - ${ TOP_BAR_HEIGHT + HORIZONTAL_NAV_BAR_HEIGHT }px)`,
       }}
       alignItems="stretch"
+      bgColor={ bgColor }
     >
       { children }
     </Flex>
