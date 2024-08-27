@@ -33,7 +33,7 @@ type ComponentProps = Props & {
   openModal: () => void;
 };
 
-export const WalletMenuDesktopComponent = ({
+export const WalletMenuDesktop = ({
   isHomePage, className, size = 'md', isWalletConnected, address, connect,
   disconnect, isModalOpening, isModalOpen, openModal,
 }: ComponentProps) => {
@@ -155,14 +155,14 @@ export const WalletMenuDesktopComponent = ({
 };
 
 // separated the useWallet hook from the main component because it's hard to mock it in tests
-const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
+const WalletMenuDesktopWrapper = ({ isHomePage, className, size = 'md' }: Props) => {
   const {
     isWalletConnected, address, connect, disconnect,
     isModalOpening, isModalOpen, openModal,
   } = useWallet({ source: 'Header' });
 
   return (
-    <WalletMenuDesktopComponent
+    <WalletMenuDesktop
       isHomePage={ isHomePage }
       className={ className }
       size={ size }
@@ -177,4 +177,4 @@ const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
   );
 };
 
-export default chakra(WalletMenuDesktop);
+export default chakra(WalletMenuDesktopWrapper);

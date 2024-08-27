@@ -24,7 +24,7 @@ type ComponentProps = {
   openModal: () => void;
 };
 
-export const WalletMenuMobileComponent = (
+export const WalletMenuMobile = (
   { isWalletConnected, address, connect, disconnect, isModalOpening, isModalOpen, openModal }: ComponentProps,
 ) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -102,14 +102,14 @@ export const WalletMenuMobileComponent = (
   );
 };
 
-const WalletMenuMobile = () => {
+const WalletMenuMobileWrapper = () => {
   const {
     isWalletConnected, address, connect, disconnect,
     isModalOpening, isModalOpen, openModal,
   } = useWallet({ source: 'Header' });
 
   return (
-    <WalletMenuMobileComponent
+    <WalletMenuMobile
       isWalletConnected={ isWalletConnected }
       address={ address }
       connect={ connect }
@@ -121,4 +121,4 @@ const WalletMenuMobile = () => {
   );
 };
 
-export default WalletMenuMobile;
+export default WalletMenuMobileWrapper;
