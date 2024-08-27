@@ -19,7 +19,7 @@ const Container = ({ children, className }: Props) => {
       minWidth={{ base: '100vw', lg: 'fit-content' }}
       maxW={ config.UI.navigation.layout === 'horizontal' ? undefined : `${ CONTENT_MAX_WIDTH }px` }
       m="0 auto"
-      bgColor={ config.UI.navigation.layout === 'horizontal' ? bgColor : undefined }
+      bgColor={ bgColor }
     >
       { children }
     </Box>
