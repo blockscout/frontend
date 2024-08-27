@@ -1,8 +1,10 @@
 import React from 'react';
 
-import type { Address } from 'types/api/address';
+import type * as bens from '@blockscout/bens-types';
 
+import config from 'configs/app';
 import * as addressMock from 'mocks/address/address';
+import * as domainMock from 'mocks/ens/domain';
 import { test, expect } from 'playwright/lib';
 
 import { WalletMenuDesktop } from './WalletMenuDesktop';
@@ -35,7 +37,11 @@ test('wallet is loading', async({ page, render }) => {
 });
 
 test('wallet connected +@dark-mode', async({ page, render, mockApiResponse }) => {
-  await mockApiResponse('address', addressMock.eoa, { pathParams: { hash: addressMock.hash } });
+  await mockApiResponse(
+    'address_domain',
+    { domain: undefined, resolved_domains_count: 0 } as bens.GetAddressResponse,
+    { pathParams: { address: addressMock.hash, chainId: config.chain.id } },
+  );
 
   const component = await render(<WalletMenuDesktop { ...props } isWalletConnected address={ addressMock.hash }/>);
   await component.locator('button').click();
@@ -43,9 +49,7 @@ test('wallet connected +@dark-mode', async({ page, render, mockApiResponse }) =>
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 250, height: 300 } });
 });
 
-test('wallet connected (home page) +@dark-mode', async({ page, render, mockApiResponse }) => {
-  await mockApiResponse('address', addressMock.eoa, { pathParams: { hash: addressMock.hash } });
-
+test('wallet connected (home page) +@dark-mode', async({ page, render }) => {
   const component = await render(<WalletMenuDesktop { ...props } isHomePage isWalletConnected address={ addressMock.hash }/>);
   await component.locator('button').click();
 
@@ -53,7 +57,11 @@ test('wallet connected (home page) +@dark-mode', async({ page, render, mockApiRe
 });
 
 test('wallet with ENS connected', async({ page, render, mockApiResponse }) => {
-  await mockApiResponse('address', { ...addressMock.eoa, ...addressMock.withEns } as Address, { pathParams: { hash: addressMock.hash } });
+  await mockApiResponse(
+    'address_domain',
+    { domain: domainMock.ensDomainB, resolved_domains_count: 1 } as bens.GetAddressResponse,
+    { pathParams: { address: addressMock.hash, chainId: config.chain.id } },
+  );
 
   const component = await render(<WalletMenuDesktop { ...props } isWalletConnected address={ addressMock.hash }/>);
   await component.locator('button').click();
