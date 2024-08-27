@@ -111,7 +111,13 @@ type ArbitrumTransactionData = {
   network_fee: string;
   poster_fee: string;
   status: ArbitrumBatchStatus;
+  message_related_info: {
+    associated_l1_transaction: string | null;
+    message_status: ArbitrumMessageStatus;
+  };
 }
+
+export type ArbitrumMessageStatus = 'Relayed' | 'Syncing with base layer' | 'Waiting for confirmation' | 'Ready for relay' | 'Settlement pending';
 
 export const ZKEVM_L2_TX_STATUSES = [ 'Confirmed by Sequencer', 'L1 Confirmed' ];
 

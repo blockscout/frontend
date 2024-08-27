@@ -1,7 +1,6 @@
 import React from 'react';
 
 import type { AddressMetadataInfo, AddressMetadataTagApi } from 'types/api/addressMetadata';
-import type { AddressParam } from 'types/api/addressParams';
 
 import config from 'configs/app';
 import { protocolTagWithMeta } from 'mocks/metadata/address';
@@ -65,22 +64,24 @@ test.describe('blockscout provider', () => {
     await expect(component).toHaveScreenshot();
   });
 
-  test('with interpretation and recipient ENS domain', async({ render, mockApiResponse }) => {
-    const txData = {
-      ...txMock.base,
-      to: {
-        ...txMock.base.to,
-        hash: (txInterpretation.data.summaries[0].summary_template_variables.to_address.value as AddressParam).hash,
-        ens_domain_name: 'duckduck.eth',
-      },
-    };
-    const txWithEnsQuery = {
-      data: txData,
-      isPlaceholderData: false,
-      isError: false,
-    } as TxQuery;
+  test('with interpretation and recipient name +@mobile', async({ render, mockApiResponse }) => {
+    const newTxQuery = { ...txQuery, data: txMock.withRecipientName } as TxQuery;
     await mockApiResponse('tx_interpretation', txInterpretation, { pathParams: { hash } });
-    const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ txWithEnsQuery }/>);
+    const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ newTxQuery }/>);
+    await expect(component).toHaveScreenshot();
+  });
+
+  test('with interpretation and recipient ENS domain +@mobile', async({ render, mockApiResponse }) => {
+    const newTxQuery = { ...txQuery, data: txMock.withRecipientEns } as TxQuery;
+    await mockApiResponse('tx_interpretation', txInterpretation, { pathParams: { hash } });
+    const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ newTxQuery }/>);
+    await expect(component).toHaveScreenshot();
+  });
+
+  test('with interpretation and recipient name tag +@mobile', async({ render, mockApiResponse }) => {
+    const newTxQuery = { ...txQuery, data: txMock.withRecipientNameTag } as TxQuery;
+    await mockApiResponse('tx_interpretation', txInterpretation, { pathParams: { hash } });
+    const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ newTxQuery }/>);
     await expect(component).toHaveScreenshot();
   });
 

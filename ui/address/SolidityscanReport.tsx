@@ -5,8 +5,7 @@ import React from 'react';
 // Probably because of the gradient
 // eslint-disable-next-line no-restricted-imports
 import solidityScanIcon from 'icons/brands/solidity_scan.svg';
-import useApiQuery from 'lib/api/useApiQuery';
-import { SOLIDITYSCAN_REPORT } from 'stubs/contract';
+import useFetchReport from 'lib/solidityScan/useFetchReport';
 import Popover from 'ui/shared/chakra/Popover';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import SolidityscanReportButton from 'ui/shared/solidityscanReport/SolidityscanReportButton';
@@ -20,22 +19,19 @@ interface Props {
 const SolidityscanReport = ({ hash }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
 
-  const { data, isPlaceholderData, isError } = useApiQuery('contract_solidityscan_report', {
-    pathParams: { hash },
-    queryOptions: {
-      enabled: Boolean(hash),
-      placeholderData: SOLIDITYSCAN_REPORT,
-      retry: 0,
-    },
-  });
+  const { data, isPlaceholderData, isError } = useFetchReport({ hash });
 
-  const score = Number(data?.scan_report.scan_summary.score_v2);
-
-  if (isError || !score) {
+  if (isError || !data) {
     return null;
   }
 
-  const vulnerabilities = data?.scan_report.scan_summary.issue_severity_distribution;
+  const score = Number(data.scan_report.scan_summary.score_v2);
+
+  if (!score) {
+    return null;
+  }
+
+  const vulnerabilities = data.scan_report.scan_summary.issue_severity_distribution;
   const vulnerabilitiesCounts = vulnerabilities ? Object.values(vulnerabilities) : [];
   const vulnerabilitiesCount = vulnerabilitiesCounts.reduce((acc, val) => acc + val, 0);
 
@@ -63,7 +59,7 @@ const SolidityscanReport = ({ hash }: Props) => {
               <SolidityscanReportDetails vulnerabilities={ vulnerabilities } vulnerabilitiesCount={ vulnerabilitiesCount }/>
             </Box>
           ) }
-          <LinkExternal href={ data?.scan_report.scanner_reference_url }>View full report</LinkExternal>
+          <LinkExternal href={ data.scan_report.scanner_reference_url }>View full report</LinkExternal>
         </PopoverBody>
       </PopoverContent>
     </Popover>

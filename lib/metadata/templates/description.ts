@@ -58,6 +58,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/login': DEFAULT_TEMPLATE,
   '/sprite': DEFAULT_TEMPLATE,
   '/api/metrics': DEFAULT_TEMPLATE,
+  '/api/monitoring/invalid-api-schema': DEFAULT_TEMPLATE,
   '/api/log': DEFAULT_TEMPLATE,
   '/api/media-type': DEFAULT_TEMPLATE,
   '/api/proxy': DEFAULT_TEMPLATE,

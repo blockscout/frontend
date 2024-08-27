@@ -1,6 +1,8 @@
 import { Box, Flex, Link } from '@chakra-ui/react';
 import React from 'react';
 
+import type { AddressParam } from 'types/api/addressParams';
+
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import { NOVES_TRANSLATE } from 'stubs/noves/NovesTranslate';
@@ -59,12 +61,12 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
     (hasNovesInterpretation && novesInterpretationQuery.data && !novesInterpretationQuery.isPlaceholderData) ||
     (hasInternalInterpretation && !txInterpretationQuery.isPlaceholderData);
 
-  const ensDomainNames: Record<string, string> = {};
-  [ txQuery.data?.from, txQuery.data?.to ].forEach(data => {
-    if (data?.hash && data?.ens_domain_name) {
-      ensDomainNames[data.hash] = data.ens_domain_name;
-    }
-  });
+  const addressDataMap: Record<string, AddressParam> = {};
+  [ txQuery.data?.from, txQuery.data?.to ]
+    .filter((data): data is AddressParam => Boolean(data && data.hash))
+    .forEach(data => {
+      addressDataMap[data.hash] = data;
+    });
 
   const content = (() => {
     if (hasNovesInterpretation && novesInterpretationQuery.data) {
@@ -73,7 +75,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
         <TxInterpretation
           summary={ novesSummary }
           isLoading={ novesInterpretationQuery.isPlaceholderData || txQuery.isPlaceholderData }
-          ensDomainNames={ ensDomainNames }
+          addressDataMap={ addressDataMap }
           fontSize="lg"
           mr={{ base: 0, lg: 6 }}
         />
@@ -84,7 +86,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
           <TxInterpretation
             summary={ txInterpretationQuery.data?.data.summaries[0] }
             isLoading={ txInterpretationQuery.isPlaceholderData || txQuery.isPlaceholderData }
-            ensDomainNames={ ensDomainNames }
+            addressDataMap={ addressDataMap }
             fontSize="lg"
             mr={ hasViewAllInterpretationsLink ? 3 : 0 }
           />

@@ -52,6 +52,7 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/login': 'Login',
   '/sprite': 'Sprite',
   '/api/metrics': 'Node API: Prometheus metrics',
+  '/api/monitoring/invalid-api-schema': 'Node API: Prometheus metrics',
   '/api/log': 'Node API: Request log',
   '/api/media-type': 'Node API: Media type',
   '/api/proxy': 'Node API: Proxy',

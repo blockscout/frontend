@@ -1,4 +1,5 @@
 import { chakra, Skeleton } from '@chakra-ui/react';
+import capitalize from 'lodash/capitalize';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -10,6 +11,7 @@ import { useAppContext } from 'lib/contexts/app';
 import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import BlockDetails from 'ui/block/BlockDetails';
 import BlockWithdrawals from 'ui/block/BlockWithdrawals';
@@ -149,7 +151,7 @@ const BlockPageContent = () => {
           fontWeight={ 500 }
         >
           <chakra.span flexShrink={ 0 }>
-            { config.chain.verificationType === 'validation' ? 'Validated by' : 'Mined by' }
+            { `${ capitalize(getNetworkValidationActionText()) } by` }
           </chakra.span>
           <AddressEntity address={ blockQuery.data?.miner }/>
         </Skeleton>

@@ -69,7 +69,7 @@ const LatestBlocks = () => {
   let content;
 
   if (isError) {
-    content = <Text>No data. Please reload page.</Text>;
+    content = <Text>No data. Please reload the page.</Text>;
   }
 
   if (data) {
