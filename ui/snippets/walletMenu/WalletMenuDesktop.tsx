@@ -2,6 +2,8 @@ import type { ButtonProps } from '@chakra-ui/react';
 import { PopoverContent, PopoverBody, PopoverTrigger, Button, Box, useBoolean, chakra, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
+import config from 'configs/app';
+import useApiQuery from 'lib/api/useApiQuery';
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';
@@ -21,12 +23,33 @@ type Props = {
   size?: 'sm' | 'md';
 };
 
-const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
-  const { isWalletConnected, address, connect, disconnect, isModalOpening, isModalOpen, openModal } = useWallet({ source: 'Header' });
+type ComponentProps = Props & {
+  isWalletConnected: boolean;
+  address: string;
+  connect: () => void;
+  disconnect: () => void;
+  isModalOpening: boolean;
+  isModalOpen: boolean;
+  openModal: () => void;
+};
+
+export const WalletMenuDesktop = ({
+  isHomePage, className, size = 'md', isWalletConnected, address, connect,
+  disconnect, isModalOpening, isModalOpen, openModal,
+}: ComponentProps) => {
   const { themedBackground, themedBackgroundOrange, themedBorderColor, themedColor } = useMenuButtonColors();
   const [ isPopoverOpen, setIsPopoverOpen ] = useBoolean(false);
   const isMobile = useIsMobile();
   const { isAutoConnectDisabled } = useMarketplaceContext();
+  const addressDomainQuery = useApiQuery('address_domain', {
+    pathParams: {
+      chainId: config.chain.id,
+      address,
+    },
+    queryOptions: {
+      enabled: config.features.nameService.isEnabled,
+    },
+  });
 
   const variant = React.useMemo(() => {
     if (isWalletConnected) {
@@ -83,7 +106,10 @@ const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
               variant={ variant }
               colorScheme="blue"
               flexShrink={ 0 }
-              isLoading={ (isModalOpening || isModalOpen) && !isWalletConnected }
+              isLoading={
+                ((isModalOpening || isModalOpen) && !isWalletConnected) ||
+                (addressDomainQuery.isLoading && isWalletConnected)
+              }
               loadingText="Connect wallet"
               onClick={ isWalletConnected ? openPopover : connect }
               fontSize="sm"
@@ -94,7 +120,11 @@ const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
               { isWalletConnected ? (
                 <>
                   <WalletIdenticon address={ address } isAutoConnectDisabled={ isAutoConnectDisabled } mr={ 2 }/>
-                  <HashStringShorten hash={ address } isTooltipDisabled/>
+                  { addressDomainQuery.data?.domain?.name ? (
+                    <chakra.span>{ addressDomainQuery.data.domain?.name }</chakra.span>
+                  ) : (
+                    <HashStringShorten hash={ address } isTooltipDisabled/>
+                  ) }
                 </>
               ) : (
                 <>
@@ -111,6 +141,7 @@ const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
           <PopoverBody padding="24px 16px 16px 16px">
             <WalletMenuContent
               address={ address }
+              ensDomainName={ addressDomainQuery.data?.domain?.name }
               disconnect={ disconnect }
               isAutoConnectDisabled={ isAutoConnectDisabled }
               openWeb3Modal={ openModal }
@@ -123,4 +154,27 @@ const WalletMenuDesktop = ({ isHomePage, className, size = 'md' }: Props) => {
   );
 };
 
-export default chakra(WalletMenuDesktop);
+// separated the useWallet hook from the main component because it's hard to mock it in tests
+const WalletMenuDesktopWrapper = ({ isHomePage, className, size = 'md' }: Props) => {
+  const {
+    isWalletConnected, address, connect, disconnect,
+    isModalOpening, isModalOpen, openModal,
+  } = useWallet({ source: 'Header' });
+
+  return (
+    <WalletMenuDesktop
+      isHomePage={ isHomePage }
+      className={ className }
+      size={ size }
+      isWalletConnected={ isWalletConnected }
+      address={ address }
+      connect={ connect }
+      disconnect={ disconnect }
+      isModalOpening={ isModalOpening }
+      isModalOpen={ isModalOpen }
+      openModal={ openModal }
+    />
+  );
+};
+
+export default chakra(WalletMenuDesktopWrapper);
