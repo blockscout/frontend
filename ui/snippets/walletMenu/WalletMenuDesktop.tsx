@@ -2,10 +2,11 @@ import type { ButtonProps } from '@chakra-ui/react';
 import { PopoverContent, PopoverBody, PopoverTrigger, Button, Box, useBoolean, chakra, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
+import config from 'configs/app';
+import useApiQuery from 'lib/api/useApiQuery';
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';
-import useAddressQuery from 'ui/address/utils/useAddressQuery';
 import Popover from 'ui/shared/chakra/Popover';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import IconSvg from 'ui/shared/IconSvg';
@@ -40,7 +41,15 @@ export const WalletMenuDesktopComponent = ({
   const [ isPopoverOpen, setIsPopoverOpen ] = useBoolean(false);
   const isMobile = useIsMobile();
   const { isAutoConnectDisabled } = useMarketplaceContext();
-  const addressQuery = useAddressQuery({ hash: address });
+  const addressDomainQuery = useApiQuery('address_domain', {
+    pathParams: {
+      chainId: config.chain.id,
+      address,
+    },
+    queryOptions: {
+      enabled: config.features.nameService.isEnabled,
+    },
+  });
 
   const variant = React.useMemo(() => {
     if (isWalletConnected) {
@@ -99,7 +108,7 @@ export const WalletMenuDesktopComponent = ({
               flexShrink={ 0 }
               isLoading={
                 ((isModalOpening || isModalOpen) && !isWalletConnected) ||
-                (addressQuery.isPlaceholderData && isWalletConnected)
+                (addressDomainQuery.isLoading && isWalletConnected)
               }
               loadingText="Connect wallet"
               onClick={ isWalletConnected ? openPopover : connect }
@@ -111,8 +120,8 @@ export const WalletMenuDesktopComponent = ({
               { isWalletConnected ? (
                 <>
                   <WalletIdenticon address={ address } isAutoConnectDisabled={ isAutoConnectDisabled } mr={ 2 }/>
-                  { addressQuery.data?.ens_domain_name ? (
-                    <chakra.span>{ addressQuery.data.ens_domain_name }</chakra.span>
+                  { addressDomainQuery.data?.domain?.name ? (
+                    <chakra.span>{ addressDomainQuery.data.domain?.name }</chakra.span>
                   ) : (
                     <HashStringShorten hash={ address } isTooltipDisabled/>
                   ) }
@@ -132,7 +141,7 @@ export const WalletMenuDesktopComponent = ({
           <PopoverBody padding="24px 16px 16px 16px">
             <WalletMenuContent
               address={ address }
-              ensDomainName={ addressQuery.data?.ens_domain_name }
+              ensDomainName={ addressDomainQuery.data?.domain?.name }
               disconnect={ disconnect }
               isAutoConnectDisabled={ isAutoConnectDisabled }
               openWeb3Modal={ openModal }

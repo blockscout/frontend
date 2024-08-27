@@ -1,10 +1,11 @@
 import { Drawer, DrawerOverlay, DrawerContent, DrawerBody, useDisclosure, IconButton } from '@chakra-ui/react';
 import React from 'react';
 
+import config from 'configs/app';
+import useApiQuery from 'lib/api/useApiQuery';
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';
-import useAddressQuery from 'ui/address/utils/useAddressQuery';
 import IconSvg from 'ui/shared/IconSvg';
 import useWallet from 'ui/snippets/walletMenu/useWallet';
 import WalletMenuContent from 'ui/snippets/walletMenu/WalletMenuContent';
@@ -30,7 +31,15 @@ export const WalletMenuMobileComponent = (
   const { themedBackground, themedBackgroundOrange, themedBorderColor, themedColor } = useMenuButtonColors();
   const isMobile = useIsMobile();
   const { isAutoConnectDisabled } = useMarketplaceContext();
-  const addressQuery = useAddressQuery({ hash: address });
+  const addressDomainQuery = useApiQuery('address_domain', {
+    pathParams: {
+      chainId: config.chain.id,
+      address,
+    },
+    queryOptions: {
+      enabled: config.features.nameService.isEnabled,
+    },
+  });
 
   const openPopover = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.WALLET_ACTION, { Action: 'Open' });
@@ -63,7 +72,7 @@ export const WalletMenuMobileComponent = (
           onClick={ isWalletConnected ? openPopover : connect }
           isLoading={
             ((isModalOpening || isModalOpen) && !isWalletConnected) ||
-            (addressQuery.isPlaceholderData && isWalletConnected)
+            (addressDomainQuery.isLoading && isWalletConnected)
           }
         />
       </WalletTooltip>
@@ -79,7 +88,7 @@ export const WalletMenuMobileComponent = (
             <DrawerBody p={ 6 }>
               <WalletMenuContent
                 address={ address }
-                ensDomainName={ addressQuery.data?.ens_domain_name }
+                ensDomainName={ addressDomainQuery.data?.domain?.name }
                 disconnect={ disconnect }
                 isAutoConnectDisabled={ isAutoConnectDisabled }
                 openWeb3Modal={ openModal }
