@@ -1,4 +1,4 @@
-import { Box, ChakraProvider, useColorModeValue } from '@chakra-ui/react';
+import { ChakraProvider } from '@chakra-ui/react';
 import { GrowthBookProvider } from '@growthbook/growthbook-react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
@@ -59,8 +59,6 @@ const TestApp = ({ children, withSocket, appContext = defaultAppContext }: Props
     },
   }));
 
-  const bgColor = useColorModeValue('white', 'black');
-
   return (
     <ChakraProvider theme={ theme }>
       <QueryClientProvider client={ queryClient }>
@@ -68,9 +66,7 @@ const TestApp = ({ children, withSocket, appContext = defaultAppContext }: Props
           <AppContextProvider { ...appContext }>
             <GrowthBookProvider>
               <WagmiProvider config={ wagmiConfig }>
-                <Box bgColor={ bgColor }>
-                  { children }
-                </Box>
+                { children }
               </WagmiProvider>
             </GrowthBookProvider>
           </AppContextProvider>
