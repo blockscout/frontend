@@ -232,6 +232,12 @@ export const RESOURCES = {
     basePath: getFeaturePayload(config.features.nameService)?.api.basePath,
     filterFields: [ 'address' as const, 'resolved_to' as const, 'owned_by' as const, 'only_active' as const, 'protocols' as const ],
   },
+  address_domain: {
+    path: '/api/v1/:chainId/addresses/:address',
+    pathParams: [ 'chainId' as const, 'address' as const ],
+    endpoint: getFeaturePayload(config.features.nameService)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.nameService)?.api.basePath,
+  },
   domain_info: {
     path: '/api/v1/:chainId/domains/:name',
     pathParams: [ 'chainId' as const, 'name' as const ],
@@ -1092,6 +1098,7 @@ Q extends 'zksync_l2_txn_batch' ? ZkSyncBatch :
 Q extends 'zksync_l2_txn_batch_txs' ? ZkSyncBatchTxs :
 Q extends 'contract_security_audits' ? SmartContractSecurityAudits :
 Q extends 'addresses_lookup' ? bens.LookupAddressResponse :
+Q extends 'address_domain' ? bens.GetAddressResponse :
 Q extends 'domain_info' ? bens.DetailedDomain :
 Q extends 'domain_events' ? bens.ListDomainEventsResponse :
 Q extends 'domains_lookup' ? bens.LookupDomainNameResponse :
