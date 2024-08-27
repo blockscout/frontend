@@ -29,6 +29,7 @@ export type MarketplaceAppOverview = MarketplaceAppPreview & MarketplaceAppSocia
 export type AppRating = {
   recordId: string;
   value: number | undefined;
+  count?: number;
 }
 
 export type MarketplaceAppWithSecurityReport = MarketplaceAppOverview & {

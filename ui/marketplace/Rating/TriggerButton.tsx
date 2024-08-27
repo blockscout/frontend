@@ -1,4 +1,4 @@
-import { Button, chakra, useColorModeValue, Tooltip, useDisclosure } from '@chakra-ui/react';
+import { Button, chakra, useColorModeValue, Tooltip, useDisclosure, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -7,6 +7,7 @@ import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {
   rating?: number;
+  count?: number;
   fullView?: boolean;
   isActive: boolean;
   onClick: () => void;
@@ -24,7 +25,7 @@ const getTooltipText = (canRate: boolean | undefined) => {
 };
 
 const TriggerButton = (
-  { rating, fullView, isActive, onClick, canRate }: Props,
+  { rating, count, fullView, isActive, onClick, canRate }: Props,
   ref: React.ForwardedRef<HTMLButtonElement>,
 ) => {
   const textColor = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
@@ -75,8 +76,9 @@ const TriggerButton = (
           />
         ) }
         { (rating && !fullView) ? (
-          <chakra.span color={ textColor } transition="inherit">
+          <chakra.span color={ textColor } transition="inherit" display="inline-flex">
             { rating }
+            <Text variant="secondary" ml={ 1 }>({ count })</Text>
           </chakra.span>
         ) : (
           'Rate it!'

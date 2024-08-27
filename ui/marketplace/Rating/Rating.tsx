@@ -51,6 +51,7 @@ const Rating = ({
         <>
           <Stars filledIndex={ (rating?.value || 0) - 1 }/>
           <Text fontSize="md" ml={ 2 }>{ rating?.value }</Text>
+          { rating?.count && <Text variant="secondary" fontSize="md" ml={ 1 }>({ rating?.count })</Text> }
         </>
       ) }
       <Box ref={ popoverRef }>
@@ -58,6 +59,7 @@ const Rating = ({
           <PopoverTrigger>
             <TriggerButton
               rating={ rating?.value }
+              count={ rating?.count }
               fullView={ fullView }
               isActive={ isOpen }
               onClick={ onToggle }
