@@ -33,6 +33,7 @@ import { CHAIN_INDICATOR_IDS } from '../../../types/homepage';
 import type { ChainIndicatorId } from '../../../types/homepage';
 import { type NetworkVerificationTypeEnvs, type NetworkExplorer, type FeaturedNetwork, NETWORK_GROUPS } from '../../../types/networks';
 import { COLOR_THEME_IDS } from '../../../types/settings';
+import type { FontFamily } from '../../../types/ui';
 import type { AddressViewId } from '../../../types/views/address';
 import { ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from '../../../types/views/address';
 import { BLOCK_FIELDS_IDS } from '../../../types/views/block';
@@ -390,6 +391,15 @@ const navItemExternalSchema: yup.ObjectSchema<NavItemExternal> = yup
     url: yup.string().test(urlTest).required(),
   });
 
+const fontFamilySchema: yup.ObjectSchema<FontFamily> = yup
+  .object()
+  .transform(replaceQuotes)
+  .json()
+  .shape({
+    name: yup.string().required(),
+    url: yup.string().test(urlTest).required(),
+  });
+
 const footerLinkSchema: yup.ObjectSchema<CustomLink> = yup
   .object({
     text: yup.string().required(),
@@ -634,6 +644,18 @@ const schema = yup
     NEXT_PUBLIC_HIDE_INDEXING_ALERT_INT_TXS: yup.boolean(),
     NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: yup.string(),
     NEXT_PUBLIC_COLOR_THEME_DEFAULT: yup.string().oneOf(COLOR_THEME_IDS),
+    NEXT_PUBLIC_FONT_FAMILY_HEADING: yup
+      .mixed()
+      .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_FONT_FAMILY_HEADING', (data) => {
+        const isUndefined = data === undefined;
+        return isUndefined || fontFamilySchema.isValidSync(data);
+      }),
+    NEXT_PUBLIC_FONT_FAMILY_BODY: yup
+      .mixed()
+      .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_FONT_FAMILY_BODY', (data) => {
+        const isUndefined = data === undefined;
+        return isUndefined || fontFamilySchema.isValidSync(data);
+      }),
 
     // 5. Features configuration
     NEXT_PUBLIC_API_SPEC_URL: yup

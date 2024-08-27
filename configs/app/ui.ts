@@ -3,6 +3,7 @@ import { NAVIGATION_LINK_IDS, type NavItemExternal, type NavigationLinkId, type 
 import type { ChainIndicatorId } from 'types/homepage';
 import type { NetworkExplorer } from 'types/networks';
 import type { ColorThemeId } from 'types/settings';
+import type { FontFamily } from 'types/ui';
 
 import { COLOR_THEMES } from 'lib/settings/colorTheme';
 
@@ -87,6 +88,10 @@ const UI = Object.freeze({
   hasContractAuditReports: getEnvValue('NEXT_PUBLIC_HAS_CONTRACT_AUDIT_REPORTS') === 'true' ? true : false,
   colorTheme: {
     'default': defaultColorTheme,
+  },
+  fonts: {
+    heading: parseEnvJson<FontFamily>(getEnvValue('NEXT_PUBLIC_FONT_FAMILY_HEADING')),
+    body: parseEnvJson<FontFamily>(getEnvValue('NEXT_PUBLIC_FONT_FAMILY_BODY')),
   },
 });
 
