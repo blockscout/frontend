@@ -4,7 +4,7 @@ import { FOOTER_LINKS } from 'mocks/config/footerLinks';
 import { test, expect } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
 
-import Footer from './Footer';
+import Footer from './Footer.pwstory';
 
 const FOOTER_LINKS_URL = 'https://localhost:3000/footer-links.json';
 
