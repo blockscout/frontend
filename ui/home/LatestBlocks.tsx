@@ -1,4 +1,4 @@
-import { Box, Heading, Flex, Text, VStack, Skeleton } from '@chakra-ui/react';
+import { chakra, Box, Heading, Flex, Text, VStack, Skeleton } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { AnimatePresence } from 'framer-motion';
 import React from 'react';
@@ -107,6 +107,12 @@ const LatestBlocks = () => {
             { statsQueryResult.data?.network_utilization_percentage.toFixed(2) }%
           </Text>
         </Skeleton>
+      ) }
+      { statsQueryResult.data?.celo && (
+        <Box whiteSpace="pre-wrap" fontSize="sm">
+          <span>Current epoch: </span>
+          <chakra.span fontWeight={ 700 }>#{ statsQueryResult.data.celo.epoch_number }</chakra.span>
+        </Box>
       ) }
       <Box mt={ 3 }>
         { content }

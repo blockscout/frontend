@@ -51,7 +51,16 @@ import type {
   ArbitrumL2TxnBatchesItem,
 } from 'types/api/arbitrumL2';
 import type { TxBlobs, Blob } from 'types/api/blobs';
-import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters, BlockWithdrawalsResponse, BlockCountdownResponse } from 'types/api/block';
+import type {
+  BlocksResponse,
+  BlockTransactionsResponse,
+  Block,
+  BlockFilters,
+  BlockWithdrawalsResponse,
+  BlockCountdownResponse,
+  BlockEpoch,
+  BlockEpochElectionRewardDetailsResponse,
+} from 'types/api/block';
 import type { ChartMarketResponse, ChartSecondaryCoinPriceResponse, ChartTransactionResponse } from 'types/api/charts';
 import type { BackendVersionConfig } from 'types/api/configs';
 import type {
@@ -325,6 +334,16 @@ export const RESOURCES = {
   block_withdrawals: {
     path: '/api/v2/blocks/:height_or_hash/withdrawals',
     pathParams: [ 'height_or_hash' as const ],
+    filterFields: [],
+  },
+  block_epoch: {
+    path: '/api/v2/blocks/:height_or_hash/epoch',
+    pathParams: [ 'height_or_hash' as const ],
+    filterFields: [],
+  },
+  block_election_rewards: {
+    path: '/api/v2/blocks/:height_or_hash/election-rewards/:reward_type',
+    pathParams: [ 'height_or_hash' as const, 'reward_type' as const ],
     filterFields: [],
   },
   txs_stats: {
@@ -938,7 +957,7 @@ export interface ResourceError<T = unknown> {
 
 export type ResourceErrorAccount<T> = ResourceError<{ errors: T }>
 
-export type PaginatedResources = 'blocks' | 'block_txs' |
+export type PaginatedResources = 'blocks' | 'block_txs' | 'block_election_rewards' |
 'txs_validated' | 'txs_pending' | 'txs_with_blobs' | 'txs_watchlist' | 'txs_execution_node' |
 'tx_internal_txs' | 'tx_logs' | 'tx_token_transfers' | 'tx_state_changes' | 'tx_blobs' |
 'addresses' |
@@ -998,6 +1017,8 @@ Q extends 'block' ? Block :
 Q extends 'block_countdown' ? BlockCountdownResponse :
 Q extends 'block_txs' ? BlockTransactionsResponse :
 Q extends 'block_withdrawals' ? BlockWithdrawalsResponse :
+Q extends 'block_epoch' ? BlockEpoch :
+Q extends 'block_election_rewards' ? BlockEpochElectionRewardDetailsResponse :
 Q extends 'txs_stats' ? TransactionsStats :
 Q extends 'txs_validated' ? TransactionsResponseValidated :
 Q extends 'txs_pending' ? TransactionsResponsePending :

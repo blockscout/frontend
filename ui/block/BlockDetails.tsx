@@ -38,6 +38,7 @@ import Utilization from 'ui/shared/Utilization/Utilization';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 import ZkSyncL2TxnBatchHashesInfo from 'ui/txnBatches/zkSyncL2/ZkSyncL2TxnBatchHashesInfo';
 
+import BlockDetailsBaseFeeCelo from './details/BlockDetailsBaseFeeCelo';
 import BlockDetailsBlobInfo from './details/BlockDetailsBlobInfo';
 import type { BlockQuery } from './useBlockQuery';
 
@@ -393,6 +394,8 @@ const BlockDetails = ({ query }: Props) => {
       }
 
       <DetailsInfoItemDivider/>
+
+      { data.celo?.base_fee && <BlockDetailsBaseFeeCelo data={ data.celo.base_fee }/> }
 
       <DetailsInfoItem.Label
         hint="The total gas amount used in the block and its percentage of gas filled in the block"

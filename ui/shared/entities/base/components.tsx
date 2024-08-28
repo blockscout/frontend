@@ -113,9 +113,10 @@ const Icon = ({ isLoading, iconSize, noIcon, name, color, borderRadius }: IconBa
 export interface ContentBaseProps extends Pick<EntityBaseProps, 'className' | 'isLoading' | 'truncation' | 'tailLength'> {
   asProp?: As;
   text: string;
+  isTooltipDisabled?: boolean;
 }
 
-const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dynamic', tailLength }: ContentBaseProps) => {
+const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dynamic', tailLength, isTooltipDisabled }: ContentBaseProps) => {
 
   const children = (() => {
     switch (truncation) {
@@ -125,6 +126,7 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
             hash={ text }
             as={ asProp }
             type="long"
+            isTooltipDisabled={ isTooltipDisabled }
           />
         );
       case 'constant':
@@ -132,6 +134,7 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
           <HashStringShorten
             hash={ text }
             as={ asProp }
+            isTooltipDisabled={ isTooltipDisabled }
           />
         );
       case 'dynamic':
@@ -140,6 +143,7 @@ const Content = chakra(({ className, isLoading, asProp, text, truncation = 'dyna
             hash={ text }
             as={ asProp }
             tailLength={ tailLength }
+            isTooltipDisabled={ isTooltipDisabled }
           />
         );
       case 'tail':
