@@ -53,7 +53,7 @@ const MarketplaceAppTopBar = ({ appId, data, isLoading, securityReport }: Props)
 
   return (
     <>
-      <Flex alignItems="center" flexWrap="wrap" mb={{ base: 3, md: 2 }} rowGap={ 3 } columnGap={ 2 }>
+      <Flex alignItems="center" mb={{ base: 3, md: 2 }} rowGap={ 3 } columnGap={ 2 }>
         { !isMobile && <NetworkLogo isCollapsed/> }
         <Tooltip label="Back to dApps list">
           <LinkInternal display="inline-flex" href={ goBackUrl } h="32px" isLoading={ isLoading } ml={ isMobile ? 0 : 4 }>
