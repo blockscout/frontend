@@ -116,6 +116,7 @@
 	| "score/score-not-ok"
 	| "score/score-ok"
 	| "search"
+	| "share"
 	| "social/canny"
 	| "social/coingecko"
 	| "social/coinmarketcap"

@@ -1,10 +1,12 @@
-import { IconButton, Image, Link, LinkBox, Skeleton, useColorModeValue, chakra, Flex } from '@chakra-ui/react';
+import { IconButton, Image, Link, LinkBox, Skeleton, useColorModeValue, chakra, Flex, Tooltip, useClipboard, useDisclosure } from '@chakra-ui/react';
 import type { MouseEvent } from 'react';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 
 import type { MarketplaceAppWithSecurityReport, ContractListTypes, AppRating } from 'types/client/marketplace';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import isBrowser from 'lib/isBrowser';
+import IconSvg from 'ui/shared/IconSvg';
 
 import AppSecurityReport from './AppSecurityReport';
 import FavoriteIcon from './FavoriteIcon';
@@ -55,6 +57,20 @@ const MarketplaceAppCard = ({
 }: Props) => {
   const isMobile = useIsMobile();
   const categoriesLabel = categories.join(', ');
+
+  const linkToApp = isBrowser() ? window.location.origin + `/apps/${ id }` : '';
+  const { hasCopied, onCopy } = useClipboard(linkToApp, 1000);
+  const [ copied, setCopied ] = useState(false);
+  // have to implement controlled tooltip because of the issue - https://github.com/chakra-ui/chakra-ui/issues/7107
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  useEffect(() => {
+    if (hasCopied) {
+      setCopied(true);
+    } else {
+      setCopied(false);
+    }
+  }, [ hasCopied ]);
 
   const handleInfoClick = useCallback((event: MouseEvent) => {
     event.preventDefault();
@@ -168,7 +184,7 @@ const MarketplaceAppCard = ({
             >
               More info
             </Link>
-            <Flex alignItems="center" gap={ 3 }>
+            <Flex alignItems="center">
               <Rating
                 appId={ id }
                 rating={ rating }
@@ -188,7 +204,22 @@ const MarketplaceAppCard = ({
                 h={{ base: 6, md: '30px' }}
                 onClick={ handleFavoriteClick }
                 icon={ <FavoriteIcon isFavorite={ isFavorite }/> }
+                ml={ 2 }
               />
+              <Tooltip label={ copied ? 'Copied' : 'Copy link to clipboard' } isOpen={ isOpen || copied }>
+                <IconButton
+                  aria-label="Copy link"
+                  variant="ghost"
+                  colorScheme="gray"
+                  w={{ base: 6, md: '30px' }}
+                  h={{ base: 6, md: '30px' }}
+                  onClick={ onCopy }
+                  onMouseEnter={ onOpen }
+                  onMouseLeave={ onClose }
+                  icon={ <IconSvg name="share" boxSize={ 4 } color="gray.400"/> }
+                  ml={{ base: 1, md: 0 }}
+                />
+              </Tooltip>
             </Flex>
           </Flex>
         ) }
