@@ -10,7 +10,9 @@ import { ContractListTypes } from 'types/client/marketplace';
 import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
+import isBrowser from 'lib/isBrowser';
 import * as mixpanel from 'lib/mixpanel/index';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -113,6 +115,8 @@ const MarketplaceAppModal = ({
     } catch (err) {}
   }
 
+  const iconColor = useColorModeValue('blue.600', 'gray.400');
+
   return (
     <Modal
       isOpen={ Boolean(data.id) }
@@ -206,8 +210,23 @@ const MarketplaceAppModal = ({
                   colorScheme="gray"
                   w={ 9 }
                   h={ 8 }
+                  flexShrink={ 0 }
                   onClick={ handleFavoriteClick }
-                  icon={ <FavoriteIcon isFavorite={ isFavorite } color={ useColorModeValue('blue.700', 'gray.400') }/> }
+                  icon={ <FavoriteIcon isFavorite={ isFavorite } color={ iconColor }/> }
+                />
+
+                <CopyToClipboard
+                  text={ isBrowser() ? window.location.origin + `/apps/${ id }` : '' }
+                  icon="share"
+                  size={ 4 }
+                  variant="outline"
+                  colorScheme="gray"
+                  w={ 9 }
+                  h={ 8 }
+                  color={ iconColor }
+                  _hover={{ color: iconColor }}
+                  display="inline-flex"
+                  borderRadius="base"
                 />
               </Flex>
             </Flex>

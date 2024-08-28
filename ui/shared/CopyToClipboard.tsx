@@ -13,9 +13,10 @@ export interface Props {
   type?: 'link';
   icon?: IconName;
   variant?: string;
+  colorScheme?: string;
 }
 
-const CopyToClipboard = ({ text, className, isLoading, onClick, size = 5, type, icon, variant = 'simple' }: Props) => {
+const CopyToClipboard = ({ text, className, isLoading, onClick, size = 5, type, icon, variant = 'simple', colorScheme }: Props) => {
   const { hasCopied, onCopy } = useClipboard(text, 1000);
   const [ copied, setCopied ] = useState(false);
   // have to implement controlled tooltip because of the issue - https://github.com/chakra-ui/chakra-ui/issues/7107
@@ -48,6 +49,7 @@ const CopyToClipboard = ({ text, className, isLoading, onClick, size = 5, type, 
         boxSize={ size }
         color={ iconColor }
         variant={ variant }
+        colorScheme={ colorScheme }
         display="inline-block"
         flexShrink={ 0 }
         onClick={ handleClick }
