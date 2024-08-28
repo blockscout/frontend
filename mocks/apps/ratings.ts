@@ -6,6 +6,7 @@ export const ratings = {
       fields: {
         appId: apps[0].id,
         rating: 4.3,
+        count: 15,
       },
     },
   ],
