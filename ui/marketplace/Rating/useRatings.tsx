@@ -28,11 +28,12 @@ export type RateFunction = (
 
 function formatRatings(data: Airtable.Records<Airtable.FieldSet>) {
   return data.reduce((acc: Record<string, AppRating>, record) => {
-    const fields = record.fields as { appId: string | Array<string>; rating: number | undefined };
+    const fields = record.fields as { appId: string | Array<string>; rating: number | undefined; count?: number };
     const appId = Array.isArray(fields.appId) ? fields.appId[0] : fields.appId;
     acc[appId] = {
       recordId: record.id,
       value: fields.rating,
+      count: fields.count,
     };
     return acc;
   }, {});
@@ -63,7 +64,7 @@ export default function useRatings() {
       return;
     }
     try {
-      const data = await airtable('apps_ratings').select({ fields: [ 'appId', 'rating' ] }).all();
+      const data = await airtable('apps_ratings').select({ fields: [ 'appId', 'rating', 'count' ] }).all();
       const ratings = formatRatings(data);
       setRatings(ratings);
     } catch (error) {

@@ -35,7 +35,7 @@ const testFn: Parameters<typeof test>[1] = async({ render, mockConfigResponse, m
     Method: 'eth_chainId',
     ReturnType: numberToHex(Number(config.chain.id)),
   });
-  await page.route('https://api.airtable.com/v0/test/apps_ratings?fields%5B%5D=appId&fields%5B%5D=rating', (route) => route.fulfill({
+  await page.route('https://api.airtable.com/v0/test/apps_ratings?fields%5B%5D=appId&fields%5B%5D=rating&fields%5B%5D=count', (route) => route.fulfill({
     status: 200,
     body: JSON.stringify(ratingsMock),
   }));
