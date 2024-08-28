@@ -12,10 +12,10 @@ export interface Props {
   size?: number;
   type?: 'link';
   icon?: IconName;
-  variant?: 'simple';
+  variant?: string;
 }
 
-const CopyToClipboard = ({ text, className, isLoading, onClick, size = 5, type, icon, variant }: Props) => {
+const CopyToClipboard = ({ text, className, isLoading, onClick, size = 5, type, icon, variant = 'simple' }: Props) => {
   const { hasCopied, onCopy } = useClipboard(text, 1000);
   const [ copied, setCopied ] = useState(false);
   // have to implement controlled tooltip because of the issue - https://github.com/chakra-ui/chakra-ui/issues/7107
