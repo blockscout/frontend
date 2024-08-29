@@ -4,4 +4,5 @@ export type ChainIndicatorId = typeof CHAIN_INDICATOR_IDS[number];
 export interface HeroBannerConfig {
   background?: Array<string | undefined>;
   text_color?: Array<string | undefined>;
+  border?: Array<string | undefined>;
 }

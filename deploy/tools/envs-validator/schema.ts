@@ -406,6 +406,7 @@ const heroBannerSchema: yup.ObjectSchema<HeroBannerConfig> = yup.object()
   .shape({
     background: yup.array().max(2).of(yup.string()),
     text_color: yup.array().max(2).of(yup.string()),
+    border: yup.array().max(2).of(yup.string()),
   });
 
 const footerLinkSchema: yup.ObjectSchema<CustomLink> = yup
