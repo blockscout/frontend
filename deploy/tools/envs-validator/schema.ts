@@ -30,7 +30,7 @@ import type { WalletType } from '../../../types/client/wallets';
 import { SUPPORTED_WALLETS } from '../../../types/client/wallets';
 import type { CustomLink, CustomLinksGroup } from '../../../types/footerLinks';
 import { CHAIN_INDICATOR_IDS } from '../../../types/homepage';
-import type { ChainIndicatorId } from '../../../types/homepage';
+import type { ChainIndicatorId, HeroBannerConfig } from '../../../types/homepage';
 import { type NetworkVerificationTypeEnvs, type NetworkExplorer, type FeaturedNetwork, NETWORK_GROUPS } from '../../../types/networks';
 import { COLOR_THEME_IDS } from '../../../types/settings';
 import type { FontFamily } from '../../../types/ui';
@@ -400,6 +400,14 @@ const fontFamilySchema: yup.ObjectSchema<FontFamily> = yup
     url: yup.string().test(urlTest).required(),
   });
 
+const heroBannerSchema: yup.ObjectSchema<HeroBannerConfig> = yup.object()
+  .transform(replaceQuotes)
+  .json()
+  .shape({
+    background: yup.array().max(2).of(yup.string()),
+    text_color: yup.array().max(2).of(yup.string()),
+  });
+
 const footerLinkSchema: yup.ObjectSchema<CustomLink> = yup
   .object({
     text: yup.string().required(),
@@ -550,6 +558,23 @@ const schema = yup
       .of(yup.string<ChainIndicatorId>().oneOf(CHAIN_INDICATOR_IDS)),
     NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR: yup.string(),
     NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND: yup.string(),
+    NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG: yup
+      .mixed()
+      .test(
+        'shape',
+        (ctx) => {
+          try {
+            heroBannerSchema.validateSync(ctx.originalValue);
+            throw new Error('Unknown validation error');
+          } catch (error: unknown) {
+            const message = typeof error === 'object' && error !== null && 'errors' in error && Array.isArray(error.errors) ? error.errors.join(', ') : '';
+            return 'Invalid schema were provided for NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG' + (message ? `: ${ message }` : '');
+          }
+        },
+        (data) => {
+          const isUndefined = data === undefined;
+          return isUndefined || heroBannerSchema.isValidSync(data);
+        }),
     NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME: yup.boolean(),
 
     //     b. sidebar

@@ -118,9 +118,19 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_HOMEPAGE_CHARTS | `Array<'daily_txs' \| 'coin_price'  \| 'secondary_coin_price' \| 'market_cap' \| 'tvl'>` | List of charts displayed on the home page | - | - | `['daily_txs','coin_price','market_cap']` | v1.0.x+ |
-| NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR | `string` | Text color of the hero plate on the homepage (escape "#" symbol if you use HEX color codes or use rgba-value instead) | - | `white` | `\#DCFE76` | v1.0.x+ |
-| NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND | `string` | Background css value for hero plate on the homepage (escape "#" symbol if you use HEX color codes or use rgba-value instead) | - | `radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%), var(--chakra-colors-blue-400)` | `radial-gradient(at 15% 86%, hsla(350,65%,70%,1) 0px, transparent 50%)` \| `no-repeat bottom 20% right 0px/100% url(https://placekitten/1400/200)` | v1.1.0+ |
+| NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR | `string` | Text color of the hero plate on the homepage (escape "#" symbol if you use HEX color codes or use rgba-value instead). **DEPRECATED** _Use `NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG` instead_  | - | `white` | `\#DCFE76` | v1.0.x+ |
+| NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND | `string` | Background css value for hero plate on the homepage (escape "#" symbol if you use HEX color codes or use rgba-value instead). **DEPRECATED** _Use `NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG` instead_  | - | `radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%), var(--chakra-colors-blue-400)` | `radial-gradient(at 15% 86%, hsla(350,65%,70%,1) 0px, transparent 50%)` \| `no-repeat bottom 20% right 0px/100% url(https://placekitten/1400/200)` | v1.1.0+ |
 | NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME | `boolean` | Set to false if average block time is useless for the network | - | `true` | `false` | v1.0.x+ |
+| NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG | `HeroBannerConfig`, see details [below](#hero-banner-configuration-properties) | Configuration of hero banner appearance. | - | - | See [below](#hero-banner-configuration-properties) | v1.35.0+ |
+
+#### Hero banner configuration properties
+
+_Note_ Here, all values are arrays of up to two strings. The first string represents the value for the light color mode, and the second string represents the value for the dark color mode. If the array contains only one string, it will be used for both color modes.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| background | `[string, string]` | Banner background (could be a solid color, gradient or picture). The value should be a valid `background` CSS property value. | - | `['radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%), var(--chakra-colors-blue-400)']` | `['lightpink','no-repeat bottom 20% right 0px/100% url(https://placekitten/1400/200)']` |
+| text_color | `[string, string]` | Banner text background. The value should be a valid `color` CSS property value. | - | `['white']` | `['lightpink','#DCFE76']` |
 
 &nbsp;
 
