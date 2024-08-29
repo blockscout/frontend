@@ -8,14 +8,12 @@ import IconSvg from 'ui/shared/IconSvg';
 import useWallet from 'ui/snippets/walletMenu/useWallet';
 import WalletMenuContent from 'ui/snippets/walletMenu/WalletMenuContent';
 
-import useMenuButtonColors from '../useMenuButtonColors';
 import WalletIdenticon from './WalletIdenticon';
 import WalletTooltip from './WalletTooltip';
 
 const WalletMenuMobile = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isWalletConnected, address, connect, disconnect, isModalOpening, isModalOpen, openModal } = useWallet({ source: 'Header' });
-  const { themedBackground, themedBackgroundOrange, themedBorderColor, themedColor } = useMenuButtonColors();
   const isMobile = useIsMobile();
   const { isAutoConnectDisabled } = useMarketplaceContext();
 
@@ -23,8 +21,6 @@ const WalletMenuMobile = () => {
     mixpanel.logEvent(mixpanel.EventTypes.WALLET_ACTION, { Action: 'Open' });
     onOpen();
   }, [ onOpen ]);
-
-  const themedBg = isAutoConnectDisabled ? themedBackgroundOrange : themedBackground;
 
   return (
     <>
@@ -40,13 +36,11 @@ const WalletMenuMobile = () => {
             <WalletIdenticon address={ address } isAutoConnectDisabled={ isAutoConnectDisabled }/> :
             <IconSvg name="wallet" boxSize={ 6 } p={ 0.5 }/>
           }
-          variant={ isWalletConnected ? 'subtle' : 'outline' }
-          colorScheme="gray"
+          variant="header"
+          data-selected={ isWalletConnected }
+          data-warning={ isAutoConnectDisabled }
           boxSize="40px"
           flexShrink={ 0 }
-          bg={ isWalletConnected ? themedBg : undefined }
-          color={ themedColor }
-          borderColor={ !isWalletConnected ? themedBorderColor : undefined }
           onClick={ isWalletConnected ? openPopover : connect }
           isLoading={ (isModalOpening || isModalOpen) && !isWalletConnected }
         />

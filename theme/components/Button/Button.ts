@@ -150,12 +150,58 @@ const variantSubtle = defineStyle((props) => {
   };
 });
 
+// for buttons in the hero banner
+const variantHero = defineStyle((props) => {
+  return {
+    bgColor: mode('blue.600', 'blue.600')(props),
+    color: mode('white', 'white')(props),
+    _hover: {
+      bgColor: mode('blue.400', 'blue.400')(props),
+      color: mode('white', 'white')(props),
+    },
+    '&[data-selected=true]': {
+      bgColor: mode('blue.50', 'blue.50')(props),
+      color: mode('blackAlpha.800', 'blackAlpha.800')(props),
+    },
+  };
+});
+
+// for buttons in the page header
+const variantHeader = defineStyle((props) => {
+
+  return {
+    bgColor: 'transparent',
+    color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
+    borderColor: mode('gray.300', 'gray.700')(props),
+    borderWidth: props.borderWidth || '2px',
+    borderStyle: 'solid',
+    _hover: {
+      color: 'link_hovered',
+      borderColor: 'link_hovered',
+    },
+    '&[data-selected=true]': {
+      bgColor: mode('blackAlpha.100', 'whiteAlpha.100')(props),
+      color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
+      borderColor: 'transparent',
+      borderWidth: props.borderWidth || '0px',
+    },
+    '&[data-selected=true][data-warning=true]': {
+      bgColor: mode('orange.100', 'orange.900')(props),
+      color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
+      borderColor: 'transparent',
+      borderWidth: props.borderWidth || '0px',
+    },
+  };
+});
+
 const variants = {
   solid: variantSolid,
   outline: variantOutline,
   simple: variantSimple,
   ghost: variantGhost,
   subtle: variantSubtle,
+  hero: variantHero,
+  header: variantHeader,
 };
 
 const baseStyle = defineStyle({
