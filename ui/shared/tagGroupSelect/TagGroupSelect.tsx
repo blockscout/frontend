@@ -44,7 +44,6 @@ const TagGroupSelect = <T extends string>({ items, value, isMulti, onChange, tag
             data-id={ item.id }
             data-selected={ isSelected }
             fontWeight={ 500 }
-            cursor="pointer"
             onClick={ onItemClick }
             size={ tagSize }
             display="inline-flex"

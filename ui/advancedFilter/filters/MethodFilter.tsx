@@ -1,6 +1,6 @@
 import { Flex, Checkbox, CheckboxGroup, Spinner, chakra } from '@chakra-ui/react';
 import differenceBy from 'lodash/differenceBy';
-import without from 'lodash/without';
+import isEqual from 'lodash/isEqual';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
@@ -23,7 +23,7 @@ type Props = {
 }
 
 const MethodFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
-  const [ currentValue, setCurrentValue ] = React.useState<Array<AdvancedFilterMethodInfo>>(value);
+  const [ currentValue, setCurrentValue ] = React.useState<Array<AdvancedFilterMethodInfo>>([ ...value ]);
   const [ searchTerm, setSearchTerm ] = React.useState<string>('');
   const [ methodsList, setMethodsList ] = React.useState<Array<AdvancedFilterMethodInfo>>([]);
 
@@ -35,9 +35,10 @@ const MethodFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
     queryParams: { q: searchTerm },
     queryOptions: { refetchOnMount: false },
   });
+
   React.useEffect(() => {
     if (!methodsList.length && methodsQuery.data) {
-      setMethodsList([ ...differenceBy(value, methodsQuery.data, i => i.method_id), ...methodsQuery.data ]);
+      setMethodsList([ ...value, ...differenceBy(methodsQuery.data, value, i => i.method_id) ]);
     }
   }, [ methodsQuery.data, value, methodsList ]);
 
@@ -51,9 +52,10 @@ const MethodFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
       const methodInfo = methodsQuery.data?.find(m => m.method_id === id);
       if (methodInfo) {
         setCurrentValue(prev => {
-          return checked ? [ ...prev, methodInfo ] : without(prev, methodInfo);
+          return checked ? [ ...prev, methodInfo ] : prev.filter(i => i.method_id !== id);
         });
-        searchTerm && checked && setMethodsList(prev => [ methodInfo, ...(prev || []) ]);
+        searchTerm && checked &&
+        setMethodsList(prev => [ methodInfo, ...(prev.filter(m => m.method_id !== id) || []) ]);
       }
     }
   }, [ methodsQuery.data, searchTerm ]);
@@ -69,6 +71,7 @@ const MethodFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
     <TableColumnFilter
       title="Method"
       isFilled={ Boolean(currentValue.length) }
+      isTouched={ !isEqual(currentValue.map(i => JSON.stringify(i)).sort(), value.map(i => JSON.stringify(i)).sort()) }
       onFilter={ onFilter }
       onReset={ onReset }
       onClose={ onClose }
@@ -84,29 +87,32 @@ const MethodFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
       { methodsQuery.isError && <span>Something went wrong. Please try again.</span> }
       { Boolean(searchTerm) && methodsQuery.data?.length === 0 && <span>No results found.</span> }
       { methodsQuery.data && (
-        <Flex display="flex" flexDir="column" rowGap={ 3 } maxH="250px" overflowY="scroll">
+        // added negative margin because of checkbox focus styles & overflow hidden
+        <Flex display="flex" flexDir="column" rowGap={ 3 } maxH="250px" overflowY="scroll" ml="-4px">
           <CheckboxGroup value={ currentValue.length ? currentValue.map(i => i.method_id) : [ 'all' ] }>
             { (searchTerm ? methodsQuery.data : (methodsList || [])).map(method => (
-              <Flex justifyContent="space-between" alignItems="center" key={ method.method_id }>
-                <Checkbox
-                  value={ method.method_id }
-                  id={ method.method_id }
-                  onChange={ handleChange }
-                  overflow="hidden"
-                  sx={{
-                    '.chakra-checkbox__label': {
-                      overflow: 'hidden',
-                      whiteSpace: 'nowrap',
-                      textOverflow: 'ellipsis',
-                    },
-                  }}
-                >
+              <Checkbox
+                key={ method.method_id }
+                value={ method.method_id }
+                id={ method.method_id }
+                onChange={ handleChange }
+                pl={ 1 }
+                sx={{
+                  '.chakra-checkbox__label': {
+                    overflow: 'hidden',
+                    whiteSpace: 'nowrap',
+                    textOverflow: 'ellipsis',
+                    flexGrow: 1,
+                  },
+                }}
+              >
+                <Flex justifyContent="space-between" alignItems="center" id={ method.method_id }>
                   <chakra.span overflow="hidden" whiteSpace="nowrap" textOverflow="ellipsis">{ method.name || method.method_id }</chakra.span>
-                </Checkbox>
-                <Tag colorScheme="gray" isTruncated ml={ 2 }>
-                  { method.method_id }
-                </Tag>
-              </Flex>
+                  <Tag colorScheme="gray" isTruncated ml={ 2 }>
+                    { method.method_id }
+                  </Tag>
+                </Flex>
+              </Checkbox>
             )) }
           </CheckboxGroup>
         </Flex>

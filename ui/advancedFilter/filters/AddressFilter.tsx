@@ -1,4 +1,5 @@
 import { Flex, Select, Input, InputGroup, InputRightElement, VStack, IconButton } from '@chakra-ui/react';
+import isEqual from 'lodash/isEqual';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
@@ -75,14 +76,14 @@ const AddressFilterInput = ({ address, mode, onModeChange, onChange, onClear, is
 
 const emptyItem = { address: '', mode: 'include' as AddressFilterMode };
 
-const AddressFilter = ({ type, value, handleFilterChange, onClose }: Props) => {
+const AddressFilter = ({ type, value = [], handleFilterChange, onClose }: Props) => {
   const [ currentValue, setCurrentValue ] =
-    React.useState<Array<{ address: string; mode: AddressFilterMode }>>([ ...value, emptyItem ] || [ emptyItem ]);
+    React.useState<Array<{ address: string; mode: AddressFilterMode }>>([ ...value, emptyItem ]);
 
   const handleModeSelectChange = React.useCallback((index: number) => (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value as AddressFilterMode;
     setCurrentValue(prev => {
-      prev[index].mode = value;
+      prev[index] = { ...prev[index], mode: value };
       return [ ...prev ];
     });
   }, []);
@@ -114,8 +115,8 @@ const AddressFilter = ({ type, value, handleFilterChange, onClose }: Props) => {
   const onFilter = React.useCallback(() => {
     const includeFilterParam = type === 'from' ? FILTER_PARAM_FROM_INCLUDE : FILTER_PARAM_TO_INCLUDE;
     const excludeFilterParam = type === 'from' ? FILTER_PARAM_FROM_EXCLUDE : FILTER_PARAM_TO_EXCLUDE;
-    const includeValue = currentValue.filter(i => i.mode === 'include').map(i => i.address);
-    const excludeValue = currentValue.filter(i => i.mode === 'exclude').map(i => i.address);
+    const includeValue = currentValue.filter(i => i.mode === 'include').map(i => i.address).filter(Boolean);
+    const excludeValue = currentValue.filter(i => i.mode === 'exclude').map(i => i.address).filter(Boolean);
 
     handleFilterChange(includeFilterParam, includeValue.length ? includeValue : undefined);
     handleFilterChange(excludeFilterParam, excludeValue.length ? excludeValue : undefined);
@@ -125,6 +126,7 @@ const AddressFilter = ({ type, value, handleFilterChange, onClose }: Props) => {
     <TableColumnFilter
       title={ type === 'from' ? 'From address' : 'To address' }
       isFilled={ Boolean(currentValue[0].address) }
+      isTouched={ !isEqual(currentValue.filter(i => i.address).map(i => JSON.stringify(i)).sort(), value.map(i => JSON.stringify(i)).sort()) }
       onFilter={ onFilter }
       onReset={ onReset }
       onClose={ onClose }

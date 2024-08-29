@@ -1,4 +1,5 @@
 import { Flex, Input, Tag, Text } from '@chakra-ui/react';
+import isEqual from 'lodash/isEqual';
 import type { ChangeEvent } from 'react';
 import React from 'react';
 
@@ -66,13 +67,16 @@ const AmountFilter = ({ value = {}, handleFilterChange, onClose }: Props) => {
 
   const onPresetClick = React.useCallback((event: React.SyntheticEvent) => {
     const to = (event.currentTarget as HTMLDivElement).getAttribute('data-id') as string;
-    setCurrentValue({ from: '', to });
-  }, []);
+    handleFilterChange(FILTER_PARAM_FROM, '');
+    handleFilterChange(FILTER_PARAM_TO, to);
+    onClose && onClose();
+  }, [ handleFilterChange, onClose ]);
 
   return (
     <TableColumnFilter
       title="Amount"
       isFilled={ Boolean(currentValue.from || currentValue.to) }
+      isTouched={ !isEqual(currentValue, value) }
       onFilter={ onFilter }
       onReset={ onReset }
       onClose={ onClose }
@@ -84,12 +88,7 @@ const AmountFilter = ({ value = {}, handleFilterChange, onClose }: Props) => {
             key={ preset.value }
             data-id={ preset.value }
             onClick={ onPresetClick }
-            // color="link"
-            // colorScheme="gray-blue"
-            colorScheme={ (!currentValue.from || currentValue.from === '0') && currentValue.to === preset.value ? 'blue' : 'gray-blue' }
-            // isActive={ (!currentValue.from || currentValue.from === '0') && currentValue.to === preset.value }
-            _hover={{ opacity: 0.76 }}
-            cursor="pointer"
+            variant="select"
           >
             { preset.name }
           </Tag>

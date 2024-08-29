@@ -7,7 +7,7 @@ export type AdvancedFilterParams = {
   methods_names?: Array<string>; /* frontend only */
   age_from?: string;
   age_to?: string;
-  age?: AdvancedFilterAge; /* frontend only */
+  age?: AdvancedFilterAge | ''; /* frontend only */
   from_address_hashes_to_include?: Array<string>;
   from_address_hashes_to_exclude?: Array<string>;
   to_address_hashes_to_include?: Array<string>;

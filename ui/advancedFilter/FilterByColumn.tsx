@@ -54,7 +54,7 @@ const FilterByColumn = ({ column, filters, columnName, handleFilterChange, searc
       );
     }
     case 'age': {
-      const value = { age: filters.age, from: filters.age_from, to: filters.age_to };
+      const value = { age: filters.age || '' as const, from: filters.age_from || '', to: filters.age_to || '' };
       return (
         <TableColumnFilterWrapper
           columnName="Age"
@@ -73,6 +73,7 @@ const FilterByColumn = ({ column, filters, columnName, handleFilterChange, searc
           isLoading={ isLoading }
           isActive={ false }
           w="106px"
+          value={ filters.address_relation === 'and' ? 'AND' : 'OR' }
         >
           <AddressRelationFilter { ...commonProps } value={ filters.address_relation }/>
         </TableColumnFilterWrapper>

@@ -1,4 +1,5 @@
 import { Flex, Checkbox, CheckboxGroup } from '@chakra-ui/react';
+import isEqual from 'lodash/isEqual';
 import without from 'lodash/without';
 import type { ChangeEvent } from 'react';
 import React from 'react';
@@ -20,7 +21,7 @@ type Props = {
 }
 
 const TypeFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
-  const [ currentValue, setCurrentValue ] = React.useState<Array<AdvancedFilterType>>(value);
+  const [ currentValue, setCurrentValue ] = React.useState<Array<AdvancedFilterType>>([ ...value ]);
 
   const handleChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
     const checked = event.target.checked;
@@ -41,7 +42,8 @@ const TypeFilter = ({ value = [], handleFilterChange, onClose }: Props) => {
   return (
     <TableColumnFilter
       title="Type of transfer"
-      isFilled={ true }
+      isFilled={ currentValue.length > 0 }
+      isTouched={ !isEqual(currentValue.sort(), value.sort()) }
       onFilter={ onFilter }
       onReset={ onReset }
       onClose={ onClose }

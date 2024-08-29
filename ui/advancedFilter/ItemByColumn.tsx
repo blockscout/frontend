@@ -39,14 +39,17 @@ const ItemByColumn = ({ item, column, isLoading }: Props) => {
       return (
         <Flex w="100%" justifyContent="space-between">
           <AddressEntity address={ item.from } truncation="constant" isLoading={ isLoading }/>
-          <AddressFromToIcon
-            isLoading={ isLoading }
-            type="out"
-          />
         </Flex>
       );
     case 'to':
       return <AddressEntity address={ item.to ? item.to : item.created_contract } truncation="constant" isLoading={ isLoading }/>;
+    case 'or_and':
+      return (
+        <AddressFromToIcon
+          isLoading={ isLoading }
+          type="unspecified"
+        />
+      );
     case 'amount': {
       if (item.token?.type === 'ERC-721') {
         return <Skeleton isLoaded={ !isLoading }>1</Skeleton>;
