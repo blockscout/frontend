@@ -1,17 +1,38 @@
-import { Table, Tbody, Tr, Th, Td, Thead, Box, Text, Tag, TagCloseButton, chakra, Flex, TagLabel, HStack, Link } from '@chakra-ui/react';
+import {
+  Table,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  Thead,
+  Box,
+  Text,
+  Tag,
+  TagCloseButton,
+  chakra,
+  Flex,
+  TagLabel,
+  HStack,
+  Link,
+  // Alert,
+  // Spinner
+} from '@chakra-ui/react';
 import omit from 'lodash/omit';
 import { useRouter } from 'next/router';
 import React from 'react';
+// import ReCaptcha from 'react-google-recaptcha';
 
 import type { AdvancedFilterParams } from 'types/api/advancedFilter';
 import { ADVANCED_FILTER_TYPES, ADVANCED_FILTER_AGES } from 'types/api/advancedFilter';
 
+// import useApiFetch from 'lib/api/useApiFetch';
 import useApiQuery from 'lib/api/useApiQuery';
 import { AddressHighlightProvider } from 'lib/contexts/addressHighlight';
 import dayjs from 'lib/date/dayjs';
 import getFilterValueFromQuery from 'lib/getFilterValueFromQuery';
 import getFilterValuesFromQuery from 'lib/getFilterValuesFromQuery';
 import getValuesArrayFromQuery from 'lib/getValuesArrayFromQuery';
+// import useToast from 'lib/hooks/useToast';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ADVANCED_FILTER_ITEM } from 'stubs/advancedFilter';
 import { generateListStub } from 'stubs/utils';
@@ -25,6 +46,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
+// import config from 'configs/app';
 
 export type ColumnsIds = 'tx_hash' | 'type' | 'method' | 'age' | 'from' | 'or_and' | 'to' | 'amount' | 'asset' | 'fee';
 
@@ -58,7 +80,12 @@ export const TABLE_COLUMNS: Array<TxTableColumn> = [
   {
     id: 'from',
     name: 'From',
-    width: '190px',
+    width: '160px',
+  },
+  {
+    id: 'or_and',
+    name: '',
+    width: '60px',
   },
   {
     id: 'to',
@@ -88,6 +115,9 @@ TABLE_COLUMNS.forEach(c => COLUMNS_CHECKED[c.id] = true);
 
 const AdvancedFilter = () => {
   const router = useRouter();
+  // const apiFetch = useApiFetch();
+  // const toast = useToast();
+
   const [ filters, setFilters ] = React.useState<AdvancedFilterParams>(() => {
     const age = getFilterValueFromQuery(ADVANCED_FILTER_AGES, router.query.age);
     return {
@@ -138,6 +168,32 @@ const AdvancedFilter = () => {
   // maybe don't need to prefetch, but on dev sepolia those requests take several seconds.
   useApiQuery('tokens', { queryParams: { limit: '7', q: '' }, queryOptions: { refetchOnMount: false } });
   useApiQuery('advanced_filter_methods', { queryParams: { q: '' }, queryOptions: { refetchOnMount: false } });
+
+  // const downloadCSV = React.useCallback((reCaptchaToken: string) => {
+  //   apiFetch<'advanced_filter_csv', unknown, unknown>('advanced_filter_csv', {
+  //     queryParams: { recaptcha_response: reCaptchaToken },
+  //   })
+  //     .then(() => {
+  //       toast({
+  //         title: 'Please wait',
+  //         description: 'Download will start when data is ready',
+  //         status: 'warning',
+  //       });
+  //     })
+  //     .catch(() => {
+  //       toast({
+  //         title: 'Error',
+  //         description: 'Unable to download CSV',
+  //         status: 'warning',
+  //       });
+  //     });
+  // }, [ apiFetch, toast ]);
+
+  // const handleReCaptchaChange = React.useCallback((token: string | null) => {
+  //   if (token) {
+  //     downloadCSV(token);
+  //   }
+  // }, [ downloadCSV ]);
 
   const handleFilterChange = React.useCallback((field: keyof AdvancedFilterParams, val: unknown) => {
     setFilters(prevState => {
@@ -199,7 +255,7 @@ const AdvancedFilter = () => {
                     wordBreak="break-word"
                     whiteSpace="normal"
                   >
-                    <chakra.span mr={ 2 } lineHeight="24px">{ column.name }</chakra.span>
+                    { Boolean(column.name) && <chakra.span mr={ 2 } lineHeight="24px">{ column.name }</chakra.span> }
                     <FilterByColumn
                       column={ column.id }
                       columnName={ column.name }
@@ -208,19 +264,6 @@ const AdvancedFilter = () => {
                       searchParams={ data?.search_params }
                       isLoading={ isPlaceholderData }
                     />
-                    { column.id === 'from' && (
-                      <>
-                        <chakra.span ml={ 6 } mr={ 2 } lineHeight="24px">OR/AND</chakra.span>
-                        <FilterByColumn
-                          column="or_and"
-                          columnName="OR/AND"
-                          handleFilterChange={ handleFilterChange }
-                          filters={ filters }
-                          searchParams={ data?.search_params }
-                          isLoading={ isPlaceholderData }
-                        />
-                      </>
-                    ) }
                   </Th>
                 );
               }) }
@@ -239,6 +282,7 @@ const AdvancedFilter = () => {
                     wordBreak="break-word"
                     whiteSpace="nowrap"
                     overflow="hidden"
+                    textAlign={ column.id === 'or_and' ? 'center' : 'start' }
                   >
                     <ItemByColumn item={ item } column={ column.id } isLoading={ isPlaceholderData }/>
                   </Td>
@@ -254,6 +298,13 @@ const AdvancedFilter = () => {
   const actionBar = (
     <ActionBar mt={ -6 }>
       <ColumnsButton columns={ columns } onChange={ setColumns }/>
+      { /* { config.services.reCaptcha.siteKey && (
+        <ReCaptcha
+          className="recaptcha"
+          sitekey={ config.services.reCaptcha.siteKey }
+          onChange={ handleReCaptchaChange }
+        />
+      ) } */ }
       <Pagination ml="auto" { ...pagination }/>
     </ActionBar>
   );
@@ -267,7 +318,7 @@ const AdvancedFilter = () => {
       <Flex mb={ 4 } justifyContent="space-between" alignItems="start">
         <Text fontSize="lg" mr={ 3 } lineHeight="24px" w="100px">Filtered by:</Text>
         { filterTags.length !== 0 && (
-          <Link onClick={ clearAllFilters } display="flex" alignItems="center" gap={ 2 } fontSize="sm" w="150px">
+          <Link onClick={ clearAllFilters } display="flex" alignItems="center" justifyContent="end" gap={ 2 } fontSize="sm" w="150px">
             <IconSvg name="repeat" boxSize={ 5 }/>
             Reset filters
           </Link>

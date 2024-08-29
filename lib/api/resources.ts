@@ -1121,6 +1121,9 @@ export const RESOURCES = {
     path: '/api/v2/advanced-filters/methods',
     filterFields: [ 'q' as const ],
   },
+  advanced_filter_csv: {
+    path: '/api/v2/advanced-filters/csv',
+  },
 
   // CONFIGS
   config_backend_version: {

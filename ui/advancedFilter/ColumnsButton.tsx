@@ -39,21 +39,20 @@ const ColumnsButton = ({ columns, onChange }: Props) => {
           colorScheme="gray"
           size="sm"
           leftIcon={ <IconSvg name="columns" boxSize={ 5 } color="inherit"/> }
-          // isLoading={ isLoading }
         >
-          { /* <IconSvg name='columns' boxSize={ 5 }/> */ }
           Columns
         </Button>
       </PopoverTrigger>
       <PopoverContent>
         <PopoverBody px={ 4 } py={ 6 } display="flex" flexDir="column" rowGap={ 5 }>
-          <Grid gridTemplateColumns="1fr 1fr">
+          <Grid gridTemplateColumns="160px 160px" gap={ 3 }>
             { TABLE_COLUMNS.map(col => (
               <Checkbox
                 key={ col.id }
                 defaultChecked={ columns[col.id] }
                 onChange={ onCheckboxClick }
                 id={ col.id }
+                size="lg"
               >
                 { col.name }
               </Checkbox>

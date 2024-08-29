@@ -53,8 +53,7 @@ const ColumnFilterContent = ({ title, isFilled, onFilter, onReset, onClose, chil
       </Flex>
       { children }
       <Button
-        // ???
-        // isDisabled={ !isFilled }
+        isDisabled={ !isFilled }
         mt={ 4 }
         onClick={ onFilterClick }
         w="fit-content"

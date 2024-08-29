@@ -3,9 +3,9 @@ import {
   PopoverContent,
   PopoverBody,
   useDisclosure,
-  IconButton,
   chakra,
   Portal,
+  Button,
 } from '@chakra-ui/react';
 import React from 'react';
 
@@ -18,9 +18,10 @@ interface Props {
   isLoading?: boolean;
   className?: string;
   children: React.ReactNode;
+  value?: string;
 }
 
-const TableColumnFilterWrapper = ({ columnName, isActive, className, children, isLoading }: Props) => {
+const TableColumnFilterWrapper = ({ columnName, isActive, className, children, isLoading, value }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
 
   const content = React.Children.only(children) as React.ReactElement & {
@@ -35,18 +36,30 @@ const TableColumnFilterWrapper = ({ columnName, isActive, className, children, i
   return (
     <Popover isOpen={ isOpen } onClose={ onClose } placement="bottom-start" isLazy lazyBehavior="unmount">
       <PopoverTrigger>
-        <IconButton
+        <Button
           onClick={ onToggle }
           aria-label={ `filter by ${ columnName }` }
           variant="ghost"
-          w="20px"
           h="20px"
-          icon={ <IconSvg name="filter" w="19px" h="19px"/> }
-          isActive={ isActive }
+          isActive={ Boolean(value) || isActive }
           isDisabled={ isLoading }
           borderRadius="4px"
           color="text_secondary"
-        />
+          fontSize="sm"
+          fontWeight={ 500 }
+          leftIcon={ <IconSvg name="filter" w="19px" h="19px"/> }
+          padding={ 0 }
+          sx={{
+            'span:only-child': {
+              mx: 0,
+            },
+            'span:not(:only-child)': {
+              mr: '2px',
+            },
+          }}
+        >
+          { Boolean(value) && <chakra.span>{ value }</chakra.span> }
+        </Button>
       </PopoverTrigger>
       <Portal>
         <PopoverContent className={ className }>

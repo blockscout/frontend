@@ -10,6 +10,7 @@ import React from 'react';
 type Props = {
   title: string;
   isFilled?: boolean;
+  isTouched?: boolean;
   hasReset?: boolean;
   onFilter: () => void;
   onReset?: () => void;
@@ -17,7 +18,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-const TableColumnFilter = ({ title, isFilled, hasReset, onFilter, onReset, onClose, children }: Props) => {
+const TableColumnFilter = ({ title, isFilled, isTouched, hasReset, onFilter, onReset, onClose, children }: Props) => {
   const onFilterClick = React.useCallback(() => {
     onClose && onClose();
     onFilter();
@@ -41,7 +42,7 @@ const TableColumnFilter = ({ title, isFilled, hasReset, onFilter, onReset, onClo
       </Flex>
       { children }
       <Button
-        // isDisabled={ !isFilled }
+        isDisabled={ !isTouched }
         onClick={ onFilterClick }
         w="fit-content"
       >
