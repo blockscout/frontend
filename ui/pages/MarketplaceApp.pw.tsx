@@ -17,8 +17,8 @@ const hooksConfig = {
   },
 };
 
-const MARKETPLACE_CONFIG_URL = 'https://marketplace-config.json';
-const MARKETPLACE_SECURITY_REPORTS_URL = 'https://marketplace-security-reports.json';
+const MARKETPLACE_CONFIG_URL = 'http://localhost:4000/marketplace-config.json';
+const MARKETPLACE_SECURITY_REPORTS_URL = 'http://localhost:4000/marketplace-security-reports.json';
 
 const testFn: Parameters<typeof test>[1] = async({ render, mockConfigResponse, mockAssetResponse, mockEnvs, mockRpcResponse, page }) => {
   await mockEnvs([

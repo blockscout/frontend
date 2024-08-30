@@ -55,9 +55,6 @@ function getAssetFileExtension(value: string) {
     const url = new URL(value);
     return url.pathname.match(regexp.FILE_EXTENSION)?.[1];
   } catch (error) {
-    try {
-      parseEnvJson(value);
-      return 'json';
-    } catch (error) {}
+    return parseEnvJson(value) ? 'json' : undefined;
   }
 }

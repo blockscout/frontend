@@ -152,7 +152,7 @@ test('search by user op hash +@mobile', async({ render, mockApiResponse, mockEnv
 
 test.describe('with apps', () => {
   test('default view +@mobile', async({ render, mockApiResponse, mockConfigResponse, mockAssetResponse, mockEnvs }) => {
-    const MARKETPLACE_CONFIG_URL = 'https://marketplace-config.json';
+    const MARKETPLACE_CONFIG_URL = 'https://localhost:4000/marketplace-config.json';
     const hooksConfig = {
       router: {
         query: { q: 'o' },

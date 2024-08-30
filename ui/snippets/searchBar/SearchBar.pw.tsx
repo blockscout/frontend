@@ -196,7 +196,7 @@ test('recent keywords suggest +@mobile', async({ render, page }, { project }) =>
 });
 
 test.describe('with apps', () => {
-  const MARKETPLACE_CONFIG_URL = 'https://marketplace-config.json';
+  const MARKETPLACE_CONFIG_URL = 'http://localhost:4000/marketplace-config.json';
 
   test('default view +@mobile', async({ render, page, mockApiResponse, mockConfigResponse, mockAssetResponse, mockEnvs }) => {
     await mockEnvs([

@@ -8,8 +8,8 @@ import { test, expect, devices } from 'playwright/lib';
 
 import Marketplace from './Marketplace';
 
-const MARKETPLACE_CONFIG_URL = 'http://localhost/marketplace-config.json';
-const MARKETPLACE_SECURITY_REPORTS_URL = 'https://marketplace-security-reports.json';
+const MARKETPLACE_CONFIG_URL = 'http://localhost:4000/marketplace-config.json';
+const MARKETPLACE_SECURITY_REPORTS_URL = 'https://localhost:4000/marketplace-security-reports.json';
 
 test.beforeEach(async({ mockConfigResponse, mockEnvs, mockAssetResponse, page }) => {
   await mockEnvs([
