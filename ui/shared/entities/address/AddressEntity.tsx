@@ -160,6 +160,7 @@ const AddressEntry = (props: EntityProps) => {
       onMouseEnter={ context?.onMouseEnter }
       onMouseLeave={ context?.onMouseLeave }
       position="relative"
+      zIndex={ 0 }
     >
       <Icon { ...partsProps } color={ props.iconColor }/>
       <Link { ...linkProps }>

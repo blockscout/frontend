@@ -45,10 +45,7 @@ const MarketplaceList = ({
   return apps.length > 0 ? (
     <>
       <Grid
-        templateColumns={{
-          md: 'repeat(auto-fill, minmax(230px, 1fr))',
-          lg: 'repeat(auto-fill, minmax(260px, 1fr))',
-        }}
+        templateColumns={{ md: 'repeat(auto-fill, minmax(270px, 1fr))' }}
         autoRows="1fr"
         gap={{ base: '16px', md: '24px' }}
         marginTop={{ base: 0, lg: 3 }}

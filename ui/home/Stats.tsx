@@ -140,6 +140,12 @@ const Stats = () => {
         value: `${ BigNumber(data.rootstock_locked_btc).div(WEI).dp(0).toFormat() } RBTC`,
         isLoading,
       },
+      data.celo && {
+        icon: 'hourglass' as const,
+        label: 'Current epoch',
+        value: `#${ data.celo.epoch_number }`,
+        isLoading,
+      },
     ].filter(Boolean);
 
     return (

@@ -5,6 +5,8 @@ import React, { useCallback } from 'react';
 import type { MarketplaceAppWithSecurityReport, ContractListTypes, AppRating } from 'types/client/marketplace';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import isBrowser from 'lib/isBrowser';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 import AppSecurityReport from './AppSecurityReport';
 import FavoriteIcon from './FavoriteIcon';
@@ -168,7 +170,7 @@ const MarketplaceAppCard = ({
             >
               More info
             </Link>
-            <Flex alignItems="center" gap={ 3 }>
+            <Flex alignItems="center">
               <Rating
                 appId={ id }
                 rating={ rating }
@@ -188,6 +190,21 @@ const MarketplaceAppCard = ({
                 h={{ base: 6, md: '30px' }}
                 onClick={ handleFavoriteClick }
                 icon={ <FavoriteIcon isFavorite={ isFavorite }/> }
+                ml={ 2 }
+              />
+              <CopyToClipboard
+                text={ isBrowser() ? window.location.origin + `/apps/${ id }` : '' }
+                icon="share"
+                size={ 4 }
+                variant="ghost"
+                colorScheme="gray"
+                w={{ base: 6, md: '30px' }}
+                h={{ base: 6, md: '30px' }}
+                color="gray.400"
+                _hover={{ color: 'gray.400' }}
+                ml={{ base: 1, md: 0 }}
+                display="inline-flex"
+                borderRadius="base"
               />
             </Flex>
           </Flex>

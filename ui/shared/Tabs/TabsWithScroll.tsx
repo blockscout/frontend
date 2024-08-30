@@ -99,7 +99,7 @@ const TabsWithScroll = ({
         //    - tabs list is changed when API data is loaded
         // is to do full re-render of the tabs list
         // so we use screenWidth + tabIds as a key for the TabsList component
-        key={ screenWidth + '_' + tabsList.map((tab) => tab.id).join(':') }
+        key={ isLoading + '_' + screenWidth + '_' + tabsList.map((tab) => tab.id).join(':') }
         tabs={ tabs }
         tabListProps={ tabListProps }
         rightSlot={ rightSlot }

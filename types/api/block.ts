@@ -3,9 +3,18 @@ import type { Reward } from 'types/api/reward';
 import type { Transaction } from 'types/api/transaction';
 
 import type { ArbitrumBatchStatus, ArbitrumL2TxData } from './arbitrumL2';
+import type { TokenInfo } from './token';
+import type { TokenTransfer } from './tokenTransfer';
 import type { ZkSyncBatchesItem } from './zkSyncL2';
 
 export type BlockType = 'block' | 'reorg' | 'uncle';
+
+export interface BlockBaseFeeCelo {
+  amount: string;
+  breakdown: Array<{ amount: string; percentage: number; address: AddressParam }>;
+  recipient: AddressParam;
+  token: TokenInfo;
+}
 
 export interface Block {
   height: number;
@@ -50,6 +59,12 @@ export interface Block {
     'batch_number': number | null;
   };
   arbitrum?: ArbitrumBlockData;
+  // CELO FIELDS
+  celo?: {
+    epoch_number: number;
+    is_epoch_block: boolean;
+    base_fee?: BlockBaseFeeCelo;
+  };
 }
 
 type ArbitrumBlockData = {
@@ -111,4 +126,36 @@ export interface BlockCountdownResponse {
     EstimateTimeInSec: string;
     RemainingBlock: string;
   } | null;
+}
+
+export interface BlockEpochElectionReward {
+  count: number;
+  token: TokenInfo<'ERC-20'>;
+  total: string;
+}
+
+export interface BlockEpoch {
+  number: number;
+  distribution: {
+    carbon_offsetting_transfer: TokenTransfer | null;
+    community_transfer: TokenTransfer | null;
+    reserve_bolster_transfer: TokenTransfer | null;
+  };
+  aggregated_election_rewards: {
+    delegated_payment: BlockEpochElectionReward | null;
+    group: BlockEpochElectionReward | null;
+    validator: BlockEpochElectionReward | null;
+    voter: BlockEpochElectionReward | null;
+  };
+}
+
+export interface BlockEpochElectionRewardDetails {
+  account: AddressParam;
+  amount: string;
+  associated_account: AddressParam;
+}
+
+export interface BlockEpochElectionRewardDetailsResponse {
+  items: Array<BlockEpochElectionRewardDetails>;
+  next_page_params: null;
 }

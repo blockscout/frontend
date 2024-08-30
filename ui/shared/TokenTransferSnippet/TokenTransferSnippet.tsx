@@ -1,8 +1,8 @@
-import { Flex } from '@chakra-ui/react';
+import { Flex, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type {
-  TokenTransfer as TTokenTransfer,
+  TokenTransfer,
   Erc20TotalPayload,
   Erc721TotalPayload,
   Erc1155TotalPayload,
@@ -10,27 +10,34 @@ import type {
 } from 'types/api/tokenTransfer';
 
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
-import NftTokenTransferSnippet from 'ui/tx/NftTokenTransferSnippet';
 
-import FtTokenTransferSnippet from '../FtTokenTransferSnippet';
+import TokenTransferSnippetFiat from './TokenTransferSnippetFiat';
+import TokenTransferSnippetNft from './TokenTransferSnippetNft';
 
 interface Props {
-  data: TTokenTransfer;
+  data: TokenTransfer;
+  noAddressIcons?: boolean;
+  isLoading?: boolean;
 }
 
-const TxDetailsTokenTransfer = ({ data }: Props) => {
+const TokenTransferSnippet = ({ data, isLoading, noAddressIcons = true }: Props) => {
 
   const content = (() => {
+
+    if (isLoading) {
+      return <Skeleton w="250px" h={ 6 }/>;
+    }
+
     switch (data.token.type) {
       case 'ERC-20': {
         const total = data.total as Erc20TotalPayload;
-        return <FtTokenTransferSnippet token={ data.token } value={ total.value } decimals={ total.decimals }/>;
+        return <TokenTransferSnippetFiat token={ data.token } value={ total.value } decimals={ total.decimals }/>;
       }
 
       case 'ERC-721': {
         const total = data.total as Erc721TotalPayload;
         return (
-          <NftTokenTransferSnippet
+          <TokenTransferSnippetNft
             token={ data.token }
             tokenId={ total.token_id }
             value="1"
@@ -41,7 +48,7 @@ const TxDetailsTokenTransfer = ({ data }: Props) => {
       case 'ERC-1155': {
         const total = data.total as Erc1155TotalPayload;
         return (
-          <NftTokenTransferSnippet
+          <TokenTransferSnippetNft
             key={ total.token_id }
             token={ data.token }
             tokenId={ total.token_id }
@@ -55,7 +62,7 @@ const TxDetailsTokenTransfer = ({ data }: Props) => {
 
         if (total.token_id !== null) {
           return (
-            <NftTokenTransferSnippet
+            <TokenTransferSnippetNft
               token={ data.token }
               tokenId={ total.token_id }
               value="1"
@@ -66,7 +73,7 @@ const TxDetailsTokenTransfer = ({ data }: Props) => {
             return null;
           }
 
-          return <FtTokenTransferSnippet token={ data.token } value={ total.value } decimals={ total.decimals }/>;
+          return <TokenTransferSnippetFiat token={ data.token } value={ total.value } decimals={ total.decimals }/>;
         }
       }
     }
@@ -86,12 +93,13 @@ const TxDetailsTokenTransfer = ({ data }: Props) => {
         from={ data.from }
         to={ data.to }
         truncation="constant"
-        noIcon
+        noIcon={ noAddressIcons }
         fontWeight="500"
+        isLoading={ isLoading }
       />
       { content }
     </Flex>
   );
 };
 
-export default React.memo(TxDetailsTokenTransfer);
+export default React.memo(TokenTransferSnippet);

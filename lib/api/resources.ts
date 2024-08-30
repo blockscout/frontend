@@ -51,7 +51,16 @@ import type {
   ArbitrumL2TxnBatchesItem,
 } from 'types/api/arbitrumL2';
 import type { TxBlobs, Blob } from 'types/api/blobs';
-import type { BlocksResponse, BlockTransactionsResponse, Block, BlockFilters, BlockWithdrawalsResponse, BlockCountdownResponse } from 'types/api/block';
+import type {
+  BlocksResponse,
+  BlockTransactionsResponse,
+  Block,
+  BlockFilters,
+  BlockWithdrawalsResponse,
+  BlockCountdownResponse,
+  BlockEpoch,
+  BlockEpochElectionRewardDetailsResponse,
+} from 'types/api/block';
 import type { ChartMarketResponse, ChartSecondaryCoinPriceResponse, ChartTransactionResponse } from 'types/api/charts';
 import type { BackendVersionConfig } from 'types/api/configs';
 import type {
@@ -232,6 +241,12 @@ export const RESOURCES = {
     basePath: getFeaturePayload(config.features.nameService)?.api.basePath,
     filterFields: [ 'address' as const, 'resolved_to' as const, 'owned_by' as const, 'only_active' as const, 'protocols' as const ],
   },
+  address_domain: {
+    path: '/api/v1/:chainId/addresses/:address',
+    pathParams: [ 'chainId' as const, 'address' as const ],
+    endpoint: getFeaturePayload(config.features.nameService)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.nameService)?.api.basePath,
+  },
   domain_info: {
     path: '/api/v1/:chainId/domains/:name',
     pathParams: [ 'chainId' as const, 'name' as const ],
@@ -319,6 +334,16 @@ export const RESOURCES = {
   block_withdrawals: {
     path: '/api/v2/blocks/:height_or_hash/withdrawals',
     pathParams: [ 'height_or_hash' as const ],
+    filterFields: [],
+  },
+  block_epoch: {
+    path: '/api/v2/blocks/:height_or_hash/epoch',
+    pathParams: [ 'height_or_hash' as const ],
+    filterFields: [],
+  },
+  block_election_rewards: {
+    path: '/api/v2/blocks/:height_or_hash/election-rewards/:reward_type',
+    pathParams: [ 'height_or_hash' as const, 'reward_type' as const ],
     filterFields: [],
   },
   txs_stats: {
@@ -932,7 +957,7 @@ export interface ResourceError<T = unknown> {
 
 export type ResourceErrorAccount<T> = ResourceError<{ errors: T }>
 
-export type PaginatedResources = 'blocks' | 'block_txs' |
+export type PaginatedResources = 'blocks' | 'block_txs' | 'block_election_rewards' |
 'txs_validated' | 'txs_pending' | 'txs_with_blobs' | 'txs_watchlist' | 'txs_execution_node' |
 'tx_internal_txs' | 'tx_logs' | 'tx_token_transfers' | 'tx_state_changes' | 'tx_blobs' |
 'addresses' |
@@ -992,6 +1017,8 @@ Q extends 'block' ? Block :
 Q extends 'block_countdown' ? BlockCountdownResponse :
 Q extends 'block_txs' ? BlockTransactionsResponse :
 Q extends 'block_withdrawals' ? BlockWithdrawalsResponse :
+Q extends 'block_epoch' ? BlockEpoch :
+Q extends 'block_election_rewards' ? BlockEpochElectionRewardDetailsResponse :
 Q extends 'txs_stats' ? TransactionsStats :
 Q extends 'txs_validated' ? TransactionsResponseValidated :
 Q extends 'txs_pending' ? TransactionsResponsePending :
@@ -1092,6 +1119,7 @@ Q extends 'zksync_l2_txn_batch' ? ZkSyncBatch :
 Q extends 'zksync_l2_txn_batch_txs' ? ZkSyncBatchTxs :
 Q extends 'contract_security_audits' ? SmartContractSecurityAudits :
 Q extends 'addresses_lookup' ? bens.LookupAddressResponse :
+Q extends 'address_domain' ? bens.GetAddressResponse :
 Q extends 'domain_info' ? bens.DetailedDomain :
 Q extends 'domain_events' ? bens.ListDomainEventsResponse :
 Q extends 'domains_lookup' ? bens.LookupDomainNameResponse :

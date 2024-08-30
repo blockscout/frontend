@@ -1,4 +1,4 @@
-import { chakra, Skeleton } from '@chakra-ui/react';
+import { chakra, Skeleton, Tooltip } from '@chakra-ui/react';
 import capitalize from 'lodash/capitalize';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -14,6 +14,7 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import BlockDetails from 'ui/block/BlockDetails';
+import BlockEpochRewards from 'ui/block/BlockEpochRewards';
 import BlockWithdrawals from 'ui/block/BlockWithdrawals';
 import useBlockBlobTxsQuery from 'ui/block/useBlockBlobTxsQuery';
 import useBlockQuery from 'ui/block/useBlockQuery';
@@ -21,6 +22,7 @@ import useBlockTxsQuery from 'ui/block/useBlockTxsQuery';
 import useBlockWithdrawalsQuery from 'ui/block/useBlockWithdrawalsQuery';
 import TextAd from 'ui/shared/ad/TextAd';
 import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
+import Tag from 'ui/shared/chakra/Tag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -94,7 +96,12 @@ const BlockPageContent = () => {
           </>
         ),
       } : null,
-  ].filter(Boolean)), [ blockBlobTxsQuery, blockQuery, blockTxsQuery, blockWithdrawalsQuery, hasPagination ]);
+    blockQuery.data?.celo?.is_epoch_block ? {
+      id: 'epoch_rewards',
+      title: 'Epoch rewards',
+      component: <BlockEpochRewards heightOrHash={ heightOrHash }/>,
+    } : null,
+  ].filter(Boolean)), [ blockBlobTxsQuery, blockQuery, blockTxsQuery, blockWithdrawalsQuery, hasPagination, heightOrHash ]);
 
   let pagination;
   if (tab === 'txs') {
@@ -139,6 +146,25 @@ const BlockPageContent = () => {
         return `Block #${ blockQuery.data?.height }`;
     }
   })();
+  const contentAfter = (() => {
+    if (!blockQuery.data?.celo) {
+      return null;
+    }
+
+    if (!blockQuery.data.celo.is_epoch_block) {
+      return (
+        <Tooltip label="Displays the epoch this block belongs to before the epoch is finalized" maxW="280px" textAlign="center">
+          <Tag>Epoch #{ blockQuery.data.celo.epoch_number }</Tag>
+        </Tooltip>
+      );
+    }
+
+    return (
+      <Tooltip label="Displays the epoch finalized by this block" maxW="280px" textAlign="center">
+        <Tag bgColor="celo" color="blackAlpha.800">Finalized epoch #{ blockQuery.data.celo.epoch_number }</Tag>
+      </Tooltip>
+    );
+  })();
   const titleSecondRow = (
     <>
       { !config.UI.views.block.hiddenFields?.miner && (
@@ -166,6 +192,7 @@ const BlockPageContent = () => {
       <PageTitle
         title={ title }
         backLink={ backLink }
+        contentAfter={ contentAfter }
         secondRow={ titleSecondRow }
         isLoading={ blockQuery.isPlaceholderData }
       />
