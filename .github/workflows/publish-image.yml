@@ -2,8 +2,7 @@ name: Create and publish a Docker image
 
 on:
   release:
-    types: [published]
-  workflow_dispatch:
+    types: [released]
 
 env:
   REGISTRY: ghcr.io
