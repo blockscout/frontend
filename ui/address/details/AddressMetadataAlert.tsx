@@ -23,7 +23,7 @@ const AddressMetadataAlert = ({ tags }: Props) => {
     <Alert
       mt="-4px"
       mb={ 6 }
-      status="error"
+      status={ noteTag.meta?.alertStatus ?? 'error' }
       bgColor={ noteTag.meta?.alertBgColor }
       color={ noteTag.meta?.alertTextColor }
       whiteSpace="pre-wrap"
