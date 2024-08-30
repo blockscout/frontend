@@ -666,6 +666,12 @@ const schema = yup
     NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN: yup.string(),
     NEXT_PUBLIC_GROWTH_BOOK_CLIENT_KEY: yup.string(),
 
+    // 7. Discord related
+    NEXT_PUBLIC_DISCORD_CLIENT_ID: yup.string(),
+    NEXT_PUBLIC_DISCORD_GUILD_ID: yup.string(),
+    NEXT_PUBLIC_DISCORD_GUILD_NAME: yup.string(),
+    NEXT_PUBLIC_STORAGE_API_HOST: yup.string(),
+
     // Misc
     NEXT_PUBLIC_USE_NEXT_JS_PROXY: yup.boolean(),
   })
