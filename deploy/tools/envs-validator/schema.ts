@@ -30,7 +30,7 @@ import type { WalletType } from '../../../types/client/wallets';
 import { SUPPORTED_WALLETS } from '../../../types/client/wallets';
 import type { CustomLink, CustomLinksGroup } from '../../../types/footerLinks';
 import { CHAIN_INDICATOR_IDS } from '../../../types/homepage';
-import type { ChainIndicatorId, HeroBannerConfig } from '../../../types/homepage';
+import type { ChainIndicatorId, HeroBannerButtonState, HeroBannerConfig } from '../../../types/homepage';
 import { type NetworkVerificationTypeEnvs, type NetworkExplorer, type FeaturedNetwork, NETWORK_GROUPS } from '../../../types/networks';
 import { COLOR_THEME_IDS } from '../../../types/settings';
 import type { FontFamily } from '../../../types/ui';
@@ -400,6 +400,11 @@ const fontFamilySchema: yup.ObjectSchema<FontFamily> = yup
     url: yup.string().test(urlTest).required(),
   });
 
+const heroBannerButtonStateSchema: yup.ObjectSchema<HeroBannerButtonState> = yup.object({
+  background: yup.array().max(2).of(yup.string()),
+  text_color: yup.array().max(2).of(yup.string()),
+});
+
 const heroBannerSchema: yup.ObjectSchema<HeroBannerConfig> = yup.object()
   .transform(replaceQuotes)
   .json()
@@ -407,6 +412,11 @@ const heroBannerSchema: yup.ObjectSchema<HeroBannerConfig> = yup.object()
     background: yup.array().max(2).of(yup.string()),
     text_color: yup.array().max(2).of(yup.string()),
     border: yup.array().max(2).of(yup.string()),
+    button: yup.object({
+      _default: heroBannerButtonStateSchema,
+      _hover: heroBannerButtonStateSchema,
+      _selected: heroBannerButtonStateSchema,
+    }),
   });
 
 const footerLinkSchema: yup.ObjectSchema<CustomLink> = yup
