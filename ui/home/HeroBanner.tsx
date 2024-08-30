@@ -36,7 +36,6 @@ const HeroBanner = () => {
       p={{ base: 4, lg: 8 }}
       columnGap={ 8 }
       alignItems="center"
-      data-label="hero plate"
     >
       <Box flexGrow={ 1 }>
         <Flex mb={{ base: 2, lg: 3 }} justifyContent="space-between" alignItems="center" columnGap={ 2 }>
