@@ -1,22 +1,12 @@
 name: Checks
 on:
-  workflow_call:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
   pull_request:
-    types: [ opened, synchronize, unlabeled ]
-    paths-ignore:
-      - '.github/ISSUE_TEMPLATE/**'
-      - '.husky/**'
-      - '.vscode/**'
-      - 'deploy/**'
-      - 'docs/**'
-      - 'public/**'
-      - 'stub/**'
-      - 'tools/**'
-      
-# concurrency:
-#   group: ${{ github.workflow }}__${{ github.job }}__${{ github.ref }}
-#   cancel-in-progress: true
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
   code_quality:
@@ -31,7 +21,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20.11.0
-          cache: 'yarn'
+          cache: "yarn"
 
       - name: Cache node_modules
         uses: actions/cache@v4
@@ -40,7 +30,7 @@ jobs:
           path: |
             node_modules
           key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
-  
+
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile --ignore-optional
@@ -54,7 +44,7 @@ jobs:
   envs_validation:
     name: ENV variables validation
     runs-on: ubuntu-latest
-    needs: [ code_quality ]
+    needs: [code_quality]
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -63,7 +53,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20.11.0
-          cache: 'yarn'
+          cache: "yarn"
 
       - name: Cache node_modules
         uses: actions/cache@v4
@@ -72,7 +62,7 @@ jobs:
           path: |
             node_modules
           key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
-    
+
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile --ignore-optional
@@ -90,7 +80,7 @@ jobs:
 
   jest_tests:
     name: Jest tests
-    needs: [ code_quality, envs_validation ]
+    needs: [code_quality, envs_validation]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -102,7 +92,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20.11.0
-          cache: 'yarn'
+          cache: "yarn"
 
       - name: Cache node_modules
         uses: actions/cache@v4
@@ -111,7 +101,7 @@ jobs:
           path: |
             node_modules
           key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
-    
+
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile --ignore-optional
@@ -122,7 +112,7 @@ jobs:
   pw_affected_tests:
     name: Resolve affected Playwright tests
     runs-on: ubuntu-latest
-    needs: [ code_quality, envs_validation ]
+    needs: [code_quality, envs_validation]
     if: github.event_name == 'pull_request'
     steps:
       - name: Checkout repo
@@ -134,7 +124,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20.11.0
-          cache: 'yarn'
+          cache: "yarn"
 
       - name: Cache node_modules
         uses: actions/cache@v4
@@ -143,14 +133,14 @@ jobs:
           path: |
             node_modules
           key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
-      
+
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile --ignore-optional
 
-      - name: Install script dependencies 
+      - name: Install script dependencies
         run: cd ./deploy/tools/affected-tests && yarn --frozen-lockfile
-      
+
       - name: Run script
         run: yarn test:pw:detect-affected
 
@@ -162,13 +152,13 @@ jobs:
           retention-days: 3
 
   pw_tests:
-    name: 'Playwright tests / Project: ${{ matrix.project }}'
-    needs: [ code_quality, envs_validation, pw_affected_tests ]
+    name: "Playwright tests / Project: ${{ matrix.project }}"
+    needs: [code_quality, envs_validation, pw_affected_tests]
     if: |
       always() &&
       needs.code_quality.result == 'success' && 
       needs.envs_validation.result == 'success' && 
-      (needs.pw_affected_tests.result == 'success' || needs.pw_affected_tests.result == 'skipped') 
+      (needs.pw_affected_tests.result == 'success' || needs.pw_affected_tests.result == 'skipped')
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.41.1-focal
@@ -176,7 +166,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        project: [ default, mobile, dark-color-mode ]
+        project: [default, mobile, dark-color-mode]
 
     steps:
       - name: Install git-lfs
@@ -185,13 +175,13 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
         with:
-          lfs: 'true'
+          lfs: "true"
 
       - name: Setup node
         uses: actions/setup-node@v4
         with:
           node-version: 20.11.0
-          cache: 'yarn'
+          cache: "yarn"
 
       - name: Cache node_modules
         uses: actions/cache@v4
@@ -200,7 +190,7 @@ jobs:
           path: |
             node_modules
           key: node_modules-${{ runner.os }}-${{ hashFiles('yarn.lock') }}
-    
+
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: yarn --frozen-lockfile --ignore-optional
