@@ -200,7 +200,7 @@ const variantHeader = defineStyle((props) => {
       borderColor: 'link_hovered',
     },
     '&[data-selected=true]': {
-      bgColor: mode('blackAlpha.100', 'whiteAlpha.100')(props),
+      bgColor: mode('blackAlpha.50', 'whiteAlpha.100')(props),
       color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
       borderColor: 'transparent',
       borderWidth: props.borderWidth || '0px',
