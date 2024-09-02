@@ -109,13 +109,13 @@ export default function useNavItems(): ReturnType {
       isActive: pathname === '/object' || pathname === '/object-details/[address]',
     };
     const bucket = {
-      text: 'Bucket',
+      text: 'Buckets',
       nextRoute: { pathname: '/bucket' as const },
       icon: 'output_roots',
       isActive: pathname === '/bucket' || pathname === '/bucket-details/[address]',
     };
     const group = {
-      text: 'Group',
+      text: 'Groups',
       nextRoute: { pathname: '/group' as const },
       icon: 'output_roots',
       isActive: pathname === '/group' || pathname === '/group-details/[address]',
