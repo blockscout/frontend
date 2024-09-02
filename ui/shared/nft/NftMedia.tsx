@@ -72,7 +72,7 @@ const NftMedia = ({ imageUrl, animationUrl, className, isLoading, withFullscreen
 
     switch (type) {
       case 'video':
-        return <NftVideo { ...props } autoPlay={ autoplayVideo }/>;
+        return <NftVideo { ...props } autoPlay={ autoplayVideo } poster={ imageUrl || undefined }/>;
       case 'html':
         return <NftHtml { ...props }/>;
       case 'image':
