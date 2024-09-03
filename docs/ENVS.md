@@ -719,6 +719,7 @@ If the feature is enabled, a Multichain balance button will be displayed on the 
 | NEXT_PUBLIC_FAUCET_VALUE | `number` | Faucet Value | - | - | - |
 | NEXT_PUBLIC_FAUCET_REQUEST_PER | `number` | Faucet Request Limit | - | - | - |
 | NEXT_PUBLIC_FAUCET_KEY | `string` | Faucet Key | - | - | - |
+| NEXT_PUBLIC_SESSION_TTL | `number` | Session TTL | - | - | - |
 
 
 ### Google ReCaptcha
