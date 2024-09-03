@@ -30,11 +30,14 @@ export const L2_WITHDRAWAL_ITEM: OptimisticL2WithdrawalsItem = {
 };
 
 export const L2_TXN_BATCHES_ITEM: OptimisticL2TxnBatchesItem = {
+  internal_id: 260991,
+  batch_data_container: 'in_blob4844',
   l1_timestamp: '2023-06-01T14:46:48.000000Z',
   l1_tx_hashes: [
     TX_HASH,
   ],
-  l2_block_number: 5218590,
+  l2_block_start: 5218590,
+  l2_block_end: 5218777,
   tx_count: 9,
 };
 

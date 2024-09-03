@@ -679,12 +679,12 @@ export const RESOURCES = {
   },
 
   optimistic_l2_txn_batches: {
-    path: '/api/v2/optimism/txn-batches',
+    path: '/api/v2/optimism/batches',
     filterFields: [],
   },
 
   optimistic_l2_txn_batches_count: {
-    path: '/api/v2/optimism/txn-batches/count',
+    path: '/api/v2/optimism/batches/count',
   },
 
   optimistic_l2_dispute_games: {

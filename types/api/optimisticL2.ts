@@ -36,16 +36,19 @@ export type OptimisticL2OutputRootsResponse = {
 }
 
 export type OptimisticL2TxnBatchesItem = {
-  l1_tx_hashes: Array<string>;
+  internal_id: number;
+  batch_data_container?: 'in_blob4844' | 'in_celestia' | 'in_calldata';
   l1_timestamp: string;
-  l2_block_number: number;
+  l1_tx_hashes: Array<string>;
+  l2_block_start: number;
+  l2_block_end: number;
   tx_count: number;
 }
 
 export type OptimisticL2TxnBatchesResponse = {
   items: Array<OptimisticL2TxnBatchesItem>;
   next_page_params: {
-    block_number: number;
+    id: number;
     items_count: number;
   };
 }
