@@ -1,4 +1,5 @@
 import type {
+  OptimismL2TxnBatch,
   OptimisticL2DepositsItem,
   OptimisticL2DisputeGamesItem,
   OptimisticL2OutputRootsItem,
@@ -39,6 +40,18 @@ export const L2_TXN_BATCHES_ITEM: OptimisticL2TxnBatchesItem = {
   l2_block_start: 5218590,
   l2_block_end: 5218777,
   tx_count: 9,
+};
+
+export const L2_TXN_BATCH: OptimismL2TxnBatch = {
+  ...L2_TXN_BATCHES_ITEM,
+  batch_data_container: 'in_blob4844',
+  blobs: [
+    {
+      hash: '0x01fb41e1ae9f827e13abb0ee94be2ee574a23ac31426cea630ddd18af854bc85',
+      l1_timestamp: '2024-09-03T13:26:23.000000Z',
+      l1_transaction_hash: '0xd25ee571f1701690615099b208a9431d8611d0130dc342bead6d9edc291f04b9',
+    },
+  ],
 };
 
 export const L2_OUTPUT_ROOTS_ITEM: OptimisticL2OutputRootsItem = {
