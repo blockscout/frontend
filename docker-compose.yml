@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  frontend:
+    container_name: frontend
+    image: front
+    # build: .
+    restart: unless-stopped
+    ports:
+      - 3001:3000
+      - 3002:3002
+    environment:
+      ENVS_PRESET: "me"
+      NEXT_PUBLIC_APP_HOST: i-testnet-scan.mechain.tech
+      # NEXT_PUBLIC_SESSION_PASSWORD: 
+    # entrypoint: /bin/bash
+    volumes:
+      - ./configs/envs:/app/configs/envs:ro
