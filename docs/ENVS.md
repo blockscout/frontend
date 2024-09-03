@@ -711,14 +711,14 @@ If the feature is enabled, a Multichain balance button will be displayed on the 
 ## External services configuration
 | Variable | Type| Description | Compulsoriness  | Default value | Example value |
 | --- | --- | --- | --- | --- | --- |
-| DATABASE_URL | `string` | Mongodb connection string | - | - | - |
-| DISCORD_CLIENT_ID | `string` | Discord (for faucet) Client Id | - | - | - |
-| DISCORD_CLIENT_SECRET | `string` | Discord (for faucet) Client Secret | - | - | - |
-| DISCORD_BOT_TOKEN | `string` | Discord (for faucet) Bot Token | - | - | - |
-| SESSION_PASSWORD | `string` | Session password | - | - | - |
-| FAUCET_VALUE | `number` | Faucet Value | - | - | - |
-| FAUCET_REQUEST_PER | `number` | Faucet Request Limit | - | - | - |
-| FAUCET_KEY | `string` | Faucet Key | - | - | - |
+| NEXT_PUBLIC_DATABASE_URL | `string` | Mongodb connection string | - | - | - |
+| NEXT_PUBLIC_DISCORD_CLIENT_ID | `string` | Discord (for faucet) Client Id | - | - | - |
+| NEXT_PUBLIC_DISCORD_CLIENT_SECRET | `string` | Discord (for faucet) Client Secret | - | - | - |
+| NEXT_PUBLIC_DISCORD_BOT_TOKEN | `string` | Discord (for faucet) Bot Token | - | - | - |
+| NEXT_PUBLIC_SESSION_PASSWORD | `string` | Session password | - | - | - |
+| NEXT_PUBLIC_FAUCET_VALUE | `number` | Faucet Value | - | - | - |
+| NEXT_PUBLIC_FAUCET_REQUEST_PER | `number` | Faucet Request Limit | - | - | - |
+| NEXT_PUBLIC_FAUCET_KEY | `string` | Faucet Key | - | - | - |
 
 
 ### Google ReCaptcha

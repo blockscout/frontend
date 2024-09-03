@@ -7,7 +7,9 @@ export const replaceQuotes = (value: string | undefined) => value?.replaceAll('\
 export const getEnvValue = (envName: string) => {
   // eslint-disable-next-line no-restricted-properties
   const envs = isBrowser() ? window.__envs : process.env;
-  console.log(envs);
+  if (envName === 'NEXT_PUBLIC_SESSION_PASSWORD') {
+    console.log('session pwd:', envs[envName]);
+  }
 
   if (isBrowser() && envs.NEXT_PUBLIC_APP_INSTANCE === 'pw') {
     const storageValue = localStorage.getItem(envName);

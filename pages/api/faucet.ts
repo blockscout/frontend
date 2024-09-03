@@ -16,7 +16,7 @@ const provider = new JsonRpcProvider(
   },
 );
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-const _signer = new Wallet(getEnvValue('FAUCET_KEY')!, provider);
+const _signer = new Wallet(getEnvValue('NEXT_PUBLIC_FAUCET_KEY')!, provider);
 const signer = new NonceManager(_signer);
 
 const requestLock = new Set<string>();
@@ -39,7 +39,7 @@ export default async function faucetHandler(
     }
 
     const timestamp: number = new Date(user?.lastRequestTime || 0).getTime();
-    const requestPer = Number(getEnvValue('FAUCET_REQUEST_PER'));
+    const requestPer = Number(getEnvValue('NEXT_PUBLIC_FAUCET_REQUEST_PER'));
     const requestPerAsHours = requestPer / 1000 / 60 / 60;
     if (Date.now() - timestamp <= requestPer) {
       return res.status(429).json({
@@ -57,7 +57,7 @@ export default async function faucetHandler(
     const txRp = await signer.sendTransaction({
       to: userWallet,
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      value: parseEther(getEnvValue('FAUCET_VALUE')!),
+      value: parseEther(getEnvValue('NEXT_PUBLIC_FAUCET_VALUE')!),
     });
     const txReceipt = await txRp.wait();
     if (txReceipt?.status !== 1) {
