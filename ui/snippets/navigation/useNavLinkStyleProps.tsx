@@ -15,7 +15,7 @@ export default function useNavLinkProps({ isExpanded, isCollapsed, isActive }: P
     itemProps: {
       py: '9px',
       display: 'flex',
-      color: isActive ? '#8A55FD' : 'rgba(0, 0, 0, 0.40)',
+      color: isActive ? '#8A55FD' : 'rgba(0, 0, 0, 0.60)',
       bgColor: isActive ? 'rgba(195, 178, 255, 0.24)' : colors.bg.default,
       _hover: { color: isActive ? '#8A55FD' : '#A07EFF' },
       borderRadius: 'base',

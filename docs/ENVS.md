@@ -709,6 +709,17 @@ If the feature is enabled, a Multichain balance button will be displayed on the 
 &nbsp;
 
 ## External services configuration
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| DATABASE_URL | `string` | Mongodb connection string | - | - | - |
+| DISCORD_CLIENT_ID | `string` | Discord (for faucet) Client Id | - | - | - |
+| DISCORD_CLIENT_SECRET | `string` | Discord (for faucet) Client Secret | - | - | - |
+| DISCORD_BOT_TOKEN | `string` | Discord (for faucet) Bot Token | - | - | - |
+| SESSION_PASSWORD | `string` | Session password | - | - | - |
+| FAUCET_VALUE | `number` | Faucet Value | - | - | - |
+| FAUCET_REQUEST_PER | `number` | Faucet Request Limit | - | - | - |
+| FAUCET_KEY | `string` | Faucet Key | - | - | - |
+
 
 ### Google ReCaptcha
 
