@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import isBrowser from 'lib/isBrowser';
 import * as regexp from 'lib/regexp';
 
@@ -6,6 +7,7 @@ export const replaceQuotes = (value: string | undefined) => value?.replaceAll('\
 export const getEnvValue = (envName: string) => {
   // eslint-disable-next-line no-restricted-properties
   const envs = isBrowser() ? window.__envs : process.env;
+  console.log(envs);
 
   if (isBrowser() && envs.NEXT_PUBLIC_APP_INSTANCE === 'pw') {
     const storageValue = localStorage.getItem(envName);
