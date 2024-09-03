@@ -123,7 +123,7 @@ const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
         isLoading={ isPlaceholderData }
         hint="Where the batch data is stored"
       >
-            Batch data container
+        Batch data container
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value>
         <OptimisticL2TxnBatchDA container={ data.batch_data_container } isLoading={ isPlaceholderData }/>
