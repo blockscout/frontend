@@ -5,11 +5,16 @@ import React from 'react';
 
 import type { OptimismL2TxnBatch } from 'types/api/optimisticL2';
 
+import { route } from 'nextjs-routes';
+
 import type { ResourceError } from 'lib/api/resources';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import isCustomAppError from 'ui/shared/AppError/isCustomAppError';
+import OptimisticL2TxnBatchDA from 'ui/shared/batch/OptimisticL2TxnBatchDA';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
+import DetailsTimestamp from 'ui/shared/DetailsTimestamp';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 import PrevNext from 'ui/shared/PrevNext';
 
 interface Props {
@@ -44,6 +49,8 @@ const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
     return null;
   }
 
+  const blocksCount = data.l2_block_end - data.l2_block_start + 1;
+
   return (
     <Grid
       columnGap={ 8 }
@@ -69,6 +76,57 @@ const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
           isPrevDisabled={ data.internal_id === 0 }
           isLoading={ isPlaceholderData }
         />
+      </DetailsInfoItem.Value>
+
+      <DetailsInfoItem.Label
+        isLoading={ isPlaceholderData }
+        hint="Date and time at which batch is submitted to L1"
+      >
+        Timestamp
+      </DetailsInfoItem.Label>
+      <DetailsInfoItem.Value>
+        { data.l1_timestamp ?
+          <DetailsTimestamp timestamp={ data.l1_timestamp }isLoading={ isPlaceholderData }/> :
+          'Undefined'
+        }
+      </DetailsInfoItem.Value>
+
+      <DetailsInfoItem.Label
+        isLoading={ isPlaceholderData }
+        hint="Number of transactions in this batch"
+      >
+        Transactions
+      </DetailsInfoItem.Label>
+      <DetailsInfoItem.Value>
+        <Skeleton isLoaded={ !isPlaceholderData }>
+          <LinkInternal href={ route({ pathname: '/batches/[number]', query: { number: data.internal_id.toString(), tab: 'txs' } }) }>
+            { data.tx_count.toLocaleString() } transaction{ data.tx_count === 1 ? '' : 's' }
+          </LinkInternal>
+        </Skeleton>
+      </DetailsInfoItem.Value>
+
+      <DetailsInfoItem.Label
+        isLoading={ isPlaceholderData }
+        hint="Number of L2 blocks in this batch"
+      >
+        Blocks
+      </DetailsInfoItem.Label>
+      <DetailsInfoItem.Value>
+        <Skeleton isLoaded={ !isPlaceholderData }>
+          <LinkInternal href={ route({ pathname: '/batches/[number]', query: { number: data.internal_id.toString(), tab: 'blocks' } }) }>
+            { blocksCount.toLocaleString() } block{ blocksCount === 1 ? '' : 's' }
+          </LinkInternal>
+        </Skeleton>
+      </DetailsInfoItem.Value>
+
+      <DetailsInfoItem.Label
+        isLoading={ isPlaceholderData }
+        hint="Where the batch data is stored"
+      >
+            Batch data container
+      </DetailsInfoItem.Label>
+      <DetailsInfoItem.Value>
+        <OptimisticL2TxnBatchDA container={ data.batch_data_container } isLoading={ isPlaceholderData }/>
       </DetailsInfoItem.Value>
     </Grid>
   );
