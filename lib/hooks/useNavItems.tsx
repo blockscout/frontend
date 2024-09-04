@@ -257,16 +257,10 @@ export default function useNavItems(): ReturnType {
 
     const mainNavItems: ReturnType['mainNavItems'] = [
       {
-        text: 'Blockchain',
+        text: 'Explorer',
         icon: 'navitems/globe-b',
         isActive: blockchainNavItems.flat().some(item => isInternalItem(item) && item.isActive),
         subItems: blockchainNavItems,
-      },
-      {
-        text: 'Tokens',
-        nextRoute: { pathname: '/tokens' as const },
-        icon: 'navitems/token',
-        isActive: pathname.startsWith('/token'),
       },
       {
         text: 'Storage',
@@ -279,6 +273,12 @@ export default function useNavItems(): ReturnType {
         icon: 'navitems/faucet',
         nextRoute: { pathname: '/faucet' as const },
         isActive: pathname.startsWith('/faucet'),
+      },
+      {
+        text: 'Tokens',
+        nextRoute: { pathname: '/tokens' as const },
+        icon: 'navitems/token',
+        isActive: pathname.startsWith('/token'),
       },
       config.features.marketplace.isEnabled ? {
         text: 'DApps',

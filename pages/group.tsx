@@ -44,7 +44,7 @@ const Page: NextPage = () => {
         }`,
         'owner_address',
       ],
-      limit: 11,
+      limit: 21,
       offset: offset,
       where: debouncedSearchTerm ? {
         _or: [
@@ -69,7 +69,7 @@ const Page: NextPage = () => {
   });
 
   React.useEffect(() => {
-    if (typeof tableLength === 'number' && tableLength !== 11) {
+    if (typeof tableLength === 'number' && tableLength >= 21) {
       setToNext(false);
     } else {
       setToNext(true);

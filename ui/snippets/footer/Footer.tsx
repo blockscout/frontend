@@ -59,12 +59,12 @@ const Footer = () => {
       text: 'Discord',
       url: 'https://discord.com/invite/SJ2RDs9NGM',
     },
-    // {
-    //   icon: 'discussions' as const,
-    //   iconSize: '20px',
-    //   text: 'Discussions',
-    //   url: 'https://github.com/orgs/blockscout/discussions',
-    // },
+    {
+      icon: 'Youtube' as const,
+      iconSize: '20px',
+      text: 'Youtube',
+      url: 'https://www.youtube.com/@zkMe_',
+    },
     // {
     //   icon: 'donate' as const,
     //   iconSize: '20px',

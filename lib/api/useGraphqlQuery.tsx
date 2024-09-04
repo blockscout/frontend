@@ -6,7 +6,7 @@ interface QueryConfig {
   limit?: number;
   offset?: number;
   where?: Record<string, any>;
-  order?: Record<string, 'ASC' | 'DESC'>;
+  order?: Record<string, string>;
 }
 
 interface QueryResult {
@@ -75,7 +75,7 @@ const useGraphqlQuery = (aliasName: string, queries: Array<QueryConfig>): QueryR
       ({ tableName, fields, limit, offset, where, order }) => `
       ${ tableName } (
         where: { ${ formatWhereCondition(where) } },
-        ${ order ? `order_by: { ${ formatObjectToGraphQL(order) } },` : '' }
+        ${ order ? `order_by: { ${ Object.keys(order)[0] }: ${ Object.values(order) } },` : '' }
         ${ limit !== undefined ? `limit: $limit,` : '' }
         ${ offset !== undefined ? `offset: $offset` : '' }
       ) {
