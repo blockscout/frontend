@@ -18,6 +18,7 @@ import LinkInternal from 'ui/shared/links/LinkInternal';
 import PrevNext from 'ui/shared/PrevNext';
 
 import OptimisticL2TxnBatchBlobCallData from './OptimisticL2TxnBatchBlobCallData';
+import OptimisticL2TxnBatchBlobCelestia from './OptimisticL2TxnBatchBlobCelestia';
 import OptimisticL2TxnBatchBlobEip4844 from './OptimisticL2TxnBatchBlobEip4844';
 
 interface Props {
@@ -134,8 +135,10 @@ const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
         { data.batch_data_container === 'in_calldata' && (
           <OptimisticL2TxnBatchBlobCallData
             l1TxHashes={ data.l1_tx_hashes }
-            l1Timestamp={ data.l1_timestamp }/>
+            l1Timestamp={ data.l1_timestamp }
+          />
         ) }
+        { data.batch_data_container === 'in_celestia' && data.blobs && <OptimisticL2TxnBatchBlobCelestia blobs={ data.blobs }/> }
       </DetailsInfoItem.Value>
     </Grid>
   );

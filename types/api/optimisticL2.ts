@@ -57,22 +57,44 @@ export type OptimisticL2TxnBatchesResponse = {
   };
 }
 
-export interface OptimisticL2Blob {
+export interface OptimisticL2BlobTypeEip4844 {
   hash: string;
   l1_timestamp: string;
   l1_transaction_hash: string;
 }
 
-export type OptimismL2TxnBatch = {
-  batch_data_container: OptimisticL2BatchDataContainer;
+export interface OptimisticL2BlobTypeCelestia {
+  commitment: string;
+  height: number;
+  l1_timestamp: string;
+  l1_transaction_hash: string;
+  namespace: string;
+}
+
+interface OptimismL2TxnBatchBase {
   internal_id: number;
-  blobs: Array<OptimisticL2Blob> | null;
   l1_timestamp: string;
   l1_tx_hashes: Array<string>;
   l2_block_start: number;
   l2_block_end: number;
   tx_count: number;
 }
+
+export interface OptimismL2TxnBatchTypeCallData extends OptimismL2TxnBatchBase {
+  batch_data_container: 'in_calldata';
+}
+
+export interface OptimismL2TxnBatchTypeEip4844 extends OptimismL2TxnBatchBase {
+  batch_data_container: 'in_blob4844';
+  blobs: Array<OptimisticL2BlobTypeEip4844> | null;
+}
+
+export interface OptimismL2TxnBatchTypeCelestia extends OptimismL2TxnBatchBase {
+  batch_data_container: 'in_celestia';
+  blobs: Array<OptimisticL2BlobTypeCelestia> | null;
+}
+
+export type OptimismL2TxnBatch = OptimismL2TxnBatchTypeCallData | OptimismL2TxnBatchTypeEip4844 | OptimismL2TxnBatchTypeCelestia;
 
 export type OptimismL2BatchTxs = {
   items: Array<Transaction>;

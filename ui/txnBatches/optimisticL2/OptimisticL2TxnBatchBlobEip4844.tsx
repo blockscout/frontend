@@ -1,7 +1,7 @@
 import { GridItem, VStack } from '@chakra-ui/react';
 import React from 'react';
 
-import type { OptimisticL2Blob } from 'types/api/optimisticL2';
+import type { OptimisticL2BlobTypeEip4844 } from 'types/api/optimisticL2';
 
 import dayjs from 'lib/date/dayjs';
 import BlobEntityL1 from 'ui/shared/entities/blob/BlobEntityL1';
@@ -10,7 +10,7 @@ import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import OptimisticL2TxnBatchBlobWrapper from './OptimisticL2TxnBatchBlobWrapper';
 
 interface Props {
-  blobs: Array<OptimisticL2Blob>;
+  blobs: Array<OptimisticL2BlobTypeEip4844>;
 }
 
 const OptimisticL2TxnBatchBlobEip4844 = ({ blobs }: Props) => {
