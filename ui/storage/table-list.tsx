@@ -21,7 +21,7 @@ import type { TalbeListType } from 'types/storage';
 
 import Pagination from './Pagination';
 import styles from './pagination.module.css';
-import { formatPubKey, skeletonList, textOmit } from './utils';
+import { formatPubKey, skeletonList } from './utils';
 
 type Props<T extends string> = {
   tapList?: Array<T> | undefined;
@@ -117,13 +117,13 @@ function TableList(props: Props<string>) {
                                   value === 'Object Name' ? (
                                     <Tooltip label={ title[value] } placement="top" bg="#FFFFFF" color="black">
                                       <NextLink href={{ pathname: '/object-details/[address]', query: { address: title[value] || '' } }}>
-                                        <Box overflow="hidden"><Skeleton isLoaded={ !props.loading }>{ textOmit(title[value]) }</Skeleton></Box>
+                                        <Box overflow="hidden"><Skeleton isLoaded={ !props.loading }>{ formatPubKey(title[value], 16, 16) }</Skeleton></Box>
                                       </NextLink>
                                     </Tooltip >
                                   ) :
                                     value === 'Bucket Name' || value === 'Bucket' ? (
                                       <NextLink href={{ pathname: '/bucket-details/[address]', query: { address: title[value] || '' } }}>
-                                        <Box><Skeleton isLoaded={ !props.loading }>{ textOmit(title[value]) }</Skeleton></Box>
+                                        <Box><Skeleton isLoaded={ !props.loading }>{ formatPubKey(title[value], 16, 16) }</Skeleton></Box>
                                       </NextLink>
                                     ) :
                                       value === 'Group Name' ? (

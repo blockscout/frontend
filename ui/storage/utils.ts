@@ -95,10 +95,3 @@ export const skeletonList = (storageName: string) => {
   }
   return list;
 };
-
-export const textOmit = (text: string) => {
-  if (text && text.length > 16) {
-    return text.slice(0, 16) + '...';
-  }
-  return text;
-};
