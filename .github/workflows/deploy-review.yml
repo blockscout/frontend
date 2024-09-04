@@ -20,6 +20,7 @@ on:
             - eth_sepolia
             - eth_goerli
             - optimism
+            - optimism_celestia
             - optimism_sepolia
             - polygon
             - rootstock
