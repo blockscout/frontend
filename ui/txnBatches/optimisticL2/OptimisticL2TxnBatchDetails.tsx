@@ -17,6 +17,9 @@ import DetailsTimestamp from 'ui/shared/DetailsTimestamp';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import PrevNext from 'ui/shared/PrevNext';
 
+import OptimisticL2TxnBatchBlobCallData from './OptimisticL2TxnBatchBlobCallData';
+import OptimisticL2TxnBatchBlobEip4844 from './OptimisticL2TxnBatchBlobEip4844';
+
 interface Props {
   query: UseQueryResult<OptimismL2TxnBatch, ResourceError>;
 }
@@ -125,8 +128,14 @@ const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
       >
         Batch data container
       </DetailsInfoItem.Label>
-      <DetailsInfoItem.Value>
+      <DetailsInfoItem.Value flexDir="column" alignItems="flex-start" rowGap={ 2 }>
         <OptimisticL2TxnBatchDA container={ data.batch_data_container } isLoading={ isPlaceholderData }/>
+        { data.batch_data_container === 'in_blob4844' && data.blobs && <OptimisticL2TxnBatchBlobEip4844 blobs={ data.blobs }/> }
+        { data.batch_data_container === 'in_calldata' && (
+          <OptimisticL2TxnBatchBlobCallData
+            l1TxHashes={ data.l1_tx_hashes }
+            l1Timestamp={ data.l1_timestamp }/>
+        ) }
       </DetailsInfoItem.Value>
     </Grid>
   );
