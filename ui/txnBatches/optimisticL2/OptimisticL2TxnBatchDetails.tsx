@@ -28,7 +28,7 @@ interface Props {
 const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
   const router = useRouter();
 
-  const { data, isPlaceholderData, isError, error } = query;
+  const { data, isError, error, isPlaceholderData } = query;
 
   const handlePrevNextClick = React.useCallback((direction: 'prev' | 'next') => {
     if (!data) {
@@ -131,14 +131,17 @@ const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value flexDir="column" alignItems="flex-start" rowGap={ 2 }>
         <OptimisticL2TxnBatchDA container={ data.batch_data_container } isLoading={ isPlaceholderData }/>
-        { data.batch_data_container === 'in_blob4844' && data.blobs && <OptimisticL2TxnBatchBlobEip4844 blobs={ data.blobs }/> }
+        { data.batch_data_container === 'in_blob4844' && data.blobs &&
+          <OptimisticL2TxnBatchBlobEip4844 blobs={ data.blobs } isLoading={ isPlaceholderData }/> }
         { data.batch_data_container === 'in_calldata' && (
           <OptimisticL2TxnBatchBlobCallData
             l1TxHashes={ data.l1_tx_hashes }
             l1Timestamp={ data.l1_timestamp }
+            isLoading={ isPlaceholderData }
           />
         ) }
-        { data.batch_data_container === 'in_celestia' && data.blobs && <OptimisticL2TxnBatchBlobCelestia blobs={ data.blobs }/> }
+        { data.batch_data_container === 'in_celestia' && data.blobs &&
+          <OptimisticL2TxnBatchBlobCelestia blobs={ data.blobs } isLoading={ isPlaceholderData }/> }
       </DetailsInfoItem.Value>
     </Grid>
   );

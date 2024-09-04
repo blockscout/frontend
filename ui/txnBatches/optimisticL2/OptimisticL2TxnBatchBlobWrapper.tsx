@@ -4,9 +4,10 @@ import React from 'react';
 interface Props {
   children: React.ReactNode;
   className?: string;
+  isLoading: boolean;
 }
 
-const OptimisticL2TxnBatchBlobWrapper = ({ children, className }: Props) => {
+const OptimisticL2TxnBatchBlobWrapper = ({ children, className, isLoading }: Props) => {
   const bgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.100');
   return (
     <Grid
@@ -18,10 +19,11 @@ const OptimisticL2TxnBatchBlobWrapper = ({ children, className }: Props) => {
       gridTemplateColumns="auto 1fr"
       borderRadius="base"
       w="100%"
+      h={ isLoading ? '140px' : undefined }
       fontSize="sm"
       lineHeight={ 5 }
     >
-      { children }
+      { isLoading ? null : children }
     </Grid>
   );
 };

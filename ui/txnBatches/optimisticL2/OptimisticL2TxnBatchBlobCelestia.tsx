@@ -1,14 +1,17 @@
-import { Flex, GridItem, VStack } from '@chakra-ui/react';
+import { Flex, GridItem, Icon, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { OptimisticL2BlobTypeCelestia } from 'types/api/optimisticL2';
 
+// This icon doesn't work properly when it is in the sprite
+// Probably because of the gradient
+// eslint-disable-next-line no-restricted-imports
+import celeniumIcon from 'icons/brands/celenium.svg';
 import dayjs from 'lib/date/dayjs';
 import hexToBase64 from 'lib/hexToBase64';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
-import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 
 import OptimisticL2TxnBatchBlobWrapper from './OptimisticL2TxnBatchBlobWrapper';
@@ -24,14 +27,15 @@ function getCeleniumUrl(blob: OptimisticL2BlobTypeCelestia) {
 
 interface Props {
   blobs: Array<OptimisticL2BlobTypeCelestia>;
+  isLoading: boolean;
 }
 
-const OptimisticL2TxnBatchBlobCelestia = ({ blobs }: Props) => {
+const OptimisticL2TxnBatchBlobCelestia = ({ blobs, isLoading }: Props) => {
   return (
-    <VStack rowGap={ 2 }>
+    <VStack rowGap={ 2 } w="100%">
       { blobs.map((blob) => {
         return (
-          <OptimisticL2TxnBatchBlobWrapper key={ blob.commitment } gridTemplateColumns="auto 1fr auto">
+          <OptimisticL2TxnBatchBlobWrapper key={ blob.commitment } isLoading={ isLoading } gridTemplateColumns="auto 1fr auto">
             <GridItem fontWeight={ 600 }>Commitment</GridItem>
             <GridItem overflow="hidden">
               <Flex minW="0" w="calc(100% - 20px)">
@@ -40,7 +44,7 @@ const OptimisticL2TxnBatchBlobCelestia = ({ blobs }: Props) => {
               </Flex>
             </GridItem>
             <GridItem display="flex" columnGap={ 2 }>
-              <IconSvg name="brands/celenium" boxSize={ 5 }/>
+              <Icon as={ celeniumIcon } boxSize={ 5 }/>
               <LinkExternal href={ getCeleniumUrl(blob) }>Blob page</LinkExternal>
             </GridItem>
             <GridItem fontWeight={ 600 }>Hight</GridItem>

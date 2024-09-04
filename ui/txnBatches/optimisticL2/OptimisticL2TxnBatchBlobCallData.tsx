@@ -9,11 +9,12 @@ import OptimisticL2TxnBatchBlobWrapper from './OptimisticL2TxnBatchBlobWrapper';
 interface Props {
   l1TxHashes: Array<string>;
   l1Timestamp: string;
+  isLoading: boolean;
 }
 
-const OptimisticL2TxnBatchBlobCallData = ({ l1TxHashes, l1Timestamp }: Props) => {
+const OptimisticL2TxnBatchBlobCallData = ({ l1TxHashes, l1Timestamp, isLoading }: Props) => {
   return (
-    <OptimisticL2TxnBatchBlobWrapper>
+    <OptimisticL2TxnBatchBlobWrapper isLoading={ isLoading }>
       <GridItem fontWeight={ 600 }>Timestamp</GridItem>
       <GridItem whiteSpace="normal">
         { dayjs(l1Timestamp).fromNow() } | { dayjs(l1Timestamp).format('llll') }
