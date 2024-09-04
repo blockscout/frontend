@@ -72,6 +72,7 @@ export const withoutGasInfo: HomeStats = {
 export const withSecondaryCoin: HomeStats = {
   ...base,
   secondary_coin_price: '3.398',
+  secondary_coin_image: 'http://localhost:3100/secondary_utia.jpg',
 };
 
 export const noChartData: HomeStats = {
