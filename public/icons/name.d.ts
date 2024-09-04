@@ -131,6 +131,7 @@
 	| "social\\discord_colored"
 	| "social\\discord_filled"
 	| "social\\discord"
+	| "social\\youtobe"
 	| "social\\facebook_filled"
 	| "social\\git"
 	| "social\\github_filled"
@@ -176,5 +177,4 @@
 	| "wallets\\metamask"
 	| "wallets\\token-pocket"
 	| "watchlist"
-	| "Youtobe";
   

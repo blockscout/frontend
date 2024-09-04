@@ -60,8 +60,8 @@ const Footer = () => {
       url: 'https://discord.com/invite/SJ2RDs9NGM',
     },
     {
-      icon: 'Youtube' as const,
-      iconSize: '20px',
+      icon: 'social/youtube' as const,
+      iconSize: '24px',
       text: 'Youtube',
       url: 'https://www.youtube.com/@zkMe_',
     },

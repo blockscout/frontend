@@ -10,7 +10,7 @@ import PageNextJs from 'nextjs/PageNextJs';
 import useGraphqlQuery from 'lib/api/useGraphqlQuery';
 import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import { timeTool, sizeTool } from 'ui/storage/utils';
+import { timeTool, sizeTool, formatPubKey } from 'ui/storage/utils';
 
 const HeadDetails = dynamic(() => import('ui/storage/head-details'), { ssr: false });
 // const TableDetails = dynamic(() => import('ui/storage/table-details'), { ssr: false });
@@ -153,7 +153,9 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       <Flex align="center" marginBottom="24px">
         <IconSvg onClick={ routerFallback() } cursor="pointer" w="24px" h="24px" marginRight="4px" name="Fallback"></IconSvg>
         <PageTitle marginBottom="0" title="Bucket Details" withTextAd/>
-        <Box ml="6px">{ router.query.address }</Box>
+        <Box ml="6px" color="rgba(0, 0, 0, 0.4)" fontWeight="400" fontSize="14px">
+          { details?.bucket_name.length > 60 ? formatPubKey(details?.bucket_name, 60, 0) : details?.bucket_name }
+        </Box>
       </Flex>
       { /* <Flex justifyContent="space-between">
         {

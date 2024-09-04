@@ -25,6 +25,7 @@ import {
   Button,
   Divider,
   Skeleton,
+  Tooltip,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React, { useState } from 'react';
@@ -32,6 +33,8 @@ import React, { useState } from 'react';
 import type { HeadProps } from 'types/storage';
 
 import IconSvg from 'ui/shared/IconSvg';
+
+import { formatPubKey } from './utils';
 
 const Page = (props: HeadProps) => {
   const toast = useToast();
@@ -104,13 +107,21 @@ const Page = (props: HeadProps) => {
                           { value || '-' }
                         </Box>
                       </Skeleton>
-                    ) : (
-                      <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
-                        <Text >
-                          { value || '-' }
-                        </Text>
-                      </Skeleton>
-                    ) }
+                    ) :
+                      key === 'Object Name' ? (
+                        <Tooltip label={ value } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
+                          <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
+                            { value.length > 30 ? formatPubKey(value, 0, 30) : value }
+                          </Skeleton>
+                        </Tooltip>
+                      ) :
+                        (
+                          <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
+                            <Text >
+                              { value || '-' }
+                            </Text>
+                          </Skeleton>
+                        ) }
                 </Td>
               </Tr>
             )) }
