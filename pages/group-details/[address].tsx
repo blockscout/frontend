@@ -90,7 +90,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       status: 'none',
     },
     'Active Group Member Count': {
-      value: details?.tags && Object.entries(details?.members).length.toString(),
+      value: (details?.tags && Object.entries(details?.members).length.toString()) || '0',
       status: 'none',
     },
     Owner: {

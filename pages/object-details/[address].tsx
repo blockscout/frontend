@@ -87,7 +87,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
     'Object Name': details?.object_name,
     'Object Tags': details?.tags && Object.entries(details?.tags).length.toString(),
     'Object ID': details?.object_id && formatPubKey(details?.object_id, 6, 6),
-    'Object No.': details?.object_id && formatPubKey(details?.object_id, 6, 6),
+    // 'Object No.': details?.object_id && formatPubKey(details?.object_id, 6, 6),
     Type: details?.content_type,
     'Object Size': sizeTool(details?.payload_size),
     'Object Status': details?.status,

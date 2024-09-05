@@ -87,14 +87,14 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
     'Bucket Name': details?.bucket_name,
     'Bucket Tags': details?.tags && Object.entries(details?.tags).length.toString(),
     'Bucket ID': details?.bucket_id,
-    'Bucket No.': details?.bucket_id,
+    // 'Bucket No.': details?.bucket_id,
     'Active Objects Count': details?.global_virtual_group_family_id,
     'Bucket Status': details?.status,
     Deleted: details?.removed ? 'Yes' : 'No',
   };
   const more = {
     'Last Updated Time': {
-      value: timeTool(details?.update_time),
+      value: timeTool(details?.update_time.slice(0, 19)),
       status: 'time',
     },
     'Storage Size': {

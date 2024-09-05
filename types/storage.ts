@@ -33,7 +33,7 @@ export interface ObjectDetailsOverviewType {
   'Object Name': string;
   'Object Tags': string;
   'Object ID': string;
-  'Object No.': string;
+  // 'Object No.': string;
   Type: string;
   'Object Size': string;
   'Object Status': string;
@@ -125,7 +125,7 @@ export interface HeadProps {
     'Bucket Name'?: string;
     'Bucket Tags'?: string;
     'Bucket ID'?: string;
-    'Bucket No.'?: string;
+    // 'Bucket No.'?: string;
     'Active Objects Count'?: string;
     'Bucket Status'?: string;
     'Deleted'?: string;
