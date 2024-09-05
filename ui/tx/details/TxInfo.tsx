@@ -790,7 +790,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         <>
           <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
 
-          { data.arbitrum?.message_related_info && (
+          { data.arbitrum?.contains_message && data.arbitrum?.message_related_info && (
             <>
               <DetailsInfoItem.Label
                 hint={ data.arbitrum.contains_message === 'incoming' ?
