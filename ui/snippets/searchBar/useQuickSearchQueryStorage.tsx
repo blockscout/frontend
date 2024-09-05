@@ -78,7 +78,7 @@ export default function useQuickSearchQueryStorage() {
       case 'object':
         return [
           {
-            tableName: 'object',
+            tableName: 'objects',
             fields: [
               'object_id',
               'object_name',
@@ -97,7 +97,7 @@ export default function useQuickSearchQueryStorage() {
       case 'bucket':
         return [
           {
-            tableName: 'bucket',
+            tableName: 'buckets',
             fields: [
               'bucket_id',
               'bucket_name',
@@ -135,6 +135,7 @@ export default function useQuickSearchQueryStorage() {
     }
   }, [ debouncedSearchTerm, type ]);
   const query = useGraphqlQuery('graphql_search', graphqlQuerires());
+
   const redirectCheckQuery = useApiQuery('search_check_redirect', {
     // on pages with regular search bar we check redirect on every search term change
     // in order to prepend its result to suggest list since this resource is much faster than regular search

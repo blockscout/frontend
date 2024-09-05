@@ -45,7 +45,16 @@ const SearchBar = ({ isHomepage }: Props) => {
 
   const recentSearchKeywords = getRecentSearchKeywords();
 
-  const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query, pathname } = useQuickSearchQuery();
+  const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query, pathname, setType, type } = useQuickSearchQuery();
+
+  const showMoreClicked = React.useCallback(() => {
+    if (type === 'default') {
+      return false;
+    } else {
+      return true;
+    }
+  }, [ type ]);
+
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (searchTerm) {
@@ -153,7 +162,8 @@ const SearchBar = ({ isHomepage }: Props) => {
                 id={ SCROLL_CONTAINER_ID }
                 ref={ scrollRef }
                 as={ Element }
-                px={ 4 }
+                px="4px"
+                py="4px"
               >
                 { searchTerm.trim().length === 0 && recentSearchKeywords.length > 0 && (
                   <SearchBarRecentKeywords onClick={ handleSearchTermChange } onClear={ onClose }/>
@@ -164,6 +174,8 @@ const SearchBar = ({ isHomepage }: Props) => {
                     searchTerm={ debouncedSearchTerm }
                     onItemClick={ handleItemClick }
                     containerId={ SCROLL_CONTAINER_ID }
+                    setType={ setType }
+                    showMoreClicked={ showMoreClicked() }
                   />
                 ) }
               </Box>

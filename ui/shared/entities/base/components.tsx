@@ -1,4 +1,4 @@
-import { chakra, Flex, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { chakra, Flex, Skeleton } from '@chakra-ui/react';
 import type { As, IconProps } from '@chakra-ui/react';
 import React from 'react';
 
@@ -88,7 +88,8 @@ export interface IconBaseProps extends Pick<EntityBaseProps, 'isLoading' | 'icon
 }
 
 const Icon = ({ isLoading, iconSize, noIcon, name, color, borderRadius }: IconBaseProps) => {
-  const defaultColor = useColorModeValue('gray.500', 'gray.400');
+  // const defaultColor = useColorModeValue('gray.500', 'gray.400');
+  const defaultColor = '#DCD4FF';
 
   if (noIcon) {
     return null;

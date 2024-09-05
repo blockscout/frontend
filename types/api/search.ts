@@ -114,21 +114,21 @@ export interface SearchRedirectResult {
 // For Stroage
 export interface SearchResultBucket {
   type: 'buckets';
-  id: number;
+  bucket_id: string;
   bucket_name: string;
   owner_address: string;
 }
 
 export interface SearchResultObject {
   type: 'objects';
-  id: number;
+  object_id: string;
   object_name: string;
   owner_address: string;
 }
 
 export interface SearchResultGroup {
   type: 'groups';
-  id: number;
+  group_id: string;
   group_name: string;
   owner_address: string;
 }

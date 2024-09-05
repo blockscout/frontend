@@ -1,5 +1,4 @@
 import { HStack, Box } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import config from 'configs/app';
@@ -8,7 +7,6 @@ import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
 import SearchBar from 'ui/snippets/searchBar/SearchBar';
 import WalletMenuDesktop from 'ui/snippets/walletMenu/WalletMenuDesktop';
 
-import SearchBarStorage from '../searchBar/SearchBarStorage';
 import Burger from './Burger';
 
 type Props = {
@@ -17,16 +15,7 @@ type Props = {
 }
 
 const HeaderDesktop = ({ renderSearchBar, isMarketplaceAppPage }: Props) => {
-  const router = useRouter();
-  const storageSearchbar = React.useCallback(() => {
-    const pathname = router.pathname;
-    if (pathname.includes('object') || pathname.includes('bucket') || pathname.includes('group')) {
-      return true;
-    }
-    return false;
-  }, [ router.pathname ]);
-  const specifiedSearchBar = storageSearchbar() ? <SearchBarStorage/> : <SearchBar/>;
-  const searchBar = renderSearchBar ? renderSearchBar() : specifiedSearchBar;
+  const searchBar = renderSearchBar ? renderSearchBar() : <SearchBar/>;
 
   return (
     <HStack

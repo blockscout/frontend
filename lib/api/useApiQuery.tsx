@@ -21,6 +21,7 @@ export default function useApiQuery<R extends ResourceName, E = unknown, D = Res
   resource: R,
   { queryOptions, pathParams, queryParams, fetchParams }: Params<R, E, D> = {},
 ) {
+
   const apiFetch = useApiFetch();
 
   return useQuery<ResourcePayload<R>, ResourceError<E>, D>({
@@ -32,6 +33,7 @@ export default function useApiQuery<R extends ResourceName, E = unknown, D = Res
       // that's why we are safe here to do type conversion "as Promise<ResourcePayload<R>>"
       return apiFetch(resource, { pathParams, queryParams, fetchParams }) as Promise<ResourcePayload<R>>;
     },
+    enabled: queryOptions?.enabled !== false,
     ...queryOptions,
   });
 }

@@ -20,7 +20,7 @@ async function getAccessToken(code: string) {
   const clientId = getEnvValue('NEXT_PUBLIC_DISCORD_CLIENT_ID');
   const clientSecret = getEnvValue('NEXT_PUBLIC_DISCORD_CLIENT_SECRET');
   const encodedCredentials = btoa(`${ clientId }:${ clientSecret }`);
-  const redirectUri = `${ getEnvValue('NEXT_PUBLIC_API_PROTOCOL') }://i-${ getEnvValue('NEXT_PUBLIC_API_HOST') }/api/auth/callback/discord`;
+  const redirectUri = `${ getEnvValue('NEXT_PUBLIC_API_PROTOCOL') }://${ getEnvValue('NEXT_PUBLIC_API_HOST') }/api/auth/callback/discord`;
 
   const rp = await fetch('https://discord.com/api/v10/oauth2/token', {
     method: 'POST',

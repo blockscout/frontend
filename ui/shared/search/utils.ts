@@ -3,9 +3,9 @@ import type { MarketplaceAppOverview } from 'types/client/marketplace';
 
 import config from 'configs/app';
 
-export type ApiCategory = 'token' | 'nft' | 'address' | 'public_tag' | 'transaction' | 'block' | 'user_operation' | 'blob' | 'domain';
+export type ApiCategory = 'token' | 'nft' | 'address' | 'public_tag' | 'transaction' | 'block' | 'user_operation' | 'blob' | 'domain' | 'all';
 export type GraphQLCategory = 'buckets' | 'objects' | 'groups';
-export type Category = ApiCategory | GraphQLCategory | 'app';
+export type Category = ApiCategory | GraphQLCategory | 'app' | 'all';
 
 export type ItemsCategoriesMap =
 Record<ApiCategory | GraphQLCategory, Array<SearchResultItem>> &
@@ -17,6 +17,7 @@ export type SearchResultAppItem = {
 }
 
 export const searchCategories: Array<{id: Category; title: string }> = [
+  { id: 'all', title: 'All' },
   { id: 'app', title: 'DApps' },
   { id: 'token', title: `Tokens (${ config.chain.tokenStandard }-20)` },
   { id: 'nft', title: `NFTs (${ config.chain.tokenStandard }-721 & 1155)` },
@@ -42,6 +43,7 @@ if (config.features.nameService.isEnabled) {
 }
 
 export const searchItemTitles: Record<Category, { itemTitle: string; itemTitleShort: string }> = {
+  all: { itemTitle: 'All', itemTitleShort: 'All' },
   app: { itemTitle: 'DApp', itemTitleShort: 'App' },
   domain: { itemTitle: 'Name', itemTitleShort: 'Name' },
   token: { itemTitle: 'Token', itemTitleShort: 'Token' },
@@ -95,6 +97,9 @@ export function getItemCategory(item: SearchResultItem | SearchResultAppItem): C
     }
     case 'objects': {
       return 'objects';
+    }
+    case 'groups': {
+      return 'groups';
     }
   }
 }

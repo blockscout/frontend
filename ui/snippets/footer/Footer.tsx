@@ -51,7 +51,7 @@ const Footer = () => {
       icon: 'social/linkedin_filled' as const,
       iconSize: '18px',
       text: 'LinkedIn',
-      url: 'https://www.linkedin.cn/incareer/company/zkme',
+      url: 'https://www.linkedin.com/company/zkme/',
     },
     {
       icon: 'social/discord' as const,

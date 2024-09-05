@@ -1,73 +1,48 @@
-import { Text, Flex, Grid, Tag } from '@chakra-ui/react';
+import { Text, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 import type { SearchResultBlock } from 'types/api/search';
 
-import dayjs from 'lib/date/dayjs';
-import highlightText from 'lib/highlightText';
-import * as BlockEntity from 'ui/shared/entities/block/BlockEntity';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   data: SearchResultBlock;
   isMobile: boolean | undefined;
   searchTerm: string;
+  isFirst?: boolean;
 }
 
-const SearchBarSuggestBlock = ({ data, isMobile, searchTerm }: Props) => {
-  const icon = <BlockEntity.Icon/>;
-  const shouldHighlightHash = data.block_hash.toLowerCase() === searchTerm.toLowerCase();
+const SearchBarSuggestBlock = ({ data, isMobile, isFirst }: Props) => {
   const blockNumber = (
-    <Text
-      fontWeight={ 700 }
-      overflow="hidden"
-      whiteSpace="nowrap"
-      textOverflow="ellipsis"
-    >
-      <span dangerouslySetInnerHTML={{ __html: highlightText(data.block_number.toString(), searchTerm) }}/>
-    </Text>
+    <Flex fontWeight={ 500 } lineHeight="20px" fontSize={ 14 }>
+      <Text color="#000">Block Height:&nbsp;</Text>
+      <Text color="#8A55FD">{ data.block_number.toString() }</Text>
+    </Flex>
   );
-  const hash = (
-    <Text
-      variant="secondary"
-      overflow="hidden"
-      whiteSpace="nowrap"
-      as={ shouldHighlightHash ? 'mark' : 'span' }
-      display="block"
-    >
-      <HashStringShortenDynamic hash={ data.block_hash } isTooltipDisabled/>
-    </Text>
-  );
-  const date = dayjs(data.timestamp).format('llll');
 
   if (isMobile) {
     return (
-      <>
-        <Flex alignItems="center">
-          { icon }
-          { blockNumber }
-          { data.block_type === 'reorg' && <Tag ml="auto">Reorg</Tag> }
-          { data.block_type === 'uncle' && <Tag ml="auto">Uncle</Tag> }
-        </Flex>
-        { hash }
-        <Text variant="secondary">{ date }</Text>
-      </>
+      <Flex alignItems="center">
+        <IconSvg w="24px" h="24px" mr="8px" color="#DCD4FF" name="block_slim"/>
+        { blockNumber }
+      </Flex>
     );
   }
 
   return (
-    <Grid templateColumns="228px minmax(auto, max-content) auto" gap={ 2 }>
+    <Flex justifyContent="space-between">
       <Flex alignItems="center">
-        { icon }
+        <IconSvg w="24px" h="24px" mr="8px" color="#DCD4FF" name="block_slim"/>
         { blockNumber }
       </Flex>
-      <Flex columnGap={ 3 } minW={ 0 } alignItems="center">
-        { data.block_type === 'reorg' && <Tag flexShrink={ 0 }>Reorg</Tag> }
-        { data.block_type === 'uncle' && <Tag flexShrink={ 0 }>Uncle</Tag> }
-        { hash }
-      </Flex>
-      <Text variant="secondary" textAlign="end">{ date }</Text>
-    </Grid>
+      {
+        isFirst ? (
+          <Flex justifyContent="end">
+            <IconSvg transform="rotate(-180deg)" float="right" w="24px" h="24px" mr="8px" name="arrows/east"/>
+          </Flex>
+        ) : null
+      }
+    </Flex>
   );
 };
 

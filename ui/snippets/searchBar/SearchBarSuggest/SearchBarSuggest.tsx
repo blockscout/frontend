@@ -1,16 +1,16 @@
-import { Box, Tab, TabList, Tabs, Text, useColorModeValue } from '@chakra-ui/react';
-import type { UseQueryResult } from '@tanstack/react-query';
-import throttle from 'lodash/throttle';
+import { Box, Flex, Tab, TabList, Tabs, Text, useColorModeValue } from '@chakra-ui/react';
+// import throttle from 'lodash/throttle';
+import type { Dispatch, SetStateAction } from 'react';
 import React from 'react';
-import { scroller, Element } from 'react-scroll';
+import { Element } from 'react-scroll';
 
 import type { SearchResultItem } from 'types/api/search';
 
-import type { ResourceError } from 'lib/api/resources';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useMarketplaceApps from 'ui/marketplace/useMarketplaceApps';
 import TextAd from 'ui/shared/ad/TextAd';
 import ContentLoader from 'ui/shared/ContentLoader';
+import IconSvg from 'ui/shared/IconSvg';
 import type { ApiCategory, ItemsCategoriesMap } from 'ui/shared/search/utils';
 import { getItemCategory, searchCategories } from 'ui/shared/search/utils';
 
@@ -18,13 +18,19 @@ import SearchBarSuggestApp from './SearchBarSuggestApp';
 import SearchBarSuggestItem from './SearchBarSuggestItem';
 
 interface Props {
-  query: UseQueryResult<Array<SearchResultItem>, ResourceError<unknown>>;
+  query: {
+    data: Array<SearchResultItem>;
+    isPending: boolean;
+    isError: true | Error | undefined;
+  };
   searchTerm: string;
   onItemClick: (event: React.MouseEvent<HTMLAnchorElement>) => void;
   containerId: string;
+  setType: Dispatch<SetStateAction<string>>;
+  showMoreClicked: boolean;
 }
 
-const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props) => {
+const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreClicked }: Props) => {
   const isMobile = useIsMobile();
 
   const marketplaceApps = useMarketplaceApps(searchTerm);
@@ -33,37 +39,40 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
   const tabsRef = React.useRef<HTMLDivElement>(null);
 
   const [ tabIndex, setTabIndex ] = React.useState(0);
+  setTabIndex(0);
+  // const handleScroll = React.useCallback(() => {
+  //   const container = document.getElementById(containerId);
+  //   if (!container || !query.data?.length) {
+  //     return;
+  //   }
+  //   const topLimit = container.getBoundingClientRect().y + (tabsRef.current?.clientHeight || 0) + 24;
+  //   if (categoriesRefs.current[categoriesRefs.current.length - 1].getBoundingClientRect().y <= topLimit) {
+  //     setTabIndex(categoriesRefs.current.length - 1);
+  //     return;
+  //   }
+  //   for (let i = 0; i < categoriesRefs.current.length - 1; i++) {
+  //     if (i === 0) {
+  //       continue;
+  //     }
+  //     if (categoriesRefs.current[i].getBoundingClientRect().y <= topLimit && categoriesRefs.current[i + 1].getBoundingClientRect().y > topLimit) {
+  //       setTabIndex(i);
+  //       break;
+  //     }
+  //   }
+  // }, [ containerId, query.data ]);
 
-  const handleScroll = React.useCallback(() => {
-    const container = document.getElementById(containerId);
-    if (!container || !query.data?.length) {
-      return;
-    }
-    const topLimit = container.getBoundingClientRect().y + (tabsRef.current?.clientHeight || 0) + 24;
-    if (categoriesRefs.current[categoriesRefs.current.length - 1].getBoundingClientRect().y <= topLimit) {
-      setTabIndex(categoriesRefs.current.length - 1);
-      return;
-    }
-    for (let i = 0; i < categoriesRefs.current.length - 1; i++) {
-      if (categoriesRefs.current[i].getBoundingClientRect().y <= topLimit && categoriesRefs.current[i + 1].getBoundingClientRect().y > topLimit) {
-        setTabIndex(i);
-        break;
-      }
-    }
-  }, [ containerId, query.data ]);
-
-  React.useEffect(() => {
-    const container = document.getElementById(containerId);
-    const throttledHandleScroll = throttle(handleScroll, 300);
-    if (container) {
-      container.addEventListener('scroll', throttledHandleScroll);
-    }
-    return () => {
-      if (container) {
-        container.removeEventListener('scroll', throttledHandleScroll);
-      }
-    };
-  }, [ containerId, handleScroll ]);
+  // React.useEffect(() => {
+  //   const container = document.getElementById(containerId);
+  //   const throttledHandleScroll = throttle(handleScroll, 300);
+  //   if (container) {
+  //     container.addEventListener('scroll', throttledHandleScroll);
+  //   }
+  //   return () => {
+  //     if (container) {
+  //       container.removeEventListener('scroll', throttledHandleScroll);
+  //     }
+  //   };
+  // }, [ containerId, handleScroll ]);
 
   const itemsGroups = React.useMemo(() => {
     if (!query.data && !marketplaceApps.displayedApps) {
@@ -90,41 +99,52 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
     categoriesRefs.current = Array(Object.keys(itemsGroups).length).fill('').map((_, i) => categoriesRefs.current[i] || React.createRef());
   }, [ itemsGroups ]);
 
-  const scrollToCategory = React.useCallback((index: number) => () => {
-    setTabIndex(index);
-    scroller.scrollTo(`cat_${ index }`, {
-      duration: 250,
-      smooth: true,
-      offset: -(tabsRef.current?.clientHeight || 0),
-      containerId: containerId,
-    });
-  }, [ containerId ]);
+  // const scrollToCategory = React.useCallback((index: number) => () => {
+  //   setTabIndex(index);
+  //   scroller.scrollTo(`cat_${ index }`, {
+  //     duration: 250,
+  //     smooth: true,
+  //     offset: -(tabsRef.current?.clientHeight || 0),
+  //     containerId: containerId,
+  //   });
+  // }, [ containerId ]);
 
   const bgColor = useColorModeValue('white', 'gray.900');
+  const handleShowMoreClk = React.useCallback((type: string) => () => {
+    setType(type);
+  }, [ setType ]);
+
+  const hanleTabClick = React.useCallback((type: string) => () => {
+    setType(type.toLowerCase());
+  }, [ setType ]);
 
   const content = (() => {
     if (query.isPending || marketplaceApps.isPlaceholderData) {
-      return <ContentLoader text="We are searching, please wait... " fontSize="sm"/>;
+      return <ContentLoader pl="12px" text="We are searching, please wait... " fontSize="sm"/>;
     }
 
     if (query.isError) {
-      return <Text>Something went wrong. Try refreshing the page or come back later.</Text>;
+      return <Text pl="12px">Something went wrong. Try refreshing the page or come back later.</Text>;
     }
 
     const resultCategories = searchCategories.filter(cat => itemsGroups[cat.id]);
 
     if (resultCategories.length === 0) {
-      return <Text>No results found.</Text>;
+      return <Text pl="12px">No results found.</Text>;
+    }
+
+    if (resultCategories.length > 1) {
+      resultCategories.unshift({ id: 'all', title: 'All' });
     }
 
     return (
       <>
         { resultCategories.length > 1 && (
-          <Box position="sticky" top="0" width="100%" background={ bgColor } py={ 5 } my={ -5 } ref={ tabsRef }>
+          <Box position="sticky" top="0" width="100%" background={ bgColor } py={ 5 } my={ -5 } pl="12px" ref={ tabsRef }>
             <Tabs variant="outline" colorScheme="gray" size="sm" index={ tabIndex }>
               <TabList columnGap={ 3 } rowGap={ 2 } flexWrap="wrap">
                 { resultCategories.map((cat, index) => (
-                  <Tab key={ cat.id } onClick={ scrollToCategory(index) } { ...(tabIndex === index ? { 'data-selected': 'true' } : {}) }>
+                  <Tab borderRadius="47px" key={ cat.id } onClick={ hanleTabClick(cat.title) } { ...(tabIndex === index ? { 'data-selected': 'true' } : {}) }>
                     { cat.title }
                   </Tab>
                 )) }
@@ -133,24 +153,58 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
           </Box>
         ) }
         { resultCategories.map((cat, indx) => {
+          if (cat.id === 'all') {
+            return <> </>;
+          }
           return (
             <Element name={ `cat_${ indx }` } key={ cat.id }>
               <Text
                 fontSize="sm"
-                fontWeight={ 600 }
+                fontWeight={ 700 }
+                color="#000"
                 variant="secondary"
-                mt={ 6 }
-                mb={ 3 }
+                mt={ indx === 1 ? 6 : 2 }
+                pb={ 2 }
+                px="12px"
                 ref={ (el: HTMLParagraphElement) => categoriesRefs.current[indx] = el }
               >
                 { cat.title }
               </Text>
-              { cat.id !== 'app' && itemsGroups[cat.id]?.map((item, index) =>
-                <SearchBarSuggestItem key={ index } data={ item } isMobile={ isMobile } searchTerm={ searchTerm } onClick={ onItemClick }/>,
+              { cat.id !== 'app' && itemsGroups[cat.id]?.map((item, index) => (
+                <Box key={ index } px="8px" borderRadius="12px">
+                  <SearchBarSuggestItem
+                    key={ index }
+                    isFirst={ indx === 1 && index === 0 }
+                    data={ item }
+                    isMobile={ isMobile }
+                    searchTerm={ searchTerm }
+                    onClick={ onItemClick }/>
+                </Box>
+              ),
               ) }
               { cat.id === 'app' && itemsGroups[cat.id]?.map((item, index) =>
                 <SearchBarSuggestApp key={ index } data={ item } isMobile={ isMobile } searchTerm={ searchTerm } onClick={ onItemClick }/>,
               ) }
+              {
+                cat.id && !showMoreClicked && (itemsGroups[cat.id] as Array<any>).length >= 6 ? (
+                  <Flex
+                    mt="12px"
+                    cursor="pointer"
+                    flexDirection="row"
+                    alignContent="center"
+                    justifyContent="center"
+                    onClick={ handleShowMoreClk(cat.id) }
+                  >
+                    <Text
+                      fontSize="12px"
+                      fontWeight="500"
+                      lineHeight="16px"
+                      color="rgba(0, 0, 0, 0.40)"
+                    >Show More</Text>
+                    <IconSvg name="arrows/east" w="16px" h="16px" ml="4px" color="rgba(0, 0, 0, 0.40)"/>
+                  </Flex>
+                ) : null
+              }
             </Element>
           );
         }) }

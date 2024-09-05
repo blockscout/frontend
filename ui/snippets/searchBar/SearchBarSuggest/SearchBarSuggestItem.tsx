@@ -79,7 +79,7 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, isFirst }: 
 
       }
       case 'block': {
-        return <SearchBarSuggestBlock data={ data } searchTerm={ searchTerm } isMobile={ isMobile }/>;
+        return <SearchBarSuggestBlock data={ data } searchTerm={ searchTerm } isMobile={ isMobile } isFirst={ isFirst }/>;
       }
       case 'transaction': {
         return <SearchBarSuggestTx data={ data } searchTerm={ searchTerm } isMobile={ isMobile }/>;
@@ -107,7 +107,7 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, isFirst }: 
 
   return (
     <NextLink href={ url as NextLinkProps['href'] } passHref legacyBehavior>
-      <SearchBarSuggestItemLink onClick={ onClick }>
+      <SearchBarSuggestItemLink onClick={ onClick } isFirst={ isFirst }>
         { content }
       </SearchBarSuggestItemLink>
     </NextLink>
