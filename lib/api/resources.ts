@@ -31,7 +31,6 @@ import type {
   AddressNFTsResponse,
   AddressCollectionsResponse,
   AddressNFTTokensFilter,
-  AddressCoinBalanceHistoryChartOld,
   AddressMudTables,
   AddressMudTablesFilter,
   AddressMudRecords,
@@ -1042,7 +1041,7 @@ Q extends 'address_internal_txs' ? AddressInternalTxsResponse :
 Q extends 'address_token_transfers' ? AddressTokenTransferResponse :
 Q extends 'address_blocks_validated' ? AddressBlocksValidatedResponse :
 Q extends 'address_coin_balance' ? AddressCoinBalanceHistoryResponse :
-Q extends 'address_coin_balance_chart' ? AddressCoinBalanceHistoryChartOld | AddressCoinBalanceHistoryChart :
+Q extends 'address_coin_balance_chart' ? AddressCoinBalanceHistoryChart :
 Q extends 'address_logs' ? LogsResponseAddress :
 Q extends 'address_tokens' ? AddressTokensResponse :
 Q extends 'address_nfts' ? AddressNFTsResponse :
