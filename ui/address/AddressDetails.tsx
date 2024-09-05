@@ -5,6 +5,8 @@ import React from 'react';
 import config from 'configs/app';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMounted from 'lib/hooks/useIsMounted';
+import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
+import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import AddressCounterItem from 'ui/address/details/AddressCounterItem';
 import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
@@ -219,10 +221,10 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
         { data.has_validated_blocks && (
           <>
             <DetailsInfoItem.Label
-              hint="Number of blocks validated by this validator"
+              hint={ `Number of blocks ${ getNetworkValidationActionText() } by this ${ getNetworkValidatorTitle() }` }
               isLoading={ addressQuery.isPlaceholderData || countersQuery.isPlaceholderData }
             >
-              Blocks validated
+              { `Blocks ${ getNetworkValidationActionText() }` }
             </DetailsInfoItem.Label>
             <DetailsInfoItem.Value>
               { addressQuery.data ? (
