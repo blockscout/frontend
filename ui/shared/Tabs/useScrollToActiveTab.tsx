@@ -19,9 +19,14 @@ export default function useScrollToActiveTab({ activeTabIndex, tabsRefs, listRef
         const activeTabRef = tabsRefs[activeTabIndex];
 
         if (activeTabRef.current && listRef.current) {
-          const activeTabRect = activeTabRef.current.getBoundingClientRect();
+          const left = tabsRefs.slice(0, activeTabIndex)
+            .map((tab) => tab.current?.getBoundingClientRect())
+            .filter(Boolean)
+            .map((rect) => rect.width)
+            .reduce((result, item) => result + item, 0);
+
           listRef.current.scrollTo({
-            left: activeTabRect.left,
+            left,
             behavior: 'smooth',
           });
         }
