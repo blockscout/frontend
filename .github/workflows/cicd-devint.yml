@@ -33,3 +33,16 @@ jobs:
           context: .
           push: true
           tags: kevin2025/blockscout-frontend:latest
+
+  deploy-with-docker-compose:
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    steps:
+      - name: deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DEVINT2_SERVER_HOST }}
+          username: ${{ secrets.DEVINT2_SERVER_USERNAME }}
+          password: ${{ secrets.DEVINT2_SERVER_PASSWORD }}
+          script: |
+            sudo docker compose -f /data/blockscout/docker-compose/docker-compose.mechain.devint.yml up --build -d
