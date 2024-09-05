@@ -90,7 +90,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       status: 'none',
     },
     'Active Group Member Count': {
-      value: details?.tags && Object.entries(details?.members).length.toString(),
+      value: (details?.tags && Object.entries(details?.members).length.toString()) || '0',
       status: 'none',
     },
     Owner: {
@@ -115,6 +115,9 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
         <IconSvg onClick={ routerFallback() } cursor="pointer" w="24px" h="24px" marginRight="4px" name="Fallback"></IconSvg>
         <PageTitle marginBottom="0" title="Group Details" withTextAd/>
         <Box ml="6px">{ router.query.address }</Box>
+        <Box ml="6px" color="rgba(0, 0, 0, 0.4)" fontWeight="400" fontSize="14px">
+          { details?.group_name.length > 60 ? formatPubKey(details?.group_name, 60, 0) : details?.group_name }
+        </Box>
       </Flex>
       <HeadDetails loading={ loadsing } overview={ overview } more={ more }/>
       { /* <TableDetails tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead } changeTable={ changeTable }/> */ }

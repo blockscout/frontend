@@ -25,6 +25,7 @@ import {
   Button,
   Divider,
   Skeleton,
+  Tooltip,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React, { useState } from 'react';
@@ -32,6 +33,8 @@ import React, { useState } from 'react';
 import type { HeadProps } from 'types/storage';
 
 import IconSvg from 'ui/shared/IconSvg';
+
+import { formatPubKey } from './utils';
 
 const Page = (props: HeadProps) => {
   const toast = useToast();
@@ -104,13 +107,33 @@ const Page = (props: HeadProps) => {
                           { value || '-' }
                         </Box>
                       </Skeleton>
-                    ) : (
-                      <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
-                        <Text >
-                          { value || '-' }
-                        </Text>
-                      </Skeleton>
-                    ) }
+                    ) :
+                      key === 'Object Name' || key === 'Bucket Name' || key === 'Group Name' ? (
+                        <Tooltip label={ value } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
+                          <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
+                            { value?.length > 30 ? formatPubKey(value, 0, 30) : value }
+                          </Skeleton>
+                        </Tooltip>
+                      ) :
+                        key === 'Bucket ID' || key === 'Group ID' ? (
+                          <Tooltip label={ value } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
+                            <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
+                              { value?.length > 12 ? formatPubKey(value, 6, 6) : value }
+                            </Skeleton>
+                          </Tooltip>
+                        ) :
+                          key === 'Object Tags' || key === 'Bucket Tags' || key === 'Active Objects Count' || key === 'Group Tags' ? (
+                            <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
+                              { value || '0' }
+                            </Skeleton>
+                          ) :
+                            (
+                              <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
+                                <Text >
+                                  { value || '-' }
+                                </Text>
+                              </Skeleton>
+                            ) }
                 </Td>
               </Tr>
             )) }
@@ -172,7 +195,9 @@ const Page = (props: HeadProps) => {
                           <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
                             <NextLink href={{ pathname: '/bucket-details/[address]', query: { address: values.value || '' } }}>
                               <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
-                                { values.value || '' }
+                                <Tooltip label={ values.value } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
+                                  { (values.value && (values.value.length > 30)) ? formatPubKey(values.value, 0, 30) : values.value }
+                                </Tooltip>
                               </Skeleton>
                             </NextLink>
                           </Skeleton>
@@ -197,7 +222,10 @@ const Page = (props: HeadProps) => {
                                       fontWeight="500"
                                       fontSize="12px"
                                       padding="0px"
-                                      variant="text">{ values.value }</Button>
+                                      variant="text">
+                                      { props.overview && props.overview['Active Objects Count'] }&nbsp;|&nbsp;
+                                      { values.value }
+                                    </Button>
                                   </PopoverTrigger>
                                   <PopoverContent right="94px" w="auto">
                                     <PopoverHeader

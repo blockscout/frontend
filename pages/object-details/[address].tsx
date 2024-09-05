@@ -87,7 +87,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
     'Object Name': details?.object_name,
     'Object Tags': details?.tags && Object.entries(details?.tags).length.toString(),
     'Object ID': details?.object_id && formatPubKey(details?.object_id, 6, 6),
-    'Object No.': details?.object_id && formatPubKey(details?.object_id, 6, 6),
+    // 'Object No.': details?.object_id && formatPubKey(details?.object_id, 6, 6),
     Type: details?.content_type,
     'Object Size': sizeTool(details?.payload_size),
     'Object Status': details?.status,
@@ -132,7 +132,9 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       <Flex align="center" marginBottom="24px">
         <IconSvg onClick={ routerFallback() } cursor="pointer" w="24px" h="24px" marginRight="4px" name="Fallback"></IconSvg>
         <PageTitle marginBottom="0" title="Object Details" withTextAd/>
-        <Box ml="6px" color="rgba(0, 0, 0, 0.4)" fontWeight="400" fontSize="14px">{ formatPubKey(details?.object_name) }</Box>
+        <Box ml="6px" color="rgba(0, 0, 0, 0.4)" fontWeight="400" fontSize="14px">
+          { details?.object_name.length > 60 ? formatPubKey(details?.object_name, 60, 0) : details?.object_name }
+        </Box>
       </Flex>
       <HeadDetails loading={ loadsing } overview={ overview } more={ more } secondaryAddresses={ secondaryAddresses }/>
       { /* <TableDetails tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead } changeTable={ changeTable }/> */ }

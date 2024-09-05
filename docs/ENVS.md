@@ -106,6 +106,10 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
 | NEXT_PUBLIC_API_PORT | `number` | Port where API is running on the host | - | - | `3001` | v1.0.x+ |
 | NEXT_PUBLIC_API_BASE_PATH | `string` | Base path for Main API endpoint url | - | - | `/poa/core` | v1.0.x+ |
 | NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL | `ws \| wss` | Main API websocket protocol | - | `wss` | `ws` | v1.0.x+ |
+| NEXT_PUBLIC_STORAGE_API_HOST | `string` | Storage related Graphql API Host | - | `storage_api_host` | `storage_api_host` | v1.0.x+ |
+| NEXT_PUBLIC_DISCORD_CLIENT_ID | `number` | Discord Client Id | - | `1234567` | `1234567` | v1.0.x+ |
+| NEXT_PUBLIC_DISCORD_GUILD_ID | `number` | Discord GUILD Id | - | `1234567` | `1234567` | v1.0.x+ |
+| NEXT_PUBLIC_DISCORD_GUILD_NAME | `string` | Discord GUILD Name | - | `zkMe` | `zkMe` | v1.0.x+ |
 
 &nbsp;
 
@@ -705,6 +709,18 @@ If the feature is enabled, a Multichain balance button will be displayed on the 
 &nbsp;
 
 ## External services configuration
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_DATABASE_URL | `string` | Mongodb connection string | - | - | - |
+| NEXT_PUBLIC_DISCORD_CLIENT_ID | `string` | Discord (for faucet) Client Id | - | - | - |
+| NEXT_PUBLIC_DISCORD_CLIENT_SECRET | `string` | Discord (for faucet) Client Secret | - | - | - |
+| NEXT_PUBLIC_DISCORD_BOT_TOKEN | `string` | Discord (for faucet) Bot Token | - | - | - |
+| NEXT_PUBLIC_SESSION_PASSWORD | `string` | Session password | - | - | - |
+| NEXT_PUBLIC_FAUCET_VALUE | `number` | Faucet Value | - | - | - |
+| NEXT_PUBLIC_FAUCET_REQUEST_PER | `number` | Faucet Request Limit | - | - | - |
+| NEXT_PUBLIC_FAUCET_KEY | `string` | Faucet Key | - | - | - |
+| NEXT_PUBLIC_SESSION_TTL | `number` | Session TTL | - | - | - |
+
 
 ### Google ReCaptcha
 

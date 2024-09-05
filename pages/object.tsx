@@ -50,7 +50,8 @@ const ObjectDetails: NextPage = () => {
           { object_id: { _eq: debouncedSearchTerm } },
         ],
       } : undefined,
-      limit: 11,
+      order: { update_time: 'desc' },
+      limit: 21,
       offset: offset,
     },
   ];
@@ -74,7 +75,7 @@ const ObjectDetails: NextPage = () => {
     }
   });
   React.useEffect(() => {
-    if (typeof tableLength === 'number' && tableLength !== 11) {
+    if (typeof tableLength === 'number' && tableLength !== 21) {
       setToNext(false);
     } else {
       setToNext(true);

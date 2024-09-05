@@ -40,7 +40,7 @@ const Faucet = (props: { verified: boolean }) => {
     if (props.verified) {
       return;
     } else {
-      const redirectUri = `${ getEnvValue('NEXT_PUBLIC_API_PROTOCOL') }://${ getEnvValue('NEXT_PUBLIC_API_HOST') }/api/auth/callback/discord`;
+      const redirectUri = `${ getEnvValue('NEXT_PUBLIC_API_PROTOCOL') }://i-${ getEnvValue('NEXT_PUBLIC_API_HOST') }/api/auth/callback/discord`;
       const authUrl = new URL('https://discord.com/oauth2/authorize');
       const searchParams = new URLSearchParams({
         client_id: getEnvValue('NEXT_PUBLIC_DISCORD_CLIENT_ID')!,

@@ -5,7 +5,7 @@ import { getEnvValue } from 'configs/app/utils';
 import { FaucetRequestRecord } from './model';
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-mongoose.connect(getEnvValue('DATABASE_URL')!);
+mongoose.connect(getEnvValue('NEXT_PUBLIC_DATABASE_URL')!);
 
 export function createAndSaveRecord(discordId: string, discordUsername: string) {
   const doc = new FaucetRequestRecord({
