@@ -1,8 +1,9 @@
 # For developer testing
-name: Build Docker
+name: Build and Push Docker Image
 on:
   push:
     branches:
+      - main
       - cicd
 
 jobs:
@@ -10,11 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     if: true
     steps:
-      # References: https://github.com/actions/checkout
       - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          ref: 'cicd'
+        uses: actions/checkout@v4
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
