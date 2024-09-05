@@ -29,6 +29,7 @@ export function ad(): CspDev.DirectiveDescriptor {
       'ipapi.co',
       'http://154.48.244.46:9090/v1/graphql',
       'https://testnet-storage.mechain.tech/v1/graphql',
+      'https://devint-storage.mechain.tech/v1/graphql',
     ],
     'frame-src': [
       // coinzilla
