@@ -17,7 +17,7 @@ const OptimisticL2TxnBatchDA = ({ container, isLoading }: Props) => {
       case 'in_blob4844':
         return 'EIP-4844 blob';
       case 'in_calldata':
-        return 'Call data';
+        return 'Calldata';
       case 'in_celestia':
         return 'Celestia blob';
     }

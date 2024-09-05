@@ -115,7 +115,7 @@ const OptimisticL2TxnBatch = () => {
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        title={ `Tx batch #${ number }` }
+        title={ `Batch #${ number }` }
         backLink={ backLink }
       />
       { batchQuery.isPlaceholderData ?

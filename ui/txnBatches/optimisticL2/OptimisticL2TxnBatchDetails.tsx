@@ -64,9 +64,9 @@ const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
     >
       <DetailsInfoItem.Label
         isLoading={ isPlaceholderData }
-        hint="Batch number indicates the length of batches produced by grouping L2 blocks to be proven on L1"
+        hint="Batch ID indicates the length of batches produced by grouping L2 blocks to be proven on L1"
       >
-        Tx batch number
+        Batch ID
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value>
         <Skeleton isLoaded={ !isPlaceholderData }>
@@ -106,6 +106,7 @@ const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
           <LinkInternal href={ route({ pathname: '/batches/[number]', query: { number: data.internal_id.toString(), tab: 'txs' } }) }>
             { data.tx_count.toLocaleString() } transaction{ data.tx_count === 1 ? '' : 's' }
           </LinkInternal>
+          { ' ' }in this batch
         </Skeleton>
       </DetailsInfoItem.Value>
 
@@ -120,6 +121,7 @@ const OptimisticL2TxnBatchDetails = ({ query }: Props) => {
           <LinkInternal href={ route({ pathname: '/batches/[number]', query: { number: data.internal_id.toString(), tab: 'blocks' } }) }>
             { blocksCount.toLocaleString() } block{ blocksCount === 1 ? '' : 's' }
           </LinkInternal>
+          { ' ' }in this batch
         </Skeleton>
       </DetailsInfoItem.Value>
 
