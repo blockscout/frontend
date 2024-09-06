@@ -3,6 +3,7 @@ import type { Reward } from 'types/api/reward';
 import type { Transaction } from 'types/api/transaction';
 
 import type { ArbitrumBatchStatus, ArbitrumL2TxData } from './arbitrumL2';
+import type { OptimisticL2BatchDataContainer, OptimisticL2BlobTypeEip4844, OptimisticL2BlobTypeCelestia } from './optimisticL2';
 import type { TokenInfo } from './token';
 import type { TokenTransfer } from './tokenTransfer';
 import type { ZkSyncBatchesItem } from './zkSyncL2';
@@ -59,6 +60,7 @@ export interface Block {
     'batch_number': number | null;
   };
   arbitrum?: ArbitrumBlockData;
+  optimism?: OptimismBlockData;
   // CELO FIELDS
   celo?: {
     epoch_number: number;
@@ -76,6 +78,14 @@ type ArbitrumBlockData = {
   'send_count': number;
   'send_root': string;
   'status': ArbitrumBatchStatus;
+}
+
+export interface OptimismBlockData {
+  batch_data_container: OptimisticL2BatchDataContainer;
+  internal_id: number;
+  blobs: Array<OptimisticL2BlobTypeEip4844> | Array<OptimisticL2BlobTypeCelestia> | null;
+  l1_timestamp: string;
+  l1_tx_hashes: Array<string>;
 }
 
 export interface BlocksResponse {
