@@ -10,7 +10,6 @@ import ContractVerificationFieldCompiler from '../fields/ContractVerificationFie
 import ContractVerificationFieldName from '../fields/ContractVerificationFieldName';
 import ContractVerificationFieldSources from '../fields/ContractVerificationFieldSources';
 import ContractVerificationFieldZkCompiler from '../fields/ContractVerificationFieldZkCompiler';
-import ContractVerificationFieldZkOptimization from '../fields/ContractVerificationFieldZkOptimization';
 
 const FILE_TYPES = [ '.json' as const ];
 const rollupFeature = config.features.rollup;
@@ -27,7 +26,6 @@ const ContractVerificationStandardInput = ({ config }: { config: SmartContractVe
         hint="Upload the standard input JSON file created during contract compilation."
         required
       />
-      { rollupFeature.isEnabled && rollupFeature.type === 'zkSync' && <ContractVerificationFieldZkOptimization config={ config }/> }
       { !config?.is_rust_verifier_microservice_enabled && <ContractVerificationFieldAutodetectArgs/> }
     </ContractVerificationMethod>
   );
