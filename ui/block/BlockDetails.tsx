@@ -19,6 +19,7 @@ import getNetworkValidationActionText from 'lib/networks/getNetworkValidationAct
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { currencyUnits } from 'lib/units';
+import OptimisticL2TxnBatchDA from 'ui/shared/batch/OptimisticL2TxnBatchDA';
 import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
@@ -202,12 +203,34 @@ const BlockDetails = ({ query }: Props) => {
             hint="Batch number"
             isLoading={ isPlaceholderData }
           >
-          Batch
+            Batch
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
             { data.arbitrum.batch_number ?
               <BatchEntityL2 isLoading={ isPlaceholderData } number={ data.arbitrum.batch_number }/> :
               <Skeleton isLoaded={ !isPlaceholderData }>Pending</Skeleton> }
+          </DetailsInfoItem.Value>
+        </>
+      ) }
+
+      { rollupFeature.isEnabled && rollupFeature.type === 'optimistic' && data.optimism && !config.UI.views.block.hiddenFields?.batch && (
+        <>
+          <DetailsInfoItem.Label
+            hint="Batch number"
+            isLoading={ isPlaceholderData }
+          >
+            Batch
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value columnGap={ 3 }>
+            { data.optimism.internal_id ?
+              <BatchEntityL2 isLoading={ isPlaceholderData } number={ data.optimism.internal_id }/> :
+              <Skeleton isLoaded={ !isPlaceholderData }>Pending</Skeleton> }
+            { data.optimism.batch_data_container && (
+              <OptimisticL2TxnBatchDA
+                container={ data.optimism.batch_data_container }
+                isLoading={ isPlaceholderData }
+              />
+            ) }
           </DetailsInfoItem.Value>
         </>
       ) }

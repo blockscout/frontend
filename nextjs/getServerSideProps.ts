@@ -112,7 +112,7 @@ export const optimisticRollup: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-const BATCH_ROLLUP_TYPES: Array<RollupType> = [ 'zkEvm', 'zkSync', 'arbitrum' ];
+const BATCH_ROLLUP_TYPES: Array<RollupType> = [ 'zkEvm', 'zkSync', 'arbitrum', 'optimistic' ];
 export const batch: GetServerSideProps<Props> = async(context) => {
   if (!(rollupFeature.isEnabled && BATCH_ROLLUP_TYPES.includes(rollupFeature.type))) {
     return {
