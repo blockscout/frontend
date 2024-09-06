@@ -1,5 +1,4 @@
-import type { ButtonProps } from '@chakra-ui/react';
-import { PopoverContent, PopoverBody, PopoverTrigger, Button, Box, useBoolean, chakra, useColorModeValue } from '@chakra-ui/react';
+import { PopoverContent, PopoverBody, PopoverTrigger, Button, Box, useBoolean, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
@@ -13,7 +12,6 @@ import IconSvg from 'ui/shared/IconSvg';
 import useWallet from 'ui/snippets/walletMenu/useWallet';
 import WalletMenuContent from 'ui/snippets/walletMenu/WalletMenuContent';
 
-import useMenuButtonColors from '../useMenuButtonColors';
 import WalletIdenticon from './WalletIdenticon';
 import WalletTooltip from './WalletTooltip';
 
@@ -37,7 +35,6 @@ export const WalletMenuDesktop = ({
   isHomePage, className, size = 'md', isWalletConnected, address, connect,
   disconnect, isModalOpening, isModalOpen, openModal,
 }: ComponentProps) => {
-  const { themedBackground, themedBackgroundOrange, themedBorderColor, themedColor } = useMenuButtonColors();
   const [ isPopoverOpen, setIsPopoverOpen ] = useBoolean(false);
   const isMobile = useIsMobile();
   const { isAutoConnectDisabled } = useMarketplaceContext();
@@ -50,36 +47,6 @@ export const WalletMenuDesktop = ({
       enabled: config.features.nameService.isEnabled,
     },
   });
-
-  const variant = React.useMemo(() => {
-    if (isWalletConnected) {
-      return 'subtle';
-    }
-    return isHomePage ? 'solid' : 'outline';
-  }, [ isWalletConnected, isHomePage ]);
-
-  const themedColorForOrangeBg = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
-  let buttonStyles: Partial<ButtonProps> = {};
-  if (isWalletConnected) {
-    const backgroundColor = isAutoConnectDisabled ? themedBackgroundOrange : themedBackground;
-    const color = isAutoConnectDisabled ? themedColorForOrangeBg : themedColor;
-    buttonStyles = {
-      bg: isHomePage ? 'blue.50' : backgroundColor,
-      color: isHomePage ? 'blackAlpha.800' : color,
-      _hover: {
-        color: isHomePage ? 'blackAlpha.800' : color,
-      },
-    };
-  } else if (isHomePage) {
-    buttonStyles = {
-      color: 'white',
-    };
-  } else {
-    buttonStyles = {
-      borderColor: themedBorderColor,
-      color: themedColor,
-    };
-  }
 
   const openPopover = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.WALLET_ACTION, { Action: 'Open' });
@@ -103,8 +70,9 @@ export const WalletMenuDesktop = ({
           >
             <Button
               className={ className }
-              variant={ variant }
-              colorScheme="blue"
+              variant={ isHomePage ? 'hero' : 'header' }
+              data-selected={ isWalletConnected }
+              data-warning={ isAutoConnectDisabled }
               flexShrink={ 0 }
               isLoading={
                 ((isModalOpening || isModalOpen) && !isWalletConnected) ||
@@ -115,7 +83,6 @@ export const WalletMenuDesktop = ({
               fontSize="sm"
               size={ size }
               px={{ lg: isHomePage ? 2 : 4, xl: 4 }}
-              { ...buttonStyles }
             >
               { isWalletConnected ? (
                 <>

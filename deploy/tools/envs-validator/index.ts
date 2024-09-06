@@ -20,6 +20,7 @@ async function run() {
         return result;
       }, {} as Record<string, string>);
 
+    printDeprecationWarning(appEnvs);
     await checkPlaceholdersCongruity(appEnvs);
     await validateEnvs(appEnvs);
 
@@ -134,4 +135,16 @@ function getEnvsPlaceholders(filePath: string): Promise<Array<string>> {
       resolve(variables.filter(Boolean));
     });
   });
+}
+
+function printDeprecationWarning(envsMap: Record<string, string>) {
+  if (
+    envsMap.NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR ||
+    envsMap.NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND
+  ) {
+    console.log('❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗');
+    // eslint-disable-next-line max-len
+    console.warn('The NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR and NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND variables are now deprecated and will be removed in the next release. Please migrate to the NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG variable.');
+    console.log('❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗\n');
+  }
 }
