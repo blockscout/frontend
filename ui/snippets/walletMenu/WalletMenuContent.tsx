@@ -1,12 +1,10 @@
-import { Box, Button, Text, Flex, IconButton } from '@chakra-ui/react';
+import { Box, Button, Text, Flex, IconButton, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import * as mixpanel from 'lib/mixpanel/index';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import IconSvg from 'ui/shared/IconSvg';
-
-import useMenuButtonColors from '../useMenuButtonColors';
 
 type Props = {
   address?: string;
@@ -18,7 +16,7 @@ type Props = {
 };
 
 const WalletMenuContent = ({ address, ensDomainName, disconnect, isAutoConnectDisabled, openWeb3Modal, closeWalletMenu }: Props) => {
-  const { themedBackgroundOrange } = useMenuButtonColors();
+  const bgColor = useColorModeValue('orange.100', 'orange.900');
   const [ isModalOpening, setIsModalOpening ] = React.useState(false);
 
   const onAddressClick = React.useCallback(() => {
@@ -39,7 +37,7 @@ const WalletMenuContent = ({ address, ensDomainName, disconnect, isAutoConnectDi
           p={ 3 }
           mb={ 3 }
           alignItems="center"
-          backgroundColor={ themedBackgroundOrange }
+          backgroundColor={ bgColor }
         >
           <IconSvg
             name="integration/partial"

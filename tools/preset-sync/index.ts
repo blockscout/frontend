@@ -11,6 +11,7 @@ const PRESETS = {
   eth_sepolia: 'https://eth-sepolia.blockscout.com',
   gnosis: 'https://gnosis.blockscout.com',
   optimism: 'https://optimism.blockscout.com',
+  optimism_celestia: 'https://opcelestia-raspberry.gelatoscout.com',
   optimism_sepolia: 'https://optimism-sepolia.blockscout.com',
   polygon: 'https://polygon.blockscout.com',
   rootstock_testnet: 'https://rootstock-testnet.blockscout.com',

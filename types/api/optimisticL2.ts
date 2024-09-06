@@ -1,4 +1,6 @@
 import type { AddressParam } from './addressParams';
+import type { Block } from './block';
+import type { Transaction } from './transaction';
 
 export type OptimisticL2DepositsItem = {
   l1_block_number: number;
@@ -35,19 +37,80 @@ export type OptimisticL2OutputRootsResponse = {
   };
 }
 
+export type OptimisticL2BatchDataContainer = 'in_blob4844' | 'in_celestia' | 'in_calldata';
+
 export type OptimisticL2TxnBatchesItem = {
-  l1_tx_hashes: Array<string>;
+  internal_id: number;
+  batch_data_container?: OptimisticL2BatchDataContainer;
   l1_timestamp: string;
-  l2_block_number: number;
+  l1_tx_hashes: Array<string>;
+  l2_block_start: number;
+  l2_block_end: number;
   tx_count: number;
 }
 
 export type OptimisticL2TxnBatchesResponse = {
   items: Array<OptimisticL2TxnBatchesItem>;
   next_page_params: {
-    block_number: number;
+    id: number;
     items_count: number;
   };
+}
+
+export interface OptimisticL2BlobTypeEip4844 {
+  hash: string;
+  l1_timestamp: string;
+  l1_transaction_hash: string;
+}
+
+export interface OptimisticL2BlobTypeCelestia {
+  commitment: string;
+  height: number;
+  l1_timestamp: string;
+  l1_transaction_hash: string;
+  namespace: string;
+}
+
+interface OptimismL2TxnBatchBase {
+  internal_id: number;
+  l1_timestamp: string;
+  l1_tx_hashes: Array<string>;
+  l2_block_start: number;
+  l2_block_end: number;
+  tx_count: number;
+}
+
+export interface OptimismL2TxnBatchTypeCallData extends OptimismL2TxnBatchBase {
+  batch_data_container: 'in_calldata';
+}
+
+export interface OptimismL2TxnBatchTypeEip4844 extends OptimismL2TxnBatchBase {
+  batch_data_container: 'in_blob4844';
+  blobs: Array<OptimisticL2BlobTypeEip4844> | null;
+}
+
+export interface OptimismL2TxnBatchTypeCelestia extends OptimismL2TxnBatchBase {
+  batch_data_container: 'in_celestia';
+  blobs: Array<OptimisticL2BlobTypeCelestia> | null;
+}
+
+export type OptimismL2TxnBatch = OptimismL2TxnBatchTypeCallData | OptimismL2TxnBatchTypeEip4844 | OptimismL2TxnBatchTypeCelestia;
+
+export type OptimismL2BatchTxs = {
+  items: Array<Transaction>;
+  next_page_params: {
+    block_number: number;
+    index: number;
+    items_count: number;
+  } | null;
+}
+
+export type OptimismL2BatchBlocks = {
+  items: Array<Block>;
+  next_page_params: {
+    batch_number: number;
+    items_count: number;
+  } | null;
 }
 
 export type OptimisticL2WithdrawalsItem = {

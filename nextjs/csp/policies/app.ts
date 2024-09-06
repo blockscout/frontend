@@ -30,6 +30,18 @@ const getCspReportUrl = () => {
   }
 };
 
+const externalFontsDomains = (() => {
+  try {
+    return [
+      config.UI.fonts.heading?.url,
+      config.UI.fonts.body?.url,
+    ]
+      .filter(Boolean)
+      .map((urlString) => new URL(urlString))
+      .map((url) => url.hostname);
+  } catch (error) {}
+})();
+
 export function app(): CspDev.DirectiveDescriptor {
   return {
     'default-src': [
@@ -116,6 +128,7 @@ export function app(): CspDev.DirectiveDescriptor {
     'font-src': [
       KEY_WORDS.DATA,
       ...MAIN_DOMAINS,
+      ...(externalFontsDomains || []),
     ],
 
     'object-src': [

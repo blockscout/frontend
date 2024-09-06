@@ -23,7 +23,7 @@ const OptimisticL2TxnBatches = () => {
         {
           next_page_params: {
             items_count: 50,
-            block_number: 9045200,
+            id: 9045200,
           },
         },
       ),
@@ -41,7 +41,7 @@ const OptimisticL2TxnBatches = () => {
       <Show below="lg" ssr={ false }>
         { data.items.map(((item, index) => (
           <OptimisticL2TxnBatchesListItem
-            key={ item.l2_block_number + (isPlaceholderData ? String(index) : '') }
+            key={ item.internal_id + (isPlaceholderData ? String(index) : '') }
             item={ item }
             isLoading={ isPlaceholderData }
           />
@@ -61,8 +61,8 @@ const OptimisticL2TxnBatches = () => {
     return (
       <Skeleton isLoaded={ !countersQuery.isPlaceholderData && !isPlaceholderData } display="flex" flexWrap="wrap">
         Tx batch (L2 block)
-        <Text fontWeight={ 600 } whiteSpace="pre"> #{ data.items[0].l2_block_number } </Text>to
-        <Text fontWeight={ 600 } whiteSpace="pre"> #{ data.items[data.items.length - 1].l2_block_number } </Text>
+        <Text fontWeight={ 600 } whiteSpace="pre"> #{ data.items[0].internal_id } </Text>to
+        <Text fontWeight={ 600 } whiteSpace="pre"> #{ data.items[data.items.length - 1].internal_id } </Text>
         (total of { countersQuery.data?.toLocaleString() } batches)
       </Skeleton>
     );
