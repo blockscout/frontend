@@ -1,12 +1,14 @@
 import { chakra } from '@chakra-ui/react';
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 
+import { Resolution } from '@blockscout/stats-types';
 import type { StatsIntervalIds } from 'types/client/stats';
 
-import useApiQuery from 'lib/api/useApiQuery';
+import type { Route } from 'nextjs-routes';
+
+import useChartQuery from 'ui/shared/chart/useChartQuery';
 
 import ChartWidget from '../shared/chart/ChartWidget';
-import { STATS_INTERVALS } from './constants';
 
 type Props = {
   id: string;
@@ -17,50 +19,39 @@ type Props = {
   onLoadingError: () => void;
   isPlaceholderData: boolean;
   className?: string;
+  href?: Route;
 }
 
-function formatDate(date: Date) {
-  return date.toISOString().substring(0, 10);
-}
-
-const ChartWidgetContainer = ({ id, title, description, interval, onLoadingError, units, isPlaceholderData, className }: Props) => {
-  const selectedInterval = STATS_INTERVALS[interval];
-
-  const endDate = selectedInterval.start ? formatDate(new Date()) : undefined;
-  const startDate = selectedInterval.start ? formatDate(selectedInterval.start) : undefined;
-
-  const { data, isPending, isError } = useApiQuery('stats_line', {
-    pathParams: { id },
-    queryParams: {
-      from: startDate,
-      to: endDate,
-    },
-    queryOptions: {
-      enabled: !isPlaceholderData,
-      refetchOnMount: false,
-    },
-  });
-
-  const items = useMemo(() => data?.chart?.map((item) => {
-    return { date: new Date(item.date), value: Number(item.value), isApproximate: item.is_approximate };
-  }), [ data ]);
+const ChartWidgetContainer = ({
+  id,
+  title,
+  description,
+  interval,
+  onLoadingError,
+  units,
+  isPlaceholderData,
+  className,
+  href,
+}: Props) => {
+  const { items, lineQuery } = useChartQuery(id, Resolution.DAY, interval, !isPlaceholderData);
 
   useEffect(() => {
-    if (isError) {
+    if (lineQuery.isError) {
       onLoadingError();
     }
-  }, [ isError, onLoadingError ]);
+  }, [ lineQuery.isError, onLoadingError ]);
 
   return (
     <ChartWidget
-      isError={ isError }
+      isError={ lineQuery.isError }
       items={ items }
       title={ title }
       units={ units }
       description={ description }
-      isLoading={ isPending }
+      isLoading={ lineQuery.isPlaceholderData }
       minH="230px"
       className={ className }
+      href={ href }
     />
   );
 };

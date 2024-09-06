@@ -22,6 +22,7 @@ const CopyToClipboard = ({ text, className, isLoading, onClick, size = 5, type, 
   // have to implement controlled tooltip because of the issue - https://github.com/chakra-ui/chakra-ui/issues/7107
   const { isOpen, onOpen, onClose } = useDisclosure();
   const iconColor = useColorModeValue('gray.400', 'gray.500');
+  const colorProps = colorScheme ? {} : { color: iconColor };
   const iconName = icon || (type === 'link' ? 'link' : 'copy');
 
   useEffect(() => {
@@ -44,10 +45,10 @@ const CopyToClipboard = ({ text, className, isLoading, onClick, size = 5, type, 
   return (
     <Tooltip label={ copied ? 'Copied' : `Copy${ type === 'link' ? ' link ' : ' ' }to clipboard` } isOpen={ isOpen || copied }>
       <IconButton
+        { ...colorProps }
         aria-label="copy"
         icon={ <IconSvg name={ iconName } boxSize={ size }/> }
         boxSize={ size }
-        color={ iconColor }
         variant={ variant }
         colorScheme={ colorScheme }
         display="inline-block"

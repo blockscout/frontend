@@ -1327,10 +1327,10 @@
   resolved "https://registry.yarnpkg.com/@blockscout/bens-types/-/bens-types-1.4.1.tgz#9182a79d9015b7fa2339edf0bfa3cd0c32045e66"
   integrity sha512-TlZ1HVdZ2Cswm/CcvNoxS+Ydiht/YGaLo//PJR/UmkmihlEFoY4HfVJvVcUnOQXi+Si7FwJ486DPii889nTJsQ==
 
-"@blockscout/stats-types@1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@blockscout/stats-types/-/stats-types-1.6.0.tgz#cdb27ab3d3cb1eef7b8b069c39d4e09afda1aec9"
-  integrity sha512-MzItYOsLa3zgoFzRgFAgg7gynSXG0w/GqHzg5BGHcBPbPSp/g7A6mMtyIchI6TnZxxnCwziHHvzmJFXz11emUg==
+"@blockscout/stats-types@^1.6.2-alpha":
+  version "1.6.2-alpha"
+  resolved "https://registry.yarnpkg.com/@blockscout/stats-types/-/stats-types-1.6.2-alpha.tgz#e0ec8d12921255943a3b7fc860e1b97e73171a69"
+  integrity sha512-3rFDgCt0sP2pbPcZ6s3m/zdZxH6hs8PlEchDyqYvKIqVBiBmRwFnXWY22W/Y71r5DJkCjWYbLzxij0WXQxwlnA==
 
 "@blockscout/visualizer-types@0.2.0":
   version "0.2.0"

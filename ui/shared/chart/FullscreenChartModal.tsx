@@ -5,7 +5,7 @@ import type { TimeChartItem } from './types';
 
 import IconSvg from 'ui/shared/IconSvg';
 
-import ChartWidgetGraph from './ChartWidgetGraph';
+import ChartWidgetContent from './ChartWidgetContent';
 
 type Props = {
   isOpen: boolean;
@@ -30,7 +30,7 @@ const FullscreenChartModal = ({
     setIsZoomResetInitial(false);
   }, []);
 
-  const handleZoomResetClick = useCallback(() => {
+  const handleZoomReset = useCallback(() => {
     setIsZoomResetInitial(true);
   }, []);
 
@@ -79,7 +79,7 @@ const FullscreenChartModal = ({
                 gridRow="1/3"
                 size="sm"
                 variant="outline"
-                onClick={ handleZoomResetClick }
+                onClick={ handleZoomReset }
               >
                 Reset zoom
               </Button>
@@ -91,13 +91,13 @@ const FullscreenChartModal = ({
 
         <ModalBody
           h="100%"
+          margin={{ bottom: 60 }}
         >
-          <ChartWidgetGraph
-            margin={{ bottom: 60 }}
+          <ChartWidgetContent
             isEnlarged
             items={ items }
             units={ units }
-            onZoom={ handleZoom }
+            handleZoom={ handleZoom }
             isZoomResetInitial={ isZoomResetInitial }
             title={ title }
           />

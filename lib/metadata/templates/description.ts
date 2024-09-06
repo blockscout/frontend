@@ -27,6 +27,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/apps': DEFAULT_TEMPLATE,
   '/apps/[id]': DEFAULT_TEMPLATE,
   '/stats': DEFAULT_TEMPLATE,
+  '/stats/[id]': DEFAULT_TEMPLATE,
   '/api-docs': DEFAULT_TEMPLATE,
   '/graphiql': DEFAULT_TEMPLATE,
   '/search-results': DEFAULT_TEMPLATE,
@@ -71,8 +72,10 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/auth/unverified-email': DEFAULT_TEMPLATE,
 };
 
-export function make(pathname: Route['pathname']) {
-  const template = TEMPLATE_MAP[pathname];
+const TEMPLATE_MAP_ENHANCED: Partial<Record<Route['pathname'], string>> = {
+  '/stats/[id]': '%description%',
+};
 
-  return template ?? '';
+export function make(pathname: Route['pathname'], isEnriched = false) {
+  return (isEnriched ? TEMPLATE_MAP_ENHANCED[pathname] : undefined) ?? TEMPLATE_MAP[pathname] ?? '';
 }
