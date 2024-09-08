@@ -19,7 +19,7 @@ export function SocketProvider({ children, options, url }: SocketProviderProps) 
       return;
     }
 
-    const socketInstance = new Socket('wss://blessnet.calderaexplorer.xyz/socket/v2', options);
+    const socketInstance = new Socket(url, options);
     socketInstance.connect();
     setSocket(socketInstance);
 
