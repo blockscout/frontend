@@ -6,8 +6,6 @@ import PageNextJs from 'nextjs/PageNextJs';
 
 const ApiKeys = dynamic(() => import('ui/pages/ApiKeys'), { ssr: false });
 
-// askljalskjsadklj
-
 const Page: NextPage = () => {
   return (
     <PageNextJs pathname="/account/api-key">
