@@ -135,6 +135,7 @@
 	| "social/telegram_filled"
 	| "social/twitter_filled"
 	| "social/twitter"
+	| "sprite"
 	| "star_filled"
 	| "star_outline"
 	| "stats"
