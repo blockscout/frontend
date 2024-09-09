@@ -11,3 +11,13 @@ export type AddressesResponse = {
   } | null;
   total_supply: string;
 }
+
+export interface AddressesMetadataSearchResult {
+  items: Array<AddressesItem>;
+  next_page_params: null;
+}
+
+export interface AddressesMetadataSearchFilters {
+  slug: string;
+  tag_type: string;
+}
