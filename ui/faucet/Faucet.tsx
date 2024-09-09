@@ -59,7 +59,11 @@ const Faucet = (props: { verified: boolean }) => {
   }, []);
 
   const onSubmit = React.useCallback((data: { address: string }) => {
-    if (!props.verified || !data.address) {
+    if (!props.verified) {
+      return;
+    }
+
+    if (!data.address) {
       if (!data.address) {
         setErrMessage('Please input a wallet address');
         setIsError(true);

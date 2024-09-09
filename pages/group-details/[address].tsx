@@ -115,7 +115,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
         <IconSvg onClick={ routerFallback() } cursor="pointer" w="24px" h="24px" marginRight="4px" name="Fallback"></IconSvg>
         <PageTitle marginBottom="0" title="Group Details" withTextAd/>
         <Box ml="6px">{ router.query.address }</Box>
-        <Box ml="6px" color="rgba(0, 0, 0, 0.4)" fontWeight="400" fontSize="14px">
+        <Box ml="6px" color="rgba(0, 0, 0, 0.6)" fontWeight="400" fontSize="14px">
           { details?.group_name.length > 60 ? formatPubKey(details?.group_name, 60, 0) : details?.group_name }
         </Box>
       </Flex>

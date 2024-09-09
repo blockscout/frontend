@@ -38,7 +38,8 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
   const categoriesRefs = React.useRef<Array<HTMLParagraphElement>>([]);
   const tabsRef = React.useRef<HTMLDivElement>(null);
 
-  const [ tabIndex ] = React.useState(0);
+  const [ tabIndex, setTabIndex ] = React.useState(0);
+  const [ filterType, setFilterType ] = React.useState('all');
   // setTabIndex(0);
   // const handleScroll = React.useCallback(() => {
   //   const container = document.getElementById(containerId);
@@ -79,6 +80,11 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
       return {};
     }
     const map: Partial<ItemsCategoriesMap> = {};
+
+    if (filterType !== 'all') {
+      query.data = query.data.filter((item) => item.type === filterType);
+    }
+
     query.data?.forEach(item => {
       const cat = getItemCategory(item) as ApiCategory;
       if (cat) {
@@ -93,7 +99,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
       map.app = marketplaceApps.displayedApps;
     }
     return map;
-  }, [ query.data, marketplaceApps.displayedApps ]);
+  }, [ query, marketplaceApps.displayedApps, filterType ]);
 
   React.useEffect(() => {
     categoriesRefs.current = Array(Object.keys(itemsGroups).length).fill('').map((_, i) => categoriesRefs.current[i] || React.createRef());
@@ -114,9 +120,10 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
     setType(type);
   }, [ setType ]);
 
-  const hanleTabClick = React.useCallback((type: string) => () => {
-    setType(type.toLowerCase());
-  }, [ setType ]);
+  const hanleTabClick = React.useCallback((type: string, index: number) => () => {
+    setFilterType(type.toLowerCase());
+    setTabIndex(index);
+  }, [ setFilterType ]);
 
   const content = (() => {
     if (query.isPending || marketplaceApps.isPlaceholderData) {
@@ -133,7 +140,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
       return <Text pl="12px">No results found.</Text>;
     }
 
-    if (resultCategories.length > 1) {
+    if (resultCategories.length) {
       resultCategories.unshift({ id: 'all', title: 'All' });
     }
 
@@ -144,7 +151,9 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
             <Tabs variant="outline" colorScheme="gray" size="sm" index={ tabIndex }>
               <TabList columnGap={ 3 } rowGap={ 2 } flexWrap="wrap">
                 { resultCategories.map((cat, index) => (
-                  <Tab borderRadius="47px" key={ cat.id } onClick={ hanleTabClick(cat.title) } { ...(tabIndex === index ? { 'data-selected': 'true' } : {}) }>
+                  <Tab borderRadius="47px"
+                    key={ cat.id }
+                    onClick={ hanleTabClick(cat.title, index) } { ...(tabIndex === index ? { 'data-selected': 'true' } : {}) }>
                     { cat.title }
                   </Tab>
                 )) }
@@ -174,7 +183,9 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
                 <Box key={ index } px="8px" borderRadius="12px">
                   <SearchBarSuggestItem
                     key={ index }
-                    isFirst={ indx === 1 && index === 0 }
+                    isFirst={
+                      indx === 1 && index === 0
+                    }
                     data={ item }
                     isMobile={ isMobile }
                     searchTerm={ searchTerm }

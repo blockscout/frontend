@@ -63,7 +63,7 @@ function TableList(props: Props<string>) {
                 <Th
                   _first={{ p: '24px 24px 10px 24px' }}
                   key={ index }
-                  color="rgba(0, 0, 0, 0.4)"
+                  color="rgba(0, 0, 0, 0.6)"
                   p="24px 24px 10px 24px"
                   bg="#FFFF"
                   borderBottom="1px"

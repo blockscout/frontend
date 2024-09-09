@@ -60,19 +60,17 @@ const ObjectDetails: NextPage = () => {
 
   const { loading, data, error } = useGraphqlQuery('Objects', queries);
   const tableLength = data?.objects?.length || 0;
-  data?.objects?.forEach((v: ObjetRequestType, i: number) => {
-    if (i < 10) {
-      talbeList.push({
-        'Object Name': v.object_name,
-        Type: v.content_type,
-        'Object Size': sizeTool(v.payload_size),
-        Status: v.status,
-        Visibility: v.visibility,
-        'Last Updated Time': v.update_time,
-        Bucket: v.bucket_name,
-        Creator: v.creator_address,
-      });
-    }
+  data?.objects?.forEach((v: ObjetRequestType) => {
+    talbeList.push({
+      'Object Name': v.object_name,
+      Type: v.content_type,
+      'Object Size': sizeTool(v.payload_size),
+      Status: v.status,
+      Visibility: v.visibility,
+      'Last Updated Time': v.update_time,
+      Bucket: v.bucket_name,
+      Creator: v.creator_address,
+    });
   });
   React.useEffect(() => {
     if (typeof tableLength === 'number' && tableLength !== 21) {

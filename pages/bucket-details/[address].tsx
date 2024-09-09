@@ -153,7 +153,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       <Flex align="center" marginBottom="24px">
         <IconSvg onClick={ routerFallback() } cursor="pointer" w="24px" h="24px" marginRight="4px" name="Fallback"></IconSvg>
         <PageTitle marginBottom="0" title="Bucket Details" withTextAd/>
-        <Box ml="6px" color="rgba(0, 0, 0, 0.4)" fontWeight="400" fontSize="14px">
+        <Box ml="6px" color="rgba(0, 0, 0, 0.6)" fontWeight="400" fontSize="14px">
           { details?.bucket_name.length > 60 ? formatPubKey(details?.bucket_name, 60, 0) : details?.bucket_name }
         </Box>
       </Flex>

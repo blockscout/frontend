@@ -58,7 +58,7 @@ function Page<T extends string>(props: Props<T>) {
                 borderColor="#8A55FD"
                 display="inline-block"
                 cursor="pointer"
-                color={ tapSelect === value ? '#8A55FD' : 'rgba(0, 0, 0, 0.4)' }
+                color={ tapSelect === value ? '#8A55FD' : 'rgba(0, 0, 0, 0.6)' }
                 fontWeight={ tapSelect === value ? '700' : '400' }
                 fontSize="16px"
                 p="0 0 10px 0"
