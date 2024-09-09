@@ -54,7 +54,7 @@ jobs:
                   file: ./Dockerfile
                   push: true
                   cache-from: type=gha
-                  tags: ${{ secrets.AWS_PUBLIC_ECR }}/game7/blockscout/blockscout-frontend:${{ env.SHORT_SHA }}
+                  tags: ${{ secrets.AWS_PUBLIC_ECR }}/game7/blockscout-frontend:${{ env.SHORT_SHA }}
                   labels: ${{ steps.meta.outputs.labels }}
                   build-args: |
                       GIT_COMMIT_SHA=${{ env.SHORT_SHA }}
