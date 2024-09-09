@@ -192,13 +192,13 @@ const Page = (props: HeadProps) => {
                         </Skeleton>
                       ) :
                         values.status === 'bucketPage' ? (
-                          <NextLink href={{ pathname: '/bucket-details/[address]', query: { address: values.value || '' } }}>
-                            <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
-                              <Tooltip label={ values.value } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
+                          <Tooltip label={ values.value } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
+                            <NextLink href={{ pathname: '/bucket-details/[address]', query: { address: values.value || '' } }}>
+                              <Box display="inline-block">
                                 { (values.value && (values.value.length > 30)) ? formatPubKey(values.value, 0, 30) : values.value }
-                              </Tooltip>
-                            </Skeleton>
-                          </NextLink>
+                              </Box>
+                            </NextLink>
+                          </Tooltip>
                         ) :
                           values.status === 'block' ? (
                             <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
