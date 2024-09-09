@@ -31,7 +31,7 @@ jobs:
 
             - name: Login to AWS ECR Public
               run: |
-                aws ecr-public get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_PUBLIC_ECR }}
+                aws ecr-public get-login-password --region ${{ secrets.AWS_DEFAULT_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_PUBLIC_ECR }}
               env:
                 AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
                 AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
