@@ -205,7 +205,7 @@ export const accounts: GetServerSideProps<Props> = async(context) => {
 };
 
 export const accountsLabelSearch: GetServerSideProps<Props> = async(context) => {
-  if (!config.features.addressMetadata.isEnabled) {
+  if (!config.features.addressMetadata.isEnabled || !context.query.tagType) {
     return {
       notFound: true,
     };
