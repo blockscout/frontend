@@ -60,6 +60,10 @@ export function app(): CspDev.DirectiveDescriptor {
       config.chain.rpcUrl,
       'https://infragrid.v.network', // RPC providers
 
+      'https://blessnet.calderaexplorer.xyz', // Caldera
+      'wss://relay.walletconnect.org', // Walletconnect
+      'https://relay.walletconnect.org', // Walletconnect
+
       // github (spec for api-docs page)
       'raw.githubusercontent.com',
     ].filter(Boolean),
