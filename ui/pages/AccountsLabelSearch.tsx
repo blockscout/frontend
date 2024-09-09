@@ -1,23 +1,27 @@
-import { Hide, Show } from '@chakra-ui/react';
+import { chakra, Flex, Hide, Show, Skeleton } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
+
+import type { EntityTag as TEntityTag, EntityTagType } from 'ui/shared/EntityTags/types';
 
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { TOP_ADDRESS } from 'stubs/address';
 import { generateListStub } from 'stubs/utils';
 import AddressesLabelSearchListItem from 'ui/addressesLabelSearch/AddressesLabelSearchListItem';
 import AddressesLabelSearchTable from 'ui/addressesLabelSearch/AddressesLabelSearchTable';
-import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
+import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
+import EntityTag from 'ui/shared/EntityTags/EntityTag';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
+import StickyPaginationWithText from 'ui/shared/StickyPaginationWithText';
 
 const AccountsLabelSearch = () => {
 
   const router = useRouter();
   const slug = getQueryParamString(router.query.slug);
   const tagType = getQueryParamString(router.query.tagType);
+  const tagName = getQueryParamString(router.query.tagName);
 
   const { isError, isPlaceholderData, data, pagination } = useQueryWithPages({
     resourceName: 'addresses_metadata_search',
@@ -35,12 +39,6 @@ const AccountsLabelSearch = () => {
       ),
     },
   });
-
-  const actionBar = pagination.isVisible && (
-    <ActionBar mt={ -6 }>
-      <Pagination ml="auto" { ...pagination }/>
-    </ActionBar>
-  );
 
   const content = data?.items ? (
     <>
@@ -65,13 +63,42 @@ const AccountsLabelSearch = () => {
     </>
   ) : null;
 
+  const text = (() => {
+    if (isError) {
+      return null;
+    }
+
+    const num = data?.items.length || 0;
+
+    const tagData: TEntityTag = {
+      tagType: tagType as EntityTagType,
+      slug,
+      name: tagName || slug,
+      ordinal: 0,
+    };
+
+    return (
+      <Flex alignItems="center" columnGap={ 2 }>
+        <Skeleton
+          isLoaded={ !isPlaceholderData }
+          display="inline-block"
+        >
+          Found <chakra.span fontWeight={ 700 }>{ num }</chakra.span> matching result{ num > 1 ? 's' : '' } for
+        </Skeleton>
+        <EntityTag data={ tagData } isLoading={ isPlaceholderData } noLink/>
+      </Flex>
+    );
+  })();
+
+  const actionBar = <StickyPaginationWithText text={ text } pagination={ pagination }/>;
+
   return (
     <>
       <PageTitle title="Search result" withTextAd/>
       <DataListDisplay
         isError={ isError }
         items={ data?.items }
-        emptyText={ null }
+        emptyText={ text }
         content={ content }
         actionBar={ actionBar }
       />

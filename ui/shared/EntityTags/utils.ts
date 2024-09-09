@@ -20,7 +20,7 @@ export function getTagLinkParams(data: EntityTag): { type: 'external' | 'interna
   if (data.tagType === 'generic' || data.tagType === 'protocol') {
     return {
       type: 'internal',
-      href: route({ pathname: '/accounts/label/[slug]', query: { slug: data.slug, tagType: data.tagType } }),
+      href: route({ pathname: '/accounts/label/[slug]', query: { slug: data.slug, tagType: data.tagType, tagName: data.name } }),
     };
   }
 }
