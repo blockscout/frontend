@@ -25,7 +25,7 @@ import { formatPubKey, skeletonList } from './utils';
 
 type Props<T extends string> = {
   tapList?: Array<T> | undefined;
-  talbeList: Array<TalbeListType>;
+  tableList: Array<TalbeListType>;
   tabThead?: Array<T> | undefined;
   loading: boolean;
   error: Error | undefined;
@@ -37,10 +37,10 @@ type Props<T extends string> = {
 }
 
 function TableList(props: Props<string>) {
-  let talbeList: Array<TalbeListType> = props.talbeList;
+  let tableList: Array<TalbeListType> = props.tableList;
   const router = useRouter();
-  if (!talbeList?.length && !props.error && props.loading) {
-    talbeList = skeletonList(router.pathname);
+  if (!tableList?.length && !props.error && props.loading) {
+    tableList = skeletonList(router.pathname);
   }
   return (
     <>
@@ -75,7 +75,7 @@ function TableList(props: Props<string>) {
           </Thead>
           <Tbody>
             {
-              talbeList?.map((title: TalbeListType | any, key) => (
+              tableList?.map((title: TalbeListType | any, key) => (
                 <Tr _hover={{ bg: 'rgba(220, 212, 255, 0.24)' }} key={ key }>
                   {
                     Object.keys(title)?.map((value: string, index) => (

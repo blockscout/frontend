@@ -55,12 +55,12 @@ const Page: NextPage = () => {
       order: { update_time: 'desc' },
     },
   ];
-  const talbeList: Array<BucketTalbeListType> = [];
+  const tableList: Array<BucketTalbeListType> = [];
 
   const { loading, data, error } = useGraphqlQuery('Buckets', queries);
   const tableLength = data?.buckets?.length || 0;
   data?.buckets?.forEach((v: BucketRequestType) => {
-    talbeList.push({
+    tableList.push({
       'Bucket Name': v.bucket_name,
       'Bucket ID': v.bucket_id,
       'Last Updated Time': timeTool(v.update_time),
@@ -94,7 +94,7 @@ const Page: NextPage = () => {
         error={ error }
         loading={ loading }
         tapList={ tapList }
-        talbeList={ talbeList }
+        tableList={ tableList }
         tabThead={ tabThead }
         page="bucket"
         handleSearchChange={ handleSearchChange }/>

@@ -54,12 +54,12 @@ const Page: NextPage = () => {
       } : undefined,
     },
   ];
-  const talbeList: Array<GroupTalbeListType> = [];
+  const tableList: Array<GroupTalbeListType> = [];
 
   const { loading, data, error } = useGraphqlQuery('storage_group', queries);
   const tableLength = data?.buckets?.length || 0;
   data?.groups?.forEach((v: GroupRequestType) => {
-    talbeList.push({
+    tableList.push({
       'Group Name': v.group_name,
       'Group ID': v.group_id,
       'Last Updated': v.update_at,
@@ -92,7 +92,7 @@ const Page: NextPage = () => {
         error={ error }
         loading={ loading }
         tapList={ tapList }
-        talbeList={ talbeList }
+        tableList={ tableList }
         tabThead={ tabThead }
         page="group"
         handleSearchChange={ handleSearchChange }/>

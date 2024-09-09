@@ -13,16 +13,9 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import { formatPubKey } from 'ui/storage/utils';
 
 const HeadDetails = dynamic(() => import('ui/storage/head-details'), { ssr: false });
-// const TableDetails = dynamic(() => import('ui/storage/table-details'), { ssr: false });
 
 const ObjectDetails: NextPage<Props> = (props: Props) => {
   const router = useRouter();
-  // const [ objectAddress, setobjectAddress ] = React.useState<string>('');
-  // React.useEffect(() => {
-  // }, [ objectAddress ]);
-  // const changeTable = React.useCallback((value: string) => {
-  //   setobjectAddress(value);
-  // }, []);
   const routerFallback = () => () => {
     router.back();
   };
@@ -98,16 +91,6 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       status: 'copyLink',
     },
   };
-  // const tapList = [ 'Transactions', 'Versions' ];
-  // const tabThead = [ 'Txn Hash', 'Block', 'Age', 'Type' ];
-  // const talbeList = [
-  //   {
-  //     'Txn Hash': '4c83feb331594408sdjhfsdk98238293',
-  //     Block: 'Seal Object',
-  //     Age: '40 B',
-  //     Type: 'Created',
-  //   },
-  // ];
 
   return (
     <PageNextJs pathname="/group-details/[address]" query={ props.query }>
@@ -120,7 +103,6 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
         </Box>
       </Flex>
       <HeadDetails loading={ loadsing } overview={ overview } more={ more }/>
-      { /* <TableDetails tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead } changeTable={ changeTable }/> */ }
     </PageNextJs>
   );
 };

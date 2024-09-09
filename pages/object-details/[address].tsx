@@ -115,17 +115,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       status: 'copyLink',
     },
   };
-  const secondaryAddresses = [ '0x4c1a93cd42b6e4960db845bcf9d540b081b1a63a', '0x4c1a93cd42b6e4960db845bcf9d540b081b1a63a' ];
-  // const tapList = [ 'Transactions', 'Versions' ];
-  // const tabThead = [ 'Txn Hash', 'Block', 'Age', 'Type' ];
-  // const talbeList = [
-  //   {
-  //     'Txn Hash': 'object1.txt',
-  //     Block: 'Seal Object',
-  //     Age: '40 B',
-  //     Type: 'Created',
-  //   },
-  // ];
+  const secondaryAddresses: Array<string> | undefined = [];
 
   return (
     <PageNextJs pathname="/object-details/[address]" query={ props.query }>
@@ -137,7 +127,6 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
         </Box>
       </Flex>
       <HeadDetails loading={ loadsing } overview={ overview } more={ more } secondaryAddresses={ secondaryAddresses }/>
-      { /* <TableDetails tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead } changeTable={ changeTable }/> */ }
     </PageNextJs>
   );
 };

@@ -120,34 +120,6 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
     },
   };
   const secondaryAddresses = details?.global_virtual_group_family.global_virtual_group_ids.split(',') || [];
-  // const tapList = [ 'Transactions', 'Versions' ];
-  // const tabThead = [ 'objects name', 'Type', 'Object Size', 'Status', 'Visibility', 'Last Updated Time', 'Creator' ];
-  // const talbeList = [
-  //   {
-  //     'objects name': '4c83feb331594408sdjhfsdk98238293',
-  //     Type: 'Created',
-  //     'Object Size': '1.41 KB',
-  //     Status: 'Sealed',
-  //     Visibility: 'Private',
-  //     'Last Updated Time': '17h 51m ago',
-  //     Creator: '0x5a8819edbc43fb1f51394e3fef35cb28977abd06',
-  //     id: '2',
-  //   },
-  // ];
-  // const storageDetails = [
-  //   {
-  //     name: 'Free Quota (one-time)',
-  //     data: '1 GB/1 GB (100%)',
-  //   },
-  //   {
-  //     name: 'Monthly Free Quota (31 Jul, 2024)',
-  //     data: '1 GB/1 GB (100%)',
-  //   },
-  //   {
-  //     name: 'Monthly Charged Quota (31 Jul, 2024)',
-  //     data: '1 GB/1 GB (100%)',
-  //   },
-  // ];
   return (
     <PageNextJs pathname="/bucket-details/[address]" query={ props.query }>
       <Flex align="center" marginBottom="24px">
@@ -157,27 +129,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
           { details?.bucket_name.length > 60 ? formatPubKey(details?.bucket_name, 60, 0) : details?.bucket_name }
         </Box>
       </Flex>
-      { /* <Flex justifyContent="space-between">
-        {
-          storageDetails.map((value, index) => (
-            <Box
-              key={ index }
-              w="432px"
-              padding="16px"
-              border="1px solid rgba(0, 0, 0, 0.06)"
-              borderRadius="12px"
-              margin="24px"
-            >
-              <Box fontSize="12px" color="rgba(0, 0, 0, 1)" fontWeight="400">{ value.name }</Box>
-              <Box paddingBottom="8px" display="inline-block" fontWeight="700" fontSize="16px" color="#000000" marginTop="8px" borderBottom="4px solid #A07EFF">
-                { value.data }
-              </Box>
-            </Box>
-          ))
-        }
-      </Flex> */ }
       <HeadDetails loading={ loadsing } secondaryAddresses={ secondaryAddresses } overview={ overview } more={ more }/>
-      { /* <TableDetails tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead } changeTable={ changeTable }/> */ }
     </PageNextJs>
   );
 };

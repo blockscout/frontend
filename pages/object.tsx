@@ -55,24 +55,21 @@ const ObjectDetails: NextPage = () => {
       offset: offset,
     },
   ];
-  // const [ talbeList ] = React.useState<Array<ObjetTalbeListType>>([]);
-  const talbeList: Array<ObjetTalbeListType> = [];
+  const tableList: Array<ObjetTalbeListType> = [];
 
   const { loading, data, error } = useGraphqlQuery('Objects', queries);
   const tableLength = data?.objects?.length || 0;
-  data?.objects?.forEach((v: ObjetRequestType, i: number) => {
-    if (i < 10) {
-      talbeList.push({
-        'Object Name': v.object_name,
-        Type: v.content_type,
-        'Object Size': sizeTool(v.payload_size),
-        Status: v.status,
-        Visibility: v.visibility,
-        'Last Updated Time': v.update_time,
-        Bucket: v.bucket_name,
-        Creator: v.creator_address,
-      });
-    }
+  data?.objects?.forEach((v: ObjetRequestType) => {
+    tableList.push({
+      'Object Name': v.object_name,
+      Type: v.content_type,
+      'Object Size': sizeTool(v.payload_size),
+      Status: v.status,
+      Visibility: v.visibility,
+      'Last Updated Time': v.update_time,
+      Bucket: v.bucket_name,
+      Creator: v.creator_address,
+    });
   });
   React.useEffect(() => {
     if (typeof tableLength === 'number' && tableLength !== 21) {
@@ -100,7 +97,7 @@ const ObjectDetails: NextPage = () => {
         error={ error }
         loading={ loading }
         tapList={ tapList }
-        talbeList={ talbeList }
+        tableList={ tableList }
         tabThead={ tabThead }
         page="object"
         handleSearchChange={ handleSearchChange }
