@@ -179,7 +179,6 @@ export default function useQuickSearchQuery() {
   }, [ debouncedSearchTerm, type ]);
 
   const graphqlQuery = useGraphqlQuery('graphql_search', graphqlQuerires());
-
   const apiQuery = useApiQuery('quick_search', {
     queryParams: { q: debouncedSearchTerm },
     queryOptions: { enabled: !graphqlSearchOnly.current && debouncedSearchTerm.trim().length > 0 },

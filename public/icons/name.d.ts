@@ -146,7 +146,7 @@
 	| "social/telegram_filled"
 	| "social/twitter_filled"
 	| "social/twitter"
-	| "social\\youtube"
+	| "social/youtube"
 	| "star_filled"
 	| "star_outline"
 	| "stats"
@@ -178,6 +178,5 @@
 	| "wallets/coinbase"
 	| "wallets/metamask"
 	| "wallets/token-pocket"
-	| "watchlist"
-	| "Youtobe";
+	| "watchlist";
   

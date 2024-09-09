@@ -38,8 +38,8 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
   const categoriesRefs = React.useRef<Array<HTMLParagraphElement>>([]);
   const tabsRef = React.useRef<HTMLDivElement>(null);
 
-  const [ tabIndex, setTabIndex ] = React.useState(0);
-  setTabIndex(0);
+  const [ tabIndex ] = React.useState(0);
+  // setTabIndex(0);
   // const handleScroll = React.useCallback(() => {
   //   const container = document.getElementById(containerId);
   //   if (!container || !query.data?.length) {
