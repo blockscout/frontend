@@ -1,13 +1,14 @@
-import { Alert } from '@chakra-ui/react';
+import { Alert, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { AddressMetadataTagFormatted } from 'types/client/addressMetadata';
 
 interface Props {
   tags: Array<AddressMetadataTagFormatted> | undefined;
+  className?: string;
 }
 
-const AddressMetadataAlert = ({ tags }: Props) => {
+const AddressMetadataAlert = ({ tags, className }: Props) => {
   const noteTag = tags?.find(({ tagType }) => tagType === 'note');
   if (!noteTag) {
     return null;
@@ -21,12 +22,12 @@ const AddressMetadataAlert = ({ tags }: Props) => {
 
   return (
     <Alert
-      mt="-4px"
-      mb={ 6 }
-      status="error"
+      className={ className }
+      status={ noteTag.meta?.alertStatus ?? 'error' }
       bgColor={ noteTag.meta?.alertBgColor }
       color={ noteTag.meta?.alertTextColor }
       whiteSpace="pre-wrap"
+      display="inline-block"
       sx={{
         '& a': {
           color: 'link',
@@ -40,4 +41,4 @@ const AddressMetadataAlert = ({ tags }: Props) => {
   );
 };
 
-export default React.memo(AddressMetadataAlert);
+export default React.memo(chakra(AddressMetadataAlert));

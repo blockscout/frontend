@@ -30,6 +30,7 @@ export default function parseMetaPayload(meta: AddressMetadataTag['meta']): Addr
       'data',
       'alertBgColor',
       'alertTextColor',
+      'alertStatus',
     ];
 
     for (const stringField of stringFields) {

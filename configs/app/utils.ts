@@ -39,10 +39,22 @@ export const getExternalAssetFilePath = (envName: string) => {
 export const buildExternalAssetFilePath = (name: string, value: string) => {
   try {
     const fileName = name.replace(/^NEXT_PUBLIC_/, '').replace(/_URL$/, '').toLowerCase();
-    const url = new URL(value);
-    const fileExtension = url.pathname.match(regexp.FILE_EXTENSION)?.[1];
+
+    const fileExtension = getAssetFileExtension(value);
+    if (!fileExtension) {
+      throw new Error('Cannot get file path');
+    }
     return `/assets/configs/${ fileName }.${ fileExtension }`;
   } catch (error) {
     return;
   }
 };
+
+function getAssetFileExtension(value: string) {
+  try {
+    const url = new URL(value);
+    return url.pathname.match(regexp.FILE_EXTENSION)?.[1];
+  } catch (error) {
+    return parseEnvJson(value) ? 'json' : undefined;
+  }
+}
