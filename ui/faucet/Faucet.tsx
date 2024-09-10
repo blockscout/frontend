@@ -30,7 +30,7 @@ const enum FAUCET_REQUEST_TYPE {
   SENT = 2,
 }
 
-const Faucet = (props: { verified: boolean }) => {
+const Faucet = (props: { verified: boolean; onVerificationChange: (status: boolean) => void }) => {
   const { register, handleSubmit } = useForm<{ address: string }>();
   const [ isError, setIsError ] = React.useState<boolean>(false);
   const [ errMessage, setErrMessage ] = React.useState<string>('');
@@ -95,6 +95,9 @@ const Faucet = (props: { verified: boolean }) => {
             setIsError(true);
             if (res.status === 429) {
               setErrMessage('The Discord account has already claimed test tokens within the last 24 hours. Please try again later.');
+            } else if (res.status === 401) {
+              setErrMessage('Please verify your Discord first.');
+              props.onVerificationChange(false);
             }
             setRequestStatus(FAUCET_REQUEST_TYPE.REQUEST);
           }
@@ -105,7 +108,7 @@ const Faucet = (props: { verified: boolean }) => {
           setRequestStatus(FAUCET_REQUEST_TYPE.REQUEST);
         });
     }
-  }, [ props.verified, reset ]);
+  }, [ props, reset ]);
 
   const verifyBtnStyles = React.useCallback(() => {
     if (props.verified) {

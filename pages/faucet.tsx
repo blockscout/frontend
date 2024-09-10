@@ -1,6 +1,6 @@
 import { getIronSession } from 'iron-session';
 import type { NextPage, GetServerSideProps } from 'next';
-import React from 'react';
+import React, { useState } from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
@@ -9,14 +9,20 @@ import Faucet from 'ui/faucet/Faucet';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 interface Props {
-  verified: boolean;
+  initialVerified: boolean;
 }
 
-const Page: NextPage<Props> = (props: Props) => {
+const Page: NextPage<Props> = ({ initialVerified }: Props) => {
+  const [ verified, setVerified ] = useState(initialVerified);
+
+  const handleVerificationChange = React.useCallback((status: boolean) => {
+    setVerified(status);
+  }, []);
+
   return (
     <PageNextJs pathname="/faucet">
       <PageTitle title="Faucet" withTextAd/>
-      <Faucet verified={ props.verified }/>
+      <Faucet verified={ verified } onVerificationChange={ handleVerificationChange }/>
     </PageNextJs>
   );
 };
@@ -27,17 +33,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async(context) => {
   const session = await getIronSession<{ user: any }>(req, res, sessionOptions);
   const user = session.user;
 
-  if (!user) {
-    return {
-      props: {
-        verified: false,
-      },
-    };
-  }
-
   return {
     props: {
-      verified: true,
+      initialVerified: Boolean(user),
     },
   };
 };

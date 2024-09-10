@@ -40,40 +40,6 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
 
   const [ tabIndex, setTabIndex ] = React.useState(0);
   const [ filterType, setFilterType ] = React.useState('all');
-  // setTabIndex(0);
-  // const handleScroll = React.useCallback(() => {
-  //   const container = document.getElementById(containerId);
-  //   if (!container || !query.data?.length) {
-  //     return;
-  //   }
-  //   const topLimit = container.getBoundingClientRect().y + (tabsRef.current?.clientHeight || 0) + 24;
-  //   if (categoriesRefs.current[categoriesRefs.current.length - 1].getBoundingClientRect().y <= topLimit) {
-  //     setTabIndex(categoriesRefs.current.length - 1);
-  //     return;
-  //   }
-  //   for (let i = 0; i < categoriesRefs.current.length - 1; i++) {
-  //     if (i === 0) {
-  //       continue;
-  //     }
-  //     if (categoriesRefs.current[i].getBoundingClientRect().y <= topLimit && categoriesRefs.current[i + 1].getBoundingClientRect().y > topLimit) {
-  //       setTabIndex(i);
-  //       break;
-  //     }
-  //   }
-  // }, [ containerId, query.data ]);
-
-  // React.useEffect(() => {
-  //   const container = document.getElementById(containerId);
-  //   const throttledHandleScroll = throttle(handleScroll, 300);
-  //   if (container) {
-  //     container.addEventListener('scroll', throttledHandleScroll);
-  //   }
-  //   return () => {
-  //     if (container) {
-  //       container.removeEventListener('scroll', throttledHandleScroll);
-  //     }
-  //   };
-  // }, [ containerId, handleScroll ]);
 
   const itemsGroups = React.useMemo(() => {
     if (!query.data && !marketplaceApps.displayedApps) {
@@ -129,20 +95,11 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
     categoriesRefs.current = Array(Object.keys(itemsGroups).length).fill('').map((_, i) => categoriesRefs.current[i] || React.createRef());
   }, [ itemsGroups ]);
 
-  // const scrollToCategory = React.useCallback((index: number) => () => {
-  //   setTabIndex(index);
-  //   scroller.scrollTo(`cat_${ index }`, {
-  //     duration: 250,
-  //     smooth: true,
-  //     offset: -(tabsRef.current?.clientHeight || 0),
-  //     containerId: containerId,
-  //   });
-  // }, [ containerId ]);
-
   const bgColor = useColorModeValue('white', 'gray.900');
   const handleShowMoreClk = React.useCallback((type: string) => () => {
+    setFilterType(type.toLowerCase());
     setType(type);
-  }, [ setType ]);
+  }, [ setType, setFilterType ]);
 
   const hanleTabClick = React.useCallback((type: string, index: number) => () => {
     setFilterType(type.toLowerCase());
@@ -205,7 +162,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
               >
                 { cat.title }
               </Text>
-              { cat.id !== 'app' && itemsGroups[cat.id]?.map((item, index) => (
+              { cat.id !== 'app' && itemsGroups[cat.id]?.slice(0, 5).map((item, index) => (
                 <Box key={ index } px="8px" borderRadius="12px">
                   <SearchBarSuggestItem
                     key={ index }
