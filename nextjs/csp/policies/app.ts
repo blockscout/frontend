@@ -63,7 +63,6 @@ export function app(): CspDev.DirectiveDescriptor {
       'https://blessnet.calderaexplorer.xyz', // Caldera
       'wss://relay.walletconnect.org', // Walletconnect
       'https://relay.walletconnect.org', // Walletconnect
-      'https://vercel.live', // Vercel
 
       // github (spec for api-docs page)
       'raw.githubusercontent.com',
