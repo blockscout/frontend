@@ -1,4 +1,4 @@
-import { Box, Flex, Link, Text, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex, Link, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -14,7 +14,7 @@ type Props = {
 
 const SearchBarSuggest = ({ onClick, onClear }: Props) => {
   const isMobile = useIsMobile();
-  const bgHoverColor = useColorModeValue('blue.50', 'gray.800');
+  // const bgHoverColor = useColorModeValue('blue.50', 'gray.800');
 
   const [ keywords, setKeywords ] = React.useState<Array<string>>(getRecentSearchKeywords());
 
@@ -63,7 +63,7 @@ const SearchBarSuggest = ({ onClick, onClear }: Props) => {
             borderBottomWidth: '0',
           }}
           _hover={{
-            bgColor: bgHoverColor,
+            bgColor: 'rgba(160, 126, 255, 0.10)',
           }}
           fontSize="sm"
           _first={{

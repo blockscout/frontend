@@ -81,8 +81,12 @@ const Page: NextPage = () => {
   const tapList = [ 'Transactions', 'Versions' ];
   const tabThead = [ 'Bucket Name', 'Bucket ID', 'Last Updated Time', 'Status', 'Active Objects Count', 'Creator' ];
 
-  const handleSearchChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
+  const handleSearchChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement> | null) => {
+    if (!event) {
+      setSearchTerm('');
+    } else {
+      setSearchTerm(event.target.value);
+    }
   }, []);
 
   return (

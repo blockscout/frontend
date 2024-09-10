@@ -85,8 +85,12 @@ const ObjectDetails: NextPage = () => {
 
   const tabThead = [ 'Object Name', 'Type', 'Object Size', 'Status', 'Visibility', 'Last Updated Time', 'Bucket', 'Creator' ];
 
-  const handleSearchChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
+  const handleSearchChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement> | null) => {
+    if (!event) {
+      setSearchTerm('');
+    } else {
+      setSearchTerm(event.target.value);
+    }
   }, []);
 
   return (
