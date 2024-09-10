@@ -11,7 +11,7 @@ export const formatPubKey = (pubKey: string | undefined, _length = 4, _preLength
   return pubKey.substr(0, _preLength || _length) + '...' + pubKey.substr(_length * -1, _length);
 };
 
-export const timeTool = (time: string) => {
+export const timeTool = (time: string, oldTimeTextFlag?: boolean) => {
   const now = new Date().getTime();
   const diff = now - new Date(time).getTime();
 
@@ -29,6 +29,10 @@ export const timeTool = (time: string) => {
   const days = Math.floor(hours / 24);
   const months = Math.floor(days / 30);
   const years = Math.floor(months / 12);
+
+  if (oldTimeTextFlag) {
+    return oldTimeText;
+  }
 
   if (years > 0) {
     return `${ years } year ago ${ oldTimeText }`;
@@ -74,6 +78,7 @@ export const mintimeTool = (time: string) => {
   if (minutes > 0) {
     return `${ minutes } minute ago`;
   }
+  return `${ seconds } seconds ago`;
 };
 
 export const timeText = (time: string) => {

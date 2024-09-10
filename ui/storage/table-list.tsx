@@ -43,7 +43,6 @@ function TableList(props: Props<string>) {
     tableList = skeletonList(router.pathname);
   }
   const linkName = (name: string) => {
-    // value === 'Object Name' || value === 'Bucket Name' || value === 'Bucket' || value === 'Group Name'
     switch (name) {
       case 'Object Name':
         return '/object-details/[address]';
@@ -55,18 +54,6 @@ function TableList(props: Props<string>) {
         return '/group-details/[address]';
     }
   };
-  function countdowns(time: string) {
-    let countdown = Number(timeTool(time));
-    if (typeof timeTool(time) === 'number' && !Number.isNaN(timeTool(time)) && Number(countdown) <= 60) {
-      setTimeout(() => {
-        countdown = countdown + 1;
-        return countdown + 's ago';
-      }, 1000);
-      countdowns(time);
-    } else {
-      return mintimeTool(time);
-    }
-  }
 
   return (
     <>
@@ -120,9 +107,9 @@ function TableList(props: Props<string>) {
                             value === 'Last Updated Time' ? (
                               <Tooltip
                                 isDisabled={ typeof timeTool(title[value]) !== 'string' }
-                                label={ title[value] } placement="top" bg="#FFFFFF" >
+                                label={ timeTool(title[value], true) } placement="top" bg="#FFFFFF" color="#000000" >
                                 <Box overflow="hidden" color="#000000">
-                                  <Skeleton isLoaded={ !props.loading }>{ countdowns(title[value]) }</Skeleton>
+                                  <Skeleton isLoaded={ !props.loading }>{ mintimeTool(title[value]) }</Skeleton>
                                 </Box>
                               </Tooltip >
                             ) :

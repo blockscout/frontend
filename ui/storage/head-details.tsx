@@ -109,14 +109,16 @@ const Page = (props: HeadProps) => {
                       </Skeleton>
                     ) :
                       key === 'Object Name' || key === 'Bucket Name' || key === 'Group Name' ? (
-                        <Tooltip label={ value } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
+                        <Tooltip isDisabled={ value?.length <= 30 } label={ value } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
                           <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
                             { value?.length > 30 ? formatPubKey(value, 0, 30) : value }
                           </Skeleton>
                         </Tooltip>
                       ) :
                         key === 'Bucket ID' || key === 'Group ID' ? (
-                          <Tooltip label={ value } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
+                          <Tooltip
+                            isDisabled={ value?.length <= 12 }
+                            label={ value } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
                             <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
                               { value?.length > 12 ? formatPubKey(value, 6, 6) : value }
                             </Skeleton>

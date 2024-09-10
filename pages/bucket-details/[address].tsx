@@ -80,12 +80,17 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
   const [ oldTimeText, setoldTimeText ] = React.useState<string>('');
   React.useEffect(() => {
     let countdown = 0;
-    if (typeof overTime === 'number' && countdown <= 60 && !Number.isNaN(overTime)) {
-      setTimeout(() => {
+    if (typeof overTime === 'number' && !Number.isNaN(overTime)) {
+      const setTime = setTimeout(() => {
         countdown = overTime + 1;
-        setoldTimeText(`${ countdown } second ago ${ timeText(details?.update_time) }`);
+        if (countdown >= 60) {
+          clearTimeout(setTime);
+          setoldTimeText(timeTool(details?.update_time).toString());
+        } else {
+          setoldTimeText(`${ countdown } second ago ${ timeText(details?.update_time) }`);
+        }
       }, 1000);
-    } else if (!oldTimeText && !Number.isNaN(overTime)) {
+    } else {
       setoldTimeText(timeTool(details?.update_time).toString());
     }
   }, [ oldTimeText, overTime, details ]);

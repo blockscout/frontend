@@ -83,7 +83,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       status: 'none',
     },
     'Active Group Member Count': {
-      value: (details?.tags && Object.entries(details?.members).length.toString()) || '0',
+      value: details?.members[0]?.member || '0',
       status: 'none',
     },
     Owner: {
@@ -97,7 +97,6 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       <Flex align="center" marginBottom="24px">
         <IconSvg onClick={ routerFallback() } cursor="pointer" w="24px" h="24px" marginRight="4px" name="Fallback"></IconSvg>
         <PageTitle marginBottom="0" title="Group Details" withTextAd/>
-        <Box ml="6px">{ router.query.address }</Box>
         <Tooltip
           isDisabled={ details?.group_name.length < 60 }
           label={ details?.group_name } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
