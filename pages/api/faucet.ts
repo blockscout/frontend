@@ -1,4 +1,4 @@
-import { Wallet, NonceManager, isAddress, JsonRpcProvider, parseEther } from 'ethers';
+import { Wallet, isAddress, JsonRpcProvider, parseEther } from 'ethers';
 import { getIronSession } from 'iron-session';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
@@ -16,8 +16,8 @@ const provider = new JsonRpcProvider(
   },
 );
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-const _signer = new Wallet(getEnvValue('NEXT_PUBLIC_FAUCET_KEY')!, provider);
-const signer = new NonceManager(_signer);
+const signer = new Wallet(getEnvValue('NEXT_PUBLIC_FAUCET_KEY')!, provider);
+// const signer = new NonceManager(_signer);
 
 const requestLock = new Set<string>();
 
