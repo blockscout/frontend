@@ -1,12 +1,13 @@
 import type { ContractCodeIde } from 'types/client/contract';
 import { NAVIGATION_LINK_IDS, type NavItemExternal, type NavigationLinkId, type NavigationLayout } from 'types/client/navigation';
-import type { ChainIndicatorId, HeroBannerConfig } from 'types/homepage';
+import { HOME_STATS_WIDGET_IDS, type ChainIndicatorId, type HeroBannerConfig, type HomeStatsWidgetId } from 'types/homepage';
 import type { NetworkExplorer } from 'types/networks';
 import type { ColorThemeId } from 'types/settings';
 import type { FontFamily } from 'types/ui';
 
 import { COLOR_THEMES } from 'lib/settings/colorTheme';
 
+import * as features from './features';
 import * as views from './ui/views';
 import { getEnvValue, getExternalAssetFilePath, parseEnvJson } from './utils';
 
@@ -23,6 +24,22 @@ const hiddenLinks = (() => {
   }, {} as Record<NavigationLinkId, boolean>);
 
   return result;
+})();
+
+const homePageStats: Array<HomeStatsWidgetId> = (() => {
+  const parsedValue = parseEnvJson<Array<HomeStatsWidgetId>>(getEnvValue('NEXT_PUBLIC_HOMEPAGE_STATS'));
+
+  if (!Array.isArray(parsedValue)) {
+    const rollupFeature = features.rollup;
+
+    if (rollupFeature.isEnabled && [ 'zkEvm', 'zkSync', 'arbitrum' ].includes(rollupFeature.type)) {
+      return [ 'latest_batch', 'average_block_time', 'total_txs', 'wallet_addresses', 'gas_tracker' ];
+    }
+
+    return [ 'total_blocks', 'average_block_time', 'total_txs', 'wallet_addresses', 'gas_tracker' ];
+  }
+
+  return parsedValue.filter((item) => HOME_STATS_WIDGET_IDS.includes(item));
 })();
 
 const highlightedRoutes = (() => {
@@ -58,12 +75,13 @@ const UI = Object.freeze({
   },
   homepage: {
     charts: parseEnvJson<Array<ChainIndicatorId>>(getEnvValue('NEXT_PUBLIC_HOMEPAGE_CHARTS')) || [],
+    stats: homePageStats,
     heroBanner: parseEnvJson<HeroBannerConfig>(getEnvValue('NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG')),
+    // !!! DEPRECATED !!!
     plate: {
       background: getEnvValue('NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND'),
       textColor: getEnvValue('NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR'),
     },
-    showAvgBlockTime: getEnvValue('NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME') === 'false' ? false : true,
   },
   views,
   indexingAlert: {
