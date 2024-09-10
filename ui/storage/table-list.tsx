@@ -12,12 +12,17 @@ import {
   Input,
   Box,
   Skeleton,
+  InputGroup,
+  InputRightElement,
+  InputLeftElement,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { TalbeListType } from 'types/storage';
+
+import IconSvg from 'ui/shared/IconSvg';
 
 import Pagination from './Pagination';
 import styles from './pagination.module.css';
@@ -30,7 +35,7 @@ type Props<T extends string> = {
   loading: boolean;
   error: Error | undefined;
   page: string;
-  handleSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleSearchChange: (event: React.ChangeEvent<HTMLInputElement> | null) => void;
   propsPage: (value: number) => void;
   currPage: number;
   toNext: boolean;
@@ -42,6 +47,7 @@ function TableList(props: Props<string>) {
   if (!tableList?.length && !props.error && props.loading) {
     tableList = skeletonList(router.pathname);
   }
+  const [ search, setSearch ] = React.useState('');
   const linkName = (name: string) => {
     // value === 'Object Name' || value === 'Bucket Name' || value === 'Bucket' || value === 'Group Name'
     switch (name) {
@@ -67,20 +73,60 @@ function TableList(props: Props<string>) {
       return mintimeTool(time);
     }
   }
+  const handleChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target) {
+      setSearch(event.target.value);
+      props.handleSearchChange(event);
+    }
+  }, [ props ]);
+
+  const clearSearch = React.useCallback(() => {
+    setSearch('');
+    props.handleSearchChange(null);
+  }, [ props ]);
 
   return (
     <>
       <Flex justifyContent="right">
-        <Input
-          _focusVisible={{ borderColor: '#A07EFF !important' }}
+        <InputGroup
           _placeholder={{ color: 'rgba(0, 0, 0, 0.3)' }}
           fontWeight="400" fontSize="12px"
           borderColor="rgba(0, 46, 51, 0.1)"
-          onChange={ props.handleSearchChange }
-          borderRadius="29px" width="344px" height="42px"
-          placeholder={ `Search by ${ props.page.replace(/^./, props.page[0].toUpperCase()) } Name or ID` }
+          width="344px"
+          display="flex"
+          alignItems="center"
         >
-        </Input>
+          <InputLeftElement
+            w="16px" h="16px" position="absolute"
+            left="16px"
+            top="50%"
+            transform="translateY(-50%)"
+          >
+            <IconSvg color="#A07EFF" w="16px" h="16px" name="search"/>
+          </InputLeftElement>
+          <Input
+            value={ search }
+            onChange={ handleChange }
+            pl="40px"
+            borderRadius="29px" height="42px"
+            _focusVisible={{ borderColor: '#A07EFF !important' }}
+            placeholder={ `Search by ${ props.page.replace(/^./, props.page[0].toUpperCase()) } Name or ID` }
+          >
+          </Input>
+          {
+            search && (
+              <InputRightElement w="16px" h="16px" position="absolute"
+                right="16px"
+                top="50%"
+                transform="translateY(-50%)"
+                cursor="pointer"
+                onClick={ clearSearch }
+              >
+                <IconSvg border="1px solid #A07EFF" borderRadius="50%" color="#A07EFF" w="16px" h="16px" name="cross"/>
+              </InputRightElement>
+            )
+          }
+        </InputGroup>
       </Flex>
       <TableContainer marginTop="16px" border="1px" borderRadius="12px" borderColor="rgba(0, 0, 0, 0.06);" padding="0 4px 78px 4px">
         <Table variant="bubble" position="relative" className={ styles.table }>
