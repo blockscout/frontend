@@ -28,7 +28,7 @@ const addresses: AddressesMetadataSearchResult = {
     {
       ...addressMocks.eoa,
       tx_count: '420',
-      coin_balance: '123456',
+      coin_balance: null,
     },
   ],
   next_page_params: null,

@@ -32,7 +32,7 @@ const AccountsLabelSearch = () => {
     options: {
       placeholderData: generateListStub<'addresses_metadata_search'>(
         TOP_ADDRESS,
-        5,
+        50,
         {
           next_page_params: null,
         },
@@ -83,7 +83,11 @@ const AccountsLabelSearch = () => {
           isLoaded={ !isPlaceholderData }
           display="inline-block"
         >
-          Found <chakra.span fontWeight={ 700 }>{ num }</chakra.span> matching result{ num > 1 ? 's' : '' } for
+          Found{ ' ' }
+          <chakra.span fontWeight={ 700 }>
+            { num }{ data?.next_page_params || pagination.page > 1 ? '+' : '' }
+          </chakra.span>{ ' ' }
+          matching result{ num > 1 ? 's' : '' } for
         </Skeleton>
         <EntityTag data={ tagData } isLoading={ isPlaceholderData } noLink/>
       </Flex>
