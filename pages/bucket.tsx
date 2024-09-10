@@ -9,7 +9,6 @@ import PageNextJs from 'nextjs/PageNextJs';
 import useGraphqlQuery from 'lib/api/useGraphqlQuery';
 import useDebounce from 'lib/hooks/useDebounce';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import { timeTool } from 'ui/storage/utils';
 const TableList = dynamic(() => import('ui/storage/table-list'), { ssr: false });
 const Page: NextPage = () => {
   const [ searchTerm, setSearchTerm ] = React.useState('');
@@ -55,19 +54,21 @@ const Page: NextPage = () => {
       order: { update_time: 'desc' },
     },
   ];
-  const talbeList: Array<BucketTalbeListType> = [];
+  const tableList: Array<BucketTalbeListType> = [];
 
   const { loading, data, error } = useGraphqlQuery('Buckets', queries);
   const tableLength = data?.buckets?.length || 0;
-  data?.buckets?.forEach((v: BucketRequestType) => {
-    talbeList.push({
-      'Bucket Name': v.bucket_name,
-      'Bucket ID': v.bucket_id,
-      'Last Updated Time': timeTool(v.update_time),
-      Status: v.status,
-      'Active Objects Count': v.active_object_count.aggregate.count,
-      Creator: v.owner_address,
-    });
+  data?.buckets?.forEach((v: BucketRequestType, index: number) => {
+    if (index <= 20) {
+      tableList.push({
+        'Bucket Name': v.bucket_name,
+        'Bucket ID': v.bucket_id,
+        'Last Updated Time': v.update_time,
+        Status: v.status,
+        'Active Objects Count': v.active_object_count.aggregate.count,
+        Creator: v.owner_address,
+      });
+    }
   });
   React.useEffect(() => {
     if (typeof tableLength === 'number' && tableLength !== 21) {
@@ -80,8 +81,12 @@ const Page: NextPage = () => {
   const tapList = [ 'Transactions', 'Versions' ];
   const tabThead = [ 'Bucket Name', 'Bucket ID', 'Last Updated Time', 'Status', 'Active Objects Count', 'Creator' ];
 
-  const handleSearchChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
+  const handleSearchChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement> | null) => {
+    if (!event) {
+      setSearchTerm('');
+    } else {
+      setSearchTerm(event.target.value);
+    }
   }, []);
 
   return (
@@ -94,7 +99,7 @@ const Page: NextPage = () => {
         error={ error }
         loading={ loading }
         tapList={ tapList }
-        talbeList={ talbeList }
+        tableList={ tableList }
         tabThead={ tabThead }
         page="bucket"
         handleSearchChange={ handleSearchChange }/>

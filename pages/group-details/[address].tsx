@@ -1,4 +1,4 @@
-import { Flex, Box } from '@chakra-ui/react';
+import { Flex, Box, Tooltip } from '@chakra-ui/react';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
@@ -13,16 +13,9 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import { formatPubKey } from 'ui/storage/utils';
 
 const HeadDetails = dynamic(() => import('ui/storage/head-details'), { ssr: false });
-// const TableDetails = dynamic(() => import('ui/storage/table-details'), { ssr: false });
 
 const ObjectDetails: NextPage<Props> = (props: Props) => {
   const router = useRouter();
-  // const [ objectAddress, setobjectAddress ] = React.useState<string>('');
-  // React.useEffect(() => {
-  // }, [ objectAddress ]);
-  // const changeTable = React.useCallback((value: string) => {
-  //   setobjectAddress(value);
-  // }, []);
   const routerFallback = () => () => {
     router.back();
   };
@@ -90,7 +83,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       status: 'none',
     },
     'Active Group Member Count': {
-      value: (details?.tags && Object.entries(details?.members).length.toString()) || '0',
+      value: details?.members[0]?.member || '0',
       status: 'none',
     },
     Owner: {
@@ -98,29 +91,21 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       status: 'copyLink',
     },
   };
-  // const tapList = [ 'Transactions', 'Versions' ];
-  // const tabThead = [ 'Txn Hash', 'Block', 'Age', 'Type' ];
-  // const talbeList = [
-  //   {
-  //     'Txn Hash': '4c83feb331594408sdjhfsdk98238293',
-  //     Block: 'Seal Object',
-  //     Age: '40 B',
-  //     Type: 'Created',
-  //   },
-  // ];
 
   return (
     <PageNextJs pathname="/group-details/[address]" query={ props.query }>
       <Flex align="center" marginBottom="24px">
         <IconSvg onClick={ routerFallback() } cursor="pointer" w="24px" h="24px" marginRight="4px" name="Fallback"></IconSvg>
         <PageTitle marginBottom="0" title="Group Details" withTextAd/>
-        <Box ml="6px">{ router.query.address }</Box>
-        <Box ml="6px" color="rgba(0, 0, 0, 0.6)" fontWeight="400" fontSize="14px">
-          { details?.group_name.length > 60 ? formatPubKey(details?.group_name, 60, 0) : details?.group_name }
-        </Box>
+        <Tooltip
+          isDisabled={ details?.group_name.length < 60 }
+          label={ details?.group_name } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
+          <Box ml="6px" color="rgba(0, 0, 0, 0.4)" fontWeight="400" fontSize="14px">
+            { details?.group_name.length > 60 ? formatPubKey(details?.group_name, 60, 0) : details?.group_name }
+          </Box>
+        </Tooltip>
       </Flex>
       <HeadDetails loading={ loadsing } overview={ overview } more={ more }/>
-      { /* <TableDetails tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead } changeTable={ changeTable }/> */ }
     </PageNextJs>
   );
 };

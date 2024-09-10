@@ -55,22 +55,23 @@ const ObjectDetails: NextPage = () => {
       offset: offset,
     },
   ];
-  // const [ talbeList ] = React.useState<Array<ObjetTalbeListType>>([]);
-  const talbeList: Array<ObjetTalbeListType> = [];
+  const tableList: Array<ObjetTalbeListType> = [];
 
   const { loading, data, error } = useGraphqlQuery('Objects', queries);
   const tableLength = data?.objects?.length || 0;
-  data?.objects?.forEach((v: ObjetRequestType) => {
-    talbeList.push({
-      'Object Name': v.object_name,
-      Type: v.content_type,
-      'Object Size': sizeTool(v.payload_size),
-      Status: v.status,
-      Visibility: v.visibility,
-      'Last Updated Time': v.update_time,
-      Bucket: v.bucket_name,
-      Creator: v.creator_address,
-    });
+  data?.objects?.forEach((v: ObjetRequestType, index: number) => {
+    if (index <= 20) {
+      tableList.push({
+        'Object Name': v.object_name,
+        Type: v.content_type,
+        'Object Size': sizeTool(v.payload_size),
+        Status: v.status,
+        Visibility: v.visibility,
+        'Last Updated Time': v.update_time,
+        Bucket: v.bucket_name,
+        Creator: v.creator_address,
+      });
+    }
   });
   React.useEffect(() => {
     if (typeof tableLength === 'number' && tableLength !== 21) {
@@ -84,8 +85,12 @@ const ObjectDetails: NextPage = () => {
 
   const tabThead = [ 'Object Name', 'Type', 'Object Size', 'Status', 'Visibility', 'Last Updated Time', 'Bucket', 'Creator' ];
 
-  const handleSearchChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
+  const handleSearchChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement> | null) => {
+    if (!event) {
+      setSearchTerm('');
+    } else {
+      setSearchTerm(event.target.value);
+    }
   }, []);
 
   return (
@@ -98,7 +103,7 @@ const ObjectDetails: NextPage = () => {
         error={ error }
         loading={ loading }
         tapList={ tapList }
-        talbeList={ talbeList }
+        tableList={ tableList }
         tabThead={ tabThead }
         page="object"
         handleSearchChange={ handleSearchChange }

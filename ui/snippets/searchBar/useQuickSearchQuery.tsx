@@ -18,24 +18,11 @@ export default function useQuickSearchQuery() {
   const router = useRouter();
 
   const [ searchTerm, setSearchTerm ] = React.useState('');
+  // For show more filter
   const [ type, setType ] = React.useState('default');
   const graphqlSearchOnly = React.useRef(false);
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
-  // const searchRescource = React.useCallback(() => {
-  //   if (isAddress(debouncedSearchTerm)) {
-  //     // If search input is address like
-  //     return 'address_like';
-  //   } else if (isHexString(debouncedSearchTerm, 66)) {
-  //     // If search input is txn hash like
-  //     return 'txn_like';
-  //   } else if (/^\d+$/.test(debouncedSearchTerm)) {
-  //     // If search input is Number
-  //     return 'number_only';
-  //   } else {
-  //     return 'default';
-  //   }
-  // }, [ debouncedSearchTerm ]);
   const pathname = router.pathname;
 
   useEffect(() => {
@@ -53,62 +40,65 @@ export default function useQuickSearchQuery() {
       return [];
     }
 
+    graphqlSearchOnly.current = false;
+
+    return [
+      {
+        tableName: 'objects',
+        fields: [
+          'object_id',
+          'object_name',
+          'owner_address',
+        ],
+        limit: 6,
+        offset: 0,
+        where: {
+          _or: [
+            { object_name: { _ilike: `${ debouncedSearchTerm }%` } },
+            { object_id: { _eq: debouncedSearchTerm } },
+          ],
+        },
+        order: { update_time: 'desc' },
+      },
+      {
+        tableName: 'buckets',
+        fields: [
+          'bucket_id',
+          'bucket_name',
+          'owner_address',
+        ],
+        limit: 6,
+        offset: 0,
+        where: {
+          _or: [
+            { bucket_name: { _ilike: `${ debouncedSearchTerm }%` } },
+            { bucket_id: { _eq: debouncedSearchTerm } },
+          ],
+        },
+        order: { update_time: 'desc' },
+      },
+      {
+        tableName: 'groups',
+        fields: [
+          'group_id',
+          'group_name',
+          'owner_address',
+        ],
+        limit: 6,
+        offset: 0,
+        where: {
+          _or: [
+            { group_name: { _ilike: `${ debouncedSearchTerm }%` } },
+            { group_id: { _eq: debouncedSearchTerm } },
+          ],
+        },
+        order: { update_time: 'desc' },
+      },
+    ];
+  }, [ debouncedSearchTerm ]);
+
+  const graphqlShowMoreQueries = React.useCallback(() => {
     switch (type) {
-      case 'default':
-        graphqlSearchOnly.current = false;
-        return [
-          {
-            tableName: 'objects',
-            fields: [
-              'object_id',
-              'object_name',
-              'owner_address',
-            ],
-            limit: 6,
-            offset: 0,
-            where: {
-              _or: [
-                { object_name: { _ilike: `${ debouncedSearchTerm }%` } },
-                { object_id: { _eq: debouncedSearchTerm } },
-              ],
-            },
-            order: { update_time: 'desc' },
-          },
-          {
-            tableName: 'buckets',
-            fields: [
-              'bucket_id',
-              'bucket_name',
-              'owner_address',
-            ],
-            limit: 6,
-            offset: 0,
-            where: {
-              _or: [
-                { bucket_name: { _ilike: `${ debouncedSearchTerm }%` } },
-                { bucket_id: { _eq: debouncedSearchTerm } },
-              ],
-            },
-            order: { update_time: 'desc' },
-          },
-          {
-            tableName: 'groups',
-            fields: [
-              'group_id',
-              'group_name',
-              'owner_address',
-            ],
-            limit: 6,
-            offset: 0,
-            where: {
-              _or: [
-                { group_name: { _ilike: `${ debouncedSearchTerm }%` } },
-                { group_id: { _eq: debouncedSearchTerm } },
-              ],
-            },
-            order: { update_time: 'desc' },
-          },
-        ];
       case 'objects':
         graphqlSearchOnly.current = true;
         return [
@@ -161,7 +151,7 @@ export default function useQuickSearchQuery() {
               'group_name',
               'owner_address',
             ],
-            limit: 6,
+            limit: 50,
             offset: 0,
             where: {
               _or: [
@@ -179,6 +169,7 @@ export default function useQuickSearchQuery() {
   }, [ debouncedSearchTerm, type ]);
 
   const graphqlQuery = useGraphqlQuery('graphql_search', graphqlQuerires());
+  const graphqlShowMoreQuery = useGraphqlQuery('graphql_search_more', graphqlShowMoreQueries());
   const apiQuery = useApiQuery('quick_search', {
     queryParams: { q: debouncedSearchTerm },
     queryOptions: { enabled: !graphqlSearchOnly.current && debouncedSearchTerm.trim().length > 0 },
@@ -187,14 +178,18 @@ export default function useQuickSearchQuery() {
   const query = React.useMemo(() => {
     const apiData = !graphqlSearchOnly.current && !apiQuery.isPending && apiQuery.data ? apiQuery.data : [];
     const graphqlData = !graphqlQuery.loading && graphqlQuery.data ? Object.values(graphqlQuery.data).flat() : [];
+    const moreData = !graphqlShowMoreQuery.loading && graphqlShowMoreQuery.data ? Object.values(graphqlShowMoreQuery.data).flat() : [];
     const isPending = apiQuery.isPending || graphqlQuery.loading;
     const isError = apiQuery.isError || graphqlQuery.error;
+
+    const aggregatedGraphqlData = moreData.length ? moreData : graphqlData;
+
     return {
-      data: [ ...apiData, ...graphqlData as Array<SearchResultItem> ],
+      data: [ ...apiData, ...aggregatedGraphqlData as Array<SearchResultItem> ],
       isPending,
       isError,
     };
-  }, [ graphqlQuery, apiQuery ]);
+  }, [ graphqlQuery, graphqlShowMoreQuery, apiQuery ]);
 
   const redirectCheckQuery = useApiQuery('search_check_redirect', {
     // on pages with regular search bar we check redirect on every search term change

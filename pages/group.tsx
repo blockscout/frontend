@@ -52,20 +52,23 @@ const Page: NextPage = () => {
           { group_id: { _eq: debouncedSearchTerm } },
         ],
       } : undefined,
+      order: { group_id: 'desc' },
     },
   ];
-  const talbeList: Array<GroupTalbeListType> = [];
+  const tableList: Array<GroupTalbeListType> = [];
 
   const { loading, data, error } = useGraphqlQuery('storage_group', queries);
   const tableLength = data?.buckets?.length || 0;
-  data?.groups?.forEach((v: GroupRequestType) => {
-    talbeList.push({
-      'Group Name': v.group_name,
-      'Group ID': v.group_id,
-      'Last Updated': v.update_at,
-      'Active Group Member Count': v.active_member_count.aggregate.count,
-      Owner: v.owner_address,
-    });
+  data?.groups?.forEach((v: GroupRequestType, index: number) => {
+    if (index <= 20) {
+      tableList.push({
+        'Group Name': v.group_name,
+        'Group ID': v.group_id,
+        'Last Updated': v.update_at,
+        'Active Group Member Count': v.active_member_count.aggregate.count,
+        Owner: v.owner_address,
+      });
+    }
   });
 
   React.useEffect(() => {
@@ -78,8 +81,12 @@ const Page: NextPage = () => {
   const tapList = [ 'objects', 'Transactions', 'Permissions' ];
   const tabThead = [ 'Group Name', 'Group ID', 'Last Updated', 'Active Group Member Count', 'Owner' ];
 
-  const handleSearchChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
+  const handleSearchChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement> | null) => {
+    if (!event) {
+      setSearchTerm('');
+    } else {
+      setSearchTerm(event.target.value);
+    }
   }, []);
 
   return (
@@ -92,7 +99,7 @@ const Page: NextPage = () => {
         error={ error }
         loading={ loading }
         tapList={ tapList }
-        talbeList={ talbeList }
+        tableList={ tableList }
         tabThead={ tabThead }
         page="group"
         handleSearchChange={ handleSearchChange }/>

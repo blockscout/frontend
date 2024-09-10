@@ -1,4 +1,4 @@
-import { Flex, Box } from '@chakra-ui/react';
+import { Flex, Box, Tooltip } from '@chakra-ui/react';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
@@ -10,19 +10,12 @@ import PageNextJs from 'nextjs/PageNextJs';
 import useGraphqlQuery from 'lib/api/useGraphqlQuery';
 import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import { timeTool, sizeTool, formatPubKey } from 'ui/storage/utils';
+import { timeTool, sizeTool, formatPubKey, timeText } from 'ui/storage/utils';
 
 const HeadDetails = dynamic(() => import('ui/storage/head-details'), { ssr: false });
-// const TableDetails = dynamic(() => import('ui/storage/table-details'), { ssr: false });
 
 const ObjectDetails: NextPage<Props> = (props: Props) => {
   const router = useRouter();
-  // const [ objectAddress, setobjectAddress ] = React.useState<string>('');
-  // React.useEffect(() => {
-  // }, [ objectAddress ]);
-  // const changeTable = React.useCallback((value: string) => {
-  //   setobjectAddress(value);
-  // }, []);
   const routerFallback = () => () => {
     router.back();
   };
@@ -82,6 +75,25 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       setLoadsing(false);
     }
   }, [ data, loading ]);
+  const overTime = timeTool(details?.update_time);
+
+  const [ oldTimeText, setoldTimeText ] = React.useState<string>('');
+  React.useEffect(() => {
+    let countdown = 0;
+    if (typeof overTime === 'number' && !Number.isNaN(overTime)) {
+      const setTime = setTimeout(() => {
+        countdown = overTime + 1;
+        if (countdown >= 60) {
+          clearTimeout(setTime);
+          setoldTimeText(timeTool(details?.update_time).toString());
+        } else {
+          setoldTimeText(`${ countdown } second ago ${ timeText(details?.update_time) }`);
+        }
+      }, 1000);
+    } else {
+      setoldTimeText(timeTool(details?.update_time).toString());
+    }
+  }, [ oldTimeText, overTime, details ]);
 
   const overview = {
     'Bucket Name': details?.bucket_name,
@@ -94,7 +106,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
   };
   const more = {
     'Last Updated Time': {
-      value: timeTool(details?.update_time.slice(0, 19)),
+      value: oldTimeText,
       status: 'time',
     },
     'Storage Size': {
@@ -120,64 +132,20 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
     },
   };
   const secondaryAddresses = details?.global_virtual_group_family.global_virtual_group_ids.split(',') || [];
-  // const tapList = [ 'Transactions', 'Versions' ];
-  // const tabThead = [ 'objects name', 'Type', 'Object Size', 'Status', 'Visibility', 'Last Updated Time', 'Creator' ];
-  // const talbeList = [
-  //   {
-  //     'objects name': '4c83feb331594408sdjhfsdk98238293',
-  //     Type: 'Created',
-  //     'Object Size': '1.41 KB',
-  //     Status: 'Sealed',
-  //     Visibility: 'Private',
-  //     'Last Updated Time': '17h 51m ago',
-  //     Creator: '0x5a8819edbc43fb1f51394e3fef35cb28977abd06',
-  //     id: '2',
-  //   },
-  // ];
-  // const storageDetails = [
-  //   {
-  //     name: 'Free Quota (one-time)',
-  //     data: '1 GB/1 GB (100%)',
-  //   },
-  //   {
-  //     name: 'Monthly Free Quota (31 Jul, 2024)',
-  //     data: '1 GB/1 GB (100%)',
-  //   },
-  //   {
-  //     name: 'Monthly Charged Quota (31 Jul, 2024)',
-  //     data: '1 GB/1 GB (100%)',
-  //   },
-  // ];
   return (
     <PageNextJs pathname="/bucket-details/[address]" query={ props.query }>
       <Flex align="center" marginBottom="24px">
         <IconSvg onClick={ routerFallback() } cursor="pointer" w="24px" h="24px" marginRight="4px" name="Fallback"></IconSvg>
         <PageTitle marginBottom="0" title="Bucket Details" withTextAd/>
-        <Box ml="6px" color="rgba(0, 0, 0, 0.6)" fontWeight="400" fontSize="14px">
-          { details?.bucket_name.length > 60 ? formatPubKey(details?.bucket_name, 60, 0) : details?.bucket_name }
-        </Box>
+        <Tooltip
+          isDisabled={ details?.bucket_name.length < 60 }
+          label={ details?.bucket_name } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
+          <Box ml="6px" color="rgba(0, 0, 0, 0.4)" fontWeight="400" fontSize="14px">
+            { details?.bucket_name.length > 60 ? formatPubKey(details?.bucket_name, 60, 0) : details?.bucket_name }
+          </Box>
+        </Tooltip>
       </Flex>
-      { /* <Flex justifyContent="space-between">
-        {
-          storageDetails.map((value, index) => (
-            <Box
-              key={ index }
-              w="432px"
-              padding="16px"
-              border="1px solid rgba(0, 0, 0, 0.06)"
-              borderRadius="12px"
-              margin="24px"
-            >
-              <Box fontSize="12px" color="rgba(0, 0, 0, 1)" fontWeight="400">{ value.name }</Box>
-              <Box paddingBottom="8px" display="inline-block" fontWeight="700" fontSize="16px" color="#000000" marginTop="8px" borderBottom="4px solid #A07EFF">
-                { value.data }
-              </Box>
-            </Box>
-          ))
-        }
-      </Flex> */ }
       <HeadDetails loading={ loadsing } secondaryAddresses={ secondaryAddresses } overview={ overview } more={ more }/>
-      { /* <TableDetails tapList={ tapList } talbeList={ talbeList } tabThead={ tabThead } changeTable={ changeTable }/> */ }
     </PageNextJs>
   );
 };

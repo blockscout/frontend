@@ -33,7 +33,7 @@ interface TalbeListType {
 
 type Props<T extends string> = {
   tapList?: Array<T> | undefined;
-  talbeList?: Array<TalbeListType> | undefined;
+  tableList?: Array<TalbeListType> | undefined;
   tabThead?: Array<T> | undefined;
   changeTable: (value: string) => void;
 }
@@ -82,7 +82,7 @@ function Page<T extends string>(props: Props<T>) {
         </Thead>
         <Tbody>
           {
-            props.talbeList?.map((title: any, key) => (
+            props.tableList?.map((title: any, key) => (
               <Tr key={ key } >
                 {
                   Object.keys(title)?.map((value: string, index) => (

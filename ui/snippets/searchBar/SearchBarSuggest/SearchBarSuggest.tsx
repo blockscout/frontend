@@ -2,7 +2,7 @@ import { Box, Flex, Tab, TabList, Tabs, Text, useColorModeValue } from '@chakra-
 // import throttle from 'lodash/throttle';
 import type { Dispatch, SetStateAction } from 'react';
 import React from 'react';
-import { Element } from 'react-scroll';
+import { scroller, Element } from 'react-scroll';
 
 import type { SearchResultItem } from 'types/api/search';
 
@@ -30,7 +30,7 @@ interface Props {
   showMoreClicked: boolean;
 }
 
-const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreClicked }: Props) => {
+const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreClicked, containerId }: Props) => {
   const isMobile = useIsMobile();
 
   const marketplaceApps = useMarketplaceApps(searchTerm);
@@ -38,8 +38,8 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
   const categoriesRefs = React.useRef<Array<HTMLParagraphElement>>([]);
   const tabsRef = React.useRef<HTMLDivElement>(null);
 
-  const [ tabIndex, setTabIndex ] = React.useState(0);
   const [ filterType, setFilterType ] = React.useState('all');
+  const seletecdTab = React.useRef('all');
 
   const itemsGroups = React.useMemo(() => {
     if (!query.data && !marketplaceApps.displayedApps) {
@@ -49,7 +49,8 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
     const filteredData = filterType !== 'all' ? query.data.filter(
       (item) => item.type === filterType ||
       `${ item.type }s` === filterType ||
-      `${ item.type }es` === filterType,
+      `${ item.type }es` === filterType ||
+      (filterType.toLowerCase().startsWith('nfts') && item.type === 'token'),
     ) : query.data;
 
     const map: Partial<ItemsCategoriesMap> = {};
@@ -96,15 +97,40 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
   }, [ itemsGroups ]);
 
   const bgColor = useColorModeValue('white', 'gray.900');
-  const handleShowMoreClk = React.useCallback((type: string) => () => {
-    setFilterType(type.toLowerCase());
-    setType(type);
-  }, [ setType, setFilterType ]);
 
-  const hanleTabClick = React.useCallback((type: string, index: number) => () => {
+  const hanleTabClick = React.useCallback((type: string) => () => {
+    seletecdTab.current = type.toLowerCase();
+    if (type === 'all') {
+      setType('default');
+    }
     setFilterType(type.toLowerCase());
-    setTabIndex(index);
-  }, [ setFilterType ]);
+  }, [ setType ]);
+
+  const scrollToTop = React.useCallback(() => {
+    scroller.scrollTo(`cat_0`, {
+      duration: 250,
+      smooth: true,
+      offset: -(tabsRef.current?.clientHeight || 0),
+      containerId: containerId,
+    });
+  }, [ containerId ]);
+
+  const handleShowMoreClk = React.useCallback((type: string) => () => {
+    hanleTabClick(type)();
+    setType(type);
+    scrollToTop();
+  }, [ hanleTabClick, setType, scrollToTop ]);
+
+  const tabMatched = React.useCallback((type: string) => {
+    if (type === seletecdTab.current ||
+      `${ type }s` === seletecdTab.current ||
+      `${ type }es` === seletecdTab.current ||
+      (seletecdTab.current.toLowerCase().startsWith('nfts') && type === 'token')) {
+      return true;
+    } else {
+      return false;
+    }
+  }, [ seletecdTab ]);
 
   const content = (() => {
     if (query.isPending || marketplaceApps.isPlaceholderData) {
@@ -131,12 +157,24 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
       <>
         { tabCategories.length > 1 && (
           <Box position="sticky" top="0" width="100%" background={ bgColor } py={ 5 } mt={ -5 } pl="12px" ref={ tabsRef } zIndex={ 9 }>
-            <Tabs variant="outline" colorScheme="gray" size="sm" index={ tabIndex }>
+            <Tabs variant="outline" colorScheme="gray" size="sm">
               <TabList columnGap={ 3 } rowGap={ 2 } flexWrap="wrap">
-                { tabCategories.map((cat, index) => (
+                { tabCategories.map((cat) => (
                   <Tab borderRadius="47px"
+                    minWidth="47px"
                     key={ cat.id }
-                    onClick={ hanleTabClick(cat.title, index) } { ...(tabIndex === index ? { 'data-selected': 'true' } : {}) }>
+                    onClick={ hanleTabClick(cat.title.toLowerCase()) }
+                    style={{
+                      backgroundColor: (tabMatched(cat.title.toLowerCase()) ||
+                      (cat.title === 'all' && seletecdTab.current === 'all')) ? '#A07EFF' : 'transparent',
+                      color: (tabMatched(cat.title.toLowerCase()) ||
+                      (cat.title === 'all' && seletecdTab.current === 'all')) ? '#FFF' : '#000',
+                      border: (tabMatched(cat.title.toLowerCase()) ||
+                      (cat.title === 'all' && seletecdTab.current === 'all')) ? '1px solid rgba(0, 46, 51, 0.10)' : '1px solid rgba(0, 46, 51, 0.10)',
+                      fontStyle: 'normal',
+                      fontWeight: 400,
+                    }}
+                  >
                     { cat.title }
                   </Tab>
                 )) }
@@ -162,7 +200,8 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
               >
                 { cat.title }
               </Text>
-              { cat.id !== 'app' && itemsGroups[cat.id]?.slice(0, 5).map((item, index) => (
+              { cat.id !== 'app' && ((showMoreClicked ? (itemsGroups[cat.id] || []) : (itemsGroups[cat.id] || []).slice(0, 5))
+              ).map((item, index) => (
                 <Box key={ index } px="8px" borderRadius="12px">
                   <SearchBarSuggestItem
                     key={ index }
@@ -187,7 +226,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
                     flexDirection="row"
                     alignContent="center"
                     justifyContent="center"
-                    onClick={ handleShowMoreClk(cat.id) }
+                    onClick={ handleShowMoreClk(cat.title) }
                   >
                     <Text
                       fontSize="12px"
