@@ -33,6 +33,9 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+# env file, load from vercel config
+.env
+
 # local env files
 .env*.local
 /configs/envs/.env.secrets
