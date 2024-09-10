@@ -78,7 +78,7 @@ const AccountsLabelSearch = () => {
     };
 
     return (
-      <Flex alignItems="center" columnGap={ 2 }>
+      <Flex alignItems="center" columnGap={ 2 } flexWrap="wrap" rowGap={ 1 }>
         <Skeleton
           isLoaded={ !isPlaceholderData }
           display="inline-block"
