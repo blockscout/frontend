@@ -79,11 +79,38 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
     if (!query.data && !marketplaceApps.displayedApps) {
       return {};
     }
+
+    const filteredData = filterType !== 'all' ? query.data.filter(
+      (item) => item.type === filterType ||
+      `${ item.type }s` === filterType ||
+      `${ item.type }es` === filterType,
+    ) : query.data;
+
     const map: Partial<ItemsCategoriesMap> = {};
 
-    if (filterType !== 'all') {
-      query.data = query.data.filter((item) => item.type === filterType);
+    filteredData.forEach(item => {
+      const cat = getItemCategory(item) as ApiCategory;
+      if (cat) {
+        if (cat in map) {
+          map[cat]?.push(item);
+        } else {
+          map[cat] = [ item ];
+        }
+      }
+    });
+
+    if (marketplaceApps.displayedApps.length) {
+      map.app = marketplaceApps.displayedApps;
     }
+    return map;
+  }, [ query.data, marketplaceApps.displayedApps, filterType ]);
+
+  const tabGroups = React.useMemo(() => {
+    if (!query.data) {
+      return {};
+    }
+
+    const map: Partial<ItemsCategoriesMap> = {};
 
     query.data?.forEach(item => {
       const cat = getItemCategory(item) as ApiCategory;
@@ -95,11 +122,8 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
         }
       }
     });
-    if (marketplaceApps.displayedApps.length) {
-      map.app = marketplaceApps.displayedApps;
-    }
     return map;
-  }, [ query, marketplaceApps.displayedApps, filterType ]);
+  }, [ query.data ]);
 
   React.useEffect(() => {
     categoriesRefs.current = Array(Object.keys(itemsGroups).length).fill('').map((_, i) => categoriesRefs.current[i] || React.createRef());
@@ -136,21 +160,23 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
 
     const resultCategories = searchCategories.filter(cat => itemsGroups[cat.id]);
 
+    const tabCategories = searchCategories.filter(cat => tabGroups[cat.id]);
+
     if (resultCategories.length === 0) {
       return <Text pl="12px">No results found.</Text>;
     }
 
-    if (resultCategories.length) {
-      resultCategories.unshift({ id: 'all', title: 'All' });
+    if (tabCategories.length) {
+      tabCategories.unshift({ id: 'all', title: 'All' });
     }
 
     return (
       <>
-        { resultCategories.length > 1 && (
-          <Box position="sticky" top="0" width="100%" background={ bgColor } py={ 5 } my={ -5 } pl="12px" ref={ tabsRef }>
+        { tabCategories.length > 1 && (
+          <Box position="sticky" top="0" width="100%" background={ bgColor } py={ 5 } mt={ -5 } pl="12px" ref={ tabsRef } zIndex={ 9 }>
             <Tabs variant="outline" colorScheme="gray" size="sm" index={ tabIndex }>
               <TabList columnGap={ 3 } rowGap={ 2 } flexWrap="wrap">
-                { resultCategories.map((cat, index) => (
+                { tabCategories.map((cat, index) => (
                   <Tab borderRadius="47px"
                     key={ cat.id }
                     onClick={ hanleTabClick(cat.title, index) } { ...(tabIndex === index ? { 'data-selected': 'true' } : {}) }>
@@ -184,7 +210,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
                   <SearchBarSuggestItem
                     key={ index }
                     isFirst={
-                      indx === 1 && index === 0
+                      indx === 0 && index === 0
                     }
                     data={ item }
                     isMobile={ isMobile }

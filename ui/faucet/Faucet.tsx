@@ -72,7 +72,7 @@ const Faucet = (props: { verified: boolean }) => {
     } else {
       if (!isAddress(data.address)) {
         setIsError(true);
-        setErrMessage('Invalid wallet address');
+        setErrMessage('Please input a valid address');
         return;
       }
 
@@ -199,6 +199,7 @@ const Faucet = (props: { verified: boolean }) => {
         fontSize="24px"
         fontWeight="400"
         lineHeight="28px"
+        color="#000"
       >
         Tokens will be automatically transferred to your address.
       </Text>
@@ -401,7 +402,7 @@ designed to be developer-friendly, providing easy access to testnet tokens for i
             </AccordionButton>
             <AccordionPanel fontSize="12px" fontWeight="400" maxWidth="800" lineHeight="16px" color="rgba(0, 0, 0, 0.60)" pl="0" pr="0" pb="0">
             Testnet $ZKME tokens are a test version of the MeChain network&apos;s native token, allowing developers to simulate transactions and interactions
-within the zkMe ecosystem without using real value. These tokens can be used in place of mainnet $ZKME tokens on the MeChaintestnet.
+within the zkMe ecosystem without using real value. These tokens can be used in place of mainnet $ZKME tokens on the MeChain testnet.
             </AccordionPanel>
           </AccordionItem>
           <AccordionItem
