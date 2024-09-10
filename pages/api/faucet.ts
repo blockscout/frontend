@@ -30,18 +30,18 @@ export default async function faucetHandler(
   try {
     const session = await getIronSession<{ user: any }>(req, res, sessionOptions);
     user = session.user;
-    if (!user) {
-      return res.status(401).json({ error: 'Failed: please verify your Discord first.' });
+    if (!user?.id) {
+      return res.status(401).json({ error: 'Please verify your Discord first.' });
     }
 
     if (requestLock.has(user.id)) {
-      return res.status(429).json({ error: 'Failed: Too many requests.' });
+      return res.status(429).json({ error: 'Too many requests.' });
     }
 
-    const timestamp: number = new Date(user?.lastRequestTime || 0).getTime();
+    const lastRequestTime: number = new Date(user?.lastRequestTime || 0).getTime();
     const requestPer = Number(getEnvValue('NEXT_PUBLIC_FAUCET_REQUEST_PER'));
     const requestPerAsHours = requestPer / 1000 / 60 / 60;
-    if (Date.now() - timestamp <= requestPer) {
+    if (Date.now() - lastRequestTime <= requestPer) {
       return res.status(429).json({
         error: `Your account has already request for $ZKME within the last ${ requestPerAsHours } hours. Please try again later.`,
       });
@@ -49,7 +49,7 @@ export default async function faucetHandler(
 
     const userWallet: string = req.body.userWallet;
     if (!isAddress(userWallet)) {
-      return res.status(400).json({ error: 'Failed: please enter the right address.' });
+      return res.status(400).json({ error: 'Please enter the right address.' });
     }
 
     requestLock.add(user.id);
