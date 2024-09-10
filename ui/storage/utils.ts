@@ -137,3 +137,7 @@ export const skeletonList = (storageName: string) => {
   }
   return list;
 };
+
+export const isNumberOnly = (str: string) => {
+  return /^\d+$/.test(str);
+};

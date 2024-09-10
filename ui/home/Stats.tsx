@@ -107,7 +107,7 @@ const Stats = () => {
         ) }
         { !(rollupFeature.isEnabled && (rollupFeature.type === 'zkEvm' || rollupFeature.type === 'zkSync')) && (
           <StatsItem
-            icon="block"
+            icon="block_slim"
             title="Total blocks"
             value={ Number(data.total_blocks).toLocaleString() }
             url={ route({ pathname: '/blocks' }) }
@@ -123,7 +123,7 @@ const Stats = () => {
           />
         ) }
         <StatsItem
-          icon="transactions"
+          icon="transactions_slim"
           title="Total transactions"
           value={ Number(data.total_transactions).toLocaleString() }
           url={ route({ pathname: '/txs' }) }

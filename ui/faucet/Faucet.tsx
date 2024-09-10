@@ -30,7 +30,7 @@ const enum FAUCET_REQUEST_TYPE {
   SENT = 2,
 }
 
-const Faucet = (props: { verified: boolean }) => {
+const Faucet = (props: { verified: boolean; onVerificationChange: (status: boolean) => void }) => {
   const { register, handleSubmit } = useForm<{ address: string }>();
   const [ isError, setIsError ] = React.useState<boolean>(false);
   const [ errMessage, setErrMessage ] = React.useState<string>('');
@@ -59,7 +59,15 @@ const Faucet = (props: { verified: boolean }) => {
   }, []);
 
   const onSubmit = React.useCallback((data: { address: string }) => {
-    if (!props.verified || !data.address) {
+    if (!props.verified) {
+      return;
+    }
+
+    if (requestStatus === FAUCET_REQUEST_TYPE.SENDING) {
+      return;
+    }
+
+    if (!data.address) {
       if (!data.address) {
         setErrMessage('Please input a wallet address');
         setIsError(true);
@@ -68,7 +76,7 @@ const Faucet = (props: { verified: boolean }) => {
     } else {
       if (!isAddress(data.address)) {
         setIsError(true);
-        setErrMessage('Invalid wallet address');
+        setErrMessage('Please input a valid address');
         return;
       }
 
@@ -91,6 +99,11 @@ const Faucet = (props: { verified: boolean }) => {
             setIsError(true);
             if (res.status === 429) {
               setErrMessage('The Discord account has already claimed test tokens within the last 24 hours. Please try again later.');
+            } else if (res.status === 401) {
+              setErrMessage('Please verify your Discord first.');
+              props.onVerificationChange(false);
+            } else if (res.status === 500) {
+              setErrMessage('Something went wrong, please try again later.');
             }
             setRequestStatus(FAUCET_REQUEST_TYPE.REQUEST);
           }
@@ -101,7 +114,7 @@ const Faucet = (props: { verified: boolean }) => {
           setRequestStatus(FAUCET_REQUEST_TYPE.REQUEST);
         });
     }
-  }, [ props.verified, reset ]);
+  }, [ props, requestStatus, reset ]);
 
   const verifyBtnStyles = React.useCallback(() => {
     if (props.verified) {
@@ -195,6 +208,7 @@ const Faucet = (props: { verified: boolean }) => {
         fontSize="24px"
         fontWeight="400"
         lineHeight="28px"
+        color="#000"
       >
         Tokens will be automatically transferred to your address.
       </Text>
@@ -397,7 +411,7 @@ designed to be developer-friendly, providing easy access to testnet tokens for i
             </AccordionButton>
             <AccordionPanel fontSize="12px" fontWeight="400" maxWidth="800" lineHeight="16px" color="rgba(0, 0, 0, 0.60)" pl="0" pr="0" pb="0">
             Testnet $ZKME tokens are a test version of the MeChain network&apos;s native token, allowing developers to simulate transactions and interactions
-within the zkMe ecosystem without using real value. These tokens can be used in place of mainnet $ZKME tokens on the MeChaintestnet.
+within the zkMe ecosystem without using real value. These tokens can be used in place of mainnet $ZKME tokens on the MeChain testnet.
             </AccordionPanel>
           </AccordionItem>
           <AccordionItem

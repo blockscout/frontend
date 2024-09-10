@@ -163,7 +163,8 @@ const SearchBar = ({ isHomepage }: Props) => {
                 ref={ scrollRef }
                 as={ Element }
                 px="4px"
-                py="4px"
+                pb="4px"
+                borderRadius="md"
               >
                 { searchTerm.trim().length === 0 && recentSearchKeywords.length > 0 && (
                   <SearchBarRecentKeywords onClick={ handleSearchTermChange } onClear={ onClose }/>

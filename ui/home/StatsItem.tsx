@@ -27,7 +27,8 @@ const StatsItem = ({ icon, title, value, className, tooltip, url, isLoading }: P
     [`@media screen and (min-width: ${ breakpoints.lg }) and (max-width: ${ LARGEST_BREAKPOINT })`]: { alignItems: 'center' },
   };
 
-  const bgColor = useColorModeValue('blue.50', 'whiteAlpha.100');
+  // const bgColor = useColorModeValue('blue.50', 'whiteAlpha.100');
+  const bgColor = 'rgba(160, 126, 255, 0.10)';
   const loadingBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
 
   return (
@@ -41,7 +42,7 @@ const StatsItem = ({ icon, title, value, className, tooltip, url, isLoading }: P
       columnGap={ 3 }
       rowGap={ 2 }
       className={ className }
-      color={ useColorModeValue('black', 'white') }
+      color="#8A55FD"
       position="relative"
       { ...(url && !isLoading ? {
         as: 'a',

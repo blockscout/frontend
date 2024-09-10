@@ -3,8 +3,9 @@ import React from 'react';
 
 import type { SearchResultBucket } from 'types/api/search';
 
+import highlightText from 'lib/highlightText';
 import IconSvg from 'ui/shared/IconSvg';
-import { formatPubKey } from 'ui/storage/utils';
+import { formatPubKey, isNumberOnly } from 'ui/storage/utils';
 
 interface Props {
   data: SearchResultBucket;
@@ -12,17 +13,24 @@ interface Props {
   isFirst?: boolean;
 }
 
-const SearchBarSuggestBucket = ({ data, isFirst }: Props) => {
+const SearchBarSuggestBucket = ({ data, isFirst, searchTerm }: Props) => {
   return (
     <Flex justifyContent="space-between">
       <Flex alignItems="center">
         <IconSvg w="24px" h="24px" mr="8px" name="bucket"/>
         <Flex flexDirection="column">
           <Flex fontWeight="500" fontSize={ 14 } lineHeight="20px" alignItems="center">
-            <Text color="#000">Bucket ID:&nbsp;</Text>
-            <Text color="#8A55FD">{ data.bucket_id }</Text>
+            <Text color="#000">{ isNumberOnly(searchTerm) && searchTerm === data.bucket_id ? 'Bucket ID' : 'Bucket Name' }:&nbsp;</Text>
+            {
+              !(isNumberOnly(searchTerm) && data.bucket_id === searchTerm) ? (
+                <span style={{ color: 'rgba(0, 0, 0, 0.30)' }} dangerouslySetInnerHTML={{ __html: highlightText(data.bucket_name, searchTerm) }}/>
+              ) :
+                <Text color="#8A55FD">{ data.bucket_id }</Text>
+            }
           </Flex>
-          <Text fontSize={ 12 } color="rgba(0, 0, 0, 0.30)">Owner: { formatPubKey(data.owner_address, 16, 16) }</Text>
+          <Text fontSize={ 12 } color="rgba(0, 0, 0, 0.30)">
+            Owner: { formatPubKey(data.owner_address, 16, 16) }
+          </Text>
         </Flex>
       </Flex>
       {

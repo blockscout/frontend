@@ -94,7 +94,7 @@ const Page = (props: HeadProps) => {
               <Tr borderBottom="1px solid rgba(0, 46, 51, 0.1)" key={ key } _last={{
                 borderColor: '#FFFFFF',
               }}>
-                <Td border="none" fontWeight="400" fontSize="14px" color="rgba(0, 0, 0, 0.4)" p="12px 0">
+                <Td border="none" fontWeight="400" fontSize="14px" color="rgba(0, 0, 0, 0.6)" p="12px 0">
                   <Skeleton w={ !props.loading ? '100%' : '100px' } isLoaded={ !props.loading }>
                     { key }
                   </Skeleton>
@@ -153,7 +153,7 @@ const Page = (props: HeadProps) => {
           <Tbody>
             { Object.entries(props.more || {}).map(([ key, values ]) => (
               <Tr key={ key }>
-                <Td fontWeight="400" fontSize="14px" color="rgba(0, 0, 0, 0.4)" p="12px 0">{ key }</Td>
+                <Td fontWeight="400" fontSize="14px" color="rgba(0, 0, 0, 0.6)" p="12px 0">{ key }</Td>
                 <Td
                   p="12px 0"
                   fontWeight="500"

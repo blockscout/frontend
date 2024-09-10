@@ -82,7 +82,7 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, isFirst }: 
         return <SearchBarSuggestBlock data={ data } searchTerm={ searchTerm } isMobile={ isMobile } isFirst={ isFirst }/>;
       }
       case 'transaction': {
-        return <SearchBarSuggestTx data={ data } searchTerm={ searchTerm } isMobile={ isMobile }/>;
+        return <SearchBarSuggestTx data={ data } searchTerm={ searchTerm } isMobile={ isMobile } isFirst={ isFirst }/>;
       }
       case 'user_operation': {
         return <SearchBarSuggestUserOp data={ data } searchTerm={ searchTerm } isMobile={ isMobile }/>;
