@@ -43,7 +43,7 @@ export default async function faucetHandler(
     const requestPerAsHours = requestPer / 1000 / 60 / 60;
     if (Date.now() - timestamp <= requestPer) {
       return res.status(429).json({
-        error: `Your account has already request for $ZKME within the last ${ requestPerAsHours } hours. Please try again later.`,
+        error: `Failed: the Discord account has already request for $ZKME within the last ${ requestPerAsHours } hours. Please try again later.`,
       });
     }
 

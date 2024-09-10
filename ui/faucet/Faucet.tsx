@@ -63,6 +63,10 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
       return;
     }
 
+    if (requestStatus === FAUCET_REQUEST_TYPE.SENDING) {
+      return;
+    }
+
     if (!data.address) {
       if (!data.address) {
         setErrMessage('Please input a wallet address');
@@ -98,6 +102,8 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
             } else if (res.status === 401) {
               setErrMessage('Please verify your Discord first.');
               props.onVerificationChange(false);
+            } else if (res.status === 500) {
+              setErrMessage('Something went wrong, please try again later.');
             }
             setRequestStatus(FAUCET_REQUEST_TYPE.REQUEST);
           }
@@ -108,7 +114,7 @@ const Faucet = (props: { verified: boolean; onVerificationChange: (status: boole
           setRequestStatus(FAUCET_REQUEST_TYPE.REQUEST);
         });
     }
-  }, [ props, reset ]);
+  }, [ props, requestStatus, reset ]);
 
   const verifyBtnStyles = React.useCallback(() => {
     if (props.verified) {

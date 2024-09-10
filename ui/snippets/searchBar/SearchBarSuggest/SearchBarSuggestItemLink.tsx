@@ -22,9 +22,7 @@ const SearchBarSuggestItemLink = ({ onClick, href, target, children, isFirst }: 
       _last={{
         borderBottomWidth: '0',
       }}
-      _notLast={{
-        marginBottom: '5px',
-      }}
+      marginBottom="5px"
       bgColor={ isFirst ? 'rgba(160, 126, 255, 0.10)' : 'transparent' }
       borderRadius="12px"
       _hover={{
