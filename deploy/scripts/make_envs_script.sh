@@ -18,6 +18,11 @@ echo "window.__envs = {" >> $output_file;
 
 # Iterate through all environment variables
 for var in $(env | grep '^NEXT_PUBLIC_' | cut -d= -f1); do
+  # Skip variables that start with NEXT_PUBLIC_VERCEL
+  if [[ $var == NEXT_PUBLIC_VERCEL* ]]; then
+    continue
+  fi
+
   # Get the value of the variable
   value="${!var}"
 
