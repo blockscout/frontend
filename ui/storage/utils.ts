@@ -1,4 +1,7 @@
-export const formatPubKey = (pubKey: string | undefined, _length = 4, _preLength = 4) => {
+export const formatPubKey = (pubKey: string | undefined, _length = 4, _preLength = 4, settingDate = 0) => {
+  if (pubKey && pubKey.toString().length <= settingDate) {
+    return pubKey;
+  }
   if (!pubKey) {
     return;
   }
@@ -42,7 +45,46 @@ export const timeTool = (time: string) => {
   if (minutes > 0) {
     return `${ minutes } minute ago ${ oldTimeText }`;
   }
-  return `${ seconds } second ago ${ oldTimeText }`;
+  return Number(seconds);
+};
+
+export const mintimeTool = (time: string) => {
+  const now = new Date().getTime();
+  const diff = now - new Date(time).getTime();
+
+  const seconds = Math.floor(diff / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+  const months = Math.floor(days / 30);
+  const years = Math.floor(months / 12);
+
+  if (years > 0) {
+    return `${ years } year ago`;
+  }
+  if (months > 0) {
+    return `${ months } month ago`;
+  }
+  if (days > 0) {
+    return `${ days } day ago`;
+  }
+  if (hours > 0) {
+    return `${ hours } hours ${ minutes % 60 }m ago`;
+  }
+  if (minutes > 0) {
+    return `${ minutes } minute ago`;
+  }
+};
+
+export const timeText = (time: string) => {
+  const oldyear = new Date(time).getFullYear();
+  const oldmonth = new Date(time).getMonth() + 1;
+  const oldday = new Date(time).getDate();
+  const oldhours = new Date(time).getHours();
+  const oldminutes = new Date(time).getMinutes();
+  const oldseconds = new Date(time).getSeconds();
+  const timeText = `${ oldyear }-${ oldmonth }-${ oldday } ${ oldhours }:${ oldminutes }:${ oldseconds } (UTC+8)`;
+  return timeText;
 };
 
 export const sizeTool = (bytes: number) => {

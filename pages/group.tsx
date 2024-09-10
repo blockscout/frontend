@@ -52,6 +52,7 @@ const Page: NextPage = () => {
           { group_id: { _eq: debouncedSearchTerm } },
         ],
       } : undefined,
+      order: { group_id: 'desc' },
     },
   ];
   const tableList: Array<GroupTalbeListType> = [];

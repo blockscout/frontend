@@ -1,4 +1,4 @@
-import { Flex, Box } from '@chakra-ui/react';
+import { Flex, Box, Tooltip } from '@chakra-ui/react';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
@@ -98,9 +98,13 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
         <IconSvg onClick={ routerFallback() } cursor="pointer" w="24px" h="24px" marginRight="4px" name="Fallback"></IconSvg>
         <PageTitle marginBottom="0" title="Group Details" withTextAd/>
         <Box ml="6px">{ router.query.address }</Box>
-        <Box ml="6px" color="rgba(0, 0, 0, 0.4)" fontWeight="400" fontSize="14px">
-          { details?.group_name.length > 60 ? formatPubKey(details?.group_name, 60, 0) : details?.group_name }
-        </Box>
+        <Tooltip
+          isDisabled={ details?.group_name.length < 60 }
+          label={ details?.group_name } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
+          <Box ml="6px" color="rgba(0, 0, 0, 0.4)" fontWeight="400" fontSize="14px">
+            { details?.group_name.length > 60 ? formatPubKey(details?.group_name, 60, 0) : details?.group_name }
+          </Box>
+        </Tooltip>
       </Flex>
       <HeadDetails loading={ loadsing } overview={ overview } more={ more }/>
     </PageNextJs>

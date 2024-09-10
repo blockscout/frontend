@@ -9,7 +9,6 @@ import PageNextJs from 'nextjs/PageNextJs';
 import useGraphqlQuery from 'lib/api/useGraphqlQuery';
 import useDebounce from 'lib/hooks/useDebounce';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import { timeTool } from 'ui/storage/utils';
 const TableList = dynamic(() => import('ui/storage/table-list'), { ssr: false });
 const Page: NextPage = () => {
   const [ searchTerm, setSearchTerm ] = React.useState('');
@@ -63,7 +62,7 @@ const Page: NextPage = () => {
     tableList.push({
       'Bucket Name': v.bucket_name,
       'Bucket ID': v.bucket_id,
-      'Last Updated Time': timeTool(v.update_time),
+      'Last Updated Time': v.update_time,
       Status: v.status,
       'Active Objects Count': v.active_object_count.aggregate.count,
       Creator: v.owner_address,

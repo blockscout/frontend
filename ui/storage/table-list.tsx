@@ -21,7 +21,7 @@ import type { TalbeListType } from 'types/storage';
 
 import Pagination from './Pagination';
 import styles from './pagination.module.css';
-import { formatPubKey, skeletonList } from './utils';
+import { formatPubKey, skeletonList, timeTool, mintimeTool } from './utils';
 
 type Props<T extends string> = {
   tapList?: Array<T> | undefined;
@@ -42,10 +42,37 @@ function TableList(props: Props<string>) {
   if (!tableList?.length && !props.error && props.loading) {
     tableList = skeletonList(router.pathname);
   }
+  const linkName = (name: string) => {
+    // value === 'Object Name' || value === 'Bucket Name' || value === 'Bucket' || value === 'Group Name'
+    switch (name) {
+      case 'Object Name':
+        return '/object-details/[address]';
+      case 'Bucket Name':
+        return '/bucket-details/[address]';
+      case 'Bucket':
+        return '/bucket-details/[address]';
+      case 'Group Name':
+        return '/group-details/[address]';
+    }
+  };
+  function countdowns(time: string) {
+    let countdown = Number(timeTool(time));
+    if (typeof timeTool(time) === 'number' && !Number.isNaN(timeTool(time)) && Number(countdown) <= 60) {
+      setTimeout(() => {
+        countdown = countdown + 1;
+        return countdown + 's ago';
+      }, 1000);
+      countdowns(time);
+    } else {
+      return mintimeTool(time);
+    }
+  }
+
   return (
     <>
       <Flex justifyContent="right">
         <Input
+          _focusVisible={{ borderColor: '#A07EFF !important' }}
           _placeholder={{ color: 'rgba(0, 0, 0, 0.3)' }}
           fontWeight="400" fontSize="12px"
           borderColor="rgba(0, 46, 51, 0.1)"
@@ -90,59 +117,78 @@ function TableList(props: Props<string>) {
                           p="12px 24px"
                         >
                           {
-                            value === 'txnHash' ? (
-                              <Tooltip label={ title[value] } placement="top" bg="#FFFFFF" >
-                                <NextLink href={{ pathname: '/tx/[hash]', query: { hash: title[value] || '' } }}>
-                                  <Box overflow="hidden">
-                                    <Skeleton isLoaded={ !props.loading }>{ formatPubKey(title[value]) }</Skeleton>
-                                  </Box>
-                                </NextLink>
+                            value === 'Last Updated Time' ? (
+                              <Tooltip
+                                isDisabled={ typeof timeTool(title[value]) !== 'string' }
+                                label={ title[value] } placement="top" bg="#FFFFFF" >
+                                <Box overflow="hidden" color="#000000">
+                                  <Skeleton isLoaded={ !props.loading }>{ countdowns(title[value]) }</Skeleton>
+                                </Box>
                               </Tooltip >
                             ) :
-                              value === 'Owner' || value === 'Creator' ? (
-                                <Tooltip label={ title[value] } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
-                                  <NextLink href={{ pathname: '/address/[hash]', query: { hash: title[value] || '' } }}>
+                              value === 'txnHash' ? (
+                                <Tooltip label={ title[value] } placement="top" bg="#FFFFFF" >
+                                  <NextLink href={{ pathname: '/tx/[hash]', query: { hash: title[value] || '' } }}>
                                     <Box overflow="hidden">
-                                      <Skeleton isLoaded={ !props.loading }>{ formatPubKey(title[value], 6, 6) }</Skeleton>
+                                      <Skeleton isLoaded={ !props.loading }>{ formatPubKey(title[value]) }</Skeleton>
                                     </Box>
                                   </NextLink>
-                                </Tooltip>
+                                </Tooltip >
                               ) :
-                                value === 'Last Updated' ? (
-                                  <Skeleton isLoaded={ !props.loading }>
-                                    <Flex>
-                                      <Box color="#000000" marginRight="4px">Block</Box>
-                                      <NextLink href={{ pathname: '/block/[height_or_hash]', query: { height_or_hash: title[value] || '' } }}>
-                                        <Box>{ title[value] }</Box>
-                                      </NextLink>
-                                    </Flex>
-                                  </Skeleton>
+                                value === 'Owner' || value === 'Creator' ? (
+                                  <Tooltip label={ title[value] } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
+                                    <NextLink href={{ pathname: '/address/[hash]', query: { hash: title[value] || '' } }}>
+                                      <Box overflow="hidden">
+                                        <Skeleton isLoaded={ !props.loading }>{ formatPubKey(title[value], 6, 6) }</Skeleton>
+                                      </Box>
+                                    </NextLink>
+                                  </Tooltip>
                                 ) :
-                                  value === 'Object Name' ? (
-                                    <Tooltip label={ title[value] } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
-                                      <NextLink href={{ pathname: '/object-details/[address]', query: { address: title[value] || '' } }}>
-                                        <Box overflow="hidden"><Skeleton isLoaded={ !props.loading }>{ formatPubKey(title[value], 16, 16) }</Skeleton></Box>
-                                      </NextLink>
-                                    </Tooltip >
+                                  value === 'Last Updated' ? (
+                                    <Skeleton isLoaded={ !props.loading }>
+                                      <Flex>
+                                        <Box color="#000000" marginRight="4px">Block</Box>
+                                        <NextLink href={{ pathname: '/block/[height_or_hash]', query: { height_or_hash: title[value] || '' } }}>
+                                          <Box>{ title[value] }</Box>
+                                        </NextLink>
+                                      </Flex>
+                                    </Skeleton>
                                   ) :
-                                    value === 'Bucket ID' || value === 'Group ID' ? (
-                                      <Tooltip label={ title[value] } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
-                                        <Box>
-                                          <Skeleton isLoaded={ !props.loading }>
-                                            { title[value].length > 12 ? formatPubKey(title[value], 6, 6) : title[value] }
-                                          </Skeleton>
-                                        </Box>
-                                      </Tooltip>
-                                    ) :
-                                      value === 'Bucket Name' || value === 'Bucket' ? (
+                                    value === 'Object Name' ||
+                                  value === 'Type' ||
+                                  value === 'Bucket Name' ||
+                                  value === 'Bucket' ||
+                                  value === 'Group Name' ||
+                                  value === 'Group ID' ? (
+                                        <Tooltip
+                                          isDisabled={ title[value].toString().length < 16 }
+                                          label={ title[value] } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
+                                          {
+                                            value === 'Object Name' || value === 'Bucket Name' || value === 'Bucket' || value === 'Group Name' ? (
+                                              <NextLink href={{ pathname: linkName(value), query: { address: title[value] || '' } }}>
+                                                <Box overflow="hidden">
+                                                  <Skeleton isLoaded={ !props.loading }>
+                                                    { formatPubKey(title[value], 0, 16, 16) }
+                                                  </Skeleton>
+                                                </Box>
+                                              </NextLink>
+                                            ) : (
+                                              <Box overflow="hidden" color="#000000">
+                                                <Skeleton isLoaded={ !props.loading }>
+                                                  { value === 'Group ID' ? formatPubKey(title[value], 0, 12, 12) : formatPubKey(title[value], 0, 16, 16) }
+                                                </Skeleton>
+                                              </Box>
+                                            )
+                                          }
+                                        </Tooltip >
+                                      ) :
+                                      value === 'Bucket ID' || value === 'Group ID' ? (
                                         <Tooltip label={ title[value] } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
-                                          <NextLink href={{ pathname: '/bucket-details/[address]', query: { address: title[value] || '' } }}>
-                                            <Box>
-                                              <Skeleton isLoaded={ !props.loading }>
-                                                { title[value].length > 16 ? formatPubKey(title[value], 0, 16) : title[value] }
-                                              </Skeleton>
-                                            </Box>
-                                          </NextLink>
+                                          <Box>
+                                            <Skeleton isLoaded={ !props.loading }>
+                                              { title[value].length > 12 ? formatPubKey(title[value], 6, 6) : title[value] }
+                                            </Skeleton>
+                                          </Box>
                                         </Tooltip>
                                       ) :
                                         value === 'Group Name' ? (
