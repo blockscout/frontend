@@ -59,14 +59,16 @@ const Page: NextPage = () => {
 
   const { loading, data, error } = useGraphqlQuery('storage_group', queries);
   const tableLength = data?.buckets?.length || 0;
-  data?.groups?.forEach((v: GroupRequestType) => {
-    tableList.push({
-      'Group Name': v.group_name,
-      'Group ID': v.group_id,
-      'Last Updated': v.update_at,
-      'Active Group Member Count': v.active_member_count.aggregate.count,
-      Owner: v.owner_address,
-    });
+  data?.groups?.forEach((v: GroupRequestType, index: number) => {
+    if (index <= 20) {
+      tableList.push({
+        'Group Name': v.group_name,
+        'Group ID': v.group_id,
+        'Last Updated': v.update_at,
+        'Active Group Member Count': v.active_member_count.aggregate.count,
+        Owner: v.owner_address,
+      });
+    }
   });
 
   React.useEffect(() => {
