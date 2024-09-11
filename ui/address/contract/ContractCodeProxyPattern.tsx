@@ -52,10 +52,10 @@ const PROXY_TYPES: Record<NonNullable<SmartContractProxyType>, {
     link: 'https://github.com/compound-finance/compound-protocol',
   },
   basic_implementation: {
-    name: 'Proxy via public implementation getter',
+    name: 'public implementation getter in proxy smart-contract',
   },
   basic_get_implementation: {
-    name: 'Proxy via public getImplementation getter',
+    name: 'public getImplementation getter in proxy smart-contract',
   },
   unknown: {
     name: 'Unknown proxy pattern',
