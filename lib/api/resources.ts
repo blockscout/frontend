@@ -161,26 +161,26 @@ export const RESOURCES = {
     path: '/api/account/v2/email/resend',
   },
   custom_abi: {
-    path: '/api/account/v2/user/custom_abis/:id?',
+    path: '/api/account/v2/user/custom_abis{/:id}',
     pathParams: [ 'id' as const ],
   },
   watchlist: {
-    path: '/api/account/v2/user/watchlist/:id?',
+    path: '/api/account/v2/user/watchlist{/:id}',
     pathParams: [ 'id' as const ],
     filterFields: [ ],
   },
   private_tags_address: {
-    path: '/api/account/v2/user/tags/address/:id?',
+    path: '/api/account/v2/user/tags/address{/:id}',
     pathParams: [ 'id' as const ],
     filterFields: [ ],
   },
   private_tags_tx: {
-    path: '/api/account/v2/user/tags/transaction/:id?',
+    path: '/api/account/v2/user/tags/transaction{/:id}',
     pathParams: [ 'id' as const ],
     filterFields: [ ],
   },
   api_keys: {
-    path: '/api/account/v2/user/api_keys/:id?',
+    path: '/api/account/v2/user/api_keys{/:id}',
     pathParams: [ 'id' as const ],
   },
 
@@ -210,7 +210,7 @@ export const RESOURCES = {
   },
 
   token_info_applications: {
-    path: '/api/v1/chains/:chainId/token-info-submissions/:id?',
+    path: '/api/v1/chains/:chainId/token-info-submissions{/:id}',
     pathParams: [ 'chainId' as const, 'id' as const ],
     endpoint: getFeaturePayload(config.features.addressVerification)?.api.endpoint,
     basePath: getFeaturePayload(config.features.addressVerification)?.api.basePath,
