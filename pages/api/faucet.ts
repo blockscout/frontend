@@ -5,7 +5,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { formatErrorMessage, httpLogger } from 'nextjs/utils/logger';
 
 import { getEnvValue } from 'configs/app/utils';
-import { findEditThenSave } from 'lib/db';
+import { findEditThenSave, findOneByDiscordId } from 'lib/db';
 import { sessionOptions } from 'lib/session/config';
 
 const provider = new JsonRpcProvider(
@@ -20,6 +20,7 @@ const _signer = new Wallet(getEnvValue('NEXT_PUBLIC_FAUCET_KEY')!, provider);
 const signer = new NonceManager(_signer);
 
 const requestLock = new Set<string>();
+const requestHistory = new Map<string, string>();
 
 export default async function faucetHandler(
   req: NextApiRequest,
@@ -38,7 +39,12 @@ export default async function faucetHandler(
       return res.status(429).json({ error: 'Too many requests.' });
     }
 
-    const lastRequestTime: number = new Date(user?.lastRequestTime || 0).getTime();
+    let lastRequestTimeAsIso = requestHistory.get(user.id);
+    if (!lastRequestTimeAsIso) {
+      const dbUser = await findOneByDiscordId(user.id);
+      lastRequestTimeAsIso = dbUser.last_request_time;
+    }
+    const lastRequestTime = new Date(lastRequestTimeAsIso || 0).getTime();
     const requestPer = Number(getEnvValue('NEXT_PUBLIC_FAUCET_REQUEST_PER'));
     const requestPerAsHours = requestPer / 1000 / 60 / 60;
     if (Date.now() - lastRequestTime <= requestPer) {
@@ -61,16 +67,19 @@ export default async function faucetHandler(
     });
     const txReceipt = await txRp.wait();
     if (txReceipt?.status !== 1) {
-      signer.reset(); // reset nonce
       requestLock.delete(user.id);
+      signer.reset(); // reset nonce
       return res.status(500).json({ error: `Transaction Failure ${ txReceipt?.hash }` });
     }
 
+    if (requestHistory.size > 10000) {
+      requestHistory.clear();
+    }
+
     const now = new Date().toISOString();
-    session.user.lastRequestTime = now;
-    await session.save();
     await findEditThenSave(user.id, userWallet, now);
 
+    requestHistory.set(user.id, now);
     requestLock.delete(user.id);
 
     res.status(200).json({ hash: txReceipt.hash });
