@@ -38,7 +38,7 @@ import type {
   AddressMudRecordsSorting,
   AddressMudRecord,
 } from 'types/api/address';
-import type { AddressesResponse } from 'types/api/addresses';
+import type { AddressesResponse, AddressesMetadataSearchResult, AddressesMetadataSearchFilters } from 'types/api/addresses';
 import type { AddressMetadataInfo, PublicTagTypesResponse } from 'types/api/addressMetadata';
 import type {
   ArbitrumL2MessagesResponse,
@@ -420,6 +420,10 @@ export const RESOURCES = {
   addresses: {
     path: '/api/v2/addresses/',
     filterFields: [ ],
+  },
+  addresses_metadata_search: {
+    path: '/api/v2/proxy/metadata/addresses',
+    filterFields: [ 'slug' as const, 'tag_type' as const ],
   },
 
   // ADDRESS
@@ -979,7 +983,7 @@ export type ResourceErrorAccount<T> = ResourceError<{ errors: T }>
 export type PaginatedResources = 'blocks' | 'block_txs' | 'block_election_rewards' |
 'txs_validated' | 'txs_pending' | 'txs_with_blobs' | 'txs_watchlist' | 'txs_execution_node' |
 'tx_internal_txs' | 'tx_logs' | 'tx_token_transfers' | 'tx_state_changes' | 'tx_blobs' |
-'addresses' |
+'addresses' | 'addresses_metadata_search' |
 'address_txs' | 'address_internal_txs' | 'address_token_transfers' | 'address_blocks_validated' | 'address_coin_balance' |
 'search' |
 'address_logs' | 'address_tokens' | 'address_nfts' | 'address_collections' |
@@ -1053,6 +1057,7 @@ Q extends 'tx_state_changes' ? TxStateChanges :
 Q extends 'tx_blobs' ? TxBlobs :
 Q extends 'tx_interpretation' ? TxInterpretationResponse :
 Q extends 'addresses' ? AddressesResponse :
+Q extends 'addresses_metadata_search' ? AddressesMetadataSearchResult :
 Q extends 'address' ? Address :
 Q extends 'address_counters' ? AddressCounters :
 Q extends 'address_tabs_counters' ? AddressTabsCounters :
@@ -1178,6 +1183,7 @@ Q extends 'txs_with_blobs' ? TTxsWithBlobsFilters :
 Q extends 'tx_token_transfers' ? TokenTransferFilters :
 Q extends 'token_transfers' ? TokenTransferFilters :
 Q extends 'address_txs' | 'address_internal_txs' ? AddressTxsFilters :
+Q extends 'addresses_metadata_search' ? AddressesMetadataSearchFilters :
 Q extends 'address_token_transfers' ? AddressTokenTransferFilters :
 Q extends 'address_tokens' ? AddressTokensFilter :
 Q extends 'address_nfts' ? AddressNFTTokensFilter :
