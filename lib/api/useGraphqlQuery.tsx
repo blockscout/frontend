@@ -92,6 +92,7 @@ const useGraphqlQuery = (aliasName: string, queries: Array<QueryConfig>): QueryR
   const { loading, error, data } = useQuery(query, {
     skip: query === EMPTY_QUERY,
     variables: query !== EMPTY_QUERY ? { limit: queries[0].limit, offset: queries[0].offset } : {},
+    fetchPolicy: 'no-cache',
   });
   // Structure the returned data to make it more usable
   const result = queries.reduce<Record<string, any>>((acc, { tableName }) => {
