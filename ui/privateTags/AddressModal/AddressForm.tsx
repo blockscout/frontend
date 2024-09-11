@@ -51,7 +51,7 @@ const AddressForm: React.FC<Props> = ({ data, onClose, onSuccess, setAlertVisibl
       const isEdit = data?.id;
       if (isEdit) {
         return apiFetch('private_tags_address', {
-          pathParams: { id: data.id },
+          pathParams: { id: String(data.id) },
           fetchParams: { method: 'PUT', body },
         });
       }

@@ -37,6 +37,7 @@ const wagmiConfig = (() => {
     },
     auth: {
       email: true,
+      socials: [],
     },
     ssr: true,
     batch: { multicall: { wait: 100 } },

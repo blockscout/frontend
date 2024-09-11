@@ -20,7 +20,7 @@ const DeleteAddressModal: React.FC<Props> = ({ isOpen, onClose, onSuccess, data 
 
   const mutationFn = useCallback(() => {
     return apiFetch('watchlist', {
-      pathParams: { id: data.id },
+      pathParams: { id: String(data.id) },
       fetchParams: { method: 'DELETE' },
     });
   }, [ data?.id, apiFetch ]);
