@@ -34,7 +34,7 @@ const AddressTagTable = ({ data, onDeleteClick, onEditClick, isLoading, top }: P
         { data?.map((item: AddressTag, index: number) => (
           <AddressTagTableItem
             item={ item }
-            key={ item.id + (isLoading ? index : '') }
+            key={ item.id + (isLoading ? String(index) : '') }
             onDeleteClick={ onDeleteClick }
             onEditClick={ onEditClick }
             isLoading={ isLoading }
