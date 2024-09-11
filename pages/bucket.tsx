@@ -19,7 +19,7 @@ const Page: NextPage = () => {
   const [ toNext, setToNext ] = React.useState<boolean>(true);
   React.useEffect(() => {
     if (page > 1) {
-      setOffset((page - 1) * 10);
+      setOffset((page - 1) * 20);
     } else {
       setOffset(0);
     }
@@ -58,17 +58,15 @@ const Page: NextPage = () => {
 
   const { loading, data, error } = useGraphqlQuery('Buckets', queries);
   const tableLength = data?.buckets?.length || 0;
-  data?.buckets?.forEach((v: BucketRequestType, index: number) => {
-    if (index <= 20) {
-      tableList.push({
-        'Bucket Name': v.bucket_name,
-        'Bucket ID': v.bucket_id,
-        'Last Updated Time': v.update_time,
-        Status: v.status,
-        'Active Objects Count': v.active_object_count.aggregate.count,
-        Creator: v.owner_address,
-      });
-    }
+  data?.buckets?.slice(0, 20).forEach((v: BucketRequestType) => {
+    tableList.push({
+      'Bucket Name': v.bucket_name,
+      'Bucket ID': v.bucket_id,
+      'Last Updated Time': v.update_time,
+      Status: v.status,
+      'Active Objects Count': v.active_object_count.aggregate.count,
+      Creator: v.owner_address,
+    });
   });
   React.useEffect(() => {
     if (typeof tableLength === 'number' && tableLength !== 21) {

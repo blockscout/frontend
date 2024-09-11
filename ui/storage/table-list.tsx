@@ -154,7 +154,7 @@ function TableList(props: Props<string>) {
                               <Tooltip
                                 isDisabled={ typeof timeTool(title[value]) !== 'string' }
                                 label={ timeTool(title[value], true) } placement="top" bg="#FFFFFF" color="#000000" >
-                                <Box overflow="hidden" color="#000000">
+                                <Box overflow="hidden" color="#000000" display="inline-block">
                                   <Skeleton isLoaded={ !props.loading }>{ mintimeTool(title[value]) }</Skeleton>
                                 </Box>
                               </Tooltip >
@@ -162,16 +162,18 @@ function TableList(props: Props<string>) {
                               value === 'txnHash' ? (
                                 <Tooltip label={ title[value] } placement="top" bg="#FFFFFF" >
                                   <NextLink href={{ pathname: '/tx/[hash]', query: { hash: title[value] || '' } }}>
-                                    <Box overflow="hidden">
+                                    <Box overflow="hidden" display="inline-block">
                                       <Skeleton isLoaded={ !props.loading }>{ formatPubKey(title[value]) }</Skeleton>
                                     </Box>
                                   </NextLink>
                                 </Tooltip >
                               ) :
                                 value === 'Owner' || value === 'Creator' ? (
-                                  <Tooltip label={ title[value] } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
+                                  <Tooltip
+                                    isDisabled={ title[value].toString().length <= 12 }
+                                    label={ title[value] } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
                                     <NextLink href={{ pathname: '/address/[hash]', query: { hash: title[value] || '' } }}>
-                                      <Box overflow="hidden">
+                                      <Box overflow="hidden" display="inline-block">
                                         <Skeleton isLoaded={ !props.loading }>{ formatPubKey(title[value], 6, 6) }</Skeleton>
                                       </Box>
                                     </NextLink>
@@ -194,19 +196,19 @@ function TableList(props: Props<string>) {
                                   value === 'Group Name' ||
                                   value === 'Group ID' ? (
                                         <Tooltip
-                                          isDisabled={ title[value].toString().length < 16 }
+                                          isDisabled={ title[value].toString().length <= 16 }
                                           label={ title[value] } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
                                           {
                                             value === 'Object Name' || value === 'Bucket Name' || value === 'Bucket' || value === 'Group Name' ? (
                                               <NextLink href={{ pathname: linkName(value), query: { address: title[value] || '' } }}>
-                                                <Box overflow="hidden">
+                                                <Box overflow="hidden" display="inline-block">
                                                   <Skeleton isLoaded={ !props.loading }>
                                                     { formatPubKey(title[value], 0, 16, 16) }
                                                   </Skeleton>
                                                 </Box>
                                               </NextLink>
                                             ) : (
-                                              <Box overflow="hidden" color="#000000">
+                                              <Box overflow="hidden" color="#000000" display="inline-block">
                                                 <Skeleton isLoaded={ !props.loading }>
                                                   { value === 'Group ID' ? formatPubKey(title[value], 0, 12, 12) : formatPubKey(title[value], 0, 16, 16) }
                                                 </Skeleton>
@@ -216,8 +218,10 @@ function TableList(props: Props<string>) {
                                         </Tooltip >
                                       ) :
                                       value === 'Bucket ID' || value === 'Group ID' ? (
-                                        <Tooltip label={ title[value] } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
-                                          <Box>
+                                        <Tooltip
+                                          isDisabled={ title[value].toString().length <= 12 }
+                                          label={ title[value] } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
+                                          <Box color="#000000" display="inline-block">
                                             <Skeleton isLoaded={ !props.loading }>
                                               { title[value].length > 12 ? formatPubKey(title[value], 6, 6) : title[value] }
                                             </Skeleton>
@@ -227,7 +231,7 @@ function TableList(props: Props<string>) {
                                         value === 'Group Name' ? (
                                           <Tooltip label={ title[value] } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
                                             <NextLink href={{ pathname: '/group-details/[address]', query: { address: title[value] || '' } }}>
-                                              <Box>
+                                              <Box display="inline-block">
                                                 <Skeleton isLoaded={ !props.loading }>
                                                   { title[value].length > 16 ? formatPubKey(title[value], 0, 16) : title[value] }
                                                 </Skeleton>

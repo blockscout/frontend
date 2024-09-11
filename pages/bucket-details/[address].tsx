@@ -100,7 +100,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
     'Bucket Tags': details?.tags && Object.entries(details?.tags).length.toString(),
     'Bucket ID': details?.bucket_id,
     // 'Bucket No.': details?.bucket_id,
-    'Active Objects Count': details?.global_virtual_group_family_id,
+    'Active Objects Count': details?.objects.length,
     'Bucket Status': details?.status,
     Deleted: details?.removed ? 'Yes' : 'No',
   };
@@ -116,6 +116,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
     'Charge Size': {
       value: sizeTool(details?.charge_size),
       status: 'none',
+      tip: 'If the object\'s storage size is less than   , charge size is 128k; otherwise charge size is equal to storage size.',
     },
     Creator: {
       value: details?.creator,

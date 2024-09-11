@@ -108,6 +108,7 @@ export interface BucketRequestType {
 }
 
 interface PropsMoreValueType {
+  tip?: string;
   titleNmae?: string;
   value: string | undefined;
   status: string;

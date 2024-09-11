@@ -44,7 +44,8 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
         `primary_sp: bucket {
           global_virtual_group_family {
             primary_sp {
-              moniker
+              moniker,
+              sp_id
             }
             global_virtual_group_ids
           }
@@ -66,6 +67,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
     },
   ];
   const { loading, data } = useGraphqlQuery('Objects', router.query.address ? queries : []);
+
   const [ loadsing, setLoadsing ] = React.useState(true);
   React.useEffect(() => {
     if (!loading && Object.keys(data?.objects || {}).length) {
@@ -75,6 +77,16 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
 
   const details = data?.objects && data?.objects[0];
   const overTime = timeTool(details?.update_time);
+  const req = [
+    {
+      tableName: 'global_virtual_groups',
+      fields: [
+        'virtual_payment_address',
+      ],
+      where: { primary_sp_id: { _eq: details?.primary_sp?.global_virtual_group_family?.primary_sp.sp_id } },
+    },
+  ];
+  const rp = useGraphqlQuery('ObjectByName', req);
 
   const [ oldTimeText, setoldTimeText ] = React.useState<string>('');
   React.useEffect(() => {
@@ -120,10 +132,16 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
     Creator: {
       value: details?.creator,
       status: 'copyLink',
+      tip: 'Could be a temporary account',
     },
     Owner: {
       value: details?.owner,
       status: 'copyLink',
+    },
+    'Primary SP': {
+      value: rp?.data?.global_virtual_groups && rp?.data?.global_virtual_groups[0].virtual_payment_address,
+      status: 'copyLink',
+      tip: 'Available for sealed object',
     },
   };
   const secondaryAddresses: Array<string> | undefined = [];

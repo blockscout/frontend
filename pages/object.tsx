@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
@@ -22,7 +21,7 @@ const ObjectDetails: NextPage = () => {
   const [ toNext, setToNext ] = React.useState<boolean>(true);
   React.useEffect(() => {
     if (page > 1) {
-      setOffset((page - 1) * 10);
+      setOffset((page - 1) * 20);
     } else {
       setOffset(0);
     }
@@ -59,19 +58,17 @@ const ObjectDetails: NextPage = () => {
 
   const { loading, data, error } = useGraphqlQuery('Objects', queries);
   const tableLength = data?.objects?.length || 0;
-  data?.objects?.forEach((v: ObjetRequestType, index: number) => {
-    if (index <= 20) {
-      tableList.push({
-        'Object Name': v.object_name,
-        Type: v.content_type,
-        'Object Size': sizeTool(v.payload_size),
-        Status: v.status,
-        Visibility: v.visibility,
-        'Last Updated Time': v.update_time,
-        Bucket: v.bucket_name,
-        Creator: v.creator_address,
-      });
-    }
+  data?.objects?.slice(0, 20).forEach((v: ObjetRequestType) => {
+    tableList.push({
+      'Object Name': v.object_name,
+      Type: v.content_type,
+      'Object Size': sizeTool(v.payload_size),
+      Status: v.status,
+      Visibility: v.visibility,
+      'Last Updated Time': v.update_time,
+      Bucket: v.bucket_name,
+      Creator: v.creator_address,
+    });
   });
   React.useEffect(() => {
     if (typeof tableLength === 'number' && tableLength !== 21) {

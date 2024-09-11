@@ -10,6 +10,7 @@ interface QueryConfig {
 }
 
 interface QueryResult {
+  [x: string]: any;
   loading: boolean;
   error: Error | undefined;
   data: Record<string, any> | null;

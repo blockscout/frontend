@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-/* eslint-disable no-console */
 /* eslint-disable no-nested-ternary */
 import {
   Table,
@@ -111,7 +110,7 @@ const Page = (props: HeadProps) => {
                       key === 'Object Name' || key === 'Bucket Name' || key === 'Group Name' ? (
                         <Tooltip isDisabled={ value?.length <= 30 } label={ value } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
                           <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
-                            { value?.length > 30 ? formatPubKey(value, 0, 30) : value }
+                            { value?.length > 30 ? formatPubKey(value, 0, 30) : (value || '-') }
                           </Skeleton>
                         </Tooltip>
                       ) :
@@ -120,7 +119,7 @@ const Page = (props: HeadProps) => {
                             isDisabled={ value?.length <= 12 }
                             label={ value } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
                             <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
-                              { value?.length > 12 ? formatPubKey(value, 6, 6) : value }
+                              { value?.length > 12 ? formatPubKey(value, 6, 6) : (value || '-') }
                             </Skeleton>
                           </Tooltip>
                         ) :
@@ -155,7 +154,24 @@ const Page = (props: HeadProps) => {
           <Tbody>
             { Object.entries(props.more || {}).map(([ key, values ]) => (
               <Tr key={ key }>
-                <Td fontWeight="400" fontSize="14px" color="rgba(0, 0, 0, 0.6)" p="12px 0">{ key }</Td>
+                <Td fontWeight="400" fontSize="14px" color="rgba(0, 0, 0, 0.6)" p="12px 0">
+                  <Flex>
+                    { key }
+                    {
+                      ((key === 'Creator' || key === 'Primary SP' || key === 'Charge Size') && values.tip) && (
+                        <Tooltip label={ values.tip } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
+                          <IconSvg
+                            color="rgba(0, 0, 0, 0.4)"
+                            ml="4px"
+                            name="tip"
+                            w="20px"
+                            h="20px">
+                          </IconSvg>
+                        </Tooltip>
+                      )
+                    }
+                  </Flex>
+                </Td>
                 <Td
                   p="12px 0"
                   fontWeight="500"
@@ -195,11 +211,13 @@ const Page = (props: HeadProps) => {
                       ) :
                         values.status === 'bucketPage' ? (
                           <Tooltip label={ values.value } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
-                            <NextLink href={{ pathname: '/bucket-details/[address]', query: { address: values.value || '' } }}>
-                              <Box display="inline-block">
-                                { (values.value && (values.value.length > 30)) ? formatPubKey(values.value, 0, 30) : values.value }
-                              </Box>
-                            </NextLink>
+                            <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
+                              <NextLink href={{ pathname: '/bucket-details/[address]', query: { address: values.value || '' } }}>
+                                <Box display="inline-block">
+                                  { (values.value && (values.value.length > 30)) ? formatPubKey(values.value, 0, 30) : (values.value || '-') }
+                                </Box>
+                              </NextLink>
+                            </Skeleton>
                           </Tooltip>
                         ) :
                           values.status === 'block' ? (
@@ -214,56 +232,61 @@ const Page = (props: HeadProps) => {
                           ) :
                             values.status === 'clickViewAll' ? (
                               <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
-                                <Popover closeOnBlur={ false }>
-                                  <PopoverTrigger>
-                                    <Button
-                                      borderRadius="none"
-                                      height="auto"
-                                      fontWeight="500"
-                                      fontSize="12px"
-                                      padding="0px"
-                                      variant="text">
-                                      { props.overview && props.overview['Active Objects Count'] }&nbsp;|&nbsp;
-                                      { values.value }
-                                    </Button>
-                                  </PopoverTrigger>
-                                  <PopoverContent right="94px" w="auto">
-                                    <PopoverHeader
-                                      textAlign="left"
-                                      border="none"
-                                      color="#000000"
-                                      p="24px"
-                                      fontWeight="500"
-                                      fontSize="12px"
-                                      width="230px"
-                                    >
-                                      { values.titleNmae }
-                                    </PopoverHeader>
-                                    <PopoverCloseButton w="16px" h="16px" top="24px" right="24px"/>
-                                    { props.secondaryAddresses?.map((value, index) => (
-                                      <PopoverBody
-                                        _last={{ paddingBottom: '24px' }}
-                                        padding="0 24px"
+                                <Flex justifyContent="right">
+                                  <Text color="#000000">
+                                    { props?.secondaryAddresses?.length }&nbsp;&nbsp;
+                                  </Text>
+                                  <Popover closeOnBlur={ false }>
+                                    <PopoverTrigger>
+                                      <Button
+                                        borderRadius="none"
+                                        height="auto"
+                                        fontWeight="500"
+                                        fontSize="12px"
+                                        padding="0px"
+                                        variant="text">
+                                        { values.value }
+                                      </Button>
+                                    </PopoverTrigger>
+                                    <PopoverContent right="94px" w="auto">
+                                      <PopoverHeader
                                         textAlign="left"
-                                        key={ index }>
-                                        <Flex align="center" color="#8A55FD" fontWeight="500" fontSize="12px">
-                                          { /* <NextLink href={{ pathname: '/address/[hash]', query: { hash: value || '' } }}>{ value }</NextLink> */ }
+                                        border="none"
+                                        color="#000000"
+                                        p="24px"
+                                        fontWeight="500"
+                                        fontSize="12px"
+                                        width="230px"
+                                      >
+                                        { values.titleNmae }
+                                      </PopoverHeader>
+                                      <PopoverCloseButton w="16px" h="16px" top="24px" right="24px"/>
+                                      { props.secondaryAddresses?.map((value, index) => (
+                                        <PopoverBody
+                                          _last={{ paddingBottom: '24px' }}
+                                          padding="0 24px"
+                                          textAlign="left"
+                                          key={ index }>
+                                          <Flex align="center" color="#8A55FD" fontWeight="500" fontSize="12px">
+                                            { /* <NextLink href={{ pathname: '/address/[hash]', query: { hash: value || '' } }}>{ value }</NextLink> */ }
                                       global_virtual_group_id { value }
-                                          <IconSvg
-                                            cursor="pointer"
-                                            onClick={ copyAddress(value) }
-                                            marginLeft="48px"
-                                            w="14px"
-                                            h="14px"
-                                            name="copyAddress">
-                                          </IconSvg>
-                                        </Flex>
-                                        <Divider margin="10px 0" bg="rgba(0, 46, 51, 0.1)"/>
-                                      </PopoverBody>
-                                    ),
-                                    ) }
-                                  </PopoverContent>
-                                </Popover>
+                                            <IconSvg
+                                              cursor="pointer"
+                                              onClick={ copyAddress(value) }
+                                              marginLeft="48px"
+                                              w="14px"
+                                              h="14px"
+                                              name="copyAddress">
+                                            </IconSvg>
+                                          </Flex>
+                                          <Divider margin="10px 0" bg="rgba(0, 46, 51, 0.1)"/>
+                                        </PopoverBody>
+                                      ),
+                                      ) }
+                                    </PopoverContent>
+                                  </Popover>
+                                </Flex>
+
                               </Skeleton>
                             ) :
                               (
