@@ -29,8 +29,8 @@ import type { ValidatorsChainType } from '../../../types/client/validators';
 import type { WalletType } from '../../../types/client/wallets';
 import { SUPPORTED_WALLETS } from '../../../types/client/wallets';
 import type { CustomLink, CustomLinksGroup } from '../../../types/footerLinks';
-import { CHAIN_INDICATOR_IDS } from '../../../types/homepage';
-import type { ChainIndicatorId, HeroBannerButtonState, HeroBannerConfig } from '../../../types/homepage';
+import { CHAIN_INDICATOR_IDS, HOME_STATS_WIDGET_IDS } from '../../../types/homepage';
+import type { ChainIndicatorId, HeroBannerButtonState, HeroBannerConfig, HomeStatsWidgetId } from '../../../types/homepage';
 import { type NetworkVerificationTypeEnvs, type NetworkExplorer, type FeaturedNetwork, NETWORK_GROUPS } from '../../../types/networks';
 import { COLOR_THEME_IDS } from '../../../types/settings';
 import type { FontFamily } from '../../../types/ui';
@@ -567,6 +567,11 @@ const schema = yup
       .transform(replaceQuotes)
       .json()
       .of(yup.string<ChainIndicatorId>().oneOf(CHAIN_INDICATOR_IDS)),
+    NEXT_PUBLIC_HOMEPAGE_STATS: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(yup.string<HomeStatsWidgetId>().oneOf(HOME_STATS_WIDGET_IDS)),
     NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR: yup.string(),
     NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND: yup.string(),
     NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG: yup
@@ -586,7 +591,6 @@ const schema = yup
           const isUndefined = data === undefined;
           return isUndefined || heroBannerSchema.isValidSync(data);
         }),
-    NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME: yup.boolean(),
 
     //     b. sidebar
     NEXT_PUBLIC_FEATURED_NETWORKS: yup

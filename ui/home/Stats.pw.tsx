@@ -9,7 +9,10 @@ import Stats from './Stats';
 test.describe('all items', () => {
   let component: Locator;
 
-  test.beforeEach(async({ render, mockApiResponse }) => {
+  test.beforeEach(async({ render, mockApiResponse, mockEnvs }) => {
+    await mockEnvs([
+      [ 'NEXT_PUBLIC_HOMEPAGE_STATS', '["total_blocks","average_block_time","total_txs","wallet_addresses","gas_tracker","btc_locked"]' ],
+    ]);
     await mockApiResponse('stats', statsMock.withBtcLocked);
     component = await render(<Stats/>);
   });
@@ -28,7 +31,7 @@ test('no gas info', async({ render, mockApiResponse }) => {
 
 test('4 items default view +@mobile -@default', async({ render, mockApiResponse, mockEnvs }) => {
   await mockEnvs([
-    [ 'NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME', 'false' ],
+    [ 'NEXT_PUBLIC_HOMEPAGE_STATS', '["total_txs","gas_tracker","wallet_addresses","total_blocks"]' ],
   ]);
   await mockApiResponse('stats', statsMock.base);
   const component = await render(<Stats/>);
@@ -37,8 +40,7 @@ test('4 items default view +@mobile -@default', async({ render, mockApiResponse,
 
 test('3 items default view +@mobile -@default', async({ render, mockApiResponse, mockEnvs }) => {
   await mockEnvs([
-    [ 'NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME', 'false' ],
-    [ 'NEXT_PUBLIC_GAS_TRACKER_ENABLED', 'false' ],
+    [ 'NEXT_PUBLIC_HOMEPAGE_STATS', '["total_txs","wallet_addresses","total_blocks"]' ],
   ]);
   await mockApiResponse('stats', statsMock.base);
   const component = await render(<Stats/>);
