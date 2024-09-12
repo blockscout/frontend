@@ -54,11 +54,19 @@ const Page: NextPage = () => {
       } : undefined,
       order: { group_id: 'desc' },
     },
+    {
+      tableName: 'groups_aggregate',
+      aggregate: [
+        'count',
+      ],
+    },
   ];
   const tableList: Array<GroupTalbeListType> = [];
 
   const { loading, data, error } = useGraphqlQuery('storage_group', queries);
   const tableLength = data?.buckets?.length || 0;
+  const totleDate = data?.groups_aggregate?.aggregate?.count || 0;
+
   data?.groups?.slice(0, 20).forEach((v: GroupRequestType) => {
     tableList.push({
       'Group Name': v.group_name,
@@ -91,6 +99,7 @@ const Page: NextPage = () => {
     <PageNextJs pathname="/group">
       <PageTitle title="Groups" withTextAd/>
       <TableList
+        totleDate={ totleDate }
         toNext={ toNext }
         currPage={ page }
         propsPage={ propsPage }

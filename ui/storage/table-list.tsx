@@ -39,6 +39,7 @@ type Props<T extends string> = {
   propsPage: (value: number) => void;
   currPage: number;
   toNext: boolean;
+  totleDate: number;
 }
 
 function TableList(props: Props<string>) {
@@ -46,10 +47,8 @@ function TableList(props: Props<string>) {
 
   const router = useRouter();
   React.useEffect(() => {
-    if (props.tableList && props.tableList.length) {
+    if (props.tableList) {
       setTableList(props.tableList);
-    } else {
-      // setTableList(skeletonList(router.pathname));
     }
   }, [ props, router.pathname, tableList.length ]);
   const [ search, setSearch ] = React.useState('');
@@ -95,7 +94,7 @@ function TableList(props: Props<string>) {
 
   return (
     <>
-      <Flex justifyContent="right">
+      <Flex justifyContent="right" position="relative" top="-64px">
         <InputGroup
           _placeholder={{ color: 'rgba(0, 0, 0, 0.3)' }}
           fontWeight="400" fontSize="12px"
@@ -136,162 +135,179 @@ function TableList(props: Props<string>) {
           }
         </InputGroup>
       </Flex>
-      <TableContainer position="relative" marginTop="16px" border="1px" borderRadius="12px" borderColor="rgba(0, 0, 0, 0.06);" padding="0 4px 78px 4px">
-        <Table minHeight="550px" variant="bubble" position="relative" className={ styles.table }>
-          <Thead>
-            <Tr>
-              { props.tabThead?.map((value, index) => (
-                <Th
-                  _first={{ p: '24px 24px 10px 24px' }}
-                  key={ index }
-                  color="rgba(0, 0, 0, 0.6)"
-                  p="24px 24px 10px 24px"
-                  bg="#FFFF"
-                  borderBottom="1px"
-                  borderColor="rgba(0, 0, 0, 0.1)">
-                  { value }
-                </Th>
-              )) }
-            </Tr>
-          </Thead>
-          <Tbody>
-            {
-              tableList?.map((title: TalbeListType | any, key) => (
-                <Tr _hover={{ bg: 'rgba(220, 212, 255, 0.24)' }} key={ key }>
-                  {
-                    Object.keys(title)?.map((value: string, index) => (
-                      value !== 'timestamp' && (
-                        <Td
-                          _last={{ borderRightRadius: '12px' }}
-                          _first={{ borderLeftRadius: '12px' }}
-                          key={ index }
-                          fontWeight="500" fontSize="14px"
-                          overflow="hidden"
-                          color="#8A55FD"
-                          p="12px 24px"
-                        >
-                          {
-                            value === 'Last Updated Time' ? (
-                              <Tooltip
-                                label={ timeTool(title[value]) + timeText(title[value]) } placement="top" bg="#FFFFFF" color="#000000" >
-                                <Box overflow="hidden" color="#000000" display="inline-block">
-                                  <Skeleton isLoaded={ !props.loading }>{ timeTool(title[value]) }</Skeleton>
-                                  { /* <Skeleton isLoaded={ !props.loading }>{ timeTool(title[value]) }</Skeleton> */ }
-                                </Box>
-                              </Tooltip >
-                            ) :
-                              value === 'txnHash' ? (
-                                <Tooltip label={ title[value] } placement="top" bg="#FFFFFF" >
-                                  <NextLink href={{ pathname: '/tx/[hash]', query: { hash: title[value] || '' } }}>
-                                    <Box overflow="hidden" display="inline-block">
-                                      <Skeleton isLoaded={ !props.loading }>{ formatPubKey(title[value]) }</Skeleton>
-                                    </Box>
-                                  </NextLink>
-                                </Tooltip >
-                              ) :
-                                value === 'Owner' || value === 'Creator' ? (
+      {
+        !props.loading ? (
+          <TableContainer position="relative" top="-50px" border="1px" borderRadius="12px" borderColor="rgba(0, 0, 0, 0.06);" padding="0 4px 78px 4px">
+            <Table minHeight={ tableList.length ? 'auto' : '550px' } variant="bubble" position="relative" className={ styles.table }>
+              <Thead>
+                <Tr>
+                  { props.tabThead?.map((value, index) => (
+                    <Th
+                      _first={{ p: '24px 24px 10px 24px' }}
+                      key={ index }
+                      color="rgba(0, 0, 0, 0.6)"
+                      p="24px 24px 10px 24px"
+                      bg="#FFFF"
+                      borderBottom="1px"
+                      borderColor="rgba(0, 0, 0, 0.1)">
+                      { value }
+                    </Th>
+                  )) }
+                </Tr>
+              </Thead>
+              <Tbody>
+                {
+                  tableList?.map((title: TalbeListType | any, key) => (
+                    <Tr _hover={{ bg: 'rgba(220, 212, 255, 0.24)' }} key={ key }>
+                      {
+                        Object.keys(title)?.map((value: string, index) => (
+                          value !== 'timestamp' && (
+                            <Td
+                              _last={{ borderRightRadius: '12px' }}
+                              _first={{ borderLeftRadius: '12px' }}
+                              key={ index }
+                              fontWeight="500" fontSize="14px"
+                              overflow="hidden"
+                              color="#8A55FD"
+                              p="12px 24px"
+                            >
+                              {
+                                value === 'Last Updated Time' ? (
                                   <Tooltip
-                                    isDisabled={ title[value].toString().length <= 12 }
-                                    label={ title[value] } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
-                                    <NextLink href={{ pathname: '/address/[hash]', query: { hash: title[value] || '' } }}>
-                                      <Box overflow="hidden" display="inline-block">
-                                        <Skeleton isLoaded={ !props.loading }>{ formatPubKey(title[value], 6, 6) }</Skeleton>
-                                      </Box>
-                                    </NextLink>
-                                  </Tooltip>
+                                    label={ timeText(title[value]) } placement="top" bg="#FFFFFF" color="#000000" >
+                                    <Box overflow="hidden" color="#000000" display="inline-block">
+                                      <Skeleton isLoaded={ !props.loading }>{ timeTool(title[value]) }</Skeleton>
+                                    </Box>
+                                  </Tooltip >
                                 ) :
-                                  value === 'Last Updated' ? (
-                                    <Skeleton isLoaded={ !props.loading }>
-                                      <Flex>
-                                        <Box color="#000000" marginRight="4px">Block</Box>
-                                        <NextLink href={{ pathname: '/block/[height_or_hash]', query: { height_or_hash: title[value] || '' } }}>
-                                          <Box>{ title[value] }</Box>
-                                        </NextLink>
-                                      </Flex>
-                                    </Skeleton>
+                                  value === 'txnHash' ? (
+                                    <Tooltip label={ title[value] } placement="top" bg="#FFFFFF" >
+                                      <NextLink href={{ pathname: '/tx/[hash]', query: { hash: title[value] || '' } }}>
+                                        <Box overflow="hidden" display="inline-block">
+                                          <Skeleton isLoaded={ !props.loading }>{ formatPubKey(title[value]) }</Skeleton>
+                                        </Box>
+                                      </NextLink>
+                                    </Tooltip >
                                   ) :
-                                    value === 'Object Name' ||
+                                    value === 'Owner' || value === 'Creator' ? (
+                                      <Tooltip
+                                        isDisabled={ title[value].toString().length <= 12 }
+                                        label={ title[value] } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
+                                        <NextLink href={{ pathname: '/address/[hash]', query: { hash: title[value] || '' } }}>
+                                          <Box overflow="hidden" display="inline-block">
+                                            <Skeleton isLoaded={ !props.loading }>{ formatPubKey(title[value], 6, 6) }</Skeleton>
+                                          </Box>
+                                        </NextLink>
+                                      </Tooltip>
+                                    ) :
+                                      value === 'Last Updated' ? (
+                                        <Skeleton isLoaded={ !props.loading }>
+                                          <Flex>
+                                            <Box color="#000000" marginRight="4px">Block</Box>
+                                            <NextLink href={{ pathname: '/block/[height_or_hash]', query: { height_or_hash: title[value] || '' } }}>
+                                              <Box>{ title[value] }</Box>
+                                            </NextLink>
+                                          </Flex>
+                                        </Skeleton>
+                                      ) :
+                                        value === 'Object Name' ||
                                   value === 'Type' ||
                                   value === 'Bucket Name' ||
                                   value === 'Bucket' ||
                                   value === 'Group Name' ? (
-                                        <Tooltip
-                                          isDisabled={ title[value].toString().length <= 16 }
-                                          label={ title[value] } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
-                                          {
-                                            value === 'Object Name' || value === 'Bucket Name' || value === 'Bucket' || value === 'Group Name' ? (
-                                              <NextLink href={{ pathname: linkName(value), query: { address: title[value] || '' } }}>
-                                                <Box overflow="hidden" display="inline-block">
-                                                  <Skeleton isLoaded={ !props.loading }>
-                                                    { formatPubKey(title[value], 0, 16, 16) }
-                                                  </Skeleton>
+                                            <Tooltip
+                                              isDisabled={ title[value].toString().length <= 16 }
+                                              label={ title[value] } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
+                                              {
+                                                value === 'Object Name' || value === 'Bucket Name' || value === 'Bucket' || value === 'Group Name' ? (
+                                                  <NextLink href={{ pathname: linkName(value), query: { address: title[value] || '' } }}>
+                                                    <Box overflow="hidden" display="inline-block">
+                                                      <Skeleton isLoaded={ !props.loading }>
+                                                        { formatPubKey(title[value], 0, 16, 16) }
+                                                      </Skeleton>
+                                                    </Box>
+                                                  </NextLink>
+                                                ) : (
+                                                  <Box overflow="hidden" color="#000000" display="inline-block">
+                                                    <Skeleton isLoaded={ !props.loading }>
+                                                      { formatPubKey(title[value], 0, 16, 16) }
+                                                    </Skeleton>
+                                                  </Box>
+                                                )
+                                              }
+                                            </Tooltip >
+                                          ) :
+                                          value === 'Bucket ID' || value === 'Group ID' ? (
+                                            <Tooltip
+                                              isDisabled={ title[value].toString().length <= 12 }
+                                              label={ title[value] } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
+                                              <Box color="#000000" display="inline-block">
+                                                <Skeleton isLoaded={ !props.loading }>
+                                                  { title[value].length > 12 ? formatPubKey(title[value], 0, 12) : title[value] }
+                                                </Skeleton>
+                                              </Box>
+                                            </Tooltip>
+                                          ) :
+                                            value === 'Group Name' ? (
+                                              <Tooltip label={ title[value] } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
+                                                <NextLink href={{ pathname: '/group-details/[address]', query: { address: title[value] || '' } }}>
+                                                  <Box display="inline-block">
+                                                    <Skeleton isLoaded={ !props.loading }>
+                                                      { title[value].length > 16 ? formatPubKey(title[value], 0, 16) : title[value] }
+                                                    </Skeleton>
+                                                  </Box>
+                                                </NextLink>
+                                              </Tooltip>
+                                            ) :
+                                              value === 'Status' ? (
+                                                <Box
+                                                  bg="#30D3BF"
+                                                  color="#FFFFFF"
+                                                  fontWeight="500"
+                                                  fontSize="12px"
+                                                  display="inline-block"
+                                                  padding="4px 8px"
+                                                  borderRadius="24px"
+                                                >
+                                                  <Box><Skeleton isLoaded={ !props.loading }>{ title[value] }</Skeleton></Box>
                                                 </Box>
-                                              </NextLink>
-                                            ) : (
-                                              <Box overflow="hidden" color="#000000" display="inline-block">
-                                                <Skeleton isLoaded={ !props.loading }>
-                                                  { formatPubKey(title[value], 0, 16, 16) }
-                                                </Skeleton>
-                                              </Box>
-                                            )
-                                          }
-                                        </Tooltip >
-                                      ) :
-                                      value === 'Bucket ID' || value === 'Group ID' ? (
-                                        <Tooltip
-                                          isDisabled={ title[value].toString().length <= 12 }
-                                          label={ title[value] } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
-                                          <Box color="#000000" display="inline-block">
-                                            <Skeleton isLoaded={ !props.loading }>
-                                              { title[value].length > 12 ? formatPubKey(title[value], 0, 12) : title[value] }
-                                            </Skeleton>
-                                          </Box>
-                                        </Tooltip>
-                                      ) :
-                                        value === 'Group Name' ? (
-                                          <Tooltip label={ title[value] } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
-                                            <NextLink href={{ pathname: '/group-details/[address]', query: { address: title[value] || '' } }}>
-                                              <Box display="inline-block">
-                                                <Skeleton isLoaded={ !props.loading }>
-                                                  { title[value].length > 16 ? formatPubKey(title[value], 0, 16) : title[value] }
-                                                </Skeleton>
-                                              </Box>
-                                            </NextLink>
-                                          </Tooltip>
-                                        ) :
-                                          value === 'Status' ? (
-                                            <Box
-                                              bg="#30D3BF"
-                                              color="#FFFFFF"
-                                              fontWeight="500"
-                                              fontSize="12px"
-                                              display="inline-block"
-                                              padding="4px 8px"
-                                              borderRadius="24px"
-                                            >
-                                              <Box><Skeleton isLoaded={ !props.loading }>{ title[value] }</Skeleton></Box>
-                                            </Box>
-                                          ) : (
-                                            <Box color="#000000" overflow="hidden">
-                                              <Skeleton isLoaded={ !props.loading }>{ title[value] }</Skeleton>
-                                            </Box>
-                                          ) }
-                        </Td>
-                      )
-                    ))
-                  }
-                </Tr>
-              )) }
-          </Tbody>
-          <Box position="absolute" right="24px" bottom="-54px">
-            <Pagination page={ props.currPage } propsPage={ props.propsPage } toNext={ props.toNext }></Pagination>
-          </Box>
-        </Table>
-        <Flex opacity={ tableList.length ? '0' : '1' } justifyItems="center">
-          <Box className={ styles.loader }></Box>
-        </Flex>
-      </TableContainer>
-
+                                              ) : (
+                                                <Box color="#000000" overflow="hidden">
+                                                  <Skeleton isLoaded={ !props.loading }>{ title[value] }</Skeleton>
+                                                </Box>
+                                              ) }
+                            </Td>
+                          )
+                        ))
+                      }
+                    </Tr>
+                  )) }
+              </Tbody>
+              <Flex position="absolute" right="24px" bottom="-54px" justifyContent="space-between" w="97%">
+                <Box color="rgba(0, 0, 0, 0.5)" fontWeight="400" fontSize="12px">Total of { props.totleDate } </Box>
+                <Pagination page={ props.currPage } propsPage={ props.propsPage } toNext={ props.toNext }></Pagination>
+              </Flex>
+            </Table>
+            <Flex>
+              <Box
+                opacity={ tableList.length ? '0' : '1' }
+                position="absolute"
+                zIndex="10"
+                w="100px"
+                h="100px"
+                backgroundRepeat="no-repeat"
+                top="50%"
+                left="50%"
+                backgroundSize="cover"
+                backgroundImage="url(/static/NotDate.png)"></Box>
+            </Flex>
+          </TableContainer>
+        ) : (
+          <Flex>
+            <Box className={ styles.loader }></Box>
+          </Flex>
+        )
+      }
     </>
   );
 }
