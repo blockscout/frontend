@@ -60,3 +60,17 @@
 .table {
   table-layout: revert !important;
 }
+
+.loader {
+  position: absolute;
+  top: 0;
+  width: 50px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 7px solid rgba(0, 0, 0, 0.06);;
+  border-right-color: #A07EFF;
+  animation: l2 1s infinite linear;
+  top: 50%;
+  left: 50%;
+}
+@keyframes l2 {to{transform: rotate(1turn)}}

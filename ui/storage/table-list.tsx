@@ -26,7 +26,7 @@ import IconSvg from 'ui/shared/IconSvg';
 
 import Pagination from './Pagination';
 import styles from './pagination.module.css';
-import { formatPubKey, skeletonList, timeTool, timeText } from './utils';
+import { formatPubKey, timeTool, timeText } from './utils';
 
 type Props<T extends string> = {
   tapList?: Array<T> | undefined;
@@ -49,7 +49,7 @@ function TableList(props: Props<string>) {
     if (props.tableList && props.tableList.length) {
       setTableList(props.tableList);
     } else {
-      setTableList(skeletonList(router.pathname));
+      // setTableList(skeletonList(router.pathname));
     }
   }, [ props, router.pathname, tableList.length ]);
   const [ search, setSearch ] = React.useState('');
@@ -136,8 +136,8 @@ function TableList(props: Props<string>) {
           }
         </InputGroup>
       </Flex>
-      <TableContainer marginTop="16px" border="1px" borderRadius="12px" borderColor="rgba(0, 0, 0, 0.06);" padding="0 4px 78px 4px">
-        <Table variant="bubble" position="relative" className={ styles.table }>
+      <TableContainer position="relative" marginTop="16px" border="1px" borderRadius="12px" borderColor="rgba(0, 0, 0, 0.06);" padding="0 4px 78px 4px">
+        <Table minHeight="550px" variant="bubble" position="relative" className={ styles.table }>
           <Thead>
             <Tr>
               { props.tabThead?.map((value, index) => (
@@ -287,7 +287,11 @@ function TableList(props: Props<string>) {
             <Pagination page={ props.currPage } propsPage={ props.propsPage } toNext={ props.toNext }></Pagination>
           </Box>
         </Table>
+        <Flex opacity={ tableList.length ? '0' : '1' } justifyItems="center">
+          <Box className={ styles.loader }></Box>
+        </Flex>
       </TableContainer>
+
     </>
   );
 }
