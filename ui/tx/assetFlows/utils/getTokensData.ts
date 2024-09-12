@@ -1,5 +1,4 @@
-import { groupBy } from 'es-toolkit';
-import _mapValues from 'lodash/mapValues';
+import { groupBy, mapValues } from 'es-toolkit';
 
 import type { NovesResponseData } from 'types/api/noves';
 import type { TokenInfo } from 'types/api/token';
@@ -53,15 +52,15 @@ export function getTokensData(data: NovesResponseData): TokensData {
   const tokensGroupById = groupBy(tokens, (item) => item.id || 'null');
 
   // Map properties to an object and remove duplicates
-  const mappedNames = _mapValues(tokensGroupByName, (i) => {
+  const mappedNames = mapValues(tokensGroupByName, (i) => {
     return i[0];
   });
 
-  const mappedSymbols = _mapValues(tokensGroupBySymbol, (i) => {
+  const mappedSymbols = mapValues(tokensGroupBySymbol, (i) => {
     return i[0];
   });
 
-  const mappedIds = _mapValues(tokensGroupById, (i) => {
+  const mappedIds = mapValues(tokensGroupById, (i) => {
     return i[0];
   });
 

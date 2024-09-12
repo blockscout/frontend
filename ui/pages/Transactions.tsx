@@ -1,4 +1,4 @@
-import capitalize from 'lodash/capitalize';
+import { capitalize } from 'es-toolkit';
 import { useRouter } from 'next/router';
 import React from 'react';
 

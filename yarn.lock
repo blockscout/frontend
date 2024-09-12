@@ -9141,10 +9141,10 @@ es-to-primitive@^1.2.1:
     is-date-object "^1.0.1"
     is-symbol "^1.0.2"
 
-es-toolkit@1.10.1:
-  version "1.10.1"
-  resolved "https://registry.yarnpkg.com/es-toolkit/-/es-toolkit-1.10.1.tgz#cc5b2c015bd44c9750e5019a1b8dbb26f5dc1d62"
-  integrity sha512-Xh/sqYQFPWXr/d+tFNULPcFUrpGrZMMqhu+6rDRhZd7N7uw53ZWXE17sbZZ0x7d5BTZfRJG+ItDI1y1vux1izQ==
+es-toolkit@1.18.0:
+  version "1.18.0"
+  resolved "https://registry.yarnpkg.com/es-toolkit/-/es-toolkit-1.18.0.tgz#55f0a1a07c24e8b28c298898225e51be5e980dbb"
+  integrity sha512-J/KKeqozMvgpPSUqZSpt59ZOTku2UrU9cmqmLBt4TmFQ2KCLGf3fXK6Xb2ud5CrpCUHFl/ThijjJkXwa/8sf2g==
 
 esbuild@^0.18.10:
   version "0.18.20"
