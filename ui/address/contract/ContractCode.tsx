@@ -1,4 +1,4 @@
-import { Flex, Skeleton, Button, Grid, GridItem, Alert, Link, chakra, Box, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Skeleton, Button, Grid, GridItem, Alert, chakra, Box, useColorModeValue } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
 import type { Channel } from 'phoenix';
@@ -24,6 +24,7 @@ import LinkExternal from 'ui/shared/links/LinkExternal';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
+import ContractCodeProxyPattern from './ContractCodeProxyPattern';
 import ContractSecurityAudits from './ContractSecurityAudits';
 import ContractSourceCode from './ContractSourceCode';
 
@@ -230,7 +231,7 @@ const ContractCode = ({ addressHash, contractQuery, channel }: Props) => {
             Warning! Contract bytecode has been changed and does not match the verified one. Therefore, interaction with this smart contract may be risky.
           </Alert>
         ) }
-        { !data?.is_verified && data?.verified_twin_address_hash && !data?.minimal_proxy_address_hash && (
+        { !data?.is_verified && data?.verified_twin_address_hash && (!data?.proxy_type || data.proxy_type === 'unknown') && (
           <Alert status="warning" whiteSpace="pre-wrap" flexWrap="wrap">
             <span>Contract is not verified. However, we found a verified contract with the same bytecode in Blockscout DB </span>
             <AddressEntity
@@ -246,23 +247,7 @@ const ContractCode = ({ addressHash, contractQuery, channel }: Props) => {
             <span> page</span>
           </Alert>
         ) }
-        { data?.minimal_proxy_address_hash && (
-          <Alert status="warning" flexWrap="wrap" whiteSpace="pre-wrap">
-            <span>Minimal Proxy Contract for </span>
-            <AddressEntity
-              address={{ hash: data.minimal_proxy_address_hash, is_contract: true }}
-              truncation="constant"
-              fontSize="sm"
-              fontWeight="500"
-              noCopy
-            />
-            <span>. </span>
-            <Box>
-              <Link href="https://eips.ethereum.org/EIPS/eip-1167">EIP-1167</Link>
-              <span> - minimal bytecode implementation that delegates all calls to a known address</span>
-            </Box>
-          </Alert>
-        ) }
+        { data?.proxy_type && <ContractCodeProxyPattern type={ data.proxy_type }/> }
       </Flex>
       { data?.is_verified && (
         <Grid templateColumns={{ base: '1fr', lg: '1fr 1fr' }} rowGap={ 4 } columnGap={ 6 } mb={ 8 }>
