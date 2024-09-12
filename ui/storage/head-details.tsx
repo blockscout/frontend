@@ -114,13 +114,15 @@ const Page = (props: HeadProps) => {
                           </Skeleton>
                         </Tooltip>
                       ) :
-                        key === 'Bucket ID' || key === 'Group ID' ? (
+                        key === 'Bucket ID' || key === 'Group ID' || key === 'Object ID' ? (
                           <Tooltip
                             isDisabled={ value?.length <= 12 }
                             label={ value } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
-                            <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
-                              { value?.length > 12 ? formatPubKey(value, 6, 6) : (value || '-') }
-                            </Skeleton>
+                            <Box display="inline-block">
+                              <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
+                                { value?.length > 12 ? formatPubKey(value, 0, 12) : (value || '-') }
+                              </Skeleton>
+                            </Box>
                           </Tooltip>
                         ) :
                           key === 'Object Tags' || key === 'Bucket Tags' || key === 'Active Objects Count' || key === 'Group Tags' ? (
@@ -200,17 +202,19 @@ const Page = (props: HeadProps) => {
                       </Skeleton>
 
                     ) :
-                      values.status === 'link' || values.status === 'nodereal' ? (
+                      values.status === 'link' || values.status === 'nodereal' || values.status === 'primary' ? (
                         <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
                           <NextLink
                             href={{ pathname: '/address/[hash]',
-                              query: { hash: values.value || '' } }}>
-                            { values.status === 'nodereal' ? values.value : '' }
+                              query: { hash: (values.status === 'primary' ? values.link : values.value) || '' } }}>
+                            { values.value || '-' }
                           </NextLink>
                         </Skeleton>
                       ) :
                         values.status === 'bucketPage' ? (
-                          <Tooltip label={ values.value } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
+                          <Tooltip
+                            isDisabled={ values?.value ? values?.value?.length <= 30 : false }
+                            label={ values.value } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
                             <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
                               <NextLink href={{ pathname: '/bucket-details/[address]', query: { address: values.value || '' } }}>
                                 <Box display="inline-block">
@@ -269,7 +273,7 @@ const Page = (props: HeadProps) => {
                                           key={ index }>
                                           <Flex align="center" color="#8A55FD" fontWeight="500" fontSize="12px">
                                             { /* <NextLink href={{ pathname: '/address/[hash]', query: { hash: value || '' } }}>{ value }</NextLink> */ }
-                                      global_virtual_group_id { value }
+                                      global_virtual_group_id: { value }
                                             <IconSvg
                                               cursor="pointer"
                                               onClick={ copyAddress(value) }

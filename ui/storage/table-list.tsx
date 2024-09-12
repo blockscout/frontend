@@ -26,7 +26,7 @@ import IconSvg from 'ui/shared/IconSvg';
 
 import Pagination from './Pagination';
 import styles from './pagination.module.css';
-import { formatPubKey, skeletonList, timeTool, mintimeTool } from './utils';
+import { formatPubKey, skeletonList, timeTool, timeText } from './utils';
 
 type Props<T extends string> = {
   tapList?: Array<T> | undefined;
@@ -42,11 +42,16 @@ type Props<T extends string> = {
 }
 
 function TableList(props: Props<string>) {
-  let tableList: Array<TalbeListType> = props.tableList;
+  const [ tableList, setTableList ] = React.useState<Array<TalbeListType>>(props.tableList);
+
   const router = useRouter();
-  if (!tableList?.length && !props.error && props.loading) {
-    tableList = skeletonList(router.pathname);
-  }
+  React.useEffect(() => {
+    if (props.tableList && props.tableList.length) {
+      setTableList(props.tableList);
+    } else {
+      setTableList(skeletonList(router.pathname));
+    }
+  }, [ props, router.pathname, tableList.length ]);
   const [ search, setSearch ] = React.useState('');
   const linkName = (name: string) => {
     switch (name) {
@@ -70,6 +75,22 @@ function TableList(props: Props<string>) {
   const clearSearch = React.useCallback(() => {
     setSearch('');
     props.handleSearchChange(null);
+  }, [ props ]);
+  React.useEffect(() => {
+    let time: any;
+    if (props?.tableList && props?.tableList.length) {
+      setInterval(() => {
+        time = setTableList(tableList => tableList.map(item => ({
+          ...item,
+          timestamp: Date.now(),
+        })));
+      }, 1000);
+    }
+    return (() => {
+      if (time) {
+        clearInterval(time);
+      }
+    });
   }, [ props ]);
 
   return (
@@ -139,7 +160,7 @@ function TableList(props: Props<string>) {
                 <Tr _hover={{ bg: 'rgba(220, 212, 255, 0.24)' }} key={ key }>
                   {
                     Object.keys(title)?.map((value: string, index) => (
-                      value !== 'id' && (
+                      value !== 'timestamp' && (
                         <Td
                           _last={{ borderRightRadius: '12px' }}
                           _first={{ borderLeftRadius: '12px' }}
@@ -152,10 +173,10 @@ function TableList(props: Props<string>) {
                           {
                             value === 'Last Updated Time' ? (
                               <Tooltip
-                                isDisabled={ typeof timeTool(title[value]) !== 'string' }
-                                label={ timeTool(title[value], true) } placement="top" bg="#FFFFFF" color="#000000" >
+                                label={ timeTool(title[value]) + timeText(title[value]) } placement="top" bg="#FFFFFF" color="#000000" >
                                 <Box overflow="hidden" color="#000000" display="inline-block">
-                                  <Skeleton isLoaded={ !props.loading }>{ mintimeTool(title[value]) }</Skeleton>
+                                  <Skeleton isLoaded={ !props.loading }>{ timeTool(title[value]) }</Skeleton>
+                                  { /* <Skeleton isLoaded={ !props.loading }>{ timeTool(title[value]) }</Skeleton> */ }
                                 </Box>
                               </Tooltip >
                             ) :
@@ -193,8 +214,7 @@ function TableList(props: Props<string>) {
                                   value === 'Type' ||
                                   value === 'Bucket Name' ||
                                   value === 'Bucket' ||
-                                  value === 'Group Name' ||
-                                  value === 'Group ID' ? (
+                                  value === 'Group Name' ? (
                                         <Tooltip
                                           isDisabled={ title[value].toString().length <= 16 }
                                           label={ title[value] } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
@@ -210,7 +230,7 @@ function TableList(props: Props<string>) {
                                             ) : (
                                               <Box overflow="hidden" color="#000000" display="inline-block">
                                                 <Skeleton isLoaded={ !props.loading }>
-                                                  { value === 'Group ID' ? formatPubKey(title[value], 0, 12, 12) : formatPubKey(title[value], 0, 16, 16) }
+                                                  { formatPubKey(title[value], 0, 16, 16) }
                                                 </Skeleton>
                                               </Box>
                                             )
@@ -223,7 +243,7 @@ function TableList(props: Props<string>) {
                                           label={ title[value] } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
                                           <Box color="#000000" display="inline-block">
                                             <Skeleton isLoaded={ !props.loading }>
-                                              { title[value].length > 12 ? formatPubKey(title[value], 6, 6) : title[value] }
+                                              { title[value].length > 12 ? formatPubKey(title[value], 0, 12) : title[value] }
                                             </Skeleton>
                                           </Box>
                                         </Tooltip>
@@ -267,7 +287,6 @@ function TableList(props: Props<string>) {
             <Pagination page={ props.currPage } propsPage={ props.propsPage } toNext={ props.toNext }></Pagination>
           </Box>
         </Table>
-
       </TableContainer>
     </>
   );

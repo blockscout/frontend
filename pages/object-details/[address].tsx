@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { Flex, Box, Tooltip } from '@chakra-ui/react';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
@@ -13,7 +12,7 @@ import PageNextJs from 'nextjs/PageNextJs';
 import useGraphqlQuery from 'lib/api/useGraphqlQuery';
 import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
-import { formatPubKey, sizeTool, timeTool, timeText } from 'ui/storage/utils';
+import { formatPubKey, sizeTool, timeText, timeTool } from 'ui/storage/utils';
 
 const HeadDetails = dynamic(() => import('ui/storage/head-details'), { ssr: false });
 
@@ -76,7 +75,6 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
   }, [ data, loading ]);
 
   const details = data?.objects && data?.objects[0];
-  const overTime = timeTool(details?.update_time);
   const req = [
     {
       tableName: 'global_virtual_groups',
@@ -87,29 +85,28 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
     },
   ];
   const rp = useGraphqlQuery('ObjectByName', req);
-
   const [ oldTimeText, setoldTimeText ] = React.useState<string>('');
+
   React.useEffect(() => {
-    let countdown = 0;
-    if (typeof overTime === 'number' && !Number.isNaN(overTime)) {
-      const setTime = setTimeout(() => {
-        countdown = overTime + 1;
-        if (countdown >= 60) {
-          clearTimeout(setTime);
-          setoldTimeText(timeTool(details?.update_time).toString());
-        } else {
-          setoldTimeText(`${ countdown } second ago ${ timeText(details?.update_time) }`);
-        }
-      }, 1000);
-    } else {
-      setoldTimeText(timeTool(details?.update_time).toString());
-    }
-  }, [ oldTimeText, overTime, details ]);
+    const time = setInterval(() => {
+      if (details?.update_time) {
+        setoldTimeText(timeTool(details?.update_time).toString() + timeText(details?.update_time));
+      }
+    }, 1000);
+
+    return (() => {
+      clearInterval(time);
+    });
+  }, [ details?.update_time ]);
+
+  React.useEffect(() => {
+    details?.update_time && setoldTimeText(timeTool(details?.update_time).toString() + timeText(details?.update_time));
+  }, [ details ]);
 
   const overview: ObjectDetailsOverviewType = {
     'Object Name': details?.object_name,
     'Object Tags': details?.tags && Object.entries(details?.tags).length.toString(),
-    'Object ID': details?.object_id && formatPubKey(details?.object_id, 6, 6),
+    'Object ID': details?.object_id,
     // 'Object No.': details?.object_id && formatPubKey(details?.object_id, 6, 6),
     Type: details?.content_type,
     'Object Size': sizeTool(details?.payload_size),
@@ -139,8 +136,9 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       status: 'copyLink',
     },
     'Primary SP': {
-      value: rp?.data?.global_virtual_groups && rp?.data?.global_virtual_groups[0].virtual_payment_address,
-      status: 'copyLink',
+      value: details?.primary_sp.global_virtual_group_family.primary_sp.moniker,
+      status: 'primary',
+      link: rp?.data?.global_virtual_groups && rp?.data?.global_virtual_groups[0].virtual_payment_address,
       tip: 'Available for sealed object',
     },
   };
