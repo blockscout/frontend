@@ -3,10 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 import * as v from 'valibot';
 
-import { route } from 'nextjs-routes';
-
 import config from 'configs/app';
-import LinkInternal from 'ui/shared/links/LinkInternal';
+import LinkExternal from 'ui/shared/links/LinkExternal';
 import TextSeparator from 'ui/shared/TextSeparator';
 
 const feature = config.features.saveOnGas;
@@ -79,9 +77,9 @@ const AddressSaveOnGas = ({ gasUsed, address }: Props) => {
       <TextSeparator color="divider"/>
       <Skeleton isLoaded={ !query.isPlaceholderData } display="flex" alignItems="center" columnGap={ 2 }>
         <Image src="/static/gas_hawk_logo.svg" w="15px" h="20px" alt="GasHawk logo"/>
-        <LinkInternal href={ route({ pathname: '/apps/[id]', query: { id: feature.dappId } }) } fontSize="sm">
+        <LinkExternal href="https://www.gashawk.io" fontSize="sm">
           Save { percent.toLocaleString(undefined, { maximumFractionDigits: 0 }) }% with GasHawk
-        </LinkInternal>
+        </LinkExternal>
       </Skeleton>
     </>
   );

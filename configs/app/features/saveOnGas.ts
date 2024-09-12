@@ -7,13 +7,11 @@ const title = 'Save on gas with GasHawk';
 
 const config: Feature<{
   apiUrlTemplate: string;
-  dappId: string;
 }> = (() => {
   if (getEnvValue('NEXT_PUBLIC_SAVE_ON_GAS_ENABLED') === 'true' && marketplace.isEnabled) {
     return Object.freeze({
       title,
       isEnabled: true,
-      dappId: 'gas-hawk',
       apiUrlTemplate: 'https://core.gashawk.io/apiv2/stats/address/<address>/savingsPotential/0x1',
     });
   }
