@@ -17,7 +17,7 @@ const SearchBarSuggestObject = ({ data, searchTerm, isFirst }: Props) => {
   return (
     <Flex justifyContent="space-between">
       <Flex alignItems="center">
-        <IconSvg w="24px" h="24px" mr="8px" color="#DCD4FF" name="document"/>
+        <IconSvg w="24px" h="24px" mr="8px" color="#DCD4FF" name="object"/>
         <Flex flexDirection="column">
           <Flex fontWeight="500" fontSize={ 14 } lineHeight="20px" alignItems="center">
             <Text color="#000">{ isNumberOnly(searchTerm) && searchTerm === data.object_id ? 'Object ID' : 'Object Name' }:&nbsp;</Text>
