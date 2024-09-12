@@ -4,11 +4,11 @@
     "links": [
       {
         "text": "Home",
-        "url": "https://github.com/zenchain-protocol"
+        "url": "https://www.zenchain.io"
       },
       {
         "text": "Whitepaper",
-        "url": "https://github.com/zenchain-protocol"
+        "url": "TODO"
       }
     ]
   },
@@ -17,19 +17,15 @@
     "links": [
       {
         "text": "Telegram",
-        "url": "https://github.com/zenchain-protocol"
+        "url": "https://t.me/unizen_io"
       },
       {
-        "text": "Twitter",
-        "url": "https://github.com/zenchain-protocol"
+        "text": "X",
+        "url": "https://twitter.com/unizen_io"
       },
       {
-        "text": "Blog",
-        "url": "https://github.com/zenchain-protocol"
-      },
-      {
-        "text": "Linkedin",
-        "url": "https://github.com/zenchain-protocol"
+        "text": "Discord",
+        "url": "https://discord.gg/qwwvcvPdgX"
       }
     ]
   },
