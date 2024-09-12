@@ -64,7 +64,7 @@ const CustomAbiPage: React.FC = () => {
         <Box display={{ base: 'block', lg: 'none' }}>
           { data?.map((item, index) => (
             <CustomAbiListItem
-              key={ item.id + (isPlaceholderData ? index : '') }
+              key={ item.id + (isPlaceholderData ? String(index) : '') }
               item={ item }
               isLoading={ isPlaceholderData }
               onDeleteClick={ onDeleteClick }

@@ -7,7 +7,6 @@ import config from 'configs/app';
 import { sortByDateDesc } from 'ui/shared/chart/utils/sorts';
 import IconSvg from 'ui/shared/IconSvg';
 import NativeTokenIcon from 'ui/shared/NativeTokenIcon';
-import TokenLogoPlaceholder from 'ui/shared/TokenLogoPlaceholder';
 
 const nonNullTailReducer = (result: Array<TimeChartItemRaw>, item: TimeChartItemRaw) => {
   if (item.value === null && result.length === 0) {
@@ -71,7 +70,7 @@ const secondaryCoinPriceIndicator: TChainIndicator<'stats_charts_secondary_coin_
     '$N/A' :
     '$' + Number(stats.secondary_coin_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }),
   valueDiff: () => null,
-  icon: <TokenLogoPlaceholder boxSize={ 6 }/>,
+  icon: <NativeTokenIcon boxSize={ 6 } type="secondary"/>,
   hint: `${ config.chain.secondaryCoin.symbol } token daily price in USD.`,
   api: {
     resourceName: 'stats_charts_secondary_coin_price',

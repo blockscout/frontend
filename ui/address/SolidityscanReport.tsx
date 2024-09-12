@@ -5,8 +5,7 @@ import React from 'react';
 // Probably because of the gradient
 // eslint-disable-next-line no-restricted-imports
 import solidityScanIcon from 'icons/brands/solidity_scan.svg';
-import useApiQuery from 'lib/api/useApiQuery';
-import { SOLIDITYSCAN_REPORT } from 'stubs/contract';
+import useFetchReport from 'lib/solidityScan/useFetchReport';
 import Popover from 'ui/shared/chakra/Popover';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import SolidityscanReportButton from 'ui/shared/solidityscanReport/SolidityscanReportButton';
@@ -20,21 +19,19 @@ interface Props {
 const SolidityscanReport = ({ hash }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();
 
-  const { data, isPlaceholderData, isError } = useApiQuery('contract_solidityscan_report', {
-    pathParams: { hash },
-    queryOptions: {
-      enabled: Boolean(hash),
-      placeholderData: SOLIDITYSCAN_REPORT,
-    },
-  });
+  const { data, isPlaceholderData, isError } = useFetchReport({ hash });
 
-  const score = Number(data?.scan_report.scan_summary.score_v2);
-
-  if (isError || !score) {
+  if (isError || !data) {
     return null;
   }
 
-  const vulnerabilities = data?.scan_report.scan_summary.issue_severity_distribution;
+  const score = Number(data.scan_report.scan_summary.score_v2);
+
+  if (!score) {
+    return null;
+  }
+
+  const vulnerabilities = data.scan_report.scan_summary.issue_severity_distribution;
   const vulnerabilitiesCounts = vulnerabilities ? Object.values(vulnerabilities) : [];
   const vulnerabilitiesCount = vulnerabilitiesCounts.reduce((acc, val) => acc + val, 0);
 
@@ -51,7 +48,7 @@ const SolidityscanReport = ({ hash }: Props) => {
       <PopoverContent w={{ base: '100vw', lg: '328px' }}>
         <PopoverBody px="26px" py="20px" fontSize="sm">
           <Box mb={ 5 } lineHeight="25px">
-            Contract analyzed for 160+ vulnerability patterns by
+            Contract analyzed for 240+ vulnerability patterns by
             <Icon as={ solidityScanIcon } mr={ 1 } ml="6px" w="23px" h="20px" display="inline-block" verticalAlign="middle"/>
             <Text fontWeight={ 600 } display="inline-block">SolidityScan</Text>
           </Box>
@@ -62,7 +59,7 @@ const SolidityscanReport = ({ hash }: Props) => {
               <SolidityscanReportDetails vulnerabilities={ vulnerabilities } vulnerabilitiesCount={ vulnerabilitiesCount }/>
             </Box>
           ) }
-          <LinkExternal href={ data?.scan_report.scanner_reference_url }>View full report</LinkExternal>
+          <LinkExternal href={ data.scan_report.scanner_reference_url }>View full report</LinkExternal>
         </PopoverBody>
       </PopoverContent>
     </Popover>

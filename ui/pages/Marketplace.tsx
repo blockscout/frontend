@@ -1,4 +1,4 @@
-import { Box, MenuButton, MenuItem, MenuList, Flex, IconButton } from '@chakra-ui/react';
+import { MenuButton, MenuItem, MenuList, Flex, IconButton } from '@chakra-ui/react';
 import React from 'react';
 import type { MouseEvent } from 'react';
 
@@ -14,6 +14,7 @@ import MarketplaceAppModal from 'ui/marketplace/MarketplaceAppModal';
 import MarketplaceDisclaimerModal from 'ui/marketplace/MarketplaceDisclaimerModal';
 import MarketplaceList from 'ui/marketplace/MarketplaceList';
 import { SORT_OPTIONS } from 'ui/marketplace/utils';
+import ActionBar from 'ui/shared/ActionBar';
 import Menu from 'ui/shared/chakra/Menu';
 import FilterInput from 'ui/shared/filters/FilterInput';
 import IconSvg from 'ui/shared/IconSvg';
@@ -70,6 +71,11 @@ const Marketplace = () => {
     contractListModalType,
     hasPreviousStep,
     setSorting,
+    userRatings,
+    rateApp,
+    isRatingSending,
+    isRatingLoading,
+    canRate,
   } = useMarketplace();
 
   const isMobile = useIsMobile();
@@ -91,13 +97,13 @@ const Marketplace = () => {
 
     tabs.unshift({
       id: MarketplaceCategory.FAVORITES,
-      title: () => <IconSvg name="star_outline" w={ 5 } h={ 5 } display="flex"/>,
-      count: null,
+      title: () => <IconSvg name="heart_filled" boxSize={ 5 } verticalAlign="middle" mt={ -1 }/>,
+      count: favoriteApps.length,
       component: null,
     });
 
     return tabs;
-  }, [ categories, appsTotal ]);
+  }, [ categories, appsTotal, favoriteApps.length ]);
 
   const selectedCategoryIndex = React.useMemo(() => {
     const index = categoryTabs.findIndex(c => c.id === selectedCategoryId);
@@ -131,10 +137,13 @@ const Marketplace = () => {
     return null;
   }
 
+  const showSort = SORT_OPTIONS.length > 1;
+
   return (
     <>
       <PageTitle
         title="DAppscout"
+        mb={ 2 }
         contentAfter={ (isMobile && links.length > 1) ? (
           <Menu>
             <MenuButton
@@ -151,7 +160,7 @@ const Marketplace = () => {
                 <MenuItem key={ label } as="a" href={ href } target="_blank" py={ 2 } px={ 4 }>
                   <IconSvg name={ icon } boxSize={ 4 } mr={ 2.5 }/>
                   { label }
-                  <IconSvg name="arrows/north-east" boxSize={ 4 } color="gray.400" ml={ 2 }/>
+                  <IconSvg name="link_external" boxSize={ 3 } color="icon_link_external" ml={ 2 }/>
                 </MenuItem>
               )) }
             </MenuList>
@@ -176,7 +185,15 @@ const Marketplace = () => {
         onAppClick={ handleAppClick }
       />
 
-      <Box marginTop={{ base: 0, lg: 8 }}>
+      <ActionBar
+        showShadow
+        display="flex"
+        flexDirection="column"
+        mx={{ base: -3, lg: -12 }}
+        px={{ base: 3, lg: 12 }}
+        pt={{ base: 4, lg: 6 }}
+        pb={{ base: 4, lg: 3 }}
+      >
         <TabsWithScroll
           tabs={ categoryTabs }
           onTabChange={ handleCategoryChange }
@@ -184,26 +201,26 @@ const Marketplace = () => {
           marginBottom={ -2 }
           isLoading={ isCategoriesPlaceholderData }
         />
-      </Box>
 
-      <Flex mb={{ base: 4, lg: 6 }} gap={{ base: 2, lg: 3 }}>
-        { feature.securityReportsUrl && (
-          <Sort
-            name="dapps_sorting"
-            options={ SORT_OPTIONS }
-            onChange={ setSorting }
+        <Flex gap={{ base: 2, lg: 3 }}>
+          { showSort && (
+            <Sort
+              name="dapps_sorting"
+              options={ SORT_OPTIONS }
+              onChange={ setSorting }
+              isLoading={ isPlaceholderData }
+            />
+          ) }
+          <FilterInput
+            initialValue={ filterQuery }
+            onChange={ onSearchInputChange }
+            placeholder="Find app by name or keyword..."
             isLoading={ isPlaceholderData }
+            size={ showSort ? 'xs' : 'sm' }
+            w={{ base: '100%', lg: '350px' }}
           />
-        ) }
-        <FilterInput
-          initialValue={ filterQuery }
-          onChange={ onSearchInputChange }
-          placeholder="Find app by name or keyword..."
-          isLoading={ isPlaceholderData }
-          size={ feature.securityReportsUrl ? 'xs' : 'sm' }
-          w={{ base: '100%', lg: '350px' }}
-        />
-      </Flex>
+        </Flex>
+      </ActionBar>
 
       <MarketplaceList
         apps={ displayedApps }
@@ -214,6 +231,11 @@ const Marketplace = () => {
         selectedCategoryId={ selectedCategoryId }
         onAppClick={ handleAppClick }
         showContractList={ showContractList }
+        userRatings={ userRatings }
+        rateApp={ rateApp }
+        isRatingSending={ isRatingSending }
+        isRatingLoading={ isRatingLoading }
+        canRate={ canRate }
       />
 
       { (selectedApp && isAppInfoModalOpen) && (
@@ -223,6 +245,11 @@ const Marketplace = () => {
           onFavoriteClick={ onFavoriteClick }
           data={ selectedApp }
           showContractList={ showContractList }
+          userRating={ userRatings[selectedApp.id] }
+          rateApp={ rateApp }
+          isRatingSending={ isRatingSending }
+          isRatingLoading={ isRatingLoading }
+          canRate={ canRate }
         />
       ) }
 

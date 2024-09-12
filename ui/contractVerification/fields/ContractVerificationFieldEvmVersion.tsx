@@ -5,7 +5,7 @@ import type { ControllerRenderProps } from 'react-hook-form';
 import { useFormContext, Controller } from 'react-hook-form';
 
 import type { FormFields } from '../types';
-import type { SmartContractVerificationConfig } from 'types/api/contract';
+import type { SmartContractVerificationConfig } from 'types/client/contract';
 
 import { getResourceKey } from 'lib/api/useApiQuery';
 import useIsMobile from 'lib/hooks/useIsMobile';

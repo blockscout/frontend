@@ -4,12 +4,12 @@ import React from 'react';
 import type { ArbitrumL2MessagesItem } from 'types/api/arbitrumL2';
 
 import config from 'configs/app';
-import dayjs from 'lib/date/dayjs';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import ArbitrumL2MessageStatus from 'ui/shared/statusTag/ArbitrumL2MessageStatus';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 import type { MessagesDirection } from './ArbitrumL2Messages';
 
@@ -21,8 +21,6 @@ const ArbitrumL2MessagesTableItem = ({ item, direction, isLoading }: Props) => {
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'arbitrum') {
     return null;
   }
-
-  const timeAgo = dayjs(item.origination_timestamp).fromNow();
 
   const l1TxHash = direction === 'from-rollup' ? item.completion_transaction_hash : item.origination_transaction_hash;
   const l2TxHash = direction === 'from-rollup' ? item.origination_transaction_hash : item.completion_transaction_hash;
@@ -75,9 +73,11 @@ const ArbitrumL2MessagesTableItem = ({ item, direction, isLoading }: Props) => {
         ) }
       </Td>
       <Td verticalAlign="middle" pr={ 12 }>
-        <Skeleton isLoaded={ !isLoading } color="text_secondary">
-          <span>{ timeAgo }</span>
-        </Skeleton>
+        <TimeAgoWithTooltip
+          timestamp={ item.origination_timestamp }
+          isLoading={ isLoading }
+          color="text_secondary"
+        />
       </Td>
       <Td verticalAlign="middle">
         <ArbitrumL2MessageStatus status={ item.status } isLoading={ isLoading }/>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { txnBatchesData } from 'mocks/l2txnBatches/txnBatches';
+import { txnBatchesData } from 'mocks/optimism/txnBatches';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 

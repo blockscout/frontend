@@ -46,7 +46,7 @@ const NavLink = ({ item, isCollapsed, px, className, onClick, disableActiveState
       w={{ base: '100%', lg: isExpanded ? '100%' : '60px', xl: isCollapsed ? '60px' : '100%' }}
       display="flex"
       position="relative"
-      px={ px || { base: 3, lg: isExpanded ? 3 : '15px', xl: isCollapsed ? '15px' : 3 } }
+      px={ px || { base: 2, lg: isExpanded ? 2 : '15px', xl: isCollapsed ? '15px' : 2 } }
       aria-label={ `${ item.text } link` }
       whiteSpace="nowrap"
       onClick={ onClick }
@@ -64,12 +64,13 @@ const NavLink = ({ item, isCollapsed, px, className, onClick, disableActiveState
         variant="nav"
         gutter={ 20 }
         color={ isInternalLink && item.isActive ? colors.text.active : colors.text.hover }
+        margin={ 0 }
       >
         <HStack spacing={ 0 } overflow="hidden">
           <NavLinkIcon item={ item }/>
           <Text { ...styleProps.textProps } as="span" ml={ 3 }>
             <span>{ item.text }</span>
-            { !isInternalLink && <IconSvg name="arrows/north-east" boxSize={ 4 } color="text_secondary" verticalAlign="middle"/> }
+            { !isInternalLink && <IconSvg name="link_external" boxSize={ 3 } color="icon_link_external" verticalAlign="middle"/> }
           </Text>
           { isHighlighted && (
             <LightningLabel iconColor={ styleProps.itemProps.bgColor } isCollapsed={ isCollapsed }/>

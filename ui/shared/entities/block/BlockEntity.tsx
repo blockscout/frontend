@@ -6,7 +6,7 @@ import { route } from 'nextjs-routes';
 
 import * as EntityBase from 'ui/shared/entities/base/components';
 
-type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'hash' | 'number'>;
+type LinkProps = EntityBase.LinkBaseProps & Partial<Pick<EntityProps, 'hash' | 'number'>>;
 
 const Link = chakra((props: LinkProps) => {
   const heightOrHash = props.hash ?? String(props.number);

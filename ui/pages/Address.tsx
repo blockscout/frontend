@@ -11,6 +11,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import useContractTabs from 'lib/hooks/useContractTabs';
 import useIsSafeAddress from 'lib/hooks/useIsSafeAddress';
+import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
@@ -23,12 +24,14 @@ import AddressContract from 'ui/address/AddressContract';
 import AddressDetails from 'ui/address/AddressDetails';
 import AddressInternalTxs from 'ui/address/AddressInternalTxs';
 import AddressLogs from 'ui/address/AddressLogs';
+import AddressMud from 'ui/address/AddressMud';
 import AddressTokens from 'ui/address/AddressTokens';
 import AddressTokenTransfers from 'ui/address/AddressTokenTransfers';
 import AddressTxs from 'ui/address/AddressTxs';
 import AddressUserOps from 'ui/address/AddressUserOps';
 import AddressWithdrawals from 'ui/address/AddressWithdrawals';
 import AddressFavoriteButton from 'ui/address/details/AddressFavoriteButton';
+import AddressMetadataAlert from 'ui/address/details/AddressMetadataAlert';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
 import AddressEnsDomains from 'ui/address/ensDomains/AddressEnsDomains';
 import SolidityscanReport from 'ui/address/SolidityscanReport';
@@ -77,6 +80,14 @@ const AddressPageContent = () => {
     },
   });
 
+  const mudTablesCountQuery = useApiQuery('address_mud_tables_count', {
+    pathParams: { hash },
+    queryOptions: {
+      enabled: config.features.mudFramework.isEnabled && areQueriesEnabled && Boolean(hash),
+      placeholderData: 10,
+    },
+  });
+
   const addressesForMetadataQuery = React.useMemo(() => ([ hash ].filter(Boolean)), [ hash ]);
   const addressMetadataQuery = useAddressMetadataInfoQuery(addressesForMetadataQuery, areQueriesEnabled);
 
@@ -97,8 +108,12 @@ const AddressPageContent = () => {
     addressEnsDomainsQuery.data?.items.find((domain) => domain.name === addressQuery.data?.ens_domain_name) :
     undefined;
 
-  const isLoading = addressQuery.isPlaceholderData || (config.features.userOps.isEnabled && userOpsAccountQuery.isPlaceholderData);
-  const isTabsLoading = isLoading || addressTabsCountersQuery.isPlaceholderData;
+  const isLoading = addressQuery.isPlaceholderData;
+  const isTabsLoading =
+    isLoading ||
+    addressTabsCountersQuery.isPlaceholderData ||
+    (config.features.userOps.isEnabled && userOpsAccountQuery.isPlaceholderData) ||
+    (config.features.mudFramework.isEnabled && mudTablesCountQuery.isPlaceholderData);
 
   const handleFetchedBytecodeMessage = React.useCallback(() => {
     addressQuery.refetch();
@@ -121,6 +136,12 @@ const AddressPageContent = () => {
 
   const tabs: Array<RoutedTab> = React.useMemo(() => {
     return [
+      config.features.mudFramework.isEnabled && mudTablesCountQuery.data && mudTablesCountQuery.data > 0 && {
+        id: 'mud',
+        title: 'MUD',
+        count: mudTablesCountQuery.data,
+        component: <AddressMud scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
+      },
       {
         id: 'txs',
         title: 'Transactions',
@@ -174,10 +195,10 @@ const AddressPageContent = () => {
         title: 'Coin balance history',
         component: <AddressCoinBalance shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
       },
-      config.chain.verificationType === 'validation' && addressTabsCountersQuery.data?.validations_count ?
+      addressTabsCountersQuery.data?.validations_count ?
         {
           id: 'blocks_validated',
-          title: 'Blocks validated',
+          title: `Blocks ${ getNetworkValidationActionText() }`,
           count: addressTabsCountersQuery.data?.validations_count,
           component: <AddressBlocksValidated scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
         } :
@@ -215,10 +236,19 @@ const AddressPageContent = () => {
         subTabs: contractTabs.tabs.map(tab => tab.id),
       } : undefined,
     ].filter(Boolean);
-  }, [ addressQuery.data, contractTabs, addressTabsCountersQuery.data, userOpsAccountQuery.data, isTabsLoading, areQueriesEnabled ]);
+  }, [
+    addressQuery.data,
+    contractTabs,
+    addressTabsCountersQuery.data,
+    userOpsAccountQuery.data,
+    isTabsLoading,
+    areQueriesEnabled,
+    mudTablesCountQuery.data,
+  ]);
 
   const tags: Array<EntityTag> = React.useMemo(() => {
     return [
+      ...(addressQuery.data?.public_tags?.map((tag) => ({ slug: tag.label, name: tag.display_name, tagType: 'custom' as const, ordinal: -1 })) || []),
       !addressQuery.data?.is_contract ? { slug: 'eoa', name: 'EOA', tagType: 'custom' as const, ordinal: -1 } : undefined,
       config.features.validators.isEnabled && addressQuery.data?.has_validated_blocks ?
         { slug: 'validator', name: 'Validator', tagType: 'custom' as const, ordinal: 10 } :
@@ -229,10 +259,13 @@ const AddressPageContent = () => {
       config.features.userOps.isEnabled && userOpsAccountQuery.data ?
         { slug: 'user_ops_acc', name: 'Smart contract wallet', tagType: 'custom' as const, ordinal: -10 } :
         undefined,
+      config.features.mudFramework.isEnabled && mudTablesCountQuery.data ?
+        { slug: 'mud', name: 'MUD World', tagType: 'custom' as const, ordinal: -10 } :
+        undefined,
       ...formatUserTags(addressQuery.data),
       ...(addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags || []),
     ].filter(Boolean).sort(sortEntityTags);
-  }, [ addressMetadataQuery.data, addressQuery.data, hash, isSafeAddress, userOpsAccountQuery.data ]);
+  }, [ addressMetadataQuery.data, addressQuery.data, hash, isSafeAddress, userOpsAccountQuery.data, mudTablesCountQuery.data ]);
 
   const titleContentAfter = (
     <EntityTags
@@ -246,16 +279,21 @@ const AddressPageContent = () => {
     <RoutedTabs tabs={ tabs } tabListProps={{ mt: 6 }} isLoading={ isTabsLoading }/>;
 
   const backLink = React.useMemo(() => {
-    const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/accounts');
-
-    if (!hasGoBackLink) {
-      return;
+    if (appProps.referrer && appProps.referrer.includes('/accounts')) {
+      return {
+        label: 'Back to top accounts list',
+        url: appProps.referrer,
+      };
     }
 
-    return {
-      label: 'Back to top accounts list',
-      url: appProps.referrer,
-    };
+    if (appProps.referrer && appProps.referrer.includes('/mud-worlds')) {
+      return {
+        label: 'Back to MUD worlds list',
+        url: appProps.referrer,
+      };
+    }
+
+    return;
   }, [ appProps.referrer ]);
 
   const titleSecondRow = (
@@ -292,8 +330,8 @@ const AddressPageContent = () => {
       <HStack ml="auto" gap={ 2 }/>
       { !isLoading && addressQuery.data?.is_contract && addressQuery.data?.is_verified && config.UI.views.address.solidityscanEnabled &&
         <SolidityscanReport hash={ hash }/> }
-      { !isLoading && addressQuery.data && config.features.nameService.isEnabled &&
-        <AddressEnsDomains query={ addressEnsDomainsQuery } addressHash={ hash } mainDomainName={ addressQuery.data.ens_domain_name }/> }
+      { !isLoading && addressEnsDomainsQuery.data && config.features.nameService.isEnabled &&
+        <AddressEnsDomains query={ addressEnsDomainsQuery } addressHash={ hash } mainDomainName={ addressQuery.data?.ens_domain_name }/> }
       <NetworkExplorers type="address" pathParam={ hash }/>
     </Flex>
   );
@@ -308,6 +346,8 @@ const AddressPageContent = () => {
         secondRow={ titleSecondRow }
         isLoading={ isLoading }
       />
+      { !addressMetadataQuery.isPending &&
+        <AddressMetadataAlert tags={ addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags } mt="-4px" mb={ 6 }/> }
       { config.features.metasuites.isEnabled && <Box display="none" id="meta-suites__address" data-ready={ !isLoading }/> }
       <AddressDetails addressQuery={ addressQuery } scrollRef={ tabsScrollRef }/>
       { /* should stay before tabs to scroll up with pagination */ }

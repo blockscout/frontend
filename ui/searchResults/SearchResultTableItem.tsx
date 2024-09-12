@@ -2,7 +2,7 @@ import { chakra, Tr, Td, Text, Flex, Image, Box, Skeleton, useColorMode, Tag } f
 import React from 'react';
 import xss from 'xss';
 
-import type { SearchResultItem } from 'types/api/search';
+import type { SearchResultItem } from 'types/client/search';
 
 import { route } from 'nextjs-routes';
 
@@ -235,16 +235,20 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
 
       case 'block': {
         const shouldHighlightHash = data.block_hash.toLowerCase() === searchTerm.toLowerCase();
+        const isFutureBlock = data.timestamp === undefined && !isLoading;
+        const href = isFutureBlock ?
+          route({ pathname: '/block/countdown/[height]', query: { height: String(data.block_number) } }) :
+          route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: data.block_hash ?? String(data.block_number) } });
 
         return (
           <>
             <Td fontSize="sm">
               <BlockEntity.Container>
-                <BlockEntity.Icon/>
+                <BlockEntity.Icon isLoading={ isLoading }/>
                 <BlockEntity.Link
-                  hash={ data.block_hash }
-                  number={ Number(data.block_number) }
+                  href={ href }
                   onClick={ handleLinkClick }
+                  isLoading={ isLoading }
                 >
                   <BlockEntity.Content
                     asProp={ shouldHighlightHash ? 'span' : 'mark' }
@@ -252,22 +256,31 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
                     fontSize="sm"
                     lineHeight={ 5 }
                     fontWeight={ 700 }
+                    isLoading={ isLoading }
                   />
                 </BlockEntity.Link>
               </BlockEntity.Container>
             </Td>
-            <Td fontSize="sm" verticalAlign="middle">
-              <Flex columnGap={ 2 } alignItems="center">
-                { data.block_type === 'reorg' && <Tag flexShrink={ 0 }>Reorg</Tag> }
-                { data.block_type === 'uncle' && <Tag flexShrink={ 0 }>Uncle</Tag> }
-                <Box overflow="hidden" whiteSpace="nowrap" as={ shouldHighlightHash ? 'mark' : 'span' } display="block">
-                  <HashStringShortenDynamic hash={ data.block_hash }/>
-                </Box>
-              </Flex>
+            <Td fontSize="sm" verticalAlign="middle" colSpan={ isFutureBlock ? 2 : 1 }>
+              { isFutureBlock ? (
+                <Skeleton isLoaded={ !isLoading }>Learn estimated time for this block to be created.</Skeleton>
+              ) : (
+                <Flex columnGap={ 2 } alignItems="center">
+                  { data.block_type === 'reorg' && !isLoading && <Tag flexShrink={ 0 }>Reorg</Tag> }
+                  { data.block_type === 'uncle' && !isLoading && <Tag flexShrink={ 0 }>Uncle</Tag> }
+                  <Skeleton isLoaded={ !isLoading } overflow="hidden" whiteSpace="nowrap" as={ shouldHighlightHash ? 'mark' : 'span' } display="block">
+                    <HashStringShortenDynamic hash={ data.block_hash }/>
+                  </Skeleton>
+                </Flex>
+              ) }
             </Td>
-            <Td fontSize="sm" verticalAlign="middle" isNumeric>
-              <Text variant="secondary">{ dayjs(data.timestamp).format('llll') }</Text>
-            </Td>
+            { !isFutureBlock && (
+              <Td fontSize="sm" verticalAlign="middle" isNumeric>
+                <Skeleton isLoaded={ !isLoading } color="text_secondary">
+                  <span>{ dayjs(data.timestamp).format('llll') }</span>
+                </Skeleton>
+              </Td>
+            ) }
           </>
         );
       }

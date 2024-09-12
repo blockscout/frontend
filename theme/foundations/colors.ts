@@ -60,6 +60,7 @@ const colors = {
   facebook: '#4460A0',
   medium: '#231F20',
   reddit: '#FF4500',
+  celo: '#FCFF52',
 };
 
 export default colors;

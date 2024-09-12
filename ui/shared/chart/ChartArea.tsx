@@ -11,10 +11,10 @@ interface Props extends React.SVGProps<SVGPathElement> {
   yScale: d3.ScaleTime<number, number> | d3.ScaleLinear<number, number>;
   color?: string;
   data: Array<TimeChartItem>;
-  disableAnimation?: boolean;
+  noAnimation?: boolean;
 }
 
-const ChartArea = ({ id, xScale, yScale, color, data, disableAnimation, ...props }: Props) => {
+const ChartArea = ({ id, xScale, yScale, color, data, noAnimation, ...props }: Props) => {
   const ref = React.useRef(null);
   const theme = useTheme();
 
@@ -26,7 +26,7 @@ const ChartArea = ({ id, xScale, yScale, color, data, disableAnimation, ...props
   };
 
   React.useEffect(() => {
-    if (disableAnimation) {
+    if (noAnimation) {
       d3.select(ref.current).attr('opacity', 1);
       return;
     }
@@ -34,10 +34,11 @@ const ChartArea = ({ id, xScale, yScale, color, data, disableAnimation, ...props
       .duration(750)
       .ease(d3.easeBackIn)
       .attr('opacity', 1);
-  }, [ disableAnimation ]);
+  }, [ noAnimation ]);
 
   const d = React.useMemo(() => {
     const area = d3.area<TimeChartItem>()
+      .defined(({ isApproximate }) => !isApproximate)
       .x(({ date }) => xScale(date))
       .y1(({ value }) => yScale(value))
       .y0(() => yScale(yScale.domain()[0]))

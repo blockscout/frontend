@@ -13,7 +13,7 @@ function getBg(props: StyleFunctionProps) {
   const { theme, colorScheme: c } = props;
   const darkBg = transparentize(`${ c }.200`, 0.16)(theme);
   return {
-    light: `colors.${ c }.${ c === 'red' ? '50' : '100' }`,
+    light: `colors.${ c }.100`,
     dark: darkBg,
   };
 }

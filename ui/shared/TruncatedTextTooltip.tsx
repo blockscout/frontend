@@ -79,7 +79,7 @@ const TruncatedTextTooltip = ({ children, label, placement }: Props) => {
     return (
       <Tooltip
         label={ label }
-        maxW={{ base: '100vw', lg: '400px' }}
+        maxW={{ base: 'calc(100vw - 8px)', lg: '400px' }}
         placement={ placement }
         isOpen={ isOpen }
       >

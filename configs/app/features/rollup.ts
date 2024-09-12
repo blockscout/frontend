@@ -2,6 +2,8 @@ import type { Feature } from './types';
 import type { RollupType } from 'types/client/rollup';
 import { ROLLUP_TYPES } from 'types/client/rollup';
 
+import stripTrailingSlash from 'lib/stripTrailingSlash';
+
 import { getEnvValue } from '../utils';
 
 const type = (() => {
@@ -21,7 +23,7 @@ const config: Feature<{ type: RollupType; L1BaseUrl: string; L2WithdrawalUrl?: s
       title,
       isEnabled: true,
       type,
-      L1BaseUrl,
+      L1BaseUrl: stripTrailingSlash(L1BaseUrl),
       L2WithdrawalUrl,
     });
   }

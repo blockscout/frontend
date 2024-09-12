@@ -1,4 +1,4 @@
-import { Grid, GridItem, Text, Link, Box, Tooltip, useColorModeValue, Skeleton } from '@chakra-ui/react';
+import { Grid, GridItem, Text, Link, Box, Tooltip, Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import { capitalize } from 'es-toolkit';
 import { useRouter } from 'next/router';
@@ -15,9 +15,12 @@ import getBlockReward from 'lib/block/getBlockReward';
 import { GWEI, WEI, WEI_IN_GWEI, ZERO } from 'lib/consts';
 import getArbitrumVerificationStepStatus from 'lib/getArbitrumVerificationStepStatus';
 import { space } from 'lib/html-entities';
+import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { currencyUnits } from 'lib/units';
+import OptimisticL2TxnBatchDA from 'ui/shared/batch/OptimisticL2TxnBatchDA';
+import BlockGasUsed from 'ui/shared/block/BlockGasUsed';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
@@ -26,18 +29,17 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
-import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import PrevNext from 'ui/shared/PrevNext';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 import StatusTag from 'ui/shared/statusTag/StatusTag';
-import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization/Utilization';
 import VerificationSteps from 'ui/shared/verificationSteps/VerificationSteps';
 import ZkSyncL2TxnBatchHashesInfo from 'ui/txnBatches/zkSyncL2/ZkSyncL2TxnBatchHashesInfo';
 
+import BlockDetailsBaseFeeCelo from './details/BlockDetailsBaseFeeCelo';
 import BlockDetailsBlobInfo from './details/BlockDetailsBlobInfo';
 import type { BlockQuery } from './useBlockQuery';
 
@@ -51,8 +53,6 @@ const BlockDetails = ({ query }: Props) => {
   const [ isExpanded, setIsExpanded ] = React.useState(false);
   const router = useRouter();
   const heightOrHash = getQueryParamString(router.query.height_or_hash);
-
-  const separatorColor = useColorModeValue('gray.200', 'gray.700');
 
   const { data, isPlaceholderData } = query;
 
@@ -117,13 +117,7 @@ const BlockDetails = ({ query }: Props) => {
     );
   })();
 
-  const verificationTitle = (() => {
-    if (rollupFeature.isEnabled && rollupFeature.type === 'zkEvm') {
-      return 'Sequenced by';
-    }
-
-    return config.chain.verificationType === 'validation' ? 'Validated by' : 'Mined by';
-  })();
+  const verificationTitle = `${ capitalize(getNetworkValidationActionText()) } by`;
 
   const txsNum = (() => {
     const blockTxsNum = (
@@ -209,12 +203,34 @@ const BlockDetails = ({ query }: Props) => {
             hint="Batch number"
             isLoading={ isPlaceholderData }
           >
-          Batch
+            Batch
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
             { data.arbitrum.batch_number ?
               <BatchEntityL2 isLoading={ isPlaceholderData } number={ data.arbitrum.batch_number }/> :
               <Skeleton isLoaded={ !isPlaceholderData }>Pending</Skeleton> }
+          </DetailsInfoItem.Value>
+        </>
+      ) }
+
+      { rollupFeature.isEnabled && rollupFeature.type === 'optimistic' && data.optimism && !config.UI.views.block.hiddenFields?.batch && (
+        <>
+          <DetailsInfoItem.Label
+            hint="Batch number"
+            isLoading={ isPlaceholderData }
+          >
+            Batch
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value columnGap={ 3 }>
+            { data.optimism.internal_id ?
+              <BatchEntityL2 isLoading={ isPlaceholderData } number={ data.optimism.internal_id }/> :
+              <Skeleton isLoaded={ !isPlaceholderData }>Pending</Skeleton> }
+            { data.optimism.batch_data_container && (
+              <OptimisticL2TxnBatchDA
+                container={ data.optimism.batch_data_container }
+                isLoading={ isPlaceholderData }
+              />
+            ) }
           </DetailsInfoItem.Value>
         </>
       ) }
@@ -402,6 +418,8 @@ const BlockDetails = ({ query }: Props) => {
 
       <DetailsInfoItemDivider/>
 
+      { data.celo?.base_fee && <BlockDetailsBaseFeeCelo data={ data.celo.base_fee }/> }
+
       <DetailsInfoItem.Label
         hint="The total gas amount used in the block and its percentage of gas filled in the block"
         isLoading={ isPlaceholderData }
@@ -412,18 +430,13 @@ const BlockDetails = ({ query }: Props) => {
         <Skeleton isLoaded={ !isPlaceholderData }>
           { BigNumber(data.gas_used || 0).toFormat() }
         </Skeleton>
-        <Utilization
-          ml={ 4 }
-          colorScheme="gray"
-          value={ BigNumber(data.gas_used || 0).dividedBy(BigNumber(data.gas_limit)).toNumber() }
+        <BlockGasUsed
+          gasUsed={ data.gas_used }
+          gasLimit={ data.gas_limit }
           isLoading={ isPlaceholderData }
+          ml={ 4 }
+          gasTarget={ data.gas_target_percentage }
         />
-        { data.gas_target_percentage && (
-          <>
-            <TextSeparator color={ separatorColor } mx={ 1 }/>
-            <GasUsedToTargetRatio value={ data.gas_target_percentage } isLoading={ isPlaceholderData }/>
-          </>
-        ) }
       </DetailsInfoItem.Value>
 
       <DetailsInfoItem.Label

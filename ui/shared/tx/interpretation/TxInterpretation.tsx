@@ -2,6 +2,7 @@ import { Skeleton, Tooltip, chakra } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
+import type { AddressParam } from 'types/api/addressParams';
 import type {
   TxInterpretationSummary,
   TxInterpretationVariable,
@@ -23,12 +24,15 @@ import { extractVariables, getStringChunks, fillStringVariables, checkSummary, N
 type Props = {
   summary?: TxInterpretationSummary;
   isLoading?: boolean;
+  addressDataMap?: Record<string, AddressParam>;
   className?: string;
 }
 
 type NonStringTxInterpretationVariable = Exclude<TxInterpretationVariable, TxInterpretationVariableString>
 
-const TxInterpretationElementByType = ({ variable }: { variable?: NonStringTxInterpretationVariable }) => {
+const TxInterpretationElementByType = (
+  { variable, addressDataMap }: { variable?: NonStringTxInterpretationVariable; addressDataMap?: Record<string, AddressParam> },
+) => {
   const onAddressClick = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.TX_INTERPRETATION_INTERACTION, { Type: 'Address click' });
   }, []);
@@ -51,7 +55,7 @@ const TxInterpretationElementByType = ({ variable }: { variable?: NonStringTxInt
       return (
         <chakra.span display="inline-block" verticalAlign="top" _notFirst={{ marginLeft: 1 }}>
           <AddressEntity
-            address={ value }
+            address={ addressDataMap?.[value.hash] || value }
             truncation="constant"
             onClick={ onAddressClick }
             whiteSpace="initial"
@@ -122,7 +126,7 @@ const TxInterpretationElementByType = ({ variable }: { variable?: NonStringTxInt
   }
 };
 
-const TxInterpretation = ({ summary, isLoading, className }: Props) => {
+const TxInterpretation = ({ summary, isLoading, addressDataMap, className }: Props) => {
   if (!summary) {
     return null;
   }
@@ -151,7 +155,12 @@ const TxInterpretation = ({ summary, isLoading, className }: Props) => {
             { index < variablesNames.length && (
               variablesNames[index] === NATIVE_COIN_SYMBOL_VAR_NAME ?
                 <chakra.span>{ currencyUnits.ether + ' ' }</chakra.span> :
-                <TxInterpretationElementByType variable={ variables[variablesNames[index]] as NonStringTxInterpretationVariable }/>
+                (
+                  <TxInterpretationElementByType
+                    variable={ variables[variablesNames[index]] as NonStringTxInterpretationVariable }
+                    addressDataMap={ addressDataMap }
+                  />
+                )
             ) }
           </chakra.span>
         );

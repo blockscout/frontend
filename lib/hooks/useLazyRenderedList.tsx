@@ -5,12 +5,12 @@ import { useInView } from 'react-intersection-observer';
 const STEP = 10;
 const MIN_ITEMS_NUM = 50;
 
-export default function useLazyRenderedList(list: Array<unknown>, isEnabled: boolean) {
-  const [ renderedItemsNum, setRenderedItemsNum ] = React.useState(MIN_ITEMS_NUM);
+export default function useLazyRenderedList(list: Array<unknown>, isEnabled: boolean, minItemsNum: number = MIN_ITEMS_NUM) {
+  const [ renderedItemsNum, setRenderedItemsNum ] = React.useState(minItemsNum);
   const { ref, inView } = useInView({
     rootMargin: '200px',
     triggerOnce: false,
-    skip: !isEnabled || list.length <= MIN_ITEMS_NUM,
+    skip: !isEnabled || list.length <= minItemsNum,
   });
 
   React.useEffect(() => {

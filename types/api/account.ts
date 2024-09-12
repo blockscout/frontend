@@ -3,7 +3,7 @@ export interface AddressTag {
   address_hash: string;
   address: AddressParam;
   name: string;
-  id: string;
+  id: number;
 }
 
 export type AddressTags = Array<AddressTag>
@@ -52,7 +52,7 @@ export interface Transaction {
 export interface TransactionTag {
   transaction_hash: string;
   name: string;
-  id: string;
+  id: number;
 }
 
 export type TransactionTags = Array<TransactionTag>
@@ -81,7 +81,7 @@ export interface WatchlistAddress {
   exchange_rate: string;
   notification_settings: NotificationSettings;
   notification_methods: NotificationMethods;
-  id: string;
+  id: number;
   address: AddressParam;
   tokens_count: number;
   tokens_fiat_value: string;
@@ -107,7 +107,7 @@ export type CustomAbis = Array<CustomAbi>
 
 export interface CustomAbi {
   name: string;
-  id: string;
+  id: number;
   contract_address_hash: string;
   contract_address: AddressParam;
   abi: Array<AbiItem>;

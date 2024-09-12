@@ -13,8 +13,9 @@ type FilterProps = {
 type Props = {
   isError: boolean;
   items?: Array<unknown>;
-  emptyText: string;
+  emptyText: React.ReactNode;
   actionBar?: React.ReactNode;
+  showActionBarIfEmpty?: boolean;
   content: React.ReactNode;
   className?: string;
   filterProps?: FilterProps;
@@ -35,7 +36,12 @@ const DataListDisplay = (props: Props) => {
   }
 
   if (!props.items?.length) {
-    return props.emptyText ? <Text className={ props.className }>{ props.emptyText }</Text> : null;
+    return (
+      <>
+        { props.showActionBarIfEmpty && props.actionBar }
+        { props.emptyText && <Text className={ props.className }>{ props.emptyText }</Text> }
+      </>
+    );
   }
 
   return (

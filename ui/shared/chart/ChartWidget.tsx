@@ -36,11 +36,12 @@ export type Props = {
   className?: string;
   isError: boolean;
   emptyText?: string;
+  noAnimation?: boolean;
 }
 
 const DOWNLOAD_IMAGE_SCALE = 5;
 
-const ChartWidget = ({ items, title, description, isLoading, className, isError, units, emptyText }: Props) => {
+const ChartWidget = ({ items, title, description, isLoading, className, isError, units, emptyText, noAnimation }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   const [ isFullscreen, setIsFullscreen ] = useState(false);
   const [ isZoomResetInitial, setIsZoomResetInitial ] = React.useState(true);
@@ -148,6 +149,7 @@ const ChartWidget = ({ items, title, description, isLoading, className, isError,
           isZoomResetInitial={ isZoomResetInitial }
           title={ title }
           units={ units }
+          noAnimation={ noAnimation }
         />
       </Box>
     );

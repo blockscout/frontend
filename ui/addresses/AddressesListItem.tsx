@@ -25,7 +25,7 @@ const AddressesListItem = ({
   isLoading,
 }: Props) => {
 
-  const addressBalance = BigNumber(item.coin_balance).div(BigNumber(10 ** config.chain.currency.decimals));
+  const addressBalance = BigNumber(item.coin_balance || 0).div(BigNumber(10 ** config.chain.currency.decimals));
 
   return (
     <ListItemMobile rowGap={ 3 }>

@@ -39,12 +39,13 @@ test.beforeEach(async({ mockApiResponse, mockAssetResponse }) => {
   await mockApiResponse('address', addressMock.contract, { pathParams: { hash } });
   await mockApiResponse('token_instance_transfers_count', { transfers_count: 42 }, { pathParams: { id: tokenInstanceMock.unique.id, hash } });
   await mockAssetResponse('http://localhost:3000/nft-marketplace-logo.png', './playwright/mocks/image_s.jpg');
+  await mockAssetResponse(tokenInstanceMock.unique.image_url as string, './playwright/mocks/image_md.jpg');
 });
 
 test('base view +@dark-mode +@mobile', async({ render, page }) => {
   const component = await render(
     <MetadataUpdateProvider>
-      <TokenInstanceDetails data={ tokenInstanceMock.unique } token={ tokenInfoERC721a }/>
+      <TokenInstanceDetails data={{ ...tokenInstanceMock.unique, image_url: null }} token={ tokenInfoERC721a }/>
     </MetadataUpdateProvider>,
   );
   await expect(component).toHaveScreenshot({
@@ -54,8 +55,7 @@ test('base view +@dark-mode +@mobile', async({ render, page }) => {
 });
 
 test.describe('action button', () => {
-  test.beforeEach(async({ mockFeatures, mockApiResponse, mockAssetResponse }) => {
-    await mockFeatures([ [ 'action_button_exp', true ] ]);
+  test.beforeEach(async({ mockApiResponse, mockAssetResponse }) => {
     const metadataResponse = generateAddressMetadataResponse(protocolTagWithMeta);
     await mockApiResponse('address_metadata_info', metadataResponse, { queryParams: addressMetadataQueryParams });
     await mockAssetResponse(protocolTagWithMeta?.meta?.appLogoURL as string, './playwright/mocks/image_s.jpg');

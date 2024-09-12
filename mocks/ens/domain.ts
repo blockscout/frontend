@@ -63,6 +63,14 @@ export const ensDomainA: bens.DetailedDomain = {
     NEAR: 'a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.factory.bridge.near',
   },
   protocol: protocolA,
+  resolver_address: {
+    hash: '0xD578780f1dA7404d9CC0eEbC9D684c140CC4b638',
+  },
+  resolved_with_wildcard: true,
+  stored_offchain: true,
+  wrapped_owner: {
+    hash: '0xD4416b13d2b3a9aBae7AcD5D6C2BbDBE25686401',
+  },
 };
 
 export const ensDomainB: bens.DetailedDomain = {
@@ -81,6 +89,8 @@ export const ensDomainB: bens.DetailedDomain = {
   expiry_date: undefined,
   other_addresses: {},
   protocol: undefined,
+  resolved_with_wildcard: false,
+  stored_offchain: false,
 };
 
 export const ensDomainC: bens.DetailedDomain = {
@@ -101,6 +111,8 @@ export const ensDomainC: bens.DetailedDomain = {
   expiry_date: '2022-11-01T13:10:36.000Z',
   other_addresses: {},
   protocol: undefined,
+  resolved_with_wildcard: false,
+  stored_offchain: false,
 };
 
 export const ensDomainD: bens.DetailedDomain = {
@@ -119,4 +131,6 @@ export const ensDomainD: bens.DetailedDomain = {
   expiry_date: '2027-09-23T13:10:36.000Z',
   other_addresses: {},
   protocol: undefined,
+  resolved_with_wildcard: false,
+  stored_offchain: false,
 };

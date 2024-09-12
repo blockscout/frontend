@@ -4,7 +4,6 @@ import React from 'react';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
-import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import Tag from 'ui/shared/chakra/Tag';
@@ -13,6 +12,8 @@ import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import { getTokenTransferTypeText } from 'ui/shared/TokenTransfer/helpers';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
+
+import TimeAgoWithTooltip from '../TimeAgoWithTooltip';
 
 type Props = TokenTransfer & {
   baseAddress?: string;
@@ -34,7 +35,6 @@ const TokenTransferTableItem = ({
   enableTimeIncrement,
   isLoading,
 }: Props) => {
-  const timeAgo = useTimeAgoIncrement(timestamp, enableTimeIncrement);
   const { usd, valueStr } = 'value' in total && total.value !== null ? getCurrencyValue({
     value: total.value,
     exchangeRate: token.exchange_rate,
@@ -78,11 +78,15 @@ const TokenTransferTableItem = ({
             mt="7px"
             truncation="constant_long"
           />
-          { timestamp && (
-            <Skeleton isLoaded={ !isLoading } color="text_secondary" fontWeight="400" mt="10px" display="inline-block">
-              <span>{ timeAgo }</span>
-            </Skeleton>
-          ) }
+          <TimeAgoWithTooltip
+            timestamp={ timestamp }
+            enableIncrement={ enableTimeIncrement }
+            isLoading={ isLoading }
+            color="text_secondary"
+            fontWeight="400"
+            mt="10px"
+            display="inline-block"
+          />
         </Td>
       ) }
       <Td>

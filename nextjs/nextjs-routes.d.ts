@@ -13,6 +13,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/account/verified-addresses">
     | StaticRoute<"/account/watchlist">
     | StaticRoute<"/accounts">
+    | DynamicRoute<"/accounts/label/[slug]", { "slug": string }>
     | DynamicRoute<"/address/[hash]/contract-verification", { "hash": string }>
     | DynamicRoute<"/address/[hash]", { "hash": string }>
     | StaticRoute<"/api/config">
@@ -21,6 +22,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/api/log">
     | StaticRoute<"/api/media-type">
     | StaticRoute<"/api/metrics">
+    | StaticRoute<"/api/monitoring/invalid-api-schema">
     | StaticRoute<"/api/proxy">
     | StaticRoute<"/api/sprite">
     | StaticRoute<"/api-docs">
@@ -33,6 +35,8 @@ declare module "nextjs-routes" {
     | StaticRoute<"/batches">
     | DynamicRoute<"/blobs/[hash]", { "hash": string }>
     | DynamicRoute<"/block/[height_or_hash]", { "height_or_hash": string }>
+    | DynamicRoute<"/block/countdown/[height]", { "height": string }>
+    | StaticRoute<"/block/countdown">
     | StaticRoute<"/blocks">
     | StaticRoute<"/contract-verification">
     | StaticRoute<"/csv-export">
@@ -42,6 +46,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/graphiql">
     | StaticRoute<"/">
     | StaticRoute<"/login">
+    | StaticRoute<"/mud-worlds">
     | DynamicRoute<"/name-domains/[name]", { "name": string }>
     | StaticRoute<"/name-domains">
     | DynamicRoute<"/op/[hash]", { "hash": string }>

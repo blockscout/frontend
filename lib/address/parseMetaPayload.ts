@@ -27,6 +27,10 @@ export default function parseMetaPayload(meta: AddressMetadataTag['meta']): Addr
       'appLogoURL',
       'appActionButtonText',
       'warpcastHandle',
+      'data',
+      'alertBgColor',
+      'alertTextColor',
+      'alertStatus',
     ];
 
     for (const stringField of stringFields) {

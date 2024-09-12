@@ -1,23 +1,20 @@
-import { Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ShibariumDepositsItem } from 'types/api/shibarium';
 
 import config from 'configs/app';
-import dayjs from 'lib/date/dayjs';
 import AddressStringOrParam from 'ui/shared/entities/address/AddressStringOrParam';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 const feature = config.features.rollup;
 
 type Props = { item: ShibariumDepositsItem; isLoading?: boolean };
 
 const DepositsListItem = ({ item, isLoading }: Props) => {
-  const timeAgo = dayjs(item.timestamp).fromNow();
-
   if (!(feature.isEnabled && feature.type === 'shibarium')) {
     return null;
   }
@@ -70,7 +67,11 @@ const DepositsListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">{ timeAgo }</Skeleton>
+        <TimeAgoWithTooltip
+          timestamp={ item.timestamp }
+          isLoading={ isLoading }
+          display="inline-block"
+        />
       </ListItemMobileGrid.Value>
 
     </ListItemMobileGrid.Container>
