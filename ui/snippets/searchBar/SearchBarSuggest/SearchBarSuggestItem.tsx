@@ -72,7 +72,7 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, isFirst }: 
       }
       case 'contract':
       case 'address': {
-        return <SearchBarSuggestAddress data={ data } searchTerm={ searchTerm } isMobile={ isMobile }/>;
+        return <SearchBarSuggestAddress data={ data } searchTerm={ searchTerm } isMobile={ isMobile } isFirst={ isFirst }/>;
       }
       case 'label': {
         return <SearchBarSuggestLabel data={ data } searchTerm={ searchTerm } isMobile={ isMobile }/>;

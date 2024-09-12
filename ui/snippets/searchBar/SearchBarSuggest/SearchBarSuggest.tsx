@@ -28,9 +28,10 @@ interface Props {
   containerId: string;
   setType: Dispatch<SetStateAction<string>>;
   showMoreClicked: boolean;
+  setFirstQueryData: (queryData: any | undefined) => void;
 }
 
-const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreClicked, containerId }: Props) => {
+const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreClicked, containerId, setFirstQueryData }: Props) => {
   const isMobile = useIsMobile();
 
   const marketplaceApps = useMarketplaceApps(searchTerm);
@@ -69,6 +70,16 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
     if (marketplaceApps.displayedApps.length) {
       map.app = marketplaceApps.displayedApps;
     }
+
+    // if (Object.entries(map)) {
+    //   if (Object.values(map)[0] && Object.values(map)[0][0]) {
+    //     setFirstQueryData(Object.values(map)[0][0]);
+    //   } else {
+    //     setFirstQueryData(null);
+    //   }
+    // } else {
+    //   setFirstQueryData(null);
+    // }
     return map;
   }, [ query.data, marketplaceApps.displayedApps, filterType ]);
 
@@ -98,14 +109,6 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
 
   const bgColor = useColorModeValue('white', 'gray.900');
 
-  const hanleTabClick = React.useCallback((type: string) => () => {
-    seletecdTab.current = type.toLowerCase();
-    if (type === 'all') {
-      setType('default');
-    }
-    setFilterType(type.toLowerCase());
-  }, [ setType ]);
-
   const scrollToTop = React.useCallback(() => {
     scroller.scrollTo(`cat_0`, {
       duration: 250,
@@ -115,11 +118,23 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
     });
   }, [ containerId ]);
 
-  const handleShowMoreClk = React.useCallback((type: string) => () => {
-    hanleTabClick(type)();
-    setType(type);
+  const handleTabClick = React.useCallback((type: string) => () => {
+    seletecdTab.current = type.toLowerCase();
+    if (type === 'all') {
+      setType('default');
+      setFilterType('all');
+    } else {
+      setType(type);
+      setFilterType(type.toLowerCase());
+    }
     scrollToTop();
-  }, [ hanleTabClick, setType, scrollToTop ]);
+  }, [ scrollToTop, setType ]);
+
+  // const handleShowMoreClk = React.useCallback((type: string) => () => {
+  //   hanleTabClick(type)();
+  //   // setType(type);
+  //   // scrollToTop();
+  // }, [ hanleTabClick ]);
 
   const tabMatched = React.useCallback((type: string) => {
     if (type === seletecdTab.current ||
@@ -149,6 +164,19 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
       return <Text pl="12px">No results found.</Text>;
     }
 
+    if (itemsGroups && resultCategories.length > 0) {
+      const firstCategoryId = resultCategories[0]?.id;
+      const firstItemsGroup = itemsGroups[firstCategoryId];
+
+      if (Array.isArray(firstItemsGroup) && firstItemsGroup.length > 0) {
+        setFirstQueryData(firstItemsGroup[0]);
+      } else {
+        setFirstQueryData(undefined);
+      }
+    } else {
+      setFirstQueryData(undefined);
+    }
+
     if (tabCategories.length) {
       tabCategories.unshift({ id: 'all', title: 'All' });
     }
@@ -163,7 +191,7 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
                   <Tab borderRadius="47px"
                     minWidth="47px"
                     key={ cat.id }
-                    onClick={ hanleTabClick(cat.title.toLowerCase()) }
+                    onClick={ handleTabClick(cat.title.toLowerCase()) }
                     style={{
                       backgroundColor: (tabMatched(cat.title.toLowerCase()) ||
                       (cat.title === 'all' && seletecdTab.current === 'all')) ? '#A07EFF' : 'transparent',
@@ -226,15 +254,15 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, setType, showMoreCli
                     flexDirection="row"
                     alignContent="center"
                     justifyContent="center"
-                    onClick={ handleShowMoreClk(cat.title) }
+                    onClick={ handleTabClick(cat.title.toLowerCase()) }
                   >
                     <Text
                       fontSize="12px"
                       fontWeight="500"
                       lineHeight="16px"
-                      color="rgba(0, 0, 0, 0.40)"
+                      color="rgba(0, 0, 0, 0.60)"
                     >Show More</Text>
-                    <IconSvg name="arrows/east" w="16px" h="16px" ml="4px" color="rgba(0, 0, 0, 0.40)"/>
+                    <IconSvg name="arrows/east" w="16px" h="16px" ml="4px" color="rgba(0, 0, 0, 0.60)"/>
                   </Flex>
                 ) : null
               }

@@ -5,7 +5,7 @@ import type { SearchResultBucket } from 'types/api/search';
 
 import highlightText from 'lib/highlightText';
 import IconSvg from 'ui/shared/IconSvg';
-import { formatPubKey, isNumberOnly } from 'ui/storage/utils';
+import { formatPubKey, isNumberOnly, truncateString } from 'ui/storage/utils';
 
 interface Props {
   data: SearchResultBucket;
@@ -23,9 +23,10 @@ const SearchBarSuggestBucket = ({ data, isFirst, searchTerm }: Props) => {
             <Text color="#000">{ isNumberOnly(searchTerm) && searchTerm === data.bucket_id ? 'Bucket ID' : 'Bucket Name' }:&nbsp;</Text>
             {
               !(isNumberOnly(searchTerm) && data.bucket_id === searchTerm) ? (
-                <span style={{ color: 'rgba(0, 0, 0, 0.30)' }} dangerouslySetInnerHTML={{ __html: highlightText(data.bucket_name, searchTerm) }}/>
+                <span style={{ color: 'rgba(0, 0, 0, 0.30)' }}
+                  dangerouslySetInnerHTML={{ __html: highlightText(truncateString(data.bucket_name), searchTerm) }}/>
               ) :
-                <Text color="#8A55FD">{ data.bucket_id }</Text>
+                <Text color="#8A55FD">{ truncateString(data.bucket_id) }</Text>
             }
           </Flex>
           <Text fontSize={ 12 } color="rgba(0, 0, 0, 0.30)">
@@ -35,7 +36,7 @@ const SearchBarSuggestBucket = ({ data, isFirst, searchTerm }: Props) => {
       </Flex>
       {
         isFirst ? (
-          <Flex justifyContent="end">
+          <Flex justifyContent="end" alignItems="center">
             <IconSvg transform="rotate(-180deg)" float="right" w="24px" h="24px" mr="8px" name="arrows/east"/>
           </Flex>
         ) : null

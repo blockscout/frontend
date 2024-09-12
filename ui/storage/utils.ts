@@ -11,6 +11,13 @@ export const formatPubKey = (pubKey: string | undefined, _length = 4, _preLength
   return pubKey.substr(0, _preLength || _length) + '...' + pubKey.substr(_length * -1, _length);
 };
 
+export const truncateString = (str: string, _length = 32): string => {
+  if (str.length > _length) {
+    return str.slice(0, _length) + '...';
+  }
+  return str;
+};
+
 export const timeTool = (time: string, oldTimeTextFlag?: boolean) => {
   const now = new Date().getTime();
   const diff = now - new Date(time).getTime();

@@ -5,7 +5,7 @@ import {
   PopoverTrigger,
   PopoverContent,
   PopoverBody,
-  PopoverFooter,
+  // PopoverFooter,
   useDisclosure,
   useOutsideClick,
 } from '@chakra-ui/react';
@@ -15,12 +15,12 @@ import type { FormEvent } from 'react';
 import React from 'react';
 import { Element } from 'react-scroll';
 
-import { route } from 'nextjs-routes';
+// import { route } from 'nextjs-routes';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';
 import { getRecentSearchKeywords, saveToRecentKeywords } from 'lib/recentSearchKeywords';
-import LinkInternal from 'ui/shared/links/LinkInternal';
+// import LinkInternal from 'ui/shared/links/LinkInternal';
 
 import SearchBarBackdrop from './SearchBarBackdrop';
 import SearchBarInput from './SearchBarInput';
@@ -47,6 +47,13 @@ const SearchBar = ({ isHomepage }: Props) => {
 
   const { searchTerm, debouncedSearchTerm, handleSearchTermChange, query, pathname, setType, type } = useQuickSearchQuery();
 
+  const firstQueryData = React.useRef<any>(null);
+
+  const setFirstQueryData = React.useCallback((queryData: any | undefined) => {
+    firstQueryData.current = queryData;
+  }, []);
+
+  // const [ firstQueryData, setFirstQueryData ] = React.useState<any>(null);
   const showMoreClicked = React.useCallback(() => {
     if (type === 'default') {
       return false;
@@ -55,29 +62,62 @@ const SearchBar = ({ isHomepage }: Props) => {
     }
   }, [ type ]);
 
-  const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (searchTerm) {
-      const url = route({ pathname: '/search-results', query: { q: searchTerm } });
-      mixpanel.logEvent(mixpanel.EventTypes.SEARCH_QUERY, {
-        'Search query': searchTerm,
-        'Source page type': mixpanel.getPageType(pathname),
-        'Result URL': url,
-      });
-      saveToRecentKeywords(searchTerm);
-      router.push({ pathname: '/search-results', query: { q: searchTerm } }, undefined, { shallow: true });
-    }
-  }, [ searchTerm, pathname, router ]);
-
-  const handleFocus = React.useCallback(() => {
-    onOpen();
-  }, [ onOpen ]);
+  // const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+  //   if (searchTerm) {
+  //     const url = route({ pathname: '/search-results', query: { q: searchTerm } });
+  //     mixpanel.logEvent(mixpanel.EventTypes.SEARCH_QUERY, {
+  //       'Search query': searchTerm,
+  //       'Source page type': mixpanel.getPageType(pathname),
+  //       'Result URL': url,
+  //     });
+  //     saveToRecentKeywords(searchTerm);
+  //     router.push({ pathname: '/search-results', query: { q: searchTerm } }, undefined, { shallow: true });
+  //   }
+  // }, [ searchTerm, pathname, router ]);
 
   const handelHide = React.useCallback(() => {
     onClose();
     inputRef.current?.querySelector('input')?.blur();
   }, [ onClose ]);
 
+  const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (searchTerm) {
+      saveToRecentKeywords(searchTerm);
+      if (firstQueryData.current) {
+        handelHide();
+        if (firstQueryData.current.type === 'token') {
+          router.push({ pathname: '/token/[hash]', query: { hash: firstQueryData.current.address } }, undefined, { shallow: true });
+        } else if (firstQueryData.current.type === 'address') {
+          router.push({ pathname: '/address/[hash]', query: { hash: firstQueryData.current.address } }, undefined, { shallow: true });
+        } else if (firstQueryData.current.type === 'transaction') {
+          router.push({ pathname: '/tx/[hash]', query: { hash: firstQueryData.current.tx_hash } }, undefined, { shallow: true });
+        } else if (firstQueryData.current.type === 'buckets') {
+          router.push({ pathname: '/bucket-details/[address]', query: { address: firstQueryData.current.bucket_name } }, undefined, { shallow: true });
+        } else if (firstQueryData.current.type === 'objects') {
+          router.push({ pathname: '/object-details/[address]', query: { address: firstQueryData.current.object_name } }, undefined, { shallow: true });
+        } else if (firstQueryData.current.type === 'groups') {
+          router.push({ pathname: '/group-details/[address]', query: { address: firstQueryData.current.group_name } }, undefined, { shallow: true });
+        }
+      }
+      // if (query.data && query.data.buckets.length) {
+      //   handelHide();
+      //   router.push({ pathname: '/bucket-details/[address]', query: { address: query.data.buckets[0].bucket_name } }, undefined, { shallow: true });
+      // } else if (query.data && query.data.objects.length) {
+      //   handelHide();
+      //   router.push({ pathname: '/object-details/[address]', query: { address: query.data.objects[0].object_name } }, undefined, { shallow: true });
+      // } else if (query.data && query.data.groups.length) {
+      //   handelHide();
+      //   router.push({ pathname: '/group-details/[address]', query: { address: query.data.groups[0].group_name } }, undefined, { shallow: true });
+      // }
+      handleSearchTermChange('');
+    }
+  }, [ searchTerm, handleSearchTermChange, handelHide, router ]);
+
+  const handleFocus = React.useCallback(() => {
+    onOpen();
+  }, [ onOpen ]);
   const handleOutsideClick = React.useCallback((event: Event) => {
     const isFocusInInput = inputRef.current?.contains(event.target as Node);
 
@@ -157,7 +197,7 @@ const SearchBar = ({ isHomepage }: Props) => {
               color="chakra-body-text"
             >
               <Box
-                maxH="50vh"
+                maxH="52vh"
                 overflowY="auto"
                 id={ SCROLL_CONTAINER_ID }
                 ref={ scrollRef }
@@ -177,11 +217,12 @@ const SearchBar = ({ isHomepage }: Props) => {
                     containerId={ SCROLL_CONTAINER_ID }
                     setType={ setType }
                     showMoreClicked={ showMoreClicked() }
+                    setFirstQueryData={ setFirstQueryData }
                   />
                 ) }
               </Box>
             </PopoverBody>
-            { searchTerm.trim().length > 0 && query.data && query.data.length >= 50 && (
+            { /* { searchTerm.trim().length > 0 && query.data && query.data.length >= 50 && (
               <PopoverFooter>
                 <LinkInternal
                   href={ route({ pathname: '/search-results', query: { q: searchTerm } }) }
@@ -190,7 +231,7 @@ const SearchBar = ({ isHomepage }: Props) => {
                 View all results
                 </LinkInternal>
               </PopoverFooter>
-            ) }
+            ) } */ }
           </PopoverContent>
         </Portal>
       </Popover>

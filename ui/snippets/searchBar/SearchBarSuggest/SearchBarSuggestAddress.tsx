@@ -8,15 +8,18 @@ import highlightText from 'lib/highlightText';
 import { ADDRESS_REGEXP } from 'lib/validations/address';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+// import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import IconSvg from 'ui/shared/IconSvg';
+import { formatPubKey } from 'ui/storage/utils';
 
 interface Props {
   data: SearchResultAddressOrContract;
   isMobile: boolean | undefined;
   searchTerm: string;
+  isFirst?: boolean;
 }
 
-const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
+const SearchBarSuggestAddress = ({ data, isMobile, searchTerm, isFirst }: Props) => {
   const shouldHighlightHash = ADDRESS_REGEXP.test(searchTerm);
 
   const icon = (
@@ -51,7 +54,8 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
       { data.certified && <ContractCertifiedLabel boxSize={ 5 } iconSize={ 5 } ml={ 1 }/> }
     </Flex>
   );
-  const addressEl = <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>;
+  // const addressEl = <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>;
+  const addressEl = (<Text color="#8A55FD">{ formatPubKey(data.address, 9, 9) }</Text>);
 
   if (isMobile) {
     return (
@@ -74,9 +78,9 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
   }
 
   return (
-    <Flex alignItems="center">
-      <Flex alignItems="center" w="450px" mr={ 2 }>
-        { icon }
+    <Flex justifyContent="space-between">
+      <Flex alignItems="center" minW={ 0 }>
+        <IconSvg w="24px" h="24px" color="#DCD4FF" mr="8px" name="face"/>
         <Box
           as={ shouldHighlightHash ? 'mark' : 'span' }
           display="block"
@@ -87,7 +91,14 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
           { addressEl }
         </Box>
       </Flex>
-      { nameEl }
+      { /* <Text variant="secondary" textAlign="end" flexShrink={ 0 } ml="auto">{ date }</Text> */ }
+      {
+        isFirst ? (
+          <Flex justifyContent="end" alignItems="center">
+            <IconSvg transform="rotate(-180deg)" float="right" w="24px" h="24px" mr="8px" name="arrows/east"/>
+          </Flex>
+        ) : null
+      }
     </Flex>
   );
 };

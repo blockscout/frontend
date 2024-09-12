@@ -2,11 +2,12 @@ import { useQuery, gql } from '@apollo/client';
 
 interface QueryConfig {
   tableName: string;
-  fields: Array<string>;
+  fields?: Array<string>;
   limit?: number;
   offset?: number;
   where?: Record<string, any>;
   order?: Record<string, string>;
+  aggregate?: Array<string>;
 }
 
 interface QueryResult {
@@ -20,10 +21,10 @@ interface QueryResult {
  * Custom Hook to perform multi-table GraphQL queries with support for where conditions and ordering.
  * @param {string} aliasName - The alias name for the query.
  * @param {QueryConfig[]} queries - An array of query configurations.
+ * @param {boolean} cached - Whether the result could be cached
  * @returns {QueryResult} - Returns the loading, error, and data states from the query.
  */
-const useGraphqlQuery = (aliasName: string, queries: Array<QueryConfig>): QueryResult => {
-  // Helper function to convert an object to a GraphQL filter string
+const useGraphqlQuery = (aliasName: string, queries: Array<QueryConfig>, cached?: boolean): QueryResult => {
   const formatObjectToGraphQL = (obj: Record<string, any>): string => {
     return Object.entries(obj)
       .map(([ key, value ]) => {
@@ -69,39 +70,54 @@ const useGraphqlQuery = (aliasName: string, queries: Array<QueryConfig>): QueryR
   }
 `;
 
+  // Function to build query fields string for aggregation
+  const buildAggregationFields = (aggregates: Array<string>): string => {
+    return aggregates.map(aggregate => `${ aggregate }`).join(' ');
+  };
+
   const query = queries.length ? gql`
   query ${ aliasName }($limit: Int, $offset: Int) {
     ${ queries
     .map(
-      ({ tableName, fields, limit, offset, where, order }) => `
-      ${ tableName } (
-        where: { ${ formatWhereCondition(where) } },
-        ${ order ? `order_by: { ${ Object.keys(order)[0] }: ${ Object.values(order) } },` : '' }
-        ${ limit !== undefined ? `limit: $limit,` : '' }
-        ${ offset !== undefined ? `offset: $offset` : '' }
-      ) {
-        ${ fields.join(' ') }
-      }
-    `,
-    )
+      ({ tableName, fields, limit, offset, where, order, aggregate }) => {
+        if (aggregate && aggregate.length > 0) {
+          // Special handling for aggregation queries
+          return `
+          ${ tableName } {
+            aggregate {
+              ${ buildAggregationFields(aggregate) }
+            }
+          }
+        `;
+        }
+        return `
+        ${ tableName } (
+          where: { ${ formatWhereCondition(where) } },
+          ${ order ? `order_by: { ${ Object.keys(order)[0] }: ${ Object.values(order) } },` : '' }
+          ${ limit !== undefined ? `limit: $limit,` : '' }
+          ${ offset !== undefined ? `offset: $offset` : '' }
+        ) {
+          ${ fields?.join(' ') }
+        }
+      `;
+      })
     .join('\n') }
   }
 ` : EMPTY_QUERY;
 
-  // Execute the query using Apollo's useQuery Hook
   const { loading, error, data } = useQuery(query, {
     skip: query === EMPTY_QUERY,
     variables: query !== EMPTY_QUERY ? { limit: queries[0].limit, offset: queries[0].offset } : {},
-    fetchPolicy: 'no-cache',
+    fetchPolicy: cached ? 'cache-first' : 'no-cache',
   });
-  // Structure the returned data to make it more usable
+
   const result = queries.reduce<Record<string, any>>((acc, { tableName }) => {
     if (data && data[tableName]) {
       acc[tableName] = data[tableName].map((item: Record<string, any>) => {
         return {
           ...item,
           type: item.__typename,
-          __typename: undefined, // Optionally remove __typename
+          __typename: undefined,
         };
       });
     } else {

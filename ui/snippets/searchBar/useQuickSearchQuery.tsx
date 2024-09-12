@@ -168,7 +168,7 @@ export default function useQuickSearchQuery() {
     }
   }, [ debouncedSearchTerm, type ]);
 
-  const graphqlQuery = useGraphqlQuery('graphql_search', graphqlQuerires());
+  const graphqlQuery = useGraphqlQuery('graphql_search', graphqlQuerires(), graphqlShowMoreQueries().length > 0);
   const graphqlShowMoreQuery = useGraphqlQuery('graphql_search_more', graphqlShowMoreQueries());
   const apiQuery = useApiQuery('quick_search', {
     queryParams: { q: debouncedSearchTerm },
@@ -177,15 +177,22 @@ export default function useQuickSearchQuery() {
 
   const query = React.useMemo(() => {
     const apiData = !graphqlSearchOnly.current && !apiQuery.isPending && apiQuery.data ? apiQuery.data : [];
+
+    if (!graphqlQuery.loading && graphqlQuery.data && !graphqlShowMoreQuery.loading && graphqlShowMoreQuery.data) {
+      if (Object.keys(graphqlShowMoreQuery.data).length) {
+        graphqlQuery.data[Object.keys(graphqlShowMoreQuery.data)[0]] = Object.values(graphqlShowMoreQuery.data).flat();
+      }
+    }
+
     const graphqlData = !graphqlQuery.loading && graphqlQuery.data ? Object.values(graphqlQuery.data).flat() : [];
-    const moreData = !graphqlShowMoreQuery.loading && graphqlShowMoreQuery.data ? Object.values(graphqlShowMoreQuery.data).flat() : [];
+    // const moreData = !graphqlShowMoreQuery.loading && graphqlShowMoreQuery.data ? Object.values(graphqlShowMoreQuery.data).flat() : [];
     const isPending = apiQuery.isPending || graphqlQuery.loading;
     const isError = apiQuery.isError || graphqlQuery.error;
 
-    const aggregatedGraphqlData = moreData.length ? moreData : graphqlData;
+    // const aggregatedGraphqlData = moreData.length ? moreData : graphqlData;
 
     return {
-      data: [ ...apiData, ...aggregatedGraphqlData as Array<SearchResultItem> ],
+      data: [ ...apiData, ...graphqlData as Array<SearchResultItem> ],
       isPending,
       isError,
     };

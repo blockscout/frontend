@@ -37,7 +37,7 @@ const SearchBarSuggestBlock = ({ data, isMobile, isFirst }: Props) => {
       </Flex>
       {
         isFirst ? (
-          <Flex justifyContent="end">
+          <Flex justifyContent="end" alignItems="center">
             <IconSvg transform="rotate(-180deg)" float="right" w="24px" h="24px" mr="8px" name="arrows/east"/>
           </Flex>
         ) : null

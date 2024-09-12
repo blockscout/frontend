@@ -47,7 +47,7 @@ const SearchBarSuggestTx = ({ data, isMobile, isFirst }: Props) => {
       { /* <Text variant="secondary" textAlign="end" flexShrink={ 0 } ml="auto">{ date }</Text> */ }
       {
         isFirst ? (
-          <Flex justifyContent="end">
+          <Flex justifyContent="end" alignItems="center">
             <IconSvg transform="rotate(-180deg)" float="right" w="24px" h="24px" mr="8px" name="arrows/east"/>
           </Flex>
         ) : null
