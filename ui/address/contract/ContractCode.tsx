@@ -231,7 +231,7 @@ const ContractCode = ({ addressHash, contractQuery, channel }: Props) => {
             Warning! Contract bytecode has been changed and does not match the verified one. Therefore, interaction with this smart contract may be risky.
           </Alert>
         ) }
-        { !data?.is_verified && data?.verified_twin_address_hash && !data?.proxy_type && (
+        { !data?.is_verified && data?.verified_twin_address_hash && (!data?.proxy_type || data.proxy_type === 'unknown') && (
           <Alert status="warning" whiteSpace="pre-wrap" flexWrap="wrap">
             <span>Contract is not verified. However, we found a verified contract with the same bytecode in Blockscout DB </span>
             <AddressEntity
