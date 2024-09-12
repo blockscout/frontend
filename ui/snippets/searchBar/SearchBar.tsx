@@ -76,17 +76,18 @@ const SearchBar = ({ isHomepage }: Props) => {
   //   }
   // }, [ searchTerm, pathname, router ]);
 
-  const handelHide = React.useCallback(() => {
+  const handleHide = React.useCallback(() => {
     onClose();
     inputRef.current?.querySelector('input')?.blur();
-  }, [ onClose ]);
+    setType('default');
+  }, [ onClose, setType ]);
 
   const handleSubmit = React.useCallback((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (searchTerm) {
       saveToRecentKeywords(searchTerm);
       if (firstQueryData.current) {
-        handelHide();
+        handleHide();
         if (firstQueryData.current.type === 'token') {
           router.push({ pathname: '/token/[hash]', query: { hash: firstQueryData.current.address } }, undefined, { shallow: true });
         } else if (firstQueryData.current.type === 'address') {
@@ -101,19 +102,9 @@ const SearchBar = ({ isHomepage }: Props) => {
           router.push({ pathname: '/group-details/[address]', query: { address: firstQueryData.current.group_name } }, undefined, { shallow: true });
         }
       }
-      // if (query.data && query.data.buckets.length) {
-      //   handelHide();
-      //   router.push({ pathname: '/bucket-details/[address]', query: { address: query.data.buckets[0].bucket_name } }, undefined, { shallow: true });
-      // } else if (query.data && query.data.objects.length) {
-      //   handelHide();
-      //   router.push({ pathname: '/object-details/[address]', query: { address: query.data.objects[0].object_name } }, undefined, { shallow: true });
-      // } else if (query.data && query.data.groups.length) {
-      //   handelHide();
-      //   router.push({ pathname: '/group-details/[address]', query: { address: query.data.groups[0].group_name } }, undefined, { shallow: true });
-      // }
       handleSearchTermChange('');
     }
-  }, [ searchTerm, handleSearchTermChange, handelHide, router ]);
+  }, [ searchTerm, handleSearchTermChange, handleHide, router ]);
 
   const handleFocus = React.useCallback(() => {
     onOpen();
@@ -122,9 +113,9 @@ const SearchBar = ({ isHomepage }: Props) => {
     const isFocusInInput = inputRef.current?.contains(event.target as Node);
 
     if (!isFocusInInput) {
-      handelHide();
+      handleHide();
     }
-  }, [ handelHide ]);
+  }, [ handleHide ]);
 
   useOutsideClick({ ref: menuRef, handler: handleOutsideClick });
 
@@ -180,7 +171,7 @@ const SearchBar = ({ isHomepage }: Props) => {
             onChange={ handleSearchTermChange }
             onSubmit={ handleSubmit }
             onFocus={ handleFocus }
-            onHide={ handelHide }
+            onHide={ handleHide }
             onClear={ handleClear }
             isHomepage={ isHomepage }
             value={ searchTerm }
