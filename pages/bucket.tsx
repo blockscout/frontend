@@ -53,11 +53,19 @@ const Page: NextPage = () => {
       } : undefined,
       order: { update_time: 'desc' },
     },
+    {
+      tableName: 'buckets_aggregate',
+      aggregate: [
+        'count',
+      ],
+    },
   ];
   const tableList: Array<BucketTalbeListType> = [];
 
   const { loading, data, error } = useGraphqlQuery('Buckets', queries);
   const tableLength = data?.buckets?.length || 0;
+  const totleDate = data?.buckets_aggregate?.aggregate?.count || 0;
+
   data?.buckets?.slice(0, 20).forEach((v: BucketRequestType) => {
     tableList.push({
       'Bucket Name': v.bucket_name,
@@ -91,6 +99,7 @@ const Page: NextPage = () => {
     <PageNextJs pathname="/bucket">
       <PageTitle title="Buckets" withTextAd/>
       <TableList
+        totleDate={ totleDate }
         toNext={ toNext }
         currPage={ page }
         propsPage={ propsPage }

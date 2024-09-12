@@ -90,7 +90,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
   React.useEffect(() => {
     const time = setInterval(() => {
       if (details?.update_time) {
-        setoldTimeText(timeTool(details?.update_time).toString() + timeText(details?.update_time));
+        setoldTimeText(`${ timeTool(details?.update_time).toString() } (${ timeText(details?.update_time) })`);
       }
     }, 1000);
 
@@ -100,7 +100,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
   }, [ details?.update_time ]);
 
   React.useEffect(() => {
-    details?.update_time && setoldTimeText(timeTool(details?.update_time).toString() + timeText(details?.update_time));
+    details?.update_time && setoldTimeText(`${ timeTool(details?.update_time).toString() } (${ timeText(details?.update_time) })`);
   }, [ details ]);
 
   const overview: ObjectDetailsOverviewType = {

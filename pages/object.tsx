@@ -53,11 +53,18 @@ const ObjectDetails: NextPage = () => {
       limit: 21,
       offset: offset,
     },
+    {
+      tableName: 'objects_aggregate',
+      aggregate: [
+        'count',
+      ],
+    },
   ];
   const tableList: Array<ObjetTalbeListType> = [];
 
   const { loading, data, error } = useGraphqlQuery('Objects', queries);
   const tableLength = data?.objects?.length || 0;
+  const totleDate = data?.objects_aggregate?.aggregate?.count || 0;
   data?.objects?.slice(0, 20).forEach((v: ObjetRequestType) => {
     tableList.push({
       'Object Name': v.object_name,
@@ -87,6 +94,7 @@ const ObjectDetails: NextPage = () => {
       setSearchTerm('');
     } else {
       setSearchTerm(event.target.value);
+      setPage(1);
     }
   }, []);
 
@@ -94,6 +102,7 @@ const ObjectDetails: NextPage = () => {
     <PageNextJs pathname="/object">
       <PageTitle title="Objects" withTextAd/>
       <TableList
+        totleDate={ totleDate }
         toNext={ toNext }
         currPage={ page }
         propsPage={ propsPage }

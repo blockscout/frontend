@@ -13,6 +13,7 @@ type Props = {
   page: number;
   propsPage: (value: number) => void;
   toNext: boolean;
+  search?: string;
 }
 
 function PaginatedItems(props: Props) {
