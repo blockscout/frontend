@@ -75,25 +75,21 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       setLoadsing(false);
     }
   }, [ data, loading ]);
-  const overTime = timeTool(details?.update_time);
 
   const [ oldTimeText, setoldTimeText ] = React.useState<string>('');
   React.useEffect(() => {
-    let countdown = 0;
-    if (typeof overTime === 'number' && !Number.isNaN(overTime)) {
-      const setTime = setTimeout(() => {
-        countdown = overTime + 1;
-        if (countdown >= 60) {
-          clearTimeout(setTime);
-          setoldTimeText(timeTool(details?.update_time).toString());
-        } else {
-          setoldTimeText(`${ countdown } second ago ${ timeText(details?.update_time) }`);
-        }
-      }, 1000);
-    } else {
-      setoldTimeText(timeTool(details?.update_time).toString());
-    }
-  }, [ oldTimeText, overTime, details ]);
+    const time = setInterval(() => {
+      if (details?.update_time) {
+        setoldTimeText(timeTool(details?.update_time).toString() + timeText(details?.update_time));
+      }
+    }, 1000);
+    return (() => {
+      clearInterval(time);
+    });
+  }, [ details?.update_time ]);
+  React.useEffect(() => {
+    details?.update_time && setoldTimeText(timeTool(details?.update_time).toString() + timeText(details?.update_time));
+  }, [ details ]);
 
   const overview = {
     'Bucket Name': details?.bucket_name,

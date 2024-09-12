@@ -65,7 +65,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
   const overview = {
     'Group Name': details?.group_name,
     'Group Tags': details?.tags && Object.entries(details?.tags).length.toString(),
-    'Group ID': formatPubKey(details?.group_id),
+    'Group ID': details?.group_id,
     Extra: details?.extra,
     'Source Type': details?.source_type,
   };

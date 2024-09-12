@@ -112,6 +112,7 @@ interface PropsMoreValueType {
   titleNmae?: string;
   value: string | undefined;
   status: string;
+  link?: string;
 }
 
 export interface HeadProps {
