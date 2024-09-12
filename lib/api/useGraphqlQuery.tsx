@@ -113,13 +113,27 @@ const useGraphqlQuery = (aliasName: string, queries: Array<QueryConfig>, cached?
 
   const result = queries.reduce<Record<string, any>>((acc, { tableName }) => {
     if (data && data[tableName]) {
-      acc[tableName] = data[tableName].map((item: Record<string, any>) => {
-        return {
-          ...item,
-          type: item.__typename,
+
+      // Check if tableData is an array or an object
+      if (Array.isArray(data[tableName])) {
+        const tableData = data[tableName] as Array<Record<string, any>>;
+        acc[tableName] = tableData.map((item: Record<string, any>) => {
+          return {
+            ...item,
+            type: item.__typename,
+            __typename: undefined,
+          };
+        });
+      } else if (typeof data[tableName] === 'object') {
+        const tableData = data[tableName];
+        acc[tableName] = {
+          ...tableData,
+          type: tableData.__typename,
           __typename: undefined,
         };
-      });
+      } else {
+        acc[tableName] = null;
+      }
     } else {
       acc[tableName] = null;
     }
