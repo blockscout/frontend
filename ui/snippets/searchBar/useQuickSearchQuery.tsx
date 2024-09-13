@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import { isAddress, isHexString } from 'ethers';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
@@ -7,6 +8,7 @@ import type { SearchResultItem } from 'types/api/search';
 import useApiQuery from 'lib/api/useApiQuery';
 import useGraphqlQuery from 'lib/api/useGraphqlQuery';
 import useDebounce from 'lib/hooks/useDebounce';
+import { isNumberOnly } from 'ui/storage/utils';
 
 export interface QueryResult {
   data: Array<any>;
@@ -40,7 +42,11 @@ export default function useQuickSearchQuery() {
       return [];
     }
 
-    graphqlSearchOnly.current = false;
+    if (isNumberOnly(debouncedSearchTerm) && new BigNumber(debouncedSearchTerm).gte(new BigNumber('9223372036854775807'))) {
+      graphqlSearchOnly.current = true;
+    } else {
+      graphqlSearchOnly.current = false;
+    }
 
     return [
       {
@@ -163,11 +169,20 @@ export default function useQuickSearchQuery() {
           },
         ];
       default:
-        graphqlSearchOnly.current = false;
+        if (isNumberOnly(debouncedSearchTerm) && new BigNumber(debouncedSearchTerm).gte(new BigNumber('9223372036854775807'))) {
+          graphqlSearchOnly.current = true;
+        } else {
+          graphqlSearchOnly.current = false;
+        }
         return [];
     }
   }, [ debouncedSearchTerm, type ]);
 
+  React.useEffect(() => {
+    if (isNumberOnly(debouncedSearchTerm) && new BigNumber(debouncedSearchTerm).gte(new BigNumber('9223372036854775807'))) {
+      graphqlSearchOnly.current = true;
+    }
+  }, [ debouncedSearchTerm ]);
   const graphqlQuery = useGraphqlQuery('graphql_search', graphqlQuerires(), graphqlShowMoreQueries().length > 0);
   const graphqlShowMoreQuery = useGraphqlQuery('graphql_search_more', graphqlShowMoreQueries());
   const apiQuery = useApiQuery('quick_search', {
@@ -185,11 +200,8 @@ export default function useQuickSearchQuery() {
     }
 
     const graphqlData = !graphqlQuery.loading && graphqlQuery.data ? Object.values(graphqlQuery.data).flat() : [];
-    // const moreData = !graphqlShowMoreQuery.loading && graphqlShowMoreQuery.data ? Object.values(graphqlShowMoreQuery.data).flat() : [];
-    const isPending = apiQuery.isPending || graphqlQuery.loading;
+    const isPending = (!graphqlSearchOnly.current && apiQuery.isPending) || graphqlQuery.loading;
     const isError = apiQuery.isError || graphqlQuery.error;
-
-    // const aggregatedGraphqlData = moreData.length ? moreData : graphqlData;
 
     return {
       data: [ ...apiData, ...graphqlData as Array<SearchResultItem> ],
