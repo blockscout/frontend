@@ -38,7 +38,7 @@ const Footer = () => {
     {
       icon: 'social/medium_filled' as const,
       iconSize: '18px',
-      text: 'Mediumn',
+      text: 'Medium',
       url: 'https://medium.com/@zkMe',
     },
     {
