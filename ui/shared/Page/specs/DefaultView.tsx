@@ -60,7 +60,7 @@ const DefaultView = () => {
       beforeTitle={ (
         <TokenEntity.Icon
           token={ tokenData }
-          iconSize="lg"
+          size="lg"
         />
       ) }
       backLink={ backLink }

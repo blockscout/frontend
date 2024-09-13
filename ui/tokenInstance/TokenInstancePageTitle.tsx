@@ -89,18 +89,20 @@ const TokenInstancePageTitle = ({ isLoading, token, instance, hash }: Props) => 
 
   const titleSecondRow = (
     <Flex alignItems="center" w="100%" minW={ 0 } columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
-      <TokenEntity
-        token={ token }
-        isLoading={ isLoading }
-        noSymbol
-        noCopy
-        jointSymbol
-        fontFamily="heading"
-        fontSize="lg"
-        fontWeight={ 500 }
-        w="auto"
-        maxW="700px"
-      />
+      { token && (
+        <TokenEntity
+          token={ token }
+          isLoading={ isLoading }
+          noSymbol
+          noCopy
+          jointSymbol
+          fontFamily="heading"
+          fontSize="lg"
+          fontWeight={ 500 }
+          w="auto"
+          maxW="700px"
+        />
+      ) }
       { !isLoading && <AddressAddToWallet token={ token } variant="button"/> }
       <AddressQrCode address={ address } isLoading={ isLoading }/>
       <AccountActionsMenu isLoading={ isLoading } showUpdateMetadataItem={ Boolean(instance?.metadata) }/>

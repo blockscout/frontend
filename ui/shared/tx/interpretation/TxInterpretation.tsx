@@ -56,6 +56,7 @@ const TxInterpretationElementByType = (
         <chakra.span display="inline-block" verticalAlign="top" _notFirst={{ marginLeft: 1 }}>
           <AddressEntity
             address={ addressDataMap?.[value.hash] || value }
+            icon={{ marginRight: 1 }}
             truncation="constant"
             onClick={ onAddressClick }
             whiteSpace="initial"
@@ -68,6 +69,7 @@ const TxInterpretationElementByType = (
         <chakra.span display="inline-block" verticalAlign="top" _notFirst={{ marginLeft: 1 }}>
           <TokenEntity
             token={ value }
+            icon={{ marginRight: 1 }}
             onlySymbol
             noCopy
             width="fit-content"
@@ -83,7 +85,8 @@ const TxInterpretationElementByType = (
         return (
           <chakra.span display="inline-block" verticalAlign="top" _notFirst={{ marginLeft: 1 }}>
             <EnsEntity
-              name={ value }
+              domain={ value }
+              icon={{ marginRight: 1 }}
               width="fit-content"
               _notFirst={{ marginLeft: 1 }}
               whiteSpace="initial"
@@ -146,7 +149,7 @@ const TxInterpretation = ({ summary, isLoading, addressDataMap, className }: Pro
   return (
     <Skeleton isLoaded={ !isLoading } className={ className } fontWeight={ 500 } whiteSpace="pre-wrap" >
       <Tooltip label="Transaction summary">
-        <IconSvg name="lightning" boxSize={ 5 } color="text_secondary" mr={ 2 } verticalAlign="text-top"/>
+        <IconSvg name="lightning" boxSize={ 5 } color="text_secondary" mr={ 1 } verticalAlign="text-top"/>
       </Tooltip>
       { chunks.map((chunk, index) => {
         return (

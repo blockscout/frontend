@@ -57,7 +57,7 @@ const NameDomain = () => {
       flexWrap={{ base: 'wrap', lg: 'nowrap' }}
     >
       <EnsEntity
-        name={ domainName }
+        domain={ domainName }
         protocol={ infoQuery.data?.protocol }
         isLoading={ isLoading }
         noLink

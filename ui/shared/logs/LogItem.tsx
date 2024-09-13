@@ -53,7 +53,7 @@ const LogItem = ({ address, index, topics, data, decoded, type, tx_hash: txHash,
       ) }
       { hasTxInfo ? <RowHeader isLoading={ isLoading }>Transaction</RowHeader> : <RowHeader isLoading={ isLoading }>Address</RowHeader> }
       <GridItem display="flex" alignItems="center">
-        { type === 'address' ? (
+        { type === 'address' && txHash ? (
           <TxEntity
             hash={ txHash }
             isLoading={ isLoading }

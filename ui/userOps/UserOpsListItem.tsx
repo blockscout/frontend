@@ -74,7 +74,7 @@ const UserOpsListItem = ({ item, isLoading, showTx, showSender }: Props) => {
       <ListItemMobileGrid.Label isLoading={ isLoading }>Block</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <BlockEntity
-          number={ item.block_number }
+          number={ Number(item.block_number) }
           isLoading={ isLoading }
           fontSize="sm"
           lineHeight={ 5 }

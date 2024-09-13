@@ -391,3 +391,8 @@ export const withRecipientNameTag = {
   ...withRecipientEns,
   to: addressMock.withNameTag,
 };
+
+export const withRecipientContract = {
+  ...withRecipientEns,
+  to: addressMock.contract,
+};

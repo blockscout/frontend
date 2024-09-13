@@ -25,7 +25,7 @@ const NameDomainsListItem = ({
     <ListItemMobileGrid.Container>
       <ListItemMobileGrid.Label isLoading={ isLoading }>Domain</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <EnsEntity name={ name } protocol={ protocol } isLoading={ isLoading } fontWeight={ 500 }/>
+        <EnsEntity domain={ name } protocol={ protocol } isLoading={ isLoading } fontWeight={ 500 }/>
       </ListItemMobileGrid.Value>
 
       { resolvedAddress && (

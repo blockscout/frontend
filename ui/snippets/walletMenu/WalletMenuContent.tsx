@@ -68,28 +68,30 @@ const WalletMenuContent = ({ address, ensDomainName, disconnect, isAutoConnectDi
       >
         Your wallet is used to interact with apps and contracts in the explorer.
       </Text>
-      <Flex alignItems="center" mb={ 6 }>
-        <AddressEntity
-          address={{ hash: address, ens_domain_name: ensDomainName }}
-          noTooltip
-          truncation="dynamic"
-          fontSize="sm"
-          fontWeight={ 700 }
-          color="text"
-          onClick={ onAddressClick }
-          flex={ 1 }
-        />
-        <IconButton
-          aria-label="open wallet"
-          icon={ <IconSvg name="gear_slim" boxSize={ 5 }/> }
-          variant="simple"
-          h="20px"
-          w="20px"
-          ml={ 1 }
-          onClick={ handleOpenWeb3Modal }
-          isLoading={ isModalOpening }
-        />
-      </Flex>
+      { address && (
+        <Flex alignItems="center" mb={ 6 }>
+          <AddressEntity
+            address={{ hash: address, ens_domain_name: ensDomainName }}
+            noTooltip
+            truncation="dynamic"
+            fontSize="sm"
+            fontWeight={ 700 }
+            color="text"
+            onClick={ onAddressClick }
+            flex={ 1 }
+          />
+          <IconButton
+            aria-label="open wallet"
+            icon={ <IconSvg name="gear_slim" boxSize={ 5 }/> }
+            variant="simple"
+            h="20px"
+            w="20px"
+            ml={ 1 }
+            onClick={ handleOpenWeb3Modal }
+            isLoading={ isModalOpening }
+          />
+        </Flex>
+      ) }
       <Button size="sm" width="full" variant="outline" onClick={ disconnect }>
         Disconnect
       </Button>
