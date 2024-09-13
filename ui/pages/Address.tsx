@@ -6,6 +6,7 @@ import type { EntityTag } from 'ui/shared/EntityTags/types';
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
+import getCheckedSummedAddress from 'lib/address/getCheckedSummedAddress';
 import useAddressMetadataInfoQuery from 'lib/address/useAddressMetadataInfoQuery';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
@@ -60,6 +61,7 @@ const AddressPageContent = () => {
 
   const tabsScrollRef = React.useRef<HTMLDivElement>(null);
   const hash = getQueryParamString(router.query.hash);
+  const checkSummedHash = React.useMemo(() => getCheckedSummedAddress(hash), [ hash ]);
 
   const areQueriesEnabled = !useCheckDomainNameParam(hash);
   const addressQuery = useAddressQuery({ hash, isEnabled: areQueriesEnabled });
@@ -310,7 +312,7 @@ const AddressPageContent = () => {
         />
       ) }
       <AddressEntity
-        address={{ ...addressQuery.data, hash, name: '', ens_domain_name: '', implementations: null }}
+        address={{ ...addressQuery.data, hash: checkSummedHash, name: '', ens_domain_name: '', implementations: null }}
         isLoading={ isLoading }
         fontFamily="heading"
         fontSize="lg"
@@ -325,7 +327,7 @@ const AddressPageContent = () => {
       { !isLoading && !addressQuery.data?.is_contract && config.features.account.isEnabled && (
         <AddressFavoriteButton hash={ hash } watchListId={ addressQuery.data?.watchlist_address_id }/>
       ) }
-      <AddressQrCode address={{ hash }} isLoading={ isLoading }/>
+      <AddressQrCode address={{ hash: checkSummedHash }} isLoading={ isLoading }/>
       <AccountActionsMenu isLoading={ isLoading }/>
       <HStack ml="auto" gap={ 2 }/>
       { !isLoading && addressQuery.data?.is_contract && addressQuery.data?.is_verified && config.UI.views.address.solidityscanEnabled &&
