@@ -284,7 +284,8 @@ function TableList(props: Props<string>) {
                   )) }
               </Tbody>
               <Flex position="absolute" right="24px" bottom="-54px" justifyContent="space-between" w="97%">
-                <Box color="rgba(0, 0, 0, 0.5)" fontWeight="400" fontSize="12px">Total of { props.totleDate } </Box>
+                <Box color="rgba(0, 0, 0, 0.5)" fontWeight="400" fontSize="12px">
+                  A total of { props.totleDate } { props.totleDate > 1 ? props.page + 's' : props.page } </Box>
                 <Pagination page={ props.currPage } propsPage={ props.propsPage } toNext={ props.toNext }></Pagination>
               </Flex>
             </Table>
