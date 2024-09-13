@@ -1,3 +1,4 @@
+import { debounce } from 'lodash';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
@@ -7,59 +8,107 @@ import type { BucketTalbeListType, BucketRequestType } from 'types/storage';
 import PageNextJs from 'nextjs/PageNextJs';
 
 import useGraphqlQuery from 'lib/api/useGraphqlQuery';
-import useDebounce from 'lib/hooks/useDebounce';
 import PageTitle from 'ui/shared/Page/PageTitle';
 const TableList = dynamic(() => import('ui/storage/table-list'), { ssr: false });
 const Page: NextPage = () => {
-  const [ searchTerm, setSearchTerm ] = React.useState('');
+  const [ queryParams, setQueryParams ] = React.useState<{offset: number; searchTerm: string; page: number}>({
+    offset: 0,
+    searchTerm: '',
+    page: 1,
+  });
 
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
-  const [ page, setPage ] = React.useState<number>(1);
-  const [ offset, setOffset ] = React.useState<number>(0);
+  const updateQueryParams = (newParams: Partial<{ offset: number; searchTerm: string; page: number }>) => {
+    setQueryParams(prevParams => ({
+      ...prevParams,
+      ...newParams,
+    }));
+  };
+
   const [ toNext, setToNext ] = React.useState<boolean>(true);
   React.useEffect(() => {
-    if (page > 1) {
-      setOffset((page - 1) * 20);
+    if (queryParams.page > 1) {
+      updateQueryParams({
+        offset: (queryParams.page - 1) * 20,
+      });
     } else {
-      setOffset(0);
+      updateQueryParams({
+        offset: 0,
+      });
     }
-  }, [ page, offset ]);
-  const propsPage = React.useCallback((value: number) => {
-    setPage(value);
-  }, [ setPage ]);
+  }, [ queryParams.page ]);
 
-  const queries = [
-    {
-      tableName: 'buckets',
-      fields: [
-        'bucket_name',
-        'bucket_id',
-        'update_time',
-        'status',
-        `active_object_count: objects_aggregate {
-          aggregate {
-            count
-          }
-        }`,
-        'owner_address',
-      ],
-      limit: 21,
-      offset: offset,
-      where: debouncedSearchTerm ? {
-        _or: [
-          { bucket_name: { _ilike: `${ debouncedSearchTerm }%` } },
-          { bucket_id: { _eq: debouncedSearchTerm } },
+  const propsPage = React.useCallback((value: number) => {
+    updateQueryParams({
+      page: value,
+    });
+  }, []);
+
+  const [ queries, setQueries ] = React.useState<Array<any>>([ {
+    tableName: 'buckets',
+    fields: [
+      'bucket_name',
+      'bucket_id',
+      'update_time',
+      'status',
+      `active_object_count: objects_aggregate {
+        aggregate {
+          count
+        }
+      }`,
+      'owner_address',
+    ],
+    limit: 21,
+    offset: 0,
+    order: { update_time: 'desc' },
+  },
+  {
+    tableName: 'buckets_aggregate',
+    aggregate: [
+      'count',
+    ],
+  } ]);
+
+  React.useEffect(() => {
+    setQueries([
+      {
+        tableName: 'buckets',
+        fields: [
+          'bucket_name',
+          'bucket_id',
+          'update_time',
+          'status',
+          `active_object_count: objects_aggregate {
+            aggregate {
+              count
+            }
+          }`,
+          'owner_address',
         ],
-      } : undefined,
-      order: { update_time: 'desc' },
-    },
-    {
-      tableName: 'buckets_aggregate',
-      aggregate: [
-        'count',
-      ],
-    },
-  ];
+        limit: 21,
+        offset: queryParams.offset,
+        where: queryParams.searchTerm ? {
+          _or: [
+            { bucket_name: { _ilike: `${ queryParams.searchTerm }%` } },
+            { bucket_id: { _eq: queryParams.searchTerm } },
+          ],
+        } : undefined,
+        order: { update_time: 'desc' },
+      },
+      {
+        tableName: 'buckets_aggregate',
+        where: queryParams.searchTerm ? {
+          _or: [
+            { bucket_name: { _ilike: `${ queryParams.searchTerm }%` } },
+            { bucket_id: { _eq: queryParams.searchTerm } },
+          ],
+        } : undefined,
+        aggregate: [
+          'count',
+        ],
+      },
+    ]);
+  }, [ queryParams ]);
+
   const tableList: Array<BucketTalbeListType> = [];
 
   const { loading, data, error } = useGraphqlQuery('Buckets', queries);
@@ -87,13 +136,28 @@ const Page: NextPage = () => {
   const tapList = [ 'Transactions', 'Versions' ];
   const tabThead = [ 'Bucket Name', 'Bucket ID', 'Last Updated Time', 'Status', 'Active Objects Count', 'Creator' ];
 
+  const debouncedHandleSearchChange = React.useMemo(
+    () => debounce((event: React.ChangeEvent<HTMLInputElement> | null) => {
+      if (!event) {
+        updateQueryParams({
+          searchTerm: '',
+          offset: 0,
+          page: 1,
+        });
+      } else {
+        updateQueryParams({
+          searchTerm: event.target.value,
+          page: 1,
+          offset: 0,
+        });
+      }
+    }, 300), // Adjust the debounce delay as needed (300ms in this case)
+    [], // Dependencies array is empty because the debounce function itself is memoized
+  );
+
   const handleSearchChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement> | null) => {
-    if (!event) {
-      setSearchTerm('');
-    } else {
-      setSearchTerm(event.target.value);
-    }
-  }, []);
+    debouncedHandleSearchChange(event);
+  }, [ debouncedHandleSearchChange ]);
 
   return (
     <PageNextJs pathname="/bucket">
@@ -101,7 +165,7 @@ const Page: NextPage = () => {
       <TableList
         totleDate={ totleDate }
         toNext={ toNext }
-        currPage={ page }
+        currPage={ queryParams.page }
         propsPage={ propsPage }
         error={ error }
         loading={ loading }

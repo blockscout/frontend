@@ -76,34 +76,37 @@ const useGraphqlQuery = (aliasName: string, queries: Array<QueryConfig>, cached?
   };
 
   const query = queries.length ? gql`
-  query ${ aliasName }($limit: Int, $offset: Int) {
-    ${ queries
+    query ${ aliasName }($limit: Int, $offset: Int) {
+      ${ queries
     .map(
       ({ tableName, fields, limit, offset, where, order, aggregate }) => {
+        // Handle aggregation queries
         if (aggregate && aggregate.length > 0) {
-          // Special handling for aggregation queries
           return `
-          ${ tableName } {
-            aggregate {
-              ${ buildAggregationFields(aggregate) }
+            ${ tableName }(
+              where: { ${ formatWhereCondition(where) } }
+            ) {
+              aggregate {
+                ${ buildAggregationFields(aggregate) }
+              }
             }
+          `;
+        }
+        // Handle regular queries
+        return `
+          ${ tableName }(
+            where: { ${ formatWhereCondition(where) } },
+            ${ order ? `order_by: { ${ Object.keys(order)[0] }: ${ Object.values(order) } },` : '' }
+            ${ limit !== undefined ? `limit: $limit,` : '' }
+            ${ offset !== undefined ? `offset: $offset` : '' }
+          ) {
+            ${ fields?.join(' ') }
           }
         `;
-        }
-        return `
-        ${ tableName } (
-          where: { ${ formatWhereCondition(where) } },
-          ${ order ? `order_by: { ${ Object.keys(order)[0] }: ${ Object.values(order) } },` : '' }
-          ${ limit !== undefined ? `limit: $limit,` : '' }
-          ${ offset !== undefined ? `offset: $offset` : '' }
-        ) {
-          ${ fields?.join(' ') }
-        }
-      `;
       })
     .join('\n') }
-  }
-` : EMPTY_QUERY;
+    }
+  ` : EMPTY_QUERY;
 
   const { loading, error, data } = useQuery(query, {
     skip: query === EMPTY_QUERY,

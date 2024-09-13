@@ -165,7 +165,6 @@ const Page = (props: HeadProps) => {
                       ((key === 'Creator' || key === 'Primary SP' || key === 'Charge Size') && values.tip) && (
                         <Tooltip label={ values.tip } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
                           <IconSvg
-                            color="rgba(0, 0, 0, 0.4)"
                             ml="4px"
                             name="tip"
                             w="20px"

@@ -1,3 +1,4 @@
+import { debounce } from 'lodash';
 import type { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import React from 'react';
@@ -7,30 +8,44 @@ import type { ObjetTalbeListType, ObjetRequestType } from 'types/storage';
 import PageNextJs from 'nextjs/PageNextJs';
 
 import useGraphqlQuery from 'lib/api/useGraphqlQuery';
-import useDebounce from 'lib/hooks/useDebounce';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import { sizeTool } from 'ui/storage/utils';
 
 const TableList = dynamic(() => import('ui/storage/table-list'), { ssr: false });
 const ObjectDetails: NextPage = () => {
-  const [ searchTerm, setSearchTerm ] = React.useState('');
+  const [ queryParams, setQueryParams ] = React.useState<{offset: number; searchTerm: string; page: number}>({
+    offset: 0,
+    searchTerm: '',
+    page: 1,
+  });
 
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
-  const [ page, setPage ] = React.useState<number>(1);
-  const [ offset, setOffset ] = React.useState<number>(0);
+  const updateQueryParams = (newParams: Partial<{ offset: number; searchTerm: string; page: number }>) => {
+    setQueryParams(prevParams => ({
+      ...prevParams,
+      ...newParams,
+    }));
+  };
+
   const [ toNext, setToNext ] = React.useState<boolean>(true);
   React.useEffect(() => {
-    if (page > 1) {
-      setOffset((page - 1) * 20);
+    if (queryParams.page > 1) {
+      updateQueryParams({
+        offset: (queryParams.page - 1) * 20,
+      });
     } else {
-      setOffset(0);
+      updateQueryParams({
+        offset: 0,
+      });
     }
-  }, [ page, offset ]);
-  const propsPage = React.useCallback((value: number) => {
-    setPage(value);
-  }, [ setPage ]);
+  }, [ queryParams.page ]);
 
-  const queries = [
+  const propsPage = React.useCallback((value: number) => {
+    updateQueryParams({
+      page: value,
+    });
+  }, []);
+
+  const [ queries, setQueries ] = React.useState<Array<any>>([
     {
       tableName: 'objects',
       fields: [
@@ -43,15 +58,9 @@ const ObjectDetails: NextPage = () => {
         'bucket_name',
         'creator_address',
       ],
-      where: debouncedSearchTerm ? {
-        _or: [
-          { object_name: { _ilike: `${ debouncedSearchTerm }%` } },
-          { object_id: { _eq: debouncedSearchTerm } },
-        ],
-      } : undefined,
       order: { update_time: 'desc' },
       limit: 21,
-      offset: offset,
+      offset: 0,
     },
     {
       tableName: 'objects_aggregate',
@@ -59,9 +68,48 @@ const ObjectDetails: NextPage = () => {
         'count',
       ],
     },
-  ];
-  const tableList: Array<ObjetTalbeListType> = [];
+  ]);
 
+  React.useEffect(() => {
+    setQueries([
+      {
+        tableName: 'objects',
+        fields: [
+          'object_name',
+          'content_type',
+          'payload_size',
+          'status',
+          'visibility',
+          'update_time',
+          'bucket_name',
+          'creator_address',
+        ],
+        where: queryParams.searchTerm ? {
+          _or: [
+            { object_name: { _ilike: `${ queryParams.searchTerm }%` } },
+            { object_id: { _eq: queryParams.searchTerm } },
+          ],
+        } : undefined,
+        order: { update_time: 'desc' },
+        limit: 21,
+        offset: queryParams.offset,
+      },
+      {
+        tableName: 'objects_aggregate',
+        where: queryParams.searchTerm ? {
+          _or: [
+            { object_name: { _ilike: `${ queryParams.searchTerm }%` } },
+            { object_id: { _eq: queryParams.searchTerm } },
+          ],
+        } : undefined,
+        aggregate: [
+          'count',
+        ],
+      },
+    ]);
+  }, [ queryParams ]);
+
+  const tableList: Array<ObjetTalbeListType> = [];
   const { loading, data, error } = useGraphqlQuery('Objects', queries);
   const tableLength = data?.objects?.length || 0;
   const totleDate = data?.objects_aggregate?.aggregate?.count || 0;
@@ -89,14 +137,28 @@ const ObjectDetails: NextPage = () => {
 
   const tabThead = [ 'Object Name', 'Type', 'Object Size', 'Status', 'Visibility', 'Last Updated Time', 'Bucket', 'Creator' ];
 
+  const debouncedHandleSearchChange = React.useMemo(
+    () => debounce((event: React.ChangeEvent<HTMLInputElement> | null) => {
+      if (!event) {
+        updateQueryParams({
+          searchTerm: '',
+          offset: 0,
+          page: 1,
+        });
+      } else {
+        updateQueryParams({
+          searchTerm: event.target.value,
+          page: 1,
+          offset: 0,
+        });
+      }
+    }, 300), // Adjust the debounce delay as needed (300ms in this case)
+    [], // Dependencies array is empty because the debounce function itself is memoized
+  );
+
   const handleSearchChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement> | null) => {
-    if (!event) {
-      setSearchTerm('');
-    } else {
-      setSearchTerm(event.target.value);
-      setPage(1);
-    }
-  }, []);
+    debouncedHandleSearchChange(event);
+  }, [ debouncedHandleSearchChange ]);
 
   return (
     <PageNextJs pathname="/object">
@@ -104,7 +166,7 @@ const ObjectDetails: NextPage = () => {
       <TableList
         totleDate={ totleDate }
         toNext={ toNext }
-        currPage={ page }
+        currPage={ queryParams.page }
         propsPage={ propsPage }
         error={ error }
         loading={ loading }
