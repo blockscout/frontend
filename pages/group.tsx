@@ -61,7 +61,7 @@ const Page: NextPage = () => {
       ],
       limit: 21,
       offset: 0,
-      order: { group_id: 'desc' },
+      order: { update_at: 'desc' },
     },
     {
       tableName: 'groups_aggregate',
@@ -125,17 +125,6 @@ const Page: NextPage = () => {
       'Active Group Member Count': v.active_member_count.aggregate.count,
       Owner: v.owner_address,
     });
-  });
-  tableList.sort((a, b) => {
-    const idA = Number(a['Group ID']);
-    const idB = Number(b['Group ID']);
-    if (idA < idB) {
-      return -1;
-    }
-    if (idA > idB) {
-      return 1;
-    }
-    return 0;
   });
 
   React.useEffect(() => {
