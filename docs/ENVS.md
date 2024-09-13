@@ -59,9 +59,10 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
   - [Validators list](ENVS.md#validators-list)
   - [Sentry error monitoring](ENVS.md#sentry-error-monitoring)
   - [OpenTelemetry](ENVS.md#opentelemetry)
-  - [Swap button](ENVS.md#defi-dropdown)
+  - [DeFi dropdown](ENVS.md#defi-dropdown)
   - [Multichain balance button](ENVS.md#multichain-balance-button)
   - [Get gas button](ENVS.md#get-gas-button)
+  - [Save on gas with GasHawk](ENVS.md#save-on-gas-with-gashawk)
 - [3rd party services configuration](ENVS.md#external-services-configuration)
 
 &nbsp;
@@ -752,6 +753,16 @@ If the feature is enabled, a Get gas button will be displayed in the top bar, wh
 | url_template | `string` | Url template, may contain `{chainId}` variable | Required | - | `https://smolrefuel.com/?outboundChain={chainId}` |
 | dapp_id | `string` | Set for open a Blockscout dapp page instead of opening external app page | - | - | `smol-refuel` |
 | logo | `string` | Gas refuel application logo url | - | - | `https://example.com/icon.png` |
+
+&nbsp;
+
+### Save on gas with GasHawk
+
+The feature enables a "Save with GasHawk" button next to the "Gas used" value on the address page.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_SAVE_ON_GAS_ENABLED | `boolean` | Set to "true" to enable the feature | - | - | `true` | v1.35.0+ |
 
 &nbsp;
 

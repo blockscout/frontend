@@ -801,6 +801,7 @@ const schema = yup
           value => value === undefined,
         ),
       }),
+    NEXT_PUBLIC_SAVE_ON_GAS_ENABLED: yup.boolean(),
 
     // 6. External services envs
     NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: yup.string(),

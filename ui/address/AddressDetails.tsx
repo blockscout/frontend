@@ -21,6 +21,7 @@ import AddressBalance from './details/AddressBalance';
 import AddressImplementations from './details/AddressImplementations';
 import AddressNameInfo from './details/AddressNameInfo';
 import AddressNetWorth from './details/AddressNetWorth';
+import AddressSaveOnGas from './details/AddressSaveOnGas';
 import TokenSelect from './tokenSelect/TokenSelect';
 import useAddressCountersQuery from './utils/useAddressCountersQuery';
 import type { AddressQuery } from './utils/useAddressQuery';
@@ -211,6 +212,12 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
                 />
               ) :
                 0 }
+              { !countersQuery.isPlaceholderData && countersQuery.data?.gas_usage_count && (
+                <AddressSaveOnGas
+                  gasUsed={ countersQuery.data.gas_usage_count }
+                  address={ data.hash }
+                />
+              ) }
             </DetailsInfoItem.Value>
           </>
         ) }
