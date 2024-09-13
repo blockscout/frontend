@@ -61,7 +61,7 @@ import type {
   BlockEpochElectionRewardDetailsResponse,
 } from 'types/api/block';
 import type { ChartMarketResponse, ChartSecondaryCoinPriceResponse, ChartTransactionResponse } from 'types/api/charts';
-import type { BackendVersionConfig } from 'types/api/configs';
+import type { BackendVersionConfig, CsvExportConfig } from 'types/api/configs';
 import type {
   SmartContract,
   SmartContractVerificationConfigRaw,
@@ -917,6 +917,9 @@ export const RESOURCES = {
   config_backend_version: {
     path: '/api/v2/config/backend-version',
   },
+  config_csv_export: {
+    path: '/api/v2/config/csv-export',
+  },
 
   // CSV EXPORT
   csv_export_token_holders: {
@@ -1114,6 +1117,7 @@ never;
 /* eslint-disable @typescript-eslint/indent */
 export type ResourcePayloadB<Q extends ResourceName> =
 Q extends 'config_backend_version' ? BackendVersionConfig :
+Q extends 'config_csv_export' ? CsvExportConfig :
 Q extends 'address_metadata_info' ? AddressMetadataInfo :
 Q extends 'address_metadata_tag_types' ? PublicTagTypesResponse :
 Q extends 'blob' ? Blob :
