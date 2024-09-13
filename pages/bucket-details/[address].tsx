@@ -135,10 +135,10 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
         <IconSvg onClick={ routerFallback() } cursor="pointer" w="24px" h="24px" marginRight="4px" name="Fallback"></IconSvg>
         <PageTitle marginBottom="0" title="Bucket Details" withTextAd/>
         <Tooltip
-          isDisabled={ details?.bucket_name.length < 60 }
+          isDisabled={ details?.bucket_name.length <= 60 }
           label={ details?.bucket_name } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
           <Box ml="6px" color="rgba(0, 0, 0, 0.4)" fontWeight="400" fontSize="14px">
-            { details?.bucket_name.length > 60 ? formatPubKey(details?.bucket_name, 60, 0) : details?.bucket_name }
+            { details?.bucket_name.length > 60 ? formatPubKey(details?.bucket_name, 0, 60) : details?.bucket_name }
           </Box>
         </Tooltip>
       </Flex>

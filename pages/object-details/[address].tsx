@@ -150,10 +150,10 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
         <IconSvg onClick={ routerFallback() } cursor="pointer" w="24px" h="24px" marginRight="4px" name="Fallback"></IconSvg>
         <PageTitle marginBottom="0" title="Object Details" withTextAd/>
         <Tooltip
-          isDisabled={ details?.object_name.length < 60 }
+          isDisabled={ details?.object_name.length <= 60 }
           label={ details?.object_name } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
           <Box ml="6px" color="rgba(0, 0, 0, 0.4)" fontWeight="400" fontSize="14px">
-            { details?.object_name.length > 60 ? formatPubKey(details?.object_name, 60, 0) : details?.object_name }
+            { details?.object_name.length > 60 ? formatPubKey(details?.object_name, 0, 60) : details?.object_name }
           </Box>
         </Tooltip>
       </Flex>

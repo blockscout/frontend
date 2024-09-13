@@ -126,6 +126,17 @@ const Page: NextPage = () => {
       Owner: v.owner_address,
     });
   });
+  tableList.sort((a, b) => {
+    const idA = Number(a['Group ID']);
+    const idB = Number(b['Group ID']);
+    if (idA < idB) {
+      return -1;
+    }
+    if (idA > idB) {
+      return 1;
+    }
+    return 0;
+  });
 
   React.useEffect(() => {
     if (typeof tableLength === 'number' && tableLength >= 21) {
