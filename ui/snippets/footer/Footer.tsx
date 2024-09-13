@@ -32,7 +32,7 @@ const Footer = () => {
     {
       icon: 'social/git' as const,
       iconSize: '18px',
-      text: 'Contribute',
+      text: 'Github',
       url: 'https://github.com/zkMeLabs',
     },
     {
