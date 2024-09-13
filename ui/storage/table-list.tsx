@@ -78,8 +78,8 @@ function TableList(props: Props<string>) {
   React.useEffect(() => {
     let time: any;
     if (props?.tableList && props?.tableList.length) {
-      setInterval(() => {
-        time = setTableList(tableList => tableList.map(item => ({
+      time = setInterval(() => {
+        setTableList(tableList => tableList.map(item => ({
           ...item,
           timestamp: Date.now(),
         })));
