@@ -88,7 +88,13 @@ const CsvExport = () => {
     },
   });
 
-  const isLoading = addressQuery.isPending || (exportTypeParam === 'holders' && tokenQuery.isPending);
+  const configQuery = useApiQuery('config_csv_export', {
+    queryOptions: {
+      enabled: Boolean(addressHash),
+    },
+  });
+
+  const isLoading = addressQuery.isPending || configQuery.isPending || (exportTypeParam === 'holders' && tokenQuery.isPending);
 
   const backLink = React.useMemo(() => {
     const hasGoBackLink = appProps.referrer && appProps.referrer.includes('/address');
@@ -147,6 +153,8 @@ const CsvExport = () => {
       return null;
     }
 
+    const limit = (configQuery.data?.limit || 10_000).toLocaleString(undefined, { maximumFractionDigits: 3, notation: 'compact' });
+
     if (exportTypeParam === 'holders') {
       return (
         <Flex mb={ 10 } whiteSpace="pre-wrap" flexWrap="wrap">
@@ -160,7 +168,7 @@ const CsvExport = () => {
             noSymbol
           />
           <span> to CSV file. </span>
-          <span>Exports are limited to the top 10K holders by amount held.</span>
+          <span>Exports are limited to the top { limit } holders by amount held.</span>
         </Flex>
       );
     }
@@ -176,7 +184,7 @@ const CsvExport = () => {
         <span>{ nbsp }</span>
         { filterType && filterValue && <span>with applied filter by { filterType } ({ filterValue }) </span> }
         <span>to CSV file. </span>
-        <span>Exports are limited to the last 10K { exportType.text }.</span>
+        <span>Exports are limited to the last { limit } { exportType.text }.</span>
       </Flex>
     );
   })();
