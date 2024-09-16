@@ -162,7 +162,7 @@ const Footer = () => {
   };
 
   const contentProps: GridProps = {
-    px: { base: 4, lg: config.UI.navigation.layout === 'horizontal' ? 6 : 12 },
+    px: { base: 4, lg: config.UI.navigation.layout === 'horizontal' ? 6 : 12, '2xl': 6 },
     py: { base: 4, lg: 8 },
     gridTemplateColumns: { base: '1fr', lg: 'minmax(auto, 470px) 1fr' },
     columnGap: { lg: '32px', xl: '100px' },

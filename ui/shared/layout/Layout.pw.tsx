@@ -18,8 +18,8 @@ test('base view +@mobile', async({ render, mockEnvs, mockApiResponse }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test.describe('xl screen', () => {
-  test.use({ viewport: pwConfig.viewport.xl });
+test.describe('xxl screen', () => {
+  test.use({ viewport: pwConfig.viewport.xxl });
 
   test('vertical navigation', async({ render }) => {
     const component = await render(<Layout>Page Content</Layout>);
