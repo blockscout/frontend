@@ -1,12 +1,23 @@
 import type { Block } from './block';
 import type { Transaction } from './transaction';
 
+export interface ArbitrumLatestDepositsItem {
+  completion_transaction_hash: string;
+  origination_timestamp: string | null;
+  origination_transaction_block_number: number | null;
+  origination_transaction_hash: string | null;
+}
+
+export interface ArbitrumLatestDepositsResponse {
+  items: Array<ArbitrumLatestDepositsItem>;
+}
+
 export type ArbitrumL2MessagesItem = {
   completion_transaction_hash: string | null;
   id: number;
   origination_address: string;
   origination_timestamp: string | null;
-  origination_transaction_block_number: number;
+  origination_transaction_block_number: number | null;
   origination_transaction_hash: string;
   status: 'initiated' | 'sent' | 'confirmed' | 'relayed';
 }

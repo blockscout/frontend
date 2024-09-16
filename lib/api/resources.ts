@@ -42,12 +42,12 @@ import type { AddressesResponse, AddressesMetadataSearchResult, AddressesMetadat
 import type { AddressMetadataInfo, PublicTagTypesResponse } from 'types/api/addressMetadata';
 import type {
   ArbitrumL2MessagesResponse,
-  ArbitrumL2MessagesItem,
   ArbitrumL2TxnBatch,
   ArbitrumL2TxnBatchesResponse,
   ArbitrumL2BatchTxs,
   ArbitrumL2BatchBlocks,
   ArbitrumL2TxnBatchesItem,
+  ArbitrumLatestDepositsResponse,
 } from 'types/api/arbitrumL2';
 import type { TxBlobs, Blob } from 'types/api/blobs';
 import type {
@@ -1028,7 +1028,7 @@ Q extends 'homepage_blocks' ? Array<Block> :
 Q extends 'homepage_txs' ? Array<Transaction> :
 Q extends 'homepage_txs_watchlist' ? Array<Transaction> :
 Q extends 'homepage_optimistic_deposits' ? Array<OptimisticL2DepositsItem> :
-Q extends 'homepage_arbitrum_deposits' ? { items: Array<ArbitrumL2MessagesItem> } :
+Q extends 'homepage_arbitrum_deposits' ? ArbitrumLatestDepositsResponse :
 Q extends 'homepage_zkevm_l2_batches' ? { items: Array<ZkEvmL2TxnBatchesItem> } :
 Q extends 'homepage_arbitrum_l2_batches' ? { items: Array<ArbitrumL2TxnBatchesItem>} :
 Q extends 'homepage_indexing_status' ? IndexingStatus :
