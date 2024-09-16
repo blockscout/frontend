@@ -88,6 +88,7 @@ const UI = Object.freeze({
   colorTheme: {
     'default': defaultColorTheme,
   },
+  maxContentWidth: getEnvValue('NEXT_PUBLIC_MAX_CONTENT_WIDTH_ENABLED') === 'false' ? false : true,
 });
 
 export default UI;
