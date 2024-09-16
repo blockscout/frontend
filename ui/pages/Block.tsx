@@ -167,7 +167,7 @@ const BlockPageContent = () => {
   })();
   const titleSecondRow = (
     <>
-      { !config.UI.views.block.hiddenFields?.miner && (
+      { !config.UI.views.block.hiddenFields?.miner && blockQuery.data?.miner && (
         <Skeleton
           isLoaded={ !blockQuery.isPlaceholderData }
           fontFamily="heading"
@@ -179,7 +179,7 @@ const BlockPageContent = () => {
           <chakra.span flexShrink={ 0 }>
             { `${ capitalize(getNetworkValidationActionText()) } by` }
           </chakra.span>
-          <AddressEntity address={ blockQuery.data?.miner }/>
+          <AddressEntity address={ blockQuery.data.miner }/>
         </Skeleton>
       ) }
       <NetworkExplorers type="block" pathParam={ heightOrHash } ml={{ base: config.UI.views.block.hiddenFields?.miner ? 0 : 3, lg: 'auto' }}/>

@@ -198,7 +198,7 @@ const UserOpDetails = ({ query }: Props) => {
         Block
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value>
-        <BlockEntity number={ data.block_number } isLoading={ isPlaceholderData }/>
+        <BlockEntity number={ Number(data.block_number) } isLoading={ isPlaceholderData }/>
       </DetailsInfoItem.Value>
 
       <DetailsInfoItem.Label

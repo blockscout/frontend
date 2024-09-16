@@ -113,11 +113,12 @@ test.describe('blockscout provider', () => {
 
   test('no interpretation, has method called', async({ render, mockApiResponse }) => {
     // the action button should not render if there is no interpretation
+    const newTxQuery = { ...txQuery, data: txMock.withRecipientContract } as TxQuery;
     const metadataResponse = generateAddressMetadataResponse(protocolTagWithMeta);
     await mockApiResponse('address_metadata_info', metadataResponse, { queryParams: addressMetadataQueryParams });
-
     await mockApiResponse('tx_interpretation', { data: { summaries: [] } }, { pathParams: { hash } });
-    const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ txQuery }/>);
+
+    const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ newTxQuery }/>);
     await expect(component).toHaveScreenshot();
   });
 

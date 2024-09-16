@@ -155,7 +155,7 @@ const CsvExport = () => {
 
     const limit = (configQuery.data?.limit || 10_000).toLocaleString(undefined, { maximumFractionDigits: 3, notation: 'compact' });
 
-    if (exportTypeParam === 'holders') {
+    if (exportTypeParam === 'holders' && tokenQuery.data) {
       return (
         <Flex mb={ 10 } whiteSpace="pre-wrap" flexWrap="wrap">
           <span>Export { exportType.text } for token </span>
@@ -171,6 +171,10 @@ const CsvExport = () => {
           <span>Exports are limited to the top { limit } holders by amount held.</span>
         </Flex>
       );
+    }
+
+    if (!addressQuery.data) {
+      return null;
     }
 
     return (

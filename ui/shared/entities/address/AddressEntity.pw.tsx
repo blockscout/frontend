@@ -9,7 +9,7 @@ import { test, expect } from 'playwright/lib';
 
 import AddressEntity from './AddressEntity';
 
-const iconSizes = [ 'md', 'lg' ];
+const iconSizes = [ 'md', 'lg' ] as const;
 
 test.use({ viewport: { width: 180, height: 140 } });
 
@@ -19,7 +19,7 @@ test.describe('icon size', () => {
       const component = await render(
         <AddressEntity
           address={ addressMock.withoutName }
-          iconSize={ size }
+          icon={{ size }}
         />,
       );
 
@@ -69,7 +69,7 @@ test.describe('proxy contract', () => {
   test('without implementation name', async({ render, page }) => {
     const component = await render(
       <AddressEntity
-        address={{ ...addressMock.contract, implementations: [ { address: addressMock.contract.implementations?.[0].address } ] }}
+        address={{ ...addressMock.contract, implementations: [ { address: addressMock.contract.implementations?.[0].address as string } ] }}
       />,
     );
 
@@ -81,7 +81,7 @@ test.describe('proxy contract', () => {
   test('without any name', async({ render, page }) => {
     const component = await render(
       <AddressEntity
-        address={{ ...addressMock.contract, name: undefined, implementations: [ { address: addressMock.contract.implementations?.[0].address } ] }}
+        address={{ ...addressMock.contract, name: undefined, implementations: [ { address: addressMock.contract.implementations?.[0].address as string } ] }}
       />,
     );
 

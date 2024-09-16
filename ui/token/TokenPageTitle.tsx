@@ -113,13 +113,15 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
 
   const secondRow = (
     <Flex alignItems="center" w="100%" minW={ 0 } columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
-      <AddressEntity
-        address={{ ...addressQuery.data, name: '' }}
-        isLoading={ isLoading }
-        fontFamily="heading"
-        fontSize="lg"
-        fontWeight={ 500 }
-      />
+      { addressQuery.data && (
+        <AddressEntity
+          address={{ ...addressQuery.data, name: '' }}
+          isLoading={ isLoading }
+          fontFamily="heading"
+          fontSize="lg"
+          fontWeight={ 500 }
+        />
+      ) }
       { !isLoading && tokenQuery.data && <AddressAddToWallet token={ tokenQuery.data } variant="button"/> }
       <AddressQrCode address={ addressQuery.data } isLoading={ isLoading }/>
       <AccountActionsMenu isLoading={ isLoading }/>
@@ -139,7 +141,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
         <TokenEntity.Icon
           token={ tokenQuery.data }
           isLoading={ tokenQuery.isPlaceholderData }
-          iconSize="lg"
+          size="lg"
         />
       ) : null }
       contentAfter={ contentAfter }

@@ -272,7 +272,11 @@ const AddressPageContent = () => {
   const titleContentAfter = (
     <EntityTags
       tags={ tags }
-      isLoading={ isLoading || (config.features.addressMetadata.isEnabled && addressMetadataQuery.isPending) }
+      isLoading={
+        isLoading ||
+        (config.features.userOps.isEnabled && userOpsAccountQuery.isPlaceholderData) ||
+        (config.features.addressMetadata.isEnabled && addressMetadataQuery.isPending)
+      }
     />
   );
 
@@ -302,7 +306,7 @@ const AddressPageContent = () => {
     <Flex alignItems="center" w="100%" columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
       { addressQuery.data?.ens_domain_name && (
         <EnsEntity
-          name={ addressQuery.data?.ens_domain_name }
+          domain={ addressQuery.data?.ens_domain_name }
           protocol={ !addressEnsDomainsQuery.isPending ? addressMainDomain?.protocol : null }
           fontFamily="heading"
           fontSize="lg"
@@ -319,7 +323,7 @@ const AddressPageContent = () => {
         fontWeight={ 500 }
         noLink
         isSafeAddress={ isSafeAddress }
-        iconColor={ isSafeAddress ? safeIconColor : undefined }
+        icon={{ color: isSafeAddress ? safeIconColor : undefined }}
         mr={ 4 }
       />
       { !isLoading && addressQuery.data?.is_contract && addressQuery.data.token &&

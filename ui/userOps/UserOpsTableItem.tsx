@@ -57,7 +57,7 @@ const UserOpsTableItem = ({ item, isLoading, showTx, showSender }: Props) => {
       ) }
       <Td verticalAlign="middle">
         <BlockEntity
-          number={ item.block_number }
+          number={ Number(item.block_number) }
           isLoading={ isLoading }
           fontSize="sm"
           lineHeight={ 5 }
