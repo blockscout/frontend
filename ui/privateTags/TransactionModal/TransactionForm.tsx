@@ -55,7 +55,7 @@ const TransactionForm: React.FC<Props> = ({ data, onClose, onSuccess, setAlertVi
 
       if (isEdit) {
         return apiFetch('private_tags_tx', {
-          pathParams: { id: data.id },
+          pathParams: { id: String(data.id) },
           fetchParams: { method: 'PUT', body },
         });
       }

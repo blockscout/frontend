@@ -6,6 +6,7 @@ function generateCspPolicy() {
     descriptors.app(),
     descriptors.ad(),
     descriptors.cloudFlare(),
+    descriptors.gasHawk(),
     descriptors.googleAnalytics(),
     descriptors.googleFonts(),
     descriptors.googleReCaptcha(),

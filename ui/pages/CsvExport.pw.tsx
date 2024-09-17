@@ -15,6 +15,7 @@ test('base view +@mobile +@dark-mode', async({ render, page, mockApiResponse }) 
     },
   };
   await mockApiResponse('address', addressMock.validator, { pathParams: { hash: addressMock.hash } });
+  await mockApiResponse('config_csv_export', { limit: 42123 });
 
   const component = await render(<Box sx={{ '.recaptcha': { w: '304px', h: '78px' } }}><CsvExport/></Box>, { hooksConfig });
 

@@ -56,6 +56,7 @@ const NavigationDesktop = () => {
   return (
     <Flex
       display={{ base: 'none', lg: 'flex' }}
+      role="group"
       position="relative"
       flexDirection="column"
       alignItems="stretch"
@@ -65,11 +66,6 @@ const NavigationDesktop = () => {
       py={ 12 }
       width={{ lg: isExpanded ? '229px' : '92px', xl: isCollapsed ? '92px' : '229px' }}
       { ...getDefaultTransitionProps({ transitionProperty: 'width, padding' }) }
-      sx={{
-        '&:hover #expand-icon': {
-          display: 'block',
-        },
-      }}
       onClick={ handleContainerClick }
     >
       <TestnetBadge position="absolute" pl={ 3 } w="49px" top="34px"/>
@@ -125,8 +121,8 @@ const NavigationDesktop = () => {
         cursor="pointer"
         onClick={ handleTogglerClick }
         aria-label="Expand/Collapse menu"
-        id="expand-icon"
         display="none"
+        _groupHover={{ display: 'block' }}
       />
     </Flex>
   );

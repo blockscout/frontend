@@ -1,6 +1,5 @@
 import type { As } from '@chakra-ui/react';
 import { Box, Flex, Skeleton, Tooltip, chakra, VStack } from '@chakra-ui/react';
-import _omit from 'lodash/omit';
 import React from 'react';
 
 import type { AddressParam } from 'types/api/addressParams';
@@ -10,7 +9,7 @@ import { route } from 'nextjs-routes';
 import { useAddressHighlightContext } from 'lib/contexts/addressHighlight';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
-import { getIconProps } from '../base/utils';
+import { distributeEntityProps, getIconProps } from '../base/utils';
 import AddressEntityContentProxy from './AddressEntityContentProxy';
 import AddressIdenticon from './AddressIdenticon';
 
@@ -29,10 +28,7 @@ const Link = chakra((props: LinkProps) => {
   );
 });
 
-type IconProps = Omit<EntityBase.IconBaseProps, 'name'> & Pick<EntityProps, 'address' | 'isSafeAddress'> & {
-  asProp?: As;
-  name?: EntityBase.IconBaseProps['name'];
-};
+type IconProps = Pick<EntityProps, 'address' | 'isSafeAddress'> & EntityBase.IconBaseProps;
 
 const Icon = (props: IconProps) => {
   if (props.noIcon) {
@@ -40,8 +36,8 @@ const Icon = (props: IconProps) => {
   }
 
   const styles = {
-    ...getIconProps(props.iconSize),
-    marginRight: 2,
+    ...getIconProps(props.size),
+    marginRight: props.marginRight ?? 2,
   };
 
   if (props.isLoading) {
@@ -80,7 +76,7 @@ const Icon = (props: IconProps) => {
   return (
     <Flex marginRight={ styles.marginRight }>
       <AddressIdenticon
-        size={ props.iconSize === 'lg' ? 30 : 20 }
+        size={ props.size === 'lg' ? 30 : 20 }
         hash={ props.address.hash }
       />
     </Flex>
@@ -137,18 +133,18 @@ const Copy = (props: CopyProps) => {
 
 const Container = EntityBase.Container;
 
+interface AddressProp extends Partial<AddressParam> {
+  hash: string;
+}
+
 export interface EntityProps extends EntityBase.EntityBaseProps {
-  address: Pick<AddressParam,
-  'hash' | 'name' | 'is_contract' | 'is_verified' | 'implementations' | 'ens_domain_name' | 'metadata'
-  >;
+  address: AddressProp;
   isSafeAddress?: boolean;
   noHighlight?: boolean;
 }
 
 const AddressEntry = (props: EntityProps) => {
-  const linkProps = _omit(props, [ 'className' ]);
-  const partsProps = _omit(props, [ 'className', 'onClick' ]);
-
+  const partsProps = distributeEntityProps(props);
   const context = useAddressHighlightContext(props.noHighlight);
 
   return (
@@ -162,16 +158,16 @@ const AddressEntry = (props: EntityProps) => {
       position="relative"
       zIndex={ 0 }
     >
-      <Icon { ...partsProps } color={ props.iconColor }/>
-      <Link { ...linkProps }>
-        <Content { ...partsProps }/>
+      <Icon { ...partsProps.icon }/>
+      <Link { ...partsProps.link }>
+        <Content { ...partsProps.content }/>
       </Link>
-      <Copy { ...partsProps }/>
+      <Copy { ...partsProps.copy }/>
     </Container>
   );
 };
 
-export default React.memo(chakra(AddressEntry));
+export default React.memo(chakra<As, EntityProps>(AddressEntry));
 
 export {
   Container,

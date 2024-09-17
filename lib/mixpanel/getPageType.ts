@@ -10,6 +10,7 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/block/countdown': 'Block countdown search',
   '/block/countdown/[height]': 'Block countdown',
   '/accounts': 'Top accounts',
+  '/accounts/label/[slug]': 'Addresses search by label',
   '/address/[hash]': 'Address details',
   '/verified-contracts': 'Verified contracts',
   '/contract-verification': 'Contract verification',

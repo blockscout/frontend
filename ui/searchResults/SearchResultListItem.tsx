@@ -344,10 +344,10 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
           <Text
             overflow="hidden"
             textOverflow="ellipsis"
-            sx={{
+            style={{
+              WebkitLineClamp: 3,
+              WebkitBoxOrient: 'vertical',
               display: '-webkit-box',
-              '-webkit-box-orient': 'vertical',
-              '-webkit-line-clamp': '3',
             }}
           >
             { data.app.description }

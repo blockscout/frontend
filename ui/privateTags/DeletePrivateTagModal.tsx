@@ -25,7 +25,7 @@ const DeletePrivateTagModal: React.FC<Props> = ({ isOpen, onClose, data, type })
   const mutationFn = useCallback(() => {
     const resourceName = type === 'address' ? 'private_tags_address' : 'private_tags_tx';
     return apiFetch(resourceName, {
-      pathParams: { id: data.id },
+      pathParams: { id: String(data.id) },
       fetchParams: { method: 'DELETE' },
     });
   }, [ type, apiFetch, data.id ]);

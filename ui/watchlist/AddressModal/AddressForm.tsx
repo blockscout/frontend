@@ -100,7 +100,7 @@ const AddressForm: React.FC<Props> = ({ data, onSuccess, setAlertVisible, isAdd 
     if (!isAdd && data) {
       // edit address
       return apiFetch('watchlist', {
-        pathParams: { id: data?.id || '' },
+        pathParams: { id: data?.id ? String(data.id) : '' },
         fetchParams: { method: 'PUT', body },
       });
 

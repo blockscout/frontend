@@ -12,6 +12,7 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/block/countdown': 'Regular page',
   '/block/countdown/[height]': 'Regular page',
   '/accounts': 'Root page',
+  '/accounts/label/[slug]': 'Root page',
   '/address/[hash]': 'Regular page',
   '/verified-contracts': 'Root page',
   '/contract-verification': 'Root page',

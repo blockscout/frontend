@@ -19,7 +19,7 @@ import { createNovesSummaryObject } from './assetFlows/utils/createNovesSummaryO
 import type { TxQuery } from './useTxQuery';
 
 type Props = {
-  hash?: string;
+  hash: string;
   hasTag: boolean;
   txQuery: TxQuery;
 }

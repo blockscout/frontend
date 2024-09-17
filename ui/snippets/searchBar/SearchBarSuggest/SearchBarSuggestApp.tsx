@@ -48,10 +48,10 @@ const SearchBarSuggestApp = ({ data, isMobile, searchTerm, onClick }: Props) => 
             variant="secondary"
             overflow="hidden"
             textOverflow="ellipsis"
-            sx={{
+            style={{
+              WebkitLineClamp: 3,
+              WebkitBoxOrient: 'vertical',
               display: '-webkit-box',
-              '-webkit-box-orient': 'vertical',
-              '-webkit-line-clamp': '3',
             }}
           >
             { data.description }

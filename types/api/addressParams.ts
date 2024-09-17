@@ -2,7 +2,7 @@ import type { AddressMetadataTagApi } from './addressMetadata';
 
 export interface AddressImplementation {
   address: string;
-  name: string | null;
+  name?: string | null;
 }
 
 export interface AddressTag {

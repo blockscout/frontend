@@ -31,7 +31,6 @@ import type {
   AddressNFTsResponse,
   AddressCollectionsResponse,
   AddressNFTTokensFilter,
-  AddressCoinBalanceHistoryChartOld,
   AddressMudTables,
   AddressMudTablesFilter,
   AddressMudRecords,
@@ -39,7 +38,7 @@ import type {
   AddressMudRecordsSorting,
   AddressMudRecord,
 } from 'types/api/address';
-import type { AddressesResponse } from 'types/api/addresses';
+import type { AddressesResponse, AddressesMetadataSearchResult, AddressesMetadataSearchFilters } from 'types/api/addresses';
 import type { AddressMetadataInfo, PublicTagTypesResponse } from 'types/api/addressMetadata';
 import type {
   ArbitrumL2MessagesResponse,
@@ -62,7 +61,7 @@ import type {
   BlockEpochElectionRewardDetailsResponse,
 } from 'types/api/block';
 import type { ChartMarketResponse, ChartSecondaryCoinPriceResponse, ChartTransactionResponse } from 'types/api/charts';
-import type { BackendVersionConfig } from 'types/api/configs';
+import type { BackendVersionConfig, CsvExportConfig } from 'types/api/configs';
 import type {
   SmartContract,
   SmartContractVerificationConfigRaw,
@@ -86,6 +85,9 @@ import type {
   OptimisticL2TxnBatchesResponse,
   OptimisticL2WithdrawalsResponse,
   OptimisticL2DisputeGamesResponse,
+  OptimismL2TxnBatch,
+  OptimismL2BatchTxs,
+  OptimismL2BatchBlocks,
 } from 'types/api/optimisticL2';
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import type { SearchRedirectResult, SearchResult, SearchResultFilters, SearchResultItem } from 'types/api/search';
@@ -159,26 +161,26 @@ export const RESOURCES = {
     path: '/api/account/v2/email/resend',
   },
   custom_abi: {
-    path: '/api/account/v2/user/custom_abis/:id?',
+    path: '/api/account/v2/user/custom_abis{/:id}',
     pathParams: [ 'id' as const ],
   },
   watchlist: {
-    path: '/api/account/v2/user/watchlist/:id?',
+    path: '/api/account/v2/user/watchlist{/:id}',
     pathParams: [ 'id' as const ],
     filterFields: [ ],
   },
   private_tags_address: {
-    path: '/api/account/v2/user/tags/address/:id?',
+    path: '/api/account/v2/user/tags/address{/:id}',
     pathParams: [ 'id' as const ],
     filterFields: [ ],
   },
   private_tags_tx: {
-    path: '/api/account/v2/user/tags/transaction/:id?',
+    path: '/api/account/v2/user/tags/transaction{/:id}',
     pathParams: [ 'id' as const ],
     filterFields: [ ],
   },
   api_keys: {
-    path: '/api/account/v2/user/api_keys/:id?',
+    path: '/api/account/v2/user/api_keys{/:id}',
     pathParams: [ 'id' as const ],
   },
 
@@ -208,7 +210,7 @@ export const RESOURCES = {
   },
 
   token_info_applications: {
-    path: '/api/v1/chains/:chainId/token-info-submissions/:id?',
+    path: '/api/v1/chains/:chainId/token-info-submissions{/:id}',
     pathParams: [ 'chainId' as const, 'id' as const ],
     endpoint: getFeaturePayload(config.features.addressVerification)?.api.endpoint,
     basePath: getFeaturePayload(config.features.addressVerification)?.api.basePath,
@@ -418,6 +420,10 @@ export const RESOURCES = {
   addresses: {
     path: '/api/v2/addresses/',
     filterFields: [ ],
+  },
+  addresses_metadata_search: {
+    path: '/api/v2/proxy/metadata/addresses',
+    filterFields: [ 'slug' as const, 'tag_type' as const ],
   },
 
   // ADDRESS
@@ -679,12 +685,29 @@ export const RESOURCES = {
   },
 
   optimistic_l2_txn_batches: {
-    path: '/api/v2/optimism/txn-batches',
+    path: '/api/v2/optimism/batches',
     filterFields: [],
   },
 
   optimistic_l2_txn_batches_count: {
-    path: '/api/v2/optimism/txn-batches/count',
+    path: '/api/v2/optimism/batches/count',
+  },
+
+  optimistic_l2_txn_batch: {
+    path: '/api/v2/optimism/batches/:number',
+    pathParams: [ 'number' as const ],
+  },
+
+  optimistic_l2_txn_batch_txs: {
+    path: '/api/v2/transactions/optimism-batch/:number',
+    pathParams: [ 'number' as const ],
+    filterFields: [],
+  },
+
+  optimistic_l2_txn_batch_blocks: {
+    path: '/api/v2/blocks/optimism-batch/:number',
+    pathParams: [ 'number' as const ],
+    filterFields: [],
   },
 
   optimistic_l2_dispute_games: {
@@ -894,6 +917,9 @@ export const RESOURCES = {
   config_backend_version: {
     path: '/api/v2/config/backend-version',
   },
+  config_csv_export: {
+    path: '/api/v2/config/csv-export',
+  },
 
   // CSV EXPORT
   csv_export_token_holders: {
@@ -960,7 +986,7 @@ export type ResourceErrorAccount<T> = ResourceError<{ errors: T }>
 export type PaginatedResources = 'blocks' | 'block_txs' | 'block_election_rewards' |
 'txs_validated' | 'txs_pending' | 'txs_with_blobs' | 'txs_watchlist' | 'txs_execution_node' |
 'tx_internal_txs' | 'tx_logs' | 'tx_token_transfers' | 'tx_state_changes' | 'tx_blobs' |
-'addresses' |
+'addresses' | 'addresses_metadata_search' |
 'address_txs' | 'address_internal_txs' | 'address_token_transfers' | 'address_blocks_validated' | 'address_coin_balance' |
 'search' |
 'address_logs' | 'address_tokens' | 'address_nfts' | 'address_collections' |
@@ -968,7 +994,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' | 'block_election_reward
 'token_instance_transfers' | 'token_instance_holders' |
 'verified_contracts' |
 'optimistic_l2_output_roots' | 'optimistic_l2_withdrawals' | 'optimistic_l2_txn_batches' | 'optimistic_l2_deposits' |
-'optimistic_l2_dispute_games' |
+'optimistic_l2_dispute_games' | 'optimistic_l2_txn_batch_txs' | 'optimistic_l2_txn_batch_blocks' |
 'mud_worlds'| 'address_mud_tables' | 'address_mud_records' |
 'shibarium_deposits' | 'shibarium_withdrawals' |
 'arbitrum_l2_messages' | 'arbitrum_l2_txn_batches' | 'arbitrum_l2_txn_batch_txs' | 'arbitrum_l2_txn_batch_blocks' |
@@ -1034,6 +1060,7 @@ Q extends 'tx_state_changes' ? TxStateChanges :
 Q extends 'tx_blobs' ? TxBlobs :
 Q extends 'tx_interpretation' ? TxInterpretationResponse :
 Q extends 'addresses' ? AddressesResponse :
+Q extends 'addresses_metadata_search' ? AddressesMetadataSearchResult :
 Q extends 'address' ? Address :
 Q extends 'address_counters' ? AddressCounters :
 Q extends 'address_tabs_counters' ? AddressTabsCounters :
@@ -1042,7 +1069,7 @@ Q extends 'address_internal_txs' ? AddressInternalTxsResponse :
 Q extends 'address_token_transfers' ? AddressTokenTransferResponse :
 Q extends 'address_blocks_validated' ? AddressBlocksValidatedResponse :
 Q extends 'address_coin_balance' ? AddressCoinBalanceHistoryResponse :
-Q extends 'address_coin_balance_chart' ? AddressCoinBalanceHistoryChartOld | AddressCoinBalanceHistoryChart :
+Q extends 'address_coin_balance_chart' ? AddressCoinBalanceHistoryChart :
 Q extends 'address_logs' ? LogsResponseAddress :
 Q extends 'address_tokens' ? AddressTokensResponse :
 Q extends 'address_nfts' ? AddressNFTsResponse :
@@ -1073,11 +1100,14 @@ Q extends 'optimistic_l2_output_roots' ? OptimisticL2OutputRootsResponse :
 Q extends 'optimistic_l2_withdrawals' ? OptimisticL2WithdrawalsResponse :
 Q extends 'optimistic_l2_deposits' ? OptimisticL2DepositsResponse :
 Q extends 'optimistic_l2_txn_batches' ? OptimisticL2TxnBatchesResponse :
+Q extends 'optimistic_l2_txn_batches_count' ? number :
+Q extends 'optimistic_l2_txn_batch' ? OptimismL2TxnBatch :
+Q extends 'optimistic_l2_txn_batch_txs' ? OptimismL2BatchTxs :
+Q extends 'optimistic_l2_txn_batch_blocks' ? OptimismL2BatchBlocks :
 Q extends 'optimistic_l2_dispute_games' ? OptimisticL2DisputeGamesResponse :
 Q extends 'optimistic_l2_output_roots_count' ? number :
 Q extends 'optimistic_l2_withdrawals_count' ? number :
 Q extends 'optimistic_l2_deposits_count' ? number :
-Q extends 'optimistic_l2_txn_batches_count' ? number :
 Q extends 'optimistic_l2_dispute_games_count' ? number :
 never;
 // !!! IMPORTANT !!!
@@ -1087,6 +1117,7 @@ never;
 /* eslint-disable @typescript-eslint/indent */
 export type ResourcePayloadB<Q extends ResourceName> =
 Q extends 'config_backend_version' ? BackendVersionConfig :
+Q extends 'config_csv_export' ? CsvExportConfig :
 Q extends 'address_metadata_info' ? AddressMetadataInfo :
 Q extends 'address_metadata_tag_types' ? PublicTagTypesResponse :
 Q extends 'blob' ? Blob :
@@ -1156,6 +1187,7 @@ Q extends 'txs_with_blobs' ? TTxsWithBlobsFilters :
 Q extends 'tx_token_transfers' ? TokenTransferFilters :
 Q extends 'token_transfers' ? TokenTransferFilters :
 Q extends 'address_txs' | 'address_internal_txs' ? AddressTxsFilters :
+Q extends 'addresses_metadata_search' ? AddressesMetadataSearchFilters :
 Q extends 'address_token_transfers' ? AddressTokenTransferFilters :
 Q extends 'address_tokens' ? AddressTokensFilter :
 Q extends 'address_nfts' ? AddressNFTTokensFilter :

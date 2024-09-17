@@ -2,6 +2,8 @@ import { defineStyle, defineStyleConfig } from '@chakra-ui/styled-system';
 import { mode } from '@chakra-ui/theme-tools';
 import { runIfFn } from '@chakra-ui/utils';
 
+import config from 'configs/app';
+
 const variantSolid = defineStyle((props) => {
   const { colorScheme: c } = props;
 
@@ -150,12 +152,76 @@ const variantSubtle = defineStyle((props) => {
   };
 });
 
+// for buttons in the hero banner
+const variantHero = defineStyle((props) => {
+  return {
+    bg: mode(
+      config.UI.homepage.heroBanner?.button?._default?.background?.[0] || 'blue.600',
+      config.UI.homepage.heroBanner?.button?._default?.background?.[1] || 'blue.600',
+    )(props),
+    color: mode(
+      config.UI.homepage.heroBanner?.button?._default?.text_color?.[0] || 'white',
+      config.UI.homepage.heroBanner?.button?._default?.text_color?.[1] || 'white',
+    )(props),
+    _hover: {
+      bg: mode(
+        config.UI.homepage.heroBanner?.button?._hover?.background?.[0] || 'blue.400',
+        config.UI.homepage.heroBanner?.button?._hover?.background?.[1] || 'blue.400',
+      )(props),
+      color: mode(
+        config.UI.homepage.heroBanner?.button?._hover?.text_color?.[0] || 'white',
+        config.UI.homepage.heroBanner?.button?._hover?.text_color?.[1] || 'white',
+      )(props),
+    },
+    '&[data-selected=true]': {
+      bg: mode(
+        config.UI.homepage.heroBanner?.button?._selected?.background?.[0] || 'blue.50',
+        config.UI.homepage.heroBanner?.button?._selected?.background?.[1] || 'blue.50',
+      )(props),
+      color: mode(
+        config.UI.homepage.heroBanner?.button?._selected?.text_color?.[0] || 'blackAlpha.800',
+        config.UI.homepage.heroBanner?.button?._selected?.text_color?.[1] || 'blackAlpha.800',
+      )(props),
+    },
+  };
+});
+
+// for buttons in the page header
+const variantHeader = defineStyle((props) => {
+
+  return {
+    bgColor: 'transparent',
+    color: mode('blackAlpha.800', 'gray.400')(props),
+    borderColor: mode('gray.300', 'gray.600')(props),
+    borderWidth: props.borderWidth || '2px',
+    borderStyle: 'solid',
+    _hover: {
+      color: 'link_hovered',
+      borderColor: 'link_hovered',
+    },
+    '&[data-selected=true]': {
+      bgColor: mode('blackAlpha.50', 'whiteAlpha.100')(props),
+      color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
+      borderColor: 'transparent',
+      borderWidth: props.borderWidth || '0px',
+    },
+    '&[data-selected=true][data-warning=true]': {
+      bgColor: mode('orange.100', 'orange.900')(props),
+      color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
+      borderColor: 'transparent',
+      borderWidth: props.borderWidth || '0px',
+    },
+  };
+});
+
 const variants = {
   solid: variantSolid,
   outline: variantOutline,
   simple: variantSimple,
   ghost: variantGhost,
   subtle: variantSubtle,
+  hero: variantHero,
+  header: variantHeader,
 };
 
 const baseStyle = defineStyle({

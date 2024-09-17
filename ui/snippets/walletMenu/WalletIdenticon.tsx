@@ -1,11 +1,9 @@
-import { Box, Flex, chakra } from '@chakra-ui/react';
+import { Box, Flex, chakra, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import AddressIdenticon from 'ui/shared/entities/address/AddressIdenticon';
 import IconSvg from 'ui/shared/IconSvg';
-
-import useMenuButtonColors from '../useMenuButtonColors';
 
 type Props = {
   address: string;
@@ -14,8 +12,8 @@ type Props = {
 };
 
 const WalletIdenticon = ({ address, isAutoConnectDisabled, className }: Props) => {
-  const { themedBackgroundOrange } = useMenuButtonColors();
   const isMobile = useIsMobile();
+  const borderColor = useColorModeValue('orange.100', 'orange.900');
 
   return (
     <Box className={ className } position="relative">
@@ -31,7 +29,7 @@ const WalletIdenticon = ({ address, isAutoConnectDisabled, className }: Props) =
           backgroundColor="rgba(16, 17, 18, 0.80)"
           borderRadius="full"
           border="1px solid"
-          borderColor={ themedBackgroundOrange }
+          borderColor={ borderColor }
         >
           <IconSvg
             name="integration/partial"

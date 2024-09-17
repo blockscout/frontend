@@ -30,6 +30,18 @@ const getCspReportUrl = () => {
   }
 };
 
+const externalFontsDomains = (() => {
+  try {
+    return [
+      config.UI.fonts.heading?.url,
+      config.UI.fonts.body?.url,
+    ]
+      .filter(Boolean)
+      .map((urlString) => new URL(urlString))
+      .map((url) => url.hostname);
+  } catch (error) {}
+})();
+
 export function app(): CspDev.DirectiveDescriptor {
   return {
     'default-src': [
@@ -72,8 +84,9 @@ export function app(): CspDev.DirectiveDescriptor {
       // https://github.com/vercel/next.js/issues/14221#issuecomment-657258278
       config.app.isDev ? KEY_WORDS.UNSAFE_EVAL : '',
 
-      // hash of ColorModeScript
+      // hash of ColorModeScript: system + dark
       '\'sha256-e7MRMmTzLsLQvIy1iizO1lXf7VWYoQ6ysj5fuUzvRwE=\'',
+      '\'sha256-9A7qFFHmxdWjZMQmfzYD2XWaNHLu1ZmQB0Ds4Go764k=\'',
     ],
 
     'style-src': [
@@ -115,6 +128,7 @@ export function app(): CspDev.DirectiveDescriptor {
     'font-src': [
       KEY_WORDS.DATA,
       ...MAIN_DOMAINS,
+      ...(externalFontsDomains || []),
     ],
 
     'object-src': [

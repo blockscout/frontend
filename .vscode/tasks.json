@@ -368,6 +368,7 @@
               "eth_goerli",
               "eth_sepolia",
               "optimism",
+              "optimism_celestia",
               "optimism_sepolia",
               "polygon",
               "rootstock_testnet",

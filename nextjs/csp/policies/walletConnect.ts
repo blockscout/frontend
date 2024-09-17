@@ -14,6 +14,7 @@ export function walletConnect(): CspDev.DirectiveDescriptor {
       '*.web3modal.com',
       '*.web3modal.org',
       '*.walletconnect.com',
+      '*.walletconnect.org',
       'wss://relay.walletconnect.com',
       'wss://www.walletlink.org',
     ],
