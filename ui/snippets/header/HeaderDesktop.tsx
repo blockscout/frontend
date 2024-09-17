@@ -3,6 +3,7 @@ import React from 'react';
 
 import config from 'configs/app';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
+import ProfileDesktop from 'ui/snippets/profile/ProfileDesktop';
 import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
 import SearchBar from 'ui/snippets/searchBar/SearchBar';
 import WalletMenuDesktop from 'ui/snippets/walletMenu/WalletMenuDesktop';
@@ -40,6 +41,7 @@ const HeaderDesktop = ({ renderSearchBar, isMarketplaceAppPage }: Props) => {
         <Box display="flex">
           { config.features.account.isEnabled && <ProfileMenuDesktop/> }
           { config.features.blockchainInteraction.isEnabled && <WalletMenuDesktop/> }
+          { config.features.account.isEnabled && <ProfileDesktop/> }
         </Box>
       ) }
     </HStack>

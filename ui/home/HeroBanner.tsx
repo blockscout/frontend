@@ -3,6 +3,7 @@ import React from 'react';
 
 import config from 'configs/app';
 import AdBanner from 'ui/shared/ad/AdBanner';
+import ProfileDesktop from 'ui/snippets/profile/ProfileDesktop';
 import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
 import SearchBar from 'ui/snippets/searchBar/SearchBar';
 import WalletMenuDesktop from 'ui/snippets/walletMenu/WalletMenuDesktop';
@@ -56,6 +57,7 @@ const HeroBanner = () => {
             <Box display={{ base: 'none', lg: 'flex' }}>
               { config.features.account.isEnabled && <ProfileMenuDesktop isHomePage/> }
               { config.features.blockchainInteraction.isEnabled && <WalletMenuDesktop isHomePage/> }
+              { config.features.account.isEnabled && <ProfileDesktop isHomePage/> }
             </Box>
           ) }
         </Flex>

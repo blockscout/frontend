@@ -12,6 +12,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
+import ProfileDesktop from 'ui/snippets/profile/ProfileDesktop';
 import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
 import WalletMenuDesktop from 'ui/snippets/walletMenu/WalletMenuDesktop';
 
@@ -101,6 +102,7 @@ const MarketplaceAppTopBar = ({ appId, data, isLoading, securityReport }: Props)
           <Flex flex="1" justifyContent="flex-end">
             { config.features.account.isEnabled && <ProfileMenuDesktop boxSize="32px" fallbackIconSize={ 16 }/> }
             { config.features.blockchainInteraction.isEnabled && <WalletMenuDesktop size="sm"/> }
+            { config.features.account.isEnabled && <ProfileDesktop buttonSize="sm"/> }
           </Flex>
         ) }
       </Flex>

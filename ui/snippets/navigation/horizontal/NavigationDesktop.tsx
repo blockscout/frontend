@@ -5,6 +5,7 @@ import config from 'configs/app';
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
+import ProfileDesktop from 'ui/snippets/profile/ProfileDesktop';
 import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
 import WalletMenuDesktop from 'ui/snippets/walletMenu/WalletMenuDesktop';
 
@@ -40,6 +41,7 @@ const NavigationDesktop = () => {
         </chakra.nav>
         { config.features.account.isEnabled && <ProfileMenuDesktop buttonBoxSize="32px"/> }
         { config.features.blockchainInteraction.isEnabled && <WalletMenuDesktop size="sm"/> }
+        { config.features.account.isEnabled && <ProfileDesktop buttonSize="sm"/> }
       </Flex>
     </Box>
   );
