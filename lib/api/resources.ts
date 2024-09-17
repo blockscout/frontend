@@ -217,6 +217,15 @@ export const RESOURCES = {
     needAuth: true,
   },
 
+  // AUTH
+  auth_send_otp: {
+    path: '/api/account/v2/send_otp',
+  },
+
+  auth_confirm_otp: {
+    path: '/api/account/v2/confirm_otp',
+  },
+
   // STATS MICROSERVICE API
   stats_counters: {
     path: '/api/v1/counters',

@@ -8,3 +8,12 @@ export type Screen = {
 } | {
   type: 'success_created_email';
 }
+
+export interface EmailFormFields {
+  email: string;
+  reCaptcha: string;
+}
+
+export interface OtpCodeFormFields {
+  code: string;
+}
