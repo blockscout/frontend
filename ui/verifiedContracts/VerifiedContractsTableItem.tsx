@@ -46,9 +46,9 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
         </Flex>
         <Flex alignItems="center" ml={ 7 }>
           <Skeleton isLoaded={ !isLoading } color="text_secondary" my={ 1 }>
-            <HashStringShorten hash={ data.address.hash } isTooltipDisabled/>
+            <HashStringShorten hash={ data.address.filecoin?.robust ?? data.address.hash } isTooltipDisabled/>
           </Skeleton>
-          <CopyToClipboard text={ data.address.hash } isLoading={ isLoading }/>
+          <CopyToClipboard text={ data.address.filecoin?.robust ?? data.address.hash } isLoading={ isLoading }/>
         </Flex>
       </Td>
       <Td isNumeric>

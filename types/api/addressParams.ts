@@ -1,3 +1,4 @@
+import type { AddressFilecoinParams } from './address';
 import type { AddressMetadataTagApi } from './addressMetadata';
 
 export interface AddressImplementation {
@@ -33,6 +34,7 @@ export type AddressParamBasic = {
     reputation: number | null;
     tags: Array<AddressMetadataTagApi>;
   } | null;
+  filecoin?: AddressFilecoinParams;
 }
 
 export type AddressParam = UserTags & AddressParamBasic;
