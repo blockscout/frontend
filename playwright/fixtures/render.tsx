@@ -6,7 +6,6 @@ import React from 'react';
 
 import type { JsonObject } from '@playwright/experimental-ct-core/types/component';
 
-import ContentWrapper from 'playwright/ContentWrapper';
 import type { Props as TestAppProps } from 'playwright/TestApp';
 import TestApp from 'playwright/TestApp';
 
@@ -28,7 +27,7 @@ export type RenderFixture = (component: JSX.Element, options?: Options, props?: 
 const fixture: TestFixture<RenderFixture, { mount: Mount }> = async({ mount }, use) => {
   await use((component, options, props) => {
     return mount(
-      <TestApp { ...props }><ContentWrapper>{ component }</ContentWrapper></TestApp>,
+      <TestApp { ...props }>{ component }</TestApp>,
       options,
     );
   });

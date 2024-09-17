@@ -696,6 +696,7 @@ const schema = yup
         const isUndefined = data === undefined;
         return isUndefined || fontFamilySchema.isValidSync(data);
       }),
+    NEXT_PUBLIC_MAX_CONTENT_WIDTH_ENABLED: yup.boolean(),
 
     // 5. Features configuration
     NEXT_PUBLIC_API_SPEC_URL: yup

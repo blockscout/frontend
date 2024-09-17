@@ -1,3 +1,6 @@
 import config from 'configs/app';
 
-export const CONTENT_MAX_WIDTH = config.UI.navigation.layout === 'horizontal' ? 1440 : 1512;
+const maxWidthVerticalNavigation = config.UI.maxContentWidth ? 1_920 : 10_000;
+const maxWidthHorizontalNavigation = config.UI.maxContentWidth ? 1_440 : 10_000;
+
+export const CONTENT_MAX_WIDTH = config.UI.navigation.layout === 'horizontal' ? maxWidthHorizontalNavigation : maxWidthVerticalNavigation;
