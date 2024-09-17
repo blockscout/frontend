@@ -11,6 +11,7 @@ const PRESETS = {
   eth_goerli: 'https://eth-goerli.blockscout.com',
   eth_sepolia: 'https://eth-sepolia.blockscout.com',
   garnet: 'https://explorer.garnetchain.com',
+  filecoin: 'https://filecoin.blockscout.com',
   gnosis: 'https://gnosis.blockscout.com',
   optimism: 'https://optimism.blockscout.com',
   optimism_celestia: 'https://opcelestia-raspberry.gelatoscout.com',
@@ -75,7 +76,7 @@ function updateFileContent(envsEntries: Array<[ string, string ]>, presetId: key
   const content =
     `# Set of ENVs for ${ chainName } network explorer\n` +
     '# ' + explorerUrl + '\n' +
-    `# This is an auto-generated file. To update all values, run "yarn preset:sync --name=${ presetId }"\n` +
+    `# This is an auto-generated file. To update all values, run "yarn dev:preset:sync --name=${ presetId }"\n` +
     '\n' +
     '# Local ENVs\n' +
     localEnvsContent + '\n' +
