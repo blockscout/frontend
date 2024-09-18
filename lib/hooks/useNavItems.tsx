@@ -297,6 +297,7 @@ export default function useNavItems(): ReturnType {
       },
     ].filter(Boolean);
 
+    // TODO @tom2drum remove this
     const profileItem = {
       text: 'My profile',
       nextRoute: { pathname: '/auth/profile' as const },

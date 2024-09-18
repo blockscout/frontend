@@ -1,9 +1,13 @@
 import type { ButtonProps } from '@chakra-ui/react';
-import { Button, Tooltip } from '@chakra-ui/react';
+import { Button, Skeleton, Tooltip, Text, HStack } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
 import type { UserInfo } from 'types/api/account';
+
+import UserAvatar from 'ui/shared/UserAvatar';
+
+import { getUserHandle } from './utils';
 
 interface Props {
   profileQuery: UseQueryResult<UserInfo, unknown>;
@@ -12,8 +16,25 @@ interface Props {
   onClick: () => void;
 }
 
-const ProfileButton = ({ profileQuery, size, variant, onClick }: Props) => {
+const ProfileButton = ({ profileQuery, size, variant, onClick }: Props, ref: React.ForwardedRef<HTMLDivElement>) => {
   const { data, isPending } = profileQuery;
+
+  const content = (() => {
+    if (!data) {
+      return 'Connect';
+    }
+
+    if (data.email) {
+      return (
+        <HStack gap={ 2 }>
+          <UserAvatar size={ 20 }/>
+          <Text>{ getUserHandle(data.email) }</Text>
+        </HStack>
+      );
+    }
+
+    return 'Connected';
+  })();
 
   return (
     <Tooltip
@@ -23,9 +44,18 @@ const ProfileButton = ({ profileQuery, size, variant, onClick }: Props) => {
       isDisabled={ isPending || Boolean(data) }
       openDelay={ 500 }
     >
-      <Button size={ size } variant={ variant } onClick={ onClick }>Connect</Button>
+      <Skeleton isLoaded={ !isPending } borderRadius="base" ref={ ref }>
+        <Button
+          size={ size }
+          variant={ variant }
+          onClick={ onClick }
+          data-selected={ Boolean(data) }
+        >
+          { content }
+        </Button>
+      </Skeleton>
     </Tooltip>
   );
 };
 
-export default React.memo(ProfileButton);
+export default React.memo(React.forwardRef(ProfileButton));
