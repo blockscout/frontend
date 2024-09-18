@@ -1,10 +1,8 @@
-import { FormControl, Input } from '@chakra-ui/react';
+import { HStack, PinInput, PinInputField, Text } from '@chakra-ui/react';
 import React from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 
 import type { OtpCodeFormFields } from '../types';
-
-import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
 const AuthModalFieldOtpCode = () => {
   const { control } = useFormContext<OtpCodeFormFields>();
@@ -17,19 +15,19 @@ const AuthModalFieldOtpCode = () => {
   const isDisabled = formState.isSubmitting;
 
   return (
-    <FormControl variant="floating" isDisabled={ isDisabled } isRequired size="md">
-      <Input
-        { ...field }
-        required
-        isInvalid={ Boolean(fieldState.error) }
-        isDisabled={ isDisabled }
-        type="number"
-        minLength={ 6 }
-        maxLength={ 6 }
-        autoComplete="one-time-code"
-      />
-      <InputPlaceholder text="Confirmation code" error={ fieldState.error }/>
-    </FormControl>
+    <>
+      <HStack>
+        <PinInput otp placeholder="-" { ...field } isDisabled={ isDisabled } isInvalid={ Boolean(fieldState.error) }>
+          <PinInputField borderRadius="base"/>
+          <PinInputField borderRadius="base"/>
+          <PinInputField borderRadius="base"/>
+          <PinInputField borderRadius="base"/>
+          <PinInputField borderRadius="base"/>
+          <PinInputField borderRadius="base"/>
+        </PinInput>
+      </HStack>
+      { fieldState.error?.message && <Text color="error" fontSize="xs" mt={ 1 }>{ fieldState.error.message }</Text> }
+    </>
   );
 };
 
