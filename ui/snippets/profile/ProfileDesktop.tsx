@@ -31,9 +31,9 @@ const ProfileDesktop = ({ buttonSize, isHomePage }: Props) => {
 
         </PopoverTrigger>
         { profileQuery.data && (
-          <PopoverContent maxW="400px" minW="220px" w="min-content">
+          <PopoverContent maxW="280px" minW="220px" w="min-content">
             <PopoverBody>
-              <ProfileMenuContent data={ profileQuery.data } onNavLinkClick={ profileMenu.onClose }/>
+              <ProfileMenuContent data={ profileQuery.data } onClose={ profileMenu.onClose }/>
             </PopoverBody>
           </PopoverContent>
         ) }

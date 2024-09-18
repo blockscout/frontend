@@ -17,7 +17,14 @@ interface Props {
 }
 
 const ProfileButton = ({ profileQuery, size, variant, onClick }: Props, ref: React.ForwardedRef<HTMLDivElement>) => {
-  const { data, isPending } = profileQuery;
+  const [ isFetched, setIsFetched ] = React.useState(false);
+  const { data, isLoading } = profileQuery;
+
+  React.useEffect(() => {
+    if (!isLoading) {
+      setIsFetched(true);
+    }
+  }, [ isLoading ]);
 
   const content = (() => {
     if (!data) {
@@ -41,10 +48,10 @@ const ProfileButton = ({ profileQuery, size, variant, onClick }: Props, ref: Rea
       label={ <span>Sign in to My Account to add tags,<br/>create watchlists, access API keys and more</span> }
       textAlign="center"
       padding={ 2 }
-      isDisabled={ isPending || Boolean(data) }
+      isDisabled={ isFetched || Boolean(data) }
       openDelay={ 500 }
     >
-      <Skeleton isLoaded={ !isPending } borderRadius="base" ref={ ref }>
+      <Skeleton isLoaded={ isFetched } borderRadius="base" ref={ ref }>
         <Button
           size={ size }
           variant={ variant }

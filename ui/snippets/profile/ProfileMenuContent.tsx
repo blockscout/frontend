@@ -9,6 +9,7 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 
 import ProfileMenuNavLink from './ProfileMenuNavLink';
+import ProfileMenuWallet from './ProfileMenuWallet';
 import { getUserHandle } from './utils';
 
 const navLinks: Array<NavLink> = [
@@ -41,10 +42,10 @@ const navLinks: Array<NavLink> = [
 
 interface Props {
   data?: UserInfo;
-  onNavLinkClick?: () => void;
+  onClose?: () => void;
 }
 
-const ProfileMenuContent = ({ data, onNavLinkClick }: Props) => {
+const ProfileMenuContent = ({ data, onClose }: Props) => {
 
   return (
     <Box>
@@ -53,19 +54,19 @@ const ProfileMenuContent = ({ data, onNavLinkClick }: Props) => {
           text="Profile"
           href={ route({ pathname: '/auth/profile' }) }
           icon="profile"
-          onClick={ onNavLinkClick }
+          onClick={ onClose }
         />
         { data?.email && <Text variant="secondary" fontSize="sm">{ getUserHandle(data.email) }</Text> }
       </Flex>
 
-      <Divider/>
+      <ProfileMenuWallet onClose={ onClose }/>
 
       <VStack as="ul" spacing="0" alignItems="flex-start" overflow="hidden">
         { navLinks.map((item) => (
           <ProfileMenuNavLink
             key={ item.text }
             { ...item }
-            onClick={ onNavLinkClick }
+            onClick={ onClose }
           />
         )) }
       </VStack>
@@ -75,7 +76,7 @@ const ProfileMenuContent = ({ data, onNavLinkClick }: Props) => {
       <ProfileMenuNavLink
         text="Sign out"
         icon="sign_out"
-        onClick={ onNavLinkClick }
+        onClick={ onClose }
       />
     </Box>
   );
