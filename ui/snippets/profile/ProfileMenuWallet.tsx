@@ -2,12 +2,12 @@ import { Button, Divider, Flex, IconButton } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
-import useApiQuery from 'lib/api/useApiQuery';
 import delay from 'lib/delay';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
 import useWallet from '../walletMenu/useWallet';
+import useWeb3AccountWithDomain from './useWeb3AccountWithDomain';
 
 interface Props {
   onClose?: () => void;
@@ -16,15 +16,7 @@ interface Props {
 const ProfileMenuWallet = ({ onClose }: Props) => {
   const wallet = useWallet({ source: 'Header' });
 
-  const addressDomainQuery = useApiQuery('address_domain', {
-    pathParams: {
-      chainId: config.chain.id,
-      address: wallet.address,
-    },
-    queryOptions: {
-      enabled: config.features.nameService.isEnabled && Boolean(wallet.address),
-    },
-  });
+  const web3AccountWithDomain = useWeb3AccountWithDomain(true);
 
   const handleConnectWalletClick = React.useCallback(async() => {
     wallet.openModal();
@@ -42,14 +34,14 @@ const ProfileMenuWallet = ({ onClose }: Props) => {
     return <Divider/>;
   }
 
-  if (wallet.isWalletConnected) {
+  if (wallet.isWalletConnected && web3AccountWithDomain.address) {
     return (
       <>
         <Divider/>
         <Flex alignItems="center" columnGap={ 2 } py="14px">
           <AddressEntity
-            address={{ hash: wallet.address, ens_domain_name: addressDomainQuery.data?.domain?.name }}
-            isLoading={ addressDomainQuery.isPending }
+            address={{ hash: web3AccountWithDomain.address, ens_domain_name: web3AccountWithDomain.domain }}
+            isLoading={ web3AccountWithDomain.isLoading }
             isTooltipDisabled
             truncation="dynamic"
             fontSize="sm"

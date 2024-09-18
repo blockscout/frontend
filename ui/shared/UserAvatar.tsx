@@ -11,6 +11,7 @@ interface Props {
   fallbackIconSize?: number;
 }
 
+// TODO @tom2drum remove this component
 const UserAvatar = ({ size, fallbackIconSize = 20 }: Props) => {
   const appProps = useAppContext();
   const hasAuth = Boolean(cookies.get(cookies.NAMES.API_TOKEN, appProps.cookies));

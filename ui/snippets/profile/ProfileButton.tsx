@@ -5,8 +5,12 @@ import React from 'react';
 
 import type { UserInfo } from 'types/api/account';
 
-import UserAvatar from 'ui/shared/UserAvatar';
+import { useMarketplaceContext } from 'lib/contexts/marketplace';
+import shortenString from 'lib/shortenString';
+import IconSvg from 'ui/shared/IconSvg';
 
+import ProfileAddressIcon from './ProfileAddressIcon';
+import useWeb3AccountWithDomain from './useWeb3AccountWithDomain';
 import { getUserHandle } from './utils';
 
 interface Props {
@@ -19,6 +23,8 @@ interface Props {
 const ProfileButton = ({ profileQuery, size, variant, onClick }: Props, ref: React.ForwardedRef<HTMLDivElement>) => {
   const [ isFetched, setIsFetched ] = React.useState(false);
   const { data, isLoading } = profileQuery;
+  const web3AccountWithDomain = useWeb3AccountWithDomain(!data?.address_hash);
+  const { isAutoConnectDisabled } = useMarketplaceContext();
 
   React.useEffect(() => {
     if (!isLoading) {
@@ -31,11 +37,33 @@ const ProfileButton = ({ profileQuery, size, variant, onClick }: Props, ref: Rea
       return 'Connect';
     }
 
+    const address = data.address_hash || web3AccountWithDomain.address;
+    if (address) {
+      const text = (() => {
+        if (data.address_hash) {
+          return shortenString(data.address_hash);
+        }
+
+        if (web3AccountWithDomain.domain) {
+          return web3AccountWithDomain.domain;
+        }
+
+        return shortenString(address);
+      })();
+
+      return (
+        <HStack gap={ 2 }>
+          <ProfileAddressIcon address={ address } isAutoConnectDisabled={ isAutoConnectDisabled }/>
+          <Text display={{ base: 'none', md: 'block' }}>{ text }</Text>
+        </HStack>
+      );
+    }
+
     if (data.email) {
       return (
         <HStack gap={ 2 }>
-          <UserAvatar size={ 20 }/>
-          <Text>{ getUserHandle(data.email) }</Text>
+          <IconSvg name="profile" boxSize={ 5 }/>
+          <Text display={{ base: 'none', md: 'block' }}>{ getUserHandle(data.email) }</Text>
         </HStack>
       );
     }
@@ -57,6 +85,11 @@ const ProfileButton = ({ profileQuery, size, variant, onClick }: Props, ref: Rea
           variant={ variant }
           onClick={ onClick }
           data-selected={ Boolean(data) }
+          data-warning={ isAutoConnectDisabled }
+          fontSize="sm"
+          lineHeight={ 5 }
+          px={ data ? 2.5 : 4 }
+          fontWeight={ data ? 700 : 600 }
         >
           { content }
         </Button>
