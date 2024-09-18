@@ -226,6 +226,14 @@ export const RESOURCES = {
     path: '/api/account/v2/confirm_otp',
   },
 
+  auth_siwe_message: {
+    path: '/api/account/v2/siwe_message',
+  },
+
+  auth_siwe_verify: {
+    path: '/api/account/v2/authenticate_via_wallet',
+  },
+
   // STATS MICROSERVICE API
   stats_counters: {
     path: '/api/v1/counters',

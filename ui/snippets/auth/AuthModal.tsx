@@ -5,10 +5,12 @@ import type { Screen } from './types';
 
 import IconSvg from 'ui/shared/IconSvg';
 
+import AuthModalScreenConnectWallet from './screens/AuthModalScreenConnectWallet';
 import AuthModalScreenEmail from './screens/AuthModalScreenEmail';
 import AuthModalScreenOtpCode from './screens/AuthModalScreenOtpCode';
 import AuthModalScreenSelectMethod from './screens/AuthModalScreenSelectMethod';
 import AuthModalScreenSuccessCreatedEmail from './screens/AuthModalScreenSuccessCreatedEmail';
+import AuthModalScreenSuccessCreatedWallet from './screens/AuthModalScreenSuccessCreatedWallet';
 
 interface Props {
   initialScreen: Screen;
@@ -26,16 +28,23 @@ const AuthModal = ({ initialScreen, onClose }: Props) => {
     setSteps((prev) => prev.length > 1 ? prev.slice(0, -1) : prev);
   }, []);
 
+  const onReset = React.useCallback(() => {
+    setSteps([ initialScreen ]);
+  }, [ initialScreen ]);
+
   const header = (() => {
     const currentStep = steps[steps.length - 1];
     switch (currentStep.type) {
       case 'select_method':
         return 'Select a way to connect';
+      case 'connect_wallet':
+        return 'Continue with wallet';
       case 'email':
-        return 'Continue with email';
+        return currentStep.isAccountExists ? 'Add email' : 'Continue with email';
       case 'otp_code':
         return 'Confirmation code';
       case 'success_created_email':
+      case 'success_created_wallet':
         return 'Congrats!';
     }
   })();
@@ -45,12 +54,16 @@ const AuthModal = ({ initialScreen, onClose }: Props) => {
     switch (currentStep.type) {
       case 'select_method':
         return <AuthModalScreenSelectMethod onSelectMethod={ onNextStep }/>;
+      case 'connect_wallet':
+        return <AuthModalScreenConnectWallet onSuccess={ onNextStep } onError={ onReset }/>;
       case 'email':
         return <AuthModalScreenEmail onSubmit={ onNextStep }/>;
       case 'otp_code':
         return <AuthModalScreenOtpCode email={ currentStep.email } onSubmit={ onNextStep }/>;
       case 'success_created_email':
         return <AuthModalScreenSuccessCreatedEmail/>;
+      case 'success_created_wallet':
+        return <AuthModalScreenSuccessCreatedWallet address={ currentStep.address } onAddEmail={ onNextStep }/>;
     }
   })();
 
