@@ -41,7 +41,7 @@ const navLinks: Array<NavLink> = [
 ].filter(Boolean);
 
 interface Props {
-  data?: UserInfo;
+  data: UserInfo;
   onClose?: () => void;
 }
 

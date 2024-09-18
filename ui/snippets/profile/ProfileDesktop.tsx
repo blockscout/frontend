@@ -28,7 +28,6 @@ const ProfileDesktop = ({ buttonSize, isHomePage }: Props) => {
             variant={ isHomePage ? 'hero' : 'header' }
             onClick={ profileQuery.data ? profileMenu.onOpen : authModal.onOpen }
           />
-
         </PopoverTrigger>
         { profileQuery.data && (
           <PopoverContent maxW="280px" minW="220px" w="min-content">
