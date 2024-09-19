@@ -11,6 +11,7 @@ import useGradualIncrement from 'lib/hooks/useGradualIncrement';
 import useToast from 'lib/hooks/useToast';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
+// TODO @tom2drum delete this page
 { /* will be deleted when we fix login in preview CI stands */ }
 const Login = () => {
   const toast = useToast();
