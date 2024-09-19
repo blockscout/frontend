@@ -29,6 +29,7 @@ const AuthModalFieldEmail = ({ className }: Props) => {
         isInvalid={ Boolean(fieldState.error) }
         isDisabled={ isDisabled }
         autoComplete="off"
+        bgColor="dialog_bg"
       />
       <InputPlaceholder text="Email" error={ fieldState.error }/>
     </FormControl>
