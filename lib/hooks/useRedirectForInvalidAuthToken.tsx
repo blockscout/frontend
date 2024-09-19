@@ -7,6 +7,7 @@ import type { ResourceError } from 'lib/api/resources';
 import * as cookies from 'lib/cookies';
 import useLoginUrl from 'lib/hooks/useLoginUrl';
 
+// TODO @tom2drum remove or revise this hook
 export default function useRedirectForInvalidAuthToken() {
   const queryClient = useQueryClient();
 

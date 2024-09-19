@@ -6,6 +6,7 @@ import config from 'configs/app';
 
 const feature = config.features.account;
 
+// TODO @tom2drum remove this hook
 export default function useLoginUrl() {
   const router = useRouter();
   return feature.isEnabled ?

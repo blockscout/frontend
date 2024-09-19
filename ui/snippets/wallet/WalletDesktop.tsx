@@ -2,9 +2,9 @@ import { PopoverBody, PopoverContent, PopoverTrigger, useDisclosure, type Button
 import React from 'react';
 
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
+import useWeb3Wallet from 'lib/web3/useWallet';
 import Popover from 'ui/shared/chakra/Popover';
 import useWeb3AccountWithDomain from 'ui/snippets/profile/useWeb3AccountWithDomain';
-import useWallet from 'ui/snippets/walletMenu/useWallet';
 
 import WalletButton from './WalletButton';
 import WalletMenuContent from './WalletMenuContent';
@@ -17,23 +17,23 @@ interface Props {
 const WalletDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => {
   const walletMenu = useDisclosure();
 
-  const walletUtils = useWallet({ source: 'Header' });
-  const web3AccountWithDomain = useWeb3AccountWithDomain(walletUtils.isWalletConnected);
+  const web3Wallet = useWeb3Wallet({ source: 'Header' });
+  const web3AccountWithDomain = useWeb3AccountWithDomain(web3Wallet.isConnected);
   const { isAutoConnectDisabled } = useMarketplaceContext();
 
   const isPending =
-    (walletUtils.isWalletConnected && web3AccountWithDomain.isLoading) ||
-    (!walletUtils.isWalletConnected && (walletUtils.isModalOpening || walletUtils.isModalOpen));
+    (web3Wallet.isConnected && web3AccountWithDomain.isLoading) ||
+    (!web3Wallet.isConnected && web3Wallet.isOpen);
 
   const handleOpenWalletClick = React.useCallback(() => {
-    walletUtils.openModal();
+    web3Wallet.openModal();
     walletMenu.onClose();
-  }, [ walletUtils, walletMenu ]);
+  }, [ web3Wallet, walletMenu ]);
 
   const handleDisconnectClick = React.useCallback(() => {
-    walletUtils.disconnect();
+    web3Wallet.disconnect();
     walletMenu.onClose();
-  }, [ walletUtils, walletMenu ]);
+  }, [ web3Wallet, walletMenu ]);
 
   return (
     <Popover openDelay={ 300 } placement="bottom-end" isLazy isOpen={ walletMenu.isOpen } onClose={ walletMenu.onClose }>
@@ -41,7 +41,7 @@ const WalletDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => {
         <WalletButton
           size={ buttonSize }
           variant={ buttonVariant }
-          onClick={ walletUtils.isWalletConnected ? walletMenu.onOpen : walletUtils.openModal }
+          onClick={ web3Wallet.isConnected ? walletMenu.onOpen : web3Wallet.openModal }
           address={ web3AccountWithDomain.address }
           domain={ web3AccountWithDomain.domain }
           isPending={ isPending }

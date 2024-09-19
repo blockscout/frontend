@@ -6,11 +6,11 @@ export enum EventTypes {
   SEARCH_QUERY = 'Search query',
   LOCAL_SEARCH = 'Local search',
   ADD_TO_WALLET = 'Add to wallet',
-  ACCOUNT_ACCESS = 'Account access',
+  ACCOUNT_ACCESS = 'Account access', // deprecated
   PRIVATE_TAG = 'Private tag',
   VERIFY_ADDRESS = 'Verify address',
   VERIFY_TOKEN = 'Verify token',
-  WALLET_CONNECT = 'Wallet connect',
+  WALLET_CONNECT = 'Wallet connect', // 🦆
   WALLET_ACTION = 'Wallet action',
   CONTRACT_INTERACTION = 'Contract interaction',
   CONTRACT_VERIFICATION = 'Contract verification',

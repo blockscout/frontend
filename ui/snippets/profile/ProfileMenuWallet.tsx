@@ -2,10 +2,10 @@ import { Button, Divider, Flex, IconButton } from '@chakra-ui/react';
 import React from 'react';
 
 import delay from 'lib/delay';
+import useWeb3Wallet from 'lib/web3/useWallet';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
-import useWallet from '../walletMenu/useWallet';
 import useWeb3AccountWithDomain from './useWeb3AccountWithDomain';
 
 interface Props {
@@ -13,23 +13,23 @@ interface Props {
 }
 
 const ProfileMenuWallet = ({ onClose }: Props) => {
-  const wallet = useWallet({ source: 'Header' });
+  const web3Wallet = useWeb3Wallet({ source: 'Header' });
 
   const web3AccountWithDomain = useWeb3AccountWithDomain(true);
 
   const handleConnectWalletClick = React.useCallback(async() => {
-    wallet.openModal();
+    web3Wallet.openModal();
     await delay(300);
     onClose?.();
-  }, [ wallet, onClose ]);
+  }, [ web3Wallet, onClose ]);
 
   const handleOpenWalletClick = React.useCallback(async() => {
-    wallet.openModal();
+    web3Wallet.openModal();
     await delay(300);
     onClose?.();
-  }, [ wallet, onClose ]);
+  }, [ web3Wallet, onClose ]);
 
-  if (wallet.isWalletConnected && web3AccountWithDomain.address) {
+  if (web3Wallet.isConnected && web3AccountWithDomain.address) {
     return (
       <>
         <Divider/>
@@ -49,7 +49,7 @@ const ProfileMenuWallet = ({ onClose }: Props) => {
             color="icon_info"
             boxSize={ 5 }
             onClick={ handleOpenWalletClick }
-            isLoading={ wallet.isModalOpening }
+            isLoading={ web3Wallet.isOpen }
             flexShrink={ 0 }
           />
         </Flex>
@@ -58,13 +58,11 @@ const ProfileMenuWallet = ({ onClose }: Props) => {
     );
   }
 
-  const isLoading = wallet.isModalOpening || wallet.isModalOpen;
-
   return (
     <Button
       size="sm"
       onClick={ handleConnectWalletClick }
-      isLoading={ isLoading }
+      isLoading={ web3Wallet.isOpen }
       loadingText="Connect Wallet"
       w="100%"
       my={ 2 }
