@@ -87,6 +87,8 @@ const ChartWidget = ({
           isLoaded={ !isLoading }
           color="text_secondary"
           fontSize="xs"
+          mt={ 1 }
+
         >
           <span>{ description }</span>
         </Skeleton>

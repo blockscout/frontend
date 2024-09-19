@@ -191,7 +191,7 @@ export const averageGasPrice: stats.LineChart = {
   ],
   info: {
     title: 'Chart title',
-    description: 'Chert description',
+    description: 'Chart description',
     id: 'chart',
     resolutions: [ 'DAY', 'MONTH' ],
   },

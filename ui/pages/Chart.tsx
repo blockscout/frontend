@@ -167,7 +167,7 @@ const Chart = () => {
         mb={ 3 }
         isLoading={ isInfoLoading }
         backLink={ backLink }
-        contentAfter={ isMobile ? shareAndMenu : undefined }
+        afterTitle={ isMobile ? shareAndMenu : undefined }
         secondRow={ info?.description || lineQuery.data?.info?.description }
         withTextAd
       />
@@ -175,9 +175,9 @@ const Chart = () => {
         <Flex alignItems="center" gap={ 3 } maxW="100%" overflow="hidden">
           <Text>Period</Text>
           <ChartIntervalSelect interval={ interval } onIntervalChange={ setIntervalState }/>
-          { lineQuery.data?.info?.resolutions && lineQuery.data?.info?.resolutions.length > 2 && (
+          { lineQuery.data?.info?.resolutions && lineQuery.data?.info?.resolutions.length > 1 && (
             <>
-              <Text ml={ 3 }>{ isMobile ? 'Res.' : 'Resolution' }</Text>
+              <Text ml={{ base: 0, lg: 3 }}>{ isMobile ? 'Res.' : 'Resolution' }</Text>
               <ChartResolutionSelect
                 resolution={ resolution }
                 onResolutionChange={ setResolution }
@@ -185,7 +185,7 @@ const Chart = () => {
               />
             </>
           ) }
-          { (!isZoomResetInitial || resolution !== 'DAY') && (
+          { (!isZoomResetInitial || resolution !== DEFAULT_RESOLUTION) && (
             isMobile ? (
               <IconButton
                 aria-label="Reset"
