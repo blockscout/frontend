@@ -1,10 +1,11 @@
-import { Box, Center, Flex, Link, Skeleton, Text, Image } from '@chakra-ui/react';
+import { Box, Center, Flex, Link, Skeleton, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TimeChartItem } from './types';
 
 import { apos } from 'lib/html-entities';
 
+import WatermarkIcon from './ChartWatermarkIcon';
 import ChartWidgetGraph from './ChartWidgetGraph';
 
 export type Props = {
@@ -77,17 +78,7 @@ const ChartWidgetContent = ({
         isEnlarged={ isEnlarged }
         noAnimation={ noAnimation }
       />
-      <Image src="/static/logo.svg"
-        position="absolute"
-        alt="blockscout logo"
-        height="30px"
-        opacity={ 0.1 }
-        top="50%"
-        left="50%"
-        transform="translate(-50%, -50%)"
-        color="link"
-        pointerEvents="none"
-      />
+      <WatermarkIcon w="162px" h="15%"/>
     </Box>
   );
 };

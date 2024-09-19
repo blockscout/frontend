@@ -37,7 +37,7 @@ const StatsFilters = ({
 
   return (
     <Grid
-      gap={ 2 }
+      gap={{ base: 2, lg: 6 }}
       templateAreas={{
         base: `"section interval"
                 "input input"`,
@@ -63,7 +63,7 @@ const StatsFilters = ({
         w={{ base: '100%', lg: 'auto' }}
         area="interval"
       >
-        <ChartIntervalSelect interval={ interval } onIntervalChange={ onIntervalChange } isLoading={ isLoading }/>
+        <ChartIntervalSelect interval={ interval } onIntervalChange={ onIntervalChange } isLoading={ isLoading } selectTagSize="md"/>
       </GridItem>
 
       <GridItem

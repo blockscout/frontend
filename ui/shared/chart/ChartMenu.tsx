@@ -118,7 +118,7 @@ const ChartMenu = ({ items, title, description, units, isLoading, chartRef, href
             h="32px"
             icon={ <IconSvg name="dots" boxSize={ 4 } transform="rotate(-90deg)"/> }
             colorScheme="gray"
-            variant="ghost"
+            variant="simple"
             as={ IconButton }
           >
             <VisuallyHidden>
@@ -132,6 +132,7 @@ const ChartMenu = ({ items, title, description, units, isLoading, chartRef, href
               display="flex"
               alignItems="center"
               onClick={ hasShare ? handleShare : onCopy }
+              closeOnSelect={ hasShare ? false : true }
             >
               <IconSvg name={ hasShare ? 'share' : 'copy' } boxSize={ 5 } mr={ 3 }/>
               { hasShare ? 'Share' : 'Copy link' }

@@ -65,46 +65,52 @@ const ChartWidget = ({
     />
   );
 
+  const chartHeader = (
+    <Flex
+      flexGrow={ 1 }
+      flexDir="column"
+      alignItems="flex-start"
+      cursor={ href ? 'pointer' : 'default' }
+      _hover={ href ? { color: 'link_hovered' } : {} }
+    >
+      <Skeleton
+        isLoaded={ !isLoading }
+        fontWeight={ 600 }
+        size={{ base: 'xs', lg: 'sm' }}
+      >
+
+        <span>{ title }</span>
+      </Skeleton>
+
+      { description && (
+        <Skeleton
+          isLoaded={ !isLoading }
+          color="text_secondary"
+          fontSize="xs"
+        >
+          <span>{ description }</span>
+        </Skeleton>
+      ) }
+    </Flex>
+  );
+
   return (
     <Flex
       height="100%"
       ref={ ref }
       flexDir="column"
       padding={{ base: 3, lg: 4 }}
-      borderRadius="md"
+      borderRadius="lg"
       border="1px"
       borderColor={ borderColor }
       className={ className }
     >
-      <Flex columnGap={ 6 } mb={ 1 } alignItems="flex-start">
-        <Flex flexGrow={ 1 } flexDir="column" alignItems="flex-start">
-          <Skeleton
-            isLoaded={ !isLoading }
-            fontWeight={ 600 }
-            size={{ base: 'xs', lg: 'sm' }}
-            cursor={ href ? 'pointer' : 'default' }
-            _hover={ href ? { color: 'link_hovered' } : {} }
-          >
-            { href ? (
-              <NextLink href={ href } passHref legacyBehavior>
-                { title }
-              </NextLink>
-            ) : title
-            }
-          </Skeleton>
-
-          { description && (
-            <Skeleton
-              isLoaded={ !isLoading }
-              color="text_secondary"
-              fontSize="xs"
-              mt={ 1 }
-            >
-              <span>{ description }</span>
-            </Skeleton>
-          ) }
-        </Flex>
-
+      <Flex columnGap={ 6 } mb={ 2 } alignItems="flex-start">
+        { href ? (
+          <NextLink href={ href } passHref legacyBehavior >
+            { chartHeader }
+          </NextLink>
+        ) : chartHeader }
         <Flex ml="auto" columnGap={ 2 }>
           <Tooltip label="Reset zoom">
             <IconButton

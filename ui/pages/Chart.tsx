@@ -169,7 +169,7 @@ const Chart = () => {
         backLink={ backLink }
         contentAfter={ isMobile ? shareAndMenu : undefined }
         secondRow={ info?.description || lineQuery.data?.info?.description }
-        // withTextAd
+        withTextAd
       />
       <Flex alignItems="center" justifyContent="space-between">
         <Flex alignItems="center" gap={ 3 } maxW="100%" overflow="hidden">
@@ -177,7 +177,7 @@ const Chart = () => {
           <ChartIntervalSelect interval={ interval } onIntervalChange={ setIntervalState }/>
           { lineQuery.data?.info?.resolutions && lineQuery.data?.info?.resolutions.length > 2 && (
             <>
-              <Text>{ isMobile ? 'Res.' : 'Resolution' }</Text>
+              <Text ml={ 3 }>{ isMobile ? 'Res.' : 'Resolution' }</Text>
               <ChartResolutionSelect
                 resolution={ resolution }
                 onResolutionChange={ setResolution }
