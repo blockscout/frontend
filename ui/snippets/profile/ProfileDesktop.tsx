@@ -1,22 +1,42 @@
 import { PopoverBody, PopoverContent, PopoverTrigger, useDisclosure, type ButtonProps } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import Popover from 'ui/shared/chakra/Popover';
 import AuthModal from 'ui/snippets/auth/AuthModal';
+import useSignInWithWallet from 'ui/snippets/auth/screens/useSignInWithWallet';
 
 import ProfileButton from './ProfileButton';
 import ProfileMenuContent from './ProfileMenuContent';
 
 interface Props {
   buttonSize?: ButtonProps['size'];
-  isHomePage?: boolean;
+  buttonVariant?: ButtonProps['variant'];
 }
 
-const ProfileDesktop = ({ buttonSize, isHomePage }: Props) => {
-  const profileQuery = useFetchProfileInfo();
+const ProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => {
+  const router = useRouter();
+
   const authModal = useDisclosure();
   const profileMenu = useDisclosure();
+
+  const profileQuery = useFetchProfileInfo();
+  const signInWithWallet = useSignInWithWallet({});
+
+  const handleProfileButtonClick = React.useCallback(() => {
+    if (profileQuery.data) {
+      profileMenu.onOpen();
+      return;
+    }
+
+    if (router.pathname === '/apps/[id]') {
+      signInWithWallet.start();
+      return;
+    }
+
+    authModal.onOpen();
+  }, [ profileQuery.data, router.pathname, authModal, profileMenu, signInWithWallet ]);
 
   return (
     <>
@@ -25,8 +45,9 @@ const ProfileDesktop = ({ buttonSize, isHomePage }: Props) => {
           <ProfileButton
             profileQuery={ profileQuery }
             size={ buttonSize }
-            variant={ isHomePage ? 'hero' : 'header' }
-            onClick={ profileQuery.data ? profileMenu.onOpen : authModal.onOpen }
+            variant={ buttonVariant }
+            onClick={ handleProfileButtonClick }
+            isPending={ signInWithWallet.isPending }
           />
         </PopoverTrigger>
         { profileQuery.data && (

@@ -1,4 +1,4 @@
-import { chakra, Flex, Tooltip, Skeleton } from '@chakra-ui/react';
+import { chakra, Flex, Tooltip, Skeleton, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { MarketplaceAppOverview, MarketplaceAppSecurityReport, ContractListTypes } from 'types/client/marketplace';
@@ -97,9 +97,9 @@ const MarketplaceAppTopBar = ({ appId, data, isLoading, securityReport }: Props)
           source="App page"
         />
         { !isMobile && (
-          <Flex flex="1" justifyContent="flex-end">
+          <Box ml="auto">
             { config.features.account.isEnabled && <ProfileDesktop buttonSize="sm"/> }
-          </Flex>
+          </Box>
         ) }
       </Flex>
       { contractListType && (

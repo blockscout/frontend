@@ -16,11 +16,12 @@ import { getUserHandle } from './utils';
 interface Props {
   profileQuery: UseQueryResult<UserInfo, unknown>;
   size?: ButtonProps['size'];
-  variant?: 'hero' | 'header';
+  variant?: ButtonProps['variant'];
   onClick: () => void;
+  isPending?: boolean;
 }
 
-const ProfileButton = ({ profileQuery, size, variant, onClick }: Props, ref: React.ForwardedRef<HTMLDivElement>) => {
+const ProfileButton = ({ profileQuery, size, variant, onClick, isPending }: Props, ref: React.ForwardedRef<HTMLDivElement>) => {
   const [ isFetched, setIsFetched ] = React.useState(false);
   const { data, isLoading } = profileQuery;
   const web3AccountWithDomain = useWeb3AccountWithDomain(!data?.address_hash);
@@ -90,6 +91,8 @@ const ProfileButton = ({ profileQuery, size, variant, onClick }: Props, ref: Rea
           lineHeight={ 5 }
           px={ data ? 2.5 : 4 }
           fontWeight={ data ? 700 : 600 }
+          isLoading={ isPending }
+          loadingText="Connecting"
         >
           { content }
         </Button>

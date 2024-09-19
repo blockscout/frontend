@@ -53,7 +53,7 @@ const HeroBanner = () => {
           </Heading>
           { config.UI.navigation.layout === 'vertical' && (
             <Box display={{ base: 'none', lg: 'block' }}>
-              { config.features.account.isEnabled && <ProfileDesktop isHomePage/> }
+              { config.features.account.isEnabled && <ProfileDesktop buttonVariant="hero"/> }
             </Box>
           ) }
         </Flex>
