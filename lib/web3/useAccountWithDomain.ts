@@ -2,9 +2,10 @@ import React from 'react';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
-import useAccount from 'lib/web3/useAccount';
 
-export default function useWeb3AccountWithDomain(isEnabled: boolean) {
+import useAccount from './useAccount';
+
+export default function useAccountWithDomain(isEnabled: boolean) {
   const { address } = useAccount();
 
   const isQueryEnabled = config.features.nameService.isEnabled && Boolean(address) && Boolean(isEnabled);

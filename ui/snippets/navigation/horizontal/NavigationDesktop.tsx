@@ -5,8 +5,8 @@ import config from 'configs/app';
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
-import ProfileDesktop from 'ui/snippets/profile/ProfileDesktop';
-import WalletDesktop from 'ui/snippets/wallet/WalletDesktop';
+import UserProfileDesktop from 'ui/snippets/user/profile/UserProfileDesktop';
+import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
 
 import TestnetBadge from '../TestnetBadge';
 import NavLink from './NavLink';
@@ -39,8 +39,8 @@ const NavigationDesktop = () => {
           </Flex>
         </chakra.nav>
         {
-          (config.features.account.isEnabled && <ProfileDesktop buttonSize="sm"/>) ||
-          (config.features.blockchainInteraction.isEnabled && <WalletDesktop buttonSize="sm"/>)
+          (config.features.account.isEnabled && <UserProfileDesktop buttonSize="sm"/>) ||
+          (config.features.blockchainInteraction.isEnabled && <UserWalletDesktop buttonSize="sm"/>)
         }
       </Flex>
     </Box>

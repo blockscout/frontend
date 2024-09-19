@@ -8,15 +8,15 @@ import Popover from 'ui/shared/chakra/Popover';
 import AuthModal from 'ui/snippets/auth/AuthModal';
 import useSignInWithWallet from 'ui/snippets/auth/useSignInWithWallet';
 
-import ProfileButton from './ProfileButton';
-import ProfileMenuContent from './ProfileMenuContent';
+import UserProfileButton from './UserProfileButton';
+import UserProfileContent from './UserProfileContent';
 
 interface Props {
   buttonSize?: ButtonProps['size'];
   buttonVariant?: ButtonProps['variant'];
 }
 
-const ProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => {
+const UserProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => {
   const router = useRouter();
 
   const authModal = useDisclosure();
@@ -43,7 +43,7 @@ const ProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => {
     <>
       <Popover openDelay={ 300 } placement="bottom-end" isLazy isOpen={ profileMenu.isOpen } onClose={ profileMenu.onClose }>
         <PopoverTrigger>
-          <ProfileButton
+          <UserProfileButton
             profileQuery={ profileQuery }
             size={ buttonSize }
             variant={ buttonVariant }
@@ -54,7 +54,7 @@ const ProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => {
         { profileQuery.data && (
           <PopoverContent maxW="280px" minW="220px" w="min-content">
             <PopoverBody>
-              <ProfileMenuContent data={ profileQuery.data } onClose={ profileMenu.onClose }/>
+              <UserProfileContent data={ profileQuery.data } onClose={ profileMenu.onClose }/>
             </PopoverBody>
           </PopoverContent>
         ) }
@@ -69,4 +69,4 @@ const ProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => {
   );
 };
 
-export default React.memo(ProfileDesktop);
+export default React.memo(UserProfileDesktop);

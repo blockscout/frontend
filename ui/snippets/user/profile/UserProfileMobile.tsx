@@ -7,10 +7,10 @@ import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import AuthModal from 'ui/snippets/auth/AuthModal';
 import useSignInWithWallet from 'ui/snippets/auth/useSignInWithWallet';
 
-import ProfileButton from './ProfileButton';
-import ProfileMenuContent from './ProfileMenuContent';
+import UserProfileButton from './UserProfileButton';
+import UserProfileContent from './UserProfileContent';
 
-const ProfileMobile = () => {
+const UserProfileMobile = () => {
   const router = useRouter();
 
   const authModal = useDisclosure();
@@ -35,7 +35,7 @@ const ProfileMobile = () => {
 
   return (
     <>
-      <ProfileButton
+      <UserProfileButton
         profileQuery={ profileQuery }
         variant="header"
         onClick={ handleProfileButtonClick }
@@ -50,7 +50,7 @@ const ProfileMobile = () => {
           <DrawerOverlay/>
           <DrawerContent maxWidth="300px">
             <DrawerBody p={ 6 }>
-              <ProfileMenuContent data={ profileQuery.data } onClose={ profileMenu.onClose }/>
+              <UserProfileContent data={ profileQuery.data } onClose={ profileMenu.onClose }/>
             </DrawerBody>
           </DrawerContent>
         </Drawer>
@@ -65,4 +65,4 @@ const ProfileMobile = () => {
   );
 };
 
-export default React.memo(ProfileMobile);
+export default React.memo(UserProfileMobile);

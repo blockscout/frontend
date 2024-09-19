@@ -8,10 +8,10 @@ import type { UserInfo } from 'types/api/account';
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import shortenString from 'lib/shortenString';
+import useWeb3AccountWithDomain from 'lib/web3/useAccountWithDomain';
 import IconSvg from 'ui/shared/IconSvg';
 
-import ProfileAddressIcon from './ProfileAddressIcon';
-import useWeb3AccountWithDomain from './useWeb3AccountWithDomain';
+import UserIdenticon from '../UserIdenticon';
 import { getUserHandle } from './utils';
 
 interface Props {
@@ -22,7 +22,7 @@ interface Props {
   isPending?: boolean;
 }
 
-const ProfileButton = ({ profileQuery, size, variant, onClick, isPending }: Props, ref: React.ForwardedRef<HTMLDivElement>) => {
+const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: Props, ref: React.ForwardedRef<HTMLDivElement>) => {
   const [ isFetched, setIsFetched ] = React.useState(false);
   const isMobile = useIsMobile();
 
@@ -57,7 +57,7 @@ const ProfileButton = ({ profileQuery, size, variant, onClick, isPending }: Prop
 
       return (
         <HStack gap={ 2 }>
-          <ProfileAddressIcon address={ address } isAutoConnectDisabled={ isAutoConnectDisabled }/>
+          <UserIdenticon address={ address } isAutoConnectDisabled={ isAutoConnectDisabled }/>
           <Box display={{ base: 'none', md: 'block' }}>{ text }</Box>
         </HStack>
       );
@@ -104,4 +104,4 @@ const ProfileButton = ({ profileQuery, size, variant, onClick, isPending }: Prop
   );
 };
 
-export default React.memo(React.forwardRef(ProfileButton));
+export default React.memo(React.forwardRef(UserProfileButton));

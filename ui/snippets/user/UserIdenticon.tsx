@@ -9,7 +9,7 @@ type Props = {
   isAutoConnectDisabled?: boolean;
 };
 
-const ProfileAddressIcon = ({ address, isAutoConnectDisabled }: Props) => {
+const UserIdenticon = ({ address, isAutoConnectDisabled }: Props) => {
   const borderColor = useColorModeValue('orange.100', 'orange.900');
 
   return (
@@ -37,4 +37,4 @@ const ProfileAddressIcon = ({ address, isAutoConnectDisabled }: Props) => {
   );
 };
 
-export default React.memo(ProfileAddressIcon);
+export default React.memo(UserIdenticon);

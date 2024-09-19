@@ -9,10 +9,10 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import useLogout from 'ui/snippets/auth/useLogout';
-import WalletAutoConnectDisabledAlert from 'ui/snippets/wallet/WalletAutoConnectDisabledAlert';
 
-import ProfileMenuNavLink from './ProfileMenuNavLink';
-import ProfileMenuWallet from './ProfileMenuWallet';
+import UserWalletAutoConnectAlert from '../UserWalletAutoConnectAlert';
+import UserProfileContentNavLink from './UserProfileContentNavLink';
+import UserProfileContentWallet from './UserProfileContentWallet';
 import { getUserHandle } from './utils';
 
 const navLinks: Array<NavLink> = [
@@ -48,16 +48,16 @@ interface Props {
   onClose?: () => void;
 }
 
-const ProfileMenuContent = ({ data, onClose }: Props) => {
+const UserProfileContent = ({ data, onClose }: Props) => {
   const { isAutoConnectDisabled } = useMarketplaceContext();
   const logout = useLogout();
 
   return (
     <Box>
-      { isAutoConnectDisabled && <WalletAutoConnectDisabledAlert/> }
+      { isAutoConnectDisabled && <UserWalletAutoConnectAlert/> }
 
       <Flex alignItems="center" justifyContent="space-between">
-        <ProfileMenuNavLink
+        <UserProfileContentNavLink
           text="Profile"
           href={ route({ pathname: '/auth/profile' }) }
           icon="profile"
@@ -66,11 +66,11 @@ const ProfileMenuContent = ({ data, onClose }: Props) => {
         { data?.email && <Text variant="secondary" fontSize="sm">{ getUserHandle(data.email) }</Text> }
       </Flex>
 
-      { config.features.blockchainInteraction.isEnabled ? <ProfileMenuWallet onClose={ onClose }/> : <Divider/> }
+      { config.features.blockchainInteraction.isEnabled ? <UserProfileContentWallet onClose={ onClose }/> : <Divider/> }
 
       <VStack as="ul" spacing="0" alignItems="flex-start" overflow="hidden">
         { navLinks.map((item) => (
-          <ProfileMenuNavLink
+          <UserProfileContentNavLink
             key={ item.text }
             { ...item }
             onClick={ onClose }
@@ -80,7 +80,7 @@ const ProfileMenuContent = ({ data, onClose }: Props) => {
 
       <Divider my={ 1 }/>
 
-      <ProfileMenuNavLink
+      <UserProfileContentNavLink
         text="Sign out"
         icon="sign_out"
         onClick={ logout }
@@ -89,4 +89,4 @@ const ProfileMenuContent = ({ data, onClose }: Props) => {
   );
 };
 
-export default React.memo(ProfileMenuContent);
+export default React.memo(UserProfileContent);

@@ -12,8 +12,8 @@ import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
-import ProfileDesktop from 'ui/snippets/profile/ProfileDesktop';
-import WalletDesktop from 'ui/snippets/wallet/WalletDesktop';
+import UserProfileDesktop from 'ui/snippets/user/profile/UserProfileDesktop';
+import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
 
 import AppSecurityReport from './AppSecurityReport';
 import ContractListModal from './ContractListModal';
@@ -100,8 +100,8 @@ const MarketplaceAppTopBar = ({ appId, data, isLoading, securityReport }: Props)
         { !isMobile && (
           <Box ml="auto">
             {
-              (config.features.account.isEnabled && <ProfileDesktop buttonSize="sm"/>) ||
-              (config.features.blockchainInteraction.isEnabled && <WalletDesktop buttonSize="sm"/>)
+              (config.features.account.isEnabled && <UserProfileDesktop buttonSize="sm"/>) ||
+              (config.features.blockchainInteraction.isEnabled && <UserWalletDesktop buttonSize="sm"/>)
             }
           </Box>
         ) }

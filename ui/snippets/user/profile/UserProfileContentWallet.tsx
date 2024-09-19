@@ -2,17 +2,16 @@ import { Button, Divider, Flex, IconButton } from '@chakra-ui/react';
 import React from 'react';
 
 import delay from 'lib/delay';
+import useWeb3AccountWithDomain from 'lib/web3/useAccountWithDomain';
 import useWeb3Wallet from 'lib/web3/useWallet';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import IconSvg from 'ui/shared/IconSvg';
-
-import useWeb3AccountWithDomain from './useWeb3AccountWithDomain';
 
 interface Props {
   onClose?: () => void;
 }
 
-const ProfileMenuWallet = ({ onClose }: Props) => {
+const UserProfileContentWallet = ({ onClose }: Props) => {
   const web3Wallet = useWeb3Wallet({ source: 'Header' });
 
   const web3AccountWithDomain = useWeb3AccountWithDomain(true);
@@ -72,4 +71,4 @@ const ProfileMenuWallet = ({ onClose }: Props) => {
   );
 };
 
-export default React.memo(ProfileMenuWallet);
+export default React.memo(UserProfileContentWallet);

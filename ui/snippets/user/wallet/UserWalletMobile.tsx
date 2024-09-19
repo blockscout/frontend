@@ -2,13 +2,13 @@ import { Drawer, DrawerBody, DrawerContent, DrawerOverlay, useDisclosure } from 
 import React from 'react';
 
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
+import useWeb3AccountWithDomain from 'lib/web3/useAccountWithDomain';
 import useWeb3Wallet from 'lib/web3/useWallet';
-import useWeb3AccountWithDomain from 'ui/snippets/profile/useWeb3AccountWithDomain';
 
-import WalletButton from './WalletButton';
-import WalletMenuContent from './WalletMenuContent';
+import UserWalletButton from './UserWalletButton';
+import UserWalletMenuContent from './UserWalletMenuContent';
 
-const WalletMobile = () => {
+const UserWalletMobile = () => {
   const walletMenu = useDisclosure();
 
   const web3Wallet = useWeb3Wallet({ source: 'Header' });
@@ -31,7 +31,7 @@ const WalletMobile = () => {
 
   return (
     <>
-      <WalletButton
+      <UserWalletButton
         variant="header"
         onClick={ web3Wallet.isConnected ? walletMenu.onOpen : web3Wallet.openModal }
         address={ web3AccountWithDomain.address }
@@ -48,7 +48,7 @@ const WalletMobile = () => {
           <DrawerOverlay/>
           <DrawerContent maxWidth="300px">
             <DrawerBody p={ 6 }>
-              <WalletMenuContent
+              <UserWalletMenuContent
                 address={ web3AccountWithDomain.address }
                 domain={ web3AccountWithDomain.domain }
                 isAutoConnectDisabled={ isAutoConnectDisabled }
@@ -63,4 +63,4 @@ const WalletMobile = () => {
   );
 };
 
-export default React.memo(WalletMobile);
+export default React.memo(UserWalletMobile);

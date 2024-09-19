@@ -3,9 +3,9 @@ import React from 'react';
 
 import config from 'configs/app';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
-import ProfileDesktop from 'ui/snippets/profile/ProfileDesktop';
 import SearchBar from 'ui/snippets/searchBar/SearchBar';
-import WalletDesktop from 'ui/snippets/wallet/WalletDesktop';
+import UserProfileDesktop from 'ui/snippets/user/profile/UserProfileDesktop';
+import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
 
 import Burger from './Burger';
 
@@ -39,8 +39,8 @@ const HeaderDesktop = ({ renderSearchBar, isMarketplaceAppPage }: Props) => {
       { config.UI.navigation.layout === 'vertical' && (
         <Box display="flex" flexShrink={ 0 }>
           {
-            (config.features.account.isEnabled && <ProfileDesktop/>) ||
-            (config.features.blockchainInteraction.isEnabled && <WalletDesktop/>)
+            (config.features.account.isEnabled && <UserProfileDesktop/>) ||
+            (config.features.blockchainInteraction.isEnabled && <UserWalletDesktop/>)
           }
         </Box>
       ) }

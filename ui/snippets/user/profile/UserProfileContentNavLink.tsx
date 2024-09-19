@@ -8,7 +8,7 @@ import LinkInternal from 'ui/shared/links/LinkInternal';
 
 type Props = NavLink
 
-const ProfileMenuNavLink = ({ href, icon, text, onClick }: Props) => {
+const UserProfileContentNavLink = ({ href, icon, text, onClick }: Props) => {
 
   return (
     <LinkInternal
@@ -27,4 +27,4 @@ const ProfileMenuNavLink = ({ href, icon, text, onClick }: Props) => {
   );
 };
 
-export default React.memo(ProfileMenuNavLink);
+export default React.memo(UserProfileContentNavLink);

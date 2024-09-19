@@ -2,12 +2,12 @@ import { PopoverBody, PopoverContent, PopoverTrigger, useDisclosure, type Button
 import React from 'react';
 
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
+import useWeb3AccountWithDomain from 'lib/web3/useAccountWithDomain';
 import useWeb3Wallet from 'lib/web3/useWallet';
 import Popover from 'ui/shared/chakra/Popover';
-import useWeb3AccountWithDomain from 'ui/snippets/profile/useWeb3AccountWithDomain';
 
-import WalletButton from './WalletButton';
-import WalletMenuContent from './WalletMenuContent';
+import UserWalletButton from './UserWalletButton';
+import UserWalletMenuContent from './UserWalletMenuContent';
 
 interface Props {
   buttonSize?: ButtonProps['size'];
@@ -38,7 +38,7 @@ const WalletDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => {
   return (
     <Popover openDelay={ 300 } placement="bottom-end" isLazy isOpen={ walletMenu.isOpen } onClose={ walletMenu.onClose }>
       <PopoverTrigger>
-        <WalletButton
+        <UserWalletButton
           size={ buttonSize }
           variant={ buttonVariant }
           onClick={ web3Wallet.isConnected ? walletMenu.onOpen : web3Wallet.openModal }
@@ -51,7 +51,7 @@ const WalletDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => {
       { web3AccountWithDomain.address && (
         <PopoverContent w="235px">
           <PopoverBody>
-            <WalletMenuContent
+            <UserWalletMenuContent
               address={ web3AccountWithDomain.address }
               domain={ web3AccountWithDomain.domain }
               isAutoConnectDisabled={ isAutoConnectDisabled }

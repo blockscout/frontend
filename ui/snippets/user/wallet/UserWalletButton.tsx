@@ -4,7 +4,8 @@ import React from 'react';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import shortenString from 'lib/shortenString';
-import ProfileAddressIcon from 'ui/snippets/profile/ProfileAddressIcon';
+
+import UserIdenticon from '../UserIdenticon';
 
 interface Props {
   size?: ButtonProps['size'];
@@ -16,7 +17,7 @@ interface Props {
   domain?: string;
 }
 
-const WalletButton = ({ size, variant, onClick, isPending, isAutoConnectDisabled, address, domain }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
+const UserWalletButton = ({ size, variant, onClick, isPending, isAutoConnectDisabled, address, domain }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
 
   const isMobile = useIsMobile();
 
@@ -29,7 +30,7 @@ const WalletButton = ({ size, variant, onClick, isPending, isAutoConnectDisabled
 
     return (
       <HStack gap={ 2 }>
-        <ProfileAddressIcon address={ address } isAutoConnectDisabled={ isAutoConnectDisabled }/>
+        <UserIdenticon address={ address } isAutoConnectDisabled={ isAutoConnectDisabled }/>
         <Box display={{ base: 'none', md: 'block' }}>{ text }</Box>
       </HStack>
     );
@@ -63,4 +64,4 @@ const WalletButton = ({ size, variant, onClick, isPending, isAutoConnectDisabled
   );
 };
 
-export default React.memo(React.forwardRef(WalletButton));
+export default React.memo(React.forwardRef(UserWalletButton));

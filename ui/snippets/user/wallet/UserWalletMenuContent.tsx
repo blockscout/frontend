@@ -5,7 +5,7 @@ import delay from 'lib/delay';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
-import WalletAutoConnectDisabledAlert from './WalletAutoConnectDisabledAlert';
+import UserWalletAutoConnectAlert from '../UserWalletAutoConnectAlert';
 
 interface Props {
   address: string;
@@ -15,7 +15,7 @@ interface Props {
   onOpenWallet: () => void;
 }
 
-const WalletMenuContent = ({ isAutoConnectDisabled, address, domain, onDisconnect, onOpenWallet }: Props) => {
+const UserWalletMenuContent = ({ isAutoConnectDisabled, address, domain, onDisconnect, onOpenWallet }: Props) => {
 
   const handleOpenWalletClick = React.useCallback(async() => {
     await delay(100);
@@ -24,7 +24,7 @@ const WalletMenuContent = ({ isAutoConnectDisabled, address, domain, onDisconnec
 
   return (
     <Box>
-      { isAutoConnectDisabled && <WalletAutoConnectDisabledAlert/> }
+      { isAutoConnectDisabled && <UserWalletAutoConnectAlert/> }
       <Text fontSize="sm" fontWeight={ 600 } mb={ 1 }>My wallet</Text>
       <Text fontSize="sm" mb={ 5 } fontWeight={ 400 } color="text_secondary">
         Your wallet is used to interact with apps and contracts in the explorer.
@@ -54,4 +54,4 @@ const WalletMenuContent = ({ isAutoConnectDisabled, address, domain, onDisconnec
   );
 };
 
-export default React.memo(WalletMenuContent);
+export default React.memo(UserWalletMenuContent);

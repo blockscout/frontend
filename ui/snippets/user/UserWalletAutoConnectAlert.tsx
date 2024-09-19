@@ -3,7 +3,7 @@ import React from 'react';
 
 import IconSvg from 'ui/shared/IconSvg';
 
-const WalletAutoConnectDisabledAlert = () => {
+const UserWalletAutoConnectAlert = () => {
   const bgColor = useColorModeValue('orange.100', 'orange.900');
 
   return (
@@ -28,4 +28,4 @@ const WalletAutoConnectDisabledAlert = () => {
   );
 };
 
-export default React.memo(WalletAutoConnectDisabledAlert);
+export default React.memo(UserWalletAutoConnectAlert);
