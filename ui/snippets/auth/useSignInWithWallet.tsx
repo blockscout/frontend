@@ -2,6 +2,7 @@ import { useWeb3Modal } from '@web3modal/wagmi/react';
 import React from 'react';
 import { useSignMessage } from 'wagmi';
 
+import config from 'configs/app';
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/errors/getErrorMessage';
 import useToast from 'lib/hooks/useToast';
@@ -12,7 +13,7 @@ interface Props {
   onError?: () => void;
 }
 
-export default function useSignInWithWallet({ onSuccess, onError }: Props) {
+function useSignInWithWallet({ onSuccess, onError }: Props) {
   const [ isPending, setIsPending ] = React.useState(false);
   const isConnectingWalletRef = React.useRef(false);
 
@@ -65,3 +66,9 @@ export default function useSignInWithWallet({ onSuccess, onError }: Props) {
 
   return React.useMemo(() => ({ start, isPending }), [ start, isPending ]);
 }
+
+function useSignInWithWalletFallback() {
+  return React.useMemo(() => ({ start: () => {}, isPending: false }), [ ]);
+}
+
+export default config.features.blockchainInteraction.isEnabled ? useSignInWithWallet : useSignInWithWalletFallback;

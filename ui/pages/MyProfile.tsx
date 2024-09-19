@@ -1,6 +1,7 @@
 import { Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import config from 'configs/app';
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import MyProfileEmail from 'ui/myProfile/MyProfileEmail';
@@ -25,7 +26,7 @@ const MyProfile = () => {
     return (
       <Flex maxW="480px" mt={ 8 } flexDir="column" rowGap={ 12 }>
         <MyProfileEmail profileQuery={ profileQuery }/>
-        <MyProfileWallet profileQuery={ profileQuery }/>
+        { config.features.blockchainInteraction.isEnabled && <MyProfileWallet profileQuery={ profileQuery }/> }
       </Flex>
     );
   })();

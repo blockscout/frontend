@@ -66,7 +66,7 @@ const ProfileMenuContent = ({ data, onClose }: Props) => {
         { data?.email && <Text variant="secondary" fontSize="sm">{ getUserHandle(data.email) }</Text> }
       </Flex>
 
-      <ProfileMenuWallet onClose={ onClose }/>
+      { config.features.blockchainInteraction.isEnabled ? <ProfileMenuWallet onClose={ onClose }/> : <Divider/> }
 
       <VStack as="ul" spacing="0" alignItems="flex-start" overflow="hidden">
         { navLinks.map((item) => (

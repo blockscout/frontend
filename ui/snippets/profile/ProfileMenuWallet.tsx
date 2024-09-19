@@ -1,7 +1,6 @@
 import { Button, Divider, Flex, IconButton } from '@chakra-ui/react';
 import React from 'react';
 
-import config from 'configs/app';
 import delay from 'lib/delay';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import IconSvg from 'ui/shared/IconSvg';
@@ -29,10 +28,6 @@ const ProfileMenuWallet = ({ onClose }: Props) => {
     await delay(300);
     onClose?.();
   }, [ wallet, onClose ]);
-
-  if (!config.features.blockchainInteraction.isEnabled) {
-    return <Divider/>;
-  }
 
   if (wallet.isWalletConnected && web3AccountWithDomain.address) {
     return (

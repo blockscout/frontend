@@ -2,6 +2,7 @@ import { PopoverBody, PopoverContent, PopoverTrigger, useDisclosure, type Button
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import config from 'configs/app';
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import Popover from 'ui/shared/chakra/Popover';
 import AuthModal from 'ui/snippets/auth/AuthModal';
@@ -58,7 +59,12 @@ const ProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => {
           </PopoverContent>
         ) }
       </Popover>
-      { authModal.isOpen && <AuthModal onClose={ authModal.onClose } initialScreen={{ type: 'select_method' }}/> }
+      { authModal.isOpen && (
+        <AuthModal
+          onClose={ authModal.onClose }
+          initialScreen={{ type: config.features.blockchainInteraction.isEnabled ? 'select_method' : 'email' }}
+        />
+      ) }
     </>
   );
 };

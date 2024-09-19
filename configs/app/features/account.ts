@@ -28,6 +28,7 @@ const logoutUrl = (() => {
 })();
 
 const title = 'My account';
+// TODO @tom2drum add condition for recaptcha
 
 const config: Feature<{ authUrl: string; logoutUrl: string }> = (() => {
   if (

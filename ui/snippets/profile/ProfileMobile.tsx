@@ -2,6 +2,7 @@ import { Drawer, DrawerBody, DrawerContent, DrawerOverlay, useDisclosure } from 
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import config from 'configs/app';
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import AuthModal from 'ui/snippets/auth/AuthModal';
 import useSignInWithWallet from 'ui/snippets/auth/useSignInWithWallet';
@@ -54,7 +55,12 @@ const ProfileMobile = () => {
           </DrawerContent>
         </Drawer>
       ) }
-      { authModal.isOpen && <AuthModal onClose={ authModal.onClose } initialScreen={{ type: 'select_method' }}/> }
+      { authModal.isOpen && (
+        <AuthModal
+          onClose={ authModal.onClose }
+          initialScreen={{ type: config.features.blockchainInteraction.isEnabled ? 'select_method' : 'email' }}
+        />
+      ) }
     </>
   );
 };
