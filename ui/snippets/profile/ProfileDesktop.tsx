@@ -5,7 +5,7 @@ import React from 'react';
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import Popover from 'ui/shared/chakra/Popover';
 import AuthModal from 'ui/snippets/auth/AuthModal';
-import useSignInWithWallet from 'ui/snippets/auth/screens/useSignInWithWallet';
+import useSignInWithWallet from 'ui/snippets/auth/useSignInWithWallet';
 
 import ProfileButton from './ProfileButton';
 import ProfileMenuContent from './ProfileMenuContent';

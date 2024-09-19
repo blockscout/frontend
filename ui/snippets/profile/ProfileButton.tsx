@@ -1,5 +1,5 @@
 import type { ButtonProps } from '@chakra-ui/react';
-import { Button, Skeleton, Tooltip, Text, HStack } from '@chakra-ui/react';
+import { Button, Skeleton, Tooltip, Box, HStack } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
@@ -55,7 +55,7 @@ const ProfileButton = ({ profileQuery, size, variant, onClick, isPending }: Prop
       return (
         <HStack gap={ 2 }>
           <ProfileAddressIcon address={ address } isAutoConnectDisabled={ isAutoConnectDisabled }/>
-          <Text display={{ base: 'none', md: 'block' }}>{ text }</Text>
+          <Box display={{ base: 'none', md: 'block' }}>{ text }</Box>
         </HStack>
       );
     }
@@ -64,7 +64,7 @@ const ProfileButton = ({ profileQuery, size, variant, onClick, isPending }: Prop
       return (
         <HStack gap={ 2 }>
           <IconSvg name="profile" boxSize={ 5 }/>
-          <Text display={{ base: 'none', md: 'block' }}>{ getUserHandle(data.email) }</Text>
+          <Box display={{ base: 'none', md: 'block' }}>{ getUserHandle(data.email) }</Box>
         </HStack>
       );
     }

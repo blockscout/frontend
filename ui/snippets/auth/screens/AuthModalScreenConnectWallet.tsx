@@ -3,7 +3,7 @@ import React from 'react';
 
 import type { Screen } from '../types';
 
-import useSignInWithWallet from './useSignInWithWallet';
+import useSignInWithWallet from '../useSignInWithWallet';
 
 interface Props {
   onSuccess: (screen: Screen) => void;

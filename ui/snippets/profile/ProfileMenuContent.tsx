@@ -9,6 +9,7 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import IconSvg from 'ui/shared/IconSvg';
+import useLogout from 'ui/snippets/auth/useLogout';
 
 import ProfileMenuNavLink from './ProfileMenuNavLink';
 import ProfileMenuWallet from './ProfileMenuWallet';
@@ -50,6 +51,7 @@ interface Props {
 const ProfileMenuContent = ({ data, onClose }: Props) => {
   const { isAutoConnectDisabled } = useMarketplaceContext();
   const alertBgColor = useColorModeValue('orange.100', 'orange.900');
+  const logout = useLogout();
 
   return (
     <Box>
@@ -101,7 +103,7 @@ const ProfileMenuContent = ({ data, onClose }: Props) => {
       <ProfileMenuNavLink
         text="Sign out"
         icon="sign_out"
-        onClick={ onClose }
+        onClick={ logout }
       />
     </Box>
   );

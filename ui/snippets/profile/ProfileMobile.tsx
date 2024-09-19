@@ -4,8 +4,8 @@ import React from 'react';
 
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import AuthModal from 'ui/snippets/auth/AuthModal';
+import useSignInWithWallet from 'ui/snippets/auth/useSignInWithWallet';
 
-import useSignInWithWallet from '../auth/screens/useSignInWithWallet';
 import ProfileButton from './ProfileButton';
 import ProfileMenuContent from './ProfileMenuContent';
 

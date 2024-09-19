@@ -28,10 +28,14 @@ export function get(name?: NAMES | undefined | null, serverCookie?: string) {
   }
 }
 
-export function set(name: string, value: string, attributes: Cookies.CookieAttributes = {}) {
+export function set(name: NAMES, value: string, attributes: Cookies.CookieAttributes = {}) {
   attributes.path = '/';
 
   return Cookies.set(name, value, attributes);
+}
+
+export function remove(name: NAMES, attributes: Cookies.CookieAttributes = {}) {
+  return Cookies.remove(name, attributes);
 }
 
 export function getFromCookieString(cookieString: string, name?: NAMES | undefined | null) {
