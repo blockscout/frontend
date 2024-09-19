@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, Text, VStack, useColorModeValue } from '@chakra-ui/react';
+import { Box, Divider, Flex, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { NavLink } from './types';
@@ -8,8 +8,8 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
-import IconSvg from 'ui/shared/IconSvg';
 import useLogout from 'ui/snippets/auth/useLogout';
+import WalletAutoConnectDisabledAlert from 'ui/snippets/wallet/WalletAutoConnectDisabledAlert';
 
 import ProfileMenuNavLink from './ProfileMenuNavLink';
 import ProfileMenuWallet from './ProfileMenuWallet';
@@ -50,31 +50,11 @@ interface Props {
 
 const ProfileMenuContent = ({ data, onClose }: Props) => {
   const { isAutoConnectDisabled } = useMarketplaceContext();
-  const alertBgColor = useColorModeValue('orange.100', 'orange.900');
   const logout = useLogout();
 
   return (
     <Box>
-      { isAutoConnectDisabled && (
-        <Flex
-          borderRadius="base"
-          p={ 3 }
-          mb={ 3 }
-          alignItems="center"
-          bgColor={ alertBgColor }
-        >
-          <IconSvg
-            name="integration/partial"
-            color="text"
-            boxSize={ 5 }
-            flexShrink={ 0 }
-            mr={ 2 }
-          />
-          <Text fontSize="xs" lineHeight="16px">
-            Connect your wallet in the app below
-          </Text>
-        </Flex>
-      ) }
+      { isAutoConnectDisabled && <WalletAutoConnectDisabledAlert/> }
 
       <Flex alignItems="center" justifyContent="space-between">
         <ProfileMenuNavLink

@@ -13,6 +13,7 @@ import LinkExternal from 'ui/shared/links/LinkExternal';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import ProfileDesktop from 'ui/snippets/profile/ProfileDesktop';
+import WalletDesktop from 'ui/snippets/wallet/WalletDesktop';
 
 import AppSecurityReport from './AppSecurityReport';
 import ContractListModal from './ContractListModal';
@@ -98,7 +99,10 @@ const MarketplaceAppTopBar = ({ appId, data, isLoading, securityReport }: Props)
         />
         { !isMobile && (
           <Box ml="auto">
-            { config.features.account.isEnabled && <ProfileDesktop buttonSize="sm"/> }
+            {
+              (config.features.account.isEnabled && <ProfileDesktop buttonSize="sm"/>) ||
+              (config.features.blockchainInteraction.isEnabled && <WalletDesktop buttonSize="sm"/>)
+            }
           </Box>
         ) }
       </Flex>

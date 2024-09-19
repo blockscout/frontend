@@ -6,6 +6,7 @@ import React from 'react';
 import type { UserInfo } from 'types/api/account';
 
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import shortenString from 'lib/shortenString';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -23,6 +24,8 @@ interface Props {
 
 const ProfileButton = ({ profileQuery, size, variant, onClick, isPending }: Props, ref: React.ForwardedRef<HTMLDivElement>) => {
   const [ isFetched, setIsFetched ] = React.useState(false);
+  const isMobile = useIsMobile();
+
   const { data, isLoading } = profileQuery;
   const web3AccountWithDomain = useWeb3AccountWithDomain(!data?.address_hash);
   const { isAutoConnectDisabled } = useMarketplaceContext();
@@ -77,7 +80,7 @@ const ProfileButton = ({ profileQuery, size, variant, onClick, isPending }: Prop
       label={ <span>Sign in to My Account to add tags,<br/>create watchlists, access API keys and more</span> }
       textAlign="center"
       padding={ 2 }
-      isDisabled={ isFetched || Boolean(data) }
+      isDisabled={ isMobile || isFetched || Boolean(data) }
       openDelay={ 500 }
     >
       <Skeleton isLoaded={ isFetched } borderRadius="base" ref={ ref }>
@@ -92,7 +95,7 @@ const ProfileButton = ({ profileQuery, size, variant, onClick, isPending }: Prop
           px={ data ? 2.5 : 4 }
           fontWeight={ data ? 700 : 600 }
           isLoading={ isPending }
-          loadingText="Connecting"
+          loadingText={ isMobile ? undefined : 'Connecting' }
         >
           { content }
         </Button>
