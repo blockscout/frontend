@@ -1,6 +1,6 @@
 import React from 'react';
 
-import type { ValidatorsFilters } from 'types/api/validators';
+import type { ValidatorsStabilityFilters } from 'types/api/validators';
 
 import PopoverFilterRadio from 'ui/shared/filters/PopoverFilterRadio';
 
@@ -13,7 +13,7 @@ const OPTIONS = [
 
 interface Props {
   hasActiveFilter: boolean;
-  defaultValue: ValidatorsFilters['state_filter'] | undefined;
+  defaultValue: ValidatorsStabilityFilters['state_filter'] | undefined;
   onChange: (nextValue: string | Array<string>) => void;
 }
 

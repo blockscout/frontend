@@ -1,31 +1,35 @@
-import type { Validator, ValidatorsCountersResponse, ValidatorsResponse } from 'types/api/validators';
+import type {
+  ValidatorStability,
+  ValidatorsStabilityCountersResponse,
+  ValidatorsStabilityResponse,
+} from 'types/api/validators';
 
 import * as addressMock from '../address/address';
 
-export const validator1: Validator = {
+export const validator1: ValidatorStability = {
   address: addressMock.withName,
   blocks_validated_count: 7334224,
   state: 'active',
 };
 
-export const validator2: Validator = {
+export const validator2: ValidatorStability = {
   address: addressMock.withEns,
   blocks_validated_count: 8937453,
   state: 'probation',
 };
 
-export const validator3: Validator = {
+export const validator3: ValidatorStability = {
   address: addressMock.withoutName,
   blocks_validated_count: 1234,
   state: 'inactive',
 };
 
-export const validatorsResponse: ValidatorsResponse = {
+export const validatorsResponse: ValidatorsStabilityResponse = {
   items: [ validator1, validator2, validator3 ],
   next_page_params: null,
 };
 
-export const validatorsCountersResponse: ValidatorsCountersResponse = {
+export const validatorsCountersResponse: ValidatorsStabilityCountersResponse = {
   active_validators_counter: '42',
   active_validators_percentage: 7.14,
   new_validators_counter_24h: '11',

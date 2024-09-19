@@ -1,28 +1,33 @@
 import { Table, Tbody, Tr, Th, Link } from '@chakra-ui/react';
 import React from 'react';
 
-import type { Validator, ValidatorsSorting, ValidatorsSortingField, ValidatorsSortingValue } from 'types/api/validators';
+import type {
+  ValidatorStability,
+  ValidatorsStabilitySorting,
+  ValidatorsStabilitySortingField,
+  ValidatorsStabilitySortingValue,
+} from 'types/api/validators';
 
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
 import IconSvg from 'ui/shared/IconSvg';
 import getNextSortValue from 'ui/shared/sort/getNextSortValue';
 import { default as Thead } from 'ui/shared/TheadSticky';
 
-import { SORT_SEQUENCE } from './utils';
+import { VALIDATORS_STABILITY_SORT_SEQUENCE } from './utils';
 import ValidatorsTableItem from './ValidatorsTableItem';
 
 interface Props {
-  data: Array<Validator>;
-  sort: ValidatorsSortingValue | undefined;
-  setSorting: (val: ValidatorsSortingValue | undefined) => void;
+  data: Array<ValidatorStability>;
+  sort: ValidatorsStabilitySortingValue | undefined;
+  setSorting: (val: ValidatorsStabilitySortingValue | undefined) => void;
   isLoading?: boolean;
 }
 
 const ValidatorsTable = ({ data, sort, setSorting, isLoading }: Props) => {
-  const sortIconTransform = sort?.includes('asc' as ValidatorsSorting['order']) ? 'rotate(-90deg)' : 'rotate(90deg)';
+  const sortIconTransform = sort?.includes('asc' as ValidatorsStabilitySorting['order']) ? 'rotate(-90deg)' : 'rotate(90deg)';
 
-  const onSortToggle = React.useCallback((field: ValidatorsSortingField) => () => {
-    const value = getNextSortValue<ValidatorsSortingField, ValidatorsSortingValue>(SORT_SEQUENCE, field)(sort);
+  const onSortToggle = React.useCallback((field: ValidatorsStabilitySortingField) => () => {
+    const value = getNextSortValue<ValidatorsStabilitySortingField, ValidatorsStabilitySortingValue>(VALIDATORS_STABILITY_SORT_SEQUENCE, field)(sort);
     setSorting(value);
   }, [ sort, setSorting ]);
 

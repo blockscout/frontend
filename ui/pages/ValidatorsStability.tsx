@@ -2,8 +2,12 @@ import { Box, Hide, HStack, Show } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { getFeaturePayload } from 'configs/app/features/types';
-import type { ValidatorsFilters, ValidatorsSorting, ValidatorsSortingField, ValidatorsSortingValue } from 'types/api/validators';
+import type {
+  ValidatorsStabilityFilters,
+  ValidatorsStabilitySorting,
+  ValidatorsStabilitySortingField,
+  ValidatorsStabilitySortingValue,
+} from 'types/api/validators';
 
 import config from 'configs/app';
 // import useDebounce from 'lib/hooks/useDebounce';
@@ -11,7 +15,7 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import { apos } from 'lib/html-entities';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { generateListStub } from 'stubs/utils';
-import { VALIDATOR } from 'stubs/validators';
+import { VALIDATOR_STABILITY } from 'stubs/validators';
 import ActionBar from 'ui/shared/ActionBar';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 // import FilterInput from 'ui/shared/filters/FilterInput';
@@ -21,35 +25,36 @@ import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
 import getSortValueFromQuery from 'ui/shared/sort/getSortValueFromQuery';
 import Sort from 'ui/shared/sort/Sort';
-import { SORT_OPTIONS } from 'ui/validators/utils';
-import ValidatorsCounters from 'ui/validators/ValidatorsCounters';
-import ValidatorsFilter from 'ui/validators/ValidatorsFilter';
-import ValidatorsList from 'ui/validators/ValidatorsList';
-import ValidatorsTable from 'ui/validators/ValidatorsTable';
+import { VALIDATORS_STABILITY_SORT_OPTIONS } from 'ui/validatorsStability/utils';
+import ValidatorsCounters from 'ui/validatorsStability/ValidatorsCounters';
+import ValidatorsFilter from 'ui/validatorsStability/ValidatorsFilter';
+import ValidatorsList from 'ui/validatorsStability/ValidatorsList';
+import ValidatorsTable from 'ui/validatorsStability/ValidatorsTable';
 
-const Validators = () => {
+const ValidatorsStability = () => {
   const router = useRouter();
   // const [ searchTerm, setSearchTerm ] = React.useState(getQueryParamString(router.query.address_hash) || undefined);
-  const [ statusFilter, setStatusFilter ] = React.useState(getQueryParamString(router.query.state_filter) as ValidatorsFilters['state_filter'] || undefined);
-  const [ sort, setSort ] =
-    React.useState<ValidatorsSortingValue | undefined>(getSortValueFromQuery<ValidatorsSortingValue>(router.query, SORT_OPTIONS));
+  const [ statusFilter, setStatusFilter ] =
+    React.useState(getQueryParamString(router.query.state_filter) as ValidatorsStabilityFilters['state_filter'] || undefined);
+  const [ sort, setSort ] = React.useState<ValidatorsStabilitySortingValue | undefined>(
+    getSortValueFromQuery<ValidatorsStabilitySortingValue>(router.query, VALIDATORS_STABILITY_SORT_OPTIONS),
+  );
 
   // const debouncedSearchTerm = useDebounce(searchTerm || '', 300);
 
   const isMobile = useIsMobile();
 
   const { isError, isPlaceholderData, data, pagination, onFilterChange, onSortingChange } = useQueryWithPages({
-    resourceName: 'validators',
-    pathParams: { chainType: getFeaturePayload(config.features.validators)?.chainType },
+    resourceName: 'validators_stability',
     filters: {
       // address_hash: debouncedSearchTerm,
       state_filter: statusFilter,
     },
-    sorting: getSortParamsFromValue<ValidatorsSortingValue, ValidatorsSortingField, ValidatorsSorting['order']>(sort),
+    sorting: getSortParamsFromValue<ValidatorsStabilitySortingValue, ValidatorsStabilitySortingField, ValidatorsStabilitySorting['order']>(sort),
     options: {
       enabled: config.features.validators.isEnabled,
-      placeholderData: generateListStub<'validators'>(
-        VALIDATOR,
+      placeholderData: generateListStub<'validators_stability'>(
+        VALIDATOR_STABILITY,
         50,
         { next_page_params: null },
       ),
@@ -69,7 +74,7 @@ const Validators = () => {
       return;
     }
 
-    const state = value === 'all' ? undefined : value as ValidatorsFilters['state_filter'];
+    const state = value === 'all' ? undefined : value as ValidatorsStabilityFilters['state_filter'];
 
     onFilterChange({
       // address_hash: debouncedSearchTerm,
@@ -78,12 +83,13 @@ const Validators = () => {
     setStatusFilter(state);
   }, [ onFilterChange ]);
 
-  const handleSortChange = React.useCallback((value?: ValidatorsSortingValue) => {
+  const handleSortChange = React.useCallback((value?: ValidatorsStabilitySortingValue) => {
     setSort(value);
     onSortingChange(getSortParamsFromValue(value));
   }, [ onSortingChange ]);
 
-  const filterMenu = <ValidatorsFilter onChange={ handleStateFilterChange } defaultValue={ statusFilter } hasActiveFilter={ Boolean(statusFilter) }/>;
+  const filterMenu =
+    <ValidatorsFilter onChange={ handleStateFilterChange } defaultValue={ statusFilter } hasActiveFilter={ Boolean(statusFilter) }/>;
 
   // const filterInput = (
   //   <FilterInput
@@ -99,7 +105,7 @@ const Validators = () => {
     <Sort
       name="validators_sorting"
       defaultValue={ sort }
-      options={ SORT_OPTIONS }
+      options={ VALIDATORS_STABILITY_SORT_OPTIONS }
       onChange={ handleSortChange }
     />
   );
@@ -141,7 +147,7 @@ const Validators = () => {
       <DataListDisplay
         isError={ isError }
         items={ data?.items }
-        emptyText="There are no verified contracts."
+        emptyText="There are no validators."
         filterProps={{
           emptyFilteredText: `Couldn${ apos }t find any validator that matches your query.`,
           hasActiveFilters: Boolean(
@@ -156,4 +162,4 @@ const Validators = () => {
   );
 };
 
-export default Validators;
+export default ValidatorsStability;
