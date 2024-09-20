@@ -14,7 +14,6 @@ const PROTECTED_ROUTES: Array<Route['pathname']> = [
   '/account/verified-addresses',
   '/account/watchlist',
   '/auth/profile',
-  '/auth/unverified-email',
 ];
 
 export default function useLogout() {

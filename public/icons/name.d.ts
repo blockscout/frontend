@@ -48,7 +48,6 @@
 	| "donate"
 	| "dots"
 	| "edit"
-	| "email-sent"
 	| "email"
 	| "empty_search_result"
 	| "ENS_slim"

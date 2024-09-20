@@ -157,9 +157,6 @@ export const RESOURCES = {
   user_info: {
     path: '/api/account/v2/user/info',
   },
-  email_resend: {
-    path: '/api/account/v2/email/resend',
-  },
   custom_abi: {
     path: '/api/account/v2/user/custom_abis{/:id}',
     pathParams: [ 'id' as const ],

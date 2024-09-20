@@ -54,7 +54,7 @@ Type extends EventTypes.ADD_TO_WALLET ? (
   }
 ) :
 Type extends EventTypes.ACCOUNT_ACCESS ? {
-  'Action': 'Auth0 init' | 'Verification email resent' | 'Logged out';
+  'Action': 'Logged out';
 } :
 Type extends EventTypes.PRIVATE_TAG ? {
   'Action': 'Form opened' | 'Submit';
