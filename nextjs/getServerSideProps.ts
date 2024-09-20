@@ -6,7 +6,6 @@ import type { RollupType } from 'types/client/rollup';
 import type { Route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import isNeedProxy from 'lib/api/isNeedProxy';
 const rollupFeature = config.features.rollup;
 const adBannerFeature = config.features.adsBanner;
 import type * as metadata from 'lib/metadata';
@@ -246,17 +245,6 @@ export const gasTracker: GetServerSideProps<Props> = async(context) => {
 
 export const dataAvailability: GetServerSideProps<Props> = async(context) => {
   if (!config.features.dataAvailability.isEnabled) {
-    return {
-      notFound: true,
-    };
-  }
-
-  return base(context);
-};
-
-export const login: GetServerSideProps<Props> = async(context) => {
-
-  if (!isNeedProxy()) {
     return {
       notFound: true,
     };

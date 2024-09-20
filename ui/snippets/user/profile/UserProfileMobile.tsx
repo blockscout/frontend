@@ -5,8 +5,8 @@ import React from 'react';
 import type { Screen } from 'ui/snippets/auth/types';
 
 import config from 'configs/app';
-import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import AuthModal from 'ui/snippets/auth/AuthModal';
+import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 import useSignInWithWallet from 'ui/snippets/auth/useSignInWithWallet';
 
 import UserProfileButton from './UserProfileButton';
@@ -21,7 +21,7 @@ const UserProfileMobile = () => {
   const authModal = useDisclosure();
   const profileMenu = useDisclosure();
 
-  const profileQuery = useFetchProfileInfo();
+  const profileQuery = useProfileQuery();
   const signInWithWallet = useSignInWithWallet({});
 
   const handleProfileButtonClick = React.useCallback(() => {

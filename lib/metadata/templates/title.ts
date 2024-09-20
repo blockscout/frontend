@@ -52,7 +52,6 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/mud-worlds': '%network_name% MUD worlds list',
 
   // service routes, added only to make typescript happy
-  '/login': '%network_name% login',
   '/sprite': '%network_name% SVG sprite',
   '/api/metrics': '%network_name% node API prometheus metrics',
   '/api/monitoring/invalid-api-schema': '%network_name% node API prometheus metrics',

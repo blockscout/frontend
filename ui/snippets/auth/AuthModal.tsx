@@ -3,7 +3,6 @@ import React from 'react';
 
 import type { Screen, ScreenSuccess } from './types';
 
-import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import IconSvg from 'ui/shared/IconSvg';
 
 import AuthModalScreenConnectWallet from './screens/AuthModalScreenConnectWallet';
@@ -12,6 +11,7 @@ import AuthModalScreenOtpCode from './screens/AuthModalScreenOtpCode';
 import AuthModalScreenSelectMethod from './screens/AuthModalScreenSelectMethod';
 import AuthModalScreenSuccessEmail from './screens/AuthModalScreenSuccessEmail';
 import AuthModalScreenSuccessWallet from './screens/AuthModalScreenSuccessWallet';
+import useProfileQuery from './useProfileQuery';
 
 interface Props {
   initialScreen: Screen;
@@ -20,7 +20,7 @@ interface Props {
 
 const AuthModal = ({ initialScreen, onClose }: Props) => {
   const [ steps, setSteps ] = React.useState<Array<Screen>>([ initialScreen ]);
-  const profileQuery = useFetchProfileInfo();
+  const profileQuery = useProfileQuery();
 
   const onNextStep = React.useCallback((screen: Screen) => {
     setSteps((prev) => [ ...prev, screen ]);

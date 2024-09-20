@@ -4,7 +4,6 @@ import React from 'react';
 import type { Screen } from 'ui/snippets/auth/types';
 
 import config from 'configs/app';
-import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import MyProfileEmail from 'ui/myProfile/MyProfileEmail';
 import MyProfileWallet from 'ui/myProfile/MyProfileWallet';
@@ -12,12 +11,13 @@ import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import AuthModal from 'ui/snippets/auth/AuthModal';
+import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 const MyProfile = () => {
   const [ authInitialScreen, setAuthInitialScreen ] = React.useState<Screen>();
   const authModal = useDisclosure();
 
-  const profileQuery = useFetchProfileInfo();
+  const profileQuery = useProfileQuery();
   useRedirectForInvalidAuthToken();
 
   const handleAddWalletClick = React.useCallback(() => {

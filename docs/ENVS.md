@@ -340,9 +340,9 @@ Settings for meta tags, OG tags and SEO
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED | `boolean` | Set to true if network has account feature | Required | - | `true` | v1.0.x+ |
-| NEXT_PUBLIC_AUTH0_CLIENT_ID | `string` | Client id for [Auth0](https://auth0.com/) provider | Required | - | `<your-secret>` | v1.0.x+ |
-| NEXT_PUBLIC_AUTH_URL | `string` | Account auth base url; it is used for building login URL (`${ NEXT_PUBLIC_AUTH_URL }/auth/auth0`) and logout return URL (`${ NEXT_PUBLIC_AUTH_URL }/auth/logout`); if not provided the base app URL will be used instead | Required | - | `https://blockscout.com` | v1.0.x+ |
-| NEXT_PUBLIC_LOGOUT_URL | `string` | Account logout url. Required if account is supported for the app instance. | Required | - | `https://blockscoutcom.us.auth0.com/v2/logout` | v1.0.x+ |
+| NEXT_PUBLIC_AUTH0_CLIENT_ID | `string` | **DEPRECATED** Client id for [Auth0](https://auth0.com/) provider | Required | - | `<your-secret>` | v1.0.x+ |
+| NEXT_PUBLIC_AUTH_URL | `string` | **DEPRECATED** Account auth base url; it is used for building login URL (`${ NEXT_PUBLIC_AUTH_URL }/auth/auth0`) and logout return URL (`${ NEXT_PUBLIC_AUTH_URL }/auth/logout`); if not provided the base app URL will be used instead | Required | - | `https://blockscout.com` | v1.0.x+ |
+| NEXT_PUBLIC_LOGOUT_URL | `string` | **DEPRECATED** Account logout url. Required if account is supported for the app instance. | Required | - | `https://blockscoutcom.us.auth0.com/v2/logout` | v1.0.x+ |
 
 &nbsp;
 

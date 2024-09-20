@@ -15,12 +15,12 @@ import type { WatchlistAddress, WatchlistErrors } from 'types/api/account';
 import type { ResourceErrorAccount } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/getErrorMessage';
-import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import { ADDRESS_REGEXP } from 'lib/validations/address';
 import AddressInput from 'ui/shared/AddressInput';
 import CheckboxInput from 'ui/shared/CheckboxInput';
 import TagInput from 'ui/shared/TagInput';
 import AuthModal from 'ui/snippets/auth/AuthModal';
+import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 import AddressFormNotifications from './AddressFormNotifications';
 
@@ -73,7 +73,7 @@ type Checkboxes = 'notification' |
 const AddressForm: React.FC<Props> = ({ data, onSuccess, setAlertVisible, isAdd }) => {
   const [ pending, setPending ] = useState(false);
 
-  const profileQuery = useFetchProfileInfo();
+  const profileQuery = useProfileQuery();
   const userWithoutEmail = profileQuery.data && !profileQuery.data.email;
   const authModal = useDisclosure();
 

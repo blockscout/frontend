@@ -7,7 +7,6 @@ import type { VerifiedAddress, TokenInfoApplication, TokenInfoApplications, Veri
 
 import config from 'configs/app';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
-import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import { PAGE_TYPE_DICT } from 'lib/mixpanel/getPageType';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -17,6 +16,7 @@ import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import AdminSupportText from 'ui/shared/texts/AdminSupportText';
+import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 import TokenInfoForm from 'ui/tokenInfo/TokenInfoForm';
 import VerifiedAddressesEmailAlert from 'ui/verifiedAddresses/VerifiedAddressesEmailAlert';
 import VerifiedAddressesListItem from 'ui/verifiedAddresses/VerifiedAddressesListItem';
@@ -39,20 +39,20 @@ const VerifiedAddresses = () => {
   const modalProps = useDisclosure();
   const queryClient = useQueryClient();
 
-  const userInfoQuery = useFetchProfileInfo();
+  const profileQuery = useProfileQuery();
 
   const addressesQuery = useApiQuery('verified_addresses', {
     pathParams: { chainId: config.chain.id },
     queryOptions: {
       placeholderData: { verifiedAddresses: Array(3).fill(VERIFIED_ADDRESS) },
-      enabled: Boolean(userInfoQuery.data?.email),
+      enabled: Boolean(profileQuery.data?.email),
     },
   });
   const applicationsQuery = useApiQuery('token_info_applications', {
     pathParams: { chainId: config.chain.id, id: undefined },
     queryOptions: {
       placeholderData: { submissions: Array(3).fill(TOKEN_INFO_APPLICATION) },
-      enabled: Boolean(userInfoQuery.data?.email),
+      enabled: Boolean(profileQuery.data?.email),
       select: (data) => {
         return {
           ...data,
@@ -63,7 +63,7 @@ const VerifiedAddresses = () => {
   });
 
   const isLoading = addressesQuery.isPlaceholderData || applicationsQuery.isPlaceholderData;
-  const userWithoutEmail = userInfoQuery.data && !userInfoQuery.data.email;
+  const userWithoutEmail = profileQuery.data && !profileQuery.data.email;
 
   const handleGoBack = React.useCallback(() => {
     setSelectedAddress(undefined);
@@ -219,7 +219,7 @@ const VerifiedAddresses = () => {
         <AdminSupportText mt={ 5 }/>
       </AccountPageDescription>
       <DataListDisplay
-        isError={ userInfoQuery.isError || addressesQuery.isError || applicationsQuery.isError }
+        isError={ profileQuery.isError || addressesQuery.isError || applicationsQuery.isError }
         items={ addressesQuery.data?.verifiedAddresses }
         content={ content }
         emptyText=""

@@ -2,12 +2,11 @@ import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
 import * as cookies from 'lib/cookies';
 
-import useFetchProfileInfo from './useFetchProfileInfo';
+import useProfileQuery from './useProfileQuery';
 
-// TODO @tom2drum move to auth
-export default function useHasAccount() {
+export default function useAuth() {
   const appProps = useAppContext();
-  const profileQuery = useFetchProfileInfo();
+  const profileQuery = useProfileQuery();
 
   if (!config.features.account.isEnabled) {
     return false;

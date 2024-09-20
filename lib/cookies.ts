@@ -6,6 +6,7 @@ export enum NAMES {
   NAV_BAR_COLLAPSED='nav_bar_collapsed',
   API_TOKEN='_explorer_key',
   INVALID_SESSION='invalid_session',
+  // TODO @tom2drum remove everything about unverified email
   CONFIRM_EMAIL_PAGE_VIEWED='confirm_email_page_viewed',
   TXS_SORT='txs_sort',
   COLOR_MODE='chakra-ui-color-mode',

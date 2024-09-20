@@ -6,10 +6,10 @@ import type { ItemProps } from '../types';
 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
-import useHasAccount from 'lib/hooks/useHasAccount';
 import { PAGE_TYPE_DICT } from 'lib/mixpanel/getPageType';
 import AddressVerificationModal from 'ui/addressVerification/AddressVerificationModal';
 import IconSvg from 'ui/shared/IconSvg';
+import useIsAuth from 'ui/snippets/auth/useIsAuth';
 
 import ButtonItem from '../parts/ButtonItem';
 import MenuItem from '../parts/MenuItem';
@@ -17,7 +17,7 @@ import MenuItem from '../parts/MenuItem';
 const TokenInfoMenuItem = ({ className, hash, onBeforeClick, type }: ItemProps) => {
   const router = useRouter();
   const modal = useDisclosure();
-  const isAuth = useHasAccount();
+  const isAuth = useIsAuth();
 
   const verifiedAddressesQuery = useApiQuery('verified_addresses', {
     pathParams: { chainId: config.chain.id },

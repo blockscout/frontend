@@ -1,28 +1,22 @@
 import * as Sentry from '@sentry/react';
-import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
-import { resourceKey } from 'lib/api/resources';
-import type { ResourceError } from 'lib/api/resources';
 import * as cookies from 'lib/cookies';
-import useLoginUrl from 'lib/hooks/useLoginUrl';
+import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
-// TODO @tom2drum remove or revise this hook
 export default function useRedirectForInvalidAuthToken() {
-  const queryClient = useQueryClient();
-
-  const state = queryClient.getQueryState<unknown, ResourceError>([ resourceKey('user_info') ]);
-  const errorStatus = state?.error?.status;
-  const loginUrl = useLoginUrl();
+  const profileQuery = useProfileQuery();
+  const errorStatus = profileQuery.error?.status;
 
   React.useEffect(() => {
     if (errorStatus === 401) {
       const apiToken = cookies.get(cookies.NAMES.API_TOKEN);
 
-      if (apiToken && loginUrl) {
+      if (apiToken) {
         Sentry.captureException(new Error('Invalid API token'), { tags: { source: 'invalid_api_token' } });
-        window.location.assign(loginUrl);
+        cookies.remove(cookies.NAMES.API_TOKEN);
+        window.location.assign('/');
       }
     }
-  }, [ errorStatus, loginUrl ]);
+  }, [ errorStatus ]);
 }

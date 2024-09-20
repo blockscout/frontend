@@ -1,8 +1,7 @@
 import useApiQuery from 'lib/api/useApiQuery';
 import * as cookies from 'lib/cookies';
 
-// TODO @tom2drum move to auth
-export default function useFetchProfileInfo() {
+export default function useProfileQuery() {
   return useApiQuery('user_info', {
     queryOptions: {
       refetchOnMount: false,
