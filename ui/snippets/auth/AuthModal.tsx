@@ -15,11 +15,12 @@ import useProfileQuery from './useProfileQuery';
 
 interface Props {
   initialScreen: Screen;
-  onClose: () => void;
+  onClose: (isSuccess?: boolean) => void;
 }
 
 const AuthModal = ({ initialScreen, onClose }: Props) => {
   const [ steps, setSteps ] = React.useState<Array<Screen>>([ initialScreen ]);
+  const [ isSuccess, setIsSuccess ] = React.useState(false);
   const profileQuery = useProfileQuery();
 
   const onNextStep = React.useCallback((screen: Screen) => {
@@ -35,12 +36,17 @@ const AuthModal = ({ initialScreen, onClose }: Props) => {
   }, [ initialScreen, onClose ]);
 
   const onAuthSuccess = React.useCallback(async(screen: ScreenSuccess) => {
+    setIsSuccess(true);
     const { data } = await profileQuery.refetch();
     if (data) {
       onNextStep({ ...screen, profile: data });
     }
     // TODO @tom2drum handle error case
   }, [ onNextStep, profileQuery ]);
+
+  const onModalClose = React.useCallback(() => {
+    onClose(isSuccess);
+  }, [ isSuccess, onClose ]);
 
   const header = (() => {
     const currentStep = steps[steps.length - 1];
@@ -92,7 +98,7 @@ const AuthModal = ({ initialScreen, onClose }: Props) => {
   })();
 
   return (
-    <Modal isOpen onClose={ onClose } size={{ base: 'full', lg: 'sm' }}>
+    <Modal isOpen onClose={ onModalClose } size={{ base: 'full', lg: 'sm' }}>
       <ModalOverlay/>
       <ModalContent p={ 6 } maxW={{ lg: '400px' }}>
         <ModalHeader fontWeight="500" textStyle="h3" mb={ 2 } display="flex" alignItems="center" columnGap={ 2 }>
