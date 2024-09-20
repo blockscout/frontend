@@ -1,7 +1,7 @@
 import React from 'react';
 
-import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import type { QueryWithPagesResult } from 'ui/shared/pagination/useQueryWithPages';
+import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInvalidAuthToken';
 import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
 
 type Props = {

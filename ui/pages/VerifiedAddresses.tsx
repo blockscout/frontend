@@ -7,7 +7,6 @@ import type { VerifiedAddress, TokenInfoApplication, TokenInfoApplications, Veri
 
 import config from 'configs/app';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
-import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import { PAGE_TYPE_DICT } from 'lib/mixpanel/getPageType';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { TOKEN_INFO_APPLICATION, VERIFIED_ADDRESS } from 'stubs/account';
@@ -17,6 +16,7 @@ import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import AdminSupportText from 'ui/shared/texts/AdminSupportText';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
+import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInvalidAuthToken';
 import TokenInfoForm from 'ui/tokenInfo/TokenInfoForm';
 import VerifiedAddressesEmailAlert from 'ui/verifiedAddresses/VerifiedAddressesEmailAlert';
 import VerifiedAddressesListItem from 'ui/verifiedAddresses/VerifiedAddressesListItem';
