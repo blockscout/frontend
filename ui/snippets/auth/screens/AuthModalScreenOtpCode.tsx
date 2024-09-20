@@ -7,6 +7,7 @@ import type { OtpCodeFormFields, ScreenSuccess } from '../types';
 
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/errors/getErrorMessage';
+import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import useToast from 'lib/hooks/useToast';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -44,39 +45,47 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
         onSuccess({ type: 'success_email', email, isAuth });
       })
       .catch((error) => {
-        // TODO @tom2drum handle incorrect code error
-        toast({
-          status: 'error',
-          title: 'Error',
-          description: getErrorMessage(error) || 'Something went wrong',
-        });
-      });
-  }, [ apiFetch, email, onSuccess, toast, isAuth ]);
+        const apiError = getErrorObjPayload<{ message: string }>(error);
 
-  const handleResendCodeClick = React.useCallback(() => {
-    return apiFetch('auth_send_otp', {
-      fetchParams: {
-        method: 'POST',
-        body: {
-          email,
-        },
-      },
-    })
-      .then(() => {
-        toast({
-          status: 'success',
-          title: 'Code sent',
-          description: 'Code has been sent to your email',
-        });
-      })
-      .catch((error) => {
+        if (apiError?.message) {
+          formApi.setError('code', { message: apiError.message });
+          return;
+        }
+
         toast({
           status: 'error',
           title: 'Error',
           description: getErrorMessage(error) || 'Something went wrong',
         });
       });
-  }, [ apiFetch, email, toast ]);
+  }, [ apiFetch, email, onSuccess, isAuth, toast, formApi ]);
+
+  const handleResendCodeClick = React.useCallback(async() => {
+    try {
+      formApi.clearErrors('code');
+      await apiFetch('auth_send_otp', {
+        fetchParams: {
+          method: 'POST',
+          body: { email },
+        },
+      });
+
+      toast({
+        status: 'success',
+        title: 'Success',
+        description: 'Code has been sent to your email',
+      });
+    } catch (error) {
+      // TODO @tom2drum check cool down error
+      const apiError = getErrorObjPayload<{ message: string }>(error);
+
+      toast({
+        status: 'error',
+        title: 'Error',
+        description: apiError?.message || getErrorMessage(error) || 'Something went wrong',
+      });
+    }
+  }, [ apiFetch, email, formApi, toast ]);
 
   return (
     <FormProvider { ...formApi }>
