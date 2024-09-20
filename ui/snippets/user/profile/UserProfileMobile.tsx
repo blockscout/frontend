@@ -2,6 +2,8 @@ import { Drawer, DrawerBody, DrawerContent, DrawerOverlay, useDisclosure } from 
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { Screen } from 'ui/snippets/auth/types';
+
 import config from 'configs/app';
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import AuthModal from 'ui/snippets/auth/AuthModal';
@@ -11,6 +13,9 @@ import UserProfileButton from './UserProfileButton';
 import UserProfileContent from './UserProfileContent';
 
 const UserProfileMobile = () => {
+  const [ authInitialScreen, setAuthInitialScreen ] = React.useState<Screen>({
+    type: config.features.blockchainInteraction.isEnabled ? 'select_method' : 'email',
+  });
   const router = useRouter();
 
   const authModal = useDisclosure();
@@ -33,6 +38,11 @@ const UserProfileMobile = () => {
     authModal.onOpen();
   }, [ profileQuery.data, router.pathname, authModal, profileMenu, signInWithWallet ]);
 
+  const handleAddEmailClick = React.useCallback(() => {
+    setAuthInitialScreen({ type: 'email', isAuth: true });
+    authModal.onOpen();
+  }, [ authModal ]);
+
   return (
     <>
       <UserProfileButton
@@ -50,7 +60,7 @@ const UserProfileMobile = () => {
           <DrawerOverlay/>
           <DrawerContent maxWidth="300px">
             <DrawerBody p={ 6 }>
-              <UserProfileContent data={ profileQuery.data } onClose={ profileMenu.onClose }/>
+              <UserProfileContent data={ profileQuery.data } onClose={ profileMenu.onClose } onAddEmail={ handleAddEmailClick }/>
             </DrawerBody>
           </DrawerContent>
         </Drawer>
@@ -58,7 +68,7 @@ const UserProfileMobile = () => {
       { authModal.isOpen && (
         <AuthModal
           onClose={ authModal.onClose }
-          initialScreen={{ type: config.features.blockchainInteraction.isEnabled ? 'select_method' : 'email' }}
+          initialScreen={ authInitialScreen }
         />
       ) }
     </>

@@ -1,8 +1,10 @@
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { Route } from 'nextjs-routes';
 
+import { getResourceKey } from 'lib/api/useApiQuery';
 import * as cookies from 'lib/cookies';
 
 const PROTECTED_ROUTES: Array<Route['pathname']> = [
@@ -17,17 +19,21 @@ const PROTECTED_ROUTES: Array<Route['pathname']> = [
 
 export default function useLogout() {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   return React.useCallback(async() => {
     cookies.remove(cookies.NAMES.API_TOKEN);
+
+    queryClient.resetQueries({
+      queryKey: getResourceKey('user_info'),
+      exact: true,
+    });
 
     if (
       PROTECTED_ROUTES.includes(router.pathname) ||
         (router.pathname === '/txs' && router.query.tab === 'watchlist')
     ) {
-      window.location.assign('/');
-    } else {
-      window.location.reload();
+      router.push({ pathname: '/' }, undefined, { shallow: true });
     }
-  }, [ router ]);
+  }, [ queryClient, router ]);
 }

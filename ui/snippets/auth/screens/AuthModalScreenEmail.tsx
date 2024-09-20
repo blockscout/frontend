@@ -14,9 +14,10 @@ import AuthModalFieldEmail from '../fields/AuthModalFieldEmail';
 
 interface Props {
   onSubmit: (screen: Screen) => void;
+  isAuth?: boolean;
 }
 
-const AuthModalScreenEmail = ({ onSubmit }: Props) => {
+const AuthModalScreenEmail = ({ onSubmit, isAuth }: Props) => {
 
   const apiFetch = useApiFetch();
   const toast = useToast();
@@ -39,7 +40,7 @@ const AuthModalScreenEmail = ({ onSubmit }: Props) => {
       },
     })
       .then(() => {
-        onSubmit({ type: 'otp_code', email: formData.email });
+        onSubmit({ type: 'otp_code', email: formData.email, isAuth });
       })
       .catch((error) => {
         toast({
@@ -48,7 +49,7 @@ const AuthModalScreenEmail = ({ onSubmit }: Props) => {
           description: getErrorMessage(error) || 'Something went wrong',
         });
       });
-  }, [ apiFetch, onSubmit, toast ]);
+  }, [ apiFetch, onSubmit, toast, isAuth ]);
 
   return (
     <FormProvider { ...formApi }>

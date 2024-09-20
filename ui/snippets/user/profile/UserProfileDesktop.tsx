@@ -2,6 +2,8 @@ import { PopoverBody, PopoverContent, PopoverTrigger, useDisclosure, type Button
 import { useRouter } from 'next/router';
 import React from 'react';
 
+import type { Screen } from 'ui/snippets/auth/types';
+
 import config from 'configs/app';
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import Popover from 'ui/shared/chakra/Popover';
@@ -17,6 +19,9 @@ interface Props {
 }
 
 const UserProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => {
+  const [ authInitialScreen, setAuthInitialScreen ] = React.useState<Screen>({
+    type: config.features.blockchainInteraction.isEnabled ? 'select_method' : 'email',
+  });
   const router = useRouter();
 
   const authModal = useDisclosure();
@@ -39,6 +44,11 @@ const UserProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => 
     authModal.onOpen();
   }, [ profileQuery.data, router.pathname, authModal, profileMenu, signInWithWallet ]);
 
+  const handleAddEmailClick = React.useCallback(() => {
+    setAuthInitialScreen({ type: 'email', isAuth: true });
+    authModal.onOpen();
+  }, [ authModal ]);
+
   return (
     <>
       <Popover openDelay={ 300 } placement="bottom-end" isLazy isOpen={ profileMenu.isOpen } onClose={ profileMenu.onClose }>
@@ -54,7 +64,7 @@ const UserProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => 
         { profileQuery.data && (
           <PopoverContent maxW="280px" minW="220px" w="min-content">
             <PopoverBody>
-              <UserProfileContent data={ profileQuery.data } onClose={ profileMenu.onClose }/>
+              <UserProfileContent data={ profileQuery.data } onClose={ profileMenu.onClose } onAddEmail={ handleAddEmailClick }/>
             </PopoverBody>
           </PopoverContent>
         ) }
@@ -62,7 +72,7 @@ const UserProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => 
       { authModal.isOpen && (
         <AuthModal
           onClose={ authModal.onClose }
-          initialScreen={{ type: config.features.blockchainInteraction.isEnabled ? 'select_method' : 'email' }}
+          initialScreen={ authInitialScreen }
         />
       ) }
     </>

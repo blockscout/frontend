@@ -3,7 +3,7 @@ import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
 
-import type { OtpCodeFormFields, Screen } from '../types';
+import type { OtpCodeFormFields, ScreenSuccess } from '../types';
 
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/errors/getErrorMessage';
@@ -14,10 +14,11 @@ import AuthModalFieldOtpCode from '../fields/AuthModalFieldOtpCode';
 
 interface Props {
   email: string;
-  onSubmit: (screen: Screen) => void;
+  onSuccess: (screen: ScreenSuccess) => void;
+  isAuth?: boolean;
 }
 
-const AuthModalScreenOtpCode = ({ email, onSubmit }: Props) => {
+const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
 
   const apiFetch = useApiFetch();
   const toast = useToast();
@@ -40,7 +41,7 @@ const AuthModalScreenOtpCode = ({ email, onSubmit }: Props) => {
       },
     })
       .then(() => {
-        onSubmit({ type: 'success_created_email' });
+        onSuccess({ type: 'success_email', email, isAuth });
       })
       .catch((error) => {
         // TODO @tom2drum handle incorrect code error
@@ -50,7 +51,7 @@ const AuthModalScreenOtpCode = ({ email, onSubmit }: Props) => {
           description: getErrorMessage(error) || 'Something went wrong',
         });
       });
-  }, [ apiFetch, email, onSubmit, toast ]);
+  }, [ apiFetch, email, onSuccess, toast, isAuth ]);
 
   const handleResendCodeClick = React.useCallback(() => {
     return apiFetch('auth_send_otp', {

@@ -1,16 +1,17 @@
 import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/react';
 import React from 'react';
 
-import type { Screen } from './types';
+import type { Screen, ScreenSuccess } from './types';
 
+import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import IconSvg from 'ui/shared/IconSvg';
 
 import AuthModalScreenConnectWallet from './screens/AuthModalScreenConnectWallet';
 import AuthModalScreenEmail from './screens/AuthModalScreenEmail';
 import AuthModalScreenOtpCode from './screens/AuthModalScreenOtpCode';
 import AuthModalScreenSelectMethod from './screens/AuthModalScreenSelectMethod';
-import AuthModalScreenSuccessCreatedEmail from './screens/AuthModalScreenSuccessCreatedEmail';
-import AuthModalScreenSuccessCreatedWallet from './screens/AuthModalScreenSuccessCreatedWallet';
+import AuthModalScreenSuccessEmail from './screens/AuthModalScreenSuccessEmail';
+import AuthModalScreenSuccessWallet from './screens/AuthModalScreenSuccessWallet';
 
 interface Props {
   initialScreen: Screen;
@@ -19,6 +20,7 @@ interface Props {
 
 const AuthModal = ({ initialScreen, onClose }: Props) => {
   const [ steps, setSteps ] = React.useState<Array<Screen>>([ initialScreen ]);
+  const profileQuery = useFetchProfileInfo();
 
   const onNextStep = React.useCallback((screen: Screen) => {
     setSteps((prev) => [ ...prev, screen ]);
@@ -32,19 +34,27 @@ const AuthModal = ({ initialScreen, onClose }: Props) => {
     setSteps([ initialScreen ]);
   }, [ initialScreen ]);
 
+  const onAuthSuccess = React.useCallback(async(screen: ScreenSuccess) => {
+    const { data } = await profileQuery.refetch();
+    if (data) {
+      onNextStep({ ...screen, profile: data });
+    }
+    // TODO @tom2drum handle error case
+  }, [ onNextStep, profileQuery ]);
+
   const header = (() => {
     const currentStep = steps[steps.length - 1];
     switch (currentStep.type) {
       case 'select_method':
         return 'Select a way to connect';
       case 'connect_wallet':
-        return 'Continue with wallet';
+        return currentStep.isAuth ? 'Add wallet' : 'Continue with wallet';
       case 'email':
-        return currentStep.isAccountExists ? 'Add email' : 'Continue with email';
+        return currentStep.isAuth ? 'Add email' : 'Continue with email';
       case 'otp_code':
         return 'Confirmation code';
-      case 'success_created_email':
-      case 'success_created_wallet':
+      case 'success_email':
+      case 'success_wallet':
         return 'Congrats!';
     }
   })();
@@ -55,15 +65,29 @@ const AuthModal = ({ initialScreen, onClose }: Props) => {
       case 'select_method':
         return <AuthModalScreenSelectMethod onSelectMethod={ onNextStep }/>;
       case 'connect_wallet':
-        return <AuthModalScreenConnectWallet onSuccess={ onNextStep } onError={ onReset }/>;
+        return <AuthModalScreenConnectWallet onSuccess={ onAuthSuccess } onError={ onReset } isAuth={ currentStep.isAuth }/>;
       case 'email':
-        return <AuthModalScreenEmail onSubmit={ onNextStep }/>;
+        return <AuthModalScreenEmail onSubmit={ onNextStep } isAuth={ currentStep.isAuth }/>;
       case 'otp_code':
-        return <AuthModalScreenOtpCode email={ currentStep.email } onSubmit={ onNextStep }/>;
-      case 'success_created_email':
-        return <AuthModalScreenSuccessCreatedEmail/>;
-      case 'success_created_wallet':
-        return <AuthModalScreenSuccessCreatedWallet address={ currentStep.address } onAddEmail={ onNextStep }/>;
+        return <AuthModalScreenOtpCode email={ currentStep.email } onSuccess={ onAuthSuccess } isAuth={ currentStep.isAuth }/>;
+      case 'success_email':
+        return (
+          <AuthModalScreenSuccessEmail
+            email={ currentStep.email }
+            onConnectWallet={ onNextStep }
+            isAuth={ currentStep.isAuth }
+            profile={ currentStep.profile }
+          />
+        );
+      case 'success_wallet':
+        return (
+          <AuthModalScreenSuccessWallet
+            address={ currentStep.address }
+            onAddEmail={ onNextStep }
+            isAuth={ currentStep.isAuth }
+            profile={ currentStep.profile }
+          />
+        );
     }
   })();
 

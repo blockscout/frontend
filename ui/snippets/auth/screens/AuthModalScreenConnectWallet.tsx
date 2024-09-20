@@ -1,21 +1,22 @@
 import { Center, Spinner } from '@chakra-ui/react';
 import React from 'react';
 
-import type { Screen } from '../types';
+import type { ScreenSuccess } from '../types';
 
 import useSignInWithWallet from '../useSignInWithWallet';
 
 interface Props {
-  onSuccess: (screen: Screen) => void;
+  onSuccess: (screen: ScreenSuccess) => void;
   onError: () => void;
+  isAuth?: boolean;
 }
 
-const AuthModalScreenConnectWallet = ({ onSuccess, onError }: Props) => {
+const AuthModalScreenConnectWallet = ({ onSuccess, onError, isAuth }: Props) => {
   const isStartedRef = React.useRef(false);
 
   const handleSignInSuccess = React.useCallback(({ address }: { address: string }) => {
-    onSuccess({ type: 'success_created_wallet', address });
-  }, [ onSuccess ]);
+    onSuccess({ type: 'success_wallet', address, isAuth });
+  }, [ onSuccess, isAuth ]);
 
   const handleSignInError = React.useCallback(() => {
     onError();

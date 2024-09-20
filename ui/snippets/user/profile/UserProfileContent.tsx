@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, Text, VStack } from '@chakra-ui/react';
+import { Box, Divider, Flex, Link, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { NavLink } from './types';
@@ -45,10 +45,11 @@ const navLinks: Array<NavLink> = [
 
 interface Props {
   data: UserInfo;
-  onClose?: () => void;
+  onClose: () => void;
+  onAddEmail: () => void;
 }
 
-const UserProfileContent = ({ data, onClose }: Props) => {
+const UserProfileContent = ({ data, onClose, onAddEmail }: Props) => {
   const { isAutoConnectDisabled } = useMarketplaceContext();
   const logout = useLogout();
 
@@ -63,7 +64,10 @@ const UserProfileContent = ({ data, onClose }: Props) => {
           icon="profile"
           onClick={ onClose }
         />
-        { data?.email && <Text variant="secondary" fontSize="sm">{ getUserHandle(data.email) }</Text> }
+        { data?.email ?
+          <Text variant="secondary" fontSize="sm">{ getUserHandle(data.email) }</Text> :
+          <Link onClick={ onAddEmail } color="text_secondary" fontSize="sm" _hover={{ color: 'link_hovered', textDecoration: 'none' }}>Add email</Link>
+        }
       </Flex>
 
       { config.features.blockchainInteraction.isEnabled ? <UserProfileContentWallet onClose={ onClose }/> : <Divider/> }
