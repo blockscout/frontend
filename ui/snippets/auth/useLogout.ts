@@ -6,6 +6,7 @@ import type { Route } from 'nextjs-routes';
 
 import { getResourceKey } from 'lib/api/useApiQuery';
 import * as cookies from 'lib/cookies';
+import * as mixpanel from 'lib/mixpanel';
 
 const PROTECTED_ROUTES: Array<Route['pathname']> = [
   '/account/api-key',
@@ -27,6 +28,8 @@ export default function useLogout() {
       queryKey: getResourceKey('user_info'),
       exact: true,
     });
+
+    mixpanel.logEvent(mixpanel.EventTypes.ACCOUNT_ACCESS, { Action: 'Logged out' }, { send_immediately: true });
 
     if (
       PROTECTED_ROUTES.includes(router.pathname) ||

@@ -6,14 +6,16 @@ import config from 'configs/app';
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/errors/getErrorMessage';
 import useToast from 'lib/hooks/useToast';
+import * as mixpanel from 'lib/mixpanel';
 import useAccount from 'lib/web3/useAccount';
 
 interface Props {
   onSuccess?: ({ address }: { address: string }) => void;
   onError?: () => void;
+  source?: mixpanel.EventPayload<mixpanel.EventTypes.WALLET_CONNECT>['Source'];
 }
 
-function useSignInWithWallet({ onSuccess, onError }: Props) {
+function useSignInWithWallet({ onSuccess, onError, source = 'Login' }: Props) {
   const [ isPending, setIsPending ] = React.useState(false);
   const isConnectingWalletRef = React.useRef(false);
 
@@ -54,15 +56,17 @@ function useSignInWithWallet({ onSuccess, onError }: Props) {
     } else {
       isConnectingWalletRef.current = true;
       web3Modal.open();
+      mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Source: source, Status: 'Started' });
     }
-  }, [ address, proceedToAuth, web3Modal ]);
+  }, [ address, proceedToAuth, source, web3Modal ]);
 
   React.useEffect(() => {
     if (address && isConnectingWalletRef.current) {
       isConnectingWalletRef.current = false;
       proceedToAuth(address);
+      mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Source: source, Status: 'Connected' });
     }
-  }, [ address, isConnected, proceedToAuth ]);
+  }, [ address, isConnected, proceedToAuth, source ]);
 
   return React.useMemo(() => ({ start, isPending }), [ start, isPending ]);
 }

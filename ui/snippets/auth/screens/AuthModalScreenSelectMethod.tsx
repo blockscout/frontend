@@ -3,6 +3,8 @@ import React from 'react';
 
 import type { Screen } from '../types';
 
+import * as mixpanel from 'lib/mixpanel';
+
 interface Props {
   onSelectMethod: (screen: Screen) => void;
 }
@@ -10,10 +12,18 @@ interface Props {
 const AuthModalScreenSelectMethod = ({ onSelectMethod }: Props) => {
 
   const handleEmailClick = React.useCallback(() => {
+    mixpanel.logEvent(mixpanel.EventTypes.LOGIN, {
+      Action: 'Email',
+      Source: 'Options selector',
+    });
     onSelectMethod({ type: 'email' });
   }, [ onSelectMethod ]);
 
   const handleConnectWalletClick = React.useCallback(() => {
+    mixpanel.logEvent(mixpanel.EventTypes.LOGIN, {
+      Action: 'Wallet',
+      Source: 'Options selector',
+    });
     onSelectMethod({ type: 'connect_wallet' });
   }, [ onSelectMethod ]);
 

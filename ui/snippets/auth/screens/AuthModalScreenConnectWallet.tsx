@@ -3,15 +3,18 @@ import React from 'react';
 
 import type { ScreenSuccess } from '../types';
 
+import type * as mixpanel from 'lib/mixpanel';
+
 import useSignInWithWallet from '../useSignInWithWallet';
 
 interface Props {
   onSuccess: (screen: ScreenSuccess) => void;
   onError: (isAuth?: boolean) => void;
   isAuth?: boolean;
+  source?: mixpanel.EventPayload<mixpanel.EventTypes.WALLET_CONNECT>['Source'];
 }
 
-const AuthModalScreenConnectWallet = ({ onSuccess, onError, isAuth }: Props) => {
+const AuthModalScreenConnectWallet = ({ onSuccess, onError, isAuth, source }: Props) => {
   const isStartedRef = React.useRef(false);
 
   const handleSignInSuccess = React.useCallback(({ address }: { address: string }) => {
@@ -22,7 +25,7 @@ const AuthModalScreenConnectWallet = ({ onSuccess, onError, isAuth }: Props) => 
     onError(isAuth);
   }, [ onError, isAuth ]);
 
-  const { start } = useSignInWithWallet({ onSuccess: handleSignInSuccess, onError: handleSignInError });
+  const { start } = useSignInWithWallet({ onSuccess: handleSignInSuccess, onError: handleSignInError, source });
 
   React.useEffect(() => {
     if (!isStartedRef.current) {

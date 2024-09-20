@@ -12,7 +12,7 @@ interface Props {
 }
 
 const UserProfileContentWallet = ({ onClose }: Props) => {
-  const web3Wallet = useWeb3Wallet({ source: 'Header' });
+  const web3Wallet = useWeb3Wallet({ source: 'Profile dropdown' });
 
   const web3AccountWithDomain = useWeb3AccountWithDomain(true);
 

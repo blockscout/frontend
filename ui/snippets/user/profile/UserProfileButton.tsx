@@ -63,16 +63,12 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: 
       );
     }
 
-    if (data.email) {
-      return (
-        <HStack gap={ 2 }>
-          <IconSvg name="profile" boxSize={ 5 }/>
-          <Box display={{ base: 'none', md: 'block' }}>{ getUserHandle(data.email) }</Box>
-        </HStack>
-      );
-    }
-
-    return 'Connected';
+    return (
+      <HStack gap={ 2 }>
+        <IconSvg name="profile" boxSize={ 5 }/>
+        <Box display={{ base: 'none', md: 'block' }}>{ data.email ? getUserHandle(data.email) : 'Profile' }</Box>
+      </HStack>
+    );
   })();
 
   return (

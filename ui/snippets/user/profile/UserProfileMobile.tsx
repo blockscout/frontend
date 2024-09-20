@@ -5,6 +5,7 @@ import React from 'react';
 import type { Screen } from 'ui/snippets/auth/types';
 
 import config from 'configs/app';
+import * as mixpanel from 'lib/mixpanel';
 import AuthModal from 'ui/snippets/auth/AuthModal';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 import useSignInWithWallet from 'ui/snippets/auth/useSignInWithWallet';
@@ -26,6 +27,7 @@ const UserProfileMobile = () => {
 
   const handleProfileButtonClick = React.useCallback(() => {
     if (profileQuery.data) {
+      mixpanel.logEvent(mixpanel.EventTypes.ACCOUNT_ACCESS, { Action: 'Dropdown open' });
       profileMenu.onOpen();
       return;
     }

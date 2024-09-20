@@ -13,6 +13,15 @@ import AuthModal from 'ui/snippets/auth/AuthModal';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInvalidAuthToken';
 
+const MIXPANEL_CONFIG = {
+  wallet_connect: {
+    source: 'Profile' as const,
+  },
+  account_link_info: {
+    source: 'Profile' as const,
+  },
+};
+
 const MyProfile = () => {
   const [ authInitialScreen, setAuthInitialScreen ] = React.useState<Screen>();
   const authModal = useDisclosure();
@@ -38,9 +47,11 @@ const MyProfile = () => {
       <>
         <Flex maxW="480px" mt={ 8 } flexDir="column" rowGap={ 12 }>
           <MyProfileEmail profileQuery={ profileQuery }/>
-          { config.features.blockchainInteraction.isEnabled && <MyProfileWallet profileQuery={ profileQuery } onAddWallet={ handleAddWalletClick }/> }
+          { config.features.blockchainInteraction.isEnabled &&
+            <MyProfileWallet profileQuery={ profileQuery } onAddWallet={ handleAddWalletClick }/> }
         </Flex>
-        { authModal.isOpen && authInitialScreen && <AuthModal initialScreen={ authInitialScreen } onClose={ authModal.onClose }/> }
+        { authModal.isOpen && authInitialScreen &&
+          <AuthModal initialScreen={ authInitialScreen } onClose={ authModal.onClose } mixpanelConfig={ MIXPANEL_CONFIG }/> }
       </>
     );
   })();
