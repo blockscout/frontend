@@ -1,4 +1,4 @@
-import { OrderedList, ListItem, chakra, Button, useDisclosure, Show, Hide, Skeleton, Link, Alert } from '@chakra-ui/react';
+import { OrderedList, ListItem, chakra, Button, useDisclosure, Show, Hide, Skeleton, Link } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -18,6 +18,7 @@ import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import AdminSupportText from 'ui/shared/texts/AdminSupportText';
 import TokenInfoForm from 'ui/tokenInfo/TokenInfoForm';
+import VerifiedAddressesEmailAlert from 'ui/verifiedAddresses/VerifiedAddressesEmailAlert';
 import VerifiedAddressesListItem from 'ui/verifiedAddresses/VerifiedAddressesListItem';
 import VerifiedAddressesTable from 'ui/verifiedAddresses/VerifiedAddressesTable';
 
@@ -193,11 +194,7 @@ const VerifiedAddresses = () => {
   return (
     <>
       <PageTitle title="My verified addresses"/>
-      { userWithoutEmail && (
-        <Alert status="warning" mb={ 6 }>
-          You need a valid email address to verify addresses. Please logout of MyAccount then login using your email to proceed.
-        </Alert>
-      ) }
+      { userWithoutEmail && <VerifiedAddressesEmailAlert/> }
       <AccountPageDescription allowCut={ false }>
         <span>
           Verify ownership of a smart contract address to easily update information in Blockscout.
