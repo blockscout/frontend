@@ -1,5 +1,7 @@
-import { Flex } from '@chakra-ui/react';
+import { Flex, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
+
+import type { Screen } from 'ui/snippets/auth/types';
 
 import config from 'configs/app';
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
@@ -9,10 +11,19 @@ import MyProfileWallet from 'ui/myProfile/MyProfileWallet';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import PageTitle from 'ui/shared/Page/PageTitle';
+import AuthModal from 'ui/snippets/auth/AuthModal';
 
 const MyProfile = () => {
+  const [ authInitialScreen, setAuthInitialScreen ] = React.useState<Screen>();
+  const authModal = useDisclosure();
+
   const profileQuery = useFetchProfileInfo();
   useRedirectForInvalidAuthToken();
+
+  const handleAddWalletClick = React.useCallback(() => {
+    setAuthInitialScreen({ type: 'connect_wallet', isAuth: true });
+    authModal.onOpen();
+  }, [ authModal ]);
 
   const content = (() => {
     if (profileQuery.isPending) {
@@ -24,10 +35,13 @@ const MyProfile = () => {
     }
 
     return (
-      <Flex maxW="480px" mt={ 8 } flexDir="column" rowGap={ 12 }>
-        <MyProfileEmail profileQuery={ profileQuery }/>
-        { config.features.blockchainInteraction.isEnabled && <MyProfileWallet profileQuery={ profileQuery }/> }
-      </Flex>
+      <>
+        <Flex maxW="480px" mt={ 8 } flexDir="column" rowGap={ 12 }>
+          <MyProfileEmail profileQuery={ profileQuery }/>
+          { config.features.blockchainInteraction.isEnabled && <MyProfileWallet profileQuery={ profileQuery } onAddWallet={ handleAddWalletClick }/> }
+        </Flex>
+        { authModal.isOpen && authInitialScreen && <AuthModal initialScreen={ authInitialScreen } onClose={ authModal.onClose }/> }
+      </>
     );
   })();
 

@@ -30,9 +30,9 @@ const AuthModal = ({ initialScreen, onClose }: Props) => {
     setSteps((prev) => prev.length > 1 ? prev.slice(0, -1) : prev);
   }, []);
 
-  const onReset = React.useCallback(() => {
-    setSteps([ initialScreen ]);
-  }, [ initialScreen ]);
+  const onReset = React.useCallback((isAuth?: boolean) => {
+    isAuth ? onClose() : setSteps([ initialScreen ]);
+  }, [ initialScreen, onClose ]);
 
   const onAuthSuccess = React.useCallback(async(screen: ScreenSuccess) => {
     const { data } = await profileQuery.refetch();

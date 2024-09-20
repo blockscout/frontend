@@ -7,7 +7,7 @@ import useSignInWithWallet from '../useSignInWithWallet';
 
 interface Props {
   onSuccess: (screen: ScreenSuccess) => void;
-  onError: () => void;
+  onError: (isAuth?: boolean) => void;
   isAuth?: boolean;
 }
 
@@ -19,8 +19,8 @@ const AuthModalScreenConnectWallet = ({ onSuccess, onError, isAuth }: Props) => 
   }, [ onSuccess, isAuth ]);
 
   const handleSignInError = React.useCallback(() => {
-    onError();
-  }, [ onError ]);
+    onError(isAuth);
+  }, [ onError, isAuth ]);
 
   const { start } = useSignInWithWallet({ onSuccess: handleSignInSuccess, onError: handleSignInError });
 
