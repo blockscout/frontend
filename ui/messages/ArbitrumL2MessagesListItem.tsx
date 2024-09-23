@@ -33,13 +33,15 @@ const ArbitrumL2MessagesListItem = ({ item, isLoading, direction }: Props) => {
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>L1 block</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <BlockEntityL1
-              number={ item.origination_transaction_block_number }
-              isLoading={ isLoading }
-              fontSize="sm"
-              lineHeight={ 5 }
-              fontWeight={ 600 }
-            />
+            { item.origination_transaction_block_number ? (
+              <BlockEntityL1
+                number={ item.origination_transaction_block_number }
+                isLoading={ isLoading }
+                fontSize="sm"
+                lineHeight={ 5 }
+                fontWeight={ 600 }
+              />
+            ) : <chakra.span>N/A</chakra.span> }
           </ListItemMobileGrid.Value>
         </>
       ) }
@@ -84,14 +86,18 @@ const ArbitrumL2MessagesListItem = ({ item, isLoading, direction }: Props) => {
         ) }
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
-      <ListItemMobileGrid.Value>
-        <TimeAgoWithTooltip
-          timestamp={ item.origination_timestamp }
-          isLoading={ isLoading }
-          display="inline-block"
-        />
-      </ListItemMobileGrid.Value>
+      { item.origination_timestamp && (
+        <>
+          <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
+          <ListItemMobileGrid.Value>
+            <TimeAgoWithTooltip
+              timestamp={ item.origination_timestamp }
+              isLoading={ isLoading }
+              display="inline-block"
+            />
+          </ListItemMobileGrid.Value>
+        </>
+      ) }
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Status</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>

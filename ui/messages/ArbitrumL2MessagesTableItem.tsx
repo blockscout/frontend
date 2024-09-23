@@ -29,14 +29,16 @@ const ArbitrumL2MessagesTableItem = ({ item, direction, isLoading }: Props) => {
     <Tr>
       { direction === 'to-rollup' && (
         <Td verticalAlign="middle">
-          <BlockEntityL1
-            number={ item.origination_transaction_block_number }
-            isLoading={ isLoading }
-            fontSize="sm"
-            lineHeight={ 5 }
-            fontWeight={ 600 }
-            noIcon
-          />
+          { item.origination_transaction_block_number ? (
+            <BlockEntityL1
+              number={ item.origination_transaction_block_number }
+              isLoading={ isLoading }
+              fontSize="sm"
+              lineHeight={ 5 }
+              fontWeight={ 600 }
+              noIcon
+            />
+          ) : <chakra.span color="text_secondary">N/A</chakra.span> }
         </Td>
       ) }
       { direction === 'from-rollup' && (
