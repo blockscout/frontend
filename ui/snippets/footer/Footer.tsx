@@ -32,13 +32,13 @@ const Footer = () => {
     {
       icon: 'social/git' as const,
       iconSize: '18px',
-      text: 'Contribute',
+      text: 'Github',
       url: 'https://github.com/zkMeLabs',
     },
     {
       icon: 'social/medium_filled' as const,
       iconSize: '18px',
-      text: 'Mediumn',
+      text: 'Medium',
       url: 'https://medium.com/@zkMe',
     },
     {

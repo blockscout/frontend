@@ -94,7 +94,7 @@ const Page: NextPage = () => {
             { group_id: { _eq: queryParams.searchTerm } },
           ],
         } : undefined,
-        order: { group_id: 'desc' },
+        order: { update_at: 'desc' },
       },
       {
         tableName: 'groups_aggregate',

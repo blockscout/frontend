@@ -22,6 +22,7 @@ concurrency:
 
 jobs:
   publish_image:
+    if: false
     name: Publish Docker image
     uses: './.github/workflows/publish-image.yml'
     secrets: inherit
