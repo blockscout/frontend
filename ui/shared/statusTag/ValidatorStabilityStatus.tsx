@@ -1,15 +1,15 @@
 import React from 'react';
 
-import type { Validator } from 'types/api/validators';
+import type { ValidatorStability } from 'types/api/validators';
 
 import StatusTag from './StatusTag';
 
 interface Props {
-  state: Validator['state'];
+  state: ValidatorStability['state'];
   isLoading?: boolean;
 }
 
-const ValidatorStatus = ({ state, isLoading }: Props) => {
+const ValidatorStabilityStatus = ({ state, isLoading }: Props) => {
   switch (state) {
     case 'active':
       return <StatusTag type="ok" text="Active" isLoading={ isLoading }/>;
@@ -20,4 +20,4 @@ const ValidatorStatus = ({ state, isLoading }: Props) => {
   }
 };
 
-export default React.memo(ValidatorStatus);
+export default React.memo(ValidatorStabilityStatus);

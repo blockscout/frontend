@@ -1,13 +1,13 @@
 import { Tr, Td, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
-import type { Validator } from 'types/api/validators';
+import type { ValidatorStability } from 'types/api/validators';
 
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import ValidatorStatus from 'ui/shared/statusTag/ValidatorStatus';
+import ValidatorStatus from 'ui/shared/statusTag/ValidatorStabilityStatus';
 
 interface Props {
-  data: Validator;
+  data: ValidatorStability;
   isLoading?: boolean;
 }
 

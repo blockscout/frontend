@@ -1,18 +1,18 @@
 import React from 'react';
 
-import * as validatorsMock from 'mocks/validators/index';
+import * as validatorsMock from 'mocks/validators/blackfort';
 import { test, expect } from 'playwright/lib';
 
-import Validators from './Validators';
+import Validators from './ValidatorsBlackfort';
 
-const chainType = 'stability';
+const chainType = 'blackfort';
 
 test('base view +@mobile', async({ render, mockApiResponse, mockEnvs, mockTextAd }) => {
   await mockEnvs([
     [ 'NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE', chainType ],
   ]);
-  await mockApiResponse('validators', validatorsMock.validatorsResponse, { pathParams: { chainType } });
-  await mockApiResponse('validators_counters', validatorsMock.validatorsCountersResponse, { pathParams: { chainType } });
+  await mockApiResponse('validators_blackfort', validatorsMock.validatorsResponse);
+  await mockApiResponse('validators_blackfort_counters', validatorsMock.validatorsCountersResponse);
   await mockTextAd();
 
   const component = await render(<Validators/>);
