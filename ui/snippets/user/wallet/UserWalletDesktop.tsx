@@ -14,7 +14,7 @@ interface Props {
   buttonVariant?: ButtonProps['variant'];
 }
 
-const WalletDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => {
+const UserWalletDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => {
   const walletMenu = useDisclosure();
 
   const web3Wallet = useWeb3Wallet({ source: 'Header' });
@@ -65,4 +65,4 @@ const WalletDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => {
   );
 };
 
-export default React.memo(WalletDesktop);
+export default React.memo(UserWalletDesktop);

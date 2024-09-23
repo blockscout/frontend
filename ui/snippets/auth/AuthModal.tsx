@@ -4,6 +4,7 @@ import React from 'react';
 
 import type { Screen, ScreenSuccess } from './types';
 
+import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
 import * as mixpanel from 'lib/mixpanel';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -34,6 +35,7 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig }: Props) => {
 
   const router = useRouter();
   const profileQuery = useProfileQuery();
+  const csrfQuery = useGetCsrfToken();
 
   React.useEffect(() => {
     if ('isAuth' in initialScreen && initialScreen.isAuth) {
@@ -79,11 +81,12 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig }: Props) => {
     }
 
     const { data } = await profileQuery.refetch();
+    await csrfQuery.refetch();
     if (data) {
       onNextStep({ ...screen, profile: data });
     }
     // TODO @tom2drum handle error case
-  }, [ initialScreen, mixpanelConfig?.account_link_info.source, onNextStep, profileQuery ]);
+  }, [ initialScreen, mixpanelConfig?.account_link_info.source, onNextStep, profileQuery, csrfQuery ]);
 
   const onModalClose = React.useCallback(() => {
     onClose(isSuccess);

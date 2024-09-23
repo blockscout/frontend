@@ -5,14 +5,28 @@ import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import useWeb3Wallet from 'lib/web3/useWallet';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import useIsAuth from 'ui/snippets/auth/useIsAuth';
+import useSignInWithWallet from 'ui/snippets/auth/useSignInWithWallet';
 
 interface Props {
   isLoading?: boolean;
 }
 
 const ContractConnectWallet = ({ isLoading }: Props) => {
+  const signInWithWallet = useSignInWithWallet({ source: 'Smart contracts' });
+  const isAuth = useIsAuth();
   const web3Wallet = useWeb3Wallet({ source: 'Smart contracts' });
   const isMobile = useIsMobile();
+
+  const shouldSignIn = config.features.account.isEnabled && !isAuth;
+
+  const handleConnectClick = React.useCallback(() => {
+    if (shouldSignIn) {
+      signInWithWallet.start();
+    } else {
+      web3Wallet.connect();
+    }
+  }, [ signInWithWallet, web3Wallet, shouldSignIn ]);
 
   const content = (() => {
     if (!web3Wallet.isConnected) {
@@ -21,13 +35,13 @@ const ContractConnectWallet = ({ isLoading }: Props) => {
           <span>Disconnected</span>
           <Button
             ml={ 3 }
-            onClick={ web3Wallet.connect }
+            onClick={ handleConnectClick }
             size="sm"
             variant="outline"
-            isLoading={ web3Wallet.isOpen }
+            isLoading={ shouldSignIn ? signInWithWallet.isPending : web3Wallet.isOpen }
             loadingText="Connect wallet"
           >
-              Connect wallet
+            Connect wallet
           </Button>
         </>
       );
