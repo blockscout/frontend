@@ -5,6 +5,7 @@ import { useSignMessage } from 'wagmi';
 import config from 'configs/app';
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/errors/getErrorMessage';
+import getErrorObj from 'lib/errors/getErrorObj';
 import useToast from 'lib/hooks/useToast';
 import * as mixpanel from 'lib/mixpanel';
 import useAccount from 'lib/web3/useAccount';
@@ -37,12 +38,13 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login' }: Props) {
       });
       onSuccess?.({ address });
     } catch (error) {
-      // TODO @tom2drum show better error message
+      const errorObj = getErrorObj(error);
+      const shortMessage = errorObj && 'shortMessage' in errorObj && typeof errorObj.shortMessage === 'string' ? errorObj.shortMessage : undefined;
       onError?.();
       toast({
         status: 'error',
         title: 'Error',
-        description: getErrorMessage(error) || 'Something went wrong',
+        description: shortMessage || getErrorMessage(error) || 'Something went wrong',
       });
     } finally {
       setIsPending(false);
