@@ -1,9 +1,11 @@
 import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 
 import type { Screen, ScreenSuccess } from './types';
 
+import config from 'configs/app';
 import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
 import * as mixpanel from 'lib/mixpanel';
 import IconSvg from 'ui/shared/IconSvg';
@@ -15,6 +17,8 @@ import AuthModalScreenSelectMethod from './screens/AuthModalScreenSelectMethod';
 import AuthModalScreenSuccessEmail from './screens/AuthModalScreenSuccessEmail';
 import AuthModalScreenSuccessWallet from './screens/AuthModalScreenSuccessWallet';
 import useProfileQuery from './useProfileQuery';
+
+const feature = config.features.account;
 
 interface Props {
   initialScreen: Screen;
@@ -154,6 +158,10 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig }: Props) => {
     }
   })();
 
+  if (!feature.isEnabled) {
+    return null;
+  }
+
   return (
     <Modal isOpen onClose={ onModalClose } size={{ base: 'full', lg: 'sm' }}>
       <ModalOverlay/>
@@ -174,7 +182,9 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig }: Props) => {
         </ModalHeader>
         <ModalCloseButton top={ 6 } right={ 6 } color="gray.400"/>
         <ModalBody mb={ 0 }>
-          { content }
+          <GoogleReCaptchaProvider reCaptchaKey={ feature.recaptchaSiteKey }>
+            { content }
+          </GoogleReCaptchaProvider>
         </ModalBody>
       </ModalContent>
     </Modal>

@@ -1,5 +1,6 @@
 import { chakra, Button, Text } from '@chakra-ui/react';
 import React from 'react';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import type { SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
 
@@ -9,7 +10,6 @@ import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/errors/getErrorMessage';
 import useToast from 'lib/hooks/useToast';
 import * as mixpanel from 'lib/mixpanel';
-import FormFieldReCaptcha from 'ui/shared/forms/fields/FormFieldReCaptcha';
 
 import AuthModalFieldEmail from '../fields/AuthModalFieldEmail';
 
@@ -27,6 +27,7 @@ const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
 
   const apiFetch = useApiFetch();
   const toast = useToast();
+  const { executeRecaptcha } = useGoogleReCaptcha();
 
   const formApi = useForm<EmailFormFields>({
     mode: 'onBlur',
@@ -35,13 +36,15 @@ const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
     },
   });
 
-  const onFormSubmit: SubmitHandler<EmailFormFields> = React.useCallback((formData) => {
+  const onFormSubmit: SubmitHandler<EmailFormFields> = React.useCallback(async(formData) => {
+    const token = await executeRecaptcha?.();
+
     return apiFetch('auth_send_otp', {
       fetchParams: {
         method: 'POST',
         body: {
           email: formData.email,
-          recaptcha_response: formData.reCaptcha,
+          recaptcha_v3_response: token,
         },
       },
     })
@@ -67,7 +70,7 @@ const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
           description: getErrorMessage(error) || 'Something went wrong',
         });
       });
-  }, [ apiFetch, isAuth, onSubmit, mixpanelConfig?.account_link_info.source, toast ]);
+  }, [ executeRecaptcha, apiFetch, isAuth, onSubmit, mixpanelConfig?.account_link_info.source, toast ]);
 
   return (
     <FormProvider { ...formApi }>
@@ -76,8 +79,7 @@ const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
         onSubmit={ formApi.handleSubmit(onFormSubmit) }
       >
         <Text>Account email, used for transaction notifications from your watchlist.</Text>
-        <AuthModalFieldEmail mt={ 6 } mb={ 3 }/>
-        <FormFieldReCaptcha/>
+        <AuthModalFieldEmail mt={ 6 }/>
         <Button
           mt={ 6 }
           type="submit"

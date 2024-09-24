@@ -27,7 +27,6 @@ export type Screen = {
 
 export interface EmailFormFields {
   email: string;
-  reCaptcha: string;
 }
 
 export interface OtpCodeFormFields {
