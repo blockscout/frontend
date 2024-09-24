@@ -24,7 +24,7 @@ interface Props {
   initialScreen: Screen;
   onClose: (isSuccess?: boolean) => void;
   mixpanelConfig?: {
-    'wallet_connect': {
+    'wallet_connect'?: {
       source: mixpanel.EventPayload<mixpanel.EventTypes.WALLET_CONNECT>['Source'];
     };
     'account_link_info': {
@@ -124,7 +124,7 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig }: Props) => {
             onSuccess={ onAuthSuccess }
             onError={ onReset }
             isAuth={ currentStep.isAuth }
-            source={ mixpanelConfig?.wallet_connect.source }
+            source={ mixpanelConfig?.wallet_connect?.source }
           />
         );
       case 'email':

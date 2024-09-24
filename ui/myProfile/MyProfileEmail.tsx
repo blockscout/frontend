@@ -1,24 +1,39 @@
-import { Button, chakra, FormControl, Heading, Input, InputGroup, InputRightElement, Text } from '@chakra-ui/react';
+import { Button, chakra, Heading, useDisclosure } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 import type { SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
 
+import type { FormFields } from './types';
 import type { UserInfo } from 'types/api/account';
 
-import { EMAIL_REGEXP } from 'lib/validations/email';
-import IconSvg from 'ui/shared/IconSvg';
-import InputPlaceholder from 'ui/shared/InputPlaceholder';
+import config from 'configs/app';
+import useApiFetch from 'lib/api/useApiFetch';
+import getErrorMessage from 'lib/errors/getErrorMessage';
+import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
+import useToast from 'lib/hooks/useToast';
+import * as mixpanel from 'lib/mixpanel';
+import FormFieldReCaptcha from 'ui/shared/forms/fields/FormFieldReCaptcha';
+import AuthModal from 'ui/snippets/auth/AuthModal';
 
-interface FormFields {
-  email: string;
-}
+import MyProfileFieldsEmail from './fields/MyProfileFieldsEmail';
+
+const MIXPANEL_CONFIG = {
+  account_link_info: {
+    source: 'Profile' as const,
+  },
+};
 
 interface Props {
   profileQuery: UseQueryResult<UserInfo, unknown>;
 }
 
 const MyProfileEmail = ({ profileQuery }: Props) => {
+  const authModal = useDisclosure();
+  const apiFetch = useApiFetch();
+  const toast = useToast();
+
   const formApi = useForm<FormFields>({
     mode: 'onBlur',
     defaultValues: {
@@ -26,12 +41,32 @@ const MyProfileEmail = ({ profileQuery }: Props) => {
     },
   });
 
-  const onFormSubmit: SubmitHandler<FormFields> = React.useCallback((formData) => {
-    // eslint-disable-next-line no-console
-    console.log(formData);
-  }, [ ]);
-
-  const isDisabled = formApi.formState.isSubmitting;
+  const onFormSubmit: SubmitHandler<FormFields> = React.useCallback(async(formData) => {
+    try {
+      await apiFetch('auth_send_otp', {
+        fetchParams: {
+          method: 'POST',
+          body: {
+            email: formData.email,
+            recaptcha_v3_response: formData.reCaptcha,
+          },
+        },
+      });
+      mixpanel.logEvent(mixpanel.EventTypes.ACCOUNT_LINK_INFO, {
+        Source: 'Profile',
+        Status: 'OTP sent',
+        Type: 'Email',
+      });
+      authModal.onOpen();
+    } catch (error) {
+      const apiError = getErrorObjPayload<{ message: string }>(error);
+      toast({
+        status: 'error',
+        title: 'Error',
+        description: apiError?.message || getErrorMessage(error) || 'Something went wrong',
+      });
+    }
+  }, [ apiFetch, authModal, toast ]);
 
   return (
     <section>
@@ -41,37 +76,34 @@ const MyProfileEmail = ({ profileQuery }: Props) => {
           noValidate
           onSubmit={ formApi.handleSubmit(onFormSubmit) }
         >
-          <FormControl variant="floating" isDisabled={ isDisabled } isRequired size="md">
-            <InputGroup>
-              <Input
-                { ...formApi.register('email', { required: true, pattern: EMAIL_REGEXP }) }
-                required
-                isInvalid={ Boolean(formApi.formState.errors.email) }
-                isDisabled={ isDisabled }
-                autoComplete="off"
-              />
-              <InputPlaceholder text="Email" error={ formApi.formState.errors.email }/>
-              { !formApi.formState.isDirty && (
-                <InputRightElement h="100%">
-                  <IconSvg name="certified" boxSize={ 5 } color="green.500"/>
-                </InputRightElement>
-              ) }
-            </InputGroup>
-            <Text variant="secondary" mt={ 1 } fontSize="sm">Email for watch list notifications and private tags</Text>
-          </FormControl>
-          <Button
-            mt={ 6 }
-            size="sm"
-            variant="outline"
-            type="submit"
-            isDisabled={ formApi.formState.isSubmitting || !formApi.formState.isDirty }
-            isLoading={ formApi.formState.isSubmitting }
-            loadingText="Save changes"
-          >
-            Save changes
-          </Button>
+          <MyProfileFieldsEmail isReadOnly={ !config.services.reCaptchaV3.siteKey }/>
+          { config.services.reCaptchaV3.siteKey && (
+            <GoogleReCaptchaProvider reCaptchaKey={ config.services.reCaptchaV3.siteKey }>
+              <FormFieldReCaptcha/>
+            </GoogleReCaptchaProvider>
+          ) }
+          { config.services.reCaptchaV3.siteKey && (
+            <Button
+              mt={ 6 }
+              size="sm"
+              variant="outline"
+              type="submit"
+              isDisabled={ formApi.formState.isSubmitting || !formApi.formState.isDirty }
+              isLoading={ formApi.formState.isSubmitting }
+              loadingText="Save changes"
+            >
+              Save changes
+            </Button>
+          ) }
         </chakra.form>
       </FormProvider>
+      { authModal.isOpen && (
+        <AuthModal
+          initialScreen={{ type: 'otp_code', isAuth: true, email: formApi.getValues('email') }}
+          onClose={ authModal.onClose }
+          mixpanelConfig={ MIXPANEL_CONFIG }
+        />
+      ) }
     </section>
   );
 };

@@ -1,5 +1,6 @@
-import { chakra, Box, Text, Button, Link } from '@chakra-ui/react';
+import { chakra, Box, Text, Button } from '@chakra-ui/react';
 import React from 'react';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import type { SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
 
@@ -23,6 +24,8 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
 
   const apiFetch = useApiFetch();
   const toast = useToast();
+  const { executeRecaptcha } = useGoogleReCaptcha();
+  const [ isCodeSending, setIsCodeSending ] = React.useState(false);
 
   const formApi = useForm<OtpCodeFormFields>({
     mode: 'onBlur',
@@ -63,10 +66,12 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
   const handleResendCodeClick = React.useCallback(async() => {
     try {
       formApi.clearErrors('code');
+      setIsCodeSending(true);
+      const token = await executeRecaptcha?.();
       await apiFetch('auth_send_otp', {
         fetchParams: {
           method: 'POST',
-          body: { email },
+          body: { email, recaptcha_v3_response: token },
         },
       });
 
@@ -84,8 +89,10 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
         title: 'Error',
         description: apiError?.message || getErrorMessage(error) || 'Something went wrong',
       });
+    } finally {
+      setIsCodeSending(false);
     }
-  }, [ apiFetch, email, formApi, toast ]);
+  }, [ apiFetch, email, executeRecaptcha, formApi, toast ]);
 
   return (
     <FormProvider { ...formApi }>
@@ -98,22 +105,27 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
           <chakra.span fontWeight="700">{ email }</chakra.span>{ ' ' }
           and enter your code below.
         </Text>
-        <AuthModalFieldOtpCode/>
-        <Link
+        <AuthModalFieldOtpCode isDisabled={ isCodeSending }/>
+        <Button
+          variant="link"
           display="flex"
           alignItems="center"
-          gap={ 2 }
+          columnGap={ 2 }
           mt={ 3 }
+          fontWeight="400"
           w="fit-content"
+          isDisabled={ isCodeSending }
           onClick={ handleResendCodeClick }
         >
           <IconSvg name="repeat" boxSize={ 5 }/>
           <Box fontSize="sm">Resend code</Box>
-        </Link>
+        </Button>
         <Button
           mt={ 6 }
           type="submit"
           isLoading={ formApi.formState.isSubmitting }
+          isDisabled={ formApi.formState.isSubmitting || isCodeSending }
+          loadingText="Submit"
           onClick={ formApi.handleSubmit(onFormSubmit) }
         >
           Submit

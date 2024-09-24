@@ -37,39 +37,37 @@ const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
   });
 
   const onFormSubmit: SubmitHandler<EmailFormFields> = React.useCallback(async(formData) => {
-    const token = await executeRecaptcha?.();
-
-    return apiFetch('auth_send_otp', {
-      fetchParams: {
-        method: 'POST',
-        body: {
-          email: formData.email,
-          recaptcha_v3_response: token,
+    try {
+      const token = await executeRecaptcha?.();
+      await apiFetch('auth_send_otp', {
+        fetchParams: {
+          method: 'POST',
+          body: {
+            email: formData.email,
+            recaptcha_v3_response: token,
+          },
         },
-      },
-    })
-      .then(() => {
-        if (isAuth) {
-          mixpanel.logEvent(mixpanel.EventTypes.ACCOUNT_LINK_INFO, {
-            Source: mixpanelConfig?.account_link_info.source ?? 'Profile dropdown',
-            Status: 'OTP sent',
-            Type: 'Email',
-          });
-        } else {
-          mixpanel.logEvent(mixpanel.EventTypes.LOGIN, {
-            Action: 'OTP sent',
-            Source: 'Email',
-          });
-        }
-        onSubmit({ type: 'otp_code', email: formData.email, isAuth });
-      })
-      .catch((error) => {
-        toast({
-          status: 'error',
-          title: 'Error',
-          description: getErrorMessage(error) || 'Something went wrong',
-        });
       });
+      if (isAuth) {
+        mixpanelConfig?.account_link_info.source !== 'Profile' && mixpanel.logEvent(mixpanel.EventTypes.ACCOUNT_LINK_INFO, {
+          Source: mixpanelConfig?.account_link_info.source ?? 'Profile dropdown',
+          Status: 'OTP sent',
+          Type: 'Email',
+        });
+      } else {
+        mixpanel.logEvent(mixpanel.EventTypes.LOGIN, {
+          Action: 'OTP sent',
+          Source: 'Email',
+        });
+      }
+      onSubmit({ type: 'otp_code', email: formData.email, isAuth });
+    } catch (error) {
+      toast({
+        status: 'error',
+        title: 'Error',
+        description: getErrorMessage(error) || 'Something went wrong',
+      });
+    }
   }, [ executeRecaptcha, apiFetch, isAuth, onSubmit, mixpanelConfig?.account_link_info.source, toast ]);
 
   return (
@@ -83,7 +81,7 @@ const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
         <Button
           mt={ 6 }
           type="submit"
-          isDisabled={ formApi.formState.isSubmitting || !formApi.formState.isValid }
+          isDisabled={ formApi.formState.isSubmitting }
           isLoading={ formApi.formState.isSubmitting }
           loadingText="Send a code"
         >

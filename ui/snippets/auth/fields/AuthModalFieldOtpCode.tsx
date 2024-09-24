@@ -8,7 +8,11 @@ import PinInput from 'ui/shared/chakra/PinInput';
 
 const CODE_LENGTH = 6;
 
-const AuthModalFieldOtpCode = () => {
+interface Props {
+  isDisabled?: boolean;
+}
+
+const AuthModalFieldOtpCode = ({ isDisabled: isDisabledProp }: Props) => {
   const { control } = useFormContext<OtpCodeFormFields>();
   const { field, fieldState, formState } = useController<OtpCodeFormFields, 'code'>({
     control,
@@ -16,7 +20,7 @@ const AuthModalFieldOtpCode = () => {
     rules: { required: true, minLength: CODE_LENGTH, maxLength: CODE_LENGTH },
   });
 
-  const isDisabled = formState.isSubmitting;
+  const isDisabled = isDisabledProp || formState.isSubmitting;
 
   return (
     <>
