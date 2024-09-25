@@ -2,6 +2,7 @@ import { Box, Center, Flex, Link, Skeleton, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import type { TimeChartItem } from './types';
+import type { Resolution } from '@blockscout/stats-types';
 
 import { apos } from 'lib/html-entities';
 
@@ -15,10 +16,11 @@ export type Props = {
   isLoading?: boolean;
   isError?: boolean;
   emptyText?: string;
-  handleZoom: () => void;
-  isZoomResetInitial: boolean;
+  zoomRange?: [ Date, Date ];
+  handleZoom: (range: [ Date, Date ]) => void;
   isEnlarged?: boolean;
   noAnimation?: boolean;
+  resolution?: Resolution;
 }
 
 const ChartWidgetContent = ({
@@ -28,10 +30,11 @@ const ChartWidgetContent = ({
   isError,
   units,
   emptyText,
+  zoomRange,
   handleZoom,
-  isZoomResetInitial,
   isEnlarged,
   noAnimation,
+  resolution,
 }: Props) => {
   const hasItems = items && items.length > 2;
 
@@ -71,12 +74,13 @@ const ChartWidgetContent = ({
     <Box flexGrow={ 1 } maxW="100%" position="relative" h="100%">
       <ChartWidgetGraph
         items={ items }
+        zoomRange={ zoomRange }
         onZoom={ handleZoom }
-        isZoomResetInitial={ isZoomResetInitial }
         title={ title }
         units={ units }
         isEnlarged={ isEnlarged }
         noAnimation={ noAnimation }
+        resolution={ resolution }
       />
       <WatermarkIcon w="162px" h="15%"/>
     </Box>

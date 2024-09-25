@@ -50,7 +50,7 @@ export default function useChartQuery(id: string, resolution: Resolution, interv
   }, [ info, lineQuery.data?.info, lineQuery.isPlaceholderData ]);
 
   const items = React.useMemo(() => lineQuery.data?.chart?.map((item) => {
-    return { date: new Date(item.date), value: Number(item.value), isApproximate: item.is_approximate };
+    return { date: new Date(item.date), date_to: new Date(item.date_to), value: Number(item.value), isApproximate: item.is_approximate };
   }), [ lineQuery ]);
 
   return {

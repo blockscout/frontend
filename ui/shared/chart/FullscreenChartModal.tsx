@@ -1,7 +1,8 @@
 import { Box, Button, Grid, Heading, Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay, Text } from '@chakra-ui/react';
-import React, { useCallback } from 'react';
+import React from 'react';
 
 import type { TimeChartItem } from './types';
+import type { Resolution } from '@blockscout/stats-types';
 
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -14,6 +15,10 @@ type Props = {
   items: Array<TimeChartItem>;
   onClose: () => void;
   units?: string;
+  resolution?: Resolution;
+  zoomRange?: [ Date, Date ];
+  handleZoom: (range: [ Date, Date ]) => void;
+  handleZoomReset: () => void;
 }
 
 const FullscreenChartModal = ({
@@ -23,17 +28,11 @@ const FullscreenChartModal = ({
   items,
   units,
   onClose,
+  resolution,
+  zoomRange,
+  handleZoom,
+  handleZoomReset,
 }: Props) => {
-  const [ isZoomResetInitial, setIsZoomResetInitial ] = React.useState(true);
-
-  const handleZoom = useCallback(() => {
-    setIsZoomResetInitial(false);
-  }, []);
-
-  const handleZoomReset = useCallback(() => {
-    setIsZoomResetInitial(true);
-  }, []);
-
   return (
     <Modal
       isOpen={ isOpen }
@@ -69,7 +68,7 @@ const FullscreenChartModal = ({
               </Text>
             ) }
 
-            { !isZoomResetInitial && (
+            { Boolean(zoomRange) && (
               <Button
                 leftIcon={ <IconSvg name="repeat" w={ 4 } h={ 4 }/> }
                 colorScheme="blue"
@@ -98,8 +97,9 @@ const FullscreenChartModal = ({
             items={ items }
             units={ units }
             handleZoom={ handleZoom }
-            isZoomResetInitial={ isZoomResetInitial }
+            zoomRange={ zoomRange }
             title={ title }
+            resolution={ resolution }
           />
         </ModalBody>
       </ModalContent>

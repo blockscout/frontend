@@ -12,6 +12,7 @@ import domToImage from 'dom-to-image';
 import React from 'react';
 
 import type { TimeChartItem } from './types';
+import type { Resolution } from '@blockscout/stats-types';
 
 import type { Route } from 'nextjs-routes';
 import { route } from 'nextjs-routes';
@@ -33,11 +34,27 @@ export type Props = {
   isLoading: boolean;
   chartRef: React.RefObject<HTMLDivElement>;
   href?: Route;
+  resolution?: Resolution;
+  zoomRange?: [ Date, Date ];
+  handleZoom: (range: [ Date, Date ]) => void;
+  handleZoomReset: () => void;
 }
 
 const DOWNLOAD_IMAGE_SCALE = 5;
 
-const ChartMenu = ({ items, title, description, units, isLoading, chartRef, href }: Props) => {
+const ChartMenu = ({
+  items,
+  title,
+  description,
+  units,
+  isLoading,
+  chartRef,
+  href,
+  resolution,
+  zoomRange,
+  handleZoom,
+  handleZoomReset,
+}: Props) => {
   const pngBackgroundColor = useColorModeValue('white', 'black');
   const [ isFullscreen, setIsFullscreen ] = React.useState(false);
 
@@ -172,6 +189,10 @@ const ChartMenu = ({ items, title, description, units, isLoading, chartRef, href
           description={ description }
           onClose={ clearFullscreenChart }
           units={ units }
+          resolution={ resolution }
+          zoomRange={ zoomRange }
+          handleZoom={ handleZoom }
+          handleZoomReset={ handleZoomReset }
         />
       ) }
     </>

@@ -1,4 +1,4 @@
-import { Button, Flex, IconButton, Text } from '@chakra-ui/react';
+import { Button, Flex, IconButton, Link, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -19,7 +19,7 @@ import ChartMenu from 'ui/shared/chart/ChartMenu';
 import ChartResolutionSelect from 'ui/shared/chart/ChartResolutionSelect';
 import ChartWidgetContent from 'ui/shared/chart/ChartWidgetContent';
 import useChartQuery from 'ui/shared/chart/useChartQuery';
-import useZoomReset from 'ui/shared/chart/useZoomReset';
+import useZoom from 'ui/shared/chart/useZoom';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -46,7 +46,7 @@ const Chart = () => {
   const id = getQueryParamString(router.query.id);
   const [ intervalState, setIntervalState ] = React.useState<StatsIntervalIds | undefined>();
   const [ resolution, setResolution ] = React.useState<Resolution>(DEFAULT_RESOLUTION);
-  const { isZoomResetInitial, handleZoom, handleZoomReset } = useZoomReset();
+  const { zoomRange, handleZoom, handleZoomReset } = useZoom();
 
   const interval = intervalState || getIntervalByResolution(resolution);
 
@@ -155,6 +155,10 @@ const Chart = () => {
           title={ info?.title || '' }
           isLoading={ lineQuery.isPlaceholderData }
           chartRef={ ref }
+          resolution={ resolution }
+          zoomRange={ zoomRange }
+          handleZoom={ handleZoom }
+          handleZoomReset={ handleZoomReset }
         />
       ) }
     </Flex>
@@ -172,44 +176,31 @@ const Chart = () => {
         withTextAd
       />
       <Flex alignItems="center" justifyContent="space-between">
-        <Flex alignItems="center" gap={ 3 } maxW="100%" overflow="hidden">
-          <Text>Period</Text>
-          <ChartIntervalSelect interval={ interval } onIntervalChange={ setIntervalState }/>
+        <Flex alignItems="center" gap={{ base: 3, lg: 6 }} maxW="100%" overflow="hidden">
+          <Flex alignItems="center" gap={ 3 }>
+            <Text>Period</Text>
+            <ChartIntervalSelect interval={ interval } onIntervalChange={ setIntervalState }/>
+          </Flex>
           { lineQuery.data?.info?.resolutions && lineQuery.data?.info?.resolutions.length > 1 && (
-            <>
-              <Text ml={{ base: 0, lg: 3 }}>{ isMobile ? 'Res.' : 'Resolution' }</Text>
+            <Flex alignItems="center" gap={ 3 }>
+              <Text>{ isMobile ? 'Res.' : 'Resolution' }</Text>
               <ChartResolutionSelect
                 resolution={ resolution }
                 onResolutionChange={ setResolution }
                 resolutions={ lineQuery.data?.info?.resolutions || [] }
               />
-            </>
+            </Flex>
           ) }
-          { (!isZoomResetInitial || resolution !== DEFAULT_RESOLUTION) && (
-            isMobile ? (
-              <IconButton
-                aria-label="Reset"
-                variant="ghost"
-                size="sm"
-                icon={ <IconSvg name="repeat" boxSize={ 5 }/> }
-                onClick={ handleReset }
-              />
-            ) : (
-              <Button
-                leftIcon={ <IconSvg name="repeat" w={ 4 } h={ 4 }/> }
-                colorScheme="blue"
-                gridColumn={ 2 }
-                justifySelf="end"
-                alignSelf="top"
-                gridRow="1/3"
-                size="sm"
-                variant="outline"
-                onClick={ handleReset }
-                ml={ 6 }
-              >
-              Reset
-              </Button>
-            )
+          { (Boolean(zoomRange)) && (
+            <Link
+              onClick={ handleReset }
+              display="flex"
+              alignItems="center"
+              gap={ 2 }
+            >
+              <IconSvg name="repeat" w={ 5 } h={ 5 }/>
+              { !isMobile && 'Reset' }
+            </Link>
           ) }
         </Flex>
         { !isMobile && shareAndMenu }
@@ -228,9 +219,10 @@ const Chart = () => {
           units={ info?.units || undefined }
           isEnlarged
           isLoading={ lineQuery.isPlaceholderData }
-          isZoomResetInitial={ isZoomResetInitial }
+          zoomRange={ zoomRange }
           handleZoom={ handleZoom }
           emptyText="No data for the selected resolution & interval."
+          resolution={ resolution }
         />
       </Flex>
     </>

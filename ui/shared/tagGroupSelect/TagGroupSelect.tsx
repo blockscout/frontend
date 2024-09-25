@@ -47,6 +47,8 @@ const TagGroupSelect = <T extends string>({ items, value, isMulti, onChange, tag
             cursor="pointer"
             onClick={ onItemClick }
             size={ tagSize }
+            display="inline-flex"
+            justifyContent="center"
           >
             { item.title }
           </Tag>

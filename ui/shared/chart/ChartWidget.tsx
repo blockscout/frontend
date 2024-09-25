@@ -17,7 +17,7 @@ import IconSvg from 'ui/shared/IconSvg';
 
 import ChartMenu from './ChartMenu';
 import ChartWidgetContent from './ChartWidgetContent';
-import useZoomReset from './useZoomReset';
+import useZoom from './useZoom';
 
 export type Props = {
   items?: Array<TimeChartItem>;
@@ -45,7 +45,7 @@ const ChartWidget = ({
   href,
 }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
-  const { isZoomResetInitial, handleZoom, handleZoomReset } = useZoomReset();
+  const { zoomRange, handleZoom, handleZoomReset } = useZoom();
 
   const borderColor = useColorModeValue('gray.200', 'gray.600');
 
@@ -60,7 +60,7 @@ const ChartWidget = ({
       title={ title }
       emptyText={ emptyText }
       handleZoom={ handleZoom }
-      isZoomResetInitial={ isZoomResetInitial }
+      zoomRange={ zoomRange }
       noAnimation={ noAnimation }
     />
   );
@@ -116,7 +116,7 @@ const ChartWidget = ({
         <Flex ml="auto" columnGap={ 2 }>
           <Tooltip label="Reset zoom">
             <IconButton
-              hidden={ isZoomResetInitial }
+              hidden={ !zoomRange }
               aria-label="Reset zoom"
               colorScheme="blue"
               w={ 9 }
@@ -137,6 +137,9 @@ const ChartWidget = ({
               isLoading={ isLoading }
               chartRef={ ref }
               units={ units }
+              handleZoom={ handleZoom }
+              handleZoomReset={ handleZoomReset }
+              zoomRange={ zoomRange }
             />
           ) }
         </Flex>
