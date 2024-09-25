@@ -164,9 +164,6 @@
     "vite-tsconfig-paths": "4.3.2",
     "ws": "^8.17.1"
   },
-  "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "*"
-  },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint --cache --fix"
   }
