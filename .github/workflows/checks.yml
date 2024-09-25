@@ -30,7 +30,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.11.0
+          node-version: 20.17.0
           cache: 'yarn'
 
       - name: Cache node_modules
@@ -62,7 +62,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.11.0
+          node-version: 20.17.0
           cache: 'yarn'
 
       - name: Cache node_modules
@@ -101,7 +101,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.11.0
+          node-version: 20.17.0
           cache: 'yarn'
 
       - name: Cache node_modules
@@ -133,7 +133,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.11.0
+          node-version: 20.17.0
           cache: 'yarn'
 
       - name: Cache node_modules
@@ -171,7 +171,7 @@ jobs:
       (needs.pw_affected_tests.result == 'success' || needs.pw_affected_tests.result == 'skipped') 
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.41.1-focal
+      image: mcr.microsoft.com/playwright:v1.47.2-focal
 
     strategy:
       fail-fast: false
@@ -190,7 +190,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.11.0
+          node-version: 20.17.0
           cache: 'yarn'
 
       - name: Cache node_modules

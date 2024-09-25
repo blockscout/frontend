@@ -4,8 +4,8 @@
   "private": false,
   "homepage": "https://github.com/blockscout/frontend#readme",
   "engines": {
-    "node": "20.11.0",
-    "npm": "10.2.4"
+    "node": "20.17.0",
+    "npm": "10.8.2"
   },
   "scripts": {
     "dev": "./tools/scripts/dev.sh",
@@ -26,8 +26,8 @@
     "svg:build-sprite": "icons build -i ./icons -o ./public/icons --optimize",
     "test:pw": "./tools/scripts/pw.sh",
     "test:pw:local": "export NODE_PATH=$(pwd)/node_modules && yarn test:pw",
-    "test:pw:docker": "docker run --rm --network host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.41.1-focal ./tools/scripts/pw.docker.sh",
-    "test:pw:docker:deps": "docker run --rm --network host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.41.1-focal ./tools/scripts/pw.docker.deps.sh",
+    "test:pw:docker": "docker run --rm --ipc=host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.47.2-focal ./tools/scripts/pw.docker.sh",
+    "test:pw:docker:deps": "docker run --rm --ipc=host -v $(pwd):/work/ -w /work/ -it mcr.microsoft.com/playwright:v1.47.2-focal ./tools/scripts/pw.docker.deps.sh",
     "test:pw:ci": "yarn test:pw --project=$PW_PROJECT",
     "test:pw:detect-affected": "node ./deploy/tools/affected-tests/index.js",
     "test:jest": "jest",
@@ -115,8 +115,8 @@
     "xss": "^1.0.14"
   },
   "devDependencies": {
-    "@playwright/experimental-ct-react": "1.41.1",
-    "@playwright/test": "1.41.1",
+    "@playwright/experimental-ct-react": "1.47.2",
+    "@playwright/test": "1.47.2",
     "@svgr/webpack": "^6.5.1",
     "@tanstack/eslint-plugin-query": "^5.0.5",
     "@testing-library/react": "^14.0.0",
@@ -128,7 +128,7 @@
     "@types/jest": "^29.2.0",
     "@types/js-cookie": "^3.0.2",
     "@types/mixpanel-browser": "^2.38.1",
-    "@types/node": "20.11.0",
+    "@types/node": "20.16.7",
     "@types/phoenix": "^1.5.4",
     "@types/qrcode": "^1.5.0",
     "@types/react": "18.0.9",
@@ -161,7 +161,7 @@
     "ts-node": "^10.9.1",
     "typescript": "5.4.2",
     "vite-plugin-svgr": "^2.2.2",
-    "vite-tsconfig-paths": "^3.5.2",
+    "vite-tsconfig-paths": "4.3.2",
     "ws": "^8.17.1"
   },
   "lint-staged": {
