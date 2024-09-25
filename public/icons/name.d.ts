@@ -85,6 +85,8 @@
 	| "link_external"
 	| "link"
 	| "lock"
+	| "merits_colored"
+	| "merits"
 	| "minus"
 	| "monaco/file"
 	| "monaco/folder-open"

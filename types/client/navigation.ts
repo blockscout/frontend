@@ -15,8 +15,9 @@ type NavItemCommon = {
 } & NavIconOrComponent;
 
 export type NavItemInternal = NavItemCommon & {
-  nextRoute: Route;
+  nextRoute?: Route;
   isActive?: boolean;
+  onClick?: () => void;
 }
 
 export type NavItemExternal = {

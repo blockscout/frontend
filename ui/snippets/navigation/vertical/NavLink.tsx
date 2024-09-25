@@ -34,7 +34,12 @@ const NavLink = ({ item, isCollapsed, px, className, onClick, disableActiveState
 
   const styleProps = useNavLinkStyleProps({ isCollapsed, isExpanded, isActive: isInternalLink && item.isActive && !disableActiveState });
   const isXLScreen = useBreakpointValue({ base: false, xl: true });
-  const href = isInternalLink ? route(item.nextRoute) : item.url;
+  let href;
+  if (isInternalLink) {
+    href = item.nextRoute ? route(item.nextRoute) : undefined;
+  } else if ('url' in item) {
+    href = item.url;
+  }
 
   const isHighlighted = checkRouteHighlight(item);
 
@@ -49,7 +54,7 @@ const NavLink = ({ item, isCollapsed, px, className, onClick, disableActiveState
       px={ px || { base: 2, lg: isExpanded ? 2 : '15px', xl: isCollapsed ? '15px' : 2 } }
       aria-label={ `${ item.text } link` }
       whiteSpace="nowrap"
-      onClick={ onClick }
+      onClick={ 'onClick' in item ? item.onClick : onClick }
       _hover={{
         [`& *:not(.${ LIGHTNING_LABEL_CLASS_NAME }, .${ LIGHTNING_LABEL_CLASS_NAME } *)`]: {
           color: 'link_hovered',
@@ -82,7 +87,7 @@ const NavLink = ({ item, isCollapsed, px, className, onClick, disableActiveState
 
   return (
     <Box as="li" listStyleType="none" w="100%" className={ className }>
-      { isInternalLink ? (
+      { isInternalLink && item.nextRoute ? (
         <NextLink href={ item.nextRoute } passHref legacyBehavior>
           { content }
         </NextLink>
