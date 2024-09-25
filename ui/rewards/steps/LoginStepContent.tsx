@@ -34,7 +34,7 @@ const LoginStepContent = ({ goNext }: { goNext: () => void }) => {
           </Flex>
           { isSwitchChecked && (
             <FormControl variant="floating" id="referral-code" mt={ 3 }>
-              <Input fontWeight="500"/>
+              <Input fontWeight="500" borderRadius="12px !important"/>
               <InputPlaceholder text="Code"/>
             </FormControl>
           ) }

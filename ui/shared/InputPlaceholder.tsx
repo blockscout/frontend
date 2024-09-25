@@ -7,9 +7,10 @@ interface Props {
   icon?: React.ReactNode;
   error?: Partial<FieldError>;
   isFancy?: boolean;
+  className?: string;
 }
 
-const InputPlaceholder = ({ text, icon, error, isFancy }: Props) => {
+const InputPlaceholder = ({ text, icon, error, isFancy, className }: Props) => {
   let errorMessage = error?.message;
 
   if (!errorMessage && error?.type === 'pattern') {
@@ -22,6 +23,7 @@ const InputPlaceholder = ({ text, icon, error, isFancy }: Props) => {
       { ...(isFancy ? { 'data-fancy': true } : {}) }
       variant="floating"
       bgColor="deeppink"
+      className={ className }
     >
       { icon }
       <chakra.span>{ text }</chakra.span>
@@ -30,4 +32,4 @@ const InputPlaceholder = ({ text, icon, error, isFancy }: Props) => {
   );
 };
 
-export default React.memo(InputPlaceholder);
+export default React.memo(chakra(InputPlaceholder));
