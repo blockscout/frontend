@@ -1,9 +1,11 @@
 import { Button, Flex, IconButton, Link, Text } from '@chakra-ui/react';
+import type { NextRouter } from 'next/router';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import { Resolution } from '@blockscout/stats-types';
 import type { StatsIntervalIds } from 'types/client/stats';
+import { StatsIntervalId } from 'types/client/stats';
 
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
@@ -41,11 +43,33 @@ const getIntervalByResolution = (resolution: Resolution): StatsIntervalIds => {
   }
 };
 
+const getIntervalFromQuery = (router: NextRouter): StatsIntervalIds | undefined => {
+  const intervalFromQuery = getQueryParamString(router.query.interval);
+
+  if (!intervalFromQuery || !Object.values(StatsIntervalId).includes(intervalFromQuery as StatsIntervalIds)) {
+    return undefined;
+  }
+
+  return intervalFromQuery as StatsIntervalIds;
+};
+
+const getResolutionFromQuery = (router: NextRouter) => {
+  const resolutionFromQuery = getQueryParamString(router.query.resolution);
+
+  if (!resolutionFromQuery || !Resolution[resolutionFromQuery as keyof typeof Resolution]) {
+    return DEFAULT_RESOLUTION;
+  }
+
+  return resolutionFromQuery as Resolution;
+};
+
 const Chart = () => {
   const router = useRouter();
   const id = getQueryParamString(router.query.id);
-  const [ intervalState, setIntervalState ] = React.useState<StatsIntervalIds | undefined>();
-  const [ resolution, setResolution ] = React.useState<Resolution>(DEFAULT_RESOLUTION);
+  const intervalFromQuery = getIntervalFromQuery(router);
+  const resolutionFromQuery = getResolutionFromQuery(router);
+  const [ intervalState, setIntervalState ] = React.useState<StatsIntervalIds | undefined>(intervalFromQuery);
+  const [ resolution, setResolution ] = React.useState<Resolution>(resolutionFromQuery || DEFAULT_RESOLUTION);
   const { zoomRange, handleZoom, handleZoomReset } = useZoom();
 
   const interval = intervalState || getIntervalByResolution(resolution);
@@ -69,10 +93,26 @@ const Chart = () => {
     };
   }, [ appProps.referrer ]);
 
+  const onIntervalChange = React.useCallback((interval: StatsIntervalIds) => {
+    setIntervalState(interval);
+    router.push({
+      pathname: router.pathname,
+      query: { ...router.query, interval },
+    });
+  }, [ setIntervalState, router ]);
+
+  const onResolutionChange = React.useCallback((resolution: Resolution) => {
+    setResolution(resolution);
+    router.push({
+      pathname: router.pathname,
+      query: { ...router.query, resolution },
+    });
+  }, [ setResolution, router ]);
+
   const handleReset = React.useCallback(() => {
     handleZoomReset();
-    setResolution(DEFAULT_RESOLUTION);
-  }, [ handleZoomReset ]);
+    onResolutionChange(DEFAULT_RESOLUTION);
+  }, [ handleZoomReset, onResolutionChange ]);
 
   const { items, info, lineQuery } = useChartQuery(id, resolution, interval);
 
@@ -179,14 +219,14 @@ const Chart = () => {
         <Flex alignItems="center" gap={{ base: 3, lg: 6 }} maxW="100%" overflow="hidden">
           <Flex alignItems="center" gap={ 3 }>
             <Text>Period</Text>
-            <ChartIntervalSelect interval={ interval } onIntervalChange={ setIntervalState }/>
+            <ChartIntervalSelect interval={ interval } onIntervalChange={ onIntervalChange }/>
           </Flex>
           { lineQuery.data?.info?.resolutions && lineQuery.data?.info?.resolutions.length > 1 && (
             <Flex alignItems="center" gap={ 3 }>
               <Text>{ isMobile ? 'Res.' : 'Resolution' }</Text>
               <ChartResolutionSelect
                 resolution={ resolution }
-                onResolutionChange={ setResolution }
+                onResolutionChange={ onResolutionChange }
                 resolutions={ lineQuery.data?.info?.resolutions || [] }
               />
             </Flex>
