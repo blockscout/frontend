@@ -28,11 +28,14 @@ export default function useCallMethodPublicClient(): (params: Params) => Promise
     }
 
     const address = getAddress(addressHash);
+    // for write payable methods we add additional input for native coin value
+    // so in simulate mode we need to strip it off
+    const _args = args.slice(0, item.inputs.length);
 
     const params = {
       abi: [ item ],
       functionName: item.name,
-      args: args,
+      args: _args,
       address,
       account,
     };
