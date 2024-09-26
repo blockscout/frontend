@@ -35,25 +35,17 @@ export function useArweaveId({ block }: BlockProps) {
 
       if (data.arweaveId) {
         return data.arweaveId;
+      } else {
+        const exexFallback = await fetch(
+          `https://arweave-exex-backfill.shuttleapp.rs/block/id/${ block }`,
+        );
+
+        const fallbackData = (await exexFallback.json()) as ExexFallbackProps;
+
+        if (fallbackData.arweave_hash) {
+          return fallbackData.arweave_hash;
+        }
       }
-
-      const exexFallback = await fetch(
-        `https://arweave-exex-backfill.shuttleapp.rs/block/id/${ block }`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
-
-      const fallbackData = (await exexFallback.json()) as ExexFallbackProps;
-
-      if (fallbackData.arweave_hash) {
-        return fallbackData.arweave_hash;
-      }
-
-      return 'Arweave Id Not Found';
     },
     enabled: Boolean(block),
   });
