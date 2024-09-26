@@ -1,3 +1,4 @@
+import type { SpaceProps } from '@chakra-ui/react';
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
@@ -6,9 +7,11 @@ import type { NavLink } from './types';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 
-type Props = NavLink
+type Props = NavLink & {
+  py?: SpaceProps['py'];
+}
 
-const UserProfileContentNavLink = ({ href, icon, text, onClick }: Props) => {
+const UserProfileContentNavLink = ({ href, icon, text, onClick, py }: Props) => {
 
   return (
     <LinkInternal
@@ -16,7 +19,7 @@ const UserProfileContentNavLink = ({ href, icon, text, onClick }: Props) => {
       display="flex"
       alignItems="center"
       columnGap={ 3 }
-      py="14px"
+      py={ py ?? '14px' }
       color="initial"
       _hover={{ textDecoration: 'none', color: 'link_hovered' }}
       onClick={ onClick }

@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, Link, VStack } from '@chakra-ui/react';
+import { Box, Button, Divider, Flex, Link, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { NavLink } from './types';
@@ -46,15 +46,26 @@ const navLinks: Array<NavLink> = [
 ].filter(Boolean);
 
 interface Props {
-  data: UserInfo;
+  data: UserInfo | undefined;
   onClose: () => void;
+  onLogin: () => void;
   onAddEmail: () => void;
   onAddAddress: () => void;
 }
 
-const UserProfileContent = ({ data, onClose, onAddEmail, onAddAddress }: Props) => {
+const UserProfileContent = ({ data, onClose, onLogin, onAddEmail, onAddAddress }: Props) => {
   const { isAutoConnectDisabled } = useMarketplaceContext();
   const logout = useLogout();
+
+  if (!data) {
+    return (
+      <Box>
+        { isAutoConnectDisabled && <UserWalletAutoConnectAlert/> }
+        { config.features.blockchainInteraction.isEnabled && <UserProfileContentWallet onClose={ onClose }/> }
+        <Button mt={ 3 } onClick={ onLogin } size="sm" w="100%">Log in</Button>
+      </Box>
+    );
+  }
 
   return (
     <Box>
@@ -65,6 +76,7 @@ const UserProfileContent = ({ data, onClose, onAddEmail, onAddAddress }: Props) 
         href={ route({ pathname: '/auth/profile' }) }
         icon="profile"
         onClick={ onClose }
+        py="8px"
       />
 
       <Box fontSize="xs" lineHeight={ 4 } fontWeight="500" borderColor="divider" borderWidth="1px" borderRadius="base">
@@ -85,7 +97,7 @@ const UserProfileContent = ({ data, onClose, onAddEmail, onAddAddress }: Props) 
         </Flex>
       </Box>
 
-      { config.features.blockchainInteraction.isEnabled ? <UserProfileContentWallet onClose={ onClose }/> : <Divider/> }
+      { config.features.blockchainInteraction.isEnabled && <UserProfileContentWallet onClose={ onClose } mt={ 3 }/> }
 
       <VStack as="ul" spacing="0" alignItems="flex-start" overflow="hidden" mt={ 3 }>
         { navLinks.map((item) => (

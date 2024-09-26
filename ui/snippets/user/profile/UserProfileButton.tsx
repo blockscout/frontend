@@ -27,7 +27,7 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: 
   const isMobile = useIsMobile();
 
   const { data, isLoading } = profileQuery;
-  const web3AccountWithDomain = useWeb3AccountWithDomain(!data?.address_hash);
+  const web3AccountWithDomain = useWeb3AccountWithDomain(true);
   const { isAutoConnectDisabled } = useMarketplaceContext();
 
   React.useEffect(() => {
@@ -37,10 +37,6 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: 
   }, [ isLoading ]);
 
   const content = (() => {
-    if (!data) {
-      return 'Log in';
-    }
-
     if (web3AccountWithDomain.address) {
       return (
         <HStack gap={ 2 }>
@@ -50,6 +46,10 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: 
           </Box>
         </HStack>
       );
+    }
+
+    if (!data) {
+      return 'Log in';
     }
 
     return (
@@ -73,7 +73,7 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: 
           size={ size }
           variant={ variant }
           onClick={ onClick }
-          data-selected={ Boolean(data) }
+          data-selected={ Boolean(data) || Boolean(web3AccountWithDomain.address) }
           data-warning={ isAutoConnectDisabled }
           fontSize="sm"
           lineHeight={ 5 }

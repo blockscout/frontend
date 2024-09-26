@@ -1,4 +1,4 @@
-import { Box, Button, Flex, IconButton, useColorModeValue } from '@chakra-ui/react';
+import { chakra, Box, Button, Flex, IconButton, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import delay from 'lib/delay';
@@ -10,9 +10,10 @@ import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   onClose?: () => void;
+  className?: string;
 }
 
-const UserProfileContentWallet = ({ onClose }: Props) => {
+const UserProfileContentWallet = ({ onClose, className }: Props) => {
   const walletSnippetBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
   const web3Wallet = useWeb3Wallet({ source: 'Profile dropdown' });
 
@@ -70,7 +71,7 @@ const UserProfileContentWallet = ({ onClose }: Props) => {
   })();
 
   return (
-    <Box mt={ 3 }>
+    <Box className={ className }>
       <Flex px={ 2 } py={ 1 } mb={ 1 } fontSize="xs" lineHeight={ 4 } fontWeight="500">
         <span>Wallet for apps or contracts</span>
         <Hint label="Wallet for apps or contracts" boxSize={ 4 } ml={ 1 }/>
@@ -80,4 +81,4 @@ const UserProfileContentWallet = ({ onClose }: Props) => {
   );
 };
 
-export default React.memo(UserProfileContentWallet);
+export default React.memo(chakra(UserProfileContentWallet));

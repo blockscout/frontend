@@ -6,6 +6,7 @@ import type { Screen } from 'ui/snippets/auth/types';
 
 import config from 'configs/app';
 import * as mixpanel from 'lib/mixpanel';
+import useAccount from 'lib/web3/useAccount';
 import AuthModal from 'ui/snippets/auth/AuthModal';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 import useSignInWithWallet from 'ui/snippets/auth/useSignInWithWallet';
@@ -24,9 +25,10 @@ const UserProfileMobile = () => {
 
   const profileQuery = useProfileQuery();
   const signInWithWallet = useSignInWithWallet({});
+  const { address: web3Address } = useAccount();
 
   const handleProfileButtonClick = React.useCallback(() => {
-    if (profileQuery.data) {
+    if (profileQuery.data || web3Address) {
       mixpanel.logEvent(mixpanel.EventTypes.ACCOUNT_ACCESS, { Action: 'Dropdown open' });
       profileMenu.onOpen();
       return;
@@ -38,7 +40,7 @@ const UserProfileMobile = () => {
     }
 
     authModal.onOpen();
-  }, [ profileQuery.data, router.pathname, authModal, profileMenu, signInWithWallet ]);
+  }, [ profileQuery.data, web3Address, router.pathname, authModal, profileMenu, signInWithWallet ]);
 
   const handleAddEmailClick = React.useCallback(() => {
     setAuthInitialScreen({ type: 'email', isAuth: true });
@@ -57,7 +59,7 @@ const UserProfileMobile = () => {
         variant="header"
         onClick={ handleProfileButtonClick }
       />
-      { profileQuery.data && (
+      { (profileQuery.data || web3Address) && (
         <Drawer
           isOpen={ profileMenu.isOpen }
           placement="right"
@@ -70,6 +72,7 @@ const UserProfileMobile = () => {
               <UserProfileContent
                 data={ profileQuery.data }
                 onClose={ profileMenu.onClose }
+                onLogin={ authModal.onOpen }
                 onAddEmail={ handleAddEmailClick }
                 onAddAddress={ handleAddAddressClick }
               />
