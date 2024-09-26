@@ -45,6 +45,11 @@ const UserProfileMobile = () => {
     authModal.onOpen();
   }, [ authModal ]);
 
+  const handleAddAddressClick = React.useCallback(() => {
+    setAuthInitialScreen({ type: 'connect_wallet', isAuth: true });
+    authModal.onOpen();
+  }, [ authModal ]);
+
   return (
     <>
       <UserProfileButton
@@ -62,7 +67,12 @@ const UserProfileMobile = () => {
           <DrawerOverlay/>
           <DrawerContent maxWidth="300px">
             <DrawerBody p={ 6 }>
-              <UserProfileContent data={ profileQuery.data } onClose={ profileMenu.onClose } onAddEmail={ handleAddEmailClick }/>
+              <UserProfileContent
+                data={ profileQuery.data }
+                onClose={ profileMenu.onClose }
+                onAddEmail={ handleAddEmailClick }
+                onAddAddress={ handleAddAddressClick }
+              />
             </DrawerBody>
           </DrawerContent>
         </Drawer>

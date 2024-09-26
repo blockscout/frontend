@@ -51,6 +51,11 @@ const UserProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => 
     authModal.onOpen();
   }, [ authModal ]);
 
+  const handleAddAddressClick = React.useCallback(() => {
+    setAuthInitialScreen({ type: 'connect_wallet', isAuth: true });
+    authModal.onOpen();
+  }, [ authModal ]);
+
   return (
     <>
       <Popover openDelay={ 300 } placement="bottom-end" isLazy isOpen={ profileMenu.isOpen } onClose={ profileMenu.onClose }>
@@ -64,9 +69,14 @@ const UserProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => 
           />
         </PopoverTrigger>
         { profileQuery.data && (
-          <PopoverContent maxW="280px" minW="220px" w="min-content">
+          <PopoverContent w="280px">
             <PopoverBody>
-              <UserProfileContent data={ profileQuery.data } onClose={ profileMenu.onClose } onAddEmail={ handleAddEmailClick }/>
+              <UserProfileContent
+                data={ profileQuery.data }
+                onClose={ profileMenu.onClose }
+                onAddEmail={ handleAddEmailClick }
+                onAddAddress={ handleAddAddressClick }
+              />
             </PopoverBody>
           </PopoverContent>
         ) }

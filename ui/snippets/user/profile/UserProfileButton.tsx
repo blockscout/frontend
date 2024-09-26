@@ -38,27 +38,16 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: 
 
   const content = (() => {
     if (!data) {
-      return 'Connect';
+      return 'Log in';
     }
 
-    const address = data.address_hash || web3AccountWithDomain.address;
-    if (address) {
-      const text = (() => {
-        if (data.address_hash) {
-          return shortenString(data.address_hash);
-        }
-
-        if (web3AccountWithDomain.domain) {
-          return web3AccountWithDomain.domain;
-        }
-
-        return shortenString(address);
-      })();
-
+    if (web3AccountWithDomain.address) {
       return (
         <HStack gap={ 2 }>
-          <UserIdenticon address={ address } isAutoConnectDisabled={ isAutoConnectDisabled }/>
-          <Box display={{ base: 'none', md: 'block' }}>{ text }</Box>
+          <UserIdenticon address={ web3AccountWithDomain.address } isAutoConnectDisabled={ isAutoConnectDisabled }/>
+          <Box display={{ base: 'none', md: 'block' }}>
+            { web3AccountWithDomain.domain || shortenString(web3AccountWithDomain.address) }
+          </Box>
         </HStack>
       );
     }
@@ -66,7 +55,7 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: 
     return (
       <HStack gap={ 2 }>
         <IconSvg name="profile" boxSize={ 5 }/>
-        <Box display={{ base: 'none', md: 'block' }}>{ data.email ? getUserHandle(data.email) : 'Profile' }</Box>
+        <Box display={{ base: 'none', md: 'block' }}>{ data.email ? getUserHandle(data.email) : 'My profile' }</Box>
       </HStack>
     );
   })();

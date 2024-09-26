@@ -1,10 +1,11 @@
-import { Button, Divider, Flex, IconButton } from '@chakra-ui/react';
+import { Box, Button, Flex, IconButton, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import delay from 'lib/delay';
 import useWeb3AccountWithDomain from 'lib/web3/useAccountWithDomain';
 import useWeb3Wallet from 'lib/web3/useWallet';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import Hint from 'ui/shared/Hint';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
 }
 
 const UserProfileContentWallet = ({ onClose }: Props) => {
+  const walletSnippetBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
   const web3Wallet = useWeb3Wallet({ source: 'Profile dropdown' });
 
   const web3AccountWithDomain = useWeb3AccountWithDomain(true);
@@ -28,11 +30,10 @@ const UserProfileContentWallet = ({ onClose }: Props) => {
     onClose?.();
   }, [ web3Wallet, onClose ]);
 
-  if (web3Wallet.isConnected && web3AccountWithDomain.address) {
-    return (
-      <>
-        <Divider/>
-        <Flex alignItems="center" columnGap={ 2 } py="14px">
+  const content = (() => {
+    if (web3Wallet.isConnected && web3AccountWithDomain.address) {
+      return (
+        <Flex alignItems="center" columnGap={ 2 } bgColor={ walletSnippetBgColor } px={ 2 } py="10px" borderRadius="base">
           <AddressEntity
             address={{ hash: web3AccountWithDomain.address, ens_domain_name: web3AccountWithDomain.domain }}
             isLoading={ web3AccountWithDomain.isLoading }
@@ -52,22 +53,30 @@ const UserProfileContentWallet = ({ onClose }: Props) => {
             flexShrink={ 0 }
           />
         </Flex>
-        <Divider/>
-      </>
+      );
+    }
+
+    return (
+      <Button
+        size="sm"
+        onClick={ handleConnectWalletClick }
+        isLoading={ web3Wallet.isOpen }
+        loadingText="Connect Wallet"
+        w="100%"
+      >
+        Connect Wallet
+      </Button>
     );
-  }
+  })();
 
   return (
-    <Button
-      size="sm"
-      onClick={ handleConnectWalletClick }
-      isLoading={ web3Wallet.isOpen }
-      loadingText="Connect Wallet"
-      w="100%"
-      my={ 2 }
-    >
-        Connect Wallet
-    </Button>
+    <Box mt={ 3 }>
+      <Flex px={ 2 } py={ 1 } mb={ 1 } fontSize="xs" lineHeight={ 4 } fontWeight="500">
+        <span>Wallet for apps or contracts</span>
+        <Hint label="Wallet for apps or contracts" boxSize={ 4 } ml={ 1 }/>
+      </Flex>
+      { content }
+    </Box>
   );
 };
 

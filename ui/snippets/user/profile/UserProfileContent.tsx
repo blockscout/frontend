@@ -1,4 +1,4 @@
-import { Box, Divider, Flex, Link, Text, VStack } from '@chakra-ui/react';
+import { Box, Divider, Flex, Link, VStack } from '@chakra-ui/react';
 import React from 'react';
 
 import type { NavLink } from './types';
@@ -8,6 +8,8 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
+import shortenString from 'lib/shortenString';
+import Hint from 'ui/shared/Hint';
 import useLogout from 'ui/snippets/auth/useLogout';
 
 import UserWalletAutoConnectAlert from '../UserWalletAutoConnectAlert';
@@ -47,9 +49,10 @@ interface Props {
   data: UserInfo;
   onClose: () => void;
   onAddEmail: () => void;
+  onAddAddress: () => void;
 }
 
-const UserProfileContent = ({ data, onClose, onAddEmail }: Props) => {
+const UserProfileContent = ({ data, onClose, onAddEmail, onAddAddress }: Props) => {
   const { isAutoConnectDisabled } = useMarketplaceContext();
   const logout = useLogout();
 
@@ -57,22 +60,34 @@ const UserProfileContent = ({ data, onClose, onAddEmail }: Props) => {
     <Box>
       { isAutoConnectDisabled && <UserWalletAutoConnectAlert/> }
 
-      <Flex alignItems="center" justifyContent="space-between">
-        <UserProfileContentNavLink
-          text="Profile"
-          href={ route({ pathname: '/auth/profile' }) }
-          icon="profile"
-          onClick={ onClose }
-        />
-        { data?.email ?
-          <Text variant="secondary" fontSize="sm">{ getUserHandle(data.email) }</Text> :
-          <Link onClick={ onAddEmail } color="text_secondary" fontSize="sm" _hover={{ color: 'link_hovered', textDecoration: 'none' }}>Add email</Link>
-        }
-      </Flex>
+      <UserProfileContentNavLink
+        text="My profile"
+        href={ route({ pathname: '/auth/profile' }) }
+        icon="profile"
+        onClick={ onClose }
+      />
+
+      <Box fontSize="xs" lineHeight={ 4 } fontWeight="500" borderColor="divider" borderWidth="1px" borderRadius="base">
+        <Flex p={ 2 } borderColor="divider" borderBottomWidth="1px">
+          <Box>Address</Box>
+          <Hint label="Address" boxSize={ 4 } ml={ 1 } mr="auto"/>
+          { data?.address_hash ?
+            <Box>{ shortenString(data?.address_hash) }</Box> :
+            <Link onClick={ onAddAddress } color="text_secondary" _hover={{ color: 'link_hovered', textDecoration: 'none' }}>Add wallet</Link>
+          }
+        </Flex>
+        <Flex p={ 2 }>
+          <Box mr="auto">Email</Box>
+          { data?.email ?
+            <Box>{ getUserHandle(data.email) }</Box> :
+            <Link onClick={ onAddEmail } color="text_secondary" _hover={{ color: 'link_hovered', textDecoration: 'none' }}>Add email</Link>
+          }
+        </Flex>
+      </Box>
 
       { config.features.blockchainInteraction.isEnabled ? <UserProfileContentWallet onClose={ onClose }/> : <Divider/> }
 
-      <VStack as="ul" spacing="0" alignItems="flex-start" overflow="hidden">
+      <VStack as="ul" spacing="0" alignItems="flex-start" overflow="hidden" mt={ 3 }>
         { navLinks.map((item) => (
           <UserProfileContentNavLink
             key={ item.text }
