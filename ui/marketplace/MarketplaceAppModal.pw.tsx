@@ -4,6 +4,7 @@ import type { MarketplaceAppWithSecurityReport } from 'types/client/marketplace'
 
 import { apps as appsMock } from 'mocks/apps/apps';
 import { securityReports as securityReportsMock } from 'mocks/apps/securityReports';
+import type { TestFnArgs } from 'playwright/lib';
 import { test, expect, devices } from 'playwright/lib';
 
 import MarketplaceAppModal from './MarketplaceAppModal';
@@ -28,7 +29,7 @@ const props = {
   canRate: undefined,
 };
 
-const testFn: Parameters<typeof test>[1] = async({ render, page, mockAssetResponse, mockEnvs }) => {
+const testFn = async({ render, page, mockAssetResponse, mockEnvs }: TestFnArgs) => {
   await mockEnvs([
     [ 'NEXT_PUBLIC_MARKETPLACE_RATING_AIRTABLE_API_KEY', 'test' ],
     [ 'NEXT_PUBLIC_MARKETPLACE_RATING_AIRTABLE_BASE_ID', 'test' ],
