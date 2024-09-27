@@ -2,9 +2,9 @@ import { useToken } from '@chakra-ui/react';
 import * as d3 from 'd3';
 import React from 'react';
 
+import { Resolution } from '@blockscout/stats-types';
 import type { ChartMargin, TimeChartData, TimeChartItem } from 'ui/shared/chart/types';
 
-import dayjs from 'lib/date/dayjs';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import ChartArea from 'ui/shared/chart/ChartArea';
 import ChartAxis from 'ui/shared/chart/ChartAxis';
@@ -20,37 +20,42 @@ interface Props {
   title: string;
   units?: string;
   items: Array<TimeChartItem>;
-  onZoom: () => void;
-  isZoomResetInitial: boolean;
+  zoomRange?: [ Date, Date ];
+  onZoom: (range: [ Date, Date ]) => void;
   margin?: ChartMargin;
   noAnimation?: boolean;
+  resolution?: Resolution;
 }
 
-// temporarily turn off the data aggregation, we need a better algorithm for that
-const MAX_SHOW_ITEMS = 100_000_000_000;
 const DEFAULT_CHART_MARGIN = { bottom: 20, left: 10, right: 20, top: 10 };
 
-const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title, margin: marginProps, units, noAnimation }: Props) => {
+const ChartWidgetGraph = ({
+  isEnlarged,
+  items,
+  onZoom,
+  title,
+  margin: marginProps,
+  units,
+  noAnimation,
+  resolution,
+  zoomRange,
+}: Props) => {
   const isMobile = useIsMobile();
   const color = useToken('colors', 'blue.200');
   const chartId = `chart-${ title.split(' ').join('') }-${ isEnlarged ? 'fullscreen' : 'small' }`;
 
   const overlayRef = React.useRef<SVGRectElement>(null);
 
-  const [ range, setRange ] = React.useState<[ Date, Date ]>([ items[0].date, items[items.length - 1].date ]);
+  const range = React.useMemo(() => zoomRange || [ items[0].date, items[items.length - 1].date ], [ zoomRange, items ]);
 
-  const rangedItems = React.useMemo(() =>
-    items.filter((item) => item.date >= range[0] && item.date <= range[1]),
-  [ items, range ]);
-  const isGroupedValues = rangedItems.length > MAX_SHOW_ITEMS;
-
-  const displayedData = React.useMemo(() => {
-    if (isGroupedValues) {
-      return groupChartItemsByWeekNumber(rangedItems);
-    } else {
-      return rangedItems;
-    }
-  }, [ isGroupedValues, rangedItems ]);
+  const displayedData = React.useMemo(() =>
+    items
+      .filter((item) => item.date >= range[0] && item.date <= range[1])
+      .map((item) => ({
+        ...item,
+        dateLabel: getDateLabel(item.date, item.date_to, resolution),
+      })),
+  [ items, range, resolution ]);
 
   const chartData: TimeChartData = React.useMemo(() => ([ { items: displayedData, name: 'Value', color, units } ]), [ color, displayedData, units ]);
 
@@ -79,17 +84,6 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
     margin,
     axesConfig,
   });
-
-  const handleRangeSelect = React.useCallback((nextRange: [ Date, Date ]) => {
-    setRange([ nextRange[0], nextRange[1] ]);
-    onZoom();
-  }, [ onZoom ]);
-
-  React.useEffect(() => {
-    if (isZoomResetInitial) {
-      setRange([ items[0].date, items[items.length - 1].date ]);
-    }
-  }, [ isZoomResetInitial, items ]);
 
   return (
     <svg width="100%" height="100%" ref={ ref } cursor="pointer" id={ chartId } opacity={ rect ? 1 : 0 }>
@@ -143,12 +137,13 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
           <ChartTooltip
             anchorEl={ overlayRef.current }
             width={ innerWidth }
-            tooltipWidth={ isGroupedValues ? 280 : 200 }
+            tooltipWidth={ (resolution === Resolution.WEEK) ? 280 : 200 }
             height={ innerHeight }
             xScale={ axes.x.scale }
             yScale={ axes.y.scale }
             data={ chartData }
             noAnimation={ noAnimation }
+            resolution={ resolution }
           />
 
           <ChartSelectionX
@@ -156,7 +151,7 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
             height={ innerHeight }
             scale={ axes.x.scale }
             data={ chartData }
-            onSelect={ handleRangeSelect }
+            onSelect={ onZoom }
           />
         </ChartOverlay>
       </g>
@@ -166,13 +161,15 @@ const ChartWidgetGraph = ({ isEnlarged, items, onZoom, isZoomResetInitial, title
 
 export default React.memo(ChartWidgetGraph);
 
-function groupChartItemsByWeekNumber(items: Array<TimeChartItem>): Array<TimeChartItem> {
-  return d3.rollups(items,
-    (group) => ({
-      date: group[0].date,
-      value: d3.sum(group, (d) => d.value),
-      dateLabel: `${ d3.timeFormat('%e %b %Y')(group[0].date) } – ${ d3.timeFormat('%e %b %Y')(group[group.length - 1].date) }`,
-    }),
-    (t) => `${ dayjs(t.date).week() } / ${ dayjs(t.date).year() }`,
-  ).map(([ , v ]) => v);
+function getDateLabel(date: Date, dateTo?: Date, resolution?: Resolution): string {
+  switch (resolution) {
+    case Resolution.WEEK:
+      return d3.timeFormat('%e %b %Y')(date) + (dateTo ? ` – ${ d3.timeFormat('%e %b %Y')(dateTo) }` : '');
+    case Resolution.MONTH:
+      return d3.timeFormat('%b %Y')(date);
+    case Resolution.YEAR:
+      return d3.timeFormat('%Y')(date);
+    default:
+      return d3.timeFormat('%e %b %Y')(date);
+  }
 }

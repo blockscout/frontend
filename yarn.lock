@@ -1327,10 +1327,10 @@
   resolved "https://registry.yarnpkg.com/@blockscout/bens-types/-/bens-types-1.4.1.tgz#9182a79d9015b7fa2339edf0bfa3cd0c32045e66"
   integrity sha512-TlZ1HVdZ2Cswm/CcvNoxS+Ydiht/YGaLo//PJR/UmkmihlEFoY4HfVJvVcUnOQXi+Si7FwJ486DPii889nTJsQ==
 
-"@blockscout/stats-types@1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@blockscout/stats-types/-/stats-types-1.6.0.tgz#cdb27ab3d3cb1eef7b8b069c39d4e09afda1aec9"
-  integrity sha512-MzItYOsLa3zgoFzRgFAgg7gynSXG0w/GqHzg5BGHcBPbPSp/g7A6mMtyIchI6TnZxxnCwziHHvzmJFXz11emUg==
+"@blockscout/stats-types@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@blockscout/stats-types/-/stats-types-2.0.0.tgz#3805f8379b75377cde8a9ab76306af37bb735846"
+  integrity sha512-icYDsOHsDACjG/7VZhlV+1QRKSJOycblpswQ5Si0dqeWdOpbtmxSqolAS/z6C77d8p+uxZUCMjNa9otUCqn18A==
 
 "@blockscout/visualizer-types@0.2.0":
   version "0.2.0"

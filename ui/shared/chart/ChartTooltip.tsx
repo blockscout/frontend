@@ -1,6 +1,7 @@
 import * as d3 from 'd3';
 import React from 'react';
 
+import { Resolution } from '@blockscout/stats-types';
 import type { TimeChartData } from 'ui/shared/chart/types';
 
 import ChartTooltipBackdrop, { useRenderBackdrop } from './tooltip/ChartTooltipBackdrop';
@@ -21,9 +22,21 @@ interface Props {
   yScale: d3.ScaleLinear<number, number>;
   anchorEl: SVGRectElement | null;
   noAnimation?: boolean;
+  resolution?: Resolution;
 }
 
-const ChartTooltip = ({ xScale, yScale, width, tooltipWidth = 200, height, data, anchorEl, noAnimation, ...props }: Props) => {
+const ChartTooltip = ({
+  xScale,
+  yScale,
+  width,
+  tooltipWidth = 200,
+  height,
+  data,
+  anchorEl,
+  noAnimation,
+  resolution,
+  ...props
+}: Props) => {
   const ref = React.useRef<SVGGElement>(null);
   const trackerId = React.useRef<number>();
   const isVisible = React.useRef(false);
@@ -150,8 +163,8 @@ const ChartTooltip = ({ xScale, yScale, width, tooltipWidth = 200, height, data,
       { data.map(({ name }) => <ChartTooltipPoint key={ name }/>) }
       <ChartTooltipContent>
         <ChartTooltipBackdrop/>
-        <ChartTooltipTitle/>
-        <ChartTooltipRow label="Date" lineNum={ 1 }/>
+        <ChartTooltipTitle resolution={ resolution }/>
+        <ChartTooltipRow label={ getDateLabel(resolution) } lineNum={ 1 }/>
         { data.map(({ name }, index) => <ChartTooltipRow key={ name } label={ name } lineNum={ index + 1 }/>) }
       </ChartTooltipContent>
     </g>
@@ -159,3 +172,16 @@ const ChartTooltip = ({ xScale, yScale, width, tooltipWidth = 200, height, data,
 };
 
 export default React.memo(ChartTooltip);
+
+function getDateLabel(resolution?: Resolution): string {
+  switch (resolution) {
+    case Resolution.WEEK:
+      return 'Dates';
+    case Resolution.MONTH:
+      return 'Month';
+    case Resolution.YEAR:
+      return 'Year';
+    default:
+      return 'Date';
+  }
+}
