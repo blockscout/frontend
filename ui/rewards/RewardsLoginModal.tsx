@@ -36,7 +36,7 @@ const RewardsLoginModal = () => {
         <ModalCloseButton top={ 6 } right={ 6 }/>
         <ModalBody mb={ 0 }>
           { isLoginStep ?
-            <LoginStepContent goNext={ setIsLoginStep.off }/> :
+            <LoginStepContent goNext={ setIsLoginStep.off } closeModal={ closeLoginModal }/> :
             <CongratsStepContent/>
           }
         </ModalBody>

@@ -5,6 +5,7 @@ import isBrowser from './isBrowser';
 export enum NAMES {
   NAV_BAR_COLLAPSED='nav_bar_collapsed',
   API_TOKEN='_explorer_key',
+  REWARDS_API_TOKEN='rewards_api_token',
   INVALID_SESSION='invalid_session',
   CONFIRM_EMAIL_PAGE_VIEWED='confirm_email_page_viewed',
   TXS_SORT='txs_sort',

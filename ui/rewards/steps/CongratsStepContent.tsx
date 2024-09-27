@@ -1,6 +1,8 @@
 import { Text, Box, Flex, useColorModeValue, Button } from '@chakra-ui/react';
 import React from 'react';
 
+import { route } from 'nextjs-routes';
+
 import IconSvg from 'ui/shared/IconSvg';
 
 import AvailableSoonLabel from '../AvailableSoonLabel';
@@ -69,7 +71,7 @@ const CongratsStepContent = () => {
           Explore your current merits balance, find activities to boost your merits,
           and view your capybara NFT badge collection on the dashboard
         </Text>
-        <Button mt={ 3 }>
+        <Button mt={ 3 } as="a" href={ route({ pathname: '/account/rewards' }) }>
           Open
         </Button>
       </Flex>

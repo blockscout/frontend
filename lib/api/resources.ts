@@ -90,6 +90,7 @@ import type {
   OptimismL2BatchBlocks,
 } from 'types/api/optimisticL2';
 import type { RawTracesResponse } from 'types/api/rawTrace';
+import type { RewardsNonceResponse, RewardsCheckUserResponse, RewardsLoginResponse } from 'types/api/rewards';
 import type { SearchRedirectResult, SearchResult, SearchResultFilters, SearchResultItem } from 'types/api/search';
 import type { ShibariumWithdrawalsResponse, ShibariumDepositsResponse } from 'types/api/shibarium';
 import type { HomeStats } from 'types/api/stats';
@@ -317,6 +318,24 @@ export const RESOURCES = {
     pathParams: [ 'chainId' as const, 'dappId' as const ],
     endpoint: marketplaceApi?.endpoint,
     basePath: marketplaceApi?.basePath,
+  },
+
+  // REWARDS SERVICE
+  rewards_nonce: {
+    path: '/api/v1/auth/nonce',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_check_user: {
+    path: '/api/v1/auth/user/:address',
+    pathParams: [ 'address' as const ],
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_login: {
+    path: '/api/v1/auth/login',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
   },
 
   // BLOCKS, TXS
@@ -1169,6 +1188,9 @@ Q extends 'address_mud_records' ? AddressMudRecords :
 Q extends 'address_mud_record' ? AddressMudRecord :
 Q extends 'withdrawals' ? WithdrawalsResponse :
 Q extends 'withdrawals_counters' ? WithdrawalsCounters :
+Q extends 'rewards_nonce' ? RewardsNonceResponse :
+Q extends 'rewards_check_user' ? RewardsCheckUserResponse :
+Q extends 'rewards_login' ? RewardsLoginResponse :
 never;
 /* eslint-enable @typescript-eslint/indent */
 

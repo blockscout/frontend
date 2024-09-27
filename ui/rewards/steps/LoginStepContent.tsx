@@ -1,14 +1,39 @@
 import { Text, Button, useColorModeValue, Image, Box, Flex, Switch, useBoolean, Input, FormControl } from '@chakra-ui/react';
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useCallback } from 'react';
 
 import InputPlaceholder from 'ui/shared/InputPlaceholder';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import useWallet from 'ui/snippets/walletMenu/useWallet';
 
-const LoginStepContent = ({ goNext }: { goNext: () => void }) => {
+import useLogin from '../useLogin';
+
+type Props = {
+  goNext: () => void;
+  closeModal: () => void;
+};
+
+const LoginStepContent = ({ goNext, closeModal }: Props) => {
+  const router = useRouter();
   const { connect, isWalletConnected } = useWallet({ source: 'Merits' });
   const [ isSwitchChecked, setIsSwitchChecked ] = useBoolean(false);
+  const [ isLoading, setIsLoading ] = useBoolean(false);
   const dividerColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
+  const login = useLogin();
+
+  const handleLogin = useCallback(async() => {
+    try {
+      setIsLoading.on();
+      const { isNewUser } = await login();
+      if (isNewUser) {
+        goNext();
+      } else {
+        closeModal();
+        router.push({ pathname: '/account/rewards' }, undefined, { shallow: true });
+      }
+    } catch (error) {}
+    setIsLoading.off();
+  }, [ login, goNext, setIsLoading, router, closeModal ]);
 
   return (
     <>
@@ -46,7 +71,8 @@ const LoginStepContent = ({ goNext }: { goNext: () => void }) => {
         w="full"
         mt={ isWalletConnected ? 6 : 0 }
         mb={ 4 }
-        onClick={ isWalletConnected ? goNext : connect }
+        onClick={ isWalletConnected ? handleLogin : connect }
+        isLoading={ isLoading }
       >
         { isWalletConnected ? 'Get started' : 'Connect wallet' }
       </Button>
