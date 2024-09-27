@@ -11,8 +11,9 @@ import React, { useRef } from 'react';
 
 import type { TimeChartItem } from './types';
 
-import type { Route } from 'nextjs-routes';
+import { route, type Route } from 'nextjs-routes';
 
+import config from 'configs/app';
 import IconSvg from 'ui/shared/IconSvg';
 
 import ChartMenu from './ChartMenu';
@@ -133,7 +134,7 @@ const ChartWidget = ({
               items={ items }
               title={ title }
               description={ description }
-              href={ href }
+              chartUrl={ href ? config.app.baseUrl + route(href) : undefined }
               isLoading={ isLoading }
               chartRef={ ref }
               units={ units }

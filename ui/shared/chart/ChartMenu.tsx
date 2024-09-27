@@ -14,10 +14,6 @@ import React from 'react';
 import type { TimeChartItem } from './types';
 import type { Resolution } from '@blockscout/stats-types';
 
-import type { Route } from 'nextjs-routes';
-import { route } from 'nextjs-routes';
-
-import config from 'configs/app';
 import dayjs from 'lib/date/dayjs';
 import isBrowser from 'lib/isBrowser';
 import saveAsCSV from 'lib/saveAsCSV';
@@ -33,7 +29,7 @@ export type Props = {
   units?: string;
   isLoading: boolean;
   chartRef: React.RefObject<HTMLDivElement>;
-  href?: Route;
+  chartUrl?: string;
   resolution?: Resolution;
   zoomRange?: [ Date, Date ];
   handleZoom: (range: [ Date, Date ]) => void;
@@ -49,7 +45,7 @@ const ChartMenu = ({
   units,
   isLoading,
   chartRef,
-  href,
+  chartUrl,
   resolution,
   zoomRange,
   handleZoom,
@@ -58,7 +54,6 @@ const ChartMenu = ({
   const pngBackgroundColor = useColorModeValue('white', 'black');
   const [ isFullscreen, setIsFullscreen ] = React.useState(false);
 
-  const chartUrl = href ? config.app.baseUrl + route(href) : '';
   const { onCopy } = useClipboard(chartUrl);
 
   const isInBrowser = isBrowser();
@@ -144,7 +139,7 @@ const ChartMenu = ({
           </MenuButton>
         </Skeleton>
         <MenuList>
-          { href && (
+          { chartUrl && (
             <MenuItem
               display="flex"
               alignItems="center"

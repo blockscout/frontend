@@ -1,4 +1,4 @@
-import { Button, Flex, IconButton, Link, Text } from '@chakra-ui/react';
+import { Button, Flex, Link, Text } from '@chakra-ui/react';
 import type { NextRouter } from 'next/router';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -95,10 +95,14 @@ const Chart = () => {
 
   const onIntervalChange = React.useCallback((interval: StatsIntervalIds) => {
     setIntervalState(interval);
-    router.push({
-      pathname: router.pathname,
-      query: { ...router.query, interval },
-    });
+    router.push(
+      {
+        pathname: router.pathname,
+        query: { ...router.query, interval },
+      },
+      undefined,
+      { shallow: true },
+    );
   }, [ setIntervalState, router ]);
 
   const onResolutionChange = React.useCallback((resolution: Resolution) => {
@@ -143,16 +147,7 @@ const Chart = () => {
 
   const isInfoLoading = !info && lineQuery.isPlaceholderData;
 
-  const shareButton = isMobile ? (
-    <IconButton
-      aria-label="share"
-      variant="outline"
-      boxSize={ 8 }
-      size="sm"
-      icon={ <IconSvg name="share" boxSize={ 5 }/> }
-      onClick={ onShare }
-    />
-  ) : (
+  const shareButton = (
     <Button
       leftIcon={ <IconSvg name="share" w={ 4 } h={ 4 }/> }
       colorScheme="blue"
@@ -169,41 +164,6 @@ const Chart = () => {
     </Button>
   );
 
-  const shareAndMenu = (
-    <Flex alignItems="center" ml="auto" gap={ 3 }>
-      { /* TS thinks window.navigator.share can't be undefined, but it can */ }
-      { /* eslint-disable-next-line @typescript-eslint/no-explicit-any */ }
-      { (isInBrowser && ((window.navigator.share as any) ?
-        shareButton :
-        (
-          <CopyToClipboard
-            text={ config.app.baseUrl + router.asPath }
-            size={ 5 }
-            type="link"
-            variant="outline"
-            colorScheme="blue"
-            display="flex"
-            borderRadius="8px"
-            width={ 8 }
-            height={ 8 }
-          />
-        )
-      )) }
-      { (hasItems || lineQuery.isPlaceholderData) && (
-        <ChartMenu
-          items={ items }
-          title={ info?.title || '' }
-          isLoading={ lineQuery.isPlaceholderData }
-          chartRef={ ref }
-          resolution={ resolution }
-          zoomRange={ zoomRange }
-          handleZoom={ handleZoom }
-          handleZoomReset={ handleZoomReset }
-        />
-      ) }
-    </Flex>
-  );
-
   return (
     <>
       <PageTitle
@@ -211,14 +171,13 @@ const Chart = () => {
         mb={ 3 }
         isLoading={ isInfoLoading }
         backLink={ backLink }
-        afterTitle={ isMobile ? shareAndMenu : undefined }
         secondRow={ info?.description || lineQuery.data?.info?.description }
         withTextAd
       />
       <Flex alignItems="center" justifyContent="space-between">
         <Flex alignItems="center" gap={{ base: 3, lg: 6 }} maxW="100%" overflow="hidden">
           <Flex alignItems="center" gap={ 3 }>
-            <Text>Period</Text>
+            { !isMobile && <Text>Period</Text> }
             <ChartIntervalSelect interval={ interval } onIntervalChange={ onIntervalChange }/>
           </Flex>
           { lineQuery.data?.info?.resolutions && lineQuery.data?.info?.resolutions.length > 1 && (
@@ -243,7 +202,39 @@ const Chart = () => {
             </Link>
           ) }
         </Flex>
-        { !isMobile && shareAndMenu }
+        <Flex alignItems="center" gap={ 3 }>
+          { /* TS thinks window.navigator.share can't be undefined, but it can */ }
+          { /* eslint-disable-next-line @typescript-eslint/no-explicit-any */ }
+          { !isMobile && (isInBrowser && ((window.navigator.share as any) ?
+            shareButton :
+            (
+              <CopyToClipboard
+                text={ config.app.baseUrl + router.asPath }
+                size={ 5 }
+                type="link"
+                variant="outline"
+                colorScheme="blue"
+                display="flex"
+                borderRadius="8px"
+                width={ 8 }
+                height={ 8 }
+              />
+            )
+          )) }
+          { (hasItems || lineQuery.isPlaceholderData) && (
+            <ChartMenu
+              items={ items }
+              title={ info?.title || '' }
+              isLoading={ lineQuery.isPlaceholderData }
+              chartRef={ ref }
+              resolution={ resolution }
+              zoomRange={ zoomRange }
+              handleZoom={ handleZoom }
+              handleZoomReset={ handleZoomReset }
+              chartUrl={ isMobile ? window.location.href : undefined }
+            />
+          ) }
+        </Flex>
       </Flex>
       <Flex
         ref={ ref }
