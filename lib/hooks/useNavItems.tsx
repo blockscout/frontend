@@ -25,7 +25,11 @@ export function isInternalItem(item: NavItem): item is NavItemInternal {
 export default function useNavItems(): ReturnType {
   const router = useRouter();
   const pathname = router.pathname;
-  const { openLoginModal: openRewardsLoginModal } = useRewardsContext();
+  const {
+    openLoginModal: openRewardsLoginModal,
+    balances: rewardsBalances,
+    isLogedIn: isLoggedInToRewards,
+  } = useRewardsContext();
 
   return React.useMemo(() => {
     let blockchainNavItems: Array<NavItem> | Array<Array<NavItem>> = [];
@@ -268,11 +272,11 @@ export default function useNavItems(): ReturnType {
 
     const accountNavItems: ReturnType['accountNavItems'] = [
       config.features.rewards.isEnabled ? {
-        text: 'Merits',
-        // nextRoute: { pathname: '/account/rewards' as const },
-        onClick: openRewardsLoginModal,
+        text: rewardsBalances?.total ? `${ rewardsBalances?.total } Merits` : 'Merits',
+        nextRoute: isLoggedInToRewards ? { pathname: '/account/rewards' as const } : undefined,
+        onClick: isLoggedInToRewards ? undefined : openRewardsLoginModal,
         icon: 'merits',
-        // isActive: pathname === '/account/rewards',
+        isActive: isLoggedInToRewards && pathname === '/account/rewards',
       } : null,
       {
         text: 'Watch list',
@@ -314,5 +318,5 @@ export default function useNavItems(): ReturnType {
     };
 
     return { mainNavItems, accountNavItems, profileItem };
-  }, [ pathname, openRewardsLoginModal ]);
+  }, [ pathname, openRewardsLoginModal, rewardsBalances, isLoggedInToRewards ]);
 }

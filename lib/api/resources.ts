@@ -90,7 +90,15 @@ import type {
   OptimismL2BatchBlocks,
 } from 'types/api/optimisticL2';
 import type { RawTracesResponse } from 'types/api/rawTrace';
-import type { RewardsNonceResponse, RewardsCheckUserResponse, RewardsLoginResponse } from 'types/api/rewards';
+import type {
+  RewardsNonceResponse,
+  RewardsCheckUserResponse,
+  RewardsLoginResponse,
+  RewardsUserBalancesResponse,
+  RewardsUserDailyCheckResponse,
+  RewardsUserDailyClaimResponse,
+  RewardsUserReferralsResponse,
+} from 'types/api/rewards';
 import type { SearchRedirectResult, SearchResult, SearchResultFilters, SearchResultItem } from 'types/api/search';
 import type { ShibariumWithdrawalsResponse, ShibariumDepositsResponse } from 'types/api/shibarium';
 import type { HomeStats } from 'types/api/stats';
@@ -334,6 +342,31 @@ export const RESOURCES = {
   },
   rewards_login: {
     path: '/api/v1/auth/login',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_logout: {
+    path: '/api/v1/auth/logout',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_user_balances: {
+    path: '/api/v1/user/balances',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_user_daily_check: {
+    path: '/api/v1/user/daily/check',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_user_daily_claim: {
+    path: '/api/v1/user/daily/claim',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_user_referrals: {
+    path: '/api/v1/user/referrals',
     endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
     basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
   },
@@ -1191,6 +1224,10 @@ Q extends 'withdrawals_counters' ? WithdrawalsCounters :
 Q extends 'rewards_nonce' ? RewardsNonceResponse :
 Q extends 'rewards_check_user' ? RewardsCheckUserResponse :
 Q extends 'rewards_login' ? RewardsLoginResponse :
+Q extends 'rewards_user_balances' ? RewardsUserBalancesResponse :
+Q extends 'rewards_user_daily_check' ? RewardsUserDailyCheckResponse :
+Q extends 'rewards_user_daily_claim' ? RewardsUserDailyClaimResponse :
+Q extends 'rewards_user_referrals' ? RewardsUserReferralsResponse :
 never;
 /* eslint-enable @typescript-eslint/indent */
 

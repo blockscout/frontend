@@ -1,6 +1,8 @@
 import { Button, Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React from 'react';
 
+import { useRewardsContext } from 'lib/contexts/rewards';
 import CopyField from 'ui/rewards/CopyField';
 import RewardsDashboardCard from 'ui/rewards/RewardsDashboardCard';
 import IconSvg from 'ui/shared/IconSvg';
@@ -8,6 +10,13 @@ import LinkExternal from 'ui/shared/links/LinkExternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const RewardsDashboard = () => {
+  const router = useRouter();
+  const { balances, dailyReward, isLogedIn } = useRewardsContext();
+
+  if (!isLogedIn) {
+    router.replace({ pathname: '/' }, undefined, { shallow: true });
+  }
+
   return (
     <>
       <PageTitle
@@ -26,8 +35,8 @@ const RewardsDashboard = () => {
         <Flex gap={ 6 }>
           <RewardsDashboardCard
             description="Claim your daily merits and any merits received from referrals."
-            values={ [ { label: 'Total balance', value: 250 } ] }
-            contentAfter={ <Button>Claim X Merits</Button> }
+            values={ [ { label: 'Total balance', value: balances?.total } ] }
+            contentAfter={ <Button>Claim { dailyReward?.daily_reward } Merits</Button> }
           />
           <RewardsDashboardCard
             title="Title"

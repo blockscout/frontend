@@ -7,7 +7,7 @@ import AvailableSoonLabel from './AvailableSoonLabel';
 
 type Value = {
   label: string;
-  value: number;
+  value: number | string | undefined;
   type?: 'percentages';
 }
 
