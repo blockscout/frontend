@@ -54,7 +54,7 @@ const ChartMenu = ({
   const pngBackgroundColor = useColorModeValue('white', 'black');
   const [ isFullscreen, setIsFullscreen ] = React.useState(false);
 
-  const { onCopy } = useClipboard(chartUrl);
+  const { onCopy } = useClipboard(chartUrl ?? '');
 
   const isInBrowser = isBrowser();
 
@@ -176,9 +176,9 @@ const ChartMenu = ({
           </MenuItem>
         </MenuList>
       </Menu>
-      { items && (
+      { items && isFullscreen && (
         <FullscreenChartModal
-          isOpen={ isFullscreen }
+          isOpen
           items={ items }
           title={ title }
           description={ description }

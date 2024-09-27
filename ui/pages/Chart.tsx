@@ -151,10 +151,6 @@ const Chart = () => {
     <Button
       leftIcon={ <IconSvg name="share" w={ 4 } h={ 4 }/> }
       colorScheme="blue"
-      gridColumn={ 2 }
-      justifySelf="end"
-      alignSelf="top"
-      gridRow="1/3"
       size="sm"
       variant="outline"
       onClick={ onShare }
