@@ -54,6 +54,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
   - [Data availability](ENVS.md#data-availability)
   - [Bridged tokens](ENVS.md#bridged-tokens)
   - [Safe{Core} address tags](ENVS.md#safecore-address-tags)
+  - [Address profile API](ENVS.md#address-profile-api)
   - [SUAVE chain](ENVS.md#suave-chain)
   - [MetaSuites extension](ENVS.md#metasuites-extension)
   - [Validators list](ENVS.md#validators-list)
@@ -650,6 +651,28 @@ For the smart contract addresses which are [Safe{Core} accounts](https://safe.gl
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_SAFE_TX_SERVICE_URL | `string` | The Safe transaction service URL. See full list of supported networks [here](https://docs.safe.global/api-supported-networks). | - | - | `uniswap` | v1.26.0+ |
+
+&nbsp;
+
+### Address profile API
+
+This feature allows the integration of an external API to fetch user info for addresses or contracts. When configured, if the API returns a username, a public tag with a custom link will be displayed in the address page header.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_ADDRESS_USERNAME_TAG | `{api_url: string; tag_link_template: string; tag_icon: string; tag_bg_color: string; tag_text_color: string}` | Address profile API tag configuration properties. See [below](#user-profile-api-configuration-properties). | - | - | `uniswap` | v1.35.0+ |
+
+&nbsp;
+
+#### Address profile API configuration properties
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| api_url_template | `string` | User profile API URL. Should be a template with `{address}` variable | Required | - | `https://example-api.com/{address}` |
+| tag_link_template | `string` | External link to the profile. Should be a template with `{username}` variable | - | - | `https://example.com/{address}` |
+| tag_icon | `string` | Public tag icon (.svg) url | - | - | `https://example.com/icon.svg` |
+| tag_bg_color | `string` | Public tag background color (escape "#" symbol if you use HEX color codes or use rgba-value instead) | - | - | `\#000000` |
+| tag_text_color | `string` | Public tag text color (escape "#" symbol if you use HEX color codes or use rgba-value instead) | - | - | `\#FFFFFF` |
 
 &nbsp;
 

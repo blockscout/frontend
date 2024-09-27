@@ -10,6 +10,7 @@ declare module 'yup' {
 import * as yup from 'yup';
 
 import type { AdButlerConfig } from '../../../types/client/adButlerConfig';
+import type { AddressProfileAPIConfig } from '../../../types/client/addressProfileAPIConfig';
 import { SUPPORTED_AD_TEXT_PROVIDERS, SUPPORTED_AD_BANNER_PROVIDERS, SUPPORTED_AD_BANNER_ADDITIONAL_PROVIDERS } from '../../../types/client/adProviders';
 import type { AdTextProviders, AdBannerProviders, AdBannerAdditionalProviders } from '../../../types/client/adProviders';
 import { SMART_CONTRACT_EXTRA_VERIFICATION_METHODS, type ContractCodeIde, type SmartContractVerificationMethodExtra } from '../../../types/client/contract';
@@ -803,6 +804,20 @@ const schema = yup
         ),
       }),
     NEXT_PUBLIC_SAVE_ON_GAS_ENABLED: yup.boolean(),
+    NEXT_PUBLIC_ADDRESS_USERNAME_TAG: yup
+      .mixed()
+      .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_ADDRESS_USERNAME_TAG, it should have api_url_template', (data) => {
+        const isUndefined = data === undefined;
+        const valueSchema = yup.object<AddressProfileAPIConfig>().transform(replaceQuotes).json().shape({
+          api_url_template: yup.string().required(),
+          tag_link_template: yup.string(),
+          tag_icon: yup.string(),
+          tag_bg_color: yup.string(),
+          tag_text_color: yup.string(),
+        });
+
+        return isUndefined || valueSchema.isValidSync(data);
+      }),
 
     // 6. External services envs
     NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: yup.string(),

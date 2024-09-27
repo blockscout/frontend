@@ -19,6 +19,7 @@ const PRESETS = {
   stability_testnet: 'https://stability-testnet.blockscout.com',
   zkevm: 'https://zkevm.blockscout.com',
   zksync: 'https://zksync.blockscout.com',
+  zora: 'https://explorer.zora.energy',
   // main === staging
   main: 'https://eth-sepolia.k8s-dev.blockscout.com',
 };
