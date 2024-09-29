@@ -12,6 +12,19 @@ const global = (props: StyleFunctionProps) => ({
     '-webkit-tap-highlight-color': 'transparent',
     'font-variant-ligatures': 'no-contextual',
   },
+  'body::before': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundImage: mode('url("/icons/blessnet/colour_butterflies.png")', 'url("/icons/blessnet/background_lines.jpeg")')(props),
+    backgroundRepeat: mode('repeat', 'no-repeat')(props),
+    backgroundSize: mode('750px 650px', 'cover')(props),
+    opacity: 0.3, // Control transparency of the background image
+    zIndex: -1, // Keep it behind the content
+  },
   mark: {
     bgColor: mode('green.100', 'green.800')(props),
     color: 'inherit',
