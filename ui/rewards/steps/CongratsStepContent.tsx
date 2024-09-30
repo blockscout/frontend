@@ -59,7 +59,7 @@ const CongratsStepContent = () => {
         </Flex>
         <Text fontSize="md" mt={ 2 }>
           Receive a{ ' ' }
-          <Skeleton display="inline" isLoaded={ !rewardsConfigQuery.isLoading }>
+          <Skeleton as="span" isLoaded={ !rewardsConfigQuery.isLoading }>
             { Number(rewardsConfigQuery.data?.rewards.referral_share || 0) * 100 }%
           </Skeleton>
           { ' ' }bonus on all merits earned by your referrals
