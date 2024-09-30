@@ -7,6 +7,10 @@ export type RewardsConfigResponse = {
   };
 };
 
+export type RewardsCheckRefCodeResponse = {
+  valid: boolean;
+};
+
 export type RewardsNonceResponse = {
   nonce: string;
 };

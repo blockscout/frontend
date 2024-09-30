@@ -10,7 +10,11 @@ import CopyField from '../CopyField';
 import useReferrals from '../useReferrals';
 import useRewardsConfig from '../useRewardsConfig';
 
-const CongratsStepContent = () => {
+type Props = {
+  isReferral: boolean;
+}
+
+const CongratsStepContent = ({ isReferral }: Props) => {
   const referralsQuery = useReferrals();
   const rewardsConfigQuery = useRewardsConfig();
 
@@ -25,12 +29,41 @@ const CongratsStepContent = () => {
         mb={ 8 }
       >
         <Flex alignItems="center" pl={ 2 } mb={ 4 }>
-          <IconSvg name="merits_colored" boxSize={ 16 }/>
+          <IconSvg name="merits_colored" boxSize="72px" m={ -2 }/>
           <Skeleton isLoaded={ !rewardsConfigQuery.isLoading }>
-            <Text fontSize="30px" fontWeight="700" color="blue.700">
-              +{ rewardsConfigQuery.data?.rewards.registration }
+            <Text fontSize="30px" fontWeight="700" color="blue.700" ml={ 1 }>
+              +{ rewardsConfigQuery.data?.rewards[ isReferral ? 'registration_with_referral' : 'registration' ] }
             </Text>
           </Skeleton>
+          { isReferral && (
+            <Flex alignItems="center" h="56px">
+              <Box w="1px" h="full" bgColor="whiteAlpha.800" mx={ 8 }/>
+              <Flex flexDirection="column" justifyContent="space-between">
+                { [
+                  {
+                    title: 'Registration',
+                    value: rewardsConfigQuery.data?.rewards.registration,
+                  },
+                  {
+                    title: 'Referral program',
+                    value: Number(rewardsConfigQuery.data?.rewards.registration_with_referral) - Number(rewardsConfigQuery.data?.rewards.registration),
+                  },
+                ].map(({ title, value }) => (
+                  <Flex key={ title } alignItems="center">
+                    <IconSvg name="merits_colored" boxSize={ 8 }/>
+                    <Skeleton isLoaded={ !rewardsConfigQuery.isLoading }>
+                      <Text fontSize="sm" fontWeight="700" color="blue.700">
+                        +{ value }
+                      </Text>
+                    </Skeleton>
+                    <Text fontSize="sm" color="blue.700" ml={ 2 }>
+                      { title }
+                    </Text>
+                  </Flex>
+                )) }
+              </Flex>
+            </Flex>
+          ) }
         </Flex>
         <Flex
           flexDirection="column"

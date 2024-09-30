@@ -1,6 +1,7 @@
 import { Text, Button, useColorModeValue, Image, Box, Flex, Switch, useBoolean, Input, FormControl } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import React, { useCallback } from 'react';
+import type { ChangeEvent } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 
 import InputPlaceholder from 'ui/shared/InputPlaceholder';
 import LinkExternal from 'ui/shared/links/LinkExternal';
@@ -9,7 +10,7 @@ import useWallet from 'ui/snippets/walletMenu/useWallet';
 import useLogin from '../useLogin';
 
 type Props = {
-  goNext: () => void;
+  goNext: (isReferral: boolean) => void;
   closeModal: () => void;
 };
 
@@ -18,22 +19,37 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
   const { connect, isWalletConnected } = useWallet({ source: 'Merits' });
   const [ isSwitchChecked, setIsSwitchChecked ] = useBoolean(false);
   const [ isLoading, setIsLoading ] = useBoolean(false);
+  const [ refCode, setRefCode ] = useState('');
+  const [ refCodeError, setRefCodeError ] = useBoolean(false);
   const dividerColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   const login = useLogin();
 
+  const handleRefCodeChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    setRefCode(event.target.value);
+  }, []);
+
   const handleLogin = useCallback(async() => {
     try {
+      setRefCodeError.off();
       setIsLoading.on();
-      const { isNewUser } = await login();
-      if (isNewUser) {
-        goNext();
+      const { isNewUser, invalidRefCodeError } = await login(refCode);
+      if (invalidRefCodeError) {
+        setRefCodeError.on();
       } else {
-        closeModal();
-        router.push({ pathname: '/account/rewards' }, undefined, { shallow: true });
+        if (isNewUser) {
+          goNext(Boolean(refCode));
+        } else {
+          closeModal();
+          router.push({ pathname: '/account/rewards' }, undefined, { shallow: true });
+        }
       }
     } catch (error) {}
     setIsLoading.off();
-  }, [ login, goNext, setIsLoading, router, closeModal ]);
+  }, [ login, goNext, setIsLoading, router, closeModal, refCode, setRefCodeError ]);
+
+  useEffect(() => {
+    setRefCodeError.off();
+  }, [ refCode ]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
@@ -59,7 +75,13 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
           </Flex>
           { isSwitchChecked && (
             <FormControl variant="floating" id="referral-code" mt={ 3 }>
-              <Input fontWeight="500" borderRadius="12px !important"/>
+              <Input
+                fontWeight="500"
+                borderRadius="12px !important"
+                value={ refCode }
+                onChange={ handleRefCodeChange }
+                isInvalid={ refCodeError }
+              />
               <InputPlaceholder text="Code"/>
             </FormControl>
           ) }

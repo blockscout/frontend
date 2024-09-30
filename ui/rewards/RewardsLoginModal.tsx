@@ -1,5 +1,5 @@
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, useBoolean } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import { useRewardsContext } from 'lib/contexts/rewards';
 import useIsMobile from 'lib/hooks/useIsMobile';
@@ -14,12 +14,21 @@ const RewardsLoginModal = () => {
   const { isLoginModalOpen, closeLoginModal } = useRewardsContext();
 
   const [ isLoginStep, setIsLoginStep ] = useBoolean(true);
+  const [ isReferral, setIsReferral ] = useBoolean(false);
 
   useEffect(() => {
     if (!isLoginModalOpen) {
       setIsLoginStep.on();
+      setIsReferral.off();
     }
-  }, [ isLoginModalOpen, setIsLoginStep ]);
+  }, [ isLoginModalOpen, setIsLoginStep, setIsReferral ]);
+
+  const goNext = useCallback((isReferral: boolean) => {
+    if (isReferral) {
+      setIsReferral.on();
+    }
+    setIsLoginStep.off();
+  }, [ setIsLoginStep, setIsReferral ]);
 
   return (
     <Modal
@@ -36,8 +45,8 @@ const RewardsLoginModal = () => {
         <ModalCloseButton top={ 6 } right={ 6 }/>
         <ModalBody mb={ 0 }>
           { isLoginStep ?
-            <LoginStepContent goNext={ setIsLoginStep.off } closeModal={ closeLoginModal }/> :
-            <CongratsStepContent/>
+            <LoginStepContent goNext={ goNext } closeModal={ closeLoginModal }/> :
+            <CongratsStepContent isReferral={ isReferral }/>
           }
         </ModalBody>
       </ModalContent>

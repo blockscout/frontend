@@ -1,7 +1,10 @@
 import { useCallback } from 'react';
 import { useAccount, useSignMessage } from 'wagmi';
 
-import type { RewardsNonceResponse, RewardsCheckUserResponse, RewardsLoginResponse } from 'types/api/rewards';
+import type {
+  RewardsNonceResponse, RewardsCheckUserResponse,
+  RewardsLoginResponse, RewardsCheckRefCodeResponse,
+} from 'types/api/rewards';
 
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
@@ -34,16 +37,22 @@ export default function useLogin() {
   const { address } = useAccount();
   const { signMessageAsync } = useSignMessage();
 
-  return useCallback(async() => {
+  return useCallback(async(refCode: string) => {
     try {
-      const [ nonceResponse, userResponse ] = await Promise.all([
+      const [ nonceResponse, userResponse, checkCodeResponse ] = await Promise.all([
         apiFetch<'rewards_nonce', RewardsNonceResponse>('rewards_nonce'),
         apiFetch<'rewards_check_user', RewardsCheckUserResponse>('rewards_check_user', { pathParams: { address } }),
+        refCode ?
+          apiFetch<'rewards_check_ref_code', RewardsCheckRefCodeResponse>('rewards_check_ref_code', { pathParams: { code: refCode } }) :
+          Promise.resolve({ valid: true }),
       ]);
-      if (!address || !('nonce' in nonceResponse) || !('exists' in userResponse)) {
+      if (!address || !('nonce' in nonceResponse) || !('exists' in userResponse) || !('valid' in checkCodeResponse)) {
         throw new Error();
       }
-      const message = getMessageToSign(address, nonceResponse.nonce, userResponse.exists);
+      if (!checkCodeResponse.valid) {
+        return { invalidRefCodeError: true };
+      }
+      const message = getMessageToSign(address, nonceResponse.nonce, userResponse.exists, refCode);
       const signature = await signMessageAsync({ message });
       const loginResponse = await apiFetch<'rewards_login', RewardsLoginResponse>('rewards_login', {
         fetchParams: {

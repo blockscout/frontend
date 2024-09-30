@@ -92,6 +92,7 @@ import type {
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import type {
   RewardsConfigResponse,
+  RewardsCheckRefCodeResponse,
   RewardsNonceResponse,
   RewardsCheckUserResponse,
   RewardsLoginResponse,
@@ -332,6 +333,12 @@ export const RESOURCES = {
   // REWARDS SERVICE
   rewards_config: {
     path: '/api/v1/config',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_check_ref_code: {
+    path: '/api/v1/auth/code/:code',
+    pathParams: [ 'code' as const ],
     endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
     basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
   },
@@ -1228,6 +1235,7 @@ Q extends 'address_mud_record' ? AddressMudRecord :
 Q extends 'withdrawals' ? WithdrawalsResponse :
 Q extends 'withdrawals_counters' ? WithdrawalsCounters :
 Q extends 'rewards_config' ? RewardsConfigResponse :
+Q extends 'rewards_check_ref_code' ? RewardsCheckRefCodeResponse :
 Q extends 'rewards_nonce' ? RewardsNonceResponse :
 Q extends 'rewards_check_user' ? RewardsCheckUserResponse :
 Q extends 'rewards_login' ? RewardsLoginResponse :
