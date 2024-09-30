@@ -824,7 +824,7 @@ const BlockDetails = ({ query }: Props) => {
               isExternal
               href={ `https://arweave.net/${ arweaveId }` }
               rel="noopener noreferrer"
-              color="#1AFFB1"
+              color="green.500"
             >
               <EntityBase.Content
                 text={ isSmallDevice ? truncateArweaveId(arweaveId) : arweaveId }
