@@ -36,8 +36,18 @@ export function useArweaveId({ block }: BlockProps) {
       if (data.arweaveId) {
         return data.arweaveId;
       } else {
+
         const exexFallback = await fetch(
-          `https://arweave-exex-backfill.shuttleapp.rs/block/id/${ block }`,
+          'https://exex-backfill-api.vercel.app/api/blockId',
+          {
+            method: 'POST',
+            body: JSON.stringify({
+              blockId: block,
+            }),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
         );
 
         const fallbackData = (await exexFallback.json()) as ExexFallbackProps;
