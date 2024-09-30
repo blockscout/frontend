@@ -6,6 +6,7 @@ import { useRewardsContext } from 'lib/contexts/rewards';
 import CopyField from 'ui/rewards/CopyField';
 import RewardsDashboardCard from 'ui/rewards/RewardsDashboardCard';
 import useReferrals from 'ui/rewards/useReferrals';
+import useRewardsConfig from 'ui/rewards/useRewardsConfig';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -14,6 +15,7 @@ const RewardsDashboard = () => {
   const router = useRouter();
   const { balances, dailyReward, isLogedIn } = useRewardsContext();
   const referralsQuery = useReferrals();
+  const rewardsConfigQuery = useRewardsConfig();
 
   if (!isLogedIn) {
     router.replace({ pathname: '/' }, undefined, { shallow: true });
@@ -66,7 +68,11 @@ const RewardsDashboard = () => {
               Referral program
             </Text>
             <Text fontSize="sm">
-              Refer friends and boost your merits! You receive a 10% bonus on all merits earned by your referrals.
+              Refer friends and boost your merits! You receive a{ ' ' }
+              <Skeleton display="inline" isLoaded={ !rewardsConfigQuery.isLoading }>
+                { Number(rewardsConfigQuery.data?.rewards.referral_share || 0) * 100 }%
+              </Skeleton>
+              { ' ' }bonus on all merits earned by your referrals.
             </Text>
           </Flex>
           <Flex

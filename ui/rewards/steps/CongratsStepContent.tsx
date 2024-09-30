@@ -1,4 +1,4 @@
-import { Text, Box, Flex, useColorModeValue, Button } from '@chakra-ui/react';
+import { Text, Box, Flex, useColorModeValue, Button, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
@@ -8,9 +8,12 @@ import IconSvg from 'ui/shared/IconSvg';
 import AvailableSoonLabel from '../AvailableSoonLabel';
 import CopyField from '../CopyField';
 import useReferrals from '../useReferrals';
+import useRewardsConfig from '../useRewardsConfig';
 
 const CongratsStepContent = () => {
   const referralsQuery = useReferrals();
+  const rewardsConfigQuery = useRewardsConfig();
+
   return (
     <>
       <Flex
@@ -23,9 +26,11 @@ const CongratsStepContent = () => {
       >
         <Flex alignItems="center" pl={ 2 } mb={ 4 }>
           <IconSvg name="merits_colored" boxSize={ 16 }/>
-          <Text fontSize="30px" fontWeight="700" color="blue.700">
-            +250
-          </Text>
+          <Skeleton isLoaded={ !rewardsConfigQuery.isLoading }>
+            <Text fontSize="30px" fontWeight="700" color="blue.700">
+              +{ rewardsConfigQuery.data?.rewards.registration }
+            </Text>
+          </Skeleton>
         </Flex>
         <Flex
           flexDirection="column"
@@ -53,7 +58,11 @@ const CongratsStepContent = () => {
           </Text>
         </Flex>
         <Text fontSize="md" mt={ 2 }>
-          Receive a 10% bonus on all merits earned by your referrals
+          Receive a{ ' ' }
+          <Skeleton display="inline" isLoaded={ !rewardsConfigQuery.isLoading }>
+            { Number(rewardsConfigQuery.data?.rewards.referral_share || 0) * 100 }%
+          </Skeleton>
+          { ' ' }bonus on all merits earned by your referrals
         </Text>
         <CopyField
           label="Referral link"

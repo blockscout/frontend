@@ -1,3 +1,12 @@
+export type RewardsConfigResponse = {
+  rewards: {
+    registration: string;
+    registration_with_referral: string;
+    daily_claim: string;
+    referral_share: string;
+  };
+};
+
 export type RewardsNonceResponse = {
   nonce: string;
 };

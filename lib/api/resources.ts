@@ -91,6 +91,7 @@ import type {
 } from 'types/api/optimisticL2';
 import type { RawTracesResponse } from 'types/api/rawTrace';
 import type {
+  RewardsConfigResponse,
   RewardsNonceResponse,
   RewardsCheckUserResponse,
   RewardsLoginResponse,
@@ -329,6 +330,11 @@ export const RESOURCES = {
   },
 
   // REWARDS SERVICE
+  rewards_config: {
+    path: '/api/v1/config',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
   rewards_nonce: {
     path: '/api/v1/auth/nonce',
     endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
@@ -1221,6 +1227,7 @@ Q extends 'address_mud_records' ? AddressMudRecords :
 Q extends 'address_mud_record' ? AddressMudRecord :
 Q extends 'withdrawals' ? WithdrawalsResponse :
 Q extends 'withdrawals_counters' ? WithdrawalsCounters :
+Q extends 'rewards_config' ? RewardsConfigResponse :
 Q extends 'rewards_nonce' ? RewardsNonceResponse :
 Q extends 'rewards_check_user' ? RewardsCheckUserResponse :
 Q extends 'rewards_login' ? RewardsLoginResponse :
