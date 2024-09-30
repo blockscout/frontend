@@ -144,6 +144,8 @@ export interface BlockEpochElectionReward {
   total: string;
 }
 
+export type EpochRewardsType = 'group' | 'validator' | 'delegated_payment' | 'voter';
+
 export interface BlockEpoch {
   number: number;
   distribution: {
@@ -151,12 +153,7 @@ export interface BlockEpoch {
     community_transfer: TokenTransfer | null;
     reserve_bolster_transfer: TokenTransfer | null;
   };
-  aggregated_election_rewards: {
-    delegated_payment: BlockEpochElectionReward | null;
-    group: BlockEpochElectionReward | null;
-    validator: BlockEpochElectionReward | null;
-    voter: BlockEpochElectionReward | null;
-  };
+  aggregated_election_rewards: Record<EpochRewardsType, BlockEpochElectionReward | null>;
 }
 
 export interface BlockEpochElectionRewardDetails {

@@ -1,7 +1,7 @@
 import type { Transaction } from 'types/api/transaction';
 
-import type { UserTags, AddressImplementation } from './addressParams';
-import type { Block } from './block';
+import type { UserTags, AddressImplementation, AddressParam } from './addressParams';
+import type { Block, EpochRewardsType } from './block';
 import type { InternalTransaction } from './internalTransaction';
 import type { MudWorldSchema, MudWorldTable } from './mudWorlds';
 import type { NFTTokenType, TokenInfo, TokenInstance, TokenType } from './token';
@@ -191,6 +191,7 @@ export type AddressTabsCounters = {
   transactions_count: number | null;
   validations_count: number | null;
   withdrawals_count: number | null;
+  celo_election_rewards_count?: number | null;
 }
 
 // MUD framework
@@ -244,4 +245,26 @@ export type AddressMudRecord = {
   record: AddressMudRecordsItem;
   schema: MudWorldSchema;
   table: MudWorldTable;
+}
+
+export type AddressEpochRewardsResponse = {
+  items: Array<AddressEpochRewardsItem>;
+  next_page_params: {
+    amount: string;
+    associated_account_address_hash: string;
+    block_number: number;
+    items_count: number;
+    type: EpochRewardsType;
+  } | null;
+}
+
+export type AddressEpochRewardsItem = {
+  type: EpochRewardsType;
+  token: TokenInfo;
+  amount: string;
+  block_number: number;
+  block_hash: string;
+  account: AddressParam;
+  epoch_number: number;
+  associated_account: AddressParam;
 }
