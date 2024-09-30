@@ -11,4 +11,3 @@ export { safe } from './safe';
 export { sentry } from './sentry';
 export { walletConnect } from './walletConnect';
 export { arweaveIdApi } from './arweaveApi';
-export { arweaveExexBackfill } from './exex-backfill';
