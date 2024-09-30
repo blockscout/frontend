@@ -1,10 +1,11 @@
-import { Button, Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import { Button, Flex, Skeleton, Text, useColorModeValue } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import { useRewardsContext } from 'lib/contexts/rewards';
 import CopyField from 'ui/rewards/CopyField';
 import RewardsDashboardCard from 'ui/rewards/RewardsDashboardCard';
+import useReferrals from 'ui/rewards/useReferrals';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -12,6 +13,7 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 const RewardsDashboard = () => {
   const router = useRouter();
   const { balances, dailyReward, isLogedIn } = useRewardsContext();
+  const referralsQuery = useReferrals();
 
   if (!isLogedIn) {
     router.replace({ pathname: '/' }, undefined, { shallow: true });
@@ -76,8 +78,8 @@ const RewardsDashboard = () => {
             px={ 6 }
             flexShrink={ 0 }
           >
-            <CopyField label="Referral link" value="blockscout.com/ref/0x789a9201d10029139101"/>
-            <CopyField label="Referral code" value="CODE10"/>
+            <CopyField label="Referral link" value={ referralsQuery.data?.link || '' } isLoading={ referralsQuery.isLoading }/>
+            <CopyField label="Referral code" value={ referralsQuery.data?.code || '' } isLoading={ referralsQuery.isLoading }/>
             <Flex flexDirection="column">
               <Flex alignItems="center" gap={ 1 } w="120px">
                 <IconSvg name="info" boxSize={ 5 } color="gray.500"/>
@@ -85,9 +87,11 @@ const RewardsDashboard = () => {
                   Referrals
                 </Text>
               </Flex>
-              <Text fontSize="32px" fontWeight="500">
-                0
-              </Text>
+              <Skeleton isLoaded={ !referralsQuery.isLoading }>
+                <Text fontSize="32px" fontWeight="500">
+                  { referralsQuery.data?.referrals || 0 }
+                </Text>
+              </Skeleton>
             </Flex>
           </Flex>
         </Flex>

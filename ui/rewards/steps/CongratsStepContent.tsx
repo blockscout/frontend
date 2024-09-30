@@ -7,8 +7,10 @@ import IconSvg from 'ui/shared/IconSvg';
 
 import AvailableSoonLabel from '../AvailableSoonLabel';
 import CopyField from '../CopyField';
+import useReferrals from '../useReferrals';
 
 const CongratsStepContent = () => {
+  const referralsQuery = useReferrals();
   return (
     <>
       <Flex
@@ -53,8 +55,13 @@ const CongratsStepContent = () => {
         <Text fontSize="md" mt={ 2 }>
           Receive a 10% bonus on all merits earned by your referrals
         </Text>
-        <CopyField label="Code" value="Test value" mt={ 3 }/>
-        <Button mt={ 6 }>
+        <CopyField
+          label="Referral link"
+          value={ referralsQuery.data?.link || '' }
+          isLoading={ referralsQuery.isLoading }
+          mt={ 3 }
+        />
+        <Button mt={ 6 } isLoading={ referralsQuery.isLoading }>
           Share on <IconSvg name="social/twitter" boxSize={ 6 } ml={ 1 }/>
         </Button>
       </Flex>
