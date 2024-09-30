@@ -4,12 +4,6 @@ interface ArweaveIdProps {
   arweaveId: string;
 }
 
-interface ExexFallbackProps {
-  block_hash: string;
-  arweave_hash: string;
-  block_number: number;
-}
-
 interface BlockProps {
   block: number | undefined | null;
 }
@@ -35,27 +29,9 @@ export function useArweaveId({ block }: BlockProps) {
 
       if (data.arweaveId) {
         return data.arweaveId;
-      } else {
-
-        const exexFallback = await fetch(
-          'https://exex-backfill-api.vercel.app/api/blockId',
-          {
-            method: 'POST',
-            body: JSON.stringify({
-              blockId: block,
-            }),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          },
-        );
-
-        const fallbackData = (await exexFallback.json()) as ExexFallbackProps;
-
-        if (fallbackData.arweave_hash) {
-          return fallbackData.arweave_hash;
-        }
       }
+
+      return null;
     },
     enabled: Boolean(block),
   });
