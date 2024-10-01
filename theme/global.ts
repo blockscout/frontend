@@ -19,10 +19,11 @@ const global = (props: StyleFunctionProps) => ({
     left: 0,
     width: '100%',
     height: '100%',
-    backgroundImage: mode('url("/icons/blessnet/colour_butterflies.png")', 'url("/icons/blessnet/background_lines.jpeg")')(props),
-    backgroundRepeat: mode('repeat', 'no-repeat')(props),
-    backgroundSize: mode('750px 650px', 'cover')(props),
-    opacity: 0.3, // Control transparency of the background image
+    backgroundImage: mode('url("/icons/blessnet/colour_butterflies.png")', 'url("/icons/blessnet/colour_butterflies.png")')(props),
+    backgroundRepeat: mode('repeat', 'repeat')(props), //leaving options to change depending on a theme
+    backgroundSize: mode('750px 650px', '750px 650px')(props), //leaving options to change depending on a theme
+    opacity: 0.2, // Control transparency of the background image
+    filter: 'grayscale(0.6)', // Control gradient of the background image
     zIndex: -1, // Keep it behind the content
   },
   mark: {
