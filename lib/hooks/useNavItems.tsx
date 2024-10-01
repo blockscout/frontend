@@ -27,7 +27,7 @@ export default function useNavItems(): ReturnType {
   const pathname = router.pathname;
   const {
     openLoginModal: openRewardsLoginModal,
-    balances: rewardsBalances,
+    balance: rewardsBalance,
     isLogedIn: isLoggedInToRewards,
   } = useRewardsContext();
 
@@ -272,7 +272,7 @@ export default function useNavItems(): ReturnType {
 
     const accountNavItems: ReturnType['accountNavItems'] = [
       config.features.rewards.isEnabled ? {
-        text: rewardsBalances?.total ? `${ rewardsBalances?.total } Merits` : 'Merits',
+        text: rewardsBalance?.total ? `${ rewardsBalance?.total } Merits` : 'Merits',
         nextRoute: isLoggedInToRewards ? { pathname: '/account/rewards' as const } : undefined,
         onClick: isLoggedInToRewards ? undefined : openRewardsLoginModal,
         icon: 'merits',
@@ -318,5 +318,5 @@ export default function useNavItems(): ReturnType {
     };
 
     return { mainNavItems, accountNavItems, profileItem };
-  }, [ pathname, openRewardsLoginModal, rewardsBalances, isLoggedInToRewards ]);
+  }, [ pathname, openRewardsLoginModal, rewardsBalance, isLoggedInToRewards ]);
 }

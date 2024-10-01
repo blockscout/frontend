@@ -15,8 +15,10 @@ type TRewardsContext = {
   isLoginModalOpen: boolean;
   openLoginModal: () => void;
   closeLoginModal: () => void;
-  balances: RewardsUserBalancesResponse | undefined;
+  balance: RewardsUserBalancesResponse | undefined;
+  refetchBalance: () => void;
   dailyReward: RewardsUserDailyCheckResponse | undefined;
+  refetchDailyReward: () => void;
   isLogedIn: boolean;
 }
 
@@ -24,8 +26,10 @@ const RewardsContext = createContext<TRewardsContext>({
   isLoginModalOpen: false,
   openLoginModal: () => {},
   closeLoginModal: () => {},
-  balances: undefined,
+  balance: undefined,
+  refetchBalance: () => {},
   dailyReward: undefined,
+  refetchDailyReward: () => {},
   isLogedIn: false,
 });
 
@@ -57,10 +61,12 @@ export function RewardsContextProvider({ children }: Props) {
     isLoginModalOpen,
     openLoginModal: setIsLoginModalOpen.on,
     closeLoginModal: setIsLoginModalOpen.off,
-    balances: balancesQuery.data,
+    balance: balancesQuery.data,
+    refetchBalance: balancesQuery.refetch,
     dailyReward: dailyRewardQuery.data,
+    refetchDailyReward: dailyRewardQuery.refetch,
     isLogedIn: Boolean(apiToken),
-  }), [ isLoginModalOpen, setIsLoginModalOpen, balancesQuery.data, dailyRewardQuery.data, apiToken ]);
+  }), [ isLoginModalOpen, setIsLoginModalOpen, balancesQuery, dailyRewardQuery, apiToken ]);
 
   return (
     <RewardsContext.Provider value={ value }>

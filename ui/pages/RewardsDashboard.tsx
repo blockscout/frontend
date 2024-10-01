@@ -1,10 +1,12 @@
-import { Button, Flex, Skeleton, Text, useColorModeValue } from '@chakra-ui/react';
+import { Button, Flex, Skeleton, Text, useBoolean, useColorModeValue } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import { useRewardsContext } from 'lib/contexts/rewards';
+import splitSecondsInPeriods from 'ui/blockCountdown/splitSecondsInPeriods';
 import CopyField from 'ui/rewards/CopyField';
 import RewardsDashboardCard from 'ui/rewards/RewardsDashboardCard';
+import useClaim from 'ui/rewards/useClaim';
 import useReferrals from 'ui/rewards/useReferrals';
 import useRewardsConfig from 'ui/rewards/useRewardsConfig';
 import IconSvg from 'ui/shared/IconSvg';
@@ -13,13 +15,50 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 
 const RewardsDashboard = () => {
   const router = useRouter();
-  const { balances, dailyReward, isLogedIn } = useRewardsContext();
+  const { balance, refetchBalance, dailyReward, refetchDailyReward, isLogedIn } = useRewardsContext();
   const referralsQuery = useReferrals();
   const rewardsConfigQuery = useRewardsConfig();
+  const claim = useClaim();
+  const [ isClaiming, setIsClaiming ] = useBoolean(false);
+  const [ timeLeft, setTimeLeft ] = React.useState<string>('');
 
   if (!isLogedIn) {
     router.replace({ pathname: '/' }, undefined, { shallow: true });
   }
+
+  const dailyRewardValue = Number(dailyReward?.daily_reward || 0) + Number(dailyReward?.pending_referral_rewards || 0);
+
+  const handleClaim = useCallback(async() => {
+    setIsClaiming.on();
+    try {
+      await claim();
+      refetchBalance();
+      refetchDailyReward();
+    } catch (error) {}
+    setIsClaiming.off();
+  }, [ claim, setIsClaiming, refetchBalance, refetchDailyReward ]);
+
+  useEffect(() => {
+    if (!dailyReward?.reset_at) {
+      return;
+    }
+    const interval = setInterval(() => {
+      const now = new Date().getTime();
+      const target = new Date(dailyReward.reset_at).getTime();
+      const difference = target - now;
+
+      if (difference > 0) {
+        const { hours, minutes, seconds } = splitSecondsInPeriods(Math.floor(difference / 1000));
+        setTimeLeft(`${ hours }:${ minutes }:${ seconds }`);
+      } else {
+        setTimeLeft('00:00:00');
+        refetchDailyReward();
+        clearInterval(interval);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [ dailyReward?.reset_at, refetchDailyReward ]);
 
   return (
     <>
@@ -39,8 +78,15 @@ const RewardsDashboard = () => {
         <Flex gap={ 6 }>
           <RewardsDashboardCard
             description="Claim your daily merits and any merits received from referrals."
-            values={ [ { label: 'Total balance', value: balances?.total } ] }
-            contentAfter={ <Button>Claim { dailyReward?.daily_reward } Merits</Button> }
+            values={ [ { label: 'Total balance', value: balance?.total } ] }
+            contentAfter={ (
+              <Button isDisabled={ !dailyReward?.available } onClick={ handleClaim } isLoading={ isClaiming }>
+                { dailyReward?.available ?
+                  `Claim ${ dailyRewardValue } Merits` :
+                  `Next claim in ${ timeLeft }`
+                }
+              </Button>
+            ) }
           />
           <RewardsDashboardCard
             title="Title"
