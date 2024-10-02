@@ -110,7 +110,10 @@ const Chart = () => {
     router.push({
       pathname: router.pathname,
       query: { ...router.query, resolution },
-    });
+    },
+    undefined,
+    { shallow: true },
+    );
   }, [ setResolution, router ]);
 
   const handleReset = React.useCallback(() => {
