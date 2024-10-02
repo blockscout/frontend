@@ -99,7 +99,7 @@ test.describe('with tooltips', () => {
 
     await component.locator('header').hover();
     await page.locator('div[aria-label="Expand/Collapse menu"]').click();
-    await page.locator('a[aria-label="Tokens link"]').hover();
+    await page.locator('a[aria-label="DApps link"]').hover();
 
     await expect(component).toHaveScreenshot();
   });

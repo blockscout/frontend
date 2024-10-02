@@ -149,6 +149,7 @@
 	| "swap"
 	| "testnet"
 	| "token-placeholder"
+	| "token-transfers"
 	| "token"
 	| "tokens"
 	| "tokens/xdai"
