@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import type { ChangeEvent } from 'react';
 import React, { useCallback, useState, useEffect } from 'react';
 
+import * as cookies from 'lib/cookies';
 import InputPlaceholder from 'ui/shared/InputPlaceholder';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import useWallet from 'ui/snippets/walletMenu/useWallet';
@@ -17,9 +18,10 @@ type Props = {
 const LoginStepContent = ({ goNext, closeModal }: Props) => {
   const router = useRouter();
   const { connect, isWalletConnected } = useWallet({ source: 'Merits' });
-  const [ isSwitchChecked, setIsSwitchChecked ] = useBoolean(false);
+  const savedRefCode = cookies.get(cookies.NAMES.REWARDS_REFERRAL_CODE);
+  const [ isSwitchChecked, setIsSwitchChecked ] = useBoolean(Boolean(savedRefCode));
   const [ isLoading, setIsLoading ] = useBoolean(false);
-  const [ refCode, setRefCode ] = useState('');
+  const [ refCode, setRefCode ] = useState(savedRefCode || '');
   const [ refCodeError, setRefCodeError ] = useBoolean(false);
   const dividerColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   const login = useLogin();

@@ -1,4 +1,5 @@
 import { useBoolean } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React, { createContext, useContext, useEffect, useMemo, useCallback } from 'react';
 
 import type { RewardsUserBalancesResponse, RewardsUserDailyCheckResponse } from 'types/api/rewards';
@@ -6,6 +7,8 @@ import type { RewardsUserBalancesResponse, RewardsUserDailyCheckResponse } from 
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import * as cookies from 'lib/cookies';
+import getQueryParamString from 'lib/router/getQueryParamString';
+import removeQueryParam from 'lib/router/removeQueryParam';
 
 type Props = {
   children: React.ReactNode;
@@ -36,6 +39,7 @@ const RewardsContext = createContext<TRewardsContext>({
 });
 
 export function RewardsContextProvider({ children }: Props) {
+  const router = useRouter();
   const [ isLoginModalOpen, setIsLoginModalOpen ] = useBoolean(false);
   const [ apiToken, setApiToken ] = React.useState<string | undefined>(cookies.get(cookies.NAMES.REWARDS_API_TOKEN));
 
@@ -62,6 +66,17 @@ export function RewardsContextProvider({ children }: Props) {
       saveApiToken('');
     }
   }, [ balancesQuery.error, apiToken, saveApiToken ]);
+
+  useEffect(() => {
+    const refCode = getQueryParamString(router.query.ref);
+    if (refCode) {
+      cookies.set(cookies.NAMES.REWARDS_REFERRAL_CODE, refCode);
+      removeQueryParam(router, 'ref');
+      if (!apiToken) {
+        setIsLoginModalOpen.on();
+      }
+    }
+  }, [ router, apiToken, setIsLoginModalOpen ]);
 
   const value = useMemo(() => ({
     isLoginModalOpen,
