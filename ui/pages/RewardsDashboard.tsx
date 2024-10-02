@@ -72,7 +72,7 @@ const RewardsDashboard = () => {
         ) }
       />
       <Flex flexDirection="column" alignItems="flex-start" w="full" gap={ 6 }>
-        <Button variant="outline">
+        <Button variant="outline" isDisabled>
           Pre-staking dashboard
         </Button>
         <Flex gap={ 6 }>
