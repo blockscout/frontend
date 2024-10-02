@@ -9,7 +9,7 @@ import RewardsDashboardCard from 'ui/rewards/RewardsDashboardCard';
 import useClaim from 'ui/rewards/useClaim';
 import useReferrals from 'ui/rewards/useReferrals';
 import useRewardsConfig from 'ui/rewards/useRewardsConfig';
-import IconSvg from 'ui/shared/IconSvg';
+import HintPopover from 'ui/shared/HintPopover';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
@@ -78,7 +78,20 @@ const RewardsDashboard = () => {
         <Flex gap={ 6 }>
           <RewardsDashboardCard
             description="Claim your daily merits and any merits received from referrals."
-            values={ [ { label: 'Total balance', value: balance?.total } ] }
+            values={ [
+              {
+                label: 'Total balance',
+                value: balance?.total,
+                hint: (
+                  <>
+                    Total number of merits earned from all activities.{ ' ' }
+                    <LinkExternal href="https://docs.blockscout.com/using-blockscout/my-account/merits">
+                      More info on merits
+                    </LinkExternal>
+                  </>
+                ),
+              },
+            ] }
             contentAfter={ (
               <Button isDisabled={ !dailyReward?.available } onClick={ handleClaim } isLoading={ isClaiming }>
                 { dailyReward?.available ?
@@ -134,7 +147,11 @@ const RewardsDashboard = () => {
             <CopyField label="Referral code" value={ referralsQuery.data?.code || '' } isLoading={ referralsQuery.isLoading }/>
             <Flex flexDirection="column">
               <Flex alignItems="center" gap={ 1 } w="120px">
-                <IconSvg name="info" boxSize={ 5 } color="gray.500"/>
+                <HintPopover
+                  label="The number of referrals who registered with your code."
+                  popoverContentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '210px' } }}
+                  popoverBodyProps={{ textAlign: 'center' }}
+                />
                 <Text fontSize="xs" fontWeight="500" variant="secondary">
                   Referrals
                 </Text>

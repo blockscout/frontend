@@ -1,6 +1,7 @@
 import { Flex, Text, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
+import HintPopover from 'ui/shared/HintPopover';
 import IconSvg from 'ui/shared/IconSvg';
 
 import AvailableSoonLabel from './AvailableSoonLabel';
@@ -9,6 +10,7 @@ type Value = {
   label: string;
   value: number | string | undefined;
   type?: 'percentages';
+  hint?: string | React.ReactNode;
 }
 
 type Props = {
@@ -38,10 +40,16 @@ const RewardsDashboardCard = ({ title, description, values, availableSoon, conte
         filter="auto"
         blur={ availableSoon ? '4px' : '0' }
       >
-        { values.map(({ label, value, type }) => (
+        { values.map(({ label, value, type, hint }) => (
           <Flex key={ label } flexDirection="column" alignItems="center" gap={ 2 }>
             <Flex alignItems="center" gap={ 1 }>
-              <IconSvg name="info" boxSize={ 5 } color="gray.500"/>
+              { hint && (
+                <HintPopover
+                  label={ hint }
+                  popoverContentProps={{ maxW: { base: 'calc(100vw - 8px)', lg: '210px' } }}
+                  popoverBodyProps={{ textAlign: 'center' }}
+                />
+              ) }
               <Text fontSize="xs" fontWeight="500" variant="secondary">
                 { label }
               </Text>
