@@ -9,7 +9,7 @@ import type {
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
-import * as cookies from 'lib/cookies';
+import { useRewardsContext } from 'lib/contexts/rewards';
 import useToast from 'lib/hooks/useToast';
 
 function getMessageToSign(address: string, nonce: string, isLogin?: boolean, refCode?: string) {
@@ -36,6 +36,7 @@ export default function useLogin() {
   const toast = useToast();
   const { address } = useAccount();
   const { signMessageAsync } = useSignMessage();
+  const { saveApiToken } = useRewardsContext();
 
   return useCallback(async(refCode: string) => {
     try {
@@ -67,7 +68,7 @@ export default function useLogin() {
       if (!('created' in loginResponse)) {
         throw loginResponse;
       }
-      cookies.set(cookies.NAMES.REWARDS_API_TOKEN, loginResponse.token);
+      saveApiToken(loginResponse.token);
       return { isNewUser: loginResponse.created };
     } catch (_error) {
       toast({
@@ -80,5 +81,5 @@ export default function useLogin() {
       });
       throw _error;
     }
-  }, [ apiFetch, address, signMessageAsync, toast ]);
+  }, [ apiFetch, address, signMessageAsync, toast, saveApiToken ]);
 }

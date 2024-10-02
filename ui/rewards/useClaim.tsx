@@ -4,12 +4,13 @@ import type { RewardsUserDailyClaimResponse } from 'types/api/rewards';
 
 import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
-import * as cookies from 'lib/cookies';
+import { useRewardsContext } from 'lib/contexts/rewards';
 import useToast from 'lib/hooks/useToast';
 
 export default function useClaim() {
   const apiFetch = useApiFetch();
   const toast = useToast();
+  const { apiToken } = useRewardsContext();
 
   return useCallback(async() => {
     try {
@@ -17,7 +18,7 @@ export default function useClaim() {
         fetchParams: {
           method: 'POST',
           headers: {
-            Authorization: `Bearer ${ cookies.get(cookies.NAMES.REWARDS_API_TOKEN) }`,
+            Authorization: `Bearer ${ apiToken }`,
           },
         },
       });
@@ -35,5 +36,5 @@ export default function useClaim() {
       });
       throw _error;
     }
-  }, [ apiFetch, toast ]);
+  }, [ apiFetch, toast, apiToken ]);
 }

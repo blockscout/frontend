@@ -1,5 +1,5 @@
 import { useBoolean } from '@chakra-ui/react';
-import React, { createContext, useContext, useEffect, useMemo } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useCallback } from 'react';
 
 import type { RewardsUserBalancesResponse, RewardsUserDailyCheckResponse } from 'types/api/rewards';
 
@@ -19,7 +19,8 @@ type TRewardsContext = {
   refetchBalance: () => void;
   dailyReward: RewardsUserDailyCheckResponse | undefined;
   refetchDailyReward: () => void;
-  isLogedIn: boolean;
+  apiToken: string | undefined;
+  saveApiToken: (token: string) => void;
 }
 
 const RewardsContext = createContext<TRewardsContext>({
@@ -30,11 +31,14 @@ const RewardsContext = createContext<TRewardsContext>({
   refetchBalance: () => {},
   dailyReward: undefined,
   refetchDailyReward: () => {},
-  isLogedIn: false,
+  apiToken: undefined,
+  saveApiToken: () => {},
 });
 
 export function RewardsContextProvider({ children }: Props) {
-  const apiToken = cookies.get(cookies.NAMES.REWARDS_API_TOKEN);
+  const [ isLoginModalOpen, setIsLoginModalOpen ] = useBoolean(false);
+  const [ apiToken, setApiToken ] = React.useState<string | undefined>(cookies.get(cookies.NAMES.REWARDS_API_TOKEN));
+
   const apiQueryOptions = {
     queryOptions: {
       enabled: Boolean(apiToken) && config.features.rewards.isEnabled,
@@ -45,17 +49,19 @@ export function RewardsContextProvider({ children }: Props) {
       },
     },
   };
-
-  const [ isLoginModalOpen, setIsLoginModalOpen ] = useBoolean(false);
-
   const balancesQuery = useApiQuery('rewards_user_balances', apiQueryOptions);
   const dailyRewardQuery = useApiQuery('rewards_user_daily_check', apiQueryOptions);
 
+  const saveApiToken = useCallback((token: string) => {
+    cookies.set(cookies.NAMES.REWARDS_API_TOKEN, token);
+    setApiToken(token);
+  }, []);
+
   useEffect(() => {
     if (apiToken && balancesQuery.error?.status === 401) {
-      cookies.set(cookies.NAMES.REWARDS_API_TOKEN, '');
+      saveApiToken('');
     }
-  }, [ balancesQuery.error, apiToken ]);
+  }, [ balancesQuery.error, apiToken, saveApiToken ]);
 
   const value = useMemo(() => ({
     isLoginModalOpen,
@@ -65,8 +71,9 @@ export function RewardsContextProvider({ children }: Props) {
     refetchBalance: balancesQuery.refetch,
     dailyReward: dailyRewardQuery.data,
     refetchDailyReward: dailyRewardQuery.refetch,
-    isLogedIn: Boolean(apiToken),
-  }), [ isLoginModalOpen, setIsLoginModalOpen, balancesQuery, dailyRewardQuery, apiToken ]);
+    apiToken,
+    saveApiToken,
+  }), [ isLoginModalOpen, setIsLoginModalOpen, balancesQuery, dailyRewardQuery, apiToken, saveApiToken ]);
 
   return (
     <RewardsContext.Provider value={ value }>

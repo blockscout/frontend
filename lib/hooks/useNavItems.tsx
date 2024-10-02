@@ -28,7 +28,7 @@ export default function useNavItems(): ReturnType {
   const {
     openLoginModal: openRewardsLoginModal,
     balance: rewardsBalance,
-    isLogedIn: isLoggedInToRewards,
+    apiToken: rewardsApiToken,
   } = useRewardsContext();
 
   return React.useMemo(() => {
@@ -273,10 +273,10 @@ export default function useNavItems(): ReturnType {
     const accountNavItems: ReturnType['accountNavItems'] = [
       config.features.rewards.isEnabled ? {
         text: rewardsBalance?.total ? `${ rewardsBalance?.total } Merits` : 'Merits',
-        nextRoute: isLoggedInToRewards ? { pathname: '/account/rewards' as const } : undefined,
-        onClick: isLoggedInToRewards ? undefined : openRewardsLoginModal,
+        nextRoute: rewardsApiToken ? { pathname: '/account/rewards' as const } : undefined,
+        onClick: rewardsApiToken ? undefined : openRewardsLoginModal,
         icon: 'merits',
-        isActive: isLoggedInToRewards && pathname === '/account/rewards',
+        isActive: Boolean(rewardsApiToken) && pathname === '/account/rewards',
       } : null,
       {
         text: 'Watch list',
@@ -318,5 +318,5 @@ export default function useNavItems(): ReturnType {
     };
 
     return { mainNavItems, accountNavItems, profileItem };
-  }, [ pathname, openRewardsLoginModal, rewardsBalance, isLoggedInToRewards ]);
+  }, [ pathname, openRewardsLoginModal, rewardsBalance, rewardsApiToken ]);
 }
