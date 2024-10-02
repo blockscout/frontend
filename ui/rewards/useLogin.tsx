@@ -28,6 +28,7 @@ function getMessageToSign(address: string, nonce: string, isLogin?: boolean, ref
     `Chain ID: ${ config.chain.id }`,
     `Nonce: ${ nonce }`,
     `Issued At: ${ new Date().toISOString() }`,
+    `Expiration Time: ${ new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString() }`,
   ].join('\n');
 }
 
