@@ -54,11 +54,6 @@ const wvmNetworks = [
 ];
 
 export function useWvmArchiver({ address }: Props) {
-
-  // the address is basically the from address of the transaction
-  // we need to find the corresponding wvm network and return the archiver address
-  // if the address is not found in any of the networks, we return null
-
   const isWvmNetwork = wvmNetworks.find((network) => network.archiver_address === address);
 
   if (isWvmNetwork) {
