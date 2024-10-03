@@ -1,19 +1,20 @@
 {
-  "name": "blockscout-frontend",
+  "name": "wvm-blockscout-frontend",
   "version": "1.0.0",
   "private": false,
-  "homepage": "https://github.com/blockscout/frontend#readme",
+  "homepage": "https://github.com/weaveVM/wvm-blockscout-frontend#readme",
   "engines": {
-    "node": "20.11.0",
+    "node": ">=20.11.0",
     "npm": "10.2.4"
   },
+  "license":"MIT",
   "scripts": {
     "dev": "./tools/scripts/dev.sh",
     "dev:preset": "./tools/scripts/dev.preset.sh",
     "build": "next build",
-    "build:docker": "docker build --build-arg GIT_COMMIT_SHA=$(git rev-parse --short HEAD) --build-arg GIT_TAG=$(git describe --tags --abbrev=0) -t blockscout-frontend:local ./",
+    "build:docker": "docker build --build-arg GIT_COMMIT_SHA=$(git rev-parse --short HEAD) --build-arg GIT_TAG=$(git describe --tags --abbrev=0) -t wvm-blockscout-frontend:local ./",
     "start": "next start",
-    "start:docker:local": "docker run -p 3000:3000 --env-file .env.local blockscout-frontend:local",
+    "start:docker:local": "docker run -p 3000:3000 --env-file .env.local wvm-blockscout-frontend:local",
     "start:docker:preset": "./tools/scripts/docker.preset.sh",
     "lint:eslint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:eslint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
