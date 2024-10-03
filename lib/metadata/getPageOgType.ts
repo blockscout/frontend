@@ -1,6 +1,6 @@
 import type { Route } from 'nextjs-routes';
 
-type OGPageType = 'Homepage' | 'Root page' | 'Regular page';
+type OGPageType = 'Homepage' | 'Root page' | 'Regular page' | 'ARK API';
 
 const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/': 'Homepage',
@@ -58,6 +58,7 @@ const OG_TYPE_DICT: Record<Route['pathname'], OGPageType> = {
   '/auth/auth0': 'Regular page',
   '/auth/unverified-email': 'Regular page',
   '/api/arweave-id': 'Regular page',
+  '/api/ark': 'ARK API',
 };
 
 export default function getPageOgType(pathname: Route['pathname']) {

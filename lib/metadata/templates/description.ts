@@ -8,6 +8,7 @@ const DEFAULT_TEMPLATE = 'Blockscout is the #1 open-source blockchain explorer a
 // FIXME all page descriptions will be updated later
 const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/': DEFAULT_TEMPLATE,
+  '/api/ark': DEFAULT_TEMPLATE,
   '/txs': DEFAULT_TEMPLATE,
   '/txs/kettle/[hash]': DEFAULT_TEMPLATE,
   '/tx/[hash]': 'View transaction %hash% on %network_title%',
