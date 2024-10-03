@@ -22,20 +22,22 @@ const AdBanner = ({ className, isLoading }: { className?: string; isLoading?: bo
     return null;
   }
 
-  const content = (() => {
-    switch (provider) {
-      case 'adbutler':
-        return <AdbutlerBanner/>;
-      case 'coinzilla':
-        return <CoinzillaBanner/>;
-      case 'getit':
-        return <GetitBanner/>;
-      case 'hype':
-        return <HypeBanner/>;
-      case 'slise':
-        return <SliseBanner/>;
-    }
-  })();
+  // const content = (() => {
+  //   switch (provider) {
+  //     case 'adbutler':
+  //       return <AdbutlerBanner/>;
+  //     case 'coinzilla':
+  //       return <CoinzillaBanner/>;
+  //     case 'getit':
+  //       return <GetitBanner/>;
+  //     case 'hype':
+  //       return <HypeBanner/>;
+  //     case 'slise':
+  //       return <SliseBanner/>;
+  //   }
+  // })();
+
+  const content = <></>
 
   return (
     <Skeleton

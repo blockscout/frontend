@@ -23,6 +23,7 @@ import AddressNetWorth from './details/AddressNetWorth';
 import TokenSelect from './tokenSelect/TokenSelect';
 import useAddressCountersQuery from './utils/useAddressCountersQuery';
 import type { AddressQuery } from './utils/useAddressQuery';
+import AddressArweaveAddress from './AddressArweaveAddress';
 
 interface Props {
   addressQuery: AddressQuery;
@@ -167,7 +168,15 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
           ) :
             0 }
         </DetailsInfoItem.Value>
-
+        <DetailsInfoItem.Label
+          hint="Visit arkprotocol.xyz to link your arweave address with your Ethereum wallet!"
+          isLoading={ addressQuery.isPlaceholderData || countersQuery.isPlaceholderData }
+        >
+          Linked Arweave Address
+        </DetailsInfoItem.Label>
+        <DetailsInfoItem.Value>
+          <AddressArweaveAddress {...{ addressHash }} />
+        </DetailsInfoItem.Value>
         { data.has_token_transfers && (
           <>
             <DetailsInfoItem.Label
