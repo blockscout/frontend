@@ -27,6 +27,7 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import { useArweaveId } from 'lib/hooks/useArweaveId';
+import { useWvmArchiver } from 'lib/hooks/useWvmArchiver';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
 import { currencyUnits } from 'lib/units';
@@ -46,6 +47,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
+import WvmArchiverTag from 'ui/shared/statusTag/WvmArchiverTag';
 import TextSeparator from 'ui/shared/TextSeparator';
 import TxFeeStability from 'ui/shared/tx/TxFeeStability';
 import Utilization from 'ui/shared/Utilization/Utilization';
@@ -73,6 +75,7 @@ interface Props {
 const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
   const size = useWindowSize();
   const { colorMode } = useColorMode();
+  const isWvmArchiver = useWvmArchiver({ address: data?.from.hash });
   const isSmallDevice = size.width && size.width < 768;
   const wvmIconPath =
     colorMode === 'light' ? 'networks/arweave-dark' : 'networks/arweave-light';
@@ -145,6 +148,9 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           </chakra.span>
         </Tooltip>
       ) : null;
+
+  // eslint-disable-next-line no-console
+  console.log('WVM ARCHIVER', data.from.hash);
 
   return (
     <Grid
@@ -311,6 +317,21 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         </>
       ) }
 
+      { isWvmArchiver && (
+        <>
+          <DetailsInfoItem.Label
+            // todo - change this
+            hint="Block number containing the transaction"
+            isLoading={ isLoading }
+          >
+          Application
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            <WvmArchiverTag/>
+          </DetailsInfoItem.Value>
+        </>
+      ) }
+
       <DetailsInfoItem.Label
         hint="Block number containing the transaction"
         isLoading={ isLoading }
@@ -426,10 +447,9 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           <DetailsInfoItem.Value>
             <IconSvg
               name={ wvmIconPath }
-              width="5"
-              height="5"
+              width="20px"
+              height="20px"
               display="block"
-              marginLeft="5px"
               marginRight="5px"
               borderRadius="full"
             />
@@ -452,6 +472,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
                   href={ `https://arweave.net/${ arweaveId }` }
                   rel="noopener noreferrer"
                   color={ colorMode === 'dark' ? '#1AFFB1' : '#00B774' }
+                  marginLeft="5px"
                 >
                   <EntityBase.Content text={ isSmallDevice ? truncateArweaveId(arweaveId) : arweaveId }/>
                 </Link>

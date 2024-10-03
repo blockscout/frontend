@@ -2,6 +2,7 @@ import {
   Tr,
   Td,
   VStack,
+  HStack,
   Skeleton,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
@@ -11,12 +12,14 @@ import type { Transaction } from 'types/api/transaction';
 
 import config from 'configs/app';
 import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
+import { useWvmArchiver } from 'lib/hooks/useWvmArchiver';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import Tag from 'ui/shared/chakra/Tag';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
+import WvmArchiverTag from 'ui/shared/statusTag/WvmArchiverTag';
 import TxFeeStability from 'ui/shared/tx/TxFeeStability';
 import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
@@ -35,6 +38,8 @@ type Props = {
 const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, isLoading }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
   const timeAgo = useTimeAgoIncrement(tx.timestamp, enableTimeIncrement);
+
+  const isWvmArchiver = useWvmArchiver({ address: tx.from.hash });
 
   return (
     <Tr
@@ -63,10 +68,14 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
       </Td>
       <Td>
         <VStack alignItems="start">
-          { tx.translation ?
-            <TxTranslationType types={ tx.tx_types } isLoading={ isLoading || tx.translation.isLoading } translatationType={ tx.translation.data?.type }/> :
-            <TxType types={ tx.tx_types } isLoading={ isLoading }/>
-          }
+          <HStack flexWrap="wrap">
+            { tx.translation ?
+              <TxTranslationType types={ tx.tx_types } isLoading={ isLoading || tx.translation.isLoading } translatationType={ tx.translation.data?.type }/> :
+              <TxType types={ tx.tx_types } isLoading={ isLoading }/>
+            }
+
+            { isWvmArchiver && <WvmArchiverTag/> }
+          </HStack>
           <TxStatus status={ tx.status } errorText={ tx.status === 'error' ? tx.result : undefined } isLoading={ isLoading }/>
           <TxWatchListTags tx={ tx } isLoading={ isLoading }/>
         </VStack>

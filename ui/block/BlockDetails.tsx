@@ -814,10 +814,9 @@ const BlockDetails = ({ query }: Props) => {
           <DetailsInfoItem.Value>
             <IconSvg
               name={ wvmIconPath }
-              width="5"
-              height="5"
+              width="20px"
+              height="20px"
               display="block"
-              marginLeft="5px"
               marginRight="5px"
               borderRadius="full"
             />
@@ -840,6 +839,7 @@ const BlockDetails = ({ query }: Props) => {
                   href={ `https://arweave.net/${ arweaveId }` }
                   rel="noopener noreferrer"
                   color={ colorMode === 'dark' ? '#1AFFB1' : '#00B774' }
+                  marginLeft="3px"
                 >
                   <EntityBase.Content text={ isSmallDevice ? truncateArweaveId(arweaveId) : arweaveId }/>
                 </Link>
