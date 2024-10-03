@@ -1,4 +1,5 @@
 import { Grid, Box } from '@chakra-ui/react';
+import type { UseQueryResult } from '@tanstack/react-query';
 import React, { useCallback } from 'react';
 import type { MouseEvent } from 'react';
 
@@ -25,11 +26,13 @@ type Props = {
   isRatingSending: boolean;
   isRatingLoading: boolean;
   canRate: boolean | undefined;
+  graphLinksQuery: UseQueryResult<Record<string, Array<{text: string; url: string}>>, unknown>;
 }
 
 const MarketplaceList = ({
   apps, showAppInfo, favoriteApps, onFavoriteClick, isLoading, selectedCategoryId,
   onAppClick, showContractList, userRatings, rateApp, isRatingSending, isRatingLoading, canRate,
+  graphLinksQuery,
 }: Props) => {
   const { cutRef, renderedItemsNum } = useLazyRenderedList(apps, !isLoading, 16);
 
@@ -75,6 +78,7 @@ const MarketplaceList = ({
             isRatingSending={ isRatingSending }
             isRatingLoading={ isRatingLoading }
             canRate={ canRate }
+            graphLinks={ graphLinksQuery.data?.[app.id] }
           />
         )) }
       </Grid>
