@@ -149,9 +149,6 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         </Tooltip>
       ) : null;
 
-  // eslint-disable-next-line no-console
-  console.log('WVM ARCHIVER', data.from.hash);
-
   return (
     <Grid
       columnGap={ 8 }
