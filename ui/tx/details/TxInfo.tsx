@@ -15,6 +15,7 @@ import {
 import { useWindowSize } from '@uidotdev/usehooks';
 import BigNumber from 'bignumber.js';
 import React from 'react';
+import { RotatingLines } from 'react-loader-spinner';
 import { scroller, Element } from 'react-scroll';
 
 import type { Transaction } from 'types/api/transaction';
@@ -432,16 +433,32 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
               marginRight="5px"
               borderRadius="full"
             />
-            <Link
-              isExternal
-              href={ `https://arweave.net/${ arweaveId }` }
-              rel="noopener noreferrer"
-              color="#00B774"
-            >
-              <EntityBase.Content text={ isSmallDevice ? truncateArweaveId(arweaveId) : arweaveId }/>
-            </Link>
+            { arweaveId === 'block_not_archived_or_backfilled' ? (
+              <>
+                <Text color={ colorMode === 'dark' ? '#1AFFB1' : '#00B774' } marginLeft="5px" marginRight="12px">Pending </Text>
 
-            <CopyToClipboard text={ arweaveId }/>
+                <RotatingLines
+                  strokeColor="grey"
+                  strokeWidth="5"
+                  animationDuration="0.75"
+                  width="18"
+                  visible={ true }
+                />
+              </>
+            ) : (
+              <>
+                <Link
+                  isExternal
+                  href={ `https://arweave.net/${ arweaveId }` }
+                  rel="noopener noreferrer"
+                  color={ colorMode === 'dark' ? '#1AFFB1' : '#00B774' }
+                >
+                  <EntityBase.Content text={ isSmallDevice ? truncateArweaveId(arweaveId) : arweaveId }/>
+                </Link>
+
+                <CopyToClipboard text={ arweaveId }/>
+              </>
+            ) }
           </DetailsInfoItem.Value>
         </>
       ) : (
