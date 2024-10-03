@@ -14,6 +14,7 @@ import BigNumber from 'bignumber.js';
 import capitalize from 'lodash/capitalize';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { RotatingLines } from 'react-loader-spinner';
 import { scroller, Element } from 'react-scroll';
 
 import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'types/api/zkSyncL2';
@@ -820,21 +821,37 @@ const BlockDetails = ({ query }: Props) => {
               marginRight="5px"
               borderRadius="full"
             />
-            <Link
-              isExternal
-              href={ `https://arweave.net/${ arweaveId }` }
-              rel="noopener noreferrer"
-              color="#00B774"
-            >
-              <EntityBase.Content
-                text={ isSmallDevice ? truncateArweaveId(arweaveId) : arweaveId }
-              />
-            </Link>
+            { arweaveId === 'block_not_archived_or_backfilled' ? (
+              <>
+                <Text color={ colorMode === 'dark' ? '#1AFFB1' : '#00B774' } marginLeft="5px" marginRight="12px">Pending </Text>
 
-            <CopyToClipboard text={ arweaveId }/>
+                <RotatingLines
+                  strokeColor="grey"
+                  strokeWidth="5"
+                  animationDuration="0.75"
+                  width="18"
+                  visible={ true }
+                />
+              </>
+            ) : (
+              <>
+                <Link
+                  isExternal
+                  href={ `https://arweave.net/${ arweaveId }` }
+                  rel="noopener noreferrer"
+                  color={ colorMode === 'dark' ? '#1AFFB1' : '#00B774' }
+                >
+                  <EntityBase.Content text={ isSmallDevice ? truncateArweaveId(arweaveId) : arweaveId }/>
+                </Link>
+
+                <CopyToClipboard text={ arweaveId }/>
+              </>
+            ) }
           </DetailsInfoItem.Value>
         </>
-      ) : <Skeleton isLoaded={ !isLoading }/> }
+      ) : (
+        <Skeleton>loading...</Skeleton>
+      ) }
 
       <DetailsInfoItemDivider/>
 
