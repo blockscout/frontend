@@ -41,7 +41,16 @@ const RewardsContext = createContext<TRewardsContext>({
 export function RewardsContextProvider({ children }: Props) {
   const router = useRouter();
   const [ isLoginModalOpen, setIsLoginModalOpen ] = useBoolean(false);
-  const [ apiToken, setApiToken ] = React.useState<string | undefined>(cookies.get(cookies.NAMES.REWARDS_API_TOKEN));
+  const [ isInitialized, setIsInitialized ] = useBoolean(false);
+  const [ apiToken, setApiToken ] = React.useState<string | undefined>();
+
+  useEffect(() => {
+    const token = cookies.get(cookies.NAMES.REWARDS_API_TOKEN);
+    if (token) {
+      setApiToken(token);
+    }
+    setIsInitialized.on();
+  }, [ setIsInitialized ]);
 
   const apiQueryOptions = {
     queryOptions: {
@@ -69,14 +78,14 @@ export function RewardsContextProvider({ children }: Props) {
 
   useEffect(() => {
     const refCode = getQueryParamString(router.query.ref);
-    if (refCode) {
+    if (refCode && isInitialized) {
       cookies.set(cookies.NAMES.REWARDS_REFERRAL_CODE, refCode);
       removeQueryParam(router, 'ref');
       if (!apiToken) {
         setIsLoginModalOpen.on();
       }
     }
-  }, [ router, apiToken, setIsLoginModalOpen ]);
+  }, [ router, apiToken, isInitialized, setIsLoginModalOpen ]);
 
   const value = useMemo(() => ({
     isLoginModalOpen,
