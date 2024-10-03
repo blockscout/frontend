@@ -318,7 +318,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         <>
           <DetailsInfoItem.Label
             // todo - change this
-            hint="Block number containing the transaction"
+            hint=""
             isLoading={ isLoading }
           >
           Application
