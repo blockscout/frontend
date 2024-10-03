@@ -35,8 +35,8 @@ const NavLink = ({ item, isCollapsed, px, className, onClick, disableActiveState
   const styleProps = useNavLinkStyleProps({ isCollapsed, isExpanded, isActive: isInternalLink && item.isActive && !disableActiveState });
   const isXLScreen = useBreakpointValue({ base: false, xl: true });
   let href;
-  if (isInternalLink) {
-    href = item.nextRoute ? route(item.nextRoute) : undefined;
+  if (isInternalLink && !item.onClick) {
+    href = route(item.nextRoute);
   } else if ('url' in item) {
     href = item.url;
   }
@@ -87,7 +87,7 @@ const NavLink = ({ item, isCollapsed, px, className, onClick, disableActiveState
 
   return (
     <Box as="li" listStyleType="none" w="100%" className={ className }>
-      { isInternalLink && item.nextRoute ? (
+      { isInternalLink && !item.onClick ? (
         <NextLink href={ item.nextRoute } passHref legacyBehavior>
           { content }
         </NextLink>
