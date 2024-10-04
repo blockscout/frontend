@@ -86,6 +86,7 @@
 	| "link"
 	| "lock"
 	| "merits_colored"
+	| "merits_with_dot"
 	| "merits"
 	| "minus"
 	| "monaco/file"

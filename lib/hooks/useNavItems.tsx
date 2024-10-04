@@ -1,4 +1,3 @@
-import { useColorModeValue } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -7,7 +6,6 @@ import type { NavItemInternal, NavItem, NavGroupItem } from 'types/client/naviga
 import config from 'configs/app';
 import { useRewardsContext } from 'lib/contexts/rewards';
 import { rightLineArrow } from 'lib/html-entities';
-import IconSvg from 'ui/shared/IconSvg';
 import UserAvatar from 'ui/shared/UserAvatar';
 
 interface ReturnType {
@@ -33,8 +31,6 @@ export default function useNavItems(): ReturnType {
     dailyReward,
     apiToken: rewardsApiToken,
   } = useRewardsContext();
-  const themeBgColor = useColorModeValue('white', 'black');
-  const activeItemBgColor = useColorModeValue('blue.50', 'gray.800');
 
   return React.useMemo(() => {
     let blockchainNavItems: Array<NavItem> | Array<Array<NavItem>> = [];
@@ -280,28 +276,7 @@ export default function useNavItems(): ReturnType {
         text: rewardsBalance?.total ? `${ rewardsBalance?.total } Merits` : 'Merits',
         nextRoute: { pathname: '/account/rewards' as const },
         onClick: rewardsApiToken ? undefined : openRewardsLoginModal,
-        iconComponent: () => (
-          <IconSvg
-            name="merits"
-            boxSize="30px"
-            flexShrink={ 0 }
-            position="relative"
-            _before={{
-              display: dailyReward?.available ? 'block' : 'none',
-              content: '""',
-              position: 'absolute',
-              top: '2px',
-              right: '1px',
-              width: '10px',
-              height: '10px',
-              boxSizing: 'border-box',
-              borderRadius: '50%',
-              backgroundColor: 'red.500',
-              border: '2px solid',
-              borderColor: pathname === '/account/rewards' ? activeItemBgColor : themeBgColor,
-            }}
-          />
-        ),
+        icon: dailyReward?.available ? 'merits_with_dot' : 'merits',
         isActive: pathname === '/account/rewards',
       } : null,
       {
@@ -344,5 +319,5 @@ export default function useNavItems(): ReturnType {
     };
 
     return { mainNavItems, accountNavItems, profileItem };
-  }, [ pathname, openRewardsLoginModal, rewardsBalance, dailyReward, rewardsApiToken, activeItemBgColor, themeBgColor ]);
+  }, [ pathname, openRewardsLoginModal, rewardsBalance, dailyReward, rewardsApiToken ]);
 }
