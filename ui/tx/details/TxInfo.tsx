@@ -317,8 +317,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       { isWvmArchiver && (
         <>
           <DetailsInfoItem.Label
-            // todo - change this
-            hint=""
+            hint="The external application source that generated this transaction"
             isLoading={ isLoading }
           >
           Application
