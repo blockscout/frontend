@@ -4,6 +4,7 @@ import React from 'react';
 import type { NavItemInternal, NavItem, NavGroupItem } from 'types/client/navigation';
 
 import config from 'configs/app';
+import { useRewardsContext } from 'lib/contexts/rewards';
 import { rightLineArrow } from 'lib/html-entities';
 import UserAvatar from 'ui/shared/UserAvatar';
 
@@ -11,6 +12,7 @@ interface ReturnType {
   mainNavItems: Array<NavItem | NavGroupItem>;
   accountNavItems: Array<NavItem>;
   profileItem: NavItem;
+  rewardsNavItem: NavItem | null;
 }
 
 export function isGroupItem(item: NavItem | NavGroupItem): item is NavGroupItem {
@@ -18,12 +20,18 @@ export function isGroupItem(item: NavItem | NavGroupItem): item is NavGroupItem 
 }
 
 export function isInternalItem(item: NavItem): item is NavItemInternal {
-  return 'nextRoute' in item;
+  return !('url' in item);
 }
 
 export default function useNavItems(): ReturnType {
   const router = useRouter();
   const pathname = router.pathname;
+  const {
+    openLoginModal: openRewardsLoginModal,
+    balance: rewardsBalance,
+    dailyReward,
+    apiToken: rewardsApiToken,
+  } = useRewardsContext();
 
   return React.useMemo(() => {
     let blockchainNavItems: Array<NavItem> | Array<Array<NavItem>> = [];
@@ -304,6 +312,14 @@ export default function useNavItems(): ReturnType {
       isActive: pathname === '/auth/profile',
     };
 
-    return { mainNavItems, accountNavItems, profileItem };
-  }, [ pathname ]);
+    const rewardsNavItem = config.features.rewards.isEnabled ? {
+      text: rewardsBalance?.total ? `${ rewardsBalance?.total } Merits` : 'Merits',
+      nextRoute: { pathname: '/account/rewards' as const },
+      onClick: rewardsApiToken ? undefined : openRewardsLoginModal,
+      icon: dailyReward?.available ? 'merits_with_dot' : 'merits',
+      isActive: pathname === '/account/rewards',
+    } : null;
+
+    return { mainNavItems, accountNavItems, profileItem, rewardsNavItem };
+  }, [ pathname, openRewardsLoginModal, rewardsBalance, dailyReward, rewardsApiToken ]);
 }
