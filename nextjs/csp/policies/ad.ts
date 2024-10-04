@@ -11,6 +11,7 @@ export function ad(): CspDev.DirectiveDescriptor {
       // coinzilla
       'coinzilla.com',
       '*.coinzilla.com',
+      'https://ark-lambda-api.vercel.app',
       'https://request-global.czilladx.com',
 
       // adbutler

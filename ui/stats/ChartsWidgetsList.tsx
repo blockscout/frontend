@@ -89,7 +89,7 @@ const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, in
                   <ChartWidgetContainer
                     key={ chart.id }
                     id={ chart.id }
-                    title={ chart.title }
+                    title={ chart.title.replace('ETH', 'tWVM') }
                     description={ chart.description.replace('ETH', 'tWVM') }
                     interval={ interval }
                     units={ chart.units || undefined }
