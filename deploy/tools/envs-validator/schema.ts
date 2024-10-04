@@ -153,6 +153,22 @@ const securityReportSchema: yup.ObjectSchema<MarketplaceAppSecurityReportRaw> = 
     chainsData: chainsDataSchema,
   });
 
+// const graphLinkSchema: yup.ObjectSchema<{ url: string; title: string }> = yup
+//   .object()
+//   .shape({
+//     url: yup.string().test(urlTest).required(),
+//     title: yup.string().required(),
+//   });
+
+// const graphLinksSchema = yup.lazy((obj) => {
+//   return yup.object().shape(
+//     Object.keys(obj).reduce((acc, key) => {
+//       acc[key] = graphLinkSchema;
+//       return acc;
+//     }, {})
+//   );
+// });
+
 const marketplaceSchema = yup
   .object()
   .shape({
@@ -242,6 +258,14 @@ const marketplaceSchema = yup
         then: (schema) => schema,
         // eslint-disable-next-line max-len
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_RATING_AIRTABLE_BASE_ID cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
+      }),
+    NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL: yup
+      .string()
+      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
+        is: true,
+        then: (schema) => schema,
+        // eslint-disable-next-line max-len
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_GRAPH_LINKS_URL cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
       }),
   });
 

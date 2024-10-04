@@ -11,6 +11,7 @@ import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import AppSecurityReport from './AppSecurityReport';
 import FavoriteIcon from './FavoriteIcon';
 import MarketplaceAppCardLink from './MarketplaceAppCardLink';
+import MarketplaceAppGraphLinks from './MarketplaceAppGraphLinks';
 import MarketplaceAppIntegrationIcon from './MarketplaceAppIntegrationIcon';
 import Rating from './Rating/Rating';
 import type { RateFunction } from './Rating/useRatings';
@@ -28,6 +29,7 @@ interface Props extends MarketplaceAppWithSecurityReport {
   isRatingSending: boolean;
   isRatingLoading: boolean;
   canRate: boolean | undefined;
+  graphLinks: Array<{text: string; url: string}>;
 }
 
 const MarketplaceAppCard = ({
@@ -54,6 +56,7 @@ const MarketplaceAppCard = ({
   isRatingSending,
   isRatingLoading,
   canRate,
+  graphLinks,
 }: Props) => {
   const isMobile = useIsMobile();
   const categoriesLabel = categories.join(', ');
@@ -118,11 +121,7 @@ const MarketplaceAppCard = ({
           >
             <Skeleton
               isLoaded={ !isLoading }
-              fontSize={{ base: 'sm', md: 'lg' }}
-              lineHeight={{ base: '20px', md: '28px' }}
               paddingRight={{ base: '40px', md: 0 }}
-              fontWeight="semibold"
-              fontFamily="heading"
               display="inline-block"
             >
               <MarketplaceAppCardLink
@@ -131,8 +130,18 @@ const MarketplaceAppCard = ({
                 external={ external }
                 title={ title }
                 onClick={ onAppClick }
+                fontWeight="semibold"
+                fontFamily="heading"
+                fontSize={{ base: 'sm', md: 'lg' }}
+                lineHeight={{ base: '20px', md: '28px' }}
               />
               <MarketplaceAppIntegrationIcon external={ external } internalWallet={ internalWallet }/>
+              <MarketplaceAppGraphLinks
+                links={ graphLinks }
+                ml={ 2 }
+                verticalAlign="middle"
+                mb={{ base: 0, md: 1 }}
+              />
             </Skeleton>
 
             <Skeleton
