@@ -38,6 +38,8 @@ const HeroBanner = () => {
         sm: backgroundSm,
         md: background,
       }}
+      backgroundSize="cover"
+      backgroundPosition="center"
       border={ border }
       borderRadius="md"
       p={{ base: 4, lg: 8 }}

@@ -23,11 +23,11 @@ const semanticTokens = {
     },
     icon_link_external: {
       'default': 'gray.300',
-      _dark: 'gray.500',
+      _dark: colors.grayTrue[200], //'gray.500',
     },
     icon_info: {
       'default': 'gray.400',
-      _dark: 'gray.500',
+      _dark: colors.grayTrue[200], //'gray.500',
     },
     error: {
       'default': 'red.500',
