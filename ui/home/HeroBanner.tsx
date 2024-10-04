@@ -2,6 +2,7 @@ import { Box, Flex, Heading, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
+import RewardsButton from 'ui/rewards/RewardsButton';
 import AdBanner from 'ui/shared/ad/AdBanner';
 import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
 import SearchBar from 'ui/snippets/searchBar/SearchBar';
@@ -54,6 +55,7 @@ const HeroBanner = () => {
           </Heading>
           { config.UI.navigation.layout === 'vertical' && (
             <Box display={{ base: 'none', lg: 'flex' }}>
+              { config.features.rewards.isEnabled && <RewardsButton isHomePage/> }
               { config.features.account.isEnabled && <ProfileMenuDesktop isHomePage/> }
               { config.features.blockchainInteraction.isEnabled && <WalletMenuDesktop isHomePage/> }
             </Box>

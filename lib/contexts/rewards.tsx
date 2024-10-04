@@ -19,8 +19,10 @@ type TRewardsContext = {
   openLoginModal: () => void;
   closeLoginModal: () => void;
   balance: RewardsUserBalancesResponse | undefined;
+  isBalanceLoading: boolean;
   refetchBalance: () => void;
   dailyReward: RewardsUserDailyCheckResponse | undefined;
+  isDailyRewardLoading: boolean;
   refetchDailyReward: () => void;
   apiToken: string | undefined;
   saveApiToken: (token: string) => void;
@@ -31,8 +33,10 @@ const RewardsContext = createContext<TRewardsContext>({
   openLoginModal: () => {},
   closeLoginModal: () => {},
   balance: undefined,
+  isBalanceLoading: false,
   refetchBalance: () => {},
   dailyReward: undefined,
+  isDailyRewardLoading: false,
   refetchDailyReward: () => {},
   apiToken: undefined,
   saveApiToken: () => {},
@@ -92,8 +96,10 @@ export function RewardsContextProvider({ children }: Props) {
     openLoginModal: setIsLoginModalOpen.on,
     closeLoginModal: setIsLoginModalOpen.off,
     balance: balancesQuery.data,
+    isBalanceLoading: balancesQuery.isLoading,
     refetchBalance: balancesQuery.refetch,
     dailyReward: dailyRewardQuery.data,
+    isDailyRewardLoading: dailyRewardQuery.isLoading,
     refetchDailyReward: dailyRewardQuery.refetch,
     apiToken,
     saveApiToken,
