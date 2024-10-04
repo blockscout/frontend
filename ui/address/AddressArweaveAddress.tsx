@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Skeleton, Text, Box } from '@chakra-ui/react';
+import { useLambdaState } from 'lib/hooks/useLambdaState';
 
 const AddressArweaveAddress = ({ addressHash }: any) => {
   const [arweaveAddress, setArweaveAddress] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data, isLoading } = useLambdaState();
 
-  const getLambdaState = async () => {
-    const response = await fetch('/api/ark');
-    return response.json();
-  }
-  
   const searchArksByKey = (state: any, ethereumAddress: string) => {
     if (!ethereumAddress || !state) return null;
     if (state.arks?.[ethereumAddress.toLowerCase()]) {
@@ -21,25 +17,15 @@ const AddressArweaveAddress = ({ addressHash }: any) => {
 
   useEffect(() => {
     const fetchArweaveAddress = async () => {
-      if (addressHash) {
-        try {
-          setIsLoading(true);
-          const state = await getLambdaState();
-          console.log('state', state);
-          console.log('addressHash', addressHash);
-          const result = searchArksByKey(state, addressHash);
-          setArweaveAddress(result ? result.arweaveLinkings : null);
-        } catch (error) {
-          console.error('Error fetching Arweave address:', error);
-          setArweaveAddress(null);
-        } finally {
-          setIsLoading(false);
-        }
+      if (addressHash && data) {
+        // @ts-ignore
+        const result = searchArksByKey(data?.data, addressHash);
+        setArweaveAddress(result ? result.arweaveLinkings : null);
       }
     };
 
     fetchArweaveAddress();
-  }, [addressHash]);
+  }, [addressHash, data]);
 
   return (
     <Skeleton isLoaded={!isLoading}>
