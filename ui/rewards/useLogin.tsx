@@ -18,12 +18,12 @@ function getMessageToSign(address: string, nonce: string, isLogin?: boolean, ref
   const referralText = refCode ? ` Referral code: ${ refCode }` : '';
   const body = isLogin ? signInText : signUpText + referralText;
   return [
-    `${ /*window.location.hostname*/ 'blockscout.com' } wants you to sign in with your Ethereum account:`,
+    `${ window.location.hostname } wants you to sign in with your Ethereum account:`,
     address,
     '',
     body,
     '',
-    `URI: ${ /*window.location.origin*/ 'https://blockscout.com' }`,
+    `URI: ${ window.location.origin }`,
     'Version: 1',
     `Chain ID: ${ config.chain.id }`,
     `Nonce: ${ nonce }`,
