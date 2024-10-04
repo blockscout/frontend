@@ -99,7 +99,7 @@ const CongratsStepContent = ({ isReferral }: Props) => {
         </Text>
         <CopyField
           label="Referral link"
-          value={ referralsQuery.data?.link || '' }
+          value={ `https://eth.blockscout.com?ref=${ referralsQuery.data?.code }` }
           isLoading={ referralsQuery.isLoading }
           mt={ 3 }
         />

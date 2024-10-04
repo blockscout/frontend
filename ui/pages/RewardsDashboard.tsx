@@ -143,8 +143,16 @@ const RewardsDashboard = () => {
             px={ 6 }
             flexShrink={ 0 }
           >
-            <CopyField label="Referral link" value={ referralsQuery.data?.link || '' } isLoading={ referralsQuery.isLoading }/>
-            <CopyField label="Referral code" value={ referralsQuery.data?.code || '' } isLoading={ referralsQuery.isLoading }/>
+            <CopyField
+              label="Referral link"
+              value={ `https://eth.blockscout.com?ref=${ referralsQuery.data?.code }` }
+              isLoading={ referralsQuery.isLoading }
+            />
+            <CopyField
+              label="Referral code"
+              value={ referralsQuery.data?.code || '' }
+              isLoading={ referralsQuery.isLoading }
+            />
             <Flex flexDirection="column">
               <Flex alignItems="center" gap={ 1 } w="120px">
                 <HintPopover
