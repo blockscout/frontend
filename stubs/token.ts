@@ -11,9 +11,10 @@ import type { TokenInstanceTransferPagination, TokenInstanceTransferResponse } f
 import type { TokenTransfer, TokenTransferPagination, TokenTransferResponse } from 'types/api/tokenTransfer';
 
 import { ADDRESS_PARAMS, ADDRESS_HASH } from './addressParams';
-import { BLOCK_HASH } from './block';
 import { TX_HASH } from './tx';
 import { generateListStub } from './utils';
+
+export const BLOCK_HASH = '0x8fa7b9e5e5e79deeb62d608db22ba9a5cb45388c7ebb9223ae77331c6080dc70';
 
 export const TOKEN_INFO_ERC_20: TokenInfo<'ERC-20'> = {
   address: ADDRESS_HASH,

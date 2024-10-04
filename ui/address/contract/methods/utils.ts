@@ -1,7 +1,8 @@
 import type { Abi } from 'abitype';
+import type { AbiFunction } from 'viem';
 import { toFunctionSelector } from 'viem';
 
-import type { SmartContractMethodRead, SmartContractMethodWrite } from './types';
+import type { SmartContractMethodCustomFields, SmartContractMethodRead, SmartContractMethodWrite } from './types';
 
 export const getNativeCoinValue = (value: unknown) => {
   if (typeof value !== 'string') {
@@ -25,13 +26,25 @@ export const isWriteMethod = (method: Abi[number]): method is SmartContractMetho
   (method.type === 'function' || method.type === 'fallback' || method.type === 'receive') &&
     !isReadMethod(method);
 
+const enrichWithMethodId = (method: AbiFunction): SmartContractMethodCustomFields => {
+  try {
+    return {
+      method_id: toFunctionSelector(method).slice(2),
+    };
+  } catch (error) {
+    return {
+      is_invalid: true,
+    };
+  }
+};
+
 export function divideAbiIntoMethodTypes(abi: Abi): DividedAbi {
   return {
     read: abi
       .filter(isReadMethod)
       .map((method) => ({
         ...method,
-        method_id: toFunctionSelector(method).slice(2),
+        ...enrichWithMethodId(method),
       })),
     write: abi
       .filter(isWriteMethod)
@@ -43,7 +56,7 @@ export function divideAbiIntoMethodTypes(abi: Abi): DividedAbi {
 
         return {
           ...method,
-          method_id: toFunctionSelector(method).slice(2),
+          ...enrichWithMethodId(method),
         };
       }),
   };

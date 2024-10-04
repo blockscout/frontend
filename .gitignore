@@ -55,3 +55,6 @@ yarn-error.log*
 /playwright/affected-tests.txt
 
 **.dec**
+
+# build outputs
+/tools/preset-sync/index.js

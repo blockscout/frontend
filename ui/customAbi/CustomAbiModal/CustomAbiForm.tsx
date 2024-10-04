@@ -98,7 +98,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
 
   const onSubmit: SubmitHandler<Inputs> = useCallback((formData) => {
     setAlertVisible(false);
-    mutation.mutate({ ...formData, id: data?.id });
+    mutation.mutate({ ...formData, id: data?.id ? String(data.id) : undefined });
   }, [ mutation, data, setAlertVisible ]);
 
   const renderContractAddressInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'contract_address_hash'>}) => {

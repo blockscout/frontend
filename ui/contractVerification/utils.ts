@@ -7,16 +7,16 @@ import type {
   FormFieldsMultiPartFile,
   FormFieldsSourcify,
   FormFieldsStandardInput,
+  FormFieldsStandardInputZk,
   FormFieldsVyperContract,
   FormFieldsVyperMultiPartFile,
   FormFieldsVyperStandardInput,
 } from './types';
 import type {
-  SmartContractVerificationMethod,
   SmartContractVerificationError,
-  SmartContractVerificationConfig,
   SmartContractLicenseType,
 } from 'types/api/contract';
+import type { SmartContractVerificationConfig, SmartContractVerificationMethod } from 'types/client/contract';
 
 import type { Params as FetchParams } from 'lib/hooks/useFetch';
 
@@ -25,19 +25,23 @@ export const SUPPORTED_VERIFICATION_METHODS: Array<SmartContractVerificationMeth
   'standard-input',
   'sourcify',
   'multi-part',
+  'solidity-hardhat',
+  'solidity-foundry',
   'vyper-code',
   'vyper-multi-part',
   'vyper-standard-input',
 ];
 
 export const METHOD_LABELS: Record<SmartContractVerificationMethod, string> = {
-  'flattened-code': 'Solidity (Flattened source code)',
+  'flattened-code': 'Solidity (Single file)',
   'standard-input': 'Solidity (Standard JSON input)',
   sourcify: 'Solidity (Sourcify)',
   'multi-part': 'Solidity (Multi-part files)',
   'vyper-code': 'Vyper (Contract)',
   'vyper-multi-part': 'Vyper (Multi-part files)',
   'vyper-standard-input': 'Vyper (Standard JSON input)',
+  'solidity-hardhat': 'Solidity (Hardhat)',
+  'solidity-foundry': 'Solidity (Foundry)',
 };
 
 export const DEFAULT_VALUES: Record<SmartContractVerificationMethod, FormFields> = {
@@ -129,14 +133,41 @@ export const DEFAULT_VALUES: Record<SmartContractVerificationMethod, FormFields>
     sources: [],
     license_type: null,
   },
+  'solidity-hardhat': {
+    address: '',
+    method: {
+      value: 'solidity-hardhat' as const,
+      label: METHOD_LABELS['solidity-hardhat'],
+    },
+    compiler: null,
+    sources: [],
+    license_type: null,
+  },
+  'solidity-foundry': {
+    address: '',
+    method: {
+      value: 'solidity-foundry' as const,
+      label: METHOD_LABELS['solidity-foundry'],
+    },
+    compiler: null,
+    sources: [],
+    license_type: null,
+  },
 };
 
 export function getDefaultValues(
-  method: SmartContractVerificationMethod,
+  methodParam: SmartContractVerificationMethod | undefined,
   config: SmartContractVerificationConfig,
   hash: string | undefined,
   licenseType: FormFields['license_type'],
 ) {
+  const singleMethod = config.verification_options.length === 1 ? config.verification_options[0] : undefined;
+  const method = singleMethod || methodParam;
+
+  if (!method) {
+    return;
+  }
+
   const defaultValues: FormFields = { ...DEFAULT_VALUES[method], address: hash || '', license_type: licenseType };
 
   if ('evm_version' in defaultValues) {
@@ -154,6 +185,13 @@ export function getDefaultValues(
       'name' in defaultValues && (defaultValues.name = undefined);
       'autodetect_constructor_args' in defaultValues && (defaultValues.autodetect_constructor_args = false);
     }
+  }
+
+  if (singleMethod) {
+    defaultValues.method = {
+      label: METHOD_LABELS[config.verification_options[0]],
+      value: config.verification_options[0],
+    };
   }
 
   return defaultValues;
@@ -200,7 +238,7 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
     }
 
     case 'standard-input': {
-      const _data = data as FormFieldsStandardInput;
+      const _data = data as (FormFieldsStandardInput | FormFieldsStandardInputZk);
 
       const body = new FormData();
       _data.compiler && body.set('compiler_version', _data.compiler.value);
@@ -209,6 +247,9 @@ export function prepareRequestBody(data: FormFields): FetchParams['body'] {
       body.set('autodetect_constructor_args', String(Boolean(_data.autodetect_constructor_args)));
       body.set('constructor_args', _data.constructor_args);
       addFilesToFormData(body, _data.sources, 'files');
+
+      // zkSync fields
+      'zk_compiler' in _data && _data.zk_compiler && body.set('zk_compiler_version', _data.zk_compiler.value);
 
       return body;
     }

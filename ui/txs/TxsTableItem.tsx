@@ -2,7 +2,6 @@ import {
   Tr,
   Td,
   VStack,
-  Skeleton,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import React from 'react';
@@ -10,14 +9,14 @@ import React from 'react';
 import type { Transaction } from 'types/api/transaction';
 
 import config from 'configs/app';
-import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import Tag from 'ui/shared/chakra/Tag';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
-import TxFeeStability from 'ui/shared/tx/TxFeeStability';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
+import TxFee from 'ui/shared/tx/TxFee';
 import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
 
@@ -34,7 +33,6 @@ type Props = {
 
 const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, isLoading }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
-  const timeAgo = useTimeAgoIncrement(tx.timestamp, enableTimeIncrement);
 
   return (
     <Tr
@@ -58,7 +56,13 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
             maxW="100%"
             truncation="constant_long"
           />
-          { tx.timestamp && <Skeleton color="text_secondary" fontWeight="400" isLoaded={ !isLoading }><span>{ timeAgo }</span></Skeleton> }
+          <TimeAgoWithTooltip
+            timestamp={ tx.timestamp }
+            enableIncrement={ enableTimeIncrement }
+            isLoading={ isLoading }
+            color="text_secondary"
+            fontWeight="400"
+          />
         </VStack>
       </Td>
       <Td>
@@ -109,12 +113,13 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
       ) }
       { !config.UI.views.tx.hiddenFields?.tx_fee && (
         <Td isNumeric>
-          { /* eslint-disable-next-line no-nested-ternary */ }
-          { tx.stability_fee ? (
-            <TxFeeStability data={ tx.stability_fee } isLoading={ isLoading } accuracy={ 8 } justifyContent="end" hideUsd/>
-          ) : (
-            tx.fee.value ? <CurrencyValue value={ tx.fee.value } accuracy={ 8 } isLoading={ isLoading }/> : '-'
-          ) }
+          <TxFee
+            tx={ tx }
+            accuracy={ 8 }
+            isLoading={ isLoading }
+            withCurrency={ Boolean(tx.celo || tx.stability_fee) }
+            justifyContent="end"
+          />
         </Td>
       ) }
     </Tr>

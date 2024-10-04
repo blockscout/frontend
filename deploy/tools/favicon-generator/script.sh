@@ -33,9 +33,12 @@ CONFIG_TEMPLATE_FILE="config.template.json"
 # Path to the generated config JSON file
 CONFIG_FILE="config.json"
 
+# Escape special characters in MASTER_URL for sed
+ESCAPED_MASTER_URL=$(printf '%s\n' "$MASTER_URL" | sed -e 's/[\/&]/\\&/g')
+
 # Replace <api_key> and <master_url> placeholders in the JSON template file
 API_KEY_VALUE="$FAVICON_GENERATOR_API_KEY"
-sed -e "s|<api_key>|$API_KEY_VALUE|" -e "s|<master_url>|$MASTER_URL|" "$CONFIG_TEMPLATE_FILE" > "$CONFIG_FILE"
+sed -e "s|<api_key>|$API_KEY_VALUE|" -e "s|<master_url>|$ESCAPED_MASTER_URL|" "$CONFIG_TEMPLATE_FILE" > "$CONFIG_FILE"
 
 # Make the API POST request with JSON data from the config file
 echo "⏳ Making request to API..."

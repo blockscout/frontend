@@ -1,9 +1,10 @@
-import { HStack, Popover, PopoverBody, PopoverContent, PopoverTrigger, chakra, StackDivider } from '@chakra-ui/react';
+import { HStack, PopoverBody, PopoverContent, PopoverTrigger, chakra, StackDivider } from '@chakra-ui/react';
 import React from 'react';
 
 import type { NavGroupItem } from 'types/client/navigation';
 
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
+import Popover from 'ui/shared/chakra/Popover';
 import IconSvg from 'ui/shared/IconSvg';
 
 import LightningLabel from '../LightningLabel';
@@ -25,8 +26,9 @@ const NavLinkGroup = ({ item }: Props) => {
   return (
     <Popover
       trigger="hover"
-      placement="bottom-start"
+      placement="bottom"
       isLazy
+      gutter={ 8 }
     >
       { ({ isOpen }) => (
         <>

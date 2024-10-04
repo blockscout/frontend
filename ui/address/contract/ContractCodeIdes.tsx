@@ -2,7 +2,6 @@ import {
   Flex,
   Button,
   chakra,
-  Popover,
   PopoverTrigger,
   PopoverBody,
   PopoverContent,
@@ -15,6 +14,7 @@ import React from 'react';
 
 import config from 'configs/app';
 import colors from 'theme/foundations/colors';
+import Popover from 'ui/shared/chakra/Popover';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 

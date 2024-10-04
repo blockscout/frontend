@@ -30,7 +30,7 @@ const CustomAbiTable = ({ data, isLoading, onDeleteClick, onEditClick }: Props) 
       <Tbody>
         { data?.map((item, index) => (
           <CustomAbiTableItem
-            key={ item.id + (isLoading ? index : '') }
+            key={ item.id + (isLoading ? String(index) : '') }
             item={ item }
             isLoading={ isLoading }
             onDeleteClick={ onDeleteClick }

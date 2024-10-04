@@ -5,12 +5,12 @@ import React from 'react';
 import type { InternalTransaction } from 'types/api/internalTransaction';
 
 import config from 'configs/app';
-import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import Tag from 'ui/shared/chakra/Tag';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 import { TX_INTERNALS_ITEMS } from 'ui/tx/internals/utils';
 
 type Props = InternalTransaction & { currentAddress: string; isLoading?: boolean }
@@ -32,8 +32,6 @@ const AddressIntTxsTableItem = ({
   const typeTitle = TX_INTERNALS_ITEMS.find(({ id }) => id === type)?.title;
   const toData = to ? to : createdContract;
 
-  const timeAgo = useTimeAgoIncrement(timestamp, true);
-
   return (
     <Tr alignItems="top">
       <Td verticalAlign="middle">
@@ -45,11 +43,14 @@ const AddressIntTxsTableItem = ({
             noIcon
             truncation="constant_long"
           />
-          { timestamp && (
-            <Skeleton isLoaded={ !isLoading } color="text_secondary" fontWeight="400" fontSize="sm">
-              <span>{ timeAgo }</span>
-            </Skeleton>
-          ) }
+          <TimeAgoWithTooltip
+            timestamp={ timestamp }
+            enableIncrement
+            isLoading={ isLoading }
+            color="text_secondary"
+            fontWeight="400"
+            fontSize="sm"
+          />
         </Flex>
       </Td>
       <Td verticalAlign="middle">

@@ -19,7 +19,7 @@ import type { ApiResource, ResourceName, ResourcePathParams } from './resources'
 
 export interface Params<R extends ResourceName> {
   pathParams?: ResourcePathParams<R>;
-  queryParams?: Record<string, string | Array<string> | number | boolean | undefined>;
+  queryParams?: Record<string, string | Array<string> | number | boolean | undefined | null>;
   fetchParams?: Pick<FetchParams, 'body' | 'method' | 'signal' | 'headers'>;
 }
 

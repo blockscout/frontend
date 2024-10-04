@@ -1,10 +1,12 @@
+import type { As } from '@chakra-ui/react';
 import { chakra } from '@chakra-ui/react';
-import _omit from 'lodash/omit';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
 import * as EntityBase from 'ui/shared/entities/base/components';
+
+import { distributeEntityProps } from '../base/utils';
 
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'hash'>;
 
@@ -21,11 +23,7 @@ const Link = chakra((props: LinkProps) => {
   );
 });
 
-type IconProps = Omit<EntityBase.IconBaseProps, 'name'> & {
-  name?: EntityBase.IconBaseProps['name'];
-};
-
-const Icon = (props: IconProps) => {
+const Icon = (props: EntityBase.IconBaseProps) => {
   return (
     <EntityBase.Icon
       { ...props }
@@ -65,21 +63,20 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
 }
 
 const UserOpEntity = (props: EntityProps) => {
-  const linkProps = _omit(props, [ 'className' ]);
-  const partsProps = _omit(props, [ 'className', 'onClick' ]);
+  const partsProps = distributeEntityProps(props);
 
   return (
-    <Container className={ props.className }>
-      <Icon { ...partsProps }/>
-      <Link { ...linkProps }>
-        <Content { ...partsProps }/>
+    <Container { ...partsProps.container }>
+      <Icon { ...partsProps.icon }/>
+      <Link { ...partsProps.link }>
+        <Content { ...partsProps.content }/>
       </Link>
-      <Copy { ...partsProps }/>
+      <Copy { ...partsProps.copy }/>
     </Container>
   );
 };
 
-export default React.memo(chakra(UserOpEntity));
+export default React.memo(chakra<As, EntityProps>(UserOpEntity));
 
 export {
   Container,

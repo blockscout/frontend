@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
-import type { MarketplaceAppWithSecurityReport } from 'types/client/marketplace';
+import type { MarketplaceAppWithSecurityReport, AppRating } from 'types/client/marketplace';
 import { MarketplaceCategory } from 'types/client/marketplace';
 
 import config from 'configs/app';
@@ -55,12 +55,14 @@ export default function useMarketplaceApps(
   selectedCategoryId: string = MarketplaceCategory.ALL,
   favoriteApps: Array<string> | undefined = undefined,
   isFavoriteAppsLoaded: boolean = false, // eslint-disable-line @typescript-eslint/no-inferrable-types
+  ratings: Record<string, AppRating> | undefined = undefined,
 ) {
   const fetch = useFetch();
   const apiFetch = useApiFetch();
 
   const { data: securityReports, isPlaceholderData: isSecurityReportsPlaceholderData } = useSecurityReports();
 
+  const [ sorting, setSorting ] = React.useState<SortValue>();
   // Set the value only 1 time to avoid unnecessary useQuery calls and re-rendering of all applications
   const [ snapshotFavoriteApps, setSnapshotFavoriteApps ] = React.useState<Array<string> | undefined>();
   const isInitialSetup = React.useRef(true);
@@ -72,7 +74,9 @@ export default function useMarketplaceApps(
     }
   }, [ isFavoriteAppsLoaded, favoriteApps ]);
 
-  const { isPlaceholderData, isError, error, data } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppWithSecurityReport>>({
+  const {
+    isPlaceholderData: isAppsPlaceholderData, isError, error, data,
+  } = useQuery<unknown, ResourceError<unknown>, Array<MarketplaceAppWithSecurityReport>>({
     queryKey: [ 'marketplace-dapps', snapshotFavoriteApps ],
     queryFn: async() => {
       if (!feature.isEnabled) {
@@ -89,29 +93,40 @@ export default function useMarketplaceApps(
     enabled: feature.isEnabled && Boolean(snapshotFavoriteApps),
   });
 
-  const [ sorting, setSorting ] = React.useState<SortValue>();
+  const isPlaceholderData = isAppsPlaceholderData || isSecurityReportsPlaceholderData;
 
-  const appsWithSecurityReports = React.useMemo(() =>
-    data?.map((app) => ({ ...app, securityReport: securityReports?.[app.id] })),
-  [ data, securityReports ]);
+  const appsWithSecurityReportsAndRating = React.useMemo(() =>
+    data?.map((app) => ({
+      ...app,
+      securityReport: securityReports?.[app.id],
+      rating: ratings?.[app.id],
+    })),
+  [ data, securityReports, ratings ]);
 
   const displayedApps = React.useMemo(() => {
-    return appsWithSecurityReports
+    if (isPlaceholderData) {
+      return appsWithSecurityReportsAndRating || [];
+    }
+
+    return appsWithSecurityReportsAndRating
       ?.filter(app => isAppNameMatches(filter, app) && isAppCategoryMatches(selectedCategoryId, app, favoriteApps))
       .sort((a, b) => {
         if (sorting === 'security_score') {
           return (b.securityReport?.overallInfo.securityScore || 0) - (a.securityReport?.overallInfo.securityScore || 0);
         }
+        if (sorting === 'rating') {
+          return (b.rating?.value || 0) - (a.rating?.value || 0);
+        }
         return 0;
       }) || [];
-  }, [ selectedCategoryId, appsWithSecurityReports, filter, favoriteApps, sorting ]);
+  }, [ selectedCategoryId, appsWithSecurityReportsAndRating, filter, favoriteApps, sorting, isPlaceholderData ]);
 
   return React.useMemo(() => ({
     data,
     displayedApps,
     error,
     isError,
-    isPlaceholderData: isPlaceholderData || isSecurityReportsPlaceholderData,
+    isPlaceholderData,
     setSorting,
   }), [
     data,
@@ -119,7 +134,6 @@ export default function useMarketplaceApps(
     error,
     isError,
     isPlaceholderData,
-    isSecurityReportsPlaceholderData,
     setSorting,
   ]);
 }

@@ -20,8 +20,7 @@ const AddressCoinBalanceChart = ({ addressHash }: Props) => {
       return undefined;
     }
 
-    const dataItems = 'items' in data ? data.items : data;
-    return dataItems.map(({ date, value }) => ({
+    return data.items.map(({ date, value }) => ({
       date: new Date(date),
       value: BigNumber(value).div(10 ** config.chain.currency.decimals).toNumber(),
     }));
@@ -35,7 +34,7 @@ const AddressCoinBalanceChart = ({ addressHash }: Props) => {
       isLoading={ isPending }
       h="300px"
       units={ currencyUnits.ether }
-      emptyText={ data && 'days' in data && `Insufficient data for the past ${ data.days } days` }
+      emptyText={ data?.days && `Insufficient data for the past ${ data.days } days` }
     />
   );
 };

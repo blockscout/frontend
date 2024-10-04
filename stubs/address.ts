@@ -3,6 +3,7 @@ import type {
   AddressCoinBalanceHistoryItem,
   AddressCollection,
   AddressCounters,
+  AddressMudTableItem,
   AddressNFT,
   AddressTabsCounters,
   AddressTokenBalance,
@@ -10,6 +11,7 @@ import type {
 import type { AddressesItem } from 'types/api/addresses';
 
 import { ADDRESS_HASH } from './addressParams';
+import { MUD_SCHEMA, MUD_TABLE } from './mud';
 import { TOKEN_INFO_ERC_1155, TOKEN_INFO_ERC_20, TOKEN_INFO_ERC_721, TOKEN_INFO_ERC_404, TOKEN_INSTANCE } from './token';
 import { TX_HASH } from './tx';
 
@@ -25,7 +27,7 @@ export const ADDRESS_INFO: Address = {
   has_tokens: false,
   has_validated_blocks: false,
   hash: ADDRESS_HASH,
-  implementations: [ { address: ADDRESS_HASH, name: 'Proxy' } ],
+  implementations: [ { address: ADDRESS_HASH, name: 'Transparent Upgradable Proxy' } ],
   is_contract: true,
   is_verified: true,
   name: 'ChainLink Token (goerli)',
@@ -108,4 +110,9 @@ export const ADDRESS_COLLECTION: AddressCollection = {
   token: TOKEN_INFO_ERC_1155,
   amount: '4',
   token_instances: Array(4).fill(TOKEN_INSTANCE),
+};
+
+export const ADDRESS_MUD_TABLE_ITEM: AddressMudTableItem = {
+  schema: MUD_SCHEMA,
+  table: MUD_TABLE,
 };

@@ -81,7 +81,7 @@ const AdaptiveTabsList = (props: Props) => {
           props.tabListProps)
       }
     >
-      { tabsList.map((tab, index) => {
+      { tabsList.slice(0, props.isLoading ? 5 : Infinity).map((tab, index) => {
         if (!tab.id) {
           if (props.isLoading) {
             return null;

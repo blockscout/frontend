@@ -62,7 +62,7 @@ const PrivateTransactionTags = () => {
       <Box display={{ base: 'block', lg: 'none' }}>
         { transactionTagsData?.items.map((item, index) => (
           <TransactionTagListItem
-            key={ item.id + (isPlaceholderData ? index : '') }
+            key={ item.id + (isPlaceholderData ? String(index) : '') }
             item={ item }
             isLoading={ isPlaceholderData }
             onDeleteClick={ onDeleteClick }

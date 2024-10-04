@@ -8,13 +8,10 @@ import * as mixpanel from 'lib/mixpanel/index';
 import UserAvatar from 'ui/shared/UserAvatar';
 import ProfileMenuContent from 'ui/snippets/profileMenu/ProfileMenuContent';
 
-import useMenuButtonColors from '../useMenuButtonColors';
-
 const ProfileMenuMobile = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { data, error, isPending } = useFetchProfileInfo();
   const loginUrl = useLoginUrl();
-  const { themedBackground, themedBorderColor, themedColor } = useMenuButtonColors();
   const [ hasMenu, setHasMenu ] = React.useState(false);
 
   const handleSignInClick = React.useCallback(() => {
@@ -48,13 +45,10 @@ const ProfileMenuMobile = () => {
       <IconButton
         aria-label="profile menu"
         icon={ <UserAvatar size={ 20 }/> }
-        variant={ data?.avatar ? 'subtle' : 'outline' }
-        colorScheme="gray"
+        variant="header"
+        data-selected={ hasMenu }
         boxSize="40px"
         flexShrink={ 0 }
-        bg={ data?.avatar ? themedBackground : undefined }
-        color={ themedColor }
-        borderColor={ !data?.avatar ? themedBorderColor : undefined }
         onClick={ hasMenu ? onOpen : undefined }
         { ...iconButtonProps }
       />

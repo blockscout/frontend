@@ -1,7 +1,6 @@
 import {
   Image,
   Button,
-  Popover,
   PopoverTrigger,
   PopoverBody,
   PopoverContent,
@@ -19,6 +18,7 @@ import type { NetworkExplorer as TNetworkExplorer } from 'types/networks';
 import config from 'configs/app';
 import stripTrailingSlash from 'lib/stripTrailingSlash';
 import colors from 'theme/foundations/colors';
+import Popover from 'ui/shared/chakra/Popover';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import PopoverTriggerTooltip from 'ui/shared/PopoverTriggerTooltip';

@@ -4,13 +4,13 @@ import React from 'react';
 import type { TokenTransfer } from 'types/api/tokenTransfer';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
-import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import { NFT_TOKEN_TYPE_IDS } from 'lib/token/tokenTypes';
 import colors from 'theme/foundations/colors';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
 import Tag from 'ui/shared/chakra/Tag';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean }
 
@@ -25,7 +25,6 @@ const TokenTransferTableItem = ({
   tokenId,
   isLoading,
 }: Props) => {
-  const timeAgo = useTimeAgoIncrement(timestamp, true);
   const { usd, valueStr } = 'value' in total && total.value !== null ? getCurrencyValue({
     value: total.value,
     exchangeRate: token.exchange_rate,
@@ -45,13 +44,15 @@ const TokenTransferTableItem = ({
             noIcon
             truncation="constant_long"
           />
-          { timestamp && (
-            <Skeleton isLoaded={ !isLoading } display="inline-block" color={ colors.grayTrue[200] } fontWeight="400" ml="10px">
-              <span>
-                { timeAgo }
-              </span>
-            </Skeleton>
-          ) }
+          <TimeAgoWithTooltip
+            timestamp={ timestamp }
+            enableIncrement
+            isLoading={ isLoading }
+            display="inline-block"
+            color={ colors.grayTrue[200] }
+            fontWeight="400"
+            ml="10px"
+          />
         </Flex>
       </Td>
       <Td>

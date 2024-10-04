@@ -1,7 +1,6 @@
 import {
   Link,
   chakra,
-  Popover,
   PopoverTrigger,
   Portal,
   PopoverContent,
@@ -18,10 +17,11 @@ import type { ControllerRenderProps, Control } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 
 import type { FormFields } from '../types';
-import type { SmartContractVerificationConfig, SmartContractVerificationMethod } from 'types/api/contract';
+import type { SmartContractVerificationMethod, SmartContractVerificationConfig } from 'types/client/contract';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import colors from 'theme/foundations/colors';
+import Popover from 'ui/shared/chakra/Popover';
 import FancySelect from 'ui/shared/FancySelect/FancySelect';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -52,6 +52,7 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
         isDisabled={ isDisabled }
         isRequired
         isAsync={ false }
+        isReadOnly={ options.length === 1 }
       />
     );
   }, [ isDisabled, isMobile, options ]);
@@ -59,7 +60,7 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
   const renderPopoverListItem = React.useCallback((method: SmartContractVerificationMethod) => {
     switch (method) {
       case 'flattened-code':
-        return <ListItem key={ method }>Verification through flattened source code.</ListItem>;
+        return <ListItem key={ method }>Verification through a single file.</ListItem>;
       case 'multi-part':
         return <ListItem key={ method }>Verification of multi-part Solidity files.</ListItem>;
       case 'sourcify':
@@ -94,6 +95,10 @@ const ContractVerificationFieldMethod = ({ control, isDisabled, methods }: Props
             <span> file.</span>
           </ListItem>
         );
+      case 'solidity-hardhat':
+        return <ListItem key={ method }>Verification through Hardhat plugin.</ListItem>;
+      case 'solidity-foundry':
+        return <ListItem key={ method }>Verification through Foundry.</ListItem>;
     }
   }, []);
 

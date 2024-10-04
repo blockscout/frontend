@@ -10,6 +10,7 @@ import * as mixpanel from 'lib/mixpanel/index';
 import colors from 'theme/foundations/colors';
 import IconSvg from 'ui/shared/IconSvg';
 
+import FavoriteIcon from '../FavoriteIcon';
 import MarketplaceAppIntegrationIcon from '../MarketplaceAppIntegrationIcon';
 import FeaturedAppMobile from './FeaturedAppMobile';
 
@@ -65,7 +66,8 @@ const FeaturedApp = ({
         height="136px"
         padding={ 5 }
         background={ backgroundColor }
-        mb={ 6 }
+        mb={ 2 }
+        mt={ 6 }
       >
         <Skeleton
           isLoaded={ !isLoading }
@@ -136,10 +138,7 @@ const FeaturedApp = ({
                 w={ 9 }
                 h={ 8 }
                 onClick={ handleFavoriteClick }
-                icon={ isFavorite ?
-                  <IconSvg name="star_filled" w={ 5 } h={ 5 } color={ colors.warning[400] }/> :
-                  <IconSvg name="star_outline" w={ 5 } h={ 5 } color={ colors.grayTrue[200] }/>
-                }
+                icon={ <FavoriteIcon isFavorite={ isFavorite }/> }
               />
             ) }
           </Flex>

@@ -1,5 +1,5 @@
 import {
-  Popover, PopoverTrigger, PopoverContent, PopoverBody,
+  PopoverTrigger, PopoverContent, PopoverBody,
   Modal, ModalContent, ModalCloseButton,
   useDisclosure,
 } from '@chakra-ui/react';
@@ -8,6 +8,7 @@ import React from 'react';
 import type { TokenVerifiedInfo } from 'types/api/token';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import Popover from 'ui/shared/chakra/Popover';
 
 import Content, { hasContent } from './TokenProjectInfo/Content';
 import TriggerButton from './TokenProjectInfo/TriggerButton';

@@ -50,7 +50,7 @@ const config: PlaywrightTestConfig = defineConfig({
 
     ctViteConfig: {
       plugins: [
-        tsconfigPaths(),
+        tsconfigPaths({ loose: true, ignoreConfigErrors: true }),
         react(),
         svgr({
           exportAsDefault: true,
@@ -82,6 +82,9 @@ const config: PlaywrightTestConfig = defineConfig({
           // We don't call this function in TestApp and since we use useWeb3Modal() and useWeb3ModalState() hooks in the code, we have to mock the module
           // Otherwise it will complain that createWeb3Modal() is no called before the hooks are used
           { find: /^@web3modal\/wagmi\/react$/, replacement: './playwright/mocks/modules/@web3modal/wagmi/react.js' },
+
+          { find: '/playwright/index.ts', replacement: './playwright/index.ts' },
+          { find: '/playwright/envs.js', replacement: './playwright/envs.js' },
         ],
       },
       define: {

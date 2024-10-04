@@ -13,6 +13,7 @@ import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import IconSvg from 'ui/shared/IconSvg';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 interface Props {
   data: VerifiedContract;
@@ -71,6 +72,14 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
             </Tooltip>
           </Skeleton>
         </Flex>
+        { data.zk_compiler_version && (
+          <Flex flexWrap="wrap" columnGap={ 2 } my={ 1 }>
+            <Skeleton isLoaded={ !isLoading } >ZK compiler</Skeleton>
+            <Skeleton isLoaded={ !isLoading } color="text_secondary" wordBreak="break-all">
+              <span>{ data.zk_compiler_version }</span>
+            </Skeleton>
+          </Flex>
+        ) }
       </Td>
       <Td>
         <Tooltip label={ isLoading ? undefined : 'Optimization' }>
@@ -90,10 +99,19 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
       </Td>
       <Td>
         <Flex alignItems="center" columnGap={ 2 } my={ 1 }>
+<<<<<<< HEAD
           <IconSvg name="status/success" boxSize={ 4 } color={ colors.success[500] } isLoading={ isLoading }/>
           <Skeleton isLoaded={ !isLoading } color="text_secondary">
             <span>{ dayjs(data.verified_at).fromNow() }</span>
           </Skeleton>
+=======
+          <IconSvg name="status/success" boxSize={ 4 } color="green.500" isLoading={ isLoading }/>
+          <TimeAgoWithTooltip
+            timestamp={ data.verified_at }
+            isLoading={ isLoading }
+            color="text_secondary"
+          />
+>>>>>>> upstream/main
         </Flex>
       </Td>
       <Td>

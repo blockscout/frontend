@@ -112,7 +112,7 @@ export const optimisticRollup: GetServerSideProps<Props> = async(context) => {
   return base(context);
 };
 
-const BATCH_ROLLUP_TYPES: Array<RollupType> = [ 'zkEvm', 'zkSync', 'arbitrum' ];
+const BATCH_ROLLUP_TYPES: Array<RollupType> = [ 'zkEvm', 'zkSync', 'arbitrum', 'optimistic' ];
 export const batch: GetServerSideProps<Props> = async(context) => {
   if (!(rollupFeature.isEnabled && BATCH_ROLLUP_TYPES.includes(rollupFeature.type))) {
     return {
@@ -136,6 +136,16 @@ Promise<GetServerSidePropsResult<Props<Pathname>>> => {
 
 export const apiDocs: GetServerSideProps<Props> = async(context) => {
   if (!config.features.restApiDocs.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
+export const graphIQl: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.graphqlApiDocs.isEnabled) {
     return {
       notFound: true,
     };
@@ -186,6 +196,16 @@ export const nameService: GetServerSideProps<Props> = async(context) => {
 
 export const accounts: GetServerSideProps<Props> = async(context) => {
   if (config.UI.views.address.hiddenViews?.top_accounts) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
+export const accountsLabelSearch: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.addressMetadata.isEnabled || !context.query.tagType) {
     return {
       notFound: true,
     };
@@ -268,6 +288,16 @@ export const publicTagsSubmit: GetServerSideProps<Props> = async(context) => {
 
 export const disputeGames: GetServerSideProps<Props> = async(context) => {
   if (!config.features.faultProofSystem.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
+export const mud: GetServerSideProps<Props> = async(context) => {
+  if (!config.features.mudFramework.isEnabled) {
     return {
       notFound: true,
     };

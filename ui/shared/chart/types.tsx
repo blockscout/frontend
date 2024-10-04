@@ -6,8 +6,10 @@ export interface TimeChartItemRaw {
 
 export interface TimeChartItem {
   date: Date;
+  date_to?: Date;
   dateLabel?: string;
   value: number;
+  isApproximate?: boolean;
 }
 
 export interface ChartMargin {

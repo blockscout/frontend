@@ -19,6 +19,20 @@ export type SmartContractLicenseType =
 'gnu_agpl_v3' |
 'bsl_1_1';
 
+export type SmartContractProxyType =
+  | 'eip1167'
+  | 'eip1967'
+  | 'eip1822'
+  | 'eip930'
+  | 'eip2535'
+  | 'master_copy'
+  | 'basic_implementation'
+  | 'basic_get_implementation'
+  | 'comptroller'
+  | 'clone_with_immutable_arguments'
+  | 'unknown'
+  | null;
+
 export interface SmartContract {
   deployed_bytecode: string | null;
   creation_bytecode: string | null;
@@ -27,7 +41,7 @@ export interface SmartContract {
   compiler_version: string | null;
   evm_version: string | null;
   optimization_enabled: boolean | null;
-  optimization_runs: number | null;
+  optimization_runs: number | string | null;
   name: string | null;
   verified_at: string | null;
   is_blueprint: boolean | null;
@@ -53,10 +67,11 @@ export interface SmartContract {
     remappings?: Array<string>;
   };
   verified_twin_address_hash: string | null;
-  minimal_proxy_address_hash: string | null;
+  proxy_type: SmartContractProxyType | null;
   language: string | null;
   license_type: SmartContractLicenseType | null;
   certified?: boolean;
+  zk_compiler_version?: string;
 }
 
 export type SmartContractDecodedConstructorArg = [
@@ -75,7 +90,7 @@ export interface SmartContractExternalLibrary {
 
 // VERIFICATION
 
-export type SmartContractVerificationMethod = 'flattened-code' | 'standard-input' | 'sourcify' | 'multi-part'
+export type SmartContractVerificationMethodApi = 'flattened-code' | 'standard-input' | 'sourcify' | 'multi-part'
 | 'vyper-code' | 'vyper-multi-part' | 'vyper-standard-input';
 
 export interface SmartContractVerificationConfigRaw {
@@ -86,10 +101,8 @@ export interface SmartContractVerificationConfigRaw {
   vyper_evm_versions: Array<string>;
   is_rust_verifier_microservice_enabled: boolean;
   license_types: Record<SmartContractLicenseType, number>;
-}
-
-export interface SmartContractVerificationConfig extends SmartContractVerificationConfigRaw {
-  verification_options: Array<SmartContractVerificationMethod>;
+  zk_compiler_versions?: Array<string>;
+  zk_optimization_modes?: Array<string>;
 }
 
 export type SmartContractVerificationResponse = {
@@ -106,29 +119,6 @@ export interface SmartContractVerificationError {
   compiler_version?: Array<string>;
   constructor_arguments?: Array<string>;
   name?: Array<string>;
-}
-
-export type SolidityscanReport = {
-  scan_report: {
-    contractname: string;
-    scan_status: string;
-    scan_summary: {
-      issue_severity_distribution: {
-        critical: number;
-        gas: number;
-        high: number;
-        informational: number;
-        low: number;
-        medium: number;
-      };
-      lines_analyzed_count: number;
-      scan_time_taken: number;
-      score: string;
-      score_v2: string;
-      threat_score: string;
-    };
-    scanner_reference_url: string;
-  };
 }
 
 type SmartContractSecurityAudit = {

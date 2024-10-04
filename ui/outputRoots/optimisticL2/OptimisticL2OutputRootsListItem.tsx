@@ -4,20 +4,18 @@ import React from 'react';
 import type { OptimisticL2OutputRootsItem } from 'types/api/optimisticL2';
 
 import config from 'configs/app';
-import dayjs from 'lib/date/dayjs';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 const rollupFeature = config.features.rollup;
 
 type Props = { item: OptimisticL2OutputRootsItem; isLoading?: boolean };
 
 const OptimisticL2OutputRootsListItem = ({ item, isLoading }: Props) => {
-  const timeAgo = dayjs(item.l1_timestamp).fromNow();
-
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'optimistic') {
     return null;
   }
@@ -32,9 +30,11 @@ const OptimisticL2OutputRootsListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">
-          <span>{ timeAgo }</span>
-        </Skeleton>
+        <TimeAgoWithTooltip
+          timestamp={ item.l1_timestamp }
+          isLoading={ isLoading }
+          display="inline-block"
+        />
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>L2 block #</ListItemMobileGrid.Label>

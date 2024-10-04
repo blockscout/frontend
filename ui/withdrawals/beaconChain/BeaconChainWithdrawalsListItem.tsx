@@ -6,12 +6,12 @@ import type { BlockWithdrawalsItem } from 'types/api/block';
 import type { WithdrawalsItem } from 'types/api/withdrawals';
 
 import config from 'configs/app';
-import dayjs from 'lib/date/dayjs';
 import { currencyUnits } from 'lib/units';
 import CurrencyValue from 'ui/shared/CurrencyValue';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 const feature = config.features.beaconChain;
 
@@ -74,7 +74,11 @@ const BeaconChainWithdrawalsListItem = ({ item, isLoading, view }: Props) => {
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <Skeleton isLoaded={ !isLoading } display="inline-block">{ dayjs(item.timestamp).fromNow() }</Skeleton>
+            <TimeAgoWithTooltip
+              timestamp={ item.timestamp }
+              isLoading={ isLoading }
+              display="inline-block"
+            />
           </ListItemMobileGrid.Value>
 
           <ListItemMobileGrid.Label isLoading={ isLoading }>Value</ListItemMobileGrid.Label>

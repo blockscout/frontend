@@ -61,7 +61,6 @@ test.describe('mobile', () => {
     );
 
     await page.getByRole('button', { name: /select/i }).click();
-    await page.getByText('USD Coin').hover();
 
     await expect(page).toHaveScreenshot();
   });

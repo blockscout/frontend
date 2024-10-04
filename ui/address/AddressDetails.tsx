@@ -4,7 +4,8 @@ import React from 'react';
 
 import config from 'configs/app';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
-import useIsMounted from 'lib/hooks/useIsMounted';
+import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
+import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import AddressCounterItem from 'ui/address/details/AddressCounterItem';
 import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
@@ -20,6 +21,7 @@ import AddressBalance from './details/AddressBalance';
 import AddressImplementations from './details/AddressImplementations';
 import AddressNameInfo from './details/AddressNameInfo';
 import AddressNetWorth from './details/AddressNetWorth';
+import AddressSaveOnGas from './details/AddressSaveOnGas';
 import TokenSelect from './tokenSelect/TokenSelect';
 import useAddressCountersQuery from './utils/useAddressCountersQuery';
 import type { AddressQuery } from './utils/useAddressQuery';
@@ -63,8 +65,6 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
     has_validated_blocks: false,
   }), [ addressHash ]);
 
-  const isMounted = useIsMounted();
-
   // error handling (except 404 codes)
   if (addressQuery.isError) {
     if (isCustomAppError(addressQuery.error)) {
@@ -79,7 +79,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
 
   const data = addressQuery.isError ? error404Data : addressQuery.data;
 
-  if (!data || !isMounted) {
+  if (!data) {
     return null;
   }
 
@@ -212,6 +212,12 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
                 />
               ) :
                 0 }
+              { !countersQuery.isPlaceholderData && countersQuery.data?.gas_usage_count && (
+                <AddressSaveOnGas
+                  gasUsed={ countersQuery.data.gas_usage_count }
+                  address={ data.hash }
+                />
+              ) }
             </DetailsInfoItem.Value>
           </>
         ) }
@@ -219,10 +225,10 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
         { data.has_validated_blocks && (
           <>
             <DetailsInfoItem.Label
-              hint="Number of blocks validated by this validator"
+              hint={ `Number of blocks ${ getNetworkValidationActionText() } by this ${ getNetworkValidatorTitle() }` }
               isLoading={ addressQuery.isPlaceholderData || countersQuery.isPlaceholderData }
             >
-              Blocks validated
+              { `Blocks ${ getNetworkValidationActionText() }` }
             </DetailsInfoItem.Label>
             <DetailsInfoItem.Value>
               { addressQuery.data ? (

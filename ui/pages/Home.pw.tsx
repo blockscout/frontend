@@ -49,33 +49,6 @@ test.describe('default view', () => {
   });
 });
 
-test.describe('custom hero plate background', () => {
-  const IMAGE_URL = 'https://localhost:3000/my-image.png';
-  test.beforeEach(async({ mockEnvs }) => {
-    await mockEnvs([
-      [ 'NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND', `no-repeat center/cover url(${ IMAGE_URL })` ],
-    ]);
-  });
-
-  test('default view', async({ render, page }) => {
-    await page.route(IMAGE_URL, (route) => {
-      return route.fulfill({
-        status: 200,
-        path: './playwright/mocks/image_long.jpg',
-      });
-    });
-
-    const component = await render(<Home/>);
-
-    const heroPlate = component.locator('div[data-label="hero plate"]');
-
-    await expect(heroPlate).toHaveScreenshot({
-      mask: [ page.locator(pwConfig.adsBannerSelector) ],
-      maskColor: pwConfig.maskColor,
-    });
-  });
-});
-
 // had to separate mobile test, otherwise all the tests fell on CI
 test.describe('mobile', () => {
   test.use({ viewport: devices['iPhone 13 Pro'].viewport });

@@ -5,12 +5,12 @@ import React from 'react';
 import type { AddressCoinBalanceHistoryItem } from 'types/api/address';
 
 import { WEI, ZERO } from 'lib/consts';
-import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import { currencyUnits } from 'lib/units';
 import colors from 'theme/foundations/colors';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 type Props = AddressCoinBalanceHistoryItem & {
   page: number;
@@ -20,7 +20,6 @@ type Props = AddressCoinBalanceHistoryItem & {
 const AddressCoinBalanceListItem = (props: Props) => {
   const deltaBn = BigNumber(props.delta).div(WEI);
   const isPositiveDelta = deltaBn.gte(ZERO);
-  const timeAgo = useTimeAgoIncrement(props.block_timestamp, props.page === 1);
 
   return (
     <ListItemMobile rowGap={ 2 } isAnimated>
@@ -62,7 +61,12 @@ const AddressCoinBalanceListItem = (props: Props) => {
       ) }
       <Flex columnGap={ 2 } w="100%">
         <Skeleton isLoaded={ !props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Age</Skeleton>
-        <Skeleton isLoaded={ !props.isLoading } color="text_secondary"><span>{ timeAgo }</span></Skeleton>
+        <TimeAgoWithTooltip
+          timestamp={ props.block_timestamp }
+          enableIncrement={ props.page === 1 }
+          isLoading={ props.isLoading }
+          color="text_secondary"
+        />
       </Flex>
     </ListItemMobile>
   );
