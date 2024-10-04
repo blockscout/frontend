@@ -1,5 +1,5 @@
 import type { GridProps, HTMLChakraProps } from '@chakra-ui/react';
-import { Box, Grid, Flex, Text, Link, VStack, Skeleton, useColorModeValue } from '@chakra-ui/react';
+import { Box, Grid, Flex, Text, Link, VStack, Skeleton } from '@chakra-ui/react'; //useColorModeValue
 import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
@@ -10,13 +10,10 @@ import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import useFetch from 'lib/hooks/useFetch';
 import useIssueUrl from 'lib/hooks/useIssueUrl';
-<<<<<<< HEAD
-import colors from 'theme/foundations/colors';
-=======
 import { copy } from 'lib/html-entities';
+import colors from 'theme/foundations/colors';
 import IconSvg from 'ui/shared/IconSvg';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
->>>>>>> upstream/main
 import NetworkAddToWallet from 'ui/shared/NetworkAddToWallet';
 
 import FooterLinkItem from './FooterLinkItem';
@@ -37,7 +34,7 @@ const Footer = () => {
   });
   const apiVersionUrl = getApiVersionUrl(backendVersionData?.backend_version);
   const issueUrl = useIssueUrl(backendVersionData?.backend_version);
-  const logoColor = useColorModeValue('blue.600', 'white');
+  // const logoColor = useColorModeValue('blue.600', 'white');
 
   const BLOCKSCOUT_LINKS = [
     {
@@ -146,7 +143,9 @@ const Footer = () => {
         <Box mt={ 6 } alignItems="start" fontSize="xs" lineHeight={ 5 }>
           { apiVersionUrl && (
             <Text>
-              Backend: <Link color={ colors.grayTrue[200] } _hover={{ color: 'white' }} href={ apiVersionUrl } target="_blank">{ backendVersionData?.backend_version }</Link>
+              Backend: <Link color={ colors.grayTrue[200] } _hover={{ color: 'white' }}
+                href={ apiVersionUrl } target="_blank">{ backendVersionData?.backend_version }
+              </Link>
             </Text>
           ) }
           { frontendLink && (
@@ -160,7 +159,7 @@ const Footer = () => {
         </Box>
       </Box>
     );
-  }, [ apiVersionUrl, backendVersionData?.backend_version, frontendLink, logoColor ]);
+  }, [ apiVersionUrl, backendVersionData?.backend_version, frontendLink ]); //logoColor
 
   const containerProps: HTMLChakraProps<'div'> = {
     as: 'footer',

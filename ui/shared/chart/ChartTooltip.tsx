@@ -4,7 +4,6 @@ import React from 'react';
 import { Resolution } from '@blockscout/stats-types';
 import type { TimeChartData } from 'ui/shared/chart/types';
 
-import colors from 'theme/foundations/colors';
 import ChartTooltipBackdrop, { useRenderBackdrop } from './tooltip/ChartTooltipBackdrop';
 import ChartTooltipContent, { useRenderContent } from './tooltip/ChartTooltipContent';
 import ChartTooltipLine, { useRenderLine } from './tooltip/ChartTooltipLine';

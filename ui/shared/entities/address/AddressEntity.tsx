@@ -7,7 +7,6 @@ import type { AddressParam } from 'types/api/addressParams';
 import { route } from 'nextjs-routes';
 
 import { useAddressHighlightContext } from 'lib/contexts/addressHighlight';
-import colors from 'theme/foundations/colors';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
 import { distributeEntityProps, getIconProps } from '../base/utils';

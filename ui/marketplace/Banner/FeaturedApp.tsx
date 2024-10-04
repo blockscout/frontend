@@ -7,8 +7,6 @@ import type { MarketplaceAppPreview } from 'types/client/marketplace';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import * as mixpanel from 'lib/mixpanel/index';
-import colors from 'theme/foundations/colors';
-import IconSvg from 'ui/shared/IconSvg';
 
 import FavoriteIcon from '../FavoriteIcon';
 import MarketplaceAppIntegrationIcon from '../MarketplaceAppIntegrationIcon';

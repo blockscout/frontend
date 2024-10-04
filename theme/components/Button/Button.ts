@@ -2,8 +2,8 @@ import { defineStyle, defineStyleConfig } from '@chakra-ui/styled-system';
 import { mode } from '@chakra-ui/theme-tools';
 import { runIfFn } from '@chakra-ui/utils';
 
-import colors from 'theme/foundations/colors';
 import config from 'configs/app';
+import colors from 'theme/foundations/colors';
 
 const variantSolid = defineStyle((props) => {
   const { colorScheme: c } = props;

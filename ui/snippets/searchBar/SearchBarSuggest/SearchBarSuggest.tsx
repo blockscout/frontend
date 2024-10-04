@@ -8,8 +8,8 @@ import type { SearchResultItem } from 'types/api/search';
 
 import type { ResourceError } from 'lib/api/resources';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import colors from 'theme/foundations/colors';
 import * as regexp from 'lib/regexp';
+import colors from 'theme/foundations/colors';
 import useMarketplaceApps from 'ui/marketplace/useMarketplaceApps';
 import TextAd from 'ui/shared/ad/TextAd';
 import ContentLoader from 'ui/shared/ContentLoader';

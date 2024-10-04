@@ -2,7 +2,6 @@ import { Box, Flex, Text, Grid, useColorModeValue, chakra } from '@chakra-ui/rea
 import React from 'react';
 
 import type { SolidityScanReportSeverityDistribution } from 'lib/solidityScan/schema';
-
 import colors from 'theme/foundations/colors';
 
 type DistributionItem = {

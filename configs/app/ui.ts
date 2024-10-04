@@ -53,10 +53,10 @@ const defaultColorTheme = (() => {
   return COLOR_THEMES.find((theme) => theme.id === envValue);
 })();
 
-// eslint-disable-next-line max-len
-const HOMEPAGE_PLATE_BACKGROUND_DEFAULT = 'linear-gradient(180deg, #FE2C2E 0%, #CCA43B 100%)';
-//'networks/background';
-//'url(/assets/ui/home/backgrounds/test-homeplate-background.png)';//'linear-gradient(180deg, #FE2C2E 0%, #CCA43B 100%)';
+// // eslint-disable-next-line max-len
+// const HOMEPAGE_PLATE_BACKGROUND_DEFAULT = 'linear-gradient(180deg, #FE2C2E 0%, #CCA43B 100%)';
+// //'networks/background';
+// //'url(/assets/ui/home/backgrounds/test-homeplate-background.png)';//'linear-gradient(180deg, #FE2C2E 0%, #CCA43B 100%)';
 
 const UI = Object.freeze({
   navigation: {

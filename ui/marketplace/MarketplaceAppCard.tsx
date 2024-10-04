@@ -5,8 +5,8 @@ import React, { useCallback } from 'react';
 import type { MarketplaceAppWithSecurityReport, ContractListTypes, AppRating } from 'types/client/marketplace';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import colors from 'theme/foundations/colors';
 import isBrowser from 'lib/isBrowser';
+import colors from 'theme/foundations/colors';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 
 import AppSecurityReport from './AppSecurityReport';

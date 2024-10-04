@@ -10,7 +10,6 @@ import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import dayjs from 'lib/date/dayjs';
 import stripTrailingSlash from 'lib/stripTrailingSlash';
-import colors from 'theme/foundations/colors';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import NftEntity from 'ui/shared/entities/nft/NftEntity';

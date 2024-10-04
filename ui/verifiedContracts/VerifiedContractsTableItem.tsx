@@ -6,7 +6,6 @@ import type { VerifiedContract } from 'types/api/contracts';
 
 import config from 'configs/app';
 import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
-import dayjs from 'lib/date/dayjs';
 import colors from 'theme/foundations/colors';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
@@ -99,19 +98,12 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
       </Td>
       <Td>
         <Flex alignItems="center" columnGap={ 2 } my={ 1 }>
-<<<<<<< HEAD
           <IconSvg name="status/success" boxSize={ 4 } color={ colors.success[500] } isLoading={ isLoading }/>
-          <Skeleton isLoaded={ !isLoading } color="text_secondary">
-            <span>{ dayjs(data.verified_at).fromNow() }</span>
-          </Skeleton>
-=======
-          <IconSvg name="status/success" boxSize={ 4 } color="green.500" isLoading={ isLoading }/>
           <TimeAgoWithTooltip
             timestamp={ data.verified_at }
             isLoading={ isLoading }
             color="text_secondary"
           />
->>>>>>> upstream/main
         </Flex>
       </Td>
       <Td>
