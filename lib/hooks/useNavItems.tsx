@@ -12,6 +12,7 @@ interface ReturnType {
   mainNavItems: Array<NavItem | NavGroupItem>;
   accountNavItems: Array<NavItem>;
   profileItem: NavItem;
+  rewardsNavItem: NavItem | null;
 }
 
 export function isGroupItem(item: NavItem | NavGroupItem): item is NavGroupItem {
@@ -272,13 +273,6 @@ export default function useNavItems(): ReturnType {
     ].filter(Boolean);
 
     const accountNavItems: ReturnType['accountNavItems'] = [
-      config.features.rewards.isEnabled ? {
-        text: rewardsBalance?.total ? `${ rewardsBalance?.total } Merits` : 'Merits',
-        nextRoute: { pathname: '/account/rewards' as const },
-        onClick: rewardsApiToken ? undefined : openRewardsLoginModal,
-        icon: dailyReward?.available ? 'merits_with_dot' : 'merits',
-        isActive: pathname === '/account/rewards',
-      } : null,
       {
         text: 'Watch list',
         nextRoute: { pathname: '/account/watchlist' as const },
@@ -318,6 +312,14 @@ export default function useNavItems(): ReturnType {
       isActive: pathname === '/auth/profile',
     };
 
-    return { mainNavItems, accountNavItems, profileItem };
+    const rewardsNavItem = config.features.rewards.isEnabled ? {
+      text: rewardsBalance?.total ? `${ rewardsBalance?.total } Merits` : 'Merits',
+      nextRoute: { pathname: '/account/rewards' as const },
+      onClick: rewardsApiToken ? undefined : openRewardsLoginModal,
+      icon: dailyReward?.available ? 'merits_with_dot' : 'merits',
+      isActive: pathname === '/account/rewards',
+    } : null;
+
+    return { mainNavItems, accountNavItems, profileItem, rewardsNavItem };
   }, [ pathname, openRewardsLoginModal, rewardsBalance, dailyReward, rewardsApiToken ]);
 }
