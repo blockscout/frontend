@@ -2,21 +2,25 @@ import { Box, Flex, Heading, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
-import AdBanner from 'ui/shared/ad/AdBanner';
 import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
 import SearchBar from 'ui/snippets/searchBar/SearchBar';
 import WalletMenuDesktop from 'ui/snippets/walletMenu/WalletMenuDesktop';
 
-const BACKGROUND_DEFAULT = 'radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%), var(--chakra-colors-blue-400)';
+// const BACKGROUND_DEFAULT = 'linear-gradient(180deg, #FE2C2E 0%, #CCA43B 100%)';
+const BACKGROUND_SMALL = 'https://static.game7protocol.com/blockscout/homeplate_bg-base.png';
+const BACKGROUND_DEFAULT = 'https://static.game7protocol.com/blockscout/homeplate_bg-lg.png';
 const TEXT_COLOR_DEFAULT = 'white';
 const BORDER_DEFAULT = 'none';
 
 const HeroBanner = () => {
   const background = useColorModeValue(
-    config.UI.homepage.heroBanner?.background?.[0] || config.UI.homepage.plate.background || BACKGROUND_DEFAULT,
-    config.UI.homepage.heroBanner?.background?.[1] || config.UI.homepage.plate.background || BACKGROUND_DEFAULT,
+    config.UI.homepage.heroBanner?.background?.[0] || BACKGROUND_DEFAULT, // config.UI.homepage.plate.background ||
+    config.UI.homepage.heroBanner?.background?.[0] || BACKGROUND_DEFAULT,
   );
-
+  const backgroundSm = useColorModeValue(
+    config.UI.homepage.heroBanner?.background?.[0] || BACKGROUND_SMALL,
+    config.UI.homepage.heroBanner?.background?.[0] || BACKGROUND_SMALL,
+  );
   const textColor = useColorModeValue(
     config.UI.homepage.heroBanner?.text_color?.[0] || config.UI.homepage.plate.textColor || TEXT_COLOR_DEFAULT,
     config.UI.homepage.heroBanner?.text_color?.[1] || config.UI.homepage.plate.textColor || TEXT_COLOR_DEFAULT,
@@ -30,7 +34,10 @@ const HeroBanner = () => {
   return (
     <Flex
       w="100%"
-      background={ background }
+      backgroundImage={{
+        sm: backgroundSm,
+        md: background,
+      }}
       border={ border }
       borderRadius="md"
       p={{ base: 4, lg: 8 }}
@@ -61,7 +68,6 @@ const HeroBanner = () => {
         </Flex>
         <SearchBar isHomepage/>
       </Box>
-      <AdBanner platform="mobile" w="fit-content" flexShrink={ 0 } borderRadius="md" overflow="hidden" display={{ base: 'none', lg: 'block ' }}/>
     </Flex>
   );
 };
