@@ -810,6 +810,7 @@ const schema = yup
     NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID: yup.string(),
     NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN: yup.string(),
     NEXT_PUBLIC_GROWTH_BOOK_CLIENT_KEY: yup.string(),
+    NEXT_PUBLIC_REWARDS_SERVICE_API_HOST: yup.string().test(urlTest),
 
     // Misc
     NEXT_PUBLIC_USE_NEXT_JS_PROXY: yup.boolean(),

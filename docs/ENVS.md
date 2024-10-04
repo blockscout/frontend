@@ -63,6 +63,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
   - [Multichain balance button](ENVS.md#multichain-balance-button)
   - [Get gas button](ENVS.md#get-gas-button)
   - [Save on gas with GasHawk](ENVS.md#save-on-gas-with-gashawk)
+  - [Rewards service API](ENVS.md#rewards-service-api)
 - [3rd party services configuration](ENVS.md#external-services-configuration)
 
 &nbsp;
@@ -766,6 +767,14 @@ The feature enables a "Save with GasHawk" button next to the "Gas used" value on
 | NEXT_PUBLIC_SAVE_ON_GAS_ENABLED | `boolean` | Set to "true" to enable the feature | - | - | `true` | v1.35.0+ |
 
 &nbsp;
+
+### Rewards service API
+
+This feature enables Blockscout Merits program.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_REWARDS_SERVICE_API_HOST | `string` | API url | - | - | `https://example.com` | v1.36.0+ |
 
 ## External services configuration
 
