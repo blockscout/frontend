@@ -15,6 +15,7 @@ import {
 import { useWindowSize } from '@uidotdev/usehooks';
 import BigNumber from 'bignumber.js';
 import React from 'react';
+import { RotatingLines } from 'react-loader-spinner';
 import { scroller, Element } from 'react-scroll';
 
 import type { Transaction } from 'types/api/transaction';
@@ -26,6 +27,7 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
 import { useArweaveId } from 'lib/hooks/useArweaveId';
+import { useWvmArchiver } from 'lib/hooks/useWvmArchiver';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
 import { currencyUnits } from 'lib/units';
@@ -45,6 +47,7 @@ import IconSvg from 'ui/shared/IconSvg';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
+import WvmArchiverTag from 'ui/shared/statusTag/WvmArchiverTag';
 import TextSeparator from 'ui/shared/TextSeparator';
 import TxFeeStability from 'ui/shared/tx/TxFeeStability';
 import Utilization from 'ui/shared/Utilization/Utilization';
@@ -72,6 +75,7 @@ interface Props {
 const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
   const size = useWindowSize();
   const { colorMode } = useColorMode();
+  const isWvmArchiver = useWvmArchiver({ address: data?.from.hash });
   const isSmallDevice = size.width && size.width < 768;
   const wvmIconPath =
     colorMode === 'light' ? 'networks/arweave-dark' : 'networks/arweave-light';
@@ -310,6 +314,20 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
         </>
       ) }
 
+      { isWvmArchiver && (
+        <>
+          <DetailsInfoItem.Label
+            hint="The external application source that generated this transaction"
+            isLoading={ isLoading }
+          >
+          Application
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            <WvmArchiverTag/>
+          </DetailsInfoItem.Value>
+        </>
+      ) }
+
       <DetailsInfoItem.Label
         hint="Block number containing the transaction"
         isLoading={ isLoading }
@@ -425,23 +443,39 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           <DetailsInfoItem.Value>
             <IconSvg
               name={ wvmIconPath }
-              width="5"
-              height="5"
+              width="20px"
+              height="20px"
               display="block"
-              marginLeft="5px"
               marginRight="5px"
               borderRadius="full"
             />
-            <Link
-              isExternal
-              href={ `https://arweave.net/${ arweaveId }` }
-              rel="noopener noreferrer"
-              color="#00B774"
-            >
-              <EntityBase.Content text={ isSmallDevice ? truncateArweaveId(arweaveId) : arweaveId }/>
-            </Link>
+            { arweaveId === 'block_not_archived_or_backfilled' ? (
+              <>
+                <Text color={ colorMode === 'dark' ? '#1AFFB1' : '#00B774' } marginLeft="5px" marginRight="12px">Pending </Text>
 
-            <CopyToClipboard text={ arweaveId }/>
+                <RotatingLines
+                  strokeColor="grey"
+                  strokeWidth="5"
+                  animationDuration="0.75"
+                  width="18"
+                  visible={ true }
+                />
+              </>
+            ) : (
+              <>
+                <Link
+                  isExternal
+                  href={ `https://arweave.net/${ arweaveId }` }
+                  rel="noopener noreferrer"
+                  color={ colorMode === 'dark' ? '#1AFFB1' : '#00B774' }
+                  marginLeft="5px"
+                >
+                  <EntityBase.Content text={ isSmallDevice ? truncateArweaveId(arweaveId) : arweaveId }/>
+                </Link>
+
+                <CopyToClipboard text={ arweaveId }/>
+              </>
+            ) }
           </DetailsInfoItem.Value>
         </>
       ) : (
