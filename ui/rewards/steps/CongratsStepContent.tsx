@@ -18,6 +18,10 @@ const CongratsStepContent = ({ isReferral }: Props) => {
   const referralsQuery = useReferrals();
   const rewardsConfigQuery = useRewardsConfig();
 
+  const registrationReward = rewardsConfigQuery.data?.rewards.registration;
+  const referralReward = Number(rewardsConfigQuery.data?.rewards.registration_with_referral) - Number(rewardsConfigQuery.data?.rewards.registration);
+  const refLink = `https://eth.blockscout.com?ref=${ referralsQuery.data?.code }`;
+  const shareText = `Just signed up for @blockscoutcom Merits program and got ${ registrationReward } merits!\n\nUse my referral link to get extra ${ referralReward } merits: ${ refLink }`; // eslint-disable-line max-len
   return (
     <>
       <Flex
@@ -42,11 +46,11 @@ const CongratsStepContent = ({ isReferral }: Props) => {
                 { [
                   {
                     title: 'Registration',
-                    value: rewardsConfigQuery.data?.rewards.registration,
+                    value: registrationReward,
                   },
                   {
                     title: 'Referral program',
-                    value: Number(rewardsConfigQuery.data?.rewards.registration_with_referral) - Number(rewardsConfigQuery.data?.rewards.registration),
+                    value: referralReward,
                   },
                 ].map(({ title, value }) => (
                   <Flex key={ title } alignItems="center">
@@ -99,11 +103,17 @@ const CongratsStepContent = ({ isReferral }: Props) => {
         </Text>
         <CopyField
           label="Referral link"
-          value={ `https://eth.blockscout.com?ref=${ referralsQuery.data?.code }` }
+          value={ refLink }
           isLoading={ referralsQuery.isLoading }
           mt={ 3 }
         />
-        <Button mt={ 6 } isLoading={ referralsQuery.isLoading }>
+        <Button
+          as="a"
+          target="_blank"
+          mt={ 6 }
+          isLoading={ referralsQuery.isLoading }
+          href={ `https://x.com/intent/tweet?text=${ encodeURIComponent(shareText) }` }
+        >
           Share on <IconSvg name="social/twitter" boxSize={ 6 } ml={ 1 }/>
         </Button>
       </Flex>
