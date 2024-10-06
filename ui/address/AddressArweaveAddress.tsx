@@ -1,6 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Skeleton, Text, Box } from '@chakra-ui/react';
+import { Skeleton, Text, chakra } from '@chakra-ui/react';
 import { useLambdaState } from 'lib/hooks/useLambdaState';
+import * as EntityBase from 'ui/shared/entities/base/components';
+
+const Link = chakra((props: any) => {
+
+  return (
+    <EntityBase.Link
+      href={ props.href }
+    >
+      { props.addressHash }
+    </EntityBase.Link>
+  );
+});
 
 const AddressArweaveAddress = ({ addressHash }: any) => {
   const [arweaveAddress, setArweaveAddress] = useState<string | null>(null);
@@ -30,11 +42,7 @@ const AddressArweaveAddress = ({ addressHash }: any) => {
   return (
     <Skeleton isLoaded={!isLoading}>
       {arweaveAddress ? (
-        <Box>
-          <Text mr={2} as="a" href={`https://viewblock.io/arweave/address/${arweaveAddress}`} target="_blank" rel="noopener noreferrer" color="blue.500" textDecoration="underline">
-            {arweaveAddress}
-          </Text>
-        </Box>
+        <Link href={`https://viewblock.io/arweave/address/${arweaveAddress}`} addressHash={arweaveAddress} />
       ) : (
         <Text>No linked Arweave address found</Text>
       )}
