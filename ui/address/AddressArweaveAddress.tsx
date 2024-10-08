@@ -16,12 +16,12 @@ const Link = chakra((props: any) => {
 
 const AddressArweaveAddress = ({ addressHash }: any) => {
   const [arweaveAddress, setArweaveAddress] = useState<string | null>(null);
-  const { data, isLoading } = useLambdaState();
+  const { data, isLoading } = useLambdaState(addressHash);
 
   const searchArksByKey = (state: any, ethereumAddress: string) => {
     if (!ethereumAddress || !state) return null;
-    if (state.arks?.[ethereumAddress.toLowerCase()]) {
-      return { ethereumAddress: ethereumAddress.toLowerCase(), arweaveLinkings: state.arks[ethereumAddress.toLowerCase()][0].arweave_address, callTXID: state.arks[ethereumAddress.toLowerCase()][0].call_txid };
+    if (state?.ark) {
+      return { ethereumAddress: ethereumAddress.toLowerCase(), arweaveLinkings: state.ark[0].arweave_address, callTXID: state.ark[0].call_txid };
     } else {
       return null;
     }
@@ -31,7 +31,7 @@ const AddressArweaveAddress = ({ addressHash }: any) => {
     const fetchArweaveAddress = async () => {
       if (addressHash && data) {
         // @ts-ignore
-        const result = searchArksByKey(data?.data, addressHash);
+        const result = searchArksByKey(data, addressHash);
         setArweaveAddress(result ? result.arweaveLinkings : null);
       }
     };
