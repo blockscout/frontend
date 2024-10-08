@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { Box, OrderedList, ListItem, useColorModeValue, Flex, chakra, Button } from '@chakra-ui/react';
+import { Box, OrderedList, ListItem, useColorModeValue, Flex, chakra, Button, Link } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
