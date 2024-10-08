@@ -13,6 +13,7 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { ARBITRUM_L2_TXN_BATCHES_ITEM } from 'stubs/arbitrumL2';
+import colors from 'theme/foundations/colors';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 
 import LatestBatchItem from './LatestBatchItem';
@@ -75,7 +76,8 @@ const LatestArbitrumL2Batches = () => {
           </AnimatePresence>
         </VStack>
         <Flex justifyContent="center">
-          <LinkInternal fontSize="sm" href={ route({ pathname: '/batches' }) }>View all batches</LinkInternal>
+          <LinkInternal textDecoration="underline" color={ colors.grayTrue[200] } _hover={{ color: 'white' }}
+            fontSize="sm" href={ route({ pathname: '/batches' }) }>View all batches</LinkInternal>
         </Flex>
       </>
     );

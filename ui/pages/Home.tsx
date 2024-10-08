@@ -16,7 +16,7 @@ const Home = () => {
   return (
     <Box as="main">
       <HeroBanner/>
-      <Flex flexDir={{ base: 'column', lg: 'row' }} columnGap={ 2 } rowGap={ 1 } mt={ 3 } _empty={{ mt: 0 }}>
+      <Flex flexDir={{ base: 'column', lg: 'row' }} columnGap={ 4 } rowGap={ 4 } mt={ 4 } _empty={{ mt: 0 }}>
         <Stats/>
         <ChainIndicators/>
       </Flex>

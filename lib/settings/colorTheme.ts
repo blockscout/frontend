@@ -37,7 +37,7 @@ export const COLOR_THEMES: Array<ColorTheme> = [
     label: 'Dark',
     colorMode: 'dark',
     hex: '#0B0B0B',
-    sampleBg: 'url("https://static.game7protocol.com/blockscout/dark_theme-sample_bg-2.png") center / contain no-repeat',
+    sampleBg: 'url("https://storage.game7test.io/blockscout/dark_theme-sample_bg.png") center / contain no-repeat',
     //'linear-gradient(180deg, #FE2C2E 0%, #CCA43B 100%)', 'linear-gradient(161deg, #000 9.37%, #383838 92.52%)'
   },
 ];

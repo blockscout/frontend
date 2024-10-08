@@ -35,7 +35,7 @@ const AddressIntTxsTableItem = ({
   return (
     <Tr alignItems="top">
       <Td verticalAlign="middle">
-        <Flex rowGap={ 3 } flexWrap="wrap">
+        <Flex gap={ 3 } flexWrap="wrap">
           <TxEntity
             hash={ txnHash }
             isLoading={ isLoading }

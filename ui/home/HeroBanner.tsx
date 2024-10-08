@@ -7,8 +7,8 @@ import SearchBar from 'ui/snippets/searchBar/SearchBar';
 import WalletMenuDesktop from 'ui/snippets/walletMenu/WalletMenuDesktop';
 
 // const BACKGROUND_DEFAULT = 'linear-gradient(180deg, #FE2C2E 0%, #CCA43B 100%)';
-const BACKGROUND_SMALL = 'https://static.game7protocol.com/blockscout/homeplate_bg-base.png';
-const BACKGROUND_DEFAULT = 'https://static.game7protocol.com/blockscout/homeplate_bg-lg.png';
+const BACKGROUND_SMALL = 'https://storage.game7test.io/blockscout/homeplate_bg-base.png';
+const BACKGROUND_DEFAULT = 'https://storage.game7test.io/blockscout/homeplate_bg-lg.png';
 const TEXT_COLOR_DEFAULT = 'white';
 const BORDER_DEFAULT = 'none';
 

@@ -13,6 +13,7 @@ import useIsMobile from 'lib/hooks/useIsMobile';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import { ZKEVM_L2_TXN_BATCHES_ITEM } from 'stubs/zkEvmL2';
+import colors from 'theme/foundations/colors';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import ZkEvmL2TxnBatchStatus from 'ui/shared/statusTag/ZkEvmL2TxnBatchStatus';
 
@@ -80,7 +81,8 @@ const LatestZkEvmL2Batches = () => {
           </AnimatePresence>
         </VStack>
         <Flex justifyContent="center">
-          <LinkInternal fontSize="sm" href={ route({ pathname: '/batches' }) }>View all batches</LinkInternal>
+          <LinkInternal textDecoration="underline" color={ colors.grayTrue[200] } _hover={{ color: 'white' }}
+            fontSize="sm" href={ route({ pathname: '/batches' }) }>View all batches</LinkInternal>
         </Flex>
       </>
     );

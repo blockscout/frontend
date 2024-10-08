@@ -6,6 +6,7 @@ import { Resolution } from '@blockscout/stats-types';
 import type { ChartMargin, TimeChartData, TimeChartItem } from 'ui/shared/chart/types';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import colors from 'theme/foundations/colors';
 import ChartArea from 'ui/shared/chart/ChartArea';
 import ChartAxis from 'ui/shared/chart/ChartAxis';
 import ChartGridLine from 'ui/shared/chart/ChartGridLine';
@@ -41,7 +42,7 @@ const ChartWidgetGraph = ({
   zoomRange,
 }: Props) => {
   const isMobile = useIsMobile();
-  const color = useToken('colors', 'blue.200');
+  const color = useToken('colors', colors.white); //'blue.200'
   const chartId = `chart-${ title.split(' ').join('') }-${ isEnlarged ? 'fullscreen' : 'small' }`;
 
   const overlayRef = React.useRef<SVGRectElement>(null);
