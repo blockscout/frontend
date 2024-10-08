@@ -32,6 +32,7 @@ export { default as stats } from './stats';
 export { default as suave } from './suave';
 export { default as txInterpretation } from './txInterpretation';
 export { default as userOps } from './userOps';
+export { default as addressProfileAPI } from './addressProfileAPI';
 export { default as validators } from './validators';
 export { default as verifiedTokens } from './verifiedTokens';
 export { default as web3Wallet } from './web3Wallet';

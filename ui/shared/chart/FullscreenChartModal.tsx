@@ -1,11 +1,12 @@
 import { Box, Button, Grid, Heading, Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay, Text } from '@chakra-ui/react';
-import React, { useCallback } from 'react';
+import React from 'react';
 
 import type { TimeChartItem } from './types';
+import type { Resolution } from '@blockscout/stats-types';
 
 import IconSvg from 'ui/shared/IconSvg';
 
-import ChartWidgetGraph from './ChartWidgetGraph';
+import ChartWidgetContent from './ChartWidgetContent';
 
 type Props = {
   isOpen: boolean;
@@ -14,6 +15,10 @@ type Props = {
   items: Array<TimeChartItem>;
   onClose: () => void;
   units?: string;
+  resolution?: Resolution;
+  zoomRange?: [ Date, Date ];
+  handleZoom: (range: [ Date, Date ]) => void;
+  handleZoomReset: () => void;
 }
 
 const FullscreenChartModal = ({
@@ -23,17 +28,11 @@ const FullscreenChartModal = ({
   items,
   units,
   onClose,
+  resolution,
+  zoomRange,
+  handleZoom,
+  handleZoomReset,
 }: Props) => {
-  const [ isZoomResetInitial, setIsZoomResetInitial ] = React.useState(true);
-
-  const handleZoom = useCallback(() => {
-    setIsZoomResetInitial(false);
-  }, []);
-
-  const handleZoomResetClick = useCallback(() => {
-    setIsZoomResetInitial(true);
-  }, []);
-
   return (
     <Modal
       isOpen={ isOpen }
@@ -69,7 +68,7 @@ const FullscreenChartModal = ({
               </Text>
             ) }
 
-            { !isZoomResetInitial && (
+            { Boolean(zoomRange) && (
               <Button
                 leftIcon={ <IconSvg name="repeat" w={ 4 } h={ 4 }/> }
                 colorScheme="blue"
@@ -79,7 +78,7 @@ const FullscreenChartModal = ({
                 gridRow="1/3"
                 size="sm"
                 variant="outline"
-                onClick={ handleZoomResetClick }
+                onClick={ handleZoomReset }
               >
                 Reset zoom
               </Button>
@@ -91,15 +90,16 @@ const FullscreenChartModal = ({
 
         <ModalBody
           h="100%"
+          margin={{ bottom: 60 }}
         >
-          <ChartWidgetGraph
-            margin={{ bottom: 60 }}
+          <ChartWidgetContent
             isEnlarged
             items={ items }
             units={ units }
-            onZoom={ handleZoom }
-            isZoomResetInitial={ isZoomResetInitial }
+            handleZoom={ handleZoom }
+            zoomRange={ zoomRange }
             title={ title }
+            resolution={ resolution }
           />
         </ModalBody>
       </ModalContent>

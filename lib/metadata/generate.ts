@@ -20,7 +20,7 @@ export default function generate<Pathname extends Route['pathname']>(route: Rout
   };
 
   const title = compileValue(templates.title.make(route.pathname, Boolean(apiData)), params);
-  const description = compileValue(templates.description.make(route.pathname), params);
+  const description = compileValue(templates.description.make(route.pathname, Boolean(apiData)), params);
 
   const pageOgType = getPageOgType(route.pathname);
 

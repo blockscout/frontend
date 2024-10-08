@@ -5,6 +5,7 @@ import path from 'path';
 const PRESETS = {
   arbitrum: 'https://arbitrum.blockscout.com',
   base: 'https://base.blockscout.com',
+  blackfort_testnet: 'https://blackfort-testnet.blockscout.com',
   celo_alfajores: 'https://celo-alfajores.blockscout.com',
   eth: 'https://eth.blockscout.com',
   eth_goerli: 'https://eth-goerli.blockscout.com',
@@ -18,6 +19,7 @@ const PRESETS = {
   stability_testnet: 'https://stability-testnet.blockscout.com',
   zkevm: 'https://zkevm.blockscout.com',
   zksync: 'https://zksync.blockscout.com',
+  zora: 'https://explorer.zora.energy',
   // main === staging
   main: 'https://eth-sepolia.k8s-dev.blockscout.com',
 };

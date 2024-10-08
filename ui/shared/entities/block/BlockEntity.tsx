@@ -48,7 +48,7 @@ const Content = chakra((props: ContentProps) => {
 const Container = EntityBase.Container;
 
 export interface EntityProps extends EntityBase.EntityBaseProps {
-  number: number;
+  number: number | string;
   hash?: string;
 }
 
