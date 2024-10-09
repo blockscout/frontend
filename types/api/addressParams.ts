@@ -2,7 +2,7 @@ import type { AddressMetadataTagApi } from './addressMetadata';
 
 export interface AddressImplementation {
   address: string;
-  name: string | null;
+  name?: string | null;
 }
 
 export interface AddressTag {
@@ -24,9 +24,7 @@ export interface UserTags {
 
 export type AddressParamBasic = {
   hash: string;
-  // API doesn't return hash in this model yet
-  // will be fixed in the future releases
-  implementations: Array<Omit<AddressImplementation, 'address'>> | null;
+  implementations: Array<AddressImplementation> | null;
   name: string | null;
   is_contract: boolean;
   is_verified: boolean | null;

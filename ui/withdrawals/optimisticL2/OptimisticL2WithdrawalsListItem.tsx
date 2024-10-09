@@ -10,13 +10,13 @@ import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 const rollupFeature = config.features.rollup;
 
 type Props = { item: OptimisticL2WithdrawalsItem; isLoading?: boolean };
 
 const OptimisticL2WithdrawalsListItem = ({ item, isLoading }: Props) => {
-  const timeAgo = item.l2_timestamp ? dayjs(item.l2_timestamp).fromNow() : null;
   const timeToEnd = item.challenge_period_end ? dayjs(item.challenge_period_end).fromNow(true) + ' left' : null;
 
   if (!rollupFeature.isEnabled || rollupFeature.type !== 'optimistic') {
@@ -57,13 +57,15 @@ const OptimisticL2WithdrawalsListItem = ({ item, isLoading }: Props) => {
         />
       </ListItemMobileGrid.Value>
 
-      { timeAgo && (
+      { item.l2_timestamp && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
-            <Skeleton isLoaded={ !isLoading } display="inline-block">
-              { timeAgo }
-            </Skeleton>
+            <TimeAgoWithTooltip
+              timestamp={ item.l2_timestamp }
+              isLoading={ isLoading }
+              display="inline-block"
+            />
           </ListItemMobileGrid.Value>
         </>
       ) }

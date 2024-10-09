@@ -21,7 +21,10 @@ test.describe.configure({ mode: 'serial' });
 
 let addressApiUrl: string;
 
-test.beforeEach(async({ mockApiResponse }) => {
+test.beforeEach(async({ mockApiResponse, page }) => {
+  await page.route('https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/**', (route) => {
+    route.abort();
+  });
   addressApiUrl = await mockApiResponse('address', addressMock.contract, { pathParams: { hash: addressMock.contract.hash } });
 });
 
@@ -121,6 +124,14 @@ test('non verified', async({ render, mockApiResponse }) => {
   const component = await render(<ContractCode/>, { hooksConfig }, { withSocket: true });
 
   await expect(component).toHaveScreenshot();
+});
+
+test('zkSync contract', async({ render, mockApiResponse, page, mockEnvs }) => {
+  await mockEnvs(ENVS_MAP.zkSyncRollup);
+  await mockApiResponse('contract', contractMock.zkSync, { pathParams: { hash: addressMock.contract.hash } });
+  await render(<ContractCode/>, { hooksConfig }, { withSocket: true });
+
+  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
 });
 
 test.describe('with audits feature', () => {

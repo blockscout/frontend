@@ -49,6 +49,16 @@ const sizes = {
       lineHeight: 5,
     },
   }),
+  md: definePartsStyle({
+    container: {
+      minH: 8,
+      minW: 8,
+      fontSize: 'sm',
+      px: '6px',
+      py: '6px',
+      lineHeight: 5,
+    },
+  }),
 };
 
 const baseStyleContainer = defineStyle({

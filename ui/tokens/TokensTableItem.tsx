@@ -49,15 +49,12 @@ const TokensTableItem = ({
     is_contract: true,
     is_verified: false,
     ens_domain_name: null,
+    implementations: null,
   };
 
   return (
     <Tr
-      sx={{
-        '&:hover [aria-label="Add token to wallet"]': {
-          opacity: 1,
-        },
-      }}
+      role="group"
     >
       <Td>
         <Flex alignItems="flex-start">
@@ -93,6 +90,7 @@ const TokensTableItem = ({
                 isLoading={ isLoading }
                 iconSize={ 5 }
                 opacity={ 0 }
+                _groupHover={{ opacity: 1 }}
               />
             </Flex>
             <Flex columnGap={ 1 }>

@@ -5,6 +5,7 @@ import React from 'react';
 import type { TimeChartData, TimeChartItem } from 'ui/shared/chart/types';
 
 import dayjs from 'lib/date/dayjs';
+import colors from 'theme/foundations/colors';
 
 const SELECTION_THRESHOLD = 2;
 
@@ -17,7 +18,7 @@ interface Props {
 }
 
 const ChartSelectionX = ({ anchorEl, height, scale, data, onSelect }: Props) => {
-  const borderColor = useToken('colors', 'blue.200');
+  const borderColor = useToken('colors', colors.white); //'blue.200'
 
   const ref = React.useRef(null);
   const isActive = React.useRef(false);
@@ -134,7 +135,7 @@ const ChartSelectionX = ({ anchorEl, height, scale, data, onSelect }: Props) => 
 
   return (
     <g className="ChartSelectionX" ref={ ref } opacity={ 0 }>
-      <rect className="ChartSelectionX__rect" width={ 0 } height={ height } fill="rgba(66, 153, 225, 0.1)"/>
+      <rect className="ChartSelectionX__rect" width={ 0 } height={ height } fill="rgba(255, 255, 255, 0.1)"/>
       <line className="ChartSelectionX__line ChartSelectionX__line_left" x1={ 0 } x2={ 0 } y1={ 0 } y2={ height } stroke={ borderColor }/>
       <line className="ChartSelectionX__line ChartSelectionX__line_right" x1={ 0 } x2={ 0 } y1={ 0 } y2={ height } stroke={ borderColor }/>
     </g>

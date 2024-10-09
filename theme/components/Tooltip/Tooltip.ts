@@ -44,7 +44,8 @@ const baseStyle = defineStyle((props) => {
     [$bg.variable]: `colors.${ bg }`,
     [$fg.variable]: `colors.${ fg }`,
     [$arrowBg.variable]: mode('blue.50', colors.grayTrue[600])(props), //$bg.reference,
-    maxWidth: props.maxWidth || props.maxW || 'unset',
+    maxWidth: props.maxWidth || props.maxW || 'calc(100vw - 8px)',
+    marginX: '4px',
   };
 });
 

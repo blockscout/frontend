@@ -70,7 +70,7 @@ const secondaryCoinPriceIndicator: TChainIndicator<'stats_charts_secondary_coin_
     '$N/A' :
     '$' + Number(stats.secondary_coin_price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }),
   valueDiff: () => null,
-  icon: <NativeTokenIcon boxSize={ 6 }/>,
+  icon: <NativeTokenIcon boxSize={ 6 } type="secondary"/>,
   hint: `${ config.chain.secondaryCoin.symbol } token daily price in USD.`,
   api: {
     resourceName: 'stats_charts_secondary_coin_price',

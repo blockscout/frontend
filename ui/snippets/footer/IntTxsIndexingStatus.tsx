@@ -1,4 +1,4 @@
-import { IconButton, Popover, PopoverTrigger, PopoverContent, PopoverBody, Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import { IconButton, PopoverTrigger, PopoverContent, PopoverBody, Flex, Text, useColorModeValue } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
 
@@ -10,6 +10,7 @@ import { apos, nbsp, ndash } from 'lib/html-entities';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import colors from 'theme/foundations/colors';
+import Popover from 'ui/shared/chakra/Popover';
 import IconSvg from 'ui/shared/IconSvg';
 
 const IntTxsIndexingStatus = () => {

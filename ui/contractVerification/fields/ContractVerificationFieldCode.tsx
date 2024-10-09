@@ -1,4 +1,4 @@
-import { FormControl, Link, Textarea } from '@chakra-ui/react';
+import { FormControl, Textarea } from '@chakra-ui/react';
 import React from 'react';
 import type { ControllerRenderProps } from 'react-hook-form';
 import { useFormContext, Controller } from 'react-hook-form';
@@ -43,12 +43,7 @@ const ContractVerificationFieldCode = ({ isVyper }: Props) => {
         rules={{ required: true }}
       />
       { isVyper ? null : (
-        <>
-          <span>We recommend using flattened code. This is necessary if your code utilizes a library or inherits dependencies. Use the </span>
-          <Link href="https://github.com/poanetwork/solidity-flattener" target="_blank">POA solidity flattener</Link>
-          <span> or the </span>
-          <Link href="https://www.npmjs.com/package/truffle-flattener" target="_blank">Truffle flattener</Link>
-        </>
+        <span>If your code utilizes a library or inherits dependencies, we recommend using other verification methods instead.</span>
       ) }
     </ContractVerificationFormRow>
   );

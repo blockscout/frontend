@@ -4,14 +4,12 @@ import React from 'react';
 import type { TokenInfo, TokenInstance } from 'types/api/token';
 
 import config from 'configs/app';
-import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import useIsMounted from 'lib/hooks/useIsMounted';
 import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';
 import useAppActionData from 'ui/shared/AppActionButton/useAppActionData';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsInfoItemDivider from 'ui/shared/DetailsInfoItemDivider';
-import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import NftMedia from 'ui/shared/nft/NftMedia';
@@ -29,8 +27,7 @@ interface Props {
 }
 
 const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
-  const { value: isActionButtonExperiment } = useFeatureValue('action_button_exp', false);
-  const appActionData = useAppActionData(token?.address, isActionButtonExperiment && !isLoading);
+  const appActionData = useAppActionData(token?.address, !isLoading);
   const isMounted = useIsMounted();
 
   const handleCounterItemClick = React.useCallback(() => {
@@ -96,10 +93,9 @@ const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
             id={ data.id }
             appActionData={ appActionData }
             source="NFT item"
-            isActionButtonExperiment={ isActionButtonExperiment }
           />
 
-          { (config.UI.views.nft.marketplaces.length === 0 && appActionData && isActionButtonExperiment) && (
+          { (config.UI.views.nft.marketplaces.length === 0 && appActionData) && (
             <>
               <DetailsInfoItem.Label
                 hint="Link to the dapp"
@@ -131,7 +127,6 @@ const TokenInstanceDetails = ({ data, token, scrollRef, isLoading }: Props) => {
       >
         <TokenInstanceMetadataInfo data={ data } isLoading={ isLoading }/>
         <DetailsInfoItemDivider/>
-        <DetailsSponsoredItem isLoading={ isLoading }/>
       </Grid>
     </>
   );

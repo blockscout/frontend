@@ -2,7 +2,7 @@ import type { LinkProps as NextLinkProps } from 'next/link';
 import NextLink from 'next/link';
 import React from 'react';
 
-import type { SearchResultItem } from 'types/api/search';
+import type { SearchResultItem } from 'types/client/search';
 
 import { route } from 'nextjs-routes';
 
@@ -39,6 +39,11 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) =>
         return route({ pathname: '/tx/[hash]', query: { hash: data.tx_hash } });
       }
       case 'block': {
+        const isFutureBlock = data.timestamp === undefined;
+        if (isFutureBlock) {
+          return route({ pathname: '/block/countdown/[height]', query: { height: String(data.block_number) } });
+        }
+
         return route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.block_hash) } });
       }
       case 'user_operation': {

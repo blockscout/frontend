@@ -1,4 +1,4 @@
-import { Box, Button, Text, Flex, IconButton } from '@chakra-ui/react';
+import { Box, Button, Text, Flex, IconButton, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 import * as mixpanel from 'lib/mixpanel/index';
@@ -6,18 +6,17 @@ import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
-import useMenuButtonColors from '../useMenuButtonColors';
-
 type Props = {
   address?: string;
+  ensDomainName?: string | null;
   disconnect?: () => void;
   isAutoConnectDisabled?: boolean;
   openWeb3Modal: () => void;
   closeWalletMenu: () => void;
 };
 
-const WalletMenuContent = ({ address, disconnect, isAutoConnectDisabled, openWeb3Modal, closeWalletMenu }: Props) => {
-  const { themedBackgroundOrange } = useMenuButtonColors();
+const WalletMenuContent = ({ address, ensDomainName, disconnect, isAutoConnectDisabled, openWeb3Modal, closeWalletMenu }: Props) => {
+  const bgColor = useColorModeValue('orange.100', 'orange.900');
   const [ isModalOpening, setIsModalOpening ] = React.useState(false);
 
   const onAddressClick = React.useCallback(() => {
@@ -38,7 +37,7 @@ const WalletMenuContent = ({ address, disconnect, isAutoConnectDisabled, openWeb
           p={ 3 }
           mb={ 3 }
           alignItems="center"
-          backgroundColor={ themedBackgroundOrange }
+          backgroundColor={ bgColor }
         >
           <IconSvg
             name="integration/partial"
@@ -69,28 +68,30 @@ const WalletMenuContent = ({ address, disconnect, isAutoConnectDisabled, openWeb
       >
         Your wallet is used to interact with apps and contracts in the explorer.
       </Text>
-      <Flex alignItems="center" mb={ 6 }>
-        <AddressEntity
-          address={{ hash: address }}
-          noTooltip
-          truncation="dynamic"
-          fontSize="sm"
-          fontWeight={ 700 }
-          color="text"
-          onClick={ onAddressClick }
-          flex={ 1 }
-        />
-        <IconButton
-          aria-label="open wallet"
-          icon={ <IconSvg name="gear_slim" boxSize={ 5 }/> }
-          variant="simple"
-          h="20px"
-          w="20px"
-          ml={ 1 }
-          onClick={ handleOpenWeb3Modal }
-          isLoading={ isModalOpening }
-        />
-      </Flex>
+      { address && (
+        <Flex alignItems="center" mb={ 6 }>
+          <AddressEntity
+            address={{ hash: address, ens_domain_name: ensDomainName }}
+            noTooltip
+            truncation="dynamic"
+            fontSize="sm"
+            fontWeight={ 700 }
+            color="text"
+            onClick={ onAddressClick }
+            flex={ 1 }
+          />
+          <IconButton
+            aria-label="open wallet"
+            icon={ <IconSvg name="gear_slim" boxSize={ 5 }/> }
+            variant="simple"
+            h="20px"
+            w="20px"
+            ml={ 1 }
+            onClick={ handleOpenWeb3Modal }
+            isLoading={ isModalOpening }
+          />
+        </Flex>
+      ) }
       <Button size="sm" width="full" variant="outline" onClick={ disconnect }>
         Disconnect
       </Button>

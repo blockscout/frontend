@@ -49,9 +49,13 @@ const AddressFavoriteButton = ({ className, hash, watchListId }: Props) => {
   }, [ deleteModalProps ]);
 
   const formData = React.useMemo(() => {
+    if (typeof watchListId !== 'number') {
+      return;
+    }
+
     return {
       address_hash: hash,
-      id: String(watchListId),
+      id: watchListId,
     };
   }, [ hash, watchListId ]);
 
@@ -83,12 +87,14 @@ const AddressFavoriteButton = ({ className, hash, watchListId }: Props) => {
         onSuccess={ handleAddOrDeleteSuccess }
         data={ formData }
       />
-      <DeleteAddressModal
-        { ...deleteModalProps }
-        onClose={ handleDeleteModalClose }
-        data={ formData }
-        onSuccess={ handleAddOrDeleteSuccess }
-      />
+      { formData && (
+        <DeleteAddressModal
+          { ...deleteModalProps }
+          onClose={ handleDeleteModalClose }
+          data={ formData }
+          onSuccess={ handleAddOrDeleteSuccess }
+        />
+      ) }
     </>
   );
 };

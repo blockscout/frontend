@@ -5,9 +5,19 @@ const RESTRICTED_MODULES = {
     { name: '@metamask/providers', message: 'Please lazy-load @metamask/providers or use useProvider hook instead' },
     { name: '@metamask/post-message-stream', message: 'Please lazy-load @metamask/post-message-stream or use useProvider hook instead' },
     { name: 'playwright/TestApp', message: 'Please use render() fixture from test() function of playwright/lib module' },
+    {
+      name: '@chakra-ui/react',
+      importNames: [ 'Popover', 'Menu', 'useToast' ],
+      message: 'Please use corresponding component or hook from ui/shared/chakra component instead',
+    },
+    {
+      name: 'lodash',
+      message: 'Please use `import [package] from \'lodash/[package]\'` instead.',
+    },
   ],
   patterns: [
     'icons/*',
+    '!lodash/*',
   ],
 };
 

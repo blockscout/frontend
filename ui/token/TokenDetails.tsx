@@ -12,14 +12,12 @@ import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getCurrencyValue from 'lib/getCurrencyValue';
-import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import useIsMounted from 'lib/hooks/useIsMounted';
 import { TOKEN_COUNTERS } from 'stubs/token';
 import type { TokenTabs } from 'ui/pages/Token';
 import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';
 import useAppActionData from 'ui/shared/AppActionButton/useAppActionData';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
 import TokenNftMarketplaces from './TokenNftMarketplaces';
@@ -31,7 +29,6 @@ interface Props {
 const TokenDetails = ({ tokenQuery }: Props) => {
   const router = useRouter();
   const isMounted = useIsMounted();
-  const { value: isActionButtonExperiment } = useFeatureValue('action_button_exp', false);
 
   const hash = router.query.hash?.toString();
 
@@ -40,7 +37,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
     queryOptions: { enabled: Boolean(router.query.hash), placeholderData: TOKEN_COUNTERS },
   });
 
-  const appActionData = useAppActionData(hash, isActionButtonExperiment);
+  const appActionData = useAppActionData(hash);
 
   const changeUrlAndScroll = useCallback((tab: TokenTabs) => () => {
     router.push(
@@ -102,7 +99,7 @@ const TokenDetails = ({ tokenQuery }: Props) => {
     <Grid
       columnGap={ 8 }
       rowGap={{ base: 1, lg: 3 }}
-      templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(728px, auto)' }} overflow="hidden"
+      templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} overflow="hidden"
     >
       { exchangeRate && (
         <>
@@ -200,11 +197,10 @@ const TokenDetails = ({ tokenQuery }: Props) => {
           isLoading={ tokenQuery.isPlaceholderData }
           appActionData={ appActionData }
           source="NFT collection"
-          isActionButtonExperiment={ isActionButtonExperiment }
         />
       ) }
 
-      { (type !== 'ERC-20' && config.UI.views.nft.marketplaces.length === 0 && appActionData && isActionButtonExperiment) && (
+      { (type !== 'ERC-20' && config.UI.views.nft.marketplaces.length === 0 && appActionData) && (
         <>
           <DetailsInfoItem.Label
             hint="Link to the dapp"
@@ -218,8 +214,6 @@ const TokenDetails = ({ tokenQuery }: Props) => {
           </DetailsInfoItem.Value>
         </>
       ) }
-
-      <DetailsSponsoredItem isLoading={ tokenQuery.isPlaceholderData }/>
     </Grid>
   );
 };

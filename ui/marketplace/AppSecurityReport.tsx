@@ -1,4 +1,4 @@
-import { Box, Text, Link, Popover, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure, chakra, Flex, Divider, Icon } from '@chakra-ui/react';
+import { Box, Text, Link, PopoverTrigger, PopoverBody, PopoverContent, useDisclosure, chakra, Flex, Divider, Icon } from '@chakra-ui/react';
 import React from 'react';
 
 import type { MarketplaceAppSecurityReport } from 'types/client/marketplace';
@@ -12,6 +12,7 @@ import solidityScanIcon from 'icons/brands/solidity_scan.svg';
 import { apos } from 'lib/html-entities';
 import * as mixpanel from 'lib/mixpanel/index';
 import colors from 'theme/foundations/colors';
+import Popover from 'ui/shared/chakra/Popover';
 import IconSvg from 'ui/shared/IconSvg';
 import SolidityscanReportButton from 'ui/shared/solidityscanReport/SolidityscanReportButton';
 import SolidityscanReportDetails from 'ui/shared/solidityscanReport/SolidityscanReportDetails';
@@ -72,7 +73,7 @@ const AppSecurityReport = ({
           className={ className }
         />
       </PopoverTrigger>
-      <PopoverContent w={{ base: '100vw', lg: '328px' }}>
+      <PopoverContent w={{ base: 'calc(100vw - 24px)', lg: '328px' }} mx={{ base: 3, lg: 0 }}>
         <PopoverBody px="26px" py="20px" fontSize="sm">
           <Text fontWeight="500" fontSize="xs" mb={ 2 } variant="secondary">Smart contracts info</Text>
           <Flex alignItems="center" justifyContent="space-between" py={ 1.5 }>

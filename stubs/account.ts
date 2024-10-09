@@ -6,12 +6,12 @@ import { TX_HASH } from './tx';
 export const PRIVATE_TAG_ADDRESS: AddressTag = {
   address: ADDRESS_PARAMS,
   address_hash: ADDRESS_HASH,
-  id: '4',
+  id: 4,
   name: 'placeholder',
 };
 
 export const PRIVATE_TAG_TX: TransactionTag = {
-  id: '1',
+  id: 1,
   name: 'placeholder',
   transaction_hash: TX_HASH,
 };
@@ -21,7 +21,7 @@ export const WATCH_LIST_ITEM_WITH_TOKEN_INFO: WatchlistAddress = {
   address_balance: '7072643779453701031672',
   address_hash: ADDRESS_HASH,
   exchange_rate: '0.00099052',
-  id: '18',
+  id: 18,
   name: 'placeholder',
   notification_methods: {
     email: false,
@@ -68,7 +68,7 @@ export const CUSTOM_ABI: CustomAbi = {
   ],
   contract_address: ADDRESS_PARAMS,
   contract_address_hash: ADDRESS_HASH,
-  id: '1',
+  id: 1,
   name: 'placeholder',
 };
 

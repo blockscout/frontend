@@ -1,21 +1,20 @@
-import { Td, Tr, Skeleton } from '@chakra-ui/react';
+import { Td, Tr } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ShibariumDepositsItem } from 'types/api/shibarium';
 
 import config from 'configs/app';
-import dayjs from 'lib/date/dayjs';
 import AddressStringOrParam from 'ui/shared/entities/address/AddressStringOrParam';
 import BlockEntityL1 from 'ui/shared/entities/block/BlockEntityL1';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 const feature = config.features.rollup;
 
  type Props = { item: ShibariumDepositsItem; isLoading?: boolean };
 
 const DepositsTableItem = ({ item, isLoading }: Props) => {
-  const timeAgo = dayjs(item.timestamp).fromNow();
 
   if (!(feature.isEnabled && feature.type === 'shibarium')) {
     return null;
@@ -59,7 +58,12 @@ const DepositsTableItem = ({ item, isLoading }: Props) => {
         />
       </Td>
       <Td verticalAlign="middle" pr={ 12 }>
-        <Skeleton isLoaded={ !isLoading } color="text_secondary" display="inline-block"><span>{ timeAgo }</span></Skeleton>
+        <TimeAgoWithTooltip
+          timestamp={ item.timestamp }
+          isLoading={ isLoading }
+          color="text_secondary"
+          display="inline-block"
+        />
       </Td>
     </Tr>
   );

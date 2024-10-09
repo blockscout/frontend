@@ -1,16 +1,12 @@
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
 import useDebounce from 'lib/hooks/useDebounce';
 
 export default function useQuickSearchQuery() {
-  const router = useRouter();
-
   const [ searchTerm, setSearchTerm ] = React.useState('');
 
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
-  const pathname = router.pathname;
 
   const query = useApiQuery('quick_search', {
     queryParams: { q: debouncedSearchTerm },
@@ -30,6 +26,5 @@ export default function useQuickSearchQuery() {
     handleSearchTermChange: setSearchTerm,
     query,
     redirectCheckQuery,
-    pathname,
-  }), [ debouncedSearchTerm, pathname, query, redirectCheckQuery, searchTerm ]);
+  }), [ debouncedSearchTerm, query, redirectCheckQuery, searchTerm ]);
 }

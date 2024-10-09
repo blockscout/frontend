@@ -5,7 +5,8 @@ import { useForm, FormProvider } from 'react-hook-form';
 
 import type { FormFields } from './types';
 import type { SocketMessage } from 'lib/socket/types';
-import type { SmartContractVerificationMethod, SmartContractVerificationConfig, SmartContract } from 'types/api/contract';
+import type { SmartContract, SmartContractVerificationMethodApi } from 'types/api/contract';
+import type { SmartContractVerificationConfig } from 'types/client/contract';
 
 import { route } from 'nextjs-routes';
 
@@ -22,6 +23,8 @@ import ContractVerificationFieldLicenseType from './fields/ContractVerificationF
 import ContractVerificationFieldMethod from './fields/ContractVerificationFieldMethod';
 import ContractVerificationFlattenSourceCode from './methods/ContractVerificationFlattenSourceCode';
 import ContractVerificationMultiPartFile from './methods/ContractVerificationMultiPartFile';
+import ContractVerificationSolidityFoundry from './methods/ContractVerificationSolidityFoundry';
+import ContractVerificationSolidityHardhat from './methods/ContractVerificationSolidityHardhat';
 import ContractVerificationSourcify from './methods/ContractVerificationSourcify';
 import ContractVerificationStandardInput from './methods/ContractVerificationStandardInput';
 import ContractVerificationVyperContract from './methods/ContractVerificationVyperContract';
@@ -30,7 +33,7 @@ import ContractVerificationVyperStandardInput from './methods/ContractVerificati
 import { prepareRequestBody, formatSocketErrors, getDefaultValues, METHOD_LABELS } from './utils';
 
 interface Props {
-  method?: SmartContractVerificationMethod;
+  method?: SmartContractVerificationMethodApi;
   config: SmartContractVerificationConfig;
   hash?: string;
 }
@@ -38,7 +41,7 @@ interface Props {
 const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Props) => {
   const formApi = useForm<FormFields>({
     mode: 'onBlur',
-    defaultValues: methodFromQuery ? getDefaultValues(methodFromQuery, config, hash, null) : undefined,
+    defaultValues: getDefaultValues(methodFromQuery, config, hash, null),
   });
   const { control, handleSubmit, watch, formState, setError, reset, getFieldState } = formApi;
   const submitPromiseResolver = React.useRef<(value: unknown) => void>();
@@ -159,6 +162,8 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
       'vyper-code': <ContractVerificationVyperContract config={ config }/>,
       'vyper-multi-part': <ContractVerificationVyperMultiPartFile/>,
       'vyper-standard-input': <ContractVerificationVyperStandardInput/>,
+      'solidity-hardhat': <ContractVerificationSolidityHardhat config={ config }/>,
+      'solidity-foundry': <ContractVerificationSolidityFoundry/>,
     };
   }, [ config ]);
   const method = watch('method');
@@ -193,7 +198,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
           />
         </Grid>
         { content }
-        { Boolean(method) && (
+        { Boolean(method) && method.value !== 'solidity-hardhat' && method.value !== 'solidity-foundry' && (
           <Button
             variant="solid"
             size="lg"

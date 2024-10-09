@@ -13,11 +13,11 @@ interface Props {
 
 const NftImageFullscreen = ({ src, isOpen, onClose }: Props) => {
   const imgRef = React.useRef<HTMLImageElement>(null);
-  const [ hasDimentions, setHasDimentions ] = React.useState<boolean>(true);
+  const [ hasDimensions, setHasDimensions ] = React.useState<boolean>(true);
 
   const checkWidth = React.useCallback(() => {
     if (imgRef.current?.getBoundingClientRect().width === 0) {
-      setHasDimentions(false);
+      setHasDimensions(false);
     }
   }, [ ]);
 
@@ -30,7 +30,7 @@ const NftImageFullscreen = ({ src, isOpen, onClose }: Props) => {
         maxW="90vw"
         ref={ imgRef }
         onLoad={ checkWidth }
-        sx={ hasDimentions ? {} : { width: '90vw', height: '90vh' } }
+        { ...(hasDimensions ? {} : { width: '90vw', height: '90vh' }) }
       />
     </NftMediaFullscreenModal>
   );

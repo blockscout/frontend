@@ -1,3 +1,5 @@
+import stripLeadingSlash from 'lib/stripLeadingSlash';
+
 // Function to get all files in drop directory
 export async function getAllFileEntries(dataTransferItemList: DataTransferItemList): Promise<Array<FileSystemFileEntry>> {
   const fileEntries: Array<FileSystemFileEntry> = [];
@@ -54,11 +56,13 @@ async function readEntriesPromise(directoryReader: DirectoryReader): Promise<Arr
   } catch (err) {}
 }
 
-export function convertFileEntryToFile(entry: FileSystemFileEntry): Promise<File> {
+export function convertFileEntryToFile(entry: FileSystemFileEntry, fullFilePath?: boolean): Promise<File> {
   return new Promise((resolve) => {
     entry.file(async(file: File) => {
-    //   const newFile = new File([ file ], entry.fullPath, { lastModified: file.lastModified, type: file.type });
-      resolve(file);
+      const newFile = fullFilePath ?
+        new File([ file ], stripLeadingSlash(entry.fullPath), { lastModified: file.lastModified, type: file.type }) :
+        file;
+      resolve(newFile);
     });
   });
 }

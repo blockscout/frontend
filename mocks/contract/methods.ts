@@ -129,6 +129,6 @@ export const write: Array<SmartContractMethodWrite> = [
     payable: false,
     stateMutability: 'nonpayable',
     type: 'function',
-    method_id: '0x06',
+    is_invalid: true,
   },
 ];

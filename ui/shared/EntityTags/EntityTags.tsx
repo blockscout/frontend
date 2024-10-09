@@ -1,10 +1,11 @@
-import { Box, Flex, Popover, PopoverBody, PopoverContent, PopoverTrigger, chakra } from '@chakra-ui/react';
+import { Box, Flex, PopoverBody, PopoverContent, PopoverTrigger, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import type { EntityTag as TEntityTag } from './types';
 
 import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import Popover from 'ui/shared/chakra/Popover';
 import Tag from 'ui/shared/chakra/Tag';
 
 import EntityTag from './EntityTag';

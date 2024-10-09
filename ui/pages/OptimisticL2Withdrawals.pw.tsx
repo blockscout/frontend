@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { data as withdrawalsData } from 'mocks/l2withdrawals/withdrawals';
+import { data as withdrawalsData } from 'mocks/optimism/withdrawals';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 

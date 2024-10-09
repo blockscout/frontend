@@ -48,6 +48,7 @@ const VerifiedAddressesListItem = ({ item, application, onAdd, onEdit, isLoading
     }
 
     const token = {
+      type: 'ERC-20' as const,
       icon_url: application.iconUrl,
       address: application.tokenAddress,
       name: item.metadata.tokenName,

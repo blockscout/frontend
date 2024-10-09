@@ -1,14 +1,13 @@
 import type { IconButtonProps } from '@chakra-ui/react';
-import { Popover, PopoverContent, PopoverBody, PopoverTrigger, IconButton, Tooltip, Box, chakra } from '@chakra-ui/react';
+import { PopoverContent, PopoverBody, PopoverTrigger, IconButton, Tooltip, Box, chakra } from '@chakra-ui/react';
 import React from 'react';
 
 import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
 import useLoginUrl from 'lib/hooks/useLoginUrl';
 import * as mixpanel from 'lib/mixpanel/index';
+import Popover from 'ui/shared/chakra/Popover';
 import UserAvatar from 'ui/shared/UserAvatar';
 import ProfileMenuContent from 'ui/snippets/profileMenu/ProfileMenuContent';
-
-import useMenuButtonColors from '../useMenuButtonColors';
 
 type Props = {
   isHomePage?: boolean;
@@ -18,9 +17,9 @@ type Props = {
 };
 
 const ProfileMenuDesktop = ({ isHomePage, className, fallbackIconSize, buttonBoxSize }: Props) => {
+  return null;
   const { data, error, isPending } = useFetchProfileInfo();
   const loginUrl = useLoginUrl();
-  const { themedBackground, themedBorderColor, themedColor } = useMenuButtonColors();
   const [ hasMenu, setHasMenu ] = React.useState(false);
 
   React.useEffect(() => {
@@ -49,29 +48,6 @@ const ProfileMenuDesktop = ({ isHomePage, className, fallbackIconSize, buttonBox
     };
   })();
 
-  const variant = React.useMemo(() => {
-    if (hasMenu) {
-      return 'subtle';
-    }
-    return isHomePage ? 'solid' : 'outline';
-  }, [ hasMenu, isHomePage ]);
-
-  let iconButtonStyles: Partial<IconButtonProps> = {};
-  if (hasMenu) {
-    iconButtonStyles = {
-      bg: isHomePage ? 'blue.50' : themedBackground,
-    };
-  } else if (isHomePage) {
-    iconButtonStyles = {
-      color: 'white',
-    };
-  } else {
-    iconButtonStyles = {
-      borderColor: themedBorderColor,
-      color: themedColor,
-    };
-  }
-
   return (
     <Popover openDelay={ 300 } placement="bottom-end" gutter={ 10 } isLazy>
       <Tooltip
@@ -87,12 +63,11 @@ const ProfileMenuDesktop = ({ isHomePage, className, fallbackIconSize, buttonBox
               className={ className }
               aria-label="profile menu"
               icon={ <UserAvatar size={ 20 } fallbackIconSize={ fallbackIconSize }/> }
-              variant={ variant }
-              colorScheme="blue"
+              variant={ isHomePage ? 'hero' : 'header' }
+              data-selected={ hasMenu }
               boxSize={ buttonBoxSize ?? '40px' }
               flexShrink={ 0 }
               { ...iconButtonProps }
-              { ...iconButtonStyles }
             />
           </PopoverTrigger>
         </Box>

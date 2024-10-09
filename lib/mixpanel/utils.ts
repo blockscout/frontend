@@ -1,4 +1,5 @@
 import type { WalletType } from 'types/client/wallets';
+import type { ColorThemeId } from 'types/settings';
 
 export enum EventTypes {
   PAGE_VIEW = 'Page view',
@@ -20,6 +21,7 @@ export enum EventTypes {
   FILTERS = 'Filters',
   BUTTON_CLICK = 'Button click',
   PROMO_BANNER = 'Promo banner',
+  APP_FEEDBACK = 'App feedback',
 }
 
 /* eslint-disable @typescript-eslint/indent */
@@ -30,6 +32,7 @@ Type extends EventTypes.PAGE_VIEW ?
   'Tab': string;
   'Page'?: string;
   'Color mode': 'light' | 'dark';
+  'Color theme': ColorThemeId | undefined;
 } :
 Type extends EventTypes.SEARCH_QUERY ? {
   'Search query': string;
@@ -113,6 +116,9 @@ Type extends EventTypes.PAGE_WIDGET ? (
     'Type': 'Address tag';
     'Info': string;
     'URL': string;
+  } | {
+    'Type': 'Share chart';
+    'Info': string;
   }
 ) :
 Type extends EventTypes.TX_INTERPRETATION_INTERACTION ? {
@@ -134,6 +140,12 @@ Type extends EventTypes.BUTTON_CLICK ? {
 Type extends EventTypes.PROMO_BANNER ? {
   'Source': 'Marketplace';
   'Link': string;
+} :
+Type extends EventTypes.APP_FEEDBACK ? {
+  'Action': 'Rating';
+  'Source': 'Discovery' | 'App modal' | 'App page';
+  'AppId': string;
+  'Score': number;
 } :
 undefined;
 /* eslint-enable @typescript-eslint/indent */

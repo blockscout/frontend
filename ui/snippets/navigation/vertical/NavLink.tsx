@@ -64,12 +64,13 @@ const NavLink = ({ item, isCollapsed, px, className, onClick, disableActiveState
         variant="nav"
         gutter={ 20 }
         color={ isInternalLink && item.isActive ? colors.text.active : colors.text.hover }
+        margin={ 0 }
       >
         <HStack spacing={ 0 } overflow="hidden">
           <NavLinkIcon item={ item }/>
           <Text { ...styleProps.textProps } as="span" ml={ 3 }>
             <span>{ item.text }</span>
-            { !isInternalLink && <IconSvg name="arrows/north-east" boxSize={ 4 } color="text_secondary" verticalAlign="middle"/> }
+            { !isInternalLink && <IconSvg name="link_external" boxSize={ 3 } color="icon_link_external" verticalAlign="middle"/> }
           </Text>
           { isHighlighted && (
             <LightningLabel iconColor={ styleProps.itemProps.bgColor } isCollapsed={ isCollapsed }/>

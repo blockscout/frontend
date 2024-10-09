@@ -1,4 +1,4 @@
-import type { ArbitrumL2MessagesResponse } from 'types/api/arbitrumL2';
+import type { ArbitrumL2MessagesResponse, ArbitrumLatestDepositsResponse } from 'types/api/arbitrumL2';
 
 export const baseResponse: ArbitrumL2MessagesResponse = {
   items: [
@@ -26,4 +26,21 @@ export const baseResponse: ArbitrumL2MessagesResponse = {
     id: 123,
     direction: 'to-rollup',
   },
+};
+
+export const latestDepositsResponse: ArbitrumLatestDepositsResponse = {
+  items: [
+    {
+      completion_transaction_hash: '0x3ccdf87449d3de6a9dcd3eddb7bc9ecdf1770d4631f03cdf12a098911618d138',
+      origination_transaction_block_number: 123400,
+      origination_transaction_hash: '0x210d9f70f411de1079e32a98473b04345a5ea6ff2340a8511ebc2df641274436',
+      origination_timestamp: '2023-06-01T14:46:48.000000Z',
+    },
+    {
+      completion_transaction_hash: '0xd16d918b2f95a5cdf66824f6291b6d5eb80b6f4acab3f9fb82ee0ec4109646a0',
+      origination_timestamp: null,
+      origination_transaction_block_number: null,
+      origination_transaction_hash: null,
+    },
+  ],
 };

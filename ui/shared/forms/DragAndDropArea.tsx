@@ -10,9 +10,10 @@ interface Props {
   onDrop: (files: Array<File>) => void;
   className?: string;
   isDisabled?: boolean;
+  fullFilePath?: boolean;
 }
 
-const DragAndDropArea = ({ onDrop, children, className, isDisabled }: Props) => {
+const DragAndDropArea = ({ onDrop, children, className, isDisabled, fullFilePath }: Props) => {
   const [ isDragOver, setIsDragOver ] = React.useState(false);
 
   const handleDrop = React.useCallback(async(event: DragEvent<HTMLDivElement>) => {
@@ -23,11 +24,11 @@ const DragAndDropArea = ({ onDrop, children, className, isDisabled }: Props) => 
     }
 
     const fileEntries = await getAllFileEntries(event.dataTransfer.items);
-    const files = await Promise.all(fileEntries.map(convertFileEntryToFile));
+    const files = await Promise.all(fileEntries.map((fileEntry) => convertFileEntryToFile(fileEntry, fullFilePath)));
 
     onDrop(files);
     setIsDragOver(false);
-  }, [ isDisabled, onDrop ]);
+  }, [ isDisabled, onDrop, fullFilePath ]);
 
   const handleDragOver = React.useCallback((event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();

@@ -1,7 +1,7 @@
 # *****************************
 # *** STAGE 1: Dependencies ***
 # *****************************
-FROM node:20.11.0-alpine AS deps
+FROM node:20.17.0-alpine AS deps
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat python3 make g++
 RUN ln -sf /usr/bin/python3 /usr/bin/python
@@ -31,7 +31,7 @@ RUN yarn --frozen-lockfile
 # *****************************
 # ****** STAGE 2: Build *******
 # *****************************
-FROM node:20.11.0-alpine AS builder
+FROM node:20.17.0-alpine AS builder
 RUN apk add --no-cache --upgrade libc6-compat bash
 
 # pass build args to env variables
@@ -51,7 +51,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Generate .env.registry with ENVs list and save build args into .env file
-COPY --chmod=+x ./deploy/scripts/collect_envs.sh ./
+COPY --chmod=755 ./deploy/scripts/collect_envs.sh ./
 RUN ./collect_envs.sh ./docs/ENVS.md
 
 # Next.js collects completely anonymous telemetry data about general usage.
@@ -81,7 +81,7 @@ RUN cd ./deploy/tools/envs-validator && yarn build
 # ******* STAGE 3: Run ********
 # *****************************
 # Production image, copy all the files and run next
-FROM node:20.11.0-alpine AS runner
+FROM node:20.17.0-alpine AS runner
 RUN apk add --no-cache --upgrade bash curl jq unzip
 
 ### APP
@@ -105,14 +105,14 @@ COPY --from=builder /app/deploy/tools/feature-reporter/index.js ./feature-report
 
 # Copy scripts
 ## Entripoint
-COPY --chmod=+x ./deploy/scripts/entrypoint.sh .
+COPY --chmod=755 ./deploy/scripts/entrypoint.sh .
 ## ENV validator and client script maker
-COPY --chmod=+x ./deploy/scripts/validate_envs.sh .
-COPY --chmod=+x ./deploy/scripts/make_envs_script.sh .
+COPY --chmod=755 ./deploy/scripts/validate_envs.sh .
+COPY --chmod=755 ./deploy/scripts/make_envs_script.sh .
 ## Assets downloader
-COPY --chmod=+x ./deploy/scripts/download_assets.sh .
+COPY --chmod=755 ./deploy/scripts/download_assets.sh .
 ## Favicon generator
-COPY --chmod=+x ./deploy/scripts/favicon_generator.sh .
+COPY --chmod=755 ./deploy/scripts/favicon_generator.sh .
 COPY ./deploy/tools/favicon-generator ./deploy/tools/favicon-generator
 RUN ["chmod", "-R", "777", "./deploy/tools/favicon-generator"]
 RUN ["chmod", "-R", "777", "./public"]

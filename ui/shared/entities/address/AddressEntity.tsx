@@ -1,6 +1,5 @@
 import type { As } from '@chakra-ui/react';
 import { Box, Flex, Skeleton, Tooltip, chakra, VStack } from '@chakra-ui/react';
-import _omit from 'lodash/omit';
 import React from 'react';
 
 import type { AddressParam } from 'types/api/addressParams';
@@ -8,10 +7,10 @@ import type { AddressParam } from 'types/api/addressParams';
 import { route } from 'nextjs-routes';
 
 import { useAddressHighlightContext } from 'lib/contexts/addressHighlight';
-import colors from 'theme/foundations/colors';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
-import { getIconProps } from '../base/utils';
+import { distributeEntityProps, getIconProps } from '../base/utils';
+import AddressEntityContentProxy from './AddressEntityContentProxy';
 import AddressIdenticon from './AddressIdenticon';
 
 type LinkProps = EntityBase.LinkBaseProps & Pick<EntityProps, 'address'>;
@@ -29,10 +28,7 @@ const Link = chakra((props: LinkProps) => {
   );
 });
 
-type IconProps = Omit<EntityBase.IconBaseProps, 'name'> & Pick<EntityProps, 'address' | 'isSafeAddress'> & {
-  asProp?: As;
-  name?: EntityBase.IconBaseProps['name'];
-};
+type IconProps = Pick<EntityProps, 'address' | 'isSafeAddress'> & EntityBase.IconBaseProps;
 
 const Icon = (props: IconProps) => {
   if (props.noIcon) {
@@ -40,8 +36,8 @@ const Icon = (props: IconProps) => {
   }
 
   const styles = {
-    ...getIconProps(props.iconSize),
-    marginRight: 2,
+    ...getIconProps(props.size),
+    marginRight: props.marginRight ?? 2,
   };
 
   if (props.isLoading) {
@@ -58,27 +54,18 @@ const Icon = (props: IconProps) => {
       );
     }
 
-    if (props.address.is_verified) {
-      return (
-        <Tooltip label="Verified contract">
-          <span>
-            <EntityBase.Icon
-              { ...props }
-              name="contracts/verified"
-              color={ colors.success[500] }
-              borderRadius={ 0 }
-            />
-          </span>
-        </Tooltip>
-      );
-    }
+    const isProxy = Boolean(props.address.implementations?.length);
+    const isVerified = isProxy ? props.address.is_verified && props.address.implementations?.every(({ name }) => Boolean(name)) : props.address.is_verified;
+    const contractIconName: EntityBase.IconBaseProps['name'] = props.address.is_verified ? 'contracts/verified' : 'contracts/regular';
+    const label = (isVerified ? 'verified ' : '') + (isProxy ? 'proxy contract' : 'contract');
 
     return (
-      <Tooltip label="Contract">
+      <Tooltip label={ label.slice(0, 1).toUpperCase() + label.slice(1) }>
         <span>
           <EntityBase.Icon
             { ...props }
-            name="contracts/regular"
+            name={ isProxy ? 'contracts/proxy' : contractIconName }
+            color={ isVerified ? 'green.500' : undefined }
             borderRadius={ 0 }
           />
         </span>
@@ -89,18 +76,24 @@ const Icon = (props: IconProps) => {
   return (
     <Flex marginRight={ styles.marginRight }>
       <AddressIdenticon
-        size={ props.iconSize === 'lg' ? 30 : 20 }
+        size={ props.size === 'lg' ? 30 : 20 }
         hash={ props.address.hash }
       />
     </Flex>
   );
 };
 
-type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'address'>;
+export type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'address'>;
 
 const Content = chakra((props: ContentProps) => {
   const nameTag = props.address.metadata?.tags.find(tag => tag.tagType === 'name')?.name;
   const nameText = nameTag || props.address.ens_domain_name || props.address.name;
+
+  const isProxy = props.address.implementations && props.address.implementations.length > 0;
+
+  if (isProxy) {
+    return <AddressEntityContentProxy { ...props }/>;
+  }
 
   if (nameText) {
     const label = (
@@ -111,7 +104,7 @@ const Content = chakra((props: ContentProps) => {
     );
 
     return (
-      <Tooltip label={ label } maxW={{ base: '100vw', lg: '400px' }}>
+      <Tooltip label={ label } maxW={{ base: 'calc(100vw - 8px)', lg: '400px' }}>
         <Skeleton isLoaded={ !props.isLoading } overflow="hidden" textOverflow="ellipsis" whiteSpace="nowrap" as="span">
           { nameText }
         </Skeleton>
@@ -140,16 +133,19 @@ const Copy = (props: CopyProps) => {
 
 const Container = EntityBase.Container;
 
+interface AddressProp extends Partial<AddressParam> {
+  hash: string;
+}
+
 export interface EntityProps extends EntityBase.EntityBaseProps {
-  address: Pick<AddressParam, 'hash' | 'name' | 'is_contract' | 'is_verified' | 'ens_domain_name' | 'metadata'>;
+  address: AddressProp;
   isSafeAddress?: boolean;
+  noHighlight?: boolean;
 }
 
 const AddressEntry = (props: EntityProps) => {
-  const linkProps = _omit(props, [ 'className' ]);
-  const partsProps = _omit(props, [ 'className', 'onClick' ]);
-
-  const context = useAddressHighlightContext();
+  const partsProps = distributeEntityProps(props);
+  const context = useAddressHighlightContext(props.noHighlight);
 
   return (
     <Container
@@ -160,17 +156,18 @@ const AddressEntry = (props: EntityProps) => {
       onMouseEnter={ context?.onMouseEnter }
       onMouseLeave={ context?.onMouseLeave }
       position="relative"
+      zIndex={ 0 }
     >
-      <Icon { ...partsProps } color={ props.iconColor }/>
-      <Link { ...linkProps }>
-        <Content { ...partsProps }/>
+      <Icon { ...partsProps.icon }/>
+      <Link { ...partsProps.link }>
+        <Content { ...partsProps.content }/>
       </Link>
-      <Copy { ...partsProps }/>
+      <Copy { ...partsProps.copy }/>
     </Container>
   );
 };
 
-export default React.memo(chakra(AddressEntry));
+export default React.memo(chakra<As, EntityProps>(AddressEntry));
 
 export {
   Container,

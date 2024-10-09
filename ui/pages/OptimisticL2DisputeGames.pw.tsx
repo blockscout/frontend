@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { data as disputeGamesData } from 'mocks/l2disputeGames/disputeGames';
+import { data as disputeGamesData } from 'mocks/optimism/disputeGames';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 

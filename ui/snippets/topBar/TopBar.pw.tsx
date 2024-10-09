@@ -61,3 +61,19 @@ test('with DeFi dropdown +@dark-mode +@mobile', async({ render, page, mockApiRes
   await component.getByText(/DeFi/i).click();
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1500, height: 220 } });
 });
+
+test('with Get gas button', async({ render, mockApiResponse, mockEnvs, mockAssetResponse }) => {
+  const ICON_URL = 'https://localhost:3000/my-icon.png';
+
+  await mockEnvs([
+    [
+      'NEXT_PUBLIC_GAS_REFUEL_PROVIDER_CONFIG',
+      `{"name": "Need gas?", "dapp_id": "duck", "url_template": "https://duck.url/{chainId}", "logo": "${ ICON_URL }"}`,
+    ],
+  ]);
+  await mockApiResponse('stats', statsMock.base);
+  await mockAssetResponse(ICON_URL, './playwright/mocks/image_svg.svg');
+
+  const component = await render(<TopBar/>);
+  await expect(component).toHaveScreenshot();
+});

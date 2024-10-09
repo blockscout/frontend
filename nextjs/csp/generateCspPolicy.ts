@@ -6,14 +6,17 @@ function generateCspPolicy() {
     descriptors.app(),
     descriptors.ad(),
     descriptors.cloudFlare(),
+    descriptors.gasHawk(),
     descriptors.googleAnalytics(),
     descriptors.googleFonts(),
     descriptors.googleReCaptcha(),
     descriptors.growthBook(),
+    descriptors.marketplace(),
     descriptors.mixpanel(),
     descriptors.monaco(),
     descriptors.safe(),
     descriptors.sentry(),
+    descriptors.usernameApi(),
     descriptors.walletConnect(),
   );
 

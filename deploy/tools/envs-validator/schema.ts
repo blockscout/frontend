@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 declare module 'yup' {
   interface StringSchema {
     // Yup's URL validator is not perfect so we made our own
@@ -9,10 +10,12 @@ declare module 'yup' {
 import * as yup from 'yup';
 
 import type { AdButlerConfig } from '../../../types/client/adButlerConfig';
+import type { AddressProfileAPIConfig } from '../../../types/client/addressProfileAPIConfig';
 import { SUPPORTED_AD_TEXT_PROVIDERS, SUPPORTED_AD_BANNER_PROVIDERS, SUPPORTED_AD_BANNER_ADDITIONAL_PROVIDERS } from '../../../types/client/adProviders';
 import type { AdTextProviders, AdBannerProviders, AdBannerAdditionalProviders } from '../../../types/client/adProviders';
-import type { ContractCodeIde } from '../../../types/client/contract';
+import { SMART_CONTRACT_EXTRA_VERIFICATION_METHODS, type ContractCodeIde, type SmartContractVerificationMethodExtra } from '../../../types/client/contract';
 import type { DeFiDropdownItem } from '../../../types/client/deFiDropdown';
+import type { GasRefuelProviderConfig } from '../../../types/client/gasRefuelProviderConfig';
 import { GAS_UNITS } from '../../../types/client/gasTracker';
 import type { GasUnit } from '../../../types/client/gasTracker';
 import type { MarketplaceAppOverview, MarketplaceAppSecurityReportRaw, MarketplaceAppSecurityReport } from '../../../types/client/marketplace';
@@ -27,10 +30,11 @@ import type { ValidatorsChainType } from '../../../types/client/validators';
 import type { WalletType } from '../../../types/client/wallets';
 import { SUPPORTED_WALLETS } from '../../../types/client/wallets';
 import type { CustomLink, CustomLinksGroup } from '../../../types/footerLinks';
-import { CHAIN_INDICATOR_IDS } from '../../../types/homepage';
-import type { ChainIndicatorId } from '../../../types/homepage';
-import { type NetworkVerificationType, type NetworkExplorer, type FeaturedNetwork, NETWORK_GROUPS } from '../../../types/networks';
+import { CHAIN_INDICATOR_IDS, HOME_STATS_WIDGET_IDS } from '../../../types/homepage';
+import type { ChainIndicatorId, HeroBannerButtonState, HeroBannerConfig, HomeStatsWidgetId } from '../../../types/homepage';
+import { type NetworkVerificationTypeEnvs, type NetworkExplorer, type FeaturedNetwork, NETWORK_GROUPS } from '../../../types/networks';
 import { COLOR_THEME_IDS } from '../../../types/settings';
+import type { FontFamily } from '../../../types/ui';
 import type { AddressViewId } from '../../../types/views/address';
 import { ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from '../../../types/views/address';
 import { BLOCK_FIELDS_IDS } from '../../../types/views/block';
@@ -223,6 +227,22 @@ const marketplaceSchema = yup
         // eslint-disable-next-line max-len
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_BANNER_LINK_URL cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
       }),
+    NEXT_PUBLIC_MARKETPLACE_RATING_AIRTABLE_API_KEY: yup
+      .string()
+      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
+        is: true,
+        then: (schema) => schema,
+        // eslint-disable-next-line max-len
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_RATING_AIRTABLE_API_KEY cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
+      }),
+    NEXT_PUBLIC_MARKETPLACE_RATING_AIRTABLE_BASE_ID: yup
+      .string()
+      .when('NEXT_PUBLIC_MARKETPLACE_ENABLED', {
+        is: true,
+        then: (schema) => schema,
+        // eslint-disable-next-line max-len
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_MARKETPLACE_RATING_AIRTABLE_BASE_ID cannot not be used without NEXT_PUBLIC_MARKETPLACE_ENABLED'),
+      }),
   });
 
 const beaconChainSchema = yup
@@ -257,7 +277,7 @@ const rollupSchema = yup
       .when('NEXT_PUBLIC_ROLLUP_TYPE', {
         is: (value: string) => value === 'optimistic',
         then: (schema) => schema.test(urlTest).required(),
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL cannot not be used if NEXT_PUBLIC_ROLLUP_TYPE is not defined'),
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL can be used only if NEXT_PUBLIC_ROLLUP_TYPE is set to \'optimistic\' '),
       }),
   });
 
@@ -370,6 +390,34 @@ const navItemExternalSchema: yup.ObjectSchema<NavItemExternal> = yup
   .object({
     text: yup.string().required(),
     url: yup.string().test(urlTest).required(),
+  });
+
+const fontFamilySchema: yup.ObjectSchema<FontFamily> = yup
+  .object()
+  .transform(replaceQuotes)
+  .json()
+  .shape({
+    name: yup.string().required(),
+    url: yup.string().test(urlTest).required(),
+  });
+
+const heroBannerButtonStateSchema: yup.ObjectSchema<HeroBannerButtonState> = yup.object({
+  background: yup.array().max(2).of(yup.string()),
+  text_color: yup.array().max(2).of(yup.string()),
+});
+
+const heroBannerSchema: yup.ObjectSchema<HeroBannerConfig> = yup.object()
+  .transform(replaceQuotes)
+  .json()
+  .shape({
+    background: yup.array().max(2).of(yup.string()),
+    text_color: yup.array().max(2).of(yup.string()),
+    border: yup.array().max(2).of(yup.string()),
+    button: yup.object({
+      _default: heroBannerButtonStateSchema,
+      _hover: heroBannerButtonStateSchema,
+      _selected: heroBannerButtonStateSchema,
+    }),
   });
 
 const footerLinkSchema: yup.ObjectSchema<CustomLink> = yup
@@ -491,7 +539,18 @@ const schema = yup
     NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL: yup.string(),
     NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS: yup.number().integer().positive(),
     NEXT_PUBLIC_NETWORK_SECONDARY_COIN_SYMBOL: yup.string(),
-    NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE: yup.string<NetworkVerificationType>().oneOf([ 'validation', 'mining' ]),
+    NEXT_PUBLIC_NETWORK_MULTIPLE_GAS_CURRENCIES: yup.boolean(),
+    NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE: yup
+      .string<NetworkVerificationTypeEnvs>().oneOf([ 'validation', 'mining' ])
+      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
+        is: (value: string) => value === 'arbitrum' || value === 'zkEvm',
+        then: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE can not be set for Arbitrum and ZkEVM rollups',
+          value => value === undefined,
+        ),
+        otherwise: (schema) => schema,
+      }),
     NEXT_PUBLIC_NETWORK_TOKEN_STANDARD_NAME: yup.string(),
     NEXT_PUBLIC_IS_TESTNET: yup.boolean(),
 
@@ -509,9 +568,30 @@ const schema = yup
       .transform(replaceQuotes)
       .json()
       .of(yup.string<ChainIndicatorId>().oneOf(CHAIN_INDICATOR_IDS)),
+    NEXT_PUBLIC_HOMEPAGE_STATS: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(yup.string<HomeStatsWidgetId>().oneOf(HOME_STATS_WIDGET_IDS)),
     NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR: yup.string(),
     NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND: yup.string(),
-    NEXT_PUBLIC_HOMEPAGE_SHOW_AVG_BLOCK_TIME: yup.boolean(),
+    NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG: yup
+      .mixed()
+      .test(
+        'shape',
+        (ctx) => {
+          try {
+            heroBannerSchema.validateSync(ctx.originalValue);
+            throw new Error('Unknown validation error');
+          } catch (error: unknown) {
+            const message = typeof error === 'object' && error !== null && 'errors' in error && Array.isArray(error.errors) ? error.errors.join(', ') : '';
+            return 'Invalid schema were provided for NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG' + (message ? `: ${ message }` : '');
+          }
+        },
+        (data) => {
+          const isUndefined = data === undefined;
+          return isUndefined || heroBannerSchema.isValidSync(data);
+        }),
 
     //     b. sidebar
     NEXT_PUBLIC_FEATURED_NETWORKS: yup
@@ -558,6 +638,21 @@ const schema = yup
       .json()
       .of(yup.string<AddressViewId>().oneOf(ADDRESS_VIEWS_IDS)),
     NEXT_PUBLIC_VIEWS_CONTRACT_SOLIDITYSCAN_ENABLED: yup.boolean(),
+    NEXT_PUBLIC_VIEWS_CONTRACT_EXTRA_VERIFICATION_METHODS: yup
+      .mixed()
+      .test(
+        'shape',
+        'Invalid schema were provided for NEXT_PUBLIC_VIEWS_CONTRACT_EXTRA_VERIFICATION_METHODS, it should be either array of method ids or "none" string literal',
+        (data) => {
+          const isNoneSchema = yup.string().oneOf([ 'none' ]);
+          const isArrayOfMethodsSchema = yup
+            .array()
+            .transform(replaceQuotes)
+            .json()
+            .of(yup.string<SmartContractVerificationMethodExtra>().oneOf(SMART_CONTRACT_EXTRA_VERIFICATION_METHODS));
+
+          return isNoneSchema.isValidSync(data) || isArrayOfMethodsSchema.isValidSync(data);
+        }),
     NEXT_PUBLIC_VIEWS_TX_HIDDEN_FIELDS: yup
       .array()
       .transform(replaceQuotes)
@@ -590,9 +685,29 @@ const schema = yup
     NEXT_PUBLIC_HIDE_INDEXING_ALERT_INT_TXS: yup.boolean(),
     NEXT_PUBLIC_MAINTENANCE_ALERT_MESSAGE: yup.string(),
     NEXT_PUBLIC_COLOR_THEME_DEFAULT: yup.string().oneOf(COLOR_THEME_IDS),
+    NEXT_PUBLIC_FONT_FAMILY_HEADING: yup
+      .mixed()
+      .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_FONT_FAMILY_HEADING', (data) => {
+        const isUndefined = data === undefined;
+        return isUndefined || fontFamilySchema.isValidSync(data);
+      }),
+    NEXT_PUBLIC_FONT_FAMILY_BODY: yup
+      .mixed()
+      .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_FONT_FAMILY_BODY', (data) => {
+        const isUndefined = data === undefined;
+        return isUndefined || fontFamilySchema.isValidSync(data);
+      }),
+    NEXT_PUBLIC_MAX_CONTENT_WIDTH_ENABLED: yup.boolean(),
 
     // 5. Features configuration
-    NEXT_PUBLIC_API_SPEC_URL: yup.string().test(urlTest),
+    NEXT_PUBLIC_API_SPEC_URL: yup
+      .mixed()
+      .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_API_SPEC_URL, it should be either URL-string or "none" string literal', (data) => {
+        const isNoneSchema = yup.string().oneOf([ 'none' ]);
+        const isUrlStringSchema = yup.string().test(urlTest);
+
+        return isNoneSchema.isValidSync(data) || isUrlStringSchema.isValidSync(data);
+      }),
     NEXT_PUBLIC_STATS_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_STATS_API_BASE_PATH: yup.string(),
     NEXT_PUBLIC_VISUALIZE_API_HOST: yup.string().test(urlTest),
@@ -601,7 +716,14 @@ const schema = yup
     NEXT_PUBLIC_NAME_SERVICE_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_METADATA_SERVICE_API_HOST: yup.string().test(urlTest),
     NEXT_PUBLIC_ADMIN_SERVICE_API_HOST: yup.string().test(urlTest),
-    NEXT_PUBLIC_GRAPHIQL_TRANSACTION: yup.string().matches(regexp.HEX_REGEXP),
+    NEXT_PUBLIC_GRAPHIQL_TRANSACTION: yup
+      .mixed()
+      .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_GRAPHIQL_TRANSACTION, it should be either Hex-string or "none" string literal', (data) => {
+        const isNoneSchema = yup.string().oneOf([ 'none' ]);
+        const isHashStringSchema = yup.string().matches(regexp.HEX_REGEXP);
+
+        return isNoneSchema.isValidSync(data) || isHashStringSchema.isValidSync(data);
+      }),
     NEXT_PUBLIC_WEB3_WALLETS: yup
       .mixed()
       .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_WEB3_WALLETS, it should be either array or "none" string literal', (data) => {
@@ -639,6 +761,19 @@ const schema = yup
 
         return isUndefined || valueSchema.isValidSync(data);
       }),
+    NEXT_PUBLIC_GAS_REFUEL_PROVIDER_CONFIG: yup
+      .mixed()
+      .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_GAS_REFUEL_PROVIDER_CONFIG, it should have name and url template', (data) => {
+        const isUndefined = data === undefined;
+        const valueSchema = yup.object<GasRefuelProviderConfig>().transform(replaceQuotes).json().shape({
+          name: yup.string().required(),
+          url_template: yup.string().required(),
+          logo: yup.string(),
+          dapp_id: yup.string(),
+        });
+
+        return isUndefined || valueSchema.isValidSync(data);
+      }),
     NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE: yup.string<ValidatorsChainType>().oneOf(VALIDATORS_CHAIN_TYPE),
     NEXT_PUBLIC_GAS_TRACKER_ENABLED: yup.boolean(),
     NEXT_PUBLIC_GAS_TRACKER_UNITS: yup.array().transform(replaceQuotes).json().of(yup.string<GasUnit>().oneOf(GAS_UNITS)),
@@ -657,6 +792,31 @@ const schema = yup
           'NEXT_PUBLIC_FAULT_PROOF_ENABLED can only be used with NEXT_PUBLIC_ROLLUP_TYPE=optimistic',
           value => value === undefined,
         ),
+      }),
+    NEXT_PUBLIC_HAS_MUD_FRAMEWORK: yup.boolean()
+      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
+        is: 'optimistic',
+        then: (schema) => schema,
+        otherwise: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_HAS_MUD_FRAMEWORK can only be used with NEXT_PUBLIC_ROLLUP_TYPE=optimistic',
+          value => value === undefined,
+        ),
+      }),
+    NEXT_PUBLIC_SAVE_ON_GAS_ENABLED: yup.boolean(),
+    NEXT_PUBLIC_ADDRESS_USERNAME_TAG: yup
+      .mixed()
+      .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_ADDRESS_USERNAME_TAG, it should have api_url_template', (data) => {
+        const isUndefined = data === undefined;
+        const valueSchema = yup.object<AddressProfileAPIConfig>().transform(replaceQuotes).json().shape({
+          api_url_template: yup.string().required(),
+          tag_link_template: yup.string(),
+          tag_icon: yup.string(),
+          tag_bg_color: yup.string(),
+          tag_text_color: yup.string(),
+        });
+
+        return isUndefined || valueSchema.isValidSync(data);
       }),
 
     // 6. External services envs
