@@ -28,6 +28,7 @@ import Layout from 'ui/shared/layout/Layout';
 import Web3ModalProvider from 'ui/shared/Web3ModalProvider';
 
 import 'lib/setLocale';
+import 'ui/games/Capybara.css';
 // import 'focus-visible/dist/focus-visible';
 
 type AppPropsWithLayout = AppProps & {
