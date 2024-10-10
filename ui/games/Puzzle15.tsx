@@ -1,4 +1,4 @@
-import { Grid, Box } from '@chakra-ui/react';
+import { Grid, Box, Flex, Button } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 
@@ -134,7 +134,7 @@ const Puzzle15 = () => {
   }, [ isWon, moveTile ]);
 
   return (
-    <>
+    <Flex flexDirection="column" alignItems="center" justifyContent="center">
       <Grid templateColumns="repeat(4, 1fr)" w="400px" h="400px">
         { tiles.map((tile, index) => (
           <motion.div
@@ -175,8 +175,8 @@ const Puzzle15 = () => {
           </motion.div>
         )) }
       </Grid>
-      { isWon && <p>Congratulations! You solved the puzzle!</p> }
-    </>
+      { isWon && <Button mt={ 10 }>Claim NFT</Button> }
+    </Flex>
   );
 };
 
