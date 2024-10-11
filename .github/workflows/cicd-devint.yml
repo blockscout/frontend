@@ -1,10 +1,25 @@
 # For developer testing
-name: Build and Push Docker Image
+name: Deploy for main branch
+
 on:
   push:
     branches:
       - main
-      - cicd
+      - workflow
+    paths-ignore:
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.husky/**'
+      - '.vscode/**'
+      - 'docs/**'
+      - 'jest/**'
+      - 'mocks/**'
+      - 'playwright/**'
+      - 'stubs/**'
+      - 'tools/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build-and-push:
@@ -13,9 +28,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -26,15 +38,26 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Add SHORT_SHA env property with commit short sha
+        run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
+
       # todo: using docker/build-push-action, Reference: https://github.com/marketplace/actions/build-and-push-docker-images
       - name: Build and Push to Docker Hub
         uses: docker/build-push-action@v6
         with:
           context: .
+          file: ./Dockerfile
           push: true
           tags: kevin2025/blockscout-frontend:latest
+          cache-to: type=gha
+          cache-from: type=gha
+          build-args: |
+            GIT_COMMIT_SHA=${{ env.SHORT_SHA }}
+            GIT_TAG=${{ github.ref_type == 'tag' && github.ref_name || '' }}
+
 
   deploy-with-docker-compose:
+    if: false
     runs-on: ubuntu-latest
     needs: build-and-push
     steps:
