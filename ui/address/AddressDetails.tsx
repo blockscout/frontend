@@ -1,9 +1,10 @@
-import { Box, Text, Grid } from '@chakra-ui/react';
+import { Box, Text, Grid, Skeleton } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import config from 'configs/app';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
+import useArweaveAddress from 'lib/hooks/useArweaveAddress';
 import useIsMounted from 'lib/hooks/useIsMounted';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import AddressCounterItem from 'ui/address/details/AddressCounterItem';
@@ -13,6 +14,7 @@ import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import * as EntityBase from 'ui/shared/entities/base/components';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 
@@ -23,7 +25,6 @@ import AddressNetWorth from './details/AddressNetWorth';
 import TokenSelect from './tokenSelect/TokenSelect';
 import useAddressCountersQuery from './utils/useAddressCountersQuery';
 import type { AddressQuery } from './utils/useAddressQuery';
-import AddressArweaveAddress from './AddressArweaveAddress';
 
 interface Props {
   addressQuery: AddressQuery;
@@ -32,8 +33,9 @@ interface Props {
 
 const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
   const router = useRouter();
-
   const addressHash = getQueryParamString(router.query.hash);
+
+  const { arweaveAddress, isLoading: loadingArweaveAddress } = useArweaveAddress({ addressHash });
 
   const countersQuery = useAddressCountersQuery({
     hash: addressHash,
@@ -168,15 +170,38 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
           ) :
             0 }
         </DetailsInfoItem.Value>
-        <DetailsInfoItem.Label
-          hint="Visit arkprotocol.xyz to link your arweave address with your Ethereum wallet!"
-          isLoading={ addressQuery.isPlaceholderData || countersQuery.isPlaceholderData }
-        >
-          Linked Arweave Address
-        </DetailsInfoItem.Label>
-        <DetailsInfoItem.Value>
-          <AddressArweaveAddress {...{ addressHash }} />
-        </DetailsInfoItem.Value>
+
+        { loadingArweaveAddress && (
+          <>
+            <DetailsInfoItem.Label>
+              <Skeleton isLoaded={ !loadingArweaveAddress }>
+                loading
+              </Skeleton>
+            </DetailsInfoItem.Label>
+            <DetailsInfoItem.Value>
+              <Skeleton isLoaded={ !loadingArweaveAddress }>
+                loading
+              </Skeleton>
+            </DetailsInfoItem.Value>
+          </>
+        ) }
+
+        { arweaveAddress && (
+          <>
+            <DetailsInfoItem.Label
+              hint="Visit arkprotocol.xyz to link your arweave address with your Ethereum wallet!"
+              isLoading={ addressQuery.isPlaceholderData || countersQuery.isPlaceholderData }
+            >
+              Linked Arweave Address
+            </DetailsInfoItem.Label>
+            <DetailsInfoItem.Value>
+              <EntityBase.Link href={ `https://viewblock.io/arweave/address/${ arweaveAddress }` }>
+                { arweaveAddress }
+              </EntityBase.Link>
+            </DetailsInfoItem.Value>
+          </>
+        ) }
+
         { data.has_token_transfers && (
           <>
             <DetailsInfoItem.Label
