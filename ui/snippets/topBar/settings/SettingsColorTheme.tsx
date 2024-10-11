@@ -22,9 +22,9 @@ const SettingsColorTheme = ({ onSelect }: Props) => {
       return;
     }
 
-    setColorMode(nextTheme.colorMode);
+    setColorMode('light');
 
-    const varName = nextTheme.colorMode === 'light' ? '--chakra-colors-white' : '--chakra-colors-black';
+    const varName = nextTheme.colorMode === 'light' ? '--chakra-colors-white' : '--chakra-colors-white';
     window.document.documentElement.style.setProperty(varName, hex);
 
     cookies.set(cookies.NAMES.COLOR_MODE_HEX, hex);

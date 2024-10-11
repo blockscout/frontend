@@ -4,7 +4,7 @@ import type { ChainIndicatorId } from 'types/homepage';
 import type { NetworkExplorer } from 'types/networks';
 // import type { ColorThemeId } from 'types/settings';
 
-import { COLOR_THEMES } from 'lib/settings/colorTheme';
+// import { COLOR_THEMES } from 'lib/settings/colorTheme';
 
 import * as views from './ui/views';
 import { getEnvValue, getExternalAssetFilePath, parseEnvJson } from './utils';
@@ -31,8 +31,15 @@ const highlightedRoutes = (() => {
 
 const defaultColorTheme = (() => {
   // const envValue = getEnvValue('NEXT_PUBLIC_COLOR_THEME_DEFAULT') as ColorThemeId | undefined;
-  const envValue = 'light'; // always light mode
-  return COLOR_THEMES.find((theme) => theme.id === envValue);
+  // const envValue = 'light';
+  // return COLOR_THEMES.find((theme) => theme.id === envValue);
+  return {
+    id: 'light',
+    label: 'Light',
+    colorMode: 'light',
+    hex: '#FFFFFF',
+    sampleBg: 'linear-gradient(154deg, #EFEFEF 50%, rgba(255, 255, 255, 0.00) 330.86%)',
+  }; // always light mode
 })();
 
 // eslint-disable-next-line max-len

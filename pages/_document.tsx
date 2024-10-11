@@ -6,7 +6,7 @@ import React from 'react';
 import logRequestFromBot from 'nextjs/utils/logRequestFromBot';
 import * as serverTiming from 'nextjs/utils/serverTiming';
 
-import theme from 'theme';
+// import theme from 'theme';
 import * as svgSprite from 'ui/shared/IconSvg';
 
 class MyDocument extends Document {
@@ -55,8 +55,8 @@ class MyDocument extends Document {
 
           <link rel="preload" as="image" href={ svgSprite.href }/>
         </Head>
-        <body>
-          <ColorModeScript initialColorMode={ theme.config.initialColorMode }/>
+        <body style={{ background: '#FFF' }}>
+          <ColorModeScript initialColorMode="light"/>
           <Main/>
           <NextScript/>
         </body>

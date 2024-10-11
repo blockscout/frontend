@@ -1,5 +1,5 @@
 import { ApolloProvider } from '@apollo/client';
-import type { ChakraProps } from '@chakra-ui/react';
+import { type ChakraProps } from '@chakra-ui/react';
 import { GrowthBookProvider } from '@growthbook/growthbook-react';
 import * as Sentry from '@sentry/react';
 import { QueryClientProvider } from '@tanstack/react-query';
@@ -59,7 +59,8 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => <Layout>{ page }</Layout>);
 
   return (
-    <ChakraProvider cookies={ pageProps.cookies }>
+    // <ChakraProvider cookies={ pageProps.cookies }> // always light mode
+    <ChakraProvider>
       <AppErrorBoundary
         { ...ERROR_SCREEN_STYLES }
         onError={ handleError }

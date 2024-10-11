@@ -3,15 +3,16 @@ import React from 'react';
 
 import type { Props as ServerSidePropsCommon } from 'nextjs/getServerSideProps';
 
-import * as cookies from 'lib/cookies';
+// import * as cookies from 'lib/cookies';
 
 type Props = ServerSidePropsCommon & {
   statusCode: number;
 }
 
 const CustomErrorComponent = (props: Props) => {
-  const colorModeCookie = cookies.getFromCookieString(props.cookies || '', cookies.NAMES.COLOR_MODE);
-  return <NextErrorComponent statusCode={ props.statusCode } withDarkMode={ colorModeCookie === 'dark' }/>;
+  // const colorModeCookie = cookies.getFromCookieString(props.cookies || '', cookies.NAMES.COLOR_MODE);
+  // return <NextErrorComponent statusCode={ props.statusCode } withDarkMode={ colorModeCookie === 'dark' }/>;
+  return <NextErrorComponent statusCode={ props.statusCode } withDarkMode={ false }/>; // always light mode
 };
 
 export default CustomErrorComponent;
