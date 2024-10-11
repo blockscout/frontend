@@ -16,7 +16,7 @@ export function useLambdaState(addressHash: string) {
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      const data = await response.json() as { ark: { arweave_address: string, ans: string, call_txid: string } };
+      const data = await response.json() as { ark: { arweave_address: string; ans: string; call_txid: string } };
       return data.ark;
     },
   });
