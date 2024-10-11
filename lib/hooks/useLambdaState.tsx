@@ -9,14 +9,15 @@ export function useLambdaState(addressHash: string) {
       }
 
       const response = await fetch(`https://ark-lambda-api.vercel.app/api/ark-lambda/eth-info?hash=${ addressHash.toLowerCase() }`, {
-        headers: {
-          'Cache-Control': 'no-cache',
-        },
+        // headers: {
+        //   'Cache-Control': 'no-cache',
+        // },
       });
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      return response.json();
+      const data = await response.json() as { ark: { arweave_address: string, ans: string, call_txid: string } };
+      return data.ark;
     },
   });
 
