@@ -35,7 +35,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
   const router = useRouter();
   const addressHash = getQueryParamString(router.query.hash);
 
-  const { arweaveAddress, isLoading: loadingArweaveAddress } = useArweaveAddress({ addressHash });
+  const { arweaveAddress, ANS, isLoading: loadingArweaveAddress } = useArweaveAddress({ addressHash });
 
   const countersQuery = useAddressCountersQuery({
     hash: addressHash,
@@ -196,7 +196,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
             </DetailsInfoItem.Label>
             <DetailsInfoItem.Value>
               <EntityBase.Link href={ `https://viewblock.io/arweave/address/${ arweaveAddress }` }>
-                { arweaveAddress }
+                { ANS || arweaveAddress }
               </EntityBase.Link>
             </DetailsInfoItem.Value>
           </>

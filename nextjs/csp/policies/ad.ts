@@ -12,6 +12,7 @@ export function ad(): CspDev.DirectiveDescriptor {
       'coinzilla.com',
       '*.coinzilla.com',
       'https://ark-lambda-api.vercel.app',
+      'https://ans-resolver.herokuapp.com/resolve/',
       'https://ark-lambda-api.vercel.app/api',
       'https://request-global.czilladx.com',
 

@@ -8,7 +8,11 @@ export function useLambdaState(addressHash: string) {
         return null;
       }
 
-      const response = await fetch(`https://ark-lambda-api.vercel.app/api/ark-lambda/eth-info?hash=${ addressHash.toLowerCase() }`);
+      const response = await fetch(`https://ark-lambda-api.vercel.app/api/ark-lambda/eth-info?hash=${ addressHash.toLowerCase() }`, {
+        headers: {
+          'Cache-Control': 'no-cache',
+        },
+      });
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
