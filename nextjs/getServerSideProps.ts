@@ -8,6 +8,7 @@ import type { Route } from 'nextjs-routes';
 import config from 'configs/app';
 const rollupFeature = config.features.rollup;
 const adBannerFeature = config.features.adsBanner;
+import isNeedProxy from 'lib/api/isNeedProxy';
 import type * as metadata from 'lib/metadata';
 
 export interface Props<Pathname extends Route['pathname'] = never> {
@@ -245,6 +246,17 @@ export const gasTracker: GetServerSideProps<Props> = async(context) => {
 
 export const dataAvailability: GetServerSideProps<Props> = async(context) => {
   if (!config.features.dataAvailability.isEnabled) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return base(context);
+};
+
+export const login: GetServerSideProps<Props> = async(context) => {
+
+  if (!isNeedProxy()) {
     return {
       notFound: true,
     };

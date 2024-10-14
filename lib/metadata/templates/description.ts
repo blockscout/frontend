@@ -57,6 +57,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/mud-worlds': DEFAULT_TEMPLATE,
 
   // service routes, added only to make typescript happy
+  '/login': DEFAULT_TEMPLATE,
   '/sprite': DEFAULT_TEMPLATE,
   '/api/metrics': DEFAULT_TEMPLATE,
   '/api/monitoring/invalid-api-schema': DEFAULT_TEMPLATE,
