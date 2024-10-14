@@ -163,7 +163,11 @@ const Page = (props: HeadProps) => {
                     { key }
                     {
                       ((key === 'Creator' || key === 'Primary SP' || key === 'Charge Size') && values.tip) && (
-                        <Tooltip label={ values.tip } padding="8px" placement="top" bg="#FFFFFF" color="black" borderRadius="8px">
+                        <Tooltip
+                          maxW="330px"
+                          color="#000000"
+                          fontSize="12px"
+                          label={ values.tip } padding="8px" placement="top" bg="#FFFFFF" borderRadius="8px">
                           <IconSvg
                             ml="4px"
                             name="tip"
@@ -239,7 +243,7 @@ const Page = (props: HeadProps) => {
                               <Skeleton w={ !props.loading ? '100%' : '100px' } float="right" isLoaded={ !props.loading }>
                                 <Flex justifyContent="right">
                                   <Text color="#000000">
-                                    { props?.secondaryAddresses && props?.secondaryAddresses[0] }&nbsp;&nbsp;
+                                    { props?.groupFamilyId }&nbsp;&nbsp;
                                   </Text>
                                   <Popover closeOnBlur={ false }>
                                     <PopoverTrigger>

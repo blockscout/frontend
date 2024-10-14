@@ -133,8 +133,6 @@ const ObjectDetails: NextPage = () => {
     }
   }, [ tableLength ]);
 
-  const tapList = [ 'Transactions', 'Versions' ];
-
   const tabThead = [ 'Object Name', 'Type', 'Object Size', 'Status', 'Visibility', 'Last Updated Time', 'Bucket', 'Creator' ];
 
   const debouncedHandleSearchChange = React.useMemo(
@@ -170,7 +168,6 @@ const ObjectDetails: NextPage = () => {
         propsPage={ propsPage }
         error={ error }
         loading={ loading }
-        tapList={ tapList }
         tableList={ tableList }
         tabThead={ tabThead }
         page="object"

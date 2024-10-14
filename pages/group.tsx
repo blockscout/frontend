@@ -114,7 +114,7 @@ const Page: NextPage = () => {
   const tableList: Array<GroupTalbeListType> = [];
 
   const { loading, data, error } = useGraphqlQuery('storage_group', queries);
-  const tableLength = data?.buckets?.length || 0;
+  const tableLength = data?.groups?.length || 0;
   const totleDate = data?.groups_aggregate?.aggregate?.count || 0;
 
   data?.groups?.slice(0, 20).forEach((v: GroupRequestType) => {
@@ -128,13 +128,12 @@ const Page: NextPage = () => {
   });
 
   React.useEffect(() => {
-    if (typeof tableLength === 'number' && tableLength >= 21) {
+    if (typeof tableLength === 'number' && tableLength !== 21) {
       setToNext(false);
     } else {
       setToNext(true);
     }
   }, [ tableLength ]);
-  const tapList = [ 'objects', 'Transactions', 'Permissions' ];
   const tabThead = [ 'Group Name', 'Group ID', 'Last Updated', 'Active Group Member Count', 'Owner' ];
 
   const debouncedHandleSearchChange = React.useMemo(
@@ -170,7 +169,6 @@ const Page: NextPage = () => {
         propsPage={ propsPage }
         error={ error }
         loading={ loading }
-        tapList={ tapList }
         tableList={ tableList }
         tabThead={ tabThead }
         page="group"

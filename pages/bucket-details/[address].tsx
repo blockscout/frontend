@@ -10,6 +10,8 @@ import PageNextJs from 'nextjs/PageNextJs';
 import useGraphqlQuery from 'lib/api/useGraphqlQuery';
 import IconSvg from 'ui/shared/IconSvg';
 import PageTitle from 'ui/shared/Page/PageTitle';
+import TableDetails from 'ui/storage/table-details';
+import { Requires } from 'ui/storage/tabs-requires';
 import { timeTool, sizeTool, formatPubKey, timeText } from 'ui/storage/utils';
 
 const HeadDetails = dynamic(() => import('ui/storage/head-details'), { ssr: false });
@@ -128,7 +130,60 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       status: 'clickViewAll',
     },
   };
-  const secondaryAddresses = details?.global_virtual_group_family.global_virtual_group_ids.split(',') || [];
+  const secondaryAddresses = details?.global_virtual_group_family.global_virtual_group_ids.replace('{', '').replace('}', '').split(',') || [];
+  const groupFamilyId = details?.global_virtual_group_family_id || '';
+  const [ tabName, setTabName ] = React.useState<'Transactions' | 'Versions'>('Transactions');
+
+  const tabsList = [ 'Transactions', 'Versions' ];
+  const tableList = [
+    {
+      'Txn Hash': '',
+    },
+  ];
+  const changeTable = React.useCallback((value: 'Transactions' | 'Versions') => {
+    setTabName(value);
+  }, []);
+  const tabRequires = Requires(tabName, 1);
+  const [ queryParams, setQueryParams ] = React.useState<{offset: number; searchTerm: string; page: number}>({
+    offset: 0,
+    searchTerm: '',
+    page: 1,
+  });
+
+  const updateQueryParams = (newParams: Partial<{ offset: number; searchTerm: string; page: number }>) => {
+    setQueryParams(prevParams => ({
+      ...prevParams,
+      ...newParams,
+    }));
+  };
+
+  const [ toNext, setToNext ] = React.useState<boolean>(true);
+  React.useEffect(() => {
+    if (queryParams.page > 1) {
+      updateQueryParams({
+        offset: (queryParams.page - 1) * 20,
+      });
+    } else {
+      updateQueryParams({
+        offset: 0,
+      });
+    }
+  }, [ queryParams.page ]);
+
+  const propsPage = React.useCallback((value: number) => {
+    updateQueryParams({
+      page: value,
+    });
+  }, []);
+
+  React.useEffect(() => {
+    if (typeof tabRequires === 'number' && tabRequires !== 21) {
+      setToNext(false);
+    } else {
+      setToNext(true);
+    }
+  }, [ tabRequires ]);
+
   return (
     <PageNextJs pathname="/bucket-details/[address]" query={ props.query }>
       <Flex align="center" marginBottom="24px">
@@ -142,7 +197,16 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
           </Box>
         </Tooltip>
       </Flex>
-      <HeadDetails loading={ loadsing } secondaryAddresses={ secondaryAddresses } overview={ overview } more={ more }/>
+      <HeadDetails loading={ loadsing } secondaryAddresses={ secondaryAddresses } groupFamilyId={ groupFamilyId } overview={ overview } more={ more }/>
+      <TableDetails
+        changeTable={ changeTable }
+        tabsList={ tabsList }
+        tableList={ tableList }
+        toNext={ toNext }
+        currPage={ queryParams.page }
+        propsPage={ propsPage }
+      >
+      </TableDetails>
     </PageNextJs>
   );
 };

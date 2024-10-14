@@ -9,9 +9,12 @@ import {
   TableContainer,
   Tooltip,
   Box,
+  Flex,
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
 import React, { useState } from 'react';
+
+// import Pagination from 'ui/shared/pagination/Pagination';
 
 import { formatPubKey } from './utils';
 
@@ -31,15 +34,18 @@ interface TalbeListType {
 }
 
 type Props<T extends string> = {
-  tapList?: Array<T> | undefined;
+  tabsList?: Array<T> | undefined;
   tableList?: Array<TalbeListType> | undefined;
   tabThead?: Array<T> | undefined;
-  changeTable: (value: string) => void;
+  changeTable: (value: any) => void;
+  toNext: boolean;
+  propsPage: (value: number) => void;
+  currPage: number;
 }
 
 function Page<T extends string>(props: Props<T>) {
-  const [ tapSelect, setTapSelect ] = useState<string>(props.tapList![0]);
-  const handleChange = (event: string) => () => {
+  const [ tapSelect, setTapSelect ] = useState<string>(props.tabsList && props.tabsList.length ? props.tabsList[0] : '');
+  const handleChange = (event: any) => () => {
     setTapSelect(event);
     props.changeTable(event);
   };
@@ -49,7 +55,7 @@ function Page<T extends string>(props: Props<T>) {
       <Table variant="simple">
         <Thead>
           <Tr padding="0 24px" display="table-row">
-            { props.tapList?.map((value, key) => (
+            { props.tabsList?.map((value, key) => (
               <Th
                 key={ key }
                 onClick={ handleChange(value) }
@@ -139,6 +145,9 @@ function Page<T extends string>(props: Props<T>) {
             )) }
         </Tbody>
       </Table>
+      <Flex position="absolute" right="24px" bottom="-54px" justifyContent="space-between" w="97%">
+        { /* <Pagination page={ props.currPage } propsPage={ props.propsPage } toNext={ props.toNext }></Pagination> */ }
+      </Flex>
     </TableContainer>
   );
 }

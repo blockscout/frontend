@@ -152,4 +152,10 @@ export interface HeadProps {
   } | undefined;
   secondaryAddresses?: Array<string>;
   loading?: boolean;
+  groupFamilyId?: string;
+}
+
+export interface TabsType {
+  Transactions: string;
+  Versions: string;
 }
