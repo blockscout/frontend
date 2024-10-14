@@ -54,11 +54,11 @@ const wvmNetworks = [
 ];
 
 export function useWvmArchiver({ address }: Props) {
-  const isWvmNetwork = wvmNetworks.find((network) => network.archiver_address === address);
+  const isWvmNetwork = wvmNetworks.some(
+    (network) =>
+      network.archiver_address === address ||
+      (network.backfill_address && network.backfill_address === address),
+  );
 
-  if (isWvmNetwork) {
-    return true;
-  }
-
-  return false;
+  return isWvmNetwork;
 }
