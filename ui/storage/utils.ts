@@ -22,11 +22,11 @@ export const timeTool = (time: string) => {
   const now = new Date().getTime();
   const diff = now - new Date(time).getTime();
 
-  const seconds = Math.floor(diff / 1000);
-  const minutes = Math.floor(seconds / 60);
-  const hours = Math.floor(minutes / 60);
-  const days = Math.floor(hours / 24);
-  const months = Math.floor(days / 30);
+  const seconds = Number(String(Math.floor(diff / 1000)).padStart(2, '0'));
+  const minutes = Number(String(Math.floor(seconds / 60)).padStart(2, '0'));
+  const hours = Number(String(Math.floor(minutes / 60)).padStart(2, '0'));
+  const days = Number(String(Math.floor(hours / 60)).padStart(2, '0'));
+  const months = Number(String(Math.floor(days / 60)).padStart(2, '0'));
   const years = Math.floor(months / 12);
 
   if (years > 0) {
