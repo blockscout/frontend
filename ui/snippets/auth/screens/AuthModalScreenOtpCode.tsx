@@ -86,7 +86,6 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
         description: 'Code has been sent to your email',
       });
     } catch (error) {
-      // TODO @tom2drum check cool down error
       const apiError = getErrorObjPayload<{ message: string }>(error);
 
       toast({

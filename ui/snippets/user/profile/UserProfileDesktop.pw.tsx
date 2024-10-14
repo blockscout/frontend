@@ -13,11 +13,11 @@ const test = base.extend<{ context: BrowserContext }>({
 
 test('without address', async({ render, page, mockApiResponse }) => {
   await mockApiResponse('user_info', profileMock.base);
-  await render(<UserProfileDesktop/>);
+  await render(<UserProfileDesktop/>, undefined, { marketplaceContext: { isAutoConnectDisabled: true, setIsAutoConnectDisabled: () => {} } });
   await page.getByText(/tom/i).click();
 
   await expect(page).toHaveScreenshot({
-    clip: { x: 0, y: 0, width: 300, height: 600 },
+    clip: { x: 0, y: 0, width: 300, height: 700 },
   });
 });
 

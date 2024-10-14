@@ -10,7 +10,7 @@ type TMarketplaceContext = {
   setIsAutoConnectDisabled: (isAutoConnectDisabled: boolean) => void;
 }
 
-const MarketplaceContext = createContext<TMarketplaceContext>({
+export const MarketplaceContext = createContext<TMarketplaceContext>({
   isAutoConnectDisabled: false,
   setIsAutoConnectDisabled: () => {},
 });
