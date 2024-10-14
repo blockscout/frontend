@@ -106,7 +106,7 @@ export default function useQuickSearchQuery() {
   const graphqlShowMoreQueries = React.useCallback(() => {
     switch (type) {
       case 'objects':
-        graphqlSearchOnly.current = true;
+        // graphqlSearchOnly.current = true;
         return [
           {
             tableName: 'objects',
@@ -127,7 +127,7 @@ export default function useQuickSearchQuery() {
           },
         ];
       case 'buckets':
-        graphqlSearchOnly.current = true;
+        // graphqlSearchOnly.current = true;
         return [
           {
             tableName: 'buckets',
@@ -148,7 +148,7 @@ export default function useQuickSearchQuery() {
           },
         ];
       case 'groups':
-        graphqlSearchOnly.current = true;
+        // graphqlSearchOnly.current = true;
         return [
           {
             tableName: 'groups',
