@@ -1,5 +1,5 @@
 # For developer testing
-name: Deploy for main branch
+name: Deploy for development
 
 on:
   push:
@@ -24,7 +24,6 @@ concurrency:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    if: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -48,7 +47,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: kevin2025/blockscout-frontend:latest
+          tags: kevin2025/blockscout-frontend:develop
           cache-to: type=gha
           cache-from: type=gha
           build-args: |
@@ -69,3 +68,37 @@ jobs:
           password: ${{ secrets.DEVINT2_SERVER_PASSWORD }}
           script: |
             sudo docker compose -f /data/blockscout/docker-compose/docker-compose.mechain.devint.yml up --build -d
+
+  deploy-with-k8s:
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    steps:
+      - name: clone
+        uses: appleboy/ssh-action@v1.0.3
+        if: false
+        with:
+          host: ${{ secrets.DEV0_SERVER_HOST }}
+          username: ${{ secrets.DEV0_SERVER_USER }}
+          password: ${{ secrets.DEV0_SERVER_PASSWORD }}
+          script: |
+            mkdir /tmp/deploy && cd /tmp/deploy
+            git clone --depth 1 https://git.bitkinetic.com/ops/k8s-hk-rke2.git && cd k8s-hk-rke2
+      - name: deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.DEV0_SERVER_HOST }}
+          username: ${{ secrets.DEV0_SERVER_USER }}
+          password: ${{ secrets.DEV0_SERVER_PASSWORD }}
+          script: |
+            cd /tmp/deploy/k8s-hk-rke2/mechain-helm-charts
+            echo "${{ secrets.KUBECONFIG_DEV }}" > kubeconfig.yaml
+            helm --kubeconfig kubeconfig.yaml -n mechain-dev upgrade --install blockscout blockscout -f blockscout/values_devint.yaml
+      - name: clean
+        uses: appleboy/ssh-action@v1.0.3
+        if: false
+        with:
+          host: ${{ secrets.DEV0_SERVER_HOST }}
+          username: ${{ secrets.DEV0_SERVER_USER }}
+          password: ${{ secrets.DEV0_SERVER_PASSWORD }}
+          script: |
+            rm -rf /tmp/deploy/
