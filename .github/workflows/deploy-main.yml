@@ -3,7 +3,7 @@ name: Deploy from main branch
 on:
   push:
     branches:
-      - main
+      - main-ignore
     paths-ignore:
       - '.github/ISSUE_TEMPLATE/**'
       - '.husky/**'
@@ -22,7 +22,6 @@ concurrency:
 
 jobs:
   publish_image:
-    if: false
     name: Publish Docker image
     uses: './.github/workflows/publish-image.yml'
     secrets: inherit
