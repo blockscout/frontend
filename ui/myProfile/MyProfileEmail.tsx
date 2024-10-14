@@ -18,6 +18,7 @@ import FormFieldReCaptcha from 'ui/shared/forms/fields/FormFieldReCaptcha';
 import AuthModal from 'ui/snippets/auth/AuthModal';
 
 import MyProfileFieldsEmail from './fields/MyProfileFieldsEmail';
+import MyProfileFieldsName from './fields/MyProfileFieldsName';
 
 const MIXPANEL_CONFIG = {
   account_link_info: {
@@ -38,6 +39,7 @@ const MyProfileEmail = ({ profileQuery }: Props) => {
     mode: 'onBlur',
     defaultValues: {
       email: profileQuery.data?.email || '',
+      name: profileQuery.data?.name || profileQuery.data?.nickname || '',
     },
   });
 
@@ -78,6 +80,7 @@ const MyProfileEmail = ({ profileQuery }: Props) => {
           noValidate
           onSubmit={ formApi.handleSubmit(onFormSubmit) }
         >
+          <MyProfileFieldsName/>
           <MyProfileFieldsEmail isReadOnly={ !config.services.reCaptchaV3.siteKey }/>
           { config.services.reCaptchaV3.siteKey && (
             <GoogleReCaptchaProvider reCaptchaKey={ config.services.reCaptchaV3.siteKey }>

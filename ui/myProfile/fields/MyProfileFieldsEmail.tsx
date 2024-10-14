@@ -32,7 +32,6 @@ const MyProfileFieldsEmail = ({ isReadOnly }: Props) => {
           isDisabled={ isDisabled }
           isReadOnly={ isReadOnly }
           autoComplete="off"
-          bgColor="dialog_bg"
         />
         <InputPlaceholder text="Email" error={ fieldState.error }/>
         { !formState.dirtyFields.email && (
