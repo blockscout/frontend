@@ -8,6 +8,7 @@ import type { EmailFormFields, Screen } from '../types';
 
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/errors/getErrorMessage';
+import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import useToast from 'lib/hooks/useToast';
 import * as mixpanel from 'lib/mixpanel';
 
@@ -65,7 +66,7 @@ const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
       toast({
         status: 'error',
         title: 'Error',
-        description: getErrorMessage(error) || 'Something went wrong',
+        description: getErrorObjPayload<{ message: string }>(error)?.message || getErrorMessage(error) || 'Something went wrong',
       });
     }
   }, [ executeRecaptcha, apiFetch, isAuth, onSubmit, mixpanelConfig?.account_link_info.source, toast ]);

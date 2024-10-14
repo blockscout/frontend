@@ -5,6 +5,7 @@ import type { SubmitHandler } from 'react-hook-form';
 import { FormProvider, useForm } from 'react-hook-form';
 
 import type { OtpCodeFormFields, ScreenSuccess } from '../types';
+import type { UserInfo } from 'types/api/account';
 
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/errors/getErrorMessage';
@@ -35,7 +36,8 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
   });
 
   const onFormSubmit: SubmitHandler<OtpCodeFormFields> = React.useCallback((formData) => {
-    return apiFetch('auth_confirm_otp', {
+    const resource = isAuth ? 'auth_link_email' : 'auth_confirm_otp';
+    return apiFetch<typeof resource, UserInfo, unknown>(resource, {
       fetchParams: {
         method: 'POST',
         body: {
@@ -44,8 +46,11 @@ const AuthModalScreenOtpCode = ({ email, onSuccess, isAuth }: Props) => {
         },
       },
     })
-      .then(() => {
-        onSuccess({ type: 'success_email', email, isAuth });
+      .then((response) => {
+        if (!('name' in response)) {
+          throw Error('Something went wrong');
+        }
+        onSuccess({ type: 'success_email', email, isAuth, profile: response });
       })
       .catch((error) => {
         const apiError = getErrorObjPayload<{ message: string }>(error);

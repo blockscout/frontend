@@ -52,6 +52,7 @@ const UserProfileContentWallet = ({ onClose, className }: Props) => {
             onClick={ handleOpenWalletClick }
             isLoading={ web3Wallet.isOpen }
             flexShrink={ 0 }
+            ml="auto"
           />
         </Flex>
       );

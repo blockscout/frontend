@@ -40,6 +40,7 @@ const UserProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => 
       return;
     }
 
+    // TODO @tom2drum use auth modal instead
     if (router.pathname === '/apps/[id]') {
       signInWithWallet.start();
       return;

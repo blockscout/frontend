@@ -2,6 +2,7 @@ import { Center, Spinner } from '@chakra-ui/react';
 import React from 'react';
 
 import type { ScreenSuccess } from '../types';
+import type { UserInfo } from 'types/api/account';
 
 import type * as mixpanel from 'lib/mixpanel';
 
@@ -17,15 +18,15 @@ interface Props {
 const AuthModalScreenConnectWallet = ({ onSuccess, onError, isAuth, source }: Props) => {
   const isStartedRef = React.useRef(false);
 
-  const handleSignInSuccess = React.useCallback(({ address }: { address: string }) => {
-    onSuccess({ type: 'success_wallet', address, isAuth });
+  const handleSignInSuccess = React.useCallback(({ address, profile }: { address: string; profile: UserInfo }) => {
+    onSuccess({ type: 'success_wallet', address, isAuth, profile });
   }, [ onSuccess, isAuth ]);
 
   const handleSignInError = React.useCallback(() => {
     onError(isAuth);
   }, [ onError, isAuth ]);
 
-  const { start } = useSignInWithWallet({ onSuccess: handleSignInSuccess, onError: handleSignInError, source });
+  const { start } = useSignInWithWallet({ onSuccess: handleSignInSuccess, onError: handleSignInError, source, isAuth });
 
   React.useEffect(() => {
     if (!isStartedRef.current) {

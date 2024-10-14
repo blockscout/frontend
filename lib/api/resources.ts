@@ -226,17 +226,20 @@ export const RESOURCES = {
   auth_send_otp: {
     path: '/api/account/v2/send_otp',
   },
-
   auth_confirm_otp: {
     path: '/api/account/v2/confirm_otp',
   },
-
   auth_siwe_message: {
     path: '/api/account/v2/siwe_message',
   },
-
   auth_siwe_verify: {
     path: '/api/account/v2/authenticate_via_wallet',
+  },
+  auth_link_email: {
+    path: '/api/account/v2/email/link',
+  },
+  auth_link_address: {
+    path: '/api/account/v2/address/link',
   },
 
   // STATS MICROSERVICE API

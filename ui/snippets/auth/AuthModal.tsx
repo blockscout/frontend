@@ -1,4 +1,5 @@
 import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
@@ -6,6 +7,7 @@ import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 import type { Screen, ScreenSuccess } from './types';
 
 import config from 'configs/app';
+import { getResourceKey } from 'lib/api/useApiQuery';
 import useGetCsrfToken from 'lib/hooks/useGetCsrfToken';
 import * as mixpanel from 'lib/mixpanel';
 import IconSvg from 'ui/shared/IconSvg';
@@ -16,7 +18,6 @@ import AuthModalScreenOtpCode from './screens/AuthModalScreenOtpCode';
 import AuthModalScreenSelectMethod from './screens/AuthModalScreenSelectMethod';
 import AuthModalScreenSuccessEmail from './screens/AuthModalScreenSuccessEmail';
 import AuthModalScreenSuccessWallet from './screens/AuthModalScreenSuccessWallet';
-import useProfileQuery from './useProfileQuery';
 
 const feature = config.features.account;
 
@@ -38,8 +39,8 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig }: Props) => {
   const [ isSuccess, setIsSuccess ] = React.useState(false);
 
   const router = useRouter();
-  const profileQuery = useProfileQuery();
   const csrfQuery = useGetCsrfToken();
+  const queryClient = useQueryClient();
 
   React.useEffect(() => {
     if ('isAuth' in initialScreen && initialScreen.isAuth) {
@@ -84,13 +85,10 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig }: Props) => {
       });
     }
 
-    const { data } = await profileQuery.refetch();
+    queryClient.setQueryData(getResourceKey('user_info'), () => screen.profile);
     await csrfQuery.refetch();
-    if (data) {
-      onNextStep({ ...screen, profile: data });
-    }
-    // TODO @tom2drum handle error case
-  }, [ initialScreen, mixpanelConfig?.account_link_info.source, onNextStep, profileQuery, csrfQuery ]);
+    onNextStep(screen);
+  }, [ initialScreen, mixpanelConfig?.account_link_info.source, onNextStep, csrfQuery, queryClient ]);
 
   const onModalClose = React.useCallback(() => {
     onClose(isSuccess);

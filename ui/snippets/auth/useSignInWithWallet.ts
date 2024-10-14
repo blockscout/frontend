@@ -2,6 +2,8 @@ import { useWeb3Modal } from '@web3modal/wagmi/react';
 import React from 'react';
 import { useSignMessage } from 'wagmi';
 
+import type { UserInfo } from 'types/api/account';
+
 import config from 'configs/app';
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/errors/getErrorMessage';
@@ -11,12 +13,13 @@ import * as mixpanel from 'lib/mixpanel';
 import useAccount from 'lib/web3/useAccount';
 
 interface Props {
-  onSuccess?: ({ address }: { address: string }) => void;
+  onSuccess?: ({ address, profile }: { address: string; profile: UserInfo }) => void;
   onError?: () => void;
   source?: mixpanel.EventPayload<mixpanel.EventTypes.WALLET_CONNECT>['Source'];
+  isAuth?: boolean;
 }
 
-function useSignInWithWallet({ onSuccess, onError, source = 'Login' }: Props) {
+function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth }: Props) {
   const [ isPending, setIsPending ] = React.useState(false);
   const isConnectingWalletRef = React.useRef(false);
 
@@ -30,13 +33,17 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login' }: Props) {
     try {
       const siweMessage = await apiFetch('auth_siwe_message', { queryParams: { address } }) as { siwe_message: string };
       const signature = await signMessageAsync({ message: siweMessage.siwe_message });
-      await apiFetch('auth_siwe_verify', {
+      const resource = isAuth ? 'auth_link_address' : 'auth_siwe_verify';
+      const response = await apiFetch<typeof resource, UserInfo, unknown>(resource, {
         fetchParams: {
           method: 'POST',
           body: { message: siweMessage.siwe_message, signature },
         },
       });
-      onSuccess?.({ address });
+      if (!('name' in response)) {
+        throw Error('Something went wrong');
+      }
+      onSuccess?.({ address, profile: response });
     } catch (error) {
       const errorObj = getErrorObj(error);
       const shortMessage = errorObj && 'shortMessage' in errorObj && typeof errorObj.shortMessage === 'string' ? errorObj.shortMessage : undefined;
@@ -49,7 +56,7 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login' }: Props) {
     } finally {
       setIsPending(false);
     }
-  }, [ apiFetch, onError, onSuccess, signMessageAsync, toast ]);
+  }, [ apiFetch, isAuth, onError, onSuccess, signMessageAsync, toast ]);
 
   const start = React.useCallback(() => {
     setIsPending(true);

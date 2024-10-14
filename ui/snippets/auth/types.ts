@@ -3,12 +3,12 @@ import type { UserInfo } from 'types/api/account';
 export type ScreenSuccess = {
   type: 'success_email';
   email: string;
-  profile?: UserInfo;
+  profile: UserInfo;
   isAuth?: boolean;
 } | {
   type: 'success_wallet';
   address: string;
-  profile?: UserInfo;
+  profile: UserInfo;
   isAuth?: boolean;
 }
 export type Screen = {
