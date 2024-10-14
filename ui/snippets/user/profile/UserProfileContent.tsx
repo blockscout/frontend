@@ -86,14 +86,14 @@ const UserProfileContent = ({ data, onClose, onLogin, onAddEmail, onAddAddress }
             <Hint label="Address" boxSize={ 4 } ml={ 1 } mr="auto"/>
             { data?.address_hash ?
               <Box>{ shortenString(data?.address_hash) }</Box> :
-              <Link onClick={ onAddAddress } color="text_secondary" _hover={{ color: 'link_hovered', textDecoration: 'none' }}>Add wallet</Link>
+              <Link onClick={ onAddAddress } color="text_secondary" _hover={{ color: 'link_hovered', textDecoration: 'none' }}>Add address</Link>
             }
           </Flex>
         ) }
         <Flex p={ 2 } columnGap={ 4 }>
           <Box mr="auto">Email</Box>
           { data?.email ?
-            <TruncatedValue value={ data.email + data.email }/> :
+            <TruncatedValue value={ data.email }/> :
             <Link onClick={ onAddEmail } color="text_secondary" _hover={{ color: 'link_hovered', textDecoration: 'none' }}>Add email</Link>
           }
         </Flex>

@@ -68,7 +68,7 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: 
       isDisabled={ isMobile || isFetched || Boolean(data) }
       openDelay={ 500 }
     >
-      <Skeleton isLoaded={ isFetched } borderRadius="base" ref={ ref }>
+      <Skeleton isLoaded={ isFetched } borderRadius="base" ref={ ref } w="fit-content">
         <Button
           size={ size }
           variant={ variant }
