@@ -341,9 +341,10 @@ Settings for meta tags, OG tags and SEO
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED | `boolean` | Set to true if network has account feature | Required | - | `true` | v1.0.x+ |
-| NEXT_PUBLIC_AUTH0_CLIENT_ID | `string` | **DEPRECATED** Client id for [Auth0](https://auth0.com/) provider | Required | - | `<your-secret>` | v1.0.x+ |
-| NEXT_PUBLIC_AUTH_URL | `string` | **DEPRECATED** Account auth base url; it is used for building login URL (`${ NEXT_PUBLIC_AUTH_URL }/auth/auth0`) and logout return URL (`${ NEXT_PUBLIC_AUTH_URL }/auth/logout`); if not provided the base app URL will be used instead | Required | - | `https://blockscout.com` | v1.0.x+ |
-| NEXT_PUBLIC_LOGOUT_URL | `string` | **DEPRECATED** Account logout url. Required if account is supported for the app instance. | Required | - | `https://blockscoutcom.us.auth0.com/v2/logout` | v1.0.x+ |
+| NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY | `boolean` | See [below](ENVS.md#google-recaptcha) | Required | - | `<your-secret>` | v1.36.0+ |
+| NEXT_PUBLIC_AUTH0_CLIENT_ID | `string` | **DEPRECATED** Client id for [Auth0](https://auth0.com/) provider | - | - | `<your-secret>` | v1.0.x+ |
+| NEXT_PUBLIC_AUTH_URL | `string` | **DEPRECATED** Account auth base url; it is used for building login URL (`${ NEXT_PUBLIC_AUTH_URL }/auth/auth0`) and logout return URL (`${ NEXT_PUBLIC_AUTH_URL }/auth/logout`); if not provided the base app URL will be used instead | - | - | `https://blockscout.com` | v1.0.x+ |
+| NEXT_PUBLIC_LOGOUT_URL | `string` | **DEPRECATED** Account logout url. Required if account is supported for the app instance. | - | - | `https://blockscoutcom.us.auth0.com/v2/logout` | v1.0.x+ |
 
 &nbsp;
 
@@ -440,7 +441,7 @@ This feature is **enabled by default** with the `coinzilla` ads provider. To swi
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY | `string` | See [below](ENVS.md#google-recaptcha) | true | - | `<your-secret>` | v1.35.0+ |
+| NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY | `string` | See [below](ENVS.md#google-recaptcha) | true | - | `<your-secret>` | v1.36.0+ |
 
 &nbsp;
 
@@ -798,4 +799,4 @@ For obtaining the variables values please refer to [reCAPTCHA documentation](htt
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY | `string` | Google reCAPTCHA v3 site key | - | - | `<your-secret>` | v1.35.0+ |
+| NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY | `string` | Google reCAPTCHA v3 site key | - | - | `<your-secret>` | v1.36.0+ |

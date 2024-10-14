@@ -35,7 +35,7 @@ const MyProfileFieldsEmail = ({ isReadOnly }: Props) => {
           bgColor="dialog_bg"
         />
         <InputPlaceholder text="Email" error={ fieldState.error }/>
-        { !formState.isDirty && (
+        { !formState.dirtyFields.email && (
           <InputRightElement h="100%">
             <IconSvg name="certified" boxSize={ 5 } color="green.500"/>
           </InputRightElement>

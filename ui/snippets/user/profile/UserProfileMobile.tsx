@@ -9,22 +9,22 @@ import * as mixpanel from 'lib/mixpanel';
 import useAccount from 'lib/web3/useAccount';
 import AuthModal from 'ui/snippets/auth/AuthModal';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
-import useSignInWithWallet from 'ui/snippets/auth/useSignInWithWallet';
 
 import UserProfileButton from './UserProfileButton';
 import UserProfileContent from './UserProfileContent';
 
+const initialScreen = {
+  type: config.features.blockchainInteraction.isEnabled ? 'select_method' as const : 'email' as const,
+};
+
 const UserProfileMobile = () => {
-  const [ authInitialScreen, setAuthInitialScreen ] = React.useState<Screen>({
-    type: config.features.blockchainInteraction.isEnabled ? 'select_method' : 'email',
-  });
+  const [ authInitialScreen, setAuthInitialScreen ] = React.useState<Screen>(initialScreen);
   const router = useRouter();
 
   const authModal = useDisclosure();
   const profileMenu = useDisclosure();
 
   const profileQuery = useProfileQuery();
-  const signInWithWallet = useSignInWithWallet({});
   const { address: web3Address } = useAccount();
 
   const handleProfileButtonClick = React.useCallback(() => {
@@ -34,14 +34,12 @@ const UserProfileMobile = () => {
       return;
     }
 
-    // TODO @tom2drum use auth modal instead
-    if (router.pathname === '/apps/[id]') {
-      signInWithWallet.start();
-      return;
+    if (router.pathname === '/apps/[id]' && config.features.blockchainInteraction.isEnabled) {
+      setAuthInitialScreen({ type: 'connect_wallet' });
     }
 
     authModal.onOpen();
-  }, [ profileQuery.data, web3Address, router.pathname, authModal, profileMenu, signInWithWallet ]);
+  }, [ profileQuery.data, web3Address, router.pathname, authModal, profileMenu ]);
 
   const handleAddEmailClick = React.useCallback(() => {
     setAuthInitialScreen({ type: 'email', isAuth: true });
@@ -51,6 +49,11 @@ const UserProfileMobile = () => {
   const handleAddAddressClick = React.useCallback(() => {
     setAuthInitialScreen({ type: 'connect_wallet', isAuth: true });
     authModal.onOpen();
+  }, [ authModal ]);
+
+  const handleAuthModalClose = React.useCallback(() => {
+    setAuthInitialScreen(initialScreen);
+    authModal.onClose();
   }, [ authModal ]);
 
   return (
@@ -83,7 +86,7 @@ const UserProfileMobile = () => {
       ) }
       { authModal.isOpen && (
         <AuthModal
-          onClose={ authModal.onClose }
+          onClose={ handleAuthModalClose }
           initialScreen={ authInitialScreen }
         />
       ) }

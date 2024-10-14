@@ -10,7 +10,6 @@ import useAccount from 'lib/web3/useAccount';
 import Popover from 'ui/shared/chakra/Popover';
 import AuthModal from 'ui/snippets/auth/AuthModal';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
-import useSignInWithWallet from 'ui/snippets/auth/useSignInWithWallet';
 
 import UserProfileButton from './UserProfileButton';
 import UserProfileContent from './UserProfileContent';
@@ -20,17 +19,18 @@ interface Props {
   buttonVariant?: ButtonProps['variant'];
 }
 
+const initialScreen = {
+  type: config.features.blockchainInteraction.isEnabled ? 'select_method' as const : 'email' as const,
+};
+
 const UserProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => {
-  const [ authInitialScreen, setAuthInitialScreen ] = React.useState<Screen>({
-    type: config.features.blockchainInteraction.isEnabled ? 'select_method' : 'email',
-  });
+  const [ authInitialScreen, setAuthInitialScreen ] = React.useState<Screen>(initialScreen);
   const router = useRouter();
 
   const authModal = useDisclosure();
   const profileMenu = useDisclosure();
 
   const profileQuery = useProfileQuery();
-  const signInWithWallet = useSignInWithWallet({});
   const { address: web3Address } = useAccount();
 
   const handleProfileButtonClick = React.useCallback(() => {
@@ -40,14 +40,12 @@ const UserProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => 
       return;
     }
 
-    // TODO @tom2drum use auth modal instead
-    if (router.pathname === '/apps/[id]') {
-      signInWithWallet.start();
-      return;
+    if (router.pathname === '/apps/[id]' && config.features.blockchainInteraction.isEnabled) {
+      setAuthInitialScreen({ type: 'connect_wallet' });
     }
 
     authModal.onOpen();
-  }, [ profileQuery.data, router.pathname, authModal, profileMenu, signInWithWallet, web3Address ]);
+  }, [ profileQuery.data, router.pathname, authModal, profileMenu, web3Address ]);
 
   const handleAddEmailClick = React.useCallback(() => {
     setAuthInitialScreen({ type: 'email', isAuth: true });
@@ -59,6 +57,11 @@ const UserProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => 
     authModal.onOpen();
   }, [ authModal ]);
 
+  const handleAuthModalClose = React.useCallback(() => {
+    setAuthInitialScreen(initialScreen);
+    authModal.onClose();
+  }, [ authModal ]);
+
   return (
     <>
       <Popover openDelay={ 300 } placement="bottom-end" isLazy isOpen={ profileMenu.isOpen } onClose={ profileMenu.onClose }>
@@ -68,7 +71,6 @@ const UserProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => 
             size={ buttonSize }
             variant={ buttonVariant }
             onClick={ handleProfileButtonClick }
-            isPending={ signInWithWallet.isPending }
           />
         </PopoverTrigger>
         { (profileQuery.data || web3Address) && (
@@ -87,7 +89,7 @@ const UserProfileDesktop = ({ buttonSize, buttonVariant = 'header' }: Props) => 
       </Popover>
       { authModal.isOpen && (
         <AuthModal
-          onClose={ authModal.onClose }
+          onClose={ handleAuthModalClose }
           initialScreen={ authInitialScreen }
         />
       ) }

@@ -10,12 +10,12 @@ import config from 'configs/app';
 import { useMarketplaceContext } from 'lib/contexts/marketplace';
 import shortenString from 'lib/shortenString';
 import Hint from 'ui/shared/Hint';
+import TruncatedValue from 'ui/shared/TruncatedValue';
 import useLogout from 'ui/snippets/auth/useLogout';
 
 import UserWalletAutoConnectAlert from '../UserWalletAutoConnectAlert';
 import UserProfileContentNavLink from './UserProfileContentNavLink';
 import UserProfileContentWallet from './UserProfileContentWallet';
-import { getUserHandle } from './utils';
 
 const navLinks: Array<NavLink> = [
   {
@@ -80,18 +80,20 @@ const UserProfileContent = ({ data, onClose, onLogin, onAddEmail, onAddAddress }
       />
 
       <Box fontSize="xs" lineHeight={ 4 } fontWeight="500" borderColor="divider" borderWidth="1px" borderRadius="base">
-        <Flex p={ 2 } borderColor="divider" borderBottomWidth="1px">
-          <Box>Address</Box>
-          <Hint label="Address" boxSize={ 4 } ml={ 1 } mr="auto"/>
-          { data?.address_hash ?
-            <Box>{ shortenString(data?.address_hash) }</Box> :
-            <Link onClick={ onAddAddress } color="text_secondary" _hover={{ color: 'link_hovered', textDecoration: 'none' }}>Add wallet</Link>
-          }
-        </Flex>
-        <Flex p={ 2 }>
+        { config.features.blockchainInteraction.isEnabled && (
+          <Flex p={ 2 } borderColor="divider" borderBottomWidth="1px">
+            <Box>Address</Box>
+            <Hint label="Address" boxSize={ 4 } ml={ 1 } mr="auto"/>
+            { data?.address_hash ?
+              <Box>{ shortenString(data?.address_hash) }</Box> :
+              <Link onClick={ onAddAddress } color="text_secondary" _hover={{ color: 'link_hovered', textDecoration: 'none' }}>Add wallet</Link>
+            }
+          </Flex>
+        ) }
+        <Flex p={ 2 } columnGap={ 4 }>
           <Box mr="auto">Email</Box>
           { data?.email ?
-            <Box>{ getUserHandle(data.email) }</Box> :
+            <TruncatedValue value={ data.email + data.email }/> :
             <Link onClick={ onAddEmail } color="text_secondary" _hover={{ color: 'link_hovered', textDecoration: 'none' }}>Add email</Link>
           }
         </Flex>

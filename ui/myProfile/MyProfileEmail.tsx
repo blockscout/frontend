@@ -68,6 +68,8 @@ const MyProfileEmail = ({ profileQuery }: Props) => {
     }
   }, [ apiFetch, authModal, toast ]);
 
+  const hasDirtyFields = Object.keys(formApi.formState.dirtyFields).length > 0;
+
   return (
     <section>
       <Heading as="h2" size="sm" mb={ 3 }>Notifications</Heading>
@@ -88,7 +90,7 @@ const MyProfileEmail = ({ profileQuery }: Props) => {
               size="sm"
               variant="outline"
               type="submit"
-              isDisabled={ formApi.formState.isSubmitting || !formApi.formState.isDirty }
+              isDisabled={ formApi.formState.isSubmitting || !hasDirtyFields }
               isLoading={ formApi.formState.isSubmitting }
               loadingText="Save changes"
             >
