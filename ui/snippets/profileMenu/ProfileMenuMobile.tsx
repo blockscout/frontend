@@ -9,6 +9,7 @@ import UserAvatar from 'ui/shared/UserAvatar';
 import ProfileMenuContent from 'ui/snippets/profileMenu/ProfileMenuContent';
 
 const ProfileMenuMobile = () => {
+  return null;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { data, error, isPending } = useFetchProfileInfo();
   const loginUrl = useLoginUrl();

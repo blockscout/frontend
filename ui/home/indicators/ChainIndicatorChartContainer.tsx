@@ -33,7 +33,7 @@ const ChainIndicatorChartContainer = ({ data, isError, isPending }: Props) => {
     );
   })();
 
-  return <Flex h={{ base: '80px', lg: '110px' }} alignItems="flex-start" flexGrow={ 1 }>{ content }</Flex>;
+  return <Flex h={{ base: '80px', lg: '128px' }} alignItems="flex-start" flexGrow={ 1 }>{ content }</Flex>;
 };
 
 export default React.memo(ChainIndicatorChartContainer);

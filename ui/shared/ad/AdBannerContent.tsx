@@ -22,6 +22,7 @@ interface Props {
 }
 
 const AdBannerContent = ({ className, isLoading, provider, platform }: Props) => {
+  return null;
   const content = (() => {
     switch (provider) {
       case 'adbutler':
