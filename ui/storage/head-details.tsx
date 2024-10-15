@@ -276,7 +276,7 @@ const Page = (props: HeadProps) => {
                                           padding="0 24px"
                                           textAlign="left"
                                           key={ index }>
-                                          <Flex align="center" color="#8A55FD" fontWeight="500" fontSize="12px">
+                                          <Flex align="center" color="#000000" fontWeight="500" fontSize="12px">
                                             { /* <NextLink href={{ pathname: '/address/[hash]', query: { hash: value || '' } }}>{ value }</NextLink> */ }
                                       global_virtual_group_id: { value }
                                             <IconSvg
@@ -285,6 +285,7 @@ const Page = (props: HeadProps) => {
                                               marginLeft="48px"
                                               w="14px"
                                               h="14px"
+                                              color="#8A55FD"
                                               name="copyAddress">
                                             </IconSvg>
                                           </Flex>
