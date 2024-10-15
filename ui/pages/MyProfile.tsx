@@ -6,6 +6,7 @@ import type { Screen } from 'ui/snippets/auth/types';
 import config from 'configs/app';
 import MyProfileEmail from 'ui/myProfile/MyProfileEmail';
 import MyProfileWallet from 'ui/myProfile/MyProfileWallet';
+import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import PageTitle from 'ui/shared/Page/PageTitle';
@@ -45,6 +46,10 @@ const MyProfile = () => {
 
     return (
       <>
+        <AccountPageDescription>
+          You can add your email to receive watchlist notifications.
+          Additionally, you can manage your wallet address and email, which can be used for logging into your Blockscout account.
+        </AccountPageDescription>
         <Flex maxW="480px" mt={ 8 } flexDir="column" rowGap={ 12 }>
           <MyProfileEmail profileQuery={ profileQuery }/>
           { config.features.blockchainInteraction.isEnabled &&

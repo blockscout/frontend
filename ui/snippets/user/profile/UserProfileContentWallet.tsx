@@ -66,7 +66,7 @@ const UserProfileContentWallet = ({ onClose, className }: Props) => {
         loadingText="Connect Wallet"
         w="100%"
       >
-        Connect Wallet
+        Connect
       </Button>
     );
   })();
@@ -74,8 +74,16 @@ const UserProfileContentWallet = ({ onClose, className }: Props) => {
   return (
     <Box className={ className }>
       <Flex px={ 2 } py={ 1 } mb={ 1 } fontSize="xs" lineHeight={ 4 } fontWeight="500">
-        <span>Wallet for apps or contracts</span>
-        <Hint label="Wallet for apps or contracts" boxSize={ 4 } ml={ 1 }/>
+        <span>Connected wallet</span>
+        <Hint
+          label={
+            web3Wallet.isConnected ?
+              'This wallet is currently connected to Blockscout and used for interacting with apps and smart contracts' :
+              'This wallet is used for interacting with apps and smart contracts'
+          }
+          boxSize={ 4 }
+          ml={ 1 }
+        />
       </Flex>
       { content }
     </Box>

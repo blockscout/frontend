@@ -83,7 +83,12 @@ const UserProfileContent = ({ data, onClose, onLogin, onAddEmail, onAddAddress }
         { config.features.blockchainInteraction.isEnabled && (
           <Flex p={ 2 } borderColor="divider" borderBottomWidth="1px">
             <Box>Address</Box>
-            <Hint label="Address" boxSize={ 4 } ml={ 1 } mr="auto"/>
+            <Hint
+              label="This wallet address is linked to your Blockscout account. It can be used to login and is used for merit program participation"
+              boxSize={ 4 }
+              ml={ 1 }
+              mr="auto"
+            />
             { data?.address_hash ?
               <Box>{ shortenString(data?.address_hash) }</Box> :
               <Link onClick={ onAddAddress } color="text_secondary" _hover={{ color: 'link_hovered', textDecoration: 'none' }}>Add address</Link>
