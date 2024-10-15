@@ -104,7 +104,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
   const changeTable = React.useCallback((value: 'Transactions' | 'Versions') => {
     setTabName(value);
   }, []);
-  const tabRequires = Requires(tabName, 1);
+  const tabRequires = Requires(tabName, 1, 2);
   const [ queryParams, setQueryParams ] = React.useState<{offset: number; searchTerm: string; page: number}>({
     offset: 0,
     searchTerm: '',
@@ -159,15 +159,17 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
         </Tooltip>
       </Flex>
       <HeadDetails loading={ loadsing } overview={ overview } more={ more }/>
-      <TableDetails
-        changeTable={ changeTable }
-        tabsList={ tabsList }
-        tableList={ tableList }
-        toNext={ toNext }
-        currPage={ queryParams.page }
-        propsPage={ propsPage }
-      >
-      </TableDetails>
+      <Box display="none">
+        <TableDetails
+          changeTable={ changeTable }
+          tabsList={ tabsList }
+          tableList={ tableList }
+          toNext={ toNext }
+          currPage={ queryParams.page }
+          propsPage={ propsPage }
+        >
+        </TableDetails>
+      </Box>
     </PageNextJs>
   );
 };
