@@ -282,7 +282,7 @@ const AddressPageContent = () => {
         { slug: 'mud', name: 'MUD World', tagType: 'custom' as const, ordinal: -10 } :
         undefined,
       ...formatUserTags(addressQuery.data),
-      ...(addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags || []),
+      ...(addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags.filter(tag => tag.tagType !== 'note') || []),
     ].filter(Boolean).sort(sortEntityTags);
   }, [ addressMetadataQuery.data, addressQuery.data, hash, isSafeAddress, userOpsAccountQuery.data, mudTablesCountQuery.data, usernameApiTag ]);
 
