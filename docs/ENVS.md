@@ -219,6 +219,7 @@ Settings for meta tags, OG tags and SEO
 ##### Block fields list
 | Id | Description |
 | --- | --- |
+| `base_fee` | Base fee |
 | `burnt_fees` | Burnt fees |
 | `total_reward` | Total block reward |
 | `nonce` | Block nonce |
