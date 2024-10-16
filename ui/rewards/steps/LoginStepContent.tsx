@@ -4,9 +4,9 @@ import type { ChangeEvent } from 'react';
 import React, { useCallback, useState, useEffect } from 'react';
 
 import * as cookies from 'lib/cookies';
+import useWallet from 'lib/web3/useWallet';
 import InputPlaceholder from 'ui/shared/InputPlaceholder';
 import LinkExternal from 'ui/shared/links/LinkExternal';
-import useWallet from 'ui/snippets/walletMenu/useWallet';
 
 import useLogin from '../useLogin';
 
@@ -17,7 +17,7 @@ type Props = {
 
 const LoginStepContent = ({ goNext, closeModal }: Props) => {
   const router = useRouter();
-  const { connect, isWalletConnected } = useWallet({ source: 'Merits' });
+  const { connect, isConnected } = useWallet({ source: 'Merits' });
   const savedRefCode = cookies.get(cookies.NAMES.REWARDS_REFERRAL_CODE);
   const [ isSwitchChecked, setIsSwitchChecked ] = useBoolean(Boolean(savedRefCode));
   const [ isLoading, setIsLoading ] = useBoolean(false);
@@ -62,7 +62,7 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
           More about Blockscout Merits
         </LinkExternal>
       </Box>
-      { isWalletConnected && (
+      { isConnected && (
         <>
           <Box w="full" mb={ 6 } borderTop="1px solid" borderColor={ dividerColor }/>
           <Flex w="full" alignItems="center" justifyContent="space-between">
@@ -93,12 +93,12 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
         variant="solid"
         colorScheme="blue"
         w="full"
-        mt={ isWalletConnected ? 6 : 0 }
+        mt={ isConnected ? 6 : 0 }
         mb={ 4 }
-        onClick={ isWalletConnected ? handleLogin : connect }
+        onClick={ isConnected ? handleLogin : connect }
         isLoading={ isLoading }
       >
-        { isWalletConnected ? 'Get started' : 'Connect wallet' }
+        { isConnected ? 'Get started' : 'Connect wallet' }
       </Button>
       <Text fontSize="sm" color={ useColorModeValue('blackAlpha.500', 'whiteAlpha.500') } textAlign="center">
         Already registered for Blockscout Merits on another network or chain? Connect the same wallet here.

@@ -3,13 +3,13 @@ import React, { useCallback, useEffect } from 'react';
 
 import { useRewardsContext } from 'lib/contexts/rewards';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import useWallet from 'ui/snippets/walletMenu/useWallet';
+import useWallet from 'lib/web3/useWallet';
 
 import CongratsStepContent from './steps/CongratsStepContent';
 import LoginStepContent from './steps/LoginStepContent';
 
 const RewardsLoginModal = () => {
-  const { isModalOpen: isWalletModalOpen } = useWallet({ source: 'Merits' });
+  const { isOpen: isWalletModalOpen } = useWallet({ source: 'Merits' });
   const isMobile = useIsMobile();
   const { isLoginModalOpen, closeLoginModal } = useRewardsContext();
 
