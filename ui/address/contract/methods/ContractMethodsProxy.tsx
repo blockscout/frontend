@@ -1,15 +1,17 @@
 import { Box } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { MethodType } from './types';
 import type { AddressImplementation } from 'types/api/addressParams';
 
 import useApiQuery from 'lib/api/useApiQuery';
+import getQueryParamString from 'lib/router/getQueryParamString';
 
 import ContractConnectWallet from './ContractConnectWallet';
 import ContractMethods from './ContractMethods';
 import ContractSourceAddressSelector from './ContractSourceAddressSelector';
-import { isReadMethod, isWriteMethod } from './utils';
+import { enrichWithMethodId, isReadMethod, isWriteMethod } from './utils';
 
 interface Props {
   type: MethodType;
@@ -18,8 +20,10 @@ interface Props {
 }
 
 const ContractMethodsProxy = ({ type, implementations, isLoading: isInitialLoading }: Props) => {
+  const router = useRouter();
+  const contractAddress = getQueryParamString(router.query.contract_address);
 
-  const [ selectedItem, setSelectedItem ] = React.useState(implementations[0]);
+  const [ selectedItem, setSelectedItem ] = React.useState(implementations.find((item) => item.address === contractAddress) || implementations[0]);
 
   const contractQuery = useApiQuery('contract', {
     pathParams: { hash: selectedItem.address },
@@ -29,7 +33,7 @@ const ContractMethodsProxy = ({ type, implementations, isLoading: isInitialLoadi
     },
   });
 
-  const abi = contractQuery.data?.abi?.filter(type === 'read' ? isReadMethod : isWriteMethod) || [];
+  const abi = contractQuery.data?.abi?.filter(type === 'read' ? isReadMethod : isWriteMethod).map(enrichWithMethodId) || [];
 
   return (
     <Box>
@@ -46,6 +50,7 @@ const ContractMethodsProxy = ({ type, implementations, isLoading: isInitialLoadi
         abi={ abi }
         isLoading={ isInitialLoading || contractQuery.isPending }
         isError={ contractQuery.isError }
+        contractAddress={ selectedItem.address }
         type={ type }
       />
     </Box>

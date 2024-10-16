@@ -758,12 +758,12 @@ export const RESOURCES = {
   },
 
   contract_mud_systems: {
-    path: '/api/v2/mud/world/:hash/systems',
+    path: '/api/v2/mud/worlds/:hash/systems',
     pathParams: [ 'hash' as const ],
   },
 
   contract_mud_system_info: {
-    path: '/api/v2/mud/world/:hash/systems/:system_address',
+    path: '/api/v2/mud/worlds/:hash/systems/:system_address',
     pathParams: [ 'hash' as const, 'system_address' as const ],
   },
 

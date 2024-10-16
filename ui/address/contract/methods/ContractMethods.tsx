@@ -14,9 +14,10 @@ interface Props {
   isLoading?: boolean;
   isError?: boolean;
   type: MethodType;
+  contractAddress?: string;
 }
 
-const ContractMethods = ({ abi, isLoading, isError, type }: Props) => {
+const ContractMethods = ({ abi, isLoading, isError, type, contractAddress }: Props) => {
 
   const router = useRouter();
 
@@ -36,7 +37,7 @@ const ContractMethods = ({ abi, isLoading, isError, type }: Props) => {
     return <span>No public { typeText } functions were found for this contract.</span>;
   }
 
-  return <ContractAbi abi={ abi } tab={ tab } addressHash={ addressHash }/>;
+  return <ContractAbi abi={ abi } tab={ tab } addressHash={ addressHash } contractAddress={ contractAddress }/>;
 };
 
 export default React.memo(ContractMethods);

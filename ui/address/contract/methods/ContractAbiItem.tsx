@@ -19,11 +19,12 @@ interface Props {
   index: number;
   id: number;
   addressHash: string;
+  contractAddress?: string;
   tab: string;
   onSubmit: FormSubmitHandler;
 }
 
-const ContractAbiItem = ({ data, index, id, addressHash, tab, onSubmit }: Props) => {
+const ContractAbiItem = ({ data, index, id, addressHash, contractAddress, tab, onSubmit }: Props) => {
   const [ attempt, setAttempt ] = React.useState(0);
 
   const url = React.useMemo(() => {
@@ -36,10 +37,11 @@ const ContractAbiItem = ({ data, index, id, addressHash, tab, onSubmit }: Props)
       query: {
         hash: addressHash ?? '',
         tab,
+        ...(contractAddress ? { contract_address: contractAddress } : {}),
       },
       hash: data.method_id,
     });
-  }, [ addressHash, data, tab ]);
+  }, [ addressHash, data, tab, contractAddress ]);
 
   const handleCopyLinkClick = React.useCallback((event: React.MouseEvent) => {
     event.stopPropagation();

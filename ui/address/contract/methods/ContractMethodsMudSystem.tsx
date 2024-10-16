@@ -1,49 +1,64 @@
 import { Box } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { AddressImplementation } from 'types/api/addressParams';
+import type { SmartContractMudSystemItem } from 'types/api/contract';
 
 import useApiQuery from 'lib/api/useApiQuery';
+import getQueryParamString from 'lib/router/getQueryParamString';
 
 import ContractConnectWallet from './ContractConnectWallet';
 import ContractMethods from './ContractMethods';
+import type { Item } from './ContractSourceAddressSelector';
 import ContractSourceAddressSelector from './ContractSourceAddressSelector';
-import { isMethod } from './utils';
+import { enrichWithMethodId, isMethod } from './utils';
 
 interface Props {
-  items: Array<AddressImplementation>;
-  isLoading?: boolean;
+  items: Array<SmartContractMudSystemItem>;
 }
 
-const ContractMethodsMudSystem = ({ items, isLoading: isInitialLoading }: Props) => {
+const ContractMethodsMudSystem = ({ items }: Props) => {
 
-  const [ selectedItem, setSelectedItem ] = React.useState(items[0]);
+  const router = useRouter();
 
-  const contractQuery = useApiQuery('contract', {
-    pathParams: { hash: selectedItem.address },
+  const addressHash = getQueryParamString(router.query.hash);
+  const contractAddress = getQueryParamString(router.query.contract_address);
+
+  const [ selectedItem, setSelectedItem ] = React.useState(items.find((item) => item.address === contractAddress) || items[0]);
+
+  const systemInfoQuery = useApiQuery('contract_mud_system_info', {
+    pathParams: { hash: addressHash, system_address: selectedItem.address },
     queryOptions: {
-      enabled: Boolean(selectedItem.address),
+      enabled: Boolean(selectedItem?.address),
       refetchOnMount: false,
     },
   });
 
-  const abi = contractQuery.data?.abi?.filter(isMethod) || [];
+  const handleItemSelect = React.useCallback((item: Item) => {
+    setSelectedItem(item as SmartContractMudSystemItem);
+  }, []);
+
+  if (items.length === 0) {
+    return <span>No MUD System found for this contract.</span>;
+  }
+
+  const abi = systemInfoQuery.data?.abi?.filter(isMethod).map(enrichWithMethodId) || [];
 
   return (
     <Box>
-      <ContractConnectWallet isLoading={ isInitialLoading }/>
+      <ContractConnectWallet/>
       <ContractSourceAddressSelector
         items={ items }
         selectedItem={ selectedItem }
-        onItemSelect={ setSelectedItem }
-        isLoading={ isInitialLoading }
+        onItemSelect={ handleItemSelect }
         label="System address"
       />
       <ContractMethods
         key={ selectedItem.address }
         abi={ abi }
-        isLoading={ isInitialLoading || contractQuery.isPending }
-        isError={ contractQuery.isError }
+        isLoading={ systemInfoQuery.isPending }
+        isError={ systemInfoQuery.isError }
+        contractAddress={ selectedItem.address }
         type="all"
       />
     </Box>

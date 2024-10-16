@@ -14,6 +14,7 @@ import ContractMethodsMudSystem from 'ui/address/contract/methods/ContractMethod
 import ContractMethodsProxy from 'ui/address/contract/methods/ContractMethodsProxy';
 import ContractMethodsRegular from 'ui/address/contract/methods/ContractMethodsRegular';
 import { divideAbiIntoMethodTypes } from 'ui/address/contract/methods/utils';
+import ContentLoader from 'ui/shared/ContentLoader';
 
 const CONTRACT_TAB_IDS = [
   'contract_code',
@@ -72,6 +73,7 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
     queryOptions: {
       enabled: isEnabled && isQueryEnabled && hasMudTab,
       refetchOnMount: false,
+      placeholderData: stubs.MUD_SYSTEMS,
     },
   });
 
@@ -146,10 +148,12 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
             />
           ),
         },
-        mudSystemsQuery.data && mudSystemsQuery.data.items.length > 0 && {
+        hasMudTab && {
           id: 'mud_system' as const,
           title: 'MUD System',
-          component: <ContractMethodsMudSystem items={ verifiedImplementations } isLoading={ contractQuery.isPending }/>,
+          component: mudSystemsQuery.isPlaceholderData ?
+            <ContentLoader/> :
+            <ContractMethodsMudSystem items={ mudSystemsQuery.data?.items ?? [] }/>,
         },
       ].filter(Boolean),
       isLoading: contractQuery.isPlaceholderData,
@@ -163,6 +167,7 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
     methodsCustomAbi.read,
     methodsCustomAbi.write,
     verifiedImplementations,
-    mudSystemsQuery.data,
+    mudSystemsQuery,
+    hasMudTab,
   ]);
 }

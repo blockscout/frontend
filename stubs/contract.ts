@@ -1,9 +1,9 @@
-import type { SmartContract } from 'types/api/contract';
+import type { SmartContract, SmartContractMudSystemsResponse } from 'types/api/contract';
 import type { VerifiedContract, VerifiedContractsCounters } from 'types/api/contracts';
 
 import type { SolidityScanReport } from 'lib/solidityScan/schema';
 
-import { ADDRESS_PARAMS } from './addressParams';
+import { ADDRESS_PARAMS, ADDRESS_HASH } from './addressParams';
 
 export const CONTRACT_CODE_UNVERIFIED = {
   creation_bytecode: '0x60806040526e',
@@ -97,4 +97,13 @@ export const SOLIDITY_SCAN_REPORT: SolidityScanReport = {
     },
     scanner_reference_url: 'https://solidityscan.com/quickscan/0xc1EF7811FF2ebFB74F80ed7423f2AdAA37454be2/blockscout/eth-goerli?ref=blockscout',
   },
+};
+
+export const MUD_SYSTEMS: SmartContractMudSystemsResponse = {
+  items: [
+    {
+      name: 'sy.AccessManagement',
+      address: ADDRESS_HASH,
+    },
+  ],
 };

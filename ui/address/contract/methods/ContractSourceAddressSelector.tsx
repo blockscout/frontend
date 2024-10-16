@@ -7,7 +7,7 @@ import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import LinkNewTab from 'ui/shared/links/LinkNewTab';
 
-interface Item {
+export interface Item {
   address: string;
   name?: string | null | undefined;
 }
