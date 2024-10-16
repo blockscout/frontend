@@ -6,19 +6,13 @@ import { useRewardsContext } from 'lib/contexts/rewards';
 import splitSecondsInPeriods from 'ui/blockCountdown/splitSecondsInPeriods';
 import CopyField from 'ui/rewards/CopyField';
 import RewardsDashboardCard from 'ui/rewards/RewardsDashboardCard';
-import useClaim from 'ui/rewards/useClaim';
-import useReferrals from 'ui/rewards/useReferrals';
-import useRewardsConfig from 'ui/rewards/useRewardsConfig';
 import HintPopover from 'ui/shared/HintPopover';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
 const RewardsDashboard = () => {
   const router = useRouter();
-  const { balance, refetchBalance, dailyReward, refetchDailyReward, apiToken } = useRewardsContext();
-  const referralsQuery = useReferrals();
-  const rewardsConfigQuery = useRewardsConfig();
-  const claim = useClaim();
+  const { balance, refetchBalance, dailyReward, refetchDailyReward, apiToken, claim, referralsQuery, rewardsConfigQuery } = useRewardsContext();
   const [ isClaiming, setIsClaiming ] = useBoolean(false);
   const [ timeLeft, setTimeLeft ] = React.useState<string>('');
 

@@ -3,20 +3,18 @@ import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+import { useRewardsContext } from 'lib/contexts/rewards';
 import IconSvg from 'ui/shared/IconSvg';
 
 import AvailableSoonLabel from '../AvailableSoonLabel';
 import CopyField from '../CopyField';
-import useReferrals from '../useReferrals';
-import useRewardsConfig from '../useRewardsConfig';
 
 type Props = {
   isReferral: boolean;
 }
 
 const CongratsStepContent = ({ isReferral }: Props) => {
-  const referralsQuery = useReferrals();
-  const rewardsConfigQuery = useRewardsConfig();
+  const { referralsQuery, rewardsConfigQuery } = useRewardsContext();
 
   const registrationReward = rewardsConfigQuery.data?.rewards.registration;
   const referralReward = Number(rewardsConfigQuery.data?.rewards.registration_with_referral) - Number(rewardsConfigQuery.data?.rewards.registration);
