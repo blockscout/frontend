@@ -10,6 +10,7 @@ import useSocketChannel from 'lib/socket/useSocketChannel';
 import * as stubs from 'stubs/contract';
 import ContractCode from 'ui/address/contract/ContractCode';
 import ContractMethodsCustom from 'ui/address/contract/methods/ContractMethodsCustom';
+import ContractMethodsMudSystem from 'ui/address/contract/methods/ContractMethodsMudSystem';
 import ContractMethodsProxy from 'ui/address/contract/methods/ContractMethodsProxy';
 import ContractMethodsRegular from 'ui/address/contract/methods/ContractMethodsRegular';
 import { divideAbiIntoMethodTypes } from 'ui/address/contract/methods/utils';
@@ -24,6 +25,7 @@ const CONTRACT_TAB_IDS = [
   'write_contract_rpc',
   'write_proxy',
   'write_custom_methods',
+  'mud_system',
 ] as const;
 
 interface ContractTab {
@@ -37,7 +39,7 @@ interface ReturnType {
   isLoading: boolean;
 }
 
-export default function useContractTabs(data: Address | undefined, isPlaceholderData: boolean): ReturnType {
+export default function useContractTabs(data: Address | undefined, isPlaceholderData: boolean, hasMudTab?: boolean): ReturnType {
   const [ isQueryEnabled, setIsQueryEnabled ] = React.useState(false);
 
   const router = useRouter();
@@ -61,6 +63,14 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
   const customAbiQuery = useApiQuery('custom_abi', {
     queryOptions: {
       enabled: isEnabled && isQueryEnabled && Boolean(cookies.get(cookies.NAMES.API_TOKEN)),
+      refetchOnMount: false,
+    },
+  });
+
+  const mudSystemsQuery = useApiQuery('contract_mud_systems', {
+    pathParams: { hash: data?.hash },
+    queryOptions: {
+      enabled: isEnabled && isQueryEnabled && hasMudTab,
       refetchOnMount: false,
     },
   });
@@ -136,8 +146,23 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
             />
           ),
         },
+        mudSystemsQuery.data && mudSystemsQuery.data.items.length > 0 && {
+          id: 'mud_system' as const,
+          title: 'MUD System',
+          component: <ContractMethodsMudSystem items={ verifiedImplementations } isLoading={ contractQuery.isPending }/>,
+        },
       ].filter(Boolean),
       isLoading: contractQuery.isPlaceholderData,
     };
-  }, [ contractQuery, channel, data?.hash, verifiedImplementations, methods.read, methods.write, methodsCustomAbi.read, methodsCustomAbi.write ]);
+  }, [
+    contractQuery,
+    channel,
+    data?.hash,
+    methods.read,
+    methods.write,
+    methodsCustomAbi.read,
+    methodsCustomAbi.write,
+    verifiedImplementations,
+    mudSystemsQuery.data,
+  ]);
 }

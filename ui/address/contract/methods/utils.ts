@@ -2,7 +2,7 @@ import type { Abi } from 'abitype';
 import type { AbiFunction } from 'viem';
 import { toFunctionSelector } from 'viem';
 
-import type { SmartContractMethodCustomFields, SmartContractMethodRead, SmartContractMethodWrite } from './types';
+import type { SmartContractMethod, SmartContractMethodCustomFields, SmartContractMethodRead, SmartContractMethodWrite } from './types';
 
 export const getNativeCoinValue = (value: unknown) => {
   if (typeof value !== 'string') {
@@ -16,6 +16,9 @@ interface DividedAbi {
   read: Array<SmartContractMethodRead>;
   write: Array<SmartContractMethodWrite>;
 }
+
+export const isMethod = (method: Abi[number]): method is SmartContractMethod =>
+  (method.type === 'function' || method.type === 'fallback' || method.type === 'receive');
 
 export const isReadMethod = (method: Abi[number]): method is SmartContractMethodRead =>
   method.type === 'function' && (

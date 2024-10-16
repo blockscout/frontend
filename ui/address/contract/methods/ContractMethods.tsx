@@ -32,7 +32,8 @@ const ContractMethods = ({ abi, isLoading, isError, type }: Props) => {
   }
 
   if (abi.length === 0) {
-    return <span>No public { type } functions were found for this contract.</span>;
+    const typeText = type === 'all' ? '' : type;
+    return <span>No public { typeText } functions were found for this contract.</span>;
   }
 
   return <ContractAbi abi={ abi } tab={ tab } addressHash={ addressHash }/>;

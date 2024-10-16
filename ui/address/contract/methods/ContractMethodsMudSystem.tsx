@@ -1,7 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 
-import type { MethodType } from './types';
 import type { AddressImplementation } from 'types/api/addressParams';
 
 import useApiQuery from 'lib/api/useApiQuery';
@@ -9,17 +8,16 @@ import useApiQuery from 'lib/api/useApiQuery';
 import ContractConnectWallet from './ContractConnectWallet';
 import ContractMethods from './ContractMethods';
 import ContractSourceAddressSelector from './ContractSourceAddressSelector';
-import { isReadMethod, isWriteMethod } from './utils';
+import { isMethod } from './utils';
 
 interface Props {
-  type: MethodType;
-  implementations: Array<AddressImplementation>;
+  items: Array<AddressImplementation>;
   isLoading?: boolean;
 }
 
-const ContractMethodsProxy = ({ type, implementations, isLoading: isInitialLoading }: Props) => {
+const ContractMethodsMudSystem = ({ items, isLoading: isInitialLoading }: Props) => {
 
-  const [ selectedItem, setSelectedItem ] = React.useState(implementations[0]);
+  const [ selectedItem, setSelectedItem ] = React.useState(items[0]);
 
   const contractQuery = useApiQuery('contract', {
     pathParams: { hash: selectedItem.address },
@@ -29,27 +27,27 @@ const ContractMethodsProxy = ({ type, implementations, isLoading: isInitialLoadi
     },
   });
 
-  const abi = contractQuery.data?.abi?.filter(type === 'read' ? isReadMethod : isWriteMethod) || [];
+  const abi = contractQuery.data?.abi?.filter(isMethod) || [];
 
   return (
     <Box>
       <ContractConnectWallet isLoading={ isInitialLoading }/>
       <ContractSourceAddressSelector
-        items={ implementations }
+        items={ items }
         selectedItem={ selectedItem }
         onItemSelect={ setSelectedItem }
         isLoading={ isInitialLoading }
-        label="Implementation address"
+        label="System address"
       />
       <ContractMethods
         key={ selectedItem.address }
         abi={ abi }
         isLoading={ isInitialLoading || contractQuery.isPending }
         isError={ contractQuery.isError }
-        type={ type }
+        type="all"
       />
     </Box>
   );
 };
 
-export default React.memo(ContractMethodsProxy);
+export default React.memo(ContractMethodsMudSystem);
