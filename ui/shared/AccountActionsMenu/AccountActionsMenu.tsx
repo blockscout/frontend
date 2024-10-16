@@ -5,12 +5,11 @@ import React from 'react';
 import type { ItemProps } from './types';
 
 import config from 'configs/app';
-import useFetchProfileInfo from 'lib/hooks/useFetchProfileInfo';
-import useIsAccountActionAllowed from 'lib/hooks/useIsAccountActionAllowed';
 import * as mixpanel from 'lib/mixpanel/index';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import Menu from 'ui/shared/chakra/Menu';
 import IconSvg from 'ui/shared/IconSvg';
+import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 import MetadataUpdateMenuItem from './items/MetadataUpdateMenuItem';
 import PrivateTagMenuItem from './items/PrivateTagMenuItem';
@@ -30,9 +29,8 @@ const AccountActionsMenu = ({ isLoading, className, showUpdateMetadataItem }: Pr
   const isTokenPage = router.pathname === '/token/[hash]';
   const isTokenInstancePage = router.pathname === '/token/[hash]/instance/[id]';
   const isTxPage = router.pathname === '/tx/[hash]';
-  const isAccountActionAllowed = useIsAccountActionAllowed();
 
-  const userInfoQuery = useFetchProfileInfo();
+  const profileQuery = useProfileQuery();
 
   const handleButtonClick = React.useCallback(() => {
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Address actions (more button)' });
@@ -42,7 +40,7 @@ const AccountActionsMenu = ({ isLoading, className, showUpdateMetadataItem }: Pr
     return null;
   }
 
-  const userWithoutEmail = userInfoQuery.data && !userInfoQuery.data.email;
+  const userWithoutEmail = profileQuery.data && !profileQuery.data.email;
 
   const items = [
     {
@@ -74,7 +72,7 @@ const AccountActionsMenu = ({ isLoading, className, showUpdateMetadataItem }: Pr
   if (items.length === 1) {
     return (
       <Box className={ className }>
-        { items[0].render({ type: 'button', hash, onBeforeClick: isAccountActionAllowed }) }
+        { items[0].render({ type: 'button', hash }) }
       </Box>
     );
   }
@@ -95,7 +93,7 @@ const AccountActionsMenu = ({ isLoading, className, showUpdateMetadataItem }: Pr
       <MenuList minWidth="180px" zIndex="popover">
         { items.map(({ render }, index) => (
           <React.Fragment key={ index }>
-            { render({ type: 'menu_item', hash, onBeforeClick: isAccountActionAllowed }) }
+            { render({ type: 'menu_item', hash }) }
           </React.Fragment>
         )) }
       </MenuList>

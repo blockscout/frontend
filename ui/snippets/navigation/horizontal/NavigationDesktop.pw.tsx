@@ -12,7 +12,7 @@ const testWithAuth = test.extend<{ context: BrowserContext }>({
   context: contextWithAuth,
 });
 
-testWithAuth('base view +@dark-mode', async({ render, mockApiResponse, mockAssetResponse, mockEnvs, page }) => {
+testWithAuth('base view +@dark-mode', async({ render, mockApiResponse, mockEnvs, page }) => {
   const hooksConfig = {
     router: {
       route: '/blocks',
@@ -21,7 +21,6 @@ testWithAuth('base view +@dark-mode', async({ render, mockApiResponse, mockAsset
   };
 
   await mockApiResponse('user_info', profileMock.base);
-  await mockAssetResponse(profileMock.base.avatar, './playwright/mocks/image_s.jpg');
   await mockEnvs([
     ...ENVS_MAP.userOps,
     ...ENVS_MAP.nameService,

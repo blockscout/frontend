@@ -3,9 +3,9 @@ import React from 'react';
 
 import config from 'configs/app';
 import AdBanner from 'ui/shared/ad/AdBanner';
-import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
 import SearchBar from 'ui/snippets/searchBar/SearchBar';
-import WalletMenuDesktop from 'ui/snippets/walletMenu/WalletMenuDesktop';
+import UserProfileDesktop from 'ui/snippets/user/profile/UserProfileDesktop';
+import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
 
 const BACKGROUND_DEFAULT = 'radial-gradient(103.03% 103.03% at 0% 0%, rgba(183, 148, 244, 0.8) 0%, rgba(0, 163, 196, 0.8) 100%), var(--chakra-colors-blue-400)';
 const TEXT_COLOR_DEFAULT = 'white';
@@ -53,9 +53,11 @@ const HeroBanner = () => {
             }
           </Heading>
           { config.UI.navigation.layout === 'vertical' && (
-            <Box display={{ base: 'none', lg: 'flex' }}>
-              { config.features.account.isEnabled && <ProfileMenuDesktop isHomePage/> }
-              { config.features.blockchainInteraction.isEnabled && <WalletMenuDesktop isHomePage/> }
+            <Box display={{ base: 'none', lg: 'block' }}>
+              {
+                (config.features.account.isEnabled && <UserProfileDesktop buttonVariant="hero"/>) ||
+                (config.features.blockchainInteraction.isEnabled && <UserWalletDesktop buttonVariant="hero"/>)
+              }
             </Box>
           ) }
         </Flex>

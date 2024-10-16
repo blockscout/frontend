@@ -1,10 +1,8 @@
-import { Box } from '@chakra-ui/react';
 import React from 'react';
 
 import { publicTagTypes as configMock } from 'mocks/metadata/publicTagTypes';
 import { base as useInfoMock } from 'mocks/user/profile';
 import { expect, test } from 'playwright/lib';
-import * as pwConfig from 'playwright/utils/config';
 
 import * as mocks from './mocks';
 import PublicTagsSubmitForm from './PublicTagsSubmitForm';
@@ -13,9 +11,7 @@ const onSubmitResult = () => {};
 
 test('base view +@mobile', async({ render }) => {
   const component = await render(
-    <Box sx={{ '.recaptcha': { w: '304px', h: '78px' } }}>
-      <PublicTagsSubmitForm config={ configMock } onSubmitResult={ onSubmitResult } userInfo={ useInfoMock }/>
-    </Box>,
+    <PublicTagsSubmitForm config={ configMock } onSubmitResult={ onSubmitResult } userInfo={ useInfoMock }/>,
   );
 
   await component.getByLabel(/Smart contract \/ Address/i).fill(mocks.address1);
@@ -30,8 +26,5 @@ test('base view +@mobile', async({ render }) => {
   await component.getByLabel(/connection/i).focus();
   await component.getByLabel(/connection/i).blur();
 
-  await expect(component).toHaveScreenshot({
-    mask: [ component.locator('.recaptcha') ],
-    maskColor: pwConfig.maskColor,
-  });
+  await expect(component).toHaveScreenshot();
 });

@@ -3,7 +3,7 @@ import type CspDev from 'csp-dev';
 import config from 'configs/app';
 
 export function googleReCaptcha(): CspDev.DirectiveDescriptor {
-  if (!config.services.reCaptcha.siteKey) {
+  if (!config.services.reCaptchaV3.siteKey) {
     return {};
   }
 

@@ -5,12 +5,12 @@ import services from '../services';
 const title = 'Export data to CSV file';
 
 const config: Feature<{ reCaptcha: { siteKey: string }}> = (() => {
-  if (services.reCaptcha.siteKey) {
+  if (services.reCaptchaV3.siteKey) {
     return Object.freeze({
       title,
       isEnabled: true,
       reCaptcha: {
-        siteKey: services.reCaptcha.siteKey,
+        siteKey: services.reCaptchaV3.siteKey,
       },
     });
   }
