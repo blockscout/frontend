@@ -4,9 +4,9 @@ import React from 'react';
 import config from 'configs/app';
 import RewardsButton from 'ui/rewards/RewardsButton';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
-import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
 import SearchBar from 'ui/snippets/searchBar/SearchBar';
-import WalletMenuDesktop from 'ui/snippets/walletMenu/WalletMenuDesktop';
+import UserProfileDesktop from 'ui/snippets/user/profile/UserProfileDesktop';
+import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
 
 import Burger from './Burger';
 
@@ -38,10 +38,12 @@ const HeaderDesktop = ({ renderSearchBar, isMarketplaceAppPage }: Props) => {
         { searchBar }
       </Box>
       { config.UI.navigation.layout === 'vertical' && (
-        <Box display="flex">
+        <Box display="flex" flexShrink={ 0 }>
           { config.features.rewards.isEnabled && <RewardsButton/> }
-          { config.features.account.isEnabled && <ProfileMenuDesktop/> }
-          { config.features.blockchainInteraction.isEnabled && <WalletMenuDesktop/> }
+          {
+            (config.features.account.isEnabled && <UserProfileDesktop/>) ||
+            (config.features.blockchainInteraction.isEnabled && <UserWalletDesktop/>)
+          }
         </Box>
       ) }
     </HStack>

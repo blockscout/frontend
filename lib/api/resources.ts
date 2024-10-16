@@ -42,12 +42,12 @@ import type { AddressesResponse, AddressesMetadataSearchResult, AddressesMetadat
 import type { AddressMetadataInfo, PublicTagTypesResponse } from 'types/api/addressMetadata';
 import type {
   ArbitrumL2MessagesResponse,
-  ArbitrumL2MessagesItem,
   ArbitrumL2TxnBatch,
   ArbitrumL2TxnBatchesResponse,
   ArbitrumL2BatchTxs,
   ArbitrumL2BatchBlocks,
   ArbitrumL2TxnBatchesItem,
+  ArbitrumLatestDepositsResponse,
 } from 'types/api/arbitrumL2';
 import type { TxBlobs, Blob } from 'types/api/blobs';
 import type {
@@ -129,7 +129,15 @@ import type { TxInterpretationResponse } from 'types/api/txInterpretation';
 import type { TTxsFilters, TTxsWithBlobsFilters } from 'types/api/txsFilters';
 import type { TxStateChanges } from 'types/api/txStateChanges';
 import type { UserOpsResponse, UserOp, UserOpsFilters, UserOpsAccount } from 'types/api/userOps';
-import type { ValidatorsCountersResponse, ValidatorsFilters, ValidatorsResponse, ValidatorsSorting } from 'types/api/validators';
+import type {
+  ValidatorsStabilityCountersResponse,
+  ValidatorsStabilityFilters,
+  ValidatorsStabilityResponse,
+  ValidatorsStabilitySorting,
+  ValidatorsBlackfortCountersResponse,
+  ValidatorsBlackfortResponse,
+  ValidatorsBlackfortSorting,
+} from 'types/api/validators';
 import type { VerifiedContractsSorting } from 'types/api/verifiedContracts';
 import type { WithdrawalsResponse, WithdrawalsCounters } from 'types/api/withdrawals';
 import type {
@@ -167,9 +175,6 @@ export const RESOURCES = {
   },
   user_info: {
     path: '/api/account/v2/user/info',
-  },
-  email_resend: {
-    path: '/api/account/v2/email/resend',
   },
   custom_abi: {
     path: '/api/account/v2/user/custom_abis{/:id}',
@@ -226,6 +231,26 @@ export const RESOURCES = {
     endpoint: getFeaturePayload(config.features.addressVerification)?.api.endpoint,
     basePath: getFeaturePayload(config.features.addressVerification)?.api.basePath,
     needAuth: true,
+  },
+
+  // AUTH
+  auth_send_otp: {
+    path: '/api/account/v2/send_otp',
+  },
+  auth_confirm_otp: {
+    path: '/api/account/v2/confirm_otp',
+  },
+  auth_siwe_message: {
+    path: '/api/account/v2/siwe_message',
+  },
+  auth_siwe_verify: {
+    path: '/api/account/v2/authenticate_via_wallet',
+  },
+  auth_link_email: {
+    path: '/api/account/v2/email/link',
+  },
+  auth_link_address: {
+    path: '/api/account/v2/address/link',
   },
 
   // STATS MICROSERVICE API
@@ -962,14 +987,19 @@ export const RESOURCES = {
   },
 
   // VALIDATORS
-  validators: {
-    path: '/api/v2/validators/:chainType',
-    pathParams: [ 'chainType' as const ],
+  validators_stability: {
+    path: '/api/v2/validators/stability',
     filterFields: [ 'address_hash' as const, 'state_filter' as const ],
   },
-  validators_counters: {
-    path: '/api/v2/validators/:chainType/counters',
-    pathParams: [ 'chainType' as const ],
+  validators_stability_counters: {
+    path: '/api/v2/validators/stability/counters',
+  },
+  validators_blackfort: {
+    path: '/api/v2/validators/blackfort',
+    filterFields: [],
+  },
+  validators_blackfort_counters: {
+    path: '/api/v2/validators/blackfort/counters',
   },
 
   // BLOBS
@@ -1067,7 +1097,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' | 'block_election_reward
 'zksync_l2_txn_batches' | 'zksync_l2_txn_batch_txs' |
 'withdrawals' | 'address_withdrawals' | 'block_withdrawals' |
 'watchlist' | 'private_tags_address' | 'private_tags_tx' |
-'domains_lookup' | 'addresses_lookup' | 'user_ops' | 'validators' | 'noves_address_history';
+'domains_lookup' | 'addresses_lookup' | 'user_ops' | 'validators_stability' | 'validators_blackfort' | 'noves_address_history';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
@@ -1093,7 +1123,7 @@ Q extends 'homepage_blocks' ? Array<Block> :
 Q extends 'homepage_txs' ? Array<Transaction> :
 Q extends 'homepage_txs_watchlist' ? Array<Transaction> :
 Q extends 'homepage_optimistic_deposits' ? Array<OptimisticL2DepositsItem> :
-Q extends 'homepage_arbitrum_deposits' ? { items: Array<ArbitrumL2MessagesItem> } :
+Q extends 'homepage_arbitrum_deposits' ? ArbitrumLatestDepositsResponse :
 Q extends 'homepage_zkevm_l2_batches' ? { items: Array<ZkEvmL2TxnBatchesItem> } :
 Q extends 'homepage_arbitrum_l2_batches' ? { items: Array<ArbitrumL2TxnBatchesItem>} :
 Q extends 'homepage_indexing_status' ? IndexingStatus :
@@ -1188,8 +1218,10 @@ Q extends 'address_metadata_tag_types' ? PublicTagTypesResponse :
 Q extends 'blob' ? Blob :
 Q extends 'marketplace_dapps' ? Array<MarketplaceAppOverview> :
 Q extends 'marketplace_dapp' ? MarketplaceAppOverview :
-Q extends 'validators' ? ValidatorsResponse :
-Q extends 'validators_counters' ? ValidatorsCountersResponse :
+Q extends 'validators_stability' ? ValidatorsStabilityResponse :
+Q extends 'validators_stability_counters' ? ValidatorsStabilityCountersResponse :
+Q extends 'validators_blackfort' ? ValidatorsBlackfortResponse :
+Q extends 'validators_blackfort_counters' ? ValidatorsBlackfortCountersResponse :
 Q extends 'shibarium_withdrawals' ? ShibariumWithdrawalsResponse :
 Q extends 'shibarium_deposits' ? ShibariumDepositsResponse :
 Q extends 'shibarium_withdrawals_count' ? number :
@@ -1274,7 +1306,7 @@ Q extends 'verified_contracts' ? VerifiedContractsFilters :
 Q extends 'addresses_lookup' ? EnsAddressLookupFilters :
 Q extends 'domains_lookup' ? EnsDomainLookupFilters :
 Q extends 'user_ops' ? UserOpsFilters :
-Q extends 'validators' ? ValidatorsFilters :
+Q extends 'validators_stability' ? ValidatorsStabilityFilters :
 Q extends 'address_mud_tables' ? AddressMudTablesFilter :
 Q extends 'address_mud_records' ? AddressMudRecordsFilter :
 never;
@@ -1288,7 +1320,8 @@ Q extends 'verified_contracts' ? VerifiedContractsSorting :
 Q extends 'address_txs' ? TransactionsSorting :
 Q extends 'addresses_lookup' ? EnsLookupSorting :
 Q extends 'domains_lookup' ? EnsLookupSorting :
-Q extends 'validators' ? ValidatorsSorting :
+Q extends 'validators_stability' ? ValidatorsStabilitySorting :
+Q extends 'validators_blackfort' ? ValidatorsBlackfortSorting :
 Q extends 'address_mud_records' ? AddressMudRecordsSorting :
 never;
 /* eslint-enable @typescript-eslint/indent */

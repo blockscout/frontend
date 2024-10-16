@@ -23,6 +23,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/apps': '%network_name% DApps - Explore top apps',
   '/apps/[id]': '%network_name% marketplace app',
   '/stats': '%network_name% stats - %network_name% network insights',
+  '/stats/[id]': '%network_name% stats - %id% chart',
   '/api-docs': '%network_name% API docs - %network_name% developer tools',
   '/graphiql': 'GraphQL for %network_name% - %network_name% data query',
   '/search-results': '%network_name% search result for %q%',
@@ -64,8 +65,6 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/api/healthz': '%network_name% node API health check',
   '/api/config': '%network_name% node API app config',
   '/api/sprite': '%network_name% node API SVG sprite content',
-  '/auth/auth0': '%network_name% authentication',
-  '/auth/unverified-email': '%network_name% unverified email',
 };
 
 const TEMPLATE_MAP_ENHANCED: Partial<Record<Route['pathname'], string>> = {
@@ -73,6 +72,7 @@ const TEMPLATE_MAP_ENHANCED: Partial<Record<Route['pathname'], string>> = {
   '/token/[hash]/instance/[id]': '%network_name% token instance for %symbol%',
   '/apps/[id]': '%network_name% - %app_name%',
   '/address/[hash]': '%network_name% address details for %domain_name%',
+  '/stats/[id]': '%title% chart on %network_name%',
 };
 
 export function make(pathname: Route['pathname'], isEnriched = false) {

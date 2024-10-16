@@ -54,6 +54,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
   - [Data availability](ENVS.md#data-availability)
   - [Bridged tokens](ENVS.md#bridged-tokens)
   - [Safe{Core} address tags](ENVS.md#safecore-address-tags)
+  - [Address profile API](ENVS.md#address-profile-api)
   - [SUAVE chain](ENVS.md#suave-chain)
   - [MetaSuites extension](ENVS.md#metasuites-extension)
   - [Validators list](ENVS.md#validators-list)
@@ -341,9 +342,10 @@ Settings for meta tags, OG tags and SEO
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED | `boolean` | Set to true if network has account feature | Required | - | `true` | v1.0.x+ |
-| NEXT_PUBLIC_AUTH0_CLIENT_ID | `string` | Client id for [Auth0](https://auth0.com/) provider | Required | - | `<your-secret>` | v1.0.x+ |
-| NEXT_PUBLIC_AUTH_URL | `string` | Account auth base url; it is used for building login URL (`${ NEXT_PUBLIC_AUTH_URL }/auth/auth0`) and logout return URL (`${ NEXT_PUBLIC_AUTH_URL }/auth/logout`); if not provided the base app URL will be used instead | Required | - | `https://blockscout.com` | v1.0.x+ |
-| NEXT_PUBLIC_LOGOUT_URL | `string` | Account logout url. Required if account is supported for the app instance. | Required | - | `https://blockscoutcom.us.auth0.com/v2/logout` | v1.0.x+ |
+| NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY | `boolean` | See [below](ENVS.md#google-recaptcha) | Required | - | `<your-secret>` | v1.36.0+ |
+| NEXT_PUBLIC_AUTH0_CLIENT_ID | `string` | **DEPRECATED** Client id for [Auth0](https://auth0.com/) provider | - | - | `<your-secret>` | v1.0.x+ |
+| NEXT_PUBLIC_AUTH_URL | `string` | **DEPRECATED** Account auth base url; it is used for building login URL (`${ NEXT_PUBLIC_AUTH_URL }/auth/auth0`) and logout return URL (`${ NEXT_PUBLIC_AUTH_URL }/auth/logout`); if not provided the base app URL will be used instead | - | - | `https://blockscout.com` | v1.0.x+ |
+| NEXT_PUBLIC_LOGOUT_URL | `string` | **DEPRECATED** Account logout url. Required if account is supported for the app instance. | - | - | `https://blockscoutcom.us.auth0.com/v2/logout` | v1.0.x+ |
 
 &nbsp;
 
@@ -440,7 +442,7 @@ This feature is **enabled by default** with the `coinzilla` ads provider. To swi
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY | `string` | See [below](ENVS.md#google-recaptcha) | true | - | `<your-secret>` | v1.0.x+ |
+| NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY | `string` | See [below](ENVS.md#google-recaptcha) | true | - | `<your-secret>` | v1.36.0+ |
 
 &nbsp;
 
@@ -654,6 +656,28 @@ For the smart contract addresses which are [Safe{Core} accounts](https://safe.gl
 
 &nbsp;
 
+### Address profile API
+
+This feature allows the integration of an external API to fetch user info for addresses or contracts. When configured, if the API returns a username, a public tag with a custom link will be displayed in the address page header.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_ADDRESS_USERNAME_TAG | `{api_url: string; tag_link_template: string; tag_icon: string; tag_bg_color: string; tag_text_color: string}` | Address profile API tag configuration properties. See [below](#user-profile-api-configuration-properties). | - | - | `uniswap` | v1.35.0+ |
+
+&nbsp;
+
+#### Address profile API configuration properties
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value |
+| --- | --- | --- | --- | --- | --- |
+| api_url_template | `string` | User profile API URL. Should be a template with `{address}` variable | Required | - | `https://example-api.com/{address}` |
+| tag_link_template | `string` | External link to the profile. Should be a template with `{username}` variable | - | - | `https://example.com/{address}` |
+| tag_icon | `string` | Public tag icon (.svg) url | - | - | `https://example.com/icon.svg` |
+| tag_bg_color | `string` | Public tag background color (escape "#" symbol if you use HEX color codes or use rgba-value instead) | - | - | `\#000000` |
+| tag_text_color | `string` | Public tag text color (escape "#" symbol if you use HEX color codes or use rgba-value instead) | - | - | `\#FFFFFF` |
+
+&nbsp;
+
 ### SUAVE chain
 
 For blockchains that implement SUAVE architecture additional fields will be shown on the transaction page ("Allowed peekers", "Kettle"). Users also will be able to see the list of all transactions for a particular Kettle in the separate view.
@@ -680,7 +704,7 @@ The feature enables the Validators page which provides detailed information abou
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE | `'stability'` | Chain type | Required | - | `'stability'` | v1.25.0+ |
+| NEXT_PUBLIC_VALIDATORS_CHAIN_TYPE | `'stability' \| 'blackfort'` | Chain type | Required | - | `'stability'` | v1.25.0+ |
 
 &nbsp;
 
@@ -784,4 +808,4 @@ For obtaining the variables values please refer to [reCAPTCHA documentation](htt
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY | `string` | Site key | - | - | `<your-secret>` | v1.0.x+ |
+| NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY | `string` | Google reCAPTCHA v3 site key | - | - | `<your-secret>` | v1.36.0+ |

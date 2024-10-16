@@ -1,7 +1,9 @@
 import {
+  Alert,
   Box,
   Button,
   Text,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { useMutation } from '@tanstack/react-query';
 import React, { useCallback, useState } from 'react';
@@ -17,6 +19,8 @@ import { ADDRESS_REGEXP } from 'lib/validations/address';
 import AddressInput from 'ui/shared/AddressInput';
 import CheckboxInput from 'ui/shared/CheckboxInput';
 import TagInput from 'ui/shared/TagInput';
+import AuthModal from 'ui/snippets/auth/AuthModal';
+import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 import AddressFormNotifications from './AddressFormNotifications';
 
@@ -69,9 +73,13 @@ type Checkboxes = 'notification' |
 const AddressForm: React.FC<Props> = ({ data, onSuccess, setAlertVisible, isAdd }) => {
   const [ pending, setPending ] = useState(false);
 
+  const profileQuery = useProfileQuery();
+  const userWithoutEmail = profileQuery.data && !profileQuery.data.email;
+  const authModal = useDisclosure();
+
   let notificationsDefault = {} as Inputs['notification_settings'];
   if (!data?.notification_settings) {
-    NOTIFICATIONS.forEach(n => notificationsDefault[n] = { incoming: true, outcoming: true });
+    NOTIFICATIONS.forEach(n => notificationsDefault[n] = { incoming: !userWithoutEmail, outcoming: !userWithoutEmail });
   } else {
     notificationsDefault = data.notification_settings;
   }
@@ -80,7 +88,7 @@ const AddressForm: React.FC<Props> = ({ data, onSuccess, setAlertVisible, isAdd 
     defaultValues: {
       address: data?.address_hash || '',
       tag: data?.name || '',
-      notification: data?.notification_methods ? data.notification_methods.email : true,
+      notification: data?.notification_methods ? data.notification_methods.email : !userWithoutEmail,
       notification_settings: notificationsDefault,
     },
     mode: 'onTouched',
@@ -179,18 +187,39 @@ const AddressForm: React.FC<Props> = ({ data, onSuccess, setAlertVisible, isAdd 
           render={ renderTagInput }
         />
       </Box>
-      <Text variant="secondary" fontSize="sm" marginBottom={ 5 }>
-        Please select what types of notifications you will receive
-      </Text>
-      <Box marginBottom={ 8 }>
-        <AddressFormNotifications control={ control }/>
-      </Box>
-      <Text variant="secondary" fontSize="sm" marginBottom={{ base: '10px', lg: 5 }}>Notification methods</Text>
-      <Controller
-        name={ 'notification' as Checkboxes }
-        control={ control }
-        render={ renderCheckbox('Email notifications') }
-      />
+      { userWithoutEmail ? (
+        <>
+          <Alert
+            status="info"
+            colorScheme="gray"
+            display="flex"
+            flexDirection={{ base: 'column', md: 'row' }}
+            alignItems={{ base: 'flex-start', lg: 'center' }}
+            columnGap={ 2 }
+            rowGap={ 2 }
+            w="fit-content"
+          >
+            To receive notifications you need to add an email to your profile.
+            <Button variant="outline" size="sm" onClick={ authModal.onOpen }>Add email</Button>
+          </Alert>
+          { authModal.isOpen && <AuthModal initialScreen={{ type: 'email', isAuth: true }} onClose={ authModal.onClose }/> }
+        </>
+      ) : (
+        <>
+          <Text variant="secondary" fontSize="sm" marginBottom={ 5 }>
+            Please select what types of notifications you will receive
+          </Text>
+          <Box marginBottom={ 8 }>
+            <AddressFormNotifications control={ control }/>
+          </Box>
+          <Text variant="secondary" fontSize="sm" marginBottom={{ base: '10px', lg: 5 }}>Notification methods</Text>
+          <Controller
+            name={ 'notification' as Checkboxes }
+            control={ control }
+            render={ renderCheckbox('Email notifications') }
+          />
+        </>
+      ) }
       <Box marginTop={ 8 }>
         <Button
           size="lg"

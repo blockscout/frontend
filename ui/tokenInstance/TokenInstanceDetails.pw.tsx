@@ -8,7 +8,7 @@ import { protocolTagWithMeta } from 'mocks/metadata/address';
 import { tokenInfoERC721a } from 'mocks/tokens/tokenInfo';
 import * as tokenInstanceMock from 'mocks/tokens/tokenInstance';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
-import { test, expect } from 'playwright/lib';
+import { test, expect, devices } from 'playwright/lib';
 import * as pwConfig from 'playwright/utils/config';
 import { MetadataUpdateProvider } from 'ui/tokenInstance/contexts/metadataUpdate';
 
@@ -42,7 +42,7 @@ test.beforeEach(async({ mockApiResponse, mockAssetResponse }) => {
   await mockAssetResponse(tokenInstanceMock.unique.image_url as string, './playwright/mocks/image_md.jpg');
 });
 
-test('base view +@dark-mode +@mobile', async({ render, page }) => {
+test('base view +@dark-mode', async({ render, page }) => {
   const component = await render(
     <MetadataUpdateProvider>
       <TokenInstanceDetails data={{ ...tokenInstanceMock.unique, image_url: null }} token={ tokenInfoERC721a }/>
@@ -61,7 +61,7 @@ test.describe('action button', () => {
     await mockAssetResponse(protocolTagWithMeta?.meta?.appLogoURL as string, './playwright/mocks/image_s.jpg');
   });
 
-  test('base view +@dark-mode +@mobile', async({ render, page }) => {
+  test('base view +@dark-mode', async({ render, page }) => {
     const component = await render(
       <MetadataUpdateProvider>
         <TokenInstanceDetails data={ tokenInstanceMock.unique } token={ tokenInfoERC721a }/>
@@ -73,11 +73,27 @@ test.describe('action button', () => {
     });
   });
 
-  test('without marketplaces +@dark-mode +@mobile', async({ render, page, mockEnvs }) => {
+  test('without marketplaces +@dark-mode', async({ render, page, mockEnvs }) => {
     mockEnvs(ENVS_MAP.noNftMarketplaces);
     const component = await render(
       <MetadataUpdateProvider>
         <TokenInstanceDetails data={ tokenInstanceMock.unique } token={ tokenInfoERC721a }/>
+      </MetadataUpdateProvider>,
+    );
+    await expect(component).toHaveScreenshot({
+      mask: [ page.locator(pwConfig.adsBannerSelector) ],
+      maskColor: pwConfig.maskColor,
+    });
+  });
+});
+
+test.describe('mobile', () => {
+  test.use({ viewport: devices['iPhone 13 Pro'].viewport });
+
+  test('base view', async({ render, page }) => {
+    const component = await render(
+      <MetadataUpdateProvider>
+        <TokenInstanceDetails data={{ ...tokenInstanceMock.unique, image_url: null }} token={ tokenInfoERC721a }/>
       </MetadataUpdateProvider>,
     );
     await expect(component).toHaveScreenshot({

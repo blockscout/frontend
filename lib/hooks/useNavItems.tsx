@@ -6,12 +6,10 @@ import type { NavItemInternal, NavItem, NavGroupItem } from 'types/client/naviga
 import config from 'configs/app';
 import { useRewardsContext } from 'lib/contexts/rewards';
 import { rightLineArrow } from 'lib/html-entities';
-import UserAvatar from 'ui/shared/UserAvatar';
 
 interface ReturnType {
   mainNavItems: Array<NavItem | NavGroupItem>;
   accountNavItems: Array<NavItem>;
-  profileItem: NavItem;
 }
 
 export function isGroupItem(item: NavItem | NavGroupItem): item is NavGroupItem {
@@ -255,7 +253,7 @@ export default function useNavItems(): ReturnType {
         text: 'Charts & stats',
         nextRoute: { pathname: '/stats' as const },
         icon: 'stats',
-        isActive: pathname === '/stats',
+        isActive: pathname.startsWith('/stats'),
       } : null,
       apiNavItems.length > 0 && {
         text: 'API',
@@ -311,13 +309,6 @@ export default function useNavItems(): ReturnType {
       },
     ].filter(Boolean);
 
-    const profileItem = {
-      text: 'My profile',
-      nextRoute: { pathname: '/auth/profile' as const },
-      iconComponent: UserAvatar,
-      isActive: pathname === '/auth/profile',
-    };
-
-    return { mainNavItems, accountNavItems, profileItem };
+    return { mainNavItems, accountNavItems };
   }, [ pathname, openRewardsLoginModal, rewardsBalance, dailyReward, rewardsApiToken ]);
 }

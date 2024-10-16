@@ -4,7 +4,21 @@ import React from 'react';
 
 import PageNextJs from 'nextjs/PageNextJs';
 
-const Validators = dynamic(() => import('ui/pages/Validators'), { ssr: false });
+import config from 'configs/app';
+
+const validatorsFeature = config.features.validators;
+
+const Validators = dynamic(() => {
+  if (validatorsFeature.isEnabled && validatorsFeature.chainType === 'stability') {
+    return import('ui/pages/ValidatorsStability');
+  }
+
+  if (validatorsFeature.isEnabled && validatorsFeature.chainType === 'blackfort') {
+    return import('ui/pages/ValidatorsBlackfort');
+  }
+
+  throw new Error('Validators feature is not enabled.');
+}, { ssr: false });
 
 const Page: NextPage = () => {
   return (

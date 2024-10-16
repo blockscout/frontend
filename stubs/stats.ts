@@ -51,24 +51,28 @@ export const STATS_CHARTS_SECTION: stats.LineChartSection = {
       title: 'Average transaction fee',
       description: 'The average amount in ETH spent per transaction',
       units: 'ETH',
+      resolutions: [ 'DAY', 'MONTH' ],
     },
     {
       id: 'chart_1',
       title: 'Transactions fees',
       description: 'Amount of tokens paid as fees',
       units: 'ETH',
+      resolutions: [ 'DAY', 'MONTH' ],
     },
     {
       id: 'chart_2',
       title: 'New transactions',
       description: 'New transactions number',
       units: undefined,
+      resolutions: [ 'DAY', 'MONTH' ],
     },
     {
       id: 'chart_3',
       title: 'Transactions growth',
       description: 'Cumulative transactions number',
       units: undefined,
+      resolutions: [ 'DAY', 'MONTH' ],
     },
   ],
 };

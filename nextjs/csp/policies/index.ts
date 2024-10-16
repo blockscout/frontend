@@ -11,4 +11,5 @@ export { mixpanel } from './mixpanel';
 export { monaco } from './monaco';
 export { safe } from './safe';
 export { sentry } from './sentry';
+export { usernameApi } from './usernameApi';
 export { walletConnect } from './walletConnect';

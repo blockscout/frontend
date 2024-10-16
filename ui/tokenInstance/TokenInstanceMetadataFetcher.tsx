@@ -1,8 +1,8 @@
 import type { ToastId } from '@chakra-ui/react';
-import { chakra, Alert, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Spinner } from '@chakra-ui/react';
+import { chakra, Alert, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Spinner, Center } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
-import ReCaptcha from 'react-google-recaptcha';
+import { GoogleReCaptcha, GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 
 import type { SocketMessage } from 'lib/socket/types';
 import type { TokenInstance } from 'types/api/token';
@@ -47,7 +47,7 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
       pathParams: { hash, id },
       fetchParams: {
         method: 'PATCH',
-        body: { recaptcha_response: reCaptchaToken },
+        body: { recaptcha_v3_response: reCaptchaToken },
       },
     })
       .then(() => {
@@ -150,33 +150,43 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  if (status !== 'MODAL_OPENED') {
+    return null;
+  }
+
   return (
     <Modal isOpen={ status === 'MODAL_OPENED' } onClose={ handleModalClose } size={{ base: 'full', lg: 'sm' }}>
       <ModalOverlay/>
       <ModalContent>
-        <ModalHeader fontWeight="500" textStyle="h3" mb={ 4 }>Solve captcha to refresh metadata</ModalHeader>
+        <ModalHeader fontWeight="500" textStyle="h3" mb={ 4 }>Sending request</ModalHeader>
         <ModalCloseButton/>
         <ModalBody mb={ 0 } minH="78px">
-          { config.services.reCaptcha.siteKey ? (
-            <ReCaptcha
-              className="recaptcha"
-              sitekey={ config.services.reCaptcha.siteKey }
-              onChange={ handleReCaptchaChange }
-            />
+          { config.services.reCaptchaV3.siteKey ? (
+            <>
+              <GoogleReCaptchaProvider reCaptchaKey={ config.services.reCaptchaV3.siteKey }>
+                <Center h="80px">
+                  <Spinner size="lg"/>
+                </Center>
+                <GoogleReCaptcha
+                  onVerify={ handleReCaptchaChange }
+                  refreshReCaptcha
+                />
+              </GoogleReCaptchaProvider>
+              { /* ONLY FOR TEST PURPOSES */ }
+              <chakra.form noValidate onSubmit={ handleFormSubmit } display="none">
+                <chakra.input
+                  name="recaptcha_token"
+                  placeholder="reCaptcha token"
+                />
+                <chakra.button type="submit">Submit</chakra.button>
+              </chakra.form>
+            </>
           ) : (
             <Alert status="error">
                 Metadata refresh is not available at the moment since reCaptcha is not configured for this application.
                 Please contact the service maintainer to make necessary changes in the service configuration.
             </Alert>
           ) }
-          { /* ONLY FOR TEST PURPOSES */ }
-          <chakra.form noValidate onSubmit={ handleFormSubmit } display="none">
-            <chakra.input
-              name="recaptcha_token"
-              placeholder="reCaptcha token"
-            />
-            <chakra.button type="submit">Submit</chakra.button>
-          </chakra.form>
         </ModalBody>
       </ModalContent>
     </Modal>

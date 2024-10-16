@@ -12,7 +12,7 @@ const authTest = test.extend<{ context: BrowserContext }>({
   context: contextWithAuth,
 });
 
-authTest('customization +@dark-mode', async({ render, page, mockEnvs, mockApiResponse, mockAssetResponse }) => {
+authTest('customization +@dark-mode', async({ render, page, mockEnvs, mockApiResponse }) => {
   const IMAGE_URL = 'https://localhost:3000/my-image.png';
 
   await mockEnvs([
@@ -28,7 +28,6 @@ authTest('customization +@dark-mode', async({ render, page, mockEnvs, mockApiRes
   });
 
   await mockApiResponse('user_info', profileMock.base);
-  await mockAssetResponse(profileMock.base.avatar, './playwright/mocks/image_s.jpg');
 
   const component = await render(<HeroBanner/>);
 

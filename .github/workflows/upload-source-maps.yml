@@ -21,7 +21,7 @@ jobs:
             - name: Setup node
               uses: actions/setup-node@v4
               with:
-                node-version: 20.11.0
+                node-version: 20.17.0
                 cache: 'yarn'
 
             - name: Cache node_modules
@@ -34,7 +34,7 @@ jobs:
 
             - name: Install dependencies
               if: steps.cache-node-modules.outputs.cache-hit != 'true'
-              run: yarn --frozen-lockfile --ignore-optional
+              run: yarn --frozen-lockfile
 
             - name: Make production build with source maps
               run: yarn build

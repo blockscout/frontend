@@ -5,7 +5,7 @@ import Menu from 'ui/shared/chakra/Menu';
 import IconSvg from 'ui/shared/IconSvg';
 
 type Props<T extends string> = {
-  items: Array<{id: T; title: string}>;
+  items: ReadonlyArray<{id: T; title: string}>;
   selectedId: T;
   onSelect: (id: T) => void;
 }
@@ -23,7 +23,7 @@ export function StatsDropdownMenu<T extends string>({ items, selectedId, onSelec
     >
       <MenuButton
         as={ Button }
-        size="md"
+        size="sm"
         variant="outline"
         colorScheme="gray"
         w="100%"

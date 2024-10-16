@@ -29,9 +29,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/api-docs">
     | DynamicRoute<"/apps/[id]", { "id": string }>
     | StaticRoute<"/apps">
-    | StaticRoute<"/auth/auth0">
     | StaticRoute<"/auth/profile">
-    | StaticRoute<"/auth/unverified-email">
     | DynamicRoute<"/batches/[number]", { "number": string }>
     | StaticRoute<"/batches">
     | DynamicRoute<"/blobs/[hash]", { "hash": string }>
@@ -56,6 +54,7 @@ declare module "nextjs-routes" {
     | StaticRoute<"/public-tags/submit">
     | StaticRoute<"/search-results">
     | StaticRoute<"/sprite">
+    | DynamicRoute<"/stats/[id]", { "id": string }>
     | StaticRoute<"/stats">
     | DynamicRoute<"/token/[hash]", { "hash": string }>
     | DynamicRoute<"/token/[hash]/instance/[id]", { "hash": string; "id": string }>

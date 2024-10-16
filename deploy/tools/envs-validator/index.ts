@@ -147,4 +147,15 @@ function printDeprecationWarning(envsMap: Record<string, string>) {
     console.warn('The NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR and NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND variables are now deprecated and will be removed in the next release. Please migrate to the NEXT_PUBLIC_HOMEPAGE_HERO_BANNER_CONFIG variable.');
     console.log('❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗\n');
   }
+
+  if (
+    envsMap.NEXT_PUBLIC_AUTH0_CLIENT_ID ||
+    envsMap.NEXT_PUBLIC_AUTH_URL ||
+    envsMap.NEXT_PUBLIC_LOGOUT_URL
+  ) {
+    console.log('❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗');
+    // eslint-disable-next-line max-len
+    console.warn('The NEXT_PUBLIC_AUTH0_CLIENT_ID, NEXT_PUBLIC_AUTH_URL and NEXT_PUBLIC_LOGOUT_URL variables are now deprecated and will be removed in the next release.');
+    console.log('❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗❗\n');
+  }
 }
