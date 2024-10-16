@@ -3,12 +3,11 @@ import { useRouter } from 'next/router';
 import type { ChangeEvent } from 'react';
 import React, { useCallback, useState, useEffect } from 'react';
 
+import { useRewardsContext } from 'lib/contexts/rewards';
 import * as cookies from 'lib/cookies';
 import useWallet from 'lib/web3/useWallet';
 import InputPlaceholder from 'ui/shared/InputPlaceholder';
 import LinkExternal from 'ui/shared/links/LinkExternal';
-
-import useLogin from '../useLogin';
 
 type Props = {
   goNext: (isReferral: boolean) => void;
@@ -24,7 +23,7 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
   const [ refCode, setRefCode ] = useState(savedRefCode || '');
   const [ refCodeError, setRefCodeError ] = useBoolean(false);
   const dividerColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
-  const login = useLogin();
+  const { login } = useRewardsContext();
 
   const handleRefCodeChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setRefCode(event.target.value);
