@@ -49,7 +49,7 @@ const HeaderMobile = ({ hideSearchBar, renderSearchBar }: Props) => {
         <Burger/>
         <NetworkLogo ml={ 2 } mr="auto"/>
         <Flex columnGap={ 2 }>
-          { config.features.rewards.isEnabled && <RewardsButton isMobile/> }
+          { config.features.rewards.isEnabled && <RewardsButton/> }
           {
             (config.features.account.isEnabled && <UserProfileMobile/>) ||
             (config.features.blockchainInteraction.isEnabled && <UserWalletMobile/>) ||

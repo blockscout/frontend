@@ -1,4 +1,4 @@
-import { chakra, Flex, Tooltip, Skeleton, Box } from '@chakra-ui/react';
+import { chakra, Flex, Tooltip, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import type { MarketplaceAppOverview, MarketplaceAppSecurityReport, ContractListTypes } from 'types/client/marketplace';
@@ -99,13 +99,13 @@ const MarketplaceAppTopBar = ({ appId, data, isLoading, securityReport }: Props)
           source="App page"
         />
         { !isMobile && (
-          <Box ml="auto">
+          <Flex ml="auto" gap={ 2 }>
             { config.features.rewards.isEnabled && <RewardsButton size="sm"/> }
             {
               (config.features.account.isEnabled && <UserProfileDesktop buttonSize="sm"/>) ||
               (config.features.blockchainInteraction.isEnabled && <UserWalletDesktop buttonSize="sm"/>)
             }
-          </Box>
+          </Flex>
         ) }
       </Flex>
       { contractListType && (

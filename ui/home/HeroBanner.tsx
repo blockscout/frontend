@@ -54,8 +54,8 @@ const HeroBanner = () => {
             }
           </Heading>
           { config.UI.navigation.layout === 'vertical' && (
-            <Box display={{ base: 'none', lg: 'block' }}>
-              { config.features.rewards.isEnabled && <RewardsButton isHomePage/> }
+            <Box display={{ base: 'none', lg: 'flex' }} gap={ 2 }>
+              { config.features.rewards.isEnabled && <RewardsButton variant="hero"/> }
               {
                 (config.features.account.isEnabled && <UserProfileDesktop buttonVariant="hero"/>) ||
                 (config.features.blockchainInteraction.isEnabled && <UserWalletDesktop buttonVariant="hero"/>)

@@ -1,31 +1,33 @@
+import type { ButtonProps } from '@chakra-ui/react';
 import { Button, chakra, Tooltip } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
 import { useRewardsContext } from 'lib/contexts/rewards';
+import useIsMobile from 'lib/hooks/useIsMobile';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 
 type Props = {
-  isHomePage?: boolean;
-  isMobile?: boolean;
-  size?: 'sm' | 'md';
+  size?: ButtonProps['size'];
+  variant?: ButtonProps['variant'];
 };
 
-const RewardsButton = ({ isHomePage, isMobile, size }: Props) => {
+const RewardsButton = ({ variant = 'header', size }: Props) => {
   const { apiToken, openLoginModal, dailyReward, balance, isDailyRewardLoading, isBalanceLoading } = useRewardsContext();
+  const isMobile = useIsMobile();
   return (
     <Tooltip
       label="Earn merits for using Blockscout"
       textAlign="center"
       padding={ 2 }
       openDelay={ 500 }
-      display={ isMobile ? 'none' : 'flex' }
+      isDisabled={ isMobile }
       width="150px"
     >
       <Button
-        variant={ isHomePage ? 'hero' : 'header' }
+        variant={ variant }
         data-selected={ Boolean(apiToken) }
         flexShrink={ 0 }
         as={ apiToken ? LinkInternal : 'button' }
@@ -33,8 +35,7 @@ const RewardsButton = ({ isHomePage, isMobile, size }: Props) => {
         onClick={ apiToken ? undefined : openLoginModal }
         fontSize="sm"
         size={ size }
-        mr={ isMobile ? 0 : 2 }
-        boxSize={ isMobile ? '40px' : 'auto' }
+        px={ 2.5 }
         isLoading={ isDailyRewardLoading || isBalanceLoading }
         loadingText={ isMobile ? undefined : 'Merits' }
         textDecoration="none !important"
@@ -45,7 +46,7 @@ const RewardsButton = ({ isHomePage, isMobile, size }: Props) => {
           flexShrink={ 0 }
           mx={ -1 }
         />
-        <chakra.span display={ isMobile ? 'none' : 'inline' } ml={ 2 }>
+        <chakra.span display={{ base: 'none', md: 'inline' }} ml={ 2 }>
           { apiToken ? balance?.total : 'Merits' }
         </chakra.span>
       </Button>

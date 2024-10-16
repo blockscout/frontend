@@ -38,7 +38,7 @@ const HeaderDesktop = ({ renderSearchBar, isMarketplaceAppPage }: Props) => {
         { searchBar }
       </Box>
       { config.UI.navigation.layout === 'vertical' && (
-        <Box display="flex" flexShrink={ 0 }>
+        <Box display="flex" gap={ 2 } flexShrink={ 0 }>
           { config.features.rewards.isEnabled && <RewardsButton/> }
           {
             (config.features.account.isEnabled && <UserProfileDesktop/>) ||
