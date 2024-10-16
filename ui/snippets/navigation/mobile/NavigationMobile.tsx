@@ -17,7 +17,7 @@ interface Props {
 }
 
 const NavigationMobile = ({ onNavLinkClick, isMarketplaceAppPage }: Props) => {
-  const { mainNavItems, accountNavItems, rewardsNavItem } = useNavItems();
+  const { mainNavItems, accountNavItems } = useNavItems();
 
   const [ openedGroupIndex, setOpenedGroupIndex ] = React.useState(-1);
 
@@ -73,7 +73,7 @@ const NavigationMobile = ({ onNavLinkClick, isMarketplaceAppPage }: Props) => {
             }) }
           </VStack>
         </Box>
-        { (hasAccount || rewardsNavItem) && (
+        { hasAccount && (
           <Box
             as="nav"
             mt={ 3 }
@@ -82,8 +82,7 @@ const NavigationMobile = ({ onNavLinkClick, isMarketplaceAppPage }: Props) => {
             borderColor="divider"
           >
             <VStack as="ul" spacing="1" alignItems="flex-start">
-              { rewardsNavItem && <NavLink item={ rewardsNavItem } onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/> }
-              { hasAccount && accountNavItems.map((item) => <NavLink key={ item.text } item={ item } onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>) }
+              { accountNavItems.map((item) => <NavLink key={ item.text } item={ item } onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>) }
             </VStack>
           </Box>
         ) }

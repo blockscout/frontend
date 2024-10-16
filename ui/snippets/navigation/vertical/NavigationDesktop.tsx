@@ -28,7 +28,7 @@ const NavigationDesktop = () => {
     isNavBarCollapsed = false;
   }
 
-  const { mainNavItems, accountNavItems, rewardsNavItem } = useNavItems();
+  const { mainNavItems, accountNavItems } = useNavItems();
 
   const hasAccount = useHasAccount();
 
@@ -97,11 +97,10 @@ const NavigationDesktop = () => {
           }) }
         </VStack>
       </Box>
-      { (hasAccount || rewardsNavItem) && (
+      { hasAccount && (
         <Box as="nav" borderTopWidth="1px" borderColor="divider" w="100%" mt={ 3 } pt={ 3 }>
           <VStack as="ul" spacing="1" alignItems="flex-start">
-            { rewardsNavItem && <NavLink item={ rewardsNavItem } isCollapsed={ isCollapsed }/> }
-            { hasAccount && accountNavItems.map((item) => <NavLink key={ item.text } item={ item } isCollapsed={ isCollapsed }/>) }
+            { accountNavItems.map((item) => <NavLink key={ item.text } item={ item } isCollapsed={ isCollapsed }/>) }
           </VStack>
         </Box>
       ) }
