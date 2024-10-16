@@ -8,6 +8,7 @@ import { route } from 'nextjs-routes';
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import RewardsButton from 'ui/rewards/RewardsButton';
 import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import LinkInternal from 'ui/shared/links/LinkInternal';
@@ -99,6 +100,7 @@ const MarketplaceAppTopBar = ({ appId, data, isLoading, securityReport }: Props)
         />
         { !isMobile && (
           <Flex flex="1" justifyContent="flex-end">
+            { config.features.rewards.isEnabled && <RewardsButton size="sm"/> }
             { config.features.account.isEnabled && <ProfileMenuDesktop boxSize="32px" fallbackIconSize={ 16 }/> }
             { config.features.blockchainInteraction.isEnabled && <WalletMenuDesktop size="sm"/> }
           </Flex>

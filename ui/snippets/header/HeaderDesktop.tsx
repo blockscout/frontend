@@ -2,6 +2,7 @@ import { HStack, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
+import RewardsButton from 'ui/rewards/RewardsButton';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
 import SearchBar from 'ui/snippets/searchBar/SearchBar';
@@ -38,6 +39,7 @@ const HeaderDesktop = ({ renderSearchBar, isMarketplaceAppPage }: Props) => {
       </Box>
       { config.UI.navigation.layout === 'vertical' && (
         <Box display="flex">
+          { config.features.rewards.isEnabled && <RewardsButton/> }
           { config.features.account.isEnabled && <ProfileMenuDesktop/> }
           { config.features.blockchainInteraction.isEnabled && <WalletMenuDesktop/> }
         </Box>

@@ -7,5 +7,5 @@ export function checkRouteHighlight(item: NavItem | Array<NavItem> | Array<Array
   if (Array.isArray(item)) {
     return item.some((subItem) => checkRouteHighlight(subItem));
   }
-  return isInternalItem(item) && (config.UI.navigation.highlightedRoutes.includes(item.nextRoute.pathname));
+  return isInternalItem(item) && item.nextRoute !== undefined && (config.UI.navigation.highlightedRoutes.includes(item.nextRoute.pathname));
 }
