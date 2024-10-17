@@ -51,6 +51,7 @@ interface TokenTransferBase {
   from: AddressParam;
   to: AddressParam;
   timestamp: string;
+  block_number: string;
   block_hash: string;
   log_index: string;
   method?: string;
