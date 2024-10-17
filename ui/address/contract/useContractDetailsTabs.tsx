@@ -8,13 +8,7 @@ import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
 import ContractDetailsVerificationButton from './ContractDetailsVerificationButton';
 import ContractSourceCode from './ContractSourceCode';
-
-export const CONTRACT_DETAILS_TAB_IDS = [
-  'contract_source_code',
-  'contract_compiler',
-  'contract_abi',
-  'contract_bytecode',
-] as const;
+import type { CONTRACT_DETAILS_TAB_IDS } from './utils';
 
 interface Tab {
   id: typeof CONTRACT_DETAILS_TAB_IDS[number];

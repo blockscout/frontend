@@ -47,6 +47,20 @@ const variantRadioGroup = definePartsStyle((props) => {
       ...Button.variants?.radio_group(props),
       ...Button.baseStyle,
       _selected: Button.variants?.radio_group(props)['&[data-selected=true]'],
+      borderRadius: 'none',
+      _notFirst: {
+        borderLeftWidth: 0,
+      },
+      '&[role="tab"]': {
+        _first: {
+          borderTopLeftRadius: 'base',
+          borderBottomLeftRadius: 'base',
+        },
+        _last: {
+          borderTopRightRadius: 'base',
+          borderBottomRightRadius: 'base',
+        },
+      },
     },
   };
 });

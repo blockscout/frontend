@@ -16,23 +16,14 @@ import ContractMethodsRegular from 'ui/address/contract/methods/ContractMethodsR
 import { divideAbiIntoMethodTypes } from 'ui/address/contract/methods/utils';
 import ContentLoader from 'ui/shared/ContentLoader';
 
-const CONTRACT_TAB_IDS = [
-  'contract_code',
-  'read_contract',
-  'read_contract_rpc',
-  'read_proxy',
-  'read_custom_methods',
-  'write_contract',
-  'write_contract_rpc',
-  'write_proxy',
-  'write_custom_methods',
-  'mud_system',
-] as const;
+import type { CONTRACT_MAIN_TAB_IDS } from './utils';
+import { CONTRACT_DETAILS_TAB_IDS, CONTRACT_TAB_IDS } from './utils';
 
 interface ContractTab {
-  id: typeof CONTRACT_TAB_IDS[number];
+  id: typeof CONTRACT_MAIN_TAB_IDS[number];
   title: string;
   component: JSX.Element;
+  subTabs?: Array<string>;
 }
 
 interface ReturnType {
@@ -105,6 +96,7 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
           id: 'contract_code' as const,
           title: 'Code',
           component: <ContractDetails contractQuery={ contractQuery } channel={ channel } addressHash={ data?.hash }/>,
+          subTabs: CONTRACT_DETAILS_TAB_IDS as unknown as Array<string>,
         },
         methods.read.length > 0 && {
           id: 'read_contract' as const,

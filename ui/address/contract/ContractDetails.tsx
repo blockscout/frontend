@@ -1,4 +1,3 @@
-import { Tabs, TabList, Tab, TabPanel, TabPanels } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
 import type { Channel } from 'phoenix';
@@ -12,6 +11,7 @@ import type { ResourceError } from 'lib/api/resources';
 import { getResourceKey } from 'lib/api/useApiQuery';
 import useSocketMessage from 'lib/socket/useSocketMessage';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 
 import ContractDetailsAlerts from './alerts/ContractDetailsAlerts';
 import ContractDetailsInfo from './info/ContractDetailsInfo';
@@ -59,34 +59,7 @@ const ContractDetails = ({ addressHash, contractQuery, channel }: Props) => {
         channel={ channel }
       />
       { data?.is_verified && <ContractDetailsInfo data={ data } isPlaceholderData={ isPlaceholderData } addressHash={ addressHash }/> }
-      <Tabs variant="radio_group" size="sm">
-        <TabList>
-          { tabs.map((tab) => (
-            <Tab
-              key={ tab.id }
-              borderRadius="none"
-              _notFirst={{
-                borderLeftWidth: 0,
-              }}
-              _first={{
-                borderTopLeftRadius: 'base',
-                borderBottomLeftRadius: 'base',
-              }}
-              _last={{
-                borderTopRightRadius: 'base',
-                borderBottomRightRadius: 'base',
-              }}
-            >
-              { tab.title }
-            </Tab>
-          )) }
-        </TabList>
-        <TabPanels>
-          { tabs.map((tab) => (
-            <TabPanel key={ tab.id }>{ tab.component }</TabPanel>
-          )) }
-        </TabPanels>
-      </Tabs>
+      <RoutedTabs tabs={ tabs } isLoading={ isPlaceholderData } variant="radio_group" size="sm"/>
     </>
   );
 };

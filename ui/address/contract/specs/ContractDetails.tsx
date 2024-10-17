@@ -1,8 +1,9 @@
 import { useRouter } from 'next/router';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import useContractTabs from 'lib/hooks/useContractTabs';
 import getQueryParamString from 'lib/router/getQueryParamString';
+
+import useContractTabs from '../useContractTabs';
 
 const ContractDetails = () => {
   const router = useRouter();
