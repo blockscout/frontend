@@ -12,16 +12,16 @@ interface Props {
   abi: Array<SmartContractMethod>;
   addressHash: string;
   tab: string;
-  contractAddress?: string;
+  sourceAddress?: string;
 }
 
-const ContractAbi = ({ abi, addressHash, contractAddress, tab }: Props) => {
+const ContractAbi = ({ abi, addressHash, sourceAddress, tab }: Props) => {
   const [ expandedSections, setExpandedSections ] = React.useState<Array<number>>(abi.length === 1 ? [ 0 ] : []);
   const [ id, setId ] = React.useState(0);
 
   useScrollToMethod(abi, setExpandedSections);
 
-  const handleFormSubmit = useFormSubmit({ addressHash: contractAddress || addressHash });
+  const handleFormSubmit = useFormSubmit({ addressHash });
 
   const handleAccordionStateChange = React.useCallback((newValue: Array<number>) => {
     setExpandedSections(newValue);
@@ -62,7 +62,7 @@ const ContractAbi = ({ abi, addressHash, contractAddress, tab }: Props) => {
             id={ id }
             index={ index }
             addressHash={ addressHash }
-            contractAddress={ contractAddress }
+            sourceAddress={ sourceAddress }
             tab={ tab }
             onSubmit={ handleFormSubmit }
           />

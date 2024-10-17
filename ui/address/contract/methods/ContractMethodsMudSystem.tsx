@@ -22,7 +22,7 @@ const ContractMethodsMudSystem = ({ items }: Props) => {
   const router = useRouter();
 
   const addressHash = getQueryParamString(router.query.hash);
-  const contractAddress = getQueryParamString(router.query.contract_address);
+  const contractAddress = getQueryParamString(router.query.source_address);
 
   const [ selectedItem, setSelectedItem ] = React.useState(items.find((item) => item.address === contractAddress) || items[0]);
 
@@ -58,7 +58,7 @@ const ContractMethodsMudSystem = ({ items }: Props) => {
         abi={ abi }
         isLoading={ systemInfoQuery.isPending }
         isError={ systemInfoQuery.isError }
-        contractAddress={ selectedItem.address }
+        sourceAddress={ selectedItem.address }
         type="all"
       />
     </Box>

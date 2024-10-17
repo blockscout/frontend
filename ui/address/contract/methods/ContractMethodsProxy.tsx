@@ -21,7 +21,7 @@ interface Props {
 
 const ContractMethodsProxy = ({ type, implementations, isLoading: isInitialLoading }: Props) => {
   const router = useRouter();
-  const contractAddress = getQueryParamString(router.query.contract_address);
+  const contractAddress = getQueryParamString(router.query.source_address);
 
   const [ selectedItem, setSelectedItem ] = React.useState(implementations.find((item) => item.address === contractAddress) || implementations[0]);
 
@@ -50,7 +50,7 @@ const ContractMethodsProxy = ({ type, implementations, isLoading: isInitialLoadi
         abi={ abi }
         isLoading={ isInitialLoading || contractQuery.isPending }
         isError={ contractQuery.isError }
-        contractAddress={ selectedItem.address }
+        sourceAddress={ selectedItem.address }
         type={ type }
       />
     </Box>
