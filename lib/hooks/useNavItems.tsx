@@ -25,8 +25,8 @@ export default function useNavItems(): ReturnType {
   const pathname = router.pathname;
   const {
     openLoginModal: openRewardsLoginModal,
-    balance: rewardsBalance,
-    dailyReward,
+    balancesQuery: rewardsBalancesQuery,
+    dailyRewardQuery,
     apiToken: rewardsApiToken,
   } = useRewardsContext();
 
@@ -271,10 +271,10 @@ export default function useNavItems(): ReturnType {
 
     const accountNavItems: ReturnType['accountNavItems'] = [
       config.features.rewards.isEnabled ? {
-        text: rewardsBalance?.total ? `${ rewardsBalance?.total } Merits` : 'Merits',
+        text: rewardsBalancesQuery.data?.total ? `${ rewardsBalancesQuery.data?.total } Merits` : 'Merits',
         nextRoute: { pathname: '/account/rewards' as const },
         onClick: rewardsApiToken ? undefined : openRewardsLoginModal,
-        icon: dailyReward?.available ? 'merits_with_dot' : 'merits',
+        icon: dailyRewardQuery.data?.available ? 'merits_with_dot' : 'merits',
         isActive: pathname === '/account/rewards',
       } : null,
       {
@@ -310,5 +310,5 @@ export default function useNavItems(): ReturnType {
     ].filter(Boolean);
 
     return { mainNavItems, accountNavItems };
-  }, [ pathname, openRewardsLoginModal, rewardsBalance, dailyReward, rewardsApiToken ]);
+  }, [ pathname, openRewardsLoginModal, rewardsBalancesQuery, dailyRewardQuery, rewardsApiToken ]);
 }

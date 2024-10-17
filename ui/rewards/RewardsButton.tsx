@@ -15,7 +15,7 @@ type Props = {
 };
 
 const RewardsButton = ({ variant = 'header', size }: Props) => {
-  const { apiToken, openLoginModal, dailyReward, balance, isDailyRewardLoading, isBalanceLoading } = useRewardsContext();
+  const { apiToken, openLoginModal, dailyRewardQuery, balancesQuery } = useRewardsContext();
   const isMobile = useIsMobile();
   return (
     <Tooltip
@@ -36,18 +36,18 @@ const RewardsButton = ({ variant = 'header', size }: Props) => {
         fontSize="sm"
         size={ size }
         px={ 2.5 }
-        isLoading={ isDailyRewardLoading || isBalanceLoading }
+        isLoading={ dailyRewardQuery.isLoading || balancesQuery.isLoading }
         loadingText={ isMobile ? undefined : 'Merits' }
         textDecoration="none !important"
       >
         <IconSvg
-          name={ dailyReward?.available ? 'merits_with_dot' : 'merits' }
+          name={ dailyRewardQuery.data?.available ? 'merits_with_dot' : 'merits' }
           boxSize={ size === 'sm' ? '26px' : '28px' }
           flexShrink={ 0 }
           mx={ -1 }
         />
         <chakra.span display={{ base: 'none', md: 'inline' }} ml={ 2 }>
-          { apiToken ? balance?.total : 'Merits' }
+          { apiToken ? balancesQuery.data?.total : 'Merits' }
         </chakra.span>
       </Button>
     </Tooltip>

@@ -12,7 +12,7 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 
 const RewardsDashboard = () => {
   const router = useRouter();
-  const { balance, refetchBalance, dailyReward, refetchDailyReward, apiToken, claim, referralsQuery, rewardsConfigQuery } = useRewardsContext();
+  const { balancesQuery, dailyRewardQuery, apiToken, claim, referralsQuery, rewardsConfigQuery } = useRewardsContext();
   const [ isClaiming, setIsClaiming ] = useBoolean(false);
   const [ timeLeft, setTimeLeft ] = React.useState<string>('');
 
@@ -20,25 +20,25 @@ const RewardsDashboard = () => {
     router.replace({ pathname: '/' }, undefined, { shallow: true });
   }
 
-  const dailyRewardValue = Number(dailyReward?.daily_reward || 0) + Number(dailyReward?.pending_referral_rewards || 0);
+  const dailyRewardValue = Number(dailyRewardQuery.data?.daily_reward || 0) + Number(dailyRewardQuery.data?.pending_referral_rewards || 0);
 
   const handleClaim = useCallback(async() => {
     setIsClaiming.on();
     try {
       await claim();
-      refetchBalance();
-      refetchDailyReward();
+      balancesQuery.refetch();
+      dailyRewardQuery.refetch();
     } catch (error) {}
     setIsClaiming.off();
-  }, [ claim, setIsClaiming, refetchBalance, refetchDailyReward ]);
+  }, [ claim, setIsClaiming, balancesQuery, dailyRewardQuery ]);
 
   useEffect(() => {
-    if (!dailyReward?.reset_at) {
+    if (!dailyRewardQuery.data?.reset_at) {
       return;
     }
     const interval = setInterval(() => {
       const now = new Date().getTime();
-      const target = new Date(dailyReward.reset_at).getTime();
+      const target = new Date(dailyRewardQuery.data.reset_at).getTime();
       const difference = target - now;
 
       if (difference > 0) {
@@ -46,13 +46,13 @@ const RewardsDashboard = () => {
         setTimeLeft(`${ hours }:${ minutes }:${ seconds }`);
       } else {
         setTimeLeft('00:00:00');
-        refetchDailyReward();
+        dailyRewardQuery.refetch();
         clearInterval(interval);
       }
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [ dailyReward?.reset_at, refetchDailyReward ]);
+  }, [ dailyRewardQuery ]);
 
   return (
     <>
@@ -75,7 +75,7 @@ const RewardsDashboard = () => {
             values={ [
               {
                 label: 'Total balance',
-                value: balance?.total,
+                value: balancesQuery.data?.total,
                 hint: (
                   <>
                     Total number of merits earned from all activities.{ ' ' }
@@ -87,8 +87,8 @@ const RewardsDashboard = () => {
               },
             ] }
             contentAfter={ (
-              <Button isDisabled={ !dailyReward?.available } onClick={ handleClaim } isLoading={ isClaiming }>
-                { dailyReward?.available ?
+              <Button isDisabled={ !dailyRewardQuery.data?.available } onClick={ handleClaim } isLoading={ isClaiming }>
+                { dailyRewardQuery.data?.available ?
                   `Claim ${ dailyRewardValue } Merits` :
                   `Next claim in ${ timeLeft }`
                 }

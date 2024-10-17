@@ -21,42 +21,33 @@ import useToast from 'lib/hooks/useToast';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import removeQueryParam from 'lib/router/removeQueryParam';
 
-type Props = {
-  children: React.ReactNode;
-}
-
 type TRewardsContext = {
+  balancesQuery: UseQueryResult<RewardsUserBalancesResponse, ResourceError<unknown>>;
+  dailyRewardQuery: UseQueryResult<RewardsUserDailyCheckResponse, ResourceError<unknown>>;
+  referralsQuery: UseQueryResult<RewardsUserReferralsResponse, ResourceError<unknown>>;
+  rewardsConfigQuery: UseQueryResult<RewardsConfigResponse, ResourceError<unknown>>;
+  apiToken: string | undefined;
   isLoginModalOpen: boolean;
   openLoginModal: () => void;
   closeLoginModal: () => void;
-  balance: RewardsUserBalancesResponse | undefined;
-  isBalanceLoading: boolean;
-  refetchBalance: () => void;
-  dailyReward: RewardsUserDailyCheckResponse | undefined;
-  isDailyRewardLoading: boolean;
-  refetchDailyReward: () => void;
-  apiToken: string | undefined;
   login: (refCode: string) => Promise<{ isNewUser?: boolean; invalidRefCodeError?: boolean }>;
   claim: () => Promise<void>;
-  referralsQuery: UseQueryResult<RewardsUserReferralsResponse, ResourceError<unknown>>;
-  rewardsConfigQuery: UseQueryResult<RewardsConfigResponse, ResourceError<unknown>>;
 }
 
+const createDefaultQueryResult = <TData, TError>() =>
+  ({ data: undefined, isLoading: false, refetch: () => {} } as UseQueryResult<TData, TError>);
+
 const RewardsContext = createContext<TRewardsContext>({
+  balancesQuery: createDefaultQueryResult<RewardsUserBalancesResponse, ResourceError<unknown>>(),
+  dailyRewardQuery: createDefaultQueryResult<RewardsUserDailyCheckResponse, ResourceError<unknown>>(),
+  referralsQuery: createDefaultQueryResult<RewardsUserReferralsResponse, ResourceError<unknown>>(),
+  rewardsConfigQuery: createDefaultQueryResult<RewardsConfigResponse, ResourceError<unknown>>(),
+  apiToken: undefined,
   isLoginModalOpen: false,
   openLoginModal: () => {},
   closeLoginModal: () => {},
-  balance: undefined,
-  isBalanceLoading: false,
-  refetchBalance: () => {},
-  dailyReward: undefined,
-  isDailyRewardLoading: false,
-  refetchDailyReward: () => {},
-  apiToken: undefined,
   login: async() => ({}),
   claim: async() => {},
-  referralsQuery: { data: undefined, isLoading: false, refetch: () => {} } as UseQueryResult<RewardsUserReferralsResponse, ResourceError<unknown>>,
-  rewardsConfigQuery: { data: undefined, isLoading: false, refetch: () => {} } as UseQueryResult<RewardsConfigResponse, ResourceError<unknown>>,
 });
 
 function getMessageToSign(address: string, nonce: string, isLogin?: boolean, refCode?: string) {
@@ -77,6 +68,10 @@ function getMessageToSign(address: string, nonce: string, isLogin?: boolean, ref
     `Issued At: ${ new Date().toISOString() }`,
     `Expiration Time: ${ new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString() }`,
   ].join('\n');
+}
+
+type Props = {
+  children: React.ReactNode;
 }
 
 export function RewardsContextProvider({ children }: Props) {
@@ -196,18 +191,14 @@ export function RewardsContextProvider({ children }: Props) {
   }, [ apiFetch, errorToast, apiToken ]);
 
   const value = useMemo(() => ({
-    isLoginModalOpen,
-    openLoginModal: setIsLoginModalOpen.on,
-    closeLoginModal: setIsLoginModalOpen.off,
-    balance: balancesQuery.data,
-    isBalanceLoading: balancesQuery.isLoading,
-    refetchBalance: balancesQuery.refetch,
-    dailyReward: dailyRewardQuery.data,
-    isDailyRewardLoading: dailyRewardQuery.isLoading,
-    refetchDailyReward: dailyRewardQuery.refetch,
+    balancesQuery,
+    dailyRewardQuery,
     referralsQuery,
     rewardsConfigQuery,
     apiToken,
+    isLoginModalOpen,
+    openLoginModal: setIsLoginModalOpen.on,
+    closeLoginModal: setIsLoginModalOpen.off,
     login,
     claim,
   }), [
