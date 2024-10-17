@@ -54,10 +54,12 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   }, []);
 
   const getLayout = Component.getLayout ?? ((page) => <Layout>{ page }</Layout>);
-
+  const isUnderMaintenance = true;
   return (
-    <ChakraProvider cookies={ pageProps.cookies }>
-      <AppErrorBoundary
+    <>
+      { isUnderMaintenance ? <div>Under Maintenance</div>: (
+      <ChakraProvider cookies={ pageProps.cookies }>
+        <AppErrorBoundary
         { ...ERROR_SCREEN_STYLES }
         onError={ handleError }
       >
@@ -80,6 +82,8 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         </Web3ModalProvider>
       </AppErrorBoundary>
     </ChakraProvider>
+    )}
+    </>
   );
 }
 
