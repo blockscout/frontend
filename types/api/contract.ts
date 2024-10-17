@@ -143,3 +143,19 @@ export type SmartContractSecurityAuditSubmission = {
   'audit_publish_date': string;
   'comment'?: string;
 }
+
+// MUD SYSTEM
+
+export interface SmartContractMudSystemsResponse {
+  items: Array<SmartContractMudSystemItem>;
+}
+
+export interface SmartContractMudSystemItem {
+  address: string;
+  name: string;
+}
+
+export interface SmartContractMudSystemInfo {
+  name: string;
+  abi: Abi;
+}

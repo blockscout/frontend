@@ -2,7 +2,7 @@ import type { AbiFunction, AbiFallback, AbiReceive } from 'abitype';
 
 export type ContractAbiItemInput = AbiFunction['inputs'][number] & { fieldType?: 'native_coin' };
 
-export type MethodType = 'read' | 'write';
+export type MethodType = 'read' | 'write' | 'all';
 export type MethodCallStrategy = 'read' | 'write' | 'simulate';
 export type ResultViewMode = 'preview' | 'result';
 
