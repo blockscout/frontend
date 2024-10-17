@@ -13,18 +13,32 @@ const BORDER_DEFAULT = 'none';
 
 const HeroBanner = () => {
   const background = useColorModeValue(
-    config.UI.homepage.heroBanner?.background?.[0] || config.UI.homepage.plate.background || BACKGROUND_DEFAULT,
-    config.UI.homepage.heroBanner?.background?.[1] || config.UI.homepage.plate.background || BACKGROUND_DEFAULT,
+    // light mode
+    config.UI.homepage.heroBanner?.background?.[0] ||
+    config.UI.homepage.plate.background ||
+    BACKGROUND_DEFAULT,
+    // dark mode
+    config.UI.homepage.heroBanner?.background?.[1] ||
+    config.UI.homepage.heroBanner?.background?.[0] ||
+    config.UI.homepage.plate.background ||
+    BACKGROUND_DEFAULT,
   );
 
   const textColor = useColorModeValue(
-    config.UI.homepage.heroBanner?.text_color?.[0] || config.UI.homepage.plate.textColor || TEXT_COLOR_DEFAULT,
-    config.UI.homepage.heroBanner?.text_color?.[1] || config.UI.homepage.plate.textColor || TEXT_COLOR_DEFAULT,
+    // light mode
+    config.UI.homepage.heroBanner?.text_color?.[0] ||
+    config.UI.homepage.plate.textColor ||
+    TEXT_COLOR_DEFAULT,
+    // dark mode
+    config.UI.homepage.heroBanner?.text_color?.[1] ||
+    config.UI.homepage.heroBanner?.text_color?.[0] ||
+    config.UI.homepage.plate.textColor ||
+    TEXT_COLOR_DEFAULT,
   );
 
   const border = useColorModeValue(
     config.UI.homepage.heroBanner?.border?.[0] || BORDER_DEFAULT,
-    config.UI.homepage.heroBanner?.border?.[1] || BORDER_DEFAULT,
+    config.UI.homepage.heroBanner?.border?.[1] || config.UI.homepage.heroBanner?.border?.[0] || BORDER_DEFAULT,
   );
 
   return (

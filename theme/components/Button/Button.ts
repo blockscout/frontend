@@ -154,33 +154,34 @@ const variantSubtle = defineStyle((props) => {
 
 // for buttons in the hero banner
 const variantHero = defineStyle((props) => {
+  const buttonConfig = config.UI.homepage.heroBanner?.button;
   return {
     bg: mode(
-      config.UI.homepage.heroBanner?.button?._default?.background?.[0] || 'blue.600',
-      config.UI.homepage.heroBanner?.button?._default?.background?.[1] || 'blue.600',
+      buttonConfig?._default?.background?.[0] || 'blue.600',
+      buttonConfig?._default?.background?.[1] || buttonConfig?._default?.background?.[0] || 'blue.600',
     )(props),
     color: mode(
-      config.UI.homepage.heroBanner?.button?._default?.text_color?.[0] || 'white',
-      config.UI.homepage.heroBanner?.button?._default?.text_color?.[1] || 'white',
+      buttonConfig?._default?.text_color?.[0] || 'white',
+      buttonConfig?._default?.text_color?.[1] || buttonConfig?._default?.text_color?.[0] || 'white',
     )(props),
     _hover: {
       bg: mode(
-        config.UI.homepage.heroBanner?.button?._hover?.background?.[0] || 'blue.400',
-        config.UI.homepage.heroBanner?.button?._hover?.background?.[1] || 'blue.400',
+        buttonConfig?._hover?.background?.[0] || 'blue.400',
+        buttonConfig?._hover?.background?.[1] || buttonConfig?._hover?.background?.[0] || 'blue.400',
       )(props),
       color: mode(
-        config.UI.homepage.heroBanner?.button?._hover?.text_color?.[0] || 'white',
-        config.UI.homepage.heroBanner?.button?._hover?.text_color?.[1] || 'white',
+        buttonConfig?._hover?.text_color?.[0] || 'white',
+        buttonConfig?._hover?.text_color?.[1] || buttonConfig?._hover?.text_color?.[0] || 'white',
       )(props),
     },
     '&[data-selected=true]': {
       bg: mode(
-        config.UI.homepage.heroBanner?.button?._selected?.background?.[0] || 'blue.50',
-        config.UI.homepage.heroBanner?.button?._selected?.background?.[1] || 'blue.50',
+        buttonConfig?._selected?.background?.[0] || 'blue.50',
+        buttonConfig?._selected?.background?.[1] || buttonConfig?._selected?.background?.[0] || 'blue.50',
       )(props),
       color: mode(
-        config.UI.homepage.heroBanner?.button?._selected?.text_color?.[0] || 'blackAlpha.800',
-        config.UI.homepage.heroBanner?.button?._selected?.text_color?.[1] || 'blackAlpha.800',
+        buttonConfig?._selected?.text_color?.[0] || 'blackAlpha.800',
+        buttonConfig?._selected?.text_color?.[1] || buttonConfig?._selected?.text_color?.[0] || 'blackAlpha.800',
       )(props),
     },
   };
