@@ -41,6 +41,16 @@ const variantOutline = definePartsStyle((props) => {
   };
 });
 
+const variantRadioGroup = definePartsStyle((props) => {
+  return {
+    tab: {
+      ...Button.variants?.radio_group(props),
+      ...Button.baseStyle,
+      _selected: Button.variants?.radio_group(props)['&[data-selected=true]'],
+    },
+  };
+});
+
 const sizes = {
   sm: definePartsStyle({
     tab: Button.sizes?.sm,
@@ -53,6 +63,7 @@ const sizes = {
 const variants = {
   'soft-rounded': variantSoftRounded,
   outline: variantOutline,
+  radio_group: variantRadioGroup,
 };
 
 const Tabs = defineMultiStyleConfig({

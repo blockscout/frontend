@@ -94,6 +94,36 @@ const variantOutline = defineStyle((props) => {
   };
 });
 
+const variantRadioGroup = defineStyle((props) => {
+  const outline = runIfFn(variantOutline, props);
+  const bgColor = mode('blue.50', 'gray.800')(props);
+  const selectedTextColor = mode('blue.700', 'gray.50')(props);
+
+  return {
+    ...outline,
+    fontWeight: 500,
+    cursor: 'pointer',
+    bgColor: 'none',
+    borderColor: bgColor,
+    _hover: {
+      borderColor: bgColor,
+      color: 'link_hovered',
+    },
+    _active: {
+      bgColor: 'none',
+    },
+    '&[data-selected=true]': {
+      cursor: 'initial',
+      bgColor,
+      borderColor: bgColor,
+      color: selectedTextColor,
+      _hover: {
+        color: selectedTextColor,
+      },
+    },
+  };
+});
+
 const variantSimple = defineStyle((props) => {
   const outline = runIfFn(variantOutline, props);
 
@@ -222,6 +252,7 @@ const variants = {
   subtle: variantSubtle,
   hero: variantHero,
   header: variantHeader,
+  radio_group: variantRadioGroup,
 };
 
 const baseStyle = defineStyle({
