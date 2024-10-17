@@ -53,6 +53,8 @@ const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum
               <Th width={ `${ REWARD_COL_WEIGHT / widthBase * 100 }%` }>Reward { currencyUnits.ether }</Th> }
             { !isRollup && !config.UI.views.block.hiddenFields?.burnt_fees &&
               <Th width={ `${ FEES_COL_WEIGHT / widthBase * 100 }%` }>Burnt fees { currencyUnits.ether }</Th> }
+            { !isRollup && !config.UI.views.block.hiddenFields?.base_fee &&
+              <Th width="150px" isNumeric>Base fee</Th> }
           </Tr>
         </Thead>
         <Tbody>
