@@ -5,11 +5,13 @@ import type { StatsChartsSection } from 'types/api/stats';
 import type { StatsIntervalIds } from 'types/client/stats';
 
 import useApiQuery from 'lib/api/useApiQuery';
+import useTvdaChart from 'lib/hooks/useTvdaChart';
 import { apos } from 'lib/html-entities';
 import EmptySearchResult from 'ui/shared/EmptySearchResult';
 import GasInfoTooltip from 'ui/shared/gas/GasInfoTooltip';
 import IconSvg from 'ui/shared/IconSvg';
 
+import ChartWidget from '../shared/chart/ChartWidget';
 import ChartsLoadingErrorAlert from './ChartsLoadingErrorAlert';
 import ChartWidgetContainer from './ChartWidgetContainer';
 
@@ -27,6 +29,15 @@ const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, in
   const isAnyChartDisplayed = charts?.some((section) => section.charts.length > 0);
   const isEmptyChartList = Boolean(filterQuery) && !isAnyChartDisplayed;
   const sectionRef = React.useRef<HTMLUListElement | null>(null);
+
+  const { tvdaData, isLoading: isTvdaLoading } = useTvdaChart();
+
+  const formattedTvdaData = tvdaData?.map((data) => {
+    return {
+      date: new Date(data.date),
+      value: data.value,
+    };
+  });
 
   const shouldScrollToSection = Boolean(initialFilterQuery);
 
@@ -56,52 +67,88 @@ const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, in
 
   return (
     <Box>
-      { isSomeChartLoadingError && (
-        <ChartsLoadingErrorAlert/>
-      ) }
+      { isSomeChartLoadingError && <ChartsLoadingErrorAlert/> }
 
       <List ref={ sectionRef }>
-        {
-          charts?.map((section) => (
-            <ListItem
-              key={ section.id }
-              mb={ 8 }
-              _last={{
-                marginBottom: 0,
-              }}
+        { charts?.map((section) => (
+          <ListItem
+            key={ section.id }
+            mb={ 8 }
+            _last={{
+              marginBottom: 0,
+            }}
+          >
+            <Skeleton
+              isLoaded={ !isPlaceholderData }
+              mb={ 4 }
+              display="inline-flex"
+              alignItems="center"
+              columnGap={ 2 }
+              id={ section.id }
             >
-              <Skeleton isLoaded={ !isPlaceholderData } mb={ 4 } display="inline-flex" alignItems="center" columnGap={ 2 } id={ section.id }>
-                <Heading size="md" id={ section.id }>
-                  { section.title }
-                </Heading>
-                { section.id === 'gas' && homeStatsQuery.data && homeStatsQuery.data.gas_prices && (
-                  <GasInfoTooltip data={ homeStatsQuery.data } dataUpdatedAt={ homeStatsQuery.dataUpdatedAt }>
-                    <IconSvg name="info" boxSize={ 5 } display="block" cursor="pointer" _hover={{ color: 'link_hovered' }}/>
-                  </GasInfoTooltip>
-                ) }
-              </Skeleton>
-
-              <Grid
-                templateColumns={{ lg: 'repeat(2, minmax(0, 1fr))' }}
-                gap={ 4 }
-              >
-                { section.charts.map((chart) => (
-                  <ChartWidgetContainer
-                    key={ chart.id }
-                    id={ chart.id }
-                    title={ chart.title.replace('ETH', 'tWVM') }
-                    description={ chart.description.replace('ETH', 'tWVM') }
-                    interval={ interval }
-                    units={ chart.units || undefined }
-                    isPlaceholderData={ isPlaceholderData }
-                    onLoadingError={ handleChartLoadingError }
+              <Heading size="md" id={ section.id }>
+                { section.title }
+              </Heading>
+              { section.id === 'gas' &&
+                homeStatsQuery.data &&
+                homeStatsQuery.data.gas_prices && (
+                <GasInfoTooltip
+                  data={ homeStatsQuery.data }
+                  dataUpdatedAt={ homeStatsQuery.dataUpdatedAt }
+                >
+                  <IconSvg
+                    name="info"
+                    boxSize={ 5 }
+                    display="block"
+                    cursor="pointer"
+                    _hover={{ color: 'link_hovered' }}
                   />
-                )) }
-              </Grid>
-            </ListItem>
-          ))
-        }
+                </GasInfoTooltip>
+              ) }
+            </Skeleton>
+
+            <Grid templateColumns={{ lg: 'repeat(2, minmax(0, 1fr))' }} gap={ 4 }>
+              { section.charts.map((chart) => (
+                <ChartWidgetContainer
+                  key={ chart.id }
+                  id={ chart.id }
+                  title={ chart.title.replace('ETH', 'tWVM') }
+                  description={ chart.description.replace('ETH', 'tWVM') }
+                  interval={ interval }
+                  units={ chart.units || undefined }
+                  isPlaceholderData={ isPlaceholderData }
+                  onLoadingError={ handleChartLoadingError }
+                />
+              )) }
+            </Grid>
+          </ListItem>
+        )) }
       </List>
+
+      <Box mb={ 8 } mt={ 8 }>
+        <Skeleton
+          isLoaded={ !isPlaceholderData }
+          mb={ 4 }
+          display="inline-flex"
+          alignItems="center"
+          columnGap={ 2 }
+          id="randomID"
+        >
+          <Heading size="md" id="random-id-1234">
+            Total Value of Data Archived
+          </Heading>
+        </Skeleton>
+
+        <Grid templateColumns={{ lg: 'repeat(2, minmax(0, 1fr))' }} gap={ 4 }>
+          <ChartWidget
+            minH="230px"
+            items={ formattedTvdaData }
+            title="Total Value of Data Archived"
+            description="Total Value of Data Archived which is the running FDV of all chains that use WeaveVM for ledger storage"
+            isLoading={ isTvdaLoading }
+          />
+        </Grid>
+      </Box>
     </Box>
   );
 };
