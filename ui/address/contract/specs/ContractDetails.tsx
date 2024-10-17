@@ -4,7 +4,7 @@ import useApiQuery from 'lib/api/useApiQuery';
 import useContractTabs from 'lib/hooks/useContractTabs';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
-const ContractCode = () => {
+const ContractDetails = () => {
   const router = useRouter();
   const hash = getQueryParamString(router.query.hash);
   const addressQuery = useApiQuery('address', { pathParams: { hash } });
@@ -13,4 +13,4 @@ const ContractCode = () => {
   return content ?? null;
 };
 
-export default ContractCode;
+export default ContractDetails;

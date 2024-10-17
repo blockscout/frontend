@@ -7,7 +7,7 @@ import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import * as socketServer from 'playwright/fixtures/socketServer';
 import { test, expect } from 'playwright/lib';
 
-import ContractCode from './specs/ContractCode';
+import ContractDetails from './specs/ContractDetails';
 
 const hooksConfig = {
   router: {
@@ -32,7 +32,7 @@ test('full view +@mobile +@dark-mode', async({ render, mockApiResponse, createSo
   await mockApiResponse('contract', contractMock.withChangedByteCode, { pathParams: { hash: addressMock.contract.hash } });
   await mockApiResponse('contract', contractMock.withChangedByteCode, { pathParams: { hash: addressMock.contract.implementations?.[0].address as string } });
 
-  const component = await render(<ContractCode/>, { hooksConfig }, { withSocket: true });
+  const component = await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
   await createSocket();
 
   await expect(component).toHaveScreenshot();
@@ -41,7 +41,7 @@ test('full view +@mobile +@dark-mode', async({ render, mockApiResponse, createSo
 test('verified with changed byte code socket', async({ render, mockApiResponse, createSocket }) => {
   await mockApiResponse('contract', contractMock.verified, { pathParams: { hash: addressMock.contract.hash } });
 
-  const component = await render(<ContractCode/>, { hooksConfig }, { withSocket: true });
+  const component = await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
   const socket = await createSocket();
   const channel = await socketServer.joinChannel(socket, 'addresses:' + addressMock.contract.hash.toLowerCase());
   socketServer.sendMessage(socket, channel, 'changed_bytecode', {});
@@ -51,7 +51,7 @@ test('verified with changed byte code socket', async({ render, mockApiResponse, 
 
 test('verified via lookup in eth_bytecode_db', async({ render, mockApiResponse, createSocket, page }) => {
   const contractApiUrl = await mockApiResponse('contract', contractMock.nonVerified, { pathParams: { hash: addressMock.contract.hash } });
-  await render(<ContractCode/>, { hooksConfig }, { withSocket: true });
+  await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
 
   const socket = await createSocket();
   const channel = await socketServer.joinChannel(socket, 'addresses:' + addressMock.contract.hash.toLowerCase());
@@ -64,7 +64,7 @@ test('verified via lookup in eth_bytecode_db', async({ render, mockApiResponse, 
 
 test('verified with multiple sources', async({ render, page, mockApiResponse }) => {
   await mockApiResponse('contract', contractMock.withMultiplePaths, { pathParams: { hash: addressMock.contract.hash } });
-  await render(<ContractCode/>, { hooksConfig }, { withSocket: true });
+  await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
 
   const section = page.locator('section', { hasText: 'Contract source code' });
   await expect(section).toHaveScreenshot();
@@ -78,21 +78,21 @@ test('verified with multiple sources', async({ render, page, mockApiResponse }) 
 
 test('verified via sourcify', async({ render, mockApiResponse, page }) => {
   await mockApiResponse('contract', contractMock.verifiedViaSourcify, { pathParams: { hash: addressMock.contract.hash } });
-  await render(<ContractCode/>, { hooksConfig }, { withSocket: true });
+  await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 110 } });
 });
 
 test('verified via eth bytecode db', async({ render, mockApiResponse, page }) => {
   await mockApiResponse('contract', contractMock.verifiedViaEthBytecodeDb, { pathParams: { hash: addressMock.contract.hash } });
-  await render(<ContractCode/>, { hooksConfig }, { withSocket: true });
+  await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 110 } });
 });
 
 test('self destructed', async({ render, mockApiResponse, page }) => {
   await mockApiResponse('contract', contractMock.selfDestructed, { pathParams: { hash: addressMock.contract.hash } });
-  await render(<ContractCode/>, { hooksConfig }, { withSocket: true });
+  await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
 
   const section = page.locator('section', { hasText: 'Contract creation code' });
   await expect(section).toHaveScreenshot();
@@ -100,28 +100,28 @@ test('self destructed', async({ render, mockApiResponse, page }) => {
 
 test('with twin address alert +@mobile', async({ render, mockApiResponse }) => {
   await mockApiResponse('contract', contractMock.withTwinAddress, { pathParams: { hash: addressMock.contract.hash } });
-  const component = await render(<ContractCode/>, { hooksConfig }, { withSocket: true });
+  const component = await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
 
   await expect(component.getByRole('alert')).toHaveScreenshot();
 });
 
 test('with proxy address alert +@mobile', async({ render, mockApiResponse }) => {
   await mockApiResponse('contract', contractMock.withProxyAddress, { pathParams: { hash: addressMock.contract.hash } });
-  const component = await render(<ContractCode/>, { hooksConfig }, { withSocket: true });
+  const component = await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
 
   await expect(component.getByRole('alert')).toHaveScreenshot();
 });
 
 test('with certified icon +@mobile', async({ render, mockApiResponse, page }) => {
   await mockApiResponse('contract', contractMock.certified, { pathParams: { hash: addressMock.contract.hash } });
-  await render(<ContractCode/>, { hooksConfig });
+  await render(<ContractDetails/>, { hooksConfig });
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 120 } });
 });
 
 test('non verified', async({ render, mockApiResponse }) => {
   await mockApiResponse('contract', contractMock.nonVerified, { pathParams: { hash: addressMock.contract.hash } });
-  const component = await render(<ContractCode/>, { hooksConfig }, { withSocket: true });
+  const component = await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
 
   await expect(component).toHaveScreenshot();
 });
@@ -129,7 +129,7 @@ test('non verified', async({ render, mockApiResponse }) => {
 test('zkSync contract', async({ render, mockApiResponse, page, mockEnvs }) => {
   await mockEnvs(ENVS_MAP.zkSyncRollup);
   await mockApiResponse('contract', contractMock.zkSync, { pathParams: { hash: addressMock.contract.hash } });
-  await render(<ContractCode/>, { hooksConfig }, { withSocket: true });
+  await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
 
   await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
 });
@@ -143,7 +143,7 @@ test.describe('with audits feature', () => {
   test('no audits', async({ render, mockApiResponse }) => {
     await mockApiResponse('contract', contractMock.verified, { pathParams: { hash: addressMock.contract.hash } });
     await mockApiResponse('contract_security_audits', { items: [] }, { pathParams: { hash: addressMock.contract.hash } });
-    const component = await render(<ContractCode/>, { hooksConfig }, { withSocket: true });
+    const component = await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
 
     await expect(component).toHaveScreenshot();
   });
@@ -151,7 +151,7 @@ test.describe('with audits feature', () => {
   test('has audits', async({ render, mockApiResponse }) => {
     await mockApiResponse('contract', contractMock.verified, { pathParams: { hash: addressMock.contract.hash } });
     await mockApiResponse('contract_security_audits', contractAudits, { pathParams: { hash: addressMock.contract.hash } });
-    const component = await render(<ContractCode/>, { hooksConfig }, { withSocket: true });
+    const component = await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
 
     await expect(component).toHaveScreenshot();
   });

@@ -8,7 +8,7 @@ import * as cookies from 'lib/cookies';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import * as stubs from 'stubs/contract';
-import ContractCode from 'ui/address/contract/ContractCode';
+import ContractDetails from 'ui/address/contract/ContractDetails';
 import ContractMethodsCustom from 'ui/address/contract/methods/ContractMethodsCustom';
 import ContractMethodsMudSystem from 'ui/address/contract/methods/ContractMethodsMudSystem';
 import ContractMethodsProxy from 'ui/address/contract/methods/ContractMethodsProxy';
@@ -104,7 +104,7 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
         {
           id: 'contract_code' as const,
           title: 'Code',
-          component: <ContractCode contractQuery={ contractQuery } channel={ channel } addressHash={ data?.hash }/>,
+          component: <ContractDetails contractQuery={ contractQuery } channel={ channel } addressHash={ data?.hash }/>,
         },
         methods.read.length > 0 && {
           id: 'read_contract' as const,

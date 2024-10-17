@@ -9,7 +9,7 @@ import ContainerWithScrollY from 'ui/shared/ContainerWithScrollY';
 import FormModal from 'ui/shared/FormModal';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 
-import ContractSubmitAuditForm from './contractSubmitAuditForm/ContractSubmitAuditForm';
+import ContractSubmitAuditForm from './ContractSubmitAuditForm';
 
 type Props = {
   addressHash?: string;
