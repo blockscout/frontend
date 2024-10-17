@@ -25,6 +25,7 @@
 	| "block"
 	| "brands/blockscout"
 	| "brands/celenium"
+	| "brands/graph"
 	| "brands/safe"
 	| "brands/solidity_scan"
 	| "burger"
