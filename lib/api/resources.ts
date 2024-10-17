@@ -37,6 +37,7 @@ import type {
   AddressMudRecordsFilter,
   AddressMudRecordsSorting,
   AddressMudRecord,
+  AddressEpochRewardsResponse,
 } from 'types/api/address';
 import type { AddressesResponse, AddressesMetadataSearchResult, AddressesMetadataSearchFilters } from 'types/api/addresses';
 import type { AddressMetadataInfo, PublicTagTypesResponse } from 'types/api/addressMetadata';
@@ -502,6 +503,11 @@ export const RESOURCES = {
   },
   address_withdrawals: {
     path: '/api/v2/addresses/:hash/withdrawals',
+    pathParams: [ 'hash' as const ],
+    filterFields: [],
+  },
+  address_epoch_rewards: {
+    path: '/api/v2/addresses/:hash/election-rewards',
     pathParams: [ 'hash' as const ],
     filterFields: [],
   },
@@ -1002,7 +1008,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' | 'block_election_reward
 'addresses' | 'addresses_metadata_search' |
 'address_txs' | 'address_internal_txs' | 'address_token_transfers' | 'address_blocks_validated' | 'address_coin_balance' |
 'search' |
-'address_logs' | 'address_tokens' | 'address_nfts' | 'address_collections' |
+'address_logs' | 'address_tokens' | 'address_nfts' | 'address_collections' | 'address_epoch_rewards' |
 'token_transfers' | 'token_holders' | 'token_inventory' | 'tokens' | 'tokens_bridged' |
 'token_instance_transfers' | 'token_instance_holders' |
 'verified_contracts' |
@@ -1182,6 +1188,7 @@ Q extends 'address_mud_tables' ? AddressMudTables :
 Q extends 'address_mud_tables_count' ? number :
 Q extends 'address_mud_records' ? AddressMudRecords :
 Q extends 'address_mud_record' ? AddressMudRecord :
+Q extends 'address_epoch_rewards' ? AddressEpochRewardsResponse :
 Q extends 'withdrawals' ? WithdrawalsResponse :
 Q extends 'withdrawals_counters' ? WithdrawalsCounters :
 never;

@@ -24,6 +24,7 @@ import AddressBlocksValidated from 'ui/address/AddressBlocksValidated';
 import AddressCoinBalance from 'ui/address/AddressCoinBalance';
 import AddressContract from 'ui/address/AddressContract';
 import AddressDetails from 'ui/address/AddressDetails';
+import AddressEpochRewards from 'ui/address/AddressEpochRewards';
 import AddressInternalTxs from 'ui/address/AddressInternalTxs';
 import AddressLogs from 'ui/address/AddressLogs';
 import AddressMud from 'ui/address/AddressMud';
@@ -195,6 +196,12 @@ const AddressPageContent = () => {
         count: addressTabsCountersQuery.data?.internal_txs_count,
         component: <AddressInternalTxs scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
       },
+      addressTabsCountersQuery.data?.celo_election_rewards_count ? {
+        id: 'epoch_rewards',
+        title: 'Epoch rewards',
+        count: addressTabsCountersQuery.data?.celo_election_rewards_count,
+        component: <AddressEpochRewards scrollRef={ tabsScrollRef } shouldRender={ !isTabsLoading } isQueryEnabled={ areQueriesEnabled }/>,
+      } : undefined,
       {
         id: 'coin_balance_history',
         title: 'Coin balance history',
