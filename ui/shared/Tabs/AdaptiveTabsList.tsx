@@ -37,7 +37,7 @@ const AdaptiveTabsList = (props: Props) => {
     return [ ...props.tabs, menuButton ];
   }, [ props.tabs ]);
 
-  const { tabsCut, tabsRefs, listRef, rightSlotRef } = useAdaptiveTabs(tabsList, isMobile);
+  const { tabsCut, tabsRefs, listRef, rightSlotRef, leftSlotRef } = useAdaptiveTabs(tabsList, isMobile);
   const isSticky = useIsSticky(listRef, 5, props.stickyEnabled);
   useScrollToActiveTab({ activeTabIndex: props.activeTabIndex, listRef, tabsRefs, isMobile, isLoading: props.isLoading });
 
@@ -80,6 +80,7 @@ const AdaptiveTabsList = (props: Props) => {
           props.tabListProps)
       }
     >
+      { props.leftSlot && <Box ref={ leftSlotRef } { ...props.leftSlotProps }> { props.leftSlot } </Box> }
       { tabsList.slice(0, props.isLoading ? 5 : Infinity).map((tab, index) => {
         if (!tab.id) {
           if (props.isLoading) {

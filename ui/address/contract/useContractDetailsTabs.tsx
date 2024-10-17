@@ -18,11 +18,12 @@ interface Tab {
 
 interface Props {
   data: SmartContract | undefined;
-  isPlaceholderData: boolean;
-  addressHash: string | undefined;
+  isLoading: boolean;
+  addressHash: string;
+  sourceAddress: string;
 }
 
-export default function useContractDetailsTabs({ data, isPlaceholderData, addressHash }: Props): Array<Tab> {
+export default function useContractDetailsTabs({ data, isLoading, addressHash, sourceAddress }: Props): Array<Tab> {
 
   const constructorArgs = React.useMemo(() => {
     if (!data?.decoded_constructor_args) {
@@ -61,14 +62,14 @@ export default function useContractDetailsTabs({ data, isPlaceholderData, addres
   return React.useMemo(() => {
     const verificationButton = (
       <ContractDetailsVerificationButton
-        isPlaceholderData={ isPlaceholderData }
+        isLoading={ isLoading }
         addressHash={ addressHash }
         isPartiallyVerified={ Boolean(data?.is_partially_verified) }
       />
     );
 
     return [
-      constructorArgs || (data?.source_code && addressHash) ? {
+      (constructorArgs || data?.source_code) ? {
         id: 'contract_source_code' as const,
         title: 'Code',
         component: (
@@ -78,13 +79,14 @@ export default function useContractDetailsTabs({ data, isPlaceholderData, addres
                 data={ constructorArgs }
                 title="Constructor Arguments"
                 textareaMaxHeight="200px"
-                isLoading={ isPlaceholderData }
+                isLoading={ isLoading }
               />
             ) }
-            { data?.source_code && addressHash && (
+            { data?.source_code && (
               <ContractSourceCode
-                address={ addressHash }
-                implementations={ undefined }
+                data={ data }
+                isLoading={ isLoading }
+                sourceAddress={ sourceAddress }
               />
             ) }
           </Flex>
@@ -98,8 +100,8 @@ export default function useContractDetailsTabs({ data, isPlaceholderData, addres
           <RawDataSnippet
             data={ JSON.stringify(data.compiler_settings, undefined, 4) }
             title="Compiler Settings"
-            textareaMaxHeight="200px"
-            isLoading={ isPlaceholderData }
+            textareaMaxHeight="600px"
+            isLoading={ isLoading }
           />
         ),
       } : undefined,
@@ -111,13 +113,13 @@ export default function useContractDetailsTabs({ data, isPlaceholderData, addres
           <RawDataSnippet
             data={ JSON.stringify(data.abi, undefined, 4) }
             title="Contract ABI"
-            textareaMaxHeight="200px"
-            isLoading={ isPlaceholderData }
+            textareaMaxHeight="600px"
+            isLoading={ isLoading }
           />
         ),
       } : undefined,
 
-      data?.creation_bytecode || data?.deployed_bytecode ? {
+      (data?.creation_bytecode || data?.deployed_bytecode) ? {
         id: 'contract_bytecode' as const,
         title: 'ByteCode',
         component: (
@@ -133,8 +135,8 @@ export default function useContractDetailsTabs({ data, isPlaceholderData, addres
                     Displaying the init data provided of the creating transaction.
                   </Alert>
                 ) : null }
-                textareaMaxHeight="200px"
-                isLoading={ isPlaceholderData }
+                textareaMaxHeight="300px"
+                isLoading={ isLoading }
               />
             ) }
             { data?.deployed_bytecode && (
@@ -142,25 +144,13 @@ export default function useContractDetailsTabs({ data, isPlaceholderData, addres
                 data={ data.deployed_bytecode }
                 title="Deployed ByteCode"
                 rightSlot={ !data?.creation_bytecode && canBeVerified ? verificationButton : null }
-                textareaMaxHeight="200px"
-                isLoading={ isPlaceholderData }
+                textareaMaxHeight="300px"
+                isLoading={ isLoading }
               />
             ) }
           </Flex>
         ),
       } : undefined,
     ].filter(Boolean);
-  }, [
-    addressHash,
-    constructorArgs,
-    data?.abi,
-    data?.compiler_settings,
-    data?.creation_bytecode,
-    data?.deployed_bytecode,
-    data?.is_self_destructed,
-    data?.source_code,
-    data?.is_partially_verified,
-    isPlaceholderData,
-    canBeVerified,
-  ]);
+  }, [ isLoading, addressHash, data, constructorArgs, sourceAddress, canBeVerified ]);
 }

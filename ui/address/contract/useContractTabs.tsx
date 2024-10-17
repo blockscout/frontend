@@ -92,10 +92,10 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
   return React.useMemo(() => {
     return {
       tabs: [
-        {
+        data?.hash && {
           id: 'contract_code' as const,
           title: 'Code',
-          component: <ContractDetails contractQuery={ contractQuery } channel={ channel } addressHash={ data?.hash }/>,
+          component: <ContractDetails mainContractQuery={ contractQuery } channel={ channel } addressHash={ data.hash }/>,
           subTabs: CONTRACT_DETAILS_TAB_IDS as unknown as Array<string>,
         },
         methods.read.length > 0 && {

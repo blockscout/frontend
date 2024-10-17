@@ -14,13 +14,27 @@ interface Props extends ThemingProps<'Tabs'> {
   tabListProps?: ChakraProps | (({ isSticky, activeTabIndex }: { isSticky: boolean; activeTabIndex: number }) => ChakraProps);
   rightSlot?: React.ReactNode;
   rightSlotProps?: ChakraProps;
+  leftSlot?: React.ReactNode;
+  leftSlotProps?: ChakraProps;
   stickyEnabled?: boolean;
   className?: string;
   onTabChange?: (index: number) => void;
   isLoading?: boolean;
 }
 
-const RoutedTabs = ({ tabs, tabListProps, rightSlot, rightSlotProps, stickyEnabled, className, onTabChange, isLoading, ...themeProps }: Props) => {
+const RoutedTabs = ({
+  tabs,
+  tabListProps,
+  rightSlot,
+  rightSlotProps,
+  leftSlot,
+  leftSlotProps,
+  stickyEnabled,
+  className,
+  onTabChange,
+  isLoading,
+  ...themeProps
+}: Props) => {
   const router = useRouter();
   const tabIndex = useTabIndexFromQuery(tabs);
   const tabsRef = useRef<HTMLDivElement>(null);
@@ -59,6 +73,8 @@ const RoutedTabs = ({ tabs, tabListProps, rightSlot, rightSlotProps, stickyEnabl
     <TabsWithScroll
       tabs={ tabs }
       tabListProps={ tabListProps }
+      leftSlot={ leftSlot }
+      leftSlotProps={ leftSlotProps }
       rightSlot={ rightSlot }
       rightSlotProps={ rightSlotProps }
       stickyEnabled={ stickyEnabled }

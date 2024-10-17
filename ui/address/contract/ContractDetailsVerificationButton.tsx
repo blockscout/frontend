@@ -4,13 +4,13 @@ import React from 'react';
 import { route } from 'nextjs-routes';
 
 interface Props {
-  isPlaceholderData: boolean;
-  addressHash: string | undefined;
+  isLoading: boolean;
+  addressHash: string;
   isPartiallyVerified: boolean;
 }
 
-const ContractDetailsVerificationButton = ({ isPlaceholderData, addressHash, isPartiallyVerified }: Props) => {
-  if (isPlaceholderData) {
+const ContractDetailsVerificationButton = ({ isLoading, addressHash, isPartiallyVerified }: Props) => {
+  if (isLoading) {
     return (
       <Skeleton
         w="130px"
@@ -29,7 +29,7 @@ const ContractDetailsVerificationButton = ({ isPlaceholderData, addressHash, isP
       ml={ isPartiallyVerified ? 0 : 'auto' }
       flexShrink={ 0 }
       as="a"
-      href={ route({ pathname: '/address/[hash]/contract-verification', query: { hash: addressHash || '' } }) }
+      href={ route({ pathname: '/address/[hash]/contract-verification', query: { hash: addressHash } }) }
     >
       Verify & publish
     </Button>

@@ -46,6 +46,7 @@ export const CONTRACT_CODE_VERIFIED = {
     remappings: [],
   },
   compiler_version: 'v0.8.7+commit.e28d00a7',
+  constructor_args: '0000000000000000000000005c7bcd6e7de5423a257d81b442095a1a6ced35c5000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
   creation_bytecode: '0x6080604052348',
   deployed_bytecode: '0x60806040',
   evm_version: 'london',

@@ -1,4 +1,4 @@
-import { Flex, Select, Skeleton } from '@chakra-ui/react';
+import { chakra, Flex, Select, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
@@ -13,6 +13,7 @@ export interface Item {
 }
 
 interface Props {
+  className?: string;
   label: string;
   selectedItem: Item;
   onItemSelect: (item: Item) => void;
@@ -20,7 +21,7 @@ interface Props {
   isLoading?: boolean;
 }
 
-const ContractSourceAddressSelector = ({ selectedItem, onItemSelect, items, isLoading, label }: Props) => {
+const ContractSourceAddressSelector = ({ className, selectedItem, onItemSelect, items, isLoading, label }: Props) => {
 
   const handleItemSelect = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
     const nextOption = items.find(({ address }) => address === event.target.value);
@@ -30,7 +31,7 @@ const ContractSourceAddressSelector = ({ selectedItem, onItemSelect, items, isLo
   }, [ items, onItemSelect ]);
 
   if (isLoading) {
-    return <Skeleton mb={ 6 } h={ 6 } w={{ base: '300px', lg: '500px' }}/>;
+    return <Skeleton h={ 6 } w={{ base: '300px', lg: '500px' }} className={ className }/>;
   }
 
   if (items.length === 0) {
@@ -39,8 +40,8 @@ const ContractSourceAddressSelector = ({ selectedItem, onItemSelect, items, isLo
 
   if (items.length === 1) {
     return (
-      <Flex mb={ 6 } flexWrap="wrap" columnGap={ 3 } rowGap={ 2 }>
-        <span>{ label }</span>
+      <Flex columnGap={ 3 } rowGap={ 2 } className={ className }>
+        <chakra.span fontWeight={ 500 } fontSize="sm">{ label }</chakra.span>
         <AddressEntity
           address={{ hash: items[0].address, is_contract: true, is_verified: true }}
         />
@@ -49,8 +50,8 @@ const ContractSourceAddressSelector = ({ selectedItem, onItemSelect, items, isLo
   }
 
   return (
-    <Flex mb={ 6 } flexWrap="wrap" columnGap={ 3 } rowGap={ 2 } alignItems="center">
-      <span>{ label }</span>
+    <Flex columnGap={ 3 } rowGap={ 2 } alignItems="center" className={ className }>
+      <chakra.span fontWeight={ 500 } fontSize="sm">{ label }</chakra.span>
       <Select
         size="xs"
         value={ selectedItem.address }
@@ -76,4 +77,4 @@ const ContractSourceAddressSelector = ({ selectedItem, onItemSelect, items, isLo
   );
 };
 
-export default React.memo(ContractSourceAddressSelector);
+export default React.memo(chakra(ContractSourceAddressSelector));

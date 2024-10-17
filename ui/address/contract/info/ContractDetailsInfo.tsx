@@ -16,11 +16,11 @@ const rollupFeature = config.features.rollup;
 
 interface Props {
   data: SmartContract ;
-  isPlaceholderData: boolean;
-  addressHash: string | undefined;
+  isLoading: boolean;
+  addressHash: string;
 }
 
-const ContractDetailsInfo = ({ data, isPlaceholderData, addressHash }: Props) => {
+const ContractDetailsInfo = ({ data, isLoading, addressHash }: Props) => {
   const contractNameWithCertifiedIcon = data ? (
     <Flex alignItems="center">
       { data.name }
@@ -51,21 +51,21 @@ const ContractDetailsInfo = ({ data, isPlaceholderData, addressHash }: Props) =>
         <ContractDetailsInfoItem
           label="Contract name"
           content={ contractNameWithCertifiedIcon }
-          isLoading={ isPlaceholderData }
+          isLoading={ isLoading }
         />
       ) }
       { data.compiler_version && (
         <ContractDetailsInfoItem
           label="Compiler version"
           content={ data.compiler_version }
-          isLoading={ isPlaceholderData }
+          isLoading={ isLoading }
         />
       ) }
       { data.zk_compiler_version && (
         <ContractDetailsInfoItem
           label="ZK compiler version"
           content={ data.zk_compiler_version }
-          isLoading={ isPlaceholderData }
+          isLoading={ isLoading }
         />
       ) }
       { data.evm_version && (
@@ -73,7 +73,7 @@ const ContractDetailsInfo = ({ data, isPlaceholderData, addressHash }: Props) =>
           label="EVM version"
           content={ data.evm_version }
           textTransform="capitalize"
-          isLoading={ isPlaceholderData }
+          isLoading={ isLoading }
         />
       ) }
       { licenseLink && (
@@ -81,21 +81,21 @@ const ContractDetailsInfo = ({ data, isPlaceholderData, addressHash }: Props) =>
           label="License"
           content={ licenseLink }
           hint="License type is entered manually during verification. The initial source code may contain a different license type than the one displayed."
-          isLoading={ isPlaceholderData }
+          isLoading={ isLoading }
         />
       ) }
       { typeof data.optimization_enabled === 'boolean' && (
         <ContractDetailsInfoItem
           label="Optimization enabled"
           content={ data.optimization_enabled ? 'true' : 'false' }
-          isLoading={ isPlaceholderData }
+          isLoading={ isLoading }
         />
       ) }
       { data.optimization_runs !== null && (
         <ContractDetailsInfoItem
           label={ rollupFeature.isEnabled && rollupFeature.type === 'zkSync' ? 'Optimization mode' : 'Optimization runs' }
           content={ String(data.optimization_runs) }
-          isLoading={ isPlaceholderData }
+          isLoading={ isLoading }
         />
       ) }
       { data.verified_at && (
@@ -103,7 +103,7 @@ const ContractDetailsInfo = ({ data, isPlaceholderData, addressHash }: Props) =>
           label="Verified at"
           content={ dayjs(data.verified_at).format('llll') }
           wordBreak="break-word"
-          isLoading={ isPlaceholderData }
+          isLoading={ isLoading }
         />
       ) }
       { data.file_path && (
@@ -111,14 +111,14 @@ const ContractDetailsInfo = ({ data, isPlaceholderData, addressHash }: Props) =>
           label="Contract file path"
           content={ data.file_path }
           wordBreak="break-word"
-          isLoading={ isPlaceholderData }
+          isLoading={ isLoading }
         />
       ) }
       { config.UI.hasContractAuditReports && (
         <ContractDetailsInfoItem
           label="Security audit"
           content={ <ContractSecurityAudits addressHash={ addressHash }/> }
-          isLoading={ isPlaceholderData }
+          isLoading={ isLoading }
         />
       ) }
     </Grid>

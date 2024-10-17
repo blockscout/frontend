@@ -18,12 +18,12 @@ import ContractDetailsAlertVerificationSource from './ContractDetailsAlertVerifi
 
 interface Props {
   data: SmartContract | undefined;
-  isPlaceholderData: boolean;
-  addressHash: string | undefined;
+  isLoading: boolean;
+  addressHash: string;
   channel: Channel | undefined;
 }
 
-const ContractDetailsAlerts = ({ data, isPlaceholderData, addressHash, channel }: Props) => {
+const ContractDetailsAlerts = ({ data, isLoading, addressHash, channel }: Props) => {
   const [ isChangedBytecodeSocket, setIsChangedBytecodeSocket ] = React.useState<boolean>();
 
   const handleChangedBytecodeMessage: SocketMessage.AddressChangedBytecode['handler'] = React.useCallback(() => {
@@ -47,13 +47,13 @@ const ContractDetailsAlerts = ({ data, isPlaceholderData, addressHash, channel }
         </Box>
       ) }
       { data?.is_verified && (
-        <Skeleton isLoaded={ !isPlaceholderData }>
+        <Skeleton isLoaded={ !isLoading }>
           <Alert status="success" flexWrap="wrap" rowGap={ 3 } columnGap={ 5 }>
             <span>Contract Source Code Verified ({ data.is_partially_verified ? 'Partial' : 'Exact' } Match)</span>
             {
               data.is_partially_verified ? (
                 <ContractDetailsVerificationButton
-                  isPlaceholderData={ isPlaceholderData }
+                  isLoading={ isLoading }
                   addressHash={ addressHash }
                   isPartiallyVerified
                 />
@@ -78,7 +78,7 @@ const ContractDetailsAlerts = ({ data, isPlaceholderData, addressHash, channel }
             fontWeight="500"
           />
           <chakra.span mt={ 1 }>All functions displayed below are from ABI of that contract. In order to verify current contract, proceed with </chakra.span>
-          <LinkInternal href={ route({ pathname: '/address/[hash]/contract-verification', query: { hash: addressHash || '' } }) }>
+          <LinkInternal href={ route({ pathname: '/address/[hash]/contract-verification', query: { hash: addressHash } }) }>
               Verify & Publish
           </LinkInternal>
           <span> page</span>

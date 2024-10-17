@@ -22,6 +22,8 @@ export interface Props extends ThemingProps<'Tabs'> {
   tabListProps?: ChakraProps | (({ isSticky, activeTabIndex }: { isSticky: boolean; activeTabIndex: number }) => ChakraProps);
   rightSlot?: React.ReactNode;
   rightSlotProps?: ChakraProps;
+  leftSlot?: React.ReactNode;
+  leftSlotProps?: ChakraProps;
   stickyEnabled?: boolean;
   onTabChange?: (index: number) => void;
   defaultTabIndex?: number;
@@ -35,6 +37,8 @@ const TabsWithScroll = ({
   tabListProps,
   rightSlot,
   rightSlotProps,
+  leftSlot,
+  leftSlotProps,
   stickyEnabled,
   onTabChange,
   defaultTabIndex,
@@ -102,6 +106,8 @@ const TabsWithScroll = ({
         key={ isLoading + '_' + screenWidth + '_' + tabsList.map((tab) => tab.id).join(':') }
         tabs={ tabs }
         tabListProps={ tabListProps }
+        leftSlot={ leftSlot }
+        leftSlotProps={ leftSlotProps }
         rightSlot={ rightSlot }
         rightSlotProps={ rightSlotProps }
         stickyEnabled={ stickyEnabled }
