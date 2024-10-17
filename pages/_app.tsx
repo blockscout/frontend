@@ -43,7 +43,6 @@ const ERROR_SCREEN_STYLES: ChakraProps = {
 };
 
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
-
   useLoadFeatures();
   useNotifyOnNavigation();
 
@@ -55,11 +54,14 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   const getLayout = Component.getLayout ?? ((page) => <Layout>{ page }</Layout>);
   const isUnderMaintenance = true;
+
+  if (isUnderMaintenance) {
+    return <div>Under Maintenance</div>;
+  }
+
   return (
-    <>
-      { isUnderMaintenance ? <div>Under Maintenance</div>: (
-      <ChakraProvider cookies={ pageProps.cookies }>
-        <AppErrorBoundary
+    <ChakraProvider cookies={ pageProps.cookies }>
+      <AppErrorBoundary
         { ...ERROR_SCREEN_STYLES }
         onError={ handleError }
       >
@@ -82,8 +84,6 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         </Web3ModalProvider>
       </AppErrorBoundary>
     </ChakraProvider>
-    )}
-    </>
   );
 }
 
