@@ -15,7 +15,7 @@ type Props = {
 
 const OptimisticL2DisputeGamesTable = ({ items, top, isLoading }: Props) => {
   return (
-    <Table variant="simple" size="sm" style={{ tableLayout: 'auto' }} minW="950px">
+    <Table style={{ tableLayout: 'auto' }} minW="950px">
       <Thead top={ top }>
         <Tr>
           <Th>Index</Th>

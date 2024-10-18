@@ -15,7 +15,7 @@ import AddressEpochRewardsTableItem from './AddressEpochRewardsTableItem';
 
 const AddressEpochRewardsTable = ({ items, isLoading, top }: Props) => {
   return (
-    <Table variant="simple" size="sm" minW="1000px" style={{ tableLayout: 'auto' }}>
+    <Table minW="1000px" style={{ tableLayout: 'auto' }}>
       <Thead top={ top }>
         <Tr>
           <Th>Block</Th>

@@ -15,7 +15,7 @@ type Props = {
 
 const ArbitrumL2TxnBatchesTable = ({ items, top, isLoading }: Props) => {
   return (
-    <Table variant="simple" size="sm" minW="1000px" style={{ tableLayout: 'auto' }}>
+    <Table minW="1000px" style={{ tableLayout: 'auto' }}>
       <Thead top={ top }>
         <Tr>
           <Th>Batch #</Th>

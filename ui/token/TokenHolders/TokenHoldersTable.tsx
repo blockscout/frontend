@@ -15,7 +15,7 @@ interface Props {
 
 const TokenHoldersTable = ({ data, token, top, isLoading }: Props) => {
   return (
-    <Table variant="simple" size="sm" layout="auto">
+    <Table layout="auto">
       <Thead top={ top }>
         <Tr>
           <Th>Holder</Th>

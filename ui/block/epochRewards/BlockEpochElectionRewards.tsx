@@ -16,7 +16,7 @@ const BlockEpochElectionRewards = ({ data, isLoading }: Props) => {
     <Box mt={ 8 }>
       <Heading as="h4" size="sm" mb={ 3 }>Election rewards</Heading>
       <Hide below="lg" ssr={ false }>
-        <Table variant="simple" size="sm" style={{ tableLayout: 'auto' }}>
+        <Table style={{ tableLayout: 'auto' }}>
           <Thead>
             <Tr>
               <Th width="24px"/>
