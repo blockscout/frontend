@@ -62,7 +62,7 @@ const data: SmartContractMethod = {
     // LITERALS
     { internalType: 'bytes32', name: 'fulfillerConduitKey', type: 'bytes32' },
     { internalType: 'address', name: 'recipient', type: 'address' },
-    { internalType: 'uint256', name: 'maximumFulfilled', type: 'uint256' },
+    { internalType: 'uint256', name: 'startTime', type: 'uint256' },
     { internalType: 'int8[]', name: 'criteriaProof', type: 'int8[]' },
   ],
   method_id: '87201b41',

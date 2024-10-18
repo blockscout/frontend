@@ -8,9 +8,9 @@ import type { AddressImplementation } from 'types/api/addressParams';
 import useApiQuery from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
+import ContractSourceAddressSelector from '../ContractSourceAddressSelector';
 import ContractConnectWallet from './ContractConnectWallet';
 import ContractMethods from './ContractMethods';
-import ContractSourceAddressSelector from './ContractSourceAddressSelector';
 import { enrichWithMethodId, isReadMethod, isWriteMethod } from './utils';
 
 interface Props {
@@ -44,6 +44,7 @@ const ContractMethodsProxy = ({ type, implementations, isLoading: isInitialLoadi
         onItemSelect={ setSelectedItem }
         isLoading={ isInitialLoading }
         label="Implementation address"
+        mb={ 6 }
       />
       <ContractMethods
         key={ selectedItem.address }

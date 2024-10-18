@@ -15,6 +15,7 @@ test.use({ viewport: { width: 150, height: 350 } });
   { variant: 'subtle', colorScheme: 'gray', states: [ 'default', 'hovered' ], withDarkMode: true },
   { variant: 'hero', states: [ 'default', 'hovered' ], withDarkMode: true },
   { variant: 'header', states: [ 'default', 'hovered', 'selected' ], withDarkMode: true },
+  { variant: 'radio_group', states: [ 'default', 'hovered', 'selected' ], withDarkMode: true },
 ].forEach(({ variant, colorScheme, withDarkMode, states }) => {
   test.describe(`variant ${ variant }${ colorScheme ? ` with ${ colorScheme } color scheme` : '' }${ withDarkMode ? ' +@dark-mode' : '' }`, () => {
     test('', async({ render }) => {

@@ -2,8 +2,8 @@ import { useRouter } from 'next/router';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import useContractTabs from 'lib/hooks/useContractTabs';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import useContractTabs from 'ui/address/contract/useContractTabs';
 
 import AddressContract from './AddressContract';
 
