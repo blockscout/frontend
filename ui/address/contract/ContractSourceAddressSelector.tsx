@@ -40,7 +40,7 @@ const ContractSourceAddressSelector = ({ className, selectedItem, onItemSelect, 
 
   if (items.length === 1) {
     return (
-      <Flex columnGap={ 3 } rowGap={ 2 } className={ className }>
+      <Flex flexWrap="wrap" columnGap={ 3 } rowGap={ 2 } className={ className }>
         <chakra.span fontWeight={ 500 } fontSize="sm">{ label }</chakra.span>
         <AddressEntity
           address={{ hash: items[0].address, is_contract: true, is_verified: true }}

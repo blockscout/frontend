@@ -137,8 +137,7 @@ test('non verified', async({ render, mockApiResponse }) => {
   await expect(component).toHaveScreenshot();
 });
 
-// eslint-disable-next-line playwright/no-focused-test
-test.only('implementation info', async({ render, mockApiResponse }) => {
+test('implementation info', async({ render, mockApiResponse }) => {
   const hooksConfig = {
     router: {
       query: { hash: addressMock.contract.hash, tab: 'contract_compiler' },
