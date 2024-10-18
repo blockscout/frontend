@@ -69,6 +69,17 @@ const abiItem: AbiFunction = {
       name: 'internalProposals',
       type: 'tuple[]',
     },
+
+    // ARRAY OF TUPLES WITHOUT NAMES
+    {
+      components: [
+        { type: 'address' },
+        { type: 'uint256' },
+      ],
+      internalType: 'struct SharingPercentage[]',
+      name: '_sharingPercentages',
+      type: 'tuple[]',
+    },
   ],
 };
 
@@ -114,6 +125,10 @@ const result = [
         },
       },
     },
+  ],
+  [
+    [ '0xfD36176C63dA52E783a347DE3544B0b44C7054a6', 0 ],
+    [ '0xC9534cB913150aD3e98D792857689B55e2404212', 3500 ],
   ],
 ];
 
