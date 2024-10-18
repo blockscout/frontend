@@ -48,12 +48,12 @@ export default function useWeb3Wallet({ source }: Params) {
 
   const isConnected = isClientLoaded && !isDisconnected && address !== undefined;
 
-  return {
+  return React.useMemo(() => ({
     connect: handleConnect,
     disconnect: handleDisconnect,
     isOpen: isOpening || isOpen,
     isConnected,
     address,
     openModal,
-  };
+  }), [ handleConnect, handleDisconnect, isOpen, isOpening, isConnected, address, openModal ]);
 }

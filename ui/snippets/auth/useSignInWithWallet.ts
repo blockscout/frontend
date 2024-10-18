@@ -1,4 +1,3 @@
-import { useWeb3Modal } from '@web3modal/wagmi/react';
 import React from 'react';
 import { useSignMessage } from 'wagmi';
 
@@ -8,9 +7,10 @@ import config from 'configs/app';
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/errors/getErrorMessage';
 import getErrorObj from 'lib/errors/getErrorObj';
+import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import useToast from 'lib/hooks/useToast';
-import * as mixpanel from 'lib/mixpanel';
-import useAccount from 'lib/web3/useAccount';
+import type * as mixpanel from 'lib/mixpanel';
+import useWeb3Wallet from 'lib/web3/useWallet';
 
 interface Props {
   onSuccess?: ({ address, profile }: { address: string; profile: UserInfo }) => void;
@@ -25,8 +25,7 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth }: P
 
   const apiFetch = useApiFetch();
   const toast = useToast();
-  const web3Modal = useWeb3Modal();
-  const { isConnected, address } = useAccount();
+  const web3Wallet = useWeb3Wallet({ source });
   const { signMessageAsync } = useSignMessage();
 
   const proceedToAuth = React.useCallback(async(address: string) => {
@@ -46,12 +45,13 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth }: P
       onSuccess?.({ address, profile: response });
     } catch (error) {
       const errorObj = getErrorObj(error);
+      const apiErrorMessage = getErrorObjPayload<{ message: string }>(error)?.message;
       const shortMessage = errorObj && 'shortMessage' in errorObj && typeof errorObj.shortMessage === 'string' ? errorObj.shortMessage : undefined;
       onError?.();
       toast({
         status: 'error',
         title: 'Error',
-        description: shortMessage || getErrorMessage(error) || 'Something went wrong',
+        description: apiErrorMessage || shortMessage || getErrorMessage(error) || 'Something went wrong',
       });
     } finally {
       setIsPending(false);
@@ -60,22 +60,20 @@ function useSignInWithWallet({ onSuccess, onError, source = 'Login', isAuth }: P
 
   const start = React.useCallback(() => {
     setIsPending(true);
-    if (address) {
-      proceedToAuth(address);
+    if (web3Wallet.address) {
+      proceedToAuth(web3Wallet.address);
     } else {
       isConnectingWalletRef.current = true;
-      web3Modal.open();
-      mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Source: source, Status: 'Started' });
+      web3Wallet.openModal();
     }
-  }, [ address, proceedToAuth, source, web3Modal ]);
+  }, [ proceedToAuth, web3Wallet ]);
 
   React.useEffect(() => {
-    if (address && isConnectingWalletRef.current) {
+    if (web3Wallet.address && isConnectingWalletRef.current) {
       isConnectingWalletRef.current = false;
-      proceedToAuth(address);
-      mixpanel.logEvent(mixpanel.EventTypes.WALLET_CONNECT, { Source: source, Status: 'Connected' });
+      proceedToAuth(web3Wallet.address);
     }
-  }, [ address, isConnected, proceedToAuth, source ]);
+  }, [ proceedToAuth, web3Wallet.address ]);
 
   return React.useMemo(() => ({ start, isPending }), [ start, isPending ]);
 }
