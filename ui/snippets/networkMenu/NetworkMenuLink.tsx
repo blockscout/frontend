@@ -17,6 +17,13 @@ const NetworkMenuLink = ({ title, icon, isActive, isMobile, url, invertIconInDar
   const darkModeFilter = { filter: 'brightness(0) invert(1)' };
   const style = useColorModeValue({}, invertIconInDarkMode ? darkModeFilter : {});
 
+  // Have to add click handler because in some cases networks can share the same main domain
+  // and we need to avoid the client-side navigation for those cases
+  const onClick = React.useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    window.location.href = url;
+  }, [ url ]);
+
   const iconEl = icon ? (
     <Image w="30px" h="30px" src={ icon } alt={ `${ title } network icon` } style={ style }/>
   ) : (
@@ -32,6 +39,7 @@ const NetworkMenuLink = ({ title, icon, isActive, isMobile, url, invertIconInDar
       <Flex
         as="a"
         href={ url }
+        onClick={ onClick }
         px={ 3 }
         py="9px"
         alignItems="center"
