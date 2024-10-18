@@ -1,4 +1,4 @@
-import { chakra, Flex, Tooltip, Skeleton } from '@chakra-ui/react';
+import { chakra, Flex, Tooltip, Skeleton, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import type { MarketplaceAppOverview, MarketplaceAppSecurityReport, ContractListTypes } from 'types/client/marketplace';
@@ -12,8 +12,8 @@ import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
-import ProfileMenuDesktop from 'ui/snippets/profileMenu/ProfileMenuDesktop';
-import WalletMenuDesktop from 'ui/snippets/walletMenu/WalletMenuDesktop';
+import UserProfileDesktop from 'ui/snippets/user/profile/UserProfileDesktop';
+import UserWalletDesktop from 'ui/snippets/user/wallet/UserWalletDesktop';
 
 import AppSecurityReport from './AppSecurityReport';
 import ContractListModal from './ContractListModal';
@@ -98,10 +98,12 @@ const MarketplaceAppTopBar = ({ appId, data, isLoading, securityReport }: Props)
           source="App page"
         />
         { !isMobile && (
-          <Flex flex="1" justifyContent="flex-end">
-            { config.features.account.isEnabled && <ProfileMenuDesktop boxSize="32px" fallbackIconSize={ 16 }/> }
-            { config.features.blockchainInteraction.isEnabled && <WalletMenuDesktop size="sm"/> }
-          </Flex>
+          <Box ml="auto">
+            {
+              (config.features.account.isEnabled && <UserProfileDesktop buttonSize="sm"/>) ||
+              (config.features.blockchainInteraction.isEnabled && <UserWalletDesktop buttonSize="sm"/>)
+            }
+          </Box>
         ) }
       </Flex>
       { contractListType && (

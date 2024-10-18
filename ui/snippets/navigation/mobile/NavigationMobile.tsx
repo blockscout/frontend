@@ -2,9 +2,9 @@ import { Box, Flex, Text, VStack, useColorModeValue } from '@chakra-ui/react';
 import { animate, motion, useMotionValue } from 'framer-motion';
 import React, { useCallback } from 'react';
 
-import useHasAccount from 'lib/hooks/useHasAccount';
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
 import IconSvg from 'ui/shared/IconSvg';
+import useIsAuth from 'ui/snippets/auth/useIsAuth';
 
 import NavLink from '../vertical/NavLink';
 import NavLinkGroup from './NavLinkGroup';
@@ -35,7 +35,7 @@ const NavigationMobile = ({ onNavLinkClick, isMarketplaceAppPage }: Props) => {
     animate(subX, DRAWER_WIDTH, { ease: 'easeInOut', onComplete: () => setOpenedGroupIndex(-1) });
   }, [ mainX, subX ]);
 
-  const hasAccount = useHasAccount();
+  const isAuth = useIsAuth();
 
   const iconColor = useColorModeValue('blue.600', 'blue.300');
 
@@ -73,7 +73,7 @@ const NavigationMobile = ({ onNavLinkClick, isMarketplaceAppPage }: Props) => {
             }) }
           </VStack>
         </Box>
-        { hasAccount && (
+        { isAuth && (
           <Box
             as="nav"
             mt={ 3 }

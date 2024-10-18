@@ -3,31 +3,31 @@ import React from 'react';
 
 import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import useWeb3Wallet from 'lib/web3/useWallet';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import useWallet from 'ui/snippets/walletMenu/useWallet';
 
 interface Props {
   isLoading?: boolean;
 }
 
 const ContractConnectWallet = ({ isLoading }: Props) => {
-  const { isModalOpening, isModalOpen, connect, disconnect, address, isWalletConnected } = useWallet({ source: 'Smart contracts' });
+  const web3Wallet = useWeb3Wallet({ source: 'Smart contracts' });
   const isMobile = useIsMobile();
 
   const content = (() => {
-    if (!isWalletConnected) {
+    if (!web3Wallet.isConnected) {
       return (
         <>
           <span>Disconnected</span>
           <Button
             ml={ 3 }
-            onClick={ connect }
+            onClick={ web3Wallet.connect }
             size="sm"
             variant="outline"
-            isLoading={ isModalOpening || isModalOpen }
+            isLoading={ web3Wallet.isOpen }
             loadingText="Connect wallet"
           >
-              Connect wallet
+            Connect wallet
           </Button>
         </>
       );
@@ -38,20 +38,20 @@ const ContractConnectWallet = ({ isLoading }: Props) => {
         <Flex alignItems="center">
           <span>Connected to </span>
           <AddressEntity
-            address={{ hash: address }}
+            address={{ hash: web3Wallet.address || '' }}
             truncation={ isMobile ? 'constant' : 'dynamic' }
             fontWeight={ 600 }
             ml={ 2 }
           />
         </Flex>
-        <Button onClick={ disconnect } size="sm" variant="outline">Disconnect</Button>
+        <Button onClick={ web3Wallet.disconnect } size="sm" variant="outline">Disconnect</Button>
       </Flex>
     );
   })();
 
   return (
     <Skeleton isLoaded={ !isLoading } mb={ 6 }>
-      <Alert status={ address ? 'success' : 'warning' }>
+      <Alert status={ web3Wallet.address ? 'success' : 'warning' }>
         { content }
       </Alert>
     </Skeleton>

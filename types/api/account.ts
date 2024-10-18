@@ -71,6 +71,7 @@ export interface UserInfo {
   name?: string;
   nickname?: string;
   email: string | null;
+  address_hash: string | null;
   avatar?: string;
 }
 

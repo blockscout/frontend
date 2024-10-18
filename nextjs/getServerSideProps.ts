@@ -6,9 +6,9 @@ import type { RollupType } from 'types/client/rollup';
 import type { Route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import isNeedProxy from 'lib/api/isNeedProxy';
 const rollupFeature = config.features.rollup;
 const adBannerFeature = config.features.adsBanner;
+import isNeedProxy from 'lib/api/isNeedProxy';
 import type * as metadata from 'lib/metadata';
 
 export interface Props<Pathname extends Route['pathname'] = never> {
