@@ -21,7 +21,7 @@ interface Props {
 
 const ApiKeyTable = ({ data, isLoading, onDeleteClick, onEditClick, limit }: Props) => {
   return (
-    <Table variant="simple" minWidth="600px">
+    <Table minWidth="600px">
       <Thead>
         <Tr>
           <Th>{ `API key token (limit ${ limit } keys)` }</Th>

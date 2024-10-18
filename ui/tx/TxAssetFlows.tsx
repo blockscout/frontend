@@ -82,7 +82,7 @@ export default function TxAssetFlows(props: FlowViewProps) {
       </Hide>
 
       <Show above="lg">
-        <Table variant="simple" size="sm">
+        <Table>
           <TheadSticky top={ 75 }>
             <Tr>
               <Th>

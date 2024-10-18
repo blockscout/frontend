@@ -40,7 +40,7 @@ const BlocksTable = ({ data, isLoading, top, page, showSocketInfo, socketInfoNum
 
   return (
     <AddressHighlightProvider>
-      <Table variant="simple" minWidth="1040px" size="md" fontWeight={ 500 }>
+      <Table minWidth="1040px" fontWeight={ 500 }>
         <Thead top={ top }>
           <Tr>
             <Th width="150px">Block</Th>

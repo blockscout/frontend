@@ -22,7 +22,7 @@ const NameDomainHistoryTable = ({ history, domain, isLoading, sort, onSortToggle
   const sortIconTransform = sort?.includes('asc') ? 'rotate(-90deg)' : 'rotate(90deg)';
 
   return (
-    <Table variant="simple" size="sm">
+    <Table>
       <Thead top={ 0 }>
         <Tr>
           <Th width="25%">Txn hash</Th>

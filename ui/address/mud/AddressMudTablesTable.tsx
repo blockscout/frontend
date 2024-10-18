@@ -18,7 +18,7 @@ type Props = {
 //sorry for the naming
 const AddressMudTablesTable = ({ items, isLoading, top, scrollRef, hash }: Props) => {
   return (
-    <Table variant="simple" size="sm" style={{ tableLayout: 'auto' }}>
+    <Table style={{ tableLayout: 'auto' }}>
       <Thead top={ top }>
         <Tr>
           <Th width="24px"></Th>

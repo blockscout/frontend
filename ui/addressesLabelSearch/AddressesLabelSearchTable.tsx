@@ -16,7 +16,7 @@ interface Props {
 
 const AddressesLabelSearchTable = ({ items, top, isLoading }: Props) => {
   return (
-    <Table variant="simple" size="sm">
+    <Table>
       <Thead top={ top }>
         <Tr>
           <Th width="70%">Address</Th>
