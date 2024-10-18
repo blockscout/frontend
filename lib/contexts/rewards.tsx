@@ -1,5 +1,6 @@
 import { useBoolean } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { createContext, useContext, useEffect, useMemo, useCallback } from 'react';
 import { useAccount, useSignMessage } from 'wagmi';
@@ -15,11 +16,13 @@ import type {
 import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
-import useApiQuery from 'lib/api/useApiQuery';
+import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
 import * as cookies from 'lib/cookies';
+import decodeJWT from 'lib/decodeJWT';
 import useToast from 'lib/hooks/useToast';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import removeQueryParam from 'lib/router/removeQueryParam';
+import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
 type TRewardsContext = {
   balancesQuery: UseQueryResult<RewardsUserBalancesResponse, ResourceError<unknown>>;
@@ -27,6 +30,7 @@ type TRewardsContext = {
   referralsQuery: UseQueryResult<RewardsUserReferralsResponse, ResourceError<unknown>>;
   rewardsConfigQuery: UseQueryResult<RewardsConfigResponse, ResourceError<unknown>>;
   apiToken: string | undefined;
+  isInitialized: boolean;
   isLoginModalOpen: boolean;
   openLoginModal: () => void;
   closeLoginModal: () => void;
@@ -43,6 +47,7 @@ const RewardsContext = createContext<TRewardsContext>({
   referralsQuery: createDefaultQueryResult<RewardsUserReferralsResponse, ResourceError<unknown>>(),
   rewardsConfigQuery: createDefaultQueryResult<RewardsConfigResponse, ResourceError<unknown>>(),
   apiToken: undefined,
+  isInitialized: false,
   isLoginModalOpen: false,
   openLoginModal: () => {},
   closeLoginModal: () => {},
@@ -50,6 +55,7 @@ const RewardsContext = createContext<TRewardsContext>({
   claim: async() => {},
 });
 
+// Message to sign for the rewards program
 function getMessageToSign(address: string, nonce: string, isLogin?: boolean, refCode?: string) {
   const signInText = 'Sign-In for the Blockscout points program.';
   const signUpText = 'Sign-Up for the Blockscout points program. I accept Terms of Service: https://points.blockscout.com/tos. I love capybaras.';
@@ -70,47 +76,82 @@ function getMessageToSign(address: string, nonce: string, isLogin?: boolean, ref
   ].join('\n');
 }
 
+// Get the registered address from the JWT token
+function getRegisteredAddress(token: string) {
+  const decodedToken = decodeJWT(token);
+  return decodedToken?.payload.sub;
+}
+
 type Props = {
   children: React.ReactNode;
 }
 
 export function RewardsContextProvider({ children }: Props) {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const apiFetch = useApiFetch();
   const toast = useToast();
   const { address } = useAccount();
   const { signMessageAsync } = useSignMessage();
+  const profileQuery = useProfileQuery();
+
   const [ isLoginModalOpen, setIsLoginModalOpen ] = useBoolean(false);
   const [ isInitialized, setIsInitialized ] = useBoolean(false);
   const [ apiToken, setApiToken ] = React.useState<string | undefined>();
 
+  // Initialize state with the API token from cookies
   useEffect(() => {
-    const token = cookies.get(cookies.NAMES.REWARDS_API_TOKEN);
-    if (token) {
-      setApiToken(token);
+    if (!profileQuery.isLoading) {
+      const token = cookies.get(cookies.NAMES.REWARDS_API_TOKEN);
+      const registeredAddress = getRegisteredAddress(token || '');
+      if (registeredAddress === profileQuery.data?.address_hash) {
+        setApiToken(token);
+      }
+      setIsInitialized.on();
     }
-    setIsInitialized.on();
-  }, [ setIsInitialized ]);
+  }, [ setIsInitialized, profileQuery ]);
 
-  const queryOptions = { enabled: Boolean(apiToken) && config.features.rewards.isEnabled };
-  const fetchParams = { headers: { Authorization: `Bearer ${ apiToken }` } };
+  // Save the API token to cookies and state
+  const saveApiToken = useCallback((token: string | undefined) => {
+    cookies.set(cookies.NAMES.REWARDS_API_TOKEN, token || '');
+    setApiToken(token);
+  }, []);
+
+  const [ queryOptions, fetchParams ] = useMemo(() => [
+    { enabled: Boolean(apiToken) && config.features.rewards.isEnabled },
+    { headers: { Authorization: `Bearer ${ apiToken }` } },
+  ], [ apiToken ]);
 
   const balancesQuery = useApiQuery('rewards_user_balances', { queryOptions, fetchParams });
   const dailyRewardQuery = useApiQuery('rewards_user_daily_check', { queryOptions, fetchParams });
   const referralsQuery = useApiQuery('rewards_user_referrals', { queryOptions, fetchParams });
   const rewardsConfigQuery = useApiQuery('rewards_config', { queryOptions });
 
-  const saveApiToken = useCallback((token: string) => {
-    cookies.set(cookies.NAMES.REWARDS_API_TOKEN, token);
-    setApiToken(token);
-  }, []);
+  // Reset queries when the API token is removed
+  useEffect(() => {
+    if (isInitialized && !apiToken) {
+      queryClient.resetQueries({ queryKey: getResourceKey('rewards_user_balances'), exact: true });
+      queryClient.resetQueries({ queryKey: getResourceKey('rewards_user_daily_check'), exact: true });
+      queryClient.resetQueries({ queryKey: getResourceKey('rewards_user_referrals'), exact: true });
+    }
+  }, [ isInitialized, apiToken, queryClient ]);
 
+  // Handle 401 error
   useEffect(() => {
     if (apiToken && balancesQuery.error?.status === 401) {
-      saveApiToken('');
+      saveApiToken(undefined);
     }
   }, [ balancesQuery.error, apiToken, saveApiToken ]);
 
+  // Check if the profile address is the same as the registered address
+  useEffect(() => {
+    const registeredAddress = getRegisteredAddress(apiToken || '');
+    if (registeredAddress && !profileQuery.isLoading && profileQuery.data?.address_hash !== registeredAddress) {
+      setApiToken(undefined);
+    }
+  }, [ apiToken, profileQuery, setApiToken ]);
+
+  // Handle referral code in the URL
   useEffect(() => {
     const refCode = getQueryParamString(router.query.ref);
     if (refCode && isInitialized) {
@@ -133,13 +174,14 @@ export function RewardsContextProvider({ children }: Props) {
     });
   }, [ toast ]);
 
+  // Login to the rewards program
   const login = useCallback(async(refCode: string) => {
     try {
       const [ nonceResponse, userResponse, checkCodeResponse ] = await Promise.all([
-        apiFetch<'rewards_nonce', RewardsNonceResponse>('rewards_nonce'),
-        apiFetch<'rewards_check_user', RewardsCheckUserResponse>('rewards_check_user', { pathParams: { address } }),
+        apiFetch('rewards_nonce') as Promise<RewardsNonceResponse>,
+        apiFetch('rewards_check_user', { pathParams: { address } }) as Promise<RewardsCheckUserResponse>,
         refCode ?
-          apiFetch<'rewards_check_ref_code', RewardsCheckRefCodeResponse>('rewards_check_ref_code', { pathParams: { code: refCode } }) :
+          apiFetch('rewards_check_ref_code', { pathParams: { code: refCode } }) as Promise<RewardsCheckRefCodeResponse> :
           Promise.resolve({ valid: true }),
       ]);
       if (!address || !('nonce' in nonceResponse) || !('exists' in userResponse) || !('valid' in checkCodeResponse)) {
@@ -150,7 +192,7 @@ export function RewardsContextProvider({ children }: Props) {
       }
       const message = getMessageToSign(address, nonceResponse.nonce, userResponse.exists, refCode);
       const signature = await signMessageAsync({ message });
-      const loginResponse = await apiFetch<'rewards_login', RewardsLoginResponse>('rewards_login', {
+      const loginResponse = await apiFetch('rewards_login', {
         fetchParams: {
           method: 'POST',
           body: {
@@ -159,7 +201,7 @@ export function RewardsContextProvider({ children }: Props) {
             signature,
           },
         },
-      });
+      }) as RewardsLoginResponse;
       if (!('created' in loginResponse)) {
         throw loginResponse;
       }
@@ -171,16 +213,15 @@ export function RewardsContextProvider({ children }: Props) {
     }
   }, [ apiFetch, address, signMessageAsync, errorToast, saveApiToken ]);
 
+  // Claim daily reward
   const claim = useCallback(async() => {
     try {
-      const claimResponse = await apiFetch<'rewards_user_daily_claim', RewardsUserDailyClaimResponse>('rewards_user_daily_claim', {
+      const claimResponse = await apiFetch('rewards_user_daily_claim', {
         fetchParams: {
           method: 'POST',
-          headers: {
-            Authorization: `Bearer ${ apiToken }`,
-          },
+          ...fetchParams,
         },
-      });
+      }) as RewardsUserDailyClaimResponse;
       if (!('daily_reward' in claimResponse)) {
         throw claimResponse;
       }
@@ -188,7 +229,7 @@ export function RewardsContextProvider({ children }: Props) {
       errorToast(_error as ResourceError<{ message: string }>);
       throw _error;
     }
-  }, [ apiFetch, errorToast, apiToken ]);
+  }, [ apiFetch, errorToast, fetchParams ]);
 
   const value = useMemo(() => ({
     balancesQuery,
@@ -196,6 +237,7 @@ export function RewardsContextProvider({ children }: Props) {
     referralsQuery,
     rewardsConfigQuery,
     apiToken,
+    isInitialized,
     isLoginModalOpen,
     openLoginModal: setIsLoginModalOpen.on,
     closeLoginModal: setIsLoginModalOpen.off,
@@ -203,7 +245,7 @@ export function RewardsContextProvider({ children }: Props) {
     claim,
   }), [
     isLoginModalOpen, setIsLoginModalOpen, balancesQuery, dailyRewardQuery,
-    apiToken, login, claim, referralsQuery, rewardsConfigQuery,
+    apiToken, login, claim, referralsQuery, rewardsConfigQuery, isInitialized,
   ]);
 
   return (

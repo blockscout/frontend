@@ -12,11 +12,14 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 
 const RewardsDashboard = () => {
   const router = useRouter();
-  const { balancesQuery, dailyRewardQuery, apiToken, claim, referralsQuery, rewardsConfigQuery } = useRewardsContext();
+  const {
+    balancesQuery, dailyRewardQuery, apiToken, claim,
+    referralsQuery, rewardsConfigQuery, isInitialized,
+  } = useRewardsContext();
   const [ isClaiming, setIsClaiming ] = useBoolean(false);
   const [ timeLeft, setTimeLeft ] = React.useState<string>('');
 
-  if (!apiToken) {
+  if (isInitialized && !apiToken) {
     router.replace({ pathname: '/' }, undefined, { shallow: true });
   }
 

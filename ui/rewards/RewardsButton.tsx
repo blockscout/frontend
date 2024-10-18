@@ -15,8 +15,9 @@ type Props = {
 };
 
 const RewardsButton = ({ variant = 'header', size }: Props) => {
-  const { apiToken, openLoginModal, dailyRewardQuery, balancesQuery } = useRewardsContext();
+  const { isInitialized, apiToken, openLoginModal, dailyRewardQuery, balancesQuery } = useRewardsContext();
   const isMobile = useIsMobile();
+  const isLoading = !isInitialized || dailyRewardQuery.isLoading || balancesQuery.isLoading;
   return (
     <Tooltip
       label="Earn merits for using Blockscout"
@@ -28,7 +29,7 @@ const RewardsButton = ({ variant = 'header', size }: Props) => {
     >
       <Button
         variant={ variant }
-        data-selected={ Boolean(apiToken) }
+        data-selected={ !isLoading && Boolean(apiToken) }
         flexShrink={ 0 }
         as={ apiToken ? LinkInternal : 'button' }
         { ...(apiToken ? { href: route({ pathname: '/account/rewards' }) } : {}) }
@@ -36,7 +37,7 @@ const RewardsButton = ({ variant = 'header', size }: Props) => {
         fontSize="sm"
         size={ size }
         px={ 2.5 }
-        isLoading={ dailyRewardQuery.isLoading || balancesQuery.isLoading }
+        isLoading={ isLoading }
         loadingText={ isMobile ? undefined : 'Merits' }
         textDecoration="none !important"
       >
