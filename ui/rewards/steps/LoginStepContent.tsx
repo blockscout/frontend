@@ -18,7 +18,7 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
   const router = useRouter();
   const { connect, isConnected } = useWallet({ source: 'Merits' });
   const savedRefCode = cookies.get(cookies.NAMES.REWARDS_REFERRAL_CODE);
-  const [ isSwitchChecked, setIsSwitchChecked ] = useBoolean(Boolean(savedRefCode));
+  const [ isRefCodeUsed, setIsRefCodeUsed ] = useBoolean(Boolean(savedRefCode));
   const [ isLoading, setIsLoading ] = useBoolean(false);
   const [ refCode, setRefCode ] = useState(savedRefCode || '');
   const [ refCodeError, setRefCodeError ] = useBoolean(false);
@@ -33,7 +33,7 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
     try {
       setRefCodeError.off();
       setIsLoading.on();
-      const { isNewUser, invalidRefCodeError } = await login(refCode);
+      const { isNewUser, invalidRefCodeError } = await login(isRefCodeUsed ? refCode : '');
       if (invalidRefCodeError) {
         setRefCodeError.on();
       } else {
@@ -46,7 +46,7 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
       }
     } catch (error) {}
     setIsLoading.off();
-  }, [ login, goNext, setIsLoading, router, closeModal, refCode, setRefCodeError ]);
+  }, [ login, goNext, setIsLoading, router, closeModal, refCode, setRefCodeError, isRefCodeUsed ]);
 
   useEffect(() => {
     setRefCodeError.off();
@@ -69,12 +69,12 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
             <Switch
               colorScheme="blue"
               size="md"
-              isChecked={ isSwitchChecked }
-              onChange={ setIsSwitchChecked.toggle }
+              isChecked={ isRefCodeUsed }
+              onChange={ setIsRefCodeUsed.toggle }
               aria-label="Referral code switch"
             />
           </Flex>
-          { isSwitchChecked && (
+          { isRefCodeUsed && (
             <FormControl variant="floating" id="referral-code" mt={ 3 }>
               <Input
                 fontWeight="500"
