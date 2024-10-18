@@ -16,11 +16,11 @@ import ContractDetailsVerificationButton from '../ContractDetailsVerificationBut
 import ContractDetailsAlertProxyPattern from './ContractDetailsAlertProxyPattern';
 import ContractDetailsAlertVerificationSource from './ContractDetailsAlertVerificationSource';
 
-interface Props {
+export interface Props {
   data: SmartContract | undefined;
   isLoading: boolean;
   addressHash: string;
-  channel: Channel | undefined;
+  channel?: Channel;
 }
 
 const ContractDetailsAlerts = ({ data, isLoading, addressHash, channel }: Props) => {

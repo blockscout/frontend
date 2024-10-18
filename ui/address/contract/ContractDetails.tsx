@@ -84,6 +84,7 @@ const ContractDetails = ({ addressHash, channel, mainContractQuery }: Props) => 
 
   const addressSelector = sourceItems.length > 1 ? (
     <ContractSourceAddressSelector
+      isLoading={ mainContractQuery.isPlaceholderData }
       label="Source code"
       items={ sourceItems }
       selectedItem={ selectedItem }

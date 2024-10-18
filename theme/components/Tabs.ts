@@ -44,9 +44,12 @@ const variantOutline = definePartsStyle((props) => {
 const variantRadioGroup = definePartsStyle((props) => {
   return {
     tab: {
-      ...Button.variants?.radio_group(props),
       ...Button.baseStyle,
-      _selected: Button.variants?.radio_group(props)['&[data-selected=true]'],
+      ...Button.variants?.radio_group(props),
+      _selected: Button.variants?.radio_group(props)?.[`
+      &[data-selected=true],
+      &[data-selected=true][aria-selected=true]
+    `],
       borderRadius: 'none',
       _notFirst: {
         borderLeftWidth: 0,

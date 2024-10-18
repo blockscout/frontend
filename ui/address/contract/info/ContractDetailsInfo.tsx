@@ -15,7 +15,7 @@ import ContractDetailsInfoItem from './ContractDetailsInfoItem';
 const rollupFeature = config.features.rollup;
 
 interface Props {
-  data: SmartContract ;
+  data: SmartContract;
   isLoading: boolean;
   addressHash: string;
 }

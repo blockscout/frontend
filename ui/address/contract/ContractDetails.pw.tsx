@@ -1,11 +1,10 @@
 import React from 'react';
 
 import * as addressMock from 'mocks/address/address';
-import { contractAudits } from 'mocks/contract/audits';
 import * as contractMock from 'mocks/contract/info';
-import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import * as socketServer from 'playwright/fixtures/socketServer';
 import { test, expect } from 'playwright/lib';
+import * as pwConfig from 'playwright/utils/config';
 
 import ContractDetails from './specs/ContractDetails';
 
@@ -28,25 +27,67 @@ test.beforeEach(async({ mockApiResponse, page }) => {
   addressApiUrl = await mockApiResponse('address', addressMock.contract, { pathParams: { hash: addressMock.contract.hash } });
 });
 
-test('full view +@mobile +@dark-mode', async({ render, mockApiResponse, createSocket }) => {
-  await mockApiResponse('contract', contractMock.withChangedByteCode, { pathParams: { hash: addressMock.contract.hash } });
-  await mockApiResponse('contract', contractMock.withChangedByteCode, { pathParams: { hash: addressMock.contract.implementations?.[0].address as string } });
+test.describe('full view', () => {
+  test.beforeEach(async({ mockApiResponse }) => {
+    await mockApiResponse('contract', contractMock.withChangedByteCode, { pathParams: { hash: addressMock.contract.hash } });
+    await mockApiResponse('contract', contractMock.withChangedByteCode, { pathParams: { hash: addressMock.contract.implementations?.[0].address as string } });
+  });
 
-  const component = await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
-  await createSocket();
+  test('source code +@dark-mode', async({ render, createSocket }) => {
+    const hooksConfig = {
+      router: {
+        query: { hash: addressMock.contract.hash, tab: 'contract_source_code' },
+      },
+    };
+    const component = await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
+    await createSocket();
+    await expect(component).toHaveScreenshot();
+  });
 
-  await expect(component).toHaveScreenshot();
+  test('compiler', async({ render, createSocket }) => {
+    const hooksConfig = {
+      router: {
+        query: { hash: addressMock.contract.hash, tab: 'contract_compiler' },
+      },
+    };
+    const component = await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
+    await createSocket();
+    await expect(component).toHaveScreenshot();
+  });
+
+  test('abi', async({ render, createSocket }) => {
+    const hooksConfig = {
+      router: {
+        query: { hash: addressMock.contract.hash, tab: 'contract_abi' },
+      },
+    };
+    const component = await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
+    await createSocket();
+    await expect(component).toHaveScreenshot();
+  });
+
+  test('bytecode', async({ render, createSocket }) => {
+    const hooksConfig = {
+      router: {
+        query: { hash: addressMock.contract.hash, tab: 'contract_bytecode' },
+      },
+    };
+    const component = await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
+    await createSocket();
+    await expect(component).toHaveScreenshot();
+  });
 });
 
-test('verified with changed byte code socket', async({ render, mockApiResponse, createSocket }) => {
-  await mockApiResponse('contract', contractMock.verified, { pathParams: { hash: addressMock.contract.hash } });
+test.describe('mobile view', () => {
+  test.use({ viewport: pwConfig.viewport.mobile });
 
-  const component = await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
-  const socket = await createSocket();
-  const channel = await socketServer.joinChannel(socket, 'addresses:' + addressMock.contract.hash.toLowerCase());
-  socketServer.sendMessage(socket, channel, 'changed_bytecode', {});
-
-  await expect(component).toHaveScreenshot();
+  test('source code', async({ render, createSocket, mockApiResponse }) => {
+    await mockApiResponse('contract', contractMock.withChangedByteCode, { pathParams: { hash: addressMock.contract.hash } });
+    await mockApiResponse('contract', contractMock.withChangedByteCode, { pathParams: { hash: addressMock.contract.implementations?.[0].address as string } });
+    const component = await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
+    await createSocket();
+    await expect(component).toHaveScreenshot();
+  });
 });
 
 test('verified via lookup in eth_bytecode_db', async({ render, mockApiResponse, createSocket, page }) => {
@@ -76,47 +117,17 @@ test('verified with multiple sources', async({ render, page, mockApiResponse }) 
   await expect(section).toHaveScreenshot();
 });
 
-test('verified via sourcify', async({ render, mockApiResponse, page }) => {
-  await mockApiResponse('contract', contractMock.verifiedViaSourcify, { pathParams: { hash: addressMock.contract.hash } });
-  await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
-
-  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 110 } });
-});
-
-test('verified via eth bytecode db', async({ render, mockApiResponse, page }) => {
-  await mockApiResponse('contract', contractMock.verifiedViaEthBytecodeDb, { pathParams: { hash: addressMock.contract.hash } });
-  await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
-
-  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 110 } });
-});
-
 test('self destructed', async({ render, mockApiResponse, page }) => {
+  const hooksConfig = {
+    router: {
+      query: { hash: addressMock.contract.hash, tab: 'contract_bytecode' },
+    },
+  };
   await mockApiResponse('contract', contractMock.selfDestructed, { pathParams: { hash: addressMock.contract.hash } });
   await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
 
   const section = page.locator('section', { hasText: 'Contract creation code' });
   await expect(section).toHaveScreenshot();
-});
-
-test('with twin address alert +@mobile', async({ render, mockApiResponse }) => {
-  await mockApiResponse('contract', contractMock.withTwinAddress, { pathParams: { hash: addressMock.contract.hash } });
-  const component = await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
-
-  await expect(component.getByRole('alert')).toHaveScreenshot();
-});
-
-test('with proxy address alert +@mobile', async({ render, mockApiResponse }) => {
-  await mockApiResponse('contract', contractMock.withProxyAddress, { pathParams: { hash: addressMock.contract.hash } });
-  const component = await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
-
-  await expect(component.getByRole('alert')).toHaveScreenshot();
-});
-
-test('with certified icon +@mobile', async({ render, mockApiResponse, page }) => {
-  await mockApiResponse('contract', contractMock.certified, { pathParams: { hash: addressMock.contract.hash } });
-  await render(<ContractDetails/>, { hooksConfig });
-
-  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 120 } });
 });
 
 test('non verified', async({ render, mockApiResponse }) => {
@@ -126,33 +137,36 @@ test('non verified', async({ render, mockApiResponse }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('zkSync contract', async({ render, mockApiResponse, page, mockEnvs }) => {
-  await mockEnvs(ENVS_MAP.zkSyncRollup);
-  await mockApiResponse('contract', contractMock.zkSync, { pathParams: { hash: addressMock.contract.hash } });
-  await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
+// eslint-disable-next-line playwright/no-focused-test
+test.only('implementation info', async({ render, mockApiResponse }) => {
+  const hooksConfig = {
+    router: {
+      query: { hash: addressMock.contract.hash, tab: 'contract_compiler' },
+    },
+  };
 
-  await expect(page).toHaveScreenshot({ clip: { x: 0, y: 0, width: 1200, height: 300 } });
-});
+  const implementationName = addressMock.contract.implementations?.[0].name as string;
+  const implementationAddress = addressMock.contract.implementations?.[0].address as string;
+  const implementationContract = {
+    ...contractMock.verified,
+    compiler_settings: {
+      evmVersion: 'london',
+      libraries: {},
+      metadata: {
+        bytecodeHash: 'ipfs',
+        useLiteralContent: false,
+      },
+      optimizer: {
+        enabled: true,
+        runs: 1000000,
+      },
+    },
+  };
+  await mockApiResponse('contract', contractMock.verified, { pathParams: { hash: addressMock.contract.hash } });
+  await mockApiResponse('contract', implementationContract, { pathParams: { hash: implementationAddress } });
 
-test.describe('with audits feature', () => {
+  const component = await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
+  await component.getByRole('combobox').selectOption(implementationName);
 
-  test.beforeEach(async({ mockEnvs }) => {
-    await mockEnvs(ENVS_MAP.hasContractAuditReports);
-  });
-
-  test('no audits', async({ render, mockApiResponse }) => {
-    await mockApiResponse('contract', contractMock.verified, { pathParams: { hash: addressMock.contract.hash } });
-    await mockApiResponse('contract_security_audits', { items: [] }, { pathParams: { hash: addressMock.contract.hash } });
-    const component = await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
-
-    await expect(component).toHaveScreenshot();
-  });
-
-  test('has audits', async({ render, mockApiResponse }) => {
-    await mockApiResponse('contract', contractMock.verified, { pathParams: { hash: addressMock.contract.hash } });
-    await mockApiResponse('contract_security_audits', contractAudits, { pathParams: { hash: addressMock.contract.hash } });
-    const component = await render(<ContractDetails/>, { hooksConfig }, { withSocket: true });
-
-    await expect(component).toHaveScreenshot();
-  });
+  await expect(component).toHaveScreenshot();
 });

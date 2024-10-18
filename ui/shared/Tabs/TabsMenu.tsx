@@ -43,6 +43,8 @@ const TabsMenu = ({ tabs, tabsCut, isActive, styles, onItemClick, buttonRef, act
     <Popover isLazy placement="bottom-end" key="more" isOpen={ isOpen } onClose={ onClose } onOpen={ onOpen } closeDelay={ 0 }>
       <PopoverTrigger>
         <Button
+          as="div"
+          role="button"
           variant="ghost"
           isActive={ isOpen || isActive }
           ref={ buttonRef }
