@@ -1,13 +1,16 @@
-import { Text, Button, useColorModeValue, Image, Box, Flex, Switch, useBoolean, Input, FormControl } from '@chakra-ui/react';
+import { Text, Button, useColorModeValue, Image, Box, Flex, Switch, useBoolean, Input, FormControl, Alert } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import type { ChangeEvent } from 'react';
 import React, { useCallback, useState, useEffect } from 'react';
 
 import { useRewardsContext } from 'lib/contexts/rewards';
 import * as cookies from 'lib/cookies';
+import { apos } from 'lib/html-entities';
 import useWallet from 'lib/web3/useWallet';
 import InputPlaceholder from 'ui/shared/InputPlaceholder';
 import LinkExternal from 'ui/shared/links/LinkExternal';
+import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
+import useSignInWithWallet from 'ui/snippets/auth/useSignInWithWallet';
 
 type Props = {
   goNext: (isReferral: boolean) => void;
@@ -16,7 +19,7 @@ type Props = {
 
 const LoginStepContent = ({ goNext, closeModal }: Props) => {
   const router = useRouter();
-  const { connect, isConnected } = useWallet({ source: 'Merits' });
+  const { connect, isConnected, address } = useWallet({ source: 'Merits' });
   const savedRefCode = cookies.get(cookies.NAMES.REWARDS_REFERRAL_CODE);
   const [ isRefCodeUsed, setIsRefCodeUsed ] = useBoolean(Boolean(savedRefCode));
   const [ isLoading, setIsLoading ] = useBoolean(false);
@@ -24,12 +27,13 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
   const [ refCodeError, setRefCodeError ] = useBoolean(false);
   const dividerColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   const { login } = useRewardsContext();
+  const profileQuery = useProfileQuery();
 
   const handleRefCodeChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setRefCode(event.target.value);
   }, []);
 
-  const handleLogin = useCallback(async() => {
+  const loginToRewardsProgram = useCallback(async() => {
     try {
       setRefCodeError.off();
       setIsLoading.on();
@@ -51,6 +55,22 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
   useEffect(() => {
     setRefCodeError.off();
   }, [ refCode ]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const { start: loginToAccount } = useSignInWithWallet({
+    isAuth: Boolean(!profileQuery.isLoading && profileQuery.data?.email),
+    onSuccess: loginToRewardsProgram,
+    onError: setIsLoading.off,
+  });
+
+  const handleLogin = useCallback(async() => {
+    if (!profileQuery.isLoading && !profileQuery.data?.address_hash) {
+      loginToAccount();
+      return;
+    }
+    loginToRewardsProgram();
+  }, [ loginToAccount, loginToRewardsProgram, profileQuery ]);
+
+  const isAddressMismatch = isConnected && profileQuery.data?.address_hash !== address;
 
   return (
     <>
@@ -88,14 +108,21 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
           ) }
         </>
       ) }
+      { isAddressMismatch && (
+        <Alert status="warning" mt={ 4 }>
+          Your wallet address doesn{ apos }t match the one in your Blockscout account. Please connect the correct wallet.
+        </Alert>
+      ) }
       <Button
         variant="solid"
         colorScheme="blue"
         w="full"
+        whiteSpace="normal"
         mt={ isConnected ? 6 : 0 }
         mb={ 4 }
         onClick={ isConnected ? handleLogin : connect }
-        isLoading={ isLoading }
+        isLoading={ isLoading || profileQuery.isLoading }
+        isDisabled={ isAddressMismatch }
       >
         { isConnected ? 'Get started' : 'Connect wallet' }
       </Button>
