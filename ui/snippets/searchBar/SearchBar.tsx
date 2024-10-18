@@ -106,7 +106,7 @@ const SearchBar = ({ isHomepage }: Props) => {
   React.useEffect(() => {
     handleSearchTermChange('');
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ router.pathname ]);
+  }, [ router.asPath?.split('?')?.[0] ]);
 
   React.useEffect(() => {
     const inputEl = inputRef.current;
