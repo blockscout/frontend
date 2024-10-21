@@ -1,3 +1,4 @@
+import _get from 'lodash/get';
 import React from 'react';
 
 import config from 'configs/app';
@@ -24,9 +25,10 @@ export default function useAddOrSwitchChain() {
 
       const errorObj = getErrorObj(error);
       const code = errorObj && 'code' in errorObj ? errorObj.code : undefined;
+      const originalErrorCode = _get(errorObj, 'data.originalError.code');
 
       // This error code indicates that the chain has not been added to Wallet.
-      if (code === 4902) {
+      if (code === 4902 || originalErrorCode === 4902) {
         const params = [ {
           chainId: hexadecimalChainId,
           chainName: config.chain.name,
