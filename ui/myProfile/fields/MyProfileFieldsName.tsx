@@ -16,7 +16,7 @@ const MyProfileFieldsName = () => {
   const isDisabled = formState.isSubmitting;
 
   return (
-    <FormControl variant="floating" isDisabled={ isDisabled } size="md" cursor="not-allowed" mb={ 3 }>
+    <FormControl variant="floating" isDisabled={ isDisabled } size="md" mb={ 3 }>
       <Input
         { ...field }
         isInvalid={ Boolean(fieldState.error) }

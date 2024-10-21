@@ -81,13 +81,16 @@ const MyProfileEmail = ({ profileQuery }: Props) => {
           onSubmit={ formApi.handleSubmit(onFormSubmit) }
         >
           <MyProfileFieldsName/>
-          <MyProfileFieldsEmail isReadOnly={ !config.services.reCaptchaV3.siteKey } defaultValue={ profileQuery.data?.email || undefined }/>
-          { config.services.reCaptchaV3.siteKey && (
+          <MyProfileFieldsEmail
+            isReadOnly={ !config.services.reCaptchaV3.siteKey || Boolean(profileQuery.data?.email) }
+            defaultValue={ profileQuery.data?.email || undefined }
+          />
+          { config.services.reCaptchaV3.siteKey && !profileQuery.data?.email && (
             <GoogleReCaptchaProvider reCaptchaKey={ config.services.reCaptchaV3.siteKey }>
               <FormFieldReCaptcha/>
             </GoogleReCaptchaProvider>
           ) }
-          { config.services.reCaptchaV3.siteKey && (
+          { config.services.reCaptchaV3.siteKey && !profileQuery.data?.email && (
             <Button
               mt={ 6 }
               size="sm"
