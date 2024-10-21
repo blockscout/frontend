@@ -7,13 +7,17 @@ type Props = {
   title?: string;
   description: string | React.ReactNode;
   availableSoon?: boolean;
+  blurFilter?: boolean;
   contentAfter?: React.ReactNode;
   direction?: 'column' | 'column-reverse' | 'row';
   reverse?: boolean;
   children?: React.ReactNode;
 };
 
-const RewardsDashboardCard = ({ title, description, availableSoon, contentAfter, direction = 'column', children }: Props) => {
+const RewardsDashboardCard = ({
+  title, description, availableSoon, contentAfter,
+  direction = 'column', children, blurFilter,
+}: Props) => {
   return (
     <Flex
       flexDirection={ direction }
@@ -44,7 +48,7 @@ const RewardsDashboardCard = ({ title, description, availableSoon, contentAfter,
         backgroundColor={ useColorModeValue('gray.50', 'whiteAlpha.50') }
         h="128px"
         filter="auto"
-        blur={ availableSoon ? '4px' : '0' }
+        blur={ blurFilter ? '4px' : '0' }
         flex={ direction === 'row' ? 1 : '0 1 auto' }
       >
         { children }

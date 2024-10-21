@@ -8,6 +8,7 @@ import splitSecondsInPeriods from 'ui/blockCountdown/splitSecondsInPeriods';
 import CopyField from 'ui/rewards/CopyField';
 import RewardsDashboardCard from 'ui/rewards/RewardsDashboardCard';
 import RewardsDashboardCardValue from 'ui/rewards/RewardsDashboardCardValue';
+import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
@@ -118,6 +119,7 @@ const RewardsDashboard = () => {
             description={ `Current number of consecutive days you${ apos }ve claimed your daily Merits.` }
             direction="column-reverse"
             availableSoon
+            blurFilter
           >
             <RewardsDashboardCardValue label="Steaks" value="5 days"/>
           </RewardsDashboardCard>
@@ -153,6 +155,7 @@ const RewardsDashboard = () => {
             title="Activity"
             description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             availableSoon
+            blurFilter
           >
             <RewardsDashboardCardValue label="Activity" value="0%"/>
             <RewardsDashboardCardValue label="Received" value="0" withIcon/>
@@ -161,11 +164,26 @@ const RewardsDashboard = () => {
             title="Verify contracts"
             description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
             availableSoon
+            blurFilter
           >
             <RewardsDashboardCardValue label="Activity" value="0%"/>
             <RewardsDashboardCardValue label="Received" value="0" withIcon/>
           </RewardsDashboardCard>
         </Flex>
+        <RewardsDashboardCard
+          title="Badges"
+          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          direction="row"
+          availableSoon
+        >
+          <Flex flex={ 1 } gap={ 6 } px={ 6 } justifyContent="space-between">
+            <IconSvg name="badges/badge_1" boxSize="100px"/>
+            <IconSvg name="badges/badge_2" boxSize="100px"/>
+            <IconSvg name="badges/badge_3" boxSize="100px"/>
+            <IconSvg name="badges/badge_4" boxSize="100px"/>
+            <IconSvg name="badges/badge_5" boxSize="100px"/>
+          </Flex>
+        </RewardsDashboardCard>
       </Flex>
     </>
   );
