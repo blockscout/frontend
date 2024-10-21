@@ -125,7 +125,11 @@ export function RewardsContextProvider({ children }: Props) {
   const balancesQuery = useApiQuery('rewards_user_balances', { queryOptions, fetchParams });
   const dailyRewardQuery = useApiQuery('rewards_user_daily_check', { queryOptions, fetchParams });
   const referralsQuery = useApiQuery('rewards_user_referrals', { queryOptions, fetchParams });
-  const rewardsConfigQuery = useApiQuery('rewards_config', { queryOptions });
+  const rewardsConfigQuery = useApiQuery('rewards_config', {
+    queryOptions: {
+      enabled: config.features.rewards.isEnabled,
+    },
+  });
 
   // Reset queries when the API token is removed
   useEffect(() => {
