@@ -306,7 +306,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             hint="Batch index for this transaction"
             isLoading={ isLoading }
           >
-            Tx batch
+            Txn batch
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
             <BatchEntityL2

@@ -47,7 +47,7 @@ const OptimisticL2TxnBatchBlobCelestia = ({ blobs, isLoading }: Props) => {
               <Icon as={ celeniumIcon } boxSize={ 5 }/>
               <LinkExternal href={ getCeleniumUrl(blob) }>Blob page</LinkExternal>
             </GridItem>
-            <GridItem fontWeight={ 600 }>Hight</GridItem>
+            <GridItem fontWeight={ 600 }>Height</GridItem>
             <GridItem colSpan={ 2 }>
               { blob.height }
             </GridItem>
