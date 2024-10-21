@@ -25,12 +25,12 @@ const CongratsStepContent = ({ isReferral }: Props) => {
         alignItems="center"
         background="linear-gradient(254.96deg, #9CD8FF 9.09%, #D0EFFF 88.45%)"
         borderRadius="md"
-        padding={ 4 }
+        padding={ 2 }
         mb={ 8 }
       >
-        <IconSvg name="merits_colored" boxSize="72px" m={ -2 }/>
+        <IconSvg name="merits_colored" boxSize="60px" mb={ -1 }/>
         <Skeleton isLoaded={ !rewardsConfigQuery.isLoading }>
-          <Text fontSize="30px" fontWeight="700" color="blue.700" ml={ 1 }>
+          <Text fontSize="30px" fontWeight="700" color="blue.700">
             +{ rewardsConfigQuery.data?.rewards[ isReferral ? 'registration_with_referral' : 'registration' ] }
           </Text>
         </Skeleton>
