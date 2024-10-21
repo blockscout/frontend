@@ -70,7 +70,7 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
     loginToRewardsProgram();
   }, [ loginToAccount, loginToRewardsProgram, profileQuery ]);
 
-  const isAddressMismatch = isConnected && profileQuery.data?.address_hash !== address;
+  const isAddressMismatch = Boolean(address) && Boolean(profileQuery.data?.address_hash) && profileQuery.data?.address_hash !== address;
 
   return (
     <>
