@@ -1,4 +1,4 @@
-import { Text, Box, Flex, useColorModeValue, Button, Skeleton } from '@chakra-ui/react';
+import { Text, Box, Flex, Button, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
@@ -6,7 +6,6 @@ import { route } from 'nextjs-routes';
 import { useRewardsContext } from 'lib/contexts/rewards';
 import IconSvg from 'ui/shared/IconSvg';
 
-import AvailableSoonLabel from '../AvailableSoonLabel';
 import CopyField from '../CopyField';
 
 type Props = {
@@ -23,65 +22,47 @@ const CongratsStepContent = ({ isReferral }: Props) => {
   return (
     <>
       <Flex
-        flexDirection="column"
+        alignItems="center"
         background="linear-gradient(254.96deg, #9CD8FF 9.09%, #D0EFFF 88.45%)"
         borderRadius="md"
-        padding={ 2 }
-        pt={ 6 }
+        padding={ 4 }
         mb={ 8 }
       >
-        <Flex alignItems="center" pl={ 2 } mb={ 4 }>
-          <IconSvg name="merits_colored" boxSize="72px" m={ -2 }/>
-          <Skeleton isLoaded={ !rewardsConfigQuery.isLoading }>
-            <Text fontSize="30px" fontWeight="700" color="blue.700" ml={ 1 }>
-              +{ rewardsConfigQuery.data?.rewards[ isReferral ? 'registration_with_referral' : 'registration' ] }
-            </Text>
-          </Skeleton>
-          { isReferral && (
-            <Flex alignItems="center" h="56px">
-              <Box w="1px" h="full" bgColor="whiteAlpha.800" mx={ 8 }/>
-              <Flex flexDirection="column" justifyContent="space-between">
-                { [
-                  {
-                    title: 'Registration',
-                    value: registrationReward,
-                  },
-                  {
-                    title: 'Referral program',
-                    value: referralReward,
-                  },
-                ].map(({ title, value }) => (
-                  <Flex key={ title } alignItems="center">
-                    <IconSvg name="merits_colored" boxSize={ 8 }/>
-                    <Skeleton isLoaded={ !rewardsConfigQuery.isLoading }>
-                      <Text fontSize="sm" fontWeight="700" color="blue.700">
-                        +{ value }
-                      </Text>
-                    </Skeleton>
-                    <Text fontSize="sm" color="blue.700" ml={ 2 }>
-                      { title }
+        <IconSvg name="merits_colored" boxSize="72px" m={ -2 }/>
+        <Skeleton isLoaded={ !rewardsConfigQuery.isLoading }>
+          <Text fontSize="30px" fontWeight="700" color="blue.700" ml={ 1 }>
+            +{ rewardsConfigQuery.data?.rewards[ isReferral ? 'registration_with_referral' : 'registration' ] }
+          </Text>
+        </Skeleton>
+        { isReferral && (
+          <Flex alignItems="center" h="56px">
+            <Box w="1px" h="full" bgColor="whiteAlpha.800" mx={ 8 }/>
+            <Flex flexDirection="column" justifyContent="space-between">
+              { [
+                {
+                  title: 'Registration',
+                  value: registrationReward,
+                },
+                {
+                  title: 'Referral program',
+                  value: referralReward,
+                },
+              ].map(({ title, value }) => (
+                <Flex key={ title } alignItems="center">
+                  <IconSvg name="merits_colored" boxSize={ 8 }/>
+                  <Skeleton isLoaded={ !rewardsConfigQuery.isLoading }>
+                    <Text fontSize="sm" fontWeight="700" color="blue.700">
+                      +{ value }
                     </Text>
-                  </Flex>
-                )) }
-              </Flex>
+                  </Skeleton>
+                  <Text fontSize="sm" color="blue.700" ml={ 2 }>
+                    { title }
+                  </Text>
+                </Flex>
+              )) }
             </Flex>
-          ) }
-        </Flex>
-        <Flex
-          flexDirection="column"
-          backgroundColor={ useColorModeValue('white', 'gray.900') }
-          borderRadius="8px"
-          padding={ 4 }
-          gap={ 2 }
-        >
-          <Flex alignItems="center" gap={ 2 }>
-            <Text fontSize="lg" fontWeight="500">
-              Pre-staking
-            </Text>
-            <AvailableSoonLabel/>
           </Flex>
-          <Text fontSize="sm">Support your favorite networks and earn 10% APR</Text>
-        </Flex>
+        ) }
       </Flex>
       <Flex flexDirection="column" alignItems="flex-start" px={ 3 } mb={ 8 }>
         <Flex alignItems="center" gap={ 2 }>
