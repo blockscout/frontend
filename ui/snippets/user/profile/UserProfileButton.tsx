@@ -65,7 +65,7 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: 
       label={ <span>Sign in to My Account to add tags,<br/>create watchlists, access API keys and more</span> }
       textAlign="center"
       padding={ 2 }
-      isDisabled={ isMobile || isFetched || Boolean(data) }
+      isDisabled={ isMobile || isLoading || Boolean(data) }
       openDelay={ 500 }
     >
       <Skeleton isLoaded={ isFetched } borderRadius="base" ref={ ref } w="fit-content">
@@ -73,6 +73,7 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: 
           size={ size }
           variant={ variant }
           onClick={ onClick }
+          onFocus={ e => e.preventDefault() } // eslint-disable-line
           data-selected={ Boolean(data) || Boolean(web3AccountWithDomain.address) }
           data-warning={ isAutoConnectDisabled }
           fontSize="sm"
