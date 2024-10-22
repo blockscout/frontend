@@ -76,7 +76,7 @@ jobs:
           script: |
             cd /tmp/deploy/k8s-hk-rke2/mechain-helm-charts
             echo "${{ secrets.KUBECONFIG_DEV }}" > kubeconfig.yaml
-            helm --kubeconfig kubeconfig.yaml -n mechain-test upgrade --install blockscout blockscout -f blockscout/values_testint.yaml
+            helm --kubeconfig kubeconfig.yaml -n mechain-test upgrade blockscout blockscout -f blockscout/values_testint.yaml --wait
       - name: clean
         uses: appleboy/ssh-action@v1.0.3
         if: false

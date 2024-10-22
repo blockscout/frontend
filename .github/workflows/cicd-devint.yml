@@ -1,5 +1,5 @@
-# For developer testing
-name: Deploy for development
+# For developer devint
+name: Deploy for devint
 
 on:
   push:
@@ -91,7 +91,7 @@ jobs:
           script: |
             cd /tmp/deploy/k8s-hk-rke2/mechain-helm-charts
             echo "${{ secrets.KUBECONFIG_DEV }}" > kubeconfig.yaml
-            helm --kubeconfig kubeconfig.yaml -n mechain-dev upgrade --install blockscout blockscout -f blockscout/values_devint.yaml
+            helm --kubeconfig kubeconfig.yaml -n mechain-dev upgrade blockscout blockscout -f blockscout/values_devint.yaml --wait
       - name: clean
         uses: appleboy/ssh-action@v1.0.3
         if: false
