@@ -15,7 +15,7 @@ import ZkEvmL2DepositsTableItem from './ZkEvmL2DepositsTableItem';
 
 const ZkEvmL2DepositsTable = ({ items, top, isLoading }: Props) => {
   return (
-    <Table variant="simple" size="sm" style={{ tableLayout: 'auto' }} minW="950px">
+    <Table style={{ tableLayout: 'auto' }} minW="950px">
       <Thead top={ top }>
         <Tr>
           <Th>L1 block</Th>

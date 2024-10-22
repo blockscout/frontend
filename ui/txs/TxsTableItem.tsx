@@ -112,7 +112,7 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
         </Td>
       ) }
       { !config.UI.views.tx.hiddenFields?.tx_fee && (
-        <Td isNumeric>
+        <Td isNumeric maxW="220px">
           <TxFee
             tx={ tx }
             accuracy={ 8 }

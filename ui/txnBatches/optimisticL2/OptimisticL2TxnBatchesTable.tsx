@@ -15,7 +15,7 @@ type Props = {
 
 const OptimisticL2TxnBatchesTable = ({ items, top, isLoading }: Props) => {
   return (
-    <Table variant="simple" size="sm" minW="850px" layout="auto">
+    <Table minW="850px" layout="auto">
       <Thead top={ top }>
         <Tr>
           <Th>Batch ID</Th>

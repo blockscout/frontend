@@ -105,7 +105,7 @@ const AddressBlocksValidated = ({ scrollRef, shouldRender = true, isQueryEnabled
   const content = query.data?.items ? (
     <>
       <Hide below="lg" ssr={ false }>
-        <Table variant="simple" size="sm" style={{ tableLayout: 'auto' }}>
+        <Table style={{ tableLayout: 'auto' }}>
           <Thead top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }>
             <Tr>
               <Th>Block</Th>

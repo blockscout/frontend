@@ -87,7 +87,7 @@ const AddressAccountHistory = ({ scrollRef, shouldRender = true, isQueryEnabled 
       </Hide>
 
       <Show above="lg" ssr={ false }>
-        <Table variant="simple" >
+        <Table>
           <TheadSticky top={ 75 }>
             <Tr>
               <Th width="120px">
