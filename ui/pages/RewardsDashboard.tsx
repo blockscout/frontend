@@ -101,13 +101,13 @@ const RewardsDashboard = () => {
           </RewardsDashboardCard>
           <RewardsDashboardCard
             title="Referrals"
-            description="Total number of users who joined the program through your referral link."
+            description="Total number of users who have joined the program using your code or referral link."
             direction="column-reverse"
           >
             <RewardsDashboardCardValue
               label="Referrals"
               value={ `${ numberOfReferrals } user${ numberOfReferrals === 1 ? '' : 's' }` }
-              hint="The number of referrals who registered with your code."
+              hint="The number of referrals who registered with your code/link."
             />
           </RewardsDashboardCard>
           <RewardsDashboardCard
@@ -155,7 +155,7 @@ const RewardsDashboard = () => {
         <Flex gap={ 6 } flexDirection={{ base: 'column', md: 'row' }}>
           <RewardsDashboardCard
             title="Activity"
-            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+            description="Earn merits for your everyday Blockscout activities. You deserve to be rewarded for choosing open-source public goods!"
             availableSoon
             blurFilter
           >
@@ -164,7 +164,7 @@ const RewardsDashboard = () => {
           </RewardsDashboardCard>
           <RewardsDashboardCard
             title="Verify contracts"
-            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+            description="Verified contracts are so important for transparency and interaction. Verify your contracts on Blockscout and receive merits for your efforts!" // eslint-disable-line max-len
             availableSoon
             blurFilter
           >
@@ -174,7 +174,15 @@ const RewardsDashboard = () => {
         </Flex>
         <RewardsDashboardCard
           title="Badges"
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          description={ (
+            <span>
+              Collect limited and legendary badges by completing different Blockscout related tasks. Go to{ ' ' }
+              <LinkExternal href="https://badges.blockscout.com?utm_source=blockscout&utm_medium=merits-dashboard">
+                the badges website
+              </LinkExternal>
+              { ' ' }to see what{ apos }s available and start your collection!
+            </span>
+          ) }
           direction="row"
           availableSoon
         >
