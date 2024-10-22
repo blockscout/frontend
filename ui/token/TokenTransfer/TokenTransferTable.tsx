@@ -27,7 +27,7 @@ const TokenTransferTable = ({ data, top, showSocketInfo, socketInfoAlert, socket
 
   return (
     <AddressHighlightProvider>
-      <Table variant="simple" size="sm" minW="950px">
+      <Table minW="950px">
         <Thead top={ top }>
           <Tr>
             <Th width="280px">Txn hash</Th>

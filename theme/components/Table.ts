@@ -30,39 +30,30 @@ const variantSimple = definePartsStyle((props) => {
 });
 
 const sizes = {
-  md: definePartsStyle({
-    th: {
-      px: 4,
-      fontSize: 'sm',
-    },
-    td: {
-      p: 4,
-    },
-  }),
   sm: definePartsStyle({
     th: {
-      px: '10px',
-      py: '10px',
-      fontSize: 'sm',
-    },
-    td: {
-      px: '10px',
-      py: 4,
-      fontSize: 'sm',
-      fontWeight: 500,
-    },
-  }),
-  xs: definePartsStyle({
-    th: {
       px: '6px',
       py: '10px',
       fontSize: 'sm',
+      _first: {
+        pl: 3,
+      },
+      _last: {
+        pr: 3,
+      },
     },
     td: {
       px: '6px',
       py: 4,
       fontSize: 'sm',
       fontWeight: 500,
+      lineHeight: 5,
+      _first: {
+        pl: 3,
+      },
+      _last: {
+        pr: 3,
+      },
     },
   }),
 };
@@ -104,6 +95,10 @@ const Table = defineMultiStyleConfig({
   baseStyle,
   sizes,
   variants,
+  defaultProps: {
+    size: 'sm',
+    variant: 'simple',
+  },
 });
 
 export default Table;
