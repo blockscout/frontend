@@ -33,7 +33,7 @@ const ValidatorsTable = ({ data, sort, setSorting, isLoading, top }: Props) => {
   }, [ sort, setSorting ]);
 
   return (
-    <Table variant="simple" size="sm">
+    <Table>
       <Thead top={ top }>
         <Tr>
           <Th>

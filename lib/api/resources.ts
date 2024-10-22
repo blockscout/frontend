@@ -605,6 +605,12 @@ export const RESOURCES = {
     filterFields: [],
   },
 
+  // TOKEN TRANSFERS
+  token_transfers_all: {
+    path: '/api/v2/token-transfers',
+    filterFields: [ 'type' as const ],
+  },
+
   // APP STATS
   stats: {
     path: '/api/v2/stats',
@@ -1021,7 +1027,8 @@ export type PaginatedResources = 'blocks' | 'block_txs' | 'block_election_reward
 'zksync_l2_txn_batches' | 'zksync_l2_txn_batch_txs' |
 'withdrawals' | 'address_withdrawals' | 'block_withdrawals' |
 'watchlist' | 'private_tags_address' | 'private_tags_tx' |
-'domains_lookup' | 'addresses_lookup' | 'user_ops' | 'validators_stability' | 'validators_blackfort' | 'noves_address_history';
+'domains_lookup' | 'addresses_lookup' | 'user_ops' | 'validators_stability' | 'validators_blackfort' | 'noves_address_history' |
+'token_transfers_all';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
@@ -1191,6 +1198,7 @@ Q extends 'address_mud_record' ? AddressMudRecord :
 Q extends 'address_epoch_rewards' ? AddressEpochRewardsResponse :
 Q extends 'withdrawals' ? WithdrawalsResponse :
 Q extends 'withdrawals_counters' ? WithdrawalsCounters :
+Q extends 'token_transfers_all' ? TokenTransferResponse :
 never;
 /* eslint-enable @typescript-eslint/indent */
 
@@ -1225,6 +1233,7 @@ Q extends 'user_ops' ? UserOpsFilters :
 Q extends 'validators_stability' ? ValidatorsStabilityFilters :
 Q extends 'address_mud_tables' ? AddressMudTablesFilter :
 Q extends 'address_mud_records' ? AddressMudRecordsFilter :
+Q extends 'token_transfers_all' ? TokenTransferFilters :
 never;
 /* eslint-enable @typescript-eslint/indent */
 
