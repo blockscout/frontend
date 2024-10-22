@@ -51,6 +51,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/validators': '%network_name% validators list',
   '/gas-tracker': '%network_name% gas tracker - Current gas fees',
   '/mud-worlds': '%network_name% MUD worlds list',
+  '/token-transfers': '%network_name% token transfers',
 
   // service routes, added only to make typescript happy
   '/login': '%network_name% login',

@@ -49,6 +49,7 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/validators': 'Validators list',
   '/gas-tracker': 'Gas tracker',
   '/mud-worlds': 'MUD worlds',
+  '/token-transfers': 'Token transfers',
 
   // service routes, added only to make typescript happy
   '/login': 'Login',

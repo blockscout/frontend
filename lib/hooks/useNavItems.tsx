@@ -179,6 +179,21 @@ export default function useNavItems(): ReturnType {
       ].filter(Boolean);
     }
 
+    const tokensNavItems = [
+      {
+        text: 'Tokens',
+        nextRoute: { pathname: '/tokens' as const },
+        icon: 'token',
+        isActive: pathname.startsWith('/token'),
+      },
+      {
+        text: 'Token transfers',
+        nextRoute: { pathname: '/token-transfers' as const },
+        icon: 'token-transfers',
+        isActive: pathname === '/token-transfers',
+      },
+    ];
+
     const apiNavItems: Array<NavItem> = [
       config.features.restApiDocs.isEnabled ? {
         text: 'REST API',
@@ -232,9 +247,9 @@ export default function useNavItems(): ReturnType {
       },
       {
         text: 'Tokens',
-        nextRoute: { pathname: '/tokens' as const },
         icon: 'token',
-        isActive: pathname.startsWith('/token'),
+        isActive: tokensNavItems.flat().some(item => isInternalItem(item) && item.isActive),
+        subItems: tokensNavItems,
       },
       config.features.marketplace.isEnabled ? {
         text: 'DApps',
