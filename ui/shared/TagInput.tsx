@@ -15,6 +15,7 @@ type Props<TInputs extends FieldValues, TInputName extends Path<TInputs>> = {
   bgColor?: string;
 }
 
+// TODO @tom2drum remove this component
 function TagInput<Inputs extends FieldValues, Name extends Path<Inputs>>({ field, error, bgColor }: Props<Inputs, Name>) {
   return (
     <FormControl variant="floating" id="tag" isRequired bgColor={ bgColor }>

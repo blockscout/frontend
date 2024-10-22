@@ -17,6 +17,7 @@ type Props<TInputs extends FieldValues, TInputName extends Path<TInputs>> = {
   error?: FieldError;
 }
 
+// TODO @tom2drum remove this component
 export default function AddressInput<Inputs extends FieldValues, Name extends Path<Inputs>>(
   {
     error,
