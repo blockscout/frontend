@@ -16,7 +16,7 @@ const L2WithdrawalUrl = getEnvValue('NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL');
 
 const title = 'Rollup (L2) chain';
 
-const config: Feature<{ type: RollupType; L1BaseUrl: string; L2WithdrawalUrl?: string }> = (() => {
+const config: Feature<{ type: RollupType; L1BaseUrl: string; L2WithdrawalUrl?: string; homepage: { showLatestBlocks: boolean } }> = (() => {
 
   if (type && L1BaseUrl) {
     return Object.freeze({
@@ -25,6 +25,9 @@ const config: Feature<{ type: RollupType; L1BaseUrl: string; L2WithdrawalUrl?: s
       type,
       L1BaseUrl: stripTrailingSlash(L1BaseUrl),
       L2WithdrawalUrl,
+      homepage: {
+        showLatestBlocks: getEnvValue('NEXT_PUBLIC_ROLLUP_HOMEPAGE_SHOW_LATEST_BLOCKS') === 'true',
+      },
     });
   }
 
