@@ -3,6 +3,7 @@
 | Variable | Type | Description | Compulsoriness | Default value | Example value | Introduced in version | Deprecated in version | Comment |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_FAVICON_GENERATOR_API_KEY | `string` | RealFaviconGenerator [API key](https://realfavicongenerator.net/api/) | Required | - | `<your-secret>` | v1.11.0 | v1.16.0 | Replaced FAVICON_GENERATOR_API_KEY |
+| FAVICON_GENERATOR_API_KEY | `string` | RealFaviconGenerator [API key](https://realfavicongenerator.net/api/) | Required | - | `<your-secret>` | v1.16.0+ | v1.37.0 | We don't use RealFaviconGenerator anymore |
 | NEXT_PUBLIC_IS_OPTIMISTIC_L2_NETWORK | `boolean` | Set to true for optimistic L2 solutions | Required | - | `true` | v1.17.0 | v1.24.0 | Replaced by NEXT_PUBLIC_ROLLUP_TYPE |
 | NEXT_PUBLIC_IS_ZKEVM_L2_NETWORK | `boolean` | Set to true for zkevm L2 solutions  | Required | - | `true` | v1.17.0 | v1.24.0 | Replaced by NEXT_PUBLIC_ROLLUP_TYPE |
 | NEXT_PUBLIC_OPTIMISTIC_L2_WITHDRAWAL_URL | `string` | URL for optimistic L2 -> L1 withdrawals | Required | - | `https://app.optimism.io/bridge/withdraw` | v1.17.0 | v1.24.0 | Renamed to NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL |
