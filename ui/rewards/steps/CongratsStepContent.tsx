@@ -1,8 +1,12 @@
-import { Text, Box, Flex, Button, Skeleton } from '@chakra-ui/react';
+import { Text, Box, Flex, Button, Skeleton, Icon } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
+// This icon doesn't work properly when it is in the sprite
+// Probably because of the gradient
+// eslint-disable-next-line no-restricted-imports
+import meritsIcon from 'icons/merits_colored.svg';
 import { useRewardsContext } from 'lib/contexts/rewards';
 import IconSvg from 'ui/shared/IconSvg';
 
@@ -28,8 +32,8 @@ const CongratsStepContent = ({ isReferral }: Props) => {
         padding={ 2 }
         mb={ 8 }
       >
-        <IconSvg
-          name="merits_colored"
+        <Icon
+          as={ meritsIcon }
           boxSize="60px"
           mb={ -1 }
           filter="drop-shadow(0px 6px 3px rgba(21, 57, 103, 0.1))"
@@ -54,7 +58,12 @@ const CongratsStepContent = ({ isReferral }: Props) => {
                 },
               ].map(({ title, value }) => (
                 <Flex key={ title } alignItems="center">
-                  <IconSvg name="merits_colored" boxSize={ 8 }/>
+                  <Icon
+                    as={ meritsIcon }
+                    boxSize={ 8 }
+                    mb={ -0.5 }
+                    filter="drop-shadow(0px 2px 2px rgba(21, 57, 103, 0.1))"
+                  />
                   <Skeleton isLoaded={ !rewardsConfigQuery.isLoading }>
                     <Text fontSize="sm" fontWeight="700" color="blue.700">
                       +{ value }

@@ -1,8 +1,11 @@
-import { Flex, Text } from '@chakra-ui/react';
+import { Flex, Text, Icon } from '@chakra-ui/react';
 import React from 'react';
 
+// This icon doesn't work properly when it is in the sprite
+// Probably because of the gradient
+// eslint-disable-next-line no-restricted-imports
+import meritsIcon from 'icons/merits_colored.svg';
 import HintPopover from 'ui/shared/HintPopover';
-import IconSvg from 'ui/shared/IconSvg';
 
 type Props = {
   label: string;
@@ -28,8 +31,8 @@ const RewardsDashboardCard = ({ label, value, withIcon, hint }: Props) => {
       </Flex>
       <Flex alignItems="center">
         { withIcon && (
-          <IconSvg
-            name="merits_colored"
+          <Icon
+            as={ meritsIcon }
             boxSize={ 12 }
             mt={ -2 }
             mb={ -2.5 }
