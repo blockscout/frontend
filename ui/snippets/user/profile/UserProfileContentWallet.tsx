@@ -73,7 +73,7 @@ const UserProfileContentWallet = ({ onClose, className }: Props) => {
 
   return (
     <Box className={ className }>
-      <Flex px={ 2 } py={ 1 } mb={ 1 } fontSize="xs" lineHeight={ 4 } fontWeight="500">
+      <Flex px={ 1 } mb="2px" fontSize="xs" alignItems="center" lineHeight={ 6 } fontWeight="500">
         <span>Connected wallet</span>
         <Hint
           label={
