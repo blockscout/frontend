@@ -31,11 +31,12 @@ const RewardsDashboardCard = ({ label, value, withIcon, hint }: Props) => {
           <IconSvg
             name="merits_colored"
             boxSize={ 12 }
-            mb={ -0.5 }
+            mt={ -2 }
+            mb={ -2.5 }
             filter="drop-shadow(0px 4px 3px rgba(21, 57, 103, 0.1))"
           />
         ) }
-        <Text fontSize="32px" fontWeight="500">
+        <Text fontSize={{ base: '24px', md: '32px' }} lineHeight={{ base: '24px', md: 1.5 }} fontWeight="500">
           { value }
         </Text>
       </Flex>

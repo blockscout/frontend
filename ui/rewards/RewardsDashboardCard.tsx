@@ -20,19 +20,25 @@ const RewardsDashboardCard = ({
 }: Props) => {
   return (
     <Flex
-      flexDirection={ direction }
+      flexDirection={{ base: direction === 'row' ? 'column' : direction, md: direction }}
       justifyContent={ direction === 'column-reverse' ? 'flex-end' : 'flex-start' }
-      p={ 2 }
+      p={{ base: 1.5, md: 2 }}
       border="1px solid"
       borderColor={ useColorModeValue('gray.200', 'whiteAlpha.200') }
       borderRadius="lg"
-      gap={ direction === 'row' ? 10 : 1 }
+      gap={{ base: 1, md: direction === 'row' ? 10 : 1 }}
       w={ direction === 'row' ? 'full' : 'auto' }
+      flex={ direction !== 'row' ? 1 : '0 1 auto' }
     >
-      <Flex flexDirection="column" gap={ 2 } p={ 3 } w={ direction === 'row' ? '340px' : 'full' }>
+      <Flex
+        flexDirection="column"
+        gap={ 2 }
+        p={{ base: 1.5, md: 3 }}
+        w={{ base: 'full', md: direction === 'row' ? '340px' : 'full' }}
+      >
         { title && (
           <Flex alignItems="center" gap={ 2 }>
-            <Text fontSize="lg" fontWeight="500">{ title }</Text>
+            <Text fontSize={{ base: 'md', md: 'lg' }} fontWeight="500">{ title }</Text>
             { availableSoon && <AvailableSoonLabel/> }
           </Flex>
         ) }
@@ -44,9 +50,9 @@ const RewardsDashboardCard = ({
       <Flex
         alignItems="center"
         justifyContent="space-around"
-        borderRadius="8px"
+        borderRadius={{ base: 'lg', md: '8px' }}
         backgroundColor={ useColorModeValue('gray.50', 'whiteAlpha.50') }
-        h="128px"
+        h={{ base: '80px', md: '128px' }}
         filter="auto"
         blur={ blurFilter ? '4px' : '0' }
         flex={ direction === 'row' ? 1 : '0 1 auto' }

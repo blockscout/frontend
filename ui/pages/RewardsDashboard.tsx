@@ -65,17 +65,14 @@ const RewardsDashboard = () => {
       <PageTitle
         title="Dashboard"
         secondRow={ (
-          <>
+          <span>
             The Blockscout Merits Program is just getting started! Learn more about the details,
-            features, and future plans in our <LinkExternal ml={ 1 } href="">blog post</LinkExternal>.
-          </>
+            features, and future plans in our <LinkExternal href="">blog post</LinkExternal>.
+          </span>
         ) }
       />
       <Flex flexDirection="column" alignItems="flex-start" w="full" gap={ 6 }>
-        <Button variant="outline" isDisabled>
-          Pre-staking dashboard
-        </Button>
-        <Flex gap={ 6 }>
+        <Flex gap={ 6 } flexDirection={{ base: 'column', md: 'row' }}>
           <RewardsDashboardCard
             description="Claim your daily merits and any merits received from referrals."
             direction="column-reverse"
@@ -136,7 +133,13 @@ const RewardsDashboard = () => {
           ) }
           direction="row"
         >
-          <Flex flex={ 1 } gap={ 6 } px={ 6 }>
+          <Flex
+            flex={ 1 }
+            gap={{ base: 2, md: 6 }}
+            px={{ base: 4, md: 6 }}
+            py={{ base: 4, md: 0 }}
+            flexDirection={{ base: 'column', md: 'row' }}
+          >
             <CopyField
               label="Referral link"
               value={ `https://eth.blockscout.com?ref=${ referralsQuery.data?.code }` }
@@ -149,7 +152,7 @@ const RewardsDashboard = () => {
             />
           </Flex>
         </RewardsDashboardCard>
-        <Flex gap={ 6 }>
+        <Flex gap={ 6 } flexDirection={{ base: 'column', md: 'row' }}>
           <RewardsDashboardCard
             title="Activity"
             description="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
@@ -175,15 +178,19 @@ const RewardsDashboard = () => {
           direction="row"
           availableSoon
         >
-          <Flex flex={ 1 } gap={ 6 } px={ 6 } justifyContent="space-between">
+          <Flex
+            flex={ 1 }
+            px={{ base: 4, md: 6 }}
+            py={{ base: 4, md: 0 }}
+            justifyContent="space-between"
+          >
             { Array(5).fill(null).map((_, index) => (
               <Image
                 key={ index }
                 src={ `/static/badges/badge_${ index + 1 }.svg` }
                 alt={ `Badge ${ index + 1 }` }
-                w="100px"
-                h="100px"
-                fallback={ <Skeleton w="100px" h="100px"/> }
+                boxSize={{ base: '50px', md: '100px' }}
+                fallback={ <Skeleton boxSize={{ base: '50px', md: '100px' }}/> }
               />
             )) }
           </Flex>
