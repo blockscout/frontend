@@ -1,4 +1,4 @@
-import { Button, Flex, Skeleton, useBoolean } from '@chakra-ui/react';
+import { Button, Flex, Skeleton, useBoolean, Image } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect } from 'react';
 
@@ -8,7 +8,6 @@ import splitSecondsInPeriods from 'ui/blockCountdown/splitSecondsInPeriods';
 import CopyField from 'ui/rewards/CopyField';
 import RewardsDashboardCard from 'ui/rewards/RewardsDashboardCard';
 import RewardsDashboardCardValue from 'ui/rewards/RewardsDashboardCardValue';
-import IconSvg from 'ui/shared/IconSvg';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
@@ -177,11 +176,16 @@ const RewardsDashboard = () => {
           availableSoon
         >
           <Flex flex={ 1 } gap={ 6 } px={ 6 } justifyContent="space-between">
-            <IconSvg name="badges/badge_1" boxSize="100px"/>
-            <IconSvg name="badges/badge_2" boxSize="100px"/>
-            <IconSvg name="badges/badge_3" boxSize="100px"/>
-            <IconSvg name="badges/badge_4" boxSize="100px"/>
-            <IconSvg name="badges/badge_5" boxSize="100px"/>
+            { Array(5).fill(null).map((_, index) => (
+              <Image
+                key={ index }
+                src={ `/static/badges/badge_${ index + 1 }.svg` }
+                alt={ `Badge ${ index + 1 }` }
+                w="100px"
+                h="100px"
+                fallback={ <Skeleton w="100px" h="100px"/> }
+              />
+            )) }
           </Flex>
         </RewardsDashboardCard>
       </Flex>
