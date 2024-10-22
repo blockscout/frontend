@@ -18,6 +18,8 @@ import IconSvg from 'ui/shared/IconSvg';
 
 import AppSecurityReport from './AppSecurityReport';
 import FavoriteIcon from './FavoriteIcon';
+import MarketplaceAppGraphLinks from './MarketplaceAppGraphLinks';
+import MarketplaceAppIntegrationIcon from './MarketplaceAppIntegrationIcon';
 import MarketplaceAppModalLink from './MarketplaceAppModalLink';
 import Rating from './Rating/Rating';
 import type { RateFunction } from './Rating/useRatings';
@@ -36,6 +38,7 @@ type Props = {
   isRatingSending: boolean;
   isRatingLoading: boolean;
   canRate: boolean | undefined;
+  graphLinks?: Array<{text: string; url: string}>;
 }
 
 const MarketplaceAppModal = ({
@@ -49,6 +52,7 @@ const MarketplaceAppModal = ({
   isRatingSending,
   isRatingLoading,
   canRate,
+  graphLinks,
 }: Props) => {
   const {
     id,
@@ -67,6 +71,7 @@ const MarketplaceAppModal = ({
     categories,
     securityReport,
     rating,
+    internalWallet,
   } = data;
 
   const socialLinks = [
@@ -148,16 +153,19 @@ const MarketplaceAppModal = ({
             />
           </Flex>
 
-          <Heading
-            as="h2"
-            gridColumn={ 2 }
-            fontSize={{ base: '2xl', md: '32px' }}
-            fontWeight="medium"
-            lineHeight={{ md: 10 }}
-            mb={{ md: 2 }}
-          >
-            { title }
-          </Heading>
+          <Flex alignItems="center" mb={{ md: 2 }} gridColumn={ 2 }>
+            <Heading
+              as="h2"
+              fontSize={{ base: '2xl', md: '32px' }}
+              fontWeight="medium"
+              lineHeight={{ md: 10 }}
+              mr={ 2 }
+            >
+              { title }
+            </Heading>
+            <MarketplaceAppIntegrationIcon external={ external } internalWallet={ internalWallet }/>
+            <MarketplaceAppGraphLinks links={ graphLinks } ml={ 2 }/>
+          </Flex>
 
           <Text
             variant="secondary"
