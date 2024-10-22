@@ -31,13 +31,7 @@ const RewardsDashboardCard = ({ label, value, withIcon, hint }: Props) => {
       </Flex>
       <Flex alignItems="center">
         { withIcon && (
-          <Icon
-            as={ meritsIcon }
-            boxSize={ 12 }
-            mt={ -2 }
-            mb={ -2.5 }
-            filter="drop-shadow(0px 4px 3px rgba(21, 57, 103, 0.1))"
-          />
+          <Icon as={ meritsIcon } boxSize={ 12 } mt={ -2 } mb={ -2.5 }/>
         ) }
         <Text fontSize={{ base: '24px', md: '32px' }} lineHeight={{ base: '24px', md: 1.5 }} fontWeight="500">
           { value }

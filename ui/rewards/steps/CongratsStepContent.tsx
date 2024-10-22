@@ -32,12 +32,7 @@ const CongratsStepContent = ({ isReferral }: Props) => {
         padding={ 2 }
         mb={ 8 }
       >
-        <Icon
-          as={ meritsIcon }
-          boxSize="60px"
-          mb={ -1 }
-          filter="drop-shadow(0px 6px 3px rgba(21, 57, 103, 0.1))"
-        />
+        <Icon as={ meritsIcon } boxSize="60px" mb={ -1 }/>
         <Skeleton isLoaded={ !rewardsConfigQuery.isLoading }>
           <Text fontSize="30px" fontWeight="700" color="blue.700">
             +{ rewardsConfigQuery.data?.rewards[ isReferral ? 'registration_with_referral' : 'registration' ] }
@@ -58,12 +53,7 @@ const CongratsStepContent = ({ isReferral }: Props) => {
                 },
               ].map(({ title, value }) => (
                 <Flex key={ title } alignItems="center">
-                  <Icon
-                    as={ meritsIcon }
-                    boxSize={ 8 }
-                    mb={ -0.5 }
-                    filter="drop-shadow(0px 2px 2px rgba(21, 57, 103, 0.1))"
-                  />
+                  <Icon as={ meritsIcon } boxSize={ 8 } mb={ -0.5 }/>
                   <Skeleton isLoaded={ !rewardsConfigQuery.isLoading }>
                     <Text fontSize="sm" fontWeight="700" color="blue.700">
                       +{ value }
