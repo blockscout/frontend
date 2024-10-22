@@ -1,4 +1,4 @@
-import { Text, Button, useColorModeValue, Image, Box, Flex, Switch, useBoolean, Input, FormControl, Alert } from '@chakra-ui/react';
+import { Text, Button, useColorModeValue, Image, Box, Flex, Switch, useBoolean, Input, FormControl, Alert, Skeleton } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import type { ChangeEvent } from 'react';
 import React, { useCallback, useState, useEffect } from 'react';
@@ -74,7 +74,12 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
 
   return (
     <>
-      <Image src="/static/merits_program.png" alt="Rewards program" mb={ 3 }/>
+      <Image
+        src="/static/merits_program.png"
+        alt="Merits program"
+        mb={ 3 }
+        fallback={ <Skeleton w="full" h="120px" mb={ 3 }/> }
+      />
       <Box mb={ 6 }>
         Merits are awarded for a variety of different Blockscout activities. Connect a wallet to get started.
         <LinkExternal href="https://docs.blockscout.com/using-blockscout/my-account/merits" ml={ 1 } fontWeight="500">
