@@ -20,7 +20,7 @@ const UserProfileContentNavLink = ({ href, icon, text, onClick, py }: Props) => 
       alignItems="center"
       columnGap={ 3 }
       py={ py ?? '14px' }
-      color="initial"
+      color="inherit"
       _hover={{ textDecoration: 'none', color: 'link_hovered' }}
       onClick={ onClick }
     >
