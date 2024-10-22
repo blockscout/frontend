@@ -43,7 +43,7 @@ const MarketplaceAppGraphLinks = ({ className, links }: Props) => {
         <PopoverContent w="260px">
           <PopoverBody fontSize="sm">
             <VStack gap={ 4 } align="start">
-              <Text>{ `This dapp uses ${ links.length > 1 ? 'several subgraphs' : 'a subgraph' } provided by The Graph` }</Text>
+              <Text>{ `This dapp uses ${ links.length > 1 ? 'several subgraphs' : 'a subgraph' } powered by The Graph` }</Text>
               { links.map(link => (
                 <LinkExternal key={ link.url } href={ link.url }>{ link.title }</LinkExternal>
               )) }
