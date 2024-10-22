@@ -11,6 +11,7 @@ type Props<TInputs extends FieldValues, TInputName extends Path<TInputs>> = {
   isDisabled?: boolean;
 }
 
+// TODO @tom2drum remove this component
 export default function CheckboxInput<Inputs extends FieldValues, Name extends Path<Inputs>>(
   {
     field,

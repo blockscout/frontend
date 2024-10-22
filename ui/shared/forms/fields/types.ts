@@ -11,6 +11,7 @@ export interface FormFieldPropsBase<
   isRequired?: boolean;
   rules?: Omit<RegisterOptions<FormFields, Name>, 'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'>;
   onBlur?: () => void;
+  onChange?: () => void;
   type?: HTMLInputElement['type'];
 
   // styles

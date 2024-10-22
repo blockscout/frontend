@@ -6,17 +6,17 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import { useMutation } from '@tanstack/react-query';
-import React, { useCallback, useState } from 'react';
-import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
-import { useForm, Controller, FormProvider } from 'react-hook-form';
+import React, { useState } from 'react';
+import type { SubmitHandler } from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
 
 import type { WatchlistAddress, WatchlistErrors } from 'types/api/account';
 
 import type { ResourceErrorAccount } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/getErrorMessage';
-import CheckboxInput from 'ui/shared/CheckboxInput';
 import FormFieldAddress from 'ui/shared/forms/fields/FormFieldAddress';
+import FormFieldCheckbox from 'ui/shared/forms/fields/FormFieldCheckbox';
 import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
 import AuthModal from 'ui/snippets/auth/AuthModal';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
@@ -35,7 +35,7 @@ type Props = {
   isAdd: boolean;
 }
 
-type Inputs = {
+export type Inputs = {
   address: string;
   tag: string;
   notification: boolean;
@@ -58,16 +58,6 @@ type Inputs = {
     };
   };
 }
-
-type Checkboxes = 'notification' |
-'notification_settings.native.outcoming' |
-'notification_settings.native.incoming' |
-'notification_settings.ERC-20.outcoming' |
-'notification_settings.ERC-20.incoming' |
-'notification_settings.ERC-721.outcoming' |
-'notification_settings.ERC-721.incoming' |
-'notification_settings.ERC-404.outcoming' |
-'notification_settings.ERC-404.incoming';
 
 const AddressForm: React.FC<Props> = ({ data, onSuccess, setAlertVisible, isAdd }) => {
   const [ pending, setPending ] = useState(false);
@@ -143,11 +133,6 @@ const AddressForm: React.FC<Props> = ({ data, onSuccess, setAlertVisible, isAdd 
     mutate(formData);
   };
 
-  // eslint-disable-next-line react/display-name
-  const renderCheckbox = useCallback((text: string) => ({ field }: {field: ControllerRenderProps<Inputs, Checkboxes>}) => (
-    <CheckboxInput<Inputs, Checkboxes> text={ text } field={ field }/>
-  ), []);
-
   return (
     <FormProvider { ...formApi }>
       <form noValidate onSubmit={ formApi.handleSubmit(onSubmit) }>
@@ -190,13 +175,12 @@ const AddressForm: React.FC<Props> = ({ data, onSuccess, setAlertVisible, isAdd 
             Please select what types of notifications you will receive
             </Text>
             <Box marginBottom={ 8 }>
-              <AddressFormNotifications control={ formApi.control }/>
+              <AddressFormNotifications/>
             </Box>
             <Text variant="secondary" fontSize="sm" marginBottom={{ base: '10px', lg: 5 }}>Notification methods</Text>
-            <Controller
-              name={ 'notification' as Checkboxes }
-              control={ formApi.control }
-              render={ renderCheckbox('Email notifications') }
+            <FormFieldCheckbox<Inputs, 'notification'>
+              name="notification"
+              label="Email notifications"
             />
           </>
         ) }
