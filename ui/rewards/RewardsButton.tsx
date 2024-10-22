@@ -24,7 +24,7 @@ const RewardsButton = ({ variant = 'header', size }: Props) => {
       textAlign="center"
       padding={ 2 }
       openDelay={ 500 }
-      isDisabled={ isMobile }
+      isDisabled={ isMobile || isLoading || Boolean(apiToken) }
       width="150px"
     >
       <Button
@@ -34,6 +34,7 @@ const RewardsButton = ({ variant = 'header', size }: Props) => {
         as={ apiToken ? LinkInternal : 'button' }
         { ...(apiToken ? { href: route({ pathname: '/account/rewards' }) } : {}) }
         onClick={ apiToken ? undefined : openLoginModal }
+        onFocus={ e => e.preventDefault() } // eslint-disable-line
         fontSize="sm"
         size={ size }
         px={ 2.5 }
