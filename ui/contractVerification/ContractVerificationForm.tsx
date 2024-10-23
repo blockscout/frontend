@@ -145,7 +145,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
     topic: `addresses:${ address?.toLowerCase() }`,
     onSocketClose: handleSocketError,
     onSocketError: handleSocketError,
-    isDisabled: Boolean(address && addressState.error),
+    isDisabled: !address || Boolean(address && addressState.error),
   });
   useSocketMessage({
     channel,

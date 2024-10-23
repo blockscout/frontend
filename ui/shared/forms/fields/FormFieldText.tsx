@@ -32,6 +32,7 @@ const FormFieldText = <
   size = 'md',
   bgColor,
   minH,
+  maxH,
 }: Props<FormFields, Name>) => {
   const { control } = useFormContext<FormFields>();
   const { field, fieldState, formState } = useController<FormFields, typeof name>({
@@ -70,6 +71,7 @@ const FormFieldText = <
         size={ size }
         bgColor={ bgColor }
         minH={ minH }
+        maxH={ maxH }
       />
       { size !== 'xs' && (
         <FormInputPlaceholder text={ placeholder } error={ fieldState.error }/>
@@ -82,7 +84,7 @@ const WrappedFormFieldText = chakra(FormFieldText, {
   shouldForwardProp: (prop) => {
     const isChakraProp = !shouldForwardProp(prop);
 
-    if (isChakraProp && ![ 'bgColor', 'size', 'minH' ].includes(prop)) {
+    if (isChakraProp && ![ 'bgColor', 'size', 'minH', 'maxH' ].includes(prop)) {
       return false;
     }
 

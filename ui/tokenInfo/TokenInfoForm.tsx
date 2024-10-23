@@ -1,7 +1,7 @@
-import { Button, Grid, GridItem } from '@chakra-ui/react';
+import { Button, Grid, GridItem, Text } from '@chakra-ui/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 
 import type { Fields } from './types';
 import type { TokenInfoApplication } from 'types/api/account';
@@ -15,22 +15,15 @@ import useUpdateEffect from 'lib/hooks/useUpdateEffect';
 import * as mixpanel from 'lib/mixpanel/index';
 import ContentLoader from 'ui/shared/ContentLoader';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
+import FormFieldAddress from 'ui/shared/forms/fields/FormFieldAddress';
+import FormFieldEmail from 'ui/shared/forms/fields/FormFieldEmail';
+import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
+import FormFieldUrl from 'ui/shared/forms/fields/FormFieldUrl';
 
-import TokenInfoFieldAddress from './fields/TokenInfoFieldAddress';
-import TokenInfoFieldComment from './fields/TokenInfoFieldComment';
-import TokenInfoFieldDocs from './fields/TokenInfoFieldDocs';
 import TokenInfoFieldIconUrl from './fields/TokenInfoFieldIconUrl';
-import TokenInfoFieldPriceTicker from './fields/TokenInfoFieldPriceTicker';
-import TokenInfoFieldProjectDescription from './fields/TokenInfoFieldProjectDescription';
-import TokenInfoFieldProjectEmail from './fields/TokenInfoFieldProjectEmail';
-import TokenInfoFieldProjectName from './fields/TokenInfoFieldProjectName';
 import TokenInfoFieldProjectSector from './fields/TokenInfoFieldProjectSector';
-import TokenInfoFieldProjectWebsite from './fields/TokenInfoFieldProjectWebsite';
-import TokenInfoFieldRequesterEmail from './fields/TokenInfoFieldRequesterEmail';
-import TokenInfoFieldRequesterName from './fields/TokenInfoFieldRequesterName';
 import TokenInfoFieldSocialLink from './fields/TokenInfoFieldSocialLink';
 import TokenInfoFieldSupport from './fields/TokenInfoFieldSupport';
-import TokenInfoFieldTokenName from './fields/TokenInfoFieldTokenName';
 import TokenInfoFormSectionHeader from './TokenInfoFormSectionHeader';
 import TokenInfoFormStatusText from './TokenInfoFormStatusText';
 import { getFormDefaultValues, prepareRequestBody } from './utils';
@@ -117,65 +110,90 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
   }
 
   const fieldProps = { control, isReadOnly: application?.status === 'IN_PROCESS' };
+  const fieldProps2 = {
+    size: { base: 'md', lg: 'lg' },
+    isReadOnly: application?.status === 'IN_PROCESS',
+  };
 
   return (
-    <form noValidate onSubmit={ handleSubmit(onFormSubmit) } autoComplete="off" ref={ containerRef }>
-      <TokenInfoFormStatusText application={ application }/>
-      <Grid mt={ 8 } gridTemplateColumns={{ base: '1fr', lg: '1fr 1fr' }} columnGap={ 5 } rowGap={ 5 }>
+    <FormProvider { ...formApi }>
+      <form noValidate onSubmit={ handleSubmit(onFormSubmit) } autoComplete="off" ref={ containerRef }>
+        <TokenInfoFormStatusText application={ application }/>
+        <Grid mt={ 8 } gridTemplateColumns={{ base: '1fr', lg: '1fr 1fr' }} columnGap={ 5 } rowGap={ 5 }>
 
-        <TokenInfoFieldTokenName { ...fieldProps }/>
-        <TokenInfoFieldAddress { ...fieldProps }/>
-        <TokenInfoFieldRequesterName { ...fieldProps }/>
-        <TokenInfoFieldRequesterEmail { ...fieldProps }/>
+          <FormFieldText<Fields> name="token_name" isRequired placeholder="Token name" { ...fieldProps2 } isReadOnly/>
+          <FormFieldAddress<Fields> name="address" isRequired placeholder="Token contract address" { ...fieldProps2 } isReadOnly/>
+          <FormFieldText<Fields> name="requester_name" isRequired placeholder="Requester name" { ...fieldProps2 }/>
+          <FormFieldEmail<Fields> name="requester_email" isRequired placeholder="Requester email" { ...fieldProps2 }/>
 
-        <TokenInfoFormSectionHeader>Project info</TokenInfoFormSectionHeader>
-        <TokenInfoFieldProjectName { ...fieldProps }/>
-        <TokenInfoFieldProjectSector { ...fieldProps } config={ configQuery.data.projectSectors }/>
-        <TokenInfoFieldProjectEmail { ...fieldProps }/>
-        <TokenInfoFieldProjectWebsite { ...fieldProps }/>
-        <TokenInfoFieldDocs { ...fieldProps }/>
-        <TokenInfoFieldSupport { ...fieldProps }/>
-        <GridItem colSpan={{ base: 1, lg: 2 }}>
-          <TokenInfoFieldIconUrl { ...fieldProps } trigger={ trigger }/>
-        </GridItem>
-        <GridItem colSpan={{ base: 1, lg: 2 }}>
-          <TokenInfoFieldProjectDescription { ...fieldProps }/>
-        </GridItem>
+          <TokenInfoFormSectionHeader>Project info</TokenInfoFormSectionHeader>
+          <FormFieldText<Fields> name="project_name" isRequired placeholder="Project name" { ...fieldProps2 }/>
+          <TokenInfoFieldProjectSector { ...fieldProps } config={ configQuery.data.projectSectors }/>
+          <FormFieldEmail<Fields> name="project_email" isRequired placeholder="Official project email address" { ...fieldProps2 }/>
+          <FormFieldUrl<Fields> name="project_website" isRequired placeholder="Official project website" { ...fieldProps2 }/>
+          <FormFieldUrl<Fields> name="docs" isRequired placeholder="Docs" { ...fieldProps2 }/>
+          <TokenInfoFieldSupport { ...fieldProps2 }/>
+          <GridItem colSpan={{ base: 1, lg: 2 }}>
+            <TokenInfoFieldIconUrl { ...fieldProps } trigger={ trigger }/>
+          </GridItem>
+          <GridItem colSpan={{ base: 1, lg: 2 }}>
+            <FormFieldText<Fields>
+              name="project_description"
+              isRequired
+              placeholder="Project description"
+              maxH="160px"
+              rules={{ maxLength: 300 }}
+              asComponent="Textarea"
+              { ...fieldProps2 }
+            />
+            <Text variant="secondary" fontSize="sm" mt={ 1 }>
+              Introduce or summarize the project’s operation/goals in a maximum of 300 characters.
+              The description should be written in a neutral point of view and must exclude unsubstantiated claims unless proven otherwise.
+            </Text>
+          </GridItem>
 
-        <TokenInfoFormSectionHeader>Links</TokenInfoFormSectionHeader>
-        <TokenInfoFieldSocialLink { ...fieldProps } name="github"/>
-        <TokenInfoFieldSocialLink { ...fieldProps } name="twitter"/>
-        <TokenInfoFieldSocialLink { ...fieldProps } name="telegram"/>
-        <TokenInfoFieldSocialLink { ...fieldProps } name="opensea"/>
-        <TokenInfoFieldSocialLink { ...fieldProps } name="linkedin"/>
-        <TokenInfoFieldSocialLink { ...fieldProps } name="facebook"/>
-        <TokenInfoFieldSocialLink { ...fieldProps } name="discord"/>
-        <TokenInfoFieldSocialLink { ...fieldProps } name="medium"/>
-        <TokenInfoFieldSocialLink { ...fieldProps } name="slack"/>
-        <TokenInfoFieldSocialLink { ...fieldProps } name="reddit"/>
+          <TokenInfoFormSectionHeader>Links</TokenInfoFormSectionHeader>
+          <TokenInfoFieldSocialLink { ...fieldProps } name="github"/>
+          <TokenInfoFieldSocialLink { ...fieldProps } name="twitter"/>
+          <TokenInfoFieldSocialLink { ...fieldProps } name="telegram"/>
+          <TokenInfoFieldSocialLink { ...fieldProps } name="opensea"/>
+          <TokenInfoFieldSocialLink { ...fieldProps } name="linkedin"/>
+          <TokenInfoFieldSocialLink { ...fieldProps } name="facebook"/>
+          <TokenInfoFieldSocialLink { ...fieldProps } name="discord"/>
+          <TokenInfoFieldSocialLink { ...fieldProps } name="medium"/>
+          <TokenInfoFieldSocialLink { ...fieldProps } name="slack"/>
+          <TokenInfoFieldSocialLink { ...fieldProps } name="reddit"/>
 
-        <TokenInfoFormSectionHeader>Price data</TokenInfoFormSectionHeader>
-        <TokenInfoFieldPriceTicker { ...fieldProps } name="ticker_coin_market_cap" label="CoinMarketCap URL"/>
-        <TokenInfoFieldPriceTicker { ...fieldProps } name="ticker_coin_gecko" label="CoinGecko URL"/>
-        <GridItem colSpan={{ base: 1, lg: 2 }}>
-          <TokenInfoFieldPriceTicker { ...fieldProps } name="ticker_defi_llama" label="DefiLlama URL "/>
-        </GridItem>
+          <TokenInfoFormSectionHeader>Price data</TokenInfoFormSectionHeader>
+          <FormFieldUrl<Fields> name="ticker_coin_market_cap" placeholder="CoinMarketCap URL" { ...fieldProps2 }/>
+          <FormFieldUrl<Fields> name="ticker_coin_gecko" placeholder="CoinGecko URL" { ...fieldProps2 }/>
+          <GridItem colSpan={{ base: 1, lg: 2 }}>
+            <FormFieldUrl<Fields> name="ticker_defi_llama" placeholder="DefiLlama URL" { ...fieldProps2 }/>
+          </GridItem>
 
-        <GridItem colSpan={{ base: 1, lg: 2 }}>
-          <TokenInfoFieldComment { ...fieldProps }/>
-        </GridItem>
-      </Grid>
-      <Button
-        type="submit"
-        size="lg"
-        mt={ 8 }
-        isLoading={ formState.isSubmitting }
-        loadingText="Send request"
-        isDisabled={ application?.status === 'IN_PROCESS' }
-      >
-        Send request
-      </Button>
-    </form>
+          <GridItem colSpan={{ base: 1, lg: 2 }}>
+            <FormFieldText<Fields>
+              name="comment"
+              placeholder="Comment"
+              maxH="160px"
+              rules={{ maxLength: 300 }}
+              asComponent="Textarea"
+              { ...fieldProps2 }
+            />
+          </GridItem>
+        </Grid>
+        <Button
+          type="submit"
+          size="lg"
+          mt={ 8 }
+          isLoading={ formState.isSubmitting }
+          loadingText="Send request"
+          isDisabled={ application?.status === 'IN_PROCESS' }
+        >
+          Send request
+        </Button>
+      </form>
+    </FormProvider>
   );
 };
 

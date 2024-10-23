@@ -14,6 +14,7 @@ interface Props {
   config: TokenInfoApplicationConfig['projectSectors'];
 }
 
+// TODO @tom2drum add common component
 const TokenInfoFieldProjectSector = ({ control, isReadOnly, config }: Props) => {
   const isMobile = useIsMobile();
 
