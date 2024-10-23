@@ -51,7 +51,7 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
     mode: 'onBlur',
     defaultValues: getFormDefaultValues(address, tokenName, application),
   });
-  const { handleSubmit, formState, control } = formApi;
+  const { handleSubmit, formState } = formApi;
 
   React.useEffect(() => {
     if (!application?.id && !openEventSent.current) {
@@ -109,8 +109,7 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
     return <ContentLoader/>;
   }
 
-  const fieldProps = { control, isReadOnly: application?.status === 'IN_PROCESS' };
-  const fieldProps2 = {
+  const fieldProps = {
     size: { base: 'md', lg: 'lg' },
     isReadOnly: application?.status === 'IN_PROCESS',
   };
@@ -121,20 +120,20 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
         <TokenInfoFormStatusText application={ application }/>
         <Grid mt={ 8 } gridTemplateColumns={{ base: '1fr', lg: '1fr 1fr' }} columnGap={ 5 } rowGap={ 5 }>
 
-          <FormFieldText<Fields> name="token_name" isRequired placeholder="Token name" { ...fieldProps2 } isReadOnly/>
-          <FormFieldAddress<Fields> name="address" isRequired placeholder="Token contract address" { ...fieldProps2 } isReadOnly/>
-          <FormFieldText<Fields> name="requester_name" isRequired placeholder="Requester name" { ...fieldProps2 }/>
-          <FormFieldEmail<Fields> name="requester_email" isRequired placeholder="Requester email" { ...fieldProps2 }/>
+          <FormFieldText<Fields> name="token_name" isRequired placeholder="Token name" { ...fieldProps } isReadOnly/>
+          <FormFieldAddress<Fields> name="address" isRequired placeholder="Token contract address" { ...fieldProps } isReadOnly/>
+          <FormFieldText<Fields> name="requester_name" isRequired placeholder="Requester name" { ...fieldProps }/>
+          <FormFieldEmail<Fields> name="requester_email" isRequired placeholder="Requester email" { ...fieldProps }/>
 
           <TokenInfoFormSectionHeader>Project info</TokenInfoFormSectionHeader>
-          <FormFieldText<Fields> name="project_name" isRequired placeholder="Project name" { ...fieldProps2 }/>
+          <FormFieldText<Fields> name="project_name" isRequired placeholder="Project name" { ...fieldProps }/>
           <TokenInfoFieldProjectSector { ...fieldProps } config={ configQuery.data.projectSectors }/>
-          <FormFieldEmail<Fields> name="project_email" isRequired placeholder="Official project email address" { ...fieldProps2 }/>
-          <FormFieldUrl<Fields> name="project_website" isRequired placeholder="Official project website" { ...fieldProps2 }/>
-          <FormFieldUrl<Fields> name="docs" isRequired placeholder="Docs" { ...fieldProps2 }/>
-          <TokenInfoFieldSupport { ...fieldProps2 }/>
+          <FormFieldEmail<Fields> name="project_email" isRequired placeholder="Official project email address" { ...fieldProps }/>
+          <FormFieldUrl<Fields> name="project_website" isRequired placeholder="Official project website" { ...fieldProps }/>
+          <FormFieldUrl<Fields> name="docs" isRequired placeholder="Docs" { ...fieldProps }/>
+          <TokenInfoFieldSupport { ...fieldProps }/>
           <GridItem colSpan={{ base: 1, lg: 2 }}>
-            <TokenInfoFieldIconUrl { ...fieldProps2 }/>
+            <TokenInfoFieldIconUrl { ...fieldProps }/>
           </GridItem>
           <GridItem colSpan={{ base: 1, lg: 2 }}>
             <FormFieldText<Fields>
@@ -144,7 +143,7 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
               maxH="160px"
               rules={{ maxLength: 300 }}
               asComponent="Textarea"
-              { ...fieldProps2 }
+              { ...fieldProps }
             />
             <Text variant="secondary" fontSize="sm" mt={ 1 }>
               Introduce or summarize the project’s operation/goals in a maximum of 300 characters.
@@ -153,22 +152,22 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
           </GridItem>
 
           <TokenInfoFormSectionHeader>Links</TokenInfoFormSectionHeader>
-          <TokenInfoFieldSocialLink { ...fieldProps2 } name="github"/>
-          <TokenInfoFieldSocialLink { ...fieldProps2 } name="twitter"/>
-          <TokenInfoFieldSocialLink { ...fieldProps2 } name="telegram"/>
-          <TokenInfoFieldSocialLink { ...fieldProps2 } name="opensea"/>
-          <TokenInfoFieldSocialLink { ...fieldProps2 } name="linkedin"/>
-          <TokenInfoFieldSocialLink { ...fieldProps2 } name="facebook"/>
-          <TokenInfoFieldSocialLink { ...fieldProps2 } name="discord"/>
-          <TokenInfoFieldSocialLink { ...fieldProps2 } name="medium"/>
-          <TokenInfoFieldSocialLink { ...fieldProps2 } name="slack"/>
-          <TokenInfoFieldSocialLink { ...fieldProps2 } name="reddit"/>
+          <TokenInfoFieldSocialLink { ...fieldProps } name="github"/>
+          <TokenInfoFieldSocialLink { ...fieldProps } name="twitter"/>
+          <TokenInfoFieldSocialLink { ...fieldProps } name="telegram"/>
+          <TokenInfoFieldSocialLink { ...fieldProps } name="opensea"/>
+          <TokenInfoFieldSocialLink { ...fieldProps } name="linkedin"/>
+          <TokenInfoFieldSocialLink { ...fieldProps } name="facebook"/>
+          <TokenInfoFieldSocialLink { ...fieldProps } name="discord"/>
+          <TokenInfoFieldSocialLink { ...fieldProps } name="medium"/>
+          <TokenInfoFieldSocialLink { ...fieldProps } name="slack"/>
+          <TokenInfoFieldSocialLink { ...fieldProps } name="reddit"/>
 
           <TokenInfoFormSectionHeader>Price data</TokenInfoFormSectionHeader>
-          <FormFieldUrl<Fields> name="ticker_coin_market_cap" placeholder="CoinMarketCap URL" { ...fieldProps2 }/>
-          <FormFieldUrl<Fields> name="ticker_coin_gecko" placeholder="CoinGecko URL" { ...fieldProps2 }/>
+          <FormFieldUrl<Fields> name="ticker_coin_market_cap" placeholder="CoinMarketCap URL" { ...fieldProps }/>
+          <FormFieldUrl<Fields> name="ticker_coin_gecko" placeholder="CoinGecko URL" { ...fieldProps }/>
           <GridItem colSpan={{ base: 1, lg: 2 }}>
-            <FormFieldUrl<Fields> name="ticker_defi_llama" placeholder="DefiLlama URL" { ...fieldProps2 }/>
+            <FormFieldUrl<Fields> name="ticker_defi_llama" placeholder="DefiLlama URL" { ...fieldProps }/>
           </GridItem>
 
           <GridItem colSpan={{ base: 1, lg: 2 }}>
@@ -178,7 +177,7 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
               maxH="160px"
               rules={{ maxLength: 300 }}
               asComponent="Textarea"
-              { ...fieldProps2 }
+              { ...fieldProps }
             />
           </GridItem>
         </Grid>
