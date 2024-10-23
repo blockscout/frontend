@@ -1,3 +1,4 @@
+import type { Props as SelectProps, GroupBase } from 'chakra-react-select';
 import React from 'react';
 import type { Path, FieldValues } from 'react-hook-form';
 import { useController, useFormContext } from 'react-hook-form';
@@ -8,19 +9,26 @@ import type { Option } from 'ui/shared/FancySelect/types';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import FancySelect from 'ui/shared/FancySelect/FancySelect';
 
-type SelectFields<O> = { [K in keyof O]: NonNullable<O[K]> extends Option ? K : never }[keyof O];
+// FIXME: Try to get this to work to add more constraints to the props type
+// this type only works for plain objects, not for nested objects or arrays (e.g. ui/publicTags/submit/types.ts:FormFields)
+// type SelectField<O> = { [K in keyof O]: NonNullable<O[K]> extends Option ? K : never }[keyof O];
+
+type Components = SelectProps<Option, boolean, GroupBase<Option>>['components'];
 
 interface Props<
   FormFields extends FieldValues,
-  Name extends Path<FormFields> & SelectFields<FormFields>,
+  Name extends Path<FormFields>,
 > extends Omit<FormFieldPropsBase<FormFields, Name>, 'bgColor' | 'size'> {
   size?: 'md' | 'lg';
   options: Array<Option>;
+  isAsync?: boolean;
+  isSearchable?: boolean;
+  components?: Components;
 }
 
 const FormFieldFancySelect = <
   FormFields extends FieldValues,
-  Name extends Path<FormFields> & SelectFields<FormFields>,
+  Name extends Path<FormFields>,
 >(props: Props<FormFields, Name>) => {
   const isMobile = useIsMobile();
   const defaultSize = isMobile ? 'md' : 'lg';
@@ -40,9 +48,12 @@ const FormFieldFancySelect = <
       options={ props.options }
       size={ props.size || defaultSize }
       placeholder={ props.placeholder }
+      error={ fieldState.error }
       isDisabled={ isDisabled }
       isReadOnly={ props.isReadOnly }
-      error={ fieldState.error }
+      isAsync={ props.isAsync }
+      isSearchable={ props.isSearchable }
+      components={ props.components }
     />
   );
 };
