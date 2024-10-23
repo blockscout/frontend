@@ -54,7 +54,7 @@ const FormFieldText = <
         isReadOnly={ isReadOnly }
         autoComplete="off"
         type={ type }
-        placeholder={ placeholder }
+        placeholder=" "
         size={ size }
         bgColor={ bgColor }
       />

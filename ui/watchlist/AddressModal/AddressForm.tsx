@@ -107,7 +107,7 @@ const AddressForm: React.FC<Props> = ({ data, onSuccess, setAlertVisible, isAdd 
     }
   }
 
-  const { mutate } = useMutation({
+  const { mutateAsync } = useMutation({
     mutationFn: updateWatchlist,
     onSuccess: async() => {
       await onSuccess();
@@ -127,10 +127,10 @@ const AddressForm: React.FC<Props> = ({ data, onSuccess, setAlertVisible, isAdd 
     },
   });
 
-  const onSubmit: SubmitHandler<Inputs> = (formData) => {
+  const onSubmit: SubmitHandler<Inputs> = async(formData) => {
     setAlertVisible(false);
     setPending(true);
-    mutate(formData);
+    await mutateAsync(formData);
   };
 
   return (
