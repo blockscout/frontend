@@ -64,11 +64,12 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
 
   const handleLogin = useCallback(async() => {
     if (!profileQuery.isLoading && !profileQuery.data?.address_hash) {
+      setIsLoading.on();
       loginToAccount();
       return;
     }
     loginToRewardsProgram();
-  }, [ loginToAccount, loginToRewardsProgram, profileQuery ]);
+  }, [ loginToAccount, loginToRewardsProgram, profileQuery, setIsLoading ]);
 
   const isAddressMismatch = Boolean(address) && Boolean(profileQuery.data?.address_hash) && profileQuery.data?.address_hash !== address;
 
@@ -127,6 +128,7 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
         mb={ 4 }
         onClick={ isConnected ? handleLogin : connect }
         isLoading={ isLoading || profileQuery.isLoading }
+        loadingText={ isLoading ? 'Sign message in your wallet' : undefined }
         isDisabled={ isAddressMismatch }
       >
         { isConnected ? 'Get started' : 'Connect wallet' }
