@@ -1,5 +1,5 @@
 import type { ChakraProps } from '@chakra-ui/react';
-import { FormControl, Input, Textarea, chakra, shouldForwardProp } from '@chakra-ui/react';
+import { FormControl, Input, InputGroup, InputRightElement, Textarea, chakra, shouldForwardProp } from '@chakra-ui/react';
 import React from 'react';
 import type { FieldValues, Path } from 'react-hook-form';
 import { useController, useFormContext } from 'react-hook-form';
@@ -26,6 +26,7 @@ const FormFieldText = <
   rules,
   onBlur,
   type = 'text',
+  rightElement,
   asComponent,
 
   className,
@@ -49,6 +50,23 @@ const FormFieldText = <
   }, [ field, onBlur ]);
 
   const Component = asComponent === 'Textarea' ? Textarea : Input;
+  const input = (
+    <Component
+      { ...field }
+      onBlur={ handleBlur }
+      isInvalid={ Boolean(fieldState.error) }
+      isDisabled={ isDisabled }
+      isReadOnly={ isReadOnly }
+      autoComplete="off"
+      type={ type }
+      placeholder=" "
+      size={ size }
+      bgColor={ bgColor }
+      minH={ minH }
+      maxH={ maxH }
+    />
+  );
+  const inputPlaceholder = size !== 'xs' && <FormInputPlaceholder text={ placeholder } error={ fieldState.error }/>;
 
   return (
     <FormControl
@@ -59,22 +77,17 @@ const FormFieldText = <
       size={ size }
       bgColor={ bgColor }
     >
-      <Component
-        { ...field }
-        onBlur={ handleBlur }
-        isInvalid={ Boolean(fieldState.error) }
-        isDisabled={ isDisabled }
-        isReadOnly={ isReadOnly }
-        autoComplete="off"
-        type={ type }
-        placeholder=" "
-        size={ size }
-        bgColor={ bgColor }
-        minH={ minH }
-        maxH={ maxH }
-      />
-      { size !== 'xs' && (
-        <FormInputPlaceholder text={ placeholder } error={ fieldState.error }/>
+      { rightElement ? (
+        <InputGroup>
+          { input }
+          { inputPlaceholder }
+          <InputRightElement h="100%"> { rightElement({ field }) } </InputRightElement>
+        </InputGroup>
+      ) : (
+        <>
+          { input }
+          { inputPlaceholder }
+        </>
       ) }
     </FormControl>
   );

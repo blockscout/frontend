@@ -51,7 +51,7 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
     mode: 'onBlur',
     defaultValues: getFormDefaultValues(address, tokenName, application),
   });
-  const { handleSubmit, formState, control, trigger } = formApi;
+  const { handleSubmit, formState, control } = formApi;
 
   React.useEffect(() => {
     if (!application?.id && !openEventSent.current) {
@@ -134,7 +134,7 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
           <FormFieldUrl<Fields> name="docs" isRequired placeholder="Docs" { ...fieldProps2 }/>
           <TokenInfoFieldSupport { ...fieldProps2 }/>
           <GridItem colSpan={{ base: 1, lg: 2 }}>
-            <TokenInfoFieldIconUrl { ...fieldProps } trigger={ trigger }/>
+            <TokenInfoFieldIconUrl { ...fieldProps2 }/>
           </GridItem>
           <GridItem colSpan={{ base: 1, lg: 2 }}>
             <FormFieldText<Fields>
@@ -153,16 +153,16 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
           </GridItem>
 
           <TokenInfoFormSectionHeader>Links</TokenInfoFormSectionHeader>
-          <TokenInfoFieldSocialLink { ...fieldProps } name="github"/>
-          <TokenInfoFieldSocialLink { ...fieldProps } name="twitter"/>
-          <TokenInfoFieldSocialLink { ...fieldProps } name="telegram"/>
-          <TokenInfoFieldSocialLink { ...fieldProps } name="opensea"/>
-          <TokenInfoFieldSocialLink { ...fieldProps } name="linkedin"/>
-          <TokenInfoFieldSocialLink { ...fieldProps } name="facebook"/>
-          <TokenInfoFieldSocialLink { ...fieldProps } name="discord"/>
-          <TokenInfoFieldSocialLink { ...fieldProps } name="medium"/>
-          <TokenInfoFieldSocialLink { ...fieldProps } name="slack"/>
-          <TokenInfoFieldSocialLink { ...fieldProps } name="reddit"/>
+          <TokenInfoFieldSocialLink { ...fieldProps2 } name="github"/>
+          <TokenInfoFieldSocialLink { ...fieldProps2 } name="twitter"/>
+          <TokenInfoFieldSocialLink { ...fieldProps2 } name="telegram"/>
+          <TokenInfoFieldSocialLink { ...fieldProps2 } name="opensea"/>
+          <TokenInfoFieldSocialLink { ...fieldProps2 } name="linkedin"/>
+          <TokenInfoFieldSocialLink { ...fieldProps2 } name="facebook"/>
+          <TokenInfoFieldSocialLink { ...fieldProps2 } name="discord"/>
+          <TokenInfoFieldSocialLink { ...fieldProps2 } name="medium"/>
+          <TokenInfoFieldSocialLink { ...fieldProps2 } name="slack"/>
+          <TokenInfoFieldSocialLink { ...fieldProps2 } name="reddit"/>
 
           <TokenInfoFormSectionHeader>Price data</TokenInfoFormSectionHeader>
           <FormFieldUrl<Fields> name="ticker_coin_market_cap" placeholder="CoinMarketCap URL" { ...fieldProps2 }/>

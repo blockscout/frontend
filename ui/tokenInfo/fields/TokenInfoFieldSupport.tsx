@@ -2,7 +2,6 @@ import type { InputProps } from '@chakra-ui/react';
 import React from 'react';
 
 import type { Fields } from '../types';
-import type { Option } from 'ui/shared/FancySelect/types';
 
 import { validator as emailValidator } from 'lib/validations/email';
 import { validator as urlValidator } from 'lib/validations/url';
@@ -14,7 +13,7 @@ interface Props {
 }
 
 const TokenInfoFieldSupport = (props: Props) => {
-  const validate = React.useCallback((newValue: string | Option | null | undefined) => {
+  const validate = React.useCallback((newValue: string | undefined) => {
     if (typeof newValue !== 'string') {
       return true;
     }
@@ -30,7 +29,7 @@ const TokenInfoFieldSupport = (props: Props) => {
   }, []);
 
   return (
-    <FormFieldText<Fields>
+    <FormFieldText<Fields, 'support'>
       name="support"
       isRequired
       placeholder="Support URL or email"

@@ -1,5 +1,5 @@
 import type { FormControlProps } from '@chakra-ui/react';
-import type { FieldValues, Path, RegisterOptions } from 'react-hook-form';
+import type { ControllerRenderProps, FieldValues, Path, RegisterOptions } from 'react-hook-form';
 
 export interface FormFieldPropsBase<
   FormFields extends FieldValues,
@@ -13,6 +13,7 @@ export interface FormFieldPropsBase<
   onBlur?: () => void;
   onChange?: () => void;
   type?: HTMLInputElement['type'];
+  rightElement?: ({ field }: { field: ControllerRenderProps<FormFields, Name> }) => React.ReactNode;
 
   // styles
   size?: FormControlProps['size'];
