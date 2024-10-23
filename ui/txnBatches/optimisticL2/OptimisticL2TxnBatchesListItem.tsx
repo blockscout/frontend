@@ -68,7 +68,7 @@ const OptimisticL2TxnBatchesListItem = ({ item, isLoading }: Props) => {
         </LinkInternal>
       </ListItemMobileGrid.Value>
 
-      <ListItemMobileGrid.Label isLoading={ isLoading }>L2 blocks</ListItemMobileGrid.Label>
+      <ListItemMobileGrid.Label isLoading={ isLoading }>Txn</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <LinkInternal
           href={ route({ pathname: '/batches/[number]', query: { number: item.internal_id.toString(), tab: 'txs' } }) }

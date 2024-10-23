@@ -106,7 +106,7 @@ const OptimisticL2TxnBatch = () => {
     }
 
     return {
-      label: 'Back to tx batches list',
+      label: 'Back to txn batches list',
       url: appProps.referrer,
     };
   }, [ appProps.referrer ]);
