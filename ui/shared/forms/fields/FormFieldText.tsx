@@ -1,5 +1,5 @@
 import type { ChakraProps } from '@chakra-ui/react';
-import { FormControl, Input, chakra, shouldForwardProp } from '@chakra-ui/react';
+import { FormControl, Input, Textarea, chakra, shouldForwardProp } from '@chakra-ui/react';
 import React from 'react';
 import type { FieldValues, Path } from 'react-hook-form';
 import { useController, useFormContext } from 'react-hook-form';
@@ -7,6 +7,13 @@ import { useController, useFormContext } from 'react-hook-form';
 import type { FormFieldPropsBase } from './types';
 
 import FormInputPlaceholder from '../FormInputPlaceholder';
+
+interface Props<
+  FormFields extends FieldValues,
+  Name extends Path<FormFields> = Path<FormFields>,
+> extends FormFieldPropsBase<FormFields, Name> {
+  asComponent?: 'Input' | 'Textarea';
+}
 
 const FormFieldText = <
   FormFields extends FieldValues,
@@ -19,10 +26,13 @@ const FormFieldText = <
   rules,
   onBlur,
   type = 'text',
+  asComponent,
+
   className,
   size = 'md',
   bgColor,
-}: FormFieldPropsBase<FormFields, Name>) => {
+  minH,
+}: Props<FormFields, Name>) => {
   const { control } = useFormContext<FormFields>();
   const { field, fieldState, formState } = useController<FormFields, typeof name>({
     control,
@@ -37,6 +47,8 @@ const FormFieldText = <
     onBlur?.();
   }, [ field, onBlur ]);
 
+  const Component = asComponent === 'Textarea' ? Textarea : Input;
+
   return (
     <FormControl
       className={ className }
@@ -46,7 +58,7 @@ const FormFieldText = <
       size={ size }
       bgColor={ bgColor }
     >
-      <Input
+      <Component
         { ...field }
         onBlur={ handleBlur }
         isInvalid={ Boolean(fieldState.error) }
@@ -57,6 +69,7 @@ const FormFieldText = <
         placeholder=" "
         size={ size }
         bgColor={ bgColor }
+        minH={ minH }
       />
       { size !== 'xs' && (
         <FormInputPlaceholder text={ placeholder } error={ fieldState.error }/>
@@ -69,7 +82,7 @@ const WrappedFormFieldText = chakra(FormFieldText, {
   shouldForwardProp: (prop) => {
     const isChakraProp = !shouldForwardProp(prop);
 
-    if (isChakraProp && ![ 'bgColor', 'size' ].includes(prop)) {
+    if (isChakraProp && ![ 'bgColor', 'size', 'minH' ].includes(prop)) {
       return false;
     }
 
@@ -80,6 +93,6 @@ const WrappedFormFieldText = chakra(FormFieldText, {
 export type WrappedComponent = <
   FormFields extends FieldValues,
   Name extends Path<FormFields> = Path<FormFields>,
->(props: FormFieldPropsBase<FormFields, Name> & ChakraProps) => JSX.Element;
+>(props: Props<FormFields, Name> & ChakraProps) => JSX.Element;
 
 export default React.memo(WrappedFormFieldText) as WrappedComponent;

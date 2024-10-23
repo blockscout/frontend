@@ -17,5 +17,6 @@ export interface FormFieldPropsBase<
   // styles
   size?: FormControlProps['size'];
   bgColor?: FormControlProps['bgColor'];
+  minH?: FormControlProps['minH'];
   className?: string;
 }
