@@ -6,8 +6,8 @@ import type { FieldError, FieldErrorsImpl, Merge } from 'react-hook-form';
 
 import type { Option } from './types';
 
-import { getChakraStyles } from 'ui/shared/FancySelect/utils';
-import InputPlaceholder from 'ui/shared/InputPlaceholder';
+import FormInputPlaceholder from 'ui/shared/forms/inputs/FormInputPlaceholder';
+import { getChakraStyles } from 'ui/shared/forms/inputs/select/utils';
 
 interface CommonProps {
   error?: Merge<FieldError, FieldErrorsImpl<Option>> | undefined;
@@ -58,7 +58,7 @@ const FancySelect = (props: Props, ref: React.LegacyRef<HTMLDivElement>) => {
         isInvalid={ Boolean(props.error) }
         useBasicStyles
       />
-      <InputPlaceholder
+      <FormInputPlaceholder
         text={ typeof props.placeholder === 'string' ? props.placeholder : '' }
         icon={ props.placeholderIcon }
         error={ props.error }

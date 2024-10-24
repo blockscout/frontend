@@ -4,10 +4,10 @@ import { useController, useFormContext } from 'react-hook-form';
 
 import type { FormFieldPropsBase } from './types';
 
-// import type { Option } from 'ui/shared/FancySelect/types';
+// import type { Option } from 'ui/shared/forms/inputs/select/types';
 import useIsMobile from 'lib/hooks/useIsMobile';
-import type { Props as FancySelectProps } from 'ui/shared/FancySelect/FancySelect';
-import FancySelect from 'ui/shared/FancySelect/FancySelect';
+import type { Props as FancySelectProps } from 'ui/shared/forms/inputs/select/FancySelect';
+import FancySelect from 'ui/shared/forms/inputs/select/FancySelect';
 
 // FIXME: Try to get this to work to add more constraints to the props type
 // this type only works for plain objects, not for nested objects or arrays (e.g. ui/publicTags/submit/types.ts:FormFields)

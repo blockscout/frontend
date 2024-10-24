@@ -6,7 +6,7 @@ import { useController, useFormContext } from 'react-hook-form';
 
 import type { FormFieldPropsBase } from './types';
 
-import FormInputPlaceholder from '../FormInputPlaceholder';
+import FormInputPlaceholder from '../inputs/FormInputPlaceholder';
 
 interface Props<
   FormFields extends FieldValues,

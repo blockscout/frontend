@@ -7,7 +7,7 @@ import { useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 import type { PublicTagType } from 'types/api/addressMetadata';
-import type { Option } from 'ui/shared/FancySelect/types';
+import type { Option } from 'ui/shared/forms/inputs/select/types';
 
 import FormFieldFancySelect from 'ui/shared/forms/fields/FormFieldFancySelect';
 import IconSvg from 'ui/shared/IconSvg';

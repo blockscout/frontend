@@ -6,7 +6,7 @@ import type { FormFields } from '../types';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { validator as colorValidator } from 'lib/validations/color';
-import InputPlaceholder from 'ui/shared/InputPlaceholder';
+import FormInputPlaceholder from 'ui/shared/forms/inputs/FormInputPlaceholder';
 
 type ColorFieldTypes = 'bgColor' | 'textColor';
 
@@ -56,7 +56,7 @@ const PublicTagsSubmitFieldTagColor = <Type extends ColorFieldTypes>({ error, fi
           autoComplete="off"
           maxLength={ 7 }
         />
-        <InputPlaceholder text={ placeholder } error={ error }/>
+        <FormInputPlaceholder text={ placeholder } error={ error }/>
         <InputRightElement w="30px" h="auto" right={ 4 } top="50%" transform="translateY(-50%)" zIndex={ 10 }>
           <Circle
             size="30px"

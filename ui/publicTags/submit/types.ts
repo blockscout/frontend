@@ -1,5 +1,5 @@
 import type { AddressMetadataTagType } from 'types/api/addressMetadata';
-import type { Option } from 'ui/shared/FancySelect/types';
+import type { Option } from 'ui/shared/forms/inputs/select/types';
 
 export interface FormFields {
   requesterName: string;
