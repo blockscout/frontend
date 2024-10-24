@@ -42,7 +42,7 @@ const RewardsDashboardCard = ({
             { availableSoon && <AvailableSoonLabel/> }
           </Flex>
         ) }
-        <Text fontSize="sm">
+        <Text as="div" fontSize="sm">
           { description }
         </Text>
         { contentAfter }
