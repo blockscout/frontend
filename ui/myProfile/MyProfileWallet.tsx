@@ -4,6 +4,7 @@ import React from 'react';
 
 import type { UserInfo } from 'types/api/account';
 
+import config from 'configs/app';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 
 interface Props {
@@ -18,7 +19,7 @@ const MyProfileWallet = ({ profileQuery, onAddWallet }: Props) => {
     <section>
       <Heading as="h2" size="sm" mb={ 3 }>My linked wallet</Heading>
       <Text mb={ 3 } >
-      This wallet address is used for login and participation in the merit program
+        This wallet address is used for login { config.features.rewards.isEnabled ? 'and participation in the merit program' : '' }
       </Text>
       { profileQuery.data?.address_hash ? (
         <Box px={ 3 } py="18px" bgColor={ bgColor } borderRadius="base">
