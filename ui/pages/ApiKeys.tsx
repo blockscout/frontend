@@ -4,7 +4,6 @@ import React, { useCallback, useState } from 'react';
 import type { ApiKey } from 'types/api/account';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import { space } from 'lib/html-entities';
 import { API_KEY } from 'stubs/account';
 import ApiKeyModal from 'ui/apiKey/ApiKeyModal/ApiKeyModal';
@@ -14,6 +13,7 @@ import DeleteApiKeyModal from 'ui/apiKey/DeleteApiKeyModal';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import DataFetchAlert from 'ui/shared/DataFetchAlert';
 import PageTitle from 'ui/shared/Page/PageTitle';
+import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInvalidAuthToken';
 
 const DATA_LIMIT = 3;
 

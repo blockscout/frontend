@@ -5,10 +5,10 @@ import React from 'react';
 
 import config from 'configs/app';
 import { getResourceKey } from 'lib/api/useApiQuery';
-import useIsAccountActionAllowed from 'lib/hooks/useIsAccountActionAllowed';
 import usePreventFocusAfterModalClosing from 'lib/hooks/usePreventFocusAfterModalClosing';
 import * as mixpanel from 'lib/mixpanel/index';
 import IconSvg from 'ui/shared/IconSvg';
+import AuthGuard from 'ui/snippets/auth/AuthGuard';
 import WatchlistAddModal from 'ui/watchlist/AddressModal/AddressModal';
 import DeleteAddressModal from 'ui/watchlist/DeleteAddressModal';
 
@@ -23,16 +23,12 @@ const AddressFavoriteButton = ({ className, hash, watchListId }: Props) => {
   const deleteModalProps = useDisclosure();
   const queryClient = useQueryClient();
   const router = useRouter();
-  const isAccountActionAllowed = useIsAccountActionAllowed();
   const onFocusCapture = usePreventFocusAfterModalClosing();
 
-  const handleClick = React.useCallback(() => {
-    if (!isAccountActionAllowed()) {
-      return;
-    }
+  const handleAddToFavorite = React.useCallback(() => {
     watchListId ? deleteModalProps.onOpen() : addModalProps.onOpen();
     !watchListId && mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Add to watchlist' });
-  }, [ isAccountActionAllowed, watchListId, deleteModalProps, addModalProps ]);
+  }, [ watchListId, deleteModalProps, addModalProps ]);
 
   const handleAddOrDeleteSuccess = React.useCallback(async() => {
     const queryKey = getResourceKey('address', { pathParams: { hash: router.query.hash?.toString() } });
@@ -50,7 +46,7 @@ const AddressFavoriteButton = ({ className, hash, watchListId }: Props) => {
 
   const formData = React.useMemo(() => {
     if (typeof watchListId !== 'number') {
-      return;
+      return { address_hash: hash };
     }
 
     return {
@@ -65,21 +61,25 @@ const AddressFavoriteButton = ({ className, hash, watchListId }: Props) => {
 
   return (
     <>
-      <Tooltip label={ `${ watchListId ? 'Remove address from Watch list' : 'Add address to Watch list' }` }>
-        <IconButton
-          isActive={ Boolean(watchListId) }
-          className={ className }
-          aria-label="edit"
-          variant="outline"
-          size="sm"
-          pl="6px"
-          pr="6px"
-          flexShrink={ 0 }
-          onClick={ handleClick }
-          icon={ <IconSvg name={ watchListId ? 'star_filled' : 'star_outline' } boxSize={ 5 }/> }
-          onFocusCapture={ onFocusCapture }
-        />
-      </Tooltip>
+      <AuthGuard onAuthSuccess={ handleAddToFavorite }>
+        { ({ onClick }) => (
+          <Tooltip label={ `${ watchListId ? 'Remove address from Watch list' : 'Add address to Watch list' }` }>
+            <IconButton
+              isActive={ Boolean(watchListId) }
+              className={ className }
+              aria-label="edit"
+              variant="outline"
+              size="sm"
+              pl="6px"
+              pr="6px"
+              flexShrink={ 0 }
+              onClick={ onClick }
+              icon={ <IconSvg name={ watchListId ? 'star_filled' : 'star_outline' } boxSize={ 5 }/> }
+              onFocusCapture={ onFocusCapture }
+            />
+          </Tooltip>
+        ) }
+      </AuthGuard>
       <WatchlistAddModal
         { ...addModalProps }
         isAdd
@@ -87,7 +87,7 @@ const AddressFavoriteButton = ({ className, hash, watchListId }: Props) => {
         onSuccess={ handleAddOrDeleteSuccess }
         data={ formData }
       />
-      { formData && (
+      { formData.id && (
         <DeleteAddressModal
           { ...deleteModalProps }
           onClose={ handleDeleteModalClose }

@@ -3,6 +3,7 @@ import { mode } from '@chakra-ui/theme-tools';
 
 import scrollbar from './foundations/scrollbar';
 import addressEntity from './globals/address-entity';
+import recaptcha from './globals/recaptcha';
 import getDefaultTransitionProps from './utils/getDefaultTransitionProps';
 
 const global = (props: StyleFunctionProps) => ({
@@ -25,6 +26,7 @@ const global = (props: StyleFunctionProps) => ({
   },
   ...scrollbar(props),
   ...addressEntity(props),
+  ...recaptcha(),
 });
 
 export default global;

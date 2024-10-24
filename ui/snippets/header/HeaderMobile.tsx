@@ -5,9 +5,9 @@ import { useInView } from 'react-intersection-observer';
 import config from 'configs/app';
 import { useScrollDirection } from 'lib/contexts/scrollDirection';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
-import ProfileMenuMobile from 'ui/snippets/profileMenu/ProfileMenuMobile';
 import SearchBar from 'ui/snippets/searchBar/SearchBar';
-import WalletMenuMobile from 'ui/snippets/walletMenu/WalletMenuMobile';
+import UserProfileMobile from 'ui/snippets/user/profile/UserProfileMobile';
+import UserWalletMobile from 'ui/snippets/user/wallet/UserWalletMobile';
 
 import Burger from './Burger';
 
@@ -48,8 +48,11 @@ const HeaderMobile = ({ hideSearchBar, renderSearchBar }: Props) => {
         <Burger/>
         <NetworkLogo ml={ 2 } mr="auto"/>
         <Flex columnGap={ 2 }>
-          { config.features.account.isEnabled ? <ProfileMenuMobile/> : <Box boxSize={ 10 }/> }
-          { config.features.blockchainInteraction.isEnabled && <WalletMenuMobile/> }
+          {
+            (config.features.account.isEnabled && <UserProfileMobile/>) ||
+            (config.features.blockchainInteraction.isEnabled && <UserWalletMobile/>) ||
+            <Box boxSize={ 10 }/>
+          }
         </Flex>
       </Flex>
       { !hideSearchBar && searchBar }
