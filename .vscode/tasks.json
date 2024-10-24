@@ -367,6 +367,7 @@
               "eth",
               "eth_goerli",
               "eth_sepolia",
+              "filecoin",
               "optimism",
               "optimism_celestia",
               "optimism_sepolia",
