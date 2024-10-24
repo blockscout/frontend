@@ -60,6 +60,7 @@ const FormFieldText = <
       autoComplete="off"
       type={ type }
       placeholder=" "
+      // TODO @tom2drum add default size
       size={ size }
       bgColor={ bgColor }
       minH={ minH }

@@ -1,29 +1,23 @@
-import type { Props as SelectProps, GroupBase } from 'chakra-react-select';
 import React from 'react';
 import type { Path, FieldValues } from 'react-hook-form';
 import { useController, useFormContext } from 'react-hook-form';
 
 import type { FormFieldPropsBase } from './types';
-import type { Option } from 'ui/shared/FancySelect/types';
 
+// import type { Option } from 'ui/shared/FancySelect/types';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import type { Props as FancySelectProps } from 'ui/shared/FancySelect/FancySelect';
 import FancySelect from 'ui/shared/FancySelect/FancySelect';
 
 // FIXME: Try to get this to work to add more constraints to the props type
 // this type only works for plain objects, not for nested objects or arrays (e.g. ui/publicTags/submit/types.ts:FormFields)
 // type SelectField<O> = { [K in keyof O]: NonNullable<O[K]> extends Option ? K : never }[keyof O];
 
-type Components = SelectProps<Option, boolean, GroupBase<Option>>['components'];
-
-interface Props<
+type Props<
   FormFields extends FieldValues,
   Name extends Path<FormFields>,
-> extends Omit<FormFieldPropsBase<FormFields, Name>, 'bgColor' | 'size'> {
+> = Omit<FormFieldPropsBase<FormFields, Name>, 'bgColor' | 'size'> & Partial<FancySelectProps> & {
   size?: 'md' | 'lg';
-  options: Array<Option>;
-  isAsync?: boolean;
-  isSearchable?: boolean;
-  components?: Components;
 }
 
 const FormFieldFancySelect = <
@@ -45,15 +39,10 @@ const FormFieldFancySelect = <
   return (
     <FancySelect
       { ...field }
-      options={ props.options }
+      { ...props }
       size={ props.size || defaultSize }
-      placeholder={ props.placeholder }
       error={ fieldState.error }
       isDisabled={ isDisabled }
-      isReadOnly={ props.isReadOnly }
-      isAsync={ props.isAsync }
-      isSearchable={ props.isSearchable }
-      components={ props.components }
     />
   );
 };

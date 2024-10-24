@@ -24,7 +24,7 @@ interface AsyncSelectProps extends AsyncProps<Option, boolean, GroupBase<Option>
   onChange: (newValue: SingleValue<Option> | MultiValue<Option>) => void;
 }
 
-type Props = RegularSelectProps | AsyncSelectProps;
+export type Props = RegularSelectProps | AsyncSelectProps;
 
 const FancySelect = (props: Props, ref: React.LegacyRef<HTMLDivElement>) => {
   const menuZIndex = useToken('zIndices', 'dropdown');
