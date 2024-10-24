@@ -1,4 +1,4 @@
-import { Flex, Skeleton } from '@chakra-ui/react';
+import { Text, Flex, Skeleton } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 
@@ -45,7 +45,9 @@ const AddressBlocksValidatedListItem = (props: Props) => {
       </Flex>
       <Flex columnGap={ 2 } w="100%">
         <Skeleton isLoaded={ !props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Gas used</Skeleton>
-        <Skeleton isLoaded={ !props.isLoading } color="text_secondary">{ BigNumber(props.gas_used || 0).toFormat() }</Skeleton>
+        <Skeleton isLoaded={ !props.isLoading }>
+          <Text color="text_secondary">{ BigNumber(props.gas_used || 0).toFormat() }</Text>
+        </Skeleton>
         <BlockGasUsed
           gasUsed={ props.gas_used }
           gasLimit={ props.gas_limit }
@@ -55,7 +57,9 @@ const AddressBlocksValidatedListItem = (props: Props) => {
       { !config.UI.views.block.hiddenFields?.total_reward && !config.features.rollup.isEnabled && (
         <Flex columnGap={ 2 } w="100%">
           <Skeleton isLoaded={ !props.isLoading } fontWeight={ 500 } flexShrink={ 0 }>Reward { currencyUnits.ether }</Skeleton>
-          <Skeleton isLoaded={ !props.isLoading } color="text_secondary">{ totalReward.toFixed() }</Skeleton>
+          <Skeleton isLoaded={ !props.isLoading }>
+            <Text color="text_secondary">{ totalReward.toFixed() }</Text>
+          </Skeleton>
         </Flex>
       ) }
     </ListItemMobile>

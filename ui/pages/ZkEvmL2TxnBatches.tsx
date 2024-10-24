@@ -59,7 +59,7 @@ const ZkEvmL2TxnBatches = () => {
 
     return (
       <Skeleton isLoaded={ !countersQuery.isPlaceholderData && !isPlaceholderData } display="flex" flexWrap="wrap">
-        Tx batch
+        Txn batch
         <Text fontWeight={ 600 } whiteSpace="pre"> #{ data.items[0].number } </Text>to
         <Text fontWeight={ 600 } whiteSpace="pre"> #{ data.items[data.items.length - 1].number } </Text>
         (total of { countersQuery.data?.toLocaleString() } batches)
@@ -71,11 +71,11 @@ const ZkEvmL2TxnBatches = () => {
 
   return (
     <>
-      <PageTitle title="Tx batches" withTextAd/>
+      <PageTitle title="Txn batches" withTextAd/>
       <DataListDisplay
         isError={ isError }
         items={ data?.items }
-        emptyText="There are no tx batches."
+        emptyText="There are no txn batches."
         content={ content }
         actionBar={ actionBar }
       />

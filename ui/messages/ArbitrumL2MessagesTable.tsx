@@ -17,7 +17,7 @@ import ArbitrumL2MessagesTableItem from './ArbitrumL2MessagesTableItem';
 
 const ArbitrumL2MessagesTable = ({ items, direction, top, isLoading }: Props) => {
   return (
-    <Table variant="simple" size="sm" style={{ tableLayout: 'auto' }} minW="950px">
+    <Table style={{ tableLayout: 'auto' }} minW="950px">
       <Thead top={ top }>
         <Tr>
           { direction === 'to-rollup' && <Th>L1 block</Th> }

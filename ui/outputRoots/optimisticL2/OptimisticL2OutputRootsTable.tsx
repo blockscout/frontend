@@ -15,7 +15,7 @@ type Props = {
 
 const OptimisticL2OutputRootsTable = ({ items, top, isLoading }: Props) => {
   return (
-    <Table variant="simple" size="sm" minW="900px">
+    <Table minW="900px">
       <Thead top={ top }>
         <Tr>
           <Th width="160px">L2 output index</Th>

@@ -7,6 +7,7 @@ import type { TabItem } from 'ui/shared/Tabs/types';
 
 import config from 'configs/app';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
+import useGraphLinks from 'lib/hooks/useGraphLinks';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import Banner from 'ui/marketplace/Banner';
 import ContractListModal from 'ui/marketplace/ContractListModal';
@@ -79,6 +80,8 @@ const Marketplace = () => {
   } = useMarketplace();
 
   const isMobile = useIsMobile();
+
+  const graphLinksQuery = useGraphLinks();
 
   const categoryTabs = React.useMemo(() => {
     const tabs: Array<TabItem> = categories.map(category => ({
@@ -236,6 +239,7 @@ const Marketplace = () => {
         isRatingSending={ isRatingSending }
         isRatingLoading={ isRatingLoading }
         canRate={ canRate }
+        graphLinksQuery={ graphLinksQuery }
       />
 
       { (selectedApp && isAppInfoModalOpen) && (
@@ -250,6 +254,7 @@ const Marketplace = () => {
           isRatingSending={ isRatingSending }
           isRatingLoading={ isRatingLoading }
           canRate={ canRate }
+          graphLinks={ graphLinksQuery.data?.[selectedApp.id] }
         />
       ) }
 

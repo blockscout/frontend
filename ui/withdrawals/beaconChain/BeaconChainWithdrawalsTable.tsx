@@ -35,7 +35,7 @@ const BeaconChainWithdrawalsTable = ({ items, isLoading, top, view }: Props) => 
   }
 
   return (
-    <Table variant="simple" size="sm" style={{ tableLayout: 'auto' }} minW="950px">
+    <Table style={{ tableLayout: 'auto' }} minW="950px">
       <Thead top={ top }>
         <Tr>
           <Th minW="140px">Index</Th>

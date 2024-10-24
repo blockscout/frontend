@@ -20,7 +20,7 @@ interface Props {
 
 const CustomAbiTable = ({ data, isLoading, onDeleteClick, onEditClick }: Props) => {
   return (
-    <Table variant="simple" minWidth="600px">
+    <Table minWidth="600px">
       <Thead>
         <Tr>
           <Th>ABI for Smart contract address (0x...)</Th>

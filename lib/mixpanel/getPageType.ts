@@ -39,8 +39,8 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/deposits': 'Deposits (L1 > L2)',
   '/output-roots': 'Output roots',
   '/dispute-games': 'Dispute games',
-  '/batches': 'Tx batches (L2 blocks)',
-  '/batches/[number]': 'L2 tx batch details',
+  '/batches': 'Txn batches',
+  '/batches/[number]': 'L2 txn batch details',
   '/blobs/[hash]': 'Blob details',
   '/ops': 'User operations',
   '/op/[hash]': 'User operation details',
@@ -50,6 +50,7 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/validators': 'Validators list',
   '/gas-tracker': 'Gas tracker',
   '/mud-worlds': 'MUD worlds',
+  '/token-transfers': 'Token transfers',
 
   // service routes, added only to make typescript happy
   '/login': 'Login',

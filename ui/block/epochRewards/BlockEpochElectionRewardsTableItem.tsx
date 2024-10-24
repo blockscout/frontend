@@ -5,10 +5,10 @@ import type { BlockEpoch, BlockEpochElectionReward } from 'types/api/block';
 
 import getCurrencyValue from 'lib/getCurrencyValue';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
+import EpochRewardTypeTag from 'ui/shared/EpochRewardTypeTag';
 import IconSvg from 'ui/shared/IconSvg';
 
 import BlockEpochElectionRewardDetailsDesktop from './BlockEpochElectionRewardDetailsDesktop';
-import BlockEpochElectionRewardType from './BlockEpochElectionRewardType';
 import { getRewardNumText } from './utils';
 
 interface Props {
@@ -54,7 +54,7 @@ const BlockEpochElectionRewardsTableItem = ({ isLoading, data, type }: Props) =>
           ) }
         </Td>
         <Td borderColor={ mainRowBorderColor }>
-          <BlockEpochElectionRewardType type={ type } isLoading={ isLoading }/>
+          <EpochRewardTypeTag type={ type } isLoading={ isLoading }/>
         </Td>
         <Td borderColor={ mainRowBorderColor }>
           <Skeleton isLoaded={ !isLoading } fontWeight={ 400 } my={ 1 }>

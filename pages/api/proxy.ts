@@ -29,6 +29,7 @@ const handler = async(nextReq: NextApiRequest, nextRes: NextApiResponse) => {
   setCookie?.forEach((value) => {
     nextRes.appendHeader('set-cookie', value);
   });
+  nextRes.setHeader('content-type', apiRes.headers.get('content-type') || '');
 
   nextRes.status(apiRes.status).send(apiRes.body);
 };

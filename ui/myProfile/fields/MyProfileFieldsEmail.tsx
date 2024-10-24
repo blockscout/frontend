@@ -10,9 +10,10 @@ import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
 interface Props {
   isReadOnly?: boolean;
+  defaultValue: string | undefined;
 }
 
-const MyProfileFieldsEmail = ({ isReadOnly }: Props) => {
+const MyProfileFieldsEmail = ({ isReadOnly, defaultValue }: Props) => {
   const { control } = useFormContext<FormFields>();
   const { field, fieldState, formState } = useController<FormFields, 'email'>({
     control,
@@ -21,6 +22,7 @@ const MyProfileFieldsEmail = ({ isReadOnly }: Props) => {
   });
 
   const isDisabled = formState.isSubmitting;
+  const isVerified = defaultValue && field.value === defaultValue;
 
   return (
     <FormControl variant="floating" isDisabled={ isDisabled } isRequired size="md">
@@ -34,7 +36,7 @@ const MyProfileFieldsEmail = ({ isReadOnly }: Props) => {
           autoComplete="off"
         />
         <InputPlaceholder text="Email" error={ fieldState.error }/>
-        { !formState.dirtyFields.email && (
+        { isVerified && (
           <InputRightElement h="100%">
             <IconSvg name="certified" boxSize={ 5 } color="green.500"/>
           </InputRightElement>

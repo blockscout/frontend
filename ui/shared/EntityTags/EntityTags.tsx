@@ -45,7 +45,7 @@ const EntityTags = ({ tags, className, isLoading }: Props) => {
                 +{ tags.length - visibleNum }
               </Tag>
             </PopoverTrigger>
-            <PopoverContent w="300px">
+            <PopoverContent maxW="300px" w="auto">
               <PopoverBody >
                 <Flex columnGap={ 2 } rowGap={ 2 } flexWrap="wrap">
                   { tags.slice(visibleNum).map((tag) => <EntityTag key={ tag.slug } data={ tag }/>) }

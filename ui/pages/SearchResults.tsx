@@ -148,7 +148,7 @@ const SearchResultsPageContent = () => {
           )) }
         </Show>
         <Hide below="lg" ssr={ false }>
-          <Table variant="simple" size="md" fontWeight={ 500 }>
+          <Table fontWeight={ 500 }>
             <Thead top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }>
               <Tr>
                 <Th width="30%">Search result</Th>

@@ -41,8 +41,8 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/deposits': '%network_name% deposits (L1 > L2)',
   '/output-roots': '%network_name% output roots',
   '/dispute-games': '%network_name% dispute games',
-  '/batches': '%network_name% tx batches (L2 blocks)',
-  '/batches/[number]': '%network_name% L2 tx batch %number%',
+  '/batches': '%network_name% txn batches',
+  '/batches/[number]': '%network_name% L2 txn batch %number%',
   '/blobs/[hash]': '%network_name% blob %hash% details',
   '/ops': 'User operations on %network_name% - %network_name% explorer',
   '/op/[hash]': '%network_name% user operation %hash%',
@@ -52,6 +52,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/validators': '%network_name% validators list',
   '/gas-tracker': '%network_name% gas tracker - Current gas fees',
   '/mud-worlds': '%network_name% MUD worlds list',
+  '/token-transfers': '%network_name% token transfers',
 
   // service routes, added only to make typescript happy
   '/login': '%network_name% login',
