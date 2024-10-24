@@ -41,9 +41,13 @@ const RewardsDashboard = () => {
       return;
     }
 
+    let interval: NodeJS.Timeout; // eslint-disable-line
+
     const updateCountdown = () => {
       const now = new Date().getTime();
-      const target = new Date(dailyRewardQuery.data.reset_at).getTime();
+      // format the date to be compatible with the Date constructor
+      const formattedDate = dailyRewardQuery.data.reset_at.replace(' ', 'T').replace(' UTC', 'Z');
+      const target = new Date(formattedDate).getTime();
       const difference = target - now;
 
       if (difference > 0) {
@@ -58,7 +62,7 @@ const RewardsDashboard = () => {
 
     updateCountdown();
 
-    const interval = setInterval(() => {
+    interval = setInterval(() => {
       updateCountdown();
     }, 1000);
 
