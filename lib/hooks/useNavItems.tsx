@@ -28,6 +28,7 @@ export default function useNavItems(): ReturnType {
     balancesQuery: rewardsBalancesQuery,
     dailyRewardQuery,
     apiToken: rewardsApiToken,
+    isInitialized: isRewardsInitialized,
   } = useRewardsContext();
 
   return React.useMemo(() => {
@@ -273,9 +274,10 @@ export default function useNavItems(): ReturnType {
       config.features.rewards.isEnabled ? {
         text: rewardsBalancesQuery.data?.total ? `${ rewardsBalancesQuery.data?.total } Merits` : 'Merits',
         nextRoute: { pathname: '/account/rewards' as const },
-        onClick: rewardsApiToken ? undefined : openRewardsLoginModal,
+        onClick: (isRewardsInitialized && !rewardsApiToken) ? openRewardsLoginModal : undefined,
         icon: dailyRewardQuery.data?.available ? 'merits_with_dot' : 'merits',
         isActive: pathname === '/account/rewards',
+        isDisabled: !isRewardsInitialized,
       } : null,
       {
         text: 'Watch list',
@@ -310,5 +312,5 @@ export default function useNavItems(): ReturnType {
     ].filter(Boolean);
 
     return { mainNavItems, accountNavItems };
-  }, [ pathname, openRewardsLoginModal, rewardsBalancesQuery, dailyRewardQuery, rewardsApiToken ]);
+  }, [ pathname, openRewardsLoginModal, rewardsBalancesQuery, dailyRewardQuery, rewardsApiToken, isRewardsInitialized ]);
 }

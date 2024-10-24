@@ -42,10 +42,11 @@ const NavLink = ({ item, isCollapsed, px, className, onClick, disableActiveState
   }
 
   const isHighlighted = checkRouteHighlight(item);
+  const isDisabled = isInternalLink && item.isDisabled;
 
   const content = (
     <Link
-      href={ href }
+      href={ isDisabled ? undefined : href }
       target={ isInternalLink ? '_self' : '_blank' }
       { ...styleProps.itemProps }
       w={{ base: '100%', lg: isExpanded ? '100%' : '60px', xl: isCollapsed ? '60px' : '100%' }}
@@ -58,7 +59,7 @@ const NavLink = ({ item, isCollapsed, px, className, onClick, disableActiveState
       onClick={ isInternalLink && item.onClick ? item.onClick : onClick }
       _hover={{
         [`& *:not(.${ LIGHTNING_LABEL_CLASS_NAME }, .${ LIGHTNING_LABEL_CLASS_NAME } *)`]: {
-          color: 'link_hovered',
+          color: isDisabled ? 'inherit' : 'link_hovered',
         },
       }}
     >
@@ -88,7 +89,7 @@ const NavLink = ({ item, isCollapsed, px, className, onClick, disableActiveState
 
   return (
     <Box as="li" listStyleType="none" w="100%" className={ className }>
-      { isInternalLink && !item.onClick ? (
+      { isInternalLink && !item.onClick && !isDisabled ? (
         <NextLink href={ item.nextRoute } passHref legacyBehavior>
           { content }
         </NextLink>
