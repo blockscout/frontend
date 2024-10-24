@@ -26,7 +26,7 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
   const [ refCode, setRefCode ] = useState(savedRefCode || '');
   const [ refCodeError, setRefCodeError ] = useBoolean(false);
   const dividerColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
-  const { login } = useRewardsContext();
+  const { login, checkUserQuery } = useRewardsContext();
   const profileQuery = useProfileQuery();
 
   const handleRefCodeChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
@@ -71,7 +71,10 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
     loginToRewardsProgram();
   }, [ loginToAccount, loginToRewardsProgram, profileQuery, setIsLoading ]);
 
-  const isAddressMismatch = Boolean(address) && Boolean(profileQuery.data?.address_hash) && profileQuery.data?.address_hash !== address;
+  const isAddressMismatch =
+    Boolean(address) &&
+    Boolean(profileQuery.data?.address_hash) &&
+    profileQuery.data?.address_hash !== address;
 
   return (
     <>
@@ -87,8 +90,8 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
           More about Blockscout Merits
         </LinkExternal>
       </Box>
-      { isConnected && (
-        <>
+      { (isConnected && !isAddressMismatch && !checkUserQuery.isFetching && !checkUserQuery.data?.exists) && (
+        <Box mb={ 6 }>
           <Box w="full" mb={ 6 } borderTop="1px solid" borderColor={ dividerColor }/>
           <Flex w="full" alignItems="center" justifyContent="space-between">
             I have a referral code
@@ -112,7 +115,7 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
               <InputPlaceholder text="Code"/>
             </FormControl>
           ) }
-        </>
+        </Box>
       ) }
       { isAddressMismatch && (
         <Alert status="warning" mt={ 4 }>
@@ -124,10 +127,9 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
         colorScheme="blue"
         w="full"
         whiteSpace="normal"
-        mt={ isConnected ? 6 : 0 }
         mb={ 4 }
         onClick={ isConnected ? handleLogin : connect }
-        isLoading={ isLoading || profileQuery.isLoading }
+        isLoading={ isLoading || profileQuery.isLoading || checkUserQuery.isFetching }
         loadingText={ isLoading ? 'Sign message in your wallet' : undefined }
         isDisabled={ isAddressMismatch }
       >

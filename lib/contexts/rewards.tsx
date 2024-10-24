@@ -29,6 +29,7 @@ type TRewardsContext = {
   dailyRewardQuery: UseQueryResult<RewardsUserDailyCheckResponse, ResourceError<unknown>>;
   referralsQuery: UseQueryResult<RewardsUserReferralsResponse, ResourceError<unknown>>;
   rewardsConfigQuery: UseQueryResult<RewardsConfigResponse, ResourceError<unknown>>;
+  checkUserQuery: UseQueryResult<RewardsCheckUserResponse, ResourceError<unknown>>;
   apiToken: string | undefined;
   isInitialized: boolean;
   isLoginModalOpen: boolean;
@@ -46,6 +47,7 @@ const RewardsContext = createContext<TRewardsContext>({
   dailyRewardQuery: createDefaultQueryResult<RewardsUserDailyCheckResponse, ResourceError<unknown>>(),
   referralsQuery: createDefaultQueryResult<RewardsUserReferralsResponse, ResourceError<unknown>>(),
   rewardsConfigQuery: createDefaultQueryResult<RewardsConfigResponse, ResourceError<unknown>>(),
+  checkUserQuery: createDefaultQueryResult<RewardsCheckUserResponse, ResourceError<unknown>>(),
   apiToken: undefined,
   isInitialized: false,
   isLoginModalOpen: false,
@@ -81,6 +83,8 @@ function getRegisteredAddress(token: string) {
   const decodedToken = decodeJWT(token);
   return decodedToken?.payload.sub;
 }
+
+const isEnabled = config.features.rewards.isEnabled;
 
 type Props = {
   children: React.ReactNode;
@@ -118,18 +122,15 @@ export function RewardsContextProvider({ children }: Props) {
   }, []);
 
   const [ queryOptions, fetchParams ] = useMemo(() => [
-    { enabled: Boolean(apiToken) && config.features.rewards.isEnabled },
+    { enabled: Boolean(apiToken) && isEnabled },
     { headers: { Authorization: `Bearer ${ apiToken }` } },
   ], [ apiToken ]);
 
   const balancesQuery = useApiQuery('rewards_user_balances', { queryOptions, fetchParams });
   const dailyRewardQuery = useApiQuery('rewards_user_daily_check', { queryOptions, fetchParams });
   const referralsQuery = useApiQuery('rewards_user_referrals', { queryOptions, fetchParams });
-  const rewardsConfigQuery = useApiQuery('rewards_config', {
-    queryOptions: {
-      enabled: config.features.rewards.isEnabled,
-    },
-  });
+  const rewardsConfigQuery = useApiQuery('rewards_config', { queryOptions: { enabled: isEnabled } });
+  const checkUserQuery = useApiQuery('rewards_check_user', { queryOptions: { enabled: isEnabled }, pathParams: { address } });
 
   // Reset queries when the API token is removed
   useEffect(() => {
@@ -181,20 +182,19 @@ export function RewardsContextProvider({ children }: Props) {
   // Login to the rewards program
   const login = useCallback(async(refCode: string) => {
     try {
-      const [ nonceResponse, userResponse, checkCodeResponse ] = await Promise.all([
+      const [ nonceResponse, checkCodeResponse ] = await Promise.all([
         apiFetch('rewards_nonce') as Promise<RewardsNonceResponse>,
-        apiFetch('rewards_check_user', { pathParams: { address } }) as Promise<RewardsCheckUserResponse>,
         refCode ?
           apiFetch('rewards_check_ref_code', { pathParams: { code: refCode } }) as Promise<RewardsCheckRefCodeResponse> :
           Promise.resolve({ valid: true }),
       ]);
-      if (!address || !('nonce' in nonceResponse) || !('exists' in userResponse) || !('valid' in checkCodeResponse)) {
+      if (!address || !('nonce' in nonceResponse) || !('valid' in checkCodeResponse)) {
         throw new Error();
       }
       if (!checkCodeResponse.valid) {
         return { invalidRefCodeError: true };
       }
-      const message = getMessageToSign(address, nonceResponse.nonce, userResponse.exists, refCode);
+      const message = getMessageToSign(address, nonceResponse.nonce, checkUserQuery.data?.exists, refCode);
       const signature = await signMessageAsync({ message });
       const loginResponse = await apiFetch('rewards_login', {
         fetchParams: {
@@ -215,7 +215,7 @@ export function RewardsContextProvider({ children }: Props) {
       errorToast(_error as ResourceError<{ message: string }>);
       throw _error;
     }
-  }, [ apiFetch, address, signMessageAsync, errorToast, saveApiToken ]);
+  }, [ apiFetch, address, signMessageAsync, errorToast, saveApiToken, checkUserQuery ]);
 
   // Claim daily reward
   const claim = useCallback(async() => {
@@ -240,6 +240,7 @@ export function RewardsContextProvider({ children }: Props) {
     dailyRewardQuery,
     referralsQuery,
     rewardsConfigQuery,
+    checkUserQuery,
     apiToken,
     isInitialized,
     isLoginModalOpen,
@@ -248,7 +249,7 @@ export function RewardsContextProvider({ children }: Props) {
     login,
     claim,
   }), [
-    isLoginModalOpen, setIsLoginModalOpen, balancesQuery, dailyRewardQuery,
+    isLoginModalOpen, setIsLoginModalOpen, balancesQuery, dailyRewardQuery, checkUserQuery,
     apiToken, login, claim, referralsQuery, rewardsConfigQuery, isInitialized,
   ]);
 
