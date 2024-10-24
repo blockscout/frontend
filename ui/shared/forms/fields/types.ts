@@ -14,6 +14,7 @@ export interface FormFieldPropsBase<
   onChange?: () => void;
   type?: HTMLInputElement['type'];
   rightElement?: ({ field }: { field: ControllerRenderProps<FormFields, Name> }) => React.ReactNode;
+  max?: HTMLInputElement['max'];
 
   // styles
   size?: FormControlProps['size'];

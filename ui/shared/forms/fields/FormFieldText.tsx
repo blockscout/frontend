@@ -28,6 +28,7 @@ const FormFieldText = <
   type = 'text',
   rightElement,
   asComponent,
+  max,
 
   className,
   size = 'md',
@@ -60,7 +61,7 @@ const FormFieldText = <
       autoComplete="off"
       type={ type }
       placeholder=" "
-      // TODO @tom2drum add default size
+      max={ max }
       size={ size }
       bgColor={ bgColor }
       minH={ minH }
