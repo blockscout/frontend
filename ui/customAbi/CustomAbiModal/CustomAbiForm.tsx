@@ -1,14 +1,11 @@
 import {
   Box,
   Button,
-  FormControl,
-  Input,
-  Textarea,
 } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useCallback } from 'react';
-import type { ControllerRenderProps, SubmitHandler } from 'react-hook-form';
-import { useForm, Controller } from 'react-hook-form';
+import type { SubmitHandler } from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
 
 import type { CustomAbi, CustomAbis, CustomAbiErrors } from 'types/api/account';
 
@@ -16,9 +13,8 @@ import type { ResourceErrorAccount } from 'lib/api/resources';
 import { resourceKey } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/getErrorMessage';
-import { ADDRESS_REGEXP } from 'lib/validations/address';
-import AddressInput from 'ui/shared/AddressInput';
-import InputPlaceholder from 'ui/shared/InputPlaceholder';
+import FormFieldAddress from 'ui/shared/forms/fields/FormFieldAddress';
+import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
 
 type Props = {
   data?: CustomAbi;
@@ -35,7 +31,7 @@ type Inputs = {
 const NAME_MAX_LENGTH = 255;
 
 const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
-  const { control, formState: { errors, isDirty }, handleSubmit, setError } = useForm<Inputs>({
+  const formApi = useForm<Inputs>({
     defaultValues: {
       contract_address_hash: data?.contract_address_hash || '',
       name: data?.name || '',
@@ -85,102 +81,64 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
     onError: (error: ResourceErrorAccount<CustomAbiErrors>) => {
       const errorMap = error.payload?.errors;
       if (errorMap?.address_hash || errorMap?.name || errorMap?.abi) {
-        errorMap?.address_hash && setError('contract_address_hash', { type: 'custom', message: getErrorMessage(errorMap, 'address_hash') });
-        errorMap?.name && setError('name', { type: 'custom', message: getErrorMessage(errorMap, 'name') });
-        errorMap?.abi && setError('abi', { type: 'custom', message: getErrorMessage(errorMap, 'abi') });
+        errorMap?.address_hash && formApi.setError('contract_address_hash', { type: 'custom', message: getErrorMessage(errorMap, 'address_hash') });
+        errorMap?.name && formApi.setError('name', { type: 'custom', message: getErrorMessage(errorMap, 'name') });
+        errorMap?.abi && formApi.setError('abi', { type: 'custom', message: getErrorMessage(errorMap, 'abi') });
       } else if (errorMap?.identity_id) {
-        setError('contract_address_hash', { type: 'custom', message: getErrorMessage(errorMap, 'identity_id') });
+        formApi.setError('contract_address_hash', { type: 'custom', message: getErrorMessage(errorMap, 'identity_id') });
       } else {
         setAlertVisible(true);
       }
     },
   });
 
-  const onSubmit: SubmitHandler<Inputs> = useCallback((formData) => {
+  const onSubmit: SubmitHandler<Inputs> = useCallback(async(formData) => {
     setAlertVisible(false);
-    mutation.mutate({ ...formData, id: data?.id ? String(data.id) : undefined });
+    await mutation.mutateAsync({ ...formData, id: data?.id ? String(data.id) : undefined });
   }, [ mutation, data, setAlertVisible ]);
 
-  const renderContractAddressInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'contract_address_hash'>}) => {
-    return (
-      <AddressInput<Inputs, 'contract_address_hash'>
-        field={ field }
-        error={ errors.contract_address_hash }
-        bgColor="dialog_bg"
-        placeholder="Smart contract address (0x...)"
-      />
-    );
-  }, [ errors ]);
-
-  const renderNameInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'name'>}) => {
-    return (
-      <FormControl variant="floating" id="name" isRequired bgColor="dialog_bg">
-        <Input
-          { ...field }
-          isInvalid={ Boolean(errors.name) }
-          maxLength={ NAME_MAX_LENGTH }
+  return (
+    <FormProvider { ...formApi }>
+      <form noValidate onSubmit={ formApi.handleSubmit(onSubmit) }>
+        <FormFieldAddress<Inputs>
+          name="contract_address_hash"
+          placeholder="Smart contract address (0x...)"
+          isRequired
           bgColor="dialog_bg"
+          mb={ 5 }
         />
-        <InputPlaceholder text="Project name" error={ errors.name }/>
-      </FormControl>
-    );
-  }, [ errors ]);
-
-  const renderAbiInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'abi'>}) => {
-    return (
-      <FormControl variant="floating" id="abi" isRequired bgColor="dialog_bg">
-        <Textarea
-          { ...field }
+        <FormFieldText<Inputs>
+          name="name"
+          placeholder="Project name"
+          isRequired
+          rules={{
+            maxLength: NAME_MAX_LENGTH,
+          }}
+          bgColor="dialog_bg"
+          mb={ 5 }
+        />
+        <FormFieldText<Inputs>
+          name="abi"
+          placeholder="Custom ABI [{...}] (JSON format)"
+          isRequired
+          asComponent="Textarea"
+          bgColor="dialog_bg"
           size="lg"
           minH="300px"
-          isInvalid={ Boolean(errors.abi) }
-          bgColor="dialog_bg"
+          mb={ 8 }
         />
-        <InputPlaceholder text="Custom ABI [{...}] (JSON format)" error={ errors.abi }/>
-      </FormControl>
-    );
-  }, [ errors ]);
-
-  return (
-    <form noValidate onSubmit={ handleSubmit(onSubmit) }>
-      <Box>
-        <Controller
-          name="contract_address_hash"
-          control={ control }
-          render={ renderContractAddressInput }
-          rules={{
-            pattern: ADDRESS_REGEXP,
-            required: true,
-          }}
-        />
-      </Box>
-      <Box marginTop={ 5 }>
-        <Controller
-          name="name"
-          control={ control }
-          render={ renderNameInput }
-          rules={{ required: true }}
-        />
-      </Box>
-      <Box marginTop={ 5 }>
-        <Controller
-          name="abi"
-          control={ control }
-          render={ renderAbiInput }
-          rules={{ required: true }}
-        />
-      </Box>
-      <Box marginTop={ 8 }>
-        <Button
-          size="lg"
-          type="submit"
-          isDisabled={ !isDirty }
-          isLoading={ mutation.isPending }
-        >
-          { data ? 'Save' : 'Create custom ABI' }
-        </Button>
-      </Box>
-    </form>
+        <Box>
+          <Button
+            size="lg"
+            type="submit"
+            isDisabled={ !formApi.formState.isDirty }
+            isLoading={ mutation.isPending }
+          >
+            { data ? 'Save' : 'Create custom ABI' }
+          </Button>
+        </Box>
+      </form>
+    </FormProvider>
   );
 };
 

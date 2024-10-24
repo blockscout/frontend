@@ -1,4 +1,4 @@
-import type { Option } from 'ui/shared/FancySelect/types';
+import type { Option } from 'ui/shared/forms/inputs/select/types';
 
 export interface Fields extends SocialLinkFields, TickerUrlFields {
   address: string;

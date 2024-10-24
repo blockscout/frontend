@@ -9,7 +9,7 @@ interface Props {
   isFancy?: boolean;
 }
 
-const InputPlaceholder = ({ text, icon, error, isFancy }: Props) => {
+const FormInputPlaceholder = ({ text, icon, error, isFancy }: Props) => {
   let errorMessage = error?.message;
 
   if (!errorMessage && error?.type === 'pattern') {
@@ -21,13 +21,17 @@ const InputPlaceholder = ({ text, icon, error, isFancy }: Props) => {
       alignItems="center"
       { ...(isFancy ? { 'data-fancy': true } : {}) }
       variant="floating"
-      bgColor="deeppink"
     >
       { icon }
       <chakra.span>{ text }</chakra.span>
-      { errorMessage && <chakra.span order={ 3 } whiteSpace="pre"> - { errorMessage }</chakra.span> }
+      { errorMessage && (
+        <chakra.span order={ 3 } whiteSpace="pre">
+          { ' ' }
+          - { errorMessage }
+        </chakra.span>
+      ) }
     </FormLabel>
   );
 };
 
-export default React.memo(InputPlaceholder);
+export default React.memo(FormInputPlaceholder);

@@ -2,7 +2,7 @@ import { chakra, Center, useColorModeValue } from '@chakra-ui/react';
 import type { DragEvent } from 'react';
 import React from 'react';
 
-import { getAllFileEntries, convertFileEntryToFile } from './utils/files';
+import { getAllFileEntries, convertFileEntryToFile } from './utils';
 
 interface Props {
   children: React.ReactNode;

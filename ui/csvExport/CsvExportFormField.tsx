@@ -1,13 +1,11 @@
-import { FormControl, Input } from '@chakra-ui/react';
 import _capitalize from 'lodash/capitalize';
 import React from 'react';
-import type { ControllerRenderProps, UseFormReturn } from 'react-hook-form';
-import { Controller } from 'react-hook-form';
+import type { UseFormReturn } from 'react-hook-form';
 
 import type { FormFields } from './types';
 
 import dayjs from 'lib/date/dayjs';
-import InputPlaceholder from 'ui/shared/InputPlaceholder';
+import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
 
 interface Props {
   formApi: UseFormReturn<FormFields>;
@@ -15,26 +13,7 @@ interface Props {
 }
 
 const CsvExportFormField = ({ formApi, name }: Props) => {
-  const { formState, control, getValues, trigger } = formApi;
-
-  const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'from' | 'to'>}) => {
-    const error = field.name in formState.errors ? formState.errors[field.name] : undefined;
-
-    return (
-      <FormControl variant="floating" id={ field.name } isRequired size={{ base: 'md', lg: 'lg' }} maxW={{ base: 'auto', lg: '220px' }}>
-        <Input
-          { ...field }
-          required
-          isInvalid={ Boolean(error) }
-          type="date"
-          isDisabled={ formState.isSubmitting }
-          autoComplete="off"
-          max={ dayjs().format('YYYY-MM-DD') }
-        />
-        <InputPlaceholder text={ _capitalize(field.name) } error={ error }/>
-      </FormControl>
-    );
-  }, [ formState.errors, formState.isSubmitting ]);
+  const { formState, getValues, trigger } = formApi;
 
   const validate = React.useCallback((newValue: string) => {
     if (name === 'from') {
@@ -57,11 +36,15 @@ const CsvExportFormField = ({ formApi, name }: Props) => {
   }, [ formState.errors.from, formState.errors.to, getValues, name, trigger ]);
 
   return (
-    <Controller
+    <FormFieldText<FormFields, typeof name>
       name={ name }
-      control={ control }
-      render={ renderControl }
-      rules={{ required: true, validate }}
+      type="date"
+      max={ dayjs().format('YYYY-MM-DD') }
+      placeholder={ _capitalize(name) }
+      isRequired
+      rules={{ validate }}
+      size={{ base: 'md', lg: 'lg' }}
+      maxW={{ base: 'auto', lg: '220px' }}
     />
   );
 };

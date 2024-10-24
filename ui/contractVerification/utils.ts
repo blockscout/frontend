@@ -165,7 +165,7 @@ export function getDefaultValues(
   const method = singleMethod || methodParam;
 
   if (!method) {
-    return;
+    return { address: hash || '' };
   }
 
   const defaultValues: FormFields = { ...DEFAULT_VALUES[method], address: hash || '', license_type: licenseType };

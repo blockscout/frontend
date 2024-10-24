@@ -4,9 +4,9 @@ import { useController, useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 
-import { EMAIL_REGEXP } from 'lib/validations/email';
+import FormInputPlaceholder from 'ui/shared/forms/inputs/FormInputPlaceholder';
+import { EMAIL_REGEXP } from 'ui/shared/forms/validators/email';
 import IconSvg from 'ui/shared/IconSvg';
-import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
 interface Props {
   isReadOnly?: boolean;
@@ -35,7 +35,7 @@ const MyProfileFieldsEmail = ({ isReadOnly, defaultValue }: Props) => {
           isReadOnly={ isReadOnly }
           autoComplete="off"
         />
-        <InputPlaceholder text="Email" error={ fieldState.error }/>
+        <FormInputPlaceholder text="Email" error={ fieldState.error }/>
         { isVerified && (
           <InputRightElement h="100%">
             <IconSvg name="certified" boxSize={ 5 } color="green.500"/>

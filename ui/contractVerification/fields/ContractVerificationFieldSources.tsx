@@ -6,10 +6,10 @@ import { Controller, useFormContext } from 'react-hook-form';
 import type { FormFields } from '../types';
 
 import { Mb } from 'lib/consts';
-import DragAndDropArea from 'ui/shared/forms/DragAndDropArea';
-import FieldError from 'ui/shared/forms/FieldError';
-import FileInput from 'ui/shared/forms/FileInput';
-import FileSnippet from 'ui/shared/forms/FileSnippet';
+import FieldError from 'ui/shared/forms/components/FieldError';
+import DragAndDropArea from 'ui/shared/forms/inputs/file/DragAndDropArea';
+import FileInput from 'ui/shared/forms/inputs/file/FileInput';
+import FileSnippet from 'ui/shared/forms/inputs/file/FileSnippet';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
 

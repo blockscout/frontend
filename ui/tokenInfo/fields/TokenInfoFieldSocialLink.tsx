@@ -1,14 +1,12 @@
-import { FormControl, Input, InputRightElement, InputGroup } from '@chakra-ui/react';
+import type { FormControlProps } from '@chakra-ui/react';
 import React from 'react';
-import type { Control, ControllerProps } from 'react-hook-form';
-import { Controller } from 'react-hook-form';
+import type { ControllerRenderProps } from 'react-hook-form';
 
 import type { Fields, SocialLinkFields } from '../types';
 
-import { validator } from 'lib/validations/url';
+import FormFieldUrl from 'ui/shared/forms/fields/FormFieldUrl';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
-import InputPlaceholder from 'ui/shared/InputPlaceholder';
 
 interface Item {
   icon: IconName;
@@ -29,38 +27,24 @@ const SETTINGS: Record<keyof SocialLinkFields, Item> = {
 };
 
 interface Props {
-  control: Control<Fields>;
   isReadOnly?: boolean;
+  size?: FormControlProps['size'];
   name: keyof SocialLinkFields;
 }
 
-const TokenInfoFieldSocialLink = ({ control, isReadOnly, name }: Props) => {
-  const renderControl: ControllerProps<Fields, typeof name>['render'] = React.useCallback(({ field, fieldState, formState }) => {
-    return (
-      <FormControl variant="floating" id={ field.name } size={{ base: 'md', lg: 'lg' }} sx={{ '.chakra-input__group input': { pr: '60px' } }}>
-        <InputGroup>
-          <Input
-            { ...field }
-            isInvalid={ Boolean(fieldState.error) }
-            isDisabled={ formState.isSubmitting }
-            isReadOnly={ isReadOnly }
-            autoComplete="off"
-          />
-          <InputPlaceholder text={ SETTINGS[name].label } error={ fieldState.error }/>
-          <InputRightElement h="100%">
-            <IconSvg name={ SETTINGS[name].icon } boxSize={ 6 } color={ field.value ? SETTINGS[name].color : '#718096' }/>
-          </InputRightElement>
-        </InputGroup>
-      </FormControl>
-    );
-  }, [ isReadOnly, name ]);
+const TokenInfoFieldSocialLink = ({ isReadOnly, size, name }: Props) => {
+
+  const rightElement = React.useCallback(({ field }: { field: ControllerRenderProps<Fields, keyof SocialLinkFields> }) => {
+    return <IconSvg name={ SETTINGS[name].icon } boxSize={ 6 } color={ field.value ? SETTINGS[name].color : '#718096' }/>;
+  }, [ name ]);
 
   return (
-    <Controller
+    <FormFieldUrl<Fields, keyof SocialLinkFields>
       name={ name }
-      control={ control }
-      render={ renderControl }
-      rules={{ validate: validator }}
+      placeholder={ SETTINGS[name].label }
+      rightElement={ rightElement }
+      isReadOnly={ isReadOnly }
+      size={ size }
     />
   );
 };

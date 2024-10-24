@@ -14,15 +14,13 @@ import useApiFetch from 'lib/api/useApiFetch';
 import getErrorObj from 'lib/errors/getErrorObj';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import useIsMobile from 'lib/hooks/useIsMobile';
+import FormFieldEmail from 'ui/shared/forms/fields/FormFieldEmail';
 import FormFieldReCaptcha from 'ui/shared/forms/fields/FormFieldReCaptcha';
+import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
+import FormFieldUrl from 'ui/shared/forms/fields/FormFieldUrl';
 import Hint from 'ui/shared/Hint';
 
 import PublicTagsSubmitFieldAddresses from './fields/PublicTagsSubmitFieldAddresses';
-import PublicTagsSubmitFieldCompanyName from './fields/PublicTagsSubmitFieldCompanyName';
-import PublicTagsSubmitFieldCompanyWebsite from './fields/PublicTagsSubmitFieldCompanyWebsite';
-import PublicTagsSubmitFieldDescription from './fields/PublicTagsSubmitFieldDescription';
-import PublicTagsSubmitFieldRequesterEmail from './fields/PublicTagsSubmitFieldRequesterEmail';
-import PublicTagsSubmitFieldRequesterName from './fields/PublicTagsSubmitFieldRequesterName';
 import PublicTagsSubmitFieldTags from './fields/PublicTagsSubmitFieldTags';
 import { convertFormDataToRequestsBody, getFormDefaultValues } from './utils';
 
@@ -82,6 +80,10 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
     return null;
   }
 
+  const fieldProps = {
+    size: { base: 'md', lg: 'lg' },
+  };
+
   return (
     <GoogleReCaptchaProvider reCaptchaKey={ appConfig.services.reCaptchaV3.siteKey }>
       <FormProvider { ...formApi }>
@@ -97,21 +99,34 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
             <GridItem colSpan={{ base: 1, lg: 3 }} as="h2" textStyle="h4">
             Company info
             </GridItem>
-            <PublicTagsSubmitFieldRequesterName/>
-            <PublicTagsSubmitFieldRequesterEmail/>
+            <FormFieldText<FormFields> name="requesterName" isRequired placeholder="Your name" { ...fieldProps }/>
+            <FormFieldEmail<FormFields> name="requesterEmail" isRequired { ...fieldProps }/>
+
             { !isMobile && <div/> }
-            <PublicTagsSubmitFieldCompanyName/>
-            <PublicTagsSubmitFieldCompanyWebsite/>
+            <FormFieldText<FormFields> name="companyName" placeholder="Company name" { ...fieldProps }/>
+            <FormFieldUrl<FormFields> name="companyWebsite" placeholder="Company website" { ...fieldProps }/>
             { !isMobile && <div/> }
 
             <GridItem colSpan={{ base: 1, lg: 3 }} as="h2" textStyle="h4" mt={{ base: 3, lg: 5 }}>
-            Public tags/labels
+              Public tags/labels
               <Hint label="Submit a public tag proposal for our moderation team to review" ml={ 1 } color="link"/>
             </GridItem>
             <PublicTagsSubmitFieldAddresses/>
             <PublicTagsSubmitFieldTags tagTypes={ config?.tagTypes }/>
             <GridItem colSpan={{ base: 1, lg: 2 }}>
-              <PublicTagsSubmitFieldDescription/>
+              <FormFieldText<FormFields>
+                name="description"
+                isRequired
+                placeholder={
+                  isMobile ?
+                    'Confirm the connection between addresses and tags.' :
+                    'Provide a comment to confirm the connection between addresses and tags.'
+                }
+                maxH="160px"
+                rules={{ maxLength: 80 }}
+                asComponent="Textarea"
+                { ...fieldProps }
+              />
             </GridItem>
 
             <GridItem colSpan={{ base: 1, lg: 3 }}>
