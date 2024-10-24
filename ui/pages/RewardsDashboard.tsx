@@ -40,7 +40,8 @@ const RewardsDashboard = () => {
     if (!dailyRewardQuery.data?.reset_at) {
       return;
     }
-    const interval = setInterval(() => {
+
+    const updateCountdown = () => {
       const now = new Date().getTime();
       const target = new Date(dailyRewardQuery.data.reset_at).getTime();
       const difference = target - now;
@@ -53,6 +54,12 @@ const RewardsDashboard = () => {
         dailyRewardQuery.refetch();
         clearInterval(interval);
       }
+    };
+
+    updateCountdown();
+
+    const interval = setInterval(() => {
+      updateCountdown();
     }, 1000);
 
     return () => clearInterval(interval);
@@ -80,7 +87,7 @@ const RewardsDashboard = () => {
               <Button
                 isDisabled={ !dailyRewardQuery.data?.available }
                 onClick={ handleClaim }
-                isLoading={ isClaiming || dailyRewardQuery.isPending }
+                isLoading={ isClaiming || dailyRewardQuery.isPending || dailyRewardQuery.isFetching }
               >
                 { dailyRewardQuery.data?.available ?
                   `Claim ${ dailyRewardValue } Merits` :
