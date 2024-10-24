@@ -1,13 +1,13 @@
-import { defaultWagmiConfig } from '@web3modal/wagmi/react/config';
+import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
 import { http } from 'viem';
-import { createConfig, type CreateConfigParameters } from 'wagmi';
+import { createConfig } from 'wagmi';
 
 import config from 'configs/app';
 import currentChain from 'lib/web3/currentChain';
 const feature = config.features.blockchainInteraction;
 
-const wagmiConfig = (() => {
-  const chains: CreateConfigParameters['chains'] = [ currentChain ];
+const wagmi = (() => {
+  const chains = [ currentChain ];
 
   if (!feature.isEnabled) {
     const wagmiConfig = createConfig({
@@ -19,31 +19,21 @@ const wagmiConfig = (() => {
       batch: { multicall: { wait: 100 } },
     });
 
-    return wagmiConfig;
+    return { config: wagmiConfig, adapter: null };
   }
 
-  const wagmiConfig = defaultWagmiConfig({
-    chains,
+  const wagmiAdapter = new WagmiAdapter({
+    networks: chains,
     multiInjectedProviderDiscovery: true,
     transports: {
       [currentChain.id]: http(),
     },
     projectId: feature.walletConnect.projectId,
-    metadata: {
-      name: `${ config.chain.name } explorer`,
-      description: `${ config.chain.name } explorer`,
-      url: config.app.baseUrl,
-      icons: [ config.UI.navigation.icon.default ].filter(Boolean),
-    },
-    auth: {
-      email: true,
-      socials: [],
-    },
     ssr: true,
     batch: { multicall: { wait: 100 } },
   });
 
-  return wagmiConfig;
+  return { config: wagmiAdapter.wagmiConfig, adapter: wagmiAdapter };
 })();
 
-export default wagmiConfig;
+export default wagmi;
