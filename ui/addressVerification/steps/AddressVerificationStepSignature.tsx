@@ -18,9 +18,9 @@ import type { VerifiedAddress } from 'types/api/account';
 import config from 'configs/app';
 import useApiFetch from 'lib/api/useApiFetch';
 import shortenString from 'lib/shortenString';
-import { SIGNATURE_REGEXP } from 'lib/validations/signature';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
+import { SIGNATURE_REGEXP } from 'ui/shared/forms/validators/signature';
 import AdminSupportText from 'ui/shared/texts/AdminSupportText';
 
 type Fields = RootFields & AddressVerificationFormSecondStepFields;

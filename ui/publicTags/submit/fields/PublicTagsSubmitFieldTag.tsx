@@ -6,10 +6,10 @@ import type { FormFields, FormFieldTag } from '../types';
 import type { PublicTagType } from 'types/api/addressMetadata';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { validator as colorValidator } from 'lib/validations/color';
 import EntityTag from 'ui/shared/EntityTags/EntityTag';
 import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
 import FormFieldUrl from 'ui/shared/forms/fields/FormFieldUrl';
+import { validator as colorValidator } from 'ui/shared/forms/validators/color';
 import IconSvg from 'ui/shared/IconSvg';
 
 import PublicTagsSubmitFieldTagColor from './PublicTagsSubmitFieldTagColor';

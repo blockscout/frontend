@@ -3,9 +3,9 @@ import React from 'react';
 
 import type { Fields } from '../types';
 
-import { validator as emailValidator } from 'lib/validations/email';
-import { validator as urlValidator } from 'lib/validations/url';
 import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
+import { validator as emailValidator } from 'ui/shared/forms/validators/email';
+import { urlValidator } from 'ui/shared/forms/validators/url';
 
 interface Props {
   isReadOnly?: boolean;
@@ -31,7 +31,6 @@ const TokenInfoFieldSupport = (props: Props) => {
   return (
     <FormFieldText<Fields, 'support'>
       name="support"
-      isRequired
       placeholder="Support URL or email"
       rules={{ validate }}
       { ...props }

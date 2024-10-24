@@ -4,8 +4,8 @@ import { useController, useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 
-import { EMAIL_REGEXP } from 'lib/validations/email';
 import FormInputPlaceholder from 'ui/shared/forms/inputs/FormInputPlaceholder';
+import { EMAIL_REGEXP } from 'ui/shared/forms/validators/email';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {

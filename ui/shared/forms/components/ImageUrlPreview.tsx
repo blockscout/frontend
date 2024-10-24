@@ -21,7 +21,7 @@ const ImageUrlPreview = ({
   fallback: fallbackProp,
   colorMode,
 }: Props) => {
-  const skeleton = <Skeleton className={ className } w="100%" h="100%" borderRadius="none"/>;
+  const skeleton = <Skeleton className={ className } w="100%" h="100%"/>;
 
   const fallback = (() => {
     if (src && !isInvalid) {

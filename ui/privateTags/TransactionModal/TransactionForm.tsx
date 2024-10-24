@@ -13,8 +13,8 @@ import type { ResourceErrorAccount } from 'lib/api/resources';
 import { resourceKey } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/getErrorMessage';
-import { TRANSACTION_HASH_LENGTH, TRANSACTION_HASH_REGEXP } from 'lib/validations/transaction';
 import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
+import { TRANSACTION_HASH_LENGTH, TRANSACTION_HASH_REGEXP } from 'ui/shared/forms/validators/transaction';
 
 const TAG_MAX_LENGTH = 35;
 

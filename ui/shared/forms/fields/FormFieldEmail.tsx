@@ -5,8 +5,7 @@ import type { FieldValues, Path } from 'react-hook-form';
 import type { FormFieldPropsBase } from './types';
 import type { PartialBy } from 'types/utils';
 
-import { EMAIL_REGEXP } from 'lib/validations/email';
-
+import { EMAIL_REGEXP } from '../validators/email';
 import FormFieldText from './FormFieldText';
 
 const FormFieldEmail = <FormFields extends FieldValues>(

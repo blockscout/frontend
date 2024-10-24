@@ -126,11 +126,11 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
           <FormFieldEmail<Fields> name="requester_email" isRequired placeholder="Requester email" { ...fieldProps }/>
 
           <TokenInfoFormSectionHeader>Project info</TokenInfoFormSectionHeader>
-          <FormFieldText<Fields> name="project_name" isRequired placeholder="Project name" { ...fieldProps }/>
+          <FormFieldText<Fields> name="project_name" placeholder="Project name" { ...fieldProps }/>
           <TokenInfoFieldProjectSector { ...fieldProps } config={ configQuery.data.projectSectors }/>
           <FormFieldEmail<Fields> name="project_email" isRequired placeholder="Official project email address" { ...fieldProps }/>
           <FormFieldUrl<Fields> name="project_website" isRequired placeholder="Official project website" { ...fieldProps }/>
-          <FormFieldUrl<Fields> name="docs" isRequired placeholder="Docs" { ...fieldProps }/>
+          <FormFieldUrl<Fields> name="docs" placeholder="Docs" { ...fieldProps }/>
           <TokenInfoFieldSupport { ...fieldProps }/>
           <GridItem colSpan={{ base: 1, lg: 2 }}>
             <TokenInfoFieldIconUrl { ...fieldProps }/>

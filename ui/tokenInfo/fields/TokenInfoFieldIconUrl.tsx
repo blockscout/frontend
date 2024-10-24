@@ -35,6 +35,7 @@ const TokenInfoFieldIconUrl = ({ isReadOnly, size }: Props) => {
           { ...previewUtils.preview }
           fallback={ <TokenLogoPlaceholder boxSize={{ base: 10, lg: 12 }}/> }
           boxSize={{ base: 10, lg: 12 }}
+          borderRadius="base"
         />
       </TokenInfoIconPreview>
     </Flex>

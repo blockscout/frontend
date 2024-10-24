@@ -5,8 +5,8 @@ import { useFormContext, type FieldError } from 'react-hook-form';
 import type { FormFields } from '../types';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
-import { validator as colorValidator } from 'lib/validations/color';
 import FormInputPlaceholder from 'ui/shared/forms/inputs/FormInputPlaceholder';
+import { validator as colorValidator } from 'ui/shared/forms/validators/color';
 
 type ColorFieldTypes = 'bgColor' | 'textColor';
 
