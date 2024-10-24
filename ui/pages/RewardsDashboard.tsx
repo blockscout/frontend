@@ -77,7 +77,11 @@ const RewardsDashboard = () => {
             description="Claim your daily merits and any merits received from referrals."
             direction="column-reverse"
             contentAfter={ (
-              <Button isDisabled={ !dailyRewardQuery.data?.available } onClick={ handleClaim } isLoading={ isClaiming }>
+              <Button
+                isDisabled={ !dailyRewardQuery.data?.available }
+                onClick={ handleClaim }
+                isLoading={ isClaiming || dailyRewardQuery.isPending }
+              >
                 { dailyRewardQuery.data?.available ?
                   `Claim ${ dailyRewardValue } Merits` :
                   `Next claim in ${ timeLeft }`
@@ -87,7 +91,8 @@ const RewardsDashboard = () => {
           >
             <RewardsDashboardCardValue
               label="Total balance"
-              value={ balancesQuery.data?.total }
+              value={ balancesQuery.data?.total || 0 }
+              isLoading={ balancesQuery.isPending }
               withIcon
               hint={ (
                 <>
@@ -107,6 +112,7 @@ const RewardsDashboard = () => {
             <RewardsDashboardCardValue
               label="Referrals"
               value={ `${ numberOfReferrals } user${ numberOfReferrals === 1 ? '' : 's' }` }
+              isLoading={ referralsQuery.isPending }
               hint="The number of referrals who registered with your code/link."
             />
           </RewardsDashboardCard>
@@ -125,7 +131,7 @@ const RewardsDashboard = () => {
           description={ (
             <>
               Refer friends and boost your merits! You receive a{ ' ' }
-              <Skeleton as="span" isLoaded={ !rewardsConfigQuery.isLoading }>
+              <Skeleton as="span" isLoaded={ !rewardsConfigQuery.isPending }>
                 { Number(rewardsConfigQuery.data?.rewards.referral_share || 0) * 100 }%
               </Skeleton>
               { ' ' }bonus on all merits earned by your referrals.
@@ -143,12 +149,12 @@ const RewardsDashboard = () => {
             <CopyField
               label="Referral link"
               value={ `https://eth.blockscout.com?ref=${ referralsQuery.data?.code }` }
-              isLoading={ referralsQuery.isLoading }
+              isLoading={ referralsQuery.isPending }
             />
             <CopyField
               label="Referral code"
               value={ referralsQuery.data?.code || '' }
-              isLoading={ referralsQuery.isLoading }
+              isLoading={ referralsQuery.isPending }
             />
           </Flex>
         </RewardsDashboardCard>

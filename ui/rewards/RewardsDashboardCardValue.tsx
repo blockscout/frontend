@@ -1,4 +1,4 @@
-import { Flex, Text, Icon } from '@chakra-ui/react';
+import { Flex, Text, Icon, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 // This icon doesn't work properly when it is in the sprite
@@ -12,9 +12,10 @@ type Props = {
   value: number | string | undefined;
   withIcon?: boolean;
   hint?: string | React.ReactNode;
+  isLoading?: boolean;
 }
 
-const RewardsDashboardCard = ({ label, value, withIcon, hint }: Props) => {
+const RewardsDashboardCard = ({ label, value, withIcon, hint, isLoading }: Props) => {
   return (
     <Flex key={ label } flexDirection="column" alignItems="center" gap={ 2 }>
       <Flex alignItems="center" gap={ 1 }>
@@ -29,14 +30,14 @@ const RewardsDashboardCard = ({ label, value, withIcon, hint }: Props) => {
           { label }
         </Text>
       </Flex>
-      <Flex alignItems="center">
+      <Skeleton isLoaded={ !isLoading } display="flex" alignItems="center" justifyContent="center" minW="100px">
         { withIcon && (
           <Icon as={ meritsIcon } boxSize={ 12 } mt={ -2 } mb={ -2.5 }/>
         ) }
         <Text fontSize={{ base: '24px', md: '32px' }} lineHeight={{ base: '24px', md: 1.5 }} fontWeight="500">
           { value }
         </Text>
-      </Flex>
+      </Skeleton>
     </Flex>
   );
 };
