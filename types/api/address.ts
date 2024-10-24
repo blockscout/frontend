@@ -11,6 +11,7 @@ export interface Address extends UserTags {
   block_number_balance_updated_at: number | null;
   coin_balance: string | null;
   creator_address_hash: string | null;
+  creator_filecoin_robust_address?: string | null;
   creation_tx_hash: string | null;
   exchange_rate: string | null;
   ens_domain_name: string | null;
@@ -271,9 +272,9 @@ export type AddressEpochRewardsItem = {
 }
 
 export type AddressFilecoinParams = {
-  actor_type: FilecoinActorType;
-  id: string;
-  robust: string;
+  actor_type?: FilecoinActorType;
+  id?: string | null;
+  robust?: string | null;
 }
 
 export type FilecoinActorType =

@@ -67,6 +67,8 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
     has_token_transfers: true,
     has_validated_blocks: false,
     filecoin: undefined,
+    creator_filecoin_robust_address: null,
+    creator_address_hash: null,
   }), [ addressHash ]);
 
   // error handling (except 404 codes)
@@ -86,6 +88,8 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
   if (!data) {
     return null;
   }
+
+  const creatorAddressHash = data.creator_address_hash;
 
   return (
     <>
@@ -140,7 +144,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
 
         <AddressNameInfo data={ data } isLoading={ addressQuery.isPlaceholderData }/>
 
-        { data.is_contract && data.creation_tx_hash && data.creator_address_hash && (
+        { data.is_contract && data.creation_tx_hash && (creatorAddressHash) && (
           <>
             <DetailsInfoItem.Label
               hint="Transaction and address of creation"
@@ -150,7 +154,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
             </DetailsInfoItem.Label>
             <DetailsInfoItem.Value>
               <AddressEntity
-                address={{ hash: data.creator_address_hash }}
+                address={{ hash: creatorAddressHash, filecoin: { robust: data.creator_filecoin_robust_address } }}
                 truncation="constant"
                 noIcon
               />
