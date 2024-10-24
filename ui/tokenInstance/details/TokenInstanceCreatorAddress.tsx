@@ -28,6 +28,9 @@ const TokenInstanceCreatorAddress = ({ hash }: Props) => {
 
   const creatorAddress = {
     hash: addressQuery.data.creator_address_hash,
+    filecoin: {
+      robust: addressQuery.data.creator_filecoin_robust_address,
+    },
     is_contract: false,
     implementations: null,
   };

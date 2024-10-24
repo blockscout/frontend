@@ -33,7 +33,7 @@ const SearchBarSuggestLabel = ({ data, isMobile, searchTerm }: Props) => {
       whiteSpace="nowrap"
       variant="secondary"
     >
-      <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
+      <HashStringShortenDynamic hash={ data.filecoin_robust_address || data.address } isTooltipDisabled/>
     </Text>
   );
 

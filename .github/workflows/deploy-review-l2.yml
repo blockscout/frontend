@@ -19,6 +19,7 @@ on:
             - eth
             - eth_sepolia
             - eth_goerli
+            - filecoin
             - optimism
             - optimism_celestia
             - optimism_sepolia

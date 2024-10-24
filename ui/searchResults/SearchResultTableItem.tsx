@@ -77,7 +77,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
             <Td fontSize="sm" verticalAlign="middle">
               <Skeleton isLoaded={ !isLoading } whiteSpace="nowrap" overflow="hidden" display="flex" alignItems="center">
                 <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-28px)' : 'unset' }>
-                  <HashStringShortenDynamic hash={ data.address }/>
+                  <HashStringShortenDynamic hash={ data.filecoin_robust_address || data.address }/>
                 </Box>
                 { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
               </Skeleton>
@@ -100,6 +100,9 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
         const addressName = data.name || data.ens_info?.name;
         const address = {
           hash: data.address,
+          filecoin: {
+            robust: data.filecoin_robust_address,
+          },
           is_contract: data.type === 'contract',
           is_verified: data.is_smart_contract_verified,
           name: null,
@@ -174,7 +177,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
             <Td fontSize="sm" verticalAlign="middle">
               <Flex alignItems="center" overflow="hidden">
                 <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-28px)' : 'unset' }>
-                  <HashStringShortenDynamic hash={ data.address }/>
+                  <HashStringShortenDynamic hash={ data.filecoin_robust_address || data.address }/>
                 </Box>
                 { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
               </Flex>
@@ -392,7 +395,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
             <Td>
               <Flex alignItems="center" overflow="hidden">
                 <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-28px)' : 'unset' }>
-                  <HashStringShortenDynamic hash={ data.address }/>
+                  <HashStringShortenDynamic hash={ data.filecoin_robust_address || data.address }/>
                 </Box>
                 { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
               </Flex>

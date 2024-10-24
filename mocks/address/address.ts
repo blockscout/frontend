@@ -157,3 +157,12 @@ export const validator: Address = {
   watchlist_address_id: null,
   ens_domain_name: null,
 };
+
+export const filecoin = {
+  ...validator,
+  filecoin: {
+    actor_type: 'evm' as const,
+    id: 'f02977693',
+    robust: 'f410fuiwj6a3yxajbohrl5vu6ns6o2e2jriul52lvzci',
+  },
+};

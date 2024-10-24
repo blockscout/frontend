@@ -11,9 +11,11 @@ export interface Address extends UserTags {
   block_number_balance_updated_at: number | null;
   coin_balance: string | null;
   creator_address_hash: string | null;
+  creator_filecoin_robust_address?: string | null;
   creation_tx_hash: string | null;
   exchange_rate: string | null;
   ens_domain_name: string | null;
+  filecoin?: AddressFilecoinParams;
   // TODO: if we are happy with tabs-counters method, should we delete has_something fields?
   has_beacon_chain_withdrawals?: boolean;
   has_decompiled_code: boolean;
@@ -268,3 +270,27 @@ export type AddressEpochRewardsItem = {
   epoch_number: number;
   associated_account: AddressParam;
 }
+
+export type AddressFilecoinParams = {
+  actor_type?: FilecoinActorType;
+  id?: string | null;
+  robust?: string | null;
+}
+
+export type FilecoinActorType =
+  'account' |
+  'cron' |
+  'datacap' |
+  'eam' |
+  'ethaccount' |
+  'evm' |
+  'init' |
+  'market' |
+  'miner' |
+  'multisig' |
+  'paych' |
+  'placeholder' |
+  'power' |
+  'reward' |
+  'system' |
+  'verifreg';

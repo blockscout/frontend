@@ -47,9 +47,9 @@ const VerifiedContractsListItem = ({ data, isLoading }: Props) => {
           { data.certified && <ContractCertifiedLabel iconSize={ 5 } boxSize={ 5 } mx={ 2 }/> }
         </Flex>
         <Skeleton isLoaded={ !isLoading } color="text_secondary" ml="auto">
-          <HashStringShorten hash={ data.address.hash } isTooltipDisabled/>
+          <HashStringShorten hash={ data.address.filecoin?.robust ?? data.address.hash } isTooltipDisabled/>
         </Skeleton>
-        <CopyToClipboard text={ data.address.hash } isLoading={ isLoading }/>
+        <CopyToClipboard text={ data.address.filecoin?.robust ?? data.address.hash } isLoading={ isLoading }/>
       </Flex>
       <Flex columnGap={ 3 }>
         <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Balance { currencyUnits.ether }</Skeleton>
