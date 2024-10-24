@@ -150,11 +150,13 @@ const RewardsDashboard = () => {
               label="Referral link"
               value={ `https://eth.blockscout.com?ref=${ referralsQuery.data?.code }` }
               isLoading={ referralsQuery.isPending }
+              flex={ 2 }
             />
             <CopyField
               label="Referral code"
               value={ referralsQuery.data?.code || '' }
               isLoading={ referralsQuery.isPending }
+              flex={ 1 }
             />
           </Flex>
         </RewardsDashboardCard>
