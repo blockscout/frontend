@@ -15,7 +15,7 @@ interface Props {
 
 const ERC20TokensTable = ({ data, top, isLoading }: Props) => {
   return (
-    <Table variant="simple" size="sm">
+    <Table>
       <Thead top={ top }>
         <Tr>
           <Th width="30%">Asset</Th>

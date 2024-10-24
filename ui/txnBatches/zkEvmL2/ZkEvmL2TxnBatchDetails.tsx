@@ -64,7 +64,7 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
       <DetailsInfoItem.Label
         isLoading={ isPlaceholderData }
       >
-        Tx batch number
+        Txn batch number
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value>
         <Skeleton isLoaded={ !isPlaceholderData }>
@@ -73,8 +73,8 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
         <PrevNext
           ml={ 6 }
           onClick={ handlePrevNextClick }
-          prevLabel="View previous tx batch"
-          nextLabel="View next tx batch"
+          prevLabel="View previous txn batch"
+          nextLabel="View next txn batch"
           isPrevDisabled={ data.number === 0 }
           isLoading={ isPlaceholderData }
         />

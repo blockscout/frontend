@@ -14,6 +14,20 @@ import AdBanner from 'ui/shared/ad/AdBanner';
 const rollupFeature = config.features.rollup;
 
 const Home = () => {
+
+  const leftWidget = (() => {
+    if (rollupFeature.isEnabled && !rollupFeature.homepage.showLatestBlocks) {
+      switch (rollupFeature.type) {
+        case 'zkEvm':
+          return <LatestZkEvmL2Batches/>;
+        case 'arbitrum':
+          return <LatestArbitrumL2Batches/>;
+      }
+    }
+
+    return <LatestBlocks/>;
+  })();
+
   return (
     <Box as="main">
       <HeroBanner/>
@@ -23,9 +37,7 @@ const Home = () => {
       </Flex>
       <AdBanner mt={ 6 } mx="auto" display={{ base: 'flex', lg: 'none' }} justifyContent="center"/>
       <Flex mt={ 8 } direction={{ base: 'column', lg: 'row' }} columnGap={ 12 } rowGap={ 6 }>
-        { rollupFeature.isEnabled && rollupFeature.type === 'zkEvm' && <LatestZkEvmL2Batches/> }
-        { rollupFeature.isEnabled && rollupFeature.type === 'arbitrum' && <LatestArbitrumL2Batches/> }
-        { !(rollupFeature.isEnabled && (rollupFeature.type === 'arbitrum' || rollupFeature.type === 'zkEvm')) && <LatestBlocks/> }
+        { leftWidget }
         <Box flexGrow={ 1 }>
           <Transactions/>
         </Box>

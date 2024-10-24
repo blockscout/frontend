@@ -2,7 +2,6 @@ import { Hide, Show, Skeleton, Text } from '@chakra-ui/react';
 import React from 'react';
 
 import useApiQuery from 'lib/api/useApiQuery';
-import { nbsp } from 'lib/html-entities';
 import { ARBITRUM_L2_TXN_BATCHES_ITEM } from 'stubs/arbitrumL2';
 import { generateListStub } from 'stubs/utils';
 import { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
@@ -60,7 +59,7 @@ const ArbitrumL2TxnBatches = () => {
 
     return (
       <Skeleton isLoaded={ !countersQuery.isPlaceholderData && !isPlaceholderData } display="flex" flexWrap="wrap">
-        Tx batch (L2 block)
+        Txn batch
         <Text fontWeight={ 600 } whiteSpace="pre"> #{ data.items[0].number } </Text>to
         <Text fontWeight={ 600 } whiteSpace="pre"> #{ data.items[data.items.length - 1].number } </Text>
         (total of { countersQuery.data?.toLocaleString() } batches)
@@ -72,11 +71,11 @@ const ArbitrumL2TxnBatches = () => {
 
   return (
     <>
-      <PageTitle title={ `Tx batches (L2${ nbsp }blocks)` } withTextAd/>
+      <PageTitle title="Txn batches" withTextAd/>
       <DataListDisplay
         isError={ isError }
         items={ data?.items }
-        emptyText="There are no tx batches."
+        emptyText="There are no txn batches."
         content={ content }
         actionBar={ actionBar }
       />

@@ -77,7 +77,7 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
         isLoading={ isPlaceholderData }
         hint="Batch number indicates the length of batches produced by grouping L2 blocks to be proven on L1"
       >
-        Tx batch number
+        Txn batch number
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value>
         <Skeleton isLoaded={ !isPlaceholderData }>
@@ -86,8 +86,8 @@ const ArbitrumL2TxnBatchDetails = ({ query }: Props) => {
         <PrevNext
           ml={ 6 }
           onClick={ handlePrevNextClick }
-          prevLabel="View previous tx batch"
-          nextLabel="View next tx batch"
+          prevLabel="View previous txn batch"
+          nextLabel="View next txn batch"
           isPrevDisabled={ data.number === 0 }
           isLoading={ isPlaceholderData }
         />
