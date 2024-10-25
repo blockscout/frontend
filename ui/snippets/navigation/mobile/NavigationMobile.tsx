@@ -3,6 +3,7 @@ import { animate, motion, useMotionValue } from 'framer-motion';
 import React, { useCallback } from 'react';
 
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
+import RewardsNavLink from 'ui/rewards/RewardsNavLink';
 import IconSvg from 'ui/shared/IconSvg';
 import useIsAuth from 'ui/snippets/auth/useIsAuth';
 
@@ -82,6 +83,7 @@ const NavigationMobile = ({ onNavLinkClick, isMarketplaceAppPage }: Props) => {
             borderColor="divider"
           >
             <VStack as="ul" spacing="1" alignItems="flex-start">
+              <RewardsNavLink onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>
               { accountNavItems.map((item) => <NavLink key={ item.text } item={ item } onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>) }
             </VStack>
           </Box>

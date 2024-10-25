@@ -17,8 +17,6 @@ type NavItemCommon = {
 export type NavItemInternal = NavItemCommon & {
   nextRoute: Route;
   isActive?: boolean;
-  onClick?: () => void;
-  isDisabled?: boolean;
 }
 
 export type NavItemExternal = {

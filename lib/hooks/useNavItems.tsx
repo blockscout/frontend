@@ -4,7 +4,6 @@ import React from 'react';
 import type { NavItemInternal, NavItem, NavGroupItem } from 'types/client/navigation';
 
 import config from 'configs/app';
-import { useRewardsContext } from 'lib/contexts/rewards';
 import { rightLineArrow } from 'lib/html-entities';
 
 interface ReturnType {
@@ -17,19 +16,12 @@ export function isGroupItem(item: NavItem | NavGroupItem): item is NavGroupItem 
 }
 
 export function isInternalItem(item: NavItem): item is NavItemInternal {
-  return !('url' in item);
+  return 'nextRoute' in item;
 }
 
 export default function useNavItems(): ReturnType {
   const router = useRouter();
   const pathname = router.pathname;
-  const {
-    openLoginModal: openRewardsLoginModal,
-    balancesQuery: rewardsBalancesQuery,
-    dailyRewardQuery,
-    apiToken: rewardsApiToken,
-    isInitialized: isRewardsInitialized,
-  } = useRewardsContext();
 
   return React.useMemo(() => {
     let blockchainNavItems: Array<NavItem> | Array<Array<NavItem>> = [];
@@ -286,14 +278,6 @@ export default function useNavItems(): ReturnType {
     ].filter(Boolean);
 
     const accountNavItems: ReturnType['accountNavItems'] = [
-      config.features.rewards.isEnabled ? {
-        text: rewardsBalancesQuery.data?.total ? `${ rewardsBalancesQuery.data?.total } Merits` : 'Merits',
-        nextRoute: { pathname: '/account/rewards' as const },
-        onClick: (isRewardsInitialized && !rewardsApiToken) ? openRewardsLoginModal : undefined,
-        icon: dailyRewardQuery.data?.available ? 'merits_with_dot' : 'merits',
-        isActive: pathname === '/account/rewards',
-        isDisabled: !isRewardsInitialized,
-      } : null,
       {
         text: 'Watch list',
         nextRoute: { pathname: '/account/watchlist' as const },
@@ -327,5 +311,5 @@ export default function useNavItems(): ReturnType {
     ].filter(Boolean);
 
     return { mainNavItems, accountNavItems };
-  }, [ pathname, openRewardsLoginModal, rewardsBalancesQuery, dailyRewardQuery, rewardsApiToken, isRewardsInitialized ]);
+  }, [ pathname ]);
 }
