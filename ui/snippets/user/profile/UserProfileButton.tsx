@@ -1,5 +1,5 @@
 import type { ButtonProps } from '@chakra-ui/react';
-import { Button, Skeleton, Tooltip, Box, HStack } from '@chakra-ui/react';
+import { Button, Tooltip, Box, HStack } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
 import React from 'react';
 
@@ -22,7 +22,7 @@ interface Props {
   isPending?: boolean;
 }
 
-const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: Props, ref: React.ForwardedRef<HTMLDivElement>) => {
+const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
   const [ isFetched, setIsFetched ] = React.useState(false);
   const isMobile = useIsMobile();
 
@@ -60,6 +60,8 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: 
     );
   })();
 
+  const isButtonLoading = isPending || !isFetched;
+
   return (
     <Tooltip
       label={ <span>Sign in to My Account to add tags,<br/>create watchlists, access API keys and more</span> }
@@ -68,24 +70,23 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: 
       isDisabled={ isMobile || isLoading || Boolean(data) }
       openDelay={ 500 }
     >
-      <Skeleton isLoaded={ isFetched } borderRadius="base" ref={ ref } w="fit-content">
-        <Button
-          size={ size }
-          variant={ variant }
-          onClick={ onClick }
-          onFocus={ e => e.preventDefault() } // eslint-disable-line
-          data-selected={ Boolean(data) || Boolean(web3AccountWithDomain.address) }
-          data-warning={ isAutoConnectDisabled }
-          fontSize="sm"
-          lineHeight={ 5 }
-          px={ data ? 2.5 : 4 }
-          fontWeight={ data ? 700 : 600 }
-          isLoading={ isPending }
-          loadingText={ isMobile ? undefined : 'Connecting' }
-        >
-          { content }
-        </Button>
-      </Skeleton>
+      <Button
+        ref={ ref }
+        size={ size }
+        variant={ variant }
+        onClick={ onClick }
+        onFocus={ e => e.preventDefault() } // eslint-disable-line
+        data-selected={ !isButtonLoading && (Boolean(data) || Boolean(web3AccountWithDomain.address)) }
+        data-warning={ isAutoConnectDisabled }
+        fontSize="sm"
+        lineHeight={ 5 }
+        px={ data ? 2.5 : 4 }
+        fontWeight={ data ? 700 : 600 }
+        isLoading={ isButtonLoading }
+        loadingText={ isMobile ? undefined : 'Log in' }
+      >
+        { content }
+      </Button>
     </Tooltip>
   );
 };
