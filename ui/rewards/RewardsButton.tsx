@@ -37,7 +37,7 @@ const RewardsButton = ({ variant = 'header', size }: Props) => {
         onFocus={ e => e.preventDefault() } // eslint-disable-line
         fontSize="sm"
         size={ size }
-        px={ 2.5 }
+        px={ !isLoading && Boolean(apiToken) ? 2.5 : 4 }
         isLoading={ isLoading }
         loadingText={ isMobile ? undefined : 'Merits' }
         textDecoration="none !important"

@@ -61,6 +61,7 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: 
   })();
 
   const isButtonLoading = isPending || !isFetched;
+  const dataExists = !isButtonLoading && (Boolean(data) || Boolean(web3AccountWithDomain.address));
 
   return (
     <Tooltip
@@ -76,12 +77,12 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: 
         variant={ variant }
         onClick={ onClick }
         onFocus={ e => e.preventDefault() } // eslint-disable-line
-        data-selected={ !isButtonLoading && (Boolean(data) || Boolean(web3AccountWithDomain.address)) }
+        data-selected={ dataExists }
         data-warning={ isAutoConnectDisabled }
         fontSize="sm"
         lineHeight={ 5 }
-        px={ data ? 2.5 : 4 }
-        fontWeight={ data ? 700 : 600 }
+        px={ dataExists ? 2.5 : 4 }
+        fontWeight={ dataExists ? 700 : 600 }
         isLoading={ isButtonLoading }
         loadingText={ isMobile ? undefined : 'Log in' }
       >
