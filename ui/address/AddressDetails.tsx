@@ -17,7 +17,6 @@ import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
-import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 import AddressBalance from './details/AddressBalance';
 import AddressImplementations from './details/AddressImplementations';
@@ -134,10 +133,11 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
               Ethereum Address
             </DetailsInfoItem.Label>
             <DetailsInfoItem.Value flexWrap="nowrap">
-              <Box overflow="hidden">
-                <HashStringShortenDynamic hash={ data.hash }/>
-              </Box>
-              <CopyToClipboard text={ data.hash }/>
+              <AddressEntity
+                address={{ hash: data.hash }}
+                noIcon
+                noLink
+              />
             </DetailsInfoItem.Value>
           </>
         ) }

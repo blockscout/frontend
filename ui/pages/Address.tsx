@@ -349,7 +349,6 @@ const AddressPageContent = () => {
         address={{
           ...addressQuery.data,
           hash: checkSummedHash,
-          filecoin: addressQuery.data?.filecoin,
           name: '',
           ens_domain_name: '',
           implementations: null,

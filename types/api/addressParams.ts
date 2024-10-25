@@ -1,4 +1,3 @@
-import type { AddressFilecoinParams } from './address';
 import type { AddressMetadataTagApi } from './addressMetadata';
 
 export interface AddressImplementation {
@@ -16,6 +15,30 @@ export interface WatchlistName {
   label: string;
   display_name: string;
 }
+
+export type AddressFilecoinParams = {
+  actor_type?: FilecoinActorType;
+  id?: string | null;
+  robust?: string | null;
+}
+
+export type FilecoinActorType =
+  'account' |
+  'cron' |
+  'datacap' |
+  'eam' |
+  'ethaccount' |
+  'evm' |
+  'init' |
+  'market' |
+  'miner' |
+  'multisig' |
+  'paych' |
+  'placeholder' |
+  'power' |
+  'reward' |
+  'system' |
+  'verifreg';
 
 export interface UserTags {
   private_tags: Array<AddressTag> | null;

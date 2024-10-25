@@ -1,6 +1,6 @@
 import type { Transaction } from 'types/api/transaction';
 
-import type { UserTags, AddressImplementation, AddressParam } from './addressParams';
+import type { UserTags, AddressImplementation, AddressParam, AddressFilecoinParams } from './addressParams';
 import type { Block, EpochRewardsType } from './block';
 import type { InternalTransaction } from './internalTransaction';
 import type { MudWorldSchema, MudWorldTable } from './mudWorlds';
@@ -270,27 +270,3 @@ export type AddressEpochRewardsItem = {
   epoch_number: number;
   associated_account: AddressParam;
 }
-
-export type AddressFilecoinParams = {
-  actor_type?: FilecoinActorType;
-  id?: string | null;
-  robust?: string | null;
-}
-
-export type FilecoinActorType =
-  'account' |
-  'cron' |
-  'datacap' |
-  'eam' |
-  'ethaccount' |
-  'evm' |
-  'init' |
-  'market' |
-  'miner' |
-  'multisig' |
-  'paych' |
-  'placeholder' |
-  'power' |
-  'reward' |
-  'system' |
-  'verifreg';

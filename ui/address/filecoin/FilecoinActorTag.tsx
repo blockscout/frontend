@@ -1,7 +1,7 @@
 import { Tag } from '@chakra-ui/react';
 import React from 'react';
 
-import type { FilecoinActorType } from 'types/api/address';
+import type { FilecoinActorType } from 'types/api/addressParams';
 
 const ACTOR_TYPES: Record<FilecoinActorType, string> = {
   account: 'Account',
