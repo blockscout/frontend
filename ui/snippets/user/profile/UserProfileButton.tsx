@@ -77,8 +77,8 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: 
           data-warning={ isAutoConnectDisabled }
           fontSize="sm"
           lineHeight={ 5 }
-          px={ data ? 2.5 : 4 }
-          fontWeight={ data ? 700 : 600 }
+          px={ data || web3AccountWithDomain.address ? 2.5 : 4 }
+          fontWeight={ data || web3AccountWithDomain.address ? 700 : 600 }
           isLoading={ isPending }
           loadingText={ isMobile ? undefined : 'Connecting' }
         >

@@ -98,7 +98,7 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig }: Props) => {
     const currentStep = steps[steps.length - 1];
     switch (currentStep.type) {
       case 'select_method':
-        return 'Select a way to connect';
+        return 'Select a way to login';
       case 'connect_wallet':
         return currentStep.isAuth ? 'Add wallet' : 'Continue with wallet';
       case 'email':
