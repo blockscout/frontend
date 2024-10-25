@@ -1,7 +1,7 @@
 import type { ButtonProps } from '@chakra-ui/react';
 import { Button, Tooltip, Box, HStack } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 
 import type { UserInfo } from 'types/api/account';
 
@@ -23,7 +23,7 @@ interface Props {
 }
 
 const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
-  const [ isFetched, setIsFetched ] = React.useState(false);
+  const [ isFetched, setIsFetched ] = useState(false);
   const isMobile = useIsMobile();
 
   const { data, isLoading } = profileQuery;
@@ -35,6 +35,10 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: 
       setIsFetched(true);
     }
   }, [ isLoading ]);
+
+  const handleFocus = useCallback((e: React.FocusEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+  }, []);
 
   const content = (() => {
     if (web3AccountWithDomain.address) {
@@ -76,7 +80,7 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: 
         size={ size }
         variant={ variant }
         onClick={ onClick }
-        onFocus={ e => e.preventDefault() } // eslint-disable-line
+        onFocus={ handleFocus }
         data-selected={ dataExists }
         data-warning={ isAutoConnectDisabled }
         fontSize="sm"

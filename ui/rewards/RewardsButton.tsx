@@ -1,6 +1,6 @@
 import type { ButtonProps } from '@chakra-ui/react';
 import { Button, chakra, Tooltip } from '@chakra-ui/react';
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import { route } from 'nextjs-routes';
 
@@ -18,6 +18,11 @@ const RewardsButton = ({ variant = 'header', size }: Props) => {
   const { isInitialized, apiToken, openLoginModal, dailyRewardQuery, balancesQuery } = useRewardsContext();
   const isMobile = useIsMobile();
   const isLoading = !isInitialized || dailyRewardQuery.isLoading || balancesQuery.isLoading;
+
+  const handleFocus = useCallback((e: React.FocusEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+  }, []);
+
   return (
     <Tooltip
       label="Earn merits for using Blockscout"
@@ -34,7 +39,7 @@ const RewardsButton = ({ variant = 'header', size }: Props) => {
         as={ apiToken ? LinkInternal : 'button' }
         { ...(apiToken ? { href: route({ pathname: '/account/rewards' }) } : {}) }
         onClick={ apiToken ? undefined : openLoginModal }
-        onFocus={ e => e.preventDefault() } // eslint-disable-line
+        onFocus={ handleFocus }
         fontSize="sm"
         size={ size }
         px={ !isLoading && Boolean(apiToken) ? 2.5 : 4 }
