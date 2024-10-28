@@ -24,6 +24,7 @@ on:
             - optimism_sepolia
             - polygon
             - rootstock
+            - shibarium
             - stability
             - zkevm
             - zksync

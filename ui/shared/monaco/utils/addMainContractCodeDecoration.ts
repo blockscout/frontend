@@ -13,7 +13,7 @@ export default function addMainContractCodeDecoration(model: monaco.editor.IText
     return;
   }
 
-  const [ firstLineMatch ] = model.findMatches(`(^contract ${ contractName })( is .+)?\\s?\\{`, false, true, false, null, true);
+  const [ firstLineMatch ] = model.findMatches(`(^contract ${ contractName })(\\sis\\s.+(\\s?,.+)*)?((\\s?\\{)|\\n)`, false, true, false, null, true);
 
   if (!firstLineMatch) {
     return;
