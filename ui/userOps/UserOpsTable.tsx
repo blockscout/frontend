@@ -18,7 +18,7 @@ import UserOpsTableItem from './UserOpsTableItem';
 
 const UserOpsTable = ({ items, isLoading, top, showTx, showSender }: Props) => {
   return (
-    <Table variant="simple" size="sm" minW="1000px">
+    <Table minW="1000px">
       <Thead top={ top }>
         <Tr>
           <Th w="60%">User op hash</Th>

@@ -37,6 +37,7 @@ import type {
   AddressMudRecordsFilter,
   AddressMudRecordsSorting,
   AddressMudRecord,
+  AddressEpochRewardsResponse,
 } from 'types/api/address';
 import type { AddressesResponse, AddressesMetadataSearchResult, AddressesMetadataSearchFilters } from 'types/api/addresses';
 import type { AddressMetadataInfo, PublicTagTypesResponse } from 'types/api/addressMetadata';
@@ -507,6 +508,11 @@ export const RESOURCES = {
     pathParams: [ 'hash' as const ],
     filterFields: [],
   },
+  address_epoch_rewards: {
+    path: '/api/v2/addresses/:hash/election-rewards',
+    pathParams: [ 'hash' as const ],
+    filterFields: [],
+  },
 
   // CONTRACT
   contract: {
@@ -599,6 +605,12 @@ export const RESOURCES = {
     path: '/api/v2/tokens/:hash/instances/:id/refetch-metadata',
     pathParams: [ 'hash' as const, 'id' as const ],
     filterFields: [],
+  },
+
+  // TOKEN TRANSFERS
+  token_transfers_all: {
+    path: '/api/v2/token-transfers',
+    filterFields: [ 'type' as const ],
   },
 
   // APP STATS
@@ -1014,7 +1026,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' | 'block_election_reward
 'addresses' | 'addresses_metadata_search' |
 'address_txs' | 'address_internal_txs' | 'address_token_transfers' | 'address_blocks_validated' | 'address_coin_balance' |
 'search' |
-'address_logs' | 'address_tokens' | 'address_nfts' | 'address_collections' |
+'address_logs' | 'address_tokens' | 'address_nfts' | 'address_collections' | 'address_epoch_rewards' |
 'token_transfers' | 'token_holders' | 'token_inventory' | 'tokens' | 'tokens_bridged' |
 'token_instance_transfers' | 'token_instance_holders' |
 'verified_contracts' |
@@ -1027,7 +1039,8 @@ export type PaginatedResources = 'blocks' | 'block_txs' | 'block_election_reward
 'zksync_l2_txn_batches' | 'zksync_l2_txn_batch_txs' |
 'withdrawals' | 'address_withdrawals' | 'block_withdrawals' |
 'watchlist' | 'private_tags_address' | 'private_tags_tx' |
-'domains_lookup' | 'addresses_lookup' | 'user_ops' | 'validators_stability' | 'validators_blackfort' | 'noves_address_history';
+'domains_lookup' | 'addresses_lookup' | 'user_ops' | 'validators_stability' | 'validators_blackfort' | 'noves_address_history' |
+'token_transfers_all';
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
@@ -1196,8 +1209,10 @@ Q extends 'address_mud_records' ? AddressMudRecords :
 Q extends 'address_mud_record' ? AddressMudRecord :
 Q extends 'contract_mud_systems' ? SmartContractMudSystemsResponse :
 Q extends 'contract_mud_system_info' ? SmartContractMudSystemInfo :
+Q extends 'address_epoch_rewards' ? AddressEpochRewardsResponse :
 Q extends 'withdrawals' ? WithdrawalsResponse :
 Q extends 'withdrawals_counters' ? WithdrawalsCounters :
+Q extends 'token_transfers_all' ? TokenTransferResponse :
 never;
 /* eslint-enable @typescript-eslint/indent */
 
@@ -1232,6 +1247,7 @@ Q extends 'user_ops' ? UserOpsFilters :
 Q extends 'validators_stability' ? ValidatorsStabilityFilters :
 Q extends 'address_mud_tables' ? AddressMudTablesFilter :
 Q extends 'address_mud_records' ? AddressMudRecordsFilter :
+Q extends 'token_transfers_all' ? TokenTransferFilters :
 never;
 /* eslint-enable @typescript-eslint/indent */
 

@@ -26,7 +26,7 @@ const AddressCoinBalanceHistory = ({ query }: Props) => {
   const content = query.data?.items ? (
     <>
       <Hide below="lg" ssr={ false }>
-        <Table variant="simple" size="sm">
+        <Table>
           <Thead top={ query.pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }>
             <Tr>
               <Th width="20%">Block</Th>

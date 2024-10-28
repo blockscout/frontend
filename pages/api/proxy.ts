@@ -24,6 +24,7 @@ const handler = async(nextReq: NextApiRequest, nextRes: NextApiResponse) => {
   // proxy some headers from API
   nextRes.setHeader('x-request-id', apiRes.headers.get('x-request-id') || '');
   nextRes.setHeader('set-cookie', apiRes.headers.get('set-cookie') || '');
+  nextRes.setHeader('content-type', apiRes.headers.get('content-type') || '');
 
   nextRes.status(apiRes.status).send(apiRes.body);
 };

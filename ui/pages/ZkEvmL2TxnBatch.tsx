@@ -59,7 +59,7 @@ const ZkEvmL2TxnBatch = () => {
     }
 
     return {
-      label: 'Back to tx batches list',
+      label: 'Back to txn batches list',
       url: appProps.referrer,
     };
   }, [ appProps.referrer ]);
@@ -68,7 +68,7 @@ const ZkEvmL2TxnBatch = () => {
     <>
       <TextAd mb={ 6 }/>
       <PageTitle
-        title={ `Tx batch #${ number }` }
+        title={ `Txn batch #${ number }` }
         backLink={ backLink }
       />
       { batchQuery.isPlaceholderData ? <TabsSkeleton tabs={ tabs }/> : (

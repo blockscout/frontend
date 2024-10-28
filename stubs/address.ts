@@ -3,6 +3,7 @@ import type {
   AddressCoinBalanceHistoryItem,
   AddressCollection,
   AddressCounters,
+  AddressEpochRewardsItem,
   AddressMudTableItem,
   AddressNFT,
   AddressTabsCounters,
@@ -10,7 +11,7 @@ import type {
 } from 'types/api/address';
 import type { AddressesItem } from 'types/api/addresses';
 
-import { ADDRESS_HASH } from './addressParams';
+import { ADDRESS_HASH, ADDRESS_PARAMS } from './addressParams';
 import { MUD_SCHEMA, MUD_TABLE } from './mud';
 import { TOKEN_INFO_ERC_1155, TOKEN_INFO_ERC_20, TOKEN_INFO_ERC_721, TOKEN_INFO_ERC_404, TOKEN_INSTANCE } from './token';
 import { TX_HASH } from './tx';
@@ -115,4 +116,15 @@ export const ADDRESS_COLLECTION: AddressCollection = {
 export const ADDRESS_MUD_TABLE_ITEM: AddressMudTableItem = {
   schema: MUD_SCHEMA,
   table: MUD_TABLE,
+};
+
+export const EPOCH_REWARD_ITEM: AddressEpochRewardsItem = {
+  amount: '136609473658452408568',
+  block_number: 10355938,
+  type: 'voter',
+  token: TOKEN_INFO_ERC_20,
+  block_hash: '0x5956a847d8089e254e02e5111cad6992b99ceb9e5c2dc4343fd53002834c4dc6',
+  account: ADDRESS_PARAMS,
+  epoch_number: 1526,
+  associated_account: ADDRESS_PARAMS,
 };
