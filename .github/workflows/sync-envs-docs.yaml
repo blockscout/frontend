@@ -13,8 +13,9 @@ jobs:
                 env:
                     API_TOKEN_GITHUB: ${{ secrets.GITHUB_TOKEN }}
                 with:
-                    source-files: 'docs/ENVS.md docs/DEPRECATED_ENVS.md'
-                    destination-username: 'blockscout-bot'
-                    destination-repository: 'blockscout/docs'
-                    destination-directory: 'docs/setup/env-variables/frontend-common-envs'
+                    source-files: './docs/ENVS.md ./docs/DEPRECATED_ENVS.md'
+                    destination-username: 'blockscout'
+                    destination-repository: 'docs'
+                    destination-directory: 'setup/env-variables/frontend-common-envs'
+                    commit-username: 'blockscout-bot'
                     commit-email: 'tom@blockscout.com'
