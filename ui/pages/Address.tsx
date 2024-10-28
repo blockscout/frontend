@@ -138,7 +138,11 @@ const AddressPageContent = () => {
   const isSafeAddress = useIsSafeAddress(!addressQuery.isPlaceholderData && addressQuery.data?.is_contract ? hash : undefined);
   const safeIconColor = useColorModeValue('black', 'white');
 
-  const contractTabs = useContractTabs(addressQuery.data, addressQuery.isPlaceholderData);
+  const contractTabs = useContractTabs(
+    addressQuery.data,
+    config.features.mudFramework.isEnabled ? (mudTablesCountQuery.isPlaceholderData || addressQuery.isPlaceholderData) : addressQuery.isPlaceholderData,
+    Boolean(config.features.mudFramework.isEnabled && mudTablesCountQuery.data && mudTablesCountQuery.data > 0),
+  );
 
   const tabs: Array<RoutedTab> = React.useMemo(() => {
     return [

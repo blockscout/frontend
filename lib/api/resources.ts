@@ -67,6 +67,8 @@ import type {
   SmartContract,
   SmartContractVerificationConfigRaw,
   SmartContractSecurityAudits,
+  SmartContractMudSystemsResponse,
+  SmartContractMudSystemInfo,
 } from 'types/api/contract';
 import type { VerifiedContractsResponse, VerifiedContractsFilters, VerifiedContractsCounters } from 'types/api/contracts';
 import type {
@@ -767,6 +769,16 @@ export const RESOURCES = {
     pathParams: [ 'hash' as const, 'table_id' as const, 'record_id' as const ],
   },
 
+  contract_mud_systems: {
+    path: '/api/v2/mud/worlds/:hash/systems',
+    pathParams: [ 'hash' as const ],
+  },
+
+  contract_mud_system_info: {
+    path: '/api/v2/mud/worlds/:hash/systems/:system_address',
+    pathParams: [ 'hash' as const, 'system_address' as const ],
+  },
+
   // arbitrum L2
   arbitrum_l2_messages: {
     path: '/api/v2/arbitrum/messages/:direction',
@@ -1195,6 +1207,8 @@ Q extends 'address_mud_tables' ? AddressMudTables :
 Q extends 'address_mud_tables_count' ? number :
 Q extends 'address_mud_records' ? AddressMudRecords :
 Q extends 'address_mud_record' ? AddressMudRecord :
+Q extends 'contract_mud_systems' ? SmartContractMudSystemsResponse :
+Q extends 'contract_mud_system_info' ? SmartContractMudSystemInfo :
 Q extends 'address_epoch_rewards' ? AddressEpochRewardsResponse :
 Q extends 'withdrawals' ? WithdrawalsResponse :
 Q extends 'withdrawals_counters' ? WithdrawalsCounters :
