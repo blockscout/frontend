@@ -11,7 +11,6 @@ import useAddressMetadataInfoQuery from 'lib/address/useAddressMetadataInfoQuery
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import useAddressProfileApiQuery from 'lib/hooks/useAddressProfileApiQuery';
-import useContractTabs from 'lib/hooks/useContractTabs';
 import useIsSafeAddress from 'lib/hooks/useIsSafeAddress';
 import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -33,6 +32,8 @@ import AddressTokenTransfers from 'ui/address/AddressTokenTransfers';
 import AddressTxs from 'ui/address/AddressTxs';
 import AddressUserOps from 'ui/address/AddressUserOps';
 import AddressWithdrawals from 'ui/address/AddressWithdrawals';
+import useContractTabs from 'ui/address/contract/useContractTabs';
+import { CONTRACT_TAB_IDS } from 'ui/address/contract/utils';
 import AddressFavoriteButton from 'ui/address/details/AddressFavoriteButton';
 import AddressMetadataAlert from 'ui/address/details/AddressMetadataAlert';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
@@ -249,7 +250,7 @@ const AddressPageContent = () => {
             isLoading={ contractTabs.isLoading }
           />
         ),
-        subTabs: contractTabs.tabs.map(tab => tab.id),
+        subTabs: CONTRACT_TAB_IDS,
       } : undefined,
     ].filter(Boolean);
   }, [

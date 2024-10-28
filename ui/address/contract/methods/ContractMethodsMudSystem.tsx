@@ -7,10 +7,10 @@ import type { SmartContractMudSystemItem } from 'types/api/contract';
 import useApiQuery from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
 
+import type { Item } from '../ContractSourceAddressSelector';
+import ContractSourceAddressSelector from '../ContractSourceAddressSelector';
 import ContractConnectWallet from './ContractConnectWallet';
 import ContractMethods from './ContractMethods';
-import type { Item } from './ContractSourceAddressSelector';
-import ContractSourceAddressSelector from './ContractSourceAddressSelector';
 import { enrichWithMethodId, isMethod } from './utils';
 
 interface Props {
@@ -22,9 +22,9 @@ const ContractMethodsMudSystem = ({ items }: Props) => {
   const router = useRouter();
 
   const addressHash = getQueryParamString(router.query.hash);
-  const contractAddress = getQueryParamString(router.query.source_address);
+  const sourceAddress = getQueryParamString(router.query.source_address);
 
-  const [ selectedItem, setSelectedItem ] = React.useState(items.find((item) => item.address === contractAddress) || items[0]);
+  const [ selectedItem, setSelectedItem ] = React.useState(items.find((item) => item.address === sourceAddress) || items[0]);
 
   const systemInfoQuery = useApiQuery('contract_mud_system_info', {
     pathParams: { hash: addressHash, system_address: selectedItem.address },
@@ -52,6 +52,7 @@ const ContractMethodsMudSystem = ({ items }: Props) => {
         selectedItem={ selectedItem }
         onItemSelect={ handleItemSelect }
         label="System address"
+        mb={ 6 }
       />
       <ContractMethods
         key={ selectedItem.address }
