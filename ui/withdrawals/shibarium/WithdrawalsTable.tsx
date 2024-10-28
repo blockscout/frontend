@@ -15,7 +15,7 @@ import WithdrawalsTableItem from './WithdrawalsTableItem';
 
 const WithdrawalsTable = ({ items, top, isLoading }: Props) => {
   return (
-    <Table variant="simple" size="sm" style={{ tableLayout: 'auto' }} minW="950px">
+    <Table style={{ tableLayout: 'auto' }} minW="950px">
       <Thead top={ top }>
         <Tr>
           <Th>L2 block No</Th>

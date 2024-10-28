@@ -18,6 +18,8 @@ import LinkInternal from 'ui/shared/links/LinkInternal';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
+import { getBaseFeeValue } from './utils';
+
 interface Props {
   data: Block;
   isLoading?: boolean;
@@ -32,6 +34,8 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
   const txFees = BigNumber(data.tx_fees || 0);
 
   const burntFeesIconColor = useColorModeValue('gray.500', 'inherit');
+
+  const baseFeeValue = getBaseFeeValue(data.base_fee_per_gas);
 
   return (
     <Tr
@@ -127,6 +131,13 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
               <Utilization mt={ 2 } value={ burntFees.div(txFees).toNumber() } isLoading={ isLoading }/>
             </Box>
           </Tooltip>
+        </Td>
+      ) }
+      { !isRollup && !config.UI.views.block.hiddenFields?.base_fee && Boolean(baseFeeValue) && (
+        <Td fontSize="sm" isNumeric>
+          <Skeleton isLoaded={ !isLoading } display="inline-block">
+            { baseFeeValue }
+          </Skeleton>
         </Td>
       ) }
     </Tr>

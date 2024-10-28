@@ -34,7 +34,7 @@ const TokenTransferTable = ({
 
   return (
     <AddressHighlightProvider>
-      <Table variant="simple" size="sm" minW="950px">
+      <Table minW="950px">
         <Thead top={ top }>
           <Tr>
             { showTxInfo && <Th width="44px"></Th> }

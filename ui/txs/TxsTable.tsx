@@ -49,7 +49,7 @@ const TxsTable = ({
 
   return (
     <AddressHighlightProvider>
-      <Table variant="simple" minWidth="950px" size="xs">
+      <Table minWidth="950px">
         <TheadSticky top={ top }>
           <Tr>
             <Th width="54px"></Th>
