@@ -8,14 +8,18 @@ jobs:
         name: Run
         runs-on: ubuntu-latest
         steps:
+            -   name: Checkout repo
+                uses: actions/checkout@v4
+
             -   name: Copy files to Blockscout Docs repository
-                uses: lubu12/copy-files-to-repository@v1
+                uses: tom2drum/copy_file_to_another_repo_action@main
                 env:
                     API_TOKEN_GITHUB: ${{ secrets.GITHUB_TOKEN }}
                 with:
-                    source-files: './docs/ENVS.md ./docs/DEPRECATED_ENVS.md'
-                    destination-username: 'blockscout'
-                    destination-repository: 'docs'
-                    destination-directory: 'setup/env-variables/frontend-common-envs'
-                    commit-username: 'blockscout-bot'
-                    commit-email: 'tom@blockscout.com'
+                    source_file: 'docs/ENVS.md'
+                    destination_repo: 'blockscout/docs'
+                    destination_folder: 'setup/env-variables/frontend-common-envs'
+                    destination_branch: 'master'
+                    user_email: 'tom@blockscout.com'
+                    user_name: 'blockscout-bot'
+                    use_rsync: true
