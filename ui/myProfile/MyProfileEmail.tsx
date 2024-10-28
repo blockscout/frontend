@@ -15,10 +15,10 @@ import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import useToast from 'lib/hooks/useToast';
 import * as mixpanel from 'lib/mixpanel';
 import FormFieldReCaptcha from 'ui/shared/forms/fields/FormFieldReCaptcha';
+import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
 import AuthModal from 'ui/snippets/auth/AuthModal';
 
 import MyProfileFieldsEmail from './fields/MyProfileFieldsEmail';
-import MyProfileFieldsName from './fields/MyProfileFieldsName';
 
 const MIXPANEL_CONFIG = {
   account_link_info: {
@@ -80,7 +80,7 @@ const MyProfileEmail = ({ profileQuery }: Props) => {
           noValidate
           onSubmit={ formApi.handleSubmit(onFormSubmit) }
         >
-          <MyProfileFieldsName/>
+          <FormFieldText<FormFields> name="name" placeholder="Name" isReadOnly mb={ 3 }/>
           <MyProfileFieldsEmail
             isReadOnly={ !config.services.reCaptchaV3.siteKey || Boolean(profileQuery.data?.email) }
             defaultValue={ profileQuery.data?.email || undefined }
