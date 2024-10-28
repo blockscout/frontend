@@ -796,7 +796,7 @@ The feature enables a "Save with GasHawk" button next to the "Gas used" value on
 
 ### Rewards service API
 
-This feature enables Blockscout Merits program.
+This feature enables Blockscout Merits program. It requires that the [My account](ENVS.md#my-account) and [Blockchain interaction](ENVS.md#blockchain-interaction-writing-to-contract-etc) features are also enabled.
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |

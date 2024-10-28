@@ -2,6 +2,7 @@ import { Button, Flex, Skeleton, useBoolean, Image } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect } from 'react';
 
+import { SECOND } from 'lib/consts';
 import { useRewardsContext } from 'lib/contexts/rewards';
 import { apos } from 'lib/html-entities';
 import splitSecondsInPeriods from 'ui/blockCountdown/splitSecondsInPeriods';
@@ -10,6 +11,7 @@ import RewardsDashboardCard from 'ui/rewards/RewardsDashboardCard';
 import RewardsDashboardCardValue from 'ui/rewards/RewardsDashboardCardValue';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
+import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInvalidAuthToken';
 
 const RewardsDashboard = () => {
   const router = useRouter();
@@ -20,9 +22,13 @@ const RewardsDashboard = () => {
   const [ isClaiming, setIsClaiming ] = useBoolean(false);
   const [ timeLeft, setTimeLeft ] = React.useState<string>('');
 
-  if (isInitialized && !apiToken) {
-    router.replace({ pathname: '/' }, undefined, { shallow: true });
-  }
+  useRedirectForInvalidAuthToken();
+
+  useEffect(() => {
+    if (isInitialized && !apiToken) {
+      router.replace({ pathname: '/' }, undefined, { shallow: true });
+    }
+  }, [ isInitialized, apiToken, router ]);
 
   const dailyRewardValue = Number(dailyRewardQuery.data?.daily_reward || 0) + Number(dailyRewardQuery.data?.pending_referral_rewards || 0);
 
@@ -30,8 +36,10 @@ const RewardsDashboard = () => {
     setIsClaiming.on();
     try {
       await claim();
-      balancesQuery.refetch();
-      dailyRewardQuery.refetch();
+      await Promise.all([
+        balancesQuery.refetch(),
+        dailyRewardQuery.refetch(),
+      ]);
     } catch (error) {}
     setIsClaiming.off();
   }, [ claim, setIsClaiming, balancesQuery, dailyRewardQuery ]);
@@ -41,17 +49,18 @@ const RewardsDashboard = () => {
       return;
     }
 
-    let interval: NodeJS.Timeout; // eslint-disable-line
+    // format the date to be compatible with the Date constructor
+    const formattedDate = dailyRewardQuery.data.reset_at.replace(' ', 'T').replace(' UTC', 'Z');
+    const target = new Date(formattedDate).getTime();
 
-    const updateCountdown = () => {
+    let interval: ReturnType<typeof setTimeout>; // eslint-disable-line prefer-const
+
+    const updateCountdown = (target: number) => {
       const now = new Date().getTime();
-      // format the date to be compatible with the Date constructor
-      const formattedDate = dailyRewardQuery.data.reset_at.replace(' ', 'T').replace(' UTC', 'Z');
-      const target = new Date(formattedDate).getTime();
       const difference = target - now;
 
       if (difference > 0) {
-        const { hours, minutes, seconds } = splitSecondsInPeriods(Math.floor(difference / 1000));
+        const { hours, minutes, seconds } = splitSecondsInPeriods(Math.floor(difference / SECOND));
         setTimeLeft(`${ hours }:${ minutes }:${ seconds }`);
       } else {
         setTimeLeft('00:00:00');
@@ -60,11 +69,11 @@ const RewardsDashboard = () => {
       }
     };
 
-    updateCountdown();
+    updateCountdown(target);
 
     interval = setInterval(() => {
-      updateCountdown();
-    }, 1000);
+      updateCountdown(target);
+    }, SECOND);
 
     return () => clearInterval(interval);
   }, [ dailyRewardQuery ]);
@@ -78,7 +87,10 @@ const RewardsDashboard = () => {
         secondRow={ (
           <span>
             The Blockscout Merits Program is just getting started! Learn more about the details,
-            features, and future plans in our <LinkExternal href="">blog post</LinkExternal>.
+            features, and future plans in our{ ' ' }
+            <LinkExternal href="https://www.blog.blockscout.com/blockscout-merits-rewarding-block-explorer-skills">
+              blog post
+            </LinkExternal>.
           </span>
         ) }
       />
@@ -108,7 +120,7 @@ const RewardsDashboard = () => {
               hint={ (
                 <>
                   Total number of merits earned from all activities.{ ' ' }
-                  <LinkExternal href="https://docs.blockscout.com/using-blockscout/my-account/merits">
+                  <LinkExternal href="https://docs.blockscout.com/using-blockscout/merits">
                     More info on merits
                   </LinkExternal>
                 </>

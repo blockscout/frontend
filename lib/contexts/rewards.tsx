@@ -3,7 +3,7 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React, { createContext, useContext, useEffect, useMemo, useCallback } from 'react';
-import { useAccount, useSignMessage } from 'wagmi';
+import { useSignMessage } from 'wagmi';
 
 import type {
   RewardsUserBalancesResponse, RewardsUserDailyCheckResponse,
@@ -17,19 +17,25 @@ import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import useApiQuery, { getResourceKey } from 'lib/api/useApiQuery';
+import { YEAR } from 'lib/consts';
 import * as cookies from 'lib/cookies';
 import decodeJWT from 'lib/decodeJWT';
+import getErrorMessage from 'lib/errors/getErrorMessage';
+import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import useToast from 'lib/hooks/useToast';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import removeQueryParam from 'lib/router/removeQueryParam';
+import useAccount from 'lib/web3/useAccount';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
+type ContextQueryResult<Response> = Pick<UseQueryResult<Response, ResourceError<unknown>>, 'data' | 'isLoading' | 'refetch' | 'isPending' | 'isFetching'>;
+
 type TRewardsContext = {
-  balancesQuery: UseQueryResult<RewardsUserBalancesResponse, ResourceError<unknown>>;
-  dailyRewardQuery: UseQueryResult<RewardsUserDailyCheckResponse, ResourceError<unknown>>;
-  referralsQuery: UseQueryResult<RewardsUserReferralsResponse, ResourceError<unknown>>;
-  rewardsConfigQuery: UseQueryResult<RewardsConfigResponse, ResourceError<unknown>>;
-  checkUserQuery: UseQueryResult<RewardsCheckUserResponse, ResourceError<unknown>>;
+  balancesQuery: ContextQueryResult<RewardsUserBalancesResponse>;
+  dailyRewardQuery: ContextQueryResult<RewardsUserDailyCheckResponse>;
+  referralsQuery: ContextQueryResult<RewardsUserReferralsResponse>;
+  rewardsConfigQuery: ContextQueryResult<RewardsConfigResponse>;
+  checkUserQuery: ContextQueryResult<RewardsCheckUserResponse>;
   apiToken: string | undefined;
   isInitialized: boolean;
   isLoginModalOpen: boolean;
@@ -39,15 +45,20 @@ type TRewardsContext = {
   claim: () => Promise<void>;
 }
 
-const createDefaultQueryResult = <TData, TError>() =>
-  ({ data: undefined, isLoading: false, refetch: () => {} } as UseQueryResult<TData, TError>);
+const defaultQueryResult = {
+  data: undefined,
+  isLoading: false,
+  isPending: false,
+  isFetching: false,
+  refetch: () => Promise.resolve({} as never),
+};
 
 const RewardsContext = createContext<TRewardsContext>({
-  balancesQuery: createDefaultQueryResult<RewardsUserBalancesResponse, ResourceError<unknown>>(),
-  dailyRewardQuery: createDefaultQueryResult<RewardsUserDailyCheckResponse, ResourceError<unknown>>(),
-  referralsQuery: createDefaultQueryResult<RewardsUserReferralsResponse, ResourceError<unknown>>(),
-  rewardsConfigQuery: createDefaultQueryResult<RewardsConfigResponse, ResourceError<unknown>>(),
-  checkUserQuery: createDefaultQueryResult<RewardsCheckUserResponse, ResourceError<unknown>>(),
+  balancesQuery: defaultQueryResult,
+  dailyRewardQuery: defaultQueryResult,
+  referralsQuery: defaultQueryResult,
+  rewardsConfigQuery: defaultQueryResult,
+  checkUserQuery: defaultQueryResult,
   apiToken: undefined,
   isInitialized: false,
   isLoginModalOpen: false,
@@ -74,7 +85,7 @@ function getMessageToSign(address: string, nonce: string, isLogin?: boolean, ref
     `Chain ID: ${ config.chain.id }`,
     `Nonce: ${ nonce }`,
     `Issued At: ${ new Date().toISOString() }`,
-    `Expiration Time: ${ new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString() }`,
+    `Expiration Time: ${ new Date(Date.now() + YEAR).toISOString() }`,
   ].join('\n');
 }
 
@@ -117,7 +128,11 @@ export function RewardsContextProvider({ children }: Props) {
 
   // Save the API token to cookies and state
   const saveApiToken = useCallback((token: string | undefined) => {
-    cookies.set(cookies.NAMES.REWARDS_API_TOKEN, token || '');
+    if (token) {
+      cookies.set(cookies.NAMES.REWARDS_API_TOKEN, token);
+    } else {
+      cookies.remove(cookies.NAMES.REWARDS_API_TOKEN);
+    }
     setApiToken(token);
   }, []);
 
@@ -168,11 +183,12 @@ export function RewardsContextProvider({ children }: Props) {
     }
   }, [ router, apiToken, isInitialized, setIsLoginModalOpen ]);
 
-  const errorToast = useCallback((error: ResourceError<{ message: string }>) => {
+  const errorToast = useCallback((error: unknown) => {
+    const apiError = getErrorObjPayload<{ message: string }>(error);
     toast({
       position: 'top-right',
       title: 'Error',
-      description: error?.payload?.message || 'Something went wrong. Try again later.',
+      description: apiError?.message || getErrorMessage(error) || 'Something went wrong. Try again later.',
       status: 'error',
       variant: 'subtle',
       isClosable: true,
@@ -182,15 +198,15 @@ export function RewardsContextProvider({ children }: Props) {
   // Login to the rewards program
   const login = useCallback(async(refCode: string) => {
     try {
+      if (!address) {
+        throw new Error();
+      }
       const [ nonceResponse, checkCodeResponse ] = await Promise.all([
         apiFetch('rewards_nonce') as Promise<RewardsNonceResponse>,
         refCode ?
           apiFetch('rewards_check_ref_code', { pathParams: { code: refCode } }) as Promise<RewardsCheckRefCodeResponse> :
           Promise.resolve({ valid: true }),
       ]);
-      if (!address || !('nonce' in nonceResponse) || !('valid' in checkCodeResponse)) {
-        throw new Error();
-      }
       if (!checkCodeResponse.valid) {
         return { invalidRefCodeError: true };
       }
@@ -206,9 +222,6 @@ export function RewardsContextProvider({ children }: Props) {
           },
         },
       }) as RewardsLoginResponse;
-      if (!('created' in loginResponse)) {
-        throw loginResponse;
-      }
       saveApiToken(loginResponse.token);
       return { isNewUser: loginResponse.created };
     } catch (_error) {
@@ -220,15 +233,12 @@ export function RewardsContextProvider({ children }: Props) {
   // Claim daily reward
   const claim = useCallback(async() => {
     try {
-      const claimResponse = await apiFetch('rewards_user_daily_claim', {
+      await apiFetch('rewards_user_daily_claim', {
         fetchParams: {
           method: 'POST',
           ...fetchParams,
         },
       }) as RewardsUserDailyClaimResponse;
-      if (!('daily_reward' in claimResponse)) {
-        throw claimResponse;
-      }
     } catch (_error) {
       errorToast(_error as ResourceError<{ message: string }>);
       throw _error;
