@@ -43,8 +43,9 @@ const RoutedTabs = ({
     const nextTab = tabs[index];
 
     const queryForPathname = _pickBy(router.query, (value, key) => router.pathname.includes(`[${ key }]`));
+    const tabId = Array.isArray(nextTab.id) ? nextTab.id[0] : nextTab.id;
     router.push(
-      { pathname: router.pathname, query: { ...queryForPathname, tab: nextTab.id } },
+      { pathname: router.pathname, query: { ...queryForPathname, tab: tabId } },
       undefined,
       { shallow: true },
     );

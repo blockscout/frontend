@@ -110,7 +110,7 @@ const AdaptiveTabsList = (props: Props) => {
 
         return (
           <Tab
-            key={ tab.id }
+            key={ tab.id.toString() }
             ref={ tabsRefs[index] }
             { ...(index < tabsCut ? {} : hiddenItemStyles) }
             scrollSnapAlign="start"

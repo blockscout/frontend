@@ -117,7 +117,7 @@ const TabsWithScroll = ({
         isLoading={ isLoading }
       />
       <TabPanels>
-        { tabsList.map((tab) => <TabPanel padding={ 0 } key={ tab.id }>{ tab.component }</TabPanel>) }
+        { tabsList.map((tab) => <TabPanel padding={ 0 } key={ tab.id?.toString() }>{ tab.component }</TabPanel>) }
       </TabPanels>
     </Tabs>
   );

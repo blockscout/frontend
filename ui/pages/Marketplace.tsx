@@ -116,7 +116,10 @@ const Marketplace = () => {
   const selectedApp = displayedApps.find(app => app.id === selectedAppId);
 
   const handleCategoryChange = React.useCallback((index: number) => {
-    onCategoryChange(categoryTabs[index].id);
+    const tabId = categoryTabs[index].id;
+    if (typeof tabId === 'string') {
+      onCategoryChange(tabId);
+    }
   }, [ categoryTabs, onCategoryChange ]);
 
   const handleAppClick = React.useCallback((event: MouseEvent, id: string) => {

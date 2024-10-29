@@ -20,7 +20,7 @@ import type { CONTRACT_MAIN_TAB_IDS } from './utils';
 import { CONTRACT_DETAILS_TAB_IDS, CONTRACT_TAB_IDS } from './utils';
 
 interface ContractTab {
-  id: typeof CONTRACT_MAIN_TAB_IDS[number];
+  id: typeof CONTRACT_MAIN_TAB_IDS[number] | Array<typeof CONTRACT_MAIN_TAB_IDS[number]>;
   title: string;
   component: JSX.Element;
   subTabs?: Array<string>;
@@ -98,17 +98,17 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
           subTabs: CONTRACT_DETAILS_TAB_IDS as unknown as Array<string>,
         },
         methods.length > 0 && {
-          id: 'read_write_contract' as const,
+          id: [ 'read_write_contract' as const, 'read_contract' as const, 'write_contract' as const ],
           title: 'Read/Write contract',
           component: <ContractMethodsRegular abi={ methods } isLoading={ contractQuery.isPlaceholderData }/>,
         },
         verifiedImplementations.length > 0 && {
-          id: 'read_write_proxy' as const,
+          id: [ 'read_write_proxy' as const, 'read_proxy' as const, 'write_proxy' as const ],
           title: 'Write/Read proxy',
           component: <ContractMethodsProxy implementations={ verifiedImplementations } isLoading={ contractQuery.isPlaceholderData }/>,
         },
         methodsCustomAbi.length > 0 && {
-          id: 'read_write_custom_methods' as const,
+          id: [ 'read_write_custom_methods' as const, 'read_custom_methods' as const, 'write_custom_methods' as const ],
           title: 'Custom ABI',
           component: <ContractMethodsCustom abi={ methodsCustomAbi } isLoading={ contractQuery.isPlaceholderData }/>,
         },

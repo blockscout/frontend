@@ -2,7 +2,7 @@ import type { Abi, AbiFallback, AbiReceive } from 'abitype';
 import type { AbiFunction } from 'viem';
 import { toFunctionSelector } from 'viem';
 
-import type { SmartContractMethod, SmartContractMethodRead, SmartContractMethodWrite } from './types';
+import type { MethodType, SmartContractMethod, SmartContractMethodRead, SmartContractMethodWrite } from './types';
 
 export const getNativeCoinValue = (value: unknown) => {
   if (typeof value !== 'string') {
@@ -41,3 +41,9 @@ export const enrichWithMethodId = (method: AbiFunction | AbiFallback | AbiReceiv
     };
   }
 };
+
+export const TYPE_FILTER_OPTIONS: Array<{ value: MethodType; title: string }> = [
+  { value: 'all', title: 'All' },
+  { value: 'read', title: 'Read' },
+  { value: 'write', title: 'Write' },
+];

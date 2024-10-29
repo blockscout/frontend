@@ -7,12 +7,7 @@ import FilterInput from 'ui/shared/filters/FilterInput';
 import RadioButtonGroup from 'ui/shared/radioButtonGroup/RadioButtonGroup';
 
 import type { MethodsFilters } from './useMethodsFilters';
-
-const TYPE_FILTER_OPTIONS: Array<{ value: MethodType; title: string }> = [
-  { value: 'all', title: 'All' },
-  { value: 'read', title: 'Read' },
-  { value: 'write', title: 'Write' },
-];
+import { TYPE_FILTER_OPTIONS } from './utils';
 
 interface Props {
   defaultMethodType: MethodType;
