@@ -11,12 +11,25 @@ jobs:
             -   name: Checkout repo
                 uses: actions/checkout@v4
 
-            -   name: Copy files to Blockscout Docs repository
-                uses: tom2drum/copy_file_to_another_repo_action@main
+            -   name: Copy main ENV file to Blockscout Docs repository
+                uses: dmnemec/copy_file_to_another_repo_action@main
                 env:
                     API_TOKEN_GITHUB: ${{ secrets.GITHIB_BOT_TOKEN }}
                 with:
                     source_file: 'docs/ENVS.md'
+                    destination_repo: 'blockscout/docs'
+                    destination_folder: 'setup/env-variables/frontend-common-envs'
+                    destination_branch: 'master'
+                    user_email: 'bot@blockscout.com'
+                    user_name: 'blockscout-bot'
+                    use_rsync: true
+
+            -   name: Copy deprecated ENV file to Blockscout Docs repository
+                uses: dmnemec/copy_file_to_another_repo_action@main
+                env:
+                    API_TOKEN_GITHUB: ${{ secrets.GITHIB_BOT_TOKEN }}
+                with:
+                    source_file: 'docs/DEPRECATED_ENVS.md'
                     destination_repo: 'blockscout/docs'
                     destination_folder: 'setup/env-variables/frontend-common-envs'
                     destination_branch: 'master'
