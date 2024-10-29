@@ -107,7 +107,6 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
             <FormControl variant="floating" id="referral-code" mt={ 3 }>
               <Input
                 fontWeight="500"
-                borderRadius="12px !important"
                 value={ refCode }
                 onChange={ handleRefCodeChange }
                 isInvalid={ refCodeError }

@@ -10,7 +10,7 @@ import meritsIcon from 'icons/merits_colored.svg';
 import { useRewardsContext } from 'lib/contexts/rewards';
 import IconSvg from 'ui/shared/IconSvg';
 
-import CopyField from '../CopyField';
+import ReadOnlyInputWithCopy from '../ReadOnlyInputWithCopy';
 
 type Props = {
   isReferral: boolean;
@@ -84,7 +84,7 @@ const CongratsStepContent = ({ isReferral }: Props) => {
           </Skeleton>
           { ' ' }bonus on all merits earned by your referrals
         </Text>
-        <CopyField
+        <ReadOnlyInputWithCopy
           label="Referral link"
           value={ refLink }
           isLoading={ referralsQuery.isLoading }

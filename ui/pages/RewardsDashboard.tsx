@@ -4,8 +4,8 @@ import React, { useEffect } from 'react';
 
 import { useRewardsContext } from 'lib/contexts/rewards';
 import { apos } from 'lib/html-entities';
-import CopyField from 'ui/rewards/CopyField';
 import DailyRewardClaimButton from 'ui/rewards/DailyRewardClaimButton';
+import ReadOnlyInputWithCopy from 'ui/rewards/ReadOnlyInputWithCopy';
 import RewardsDashboardCard from 'ui/rewards/RewardsDashboardCard';
 import RewardsDashboardCardValue from 'ui/rewards/RewardsDashboardCardValue';
 import LinkExternal from 'ui/shared/links/LinkExternal';
@@ -104,13 +104,13 @@ const RewardsDashboard = () => {
             py={{ base: 4, md: 0 }}
             flexDirection={{ base: 'column', md: 'row' }}
           >
-            <CopyField
+            <ReadOnlyInputWithCopy
               label="Referral link"
               value={ `https://eth.blockscout.com?ref=${ referralsQuery.data?.code }` }
               isLoading={ referralsQuery.isPending }
               flex={ 2 }
             />
-            <CopyField
+            <ReadOnlyInputWithCopy
               label="Referral code"
               value={ referralsQuery.data?.code || '' }
               isLoading={ referralsQuery.isPending }
