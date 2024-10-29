@@ -45,7 +45,9 @@ const RewardsButton = ({ variant = 'header', size }: Props) => {
         px={ !isLoading && Boolean(apiToken) ? 2.5 : 4 }
         isLoading={ isLoading }
         loadingText={ isMobile ? undefined : 'Merits' }
-        textDecoration="none !important"
+        _hover={{
+          textDecoration: 'none',
+        }}
       >
         <IconSvg
           name={ dailyRewardQuery.data?.available ? 'merits_with_dot' : 'merits' }
