@@ -9,8 +9,10 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 
 import type { Item } from '../ContractSourceAddressSelector';
 import ContractSourceAddressSelector from '../ContractSourceAddressSelector';
+import ContractAbi from './ContractAbi';
 import ContractConnectWallet from './ContractConnectWallet';
-import ContractMethods from './ContractMethods';
+import ContractMethodsContainer from './ContractMethodsContainer';
+import useMethodsFilters from './useMethodsFilters';
 import { enrichWithMethodId, isMethod } from './utils';
 
 interface Props {
@@ -23,6 +25,7 @@ const ContractMethodsMudSystem = ({ items }: Props) => {
 
   const addressHash = getQueryParamString(router.query.hash);
   const sourceAddress = getQueryParamString(router.query.source_address);
+  const tab = getQueryParamString(router.query.tab);
 
   const [ selectedItem, setSelectedItem ] = React.useState(items.find((item) => item.address === sourceAddress) || items[0]);
 
@@ -38,11 +41,11 @@ const ContractMethodsMudSystem = ({ items }: Props) => {
     setSelectedItem(item as SmartContractMudSystemItem);
   }, []);
 
-  if (items.length === 0) {
-    return <span>No MUD System found for this contract.</span>;
-  }
+  const abi = React.useMemo(() => {
+    return systemInfoQuery.data?.abi?.filter(isMethod).map(enrichWithMethodId) || [];
+  }, [ systemInfoQuery.data?.abi ]);
 
-  const abi = systemInfoQuery.data?.abi?.filter(isMethod).map(enrichWithMethodId) || [];
+  const filters = useMethodsFilters({ abi });
 
   return (
     <Box>
@@ -54,14 +57,21 @@ const ContractMethodsMudSystem = ({ items }: Props) => {
         label="System address"
         mb={ 6 }
       />
-      <ContractMethods
+      <ContractMethodsContainer
         key={ selectedItem.address }
-        abi={ abi }
         isLoading={ systemInfoQuery.isPending }
+        isEmpty={ abi.length === 0 }
+        type={ filters.methodType }
         isError={ systemInfoQuery.isError }
-        sourceAddress={ selectedItem.address }
-        type="all"
-      />
+      >
+        <ContractAbi
+          abi={ abi }
+          tab={ tab }
+          addressHash={ addressHash }
+          visibleItems={ filters.visibleItems }
+          sourceAddress={ selectedItem.address }
+        />
+      </ContractMethodsContainer>
     </Box>
   );
 };

@@ -4,18 +4,21 @@ import React from 'react';
 
 import type { SmartContractMethod } from './types';
 
+import { apos } from 'lib/html-entities';
+
 import ContractAbiItem from './ContractAbiItem';
 import useFormSubmit from './useFormSubmit';
 import useScrollToMethod from './useScrollToMethod';
 
 interface Props {
   abi: Array<SmartContractMethod>;
+  visibleItems?: Array<number>;
   addressHash: string;
   tab: string;
   sourceAddress?: string;
 }
 
-const ContractAbi = ({ abi, addressHash, sourceAddress, tab }: Props) => {
+const ContractAbi = ({ abi, addressHash, sourceAddress, tab, visibleItems }: Props) => {
   const [ expandedSections, setExpandedSections ] = React.useState<Array<number>>(abi.length === 1 ? [ 0 ] : []);
   const [ id, setId ] = React.useState(0);
 
@@ -43,6 +46,8 @@ const ContractAbi = ({ abi, addressHash, sourceAddress, tab }: Props) => {
     setId((id) => id + 1);
   }, []);
 
+  const hasVisibleItems = !visibleItems || visibleItems.length > 0;
+
   return (
     <>
       <Flex mb={ 3 }>
@@ -58,9 +63,10 @@ const ContractAbi = ({ abi, addressHash, sourceAddress, tab }: Props) => {
         { abi.map((item, index) => (
           <ContractAbiItem
             key={ index }
-            data={ item }
             id={ id }
             index={ index }
+            data={ item }
+            isVisible={ !visibleItems || visibleItems.includes(index) }
             addressHash={ addressHash }
             sourceAddress={ sourceAddress }
             tab={ tab }
@@ -68,6 +74,7 @@ const ContractAbi = ({ abi, addressHash, sourceAddress, tab }: Props) => {
           />
         )) }
       </Accordion>
+      { !hasVisibleItems && <Box>Couldn{ apos }t find any method that matches your query.</Box> }
     </>
   );
 };

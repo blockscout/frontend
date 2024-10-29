@@ -1,24 +1,37 @@
+import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { MethodType, SmartContractMethod } from './types';
+import type { SmartContractMethod } from './types';
 
+import getQueryParamString from 'lib/router/getQueryParamString';
+
+import ContractAbi from './ContractAbi';
 import ContractConnectWallet from './ContractConnectWallet';
 import ContractCustomAbiAlert from './ContractCustomAbiAlert';
-import ContractMethods from './ContractMethods';
+import ContractMethodsContainer from './ContractMethodsContainer';
+import useMethodsFilters from './useMethodsFilters';
 
 interface Props {
   abi: Array<SmartContractMethod>;
   isLoading?: boolean;
-  type: MethodType;
 }
 
-const ContractMethodsCustom = ({ abi, isLoading, type }: Props) => {
+const ContractMethodsCustom = ({ abi, isLoading }: Props) => {
+
+  const router = useRouter();
+
+  const tab = getQueryParamString(router.query.tab);
+  const addressHash = getQueryParamString(router.query.hash);
+
+  const filters = useMethodsFilters({ abi });
 
   return (
     <>
       <ContractConnectWallet isLoading={ isLoading }/>
       <ContractCustomAbiAlert isLoading={ isLoading }/>
-      <ContractMethods abi={ abi } isLoading={ isLoading } type={ type }/>
+      <ContractMethodsContainer isLoading={ isLoading } isEmpty={ abi.length === 0 } type={ filters.methodType }>
+        <ContractAbi abi={ abi } tab={ tab } addressHash={ addressHash } visibleItems={ filters.visibleItems }/>
+      </ContractMethodsContainer>
     </>
   );
 };

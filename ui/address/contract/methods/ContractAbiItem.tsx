@@ -1,4 +1,4 @@
-import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Alert, Box } from '@chakra-ui/react';
+import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Alert, Box, Tag } from '@chakra-ui/react';
 import React from 'react';
 import { Element } from 'react-scroll';
 
@@ -7,7 +7,6 @@ import type { FormSubmitHandler, SmartContractMethod } from './types';
 import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
-import Tag from 'ui/shared/chakra/Tag';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import Hint from 'ui/shared/Hint';
 
@@ -22,9 +21,10 @@ interface Props {
   sourceAddress?: string;
   tab: string;
   onSubmit: FormSubmitHandler;
+  isVisible?: boolean;
 }
 
-const ContractAbiItem = ({ data, index, id, addressHash, sourceAddress, tab, onSubmit }: Props) => {
+const ContractAbiItem = ({ data, index, id, addressHash, sourceAddress, tab, onSubmit, isVisible = true }: Props) => {
   const [ attempt, setAttempt ] = React.useState(0);
 
   const url = React.useMemo(() => {
@@ -56,7 +56,7 @@ const ContractAbiItem = ({ data, index, id, addressHash, sourceAddress, tab, onS
   }, []);
 
   return (
-    <AccordionItem as="section" _first={{ borderTopWidth: 0 }} _last={{ borderBottomWidth: 0 }}>
+    <AccordionItem as="section" _first={{ borderTopWidth: 0 }} _last={{ borderBottomWidth: 0 }} display={ isVisible ? 'block' : 'none' }>
       { ({ isExpanded }) => (
         <>
           <Element as="h2" name={ 'method_id' in data ? getElementName(data.method_id) : '' }>
@@ -84,10 +84,10 @@ const ContractAbiItem = ({ data, index, id, addressHash, sourceAddress, tab, onS
                   }/>
               ) }
               { 'method_id' in data && (
-                <>
-                  <Tag>{ data.method_id }</Tag>
+                <Tag display="inline-flex" alignItems="center">
+                  { data.method_id }
                   <CopyToClipboard text={ `${ data.name } (${ data.method_id })` } onClick={ handleCopyMethodIdClick }/>
-                </>
+                </Tag>
               ) }
               <AccordionIcon transform={ isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' } color="gray.500"/>
             </AccordionButton>

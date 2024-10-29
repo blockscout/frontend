@@ -1,13 +1,14 @@
 export const CONTRACT_MAIN_TAB_IDS = [
   'contract_code',
   'read_contract',
-  'read_contract_rpc',
-  'read_proxy',
-  'read_custom_methods',
   'write_contract',
-  'write_contract_rpc',
+  'read_write_contract',
+  'read_proxy',
   'write_proxy',
+  'read_write_proxy',
+  'read_custom_methods',
   'write_custom_methods',
+  'read_write_custom_methods',
   'mud_system',
 ] as const;
 

@@ -12,11 +12,6 @@ export const getNativeCoinValue = (value: unknown) => {
   return BigInt(value);
 };
 
-interface DividedAbi {
-  read: Array<SmartContractMethodRead>;
-  write: Array<SmartContractMethodWrite>;
-}
-
 export const isMethod = (method: Abi[number]): method is SmartContractMethod =>
   (method.type === 'function' || method.type === 'fallback' || method.type === 'receive');
 
@@ -46,14 +41,3 @@ export const enrichWithMethodId = (method: AbiFunction | AbiFallback | AbiReceiv
     };
   }
 };
-
-export function divideAbiIntoMethodTypes(abi: Abi): DividedAbi {
-  return {
-    read: abi
-      .filter(isReadMethod)
-      .map(enrichWithMethodId) as Array<SmartContractMethodRead>,
-    write: abi
-      .filter(isWriteMethod)
-      .map(enrichWithMethodId) as Array<SmartContractMethodWrite>,
-  };
-}
