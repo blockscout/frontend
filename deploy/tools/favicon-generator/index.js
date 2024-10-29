@@ -23,7 +23,9 @@ async function generateFavicons() {
       appName: 'Blockscout',
       icons: {
         android: true,
-        appleIcon: true,
+        appleIcon: {
+          background: 'transparent',
+        },
         appleStartup: false,
         favicons: true,
         windows: false,
@@ -60,7 +62,6 @@ async function generateFavicons() {
       console.log('Favicons generated successfully!');
     } catch (faviconError) {
       console.warn('Error generating favicons:', faviconError);
-      console.warn('Skipping favicon generation. Please check your sharp installation.');
     }
   } catch (error) {
     console.error('Error in favicon generation process:', error);

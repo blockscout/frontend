@@ -9,7 +9,6 @@ fi
 
 dotenv \
   -v MASTER_URL=$master_url \
-  -e $secrets_file \
   -- bash -c 'cd ./deploy/tools/favicon-generator && node "$(dirname "$0")/index.js"'
 
 if [ -d "$favicon_folder" ]; then

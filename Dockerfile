@@ -112,7 +112,6 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/deploy/tools/envs-validator/index.js ./envs-validator.js
 COPY --from=builder /app/deploy/tools/feature-reporter/index.js ./feature-reporter.js
-# COPY /app/deploy/tools/favicon-generator/index.js ./favicon-generator.js
 
 # Copy scripts
 ## Entripoint
