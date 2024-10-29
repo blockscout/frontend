@@ -1,15 +1,12 @@
-import { Text, Box, Flex, Button, Skeleton, Icon } from '@chakra-ui/react';
+import { Text, Box, Flex, Button, Skeleton } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
 
-// This icon doesn't work properly when it is in the sprite
-// Probably because of the gradient
-// eslint-disable-next-line no-restricted-imports
-import meritsIcon from 'icons/merits_colored.svg';
 import { useRewardsContext } from 'lib/contexts/rewards';
 import IconSvg from 'ui/shared/IconSvg';
 
+import MeritsIcon from '../MeritsIcon';
 import ReadOnlyInputWithCopy from '../ReadOnlyInputWithCopy';
 
 type Props = {
@@ -29,10 +26,12 @@ const CongratsStepContent = ({ isReferral }: Props) => {
         alignItems="center"
         background="linear-gradient(254.96deg, #9CD8FF 9.09%, #D0EFFF 88.45%)"
         borderRadius="md"
-        padding={ 2 }
+        p={ 2 }
+        pl={ 8 }
         mb={ 8 }
+        h="90px"
       >
-        <Icon as={ meritsIcon } boxSize="60px" mb={ -1 }/>
+        <MeritsIcon boxSize={ 12 } mr={ 2 }/>
         <Skeleton isLoaded={ !rewardsConfigQuery.isLoading }>
           <Text fontSize="30px" fontWeight="700" color="blue.700">
             +{ rewardsConfigQuery.data?.rewards[ isReferral ? 'registration_with_referral' : 'registration' ] }
@@ -41,7 +40,7 @@ const CongratsStepContent = ({ isReferral }: Props) => {
         { isReferral && (
           <Flex alignItems="center" h="56px">
             <Box w="1px" h="full" bgColor="whiteAlpha.800" mx={ 8 }/>
-            <Flex flexDirection="column" justifyContent="space-between">
+            <Flex flexDirection="column" justifyContent="space-between" gap={ 2 }>
               { [
                 {
                   title: 'Registration',
@@ -53,13 +52,13 @@ const CongratsStepContent = ({ isReferral }: Props) => {
                 },
               ].map(({ title, value }) => (
                 <Flex key={ title } alignItems="center">
-                  <Icon as={ meritsIcon } boxSize={ 8 } mb={ -0.5 }/>
-                  <Skeleton isLoaded={ !rewardsConfigQuery.isLoading }>
+                  <MeritsIcon boxSize={ 6 }/>
+                  <Skeleton isLoaded={ !rewardsConfigQuery.isLoading } ml={ 1 } mr={ 2 }>
                     <Text fontSize="sm" fontWeight="700" color="blue.700">
                       +{ value }
                     </Text>
                   </Skeleton>
-                  <Text fontSize="sm" color="blue.700" ml={ 2 }>
+                  <Text fontSize="sm" color="blue.700">
                     { title }
                   </Text>
                 </Flex>
