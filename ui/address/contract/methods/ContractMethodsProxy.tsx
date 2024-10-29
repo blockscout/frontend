@@ -10,7 +10,7 @@ import ContractSourceAddressSelector from '../ContractSourceAddressSelector';
 import ContractAbi from './ContractAbi';
 import ContractConnectWallet from './ContractConnectWallet';
 import ContractMethodsContainer from './ContractMethodsContainer';
-import ContractMethodsFilter from './ContractMethodsFilter';
+import ContractMethodsFilters from './ContractMethodsFilters';
 import useMethodsFilters from './useMethodsFilters';
 import { enrichWithMethodId, isMethod } from './utils';
 
@@ -43,7 +43,6 @@ const ContractMethodsProxy = ({ implementations, isLoading: isInitialLoading }: 
 
   return (
     <>
-      <ContractMethodsFilter defaultValue={ filters.methodType } onChange={ filters.onChange }/>
       <ContractConnectWallet isLoading={ isInitialLoading }/>
       <ContractSourceAddressSelector
         items={ implementations }
@@ -52,6 +51,12 @@ const ContractMethodsProxy = ({ implementations, isLoading: isInitialLoading }: 
         isLoading={ isInitialLoading }
         label="Implementation address"
         mb={ 6 }
+      />
+      <ContractMethodsFilters
+        defaultMethodType={ filters.methodType }
+        defaultSearchTerm={ filters.searchTerm }
+        onChange={ filters.onChange }
+        isLoading={ isInitialLoading }
       />
       <ContractMethodsContainer
         key={ selectedItem.address }

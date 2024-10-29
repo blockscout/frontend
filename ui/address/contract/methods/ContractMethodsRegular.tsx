@@ -8,7 +8,7 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import ContractAbi from './ContractAbi';
 import ContractConnectWallet from './ContractConnectWallet';
 import ContractMethodsContainer from './ContractMethodsContainer';
-import ContractMethodsFilter from './ContractMethodsFilter';
+import ContractMethodsFilters from './ContractMethodsFilters';
 import useMethodsFilters from './useMethodsFilters';
 
 interface Props {
@@ -27,8 +27,13 @@ const ContractMethodsRegular = ({ abi, isLoading }: Props) => {
 
   return (
     <>
-      <ContractMethodsFilter defaultValue={ filters.methodType } onChange={ filters.onChange }/>
       <ContractConnectWallet isLoading={ isLoading }/>
+      <ContractMethodsFilters
+        defaultMethodType={ filters.methodType }
+        defaultSearchTerm={ filters.searchTerm }
+        onChange={ filters.onChange }
+        isLoading={ isLoading }
+      />
       <ContractMethodsContainer isLoading={ isLoading } isEmpty={ abi.length === 0 } type={ filters.methodType }>
         <ContractAbi abi={ abi } tab={ tab } addressHash={ addressHash } visibleItems={ filters.visibleItems }/>
       </ContractMethodsContainer>

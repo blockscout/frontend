@@ -22,12 +22,15 @@ interface Params {
 
 export default function useMethodsFilters({ abi }: Params) {
   const [ methodType, setMethodType ] = React.useState<MethodType>('all');
+  const [ searchTerm, setSearchTerm ] = React.useState<string>('');
 
   const onChange = React.useCallback((filters: MethodsFilters) => {
     if (filters.type === 'method_type') {
       setMethodType(filters.value);
+    } else if (filters.type === 'method_name') {
+      setSearchTerm(filters.value);
     }
-  }, [ setMethodType ]);
+  }, [ setMethodType, setSearchTerm ]);
 
   return React.useMemo(() => {
     const typeFilterFn = (() => {
@@ -41,12 +44,31 @@ export default function useMethodsFilters({ abi }: Params) {
       }
     })();
 
+    const nameFilterFn = (method: SmartContractMethod) => {
+      const searchTermLower = searchTerm.toLowerCase().trim();
+
+      if (searchTermLower === '') {
+        return true;
+      }
+
+      if (method.type === 'fallback') {
+        return 'fallback'.includes(searchTermLower);
+      }
+
+      if (method.type === 'receive') {
+        return 'receive'.includes(searchTermLower);
+      }
+
+      return method.name.toLowerCase().includes(searchTermLower);
+    };
+
     return {
       methodType,
+      searchTerm,
       onChange,
       visibleItems: abi
-        .map((method, index) => typeFilterFn(method) ? index : -1)
+        .map((method, index) => typeFilterFn(method) && nameFilterFn(method) ? index : -1)
         .filter((item) => item !== -1),
     };
-  }, [ methodType, onChange, abi ]);
+  }, [ methodType, searchTerm, onChange, abi ]);
 }
