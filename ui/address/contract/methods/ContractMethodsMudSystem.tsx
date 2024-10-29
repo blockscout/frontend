@@ -12,6 +12,7 @@ import ContractSourceAddressSelector from '../ContractSourceAddressSelector';
 import ContractAbi from './ContractAbi';
 import ContractConnectWallet from './ContractConnectWallet';
 import ContractMethodsContainer from './ContractMethodsContainer';
+import ContractMethodsFilters from './ContractMethodsFilters';
 import useMethodsFilters from './useMethodsFilters';
 import { enrichWithMethodId, isMethod } from './utils';
 
@@ -56,6 +57,11 @@ const ContractMethodsMudSystem = ({ items }: Props) => {
         onItemSelect={ handleItemSelect }
         label="System address"
         mb={ 6 }
+      />
+      <ContractMethodsFilters
+        defaultMethodType={ filters.methodType }
+        defaultSearchTerm={ filters.searchTerm }
+        onChange={ filters.onChange }
       />
       <ContractMethodsContainer
         key={ selectedItem.address }
