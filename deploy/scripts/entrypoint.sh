@@ -39,9 +39,14 @@ export_envs_from_preset
 ./download_assets.sh ./public/assets/configs
 
 # Check run-time ENVs values
-./validate_envs.sh
-if [ $? -ne 0 ]; then
-  exit 1
+if [ "$SKIP_ENVS_VALIDATION" != "true" ]; then
+  ./validate_envs.sh
+  if [ $? -ne 0 ]; then
+    exit 1
+  fi
+else
+  echo "😱 Skipping ENVs validation."
+  echo
 fi
 
 # Generate favicons bundle
