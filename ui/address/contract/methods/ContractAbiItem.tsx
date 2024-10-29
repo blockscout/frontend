@@ -12,6 +12,7 @@ import Hint from 'ui/shared/Hint';
 
 import ContractMethodForm from './form/ContractMethodForm';
 import { getElementName } from './useScrollToMethod';
+import { isReadMethod } from './utils';
 
 interface Props {
   data: SmartContractMethod;
@@ -60,31 +61,47 @@ const ContractAbiItem = ({ data, index, id, addressHash, sourceAddress, tab, onS
       { ({ isExpanded }) => (
         <>
           <Element as="h2" name={ 'method_id' in data ? getElementName(data.method_id) : '' }>
-            <AccordionButton px={ 0 } py={ 3 } _hover={{ bgColor: 'inherit' }} wordBreak="break-all" textAlign="left" as="div" cursor="pointer">
-              { 'method_id' in data && <CopyToClipboard text={ url } onClick={ handleCopyLinkClick } type="link" mr={ 2 } ml={ 0 } color="text_secondary"/> }
-              <Box as="span" fontWeight={ 500 } mr={ 1 }>
+            <AccordionButton
+              px={ 0 }
+              py={ 3 }
+              _hover={{ bgColor: 'inherit' }}
+              wordBreak="break-all"
+              textAlign="left"
+              as="div"
+              cursor="pointer"
+              display="flex"
+              alignItems="center"
+              columnGap={ 2 }
+            >
+              { 'method_id' in data && <CopyToClipboard text={ url } onClick={ handleCopyLinkClick } type="link" ml={ 0 } color="text_secondary"/> }
+              <Box as="div" fontWeight={ 500 } display="flex" alignItems="center">
                 { index + 1 }. { data.type === 'fallback' || data.type === 'receive' ? data.type : data.name }
-              </Box>
-              { data.type === 'fallback' && (
-                <Hint
-                  label={
-                    `The fallback function is executed on a call to the contract if none of the other functions match 
+                { data.type === 'fallback' && (
+                  <Hint
+                    label={
+                      `The fallback function is executed on a call to the contract if none of the other functions match 
                     the given function signature, or if no data was supplied at all and there is no receive Ether function. 
                     The fallback function always receives data, but in order to also receive Ether it must be marked payable.`
-                  }/>
-              ) }
-              { data.type === 'receive' && (
-                <Hint
-                  label={
-                    `The receive function is executed on a call to the contract with empty calldata. 
+                    }
+                    ml={ 1 }
+                  />
+                ) }
+                { data.type === 'receive' && (
+                  <Hint
+                    label={
+                      `The receive function is executed on a call to the contract with empty calldata. 
                     This is the function that is executed on plain Ether transfers (e.g. via .send() or .transfer()). 
                     If no such function exists, but a payable fallback function exists, the fallback function will be called on a plain Ether transfer. 
                     If neither a receive Ether nor a payable fallback function is present, 
                     the contract cannot receive Ether through regular transactions and throws an exception.`
-                  }/>
-              ) }
+                    }
+                    ml={ 1 }
+                  />
+                ) }
+              </Box>
+              <Tag colorScheme="black-blue" flexShrink={ 0 }>{ isReadMethod(data) ? 'read' : 'write' }</Tag>
               { 'method_id' in data && (
-                <Tag display="inline-flex" alignItems="center">
+                <Tag display="inline-flex" alignItems="center" flexShrink={ 0 }>
                   { data.method_id }
                   <CopyToClipboard text={ `${ data.name } (${ data.method_id })` } onClick={ handleCopyMethodIdClick }/>
                 </Tag>
