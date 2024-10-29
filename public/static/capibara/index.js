@@ -65,6 +65,8 @@
       this.images = {};
       this.imagesLoaded = 0;
 
+      this.highScoreReached = false; // Add this new flag
+
       if (this.isDisabled()) {
           this.setupDisabledRunner();
       } else {
@@ -540,6 +542,13 @@
               if (!collision) {
                   this.distanceRan += this.currentSpeed * deltaTime / this.msPerFrame;
 
+                  if (!this.highScoreReached && this.distanceMeter.getActualDistance(this.distanceRan) >= 1000) {
+                      this.highScoreReached = true;
+                      window.dispatchEvent(new CustomEvent('reachedHighScore', {
+                          detail: { score: this.distanceRan }
+                    }));
+                  }
+
                   if (this.currentSpeed < this.config.MAX_SPEED) {
                       this.currentSpeed += this.config.ACCELERATION;
                   }
@@ -547,12 +556,8 @@
                   this.gameOver();
               }
 
-            //   var playAchievementSound = this.distanceMeter.update(deltaTime,
-            //       Math.ceil(this.distanceRan));
-
-            //   if (playAchievementSound) {
-            //       this.playSound(this.soundFx.SCORE);
-            //   }
+              this.distanceMeter.update(deltaTime,
+                  Math.ceil(this.distanceRan));
 
               // Night mode.
               if (this.invertTimer > this.config.INVERT_FADE_DURATION) {
@@ -1773,6 +1778,7 @@
           this.midair = false;
           this.speedDrop = false;
           this.jumpCount = 0;
+          this.highScoreReached = false;
       }
   };
 
@@ -1944,7 +1950,6 @@
        */
       update: function (deltaTime, distance) {
           var paint = true;
-        //   var playSound = false;
 
           if (!this.acheivement) {
               distance = this.getActualDistance(distance);
