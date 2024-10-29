@@ -14,7 +14,7 @@ jobs:
             -   name: Copy files to Blockscout Docs repository
                 uses: tom2drum/copy_file_to_another_repo_action@main
                 env:
-                    API_TOKEN_GITHUB: ${{ secrets.GITHUB_TOKEN }}
+                    API_TOKEN_GITHUB: ${{ secrets.GITHIB_BOT_TOKEN }}
                 with:
                     source_file: 'docs/ENVS.md'
                     destination_repo: 'blockscout/docs'
