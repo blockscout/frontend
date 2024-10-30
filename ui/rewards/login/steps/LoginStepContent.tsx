@@ -125,7 +125,7 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
         </Box>
       ) }
       { isAddressMismatch && (
-        <Alert status="warning" mt={ 4 }>
+        <Alert status="warning" mb={ 4 }>
           Your wallet address doesn{ apos }t match the one in your Blockscout account. Please connect the correct wallet.
         </Alert>
       ) }
