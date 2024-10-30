@@ -71,7 +71,7 @@ const NavigationDesktop = () => {
       }}
       onClick={ handleContainerClick }
     >
-      { config.chain.isTestnet && <IconSvg name="testnet" h="14px" w="49px" color="red.400" position="absolute" pl={ 3 } top="34px"/> }
+      { config.chain.isTestnet && <IconSvg name="alphanetv2" h="14px" w="49px" color="red.400" position="absolute" pl={ 3 } top="34px"/> }
       <Box
         as="header"
         display="flex"

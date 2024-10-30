@@ -3,6 +3,7 @@
   export type IconName =
   	| "ABI_slim"
 	| "ABI"
+	| "alphanetv2"
 	| "API"
 	| "apps_list"
 	| "apps_xs"
