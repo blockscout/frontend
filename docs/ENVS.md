@@ -801,7 +801,7 @@ This feature enables Blockscout Merits program. It requires that the [My account
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_REWARDS_SERVICE_API_HOST | `string` | API url | - | - | `https://example.com` | v1.36.0+ |
+| NEXT_PUBLIC_REWARDS_SERVICE_API_HOST | `string` | API URL | - | - | `https://example.com` | v1.36.0+ |
 
 ## External services configuration
 

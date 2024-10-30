@@ -11,7 +11,7 @@ type Props = {
   isLoading?: boolean;
 };
 
-const ReadOnlyInputWithCopy = ({ label, value, className, isLoading }: Props) => (
+const RewardsReadOnlyInputWithCopy = ({ label, value, className, isLoading }: Props) => (
   <FormControl variant="floating" id={ label } className={ className }>
     <Skeleton isLoaded={ !isLoading }>
       <InputGroup>
@@ -36,4 +36,4 @@ const ReadOnlyInputWithCopy = ({ label, value, className, isLoading }: Props) =>
   </FormControl>
 );
 
-export default chakra(ReadOnlyInputWithCopy);
+export default chakra(RewardsReadOnlyInputWithCopy);

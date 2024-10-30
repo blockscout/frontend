@@ -227,7 +227,7 @@ export function RewardsContextProvider({ children }: Props) {
       saveApiToken(loginResponse.token);
       return { isNewUser: loginResponse.created };
     } catch (_error) {
-      errorToast(_error as ResourceError<{ message: string }>);
+      errorToast(_error);
       throw _error;
     }
   }, [ apiFetch, address, signMessageAsync, errorToast, saveApiToken, checkUserQuery ]);
@@ -242,7 +242,7 @@ export function RewardsContextProvider({ children }: Props) {
         },
       }) as RewardsUserDailyClaimResponse;
     } catch (_error) {
-      errorToast(_error as ResourceError<{ message: string }>);
+      errorToast(_error);
       throw _error;
     }
   }, [ apiFetch, errorToast, fetchParams ]);

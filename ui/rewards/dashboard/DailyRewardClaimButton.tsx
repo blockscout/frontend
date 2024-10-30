@@ -37,7 +37,7 @@ const DailyRewardClaimButton = () => {
     const formattedDate = dailyRewardQuery.data.reset_at.replace(' ', 'T').replace(' UTC', 'Z');
     const target = new Date(formattedDate).getTime();
 
-    let interval: ReturnType<typeof setTimeout>; // eslint-disable-line prefer-const
+    let interval = 0;
 
     const updateCountdown = (target: number) => {
       const now = new Date().getTime();
@@ -55,7 +55,7 @@ const DailyRewardClaimButton = () => {
 
     updateCountdown(target);
 
-    interval = setInterval(() => {
+    interval = window.setInterval(() => {
       updateCountdown(target);
     }, SECOND);
 

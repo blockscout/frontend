@@ -7,7 +7,7 @@ import { apos } from 'lib/html-entities';
 import DailyRewardClaimButton from 'ui/rewards/dashboard/DailyRewardClaimButton';
 import RewardsDashboardCard from 'ui/rewards/dashboard/RewardsDashboardCard';
 import RewardsDashboardCardValue from 'ui/rewards/dashboard/RewardsDashboardCardValue';
-import ReadOnlyInputWithCopy from 'ui/rewards/ReadOnlyInputWithCopy';
+import RewardsReadOnlyInputWithCopy from 'ui/rewards/RewardsReadOnlyInputWithCopy';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInvalidAuthToken';
@@ -107,13 +107,13 @@ const RewardsDashboard = () => {
             py={{ base: 4, md: 0 }}
             flexDirection={{ base: 'column', md: 'row' }}
           >
-            <ReadOnlyInputWithCopy
+            <RewardsReadOnlyInputWithCopy
               label="Referral link"
-              value={ `https://eth.blockscout.com?ref=${ referralsQuery.data?.code }` }
+              value={ referralsQuery.data?.link || '' }
               isLoading={ referralsQuery.isPending }
               flex={ 2 }
             />
-            <ReadOnlyInputWithCopy
+            <RewardsReadOnlyInputWithCopy
               label="Referral code"
               value={ referralsQuery.data?.code || '' }
               isLoading={ referralsQuery.isPending }

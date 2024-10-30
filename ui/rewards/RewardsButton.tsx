@@ -50,7 +50,7 @@ const RewardsButton = ({ variant = 'header', size }: Props) => {
         }}
       >
         <IconSvg
-          name={ dailyRewardQuery.data?.available ? 'merits_with_dot' : 'merits' }
+          name={ dailyRewardQuery.data?.available ? 'merits_with_dot_slim' : 'merits_slim' }
           boxSize={ variant === 'hero' ? 6 : 5 }
           flexShrink={ 0 }
         />
