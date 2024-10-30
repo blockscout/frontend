@@ -33,6 +33,7 @@ export default function fetchFactory(
       message: 'API fetch via Next.js proxy',
       url,
       // headers,
+      // init,
     });
 
     const body = (() => {

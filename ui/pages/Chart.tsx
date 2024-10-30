@@ -1,4 +1,4 @@
-import { Button, Flex, Link, Text } from '@chakra-ui/react';
+import { Button, Flex, Link, Skeleton, Text } from '@chakra-ui/react';
 import type { NextRouter } from 'next/router';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -179,13 +179,19 @@ const Chart = () => {
             { !isMobile && <Text>Period</Text> }
             <ChartIntervalSelect interval={ interval } onIntervalChange={ onIntervalChange }/>
           </Flex>
-          { lineQuery.data?.info?.resolutions && lineQuery.data?.info?.resolutions.length > 1 && (
+          { (
+            (info?.resolutions && info?.resolutions.length > 1) ||
+            (!info && lineQuery.data?.info?.resolutions && lineQuery.data?.info?.resolutions.length > 1)
+          ) && (
             <Flex alignItems="center" gap={ 3 }>
-              <Text>{ isMobile ? 'Res.' : 'Resolution' }</Text>
+              <Skeleton isLoaded={ !isInfoLoading }>
+                { isMobile ? 'Res.' : 'Resolution' }
+              </Skeleton>
               <ChartResolutionSelect
                 resolution={ resolution }
                 onResolutionChange={ onResolutionChange }
                 resolutions={ lineQuery.data?.info?.resolutions || [] }
+                isLoading={ isInfoLoading }
               />
             </Flex>
           ) }

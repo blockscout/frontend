@@ -1,6 +1,6 @@
 import type { SmartContractLicenseType } from 'types/api/contract';
 import type { SmartContractVerificationMethod } from 'types/client/contract';
-import type { Option } from 'ui/shared/FancySelect/types';
+import type { Option } from 'ui/shared/forms/inputs/select/types';
 
 export interface ContractLibrary {
   name: string;

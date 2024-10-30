@@ -1,14 +1,11 @@
 import {
   Box,
   Button,
-  FormControl,
-  FormLabel,
-  Input,
 } from '@chakra-ui/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useCallback } from 'react';
-import type { SubmitHandler, ControllerRenderProps } from 'react-hook-form';
-import { useForm, Controller } from 'react-hook-form';
+import type { SubmitHandler } from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
 
 import type { ApiKey, ApiKeys, ApiKeyErrors } from 'types/api/account';
 
@@ -16,7 +13,7 @@ import type { ResourceErrorAccount } from 'lib/api/resources';
 import { resourceKey } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
 import getErrorMessage from 'lib/getErrorMessage';
-import InputPlaceholder from 'ui/shared/InputPlaceholder';
+import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
 
 type Props = {
   data?: ApiKey;
@@ -32,7 +29,7 @@ type Inputs = {
 const NAME_MAX_LENGTH = 255;
 
 const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
-  const { control, handleSubmit, formState: { errors, isDirty }, setError } = useForm<Inputs>({
+  const formApi = useForm<Inputs>({
     mode: 'onTouched',
     defaultValues: {
       token: data?.api_key || '',
@@ -81,80 +78,54 @@ const ApiKeyForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
     onError: (error: ResourceErrorAccount<ApiKeyErrors>) => {
       const errorMap = error.payload?.errors;
       if (errorMap?.name) {
-        setError('name', { type: 'custom', message: getErrorMessage(errorMap, 'name') });
+        formApi.setError('name', { type: 'custom', message: getErrorMessage(errorMap, 'name') });
       } else if (errorMap?.identity_id) {
-        setError('name', { type: 'custom', message: getErrorMessage(errorMap, 'identity_id') });
+        formApi.setError('name', { type: 'custom', message: getErrorMessage(errorMap, 'identity_id') });
       } else {
         setAlertVisible(true);
       }
     },
   });
 
-  const onSubmit: SubmitHandler<Inputs> = useCallback((data) => {
+  const onSubmit: SubmitHandler<Inputs> = useCallback(async(data) => {
     setAlertVisible(false);
-    mutation.mutate(data);
+    await mutation.mutateAsync(data);
   }, [ mutation, setAlertVisible ]);
 
-  const renderTokenInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'token'>}) => {
-    return (
-      <FormControl variant="floating" id="address">
-        <Input
-          { ...field }
-          bgColor="dialog_bg"
-          isReadOnly
-        />
-        <FormLabel>Auto-generated API key token</FormLabel>
-      </FormControl>
-    );
-  }, []);
-
-  const renderNameInput = useCallback(({ field }: {field: ControllerRenderProps<Inputs, 'name'>}) => {
-    return (
-      <FormControl variant="floating" id="name" isRequired bgColor="dialog_bg">
-        <Input
-          { ...field }
-          isInvalid={ Boolean(errors.name) }
-          maxLength={ NAME_MAX_LENGTH }
-          bgColor="dialog_bg"
-        />
-        <InputPlaceholder text="Application name for API key (e.g Web3 project)" error={ errors.name }/>
-      </FormControl>
-    );
-  }, [ errors ]);
-
   return (
-    <form noValidate onSubmit={ handleSubmit(onSubmit) }>
-      { data && (
-        <Box marginBottom={ 5 }>
-          <Controller
+    <FormProvider { ...formApi }>
+      <form noValidate onSubmit={ formApi.handleSubmit(onSubmit) }>
+        { data && (
+          <FormFieldText<Inputs>
             name="token"
-            control={ control }
-            render={ renderTokenInput }
+            placeholder="Auto-generated API key token"
+            isReadOnly
+            bgColor="dialog_bg"
+            mb={ 5 }
           />
-        </Box>
-      ) }
-      <Box marginBottom={ 8 }>
-        <Controller
+        ) }
+        <FormFieldText<Inputs>
           name="name"
-          control={ control }
+          placeholder="Application name for API key (e.g Web3 project)"
+          isRequired
           rules={{
             maxLength: NAME_MAX_LENGTH,
-            required: true,
           }}
-          render={ renderNameInput }
+          bgColor="dialog_bg"
+          mb={ 8 }
         />
-      </Box>
-      <Box marginTop={ 8 }>
-        <Button
-          size="lg"
-          type="submit"
-          isDisabled={ !isDirty }
-          isLoading={ mutation.isPending }
-        >
-          { data ? 'Save' : 'Generate API key' }
-        </Button>
-      </Box>
-    </form>
+        <Box marginTop={ 8 }>
+          <Button
+            size="lg"
+            type="submit"
+            isDisabled={ !formApi.formState.isDirty }
+            isLoading={ mutation.isPending }
+          >
+            { data ? 'Save' : 'Generate API key' }
+          </Button>
+        </Box>
+      </form>
+    </FormProvider>
   );
 };
 
