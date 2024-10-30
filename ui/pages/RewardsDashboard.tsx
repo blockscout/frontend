@@ -78,13 +78,13 @@ const RewardsDashboard = () => {
             />
           </RewardsDashboardCard>
           <RewardsDashboardCard
-            title="Steaks"
-            description={ `Current number of consecutive days you${ apos }ve claimed your daily Merits.` }
+            title="Streaks"
+            description={ `Current number of consecutive days you${ apos }ve claimed your daily merits.` }
             direction="column-reverse"
             availableSoon
             blurFilter
           >
-            <RewardsDashboardCardValue label="Steaks" value="5 days"/>
+            <RewardsDashboardCardValue label="Streaks" value="5 days"/>
           </RewardsDashboardCard>
         </Flex>
         <RewardsDashboardCard
@@ -133,7 +133,7 @@ const RewardsDashboard = () => {
           </RewardsDashboardCard>
           <RewardsDashboardCard
             title="Verify contracts"
-            description="Verified contracts are so important for transparency and interaction. Verify your contracts on Blockscout and receive merits for your efforts!" // eslint-disable-line max-len
+            description="Verified contracts are so important for transparency and interaction. Verify your contracts on Blockscout and receive merits for your efforts." // eslint-disable-line max-len
             availableSoon
             blurFilter
           >
@@ -147,7 +147,7 @@ const RewardsDashboard = () => {
             <Flex flexDir="column" gap={ 2 }>
               <span>
                 Collect limited and legendary badges by completing different Blockscout related tasks.
-                Go to the badges website to see what{ apos }s available and start your collection!
+                Go to the badges website to see what{ apos }s available and start your collection today.
               </span>
               <LinkExternal
                 href="https://badges.blockscout.com?utm_source=blockscout&utm_medium=merits-dashboard"
