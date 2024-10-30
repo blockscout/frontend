@@ -4,8 +4,8 @@ import { useController, useFormContext } from 'react-hook-form';
 
 import type { EmailFormFields } from '../types';
 
-import { EMAIL_REGEXP } from 'lib/validations/email';
-import InputPlaceholder from 'ui/shared/InputPlaceholder';
+import FormInputPlaceholder from 'ui/shared/forms/inputs/FormInputPlaceholder';
+import { EMAIL_REGEXP } from 'ui/shared/forms/validators/email';
 
 interface Props {
   className?: string;
@@ -31,7 +31,7 @@ const AuthModalFieldEmail = ({ className }: Props) => {
         autoComplete="off"
         bgColor="dialog_bg"
       />
-      <InputPlaceholder text="Email" error={ fieldState.error }/>
+      <FormInputPlaceholder text="Email" error={ fieldState.error }/>
     </FormControl>
   );
 };

@@ -2,7 +2,7 @@ import { FormControl, Input, InputGroup, InputRightElement, Skeleton, chakra } f
 import React from 'react';
 
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
-import InputPlaceholder from 'ui/shared/InputPlaceholder';
+import FormInputPlaceholder from 'ui/shared/forms/inputs/FormInputPlaceholder';
 
 type Props = {
   label: string;
@@ -27,7 +27,7 @@ const ReadOnlyInputWithCopy = ({ label, value, className, isLoading }: Props) =>
             },
           }}
         />
-        <InputPlaceholder text={ label }/>
+        <FormInputPlaceholder text={ label }/>
         <InputRightElement w="40px" display="flex" justifyContent="flex-end" pr={ 2 }>
           <CopyToClipboard text={ value }/>
         </InputRightElement>

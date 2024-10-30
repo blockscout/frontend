@@ -4,7 +4,7 @@ import { useController, useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 
-import InputPlaceholder from 'ui/shared/InputPlaceholder';
+import FormInputPlaceholder from 'ui/shared/forms/inputs/FormInputPlaceholder';
 
 const MyProfileFieldsName = () => {
   const { control } = useFormContext<FormFields>();
@@ -24,7 +24,7 @@ const MyProfileFieldsName = () => {
         isReadOnly={ true }
         autoComplete="off"
       />
-      <InputPlaceholder text="Name" error={ fieldState.error }/>
+      <FormInputPlaceholder text="Name" error={ fieldState.error }/>
     </FormControl>
   );
 };

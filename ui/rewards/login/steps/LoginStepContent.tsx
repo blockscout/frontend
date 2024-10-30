@@ -7,7 +7,7 @@ import { useRewardsContext } from 'lib/contexts/rewards';
 import * as cookies from 'lib/cookies';
 import { apos } from 'lib/html-entities';
 import useWallet from 'lib/web3/useWallet';
-import InputPlaceholder from 'ui/shared/InputPlaceholder';
+import FormInputPlaceholder from 'ui/shared/forms/inputs/FormInputPlaceholder';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 import useSignInWithWallet from 'ui/snippets/auth/useSignInWithWallet';
@@ -115,7 +115,7 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
                   onChange={ handleRefCodeChange }
                   isInvalid={ refCodeError }
                 />
-                <InputPlaceholder text="Code"/>
+                <FormInputPlaceholder text="Code"/>
               </FormControl>
               <Text fontSize="sm" variant="secondary" mt={ 1 } color={ refCodeError ? 'red.500' : undefined }>
                 { refCodeError ? 'Incorrect code or format' : 'The code should be in format XXXXXX' }
