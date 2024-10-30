@@ -1,4 +1,4 @@
-import { Text, Box, Flex, Button, Skeleton } from '@chakra-ui/react';
+import { Text, Box, Flex, Button, Skeleton, useColorModeValue, Tag } from '@chakra-ui/react';
 import React from 'react';
 
 import { route } from 'nextjs-routes';
@@ -20,26 +20,30 @@ const CongratsStepContent = ({ isReferral }: Props) => {
   const referralReward = Number(rewardsConfigQuery.data?.rewards.registration_with_referral) - Number(rewardsConfigQuery.data?.rewards.registration);
   const refLink = `https://eth.blockscout.com?ref=${ referralsQuery.data?.code }`;
   const shareText = `Just signed up for @blockscoutcom Merits program and got ${ registrationReward } merits!\n\nUse my referral link to get extra ${ referralReward } merits: ${ refLink }`; // eslint-disable-line max-len
+
+  const textColor = useColorModeValue('blue.700', 'blue.100');
+  const dividerColor = useColorModeValue('whiteAlpha.800', 'whiteAlpha.100');
+
   return (
     <>
       <Flex
         alignItems="center"
-        background="linear-gradient(254.96deg, #9CD8FF 9.09%, #D0EFFF 88.45%)"
+        background={ useColorModeValue('linear-gradient(254.96deg, #9CD8FF 9.09%, #D0EFFF 88.45%)', 'linear-gradient(255deg, #1B253B 9.09%, #222C3F 88.45%)') }
         borderRadius="md"
         p={ 2 }
-        pl={ 8 }
+        pl={{ base: isReferral ? 4 : 8, md: 8 }}
         mb={ 8 }
         h="90px"
       >
-        <MeritsIcon boxSize={ 12 } mr={ 2 }/>
+        <MeritsIcon boxSize={{ base: isReferral ? 8 : 12, md: 12 }} mr={{ base: isReferral ? 1 : 2, md: 2 }}/>
         <Skeleton isLoaded={ !rewardsConfigQuery.isLoading }>
-          <Text fontSize="30px" fontWeight="700" color="blue.700">
+          <Text fontSize={{ base: isReferral ? '24px' : '30px', md: '30px' }} fontWeight="700" color={ textColor }>
             +{ rewardsConfigQuery.data?.rewards[ isReferral ? 'registration_with_referral' : 'registration' ] }
           </Text>
         </Skeleton>
         { isReferral && (
           <Flex alignItems="center" h="56px">
-            <Box w="1px" h="full" bgColor="whiteAlpha.800" mx={ 8 }/>
+            <Box w="1px" h="full" bgColor={ dividerColor } mx={{ base: 3, md: 8 }}/>
             <Flex flexDirection="column" justifyContent="space-between" gap={ 2 }>
               { [
                 {
@@ -51,14 +55,14 @@ const CongratsStepContent = ({ isReferral }: Props) => {
                   value: referralReward,
                 },
               ].map(({ title, value }) => (
-                <Flex key={ title } alignItems="center">
-                  <MeritsIcon boxSize={ 6 }/>
-                  <Skeleton isLoaded={ !rewardsConfigQuery.isLoading } ml={ 1 } mr={ 2 }>
-                    <Text fontSize="sm" fontWeight="700" color="blue.700">
+                <Flex key={ title } alignItems="center" gap={{ base: 1, md: 2 }}>
+                  <MeritsIcon boxSize={{ base: 5, md: 6 }}/>
+                  <Skeleton isLoaded={ !rewardsConfigQuery.isLoading }>
+                    <Text fontSize="sm" fontWeight="700" color={ textColor }>
                       +{ value }
                     </Text>
                   </Skeleton>
-                  <Text fontSize="sm" color="blue.700">
+                  <Text fontSize="sm" color={ textColor }>
                     { title }
                   </Text>
                 </Flex>
@@ -69,9 +73,9 @@ const CongratsStepContent = ({ isReferral }: Props) => {
       </Flex>
       <Flex flexDirection="column" alignItems="flex-start" px={ 3 } mb={ 8 }>
         <Flex alignItems="center" gap={ 2 }>
-          <Box w={ 8 } h={ 8 } p={ 1.5 } borderRadius="8px" backgroundColor="blue.50">
-            <IconSvg name="profile" boxSize={ 5 } color="blue.500"/>
-          </Box>
+          <Tag colorScheme="blue" w={ 8 } h={ 8 } display="flex" alignItems="center" justifyContent="center" borderRadius="8px">
+            <IconSvg name="profile" boxSize={ 5 }/>
+          </Tag>
           <Text fontSize="lg" fontWeight="500">
             Referral program
           </Text>
@@ -101,9 +105,9 @@ const CongratsStepContent = ({ isReferral }: Props) => {
       </Flex>
       <Flex flexDirection="column" alignItems="flex-start" px={ 3 }>
         <Flex alignItems="center" gap={ 2 }>
-          <Box w={ 8 } h={ 8 } p={ 1 } borderRadius="8px" backgroundColor="blue.50">
-            <IconSvg name="stats" boxSize={ 6 } color="blue.500"/>
-          </Box>
+          <Tag colorScheme="blue" w={ 8 } h={ 8 } display="flex" alignItems="center" justifyContent="center" borderRadius="8px">
+            <IconSvg name="stats" boxSize={ 6 }/>
+          </Tag>
           <Text fontSize="lg" fontWeight="500">
             Dashboard
           </Text>
