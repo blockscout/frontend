@@ -17,3 +17,6 @@ export type PickByType<T, X> = Record<
 {[K in keyof T]: T[K] extends X ? K : never}[keyof T],
 X
 >;
+
+// Make some properties of an object optional
+export type PartialBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>

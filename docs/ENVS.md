@@ -220,6 +220,7 @@ Settings for meta tags, OG tags and SEO
 ##### Block fields list
 | Id | Description |
 | --- | --- |
+| `base_fee` | Base fee |
 | `burnt_fees` | Burnt fees |
 | `total_reward` | Total block reward |
 | `nonce` | Block nonce |
@@ -748,7 +749,7 @@ If the feature is enabled, a Multichain balance button will be displayed on the 
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG | `{ name: string; url_template: string; dapp_id?: string; logo?: string }` | Multichain portfolio application config See [below](#multichain-button-configuration-properties) | - | - | `{ name: 'zerion', url_template: 'https://app.zerion.io/{address}/overview', logo: 'https://example.com/icon.svg'` | v1.31.0+ |
+| NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG | `[{ name: string; url_template: string; dapp_id?: string; logo: string }]` | Multichain portfolio application config See [below](#multichain-button-configuration-properties) | - | - | `[{ name: 'zerion', url_template: 'https://app.zerion.io/{address}/overview', logo: 'https://example.com/icon.svg'}]` | v1.31.0+ |
 
 &nbsp;
 

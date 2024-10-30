@@ -94,6 +94,42 @@ const variantOutline = defineStyle((props) => {
   };
 });
 
+const variantRadioGroup = defineStyle((props) => {
+  const outline = runIfFn(variantOutline, props);
+  const bgColor = mode('blue.50', 'gray.800')(props);
+  const selectedTextColor = mode('blue.700', 'gray.50')(props);
+
+  return {
+    ...outline,
+    fontWeight: 500,
+    cursor: 'pointer',
+    bgColor: 'none',
+    borderColor: bgColor,
+    _hover: {
+      borderColor: bgColor,
+      color: 'link_hovered',
+    },
+    _active: {
+      bgColor: 'none',
+    },
+    // We have a special state for this button variant that serves as a popover trigger.
+    // When any items (filters) are selected in the popover, the button should change its background and text color.
+    // The last CSS selector is for redefining styles for the TabList component.
+    [`
+      &[data-selected=true],
+      &[data-selected=true][aria-selected=true]
+    `]: {
+      cursor: 'initial',
+      bgColor,
+      borderColor: bgColor,
+      color: selectedTextColor,
+      _hover: {
+        color: selectedTextColor,
+      },
+    },
+  };
+});
+
 const variantSimple = defineStyle((props) => {
   const outline = runIfFn(variantOutline, props);
 
@@ -223,6 +259,7 @@ const variants = {
   subtle: variantSubtle,
   hero: variantHero,
   header: variantHeader,
+  radio_group: variantRadioGroup,
 };
 
 const baseStyle = defineStyle({
