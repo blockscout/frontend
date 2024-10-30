@@ -1,4 +1,4 @@
-import { Box } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -49,20 +49,22 @@ const ContractMethodsMudSystem = ({ items }: Props) => {
   const filters = useMethodsFilters({ abi });
 
   return (
-    <Box>
+    <Flex flexDir="column" rowGap={ 6 }>
       <ContractConnectWallet/>
-      <ContractSourceAddressSelector
-        items={ items }
-        selectedItem={ selectedItem }
-        onItemSelect={ handleItemSelect }
-        label="System address"
-        mb={ 6 }
-      />
-      <ContractMethodsFilters
-        defaultMethodType={ filters.methodType }
-        defaultSearchTerm={ filters.searchTerm }
-        onChange={ filters.onChange }
-      />
+      <div>
+        <ContractSourceAddressSelector
+          items={ items }
+          selectedItem={ selectedItem }
+          onItemSelect={ handleItemSelect }
+          label="System address"
+          mb={ 3 }
+        />
+        <ContractMethodsFilters
+          defaultMethodType={ filters.methodType }
+          defaultSearchTerm={ filters.searchTerm }
+          onChange={ filters.onChange }
+        />
+      </div>
       <ContractMethodsContainer
         key={ selectedItem.address }
         isLoading={ systemInfoQuery.isPending }
@@ -78,7 +80,7 @@ const ContractMethodsMudSystem = ({ items }: Props) => {
           sourceAddress={ selectedItem.address }
         />
       </ContractMethodsContainer>
-    </Box>
+    </Flex>
   );
 };
 

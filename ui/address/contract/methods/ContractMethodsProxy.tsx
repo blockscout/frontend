@@ -1,3 +1,4 @@
+import { Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -42,22 +43,24 @@ const ContractMethodsProxy = ({ implementations, isLoading: isInitialLoading }: 
   const filters = useMethodsFilters({ abi });
 
   return (
-    <>
+    <Flex flexDir="column" rowGap={ 6 }>
       <ContractConnectWallet isLoading={ isInitialLoading }/>
-      <ContractSourceAddressSelector
-        items={ implementations }
-        selectedItem={ selectedItem }
-        onItemSelect={ setSelectedItem }
-        isLoading={ isInitialLoading }
-        label="Implementation address"
-        mb={ 6 }
-      />
-      <ContractMethodsFilters
-        defaultMethodType={ filters.methodType }
-        defaultSearchTerm={ filters.searchTerm }
-        onChange={ filters.onChange }
-        isLoading={ isInitialLoading }
-      />
+      <div>
+        <ContractSourceAddressSelector
+          items={ implementations }
+          selectedItem={ selectedItem }
+          onItemSelect={ setSelectedItem }
+          isLoading={ isInitialLoading }
+          label="Implementation address"
+          mb={ 3 }
+        />
+        <ContractMethodsFilters
+          defaultMethodType={ filters.methodType }
+          defaultSearchTerm={ filters.searchTerm }
+          onChange={ filters.onChange }
+          isLoading={ isInitialLoading }
+        />
+      </div>
       <ContractMethodsContainer
         key={ selectedItem.address }
         isLoading={ isInitialLoading || contractQuery.isPending }
@@ -73,7 +76,7 @@ const ContractMethodsProxy = ({ implementations, isLoading: isInitialLoading }: 
           sourceAddress={ selectedItem.address }
         />
       </ContractMethodsContainer>
-    </>
+    </Flex>
   );
 };
 

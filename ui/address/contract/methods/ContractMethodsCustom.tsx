@@ -1,4 +1,4 @@
-import { Box, Button, Skeleton, useDisclosure } from '@chakra-ui/react';
+import { Button, Flex, Skeleton, useDisclosure } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -75,18 +75,19 @@ const ContractMethodsCustom = ({ isLoading: isLoadingProp }: Props) => {
   }, [ isLoading, modal.onOpen ]);
 
   return (
-    <Box>
+    <Flex flexDir="column" rowGap={ 6 }>
       { currentInfo ? (
         <>
-          <ContractConnectWallet isLoading={ isLoading }/>
-          <ContractCustomAbiAlert isLoading={ isLoading }/>
+          <Flex flexDir="column" rowGap={ 2 }>
+            <ContractConnectWallet isLoading={ isLoading }/>
+            <ContractCustomAbiAlert isLoading={ isLoading }/>
+          </Flex>
           <RawDataSnippet
             data={ JSON.stringify(abi) }
             title="Contract ABI"
             textareaMaxHeight="150px"
             isLoading={ isLoading }
             rightSlot={ updateButton }
-            mb={ 6 }
           />
           <ContractMethodsFilters
             defaultMethodType={ filters.methodType }
@@ -100,7 +101,7 @@ const ContractMethodsCustom = ({ isLoading: isLoadingProp }: Props) => {
         </>
       ) : (
         <>
-          <Skeleton isLoaded={ !isLoading } mb={ 6 }>
+          <Skeleton isLoaded={ !isLoading }>
             Add custom ABIs for any contract and access when logged into your account. Helpful for debugging,
             functional testing and contract interaction.
           </Skeleton>
@@ -119,7 +120,7 @@ const ContractMethodsCustom = ({ isLoading: isLoadingProp }: Props) => {
         </>
       ) }
       <CustomAbiModal { ...modal } data={ modalData }/>
-    </Box>
+    </Flex>
   );
 };
 

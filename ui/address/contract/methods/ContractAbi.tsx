@@ -49,7 +49,7 @@ const ContractAbi = ({ abi, addressHash, sourceAddress, tab, visibleItems }: Pro
   const hasVisibleItems = !visibleItems || visibleItems.length > 0;
 
   return (
-    <>
+    <div>
       <Flex mb={ 3 }>
         <Box fontWeight={ 500 } mr="auto">Contract information</Box>
         { abi.length > 1 && (
@@ -75,7 +75,7 @@ const ContractAbi = ({ abi, addressHash, sourceAddress, tab, visibleItems }: Pro
         )) }
       </Accordion>
       { !hasVisibleItems && <Box>Couldn{ apos }t find any method that matches your query.</Box> }
-    </>
+    </div>
   );
 };
 

@@ -50,7 +50,7 @@ const ContractConnectWallet = ({ isLoading }: Props) => {
   })();
 
   return (
-    <Skeleton isLoaded={ !isLoading } mb={ 6 }>
+    <Skeleton isLoaded={ !isLoading }>
       <Alert status={ web3Wallet.address ? 'success' : 'warning' }>
         { content }
       </Alert>

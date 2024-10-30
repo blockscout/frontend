@@ -1,3 +1,4 @@
+import { Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
 
@@ -26,7 +27,7 @@ const ContractMethodsRegular = ({ abi, isLoading }: Props) => {
   const filters = useMethodsFilters({ abi });
 
   return (
-    <>
+    <Flex flexDir="column" rowGap={ 6 }>
       <ContractConnectWallet isLoading={ isLoading }/>
       <ContractMethodsFilters
         defaultMethodType={ filters.methodType }
@@ -37,7 +38,7 @@ const ContractMethodsRegular = ({ abi, isLoading }: Props) => {
       <ContractMethodsContainer isLoading={ isLoading } isEmpty={ abi.length === 0 } type={ filters.methodType }>
         <ContractAbi abi={ abi } tab={ tab } addressHash={ addressHash } visibleItems={ filters.visibleItems }/>
       </ContractMethodsContainer>
-    </>
+    </Flex>
   );
 };
 

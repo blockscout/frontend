@@ -27,7 +27,7 @@ const ContractMethodsFilters = ({ defaultMethodType, defaultSearchTerm, onChange
   }, [ onChange ]);
 
   return (
-    <Flex mb={ 6 } columnGap={ 3 } rowGap={ 3 } flexDir={{ base: 'column', lg: 'row' }}>
+    <Flex columnGap={ 3 } rowGap={ 3 } flexDir={{ base: 'column', lg: 'row' }}>
       <RadioButtonGroup<MethodType>
         name="contract-methods-filter"
         defaultValue={ defaultMethodType }
