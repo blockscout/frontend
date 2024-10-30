@@ -1,12 +1,10 @@
-import React from 'react';
+import { walletL1FacetActions } from '@0xfacet/sdk';
+import React, { useMemo } from 'react';
 import { encodeFunctionData, getAddress, type Abi } from 'viem';
-import { useAccount, useWalletClient, usePublicClient } from 'wagmi';
+import { useAccount, useWalletClient } from 'wagmi';
 
 import type { FormSubmitResult, SmartContractMethod } from './types';
 
-import config from 'configs/app';
-
-import useFacet from './useFacet';
 import { getNativeCoinValue } from './utils';
 
 interface Params {
@@ -15,19 +13,13 @@ interface Params {
   addressHash: string;
 }
 
-interface FacetTransactionParams {
-  to: `0x${ string }`;
-  value?: bigint;
-  maxFeePerGas: bigint;
-  gasLimit: bigint;
-  data?: `0x${ string }`;
-}
-
 export default function useCallMethodWalletClient(): (params: Params) => Promise<FormSubmitResult> {
-  const publicClient = usePublicClient({ chainId: Number(config.chain.id) });
-  const { data: walletClient } = useWalletClient();
+  const { data: walletClientWithoutFacet } = useWalletClient();
   const { isConnected, address: from } = useAccount();
-  const sendFacetTransaction = useFacet();
+  const walletClient = useMemo(
+    () => walletClientWithoutFacet?.extend(walletL1FacetActions),
+    [ walletClientWithoutFacet ],
+  );
 
   return React.useCallback(async({ args, item, addressHash }) => {
     if (!isConnected || !from) {
@@ -40,19 +32,15 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
 
     const address = getAddress(addressHash);
 
-    const estimateFeesPerGas = await publicClient?.estimateFeesPerGas({ type: 'eip1559' });
+    let value = BigInt(0);
 
-    const facetTransactionParams: FacetTransactionParams = {
-      to: address,
-      maxFeePerGas: estimateFeesPerGas?.maxFeePerGas || BigInt(0),
-      gasLimit: BigInt(0),
-    };
+    let data: `0x${ string }` = '0x';
 
     if (item.type === 'receive' || item.type === 'fallback') {
-      facetTransactionParams.value = getNativeCoinValue(args[0]);
+      value = getNativeCoinValue(args[0]);
     } else {
       const _args = args.slice(0, item.inputs.length);
-      facetTransactionParams.value = getNativeCoinValue(args[item.inputs.length]);
+      value = getNativeCoinValue(args[item.inputs.length]);
 
       const methodName = item.name;
 
@@ -67,25 +55,12 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
       });
 
       if (encodedFunctionData) {
-        facetTransactionParams.data = encodedFunctionData;
+        data = encodedFunctionData;
       }
     }
 
-    const estimateGas = await publicClient?.estimateGas({
-      account: from,
-      to: facetTransactionParams.to,
-      value: facetTransactionParams.value,
-      data: facetTransactionParams.data,
-    });
+    const { facetTransactionHash } = await walletClient.sendFacetTransaction({ to: address, value, data });
 
-    if (!estimateGas) {
-      throw 'Could not estimate gas';
-    }
-
-    facetTransactionParams.gasLimit = estimateGas;
-
-    const hash = await sendFacetTransaction(facetTransactionParams);
-
-    return { source: 'wallet_client', data: { hash } };
-  }, [ from, isConnected, publicClient, sendFacetTransaction, walletClient ]);
+    return { source: 'wallet_client', data: { hash: facetTransactionHash } };
+  }, [ from, isConnected, walletClient ]);
 }

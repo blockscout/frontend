@@ -7,6 +7,7 @@ import type { FormSubmitResultWalletClient } from '../types';
 
 import { route } from 'nextjs-routes';
 
+import config from 'configs/app';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 
 interface Props {
@@ -18,6 +19,7 @@ const ContractMethodResultWalletClient = ({ data, onSettle }: Props) => {
   const txHash = data && 'hash' in data ? data.hash as `0x${ string }` : undefined;
   const txInfo = useWaitForTransactionReceipt({
     hash: txHash,
+    chainId: Number(config.chain.id),
   });
 
   return <ContractMethodResultWalletClientDumb data={ data } onSettle={ onSettle } txInfo={ txInfo }/>;
