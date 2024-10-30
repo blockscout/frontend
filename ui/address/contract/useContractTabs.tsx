@@ -3,8 +3,8 @@ import React from 'react';
 
 import type { Address } from 'types/api/address';
 
+import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
-import * as cookies from 'lib/cookies';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import * as stubs from 'stubs/contract';
@@ -52,13 +52,6 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
     },
   });
 
-  const customAbiQuery = useApiQuery('custom_abi', {
-    queryOptions: {
-      enabled: isEnabled && isQueryEnabled && Boolean(cookies.get(cookies.NAMES.API_TOKEN)),
-      refetchOnMount: false,
-    },
-  });
-
   const mudSystemsQuery = useApiQuery('contract_mud_systems', {
     pathParams: { hash: data?.hash },
     queryOptions: {
@@ -76,13 +69,6 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
   });
 
   const methods = React.useMemo(() => contractQuery.data?.abi?.filter(isMethod).map(enrichWithMethodId) ?? [], [ contractQuery.data?.abi ]);
-  const methodsCustomAbi = React.useMemo(() => {
-    return customAbiQuery.data
-      ?.find((item) => data && item.contract_address_hash.toLowerCase() === data.hash.toLowerCase())
-      ?.abi
-      .filter(isMethod)
-      .map(enrichWithMethodId) ?? [];
-  }, [ customAbiQuery.data, data ]);
 
   const verifiedImplementations = React.useMemo(() => {
     return data?.implementations?.filter(({ name, address }) => name && address && address !== data?.hash) || [];
@@ -107,10 +93,10 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
           title: 'Write/Read proxy',
           component: <ContractMethodsProxy implementations={ verifiedImplementations } isLoading={ contractQuery.isPlaceholderData }/>,
         },
-        methodsCustomAbi.length > 0 && {
+        config.features.account.isEnabled && {
           id: [ 'read_write_custom_methods' as const, 'read_custom_methods' as const, 'write_custom_methods' as const ],
           title: 'Custom ABI',
-          component: <ContractMethodsCustom abi={ methodsCustomAbi } isLoading={ contractQuery.isPlaceholderData }/>,
+          component: <ContractMethodsCustom isLoading={ contractQuery.isPlaceholderData }/>,
         },
         hasMudTab && {
           id: 'mud_system' as const,
@@ -127,7 +113,6 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
     contractQuery,
     channel,
     methods,
-    methodsCustomAbi,
     verifiedImplementations,
     hasMudTab,
     mudSystemsQuery.isPlaceholderData,
