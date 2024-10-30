@@ -26,7 +26,7 @@ const RewardsNavLink = ({ isCollapsed, onClick }: Props) => {
   const isMobile = useIsMobile();
   const colors = useColors();
   const router = useRouter();
-  const { openLoginModal, balancesQuery, dailyRewardQuery, apiToken, isInitialized } = useRewardsContext();
+  const { openLoginModal, dailyRewardQuery, apiToken, isInitialized } = useRewardsContext();
 
   const pathname = '/account/rewards';
   const nextRoute = { pathname } as Route;
@@ -79,9 +79,7 @@ const RewardsNavLink = ({ isCollapsed, onClick }: Props) => {
         <HStack spacing={ 0 } overflow="hidden">
           <NavLinkIcon item={{ icon: dailyRewardQuery.data?.available ? 'merits_with_dot_slim' : 'merits_slim' } as NavItem}/>
           <Text { ...styleProps.textProps } as="span" ml={ 3 }>
-            <span>
-              { balancesQuery.data?.total ? `${ balancesQuery.data?.total } Merits` : 'Merits' }
-            </span>
+            Merits
           </Text>
           { isHighlighted && (
             <LightningLabel iconColor={ styleProps.itemProps.bgColor } isCollapsed={ isCollapsed }/>
