@@ -19,7 +19,7 @@ import { growthBook } from 'lib/growthbook/init';
 import useLoadFeatures from 'lib/growthbook/useLoadFeatures';
 import useNotifyOnNavigation from 'lib/hooks/useNotifyOnNavigation';
 import { SocketProvider } from 'lib/socket/context';
-import RewardsLoginModal from 'ui/rewards/RewardsLoginModal';
+import RewardsLoginModal from 'ui/rewards/login/RewardsLoginModal';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
 import AppErrorGlobalContainer from 'ui/shared/AppError/AppErrorGlobalContainer';
 import GoogleAnalytics from 'ui/shared/GoogleAnalytics';

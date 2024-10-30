@@ -6,8 +6,8 @@ import { route } from 'nextjs-routes';
 import { useRewardsContext } from 'lib/contexts/rewards';
 import IconSvg from 'ui/shared/IconSvg';
 
-import MeritsIcon from '../MeritsIcon';
-import ReadOnlyInputWithCopy from '../ReadOnlyInputWithCopy';
+import MeritsIcon from '../../MeritsIcon';
+import ReadOnlyInputWithCopy from '../../ReadOnlyInputWithCopy';
 
 type Props = {
   isReferral: boolean;

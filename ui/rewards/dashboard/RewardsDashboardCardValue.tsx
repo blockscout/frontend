@@ -3,7 +3,7 @@ import React from 'react';
 
 import HintPopover from 'ui/shared/HintPopover';
 
-import MeritsIcon from './MeritsIcon';
+import MeritsIcon from '../MeritsIcon';
 
 type Props = {
   label: string;
