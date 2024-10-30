@@ -1,7 +1,5 @@
-import { Flex, Text, useColorModeValue } from '@chakra-ui/react';
+import { Flex, Text, useColorModeValue, Tag } from '@chakra-ui/react';
 import React from 'react';
-
-import AvailableSoonLabel from './AvailableSoonLabel';
 
 type Props = {
   title?: string;
@@ -39,7 +37,7 @@ const RewardsDashboardCard = ({
         { title && (
           <Flex alignItems="center" gap={ 2 }>
             <Text fontSize={{ base: 'md', md: 'lg' }} fontWeight="500">{ title }</Text>
-            { availableSoon && <AvailableSoonLabel/> }
+            { availableSoon && <Tag colorScheme="blue">Available soon</Tag> }
           </Flex>
         ) }
         <Text as="div" fontSize="sm">
