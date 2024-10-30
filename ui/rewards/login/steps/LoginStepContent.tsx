@@ -52,7 +52,11 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
   }, [ login, goNext, setIsLoading, router, closeModal, refCode, setRefCodeError, isRefCodeUsed ]);
 
   useEffect(() => {
-    setRefCodeError.off();
+    if (refCode.length > 0 && refCode.length !== 6) {
+      setRefCodeError.on();
+    } else {
+      setRefCodeError.off();
+    }
   }, [ refCode ]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const { start: loginToAccount } = useSignInWithWallet({
@@ -103,15 +107,20 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
             />
           </Flex>
           { isRefCodeUsed && (
-            <FormControl variant="floating" id="referral-code" mt={ 3 }>
-              <Input
-                fontWeight="500"
-                value={ refCode }
-                onChange={ handleRefCodeChange }
-                isInvalid={ refCodeError }
-              />
-              <InputPlaceholder text="Code"/>
-            </FormControl>
+            <>
+              <FormControl variant="floating" id="referral-code" mt={ 3 }>
+                <Input
+                  fontWeight="500"
+                  value={ refCode }
+                  onChange={ handleRefCodeChange }
+                  isInvalid={ refCodeError }
+                />
+                <InputPlaceholder text="Code"/>
+              </FormControl>
+              <Text fontSize="sm" variant="secondary" mt={ 1 } color={ refCodeError ? 'red.500' : undefined }>
+                { refCodeError ? 'Incorrect code or format' : 'The code should be in format XXXXXX' }
+              </Text>
+            </>
           ) }
         </Box>
       ) }
@@ -129,7 +138,7 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
         onClick={ isConnected ? handleLogin : connect }
         isLoading={ isLoading || profileQuery.isLoading || checkUserQuery.isFetching }
         loadingText={ isLoading ? 'Sign message in your wallet' : undefined }
-        isDisabled={ isAddressMismatch }
+        isDisabled={ isAddressMismatch || refCodeError }
       >
         { isConnected ? 'Get started' : 'Connect wallet' }
       </Button>
