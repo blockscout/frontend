@@ -1,4 +1,4 @@
-import { Button, useBoolean } from '@chakra-ui/react';
+import { Button, useBoolean, Flex, useColorModeValue } from '@chakra-ui/react';
 import React, { useCallback, useEffect, useMemo } from 'react';
 
 import { SECOND } from 'lib/consts';
@@ -62,16 +62,26 @@ const DailyRewardClaimButton = () => {
     return () => clearInterval(interval);
   }, [ dailyRewardQuery ]);
 
-  return (
-    <Button
-      isDisabled={ !dailyRewardQuery.data?.available }
-      onClick={ handleClaim }
-      isLoading={ isClaiming || dailyRewardQuery.isPending || dailyRewardQuery.isFetching }
+  const isLoading = isClaiming || dailyRewardQuery.isPending || dailyRewardQuery.isFetching;
+  const timerBgColor = useColorModeValue('gray.200', 'gray.800');
+
+  return !isLoading && !dailyRewardQuery.data?.available ? (
+    <Flex
+      h="40px"
+      alignItems="center"
+      justifyContent="center"
+      borderRadius="base"
+      color="gray.500"
+      bgColor={ timerBgColor }
+      fontSize="md"
+      fontWeight="600"
+      cursor="default"
     >
-      { dailyRewardQuery.data?.available ?
-        `Claim ${ dailyRewardValue } Merits` :
-        `Next claim in ${ timeLeft }`
-      }
+      Next claim in { timeLeft }
+    </Flex>
+  ) : (
+    <Button onClick={ handleClaim } isLoading={ isLoading }>
+      Claim { dailyRewardValue } Merits
     </Button>
   );
 };
