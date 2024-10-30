@@ -8,6 +8,7 @@ import type { NavItem } from 'types/client/navigation';
 import { route } from 'nextjs-routes';
 import type { Route } from 'nextjs-routes';
 
+import config from 'configs/app';
 import { useRewardsContext } from 'lib/contexts/rewards';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import LightningLabel, { LIGHTNING_LABEL_CLASS_NAME } from 'ui/snippets/navigation/LightningLabel';
@@ -42,6 +43,10 @@ const RewardsNavLink = ({ isCollapsed, onClick }: Props) => {
     }
     onClick?.();
   }, [ onClick, isInitialized, apiToken, openLoginModal ]);
+
+  if (!config.features.rewards.isEnabled) {
+    return null;
+  }
 
   const content = (
     <Link

@@ -53,7 +53,7 @@ const defaultQueryResult = {
   refetch: () => Promise.resolve({} as never),
 };
 
-const RewardsContext = createContext<TRewardsContext>({
+const initialState = {
   balancesQuery: defaultQueryResult,
   dailyRewardQuery: defaultQueryResult,
   referralsQuery: defaultQueryResult,
@@ -66,7 +66,9 @@ const RewardsContext = createContext<TRewardsContext>({
   closeLoginModal: () => {},
   login: async() => ({}),
   claim: async() => {},
-});
+};
+
+const RewardsContext = createContext<TRewardsContext>(initialState);
 
 // Message to sign for the rewards program
 function getMessageToSign(address: string, nonce: string, isLogin?: boolean, refCode?: string) {
@@ -245,20 +247,25 @@ export function RewardsContextProvider({ children }: Props) {
     }
   }, [ apiFetch, errorToast, fetchParams ]);
 
-  const value = useMemo(() => ({
-    balancesQuery,
-    dailyRewardQuery,
-    referralsQuery,
-    rewardsConfigQuery,
-    checkUserQuery,
-    apiToken,
-    isInitialized,
-    isLoginModalOpen,
-    openLoginModal: setIsLoginModalOpen.on,
-    closeLoginModal: setIsLoginModalOpen.off,
-    login,
-    claim,
-  }), [
+  const value = useMemo(() => {
+    if (!isEnabled) {
+      return initialState;
+    }
+    return {
+      balancesQuery,
+      dailyRewardQuery,
+      referralsQuery,
+      rewardsConfigQuery,
+      checkUserQuery,
+      apiToken,
+      isInitialized,
+      isLoginModalOpen,
+      openLoginModal: setIsLoginModalOpen.on,
+      closeLoginModal: setIsLoginModalOpen.off,
+      login,
+      claim,
+    };
+  }, [
     isLoginModalOpen, setIsLoginModalOpen, balancesQuery, dailyRewardQuery, checkUserQuery,
     apiToken, login, claim, referralsQuery, rewardsConfigQuery, isInitialized,
   ]);

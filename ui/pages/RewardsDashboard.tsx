@@ -1,7 +1,7 @@
 import { Flex, Skeleton, Image } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
+import config from 'configs/app';
 import { useRewardsContext } from 'lib/contexts/rewards';
 import { apos } from 'lib/html-entities';
 import DailyRewardClaimButton from 'ui/rewards/DailyRewardClaimButton';
@@ -13,18 +13,21 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInvalidAuthToken';
 
 const RewardsDashboard = () => {
-  const router = useRouter();
   const { balancesQuery, apiToken, referralsQuery, rewardsConfigQuery, isInitialized } = useRewardsContext();
 
   useRedirectForInvalidAuthToken();
 
   useEffect(() => {
-    if (isInitialized && !apiToken) {
-      router.replace({ pathname: '/' }, undefined, { shallow: true });
+    if (!config.features.rewards.isEnabled || (isInitialized && !apiToken)) {
+      window.location.assign('/');
     }
-  }, [ isInitialized, apiToken, router ]);
+  }, [ isInitialized, apiToken ]);
 
   const numberOfReferrals = Number(referralsQuery.data?.referrals || 0);
+
+  if (!config.features.rewards.isEnabled) {
+    return null;
+  }
 
   return (
     <>
