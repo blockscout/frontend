@@ -43,7 +43,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
     mode: 'onBlur',
     defaultValues: getDefaultValues(methodFromQuery, config, hash, null),
   });
-  const { control, handleSubmit, watch, formState, setError, reset, getFieldState } = formApi;
+  const { handleSubmit, watch, formState, setError, reset, getFieldState } = formApi;
   const submitPromiseResolver = React.useRef<(value: unknown) => void>();
   const methodNameRef = React.useRef<string>();
 
@@ -145,7 +145,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
     topic: `addresses:${ address?.toLowerCase() }`,
     onSocketClose: handleSocketError,
     onSocketError: handleSocketError,
-    isDisabled: Boolean(address && addressState.error),
+    isDisabled: !address || Boolean(address && addressState.error),
   });
   useSocketMessage({
     channel,
@@ -191,11 +191,7 @@ const ContractVerificationForm = ({ method: methodFromQuery, config, hash }: Pro
         <Grid as="section" columnGap="30px" rowGap={{ base: 2, lg: 5 }} templateColumns={{ base: '1fr', lg: 'minmax(auto, 680px) minmax(0, 340px)' }}>
           { !hash && <ContractVerificationFieldAddress/> }
           <ContractVerificationFieldLicenseType/>
-          <ContractVerificationFieldMethod
-            control={ control }
-            methods={ config.verification_options }
-            isDisabled={ formState.isSubmitting }
-          />
+          <ContractVerificationFieldMethod methods={ config.verification_options }/>
         </Grid>
         { content }
         { Boolean(method) && method.value !== 'solidity-hardhat' && method.value !== 'solidity-foundry' && (

@@ -11,8 +11,7 @@ import getErrorMessage from 'lib/errors/getErrorMessage';
 import getErrorObjPayload from 'lib/errors/getErrorObjPayload';
 import useToast from 'lib/hooks/useToast';
 import * as mixpanel from 'lib/mixpanel';
-
-import AuthModalFieldEmail from '../fields/AuthModalFieldEmail';
+import FormFieldEmail from 'ui/shared/forms/fields/FormFieldEmail';
 
 interface Props {
   onSubmit: (screen: Screen) => void;
@@ -78,7 +77,13 @@ const AuthModalScreenEmail = ({ onSubmit, isAuth, mixpanelConfig }: Props) => {
         onSubmit={ formApi.handleSubmit(onFormSubmit) }
       >
         <Text>Account email, used for transaction notifications from your watchlist.</Text>
-        <AuthModalFieldEmail mt={ 6 }/>
+        <FormFieldEmail<EmailFormFields>
+          name="email"
+          isRequired
+          placeholder="Email"
+          bgColor="dialog_bg"
+          mt={ 6 }
+        />
         <Button
           mt={ 6 }
           type="submit"

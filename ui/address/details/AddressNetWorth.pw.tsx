@@ -23,11 +23,11 @@ test('base view', async({ render }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test('with multichain button internal +@dark-mode', async({ render, mockEnvs, mockAssetResponse }) => {
+test('with single multichain button internal +@dark-mode', async({ render, mockEnvs, mockAssetResponse }) => {
   await mockEnvs([
     [
       'NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG',
-      `{"name": "duck", "dapp_id": "duck", "url_template": "https://duck.url/{address}", "logo": "${ ICON_URL }"}` ],
+      `[{"name": "duck", "dapp_id": "duck", "url_template": "https://duck.url/{address}", "logo": "${ ICON_URL }"}]` ],
   ]);
   await mockAssetResponse(ICON_URL, './playwright/mocks/image_svg.svg');
 
@@ -36,9 +36,23 @@ test('with multichain button internal +@dark-mode', async({ render, mockEnvs, mo
   await expect(component).toHaveScreenshot();
 });
 
-test('with multichain button external', async({ render, mockEnvs, mockAssetResponse }) => {
+test('with single multichain button external', async({ render, mockEnvs, mockAssetResponse }) => {
   await mockEnvs([
-    [ 'NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG', `{"name": "duck", "url_template": "https://duck.url/{address}", "logo": "${ ICON_URL }"}` ],
+    [ 'NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG', `[{"name": "duck", "url_template": "https://duck.url/{address}", "logo": "${ ICON_URL }"}]` ],
+  ]);
+  await mockAssetResponse(ICON_URL, './playwright/mocks/image_svg.svg');
+
+  const component = await render(<AddressNetWorth addressData={ addressMock.eoa } addressHash={ ADDRESS_HASH }/>);
+
+  await expect(component).toHaveScreenshot();
+});
+
+test('with two multichain button external', async({ render, mockEnvs, mockAssetResponse }) => {
+  await mockEnvs([
+    [ 'NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG', `[
+      {"name": "duck", "url_template": "https://duck.url/{address}", "logo": "${ ICON_URL }"},
+      {"name": "duck2", "url_template": "https://duck.url/{address}", "logo": "${ ICON_URL }"}
+    ]` ],
   ]);
   await mockAssetResponse(ICON_URL, './playwright/mocks/image_svg.svg');
 
@@ -51,7 +65,7 @@ test('with multichain button internal small screen', async({ render, mockEnvs, m
   await mockEnvs([
     [
       'NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG',
-      `{"name": "duck", "dapp_id": "duck", "url_template": "https://duck.url/{address}", "logo": "${ ICON_URL }"}` ],
+      `[{"name": "duck", "dapp_id": "duck", "url_template": "https://duck.url/{address}", "logo": "${ ICON_URL }"}]` ],
   ]);
   await mockAssetResponse(ICON_URL, './playwright/mocks/image_svg.svg');
 
