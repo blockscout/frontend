@@ -1,23 +1,18 @@
 import { Button, VStack } from '@chakra-ui/react';
 import React from 'react';
 import type { SubmitHandler } from 'react-hook-form';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 
 import type { SmartContractSecurityAuditSubmission } from 'types/api/contract';
 
 import type { ResourceError } from 'lib/api/resources';
 import useApiFetch from 'lib/api/useApiFetch';
+import dayjs from 'lib/date/dayjs';
 import useToast from 'lib/hooks/useToast';
-
-import AuditComment from './fields/AuditComment';
-import AuditCompanyName from './fields/AuditCompanyName';
-import AuditProjectName from './fields/AuditProjectName';
-import AuditProjectUrl from './fields/AuditProjectUrl';
-import AuditReportDate from './fields/AuditReportDate';
-import AuditReportUrl from './fields/AuditReportUrl';
-import AuditSubmitterEmail from './fields/AuditSubmitterEmail';
-import AuditSubmitterIsOwner from './fields/AuditSubmitterIsOwner';
-import AuditSubmitterName from './fields/AuditSubmitterName';
+import FormFieldCheckbox from 'ui/shared/forms/fields/FormFieldCheckbox';
+import FormFieldEmail from 'ui/shared/forms/fields/FormFieldEmail';
+import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
+import FormFieldUrl from 'ui/shared/forms/fields/FormFieldUrl';
 
 interface Props {
   address?: string;
@@ -46,10 +41,11 @@ const ContractSubmitAuditForm = ({ address, onSuccess }: Props) => {
   const apiFetch = useApiFetch();
   const toast = useToast();
 
-  const { handleSubmit, formState, control, setError } = useForm<Inputs>({
+  const formApi = useForm<Inputs>({
     mode: 'onTouched',
     defaultValues: { is_project_owner: false },
   });
+  const { handleSubmit, formState, setError } = formApi;
 
   const onFormSubmit: SubmitHandler<Inputs> = React.useCallback(async(data) => {
     try {
@@ -94,30 +90,46 @@ const ContractSubmitAuditForm = ({ address, onSuccess }: Props) => {
   }, [ apiFetch, address, toast, setError, onSuccess ]);
 
   return (
-    <form noValidate onSubmit={ handleSubmit(onFormSubmit) } autoComplete="off" ref={ containerRef }>
-      <VStack gap={ 5 }>
-        <AuditSubmitterName control={ control }/>
-        <AuditSubmitterEmail control={ control }/>
-        <AuditSubmitterIsOwner control={ control }/>
-        <AuditProjectName control={ control }/>
-        <AuditProjectUrl control={ control }/>
-        <AuditCompanyName control={ control }/>
-        <AuditReportUrl control={ control }/>
-        <AuditReportDate control={ control }/>
-
-        <AuditComment control={ control }/>
-      </VStack>
-      <Button
-        type="submit"
-        size="lg"
-        mt={ 8 }
-        isLoading={ formState.isSubmitting }
-        loadingText="Send request"
-        isDisabled={ !formState.isDirty }
-      >
+    <FormProvider { ...formApi }>
+      <form noValidate onSubmit={ handleSubmit(onFormSubmit) } autoComplete="off" ref={ containerRef }>
+        <VStack gap={ 5 } alignItems="flex-start">
+          <FormFieldText<Inputs> name="submitter_name" isRequired placeholder="Submitter name"/>
+          <FormFieldEmail<Inputs> name="submitter_email" isRequired placeholder="Submitter email"/>
+          <FormFieldCheckbox<Inputs, 'is_project_owner'>
+            name="is_project_owner"
+            label="I'm the contract owner"
+          />
+          <FormFieldText<Inputs> name="project_name" isRequired placeholder="Project name"/>
+          <FormFieldUrl<Inputs> name="project_url" isRequired placeholder="Project URL"/>
+          <FormFieldText<Inputs> name="audit_company_name" isRequired placeholder="Audit company name"/>
+          <FormFieldUrl<Inputs> name="audit_report_url" isRequired placeholder="Audit report URL"/>
+          <FormFieldText<Inputs>
+            name="audit_publish_date"
+            type="date"
+            max={ dayjs().format('YYYY-MM-DD') }
+            isRequired
+            placeholder="Audit publish date"
+          />
+          <FormFieldText<Inputs>
+            name="comment"
+            placeholder="Comment"
+            maxH="160px"
+            rules={{ maxLength: 300 }}
+            asComponent="Textarea"
+          />
+        </VStack>
+        <Button
+          type="submit"
+          size="lg"
+          mt={ 8 }
+          isLoading={ formState.isSubmitting }
+          loadingText="Send request"
+          isDisabled={ !formState.isDirty }
+        >
         Send request
-      </Button>
-    </form>
+        </Button>
+      </form>
+    </FormProvider>
   );
 };
 

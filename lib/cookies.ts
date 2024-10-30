@@ -5,8 +5,6 @@ import isBrowser from './isBrowser';
 export enum NAMES {
   NAV_BAR_COLLAPSED='nav_bar_collapsed',
   API_TOKEN='_explorer_key',
-  INVALID_SESSION='invalid_session',
-  CONFIRM_EMAIL_PAGE_VIEWED='confirm_email_page_viewed',
   TXS_SORT='txs_sort',
   COLOR_MODE='chakra-ui-color-mode',
   COLOR_MODE_HEX='chakra-ui-color-mode-hex',
@@ -28,10 +26,14 @@ export function get(name?: NAMES | undefined | null, serverCookie?: string) {
   }
 }
 
-export function set(name: string, value: string, attributes: Cookies.CookieAttributes = {}) {
+export function set(name: NAMES, value: string, attributes: Cookies.CookieAttributes = {}) {
   attributes.path = '/';
 
   return Cookies.set(name, value, attributes);
+}
+
+export function remove(name: NAMES, attributes: Cookies.CookieAttributes = {}) {
+  return Cookies.remove(name, attributes);
 }
 
 export function getFromCookieString(cookieString: string, name?: NAMES | undefined | null) {

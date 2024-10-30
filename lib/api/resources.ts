@@ -168,9 +168,6 @@ export const RESOURCES = {
   user_info: {
     path: '/api/account/v2/user/info',
   },
-  email_resend: {
-    path: '/api/account/v2/email/resend',
-  },
   custom_abi: {
     path: '/api/account/v2/user/custom_abis{/:id}',
     pathParams: [ 'id' as const ],
@@ -226,6 +223,26 @@ export const RESOURCES = {
     endpoint: getFeaturePayload(config.features.addressVerification)?.api.endpoint,
     basePath: getFeaturePayload(config.features.addressVerification)?.api.basePath,
     needAuth: true,
+  },
+
+  // AUTH
+  auth_send_otp: {
+    path: '/api/account/v2/send_otp',
+  },
+  auth_confirm_otp: {
+    path: '/api/account/v2/confirm_otp',
+  },
+  auth_siwe_message: {
+    path: '/api/account/v2/siwe_message',
+  },
+  auth_siwe_verify: {
+    path: '/api/account/v2/authenticate_via_wallet',
+  },
+  auth_link_email: {
+    path: '/api/account/v2/email/link',
+  },
+  auth_link_address: {
+    path: '/api/account/v2/address/link',
   },
 
   // STATS MICROSERVICE API
