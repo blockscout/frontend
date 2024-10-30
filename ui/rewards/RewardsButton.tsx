@@ -51,11 +51,14 @@ const RewardsButton = ({ variant = 'header', size }: Props) => {
       >
         <IconSvg
           name={ dailyRewardQuery.data?.available ? 'merits_with_dot' : 'merits' }
-          boxSize={ size === 'sm' ? '26px' : '28px' }
+          boxSize={ variant === 'hero' ? 6 : 5 }
           flexShrink={ 0 }
-          mx={ -1 }
         />
-        <chakra.span display={{ base: 'none', md: 'inline' }} ml={ 2 }>
+        <chakra.span
+          display={{ base: 'none', md: 'inline' }}
+          ml={ 2 }
+          fontWeight={ apiToken ? '700' : '600' }
+        >
           { apiToken ? balancesQuery.data?.total : 'Merits' }
         </chakra.span>
       </Button>

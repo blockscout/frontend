@@ -72,7 +72,7 @@ const RewardsNavLink = ({ isCollapsed, onClick }: Props) => {
         margin={ 0 }
       >
         <HStack spacing={ 0 } overflow="hidden">
-          <NavLinkIcon item={{ icon: dailyRewardQuery.data?.available ? 'merits_with_dot' : 'merits' } as NavItem}/>
+          <NavLinkIcon item={{ icon: dailyRewardQuery.data?.available ? 'merits_with_dot_slim' : 'merits_slim' } as NavItem}/>
           <Text { ...styleProps.textProps } as="span" ml={ 3 }>
             <span>
               { balancesQuery.data?.total ? `${ balancesQuery.data?.total } Merits` : 'Merits' }

@@ -87,6 +87,8 @@
 	| "link"
 	| "lock"
 	| "merits_colored"
+	| "merits_slim"
+	| "merits_with_dot_slim"
 	| "merits_with_dot"
 	| "merits"
 	| "minus"
