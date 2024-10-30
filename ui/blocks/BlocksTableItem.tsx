@@ -2,6 +2,7 @@ import { Tr, Td, Flex, Box, Tooltip, Skeleton, useColorModeValue } from '@chakra
 import BigNumber from 'bignumber.js';
 import { motion } from 'framer-motion';
 import React from 'react';
+import { TbCoins } from 'react-icons/tb';
 
 import type { Block } from 'types/api/block';
 
@@ -14,7 +15,6 @@ import BlockTimestamp from 'ui/blocks/BlockTimestamp';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import GasUsedToTargetRatio from 'ui/shared/GasUsedToTargetRatio';
-import IconSvg from 'ui/shared/IconSvg';
 import LinkInternal from 'ui/shared/links/LinkInternal';
 import TextSeparator from 'ui/shared/TextSeparator';
 import Utilization from 'ui/shared/Utilization/Utilization';
@@ -33,7 +33,6 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
   const txFees = BigNumber(data.tx_fees || 0);
 
   const separatorColor = useColorModeValue('gray.200', 'gray.700');
-  const burntFeesIconColor = useColorModeValue('gray.500', 'inherit');
 
   return (
     <Tr
@@ -116,7 +115,9 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
       { !isRollup && !config.UI.views.block.hiddenFields?.burnt_fees && (
         <Td fontSize="sm">
           <Flex alignItems="center" columnGap={ 2 }>
-            <IconSvg name="flame" boxSize={ 5 } color={ burntFeesIconColor } isLoading={ isLoading }/>
+            <Skeleton isLoaded={ !isLoading } display="inline-block">
+              <TbCoins size={ 20 } color="#718096"/>
+            </Skeleton>
             <Skeleton isLoaded={ !isLoading } display="inline-block">
               { burntFees.dividedBy(WEI).toFixed(8) }
             </Skeleton>
