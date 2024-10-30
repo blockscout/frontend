@@ -144,13 +144,19 @@ const RewardsDashboard = () => {
         <RewardsDashboardCard
           title="Badges"
           description={ (
-            <span>
-              Collect limited and legendary badges by completing different Blockscout related tasks. Go to{ ' ' }
-              <LinkExternal href="https://badges.blockscout.com?utm_source=blockscout&utm_medium=merits-dashboard">
-                the badges website
+            <Flex flexDir="column" gap={ 2 }>
+              <span>
+                Collect limited and legendary badges by completing different Blockscout related tasks.
+                Go to the badges website to see what{ apos }s available and start your collection!
+              </span>
+              <LinkExternal
+                href="https://badges.blockscout.com?utm_source=blockscout&utm_medium=merits-dashboard"
+                fontSize="md"
+                fontWeight="500"
+              >
+                Go to website
               </LinkExternal>
-              { ' ' }to see what{ apos }s available and start your collection!
-            </span>
+            </Flex>
           ) }
           direction="row"
           availableSoon
@@ -164,10 +170,16 @@ const RewardsDashboard = () => {
             { Array(5).fill(null).map((_, index) => (
               <Image
                 key={ index }
+                display={{ base: index > 2 ? 'none' : 'block', md: 'block' }}
                 src={ `/static/badges/badge_${ index + 1 }.svg` }
                 alt={ `Badge ${ index + 1 }` }
-                boxSize={{ base: '50px', md: '100px' }}
-                fallback={ <Skeleton boxSize={{ base: '50px', md: '100px' }}/> }
+                boxSize={{ base: '80px', md: '100px' }}
+                fallback={ (
+                  <Skeleton
+                    boxSize={{ base: '80px', md: '100px' }}
+                    display={{ base: index > 2 ? 'none' : 'block', md: 'block' }}
+                  />
+                ) }
               />
             )) }
           </Flex>
