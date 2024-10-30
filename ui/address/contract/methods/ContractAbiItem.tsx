@@ -103,7 +103,7 @@ const ContractAbiItem = ({ data, index, id, addressHash, sourceAddress, tab, onS
               { 'method_id' in data && (
                 <Tag display="inline-flex" alignItems="center" flexShrink={ 0 }>
                   { data.method_id }
-                  <CopyToClipboard text={ `${ data.name } (${ data.method_id })` } onClick={ handleCopyMethodIdClick }/>
+                  <CopyToClipboard text={ data.method_id } onClick={ handleCopyMethodIdClick }/>
                 </Tag>
               ) }
               <AccordionIcon transform={ isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' } color="gray.500"/>

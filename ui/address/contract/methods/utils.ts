@@ -32,7 +32,7 @@ export const enrichWithMethodId = (method: AbiFunction | AbiFallback | AbiReceiv
   try {
     return {
       ...method,
-      method_id: toFunctionSelector(method).slice(2),
+      method_id: toFunctionSelector(method),
     };
   } catch (error) {
     return {

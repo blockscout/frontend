@@ -90,7 +90,7 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
         },
         verifiedImplementations.length > 0 && {
           id: [ 'read_write_proxy' as const, 'read_proxy' as const, 'write_proxy' as const ],
-          title: 'Write/Read proxy',
+          title: 'Read/Write proxy',
           component: <ContractMethodsProxy implementations={ verifiedImplementations } isLoading={ contractQuery.isPlaceholderData }/>,
         },
         config.features.account.isEnabled && {
