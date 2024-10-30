@@ -1,4 +1,4 @@
-import { Text, Button, useColorModeValue, Image, Box, Flex, Switch, useBoolean, Input, FormControl, Alert, Skeleton } from '@chakra-ui/react';
+import { Text, Button, useColorModeValue, Image, Box, Flex, Switch, useBoolean, Input, FormControl, Alert, Skeleton, Divider } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import type { ChangeEvent } from 'react';
 import React, { useCallback, useState, useEffect } from 'react';
@@ -25,7 +25,6 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
   const [ isLoading, setIsLoading ] = useBoolean(false);
   const [ refCode, setRefCode ] = useState(savedRefCode || '');
   const [ refCodeError, setRefCodeError ] = useBoolean(false);
-  const dividerColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   const { login, checkUserQuery } = useRewardsContext();
   const profileQuery = useProfileQuery();
 
@@ -92,7 +91,7 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
       </Box>
       { (isConnected && !isAddressMismatch && !checkUserQuery.isFetching && !checkUserQuery.data?.exists) && (
         <Box mb={ 6 }>
-          <Box w="full" mb={ 6 } borderTop="1px solid" borderColor={ dividerColor }/>
+          <Divider bgColor="divider" mb={ 6 }/>
           <Flex w="full" alignItems="center" justifyContent="space-between">
             I have a referral code
             <Switch
