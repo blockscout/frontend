@@ -16,9 +16,11 @@ type Props = {
 const CongratsStepContent = ({ isReferral }: Props) => {
   const { referralsQuery, rewardsConfigQuery } = useRewardsContext();
 
-  const registrationReward = rewardsConfigQuery.data?.rewards.registration;
-  const referralReward = Number(rewardsConfigQuery.data?.rewards.registration_with_referral) - Number(rewardsConfigQuery.data?.rewards.registration);
-  const refLink = `https://eth.blockscout.com?ref=${ referralsQuery.data?.code }`;
+  const registrationReward = rewardsConfigQuery.data?.rewards.registration || 0;
+  const registrationWithReferralReward = rewardsConfigQuery.data?.rewards.registration_with_referral || 0;
+  const referralReward = Number(registrationWithReferralReward) - Number(registrationReward);
+
+  const refLink = referralsQuery.data?.link || '';
   const shareText = `Just signed up for @blockscoutcom Merits program and got ${ registrationReward } merits!\n\nUse my referral link to get extra ${ referralReward } merits: ${ refLink }`; // eslint-disable-line max-len
 
   const textColor = useColorModeValue('blue.700', 'blue.100');
