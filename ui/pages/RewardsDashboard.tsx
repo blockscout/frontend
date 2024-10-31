@@ -1,5 +1,5 @@
-import { Flex, Skeleton, Image } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
+import { Flex, Skeleton, Image, Alert } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
 
 import config from 'configs/app';
 import { useRewardsContext } from 'lib/contexts/rewards';
@@ -13,7 +13,8 @@ import PageTitle from 'ui/shared/Page/PageTitle';
 import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInvalidAuthToken';
 
 const RewardsDashboard = () => {
-  const { balancesQuery, apiToken, referralsQuery, rewardsConfigQuery, isInitialized } = useRewardsContext();
+  const { balancesQuery, apiToken, referralsQuery, rewardsConfigQuery, dailyRewardQuery, isInitialized } = useRewardsContext();
+  const [ isError, setIsError ] = useState(false);
 
   useRedirectForInvalidAuthToken();
 
@@ -23,7 +24,9 @@ const RewardsDashboard = () => {
     }
   }, [ isInitialized, apiToken ]);
 
-  const numberOfReferrals = Number(referralsQuery.data?.referrals || 0);
+  useEffect(() => {
+    setIsError(balancesQuery.isError || referralsQuery.isError || rewardsConfigQuery.isError || dailyRewardQuery.isError);
+  }, [ balancesQuery.isError, referralsQuery.isError, rewardsConfigQuery.isError, dailyRewardQuery.isError ]);
 
   if (!config.features.rewards.isEnabled) {
     return null;
@@ -44,6 +47,7 @@ const RewardsDashboard = () => {
         ) }
       />
       <Flex flexDirection="column" alignItems="flex-start" w="full" gap={ 6 }>
+        { isError && <Alert status="error">Failed to load some data. Please try again later.</Alert> }
         <Flex gap={ 6 } flexDirection={{ base: 'column', md: 'row' }}>
           <RewardsDashboardCard
             description="Claim your daily Merits and any Merits received from referrals."
@@ -52,7 +56,7 @@ const RewardsDashboard = () => {
           >
             <RewardsDashboardCardValue
               label="Total balance"
-              value={ balancesQuery.data?.total || 0 }
+              value={ balancesQuery.data?.total || 'N/A' }
               isLoading={ balancesQuery.isPending }
               withIcon
               hint={ (
@@ -72,7 +76,10 @@ const RewardsDashboard = () => {
           >
             <RewardsDashboardCardValue
               label="Referrals"
-              value={ `${ numberOfReferrals } user${ numberOfReferrals === 1 ? '' : 's' }` }
+              value={ referralsQuery.data?.referrals ?
+                `${ referralsQuery.data?.referrals } user${ Number(referralsQuery.data?.referrals) === 1 ? '' : 's' }` :
+                'N/A'
+              }
               isLoading={ referralsQuery.isPending }
               hint="The number of referrals who registered with your code/link."
             />
@@ -93,7 +100,10 @@ const RewardsDashboard = () => {
             <>
               Refer friends and boost your Merits! You receive a{ ' ' }
               <Skeleton as="span" isLoaded={ !rewardsConfigQuery.isPending }>
-                { Number(rewardsConfigQuery.data?.rewards.referral_share || 0) * 100 }%
+                { rewardsConfigQuery.data?.rewards.referral_share ?
+                  `${ Number(rewardsConfigQuery.data?.rewards.referral_share) * 100 }%` :
+                  'N/A'
+                }
               </Skeleton>
               { ' ' }bonus on all Merits earned by your referrals.
             </>
@@ -109,13 +119,13 @@ const RewardsDashboard = () => {
           >
             <RewardsReadOnlyInputWithCopy
               label="Referral link"
-              value={ referralsQuery.data?.link || '' }
+              value={ referralsQuery.data?.link || 'N/A' }
               isLoading={ referralsQuery.isPending }
               flex={ 2 }
             />
             <RewardsReadOnlyInputWithCopy
               label="Referral code"
-              value={ referralsQuery.data?.code || '' }
+              value={ referralsQuery.data?.code || 'N/A' }
               isLoading={ referralsQuery.isPending }
               flex={ 1 }
             />

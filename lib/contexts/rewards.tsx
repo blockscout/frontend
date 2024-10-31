@@ -28,7 +28,8 @@ import removeQueryParam from 'lib/router/removeQueryParam';
 import useAccount from 'lib/web3/useAccount';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
-type ContextQueryResult<Response> = Pick<UseQueryResult<Response, ResourceError<unknown>>, 'data' | 'isLoading' | 'refetch' | 'isPending' | 'isFetching'>;
+type ContextQueryResult<Response> =
+  Pick<UseQueryResult<Response, ResourceError<unknown>>, 'data' | 'isLoading' | 'refetch' | 'isPending' | 'isFetching' | 'isError'>;
 
 type TRewardsContext = {
   balancesQuery: ContextQueryResult<RewardsUserBalancesResponse>;
@@ -50,6 +51,7 @@ const defaultQueryResult = {
   isLoading: false,
   isPending: false,
   isFetching: false,
+  isError: false,
   refetch: () => Promise.resolve({} as never),
 };
 

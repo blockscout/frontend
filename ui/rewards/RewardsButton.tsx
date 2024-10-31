@@ -59,7 +59,7 @@ const RewardsButton = ({ variant = 'header', size }: Props) => {
           ml={ 2 }
           fontWeight={ apiToken ? '700' : '600' }
         >
-          { apiToken ? balancesQuery.data?.total : 'Merits' }
+          { apiToken ? (balancesQuery.data?.total || 'N/A') : 'Merits' }
         </chakra.span>
       </Button>
     </Tooltip>

@@ -16,12 +16,12 @@ type Props = {
 const CongratsStepContent = ({ isReferral }: Props) => {
   const { referralsQuery, rewardsConfigQuery } = useRewardsContext();
 
-  const registrationReward = rewardsConfigQuery.data?.rewards.registration || 0;
-  const registrationWithReferralReward = rewardsConfigQuery.data?.rewards.registration_with_referral || 0;
+  const registrationReward = rewardsConfigQuery.data?.rewards.registration;
+  const registrationWithReferralReward = rewardsConfigQuery.data?.rewards.registration_with_referral;
   const referralReward = Number(registrationWithReferralReward) - Number(registrationReward);
 
-  const refLink = referralsQuery.data?.link || '';
-  const shareText = `I joined the @blockscoutcom Merits Program and got my first ${ registrationReward } #Merits! Use this link for a sign-up bonus and start earning rewards with @blockscoutcom block explorer.\n\n${ refLink }`; // eslint-disable-line max-len
+  const refLink = referralsQuery.data?.link || 'N/A';
+  const shareText = `I joined the @blockscoutcom Merits Program and got my first ${ registrationReward || 'N/A' } #Merits! Use this link for a sign-up bonus and start earning rewards with @blockscoutcom block explorer.\n\n${ refLink }`; // eslint-disable-line max-len
 
   const textColor = useColorModeValue('blue.700', 'blue.100');
   const dividerColor = useColorModeValue('whiteAlpha.800', 'whiteAlpha.100');
@@ -40,7 +40,7 @@ const CongratsStepContent = ({ isReferral }: Props) => {
         <MeritsIcon boxSize={{ base: isReferral ? 8 : 12, md: 12 }} mr={{ base: isReferral ? 1 : 2, md: 2 }}/>
         <Skeleton isLoaded={ !rewardsConfigQuery.isLoading }>
           <Text fontSize={{ base: isReferral ? '24px' : '30px', md: '30px' }} fontWeight="700" color={ textColor }>
-            +{ rewardsConfigQuery.data?.rewards[ isReferral ? 'registration_with_referral' : 'registration' ] }
+            +{ rewardsConfigQuery.data?.rewards[ isReferral ? 'registration_with_referral' : 'registration' ] || 'N/A' }
           </Text>
         </Skeleton>
         { isReferral && (
@@ -50,11 +50,11 @@ const CongratsStepContent = ({ isReferral }: Props) => {
               { [
                 {
                   title: 'Registration',
-                  value: registrationReward,
+                  value: registrationReward || 'N/A',
                 },
                 {
                   title: 'Referral program',
-                  value: referralReward,
+                  value: referralReward || 'N/A',
                 },
               ].map(({ title, value }) => (
                 <Flex key={ title } alignItems="center" gap={{ base: 1, md: 2 }}>
@@ -85,7 +85,10 @@ const CongratsStepContent = ({ isReferral }: Props) => {
         <Text fontSize="md" mt={ 2 }>
           Receive a{ ' ' }
           <Skeleton as="span" isLoaded={ !rewardsConfigQuery.isLoading }>
-            { Number(rewardsConfigQuery.data?.rewards.referral_share || 0) * 100 }%
+            { rewardsConfigQuery.data?.rewards.referral_share ?
+              `${ Number(rewardsConfigQuery.data?.rewards.referral_share) * 100 }%` :
+              'N/A'
+            }
           </Skeleton>
           { ' ' }bonus on all Merits earned by your referrals
         </Text>

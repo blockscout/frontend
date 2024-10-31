@@ -77,7 +77,7 @@ const DailyRewardClaimButton = () => {
       fontWeight="600"
       cursor="default"
     >
-      Next claim in { timeLeft }
+      Next claim in { timeLeft || 'N/A' }
     </Flex>
   ) : (
     <Button onClick={ handleClaim } isLoading={ isLoading }>
