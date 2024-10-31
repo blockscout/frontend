@@ -2,9 +2,12 @@ import { Link, Text, HStack, Tooltip, Box, useBreakpointValue } from '@chakra-ui
 import NextLink from 'next/link';
 import React from 'react';
 
-import type { NavItem, NavItemExternal, NavItemInternal } from 'types/client/navigation';
+import type { NavItem } from 'types/client/navigation';
+
+import { route } from 'nextjs-routes';
 
 import useIsMobile from 'lib/hooks/useIsMobile';
+import { isInternalItem } from 'lib/hooks/useNavItems';
 import IconSvg from 'ui/shared/IconSvg';
 
 import LightningLabel, { LIGHTNING_LABEL_CLASS_NAME } from '../LightningLabel';
@@ -15,32 +18,29 @@ import { checkRouteHighlight } from '../utils';
 
 type Props = {
   item: NavItem;
-  nextRoute?: NavItemInternal['nextRoute'];
+  onClick?: (e: React.MouseEvent) => void;
   isCollapsed?: boolean;
-  onClick?: () => void;
-  as?: 'a' | 'button';
-  href?: string;
-  isExternal?: boolean;
-  isActive?: boolean;
   isDisabled?: boolean;
 }
 
-const NavLinkBase = ({ item, nextRoute, isCollapsed, onClick, isExternal, as = 'a', href, isActive, isDisabled }: Props) => {
+const NavLinkBase = ({ item, onClick, isCollapsed, isDisabled }: Props) => {
   const isMobile = useIsMobile();
   const colors = useColors();
 
+  const isInternalLink = isInternalItem(item);
+  const href = isInternalLink ? route(item.nextRoute) : item.url;
+
   const isExpanded = isCollapsed === false;
 
-  const styleProps = useNavLinkStyleProps({ isCollapsed, isExpanded, isActive });
+  const styleProps = useNavLinkStyleProps({ isCollapsed, isExpanded, isActive: isInternalLink && item.isActive });
   const isXLScreen = useBreakpointValue({ base: false, xl: true });
 
-  const isHighlighted = checkRouteHighlight(nextRoute ? { nextRoute } as NavItemInternal : {} as NavItemExternal);
+  const isHighlighted = checkRouteHighlight(item);
 
   const content = (
     <Link
-      as={ as }
       href={ href }
-      target={ isExternal ? '_blank' : '_self' }
+      target={ isInternalLink ? '_self' : '_blank' }
       { ...styleProps.itemProps }
       w={{ base: '100%', lg: isExpanded ? '100%' : '60px', xl: isCollapsed ? '60px' : '100%' }}
       display="flex"
@@ -62,14 +62,14 @@ const NavLinkBase = ({ item, nextRoute, isCollapsed, onClick, isExternal, as = '
         placement="right"
         variant="nav"
         gutter={ 20 }
-        color={ isActive ? colors.text.active : colors.text.hover }
+        color={ isInternalLink && item.isActive ? colors.text.active : colors.text.hover }
         margin={ 0 }
       >
         <HStack spacing={ 0 } overflow="hidden">
           <NavLinkIcon item={ item }/>
           <Text { ...styleProps.textProps } as="span" ml={ 3 }>
             <span>{ item.text }</span>
-            { isExternal && <IconSvg name="link_external" boxSize={ 3 } color="icon_link_external" verticalAlign="middle"/> }
+            { !isInternalLink && <IconSvg name="link_external" boxSize={ 3 } color="icon_link_external" verticalAlign="middle"/> }
           </Text>
           { isHighlighted && (
             <LightningLabel iconColor={ styleProps.itemProps.bgColor } isCollapsed={ isCollapsed }/>
@@ -81,8 +81,8 @@ const NavLinkBase = ({ item, nextRoute, isCollapsed, onClick, isExternal, as = '
 
   return (
     <Box as="li" listStyleType="none" w="100%">
-      { nextRoute ? (
-        <NextLink href={ nextRoute } passHref legacyBehavior>
+      { isInternalLink ? (
+        <NextLink href={ item.nextRoute } passHref legacyBehavior>
           { content }
         </NextLink>
       ) : content }

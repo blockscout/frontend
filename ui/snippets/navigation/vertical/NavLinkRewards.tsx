@@ -3,7 +3,6 @@ import React, { useCallback } from 'react';
 
 import type { NavItem } from 'types/client/navigation';
 
-import { route } from 'nextjs-routes';
 import type { Route } from 'nextjs-routes';
 
 import config from 'configs/app';
@@ -23,10 +22,9 @@ const NavLinkRewards = ({ isCollapsed, onClick }: Props) => {
   const pathname = '/account/rewards';
   const nextRoute = { pathname } as Route;
 
-  const isLogedIn = isInitialized && apiToken;
-
-  const handleClick = useCallback(() => {
+  const handleClick = useCallback((e: React.MouseEvent) => {
     if (isInitialized && !apiToken) {
+      e.preventDefault();
       openLoginModal();
     }
     onClick?.();
@@ -41,14 +39,12 @@ const NavLinkRewards = ({ isCollapsed, onClick }: Props) => {
       item={{
         text: 'Merits',
         icon: dailyRewardQuery.data?.available ? 'merits_with_dot' : 'merits',
+        nextRoute: nextRoute,
+        isActive: router.pathname === pathname,
       } as NavItem}
-      nextRoute={ isLogedIn ? nextRoute : undefined }
       onClick={ handleClick }
-      as={ isLogedIn ? 'a' : 'button' }
-      href={ isLogedIn ? route(nextRoute) : undefined }
-      isActive={ router.pathname === pathname }
-      isDisabled={ !isInitialized }
       isCollapsed={ isCollapsed }
+      isDisabled={ !isInitialized }
     />
   );
 };
