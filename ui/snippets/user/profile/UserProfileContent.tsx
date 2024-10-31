@@ -92,7 +92,7 @@ const UserProfileContent = ({ data, onClose, onLogin, onAddEmail, onAddAddress }
           <Flex p={ 2 } borderColor="divider" borderBottomWidth="1px">
             <Box>Address</Box>
             <Hint
-              label={ `This wallet address is linked to your Blockscout account. It can be used to login ${ config.features.rewards.isEnabled ? 'and is used for merit program participation' : '' }` } // eslint-disable-line max-len
+              label={ `This wallet address is linked to your Blockscout account. It can be used to login ${ config.features.rewards.isEnabled ? 'and is used for Merits Program participation' : '' }` } // eslint-disable-line max-len
               boxSize={ 4 }
               ml={ 1 }
               mr="auto"

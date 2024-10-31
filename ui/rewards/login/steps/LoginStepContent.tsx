@@ -89,7 +89,7 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
       />
       <Box mb={ 6 }>
         Merits are awarded for a variety of different Blockscout activities. Connect a wallet to get started.
-        <LinkExternal href="https://docs.blockscout.com/using-blockscout/my-account/merits" ml={ 1 } fontWeight="500">
+        <LinkExternal href="https://docs.blockscout.com/using-blockscout/merits" ml={ 1 } fontWeight="500">
           More about Blockscout Merits
         </LinkExternal>
       </Box>

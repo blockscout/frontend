@@ -59,7 +59,7 @@ const RewardsDashboard = () => {
                 <>
                   Total number of merits earned from all activities.{ ' ' }
                   <LinkExternal href="https://docs.blockscout.com/using-blockscout/merits">
-                    More info on merits
+                    More info on Merits
                   </LinkExternal>
                 </>
               ) }
