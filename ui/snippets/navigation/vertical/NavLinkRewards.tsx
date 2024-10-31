@@ -1,14 +1,12 @@
 import { useRouter } from 'next/router';
 import React, { useCallback } from 'react';
 
-import type { NavItem } from 'types/client/navigation';
-
 import type { Route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import { useRewardsContext } from 'lib/contexts/rewards';
 
-import NavLinkBase from './NavLinkBase';
+import NavLink from './NavLink';
 
 type Props = {
   isCollapsed?: boolean;
@@ -35,13 +33,13 @@ const NavLinkRewards = ({ isCollapsed, onClick }: Props) => {
   }
 
   return (
-    <NavLinkBase
+    <NavLink
       item={{
         text: 'Merits',
         icon: dailyRewardQuery.data?.available ? 'merits_with_dot' : 'merits',
         nextRoute: nextRoute,
         isActive: router.pathname === pathname,
-      } as NavItem}
+      }}
       onClick={ handleClick }
       isCollapsed={ isCollapsed }
       isDisabled={ !isInitialized }
