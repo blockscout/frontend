@@ -21,7 +21,7 @@ const CongratsStepContent = ({ isReferral }: Props) => {
   const referralReward = Number(registrationWithReferralReward) - Number(registrationReward);
 
   const refLink = referralsQuery.data?.link || '';
-  const shareText = `Just signed up for @blockscoutcom Merits Program and got ${ registrationReward } Merits!\n\nUse my referral link to get extra ${ referralReward } Merits: ${ refLink }`; // eslint-disable-line max-len
+  const shareText = `I joined the @blockscoutcom Merits Program and got my first ${ registrationReward } #Merits! Use this link for a sign-up bonus and start earning rewards with @blockscoutcom block explorer.\n\n${ refLink }`; // eslint-disable-line max-len
 
   const textColor = useColorModeValue('blue.700', 'blue.100');
   const dividerColor = useColorModeValue('whiteAlpha.800', 'whiteAlpha.100');
