@@ -43,14 +43,6 @@ const ContractAbiItem = ({ data, index, id, addressHash, sourceAddress, tab, onS
     });
   }, [ addressHash, data, tab, sourceAddress ]);
 
-  const handleCopyLinkClick = React.useCallback((event: React.MouseEvent) => {
-    event.stopPropagation();
-  }, []);
-
-  const handleCopyMethodIdClick = React.useCallback((event: React.MouseEvent) => {
-    event.stopPropagation();
-  }, []);
-
   const handleReset = React.useCallback(() => {
     setAttempt((prev) => prev + 1);
   }, []);
@@ -61,7 +53,7 @@ const ContractAbiItem = ({ data, index, id, addressHash, sourceAddress, tab, onS
         <>
           <Element as="h2" name={ 'method_id' in data ? getElementName(data.method_id) : '' }>
             <AccordionButton px={ 0 } py={ 3 } _hover={{ bgColor: 'inherit' }} wordBreak="break-all" textAlign="left" as="div" cursor="pointer">
-              { 'method_id' in data && <CopyToClipboard text={ url } onClick={ handleCopyLinkClick } type="link" mr={ 2 } ml={ 0 } color="text_secondary"/> }
+              { 'method_id' in data && <CopyToClipboard text={ url } type="link" mr={ 2 } ml={ 0 } color="text_secondary"/> }
               <Box as="span" fontWeight={ 500 } mr={ 1 }>
                 { index + 1 }. { data.type === 'fallback' || data.type === 'receive' ? data.type : data.name }
               </Box>
@@ -86,7 +78,7 @@ const ContractAbiItem = ({ data, index, id, addressHash, sourceAddress, tab, onS
               { 'method_id' in data && (
                 <>
                   <Tag>{ data.method_id }</Tag>
-                  <CopyToClipboard text={ `${ data.name } (${ data.method_id })` } onClick={ handleCopyMethodIdClick }/>
+                  <CopyToClipboard text={ `${ data.name } (${ data.method_id })` }/>
                 </>
               ) }
               <AccordionIcon transform={ isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' } color="gray.500"/>

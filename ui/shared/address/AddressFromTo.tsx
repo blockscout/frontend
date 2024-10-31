@@ -55,7 +55,6 @@ const AddressFromTo = ({ from, to, current, mode: modeProp, className, isLoading
             truncation="constant"
             maxW="calc(100% - 28px)"
             w="min-content"
-
           />
         </Flex>
         { to && (

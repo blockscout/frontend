@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { BlockEpoch } from 'types/api/block';
 
+import useIsMobile from 'lib/hooks/useIsMobile';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import TokenTransferSnippet from 'ui/shared/TokenTransferSnippet/TokenTransferSnippet';
 
@@ -12,6 +13,7 @@ interface Props {
 }
 
 const BlockEpochRewardsDistribution = ({ data, isLoading }: Props) => {
+  const isMobile = useIsMobile();
 
   if (!data.distribution.community_transfer && !data.distribution.carbon_offsetting_transfer && !data.distribution.reserve_bolster_transfer) {
     return null;
@@ -33,7 +35,7 @@ const BlockEpochRewardsDistribution = ({ data, isLoading }: Props) => {
             Community fund
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
-            <TokenTransferSnippet data={ data.distribution.community_transfer } isLoading={ isLoading } noAddressIcons={ false }/>
+            <TokenTransferSnippet data={ data.distribution.community_transfer } isLoading={ isLoading } noAddressIcons={ isMobile }/>
           </DetailsInfoItem.Value>
         </>
       ) }
@@ -46,7 +48,7 @@ const BlockEpochRewardsDistribution = ({ data, isLoading }: Props) => {
             Carbon offset fund
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
-            <TokenTransferSnippet data={ data.distribution.carbon_offsetting_transfer } isLoading={ isLoading } noAddressIcons={ false }/>
+            <TokenTransferSnippet data={ data.distribution.carbon_offsetting_transfer } isLoading={ isLoading } noAddressIcons={ isMobile }/>
           </DetailsInfoItem.Value>
         </>
       ) }
@@ -59,7 +61,7 @@ const BlockEpochRewardsDistribution = ({ data, isLoading }: Props) => {
             Reserve bolster
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
-            <TokenTransferSnippet data={ data.distribution.reserve_bolster_transfer } isLoading={ isLoading } noAddressIcons={ false }/>
+            <TokenTransferSnippet data={ data.distribution.reserve_bolster_transfer } isLoading={ isLoading } noAddressIcons={ isMobile }/>
           </DetailsInfoItem.Value>
         </>
       ) }

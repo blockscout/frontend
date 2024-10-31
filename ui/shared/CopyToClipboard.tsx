@@ -34,6 +34,7 @@ const CopyToClipboard = ({ text, className, isLoading, onClick, size = 5, type, 
   }, [ hasCopied ]);
 
   const handleClick = React.useCallback((event: React.MouseEvent) => {
+    event.stopPropagation();
     onCopy();
     onClick?.(event);
   }, [ onClick, onCopy ]);
