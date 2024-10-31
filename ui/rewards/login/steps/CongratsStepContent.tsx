@@ -21,7 +21,7 @@ const CongratsStepContent = ({ isReferral }: Props) => {
   const referralReward = Number(registrationWithReferralReward) - Number(registrationReward);
 
   const refLink = referralsQuery.data?.link || '';
-  const shareText = `Just signed up for @blockscoutcom Merits program and got ${ registrationReward } merits!\n\nUse my referral link to get extra ${ referralReward } merits: ${ refLink }`; // eslint-disable-line max-len
+  const shareText = `Just signed up for @blockscoutcom Merits Program and got ${ registrationReward } Merits!\n\nUse my referral link to get extra ${ referralReward } Merits: ${ refLink }`; // eslint-disable-line max-len
 
   const textColor = useColorModeValue('blue.700', 'blue.100');
   const dividerColor = useColorModeValue('whiteAlpha.800', 'whiteAlpha.100');
@@ -87,7 +87,7 @@ const CongratsStepContent = ({ isReferral }: Props) => {
           <Skeleton as="span" isLoaded={ !rewardsConfigQuery.isLoading }>
             { Number(rewardsConfigQuery.data?.rewards.referral_share || 0) * 100 }%
           </Skeleton>
-          { ' ' }bonus on all merits earned by your referrals
+          { ' ' }bonus on all Merits earned by your referrals
         </Text>
         <RewardsReadOnlyInputWithCopy
           label="Referral link"
@@ -115,7 +115,7 @@ const CongratsStepContent = ({ isReferral }: Props) => {
           </Text>
         </Flex>
         <Text fontSize="md" mt={ 2 }>
-          Explore your current merits balance, find activities to boost your merits,
+          Explore your current Merits balance, find activities to boost your Merits,
           and view your capybara NFT badge collection on the dashboard
         </Text>
         <Button mt={ 3 } as="a" href={ route({ pathname: '/account/rewards' }) }>

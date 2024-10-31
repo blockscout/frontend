@@ -46,7 +46,7 @@ const RewardsDashboard = () => {
       <Flex flexDirection="column" alignItems="flex-start" w="full" gap={ 6 }>
         <Flex gap={ 6 } flexDirection={{ base: 'column', md: 'row' }}>
           <RewardsDashboardCard
-            description="Claim your daily merits and any merits received from referrals."
+            description="Claim your daily Merits and any Merits received from referrals."
             direction="column-reverse"
             contentAfter={ <DailyRewardClaimButton/> }
           >
@@ -57,7 +57,7 @@ const RewardsDashboard = () => {
               withIcon
               hint={ (
                 <>
-                  Total number of merits earned from all activities.{ ' ' }
+                  Total number of Merits earned from all activities.{ ' ' }
                   <LinkExternal href="https://docs.blockscout.com/using-blockscout/merits">
                     More info on Merits
                   </LinkExternal>
@@ -79,7 +79,7 @@ const RewardsDashboard = () => {
           </RewardsDashboardCard>
           <RewardsDashboardCard
             title="Streaks"
-            description={ `Current number of consecutive days you${ apos }ve claimed your daily merits.` }
+            description={ `Current number of consecutive days you${ apos }ve claimed your daily Merits.` }
             direction="column-reverse"
             availableSoon
             blurFilter
@@ -91,11 +91,11 @@ const RewardsDashboard = () => {
           title="Referral program"
           description={ (
             <>
-              Refer friends and boost your merits! You receive a{ ' ' }
+              Refer friends and boost your Merits! You receive a{ ' ' }
               <Skeleton as="span" isLoaded={ !rewardsConfigQuery.isPending }>
                 { Number(rewardsConfigQuery.data?.rewards.referral_share || 0) * 100 }%
               </Skeleton>
-              { ' ' }bonus on all merits earned by your referrals.
+              { ' ' }bonus on all Merits earned by your referrals.
             </>
           ) }
           direction="row"
@@ -124,7 +124,7 @@ const RewardsDashboard = () => {
         <Flex gap={ 6 } flexDirection={{ base: 'column', md: 'row' }}>
           <RewardsDashboardCard
             title="Activity"
-            description="Earn merits for your everyday Blockscout activities. You deserve to be rewarded for choosing open-source public goods!"
+            description="Earn Merits for your everyday Blockscout activities. You deserve to be rewarded for choosing open-source public goods!"
             availableSoon
             blurFilter
           >
@@ -133,7 +133,7 @@ const RewardsDashboard = () => {
           </RewardsDashboardCard>
           <RewardsDashboardCard
             title="Verify contracts"
-            description="Verified contracts are so important for transparency and interaction. Verify your contracts on Blockscout and receive merits for your efforts." // eslint-disable-line max-len
+            description="Verified contracts are so important for transparency and interaction. Verify your contracts on Blockscout and receive Merits for your efforts." // eslint-disable-line max-len
             availableSoon
             blurFilter
           >
