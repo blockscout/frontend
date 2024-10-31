@@ -6,7 +6,6 @@ import { useAppContext } from 'lib/contexts/app';
 import * as cookies from 'lib/cookies';
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
 import getDefaultTransitionProps from 'theme/utils/getDefaultTransitionProps';
-import RewardsNavLink from 'ui/rewards/RewardsNavLink';
 import IconSvg from 'ui/shared/IconSvg';
 import useIsAuth from 'ui/snippets/auth/useIsAuth';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
@@ -15,6 +14,7 @@ import NetworkMenu from 'ui/snippets/networkMenu/NetworkMenu';
 import TestnetBadge from '../TestnetBadge';
 import NavLink from './NavLink';
 import NavLinkGroup from './NavLinkGroup';
+import RewardsNavLink from './RewardsNavLink';
 
 const NavigationDesktop = () => {
   const appProps = useAppContext();

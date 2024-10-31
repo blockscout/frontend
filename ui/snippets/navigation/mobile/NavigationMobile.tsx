@@ -3,11 +3,11 @@ import { animate, motion, useMotionValue } from 'framer-motion';
 import React, { useCallback } from 'react';
 
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
-import RewardsNavLink from 'ui/rewards/RewardsNavLink';
 import IconSvg from 'ui/shared/IconSvg';
 import useIsAuth from 'ui/snippets/auth/useIsAuth';
 
 import NavLink from '../vertical/NavLink';
+import RewardsNavLink from '../vertical/RewardsNavLink';
 import NavLinkGroup from './NavLinkGroup';
 
 const DRAWER_WIDTH = 330;
