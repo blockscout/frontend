@@ -99,7 +99,7 @@ const UserProfileContent = ({ data, onClose, onLogin, onAddEmail, onAddAddress }
             />
             { data?.address_hash ?
               <Box>{ shortenString(data?.address_hash) }</Box> :
-              <Link onClick={ onAddAddress } color="icon_info" _hover={{ color: 'link_hovered', textDecoration: 'none' }}>Add address</Link>
+              <Link onClick={ onAddAddress } _hover={{ color: 'link_hovered', textDecoration: 'none' }}>Add address</Link>
             }
           </Flex>
         ) }
@@ -107,7 +107,7 @@ const UserProfileContent = ({ data, onClose, onLogin, onAddEmail, onAddAddress }
           <Box mr="auto">Email</Box>
           { data?.email ?
             <TruncatedValue value={ data.email }/> :
-            <Link onClick={ onAddEmail } color="icon_info" _hover={{ color: 'link_hovered', textDecoration: 'none' }}>Add email</Link>
+            <Link onClick={ onAddEmail } _hover={{ color: 'link_hovered', textDecoration: 'none' }}>Add email</Link>
           }
         </Flex>
       </Box>

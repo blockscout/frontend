@@ -140,6 +140,7 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig }: Props) => {
           <AuthModalScreenSuccessEmail
             email={ currentStep.email }
             onConnectWallet={ onNextStep }
+            onClose={ onModalClose }
             isAuth={ currentStep.isAuth }
             profile={ currentStep.profile }
           />
@@ -149,6 +150,7 @@ const AuthModal = ({ initialScreen, onClose, mixpanelConfig }: Props) => {
           <AuthModalScreenSuccessWallet
             address={ currentStep.address }
             onAddEmail={ onNextStep }
+            onClose={ onModalClose }
             isAuth={ currentStep.isAuth }
             profile={ currentStep.profile }
           />
