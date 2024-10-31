@@ -10,6 +10,7 @@ const PRESETS = {
   eth: 'https://eth.blockscout.com',
   eth_goerli: 'https://eth-goerli.blockscout.com',
   eth_sepolia: 'https://eth-sepolia.blockscout.com',
+  garnet: 'https://explorer.garnetchain.com',
   gnosis: 'https://gnosis.blockscout.com',
   optimism: 'https://optimism.blockscout.com',
   optimism_celestia: 'https://opcelestia-raspberry.gelatoscout.com',
