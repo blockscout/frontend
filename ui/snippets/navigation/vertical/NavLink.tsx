@@ -21,7 +21,6 @@ const NavLink = ({ item, isCollapsed, onClick }: Props) => {
       item={ item }
       nextRoute={ 'nextRoute' in item ? item.nextRoute : undefined }
       onClick={ onClick }
-      target={ isInternalLink ? '_self' : '_blank' }
       href={ isInternalLink ? route(item.nextRoute) : item.url }
       isActive={ isInternalLink && item.isActive }
       isExternal={ !isInternalLink }

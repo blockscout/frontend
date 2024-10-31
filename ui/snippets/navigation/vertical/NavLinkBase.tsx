@@ -19,14 +19,13 @@ type Props = {
   isCollapsed?: boolean;
   onClick?: () => void;
   as?: 'a' | 'button';
-  target?: '_self' | '_blank';
   href?: string;
   isExternal?: boolean;
   isActive?: boolean;
   isDisabled?: boolean;
 }
 
-const NavLinkBase = ({ item, nextRoute, isCollapsed, onClick, isExternal, as = 'a', target = '_self', href, isActive, isDisabled }: Props) => {
+const NavLinkBase = ({ item, nextRoute, isCollapsed, onClick, isExternal, as = 'a', href, isActive, isDisabled }: Props) => {
   const isMobile = useIsMobile();
   const colors = useColors();
 
@@ -41,7 +40,7 @@ const NavLinkBase = ({ item, nextRoute, isCollapsed, onClick, isExternal, as = '
     <Link
       as={ as }
       href={ href }
-      target={ target }
+      target={ isExternal ? '_blank' : '_self' }
       { ...styleProps.itemProps }
       w={{ base: '100%', lg: isExpanded ? '100%' : '60px', xl: isCollapsed ? '60px' : '100%' }}
       display="flex"

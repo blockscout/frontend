@@ -45,7 +45,6 @@ const RewardsNavLink = ({ isCollapsed, onClick }: Props) => {
       nextRoute={ isLogedIn ? nextRoute : undefined }
       onClick={ handleClick }
       as={ isLogedIn ? 'a' : 'button' }
-      target="_self"
       href={ isLogedIn ? route(nextRoute) : undefined }
       isActive={ router.pathname === pathname }
       isDisabled={ !isInitialized }
