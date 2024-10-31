@@ -41,7 +41,7 @@ const UserProfileContentWallet = ({ onClose, className }: Props) => {
             isTooltipDisabled
             truncation="dynamic"
             fontSize="sm"
-            fontWeight={ 700 }
+            fontWeight={ 500 }
           />
           <IconButton
             aria-label="Open wallet"
