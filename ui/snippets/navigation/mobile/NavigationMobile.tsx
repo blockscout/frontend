@@ -122,8 +122,11 @@ const NavigationMobile = ({ onNavLinkClick, isMarketplaceAppPage }: Props) => {
                 >
                   { item.map(subItem => <NavLink key={ subItem.text } item={ subItem } onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>) }
                 </Box>
-              ) :
-                <NavLink key={ item.text } item={ item } mb={ 1 } onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>,
+              ) : (
+                <Box key={ item.text } mb={ 1 }>
+                  <NavLink item={ item } onClick={ onNavLinkClick } isCollapsed={ isCollapsed }/>
+                </Box>
+              ),
             ) }
           </Box>
         </Box>
