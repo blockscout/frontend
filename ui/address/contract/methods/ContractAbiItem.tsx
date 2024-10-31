@@ -56,6 +56,8 @@ const ContractAbiItem = ({ data, index, id, addressHash, sourceAddress, tab, onS
     setAttempt((prev) => prev + 1);
   }, []);
 
+  const isRead = isReadMethod(data);
+
   return (
     <AccordionItem as="section" _first={{ borderTopWidth: 0 }} _last={{ borderBottomWidth: 0 }} display={ isVisible ? 'block' : 'none' }>
       { ({ isExpanded }) => (
@@ -99,7 +101,7 @@ const ContractAbiItem = ({ data, index, id, addressHash, sourceAddress, tab, onS
                   />
                 ) }
               </Box>
-              <Tag colorScheme="black-blue" flexShrink={ 0 }>{ isReadMethod(data) ? 'read' : 'write' }</Tag>
+              <Tag colorScheme={ isRead ? 'black-purple' : 'black-blue' } flexShrink={ 0 }>{ isRead ? 'read' : 'write' }</Tag>
               { 'method_id' in data && (
                 <Tag display="inline-flex" alignItems="center" flexShrink={ 0 }>
                   { data.method_id }

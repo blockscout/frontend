@@ -102,7 +102,7 @@ const ContractMethodsCustom = ({ isLoading: isLoadingProp }: Props) => {
       ) : (
         <>
           <Skeleton isLoaded={ !isLoading }>
-            Add custom ABIs for any contract and access when logged into your account. Helpful for debugging,
+            Add custom ABIs for this contract and access when logged into your account. Helpful for debugging,
             functional testing and contract interaction.
           </Skeleton>
           <AuthGuard onAuthSuccess={ modal.onOpen }>

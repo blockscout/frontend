@@ -4,7 +4,10 @@ import React from 'react';
 
 import type { SmartContractMethod } from './types';
 
+import { route } from 'nextjs-routes';
+
 import { apos } from 'lib/html-entities';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 
 import ContractAbiItem from './ContractAbiItem';
 import useFormSubmit from './useFormSubmit';
@@ -74,7 +77,21 @@ const ContractAbi = ({ abi, addressHash, sourceAddress, tab, visibleItems }: Pro
           />
         )) }
       </Accordion>
-      { !hasVisibleItems && <Box>Couldn{ apos }t find any method that matches your query.</Box> }
+      { !hasVisibleItems && (
+        <div>
+          <div>Couldn{ apos }t find any method that matches your query.</div>
+          <div>
+            You can use custom ABI for this contract without verifying the contract in the{ ' ' }
+            <LinkInternal
+              href={ route({ pathname: '/address/[hash]', query: { hash: addressHash, tab: 'read_write_custom_methods' } }) }
+              scroll={ false }
+            >
+              Custom ABI
+            </LinkInternal>
+            { ' ' }tab.
+          </div>
+        </div>
+      ) }
     </div>
   );
 };
