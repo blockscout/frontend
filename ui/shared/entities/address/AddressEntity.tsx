@@ -7,6 +7,7 @@ import type { AddressParam } from 'types/api/addressParams';
 import { route } from 'nextjs-routes';
 
 import { useAddressHighlightContext } from 'lib/contexts/addressHighlight';
+import { useSettingsContext } from 'lib/contexts/settings';
 import * as EntityBase from 'ui/shared/entities/base/components';
 
 import { distributeEntityProps, getIconProps } from '../base/utils';
@@ -86,10 +87,13 @@ const Icon = (props: IconProps) => {
 export type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'address'>;
 
 const Content = chakra((props: ContentProps) => {
+  const settingsContext = useSettingsContext();
+
   const nameTag = props.address.metadata?.tags.find(tag => tag.tagType === 'name')?.name;
   const nameText = nameTag || props.address.ens_domain_name || props.address.name;
 
   const isProxy = props.address.implementations && props.address.implementations.length > 0;
+  const hash = settingsContext?.addressFormat === 'bech32' ? 'zil1' + props.address.hash.slice(2) : props.address.hash;
 
   if (isProxy) {
     return <AddressEntityContentProxy { ...props }/>;
@@ -115,7 +119,7 @@ const Content = chakra((props: ContentProps) => {
   return (
     <EntityBase.Content
       { ...props }
-      text={ props.address.hash }
+      text={ hash }
     />
   );
 });
