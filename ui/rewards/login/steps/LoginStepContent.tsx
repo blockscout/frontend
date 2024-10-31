@@ -1,7 +1,7 @@
 import { Text, Button, useColorModeValue, Image, Box, Flex, Switch, useBoolean, Input, FormControl, Alert, Skeleton, Divider } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import type { ChangeEvent } from 'react';
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect, useMemo } from 'react';
 
 import { useRewardsContext } from 'lib/contexts/rewards';
 import * as cookies from 'lib/cookies';
@@ -28,6 +28,16 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
   const { login, checkUserQuery } = useRewardsContext();
   const profileQuery = useProfileQuery();
 
+  const isAddressMismatch = useMemo(() =>
+    Boolean(address) &&
+    Boolean(profileQuery.data?.address_hash) &&
+    profileQuery.data?.address_hash !== address,
+  [ address, profileQuery.data ]);
+
+  const isSignUp = useMemo(() =>
+    isConnected && !isAddressMismatch && !checkUserQuery.isFetching && !checkUserQuery.data?.exists,
+  [ isConnected, isAddressMismatch, checkUserQuery ]);
+
   const handleRefCodeChange = React.useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setRefCode(event.target.value);
   }, []);
@@ -36,7 +46,7 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
     try {
       setRefCodeError.off();
       setIsLoading.on();
-      const { isNewUser, invalidRefCodeError } = await login(isRefCodeUsed ? refCode : '');
+      const { isNewUser, invalidRefCodeError } = await login(isSignUp && isRefCodeUsed ? refCode : '');
       if (invalidRefCodeError) {
         setRefCodeError.on();
       } else {
@@ -49,15 +59,15 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
       }
     } catch (error) {}
     setIsLoading.off();
-  }, [ login, goNext, setIsLoading, router, closeModal, refCode, setRefCodeError, isRefCodeUsed ]);
+  }, [ login, goNext, setIsLoading, router, closeModal, refCode, setRefCodeError, isRefCodeUsed, isSignUp ]);
 
   useEffect(() => {
-    if (refCode.length > 0 && refCode.length !== 6) {
+    if (isSignUp && isRefCodeUsed && refCode.length > 0 && refCode.length !== 6) {
       setRefCodeError.on();
     } else {
       setRefCodeError.off();
     }
-  }, [ refCode ]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [ refCode, isRefCodeUsed, isSignUp ]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const { start: loginToAccount } = useSignInWithWallet({
     isAuth: Boolean(!profileQuery.isLoading && profileQuery.data?.email),
@@ -74,11 +84,6 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
     loginToRewardsProgram();
   }, [ loginToAccount, loginToRewardsProgram, profileQuery, setIsLoading ]);
 
-  const isAddressMismatch =
-    Boolean(address) &&
-    Boolean(profileQuery.data?.address_hash) &&
-    profileQuery.data?.address_hash !== address;
-
   return (
     <>
       <Image
@@ -93,7 +98,7 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
           More about Blockscout Merits
         </LinkExternal>
       </Box>
-      { (isConnected && !isAddressMismatch && !checkUserQuery.isFetching && !checkUserQuery.data?.exists) && (
+      { isSignUp && (
         <Box mb={ 6 }>
           <Divider bgColor="divider" mb={ 6 }/>
           <Flex w="full" alignItems="center" justifyContent="space-between">
