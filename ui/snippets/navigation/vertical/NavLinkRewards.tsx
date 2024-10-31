@@ -16,7 +16,7 @@ type Props = {
   onClick?: () => void;
 }
 
-const RewardsNavLink = ({ isCollapsed, onClick }: Props) => {
+const NavLinkRewards = ({ isCollapsed, onClick }: Props) => {
   const router = useRouter();
   const { openLoginModal, dailyRewardQuery, apiToken, isInitialized } = useRewardsContext();
 
@@ -53,4 +53,4 @@ const RewardsNavLink = ({ isCollapsed, onClick }: Props) => {
   );
 };
 
-export default React.memo(RewardsNavLink);
+export default React.memo(NavLinkRewards);
