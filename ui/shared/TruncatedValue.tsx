@@ -23,7 +23,7 @@ const TruncatedValue = ({ className, isLoading, value, tooltipPlacement }: Props
         textOverflow="ellipsis"
         height="fit-content"
       >
-        { value }
+        <span>{ value }</span>
       </Skeleton>
     </TruncatedTextTooltip>
   );
