@@ -1,4 +1,4 @@
+/node_modules
+/public
+.env
 /output
-config.json
-response.json
-favicon_package**
