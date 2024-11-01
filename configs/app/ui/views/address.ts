@@ -25,7 +25,7 @@ const formats: Array<AddressFormat> = (() => {
 const bech32Prefix = (() => {
   const value = getEnvValue('NEXT_PUBLIC_VIEWS_ADDRESS_BECH_32_PREFIX');
 
-  if (!value) {
+  if (!value || !formats.includes('bech32')) {
     return undefined;
   }
 
