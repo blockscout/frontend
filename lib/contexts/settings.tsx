@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { ADDRESS_FORMATS, type AddressFormat } from 'types/views/address';
+
 import * as cookies from 'lib/cookies';
 
 import { useAppContext } from './app';
@@ -7,9 +9,6 @@ import { useAppContext } from './app';
 interface SettingsProviderProps {
   children: React.ReactNode;
 }
-
-const ADDRESS_FORMATS = [ 'base16', 'bech32' ] as const;
-export type AddressFormat = typeof ADDRESS_FORMATS[ number ];
 
 interface TSettingsContext {
   addressFormat: AddressFormat;

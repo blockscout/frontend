@@ -35,8 +35,8 @@ import type { ChainIndicatorId, HeroBannerButtonState, HeroBannerConfig, HomeSta
 import { type NetworkVerificationTypeEnvs, type NetworkExplorer, type FeaturedNetwork, NETWORK_GROUPS } from '../../../types/networks';
 import { COLOR_THEME_IDS } from '../../../types/settings';
 import type { FontFamily } from '../../../types/ui';
-import type { AddressViewId } from '../../../types/views/address';
-import { ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from '../../../types/views/address';
+import type { AddressFormat, AddressViewId } from '../../../types/views/address';
+import { ADDRESS_FORMATS, ADDRESS_VIEWS_IDS, IDENTICON_TYPES } from '../../../types/views/address';
 import { BLOCK_FIELDS_IDS } from '../../../types/views/block';
 import type { BlockFieldId } from '../../../types/views/block';
 import type { NftMarketplaceItem } from '../../../types/views/nft';
@@ -658,6 +658,19 @@ const schema = yup
       .json()
       .of(yup.string<BlockFieldId>().oneOf(BLOCK_FIELDS_IDS)),
     NEXT_PUBLIC_VIEWS_ADDRESS_IDENTICON_TYPE: yup.string().oneOf(IDENTICON_TYPES),
+    NEXT_PUBLIC_VIEWS_ADDRESS_FORMAT: yup
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(yup.string<AddressFormat>().oneOf(ADDRESS_FORMATS)),
+    NEXT_PUBLIC_VIEWS_ADDRESS_BECH_32_PREFIX: yup
+      .string()
+      .when('NEXT_PUBLIC_VIEWS_ADDRESS_FORMAT', {
+        is: (value: Array<AddressFormat> | undefined) => value && value.includes('bech32'),
+        then: (schema) => schema.required().min(1).max(83),
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_VIEWS_ADDRESS_BECH_32_PREFIX is required if NEXT_PUBLIC_VIEWS_ADDRESS_FORMAT contains "bech32"'),
+      }),
+
     NEXT_PUBLIC_VIEWS_ADDRESS_HIDDEN_VIEWS: yup
       .array()
       .transform(replaceQuotes)
