@@ -143,13 +143,14 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
   address: AddressProp;
   isSafeAddress?: boolean;
   noHighlight?: boolean;
+  noAltHash?: boolean;
 }
 
 const AddressEntry = (props: EntityProps) => {
   const partsProps = distributeEntityProps(props);
   const highlightContext = useAddressHighlightContext(props.noHighlight);
   const settingsContext = useSettingsContext();
-  const altHash = settingsContext?.addressFormat === 'bech32' ? toBech32Address(props.address.hash) : undefined;
+  const altHash = !props.noAltHash && settingsContext?.addressFormat === 'bech32' ? toBech32Address(props.address.hash) : undefined;
 
   return (
     <Container

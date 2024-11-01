@@ -17,6 +17,7 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 
+import AddressAlternativeFormat from './details/AddressAlternativeFormat';
 import AddressBalance from './details/AddressBalance';
 import AddressImplementations from './details/AddressImplementations';
 import AddressNameInfo from './details/AddressNameInfo';
@@ -91,6 +92,7 @@ const AddressDetails = ({ addressQuery, scrollRef }: Props) => {
         rowGap={{ base: 1, lg: 3 }}
         templateColumns={{ base: 'minmax(0, 1fr)', lg: 'auto minmax(0, 1fr)' }} overflow="hidden"
       >
+        <AddressAlternativeFormat isLoading={ addressQuery.isPlaceholderData } addressHash={ addressHash }/>
         <AddressNameInfo data={ data } isLoading={ addressQuery.isPlaceholderData }/>
 
         { data.is_contract && data.creation_tx_hash && data.creator_address_hash && (

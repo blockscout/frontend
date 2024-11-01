@@ -42,6 +42,7 @@ const ContractConnectWallet = ({ isLoading }: Props) => {
             truncation={ isMobile ? 'constant' : 'dynamic' }
             fontWeight={ 600 }
             ml={ 2 }
+            noAltHash
           />
         </Flex>
         <Button onClick={ web3Wallet.disconnect } size="sm" variant="outline">Disconnect</Button>
