@@ -11,6 +11,7 @@ import type { Props as PageProps } from 'nextjs/getServerSideProps';
 import config from 'configs/app';
 import { AppContextProvider } from 'lib/contexts/app';
 import { MarketplaceContext } from 'lib/contexts/marketplace';
+import { RewardsContextProvider } from 'lib/contexts/rewards';
 import { SocketProvider } from 'lib/socket/context';
 import currentChain from 'lib/web3/currentChain';
 import theme from 'theme/theme';
@@ -77,7 +78,9 @@ const TestApp = ({ children, withSocket, appContext = defaultAppContext, marketp
             <MarketplaceContext.Provider value={ marketplaceContext }>
               <GrowthBookProvider>
                 <WagmiProvider config={ wagmiConfig }>
-                  { children }
+                  <RewardsContextProvider>
+                    { children }
+                  </RewardsContextProvider>
                 </WagmiProvider>
               </GrowthBookProvider>
             </MarketplaceContext.Provider>

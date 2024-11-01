@@ -81,4 +81,7 @@ export const ENVS_MAP: Record<string, Array<[string, string]>> = {
   nameService: [
     [ 'NEXT_PUBLIC_NAME_SERVICE_API_HOST', 'https://localhost:3101' ],
   ],
+  rewardsService: [
+    [ 'NEXT_PUBLIC_REWARDS_SERVICE_API_HOST', 'http://localhost:3003' ],
+  ],
 };

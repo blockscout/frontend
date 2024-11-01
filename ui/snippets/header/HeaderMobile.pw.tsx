@@ -1,10 +1,17 @@
 import React from 'react';
 
+import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect, devices } from 'playwright/lib';
 
 import HeaderMobile from './HeaderMobile';
 
 test.use({ viewport: devices['iPhone 13 Pro'].viewport });
+
+test.beforeEach(async({ mockEnvs }) => {
+  await mockEnvs([
+    ...ENVS_MAP.rewardsService,
+  ]);
+});
 
 test('default view +@dark-mode', async({ render, page }) => {
   await render(<HeaderMobile/>);
