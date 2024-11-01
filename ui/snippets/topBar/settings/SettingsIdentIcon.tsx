@@ -7,7 +7,6 @@ import { IDENTICONS } from 'lib/settings/identIcon';
 
 import SettingsSample from './SettingsSample';
 
-// TODO @tom2drum move to settings context
 const SettingsIdentIcon = () => {
   const [ activeId, setActiveId ] = React.useState<string>();
 

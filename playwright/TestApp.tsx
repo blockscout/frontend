@@ -11,6 +11,7 @@ import type { Props as PageProps } from 'nextjs/getServerSideProps';
 import config from 'configs/app';
 import { AppContextProvider } from 'lib/contexts/app';
 import { MarketplaceContext } from 'lib/contexts/marketplace';
+import { SettingsContextProvider } from 'lib/contexts/settings';
 import { SocketProvider } from 'lib/socket/context';
 import currentChain from 'lib/web3/currentChain';
 import theme from 'theme/theme';
@@ -75,11 +76,13 @@ const TestApp = ({ children, withSocket, appContext = defaultAppContext, marketp
         <SocketProvider url={ withSocket ? `ws://${ config.app.host }:${ socketPort }` : undefined }>
           <AppContextProvider { ...appContext }>
             <MarketplaceContext.Provider value={ marketplaceContext }>
-              <GrowthBookProvider>
-                <WagmiProvider config={ wagmiConfig }>
-                  { children }
-                </WagmiProvider>
-              </GrowthBookProvider>
+              <SettingsContextProvider>
+                <GrowthBookProvider>
+                  <WagmiProvider config={ wagmiConfig }>
+                    { children }
+                  </WagmiProvider>
+                </GrowthBookProvider>
+              </SettingsContextProvider>
             </MarketplaceContext.Provider>
           </AppContextProvider>
         </SocketProvider>
