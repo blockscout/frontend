@@ -32,7 +32,7 @@ const AddressEntityContentProxy = (props: ContentProps) => {
           <EntityBase.Content
             { ...props }
             truncation={ nameTag || implementationName || props.address.name ? 'tail' : props.truncation }
-            text={ nameTag || implementationName || props.address.name || props.address.hash }
+            text={ nameTag || implementationName || props.address.name || props.altHash || props.address.hash }
             isTooltipDisabled
           />
         </Box>

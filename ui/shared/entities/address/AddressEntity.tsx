@@ -6,6 +6,7 @@ import type { AddressParam } from 'types/api/addressParams';
 
 import { route } from 'nextjs-routes';
 
+import { toBech32Address } from 'lib/address/bech32';
 import { useAddressHighlightContext } from 'lib/contexts/addressHighlight';
 import { useSettingsContext } from 'lib/contexts/settings';
 import * as EntityBase from 'ui/shared/entities/base/components';
@@ -84,16 +85,13 @@ const Icon = (props: IconProps) => {
   );
 };
 
-export type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'address'>;
+export type ContentProps = Omit<EntityBase.ContentBaseProps, 'text'> & Pick<EntityProps, 'address'> & { altHash?: string };
 
 const Content = chakra((props: ContentProps) => {
-  const settingsContext = useSettingsContext();
-
   const nameTag = props.address.metadata?.tags.find(tag => tag.tagType === 'name')?.name;
   const nameText = nameTag || props.address.ens_domain_name || props.address.name;
 
   const isProxy = props.address.implementations && props.address.implementations.length > 0;
-  const hash = settingsContext?.addressFormat === 'bech32' ? 'zil1' + props.address.hash.slice(2) : props.address.hash;
 
   if (isProxy) {
     return <AddressEntityContentProxy { ...props }/>;
@@ -103,7 +101,7 @@ const Content = chakra((props: ContentProps) => {
     const label = (
       <VStack gap={ 0 } py={ 1 } color="inherit">
         <Box fontWeight={ 600 } whiteSpace="pre-wrap" wordBreak="break-word">{ nameText }</Box>
-        <Box whiteSpace="pre-wrap" wordBreak="break-word">{ props.address.hash }</Box>
+        <Box whiteSpace="pre-wrap" wordBreak="break-word">{ props.altHash ?? props.address.hash }</Box>
       </VStack>
     );
 
@@ -119,18 +117,18 @@ const Content = chakra((props: ContentProps) => {
   return (
     <EntityBase.Content
       { ...props }
-      text={ hash }
+      text={ props.altHash ?? props.address.hash }
     />
   );
 });
 
-type CopyProps = Omit<EntityBase.CopyBaseProps, 'text'> & Pick<EntityProps, 'address'>;
+type CopyProps = Omit<EntityBase.CopyBaseProps, 'text'> & Pick<EntityProps, 'address'> & { altHash?: string };
 
 const Copy = (props: CopyProps) => {
   return (
     <EntityBase.Copy
       { ...props }
-      text={ props.address.hash }
+      text={ props.altHash ?? props.address.hash }
     />
   );
 };
@@ -149,24 +147,26 @@ export interface EntityProps extends EntityBase.EntityBaseProps {
 
 const AddressEntry = (props: EntityProps) => {
   const partsProps = distributeEntityProps(props);
-  const context = useAddressHighlightContext(props.noHighlight);
+  const highlightContext = useAddressHighlightContext(props.noHighlight);
+  const settingsContext = useSettingsContext();
+  const altHash = settingsContext?.addressFormat === 'bech32' ? toBech32Address(props.address.hash) : undefined;
 
   return (
     <Container
       // we have to use the global classnames here, see theme/global.ts
       // otherwise, if we use sx prop, Chakra will generate the same styles for each instance of the component on the page
       className={ `${ props.className } address-entity ${ props.noCopy ? 'address-entity_no-copy' : '' }` }
-      data-hash={ context && !props.isLoading ? props.address.hash : undefined }
-      onMouseEnter={ context?.onMouseEnter }
-      onMouseLeave={ context?.onMouseLeave }
+      data-hash={ highlightContext && !props.isLoading ? props.address.hash : undefined }
+      onMouseEnter={ highlightContext?.onMouseEnter }
+      onMouseLeave={ highlightContext?.onMouseLeave }
       position="relative"
       zIndex={ 0 }
     >
       <Icon { ...partsProps.icon }/>
       <Link { ...partsProps.link }>
-        <Content { ...partsProps.content }/>
+        <Content { ...partsProps.content } altHash={ altHash }/>
       </Link>
-      <Copy { ...partsProps.copy }/>
+      <Copy { ...partsProps.copy } altHash={ altHash }/>
     </Container>
   );
 };
