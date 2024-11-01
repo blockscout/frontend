@@ -11,7 +11,7 @@ import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import Hint from 'ui/shared/Hint';
 
 import ContractMethodForm from './form/ContractMethodForm';
-import { getElementName } from './useScrollToMethod';
+import { getElementId, getElementName } from './useScrollToMethod';
 import { isReadMethod } from './utils';
 
 interface Props {
@@ -29,10 +29,6 @@ const ContractAbiItem = ({ data, index, id, addressHash, sourceAddress, tab, onS
   const [ attempt, setAttempt ] = React.useState(0);
 
   const url = React.useMemo(() => {
-    if (!('method_id' in data)) {
-      return '';
-    }
-
     return config.app.baseUrl + route({
       pathname: '/address/[hash]',
       query: {
@@ -40,7 +36,7 @@ const ContractAbiItem = ({ data, index, id, addressHash, sourceAddress, tab, onS
         tab,
         ...(sourceAddress ? { source_address: sourceAddress } : {}),
       },
-      hash: data.method_id,
+      hash: getElementId(data),
     });
   }, [ addressHash, data, tab, sourceAddress ]);
 
@@ -62,7 +58,7 @@ const ContractAbiItem = ({ data, index, id, addressHash, sourceAddress, tab, onS
     <AccordionItem as="section" _first={{ borderTopWidth: 0 }} _last={{ borderBottomWidth: 0 }} display={ isVisible ? 'block' : 'none' }>
       { ({ isExpanded }) => (
         <>
-          <Element as="h2" name={ 'method_id' in data ? getElementName(data.method_id) : '' }>
+          <Element as="h2" name={ getElementName(data) }>
             <AccordionButton
               px={ 0 }
               py={ 3 }
@@ -75,7 +71,7 @@ const ContractAbiItem = ({ data, index, id, addressHash, sourceAddress, tab, onS
               alignItems="center"
               columnGap={ 2 }
             >
-              { 'method_id' in data && <CopyToClipboard text={ url } onClick={ handleCopyLinkClick } type="link" ml={ 0 } color="text_secondary"/> }
+              <CopyToClipboard text={ url } onClick={ handleCopyLinkClick } type="link" ml={ 0 } color="text_secondary"/>
               <Box as="div" fontWeight={ 500 } display="flex" alignItems="center">
                 { index + 1 }. { data.type === 'fallback' || data.type === 'receive' ? data.type : data.name }
                 { data.type === 'fallback' && (
