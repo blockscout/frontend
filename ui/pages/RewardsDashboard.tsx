@@ -176,18 +176,24 @@ const RewardsDashboard = () => {
             px={{ base: 4, md: 6 }}
             py={{ base: 4, md: 0 }}
             justifyContent="space-between"
+            gap={ 2 }
           >
             { Array(5).fill(null).map((_, index) => (
               <Image
                 key={ index }
-                display={{ base: index > 2 ? 'none' : 'block', md: 'block' }}
+                display={{ base: index > 2 ? 'none' : 'block', sm: 'block' }}
                 src={ `/static/badges/badge_${ index + 1 }.svg` }
                 alt={ `Badge ${ index + 1 }` }
-                boxSize={{ base: '80px', md: '100px' }}
+                w={{ base: 'calc((100% - 16px) / 3)', sm: 'calc((100% - 32px) / 5)' }}
+                maxW={{ base: '80px', md: '100px' }}
+                maxH={{ base: '80px', md: '100px' }}
                 fallback={ (
                   <Skeleton
-                    boxSize={{ base: '80px', md: '100px' }}
-                    display={{ base: index > 2 ? 'none' : 'block', md: 'block' }}
+                    display={{ base: index > 2 ? 'none' : 'block', sm: 'block' }}
+                    w={{ base: 'calc((100% - 16px) / 3)', sm: 'calc((100% - 32px) / 5)' }}
+                    maxW={{ base: '80px', md: '100px' }}
+                    maxH={{ base: '80px', md: '100px' }}
+                    aspectRatio={ 1 }
                   />
                 ) }
               />
