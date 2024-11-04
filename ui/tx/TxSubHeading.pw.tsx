@@ -3,6 +3,7 @@ import React from 'react';
 import type { AddressMetadataInfo, AddressMetadataTagApi } from 'types/api/addressMetadata';
 
 import config from 'configs/app';
+import * as addressMock from 'mocks/address/address';
 import { protocolTagWithMeta } from 'mocks/metadata/address';
 import * as txMock from 'mocks/txs/tx';
 import { txInterpretation } from 'mocks/txs/txInterpretation';
@@ -127,7 +128,7 @@ test.describe('blockscout provider', () => {
     await mockApiResponse('address_metadata_info', metadataResponse, { queryParams: addressMetadataQueryParams });
     await mockAssetResponse(protocolTagWithMeta?.meta?.appLogoURL as string, './playwright/mocks/image_s.jpg');
 
-    const newTxQuery = { ...txQuery, data: txMock.withRecipientContract } as TxQuery;
+    const newTxQuery = { ...txQuery, data: { ...txMock.pending, to: addressMock.contract } } as TxQuery;
     const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ newTxQuery }/>);
     await expect(component).toHaveScreenshot();
   });
