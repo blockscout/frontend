@@ -57,10 +57,6 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
   const hasViewAllInterpretationsLink =
     !txInterpretationQuery.isPlaceholderData && txInterpretationQuery.data?.data.summaries && txInterpretationQuery.data?.data.summaries.length > 1;
 
-  const hasAnyInterpretation =
-    (hasNovesInterpretation && novesInterpretationQuery.data && !novesInterpretationQuery.isPlaceholderData) ||
-    (hasInternalInterpretation && !txInterpretationQuery.isPlaceholderData);
-
   const addressDataMap: Record<string, AddressParam> = {};
   [ txQuery.data?.from, txQuery.data?.to ]
     .filter((data): data is AddressParam => Boolean(data && data.hash))
@@ -140,7 +136,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
         mt={{ base: 3, lg: 0 }}
       >
         { !hasTag && <AccountActionsMenu isLoading={ isLoading }/> }
-        { (appActionData && hasAnyInterpretation) && (
+        { appActionData && (
           <AppActionButton data={ appActionData } txHash={ hash } source="Txn"/>
         ) }
         <NetworkExplorers type="tx" pathParam={ hash } ml={{ base: 0, lg: 'auto' }}/>
