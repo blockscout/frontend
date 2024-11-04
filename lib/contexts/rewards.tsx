@@ -28,6 +28,8 @@ import removeQueryParam from 'lib/router/removeQueryParam';
 import useAccount from 'lib/web3/useAccount';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 
+const feature = config.features.rewards;
+
 type ContextQueryResult<Response> =
   Pick<UseQueryResult<Response, ResourceError<unknown>>, 'data' | 'isLoading' | 'refetch' | 'isPending' | 'isFetching' | 'isError'>;
 
@@ -78,13 +80,18 @@ function getMessageToSign(address: string, nonce: string, isLogin?: boolean, ref
   const signUpText = 'Sign-Up for the Blockscout Merits program. I accept Terms of Service: https://merits.blockscout.com/tos. I love capybaras.';
   const referralText = refCode ? ` Referral code: ${ refCode }` : '';
   const body = isLogin ? signInText : signUpText + referralText;
+
+  const urlObj = window.location.hostname === 'localhost' && feature.isEnabled ?
+    new URL(feature.api.endpoint) :
+    window.location;
+
   return [
-    `${ window.location.hostname } wants you to sign in with your Ethereum account:`,
+    `${ urlObj.hostname } wants you to sign in with your Ethereum account:`,
     address,
     '',
     body,
     '',
-    `URI: ${ window.location.origin }`,
+    `URI: ${ urlObj.origin }`,
     'Version: 1',
     `Chain ID: ${ config.chain.id }`,
     `Nonce: ${ nonce }`,
@@ -98,8 +105,6 @@ function getRegisteredAddress(token: string) {
   const decodedToken = decodeJWT(token);
   return decodedToken?.payload.sub;
 }
-
-const isEnabled = config.features.rewards.isEnabled;
 
 type Props = {
   children: React.ReactNode;
@@ -141,15 +146,15 @@ export function RewardsContextProvider({ children }: Props) {
   }, []);
 
   const [ queryOptions, fetchParams ] = useMemo(() => [
-    { enabled: Boolean(apiToken) && isEnabled },
+    { enabled: Boolean(apiToken) && feature.isEnabled },
     { headers: { Authorization: `Bearer ${ apiToken }` } },
   ], [ apiToken ]);
 
   const balancesQuery = useApiQuery('rewards_user_balances', { queryOptions, fetchParams });
   const dailyRewardQuery = useApiQuery('rewards_user_daily_check', { queryOptions, fetchParams });
   const referralsQuery = useApiQuery('rewards_user_referrals', { queryOptions, fetchParams });
-  const rewardsConfigQuery = useApiQuery('rewards_config', { queryOptions: { enabled: isEnabled } });
-  const checkUserQuery = useApiQuery('rewards_check_user', { queryOptions: { enabled: isEnabled }, pathParams: { address } });
+  const rewardsConfigQuery = useApiQuery('rewards_config', { queryOptions: { enabled: feature.isEnabled } });
+  const checkUserQuery = useApiQuery('rewards_check_user', { queryOptions: { enabled: feature.isEnabled }, pathParams: { address } });
 
   // Reset queries when the API token is removed
   useEffect(() => {
@@ -250,7 +255,7 @@ export function RewardsContextProvider({ children }: Props) {
   }, [ apiFetch, errorToast, fetchParams ]);
 
   const value = useMemo(() => {
-    if (!isEnabled) {
+    if (!feature.isEnabled) {
       return initialState;
     }
     return {
