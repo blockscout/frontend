@@ -36,10 +36,6 @@ const AccountActionsMenu = ({ isLoading, className, showUpdateMetadataItem }: Pr
     mixpanel.logEvent(mixpanel.EventTypes.PAGE_WIDGET, { Type: 'Address actions (more button)' });
   }, []);
 
-  if (!config.features.account.isEnabled) {
-    return null;
-  }
-
   const userWithoutEmail = profileQuery.data && !profileQuery.data.email;
 
   const items = [
@@ -49,15 +45,15 @@ const AccountActionsMenu = ({ isLoading, className, showUpdateMetadataItem }: Pr
     },
     {
       render: (props: ItemProps) => <TokenInfoMenuItem { ...props }/>,
-      enabled: isTokenPage && config.features.addressVerification.isEnabled && !userWithoutEmail,
+      enabled: config.features.account.isEnabled && isTokenPage && config.features.addressVerification.isEnabled && !userWithoutEmail,
     },
     {
       render: (props: ItemProps) => <PrivateTagMenuItem { ...props } entityType={ isTxPage ? 'tx' : 'address' }/>,
-      enabled: true,
+      enabled: config.features.account.isEnabled,
     },
     {
       render: (props: ItemProps) => <PublicTagMenuItem { ...props }/>,
-      enabled: !isTxPage && config.features.publicTagsSubmission.isEnabled,
+      enabled: config.features.account.isEnabled && !isTxPage && config.features.publicTagsSubmission.isEnabled,
     },
   ].filter(({ enabled }) => enabled);
 

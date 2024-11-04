@@ -19,7 +19,14 @@ import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import IconSvg from 'ui/shared/IconSvg';
 
-import { extractVariables, getStringChunks, fillStringVariables, checkSummary, NATIVE_COIN_SYMBOL_VAR_NAME } from './utils';
+import {
+  extractVariables,
+  getStringChunks,
+  fillStringVariables,
+  checkSummary,
+  NATIVE_COIN_SYMBOL_VAR_NAME,
+  WEI_VAR_NAME,
+} from './utils';
 
 type Props = {
   summary?: TxInterpretationSummary;
@@ -152,19 +159,23 @@ const TxInterpretation = ({ summary, isLoading, addressDataMap, className }: Pro
         <IconSvg name="lightning" boxSize={ 5 } color="text_secondary" mr={ 1 } verticalAlign="text-top"/>
       </Tooltip>
       { chunks.map((chunk, index) => {
+        let content = null;
+        if (variablesNames[index] === NATIVE_COIN_SYMBOL_VAR_NAME) {
+          content = <chakra.span>{ currencyUnits.ether + ' ' }</chakra.span>;
+        } else if (variablesNames[index] === WEI_VAR_NAME) {
+          content = <chakra.span>{ currencyUnits.wei + ' ' }</chakra.span>;
+        } else {
+          content = (
+            <TxInterpretationElementByType
+              variable={ variables[variablesNames[index]] as NonStringTxInterpretationVariable }
+              addressDataMap={ addressDataMap }
+            />
+          );
+        }
         return (
           <chakra.span key={ chunk + index }>
             <chakra.span color="text_secondary">{ chunk.trim() + (chunk.trim() && variablesNames[index] ? ' ' : '') }</chakra.span>
-            { index < variablesNames.length && (
-              variablesNames[index] === NATIVE_COIN_SYMBOL_VAR_NAME ?
-                <chakra.span>{ currencyUnits.ether + ' ' }</chakra.span> :
-                (
-                  <TxInterpretationElementByType
-                    variable={ variables[variablesNames[index]] as NonStringTxInterpretationVariable }
-                    addressDataMap={ addressDataMap }
-                  />
-                )
-            ) }
+            { index < variablesNames.length && content }
           </chakra.span>
         );
       }) }

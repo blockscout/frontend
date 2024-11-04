@@ -28,6 +28,10 @@ export default function useLogout() {
       queryKey: getResourceKey('user_info'),
       exact: true,
     });
+    queryClient.resetQueries({
+      queryKey: getResourceKey('custom_abi'),
+      exact: true,
+    });
 
     mixpanel.logEvent(mixpanel.EventTypes.ACCOUNT_ACCESS, { Action: 'Logged out' }, { send_immediately: true });
 

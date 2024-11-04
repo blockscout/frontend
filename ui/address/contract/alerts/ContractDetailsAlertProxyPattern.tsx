@@ -44,18 +44,18 @@ const PROXY_TYPES: Record<NonNullable<SmartContractProxyType>, {
     link: 'https://github.com/wighawag/clones-with-immutable-args',
   },
   master_copy: {
-    name: 'GnosisSafe',
+    name: 'Safe proxy',
     link: 'https://github.com/safe-global/safe-smart-account',
   },
   comptroller: {
-    name: 'Compound protocol',
+    name: 'Compound protocol proxy',
     link: 'https://github.com/compound-finance/compound-protocol',
   },
   basic_implementation: {
-    name: 'public implementation getter in proxy smart-contract',
+    name: 'public implementation() getter',
   },
   basic_get_implementation: {
-    name: 'public getImplementation getter in proxy smart-contract',
+    name: 'public getImplementation() getter',
   },
   unknown: {
     name: 'Unknown proxy pattern',

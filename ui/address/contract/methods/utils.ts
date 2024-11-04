@@ -2,7 +2,7 @@ import type { Abi, AbiFallback, AbiReceive } from 'abitype';
 import type { AbiFunction } from 'viem';
 import { toFunctionSelector } from 'viem';
 
-import type { SmartContractMethod, SmartContractMethodRead, SmartContractMethodWrite } from './types';
+import type { MethodType, SmartContractMethod, SmartContractMethodRead, SmartContractMethodWrite } from './types';
 
 export const getNativeCoinValue = (value: unknown) => {
   if (typeof value !== 'string') {
@@ -11,11 +11,6 @@ export const getNativeCoinValue = (value: unknown) => {
 
   return BigInt(value);
 };
-
-interface DividedAbi {
-  read: Array<SmartContractMethodRead>;
-  write: Array<SmartContractMethodWrite>;
-}
 
 export const isMethod = (method: Abi[number]): method is SmartContractMethod =>
   (method.type === 'function' || method.type === 'fallback' || method.type === 'receive');
@@ -37,7 +32,7 @@ export const enrichWithMethodId = (method: AbiFunction | AbiFallback | AbiReceiv
   try {
     return {
       ...method,
-      method_id: toFunctionSelector(method).slice(2),
+      method_id: toFunctionSelector(method),
     };
   } catch (error) {
     return {
@@ -47,13 +42,8 @@ export const enrichWithMethodId = (method: AbiFunction | AbiFallback | AbiReceiv
   }
 };
 
-export function divideAbiIntoMethodTypes(abi: Abi): DividedAbi {
-  return {
-    read: abi
-      .filter(isReadMethod)
-      .map(enrichWithMethodId) as Array<SmartContractMethodRead>,
-    write: abi
-      .filter(isWriteMethod)
-      .map(enrichWithMethodId) as Array<SmartContractMethodWrite>,
-  };
-}
+export const TYPE_FILTER_OPTIONS: Array<{ value: MethodType; title: string }> = [
+  { value: 'all', title: 'All' },
+  { value: 'read', title: 'Read' },
+  { value: 'write', title: 'Write' },
+];

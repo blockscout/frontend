@@ -51,9 +51,6 @@ const variantRadioGroup = definePartsStyle((props) => {
       &[data-selected=true][aria-selected=true]
     `],
       borderRadius: 'none',
-      _notFirst: {
-        borderLeftWidth: 0,
-      },
       '&[role="tab"]': {
         _first: {
           borderTopLeftRadius: 'base',
