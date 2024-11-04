@@ -1,4 +1,3 @@
-import _upperFirst from 'lodash/upperFirst';
 import React from 'react';
 
 import config from 'configs/app';
@@ -19,7 +18,7 @@ const AddressAlternativeFormat = ({ isLoading, addressHash }: Props) => {
     return null;
   }
 
-  const label = settingsContext.addressFormat === 'bech32' ? '0x hash' : `${ _upperFirst(config.UI.views.address.hashFormat.bech32Prefix) }1 hash`;
+  const label = settingsContext.addressFormat === 'bech32' ? '0x hash' : `${ config.UI.views.address.hashFormat.bech32Prefix }1 hash`;
   const hint = settingsContext.addressFormat === 'bech32' ? 'Address hash encoded in base16 format' : 'Address hash encoded in bech32 format';
   const altHash = settingsContext.addressFormat === 'bech32' ? addressHash : toBech32Address(addressHash);
 
@@ -35,7 +34,6 @@ const AddressAlternativeFormat = ({ isLoading, addressHash }: Props) => {
         <AddressEntity
           address={{ hash: altHash }}
           isLoading={ isLoading }
-          noCopy
           noIcon
           noLink
           noAltHash
