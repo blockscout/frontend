@@ -2,6 +2,7 @@ import { FormLabel, FormControl, Switch } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
+import { BECH_32_SEPARATOR } from 'lib/address/bech32';
 import { useSettingsContext } from 'lib/contexts/settings';
 
 const SettingsAddressFormat = () => {
@@ -16,7 +17,7 @@ const SettingsAddressFormat = () => {
   return (
     <FormControl display="flex" alignItems="center" columnGap={ 2 } mt={ 4 }>
       <FormLabel htmlFor="address-format" m="0" fontWeight={ 400 } fontSize="sm" lineHeight={ 5 }>
-        Show { config.UI.views.address.hashFormat.bech32Prefix }1 format
+        Show { config.UI.views.address.hashFormat.bech32Prefix }{ BECH_32_SEPARATOR } format
       </FormLabel>
       <Switch id="address-format" defaultChecked={ addressFormat === 'bech32' } onChange={ toggleAddressFormat }/>
     </FormControl>

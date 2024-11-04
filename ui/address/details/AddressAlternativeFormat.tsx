@@ -1,7 +1,7 @@
 import React from 'react';
 
 import config from 'configs/app';
-import { toBech32Address } from 'lib/address/bech32';
+import { BECH_32_SEPARATOR, toBech32Address } from 'lib/address/bech32';
 import { useSettingsContext } from 'lib/contexts/settings';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
@@ -18,7 +18,7 @@ const AddressAlternativeFormat = ({ isLoading, addressHash }: Props) => {
     return null;
   }
 
-  const label = settingsContext.addressFormat === 'bech32' ? '0x hash' : `${ config.UI.views.address.hashFormat.bech32Prefix }1 hash`;
+  const label = settingsContext.addressFormat === 'bech32' ? '0x hash' : `${ config.UI.views.address.hashFormat.bech32Prefix }${ BECH_32_SEPARATOR } hash`;
   const hint = settingsContext.addressFormat === 'bech32' ? 'Address hash encoded in base16 format' : 'Address hash encoded in bech32 format';
   const altHash = settingsContext.addressFormat === 'bech32' ? addressHash : toBech32Address(addressHash);
 
