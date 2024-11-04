@@ -12,9 +12,10 @@ interface Props {
   abi: Array<SmartContractMethod>;
   addressHash: string;
   tab: string;
+  sourceAddress?: string;
 }
 
-const ContractAbi = ({ abi, addressHash, tab }: Props) => {
+const ContractAbi = ({ abi, addressHash, sourceAddress, tab }: Props) => {
   const [ expandedSections, setExpandedSections ] = React.useState<Array<number>>(abi.length === 1 ? [ 0 ] : []);
   const [ id, setId ] = React.useState(0);
 
@@ -61,6 +62,7 @@ const ContractAbi = ({ abi, addressHash, tab }: Props) => {
             id={ id }
             index={ index }
             addressHash={ addressHash }
+            sourceAddress={ sourceAddress }
             tab={ tab }
             onSubmit={ handleFormSubmit }
           />

@@ -1,15 +1,17 @@
 import { Box } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { MethodType } from './types';
 import type { AddressImplementation } from 'types/api/addressParams';
 
 import useApiQuery from 'lib/api/useApiQuery';
+import getQueryParamString from 'lib/router/getQueryParamString';
 
+import ContractSourceAddressSelector from '../ContractSourceAddressSelector';
 import ContractConnectWallet from './ContractConnectWallet';
-import ContractImplementationAddress from './ContractImplementationAddress';
 import ContractMethods from './ContractMethods';
-import { isReadMethod, isWriteMethod } from './utils';
+import { enrichWithMethodId, isReadMethod, isWriteMethod } from './utils';
 
 interface Props {
   type: MethodType;
@@ -18,8 +20,10 @@ interface Props {
 }
 
 const ContractMethodsProxy = ({ type, implementations, isLoading: isInitialLoading }: Props) => {
+  const router = useRouter();
+  const contractAddress = getQueryParamString(router.query.source_address);
 
-  const [ selectedItem, setSelectedItem ] = React.useState(implementations[0]);
+  const [ selectedItem, setSelectedItem ] = React.useState(implementations.find((item) => item.address === contractAddress) || implementations[0]);
 
   const contractQuery = useApiQuery('contract', {
     pathParams: { hash: selectedItem.address },
@@ -29,29 +33,25 @@ const ContractMethodsProxy = ({ type, implementations, isLoading: isInitialLoadi
     },
   });
 
-  const handleItemSelect = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
-    const nextOption = implementations.find(({ address }) => address === event.target.value);
-    if (nextOption) {
-      setSelectedItem(nextOption);
-    }
-  }, [ implementations ]);
-
-  const abi = contractQuery.data?.abi?.filter(type === 'read' ? isReadMethod : isWriteMethod) || [];
+  const abi = contractQuery.data?.abi?.filter(type === 'read' ? isReadMethod : isWriteMethod).map(enrichWithMethodId) || [];
 
   return (
     <Box>
       <ContractConnectWallet isLoading={ isInitialLoading }/>
-      <ContractImplementationAddress
-        implementations={ implementations }
+      <ContractSourceAddressSelector
+        items={ implementations }
         selectedItem={ selectedItem }
-        onItemSelect={ handleItemSelect }
+        onItemSelect={ setSelectedItem }
         isLoading={ isInitialLoading }
+        label="Implementation address"
+        mb={ 6 }
       />
       <ContractMethods
         key={ selectedItem.address }
         abi={ abi }
         isLoading={ isInitialLoading || contractQuery.isPending }
         isError={ contractQuery.isError }
+        sourceAddress={ selectedItem.address }
         type={ type }
       />
     </Box>

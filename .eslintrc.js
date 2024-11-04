@@ -7,7 +7,7 @@ const RESTRICTED_MODULES = {
     { name: 'playwright/TestApp', message: 'Please use render() fixture from test() function of playwright/lib module' },
     {
       name: '@chakra-ui/react',
-      importNames: [ 'Popover', 'Menu', 'useToast' ],
+      importNames: [ 'Popover', 'Menu', 'PinInput', 'useToast' ],
       message: 'Please use corresponding component or hook from ui/shared/chakra component instead',
     },
     {

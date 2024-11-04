@@ -7,6 +7,8 @@ export enum EventTypes {
   LOCAL_SEARCH = 'Local search',
   ADD_TO_WALLET = 'Add to wallet',
   ACCOUNT_ACCESS = 'Account access',
+  LOGIN = 'Login',
+  ACCOUNT_LINK_INFO = 'Account link info',
   PRIVATE_TAG = 'Private tag',
   VERIFY_ADDRESS = 'Verify address',
   VERIFY_TOKEN = 'Verify token',
@@ -54,7 +56,27 @@ Type extends EventTypes.ADD_TO_WALLET ? (
   }
 ) :
 Type extends EventTypes.ACCOUNT_ACCESS ? {
-  'Action': 'Auth0 init' | 'Verification email resent' | 'Logged out';
+  'Action': 'Dropdown open' | 'Logged out';
+} :
+Type extends EventTypes.LOGIN ? (
+  {
+    'Action': 'Started';
+    'Source': string;
+  } | {
+    'Action': 'Wallet' | 'Email';
+    'Source': 'Options selector';
+  } | {
+    'Action': 'OTP sent';
+    'Source': 'Email';
+  } | {
+    'Action': 'Success';
+    'Source': 'Email' | 'Wallet';
+  }
+) :
+Type extends EventTypes.ACCOUNT_LINK_INFO ? {
+  'Source': 'Profile' | 'Login modal' | 'Profile dropdown';
+  'Status': 'Started' | 'OTP sent' | 'Finished';
+  'Type': 'Email' | 'Wallet';
 } :
 Type extends EventTypes.PRIVATE_TAG ? {
   'Action': 'Form opened' | 'Submit';
@@ -75,7 +97,7 @@ Type extends EventTypes.VERIFY_TOKEN ? {
   'Action': 'Form opened' | 'Submit';
 } :
 Type extends EventTypes.WALLET_CONNECT ? {
-  'Source': 'Header' | 'Smart contracts' | 'Swap button';
+  'Source': 'Header' | 'Login' | 'Profile' | 'Profile dropdown' | 'Smart contracts' | 'Swap button';
   'Status': 'Started' | 'Connected';
 } :
 Type extends EventTypes.WALLET_ACTION ? (

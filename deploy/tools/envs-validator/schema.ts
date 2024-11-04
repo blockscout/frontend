@@ -530,6 +530,13 @@ const deFiDropdownItemSchema: yup.ObjectSchema<DeFiDropdownItem> = yup
     return Boolean(value.dappId) || Boolean(value.url);
   }) as yup.ObjectSchema<DeFiDropdownItem>;
 
+const multichainProviderConfigSchema: yup.ObjectSchema<MultichainProviderConfig> = yup.object({
+  name: yup.string().required(),
+  url_template: yup.string().required(),
+  logo: yup.string().required(),
+  dapp_id: yup.string(),
+});
+
 const schema = yup
   .object()
   .noUnknown(true, (params) => {
@@ -768,18 +775,10 @@ const schema = yup
     NEXT_PUBLIC_HAS_USER_OPS: yup.boolean(),
     NEXT_PUBLIC_METASUITES_ENABLED: yup.boolean(),
     NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG: yup
-      .mixed()
-      .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_MULTICHAIN_BALANCE_PROVIDER_CONFIG, it should have name and url template', (data) => {
-        const isUndefined = data === undefined;
-        const valueSchema = yup.object<MultichainProviderConfig>().transform(replaceQuotes).json().shape({
-          name: yup.string().required(),
-          url_template: yup.string().required(),
-          logo: yup.string(),
-          dapp_id: yup.string(),
-        });
-
-        return isUndefined || valueSchema.isValidSync(data);
-      }),
+      .array()
+      .transform(replaceQuotes)
+      .json()
+      .of(multichainProviderConfigSchema),
     NEXT_PUBLIC_GAS_REFUEL_PROVIDER_CONFIG: yup
       .mixed()
       .test('shape', 'Invalid schema were provided for NEXT_PUBLIC_GAS_REFUEL_PROVIDER_CONFIG, it should have name and url template', (data) => {
@@ -840,7 +839,7 @@ const schema = yup
 
     // 6. External services envs
     NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: yup.string(),
-    NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY: yup.string(),
+    NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY: yup.string(),
     NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID: yup.string(),
     NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN: yup.string(),
     NEXT_PUBLIC_GROWTH_BOOK_CLIENT_KEY: yup.string(),
