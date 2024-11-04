@@ -66,7 +66,7 @@ B. Pre-defined configuration:
 ## Adding new dependencies
 For all types of dependencies:
 - **Do not add** a dependency if the desired functionality is easily implementable
-- If adding a dependency is necessary, please be sure that is is well-maintained and trustworthy
+- If adding a dependency is necessary, please be sure that it is well-maintained and trustworthy
 
 &nbsp;
 
