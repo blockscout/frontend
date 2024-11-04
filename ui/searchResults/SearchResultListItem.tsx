@@ -80,6 +80,9 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
         const shouldHighlightHash = ADDRESS_REGEXP.test(searchTerm);
         const address = {
           hash: data.address,
+          filecoin: {
+            robust: data.filecoin_robust_address,
+          },
           is_contract: data.type === 'contract',
           is_verified: data.is_smart_contract_verified,
           name: null,
@@ -288,7 +291,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
           <Grid templateColumns={ templateCols } alignItems="center" gap={ 2 }>
             <Skeleton isLoaded={ !isLoading } overflow="hidden" display="flex" alignItems="center">
               <Text whiteSpace="nowrap" overflow="hidden">
-                <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
+                <HashStringShortenDynamic hash={ data.filecoin_robust_address || data.address } isTooltipDisabled/>
               </Text>
               { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
             </Skeleton>
@@ -333,7 +336,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
         return (
           <Flex alignItems="center">
             <Box overflow="hidden">
-              <HashStringShortenDynamic hash={ data.address }/>
+              <HashStringShortenDynamic hash={ data.filecoin_robust_address || data.address }/>
             </Box>
             { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
           </Flex>
@@ -384,7 +387,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
         return (
           <Flex alignItems="center" gap={ 3 }>
             <Box overflow="hidden">
-              <HashStringShortenDynamic hash={ data.address }/>
+              <HashStringShortenDynamic hash={ data.filecoin_robust_address || data.address }/>
             </Box>
             {
               data.ens_info.names_count > 1 ?

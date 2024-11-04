@@ -52,7 +52,7 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
       { data.certified && <ContractCertifiedLabel boxSize={ 5 } iconSize={ 5 } ml={ 1 }/> }
     </Flex>
   );
-  const addressEl = <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>;
+  const addressEl = <HashStringShortenDynamic hash={ data.filecoin_robust_address || data.address } isTooltipDisabled/>;
 
   if (isMobile) {
     return (

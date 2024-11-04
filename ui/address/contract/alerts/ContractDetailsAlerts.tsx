@@ -72,7 +72,7 @@ const ContractDetailsAlerts = ({ data, isLoading, addressHash, channel }: Props)
         <Alert status="warning" whiteSpace="pre-wrap" flexWrap="wrap">
           <span>Contract is not verified. However, we found a verified contract with the same bytecode in Blockscout DB </span>
           <AddressEntity
-            address={{ hash: data.verified_twin_address_hash, is_contract: true }}
+            address={{ hash: data.verified_twin_address_hash, filecoin: { robust: data.verified_twin_filecoin_robust_address }, is_contract: true }}
             truncation="constant"
             fontSize="sm"
             fontWeight="500"

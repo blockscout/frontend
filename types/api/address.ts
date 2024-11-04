@@ -1,6 +1,6 @@
 import type { Transaction } from 'types/api/transaction';
 
-import type { UserTags, AddressImplementation, AddressParam } from './addressParams';
+import type { UserTags, AddressImplementation, AddressParam, AddressFilecoinParams } from './addressParams';
 import type { Block, EpochRewardsType } from './block';
 import type { InternalTransaction } from './internalTransaction';
 import type { MudWorldSchema, MudWorldTable } from './mudWorlds';
@@ -11,9 +11,11 @@ export interface Address extends UserTags {
   block_number_balance_updated_at: number | null;
   coin_balance: string | null;
   creator_address_hash: string | null;
+  creator_filecoin_robust_address?: string | null;
   creation_tx_hash: string | null;
   exchange_rate: string | null;
   ens_domain_name: string | null;
+  filecoin?: AddressFilecoinParams;
   // TODO: if we are happy with tabs-counters method, should we delete has_something fields?
   has_beacon_chain_withdrawals?: boolean;
   has_decompiled_code: boolean;

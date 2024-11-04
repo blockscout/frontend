@@ -346,7 +346,13 @@ const AddressPageContent = () => {
         />
       ) }
       <AddressEntity
-        address={{ ...addressQuery.data, hash: checkSummedHash, name: '', ens_domain_name: '', implementations: null }}
+        address={{
+          ...addressQuery.data,
+          hash: checkSummedHash,
+          name: '',
+          ens_domain_name: '',
+          implementations: null,
+        }}
         isLoading={ isLoading }
         fontFamily="heading"
         fontSize="lg"
@@ -361,7 +367,7 @@ const AddressPageContent = () => {
       { !isLoading && !addressQuery.data?.is_contract && config.features.account.isEnabled && (
         <AddressFavoriteButton hash={ hash } watchListId={ addressQuery.data?.watchlist_address_id }/>
       ) }
-      <AddressQrCode address={{ hash: checkSummedHash }} isLoading={ isLoading }/>
+      <AddressQrCode address={{ hash: addressQuery.data?.filecoin?.robust ?? checkSummedHash }} isLoading={ isLoading }/>
       <AccountActionsMenu isLoading={ isLoading }/>
       <HStack ml="auto" gap={ 2 }/>
       { !isLoading && addressQuery.data?.is_contract && addressQuery.data?.is_verified && config.UI.views.address.solidityscanEnabled &&
