@@ -50,7 +50,7 @@ const BlobData = ({ data, isLoading, hash }: Props) => {
     const fileBlob = (() => {
       switch (format) {
         case 'Image': {
-          const bytes = new Uint8Array(hexToBytes(data));
+          const bytes = hexToBytes(data);
           const filteredBytes = removeNonSignificantZeroBytes(bytes);
           return new Blob([ filteredBytes ], { type: guessedType?.mime });
         }
@@ -77,7 +77,7 @@ const BlobData = ({ data, isLoading, hash }: Props) => {
           return <RawDataSnippet data="Not an image" showCopy={ false } isLoading={ isLoading }/>;
         }
 
-        const bytes = new Uint8Array(hexToBytes(data));
+        const bytes = hexToBytes(data);
         const filteredBytes = removeNonSignificantZeroBytes(bytes);
         const base64 = bytesToBase64(filteredBytes);
 

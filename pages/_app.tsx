@@ -15,6 +15,7 @@ import { ChakraProvider } from 'lib/contexts/chakra';
 import { MarketplaceContextProvider } from 'lib/contexts/marketplace';
 import { RewardsContextProvider } from 'lib/contexts/rewards';
 import { ScrollDirectionProvider } from 'lib/contexts/scrollDirection';
+import { SettingsContextProvider } from 'lib/contexts/settings';
 import { growthBook } from 'lib/growthbook/init';
 import useLoadFeatures from 'lib/growthbook/useLoadFeatures';
 import useNotifyOnNavigation from 'lib/hooks/useNotifyOnNavigation';
@@ -73,8 +74,10 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
                   <SocketProvider url={ `${ config.api.socket }${ config.api.basePath }/socket/v2` }>
                     <RewardsContextProvider>
                       <MarketplaceContextProvider>
-                        { getLayout(<Component { ...pageProps }/>) }
-                        { config.features.rewards.isEnabled && <RewardsLoginModal/> }
+                        <SettingsContextProvider>
+                          { getLayout(<Component { ...pageProps }/>) }
+                          { config.features.rewards.isEnabled && <RewardsLoginModal/> }
+                        </SettingsContextProvider>
                       </MarketplaceContextProvider>
                     </RewardsContextProvider>
                   </SocketProvider>

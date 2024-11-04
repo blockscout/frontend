@@ -3,9 +3,11 @@ import React from 'react';
 import xss from 'xss';
 
 import type { SearchResultItem } from 'types/client/search';
+import type { AddressFormat } from 'types/views/address';
 
 import { route } from 'nextjs-routes';
 
+import { toBech32Address } from 'lib/address/bech32';
 import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
 import * as mixpanel from 'lib/mixpanel/index';
@@ -31,9 +33,10 @@ interface Props {
   data: SearchResultItem | SearchResultAppItem;
   searchTerm: string;
   isLoading?: boolean;
+  addressFormat?: AddressFormat;
 }
 
-const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
+const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Props) => {
 
   const handleLinkClick = React.useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
     saveToRecentKeywords(searchTerm);
@@ -78,6 +81,8 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
       case 'contract':
       case 'address': {
         const shouldHighlightHash = ADDRESS_REGEXP.test(searchTerm);
+        const hash = addressFormat === 'bech32' ? toBech32Address(data.address) : data.address;
+
         const address = {
           hash: data.address,
           filecoin: {
@@ -99,13 +104,13 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
             >
               <AddressEntity.Content
                 asProp={ shouldHighlightHash ? 'mark' : 'span' }
-                address={ address }
+                address={{ ...address, hash }}
                 fontSize="sm"
                 lineHeight={ 5 }
                 fontWeight={ 700 }
               />
             </AddressEntity.Link>
-            <AddressEntity.Copy address={ address }/>
+            <AddressEntity.Copy address={{ ...address, hash }}/>
           </AddressEntity.Container>
         );
       }
@@ -286,12 +291,13 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
       case 'token': {
         const templateCols = `1fr
         ${ (data.token_type === 'ERC-20' && data.exchange_rate) || (data.token_type !== 'ERC-20' && data.total_supply) ? ' auto' : '' }`;
+        const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address) : data.address);
 
         return (
           <Grid templateColumns={ templateCols } alignItems="center" gap={ 2 }>
             <Skeleton isLoaded={ !isLoading } overflow="hidden" display="flex" alignItems="center">
               <Text whiteSpace="nowrap" overflow="hidden">
-                <HashStringShortenDynamic hash={ data.filecoin_robust_address || data.address } isTooltipDisabled/>
+                <HashStringShortenDynamic hash={ hash } isTooltipDisabled/>
               </Text>
               { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
             </Skeleton>
@@ -333,10 +339,12 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
         );
       }
       case 'label': {
+        const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address) : data.address);
+
         return (
           <Flex alignItems="center">
             <Box overflow="hidden">
-              <HashStringShortenDynamic hash={ data.filecoin_robust_address || data.address }/>
+              <HashStringShortenDynamic hash={ hash }/>
             </Box>
             { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
           </Flex>
@@ -384,10 +392,12 @@ const SearchResultListItem = ({ data, searchTerm, isLoading }: Props) => {
       }
       case 'ens_domain': {
         const expiresText = data.ens_info?.expiry_date ? ` expires ${ dayjs(data.ens_info.expiry_date).fromNow() }` : '';
+        const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address) : data.address);
+
         return (
           <Flex alignItems="center" gap={ 3 }>
             <Box overflow="hidden">
-              <HashStringShortenDynamic hash={ data.filecoin_robust_address || data.address }/>
+              <HashStringShortenDynamic hash={ hash }/>
             </Box>
             {
               data.ens_info.names_count > 1 ?

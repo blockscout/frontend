@@ -35,6 +35,7 @@ const MyProfileWallet = ({ profileQuery, onAddWallet }: Props) => {
           <AddressEntity
             address={{ hash: profileQuery.data.address_hash }}
             fontWeight="500"
+            noAltHash
           />
         </Box>
       ) : <Button size="sm" onClick={ onAddWallet }>Link wallet</Button> }

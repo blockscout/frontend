@@ -3,9 +3,11 @@ import React from 'react';
 import xss from 'xss';
 
 import type { SearchResultItem } from 'types/client/search';
+import type { AddressFormat } from 'types/views/address';
 
 import { route } from 'nextjs-routes';
 
+import { toBech32Address } from 'lib/address/bech32';
 import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
 import * as mixpanel from 'lib/mixpanel/index';
@@ -30,9 +32,10 @@ interface Props {
   data: SearchResultItem | SearchResultAppItem;
   searchTerm: string;
   isLoading?: boolean;
+  addressFormat?: AddressFormat;
 }
 
-const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
+const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: Props) => {
 
   const handleLinkClick = React.useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
     saveToRecentKeywords(searchTerm);
@@ -49,6 +52,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
     switch (data.type) {
       case 'token': {
         const name = data.name + (data.symbol ? ` (${ data.symbol })` : '');
+        const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address) : data.address);
 
         return (
           <>
@@ -77,7 +81,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
             <Td fontSize="sm" verticalAlign="middle">
               <Skeleton isLoaded={ !isLoading } whiteSpace="nowrap" overflow="hidden" display="flex" alignItems="center">
                 <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-28px)' : 'unset' }>
-                  <HashStringShortenDynamic hash={ data.filecoin_robust_address || data.address }/>
+                  <HashStringShortenDynamic hash={ hash }/>
                 </Box>
                 { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
               </Skeleton>
@@ -110,6 +114,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
           ens_domain_name: null,
         };
         const expiresText = data.ens_info?.expiry_date ? ` (expires ${ dayjs(data.ens_info.expiry_date).fromNow() })` : '';
+        const hash = addressFormat === 'bech32' ? toBech32Address(data.address) : data.address;
 
         return (
           <>
@@ -122,13 +127,13 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
                 >
                   <AddressEntity.Content
                     asProp={ shouldHighlightHash ? 'mark' : 'span' }
-                    address={ address }
+                    address={{ ...address, hash }}
                     fontSize="sm"
                     lineHeight={ 5 }
                     fontWeight={ 700 }
                   />
                 </AddressEntity.Link>
-                <AddressEntity.Copy address={ address }/>
+                <AddressEntity.Copy address={{ ...address, hash }}/>
               </AddressEntity.Container>
             </Td>
             { addressName && (
@@ -158,6 +163,8 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
       }
 
       case 'label': {
+        const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address) : data.address);
+
         return (
           <>
             <Td fontSize="sm">
@@ -177,7 +184,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
             <Td fontSize="sm" verticalAlign="middle">
               <Flex alignItems="center" overflow="hidden">
                 <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-28px)' : 'unset' }>
-                  <HashStringShortenDynamic hash={ data.filecoin_robust_address || data.address }/>
+                  <HashStringShortenDynamic hash={ hash }/>
                 </Box>
                 { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
               </Flex>
@@ -369,6 +376,8 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
 
       case 'ens_domain': {
         const expiresText = data.ens_info?.expiry_date ? ` expires ${ dayjs(data.ens_info.expiry_date).fromNow() }` : '';
+        const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address) : data.address);
+
         return (
           <>
             <Td fontSize="sm">
@@ -395,7 +404,7 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading }: Props) => {
             <Td>
               <Flex alignItems="center" overflow="hidden">
                 <Box overflow="hidden" whiteSpace="nowrap" w={ data.is_smart_contract_verified ? 'calc(100%-28px)' : 'unset' }>
-                  <HashStringShortenDynamic hash={ data.filecoin_robust_address || data.address }/>
+                  <HashStringShortenDynamic hash={ hash }/>
                 </Box>
                 { data.is_smart_contract_verified && <IconSvg name="status/success" boxSize="14px" color="green.500" ml={ 1 } flexShrink={ 0 }/> }
               </Flex>

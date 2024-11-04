@@ -41,6 +41,7 @@ import AddressQrCode from 'ui/address/details/AddressQrCode';
 import AddressEnsDomains from 'ui/address/ensDomains/AddressEnsDomains';
 import SolidityscanReport from 'ui/address/SolidityscanReport';
 import useAddressQuery from 'ui/address/utils/useAddressQuery';
+import useCheckAddressFormat from 'ui/address/utils/useCheckAddressFormat';
 import useCheckDomainNameParam from 'ui/address/utils/useCheckDomainNameParam';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import TextAd from 'ui/shared/ad/TextAd';
@@ -69,7 +70,9 @@ const AddressPageContent = () => {
   const hash = getQueryParamString(router.query.hash);
   const checkSummedHash = React.useMemo(() => getCheckedSummedAddress(hash), [ hash ]);
 
-  const areQueriesEnabled = !useCheckDomainNameParam(hash);
+  const checkDomainName = useCheckDomainNameParam(hash);
+  const checkAddressFormat = useCheckAddressFormat(hash);
+  const areQueriesEnabled = !checkDomainName && !checkAddressFormat;
   const addressQuery = useAddressQuery({ hash, isEnabled: areQueriesEnabled });
 
   const addressTabsCountersQuery = useApiQuery('address_tabs_counters', {

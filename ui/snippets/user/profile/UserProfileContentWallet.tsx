@@ -42,6 +42,7 @@ const UserProfileContentWallet = ({ onClose, className }: Props) => {
             truncation="dynamic"
             fontSize="sm"
             fontWeight={ 500 }
+            noAltHash
           />
           <IconButton
             aria-label="Open wallet"
