@@ -270,3 +270,7 @@ export type AddressEpochRewardsItem = {
   epoch_number: number;
   associated_account: AddressParam;
 }
+
+export type AddressXStarResponse = {
+  data: string | null;
+}

@@ -16,6 +16,7 @@ import getNetworkValidationActionText from 'lib/networks/getNetworkValidationAct
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
+import useFetchXStarScore from 'lib/xStarScore/useFetchXStarScore';
 import { ADDRESS_TABS_COUNTERS } from 'stubs/address';
 import { USER_OPS_ACCOUNT } from 'stubs/userOps';
 import AddressAccountHistory from 'ui/address/AddressAccountHistory';
@@ -58,6 +59,7 @@ const TOKEN_TABS = [ 'tokens_erc20', 'tokens_nfts', 'tokens_nfts_collection', 't
 
 const txInterpretation = config.features.txInterpretation;
 const addressProfileAPIFeature = config.features.addressProfileAPI;
+const xScoreFeature = config.features.xStarScore;
 
 const AddressPageContent = () => {
   const router = useRouter();
@@ -138,6 +140,8 @@ const AddressPageContent = () => {
 
   const isSafeAddress = useIsSafeAddress(!addressQuery.isPlaceholderData && addressQuery.data?.is_contract ? hash : undefined);
   const safeIconColor = useColorModeValue('black', 'white');
+
+  const xStarQuery = useFetchXStarScore({ hash });
 
   const contractTabs = useContractTabs(
     addressQuery.data,
@@ -295,8 +299,32 @@ const AddressPageContent = () => {
         undefined,
       ...formatUserTags(addressQuery.data),
       ...(addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags.filter(tag => tag.tagType !== 'note') || []),
+      !addressQuery.data?.is_contract && xScoreFeature.isEnabled && xStarQuery.data?.data ?
+        {
+          slug: 'xstar',
+          name: `XHS ${ xStarQuery.data.data } level`,
+          tagType: 'custom' as const,
+          ordinal: 12,
+          meta: {
+            tagUrl: xScoreFeature.url,
+            tooltipTitle: 'XStar humanity levels',
+            tooltipDescription:
+              'XStar looks for off-chain information about an address and interpret it as a XHS score. Different score means different humanity levels.',
+            tooltipUrl: xScoreFeature.url,
+          },
+        } :
+        undefined,
     ].filter(Boolean).sort(sortEntityTags);
-  }, [ addressMetadataQuery.data, addressQuery.data, hash, isSafeAddress, userOpsAccountQuery.data, mudTablesCountQuery.data, usernameApiTag ]);
+  }, [
+    addressMetadataQuery.data,
+    addressQuery.data,
+    hash,
+    isSafeAddress,
+    userOpsAccountQuery.data,
+    mudTablesCountQuery.data,
+    usernameApiTag,
+    xStarQuery.data?.data,
+  ]);
 
   const titleContentAfter = (
     <EntityTags
@@ -305,7 +333,8 @@ const AddressPageContent = () => {
         isLoading ||
         (config.features.userOps.isEnabled && userOpsAccountQuery.isPlaceholderData) ||
         (config.features.addressMetadata.isEnabled && addressMetadataQuery.isPending) ||
-        (addressProfileAPIFeature.isEnabled && userPropfileApiQuery.isPending)
+        (addressProfileAPIFeature.isEnabled && userPropfileApiQuery.isPending) ||
+        (xScoreFeature.isEnabled && xStarQuery.isPlaceholderData)
       }
     />
   );
