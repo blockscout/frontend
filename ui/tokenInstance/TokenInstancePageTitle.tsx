@@ -105,7 +105,7 @@ const TokenInstancePageTitle = ({ isLoading, token, instance, hash }: Props) => 
       ) }
       { !isLoading && <AddressAddToWallet token={ token } variant="button"/> }
       <AddressQrCode address={ address } isLoading={ isLoading }/>
-      <AccountActionsMenu isLoading={ isLoading } showUpdateMetadataItem={ Boolean(instance?.metadata) }/>
+      <AccountActionsMenu isLoading={ isLoading } showUpdateMetadataItem/>
       { appLink }
     </Flex>
   );
