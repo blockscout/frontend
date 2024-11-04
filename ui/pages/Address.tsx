@@ -333,7 +333,8 @@ const AddressPageContent = () => {
         isLoading ||
         (config.features.userOps.isEnabled && userOpsAccountQuery.isPlaceholderData) ||
         (config.features.addressMetadata.isEnabled && addressMetadataQuery.isPending) ||
-        (addressProfileAPIFeature.isEnabled && userPropfileApiQuery.isPending)
+        (addressProfileAPIFeature.isEnabled && userPropfileApiQuery.isPending) ||
+        (xScoreFeature.isEnabled && xStarQuery.isPlaceholderData)
       }
     />
   );
