@@ -38,6 +38,7 @@ import type {
   AddressMudRecordsSorting,
   AddressMudRecord,
   AddressEpochRewardsResponse,
+  AddressXStarResponse,
 } from 'types/api/address';
 import type { AddressesResponse, AddressesMetadataSearchResult, AddressesMetadataSearchFilters } from 'types/api/addresses';
 import type { AddressMetadataInfo, PublicTagTypesResponse } from 'types/api/addressMetadata';
@@ -594,6 +595,10 @@ export const RESOURCES = {
     path: '/api/v2/addresses/:hash/election-rewards',
     pathParams: [ 'hash' as const ],
     filterFields: [],
+  },
+  address_xstar_score: {
+    path: '/api/v2/proxy/xname/address/:hash',
+    pathParams: [ 'hash' as const ],
   },
 
   // CONTRACT
@@ -1304,6 +1309,7 @@ Q extends 'rewards_user_daily_check' ? RewardsUserDailyCheckResponse :
 Q extends 'rewards_user_daily_claim' ? RewardsUserDailyClaimResponse :
 Q extends 'rewards_user_referrals' ? RewardsUserReferralsResponse :
 Q extends 'token_transfers_all' ? TokenTransferResponse :
+Q extends 'address_xstar_score' ? AddressXStarResponse :
 never;
 /* eslint-enable @typescript-eslint/indent */
 

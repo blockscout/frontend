@@ -55,6 +55,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
   - [Bridged tokens](ENVS.md#bridged-tokens)
   - [Safe{Core} address tags](ENVS.md#safecore-address-tags)
   - [Address profile API](ENVS.md#address-profile-api)
+  - [Address XStar XHS score](ENVS.md#address-xstar-xhs-score)
   - [SUAVE chain](ENVS.md#suave-chain)
   - [MetaSuites extension](ENVS.md#metasuites-extension)
   - [Validators list](ENVS.md#validators-list)
@@ -677,6 +678,16 @@ This feature allows the integration of an external API to fetch user info for ad
 | tag_icon | `string` | Public tag icon (.svg) url | - | - | `https://example.com/icon.svg` |
 | tag_bg_color | `string` | Public tag background color (escape "#" symbol if you use HEX color codes or use rgba-value instead) | - | - | `\#000000` |
 | tag_text_color | `string` | Public tag text color (escape "#" symbol if you use HEX color codes or use rgba-value instead) | - | - | `\#FFFFFF` |
+
+&nbsp;
+
+### Address XStar XHS score
+
+This feature allows the integration of an XStar API to fetch XHS score for addresses. When configured, if the API returns a score, a public tag with that score will be displayed in the address page header.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_XSTAR_SCORE_URL | `string` | XStar XHS score documentation URL for the address tag. Enables the XStar score feature. | - | - | `https://docs.xname.app/the-solution-adaptive-proof-of-humanity-on-blockchain/xhs-scoring-algorithm` | v1.36.0+ |
 
 &nbsp;
 
