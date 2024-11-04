@@ -1,23 +1,44 @@
+import { Flex } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { MethodType, SmartContractMethod } from './types';
+import type { SmartContractMethod } from './types';
 
+import getQueryParamString from 'lib/router/getQueryParamString';
+
+import ContractAbi from './ContractAbi';
 import ContractConnectWallet from './ContractConnectWallet';
-import ContractMethods from './ContractMethods';
+import ContractMethodsContainer from './ContractMethodsContainer';
+import ContractMethodsFilters from './ContractMethodsFilters';
+import useMethodsFilters from './useMethodsFilters';
 
 interface Props {
   abi: Array<SmartContractMethod>;
   isLoading?: boolean;
-  type: MethodType;
 }
 
-const ContractMethodsRegular = ({ abi, isLoading, type }: Props) => {
+const ContractMethodsRegular = ({ abi, isLoading }: Props) => {
+
+  const router = useRouter();
+
+  const tab = getQueryParamString(router.query.tab);
+  const addressHash = getQueryParamString(router.query.hash);
+
+  const filters = useMethodsFilters({ abi });
 
   return (
-    <>
+    <Flex flexDir="column" rowGap={ 6 }>
       <ContractConnectWallet isLoading={ isLoading }/>
-      <ContractMethods abi={ abi } isLoading={ isLoading } type={ type }/>
-    </>
+      <ContractMethodsFilters
+        defaultMethodType={ filters.methodType }
+        defaultSearchTerm={ filters.searchTerm }
+        onChange={ filters.onChange }
+        isLoading={ isLoading }
+      />
+      <ContractMethodsContainer isLoading={ isLoading } isEmpty={ abi.length === 0 } type={ filters.methodType }>
+        <ContractAbi abi={ abi } tab={ tab } addressHash={ addressHash } visibleItems={ filters.visibleItems }/>
+      </ContractMethodsContainer>
+    </Flex>
   );
 };
 

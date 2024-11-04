@@ -13,7 +13,7 @@ import IconSvg from 'ui/shared/IconSvg';
 const SearchBarSuggestToken = ({ data, isMobile, searchTerm, addressFormat }: ItemsProps<SearchResultToken>) => {
   const icon = <TokenEntity.Icon token={{ ...data, type: data.token_type }}/>;
   const verifiedIcon = <IconSvg name="certified" boxSize={ 4 } color="green.500" ml={ 1 }/>;
-  const hash = addressFormat === 'bech32' ? toBech32Address(data.address) : data.address;
+  const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address) : data.address);
 
   const name = (
     <Text

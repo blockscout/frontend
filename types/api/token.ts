@@ -20,6 +20,7 @@ export interface TokenInfo<T extends TokenType = TokenType> {
   bridge_type?: string | null;
   origin_chain_id?: string | null;
   foreign_address?: string | null;
+  filecoin_robust_address?: string | null;
 }
 
 export interface TokenCounters {

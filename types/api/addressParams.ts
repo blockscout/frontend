@@ -16,6 +16,30 @@ export interface WatchlistName {
   display_name: string;
 }
 
+export type AddressFilecoinParams = {
+  actor_type?: FilecoinActorType;
+  id?: string | null;
+  robust?: string | null;
+}
+
+export type FilecoinActorType =
+  'account' |
+  'cron' |
+  'datacap' |
+  'eam' |
+  'ethaccount' |
+  'evm' |
+  'init' |
+  'market' |
+  'miner' |
+  'multisig' |
+  'paych' |
+  'placeholder' |
+  'power' |
+  'reward' |
+  'system' |
+  'verifreg';
+
 export interface UserTags {
   private_tags: Array<AddressTag> | null;
   watchlist_names: Array<WatchlistName> | null;
@@ -33,6 +57,7 @@ export type AddressParamBasic = {
     reputation: number | null;
     tags: Array<AddressMetadataTagApi>;
   } | null;
+  filecoin?: AddressFilecoinParams;
 }
 
 export type AddressParam = UserTags & AddressParamBasic;

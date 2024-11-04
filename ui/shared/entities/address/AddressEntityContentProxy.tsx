@@ -46,7 +46,7 @@ const AddressEntityContentProxy = (props: ContentProps) => {
                 Proxy contract
                 { props.address.name ? ` (${ props.address.name })` : '' }
               </Box>
-              <AddressEntity address={{ hash: props.address.hash }} noLink noIcon noHighlight justifyContent="center"/>
+              <AddressEntity address={{ hash: props.address.hash, filecoin: props.address.filecoin }} noLink noIcon noHighlight justifyContent="center"/>
               <Box fontWeight={ 600 } mt={ 2 }>
                 Implementation{ implementations.length > 1 ? 's' : '' }
                 { implementationName ? ` (${ implementationName })` : '' }

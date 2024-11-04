@@ -45,7 +45,7 @@ const VerifiedContractsListItem = ({ data, isLoading }: Props) => {
           { data.certified && <ContractCertifiedLabel iconSize={ 5 } boxSize={ 5 } mx={ 2 }/> }
         </Flex>
         <AddressEntity
-          address={{ hash: data.address.hash }}
+          address={{ hash: data.address.filecoin?.robust ?? data.address.hash }}
           isLoading={ isLoading }
           noLink
           noIcon

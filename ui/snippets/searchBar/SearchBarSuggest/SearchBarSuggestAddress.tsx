@@ -14,7 +14,7 @@ import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
 const SearchBarSuggestAddress = ({ data, isMobile, searchTerm, addressFormat }: ItemsProps<SearchResultAddressOrContract>) => {
   const shouldHighlightHash = ADDRESS_REGEXP.test(searchTerm);
-  const hash = addressFormat === 'bech32' ? toBech32Address(data.address) : data.address;
+  const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address) : data.address);
 
   const icon = (
     <AddressEntity.Icon

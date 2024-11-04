@@ -64,6 +64,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
   - [Multichain balance button](ENVS.md#multichain-balance-button)
   - [Get gas button](ENVS.md#get-gas-button)
   - [Save on gas with GasHawk](ENVS.md#save-on-gas-with-gashawk)
+  - [Rewards service API](ENVS.md#rewards-service-api)
 - [3rd party services configuration](ENVS.md#external-services-configuration)
 
 &nbsp;
@@ -184,11 +185,10 @@ The app version shown in the footer is derived from build-time ENV variables `NE
 
 ### Favicon
 
-By default, the app has generic favicon. You can override this behavior by providing the following variables. Hence, the favicon assets bundle will be generated at the container start time and will be used instead of default one.
+By default, the app has generic favicon. You can override this behavior by providing the following variable. Hence, the favicon assets bundle will be generated at the container start time and will be used instead of default one.
 
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
-| FAVICON_GENERATOR_API_KEY | `string` | RealFaviconGenerator [API key](https://realfavicongenerator.net/api/) | Required | - | `<your-secret>` | v1.16.0+ |
 | FAVICON_MASTER_URL | `string` | - | - | `NEXT_PUBLIC_NETWORK_ICON` | `https://placekitten.com/180/180` | v1.11.0+ |
 
 &nbsp;
@@ -795,6 +795,14 @@ The feature enables a "Save with GasHawk" button next to the "Gas used" value on
 | NEXT_PUBLIC_SAVE_ON_GAS_ENABLED | `boolean` | Set to "true" to enable the feature | - | - | `true` | v1.35.0+ |
 
 &nbsp;
+
+### Rewards service API
+
+This feature enables Blockscout Merits program. It requires that the [My account](ENVS.md#my-account) and [Blockchain interaction](ENVS.md#blockchain-interaction-writing-to-contract-etc) features are also enabled.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_REWARDS_SERVICE_API_HOST | `string` | API URL | - | - | `https://example.com` | v1.36.0+ |
 
 ## External services configuration
 

@@ -13,12 +13,14 @@ import useQueryClientConfig from 'lib/api/useQueryClientConfig';
 import { AppContextProvider } from 'lib/contexts/app';
 import { ChakraProvider } from 'lib/contexts/chakra';
 import { MarketplaceContextProvider } from 'lib/contexts/marketplace';
+import { RewardsContextProvider } from 'lib/contexts/rewards';
 import { ScrollDirectionProvider } from 'lib/contexts/scrollDirection';
 import { SettingsContextProvider } from 'lib/contexts/settings';
 import { growthBook } from 'lib/growthbook/init';
 import useLoadFeatures from 'lib/growthbook/useLoadFeatures';
 import useNotifyOnNavigation from 'lib/hooks/useNotifyOnNavigation';
 import { SocketProvider } from 'lib/socket/context';
+import RewardsLoginModal from 'ui/rewards/login/RewardsLoginModal';
 import AppErrorBoundary from 'ui/shared/AppError/AppErrorBoundary';
 import AppErrorGlobalContainer from 'ui/shared/AppError/AppErrorGlobalContainer';
 import GoogleAnalytics from 'ui/shared/GoogleAnalytics';
@@ -70,11 +72,14 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
               <GrowthBookProvider growthbook={ growthBook }>
                 <ScrollDirectionProvider>
                   <SocketProvider url={ `${ config.api.socket }${ config.api.basePath }/socket/v2` }>
-                    <MarketplaceContextProvider>
-                      <SettingsContextProvider>
-                        { getLayout(<Component { ...pageProps }/>) }
-                      </SettingsContextProvider>
-                    </MarketplaceContextProvider>
+                    <RewardsContextProvider>
+                      <MarketplaceContextProvider>
+                        <SettingsContextProvider>
+                          { getLayout(<Component { ...pageProps }/>) }
+                          { config.features.rewards.isEnabled && <RewardsLoginModal/> }
+                        </SettingsContextProvider>
+                      </MarketplaceContextProvider>
+                    </RewardsContextProvider>
                   </SocketProvider>
                 </ScrollDirectionProvider>
               </GrowthBookProvider>

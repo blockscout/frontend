@@ -12,7 +12,7 @@ import IconSvg from 'ui/shared/IconSvg';
 
 const SearchBarSuggestDomain = ({ data, isMobile, searchTerm, addressFormat }: ItemsProps<SearchResultDomain>) => {
   const icon = <IconSvg name="ENS_slim" boxSize={ 5 } color="gray.500"/>;
-  const hash = addressFormat === 'bech32' ? toBech32Address(data.address) : data.address;
+  const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address) : data.address);
 
   const name = (
     <Text

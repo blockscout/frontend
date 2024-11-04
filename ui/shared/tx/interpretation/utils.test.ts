@@ -13,7 +13,7 @@ it('split string without capturing variables', () => {
 });
 
 it('checks that summary is valid', () => {
-  const result = checkSummary('{foo} {native} {bar}', { foo: { type: 'string', value: 'foo' }, bar: { type: 'string', value: 'bar' } });
+  const result = checkSummary('{foo} {native} {bar} {wei}', { foo: { type: 'string', value: 'foo' }, bar: { type: 'string', value: 'bar' } });
   expect(result).toBe(true);
 });
 

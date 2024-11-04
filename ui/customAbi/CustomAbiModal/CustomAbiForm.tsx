@@ -16,9 +16,15 @@ import getErrorMessage from 'lib/getErrorMessage';
 import FormFieldAddress from 'ui/shared/forms/fields/FormFieldAddress';
 import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
 
+export type FormData = CustomAbi | {
+  contract_address_hash: string;
+  name: string;
+} | undefined;
+
 type Props = {
-  data?: CustomAbi;
+  data: FormData;
   onClose: () => void;
+  onSuccess?: () => Promise<void>;
   setAlertVisible: (isAlertVisible: boolean) => void;
 }
 
@@ -30,12 +36,12 @@ type Inputs = {
 
 const NAME_MAX_LENGTH = 255;
 
-const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
+const CustomAbiForm: React.FC<Props> = ({ data, onClose, onSuccess, setAlertVisible }) => {
   const formApi = useForm<Inputs>({
     defaultValues: {
       contract_address_hash: data?.contract_address_hash || '',
       name: data?.name || '',
-      abi: JSON.stringify(data?.abi) || '',
+      abi: data && 'abi' in data ? JSON.stringify(data.abi) : '',
     },
     mode: 'onTouched',
   });
@@ -58,7 +64,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
 
   const mutation = useMutation({
     mutationFn: customAbiKey,
-    onSuccess: (data) => {
+    onSuccess: async(data) => {
       const response = data as unknown as CustomAbi;
       queryClient.setQueryData([ resourceKey('custom_abi') ], (prevData: CustomAbis | undefined) => {
         const isExisting = prevData && prevData.some((item) => item.id === response.id);
@@ -75,7 +81,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
 
         return [ response, ...(prevData || []) ];
       });
-
+      await onSuccess?.();
       onClose();
     },
     onError: (error: ResourceErrorAccount<CustomAbiErrors>) => {
@@ -94,7 +100,8 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
 
   const onSubmit: SubmitHandler<Inputs> = useCallback(async(formData) => {
     setAlertVisible(false);
-    await mutation.mutateAsync({ ...formData, id: data?.id ? String(data.id) : undefined });
+    const id = data && 'id' in data ? String(data.id) : undefined;
+    await mutation.mutateAsync({ ...formData, id });
   }, [ mutation, data, setAlertVisible ]);
 
   return (
@@ -105,6 +112,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
           placeholder="Smart contract address (0x...)"
           isRequired
           bgColor="dialog_bg"
+          isReadOnly={ Boolean(data && 'contract_address_hash' in data) }
           mb={ 5 }
         />
         <FormFieldText<Inputs>
@@ -134,7 +142,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, setAlertVisible }) => {
             isDisabled={ !formApi.formState.isDirty }
             isLoading={ mutation.isPending }
           >
-            { data ? 'Save' : 'Create custom ABI' }
+            { data && 'id' in data ? 'Save' : 'Create custom ABI' }
           </Button>
         </Box>
       </form>

@@ -92,14 +92,14 @@ const UserProfileContent = ({ data, onClose, onLogin, onAddEmail, onAddAddress }
           <Flex p={ 2 } borderColor="divider" borderBottomWidth="1px">
             <Box>Address</Box>
             <Hint
-              label="This wallet address is linked to your Blockscout account. It can be used to login and is used for merit program participation"
+              label={ `This wallet address is linked to your Blockscout account. It can be used to login ${ config.features.rewards.isEnabled ? 'and is used for Merits Program participation' : '' }` } // eslint-disable-line max-len
               boxSize={ 4 }
               ml={ 1 }
               mr="auto"
             />
             { data?.address_hash ?
               <Box>{ shortenString(data?.address_hash) }</Box> :
-              <Link onClick={ onAddAddress } color="icon_info" _hover={{ color: 'link_hovered', textDecoration: 'none' }}>Add address</Link>
+              <Link onClick={ onAddAddress } _hover={{ color: 'link_hovered', textDecoration: 'none' }}>Add address</Link>
             }
           </Flex>
         ) }
@@ -107,7 +107,7 @@ const UserProfileContent = ({ data, onClose, onLogin, onAddEmail, onAddAddress }
           <Box mr="auto">Email</Box>
           { data?.email ?
             <TruncatedValue value={ data.email }/> :
-            <Link onClick={ onAddEmail } color="icon_info" _hover={{ color: 'link_hovered', textDecoration: 'none' }}>Add email</Link>
+            <Link onClick={ onAddEmail } _hover={{ color: 'link_hovered', textDecoration: 'none' }}>Add email</Link>
           }
         </Flex>
       </Box>

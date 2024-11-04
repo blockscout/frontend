@@ -64,12 +64,12 @@ test.describe('ABI functionality', () => {
 
     await expect(component.getByRole('button', { name: 'Connect wallet' })).toBeVisible();
     await component.getByText('setReserveInterestRateStrategyAddress').click();
-    await expect(component.getByLabel('2.').getByRole('button', { name: 'Simulate' })).toBeEnabled();
-    await expect(component.getByLabel('2.').getByRole('button', { name: 'Write' })).toBeEnabled();
+    await expect(component.getByLabel('4.').getByRole('button', { name: 'Simulate' })).toBeEnabled();
+    await expect(component.getByLabel('4.').getByRole('button', { name: 'Write' })).toBeEnabled();
 
     await component.getByText('pause').click();
-    await expect(component.getByLabel('5.').getByRole('button', { name: 'Simulate' })).toBeHidden();
-    await expect(component.getByLabel('5.').getByRole('button', { name: 'Write' })).toBeEnabled();
+    await expect(component.getByLabel('7.').getByRole('button', { name: 'Simulate' })).toBeHidden();
+    await expect(component.getByLabel('7.').getByRole('button', { name: 'Write' })).toBeEnabled();
   });
 
   test('write, no wallet client', async({ render, createSocket, mockEnvs }) => {
@@ -86,11 +86,11 @@ test.describe('ABI functionality', () => {
 
     await expect(component.getByRole('button', { name: 'Connect wallet' })).toBeHidden();
     await component.getByText('setReserveInterestRateStrategyAddress').click();
-    await expect(component.getByLabel('2.').getByRole('button', { name: 'Simulate' })).toBeEnabled();
-    await expect(component.getByLabel('2.').getByRole('button', { name: 'Write' })).toBeDisabled();
+    await expect(component.getByLabel('4.').getByRole('button', { name: 'Simulate' })).toBeEnabled();
+    await expect(component.getByLabel('4.').getByRole('button', { name: 'Write' })).toBeDisabled();
 
     await component.getByText('pause').click();
-    await expect(component.getByLabel('5.').getByRole('button', { name: 'Simulate' })).toBeHidden();
-    await expect(component.getByLabel('5.').getByRole('button', { name: 'Write' })).toBeDisabled();
+    await expect(component.getByLabel('7.').getByRole('button', { name: 'Simulate' })).toBeHidden();
+    await expect(component.getByLabel('7.').getByRole('button', { name: 'Write' })).toBeDisabled();
   });
 });

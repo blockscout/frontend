@@ -121,7 +121,7 @@ const ContractMethodFieldInput = ({ data, hideLabel, path: name, className, isDi
           <InputRightElement w="auto" right={ 1 } bgColor={ inputBgColor } h="calc(100% - 4px)" top="2px" borderRadius="base">
             { field.value !== undefined && field.value !== '' && <ClearButton onClick={ handleClear } isDisabled={ isDisabled }/> }
             { data.type === 'address' && <ContractMethodAddressButton onClick={ handleAddressButtonClick } isDisabled={ isDisabled }/> }
-            { argTypeMatchInt && (hasTimestampButton ? (
+            { argTypeMatchInt && !isNativeCoin && (hasTimestampButton ? (
               <Button
                 variant="subtle"
                 colorScheme="gray"

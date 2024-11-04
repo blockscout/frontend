@@ -3,6 +3,7 @@ import React from 'react';
 
 import config from 'configs/app';
 import useNavItems, { isGroupItem } from 'lib/hooks/useNavItems';
+import RewardsButton from 'ui/rewards/RewardsButton';
 import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
 import NetworkLogo from 'ui/snippets/networkMenu/NetworkLogo';
 import UserProfileDesktop from 'ui/snippets/user/profile/UserProfileDesktop';
@@ -38,10 +39,13 @@ const NavigationDesktop = () => {
             }) }
           </Flex>
         </chakra.nav>
-        {
-          (config.features.account.isEnabled && <UserProfileDesktop buttonSize="sm"/>) ||
-          (config.features.blockchainInteraction.isEnabled && <UserWalletDesktop buttonSize="sm"/>)
-        }
+        <Flex gap={ 2 }>
+          { config.features.rewards.isEnabled && <RewardsButton size="sm"/> }
+          {
+            (config.features.account.isEnabled && <UserProfileDesktop buttonSize="sm"/>) ||
+            (config.features.blockchainInteraction.isEnabled && <UserWalletDesktop buttonSize="sm"/>)
+          }
+        </Flex>
       </Flex>
     </Box>
   );

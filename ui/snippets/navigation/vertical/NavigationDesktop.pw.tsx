@@ -24,6 +24,7 @@ const FEATURED_NETWORKS_URL = 'https://localhost:3000/featured-networks.json';
 
 test.beforeEach(async({ mockEnvs, mockConfigResponse }) => {
   await mockEnvs([
+    ...ENVS_MAP.rewardsService,
     [ 'NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL ],
   ]);
   await mockConfigResponse('NEXT_PUBLIC_FEATURED_NETWORKS', FEATURED_NETWORKS_URL, FEATURED_NETWORKS_MOCK);
@@ -116,7 +117,7 @@ test.describe('with submenu', () => {
       </Flex>,
       { hooksConfig },
     );
-    await page.locator('a[aria-label="Blockchain link group"]').hover();
+    await page.locator('div[aria-label="Blockchain link group"]').hover();
   });
 
   test('', async() => {
@@ -239,7 +240,7 @@ test.describe('with highlighted routes', () => {
   });
 
   test('with submenu', async({ page }) => {
-    await page.locator('a[aria-label="Blockchain link group"]').hover();
+    await page.locator('div[aria-label="Blockchain link group"]').hover();
     await expect(component).toHaveScreenshot();
   });
 

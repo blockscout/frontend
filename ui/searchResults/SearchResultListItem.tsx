@@ -85,6 +85,9 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
 
         const address = {
           hash: data.address,
+          filecoin: {
+            robust: data.filecoin_robust_address,
+          },
           is_contract: data.type === 'contract',
           is_verified: data.is_smart_contract_verified,
           name: null,
@@ -288,7 +291,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
       case 'token': {
         const templateCols = `1fr
         ${ (data.token_type === 'ERC-20' && data.exchange_rate) || (data.token_type !== 'ERC-20' && data.total_supply) ? ' auto' : '' }`;
-        const hash = addressFormat === 'bech32' ? toBech32Address(data.address) : data.address;
+        const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address) : data.address);
 
         return (
           <Grid templateColumns={ templateCols } alignItems="center" gap={ 2 }>
@@ -336,7 +339,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
         );
       }
       case 'label': {
-        const hash = addressFormat === 'bech32' ? toBech32Address(data.address) : data.address;
+        const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address) : data.address);
 
         return (
           <Flex alignItems="center">
@@ -389,7 +392,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
       }
       case 'ens_domain': {
         const expiresText = data.ens_info?.expiry_date ? ` expires ${ dayjs(data.ens_info.expiry_date).fromNow() }` : '';
-        const hash = addressFormat === 'bech32' ? toBech32Address(data.address) : data.address;
+        const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address) : data.address);
 
         return (
           <Flex alignItems="center" gap={ 3 }>

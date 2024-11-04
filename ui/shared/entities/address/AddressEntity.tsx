@@ -79,7 +79,7 @@ const Icon = (props: IconProps) => {
     <Flex marginRight={ styles.marginRight }>
       <AddressIdenticon
         size={ props.size === 'lg' ? 30 : 20 }
-        hash={ props.address.hash }
+        hash={ props.address.filecoin?.robust ?? props.address.hash }
       />
     </Flex>
   );
@@ -101,7 +101,7 @@ const Content = chakra((props: ContentProps) => {
     const label = (
       <VStack gap={ 0 } py={ 1 } color="inherit">
         <Box fontWeight={ 600 } whiteSpace="pre-wrap" wordBreak="break-word">{ nameText }</Box>
-        <Box whiteSpace="pre-wrap" wordBreak="break-word">{ props.altHash ?? props.address.hash }</Box>
+        <Box whiteSpace="pre-wrap" wordBreak="break-word">{ props.address.filecoin?.robust ?? props.altHash ?? props.address.hash }</Box>
       </VStack>
     );
 
@@ -117,7 +117,7 @@ const Content = chakra((props: ContentProps) => {
   return (
     <EntityBase.Content
       { ...props }
-      text={ props.altHash ?? props.address.hash }
+      text={ props.address.filecoin?.robust ?? props.altHash ?? props.address.hash }
     />
   );
 });
@@ -128,7 +128,7 @@ const Copy = (props: CopyProps) => {
   return (
     <EntityBase.Copy
       { ...props }
-      text={ props.altHash ?? props.address.hash }
+      text={ props.address.filecoin?.robust ?? props.altHash ?? props.address.hash }
     />
   );
 };
