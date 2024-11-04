@@ -1,7 +1,7 @@
 import type { ButtonProps } from '@chakra-ui/react';
-import { Button, Skeleton, Tooltip, Box, HStack } from '@chakra-ui/react';
+import { Button, Tooltip, Box, HStack } from '@chakra-ui/react';
 import type { UseQueryResult } from '@tanstack/react-query';
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 
 import type { UserInfo } from 'types/api/account';
 
@@ -22,8 +22,8 @@ interface Props {
   isPending?: boolean;
 }
 
-const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: Props, ref: React.ForwardedRef<HTMLDivElement>) => {
-  const [ isFetched, setIsFetched ] = React.useState(false);
+const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
+  const [ isFetched, setIsFetched ] = useState(false);
   const isMobile = useIsMobile();
 
   const { data, isLoading } = profileQuery;
@@ -35,6 +35,10 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: 
       setIsFetched(true);
     }
   }, [ isLoading ]);
+
+  const handleFocus = useCallback((e: React.FocusEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+  }, []);
 
   const content = (() => {
     if (web3AccountWithDomain.address) {
@@ -60,31 +64,34 @@ const UserProfileButton = ({ profileQuery, size, variant, onClick, isPending }: 
     );
   })();
 
+  const isButtonLoading = isPending || !isFetched;
+  const dataExists = !isButtonLoading && (Boolean(data) || Boolean(web3AccountWithDomain.address));
+
   return (
     <Tooltip
       label={ <span>Sign in to My Account to add tags,<br/>create watchlists, access API keys and more</span> }
       textAlign="center"
       padding={ 2 }
-      isDisabled={ isMobile || isFetched || Boolean(data) }
+      isDisabled={ isMobile || isLoading || Boolean(data) }
       openDelay={ 500 }
     >
-      <Skeleton isLoaded={ isFetched } borderRadius="base" ref={ ref } w="fit-content">
-        <Button
-          size={ size }
-          variant={ variant }
-          onClick={ onClick }
-          data-selected={ Boolean(data) || Boolean(web3AccountWithDomain.address) }
-          data-warning={ isAutoConnectDisabled }
-          fontSize="sm"
-          lineHeight={ 5 }
-          px={ data || web3AccountWithDomain.address ? 2.5 : 4 }
-          fontWeight={ data || web3AccountWithDomain.address ? 700 : 600 }
-          isLoading={ isPending }
-          loadingText={ isMobile ? undefined : 'Connecting' }
-        >
-          { content }
-        </Button>
-      </Skeleton>
+      <Button
+        ref={ ref }
+        size={ size }
+        variant={ variant }
+        onClick={ onClick }
+        onFocus={ handleFocus }
+        data-selected={ dataExists }
+        data-warning={ isAutoConnectDisabled }
+        fontSize="sm"
+        lineHeight={ 5 }
+        px={ dataExists ? 2.5 : 4 }
+        fontWeight={ dataExists ? 700 : 600 }
+        isLoading={ isButtonLoading }
+        loadingText={ isMobile ? undefined : 'Log in' }
+      >
+        { content }
+      </Button>
     </Tooltip>
   );
 };

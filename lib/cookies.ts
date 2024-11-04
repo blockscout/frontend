@@ -5,6 +5,8 @@ import isBrowser from './isBrowser';
 export enum NAMES {
   NAV_BAR_COLLAPSED='nav_bar_collapsed',
   API_TOKEN='_explorer_key',
+  REWARDS_API_TOKEN='rewards_api_token',
+  REWARDS_REFERRAL_CODE='rewards_ref_code',
   TXS_SORT='txs_sort',
   COLOR_MODE='chakra-ui-color-mode',
   COLOR_MODE_HEX='chakra-ui-color-mode-hex',

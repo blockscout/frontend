@@ -4,7 +4,9 @@ import React from 'react';
 
 import type { UserInfo } from 'types/api/account';
 
+import config from 'configs/app';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import LinkExternal from 'ui/shared/links/LinkExternal';
 
 interface Props {
   profileQuery: UseQueryResult<UserInfo, unknown>;
@@ -18,7 +20,15 @@ const MyProfileWallet = ({ profileQuery, onAddWallet }: Props) => {
     <section>
       <Heading as="h2" size="sm" mb={ 3 }>My linked wallet</Heading>
       <Text mb={ 3 } >
-      This wallet address is used for login and participation in the merit program
+        This wallet address is used for login{ ' ' }
+        { config.features.rewards.isEnabled && (
+          <>
+            and participation in the Merits Program.
+            <LinkExternal href="https://docs.blockscout.com/using-blockscout/merits" ml={ 1 }>
+              Learn more
+            </LinkExternal>
+          </>
+        ) }
       </Text>
       { profileQuery.data?.address_hash ? (
         <Box px={ 3 } py="18px" bgColor={ bgColor } borderRadius="base">
