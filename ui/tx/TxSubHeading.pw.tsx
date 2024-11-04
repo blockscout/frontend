@@ -111,22 +111,28 @@ test.describe('blockscout provider', () => {
     await expect(component).toHaveScreenshot();
   });
 
-  test('no interpretation, has method called', async({ render, mockApiResponse }) => {
-    // the action button should not render if there is no interpretation
+  test('no interpretation, has method called', async({ render, mockApiResponse, mockAssetResponse }) => {
     const newTxQuery = { ...txQuery, data: txMock.withRecipientContract } as TxQuery;
     const metadataResponse = generateAddressMetadataResponse(protocolTagWithMeta);
     await mockApiResponse('address_metadata_info', metadataResponse, { queryParams: addressMetadataQueryParams });
+    await mockAssetResponse(protocolTagWithMeta?.meta?.appLogoURL as string, './playwright/mocks/image_s.jpg');
     await mockApiResponse('tx_interpretation', { data: { summaries: [] } }, { pathParams: { hash } });
 
     const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ newTxQuery }/>);
     await expect(component).toHaveScreenshot();
   });
 
-  test('no interpretation', async({ render, mockApiResponse }) => {
-    // the action button should not render if there is no interpretation
+  test('no interpretation, with action button', async({ render, mockApiResponse, mockAssetResponse }) => {
     const metadataResponse = generateAddressMetadataResponse(protocolTagWithMeta);
     await mockApiResponse('address_metadata_info', metadataResponse, { queryParams: addressMetadataQueryParams });
+    await mockAssetResponse(protocolTagWithMeta?.meta?.appLogoURL as string, './playwright/mocks/image_s.jpg');
 
+    const newTxQuery = { ...txQuery, data: txMock.withRecipientContract } as TxQuery;
+    const component = await render(<TxSubHeading hash={ hash } hasTag={ false } txQuery={ newTxQuery }/>);
+    await expect(component).toHaveScreenshot();
+  });
+
+  test('no interpretation (pending)', async({ render, mockApiResponse }) => {
     const txPendingQuery = {
       data: txMock.pending,
       isPlaceholderData: false,
