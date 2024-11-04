@@ -12,7 +12,7 @@ const DailyRewardClaimButton = () => {
 
   const dailyRewardValue = useMemo(() =>
     dailyRewardQuery.data ?
-      Number(dailyRewardQuery.data.daily_reward) + Number(dailyRewardQuery.data.pending_referral_rewards) :
+      Number((Number(dailyRewardQuery.data.daily_reward) + Number(dailyRewardQuery.data.pending_referral_rewards)).toFixed(2)) :
       0,
   [ dailyRewardQuery.data ]);
 
