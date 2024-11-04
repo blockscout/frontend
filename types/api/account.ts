@@ -1,3 +1,5 @@
+import type { Abi } from 'viem';
+
 import type { AddressParam } from './addressParams';
 export interface AddressTag {
   address_hash: string;
@@ -111,22 +113,7 @@ export interface CustomAbi {
   id: number;
   contract_address_hash: string;
   contract_address: AddressParam;
-  abi: Array<AbiItem>;
-}
-
-export interface AbiItem {
-  type: 'function';
-  stateMutability: 'nonpayable' | 'view';
-  payable: boolean;
-  outputs: Array<AbiInputOutput>;
-  name: string;
-  inputs: Array<AbiInputOutput>;
-  constant: boolean;
-}
-
-interface AbiInputOutput {
-  type: 'uint256' | 'address';
-  name: string;
+  abi: Abi;
 }
 
 export type WatchlistErrors = {
