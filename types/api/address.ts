@@ -266,6 +266,7 @@ export type AddressEpochRewardsItem = {
   amount: string;
   block_number: number;
   block_hash: string;
+  block_timestamp: string;
   account: AddressParam;
   epoch_number: number;
   associated_account: AddressParam;
