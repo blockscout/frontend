@@ -39,7 +39,7 @@ const MetadataItemPrimitive = ({ name, value, isItem = true, isFlat, level }: Pr
   })();
 
   return (
-    <Component level={ level } isFlat={ isFlat }>
+    <Component level={ level } { ...(isItem ? { isFlat } : {}) }>
       { name && <MetadataAccordionItemTitle name={ name }/> }
       { content }
     </Component>

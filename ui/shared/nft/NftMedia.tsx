@@ -2,6 +2,8 @@ import { AspectRatio, chakra, Skeleton, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
 
+import type { TokenInstance } from 'types/api/token';
+
 import NftFallback from './NftFallback';
 import NftHtml from './NftHtml';
 import NftHtmlFullscreen from './NftHtmlFullscreen';
@@ -13,21 +15,20 @@ import useNftMediaInfo from './useNftMediaInfo';
 import { mediaStyleProps } from './utils';
 
 interface Props {
-  imageUrl: string | null;
-  animationUrl: string | null;
+  data: TokenInstance;
   className?: string;
   isLoading?: boolean;
   withFullscreen?: boolean;
   autoplayVideo?: boolean;
 }
 
-const NftMedia = ({ imageUrl, animationUrl, className, isLoading, withFullscreen, autoplayVideo }: Props) => {
+const NftMedia = ({ data, className, isLoading, withFullscreen, autoplayVideo }: Props) => {
   const [ isMediaLoading, setIsMediaLoading ] = React.useState(true);
   const [ isLoadingError, setIsLoadingError ] = React.useState(false);
 
   const { ref, inView } = useInView({ triggerOnce: true });
 
-  const mediaInfo = useNftMediaInfo({ imageUrl, animationUrl, isEnabled: !isLoading && inView });
+  const mediaInfo = useNftMediaInfo({ data, isEnabled: !isLoading && inView });
 
   React.useEffect(() => {
     if (!isLoading && !mediaInfo) {
@@ -57,14 +58,14 @@ const NftMedia = ({ imageUrl, animationUrl, className, isLoading, withFullscreen
       return <NftFallback { ...styleProps }/>;
     }
 
-    const { type, url } = mediaInfo;
+    const { type, src } = mediaInfo;
 
-    if (!url) {
+    if (!src) {
       return null;
     }
 
     const props = {
-      src: url,
+      src,
       onLoad: handleMediaLoaded,
       onError: handleMediaLoadError,
       ...(withFullscreen ? { onClick: onOpen } : {}),
@@ -72,7 +73,8 @@ const NftMedia = ({ imageUrl, animationUrl, className, isLoading, withFullscreen
 
     switch (type) {
       case 'video':
-        return <NftVideo { ...props } autoPlay={ autoplayVideo } poster={ imageUrl || undefined }/>;
+        // TODO @tom2drum add poster src from ipfs
+        return <NftVideo { ...props } autoPlay={ autoplayVideo } poster={ data.image_url || undefined }/>;
       case 'html':
         return <NftHtml { ...props }/>;
       case 'image':
@@ -87,14 +89,14 @@ const NftMedia = ({ imageUrl, animationUrl, className, isLoading, withFullscreen
       return null;
     }
 
-    const { type, url } = mediaInfo;
+    const { type, src } = mediaInfo;
 
-    if (!url) {
+    if (!src) {
       return null;
     }
 
     const props = {
-      src: url,
+      src,
       isOpen,
       onClose,
     };
