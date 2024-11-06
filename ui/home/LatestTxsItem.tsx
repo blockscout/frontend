@@ -62,7 +62,6 @@ const LatestTxsItem = ({ tx, isLoading }: Props) => {
             <TxEntity
               isLoading={ isLoading }
               hash={ tx.hash }
-              fontWeight="700"
             />
             <TimeAgoWithTooltip
               timestamp={ tx.timestamp }

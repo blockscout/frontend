@@ -55,7 +55,7 @@ const defaultColorTheme = (() => {
 const UI = Object.freeze({
   navigation: {
     logo: {
-      'default': getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_LOGO'),
+      'default': '/static/fluent.logo.svg',
       dark: getExternalAssetFilePath('NEXT_PUBLIC_NETWORK_LOGO_DARK'),
     },
     icon: {

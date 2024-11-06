@@ -58,3 +58,5 @@ yarn-error.log*
 
 # build outputs
 /tools/preset-sync/index.js
+
+.idea

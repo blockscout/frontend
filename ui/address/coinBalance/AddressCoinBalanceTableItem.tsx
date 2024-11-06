@@ -36,7 +36,6 @@ const AddressCoinBalanceTableItem = (props: Props) => {
             hash={ props.transaction_hash }
             isLoading={ props.isLoading }
             noIcon
-            fontWeight={ 700 }
             maxW="150px"
           />
         ) }

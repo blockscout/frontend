@@ -36,7 +36,7 @@ const NavLinkGroup = ({ item, isCollapsed }: Props) => {
     <Box as="li" listStyleType="none" w="100%">
       <Popover
         trigger="hover"
-        placement="right-start"
+        placement="bottom"
         // should not be lazy to help google indexing pages
         isLazy={ false }
         gutter={ 8 }
@@ -44,17 +44,17 @@ const NavLinkGroup = ({ item, isCollapsed }: Props) => {
         <PopoverTrigger>
           <Box
             { ...styleProps.itemProps }
-            w={{ lg: isExpanded ? '180px' : '60px', xl: isCollapsed ? '60px' : '180px' }}
-            pl={{ lg: isExpanded ? 2 : '15px', xl: isCollapsed ? '15px' : 2 }}
-            pr={{ lg: isExpanded ? 0 : '15px', xl: isCollapsed ? '15px' : 0 }}
+            mr={ 3 }
+            px={ 2 }
+            py={ 1 }
             aria-label={ `${ item.text } link group` }
             position="relative"
           >
-            <HStack spacing={ 0 } overflow="hidden">
+            <HStack spacing={ 0 }>
               <NavLinkIcon item={ item }/>
               <Text
                 { ...styleProps.textProps }
-                ml={ 3 }
+                ml={ 1 }
               >
                 { item.text }
               </Text>
@@ -63,10 +63,10 @@ const NavLinkGroup = ({ item, isCollapsed }: Props) => {
               ) }
               <IconSvg
                 name="arrows/east-mini"
-                position="absolute"
+                ml={ 1 }
                 right="7px"
-                transform="rotate(180deg)"
-                boxSize={ 6 }
+                transform="rotate(-90deg)"
+                boxSize={ 4 }
                 opacity={{ lg: isExpanded ? '1' : '0', xl: isCollapsed ? '0' : '1' }}
                 transitionProperty="opacity"
                 transitionDuration="normal"
@@ -75,6 +75,7 @@ const NavLinkGroup = ({ item, isCollapsed }: Props) => {
             </HStack>
           </Box>
         </PopoverTrigger>
+
         <PopoverContent width="252px" top={{ lg: isExpanded ? '-16px' : 0, xl: isCollapsed ? 0 : '-16px' }}>
           <PopoverBody p={ 4 }>
             <Text variant="secondary" fontSize="sm" mb={ 1 } display={{ lg: isExpanded ? 'none' : 'block', xl: isCollapsed ? 'block' : 'none' }}>

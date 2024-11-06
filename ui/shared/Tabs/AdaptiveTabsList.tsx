@@ -108,6 +108,8 @@ const AdaptiveTabsList = (props: Props) => {
           );
         }
 
+        const isActive = index === props.activeTabIndex;
+
         return (
           <Tab
             key={ tab.id.toString() }
@@ -120,11 +122,11 @@ const AdaptiveTabsList = (props: Props) => {
                 color: 'inherit',
               },
             }}
-            { ...(index === props.activeTabIndex ? { 'data-selected': true } : {}) }
+            { ...(isActive ? { 'data-selected': true } : {}) }
           >
             <Skeleton isLoaded={ !props.isLoading }>
               { typeof tab.title === 'function' ? tab.title() : tab.title }
-              <TabCounter count={ tab.count }/>
+              <TabCounter count={ tab.count } isActive={ isActive }/>
             </Skeleton>
           </Tab>
         );

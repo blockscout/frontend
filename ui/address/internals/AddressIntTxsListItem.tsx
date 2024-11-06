@@ -44,7 +44,6 @@ const TxInternalsListItem = ({
         <TxEntity
           hash={ txnHash }
           isLoading={ isLoading }
-          fontWeight={ 700 }
           truncation="constant_long"
         />
         <TimeAgoWithTooltip

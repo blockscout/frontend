@@ -36,6 +36,8 @@ export default function useApiInfiniteQuery<R extends PaginatedResources>({
     },
     initialPageParam: null,
     getNextPageParam: (lastPage) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore-next-line
       return lastPage.next_page_params as TPageParam<R>;
     },
     ...queryOptions,

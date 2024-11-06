@@ -5,7 +5,7 @@ const semanticTokens = {
       _dark: 'whiteAlpha.200',
     },
     text: {
-      'default': 'blackAlpha.800',
+      'default': 'black',
       _dark: 'whiteAlpha.800',
     },
     text_secondary: {
@@ -13,11 +13,11 @@ const semanticTokens = {
       _dark: 'gray.400',
     },
     link: {
-      'default': 'blue.600',
+      'default': 'purple.90',
       _dark: 'blue.300',
     },
     link_hovered: {
-      'default': 'blue.400',
+      'default': 'purple.80',
     },
     icon_link_external: {
       'default': 'gray.300',

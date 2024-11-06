@@ -11,7 +11,6 @@ import getQueryParamString from 'lib/router/getQueryParamString';
 import { TX_ZKEVM_L2 } from 'stubs/tx';
 import { generateListStub } from 'stubs/utils';
 import { ZKEVM_L2_TXN_BATCH } from 'stubs/zkEvmL2';
-import TextAd from 'ui/shared/ad/TextAd';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
@@ -66,7 +65,6 @@ const ZkEvmL2TxnBatch = () => {
 
   return (
     <>
-      <TextAd mb={ 6 }/>
       <PageTitle
         title={ `Txn batch #${ number }` }
         backLink={ backLink }

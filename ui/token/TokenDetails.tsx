@@ -18,7 +18,6 @@ import type { TokenTabs } from 'ui/pages/Token';
 import AppActionButton from 'ui/shared/AppActionButton/AppActionButton';
 import useAppActionData from 'ui/shared/AppActionButton/useAppActionData';
 import * as DetailsInfoItem from 'ui/shared/DetailsInfoItem';
-import DetailsSponsoredItem from 'ui/shared/DetailsSponsoredItem';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
 import TokenNftMarketplaces from './TokenNftMarketplaces';
@@ -215,8 +214,6 @@ const TokenDetails = ({ tokenQuery }: Props) => {
           </DetailsInfoItem.Value>
         </>
       ) }
-
-      <DetailsSponsoredItem isLoading={ tokenQuery.isPlaceholderData }/>
     </Grid>
   );
 };

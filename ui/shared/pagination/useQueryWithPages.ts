@@ -37,6 +37,8 @@ function getPaginationParamsFromQuery(queryString: string | Array<string> | unde
 }
 
 function getNextPageParams<R extends PaginatedResources>(data: ResourcePayload<R> | undefined) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore-next-line
   if (!data || typeof data !== 'object' || !('next_page_params' in data)) {
     return;
   }

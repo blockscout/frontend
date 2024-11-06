@@ -39,7 +39,6 @@ const AddressIntTxsTableItem = ({
           <TxEntity
             hash={ txnHash }
             isLoading={ isLoading }
-            fontWeight={ 700 }
             noIcon
             truncation="constant_long"
           />

@@ -39,7 +39,6 @@ const TokenTransferTableItem = ({
           <TxEntity
             hash={ txHash }
             isLoading={ isLoading }
-            fontWeight={ 600 }
             noIcon
             truncation="constant_long"
           />

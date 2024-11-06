@@ -12,7 +12,6 @@ import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { USER_OP } from 'stubs/userOps';
-import TextAd from 'ui/shared/ad/TextAd';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import RoutedTabs from 'ui/shared/Tabs/RoutedTabs';
 import TabsSkeleton from 'ui/shared/Tabs/TabsSkeleton';
@@ -98,7 +97,6 @@ const UserOp = () => {
 
   return (
     <>
-      <TextAd mb={ 6 }/>
       <PageTitle
         title="User operation details"
         backLink={ backLink }

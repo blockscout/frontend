@@ -7,11 +7,16 @@ const COUNTER_OVERLOAD = 50;
 
 type Props = {
   count?: number | null;
+  isActive?: boolean;
 }
 
-const TabCounter = ({ count }: Props) => {
+const TabCounter = ({ count, isActive }: Props) => {
 
   const zeroCountColor = useColorModeValue('blackAlpha.400', 'whiteAlpha.400');
+  const nonZeroCountColor = useColorModeValue('text_secondary', 'text_secondary');
+
+  const activeZeroColor = isActive ? 'gray.50' : zeroCountColor;
+  const activeNonZeroColor = isActive ? 'white' : nonZeroCountColor;
 
   if (count === undefined || count === null) {
     return null;
@@ -19,8 +24,9 @@ const TabCounter = ({ count }: Props) => {
 
   return (
     <chakra.span
-      color={ count > 0 ? 'text_secondary' : zeroCountColor }
+      color={ count > 0 ? activeNonZeroColor : activeZeroColor }
       ml={ 1 }
+      fontSize="sm"
       { ...getDefaultTransitionProps() }
     >
       { count > COUNTER_OVERLOAD ? `${ COUNTER_OVERLOAD }+` : count }
