@@ -30,7 +30,7 @@ const TokenTransferTable = ({ items, top, isLoading }: Props) => {
         <Tbody>
           { items?.map((item, index) => (
             <TokenTransferTableItem
-              key={ item.block_number + item.log_index + (isLoading ? index : '') }
+              key={ item.tx_hash + item.log_index + (isLoading ? index : '') }
               item={ item }
               isLoading={ isLoading }
             />
