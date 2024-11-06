@@ -2,6 +2,7 @@ import type { AddressMetadataTagApi } from './addressMetadata';
 
 export interface AddressImplementation {
   address: string;
+  filecoin_robust_address?: string | null;
   name?: string | null;
 }
 
