@@ -1,8 +1,8 @@
-<h1 align="center">Lux Explorer</h1>
+<h1 align="center">Lux Explore</h1>
 
 <p align="center">
     <span>Frontend application for </span>
-    <a href="https://github.com/luxfi/explorer-app/blob/master/README.md">Lux Explorer</a>
+    <a href="https://lux.network">Lux Network</a>
     <span> blockchain explorer</span>
 </p>
 
@@ -13,7 +13,7 @@ App is distributed as a docker image. Here you can find information about the [p
 You can configure your app by passing necessary environment variables when starting the container. See full list of ENVs and their description [here](./docs/ENVS.md).
 
 ```sh
-docker run -p 3000:3000 --env-file <path-to-your-env-file> ghcr.io/luxfi/:latest
+docker run -p 3000:3000 --env-file <path-to-your-env-file> ghcr.io/luxfi/explore:latest
 ```
 
 Alternatively, you can build your own docker image and run your app from that. Please follow this [guide](./docs/CUSTOM_BUILD.md).
