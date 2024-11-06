@@ -123,7 +123,7 @@ const TokenInstanceMetadataInfo = ({ data, isLoading: isLoadingProp }: Props) =>
           </DetailsInfoItem.Value>
         </>
       ) }
-      { metadata?.attributes && (
+      { metadata?.attributes && metadata.attributes.length > 0 && (
         <>
           <DetailsInfoItem.Label
             hint="NFT attributes"
