@@ -121,10 +121,11 @@ export const ADDRESS_MUD_TABLE_ITEM: AddressMudTableItem = {
 export const EPOCH_REWARD_ITEM: AddressEpochRewardsItem = {
   amount: '136609473658452408568',
   block_number: 10355938,
+  block_timestamp: '2022-05-15T13:16:24Z',
   type: 'voter',
   token: TOKEN_INFO_ERC_20,
   block_hash: '0x5956a847d8089e254e02e5111cad6992b99ceb9e5c2dc4343fd53002834c4dc6',
   account: ADDRESS_PARAMS,
-  epoch_number: 1526,
+  epoch_number: 1234,
   associated_account: ADDRESS_PARAMS,
 };
