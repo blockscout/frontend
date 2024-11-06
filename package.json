@@ -97,7 +97,7 @@
     "react-jazzicon": "^1.0.4",
     "react-number-format": "^5.3.1",
     "react-scroll": "^1.8.7",
-    "swagger-ui-react": "^5.17.3",
+    "swagger-ui-react": "^5.18.0",
     "use-font-face-observer": "^1.2.1",
     "viem": "1.20.1",
     "wagmi": "1.4.12",
