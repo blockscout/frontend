@@ -4,6 +4,8 @@ import React from 'react';
 
 import type { TokenInstance } from 'types/api/token';
 
+import config from 'configs/app';
+
 import { mediaStyleProps, videoPlayProps } from './utils';
 
 interface Props {
@@ -25,11 +27,11 @@ const NftVideo = ({ src, instance, autoPlay = true, onLoad, onError, onClick }: 
     }
 
     try {
-      controller.current = new AbortController();
       const imageUrl = typeof instance.metadata?.image === 'string' ? instance.metadata.image : undefined;
-      if (!imageUrl) {
+      if (!imageUrl || !config.UI.views.nft.verifiedFetch.isEnabled) {
         throw new Error('No image URL found');
       }
+      controller.current = new AbortController();
       const response = await verifiedFetch(imageUrl, { signal: controller.current.signal });
       const blob = await response.blob();
       const src = URL.createObjectURL(blob);

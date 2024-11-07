@@ -7,6 +7,7 @@ import type { TokenInstance } from 'types/api/token';
 import type { StaticRoute } from 'nextjs-routes';
 import { route } from 'nextjs-routes';
 
+import config from 'configs/app';
 import type { ResourceError } from 'lib/api/resources';
 import useFetch from 'lib/hooks/useFetch';
 
@@ -88,7 +89,7 @@ function useFetchAssetViaIpfs(url: string | undefined, type: MediaType | undefin
 
   React.useEffect(() => {
     if (isEnabled) {
-      if (type === 'image' && url && url.includes('ipfs')) {
+      if (config.UI.views.nft.verifiedFetch.isEnabled && type === 'image' && url && url.includes('ipfs')) {
         fetchAsset(url);
       } else {
         setResult(null);
