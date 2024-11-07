@@ -1,6 +1,5 @@
-import { createVerifiedFetch } from '@helia/verified-fetch';
+import { verifiedFetch } from '@helia/verified-fetch';
 import { useQuery } from '@tanstack/react-query';
-import filetype from 'magic-bytes.js';
 import React from 'react';
 
 import type { TokenInstance } from 'types/api/token';
@@ -39,10 +38,18 @@ null;
 export default function useNftMediaInfo({ data, isEnabled }: Params): ReturnType | null {
 
   const assetsData = composeAssetsData(data);
-  const ipfsPrimaryQuery = useFetchViaIpfs(assetsData.ipfs.animationUrl, isEnabled);
-  const httpPrimaryQuery = useNftMediaTypeQuery(assetsData.http.animationUrl, isEnabled && !ipfsPrimaryQuery);
-  const ipfsSecondaryQuery = useFetchViaIpfs(assetsData.ipfs.imageUrl, isEnabled && !httpPrimaryQuery.data);
-  const httpSecondaryQuery = useNftMediaTypeQuery(assetsData.http.imageUrl, isEnabled && !ipfsSecondaryQuery);
+  const httpPrimaryQuery = useNftMediaTypeQuery(assetsData.http.animationUrl, isEnabled);
+  const ipfsPrimaryQuery = useFetchAssetViaIpfs(
+    assetsData.ipfs.animationUrl,
+    httpPrimaryQuery.data?.type,
+    isEnabled && (httpPrimaryQuery.data === null || Boolean(httpPrimaryQuery.data?.type)),
+  );
+  const httpSecondaryQuery = useNftMediaTypeQuery(assetsData.http.imageUrl, isEnabled && !httpPrimaryQuery.data && !ipfsPrimaryQuery);
+  const ipfsSecondaryQuery = useFetchAssetViaIpfs(
+    assetsData.ipfs.imageUrl,
+    httpSecondaryQuery.data?.type,
+    isEnabled && (httpSecondaryQuery.data === null || Boolean(httpSecondaryQuery.data?.type)),
+  );
 
   return React.useMemo(() => {
     return ipfsPrimaryQuery || httpPrimaryQuery.data || ipfsSecondaryQuery || httpSecondaryQuery.data || null;
@@ -62,40 +69,17 @@ function composeAssetsData(data: TokenInstance): Record<TransportType, AssetsDat
   };
 }
 
-const ipfsFetch = createVerifiedFetch(undefined, {
-  contentTypeParser: async(bytes) => {
-    const result = filetype(bytes);
-    return result[0]?.mime;
-  },
-});
-
-function mapContentTypeToMediaType(contentType: string | null) {
-  if (!contentType) {
-    return;
-  }
-
-  if (contentType.includes('image')) {
-    return 'image';
-  }
-
-  if (contentType.includes('video')) {
-    return 'video';
-  }
-}
-
-function useFetchViaIpfs(url: string | undefined, isEnabled: boolean): ReturnType | null {
+// As of now we fetch only images via IPFS because video streaming has performance issues
+function useFetchAssetViaIpfs(url: string | undefined, type: MediaType | undefined, isEnabled: boolean): ReturnType | null {
   const [ result, setResult ] = React.useState<ReturnType | null>({ type: undefined });
 
   const fetchAsset = React.useCallback(async(url: string) => {
     try {
-      const response = await (await ipfsFetch)(url);
-      const contentType = response.headers.get('content-type');
-      const mediaType = mapContentTypeToMediaType(contentType);
-
-      if (mediaType) {
+      const response = await verifiedFetch(url);
+      if (response.status === 200) {
         const blob = await response.blob();
         const src = URL.createObjectURL(blob);
-        setResult({ type: mediaType, src });
+        setResult({ type: 'image', src });
         return;
       }
     } catch (error) {}
@@ -104,11 +88,15 @@ function useFetchViaIpfs(url: string | undefined, isEnabled: boolean): ReturnTyp
 
   React.useEffect(() => {
     if (isEnabled) {
-      url && url.includes('ipfs') ? fetchAsset(url) : setResult(null);
+      if (type === 'image' && url && url.includes('ipfs')) {
+        fetchAsset(url);
+      } else {
+        setResult(null);
+      }
     } else {
       setResult({ type: undefined });
     }
-  }, [ fetchAsset, url, isEnabled ]);
+  }, [ fetchAsset, url, type, isEnabled ]);
 
   return result;
 }
