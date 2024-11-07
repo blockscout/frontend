@@ -309,7 +309,6 @@ const AddressPageContent = () => {
           tagType: 'custom' as const,
           ordinal: 12,
           meta: {
-            tagUrl: xScoreFeature.url,
             tooltipTitle: 'XStar humanity levels',
             tooltipDescription:
               'XStar looks for off-chain information about an address and interpret it as a XHS score. Different score means different humanity levels.',
