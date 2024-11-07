@@ -34,7 +34,9 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
     profileQuery.data?.address_hash !== address,
   [ address, profileQuery.data ]);
 
-  const isLoggedInToAccount = useMemo(() => !profileQuery.isLoading && profileQuery.data?.address_hash, [ profileQuery ]);
+  const isLoggedIntoAccountWithWallet = useMemo(() =>
+    !profileQuery.isLoading && profileQuery.data?.address_hash,
+  [ profileQuery ]);
 
   const isSignUp = useMemo(() =>
     isConnected && !isAddressMismatch && !checkUserQuery.isFetching && !checkUserQuery.data?.exists,
@@ -72,17 +74,22 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
   }, [ refCode, isRefCodeUsed, isSignUp ]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleLogin = useCallback(async() => {
-    if (isLoggedInToAccount) {
+    if (isLoggedIntoAccountWithWallet) {
       loginToRewardsProgram();
     } else {
       openAuthModal(Boolean(profileQuery.data?.email));
     }
-  }, [ loginToRewardsProgram, openAuthModal, isLoggedInToAccount, profileQuery ]);
+  }, [ loginToRewardsProgram, openAuthModal, isLoggedIntoAccountWithWallet, profileQuery ]);
 
-  let text = 'Connect wallet';
-  if (isConnected) {
-    text = isLoggedInToAccount ? 'Get started' : 'Log in to account';
-  }
+  const buttonText = useMemo(() => {
+    if (!isConnected) {
+      return 'Connect wallet';
+    }
+    if (isLoggedIntoAccountWithWallet) {
+      return 'Get started';
+    }
+    return profileQuery.data?.email ? 'Add wallet to account' : 'Log in to account';
+  }, [ isConnected, isLoggedIntoAccountWithWallet, profileQuery.data ]);
 
   return (
     <>
@@ -98,7 +105,7 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
           More about Blockscout Merits
         </LinkExternal>
       </Box>
-      { isSignUp && isLoggedInToAccount && (
+      { isSignUp && isLoggedIntoAccountWithWallet && (
         <Box mb={ 6 }>
           <Divider bgColor="divider" mb={ 6 }/>
           <Flex w="full" alignItems="center" justifyContent="space-between">
@@ -145,7 +152,7 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
         loadingText={ isLoading ? 'Sign message in your wallet' : undefined }
         isDisabled={ isAddressMismatch || refCodeError }
       >
-        { text }
+        { buttonText }
       </Button>
       <Text fontSize="sm" color={ useColorModeValue('blackAlpha.500', 'whiteAlpha.500') } textAlign="center">
         Already registered for Blockscout Merits on another network or chain? Connect the same wallet here.
