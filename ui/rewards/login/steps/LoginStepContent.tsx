@@ -10,14 +10,14 @@ import useWallet from 'lib/web3/useWallet';
 import FormInputPlaceholder from 'ui/shared/forms/inputs/FormInputPlaceholder';
 import LinkExternal from 'ui/shared/links/LinkExternal';
 import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
-import useSignInWithWallet from 'ui/snippets/auth/useSignInWithWallet';
 
 type Props = {
   goNext: (isReferral: boolean) => void;
   closeModal: () => void;
+  openAuthModal: () => void;
 };
 
-const LoginStepContent = ({ goNext, closeModal }: Props) => {
+const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
   const router = useRouter();
   const { connect, isConnected, address } = useWallet({ source: 'Merits' });
   const savedRefCode = cookies.get(cookies.NAMES.REWARDS_REFERRAL_CODE);
@@ -33,6 +33,8 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
     Boolean(profileQuery.data?.address_hash) &&
     profileQuery.data?.address_hash !== address,
   [ address, profileQuery.data ]);
+
+  const isLoggedInToAccount = useMemo(() => !profileQuery.isLoading && profileQuery.data?.address_hash, [ profileQuery ]);
 
   const isSignUp = useMemo(() =>
     isConnected && !isAddressMismatch && !checkUserQuery.isFetching && !checkUserQuery.data?.exists,
@@ -69,20 +71,18 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
     }
   }, [ refCode, isRefCodeUsed, isSignUp ]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const { start: loginToAccount } = useSignInWithWallet({
-    isAuth: Boolean(!profileQuery.isLoading && profileQuery.data?.email),
-    onSuccess: loginToRewardsProgram,
-    onError: setIsLoading.off,
-  });
-
   const handleLogin = useCallback(async() => {
-    if (!profileQuery.isLoading && !profileQuery.data?.address_hash) {
-      setIsLoading.on();
-      loginToAccount();
-      return;
+    if (isLoggedInToAccount) {
+      loginToRewardsProgram();
+    } else {
+      openAuthModal();
     }
-    loginToRewardsProgram();
-  }, [ loginToAccount, loginToRewardsProgram, profileQuery, setIsLoading ]);
+  }, [ loginToRewardsProgram, openAuthModal, isLoggedInToAccount ]);
+
+  let text = 'Connect wallet';
+  if (isConnected) {
+    text = isLoggedInToAccount ? 'Get started' : 'Log in to account';
+  }
 
   return (
     <>
@@ -98,7 +98,7 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
           More about Blockscout Merits
         </LinkExternal>
       </Box>
-      { isSignUp && (
+      { isSignUp && isLoggedInToAccount && (
         <Box mb={ 6 }>
           <Divider bgColor="divider" mb={ 6 }/>
           <Flex w="full" alignItems="center" justifyContent="space-between">
@@ -145,7 +145,7 @@ const LoginStepContent = ({ goNext, closeModal }: Props) => {
         loadingText={ isLoading ? 'Sign message in your wallet' : undefined }
         isDisabled={ isAddressMismatch || refCodeError }
       >
-        { isConnected ? 'Get started' : 'Connect wallet' }
+        { text }
       </Button>
       <Text fontSize="sm" color={ useColorModeValue('blackAlpha.500', 'whiteAlpha.500') } textAlign="center">
         Already registered for Blockscout Merits on another network or chain? Connect the same wallet here.
