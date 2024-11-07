@@ -19,7 +19,7 @@ type Props = {
 }
 
 const TokenTransferTableItem = ({ item, isLoading }: Props) => {
-  const { valueStr } = 'value' in item.total && item.total.value !== null ? getCurrencyValue({
+  const { valueStr } = item.total && 'value' in item.total && item.total.value !== null ? getCurrencyValue({
     value: item.total.value,
     exchangeRate: item.token.exchange_rate,
     accuracy: 8,
