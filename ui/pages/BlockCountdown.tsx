@@ -18,6 +18,8 @@ import LinkExternal from 'ui/shared/links/LinkExternal';
 import StatsWidget from 'ui/shared/stats/StatsWidget';
 import TruncatedValue from 'ui/shared/TruncatedValue';
 
+import CapybaraRunner from '../games/CapybaraRunner';
+
 const BlockCountdown = () => {
   const router = useRouter();
   const height = getQueryParamString(router.query.height);
@@ -112,6 +114,7 @@ const BlockCountdown = () => {
           <StatsWidget label="Remaining blocks" value={ data.result.RemainingBlock } icon="apps_slim"/>
           <StatsWidget label="Current block" value={ data.result.CurrentBlock } icon="block_slim"/>
         </Grid>
+        <CapybaraRunner/>
       </Flex>
     </Center>
   );
