@@ -9,6 +9,15 @@ import AuthModal from 'ui/snippets/auth/AuthModal';
 import CongratsStepContent from './steps/CongratsStepContent';
 import LoginStepContent from './steps/LoginStepContent';
 
+const MIXPANEL_CONFIG = {
+  account_link_info: {
+    source: 'Merits' as const,
+  },
+  wallet_connect: {
+    source: 'Merits' as const,
+  },
+};
+
 const RewardsLoginModal = () => {
   const { isOpen: isWalletModalOpen } = useWallet({ source: 'Merits' });
   const isMobile = useIsMobile();
@@ -69,6 +78,7 @@ const RewardsLoginModal = () => {
         <AuthModal
           onClose={ handleAuthModalClose }
           initialScreen={{ type: 'connect_wallet', isAuth }}
+          mixpanelConfig={ MIXPANEL_CONFIG }
           closeOnError
         />
       ) }
