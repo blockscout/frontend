@@ -44,7 +44,6 @@ const RewardsButton = ({ variant = 'header', size }: Props) => {
         size={ size }
         px={ !isLoading && Boolean(apiToken) ? 2.5 : 4 }
         isLoading={ isLoading }
-        loadingText={ isMobile ? undefined : 'Merits' }
         _hover={{
           textDecoration: 'none',
         }}
