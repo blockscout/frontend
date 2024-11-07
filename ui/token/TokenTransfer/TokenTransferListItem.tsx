@@ -89,7 +89,7 @@ const TokenTransferListItem = ({
           ) }
         </Grid>
       ) }
-      { 'token_id' in total && (NFT_TOKEN_TYPE_IDS.includes(token.type)) && total.token_id !== null && (
+      { total && 'token_id' in total && (NFT_TOKEN_TYPE_IDS.includes(token.type)) && total.token_id !== null && (
         <NftEntity
           hash={ token.address }
           id={ total.token_id }

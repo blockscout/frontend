@@ -73,7 +73,7 @@ const TokenTransferTableItem = ({
       </Td>
       { (NFT_TOKEN_TYPE_IDS.includes(token.type)) && (
         <Td>
-          { 'token_id' in total && total.token_id !== null ? (
+          { total && 'token_id' in total && total.token_id !== null ? (
             <NftEntity
               hash={ token.address }
               id={ total.token_id }
