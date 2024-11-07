@@ -113,7 +113,24 @@ const TransactionPageContent = () => {
     if (isCustomAppError(error)) {
       throwOnResourceLoadError({ resource: 'tx', error, isError: true });
     }
-  }
+  } else {
+          // Display a specific failure message for failed transactions
+          return (
+            <div>
+              <TextAd mb={ 6 }/>
+              <PageTitle
+                title="Transaction details"
+                backLink={ backLink }
+                contentAfter={ tags }
+                secondRow={ titleSecondRow }
+              />
+              <p style={{ color: 'red', fontWeight: 'bold', marginTop: '20px' }}>
+                Address failed to call method on address.
+              </p>
+            </div>
+          );
+        }
+      }
 
   return (
     <>
