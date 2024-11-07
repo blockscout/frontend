@@ -14,7 +14,7 @@ import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
 type Props = {
   goNext: (isReferral: boolean) => void;
   closeModal: () => void;
-  openAuthModal: () => void;
+  openAuthModal: (isAuth: boolean) => void;
 };
 
 const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
@@ -75,9 +75,9 @@ const LoginStepContent = ({ goNext, closeModal, openAuthModal }: Props) => {
     if (isLoggedInToAccount) {
       loginToRewardsProgram();
     } else {
-      openAuthModal();
+      openAuthModal(Boolean(profileQuery.data?.email));
     }
-  }, [ loginToRewardsProgram, openAuthModal, isLoggedInToAccount ]);
+  }, [ loginToRewardsProgram, openAuthModal, isLoggedInToAccount, profileQuery ]);
 
   let text = 'Connect wallet';
   if (isConnected) {

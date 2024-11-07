@@ -16,6 +16,7 @@ const RewardsLoginModal = () => {
 
   const [ isLoginStep, setIsLoginStep ] = useBoolean(true);
   const [ isReferral, setIsReferral ] = useBoolean(false);
+  const [ isAuth, setIsAuth ] = useBoolean(false);
   const authModal = useDisclosure();
 
   useEffect(() => {
@@ -31,6 +32,16 @@ const RewardsLoginModal = () => {
     }
     setIsLoginStep.off();
   }, [ setIsLoginStep, setIsReferral ]);
+
+  const handleAuthModalOpen = useCallback((isAuth: boolean) => {
+    setIsAuth[isAuth ? 'on' : 'off']();
+    authModal.onOpen();
+  }, [ authModal, setIsAuth ]);
+
+  const handleAuthModalClose = useCallback(() => {
+    setIsAuth.off();
+    authModal.onClose();
+  }, [ authModal, setIsAuth ]);
 
   return (
     <>
@@ -48,7 +59,7 @@ const RewardsLoginModal = () => {
           <ModalCloseButton top={ 6 } right={ 6 }/>
           <ModalBody mb={ 0 }>
             { isLoginStep ?
-              <LoginStepContent goNext={ goNext } openAuthModal={ authModal.onOpen } closeModal={ closeLoginModal }/> :
+              <LoginStepContent goNext={ goNext } openAuthModal={ handleAuthModalOpen } closeModal={ closeLoginModal }/> :
               <CongratsStepContent isReferral={ isReferral }/>
             }
           </ModalBody>
@@ -56,8 +67,8 @@ const RewardsLoginModal = () => {
       </Modal>
       { authModal.isOpen && (
         <AuthModal
-          onClose={ authModal.onClose }
-          initialScreen={{ type: 'connect_wallet' }}
+          onClose={ handleAuthModalClose }
+          initialScreen={{ type: 'connect_wallet', isAuth }}
           closeOnError
         />
       ) }
