@@ -35,7 +35,7 @@ const TokenTransferTableItem = ({
   enableTimeIncrement,
   isLoading,
 }: Props) => {
-  const { usd, valueStr } = 'value' in total && total.value !== null ? getCurrencyValue({
+  const { usd, valueStr } = total && 'value' in total && total.value !== null ? getCurrencyValue({
     value: total.value,
     exchangeRate: token.exchange_rate,
     accuracy: 8,
