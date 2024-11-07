@@ -26,21 +26,26 @@ interface AssetsData {
 
 type TransportType = 'http' | 'ipfs';
 
-interface ReturnType {
-  type: MediaType | undefined;
-  src: string | undefined;
-}
+type ReturnType =
+{
+  type: MediaType;
+  src: string;
+} |
+{
+  type: undefined;
+} |
+null;
 
 export default function useNftMediaInfo({ data, isEnabled }: Params): ReturnType | null {
 
   const assetsData = composeAssetsData(data);
   const ipfsPrimaryQuery = useFetchViaIpfs(assetsData.ipfs.animationUrl, isEnabled);
-  const ipfsSecondaryQuery = useFetchViaIpfs(assetsData.ipfs.imageUrl, isEnabled && !ipfsPrimaryQuery);
-  const httpPrimaryQuery = useNftMediaTypeQuery(assetsData.http.animationUrl, isEnabled && !ipfsSecondaryQuery);
-  const httpSecondaryQuery = useNftMediaTypeQuery(assetsData.http.imageUrl, isEnabled && !httpPrimaryQuery.data);
+  const httpPrimaryQuery = useNftMediaTypeQuery(assetsData.http.animationUrl, isEnabled && !ipfsPrimaryQuery);
+  const ipfsSecondaryQuery = useFetchViaIpfs(assetsData.ipfs.imageUrl, isEnabled && !httpPrimaryQuery.data);
+  const httpSecondaryQuery = useNftMediaTypeQuery(assetsData.http.imageUrl, isEnabled && !ipfsSecondaryQuery);
 
   return React.useMemo(() => {
-    return ipfsPrimaryQuery || ipfsSecondaryQuery || httpPrimaryQuery.data || httpSecondaryQuery.data || null;
+    return ipfsPrimaryQuery || httpPrimaryQuery.data || ipfsSecondaryQuery || httpSecondaryQuery.data || null;
   }, [ httpPrimaryQuery.data, httpSecondaryQuery.data, ipfsPrimaryQuery, ipfsSecondaryQuery ]);
 }
 
@@ -57,14 +62,12 @@ function composeAssetsData(data: TokenInstance): Record<TransportType, AssetsDat
   };
 }
 
-async function ipfsFetch() {
-  return createVerifiedFetch(undefined, {
-    contentTypeParser: async(bytes) => {
-      const result = filetype(bytes);
-      return result[0]?.mime;
-    },
-  });
-}
+const ipfsFetch = createVerifiedFetch(undefined, {
+  contentTypeParser: async(bytes) => {
+    const result = filetype(bytes);
+    return result[0]?.mime;
+  },
+});
 
 function mapContentTypeToMediaType(contentType: string | null) {
   if (!contentType) {
@@ -81,13 +84,14 @@ function mapContentTypeToMediaType(contentType: string | null) {
 }
 
 function useFetchViaIpfs(url: string | undefined, isEnabled: boolean): ReturnType | null {
-  const [ result, setResult ] = React.useState<ReturnType | null>({ src: url, type: undefined });
+  const [ result, setResult ] = React.useState<ReturnType | null>({ type: undefined });
 
   const fetchAsset = React.useCallback(async(url: string) => {
     try {
-      const response = await (await ipfsFetch())(url);
+      const response = await (await ipfsFetch)(url);
       const contentType = response.headers.get('content-type');
       const mediaType = mapContentTypeToMediaType(contentType);
+
       if (mediaType) {
         const blob = await response.blob();
         const src = URL.createObjectURL(blob);
@@ -102,7 +106,7 @@ function useFetchViaIpfs(url: string | undefined, isEnabled: boolean): ReturnTyp
     if (isEnabled) {
       url && url.includes('ipfs') ? fetchAsset(url) : setResult(null);
     } else {
-      setResult({ src: url, type: undefined });
+      setResult({ type: undefined });
     }
   }, [ fetchAsset, url, isEnabled ]);
 
@@ -149,7 +153,7 @@ function useNftMediaTypeQuery(url: string | undefined, enabled: boolean) {
       return { type, src: url };
     },
     enabled,
-    placeholderData: { type: undefined, src: url },
+    placeholderData: { type: undefined },
     staleTime: Infinity,
   });
 }

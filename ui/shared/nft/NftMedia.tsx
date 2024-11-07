@@ -58,27 +58,20 @@ const NftMedia = ({ data, className, isLoading, withFullscreen, autoplayVideo }:
       return <NftFallback { ...styleProps }/>;
     }
 
-    const { type, src } = mediaInfo;
-
-    if (!src) {
-      return null;
-    }
-
     const props = {
-      src,
       onLoad: handleMediaLoaded,
       onError: handleMediaLoadError,
       ...(withFullscreen ? { onClick: onOpen } : {}),
     };
 
-    switch (type) {
-      case 'video':
-        // TODO @tom2drum add poster src from ipfs
-        return <NftVideo { ...props } autoPlay={ autoplayVideo } poster={ data.image_url || undefined }/>;
+    switch (mediaInfo.type) {
+      case 'video': {
+        return <NftVideo { ...props } src={ mediaInfo.src } autoPlay={ autoplayVideo } instance={ data }/>;
+      }
       case 'html':
-        return <NftHtml { ...props }/>;
+        return <NftHtml { ...props } src={ mediaInfo.src }/>;
       case 'image':
-        return <NftImage { ...props }/>;
+        return <NftImage { ...props } src={ mediaInfo.src }/>;
       default:
         return null;
     }
@@ -89,25 +82,18 @@ const NftMedia = ({ data, className, isLoading, withFullscreen, autoplayVideo }:
       return null;
     }
 
-    const { type, src } = mediaInfo;
-
-    if (!src) {
-      return null;
-    }
-
     const props = {
-      src,
       isOpen,
       onClose,
     };
 
-    switch (type) {
+    switch (mediaInfo.type) {
       case 'video':
-        return <NftVideoFullscreen { ...props }/>;
+        return <NftVideoFullscreen { ...props } src={ mediaInfo.src }/>;
       case 'html':
-        return <NftHtmlFullscreen { ...props }/>;
+        return <NftHtmlFullscreen { ...props } src={ mediaInfo.src }/>;
       case 'image':
-        return <NftImageFullscreen { ...props }/>;
+        return <NftImageFullscreen { ...props } src={ mediaInfo.src }/>;
       default:
         return null;
     }
