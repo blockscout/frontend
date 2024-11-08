@@ -71,12 +71,15 @@ function composeAssetsData(data: TokenInstance): Record<TransportType, AssetsDat
 }
 
 // As of now we fetch only images via IPFS because video streaming has performance issues
+// Also, we don't want to store the entire file content in the ReactQuery cache, so we don't use useQuery hook here
 function useFetchAssetViaIpfs(url: string | undefined, type: MediaType | undefined, isEnabled: boolean): ReturnType | null {
   const [ result, setResult ] = React.useState<ReturnType | null>({ type: undefined });
+  const controller = React.useRef<AbortController | null>(null);
 
   const fetchAsset = React.useCallback(async(url: string) => {
     try {
-      const response = await verifiedFetch(url);
+      controller.current = new AbortController();
+      const response = await verifiedFetch(url, { signal: controller.current.signal });
       if (response.status === 200) {
         const blob = await response.blob();
         const src = URL.createObjectURL(blob);
@@ -98,6 +101,12 @@ function useFetchAssetViaIpfs(url: string | undefined, type: MediaType | undefin
       setResult({ type: undefined });
     }
   }, [ fetchAsset, url, type, isEnabled ]);
+
+  React.useEffect(() => {
+    return () => {
+      controller.current?.abort();
+    };
+  }, []);
 
   return result;
 }

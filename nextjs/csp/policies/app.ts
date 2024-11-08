@@ -75,9 +75,6 @@ export function app(): CspDev.DirectiveDescriptor {
 
       // github (spec for api-docs page)
       'raw.githubusercontent.com',
-
-      'https://delegated-ipfs.dev',
-      'https://trustless-gateway.link',
     ].filter(Boolean),
 
     'script-src': [

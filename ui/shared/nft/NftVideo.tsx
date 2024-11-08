@@ -27,8 +27,11 @@ const NftVideo = ({ src, instance, autoPlay = true, onLoad, onError, onClick }: 
     }
 
     try {
+      if (!config.UI.views.nft.verifiedFetch.isEnabled) {
+        throw new Error('Helia verified fetch is disabled');
+      }
       const imageUrl = typeof instance.metadata?.image === 'string' ? instance.metadata.image : undefined;
-      if (!imageUrl || !config.UI.views.nft.verifiedFetch.isEnabled) {
+      if (!imageUrl) {
         throw new Error('No image URL found');
       }
       controller.current = new AbortController();
@@ -36,12 +39,22 @@ const NftVideo = ({ src, instance, autoPlay = true, onLoad, onError, onClick }: 
       const blob = await response.blob();
       const src = URL.createObjectURL(blob);
       ref.current.poster = src;
+
+      // we want to call onLoad right after the poster is loaded
+      // otherwise, the skeleton will be shown underneath the element until the video is loaded
+      onLoad();
     } catch (error) {
       if (instance.image_url) {
         ref.current.poster = instance.image_url;
+
+        // we want to call onLoad right after the poster is loaded
+        // otherwise, the skeleton will be shown underneath the element until the video is loaded
+        const poster = new Image();
+        poster.src = ref.current.poster;
+        poster.onload = onLoad;
       }
     }
-  }, [ instance.image_url, instance.metadata?.image ]);
+  }, [ instance.image_url, instance.metadata?.image, onLoad ]);
 
   React.useEffect(() => {
     fetchVideoPoster();
