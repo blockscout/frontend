@@ -67,6 +67,8 @@ export interface Block {
     is_epoch_block: boolean;
     base_fee?: BlockBaseFeeCelo;
   };
+  // ZILLIQA FIELDS
+  zilliqa?: ZilliqaBlockData;
 }
 
 type ArbitrumBlockData = {
@@ -86,6 +88,25 @@ export interface OptimismBlockData {
   blobs: Array<OptimisticL2BlobTypeEip4844> | Array<OptimisticL2BlobTypeCelestia> | null;
   l1_timestamp: string;
   l1_tx_hashes: Array<string>;
+}
+
+export interface ZilliqaBlockData {
+  view: number;
+  quorum_certificate: ZilliqaQuorumCertificate;
+  aggregate_quorum_certificate: (ZilliqaQuorumCertificate & {
+    nested_quorum_certificates: Array<ZilliqaNestedQuorumCertificate>;
+  }) | null;
+}
+
+export interface ZilliqaQuorumCertificate {
+  view: number;
+  signature: string;
+  signers: Array<number>;
+}
+
+export interface ZilliqaNestedQuorumCertificate extends Omit<ZilliqaQuorumCertificate, 'signers'> {
+  proposed_by_validator_index: number;
+  signers?: Array<number>;
 }
 
 export interface BlocksResponse {
