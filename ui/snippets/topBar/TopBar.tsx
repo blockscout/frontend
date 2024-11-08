@@ -6,6 +6,7 @@ import { CONTENT_MAX_WIDTH } from 'ui/shared/layout/utils';
 
 import DeFiDropdown from './DeFiDropdown';
 import NetworkMenu from './NetworkMenu';
+import Settings from './settings/Settings';
 import TopBarStats from './TopBarStats';
 
 const TopBar = () => {
@@ -15,12 +16,14 @@ const TopBar = () => {
     <Box bgColor={ bgColor }>
       <Flex
         py={ 2 }
-        px={{ base: 3, lg: 6 }}
+        px={ 12 }
         maxW={ `${ CONTENT_MAX_WIDTH }px` }
         m="0 auto"
+        mb={ 2 }
         justifyContent="space-between"
         alignItems="center"
       >
+        <TopBarStats/>
         <Flex alignItems="center" px={ 12 }>
           { config.features.deFiDropdown.isEnabled && (
             <>
@@ -35,7 +38,7 @@ const TopBar = () => {
             </Box>
           ) }
         </Flex>
-        <TopBarStats/>
+        <Settings/>
       </Flex>
     </Box>
   );

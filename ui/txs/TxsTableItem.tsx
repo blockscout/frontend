@@ -51,7 +51,6 @@ const TxsTableItem = ({ tx, showBlockInfo, currentAddress, enableTimeIncrement, 
           <TxEntity
             hash={ tx.hash }
             isLoading={ isLoading }
-            fontWeight={ 700 }
             noIcon
             maxW="100%"
             truncation="constant_long"

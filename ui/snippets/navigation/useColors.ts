@@ -3,8 +3,8 @@ import { useColorModeValue } from '@chakra-ui/react';
 export default function useColors() {
   return {
     text: {
-      'default': useColorModeValue('gray.600', 'gray.400'),
-      active: useColorModeValue('purple.100', 'gray.50'),
+      'default': useColorModeValue('gray.600', 'gray.300'),
+      active: useColorModeValue('purple.100', 'purple.40'),
       hover: 'link_hovered',
     },
     bg: {
@@ -13,7 +13,7 @@ export default function useColors() {
     },
     border: {
       'default': 'divider',
-      active: useColorModeValue('blue.50', 'gray.800'),
+      active: useColorModeValue('blue.50', 'purple.40'),
     },
   };
 }
