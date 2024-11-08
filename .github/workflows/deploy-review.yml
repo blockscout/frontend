@@ -28,7 +28,9 @@ on:
             - shibarium
             - stability
             - zkevm
+            - zilliqa_prototestnet
             - zksync
+            - zora
 
 jobs:
   make_slug:
