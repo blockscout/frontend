@@ -300,6 +300,22 @@ const rollupSchema = yup
       }),
   });
 
+const celoSchema = yup
+  .object()
+  .shape({
+    NEXT_PUBLIC_CELO_ENABLED: yup.boolean(),
+    NEXT_PUBLIC_CELO_L2_UPGRADE_BLOCK: yup
+      .string()
+      .when('NEXT_PUBLIC_CELO_ENABLED', {
+        is: (value: boolean) => value,
+        then: (schema) => schema.min(0).optional(),
+        otherwise: (schema) => schema.max(
+          -1,
+          'NEXT_PUBLIC_CELO_L2_UPGRADE_BLOCK cannot not be used if NEXT_PUBLIC_CELO_ENABLED is not set to "true"',
+        ),
+      }),
+  });
+
 const adButlerConfigSchema = yup
   .object<AdButlerConfig>()
   .transform(replaceQuotes)
@@ -867,6 +883,7 @@ const schema = yup
   .concat(adsBannerSchema)
   .concat(marketplaceSchema)
   .concat(rollupSchema)
+  .concat(celoSchema)
   .concat(beaconChainSchema)
   .concat(bridgedTokensSchema)
   .concat(sentrySchema);
