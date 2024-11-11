@@ -104,10 +104,10 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
         Verify tx hash
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value>
-        { data.verify_tx_hash ? (
+        { data.verify_transaction_hash ? (
           <TxEntityL1
             isLoading={ isPlaceholderData }
-            hash={ data.verify_tx_hash }
+            hash={ data.verify_transaction_hash }
             maxW="100%"
           />
         ) : <Text>Pending</Text> }
@@ -162,10 +162,10 @@ const ZkEvmL2TxnBatchDetails = ({ query }: Props) => {
         Sequence tx hash
       </DetailsInfoItem.Label>
       <DetailsInfoItem.Value>
-        { data.sequence_tx_hash ? (
+        { data.sequence_transaction_hash ? (
           <TxEntityL1
             isLoading={ isPlaceholderData }
-            hash={ data.sequence_tx_hash }
+            hash={ data.sequence_transaction_hash }
             maxW="100%"
           />
         ) : <Text>Pending</Text> }

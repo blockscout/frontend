@@ -20,7 +20,7 @@ export interface BlockBaseFeeCelo {
 export interface Block {
   height: number;
   timestamp: string;
-  tx_count: number;
+  transaction_count: number;
   miner: AddressParam;
   size: number;
   hash: string;
@@ -40,7 +40,7 @@ export interface Block {
   gas_used_percentage: number | null;
   burnt_fees_percentage: number | null;
   type: BlockType;
-  tx_fees: string | null;
+  transaction_fees: string | null;
   uncles_hashes: Array<string>;
   withdrawals_count?: number;
   // ROOTSTOCK FIELDS
@@ -56,7 +56,7 @@ export interface Block {
   excess_blob_gas?: string;
   blob_tx_count?: number;
   // ZKSYNC FIELDS
-  zksync?: Omit<ZkSyncBatchesItem, 'number' | 'tx_count' | 'timestamp'> & {
+  zksync?: Omit<ZkSyncBatchesItem, 'number' | 'transaction_count' | 'timestamp'> & {
     'batch_number': number | null;
   };
   arbitrum?: ArbitrumBlockData;
@@ -85,7 +85,7 @@ export interface OptimismBlockData {
   internal_id: number;
   blobs: Array<OptimisticL2BlobTypeEip4844> | Array<OptimisticL2BlobTypeCelestia> | null;
   l1_timestamp: string;
-  l1_tx_hashes: Array<string>;
+  l1_transaction_hashes: Array<string>;
 }
 
 export interface BlocksResponse {

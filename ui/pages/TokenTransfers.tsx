@@ -37,7 +37,7 @@ const TokenTransfers = () => {
       <Show below="lg" ssr={ false }>
         { tokenTransfersQuery.data?.items.map((item, index) => (
           <TokenTransfersListItem
-            key={ item.tx_hash + item.log_index + (tokenTransfersQuery.isPlaceholderData ? index : '') }
+            key={ item.transaction_hash + item.log_index + (tokenTransfersQuery.isPlaceholderData ? index : '') }
             isLoading={ tokenTransfersQuery.isPlaceholderData }
             item={ item }
           />

@@ -303,12 +303,12 @@ const SearchResultTableItem = ({ data, searchTerm, isLoading, addressFormat }: P
                 <TxEntity.Icon/>
                 <TxEntity.Link
                   isLoading={ isLoading }
-                  hash={ data.tx_hash }
+                  hash={ data.transaction_hash }
                   onClick={ handleLinkClick }
                 >
                   <TxEntity.Content
                     asProp="mark"
-                    hash={ data.tx_hash }
+                    hash={ data.transaction_hash }
                     fontSize="sm"
                     lineHeight={ 5 }
                     fontWeight={ 700 }

@@ -50,15 +50,15 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
           isLoading={ isLoading }
         >
           <Skeleton isLoaded={ !isLoading } minW="40px" my={ 1 }>
-            { item.tx_count }
+            { item.transaction_count }
           </Skeleton>
         </LinkInternal>
       </Td>
       <Td pr={ 12 } verticalAlign="middle">
-        { item.verify_tx_hash ? (
+        { item.verify_transaction_hash ? (
           <TxEntityL1
             isLoading={ isLoading }
-            hash={ item.verify_tx_hash }
+            hash={ item.verify_transaction_hash }
             fontSize="sm"
             lineHeight={ 5 }
             truncation="constant_long"
@@ -67,10 +67,10 @@ const TxnBatchesTableItem = ({ item, isLoading }: Props) => {
         ) : <Text>Pending</Text> }
       </Td>
       <Td pr={ 12 } verticalAlign="middle">
-        { item.sequence_tx_hash ? (
+        { item.sequence_transaction_hash ? (
           <TxEntityL1
             isLoading={ isLoading }
-            hash={ item.sequence_tx_hash }
+            hash={ item.sequence_transaction_hash }
             fontSize="sm"
             lineHeight={ 5 }
             truncation="constant_long"

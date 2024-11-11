@@ -25,7 +25,7 @@ type Props = TokenTransfer & {
 const TokenTransferTableItem = ({
   token,
   total,
-  tx_hash: txHash,
+  transaction_hash: txHash,
   from,
   to,
   baseAddress,
