@@ -31,8 +31,8 @@ export const BLOCK: Block = {
   state_root: 'TODO',
   timestamp: '2023-05-12T19:29:12.000000Z',
   total_difficulty: '10837812015930321201107455268036056402048391639',
-  tx_count: 142,
-  tx_fees: '19241635547777613',
+  transaction_count: 142,
+  transaction_fees: '19241635547777613',
   type: 'block',
   uncles_hashes: [],
 };

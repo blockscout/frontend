@@ -33,7 +33,7 @@ const TokenTransfersListItem = ({ item, isLoading }: Props) => {
     <ListItemMobileGrid.Container>
       <ListItemMobileGrid.Label isLoading={ isLoading }>Txn hash</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <TxEntity hash={ item.tx_hash } isLoading={ isLoading } truncation="constant_long" noIcon/>
+        <TxEntity hash={ item.transaction_hash } isLoading={ isLoading } truncation="constant_long" noIcon/>
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>

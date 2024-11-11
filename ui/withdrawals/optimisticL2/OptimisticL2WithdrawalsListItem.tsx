@@ -50,7 +50,7 @@ const OptimisticL2WithdrawalsListItem = ({ item, isLoading }: Props) => {
       <ListItemMobileGrid.Value>
         <TxEntity
           isLoading={ isLoading }
-          hash={ item.l2_tx_hash }
+          hash={ item.l2_transaction_hash }
           fontSize="sm"
           lineHeight={ 5 }
           truncation="constant_long"
@@ -77,13 +77,13 @@ const OptimisticL2WithdrawalsListItem = ({ item, isLoading }: Props) => {
           <Skeleton isLoaded={ !isLoading } display="inline-block">{ item.status }</Skeleton> }
       </ListItemMobileGrid.Value>
 
-      { item.l1_tx_hash && (
+      { item.l1_transaction_hash && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn hash</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
             <TxEntityL1
               isLoading={ isLoading }
-              hash={ item.l1_tx_hash }
+              hash={ item.l1_transaction_hash }
               fontSize="sm"
               lineHeight={ 5 }
               truncation="constant_long"

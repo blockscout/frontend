@@ -52,7 +52,7 @@ const OptimisticL2TxnBatchesListItem = ({ item, isLoading }: Props) => {
       <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn count</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <Skeleton isLoaded={ !isLoading } minW="40px">
-          { item.l1_tx_hashes.length }
+          { item.l1_transaction_hashes.length }
         </Skeleton>
       </ListItemMobileGrid.Value>
 
@@ -75,7 +75,7 @@ const OptimisticL2TxnBatchesListItem = ({ item, isLoading }: Props) => {
           isLoading={ isLoading }
         >
           <Skeleton isLoaded={ !isLoading } minW="40px">
-            { item.tx_count }
+            { item.transaction_count }
           </Skeleton>
         </LinkInternal>
       </ListItemMobileGrid.Value>

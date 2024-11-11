@@ -60,7 +60,7 @@ const AddressesTableItem = ({
       ) }
       <Td isNumeric>
         <Skeleton isLoaded={ !isLoading } display="inline-block" lineHeight="24px">
-          { Number(item.tx_count).toLocaleString() }
+          { Number(item.transaction_count).toLocaleString() }
         </Skeleton>
       </Td>
     </Tr>

@@ -61,7 +61,7 @@ const AddressesListItem = ({
       <HStack spacing={ 3 }>
         <Skeleton isLoaded={ !isLoading } fontSize="sm" fontWeight={ 500 }>Txn count</Skeleton>
         <Skeleton isLoaded={ !isLoading } fontSize="sm" color="text_secondary">
-          <span>{ Number(item.tx_count).toLocaleString() }</span>
+          <span>{ Number(item.transaction_count).toLocaleString() }</span>
         </Skeleton>
       </HStack>
     </ListItemMobile>

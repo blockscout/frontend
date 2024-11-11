@@ -31,7 +31,7 @@ const TokenTransferTableItem = ({ item, isLoading }: Props) => {
     <Tr>
       <Td>
         <TxEntity
-          hash={ item.tx_hash }
+          hash={ item.transaction_hash }
           isLoading={ isLoading }
           fontWeight={ 600 }
           noIcon

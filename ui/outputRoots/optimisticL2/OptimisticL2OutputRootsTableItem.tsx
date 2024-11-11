@@ -45,7 +45,7 @@ const OptimisticL2OutputRootsTableItem = ({ item, isLoading }: Props) => {
       <Td verticalAlign="middle" pr={ 12 }>
         <TxEntityL1
           isLoading={ isLoading }
-          hash={ item.l1_tx_hash }
+          hash={ item.l1_transaction_hash }
           fontSize="sm"
           lineHeight={ 5 }
           noIcon

@@ -34,7 +34,7 @@ const isRollup = config.features.rollup.isEnabled;
 const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
   const totalReward = getBlockTotalReward(data);
   const burntFees = BigNumber(data.burnt_fees || 0);
-  const txFees = BigNumber(data.tx_fees || 0);
+  const txFees = BigNumber(data.transaction_fees || 0);
   const baseFeeValue = getBaseFeeValue(data.base_fee_per_gas);
 
   return (
@@ -81,14 +81,14 @@ const BlocksListItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
       ) }
       <Flex columnGap={ 2 }>
         <Text fontWeight={ 500 }>Txn</Text>
-        { data.tx_count > 0 ? (
+        { data.transaction_count > 0 ? (
           <Skeleton isLoaded={ !isLoading } display="inline-block">
             <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.height), tab: 'txs' } }) }>
-              { data.tx_count }
+              { data.transaction_count }
             </LinkInternal>
           </Skeleton>
         ) :
-          <Text variant="secondary">{ data.tx_count }</Text>
+          <Text variant="secondary">{ data.transaction_count }</Text>
         }
       </Flex>
       <Box>

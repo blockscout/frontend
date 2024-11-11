@@ -1,6 +1,6 @@
 import type { AddressParam } from './addressParams';
 
-export type AddressesItem = AddressParam & { tx_count: string; coin_balance: string | null }
+export type AddressesItem = AddressParam & { transaction_count: string; coin_balance: string | null }
 
 export type AddressesResponse = {
   items: Array<AddressesItem>;

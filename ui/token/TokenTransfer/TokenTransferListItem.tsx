@@ -18,7 +18,7 @@ type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean };
 const TokenTransferListItem = ({
   token,
   total,
-  tx_hash: txHash,
+  transaction_hash: txHash,
   from,
   to,
   method,

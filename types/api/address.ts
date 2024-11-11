@@ -12,7 +12,7 @@ export interface Address extends UserTags {
   coin_balance: string | null;
   creator_address_hash: string | null;
   creator_filecoin_robust_address?: string | null;
-  creation_tx_hash: string | null;
+  creation_transaction_hash: string | null;
   exchange_rate: string | null;
   ens_domain_name: string | null;
   filecoin?: AddressFilecoinParams;

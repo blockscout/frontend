@@ -122,7 +122,7 @@ const BlockDetails = ({ query }: Props) => {
   const txsNum = (() => {
     const blockTxsNum = (
       <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash, tab: 'txs' } }) }>
-        { data.tx_count } txn{ data.tx_count === 1 ? '' : 's' }
+        { data.transaction_count } txn{ data.transaction_count === 1 ? '' : 's' }
       </LinkInternal>
     );
 

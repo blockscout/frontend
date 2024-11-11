@@ -20,7 +20,7 @@ export interface ZkSyncBatchesItem {
   prove_transaction_timestamp: string | null;
   status: ZkSyncBatchStatus;
   timestamp: string;
-  tx_count: number;
+  transaction_count: number;
 }
 
 export type ZkSyncBatchesResponse = {
@@ -31,13 +31,13 @@ export type ZkSyncBatchesResponse = {
   } | null;
 }
 
-export interface ZkSyncBatch extends Omit<ZkSyncBatchesItem, 'tx_count'> {
+export interface ZkSyncBatch extends Omit<ZkSyncBatchesItem, 'transaction_count'> {
   start_block: number;
   end_block: number;
   l1_gas_price: string;
-  l1_tx_count: number;
+  l1_transaction_count: number;
   l2_fair_gas_price: string;
-  l2_tx_count: number;
+  l2_transaction_count: number;
   root_hash: string;
 }
 

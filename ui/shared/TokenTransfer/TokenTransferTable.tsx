@@ -57,7 +57,7 @@ const TokenTransferTable = ({
           ) }
           { data.map((item, index) => (
             <TokenTransferTableItem
-              key={ item.tx_hash + item.block_hash + item.log_index + (isLoading ? index : '') }
+              key={ item.transaction_hash + item.block_hash + item.log_index + (isLoading ? index : '') }
               { ...item }
               baseAddress={ baseAddress }
               showTxInfo={ showTxInfo }
