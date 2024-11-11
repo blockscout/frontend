@@ -74,7 +74,7 @@ Type extends EventTypes.LOGIN ? (
   }
 ) :
 Type extends EventTypes.ACCOUNT_LINK_INFO ? {
-  'Source': 'Profile' | 'Login modal' | 'Profile dropdown';
+  'Source': 'Profile' | 'Login modal' | 'Profile dropdown' | 'Merits';
   'Status': 'Started' | 'OTP sent' | 'Finished';
   'Type': 'Email' | 'Wallet';
 } :

@@ -184,7 +184,7 @@ export default function useNavItems(): ReturnType {
         text: 'Tokens',
         nextRoute: { pathname: '/tokens' as const },
         icon: 'token',
-        isActive: pathname.startsWith('/token'),
+        isActive: pathname === '/tokens' || pathname.startsWith('/token/'),
       },
       {
         text: 'Token transfers',

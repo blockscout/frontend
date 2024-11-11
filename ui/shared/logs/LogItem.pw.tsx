@@ -23,7 +23,7 @@ test('with decoded input data +@mobile +@dark-mode', async({ render }) => {
       topics={ TOPICS }
       data={ DATA }
       type="transaction"
-      tx_hash={ null }
+      transaction_hash={ null }
     />,
   );
   await expect(component).toHaveScreenshot();
@@ -38,7 +38,7 @@ test('without decoded input data +@mobile', async({ render }) => {
       topics={ TOPICS }
       data={ DATA }
       type="transaction"
-      tx_hash={ null }
+      transaction_hash={ null }
     />,
   );
   await expect(component).toHaveScreenshot();

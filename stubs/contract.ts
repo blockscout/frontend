@@ -69,7 +69,7 @@ export const VERIFIED_CONTRACT_INFO: VerifiedContract = {
   language: 'solidity',
   market_cap: null,
   optimization_enabled: false,
-  tx_count: 565058,
+  transaction_count: 565058,
   verified_at: '2023-04-10T13:16:33.884921Z',
   license_type: 'mit',
 };

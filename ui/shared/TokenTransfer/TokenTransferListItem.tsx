@@ -26,7 +26,7 @@ type Props = TokenTransfer & {
 const TokenTransferListItem = ({
   token,
   total,
-  tx_hash: txHash,
+  transaction_hash: txHash,
   from,
   to,
   baseAddress,
@@ -36,7 +36,7 @@ const TokenTransferListItem = ({
   enableTimeIncrement,
   isLoading,
 }: Props) => {
-  const { usd, valueStr } = 'value' in total && total.value !== null ? getCurrencyValue({
+  const { usd, valueStr } = total && 'value' in total && total.value !== null ? getCurrencyValue({
     value: total.value,
     exchangeRate: token.exchange_rate,
     accuracy: 8,
@@ -62,7 +62,7 @@ const TokenTransferListItem = ({
           <TxAdditionalInfo hash={ txHash } isMobile isLoading={ isLoading }/>
         ) }
       </Flex>
-      { 'token_id' in total && total.token_id !== null && <NftEntity hash={ token.address } id={ total.token_id } isLoading={ isLoading }/> }
+      { total && 'token_id' in total && total.token_id !== null && <NftEntity hash={ token.address } id={ total.token_id } isLoading={ isLoading }/> }
       { showTxInfo && txHash && (
         <Flex justifyContent="space-between" alignItems="center" lineHeight="24px" width="100%">
           <TxEntity

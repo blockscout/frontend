@@ -30,7 +30,7 @@ const dailyTxsIndicator: TChainIndicator<'stats_charts_txs'> = {
     resourceName: 'stats_charts_txs',
     dataFn: (response) => ([ {
       items: response.chart_data
-        .map((item) => ({ date: new Date(item.date), value: item.tx_count }))
+        .map((item) => ({ date: new Date(item.date), value: item.transaction_count }))
         .sort(sortByDateDesc)
         .reduceRight(nonNullTailReducer, [] as Array<TimeChartItemRaw>)
         .map(mapNullToZero),

@@ -19,7 +19,7 @@ import { TX_HASH } from './tx';
 export const ADDRESS_INFO: Address = {
   block_number_balance_updated_at: 8774377,
   coin_balance: '810941268802273085757',
-  creation_tx_hash: null,
+  creation_transaction_hash: null,
   creator_address_hash: ADDRESS_HASH,
   exchange_rate: null,
   has_decompiled_code: false,
@@ -59,7 +59,7 @@ export const ADDRESS_TABS_COUNTERS: AddressTabsCounters = {
 
 export const TOP_ADDRESS: AddressesItem = {
   coin_balance: '11886682377162664596540805',
-  tx_count: '1835',
+  transaction_count: '1835',
   hash: '0x4f7A67464B5976d7547c860109e4432d50AfB38e',
   implementations: null,
   is_contract: false,

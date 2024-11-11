@@ -39,7 +39,7 @@ const OptimisticL2TxnBatchesTableItem = ({ item, isLoading }: Props) => {
       </Td>
       <Td verticalAlign="middle" isNumeric>
         <Skeleton isLoaded={ !isLoading } minW="40px" display="inline-block">
-          { item.l1_tx_hashes.length }
+          { item.l1_transaction_hashes.length }
         </Skeleton>
       </Td>
       <Td verticalAlign="middle" isNumeric>
@@ -60,7 +60,7 @@ const OptimisticL2TxnBatchesTableItem = ({ item, isLoading }: Props) => {
           justifyContent="flex-end"
         >
           <Skeleton isLoaded={ !isLoading } minW="40px" display="inline-block">
-            { item.tx_count }
+            { item.transaction_count }
           </Skeleton>
         </LinkInternal>
       </Td>

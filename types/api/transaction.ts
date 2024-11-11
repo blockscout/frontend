@@ -87,7 +87,7 @@ export type Transaction = {
   zkevm_status?: typeof ZKEVM_L2_TX_STATUSES[number];
   zkevm_sequence_hash?: string;
   // zkSync FIELDS
-  zksync?: Omit<ZkSyncBatchesItem, 'number' | 'tx_count' | 'timestamp'> & {
+  zksync?: Omit<ZkSyncBatchesItem, 'number' | 'transaction_count' | 'timestamp'> & {
     'batch_number': number | null;
   };
   // blob tx fields

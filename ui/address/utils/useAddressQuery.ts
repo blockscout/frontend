@@ -72,7 +72,7 @@ export default function useAddressQuery({ hash, isEnabled = true }: Params): Add
         block_number_balance_updated_at: null,
         coin_balance: balance.toString(),
         creator_address_hash: null,
-        creation_tx_hash: null,
+        creation_transaction_hash: null,
         exchange_rate: null,
         ens_domain_name: null,
         has_decompiled_code: false,

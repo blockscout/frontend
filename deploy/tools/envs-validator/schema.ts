@@ -375,7 +375,7 @@ const accountSchema = yup
       .string()
       .when('NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED', {
         is: (value: boolean) => value,
-        then: (schema) => schema.required(),
+        then: (schema) => schema,
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_AUTH0_CLIENT_ID cannot not be used if NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED is not set to "true"'),
       }),
     NEXT_PUBLIC_AUTH_URL: yup
@@ -389,7 +389,7 @@ const accountSchema = yup
       .string()
       .when('NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED', {
         is: (value: boolean) => value,
-        then: (schema) => schema.test(urlTest).required(),
+        then: (schema) => schema.test(urlTest),
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_LOGOUT_URL cannot not be used if NEXT_PUBLIC_IS_ACCOUNT_SUPPORTED is not set to "true"'),
       }),
   });
@@ -854,6 +854,7 @@ const schema = yup
 
     // 6. External services envs
     NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: yup.string(),
+    NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY: yup.string(), // DEPRECATED
     NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY: yup.string(),
     NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID: yup.string(),
     NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN: yup.string(),

@@ -38,11 +38,11 @@ export type ZkEvmL2WithdrawalsResponse = {
 
 export type ZkEvmL2TxnBatchesItem = {
   number: number;
-  verify_tx_hash: string | null;
-  sequence_tx_hash: string | null;
+  verify_transaction_hash: string | null;
+  sequence_transaction_hash: string | null;
   status: string;
   timestamp: string | null;
-  tx_count: number;
+  transaction_count: number;
 }
 
 export type ZkEvmL2TxnBatchesResponse = {
@@ -59,12 +59,12 @@ export type ZkEvmL2TxnBatch = {
   acc_input_hash: string;
   global_exit_root: string;
   number: number;
-  sequence_tx_hash: string;
+  sequence_transaction_hash: string;
   state_root: string;
   status: typeof ZKEVM_L2_TX_BATCH_STATUSES[number];
   timestamp: string | null;
   transactions: Array<string>;
-  verify_tx_hash: string;
+  verify_transaction_hash: string;
 }
 
 export type ZkEvmL2TxnBatchTxs = {

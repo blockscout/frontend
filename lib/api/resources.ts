@@ -597,7 +597,7 @@ export const RESOURCES = {
     filterFields: [],
   },
   address_xstar_score: {
-    path: '/api/v2/proxy/xname/address/:hash',
+    path: '/api/v2/proxy/xname/addresses/:hash',
     pathParams: [ 'hash' as const ],
   },
 

@@ -32,7 +32,7 @@ const AddressEpochRewardsTableItem = ({ item, isLoading }: Props) => {
         <EpochRewardTypeTag type={ item.type } isLoading={ isLoading }/>
       </Td>
       <Td verticalAlign="middle">
-        <AddressEntity address={ item.associated_account } isLoading={ isLoading }/>
+        <AddressEntity address={ item.associated_account } isLoading={ isLoading } truncation="constant"/>
       </Td>
       <Td verticalAlign="middle" isNumeric>
         <Skeleton isLoaded={ !isLoading } display="flex" alignItems="center" gap={ 2 } justifyContent="flex-end">

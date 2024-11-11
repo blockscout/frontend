@@ -4,11 +4,11 @@ import type { Transaction } from './transaction';
 
 export type OptimisticL2DepositsItem = {
   l1_block_number: number;
-  l1_tx_hash: string;
+  l1_transaction_hash: string;
   l1_block_timestamp: string;
-  l1_tx_origin: string;
-  l2_tx_gas_limit: string;
-  l2_tx_hash: string;
+  l1_transaction_origin: string;
+  l2_transaction_gas_limit: string;
+  l2_transaction_hash: string;
 }
 
 export type OptimisticL2DepositsResponse = {
@@ -16,14 +16,14 @@ export type OptimisticL2DepositsResponse = {
   next_page_params: {
     items_count: number;
     l1_block_number: number;
-    tx_hash: string;
+    transaction_hash: string;
   };
 }
 
 export type OptimisticL2OutputRootsItem = {
   l1_block_number: number;
   l1_timestamp: string;
-  l1_tx_hash: string;
+  l1_transaction_hash: string;
   l2_block_number: number;
   l2_output_index: number;
   output_root: string;
@@ -43,10 +43,10 @@ export type OptimisticL2TxnBatchesItem = {
   internal_id: number;
   batch_data_container?: OptimisticL2BatchDataContainer;
   l1_timestamp: string;
-  l1_tx_hashes: Array<string>;
+  l1_transaction_hashes: Array<string>;
   l2_block_start: number;
   l2_block_end: number;
-  tx_count: number;
+  transaction_count: number;
 }
 
 export type OptimisticL2TxnBatchesResponse = {
@@ -74,10 +74,10 @@ export interface OptimisticL2BlobTypeCelestia {
 interface OptimismL2TxnBatchBase {
   internal_id: number;
   l1_timestamp: string;
-  l1_tx_hashes: Array<string>;
+  l1_transaction_hashes: Array<string>;
   l2_block_start: number;
   l2_block_end: number;
-  tx_count: number;
+  transaction_count: number;
 }
 
 export interface OptimismL2TxnBatchTypeCallData extends OptimismL2TxnBatchBase {
@@ -116,9 +116,9 @@ export type OptimismL2BatchBlocks = {
 export type OptimisticL2WithdrawalsItem = {
   'challenge_period_end': string | null;
   'from': AddressParam | null;
-  'l1_tx_hash': string | null;
+  'l1_transaction_hash': string | null;
   'l2_timestamp': string | null;
-  'l2_tx_hash': string;
+  'l2_transaction_hash': string;
   'msg_nonce': number;
   'msg_nonce_version': number;
   'status': string;

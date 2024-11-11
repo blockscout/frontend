@@ -21,7 +21,7 @@ type Props = {
 
 const TokenTransfersListItem = ({ item, isLoading }: Props) => {
 
-  const { valueStr } = 'value' in item.total && item.total.value !== null ? getCurrencyValue({
+  const { valueStr } = item.total && 'value' in item.total && item.total.value !== null ? getCurrencyValue({
     value: item.total.value,
     exchangeRate: item.token.exchange_rate,
     accuracy: 8,
@@ -33,7 +33,7 @@ const TokenTransfersListItem = ({ item, isLoading }: Props) => {
     <ListItemMobileGrid.Container>
       <ListItemMobileGrid.Label isLoading={ isLoading }>Txn hash</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <TxEntity hash={ item.tx_hash } isLoading={ isLoading } truncation="constant_long" noIcon/>
+        <TxEntity hash={ item.transaction_hash } isLoading={ isLoading } truncation="constant_long" noIcon/>
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
@@ -68,7 +68,7 @@ const TokenTransfersListItem = ({ item, isLoading }: Props) => {
         <AddressEntity address={ item.to } isLoading={ isLoading } truncation="constant"/>
       </ListItemMobileGrid.Value>
 
-      { 'token_id' in item.total && (NFT_TOKEN_TYPE_IDS.includes(item.token.type)) && item.total.token_id !== null && (
+      { item.total && 'token_id' in item.total && (NFT_TOKEN_TYPE_IDS.includes(item.token.type)) && item.total.token_id !== null && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Token ID</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value overflow="hidden">

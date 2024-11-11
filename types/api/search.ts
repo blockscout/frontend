@@ -69,7 +69,7 @@ export interface SearchResultBlock {
 
 export interface SearchResultTx {
   type: 'transaction';
-  tx_hash: string;
+  transaction_hash: string;
   timestamp: string;
   url?: string; // not used by the frontend, we build the url ourselves
 }
@@ -101,7 +101,7 @@ export interface SearchResult {
     'items_count': number;
     'name': string;
     'q': string;
-    'tx_hash': string | null;
+    'transaction_hash': string | null;
   } | null;
 }
 

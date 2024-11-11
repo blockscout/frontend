@@ -1,4 +1,4 @@
-import { chakra, Box, Button, Flex, IconButton, useColorModeValue } from '@chakra-ui/react';
+import { chakra, Box, Button, Flex, IconButton, useColorModeValue, Spinner } from '@chakra-ui/react';
 import React from 'react';
 
 import delay from 'lib/delay';
@@ -34,7 +34,7 @@ const UserProfileContentWallet = ({ onClose, className }: Props) => {
   const content = (() => {
     if (web3Wallet.isConnected && web3AccountWithDomain.address) {
       return (
-        <Flex alignItems="center" columnGap={ 2 } bgColor={ walletSnippetBgColor } px={ 2 } py="10px" borderRadius="base">
+        <Flex alignItems="center" columnGap={ 2 } bgColor={ walletSnippetBgColor } px={ 2 } py="10px" borderRadius="base" justifyContent="space-between">
           <AddressEntity
             address={{ hash: web3AccountWithDomain.address, ens_domain_name: web3AccountWithDomain.domain }}
             isLoading={ web3AccountWithDomain.isLoading }
@@ -44,17 +44,18 @@ const UserProfileContentWallet = ({ onClose, className }: Props) => {
             fontWeight={ 500 }
             noAltHash
           />
-          <IconButton
-            aria-label="Open wallet"
-            icon={ <IconSvg name="gear_slim" boxSize={ 5 }/> }
-            variant="simple"
-            color="icon_info"
-            boxSize={ 5 }
-            onClick={ handleOpenWalletClick }
-            isLoading={ web3Wallet.isOpen }
-            flexShrink={ 0 }
-            ml="auto"
-          />
+          { web3Wallet.isReconnecting ? <Spinner size="sm" m="2px" flexShrink={ 0 }/> : (
+            <IconButton
+              aria-label="Open wallet"
+              icon={ <IconSvg name="gear_slim" boxSize={ 5 }/> }
+              variant="simple"
+              color="icon_info"
+              boxSize={ 5 }
+              onClick={ handleOpenWalletClick }
+              isLoading={ web3Wallet.isOpen }
+              flexShrink={ 0 }
+            />
+          ) }
         </Flex>
       );
     }

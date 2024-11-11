@@ -824,3 +824,4 @@ For obtaining the variables values please refer to [reCAPTCHA documentation](htt
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_RE_CAPTCHA_V3_APP_SITE_KEY | `string` | Google reCAPTCHA v3 site key | - | - | `<your-secret>` | v1.36.0+ |
+| NEXT_PUBLIC_RE_CAPTCHA_APP_SITE_KEY | `string` | **DEPRECATED** Google reCAPTCHA v2 site key | - | - | `<your-secret>` | v1.0.x+ |

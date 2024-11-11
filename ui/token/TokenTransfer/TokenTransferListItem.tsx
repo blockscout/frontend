@@ -18,7 +18,7 @@ type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean };
 const TokenTransferListItem = ({
   token,
   total,
-  tx_hash: txHash,
+  transaction_hash: txHash,
   from,
   to,
   method,
@@ -26,7 +26,7 @@ const TokenTransferListItem = ({
   tokenId,
   isLoading,
 }: Props) => {
-  const { usd, valueStr } = 'value' in total && total.value !== null ? getCurrencyValue({
+  const { usd, valueStr } = total && 'value' in total && total.value !== null ? getCurrencyValue({
     value: total.value,
     exchangeRate: token.exchange_rate,
     accuracy: 8,
@@ -89,7 +89,7 @@ const TokenTransferListItem = ({
           ) }
         </Grid>
       ) }
-      { 'token_id' in total && (NFT_TOKEN_TYPE_IDS.includes(token.type)) && total.token_id !== null && (
+      { total && 'token_id' in total && (NFT_TOKEN_TYPE_IDS.includes(token.type)) && total.token_id !== null && (
         <NftEntity
           hash={ token.address }
           id={ total.token_id }
