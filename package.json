@@ -4,7 +4,7 @@
   "private": false,
   "homepage": "https://github.com/blockscout/frontend#readme",
   "engines": {
-    "node": "20.17.0",
+    "node": "22.11.0",
     "npm": "10.8.2"
   },
   "scripts": {
@@ -74,7 +74,7 @@
     "crypto-js": "^4.2.0",
     "d3": "^7.6.1",
     "dappscout-iframe": "0.2.2",
-    "dayjs": "^1.11.5",
+    "dayjs": "1.11.13",
     "dom-to-image": "^2.6.0",
     "focus-visible": "^5.2.0",
     "framer-motion": "^6.5.1",
@@ -109,7 +109,7 @@
     "react-number-format": "^5.3.1",
     "react-scroll": "^1.8.7",
     "swagger-ui-react": "^5.9.0",
-    "use-font-face-observer": "^1.2.1",
+    "use-font-face-observer": "1.2.2",
     "valibot": "0.38.0",
     "viem": "2.21.5",
     "wagmi": "2.12.10",

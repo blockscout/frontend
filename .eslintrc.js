@@ -328,7 +328,6 @@ module.exports = {
         '*.config.js',
         'playwright/**',
         'deploy/tools/**',
-        'middleware.ts',
         'nextjs/**',
         'instrumentation*.ts',
       ],

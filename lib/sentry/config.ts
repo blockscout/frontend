@@ -1,4 +1,4 @@
-import * as Sentry from '@sentry/react';
+import type * as Sentry from '@sentry/react';
 import { BrowserTracing } from '@sentry/tracing';
 
 import appConfig from 'configs/app';
@@ -103,6 +103,6 @@ export function init() {
     return;
   }
 
-  Sentry.init(config);
-  Sentry.configureScope(configureScope);
+  //Sentry.init(config);
+  //Sentry.configureScope(configureScope);
 }

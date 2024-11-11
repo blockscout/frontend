@@ -9,7 +9,7 @@ import LayoutHome from 'ui/shared/layout/LayoutHome';
 
 const Page: NextPageWithLayout = () => {
   return (
-    <PageNextJs pathname="/">
+    <PageNextJs pathname="/" >
       <Home/>
     </PageNextJs>
   );
