@@ -31,7 +31,7 @@ const BlockDetailsZilliqaQuorumCertificate = ({ data }: Props) => {
       { isNested && (
         <>
           <br/><br/>
-          Proposed by Validator { ndash } validator index proposing the nested quorum certificate.
+          Proposed by validator { ndash } validator index proposing the nested quorum certificate.
         </>
       ) }
     </>
