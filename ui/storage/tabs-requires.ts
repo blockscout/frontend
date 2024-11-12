@@ -15,7 +15,7 @@ const map = (id: number, page: number) => {
           'height',
         ],
         limit: 21,
-        where: { object_id: { _eq: id } },
+        where: { object_id: { _eq: id.toString() } },
         offset: page,
       },
     ],

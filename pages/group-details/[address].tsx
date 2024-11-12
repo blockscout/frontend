@@ -33,11 +33,11 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
         'source_type',
         'update_at',
         'create_at',
-        `members: group_members {
-          id
-          member
-          expiration_time
-        }`,
+        // `members: group_members {
+        //   id
+        //   member
+        //   expiration_time
+        // }`,
         'owner_address',
       ],
       where: { group_name: { _eq: router.query.address } },
@@ -52,6 +52,13 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
         'raw_log',
         'messages',
         'hash',
+      ],
+    },
+    {
+      tableName: 'groups_aggregate',
+      where: { group_name: { _eq: router.query.address } },
+      aggregate: [
+        'count',
       ],
     },
   ];
@@ -85,7 +92,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       status: 'none',
     },
     'Active Group Member Count': {
-      value: details?.members[0]?.member || '0',
+      value: data?.groups_aggregate?.aggregate.count || '0',
       status: 'none',
     },
     Owner: {

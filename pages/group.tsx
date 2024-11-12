@@ -52,11 +52,11 @@ const Page: NextPage = () => {
         'group_name',
         'group_id',
         'update_at',
-        `active_member_count: group_members_aggregate {
-          aggregate {
-            count
-          }
-        }`,
+        // `active_member_count: group_members_aggregate {
+        //   aggregate {
+        //     count
+        //   }
+        // }`,
         'owner_address',
       ],
       limit: 21,
@@ -79,11 +79,11 @@ const Page: NextPage = () => {
           'group_name',
           'group_id',
           'update_at',
-          `active_member_count: group_members_aggregate {
-            aggregate {
-              count
-            }
-          }`,
+          // `active_member_count: group_members_aggregate {
+          //   aggregate {
+          //     count
+          //   }
+          // }`,
           'owner_address',
         ],
         limit: 21,
@@ -122,7 +122,7 @@ const Page: NextPage = () => {
       'Group Name': v.group_name,
       'Group ID': v.group_id,
       'Last Updated': v.update_at,
-      'Active Group Member Count': v.active_member_count.aggregate.count,
+      'Active Group Member Count': '0',
       Owner: v.owner_address,
     });
   });
