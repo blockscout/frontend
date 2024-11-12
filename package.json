@@ -49,8 +49,9 @@
     "@metamask/post-message-stream": "^7.0.0",
     "@metamask/providers": "^10.2.1",
     "@monaco-editor/react": "^4.4.6",
-    "@next/bundle-analyzer": "14.2.3",
+    "@next/bundle-analyzer": "15.0.3",
     "@opentelemetry/auto-instrumentations-node": "0.43.0",
+    "@opentelemetry/exporter-jaeger": "1.27.0",
     "@opentelemetry/exporter-metrics-otlp-proto": "0.49.1",
     "@opentelemetry/exporter-trace-otlp-http": "0.49.1",
     "@opentelemetry/resources": "1.22.0",
@@ -88,7 +89,7 @@
     "magic-bytes.js": "1.8.0",
     "mixpanel-browser": "^2.47.0",
     "monaco-editor": "^0.34.1",
-    "next": "14.2.13",
+    "next": "15.0.3",
     "nextjs-routes": "^1.0.8",
     "node-fetch": "^3.2.9",
     "papaparse": "^5.3.2",
@@ -98,9 +99,9 @@
     "pino-pretty": "^9.1.1",
     "prom-client": "15.1.1",
     "qrcode": "^1.5.1",
-    "react": "18.2.0",
+    "react": "18.3.1",
     "react-device-detect": "^2.2.3",
-    "react-dom": "18.2.0",
+    "react-dom": "18.3.1",
     "react-google-recaptcha-v3": "1.10.1",
     "react-hook-form": "7.52.1",
     "react-identicons": "^1.2.5",
@@ -132,8 +133,8 @@
     "@types/node": "20.16.7",
     "@types/phoenix": "^1.5.4",
     "@types/qrcode": "^1.5.0",
-    "@types/react": "18.0.9",
-    "@types/react-dom": "18.0.5",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
     "@types/react-google-recaptcha": "^2.1.5",
     "@types/swagger-ui-react": "^4.11.0",
     "@types/ws": "^8.5.3",
@@ -142,7 +143,7 @@
     "css-loader": "^6.7.3",
     "dotenv-cli": "^6.0.0",
     "eslint": "^8.32.0",
-    "eslint-config-next": "13.3.0",
+    "eslint-config-next": "15.0.3",
     "eslint-plugin-es5": "^1.5.0",
     "eslint-plugin-import-helpers": "^1.2.1",
     "eslint-plugin-jest": "^27.1.6",
@@ -167,5 +168,9 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": "eslint --cache --fix"
+  },
+  "resolutions": {
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1"
   }
 }
