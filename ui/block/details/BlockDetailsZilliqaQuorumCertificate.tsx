@@ -73,52 +73,56 @@ const BlockDetailsZilliqaQuorumCertificate = ({ data }: Props) => {
               lineHeight={ 5 }
             >
               <AccordionItem borderWidth={ 0 } _last={{ borderBottomWidth: 0 }}>
-                <AccordionButton
-                  fontSize="sm"
-                  lineHeight={ 5 }
-                  fontWeight={ 600 }
-                  display="flex"
-                  alignItems="center"
-                  columnGap={ 1 }
-                  px={ 0 }
-                  pt={ 0 }
-                  pb="10px"
-                  _hover={{ bgColor: 'inherit' }}
-                >
-                  <span>Nested quorum certificates</span>
-                  <Hint label={ hint(true) }/>
-                  <AccordionIcon/>
-                </AccordionButton>
-                <AccordionPanel display="flex" flexDirection="column" rowGap={ 2 } p={ 0 }>
-                  { data.nested_quorum_certificates?.map((item, index) => (
-                    <Grid
-                      key={ index }
-                      gridTemplateColumns="90px 1fr"
-                      columnGap={ 3 }
-                      rowGap={ 2 }
-                      bgColor={ nestedBlockBgColor }
-                      p={ 4 }
-                      borderRadius="md"
-                      _first={{ borderTopRightRadius: 0, borderTopLeftRadius: 0 }}
+                { ({ isExpanded }) => (
+                  <>
+                    <AccordionButton
+                      fontSize="sm"
+                      lineHeight={ 5 }
+                      fontWeight={ 600 }
+                      display="flex"
+                      alignItems="center"
+                      columnGap={ 1 }
+                      px={ 0 }
+                      pt={ 0 }
+                      pb={ 2 }
+                      _hover={{ bgColor: 'inherit' }}
                     >
-                      <GridItem>View</GridItem>
-                      <GridItem>{ item.view }</GridItem>
-                      <GridItem>Signature</GridItem>
-                      <GridItem whiteSpace="pre-wrap" wordBreak="break-word" display="flex" alignItems="flex-start" columnGap={ 3 }>
-                        { item.signature }
-                        <CopyToClipboard text={ item.signature }/>
-                      </GridItem>
-                      { item.signers && item.signers.length > 0 && (
-                        <>
-                          <GridItem>Signers</GridItem>
-                          <GridItem >{ formatSigners(item.signers) }</GridItem>
-                        </>
-                      ) }
-                      <GridItem whiteSpace="pre-wrap">Proposed by validator</GridItem>
-                      <GridItem >{ item.proposed_by_validator_index }</GridItem>
-                    </Grid>
-                  )) }
-                </AccordionPanel>
+                      <span>Nested quorum certificates</span>
+                      <Hint label={ hint(true) }/>
+                      <AccordionIcon flexShrink={ 0 } boxSize={ 5 } transform={ isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)' } color="gray.500"/>
+                    </AccordionButton>
+                    <AccordionPanel display="flex" flexDirection="column" rowGap={ 2 } p={ 0 }>
+                      { data.nested_quorum_certificates?.map((item, index) => (
+                        <Grid
+                          key={ index }
+                          gridTemplateColumns="90px 1fr"
+                          columnGap={ 3 }
+                          rowGap={ 2 }
+                          bgColor={ nestedBlockBgColor }
+                          p={ 4 }
+                          borderRadius="md"
+                          _first={{ borderTopRightRadius: 0, borderTopLeftRadius: 0 }}
+                        >
+                          <GridItem>View</GridItem>
+                          <GridItem>{ item.view }</GridItem>
+                          <GridItem>Signature</GridItem>
+                          <GridItem whiteSpace="pre-wrap" wordBreak="break-word" display="flex" alignItems="flex-start" columnGap={ 3 }>
+                            { item.signature }
+                            <CopyToClipboard text={ item.signature }/>
+                          </GridItem>
+                          { item.signers && item.signers.length > 0 && (
+                            <>
+                              <GridItem>Signers</GridItem>
+                              <GridItem >{ formatSigners(item.signers) }</GridItem>
+                            </>
+                          ) }
+                          <GridItem whiteSpace="pre-wrap">Proposed by validator</GridItem>
+                          <GridItem >{ item.proposed_by_validator_index }</GridItem>
+                        </Grid>
+                      )) }
+                    </AccordionPanel>
+                  </>
+                ) }
               </AccordionItem>
             </Accordion>
           </>
