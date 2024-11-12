@@ -92,7 +92,7 @@ const ObjectDetails: NextPage<Props> = (props: Props) => {
       status: 'none',
     },
     'Active Group Member Count': {
-      value: data?.groups_aggregate?.aggregate.count || '0',
+      value: data?.groups_aggregate?.aggregate?.count || '0',
       status: 'none',
     },
     Owner: {
