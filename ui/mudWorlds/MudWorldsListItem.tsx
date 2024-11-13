@@ -12,7 +12,7 @@ import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 type Props = {
   item: MudWorldItem;
   isLoading?: boolean;
-}
+};
 
 const MudWorldsListItem = ({
   item,

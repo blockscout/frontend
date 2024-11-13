@@ -12,7 +12,7 @@ type Props = LinkProps & {
   variant?: Variants;
   isLoading?: boolean;
   scroll?: boolean;
-}
+};
 
 const LinkInternal = ({ isLoading, variant, scroll = true, ...props }: Props, ref: LegacyRef<HTMLAnchorElement>) => {
   const styleProps = useLinkStyles({}, variant);

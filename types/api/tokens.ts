@@ -9,7 +9,7 @@ export type TokensResponse = {
     name: string;
     market_cap: string | null;
   } | null;
-}
+};
 
 export type TokensFilters = { q: string; type: Array<TokenType> | undefined };
 

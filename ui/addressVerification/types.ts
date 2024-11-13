@@ -47,4 +47,4 @@ export type AddressValidationResponseSuccess = {
 } |
 { status: 'VALIDITY_EXPIRED_ERROR' } |
 { status: 'INVALID_SIGNATURE_ERROR' } |
-{ status: 'UNKNOWN_STATUS' }
+{ status: 'UNKNOWN_STATUS' };

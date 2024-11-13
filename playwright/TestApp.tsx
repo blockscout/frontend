@@ -30,7 +30,7 @@ export type Props = {
     isAutoConnectDisabled: boolean;
     setIsAutoConnectDisabled: (isAutoConnectDisabled: boolean) => void;
   };
-}
+};
 
 const defaultAppContext = {
   pageProps: {

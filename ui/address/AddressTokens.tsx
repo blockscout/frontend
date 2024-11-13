@@ -46,7 +46,7 @@ const getTokenFilterValue = (getFilterValuesFromQuery<NFTTokenType>).bind(null, 
 type Props = {
   shouldRender?: boolean;
   isQueryEnabled?: boolean;
-}
+};
 
 const AddressTokens = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
   const router = useRouter();

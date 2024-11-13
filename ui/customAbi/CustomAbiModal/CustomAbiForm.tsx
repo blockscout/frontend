@@ -26,13 +26,13 @@ type Props = {
   onClose: () => void;
   onSuccess?: () => Promise<void>;
   setAlertVisible: (isAlertVisible: boolean) => void;
-}
+};
 
 type Inputs = {
   contract_address_hash: string;
   name: string;
   abi: string;
-}
+};
 
 const NAME_MAX_LENGTH = 255;
 

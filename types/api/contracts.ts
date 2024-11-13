@@ -34,4 +34,4 @@ export type VerifiedContractsCounters = {
   new_verified_smart_contracts_24h: string;
   smart_contracts: string;
   verified_smart_contracts: string;
-}
+};

@@ -10,7 +10,7 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   data?: ApiKey;
-}
+};
 
 const ApiKeyModal: React.FC<Props> = ({ isOpen, onClose, data }) => {
   const title = data ? 'Edit API key' : 'New API key';

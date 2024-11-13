@@ -28,7 +28,7 @@ type Props = {
   addressHash: string;
   channel: Channel | undefined;
   mainContractQuery: UseQueryResult<SmartContract, ResourceError>;
-}
+};
 
 const ContractDetails = ({ addressHash, channel, mainContractQuery }: Props) => {
   const router = useRouter();

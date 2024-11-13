@@ -91,7 +91,7 @@ const AppError = ({ error, className }: Props) => {
               as="a"
               href={ route({ pathname: '/' }) }
             >
-                Back to home
+              Back to home
             </Button>
             { statusCode === 404 && adBannerProvider && <AdBannerContent mt={ 12 } provider={ adBannerProvider }/> }
           </>

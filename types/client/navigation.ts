@@ -17,19 +17,19 @@ type NavItemCommon = {
 export type NavItemInternal = NavItemCommon & {
   nextRoute: Route;
   isActive?: boolean;
-}
+};
 
 export type NavItemExternal = {
   text: string;
   url: string;
-}
+};
 
-export type NavItem = NavItemInternal | NavItemExternal
+export type NavItem = NavItemInternal | NavItemExternal;
 
 export type NavGroupItem = NavItemCommon & {
   isActive?: boolean;
   subItems: Array<NavItem> | Array<Array<NavItem>>;
-}
+};
 
 import type { ArrayElement } from '../utils';
 

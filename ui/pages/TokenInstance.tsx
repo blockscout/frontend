@@ -28,7 +28,7 @@ import TokenInstanceMetadata from 'ui/tokenInstance/TokenInstanceMetadata';
 import TokenInstanceMetadataFetcher from 'ui/tokenInstance/TokenInstanceMetadataFetcher';
 import TokenInstancePageTitle from 'ui/tokenInstance/TokenInstancePageTitle';
 
-export type TokenTabs = 'token_transfers' | 'holders'
+export type TokenTabs = 'token_transfers' | 'holders';
 
 const TokenInstanceContent = () => {
   const router = useRouter();

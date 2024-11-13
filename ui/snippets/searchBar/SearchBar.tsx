@@ -31,7 +31,7 @@ import useQuickSearchQuery from './useQuickSearchQuery';
 
 type Props = {
   isHomepage?: boolean;
-}
+};
 
 const SCROLL_CONTAINER_ID = 'search_bar_popover_content';
 
@@ -184,7 +184,7 @@ const SearchBar = ({ isHomepage }: Props) => {
                   href={ route({ pathname: '/search-results', query: { q: searchTerm } }) }
                   fontSize="sm"
                 >
-                View all results
+                  View all results
                 </LinkInternal>
               </PopoverFooter>
             ) }

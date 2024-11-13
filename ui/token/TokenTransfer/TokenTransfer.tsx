@@ -25,7 +25,7 @@ type Props = {
   tokenId?: string;
   token?: TokenInfo;
   shouldRender?: boolean;
-}
+};
 
 const TokenTransfer = ({ transfersQuery, tokenId, token, shouldRender = true }: Props) => {
   const isMobile = useIsMobile();

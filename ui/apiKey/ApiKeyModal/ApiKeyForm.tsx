@@ -19,12 +19,12 @@ type Props = {
   data?: ApiKey;
   onClose: () => void;
   setAlertVisible: (isAlertVisible: boolean) => void;
-}
+};
 
 type Inputs = {
   token: string;
   name: string;
-}
+};
 
 const NAME_MAX_LENGTH = 255;
 

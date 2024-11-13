@@ -19,10 +19,10 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   title: string;
-  renderContent: () => JSX.Element;
+  renderContent: () => React.JSX.Element;
   mutationFn: () => Promise<unknown>;
   onSuccess: () => Promise<void>;
-}
+};
 
 const DeleteModal: React.FC<Props> = ({
   isOpen,
@@ -75,7 +75,7 @@ const DeleteModal: React.FC<Props> = ({
             // FIXME: chackra's button is disabled when isLoading
             isDisabled={ false }
           >
-              Delete
+            Delete
           </Button>
         </ModalFooter>
       </ModalContent>

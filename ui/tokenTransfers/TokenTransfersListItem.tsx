@@ -17,7 +17,7 @@ import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 type Props = {
   item: TokenTransfer;
   isLoading: boolean;
-}
+};
 
 const TokenTransfersListItem = ({ item, isLoading }: Props) => {
 

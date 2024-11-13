@@ -13,7 +13,7 @@ const test = base.extend<{ context: BrowserContext }>({
 
 test.use({ viewport: { width: 200, height: 200 } });
 
-test.describe('with multiple items', async() => {
+test.describe('with multiple items', () => {
   const hooksConfig = {
     router: {
       query: { hash: '<hash>' },
@@ -53,7 +53,7 @@ test.describe('with multiple items', async() => {
   });
 });
 
-test.describe('with one item', async() => {
+test.describe('with one item', () => {
   const hooksConfig = {
     router: {
       query: { hash: '<hash>' },

@@ -4,7 +4,7 @@ import services from '../services';
 
 const title = 'Export data to CSV file';
 
-const config: Feature<{ reCaptcha: { siteKey: string }}> = (() => {
+const config: Feature<{ reCaptcha: { siteKey: string } }> = (() => {
   if (services.reCaptchaV3.siteKey) {
     return Object.freeze({
       title,

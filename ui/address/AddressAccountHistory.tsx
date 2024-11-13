@@ -28,7 +28,7 @@ type Props = {
   scrollRef?: React.RefObject<HTMLDivElement>;
   shouldRender?: boolean;
   isQueryEnabled?: boolean;
-}
+};
 
 const AddressAccountHistory = ({ scrollRef, shouldRender = true, isQueryEnabled = true }: Props) => {
   const router = useRouter();
@@ -91,13 +91,13 @@ const AddressAccountHistory = ({ scrollRef, shouldRender = true, isQueryEnabled 
           <TheadSticky top={ 75 }>
             <Tr>
               <Th width="120px">
-                  Age
+                Age
               </Th>
               <Th>
-                  Action
+                Action
               </Th>
               <Th width="320px">
-                  From/To
+                From/To
               </Th>
             </Tr>
           </TheadSticky>

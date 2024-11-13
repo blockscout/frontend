@@ -9,10 +9,10 @@ export interface ValidatorStability {
 export interface ValidatorsStabilityResponse {
   items: Array<ValidatorStability>;
   next_page_params: {
-    'address_hash': string;
-    'blocks_validated': string;
-    'items_count': string;
-    'state': ValidatorStability['state'];
+    address_hash: string;
+    blocks_validated: string;
+    items_count: string;
+    state: ValidatorStability['state'];
   } | null;
 }
 
@@ -48,7 +48,7 @@ export interface ValidatorBlackfort {
 export interface ValidatorsBlackfortResponse {
   items: Array<ValidatorBlackfort>;
   next_page_params: {
-    'address_hash': string;
+    address_hash: string;
   } | null;
 }
 

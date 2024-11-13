@@ -46,7 +46,7 @@ type TRewardsContext = {
   closeLoginModal: () => void;
   login: (refCode: string) => Promise<{ isNewUser?: boolean; invalidRefCodeError?: boolean }>;
   claim: () => Promise<void>;
-}
+};
 
 const defaultQueryResult = {
   data: undefined,
@@ -108,7 +108,7 @@ function getRegisteredAddress(token: string) {
 
 type Props = {
   children: React.ReactNode;
-}
+};
 
 export function RewardsContextProvider({ children }: Props) {
   const router = useRouter();

@@ -11,7 +11,7 @@ type Props = {
   items: Array<ArbitrumL2TxnBatchesItem>;
   top: number;
   isLoading?: boolean;
-}
+};
 
 const ArbitrumL2TxnBatchesTable = ({ items, top, isLoading }: Props) => {
   return (

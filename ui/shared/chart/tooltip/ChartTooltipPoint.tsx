@@ -35,7 +35,7 @@ export interface CurrentPoint {
   item: TimeChartItem;
 }
 
-interface RenderPointsReturnType{
+interface RenderPointsReturnType {
   x: number;
   y: number;
   currentPoints: Array<CurrentPoint>;

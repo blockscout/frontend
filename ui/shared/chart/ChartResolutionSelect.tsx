@@ -11,7 +11,7 @@ type Props = {
   resolutions: Array<string>;
   onResolutionChange: (resolution: Resolution) => void;
   isLoading?: boolean;
-}
+};
 
 const ChartResolutionSelect = ({ resolution, resolutions, onResolutionChange, isLoading }: Props) => {
   return (

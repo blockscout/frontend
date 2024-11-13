@@ -33,9 +33,9 @@ type Props = {
   isLoading?: boolean;
   addressDataMap?: Record<string, AddressParam>;
   className?: string;
-}
+};
 
-type NonStringTxInterpretationVariable = Exclude<TxInterpretationVariable, TxInterpretationVariableString>
+type NonStringTxInterpretationVariable = Exclude<TxInterpretationVariable, TxInterpretationVariableString>;
 
 const TxInterpretationElementByType = (
   { variable, addressDataMap }: { variable?: NonStringTxInterpretationVariable; addressDataMap?: Record<string, AddressParam> },

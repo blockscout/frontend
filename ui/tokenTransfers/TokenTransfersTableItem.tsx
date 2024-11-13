@@ -16,7 +16,7 @@ import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 type Props = {
   item: TokenTransfer;
   isLoading?: boolean;
-}
+};
 
 const TokenTransferTableItem = ({ item, isLoading }: Props) => {
   const { valueStr } = item.total && 'value' in item.total && item.total.value !== null ? getCurrencyValue({

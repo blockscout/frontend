@@ -1,6 +1,6 @@
 import type { AddressParam } from './addressParams';
 
-export type TxInternalsType = 'call' | 'delegatecall' | 'staticcall' | 'create' | 'create2' | 'selfdestruct' | 'reward'
+export type TxInternalsType = 'call' | 'delegatecall' | 'staticcall' | 'create' | 'create2' | 'selfdestruct' | 'reward';
 
 export type InternalTransaction = (
   {
@@ -22,7 +22,7 @@ export type InternalTransaction = (
   block: number;
   timestamp: string;
   gas_limit: string;
-}
+};
 
 export interface InternalTransactionsResponse {
   items: Array<InternalTransaction>;

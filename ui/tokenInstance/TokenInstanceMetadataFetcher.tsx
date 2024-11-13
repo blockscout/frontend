@@ -183,8 +183,8 @@ const TokenInstanceMetadataFetcher = ({ hash, id }: Props) => {
             </>
           ) : (
             <Alert status="error">
-                Metadata refresh is not available at the moment since reCaptcha is not configured for this application.
-                Please contact the service maintainer to make necessary changes in the service configuration.
+              Metadata refresh is not available at the moment since reCaptcha is not configured for this application.
+              Please contact the service maintainer to make necessary changes in the service configuration.
             </Alert>
           ) }
         </ModalBody>

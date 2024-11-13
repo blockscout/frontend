@@ -7,7 +7,7 @@ test('base view +@dark-mode', async({ render, page }) => {
   const component = await render(
     <Box m={ 10 }>
       <Tooltip label="Tooltip content">
-          trigger
+        trigger
       </Tooltip>
     </Box>,
   );

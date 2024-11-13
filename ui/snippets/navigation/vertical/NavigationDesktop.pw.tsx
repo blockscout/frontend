@@ -186,7 +186,7 @@ sideBarCookieTest.describe('cookie set to true', () => {
     );
 
     const networkMenu = component.locator('button[aria-label="Network menu"]');
-    expect(await networkMenu.isVisible()).toBe(false);
+    await expect(networkMenu).toBeHidden();
   });
 });
 

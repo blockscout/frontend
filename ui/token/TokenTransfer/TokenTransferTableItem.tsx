@@ -11,7 +11,7 @@ import NftEntity from 'ui/shared/entities/nft/NftEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
-type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean }
+type Props = TokenTransfer & { tokenId?: string; isLoading?: boolean };
 
 const TokenTransferTableItem = ({
   token,

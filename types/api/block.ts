@@ -57,7 +57,7 @@ export interface Block {
   blob_tx_count?: number;
   // ZKSYNC FIELDS
   zksync?: Omit<ZkSyncBatchesItem, 'number' | 'transaction_count' | 'timestamp'> & {
-    'batch_number': number | null;
+    batch_number: number | null;
   };
   arbitrum?: ArbitrumBlockData;
   optimism?: OptimismBlockData;
@@ -70,15 +70,15 @@ export interface Block {
 }
 
 type ArbitrumBlockData = {
-  'batch_number': number;
-  'commitment_transaction': ArbitrumL2TxData;
-  'confirmation_transaction': ArbitrumL2TxData;
-  'delayed_messages': number;
-  'l1_block_height': number;
-  'send_count': number;
-  'send_root': string;
-  'status': ArbitrumBatchStatus;
-}
+  batch_number: number;
+  commitment_transaction: ArbitrumL2TxData;
+  confirmation_transaction: ArbitrumL2TxData;
+  delayed_messages: number;
+  l1_block_height: number;
+  send_count: number;
+  send_root: string;
+  status: ArbitrumBatchStatus;
+};
 
 export interface OptimismBlockData {
   batch_data_container: OptimisticL2BatchDataContainer;
@@ -120,14 +120,14 @@ export type BlockWithdrawalsResponse = {
     index: number;
     items_count: number;
   } | null;
-}
+};
 
 export type BlockWithdrawalsItem = {
   amount: string;
   index: number;
   receiver: AddressParam;
   validator_index: number;
-}
+};
 
 export interface BlockCountdownResponse {
   result: {

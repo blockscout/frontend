@@ -11,7 +11,7 @@ import LinkInternal from 'ui/shared/links/LinkInternal';
 
 type Props = {
   item: TDeFiDropdownItem & { onClick: () => void };
-}
+};
 
 const DeFiDropdownItem = ({ item }: Props) => {
   const styles = {

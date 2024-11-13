@@ -33,7 +33,7 @@ type Props = {
   onSuccess: () => Promise<void>;
   setAlertVisible: (isAlertVisible: boolean) => void;
   isAdd: boolean;
-}
+};
 
 export type Inputs = {
   address: string;
@@ -57,7 +57,7 @@ export type Inputs = {
       incoming: boolean;
     };
   };
-}
+};
 
 const AddressForm: React.FC<Props> = ({ data, onSuccess, setAlertVisible, isAdd }) => {
   const [ pending, setPending ] = useState(false);
@@ -164,7 +164,7 @@ const AddressForm: React.FC<Props> = ({ data, onSuccess, setAlertVisible, isAdd 
               rowGap={ 2 }
               w="fit-content"
             >
-            To receive notifications you need to add an email to your profile.
+              To receive notifications you need to add an email to your profile.
               <Button variant="outline" size="sm" onClick={ authModal.onOpen }>Add email</Button>
             </Alert>
             { authModal.isOpen && <AuthModal initialScreen={{ type: 'email', isAuth: true }} onClose={ authModal.onClose }/> }
@@ -172,7 +172,7 @@ const AddressForm: React.FC<Props> = ({ data, onSuccess, setAlertVisible, isAdd 
         ) : (
           <>
             <Text variant="secondary" fontSize="sm" marginBottom={ 5 }>
-            Please select what types of notifications you will receive
+              Please select what types of notifications you will receive
             </Text>
             <Box marginBottom={ 8 }>
               <AddressFormNotifications/>

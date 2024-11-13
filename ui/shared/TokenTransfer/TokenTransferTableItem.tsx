@@ -20,7 +20,7 @@ type Props = TokenTransfer & {
   showTxInfo?: boolean;
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
-}
+};
 
 const TokenTransferTableItem = ({
   token,

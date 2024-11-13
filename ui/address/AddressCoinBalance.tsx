@@ -21,7 +21,7 @@ import AddressCoinBalanceHistory from './coinBalance/AddressCoinBalanceHistory';
 type Props = {
   shouldRender?: boolean;
   isQueryEnabled?: boolean;
-}
+};
 
 const AddressCoinBalance = ({ shouldRender = true, isQueryEnabled = true }: Props) => {
   const [ socketAlert, setSocketAlert ] = React.useState(false);

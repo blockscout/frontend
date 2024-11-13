@@ -8,7 +8,7 @@ interface InjectedProps {
 
 interface Props {
   type?: 'transaction' | 'token_transfer' | 'deposit' | 'block';
-  children?: (props: InjectedProps) => JSX.Element;
+  children?: (props: InjectedProps) => React.JSX.Element;
   className?: string;
   url: string;
   alert?: string;

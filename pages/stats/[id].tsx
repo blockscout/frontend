@@ -19,7 +19,7 @@ const pathname: Route['pathname'] = '/stats/[id]';
 
 const Page: NextPage<Props<typeof pathname>> = (props: Props<typeof pathname>) => {
   return (
-    <PageNextJs pathname="/stats/[id]" query={ props.query } apiData={ props.apiData }>
+    <PageNextJs pathname={ pathname } query={ props.query } apiData={ props.apiData }>
       <Chart/>
     </PageNextJs>
   );

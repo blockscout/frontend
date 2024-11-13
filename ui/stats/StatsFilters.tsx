@@ -18,7 +18,7 @@ type Props = {
   onFilterInputChange: (q: string) => void;
   isLoading: boolean;
   initialFilterValue: string;
-}
+};
 
 const StatsFilters = ({
   sections,

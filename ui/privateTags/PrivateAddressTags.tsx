@@ -104,7 +104,7 @@ const PrivateAddressTags = () => {
           size="lg"
           onClick={ addressModalProps.onOpen }
         >
-            Add address tag
+          Add address tag
         </Button>
       </Skeleton>
       <AddressModal

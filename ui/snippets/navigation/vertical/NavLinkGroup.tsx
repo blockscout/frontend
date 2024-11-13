@@ -23,7 +23,7 @@ import NavLink from './NavLink';
 type Props = {
   item: NavGroupItem;
   isCollapsed?: boolean;
-}
+};
 
 const NavLinkGroup = ({ item, isCollapsed }: Props) => {
   const isExpanded = isCollapsed === false;

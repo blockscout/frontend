@@ -28,7 +28,6 @@ export default function useApiQuery<R extends ResourceName, E = unknown, D = Res
   const apiFetch = useApiFetch();
 
   return useQuery<ResourcePayload<R>, ResourceError<E>, D>({
-    // eslint-disable-next-line @tanstack/query/exhaustive-deps
     queryKey: queryOptions?.queryKey || getResourceKey(resource, { pathParams, queryParams }),
     queryFn: async({ signal }) => {
       // all errors and error typing is handled by react-query

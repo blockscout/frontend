@@ -31,7 +31,7 @@ export type Props = {
   emptyText?: string;
   noAnimation?: boolean;
   href?: Route;
-}
+};
 
 const ChartWidget = ({
   items,
