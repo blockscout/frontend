@@ -66,11 +66,13 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
       <Td>
         <Flex flexWrap="wrap" columnGap={ 2 }>
           <Skeleton isLoaded={ !isLoading } textTransform="capitalize" my={ 1 }>{ data.language }</Skeleton>
-          <Skeleton isLoaded={ !isLoading } color="text_secondary" wordBreak="break-all" my={ 1 } cursor="pointer">
-            <Tooltip label={ data.compiler_version }>
-              <span>{ data.compiler_version.split('+')[0] }</span>
-            </Tooltip>
-          </Skeleton>
+          { data.compiler_version && (
+            <Skeleton isLoaded={ !isLoading } color="text_secondary" wordBreak="break-all" my={ 1 } cursor="pointer">
+              <Tooltip label={ data.compiler_version }>
+                <span>{ data.compiler_version.split('+')[0] }</span>
+              </Tooltip>
+            </Skeleton>
+          ) }
         </Flex>
         { data.zk_compiler_version && (
           <Flex flexWrap="wrap" columnGap={ 2 } my={ 1 }>
