@@ -52,11 +52,11 @@ const Page: NextPage = () => {
         'group_name',
         'group_id',
         'update_at',
-        `active_member_count: group_members_aggregate {
-          aggregate {
-            count
-          }
-        }`,
+        // `active_member_count: group_members_aggregate {
+        //   aggregate {
+        //     count
+        //   }
+        // }`,
         'owner_address',
       ],
       limit: 21,
@@ -79,11 +79,11 @@ const Page: NextPage = () => {
           'group_name',
           'group_id',
           'update_at',
-          `active_member_count: group_members_aggregate {
-            aggregate {
-              count
-            }
-          }`,
+          // `active_member_count: group_members_aggregate {
+          //   aggregate {
+          //     count
+          //   }
+          // }`,
           'owner_address',
         ],
         limit: 21,
@@ -114,7 +114,7 @@ const Page: NextPage = () => {
   const tableList: Array<GroupTalbeListType> = [];
 
   const { loading, data, error } = useGraphqlQuery('storage_group', queries);
-  const tableLength = data?.buckets?.length || 0;
+  const tableLength = data?.groups?.length || 0;
   const totleDate = data?.groups_aggregate?.aggregate?.count || 0;
 
   data?.groups?.slice(0, 20).forEach((v: GroupRequestType) => {
@@ -122,19 +122,18 @@ const Page: NextPage = () => {
       'Group Name': v.group_name,
       'Group ID': v.group_id,
       'Last Updated': v.update_at,
-      'Active Group Member Count': v.active_member_count.aggregate.count,
+      'Active Group Member Count': '0',
       Owner: v.owner_address,
     });
   });
 
   React.useEffect(() => {
-    if (typeof tableLength === 'number' && tableLength >= 21) {
+    if (typeof tableLength === 'number' && tableLength !== 21) {
       setToNext(false);
     } else {
       setToNext(true);
     }
   }, [ tableLength ]);
-  const tapList = [ 'objects', 'Transactions', 'Permissions' ];
   const tabThead = [ 'Group Name', 'Group ID', 'Last Updated', 'Active Group Member Count', 'Owner' ];
 
   const debouncedHandleSearchChange = React.useMemo(
@@ -170,7 +169,6 @@ const Page: NextPage = () => {
         propsPage={ propsPage }
         error={ error }
         loading={ loading }
-        tapList={ tapList }
         tableList={ tableList }
         tabThead={ tabThead }
         page="group"

@@ -25,8 +25,8 @@ export const timeTool = (time: string) => {
   const seconds = Math.floor(diff / 1000);
   const minutes = Math.floor(seconds / 60);
   const hours = Math.floor(minutes / 60);
-  const days = Math.floor(hours / 24);
-  const months = Math.floor(days / 30);
+  const days = Math.floor(hours / 60);
+  const months = Math.floor(days / 60);
   const years = Math.floor(months / 12);
 
   if (years > 0) {
@@ -54,7 +54,8 @@ export const timeText = (time: string) => {
   const oldhours = new Date(time).getHours();
   const oldminutes = new Date(time).getMinutes();
   const oldseconds = new Date(time).getSeconds();
-  const timeText = `${ oldyear }-${ oldmonth }-${ oldday } ${ oldhours }:${ oldminutes }:${ oldseconds } (UTC+8)`;
+  const timeText = `${ oldyear }-${ oldmonth }-${ oldday } 
+  ${ oldhours }:${ oldminutes.toString().padStart(2, '0') }:${ oldseconds.toString().padStart(2, '0') } (UTC+8)`;
   return timeText;
 };
 

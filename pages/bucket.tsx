@@ -133,7 +133,6 @@ const Page: NextPage = () => {
     }
   }, [ tableLength ]);
 
-  const tapList = [ 'Transactions', 'Versions' ];
   const tabThead = [ 'Bucket Name', 'Bucket ID', 'Last Updated Time', 'Status', 'Active Objects Count', 'Creator' ];
 
   const debouncedHandleSearchChange = React.useMemo(
@@ -169,7 +168,6 @@ const Page: NextPage = () => {
         propsPage={ propsPage }
         error={ error }
         loading={ loading }
-        tapList={ tapList }
         tableList={ tableList }
         tabThead={ tabThead }
         page="bucket"

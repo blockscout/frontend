@@ -29,7 +29,6 @@ import styles from './pagination.module.css';
 import { formatPubKey, timeTool, timeText } from './utils';
 
 type Props<T extends string> = {
-  tapList?: Array<T> | undefined;
   tableList: Array<TalbeListType>;
   tabThead?: Array<T> | undefined;
   loading: boolean;
