@@ -4,7 +4,7 @@ name: Deploy for testnet
 on:
   push:
     tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+-[a-z]+*' # e.g v1.2.3-alpha.2
+      - 'v[0-9]+.[0-9]+.[0-9]+(-[a-z]+*)?' # e.g v1.2.3-alpha.2
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
