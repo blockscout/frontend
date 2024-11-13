@@ -273,5 +273,7 @@ export type AddressEpochRewardsItem = {
 };
 
 export type AddressXStarResponse = {
-  data: string | null;
+  data: {
+    level: string | null;
+  };
 };
