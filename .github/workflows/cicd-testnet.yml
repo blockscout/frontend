@@ -1,0 +1,25 @@
+# For testnet
+name: Deploy for testnet
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+-[a-z]+*' # e.g v1.2.3-alpha.2
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  publish_image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Github Tag
+        id: meta
+        run: |
+          echo "tag=$(git describe --always --tags --match='v*')" >> "$GITHUB_OUTPUT"
+
+      - name: Publish Image
+        uses: './.github/workflows/publish-image.yml'
+        with:
+          tags: zkmelabs/blockscout-frontend:latest, zkmelabs/blockscout-frontend:${{ steps.meta.outputs.tag }}

@@ -1,4 +1,4 @@
-# For developer devint
+# For devint
 name: Deploy for devint
 
 on:
@@ -27,7 +27,7 @@ jobs:
     uses: './.github/workflows/publish-image.yml'
     secrets: inherit
     with:
-     tags: zkmelabs/blockscout-frontend:develop
+      tags: zkmelabs/blockscout-frontend:develop
 
   deploy_with_k8s:
     runs-on: ubuntu-latest

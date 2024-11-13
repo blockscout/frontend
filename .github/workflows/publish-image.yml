@@ -34,7 +34,7 @@ on:
 
 jobs:
   run:
-    name: Run
+    name: Publish Image
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
