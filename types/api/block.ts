@@ -104,9 +104,8 @@ export interface ZilliqaQuorumCertificate {
   signers: Array<number>;
 }
 
-export interface ZilliqaNestedQuorumCertificate extends Omit<ZilliqaQuorumCertificate, 'signers'> {
+export interface ZilliqaNestedQuorumCertificate extends ZilliqaQuorumCertificate {
   proposed_by_validator_index: number;
-  signers?: Array<number>;
 }
 
 export interface BlocksResponse {

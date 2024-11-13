@@ -110,12 +110,8 @@ const BlockDetailsZilliqaQuorumCertificate = ({ data }: Props) => {
                             { item.signature }
                             <CopyToClipboard text={ item.signature }/>
                           </GridItem>
-                          { item.signers && item.signers.length > 0 && (
-                            <>
-                              <GridItem>Signers</GridItem>
-                              <GridItem >{ formatSigners(item.signers) }</GridItem>
-                            </>
-                          ) }
+                          <GridItem>Signers</GridItem>
+                          <GridItem >{ formatSigners(item.signers) }</GridItem>
                           <GridItem whiteSpace="pre-wrap">Proposed by validator</GridItem>
                           <GridItem >{ item.proposed_by_validator_index }</GridItem>
                         </Grid>
