@@ -11,15 +11,24 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  publish_image:
+  make_tags:
     runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.meta.outputs.tag }}
     steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
       - name: Get Github Tag
         id: meta
         run: |
           echo "tag=$(git describe --always --tags --match='v*')" >> "$GITHUB_OUTPUT"
 
-      - name: Publish Image
-        uses: './.github/workflows/publish-image.yml'
-        with:
-          tags: zkmelabs/blockscout-frontend:latest, zkmelabs/blockscout-frontend:${{ steps.meta.outputs.tag }}
+  publish_image:
+    name: Publish Image
+    uses: './.github/workflows/publish-image.yml'
+    needs:
+      - make_tags
+    secrets: inherit
+    with:
+      tags: zkmelabs/blockscout-frontend:latest, zkmelabs/blockscout-frontend:${{ needs.make_tags.outputs.tag }}
