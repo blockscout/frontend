@@ -28,7 +28,7 @@ const TokenTransferSnippet = ({ data, isLoading, noAddressIcons = true }: Props)
       return <Skeleton w="250px" h={ 6 }/>;
     }
 
-    switch (data.token.type) {
+    switch (data.token?.type) {
       case 'ERC-20': {
         const total = data.total as Erc20TotalPayload | null;
         if (total === null || total.value === null) {
@@ -81,6 +81,9 @@ const TokenTransferSnippet = ({ data, isLoading, noAddressIcons = true }: Props)
 
           return <TokenTransferSnippetFiat token={ data.token } value={ total.value } decimals={ total.decimals }/>;
         }
+      }
+      default: {
+        return null;
       }
     }
   })();

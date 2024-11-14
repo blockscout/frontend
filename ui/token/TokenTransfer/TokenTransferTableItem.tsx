@@ -26,7 +26,7 @@ const TokenTransferTableItem = ({
 }: Props) => {
   const { usd, valueStr } = total && 'value' in total && total.value !== null ? getCurrencyValue({
     value: total.value,
-    exchangeRate: token.exchange_rate,
+    exchangeRate: token?.exchange_rate,
     accuracy: 8,
     accuracyUsd: 2,
     decimals: total.decimals || '0',
@@ -68,12 +68,12 @@ const TokenTransferTableItem = ({
           isLoading={ isLoading }
           mt="5px"
           mode={{ lg: 'compact', xl: 'long' }}
-          tokenHash={ token.address }
+          tokenHash={ token?.address }
         />
       </Td>
-      { (NFT_TOKEN_TYPE_IDS.includes(token.type)) && (
+      { (token && NFT_TOKEN_TYPE_IDS.includes(token.type)) && (
         <Td>
-          { total && 'token_id' in total && total.token_id !== null ? (
+          { total && 'token_id' in total && token && total.token_id !== null ? (
             <NftEntity
               hash={ token.address }
               id={ total.token_id }
@@ -84,7 +84,7 @@ const TokenTransferTableItem = ({
           }
         </Td>
       ) }
-      { (token.type === 'ERC-20' || token.type === 'ERC-1155' || token.type === 'ERC-404') && (
+      { token && (token.type === 'ERC-20' || token.type === 'ERC-1155' || token.type === 'ERC-404') && (
         <Td isNumeric verticalAlign="top">
           { valueStr && (
             <Skeleton isLoaded={ !isLoading } display="inline-block" mt="7px" wordBreak="break-all">

@@ -21,7 +21,7 @@ type Props = {
 const TokenTransferTableItem = ({ item, isLoading }: Props) => {
   const { valueStr } = item.total && 'value' in item.total && item.total.value !== null ? getCurrencyValue({
     value: item.total.value,
-    exchangeRate: item.token.exchange_rate,
+    exchangeRate: item.token?.exchange_rate,
     accuracy: 8,
     accuracyUsd: 2,
     decimals: item.total.decimals || '0',
@@ -62,7 +62,7 @@ const TokenTransferTableItem = ({ item, isLoading }: Props) => {
         />
       </Td>
       <Td>
-        { item.total && 'token_id' in item.total && (NFT_TOKEN_TYPE_IDS.includes(item.token.type)) && item.total.token_id !== null ? (
+        { item.total && 'token_id' in item.total && item.token && (NFT_TOKEN_TYPE_IDS.includes(item.token.type)) && item.total.token_id !== null ? (
           <NftEntity
             hash={ item.token.address }
             id={ item.total.token_id }
@@ -72,7 +72,7 @@ const TokenTransferTableItem = ({ item, isLoading }: Props) => {
         ) : '-' }
       </Td>
       <Td isNumeric verticalAlign="top">
-        { valueStr ? (
+        { (item.token && valueStr) ? (
           <Flex gap={ 2 } overflow="hidden" justifyContent="flex-end">
             <Skeleton isLoaded={ !isLoading } wordBreak="break-all">
               { valueStr }
