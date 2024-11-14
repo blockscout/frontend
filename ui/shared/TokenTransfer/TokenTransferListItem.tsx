@@ -47,19 +47,21 @@ const TokenTransferListItem = ({
   return (
     <ListItemMobile rowGap={ 3 } isAnimated>
       <Flex w="100%" justifyContent="space-between">
-        { token && (
-          <Flex flexWrap="wrap" rowGap={ 1 } mr={ showTxInfo && txHash ? 2 : 0 } columnGap={ 2 } overflow="hidden">
-            <TokenEntity
-              token={ token }
-              isLoading={ isLoading }
-              noSymbol
-              noCopy
-              w="auto"
-            />
-            <Tag flexShrink={ 0 } isLoading={ isLoading }>{ getTokenTypeName(token.type) }</Tag>
-            <Tag colorScheme="orange" isLoading={ isLoading }>{ getTokenTransferTypeText(type) }</Tag>
-          </Flex>
-        ) }
+        <Flex flexWrap="wrap" rowGap={ 1 } mr={ showTxInfo && txHash ? 2 : 0 } columnGap={ 2 } overflow="hidden">
+          { token && (
+            <>
+              <TokenEntity
+                token={ token }
+                isLoading={ isLoading }
+                noSymbol
+                noCopy
+                w="auto"
+              />
+              <Tag flexShrink={ 0 } isLoading={ isLoading }>{ getTokenTypeName(token.type) }</Tag>
+            </>
+          ) }
+          <Tag colorScheme="orange" isLoading={ isLoading }>{ getTokenTransferTypeText(type) }</Tag>
+        </Flex>
         { showTxInfo && txHash && (
           <TxAdditionalInfo hash={ txHash } isMobile isLoading={ isLoading }/>
         ) }
