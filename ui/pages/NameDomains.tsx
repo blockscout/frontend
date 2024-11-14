@@ -50,7 +50,7 @@ const NameDomains = () => {
 
   const addressesLookupQuery = useQueryWithPages({
     resourceName: 'addresses_lookup',
-    pathParams: { chainId: config.chain.id },
+    pathParams: { chainId: `${ config.l1Chain?.id ?? config.chain.id }` },
     filters: {
       address: debouncedSearchTerm,
       resolved_to: filterValue.includes('resolved_to'),
@@ -67,7 +67,7 @@ const NameDomains = () => {
 
   const domainsLookupQuery = useQueryWithPages({
     resourceName: 'domains_lookup',
-    pathParams: { chainId: config.chain.id },
+    pathParams: { chainId: `${ config.l1Chain?.id ?? config.chain.id }` },
     filters: {
       name: debouncedSearchTerm,
       only_active: !filterValue.includes('with_inactive'),
@@ -81,7 +81,7 @@ const NameDomains = () => {
   });
 
   const protocolsQuery = useApiQuery('domain_protocols', {
-    pathParams: { chainId: config.chain.id },
+    pathParams: { chainId: `${ config.l1Chain?.id ?? config.chain.id }` },
   });
 
   const query = isAddressSearch ? addressesLookupQuery : domainsLookupQuery;

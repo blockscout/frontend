@@ -1,4 +1,4 @@
-import { walletL1FacetActions } from '@0xfacet/sdk';
+import { viem as facetViem } from '@0xfacet/sdk';
 import React, { useMemo } from 'react';
 import { encodeFunctionData, getAddress, type Abi } from 'viem';
 import { useAccount, useWalletClient } from 'wagmi';
@@ -17,7 +17,7 @@ export default function useCallMethodWalletClient(): (params: Params) => Promise
   const { data: walletClientWithoutFacet } = useWalletClient();
   const { isConnected, address: from } = useAccount();
   const walletClient = useMemo(
-    () => walletClientWithoutFacet?.extend(walletL1FacetActions),
+    () => walletClientWithoutFacet?.extend(facetViem.walletL1FacetActions),
     [ walletClientWithoutFacet ],
   );
 

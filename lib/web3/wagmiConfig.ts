@@ -1,14 +1,14 @@
 import { defaultWagmiConfig } from '@web3modal/wagmi/react/config';
 import { http } from 'viem';
-import * as allChains from 'viem/chains';
 import { createConfig, type CreateConfigParameters } from 'wagmi';
 
 import config from 'configs/app';
 import currentChain from 'lib/web3/currentChain';
+
 const feature = config.features.blockchainInteraction;
+const l1Chain = config.l1Chain;
 
 const wagmiConfig = (() => {
-  const l1Chain = config.chain.l1Network ? allChains[config.chain.l1Network] : null;
   const chains: CreateConfigParameters['chains'] = l1Chain ? [ currentChain, l1Chain ] : [ currentChain ];
 
   if (!feature.isEnabled) {

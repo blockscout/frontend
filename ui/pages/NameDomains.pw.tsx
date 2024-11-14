@@ -22,13 +22,13 @@ test.beforeEach(async({ mockApiResponse, mockAssetResponse, mockTextAd }) => {
       page_size: 50,
     },
   }, {
-    pathParams: { chainId: config.chain.id },
+    pathParams: { chainId: `${ config.l1Chain?.id ?? config.chain.id }` },
     queryParams: { only_active: true },
   });
   await mockApiResponse('domain_protocols', {
     items: [ ensDomainMock.protocolA, ensDomainMock.protocolB ],
   }, {
-    pathParams: { chainId: config.chain.id },
+    pathParams: { chainId: `${ config.l1Chain?.id ?? config.chain.id }` },
   });
 });
 

@@ -25,7 +25,7 @@ const NameDomainHistory = ({ domain }: Props) => {
   const [ sort, setSort ] = React.useState<Sort>();
 
   const { isPlaceholderData, isError, data } = useApiQuery('domain_events', {
-    pathParams: { name: domainName, chainId: config.chain.id },
+    pathParams: { name: domainName, chainId: `${ config.l1Chain?.id ?? config.chain.id }` },
     queryOptions: {
       placeholderData: { items: Array(4).fill(ENS_DOMAIN_EVENT) },
     },

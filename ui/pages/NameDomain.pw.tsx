@@ -10,7 +10,7 @@ import NameDomain from './NameDomain';
 test('details tab', async({ render, mockTextAd, mockApiResponse }) => {
   await mockTextAd();
   await mockApiResponse('domain_info', ensDomainMock.ensDomainA, {
-    pathParams: { chainId: config.chain.id, name: ensDomainMock.ensDomainA.name },
+    pathParams: { chainId: `${ config.l1Chain?.id ?? config.chain.id }`, name: ensDomainMock.ensDomainA.name },
   });
   const component = await render(
     <NameDomain/>,
@@ -27,7 +27,7 @@ test('details tab', async({ render, mockTextAd, mockApiResponse }) => {
 test('history tab +@mobile', async({ render, mockTextAd, mockApiResponse }) => {
   await mockTextAd();
   await mockApiResponse('domain_info', ensDomainMock.ensDomainA, {
-    pathParams: { chainId: config.chain.id, name: ensDomainMock.ensDomainA.name },
+    pathParams: { chainId: `${ config.l1Chain?.id ?? config.chain.id }`, name: ensDomainMock.ensDomainA.name },
   });
   await mockApiResponse('domain_events', {
     items: [
@@ -35,7 +35,7 @@ test('history tab +@mobile', async({ render, mockTextAd, mockApiResponse }) => {
       ensDomainEventsMock.ensDomainEventB,
     ],
   }, {
-    pathParams: { chainId: config.chain.id, name: ensDomainMock.ensDomainA.name },
+    pathParams: { chainId: `${ config.l1Chain?.id ?? config.chain.id }`, name: ensDomainMock.ensDomainA.name },
   });
   const component = await render(
     <NameDomain/>,
