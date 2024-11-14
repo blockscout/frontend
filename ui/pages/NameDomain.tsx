@@ -6,6 +6,7 @@ import type { RoutedTab } from 'ui/shared/Tabs/types';
 
 import { route } from 'nextjs-routes';
 
+import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import getQueryParamString from 'lib/router/getQueryParamString';
@@ -27,7 +28,7 @@ const NameDomain = () => {
   const domainName = getQueryParamString(router.query.name);
 
   const infoQuery = useApiQuery('domain_info', {
-    pathParams: { name: domainName, chainId: '1' },
+    pathParams: { name: domainName, chainId: config.chain.id },
     queryOptions: {
       placeholderData: ENS_DOMAIN,
     },
