@@ -170,7 +170,7 @@ const TokenPageContent = () => {
     {
       id: 'token_transfers',
       title: 'Token transfers',
-      component: <TokenTransfer transfersQuery={ transfersQuery } token={ tokenQuery.data } shouldRender={ !isLoading }/>,
+      component: <TokenTransfer transfersQuery={ transfersQuery } tokenQuery={ tokenQuery } shouldRender={ !isLoading }/>,
     },
     {
       id: 'holders',

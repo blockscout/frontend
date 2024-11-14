@@ -54,7 +54,7 @@ const matchFilters = (filters: Filters, tokenTransfer: TokenTransfer, address?: 
     }
   }
   if (filters.type && filters.type.length) {
-    if (!filters.type.includes(tokenTransfer.token.type)) {
+    if (!tokenTransfer.token || !filters.type.includes(tokenTransfer.token.type)) {
       return false;
     }
   }

@@ -37,7 +37,7 @@ const TokenTransferTableItem = ({
 }: Props) => {
   const { usd, valueStr } = total && 'value' in total && total.value !== null ? getCurrencyValue({
     value: total.value,
-    exchangeRate: token.exchange_rate,
+    exchangeRate: token?.exchange_rate,
     accuracy: 8,
     accuracyUsd: 2,
     decimals: total.decimals || '0',
@@ -53,20 +53,30 @@ const TokenTransferTableItem = ({
         </Td>
       ) }
       <Td>
-        <TokenEntity
-          token={ token }
-          isLoading={ isLoading }
-          noSymbol
-          noCopy
-          mt={ 1 }
-        />
-        <Flex columnGap={ 2 } rowGap={ 2 } mt={ 2 } flexWrap="wrap">
-          <Tag isLoading={ isLoading }>{ getTokenTypeName(token.type) }</Tag>
-          <Tag colorScheme="orange" isLoading={ isLoading }>{ getTokenTransferTypeText(type) }</Tag>
-        </Flex>
+        { token ? (
+          <>
+            <TokenEntity
+              token={ token }
+              isLoading={ isLoading }
+              noSymbol
+              noCopy
+              mt={ 1 }
+            />
+            <Flex columnGap={ 2 } rowGap={ 2 } mt={ 2 } flexWrap="wrap">
+              <Tag isLoading={ isLoading }>{ getTokenTypeName(token.type) }</Tag>
+              <Tag colorScheme="orange" isLoading={ isLoading }>{ getTokenTransferTypeText(type) }</Tag>
+            </Flex>
+          </>
+        ) : 'N/A' }
       </Td>
       <Td>
-        { total && 'token_id' in total && total.token_id !== null && <NftEntity hash={ token.address } id={ total.token_id } isLoading={ isLoading }/> }
+        { total && 'token_id' in total && total.token_id !== null && token && (
+          <NftEntity
+            hash={ token.address }
+            id={ total.token_id }
+            isLoading={ isLoading }
+          />
+        ) }
       </Td>
       { showTxInfo && txHash && (
         <Td>

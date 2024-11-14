@@ -26,19 +26,19 @@ export type Erc404TotalPayload = {
 
 export type TokenTransfer = (
   {
-    token: TokenInfo<'ERC-20'>;
+    token: TokenInfo<'ERC-20'> | null;
     total: Erc20TotalPayload | null;
   } |
   {
-    token: TokenInfo<'ERC-721'>;
+    token: TokenInfo<'ERC-721'> | null;
     total: Erc721TotalPayload | null;
   } |
   {
-    token: TokenInfo<'ERC-1155'>;
+    token: TokenInfo<'ERC-1155'> | null;
     total: Erc1155TotalPayload | null;
   } |
   {
-    token: TokenInfo<'ERC-404'>;
+    token: TokenInfo<'ERC-404'> | null;
     total: Erc404TotalPayload | null;
   }
 ) & TokenTransferBase;

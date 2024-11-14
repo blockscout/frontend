@@ -23,7 +23,7 @@ const TokenTransfersListItem = ({ item, isLoading }: Props) => {
 
   const { valueStr } = item.total && 'value' in item.total && item.total.value !== null ? getCurrencyValue({
     value: item.total.value,
-    exchangeRate: item.token.exchange_rate,
+    exchangeRate: item.token?.exchange_rate,
     accuracy: 8,
     accuracyUsd: 2,
     decimals: item.total.decimals || '0',
@@ -68,7 +68,7 @@ const TokenTransfersListItem = ({ item, isLoading }: Props) => {
         <AddressEntity address={ item.to } isLoading={ isLoading } truncation="constant"/>
       </ListItemMobileGrid.Value>
 
-      { item.total && 'token_id' in item.total && (NFT_TOKEN_TYPE_IDS.includes(item.token.type)) && item.total.token_id !== null && (
+      { item.total && 'token_id' in item.total && item.token && (NFT_TOKEN_TYPE_IDS.includes(item.token.type)) && item.total.token_id !== null && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Token ID</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value overflow="hidden">
@@ -82,7 +82,7 @@ const TokenTransfersListItem = ({ item, isLoading }: Props) => {
         </>
       ) }
 
-      { valueStr && (item.token.type === 'ERC-20' || item.token.type === 'ERC-1155') && (
+      { valueStr && item.token && (item.token.type === 'ERC-20' || item.token.type === 'ERC-1155') && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Amount</ListItemMobileGrid.Label>
           <ListItemMobileGrid.Value>
