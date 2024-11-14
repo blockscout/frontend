@@ -4,7 +4,6 @@ import React from 'react';
 
 import type * as bens from '@blockscout/bens-types';
 
-import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import { ENS_DOMAIN_EVENT } from 'stubs/ENS';
@@ -25,7 +24,7 @@ const NameDomainHistory = ({ domain }: Props) => {
   const [ sort, setSort ] = React.useState<Sort>();
 
   const { isPlaceholderData, isError, data } = useApiQuery('domain_events', {
-    pathParams: { name: domainName, chainId: `${ config.l1Chain?.id ?? config.chain.id }` },
+    pathParams: { name: domainName, chainId: '1' },
     queryOptions: {
       placeholderData: { items: Array(4).fill(ENS_DOMAIN_EVENT) },
     },

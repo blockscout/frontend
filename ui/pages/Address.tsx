@@ -90,7 +90,7 @@ const AddressPageContent = () => {
   const addressMetadataQuery = useAddressMetadataInfoQuery(addressesForMetadataQuery, areQueriesEnabled);
 
   const addressEnsDomainsQuery = useApiQuery('addresses_lookup', {
-    pathParams: { chainId: `${ config.l1Chain?.id ?? config.chain.id }` },
+    pathParams: { chainId: '1' },
     queryParams: {
       address: hash,
       resolved_to: true,

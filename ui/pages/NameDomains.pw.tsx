@@ -1,6 +1,5 @@
 import React from 'react';
 
-import config from 'configs/app';
 import * as ensDomainMock from 'mocks/ens/domain';
 import { test, expect } from 'playwright/lib';
 
@@ -22,13 +21,13 @@ test.beforeEach(async({ mockApiResponse, mockAssetResponse, mockTextAd }) => {
       page_size: 50,
     },
   }, {
-    pathParams: { chainId: `${ config.l1Chain?.id ?? config.chain.id }` },
+    pathParams: { chainId: '1' },
     queryParams: { only_active: true },
   });
   await mockApiResponse('domain_protocols', {
     items: [ ensDomainMock.protocolA, ensDomainMock.protocolB ],
   }, {
-    pathParams: { chainId: `${ config.l1Chain?.id ?? config.chain.id }` },
+    pathParams: { chainId: '1' },
   });
 });
 
