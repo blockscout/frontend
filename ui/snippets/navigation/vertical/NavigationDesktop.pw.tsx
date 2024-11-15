@@ -89,7 +89,7 @@ authTest.describe('auth', () => {
 test.describe('with tooltips', () => {
   test.use({ viewport: pwConfig.viewport.xl });
 
-  test('', async({ render, page }) => {
+  test('base view', async({ render, page }) => {
     const component = await render(
       <Flex w="100%" minH="100vh" alignItems="stretch">
         <NavigationDesktop/>
@@ -120,14 +120,14 @@ test.describe('with submenu', () => {
     await page.locator('div[aria-label="Blockchain link group"]').hover();
   });
 
-  test('', async() => {
+  test('base view', async() => {
     await expect(component).toHaveScreenshot();
   });
 
   test.describe('xl screen', () => {
     test.use({ viewport: pwConfig.viewport.xl });
 
-    test('', async() => {
+    test('base view', async() => {
       await expect(component).toHaveScreenshot();
     });
   });

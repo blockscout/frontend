@@ -48,7 +48,7 @@ test.describe('base view', () => {
   test.describe('screen xl', () => {
     test.use({ viewport: pwConfig.viewport.xl });
 
-    test('', async() => {
+    test('base view', async() => {
       test.slow();
       await expect(component).toHaveScreenshot();
     });

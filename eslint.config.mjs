@@ -236,10 +236,10 @@ export default tseslint.config(
   },
 
   {
-    plugins: { playwright: playwrightPlugin },
+    ...playwrightPlugin.configs['flat/recommended'],
     files: [ '**/*.pw.tsx' ],
     rules: {
-      'playwright/valid-title': 'warn', // TODO @tom2drum turn on this rule
+      ...playwrightPlugin.configs['flat/recommended'].rules,
       'playwright/no-standalone-expect': 'off', // this rules does not work correctly with extended test functions
     },
   },
