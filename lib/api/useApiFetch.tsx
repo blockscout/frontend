@@ -58,7 +58,7 @@ export default function useApiFetch() {
       },
       {
         resource: resource.path,
-        omitSentryErrorLog: true, // disable logging of API errors to Sentry
+        omitMonitoringLog: true, // disable logging of API errors to Rollbar
       },
     );
   }, [ fetch, csrfToken ]);

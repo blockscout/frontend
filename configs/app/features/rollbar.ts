@@ -5,14 +5,14 @@ import { getEnvValue } from '../utils';
 
 const clientToken = getEnvValue('NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN');
 const instance = (() => {
-  // const envValue = getEnvValue('NEXT_PUBLIC_APP_INSTANCE');
-  // if (envValue) {
-  //   return envValue;
-  // }
+  const envValue = getEnvValue('NEXT_PUBLIC_APP_INSTANCE');
+  if (envValue) {
+    return envValue;
+  }
 
   return app.host?.replace('.blockscout.com', '').replaceAll('-', '_');
 })();
-const environment = getEnvValue('NEXT_PUBLIC_ROLLBAR_ENVIRONMENT') || 'development';
+const environment = getEnvValue('NEXT_PUBLIC_APP_ENV') || 'development';
 const codeVersion = getEnvValue('NEXT_PUBLIC_GIT_TAG') || getEnvValue('NEXT_PUBLIC_GIT_COMMIT_SHA');
 
 const title = 'Rollbar error monitoring';

@@ -334,6 +334,7 @@ const adsBannerSchema = yup
     NEXT_PUBLIC_AD_ADBUTLER_CONFIG_MOBILE: adButlerConfigSchema,
   });
 
+// DEPRECATED
 const sentrySchema = yup
   .object()
   .shape({
@@ -351,33 +352,12 @@ const sentrySchema = yup
         is: (value: string) => Boolean(value),
         then: (schema) => schema,
       }),
-    NEXT_PUBLIC_APP_INSTANCE: yup
-      .string()
-      .when('NEXT_PUBLIC_SENTRY_DSN', {
-        is: (value: string) => Boolean(value),
-        then: (schema) => schema,
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_APP_INSTANCE cannot not be used without NEXT_PUBLIC_SENTRY_DSN'),
-      }),
-    NEXT_PUBLIC_APP_ENV: yup
-      .string()
-      .when('NEXT_PUBLIC_SENTRY_DSN', {
-        is: (value: string) => Boolean(value),
-        then: (schema) => schema,
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_APP_ENV cannot not be used without NEXT_PUBLIC_SENTRY_DSN'),
-      }),
   });
 
 const rollbarSchema = yup
   .object()
   .shape({
     NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN: yup.string().required(),
-    NEXT_PUBLIC_ROLLBAR_ENVIRONMENT: yup
-      .string()
-      .when('NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN', {
-        is: (value: string) => Boolean(value),
-        then: (schema) => schema,
-        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_ROLLBAR_ENVIRONMENT cannot not be used without NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN'),
-      }),
   });
 
 const accountSchema = yup
@@ -567,6 +547,8 @@ const schema = yup
     NEXT_PUBLIC_APP_HOST: yup.string().required(),
     NEXT_PUBLIC_APP_PROTOCOL: yup.string().oneOf(protocols),
     NEXT_PUBLIC_APP_PORT: yup.number().positive().integer(),
+    NEXT_PUBLIC_APP_ENV: yup.string(),
+    NEXT_PUBLIC_APP_INSTANCE: yup.string(),
 
     // 2. Blockchain parameters
     NEXT_PUBLIC_NETWORK_NAME: yup.string().required(),

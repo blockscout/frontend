@@ -43,9 +43,6 @@ yarn-error.log*
 
 .eslintcache
 
-# Sentry
-.sentryclirc
-
 **.decrypted~**
 /test-results/
 /playwright-report/

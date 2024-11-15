@@ -79,8 +79,6 @@ frontend:
     NEXT_PUBLIC_NAVIGATION_HIGHLIGHTED_ROUTES: "['/apps']"
     PROMETHEUS_METRICS_ENABLED: true
   envFromSecret:
-    NEXT_PUBLIC_SENTRY_DSN: ref+vault://deployment-values/blockscout/dev/review?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_SENTRY_DSN
-    SENTRY_CSP_REPORT_URI: ref+vault://deployment-values/blockscout/dev/review?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/SENTRY_CSP_REPORT_URI
     NEXT_PUBLIC_AUTH0_CLIENT_ID: ref+vault://deployment-values/blockscout/dev/review?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_AUTH0_CLIENT_ID
     NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID: ref+vault://deployment-values/blockscout/dev/review?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID
     NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID: ref+vault://deployment-values/blockscout/dev/review?token_env=VAULT_TOKEN&address=https://vault.k8s.blockscout.com#/NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID

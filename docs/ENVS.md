@@ -60,6 +60,7 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
   - [MetaSuites extension](ENVS.md#metasuites-extension)
   - [Validators list](ENVS.md#validators-list)
   - [Sentry error monitoring](ENVS.md#sentry-error-monitoring)
+  - [Rollbar error monitoring](ENVS.md#rollbar-error-monitoring)
   - [OpenTelemetry](ENVS.md#opentelemetry)
   - [DeFi dropdown](ENVS.md#defi-dropdown)
   - [Multichain balance button](ENVS.md#multichain-balance-button)
@@ -77,6 +78,8 @@ Please be aware that all environment variables prefixed with `NEXT_PUBLIC_` will
 | NEXT_PUBLIC_APP_PROTOCOL | `http \| https` | App url schema | - | `https` | `http` | v1.0.x+ |
 | NEXT_PUBLIC_APP_HOST | `string` | App host | Required | - | `blockscout.com` | v1.0.x+ |
 | NEXT_PUBLIC_APP_PORT | `number` | Port where app is running | - | `3000` | `3001` | v1.0.x+ |
+| NEXT_PUBLIC_APP_ENV | `string` | App env (e.g development, staging, production, etc.). | - | `production` | `staging` | v1.0.x+ |
+| NEXT_PUBLIC_APP_INSTANCE | `string` | Name of app instance. Used for app monitoring purposes. If not provided, it will be constructed from `NEXT_PUBLIC_APP_HOST` | - | - | `wonderful_kepler` | v1.0.x+ |
 | NEXT_PUBLIC_USE_NEXT_JS_PROXY | `boolean` | Tells the app to proxy all APIs request through the NextJS app. **We strongly advise not to use it in the production environment**, since it can lead to performance issues of the NodeJS server | - | `false` | `true` | v1.8.0+ |
 
 &nbsp;
@@ -725,13 +728,13 @@ The feature enables the Validators page which provides detailed information abou
 
 ### Sentry error monitoring
 
+_Note_ This feature is **deprecated**. All ENV variables will be removed in the future releases.
+
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_SENTRY_DSN | `string` | Client key for your Sentry.io app | Required | - | `<your-secret>` | v1.0.x+ |
 | SENTRY_CSP_REPORT_URI | `string` | URL for sending CSP-reports to your Sentry.io app | - | - | `<your-secret>` | v1.0.x+ |
 | NEXT_PUBLIC_SENTRY_ENABLE_TRACING | `boolean` | Enables tracing and performance monitoring in Sentry.io | - | `false` | `true` | v1.17.0+ |
-| NEXT_PUBLIC_APP_ENV | `string` | App env (e.g development, review or production). Passed as `environment` property to Sentry config | - | `production` | `production` | v1.0.x+ |
-| NEXT_PUBLIC_APP_INSTANCE | `string` | Name of app instance. Used as custom tag `app_instance` value in the main Sentry scope. If not provided, it will be constructed from `NEXT_PUBLIC_APP_HOST` | - | - | `wonderful_kepler` | v1.0.x+ |
 
 &nbsp;
 
@@ -740,7 +743,6 @@ The feature enables the Validators page which provides detailed information abou
 | Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
 | --- | --- | --- | --- | --- | --- | --- |
 | NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN | `string` | Client token for your Rollbar project | Required | - | `<your-secret>` | v1.37.x+ |
-| NEXT_PUBLIC_ROLLBAR_ENVIRONMENT | `string` | App env (e.g development, staging, e2e or production). Passed as `environment` property to Rollbar config | - | `development` | `production` | v1.37.x+ |
 
 &nbsp;
 

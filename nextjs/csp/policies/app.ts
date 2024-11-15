@@ -11,25 +11,6 @@ const MAIN_DOMAINS = [
   config.app.host,
 ].filter(Boolean);
 
-const getCspReportUrl = () => {
-  try {
-    const sentryFeature = config.features.sentry;
-    if (!sentryFeature.isEnabled || !process.env.SENTRY_CSP_REPORT_URI) {
-      return;
-    }
-
-    const url = new URL(process.env.SENTRY_CSP_REPORT_URI);
-
-    // https://docs.sentry.io/product/security-policy-reporting/#additional-configuration
-    url.searchParams.set('sentry_environment', sentryFeature.environment);
-    sentryFeature.release && url.searchParams.set('sentry_release', sentryFeature.release);
-
-    return url.toString();
-  } catch (error) {
-    return;
-  }
-};
-
 const externalFontsDomains = (() => {
   try {
     return [
@@ -148,17 +129,5 @@ export function app(): CspDev.DirectiveDescriptor {
     'frame-ancestors': [
       KEY_WORDS.SELF,
     ],
-
-    ...((() => {
-      if (!config.features.sentry.isEnabled) {
-        return {};
-      }
-
-      return {
-        'report-uri': [
-          getCspReportUrl(),
-        ].filter(Boolean),
-      };
-    })()),
   };
 }
