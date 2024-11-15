@@ -83,7 +83,8 @@ test.describe('socket', () => {
 
     socketServer.sendMessage(socket, channel, 'transaction', { transactions: [ txMock.base2, txMock.base4 ] });
 
-    await page.waitForSelector('tbody tr:nth-child(3)');
+    const thirdRow = page.locator('tbody tr:nth-child(3)');
+    await thirdRow.waitFor();
 
     const itemsCountNew = await page.locator('tbody tr').count();
     expect(itemsCountNew).toBe(4);
@@ -112,7 +113,8 @@ test.describe('socket', () => {
 
     socketServer.sendMessage(socket, channel, 'transaction', { transactions: [ txMock.base, txMock.base2 ] });
 
-    await page.waitForSelector('tbody tr:nth-child(3)');
+    const thirdRow = page.locator('tbody tr:nth-child(3)');
+    await thirdRow.waitFor();
 
     const itemsCountNew = await page.locator('tbody tr').count();
     expect(itemsCountNew).toBe(3);
@@ -141,7 +143,8 @@ test.describe('socket', () => {
 
     socketServer.sendMessage(socket, channel, 'transaction', { transactions: [ txMock.base2, txMock.base3, txMock.base4 ] });
 
-    await page.waitForSelector('tbody tr:nth-child(3)');
+    const thirdRow = page.locator('tbody tr:nth-child(3)');
+    await thirdRow.waitFor();
 
     const itemsCountNew = await page.locator('tbody tr').count();
     expect(itemsCountNew).toBe(3);
@@ -179,7 +182,8 @@ test.describe('socket', () => {
 
     socketServer.sendMessage(socket, channel, 'transaction', { transactions: [ txMock.base2, txMock.base4 ] });
 
-    await page.waitForSelector('tbody tr:nth-child(3)');
+    const thirdRow = page.locator('tbody tr:nth-child(3)');
+    await thirdRow.waitFor();
 
     const itemsCountNew = await page.locator('tbody tr').count();
     expect(itemsCountNew).toBe(3);
@@ -214,7 +218,8 @@ test.describe('socket', () => {
 
     socketServer.sendMessage(socket, channel, 'transaction', { transactions: [ txMock.base2, txMock.base3, txMock.base4 ] });
 
-    await page.waitForSelector('tbody tr:nth-child(3)');
+    const thirdRow = page.locator('tbody tr:nth-child(3)');
+    await thirdRow.waitFor();
 
     const itemsCountNew = await page.locator('tbody tr').count();
     expect(itemsCountNew).toBe(3);
