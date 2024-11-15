@@ -367,6 +367,19 @@ const sentrySchema = yup
       }),
   });
 
+const rollbarSchema = yup
+  .object()
+  .shape({
+    NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN: yup.string().required(),
+    NEXT_PUBLIC_ROLLBAR_ENVIRONMENT: yup
+      .string()
+      .when('NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN', {
+        is: (value: string) => Boolean(value),
+        then: (schema) => schema,
+        otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_ROLLBAR_ENVIRONMENT cannot not be used without NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN'),
+      }),
+  });
+
 const accountSchema = yup
   .object()
   .shape({
@@ -869,6 +882,7 @@ const schema = yup
   .concat(rollupSchema)
   .concat(beaconChainSchema)
   .concat(bridgedTokensSchema)
-  .concat(sentrySchema);
+  .concat(sentrySchema)
+  .concat(rollbarSchema);
 
 export default schema;

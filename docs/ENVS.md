@@ -735,6 +735,15 @@ The feature enables the Validators page which provides detailed information abou
 
 &nbsp;
 
+### Rollbar error monitoring
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN | `string` | Client token for your Rollbar project | Required | - | `<your-secret>` | v1.37.x+ |
+| NEXT_PUBLIC_ROLLBAR_ENVIRONMENT | `string` | App env (e.g development, staging, e2e or production). Passed as `environment` property to Rollbar config | - | `development` | `production` | v1.37.x+ |
+
+&nbsp;
+
 ### OpenTelemetry
 
 OpenTelemetry SDK for Node.js app could be enabled by passing `OTEL_SDK_ENABLED=true` variable. Configure the OpenTelemetry Protocol Exporter by using the generic environment variables described in the [OT docs](https://opentelemetry.io/docs/specs/otel/protocol/exporter/#configuration-options). Note that this Next.js feature is currently experimental. The Docker image should be built with the `NEXT_OPEN_TELEMETRY_ENABLED=true` argument to enable it.

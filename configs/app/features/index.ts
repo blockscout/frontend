@@ -24,6 +24,7 @@ export { default as nameService } from './nameService';
 export { default as publicTagsSubmission } from './publicTagsSubmission';
 export { default as restApiDocs } from './restApiDocs';
 export { default as rewards } from './rewards';
+export { default as rollbar } from './rollbar';
 export { default as rollup } from './rollup';
 export { default as safe } from './safe';
 export { default as saveOnGas } from './saveOnGas';
