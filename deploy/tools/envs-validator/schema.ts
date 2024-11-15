@@ -354,12 +354,6 @@ const sentrySchema = yup
       }),
   });
 
-const rollbarSchema = yup
-  .object()
-  .shape({
-    NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN: yup.string().required(),
-  });
-
 const accountSchema = yup
   .object()
   .shape({
@@ -854,6 +848,7 @@ const schema = yup
     NEXT_PUBLIC_GOOGLE_ANALYTICS_PROPERTY_ID: yup.string(),
     NEXT_PUBLIC_MIXPANEL_PROJECT_TOKEN: yup.string(),
     NEXT_PUBLIC_GROWTH_BOOK_CLIENT_KEY: yup.string(),
+    NEXT_PUBLIC_ROLLBAR_CLIENT_TOKEN: yup.string(),
 
     // Misc
     NEXT_PUBLIC_USE_NEXT_JS_PROXY: yup.boolean(),
@@ -864,7 +859,6 @@ const schema = yup
   .concat(rollupSchema)
   .concat(beaconChainSchema)
   .concat(bridgedTokensSchema)
-  .concat(sentrySchema)
-  .concat(rollbarSchema);
+  .concat(sentrySchema);
 
 export default schema;
