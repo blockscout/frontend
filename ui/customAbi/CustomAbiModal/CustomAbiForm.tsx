@@ -62,7 +62,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, onSuccess, setAlertVisi
     });
   };
 
-  const mutation = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationFn: customAbiKey,
     onSuccess: async(data) => {
       const response = data as unknown as CustomAbi;
@@ -101,8 +101,8 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, onSuccess, setAlertVisi
   const onSubmit: SubmitHandler<Inputs> = useCallback(async(formData) => {
     setAlertVisible(false);
     const id = data && 'id' in data ? String(data.id) : undefined;
-    await mutation.mutateAsync({ ...formData, id });
-  }, [ mutation, data, setAlertVisible ]);
+    await mutateAsync({ ...formData, id });
+  }, [ mutateAsync, data, setAlertVisible ]);
 
   return (
     <FormProvider { ...formApi }>
@@ -140,7 +140,7 @@ const CustomAbiForm: React.FC<Props> = ({ data, onClose, onSuccess, setAlertVisi
             size="lg"
             type="submit"
             isDisabled={ !formApi.formState.isDirty }
-            isLoading={ mutation.isPending }
+            isLoading={ isPending }
           >
             { data && 'id' in data ? 'Save' : 'Create custom ABI' }
           </Button>

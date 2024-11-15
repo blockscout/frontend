@@ -32,7 +32,7 @@ test.describe('with custom links, max cols', () => {
   test.describe('screen xl', () => {
     test.use({ viewport: pwConfig.viewport.xl });
 
-    test('', async({ page }) => {
+    test('base view', async({ page }) => {
       await expect(page).toHaveScreenshot();
     });
   });
