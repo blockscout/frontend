@@ -230,9 +230,6 @@ export default tseslint.config(
 
   {
     plugins: { '@tanstack/query': reactQueryPlugin },
-    rules: {
-      '@tanstack/query/no-unstable-deps': 'off', // TODO @tom2drum turn on this rule
-    },
   },
 
   {

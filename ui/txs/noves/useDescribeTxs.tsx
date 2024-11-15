@@ -79,7 +79,7 @@ export default function useDescribeTxs(items: Array<Transaction> | undefined, vi
     }
 
     return tx;
-  }), [ items, describeQuery ]);
+  }), [ items, describeQuery.data, describeQuery.isLoading ]);
 
   if (!translateEnabled || isPlaceholderData) {
     return items;
