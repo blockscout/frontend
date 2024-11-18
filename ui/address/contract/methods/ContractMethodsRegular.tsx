@@ -1,8 +1,7 @@
 import { Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react';
-
-import type { SmartContractMethod } from './types';
+import type { Abi } from 'viem';
 
 import getQueryParamString from 'lib/router/getQueryParamString';
 
@@ -11,9 +10,10 @@ import ContractConnectWallet from './ContractConnectWallet';
 import ContractMethodsContainer from './ContractMethodsContainer';
 import ContractMethodsFilters from './ContractMethodsFilters';
 import useMethodsFilters from './useMethodsFilters';
+import { formatAbi } from './utils';
 
 interface Props {
-  abi: Array<SmartContractMethod>;
+  abi: Abi;
   isLoading?: boolean;
 }
 
@@ -24,7 +24,8 @@ const ContractMethodsRegular = ({ abi, isLoading }: Props) => {
   const tab = getQueryParamString(router.query.tab);
   const addressHash = getQueryParamString(router.query.hash);
 
-  const filters = useMethodsFilters({ abi });
+  const formattedAbi = React.useMemo(() => formatAbi(abi), [ abi ]);
+  const filters = useMethodsFilters({ abi: formattedAbi });
 
   return (
     <Flex flexDir="column" rowGap={ 6 }>
@@ -35,8 +36,8 @@ const ContractMethodsRegular = ({ abi, isLoading }: Props) => {
         onChange={ filters.onChange }
         isLoading={ isLoading }
       />
-      <ContractMethodsContainer isLoading={ isLoading } isEmpty={ abi.length === 0 } type={ filters.methodType }>
-        <ContractAbi abi={ abi } tab={ tab } addressHash={ addressHash } visibleItems={ filters.visibleItems }/>
+      <ContractMethodsContainer isLoading={ isLoading } isEmpty={ formattedAbi.length === 0 } type={ filters.methodType }>
+        <ContractAbi abi={ formattedAbi } tab={ tab } addressHash={ addressHash } visibleItems={ filters.visibleItems }/>
       </ContractMethodsContainer>
     </Flex>
   );
