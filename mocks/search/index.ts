@@ -114,7 +114,7 @@ export const label1: SearchResultLabel = {
 };
 
 export const tx1: SearchResultTx = {
-  tx_hash: '0x349d4025d03c6faec117ee10ac0bce7c7a805dd2cbff7a9f101304d9a8a525dd',
+  transaction_hash: '0x349d4025d03c6faec117ee10ac0bce7c7a805dd2cbff7a9f101304d9a8a525dd',
   type: 'transaction' as const,
   timestamp: '2022-12-11T17:55:20Z',
   url: '/tx/0x349d4025d03c6faec117ee10ac0bce7c7a805dd2cbff7a9f101304d9a8a525dd',

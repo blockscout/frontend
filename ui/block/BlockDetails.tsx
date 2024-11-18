@@ -122,7 +122,7 @@ const BlockDetails = ({ query }: Props) => {
   const txsNum = (() => {
     const blockTxsNum = (
       <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: heightOrHash, tab: 'txs' } }) }>
-        { data.tx_count } txn{ data.tx_count === 1 ? '' : 's' }
+        { data.transaction_count } txn{ data.transaction_count === 1 ? '' : 's' }
       </LinkInternal>
     );
 
@@ -389,7 +389,7 @@ const BlockDetails = ({ query }: Props) => {
             }
             isLoading={ isPlaceholderData }
           >
-          Block reward
+            Block reward
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value columnGap={ 1 }>
             <Skeleton isLoaded={ !isPlaceholderData }>
@@ -457,7 +457,7 @@ const BlockDetails = ({ query }: Props) => {
             hint="The minimum gas price a transaction should have in order to be included in this block"
             isLoading={ isPlaceholderData }
           >
-        Minimum gas price
+            Minimum gas price
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
             <Skeleton isLoaded={ !isPlaceholderData }>

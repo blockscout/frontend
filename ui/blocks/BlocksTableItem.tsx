@@ -18,6 +18,8 @@ import LinkInternal from 'ui/shared/links/LinkInternal';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 import Utilization from 'ui/shared/Utilization/Utilization';
 
+import { getBaseFeeValue } from './utils';
+
 interface Props {
   data: Block;
   isLoading?: boolean;
@@ -29,9 +31,11 @@ const isRollup = config.features.rollup.isEnabled;
 const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
   const totalReward = getBlockTotalReward(data);
   const burntFees = BigNumber(data.burnt_fees || 0);
-  const txFees = BigNumber(data.tx_fees || 0);
+  const txFees = BigNumber(data.transaction_fees || 0);
 
   const burntFeesIconColor = useColorModeValue('gray.500', 'inherit');
+
+  const baseFeeValue = getBaseFeeValue(data.base_fee_per_gas);
 
   return (
     <Tr
@@ -85,16 +89,16 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
         </Td>
       ) }
       <Td isNumeric fontSize="sm">
-        { data.tx_count > 0 ? (
+        { data.transaction_count > 0 ? (
           <Skeleton isLoaded={ !isLoading } display="inline-block">
             <LinkInternal href={ route({
               pathname: '/block/[height_or_hash]',
               query: { height_or_hash: String(data.height), tab: 'txs' },
             }) }>
-              { data.tx_count }
+              { data.transaction_count }
             </LinkInternal>
           </Skeleton>
-        ) : data.tx_count }
+        ) : data.transaction_count }
       </Td>
       <Td fontSize="sm">
         <Skeleton isLoaded={ !isLoading } display="inline-block">{ BigNumber(data.gas_used || 0).toFormat() }</Skeleton>
@@ -127,6 +131,13 @@ const BlocksTableItem = ({ data, isLoading, enableTimeIncrement }: Props) => {
               <Utilization mt={ 2 } value={ burntFees.div(txFees).toNumber() } isLoading={ isLoading }/>
             </Box>
           </Tooltip>
+        </Td>
+      ) }
+      { !isRollup && !config.UI.views.block.hiddenFields?.base_fee && Boolean(baseFeeValue) && (
+        <Td fontSize="sm" isNumeric>
+          <Skeleton isLoaded={ !isLoading } display="inline-block">
+            { baseFeeValue }
+          </Skeleton>
         </Td>
       ) }
     </Tr>

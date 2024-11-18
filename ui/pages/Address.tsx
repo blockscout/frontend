@@ -11,12 +11,12 @@ import useAddressMetadataInfoQuery from 'lib/address/useAddressMetadataInfoQuery
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import useAddressProfileApiQuery from 'lib/hooks/useAddressProfileApiQuery';
-import useContractTabs from 'lib/hooks/useContractTabs';
 import useIsSafeAddress from 'lib/hooks/useIsSafeAddress';
 import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
 import getQueryParamString from 'lib/router/getQueryParamString';
 import useSocketChannel from 'lib/socket/useSocketChannel';
 import useSocketMessage from 'lib/socket/useSocketMessage';
+import useFetchXStarScore from 'lib/xStarScore/useFetchXStarScore';
 import { ADDRESS_TABS_COUNTERS } from 'stubs/address';
 import { USER_OPS_ACCOUNT } from 'stubs/userOps';
 import AddressAccountHistory from 'ui/address/AddressAccountHistory';
@@ -33,12 +33,15 @@ import AddressTokenTransfers from 'ui/address/AddressTokenTransfers';
 import AddressTxs from 'ui/address/AddressTxs';
 import AddressUserOps from 'ui/address/AddressUserOps';
 import AddressWithdrawals from 'ui/address/AddressWithdrawals';
+import useContractTabs from 'ui/address/contract/useContractTabs';
+import { CONTRACT_TAB_IDS } from 'ui/address/contract/utils';
 import AddressFavoriteButton from 'ui/address/details/AddressFavoriteButton';
 import AddressMetadataAlert from 'ui/address/details/AddressMetadataAlert';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
 import AddressEnsDomains from 'ui/address/ensDomains/AddressEnsDomains';
 import SolidityscanReport from 'ui/address/SolidityscanReport';
 import useAddressQuery from 'ui/address/utils/useAddressQuery';
+import useCheckAddressFormat from 'ui/address/utils/useCheckAddressFormat';
 import useCheckDomainNameParam from 'ui/address/utils/useCheckDomainNameParam';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import TextAd from 'ui/shared/ad/TextAd';
@@ -57,6 +60,7 @@ const TOKEN_TABS = [ 'tokens_erc20', 'tokens_nfts', 'tokens_nfts_collection', 't
 
 const txInterpretation = config.features.txInterpretation;
 const addressProfileAPIFeature = config.features.addressProfileAPI;
+const xScoreFeature = config.features.xStarScore;
 
 const AddressPageContent = () => {
   const router = useRouter();
@@ -66,7 +70,9 @@ const AddressPageContent = () => {
   const hash = getQueryParamString(router.query.hash);
   const checkSummedHash = React.useMemo(() => getCheckedSummedAddress(hash), [ hash ]);
 
-  const areQueriesEnabled = !useCheckDomainNameParam(hash);
+  const checkDomainName = useCheckDomainNameParam(hash);
+  const checkAddressFormat = useCheckAddressFormat(hash);
+  const areQueriesEnabled = !checkDomainName && !checkAddressFormat;
   const addressQuery = useAddressQuery({ hash, isEnabled: areQueriesEnabled });
 
   const addressTabsCountersQuery = useApiQuery('address_tabs_counters', {
@@ -138,7 +144,13 @@ const AddressPageContent = () => {
   const isSafeAddress = useIsSafeAddress(!addressQuery.isPlaceholderData && addressQuery.data?.is_contract ? hash : undefined);
   const safeIconColor = useColorModeValue('black', 'white');
 
-  const contractTabs = useContractTabs(addressQuery.data, addressQuery.isPlaceholderData);
+  const xStarQuery = useFetchXStarScore({ hash });
+
+  const contractTabs = useContractTabs(
+    addressQuery.data,
+    config.features.mudFramework.isEnabled ? (mudTablesCountQuery.isPlaceholderData || addressQuery.isPlaceholderData) : addressQuery.isPlaceholderData,
+    Boolean(config.features.mudFramework.isEnabled && mudTablesCountQuery.data && mudTablesCountQuery.data > 0),
+  );
 
   const tabs: Array<RoutedTab> = React.useMemo(() => {
     return [
@@ -245,7 +257,7 @@ const AddressPageContent = () => {
             isLoading={ contractTabs.isLoading }
           />
         ),
-        subTabs: contractTabs.tabs.map(tab => tab.id),
+        subTabs: CONTRACT_TAB_IDS,
       } : undefined,
     ].filter(Boolean);
   }, [
@@ -290,8 +302,31 @@ const AddressPageContent = () => {
         undefined,
       ...formatUserTags(addressQuery.data),
       ...(addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags.filter(tag => tag.tagType !== 'note') || []),
+      !addressQuery.data?.is_contract && xScoreFeature.isEnabled && xStarQuery.data?.data.level ?
+        {
+          slug: 'xstar',
+          name: `XHS ${ xStarQuery.data.data.level } level`,
+          tagType: 'custom' as const,
+          ordinal: 12,
+          meta: {
+            tooltipTitle: 'XStar humanity levels',
+            tooltipDescription:
+              'XStar looks for off-chain information about an address and interpret it as a XHS score. Different score means different humanity levels.',
+            tooltipUrl: xScoreFeature.url,
+          },
+        } :
+        undefined,
     ].filter(Boolean).sort(sortEntityTags);
-  }, [ addressMetadataQuery.data, addressQuery.data, hash, isSafeAddress, userOpsAccountQuery.data, mudTablesCountQuery.data, usernameApiTag ]);
+  }, [
+    addressMetadataQuery.data,
+    addressQuery.data,
+    hash,
+    isSafeAddress,
+    userOpsAccountQuery.data,
+    mudTablesCountQuery.data,
+    usernameApiTag,
+    xStarQuery.data?.data,
+  ]);
 
   const titleContentAfter = (
     <EntityTags
@@ -300,7 +335,8 @@ const AddressPageContent = () => {
         isLoading ||
         (config.features.userOps.isEnabled && userOpsAccountQuery.isPlaceholderData) ||
         (config.features.addressMetadata.isEnabled && addressMetadataQuery.isPending) ||
-        (addressProfileAPIFeature.isEnabled && userPropfileApiQuery.isPending)
+        (addressProfileAPIFeature.isEnabled && userPropfileApiQuery.isPending) ||
+        (xScoreFeature.isEnabled && xStarQuery.isPlaceholderData)
       }
     />
   );
@@ -341,7 +377,13 @@ const AddressPageContent = () => {
         />
       ) }
       <AddressEntity
-        address={{ ...addressQuery.data, hash: checkSummedHash, name: '', ens_domain_name: '', implementations: null }}
+        address={{
+          ...addressQuery.data,
+          hash: checkSummedHash,
+          name: '',
+          ens_domain_name: '',
+          implementations: null,
+        }}
         isLoading={ isLoading }
         fontFamily="heading"
         fontSize="lg"
@@ -356,7 +398,7 @@ const AddressPageContent = () => {
       { !isLoading && !addressQuery.data?.is_contract && config.features.account.isEnabled && (
         <AddressFavoriteButton hash={ hash } watchListId={ addressQuery.data?.watchlist_address_id }/>
       ) }
-      <AddressQrCode address={{ hash: checkSummedHash }} isLoading={ isLoading }/>
+      <AddressQrCode address={{ hash: addressQuery.data?.filecoin?.robust ?? checkSummedHash }} isLoading={ isLoading }/>
       <AccountActionsMenu isLoading={ isLoading }/>
       <HStack ml="auto" gap={ 2 }/>
       { !isLoading && addressQuery.data?.is_contract && addressQuery.data?.is_verified && config.UI.views.address.solidityscanEnabled &&

@@ -38,6 +38,7 @@ import type {
   AddressMudRecordsSorting,
   AddressMudRecord,
   AddressEpochRewardsResponse,
+  AddressXStarResponse,
 } from 'types/api/address';
 import type { AddressesResponse, AddressesMetadataSearchResult, AddressesMetadataSearchFilters } from 'types/api/addresses';
 import type { AddressMetadataInfo, PublicTagTypesResponse } from 'types/api/addressMetadata';
@@ -67,6 +68,8 @@ import type {
   SmartContract,
   SmartContractVerificationConfigRaw,
   SmartContractSecurityAudits,
+  SmartContractMudSystemsResponse,
+  SmartContractMudSystemInfo,
 } from 'types/api/contract';
 import type { VerifiedContractsResponse, VerifiedContractsFilters, VerifiedContractsCounters } from 'types/api/contracts';
 import type {
@@ -91,6 +94,17 @@ import type {
   OptimismL2BatchBlocks,
 } from 'types/api/optimisticL2';
 import type { RawTracesResponse } from 'types/api/rawTrace';
+import type {
+  RewardsConfigResponse,
+  RewardsCheckRefCodeResponse,
+  RewardsNonceResponse,
+  RewardsCheckUserResponse,
+  RewardsLoginResponse,
+  RewardsUserBalancesResponse,
+  RewardsUserDailyCheckResponse,
+  RewardsUserDailyClaimResponse,
+  RewardsUserReferralsResponse,
+} from 'types/api/rewards';
 import type { SearchRedirectResult, SearchResult, SearchResultFilters, SearchResultItem } from 'types/api/search';
 import type { ShibariumWithdrawalsResponse, ShibariumDepositsResponse } from 'types/api/shibarium';
 import type { HomeStats } from 'types/api/stats';
@@ -166,9 +180,6 @@ export const RESOURCES = {
   user_info: {
     path: '/api/account/v2/user/info',
   },
-  email_resend: {
-    path: '/api/account/v2/email/resend',
-  },
   custom_abi: {
     path: '/api/account/v2/user/custom_abis{/:id}',
     pathParams: [ 'id' as const ],
@@ -224,6 +235,26 @@ export const RESOURCES = {
     endpoint: getFeaturePayload(config.features.addressVerification)?.api.endpoint,
     basePath: getFeaturePayload(config.features.addressVerification)?.api.basePath,
     needAuth: true,
+  },
+
+  // AUTH
+  auth_send_otp: {
+    path: '/api/account/v2/send_otp',
+  },
+  auth_confirm_otp: {
+    path: '/api/account/v2/confirm_otp',
+  },
+  auth_siwe_message: {
+    path: '/api/account/v2/siwe_message',
+  },
+  auth_siwe_verify: {
+    path: '/api/account/v2/authenticate_via_wallet',
+  },
+  auth_link_email: {
+    path: '/api/account/v2/email/link',
+  },
+  auth_link_address: {
+    path: '/api/account/v2/address/link',
   },
 
   // STATS MICROSERVICE API
@@ -326,6 +357,60 @@ export const RESOURCES = {
     pathParams: [ 'chainId' as const, 'dappId' as const ],
     endpoint: marketplaceApi?.endpoint,
     basePath: marketplaceApi?.basePath,
+  },
+
+  // REWARDS SERVICE
+  rewards_config: {
+    path: '/api/v1/config',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_check_ref_code: {
+    path: '/api/v1/auth/code/:code',
+    pathParams: [ 'code' as const ],
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_nonce: {
+    path: '/api/v1/auth/nonce',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_check_user: {
+    path: '/api/v1/auth/user/:address',
+    pathParams: [ 'address' as const ],
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_login: {
+    path: '/api/v1/auth/login',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_logout: {
+    path: '/api/v1/auth/logout',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_user_balances: {
+    path: '/api/v1/user/balances',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_user_daily_check: {
+    path: '/api/v1/user/daily/check',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_user_daily_claim: {
+    path: '/api/v1/user/daily/claim',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
+  },
+  rewards_user_referrals: {
+    path: '/api/v1/user/referrals',
+    endpoint: getFeaturePayload(config.features.rewards)?.api.endpoint,
+    basePath: getFeaturePayload(config.features.rewards)?.api.basePath,
   },
 
   // BLOCKS, TXS
@@ -510,6 +595,10 @@ export const RESOURCES = {
     path: '/api/v2/addresses/:hash/election-rewards',
     pathParams: [ 'hash' as const ],
     filterFields: [],
+  },
+  address_xstar_score: {
+    path: '/api/v2/proxy/xname/addresses/:hash',
+    pathParams: [ 'hash' as const ],
   },
 
   // CONTRACT
@@ -767,6 +856,16 @@ export const RESOURCES = {
     pathParams: [ 'hash' as const, 'table_id' as const, 'record_id' as const ],
   },
 
+  contract_mud_systems: {
+    path: '/api/v2/mud/worlds/:hash/systems',
+    pathParams: [ 'hash' as const ],
+  },
+
+  contract_mud_system_info: {
+    path: '/api/v2/mud/worlds/:hash/systems/:system_address',
+    pathParams: [ 'hash' as const, 'system_address' as const ],
+  },
+
   // arbitrum L2
   arbitrum_l2_messages: {
     path: '/api/v2/arbitrum/messages/:direction',
@@ -982,10 +1081,10 @@ export type ResourceName = keyof typeof RESOURCES;
 
 type ResourcePathMap = {
   [K in ResourceName]: typeof RESOURCES[K]['path']
-}
-export type ResourcePath = ResourcePathMap[keyof ResourcePathMap]
+};
+export type ResourcePath = ResourcePathMap[keyof ResourcePathMap];
 
-export type ResourceFiltersKey<R extends ResourceName> = typeof RESOURCES[R] extends {filterFields: Array<unknown>} ?
+export type ResourceFiltersKey<R extends ResourceName> = typeof RESOURCES[R] extends { filterFields: Array<unknown> } ?
   ArrayElement<typeof RESOURCES[R]['filterFields']> :
   never;
 
@@ -1006,7 +1105,7 @@ export interface ResourceError<T = unknown> {
   statusText: Response['statusText'];
 }
 
-export type ResourceErrorAccount<T> = ResourceError<{ errors: T }>
+export type ResourceErrorAccount<T> = ResourceError<{ errors: T }>;
 
 export type PaginatedResources = 'blocks' | 'block_txs' | 'block_election_rewards' |
 'txs_validated' | 'txs_pending' | 'txs_with_blobs' | 'txs_watchlist' | 'txs_execution_node' |
@@ -1020,7 +1119,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' | 'block_election_reward
 'verified_contracts' |
 'optimistic_l2_output_roots' | 'optimistic_l2_withdrawals' | 'optimistic_l2_txn_batches' | 'optimistic_l2_deposits' |
 'optimistic_l2_dispute_games' | 'optimistic_l2_txn_batch_txs' | 'optimistic_l2_txn_batch_blocks' |
-'mud_worlds'| 'address_mud_tables' | 'address_mud_records' |
+'mud_worlds' | 'address_mud_tables' | 'address_mud_records' |
 'shibarium_deposits' | 'shibarium_withdrawals' |
 'arbitrum_l2_messages' | 'arbitrum_l2_txn_batches' | 'arbitrum_l2_txn_batch_txs' | 'arbitrum_l2_txn_batch_blocks' |
 'zkevm_l2_deposits' | 'zkevm_l2_withdrawals' | 'zkevm_l2_txn_batches' | 'zkevm_l2_txn_batch_txs' |
@@ -1032,7 +1131,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' | 'block_election_reward
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
-/* eslint-disable @typescript-eslint/indent */
+/* eslint-disable @stylistic/indent */
 // !!! IMPORTANT !!!
 // Don't add any new types here because TypeScript cannot handle it properly
 // use ResourcePayloadB instead
@@ -1056,7 +1155,7 @@ Q extends 'homepage_txs_watchlist' ? Array<Transaction> :
 Q extends 'homepage_optimistic_deposits' ? Array<OptimisticL2DepositsItem> :
 Q extends 'homepage_arbitrum_deposits' ? ArbitrumLatestDepositsResponse :
 Q extends 'homepage_zkevm_l2_batches' ? { items: Array<ZkEvmL2TxnBatchesItem> } :
-Q extends 'homepage_arbitrum_l2_batches' ? { items: Array<ArbitrumL2TxnBatchesItem>} :
+Q extends 'homepage_arbitrum_l2_batches' ? { items: Array<ArbitrumL2TxnBatchesItem> } :
 Q extends 'homepage_indexing_status' ? IndexingStatus :
 Q extends 'homepage_zkevm_latest_batch' ? number :
 Q extends 'homepage_zksync_latest_batch' ? number :
@@ -1138,9 +1237,9 @@ Q extends 'optimistic_l2_dispute_games_count' ? number :
 never;
 // !!! IMPORTANT !!!
 // See comment above
-/* eslint-enable @typescript-eslint/indent */
+/* eslint-enable @stylistic/indent */
 
-/* eslint-disable @typescript-eslint/indent */
+/* eslint-disable @stylistic/indent */
 export type ResourcePayloadB<Q extends ResourceName> =
 Q extends 'config_backend_version' ? BackendVersionConfig :
 Q extends 'config_csv_export' ? CsvExportConfig :
@@ -1186,7 +1285,7 @@ Q extends 'domain_protocols' ? bens.GetProtocolsResponse :
 Q extends 'user_ops' ? UserOpsResponse :
 Q extends 'user_op' ? UserOp :
 Q extends 'user_ops_account' ? UserOpsAccount :
-Q extends 'user_op_interpretation'? TxInterpretationResponse :
+Q extends 'user_op_interpretation' ? TxInterpretationResponse :
 Q extends 'noves_transaction' ? NovesResponseData :
 Q extends 'noves_address_history' ? NovesAccountHistoryResponse :
 Q extends 'noves_describe_txs' ? NovesDescribeTxsResponse :
@@ -1195,12 +1294,24 @@ Q extends 'address_mud_tables' ? AddressMudTables :
 Q extends 'address_mud_tables_count' ? number :
 Q extends 'address_mud_records' ? AddressMudRecords :
 Q extends 'address_mud_record' ? AddressMudRecord :
+Q extends 'contract_mud_systems' ? SmartContractMudSystemsResponse :
+Q extends 'contract_mud_system_info' ? SmartContractMudSystemInfo :
 Q extends 'address_epoch_rewards' ? AddressEpochRewardsResponse :
 Q extends 'withdrawals' ? WithdrawalsResponse :
 Q extends 'withdrawals_counters' ? WithdrawalsCounters :
+Q extends 'rewards_config' ? RewardsConfigResponse :
+Q extends 'rewards_check_ref_code' ? RewardsCheckRefCodeResponse :
+Q extends 'rewards_nonce' ? RewardsNonceResponse :
+Q extends 'rewards_check_user' ? RewardsCheckUserResponse :
+Q extends 'rewards_login' ? RewardsLoginResponse :
+Q extends 'rewards_user_balances' ? RewardsUserBalancesResponse :
+Q extends 'rewards_user_daily_check' ? RewardsUserDailyCheckResponse :
+Q extends 'rewards_user_daily_claim' ? RewardsUserDailyClaimResponse :
+Q extends 'rewards_user_referrals' ? RewardsUserReferralsResponse :
 Q extends 'token_transfers_all' ? TokenTransferResponse :
+Q extends 'address_xstar_score' ? AddressXStarResponse :
 never;
-/* eslint-enable @typescript-eslint/indent */
+/* eslint-enable @stylistic/indent */
 
 export type ResourcePayload<Q extends ResourceName> = ResourcePayloadA<Q> | ResourcePayloadB<Q>;
 export type PaginatedResponseItems<Q extends ResourceName> = Q extends PaginatedResources ? ResourcePayloadA<Q>['items'] | ResourcePayloadB<Q>['items'] : never;
@@ -1208,7 +1319,7 @@ export type PaginatedResponseNextPageParams<Q extends ResourceName> = Q extends 
   ResourcePayloadA<Q>['next_page_params'] | ResourcePayloadB<Q>['next_page_params'] :
   never;
 
-/* eslint-disable @typescript-eslint/indent */
+/* eslint-disable @stylistic/indent */
 export type PaginationFilters<Q extends PaginatedResources> =
 Q extends 'blocks' ? BlockFilters :
 Q extends 'block_txs' ? TTxsWithBlobsFilters :
@@ -1235,9 +1346,9 @@ Q extends 'address_mud_tables' ? AddressMudTablesFilter :
 Q extends 'address_mud_records' ? AddressMudRecordsFilter :
 Q extends 'token_transfers_all' ? TokenTransferFilters :
 never;
-/* eslint-enable @typescript-eslint/indent */
+/* eslint-enable @stylistic/indent */
 
-/* eslint-disable @typescript-eslint/indent */
+/* eslint-disable @stylistic/indent */
 export type PaginationSorting<Q extends PaginatedResources> =
 Q extends 'tokens' ? TokensSorting :
 Q extends 'tokens_bridged' ? TokensSorting :
@@ -1249,4 +1360,4 @@ Q extends 'validators_stability' ? ValidatorsStabilitySorting :
 Q extends 'validators_blackfort' ? ValidatorsBlackfortSorting :
 Q extends 'address_mud_records' ? AddressMudRecordsSorting :
 never;
-/* eslint-enable @typescript-eslint/indent */
+/* eslint-enable @stylistic/indent */

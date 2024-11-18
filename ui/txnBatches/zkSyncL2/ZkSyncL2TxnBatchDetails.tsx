@@ -67,7 +67,7 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
     return null;
   }
 
-  const txNum = data.l2_tx_count + data.l1_tx_count;
+  const txNum = data.l2_transaction_count + data.l1_transaction_count;
 
   return (
     <Grid
@@ -178,7 +178,7 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
           </DetailsInfoItem.Value>
 
           <DetailsInfoItem.Label
-            hint={ 'The gas price below which the "baseFee" of the batch should not fall' }
+            hint='The gas price below which the "baseFee" of the batch should not fall'
           >
             L2 fair gas price
           </DetailsInfoItem.Label>

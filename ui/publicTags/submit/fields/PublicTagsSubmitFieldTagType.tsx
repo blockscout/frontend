@@ -1,38 +1,34 @@
-import { chakra, Flex, FormControl } from '@chakra-ui/react';
+import { chakra, Flex } from '@chakra-ui/react';
 import type { GroupBase, SelectComponentsConfig, SingleValueProps } from 'chakra-react-select';
 import { chakraComponents } from 'chakra-react-select';
 import _capitalize from 'lodash/capitalize';
 import React from 'react';
-import type { ControllerRenderProps } from 'react-hook-form';
-import { Controller, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
 import type { PublicTagType } from 'types/api/addressMetadata';
-import type { Option } from 'ui/shared/FancySelect/types';
+import type { Option } from 'ui/shared/forms/inputs/select/types';
 
-import useIsMobile from 'lib/hooks/useIsMobile';
-import FancySelect from 'ui/shared/FancySelect/FancySelect';
+import FormFieldFancySelect from 'ui/shared/forms/fields/FormFieldFancySelect';
 import IconSvg from 'ui/shared/IconSvg';
 
 interface Props {
   index: number;
   tagTypes: Array<PublicTagType> | undefined;
-  isDisabled: boolean;
 }
 
-const PublicTagsSubmitFieldTagType = ({ index, tagTypes, isDisabled }: Props) => {
-  const isMobile = useIsMobile();
-  const { control, watch } = useFormContext<FormFields>();
+const PublicTagsSubmitFieldTagType = ({ index, tagTypes }: Props) => {
+  const { watch } = useFormContext<FormFields>();
 
   const typeOptions = React.useMemo(() => tagTypes?.map((type) => ({
     value: type.type,
     label: _capitalize(type.type),
-  })), [ tagTypes ]);
+  })) ?? [], [ tagTypes ]);
 
   const fieldValue = watch(`tags.${ index }.type`).value;
 
   const selectComponents: SelectComponentsConfig<Option, boolean, GroupBase<Option>> = React.useMemo(() => {
-    type SingleValueComponentProps = SingleValueProps<Option, boolean, GroupBase<Option>> & { children: React.ReactNode }
+    type SingleValueComponentProps = SingleValueProps<Option, boolean, GroupBase<Option>> & { children: React.ReactNode };
     const SingleValue = ({ children, ...props }: SingleValueComponentProps) => {
       switch (fieldValue) {
         case 'name': {
@@ -63,30 +59,15 @@ const PublicTagsSubmitFieldTagType = ({ index, tagTypes, isDisabled }: Props) =>
     return { SingleValue };
   }, [ fieldValue ]);
 
-  const renderControl = React.useCallback(({ field }: { field: ControllerRenderProps<FormFields, `tags.${ number }.type`> }) => {
-    return (
-      <FormControl variant="floating" id={ field.name } isRequired size={{ base: 'md', lg: 'lg' }}>
-        <FancySelect
-          { ...field }
-          options={ typeOptions }
-          size={ isMobile ? 'md' : 'lg' }
-          placeholder="Tag type"
-          isDisabled={ isDisabled }
-          isRequired
-          isAsync={ false }
-          isSearchable={ false }
-          components={ selectComponents }
-        />
-      </FormControl>
-    );
-  }, [ isDisabled, isMobile, selectComponents, typeOptions ]);
-
   return (
-    <Controller
+    <FormFieldFancySelect<FormFields, `tags.${ number }.type`>
       name={ `tags.${ index }.type` }
-      control={ control }
-      render={ renderControl }
-      rules={{ required: true }}
+      placeholder="Tag type"
+      options={ typeOptions }
+      isRequired
+      isAsync={ false }
+      isSearchable={ false }
+      components={ selectComponents }
     />
   );
 };

@@ -17,7 +17,7 @@ type Props = {
   index: number;
   page: number;
   isLoading?: boolean;
-}
+};
 
 const PAGE_SIZE = 50;
 
@@ -32,6 +32,7 @@ const TokensTableItem = ({
 
   const {
     address,
+    filecoin_robust_address: filecoinRobustAddress,
     exchange_rate: exchangeRate,
     type,
     holders,
@@ -45,6 +46,9 @@ const TokensTableItem = ({
 
   const tokenAddress: AddressEntityProps['address'] = {
     hash: address,
+    filecoin: {
+      robust: filecoinRobustAddress,
+    },
     name: '',
     is_contract: true,
     is_verified: false,

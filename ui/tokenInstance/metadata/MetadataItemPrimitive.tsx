@@ -27,6 +27,9 @@ const MetadataItemPrimitive = ({ name, value, isItem = true, isFlat, level }: Pr
         if (url) {
           return <LinkExternal href={ url.toString() }>{ value }</LinkExternal>;
         }
+        if (value === '') {
+          return <div>&quot;&quot;</div>;
+        }
       }
       // eslint-disable-next-line no-fallthrough
       default: {

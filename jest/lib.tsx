@@ -20,7 +20,7 @@ const PAGE_PROPS = {
   apiData: null,
 };
 
-const TestApp = ({ children }: {children: React.ReactNode}) => {
+const TestApp = ({ children }: { children: React.ReactNode }) => {
   const [ queryClient ] = React.useState(() => new QueryClient({
     defaultOptions: {
       queries: {

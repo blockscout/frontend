@@ -6,7 +6,7 @@ export type WithdrawalsResponse = {
     index: number;
     items_count: number;
   };
-}
+};
 
 export type WithdrawalsItem = {
   amount: string;
@@ -15,9 +15,9 @@ export type WithdrawalsItem = {
   receiver: AddressParam;
   timestamp: string;
   validator_index: number;
-}
+};
 
 export type WithdrawalsCounters = {
   withdrawal_count: string;
   withdrawal_sum: string;
-}
+};

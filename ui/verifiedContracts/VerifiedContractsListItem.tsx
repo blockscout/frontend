@@ -8,9 +8,7 @@ import config from 'configs/app';
 import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
 import { currencyUnits } from 'lib/units';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import HashStringShorten from 'ui/shared/HashStringShorten';
 import IconSvg from 'ui/shared/IconSvg';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
@@ -46,10 +44,16 @@ const VerifiedContractsListItem = ({ data, isLoading }: Props) => {
           />
           { data.certified && <ContractCertifiedLabel iconSize={ 5 } boxSize={ 5 } mx={ 2 }/> }
         </Flex>
-        <Skeleton isLoaded={ !isLoading } color="text_secondary" ml="auto">
-          <HashStringShorten hash={ data.address.hash } isTooltipDisabled/>
-        </Skeleton>
-        <CopyToClipboard text={ data.address.hash } isLoading={ isLoading }/>
+        <AddressEntity
+          address={{ hash: data.address.filecoin?.robust ?? data.address.hash }}
+          isLoading={ isLoading }
+          noLink
+          noIcon
+          truncation="constant"
+          ml="auto"
+          color="text_secondary"
+          flexShrink={ 0 }
+        />
       </Flex>
       <Flex columnGap={ 3 }>
         <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Balance { currencyUnits.ether }</Skeleton>
@@ -60,7 +64,7 @@ const VerifiedContractsListItem = ({ data, isLoading }: Props) => {
       <Flex columnGap={ 3 }>
         <Skeleton isLoaded={ !isLoading } fontWeight={ 500 }>Txs count</Skeleton>
         <Skeleton isLoaded={ !isLoading } color="text_secondary">
-          <span>{ data.tx_count ? data.tx_count.toLocaleString() : '0' }</span>
+          <span>{ data.transaction_count ? data.transaction_count.toLocaleString() : '0' }</span>
         </Skeleton>
       </Flex>
       <Flex columnGap={ 3 }>

@@ -9,7 +9,7 @@ import { ZERO } from 'lib/consts';
 
 export type TokenEnhancedData = AddressTokenBalance & {
   usd?: BigNumber ;
-}
+};
 
 export type Sort = 'desc' | 'asc';
 

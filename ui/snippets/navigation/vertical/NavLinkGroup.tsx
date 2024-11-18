@@ -2,7 +2,6 @@ import {
   Text,
   HStack,
   Box,
-  Link,
   PopoverTrigger,
   PopoverContent,
   PopoverBody,
@@ -24,7 +23,7 @@ import NavLink from './NavLink';
 type Props = {
   item: NavGroupItem;
   isCollapsed?: boolean;
-}
+};
 
 const NavLinkGroup = ({ item, isCollapsed }: Props) => {
   const isExpanded = isCollapsed === false;
@@ -38,11 +37,12 @@ const NavLinkGroup = ({ item, isCollapsed }: Props) => {
       <Popover
         trigger="hover"
         placement="right-start"
-        isLazy
+        // should not be lazy to help google indexing pages
+        isLazy={ false }
         gutter={ 8 }
       >
         <PopoverTrigger>
-          <Link
+          <Box
             { ...styleProps.itemProps }
             w={{ lg: isExpanded ? '180px' : '60px', xl: isCollapsed ? '60px' : '180px' }}
             pl={{ lg: isExpanded ? 2 : '15px', xl: isCollapsed ? '15px' : 2 }}
@@ -73,14 +73,14 @@ const NavLinkGroup = ({ item, isCollapsed }: Props) => {
                 transitionTimingFunction="ease"
               />
             </HStack>
-          </Link>
+          </Box>
         </PopoverTrigger>
         <PopoverContent width="252px" top={{ lg: isExpanded ? '-16px' : 0, xl: isCollapsed ? 0 : '-16px' }}>
           <PopoverBody p={ 4 }>
             <Text variant="secondary" fontSize="sm" mb={ 1 } display={{ lg: isExpanded ? 'none' : 'block', xl: isCollapsed ? 'block' : 'none' }}>
               { item.text }
             </Text>
-            <VStack spacing={ 1 } alignItems="start">
+            <VStack spacing={ 1 } alignItems="start" as="ul">
               { item.subItems.map((subItem, index) => Array.isArray(subItem) ? (
                 <Box
                   key={ index }

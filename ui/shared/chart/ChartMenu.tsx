@@ -34,7 +34,7 @@ export type Props = {
   zoomRange?: [ Date, Date ];
   handleZoom: (range: [ Date, Date ]) => void;
   handleZoomReset: () => void;
-}
+};
 
 const DOWNLOAD_IMAGE_SCALE = 5;
 
@@ -134,7 +134,7 @@ const ChartMenu = ({
             as={ IconButton }
           >
             <VisuallyHidden>
-            Open chart options menu
+              Open chart options menu
             </VisuallyHidden>
           </MenuButton>
         </Skeleton>

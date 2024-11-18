@@ -67,6 +67,7 @@ export function app(): CspDev.DirectiveDescriptor {
       getFeaturePayload(config.features.addressVerification)?.api.endpoint,
       getFeaturePayload(config.features.nameService)?.api.endpoint,
       getFeaturePayload(config.features.addressMetadata)?.api.endpoint,
+      getFeaturePayload(config.features.rewards)?.api.endpoint,
 
       // chain RPC server
       config.chain.rpcUrl,

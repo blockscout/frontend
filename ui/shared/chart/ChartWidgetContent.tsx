@@ -21,7 +21,7 @@ export type Props = {
   isEnlarged?: boolean;
   noAnimation?: boolean;
   resolution?: Resolution;
-}
+};
 
 const ChartWidgetContent = ({
   items,

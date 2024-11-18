@@ -17,10 +17,10 @@ import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
 import AddressMudTablesListItem from './AddressMudTablesListItem';
 import AddressMudTablesTable from './AddressMudTablesTable';
 
-type Props ={
+type Props = {
   scrollRef?: React.RefObject<HTMLDivElement>;
   isQueryEnabled?: boolean;
-}
+};
 
 const AddressMudTables = ({ scrollRef, isQueryEnabled = true }: Props) => {
   const router = useRouter();

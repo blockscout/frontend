@@ -23,4 +23,4 @@ export interface TxActionNft {
 
 export type TxAction = {
   protocol: 'uniswap_v3';
-} & (TxActionGeneral | TxActionNft)
+} & (TxActionGeneral | TxActionNft);

@@ -12,4 +12,4 @@ export type CsvExportParams = {
   type: 'holders';
   filterType?: undefined;
   filterValue?: undefined;
-}
+};

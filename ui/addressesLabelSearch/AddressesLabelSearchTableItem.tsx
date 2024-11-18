@@ -10,7 +10,7 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 type Props = {
   item: AddressesItem;
   isLoading?: boolean;
-}
+};
 
 const AddressesLabelSearchTableItem = ({
   item,
@@ -38,7 +38,7 @@ const AddressesLabelSearchTableItem = ({
       </Td>
       <Td isNumeric>
         <Skeleton isLoaded={ !isLoading } display="inline-block" lineHeight="24px">
-          { Number(item.tx_count).toLocaleString() }
+          { Number(item.transaction_count).toLocaleString() }
         </Skeleton>
       </Td>
     </Tr>

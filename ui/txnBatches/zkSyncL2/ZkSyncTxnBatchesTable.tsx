@@ -11,7 +11,7 @@ type Props = {
   items: Array<ZkSyncBatchesItem>;
   top: number;
   isLoading?: boolean;
-}
+};
 
 const ZkSyncTxnBatchesTable = ({ items, top, isLoading }: Props) => {
   return (

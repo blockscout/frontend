@@ -14,7 +14,7 @@ type Props = {
   isLoading?: boolean;
   type?: React.HTMLInputTypeAttribute;
   name?: string;
-}
+};
 
 const FilterInput = ({ onChange, className, size = 'sm', placeholder, initialValue, isLoading, type, name }: Props) => {
   const [ filterQuery, setFilterQuery ] = useState(initialValue || '');

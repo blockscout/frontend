@@ -11,7 +11,7 @@ type Props = {
   isLoading?: boolean;
   className?: string;
   type?: 'primary' | 'secondary';
-}
+};
 
 const NativeTokenIcon = ({ isLoading, className, type }: Props) => {
   const statsQueryResult = useApiQuery('stats', {

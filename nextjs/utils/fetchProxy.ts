@@ -23,7 +23,8 @@ export default function fetchFactory(
       cookie: apiToken ? `${ cookies.NAMES.API_TOKEN }=${ apiToken }` : '',
       ..._pick(_req.headers, [
         'x-csrf-token',
-        'Authorization',
+        'Authorization', // the old value, just in case
+        'authorization', // Node.js automatically lowercases headers
         // feature flags
         'updated-gas-oracle',
       ]) as Record<string, string | undefined>,
@@ -33,6 +34,7 @@ export default function fetchFactory(
       message: 'API fetch via Next.js proxy',
       url,
       // headers,
+      // init,
     });
 
     const body = (() => {

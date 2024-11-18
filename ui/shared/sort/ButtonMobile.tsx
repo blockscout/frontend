@@ -8,7 +8,7 @@ type Props = {
   isActive: boolean;
   className?: string;
   isLoading?: boolean;
-}
+};
 
 const ButtonMobile = ({ onClick, isActive, className, isLoading }: Props, ref: React.ForwardedRef<HTMLButtonElement>) => {
   if (isLoading) {

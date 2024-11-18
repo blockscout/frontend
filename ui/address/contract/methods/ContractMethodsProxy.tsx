@@ -1,25 +1,32 @@
-import { Box } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React from 'react';
 
-import type { MethodType } from './types';
 import type { AddressImplementation } from 'types/api/addressParams';
 
 import useApiQuery from 'lib/api/useApiQuery';
+import getQueryParamString from 'lib/router/getQueryParamString';
 
+import ContractSourceAddressSelector from '../ContractSourceAddressSelector';
+import ContractAbi from './ContractAbi';
 import ContractConnectWallet from './ContractConnectWallet';
-import ContractImplementationAddress from './ContractImplementationAddress';
-import ContractMethods from './ContractMethods';
-import { isReadMethod, isWriteMethod } from './utils';
+import ContractMethodsContainer from './ContractMethodsContainer';
+import ContractMethodsFilters from './ContractMethodsFilters';
+import useMethodsFilters from './useMethodsFilters';
+import { enrichWithMethodId, isMethod } from './utils';
 
 interface Props {
-  type: MethodType;
   implementations: Array<AddressImplementation>;
   isLoading?: boolean;
 }
 
-const ContractMethodsProxy = ({ type, implementations, isLoading: isInitialLoading }: Props) => {
+const ContractMethodsProxy = ({ implementations, isLoading: isInitialLoading }: Props) => {
+  const router = useRouter();
+  const sourceAddress = getQueryParamString(router.query.source_address);
+  const tab = getQueryParamString(router.query.tab);
+  const addressHash = getQueryParamString(router.query.hash);
 
-  const [ selectedItem, setSelectedItem ] = React.useState(implementations[0]);
+  const [ selectedItem, setSelectedItem ] = React.useState(implementations.find((item) => item.address === sourceAddress) || implementations[0]);
 
   const contractQuery = useApiQuery('contract', {
     pathParams: { hash: selectedItem.address },
@@ -29,32 +36,47 @@ const ContractMethodsProxy = ({ type, implementations, isLoading: isInitialLoadi
     },
   });
 
-  const handleItemSelect = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
-    const nextOption = implementations.find(({ address }) => address === event.target.value);
-    if (nextOption) {
-      setSelectedItem(nextOption);
-    }
-  }, [ implementations ]);
+  const abi = React.useMemo(() => {
+    return contractQuery.data?.abi?.filter(isMethod).map(enrichWithMethodId) || [];
+  }, [ contractQuery.data?.abi ]);
 
-  const abi = contractQuery.data?.abi?.filter(type === 'read' ? isReadMethod : isWriteMethod) || [];
+  const filters = useMethodsFilters({ abi });
 
   return (
-    <Box>
+    <Flex flexDir="column" rowGap={ 6 }>
       <ContractConnectWallet isLoading={ isInitialLoading }/>
-      <ContractImplementationAddress
-        implementations={ implementations }
-        selectedItem={ selectedItem }
-        onItemSelect={ handleItemSelect }
-        isLoading={ isInitialLoading }
-      />
-      <ContractMethods
+      <div>
+        <ContractSourceAddressSelector
+          items={ implementations }
+          selectedItem={ selectedItem }
+          onItemSelect={ setSelectedItem }
+          isLoading={ isInitialLoading }
+          label="Implementation address"
+          mb={ 3 }
+        />
+        <ContractMethodsFilters
+          defaultMethodType={ filters.methodType }
+          defaultSearchTerm={ filters.searchTerm }
+          onChange={ filters.onChange }
+          isLoading={ isInitialLoading }
+        />
+      </div>
+      <ContractMethodsContainer
         key={ selectedItem.address }
-        abi={ abi }
         isLoading={ isInitialLoading || contractQuery.isPending }
+        isEmpty={ abi.length === 0 }
+        type={ filters.methodType }
         isError={ contractQuery.isError }
-        type={ type }
-      />
-    </Box>
+      >
+        <ContractAbi
+          abi={ abi }
+          tab={ tab }
+          addressHash={ addressHash }
+          visibleItems={ filters.visibleItems }
+          sourceAddress={ selectedItem.address }
+        />
+      </ContractMethodsContainer>
+    </Flex>
   );
 };
 

@@ -13,7 +13,7 @@ const feature = config.features.marketplace;
 type Props = {
   favoriteApps: Array<string>;
   selectedCategoryId?: string;
-}
+};
 
 const EmptySearchResult = ({ favoriteApps, selectedCategoryId }: Props) => (
   <EmptySearchResultDefault

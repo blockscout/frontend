@@ -12,7 +12,7 @@ test.use({ viewport: { width: 180, height: 30 } });
 
 test.describe('icon size', () => {
   iconSizes.forEach((size) => {
-    test(size, async({ render }) => {
+    test(`${ size }`, async({ render }) => {
       const component = await render(
         <EnsEntity
           domain={ name }
@@ -61,8 +61,9 @@ test('customization', async({ render }) => {
   await expect(component).toHaveScreenshot();
 });
 
-test.describe('', () => {
+test.describe('tooltip test', () => {
   test.use({ viewport: { width: 300, height: 400 } });
+
   test('with protocol info', async({ render, page, mockAssetResponse }) => {
     await mockAssetResponse(domainMock.ensDomainA.protocol?.icon_url as string, './playwright/mocks/image_s.jpg');
 

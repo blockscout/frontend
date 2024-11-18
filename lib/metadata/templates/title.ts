@@ -28,6 +28,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/graphiql': 'GraphQL for %network_name% - %network_name% data query',
   '/search-results': '%network_name% search result for %q%',
   '/auth/profile': '%network_name% - my profile',
+  '/account/rewards': '%network_name% - rewards',
   '/account/watchlist': '%network_name% - watchlist',
   '/account/api-key': '%network_name% - API keys',
   '/account/custom-abi': '%network_name% - custom ABI',
@@ -65,8 +66,6 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/api/healthz': '%network_name% node API health check',
   '/api/config': '%network_name% node API app config',
   '/api/sprite': '%network_name% node API SVG sprite content',
-  '/auth/auth0': '%network_name% authentication',
-  '/auth/unverified-email': '%network_name% unverified email',
 };
 
 const TEMPLATE_MAP_ENHANCED: Partial<Record<Route['pathname'], string>> = {

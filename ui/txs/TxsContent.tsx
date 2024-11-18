@@ -38,7 +38,7 @@ type Props = {
   isError: boolean;
   setSorting: (value: TransactionsSortingValue | undefined) => void;
   sort: TransactionsSortingValue | undefined;
-}
+};
 
 const TxsContent = ({
   query,

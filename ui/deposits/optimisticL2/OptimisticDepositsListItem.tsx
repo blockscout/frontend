@@ -39,7 +39,7 @@ const OptimisticDepositsListItem = ({ item, isLoading }: Props) => {
       <ListItemMobileGrid.Value>
         <TxEntity
           isLoading={ isLoading }
-          hash={ item.l2_tx_hash }
+          hash={ item.l2_transaction_hash }
           fontSize="sm"
           lineHeight={ 5 }
           truncation="constant_long"
@@ -59,7 +59,7 @@ const OptimisticDepositsListItem = ({ item, isLoading }: Props) => {
       <ListItemMobileGrid.Value>
         <TxEntityL1
           isLoading={ isLoading }
-          hash={ item.l1_tx_hash }
+          hash={ item.l1_transaction_hash }
           fontSize="sm"
           lineHeight={ 5 }
           truncation="constant_long"
@@ -69,7 +69,7 @@ const OptimisticDepositsListItem = ({ item, isLoading }: Props) => {
       <ListItemMobileGrid.Label isLoading={ isLoading }>L1 txn origin</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
         <AddressEntityL1
-          address={{ hash: item.l1_tx_origin, name: '', is_contract: false, is_verified: false, ens_domain_name: null, implementations: null }}
+          address={{ hash: item.l1_transaction_origin, name: '', is_contract: false, is_verified: false, ens_domain_name: null, implementations: null }}
           isLoading={ isLoading }
           noCopy
           truncation="constant"
@@ -78,7 +78,7 @@ const OptimisticDepositsListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Gas limit</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">{ BigNumber(item.l2_tx_gas_limit).toFormat() }</Skeleton>
+        <Skeleton isLoaded={ !isLoading } display="inline-block">{ BigNumber(item.l2_transaction_gas_limit).toFormat() }</Skeleton>
       </ListItemMobileGrid.Value>
 
     </ListItemMobileGrid.Container>

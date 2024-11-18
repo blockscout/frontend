@@ -22,9 +22,9 @@ export type Props = {
   period?: '1h' | '24h';
   href?: Route;
   icon?: IconName;
-}
+};
 
-const Container = ({ href, children }: { href?: Route; children: JSX.Element }) => {
+const Container = ({ href, children }: { href?: Route; children: React.JSX.Element }) => {
   if (href) {
     return (
       <NextLink href={ href } passHref legacyBehavior>

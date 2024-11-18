@@ -7,9 +7,7 @@ import type { VerifiedContract } from 'types/api/contracts';
 import config from 'configs/app';
 import { CONTRACT_LICENSES } from 'lib/contracts/licenses';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
-import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import HashStringShorten from 'ui/shared/HashStringShorten';
 import IconSvg from 'ui/shared/IconSvg';
 import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
@@ -44,12 +42,16 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
           />
           { data.certified && <ContractCertifiedLabel iconSize={ 5 } boxSize={ 5 } ml={ 2 }/> }
         </Flex>
-        <Flex alignItems="center" ml={ 7 }>
-          <Skeleton isLoaded={ !isLoading } color="text_secondary" my={ 1 }>
-            <HashStringShorten hash={ data.address.hash } isTooltipDisabled/>
-          </Skeleton>
-          <CopyToClipboard text={ data.address.hash } isLoading={ isLoading }/>
-        </Flex>
+        <AddressEntity
+          address={{ hash: data.address.filecoin?.robust ?? data.address.hash }}
+          isLoading={ isLoading }
+          noLink
+          noIcon
+          truncation="constant"
+          my={ 1 }
+          ml={ 7 }
+          color="text_secondary"
+        />
       </Td>
       <Td isNumeric>
         <Skeleton isLoaded={ !isLoading } display="inline-block" my={ 1 }>
@@ -58,17 +60,19 @@ const VerifiedContractsTableItem = ({ data, isLoading }: Props) => {
       </Td>
       <Td isNumeric>
         <Skeleton isLoaded={ !isLoading } display="inline-block" my={ 1 }>
-          { data.tx_count ? data.tx_count.toLocaleString() : '0' }
+          { data.transaction_count ? data.transaction_count.toLocaleString() : '0' }
         </Skeleton>
       </Td>
       <Td>
         <Flex flexWrap="wrap" columnGap={ 2 }>
           <Skeleton isLoaded={ !isLoading } textTransform="capitalize" my={ 1 }>{ data.language }</Skeleton>
-          <Skeleton isLoaded={ !isLoading } color="text_secondary" wordBreak="break-all" my={ 1 } cursor="pointer">
-            <Tooltip label={ data.compiler_version }>
-              <span>{ data.compiler_version.split('+')[0] }</span>
-            </Tooltip>
-          </Skeleton>
+          { data.compiler_version && (
+            <Skeleton isLoaded={ !isLoading } color="text_secondary" wordBreak="break-all" my={ 1 } cursor="pointer">
+              <Tooltip label={ data.compiler_version }>
+                <span>{ data.compiler_version.split('+')[0] }</span>
+              </Tooltip>
+            </Skeleton>
+          ) }
         </Flex>
         { data.zk_compiler_version && (
           <Flex flexWrap="wrap" columnGap={ 2 } my={ 1 }>

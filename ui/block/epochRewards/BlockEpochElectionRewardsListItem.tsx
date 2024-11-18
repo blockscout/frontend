@@ -34,7 +34,7 @@ const BlockEpochElectionRewardsListItem = ({ data, isLoading, type }: Props) => 
       onClick={ isLoading || !data.count ? undefined : section.onToggle }
       cursor={ isLoading || !data.count ? undefined : 'pointer' }
     >
-      <Flex my="3px" columnGap={ 3 } alignItems="center" flexWrap="wrap" rowGap={ 1 }>
+      <Flex my="3px" columnGap={ 3 } alignItems="center" flexWrap="wrap" rowGap={ 2 }>
         { data.count ? (
           <Skeleton isLoaded={ !isLoading } display="flex" borderRadius="sm">
             <IconButton
@@ -55,7 +55,7 @@ const BlockEpochElectionRewardsListItem = ({ data, isLoading, type }: Props) => 
         ) : <Box boxSize={ 6 }/> }
         <EpochRewardTypeTag type={ type } isLoading={ isLoading }/>
         <Skeleton isLoaded={ !isLoading }>{ data.count }</Skeleton>
-        <Flex columnGap={ 2 } alignItems="center" ml="auto" fontWeight={ 500 }>
+        <Flex columnGap={ 2 } alignItems="center" ml={{ base: 9, lg: 'auto' }} w={{ base: '100%', lg: 'fit-content' }} fontWeight={ 500 }>
           <Skeleton isLoaded={ !isLoading }>{ valueStr }</Skeleton>
           <TokenEntity
             token={ data.token }

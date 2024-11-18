@@ -2,7 +2,6 @@
 import type { Route } from 'nextjs-routes';
 
 // equal og:description
-// eslint-disable-next-line max-len
 const DEFAULT_TEMPLATE = 'Blockscout is the #1 open-source blockchain explorer available today. 100+ chains and counting rely on Blockscout data availability, APIs, and ecosystem tools to support their networks.';
 
 // FIXME all page descriptions will be updated later
@@ -32,6 +31,7 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/graphiql': DEFAULT_TEMPLATE,
   '/search-results': DEFAULT_TEMPLATE,
   '/auth/profile': DEFAULT_TEMPLATE,
+  '/account/rewards': DEFAULT_TEMPLATE,
   '/account/watchlist': DEFAULT_TEMPLATE,
   '/account/api-key': DEFAULT_TEMPLATE,
   '/account/custom-abi': DEFAULT_TEMPLATE,
@@ -69,8 +69,6 @@ const TEMPLATE_MAP: Record<Route['pathname'], string> = {
   '/api/healthz': DEFAULT_TEMPLATE,
   '/api/config': DEFAULT_TEMPLATE,
   '/api/sprite': DEFAULT_TEMPLATE,
-  '/auth/auth0': DEFAULT_TEMPLATE,
-  '/auth/unverified-email': DEFAULT_TEMPLATE,
 };
 
 const TEMPLATE_MAP_ENHANCED: Partial<Record<Route['pathname'], string>> = {

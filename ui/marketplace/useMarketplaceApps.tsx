@@ -54,7 +54,7 @@ export default function useMarketplaceApps(
   filter: string,
   selectedCategoryId: string = MarketplaceCategory.ALL,
   favoriteApps: Array<string> | undefined = undefined,
-  isFavoriteAppsLoaded: boolean = false, // eslint-disable-line @typescript-eslint/no-inferrable-types
+  isFavoriteAppsLoaded: boolean = false,
   ratings: Record<string, AppRating> | undefined = undefined,
 ) {
   const fetch = useFetch();

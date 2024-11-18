@@ -26,6 +26,7 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/graphiql': 'GraphQL',
   '/search-results': 'Search results',
   '/auth/profile': 'Profile',
+  '/account/rewards': 'Merits',
   '/account/watchlist': 'Watchlist',
   '/account/api-key': 'API keys',
   '/account/custom-abi': 'Custom ABI',
@@ -63,8 +64,6 @@ export const PAGE_TYPE_DICT: Record<Route['pathname'], string> = {
   '/api/healthz': 'Node API: Health check',
   '/api/config': 'Node API: App config',
   '/api/sprite': 'Node API: SVG sprite content',
-  '/auth/auth0': 'Auth',
-  '/auth/unverified-email': 'Unverified email',
 };
 
 export default function getPageType(pathname: Route['pathname']) {

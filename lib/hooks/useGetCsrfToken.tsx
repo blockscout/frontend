@@ -10,7 +10,7 @@ import useFetch from 'lib/hooks/useFetch';
 export default function useGetCsrfToken() {
   const nodeApiFetch = useFetch();
 
-  useQuery({
+  return useQuery({
     queryKey: getResourceKey('csrf'),
     queryFn: async() => {
       if (!isNeedProxy()) {

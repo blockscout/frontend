@@ -27,6 +27,12 @@ WORKDIR /envs-validator
 COPY ./deploy/tools/envs-validator/package.json ./deploy/tools/envs-validator/yarn.lock ./
 RUN yarn --frozen-lockfile
 
+### FAVICON GENERATOR
+# Install dependencies
+WORKDIR /favicon-generator
+COPY ./deploy/tools/favicon-generator/package.json ./deploy/tools/favicon-generator/yarn.lock ./
+RUN yarn --frozen-lockfile
+
 
 # *****************************
 # ****** STAGE 2: Build *******
@@ -77,6 +83,10 @@ COPY --from=deps /envs-validator/node_modules ./deploy/tools/envs-validator/node
 RUN cd ./deploy/tools/envs-validator && yarn build
 
 
+### FAVICON GENERATOR
+# Copy dependencies and source code
+COPY --from=deps /favicon-generator/node_modules ./deploy/tools/favicon-generator/node_modules
+
 # *****************************
 # ******* STAGE 3: Run ********
 # *****************************
@@ -113,7 +123,7 @@ COPY --chmod=755 ./deploy/scripts/make_envs_script.sh .
 COPY --chmod=755 ./deploy/scripts/download_assets.sh .
 ## Favicon generator
 COPY --chmod=755 ./deploy/scripts/favicon_generator.sh .
-COPY ./deploy/tools/favicon-generator ./deploy/tools/favicon-generator
+COPY --from=builder /app/deploy/tools/favicon-generator ./deploy/tools/favicon-generator
 RUN ["chmod", "-R", "777", "./deploy/tools/favicon-generator"]
 RUN ["chmod", "-R", "777", "./public"]
 

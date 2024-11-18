@@ -22,11 +22,11 @@ import { getNameTypeText, SORT_SEQUENCE } from './utils';
 const BREADCRUMBS_HEIGHT = 60;
 const FILTERS_HEIGHT = 44;
 
-type Props ={
+type Props = {
   scrollRef?: React.RefObject<HTMLDivElement>;
   isQueryEnabled?: boolean;
   tableId: string;
-}
+};
 
 type FilterKeys = keyof AddressMudRecordsFilter;
 

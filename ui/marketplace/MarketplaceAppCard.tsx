@@ -29,7 +29,7 @@ interface Props extends MarketplaceAppWithSecurityReport {
   isRatingSending: boolean;
   isRatingLoading: boolean;
   canRate: boolean | undefined;
-  graphLinks: Array<{text: string; url: string}>;
+  graphLinks: Array<{ text: string; url: string }>;
 }
 
 const MarketplaceAppCard = ({
