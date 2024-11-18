@@ -14,7 +14,6 @@ export default function useRedirectForInvalidAuthToken() {
       const apiToken = cookies.get(cookies.NAMES.API_TOKEN);
 
       if (apiToken) {
-        rollbar?.warn('Invalid API token');
         cookies.remove(cookies.NAMES.API_TOKEN);
         window.location.assign('/');
       }

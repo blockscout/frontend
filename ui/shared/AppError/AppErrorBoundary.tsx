@@ -1,6 +1,7 @@
 import { chakra } from '@chakra-ui/react';
 import React from 'react';
 
+import getErrorCauseStatusCode from 'lib/errors/getErrorCauseStatusCode';
 import { useRollbar } from 'lib/rollbar';
 import ErrorBoundary from 'ui/shared/ErrorBoundary';
 
@@ -25,7 +26,16 @@ const AppErrorBoundary = ({ className, children, Container }: Props) => {
   }, [ className, Container ]);
 
   const handleError = React.useCallback((error: Error) => {
-    rollbar?.error(error);
+    const statusCode = getErrorCauseStatusCode(error);
+    if (statusCode || !rollbar) {
+      // For now, we are not interested in logging errors from the API.
+      // If an error from a resource should be logged, please consider passing "logError: true" to the useApiQuery or useApiFetch hook.
+      return;
+    }
+
+    // To this point, there can only be errors that lead to a page crash.
+    // Therefore, we set the error level to "critical."
+    rollbar.critical(error);
   }, [ rollbar ]);
 
   return (

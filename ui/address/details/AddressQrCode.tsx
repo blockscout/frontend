@@ -52,7 +52,7 @@ const AddressQrCode = ({ address, className, isLoading }: Props) => {
       QRCode.toString(address.hash, SVG_OPTIONS, (error: Error | null | undefined, svg: string) => {
         if (error) {
           setError('We were unable to generate QR code.');
-          rollbar?.error('QR code generation failed');
+          rollbar?.warn('QR code generation failed');
           return;
         }
 

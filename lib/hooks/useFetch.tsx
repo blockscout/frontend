@@ -14,7 +14,7 @@ export interface Params {
 
 interface Meta {
   resource?: ResourcePath;
-  omitMonitoringLog?: boolean;
+  logError?: boolean;
 }
 
 export default function useFetch() {
@@ -53,7 +53,7 @@ export default function useFetch() {
           statusText: response.statusText,
         };
 
-        if (!meta?.omitMonitoringLog && rollbar) {
+        if (meta?.logError && rollbar) {
           rollbar.warn('Client fetch failed', {
             resource: meta?.resource,
             status_code: error.status,
