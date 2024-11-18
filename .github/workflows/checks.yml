@@ -30,7 +30,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.17.0
+          node-version: 22.11.0
           cache: 'yarn'
 
       - name: Cache node_modules
@@ -62,7 +62,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.17.0
+          node-version: 22.11.0
           cache: 'yarn'
 
       - name: Cache node_modules
@@ -101,7 +101,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.17.0
+          node-version: 22.11.0
           cache: 'yarn'
 
       - name: Cache node_modules
@@ -133,7 +133,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.17.0
+          node-version: 22.11.0
           cache: 'yarn'
 
       - name: Cache node_modules
@@ -190,7 +190,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.17.0
+          node-version: 22.11.0
           cache: 'yarn'
 
       - name: Cache node_modules
