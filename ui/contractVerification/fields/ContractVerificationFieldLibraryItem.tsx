@@ -88,7 +88,7 @@ const ContractVerificationFieldLibraryItem = ({ index, fieldsLength, onAddFieldC
         />
         { index === 0 ? (
           <>
-              The 0x library address. This can be found in the generated json file or Truffle output (if using truffle).
+            The 0x library address. This can be found in the generated json file or Truffle output (if using truffle).
           </>
         ) : null }
       </ContractVerificationFormRow>

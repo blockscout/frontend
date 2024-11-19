@@ -58,6 +58,6 @@ const WrappedFormFieldCheckbox = chakra(FormFieldCheckbox);
 export type WrappedComponent = <
   FormFields extends FieldValues,
   Name extends Path<FormFields> = Path<FormFields>,
->(props: Props<FormFields, Name> & ChakraProps) => JSX.Element;
+>(props: Props<FormFields, Name> & ChakraProps) => React.JSX.Element;
 
 export default React.memo(WrappedFormFieldCheckbox) as WrappedComponent;

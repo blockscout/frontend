@@ -22,7 +22,7 @@ type SortingValue = TransactionsSortingValue | undefined;
 type HookResult = UseQueryResult<TxsResponse, ResourceError<unknown>> & {
   sorting: SortingValue;
   setSortByValue: (value: SortingValue) => void;
-}
+};
 
 export default function useTxsSort(
   queryResult: UseQueryResult<TxsResponse, ResourceError<unknown>>,

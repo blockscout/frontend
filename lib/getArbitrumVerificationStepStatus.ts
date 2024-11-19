@@ -4,7 +4,7 @@ type Args = {
   status: ArbitrumBatchStatus;
   commitment_transaction: ArbitrumL2TxData;
   confirmation_transaction: ArbitrumL2TxData;
-}
+};
 
 export default function getArbitrumVerificationStepStatus({
   status,

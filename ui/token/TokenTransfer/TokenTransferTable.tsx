@@ -19,11 +19,12 @@ interface Props {
   socketInfoNum?: number;
   tokenId?: string;
   isLoading?: boolean;
-  token?: TokenInfo;
+  token: TokenInfo;
 }
 
 const TokenTransferTable = ({ data, top, showSocketInfo, socketInfoAlert, socketInfoNum, tokenId, isLoading, token }: Props) => {
-  const tokenType = data[0].token.type;
+
+  const tokenType = token.type;
 
   return (
     <AddressHighlightProvider>

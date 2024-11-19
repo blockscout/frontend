@@ -18,7 +18,7 @@ type Props = {
   scrollRef?: React.RefObject<HTMLDivElement>;
   shouldRender?: boolean;
   isQueryEnabled?: boolean;
-}
+};
 
 const AddressEpochRewards = ({ scrollRef, shouldRender = true, isQueryEnabled = true }: Props) => {
   const router = useRouter();

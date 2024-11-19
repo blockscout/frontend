@@ -9,7 +9,7 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 
-type Props = AddressTokenBalance & { isLoading: boolean};
+type Props = AddressTokenBalance & { isLoading: boolean };
 
 const ERC20TokensListItem = ({ token, value, isLoading }: Props) => {
 

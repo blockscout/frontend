@@ -302,10 +302,10 @@ const AddressPageContent = () => {
         undefined,
       ...formatUserTags(addressQuery.data),
       ...(addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags.filter(tag => tag.tagType !== 'note') || []),
-      !addressQuery.data?.is_contract && xScoreFeature.isEnabled && xStarQuery.data?.data ?
+      !addressQuery.data?.is_contract && xScoreFeature.isEnabled && xStarQuery.data?.data.level ?
         {
           slug: 'xstar',
-          name: `XHS ${ xStarQuery.data.data } level`,
+          name: `XHS ${ xStarQuery.data.data.level } level`,
           tagType: 'custom' as const,
           ordinal: 12,
           meta: {

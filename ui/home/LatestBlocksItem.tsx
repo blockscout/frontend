@@ -21,7 +21,7 @@ import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 type Props = {
   block: Block;
   isLoading?: boolean;
-}
+};
 
 const LatestBlocksItem = ({ block, isLoading }: Props) => {
   const totalReward = getBlockTotalReward(block);

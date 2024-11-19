@@ -23,13 +23,13 @@ export type HomeStats = {
   celo?: {
     epoch_number: number;
   };
-}
+};
 
 export type GasPrices = {
   average: GasPriceInfo | null;
   fast: GasPriceInfo | null;
   slow: GasPriceInfo | null;
-}
+};
 
 export interface GasPriceInfo {
   fiat_price: string | null;

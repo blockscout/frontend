@@ -33,7 +33,7 @@ TEST_CASES.forEach((props) => {
       <Alert { ...props }>
         <AlertIcon/>
         <AlertTitle>
-            This is alert text
+          This is alert text
         </AlertTitle>
       </Alert>,
     );

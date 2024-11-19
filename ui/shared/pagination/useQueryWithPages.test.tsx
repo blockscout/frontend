@@ -1,3 +1,4 @@
+import type React from 'react';
 import { animateScroll } from 'react-scroll';
 
 import fetch from 'jest-fetch-mock';
@@ -434,7 +435,7 @@ describe('queries with filters', () => {
     const params: Params<'address_txs'> = {
       resourceName: 'address_txs',
       pathParams: { hash: addressMock.hash },
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
       // @ts-ignore:
       sorting: { sort: 'val-desc' },
     };
@@ -538,7 +539,7 @@ describe('queries with sorting', () => {
     await waitForApiResponse();
 
     await act(async() => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
       // @ts-ignore:
       result.current.onSortingChange({ sort: 'val-desc' });
     });
@@ -575,7 +576,7 @@ describe('queries with sorting', () => {
     const params: Params<'address_txs'> = {
       resourceName: 'address_txs',
       pathParams: { hash: addressMock.hash },
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+
       // @ts-ignore:
       sorting: { sort: 'val-desc' },
     };

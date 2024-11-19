@@ -14,7 +14,7 @@ type RadioItemProps = {
   title: string;
   icon: IconName;
   onlyIcon: true;
-}
+};
 
 type RadioButtonProps = UseRadioProps & RadioItemProps;
 
@@ -69,7 +69,7 @@ type RadioButtonGroupProps<T extends string> = {
   autoWidth?: boolean;
   className?: string;
   isLoading?: boolean;
-}
+};
 
 const RadioButtonGroup = <T extends string>({ onChange, name, defaultValue, options, autoWidth = false, className, isLoading }: RadioButtonGroupProps<T>) => {
   const { getRootProps, getRadioProps } = useRadioGroup({ name, defaultValue, onChange });
@@ -96,6 +96,6 @@ const RadioButtonGroup = <T extends string>({ onChange, name, defaultValue, opti
 };
 
 const WrappedRadioButtonGroup = chakra(RadioButtonGroup);
-type WrappedComponent = <T extends string>(props: RadioButtonGroupProps<T> & ChakraProps) => JSX.Element;
+type WrappedComponent = <T extends string>(props: RadioButtonGroupProps<T> & ChakraProps) => React.JSX.Element;
 
 export default React.memo(WrappedRadioButtonGroup) as WrappedComponent;

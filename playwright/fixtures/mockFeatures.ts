@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import type { TestFixture, Page } from '@playwright/test';
 
 export type MockFeaturesFixture = (features: Array<[string, unknown]>) => Promise<void>;

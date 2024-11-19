@@ -9,7 +9,7 @@ export interface TabItem {
   component: React.ReactNode;
 }
 
-export type RoutedTab = TabItem & { subTabs?: Array<string> }
+export type RoutedTab = TabItem & { subTabs?: Array<string> };
 
 export type RoutedSubTab = Omit<TabItem, 'subTabs'>;
 

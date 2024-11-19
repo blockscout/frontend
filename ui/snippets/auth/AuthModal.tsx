@@ -25,10 +25,10 @@ interface Props {
   initialScreen: Screen;
   onClose: (isSuccess?: boolean) => void;
   mixpanelConfig?: {
-    'wallet_connect'?: {
+    wallet_connect?: {
       source: mixpanel.EventPayload<mixpanel.EventTypes.WALLET_CONNECT>['Source'];
     };
-    'account_link_info': {
+    account_link_info: {
       source: mixpanel.EventPayload<mixpanel.EventTypes.ACCOUNT_LINK_INFO>['Source'];
     };
   };

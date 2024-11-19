@@ -14,7 +14,7 @@ type Props = {
   totalSupply: BigNumber;
   hasPercentage: boolean;
   isLoading?: boolean;
-}
+};
 
 const AddressesTableItem = ({
   item,

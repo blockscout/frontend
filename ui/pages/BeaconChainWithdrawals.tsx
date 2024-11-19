@@ -71,7 +71,7 @@ const Withdrawals = () => {
         { countersQuery.data && (
           <Text lineHeight={{ base: '24px', lg: '32px' }}>
             { BigNumber(countersQuery.data.withdrawal_count).toFormat() } withdrawals processed
-        and { getCurrencyValue({ value: countersQuery.data.withdrawal_sum }).valueStr } { currencyUnits.ether } withdrawn
+            and { getCurrencyValue({ value: countersQuery.data.withdrawal_sum }).valueStr } { currencyUnits.ether } withdrawn
           </Text>
         ) }
       </Skeleton>

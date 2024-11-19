@@ -33,7 +33,7 @@ type Props = {
   toggleTableHasHorizontalScroll: () => void;
   scrollRef?: React.RefObject<HTMLDivElement>;
   hash: string;
-}
+};
 
 const AddressMudRecordsTable = ({
   data,

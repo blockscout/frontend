@@ -8,7 +8,7 @@ type Props = {
   isLoading?: boolean;
   className?: string;
   children: React.ReactNode;
-}
+};
 
 const PopoverTriggerTooltip = ({ label, isLoading, className, children }: Props, ref: React.ForwardedRef<HTMLDivElement>) => {
   const isMobile = useIsMobile();

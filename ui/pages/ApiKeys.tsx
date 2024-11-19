@@ -108,7 +108,7 @@ const ApiKeysPage: React.FC = () => {
             onClick={ apiKeyModalProps.onOpen }
             isDisabled={ !canAdd }
           >
-              Add API key
+            Add API key
           </Button>
           { !canAdd && (
             <Text fontSize="sm" variant="secondary">

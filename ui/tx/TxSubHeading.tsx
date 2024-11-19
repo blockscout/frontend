@@ -22,7 +22,7 @@ type Props = {
   hash: string;
   hasTag: boolean;
   txQuery: TxQuery;
-}
+};
 
 const feature = config.features.txInterpretation;
 

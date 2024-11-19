@@ -16,7 +16,7 @@ import SolidityscanReportScore from 'ui/shared/solidityscanReport/SolidityscanRe
 
 type Props = {
   securityReport?: SolidityScanReport['scan_report'] | null;
-}
+};
 
 const ContractSecurityReport = ({ securityReport }: Props) => {
   const { isOpen, onToggle, onClose } = useDisclosure();

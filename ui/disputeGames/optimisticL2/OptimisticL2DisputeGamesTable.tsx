@@ -11,7 +11,7 @@ type Props = {
   items: Array<OptimisticL2DisputeGamesItem>;
   top: number;
   isLoading?: boolean;
-}
+};
 
 const OptimisticL2DisputeGamesTable = ({ items, top, isLoading }: Props) => {
   return (

@@ -1,4 +1,5 @@
 import type { FormControlProps } from '@chakra-ui/react';
+import type React from 'react';
 import type { ControllerRenderProps, FieldValues, Path, RegisterOptions } from 'react-hook-form';
 
 export interface FormFieldPropsBase<

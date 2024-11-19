@@ -28,7 +28,7 @@ const PublicTagsSubmitFieldTagType = ({ index, tagTypes }: Props) => {
   const fieldValue = watch(`tags.${ index }.type`).value;
 
   const selectComponents: SelectComponentsConfig<Option, boolean, GroupBase<Option>> = React.useMemo(() => {
-    type SingleValueComponentProps = SingleValueProps<Option, boolean, GroupBase<Option>> & { children: React.ReactNode }
+    type SingleValueComponentProps = SingleValueProps<Option, boolean, GroupBase<Option>> & { children: React.ReactNode };
     const SingleValue = ({ children, ...props }: SingleValueComponentProps) => {
       switch (fieldValue) {
         case 'name': {

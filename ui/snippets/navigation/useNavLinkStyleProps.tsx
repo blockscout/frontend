@@ -6,7 +6,7 @@ type Props = {
   isExpanded?: boolean;
   isCollapsed?: boolean;
   isActive?: boolean;
-}
+};
 
 export default function useNavLinkProps({ isExpanded, isCollapsed, isActive }: Props) {
   const colors = useColors();

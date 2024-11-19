@@ -11,7 +11,7 @@ type Props = {
   items: Array<ZkEvmL2TxnBatchesItem>;
   top: number;
   isLoading?: boolean;
-}
+};
 
 const TxnBatchesTable = ({ items, top, isLoading }: Props) => {
   return (

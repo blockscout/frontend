@@ -40,7 +40,7 @@ test.describe('default view', () => {
   test.describe('screen xl', () => {
     test.use({ viewport: pwConfig.viewport.xl });
 
-    test('', async({ page }) => {
+    test('base view', async({ page }) => {
       await expect(component).toHaveScreenshot({
         mask: [ page.locator(pwConfig.adsBannerSelector) ],
         maskColor: pwConfig.maskColor,

@@ -16,7 +16,7 @@ type Props = {
   index: number;
   totalSupply: BigNumber;
   isLoading?: boolean;
-}
+};
 
 const AddressesListItem = ({
   item,

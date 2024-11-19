@@ -11,7 +11,7 @@ import ZkEvmL2WithdrawalsTableItem from './ZkEvmL2WithdrawalsTableItem';
    items: Array<ZkEvmL2WithdrawalsItem>;
    top: number;
    isLoading?: boolean;
- }
+ };
 
 const ZkEvmL2DepositsTable = ({ items, top, isLoading }: Props) => {
   return (

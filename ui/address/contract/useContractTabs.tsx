@@ -22,7 +22,7 @@ import { CONTRACT_DETAILS_TAB_IDS, CONTRACT_TAB_IDS } from './utils';
 interface ContractTab {
   id: typeof CONTRACT_MAIN_TAB_IDS[number] | Array<typeof CONTRACT_MAIN_TAB_IDS[number]>;
   title: string;
-  component: JSX.Element;
+  component: React.JSX.Element;
   subTabs?: Array<string>;
 }
 

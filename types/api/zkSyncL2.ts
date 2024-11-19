@@ -29,7 +29,7 @@ export type ZkSyncBatchesResponse = {
     number: number;
     items_count: number;
   } | null;
-}
+};
 
 export interface ZkSyncBatch extends Omit<ZkSyncBatchesItem, 'transaction_count'> {
   start_block: number;
@@ -49,4 +49,4 @@ export type ZkSyncBatchTxs = {
     index: number;
     items_count: number;
   } | null;
-}
+};

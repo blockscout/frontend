@@ -26,7 +26,7 @@ type Props = {
   source: 'Discovery view' | 'App modal' | 'App page';
   className?: string;
   popoverPlacement?: 'bottom-start' | 'bottom-end' | 'left';
-}
+};
 
 const AppSecurityReport = ({
   id, securityReport, showContractList, isLoading, onlyIcon, source, className, popoverPlacement = 'bottom-start',

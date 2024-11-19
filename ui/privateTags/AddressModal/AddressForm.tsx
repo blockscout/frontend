@@ -22,12 +22,12 @@ type Props = {
   onClose: () => void;
   onSuccess: () => Promise<void>;
   setAlertVisible: (isAlertVisible: boolean) => void;
-}
+};
 
 type Inputs = {
   address: string;
   tag: string;
-}
+};
 
 const AddressForm: React.FC<Props> = ({ data, onClose, onSuccess, setAlertVisible }) => {
   const apiFetch = useApiFetch();

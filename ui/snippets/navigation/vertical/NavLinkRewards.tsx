@@ -11,7 +11,7 @@ import NavLink from './NavLink';
 type Props = {
   isCollapsed?: boolean;
   onClick?: () => void;
-}
+};
 
 const NavLinkRewards = ({ isCollapsed, onClick }: Props) => {
   const router = useRouter();

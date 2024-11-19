@@ -23,12 +23,12 @@ type Props = {
   onClose: () => void;
   onSuccess: () => Promise<void>;
   setAlertVisible: (isAlertVisible: boolean) => void;
-}
+};
 
 type Inputs = {
   transaction: string;
   tag: string;
-}
+};
 
 const TransactionForm: React.FC<Props> = ({ data, onClose, onSuccess, setAlertVisible }) => {
   const [ pending, setPending ] = useState(false);

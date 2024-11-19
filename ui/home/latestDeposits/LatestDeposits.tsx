@@ -22,19 +22,19 @@ type DepositsItem = {
   l1TxHash: string | null;
   l2TxHash: string;
   timestamp: string | null;
-}
+};
 
 type Props = {
   isLoading?: boolean;
   items: Array<DepositsItem>;
   socketItemsNum: number;
   socketAlert?: string;
-}
+};
 
 type ItemProps = {
   item: DepositsItem;
   isLoading?: boolean;
-}
+};
 
 const LatestDepositsItem = ({ item, isLoading }: ItemProps) => {
   const isMobile = useIsMobile();

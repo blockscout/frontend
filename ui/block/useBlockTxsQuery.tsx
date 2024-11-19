@@ -157,14 +157,12 @@ export default function useBlockTxsQuery({ heightOrHash, blockQuery, tab }: Para
     ((apiQuery.isError || apiQuery.isPlaceholderData) && apiQuery.errorUpdateCount > 0)
   ) && rpcQuery.data && publicClient);
 
-  const rpcQueryWithPages: QueryWithPagesResult<'block_txs'> = React.useMemo(() => {
-    return {
-      ...rpcQuery as UseQueryResult<BlockTransactionsResponse, ResourceError>,
-      pagination: emptyPagination,
-      onFilterChange: () => {},
-      onSortingChange: () => {},
-    };
-  }, [ rpcQuery ]);
+  const rpcQueryWithPages: QueryWithPagesResult<'block_txs'> = {
+    ...rpcQuery as UseQueryResult<BlockTransactionsResponse, ResourceError>,
+    pagination: emptyPagination,
+    onFilterChange: () => {},
+    onSortingChange: () => {},
+  };
 
   const query = isRpcQuery ? rpcQueryWithPages : apiQuery;
 

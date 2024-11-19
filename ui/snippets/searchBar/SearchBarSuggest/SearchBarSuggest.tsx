@@ -163,7 +163,9 @@ const SearchBarSuggest = ({ query, searchTerm, onItemClick, containerId }: Props
                 variant="secondary"
                 mt={ 6 }
                 mb={ 3 }
-                ref={ (el: HTMLParagraphElement) => categoriesRefs.current[indx] = el }
+                ref={ (el: HTMLParagraphElement) => {
+                  categoriesRefs.current[indx] = el;
+                } }
               >
                 { cat.title }
               </Text>

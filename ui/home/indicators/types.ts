@@ -1,3 +1,5 @@
+import type React from 'react';
+
 import type { HomeStats } from 'types/api/stats';
 import type { ChainIndicatorId } from 'types/homepage';
 import type { TimeChartData } from 'ui/shared/chart/types';

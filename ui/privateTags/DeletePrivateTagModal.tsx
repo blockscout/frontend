@@ -13,7 +13,7 @@ type Props = {
   onClose: () => void;
   data: AddressTag | TransactionTag;
   type: 'address' | 'transaction';
-}
+};
 
 const DeletePrivateTagModal: React.FC<Props> = ({ isOpen, onClose, data, type }) => {
   const tag = data.name;

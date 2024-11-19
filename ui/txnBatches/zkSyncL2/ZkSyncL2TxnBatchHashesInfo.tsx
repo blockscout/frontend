@@ -10,7 +10,7 @@ import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 interface Props {
   isLoading: boolean;
   data: Pick<
-  ZkSyncBatch,
+    ZkSyncBatch,
   'commit_transaction_hash' |
   'commit_transaction_timestamp' |
   'prove_transaction_hash' |

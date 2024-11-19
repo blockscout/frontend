@@ -29,7 +29,7 @@ export async function getAllFileEntries(dataTransferItemList: DataTransferItemLi
 
 // Get all the entries (files or sub-directories) in a directory
 // by calling readEntries until it returns empty array
-async function readAllDirectoryEntries(directoryReader: DirectoryReader) {
+async function readAllDirectoryEntries(directoryReader: FileSystemDirectoryReader) {
   const entries: Array<FileSystemFileEntry> = [];
   let readEntries = await readEntriesPromise(directoryReader);
 
@@ -43,7 +43,7 @@ async function readAllDirectoryEntries(directoryReader: DirectoryReader) {
 // Wrap readEntries in a promise to make working with readEntries easier
 // readEntries will return only some of the entries in a directory
 // e.g. Chrome returns at most 100 entries at a time
-async function readEntriesPromise(directoryReader: DirectoryReader): Promise<Array<FileSystemFileEntry> | undefined> {
+async function readEntriesPromise(directoryReader: FileSystemDirectoryReader): Promise<Array<FileSystemFileEntry> | undefined> {
   try {
     return await new Promise((resolve, reject) => {
       directoryReader.readEntries(

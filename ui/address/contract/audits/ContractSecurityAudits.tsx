@@ -13,7 +13,7 @@ import ContractSubmitAuditForm from './ContractSubmitAuditForm';
 
 type Props = {
   addressHash?: string;
-}
+};
 
 const ContractSecurityAudits = ({ addressHash }: Props) => {
   const { data, isPlaceholderData } = useApiQuery('contract_security_audits', {
