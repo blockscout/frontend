@@ -38,7 +38,6 @@ test('base view +@dark-mode', async({ render, page }) => {
   );
 
   await page.getByRole('button', { name: /select/i }).click();
-  await page.getByText('USD Coin').hover();
 
   await expect(page).toHaveScreenshot({ clip: CLIPPING_AREA });
 
