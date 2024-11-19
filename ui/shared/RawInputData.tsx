@@ -10,10 +10,11 @@ const OPTIONS: Array<DataType> = [ 'Hex', 'UTF-8' ];
 interface Props {
   hex: string;
   rightSlot?: React.ReactNode;
+  defaultDataType?: DataType;
 }
 
-const RawInputData = ({ hex, rightSlot: rightSlotProp }: Props) => {
-  const [ selectedDataType, setSelectedDataType ] = React.useState<DataType>('Hex');
+const RawInputData = ({ hex, rightSlot: rightSlotProp, defaultDataType = 'Hex' }: Props) => {
+  const [ selectedDataType, setSelectedDataType ] = React.useState<DataType>(defaultDataType);
 
   const handleSelectChange = React.useCallback((event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedDataType(event.target.value as DataType);
