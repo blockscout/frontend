@@ -10,7 +10,7 @@ import EnsEntity from 'ui/shared/entities/ens/EnsEntity';
 
 type Props = bens.Domain & {
   isLoading?: boolean;
-}
+};
 
 const NameDomainsTableItem = ({
   isLoading,

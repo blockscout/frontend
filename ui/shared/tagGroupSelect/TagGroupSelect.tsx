@@ -15,7 +15,7 @@ type Props<T extends string> = {
     onChange: (value: Array<T>) => void;
     isMulti: true;
   }
-)
+);
 
 const TagGroupSelect = <T extends string>({ items, value, isMulti, onChange, tagSize }: Props<T>) => {
   const onItemClick = React.useCallback((event: React.SyntheticEvent) => {

@@ -26,7 +26,7 @@ type Props = {
   currentAddress?: string;
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
-}
+};
 
 const TxsTable = ({
   txs,

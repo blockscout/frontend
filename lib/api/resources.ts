@@ -1081,10 +1081,10 @@ export type ResourceName = keyof typeof RESOURCES;
 
 type ResourcePathMap = {
   [K in ResourceName]: typeof RESOURCES[K]['path']
-}
-export type ResourcePath = ResourcePathMap[keyof ResourcePathMap]
+};
+export type ResourcePath = ResourcePathMap[keyof ResourcePathMap];
 
-export type ResourceFiltersKey<R extends ResourceName> = typeof RESOURCES[R] extends {filterFields: Array<unknown>} ?
+export type ResourceFiltersKey<R extends ResourceName> = typeof RESOURCES[R] extends { filterFields: Array<unknown> } ?
   ArrayElement<typeof RESOURCES[R]['filterFields']> :
   never;
 
@@ -1105,7 +1105,7 @@ export interface ResourceError<T = unknown> {
   statusText: Response['statusText'];
 }
 
-export type ResourceErrorAccount<T> = ResourceError<{ errors: T }>
+export type ResourceErrorAccount<T> = ResourceError<{ errors: T }>;
 
 export type PaginatedResources = 'blocks' | 'block_txs' | 'block_election_rewards' |
 'txs_validated' | 'txs_pending' | 'txs_with_blobs' | 'txs_watchlist' | 'txs_execution_node' |
@@ -1119,7 +1119,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' | 'block_election_reward
 'verified_contracts' |
 'optimistic_l2_output_roots' | 'optimistic_l2_withdrawals' | 'optimistic_l2_txn_batches' | 'optimistic_l2_deposits' |
 'optimistic_l2_dispute_games' | 'optimistic_l2_txn_batch_txs' | 'optimistic_l2_txn_batch_blocks' |
-'mud_worlds'| 'address_mud_tables' | 'address_mud_records' |
+'mud_worlds' | 'address_mud_tables' | 'address_mud_records' |
 'shibarium_deposits' | 'shibarium_withdrawals' |
 'arbitrum_l2_messages' | 'arbitrum_l2_txn_batches' | 'arbitrum_l2_txn_batch_txs' | 'arbitrum_l2_txn_batch_blocks' |
 'zkevm_l2_deposits' | 'zkevm_l2_withdrawals' | 'zkevm_l2_txn_batches' | 'zkevm_l2_txn_batch_txs' |
@@ -1131,7 +1131,7 @@ export type PaginatedResources = 'blocks' | 'block_txs' | 'block_election_reward
 
 export type PaginatedResponse<Q extends PaginatedResources> = ResourcePayload<Q>;
 
-/* eslint-disable @typescript-eslint/indent */
+/* eslint-disable @stylistic/indent */
 // !!! IMPORTANT !!!
 // Don't add any new types here because TypeScript cannot handle it properly
 // use ResourcePayloadB instead
@@ -1155,7 +1155,7 @@ Q extends 'homepage_txs_watchlist' ? Array<Transaction> :
 Q extends 'homepage_optimistic_deposits' ? Array<OptimisticL2DepositsItem> :
 Q extends 'homepage_arbitrum_deposits' ? ArbitrumLatestDepositsResponse :
 Q extends 'homepage_zkevm_l2_batches' ? { items: Array<ZkEvmL2TxnBatchesItem> } :
-Q extends 'homepage_arbitrum_l2_batches' ? { items: Array<ArbitrumL2TxnBatchesItem>} :
+Q extends 'homepage_arbitrum_l2_batches' ? { items: Array<ArbitrumL2TxnBatchesItem> } :
 Q extends 'homepage_indexing_status' ? IndexingStatus :
 Q extends 'homepage_zkevm_latest_batch' ? number :
 Q extends 'homepage_zksync_latest_batch' ? number :
@@ -1237,9 +1237,9 @@ Q extends 'optimistic_l2_dispute_games_count' ? number :
 never;
 // !!! IMPORTANT !!!
 // See comment above
-/* eslint-enable @typescript-eslint/indent */
+/* eslint-enable @stylistic/indent */
 
-/* eslint-disable @typescript-eslint/indent */
+/* eslint-disable @stylistic/indent */
 export type ResourcePayloadB<Q extends ResourceName> =
 Q extends 'config_backend_version' ? BackendVersionConfig :
 Q extends 'config_csv_export' ? CsvExportConfig :
@@ -1285,7 +1285,7 @@ Q extends 'domain_protocols' ? bens.GetProtocolsResponse :
 Q extends 'user_ops' ? UserOpsResponse :
 Q extends 'user_op' ? UserOp :
 Q extends 'user_ops_account' ? UserOpsAccount :
-Q extends 'user_op_interpretation'? TxInterpretationResponse :
+Q extends 'user_op_interpretation' ? TxInterpretationResponse :
 Q extends 'noves_transaction' ? NovesResponseData :
 Q extends 'noves_address_history' ? NovesAccountHistoryResponse :
 Q extends 'noves_describe_txs' ? NovesDescribeTxsResponse :
@@ -1311,7 +1311,7 @@ Q extends 'rewards_user_referrals' ? RewardsUserReferralsResponse :
 Q extends 'token_transfers_all' ? TokenTransferResponse :
 Q extends 'address_xstar_score' ? AddressXStarResponse :
 never;
-/* eslint-enable @typescript-eslint/indent */
+/* eslint-enable @stylistic/indent */
 
 export type ResourcePayload<Q extends ResourceName> = ResourcePayloadA<Q> | ResourcePayloadB<Q>;
 export type PaginatedResponseItems<Q extends ResourceName> = Q extends PaginatedResources ? ResourcePayloadA<Q>['items'] | ResourcePayloadB<Q>['items'] : never;
@@ -1319,7 +1319,7 @@ export type PaginatedResponseNextPageParams<Q extends ResourceName> = Q extends 
   ResourcePayloadA<Q>['next_page_params'] | ResourcePayloadB<Q>['next_page_params'] :
   never;
 
-/* eslint-disable @typescript-eslint/indent */
+/* eslint-disable @stylistic/indent */
 export type PaginationFilters<Q extends PaginatedResources> =
 Q extends 'blocks' ? BlockFilters :
 Q extends 'block_txs' ? TTxsWithBlobsFilters :
@@ -1346,9 +1346,9 @@ Q extends 'address_mud_tables' ? AddressMudTablesFilter :
 Q extends 'address_mud_records' ? AddressMudRecordsFilter :
 Q extends 'token_transfers_all' ? TokenTransferFilters :
 never;
-/* eslint-enable @typescript-eslint/indent */
+/* eslint-enable @stylistic/indent */
 
-/* eslint-disable @typescript-eslint/indent */
+/* eslint-disable @stylistic/indent */
 export type PaginationSorting<Q extends PaginatedResources> =
 Q extends 'tokens' ? TokensSorting :
 Q extends 'tokens_bridged' ? TokensSorting :
@@ -1360,4 +1360,4 @@ Q extends 'validators_stability' ? ValidatorsStabilitySorting :
 Q extends 'validators_blackfort' ? ValidatorsBlackfortSorting :
 Q extends 'address_mud_records' ? AddressMudRecordsSorting :
 never;
-/* eslint-enable @typescript-eslint/indent */
+/* eslint-enable @stylistic/indent */

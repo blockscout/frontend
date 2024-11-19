@@ -7,7 +7,7 @@ type Props = {
   icon: React.ReactNode;
   valueSecondary?: string;
   isLoading: boolean;
-}
+};
 
 const TokenBalancesItem = ({ name, icon, value, valueSecondary, isLoading }: Props) => {
 

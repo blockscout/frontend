@@ -178,7 +178,7 @@ const ZkSyncL2TxnBatchDetails = ({ query }: Props) => {
           </DetailsInfoItem.Value>
 
           <DetailsInfoItem.Label
-            hint={ 'The gas price below which the "baseFee" of the batch should not fall' }
+            hint='The gas price below which the "baseFee" of the batch should not fall'
           >
             L2 fair gas price
           </DetailsInfoItem.Label>

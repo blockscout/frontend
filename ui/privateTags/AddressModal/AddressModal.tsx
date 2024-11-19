@@ -13,7 +13,7 @@ type Props = {
   onSuccess: () => Promise<void>;
   data?: Partial<AddressTag>;
   pageType: string;
-}
+};
 
 const AddressModal: React.FC<Props> = ({ isOpen, onClose, onSuccess, data, pageType }) => {
   const title = data?.id ? 'Edit address tag' : 'New address tag';

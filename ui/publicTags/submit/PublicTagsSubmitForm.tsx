@@ -97,7 +97,7 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
             templateColumns={{ base: '1fr', lg: '1fr 1fr minmax(0, 200px)', xl: '1fr 1fr minmax(0, 250px)' }}
           >
             <GridItem colSpan={{ base: 1, lg: 3 }} as="h2" textStyle="h4">
-            Company info
+              Company info
             </GridItem>
             <FormFieldText<FormFields> name="requesterName" isRequired placeholder="Your name" { ...fieldProps }/>
             <FormFieldEmail<FormFields> name="requesterEmail" isRequired { ...fieldProps }/>
@@ -142,7 +142,7 @@ const PublicTagsSubmitForm = ({ config, userInfo, onSubmitResult }: Props) => {
               loadingText="Send request"
               w="min-content"
             >
-            Send request
+              Send request
             </Button>
           </Grid>
         </chakra.form>

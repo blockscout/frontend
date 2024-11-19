@@ -6,7 +6,7 @@ import TxsWithFrontendSorting from 'ui/txs/TxsWithFrontendSorting';
 
 type Props = {
   query: QueryWithPagesResult<'txs_watchlist'>;
-}
+};
 
 const TxsWatchlist = ({ query }: Props) => {
   useRedirectForInvalidAuthToken();

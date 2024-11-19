@@ -27,7 +27,7 @@ type Props = {
   data: MarketplaceAppOverview | undefined;
   isLoading: boolean;
   securityReport?: MarketplaceAppSecurityReport;
-}
+};
 
 const MarketplaceAppTopBar = ({ appId, data, isLoading, securityReport }: Props) => {
   const [ contractListType, setContractListType ] = React.useState<ContractListTypes>();

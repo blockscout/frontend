@@ -17,14 +17,14 @@ type ContentProps = {
   onReset?: () => void;
   onClose?: () => void;
   children: React.ReactNode;
-}
+};
 
 type Props = ContentProps & {
   columnName: string;
   isActive?: boolean;
   isLoading?: boolean;
   className?: string;
-}
+};
 
 const TableColumnFilterContent = ({ title, isFilled, hasReset, onFilter, onReset, onClose, children }: ContentProps) => {
   const onFilterClick = React.useCallback(() => {

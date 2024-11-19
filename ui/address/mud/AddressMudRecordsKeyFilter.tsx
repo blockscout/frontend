@@ -9,7 +9,7 @@ type Props = {
   title: string;
   columnName: string;
   isLoading?: boolean;
-}
+};
 
 const AddressMudRecordsKeyFilter = ({ value = '', handleFilterChange, columnName, title, isLoading }: Props) => {
   const [ filterValue, setFilterValue ] = React.useState<string>(value);

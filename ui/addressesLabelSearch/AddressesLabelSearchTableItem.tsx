@@ -10,7 +10,7 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 type Props = {
   item: AddressesItem;
   isLoading?: boolean;
-}
+};
 
 const AddressesLabelSearchTableItem = ({
   item,

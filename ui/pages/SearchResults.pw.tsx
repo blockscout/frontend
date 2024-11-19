@@ -7,7 +7,7 @@ import { test, expect } from 'playwright/lib';
 
 import SearchResults from './SearchResults';
 
-test.describe('search by name ', () => {
+test.describe('search by name', () => {
   test('+@mobile +@dark-mode', async({ render, mockApiResponse, mockAssetResponse, mockEnvs }) => {
     const hooksConfig = {
       router: {

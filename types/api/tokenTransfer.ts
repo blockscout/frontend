@@ -4,17 +4,17 @@ import type { TokenInfo, TokenType } from './token';
 export type Erc20TotalPayload = {
   decimals: string | null;
   value: string;
-}
+};
 
 export type Erc721TotalPayload = {
   token_id: string | null;
-}
+};
 
 export type Erc1155TotalPayload = {
   decimals: string | null;
   value: string;
   token_id: string | null;
-}
+};
 
 export type Erc404TotalPayload = {
   decimals: string;
@@ -26,22 +26,22 @@ export type Erc404TotalPayload = {
 
 export type TokenTransfer = (
   {
-    token: TokenInfo<'ERC-20'>;
+    token: TokenInfo<'ERC-20'> | null;
     total: Erc20TotalPayload | null;
   } |
   {
-    token: TokenInfo<'ERC-721'>;
+    token: TokenInfo<'ERC-721'> | null;
     total: Erc721TotalPayload | null;
   } |
   {
-    token: TokenInfo<'ERC-1155'>;
+    token: TokenInfo<'ERC-1155'> | null;
     total: Erc1155TotalPayload | null;
   } |
   {
-    token: TokenInfo<'ERC-404'>;
+    token: TokenInfo<'ERC-404'> | null;
     total: Erc404TotalPayload | null;
   }
-) & TokenTransferBase
+) & TokenTransferBase;
 
 export type TokenTotal = Erc20TotalPayload | Erc721TotalPayload | Erc1155TotalPayload;
 
@@ -61,7 +61,7 @@ export type TokenTransferPagination = {
   block_number: number;
   index: number;
   items_count: number;
-}
+};
 
 export interface TokenTransferResponse {
   items: Array<TokenTransfer>;

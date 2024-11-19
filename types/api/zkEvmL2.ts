@@ -8,7 +8,7 @@ export type ZkEvmL2DepositsItem = {
   timestamp: string;
   value: string;
   symbol: string;
-}
+};
 
 export type ZkEvmL2DepositsResponse = {
   items: Array<ZkEvmL2DepositsItem>;
@@ -16,7 +16,7 @@ export type ZkEvmL2DepositsResponse = {
     items_count: number;
     index: number;
   };
-}
+};
 
 export type ZkEvmL2WithdrawalsItem = {
   block_number: number;
@@ -26,7 +26,7 @@ export type ZkEvmL2WithdrawalsItem = {
   timestamp: string;
   value: string;
   symbol: string;
-}
+};
 
 export type ZkEvmL2WithdrawalsResponse = {
   items: Array<ZkEvmL2WithdrawalsItem>;
@@ -34,7 +34,7 @@ export type ZkEvmL2WithdrawalsResponse = {
     items_count: number;
     index: number;
   };
-}
+};
 
 export type ZkEvmL2TxnBatchesItem = {
   number: number;
@@ -43,7 +43,7 @@ export type ZkEvmL2TxnBatchesItem = {
   status: string;
   timestamp: string | null;
   transaction_count: number;
-}
+};
 
 export type ZkEvmL2TxnBatchesResponse = {
   items: Array<ZkEvmL2TxnBatchesItem>;
@@ -51,7 +51,7 @@ export type ZkEvmL2TxnBatchesResponse = {
     number: number;
     items_count: number;
   } | null;
-}
+};
 
 export const ZKEVM_L2_TX_BATCH_STATUSES = [ 'Unfinalized', 'L1 Sequence Confirmed', 'Finalized' ];
 
@@ -65,12 +65,12 @@ export type ZkEvmL2TxnBatch = {
   timestamp: string | null;
   transactions: Array<string>;
   verify_transaction_hash: string;
-}
+};
 
 export type ZkEvmL2TxnBatchTxs = {
   items: Array<Transaction>;
   // API responce doesn't have next_page_params option, but we need to add it to the type for consistency
   next_page_params: null;
-}
+};
 
 export type NewZkEvmBatchSocketResponse = { batch: ZkEvmL2TxnBatchesItem };

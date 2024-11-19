@@ -474,7 +474,7 @@ const BlockDetails = ({ query }: Props) => {
             hint="The minimum gas price a transaction should have in order to be included in this block"
             isLoading={ isPlaceholderData }
           >
-        Minimum gas price
+            Minimum gas price
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
             <Skeleton isLoaded={ !isPlaceholderData }>

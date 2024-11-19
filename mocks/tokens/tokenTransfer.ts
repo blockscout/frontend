@@ -1,3 +1,4 @@
+import type { TokenInfo } from 'types/api/token';
 import type { TokenTransfer, TokenTransferResponse } from 'types/api/tokenTransfer';
 
 export const erc20: TokenTransfer = {
@@ -146,7 +147,7 @@ export const erc1155A: TokenTransfer = {
 export const erc1155B: TokenTransfer = {
   ...erc1155A,
   token: {
-    ...erc1155A.token,
+    ...(erc1155A.token as TokenInfo<'ERC-1155'>),
     name: 'SastanaNFT',
     symbol: 'ipfs://QmUpFUfVKDCWeZQk5pvDFUxnpQP9N6eLSHhNUy49T1JVtY',
   },
@@ -156,7 +157,7 @@ export const erc1155B: TokenTransfer = {
 export const erc1155C: TokenTransfer = {
   ...erc1155A,
   token: {
-    ...erc1155A.token,
+    ...(erc1155A.token as TokenInfo<'ERC-1155'>),
     name: 'SastanaNFT',
     symbol: 'ipfs://QmUpFUfVKDCWeZQk5pvDFUxnpQP9N6eLSHhNUy49T1JVtY',
   },
@@ -166,7 +167,7 @@ export const erc1155C: TokenTransfer = {
 export const erc1155D: TokenTransfer = {
   ...erc1155A,
   token: {
-    ...erc1155A.token,
+    ...(erc1155A.token as TokenInfo<'ERC-1155'>),
     name: 'SastanaNFT',
     symbol: 'ipfs://QmUpFUfVKDCWeZQk5pvDFUxnpQP9N6eLSHhNUy49T1JVtY',
   },
@@ -225,7 +226,7 @@ export const erc404A: TokenTransfer = {
 export const erc404B: TokenTransfer = {
   ...erc404A,
   token: {
-    ...erc404A.token,
+    ...(erc404A.token as TokenInfo<'ERC-404'>),
     name: 'SastanaNFT',
     symbol: 'ipfs://QmUpFUfVKDCWeZQk5pvDFUxnpQP9N6eLSHhNUy49T1JVtY',
   },

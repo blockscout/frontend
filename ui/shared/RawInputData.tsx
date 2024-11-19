@@ -4,7 +4,7 @@ import React from 'react';
 import hexToUtf8 from 'lib/hexToUtf8';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
-type DataType = 'Hex' | 'UTF-8'
+type DataType = 'Hex' | 'UTF-8';
 const OPTIONS: Array<DataType> = [ 'Hex', 'UTF-8' ];
 
 interface Props {

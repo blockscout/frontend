@@ -11,7 +11,7 @@ type Props = {
   onClose: () => void;
   onSuccess?: () => Promise<void>;
   data: FormData;
-}
+};
 
 const CustomAbiModal: React.FC<Props> = ({ isOpen, onClose, data, onSuccess }) => {
   const title = data && 'id' in data ? 'Edit custom ABI' : 'New custom ABI';

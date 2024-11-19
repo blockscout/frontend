@@ -32,7 +32,7 @@ import 'lib/setLocale';
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
-}
+};
 
 const ERROR_SCREEN_STYLES: ChakraProps = {
   h: '100vh',

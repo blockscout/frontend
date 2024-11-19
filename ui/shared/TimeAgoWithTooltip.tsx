@@ -10,7 +10,7 @@ type Props = {
   isLoading?: boolean;
   enableIncrement?: boolean;
   className?: string;
-}
+};
 
 const TimeAgoWithTooltip = ({ timestamp, fallbackText, isLoading, enableIncrement, className }: Props) => {
   const timeAgo = useTimeAgoIncrement(timestamp || '', enableIncrement && !isLoading);

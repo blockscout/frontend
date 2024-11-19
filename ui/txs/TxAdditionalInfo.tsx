@@ -30,7 +30,7 @@ type Props =
     isMobile?: boolean;
     isLoading?: boolean;
     className?: string;
-  }
+  };
 
 const TxAdditionalInfo = ({ hash, tx, isMobile, isLoading, className }: Props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();

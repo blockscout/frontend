@@ -34,7 +34,7 @@ type AdsBannerFeaturePayload = {
       mobile: AdButlerConfig;
     };
   };
-}
+};
 
 const config: Feature<AdsBannerFeaturePayload> = (() => {
   if (provider === 'adbutler') {

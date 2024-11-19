@@ -6,7 +6,7 @@ import IconSvg from 'ui/shared/IconSvg';
 type Props = {
   isFavorite: boolean;
   color?: string;
-}
+};
 
 const FavoriteIcon = ({ isFavorite, color }: Props) => {
   const heartFilledColor = useColorModeValue('blue.600', 'blue.300');

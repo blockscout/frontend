@@ -19,7 +19,7 @@ type Props = {
   secondRow?: React.ReactNode;
   isLoading?: boolean;
   withTextAd?: boolean;
-}
+};
 
 const TEXT_MAX_LINES = 1;
 

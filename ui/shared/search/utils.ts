@@ -13,9 +13,9 @@ Record<'app', Array<MarketplaceAppOverview>>;
 export type SearchResultAppItem = {
   type: 'app';
   app: MarketplaceAppOverview;
-}
+};
 
-export const searchCategories: Array<{id: Category; title: string }> = [
+export const searchCategories: Array<{ id: Category; title: string }> = [
   { id: 'app', title: 'DApps' },
   { id: 'token', title: `Tokens (${ config.chain.tokenStandard }-20)` },
   { id: 'nft', title: `NFTs (${ config.chain.tokenStandard }-721 & 1155)` },

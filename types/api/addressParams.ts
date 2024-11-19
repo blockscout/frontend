@@ -21,7 +21,7 @@ export type AddressFilecoinParams = {
   actor_type?: FilecoinActorType;
   id?: string | null;
   robust?: string | null;
-}
+};
 
 export type FilecoinActorType =
   'account' |
@@ -59,6 +59,6 @@ export type AddressParamBasic = {
     tags: Array<AddressMetadataTagApi>;
   } | null;
   filecoin?: AddressFilecoinParams;
-}
+};
 
 export type AddressParam = UserTags & AddressParamBasic;

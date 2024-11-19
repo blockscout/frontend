@@ -12,7 +12,7 @@ import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 type Props = {
   item: AddressesItem;
   isLoading?: boolean;
-}
+};
 
 const AddressesLabelSearchListItem = ({
   item,

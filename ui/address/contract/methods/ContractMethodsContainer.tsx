@@ -10,7 +10,7 @@ interface Props {
   isError?: boolean;
   isEmpty?: boolean;
   type: MethodType;
-  children: JSX.Element;
+  children: React.JSX.Element;
 }
 
 const ContractMethodsContainer = ({ isLoading, isError, isEmpty, type, children }: Props) => {

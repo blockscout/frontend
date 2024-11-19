@@ -16,7 +16,7 @@ type Props = {
   item: MultichainProviderConfigParsed;
   addressHash: string;
   onClick?: () => void;
-}
+};
 
 const AddressMultichainButton = ({ item, addressHash, onClick, hasSingleProvider }: Props) => {
 

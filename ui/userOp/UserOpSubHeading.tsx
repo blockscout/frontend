@@ -15,7 +15,7 @@ import TxInterpretation from 'ui/shared/tx/interpretation/TxInterpretation';
 type Props = {
   hash: string;
   // userOpQuery: UseQueryResult<UserOp, ResourceError<unknown>>;
-}
+};
 
 const UserOpSubHeading = ({ hash }: Props) => {
   const hasInterpretationFeature = config.features.txInterpretation.isEnabled;

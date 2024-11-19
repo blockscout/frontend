@@ -4,7 +4,7 @@ type CPreferences = {
   zone: string;
   width: string;
   height: string;
-}
+};
 
 declare global {
   export interface Window {

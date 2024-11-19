@@ -88,7 +88,7 @@ export type Transaction = {
   zkevm_sequence_hash?: string;
   // zkSync FIELDS
   zksync?: Omit<ZkSyncBatchesItem, 'number' | 'transaction_count' | 'timestamp'> & {
-    'batch_number': number | null;
+    batch_number: number | null;
   };
   // blob tx fields
   blob_versioned_hashes?: Array<string>;
@@ -99,7 +99,7 @@ export type Transaction = {
   // Noves-fi
   translation?: NovesTxTranslation;
   arbitrum?: ArbitrumTransactionData;
-}
+};
 
 type ArbitrumTransactionData = {
   batch_number: number;
@@ -115,7 +115,7 @@ type ArbitrumTransactionData = {
     associated_l1_transaction: string | null;
     message_status: ArbitrumMessageStatus;
   };
-}
+};
 
 export type ArbitrumMessageStatus = 'Relayed' | 'Syncing with base layer' | 'Waiting for confirmation' | 'Ready for relay' | 'Settlement pending';
 
@@ -174,7 +174,7 @@ export type TransactionType = 'rootstock_remasc' |
 'contract_call' |
 'token_creation' |
 'coin_transfer' |
-'blob_transaction'
+'blob_transaction';
 
 export type TxsResponse = TransactionsResponseValidated | TransactionsResponsePending | BlockTransactionsResponse;
 

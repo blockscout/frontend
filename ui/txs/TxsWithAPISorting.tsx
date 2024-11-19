@@ -9,7 +9,7 @@ import getSortParamsFromValue from 'ui/shared/sort/getSortParamsFromValue';
 import TxsContent from './TxsContent';
 
 type Props = {
-  // eslint-disable-next-line max-len
+
   query: QueryWithPagesResult<'address_txs'>;
   showBlockInfo?: boolean;
   showSocketInfo?: boolean;
@@ -22,7 +22,7 @@ type Props = {
   top?: number;
   sorting: TransactionsSortingValue | undefined;
   setSort: (value?: TransactionsSortingValue) => void;
-}
+};
 
 const TxsWithAPISorting = ({
   filter,

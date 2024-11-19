@@ -8,7 +8,7 @@ export interface AddressTag {
   id: number;
 }
 
-export type AddressTags = Array<AddressTag>
+export type AddressTags = Array<AddressTag>;
 
 export type AddressTagsResponse = {
   items: AddressTags;
@@ -16,14 +16,14 @@ export type AddressTagsResponse = {
     id: number;
     items_count: number;
   } | null;
-}
+};
 
 export interface ApiKey {
   api_key: string;
   name: string;
 }
 
-export type ApiKeys = Array<ApiKey>
+export type ApiKeys = Array<ApiKey>;
 
 export interface ModelError {
   message: string;
@@ -57,7 +57,7 @@ export interface TransactionTag {
   id: number;
 }
 
-export type TransactionTags = Array<TransactionTag>
+export type TransactionTags = Array<TransactionTag>;
 
 export type TransactionTagsResponse = {
   items: TransactionTags;
@@ -65,9 +65,9 @@ export type TransactionTagsResponse = {
     id: number;
     items_count: number;
   } | null;
-}
+};
 
-export type Transactions = Array<Transaction>
+export type Transactions = Array<Transaction>;
 
 export interface UserInfo {
   name?: string;
@@ -96,7 +96,7 @@ export interface WatchlistAddressNew {
   notificationSettings: NotificationSettings;
 }
 
-export type WatchlistAddresses = Array<WatchlistAddress>
+export type WatchlistAddresses = Array<WatchlistAddress>;
 
 export type WatchlistResponse = {
   items: WatchlistAddresses;
@@ -104,9 +104,9 @@ export type WatchlistResponse = {
     id: number;
     items_count: number;
   } | null;
-}
+};
 
-export type CustomAbis = Array<CustomAbi>
+export type CustomAbis = Array<CustomAbi>;
 
 export interface CustomAbi {
   name: string;
@@ -120,14 +120,14 @@ export type WatchlistErrors = {
   address_hash?: Array<string>;
   name?: Array<string>;
   watchlist_id?: Array<string>;
-}
+};
 
 export type CustomAbiErrors = {
   address_hash?: Array<string>;
   name?: Array<string>;
   abi?: Array<string>;
   identity_id?: Array<string>;
-}
+};
 
 export type ApiKeyErrors = {
   name?: Array<string>;
@@ -138,13 +138,13 @@ export type AddressTagErrors = {
   address_hash: Array<string>;
   name: Array<string>;
   identity_id?: Array<string>;
-}
+};
 
 export type TransactionTagErrors = {
   transaction_hash: Array<string>;
   name: Array<string>;
   identity_id?: Array<string>;
-}
+};
 
 export interface VerifiedAddress {
   userId: string;

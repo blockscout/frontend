@@ -11,7 +11,7 @@ import OptimisticDepositsTableItem from './OptimisticDepositsTableItem';
    items: Array<OptimisticL2DepositsItem>;
    top: number;
    isLoading?: boolean;
- }
+ };
 
 const OptimisticDepositsTable = ({ items, top, isLoading }: Props) => {
   return (

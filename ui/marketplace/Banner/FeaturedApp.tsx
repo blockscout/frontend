@@ -19,7 +19,7 @@ type FeaturedAppProps = {
   onInfoClick: (id: string) => void;
   onFavoriteClick: (id: string, isFavorite: boolean, source: 'Banner') => void;
   onAppClick: (event: MouseEvent, id: string) => void;
-}
+};
 
 const FeaturedApp = ({
   app, isFavorite, isLoading, onAppClick,

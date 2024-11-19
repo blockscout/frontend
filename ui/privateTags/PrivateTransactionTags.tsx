@@ -52,8 +52,8 @@ const PrivateTransactionTags = () => {
 
   const description = (
     <AccountPageDescription>
-        Use private transaction tags to label any transactions of interest.
-        Private tags are saved in your account and are only visible when you are logged in.
+      Use private transaction tags to label any transactions of interest.
+      Private tags are saved in your account and are only visible when you are logged in.
     </AccountPageDescription>
   );
 
