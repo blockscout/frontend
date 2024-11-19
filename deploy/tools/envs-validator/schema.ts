@@ -287,7 +287,7 @@ const rollupSchema = yup
         then: (schema) => schema.test(urlTest).required(),
         otherwise: (schema) => schema.max(-1, 'NEXT_PUBLIC_ROLLUP_L2_WITHDRAWAL_URL can be used only if NEXT_PUBLIC_ROLLUP_TYPE is set to \'optimistic\' '),
       }),
-      NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED: yup
+    NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED: yup
       .boolean()
       .when('NEXT_PUBLIC_ROLLUP_TYPE', {
         is: 'optimistic',
@@ -295,6 +295,17 @@ const rollupSchema = yup
         otherwise: (schema) => schema.test(
           'not-exist',
           'NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED can only be used if NEXT_PUBLIC_ROLLUP_TYPE is set to \'optimistic\' ',
+          value => value === undefined,
+        ),
+      }),
+    NEXT_PUBLIC_ROLLUP_PARENT_CHAIN_NAME: yup
+      .string()
+      .when('NEXT_PUBLIC_ROLLUP_TYPE', {
+        is: 'arbitrum',
+        then: (schema) => schema,
+        otherwise: (schema) => schema.test(
+          'not-exist',
+          'NEXT_PUBLIC_ROLLUP_PARENT_CHAIN_NAME can only be used if NEXT_PUBLIC_ROLLUP_TYPE is set to \'arbitrum\' ',
           value => value === undefined,
         ),
       }),

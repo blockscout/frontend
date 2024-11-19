@@ -22,6 +22,7 @@ const config: Feature<{
   homepage: { showLatestBlocks: boolean };
   outputRootsEnabled: boolean;
   L2WithdrawalUrl: string | undefined;
+  parentChainName: string | undefined;
 }> = (() => {
   if (type && L1BaseUrl) {
     return Object.freeze({
@@ -31,6 +32,7 @@ const config: Feature<{
       L1BaseUrl: stripTrailingSlash(L1BaseUrl),
       L2WithdrawalUrl: type === 'optimistic' ? L2WithdrawalUrl : undefined,
       outputRootsEnabled: type === 'optimistic' && getEnvValue('NEXT_PUBLIC_ROLLUP_OUTPUT_ROOTS_ENABLED') !== 'false',
+      parentChainName: type === 'arbitrum' ? getEnvValue('NEXT_PUBLIC_ROLLUP_PARENT_CHAIN_NAME') : undefined,
       homepage: {
         showLatestBlocks: getEnvValue('NEXT_PUBLIC_ROLLUP_HOMEPAGE_SHOW_LATEST_BLOCKS') === 'true',
       },
