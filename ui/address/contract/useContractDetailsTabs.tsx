@@ -3,6 +3,7 @@ import React from 'react';
 
 import type { SmartContract } from 'types/api/contract';
 
+import CodeViewSnippet from 'ui/shared/CodeViewSnippet';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import RawDataSnippet from 'ui/shared/RawDataSnippet';
 
@@ -97,10 +98,11 @@ export default function useContractDetailsTabs({ data, isLoading, addressHash, s
         id: 'contract_compiler' as const,
         title: 'Compiler',
         component: (
-          <RawDataSnippet
-            data={ JSON.stringify(data.compiler_settings, undefined, 4) }
+          <CodeViewSnippet
+            data={ JSON.stringify(data.compiler_settings, undefined, 2) }
+            language="json"
             title="Compiler Settings"
-            textareaMaxHeight="600px"
+            copyData={ JSON.stringify(data.compiler_settings) }
             isLoading={ isLoading }
           />
         ),
@@ -110,10 +112,11 @@ export default function useContractDetailsTabs({ data, isLoading, addressHash, s
         id: 'contract_abi' as const,
         title: 'ABI',
         component: (
-          <RawDataSnippet
-            data={ JSON.stringify(data.abi, undefined, 4) }
+          <CodeViewSnippet
+            data={ JSON.stringify(data.abi, undefined, 2) }
+            language="json"
             title="Contract ABI"
-            textareaMaxHeight="600px"
+            copyData={ JSON.stringify(data.abi) }
             isLoading={ isLoading }
           />
         ),

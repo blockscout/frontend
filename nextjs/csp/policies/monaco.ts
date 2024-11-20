@@ -11,6 +11,8 @@ export function monaco(): CspDev.DirectiveDescriptor {
       'https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/min/vs/editor/editor.main.nls.js',
       'https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/min/vs/basic-languages/solidity/solidity.js',
       'https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/min/vs/basic-languages/elixir/elixir.js',
+      'https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/min/vs/language/json/jsonMode.js',
+      'https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/min/vs/language/json/jsonWorker.js',
       'https://cdn.jsdelivr.net/npm/monaco-editor@0.33.0/min/vs/base/worker/workerMain.js',
     ],
     'style-src': [

@@ -62,7 +62,18 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
 
   const editorWidth = containerRect ? containerRect.width - (isMobile ? 0 : SIDE_BAR_WIDTH) : 0;
 
-  const editorLanguage = language === 'vyper' ? 'elixir' : 'sol';
+  const editorLanguage = (() => {
+    switch (language) {
+      case 'vyper':
+        return 'elixir';
+      case 'json':
+        return 'json';
+      case 'solidity':
+        return 'sol';
+      default:
+        return 'javascript';
+    }
+  })();
 
   React.useEffect(() => {
     instance?.editor.setTheme(colorMode === 'light' ? 'blockscout-light' : 'blockscout-dark');
