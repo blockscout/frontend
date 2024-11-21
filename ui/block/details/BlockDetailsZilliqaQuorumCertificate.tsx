@@ -24,9 +24,9 @@ const BlockDetailsZilliqaQuorumCertificate = ({ data }: Props) => {
 
   const hint = (isNested?: boolean) => (
     <>
-        The iteration of the consensus round in which the block was proposed:<br/><br/>
-        View { ndash } the view number of the quorum certificate, indicating the consensus round.<br/><br/>
-        Signature { ndash } aggregated BLS signature representing the validators{ apos } agreement.<br/><br/>
+      The iteration of the consensus round in which the block was proposed:<br/><br/>
+      View { ndash } the view number of the quorum certificate, indicating the consensus round.<br/><br/>
+      Signature { ndash } aggregated BLS signature representing the validators{ apos } agreement.<br/><br/>
       Signers { ndash } an array of integers representing the indices of validators who participated in the quorum (indicated by the cosigned bit vector).
       { isNested && (
         <>
