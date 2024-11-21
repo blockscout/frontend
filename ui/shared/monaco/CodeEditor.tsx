@@ -20,10 +20,10 @@ import CodeEditorTabs from './CodeEditorTabs';
 import addExternalLibraryWarningDecoration from './utils/addExternalLibraryWarningDecoration';
 import addFileImportDecorations from './utils/addFileImportDecorations';
 import addMainContractCodeDecoration from './utils/addMainContractCodeDecoration';
+import { defScilla, configScilla } from './utils/defScilla';
 import getFullPathOfImportedFile from './utils/getFullPathOfImportedFile';
 import * as themes from './utils/themes';
 import useThemeColors from './utils/useThemeColors';
-
 const EDITOR_OPTIONS: EditorProps['options'] = {
   readOnly: true,
   minimap: { enabled: false },
@@ -70,6 +70,8 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
         return 'json';
       case 'solidity':
         return 'sol';
+      case 'scilla':
+        return 'scilla';
       default:
         return 'javascript';
     }
@@ -86,6 +88,12 @@ const CodeEditor = ({ data, remappings, libraries, language, mainFile, contractN
     monaco.editor.defineTheme('blockscout-light', themes.light);
     monaco.editor.defineTheme('blockscout-dark', themes.dark);
     monaco.editor.setTheme(colorMode === 'light' ? 'blockscout-light' : 'blockscout-dark');
+
+    if (editorLanguage === 'scilla') {
+      monaco.languages.register({ id: editorLanguage });
+      monaco.languages.setMonarchTokensProvider(editorLanguage, defScilla);
+      monaco.languages.setLanguageConfiguration(editorLanguage, configScilla);
+    }
 
     const loadedModels = monaco.editor.getModels();
     const loadedModelsPaths = loadedModels.map((model) => model.uri.path);
