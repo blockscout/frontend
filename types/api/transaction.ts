@@ -5,6 +5,7 @@ import type { DecodedInput } from './decodedInput';
 import type { Fee } from './fee';
 import type { NovesTxTranslation } from './noves';
 import type { OptimisticL2WithdrawalStatus } from './optimisticL2';
+import type { ScrollL2BlockStatus } from './scrollL2';
 import type { TokenInfo } from './token';
 import type { TokenTransfer } from './tokenTransfer';
 import type { TxAction } from './txAction';
@@ -103,6 +104,7 @@ export type Transaction = {
   // Noves-fi
   translation?: NovesTxTranslation;
   arbitrum?: ArbitrumTransactionData;
+  scroll?: ScrollTransactionData;
 };
 
 type ArbitrumTransactionData = {
@@ -190,3 +192,17 @@ export interface TransactionsSorting {
 export type TransactionsSortingField = TransactionsSorting['sort'];
 
 export type TransactionsSortingValue = `${ TransactionsSortingField }-${ TransactionsSorting['order'] }`;
+
+export type ScrollTransactionData = {
+  l1_fee: string;
+  l2_fee: Fee;
+  l1_fee_commit_scalar: number;
+  l1_base_fee: number;
+  l1_blob_base_fee: number;
+  l1_fee_scalar: number;
+  l1_fee_overhead: number;
+  l1_fee_blob_scalar: number;
+  l1_gas_used: number;
+  l2_block_status: ScrollL2BlockStatus;
+  queue_index: number;
+};
