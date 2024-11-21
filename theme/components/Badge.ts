@@ -21,6 +21,9 @@ const variantSubtle = defineStyle((props) => {
     return {
       bg: mode('gray.100', 'gray.800')(props),
       color: mode('blackAlpha.800', 'whiteAlpha.800')(props),
+      _hover: {
+        opacity: 0.76,
+      },
     };
   }
 

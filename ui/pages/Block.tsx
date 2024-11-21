@@ -6,6 +6,8 @@ import React from 'react';
 import type { PaginationParams } from 'ui/shared/pagination/types';
 import type { RoutedTab } from 'ui/shared/Tabs/types';
 
+import { route } from 'nextjs-routes';
+
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
 import throwOnAbsentParamError from 'lib/errors/throwOnAbsentParamError';
@@ -24,6 +26,7 @@ import TextAd from 'ui/shared/ad/TextAd';
 import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
 import Tag from 'ui/shared/chakra/Tag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import LinkInternal from 'ui/shared/links/LinkInternal';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -152,9 +155,20 @@ const BlockPageContent = () => {
     }
 
     if (!blockQuery.data.celo.is_epoch_block) {
+      const celoConfig = config.features.celo;
+      const epochBlockNumber = celoConfig.isEnabled && celoConfig.L2UpgradeBlock && blockQuery.data.height <= celoConfig.L2UpgradeBlock ?
+        blockQuery.data.celo.epoch_number * celoConfig.BLOCKS_PER_EPOCH :
+        undefined;
+      const tag = <Tag colorScheme={ epochBlockNumber ? 'gray-blue' : 'gray' }>Epoch #{ blockQuery.data.celo.epoch_number }</Tag>;
+      const content = epochBlockNumber ? (
+        <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(epochBlockNumber) } }) }>
+          { tag }
+        </LinkInternal>
+      ) : tag;
+
       return (
         <Tooltip label="Displays the epoch this block belongs to before the epoch is finalized" maxW="280px" textAlign="center">
-          <Tag>Epoch #{ blockQuery.data.celo.epoch_number }</Tag>
+          { content }
         </Tooltip>
       );
     }

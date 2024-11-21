@@ -703,6 +703,17 @@ For blockchains that implement SUAVE architecture additional fields will be show
 
 &nbsp;
 
+### Celo chain
+
+For blockchains that use the Celo platform. _Note_, that once the Celo mainnet becomes an L2 chain, these variables will be migrated to the Rollup configuration section.
+
+| Variable | Type| Description | Compulsoriness  | Default value | Example value | Version |
+| --- | --- | --- | --- | --- | --- | --- |
+| NEXT_PUBLIC_CELO_ENABLED | `boolean` | Indicates that it is a Celo-based chain. | - | - | `true` | v1.37.0+ |
+| NEXT_PUBLIC_CELO_L2_UPGRADE_BLOCK | `number` | Indicates the block number when the Celo-type chain transitioned to L2. This is used to display links to the Epoch block page from a regular block page. | - | - | `26369280` | v1.37.0+ |
+
+&nbsp;
+
 ### MetaSuites extension
 
 Enables [MetaSuites browser extension](https://github.com/blocksecteam/metasuites) to integrate with the app views.
