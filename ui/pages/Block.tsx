@@ -1,12 +1,10 @@
-import { chakra, Skeleton, Tooltip } from '@chakra-ui/react';
+import { chakra, Skeleton } from '@chakra-ui/react';
 import capitalize from 'lodash/capitalize';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import type { PaginationParams } from 'ui/shared/pagination/types';
 import type { RoutedTab } from 'ui/shared/Tabs/types';
-
-import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import { useAppContext } from 'lib/contexts/app';
@@ -15,6 +13,7 @@ import throwOnResourceLoadError from 'lib/errors/throwOnResourceLoadError';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import getNetworkValidationActionText from 'lib/networks/getNetworkValidationActionText';
 import getQueryParamString from 'lib/router/getQueryParamString';
+import BlockCeloEpochTag from 'ui/block/BlockCeloEpochTag';
 import BlockDetails from 'ui/block/BlockDetails';
 import BlockEpochRewards from 'ui/block/BlockEpochRewards';
 import BlockWithdrawals from 'ui/block/BlockWithdrawals';
@@ -24,9 +23,7 @@ import useBlockTxsQuery from 'ui/block/useBlockTxsQuery';
 import useBlockWithdrawalsQuery from 'ui/block/useBlockWithdrawalsQuery';
 import TextAd from 'ui/shared/ad/TextAd';
 import ServiceDegradationWarning from 'ui/shared/alerts/ServiceDegradationWarning';
-import Tag from 'ui/shared/chakra/Tag';
 import AddressEntity from 'ui/shared/entities/address/AddressEntity';
-import LinkInternal from 'ui/shared/links/LinkInternal';
 import NetworkExplorers from 'ui/shared/NetworkExplorers';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
@@ -149,36 +146,6 @@ const BlockPageContent = () => {
         return `Block #${ blockQuery.data?.height }`;
     }
   })();
-  const contentAfter = (() => {
-    if (!blockQuery.data?.celo) {
-      return null;
-    }
-
-    if (!blockQuery.data.celo.is_epoch_block) {
-      const celoConfig = config.features.celo;
-      const epochBlockNumber = celoConfig.isEnabled && celoConfig.L2UpgradeBlock && blockQuery.data.height <= celoConfig.L2UpgradeBlock ?
-        blockQuery.data.celo.epoch_number * celoConfig.BLOCKS_PER_EPOCH :
-        undefined;
-      const tag = <Tag colorScheme={ epochBlockNumber ? 'gray-blue' : 'gray' }>Epoch #{ blockQuery.data.celo.epoch_number }</Tag>;
-      const content = epochBlockNumber ? (
-        <LinkInternal href={ route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(epochBlockNumber) } }) }>
-          { tag }
-        </LinkInternal>
-      ) : tag;
-
-      return (
-        <Tooltip label="Displays the epoch this block belongs to before the epoch is finalized" maxW="280px" textAlign="center">
-          { content }
-        </Tooltip>
-      );
-    }
-
-    return (
-      <Tooltip label="Displays the epoch finalized by this block" maxW="280px" textAlign="center">
-        <Tag bgColor="celo" color="blackAlpha.800">Finalized epoch #{ blockQuery.data.celo.epoch_number }</Tag>
-      </Tooltip>
-    );
-  })();
   const titleSecondRow = (
     <>
       { !config.UI.views.block.hiddenFields?.miner && blockQuery.data?.miner && (
@@ -206,7 +173,7 @@ const BlockPageContent = () => {
       <PageTitle
         title={ title }
         backLink={ backLink }
-        contentAfter={ contentAfter }
+        contentAfter={ <BlockCeloEpochTag blockQuery={ blockQuery }/> }
         secondRow={ titleSecondRow }
         isLoading={ blockQuery.isPlaceholderData }
       />
