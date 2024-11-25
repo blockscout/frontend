@@ -146,6 +146,7 @@ const BlockPageContent = () => {
         return `Block #${ blockQuery.data?.height }`;
     }
   })();
+
   const titleSecondRow = (
     <>
       { !config.UI.views.block.hiddenFields?.miner && blockQuery.data?.miner && (

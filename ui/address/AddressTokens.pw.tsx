@@ -166,7 +166,7 @@ test.describe('mobile', () => {
 test.describe('update balances via socket', () => {
   test.describe.configure({ mode: 'serial' });
 
-  test('', async({ render, page, createSocket, mockApiResponse }) => {
+  test('base flow', async({ render, page, createSocket, mockApiResponse }) => {
     test.slow();
 
     const hooksConfig = {

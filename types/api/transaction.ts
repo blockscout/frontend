@@ -90,6 +90,10 @@ export type Transaction = {
   zksync?: Omit<ZkSyncBatchesItem, 'number' | 'transaction_count' | 'timestamp'> & {
     batch_number: number | null;
   };
+  // Zilliqa fields
+  zilliqa?: {
+    is_scilla: boolean;
+  };
   // blob tx fields
   blob_versioned_hashes?: Array<string>;
   blob_gas_used?: string;
@@ -179,7 +183,7 @@ export type TransactionType = 'rootstock_remasc' |
 export type TxsResponse = TransactionsResponseValidated | TransactionsResponsePending | BlockTransactionsResponse;
 
 export interface TransactionsSorting {
-  sort: 'value' | 'fee';
+  sort: 'value' | 'fee' | 'block_number';
   order: 'asc' | 'desc';
 }
 
