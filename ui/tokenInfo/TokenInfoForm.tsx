@@ -19,6 +19,7 @@ import FormFieldAddress from 'ui/shared/forms/fields/FormFieldAddress';
 import FormFieldEmail from 'ui/shared/forms/fields/FormFieldEmail';
 import FormFieldText from 'ui/shared/forms/fields/FormFieldText';
 import FormFieldUrl from 'ui/shared/forms/fields/FormFieldUrl';
+import { noWhitespaceValidator } from 'ui/shared/forms/validators/text';
 
 import TokenInfoFieldIconUrl from './fields/TokenInfoFieldIconUrl';
 import TokenInfoFieldProjectSector from './fields/TokenInfoFieldProjectSector';
@@ -101,6 +102,14 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
     }
   }, [ formState.isValid, formState.submitCount ]);
 
+  const nonWhitespaceFieldRules = React.useMemo(() => {
+    return {
+      validate: {
+        no_whitespace: noWhitespaceValidator,
+      },
+    };
+  }, []);
+
   if (configQuery.isError) {
     return <DataFetchAlert/>;
   }
@@ -126,7 +135,7 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
           <FormFieldEmail<Fields> name="requester_email" isRequired placeholder="Requester email" { ...fieldProps }/>
 
           <TokenInfoFormSectionHeader>Project info</TokenInfoFormSectionHeader>
-          <FormFieldText<Fields> name="project_name" placeholder="Project name" { ...fieldProps }/>
+          <FormFieldText<Fields> name="project_name" placeholder="Project name" { ...fieldProps } rules={ nonWhitespaceFieldRules }/>
           <TokenInfoFieldProjectSector { ...fieldProps } config={ configQuery.data.projectSectors }/>
           <FormFieldEmail<Fields> name="project_email" isRequired placeholder="Official project email address" { ...fieldProps }/>
           <FormFieldUrl<Fields> name="project_website" isRequired placeholder="Official project website" { ...fieldProps }/>
@@ -141,7 +150,7 @@ const TokenInfoForm = ({ address, tokenName, application, onSubmit }: Props) => 
               isRequired
               placeholder="Project description"
               maxH="160px"
-              rules={{ maxLength: 300 }}
+              rules={{ maxLength: 300, ...nonWhitespaceFieldRules }}
               asComponent="Textarea"
               { ...fieldProps }
             />
