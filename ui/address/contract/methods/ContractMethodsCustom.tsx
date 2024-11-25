@@ -18,7 +18,7 @@ import ContractCustomAbiAlert from './ContractCustomAbiAlert';
 import ContractMethodsContainer from './ContractMethodsContainer';
 import ContractMethodsFilters from './ContractMethodsFilters';
 import useMethodsFilters from './useMethodsFilters';
-import { enrichWithMethodId, isMethod } from './utils';
+import { formatAbi } from './utils';
 
 interface Props {
   isLoading?: boolean;
@@ -52,12 +52,7 @@ const ContractMethodsCustom = ({ isLoading: isLoadingProp }: Props) => {
     contract_address_hash: addressHash,
   } : undefined);
 
-  const abi = React.useMemo(() => {
-    return currentInfo?.abi
-      .filter(isMethod)
-      .map(enrichWithMethodId) ?? [];
-  }, [ currentInfo ]);
-
+  const abi = React.useMemo(() => formatAbi(currentInfo?.abi || []), [ currentInfo ]);
   const filters = useMethodsFilters({ abi });
 
   const updateButton = React.useMemo(() => {
