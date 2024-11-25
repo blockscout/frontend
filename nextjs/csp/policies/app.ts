@@ -148,6 +148,9 @@ export function app(): CspDev.DirectiveDescriptor {
 
     'frame-ancestors': [
       KEY_WORDS.SELF,
+
+      // allow remix.ethereum.org to embed our contract page in iframe
+      'remix.ethereum.org',
     ],
 
     ...((() => {
