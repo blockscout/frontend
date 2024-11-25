@@ -6,7 +6,7 @@ export type Props = {
   gradientHeight: number;
   className?: string;
   onScrollVisibilityChange?: (isVisible: boolean) => void;
-}
+};
 
 const ContainerWithScrollY = ({ className, gradientHeight, children, onScrollVisibilityChange }: Props) => {
   const ref = React.useRef<HTMLDivElement>(null);

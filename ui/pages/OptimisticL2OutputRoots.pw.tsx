@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { outputRootsData } from 'mocks/l2outputRoots/outputRoots';
+import { outputRootsData } from 'mocks/optimism/outputRoots';
 import { ENVS_MAP } from 'playwright/fixtures/mockEnvs';
 import { test, expect } from 'playwright/lib';
 

@@ -1,0 +1,24 @@
+{
+	"extends": "../tsconfig.json",
+	"compilerOptions": {
+		"noEmit": false,
+		"target": "es2016",
+		"module": "CommonJS",
+		"moduleResolution": "node",
+		"paths": {
+			"nextjs-routes": ["./nextjs/nextjs-routes.d.ts"],
+		}
+	},
+	"include": [ 
+		"../types/**/*.ts", 
+		"../configs/app/**/*.ts", 
+		"../global.d.ts", 
+		"./theme.ts",
+		"./components/**/*.pw.tsx",
+	],
+	"tsc-alias": {
+	  "verbose": true,
+	  "resolveFullPaths": true,
+	}
+}
+  

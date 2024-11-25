@@ -12,7 +12,8 @@ const defaultOptions: UseToastOptions & { toastComponent?: React.FC<ToastProps> 
   position: 'top-right',
   isClosable: true,
   containerStyle: {
-    margin: 8,
+    margin: 3,
+    marginBottom: 0,
   },
   variant: 'subtle',
 };

@@ -1,15 +1,13 @@
 import { chakra, Checkbox, Code } from '@chakra-ui/react';
 import { useQueryClient } from '@tanstack/react-query';
 import React from 'react';
-import type { ControllerRenderProps } from 'react-hook-form';
-import { useFormContext, Controller } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 
 import type { FormFields } from '../types';
-import type { SmartContractVerificationConfig } from 'types/api/contract';
+import type { SmartContractVerificationConfig } from 'types/client/contract';
 
 import { getResourceKey } from 'lib/api/useApiQuery';
-import useIsMobile from 'lib/hooks/useIsMobile';
-import FancySelect from 'ui/shared/FancySelect/FancySelect';
+import FormFieldFancySelect from 'ui/shared/forms/fields/FormFieldFancySelect';
 import IconSvg from 'ui/shared/IconSvg';
 
 import ContractVerificationFormRow from '../ContractVerificationFormRow';
@@ -22,8 +20,7 @@ interface Props {
 
 const ContractVerificationFieldCompiler = ({ isVyper }: Props) => {
   const [ isNightly, setIsNightly ] = React.useState(false);
-  const { formState, control, getValues, resetField } = useFormContext<FormFields>();
-  const isMobile = useIsMobile();
+  const { formState, getValues, resetField } = useFormContext<FormFields>();
   const queryClient = useQueryClient();
   const config = queryClient.getQueryData<SmartContractVerificationConfig>(getResourceKey('contract_verification_config'));
 
@@ -46,25 +43,6 @@ const ContractVerificationFieldCompiler = ({ isVyper }: Props) => {
       .slice(0, OPTIONS_LIMIT);
   }, [ isNightly, options ]);
 
-  const renderControl = React.useCallback(({ field }: {field: ControllerRenderProps<FormFields, 'compiler'>}) => {
-    const error = 'compiler' in formState.errors ? formState.errors.compiler : undefined;
-
-    return (
-      <FancySelect
-        { ...field }
-        loadOptions={ loadOptions }
-        defaultOptions
-        size={ isMobile ? 'md' : 'lg' }
-        placeholder="Compiler (enter version or use the dropdown)"
-        placeholderIcon={ <IconSvg name="search"/> }
-        isDisabled={ formState.isSubmitting }
-        error={ error }
-        isRequired
-        isAsync
-      />
-    );
-  }, [ formState.errors, formState.isSubmitting, isMobile, loadOptions ]);
-
   return (
     <ContractVerificationFormRow>
       <>
@@ -78,11 +56,14 @@ const ContractVerificationFieldCompiler = ({ isVyper }: Props) => {
             Include nightly builds
           </Checkbox>
         ) }
-        <Controller
+        <FormFieldFancySelect<FormFields, 'compiler'>
           name="compiler"
-          control={ control }
-          render={ renderControl }
-          rules={{ required: true }}
+          placeholder="Compiler (enter version or use the dropdown)"
+          loadOptions={ loadOptions }
+          defaultOptions
+          placeholderIcon={ <IconSvg name="search"/> }
+          isRequired
+          isAsync
         />
       </>
       { isVyper ? null : (

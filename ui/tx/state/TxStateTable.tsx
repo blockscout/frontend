@@ -21,7 +21,7 @@ interface Props {
 const TxStateTable = ({ data, isLoading, top }: Props) => {
   return (
     <AddressHighlightProvider>
-      <Table variant="simple" minWidth="1000px" size="sm" w="100%">
+      <Table minWidth="1000px" w="100%">
         <Thead top={ top }>
           <Tr>
             <Th width="140px">Type</Th>

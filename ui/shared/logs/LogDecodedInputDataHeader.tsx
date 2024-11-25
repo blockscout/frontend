@@ -10,9 +10,10 @@ interface Props {
   rightSlot?: React.ReactNode;
 }
 
-const Item = ({ label, children, isLoading }: { label: string; children: React.ReactNode; isLoading?: boolean}) => {
+const Item = ({ label, children, isLoading }: { label: string; children: React.ReactNode; isLoading?: boolean }) => {
   return (
     <Flex
+      w="100%"
       columnGap={ 5 }
       rowGap={ 2 }
       px={{ base: 0, lg: 4 }}
@@ -35,6 +36,7 @@ const LogDecodedInputDataHeader = ({ methodId, methodCall, isLoading, rightSlot 
       fontSize="sm"
       lineHeight={ 5 }
       flexGrow={ 1 }
+      w="100%"
     >
       <Flex columnGap={ 2 } w="100%">
         <Item label="Method id" isLoading={ isLoading }>
@@ -43,7 +45,7 @@ const LogDecodedInputDataHeader = ({ methodId, methodCall, isLoading, rightSlot 
         { rightSlot }
       </Flex>
       <Item label="Call" isLoading={ isLoading }>
-        <Skeleton isLoaded={ !isLoading } whiteSpace="pre-wrap">{ methodCall }</Skeleton>
+        <Skeleton isLoaded={ !isLoading } whiteSpace="pre-wrap" w="100%">{ methodCall }</Skeleton>
       </Item>
     </VStack>
   );

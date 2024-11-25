@@ -1,21 +1,18 @@
 import { Grid, Text, Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import type { ItemsProps } from './types';
 import type { SearchResultDomain } from 'types/api/search';
 
+import { toBech32Address } from 'lib/address/bech32';
 import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
 
-interface Props {
-  data: SearchResultDomain;
-  isMobile: boolean | undefined;
-  searchTerm: string;
-}
-
-const SearchBarSuggestDomain = ({ data, isMobile, searchTerm }: Props) => {
+const SearchBarSuggestDomain = ({ data, isMobile, searchTerm, addressFormat }: ItemsProps<SearchResultDomain>) => {
   const icon = <IconSvg name="ENS_slim" boxSize={ 5 } color="gray.500"/>;
+  const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address) : data.address);
 
   const name = (
     <Text
@@ -34,7 +31,7 @@ const SearchBarSuggestDomain = ({ data, isMobile, searchTerm }: Props) => {
       whiteSpace="nowrap"
       variant="secondary"
     >
-      <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
+      <HashStringShortenDynamic hash={ hash } isTooltipDisabled/>
     </Text>
   );
 

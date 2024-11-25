@@ -40,7 +40,7 @@ const EntityTagPopover = ({ data, children }: Props) => {
       <PopoverTrigger>
         { children }
       </PopoverTrigger>
-      <PopoverContent bgColor={ bgColor } borderRadius="sm" maxW="300px" w="fit-content">
+      <PopoverContent bgColor={ bgColor } borderRadius="sm" maxW="280px" w="fit-content">
         <PopoverArrow bgColor={ bgColor }/>
         <DarkMode>
           <PopoverBody color="white" p={ 2 } fontSize="sm" display="flex" flexDir="column" rowGap={ 2 }>

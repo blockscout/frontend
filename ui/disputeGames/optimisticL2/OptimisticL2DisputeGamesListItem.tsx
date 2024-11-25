@@ -4,11 +4,11 @@ import React from 'react';
 import type { OptimisticL2DisputeGamesItem } from 'types/api/optimisticL2';
 
 import config from 'configs/app';
-import dayjs from 'lib/date/dayjs';
 import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import BlockEntityL2 from 'ui/shared/entities/block/BlockEntityL2';
 import HashStringShorten from 'ui/shared/HashStringShorten';
 import ListItemMobileGrid from 'ui/shared/ListItemMobile/ListItemMobileGrid';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 const rollupFeature = config.features.rollup;
 
@@ -53,7 +53,11 @@ const OptimisticL2DisputeGamesListItem = ({ item, isLoading }: Props) => {
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Age</ListItemMobileGrid.Label>
       <ListItemMobileGrid.Value>
-        <Skeleton isLoaded={ !isLoading } display="inline-block">{ dayjs(item.created_at).fromNow() }</Skeleton>
+        <TimeAgoWithTooltip
+          timestamp={ item.created_at }
+          isLoading={ isLoading }
+          display="inline-block"
+        />
       </ListItemMobileGrid.Value>
 
       <ListItemMobileGrid.Label isLoading={ isLoading }>Status</ListItemMobileGrid.Label>
@@ -64,7 +68,11 @@ const OptimisticL2DisputeGamesListItem = ({ item, isLoading }: Props) => {
       { item.resolved_at && (
         <>
           <ListItemMobileGrid.Label isLoading={ isLoading }>Resolution age</ListItemMobileGrid.Label><ListItemMobileGrid.Value>
-            <Skeleton isLoaded={ !isLoading } display="inline-block">{ dayjs(item.resolved_at).fromNow() }</Skeleton>
+            <TimeAgoWithTooltip
+              timestamp={ item.resolved_at }
+              isLoading={ isLoading }
+              display="inline-block"
+            />
           </ListItemMobileGrid.Value>
         </>
       ) }

@@ -16,7 +16,7 @@ const TokenTransferList = ({ data, tokenId, isLoading }: Props) => {
     <Box>
       { data.map((item, index) => (
         <TokenTransferListItem
-          key={ item.tx_hash + item.block_hash + item.log_index + '_' + index }
+          key={ item.transaction_hash + item.block_hash + item.log_index + '_' + index }
           { ...item }
           tokenId={ tokenId }
           isLoading={ isLoading }

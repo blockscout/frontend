@@ -30,7 +30,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.11.0
+          node-version: 22.11.0
           cache: 'yarn'
 
       - name: Cache node_modules
@@ -43,7 +43,7 @@ jobs:
   
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: yarn --frozen-lockfile --ignore-optional
+        run: yarn --frozen-lockfile
 
       - name: Run ESLint
         run: yarn lint:eslint
@@ -62,7 +62,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.11.0
+          node-version: 22.11.0
           cache: 'yarn'
 
       - name: Cache node_modules
@@ -75,10 +75,10 @@ jobs:
     
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: yarn --frozen-lockfile --ignore-optional
+        run: yarn --frozen-lockfile
 
       - name: Install script dependencies
-        run: cd ./deploy/tools/envs-validator && yarn --frozen-lockfile --ignore-optional
+        run: cd ./deploy/tools/envs-validator && yarn --frozen-lockfile
 
       - name: Run validation tests
         run: |
@@ -101,7 +101,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.11.0
+          node-version: 22.11.0
           cache: 'yarn'
 
       - name: Cache node_modules
@@ -114,7 +114,7 @@ jobs:
     
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: yarn --frozen-lockfile --ignore-optional
+        run: yarn --frozen-lockfile
 
       - name: Run Jest
         run: yarn test:jest ${{ github.event_name == 'pull_request' && '--changedSince=origin/main' || '' }} --passWithNoTests
@@ -133,7 +133,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.11.0
+          node-version: 22.11.0
           cache: 'yarn'
 
       - name: Cache node_modules
@@ -146,7 +146,7 @@ jobs:
       
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: yarn --frozen-lockfile --ignore-optional
+        run: yarn --frozen-lockfile
 
       - name: Install script dependencies 
         run: cd ./deploy/tools/affected-tests && yarn --frozen-lockfile
@@ -171,7 +171,7 @@ jobs:
       (needs.pw_affected_tests.result == 'success' || needs.pw_affected_tests.result == 'skipped') 
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.41.1-focal
+      image: mcr.microsoft.com/playwright:v1.49.0-noble
 
     strategy:
       fail-fast: false
@@ -190,7 +190,7 @@ jobs:
       - name: Setup node
         uses: actions/setup-node@v4
         with:
-          node-version: 20.11.0
+          node-version: 22.11.0
           cache: 'yarn'
 
       - name: Cache node_modules
@@ -203,7 +203,7 @@ jobs:
     
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: yarn --frozen-lockfile --ignore-optional
+        run: yarn --frozen-lockfile
 
       - name: Download affected tests list
         if: ${{ needs.pw_affected_tests.result == 'success' }}

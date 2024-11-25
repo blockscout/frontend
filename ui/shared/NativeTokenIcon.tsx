@@ -10,9 +10,10 @@ import TokenLogoPlaceholder from './TokenLogoPlaceholder';
 type Props = {
   isLoading?: boolean;
   className?: string;
-}
+  type?: 'primary' | 'secondary';
+};
 
-const NativeTokenIcon = (props: Props) => {
+const NativeTokenIcon = ({ isLoading, className, type }: Props) => {
   const statsQueryResult = useApiQuery('stats', {
     queryOptions: {
       refetchOnMount: false,
@@ -20,18 +21,20 @@ const NativeTokenIcon = (props: Props) => {
     },
   });
 
-  if (props.isLoading || statsQueryResult.isPlaceholderData) {
-    return <Skeleton borderRadius="base" className={ props.className }/>;
+  if (isLoading || statsQueryResult.isPlaceholderData) {
+    return <Skeleton borderRadius="base" className={ className }/>;
   }
+
+  const src = type === 'secondary' ? statsQueryResult.data?.secondary_coin_image : statsQueryResult.data?.coin_image;
 
   return (
     <Image
       borderRadius="base"
-      className={ props.className }
-      src={ statsQueryResult.data?.coin_image || '' }
+      className={ className }
+      src={ src || '' }
       alt={ `${ config.chain.currency.symbol } logo` }
-      fallback={ <TokenLogoPlaceholder borderRadius="base" className={ props.className }/> }
-      fallbackStrategy={ statsQueryResult.data?.coin_image ? 'onError' : 'beforeLoadOrError' }
+      fallback={ <TokenLogoPlaceholder borderRadius="base" className={ className }/> }
+      fallbackStrategy={ src ? 'onError' : 'beforeLoadOrError' }
     />
   );
 };

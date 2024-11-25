@@ -12,6 +12,7 @@ import type { ResourceError } from 'lib/api/resources';
 import useApiQuery from 'lib/api/useApiQuery';
 import { useAppContext } from 'lib/contexts/app';
 import { getTokenTypeName } from 'lib/token/tokenTypes';
+import AddressMetadataAlert from 'ui/address/details/AddressMetadataAlert';
 import AddressQrCode from 'ui/address/details/AddressQrCode';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
 import AddressAddToWallet from 'ui/shared/address/AddressAddToWallet';
@@ -82,7 +83,7 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
       verifiedInfoQuery.data?.projectSector ?
         { slug: verifiedInfoQuery.data.projectSector, name: verifiedInfoQuery.data.projectSector, tagType: 'custom' as const, ordinal: -30 } :
         undefined,
-      ...(addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags || []),
+      ...(addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags.filter(tag => tag.tagType !== 'note') || []),
     ].filter(Boolean).sort(sortEntityTags);
   }, [
     addressMetadataQuery.data?.addresses,
@@ -113,13 +114,15 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
 
   const secondRow = (
     <Flex alignItems="center" w="100%" minW={ 0 } columnGap={ 2 } rowGap={ 2 } flexWrap={{ base: 'wrap', lg: 'nowrap' }}>
-      <AddressEntity
-        address={{ ...addressQuery.data, name: '' }}
-        isLoading={ isLoading }
-        fontFamily="heading"
-        fontSize="lg"
-        fontWeight={ 500 }
-      />
+      { addressQuery.data && (
+        <AddressEntity
+          address={{ ...addressQuery.data, name: '' }}
+          isLoading={ isLoading }
+          fontFamily="heading"
+          fontSize="lg"
+          fontWeight={ 500 }
+        />
+      ) }
       { !isLoading && tokenQuery.data && <AddressAddToWallet token={ tokenQuery.data } variant="button"/> }
       <AddressQrCode address={ addressQuery.data } isLoading={ isLoading }/>
       <AccountActionsMenu isLoading={ isLoading }/>
@@ -131,20 +134,24 @@ const TokenPageTitle = ({ tokenQuery, addressQuery, hash }: Props) => {
   );
 
   return (
-    <PageTitle
-      title={ `${ tokenQuery.data?.name || 'Unnamed token' }${ tokenSymbolText }` }
-      isLoading={ tokenQuery.isPlaceholderData }
-      backLink={ backLink }
-      beforeTitle={ tokenQuery.data ? (
-        <TokenEntity.Icon
-          token={ tokenQuery.data }
-          isLoading={ tokenQuery.isPlaceholderData }
-          iconSize="lg"
-        />
-      ) : null }
-      contentAfter={ contentAfter }
-      secondRow={ secondRow }
-    />
+    <>
+      <PageTitle
+        title={ `${ tokenQuery.data?.name || 'Unnamed token' }${ tokenSymbolText }` }
+        isLoading={ tokenQuery.isPlaceholderData }
+        backLink={ backLink }
+        beforeTitle={ tokenQuery.data ? (
+          <TokenEntity.Icon
+            token={ tokenQuery.data }
+            isLoading={ tokenQuery.isPlaceholderData }
+            size="lg"
+          />
+        ) : null }
+        contentAfter={ contentAfter }
+        secondRow={ secondRow }
+      />
+      { !addressMetadataQuery.isPending &&
+        <AddressMetadataAlert tags={ addressMetadataQuery.data?.addresses?.[hash.toLowerCase()]?.tags } mt="-4px" mb={ 6 }/> }
+    </>
   );
 };
 

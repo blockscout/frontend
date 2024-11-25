@@ -18,7 +18,7 @@ type BannerProps = {
   onInfoClick: (id: string) => void;
   onFavoriteClick: (id: string, isFavorite: boolean, source: 'Banner') => void;
   onAppClick: (event: MouseEvent, id: string) => void;
-}
+};
 
 const Banner = ({ apps = [], favoriteApps, isLoading, onInfoClick, onFavoriteClick, onAppClick }: BannerProps) => {
   if (!feature.isEnabled) {

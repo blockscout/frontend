@@ -9,7 +9,6 @@ import type { Transaction } from 'types/api/transaction';
 
 import config from 'configs/app';
 import getValueWithUnit from 'lib/getValueWithUnit';
-import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import { space } from 'lib/html-entities';
 import { currencyUnits } from 'lib/units';
 import AddressFromTo from 'ui/shared/address/AddressFromTo';
@@ -17,6 +16,7 @@ import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import ListItemMobile from 'ui/shared/ListItemMobile/ListItemMobile';
 import TxStatus from 'ui/shared/statusTag/TxStatus';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 import TxFee from 'ui/shared/tx/TxFee';
 import TxWatchListTags from 'ui/shared/tx/TxWatchListTags';
 import TxAdditionalInfo from 'ui/txs/TxAdditionalInfo';
@@ -30,12 +30,10 @@ type Props = {
   currentAddress?: string;
   enableTimeIncrement?: boolean;
   isLoading?: boolean;
-}
+};
 
 const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeIncrement }: Props) => {
   const dataTo = tx.to ? tx.to : tx.created_contract;
-
-  const timeAgo = useTimeAgoIncrement(tx.timestamp, enableTimeIncrement);
 
   return (
     <ListItemMobile display="block" width="100%" isAnimated key={ tx.hash }>
@@ -56,13 +54,18 @@ const TxsListItem = ({ tx, isLoading, showBlockInfo, currentAddress, enableTimeI
           hash={ tx.hash }
           truncation="constant_long"
           fontWeight="700"
-          iconName={ tx.tx_types.includes('blob_transaction') ? 'blob' : undefined }
+          icon={{
+            name: tx.tx_types.includes('blob_transaction') ? 'blob' : undefined,
+          }}
         />
-        { tx.timestamp && (
-          <Skeleton isLoaded={ !isLoading } color="text_secondary" fontWeight="400" fontSize="sm">
-            <span>{ timeAgo }</span>
-          </Skeleton>
-        ) }
+        <TimeAgoWithTooltip
+          timestamp={ tx.timestamp }
+          enableIncrement={ enableTimeIncrement }
+          isLoading={ isLoading }
+          color="text_secondary"
+          fontWeight="400"
+          fontSize="sm"
+        />
       </Flex>
       { tx.method && (
         <Flex mt={ 3 }>

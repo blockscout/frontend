@@ -24,7 +24,7 @@ export const verified: SmartContract = {
   verified_at: '2021-08-03T10:40:41.679421Z',
   decoded_constructor_args: [
     [ '0xc59615da2da226613b1c78f0c6676cac497910bc', { internalType: 'address', name: '_token', type: 'address' } ],
-    [ '1800', { internalType: 'uint256', name: '_duration', type: 'uint256' } ],
+    [ [ 1800, 3600, 7200 ], { internalType: 'uint256[]', name: '_durations', type: 'uint256[]' } ],
     [ '900000000', { internalType: 'uint256', name: '_totalSupply', type: 'uint256' } ],
   ],
   external_libraries: [
@@ -43,7 +43,7 @@ export const verified: SmartContract = {
   file_path: '',
   additional_sources: [],
   verified_twin_address_hash: null,
-  minimal_proxy_address_hash: null,
+  proxy_type: null,
 };
 
 export const certified: SmartContract = {
@@ -85,7 +85,7 @@ export const withProxyAddress: SmartContract = {
   ...verified,
   is_verified: false,
   verified_twin_address_hash: '0xa62744bee8646e237441cdbfdedd3458861748a8',
-  minimal_proxy_address_hash: '0xa62744bee8646e237441cdbfdedd3458861748a8',
+  proxy_type: 'eip1967',
 };
 
 export const selfDestructed: SmartContract = {
@@ -97,6 +97,13 @@ export const withChangedByteCode: SmartContract = {
   ...verified,
   is_changed_bytecode: true,
   is_blueprint: true,
+};
+
+export const zkSync: SmartContract = {
+  ...verified,
+  zk_compiler_version: 'v1.2.5',
+  optimization_enabled: true,
+  optimization_runs: 's',
 };
 
 export const nonVerified: SmartContract = {
@@ -126,7 +133,7 @@ export const nonVerified: SmartContract = {
   additional_sources: [],
   external_libraries: null,
   verified_twin_address_hash: null,
-  minimal_proxy_address_hash: null,
+  proxy_type: null,
   language: null,
   license_type: null,
 };

@@ -10,12 +10,12 @@ import {
   chakra,
   useColorModeValue,
   Skeleton,
+  HStack,
 } from '@chakra-ui/react';
 import BigNumber from 'bignumber.js';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
-import { ARBITRUM_L2_TX_BATCH_STATUSES } from 'types/api/arbitrumL2';
 import type { Transaction } from 'types/api/transaction';
 import { ZKEVM_L2_TX_STATUSES } from 'types/api/transaction';
 import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'types/api/zkSyncL2';
@@ -24,8 +24,9 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
-import getArbitrumVerificationStepStatus from 'lib/getArbitrumVerificationStepStatus';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
+import * as arbitrum from 'lib/rollups/arbitrum';
+import { MESSAGE_DESCRIPTIONS } from 'lib/tx/arbitrumMessageStatusDescription';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
 import { currencyUnits } from 'lib/units';
 import Tag from 'ui/shared/chakra/Tag';
@@ -40,6 +41,7 @@ import BatchEntityL2 from 'ui/shared/entities/block/BatchEntityL2';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntityL1 from 'ui/shared/entities/tx/TxEntityL1';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
+import Hint from 'ui/shared/Hint';
 import IconSvg from 'ui/shared/IconSvg';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import RawInputData from 'ui/shared/RawInputData';
@@ -81,6 +83,14 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
     });
   }, []);
   const executionSuccessIconColor = useColorModeValue('blackAlpha.800', 'whiteAlpha.800');
+
+  const showAssociatedL1Tx = React.useCallback(() => {
+    setIsExpanded(true);
+    scroller.scrollTo('TxInfo__cutLink', {
+      duration: 500,
+      smooth: true,
+    });
+  }, []);
 
   if (!data) {
     return null;
@@ -178,9 +188,11 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           </Tag>
         ) }
         { data.arbitrum?.contains_message && (
-          <Tag isLoading={ isLoading } isTruncated ml={ 3 }>
-            { data.arbitrum?.contains_message === 'incoming' ? 'Incoming message' : 'Outgoing message' }
-          </Tag>
+          <Skeleton isLoaded={ !isLoading } onClick={ showAssociatedL1Tx }>
+            <Link isTruncated ml={ 3 }>
+              { data.arbitrum?.contains_message === 'incoming' ? 'Incoming message' : 'Outgoing message' }
+            </Link>
+          </Skeleton>
         ) }
       </DetailsInfoItem.Value>
 
@@ -235,9 +247,9 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
             <VerificationSteps
-              currentStep={ data.arbitrum.status }
-              currentStepPending={ getArbitrumVerificationStepStatus(data.arbitrum) === 'pending' }
-              steps={ ARBITRUM_L2_TX_BATCH_STATUSES }
+              currentStep={ arbitrum.VERIFICATION_STEPS_MAP[data.arbitrum.status] }
+              currentStepPending={ arbitrum.getVerificationStepStatus(data.arbitrum) === 'pending' }
+              steps={ arbitrum.verificationSteps }
               isLoading={ isLoading }
             />
           </DetailsInfoItem.Value>
@@ -315,7 +327,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             hint="Batch index for this transaction"
             isLoading={ isLoading }
           >
-            Tx batch
+            Txn batch
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
             <BatchEntityL2
@@ -351,7 +363,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             hint="Index of the batch containing this transaction"
             isLoading={ isLoading }
           >
-          Batch
+            Batch
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
             { data.arbitrum.batch_number ?
@@ -535,7 +547,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           <DetailsInfoItem.Label
             isLoading={ isLoading }
           >
-        Verify tx hash
+            Verify tx hash
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value flexWrap="nowrap">
             <Skeleton isLoaded={ !isLoading } overflow="hidden">
@@ -675,7 +687,6 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             (data.base_fee_per_gas || data.max_fee_per_gas || data.max_priority_fee_per_gas) && (
         <>
           <DetailsInfoItem.Label
-            // eslint-disable-next-line max-len
             hint={ `
             Base Fee refers to the network Base Fee at the time of the block,
             while Max Fee & Max Priority Fee refer to the max amount a user is willing to pay
@@ -824,6 +835,30 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
       { isExpanded && (
         <>
           <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 4 }}/>
+
+          { data.arbitrum?.contains_message && data.arbitrum?.message_related_info && (
+            <>
+              <DetailsInfoItem.Label
+                hint={ data.arbitrum.contains_message === 'incoming' ?
+                  'The hash of the transaction that originated the message from the base layer' :
+                  'The hash of the transaction that completed the message on the base layer'
+                }
+              >
+                { data.arbitrum.contains_message === 'incoming' ? 'Originating L1 txn hash' : 'Completion L1 txn hash' }
+              </DetailsInfoItem.Label>
+              <DetailsInfoItem.Value>
+                { data.arbitrum.message_related_info.associated_l1_transaction ?
+                  <TxEntityL1 hash={ data.arbitrum.message_related_info.associated_l1_transaction }/> : (
+                    <HStack gap={ 2 }>
+                      <Text color="text_secondary">{ data.arbitrum.message_related_info.message_status }</Text>
+                      <Hint label={ MESSAGE_DESCRIPTIONS[data.arbitrum.message_related_info.message_status] }/>
+                    </HStack>
+                  )
+                }
+              </DetailsInfoItem.Value>
+            </>
+          ) }
+
           { (data.blob_gas_used || data.max_fee_per_blob_gas || data.blob_gas_price) && (
             <>
               { data.blob_gas_used && data.blob_gas_price && (
@@ -891,7 +926,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             Raw input
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
-            <RawInputData hex={ data.raw_input }/>
+            <RawInputData hex={ data.raw_input } defaultDataType={ data.zilliqa?.is_scilla ? 'UTF-8' : 'Hex' }/>
           </DetailsInfoItem.Value>
 
           { data.decoded_input && (

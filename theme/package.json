@@ -1,0 +1,24 @@
+{
+  "name": "@blockscout/chakra-theme",
+  "version": "1.32.0",
+  "main": "./dist/index.js",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/blockscout/frontend.git",
+    "directory": "theme"
+  },
+  "scripts": {
+    "build": "yarn webpack-cli -c ./webpack.config.js"
+  },
+  "devDependencies": {
+    "typescript": "5.4.2",
+    "ts-loader": "^9.4.4",
+    "webpack": "^5.94.0",
+    "webpack-cli": "^5.1.4",
+    "tsconfig-paths-webpack-plugin": "^4.1.0"
+  },
+  "files": [
+    "/dist"
+  ]
+}

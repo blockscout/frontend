@@ -17,7 +17,7 @@ type Props = {
   index: number;
   page: number;
   isLoading?: boolean;
-}
+};
 
 const PAGE_SIZE = 50;
 
@@ -32,6 +32,7 @@ const TokensTableItem = ({
 
   const {
     address,
+    filecoin_robust_address: filecoinRobustAddress,
     exchange_rate: exchangeRate,
     type,
     holders,
@@ -45,6 +46,9 @@ const TokensTableItem = ({
 
   const tokenAddress: AddressEntityProps['address'] = {
     hash: address,
+    filecoin: {
+      robust: filecoinRobustAddress,
+    },
     name: '',
     is_contract: true,
     is_verified: false,
@@ -54,11 +58,7 @@ const TokensTableItem = ({
 
   return (
     <Tr
-      sx={{
-        '&:hover [aria-label="Add token to wallet"]': {
-          opacity: 1,
-        },
-      }}
+      role="group"
     >
       <Td>
         <Flex alignItems="flex-start">
@@ -94,6 +94,7 @@ const TokensTableItem = ({
                 isLoading={ isLoading }
                 iconSize={ 5 }
                 opacity={ 0 }
+                _groupHover={{ opacity: 1 }}
               />
             </Flex>
             <Flex columnGap={ 1 }>

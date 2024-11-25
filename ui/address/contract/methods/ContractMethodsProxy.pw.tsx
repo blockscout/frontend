@@ -20,7 +20,7 @@ test('with one implementation +@mobile', async({ render, mockApiResponse }) => {
   ];
   await mockApiResponse('contract', { ...contractMock.verified, abi: methodsMock.read }, { pathParams: { hash: implementations[0].address } });
 
-  const component = await render(<ContractMethodsProxy implementations={ implementations } type="read"/>, { hooksConfig });
+  const component = await render(<ContractMethodsProxy implementations={ implementations }/>, { hooksConfig });
   await expect(component).toHaveScreenshot();
 });
 
@@ -36,6 +36,6 @@ test('with multiple implementations +@mobile', async({ render, mockApiResponse }
   ];
   await mockApiResponse('contract', { ...contractMock.verified, abi: methodsMock.read }, { pathParams: { hash: implementations[0].address } });
 
-  const component = await render(<ContractMethodsProxy implementations={ implementations } type="read"/>, { hooksConfig });
+  const component = await render(<ContractMethodsProxy implementations={ implementations }/>, { hooksConfig });
   await expect(component).toHaveScreenshot();
 });

@@ -18,6 +18,7 @@ const ContractVerificationMultiPartFile = () => {
       <ContractVerificationFieldSources
         fileTypes={ FILE_TYPES }
         multiple
+        fullFilePath
         required
         title="Sources *.sol or *.yul files"
         hint="Upload all Solidity or Yul contract source files."

@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 import type { Transaction } from 'types/api/transaction';
 
+import * as addressMock from 'mocks/address/address';
 import { publicTag, privateTag, watchlistName } from 'mocks/address/tag';
 import * as tokenTransferMock from 'mocks/tokens/tokenTransfer';
 import * as decodedInputDataMock from 'mocks/txs/decodedInputData';
@@ -47,7 +48,7 @@ export const base: Transaction = {
   status: 'ok',
   timestamp: '2022-10-10T14:34:30.000000Z',
   to: {
-    hash: '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859',
+    hash: addressMock.hash,
     implementations: null,
     is_contract: false,
     is_verified: true,
@@ -110,7 +111,7 @@ export const withTokenTransfer: Transaction = {
   ...base,
   hash: '0x62d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3196',
   to: {
-    hash: '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859',
+    hash: addressMock.hash,
     implementations: null,
     is_contract: true,
     is_verified: true,
@@ -166,7 +167,7 @@ export const withRawRevertReason: Transaction = {
     raw: '4f6e6c79206368616972706572736f6e2063616e206769766520726967687420746f20766f74652e',
   },
   to: {
-    hash: '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859',
+    hash: addressMock.hash,
     implementations: null,
     is_verified: true,
     is_contract: true,
@@ -339,12 +340,39 @@ export const celoTxn: Transaction = {
   },
 };
 
+export const arbitrumTxn: Transaction = {
+  ...base,
+  arbitrum: {
+    batch_number: 743991,
+    commitment_transaction: {
+      hash: '0x71a25e01dde129a308704de217d200ea42e0f5b8c221c8ba8b2b680ff347f708',
+      status: 'unfinalized',
+      timestamp: '2024-11-19T14:26:23.000000Z',
+    },
+    confirmation_transaction: {
+      hash: null,
+      status: null,
+      timestamp: null,
+    },
+    contains_message: null,
+    gas_used_for_l1: '129773',
+    gas_used_for_l2: '128313',
+    message_related_info: {
+      associated_l1_transaction: null,
+      message_status: 'Relayed',
+    },
+    network_fee: '1283130000000',
+    poster_fee: '1297730000000',
+    status: 'Sent to base',
+  },
+};
+
 export const base2 = {
   ...base,
   hash: '0x02d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3193',
   from: {
     ...base.from,
-    hash: '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859',
+    hash: addressMock.hash,
   },
 };
 
@@ -353,7 +381,7 @@ export const base3 = {
   hash: '0x12d597ebcf3e8d60096dd0363bc2f0f5e2df27ba1dacd696c51aa7c9409f3193',
   from: {
     ...base.from,
-    hash: '0xd789a607CEac2f0E14867de4EB15b15C9FFB5859',
+    hash: addressMock.hash,
   },
 };
 
@@ -374,4 +402,24 @@ export const withBlob = {
   max_fee_per_blob_gas: '60000000000',
   tx_types: [ 'blob_transaction' as const ],
   type: 3,
+};
+
+export const withRecipientName = {
+  ...base,
+  to: addressMock.withName,
+};
+
+export const withRecipientEns = {
+  ...base,
+  to: addressMock.withEns,
+};
+
+export const withRecipientNameTag = {
+  ...withRecipientEns,
+  to: addressMock.withNameTag,
+};
+
+export const withRecipientContract = {
+  ...withRecipientEns,
+  to: addressMock.contract,
 };

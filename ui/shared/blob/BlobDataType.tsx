@@ -10,7 +10,7 @@ interface Props {
   isLoading?: boolean;
 }
 
-const TYPES: Record<string, { iconName: IconName; label: string}> = {
+const TYPES: Record<string, { iconName: IconName; label: string }> = {
   image: { iconName: 'blobs/image', label: 'Image' },
   text: { iconName: 'blobs/text', label: 'Text' },
   raw: { iconName: 'blobs/raw', label: 'Raw' },

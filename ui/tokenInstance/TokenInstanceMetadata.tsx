@@ -10,7 +10,7 @@ import RawDataSnippet from 'ui/shared/RawDataSnippet';
 import { useMetadataUpdateContext } from './contexts/metadataUpdate';
 import MetadataAccordion from './metadata/MetadataAccordion';
 
-type Format = 'JSON' | 'Table'
+type Format = 'JSON' | 'Table';
 
 interface Props {
   data: TokenInstance['metadata'] | undefined;

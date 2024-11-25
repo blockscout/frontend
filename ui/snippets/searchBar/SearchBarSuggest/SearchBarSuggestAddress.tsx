@@ -1,23 +1,20 @@
 import { chakra, Box, Text, Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import type { ItemsProps } from './types';
 import type { SearchResultAddressOrContract } from 'types/api/search';
 
+import { toBech32Address } from 'lib/address/bech32';
 import dayjs from 'lib/date/dayjs';
 import highlightText from 'lib/highlightText';
-import { ADDRESS_REGEXP } from 'lib/validations/address';
 import ContractCertifiedLabel from 'ui/shared/ContractCertifiedLabel';
 import * as AddressEntity from 'ui/shared/entities/address/AddressEntity';
+import { ADDRESS_REGEXP } from 'ui/shared/forms/validators/address';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 
-interface Props {
-  data: SearchResultAddressOrContract;
-  isMobile: boolean | undefined;
-  searchTerm: string;
-}
-
-const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
+const SearchBarSuggestAddress = ({ data, isMobile, searchTerm, addressFormat }: ItemsProps<SearchResultAddressOrContract>) => {
   const shouldHighlightHash = ADDRESS_REGEXP.test(searchTerm);
+  const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address) : data.address);
 
   const icon = (
     <AddressEntity.Icon
@@ -52,7 +49,7 @@ const SearchBarSuggestAddress = ({ data, isMobile, searchTerm }: Props) => {
       { data.certified && <ContractCertifiedLabel boxSize={ 5 } iconSize={ 5 } ml={ 1 }/> }
     </Flex>
   );
-  const addressEl = <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>;
+  const addressEl = <HashStringShortenDynamic hash={ hash } isTooltipDisabled/>;
 
   if (isMobile) {
     return (

@@ -2,7 +2,8 @@ import type { LinkProps as NextLinkProps } from 'next/link';
 import NextLink from 'next/link';
 import React from 'react';
 
-import type { SearchResultItem } from 'types/api/search';
+import type { SearchResultItem } from 'types/client/search';
+import type { AddressFormat } from 'types/views/address';
 
 import { route } from 'nextjs-routes';
 
@@ -21,9 +22,10 @@ interface Props {
   isMobile: boolean | undefined;
   searchTerm: string;
   onClick: (event: React.MouseEvent<HTMLAnchorElement>) => void;
+  addressFormat?: AddressFormat;
 }
 
-const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) => {
+const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick, addressFormat }: Props) => {
 
   const url = (() => {
     switch (data.type) {
@@ -36,9 +38,14 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) =>
         return route({ pathname: '/address/[hash]', query: { hash: data.address } });
       }
       case 'transaction': {
-        return route({ pathname: '/tx/[hash]', query: { hash: data.tx_hash } });
+        return route({ pathname: '/tx/[hash]', query: { hash: data.transaction_hash } });
       }
       case 'block': {
+        const isFutureBlock = data.timestamp === undefined;
+        if (isFutureBlock) {
+          return route({ pathname: '/block/countdown/[height]', query: { height: String(data.block_number) } });
+        }
+
         return route({ pathname: '/block/[height_or_hash]', query: { height_or_hash: String(data.block_hash) } });
       }
       case 'user_operation': {
@@ -56,15 +63,35 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) =>
   const content = (() => {
     switch (data.type) {
       case 'token': {
-        return <SearchBarSuggestToken data={ data } searchTerm={ searchTerm } isMobile={ isMobile }/>;
+        return (
+          <SearchBarSuggestToken
+            data={ data }
+            searchTerm={ searchTerm }
+            isMobile={ isMobile }
+            addressFormat={ addressFormat }
+          />
+        );
       }
       case 'contract':
       case 'address': {
-        return <SearchBarSuggestAddress data={ data } searchTerm={ searchTerm } isMobile={ isMobile }/>;
+        return (
+          <SearchBarSuggestAddress
+            data={ data }
+            searchTerm={ searchTerm }
+            isMobile={ isMobile }
+            addressFormat={ addressFormat }
+          />
+        );
       }
       case 'label': {
-        return <SearchBarSuggestLabel data={ data } searchTerm={ searchTerm } isMobile={ isMobile }/>;
-
+        return (
+          <SearchBarSuggestLabel
+            data={ data }
+            searchTerm={ searchTerm }
+            isMobile={ isMobile }
+            addressFormat={ addressFormat }
+          />
+        );
       }
       case 'block': {
         return <SearchBarSuggestBlock data={ data } searchTerm={ searchTerm } isMobile={ isMobile }/>;
@@ -79,7 +106,7 @@ const SearchBarSuggestItem = ({ data, isMobile, searchTerm, onClick }: Props) =>
         return <SearchBarSuggestBlob data={ data } searchTerm={ searchTerm }/>;
       }
       case 'ens_domain': {
-        return <SearchBarSuggestDomain data={ data } searchTerm={ searchTerm } isMobile={ isMobile }/>;
+        return <SearchBarSuggestDomain data={ data } searchTerm={ searchTerm } isMobile={ isMobile } addressFormat={ addressFormat }/>;
       }
     }
   })();

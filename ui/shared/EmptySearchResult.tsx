@@ -1,4 +1,4 @@
-import { Box, Heading, Text, Icon } from '@chakra-ui/react';
+import { Box, Heading, Icon } from '@chakra-ui/react';
 import React from 'react';
 
 // This icon doesn't work properly when it is in the sprite
@@ -7,7 +7,7 @@ import React from 'react';
 import emptySearchResultIcon from 'icons/empty_search_result.svg';
 
 interface Props {
-  text: string | JSX.Element;
+  text: string | React.JSX.Element;
 }
 
 const EmptySearchResult = ({ text }: Props) => {
@@ -30,9 +30,9 @@ const EmptySearchResult = ({ text }: Props) => {
         No results
       </Heading>
 
-      <Text fontSize={{ base: 'sm', sm: 'md' }} align="center">
+      <Box fontSize={{ base: 'sm', sm: 'md' }} textAlign="center">
         { text }
-      </Text>
+      </Box>
     </Box>
   );
 };

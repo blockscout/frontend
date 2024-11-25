@@ -22,7 +22,7 @@ type Props = {
   showPagination?: boolean;
   filterComponent?: React.ReactNode;
   linkSlot?: React.ReactNode;
-}
+};
 
 const TxsHeaderMobile = ({ filterComponent, sorting, setSorting, paginationProps, className, showPagination = true, linkSlot }: Props) => {
   return (

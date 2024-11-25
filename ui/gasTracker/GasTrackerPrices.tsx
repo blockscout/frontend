@@ -21,13 +21,6 @@ const GasTrackerPrices = ({ prices, isLoading }: Props) => {
       borderWidth="2px"
       borderRadius="xl"
       overflow="hidden"
-      sx={{
-        'li:not(:last-child)': {
-          borderColor: borderColor,
-          borderRightWidth: { lg: '2px' },
-          borderBottomWidth: { base: '2px', lg: '0' },
-        },
-      }}
     >
       { prices.fast && <GasTrackerPriceSnippet type="fast" data={ prices.fast } isLoading={ isLoading }/> }
       { prices.average && <GasTrackerPriceSnippet type="average" data={ prices.average } isLoading={ isLoading }/> }

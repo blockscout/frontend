@@ -7,7 +7,7 @@ type Props = {
   url: string;
   external?: boolean;
   title: string;
-}
+};
 
 const MarketplaceAppModalLink = ({ url, external, id }: Props) => {
   const buttonProps = {

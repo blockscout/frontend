@@ -11,7 +11,6 @@ import useGradualIncrement from 'lib/hooks/useGradualIncrement';
 import useToast from 'lib/hooks/useToast';
 import PageTitle from 'ui/shared/Page/PageTitle';
 
-{ /* will be deleted when we fix login in preview CI stands */ }
 const Login = () => {
   const toast = useToast();
   const [ num, setNum ] = useGradualIncrement(0);
@@ -68,12 +67,12 @@ const Login = () => {
         <>
           <Alert status="error" flexDirection="column" alignItems="flex-start">
             <AlertTitle fontSize="md">
-                !!! Temporary solution for authentication on localhost !!!
+              !!! Temporary solution for authentication on localhost !!!
             </AlertTitle>
             <AlertDescription mt={ 3 }>
-                    To Sign in go to production instance first, sign in there, copy obtained API token from cookie
+              To Sign in go to production instance first, sign in there, copy obtained API token from cookie
               <Code ml={ 1 }>{ cookies.NAMES.API_TOKEN }</Code> and paste it in the form below. After submitting the form you should be successfully
-                    authenticated in current environment
+              authenticated in current environment
             </AlertDescription>
           </Alert>
           <Textarea value={ token } onChange={ handleTokenChange } placeholder="API token"/>

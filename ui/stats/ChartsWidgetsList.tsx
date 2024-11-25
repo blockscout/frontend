@@ -20,7 +20,7 @@ type Props = {
   isPlaceholderData: boolean;
   charts?: Array<stats.LineChartSection>;
   interval: StatsIntervalIds;
-}
+};
 
 const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, interval, initialFilterQuery }: Props) => {
   const [ isSomeChartLoadingError, setIsSomeChartLoadingError ] = useState(false);
@@ -95,6 +95,7 @@ const ChartsWidgetsList = ({ filterQuery, isError, isPlaceholderData, charts, in
                     units={ chart.units || undefined }
                     isPlaceholderData={ isPlaceholderData }
                     onLoadingError={ handleChartLoadingError }
+                    href={{ pathname: '/stats/[id]', query: { id: chart.id } }}
                   />
                 )) }
               </Grid>

@@ -57,11 +57,11 @@ export default function useNewTxsSocket() {
   }, [ setNum ]);
 
   const handleSocketClose = React.useCallback(() => {
-    setSocketAlert('Connection is lost. Please reload page.');
+    setSocketAlert('Connection is lost. Please reload the page.');
   }, []);
 
   const handleSocketError = React.useCallback(() => {
-    setSocketAlert('An error has occurred while fetching new transactions. Please reload page.');
+    setSocketAlert('An error has occurred while fetching new transactions. Please reload the page.');
   }, []);
 
   const channel = useSocketChannel({

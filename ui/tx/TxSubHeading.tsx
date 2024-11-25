@@ -1,9 +1,10 @@
 import { Box, Flex, Link } from '@chakra-ui/react';
 import React from 'react';
 
+import type { AddressParam } from 'types/api/addressParams';
+
 import config from 'configs/app';
 import useApiQuery from 'lib/api/useApiQuery';
-import useFeatureValue from 'lib/growthbook/useFeatureValue';
 import { NOVES_TRANSLATE } from 'stubs/noves/NovesTranslate';
 import { TX_INTERPRETATION } from 'stubs/txInterpretation';
 import AccountActionsMenu from 'ui/shared/AccountActionsMenu/AccountActionsMenu';
@@ -18,10 +19,10 @@ import { createNovesSummaryObject } from './assetFlows/utils/createNovesSummaryO
 import type { TxQuery } from './useTxQuery';
 
 type Props = {
-  hash?: string;
+  hash: string;
   hasTag: boolean;
   txQuery: TxQuery;
-}
+};
 
 const feature = config.features.txInterpretation;
 
@@ -29,8 +30,7 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
   const hasInterpretationFeature = feature.isEnabled;
   const isNovesInterpretation = hasInterpretationFeature && feature.provider === 'noves';
 
-  const { value: isActionButtonExperiment } = useFeatureValue('action_button_exp', false);
-  const appActionData = useAppActionData(txQuery.data?.to?.hash, isActionButtonExperiment && !txQuery.isPlaceholderData);
+  const appActionData = useAppActionData(txQuery.data?.to?.hash, !txQuery.isPlaceholderData);
 
   const txInterpretationQuery = useApiQuery('tx_interpretation', {
     pathParams: { hash },
@@ -57,18 +57,21 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
   const hasViewAllInterpretationsLink =
     !txInterpretationQuery.isPlaceholderData && txInterpretationQuery.data?.data.summaries && txInterpretationQuery.data?.data.summaries.length > 1;
 
-  const hasAnyInterpretation =
-    (hasNovesInterpretation && novesInterpretationQuery.data && !novesInterpretationQuery.isPlaceholderData) ||
-    (hasInternalInterpretation && !txInterpretationQuery.isPlaceholderData);
+  const addressDataMap: Record<string, AddressParam> = {};
+  [ txQuery.data?.from, txQuery.data?.to ]
+    .filter((data): data is AddressParam => Boolean(data && data.hash))
+    .forEach(data => {
+      addressDataMap[data.hash] = data;
+    });
 
   const content = (() => {
     if (hasNovesInterpretation && novesInterpretationQuery.data) {
       const novesSummary = createNovesSummaryObject(novesInterpretationQuery.data);
-
       return (
         <TxInterpretation
           summary={ novesSummary }
-          isLoading={ novesInterpretationQuery.isPlaceholderData }
+          isLoading={ novesInterpretationQuery.isPlaceholderData || txQuery.isPlaceholderData }
+          addressDataMap={ addressDataMap }
           fontSize="lg"
           mr={{ base: 0, lg: 6 }}
         />
@@ -78,7 +81,8 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
         <Flex mr={{ base: 0, lg: 6 }} flexWrap="wrap" alignItems="center">
           <TxInterpretation
             summary={ txInterpretationQuery.data?.data.summaries[0] }
-            isLoading={ txInterpretationQuery.isPlaceholderData }
+            isLoading={ txInterpretationQuery.isPlaceholderData || txQuery.isPlaceholderData }
+            addressDataMap={ addressDataMap }
             fontSize="lg"
             mr={ hasViewAllInterpretationsLink ? 3 : 0 }
           />
@@ -116,6 +120,11 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
     }
   })();
 
+  const isLoading =
+    txQuery.isPlaceholderData ||
+    (hasNovesInterpretation && novesInterpretationQuery.isPlaceholderData) ||
+    (hasInternalInterpretation && txInterpretationQuery.isPlaceholderData);
+
   return (
     <Box display={{ base: 'block', lg: 'flex' }} alignItems="center" w="100%">
       { content }
@@ -126,8 +135,8 @@ const TxSubHeading = ({ hash, hasTag, txQuery }: Props) => {
         gap={ 3 }
         mt={{ base: 3, lg: 0 }}
       >
-        { !hasTag && <AccountActionsMenu/> }
-        { (appActionData && isActionButtonExperiment && hasAnyInterpretation) && (
+        { !hasTag && <AccountActionsMenu isLoading={ isLoading }/> }
+        { appActionData && (
           <AppActionButton data={ appActionData } txHash={ hash } source="Txn"/>
         ) }
         <NetworkExplorers type="tx" pathParam={ hash } ml={{ base: 0, lg: 'auto' }}/>

@@ -4,17 +4,28 @@ import {
 } from '@chakra-ui/react';
 import React, { useCallback } from 'react';
 
-import type { MarketplaceAppWithSecurityReport } from 'types/client/marketplace';
+import type { MarketplaceAppWithSecurityReport, AppRating } from 'types/client/marketplace';
 import { ContractListTypes } from 'types/client/marketplace';
 
+import config from 'configs/app';
 import useIsMobile from 'lib/hooks/useIsMobile';
 import { nbsp } from 'lib/html-entities';
+import isBrowser from 'lib/isBrowser';
 import * as mixpanel from 'lib/mixpanel/index';
+import CopyToClipboard from 'ui/shared/CopyToClipboard';
 import type { IconName } from 'ui/shared/IconSvg';
 import IconSvg from 'ui/shared/IconSvg';
 
 import AppSecurityReport from './AppSecurityReport';
+import FavoriteIcon from './FavoriteIcon';
+import MarketplaceAppGraphLinks from './MarketplaceAppGraphLinks';
+import MarketplaceAppIntegrationIcon from './MarketplaceAppIntegrationIcon';
 import MarketplaceAppModalLink from './MarketplaceAppModalLink';
+import Rating from './Rating/Rating';
+import type { RateFunction } from './Rating/useRatings';
+
+const feature = config.features.marketplace;
+const isRatingEnabled = feature.isEnabled && feature.rating;
 
 type Props = {
   onClose: () => void;
@@ -22,7 +33,13 @@ type Props = {
   onFavoriteClick: (id: string, isFavorite: boolean, source: 'App modal') => void;
   data: MarketplaceAppWithSecurityReport;
   showContractList: (id: string, type: ContractListTypes, hasPreviousStep: boolean) => void;
-}
+  userRating?: AppRating;
+  rateApp: RateFunction;
+  isRatingSending: boolean;
+  isRatingLoading: boolean;
+  canRate: boolean | undefined;
+  graphLinks?: Array<{ text: string; url: string }>;
+};
 
 const MarketplaceAppModal = ({
   onClose,
@@ -30,9 +47,13 @@ const MarketplaceAppModal = ({
   onFavoriteClick,
   data,
   showContractList: showContractListProp,
+  userRating,
+  rateApp,
+  isRatingSending,
+  isRatingLoading,
+  canRate,
+  graphLinks,
 }: Props) => {
-  const starOutlineIconColor = useColorModeValue('gray.600', 'gray.300');
-
   const {
     id,
     title,
@@ -49,6 +70,8 @@ const MarketplaceAppModal = ({
     logoDarkMode,
     categories,
     securityReport,
+    rating,
+    internalWallet,
   } = data;
 
   const socialLinks = [
@@ -97,6 +120,8 @@ const MarketplaceAppModal = ({
     } catch (err) {}
   }
 
+  const iconColor = useColorModeValue('blue.600', 'gray.400');
+
   return (
     <Modal
       isOpen={ Boolean(data.id) }
@@ -119,7 +144,7 @@ const MarketplaceAppModal = ({
             w={{ base: '72px', md: '144px' }}
             h={{ base: '72px', md: '144px' }}
             marginRight={{ base: 6, md: 8 }}
-            gridRow={{ base: '1 / 3', md: '1 / 4' }}
+            gridRow={{ base: '1 / 3', md: '1 / 5' }}
           >
             <Image
               src={ logoUrl }
@@ -128,30 +153,54 @@ const MarketplaceAppModal = ({
             />
           </Flex>
 
-          <Heading
-            as="h2"
-            gridColumn={ 2 }
-            fontSize={{ base: '2xl', md: '3xl' }}
-            fontWeight="medium"
-            lineHeight={ 1 }
-            color="blue.600"
-          >
-            { title }
-          </Heading>
+          <Flex alignItems="center" mb={{ md: 2 }} gridColumn={ 2 }>
+            <Heading
+              as="h2"
+              fontSize={{ base: '2xl', md: '32px' }}
+              fontWeight="medium"
+              lineHeight={{ md: 10 }}
+              mr={ 2 }
+            >
+              { title }
+            </Heading>
+            <MarketplaceAppIntegrationIcon external={ external } internalWallet={ internalWallet }/>
+            <MarketplaceAppGraphLinks links={ graphLinks } ml={ 2 }/>
+          </Flex>
 
           <Text
             variant="secondary"
             gridColumn={ 2 }
-            fontSize="sm"
+            fontSize={{ base: 'sm', md: 'md' }}
             fontWeight="normal"
-            lineHeight={ 1 }
+            lineHeight={{ md: 6 }}
           >
             By{ nbsp }{ author }
           </Text>
 
+          { isRatingEnabled && (
+            <Box
+              gridColumn={{ base: '1 / 3', md: 2 }}
+              marginTop={{ base: 6, md: 3 }}
+              py={{ base: 0, md: 1.5 }}
+              width="fit-content"
+            >
+              <Rating
+                appId={ id }
+                rating={ rating }
+                userRating={ userRating }
+                rate={ rateApp }
+                isSending={ isRatingSending }
+                isLoading={ isRatingLoading }
+                fullView
+                canRate={ canRate }
+                source="App modal"
+              />
+            </Box>
+          ) }
+
           <Box
             gridColumn={{ base: '1 / 3', md: 2 }}
-            marginTop={{ base: 6, md: 0 }}
+            marginTop={{ base: 6, md: 3 }}
           >
             <Flex flexWrap="wrap" gap={ 6 }>
               <Flex width={{ base: '100%', md: 'auto' }}>
@@ -169,10 +218,23 @@ const MarketplaceAppModal = ({
                   colorScheme="gray"
                   w={ 9 }
                   h={ 8 }
+                  flexShrink={ 0 }
                   onClick={ handleFavoriteClick }
-                  icon={ isFavorite ?
-                    <IconSvg name="star_filled" w={ 5 } h={ 5 } color="yellow.400"/> :
-                    <IconSvg name="star_outline" w={ 5 } h={ 5 } color={ starOutlineIconColor }/> }
+                  icon={ <FavoriteIcon isFavorite={ isFavorite } color={ iconColor }/> }
+                />
+
+                <CopyToClipboard
+                  text={ isBrowser() ? window.location.origin + `/apps/${ id }` : '' }
+                  icon="share"
+                  size={ 4 }
+                  variant="outline"
+                  colorScheme="gray"
+                  w={ 9 }
+                  h={ 8 }
+                  color={ iconColor }
+                  _hover={{ color: iconColor }}
+                  display="inline-flex"
+                  borderRadius="base"
                 />
               </Flex>
             </Flex>

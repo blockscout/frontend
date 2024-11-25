@@ -1,22 +1,20 @@
 import { Grid, Text, Flex } from '@chakra-ui/react';
 import React from 'react';
 
+import type { ItemsProps } from './types';
 import type { SearchResultToken } from 'types/api/search';
 
+import { toBech32Address } from 'lib/address/bech32';
 import highlightText from 'lib/highlightText';
 import * as TokenEntity from 'ui/shared/entities/token/TokenEntity';
 import HashStringShortenDynamic from 'ui/shared/HashStringShortenDynamic';
 import IconSvg from 'ui/shared/IconSvg';
 
-interface Props {
-  data: SearchResultToken;
-  isMobile: boolean | undefined;
-  searchTerm: string;
-}
-
-const SearchBarSuggestToken = ({ data, isMobile, searchTerm }: Props) => {
+const SearchBarSuggestToken = ({ data, isMobile, searchTerm, addressFormat }: ItemsProps<SearchResultToken>) => {
   const icon = <TokenEntity.Icon token={{ ...data, type: data.token_type }}/>;
   const verifiedIcon = <IconSvg name="certified" boxSize={ 4 } color="green.500" ml={ 1 }/>;
+  const hash = data.filecoin_robust_address || (addressFormat === 'bech32' ? toBech32Address(data.address) : data.address);
+
   const name = (
     <Text
       fontWeight={ 700 }
@@ -30,7 +28,7 @@ const SearchBarSuggestToken = ({ data, isMobile, searchTerm }: Props) => {
 
   const address = (
     <Text variant="secondary" whiteSpace="nowrap" overflow="hidden">
-      <HashStringShortenDynamic hash={ data.address } isTooltipDisabled/>
+      <HashStringShortenDynamic hash={ hash } isTooltipDisabled/>
     </Text>
   );
 

@@ -5,9 +5,9 @@ import React from 'react';
 import type { AddressCoinBalanceHistoryItem } from 'types/api/address';
 
 import { WEI, ZERO } from 'lib/consts';
-import useTimeAgoIncrement from 'lib/hooks/useTimeAgoIncrement';
 import BlockEntity from 'ui/shared/entities/block/BlockEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
+import TimeAgoWithTooltip from 'ui/shared/TimeAgoWithTooltip';
 
 type Props = AddressCoinBalanceHistoryItem & {
   page: number;
@@ -17,7 +17,6 @@ type Props = AddressCoinBalanceHistoryItem & {
 const AddressCoinBalanceTableItem = (props: Props) => {
   const deltaBn = BigNumber(props.delta).div(WEI);
   const isPositiveDelta = deltaBn.gte(ZERO);
-  const timeAgo = useTimeAgoIncrement(props.block_timestamp, props.page === 1);
 
   return (
     <Tr>
@@ -43,9 +42,13 @@ const AddressCoinBalanceTableItem = (props: Props) => {
         ) }
       </Td>
       <Td>
-        <Skeleton isLoaded={ !props.isLoading } color="text_secondary" display="inline-block">
-          <span>{ timeAgo }</span>
-        </Skeleton>
+        <TimeAgoWithTooltip
+          timestamp={ props.block_timestamp }
+          enableIncrement={ props.page === 1 }
+          isLoading={ props.isLoading }
+          color="text_secondary"
+          display="inline-block"
+        />
       </Td>
       <Td isNumeric pr={ 1 }>
         <Skeleton isLoaded={ !props.isLoading } color="text_secondary" display="inline-block">

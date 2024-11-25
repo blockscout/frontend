@@ -6,7 +6,6 @@ import type { WatchlistAddress, WatchlistResponse } from 'types/api/account';
 
 import { resourceKey } from 'lib/api/resources';
 import { getResourceKey } from 'lib/api/useApiQuery';
-import useRedirectForInvalidAuthToken from 'lib/hooks/useRedirectForInvalidAuthToken';
 import { WATCH_LIST_ITEM_WITH_TOKEN_INFO } from 'stubs/account';
 import AccountPageDescription from 'ui/shared/AccountPageDescription';
 import ActionBar, { ACTION_BAR_HEIGHT_DESKTOP } from 'ui/shared/ActionBar';
@@ -14,6 +13,8 @@ import DataListDisplay from 'ui/shared/DataListDisplay';
 import PageTitle from 'ui/shared/Page/PageTitle';
 import Pagination from 'ui/shared/pagination/Pagination';
 import useQueryWithPages from 'ui/shared/pagination/useQueryWithPages';
+import useProfileQuery from 'ui/snippets/auth/useProfileQuery';
+import useRedirectForInvalidAuthToken from 'ui/snippets/auth/useRedirectForInvalidAuthToken';
 import AddressModal from 'ui/watchlist/AddressModal/AddressModal';
 import DeleteAddressModal from 'ui/watchlist/DeleteAddressModal';
 import WatchListItem from 'ui/watchlist/WatchlistTable/WatchListItem';
@@ -28,6 +29,7 @@ const WatchList: React.FC = () => {
     },
   });
   const queryClient = useQueryClient();
+  const profileQuery = useProfileQuery();
 
   const addressModalProps = useDisclosure();
   const deleteModalProps = useDisclosure();
@@ -93,6 +95,7 @@ const WatchList: React.FC = () => {
               isLoading={ isPlaceholderData }
               onDeleteClick={ onDeleteClick }
               onEditClick={ onEditClick }
+              hasEmail={ Boolean(profileQuery.data?.email) }
             />
           )) }
         </Box>
@@ -103,6 +106,7 @@ const WatchList: React.FC = () => {
             onDeleteClick={ onDeleteClick }
             onEditClick={ onEditClick }
             top={ pagination.isVisible ? ACTION_BAR_HEIGHT_DESKTOP : 0 }
+            hasEmail={ Boolean(profileQuery.data?.email) }
           />
         </Box>
       </>
