@@ -16,7 +16,6 @@ import BigNumber from 'bignumber.js';
 import React from 'react';
 import { scroller, Element } from 'react-scroll';
 
-import { ARBITRUM_L2_TX_BATCH_STATUSES } from 'types/api/arbitrumL2';
 import type { Transaction } from 'types/api/transaction';
 import { ZKEVM_L2_TX_STATUSES } from 'types/api/transaction';
 import { ZKSYNC_L2_TX_BATCH_STATUSES } from 'types/api/zkSyncL2';
@@ -25,8 +24,8 @@ import { route } from 'nextjs-routes';
 
 import config from 'configs/app';
 import { WEI, WEI_IN_GWEI } from 'lib/consts';
-import getArbitrumVerificationStepStatus from 'lib/getArbitrumVerificationStepStatus';
 import getNetworkValidatorTitle from 'lib/networks/getNetworkValidatorTitle';
+import * as arbitrum from 'lib/rollups/arbitrum';
 import { MESSAGE_DESCRIPTIONS } from 'lib/tx/arbitrumMessageStatusDescription';
 import getConfirmationDuration from 'lib/tx/getConfirmationDuration';
 import { currencyUnits } from 'lib/units';
@@ -239,9 +238,9 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
             <VerificationSteps
-              currentStep={ data.arbitrum.status }
-              currentStepPending={ getArbitrumVerificationStepStatus(data.arbitrum) === 'pending' }
-              steps={ ARBITRUM_L2_TX_BATCH_STATUSES }
+              currentStep={ arbitrum.VERIFICATION_STEPS_MAP[data.arbitrum.status] }
+              currentStepPending={ arbitrum.getVerificationStepStatus(data.arbitrum) === 'pending' }
+              steps={ arbitrum.verificationSteps }
               isLoading={ isLoading }
             />
           </DetailsInfoItem.Value>
