@@ -73,7 +73,8 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
                 textOverflow="ellipsis"
               />
             </LinkInternal>
-            { data.is_verified_via_admin_panel && <IconSvg name="certified" boxSize={ 4 } ml={ 1 } color="green.500"/> }
+            { data.certified && <ContractCertifiedLabel iconSize={ 4 } boxSize={ 4 } ml={ 1 }/> }
+            { data.is_verified_via_admin_panel && !data.certified && <IconSvg name="certified" boxSize={ 4 } ml={ 1 } color="green.500"/> }
           </Flex>
         );
       }
@@ -385,7 +386,7 @@ const SearchResultListItem = ({ data, searchTerm, isLoading, addressFormat }: Pr
                   <chakra.span color="text_secondary">{ expiresText }</chakra.span>
               ) }
             </Text>
-            { data.certified && <ContractCertifiedLabel iconSize={ 5 } boxSize={ 5 } ml={ 1 }/> }
+            { data.certified && <ContractCertifiedLabel iconSize={ 4 } boxSize={ 4 } ml={ 1 }/> }
           </Flex>
         ) :
           null;
