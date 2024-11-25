@@ -183,7 +183,7 @@ export type TransactionType = 'rootstock_remasc' |
 export type TxsResponse = TransactionsResponseValidated | TransactionsResponsePending | BlockTransactionsResponse;
 
 export interface TransactionsSorting {
-  sort: 'value' | 'fee';
+  sort: 'value' | 'fee' | 'block_number';
   order: 'asc' | 'desc';
 }
 
