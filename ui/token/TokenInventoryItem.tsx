@@ -20,8 +20,7 @@ const TokenInventoryItem = ({ item, token, isLoading }: Props) => {
   const mediaElement = (
     <NftMedia
       mb="18px"
-      animationUrl={ item.animation_url }
-      imageUrl={ item.image_url }
+      data={ item }
       isLoading={ isLoading }
       autoplayVideo={ false }
     />

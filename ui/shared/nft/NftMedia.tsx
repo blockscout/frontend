@@ -2,6 +2,8 @@ import { AspectRatio, chakra, Skeleton, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
 
+import type { TokenInstance } from 'types/api/token';
+
 import NftFallback from './NftFallback';
 import NftHtml from './NftHtml';
 import NftHtmlFullscreen from './NftHtmlFullscreen';
@@ -13,21 +15,20 @@ import useNftMediaInfo from './useNftMediaInfo';
 import { mediaStyleProps } from './utils';
 
 interface Props {
-  imageUrl: string | null;
-  animationUrl: string | null;
+  data: TokenInstance;
   className?: string;
   isLoading?: boolean;
   withFullscreen?: boolean;
   autoplayVideo?: boolean;
 }
 
-const NftMedia = ({ imageUrl, animationUrl, className, isLoading, withFullscreen, autoplayVideo }: Props) => {
+const NftMedia = ({ data, className, isLoading, withFullscreen, autoplayVideo }: Props) => {
   const [ isMediaLoading, setIsMediaLoading ] = React.useState(true);
   const [ isLoadingError, setIsLoadingError ] = React.useState(false);
 
   const { ref, inView } = useInView({ triggerOnce: true });
 
-  const mediaInfo = useNftMediaInfo({ imageUrl, animationUrl, isEnabled: !isLoading && inView });
+  const mediaInfo = useNftMediaInfo({ data, isEnabled: !isLoading && inView });
 
   React.useEffect(() => {
     if (!isLoading && !mediaInfo) {
@@ -57,26 +58,20 @@ const NftMedia = ({ imageUrl, animationUrl, className, isLoading, withFullscreen
       return <NftFallback { ...styleProps }/>;
     }
 
-    const { type, url } = mediaInfo;
-
-    if (!url) {
-      return null;
-    }
-
     const props = {
-      src: url,
       onLoad: handleMediaLoaded,
       onError: handleMediaLoadError,
       ...(withFullscreen ? { onClick: onOpen } : {}),
     };
 
-    switch (type) {
-      case 'video':
-        return <NftVideo { ...props } autoPlay={ autoplayVideo } poster={ imageUrl || undefined }/>;
+    switch (mediaInfo.type) {
+      case 'video': {
+        return <NftVideo { ...props } src={ mediaInfo.src } autoPlay={ autoplayVideo } instance={ data }/>;
+      }
       case 'html':
-        return <NftHtml { ...props }/>;
+        return <NftHtml { ...props } src={ mediaInfo.src }/>;
       case 'image':
-        return <NftImage { ...props }/>;
+        return <NftImage { ...props } src={ mediaInfo.src }/>;
       default:
         return null;
     }
@@ -87,25 +82,18 @@ const NftMedia = ({ imageUrl, animationUrl, className, isLoading, withFullscreen
       return null;
     }
 
-    const { type, url } = mediaInfo;
-
-    if (!url) {
-      return null;
-    }
-
     const props = {
-      src: url,
       isOpen,
       onClose,
     };
 
-    switch (type) {
+    switch (mediaInfo.type) {
       case 'video':
-        return <NftVideoFullscreen { ...props }/>;
+        return <NftVideoFullscreen { ...props } src={ mediaInfo.src }/>;
       case 'html':
-        return <NftHtmlFullscreen { ...props }/>;
+        return <NftHtmlFullscreen { ...props } src={ mediaInfo.src }/>;
       case 'image':
-        return <NftImageFullscreen { ...props }/>;
+        return <NftImageFullscreen { ...props } src={ mediaInfo.src }/>;
       default:
         return null;
     }

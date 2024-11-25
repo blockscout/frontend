@@ -745,6 +745,7 @@ const schema = yup
       .transform(replaceQuotes)
       .json()
       .of(nftMarketplaceSchema),
+    NEXT_PUBLIC_HELIA_VERIFIED_FETCH_ENABLED: yup.boolean(),
 
     //     e. misc
     NEXT_PUBLIC_NETWORK_EXPLORERS: yup
