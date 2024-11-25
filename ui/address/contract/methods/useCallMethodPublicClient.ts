@@ -7,6 +7,8 @@ import type { FormSubmitResult, MethodCallStrategy, SmartContractMethod } from '
 import config from 'configs/app';
 import useAccount from 'lib/web3/useAccount';
 
+import { getNativeCoinValue } from './utils';
+
 interface Params {
   item: SmartContractMethod;
   args: Array<unknown>;
@@ -31,6 +33,7 @@ export default function useCallMethodPublicClient(): (params: Params) => Promise
     // for write payable methods we add additional input for native coin value
     // so in simulate mode we need to strip it off
     const _args = args.slice(0, item.inputs.length);
+    const value = getNativeCoinValue(args[item.inputs.length]);
 
     const params = {
       abi: [ item ],
@@ -38,6 +41,7 @@ export default function useCallMethodPublicClient(): (params: Params) => Promise
       args: _args,
       address,
       account,
+      value,
     };
 
     const result = strategy === 'read' ? await publicClient.readContract(params) : await publicClient.simulateContract(params);
