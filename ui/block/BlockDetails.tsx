@@ -41,6 +41,7 @@ import ZkSyncL2TxnBatchHashesInfo from 'ui/txnBatches/zkSyncL2/ZkSyncL2TxnBatchH
 
 import BlockDetailsBaseFeeCelo from './details/BlockDetailsBaseFeeCelo';
 import BlockDetailsBlobInfo from './details/BlockDetailsBlobInfo';
+import BlockDetailsZilliqaQuorumCertificate from './details/BlockDetailsZilliqaQuorumCertificate';
 import type { BlockQuery } from './useBlockQuery';
 
 interface Props {
@@ -416,6 +417,22 @@ const BlockDetails = ({ query }: Props) => {
         ))
       }
 
+      { typeof data.zilliqa?.view === 'number' && (
+        <>
+          <DetailsInfoItem.Label
+            hint="The iteration of the consensus round in which the block was proposed"
+            isLoading={ isPlaceholderData }
+          >
+            View
+          </DetailsInfoItem.Label>
+          <DetailsInfoItem.Value>
+            <Skeleton isLoaded={ !isPlaceholderData }>
+              { data.zilliqa.view }
+            </Skeleton>
+          </DetailsInfoItem.Value>
+        </>
+      ) }
+
       <DetailsInfoItemDivider/>
 
       { data.celo?.base_fee && <BlockDetailsBaseFeeCelo data={ data.celo.base_fee }/> }
@@ -739,6 +756,19 @@ const BlockDetails = ({ query }: Props) => {
               <DetailsInfoItem.Value>
                 { data.nonce }
               </DetailsInfoItem.Value>
+            </>
+          ) }
+
+          { data.zilliqa && (
+            <>
+              <DetailsInfoItemDivider/>
+              <BlockDetailsZilliqaQuorumCertificate data={ data.zilliqa?.quorum_certificate }/>
+              { data.zilliqa?.aggregate_quorum_certificate && (
+                <>
+                  <GridItem colSpan={{ base: undefined, lg: 2 }} mt={{ base: 1, lg: 2 }}/>
+                  <BlockDetailsZilliqaQuorumCertificate data={ data.zilliqa?.aggregate_quorum_certificate }/>
+                </>
+              ) }
             </>
           ) }
         </>

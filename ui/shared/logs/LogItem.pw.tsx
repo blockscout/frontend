@@ -43,3 +43,19 @@ test('without decoded input data +@mobile', async({ render }) => {
   );
   await expect(component).toHaveScreenshot();
 });
+
+test('with default data type', async({ render }) => {
+  const component = await render(
+    <LogItem
+      index={ 42 }
+      decoded={ null }
+      address={ addressMocks.withoutName }
+      topics={ TOPICS }
+      data="0x6475636b"
+      type="address"
+      transaction_hash="0x404bd417203769f968aacb1d66211510db86b81303b0c68283b4eb4572e6845c"
+      defaultDataType="UTF-8"
+    />,
+  );
+  await expect(component).toHaveScreenshot();
+});

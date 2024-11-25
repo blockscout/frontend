@@ -879,7 +879,7 @@ const TxInfo = ({ data, isLoading, socketStatus }: Props) => {
             Raw input
           </DetailsInfoItem.Label>
           <DetailsInfoItem.Value>
-            <RawInputData hex={ data.raw_input }/>
+            <RawInputData hex={ data.raw_input } defaultDataType={ data.zilliqa?.is_scilla ? 'UTF-8' : 'Hex' }/>
           </DetailsInfoItem.Value>
 
           { data.decoded_input && (
