@@ -13,7 +13,6 @@ import ContractMethodsCustom from 'ui/address/contract/methods/ContractMethodsCu
 import ContractMethodsMudSystem from 'ui/address/contract/methods/ContractMethodsMudSystem';
 import ContractMethodsProxy from 'ui/address/contract/methods/ContractMethodsProxy';
 import ContractMethodsRegular from 'ui/address/contract/methods/ContractMethodsRegular';
-import { enrichWithMethodId, isMethod } from 'ui/address/contract/methods/utils';
 import ContentLoader from 'ui/shared/ContentLoader';
 
 import type { CONTRACT_MAIN_TAB_IDS } from './utils';
@@ -68,8 +67,6 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
     onSocketError: enableQuery,
   });
 
-  const methods = React.useMemo(() => contractQuery.data?.abi?.filter(isMethod).map(enrichWithMethodId) ?? [], [ contractQuery.data?.abi ]);
-
   const verifiedImplementations = React.useMemo(() => {
     return data?.implementations?.filter(({ name, address }) => name && address && address !== data?.hash) || [];
   }, [ data?.hash, data?.implementations ]);
@@ -83,10 +80,10 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
           component: <ContractDetails mainContractQuery={ contractQuery } channel={ channel } addressHash={ data.hash }/>,
           subTabs: CONTRACT_DETAILS_TAB_IDS as unknown as Array<string>,
         },
-        methods.length > 0 && {
+        contractQuery.data?.abi && {
           id: [ 'read_write_contract' as const, 'read_contract' as const, 'write_contract' as const ],
           title: 'Read/Write contract',
-          component: <ContractMethodsRegular abi={ methods } isLoading={ contractQuery.isPlaceholderData }/>,
+          component: <ContractMethodsRegular abi={ contractQuery.data.abi } isLoading={ contractQuery.isPlaceholderData }/>,
         },
         verifiedImplementations.length > 0 && {
           id: [ 'read_write_proxy' as const, 'read_proxy' as const, 'write_proxy' as const ],
@@ -112,7 +109,6 @@ export default function useContractTabs(data: Address | undefined, isPlaceholder
     data?.hash,
     contractQuery,
     channel,
-    methods,
     verifiedImplementations,
     hasMudTab,
     mudSystemsQuery.isPlaceholderData,

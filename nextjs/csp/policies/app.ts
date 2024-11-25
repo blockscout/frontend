@@ -123,6 +123,7 @@ export function app(): CspDev.DirectiveDescriptor {
     ],
 
     'media-src': [
+      KEY_WORDS.BLOB,
       '*', // see comment for img-src directive
     ],
 

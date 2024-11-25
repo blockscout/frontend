@@ -11,10 +11,13 @@ import AddressEntity from 'ui/shared/entities/address/AddressEntity';
 import TxEntity from 'ui/shared/entities/tx/TxEntity';
 import LogDecodedInputData from 'ui/shared/logs/LogDecodedInputData';
 import LogTopic from 'ui/shared/logs/LogTopic';
+import type { DataType } from 'ui/shared/RawInputData';
+import RawInputData from 'ui/shared/RawInputData';
 
 type Props = Log & {
   type: 'address' | 'transaction';
   isLoading?: boolean;
+  defaultDataType?: DataType;
 };
 
 const RowHeader = ({ children, isLoading }: { children: React.ReactNode; isLoading?: boolean }) => (
@@ -23,7 +26,7 @@ const RowHeader = ({ children, isLoading }: { children: React.ReactNode; isLoadi
   </GridItem>
 );
 
-const LogItem = ({ address, index, topics, data, decoded, type, transaction_hash: txHash, isLoading }: Props) => {
+const LogItem = ({ address, index, topics, data, decoded, type, transaction_hash: txHash, isLoading, defaultDataType }: Props) => {
 
   const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200');
   const dataBgColor = useColorModeValue('blackAlpha.50', 'whiteAlpha.50');
@@ -100,9 +103,13 @@ const LogItem = ({ address, index, topics, data, decoded, type, transaction_hash
         )) }
       </GridItem>
       <RowHeader isLoading={ isLoading }>Data</RowHeader>
-      <Skeleton isLoaded={ !isLoading } p={ 4 } fontSize="sm" borderRadius="md" bgColor={ isLoading ? undefined : dataBgColor }>
-        { data }
-      </Skeleton>
+      { defaultDataType ? (
+        <RawInputData hex={ data } isLoading={ isLoading } defaultDataType={ defaultDataType } minHeight="53px"/>
+      ) : (
+        <Skeleton isLoaded={ !isLoading } p={ 4 } fontSize="sm" borderRadius="md" bgColor={ isLoading ? undefined : dataBgColor }>
+          { data }
+        </Skeleton>
+      ) }
     </Grid>
   );
 };

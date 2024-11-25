@@ -76,7 +76,7 @@ export interface SmartContract {
 }
 
 export type SmartContractDecodedConstructorArg = [
-  string,
+  unknown,
   {
     internalType: SmartContractMethodArgType;
     name: string;

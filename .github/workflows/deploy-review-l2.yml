@@ -27,8 +27,10 @@ on:
             - rootstock
             - shibarium
             - stability
-            - zkevm
+            - zkevm 
+            - zilliqa_prototestnet
             - zksync
+            - zora
 
 jobs:
   make_slug:

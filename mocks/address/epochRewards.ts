@@ -40,5 +40,11 @@ export const epochRewards: AddressEpochRewardsResponse = {
       token: tokenInfo,
     },
   ],
-  next_page_params: null,
+  next_page_params: {
+    amount: '71952055594478242556',
+    associated_account_address_hash: '0x30d060f129817c4de5fbc1366d53e19f43c8c64f',
+    block_number: 25954560,
+    items_count: 50,
+    type: 'delegated_payment',
+  },
 };
